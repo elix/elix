@@ -1,0 +1,30 @@
+{
+  "name": "custom-elements",
+  "main": "custom-elements.min.js",
+  "homepage": "http://webcomponents.org",
+  "authors": [
+    "The Polymer Authors"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webcomponents/custom-elements.git"
+  },
+  "keywords": [
+    "webcomponents"
+  ],
+  "license": "BSD",
+  "ignore": [],
+  "devDependencies": {
+    "web-component-tester": "^4.0.1",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.22"
+  },
+  "_release": "a0f55ecbb1",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "a0f55ecbb17eee97aab877cfda9ac3a16b3b14ac"
+  },
+  "_source": "git://github.com/webcomponents/custom-elements.git",
+  "_target": "master",
+  "_originalSource": "webcomponents/custom-elements"
+}

@@ -1,0 +1,23 @@
+body,
+button,
+input {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+}
+
+body {
+  margin: 0;
+  padding: 25px;
+}
+
+p,
+li {
+  max-width: 800px;
+}
+
+label {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
