@@ -1,0 +1,18 @@
+{
+  "browser": true,
+  "curly": true,
+  "eqnull": true,
+  "esnext": true,
+  "globals": {
+    "afterEach": false,
+    "before": false,
+    "console": false,
+    "customElements": false,
+    "describe": false,
+    "HTMLSlotElement": false,
+    "it": false
+  },
+  "undef": true,
+  "unused": "vars",
+  "varstmt": true
+}
