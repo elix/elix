@@ -1,5 +1,5 @@
-import SimpleAttribute from '../../elix-component-mixins/src/SimpleAttribute';
-import SimpleTemplate from '../../elix-component-mixins/src/SimpleTemplate';
+import SimpleAttribute from '../../elix-mixins/src/SimpleAttribute';
+import SimpleTemplate from '../../elix-mixins/src/SimpleTemplate';
 
 /**
  * A simple element

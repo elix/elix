@@ -36,7 +36,7 @@ important limitation of custom element consturctors is that they cannot
 set attributes. A call to `reflectAttribute` during the constructor will
 be deferred until the element is connected to the document.
 
-  **Kind**: instance method of <code>[SimpleElement](#SimpleElement)</code>. Defined by <code>[SimpleAttribute](../elix-component-mixins/docs/SimpleAttribute.md)</code> mixin.
+  **Kind**: instance method of <code>[SimpleElement](#SimpleElement)</code>. Defined by <code>[SimpleAttribute](../elix-mixins/docs/SimpleAttribute.md)</code> mixin.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -55,7 +55,7 @@ set attributes, including the `class` attribute. A call to
 `reflectClass` during the constructor will be deferred until the element
 is connected to the document.
 
-  **Kind**: instance method of <code>[SimpleElement](#SimpleElement)</code>. Defined by <code>[SimpleTemplate](../elix-component-mixins/docs/SimpleTemplate.md)</code> mixin.
+  **Kind**: instance method of <code>[SimpleElement](#SimpleElement)</code>. Defined by <code>[SimpleTemplate](../elix-mixins/docs/SimpleTemplate.md)</code> mixin.
 
 | Param | Type | Description |
 | --- | --- | --- |

@@ -13,7 +13,7 @@
   "main": "src/CLASS NAME GOES HERE.js",
   "dependencies": {
     "elix-element-base": "^0.8.0",
-    "elix-component-mixins": "^0.8.0"
+    "elix-mixins": "^0.8.0"
   },
   "browserify": {
     "transform": [

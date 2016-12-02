@@ -1,8 +1,8 @@
-# elix-component-mixins
+# elix-mixins
 
 Mixin library for creating web components in plain JavaScript (ES5 or ES6)
 
-[![npm version](https://img.shields.io/npm/v/elix-component-mixins.svg?style=flat)](https://www.npmjs.com/package/elix-component-mixins)
+[![npm version](https://img.shields.io/npm/v/elix-mixins.svg?style=flat)](https://www.npmjs.com/package/elix-mixins)
 
 This library implements common web component features as JavaScript mixins. It
 is designed for people who would like to create web components in plain

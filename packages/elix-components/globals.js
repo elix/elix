@@ -10,7 +10,7 @@
 /* jshint ignore:start */
 
 import * as simpleElement from '../elix-simple-element/globals';
-import * as componentMixins from '../elix-component-mixins/globals';
+import * as componentMixins from '../elix-mixins/globals';
 import * as webComponents from '../elix-components/globals';
 
 /* jshint ignore:end */
