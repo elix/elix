@@ -11,6 +11,6 @@
 
 import * as simpleElement from '../elix-simple-element/globals';
 import * as componentMixins from '../elix-mixins/globals';
-import * as webComponents from '../elix-components/globals';
+import * as webComponents from '../elix-all/globals';
 
 /* jshint ignore:end */

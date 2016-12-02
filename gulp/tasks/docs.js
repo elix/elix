@@ -14,7 +14,7 @@ const allPackages = require('../lib/allPackages');
 function buildDocsList() {
   const packagesWithoutBuiltDocs = [
     'elix-mixins',
-    'elix-components'
+    'elix-all'
   ];
   const ary = allPackages.filter(item => {
     return packagesWithoutBuiltDocs.indexOf(item) < 0;

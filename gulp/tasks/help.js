@@ -9,7 +9,7 @@ const gutil = require('gulp-util');
 //
 const helpTask = function() {
   gutil.log('gulp commands this project supports:');
-  gutil.log('  gulp build (builds consolidated elix-components.js, all package distributions, all documentation, and all tests)');
+  gutil.log('  gulp build (builds consolidated elix-all.js, all package distributions, all documentation, and all tests)');
   gutil.log('  gulp devbuild (same as build minus building the documentation)');
   gutil.log('  gulp docs (builds all packages README.md files)');
   gutil.log('  gulp lint (runs jshint on all .js files)');
