@@ -9,8 +9,8 @@ A simple element
 This is a simple element.
 
   **Kind**: global class
-**Mixes**: <code>[SimpleAttribute](../basic-component-mixins/docs/SimpleAttribute.md)</code>
-  , <code>[SimpleTemplate](../basic-component-mixins/docs/SimpleTemplate.md)</code>
+**Mixes**: <code>[SimpleAttribute](../elix-mixins/docs/SimpleAttribute.md)</code>
+  , <code>[SimpleTemplate](../elix-mixins/docs/SimpleTemplate.md)</code>
   
 
 * [SimpleElement](#SimpleElement)
