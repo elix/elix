@@ -10,6 +10,7 @@ const watchify = require('watchify');
 const buffer = require('vinyl-buffer');
 const vinylStream = require('vinyl-source-stream');
 const sourceMaps = require('gulp-sourcemaps');
+const uglify = require('gulp-uglify');
 const allPackages = require('../lib/allPackages');
 
 //
@@ -45,9 +46,10 @@ const browserifyHelperTask = function(watch, done) {
       .bundle()
       .pipe(vinylStream(bundler.outputFile))
       .pipe(buffer()) // Convert to gulp pipeline
-      // The following two lines are for splitting source maps away from js file:
-      //.pipe(sourceMaps.init({loadMaps : true})) // Strip inline source maps
-      //.pipe(sourceMaps.write(mapDir))
+      .pipe(sourceMaps.init({loadMaps : true})) // Strip inline source maps
+      .pipe(uglify())   // Minimize
+      .on('error', gutil.log)
+      .pipe(sourceMaps.write('./')) // Relative to bundler.outputDir below
       .pipe(gulp.dest(bundler.outputDir))
       .on('end', function() {
         gutil.log(`Processed ${bundler.source} and wrote ${bundler.outputDir}${bundler.outputFile}`);
