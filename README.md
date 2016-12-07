@@ -93,6 +93,22 @@ The /packages folder contains the components and other cohesive units which are
 registered with npm as separately installable packages.
 
 
+# Getting started
+
+1. **Clone or fork the project**
+2. **npm install -g yarn**
+3. **yarn install**
+4. **gulp** Depending on your OS, you’ll see available gulp tasks listed, or if 
+   not, do this: *npm install -g gulp-cli*
+5. **gulp build** Builds distribution .js files for all components and mixins, 
+   and builds elix-all.js which is a consolidated distribution file containing 
+   everything. Also builds JSDoc-constructed README.md documentation files and 
+   runs lint.
+
+Note that the built files are committed to the repo. After running 
+‘gulp build’, a ‘git status’ should show nothing new or changed.
+
+
 # Contributing
 
 Please see our [Contributor's guide](Contributing.md).
