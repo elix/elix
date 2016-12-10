@@ -30,7 +30,7 @@
   when defining members of a class, define the `constructor()` first, followed
   by all public members in alphabetical order.
 * Capitalize the names of mixin that accept and return a class, to reflect their
-  class-like nature. Avoid including the word "Mixin" in the mixin name.
+  class-like nature.
 * Write user interface specifications to document end-user visible behavior.
   It’s fine to reference such behavior in code comments, but try to avoid
   letting comments be the sole place where user-visible behavior is described.
