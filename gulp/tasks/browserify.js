@@ -18,10 +18,10 @@ const allPackages = require('../lib/allPackages');
 //
 function buildBuildList() {
   const buildList = {
-    'build/tests.js': allPackages.map(pkg => `packages/${pkg}/test/*.js`)
+    'build/tests.js': allPackages.map(pkg => `elements/${pkg}/test/*.js`)
   };
   allPackages.forEach(pkg => {
-    buildList[`packages/${pkg}/dist/${pkg}.js`] = [`packages/${pkg}/globals.js`];
+    buildList[`elements/${pkg}/dist/${pkg}.js`] = [`elements/${pkg}/globals.js`];
   });
 
   return buildList;

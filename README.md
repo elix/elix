@@ -89,9 +89,6 @@ together._
 All core Elix work happens in this monorepo, keeping all sources in a single
 place. This makes it easy to clone, fork, and track issues and pull requests.
 
-The /packages folder contains the components and other cohesive units which are
-registered with npm as separately installable packages.
-
 
 # Getting started
 

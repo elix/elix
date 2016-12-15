@@ -1,0 +1,12 @@
+.c9/
+.git/
+.idea/
+gulp/
+node_modules/
+test/
+.babelrc
+.gitignore
+.jshintrc
+.npmignore
+gulpfile.js
+yarn.lock 

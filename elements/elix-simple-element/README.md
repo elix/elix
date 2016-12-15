@@ -4,7 +4,7 @@
 ## SimpleElement
 A simple element
 
-[Live demo](http://elix.org/elix/packages/elix-simple-element/)
+[Live demo](http://elix.org/elix/elements/elix-simple-element/)
 
 This is a simple element.
 

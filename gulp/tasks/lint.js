@@ -8,10 +8,10 @@ const jshint = require('gulp-jshint');
 const lintTask = function() {
   const lintFiles = [
         'gulpfile.js',
-        'packages/**/*.js',
-        '!packages/**/dist/**',
-        '!packages/**/lib/**',
-        '!packages/**/bower_components/**',
+        'elements/**/*.js',
+        '!elements/**/dist/**',
+        '!elements/**/lib/**',
+        '!elements/**/bower_components/**',
         'test/**/*.js'
     ];
     

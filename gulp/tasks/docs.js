@@ -20,8 +20,8 @@ function buildDocsList() {
     return packagesWithoutBuiltDocs.indexOf(item) < 0;
   }).map(item => {
     return {
-      src: `packages/${item}/src/*.js`,
-      dest: `packages/${item}/README.md`};
+      src: `elements/${item}/src/*.js`,
+      dest: `elements/${item}/README.md`};
   });
 
   return ary.concat(buildMixinsDocsList());
@@ -33,13 +33,13 @@ const docsList = buildDocsList();
 // the elix-mixins directory.
 //
 function buildMixinsDocsList() {
-  return fs.readdirSync('packages/elix-mixins/src').filter(file => {
+  return fs.readdirSync('elements/elix-mixins/src').filter(file => {
     return file.indexOf('.js') == file.length - 3;
   }).map(file => {
     const fileRoot = file.replace('.js', '');
     return {
-      src: `packages/elix-mixins/src/${file}`,
-      dest: `packages/elix-mixins/docs/${fileRoot}.md` };
+      src: `elements/elix-mixins/src/${file}`,
+      dest: `elements/elix-mixins/docs/${fileRoot}.md` };
   });
 }
 
@@ -141,7 +141,7 @@ function mergeMixinDocs(componentJson) {
   }
 
   const mixins = componentJson[0].mixes.map(mixin => {
-    return 'packages/elix-mixins/src/' + mixin + '.js';
+    return 'elements/elix-mixins/src/' + mixin + '.js';
   });
 
   const hostId = componentJson[0].id;
