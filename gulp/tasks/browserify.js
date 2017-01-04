@@ -1,10 +1,10 @@
 /*jslint node: true */
+/*jshint loopfunc: true */
 'use strict';
 
 const gulp = require('gulp');
 const gutil = require('gulp-util');
 const glob = require('glob');
-const babelify = require('babelify')
 const browserify = require('browserify');
 const watchify = require('watchify');
 const buffer = require('vinyl-buffer');
@@ -30,11 +30,11 @@ const buildList = buildBuildList();
 
 const watchifyTask = function(done) {
   browserifyHelperTask(true, done);
-}
+};
 
 const browserifyTask = function(done) {
   browserifyHelperTask(false, done);
-}
+};
 
 const browserifyHelperTask = function(watch, done) {
   let processedCount = 0;
@@ -57,7 +57,7 @@ const browserifyHelperTask = function(watch, done) {
         if (processedCount >= bundlerCount) {
           if (watch) {
             // Do not call task completion callback in the watch case
-            gutil.log('Now watching for changes...')
+            gutil.log('Now watching for changes...');
           }
           else {
             done();
@@ -85,7 +85,7 @@ const browserifyHelperTask = function(watch, done) {
       } : {
         entries: entries,
         debug: true
-      }
+      };
 
     let bundler = browserify(props);
     if (watch) {
