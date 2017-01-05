@@ -1,20 +1,21 @@
-import SimpleAttribute from '../../elix-mixins/src/SimpleAttribute';
-import SimpleTemplate from '../../elix-mixins/src/SimpleTemplate';
+import SimpleAttributeMixin from '../../elix-mixins/src/SimpleAttributeMixin';
+import SimpleTemplateMixin from '../../elix-mixins/src/SimpleTemplateMixin';
+
 
 /**
- * A simple element
+ * A simple element used to demonstrate the build and documentation process.
  *
  * [Live demo](http://elix.org/elix/elements/elix-simple-element/)
  *
- * This is a simple element.
- *
- * @mixes SimpleAttribute
- * @mixes SimpleTemplate
+ * @module SimpleElement
+ * @mixes SimpleAttributeMixin
+ * @mixes SimpleTemplateMixin
  */
-class SimpleElement extends SimpleTemplate(SimpleAttribute(HTMLElement)) {
+class SimpleElement extends SimpleTemplateMixin(SimpleAttributeMixin(HTMLElement)) {
+
   /**
    * Specifies the greeting.
-   * 
+   *
    * @type {string}
    * @default greeting
    */
@@ -24,11 +25,11 @@ class SimpleElement extends SimpleTemplate(SimpleAttribute(HTMLElement)) {
   set greeting(value) {
     this.shadowRoot.getElementById('greeting').textContent = value;
   }
-  
+
   static get observedAttributes() {
     return ['greeting'];
   }
-  
+
   get template() {
     return `<span id="greeting">Hello</span>, <slot></slot>.`;
   }

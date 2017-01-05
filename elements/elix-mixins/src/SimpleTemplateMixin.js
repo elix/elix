@@ -1,11 +1,18 @@
-
-/* Exported function extends a base class with SimpleTemplate. */
-export default (base) => {
+/**
+ * Mixin which adds a simplistic means of cloning a string template into a new
+ * shadow root.
+ *
+ * @module SimpleTemplateMixin
+ * @param base {Class} the base class to extend
+ * @returns {Class} the extended class
+ */
+export default function SimpleTemplateMixin(base) {
 
   /**
-   * Simple mixin for cloning a string template into a new shadow root.
+   * The class prototype added by the mixin.
    */
   class SimpleTemplate extends base {
+
     constructor() {
 	    super();
 	    const template = this.template;
@@ -14,7 +21,7 @@ export default (base) => {
         root.innerHTML = template;
 	    }
     }
-    
+
     /**
      * Set/unset the class with the indicated name.
      *
@@ -33,6 +40,6 @@ export default (base) => {
     }
 
   }
-  
+
   return SimpleTemplate;
-};
+}
