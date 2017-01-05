@@ -10,11 +10,11 @@ const lintTask = function() {
         'elements/**/*.js',
         '!elements/**/dist/**',
         '!elements/**/lib/**',
-        '!elements/**/bower_components/**',
+        '!elements/**/node_modules/**',
         'gulp/**/*.js',
         'test/**/*.js'
     ];
-    
+
   return gulp.src(lintFiles)
     .pipe(jshint())
     .pipe(jshint.reporter('default'));
