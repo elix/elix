@@ -1,0 +1,14 @@
+{
+  "name": "elix-demos",
+  "description": "Elix demos",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/elix/elix.git"
+  },
+  "author": "info@component.kitchen",
+  "dependencies": {
+    "custom-elements": "webcomponents/custom-elements#master",
+    "shadydom": "webcomponents/shadydom#master"
+  }
+}
