@@ -136,7 +136,8 @@ function parseJSONToMarkdown(json) {
 }
 
 function mergeMixinDocs(componentJson) {
-  if (componentJson[0].mixes == null || componentJson[0].mixes === undefined) {
+  if (componentJson.length === 0 ||
+      componentJson[0].mixes == null || componentJson[0].mixes === undefined) {
     return componentJson;
   }
 
