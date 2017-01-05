@@ -1,8 +1,8 @@
 import { assert } from 'chai';
-import SimpleAttribute from '../src/SimpleAttribute';
+import SimpleTemplateMixin from '../src/SimpleTemplateMixin';
 
 
-class SimpleAttributeTest extends SimpleAttribute(HTMLElement) {
+class SimpleTemplateTest extends SimpleTemplateMixin(HTMLElement) {
   get template() {
     return `
       <style>
@@ -20,10 +20,10 @@ class SimpleAttributeTest extends SimpleAttribute(HTMLElement) {
     `;
   }
 }
-customElements.define('simple-attribute-test', SimpleAttributeTest);
+customElements.define('simple-template-test', SimpleTemplateTest);
 
 
-describe("SimpleAttribute mixin", function() {
+describe("SimpleTemplateMixin", function() {
 
   let container;
 
@@ -36,7 +36,7 @@ describe("SimpleAttribute mixin", function() {
   });
 
   it("can be instantiated", () => {
-    const fixture = document.createElement('simple-attribute-test');
+    const fixture = document.createElement('simple-template-test');
     container.appendChild(fixture);
     assert(fixture);
   });

@@ -5,10 +5,10 @@
  * the source file(s) you want from the src folder.
  */
 
-import SimpleAttribute from './src/SimpleAttribute';
-import SimpleTemplate from './src/SimpleTemplate';
+import SimpleAttributeMixin from './src/SimpleAttributeMixin';
+import SimpleTemplateMixin from './src/SimpleTemplateMixin';
 
 window.Elix = window.Elix || {};
 
-window.Elix.SimpleAttribute = SimpleAttribute;
-window.Elix.SimpleTemplate = SimpleTemplate;
+window.Elix.SimpleAttributeMixin = SimpleAttributeMixin;
+window.Elix.SimpleTemplateMixin = SimpleTemplateMixin;
