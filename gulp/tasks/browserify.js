@@ -1,5 +1,4 @@
 /*jslint node: true */
-/*jshint loopfunc: true */
 'use strict';
 
 const gulp = require('gulp');
@@ -69,6 +68,7 @@ const browserifyHelperTask = function(watch, done) {
   gutil.log('Preparing build...');
   
   for (let key in buildList) {
+    /*jshint loopfunc: true */
     let entries = [];
     
     buildList[key].forEach(globItem => {
