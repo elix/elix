@@ -17,6 +17,7 @@ const allPackages = require('../lib/allPackages');
 //
 function buildBuildList() {
   const buildList = {
+    'elements/demos/dist/demos.js': ['elements/demos/src/*.js'],
     'build/tests.js': allPackages.map(pkg => `elements/${pkg}/test/*.js`)
   };
   allPackages.forEach(pkg => {
@@ -39,7 +40,7 @@ const browserifyHelperTask = function(watch, done) {
   let processedCount = 0;
   let bundlerCount = 0;
   let bundlers = [];
-  
+
   function bundleIt(bundler) {
     bundler.bundler
       .bundle()
@@ -64,18 +65,18 @@ const browserifyHelperTask = function(watch, done) {
         }
       });
   }
-  
+
   gutil.log('Preparing build...');
-  
+
   for (let key in buildList) {
     /*jshint loopfunc: true */
     let entries = [];
-    
+
     buildList[key].forEach(globItem => {
       let a = glob.sync(globItem);
       Array.prototype.push.apply(entries, a);
     });
-    
+
     const props = watch ? {
         entries: entries,
         debug: true,
@@ -93,23 +94,23 @@ const browserifyHelperTask = function(watch, done) {
         bundleIt(this.bundlerData);
       });
     }
-    
+
     let bundlerData = {
       bundler: bundler,
       source: entries,
       outputFile: key.split('/').pop(),
       outputDir: key.substring(0, key.lastIndexOf('/') + 1)
     };
-    
+
     // Attach bundlerData to the bundler object so we can fetch
     // details about the bundler in the update event
     bundler.bundlerData = bundlerData;
-    
+
     bundlers.push(bundlerData);
   }
-  
+
   bundlerCount = bundlers.length;
-  
+
   bundlers.forEach(bundler => {
     //
     // Remember: we have .babelrc in the root specifying the ES2015 preset,
@@ -118,7 +119,7 @@ const browserifyHelperTask = function(watch, done) {
     // therefore unnecessary:
     //
     // bundler.bundler.transform(babelify, {presets: ['es2015']});
-    
+
     bundleIt(bundler);
   });
 };
