@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Single-selection demo</title>
+
+  <!-- TODO: Use npm distribution of v1 polyfills when available. -->
+  <script src="node_modules/shadydom/shadydom.min.js"></script>
+  <script src="node_modules/custom-elements/custom-elements.min.js"></script>
+  <script src="node_modules/custom-elements/src/native-shim.js"></script>
+  <script src="node_modules/custom-elements/src/htmlelement-instanceof.js"></script>
+  <script src="dist/demos.js"></script>
+  <link rel="stylesheet" href="demos.css">
+
+  <style>
+    single-selection-demo {
+      cursor: default;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    single-selection-demo > * {
+      align-items: center;
+      border: 1px solid lightgray;
+      display: inline-flex;
+      height: 50px;
+      justify-content: center;
+      padding: 0.25em;
+      width: 50px;
+    }
+
+    single-selection-demo > .selected {
+      background-color: highlight;
+      color: highlighttext;
+    }
+  </style>
+
+</head>
+
+<body>
+  <p>
+    Click an item to select it:
+  </p>
+  <single-selection-demo>
+    <div>One</div>
+    <div>Two</div>
+    <div>Three</div>
+    <div>Four</div>
+    <div>Five</div>
+  </single-selection-demo>
+</body>
+
+</html>

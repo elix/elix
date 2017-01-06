@@ -5,10 +5,16 @@
  * the source file(s) you want from the src folder.
  */
 
+import microtask from './src/microtask';
 import SimpleAttributeMixin from './src/SimpleAttributeMixin';
 import SimpleTemplateMixin from './src/SimpleTemplateMixin';
+import SingleSelectionMixin from './src/SingleSelectionMixin';
+import symbols from './src/symbols';
 
 window.Elix = window.Elix || {};
 
+window.Elix.microtask = microtask;
 window.Elix.SimpleAttributeMixin = SimpleAttributeMixin;
 window.Elix.SimpleTemplateMixin = SimpleTemplateMixin;
+window.Elix.SingleSelectionMixin = SingleSelectionMixin;
+window.Elix.symbols = symbols;

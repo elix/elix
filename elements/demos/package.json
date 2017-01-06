@@ -10,5 +10,10 @@
   "dependencies": {
     "custom-elements": "webcomponents/custom-elements#master",
     "shadydom": "webcomponents/shadydom#master"
+  },
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
   }
 }
