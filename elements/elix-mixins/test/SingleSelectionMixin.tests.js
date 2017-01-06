@@ -45,32 +45,32 @@ describe("SingleSelectionMixin", () => {
   });
 
   it("has selectedItem initially null", () => {
-    const element = document.createElement('items-selection-test');
-    assert.isNull(element.selectedItem);
-    assert.equal(element.selectedIndex, -1);
+    const fixture = document.createElement('items-selection-test');
+    assert.isNull(fixture.selectedItem);
+    assert.equal(fixture.selectedIndex, -1);
   });
 
   it("updates selectingIndex when selectedItem changes", () => {
-    const element = createSampleElement();
-    element.selectedIndex = 2;
-    assert.equal(element.selectedItem, element.children[2]);
+    const fixture = createSampleElement();
+    fixture.selectedIndex = 2;
+    assert.equal(fixture.selectedItem, fixture.children[2]);
   });
 
   it("updates selectedItem when selectedIndex changes", () => {
-    const element = createSampleElement();
-    element.selectedItem = element.children[2];
-    assert.equal(element.selectedIndex, 2);
+    const fixture = createSampleElement();
+    fixture.selectedItem = fixture.children[2];
+    assert.equal(fixture.selectedIndex, 2);
   });
 
   it("updates selectedIndex if selectedItem changes position", () => {
-    const element = createSampleElement();
-    const item = element.children[0];
-    element.selectedItem = item;
-    assert.equal(element.selectedIndex, 0);
-    element.appendChild(item); // Move to end.
-    element[symbols.itemsChanged]();
-    assert.equal(element.selectedItem, item);
-    assert.equal(element.selectedIndex, 2);
+    const fixture = createSampleElement();
+    const item = fixture.children[0];
+    fixture.selectedItem = item;
+    assert.equal(fixture.selectedIndex, 0);
+    fixture.appendChild(item); // Move to end.
+    fixture[symbols.itemsChanged]();
+    assert.equal(fixture.selectedItem, item);
+    assert.equal(fixture.selectedIndex, 2);
   });
 
   it("can set selectedIndex in markup", done => {
@@ -89,188 +89,188 @@ describe("SingleSelectionMixin", () => {
   });
 
   it("can advance the selection to the next item", () => {
-    const element = createSampleElement();
-    assert.equal(element.selectedIndex, -1);
-    element.selectNext();
-    assert.equal(element.selectedIndex, 0);
-    element.selectNext();
-    element.selectNext();
-    assert.equal(element.selectedIndex, 2);
-    element.selectNext(); // Moving past last item should have no effect.
-    assert.equal(element.selectedIndex, 2);
+    const fixture = createSampleElement();
+    assert.equal(fixture.selectedIndex, -1);
+    fixture.selectNext();
+    assert.equal(fixture.selectedIndex, 0);
+    fixture.selectNext();
+    fixture.selectNext();
+    assert.equal(fixture.selectedIndex, 2);
+    fixture.selectNext(); // Moving past last item should have no effect.
+    assert.equal(fixture.selectedIndex, 2);
   });
 
   it("can move the selection to the previous item", () => {
-    const element = createSampleElement();
-    assert.equal(element.selectedIndex, -1);
-    element.selectPrevious();
-    assert.equal(element.selectedIndex, 2); // last item
-    element.selectPrevious();
-    assert.equal(element.selectedIndex, 1);
+    const fixture = createSampleElement();
+    assert.equal(fixture.selectedIndex, -1);
+    fixture.selectPrevious();
+    assert.equal(fixture.selectedIndex, 2); // last item
+    fixture.selectPrevious();
+    assert.equal(fixture.selectedIndex, 1);
   });
 
   it("can wrap the selection from the last to the first item", () => {
-    const element = createSampleElement();
-    element.selectionWraps = true;
-    element.selectedIndex = 2;
-    element.selectNext();
-    assert.equal(element.selectedIndex, 0);
+    const fixture = createSampleElement();
+    fixture.selectionWraps = true;
+    fixture.selectedIndex = 2;
+    fixture.selectNext();
+    assert.equal(fixture.selectedIndex, 0);
   });
 
   it("tracks selection of first item when no item is selected", () => {
-    const element = createSampleElement();
-    assert.equal(element.selectedIndex, -1);
-    element.selectionRequired = true;
-    assert.equal(element.selectedIndex, 0);
+    const fixture = createSampleElement();
+    assert.equal(fixture.selectedIndex, -1);
+    fixture.selectionRequired = true;
+    assert.equal(fixture.selectedIndex, 0);
   });
 
   it("tracks selection when current item (not last place) is removed", () => {
-    const element = createSampleElement();
-    element.selectionRequired = true;
-    const originalItem1 = element.children[1];
-    element.selectedIndex = 0;
-    element.removeChild(element.children[0]);
-    element[symbols.itemsChanged]();
-    assert.equal(element.selectedIndex, 0);
-    assert.equal(element.selectedItem, originalItem1);
+    const fixture = createSampleElement();
+    fixture.selectionRequired = true;
+    const originalItem1 = fixture.children[1];
+    fixture.selectedIndex = 0;
+    fixture.removeChild(fixture.children[0]);
+    fixture[symbols.itemsChanged]();
+    assert.equal(fixture.selectedIndex, 0);
+    assert.equal(fixture.selectedItem, originalItem1);
   });
 
   it("tracks selection when current item in last place is removed", () => {
-    const element = createSampleElement();
-    element.selectionRequired = true;
-    const originalItem1 = element.children[1];
-    element.selectedIndex = 2;
-    element.removeChild(element.children[2]);
-    element[symbols.itemsChanged]();
-    assert.equal(element.selectedIndex, 1);
-    assert.equal(element.selectedItem, originalItem1);
+    const fixture = createSampleElement();
+    fixture.selectionRequired = true;
+    const originalItem1 = fixture.children[1];
+    fixture.selectedIndex = 2;
+    fixture.removeChild(fixture.children[2]);
+    fixture[symbols.itemsChanged]();
+    assert.equal(fixture.selectedIndex, 1);
+    assert.equal(fixture.selectedItem, originalItem1);
   });
 
   it("tracks selection when item other than current item is removed", () => {
-    const element = createSampleElement();
-    element.selectionRequired = true;
-    const originalItem1 = element.children[1];
-    element.selectedIndex = 1;
-    element.removeChild(element.children[0]);
-    element[symbols.itemsChanged]();
-    assert.equal(element.selectedIndex, 0);
-    assert.equal(element.selectedItem, originalItem1);
+    const fixture = createSampleElement();
+    fixture.selectionRequired = true;
+    const originalItem1 = fixture.children[1];
+    fixture.selectedIndex = 1;
+    fixture.removeChild(fixture.children[0]);
+    fixture[symbols.itemsChanged]();
+    assert.equal(fixture.selectedIndex, 0);
+    assert.equal(fixture.selectedItem, originalItem1);
   });
 
   it("drops selection when the last item is removed", () => {
-    const element = createSampleElement();
-    element.selectionRequired = true;
-    element.selectedIndex = 0;
-    element.removeChild(element.children[0]);
-    element.removeChild(element.children[0]);
-    element.removeChild(element.children[0]);
-    element[symbols.itemsChanged]();
-    assert.equal(element.selectedIndex, -1);
-    assert.equal(element.selectedItem, null);
+    const fixture = createSampleElement();
+    fixture.selectionRequired = true;
+    fixture.selectedIndex = 0;
+    fixture.removeChild(fixture.children[0]);
+    fixture.removeChild(fixture.children[0]);
+    fixture.removeChild(fixture.children[0]);
+    fixture[symbols.itemsChanged]();
+    assert.equal(fixture.selectedIndex, -1);
+    assert.equal(fixture.selectedItem, null);
   });
 
   it("sets canSelectNext/canSelectPrevious with no wrapping", () => {
-    const element = createSampleElement();
-    assert(!element.selectionWraps);
+    const fixture = createSampleElement();
+    assert(!fixture.selectionWraps);
 
     // No selection yet
-    assert.equal(element.selectedIndex, -1);
-    assert(element.canSelectNext);
-    assert(element.canSelectPrevious);
+    assert.equal(fixture.selectedIndex, -1);
+    assert(fixture.canSelectNext);
+    assert(fixture.canSelectPrevious);
 
     // Start of list
-    element.selectFirst();
-    assert(element.canSelectNext);
-    assert(!element.canSelectPrevious);
+    fixture.selectFirst();
+    assert(fixture.canSelectNext);
+    assert(!fixture.canSelectPrevious);
 
     // Middle of list
-    element.selectNext();
-    assert(element.canSelectNext);
-    assert(element.canSelectPrevious);
+    fixture.selectNext();
+    assert(fixture.canSelectNext);
+    assert(fixture.canSelectPrevious);
 
     // End of list
-    element.selectLast();
-    assert(!element.canSelectNext);
-    assert(element.canSelectPrevious);
+    fixture.selectLast();
+    assert(!fixture.canSelectNext);
+    assert(fixture.canSelectPrevious);
   });
 
   it("sets canSelectNext/canSelectPrevious with wrapping", () => {
-    const element = createSampleElement();
-    element.selectionWraps = true;
+    const fixture = createSampleElement();
+    fixture.selectionWraps = true;
 
     // Start of list
-    element.selectFirst();
-    assert(element.canSelectNext);
-    assert(element.canSelectPrevious);
+    fixture.selectFirst();
+    assert(fixture.canSelectNext);
+    assert(fixture.canSelectPrevious);
 
     // End of list
-    element.selectLast();
-    assert(element.canSelectNext);
-    assert(element.canSelectPrevious);
+    fixture.selectLast();
+    assert(fixture.canSelectNext);
+    assert(fixture.canSelectPrevious);
   });
 
   it("changing selection through (simulated) user interaction raises the selected-item-changed event", done => {
-    const element = createSampleElement();
-    element.addEventListener('selected-item-changed', () => {
+    const fixture = createSampleElement();
+    fixture.addEventListener('selected-item-changed', () => {
       done();
     });
-    container.appendChild(element);
+    container.appendChild(fixture);
 
-    element[symbols.raiseChangeEvents] = true; // Simulate user interaction
-    element.selectedIndex = 1;
-    element[symbols.raiseChangeEvents] = false;
+    fixture[symbols.raiseChangeEvents] = true; // Simulate user interaction
+    fixture.selectedIndex = 1;
+    fixture[symbols.raiseChangeEvents] = false;
   });
 
   it("changing selection programmatically does not raise the selected-item-changed event", done => {
-    const element = createSampleElement();
-    element.addEventListener('selected-item-changed', () => {
+    const fixture = createSampleElement();
+    fixture.addEventListener('selected-item-changed', () => {
       assert.fail(null, null, 'selected-item-changed event should not have been raised in response to programmatic property change');
     });
-    container.appendChild(element);
-    element.selectedIndex = 1; // This should not trigger events.
+    container.appendChild(fixture);
+    fixture.selectedIndex = 1; // This should not trigger events.
     // Give event handler a chance to run (but it shouldn't).
     microtask(done);
   });
 
   it("raises can-select-previous-changed event", done => {
-    const element = createSampleElement();
-    element.addEventListener('can-select-previous-changed', () => {
-      assert.equal(element.selectedIndex, 0);
-      assert(!element.canSelectPrevious);
+    const fixture = createSampleElement();
+    fixture.addEventListener('can-select-previous-changed', () => {
+      assert.equal(fixture.selectedIndex, 0);
+      assert(!fixture.canSelectPrevious);
       done();
     });
-    container.appendChild(element);
-    assert(element.canSelectPrevious);
+    container.appendChild(fixture);
+    assert(fixture.canSelectPrevious);
 
-    element[symbols.raiseChangeEvents] = true; // Simulate user interaction
-    element.selectFirst();
-    element[symbols.raiseChangeEvents] = false;
+    fixture[symbols.raiseChangeEvents] = true; // Simulate user interaction
+    fixture.selectFirst();
+    fixture[symbols.raiseChangeEvents] = false;
   });
 
   it("raises can-select-next-changed event", done => {
-    const element = createSampleElement();
-    element.addEventListener('can-select-next-changed', () => {
-      assert.equal(element.selectedIndex, 2);
-      assert(!element.canSelectNext);
+    const fixture = createSampleElement();
+    fixture.addEventListener('can-select-next-changed', () => {
+      assert.equal(fixture.selectedIndex, 2);
+      assert(!fixture.canSelectNext);
       done();
     });
-    container.appendChild(element);
-    assert(element.canSelectNext);
+    container.appendChild(fixture);
+    assert(fixture.canSelectNext);
 
-    element[symbols.raiseChangeEvents] = true; // Simulate user interaction
-    element.selectLast();
-    element[symbols.raiseChangeEvents] = false;
+    fixture[symbols.raiseChangeEvents] = true; // Simulate user interaction
+    fixture.selectLast();
+    fixture[symbols.raiseChangeEvents] = false;
   });
 
 });
 
 function createSampleElement() {
-  const element = document.createElement('items-selection-test');
+  const fixture = document.createElement('items-selection-test');
   ['Zero', 'One', 'Two'].forEach(text => {
     const div = document.createElement('div');
     div.textContent = text;
-    element.appendChild(div);
+    fixture.appendChild(div);
   });
-  element[symbols.itemsChanged]();
-  return element;
+  fixture[symbols.itemsChanged]();
+  return fixture;
 }
