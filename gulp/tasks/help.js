@@ -9,11 +9,11 @@ const gutil = require('gulp-util');
 function helpTask() {
   gutil.log(`gulp commands this project supports:
 
-    gulp build (builds all elements, docs, and tests)
-    gulp devbuild (same as build minus building the documentation)
+    gulp build (builds all elements minified and non-minified, docs, and tests)
+    gulp devbuild (builds all elements non-minified)
     gulp docs (builds all elements README.md files)
     gulp lint (runs jshint on all .js files)
-    gulp watch (builds and watches changes to project files)
+    gulp watch (builds devbuild and watches changes to project files)
   `);
   //  gulp npm-publish:package-name|* (publishes elements/element-name or all elements (elements/*) to npm)
   //  gulp set-version:version (updates package.json version values and dependencies. Ex: gulp set-version:1.0.30)

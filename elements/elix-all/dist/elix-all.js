@@ -1,2 +1,365 @@
-!function e(t,n,r){function o(l,u){if(!n[l]){if(!t[l]){var a="function"==typeof require&&require;if(!u&&a)return a(l,!0);if(i)return i(l,!0);var c=new Error("Cannot find module '"+l+"'");throw c.code="MODULE_NOT_FOUND",c}var f=n[l]={exports:{}};t[l][0].call(f.exports,function(e){var n=t[l][1][e];return o(n?n:e)},f,f.exports,e,t,n,r)}return n[l].exports}for(var i="function"==typeof require&&require,l=0;l<r.length;l++)o(r[l]);return o}({1:[function(e,t,n){"use strict";function r(e){if(e&&e.__esModule)return e;var t={};if(null!=e)for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&(t[n]=e[n]);return t.default=e,t}var o=e("../elix-simple-element/globals"),i=(r(o),e("../elix-mixins/globals")),l=(r(i),e("../elix-all/globals"));r(l)},{"../elix-all/globals":1,"../elix-mixins/globals":2,"../elix-simple-element/globals":5}],2:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{default:e}}var o=e("./src/SimpleAttributeMixin"),i=r(o),l=e("./src/SimpleTemplateMixin"),u=r(l);window.Elix=window.Elix||{},window.Elix.SimpleAttributeMixin=i.default,window.Elix.SimpleTemplateMixin=u.default},{"./src/SimpleAttributeMixin":3,"./src/SimpleTemplateMixin":4}],3:[function(e,t,n){"use strict";function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function o(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function i(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}function l(e){var t=function(e){function t(){return r(this,t),o(this,(t.__proto__||Object.getPrototypeOf(t)).apply(this,arguments))}return i(t,e),u(t,[{key:"attributeChangedCallback",value:function(e,n,r){a(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"attributeChangedCallback",this)&&a(t.prototype.__proto__||Object.getPrototypeOf(t.prototype),"attributeChangedCallback",this).call(this),e in this&&!(e in HTMLElement.prototype)&&(this[e]=r)}},{key:"reflectAttribute",value:function(e,t){}}]),t}(e);return t}Object.defineProperty(n,"__esModule",{value:!0});var u=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(t,n,r){return n&&e(t.prototype,n),r&&e(t,r),t}}(),a=function e(t,n,r){null===t&&(t=Function.prototype);var o=Object.getOwnPropertyDescriptor(t,n);if(void 0===o){var i=Object.getPrototypeOf(t);return null===i?void 0:e(i,n,r)}if("value"in o)return o.value;var l=o.get;if(void 0!==l)return l.call(r)};n.default=l},{}],4:[function(e,t,n){"use strict";function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function o(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function i(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}function l(e){var t=function(e){function t(){r(this,t);var e=o(this,(t.__proto__||Object.getPrototypeOf(t)).call(this)),n=e.template;if(n){var i=e.attachShadow({mode:"open"});i.innerHTML=n}return e}return i(t,e),u(t,[{key:"reflectClass",value:function(e,t){}}]),t}(e);return t}Object.defineProperty(n,"__esModule",{value:!0});var u=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(t,n,r){return n&&e(t.prototype,n),r&&e(t,r),t}}();n.default=l},{}],5:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{default:e}}var o=e("./src/SimpleElement"),i=r(o);window.Elix=window.Elix||{},window.Elix.SimpleElement=i.default},{"./src/SimpleElement":6}],6:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{default:e}}function o(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function l(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(n,"__esModule",{value:!0});var u=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(t,n,r){return n&&e(t.prototype,n),r&&e(t,r),t}}(),a=e("../../elix-mixins/src/SimpleAttributeMixin"),c=r(a),f=e("../../elix-mixins/src/SimpleTemplateMixin"),p=r(f),s=function(e){function t(){return o(this,t),i(this,(t.__proto__||Object.getPrototypeOf(t)).apply(this,arguments))}return l(t,e),u(t,[{key:"greeting",get:function(){return this.shadowRoot.getElementById("greeting").textContent},set:function(e){this.shadowRoot.getElementById("greeting").textContent=e}},{key:"template",get:function(){return'<span id="greeting">Hello</span>, <slot></slot>.'}}],[{key:"observedAttributes",get:function(){return["greeting"]}}]),t}((0,p.default)((0,c.default)(HTMLElement)));customElements.define("elix-simple-element",s),n.default=s},{"../../elix-mixins/src/SimpleAttributeMixin":3,"../../elix-mixins/src/SimpleTemplateMixin":4}]},{},[1]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(1);
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _globals = __webpack_require__(2);
+	
+	var simpleElement = _interopRequireWildcard(_globals);
+	
+	var _globals2 = __webpack_require__(6);
+	
+	var componentMixins = _interopRequireWildcard(_globals2);
+	
+	var _globals3 = __webpack_require__(1);
+	
+	var webComponents = _interopRequireWildcard(_globals3);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _SimpleElement = __webpack_require__(3);
+	
+	var _SimpleElement2 = _interopRequireDefault(_SimpleElement);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	window.Elix = window.Elix || {}; /*
+	                                  * This file is transpiled to create an ES5-compatible distribution in which
+	                                  * the package's main feature(s) are available via the window.Elix global.
+	                                  * If you're already using ES6 yourself, ignore this file, and instead import
+	                                  * the source file(s) you want from the src folder.
+	                                  */
+	
+	window.Elix.SimpleElement = _SimpleElement2.default;
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _SimpleAttributeMixin = __webpack_require__(4);
+	
+	var _SimpleAttributeMixin2 = _interopRequireDefault(_SimpleAttributeMixin);
+	
+	var _SimpleTemplateMixin2 = __webpack_require__(5);
+	
+	var _SimpleTemplateMixin3 = _interopRequireDefault(_SimpleTemplateMixin2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	/**
+	 * A simple element used to demonstrate the build and documentation process.
+	 *
+	 * [Live demo](http://elix.org/elix/elements/elix-simple-element/)
+	 *
+	 * @module SimpleElement
+	 * @mixes SimpleAttributeMixin
+	 * @mixes SimpleTemplateMixin
+	 */
+	var SimpleElement = function (_SimpleTemplateMixin) {
+	  _inherits(SimpleElement, _SimpleTemplateMixin);
+	
+	  function SimpleElement() {
+	    _classCallCheck(this, SimpleElement);
+	
+	    return _possibleConstructorReturn(this, (SimpleElement.__proto__ || Object.getPrototypeOf(SimpleElement)).apply(this, arguments));
+	  }
+	
+	  _createClass(SimpleElement, [{
+	    key: 'greeting',
+	
+	
+	    /**
+	     * Specifies the greeting.
+	     *
+	     * @type {string}
+	     * @default greeting
+	     */
+	    get: function get() {
+	      return this.shadowRoot.getElementById('greeting').textContent;
+	    },
+	    set: function set(value) {
+	      this.shadowRoot.getElementById('greeting').textContent = value;
+	    }
+	  }, {
+	    key: 'template',
+	    get: function get() {
+	      return '<span id="greeting">Hello</span>, <slot></slot>.';
+	    }
+	  }], [{
+	    key: 'observedAttributes',
+	    get: function get() {
+	      return ['greeting'];
+	    }
+	  }]);
+	
+	  return SimpleElement;
+	}((0, _SimpleTemplateMixin3.default)((0, _SimpleAttributeMixin2.default)(HTMLElement)));
+	
+	customElements.define('elix-simple-element', SimpleElement);
+	exports.default = SimpleElement;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	exports.default = SimpleAttributeMixin;
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	/**
+	 * Mixin which adds simplistic mapping of attributes to properties.
+	 *
+	 * @module SimpleAttributeMixin
+	 * @param base {Class} the base class to extend
+	 * @returns {Class} the extended class
+	 */
+	function SimpleAttributeMixin(base) {
+	
+	  /**
+	   * The class prototype added by the mixin.
+	   */
+	  var SimpleAttribute = function (_base) {
+	    _inherits(SimpleAttribute, _base);
+	
+	    function SimpleAttribute() {
+	      _classCallCheck(this, SimpleAttribute);
+	
+	      return _possibleConstructorReturn(this, (SimpleAttribute.__proto__ || Object.getPrototypeOf(SimpleAttribute)).apply(this, arguments));
+	    }
+	
+	    _createClass(SimpleAttribute, [{
+	      key: "attributeChangedCallback",
+	
+	
+	      /*
+	       * Handle a change to the attribute with the given name.
+	       */
+	      value: function attributeChangedCallback(attributeName, oldValue, newValue) {
+	        if (_get(SimpleAttribute.prototype.__proto__ || Object.getPrototypeOf(SimpleAttribute.prototype), "attributeChangedCallback", this)) {
+	          _get(SimpleAttribute.prototype.__proto__ || Object.getPrototypeOf(SimpleAttribute.prototype), "attributeChangedCallback", this).call(this);
+	        }
+	        // If the attribute name corresponds to a property name, set the property.
+	        // Ignore standard HTMLElement properties handled by the DOM.
+	        if (attributeName in this && !(attributeName in HTMLElement.prototype)) {
+	          this[attributeName] = newValue;
+	        }
+	      }
+	
+	      /**
+	       * Set/unset the attribute with the indicated name.
+	       *
+	       * This method exists primarily to handle the case where an element wants to
+	       * set a default property value that should be reflected as an attribute. An
+	       * important limitation of custom element consturctors is that they cannot
+	       * set attributes. A call to `reflectAttribute` during the constructor will
+	       * be deferred until the element is connected to the document.
+	       *
+	       * @param {string} attribute - The name of the *attribute* (not property) to set.
+	       * @param {object} value - The value to set. If null, the attribute will be removed.
+	       */
+	
+	    }, {
+	      key: "reflectAttribute",
+	      value: function reflectAttribute(attribute, value) {
+	        // For documentation purposes only
+	      }
+	    }]);
+	
+	    return SimpleAttribute;
+	  }(base);
+	
+	  return SimpleAttribute;
+	}
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	exports.default = SimpleTemplateMixin;
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	/**
+	 * Mixin which adds a simplistic means of cloning a string template into a new
+	 * shadow root.
+	 *
+	 * @module SimpleTemplateMixin
+	 * @param base {Class} the base class to extend
+	 * @returns {Class} the extended class
+	 */
+	function SimpleTemplateMixin(base) {
+	
+	  /**
+	   * The class prototype added by the mixin.
+	   */
+	  var SimpleTemplate = function (_base) {
+	    _inherits(SimpleTemplate, _base);
+	
+	    function SimpleTemplate() {
+	      _classCallCheck(this, SimpleTemplate);
+	
+	      var _this = _possibleConstructorReturn(this, (SimpleTemplate.__proto__ || Object.getPrototypeOf(SimpleTemplate)).call(this));
+	
+	      var template = _this.template;
+	      if (template) {
+	        var root = _this.attachShadow({ mode: 'open' });
+	        root.innerHTML = template;
+	      }
+	      return _this;
+	    }
+	
+	    /**
+	     * Set/unset the class with the indicated name.
+	     *
+	     * This method exists primarily to handle the case where an element wants to
+	     * set a default property value that should be reflected as as class. An
+	     * important limitation of custom element consturctors is that they cannot
+	     * set attributes, including the `class` attribute. A call to
+	     * `reflectClass` during the constructor will be deferred until the element
+	     * is connected to the document.
+	     *
+	     * @param {string} className - The name of the class to set.
+	     * @param {object} value - True to set the class, false to remove it.
+	     */
+	
+	
+	    _createClass(SimpleTemplate, [{
+	      key: 'reflectClass',
+	      value: function reflectClass(className, value) {
+	        // For documentation purposes only
+	      }
+	    }]);
+	
+	    return SimpleTemplate;
+	  }(base);
+	
+	  return SimpleTemplate;
+	}
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _SimpleAttributeMixin = __webpack_require__(4);
+	
+	var _SimpleAttributeMixin2 = _interopRequireDefault(_SimpleAttributeMixin);
+	
+	var _SimpleTemplateMixin = __webpack_require__(5);
+	
+	var _SimpleTemplateMixin2 = _interopRequireDefault(_SimpleTemplateMixin);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/*
+	 * This file is transpiled to create an ES5-compatible distribution in which
+	 * the package's main feature(s) are available via the window.Basic global.
+	 * If you're already using ES6 yourself, ignore this file, and instead import
+	 * the source file(s) you want from the src folder.
+	 */
+	
+	window.Elix = window.Elix || {};
+	
+	window.Elix.SimpleAttributeMixin = _SimpleAttributeMixin2.default;
+	window.Elix.SimpleTemplateMixin = _SimpleTemplateMixin2.default;
+
+/***/ }
+/******/ ]);
 //# sourceMappingURL=elix-all.js.map
