@@ -1,5 +1,9 @@
 .c9
 .idea
-node_modules
+
+# Leave out Node modules generally
+# Subfolders like elements/demos *do* need node_modules for GitHub pages.
+/node_modules/
+
 build
 /dist

@@ -4,7 +4,15 @@ custom-elements@webcomponents/custom-elements#master:
   version "1.0.0-alpha.3"
   resolved "https://codeload.github.com/webcomponents/custom-elements/tar.gz/36451e1dbe4e3b77d98499fc12132573d91d4a8b"
 
+shadycss@webcomponents/shadycss#master:
+  version "0.0.1"
+  resolved "https://codeload.github.com/webcomponents/shadycss/tar.gz/bea402db5e416e20b2a706d46bccaa673265b6f3"
+
 shadydom@webcomponents/shadydom#master:
   version "0.0.1"
   resolved "https://codeload.github.com/webcomponents/shadydom/tar.gz/d88a9ae7a782057315690a5d958d250820db5a8c"
+
+template@webcomponents/template#master:
+  version "0.0.1"
+  resolved "https://codeload.github.com/webcomponents/template/tar.gz/81ba4335a21f96ea58c6a5129ce4b2482fb6c1b2"
 
