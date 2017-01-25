@@ -3,8 +3,9 @@
 
 const gulp = require('gulp');
 
-const browserifyTask = require('./gulp/tasks/browserify').browserifyTask;
-const watchifyTask = require('./gulp/tasks/browserify').watchifyTask;
+const webpackTask = require('./gulp/tasks/webpack').webpackTask;
+const debugWebpackTask = require('./gulp/tasks/webpack').debugWebpackTask;
+const watchifyTask = require('./gulp/tasks/webpack').watchifyTask;
 const docsTask = require('./gulp/tasks/docs');
 const helpTask = require('./gulp/tasks/help');
 const lintTask = require('./gulp/tasks/lint');
@@ -15,21 +16,24 @@ const lintTask = require('./gulp/tasks/lint');
 //
 // Example:
 // lint: Simply runs the lint task
-// lint-browserify: Runs the lint task with a dependency on browserify
-// lint-docs-browserify: Runs the lint taks with a dependency first on docs,
-//    then browserify
+// lint-webpack: Runs the lint task with a dependency on webpack
+// lint-docs-webpack: Runs the lint taks with a dependency first on docs,
+//    then webpack
 //
 
 // Private
-gulp.task('browserify', [], browserifyTask);
-gulp.task('docs-browserify', ['browserify'], docsTask);
+gulp.task('webpack', [], webpackTask);
+gulp.task('debugWebpack', [], debugWebpackTask);
+gulp.task('debugWebpack-webpack', ['webpack'], debugWebpackTask);
+gulp.task('docs-debugWebpack-webpack', ['debugWebpack-webpack'], docsTask);
 gulp.task('help', [], helpTask);
-gulp.task('lint-docs-browserify', ['docs-browserify'], lintTask);
-gulp.task('lint-browserify', ['browserify'], lintTask);
+gulp.task('lint-docs-debugWebpack-webpack', ['docs-debugWebpack-webpack'], lintTask);
+gulp.task('lint-debugWebpack-webpack', ['debugWebpack-webpack'], lintTask);
+gulp.task('lint-debugWebpack', ['debugWebpack'], lintTask);
 
 // Public
-gulp.task('build', ['browserify', 'docs-browserify', 'lint-docs-browserify']);
-gulp.task('devbuild', ['browserify', 'lint-browserify']);
+gulp.task('build', ['lint-docs-debugWebpack-webpack']);
+gulp.task('devbuild', ['lint-debugWebpack']);
 gulp.task('default', ['help']);
 gulp.task('docs', [], docsTask);
 gulp.task('lint', [], lintTask);

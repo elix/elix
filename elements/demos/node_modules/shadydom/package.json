@@ -1,0 +1,38 @@
+{
+  "name": "@webcomponents/shadydom",
+  "version": "0.0.1",
+  "description": "shadydom.js",
+  "main": "shadydom.min.js",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webcomponents/shadydom.git"
+  },
+  "author": "The Polymer Authors",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/webcomponents/shadydom/issues"
+  },
+  "scripts": {
+    "test": "wct"
+  },
+  "homepage": "http://webcomponents.org",
+  "devDependencies": {
+    "@webcomponents/custom-elements": "^1.0.0-alpha.1",
+    "eslint": "^3.4.0",
+    "eslint-plugin-html": "^1.5.2",
+    "google-closure-compiler": "^20160822.0.0",
+    "gulp": "^3.8.8",
+    "gulp-header": "^1.8.8",
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^2.0.0",
+    "rollup-plugin-buble": "^0.13.0",
+    "rollup-stream": "^1.13.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "web-component-tester": "^4.0.1"
+  }
+}

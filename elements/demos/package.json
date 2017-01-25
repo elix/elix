@@ -9,7 +9,9 @@
   "author": "info@component.kitchen",
   "dependencies": {
     "custom-elements": "webcomponents/custom-elements#master",
-    "shadydom": "webcomponents/shadydom#master"
+    "shadycss": "webcomponents/shadycss#master",
+    "shadydom": "webcomponents/shadydom#master",
+    "template": "webcomponents/template#master"
   },
   "browserify": {
     "transform": [
