@@ -2,7 +2,8 @@
 <a name="module_symbols"></a>
 
 ## symbols
-A collection of Symbol objects for standard component properties and methods.
+A collection of (potentially polyfilled) Symbol objects for standard
+component properties and methods.
 
 These Symbol objects are used to allow mixins and a component to internally
 communicate, without exposing these properties and methods in the component's

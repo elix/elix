@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<head>
+  <meta charset="UTF-8">
+  <title>WebComponents-platform tests</title>
+  <script src="../../web-component-tester/browser.js"></script>
+  <script src="../webcomponents-platform.js"></script>
+</head>
+<body>
+<script>
+  suite('WebComponents-Platform utils', function() {
+    test('CustomEvent constructor', function() {
+      var detail = {};
+      var e = new CustomEvent('foo', {bubbles: true, cancelable: true, detail: detail});
+      assert(e);
+      assert.equal(e.type, 'foo');
+      assert.isTrue(e.bubbles);
+      assert.isTrue(e.cancelable);
+      assert.equal(e.detail, detail);
+
+      e = new CustomEvent('bar');
+      assert(e);
+      assert.equal(e.type, 'bar');
+      assert.isFalse(e.bubbles);
+      assert.isFalse(e.cancelable);
+      assert.notOk(e.detail);
+    });
+
+    test('Event constructor', function() {
+      var e = new Event('foo', {bubbles: true, cancelable: true});
+      assert(e);
+      assert.equal(e.type, 'foo');
+      assert.isTrue(e.bubbles);
+      assert.isTrue(e.cancelable);
+
+      e = new Event('bar');
+      assert(e);
+      assert.equal(e.type, 'bar');
+      assert.isFalse(e.bubbles);
+      assert.isFalse(e.cancelable);
+    });
+
+    test('event defaultPrevented', function() {
+      var e = new Event('foo', {cancelable: true});
+      e.preventDefault();
+      assert.isTrue(e.defaultPrevented);
+      // call again, just in case
+      assert.doesNotThrow(function() {e.preventDefault(); });
+    });
+
+    test('CustomEvent defaultPrevented', function() {
+      var e = new CustomEvent('foo', {cancelable: true});
+      e.preventDefault();
+      assert.isTrue(e.defaultPrevented);
+      // call again, just in case
+      assert.doesNotThrow(function() {e.preventDefault(); });
+    });
+  });
+</script>
+</body>
+</html>

@@ -264,6 +264,7 @@ describe("SingleSelectionMixin", () => {
 
 });
 
+
 function createSampleElement() {
   const fixture = document.createElement('items-selection-test');
   ['Zero', 'One', 'Two'].forEach(text => {

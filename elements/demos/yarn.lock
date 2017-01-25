@@ -16,3 +16,7 @@ template@webcomponents/template#master:
   version "0.0.1"
   resolved "https://codeload.github.com/webcomponents/template/tar.gz/81ba4335a21f96ea58c6a5129ce4b2482fb6c1b2"
 
+webcomponents-platform@webcomponents/webcomponents-platform#master:
+  version "0.0.1"
+  resolved "https://codeload.github.com/webcomponents/webcomponents-platform/tar.gz/203270306f3beeceae0229f60dbf66dba18f3c18"
+

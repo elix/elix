@@ -1,0 +1,20 @@
+language: node_js
+sudo: required
+dist: trusty
+node_js: 6
+addons:
+  firefox: latest
+  apt:
+    sources:
+    - google-chrome
+    packages:
+    - google-chrome-stable
+script:
+- xvfb-run wct
+- if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then wct -s 'windows 10/microsoftedge@14'
+  -s 'windows 8.1/internet explorer@11' -s 'os x 10.11/safari@10' -s 'os x 10.11/safari@9';
+  fi
+env:
+  global:
+  - secure: HJqGZudd8jAegvRbU8MYMtGiLbfu8C1hbz+occ0ML5vfKgggsv2JrHSgdo1cF9gRkZu5zp389v00za+P0Fm6dFs+VA4Xp0/kC/gDUloRfp01Mnkdz171GoO0NpZo6iQWgN98ih72DrVUyhGi3Enj0y8JVPmIwMkosW/EGEJURIegl9EKW8VE3Hvo79zwXi3FN2JzNja20MmQUWH8LXypfNJfx9LKlwzXnvD+tYGZHV80lM7qadTwfw9uJIucd5cSevuZeuA0vZIVv0eLy09Hk/pQedZo8KOTrbjXezlJGHUDvkcYpUjUtQu7so71aVkdEoMUlV0CGBavreS17GTWn5KP2IV9Pu4QmnxMmjkIhBnuF/LftRDTAE/JqzenTi2ep0MsPlFiK963uuT/A/y4hD3JDaFTFUtY7XCScgEnyTMPpLJKDBgnUejLJOIiC6ETgRkCXM/kTq3tbWbNYMbcuMN6jcRvIQ0OezoAsYElDDqBzpa0Ou9vul/k5+gTz0A2bvALKfOQuacGXchUU2U9gFqvz6MJx+lSZK7SPZgQS+k51WEHJjCHCfHMOZ0R21DtAMigijou8PL8Mqkw/blczoSY/21qjNYxlLpIblRIWTVWdsHzJbmTHuDDwuoYQdre62uRW3GhO6gINYAQy5ymE8GF8eUyTQLxvnL/H7Uo1EU=
+  - secure: pF2Y4srYs2GBrNj0ZoTcI+BKtIePMCU6BLP9QcVSJRWN/B2Lo4f41awsMpIV2c5QtFy4wMJyaAXEhgqHDCxedWYsICS4+/gS6fgZaCndF5xNTrVFy/nQmSaqZxJf/MppbDDZKbzX0fofQPxZ+IKP4LMzNvN8xoIkxXiqbVk0/qbKqkJqs7NkB5n7pexIXMYNH9xX4jK6p8aHWHAAYGqz2X8sQ24TyS9EOQh+gjABPnzjGEi1MhpY5faz1xrjcs6Vjv60Xt/6aXOTJGLvn0Ojbu5gHh/w6XsX2RQYPS0ZIOiraxosgPFejhrzLoaRZW/1+Fb9YGiEkXgjRPFv1/V/6p+GjZLH9bEZdYxGNGjAPNQa80EsMOoztMlk2JNbfTK0PF+GfjHi/XQvR0xc/z1Cpjw2j01iFVF8TXsaxY3Ag2DcFPJpD1NNUtwD/moa+1XSgY+lgw1LQbFhuSuZWFsXBbkjW55VYOiP6zGMzHvEgmvnBuqJxjFocwFfKU3RPemek7wqxloTX+lJMOBmOh5zjhMzTpHpbW7CeAfOzmvv0Od1OfN+icPOyJbtMoPNkbAIEAOCXVgbFYPxkwjYgkbaWRnGy3QHyoiQETv9VFMbRm+JudKlcXj7AJblE6zwk/xx6bhpBeWJFRpNG07JjHN8uDg7QLRF2T/qlLou6K2FNt0=

@@ -1,13 +1,12 @@
-import createSymbol from './createSymbol';
-import CustomEvent from './CustomEvent';
+import Symbol from './Symbol';
 import symbols from './symbols';
 
 
 // Symbols for private data members on an element.
-const canSelectNextSymbol = createSymbol('canSelectNext');
-const canSelectPreviousSymbol = createSymbol('canSelectPrevious');
-const selectionRequiredSymbol = createSymbol('selectionRequired');
-const selectionWrapsSymbol = createSymbol('selectionWraps');
+const canSelectNextSymbol = Symbol('canSelectNext');
+const canSelectPreviousSymbol = Symbol('canSelectPrevious');
+const selectionRequiredSymbol = Symbol('selectionRequired');
+const selectionWrapsSymbol = Symbol('selectionWraps');
 
 // We want to expose both selectedIndex and selectedItem as independent
 // properties but keep them in sync. This allows a component user to reference
@@ -26,10 +25,10 @@ const selectionWrapsSymbol = createSymbol('selectionWraps');
 // new value. Once we've begun that processing, we store the new value as the
 // internal value to indicate we've handled it.
 //
-const externalSelectedIndexSymbol = createSymbol('externalSelectedIndex');
-const externalSelectedItemSymbol = createSymbol('externalSelectedItem');
-const internalSelectedIndexSymbol = createSymbol('internalSelectedIndex');
-const internalSelectedItemSymbol = createSymbol('internalSelectedItem');
+const externalSelectedIndexSymbol = Symbol('externalSelectedIndex');
+const externalSelectedItemSymbol = Symbol('externalSelectedItem');
+const internalSelectedIndexSymbol = Symbol('internalSelectedIndex');
+const internalSelectedItemSymbol = Symbol('internalSelectedItem');
 
 
 /**

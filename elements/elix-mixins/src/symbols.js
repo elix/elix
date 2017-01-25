@@ -1,7 +1,9 @@
-import createSymbol from './createSymbol';
+import Symbol from './Symbol';
+
 
 /**
- * A collection of Symbol objects for standard component properties and methods.
+ * A collection of (potentially polyfilled) Symbol objects for standard
+ * component properties and methods.
  *
  * These Symbol objects are used to allow mixins and a component to internally
  * communicate, without exposing these properties and methods in the component's
@@ -40,7 +42,7 @@ const symbols = {
    *
    * @var {object} defaults
    */
-  defaults: createSymbol('defaults'),
+  defaults: Symbol('defaults'),
 
   /**
    * Symbol for the `raiseChangeEvents` property.
@@ -76,7 +78,7 @@ const symbols = {
    * property will cause those events to be raised.
    *
    */
-  raiseChangeEvents: createSymbol('raiseChangeEvents'),
+  raiseChangeEvents: Symbol('raiseChangeEvents'),
 
   /**
    * Symbol for the `itemAdded` method.
@@ -86,7 +88,7 @@ const symbols = {
    * @function itemAdded
    * @param {HTMLElement} item - the item being selected/deselected
    */
-  itemAdded: createSymbol('itemAdded'),
+  itemAdded: Symbol('itemAdded'),
 
   /**
    * Symbol for the `itemsChanged` method.
@@ -95,7 +97,7 @@ const symbols = {
    * invoked on component initialization – since the items have "changed" from
    * being nothing.
    */
-  itemsChanged: createSymbol('itemsChanged'),
+  itemsChanged: Symbol('itemsChanged'),
 
   /**
    * Symbol for the `itemSelected` method.
@@ -106,8 +108,16 @@ const symbols = {
    * @param {HTMLElement} item - the item being selected/deselected
    * @param {boolean} selected - true if the item is selected, false if not
    */
-  itemSelected: createSymbol('itemSelected')
+  itemSelected: Symbol('itemSelected'),
 
+  /**
+   * Symbol for the `template` property.
+   *
+   * This property returns a component's template.
+   *
+   * @type {string|HTMLTemplateElement}
+   */
+  template: Symbol('template')
 };
 
 export default symbols;

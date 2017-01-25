@@ -53,17 +53,17 @@
 
 	'use strict';
 	
-	var _globals = __webpack_require__(2);
+	var _globals = __webpack_require__(1);
 	
-	var simpleElement = _interopRequireWildcard(_globals);
+	var all = _interopRequireWildcard(_globals);
 	
-	var _globals2 = __webpack_require__(6);
+	var _globals2 = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../elix-list-box/globals\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	
-	var componentMixins = _interopRequireWildcard(_globals2);
+	var listBox = _interopRequireWildcard(_globals2);
 	
-	var _globals3 = __webpack_require__(1);
+	var _globals3 = __webpack_require__(2);
 	
-	var webComponents = _interopRequireWildcard(_globals3);
+	var mixins = _interopRequireWildcard(_globals3);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -73,308 +73,50 @@
 
 	'use strict';
 	
-	var _SimpleElement = __webpack_require__(3);
-	
-	var _SimpleElement2 = _interopRequireDefault(_SimpleElement);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	window.Elix = window.Elix || {}; /*
-	                                  * This file is transpiled to create an ES5-compatible distribution in which
-	                                  * the package's main feature(s) are available via the window.Elix global.
-	                                  * If you're already using ES6 yourself, ignore this file, and instead import
-	                                  * the source file(s) you want from the src folder.
-	                                  */
-	
-	window.Elix.SimpleElement = _SimpleElement2.default;
-
-/***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _SimpleAttributeMixin = __webpack_require__(4);
-	
-	var _SimpleAttributeMixin2 = _interopRequireDefault(_SimpleAttributeMixin);
-	
-	var _SimpleTemplateMixin2 = __webpack_require__(5);
-	
-	var _SimpleTemplateMixin3 = _interopRequireDefault(_SimpleTemplateMixin2);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	/**
-	 * A simple element used to demonstrate the build and documentation process.
-	 *
-	 * [Live demo](http://elix.org/elix/elements/elix-simple-element/)
-	 *
-	 * @module SimpleElement
-	 * @mixes SimpleAttributeMixin
-	 * @mixes SimpleTemplateMixin
-	 */
-	var SimpleElement = function (_SimpleTemplateMixin) {
-	  _inherits(SimpleElement, _SimpleTemplateMixin);
-	
-	  function SimpleElement() {
-	    _classCallCheck(this, SimpleElement);
-	
-	    return _possibleConstructorReturn(this, (SimpleElement.__proto__ || Object.getPrototypeOf(SimpleElement)).apply(this, arguments));
-	  }
-	
-	  _createClass(SimpleElement, [{
-	    key: 'greeting',
-	
-	
-	    /**
-	     * Specifies the greeting.
-	     *
-	     * @type {string}
-	     * @default greeting
-	     */
-	    get: function get() {
-	      return this.shadowRoot.getElementById('greeting').textContent;
-	    },
-	    set: function set(value) {
-	      this.shadowRoot.getElementById('greeting').textContent = value;
-	    }
-	  }, {
-	    key: 'template',
-	    get: function get() {
-	      return '<span id="greeting">Hello</span>, <slot></slot>.';
-	    }
-	  }], [{
-	    key: 'observedAttributes',
-	    get: function get() {
-	      return ['greeting'];
-	    }
-	  }]);
-	
-	  return SimpleElement;
-	}((0, _SimpleTemplateMixin3.default)((0, _SimpleAttributeMixin2.default)(HTMLElement)));
-	
-	customElements.define('elix-simple-element', SimpleElement);
-	exports.default = SimpleElement;
-
-/***/ },
-/* 4 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-	
-	exports.default = SimpleAttributeMixin;
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	/**
-	 * Mixin which adds simplistic mapping of attributes to properties.
-	 *
-	 * @module SimpleAttributeMixin
-	 * @param base {Class} the base class to extend
-	 * @returns {Class} the extended class
-	 */
-	function SimpleAttributeMixin(base) {
-	
-	  /**
-	   * The class prototype added by the mixin.
-	   */
-	  var SimpleAttribute = function (_base) {
-	    _inherits(SimpleAttribute, _base);
-	
-	    function SimpleAttribute() {
-	      _classCallCheck(this, SimpleAttribute);
-	
-	      return _possibleConstructorReturn(this, (SimpleAttribute.__proto__ || Object.getPrototypeOf(SimpleAttribute)).apply(this, arguments));
-	    }
-	
-	    _createClass(SimpleAttribute, [{
-	      key: "attributeChangedCallback",
-	
-	
-	      /*
-	       * Handle a change to the attribute with the given name.
-	       */
-	      value: function attributeChangedCallback(attributeName, oldValue, newValue) {
-	        if (_get(SimpleAttribute.prototype.__proto__ || Object.getPrototypeOf(SimpleAttribute.prototype), "attributeChangedCallback", this)) {
-	          _get(SimpleAttribute.prototype.__proto__ || Object.getPrototypeOf(SimpleAttribute.prototype), "attributeChangedCallback", this).call(this);
-	        }
-	        // If the attribute name corresponds to a property name, set the property.
-	        // Ignore standard HTMLElement properties handled by the DOM.
-	        if (attributeName in this && !(attributeName in HTMLElement.prototype)) {
-	          this[attributeName] = newValue;
-	        }
-	      }
-	
-	      /**
-	       * Set/unset the attribute with the indicated name.
-	       *
-	       * This method exists primarily to handle the case where an element wants to
-	       * set a default property value that should be reflected as an attribute. An
-	       * important limitation of custom element consturctors is that they cannot
-	       * set attributes. A call to `reflectAttribute` during the constructor will
-	       * be deferred until the element is connected to the document.
-	       *
-	       * @param {string} attribute - The name of the *attribute* (not property) to set.
-	       * @param {object} value - The value to set. If null, the attribute will be removed.
-	       */
-	
-	    }, {
-	      key: "reflectAttribute",
-	      value: function reflectAttribute(attribute, value) {
-	        // For documentation purposes only
-	      }
-	    }]);
-	
-	    return SimpleAttribute;
-	  }(base);
-	
-	  return SimpleAttribute;
-	}
-
-/***/ },
-/* 5 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	exports.default = SimpleTemplateMixin;
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	/**
-	 * Mixin which adds a simplistic means of cloning a string template into a new
-	 * shadow root.
-	 *
-	 * @module SimpleTemplateMixin
-	 * @param base {Class} the base class to extend
-	 * @returns {Class} the extended class
-	 */
-	function SimpleTemplateMixin(base) {
-	
-	  /**
-	   * The class prototype added by the mixin.
-	   */
-	  var SimpleTemplate = function (_base) {
-	    _inherits(SimpleTemplate, _base);
-	
-	    function SimpleTemplate() {
-	      _classCallCheck(this, SimpleTemplate);
-	
-	      var _this = _possibleConstructorReturn(this, (SimpleTemplate.__proto__ || Object.getPrototypeOf(SimpleTemplate)).call(this));
-	
-	      var template = _this.template;
-	      if (template) {
-	        var root = _this.attachShadow({ mode: 'open' });
-	        root.innerHTML = template;
-	      }
-	      return _this;
-	    }
-	
-	    /**
-	     * Set/unset the class with the indicated name.
-	     *
-	     * This method exists primarily to handle the case where an element wants to
-	     * set a default property value that should be reflected as as class. An
-	     * important limitation of custom element consturctors is that they cannot
-	     * set attributes, including the `class` attribute. A call to
-	     * `reflectClass` during the constructor will be deferred until the element
-	     * is connected to the document.
-	     *
-	     * @param {string} className - The name of the class to set.
-	     * @param {object} value - True to set the class, false to remove it.
-	     */
-	
-	
-	    _createClass(SimpleTemplate, [{
-	      key: 'reflectClass',
-	      value: function reflectClass(className, value) {
-	        // For documentation purposes only
-	      }
-	    }]);
-	
-	    return SimpleTemplate;
-	  }(base);
-	
-	  return SimpleTemplate;
-	}
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _microtask = __webpack_require__(7);
+	var _microtask = __webpack_require__(3);
 	
 	var _microtask2 = _interopRequireDefault(_microtask);
 	
-	var _SimpleAttributeMixin = __webpack_require__(4);
+	var _SelectionAriaMixin = __webpack_require__(4);
 	
-	var _SimpleAttributeMixin2 = _interopRequireDefault(_SimpleAttributeMixin);
+	var _SelectionAriaMixin2 = _interopRequireDefault(_SelectionAriaMixin);
 	
-	var _SimpleTemplateMixin = __webpack_require__(5);
+	var _ShadowTemplateMixin = __webpack_require__(7);
 	
-	var _SimpleTemplateMixin2 = _interopRequireDefault(_SimpleTemplateMixin);
+	var _ShadowTemplateMixin2 = _interopRequireDefault(_ShadowTemplateMixin);
 	
 	var _SingleSelectionMixin = __webpack_require__(8);
 	
 	var _SingleSelectionMixin2 = _interopRequireDefault(_SingleSelectionMixin);
 	
-	var _symbols = __webpack_require__(11);
+	var _Symbol2 = __webpack_require__(6);
+	
+	var _Symbol3 = _interopRequireDefault(_Symbol2);
+	
+	var _symbols = __webpack_require__(5);
 	
 	var _symbols2 = _interopRequireDefault(_symbols);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	window.Elix = window.Elix || {}; /*
-	                                  * This file is transpiled to create an ES5-compatible distribution in which
-	                                  * the package's main feature(s) are available via the window.Basic global.
-	                                  * If you're already using ES6 yourself, ignore this file, and instead import
-	                                  * the source file(s) you want from the src folder.
-	                                  */
+	/*
+	 * This file is transpiled to create an ES5-compatible distribution in which
+	 * the package's main feature(s) are available via the window.Elix global.
+	 * If you're already using ES6 yourself, ignore this file, and instead import
+	 * the source file(s) you want from the src folder.
+	 */
+	
+	window.Elix = window.Elix || {};
 	
 	window.Elix.microtask = _microtask2.default;
-	window.Elix.SimpleAttributeMixin = _SimpleAttributeMixin2.default;
-	window.Elix.SimpleTemplateMixin = _SimpleTemplateMixin2.default;
+	window.Elix.SelectionAriaMixin = _SelectionAriaMixin2.default;
+	window.Elix.ShadowTemplateMixin = _ShadowTemplateMixin2.default;
 	window.Elix.SingleSelectionMixin = _SingleSelectionMixin2.default;
+	window.Elix.Symbol = _Symbol3.default;
 	window.Elix.symbols = _symbols2.default;
 
 /***/ },
-/* 7 */
+/* 3 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -438,6 +180,496 @@
 	});
 
 /***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _set = function set(object, property, value, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent !== null) { set(parent, property, value, receiver); } } else if ("value" in desc && desc.writable) { desc.value = value; } else { var setter = desc.set; if (setter !== undefined) { setter.call(receiver, value); } } return value; };
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	exports.default = function (base) {
+	
+	  /**
+	   * The class prototype added by the mixin.
+	   */
+	  var SelectionAria = function (_base) {
+	    _inherits(SelectionAria, _base);
+	
+	    function SelectionAria() {
+	      _classCallCheck(this, SelectionAria);
+	
+	      return _possibleConstructorReturn(this, (SelectionAria.__proto__ || Object.getPrototypeOf(SelectionAria)).apply(this, arguments));
+	    }
+	
+	    _createClass(SelectionAria, [{
+	      key: 'connectedCallback',
+	      value: function connectedCallback() {
+	        if (_get(SelectionAria.prototype.__proto__ || Object.getPrototypeOf(SelectionAria.prototype), 'connectedCallback', this)) {
+	          _get(SelectionAria.prototype.__proto__ || Object.getPrototypeOf(SelectionAria.prototype), 'connectedCallback', this).call(this);
+	        }
+	
+	        // Set default ARIA role for the overall component.
+	        if (this.getAttribute('role') == null && this[_symbols2.default.defaults].role) {
+	          this.setAttribute('role', this[_symbols2.default.defaults].role);
+	        }
+	      }
+	    }, {
+	      key: _symbols2.default.itemAdded,
+	      value: function value(item) {
+	        if (_get(SelectionAria.prototype.__proto__ || Object.getPrototypeOf(SelectionAria.prototype), _symbols2.default.itemAdded, this)) {
+	          _get(SelectionAria.prototype.__proto__ || Object.getPrototypeOf(SelectionAria.prototype), _symbols2.default.itemAdded, this).call(this, item);
+	        }
+	
+	        if (!item.getAttribute('role')) {
+	          // Assign a default ARIA role for an individual item.
+	          item.setAttribute('role', this[_symbols2.default.defaults].itemRole);
+	        }
+	
+	        // Ensure each item has an ID so we can set aria-activedescendant on the
+	        // overall list whenever the selection changes.
+	        //
+	        // The ID will take the form of a base ID plus a unique integer. The base
+	        // ID will be incorporate the component's own ID. E.g., if a component has
+	        // ID "foo", then its items will have IDs that look like "_fooOption1". If
+	        // the compnent has no ID itself, its items will get IDs that look like
+	        // "_option1". Item IDs are prefixed with an underscore to differentiate
+	        // them from manually-assigned IDs, and to minimize the potential for ID
+	        // conflicts.
+	        if (!item.id) {
+	          var baseId = this.id ? "_" + this.id + "Option" : "_option";
+	          item.id = baseId + idCount++;
+	        }
+	      }
+	    }, {
+	      key: _symbols2.default.itemSelected,
+	      value: function value(item, selected) {
+	        if (_get(SelectionAria.prototype.__proto__ || Object.getPrototypeOf(SelectionAria.prototype), _symbols2.default.itemSelected, this)) {
+	          _get(SelectionAria.prototype.__proto__ || Object.getPrototypeOf(SelectionAria.prototype), _symbols2.default.itemSelected, this).call(this, item, selected);
+	        }
+	        item.setAttribute('aria-selected', selected);
+	        var itemId = item.id;
+	        if (itemId && selected) {
+	          this.setAttribute('aria-activedescendant', itemId);
+	        }
+	      }
+	    }, {
+	      key: _symbols2.default.defaults,
+	      get: function get() {
+	        var defaults = _get(SelectionAria.prototype.__proto__ || Object.getPrototypeOf(SelectionAria.prototype), _symbols2.default.defaults, this) || {};
+	        defaults.role = 'listbox';
+	        defaults.itemRole = 'option';
+	        return defaults;
+	      }
+	    }, {
+	      key: 'selectedItem',
+	      get: function get() {
+	        return _get(SelectionAria.prototype.__proto__ || Object.getPrototypeOf(SelectionAria.prototype), 'selectedItem', this);
+	      },
+	      set: function set(item) {
+	        if ('selectedItem' in base.prototype) {
+	          _set(SelectionAria.prototype.__proto__ || Object.getPrototypeOf(SelectionAria.prototype), 'selectedItem', item, this);
+	        }
+	        if (item == null) {
+	          // Selection was removed.
+	          this.removeAttribute('aria-activedescendant');
+	        }
+	      }
+	    }]);
+	
+	    return SelectionAria;
+	  }(base);
+	
+	  return SelectionAria;
+	};
+	
+	var _symbols = __webpack_require__(5);
+	
+	var _symbols2 = _interopRequireDefault(_symbols);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	// Used to assign unique IDs to item elements without IDs.
+	var idCount = 0;
+	
+	/**
+	 * Mixin which treats the selected item in a list as the active item in ARIA
+	 * accessibility terms.
+	 *
+	 * Handling ARIA selection state properly is actually quite complex:
+	 *
+	 * * The items in the list need to be indicated as possible items via an ARIA
+	 *   `role` attribute value such as "option".
+	 * * The selected item need to be marked as selected by setting the item's
+	 *   `aria-selected` attribute to true *and* the other items need be marked as
+	 *   *not* selected by setting `aria-selected` to false.
+	 * * The outermost element with the keyboard focus needs to have attributes
+	 *   set on it so that the selection is knowable at the list level via the
+	 *   `aria-activedescendant` attribute.
+	 * * Use of `aria-activedescendant` in turn requires that all items in the
+	 *   list have ID attributes assigned to them.
+	 *
+	 * This mixin tries to address all of the above requirements. To that end,
+	 * this mixin will assign generated IDs to any item that doesn't already have
+	 * an ID.
+	 *
+	 * ARIA relies on elements to provide `role` attributes. This mixin will apply
+	 * a default role of "listbox" on the outer list if it doesn't already have an
+	 * explicit role. Similarly, this mixin will apply a default role of "option"
+	 * to any list item that does not already have a role specified.
+	 *
+	 * This mixin expects a set of members that manage the state of the selection:
+	 * `[symbols.itemSelected]`, `[symbols.itemAdded]`, and `selectedItem`. You can
+	 * supply these yourself, or do so via
+	 * [SingleSelectionMixin](SingleSelectionMixin.md).
+	 *
+	 * @module
+	 * @param base {Class} the base class to extend
+	 * @returns {Class} the extended class
+	 */
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _Symbol2 = __webpack_require__(6);
+	
+	var _Symbol3 = _interopRequireDefault(_Symbol2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/**
+	 * A collection of (potentially polyfilled) Symbol objects for standard
+	 * component properties and methods.
+	 *
+	 * These Symbol objects are used to allow mixins and a component to internally
+	 * communicate, without exposing these properties and methods in the component's
+	 * public API.
+	 *
+	 * To use these Symbol objects in your own component, include this module and
+	 * then create a property or method whose key is the desired Symbol.
+	 *
+	 *     import 'SingleSelectionMixin' from 'elix-mixins/src/SingleSelectionMixin';
+	 *     import 'symbols' from 'elix-mixins/src/symbols';
+	 *
+	 *     class MyElement extends SingleSelectionMixin(HTMLElement) {
+	 *       [symbols.itemSelected](item, selected) {
+	 *         // This will be invoked whenever an item is selected/deselected.
+	 *       }
+	 *     }
+	 *
+	 * @module symbols
+	 */
+	var symbols = {
+	
+	  /**
+	   * Symbol for the `defaults` property.
+	   *
+	   * This property can be used to set or override defaults that will be applied
+	   * to a new component instance. When implementing this property, take care to
+	   * first acquire any defaults defined by the superclass. The standard idiom is
+	   * as follows:
+	   *
+	   *     get [symbols.defaults]() {
+	   *       const defaults = super[symbols.defaults] || {};
+	   *       // Set or override default values here
+	   *       defaults.customProperty = false;
+	   *       return defaults;
+	   *     }
+	   *
+	   * @var {object} defaults
+	   */
+	  defaults: (0, _Symbol3.default)('defaults'),
+	
+	  /**
+	   * Symbol for the `raiseChangeEvents` property.
+	   *
+	   * This property is used by mixins to determine whether they should raise
+	   * property change events. The standard HTML pattern is to only raise such
+	   * events in response to direct user interactions. This property can be used
+	   * to manage events as follows.
+	   *
+	   * First, UI event listeners should set this property to `true` at the start
+	   * of the event handler, then `false` at the end:
+	   *
+	   *     this.addEventListener('click', event => {
+	   *       this[symbols.raiseChangeEvents] = true;
+	   *       // Do work here, possibly setting properties, like:
+	   *       this.foo = 'Hello';
+	   *       this[symbols.raiseChangeEvents] = false;
+	   *     });
+	   *
+	   * Elsewhere, property setters that raise change events should only do so it
+	   * this property is `true`:
+	   *
+	   *     set foo(value) {
+	   *       // Save foo value here, do any other work.
+	   *       if (this[symbols.raiseChangeEvents]) {
+	   *         const event = new CustomEvent('foo-changed');
+	   *         this.dispatchEvent(event);
+	   *       }
+	   *     }
+	   *
+	   * In this way, programmatic attempts to set the `foo` property will not
+	   * trigger the `foo-changed` event, but UI interactions that update that
+	   * property will cause those events to be raised.
+	   *
+	   */
+	  raiseChangeEvents: (0, _Symbol3.default)('raiseChangeEvents'),
+	
+	  /**
+	   * Symbol for the `itemAdded` method.
+	   *
+	   * This method is invoked when a new item is added to a list.
+	   *
+	   * @function itemAdded
+	   * @param {HTMLElement} item - the item being selected/deselected
+	   */
+	  itemAdded: (0, _Symbol3.default)('itemAdded'),
+	
+	  /**
+	   * Symbol for the `itemsChanged` method.
+	   *
+	   * This method is invoked when the underlying contents change. It is also
+	   * invoked on component initialization – since the items have "changed" from
+	   * being nothing.
+	   */
+	  itemsChanged: (0, _Symbol3.default)('itemsChanged'),
+	
+	  /**
+	   * Symbol for the `itemSelected` method.
+	   *
+	   * This method is invoked when an item becomes selected or deselected.
+	   *
+	   * @function itemSelected
+	   * @param {HTMLElement} item - the item being selected/deselected
+	   * @param {boolean} selected - true if the item is selected, false if not
+	   */
+	  itemSelected: (0, _Symbol3.default)('itemSelected'),
+	
+	  /**
+	   * Symbol for the `template` property.
+	   *
+	   * This property returns a component's template.
+	   *
+	   * @type {string|HTMLTemplateElement}
+	   */
+	  template: (0, _Symbol3.default)('template')
+	};
+	
+	exports.default = symbols;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	/* The number of fake symbols we've served up */
+	var count = 0;
+	
+	function uniqueString(description) {
+	  return '_' + description + count++;
+	}
+	
+	var symbolFunction = typeof window.Symbol === 'function' ? window.Symbol : uniqueString;
+	
+	/**
+	 * Polyfill for ES6 symbol class.
+	 *
+	 * Mixins and component classes often want to associate private data with an
+	 * element instance, but JavaScript does not have direct support for true
+	 * private properties. One approach is to use the
+	 * [Symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol)
+	 * data type to set and retrieve data on an element.
+	 *
+	 * Unfortunately, the Symbol type is not available in Internet Explorer 11. In
+	 * lieu of returning a true Symbol, this polyfill returns a different string
+	 * each time it is called.
+	 *
+	 * Usage:
+	 *
+	 *     const fooSymbol = Symbol('foo');
+	 *
+	 *     class MyElement extends HTMLElement {
+	 *       get foo() {
+	 *         return this[fooSymbol];
+	 *       }
+	 *       set foo(value) {
+	 *         this[fooSymbol] = value;
+	 *       }
+	 *     }
+	 *
+	 * In IE 11, this sample will "hide" data behind an instance property that looks
+	 * like this._foo0. The underscore is meant to reduce (not eliminate) potential
+	 * accidental access, and the unique number at the end is mean to avoid (not
+	 * eliminate) naming conflicts.
+	 *
+	 * @function Symbol
+	 * @param {string} description - A string to identify the symbol when debugging
+	 * @returns {Symbol|string} — A Symbol (in ES6 browsers) or unique string ID (in
+	 * ES5).
+	 */
+	exports.default = symbolFunction;
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	exports.default = ShadowTemplateMixin;
+	
+	var _symbols = __webpack_require__(5);
+	
+	var _symbols2 = _interopRequireDefault(_symbols);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	// A cache of processed templates.
+	//
+	// We maintain this as a map keyed by element tag (localName). We could store
+	// an element's processed template on its element prototype. One scenario that
+	// wouldn't support would be registration of the same constructor under multiple
+	// tag names, which was a (perhaps theoretical) use case for Custom Elements.
+	//
+	var mapTagToTemplate = {};
+	
+	/**
+	 * Mixin which adds stamping a template into a Shadow DOM subtree upon component
+	 * instantiation.
+	 *
+	 * To use this mixin, define a `template` property as a string or HTML
+	 * `<template>` element:
+	 *
+	 *     class MyElement extends ShadowTemplateMixin(HTMLElement) {
+	 *       get [symbols.template]() {
+	 *         return `Hello, <em>world</em>.`;
+	 *       }
+	 *     }
+	 *
+	 * When your component class is instantiated, a shadow root will be created on
+	 * the instance, and the contents of the template will be cloned into the
+	 * shadow root. If your component does not define a `template` property, this
+	 * mixin has no effect.
+	 *
+	 * For the time being, this extension retains support for Shadow DOM v0. That
+	 * will eventually be deprecated as browsers (and the Shadow DOM polyfill)
+	 * implement Shadow DOM v1.
+	 *
+	 * @module ShadowTemplateMixin
+	 * @param base {Class} the base class to extend
+	 * @returns {Class} the extended class
+	 */
+	function ShadowTemplateMixin(base) {
+	
+	  /**
+	   * The class prototype added by the mixin.
+	   */
+	  var ShadowTemplate = function (_base) {
+	    _inherits(ShadowTemplate, _base);
+	
+	    /*
+	     * If the component defines a template, a shadow root will be created on the
+	     * component instance, and the template stamped into it.
+	     */
+	    function ShadowTemplate() {
+	      _classCallCheck(this, ShadowTemplate);
+	
+	      var _this = _possibleConstructorReturn(this, (ShadowTemplate.__proto__ || Object.getPrototypeOf(ShadowTemplate)).call(this));
+	
+	      var tag = _this.localName;
+	      var template = mapTagToTemplate[tag];
+	
+	      // See if we've already processed a template for this tag.
+	      if (!template) {
+	        // This is the first time we've created an instance of this tag.
+	
+	        // Get the template and perform initial processing.
+	        template = _this[_symbols2.default.template];
+	        if (!template) {
+	          console.warn('ShadowTemplateMixin expects a component to define a template property with [symbols.template].');
+	          return _possibleConstructorReturn(_this);
+	        }
+	
+	        if (typeof template === 'string') {
+	          // Upgrade plain string to real template.
+	          var templateText = template;
+	          template = document.createElement('template');
+	          template.innerHTML = templateText;
+	        }
+	
+	        if (window.ShadyCSS) {
+	          // Let the CSS polyfill do its own initialization.
+	          window.ShadyCSS.prepareTemplate(template, tag);
+	        }
+	
+	        // Store this for the next time we create the same type of element.
+	        mapTagToTemplate[tag] = template;
+	      }
+	
+	      // Stamp the template into a new shadow root.
+	      var root = _this.attachShadow({ mode: 'open' });
+	      var clone = document.importNode(template.content, true);
+	      root.appendChild(clone);
+	      return _this;
+	    }
+	
+	    _createClass(ShadowTemplate, [{
+	      key: 'connectedCallback',
+	      value: function connectedCallback() {
+	        if (_get(ShadowTemplate.prototype.__proto__ || Object.getPrototypeOf(ShadowTemplate.prototype), 'connectedCallback', this)) {
+	          _get(ShadowTemplate.prototype.__proto__ || Object.getPrototypeOf(ShadowTemplate.prototype), 'connectedCallback', this).call(this);
+	        }
+	        if (window.ShadyCSS) {
+	          window.ShadyCSS.applyStyle(this);
+	        }
+	      }
+	    }]);
+	
+	    return ShadowTemplate;
+	  }(base);
+	
+	  return ShadowTemplate;
+	}
+
+/***/ },
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -455,15 +687,11 @@
 	
 	exports.default = SingleSelectionMixin;
 	
-	var _createSymbol = __webpack_require__(9);
+	var _Symbol2 = __webpack_require__(6);
 	
-	var _createSymbol2 = _interopRequireDefault(_createSymbol);
+	var _Symbol3 = _interopRequireDefault(_Symbol2);
 	
-	var _CustomEvent = __webpack_require__(10);
-	
-	var _CustomEvent2 = _interopRequireDefault(_CustomEvent);
-	
-	var _symbols = __webpack_require__(11);
+	var _symbols = __webpack_require__(5);
 	
 	var _symbols2 = _interopRequireDefault(_symbols);
 	
@@ -476,10 +704,10 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	// Symbols for private data members on an element.
-	var canSelectNextSymbol = (0, _createSymbol2.default)('canSelectNext');
-	var canSelectPreviousSymbol = (0, _createSymbol2.default)('canSelectPrevious');
-	var selectionRequiredSymbol = (0, _createSymbol2.default)('selectionRequired');
-	var selectionWrapsSymbol = (0, _createSymbol2.default)('selectionWraps');
+	var canSelectNextSymbol = (0, _Symbol3.default)('canSelectNext');
+	var canSelectPreviousSymbol = (0, _Symbol3.default)('canSelectPrevious');
+	var selectionRequiredSymbol = (0, _Symbol3.default)('selectionRequired');
+	var selectionWrapsSymbol = (0, _Symbol3.default)('selectionWraps');
 	
 	// We want to expose both selectedIndex and selectedItem as independent
 	// properties but keep them in sync. This allows a component user to reference
@@ -498,10 +726,10 @@
 	// new value. Once we've begun that processing, we store the new value as the
 	// internal value to indicate we've handled it.
 	//
-	var externalSelectedIndexSymbol = (0, _createSymbol2.default)('externalSelectedIndex');
-	var externalSelectedItemSymbol = (0, _createSymbol2.default)('externalSelectedItem');
-	var internalSelectedIndexSymbol = (0, _createSymbol2.default)('internalSelectedIndex');
-	var internalSelectedItemSymbol = (0, _createSymbol2.default)('internalSelectedItem');
+	var externalSelectedIndexSymbol = (0, _Symbol3.default)('externalSelectedIndex');
+	var externalSelectedItemSymbol = (0, _Symbol3.default)('externalSelectedItem');
+	var internalSelectedIndexSymbol = (0, _Symbol3.default)('internalSelectedIndex');
+	var internalSelectedItemSymbol = (0, _Symbol3.default)('internalSelectedItem');
 	
 	/**
 	 * Mixin which adds single-selection semantics for items in a list.
@@ -734,7 +962,7 @@
 	          _set(SingleSelection.prototype.__proto__ || Object.getPrototypeOf(SingleSelection.prototype), 'canSelectNext', canSelectNext, this);
 	        }
 	        if (this[_symbols2.default.raiseChangeEvents] && changed) {
-	          this.dispatchEvent(new _CustomEvent2.default('can-select-next-changed'));
+	          this.dispatchEvent(new CustomEvent('can-select-next-changed'));
 	        }
 	      }
 	
@@ -757,7 +985,7 @@
 	          _set(SingleSelection.prototype.__proto__ || Object.getPrototypeOf(SingleSelection.prototype), 'canSelectPrevious', canSelectPrevious, this);
 	        }
 	        if (this[_symbols2.default.raiseChangeEvents] && changed) {
-	          this.dispatchEvent(new _CustomEvent2.default('can-select-previous-changed'));
+	          this.dispatchEvent(new CustomEvent('can-select-previous-changed'));
 	        }
 	      }
 	    }, {
@@ -802,7 +1030,7 @@
 	          this[internalSelectedIndexSymbol] = parsedIndex;
 	
 	          if (this[_symbols2.default.raiseChangeEvents]) {
-	            var event = new _CustomEvent2.default('selected-index-changed', {
+	            var event = new CustomEvent('selected-index-changed', {
 	              detail: {
 	                selectedIndex: parsedIndex,
 	                value: parsedIndex // for Polymer binding. TODO: Verify still necessary
@@ -875,7 +1103,7 @@
 	          updatePossibleNavigations(this);
 	
 	          if (this[_symbols2.default.raiseChangeEvents]) {
-	            var event = new _CustomEvent2.default('selected-item-changed', {
+	            var event = new CustomEvent('selected-item-changed', {
 	              detail: {
 	                selectedItem: item,
 	                value: item // for Polymer binding
@@ -1029,235 +1257,6 @@
 	    element.canSelectPrevious = canSelectPrevious;
 	  }
 	}
-
-/***/ },
-/* 9 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = createSymbol;
-	/**
-	 * Helper function to create a symbol that can be used for associating private
-	 * data with an element.
-	 *
-	 * Mixins and component classes often want to associate private data with an
-	 * element instance, but JavaScript does not have direct support for true
-	 * private properties. One approach is to use the
-	 * [Symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol)
-	 * data type to set and retrieve data on an element.
-	 *
-	 * Unfortunately, the Symbol type is not available in Internet Explorer 11. The
-	 * `createSymbol` helper function exists as a workaround for IE 11. Rather than
-	 * returning a true Symbol, it simply returns an underscore-prefixed string.
-	 *
-	 * Usage:
-	 *
-	 *     const fooSymbol = createSymbol('foo');
-	 *
-	 *     class MyElement extends HTMLElement {
-	 *       get foo() {
-	 *         return this[fooSymbol];
-	 *       }
-	 *       set foo(value) {
-	 *         this[fooSymbol] = value;
-	 *       }
-	 *     }
-	 *
-	 * In IE 11, this sample will "hide" data behind an instance property this._foo.
-	 * The use of the underscore is meant to reduce (not eliminate) the potential
-	 * for name conflicts, and discourage (not prevent) external access to this
-	 * data. In modern browsers, the above code will eliminate the potential of
-	 * naming conflicts, and better hide the data behind a real Symbol.
-	 *
-	 * @function createSymbol
-	 * @param {string} description - A string to identify the symbol when debugging
-	 */
-	function createSymbol(description) {
-	  return typeof Symbol === 'function' ? Symbol(description) : '_' + description;
-	}
-
-/***/ },
-/* 10 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	/*
-	 * Polyfill for creating CustomEvents for IE 11.
-	 * Inspired by https://github.com/krambuhl/custom-event-polyfill.
-	 */
-	
-	var customEventConstructor = void 0;
-	
-	function customEventPolyfill(eventName, params) {
-	  params = params || {
-	    bubbles: false,
-	    cancelable: false,
-	    detail: undefined
-	  };
-	  var event = document.createEvent("CustomEvent");
-	  event.initCustomEvent(eventName, params.bubbles, params.cancelable, params.detail);
-	  var originalPreventDefault = event.preventDefault;
-	  event.preventDefault = function () {
-	    originalPreventDefault.call(this);
-	    try {
-	      Object.defineProperty(this, 'defaultPrevented', {
-	        get: function get() {
-	          return true;
-	        }
-	      });
-	    } catch (e) {
-	      this.defaultPrevented = true;
-	    }
-	  };
-	
-	  return event;
-	}
-	Object.setPrototypeOf(customEventPolyfill, window.Event.prototype);
-	
-	try {
-	  new window.CustomEvent('test');
-	  customEventConstructor = window.CustomEvent;
-	} catch (e) {
-	  customEventConstructor = customEventPolyfill;
-	}
-	
-	exports.default = customEventConstructor;
-
-/***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createSymbol = __webpack_require__(9);
-	
-	var _createSymbol2 = _interopRequireDefault(_createSymbol);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	/**
-	 * A collection of Symbol objects for standard component properties and methods.
-	 *
-	 * These Symbol objects are used to allow mixins and a component to internally
-	 * communicate, without exposing these properties and methods in the component's
-	 * public API.
-	 *
-	 * To use these Symbol objects in your own component, include this module and
-	 * then create a property or method whose key is the desired Symbol.
-	 *
-	 *     import 'SingleSelectionMixin' from 'elix-mixins/src/SingleSelectionMixin';
-	 *     import 'symbols' from 'elix-mixins/src/symbols';
-	 *
-	 *     class MyElement extends SingleSelectionMixin(HTMLElement) {
-	 *       [symbols.itemSelected](item, selected) {
-	 *         // This will be invoked whenever an item is selected/deselected.
-	 *       }
-	 *     }
-	 *
-	 * @module symbols
-	 */
-	var symbols = {
-	
-	  /**
-	   * Symbol for the `defaults` property.
-	   *
-	   * This property can be used to set or override defaults that will be applied
-	   * to a new component instance. When implementing this property, take care to
-	   * first acquire any defaults defined by the superclass. The standard idiom is
-	   * as follows:
-	   *
-	   *     get [symbols.defaults]() {
-	   *       const defaults = super[symbols.defaults] || {};
-	   *       // Set or override default values here
-	   *       defaults.customProperty = false;
-	   *       return defaults;
-	   *     }
-	   *
-	   * @var {object} defaults
-	   */
-	  defaults: (0, _createSymbol2.default)('defaults'),
-	
-	  /**
-	   * Symbol for the `raiseChangeEvents` property.
-	   *
-	   * This property is used by mixins to determine whether they should raise
-	   * property change events. The standard HTML pattern is to only raise such
-	   * events in response to direct user interactions. This property can be used
-	   * to manage events as follows.
-	   *
-	   * First, UI event listeners should set this property to `true` at the start
-	   * of the event handler, then `false` at the end:
-	   *
-	   *     this.addEventListener('click', event => {
-	   *       this[symbols.raiseChangeEvents] = true;
-	   *       // Do work here, possibly setting properties, like:
-	   *       this.foo = 'Hello';
-	   *       this[symbols.raiseChangeEvents] = false;
-	   *     });
-	   *
-	   * Elsewhere, property setters that raise change events should only do so it
-	   * this property is `true`:
-	   *
-	   *     set foo(value) {
-	   *       // Save foo value here, do any other work.
-	   *       if (this[symbols.raiseChangeEvents]) {
-	   *         const event = new CustomEvent('foo-changed');
-	   *         this.dispatchEvent(event);
-	   *       }
-	   *     }
-	   *
-	   * In this way, programmatic attempts to set the `foo` property will not
-	   * trigger the `foo-changed` event, but UI interactions that update that
-	   * property will cause those events to be raised.
-	   *
-	   */
-	  raiseChangeEvents: (0, _createSymbol2.default)('raiseChangeEvents'),
-	
-	  /**
-	   * Symbol for the `itemAdded` method.
-	   *
-	   * This method is invoked when a new item is added to a list.
-	   *
-	   * @function itemAdded
-	   * @param {HTMLElement} item - the item being selected/deselected
-	   */
-	  itemAdded: (0, _createSymbol2.default)('itemAdded'),
-	
-	  /**
-	   * Symbol for the `itemsChanged` method.
-	   *
-	   * This method is invoked when the underlying contents change. It is also
-	   * invoked on component initialization – since the items have "changed" from
-	   * being nothing.
-	   */
-	  itemsChanged: (0, _createSymbol2.default)('itemsChanged'),
-	
-	  /**
-	   * Symbol for the `itemSelected` method.
-	   *
-	   * This method is invoked when an item becomes selected or deselected.
-	   *
-	   * @function itemSelected
-	   * @param {HTMLElement} item - the item being selected/deselected
-	   * @param {boolean} selected - true if the item is selected, false if not
-	   */
-	  itemSelected: (0, _createSymbol2.default)('itemSelected')
-	
-	};
-	
-	exports.default = symbols;
 
 /***/ }
 /******/ ]);

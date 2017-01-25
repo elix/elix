@@ -9,8 +9,8 @@
 // We tell jshint to ignore the fact that we're not actually using them here.
 /* jshint ignore:start */
 
-import * as simpleElement from '../elix-simple-element/globals';
-import * as componentMixins from '../elix-mixins/globals';
-import * as webComponents from '../elix-all/globals';
+import * as all from '../elix-all/globals';
+import * as listBox from '../elix-list-box/globals';
+import * as mixins from '../elix-mixins/globals';
 
 /* jshint ignore:end */

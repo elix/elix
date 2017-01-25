@@ -4,23 +4,42 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>ELEMENT NAME GOES HERE</title>
+  <title>elix-list-box</title>
 
   <script src="../demos/node_modules/webcomponents-platform/webcomponents-platform.js"></script>
   <script src="../demos/node_modules/shadydom/shadydom.min.js"></script>
   <script src="../demos/node_modules/template/template.js"></script>
-  <script src="../demos/node_modules/shadycss/shadycss.min.js"></script>
   <script src="../demos/node_modules/custom-elements/custom-elements.min.js"></script>
+  <script src="../demos/node_modules/shadycss/shadycss.min.js"></script>
   <script src="../demos/node_modules/custom-elements/src/native-shim.js"></script>
   <script src="../demos/node_modules/custom-elements/src/htmlelement-instanceof.js"></script>
-  <script src="dist/ELEMENT NAME GOES HERE.js"></script>
+  <script src="dist/demos.js"></script>
   <link rel="stylesheet" href="../demos/demos.css">
+
+  <custom-style>
+    <style>
+    :root {
+      --elix-selected-background: cornflowerblue;
+      --elix-selected-color: white;
+    }
+    </style>
+  </custom-style>
 
 </head>
 
 <body>
-  <ELEMENT NAME GOES HERE>
-  </ELEMENT NAME GOES HERE>
+  <sample-list-box aria-label="Numbers">
+    <div>One</div>
+    <div>Two</div>
+    <div>Three</div>
+    <div>Four</div>
+    <div>Five</div>
+    <div>Six</div>
+    <div>Seven</div>
+    <div>Eight</div>
+    <div>Nine</div>
+    <div>Ten</div>
+  </sample-list-box>
 </body>
 
 </html>

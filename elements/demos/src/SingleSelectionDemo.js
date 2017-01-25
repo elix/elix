@@ -2,17 +2,18 @@ import SingleSelectionMixin from '../../elix-mixins/src/SingleSelectionMixin';
 import symbols from '../../elix-mixins/src/symbols';
 
 
+/*
+ * A very simple component to show the application of SingleSelectionMixin.
+ *
+ * For a more complete demo using SingleSelectionMixin, see the ListBox demo.
+ */
 export default class SingleSelectionDemo extends SingleSelectionMixin(HTMLElement) {
 
   constructor() {
     super();
-
-    // When a child is clicked, set the selectedItem.
-    this.addEventListener('click', event => {
+    this.addEventListener('mousedown', event => {
       this[symbols.raiseChangeEvents] = true;
-      this.selectedItem = event.target !== this ?
-        event.target :  // Clicked on an item
-        null;           // Clicked on element background
+      this.selectedItem = event.target;
       event.stopPropagation();
       this[symbols.raiseChangeEvents] = false;
     });

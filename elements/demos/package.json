@@ -11,7 +11,8 @@
     "custom-elements": "webcomponents/custom-elements#master",
     "shadycss": "webcomponents/shadycss#master",
     "shadydom": "webcomponents/shadydom#master",
-    "template": "webcomponents/template#master"
+    "template": "webcomponents/template#master",
+    "webcomponents-platform": "webcomponents/webcomponents-platform#master"
   },
   "browserify": {
     "transform": [
