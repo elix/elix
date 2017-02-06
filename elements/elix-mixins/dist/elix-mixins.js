@@ -385,11 +385,21 @@
 	   *
 	   * This property is used by mixins to determine whether they should raise
 	   * property change events. The standard HTML pattern is to only raise such
-	   * events in response to direct user interactions. This property can be used
-	   * to manage events as follows.
+	   * events in response to direct user interactions. For a detailed discussion
+	   * of this point, see the Gold Standard checklist item for
+	   * [Propery Change Events](https://github.com/webcomponents/gold-standard/wiki/Property%20Change%20Events).
 	   *
-	   * First, UI event listeners should set this property to `true` at the start
-	   * of the event handler, then `false` at the end:
+	   * The above article describes a pattern for using a flag to track whether
+	   * work is being performed in response to internal component activity, and
+	   * whether the component should therefore raise property change events.
+	   * This `raiseChangeEvents` symbol is a shared flag used for that purpose by
+	   * all Elix mixins and components. Sharing this flag ensures that internal
+	   * activity (e.g., a UI event listener) in one mixin can signal other mixins
+	   * handling affected properties to raise change events.
+	   *
+	   * All UI event listeners (and other forms of internal handlers, such as
+	   * timeouts and async network handlers) should set `raiseChangeEvents` to
+	   * `true` at the start of the event handler, then `false` at the end:
 	   *
 	   *     this.addEventListener('click', event => {
 	   *       this[symbols.raiseChangeEvents] = true;
@@ -413,6 +423,7 @@
 	   * trigger the `foo-changed` event, but UI interactions that update that
 	   * property will cause those events to be raised.
 	   *
+	   * @var {boolean} raiseChangeEvents
 	   */
 	  raiseChangeEvents: (0, _Symbol3.default)('raiseChangeEvents'),
 	
@@ -432,6 +443,8 @@
 	   * This method is invoked when the underlying contents change. It is also
 	   * invoked on component initialization – since the items have "changed" from
 	   * being nothing.
+	   *
+	   * @function itemsChanged
 	   */
 	  itemsChanged: (0, _Symbol3.default)('itemsChanged'),
 	
