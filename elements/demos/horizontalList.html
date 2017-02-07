@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>horizontal-list</title>
+
+  <script src="../demos/node_modules/webcomponents-platform/webcomponents-platform.js"></script>
+  <script src="../demos/node_modules/shadydom/shadydom.min.js"></script>
+  <script src="../demos/node_modules/template/template.js"></script>
+  <script src="../demos/node_modules/custom-elements/custom-elements.min.js"></script>
+  <script src="../demos/node_modules/shadycss/shadycss.min.js"></script>
+  <script src="../demos/node_modules/custom-elements/src/native-shim.js"></script>
+  <script src="../demos/node_modules/custom-elements/src/htmlelement-instanceof.js"></script>
+  <script src="dist/demos.js"></script>
+  <link rel="stylesheet" href="../demos/demos.css">
+
+  <style>
+    sample-list-box {
+      box-sizing: content-box;
+      width: 250px;
+    }
+
+    .emoji {
+      align-items: center;
+      display: flex;
+      flex-shrink: 0;
+      font-size: 36px;
+      height: 50px;
+      justify-content: center;
+      padding: 0 !important;
+      width: 50px;
+    }
+  </style>
+
+</head>
+
+<body>
+  <p>
+    This horizontally-scrolling list can be navigated with the keyboard, too.
+  </p>
+  <sample-list-box orientation="horizontal" aria-label="Face emoji">
+    <div class="emoji" alt="Grinning Face">😀</div>
+    <div class="emoji" alt="Grinning Face With Smiling Eyes">😁</div>
+    <div class="emoji" alt="Face With Tears of Joy">😂</div>
+    <div class="emoji" alt="Smiling Face With Heart-eyes">😍</div>
+    <div class="emoji" alt="Smiling Face With Smiling Eyes">😊</div>
+    <div class="emoji" alt="Thinking Face">🤔</div>
+    <div class="emoji" alt="Smiling Face With Open Mouth & Closed Eyes">😆</div>
+    <div class="emoji" alt="Face With Open Mouth">😮</div>
+    <div class="emoji" alt="Face With Rolling Eyes">🙄</div>
+    <div class="emoji" alt="Face Blowing a Kiss">😘</div>
+  </sample-list-box>
+</body>
+
+</html>

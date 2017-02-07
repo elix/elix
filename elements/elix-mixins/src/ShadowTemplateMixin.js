@@ -61,7 +61,7 @@ export default function ShadowTemplateMixin(base) {
         // Get the template and perform initial processing.
         template = this[symbols.template];
         if (!template) {
-          console.warn(`ShadowTemplateMixin expects a component to define a template property with [symbols.template].`);
+          console.warn(`ShadowTemplateMixin expects a component to define a property called [symbols.template].`);
           return;
         }
 

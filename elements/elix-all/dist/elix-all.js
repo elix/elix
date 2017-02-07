@@ -401,6 +401,126 @@
 	  defaults: (0, _Symbol3.default)('defaults'),
 	
 	  /**
+	   * Symbol for the `getItemText` method.
+	   *
+	   * This method can be applied to an item to return its text.
+	   *
+	   * @function getText
+	   * @param {HTMLElement} item - the item to extract text from
+	   * @returns {string} - the text of the item
+	   */
+	  getItemText: (0, _Symbol3.default)('getText'),
+	
+	  /**
+	   * Symbol for the `goDown` method.
+	   *
+	   * This method is invoked when the user wants to go/navigate down.
+	   *
+	   * @function goDown
+	   */
+	  goDown: (0, _Symbol3.default)('goDown'),
+	
+	  /**
+	   * Symbol for the `goEnd` method.
+	   *
+	   * This method is invoked when the user wants to go/navigate to the end (e.g.,
+	   * of a list).
+	   *
+	   * @function goEnd
+	   */
+	  goEnd: (0, _Symbol3.default)('goEnd'),
+	
+	  /**
+	   * Symbol for the `goLeft` method.
+	   *
+	   * This method is invoked when the user wants to go/navigate left.
+	   *
+	   * @function goLeft
+	   */
+	  goLeft: (0, _Symbol3.default)('goLeft'),
+	
+	  /**
+	   * Symbol for the `goRight` method.
+	   *
+	   * This method is invoked when the user wants to go/navigate right.
+	   *
+	   * @function goRight
+	   */
+	  goRight: (0, _Symbol3.default)('goRight'),
+	
+	  /**
+	   * Symbol for the `goStart` method.
+	   *
+	   * This method is invoked when the user wants to go/navigate to the start
+	   * (e.g., of a list).
+	   *
+	   * @function goStart
+	   */
+	  goStart: (0, _Symbol3.default)('goStart'),
+	
+	  /**
+	   * Symbol for the `goUp` method.
+	   *
+	   * This method is invoked when the user wants to go/navigate up.
+	   *
+	   * @function goUp
+	   */
+	  goUp: (0, _Symbol3.default)('goUp'),
+	
+	  /**
+	   * Symbol for the `itemAdded` method.
+	   *
+	   * This method is invoked when a new item is added to a list.
+	   *
+	   * @function itemAdded
+	   * @param {HTMLElement} item - the item being selected/deselected
+	   */
+	  itemAdded: (0, _Symbol3.default)('itemAdded'),
+	
+	  /**
+	   * Symbol for the `itemsChanged` method.
+	   *
+	   * This method is invoked when the underlying contents change. It is also
+	   * invoked on component initialization – since the items have "changed" from
+	   * being nothing.
+	   *
+	   * @function itemsChanged
+	   */
+	  itemsChanged: (0, _Symbol3.default)('itemsChanged'),
+	
+	  /**
+	   * Symbol for the `itemSelected` method.
+	   *
+	   * This method is invoked when an item becomes selected or deselected.
+	   *
+	   * @function itemSelected
+	   * @param {HTMLElement} item - the item being selected/deselected
+	   * @param {boolean} selected - true if the item is selected, false if not
+	   */
+	  itemSelected: (0, _Symbol3.default)('itemSelected'),
+	
+	  /**
+	   * Symbol for the `keydown` method.
+	   *
+	   * This method is invoked when an element receives a `keydown` event.
+	   *
+	   * @function keydown
+	   * @param {KeyboardEvent} event - the event being processed
+	   */
+	  keydown: (0, _Symbol3.default)('keydown'),
+	
+	  /**
+	   * Indicates the general horizontal and/or vertical orientation of the
+	   * component. This may affect both presentation and behavior (e.g., of
+	   * keyboard navigation).
+	   *
+	   * Accepted values are "horizontal", "vertical", or "both" (the default).
+	   *
+	   * @type {string}
+	   */
+	  orientation: (0, _Symbol3.default)('orientation'),
+	
+	  /**
 	   * Symbol for the `raiseChangeEvents` property.
 	   *
 	   * This property is used by mixins to determine whether they should raise
@@ -446,38 +566,6 @@
 	   * @var {boolean} raiseChangeEvents
 	   */
 	  raiseChangeEvents: (0, _Symbol3.default)('raiseChangeEvents'),
-	
-	  /**
-	   * Symbol for the `itemAdded` method.
-	   *
-	   * This method is invoked when a new item is added to a list.
-	   *
-	   * @function itemAdded
-	   * @param {HTMLElement} item - the item being selected/deselected
-	   */
-	  itemAdded: (0, _Symbol3.default)('itemAdded'),
-	
-	  /**
-	   * Symbol for the `itemsChanged` method.
-	   *
-	   * This method is invoked when the underlying contents change. It is also
-	   * invoked on component initialization – since the items have "changed" from
-	   * being nothing.
-	   *
-	   * @function itemsChanged
-	   */
-	  itemsChanged: (0, _Symbol3.default)('itemsChanged'),
-	
-	  /**
-	   * Symbol for the `itemSelected` method.
-	   *
-	   * This method is invoked when an item becomes selected or deselected.
-	   *
-	   * @function itemSelected
-	   * @param {HTMLElement} item - the item being selected/deselected
-	   * @param {boolean} selected - true if the item is selected, false if not
-	   */
-	  itemSelected: (0, _Symbol3.default)('itemSelected'),
 	
 	  /**
 	   * Symbol for the `template` property.
@@ -637,7 +725,7 @@
 	        // Get the template and perform initial processing.
 	        template = _this[_symbols2.default.template];
 	        if (!template) {
-	          console.warn('ShadowTemplateMixin expects a component to define a template property with [symbols.template].');
+	          console.warn('ShadowTemplateMixin expects a component to define a property called [symbols.template].');
 	          return _possibleConstructorReturn(_this);
 	        }
 	

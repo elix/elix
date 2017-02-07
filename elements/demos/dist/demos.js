@@ -45,7 +45,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	module.exports = __webpack_require__(8);
+	module.exports = __webpack_require__(16);
 
 
 /***/ },
@@ -60,21 +60,47 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
+	var _set = function set(object, property, value, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent !== null) { set(parent, property, value, receiver); } } else if ("value" in desc && desc.writable) { desc.value = value; } else { var setter = desc.set; if (setter !== undefined) { setter.call(receiver, value); } } return value; };
+	
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 	
 	var _ClickSelectionMixin = __webpack_require__(2);
 	
 	var _ClickSelectionMixin2 = _interopRequireDefault(_ClickSelectionMixin);
 	
-	var _SelectionAriaMixin = __webpack_require__(5);
+	var _DirectionSelectionMixin = __webpack_require__(5);
+	
+	var _DirectionSelectionMixin2 = _interopRequireDefault(_DirectionSelectionMixin);
+	
+	var _KeyboardDirectionMixin = __webpack_require__(6);
+	
+	var _KeyboardDirectionMixin2 = _interopRequireDefault(_KeyboardDirectionMixin);
+	
+	var _KeyboardMixin = __webpack_require__(7);
+	
+	var _KeyboardMixin2 = _interopRequireDefault(_KeyboardMixin);
+	
+	var _KeyboardPagedSelectionMixin = __webpack_require__(8);
+	
+	var _KeyboardPagedSelectionMixin2 = _interopRequireDefault(_KeyboardPagedSelectionMixin);
+	
+	var _KeyboardPrefixSelectionMixin = __webpack_require__(10);
+	
+	var _KeyboardPrefixSelectionMixin2 = _interopRequireDefault(_KeyboardPrefixSelectionMixin);
+	
+	var _SelectionAriaMixin = __webpack_require__(12);
 	
 	var _SelectionAriaMixin2 = _interopRequireDefault(_SelectionAriaMixin);
 	
-	var _ShadowTemplateMixin = __webpack_require__(6);
+	var _SelectionInViewMixin = __webpack_require__(13);
+	
+	var _SelectionInViewMixin2 = _interopRequireDefault(_SelectionInViewMixin);
+	
+	var _ShadowTemplateMixin = __webpack_require__(14);
 	
 	var _ShadowTemplateMixin2 = _interopRequireDefault(_ShadowTemplateMixin);
 	
-	var _SingleSelectionMixin = __webpack_require__(7);
+	var _SingleSelectionMixin = __webpack_require__(15);
 	
 	var _SingleSelectionMixin2 = _interopRequireDefault(_SingleSelectionMixin);
 	
@@ -107,7 +133,7 @@
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 	
 	// We want to apply a number of mixin functions to HTMLElement.
-	var mixins = [_ClickSelectionMixin2.default, _SelectionAriaMixin2.default, _ShadowTemplateMixin2.default, _SingleSelectionMixin2.default];
+	var mixins = [_ClickSelectionMixin2.default, _DirectionSelectionMixin2.default, _KeyboardDirectionMixin2.default, _KeyboardMixin2.default, _KeyboardPagedSelectionMixin2.default, _KeyboardPrefixSelectionMixin2.default, _SelectionAriaMixin2.default, _SelectionInViewMixin2.default, _ShadowTemplateMixin2.default, _SingleSelectionMixin2.default];
 	
 	// The mixins are functions, so an efficient way to apply them all is with
 	// reduce. This is just function composition. We end up with a base class we
@@ -126,7 +152,13 @@
 	 *
 	 * @extends HTMLElement
 	 * @mixes ClickSelectionMixin
+	 * @mixes DirectionSelectionMixin
+	 * @mixes KeyboardDirectionMixin
+	 * @mixes KeyboardMixin
+	 * @mixes KeyboardPagedSelectionMixin
+	 * @mixes KeyboardPrefixSelectionMixin
 	 * @mixes SelectionAriaMixin
+	 * @mixes SelectionInViewMixin
 	 * @mixes ShadowTemplateMixin
 	 * @mixes SingleSelectionMixin
 	 */
@@ -137,31 +169,6 @@
 	  function ListBox() {
 	    _classCallCheck(this, ListBox);
 	
-	    // Simplistic keyboard handling for Left/Right and Up/Down keys.
-	    var _this = _possibleConstructorReturn(this, (ListBox.__proto__ || Object.getPrototypeOf(ListBox)).call(this));
-	
-	    _this.addEventListener('keydown', function (event) {
-	      _this[_symbols2.default.raiseChangeEvents] = true;
-	      var handled = false;
-	      switch (event.keyCode) {
-	        case 37: // Left
-	        case 38:
-	          // Up
-	          handled = _this.selectPrevious();
-	          break;
-	        case 39: // Right
-	        case 40:
-	          // Down
-	          handled = _this.selectNext();
-	          break;
-	      }
-	      if (handled) {
-	        event.preventDefault();
-	        event.stopPropagation();
-	      }
-	      _this[_symbols2.default.raiseChangeEvents] = false;
-	    });
-	
 	    // The list needs to initialize any items it starts with by invoking the
 	    // itemsChanged method. Mixins like the ARIA mixin will then use that signal
 	    // to apply attributes to each item, as well as to the list element itself.
@@ -169,6 +176,8 @@
 	    // to handle this common need. Because the Custom Element spec prevents an
 	    // element from modifying itself in its own constructor, we do so in
 	    // timeout.
+	    var _this = _possibleConstructorReturn(this, (ListBox.__proto__ || Object.getPrototypeOf(ListBox)).call(this));
+	
 	    setTimeout(function () {
 	      _this[_symbols2.default.itemsChanged]();
 	    });
@@ -184,22 +193,11 @@
 	      if (_get(ListBox.prototype.__proto__ || Object.getPrototypeOf(ListBox.prototype), 'attributeChangedCallback', this)) {
 	        _get(ListBox.prototype.__proto__ || Object.getPrototypeOf(ListBox.prototype), 'attributeChangedCallback', this).call(this, attributeName, oldValue, newValue);
 	      }
-	      if (attributeName === 'selected-index') {
-	        this.selectedIndex = parseInt(newValue);
-	      }
-	    }
-	  }, {
-	    key: 'connectedCallback',
-	    value: function connectedCallback() {
-	      if (_get(ListBox.prototype.__proto__ || Object.getPrototypeOf(ListBox.prototype), 'connectedCallback', this)) {
-	        _get(ListBox.prototype.__proto__ || Object.getPrototypeOf(ListBox.prototype), 'connectedCallback', this).call(this);
-	      }
-	      // Set a default tabindex so that the element can receive focus. That lets
-	      // us support keyboard selection. We take care to avoid ovewritting any
-	      // tabindex that's explicitly set on the list element.
-	      if (this.getAttribute('tabindex') == null && this[_symbols2.default.defaults].tabindex !== null) {
-	        this.setAttribute('tabindex', this[_symbols2.default.defaults].tabindex);
-	      }
+	      var mapAttributeToProperty = {
+	        'selected-index': 'selectedIndex'
+	      };
+	      var propertyName = mapAttributeToProperty[attributeName] || attributeName;
+	      this[propertyName] = newValue;
 	    }
 	
 	    // We define a collection of default property values which can be set in
@@ -234,6 +232,9 @@
 	    value: function value() {
 	      var _this2 = this;
 	
+	      if (_get(ListBox.prototype.__proto__ || Object.getPrototypeOf(ListBox.prototype), _symbols2.default.itemsChanged, this)) {
+	        _get(ListBox.prototype.__proto__ || Object.getPrototypeOf(ListBox.prototype), _symbols2.default.itemsChanged, this).call(this);
+	      }
 	      Array.prototype.forEach.call(this.items, function (child) {
 	        _this2[_symbols2.default.itemAdded](child);
 	      });
@@ -245,8 +246,8 @@
 	    key: _symbols2.default.defaults,
 	    get: function get() {
 	      var defaults = _get(ListBox.prototype.__proto__ || Object.getPrototypeOf(ListBox.prototype), _symbols2.default.defaults, this) || {};
-	      // The default tab index is 0 (document order).
-	      defaults.tabindex = 0;
+	      // By default, we assume the list presents list items vertically.
+	      defaults.orientation = 'vertical';
 	      return defaults;
 	    }
 	  }, {
@@ -255,18 +256,61 @@
 	      return this.children;
 	    }
 	  }, {
-	    key: _symbols2.default.template,
+	    key: 'orientation',
 	
+	
+	    /**
+	     * The vertical (default) or horizontal orientation of the list.
+	     *
+	     * Supported values are "horizontal" or "vertical".
+	     *
+	     * @type {string}
+	     */
+	    get: function get() {
+	      return this[_symbols2.default.orientation] || this[_symbols2.default.defaults].orientation;
+	    },
+	    set: function set(value) {
+	      var changed = value !== this[_symbols2.default.orientation];
+	      this[_symbols2.default.orientation] = value;
+	      if ('orientation' in base) {
+	        _set(ListBox.prototype.__proto__ || Object.getPrototypeOf(ListBox.prototype), 'orientation', value, this);
+	      }
+	      // Reflect attribute for styling
+	      if (this.getAttribute('orientation') !== value) {
+	        this.setAttribute('orientation', value);
+	      }
+	      if (changed && this[_symbols2.default.raiseChangeEvents]) {
+	        var event = new CustomEvent('orientation-changed');
+	        this.dispatchEvent(event);
+	      }
+	    }
+	  }, {
+	    key: _symbols2.default.scrollTarget,
+	    get: function get() {
+	      return this.shadowRoot.querySelector('#itemsContainer');
+	    }
 	
 	    // Define a template that will be stamped into the Shadow DOM by the
 	    // ShadowTemplateMixin.
+	
+	  }, {
+	    key: _symbols2.default.template,
 	    get: function get() {
-	      return '\n      <style>\n      :host {\n        border: 1px solid gray;\n        box-sizing: border-box;\n        cursor: default;\n        display: flex;\n        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);\n      }\n\n      #itemsContainer {\n        flex: 1;\n        -webkit-overflow-scrolling: touch;\n        overflow-y: scroll; /* for momentum scrolling */\n      }\n\n      #itemsContainer ::slotted(*) {\n        cursor: default;\n        padding: 0.25em;\n        -webkit-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n      }\n\n      #itemsContainer ::slotted(.selected) {\n        background: var(--elix-selected-background, highlight);\n        color: var(--elix-selected-color, highlighttext);\n      }\n      </style>\n\n      <div id="itemsContainer" role="none">\n        <slot></slot>\n      </div>\n    ';
+	      return '\n      <style>\n      :host {\n        border: 1px solid gray;\n        box-sizing: border-box;\n        cursor: default;\n        display: flex;\n        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);\n      }\n\n      #itemsContainer {\n        flex: 1;\n        -webkit-overflow-scrolling: touch; /* for momentum scrolling */\n        overflow-x: hidden;\n        overflow-y: scroll;\n      }\n      :host([orientation="horizontal"]) #itemsContainer {\n        display: flex;\n        overflow-x: scroll;\n        overflow-y: hidden;\n      }\n\n      #itemsContainer ::slotted(*) {\n        cursor: default;\n        padding: 0.25em;\n        -webkit-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n      }\n\n      #itemsContainer ::slotted(.selected) {\n        background: var(--elix-selected-background, highlight);\n        color: var(--elix-selected-color, highlighttext);\n      }\n      </style>\n\n      <div id="itemsContainer" role="none">\n        <slot></slot>\n      </div>\n    ';
 	    }
+	
+	    /**
+	     * Fires when the orientation property changes in response to internal
+	     * component activity.
+	     *
+	     * @memberof ListBox
+	     * @event orientation-changed
+	     */
+	
 	  }], [{
 	    key: 'observedAttributes',
 	    get: function get() {
-	      return ['selected-index'];
+	      return ['orientation', 'selected-index'];
 	    }
 	  }]);
 	
@@ -457,6 +501,126 @@
 	  defaults: (0, _Symbol3.default)('defaults'),
 	
 	  /**
+	   * Symbol for the `getItemText` method.
+	   *
+	   * This method can be applied to an item to return its text.
+	   *
+	   * @function getText
+	   * @param {HTMLElement} item - the item to extract text from
+	   * @returns {string} - the text of the item
+	   */
+	  getItemText: (0, _Symbol3.default)('getText'),
+	
+	  /**
+	   * Symbol for the `goDown` method.
+	   *
+	   * This method is invoked when the user wants to go/navigate down.
+	   *
+	   * @function goDown
+	   */
+	  goDown: (0, _Symbol3.default)('goDown'),
+	
+	  /**
+	   * Symbol for the `goEnd` method.
+	   *
+	   * This method is invoked when the user wants to go/navigate to the end (e.g.,
+	   * of a list).
+	   *
+	   * @function goEnd
+	   */
+	  goEnd: (0, _Symbol3.default)('goEnd'),
+	
+	  /**
+	   * Symbol for the `goLeft` method.
+	   *
+	   * This method is invoked when the user wants to go/navigate left.
+	   *
+	   * @function goLeft
+	   */
+	  goLeft: (0, _Symbol3.default)('goLeft'),
+	
+	  /**
+	   * Symbol for the `goRight` method.
+	   *
+	   * This method is invoked when the user wants to go/navigate right.
+	   *
+	   * @function goRight
+	   */
+	  goRight: (0, _Symbol3.default)('goRight'),
+	
+	  /**
+	   * Symbol for the `goStart` method.
+	   *
+	   * This method is invoked when the user wants to go/navigate to the start
+	   * (e.g., of a list).
+	   *
+	   * @function goStart
+	   */
+	  goStart: (0, _Symbol3.default)('goStart'),
+	
+	  /**
+	   * Symbol for the `goUp` method.
+	   *
+	   * This method is invoked when the user wants to go/navigate up.
+	   *
+	   * @function goUp
+	   */
+	  goUp: (0, _Symbol3.default)('goUp'),
+	
+	  /**
+	   * Symbol for the `itemAdded` method.
+	   *
+	   * This method is invoked when a new item is added to a list.
+	   *
+	   * @function itemAdded
+	   * @param {HTMLElement} item - the item being selected/deselected
+	   */
+	  itemAdded: (0, _Symbol3.default)('itemAdded'),
+	
+	  /**
+	   * Symbol for the `itemsChanged` method.
+	   *
+	   * This method is invoked when the underlying contents change. It is also
+	   * invoked on component initialization – since the items have "changed" from
+	   * being nothing.
+	   *
+	   * @function itemsChanged
+	   */
+	  itemsChanged: (0, _Symbol3.default)('itemsChanged'),
+	
+	  /**
+	   * Symbol for the `itemSelected` method.
+	   *
+	   * This method is invoked when an item becomes selected or deselected.
+	   *
+	   * @function itemSelected
+	   * @param {HTMLElement} item - the item being selected/deselected
+	   * @param {boolean} selected - true if the item is selected, false if not
+	   */
+	  itemSelected: (0, _Symbol3.default)('itemSelected'),
+	
+	  /**
+	   * Symbol for the `keydown` method.
+	   *
+	   * This method is invoked when an element receives a `keydown` event.
+	   *
+	   * @function keydown
+	   * @param {KeyboardEvent} event - the event being processed
+	   */
+	  keydown: (0, _Symbol3.default)('keydown'),
+	
+	  /**
+	   * Indicates the general horizontal and/or vertical orientation of the
+	   * component. This may affect both presentation and behavior (e.g., of
+	   * keyboard navigation).
+	   *
+	   * Accepted values are "horizontal", "vertical", or "both" (the default).
+	   *
+	   * @type {string}
+	   */
+	  orientation: (0, _Symbol3.default)('orientation'),
+	
+	  /**
 	   * Symbol for the `raiseChangeEvents` property.
 	   *
 	   * This property is used by mixins to determine whether they should raise
@@ -502,38 +666,6 @@
 	   * @var {boolean} raiseChangeEvents
 	   */
 	  raiseChangeEvents: (0, _Symbol3.default)('raiseChangeEvents'),
-	
-	  /**
-	   * Symbol for the `itemAdded` method.
-	   *
-	   * This method is invoked when a new item is added to a list.
-	   *
-	   * @function itemAdded
-	   * @param {HTMLElement} item - the item being selected/deselected
-	   */
-	  itemAdded: (0, _Symbol3.default)('itemAdded'),
-	
-	  /**
-	   * Symbol for the `itemsChanged` method.
-	   *
-	   * This method is invoked when the underlying contents change. It is also
-	   * invoked on component initialization – since the items have "changed" from
-	   * being nothing.
-	   *
-	   * @function itemsChanged
-	   */
-	  itemsChanged: (0, _Symbol3.default)('itemsChanged'),
-	
-	  /**
-	   * Symbol for the `itemSelected` method.
-	   *
-	   * This method is invoked when an item becomes selected or deselected.
-	   *
-	   * @function itemSelected
-	   * @param {HTMLElement} item - the item being selected/deselected
-	   * @param {boolean} selected - true if the item is selected, false if not
-	   */
-	  itemSelected: (0, _Symbol3.default)('itemSelected'),
 	
 	  /**
 	   * Symbol for the `template` property.
@@ -605,6 +737,1051 @@
 
 /***/ },
 /* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	exports.default = DirectionSelectionMixin;
+	
+	var _symbols = __webpack_require__(3);
+	
+	var _symbols2 = _interopRequireDefault(_symbols);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	/**
+	 * Mixin which maps direction semantics (goLeft, goRight, etc.) to selection
+	 * semantics (selectPrevious, selectNext, etc.).
+	 *
+	 * This mixin can be used in conjunction with
+	 * [KeyboardDirectionMixin](KeyboardDirectionMixin.md) (which maps keyboard
+	 * events to directions) and a mixin that handles selection like
+	 * [SingleSelectionMixin](SingleSelectionMixin.md).
+	 *
+	 * @module DirectionSelectionMixin
+	 * @param base {Class} the base class to extend
+	 * @returns {Class} the extended class
+	 */
+	function DirectionSelectionMixin(base) {
+	
+	  /**
+	   * The class prototype added by the mixin.
+	   */
+	  var DirectionSelection = function (_base) {
+	    _inherits(DirectionSelection, _base);
+	
+	    function DirectionSelection() {
+	      _classCallCheck(this, DirectionSelection);
+	
+	      return _possibleConstructorReturn(this, (DirectionSelection.__proto__ || Object.getPrototypeOf(DirectionSelection)).apply(this, arguments));
+	    }
+	
+	    _createClass(DirectionSelection, [{
+	      key: _symbols2.default.goDown,
+	      value: function value() {
+	        if (_get(DirectionSelection.prototype.__proto__ || Object.getPrototypeOf(DirectionSelection.prototype), _symbols2.default.goDown, this)) {
+	          _get(DirectionSelection.prototype.__proto__ || Object.getPrototypeOf(DirectionSelection.prototype), _symbols2.default.goDown, this).call(this);
+	        }
+	        if (!this.selectNext) {
+	          console.warn('DirectionSelectionMixin expects a component to define a "selectNext" method.');
+	        } else {
+	          return this.selectNext();
+	        }
+	      }
+	    }, {
+	      key: _symbols2.default.goEnd,
+	      value: function value() {
+	        if (_get(DirectionSelection.prototype.__proto__ || Object.getPrototypeOf(DirectionSelection.prototype), _symbols2.default.goEnd, this)) {
+	          _get(DirectionSelection.prototype.__proto__ || Object.getPrototypeOf(DirectionSelection.prototype), _symbols2.default.goEnd, this).call(this);
+	        }
+	        if (!this.selectLast) {
+	          console.warn('DirectionSelectionMixin expects a component to define a "selectLast" method.');
+	        } else {
+	          return this.selectLast();
+	        }
+	      }
+	    }, {
+	      key: _symbols2.default.goLeft,
+	      value: function value() {
+	        if (_get(DirectionSelection.prototype.__proto__ || Object.getPrototypeOf(DirectionSelection.prototype), _symbols2.default.goLeft, this)) {
+	          _get(DirectionSelection.prototype.__proto__ || Object.getPrototypeOf(DirectionSelection.prototype), _symbols2.default.goLeft, this).call(this);
+	        }
+	        if (!this.selectPrevious) {
+	          console.warn('DirectionSelectionMixin expects a component to define a "selectPrevious" method.');
+	        } else {
+	          return this.selectPrevious();
+	        }
+	      }
+	    }, {
+	      key: _symbols2.default.goRight,
+	      value: function value() {
+	        if (_get(DirectionSelection.prototype.__proto__ || Object.getPrototypeOf(DirectionSelection.prototype), _symbols2.default.goRight, this)) {
+	          _get(DirectionSelection.prototype.__proto__ || Object.getPrototypeOf(DirectionSelection.prototype), _symbols2.default.goRight, this).call(this);
+	        }
+	        if (!this.selectNext) {
+	          console.warn('DirectionSelectionMixin expects a component to define a "selectNext" method.');
+	        } else {
+	          return this.selectNext();
+	        }
+	      }
+	    }, {
+	      key: _symbols2.default.goStart,
+	      value: function value() {
+	        if (_get(DirectionSelection.prototype.__proto__ || Object.getPrototypeOf(DirectionSelection.prototype), _symbols2.default.goStart, this)) {
+	          _get(DirectionSelection.prototype.__proto__ || Object.getPrototypeOf(DirectionSelection.prototype), _symbols2.default.goStart, this).call(this);
+	        }
+	        if (!this.selectFirst) {
+	          console.warn('DirectionSelectionMixin expects a component to define a "selectFirst" method.');
+	        } else {
+	          return this.selectFirst();
+	        }
+	      }
+	    }, {
+	      key: _symbols2.default.goUp,
+	      value: function value() {
+	        if (_get(DirectionSelection.prototype.__proto__ || Object.getPrototypeOf(DirectionSelection.prototype), _symbols2.default.goUp, this)) {
+	          _get(DirectionSelection.prototype.__proto__ || Object.getPrototypeOf(DirectionSelection.prototype), _symbols2.default.goUp, this).call(this);
+	        }
+	        if (!this.selectPrevious) {
+	          console.warn('DirectionSelectionMixin expects a component to define a "selectPrevious" method.');
+	        } else {
+	          return this.selectPrevious();
+	        }
+	      }
+	    }]);
+	
+	    return DirectionSelection;
+	  }(base);
+	
+	  return DirectionSelection;
+	};
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	exports.default = KeyboardDirectionMixin;
+	
+	var _Symbol2 = __webpack_require__(4);
+	
+	var _Symbol3 = _interopRequireDefault(_Symbol2);
+	
+	var _symbols = __webpack_require__(3);
+	
+	var _symbols2 = _interopRequireDefault(_symbols);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	// Symbols for private data members on an element.
+	var orientationSymbol = (0, _Symbol3.default)('orientation');
+	
+	/**
+	 * Mixin which maps direction keys (Left, Right, etc.) to direction semantics
+	 * (go left, go right, etc.).
+	 *
+	 * This mixin expects the component to invoke a `keydown` method when a key is
+	 * pressed. You can use [KeyboardMixin](KeyboardMixin.md) for that
+	 * purpose, or wire up your own keyboard handling and call `keydown` yourself.
+	 *
+	 * This mixin calls methods such as `goLeft` and `goRight`. You can define
+	 * what that means by implementing those methods yourself. If you want to use
+	 * direction keys to navigate a selection, use this mixin with
+	 * [DirectionSelectionMixin](DirectionSelectionMixin.md).
+	 *
+	 * If the component defines a property called `symbols.orientation`, the value
+	 * of that property will constrain navigation to the horizontal or vertical axis.
+	 *
+	 * @module KeyboardDirectionMixin
+	 * @param base {Class} the base class to extend
+	 * @returns {Class} the extended class
+	 */
+	function KeyboardDirectionMixin(base) {
+	
+	  /**
+	   * The class prototype added by the mixin.
+	   */
+	  var KeyboardDirection = function (_base) {
+	    _inherits(KeyboardDirection, _base);
+	
+	    function KeyboardDirection() {
+	      _classCallCheck(this, KeyboardDirection);
+	
+	      return _possibleConstructorReturn(this, (KeyboardDirection.__proto__ || Object.getPrototypeOf(KeyboardDirection)).apply(this, arguments));
+	    }
+	
+	    _createClass(KeyboardDirection, [{
+	      key: _symbols2.default.goDown,
+	
+	
+	      /**
+	       * Invoked when the user wants to go/navigate down.
+	       * The default implementation of this method does nothing.
+	       */
+	      value: function value() {
+	        if (_get(KeyboardDirection.prototype.__proto__ || Object.getPrototypeOf(KeyboardDirection.prototype), _symbols2.default.goDown, this)) {
+	          return _get(KeyboardDirection.prototype.__proto__ || Object.getPrototypeOf(KeyboardDirection.prototype), _symbols2.default.goDown, this).call(this);
+	        }
+	      }
+	
+	      /**
+	       * Invoked when the user wants to go/navigate to the end (e.g., of a list).
+	       * The default implementation of this method does nothing.
+	       */
+	
+	    }, {
+	      key: _symbols2.default.goEnd,
+	      value: function value() {
+	        if (_get(KeyboardDirection.prototype.__proto__ || Object.getPrototypeOf(KeyboardDirection.prototype), _symbols2.default.goEnd, this)) {
+	          return _get(KeyboardDirection.prototype.__proto__ || Object.getPrototypeOf(KeyboardDirection.prototype), _symbols2.default.goEnd, this).call(this);
+	        }
+	      }
+	
+	      /**
+	       * Invoked when the user wants to go/navigate left.
+	       * The default implementation of this method does nothing.
+	       */
+	
+	    }, {
+	      key: _symbols2.default.goLeft,
+	      value: function value() {
+	        if (_get(KeyboardDirection.prototype.__proto__ || Object.getPrototypeOf(KeyboardDirection.prototype), _symbols2.default.goLeft, this)) {
+	          return _get(KeyboardDirection.prototype.__proto__ || Object.getPrototypeOf(KeyboardDirection.prototype), _symbols2.default.goLeft, this).call(this);
+	        }
+	      }
+	
+	      /**
+	       * Invoked when the user wants to go/navigate right.
+	       * The default implementation of this method does nothing.
+	       */
+	
+	    }, {
+	      key: _symbols2.default.goRight,
+	      value: function value() {
+	        if (_get(KeyboardDirection.prototype.__proto__ || Object.getPrototypeOf(KeyboardDirection.prototype), _symbols2.default.goRight, this)) {
+	          return _get(KeyboardDirection.prototype.__proto__ || Object.getPrototypeOf(KeyboardDirection.prototype), _symbols2.default.goRight, this).call(this);
+	        }
+	      }
+	
+	      /**
+	       * Invoked when the user wants to go/navigate to the start (e.g., of a
+	       * list). The default implementation of this method does nothing.
+	       */
+	
+	    }, {
+	      key: _symbols2.default.goStart,
+	      value: function value() {
+	        if (_get(KeyboardDirection.prototype.__proto__ || Object.getPrototypeOf(KeyboardDirection.prototype), _symbols2.default.goStart, this)) {
+	          return _get(KeyboardDirection.prototype.__proto__ || Object.getPrototypeOf(KeyboardDirection.prototype), _symbols2.default.goStart, this).call(this);
+	        }
+	      }
+	
+	      /**
+	       * Invoked when the user wants to go/navigate up.
+	       * The default implementation of this method does nothing.
+	       */
+	
+	    }, {
+	      key: _symbols2.default.goUp,
+	      value: function value() {
+	        if (_get(KeyboardDirection.prototype.__proto__ || Object.getPrototypeOf(KeyboardDirection.prototype), _symbols2.default.goUp, this)) {
+	          return _get(KeyboardDirection.prototype.__proto__ || Object.getPrototypeOf(KeyboardDirection.prototype), _symbols2.default.goUp, this).call(this);
+	        }
+	      }
+	    }, {
+	      key: _symbols2.default.keydown,
+	      value: function value(event) {
+	        var handled = false;
+	
+	        var orientation = this[_symbols2.default.orientation] || 'both';
+	        var horizontal = orientation === 'horizontal' || orientation === 'both';
+	        var vertical = orientation === 'vertical' || orientation === 'both';
+	
+	        // Ignore Left/Right keys when metaKey or altKey modifier is also pressed,
+	        // as the user may be trying to navigate back or forward in the browser.
+	        switch (event.keyCode) {
+	          case 35:
+	            // End
+	            handled = this[_symbols2.default.goEnd]();
+	            break;
+	          case 36:
+	            // Home
+	            handled = this[_symbols2.default.goStart]();
+	            break;
+	          case 37:
+	            // Left
+	            if (horizontal && !event.metaKey && !event.altKey) {
+	              handled = this[_symbols2.default.goLeft]();
+	            }
+	            break;
+	          case 38:
+	            // Up
+	            if (vertical) {
+	              handled = event.altKey ? this[_symbols2.default.goStart]() : this[_symbols2.default.goUp]();
+	            }
+	            break;
+	          case 39:
+	            // Right
+	            if (horizontal && !event.metaKey && !event.altKey) {
+	              handled = this[_symbols2.default.goRight]();
+	            }
+	            break;
+	          case 40:
+	            // Down
+	            if (vertical) {
+	              handled = event.altKey ? this[_symbols2.default.goEnd]() : this[_symbols2.default.goDown]();
+	            }
+	            break;
+	        }
+	        // Prefer mixin result if it's defined, otherwise use base result.
+	        return handled || _get(KeyboardDirection.prototype.__proto__ || Object.getPrototypeOf(KeyboardDirection.prototype), _symbols2.default.keydown, this) && _get(KeyboardDirection.prototype.__proto__ || Object.getPrototypeOf(KeyboardDirection.prototype), _symbols2.default.keydown, this).call(this, event) || false;
+	      }
+	    }]);
+	
+	    return KeyboardDirection;
+	  }(base);
+	
+	  return KeyboardDirection;
+	};
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	exports.default = KeyboardMixin;
+	
+	var _symbols = __webpack_require__(3);
+	
+	var _symbols2 = _interopRequireDefault(_symbols);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	/**
+	 * Mixin which manages the keydown handling for a component.
+	 *
+	 * This mixin handles several keyboard-related features.
+	 *
+	 * First, it wires up a single keydown event handler that can be shared by
+	 * multiple mixins on a component. The event handler will invoke a `keydown`
+	 * method with the event object, and any mixin along the prototype chain that
+	 * wants to handle that method can do so.
+	 *
+	 * If a mixin wants to indicate that keyboard event has been handled, and that
+	 * other mixins should *not* handle it, the mixin's `keydown` handler should
+	 * return a value of true. The convention that seems to work well is that a
+	 * mixin should see if it wants to handle the event and, if not, then ask the
+	 * superclass to see if it wants to handle the event. This has the effect of
+	 * giving the mixin that was applied last the first chance at handling a
+	 * keyboard event.
+	 *
+	 * Example:
+	 *
+	 *     [symbols.keydown](event) {
+	 *       let handled;
+	 *       switch (event.keyCode) {
+	 *         // Handle the keys you want, setting handled = true if appropriate.
+	 *       }
+	 *       // Prefer mixin result if it's defined, otherwise use base result.
+	 *       return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+	 *     }
+	 *
+	 * Until iOS Safari supports the `KeyboardEvent.key` property
+	 * (see http://caniuse.com/#search=keyboardevent.key), mixins should generally
+	 * test keys using the legacy `keyCode` property, not `key`.
+	 *
+	 * A second feature provided by this mixin is that it implicitly makes the
+	 * component a tab stop if it isn't already, by setting `tabIndex` to 0. This
+	 * has the effect of adding the component to the tab order in document order.
+	 *
+	 * @module KeyboardMixin
+	 * @param base {Class} the base class to extend
+	 * @returns {Class} the extended class
+	 */
+	function KeyboardMixin(base) {
+	
+	  /**
+	   * The class prototype added by the mixin.
+	   */
+	  var Keyboard = function (_base) {
+	    _inherits(Keyboard, _base);
+	
+	    function Keyboard() {
+	      _classCallCheck(this, Keyboard);
+	
+	      var _this = _possibleConstructorReturn(this, (Keyboard.__proto__ || Object.getPrototypeOf(Keyboard)).call(this));
+	
+	      _this.addEventListener('keydown', function (event) {
+	        _this[_symbols2.default.raiseChangeEvents] = true;
+	        var handled = _this[_symbols2.default.keydown](event);
+	        if (handled) {
+	          event.preventDefault();
+	          event.stopPropagation();
+	        }
+	        _this[_symbols2.default.raiseChangeEvents] = false;
+	      });
+	      return _this;
+	    }
+	
+	    _createClass(Keyboard, [{
+	      key: 'connectedCallback',
+	      value: function connectedCallback() {
+	        if (_get(Keyboard.prototype.__proto__ || Object.getPrototypeOf(Keyboard.prototype), 'connectedCallback', this)) {
+	          _get(Keyboard.prototype.__proto__ || Object.getPrototypeOf(Keyboard.prototype), 'connectedCallback', this).call(this);
+	        }
+	        if (this.getAttribute('tabindex') == null && this[_symbols2.default.defaults].tabindex !== null) {
+	          this.setAttribute('tabindex', this[_symbols2.default.defaults].tabindex);
+	        }
+	      }
+	    }, {
+	      key: _symbols2.default.keydown,
+	
+	
+	      /**
+	       * Handle the indicated keyboard event.
+	       *
+	       * The default implementation of this method does nothing. This will
+	       * typically be handled by other mixins.
+	       *
+	       * @param {KeyboardEvent} event - the keyboard event
+	       * @return {boolean} true if the event was handled
+	       */
+	      value: function value(event) {
+	        if (_get(Keyboard.prototype.__proto__ || Object.getPrototypeOf(Keyboard.prototype), _symbols2.default.keydown, this)) {
+	          return _get(Keyboard.prototype.__proto__ || Object.getPrototypeOf(Keyboard.prototype), _symbols2.default.keydown, this).call(this, event);
+	        }
+	      }
+	    }, {
+	      key: _symbols2.default.defaults,
+	      get: function get() {
+	        var defaults = _get(Keyboard.prototype.__proto__ || Object.getPrototypeOf(Keyboard.prototype), _symbols2.default.defaults, this) || {};
+	        // The default tab index is 0 (document order).
+	        defaults.tabindex = 0;
+	        return defaults;
+	      }
+	    }]);
+	
+	    return Keyboard;
+	  }(base);
+	
+	  return Keyboard;
+	};
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	exports.default = KeyboardPagedSelectionMixin;
+	
+	var _defaultScrollTarget = __webpack_require__(9);
+	
+	var _defaultScrollTarget2 = _interopRequireDefault(_defaultScrollTarget);
+	
+	var _symbols = __webpack_require__(3);
+	
+	var _symbols2 = _interopRequireDefault(_symbols);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	/**
+	 * Mixin which maps page keys (Page Up, Page Down) into operations that move
+	 * the selection by one page.
+	 *
+	 * The keyboard interaction model generally follows that of Microsoft Windows'
+	 * list boxes instead of those in OS X:
+	 *
+	 * * The Page Up/Down and Home/End keys actually change the selection, rather
+	 *   than just scrolling. The former behavior seems more generally useful for
+	 *   keyboard users.
+	 *
+	 * * Pressing Page Up/Down will change the selection to the topmost/bottommost
+	 *   visible item if the selection is not already there. Thereafter, the key
+	 *   will move the selection up/down by a page, and (per the above point) make
+	 *   the selected item visible.
+	 *
+	 * To ensure the selected item is in view following use of Page Up/Down, use
+	 * the related [SelectionInViewMixin](SelectionInViewMixin.md).
+	 *
+	 * This mixin expects the component to provide:
+	 *
+	 * * A `[symbols.keydown]` method invoked when a key is pressed. You can use
+	 *   [KeyboardMixin](KeyboardMixin.md) for that purpose, or wire up your own
+	 *   keyboard handling and call `[symbols.keydown]` yourself.
+	 * * A `selectedIndex` property that indicates the index of the selected item.
+	 *
+	 * @module KeyboardPagedSelectionMixin
+	 * @param base {Class} the base class to extend
+	 * @returns {Class} the extended class
+	 */
+	function KeyboardPagedSelectionMixin(base) {
+	
+	  /**
+	   * The class prototype added by the mixin.
+	   */
+	  var KeyboardPagedSelection = function (_base) {
+	    _inherits(KeyboardPagedSelection, _base);
+	
+	    function KeyboardPagedSelection() {
+	      _classCallCheck(this, KeyboardPagedSelection);
+	
+	      return _possibleConstructorReturn(this, (KeyboardPagedSelection.__proto__ || Object.getPrototypeOf(KeyboardPagedSelection)).apply(this, arguments));
+	    }
+	
+	    _createClass(KeyboardPagedSelection, [{
+	      key: _symbols2.default.keydown,
+	      value: function value(event) {
+	        var handled = false;
+	        var orientation = this[_symbols2.default.orientation];
+	        if (orientation !== 'horizontal') {
+	          switch (event.keyCode) {
+	            case 33:
+	              // Page Up
+	              handled = this.pageUp();
+	              break;
+	            case 34:
+	              // Page Down
+	              handled = this.pageDown();
+	              break;
+	          }
+	        }
+	        // Prefer mixin result if it's defined, otherwise use base result.
+	        return handled || _get(KeyboardPagedSelection.prototype.__proto__ || Object.getPrototypeOf(KeyboardPagedSelection.prototype), _symbols2.default.keydown, this) && _get(KeyboardPagedSelection.prototype.__proto__ || Object.getPrototypeOf(KeyboardPagedSelection.prototype), _symbols2.default.keydown, this).call(this, event);
+	      }
+	
+	      /**
+	       * Scroll down one page.
+	       */
+	
+	    }, {
+	      key: 'pageDown',
+	      value: function pageDown() {
+	        if (_get(KeyboardPagedSelection.prototype.__proto__ || Object.getPrototypeOf(KeyboardPagedSelection.prototype), 'pageDown', this)) {
+	          _get(KeyboardPagedSelection.prototype.__proto__ || Object.getPrototypeOf(KeyboardPagedSelection.prototype), 'pageDown', this).call(this);
+	        }
+	        return scrollOnePage(this, true);
+	      }
+	
+	      /**
+	       * Scroll up one page.
+	       */
+	
+	    }, {
+	      key: 'pageUp',
+	      value: function pageUp() {
+	        if (_get(KeyboardPagedSelection.prototype.__proto__ || Object.getPrototypeOf(KeyboardPagedSelection.prototype), 'pageUp', this)) {
+	          _get(KeyboardPagedSelection.prototype.__proto__ || Object.getPrototypeOf(KeyboardPagedSelection.prototype), 'pageUp', this).call(this);
+	        }
+	        return scrollOnePage(this, false);
+	      }
+	
+	      /* Provide a default scrollTarget implementation if none exists. */
+	
+	    }, {
+	      key: _symbols2.default.scrollTarget,
+	      get: function get() {
+	        return _get(KeyboardPagedSelection.prototype.__proto__ || Object.getPrototypeOf(KeyboardPagedSelection.prototype), _symbols2.default.scrollTarget, this) || (0, _defaultScrollTarget2.default)(this);
+	      }
+	    }]);
+	
+	    return KeyboardPagedSelection;
+	  }(base);
+	
+	  return KeyboardPagedSelection;
+	}
+	
+	// Return the item whose content spans the given y position (relative to the
+	// top of the list's scrolling client area), or null if not found.
+	//
+	// If downward is true, move down the list of items to find the first item
+	// found at the given y position; if downward is false, move up the list of
+	// items to find the last item at that position.
+	function getIndexOfItemAtY(element, scrollTarget, y, downward) {
+	
+	  var items = element.items;
+	  var start = downward ? 0 : items.length - 1;
+	  var end = downward ? items.length : 0;
+	  var step = downward ? 1 : -1;
+	
+	  var topOfClientArea = scrollTarget.offsetTop + scrollTarget.clientTop;
+	
+	  // Find the item spanning the indicated y coordinate.
+	  var item = void 0;
+	  var itemIndex = start;
+	  var itemTop = void 0;
+	  var found = false;
+	  while (itemIndex !== end) {
+	    item = items[itemIndex];
+	    itemTop = item.offsetTop - topOfClientArea;
+	    var itemBottom = itemTop + item.offsetHeight;
+	    if (itemTop <= y && itemBottom >= y) {
+	      // Item spans the indicated y coordinate.
+	      found = true;
+	      break;
+	    }
+	    itemIndex += step;
+	  }
+	
+	  if (!found) {
+	    return null;
+	  }
+	
+	  // We may have found an item whose padding spans the given y coordinate,
+	  // but whose content is actually above/below that point.
+	  // TODO: If the item has a border, then padding should be included in
+	  // considering a hit.
+	  var itemStyle = getComputedStyle(item);
+	  var itemPaddingTop = parseFloat(itemStyle.paddingTop);
+	  var itemPaddingBottom = parseFloat(itemStyle.paddingBottom);
+	  var contentTop = itemTop + item.clientTop + itemPaddingTop;
+	  var contentBottom = contentTop + item.clientHeight - itemPaddingTop - itemPaddingBottom;
+	  if (downward && contentTop <= y || !downward && contentBottom >= y) {
+	    // The indicated coordinate hits the actual item content.
+	    return itemIndex;
+	  } else {
+	    // The indicated coordinate falls within the item's padding. Back up to
+	    // the item below/above the item we found and return that.
+	    return itemIndex - step;
+	  }
+	}
+	
+	// Move by one page downward (if downward is true), or upward (if false).
+	// Return true if we ended up changing the selection, false if not.
+	function scrollOnePage(element, downward) {
+	
+	  // Determine the item visible just at the edge of direction we're heading.
+	  // We'll select that item if it's not already selected.
+	  var scrollTarget = element[_symbols2.default.scrollTarget];
+	  var edge = scrollTarget.scrollTop + (downward ? scrollTarget.clientHeight : 0);
+	  var indexOfItemAtEdge = getIndexOfItemAtY(element, scrollTarget, edge, downward);
+	
+	  var selectedIndex = element.selectedIndex;
+	  var newIndex = void 0;
+	  if (indexOfItemAtEdge && selectedIndex === indexOfItemAtEdge) {
+	    // The item at the edge was already selected, so scroll in the indicated
+	    // direction by one page. Leave the new item at that edge selected.
+	    var delta = (downward ? 1 : -1) * scrollTarget.clientHeight;
+	    newIndex = getIndexOfItemAtY(element, scrollTarget, edge + delta, downward);
+	  } else {
+	    // The item at the edge wasn't selected yet. Instead of scrolling, we'll
+	    // just select that item. That is, the first attempt to page up/down
+	    // usually just moves the selection to the edge in that direction.
+	    newIndex = indexOfItemAtEdge;
+	  }
+	
+	  if (!newIndex) {
+	    // We can't find an item in the direction we want to travel. Select the
+	    // last item (if moving downward) or first item (if moving upward).
+	    newIndex = downward ? element.items.length - 1 : 0;
+	  }
+	
+	  if (newIndex !== selectedIndex) {
+	    element.selectedIndex = newIndex;
+	    return true; // We handled the page up/down ourselves.
+	  } else {
+	    return false; // We didn't do anything.
+	  }
+	}
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = defaultScrollTarget;
+	/**
+	 * Return a guess as to what portion of the given element can be scrolled.
+	 * This can be used to provide a default implementation of
+	 * [symbols.scrollTarget].
+	 *
+	 * If the element has a shadow root containing a default (unnamed) slot, this
+	 * returns the first ancestor of that slot that is styled with `overflow-y:
+	 * auto` or `overflow-y: scroll`. If the element has no default slot, or no
+	 * scrolling ancestor is found, the element itself is returned.
+	 *
+	 * @type {HTMLElement}
+	 */
+	function defaultScrollTarget(element) {
+	  var slot = element.shadowRoot && element.shadowRoot.querySelector('slot:not([name])');
+	  return slot ? getScrollingParent(slot, element) : element;
+	}
+	
+	// Return the parent of the given element that can be scroll vertically. If no
+	// such element is found, return the given root element.
+	function getScrollingParent(element, root) {
+	  if (element === null || element === root) {
+	    // Didn't find a scrolling parent; use the root element instead.
+	    return root;
+	  }
+	  var overflowY = getComputedStyle(element).overflowY;
+	  if (overflowY === 'scroll' || overflowY === 'auto') {
+	    // Found an element we can scroll vertically.
+	    return element;
+	  }
+	  // Keep looking higher in the hierarchy for a scrolling parent.
+	  return getScrollingParent(element.parentNode, root);
+	}
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _set = function set(object, property, value, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent !== null) { set(parent, property, value, receiver); } } else if ("value" in desc && desc.writable) { desc.value = value; } else { var setter = desc.set; if (setter !== undefined) { setter.call(receiver, value); } } return value; };
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	exports.default = KeyboardPrefixSelectionMixin;
+	
+	var _constants = __webpack_require__(11);
+	
+	var _constants2 = _interopRequireDefault(_constants);
+	
+	var _Symbol2 = __webpack_require__(4);
+	
+	var _Symbol3 = _interopRequireDefault(_Symbol2);
+	
+	var _symbols = __webpack_require__(3);
+	
+	var _symbols2 = _interopRequireDefault(_symbols);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	// Symbols for private data members on an element.
+	var itemTextContentsSymbol = (0, _Symbol3.default)('itemTextContents');
+	var typedPrefixSymbol = (0, _Symbol3.default)('typedPrefix');
+	var prefixTimeoutSymbol = (0, _Symbol3.default)('prefixTimeout');
+	var settingSelectionSymbol = (0, _Symbol3.default)('settingSelection');
+	
+	/**
+	 * Mixin that handles list box-style prefix typing, in which the user can type
+	 * a string to select the first item that begins with that string.
+	 *
+	 * Example: suppose a component using this mixin has the following items:
+	 *
+	 *     <sample-list-component>
+	 *       <div>Apple</div>
+	 *       <div>Apricot</div>
+	 *       <div>Banana</div>
+	 *       <div>Blackberry</div>
+	 *       <div>Blueberry</div>
+	 *       <div>Cantaloupe</div>
+	 *       <div>Cherry</div>
+	 *       <div>Lemon</div>
+	 *       <div>Lime</div>
+	 *     </sample-list-component>
+	 *
+	 * If this component receives the focus, and the user presses the "b" or "B"
+	 * key, the "Banana" item will be selected, because it's the first item that
+	 * matches the prefix "b". (Matching is case-insensitive.) If the user now
+	 * presses the "l" or "L" key quickly, the prefix to match becomes "bl", so
+	 * "Blackberry" will be selected.
+	 *
+	 * The prefix typing feature has a one second timeout — the prefix to match
+	 * will be reset after a second has passed since the user last typed a key.
+	 * If, in the above example, the user waits a second between typing "b" and
+	 * "l", the prefix will become "l", so "Lemon" would be selected.
+	 *
+	 * This mixin expects the component to invoke a `keydown` method when a key is
+	 * pressed. You can use [KeyboardMixin](KeyboardMixin.md) for that
+	 * purpose, or wire up your own keyboard handling and call `keydown` yourself.
+	 *
+	 * This mixin also expects the component to provide an `items` property. The
+	 * `textContent` of those items will be used for purposes of prefix matching.
+	 *
+	 * @module KeyboardPrefixSelectionMixin
+	 * @param base {Class} the base class to extend
+	 * @returns {Class} the extended class
+	 */
+	function KeyboardPrefixSelectionMixin(base) {
+	
+	  /**
+	   * The class prototype added by the mixin.
+	   */
+	  var KeyboardPrefixSelection = function (_base) {
+	    _inherits(KeyboardPrefixSelection, _base);
+	
+	    function KeyboardPrefixSelection() {
+	      _classCallCheck(this, KeyboardPrefixSelection);
+	
+	      return _possibleConstructorReturn(this, (KeyboardPrefixSelection.__proto__ || Object.getPrototypeOf(KeyboardPrefixSelection)).apply(this, arguments));
+	    }
+	
+	    _createClass(KeyboardPrefixSelection, [{
+	      key: _symbols2.default.getItemText,
+	
+	
+	      // Default implementation returns an item's `alt` attribute or its
+	      // `textContent`, in that order.
+	      value: function value(item) {
+	        return item.getAttribute('alt') || item.textContent;
+	      }
+	
+	      // If the set of items has changed, reset the prefix. We'll also need to
+	      // rebuild our cache of item text the next time we're asked for it.
+	
+	    }, {
+	      key: _symbols2.default.itemsChanged,
+	      value: function value() {
+	        if (_get(KeyboardPrefixSelection.prototype.__proto__ || Object.getPrototypeOf(KeyboardPrefixSelection.prototype), _symbols2.default.itemsChanged, this)) {
+	          _get(KeyboardPrefixSelection.prototype.__proto__ || Object.getPrototypeOf(KeyboardPrefixSelection.prototype), _symbols2.default.itemsChanged, this).call(this);
+	        }
+	        this[itemTextContentsSymbol] = null;
+	        resetTypedPrefix(this);
+	      }
+	    }, {
+	      key: _symbols2.default.keydown,
+	      value: function value(event) {
+	        var handled = void 0;
+	        var resetPrefix = true;
+	
+	        switch (event.keyCode) {
+	          case 8:
+	            // Backspace
+	            handleBackspace(this);
+	            handled = true;
+	            resetPrefix = false;
+	            break;
+	          case 27:
+	            // Escape
+	            handled = true;
+	            break;
+	          default:
+	            if (!event.ctrlKey && !event.metaKey && !event.altKey && event.which !== 32 /* Space */) {
+	                handlePlainCharacter(this, String.fromCharCode(event.keyCode));
+	              }
+	            resetPrefix = false;
+	        }
+	
+	        if (resetPrefix) {
+	          resetTypedPrefix(this);
+	        }
+	
+	        // Prefer mixin result if it's defined, otherwise use base result.
+	        return handled || _get(KeyboardPrefixSelection.prototype.__proto__ || Object.getPrototypeOf(KeyboardPrefixSelection.prototype), _symbols2.default.keydown, this) && _get(KeyboardPrefixSelection.prototype.__proto__ || Object.getPrototypeOf(KeyboardPrefixSelection.prototype), _symbols2.default.keydown, this).call(this, event);
+	      }
+	    }, {
+	      key: 'selectItemWithTextPrefix',
+	
+	
+	      /**
+	       * Select the first item whose text content begins with the given prefix.
+	       *
+	       * @param prefix [String] The prefix string to search for
+	       */
+	      value: function selectItemWithTextPrefix(prefix) {
+	        if (_get(KeyboardPrefixSelection.prototype.__proto__ || Object.getPrototypeOf(KeyboardPrefixSelection.prototype), 'selectItemWithTextPrefix', this)) {
+	          _get(KeyboardPrefixSelection.prototype.__proto__ || Object.getPrototypeOf(KeyboardPrefixSelection.prototype), 'selectItemWithTextPrefix', this).call(this, prefix);
+	        }
+	        if (prefix == null || prefix.length === 0) {
+	          return;
+	        }
+	        var index = getIndexOfItemWithTextPrefix(this, prefix);
+	        if (index >= 0) {
+	          // Update the selection. During that operation, set the flag that lets
+	          // us know that we are the cause of the selection change. See note at
+	          // this mixin's `selectedIndex` implementation.
+	          this[settingSelectionSymbol] = true;
+	          this.selectedIndex = index;
+	          this[settingSelectionSymbol] = false;
+	        }
+	      }
+	    }, {
+	      key: 'selectedIndex',
+	      get: function get() {
+	        return _get(KeyboardPrefixSelection.prototype.__proto__ || Object.getPrototypeOf(KeyboardPrefixSelection.prototype), 'selectedIndex', this);
+	      },
+	      set: function set(index) {
+	        if ('selectedIndex' in base.prototype) {
+	          _set(KeyboardPrefixSelection.prototype.__proto__ || Object.getPrototypeOf(KeyboardPrefixSelection.prototype), 'selectedIndex', index, this);
+	        }
+	        if (!this[settingSelectionSymbol]) {
+	          // Someone else (not this mixin) has changed the selection. In response,
+	          // we invalidate the prefix under construction.
+	          resetTypedPrefix(this);
+	        }
+	      }
+	    }]);
+	
+	    return KeyboardPrefixSelection;
+	  }(base);
+	
+	  return KeyboardPrefixSelection;
+	}
+	
+	// Return the index of the first item with the given prefix, else -1.
+	function getIndexOfItemWithTextPrefix(element, prefix) {
+	  var itemTextContents = getItemTextContents(element);
+	  var prefixLength = prefix.length;
+	  for (var i = 0; i < itemTextContents.length; i++) {
+	    var itemTextContent = itemTextContents[i];
+	    if (itemTextContent.substr(0, prefixLength) === prefix) {
+	      return i;
+	    }
+	  }
+	  return -1;
+	}
+	
+	// Return an array of the text content (in lowercase) of all items.
+	// Cache these results.
+	function getItemTextContents(element) {
+	  if (!element[itemTextContentsSymbol]) {
+	    var items = element.items;
+	    element[itemTextContentsSymbol] = Array.prototype.map.call(items, function (item) {
+	      var text = element[_symbols2.default.getItemText](item);
+	      return text.toLowerCase();
+	    });
+	  }
+	  return element[itemTextContentsSymbol];
+	}
+	
+	// Handle the Backspace key: remove the last character from the prefix.
+	function handleBackspace(element) {
+	  var length = element[typedPrefixSymbol] ? element[typedPrefixSymbol].length : 0;
+	  if (length > 0) {
+	    element[typedPrefixSymbol] = element[typedPrefixSymbol].substr(0, length - 1);
+	  }
+	  element.selectItemWithTextPrefix(element[typedPrefixSymbol]);
+	  setPrefixTimeout(element);
+	}
+	
+	// Add a plain character to the prefix.
+	function handlePlainCharacter(element, char) {
+	  var prefix = element[typedPrefixSymbol] || '';
+	  element[typedPrefixSymbol] = prefix + char.toLowerCase();
+	  element.selectItemWithTextPrefix(element[typedPrefixSymbol]);
+	  setPrefixTimeout(element);
+	}
+	
+	// Stop listening for typing.
+	function resetPrefixTimeout(element) {
+	  if (element[prefixTimeoutSymbol]) {
+	    clearTimeout(element[prefixTimeoutSymbol]);
+	    element[prefixTimeoutSymbol] = false;
+	  }
+	}
+	
+	// Clear the prefix under construction.
+	function resetTypedPrefix(element) {
+	  element[typedPrefixSymbol] = '';
+	  resetPrefixTimeout(element);
+	}
+	
+	// Wait for the user to stop typing.
+	function setPrefixTimeout(element) {
+	  resetPrefixTimeout(element);
+	  element[prefixTimeoutSymbol] = setTimeout(function () {
+	    resetTypedPrefix(element);
+	  }, _constants2.default.TYPING_TIMEOUT_DURATION);
+	}
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	/**
+	 * A collection of constants used by Elix mixins and components for consistency
+	 * in things such as user interface timings.
+	 *
+	 * @module constants
+	 */
+	var constants = {
+	
+	  /**
+	   * Time in milliseconds after which the user is considered to have stopped
+	   * typing.
+	   *
+	   * @const {number} TYPING_TIMEOUT_DURATION
+	   */
+	  TYPING_TIMEOUT_DURATION: 1000
+	
+	};
+	
+	exports.default = constants;
+
+/***/ },
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -766,7 +1943,158 @@
 	 */
 
 /***/ },
-/* 6 */
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _set = function set(object, property, value, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent !== null) { set(parent, property, value, receiver); } } else if ("value" in desc && desc.writable) { desc.value = value; } else { var setter = desc.set; if (setter !== undefined) { setter.call(receiver, value); } } return value; };
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	var _defaultScrollTarget = __webpack_require__(9);
+	
+	var _defaultScrollTarget2 = _interopRequireDefault(_defaultScrollTarget);
+	
+	var _symbols = __webpack_require__(3);
+	
+	var _symbols2 = _interopRequireDefault(_symbols);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	/**
+	 * Mixin which scrolls a container horizontally and/or vertically to ensure that
+	 * a newly-selected item is visible to the user.
+	 *
+	 * When the selected item in a list-like component changes, the selected item
+	 * should be brought into view so that the user can confirm their selection.
+	 *
+	 * This mixin expects a `selectedItem` property to be set when the selection
+	 * changes. You can supply that yourself, or use
+	 * [SingleSelectionMixin](SingleSelectionMixin.md).
+	 *
+	 * @module SelectinInViewMixin
+	 * @param base {Class} the base class to extend
+	 * @returns {Class} the extended class
+	 */
+	exports.default = function (base) {
+	
+	  /**
+	   * The class prototype added by the mixin.
+	   */
+	  var SelectionInView = function (_base) {
+	    _inherits(SelectionInView, _base);
+	
+	    function SelectionInView() {
+	      _classCallCheck(this, SelectionInView);
+	
+	      return _possibleConstructorReturn(this, (SelectionInView.__proto__ || Object.getPrototypeOf(SelectionInView)).apply(this, arguments));
+	    }
+	
+	    _createClass(SelectionInView, [{
+	      key: 'connectedCallback',
+	      value: function connectedCallback() {
+	        if (_get(SelectionInView.prototype.__proto__ || Object.getPrototypeOf(SelectionInView.prototype), 'connectedCallback', this)) {
+	          _get(SelectionInView.prototype.__proto__ || Object.getPrototypeOf(SelectionInView.prototype), 'connectedCallback', this).call(this);
+	        }
+	        var selectedItem = this.selectedItem;
+	        if (selectedItem) {
+	          this.scrollItemIntoView(selectedItem);
+	        }
+	      }
+	
+	      /**
+	       * Scroll the given element completely into view, minimizing the degree of
+	       * scrolling performed.
+	       *
+	       * Blink has a `scrollIntoViewIfNeeded()` function that does something
+	       * similar, but unfortunately it's non-standard, and in any event often ends
+	       * up scrolling more than is absolutely necessary.
+	       *
+	       * This scrolls the containing element defined by the `scrollTarget`
+	       * property. See that property for a discussion of the default value of
+	       * that property.
+	       *
+	       * @param {HTMLElement} item - the item to scroll into view.
+	       */
+	
+	    }, {
+	      key: 'scrollItemIntoView',
+	      value: function scrollItemIntoView(item) {
+	        if (_get(SelectionInView.prototype.__proto__ || Object.getPrototypeOf(SelectionInView.prototype), 'scrollItemIntoView', this)) {
+	          _get(SelectionInView.prototype.__proto__ || Object.getPrototypeOf(SelectionInView.prototype), 'scrollItemIntoView', this).call(this);
+	        }
+	
+	        var scrollTarget = this[_symbols2.default.scrollTarget];
+	
+	        // Determine the bounds of the scroll target and item. We use
+	        // getBoundingClientRect instead of .offsetTop, etc., because the latter
+	        // round values, and we want to handle fractional values.
+	        var scrollTargetRect = scrollTarget.getBoundingClientRect();
+	        var itemRect = item.getBoundingClientRect();
+	
+	        // Determine how far the item is outside the viewport.
+	        var bottomDelta = itemRect.bottom - scrollTargetRect.bottom;
+	        var topDelta = itemRect.top - scrollTargetRect.top;
+	        var leftDelta = itemRect.left - scrollTargetRect.left;
+	        var rightDelta = itemRect.right - scrollTargetRect.right;
+	
+	        // Scroll the target as necessary to bring the item into view.
+	        if (bottomDelta > 0) {
+	          scrollTarget.scrollTop += bottomDelta; // Scroll down
+	        } else if (topDelta < 0) {
+	          scrollTarget.scrollTop += Math.ceil(topDelta); // Scroll up
+	        }
+	        if (rightDelta > 0) {
+	          scrollTarget.scrollLeft += rightDelta; // Scroll right
+	        } else if (leftDelta < 0) {
+	          scrollTarget.scrollLeft += Math.ceil(leftDelta); // Scroll left
+	        }
+	      }
+	
+	      /* Provide a default scrollTarget implementation if none exists. */
+	
+	    }, {
+	      key: _symbols2.default.scrollTarget,
+	      get: function get() {
+	        return _get(SelectionInView.prototype.__proto__ || Object.getPrototypeOf(SelectionInView.prototype), _symbols2.default.scrollTarget, this) || (0, _defaultScrollTarget2.default)(this);
+	      }
+	    }, {
+	      key: 'selectedItem',
+	      get: function get() {
+	        return _get(SelectionInView.prototype.__proto__ || Object.getPrototypeOf(SelectionInView.prototype), 'selectedItem', this);
+	      },
+	      set: function set(item) {
+	        if ('selectedItem' in base.prototype) {
+	          _set(SelectionInView.prototype.__proto__ || Object.getPrototypeOf(SelectionInView.prototype), 'selectedItem', item, this);
+	        }
+	        if (item) {
+	          // Keep the selected item in view.
+	          this.scrollItemIntoView(item);
+	        }
+	      }
+	    }]);
+	
+	    return SelectionInView;
+	  }(base);
+	
+	  return SelectionInView;
+	};
+
+/***/ },
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -855,7 +2183,7 @@
 	        // Get the template and perform initial processing.
 	        template = _this[_symbols2.default.template];
 	        if (!template) {
-	          console.warn('ShadowTemplateMixin expects a component to define a template property with [symbols.template].');
+	          console.warn('ShadowTemplateMixin expects a component to define a property called [symbols.template].');
 	          return _possibleConstructorReturn(_this);
 	        }
 	
@@ -901,7 +2229,7 @@
 	}
 
 /***/ },
-/* 7 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1490,7 +2818,7 @@
 	}
 
 /***/ },
-/* 8 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1503,7 +2831,7 @@
 	
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 	
-	var _SingleSelectionMixin2 = __webpack_require__(7);
+	var _SingleSelectionMixin2 = __webpack_require__(15);
 	
 	var _SingleSelectionMixin3 = _interopRequireDefault(_SingleSelectionMixin2);
 	

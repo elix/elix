@@ -24,9 +24,17 @@ then create a property or method whose key is the desired Symbol.
 
 * [symbols](#module_symbols)
     * [~defaults](#module_symbols..defaults) : <code>object</code>
+    * [~getText(item)](#module_symbols..getText) ⇒ <code>string</code>
+    * [~goDown()](#module_symbols..goDown)
+    * [~goEnd()](#module_symbols..goEnd)
+    * [~goLeft()](#module_symbols..goLeft)
+    * [~goRight()](#module_symbols..goRight)
+    * [~goStart()](#module_symbols..goStart)
+    * [~goUp()](#module_symbols..goUp)
     * [~itemAdded(item)](#module_symbols..itemAdded)
     * [~itemsChanged()](#module_symbols..itemsChanged)
     * [~itemSelected(item, selected)](#module_symbols..itemSelected)
+    * [~keydown(event)](#module_symbols..keydown)
     * [~raiseChangeEvents](#module_symbols..raiseChangeEvents) : <code>boolean</code>
 
 <a name="module_symbols..defaults"></a>
@@ -47,6 +55,70 @@ as follows:
     }
 
   **Kind**: inner property of <code>[symbols](#module_symbols)</code>
+<a name="module_symbols..getText"></a>
+
+### symbols~getText(item) ⇒ <code>string</code>
+Symbol for the `getItemText` method.
+
+This method can be applied to an item to return its text.
+
+  **Kind**: inner method of <code>[symbols](#module_symbols)</code>
+**Returns**: <code>string</code> - - the text of the item  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| item | <code>HTMLElement</code> | the item to extract text from |
+
+<a name="module_symbols..goDown"></a>
+
+### symbols~goDown()
+Symbol for the `goDown` method.
+
+This method is invoked when the user wants to go/navigate down.
+
+  **Kind**: inner method of <code>[symbols](#module_symbols)</code>
+<a name="module_symbols..goEnd"></a>
+
+### symbols~goEnd()
+Symbol for the `goEnd` method.
+
+This method is invoked when the user wants to go/navigate to the end (e.g.,
+of a list).
+
+  **Kind**: inner method of <code>[symbols](#module_symbols)</code>
+<a name="module_symbols..goLeft"></a>
+
+### symbols~goLeft()
+Symbol for the `goLeft` method.
+
+This method is invoked when the user wants to go/navigate left.
+
+  **Kind**: inner method of <code>[symbols](#module_symbols)</code>
+<a name="module_symbols..goRight"></a>
+
+### symbols~goRight()
+Symbol for the `goRight` method.
+
+This method is invoked when the user wants to go/navigate right.
+
+  **Kind**: inner method of <code>[symbols](#module_symbols)</code>
+<a name="module_symbols..goStart"></a>
+
+### symbols~goStart()
+Symbol for the `goStart` method.
+
+This method is invoked when the user wants to go/navigate to the start
+(e.g., of a list).
+
+  **Kind**: inner method of <code>[symbols](#module_symbols)</code>
+<a name="module_symbols..goUp"></a>
+
+### symbols~goUp()
+Symbol for the `goUp` method.
+
+This method is invoked when the user wants to go/navigate up.
+
+  **Kind**: inner method of <code>[symbols](#module_symbols)</code>
 <a name="module_symbols..itemAdded"></a>
 
 ### symbols~itemAdded(item)
@@ -83,6 +155,19 @@ This method is invoked when an item becomes selected or deselected.
 | --- | --- | --- |
 | item | <code>HTMLElement</code> | the item being selected/deselected |
 | selected | <code>boolean</code> | true if the item is selected, false if not |
+
+<a name="module_symbols..keydown"></a>
+
+### symbols~keydown(event)
+Symbol for the `keydown` method.
+
+This method is invoked when an element receives a `keydown` event.
+
+  **Kind**: inner method of <code>[symbols](#module_symbols)</code>
+
+| Param | Type | Description |
+| --- | --- | --- |
+| event | <code>KeyboardEvent</code> | the event being processed |
 
 <a name="module_symbols..raiseChangeEvents"></a>
 
