@@ -1137,11 +1137,21 @@
 	        return this[selectionRequiredSymbol];
 	      },
 	      set: function set(selectionRequired) {
-	        this[selectionRequiredSymbol] = selectionRequired;
+	        var parsed = String(selectionRequired) === 'true';
+	        var changed = parsed !== this[selectionRequiredSymbol];
+	        this[selectionRequiredSymbol] = parsed;
 	        if ('selectionRequired' in base.prototype) {
 	          _set(SingleSelection.prototype.__proto__ || Object.getPrototypeOf(SingleSelection.prototype), 'selectionRequired', selectionRequired, this);
 	        }
-	        trackSelectedItem(this);
+	        if (changed) {
+	          if (this[_symbols2.default.raiseChangeEvents]) {
+	            var event = new CustomEvent('selection-required-changed');
+	            this.dispatchEvent(event);
+	          }
+	          if (selectionRequired) {
+	            trackSelectedItem(this);
+	          }
+	        }
 	      }
 	
 	      /**
@@ -1156,12 +1166,20 @@
 	      get: function get() {
 	        return this[selectionWrapsSymbol];
 	      },
-	      set: function set(value) {
-	        this[selectionWrapsSymbol] = String(value) === 'true';
+	      set: function set(selectionWraps) {
+	        var parsed = String(selectionWraps) === 'true';
+	        var changed = parsed !== this[selectionWrapsSymbol];
+	        this[selectionWrapsSymbol] = parsed;
 	        if ('selectionWraps' in base.prototype) {
-	          _set(SingleSelection.prototype.__proto__ || Object.getPrototypeOf(SingleSelection.prototype), 'selectionWraps', value, this);
+	          _set(SingleSelection.prototype.__proto__ || Object.getPrototypeOf(SingleSelection.prototype), 'selectionWraps', selectionWraps, this);
 	        }
-	        updatePossibleNavigations(this);
+	        if (changed) {
+	          if (this[_symbols2.default.raiseChangeEvents]) {
+	            var event = new CustomEvent('selection-wraps-changed');
+	            this.dispatchEvent(event);
+	          }
+	          updatePossibleNavigations(this);
+	        }
 	      }
 	    }]);
 	
