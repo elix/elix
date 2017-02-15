@@ -1,9 +1,4 @@
-import Symbol from './Symbol';
 import symbols from './symbols';
-
-
-// Symbols for private data members on an element.
-const orientationSymbol = Symbol('orientation');
 
 
 /**
@@ -125,4 +120,4 @@ export default function KeyboardDirectionMixin(base) {
   }
 
   return KeyboardDirection;
-};
+}

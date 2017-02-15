@@ -868,7 +868,7 @@
 	  }(base);
 	
 	  return DirectionSelection;
-	};
+	}
 
 /***/ },
 /* 6 */
@@ -886,10 +886,6 @@
 	
 	exports.default = KeyboardDirectionMixin;
 	
-	var _Symbol2 = __webpack_require__(4);
-	
-	var _Symbol3 = _interopRequireDefault(_Symbol2);
-	
 	var _symbols = __webpack_require__(3);
 	
 	var _symbols2 = _interopRequireDefault(_symbols);
@@ -901,9 +897,6 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	// Symbols for private data members on an element.
-	var orientationSymbol = (0, _Symbol3.default)('orientation');
 	
 	/**
 	 * Mixin which maps direction keys (Left, Right, etc.) to direction semantics
@@ -1071,7 +1064,7 @@
 	  }(base);
 	
 	  return KeyboardDirection;
-	};
+	}
 
 /***/ },
 /* 7 */
@@ -1209,7 +1202,7 @@
 	  }(base);
 	
 	  return Keyboard;
-	};
+	}
 
 /***/ },
 /* 8 */

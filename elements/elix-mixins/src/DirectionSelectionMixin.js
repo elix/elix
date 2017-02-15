@@ -78,4 +78,4 @@ export default function DirectionSelectionMixin(base) {
   }
 
   return DirectionSelection;
-};
+}

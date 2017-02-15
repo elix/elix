@@ -92,4 +92,4 @@ export default function KeyboardMixin(base) {
   }
 
   return Keyboard;
-};
+}
