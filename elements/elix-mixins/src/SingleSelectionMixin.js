@@ -292,9 +292,19 @@ export default function SingleSelectionMixin(base) {
       return this[selectionRequiredSymbol];
     }
     set selectionRequired(selectionRequired) {
-      this[selectionRequiredSymbol] = selectionRequired;
+      const parsed = String(selectionRequired) === 'true';
+      const changed = parsed !== this[selectionRequiredSymbol];
+      this[selectionRequiredSymbol] = parsed;
       if ('selectionRequired' in base.prototype) { super.selectionRequired = selectionRequired; }
-      trackSelectedItem(this);
+      if (changed) {
+        if (this[symbols.raiseChangeEvents]) {
+          const event = new CustomEvent('selection-required-changed');
+          this.dispatchEvent(event);
+        }
+        if (selectionRequired) {
+          trackSelectedItem(this);
+        }
+      }
     }
 
     /**
@@ -306,10 +316,18 @@ export default function SingleSelectionMixin(base) {
     get selectionWraps() {
       return this[selectionWrapsSymbol];
     }
-    set selectionWraps(value) {
-      this[selectionWrapsSymbol] = String(value) === 'true';
-      if ('selectionWraps' in base.prototype) { super.selectionWraps = value; }
-      updatePossibleNavigations(this);
+    set selectionWraps(selectionWraps) {
+      const parsed = String(selectionWraps) === 'true';
+      const changed = parsed !== this[selectionWrapsSymbol];
+      this[selectionWrapsSymbol] = parsed;
+      if ('selectionWraps' in base.prototype) { super.selectionWraps = selectionWraps; }
+      if (changed) {
+        if (this[symbols.raiseChangeEvents]) {
+          const event = new CustomEvent('selection-wraps-changed');
+          this.dispatchEvent(event);
+        }
+        updatePossibleNavigations(this);
+      }
     }
 
     /**
