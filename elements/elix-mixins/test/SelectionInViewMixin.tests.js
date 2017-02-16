@@ -1,4 +1,5 @@
 import { assert } from 'chai';
+import flushPolyfills from '../../../test/flushPolyfills';
 import SelectionInViewMixin from '../src/SelectionInViewMixin';
 
 const itemHeight = '100';
@@ -35,27 +36,21 @@ describe("SelectionInViewMixin", function() {
     fixture.selectedItem = fixture.children[1];
   });
 
-  it("Scrolls down to bring item below bottom edge fully into view", done => {
+  it("Scrolls down to bring item below bottom edge fully into view", () => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     fixture.selectedItem = fixture.children[2];
-    // Give polyfill time to upgrade item.
-    setTimeout(() => {
-      assert.equal(fixture.scrollTop, 150);
-      done();
-    });
+    flushPolyfills();
+    assert.equal(fixture.scrollTop, 150);
   });
 
-  it("Scrolls up to bring item above top edge fully into view", done => {
+  it("Scrolls up to bring item above top edge fully into view", () => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     fixture.scrollTop = 150; // Scrolled all the way to bottom.
     fixture.selectedItem = fixture.children[0];
-    // Give polyfill time to upgrade item.
-    setTimeout(() => {
-      assert.equal(fixture.scrollTop, 0);
-      done();
-    });
+    flushPolyfills();
+    assert.equal(fixture.scrollTop, 0);
   });
 
 });

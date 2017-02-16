@@ -85,6 +85,11 @@ export default function ShadowTemplateMixin(base) {
       const root = this.attachShadow({ mode: 'open' });
       const clone = document.importNode(template.content, true);
       root.appendChild(clone);
+
+      /* Let the component know the shadow tree has been populated. */
+      if (this[symbols.shadowCreated]) {
+        this[symbols.shadowCreated]();
+      }
     }
 
     connectedCallback() {

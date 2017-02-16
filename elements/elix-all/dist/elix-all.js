@@ -382,6 +382,27 @@
 	var symbols = {
 	
 	  /**
+	   * Symbols for the `content` property.
+	   *
+	   * This property returns the component's content -- however the component
+	   * wants to define that. This could, for example, return the component's
+	   * distributed children.
+	   *
+	   * @type {HTMLElement[]}
+	   */
+	  content: (0, _Symbol3.default)('content'),
+	
+	  /**
+	   * Symbol for the `contentChanged` method.
+	   *
+	   * For components that define a `content` property, this method should be
+	   * invoked when that property changes.
+	   *
+	   * @function contentChanged
+	   */
+	  contentChanged: (0, _Symbol3.default)('contentChanged'),
+	
+	  /**
 	   * Symbol for the `defaults` property.
 	   *
 	   * This property can be used to set or override defaults that will be applied
@@ -568,6 +589,17 @@
 	  raiseChangeEvents: (0, _Symbol3.default)('raiseChangeEvents'),
 	
 	  /**
+	   * Symbol for the `shadowCreated` method.
+	   *
+	   * This method is invoked when the component's shadow root has been attached
+	   * and populated. Other code can handle this method to perform initialization
+	   * that depends upon the existence of a populated shadow subtree.
+	   *
+	   * @function shadowCreated
+	   */
+	  shadowCreated: (0, _Symbol3.default)('shadowCreated'),
+	
+	  /**
 	   * Symbol for the `template` property.
 	   *
 	   * This property returns a component's template.
@@ -749,6 +781,11 @@
 	      var root = _this.attachShadow({ mode: 'open' });
 	      var clone = document.importNode(template.content, true);
 	      root.appendChild(clone);
+	
+	      /* Let the component know the shadow tree has been populated. */
+	      if (_this[_symbols2.default.shadowCreated]) {
+	        _this[_symbols2.default.shadowCreated]();
+	      }
 	      return _this;
 	    }
 	

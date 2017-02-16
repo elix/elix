@@ -1,4 +1,5 @@
 import { assert } from 'chai';
+import flushPolyfills from '../../../test/flushPolyfills';
 import microtask from '../src/microtask';
 import SingleSelectionMixin from '../src/SingleSelectionMixin';
 import symbols from '../src/symbols';
@@ -73,19 +74,16 @@ describe("SingleSelectionMixin", () => {
     assert.equal(fixture.selectedIndex, 2);
   });
 
-  it("can set selectedIndex in markup", done => {
+  it("can set selectedIndex in markup", () => {
     container.innerHTML = `
       <items-selection-test selected-index="0">
         <div></div>
       </items-selection-test>
     `;
-    // Timeout gives polyfill time to upgrade element.
-    setTimeout(() => {
-      const list = container.querySelector('items-selection-test');
-      const item = list.children[0];
-      assert.equal(list.selectedItem, item);
-      done();
-    });
+    flushPolyfills();
+    const list = container.querySelector('items-selection-test');
+    const item = list.children[0];
+    assert.equal(list.selectedItem, item);
   });
 
   it("can advance the selection to the next item", () => {

@@ -12,6 +12,10 @@ boxes don't appear to be consistent with regard to whether they select
 on mousedown or click/mouseup. This mixin assumes the use of mousedown.
 On touch devices, that event appears to trigger when the touch is *released*.
 
+This mixin only listens to mousedown events for the primary mouse button
+(typically the left button). Right-clicks are ignored so that the browser
+may display a context menu.
+
 Much has been written about how to ensure "fast tap" behavior on mobile
 devices. This mixin makes a very straightforward use of a standard event, and
 this appears to perform well on mobile devices when, e.g., the viewport is

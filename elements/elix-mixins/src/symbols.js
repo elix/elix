@@ -26,6 +26,27 @@ import Symbol from './Symbol';
 const symbols = {
 
   /**
+   * Symbols for the `content` property.
+   *
+   * This property returns the component's content -- however the component
+   * wants to define that. This could, for example, return the component's
+   * distributed children.
+   *
+   * @type {HTMLElement[]}
+   */
+  content: Symbol('content'),
+
+  /**
+   * Symbol for the `contentChanged` method.
+   *
+   * For components that define a `content` property, this method should be
+   * invoked when that property changes.
+   *
+   * @function contentChanged
+   */
+  contentChanged: Symbol('contentChanged'),
+
+  /**
    * Symbol for the `defaults` property.
    *
    * This property can be used to set or override defaults that will be applied
@@ -210,6 +231,17 @@ const symbols = {
    * @var {boolean} raiseChangeEvents
    */
   raiseChangeEvents: Symbol('raiseChangeEvents'),
+
+  /**
+   * Symbol for the `shadowCreated` method.
+   *
+   * This method is invoked when the component's shadow root has been attached
+   * and populated. Other code can handle this method to perform initialization
+   * that depends upon the existence of a populated shadow subtree.
+   *
+   * @function shadowCreated
+   */
+  shadowCreated: Symbol('shadowCreated'),
 
   /**
    * Symbol for the `template` property.

@@ -1,4 +1,5 @@
 import { assert } from 'chai';
+import flushPolyfills from '../../../test/flushPolyfills';
 import KeyboardMixin from '../src/KeyboardMixin';
 import * as mockInteractions from '../../../test/mockInteractions';
 import symbols from '../src/symbols';
@@ -20,14 +21,11 @@ describe("KeyboardMixin", () => {
     container.innerHTML = '';
   });
 
-  it("assigns a tabindex of 0 by default", done => {
+  it("assigns a tabindex of 0 by default", () => {
     const fixture = document.createElement('keyboard-test');
     container.appendChild(fixture);
-    // Give polyfill time to upgrade item.
-    setTimeout(() => {
-      assert.equal(fixture.getAttribute('tabindex'), '0');
-      done();
-    });
+    flushPolyfills();
+    assert.equal(fixture.getAttribute('tabindex'), '0');
   });
 
   it("doesn't overwrite an explicit tabindex", () => {

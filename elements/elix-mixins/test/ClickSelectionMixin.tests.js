@@ -42,6 +42,20 @@ describe("ClickSelectionMixin", function() {
     });
     mockInteractions.dispatchSyntheticMouseEvent(item, 'mousedown');
   });
+
+  it("ignores right clicks", done => {
+    const fixture = createSampleElement();
+    container.appendChild(fixture);
+    assert.equal(fixture.selectedItem, null);
+    const item = fixture.items[0];
+    fixture.addEventListener('mousedown', () => {
+      assert.equal(fixture.selectedItem, null, "handled mousedown even when right button was pressed");
+      done();
+    });
+    mockInteractions.dispatchSyntheticMouseEvent(item, 'mousedown', {
+      button: 2
+    });
+  });
 });
 
 

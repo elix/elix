@@ -69,34 +69,39 @@ export function dispatchSyntheticKeyboardEvent(element, eventType, init) {
 /**
  * Raise a synthetic mousedown event on the indicated element.
  */
-export function dispatchSyntheticMouseEvent(element, eventType) {
+export function dispatchSyntheticMouseEvent(element, eventType, init) {
+
+  const properties = {};
+  for (let key in init) {
+    properties[key] = init[key];
+  }
+  properties.bubbles = properties.bubbles || true;
+  properties.cancelable = properties.cancelable || true;
+  properties.clientX = properties.clientX || 0;
+  properties.clientY = properties.clientY || 0;
+  properties.button = properties.button || 0;
+
   let event;
   if (hasMouseEventConstructor) {
-    event = new MouseEvent(eventType, {
-      bubbles: true,
-      cancelable: true,
-      clientX: 0,
-      clientY: 0,
-      buttons: 1
-    });
+    event = new MouseEvent(eventType, properties);
   } else {
     event = document.createEvent('MouseEvent');
     event.initMouseEvent(
       eventType,
-      true,       // bubbles
-      true,       // cancelable
-      null,       // view
-      null,       // detail
-      0,          // screenX
-      0,          // screenY
-      0,          // clientX
-      0,          // clientY
-      false,      // ctrlKey
-      false,      // altKey
-      false,      // shiftKey
-      false,      // metaKey
-      0,          // button
-      null        // relatedTarge
+      properties.bubbles,
+      properties.cancelable,
+      null,                 // view
+      null,                 // detail
+      0,                    // screenX
+      0,                    // screenY
+      properties.clientX,
+      properties.clientX,
+      false,                // ctrlKey
+      false,                // altKey
+      false,                // shiftKey
+      false,                // metaKey
+      properties.button,
+      null                  // relatedTarge
     );
   }
   element.dispatchEvent(event);

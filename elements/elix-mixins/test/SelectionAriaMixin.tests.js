@@ -1,4 +1,5 @@
 import { assert } from 'chai';
+import flushPolyfills from '../../../test/flushPolyfills';
 import SelectionAriaMixin from '../src/SelectionAriaMixin';
 import SingleSelectionMixin from '../src/SingleSelectionMixin';
 import symbols from '../src/symbols';
@@ -25,7 +26,7 @@ describe("SelectionAriaMixin", () => {
     container.innerHTML = '';
   });
 
-  it("assigns default roles to list and items, and default IDs to items without IDs", done => {
+  it("assigns default roles to list and items, and default IDs to items without IDs", () => {
     const fixture = document.createElement('selection-aria-test');
     fixture.id = 'test'; // Will be used as basis for assigned item IDs.
     const item1 = document.createElement('div');
@@ -38,17 +39,14 @@ describe("SelectionAriaMixin", () => {
     fixture[symbols.itemAdded](item1);
     fixture[symbols.itemAdded](item2);
     container.appendChild(fixture);
-    // Give polyfill time to upgrade item.
-    setTimeout(() => {
-      assert.equal(fixture.getAttribute('role'), 'listbox'); // default role
-      assert.equal(item1.id, 'explicitID'); // unchanged
-      assert.equal(item1.getAttribute('role'), 'option'); // default role
-      const expectedIdStart = '_testOption';
-      const idStart = item2.id.slice(0, expectedIdStart.length);
-      assert.equal(idStart, expectedIdStart); // implicitly assigned ID
-      assert.equal(item2.getAttribute('role'), 'option'); // default role
-      done();
-    });
+    flushPolyfills();
+    assert.equal(fixture.getAttribute('role'), 'listbox'); // default role
+    assert.equal(item1.id, 'explicitID'); // unchanged
+    assert.equal(item1.getAttribute('role'), 'option'); // default role
+    const expectedIdStart = '_testOption';
+    const idStart = item2.id.slice(0, expectedIdStart.length);
+    assert.equal(idStart, expectedIdStart); // implicitly assigned ID
+    assert.equal(item2.getAttribute('role'), 'option'); // default role
   });
 
   it("indicates the selection state on both the list and the item", () => {
@@ -70,14 +68,11 @@ describe("SelectionAriaMixin", () => {
     assert.equal(item2.getAttribute('aria-selected'), 'true');
   });
 
-  it("assigns a default role of 'listbox'", done => {
+  it("assigns a default role of 'listbox'", () => {
     const fixture = document.createElement('selection-aria-test');
     container.appendChild(fixture);
-    // Give polyfill time to upgrade item.
-    setTimeout(() => {
-      assert.equal(fixture.getAttribute('role'), 'listbox');
-      done();
-    });
+    flushPolyfills();
+    assert.equal(fixture.getAttribute('role'), 'listbox');
   });
 
   it("doesn't overwrite an explicit role", () => {

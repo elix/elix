@@ -23,6 +23,7 @@ then create a property or method whose key is the desired Symbol.
 
 
 * [symbols](#module_symbols)
+    * [~contentChanged()](#module_symbols..contentChanged)
     * [~defaults](#module_symbols..defaults) : <code>object</code>
     * [~getText(item)](#module_symbols..getText) ⇒ <code>string</code>
     * [~goDown()](#module_symbols..goDown)
@@ -36,7 +37,17 @@ then create a property or method whose key is the desired Symbol.
     * [~itemSelected(item, selected)](#module_symbols..itemSelected)
     * [~keydown(event)](#module_symbols..keydown)
     * [~raiseChangeEvents](#module_symbols..raiseChangeEvents) : <code>boolean</code>
+    * [~shadowCreated()](#module_symbols..shadowCreated)
 
+<a name="module_symbols..contentChanged"></a>
+
+### symbols~contentChanged()
+Symbol for the `contentChanged` method.
+
+For components that define a `content` property, this method should be
+invoked when that property changes.
+
+  **Kind**: inner method of <code>[symbols](#module_symbols)</code>
 <a name="module_symbols..defaults"></a>
 
 ### symbols~defaults : <code>object</code>
@@ -215,3 +226,13 @@ trigger the `foo-changed` event, but UI interactions that update that
 property will cause those events to be raised.
 
   **Kind**: inner property of <code>[symbols](#module_symbols)</code>
+<a name="module_symbols..shadowCreated"></a>
+
+### symbols~shadowCreated()
+Symbol for the `shadowCreated` method.
+
+This method is invoked when the component's shadow root has been attached
+and populated. Other code can handle this method to perform initialization
+that depends upon the existence of a populated shadow subtree.
+
+  **Kind**: inner method of <code>[symbols](#module_symbols)</code>

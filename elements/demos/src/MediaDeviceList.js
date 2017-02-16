@@ -1,23 +1,8 @@
 /*
- * This is currently a demo of how multiple mixins cooperate to perform useful
- * functions.
- *
- * * The component uses ShadowTemplateMixin to populate its shadow root.
- * * A user can click on a child item, and ClickSelectionMixin will set the
- *   selected item.
- * * The SingleSelectionMixin will track the selected item, and map that to
- *   changes in the selection state of the selected/deselected items.
- * * The SelectionAriaMixin will reflect an item's selection state using ARIA
- *   attributes to support assistive devices like screen readers.
- *
- * This demo will eventually evolve into a complete list box component, but
- * at the moment omits many features, including support for Page Up/Page Down
- * keys, keeping the selected item in view, the ability to select an item
- * by typing its initial characters, and support for slot elements as children.
+ * Demo of a list box with hard-coded contents.
  */
 
 
-import ChildrenContentMixin from '../../elix-mixins/src/ChildrenContentMixin';
 import ClickSelectionMixin from '../../elix-mixins/src/ClickSelectionMixin';
 import ContentItemsMixin from '../../elix-mixins/src/ContentItemsMixin';
 import DirectionSelectionMixin from '../../elix-mixins/src/DirectionSelectionMixin';
@@ -34,7 +19,6 @@ import symbols from '../../elix-mixins/src/symbols';
 
 // We want to apply a number of mixin functions to HTMLElement.
 const mixins = [
-  ChildrenContentMixin,
   ClickSelectionMixin,
   ContentItemsMixin,
   DirectionSelectionMixin,
@@ -54,29 +38,7 @@ const mixins = [
 const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
 
 
-/**
- * A simple single-selection list box.
- *
- * This uses the base class we just created above, and adds in the behavior
- * unique to this list box element. As it turns out, much of this behavior is
- * also interesting to other components, and will eventually get factored into
- * other mixins.
- *
- * @extends HTMLElement
- * @mixes ChildrenContentMixin
- * @mixes ClickSelectionMixin
- * @mixes ContentItemsMixin
- * @mixes DirectionSelectionMixin
- * @mixes KeyboardDirectionMixin
- * @mixes KeyboardMixin
- * @mixes KeyboardPagedSelectionMixin
- * @mixes KeyboardPrefixSelectionMixin
- * @mixes SelectionAriaMixin
- * @mixes SelectionInViewMixin
- * @mixes ShadowTemplateMixin
- * @mixes SingleSelectionMixin
- */
-class ListBox extends base {
+class MediaDeviceList extends base {
 
   // Map attribute changes to the corresponding property.
   attributeChangedCallback(attributeName, oldValue, newValue) {
@@ -86,6 +48,10 @@ class ListBox extends base {
     };
     const propertyName = mapAttributeToProperty[attributeName] || attributeName;
     this[propertyName] = newValue;
+  }
+
+  get [symbols.content]() {
+    return this.shadowRoot.querySelector('#devicesContainer').children;
   }
 
   // We define a collection of default property values which can be set in
@@ -107,31 +73,12 @@ class ListBox extends base {
 
   // Tell the browser which attributes we want to handle.
   static get observedAttributes() {
-    return ['orientation', 'selected-index'];
+    return ['selected-index'];
   }
 
-  /**
-   * The vertical (default) or horizontal orientation of the list.
-   *
-   * Supported values are "horizontal" or "vertical".
-   *
-   * @type {string}
-   */
-  get orientation() {
-    return this[symbols.orientation] || this[symbols.defaults].orientation;
-  }
-  set orientation(value) {
-    const changed = value !== this[symbols.orientation];
-    this[symbols.orientation] = value;
-    if ('orientation' in base) { super.orientation = value; }
-    // Reflect attribute for styling
-    if (this.getAttribute('orientation') !== value) {
-      this.setAttribute('orientation', value);
-    }
-    if (changed && this[symbols.raiseChangeEvents]) {
-      const event = new CustomEvent('orientation-changed');
-      this.dispatchEvent(event);
-    }
+  [symbols.shadowCreated]() {
+    if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
+    this[symbols.contentChanged]();
   }
 
   // Define a template that will be stamped into the Shadow DOM by the
@@ -147,19 +94,14 @@ class ListBox extends base {
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
       }
 
-      #itemsContainer {
+      #devicesContainer {
         flex: 1;
         -webkit-overflow-scrolling: touch; /* for momentum scrolling */
         overflow-x: hidden;
         overflow-y: scroll;
       }
-      :host([orientation="horizontal"]) #itemsContainer {
-        display: flex;
-        overflow-x: scroll;
-        overflow-y: hidden;
-      }
 
-      #itemsContainer ::slotted(*) {
+      #devicesContainer > * {
         cursor: default;
         padding: 0.25em;
         -webkit-user-select: none;
@@ -168,27 +110,22 @@ class ListBox extends base {
         user-select: none;
       }
 
-      #itemsContainer ::slotted(.selected) {
-        background: var(--elix-selected-background, highlight);
-        color: var(--elix-selected-color, highlighttext);
+      #devicesContainer > .selected {
+        background: highlight;
+        color: highlighttext;
       }
       </style>
 
-      <div id="itemsContainer" role="none">
-        <slot></slot>
+      <div id="devicesContainer" role="none">
+        <div>Device 1</div>
+        <div>Device 2</div>
+        <div>Device 3</div>
       </div>
     `;
   }
 
-  /**
-   * Fires when the orientation property changes in response to internal
-   * component activity.
-   *
-   * @memberof ListBox
-   * @event orientation-changed
-   */
 }
 
 
-customElements.define('sample-list-box', ListBox);
-export default ListBox;
+customElements.define('media-device-list', MediaDeviceList);
+export default MediaDeviceList;
