@@ -95,7 +95,7 @@ place. This makes it easy to clone, fork, and track issues and pull requests.
 The source for the
 [list box demo](https://janmiksovsky.github.io/elix/elements/demos/listBox.html)
 shown in the Elix talk at the February 2017 Web
-Components Remote Conf, can be found on this [fork](https://github.com/JanMiksovsky/elix/tree/list-box).
+Components Remote Conf can be found on this [fork](https://github.com/JanMiksovsky/elix/tree/list-box).
 
 
 # Getting started
