@@ -1,7 +1,6 @@
 import * as content from './content';
 import Symbol from './Symbol';
 import symbols from './symbols';
-import toggleClass from './toggleClass';
 
 
 // Symbols for private data members on an element.
@@ -27,17 +26,16 @@ const itemInitializedSymbol = Symbol('itemInitialized');
  * raw set of elements. You can provide that yourself, or use
  * [ChildrenContentMixin](ChildrenContentMixin.md).
  *
- * [ChildrenContentMixin](ChildrenContentMixin.md), the
- * `contentChanged` method will be invoked for you when the element's children
- * care of notifying it of future changes, and turns on the optimization. With
- * change, turning on the optimization automatically.
- * method when the set of items changes, the mixin concludes that you'll take
- * property. To avoid having to do work each time that property is requested,
- * return that immediately on subsequent calls to the `items` property. If you
- * that on, the mixin saves a reference to the computed set of items, and will
  * The most commonly referenced property defined by this mixin is the `items`
+ * property. To avoid having to do work each time that property is requested,
  * this mixin supports an optimized mode. If you invoke the `contentChanged`
- * use this mixin in conjunction with
+ * method when the set of items changes, the mixin concludes that you'll take
+ * care of notifying it of future changes, and turns on the optimization. With
+ * that on, the mixin saves a reference to the computed set of items, and will
+ * return that immediately on subsequent calls to the `items` property. If you
+ * use this mixin in conjunction with `ChildrenContentMixin`, the
+ * `contentChanged` method will be invoked for you when the element's children
+ * change, turning on the optimization automatically.
  *
  * @module ContentItemsMixin
  * @param base {Class} the base class to extend
@@ -60,21 +58,6 @@ export default function ContentItemsMixin(base) {
       this[itemsSymbol] = null;
 
       this[symbols.itemsChanged]();
-    }
-
-    /**
-     * The selection state for a single item has changed.
-     *
-     * Invoke this method to signal that the selected state of the indicated item
-     * has changed. By default, this applies a `selected` CSS class if the item
-     * is selected, and removed it if not selected.
-     *
-     * @param {HTMLElement} item - The item whose selection state has changed.
-     * @param {boolean} selected - True if the item is selected, false if not.
-     */
-    [symbols.itemSelected](item, selected) {
-      if (super[symbols.itemSelected]) { super[symbols.itemSelected](item, selected); }
-      toggleClass(item, 'selected', selected);
     }
 
     /**

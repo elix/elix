@@ -45,8 +45,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	__webpack_require__(21);
-	module.exports = __webpack_require__(22);
+	module.exports = __webpack_require__(20);
 
 
 /***/ },
@@ -77,39 +76,39 @@
 	
 	var _ContentItemsMixin2 = _interopRequireDefault(_ContentItemsMixin);
 	
-	var _DirectionSelectionMixin = __webpack_require__(10);
+	var _DirectionSelectionMixin = __webpack_require__(9);
 	
 	var _DirectionSelectionMixin2 = _interopRequireDefault(_DirectionSelectionMixin);
 	
-	var _KeyboardDirectionMixin = __webpack_require__(11);
+	var _KeyboardDirectionMixin = __webpack_require__(10);
 	
 	var _KeyboardDirectionMixin2 = _interopRequireDefault(_KeyboardDirectionMixin);
 	
-	var _KeyboardMixin = __webpack_require__(12);
+	var _KeyboardMixin = __webpack_require__(11);
 	
 	var _KeyboardMixin2 = _interopRequireDefault(_KeyboardMixin);
 	
-	var _KeyboardPagedSelectionMixin = __webpack_require__(13);
+	var _KeyboardPagedSelectionMixin = __webpack_require__(12);
 	
 	var _KeyboardPagedSelectionMixin2 = _interopRequireDefault(_KeyboardPagedSelectionMixin);
 	
-	var _KeyboardPrefixSelectionMixin = __webpack_require__(15);
+	var _KeyboardPrefixSelectionMixin = __webpack_require__(14);
 	
 	var _KeyboardPrefixSelectionMixin2 = _interopRequireDefault(_KeyboardPrefixSelectionMixin);
 	
-	var _SelectionAriaMixin = __webpack_require__(17);
+	var _SelectionAriaMixin = __webpack_require__(16);
 	
 	var _SelectionAriaMixin2 = _interopRequireDefault(_SelectionAriaMixin);
 	
-	var _SelectionInViewMixin = __webpack_require__(18);
+	var _SelectionInViewMixin = __webpack_require__(17);
 	
 	var _SelectionInViewMixin2 = _interopRequireDefault(_SelectionInViewMixin);
 	
-	var _ShadowTemplateMixin = __webpack_require__(19);
+	var _ShadowTemplateMixin = __webpack_require__(18);
 	
 	var _ShadowTemplateMixin2 = _interopRequireDefault(_ShadowTemplateMixin);
 	
-	var _SingleSelectionMixin = __webpack_require__(20);
+	var _SingleSelectionMixin = __webpack_require__(19);
 	
 	var _SingleSelectionMixin2 = _interopRequireDefault(_SingleSelectionMixin);
 	
@@ -1154,10 +1153,6 @@
 	
 	var _symbols2 = _interopRequireDefault(_symbols);
 	
-	var _toggleClass = __webpack_require__(9);
-	
-	var _toggleClass2 = _interopRequireDefault(_toggleClass);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -1190,17 +1185,16 @@
 	 * raw set of elements. You can provide that yourself, or use
 	 * [ChildrenContentMixin](ChildrenContentMixin.md).
 	 *
-	 * [ChildrenContentMixin](ChildrenContentMixin.md), the
-	 * `contentChanged` method will be invoked for you when the element's children
-	 * care of notifying it of future changes, and turns on the optimization. With
-	 * change, turning on the optimization automatically.
-	 * method when the set of items changes, the mixin concludes that you'll take
-	 * property. To avoid having to do work each time that property is requested,
-	 * return that immediately on subsequent calls to the `items` property. If you
-	 * that on, the mixin saves a reference to the computed set of items, and will
 	 * The most commonly referenced property defined by this mixin is the `items`
+	 * property. To avoid having to do work each time that property is requested,
 	 * this mixin supports an optimized mode. If you invoke the `contentChanged`
-	 * use this mixin in conjunction with
+	 * method when the set of items changes, the mixin concludes that you'll take
+	 * care of notifying it of future changes, and turns on the optimization. With
+	 * that on, the mixin saves a reference to the computed set of items, and will
+	 * return that immediately on subsequent calls to the `items` property. If you
+	 * use this mixin in conjunction with `ChildrenContentMixin`, the
+	 * `contentChanged` method will be invoked for you when the element's children
+	 * change, turning on the optimization automatically.
 	 *
 	 * @module ContentItemsMixin
 	 * @param base {Class} the base class to extend
@@ -1234,26 +1228,6 @@
 	        this[itemsSymbol] = null;
 	
 	        this[_symbols2.default.itemsChanged]();
-	      }
-	
-	      /**
-	       * The selection state for a single item has changed.
-	       *
-	       * Invoke this method to signal that the selected state of the indicated item
-	       * has changed. By default, this applies a `selected` CSS class if the item
-	       * is selected, and removed it if not selected.
-	       *
-	       * @param {HTMLElement} item - The item whose selection state has changed.
-	       * @param {boolean} selected - True if the item is selected, false if not.
-	       */
-	
-	    }, {
-	      key: _symbols2.default.itemSelected,
-	      value: function value(item, selected) {
-	        if (_get(ContentItems.prototype.__proto__ || Object.getPrototypeOf(ContentItems.prototype), _symbols2.default.itemSelected, this)) {
-	          _get(ContentItems.prototype.__proto__ || Object.getPrototypeOf(ContentItems.prototype), _symbols2.default.itemSelected, this).call(this, item, selected);
-	        }
-	        (0, _toggleClass2.default)(item, 'selected', selected);
 	      }
 	
 	      /**
@@ -1329,49 +1303,6 @@
 
 /***/ },
 /* 9 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = toggleClass;
-	/**
-	 * Helper function for standard classList.toggle() behavior on old browsers,
-	 * namely IE 11.
-	 *
-	 * The standard
-	 * [classlist](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList)
-	 * object has a `toggle()` function that supports a second Boolean parameter
-	 * that can be used to succinctly turn a class on or off. This feature is often
-	 * useful in designing custom elements, which may want to externally reflect
-	 * component state in a CSS class that can be used for styling purposes.
-	 *
-	 * Unfortunately, IE 11 does not support the Boolean parameter to
-	 * `classList.toggle()`. This helper function behaves like the standard
-	 * `toggle()`, including support for the Boolean parameter, so that it can be
-	 * used even on IE 11.
-	 *
-	 * @function toggleClass
-	 * @param {HTMLElement} element - The element to modify
-	 * @param {string} className - The class to add/remove
-	 * @param {boolean} [force] - Force the class to be added (if true) or removed
-	 *                            (if false)
-	 */
-	function toggleClass(element, className, force) {
-	  var classList = element.classList;
-	  var addClass = typeof force === 'undefined' ? !classList.contains(className) : force;
-	  if (addClass) {
-	    classList.add(className);
-	  } else {
-	    classList.remove(className);
-	  }
-	  return addClass;
-	}
-
-/***/ },
-/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1506,7 +1437,7 @@
 	}
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1702,7 +1633,7 @@
 	}
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1840,7 +1771,7 @@
 	}
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1855,7 +1786,7 @@
 	
 	exports.default = KeyboardPagedSelectionMixin;
 	
-	var _defaultScrollTarget = __webpack_require__(14);
+	var _defaultScrollTarget = __webpack_require__(13);
 	
 	var _defaultScrollTarget2 = _interopRequireDefault(_defaultScrollTarget);
 	
@@ -2071,7 +2002,7 @@
 	}
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2114,7 +2045,7 @@
 	}
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2131,7 +2062,7 @@
 	
 	exports.default = KeyboardPrefixSelectionMixin;
 	
-	var _constants = __webpack_require__(16);
+	var _constants = __webpack_require__(15);
 	
 	var _constants2 = _interopRequireDefault(_constants);
 	
@@ -2380,7 +2311,7 @@
 	}
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2409,7 +2340,7 @@
 	exports.default = constants;
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2571,7 +2502,7 @@
 	 */
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2586,7 +2517,7 @@
 	
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 	
-	var _defaultScrollTarget = __webpack_require__(14);
+	var _defaultScrollTarget = __webpack_require__(13);
 	
 	var _defaultScrollTarget2 = _interopRequireDefault(_defaultScrollTarget);
 	
@@ -2722,7 +2653,7 @@
 	};
 
 /***/ },
-/* 19 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2862,7 +2793,7 @@
 	}
 
 /***/ },
-/* 20 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3469,7 +3400,7 @@
 	}
 
 /***/ },
-/* 21 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3482,176 +3413,7 @@
 	
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 	
-	var _ClickSelectionMixin = __webpack_require__(7);
-	
-	var _ClickSelectionMixin2 = _interopRequireDefault(_ClickSelectionMixin);
-	
-	var _ContentItemsMixin = __webpack_require__(8);
-	
-	var _ContentItemsMixin2 = _interopRequireDefault(_ContentItemsMixin);
-	
-	var _DirectionSelectionMixin = __webpack_require__(10);
-	
-	var _DirectionSelectionMixin2 = _interopRequireDefault(_DirectionSelectionMixin);
-	
-	var _KeyboardDirectionMixin = __webpack_require__(11);
-	
-	var _KeyboardDirectionMixin2 = _interopRequireDefault(_KeyboardDirectionMixin);
-	
-	var _KeyboardMixin = __webpack_require__(12);
-	
-	var _KeyboardMixin2 = _interopRequireDefault(_KeyboardMixin);
-	
-	var _KeyboardPagedSelectionMixin = __webpack_require__(13);
-	
-	var _KeyboardPagedSelectionMixin2 = _interopRequireDefault(_KeyboardPagedSelectionMixin);
-	
-	var _KeyboardPrefixSelectionMixin = __webpack_require__(15);
-	
-	var _KeyboardPrefixSelectionMixin2 = _interopRequireDefault(_KeyboardPrefixSelectionMixin);
-	
-	var _SelectionAriaMixin = __webpack_require__(17);
-	
-	var _SelectionAriaMixin2 = _interopRequireDefault(_SelectionAriaMixin);
-	
-	var _SelectionInViewMixin = __webpack_require__(18);
-	
-	var _SelectionInViewMixin2 = _interopRequireDefault(_SelectionInViewMixin);
-	
-	var _ShadowTemplateMixin = __webpack_require__(19);
-	
-	var _ShadowTemplateMixin2 = _interopRequireDefault(_ShadowTemplateMixin);
-	
-	var _SingleSelectionMixin = __webpack_require__(20);
-	
-	var _SingleSelectionMixin2 = _interopRequireDefault(_SingleSelectionMixin);
-	
-	var _symbols = __webpack_require__(5);
-	
-	var _symbols2 = _interopRequireDefault(_symbols);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Demo of a list box with hard-coded contents.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
-	
-	// We want to apply a number of mixin functions to HTMLElement.
-	var mixins = [_ClickSelectionMixin2.default, _ContentItemsMixin2.default, _DirectionSelectionMixin2.default, _KeyboardDirectionMixin2.default, _KeyboardMixin2.default, _KeyboardPagedSelectionMixin2.default, _KeyboardPrefixSelectionMixin2.default, _SelectionAriaMixin2.default, _SelectionInViewMixin2.default, _ShadowTemplateMixin2.default, _SingleSelectionMixin2.default];
-	
-	// The mixins are functions, so an efficient way to apply them all is with
-	// reduce. This is just function composition. We end up with a base class we
-	// can extend below.
-	var base = mixins.reduce(function (cls, mixin) {
-	  return mixin(cls);
-	}, HTMLElement);
-	
-	var MediaDeviceList = function (_base) {
-	  _inherits(MediaDeviceList, _base);
-	
-	  function MediaDeviceList() {
-	    _classCallCheck(this, MediaDeviceList);
-	
-	    return _possibleConstructorReturn(this, (MediaDeviceList.__proto__ || Object.getPrototypeOf(MediaDeviceList)).apply(this, arguments));
-	  }
-	
-	  _createClass(MediaDeviceList, [{
-	    key: 'attributeChangedCallback',
-	
-	
-	    // Map attribute changes to the corresponding property.
-	    value: function attributeChangedCallback(attributeName, oldValue, newValue) {
-	      if (_get(MediaDeviceList.prototype.__proto__ || Object.getPrototypeOf(MediaDeviceList.prototype), 'attributeChangedCallback', this)) {
-	        _get(MediaDeviceList.prototype.__proto__ || Object.getPrototypeOf(MediaDeviceList.prototype), 'attributeChangedCallback', this).call(this, attributeName, oldValue, newValue);
-	      }
-	      var mapAttributeToProperty = {
-	        'selected-index': 'selectedIndex'
-	      };
-	      var propertyName = mapAttributeToProperty[attributeName] || attributeName;
-	      this[propertyName] = newValue;
-	    }
-	  }, {
-	    key: _symbols2.default.itemSelected,
-	
-	
-	    // Map item selection to a `selected` CSS class.
-	    value: function value(item, selected) {
-	      if (_get(MediaDeviceList.prototype.__proto__ || Object.getPrototypeOf(MediaDeviceList.prototype), _symbols2.default.itemSelected, this)) {
-	        _get(MediaDeviceList.prototype.__proto__ || Object.getPrototypeOf(MediaDeviceList.prototype), _symbols2.default.itemSelected, this).call(this, item, selected);
-	      }
-	      item.classList.toggle('selected', selected);
-	    }
-	
-	    // Tell the browser which attributes we want to handle.
-	
-	  }, {
-	    key: _symbols2.default.shadowCreated,
-	    value: function value() {
-	      if (_get(MediaDeviceList.prototype.__proto__ || Object.getPrototypeOf(MediaDeviceList.prototype), _symbols2.default.shadowCreated, this)) {
-	        _get(MediaDeviceList.prototype.__proto__ || Object.getPrototypeOf(MediaDeviceList.prototype), _symbols2.default.shadowCreated, this).call(this);
-	      }
-	      this[_symbols2.default.contentChanged]();
-	    }
-	
-	    // Define a template that will be stamped into the Shadow DOM by the
-	    // ShadowTemplateMixin.
-	
-	  }, {
-	    key: _symbols2.default.content,
-	    get: function get() {
-	      return this.shadowRoot.querySelector('#devicesContainer').children;
-	    }
-	
-	    // We define a collection of default property values which can be set in
-	    // the constructor or connectedCallback. Defining the actual default values
-	    // in those calls would complicate things if a subclass someday wants to
-	    // define its own default value.
-	
-	  }, {
-	    key: _symbols2.default.defaults,
-	    get: function get() {
-	      var defaults = _get(MediaDeviceList.prototype.__proto__ || Object.getPrototypeOf(MediaDeviceList.prototype), _symbols2.default.defaults, this) || {};
-	      // By default, we assume the list presents list items vertically.
-	      defaults.orientation = 'vertical';
-	      return defaults;
-	    }
-	  }, {
-	    key: _symbols2.default.template,
-	    get: function get() {
-	      return '\n      <style>\n      :host {\n        border: 1px solid gray;\n        box-sizing: border-box;\n        cursor: default;\n        display: flex;\n        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);\n      }\n\n      #devicesContainer {\n        flex: 1;\n        -webkit-overflow-scrolling: touch; /* for momentum scrolling */\n        overflow-x: hidden;\n        overflow-y: scroll;\n      }\n\n      #devicesContainer > * {\n        cursor: default;\n        padding: 0.25em;\n        -webkit-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n      }\n\n      #devicesContainer > .selected {\n        background: highlight;\n        color: highlighttext;\n      }\n      </style>\n\n      <div id="devicesContainer" role="none">\n        <div>Device 1</div>\n        <div>Device 2</div>\n        <div>Device 3</div>\n      </div>\n    ';
-	    }
-	  }], [{
-	    key: 'observedAttributes',
-	    get: function get() {
-	      return ['selected-index'];
-	    }
-	  }]);
-	
-	  return MediaDeviceList;
-	}(base);
-	
-	customElements.define('media-device-list', MediaDeviceList);
-	exports.default = MediaDeviceList;
-
-/***/ },
-/* 22 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-	
-	var _SingleSelectionMixin2 = __webpack_require__(20);
+	var _SingleSelectionMixin2 = __webpack_require__(19);
 	
 	var _SingleSelectionMixin3 = _interopRequireDefault(_SingleSelectionMixin2);
 	
