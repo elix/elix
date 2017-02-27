@@ -10,7 +10,8 @@
     "customElements": false,
     "describe": false,
     "HTMLSlotElement": false,
-    "it": false
+    "it": false,
+    "ShadowRoot": false
   },
   "undef": true,
   "unused": "vars",
