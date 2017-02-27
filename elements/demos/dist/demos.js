@@ -307,6 +307,10 @@
 	
 	var _microtask2 = _interopRequireDefault(_microtask);
 	
+	var _Symbol2 = __webpack_require__(6);
+	
+	var _Symbol3 = _interopRequireDefault(_Symbol2);
+	
 	var _symbols = __webpack_require__(5);
 	
 	var _symbols2 = _interopRequireDefault(_symbols);
@@ -318,6 +322,9 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	// Symbols for private data members on an element.
+	var slotchangeFiredSymbol = (0, _Symbol3.default)('slotchangeFired');
 	
 	/**
 	 * Mixin which defines a component's `symbols.content` property as all
@@ -366,14 +373,6 @@
 	 * invoke a method called `symbols.shadowCreated` after the component's shadow
 	 * root has been created and populated.
 	 *
-	 * Note: This mixin relies upon the browser firing `slotchange` events when the
-	 * contents of a `slot` change. Safari and the polyfills fire this event when a
-	 * custom element is first upgraded, while Chrome does not. This mixin always
-	 * invokes the `contentChanged` method after component instantiation so that the
-	 * method will always be invoked at least once. However, on Safari (and possibly
-	 * other browsers), `contentChanged` might be invoked _twice_ for a new
-	 * component instance.
-	 *
 	 * @module ChildrenContentMixin
 	 * @param base {Class} the base class to extend
 	 * @returns {Class} the extended class
@@ -389,37 +388,45 @@
 	    function ChildrenContent() {
 	      _classCallCheck(this, ChildrenContent);
 	
-	      // Make an initial call to contentChanged() so that the component can do
-	      // initialization that it normally does when content changes.
-	      //
-	      // This will invoke contentChanged() handlers in other mixins. In order
-	      // that those mixins have a chance to complete their own initialization,
-	      // we add the contentChanged() call to the microtask queue.
-	      var _this = _possibleConstructorReturn(this, (ChildrenContent.__proto__ || Object.getPrototypeOf(ChildrenContent)).call(this));
-	
-	      (0, _microtask2.default)(function () {
-	        if (_this[_symbols2.default.contentChanged]) {
-	          _this[_symbols2.default.contentChanged]();
-	        }
-	      });
-	      return _this;
+	      return _possibleConstructorReturn(this, (ChildrenContent.__proto__ || Object.getPrototypeOf(ChildrenContent)).apply(this, arguments));
 	    }
 	
-	    /**
-	     * The content of this component, defined to be the flattened array of
-	     * children distributed to the component.
-	     *
-	     * The default implementation of this property only returns instances of
-	     * Element
-	     *
-	     * @type {HTMLElement[]}
-	     */
-	
-	
 	    _createClass(ChildrenContent, [{
+	      key: 'connectedCallback',
+	      value: function connectedCallback() {
+	        var _this2 = this;
+	
+	        if (_get(ChildrenContent.prototype.__proto__ || Object.getPrototypeOf(ChildrenContent.prototype), 'connectedCallback', this)) {
+	          _get(ChildrenContent.prototype.__proto__ || Object.getPrototypeOf(ChildrenContent.prototype), 'connectedCallback', this).call(this);
+	        }
+	        // HACK for Blink, which doesn't correctly fire initial slotchange.
+	        // See https://bugs.chromium.org/p/chromium/issues/detail?id=696659
+	        setTimeout(function () {
+	          // By this point, the slotchange event should have fired.
+	          if (!_this2[slotchangeFiredSymbol]) {
+	            // slotchange event didn't fire; we're in Blink. Force the invocation
+	            // of contentChanged that would have happened on slotchange.
+	            if (_this2[_symbols2.default.contentChanged]) {
+	              _this2[_symbols2.default.contentChanged]();
+	            }
+	          }
+	        });
+	      }
+	
+	      /**
+	       * The content of this component, defined to be the flattened array of
+	       * children distributed to the component.
+	       *
+	       * The default implementation of this property only returns instances of
+	       * Element
+	       *
+	       * @type {HTMLElement[]}
+	       */
+	
+	    }, {
 	      key: _symbols2.default.shadowCreated,
 	      value: function value() {
-	        var _this2 = this;
+	        var _this3 = this;
 	
 	        if (_get(ChildrenContent.prototype.__proto__ || Object.getPrototypeOf(ChildrenContent.prototype), _symbols2.default.shadowCreated, this)) {
 	          _get(ChildrenContent.prototype.__proto__ || Object.getPrototypeOf(ChildrenContent.prototype), _symbols2.default.shadowCreated, this).call(this);
@@ -428,8 +435,9 @@
 	        var slots = this.shadowRoot.querySelectorAll('slot');
 	        slots.forEach(function (slot) {
 	          return slot.addEventListener('slotchange', function (event) {
-	            if (_this2[_symbols2.default.contentChanged]) {
-	              _this2[_symbols2.default.contentChanged]();
+	            _this3[slotchangeFiredSymbol] = true;
+	            if (_this3[_symbols2.default.contentChanged]) {
+	              _this3[_symbols2.default.contentChanged]();
 	            }
 	          });
 	        });

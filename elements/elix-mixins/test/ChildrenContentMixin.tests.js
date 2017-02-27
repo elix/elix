@@ -87,10 +87,8 @@ describe("ChildrenContentMixin", () => {
     const fixture = container.querySelector('content-test');
     // Wait for initial contentChanged call to complete.
     flushPolyfills();
-    microtask(() => {
-      // Note that the call count here may be 1 in Chrome, but 2 in Safari and
-      // the polyfills. See notes in ChildrenContentMixin.
-      assert(fixture.contentChangedCallCount > 0);
+    setTimeout(() => {
+      assert(fixture.contentChangedCallCount === 1);
       done();
     });
   });
@@ -154,7 +152,7 @@ describe("ChildrenContentMixin", () => {
     container.appendChild(fixture);
     // Wait for initial contentChanged call to complete.
     flushPolyfills();
-    microtask(() => {
+    setTimeout(() => {
       fixture.contentChangedCallCount = 0;
 
       // Modify an element in the shadow, which shouldn't trigger contentChanged.
@@ -189,7 +187,7 @@ describe("ChildrenContentMixin", () => {
     container.appendChild(fixture);
     // Wait for initial contentChanged call to complete.
     flushPolyfills();
-    microtask(() => {
+    setTimeout(() => {
       fixture.contentChangedCallCount = 0;
 
       // Remove an element from the shadow, which shouldn't trigger contentChanged.
@@ -228,7 +226,7 @@ describe("ChildrenContentMixin", () => {
 
       // Remove a light DOM child, which should trigger contentChanged.
       fixture.removeChild(div);
-      
+
       // Wait for second slotchange event to be processed.
       flushPolyfills();
       setTimeout(() => {

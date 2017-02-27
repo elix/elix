@@ -1,6 +1,11 @@
 import { assignedChildren } from './content';
 import microtask from './microtask';
+import Symbol from './Symbol';
 import symbols from './symbols';
+
+
+// Symbols for private data members on an element.
+const slotchangeFiredSymbol = Symbol('slotchangeFired');
 
 
 /**
@@ -50,14 +55,6 @@ import symbols from './symbols';
  * invoke a method called `symbols.shadowCreated` after the component's shadow
  * root has been created and populated.
  *
- * Note: This mixin relies upon the browser firing `slotchange` events when the
- * contents of a `slot` change. Safari and the polyfills fire this event when a
- * custom element is first upgraded, while Chrome does not. This mixin always
- * invokes the `contentChanged` method after component instantiation so that the
- * method will always be invoked at least once. However, on Safari (and possibly
- * other browsers), `contentChanged` might be invoked _twice_ for a new
- * component instance.
- *
  * @module ChildrenContentMixin
  * @param base {Class} the base class to extend
  * @returns {Class} the extended class
@@ -69,18 +66,18 @@ export default function ChildrenContentMixin(base) {
    */
   class ChildrenContent extends base {
 
-    constructor() {
-      super();
-
-      // Make an initial call to contentChanged() so that the component can do
-      // initialization that it normally does when content changes.
-      //
-      // This will invoke contentChanged() handlers in other mixins. In order
-      // that those mixins have a chance to complete their own initialization,
-      // we add the contentChanged() call to the microtask queue.
-      microtask(() => {
-        if (this[symbols.contentChanged]) {
-          this[symbols.contentChanged]();
+    connectedCallback() {
+      if (super.connectedCallback) { super.connectedCallback(); }
+      // HACK for Blink, which doesn't correctly fire initial slotchange.
+      // See https://bugs.chromium.org/p/chromium/issues/detail?id=696659
+      setTimeout(() => {
+        // By this point, the slotchange event should have fired.
+        if (!this[slotchangeFiredSymbol]) {
+          // slotchange event didn't fire; we're in Blink. Force the invocation
+          // of contentChanged that would have happened on slotchange.
+          if (this[symbols.contentChanged]) {
+            this[symbols.contentChanged]();
+          }
         }
       });
     }
@@ -103,6 +100,7 @@ export default function ChildrenContentMixin(base) {
       // Listen to changes on all slots.
       const slots = this.shadowRoot.querySelectorAll('slot');
       slots.forEach(slot => slot.addEventListener('slotchange', event => {
+        this[slotchangeFiredSymbol] = true;
         if (this[symbols.contentChanged]) {
           this[symbols.contentChanged]();
         }
