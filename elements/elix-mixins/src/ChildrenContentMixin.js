@@ -1,5 +1,4 @@
 import { assignedChildren } from './content';
-import microtask from './microtask';
 import Symbol from './Symbol';
 import symbols from './symbols';
 

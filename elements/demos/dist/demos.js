@@ -45,7 +45,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	module.exports = __webpack_require__(20);
+	module.exports = __webpack_require__(19);
 
 
 /***/ },
@@ -68,47 +68,47 @@
 	
 	var _ChildrenContentMixin2 = _interopRequireDefault(_ChildrenContentMixin);
 	
-	var _ClickSelectionMixin = __webpack_require__(7);
+	var _ClickSelectionMixin = __webpack_require__(6);
 	
 	var _ClickSelectionMixin2 = _interopRequireDefault(_ClickSelectionMixin);
 	
-	var _ContentItemsMixin = __webpack_require__(8);
+	var _ContentItemsMixin = __webpack_require__(7);
 	
 	var _ContentItemsMixin2 = _interopRequireDefault(_ContentItemsMixin);
 	
-	var _DirectionSelectionMixin = __webpack_require__(9);
+	var _DirectionSelectionMixin = __webpack_require__(8);
 	
 	var _DirectionSelectionMixin2 = _interopRequireDefault(_DirectionSelectionMixin);
 	
-	var _KeyboardDirectionMixin = __webpack_require__(10);
+	var _KeyboardDirectionMixin = __webpack_require__(9);
 	
 	var _KeyboardDirectionMixin2 = _interopRequireDefault(_KeyboardDirectionMixin);
 	
-	var _KeyboardMixin = __webpack_require__(11);
+	var _KeyboardMixin = __webpack_require__(10);
 	
 	var _KeyboardMixin2 = _interopRequireDefault(_KeyboardMixin);
 	
-	var _KeyboardPagedSelectionMixin = __webpack_require__(12);
+	var _KeyboardPagedSelectionMixin = __webpack_require__(11);
 	
 	var _KeyboardPagedSelectionMixin2 = _interopRequireDefault(_KeyboardPagedSelectionMixin);
 	
-	var _KeyboardPrefixSelectionMixin = __webpack_require__(14);
+	var _KeyboardPrefixSelectionMixin = __webpack_require__(13);
 	
 	var _KeyboardPrefixSelectionMixin2 = _interopRequireDefault(_KeyboardPrefixSelectionMixin);
 	
-	var _SelectionAriaMixin = __webpack_require__(16);
+	var _SelectionAriaMixin = __webpack_require__(15);
 	
 	var _SelectionAriaMixin2 = _interopRequireDefault(_SelectionAriaMixin);
 	
-	var _SelectionInViewMixin = __webpack_require__(17);
+	var _SelectionInViewMixin = __webpack_require__(16);
 	
 	var _SelectionInViewMixin2 = _interopRequireDefault(_SelectionInViewMixin);
 	
-	var _ShadowTemplateMixin = __webpack_require__(18);
+	var _ShadowTemplateMixin = __webpack_require__(17);
 	
 	var _ShadowTemplateMixin2 = _interopRequireDefault(_ShadowTemplateMixin);
 	
-	var _SingleSelectionMixin = __webpack_require__(19);
+	var _SingleSelectionMixin = __webpack_require__(18);
 	
 	var _SingleSelectionMixin2 = _interopRequireDefault(_SingleSelectionMixin);
 	
@@ -303,11 +303,7 @@
 	
 	var _content = __webpack_require__(3);
 	
-	var _microtask = __webpack_require__(4);
-	
-	var _microtask2 = _interopRequireDefault(_microtask);
-	
-	var _Symbol2 = __webpack_require__(6);
+	var _Symbol2 = __webpack_require__(4);
 	
 	var _Symbol3 = _interopRequireDefault(_Symbol2);
 	
@@ -622,60 +618,52 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = microtask;
-	/*
-	 * Microtask helper for IE 11.
-	 *
-	 * Executing a function as a microtask is trivial in browsers that support
-	 * promises, whose then() clauses use microtask timing. IE 11 doesn't support
-	 * promises, but does support MutationObservers, which are also executed as
-	 * microtasks. So this helper uses an MutationObserver to achieve microtask
-	 * timing.
-	 *
-	 * See https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/
-	 *
-	 * Inspired by Polymer's async() function.
-	 */
+	/* The number of fake symbols we've served up */
+	var count = 0;
 	
-	// The queue of pending callbacks to be executed as microtasks.
-	var callbacks = [];
+	function uniqueString(description) {
+	  return '_' + description + count++;
+	}
 	
-	// Create an element that we will modify to force observable mutations.
-	var element = document.createTextNode('');
-	
-	// A monotonically-increasing value.
-	var counter = 0;
+	var symbolFunction = typeof window.Symbol === 'function' ? window.Symbol : uniqueString;
 	
 	/**
-	 * Add a callback to the microtask queue.
+	 * Polyfill for ES6 symbol class.
 	 *
-	 * This uses a MutationObserver so that it works on IE 11.
+	 * Mixins and component classes often want to associate private data with an
+	 * element instance, but JavaScript does not have direct support for true
+	 * private properties. One approach is to use the
+	 * [Symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol)
+	 * data type to set and retrieve data on an element.
 	 *
-	 * NOTE: IE 11 may actually use timeout timing with MutationObservers. This
-	 * needs more investigation.
+	 * Unfortunately, the Symbol type is not available in Internet Explorer 11. In
+	 * lieu of returning a true Symbol, this polyfill returns a different string
+	 * each time it is called.
 	 *
-	 * @function microtask
-	 * @param {function} callback
+	 * Usage:
+	 *
+	 *     const fooSymbol = Symbol('foo');
+	 *
+	 *     class MyElement extends HTMLElement {
+	 *       get foo() {
+	 *         return this[fooSymbol];
+	 *       }
+	 *       set foo(value) {
+	 *         this[fooSymbol] = value;
+	 *       }
+	 *     }
+	 *
+	 * In IE 11, this sample will "hide" data behind an instance property that looks
+	 * like this._foo0. The underscore is meant to reduce (not eliminate) potential
+	 * accidental access, and the unique number at the end is mean to avoid (not
+	 * eliminate) naming conflicts.
+	 *
+	 * @function Symbol
+	 * @param {string} description - A string to identify the symbol when debugging
+	 * @returns {Symbol|string} — A Symbol (in ES6 browsers) or unique string ID (in
+	 * ES5).
 	 */
-	function microtask(callback) {
-	  callbacks.push(callback);
-	  // Force a mutation.
-	  element.textContent = ++counter;
-	}
-	
-	// Execute any pending callbacks.
-	function executeCallbacks() {
-	  while (callbacks.length > 0) {
-	    var callback = callbacks.shift();
-	    callback();
-	  }
-	}
-	
-	// Create the observer.
-	var observer = new MutationObserver(executeCallbacks);
-	observer.observe(element, {
-	  characterData: true
-	});
+	exports.default = symbolFunction;
 
 /***/ },
 /* 5 */
@@ -687,7 +675,7 @@
 	  value: true
 	});
 	
-	var _Symbol2 = __webpack_require__(6);
+	var _Symbol2 = __webpack_require__(4);
 	
 	var _Symbol3 = _interopRequireDefault(_Symbol2);
 	
@@ -949,62 +937,6 @@
 
 /***/ },
 /* 6 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	/* The number of fake symbols we've served up */
-	var count = 0;
-	
-	function uniqueString(description) {
-	  return '_' + description + count++;
-	}
-	
-	var symbolFunction = typeof window.Symbol === 'function' ? window.Symbol : uniqueString;
-	
-	/**
-	 * Polyfill for ES6 symbol class.
-	 *
-	 * Mixins and component classes often want to associate private data with an
-	 * element instance, but JavaScript does not have direct support for true
-	 * private properties. One approach is to use the
-	 * [Symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol)
-	 * data type to set and retrieve data on an element.
-	 *
-	 * Unfortunately, the Symbol type is not available in Internet Explorer 11. In
-	 * lieu of returning a true Symbol, this polyfill returns a different string
-	 * each time it is called.
-	 *
-	 * Usage:
-	 *
-	 *     const fooSymbol = Symbol('foo');
-	 *
-	 *     class MyElement extends HTMLElement {
-	 *       get foo() {
-	 *         return this[fooSymbol];
-	 *       }
-	 *       set foo(value) {
-	 *         this[fooSymbol] = value;
-	 *       }
-	 *     }
-	 *
-	 * In IE 11, this sample will "hide" data behind an instance property that looks
-	 * like this._foo0. The underscore is meant to reduce (not eliminate) potential
-	 * accidental access, and the unique number at the end is mean to avoid (not
-	 * eliminate) naming conflicts.
-	 *
-	 * @function Symbol
-	 * @param {string} description - A string to identify the symbol when debugging
-	 * @returns {Symbol|string} — A Symbol (in ES6 browsers) or unique string ID (in
-	 * ES5).
-	 */
-	exports.default = symbolFunction;
-
-/***/ },
-/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1134,7 +1066,7 @@
 	}
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1153,7 +1085,7 @@
 	
 	var content = _interopRequireWildcard(_content);
 	
-	var _Symbol2 = __webpack_require__(6);
+	var _Symbol2 = __webpack_require__(4);
 	
 	var _Symbol3 = _interopRequireDefault(_Symbol2);
 	
@@ -1310,7 +1242,7 @@
 	}
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1445,7 +1377,7 @@
 	}
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1641,7 +1573,7 @@
 	}
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1779,7 +1711,7 @@
 	}
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1794,7 +1726,7 @@
 	
 	exports.default = KeyboardPagedSelectionMixin;
 	
-	var _defaultScrollTarget = __webpack_require__(13);
+	var _defaultScrollTarget = __webpack_require__(12);
 	
 	var _defaultScrollTarget2 = _interopRequireDefault(_defaultScrollTarget);
 	
@@ -2010,7 +1942,7 @@
 	}
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2057,7 +1989,7 @@
 	}
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2074,11 +2006,11 @@
 	
 	exports.default = KeyboardPrefixSelectionMixin;
 	
-	var _constants = __webpack_require__(15);
+	var _constants = __webpack_require__(14);
 	
 	var _constants2 = _interopRequireDefault(_constants);
 	
-	var _Symbol2 = __webpack_require__(6);
+	var _Symbol2 = __webpack_require__(4);
 	
 	var _Symbol3 = _interopRequireDefault(_Symbol2);
 	
@@ -2323,7 +2255,7 @@
 	}
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2352,7 +2284,7 @@
 	exports.default = constants;
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2514,7 +2446,7 @@
 	 */
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2529,7 +2461,7 @@
 	
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 	
-	var _defaultScrollTarget = __webpack_require__(13);
+	var _defaultScrollTarget = __webpack_require__(12);
 	
 	var _defaultScrollTarget2 = _interopRequireDefault(_defaultScrollTarget);
 	
@@ -2665,7 +2597,7 @@
 	};
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2805,7 +2737,7 @@
 	}
 
 /***/ },
-/* 19 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2822,7 +2754,7 @@
 	
 	exports.default = SingleSelectionMixin;
 	
-	var _Symbol2 = __webpack_require__(6);
+	var _Symbol2 = __webpack_require__(4);
 	
 	var _Symbol3 = _interopRequireDefault(_Symbol2);
 	
@@ -3412,7 +3344,7 @@
 	}
 
 /***/ },
-/* 20 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3425,7 +3357,7 @@
 	
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 	
-	var _SingleSelectionMixin2 = __webpack_require__(19);
+	var _SingleSelectionMixin2 = __webpack_require__(18);
 	
 	var _SingleSelectionMixin3 = _interopRequireDefault(_SingleSelectionMixin2);
 	

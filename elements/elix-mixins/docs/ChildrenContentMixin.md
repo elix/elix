@@ -48,14 +48,6 @@ To receive `contentChanged` notification, this mixin expects a component to
 invoke a method called `symbols.shadowCreated` after the component's shadow
 root has been created and populated.
 
-Note: This mixin relies upon the browser firing `slotchange` events when the
-contents of a `slot` change. Safari and the polyfills fire this event when a
-custom element is first upgraded, while Chrome does not. This mixin always
-invokes the `contentChanged` method after component instantiation so that the
-method will always be invoked at least once. However, on Safari (and possibly
-other browsers), `contentChanged` might be invoked _twice_ for a new
-component instance.
-
 **Returns**: <code>Class</code> - the extended class  
 
 | Param | Type | Description |
