@@ -349,7 +349,7 @@
 	        // If the item clicked on is a button, the event seems to be raised in
 	        // phase 2 (AT_TARGET) — but the event target will be the component, not
 	        // the item that was clicked on.
-	        var target = event.target === _this ? event.path[0] : // Event target isn't the item, so get it from path.
+	        var target = event.target === _this ? event.composedPath()[0] : // Event target isn't the item, so get it from path.
 	        event.target;
 	
 	        // Find which item was clicked on and, if found, select it. For elements
