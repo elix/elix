@@ -45,7 +45,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	module.exports = __webpack_require__(19);
+	__webpack_require__(20);
+	module.exports = __webpack_require__(22);
 
 
 /***/ },
@@ -60,15 +61,13 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _set = function set(object, property, value, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent !== null) { set(parent, property, value, receiver); } } else if ("value" in desc && desc.writable) { desc.value = value; } else { var setter = desc.set; if (setter !== undefined) { setter.call(receiver, value); } } return value; };
-	
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 	
-	var _ChildrenContentMixin = __webpack_require__(2);
+	var _AttributeMarshallingMixin = __webpack_require__(2);
 	
-	var _ChildrenContentMixin2 = _interopRequireDefault(_ChildrenContentMixin);
+	var _AttributeMarshallingMixin2 = _interopRequireDefault(_AttributeMarshallingMixin);
 	
-	var _ClickSelectionMixin = __webpack_require__(6);
+	var _ClickSelectionMixin = __webpack_require__(5);
 	
 	var _ClickSelectionMixin2 = _interopRequireDefault(_ClickSelectionMixin);
 	
@@ -76,72 +75,61 @@
 	
 	var _ContentItemsMixin2 = _interopRequireDefault(_ContentItemsMixin);
 	
-	var _DirectionSelectionMixin = __webpack_require__(8);
+	var _DirectionSelectionMixin = __webpack_require__(9);
 	
 	var _DirectionSelectionMixin2 = _interopRequireDefault(_DirectionSelectionMixin);
 	
-	var _KeyboardDirectionMixin = __webpack_require__(9);
+	var _KeyboardDirectionMixin = __webpack_require__(10);
 	
 	var _KeyboardDirectionMixin2 = _interopRequireDefault(_KeyboardDirectionMixin);
 	
-	var _KeyboardMixin = __webpack_require__(10);
+	var _KeyboardMixin = __webpack_require__(11);
 	
 	var _KeyboardMixin2 = _interopRequireDefault(_KeyboardMixin);
 	
-	var _KeyboardPagedSelectionMixin = __webpack_require__(11);
+	var _KeyboardPagedSelectionMixin = __webpack_require__(12);
 	
 	var _KeyboardPagedSelectionMixin2 = _interopRequireDefault(_KeyboardPagedSelectionMixin);
 	
-	var _KeyboardPrefixSelectionMixin = __webpack_require__(13);
+	var _KeyboardPrefixSelectionMixin = __webpack_require__(14);
 	
 	var _KeyboardPrefixSelectionMixin2 = _interopRequireDefault(_KeyboardPrefixSelectionMixin);
 	
-	var _SelectionAriaMixin = __webpack_require__(15);
+	var _SelectionAriaMixin = __webpack_require__(16);
 	
 	var _SelectionAriaMixin2 = _interopRequireDefault(_SelectionAriaMixin);
 	
-	var _SelectionInViewMixin = __webpack_require__(16);
+	var _SelectionInViewMixin = __webpack_require__(17);
 	
 	var _SelectionInViewMixin2 = _interopRequireDefault(_SelectionInViewMixin);
 	
-	var _ShadowTemplateMixin = __webpack_require__(17);
+	var _ShadowTemplateMixin = __webpack_require__(18);
 	
 	var _ShadowTemplateMixin2 = _interopRequireDefault(_ShadowTemplateMixin);
 	
-	var _SingleSelectionMixin = __webpack_require__(18);
+	var _SingleSelectionMixin = __webpack_require__(19);
 	
 	var _SingleSelectionMixin2 = _interopRequireDefault(_SingleSelectionMixin);
 	
-	var _symbols = __webpack_require__(5);
+	var _symbols = __webpack_require__(6);
 	
 	var _symbols2 = _interopRequireDefault(_symbols);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This is currently a demo of how multiple mixins cooperate to perform useful
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * functions.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * * The component uses ShadowTemplateMixin to populate its shadow root.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * * A user can click on a child item, and ClickSelectionMixin will set the
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *   selected item.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * * The SingleSelectionMixin will track the selected item, and map that to
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *   changes in the selection state of the selected/deselected items.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * * The SelectionAriaMixin will reflect an item's selection state using ARIA
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *   attributes to support assistive devices like screen readers.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This demo will eventually evolve into a complete list box component, but
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * at the moment omits many features, including support for Page Up/Page Down
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * keys, keeping the selected item in view, the ability to select an item
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * by typing its initial characters, and support for slot elements as children.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Demo of a list box with hard-coded contents.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * As a list source, this enumerates `navigator.plugins`.
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 	
 	// We want to apply a number of mixin functions to HTMLElement.
-	var mixins = [_ChildrenContentMixin2.default, _ClickSelectionMixin2.default, _ContentItemsMixin2.default, _DirectionSelectionMixin2.default, _KeyboardDirectionMixin2.default, _KeyboardMixin2.default, _KeyboardPagedSelectionMixin2.default, _KeyboardPrefixSelectionMixin2.default, _SelectionAriaMixin2.default, _SelectionInViewMixin2.default, _ShadowTemplateMixin2.default, _SingleSelectionMixin2.default];
+	var mixins = [_AttributeMarshallingMixin2.default, _ClickSelectionMixin2.default, _ContentItemsMixin2.default, _DirectionSelectionMixin2.default, _KeyboardDirectionMixin2.default, _KeyboardMixin2.default, _KeyboardPagedSelectionMixin2.default, _KeyboardPrefixSelectionMixin2.default, _SelectionAriaMixin2.default, _SelectionInViewMixin2.default, _ShadowTemplateMixin2.default, _SingleSelectionMixin2.default];
 	
 	// The mixins are functions, so an efficient way to apply them all is with
 	// reduce. This is just function composition. We end up with a base class we
@@ -150,52 +138,58 @@
 	  return mixin(cls);
 	}, HTMLElement);
 	
-	/**
-	 * A simple single-selection list box.
-	 *
-	 * This uses the base class we just created above, and adds in the behavior
-	 * unique to this list box element. As it turns out, much of this behavior is
-	 * also interesting to other components, and will eventually get factored into
-	 * other mixins.
-	 *
-	 * @extends HTMLElement
-	 * @mixes ChildrenContentMixin
-	 * @mixes ClickSelectionMixin
-	 * @mixes ContentItemsMixin
-	 * @mixes DirectionSelectionMixin
-	 * @mixes KeyboardDirectionMixin
-	 * @mixes KeyboardMixin
-	 * @mixes KeyboardPagedSelectionMixin
-	 * @mixes KeyboardPrefixSelectionMixin
-	 * @mixes SelectionAriaMixin
-	 * @mixes SelectionInViewMixin
-	 * @mixes ShadowTemplateMixin
-	 * @mixes SingleSelectionMixin
-	 */
+	var BrowserPluginList = function (_base) {
+	  _inherits(BrowserPluginList, _base);
 	
-	var ListBox = function (_base) {
-	  _inherits(ListBox, _base);
+	  function BrowserPluginList() {
+	    _classCallCheck(this, BrowserPluginList);
 	
-	  function ListBox() {
-	    _classCallCheck(this, ListBox);
-	
-	    return _possibleConstructorReturn(this, (ListBox.__proto__ || Object.getPrototypeOf(ListBox)).apply(this, arguments));
+	    return _possibleConstructorReturn(this, (BrowserPluginList.__proto__ || Object.getPrototypeOf(BrowserPluginList)).apply(this, arguments));
 	  }
 	
-	  _createClass(ListBox, [{
-	    key: 'attributeChangedCallback',
+	  _createClass(BrowserPluginList, [{
+	    key: _symbols2.default.itemAdded,
 	
 	
-	    // Map attribute changes to the corresponding property.
-	    value: function attributeChangedCallback(attributeName, oldValue, newValue) {
-	      if (_get(ListBox.prototype.__proto__ || Object.getPrototypeOf(ListBox.prototype), 'attributeChangedCallback', this)) {
-	        _get(ListBox.prototype.__proto__ || Object.getPrototypeOf(ListBox.prototype), 'attributeChangedCallback', this).call(this, attributeName, oldValue, newValue);
+	    // HACK to work around limitations of pre-v1 ShadyCSS.
+	    value: function value(item) {
+	      if (_get(BrowserPluginList.prototype.__proto__ || Object.getPrototypeOf(BrowserPluginList.prototype), _symbols2.default.itemAdded, this)) {
+	        _get(BrowserPluginList.prototype.__proto__ || Object.getPrototypeOf(BrowserPluginList.prototype), _symbols2.default.itemAdded, this).call(this, item);
 	      }
-	      var mapAttributeToProperty = {
-	        'selected-index': 'selectedIndex'
-	      };
-	      var propertyName = mapAttributeToProperty[attributeName] || attributeName;
-	      this[propertyName] = newValue;
+	      item.classList.add('style-scope');
+	      item.classList.add('browser-plugin-list');
+	    }
+	
+	    // Map item selection to a `selected` CSS class.
+	
+	  }, {
+	    key: _symbols2.default.itemSelected,
+	    value: function value(item, selected) {
+	      if (_get(BrowserPluginList.prototype.__proto__ || Object.getPrototypeOf(BrowserPluginList.prototype), _symbols2.default.itemSelected, this)) {
+	        _get(BrowserPluginList.prototype.__proto__ || Object.getPrototypeOf(BrowserPluginList.prototype), _symbols2.default.itemSelected, this).call(this, item, selected);
+	      }
+	      item.classList.toggle('selected', selected);
+	    }
+	  }, {
+	    key: _symbols2.default.shadowCreated,
+	    value: function value() {
+	      if (_get(BrowserPluginList.prototype.__proto__ || Object.getPrototypeOf(BrowserPluginList.prototype), _symbols2.default.shadowCreated, this)) {
+	        _get(BrowserPluginList.prototype.__proto__ || Object.getPrototypeOf(BrowserPluginList.prototype), _symbols2.default.shadowCreated, this).call(this);
+	      }
+	      var choices = [].concat(_toConsumableArray(navigator.plugins)).map(function (plugin) {
+	        return plugin.name;
+	      });
+	      var sorted = choices.sort();
+	      setOptions(this, sorted);
+	    }
+	
+	    // Define a template that will be stamped into the Shadow DOM by the
+	    // ShadowTemplateMixin.
+	
+	  }, {
+	    key: _symbols2.default.content,
+	    get: function get() {
+	      return this.shadowRoot.querySelector('#devicesContainer').children;
 	    }
 	
 	    // We define a collection of default property values which can be set in
@@ -204,86 +198,41 @@
 	    // define its own default value.
 	
 	  }, {
-	    key: _symbols2.default.itemSelected,
-	
-	
-	    // Map item selection to a `selected` CSS class.
-	    value: function value(item, selected) {
-	      if (_get(ListBox.prototype.__proto__ || Object.getPrototypeOf(ListBox.prototype), _symbols2.default.itemSelected, this)) {
-	        _get(ListBox.prototype.__proto__ || Object.getPrototypeOf(ListBox.prototype), _symbols2.default.itemSelected, this).call(this, item, selected);
-	      }
-	      item.classList.toggle('selected', selected);
-	    }
-	
-	    // Tell the browser which attributes we want to handle.
-	
-	  }, {
 	    key: _symbols2.default.defaults,
 	    get: function get() {
-	      var defaults = _get(ListBox.prototype.__proto__ || Object.getPrototypeOf(ListBox.prototype), _symbols2.default.defaults, this) || {};
+	      var defaults = _get(BrowserPluginList.prototype.__proto__ || Object.getPrototypeOf(BrowserPluginList.prototype), _symbols2.default.defaults, this) || {};
 	      // By default, we assume the list presents list items vertically.
 	      defaults.orientation = 'vertical';
 	      return defaults;
 	    }
 	  }, {
-	    key: 'orientation',
-	
-	
-	    /**
-	     * The vertical (default) or horizontal orientation of the list.
-	     *
-	     * Supported values are "horizontal" or "vertical".
-	     *
-	     * @type {string}
-	     */
-	    get: function get() {
-	      return this[_symbols2.default.orientation] || this[_symbols2.default.defaults].orientation;
-	    },
-	    set: function set(value) {
-	      var changed = value !== this[_symbols2.default.orientation];
-	      this[_symbols2.default.orientation] = value;
-	      if ('orientation' in base) {
-	        _set(ListBox.prototype.__proto__ || Object.getPrototypeOf(ListBox.prototype), 'orientation', value, this);
-	      }
-	      // Reflect attribute for styling
-	      if (this.getAttribute('orientation') !== value) {
-	        this.setAttribute('orientation', value);
-	      }
-	      if (changed && this[_symbols2.default.raiseChangeEvents]) {
-	        var event = new CustomEvent('orientation-changed');
-	        this.dispatchEvent(event);
-	      }
-	    }
-	
-	    // Define a template that will be stamped into the Shadow DOM by the
-	    // ShadowTemplateMixin.
-	
-	  }, {
 	    key: _symbols2.default.template,
 	    get: function get() {
-	      return '\n      <style>\n      :host {\n        border: 1px solid gray;\n        box-sizing: border-box;\n        cursor: default;\n        display: flex;\n        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);\n      }\n\n      #itemsContainer {\n        flex: 1;\n        -webkit-overflow-scrolling: touch; /* for momentum scrolling */\n        overflow-x: hidden;\n        overflow-y: scroll;\n      }\n      :host([orientation="horizontal"]) #itemsContainer {\n        display: flex;\n        overflow-x: scroll;\n        overflow-y: hidden;\n      }\n\n      #itemsContainer ::slotted(*) {\n        cursor: default;\n        padding: 0.25em;\n        -webkit-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n      }\n\n      #itemsContainer ::slotted(.selected) {\n        background: var(--elix-selected-background, highlight);\n        color: var(--elix-selected-color, highlighttext);\n      }\n      </style>\n\n      <div id="itemsContainer" role="none">\n        <slot></slot>\n      </div>\n    ';
-	    }
-	
-	    /**
-	     * Fires when the orientation property changes in response to internal
-	     * component activity.
-	     *
-	     * @memberof ListBox
-	     * @event orientation-changed
-	     */
-	
-	  }], [{
-	    key: 'observedAttributes',
-	    get: function get() {
-	      return ['orientation', 'selected-index'];
+	      return '\n      <style>\n      :host {\n        border: 1px solid gray;\n        box-sizing: border-box;\n        cursor: default;\n        display: inline-flex;\n        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);\n      }\n\n      #devicesContainer {\n        flex: 1;\n        -webkit-overflow-scrolling: touch; /* for momentum scrolling */\n        overflow-x: hidden;\n        overflow-y: scroll;\n      }\n\n      #devicesContainer > * {\n        cursor: default;\n        padding: 0.25em;\n        -webkit-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n      }\n\n      #devicesContainer > .selected {\n        background: highlight;\n        color: highlighttext;\n      }\n      </style>\n\n      <div id="devicesContainer" role="none"></div>\n    ';
 	    }
 	  }]);
 	
-	  return ListBox;
+	  return BrowserPluginList;
 	}(base);
 	
-	customElements.define('sample-list-box', ListBox);
-	exports.default = ListBox;
+	function setOptions(element, options) {
+	  var container = element.shadowRoot.querySelector('#devicesContainer');
+	  while (container.children.length > 0) {
+	    container.children[0].remove();
+	  }
+	  var divs = options.map(function (option) {
+	    var div = document.createElement('div');
+	    div.textContent = option;
+	    return div;
+	  });
+	  divs.forEach(function (option) {
+	    return container.appendChild(option);
+	  });
+	  element[_symbols2.default.contentChanged]();
+	}
+	
+	customElements.define('browser-plugin-list', BrowserPluginList);
+	exports.default = BrowserPluginList;
 
 /***/ },
 /* 2 */
@@ -299,19 +248,13 @@
 	
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 	
-	exports.default = ChildrenContentMixin;
+	exports.default = AttributeMarshallingMixin;
 	
-	var _content = __webpack_require__(3);
+	var _attributes = __webpack_require__(3);
 	
-	var _Symbol2 = __webpack_require__(4);
+	var attributes = _interopRequireWildcard(_attributes);
 	
-	var _Symbol3 = _interopRequireDefault(_Symbol2);
-	
-	var _symbols = __webpack_require__(5);
-	
-	var _symbols2 = _interopRequireDefault(_symbols);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -319,294 +262,346 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	// Symbols for private data members on an element.
-	var slotchangeFiredSymbol = (0, _Symbol3.default)('slotchangeFired');
+	// Memoized maps of attribute to property names and vice versa.
+	var attributeToPropertyNames = {};
+	var propertyNamesToAttributes = {};
 	
 	/**
-	 * Mixin which defines a component's `symbols.content` property as all
-	 * child elements, including elements distributed to the component's slots.
+	 * Mixin which marshalls attributes to properties and vice versa.
 	 *
-	 * This also provides notification of changes to a component's content. It
-	 * will invoke a `symbols.contentChanged` method when the component is first
-	 * instantiated, and whenever its distributed children change. This is intended
-	 * to satisfy the Gold Standard checklist item for monitoring
-	 * [Content Changes](https://github.com/webcomponents/gold-standard/wiki/Content-Changes).
+	 * If your component exposes a setter for a property, it's generally a good
+	 * idea to let devs using your component be able to set that property in HTML
+	 * via an element attribute. You can code that yourself by writing an
+	 * `attributeChangedCallback`, or you can use this mixin to get a degree of
+	 * automatic support.
 	 *
-	 * Example:
+	 * This mixin implements an `attributeChangedCallback` that will attempt to
+	 * convert a change in an element attribute into a call to the corresponding
+	 * property setter. Attributes typically follow hyphenated names ("foo-bar"),
+	 * whereas properties typically use camelCase names ("fooBar"). This mixin
+	 * respects that convention, automatically mapping the hyphenated attribute
+	 * name to the corresponding camelCase property name.
 	 *
-	 * ```
-	 * let base = ChildrenContentMixin(DistributedChildrenMixin(HTMLElement));
-	 * class CountingElement extends base {
+	 * Example: You define a component using this mixin:
 	 *
-	 *   constructor() {
-	 *     super();
-	 *     let root = this.attachShadow({ mode: 'open' });
-	 *     root.innerHTML = `<slot></slot>`;
-	 *     this[symbols.shadowCreated]();
-	 *   }
+	 *     class MyElement extends AttributeMarshallingMixin(HTMLElement) {
+	 *       get fooBar() { return this._fooBar; }
+	 *       set fooBar(value) { this._fooBar = value; }
+	 *     }
+	 *     customElements.define('my-element', MyElement);
 	 *
-	 *   [symbols.contentChanged]() {
-	 *     if (super[symbols.contentChanged]) { super[symbols.contentChanged](); }
-	 *     // Count the component's children, both initially and when changed.
-	 *     this.count = this.distributedChildren.length;
-	 *   }
+	 * If someone then instantiates your component in HTML:
 	 *
-	 * }
-	 * ```
+	 *     <my-element foo-bar="Hello"></my-element>
 	 *
-	 * Note that content change detection depends upon the element having at least
-	 * one `slot` element in its shadow subtree.
+	 * Then, after the element has been upgraded, the `fooBar` setter will
+	 * automatically be invoked with the initial value "Hello".
 	 *
-	 * This mixin is intended for use with the
-	 * [DistributedChildrenMixin](DistributedChildrenMixin.md). See that mixin for
-	 * a discussion of how that works. This ChildrenContentMixin
-	 * provides an easy way of defining the "content" of a component as the
-	 * component's distributed children. That in turn lets mixins like
-	 * [ContentItemsMixin](ContentItemsMixin.md) manipulate the children as list
-	 * items.
+	 * Attributes can only have string values. If you'd like to convert string
+	 * attributes to other types (numbers, booleans), you must implement parsing
+	 * yourself.
 	 *
-	 * To receive `contentChanged` notification, this mixin expects a component to
-	 * invoke a method called `symbols.shadowCreated` after the component's shadow
-	 * root has been created and populated.
+	 * This mixin also exposes helpers for reflecting attributes and classes to
+	 * the element. These helpers can be invoked during a component's constructor;
+	 * any attributes or classes set during the constructor are applied when the
+	 * component's `connectedCallback` is invoked.
 	 *
-	 * @module ChildrenContentMixin
+	 * @module AttributeMarshallingMixin
 	 * @param base {Class} the base class to extend
 	 * @returns {Class} the extended class
 	 */
-	function ChildrenContentMixin(base) {
+	function AttributeMarshallingMixin(base) {
 	
 	  /**
 	   * The class prototype added by the mixin.
 	   */
-	  var ChildrenContent = function (_base) {
-	    _inherits(ChildrenContent, _base);
+	  var AttributeMarshalling = function (_base) {
+	    _inherits(AttributeMarshalling, _base);
 	
-	    function ChildrenContent() {
-	      _classCallCheck(this, ChildrenContent);
+	    function AttributeMarshalling() {
+	      _classCallCheck(this, AttributeMarshalling);
 	
-	      return _possibleConstructorReturn(this, (ChildrenContent.__proto__ || Object.getPrototypeOf(ChildrenContent)).apply(this, arguments));
+	      return _possibleConstructorReturn(this, (AttributeMarshalling.__proto__ || Object.getPrototypeOf(AttributeMarshalling)).apply(this, arguments));
 	    }
 	
-	    _createClass(ChildrenContent, [{
+	    _createClass(AttributeMarshalling, [{
+	      key: 'attributeChangedCallback',
+	
+	
+	      /*
+	       * Handle a change to the attribute with the given name.
+	       */
+	      value: function attributeChangedCallback(attributeName, oldValue, newValue) {
+	        if (_get(AttributeMarshalling.prototype.__proto__ || Object.getPrototypeOf(AttributeMarshalling.prototype), 'attributeChangedCallback', this)) {
+	          _get(AttributeMarshalling.prototype.__proto__ || Object.getPrototypeOf(AttributeMarshalling.prototype), 'attributeChangedCallback', this).call(this);
+	        }
+	        var propertyName = attributeToPropertyName(attributeName);
+	        // If the attribute name corresponds to a property name, set the property.
+	        if (propertyName in this) {
+	          this[propertyName] = newValue;
+	        }
+	      }
+	    }, {
 	      key: 'connectedCallback',
 	      value: function connectedCallback() {
-	        var _this2 = this;
-	
-	        if (_get(ChildrenContent.prototype.__proto__ || Object.getPrototypeOf(ChildrenContent.prototype), 'connectedCallback', this)) {
-	          _get(ChildrenContent.prototype.__proto__ || Object.getPrototypeOf(ChildrenContent.prototype), 'connectedCallback', this).call(this);
+	        if (_get(AttributeMarshalling.prototype.__proto__ || Object.getPrototypeOf(AttributeMarshalling.prototype), 'connectedCallback', this)) {
+	          _get(AttributeMarshalling.prototype.__proto__ || Object.getPrototypeOf(AttributeMarshalling.prototype), 'connectedCallback', this).call(this);
 	        }
-	        // HACK for Blink, which doesn't correctly fire initial slotchange.
-	        // See https://bugs.chromium.org/p/chromium/issues/detail?id=696659
-	        setTimeout(function () {
-	          // By this point, the slotchange event should have fired.
-	          if (!_this2[slotchangeFiredSymbol]) {
-	            // slotchange event didn't fire; we're in Blink. Force the invocation
-	            // of contentChanged that would have happened on slotchange.
-	            if (_this2[_symbols2.default.contentChanged]) {
-	              _this2[_symbols2.default.contentChanged]();
-	            }
-	          }
-	        });
+	        // Reflect any attributes set during constructor.
+	        attributes.writePendingAttributes(this);
+	      }
+	    }, {
+	      key: 'reflectAttribute',
+	
+	
+	      /**
+	       * Set/unset the attribute with the indicated name.
+	       *
+	       * This method exists primarily to handle the case where an element wants to
+	       * set a default property value that should be reflected as an attribute. An
+	       * important limitation of custom element consturctors is that they cannot
+	       * set attributes. A call to `reflectAttribute` during the constructor will
+	       * be deferred until the element is connected to the document.
+	       *
+	       * @param {string} attribute - The name of the *attribute* (not property) to set.
+	       * @param {object} value - The value to set. If null, the attribute will be removed.
+	       */
+	      value: function reflectAttribute(attribute, value) {
+	        return attributes.setAttribute(this, attribute, value);
 	      }
 	
 	      /**
-	       * The content of this component, defined to be the flattened array of
-	       * children distributed to the component.
+	       * Set/unset the class with the indicated name.
 	       *
-	       * The default implementation of this property only returns instances of
-	       * Element
+	       * This method exists primarily to handle the case where an element wants to
+	       * set a default property value that should be reflected as as class. An
+	       * important limitation of custom element consturctors is that they cannot
+	       * set attributes, including the `class` attribute. A call to
+	       * `reflectClass` during the constructor will be deferred until the element
+	       * is connected to the document.
 	       *
-	       * @type {HTMLElement[]}
+	       * @param {string} className - The name of the class to set.
+	       * @param {object} value - True to set the class, false to remove it.
 	       */
 	
 	    }, {
-	      key: _symbols2.default.shadowCreated,
-	      value: function value() {
-	        var _this3 = this;
-	
-	        if (_get(ChildrenContent.prototype.__proto__ || Object.getPrototypeOf(ChildrenContent.prototype), _symbols2.default.shadowCreated, this)) {
-	          _get(ChildrenContent.prototype.__proto__ || Object.getPrototypeOf(ChildrenContent.prototype), _symbols2.default.shadowCreated, this).call(this);
-	        }
-	        // Listen to changes on all slots.
-	        var slots = this.shadowRoot.querySelectorAll('slot');
-	        slots.forEach(function (slot) {
-	          return slot.addEventListener('slotchange', function (event) {
-	            _this3[slotchangeFiredSymbol] = true;
-	            if (_this3[_symbols2.default.contentChanged]) {
-	              _this3[_symbols2.default.contentChanged]();
-	            }
-	          });
-	        });
+	      key: 'reflectClass',
+	      value: function reflectClass(className, value) {
+	        return attributes.toggleClass(this, className, value);
 	      }
-	    }, {
-	      key: _symbols2.default.content,
+	    }], [{
+	      key: 'observedAttributes',
 	      get: function get() {
-	        return (0, _content.assignedChildren)(this);
+	        return attributesForClass(this);
 	      }
 	    }]);
 	
-	    return ChildrenContent;
+	    return AttributeMarshalling;
 	  }(base);
 	
-	  return ChildrenContent;
+	  return AttributeMarshalling;
+	}
+	
+	// Return the custom attributes for the given class.
+	function attributesForClass(classFn) {
+	
+	  // We treat the element base classes as if they have no attributes, since we
+	  // don't want to receive attributeChangedCallback for them.
+	  if (classFn === HTMLElement || classFn === Object) {
+	    return [];
+	  }
+	
+	  // Get attributes for parent class.
+	  var baseClass = Object.getPrototypeOf(classFn.prototype).constructor;
+	  // See if parent class defines observedAttributes manually.
+	  var baseAttributes = baseClass.observedAttributes;
+	  if (!baseAttributes) {
+	    // Calculate parent class attributes ourselves.
+	    baseAttributes = attributesForClass(baseClass);
+	  }
+	
+	  // Get attributes for this class.
+	  var propertyNames = Object.getOwnPropertyNames(classFn.prototype);
+	  var setterNames = propertyNames.filter(function (propertyName) {
+	    return typeof Object.getOwnPropertyDescriptor(classFn.prototype, propertyName).set === 'function';
+	  });
+	  var attributes = setterNames.map(function (setterName) {
+	    return propertyNameToAttribute(setterName);
+	  });
+	
+	  // Merge.
+	  var diff = attributes.filter(function (attribute) {
+	    return baseAttributes.indexOf(attribute) < 0;
+	  });
+	  return baseAttributes.concat(diff);
+	}
+	
+	// Convert hyphenated foo-bar attribute name to camel case fooBar property name.
+	function attributeToPropertyName(attributeName) {
+	  var propertyName = attributeToPropertyNames[attributeName];
+	  if (!propertyName) {
+	    // Convert and memoize.
+	    var hyphenRegEx = /-([a-z])/g;
+	    propertyName = attributeName.replace(hyphenRegEx, function (match) {
+	      return match[1].toUpperCase();
+	    });
+	    attributeToPropertyNames[attributeName] = propertyName;
+	  }
+	  return propertyName;
+	}
+	
+	// Convert a camel case fooBar property name to a hyphenated foo-bar attribute.
+	function propertyNameToAttribute(propertyName) {
+	  var attribute = propertyNamesToAttributes[propertyName];
+	  if (!attribute) {
+	    // Convert and memoize.
+	    var uppercaseRegEx = /([A-Z])/g;
+	    attribute = propertyName.replace(uppercaseRegEx, '-$1').toLowerCase();
+	  }
+	  return attribute;
 	}
 
 /***/ },
 /* 3 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.assignedChildren = assignedChildren;
-	exports.assignedChildNodes = assignedChildNodes;
-	exports.assignedTextContent = assignedTextContent;
-	exports.filterAuxiliaryElements = filterAuxiliaryElements;
+	exports.setAttribute = setAttribute;
+	exports.toggleClass = toggleClass;
+	exports.writePendingAttributes = writePendingAttributes;
 	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	var _Symbol2 = __webpack_require__(4);
 	
-	/**
-	 * Helpers for accessing a component's content.
-	 *
-	 * The standard DOM API provides several ways of accessing child content:
-	 * `children`, `childNodes`, and `textContent`. None of these functions are
-	 * Shadow DOM aware. This mixin defines variations of those functions that
-	 * *are* Shadow DOM aware.
-	 *
-	 * Example: you create a component `<count-children>` that displays a number
-	 * equal to the number of children placed inside that component. If someone
-	 * instantiates your component like:
-	 *
-	 *     <count-children>
-	 *       <div></div>
-	 *       <div></div>
-	 *       <div></div>
-	 *     </count-children>
-	 *
-	 * Then the component should show "3", because there are three children. To
-	 * calculate the number of children, the component can just calculate
-	 * `this.children.length`. However, suppose someone instantiates your
-	 * component inside one of their own components, and puts a `<slot>` element
-	 * inside your component:
-	 *
-	 *     <count-children>
-	 *       <slot></slot>
-	 *     </count-children>
-	 *
-	 * If your component only looks at `this.children`, it will always see exactly
-	 * one child — the `<slot>` element. But the user looking at the page will
-	 * *see* any nodes distributed to that slot. To match what the user sees, your
-	 * component should expand any `<slot>` elements it contains.
-	 *
-	 * That is one problem these helpers solve. For example, the helper
-	 * `assignedChildren` will return all children assigned to your component in
-	 * the composed tree.
-	 *
-	 * @module content
-	 */
+	var _Symbol3 = _interopRequireDefault(_Symbol2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// Symbols for private data members on an element.
+	var safeToSetAttributesSymbol = (0, _Symbol3.default)('safeToSetAttributes'); /**
+	                                                                               * Helpers for accessing a component's attributes.
+	                                                                               *
+	                                                                               * @module attributes
+	                                                                               */
+	
+	var pendingAttributesSymbol = (0, _Symbol3.default)('pendingAttributes');
+	var pendingClassesSymbol = (0, _Symbol3.default)('pendingClasses');
 	
 	/**
-	 * An in-order collection of distributed children, expanding any slot
-	 * elements. Like the standard `children` property, this skips text and other
-	 * node types which are not Element instances.
+	 * Set/unset the attribute with the indicated name.
 	 *
-	 * @param {HTMLElement} element - the element to inspect
-	 * @returns {Element[]} - the children assigned to the element
+	 * This method exists primarily to handle the case where an element wants to
+	 * set a default property value that should be reflected as an attribute. An
+	 * important limitation of custom element consturctors is that they cannot
+	 * set attributes. A call to `setAttribute` during the constructor will
+	 * be deferred until the element is connected to the document.
+	 *
+	 * @param {string} attribute - The name of the *attribute* (not property) to set.
+	 * @param {object} value - The value to set. If null, the attribute will be removed.
 	 */
-	function assignedChildren(element) {
-	  return expandAssignedNodes(element.children, true);
+	function setAttribute(element, attribute, value) {
+	  if (element[safeToSetAttributesSymbol]) {
+	    // Safe to set attributes immediately.
+	    setAttributeToElement(element, attribute, value);
+	  } else {
+	    // Defer setting attributes until the first time we're connected.
+	    if (!element[pendingAttributesSymbol]) {
+	      element[pendingAttributesSymbol] = {};
+	    }
+	    element[pendingAttributesSymbol][attribute] = value;
+	  }
 	}
 	
 	/**
-	 * An in-order collection of distributed child nodes, expanding any slot
-	 * elements. Like the standard `childNodes` property, this includes text and
-	 * other types of nodes.
+	 * Set/unset the class with the indicated name.
 	 *
-	 * @param {HTMLElement} element - the element to inspect
-	 * @returns {Node[]} - the nodes assigned to the element
+	 * This method exists primarily to handle the case where an element wants to
+	 * set a default property value that should be reflected as as class. An
+	 * important limitation of custom element consturctors is that they cannot
+	 * set attributes, including the `class` attribute. A call to
+	 * `toggleClass` during the constructor will be deferred until the element
+	 * is connected to the document.
+	 *
+	 * @param {string} className - The name of the class to set.
+	 * @param {boolean} [value] - True to set the class, false to remove it. If
+	 * omitted, the class will be toggled.
 	 */
-	function assignedChildNodes(element) {
-	  return expandAssignedNodes(element.childNodes, false);
+	function toggleClass(element, className, value) {
+	  if (element[safeToSetAttributesSymbol]) {
+	    // Safe to set class immediately.
+	    // Since IE 11's native `toggleClass` implementation is deficient, we
+	    // set or unset the class by hand.
+	    var classList = element.classList;
+	    var addClass = typeof value === 'undefined' ? !classList.contains(className) : value;
+	    if (addClass) {
+	      classList.add(className);
+	    } else {
+	      classList.remove(className);
+	    }
+	    return addClass;
+	  } else {
+	    // Defer setting class until the first time we're connected.
+	    if (!element[pendingClassesSymbol]) {
+	      element[pendingClassesSymbol] = {};
+	    }
+	    element[pendingClassesSymbol][className] = value;
+	  }
 	}
 	
 	/**
-	 * The concatenated `textContent` of all distributed child nodes, expanding
-	 * any slot elements.
+	 * Perform any pending updates to attributes and classes.
 	 *
-	 * @param {HTMLElement} element - the element to inspect
-	 * @type {string} - the text content of all nodes assigned to the element
-	 */
-	function assignedTextContent(element) {
-	  var strings = assignedChildNodes(element).map(function (child) {
-	    return child.textContent;
-	  });
-	  return strings.join('');
-	}
-	
-	/**
-	 * Return the given elements, filtering out auxiliary elements that aren't
-	 * typically visible. Given a `NodeList` or array of objects, it will only
-	 * return array members that are instances of `Element` (`HTMLElement` or
-	 * `SVGElement`), and not on a blacklist of normally invisible elements
-	 * (such as `style` or `script`).
+	 * This writes any `setAttribute` or `toggleClass` values that were performed
+	 * before an element was attached to the document for the first time.
 	 *
-	 * @param {NodeList|Element[]} elements - the list of elements to filter
-	 * @returns {Element[]} - the filtered elements
+	 * This method should be called by mixins/components in their
+	 * `connectedCallback`. If mulitple mixins/components invoke this during the
+	 * same `connectedCallback`, only the first call will have any effect. The
+	 * subsequent calls will be harmless.
+	 *
+	 * @param {HTMLElement} element - The element being added to the document.
 	 */
-	function filterAuxiliaryElements(elements) {
+	function writePendingAttributes(element) {
+	  element[safeToSetAttributesSymbol] = true;
 	
-	  // These are tags that can appear in the document body, but do not seem to
-	  // have any user-visible manifestation.
-	  // See https://developer.mozilla.org/en-US/docs/Web/HTML/Element
-	  var auxiliaryTags = ['applet', // deprecated
-	  'basefont', // deprecated
-	  'embed', 'font', // deprecated
-	  'frame', // deprecated
-	  'frameset', // deprecated
-	  'isindex', // deprecated
-	  'keygen', // deprecated
-	  'link', 'multicol', // deprecated
-	  'nextid', // deprecated
-	  'noscript', 'object', 'param', 'script', 'style', 'template', 'noembed' // deprecated
-	  ];
+	  // Set any pending attributes.
+	  if (element[pendingAttributesSymbol]) {
+	    for (var attribute in element[pendingAttributesSymbol]) {
+	      var value = element[pendingAttributesSymbol][attribute];
+	      setAttributeToElement(element, attribute, value);
+	    }
+	    element[pendingAttributesSymbol] = null;
+	  }
 	
-	  return [].filter.call(elements, function (element) {
-	    return element instanceof Element && (!element.localName || auxiliaryTags.indexOf(element.localName) < 0);
-	  });
+	  // Set any pending classes.
+	  if (element[pendingClassesSymbol]) {
+	    for (var className in element[pendingClassesSymbol]) {
+	      var _value = element[pendingClassesSymbol][className];
+	      toggleClass(element, className, _value);
+	    }
+	    element[pendingClassesSymbol] = null;
+	  }
 	}
 	
 	//
-	// Helpers for the helper functions
+	// Helpers
 	//
 	
-	/*
-	 * Given a array of nodes, return a new array with any `slot` elements expanded
-	 * to the nodes assigned to those slots.
-	 *
-	 * If ElementsOnly is true, only Element instances are returned, as with the
-	 * standard `children` property. Otherwise, all nodes are returned, as in the
-	 * standard `childNodes` property.
-	 */
-	function expandAssignedNodes(nodes, ElementsOnly) {
-	  var _ref;
-	
-	  var expanded = Array.prototype.map.call(nodes, function (node) {
-	
-	    // We want to see if the node is an instanceof HTMLSlotELement, but
-	    // that class won't exist if the browser that doesn't support native
-	    // Shadow DOM and if the Shadow DOM polyfill hasn't been loaded. Instead,
-	    // we do a simplistic check to see if the tag name is "slot".
-	    var isSlot = typeof HTMLSlotElement !== 'undefined' ? node instanceof HTMLSlotElement : node.localName === 'slot';
-	
-	    return isSlot ? node.assignedNodes({ flatten: true }) : [node];
-	  });
-	  var flattened = (_ref = []).concat.apply(_ref, _toConsumableArray(expanded));
-	  var result = ElementsOnly ? flattened.filter(function (node) {
-	    return node instanceof Element;
-	  }) : flattened;
-	  return result;
+	// Reflect the attribute to the given element.
+	// If the value is null, remove the attribute.
+	function setAttributeToElement(element, attributeName, value) {
+	  if (value === null || typeof value === 'undefined') {
+	    element.removeAttribute(attributeName);
+	  } else {
+	    var text = String(value);
+	    // Avoid recursive attributeChangedCallback calls.
+	    if (element.getAttribute(attributeName) !== text) {
+	      element.setAttribute(attributeName, value);
+	    }
+	  }
 	}
 
 /***/ },
@@ -667,6 +662,136 @@
 
 /***/ },
 /* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = ClickSelectionMixin;
+	
+	var _symbols = __webpack_require__(6);
+	
+	var _symbols2 = _interopRequireDefault(_symbols);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	/**
+	 * Mixin which maps a click (actually, a mousedown) to a selection.
+	 *
+	 * This simple mixin is useful in list box-like elements, where a click on a
+	 * list item implicitly selects it.
+	 *
+	 * The standard use for this mixin is in list-like elements. Native list
+	 * boxes don't appear to be consistent with regard to whether they select
+	 * on mousedown or click/mouseup. This mixin assumes the use of mousedown.
+	 * On touch devices, that event appears to trigger when the touch is *released*.
+	 *
+	 * This mixin only listens to mousedown events for the primary mouse button
+	 * (typically the left button). Right-clicks are ignored so that the browser
+	 * may display a context menu.
+	 *
+	 * Much has been written about how to ensure "fast tap" behavior on mobile
+	 * devices. This mixin makes a very straightforward use of a standard event, and
+	 * this appears to perform well on mobile devices when, e.g., the viewport is
+	 * configured with `width=device-width`.
+	 *
+	 * This mixin expects the component to provide an `items` property. It also
+	 * expects the component to define a `selectedItem` property; you can provide
+	 * that yourself, or use [SingleSelectionMixin](SingleSelectionMixin.md).
+	 *
+	 * If the component receives a clicks that doesn't correspond to an item (e.g.,
+	 * the user clicks on the element background visible between items), the
+	 * selection will be removed. However, if the component defines a
+	 * `selectionRequired` and this is true, a background click will *not* remove
+	 * the selection.
+	 *
+	 * @module ClickSelectionMixin
+	 * @param base {Class} the base class to extend
+	 * @returns {Class} the extended class
+	 */
+	function ClickSelectionMixin(base) {
+	
+	  /**
+	   * The class prototype added by the mixin.
+	   */
+	  var ClickSelection = function (_base) {
+	    _inherits(ClickSelection, _base);
+	
+	    function ClickSelection() {
+	      _classCallCheck(this, ClickSelection);
+	
+	      var _this = _possibleConstructorReturn(this, (ClickSelection.__proto__ || Object.getPrototypeOf(ClickSelection)).call(this));
+	
+	      _this.addEventListener('mousedown', function (event) {
+	
+	        // Only process events for the main (usually left) button.
+	        if (event.button !== 0) {
+	          return;
+	        }
+	
+	        _this[_symbols2.default.raiseChangeEvents] = true;
+	
+	        // If the item clicked on is a button, the event seems to be raised in
+	        // phase 2 (AT_TARGET) — but the event target will be the component, not
+	        // the item that was clicked on.
+	        var target = event.target === _this ? event.composedPath()[0] : // Event target isn't the item, so get it from path.
+	        event.target;
+	
+	        // Find which item was clicked on and, if found, select it. For elements
+	        // which don't require a selection, a background click will determine
+	        // the item was null, in which we case we'll remove the selection.
+	        var item = itemForTarget(_this, target);
+	        if (item || !_this.selectionRequired) {
+	
+	          if (!('selectedItem' in _this)) {
+	            console.warn('ClickSelectionMixin expects a component to define a "selectedItem" property.');
+	          } else {
+	            _this.selectedItem = item;
+	          }
+	
+	          // We don't call preventDefault here. The default behavior for
+	          // mousedown includes setting keyboard focus if the element doesn't
+	          // already have the focus, and we want to preserve that behavior.
+	          event.stopPropagation();
+	        }
+	
+	        _this[_symbols2.default.raiseChangeEvents] = false;
+	      });
+	      return _this;
+	    }
+	
+	    return ClickSelection;
+	  }(base);
+	
+	  return ClickSelection;
+	}
+	
+	/*
+	 * Return the list item that is, or contains, the indicated target element.
+	 * Return null if not found.
+	 */
+	function itemForTarget(listElement, target) {
+	  var items = listElement.items;
+	  var itemCount = items ? items.length : 0;
+	  for (var i = 0; i < itemCount; i++) {
+	    var item = items[i];
+	    if (item === target || item.contains(target)) {
+	      return item;
+	    }
+	  }
+	  return null;
+	}
+
+/***/ },
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -936,136 +1061,6 @@
 	exports.default = symbols;
 
 /***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = ClickSelectionMixin;
-	
-	var _symbols = __webpack_require__(5);
-	
-	var _symbols2 = _interopRequireDefault(_symbols);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	/**
-	 * Mixin which maps a click (actually, a mousedown) to a selection.
-	 *
-	 * This simple mixin is useful in list box-like elements, where a click on a
-	 * list item implicitly selects it.
-	 *
-	 * The standard use for this mixin is in list-like elements. Native list
-	 * boxes don't appear to be consistent with regard to whether they select
-	 * on mousedown or click/mouseup. This mixin assumes the use of mousedown.
-	 * On touch devices, that event appears to trigger when the touch is *released*.
-	 *
-	 * This mixin only listens to mousedown events for the primary mouse button
-	 * (typically the left button). Right-clicks are ignored so that the browser
-	 * may display a context menu.
-	 *
-	 * Much has been written about how to ensure "fast tap" behavior on mobile
-	 * devices. This mixin makes a very straightforward use of a standard event, and
-	 * this appears to perform well on mobile devices when, e.g., the viewport is
-	 * configured with `width=device-width`.
-	 *
-	 * This mixin expects the component to provide an `items` property. It also
-	 * expects the component to define a `selectedItem` property; you can provide
-	 * that yourself, or use [SingleSelectionMixin](SingleSelectionMixin.md).
-	 *
-	 * If the component receives a clicks that doesn't correspond to an item (e.g.,
-	 * the user clicks on the element background visible between items), the
-	 * selection will be removed. However, if the component defines a
-	 * `selectionRequired` and this is true, a background click will *not* remove
-	 * the selection.
-	 *
-	 * @module ClickSelectionMixin
-	 * @param base {Class} the base class to extend
-	 * @returns {Class} the extended class
-	 */
-	function ClickSelectionMixin(base) {
-	
-	  /**
-	   * The class prototype added by the mixin.
-	   */
-	  var ClickSelection = function (_base) {
-	    _inherits(ClickSelection, _base);
-	
-	    function ClickSelection() {
-	      _classCallCheck(this, ClickSelection);
-	
-	      var _this = _possibleConstructorReturn(this, (ClickSelection.__proto__ || Object.getPrototypeOf(ClickSelection)).call(this));
-	
-	      _this.addEventListener('mousedown', function (event) {
-	
-	        // Only process events for the main (usually left) button.
-	        if (event.button !== 0) {
-	          return;
-	        }
-	
-	        _this[_symbols2.default.raiseChangeEvents] = true;
-	
-	        // If the item clicked on is a button, the event seems to be raised in
-	        // phase 2 (AT_TARGET) — but the event target will be the component, not
-	        // the item that was clicked on.
-	        var target = event.target === _this ? event.composedPath()[0] : // Event target isn't the item, so get it from path.
-	        event.target;
-	
-	        // Find which item was clicked on and, if found, select it. For elements
-	        // which don't require a selection, a background click will determine
-	        // the item was null, in which we case we'll remove the selection.
-	        var item = itemForTarget(_this, target);
-	        if (item || !_this.selectionRequired) {
-	
-	          if (!('selectedItem' in _this)) {
-	            console.warn('ClickSelectionMixin expects a component to define a "selectedItem" property.');
-	          } else {
-	            _this.selectedItem = item;
-	          }
-	
-	          // We don't call preventDefault here. The default behavior for
-	          // mousedown includes setting keyboard focus if the element doesn't
-	          // already have the focus, and we want to preserve that behavior.
-	          event.stopPropagation();
-	        }
-	
-	        _this[_symbols2.default.raiseChangeEvents] = false;
-	      });
-	      return _this;
-	    }
-	
-	    return ClickSelection;
-	  }(base);
-	
-	  return ClickSelection;
-	}
-	
-	/*
-	 * Return the list item that is, or contains, the indicated target element.
-	 * Return null if not found.
-	 */
-	function itemForTarget(listElement, target) {
-	  var items = listElement.items;
-	  var itemCount = items ? items.length : 0;
-	  for (var i = 0; i < itemCount; i++) {
-	    var item = items[i];
-	    if (item === target || item.contains(target)) {
-	      return item;
-	    }
-	  }
-	  return null;
-	}
-
-/***/ },
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1081,7 +1076,7 @@
 	
 	exports.default = ContentItemsMixin;
 	
-	var _content = __webpack_require__(3);
+	var _content = __webpack_require__(8);
 	
 	var content = _interopRequireWildcard(_content);
 	
@@ -1089,7 +1084,7 @@
 	
 	var _Symbol3 = _interopRequireDefault(_Symbol2);
 	
-	var _symbols = __webpack_require__(5);
+	var _symbols = __webpack_require__(6);
 	
 	var _symbols2 = _interopRequireDefault(_symbols);
 	
@@ -1243,6 +1238,164 @@
 
 /***/ },
 /* 8 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.assignedChildren = assignedChildren;
+	exports.assignedChildNodes = assignedChildNodes;
+	exports.assignedTextContent = assignedTextContent;
+	exports.filterAuxiliaryElements = filterAuxiliaryElements;
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
+	/**
+	 * Helpers for accessing a component's content.
+	 *
+	 * The standard DOM API provides several ways of accessing child content:
+	 * `children`, `childNodes`, and `textContent`. None of these functions are
+	 * Shadow DOM aware. This mixin defines variations of those functions that
+	 * *are* Shadow DOM aware.
+	 *
+	 * Example: you create a component `<count-children>` that displays a number
+	 * equal to the number of children placed inside that component. If someone
+	 * instantiates your component like:
+	 *
+	 *     <count-children>
+	 *       <div></div>
+	 *       <div></div>
+	 *       <div></div>
+	 *     </count-children>
+	 *
+	 * Then the component should show "3", because there are three children. To
+	 * calculate the number of children, the component can just calculate
+	 * `this.children.length`. However, suppose someone instantiates your
+	 * component inside one of their own components, and puts a `<slot>` element
+	 * inside your component:
+	 *
+	 *     <count-children>
+	 *       <slot></slot>
+	 *     </count-children>
+	 *
+	 * If your component only looks at `this.children`, it will always see exactly
+	 * one child — the `<slot>` element. But the user looking at the page will
+	 * *see* any nodes distributed to that slot. To match what the user sees, your
+	 * component should expand any `<slot>` elements it contains.
+	 *
+	 * That is one problem these helpers solve. For example, the helper
+	 * `assignedChildren` will return all children assigned to your component in
+	 * the composed tree.
+	 *
+	 * @module content
+	 */
+	
+	/**
+	 * An in-order collection of distributed children, expanding any slot
+	 * elements. Like the standard `children` property, this skips text and other
+	 * node types which are not Element instances.
+	 *
+	 * @param {HTMLElement} element - the element to inspect
+	 * @returns {Element[]} - the children assigned to the element
+	 */
+	function assignedChildren(element) {
+	  return expandAssignedNodes(element.children, true);
+	}
+	
+	/**
+	 * An in-order collection of distributed child nodes, expanding any slot
+	 * elements. Like the standard `childNodes` property, this includes text and
+	 * other types of nodes.
+	 *
+	 * @param {HTMLElement} element - the element to inspect
+	 * @returns {Node[]} - the nodes assigned to the element
+	 */
+	function assignedChildNodes(element) {
+	  return expandAssignedNodes(element.childNodes, false);
+	}
+	
+	/**
+	 * The concatenated `textContent` of all distributed child nodes, expanding
+	 * any slot elements.
+	 *
+	 * @param {HTMLElement} element - the element to inspect
+	 * @type {string} - the text content of all nodes assigned to the element
+	 */
+	function assignedTextContent(element) {
+	  var strings = assignedChildNodes(element).map(function (child) {
+	    return child.textContent;
+	  });
+	  return strings.join('');
+	}
+	
+	/**
+	 * Return the given elements, filtering out auxiliary elements that aren't
+	 * typically visible. Given a `NodeList` or array of objects, it will only
+	 * return array members that are instances of `Element` (`HTMLElement` or
+	 * `SVGElement`), and not on a blacklist of normally invisible elements
+	 * (such as `style` or `script`).
+	 *
+	 * @param {NodeList|Element[]} elements - the list of elements to filter
+	 * @returns {Element[]} - the filtered elements
+	 */
+	function filterAuxiliaryElements(elements) {
+	
+	  // These are tags that can appear in the document body, but do not seem to
+	  // have any user-visible manifestation.
+	  // See https://developer.mozilla.org/en-US/docs/Web/HTML/Element
+	  var auxiliaryTags = ['applet', // deprecated
+	  'basefont', // deprecated
+	  'embed', 'font', // deprecated
+	  'frame', // deprecated
+	  'frameset', // deprecated
+	  'isindex', // deprecated
+	  'keygen', // deprecated
+	  'link', 'multicol', // deprecated
+	  'nextid', // deprecated
+	  'noscript', 'object', 'param', 'script', 'style', 'template', 'noembed' // deprecated
+	  ];
+	
+	  return [].filter.call(elements, function (element) {
+	    return element instanceof Element && (!element.localName || auxiliaryTags.indexOf(element.localName) < 0);
+	  });
+	}
+	
+	//
+	// Helpers for the helper functions
+	//
+	
+	/*
+	 * Given a array of nodes, return a new array with any `slot` elements expanded
+	 * to the nodes assigned to those slots.
+	 *
+	 * If ElementsOnly is true, only Element instances are returned, as with the
+	 * standard `children` property. Otherwise, all nodes are returned, as in the
+	 * standard `childNodes` property.
+	 */
+	function expandAssignedNodes(nodes, ElementsOnly) {
+	  var _ref;
+	
+	  var expanded = Array.prototype.map.call(nodes, function (node) {
+	
+	    // We want to see if the node is an instanceof HTMLSlotELement, but
+	    // that class won't exist if the browser that doesn't support native
+	    // Shadow DOM and if the Shadow DOM polyfill hasn't been loaded. Instead,
+	    // we do a simplistic check to see if the tag name is "slot".
+	    var isSlot = typeof HTMLSlotElement !== 'undefined' ? node instanceof HTMLSlotElement : node.localName === 'slot';
+	
+	    return isSlot ? node.assignedNodes({ flatten: true }) : [node];
+	  });
+	  var flattened = (_ref = []).concat.apply(_ref, _toConsumableArray(expanded));
+	  var result = ElementsOnly ? flattened.filter(function (node) {
+	    return node instanceof Element;
+	  }) : flattened;
+	  return result;
+	}
+
+/***/ },
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1257,7 +1410,7 @@
 	
 	exports.default = DirectionSelectionMixin;
 	
-	var _symbols = __webpack_require__(5);
+	var _symbols = __webpack_require__(6);
 	
 	var _symbols2 = _interopRequireDefault(_symbols);
 	
@@ -1377,7 +1530,7 @@
 	}
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1392,7 +1545,7 @@
 	
 	exports.default = KeyboardDirectionMixin;
 	
-	var _symbols = __webpack_require__(5);
+	var _symbols = __webpack_require__(6);
 	
 	var _symbols2 = _interopRequireDefault(_symbols);
 	
@@ -1573,7 +1726,7 @@
 	}
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1588,7 +1741,7 @@
 	
 	exports.default = KeyboardMixin;
 	
-	var _symbols = __webpack_require__(5);
+	var _symbols = __webpack_require__(6);
 	
 	var _symbols2 = _interopRequireDefault(_symbols);
 	
@@ -1711,7 +1864,7 @@
 	}
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1726,11 +1879,11 @@
 	
 	exports.default = KeyboardPagedSelectionMixin;
 	
-	var _defaultScrollTarget = __webpack_require__(12);
+	var _defaultScrollTarget = __webpack_require__(13);
 	
 	var _defaultScrollTarget2 = _interopRequireDefault(_defaultScrollTarget);
 	
-	var _symbols = __webpack_require__(5);
+	var _symbols = __webpack_require__(6);
 	
 	var _symbols2 = _interopRequireDefault(_symbols);
 	
@@ -1942,7 +2095,7 @@
 	}
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1973,7 +2126,11 @@
 	// Return the parent of the given element that can be scrolled. If no such
 	// element is found, return null.
 	function getScrollingParent(element) {
-	  if (element === null || element instanceof ShadowRoot) {
+	  // We test against DocumentFragment below instead of ShadowRoot, because the
+	  // polyfill doesn't define the latter, and instead uses the former. In native
+	  // Shadow DOM, a ShadowRoot is a subclass of DocumentFragment, so the same
+	  // test works then too.
+	  if (element === null || element instanceof DocumentFragment) {
 	    // Didn't find a scrolling parent.
 	    return null;
 	  }
@@ -1989,7 +2146,7 @@
 	}
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2006,7 +2163,7 @@
 	
 	exports.default = KeyboardPrefixSelectionMixin;
 	
-	var _constants = __webpack_require__(14);
+	var _constants = __webpack_require__(15);
 	
 	var _constants2 = _interopRequireDefault(_constants);
 	
@@ -2014,7 +2171,7 @@
 	
 	var _Symbol3 = _interopRequireDefault(_Symbol2);
 	
-	var _symbols = __webpack_require__(5);
+	var _symbols = __webpack_require__(6);
 	
 	var _symbols2 = _interopRequireDefault(_symbols);
 	
@@ -2255,7 +2412,7 @@
 	}
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2284,7 +2441,7 @@
 	exports.default = constants;
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2394,7 +2551,7 @@
 	  return SelectionAria;
 	};
 	
-	var _symbols = __webpack_require__(5);
+	var _symbols = __webpack_require__(6);
 	
 	var _symbols2 = _interopRequireDefault(_symbols);
 	
@@ -2446,7 +2603,7 @@
 	 */
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2461,11 +2618,11 @@
 	
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 	
-	var _defaultScrollTarget = __webpack_require__(12);
+	var _defaultScrollTarget = __webpack_require__(13);
 	
 	var _defaultScrollTarget2 = _interopRequireDefault(_defaultScrollTarget);
 	
-	var _symbols = __webpack_require__(5);
+	var _symbols = __webpack_require__(6);
 	
 	var _symbols2 = _interopRequireDefault(_symbols);
 	
@@ -2597,7 +2754,7 @@
 	};
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2612,7 +2769,7 @@
 	
 	exports.default = ShadowTemplateMixin;
 	
-	var _symbols = __webpack_require__(5);
+	var _symbols = __webpack_require__(6);
 	
 	var _symbols2 = _interopRequireDefault(_symbols);
 	
@@ -2737,7 +2894,7 @@
 	}
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2758,7 +2915,7 @@
 	
 	var _Symbol3 = _interopRequireDefault(_Symbol2);
 	
-	var _symbols = __webpack_require__(5);
+	var _symbols = __webpack_require__(6);
 	
 	var _symbols2 = _interopRequireDefault(_symbols);
 	
@@ -3344,7 +3501,224 @@
 	}
 
 /***/ },
-/* 19 */
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _set = function set(object, property, value, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent !== null) { set(parent, property, value, receiver); } } else if ("value" in desc && desc.writable) { desc.value = value; } else { var setter = desc.set; if (setter !== undefined) { setter.call(receiver, value); } } return value; };
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	var _AttributeMarshallingMixin = __webpack_require__(2);
+	
+	var _AttributeMarshallingMixin2 = _interopRequireDefault(_AttributeMarshallingMixin);
+	
+	var _ChildrenContentMixin = __webpack_require__(21);
+	
+	var _ChildrenContentMixin2 = _interopRequireDefault(_ChildrenContentMixin);
+	
+	var _ClickSelectionMixin = __webpack_require__(5);
+	
+	var _ClickSelectionMixin2 = _interopRequireDefault(_ClickSelectionMixin);
+	
+	var _ContentItemsMixin = __webpack_require__(7);
+	
+	var _ContentItemsMixin2 = _interopRequireDefault(_ContentItemsMixin);
+	
+	var _DirectionSelectionMixin = __webpack_require__(9);
+	
+	var _DirectionSelectionMixin2 = _interopRequireDefault(_DirectionSelectionMixin);
+	
+	var _KeyboardDirectionMixin = __webpack_require__(10);
+	
+	var _KeyboardDirectionMixin2 = _interopRequireDefault(_KeyboardDirectionMixin);
+	
+	var _KeyboardMixin = __webpack_require__(11);
+	
+	var _KeyboardMixin2 = _interopRequireDefault(_KeyboardMixin);
+	
+	var _KeyboardPagedSelectionMixin = __webpack_require__(12);
+	
+	var _KeyboardPagedSelectionMixin2 = _interopRequireDefault(_KeyboardPagedSelectionMixin);
+	
+	var _KeyboardPrefixSelectionMixin = __webpack_require__(14);
+	
+	var _KeyboardPrefixSelectionMixin2 = _interopRequireDefault(_KeyboardPrefixSelectionMixin);
+	
+	var _SelectionAriaMixin = __webpack_require__(16);
+	
+	var _SelectionAriaMixin2 = _interopRequireDefault(_SelectionAriaMixin);
+	
+	var _SelectionInViewMixin = __webpack_require__(17);
+	
+	var _SelectionInViewMixin2 = _interopRequireDefault(_SelectionInViewMixin);
+	
+	var _ShadowTemplateMixin = __webpack_require__(18);
+	
+	var _ShadowTemplateMixin2 = _interopRequireDefault(_ShadowTemplateMixin);
+	
+	var _SingleSelectionMixin = __webpack_require__(19);
+	
+	var _SingleSelectionMixin2 = _interopRequireDefault(_SingleSelectionMixin);
+	
+	var _symbols = __webpack_require__(6);
+	
+	var _symbols2 = _interopRequireDefault(_symbols);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This is currently a demo of how multiple mixins cooperate to perform useful
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * functions.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * * The component uses ShadowTemplateMixin to populate its shadow root.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * * A user can click on a child item, and ClickSelectionMixin will set the
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *   selected item.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * * The SingleSelectionMixin will track the selected item, and map that to
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *   changes in the selection state of the selected/deselected items.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * * The SelectionAriaMixin will reflect an item's selection state using ARIA
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *   attributes to support assistive devices like screen readers.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * This demo will eventually evolve into a complete list box component, but
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * at the moment omits many features, including support for Page Up/Page Down
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * keys, keeping the selected item in view, the ability to select an item
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * by typing its initial characters, and support for slot elements as children.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+	
+	// We want to apply a number of mixin functions to HTMLElement.
+	var mixins = [_AttributeMarshallingMixin2.default, _ChildrenContentMixin2.default, _ClickSelectionMixin2.default, _ContentItemsMixin2.default, _DirectionSelectionMixin2.default, _KeyboardDirectionMixin2.default, _KeyboardMixin2.default, _KeyboardPagedSelectionMixin2.default, _KeyboardPrefixSelectionMixin2.default, _SelectionAriaMixin2.default, _SelectionInViewMixin2.default, _ShadowTemplateMixin2.default, _SingleSelectionMixin2.default];
+	
+	// The mixins are functions, so an efficient way to apply them all is with
+	// reduce. This is just function composition. We end up with a base class we
+	// can extend below.
+	var base = mixins.reduce(function (cls, mixin) {
+	  return mixin(cls);
+	}, HTMLElement);
+	
+	/**
+	 * A simple single-selection list box.
+	 *
+	 * This uses the base class we just created above, and adds in the behavior
+	 * unique to this list box element. As it turns out, much of this behavior is
+	 * also interesting to other components, and will eventually get factored into
+	 * other mixins.
+	 *
+	 * @extends HTMLElement
+	 * @mixes AttributeMarshallingMixin
+	 * @mixes ChildrenContentMixin
+	 * @mixes ClickSelectionMixin
+	 * @mixes ContentItemsMixin
+	 * @mixes DirectionSelectionMixin
+	 * @mixes KeyboardDirectionMixin
+	 * @mixes KeyboardMixin
+	 * @mixes KeyboardPagedSelectionMixin
+	 * @mixes KeyboardPrefixSelectionMixin
+	 * @mixes SelectionAriaMixin
+	 * @mixes SelectionInViewMixin
+	 * @mixes ShadowTemplateMixin
+	 * @mixes SingleSelectionMixin
+	 */
+	
+	var ListBox = function (_base) {
+	  _inherits(ListBox, _base);
+	
+	  function ListBox() {
+	    _classCallCheck(this, ListBox);
+	
+	    return _possibleConstructorReturn(this, (ListBox.__proto__ || Object.getPrototypeOf(ListBox)).apply(this, arguments));
+	  }
+	
+	  _createClass(ListBox, [{
+	    key: _symbols2.default.itemSelected,
+	
+	
+	    // Map item selection to a `selected` CSS class.
+	    value: function value(item, selected) {
+	      if (_get(ListBox.prototype.__proto__ || Object.getPrototypeOf(ListBox.prototype), _symbols2.default.itemSelected, this)) {
+	        _get(ListBox.prototype.__proto__ || Object.getPrototypeOf(ListBox.prototype), _symbols2.default.itemSelected, this).call(this, item, selected);
+	      }
+	      item.classList.toggle('selected', selected);
+	    }
+	
+	    /**
+	     * The vertical (default) or horizontal orientation of the list.
+	     *
+	     * Supported values are "horizontal" or "vertical".
+	     *
+	     * @type {string}
+	     */
+	
+	  }, {
+	    key: _symbols2.default.defaults,
+	
+	
+	    // We define a collection of default property values which can be set in
+	    // the constructor or connectedCallback. Defining the actual default values
+	    // in those calls would complicate things if a subclass someday wants to
+	    // define its own default value.
+	    get: function get() {
+	      var defaults = _get(ListBox.prototype.__proto__ || Object.getPrototypeOf(ListBox.prototype), _symbols2.default.defaults, this) || {};
+	      // By default, we assume the list presents list items vertically.
+	      defaults.orientation = 'vertical';
+	      return defaults;
+	    }
+	  }, {
+	    key: 'orientation',
+	    get: function get() {
+	      return this[_symbols2.default.orientation] || this[_symbols2.default.defaults].orientation;
+	    },
+	    set: function set(value) {
+	      var changed = value !== this[_symbols2.default.orientation];
+	      this[_symbols2.default.orientation] = value;
+	      if ('orientation' in base) {
+	        _set(ListBox.prototype.__proto__ || Object.getPrototypeOf(ListBox.prototype), 'orientation', value, this);
+	      }
+	      // Reflect attribute for styling
+	      this.reflectAttribute('orientation', value);
+	      if (changed && this[_symbols2.default.raiseChangeEvents]) {
+	        var event = new CustomEvent('orientation-changed');
+	        this.dispatchEvent(event);
+	      }
+	    }
+	
+	    // Define a template that will be stamped into the Shadow DOM by the
+	    // ShadowTemplateMixin.
+	
+	  }, {
+	    key: _symbols2.default.template,
+	    get: function get() {
+	      return '\n      <style>\n      :host {\n        border: 1px solid gray;\n        box-sizing: border-box;\n        cursor: default;\n        display: flex;\n        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);\n      }\n\n      #itemsContainer {\n        flex: 1;\n        -webkit-overflow-scrolling: touch; /* for momentum scrolling */\n        overflow-x: hidden;\n        overflow-y: scroll;\n      }\n      :host([orientation="horizontal"]) #itemsContainer {\n        display: flex;\n        overflow-x: scroll;\n        overflow-y: hidden;\n      }\n\n      #itemsContainer ::slotted(*) {\n        cursor: default;\n        padding: 0.25em;\n        -webkit-user-select: none;\n        -moz-user-select: none;\n        -ms-user-select: none;\n        user-select: none;\n      }\n\n      #itemsContainer ::slotted(.selected) {\n        background: var(--elix-selected-background, highlight);\n        color: var(--elix-selected-color, highlighttext);\n      }\n      </style>\n\n      <div id="itemsContainer" role="none">\n        <slot></slot>\n      </div>\n    ';
+	    }
+	
+	    /**
+	     * Fires when the orientation property changes in response to internal
+	     * component activity.
+	     *
+	     * @memberof ListBox
+	     * @event orientation-changed
+	     */
+	
+	  }]);
+	
+	  return ListBox;
+	}(base);
+	
+	customElements.define('sample-list-box', ListBox);
+	exports.default = ListBox;
+
+/***/ },
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3357,11 +3731,177 @@
 	
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 	
-	var _SingleSelectionMixin2 = __webpack_require__(18);
+	exports.default = ChildrenContentMixin;
+	
+	var _content = __webpack_require__(8);
+	
+	var _Symbol2 = __webpack_require__(4);
+	
+	var _Symbol3 = _interopRequireDefault(_Symbol2);
+	
+	var _symbols = __webpack_require__(6);
+	
+	var _symbols2 = _interopRequireDefault(_symbols);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	// Symbols for private data members on an element.
+	var slotchangeFiredSymbol = (0, _Symbol3.default)('slotchangeFired');
+	
+	/**
+	 * Mixin which defines a component's `symbols.content` property as all
+	 * child elements, including elements distributed to the component's slots.
+	 *
+	 * This also provides notification of changes to a component's content. It
+	 * will invoke a `symbols.contentChanged` method when the component is first
+	 * instantiated, and whenever its distributed children change. This is intended
+	 * to satisfy the Gold Standard checklist item for monitoring
+	 * [Content Changes](https://github.com/webcomponents/gold-standard/wiki/Content-Changes).
+	 *
+	 * Example:
+	 *
+	 * ```
+	 * let base = ChildrenContentMixin(DistributedChildrenMixin(HTMLElement));
+	 * class CountingElement extends base {
+	 *
+	 *   constructor() {
+	 *     super();
+	 *     let root = this.attachShadow({ mode: 'open' });
+	 *     root.innerHTML = `<slot></slot>`;
+	 *     this[symbols.shadowCreated]();
+	 *   }
+	 *
+	 *   [symbols.contentChanged]() {
+	 *     if (super[symbols.contentChanged]) { super[symbols.contentChanged](); }
+	 *     // Count the component's children, both initially and when changed.
+	 *     this.count = this.distributedChildren.length;
+	 *   }
+	 *
+	 * }
+	 * ```
+	 *
+	 * Note that content change detection depends upon the element having at least
+	 * one `slot` element in its shadow subtree.
+	 *
+	 * This mixin is intended for use with the
+	 * [DistributedChildrenMixin](DistributedChildrenMixin.md). See that mixin for
+	 * a discussion of how that works. This ChildrenContentMixin
+	 * provides an easy way of defining the "content" of a component as the
+	 * component's distributed children. That in turn lets mixins like
+	 * [ContentItemsMixin](ContentItemsMixin.md) manipulate the children as list
+	 * items.
+	 *
+	 * To receive `contentChanged` notification, this mixin expects a component to
+	 * invoke a method called `symbols.shadowCreated` after the component's shadow
+	 * root has been created and populated.
+	 *
+	 * @module ChildrenContentMixin
+	 * @param base {Class} the base class to extend
+	 * @returns {Class} the extended class
+	 */
+	function ChildrenContentMixin(base) {
+	
+	  /**
+	   * The class prototype added by the mixin.
+	   */
+	  var ChildrenContent = function (_base) {
+	    _inherits(ChildrenContent, _base);
+	
+	    function ChildrenContent() {
+	      _classCallCheck(this, ChildrenContent);
+	
+	      return _possibleConstructorReturn(this, (ChildrenContent.__proto__ || Object.getPrototypeOf(ChildrenContent)).apply(this, arguments));
+	    }
+	
+	    _createClass(ChildrenContent, [{
+	      key: 'connectedCallback',
+	      value: function connectedCallback() {
+	        var _this2 = this;
+	
+	        if (_get(ChildrenContent.prototype.__proto__ || Object.getPrototypeOf(ChildrenContent.prototype), 'connectedCallback', this)) {
+	          _get(ChildrenContent.prototype.__proto__ || Object.getPrototypeOf(ChildrenContent.prototype), 'connectedCallback', this).call(this);
+	        }
+	        // HACK for Blink, which doesn't correctly fire initial slotchange.
+	        // See https://bugs.chromium.org/p/chromium/issues/detail?id=696659
+	        setTimeout(function () {
+	          // By this point, the slotchange event should have fired.
+	          if (!_this2[slotchangeFiredSymbol]) {
+	            // slotchange event didn't fire; we're in Blink. Force the invocation
+	            // of contentChanged that would have happened on slotchange.
+	            if (_this2[_symbols2.default.contentChanged]) {
+	              _this2[_symbols2.default.contentChanged]();
+	            }
+	          }
+	        });
+	      }
+	
+	      /**
+	       * The content of this component, defined to be the flattened array of
+	       * children distributed to the component.
+	       *
+	       * The default implementation of this property only returns instances of
+	       * Element
+	       *
+	       * @type {HTMLElement[]}
+	       */
+	
+	    }, {
+	      key: _symbols2.default.shadowCreated,
+	      value: function value() {
+	        var _this3 = this;
+	
+	        if (_get(ChildrenContent.prototype.__proto__ || Object.getPrototypeOf(ChildrenContent.prototype), _symbols2.default.shadowCreated, this)) {
+	          _get(ChildrenContent.prototype.__proto__ || Object.getPrototypeOf(ChildrenContent.prototype), _symbols2.default.shadowCreated, this).call(this);
+	        }
+	        // Listen to changes on all slots.
+	        var slots = this.shadowRoot.querySelectorAll('slot');
+	        slots.forEach(function (slot) {
+	          return slot.addEventListener('slotchange', function (event) {
+	            _this3[slotchangeFiredSymbol] = true;
+	            if (_this3[_symbols2.default.contentChanged]) {
+	              _this3[_symbols2.default.contentChanged]();
+	            }
+	          });
+	        });
+	      }
+	    }, {
+	      key: _symbols2.default.content,
+	      get: function get() {
+	        return (0, _content.assignedChildren)(this);
+	      }
+	    }]);
+	
+	    return ChildrenContent;
+	  }(base);
+	
+	  return ChildrenContent;
+	}
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	var _SingleSelectionMixin2 = __webpack_require__(19);
 	
 	var _SingleSelectionMixin3 = _interopRequireDefault(_SingleSelectionMixin2);
 	
-	var _symbols = __webpack_require__(5);
+	var _symbols = __webpack_require__(6);
 	
 	var _symbols2 = _interopRequireDefault(_symbols);
 	

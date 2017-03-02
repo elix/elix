@@ -21,7 +21,11 @@ export default function defaultScrollTarget(element) {
 // Return the parent of the given element that can be scrolled. If no such
 // element is found, return null.
 function getScrollingParent(element) {
-  if (element === null || element instanceof ShadowRoot) {
+  // We test against DocumentFragment below instead of ShadowRoot, because the
+  // polyfill doesn't define the latter, and instead uses the former. In native
+  // Shadow DOM, a ShadowRoot is a subclass of DocumentFragment, so the same
+  // test works then too.
+  if (element === null || element instanceof DocumentFragment) {
     // Didn't find a scrolling parent.
     return null;
   }

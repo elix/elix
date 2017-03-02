@@ -73,27 +73,27 @@
 
 	'use strict';
 	
-	var _microtask = __webpack_require__(3);
+	var _microtask = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./src/microtask\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	
 	var _microtask2 = _interopRequireDefault(_microtask);
 	
-	var _SelectionAriaMixin = __webpack_require__(4);
+	var _SelectionAriaMixin = __webpack_require__(3);
 	
 	var _SelectionAriaMixin2 = _interopRequireDefault(_SelectionAriaMixin);
 	
-	var _ShadowTemplateMixin = __webpack_require__(7);
+	var _ShadowTemplateMixin = __webpack_require__(6);
 	
 	var _ShadowTemplateMixin2 = _interopRequireDefault(_ShadowTemplateMixin);
 	
-	var _SingleSelectionMixin = __webpack_require__(8);
+	var _SingleSelectionMixin = __webpack_require__(7);
 	
 	var _SingleSelectionMixin2 = _interopRequireDefault(_SingleSelectionMixin);
 	
-	var _Symbol2 = __webpack_require__(6);
+	var _Symbol2 = __webpack_require__(5);
 	
 	var _Symbol3 = _interopRequireDefault(_Symbol2);
 	
-	var _symbols = __webpack_require__(5);
+	var _symbols = __webpack_require__(4);
 	
 	var _symbols2 = _interopRequireDefault(_symbols);
 	
@@ -117,70 +117,6 @@
 
 /***/ },
 /* 3 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = microtask;
-	/*
-	 * Microtask helper for IE 11.
-	 *
-	 * Executing a function as a microtask is trivial in browsers that support
-	 * promises, whose then() clauses use microtask timing. IE 11 doesn't support
-	 * promises, but does support MutationObservers, which are also executed as
-	 * microtasks. So this helper uses an MutationObserver to achieve microtask
-	 * timing.
-	 *
-	 * See https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/
-	 *
-	 * Inspired by Polymer's async() function.
-	 */
-	
-	// The queue of pending callbacks to be executed as microtasks.
-	var callbacks = [];
-	
-	// Create an element that we will modify to force observable mutations.
-	var element = document.createTextNode('');
-	
-	// A monotonically-increasing value.
-	var counter = 0;
-	
-	/**
-	 * Add a callback to the microtask queue.
-	 *
-	 * This uses a MutationObserver so that it works on IE 11.
-	 *
-	 * NOTE: IE 11 may actually use timeout timing with MutationObservers. This
-	 * needs more investigation.
-	 *
-	 * @function microtask
-	 * @param {function} callback
-	 */
-	function microtask(callback) {
-	  callbacks.push(callback);
-	  // Force a mutation.
-	  element.textContent = ++counter;
-	}
-	
-	// Execute any pending callbacks.
-	function executeCallbacks() {
-	  while (callbacks.length > 0) {
-	    var callback = callbacks.shift();
-	    callback();
-	  }
-	}
-	
-	// Create the observer.
-	var observer = new MutationObserver(executeCallbacks);
-	observer.observe(element, {
-	  characterData: true
-	});
-
-/***/ },
-/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -290,7 +226,7 @@
 	  return SelectionAria;
 	};
 	
-	var _symbols = __webpack_require__(5);
+	var _symbols = __webpack_require__(4);
 	
 	var _symbols2 = _interopRequireDefault(_symbols);
 	
@@ -342,7 +278,7 @@
 	 */
 
 /***/ },
-/* 5 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -351,7 +287,7 @@
 	  value: true
 	});
 	
-	var _Symbol2 = __webpack_require__(6);
+	var _Symbol2 = __webpack_require__(5);
 	
 	var _Symbol3 = _interopRequireDefault(_Symbol2);
 	
@@ -612,7 +548,7 @@
 	exports.default = symbols;
 
 /***/ },
-/* 6 */
+/* 5 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -668,7 +604,7 @@
 	exports.default = symbolFunction;
 
 /***/ },
-/* 7 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -683,7 +619,7 @@
 	
 	exports.default = ShadowTemplateMixin;
 	
-	var _symbols = __webpack_require__(5);
+	var _symbols = __webpack_require__(4);
 	
 	var _symbols2 = _interopRequireDefault(_symbols);
 	
@@ -808,7 +744,7 @@
 	}
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -825,11 +761,11 @@
 	
 	exports.default = SingleSelectionMixin;
 	
-	var _Symbol2 = __webpack_require__(6);
+	var _Symbol2 = __webpack_require__(5);
 	
 	var _Symbol3 = _interopRequireDefault(_Symbol2);
 	
-	var _symbols = __webpack_require__(5);
+	var _symbols = __webpack_require__(4);
 	
 	var _symbols2 = _interopRequireDefault(_symbols);
 	

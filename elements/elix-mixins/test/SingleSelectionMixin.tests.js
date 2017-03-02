@@ -1,6 +1,5 @@
 import { assert } from 'chai';
 import flushPolyfills from '../../../test/flushPolyfills';
-import microtask from '../src/microtask';
 import SingleSelectionMixin from '../src/SingleSelectionMixin';
 import symbols from '../src/symbols';
 
@@ -227,7 +226,7 @@ describe("SingleSelectionMixin", () => {
     container.appendChild(fixture);
     fixture.selectedIndex = 1; // This should not trigger events.
     // Give event handler a chance to run (but it shouldn't).
-    microtask(done);
+    setTimeout(done);
   });
 
   it("raises can-select-previous-changed event", done => {

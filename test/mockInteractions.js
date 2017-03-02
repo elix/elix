@@ -12,14 +12,6 @@ try {
   hasKeyboardEventConstructor = false;
 }
 
-try {
-  new MouseEvent('click');
-  hasMouseEventConstructor = true;
-} catch (e) {
-  /* IE 11 */
-  hasMouseEventConstructor = false;
-}
-
 
 /**
  * Raise a synthetic keyboard event on the indicated element.
@@ -81,28 +73,6 @@ export function dispatchSyntheticMouseEvent(element, eventType, init) {
   properties.clientY = properties.clientY || 0;
   properties.button = properties.button || 0;
 
-  let event;
-  if (hasMouseEventConstructor) {
-    event = new MouseEvent(eventType, properties);
-  } else {
-    event = document.createEvent('MouseEvent');
-    event.initMouseEvent(
-      eventType,
-      properties.bubbles,
-      properties.cancelable,
-      null,                 // view
-      null,                 // detail
-      0,                    // screenX
-      0,                    // screenY
-      properties.clientX,
-      properties.clientX,
-      false,                // ctrlKey
-      false,                // altKey
-      false,                // shiftKey
-      false,                // metaKey
-      properties.button,
-      null                  // relatedTarge
-    );
-  }
+  const event = new MouseEvent(eventType, properties);
   element.dispatchEvent(event);
 }

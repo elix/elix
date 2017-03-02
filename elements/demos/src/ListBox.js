@@ -17,6 +17,7 @@
  */
 
 
+import AttributeMarshallingMixin from '../../elix-mixins/src/AttributeMarshallingMixin';
 import ChildrenContentMixin from '../../elix-mixins/src/ChildrenContentMixin';
 import ClickSelectionMixin from '../../elix-mixins/src/ClickSelectionMixin';
 import ContentItemsMixin from '../../elix-mixins/src/ContentItemsMixin';
@@ -34,6 +35,7 @@ import symbols from '../../elix-mixins/src/symbols';
 
 // We want to apply a number of mixin functions to HTMLElement.
 const mixins = [
+  AttributeMarshallingMixin,
   ChildrenContentMixin,
   ClickSelectionMixin,
   ContentItemsMixin,
@@ -63,6 +65,7 @@ const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
  * other mixins.
  *
  * @extends HTMLElement
+ * @mixes AttributeMarshallingMixin
  * @mixes ChildrenContentMixin
  * @mixes ClickSelectionMixin
  * @mixes ContentItemsMixin
@@ -77,16 +80,6 @@ const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
  * @mixes SingleSelectionMixin
  */
 class ListBox extends base {
-
-  // Map attribute changes to the corresponding property.
-  attributeChangedCallback(attributeName, oldValue, newValue) {
-    if (super.attributeChangedCallback) { super.attributeChangedCallback(attributeName, oldValue, newValue); }
-    const mapAttributeToProperty = {
-      'selected-index': 'selectedIndex'
-    };
-    const propertyName = mapAttributeToProperty[attributeName] || attributeName;
-    this[propertyName] = newValue;
-  }
 
   // We define a collection of default property values which can be set in
   // the constructor or connectedCallback. Defining the actual default values
@@ -105,11 +98,6 @@ class ListBox extends base {
     item.classList.toggle('selected', selected);
   }
 
-  // Tell the browser which attributes we want to handle.
-  static get observedAttributes() {
-    return ['orientation', 'selected-index'];
-  }
-
   /**
    * The vertical (default) or horizontal orientation of the list.
    *
@@ -125,9 +113,7 @@ class ListBox extends base {
     this[symbols.orientation] = value;
     if ('orientation' in base) { super.orientation = value; }
     // Reflect attribute for styling
-    if (this.getAttribute('orientation') !== value) {
-      this.setAttribute('orientation', value);
-    }
+    this.reflectAttribute('orientation', value);
     if (changed && this[symbols.raiseChangeEvents]) {
       const event = new CustomEvent('orientation-changed');
       this.dispatchEvent(event);

@@ -1,6 +1,5 @@
 import { assert } from 'chai';
 import flushPolyfills from '../../../test/flushPolyfills';
-import microtask from '../src/microtask';
 import ChildrenContentMixin from '../src/ChildrenContentMixin';
 import ShadowTemplateMixin from '../src/ShadowTemplateMixin';
 import symbols from '../src/symbols';
@@ -98,15 +97,13 @@ describe("ChildrenContentMixin", () => {
     container.appendChild(fixture);
     // Wait for initial contentChanged call to complete.
     flushPolyfills();
-    microtask(() => {
-      fixture.contentChangedCallCount = 0;
-      fixture.textContent = 'chihuahua';
-      // Wait for slotchange event to be processed.
-      flushPolyfills();
-      setTimeout(() => {
-        assert(fixture.contentChangedCallCount === 1);
-        done();
-      });
+    fixture.contentChangedCallCount = 0;
+    fixture.textContent = 'chihuahua';
+    // Wait for slotchange event to be processed.
+    flushPolyfills();
+    setTimeout(() => {
+      assert(fixture.contentChangedCallCount === 1);
+      done();
     });
   });
 
@@ -115,17 +112,15 @@ describe("ChildrenContentMixin", () => {
     container.appendChild(fixture);
     // Wait for initial contentChanged call to complete.
     flushPolyfills();
-    microtask(() => {
-      fixture.contentChangedCallCount = 0;
-      const div = document.createElement('div');
-      div.textContent = 'dingo';
-      fixture.appendChild(div);
-      // Wait for slotchange event to be processed.
-      flushPolyfills();
-      setTimeout(() => {
-        assert(fixture.contentChangedCallCount === 1);
-        done();
-      });
+    fixture.contentChangedCallCount = 0;
+    const div = document.createElement('div');
+    div.textContent = 'dingo';
+    fixture.appendChild(div);
+    // Wait for slotchange event to be processed.
+    flushPolyfills();
+    setTimeout(() => {
+      assert(fixture.contentChangedCallCount === 1);
+      done();
     });
   });
 
@@ -135,15 +130,13 @@ describe("ChildrenContentMixin", () => {
     container.appendChild(wrapper);
     // Wait for initial contentChanged call to complete.
     flushPolyfills();
-    microtask(() => {
-      fixture.contentChangedCallCount = 0;
-      wrapper.textContent = 'echidna';
-      // Wait for slotchange event to be processed.
-      flushPolyfills();
-      setTimeout(() => {
-        assert(fixture.contentChangedCallCount === 1);
-        done();
-      });
+    fixture.contentChangedCallCount = 0;
+    wrapper.textContent = 'echidna';
+    // Wait for slotchange event to be processed.
+    flushPolyfills();
+    setTimeout(() => {
+      assert(fixture.contentChangedCallCount === 1);
+      done();
     });
   });
 
@@ -221,18 +214,16 @@ describe("ChildrenContentMixin", () => {
     // Wait for initial contentChanged call to complete and for first
     // slotchange event to be processed.
     flushPolyfills();
+    fixture.contentChangedCallCount = 0;
+
+    // Remove a light DOM child, which should trigger contentChanged.
+    fixture.removeChild(div);
+
+    // Wait for second slotchange event to be processed.
+    flushPolyfills();
     setTimeout(() => {
-      fixture.contentChangedCallCount = 0;
-
-      // Remove a light DOM child, which should trigger contentChanged.
-      fixture.removeChild(div);
-
-      // Wait for second slotchange event to be processed.
-      flushPolyfills();
-      setTimeout(() => {
-        assert(fixture.contentChangedCallCount === 1);
-        done();
-      });
+      assert(fixture.contentChangedCallCount === 1);
+      done();
     });
   });
 
