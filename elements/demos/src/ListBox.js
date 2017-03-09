@@ -17,7 +17,7 @@
  */
 
 
-import ChildrenContentMixin from '../../elix-mixins/src/ChildrenContentMixin';
+import DefaultSlotContentMixin from '../../elix-mixins/src/DefaultSlotContentMixin';
 import ClickSelectionMixin from '../../elix-mixins/src/ClickSelectionMixin';
 import ContentItemsMixin from '../../elix-mixins/src/ContentItemsMixin';
 import DirectionSelectionMixin from '../../elix-mixins/src/DirectionSelectionMixin';
@@ -34,7 +34,7 @@ import symbols from '../../elix-mixins/src/symbols';
 
 // We want to apply a number of mixin functions to HTMLElement.
 const mixins = [
-  ChildrenContentMixin,
+  DefaultSlotContentMixin,
   ClickSelectionMixin,
   ContentItemsMixin,
   DirectionSelectionMixin,
@@ -63,7 +63,7 @@ const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
  * other mixins.
  *
  * @extends HTMLElement
- * @mixes ChildrenContentMixin
+ * @mixes DefaultSlotContentMixin
  * @mixes ClickSelectionMixin
  * @mixes ContentItemsMixin
  * @mixes DirectionSelectionMixin

@@ -64,9 +64,9 @@
 	
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 	
-	var _ChildrenContentMixin = __webpack_require__(2);
+	var _DefaultSlotContentMixin = __webpack_require__(2);
 	
-	var _ChildrenContentMixin2 = _interopRequireDefault(_ChildrenContentMixin);
+	var _DefaultSlotContentMixin2 = _interopRequireDefault(_DefaultSlotContentMixin);
 	
 	var _ClickSelectionMixin = __webpack_require__(6);
 	
@@ -141,7 +141,7 @@
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 	
 	// We want to apply a number of mixin functions to HTMLElement.
-	var mixins = [_ChildrenContentMixin2.default, _ClickSelectionMixin2.default, _ContentItemsMixin2.default, _DirectionSelectionMixin2.default, _KeyboardDirectionMixin2.default, _KeyboardMixin2.default, _KeyboardPagedSelectionMixin2.default, _KeyboardPrefixSelectionMixin2.default, _SelectionAriaMixin2.default, _SelectionInViewMixin2.default, _ShadowTemplateMixin2.default, _SingleSelectionMixin2.default];
+	var mixins = [_DefaultSlotContentMixin2.default, _ClickSelectionMixin2.default, _ContentItemsMixin2.default, _DirectionSelectionMixin2.default, _KeyboardDirectionMixin2.default, _KeyboardMixin2.default, _KeyboardPagedSelectionMixin2.default, _KeyboardPrefixSelectionMixin2.default, _SelectionAriaMixin2.default, _SelectionInViewMixin2.default, _ShadowTemplateMixin2.default, _SingleSelectionMixin2.default];
 	
 	// The mixins are functions, so an efficient way to apply them all is with
 	// reduce. This is just function composition. We end up with a base class we
@@ -159,7 +159,7 @@
 	 * other mixins.
 	 *
 	 * @extends HTMLElement
-	 * @mixes ChildrenContentMixin
+	 * @mixes DefaultSlotContentMixin
 	 * @mixes ClickSelectionMixin
 	 * @mixes ContentItemsMixin
 	 * @mixes DirectionSelectionMixin
@@ -299,7 +299,7 @@
 	
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 	
-	exports.default = ChildrenContentMixin;
+	exports.default = DefaultSlotContentMixin;
 	
 	var _content = __webpack_require__(3);
 	
@@ -323,8 +323,8 @@
 	var slotchangeFiredSymbol = (0, _Symbol3.default)('slotchangeFired');
 	
 	/**
-	 * Mixin which defines a component's `symbols.content` property as all
-	 * child elements, including elements distributed to the component's slots.
+	 * Mixin which defines a component's `symbols.content` property as the flattened
+	 * set of nodes assigned to its default slot.
 	 *
 	 * This also provides notification of changes to a component's content. It
 	 * will invoke a `symbols.contentChanged` method when the component is first
@@ -335,7 +335,7 @@
 	 * Example:
 	 *
 	 * ```
-	 * let base = ChildrenContentMixin(DistributedChildrenMixin(HTMLElement));
+	 * let base = DefaultSlotContentMixin(HTMLElement);
 	 * class CountingElement extends base {
 	 *
 	 *   constructor() {
@@ -354,46 +354,38 @@
 	 * }
 	 * ```
 	 *
-	 * Note that content change detection depends upon the element having at least
-	 * one `slot` element in its shadow subtree.
-	 *
-	 * This mixin is intended for use with the
-	 * [DistributedChildrenMixin](DistributedChildrenMixin.md). See that mixin for
-	 * a discussion of how that works. This ChildrenContentMixin
-	 * provides an easy way of defining the "content" of a component as the
-	 * component's distributed children. That in turn lets mixins like
-	 * [ContentItemsMixin](ContentItemsMixin.md) manipulate the children as list
-	 * items.
+	 * To use this mixin, the component should define a default (unnamed) `slot`
+	 * element in its shadow subtree.
 	 *
 	 * To receive `contentChanged` notification, this mixin expects a component to
 	 * invoke a method called `symbols.shadowCreated` after the component's shadow
 	 * root has been created and populated.
 	 *
-	 * @module ChildrenContentMixin
+	 * @module DefaultSlotContentMixin
 	 * @param base {Class} the base class to extend
 	 * @returns {Class} the extended class
 	 */
-	function ChildrenContentMixin(base) {
+	function DefaultSlotContentMixin(base) {
 	
 	  /**
 	   * The class prototype added by the mixin.
 	   */
-	  var ChildrenContent = function (_base) {
-	    _inherits(ChildrenContent, _base);
+	  var DefaultSlotContent = function (_base) {
+	    _inherits(DefaultSlotContent, _base);
 	
-	    function ChildrenContent() {
-	      _classCallCheck(this, ChildrenContent);
+	    function DefaultSlotContent() {
+	      _classCallCheck(this, DefaultSlotContent);
 	
-	      return _possibleConstructorReturn(this, (ChildrenContent.__proto__ || Object.getPrototypeOf(ChildrenContent)).apply(this, arguments));
+	      return _possibleConstructorReturn(this, (DefaultSlotContent.__proto__ || Object.getPrototypeOf(DefaultSlotContent)).apply(this, arguments));
 	    }
 	
-	    _createClass(ChildrenContent, [{
+	    _createClass(DefaultSlotContent, [{
 	      key: 'connectedCallback',
 	      value: function connectedCallback() {
 	        var _this2 = this;
 	
-	        if (_get(ChildrenContent.prototype.__proto__ || Object.getPrototypeOf(ChildrenContent.prototype), 'connectedCallback', this)) {
-	          _get(ChildrenContent.prototype.__proto__ || Object.getPrototypeOf(ChildrenContent.prototype), 'connectedCallback', this).call(this);
+	        if (_get(DefaultSlotContent.prototype.__proto__ || Object.getPrototypeOf(DefaultSlotContent.prototype), 'connectedCallback', this)) {
+	          _get(DefaultSlotContent.prototype.__proto__ || Object.getPrototypeOf(DefaultSlotContent.prototype), 'connectedCallback', this).call(this);
 	        }
 	        // HACK for Blink, which doesn't correctly fire initial slotchange.
 	        // See https://bugs.chromium.org/p/chromium/issues/detail?id=696659
@@ -410,11 +402,8 @@
 	      }
 	
 	      /**
-	       * The content of this component, defined to be the flattened array of
-	       * children distributed to the component.
-	       *
-	       * The default implementation of this property only returns instances of
-	       * Element
+	       * The content of this component, defined to be the flattened set of
+	       * nodes assigned to its default unnamed slot.
 	       *
 	       * @type {HTMLElement[]}
 	       */
@@ -424,31 +413,38 @@
 	      value: function value() {
 	        var _this3 = this;
 	
-	        if (_get(ChildrenContent.prototype.__proto__ || Object.getPrototypeOf(ChildrenContent.prototype), _symbols2.default.shadowCreated, this)) {
-	          _get(ChildrenContent.prototype.__proto__ || Object.getPrototypeOf(ChildrenContent.prototype), _symbols2.default.shadowCreated, this).call(this);
+	        if (_get(DefaultSlotContent.prototype.__proto__ || Object.getPrototypeOf(DefaultSlotContent.prototype), _symbols2.default.shadowCreated, this)) {
+	          _get(DefaultSlotContent.prototype.__proto__ || Object.getPrototypeOf(DefaultSlotContent.prototype), _symbols2.default.shadowCreated, this).call(this);
 	        }
-	        // Listen to changes on all slots.
-	        var slots = this.shadowRoot.querySelectorAll('slot');
-	        slots.forEach(function (slot) {
-	          return slot.addEventListener('slotchange', function (event) {
-	            _this3[slotchangeFiredSymbol] = true;
-	            if (_this3[_symbols2.default.contentChanged]) {
-	              _this3[_symbols2.default.contentChanged]();
-	            }
-	          });
+	        // Listen to changes on the default slot.
+	        var slot = defaultSlot(this);
+	        slot.addEventListener('slotchange', function (event) {
+	          _this3[slotchangeFiredSymbol] = true;
+	          if (_this3[_symbols2.default.contentChanged]) {
+	            _this3[_symbols2.default.contentChanged]();
+	          }
 	        });
 	      }
 	    }, {
 	      key: _symbols2.default.content,
 	      get: function get() {
-	        return (0, _content.assignedChildren)(this);
+	        var slot = defaultSlot(this);
+	        return slot ? slot.assignedNodes({ flatten: true }) : [];
 	      }
 	    }]);
 	
-	    return ChildrenContent;
+	    return DefaultSlotContent;
 	  }(base);
 	
-	  return ChildrenContent;
+	  return DefaultSlotContent;
+	}
+	
+	function defaultSlot(element) {
+	  var defaultSlot = element.shadowRoot && element.shadowRoot.querySelector('slot:not([name])');
+	  if (element.shadowRoot && !defaultSlot) {
+	    console.warn('DefaultSlotContentMixin expects a component to define a shadow tree that includes a default (unnamed) slot.');
+	  }
+	  return defaultSlot;
 	}
 
 /***/ },
@@ -460,107 +456,30 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.assignedChildren = assignedChildren;
-	exports.assignedChildNodes = assignedChildNodes;
-	exports.assignedTextContent = assignedTextContent;
-	exports.filterAuxiliaryElements = filterAuxiliaryElements;
-	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-	
+	exports.substantiveElements = substantiveElements;
 	/**
 	 * Helpers for accessing a component's content.
-	 *
-	 * The standard DOM API provides several ways of accessing child content:
-	 * `children`, `childNodes`, and `textContent`. None of these functions are
-	 * Shadow DOM aware. This mixin defines variations of those functions that
-	 * *are* Shadow DOM aware.
-	 *
-	 * Example: you create a component `<count-children>` that displays a number
-	 * equal to the number of children placed inside that component. If someone
-	 * instantiates your component like:
-	 *
-	 *     <count-children>
-	 *       <div></div>
-	 *       <div></div>
-	 *       <div></div>
-	 *     </count-children>
-	 *
-	 * Then the component should show "3", because there are three children. To
-	 * calculate the number of children, the component can just calculate
-	 * `this.children.length`. However, suppose someone instantiates your
-	 * component inside one of their own components, and puts a `<slot>` element
-	 * inside your component:
-	 *
-	 *     <count-children>
-	 *       <slot></slot>
-	 *     </count-children>
-	 *
-	 * If your component only looks at `this.children`, it will always see exactly
-	 * one child — the `<slot>` element. But the user looking at the page will
-	 * *see* any nodes distributed to that slot. To match what the user sees, your
-	 * component should expand any `<slot>` elements it contains.
-	 *
-	 * That is one problem these helpers solve. For example, the helper
-	 * `assignedChildren` will return all children assigned to your component in
-	 * the composed tree.
 	 *
 	 * @module content
 	 */
 	
 	/**
-	 * An in-order collection of distributed children, expanding any slot
-	 * elements. Like the standard `children` property, this skips text and other
-	 * node types which are not Element instances.
+	 * Return a set of Elements which are likely to be useful as component content.
 	 *
-	 * @param {HTMLElement} element - the element to inspect
-	 * @returns {Element[]} - the children assigned to the element
-	 */
-	function assignedChildren(element) {
-	  return expandAssignedNodes(element.children, true);
-	}
-	
-	/**
-	 * An in-order collection of distributed child nodes, expanding any slot
-	 * elements. Like the standard `childNodes` property, this includes text and
-	 * other types of nodes.
+	 * Given a `NodeList` or array of objects, this will return only those array
+	 * members that are: a) instances of `Element` (`HTMLElement` or `SVGElement`),
+	 * and b) not on a blacklist of normally invisible elements (such as `style` or
+	 * `script`). Among other things, this filters out Text nodes.
 	 *
-	 * @param {HTMLElement} element - the element to inspect
-	 * @returns {Node[]} - the nodes assigned to the element
-	 */
-	function assignedChildNodes(element) {
-	  return expandAssignedNodes(element.childNodes, false);
-	}
-	
-	/**
-	 * The concatenated `textContent` of all distributed child nodes, expanding
-	 * any slot elements.
-	 *
-	 * @param {HTMLElement} element - the element to inspect
-	 * @type {string} - the text content of all nodes assigned to the element
-	 */
-	function assignedTextContent(element) {
-	  var strings = assignedChildNodes(element).map(function (child) {
-	    return child.textContent;
-	  });
-	  return strings.join('');
-	}
-	
-	/**
-	 * Return the given elements, filtering out auxiliary elements that aren't
-	 * typically visible. Given a `NodeList` or array of objects, it will only
-	 * return array members that are instances of `Element` (`HTMLElement` or
-	 * `SVGElement`), and not on a blacklist of normally invisible elements
-	 * (such as `style` or `script`).
-	 *
-	 * @param {NodeList|Element[]} elements - the list of elements to filter
+	 * @param {NodeList|Node[]} nodes - the list of nodes to filter
 	 * @returns {Element[]} - the filtered elements
 	 */
-	function filterAuxiliaryElements(elements) {
+	function substantiveElements(nodes) {
 	
-	  // These are tags that can appear in the document body, but do not seem to
-	  // have any user-visible manifestation.
+	  // These are tags for elements that can appear in the document body, but do
+	  // not seem to have any user-visible manifestation.
 	  // See https://developer.mozilla.org/en-US/docs/Web/HTML/Element
-	  var auxiliaryTags = ['applet', // deprecated
+	  var auxiliaryElementTags = ['applet', // deprecated
 	  'basefont', // deprecated
 	  'embed', 'font', // deprecated
 	  'frame', // deprecated
@@ -572,41 +491,9 @@
 	  'noscript', 'object', 'param', 'script', 'style', 'template', 'noembed' // deprecated
 	  ];
 	
-	  return [].filter.call(elements, function (element) {
-	    return element instanceof Element && (!element.localName || auxiliaryTags.indexOf(element.localName) < 0);
+	  return [].filter.call(nodes, function (node) {
+	    return node instanceof Element && (!node.localName || auxiliaryElementTags.indexOf(node.localName) < 0);
 	  });
-	}
-	
-	//
-	// Helpers for the helper functions
-	//
-	
-	/*
-	 * Given a array of nodes, return a new array with any `slot` elements expanded
-	 * to the nodes assigned to those slots.
-	 *
-	 * If ElementsOnly is true, only Element instances are returned, as with the
-	 * standard `children` property. Otherwise, all nodes are returned, as in the
-	 * standard `childNodes` property.
-	 */
-	function expandAssignedNodes(nodes, ElementsOnly) {
-	  var _ref;
-	
-	  var expanded = Array.prototype.map.call(nodes, function (node) {
-	
-	    // We want to see if the node is an instanceof HTMLSlotELement, but
-	    // that class won't exist if the browser that doesn't support native
-	    // Shadow DOM and if the Shadow DOM polyfill hasn't been loaded. Instead,
-	    // we do a simplistic check to see if the tag name is "slot".
-	    var isSlot = typeof HTMLSlotElement !== 'undefined' ? node instanceof HTMLSlotElement : node.localName === 'slot';
-	
-	    return isSlot ? node.assignedNodes({ flatten: true }) : [node];
-	  });
-	  var flattened = (_ref = []).concat.apply(_ref, _toConsumableArray(expanded));
-	  var result = ElementsOnly ? flattened.filter(function (node) {
-	    return node instanceof Element;
-	  }) : flattened;
-	  return result;
 	}
 
 /***/ },
@@ -1108,14 +995,15 @@
 	var itemInitializedSymbol = (0, _Symbol3.default)('itemInitialized');
 	
 	/**
-	 * Mixin which maps content semantics (elements) to list item semantics.
+	 * Mixin which maps content semantics (nodes) to list item semantics.
 	 *
-	 * Items differ from element contents in several ways:
+	 * Items differ from nodes contents in several ways:
 	 *
 	 * * They are often referenced via index.
 	 * * They may have a selection state.
 	 * * It's common to do work to initialize the appearance or state of a new
 	 *   item.
+	 * * Text nodes are filtered out.
 	 * * Auxiliary invisible child elements are filtered out and not counted as
 	 *   items. Auxiliary elements include link, script, style, and template
 	 *   elements. This filtering ensures that those auxiliary elements can be
@@ -1123,7 +1011,7 @@
 	 *
 	 * This mixin expects a component to provide a `content` property returning a
 	 * raw set of elements. You can provide that yourself, or use
-	 * [ChildrenContentMixin](ChildrenContentMixin.md).
+	 * [DefaultSlotContentMixin](DefaultSlotContentMixin.md).
 	 *
 	 * The most commonly referenced property defined by this mixin is the `items`
 	 * property. To avoid having to do work each time that property is requested,
@@ -1132,7 +1020,7 @@
 	 * care of notifying it of future changes, and turns on the optimization. With
 	 * that on, the mixin saves a reference to the computed set of items, and will
 	 * return that immediately on subsequent calls to the `items` property. If you
-	 * use this mixin in conjunction with `ChildrenContentMixin`, the
+	 * use this mixin in conjunction with `DefaultSlotContentMixin`, the
 	 * `contentChanged` method will be invoked for you when the element's children
 	 * change, turning on the optimization automatically.
 	 *
@@ -1220,7 +1108,7 @@
 	      get: function get() {
 	        var items = void 0;
 	        if (this[itemsSymbol] == null) {
-	          items = content.filterAuxiliaryElements(this[_symbols2.default.content]);
+	          items = content.substantiveElements(this[_symbols2.default.content]);
 	          // Note: test for *equality* with null, since we use `undefined` to
 	          // indicate that we're not yet caching items.
 	          if (this[itemsSymbol] === null) {
