@@ -1,14 +1,14 @@
 import { assert } from 'chai';
+import DefaultSlotContentMixin from '../src/DefaultSlotContentMixin';
 import flushPolyfills from '../../../test/flushPolyfills';
-import ChildrenContentMixin from '../src/ChildrenContentMixin';
 import ShadowTemplateMixin from '../src/ShadowTemplateMixin';
 import symbols from '../src/symbols';
 
 
 /*
- * Simple element using the ChildrenContentMixin mixin.
+ * Simple element using the DefaultSlotContentMixin mixin.
  */
-class ContentTest extends ChildrenContentMixin(ShadowTemplateMixin(HTMLElement)) {
+class DefaultSlotContentTest extends DefaultSlotContentMixin(ShadowTemplateMixin(HTMLElement)) {
 
   constructor() {
     super();
@@ -32,7 +32,7 @@ class ContentTest extends ChildrenContentMixin(ShadowTemplateMixin(HTMLElement))
   }
 
 }
-customElements.define('content-test', ContentTest);
+customElements.define('default-slot-content-test', DefaultSlotContentTest);
 
 
 /*
@@ -41,13 +41,13 @@ customElements.define('content-test', ContentTest);
  */
 class WrappedContentTest extends ShadowTemplateMixin(HTMLElement) {
   get [symbols.template]() {
-    return `<content-test><slot></slot></content-test>`;
+    return `<default-slot-content-test><slot></slot></default-slotcontent-test>`;
   }
 }
-customElements.define('wrapped-content-test', WrappedContentTest);
+customElements.define('wrapped-default-slot-content-test', WrappedContentTest);
 
 
-describe("ChildrenContentMixin", () => {
+describe("DefaultSlotContentMixin", () => {
 
   let container;
 
@@ -60,30 +60,23 @@ describe("ChildrenContentMixin", () => {
   });
 
   it("returns direct assigned nodes as content", () => {
-    const fixture = document.createElement('content-test');
-    fixture.innerHTML = `
-      <div>One</div>
-      <div>Two</div>
-      <div>Three</div>
-    `;
+    const fixture = document.createElement('default-slot-content-test');
+    fixture.innerHTML = `<div>One</div><div>Two</div><div>Three</div>`;
+    flushPolyfills();
     assert.equal(fixture[symbols.content].length, 3);
   });
 
   it("returns distributed nodes as content", () => {
-    const wrapper = document.createElement('wrapped-content-test');
-    wrapper.innerHTML = `
-      <div>One</div>
-      <div>Two</div>
-      <div>Three</div>
-    `;
+    const wrapper = document.createElement('wrapped-default-slot-content-test');
+    wrapper.innerHTML = `<div>One</div><div>Two</div><div>Three</div>`;
     flushPolyfills();
-    const fixture = wrapper.shadowRoot.querySelector('content-test');
+    const fixture = wrapper.shadowRoot.querySelector('default-slot-content-test');
     assert.equal(fixture[symbols.content].length, 3);
   });
 
   it("makes initial call to contentChanged when component is created", done => {
-    container.innerHTML = `<content-test>beaver</content-test>`;
-    const fixture = container.querySelector('content-test');
+    container.innerHTML = `<default-slot-content-test>beaver</default-slot-content-test>`;
+    const fixture = container.querySelector('default-slot-content-test');
     // Wait for initial contentChanged call to complete.
     flushPolyfills();
     setTimeout(() => {
@@ -93,7 +86,7 @@ describe("ChildrenContentMixin", () => {
   });
 
   it("calls contentChanged when textContent changes", done => {
-    const fixture = document.createElement('content-test');
+    const fixture = document.createElement('default-slot-content-test');
     container.appendChild(fixture);
     // Wait for initial contentChanged call to complete.
     flushPolyfills();
@@ -108,7 +101,7 @@ describe("ChildrenContentMixin", () => {
   });
 
   it("calls contentChanged when children change", done => {
-    const fixture = document.createElement('content-test');
+    const fixture = document.createElement('default-slot-content-test');
     container.appendChild(fixture);
     // Wait for initial contentChanged call to complete.
     flushPolyfills();
@@ -125,8 +118,8 @@ describe("ChildrenContentMixin", () => {
   });
 
   it("calls contentChanged when redistributed content changes", done => {
-    const wrapper = document.createElement('wrapped-content-test');
-    const fixture = wrapper.shadowRoot.querySelector('content-test');
+    const wrapper = document.createElement('wrapped-default-slot-content-test');
+    const fixture = wrapper.shadowRoot.querySelector('default-slot-content-test');
     container.appendChild(wrapper);
     // Wait for initial contentChanged call to complete.
     flushPolyfills();
@@ -141,7 +134,7 @@ describe("ChildrenContentMixin", () => {
   });
 
   it("doesn't call contentChanged for changes in the component's shadow tree", done => {
-    const fixture = document.createElement('content-test');
+    const fixture = document.createElement('default-slot-content-test');
     container.appendChild(fixture);
     // Wait for initial contentChanged call to complete.
     flushPolyfills();
@@ -176,7 +169,7 @@ describe("ChildrenContentMixin", () => {
   });
 
   it("doesn't call contentChanged when node is removed from shadow DOM", done => {
-    const fixture = document.createElement('content-test');
+    const fixture = document.createElement('default-slot-content-test');
     container.appendChild(fixture);
     // Wait for initial contentChanged call to complete.
     flushPolyfills();
@@ -206,7 +199,7 @@ describe("ChildrenContentMixin", () => {
   });
 
   it("*does* call contentChanged if node is removed from light DOM", done => {
-    const fixture = document.createElement('content-test');
+    const fixture = document.createElement('default-slot-content-test');
     const div = document.createElement('div');
     div.textContent = 'hippopotamus';
     fixture.appendChild(div);

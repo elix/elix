@@ -18,9 +18,9 @@
 
 
 import AttributeMarshallingMixin from '../../elix-mixins/src/AttributeMarshallingMixin';
-import ChildrenContentMixin from '../../elix-mixins/src/ChildrenContentMixin';
 import ClickSelectionMixin from '../../elix-mixins/src/ClickSelectionMixin';
 import ContentItemsMixin from '../../elix-mixins/src/ContentItemsMixin';
+import DefaultSlotContentMixin from '../../elix-mixins/src/DefaultSlotContentMixin';
 import DirectionSelectionMixin from '../../elix-mixins/src/DirectionSelectionMixin';
 import KeyboardDirectionMixin from '../../elix-mixins/src/KeyboardDirectionMixin';
 import KeyboardMixin from '../../elix-mixins/src/KeyboardMixin';
@@ -36,9 +36,9 @@ import symbols from '../../elix-mixins/src/symbols';
 // We want to apply a number of mixin functions to HTMLElement.
 const mixins = [
   AttributeMarshallingMixin,
-  ChildrenContentMixin,
   ClickSelectionMixin,
   ContentItemsMixin,
+  DefaultSlotContentMixin,
   DirectionSelectionMixin,
   KeyboardDirectionMixin,
   KeyboardMixin,
@@ -66,9 +66,9 @@ const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
  *
  * @extends HTMLElement
  * @mixes AttributeMarshallingMixin
- * @mixes ChildrenContentMixin
  * @mixes ClickSelectionMixin
  * @mixes ContentItemsMixin
+ * @mixes DefaultSlotContentMixin
  * @mixes DirectionSelectionMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
