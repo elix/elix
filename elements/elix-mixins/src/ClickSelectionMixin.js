@@ -57,7 +57,7 @@ export default function ClickSelectionMixin(base) {
         // phase 2 (AT_TARGET) — but the event target will be the component, not
         // the item that was clicked on.
         const target = event.target === this ?
-          event.path[0] : // Event target isn't the item, so get it from path.
+          event.composedPath()[0] : // Event target isn't the item, so get it from path.
           event.target;
 
         // Find which item was clicked on and, if found, select it. For elements
