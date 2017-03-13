@@ -8,17 +8,11 @@
 
   <link rel="stylesheet" href="../node_modules/mocha/mocha.css">
   <script src="../node_modules/mocha/mocha.js" type="text/javascript"></script>
-
-  <script src="../elements/demos/node_modules/webcomponents-platform/webcomponents-platform.js"></script>
-  <script src="../elements/demos/node_modules/shadydom/shadydom.min.js"></script>
-  <script src="../elements/demos/node_modules/template/template.js"></script>
-  <script src="../elements/demos/node_modules/custom-elements/custom-elements.min.js"></script>
-  <script src="../elements/demos/node_modules/shadycss/shadycss.min.js"></script>
-  <script src="../elements/demos/node_modules/custom-elements/src/native-shim.js"></script>
-  <script src="../elements/demos/node_modules/custom-elements/src/htmlelement-instanceof.js"></script>
+  <script src="../demos/node_modules/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../demos/node_modules/custom-elements/src/native-shim.js"></script>
 
   <script>
-  mocha.setup('bdd');
+    mocha.setup('bdd');
   </script>
 
   <script src="../build/tests.js"></script>
@@ -33,11 +27,7 @@
   <div id="container"></div>
 
   <script>
-  // Only tests run in real browser.
-  // When running under grunt-mocha, the grunt task will start the run.
-  if (navigator.userAgent.indexOf('PhantomJS') < 0) {
     mocha.run();
-  }
   </script>
 
 </body>

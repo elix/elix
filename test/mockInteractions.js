@@ -2,7 +2,6 @@
 
 
 let hasKeyboardEventConstructor;
-let hasMouseEventConstructor;
 
 try {
   new window.KeyboardEvent('keydown');

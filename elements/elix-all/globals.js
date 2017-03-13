@@ -9,8 +9,7 @@
 // We tell jshint to ignore the fact that we're not actually using them here.
 /* jshint ignore:start */
 
-import * as all from '../elix-all/globals';
 import * as listBox from '../elix-list-box/globals';
-import * as mixins from '../elix-mixins/globals';
+import * as mixins from '../../mixins/globals';
 
 /* jshint ignore:end */

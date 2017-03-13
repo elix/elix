@@ -7,16 +7,17 @@ const glob = require('glob');
 const allPackages = require('../lib/allPackages');
 
 //
-// Build the global buildList object for use in browserifyTask
+// Create the full list of build targets.
 //
 function buildBuildList() {
   const buildList = {
-    './build/tests.js': allPackages.map(pkg => `./elements/${pkg}/test/*.js`)
+    './build/tests.js': ['./mixins/test/*.js', './elements/elix-*/test/*.js'],
+    './mixins/dist/mixins.js': ['./mixins/src/*.js'],
+    './demos/dist/demos.js': ['./demos/src/*.js']
   };
   allPackages.forEach(pkg => {
     buildList[`./elements/${pkg}/dist/${pkg}.js`] = [`./elements/${pkg}/globals.js`];
   });
-  buildList['./elements/demos/dist/demos.js'] = ['./elements/demos/src/*.js'];
   return buildList;
 }
 const buildList = buildBuildList();
@@ -37,13 +38,13 @@ const webpackHelperTask = function(options, done) {
   let packOptionsArray = [];
   let processedCount = 0;
   let packOptionsCount = 0;
-  
+
   function packIt(packOptions) {
     webpack(packOptions, function(err, stats) {
       if (err) {
         throw new gutil.PluginError('webpack', err);
       }
-      
+
       gutil.log(`Processed ${packOptions.entry} and wrote ${packOptions.output.path}${packOptions.output.filename}`);
       //gutil.log('[webpack]', stats.toString({}));
       processedCount++;
@@ -58,7 +59,7 @@ const webpackHelperTask = function(options, done) {
       }
     });
   }
-  
+
   gutil.log('Preparing build...');
 
   /*jshint loopfunc: true */
@@ -94,10 +95,10 @@ const webpackHelperTask = function(options, done) {
           {
             test: /\.js$/,
             loader: 'babel-loader',
-            include: [/elements/, /test/],
+            include: [/demos/, /elements/, /mixins/, /test/],
             query: {
               presets: ['es2015']
-            }        
+            }
           }
         ]
       },
@@ -110,18 +111,19 @@ const webpackHelperTask = function(options, done) {
       ] :
       []
     };
-    
+
     packOptionsArray.push(packOptions);
   }
-  
+
   packOptionsCount = packOptionsArray.length;
-  
+
   packOptionsArray.forEach(packOptions => {
     packIt(packOptions);
   });
 };
 
 module.exports = {
-  webpackTask: webpackTask, 
-  debugWebpackTask: debugWebpackTask, 
-  watchifyTask: watchifyTask};
+  webpackTask,
+  debugWebpackTask,
+  watchifyTask
+};
