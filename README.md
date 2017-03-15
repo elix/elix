@@ -110,8 +110,25 @@ Components Remote Conf can be found on this [fork](https://github.com/JanMiksovs
    everything. Also builds JSDoc-constructed README.md documentation files and
    runs lint.
 
-Note that the built files are committed to the repo. After running
+Note that the built document files are committed to the repo. After running
 ‘gulp build’, a ‘git status’ should show nothing new or changed.
+
+
+# Unit tests
+
+Unit tests can be run on Sauce Labs. Do do so, you will need to set the
+following environment variables:
+
+````
+export SAUCE_USERNAME=elix
+export SAUCE_ACCESS_KEY=<ask a core team member for this key>
+````
+
+Invoke the unit tests to be run on Sauce Labs with:
+
+````
+gulp sauce-tests
+````
 
 
 # Contributing

@@ -9,6 +9,9 @@ const watchifyTask = require('./gulp/tasks/webpack').watchifyTask;
 const docsTask = require('./gulp/tasks/docs');
 const helpTask = require('./gulp/tasks/help');
 const lintTask = require('./gulp/tasks/lint');
+const saucetestsTask = require('./gulp/tasks/saucetests').saucetestsTask;
+const connectTask = require('./gulp/tasks/saucetests').connectTask;
+const disconnectTask = require('./gulp/tasks/saucetests').disconnectTask;
 
 //
 // Naming convention for tasks:
@@ -30,6 +33,9 @@ gulp.task('help', [], helpTask);
 gulp.task('lint-docs-debugWebpack-webpack', ['docs-debugWebpack-webpack'], lintTask);
 gulp.task('lint-debugWebpack-webpack', ['debugWebpack-webpack'], lintTask);
 gulp.task('lint-debugWebpack', ['debugWebpack'], lintTask);
+gulp.task('connect', [], connectTask);
+gulp.task('saucetests-connect', ['connect'], saucetestsTask);
+gulp.task('disconnect-saucetests-connect', ['saucetests-connect'], disconnectTask);
 
 // Public
 gulp.task('build', ['lint-docs-debugWebpack-webpack']);
@@ -38,3 +44,4 @@ gulp.task('default', ['help']);
 gulp.task('docs', [], docsTask);
 gulp.task('lint', [], lintTask);
 gulp.task('watch', [], watchifyTask);
+gulp.task('sauce-tests', ['disconnect-saucetests-connect']);

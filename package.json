@@ -22,5 +22,9 @@
     "mocha": "^3.2.0",
     "sinon": "^2.0.0-pre.5",
     "webpack": "^1.14.0"
+  },
+  "devDependencies": {
+    "gulp-connect": "^5.0.0",
+    "gulp-saucelabs": "^0.1.4"
   }
 }

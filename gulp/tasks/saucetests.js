@@ -1,0 +1,73 @@
+/*jslint node: true */
+'use strict';
+
+const gutil = require('gulp-util');
+const saucelabs = require('gulp-saucelabs');
+const connect   = require('gulp-connect');
+
+//
+// SauceTests task - runs tests on Sauce Labs
+//
+function saucetestsTask() {
+  const config = {
+    urls: ['http://127.0.0.1:9999/test/saucelabs-tests.html'],
+    testname: 'Elix tests',
+    framework: 'mocha',
+    throttled: 3,
+    sauceConfig: {
+      'video-upload-on-pass': false
+    },
+    browsers: [
+      {
+        browserName: 'chrome',
+        platform: 'OS X 10.11'
+      },
+      {
+        browserName: 'chrome',
+        platform: 'Windows 10'
+      },
+      {
+        browserName: 'firefox',
+        platform: 'OS X 10.11',
+      },
+      {
+        browserName: 'firefox',
+        platform: 'Windows 10'
+      },
+      {
+        browserName: 'internet explorer',
+        platform: 'Windows 8.1',
+        version: '11.0'
+      },
+      {
+        browserName: 'MicrosoftEdge',
+        platform: 'Windows 10',
+      },
+      {
+        browserName: 'safari',
+        platform: 'OS X 10.11',
+      }
+    ],
+    onTestSuiteComplete: (status) => {
+      if (status) {
+        gutil.log('All tests passed!');
+      }
+    }
+  };
+
+  return saucelabs(config);
+}
+
+function connectTask() {
+  return connect.server({ port: 9999, root: './' });
+}
+
+function disconnectTask() {
+  return connect.serverClose();
+}
+
+module.exports = {
+  saucetestsTask,
+  connectTask,
+  disconnectTask
+};
