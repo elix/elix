@@ -1,8 +1,8 @@
 import { assert } from 'chai';
 import flushPolyfills from '../../test/flushPolyfills';
-import SelectionAriaMixin from '../src/SelectionAriaMixin';
-import SingleSelectionMixin from '../src/SingleSelectionMixin';
-import symbols from '../src/symbols';
+import SelectionAriaMixin from '../../mixins//SelectionAriaMixin';
+import SingleSelectionMixin from '../../mixins//SingleSelectionMixin';
+import symbols from '../../mixins//symbols';
 
 
 class SelectionAriaActiveTest extends SelectionAriaMixin(SingleSelectionMixin(HTMLElement)) {

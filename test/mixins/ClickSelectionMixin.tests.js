@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import ClickSelectionMixin from '../src/ClickSelectionMixin';
+import ClickSelectionMixin from '../../mixins//ClickSelectionMixin';
 import * as mockInteractions from '../../test/mockInteractions';
 
 class ClickSelectionTest extends ClickSelectionMixin(HTMLElement) {

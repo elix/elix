@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import flushPolyfills from '../../test/flushPolyfills';
-import symbols from '../src/symbols';
-import ShadowTemplateMixin from '../src/ShadowTemplateMixin';
+import symbols from '../../mixins//symbols';
+import ShadowTemplateMixin from '../../mixins//ShadowTemplateMixin';
 
 
 /* Element with a simple template */

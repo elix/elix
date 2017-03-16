@@ -4,23 +4,13 @@
 const gutil = require('gulp-util');
 const webpack = require('webpack');
 const glob = require('glob');
-const allPackages = require('../lib/allPackages');
 
-//
-// Create the full list of build targets.
-//
-function buildBuildList() {
-  const buildList = {
-    './build/tests.js': ['./mixins/test/*.js', './elements/elix-*/test/*.js'],
-    './mixins/dist/mixins.js': ['./mixins/src/*.js'],
-    './demos/dist/demos.js': ['./demos/src/*.js']
-  };
-  allPackages.forEach(pkg => {
-    buildList[`./elements/${pkg}/dist/${pkg}.js`] = [`./elements/${pkg}/globals.js`];
-  });
-  return buildList;
-}
-const buildList = buildBuildList();
+
+const buildTargets = {
+  './build/tests.js': ['./test/**/*.js'],
+  './build/elix.js': ['./globals.js'],
+  './build/demos.js': ['./elements/*.js', './demos/src/*.js']
+};
 
 const watchifyTask = function(done) {
   webpackHelperTask({minify: false, watch: true}, done);
@@ -63,10 +53,10 @@ const webpackHelperTask = function(options, done) {
   gutil.log('Preparing build...');
 
   /*jshint loopfunc: true */
-  for (let key in buildList) {
+  for (let key in buildTargets) {
     let entries = [];
 
-    buildList[key].forEach(globItem => {
+    buildTargets[key].forEach(globItem => {
       let a = glob.sync(globItem);
       Array.prototype.push.apply(entries, a);
     });
@@ -95,7 +85,13 @@ const webpackHelperTask = function(options, done) {
           {
             test: /\.js$/,
             loader: 'babel-loader',
-            include: [/demos/, /elements/, /mixins/, /test/],
+            // include: [
+            //   /demos/,
+            //   /elements/,
+            //   /mixins/,
+            //   /test/
+            // ],
+            exclude: [/node_modules/],
             query: {
               presets: ['es2015']
             }

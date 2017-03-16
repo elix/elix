@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import AttributeMarshallingMixin from '../src/AttributeMarshallingMixin';
+import AttributeMarshallingMixin from '../../mixins//AttributeMarshallingMixin';
 import flushPolyfills from '../../test/flushPolyfills';
 
 

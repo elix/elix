@@ -1,6 +1,6 @@
 import { assert } from 'chai';
-import KeyboardPrefixSelectionMixin from '../src/KeyboardPrefixSelectionMixin';
-import symbols from '../src/symbols';
+import KeyboardPrefixSelectionMixin from '../../mixins//KeyboardPrefixSelectionMixin';
+import symbols from '../../mixins//symbols';
 
 
 class KeyboardPrefixSelectionTest extends KeyboardPrefixSelectionMixin(HTMLElement) {

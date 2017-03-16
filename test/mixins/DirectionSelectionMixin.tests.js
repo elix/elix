@@ -1,7 +1,7 @@
 import { assert } from 'chai';
-import DirectionSelectionMixin from '../src/DirectionSelectionMixin';
+import DirectionSelectionMixin from '../../mixins//DirectionSelectionMixin';
 import sinon from 'sinon';
-import symbols from '../src/symbols';
+import symbols from '../../mixins//symbols';
 
 
 class DirectionSelectionTest extends DirectionSelectionMixin(HTMLElement) {

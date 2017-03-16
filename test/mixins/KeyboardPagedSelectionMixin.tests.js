@@ -1,6 +1,6 @@
 import { assert } from 'chai';
-import KeyboardPagedSelectionMixin from '../src/KeyboardPagedSelectionMixin';
-import symbols from '../src/symbols';
+import KeyboardPagedSelectionMixin from '../../mixins//KeyboardPagedSelectionMixin';
+import symbols from '../../mixins//symbols';
 
 
 const itemHeight = '100';

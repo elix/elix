@@ -1,8 +1,8 @@
 import { assert } from 'chai';
-import DefaultSlotContentMixin from '../src/DefaultSlotContentMixin';
+import DefaultSlotContentMixin from '../../mixins//DefaultSlotContentMixin';
 import flushPolyfills from '../../test/flushPolyfills';
-import ShadowTemplateMixin from '../src/ShadowTemplateMixin';
-import symbols from '../src/symbols';
+import ShadowTemplateMixin from '../../mixins//ShadowTemplateMixin';
+import symbols from '../../mixins//symbols';
 
 
 /*

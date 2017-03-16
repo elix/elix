@@ -1,5 +1,5 @@
-import SingleSelectionMixin from '../../mixins/src/SingleSelectionMixin';
-import symbols from '../../mixins/src/symbols';
+import SingleSelectionMixin from '../../mixins/SingleSelectionMixin';
+import symbols from '../../mixins/symbols';
 
 
 /*

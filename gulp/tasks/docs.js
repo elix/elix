@@ -19,7 +19,7 @@ function buildDocsList() {
     return packagesWithoutBuiltDocs.indexOf(item) < 0;
   }).map(item => {
     return {
-      src: `elements/${item}/src/*.js`,
+      src: `elements/${item}/*.js`,
       dest: `elements/${item}/README.md`};
   });
 
@@ -32,14 +32,14 @@ const docsList = buildDocsList();
 // the elix-mixins directory.
 //
 function buildMixinsDocsList() {
-  return fs.readdirSync('mixins/src').filter(file => {
-    return file.indexOf('.js') == file.length - 3;
-  }).map(file => {
-    const fileRoot = file.replace('.js', '');
-    return {
-      src: `mixins/src/${file}`,
-      dest: `mixins/docs/${fileRoot}.md` };
-  });
+  return fs.readdirSync('mixins/')
+    .filter(file => file.endsWith('.js'))
+    .map(file => {
+      const fileRoot = file.replace('.js', '');
+      return {
+        src: `mixins/${file}`,
+        dest: `mixins/docs/${fileRoot}.md` };
+    });
 }
 
 function buildMarkdownDoc(docItem) {

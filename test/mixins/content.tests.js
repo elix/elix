@@ -1,7 +1,7 @@
 import { assert } from 'chai';
-import * as content from '../src/content';
-import ShadowTemplateMixin from '../src/ShadowTemplateMixin';
-import symbols from '../src/symbols';
+import * as content from '../../mixins/content';
+import ShadowTemplateMixin from '../../mixins//ShadowTemplateMixin';
+import symbols from '../../mixins//symbols';
 
 
 /*
