@@ -10,7 +10,7 @@ const connect   = require('gulp-connect');
 //
 function saucetestsTask() {
   const config = {
-    urls: ['http://127.0.0.1:9999/test/saucelabs-tests.html'],
+    urls: ['http://127.0.0.1:8080/test/saucelabs-tests.html'],
     testname: 'Elix tests',
     framework: 'mocha',
     throttled: 3,
