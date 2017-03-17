@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>elix-modes with keyboard</title>
+
+  <script src="node_modules/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="node_modules/custom-elements/src/native-shim.js"></script>
+  <script src="../build/demos.js"></script>
+  <link rel="stylesheet" href="demos.css">
+
+  <style>
+  modes-with-keyboard {
+    border: 1px solid gray;
+    height: 300px;
+    max-width: 100%;
+    width: 400px;
+  }
+
+  .panel {
+    display: -webkit-flex;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+  </style>
+
+</head>
+
+<body>
+  <p>
+    The elix-modes component below shows a single selected page out of a set of
+    pages. It provides no user interface of its own. Below, it's been combined
+    with mixins that provide lateral navigation with the keyboard.
+  </p>
+  <modes-with-keyboard aria-label="Panels">
+    <div class="panel">One</div>
+    <div class="panel">Two</div>
+    <div class="panel">Three</div>
+  </modes-with-keyboard>
+</body>
+
+</html>

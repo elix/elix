@@ -94,18 +94,20 @@ export function writePendingAttributes(element) {
   element[safeToSetAttributesSymbol] = true;
 
   // Set any pending attributes.
-  if (element[pendingAttributesSymbol]) {
-    for (let attribute in element[pendingAttributesSymbol]) {
-      const value = element[pendingAttributesSymbol][attribute];
+  const pendingAttributes = element[pendingAttributesSymbol];
+  if (pendingAttributes) {
+    for (let attribute in pendingAttributes) {
+      const value = pendingAttributes[attribute];
       setAttributeToElement(element, attribute, value);
     }
     element[pendingAttributesSymbol] = null;
   }
 
   // Set any pending classes.
-  if (element[pendingClassesSymbol]) {
-    for (let className in element[pendingClassesSymbol]) {
-      const value = element[pendingClassesSymbol][className];
+  const pendingClasses = element[pendingClassesSymbol];
+  if (pendingClasses) {
+    for (let className in pendingClasses) {
+      const value = pendingClasses[className];
       toggleClass(element, className, value);
     }
     element[pendingClassesSymbol] = null;

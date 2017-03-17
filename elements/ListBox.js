@@ -1,39 +1,20 @@
-/*
- * This is currently a demo of how multiple mixins cooperate to perform useful
- * functions.
- *
- * * The component uses ShadowTemplateMixin to populate its shadow root.
- * * A user can click on a child item, and ClickSelectionMixin will set the
- *   selected item.
- * * The SingleSelectionMixin will track the selected item, and map that to
- *   changes in the selection state of the selected/deselected items.
- * * The SelectionAriaMixin will reflect an item's selection state using ARIA
- *   attributes to support assistive devices like screen readers.
- *
- * This demo will eventually evolve into a complete list box component, but
- * at the moment omits many features, including support for Page Up/Page Down
- * keys, keeping the selected item in view, the ability to select an item
- * by typing its initial characters, and support for slot elements as children.
- */
+import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin';
+import ClickSelectionMixin from '../mixins/ClickSelectionMixin';
+import ContentItemsMixin from '../mixins/ContentItemsMixin';
+import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin';
+import DirectionSelectionMixin from '../mixins/DirectionSelectionMixin';
+import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin';
+import KeyboardMixin from '../mixins/KeyboardMixin';
+import KeyboardPagedSelectionMixin from '../mixins/KeyboardPagedSelectionMixin';
+import KeyboardPrefixSelectionMixin from '../mixins/KeyboardPrefixSelectionMixin';
+import SelectedItemTextValueMixin from '../mixins/SelectedItemTextValueMixin';
+import SelectionAriaMixin from '../mixins/SelectionAriaMixin';
+import SelectionInViewMixin from '../mixins/SelectionInViewMixin';
+import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin';
+import SingleSelectionMixin from '../mixins/SingleSelectionMixin';
+import symbols from '../mixins/symbols';
 
 
-import AttributeMarshallingMixin from '../../mixins/AttributeMarshallingMixin';
-import ClickSelectionMixin from '../../mixins/ClickSelectionMixin';
-import ContentItemsMixin from '../../mixins/ContentItemsMixin';
-import DefaultSlotContentMixin from '../../mixins/DefaultSlotContentMixin';
-import DirectionSelectionMixin from '../../mixins/DirectionSelectionMixin';
-import KeyboardDirectionMixin from '../../mixins/KeyboardDirectionMixin';
-import KeyboardMixin from '../../mixins/KeyboardMixin';
-import KeyboardPagedSelectionMixin from '../../mixins/KeyboardPagedSelectionMixin';
-import KeyboardPrefixSelectionMixin from '../../mixins/KeyboardPrefixSelectionMixin';
-import SelectionAriaMixin from '../../mixins/SelectionAriaMixin';
-import SelectionInViewMixin from '../../mixins/SelectionInViewMixin';
-import ShadowTemplateMixin from '../../mixins/ShadowTemplateMixin';
-import SingleSelectionMixin from '../../mixins/SingleSelectionMixin';
-import symbols from '../../mixins/symbols';
-
-
-// We want to apply a number of mixin functions to HTMLElement.
 const mixins = [
   AttributeMarshallingMixin,
   ClickSelectionMixin,
@@ -44,25 +25,24 @@ const mixins = [
   KeyboardMixin,
   KeyboardPagedSelectionMixin,
   KeyboardPrefixSelectionMixin,
+  SelectedItemTextValueMixin,
   SelectionAriaMixin,
   SelectionInViewMixin,
   ShadowTemplateMixin,
   SingleSelectionMixin
 ];
 
-// The mixins are functions, so an efficient way to apply them all is with
-// reduce. This is just function composition. We end up with a base class we
-// can extend below.
+// Apply the above mixins to HTMLElement.
 const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
 
 
 /**
  * A simple single-selection list box.
  *
- * This uses the base class we just created above, and adds in the behavior
- * unique to this list box element. As it turns out, much of this behavior is
- * also interesting to other components, and will eventually get factored into
- * other mixins.
+ * This component supports a generic visual style, ARIA support, and full
+ * keyboard navigation. See `KeyboardDirectionMixin`,
+ * `KeyboardPagedSelectionMixin`, and `KeyboardPrefixSelectionMixin` for
+ * keyboard details.
  *
  * @extends HTMLElement
  * @mixes AttributeMarshallingMixin
@@ -74,6 +54,7 @@ const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
  * @mixes KeyboardMixin
  * @mixes KeyboardPagedSelectionMixin
  * @mixes KeyboardPrefixSelectionMixin
+ * @mixes SelectedItemTextValueMixin
  * @mixes SelectionAriaMixin
  * @mixes SelectionInViewMixin
  * @mixes ShadowTemplateMixin
@@ -81,10 +62,6 @@ const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
  */
 class ListBox extends base {
 
-  // We define a collection of default property values which can be set in
-  // the constructor or connectedCallback. Defining the actual default values
-  // in those calls would complicate things if a subclass someday wants to
-  // define its own default value.
   get [symbols.defaults]() {
     const defaults = super[symbols.defaults] || {};
     // By default, we assume the list presents list items vertically.
@@ -120,8 +97,6 @@ class ListBox extends base {
     }
   }
 
-  // Define a template that will be stamped into the Shadow DOM by the
-  // ShadowTemplateMixin.
   get [symbols.template]() {
     return `
       <style>
@@ -176,5 +151,5 @@ class ListBox extends base {
 }
 
 
-customElements.define('sample-list-box', ListBox);
+customElements.define('elix-list-box', ListBox);
 export default ListBox;
