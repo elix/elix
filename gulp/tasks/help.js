@@ -14,6 +14,7 @@ function helpTask() {
     gulp docs (builds all elements README.md files)
     gulp lint (runs jshint on all .js files)
     gulp watch (builds devbuild and watches changes to project files)
+    gulp sauce-tests (runs tests on Sauce Labs)
   `);
   //  gulp npm-publish:package-name|* (publishes elements/element-name or all elements (elements/*) to npm)
   //  gulp set-version:version (updates package.json version values and dependencies. Ex: gulp set-version:1.0.30)
