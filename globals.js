@@ -27,6 +27,10 @@ import SingleSelectionMixin from './mixins/SingleSelectionMixin';
 import Symbol from './mixins/Symbol';
 import symbols from './mixins/symbols';
 
+// Elements
+import ListBox from './elements/ListBox';
+import Modes from './elements/Modes';
+
 
 window.Elix = window.Elix || {};
 
@@ -50,3 +54,6 @@ window.Elix.ShadowTemplateMixin = ShadowTemplateMixin;
 window.Elix.SingleSelectionMixin = SingleSelectionMixin;
 window.Elix.Symbol = Symbol;
 window.Elix.symbols = symbols;
+
+window.ListBox = ListBox;
+window.Modes = Modes;
