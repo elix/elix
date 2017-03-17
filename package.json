@@ -14,17 +14,15 @@
     "babelify": "^7.3.0",
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
+    "gulp-connect": "^5.0.0",
     "gulp-jshint": "^2.0.3",
     "gulp-rename": "^1.2.2",
+    "gulp-saucelabs": "^0.1.5",
     "gulp-util": "^3.0.7",
     "jsdoc-to-markdown": "^1.3.3",
     "jshint": "^2.9.4",
     "mocha": "^3.2.0",
     "sinon": "^2.0.0-pre.5",
     "webpack": "^1.14.0"
-  },
-  "devDependencies": {
-    "gulp-connect": "^5.0.0",
-    "gulp-saucelabs": "^0.1.4"
   }
 }
