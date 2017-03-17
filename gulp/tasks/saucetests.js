@@ -5,12 +5,14 @@ const gutil = require('gulp-util');
 const saucelabs = require('gulp-saucelabs');
 const connect   = require('gulp-connect');
 
+const port = 9999;
+
 //
 // SauceTests task - runs tests on Sauce Labs
 //
 function saucetestsTask() {
   const config = {
-    urls: ['http://127.0.0.1:8080/test/saucelabs-tests.html'],
+    urls: [`http://127.0.0.1:${port}/test/saucelabs-tests.html`],
     testname: 'Elix tests',
     framework: 'mocha',
     throttled: 3,
@@ -59,7 +61,7 @@ function saucetestsTask() {
 }
 
 function connectTask() {
-  return connect.server({ port: 9999, root: './' });
+  return connect.server({ port: port, root: './' });
 }
 
 function disconnectTask() {

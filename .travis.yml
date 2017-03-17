@@ -4,7 +4,9 @@ node_js:
 - '6'
 before_script:
 - npm install -g gulp
-script: gulp sauce-tests
+- gulp build
+script: 
+- gulp sauce-tests
 env:
   global:
   - secure: Byd48iC3+NlETw6sDeGmIosSjFMiOTentw+DbKxmgiYg0d3mrg5aq3HaZZtPT1MgH7auFrLXtVaiK1lDaDmRq+p2WlKOWK4WgN0/UxyzRL5b/dYNU4chijEZrYTa45CGXTwLaPf2Wbq2ncbzbOgBEZxiFHKvI0dwg57U7sDa/lMcTHNOcnLXcVHu5K11cs6N3WcqyLNZiHJd9YhokDFI2aCmdSizfTElPofIWKoxt4i5kCYGpzSNTWr2TsHJc6Ls4Y4Abve4rg6GAYpKeeiuTxXOwbJ5dI8u0aRDd+eCGbtmbMSrOHYZXQCw5xceLrjonovXPDZm4UtHHZRKHE1+e23La+GsH2MIVUApl4Zc1R6lJ1omTjSQt8KHcFV2P0MxSxnOOGA7NPLATTa++Vu1sXsB8X+AVWoR5alJqfyXMrErOeWgxYNI65tPhoX0sOBalxcn5CLAv3JmkkQBZe5VUS89zkUUxxKu4M5lbc2JEoYbkUFH3xvA+rhrXh8Fh5DKEyd9myb+A6B4Esez1bc4nlV6FuUA95vQ/eauv2F3PC1nhz15kSKKgHrZziONUSopwhtaqo953ifLUEwKShEbhLymnkHvlICYRCI2iEVLhc/aT7sNNa5mk5tP6KUabuVSroyNZWHvmluXfDCxG1X443+Fpt6Czj8stOLOMGDzEVE=
