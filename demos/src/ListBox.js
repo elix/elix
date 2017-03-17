@@ -17,20 +17,20 @@
  */
 
 
-import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin';
-import ClickSelectionMixin from '../mixins/ClickSelectionMixin';
-import ContentItemsMixin from '../mixins/ContentItemsMixin';
-import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin';
-import DirectionSelectionMixin from '../mixins/DirectionSelectionMixin';
-import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin';
-import KeyboardMixin from '../mixins/KeyboardMixin';
-import KeyboardPagedSelectionMixin from '../mixins/KeyboardPagedSelectionMixin';
-import KeyboardPrefixSelectionMixin from '../mixins/KeyboardPrefixSelectionMixin';
-import SelectionAriaMixin from '../mixins/SelectionAriaMixin';
-import SelectionInViewMixin from '../mixins/SelectionInViewMixin';
-import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin';
-import SingleSelectionMixin from '../mixins/SingleSelectionMixin';
-import symbols from '../mixins/symbols';
+import AttributeMarshallingMixin from '../../mixins/AttributeMarshallingMixin';
+import ClickSelectionMixin from '../../mixins/ClickSelectionMixin';
+import ContentItemsMixin from '../../mixins/ContentItemsMixin';
+import DefaultSlotContentMixin from '../../mixins/DefaultSlotContentMixin';
+import DirectionSelectionMixin from '../../mixins/DirectionSelectionMixin';
+import KeyboardDirectionMixin from '../../mixins/KeyboardDirectionMixin';
+import KeyboardMixin from '../../mixins/KeyboardMixin';
+import KeyboardPagedSelectionMixin from '../../mixins/KeyboardPagedSelectionMixin';
+import KeyboardPrefixSelectionMixin from '../../mixins/KeyboardPrefixSelectionMixin';
+import SelectionAriaMixin from '../../mixins/SelectionAriaMixin';
+import SelectionInViewMixin from '../../mixins/SelectionInViewMixin';
+import ShadowTemplateMixin from '../../mixins/ShadowTemplateMixin';
+import SingleSelectionMixin from '../../mixins/SingleSelectionMixin';
+import symbols from '../../mixins/symbols';
 
 
 // We want to apply a number of mixin functions to HTMLElement.
@@ -176,5 +176,5 @@ class ListBox extends base {
 }
 
 
-customElements.define('elix-list-box', ListBox);
+customElements.define('sample-list-box', ListBox);
 export default ListBox;
