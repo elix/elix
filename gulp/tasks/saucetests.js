@@ -12,7 +12,7 @@ const port = 9999;
 //
 function saucetestsTask() {
   const config = {
-    urls: [`http://127.0.0.1:${port}/test/saucelabs-tests.html`],
+    urls: [`http://127.0.0.1:${port}/test/sauce-tests.html`],
     testname: 'Elix tests',
     framework: 'mocha',
     throttled: 3,
