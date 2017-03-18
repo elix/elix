@@ -1,0 +1,16 @@
+language: node_js
+sudo: false
+node_js:
+- '6'
+before_script:
+- npm install -g gulp
+- gulp build
+script:
+- gulp sauce-tests
+env:
+  global:
+  - SAUCE_USERNAME=elix
+addons:
+  sauce_connect: true
+  jwt:
+    secure: "j5qHvOV/qbGxOlpZtSDdzeVMC+Sn+7unE0zlogNa5fVgzn55eO9NylDUjugf+03y9YegQ0qTsEizPPlBLzYU/9id9oI6IFyRsRZWiALCw5GeGHlHpNd9q5M5kwl62qtneOF9vvwtptJuTN/LalrXu6177j8kDt/ULeYeR/mbdtMAMrvUOuyq7tMwLJU5YH1UW0zZhyxKwDefv7942uNEmmSwthrJfIIpgQjWe1InaQmgXKLOFYB4SXv8u30MWLnUXh/E44TyGhJJ8em1NIPiAwOkruRh7PqynU9eAhBMbgnCGLA9CR2aSc3hgENZ2B3XxfjbmqtaucnmVqqW+n6P9Dt0kHmGywV7rTeN1UJyK32wwpzEWf7Pf1lHjLfXF1FW2EYq3li4ELTVQ/j4btiAHdk0Oh+E+JwAlad0gQVkphph2Shvqbc/XbCHqOpKp4zdYcNx2DZ8I5x5DGZj+M4wSHy0Ki7iBMT0nfcmL0GFqpW5B7MYXVCzTTP1tF0ZnZMppUIxyb9UJkxVlHSlQizGggA/XQnqoe9FTswB1UsqhWiUsUvzEuLCzz43cU4roWj08O0mCCBvgAn94dqflhhQ5Yr87+Bkdk0rGYX7+Vpje85hJg1E+aZg574i+HVnCENX9HMKdEHKobvQlZLDmTTHzzFQn63ktZeu1sgxZjMDX0M="
