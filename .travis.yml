@@ -7,8 +7,8 @@ before_script:
 - gulp build
 script:
 - gulp sauce-tests
+env:
+  - SAUCE_USERNAME=elix
 addons:
-  sauce_connect:
-    username: elix
   jwt:
     secure: lEPpoyxz6GEPaSvZoikW5rKUkDEfj0TQ0qgR2OAwPDNXODFKp7ea/+KrTcESLhzX2SgjV9fyBiccR3W6BAsc9e+4KBVKDiOJ4eDE6Y0PT6X42EtcOANNF4OOuZVpYm3IG+SF6kyEnC+lKVohywKp2nC8gOi+CKQLxKYKkchesg91cVR1LUTTV65eSoN/uTggtaNtEWRfGJ2TJi9I1VFONHfY3to4oqDlQirY5b+AkRGUBJQF3w7hwVSQZ4+pSFKwk16W4JCRCM+OuROfECStI9u1AC6jp+aBypiJGWzl/N1r5QNMlTfN8WH1b0e4dv02KiUugxUhXPxaiiTi8ISBryohR70/HA/H+KM5jNeZjG324R7KlBhUyMTYeJUyluiMaDl6mOjIhDRkhDQEfniZie5efu0PIGakebiM08Y6pWvt9Wag15tEmqV57qrTFlD90YgG72d/aLA737Mof3ojn/CIp4ANnu6yz4shq9TIr3IPiR+/YHwRVts+c6tIWROzZopugGroWqTN+h2j//Iv9ZNM480Tk2q401r61p1yxr2m8D+JSe5MOxW8GeXutYWNQCyIZg1AiWnmNjvwA98Z9kW6C+tiQ5uNBfTjIijX9ypUCxoh9H6OIzPshlQa1CK0Er4aPFk01JmjR5gUFwrVSjosA4NKJbab+Ja/RZg3Gus=
