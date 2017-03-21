@@ -85,13 +85,13 @@ const webpackHelperTask = function(options, done) {
           {
             test: /\.js$/,
             loader: 'babel-loader',
-            // include: [
-            //   /demos/,
-            //   /elements/,
-            //   /mixins/,
-            //   /test/
-            // ],
-            exclude: [/node_modules/],
+            include: [
+              './',
+              /demos/,
+              /elements/,
+              /mixins/,
+              /test/
+            ],
             query: {
               presets: ['es2015']
             }
