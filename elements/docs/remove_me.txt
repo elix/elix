@@ -1,0 +1,2 @@
+Remove this when elements docs are added. This keeps the otherwise empty
+elements/docs folder around in the git repo.
