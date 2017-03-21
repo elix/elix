@@ -6,39 +6,25 @@ const jsDocParse = require('jsdoc-parse');
 const dmd = require('dmd');
 const Readable = require('stream').Readable;
 const gutil = require('gulp-util');
-const allPackages = require('../lib/allPackages');
 
 //
 // Build the global docsList array for use in building the package's README.md documentation
 //
-function buildDocsList() {
-  const packagesWithoutBuiltDocs = [
-    'elix-all'
-  ];
-  const ary = allPackages.filter(item => {
-    return packagesWithoutBuiltDocs.indexOf(item) < 0;
-  }).map(item => {
-    return {
-      src: `elements/${item}/*.js`,
-      dest: `elements/${item}/README.md`};
-  });
-
-  return ary.concat(buildMixinsDocsList());
-}
-const docsList = buildDocsList();
+const docsList = buildDocsList('elements').concat(buildDocsList('mixins'));
 
 //
-// Build the portion of docsList that represents the individual source files within
-// the elix-mixins directory.
+// Build the portion of docsList that represents the individual source files
+// within the specified directory.
 //
-function buildMixinsDocsList() {
-  return fs.readdirSync('mixins/')
+function buildDocsList(dirName) {
+  return fs.readdirSync(`${dirName}/`)
     .filter(file => file.endsWith('.js'))
     .map(file => {
       const fileRoot = file.replace('.js', '');
       return {
-        src: `mixins/${file}`,
-        dest: `mixins/docs/${fileRoot}.md` };
+        src: `${dirName}/${file}`,
+        dest: `${dirName}/docs/${fileRoot}.md`
+      };
     });
 }
 
@@ -141,7 +127,7 @@ function mergeMixinDocs(componentJson) {
   }
 
   const mixins = componentJson[0].mixes.map(mixin => {
-    return 'mixins/src/' + mixin + '.js';
+    return 'mixins/' + mixin + '.js';
   });
 
   const hostId = componentJson[0].id;
