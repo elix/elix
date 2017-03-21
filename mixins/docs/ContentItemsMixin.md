@@ -37,35 +37,3 @@ change, turning on the optimization automatically.
 | --- | --- | --- |
 | base | <code>Class</code> | the base class to extend |
 
-
-* [ContentItemsMixin](#module_ContentItemsMixin) ⇒ <code>Class</code>
-    * [~ContentItems](#module_ContentItemsMixin..ContentItems)
-        * [.items](#module_ContentItemsMixin..ContentItems+items) : <code>Array.&lt;HTMLElement&gt;</code>
-        * [.symbols.itemsChanged()](#module_ContentItemsMixin..ContentItems+symbols.itemsChanged)
-
-<a name="module_ContentItemsMixin..ContentItems"></a>
-
-### ContentItemsMixin~ContentItems
-The class prototype added by the mixin.
-
-  **Kind**: inner class of <code>[ContentItemsMixin](#module_ContentItemsMixin)</code>
-
-* [~ContentItems](#module_ContentItemsMixin..ContentItems)
-    * [.items](#module_ContentItemsMixin..ContentItems+items) : <code>Array.&lt;HTMLElement&gt;</code>
-    * [.symbols.itemsChanged()](#module_ContentItemsMixin..ContentItems+symbols.itemsChanged)
-
-<a name="module_ContentItemsMixin..ContentItems+items"></a>
-
-#### contentItems.items : <code>Array.&lt;HTMLElement&gt;</code>
-The current set of items in the list. See the top-level documentation for
-mixin for a description of how items differ from plain content.
-
-  **Kind**: instance property of <code>[ContentItems](#module_ContentItemsMixin..ContentItems)</code>
-<a name="module_ContentItemsMixin..ContentItems+symbols.itemsChanged"></a>
-
-#### contentItems.symbols.itemsChanged()
-This method is invoked when the underlying contents change. It is also
-invoked on component initialization – since the items have "changed" from
-being nothing.
-
-  **Kind**: instance method of <code>[ContentItems](#module_ContentItemsMixin..ContentItems)</code>

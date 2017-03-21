@@ -33,32 +33,3 @@ This mixin expects the component to provide:
 | --- | --- | --- |
 | base | <code>Class</code> | the base class to extend |
 
-
-* [KeyboardPagedSelectionMixin](#module_KeyboardPagedSelectionMixin) ⇒ <code>Class</code>
-    * [~KeyboardPagedSelection](#module_KeyboardPagedSelectionMixin..KeyboardPagedSelection)
-        * [.pageDown()](#module_KeyboardPagedSelectionMixin..KeyboardPagedSelection+pageDown)
-        * [.pageUp()](#module_KeyboardPagedSelectionMixin..KeyboardPagedSelection+pageUp)
-
-<a name="module_KeyboardPagedSelectionMixin..KeyboardPagedSelection"></a>
-
-### KeyboardPagedSelectionMixin~KeyboardPagedSelection
-The class prototype added by the mixin.
-
-  **Kind**: inner class of <code>[KeyboardPagedSelectionMixin](#module_KeyboardPagedSelectionMixin)</code>
-
-* [~KeyboardPagedSelection](#module_KeyboardPagedSelectionMixin..KeyboardPagedSelection)
-    * [.pageDown()](#module_KeyboardPagedSelectionMixin..KeyboardPagedSelection+pageDown)
-    * [.pageUp()](#module_KeyboardPagedSelectionMixin..KeyboardPagedSelection+pageUp)
-
-<a name="module_KeyboardPagedSelectionMixin..KeyboardPagedSelection+pageDown"></a>
-
-#### keyboardPagedSelection.pageDown()
-Scroll down one page.
-
-  **Kind**: instance method of <code>[KeyboardPagedSelection](#module_KeyboardPagedSelectionMixin..KeyboardPagedSelection)</code>
-<a name="module_KeyboardPagedSelectionMixin..KeyboardPagedSelection+pageUp"></a>
-
-#### keyboardPagedSelection.pageUp()
-Scroll up one page.
-
-  **Kind**: instance method of <code>[KeyboardPagedSelection](#module_KeyboardPagedSelectionMixin..KeyboardPagedSelection)</code>

@@ -43,25 +43,3 @@ This mixin also expects the component to provide an `items` property. The
 | --- | --- | --- |
 | base | <code>Class</code> | the base class to extend |
 
-
-* [KeyboardPrefixSelectionMixin](#module_KeyboardPrefixSelectionMixin) ⇒ <code>Class</code>
-    * [~KeyboardPrefixSelection](#module_KeyboardPrefixSelectionMixin..KeyboardPrefixSelection)
-        * [.selectItemWithTextPrefix(prefix)](#module_KeyboardPrefixSelectionMixin..KeyboardPrefixSelection+selectItemWithTextPrefix)
-
-<a name="module_KeyboardPrefixSelectionMixin..KeyboardPrefixSelection"></a>
-
-### KeyboardPrefixSelectionMixin~KeyboardPrefixSelection
-The class prototype added by the mixin.
-
-  **Kind**: inner class of <code>[KeyboardPrefixSelectionMixin](#module_KeyboardPrefixSelectionMixin)</code>
-<a name="module_KeyboardPrefixSelectionMixin..KeyboardPrefixSelection+selectItemWithTextPrefix"></a>
-
-#### keyboardPrefixSelection.selectItemWithTextPrefix(prefix)
-Select the first item whose text content begins with the given prefix.
-
-  **Kind**: instance method of <code>[KeyboardPrefixSelection](#module_KeyboardPrefixSelectionMixin..KeyboardPrefixSelection)</code>
-
-| Param | Description |
-| --- | --- |
-| prefix | [String] The prefix string to search for |
-

@@ -37,9 +37,3 @@ the selection.
 | --- | --- | --- |
 | base | <code>Class</code> | the base class to extend |
 
-<a name="module_ClickSelectionMixin..ClickSelection"></a>
-
-### ClickSelectionMixin~ClickSelection
-The class prototype added by the mixin.
-
-  **Kind**: inner class of <code>[ClickSelectionMixin](#module_ClickSelectionMixin)</code>

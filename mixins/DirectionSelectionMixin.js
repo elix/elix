@@ -16,9 +16,7 @@ import symbols from './symbols';
  */
 export default function DirectionSelectionMixin(base) {
 
-  /**
-   * The class prototype added by the mixin.
-   */
+  // The class prototype added by the mixin.
   class DirectionSelection extends base {
 
     [symbols.goDown]() {

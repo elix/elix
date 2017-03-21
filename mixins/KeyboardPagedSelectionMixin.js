@@ -34,9 +34,7 @@ import symbols from './symbols';
  */
 export default function KeyboardPagedSelectionMixin(base) {
 
-  /**
-   * The class prototype added by the mixin.
-   */
+  // The class prototype added by the mixin.
   class KeyboardPagedSelection extends base {
 
     [symbols.keydown](event) {

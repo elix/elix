@@ -39,9 +39,7 @@ const mapTagToTemplate = {};
  */
 export default function ShadowTemplateMixin(base) {
 
-  /**
-   * The class prototype added by the mixin.
-   */
+  // The class prototype added by the mixin.
   class ShadowTemplate extends base {
 
     /*

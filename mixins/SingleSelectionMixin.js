@@ -51,9 +51,7 @@ const internalSelectedItemSymbol = Symbol('internalSelectedItem');
  */
 export default function SingleSelectionMixin(base) {
 
-  /**
-   * The class prototype added by the mixin.
-   */
+  // The class prototype added by the mixin.
   class SingleSelection extends base {
 
     constructor() {

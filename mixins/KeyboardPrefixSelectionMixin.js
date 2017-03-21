@@ -52,9 +52,7 @@ const settingSelectionSymbol = Symbol('settingSelection');
  */
 export default function KeyboardPrefixSelectionMixin(base) {
 
-  /**
-   * The class prototype added by the mixin.
-   */
+  // The class prototype added by the mixin.
   class KeyboardPrefixSelection extends base {
 
     // Default implementation returns an item's `alt` attribute or its

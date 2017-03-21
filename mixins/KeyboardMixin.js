@@ -44,9 +44,7 @@ import symbols from './symbols';
  */
 export default function KeyboardMixin(base) {
 
-  /**
-   * The class prototype added by the mixin.
-   */
+  // The class prototype added by the mixin.
   class Keyboard extends base {
 
     constructor() {

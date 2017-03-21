@@ -42,9 +42,7 @@ let idCount = 0;
  */
 export default function (base) {
 
-  /**
-   * The class prototype added by the mixin.
-   */
+  // The class prototype added by the mixin.
   class SelectionAria extends base {
 
     connectedCallback() {

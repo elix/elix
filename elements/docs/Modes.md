@@ -17,13 +17,10 @@ This component doesn't provide any UI for changing which mode is shown.
   
 
 * [Modes](#Modes) ⇐ <code>HTMLElement</code>
-    * [~AttributeMarshalling](#module_AttributeMarshallingMixin..AttributeMarshalling)
     * ["can-select-next-changed"](#SingleSelection.event_can-select-next-changed)
     * ["can-select-previous-changed"](#SingleSelection.event_can-select-previous-changed)
     * [.canSelectNext](#module_SingleSelectionMixin..SingleSelection+canSelectNext) : <code>boolean</code>
     * [.canSelectPrevious](#module_SingleSelectionMixin..SingleSelection+canSelectPrevious) : <code>boolean</code>
-    * [~ContentItems](#module_ContentItemsMixin..ContentItems)
-    * [~DefaultSlotContent](#module_DefaultSlotContentMixin..DefaultSlotContent)
     * [.items](#module_ContentItemsMixin..ContentItems+items) : <code>Array.&lt;HTMLElement&gt;</code>
     * ["items-changed"](#ContentItems.event_items-changed)
     * [.reflectAttribute(attribute, value)](#module_AttributeMarshallingMixin..AttributeMarshalling+reflectAttribute)
@@ -38,18 +35,11 @@ This component doesn't provide any UI for changing which mode is shown.
     * [.selectLast()](#module_SingleSelectionMixin..SingleSelection+selectLast) ⇒ <code>Boolean</code>
     * [.selectNext()](#module_SingleSelectionMixin..SingleSelection+selectNext) ⇒ <code>Boolean</code>
     * [.selectPrevious()](#module_SingleSelectionMixin..SingleSelection+selectPrevious) ⇒ <code>Boolean</code>
-    * [~SingleSelection](#module_SingleSelectionMixin..SingleSelection)
     * [.symbols.content](#module_DefaultSlotContentMixin..DefaultSlotContent+symbols.content) : <code>Array.&lt;HTMLElement&gt;</code>
     * [.symbols.itemAdded(item)](#module_SingleSelectionMixin..SingleSelection+symbols.itemAdded)
     * [.symbols.itemsChanged()](#module_ContentItemsMixin..ContentItems+symbols.itemsChanged)
     * [.symbols.itemSelected(item, selected)](#module_SingleSelectionMixin..SingleSelection+symbols.itemSelected)
 
-<a name="module_AttributeMarshallingMixin..AttributeMarshalling"></a>
-
-### Modes~AttributeMarshalling
-The class prototype added by the mixin.
-
-  **Kind**: inner class of <code>[Modes](#Modes)</code>. Defined by <code>[module:AttributeMarshallingMixin](../elix-mixins/docs/module:AttributeMarshallingMixin.md)</code> mixin.
 <a name="SingleSelection.event_can-select-next-changed"></a>
 
 ### "can-select-next-changed"
@@ -78,18 +68,6 @@ True if the selection can be moved to the previous item, false if not
 (the selected item is the first one in the list).
 
   **Kind**: instance property of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
-<a name="module_ContentItemsMixin..ContentItems"></a>
-
-### Modes~ContentItems
-The class prototype added by the mixin.
-
-  **Kind**: inner class of <code>[Modes](#Modes)</code>. Defined by <code>[module:ContentItemsMixin](../elix-mixins/docs/module:ContentItemsMixin.md)</code> mixin.
-<a name="module_DefaultSlotContentMixin..DefaultSlotContent"></a>
-
-### Modes~DefaultSlotContent
-The class prototype added by the mixin.
-
-  **Kind**: inner class of <code>[Modes](#Modes)</code>. Defined by <code>[module:DefaultSlotContentMixin](../elix-mixins/docs/module:DefaultSlotContentMixin.md)</code> mixin.
 <a name="module_ContentItemsMixin..ContentItems+items"></a>
 
 ### modes.items : <code>Array.&lt;HTMLElement&gt;</code>
@@ -233,12 +211,6 @@ If the list has no selection, the last item will be selected.
 
   **Kind**: instance method of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 **Returns**: <code>Boolean</code> - True if the selection changed, false if not.  
-<a name="module_SingleSelectionMixin..SingleSelection"></a>
-
-### Modes~SingleSelection
-The class prototype added by the mixin.
-
-  **Kind**: inner class of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin](../elix-mixins/docs/module:SingleSelectionMixin.md)</code> mixin.
 <a name="module_DefaultSlotContentMixin..DefaultSlotContent+symbols.content"></a>
 
 ### modes.symbols.content : <code>Array.&lt;HTMLElement&gt;</code>

@@ -44,29 +44,3 @@ has the effect of adding the component to the tab order in document order.
 | --- | --- | --- |
 | base | <code>Class</code> | the base class to extend |
 
-
-* [KeyboardMixin](#module_KeyboardMixin) ⇒ <code>Class</code>
-    * [~Keyboard](#module_KeyboardMixin..Keyboard)
-        * [.symbols.keydown(event)](#module_KeyboardMixin..Keyboard+symbols.keydown) ⇒ <code>boolean</code>
-
-<a name="module_KeyboardMixin..Keyboard"></a>
-
-### KeyboardMixin~Keyboard
-The class prototype added by the mixin.
-
-  **Kind**: inner class of <code>[KeyboardMixin](#module_KeyboardMixin)</code>
-<a name="module_KeyboardMixin..Keyboard+symbols.keydown"></a>
-
-#### keyboard.symbols.keydown(event) ⇒ <code>boolean</code>
-Handle the indicated keyboard event.
-
-The default implementation of this method does nothing. This will
-typically be handled by other mixins.
-
-  **Kind**: instance method of <code>[Keyboard](#module_KeyboardMixin..Keyboard)</code>
-**Returns**: <code>boolean</code> - true if the event was handled  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| event | <code>KeyboardEvent</code> | the keyboard event |
-

@@ -44,9 +44,7 @@ const itemInitializedSymbol = Symbol('itemInitialized');
  */
 export default function ContentItemsMixin(base) {
 
-  /**
-   * The class prototype added by the mixin.
-   */
+  // The class prototype added by the mixin.
   class ContentItems extends base {
 
     [symbols.contentChanged]() {

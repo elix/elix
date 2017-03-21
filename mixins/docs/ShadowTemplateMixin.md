@@ -29,9 +29,3 @@ implement Shadow DOM v1.
 | --- | --- | --- |
 | base | <code>Class</code> | the base class to extend |
 
-<a name="module_ShadowTemplateMixin..ShadowTemplate"></a>
-
-### ShadowTemplateMixin~ShadowTemplate
-The class prototype added by the mixin.
-
-  **Kind**: inner class of <code>[ShadowTemplateMixin](#module_ShadowTemplateMixin)</code>

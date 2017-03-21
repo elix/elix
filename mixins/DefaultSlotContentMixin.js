@@ -52,9 +52,7 @@ const slotchangeFiredSymbol = Symbol('slotchangeFired');
  */
 export default function DefaultSlotContentMixin(base) {
 
-  /**
-   * The class prototype added by the mixin.
-   */
+  // The class prototype added by the mixin.
   class DefaultSlotContent extends base {
 
     connectedCallback() {

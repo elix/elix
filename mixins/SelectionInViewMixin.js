@@ -19,9 +19,7 @@ import symbols from './symbols';
  */
 export default (base) => {
 
-  /**
-   * The class prototype added by the mixin.
-   */
+  // The class prototype added by the mixin.
   class SelectionInView extends base {
 
     connectedCallback() {

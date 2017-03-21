@@ -23,9 +23,7 @@ import symbols from './symbols';
  */
 export default function KeyboardDirectionMixin(base) {
 
-  /**
-   * The class prototype added by the mixin.
-   */
+  // The class prototype added by the mixin.
   class KeyboardDirection extends base {
 
     /**

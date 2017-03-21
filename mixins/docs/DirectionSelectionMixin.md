@@ -16,9 +16,3 @@ events to directions) and a mixin that handles selection like
 | --- | --- | --- |
 | base | <code>Class</code> | the base class to extend |
 
-<a name="module_DirectionSelectionMixin..DirectionSelection"></a>
-
-### DirectionSelectionMixin~DirectionSelection
-The class prototype added by the mixin.
-
-  **Kind**: inner class of <code>[DirectionSelectionMixin](#module_DirectionSelectionMixin)</code>

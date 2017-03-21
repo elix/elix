@@ -38,9 +38,3 @@ supply these yourself, or do so via
 | --- | --- | --- |
 | base | <code>Class</code> | the base class to extend |
 
-<a name="module_SelectionAriaMixin..SelectionAria"></a>
-
-### SelectionAriaMixin~SelectionAria
-The class prototype added by the mixin.
-
-  **Kind**: inner class of <code>[SelectionAriaMixin](#module_SelectionAriaMixin)</code>

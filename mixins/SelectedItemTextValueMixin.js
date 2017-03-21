@@ -20,6 +20,7 @@ import symbols from './symbols';
  */
 export default function SelectedItemTextValueMixin(base) {
 
+  // The class prototype added by the mixin.
   class SelectedItemTextValue extends base {
 
     /**

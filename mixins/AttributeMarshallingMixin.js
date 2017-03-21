@@ -52,9 +52,7 @@ const propertyNamesToAttributes = {};
  */
 export default function AttributeMarshallingMixin(base) {
 
-  /**
-   * The class prototype added by the mixin.
-   */
+  // The class prototype added by the mixin.
   class AttributeMarshalling extends base {
 
     /*
