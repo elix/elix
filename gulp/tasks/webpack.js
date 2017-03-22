@@ -86,7 +86,7 @@ const webpackHelperTask = function(options, done) {
             test: /\.js$/,
             loader: 'babel-loader',
             include: [
-              './',
+              /\//,
               /demos/,
               /elements/,
               /mixins/,
