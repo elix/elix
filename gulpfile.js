@@ -12,6 +12,7 @@ const lintTask = require('./gulp/tasks/lint');
 const saucetestsTask = require('./gulp/tasks/saucetests').saucetestsTask;
 const connectTask = require('./gulp/tasks/saucetests').connectTask;
 const disconnectTask = require('./gulp/tasks/saucetests').disconnectTask;
+const reportTask = require('./gulp/tasks/saucetests').reportTask;
 
 //
 // Naming convention for tasks:
@@ -36,6 +37,7 @@ gulp.task('lint-debugWebpack', ['debugWebpack'], lintTask);
 gulp.task('connect', [], connectTask);
 gulp.task('saucetests-connect', ['connect'], saucetestsTask);
 gulp.task('disconnect-saucetests-connect', ['saucetests-connect'], disconnectTask);
+gulp.task('report-disconnect-saucetests-connect', ['disconnect-saucetests-connect'], reportTask);
 
 // Public
 gulp.task('build', ['lint-docs-debugWebpack-webpack']);
@@ -44,4 +46,4 @@ gulp.task('default', ['help']);
 gulp.task('docs', [], docsTask);
 gulp.task('lint', [], lintTask);
 gulp.task('watch', [], watchifyTask);
-gulp.task('sauce-tests', ['disconnect-saucetests-connect']);
+gulp.task('sauce-tests', ['report-disconnect-saucetests-connect']);
