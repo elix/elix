@@ -6,7 +6,9 @@ Shows exactly one child element at a time. This can be useful, for example,
 if a given UI element has multiple modes that present substantially different
 elements.
 
-This component doesn't provide any UI for changing which mode is shown.
+This component doesn't provide any UI for changing which mode is shown. A
+common pattern in which buttons select the mode are tabs, a pattern
+implemented by the [Tabs](Tabs.md) component.
 
   **Kind**: global class
 **Extends:** <code>HTMLElement</code>  

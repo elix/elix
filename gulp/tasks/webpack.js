@@ -7,16 +7,16 @@ const glob = require('glob');
 
 
 const buildTargets = {
-  './build/tests.js': { 
-    globItems: ['./test/**/*.js'], 
+  './build/tests.js': {
+    globItems: ['./test/**/*.js'],
     includes: [/mixins/, /elements/, /test/]
   },
-  './build/elix.js': { 
-    globItems: ['./globals.js'], 
-    includes: [/\//] 
+  './build/elix.js': {
+    globItems: ['./globals.js'],
+    includes: [/\//]
   },
-  './build/demos.js': { 
-    globItems: ['./demos/src/*.js'], 
+  './build/demos.js': {
+    globItems: ['./globals.js', './demos/src/*.js'],
     includes: [/\//, /demos/] 
   }
 };

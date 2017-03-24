@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>elix-tab-strip</title>
+
+  <script src="node_modules/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="node_modules/custom-elements/src/native-shim.js"></script>
+  <script src="../build/demos.js"></script>
+  <link rel="stylesheet" href="demos.css">
+
+  <style>
+    button.selected {
+      background: darkgray;
+      color: white;
+    }
+  </style>
+
+</head>
+
+<body>
+  <p>
+    This component is used to render a strip of tab buttons corresponding to the
+    tab panels managed by another component. It is largely concerned with
+    addressing the layout, keyboard navigation, and accessibility of the buttons
+    in a tab strip.
+    <a href="labeledTabs.html">elix-labeled-tabs</a> for a complete example.
+  </p>
+  <elix-tab-strip>
+    <button aria-label="One">One</button>
+    <button aria-label="Two">Two</button>
+    <button aria-label="Three">Three</button>
+  </elix-tab-strip>
+</body>
+
+</html>

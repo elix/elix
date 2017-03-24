@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Navigation toolbar using elix-tabs</title>
+
+  <script src="node_modules/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="node_modules/custom-elements/src/native-shim.js"></script>
+  <script src="../build/demos.js"></script>
+  <link rel="stylesheet" href="demos.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+  <style>
+  html {
+    height: 100%;
+  }
+
+  body {
+    background: #eee;
+    color: gray;
+    display: flex;
+    height: 100%;
+    padding: 0;
+  }
+
+  elix-tabs {
+    display: flex;
+    flex: 1;
+  }
+
+  .page {
+    align-items: center;
+    background: initial;
+    color: initial;
+    display: flex;
+    justify-content: center;
+  }
+  </style>
+
+</head>
+
+<body>
+  <elix-tabs tab-position="bottom" tab-align="stretch">
+
+    <toolbar-tab slot="tabButtons" aria-label="Home">
+      <div class="material-icons">home</div>
+      Home
+    </toolbar-tab>
+    <toolbar-tab slot="tabButtons" aria-label="Search">
+      <div class="material-icons">search</div>
+      Search
+    </toolbar-tab>
+    <toolbar-tab slot="tabButtons" aria-label="Settings">
+      <div class="material-icons">settings</div>
+      Settings
+    </toolbar-tab>
+
+    <div class="page">Home page</div>
+    <div class="page">Search page</div>
+    <div class="page">Settings page</div>
+
+  </elix-tabs>
+</body>
+
+</html>

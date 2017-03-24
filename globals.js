@@ -6,12 +6,12 @@
  */
 
 
-// Mixins
+// Import mixins
 import AttributeMarshallingMixin from './mixins/AttributeMarshallingMixin';
-import attributes from './mixins/attributes';
+import * as attributes from './mixins/attributes';
 import ClickSelectionMixin from './mixins/ClickSelectionMixin';
 import constants from './mixins/constants';
-import content from './mixins/content';
+import * as content from './mixins/content';
 import ContentItemsMixin from './mixins/ContentItemsMixin';
 import defaultScrollTarget from './mixins/defaultScrollTarget';
 import DefaultSlotContentMixin from './mixins/DefaultSlotContentMixin';
@@ -20,40 +20,53 @@ import KeyboardDirectionMixin from './mixins/KeyboardDirectionMixin';
 import KeyboardMixin from './mixins/KeyboardMixin';
 import KeyboardPagedSelectionMixin from './mixins/KeyboardPagedSelectionMixin';
 import KeyboardPrefixSelectionMixin from './mixins/KeyboardPrefixSelectionMixin';
+import renderArrayAsElements from './mixins/renderArrayAsElements';
 import SelectionAriaMixin from './mixins/SelectionAriaMixin';
 import SelectionInViewMixin from './mixins/SelectionInViewMixin';
+import ShadowReferencesMixin from './mixins/ShadowReferencesMixin';
 import ShadowTemplateMixin from './mixins/ShadowTemplateMixin';
 import SingleSelectionMixin from './mixins/SingleSelectionMixin';
 import Symbol from './mixins/Symbol';
 import symbols from './mixins/symbols';
 
-// Elements
+// Import elements
+import LabeledTabButton from './elements/LabeledTabButton';
+import LabeledTabs from './elements/LabeledTabs';
 import ListBox from './elements/ListBox';
 import Modes from './elements/Modes';
+import Tabs from './elements/Tabs';
+import TabStrip from './elements/TabStrip';
+import TabStripWrapper from './elements/TabStripWrapper';
 
 
-window.Elix = window.Elix || {};
-
-// Mixins
-window.Elix.AttributeMarshallingMixin = AttributeMarshallingMixin;
-window.Elix.attributes = attributes;
-window.Elix.ClickSelectionMixin = ClickSelectionMixin;
-window.Elix.constants = constants;
-window.Elix.content = content;
-window.Elix.ContentItemsMixin = ContentItemsMixin;
-window.Elix.defaultScrollTarget = defaultScrollTarget;
-window.Elix.DefaultSlotContentMixin = DefaultSlotContentMixin;
-window.Elix.DirectionSelectionMixin = DirectionSelectionMixin;
-window.Elix.KeyboardDirectionMixin = KeyboardDirectionMixin;
-window.Elix.KeyboardMixin = KeyboardMixin;
-window.Elix.KeyboardPagedSelectionMixin = KeyboardPagedSelectionMixin;
-window.Elix.KeyboardPrefixSelectionMixin = KeyboardPrefixSelectionMixin;
-window.Elix.SelectionAriaMixin = SelectionAriaMixin;
-window.Elix.SelectionInViewMixin = SelectionInViewMixin;
-window.Elix.ShadowTemplateMixin = ShadowTemplateMixin;
-window.Elix.SingleSelectionMixin = SingleSelectionMixin;
-window.Elix.Symbol = Symbol;
-window.Elix.symbols = symbols;
-
-window.ListBox = ListBox;
-window.Modes = Modes;
+// Create (or add to) Elix global, and add in all mixins and elements.
+window.Elix = Object.assign(window.Elix || {}, {
+  AttributeMarshallingMixin,
+  attributes,
+  ClickSelectionMixin,
+  constants,
+  content,
+  ContentItemsMixin,
+  defaultScrollTarget,
+  DefaultSlotContentMixin,
+  DirectionSelectionMixin,
+  KeyboardDirectionMixin,
+  KeyboardMixin,
+  KeyboardPagedSelectionMixin,
+  KeyboardPrefixSelectionMixin,
+  renderArrayAsElements,
+  SelectionAriaMixin,
+  SelectionInViewMixin,
+  ShadowReferencesMixin,
+  ShadowTemplateMixin,
+  SingleSelectionMixin,
+  Symbol,
+  symbols,
+  LabeledTabButton,
+  LabeledTabs,
+  ListBox,
+  Modes,
+  Tabs,
+  TabStrip,
+  TabStripWrapper
+});

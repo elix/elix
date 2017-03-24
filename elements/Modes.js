@@ -22,7 +22,9 @@ const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
  * if a given UI element has multiple modes that present substantially different
  * elements.
  *
- * This component doesn't provide any UI for changing which mode is shown.
+ * This component doesn't provide any UI for changing which mode is shown. A
+ * common pattern in which buttons select the mode are tabs, a pattern
+ * implemented by the [Tabs](Tabs.md) component.
  *
  * @extends HTMLElement
  * @mixes AttributeMarshallingMixin

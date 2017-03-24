@@ -11,6 +11,12 @@
   li {
     margin-bottom: 0.5em;
   }
+
+  .note {
+    color: #666;
+    font-size: smaller;
+    margin-top: 0.5em;
+  }
   </style>
 
 </head>
@@ -50,6 +56,24 @@
       <li>
         <a href="demos/browserPluginList.html">Browser plugin list</a>.
         A list box with a hard-coded set of list items.
+      </li>
+      <li>
+        <a href="demos/labeledTabs.html">Labeled tabs</a>.
+        A set of panels with classic rounded tabs.
+        <p class="note">
+          (Works in Chrome and macOS Safari, but a polyfill bug prevents this
+          from working in mobile Safari, Firefox, Edge, and IE. Additionally,
+          macOS Safari has a layout bug that causes tabs to initially render
+          incorrectly when their position is changed at runtime.)
+        </p>
+      </li>
+      <li>
+        <a href="demos/toolbarTabs.html">Toolbar tabs</a>.
+        Tabs used as the overall navigation UI model for a mobile app.
+        <p class="note">
+          (Works in Chrome; bugs in Safari and the polyfill prevent user
+          interactions from changing the selected toolbar button.)
+        </p>
       </li>
   </ul>
   <p>
