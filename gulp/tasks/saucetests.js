@@ -7,6 +7,8 @@ const connect   = require('gulp-connect');
 
 const port = 9999;
 
+let reportStatus = 0;
+
 //
 // SauceTests task - runs tests on Sauce Labs
 //
@@ -54,6 +56,9 @@ function saucetestsTask() {
       if (status) {
         gutil.log('All tests passed!');
       }
+      else {
+        reportStatus = 1;
+      }
     }
   };
 
@@ -68,8 +73,15 @@ function disconnectTask() {
   return connect.serverClose();
 }
 
+function reportTask() {
+  if (reportStatus) {
+    return process.exit(reportStatus);
+  }
+}
+
 module.exports = {
   saucetestsTask,
   connectTask,
-  disconnectTask
+  disconnectTask,
+  reportTask
 };

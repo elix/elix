@@ -7,9 +7,18 @@ const glob = require('glob');
 
 
 const buildTargets = {
-  './build/tests.js': ['./test/**/*.js'],
-  './build/elix.js': ['./globals.js'],
-  './build/demos.js': ['./elements/*.js', './demos/src/*.js']
+  './build/tests.js': { 
+    globItems: ['./test/**/*.js'], 
+    includes: [/mixins/, /elements/, /test/]
+  },
+  './build/elix.js': { 
+    globItems: ['./globals.js'], 
+    includes: [/\//] 
+  },
+  './build/demos.js': { 
+    globItems: ['./demos/src/*.js'], 
+    includes: [/\//, /demos/] 
+  }
 };
 
 const watchifyTask = function(done) {
@@ -55,8 +64,9 @@ const webpackHelperTask = function(options, done) {
   /*jshint loopfunc: true */
   for (let key in buildTargets) {
     let entries = [];
+    let includes = buildTargets[key].includes;
 
-    buildTargets[key].forEach(globItem => {
+    buildTargets[key].globItems.forEach(globItem => {
       let a = glob.sync(globItem);
       Array.prototype.push.apply(entries, a);
     });
@@ -85,13 +95,7 @@ const webpackHelperTask = function(options, done) {
           {
             test: /\.js$/,
             loader: 'babel-loader',
-            include: [
-              './',
-              /demos/,
-              /elements/,
-              /mixins/,
-              /test/
-            ],
+            include: includes,
             query: {
               presets: ['es2015']
             }
