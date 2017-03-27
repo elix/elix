@@ -3,12 +3,13 @@ import ShadowTemplateMixin from '../../mixins/ShadowTemplateMixin';
 import symbols from '../../mixins/symbols';
 
 
-class ToolbarTab extends FocusRingMixin(ShadowTemplateMixin(HTMLElement)) {
+class FocusRingTest extends FocusRingMixin(ShadowTemplateMixin(HTMLElement)) {
+
   get [symbols.template]() {
     return `
       <style>
         :host {
-          display: flex;
+          display: inline-block;
         }
 
         :host(:focus:not(.focus-ring)) {
@@ -16,32 +17,24 @@ class ToolbarTab extends FocusRingMixin(ShadowTemplateMixin(HTMLElement)) {
         }
 
         button {
-          align-items: center;
-          background: transparent;
-          border: none;
-          color: inherit;
-          display: flex;
-          flex: 1;
-          flex-direction: column;
+          background: gray;
+          color: white;
           font-family: inherit;
           font-size: inherit;
+          font-style: inherit;
+          font-weight: inherit;
           outline: none;
-          padding: 6px;
-        }
-
-        :host(.selected) button,
-        :host(.selected) ::slotted(*) {
-          color: dodgerblue;
         }
       </style>
-
       <button tabindex="-1">
         <slot></slot>
       </button>
     `;
   }
+
+  connectedCallback() {
+    this.setAttribute('tabindex', '0');
+  }
+
 }
-
-
-customElements.define('toolbar-tab', ToolbarTab);
-export default ToolbarTab;
+customElements.define('focus-ring-test', FocusRingTest);

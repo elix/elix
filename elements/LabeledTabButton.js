@@ -1,3 +1,4 @@
+import FocusRingMixin from '../mixins/FocusRingMixin';
 import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin';
 import symbols from '../mixins/symbols';
 
@@ -11,12 +12,16 @@ import symbols from '../mixins/symbols';
  * @extends HTMLElement
  * @mixes ShadowTemplateMixin
  */
-class LabeledTabButton extends ShadowTemplateMixin(HTMLElement) {
+class LabeledTabButton extends FocusRingMixin(ShadowTemplateMixin(HTMLElement)) {
   get [symbols.template]() {
     return `
       <style>
         :host {
           display: inline-flex;
+        }
+
+        :host(:focus:not(.focus-ring)) {
+          outline: none;
         }
 
         button {
@@ -27,6 +32,7 @@ class LabeledTabButton extends ShadowTemplateMixin(HTMLElement) {
           font-family: inherit;
           font-size: inherit;
           margin: 0;
+          outline: none;
           padding: 0.5em 0.75em;
           position: relative;
           transition: border-color 0.25s;
