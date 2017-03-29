@@ -28,6 +28,7 @@ const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
  * @mixes AttributeMarshallingMixin
  * @mixes ContentItemsMixin
  * @mixes DefaultSlotContentMixin
+ * @mixes ShadowTemplateMixin
  * @mixes SingleSelectionMixin
  */
 class Modes extends base {

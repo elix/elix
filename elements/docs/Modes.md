@@ -13,6 +13,7 @@ This component doesn't provide any UI for changing which mode is shown.
 **Mixes**: <code>[AttributeMarshallingMixin](../elix-mixins/docs/AttributeMarshallingMixin.md)</code>
   , <code>[ContentItemsMixin](../elix-mixins/docs/ContentItemsMixin.md)</code>
   , <code>[DefaultSlotContentMixin](../elix-mixins/docs/DefaultSlotContentMixin.md)</code>
+  , <code>[ShadowTemplateMixin](../elix-mixins/docs/ShadowTemplateMixin.md)</code>
   , <code>[SingleSelectionMixin](../elix-mixins/docs/SingleSelectionMixin.md)</code>
   
 
