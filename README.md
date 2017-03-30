@@ -48,8 +48,7 @@ together._
   meet every situation. (There is no One Carousel to Rule Them All.) So these
   components are factored into parts that you can readily recombine to create
   solid components to meet your needs. Composition is generally preferred over
-  class inheritance as a means of aggregating behavior; see the elix-mixins
-  package for details.
+  class inheritance as a means of aggregating behavior.
 * **Use the platform.** These components are generally written as "close to the
   metal" as is possible while still allowing code to be shared across
   components. These components are not built upon a monolithic framework, nor is

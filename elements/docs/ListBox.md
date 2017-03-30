@@ -71,41 +71,41 @@ keyboard details.
 Fires when the canSelectNext property changes in response to internal
 component activity.
 
-  **Kind**: event emitted by <code>[ListBox](#ListBox)</code>. Defined by <code>[SingleSelection](../elix-mixins/docs/SingleSelection.md)</code> mixin.
+  **Kind**: event emitted by <code>[ListBox](#ListBox)</code>. Defined by <code>[SingleSelection](../mixins/docs/SingleSelection.md)</code> mixin.
 <a name="SingleSelection.event_can-select-previous-changed"></a>
 
 ### "can-select-previous-changed"
 Fires when the canSelectPrevious property changes in response to internal
 component activity.
 
-  **Kind**: event emitted by <code>[ListBox](#ListBox)</code>. Defined by <code>[SingleSelection](../elix-mixins/docs/SingleSelection.md)</code> mixin.
+  **Kind**: event emitted by <code>[ListBox](#ListBox)</code>. Defined by <code>[SingleSelection](../mixins/docs/SingleSelection.md)</code> mixin.
 <a name="module_SingleSelectionMixin..SingleSelection+canSelectNext"></a>
 
 ### listBox.canSelectNext : <code>boolean</code>
 True if the selection can be moved to the next item, false if not (the
 selected item is the last item in the list).
 
-  **Kind**: instance property of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance property of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 <a name="module_SingleSelectionMixin..SingleSelection+canSelectPrevious"></a>
 
 ### listBox.canSelectPrevious : <code>boolean</code>
 True if the selection can be moved to the previous item, false if not
 (the selected item is the first one in the list).
 
-  **Kind**: instance property of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance property of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 <a name="module_ContentItemsMixin..ContentItems+items"></a>
 
 ### listBox.items : <code>Array.&lt;HTMLElement&gt;</code>
 The current set of items in the list. See the top-level documentation for
 mixin for a description of how items differ from plain content.
 
-  **Kind**: instance property of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:ContentItemsMixin~ContentItems](../elix-mixins/docs/module:ContentItemsMixin~ContentItems.md)</code> mixin.
+  **Kind**: instance property of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:ContentItemsMixin~ContentItems](../mixins/docs/module:ContentItemsMixin~ContentItems.md)</code> mixin.
 <a name="ContentItems.event_items-changed"></a>
 
 ### "items-changed"
 Fires when the items in the list change.
 
-  **Kind**: event emitted by <code>[ListBox](#ListBox)</code>. Defined by <code>[ContentItems](../elix-mixins/docs/ContentItems.md)</code> mixin.
+  **Kind**: event emitted by <code>[ListBox](#ListBox)</code>. Defined by <code>[ContentItems](../mixins/docs/ContentItems.md)</code> mixin.
 <a name="ListBox+orientation"></a>
 
 ### listBox.orientation : <code>string</code>
@@ -126,13 +126,13 @@ component activity.
 ### listBox.pageDown()
 Scroll down one page.
 
-  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:KeyboardPagedSelectionMixin~KeyboardPagedSelection](../elix-mixins/docs/module:KeyboardPagedSelectionMixin~KeyboardPagedSelection.md)</code> mixin.
+  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:KeyboardPagedSelectionMixin~KeyboardPagedSelection](../mixins/docs/module:KeyboardPagedSelectionMixin~KeyboardPagedSelection.md)</code> mixin.
 <a name="module_KeyboardPagedSelectionMixin..KeyboardPagedSelection+pageUp"></a>
 
 ### listBox.pageUp()
 Scroll up one page.
 
-  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:KeyboardPagedSelectionMixin~KeyboardPagedSelection](../elix-mixins/docs/module:KeyboardPagedSelectionMixin~KeyboardPagedSelection.md)</code> mixin.
+  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:KeyboardPagedSelectionMixin~KeyboardPagedSelection](../mixins/docs/module:KeyboardPagedSelectionMixin~KeyboardPagedSelection.md)</code> mixin.
 <a name="module_AttributeMarshallingMixin..AttributeMarshalling+reflectAttribute"></a>
 
 ### listBox.reflectAttribute(attribute, value)
@@ -144,7 +144,7 @@ important limitation of custom element consturctors is that they cannot
 set attributes. A call to `reflectAttribute` during the constructor will
 be deferred until the element is connected to the document.
 
-  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:AttributeMarshallingMixin~AttributeMarshalling](../elix-mixins/docs/module:AttributeMarshallingMixin~AttributeMarshalling.md)</code> mixin.
+  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:AttributeMarshallingMixin~AttributeMarshalling](../mixins/docs/module:AttributeMarshallingMixin~AttributeMarshalling.md)</code> mixin.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -163,7 +163,7 @@ set attributes, including the `class` attribute. A call to
 `reflectClass` during the constructor will be deferred until the element
 is connected to the document.
 
-  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:AttributeMarshallingMixin~AttributeMarshalling](../elix-mixins/docs/module:AttributeMarshallingMixin~AttributeMarshalling.md)</code> mixin.
+  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:AttributeMarshallingMixin~AttributeMarshalling](../mixins/docs/module:AttributeMarshallingMixin~AttributeMarshalling.md)</code> mixin.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -184,7 +184,7 @@ This scrolls the containing element defined by the `scrollTarget`
 property. See that property for a discussion of the default value of
 that property.
 
-  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SelectinInViewMixin~SelectionInView](../elix-mixins/docs/module:SelectinInViewMixin~SelectionInView.md)</code> mixin.
+  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SelectinInViewMixin~SelectionInView](../mixins/docs/module:SelectinInViewMixin~SelectionInView.md)</code> mixin.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -196,7 +196,7 @@ that property.
 Fires when the selectedIndex property changes in response to internal
 component activity.
 
-  **Kind**: event emitted by <code>[ListBox](#ListBox)</code>. Defined by <code>[SingleSelection](../elix-mixins/docs/SingleSelection.md)</code> mixin.
+  **Kind**: event emitted by <code>[ListBox](#ListBox)</code>. Defined by <code>[SingleSelection](../mixins/docs/SingleSelection.md)</code> mixin.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -208,7 +208,7 @@ component activity.
 Fires when the selectedItem property changes in response to internal
 component activity.
 
-  **Kind**: event emitted by <code>[ListBox](#ListBox)</code>. Defined by <code>[SingleSelection](../elix-mixins/docs/SingleSelection.md)</code> mixin.
+  **Kind**: event emitted by <code>[ListBox](#ListBox)</code>. Defined by <code>[SingleSelection](../mixins/docs/SingleSelection.md)</code> mixin.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -224,7 +224,7 @@ The setter expects an integer or a string representing an integer.
 A `selectedIndex` of -1 indicates there is no selection. Setting this
 property to -1 will remove any existing selection.
 
-  **Kind**: instance property of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance property of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 <a name="module_SingleSelectionMixin..SingleSelection+selectedItem"></a>
 
 ### listBox.selectedItem : <code>object</code>
@@ -236,34 +236,34 @@ Setting this property to an object that is not in the list has no effect.
 TODO: Even if selectionRequired, can still explicitly set selectedItem to null.
 TODO: If selectionRequired, leave selection alone?
 
-  **Kind**: instance property of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance property of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 <a name="module_SingleSelectionMixin..SingleSelection+selectFirst"></a>
 
 ### listBox.selectFirst() ⇒ <code>Boolean</code>
 Select the first item in the list.
 
-  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 **Returns**: <code>Boolean</code> - True if the selection changed, false if not.  
 <a name="module_SingleSelectionMixin..SingleSelection+selectionRequired"></a>
 
 ### listBox.selectionRequired : <code>boolean</code>
 True if the list should always have a selection (if it has items).
 
-  **Kind**: instance property of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance property of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 **Default**: <code>false</code>  
 <a name="module_SingleSelectionMixin..SingleSelection+selectionWraps"></a>
 
 ### listBox.selectionWraps : <code>boolean</code>
 True if selection navigations wrap from last to first, and vice versa.
 
-  **Kind**: instance property of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance property of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 **Default**: <code>false</code>  
 <a name="module_KeyboardPrefixSelectionMixin..KeyboardPrefixSelection+selectItemWithTextPrefix"></a>
 
 ### listBox.selectItemWithTextPrefix(prefix)
 Select the first item whose text content begins with the given prefix.
 
-  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:KeyboardPrefixSelectionMixin~KeyboardPrefixSelection](../elix-mixins/docs/module:KeyboardPrefixSelectionMixin~KeyboardPrefixSelection.md)</code> mixin.
+  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:KeyboardPrefixSelectionMixin~KeyboardPrefixSelection](../mixins/docs/module:KeyboardPrefixSelectionMixin~KeyboardPrefixSelection.md)</code> mixin.
 
 | Param | Description |
 | --- | --- |
@@ -274,7 +274,7 @@ Select the first item whose text content begins with the given prefix.
 ### listBox.selectLast() ⇒ <code>Boolean</code>
 Select the last item in the list.
 
-  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 **Returns**: <code>Boolean</code> - True if the selection changed, false if not.  
 <a name="module_SingleSelectionMixin..SingleSelection+selectNext"></a>
 
@@ -283,7 +283,7 @@ Select the next item in the list.
 
 If the list has no selection, the first item will be selected.
 
-  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 **Returns**: <code>Boolean</code> - True if the selection changed, false if not.  
 <a name="module_SingleSelectionMixin..SingleSelection+selectPrevious"></a>
 
@@ -292,7 +292,7 @@ Select the previous item in the list.
 
 If the list has no selection, the last item will be selected.
 
-  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 **Returns**: <code>Boolean</code> - True if the selection changed, false if not.  
 <a name="module_DefaultSlotContentMixin..DefaultSlotContent+symbols.content"></a>
 
@@ -300,49 +300,49 @@ If the list has no selection, the last item will be selected.
 The content of this component, defined to be the flattened set of
 nodes assigned to its default unnamed slot.
 
-  **Kind**: instance property of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:DefaultSlotContentMixin~DefaultSlotContent](../elix-mixins/docs/module:DefaultSlotContentMixin~DefaultSlotContent.md)</code> mixin.
+  **Kind**: instance property of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:DefaultSlotContentMixin~DefaultSlotContent](../mixins/docs/module:DefaultSlotContentMixin~DefaultSlotContent.md)</code> mixin.
 <a name="module_KeyboardDirectionMixin..KeyboardDirection+symbols.goDown"></a>
 
 ### listBox.symbols.goDown()
 Invoked when the user wants to go/navigate down.
 The default implementation of this method does nothing.
 
-  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../elix-mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
+  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
 <a name="module_KeyboardDirectionMixin..KeyboardDirection+symbols.goEnd"></a>
 
 ### listBox.symbols.goEnd()
 Invoked when the user wants to go/navigate to the end (e.g., of a list).
 The default implementation of this method does nothing.
 
-  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../elix-mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
+  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
 <a name="module_KeyboardDirectionMixin..KeyboardDirection+symbols.goLeft"></a>
 
 ### listBox.symbols.goLeft()
 Invoked when the user wants to go/navigate left.
 The default implementation of this method does nothing.
 
-  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../elix-mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
+  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
 <a name="module_KeyboardDirectionMixin..KeyboardDirection+symbols.goRight"></a>
 
 ### listBox.symbols.goRight()
 Invoked when the user wants to go/navigate right.
 The default implementation of this method does nothing.
 
-  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../elix-mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
+  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
 <a name="module_KeyboardDirectionMixin..KeyboardDirection+symbols.goStart"></a>
 
 ### listBox.symbols.goStart()
 Invoked when the user wants to go/navigate to the start (e.g., of a
 list). The default implementation of this method does nothing.
 
-  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../elix-mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
+  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
 <a name="module_KeyboardDirectionMixin..KeyboardDirection+symbols.goUp"></a>
 
 ### listBox.symbols.goUp()
 Invoked when the user wants to go/navigate up.
 The default implementation of this method does nothing.
 
-  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../elix-mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
+  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
 <a name="module_SingleSelectionMixin..SingleSelection+symbols.itemAdded"></a>
 
 ### listBox.symbols.itemAdded(item)
@@ -351,7 +351,7 @@ Handle a new item being added to the list.
 The default implementation of this method simply sets the item's
 selection state to false.
 
-  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -364,7 +364,7 @@ This method is invoked when the underlying contents change. It is also
 invoked on component initialization – since the items have "changed" from
 being nothing.
 
-  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:ContentItemsMixin~ContentItems](../elix-mixins/docs/module:ContentItemsMixin~ContentItems.md)</code> mixin.
+  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:ContentItemsMixin~ContentItems](../mixins/docs/module:ContentItemsMixin~ContentItems.md)</code> mixin.
 <a name="module_SingleSelectionMixin..SingleSelection+symbols.itemSelected"></a>
 
 ### listBox.symbols.itemSelected(item, selected)
@@ -373,7 +373,7 @@ Apply the indicate selection state to the item.
 The default implementation of this method does nothing. User-visible
 effects will typically be handled by other mixins.
 
-  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -388,7 +388,7 @@ Handle the indicated keyboard event.
 The default implementation of this method does nothing. This will
 typically be handled by other mixins.
 
-  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:KeyboardMixin~Keyboard](../elix-mixins/docs/module:KeyboardMixin~Keyboard.md)</code> mixin.
+  **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:KeyboardMixin~Keyboard](../mixins/docs/module:KeyboardMixin~Keyboard.md)</code> mixin.
 **Returns**: <code>boolean</code> - true if the event was handled  
 
 | Param | Type | Description |
@@ -404,4 +404,4 @@ Setting this value to a string will attempt to select the first list item
 whose text content match that string. Setting this to a string not matching
 any list item will result in no selection.
 
-  **Kind**: instance property of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SelectedItemTextValueMixin~SelectedItemTextValue](../elix-mixins/docs/module:SelectedItemTextValueMixin~SelectedItemTextValue.md)</code> mixin.
+  **Kind**: instance property of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SelectedItemTextValueMixin~SelectedItemTextValue](../mixins/docs/module:SelectedItemTextValueMixin~SelectedItemTextValue.md)</code> mixin.

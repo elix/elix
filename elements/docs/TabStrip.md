@@ -70,28 +70,28 @@ component.
 Fires when the canSelectNext property changes in response to internal
 component activity.
 
-  **Kind**: event emitted by <code>[TabStrip](#TabStrip)</code>. Defined by <code>[SingleSelection](../elix-mixins/docs/SingleSelection.md)</code> mixin.
+  **Kind**: event emitted by <code>[TabStrip](#TabStrip)</code>. Defined by <code>[SingleSelection](../mixins/docs/SingleSelection.md)</code> mixin.
 <a name="SingleSelection.event_can-select-previous-changed"></a>
 
 ### "can-select-previous-changed"
 Fires when the canSelectPrevious property changes in response to internal
 component activity.
 
-  **Kind**: event emitted by <code>[TabStrip](#TabStrip)</code>. Defined by <code>[SingleSelection](../elix-mixins/docs/SingleSelection.md)</code> mixin.
+  **Kind**: event emitted by <code>[TabStrip](#TabStrip)</code>. Defined by <code>[SingleSelection](../mixins/docs/SingleSelection.md)</code> mixin.
 <a name="module_SingleSelectionMixin..SingleSelection+canSelectNext"></a>
 
 ### tabStrip.canSelectNext : <code>boolean</code>
 True if the selection can be moved to the next item, false if not (the
 selected item is the last item in the list).
 
-  **Kind**: instance property of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance property of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 <a name="module_SingleSelectionMixin..SingleSelection+canSelectPrevious"></a>
 
 ### tabStrip.canSelectPrevious : <code>boolean</code>
 True if the selection can be moved to the previous item, false if not
 (the selected item is the first one in the list).
 
-  **Kind**: instance property of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance property of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 <a name="module_AttributeMarshallingMixin..AttributeMarshalling+reflectAttribute"></a>
 
 ### tabStrip.reflectAttribute(attribute, value)
@@ -103,7 +103,7 @@ important limitation of custom element consturctors is that they cannot
 set attributes. A call to `reflectAttribute` during the constructor will
 be deferred until the element is connected to the document.
 
-  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:AttributeMarshallingMixin~AttributeMarshalling](../elix-mixins/docs/module:AttributeMarshallingMixin~AttributeMarshalling.md)</code> mixin.
+  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:AttributeMarshallingMixin~AttributeMarshalling](../mixins/docs/module:AttributeMarshallingMixin~AttributeMarshalling.md)</code> mixin.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -122,7 +122,7 @@ set attributes, including the `class` attribute. A call to
 `reflectClass` during the constructor will be deferred until the element
 is connected to the document.
 
-  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:AttributeMarshallingMixin~AttributeMarshalling](../elix-mixins/docs/module:AttributeMarshallingMixin~AttributeMarshalling.md)</code> mixin.
+  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:AttributeMarshallingMixin~AttributeMarshalling](../mixins/docs/module:AttributeMarshallingMixin~AttributeMarshalling.md)</code> mixin.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -135,7 +135,7 @@ is connected to the document.
 Fires when the selectedIndex property changes in response to internal
 component activity.
 
-  **Kind**: event emitted by <code>[TabStrip](#TabStrip)</code>. Defined by <code>[SingleSelection](../elix-mixins/docs/SingleSelection.md)</code> mixin.
+  **Kind**: event emitted by <code>[TabStrip](#TabStrip)</code>. Defined by <code>[SingleSelection](../mixins/docs/SingleSelection.md)</code> mixin.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -147,7 +147,7 @@ component activity.
 Fires when the selectedItem property changes in response to internal
 component activity.
 
-  **Kind**: event emitted by <code>[TabStrip](#TabStrip)</code>. Defined by <code>[SingleSelection](../elix-mixins/docs/SingleSelection.md)</code> mixin.
+  **Kind**: event emitted by <code>[TabStrip](#TabStrip)</code>. Defined by <code>[SingleSelection](../mixins/docs/SingleSelection.md)</code> mixin.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -163,7 +163,7 @@ The setter expects an integer or a string representing an integer.
 A `selectedIndex` of -1 indicates there is no selection. Setting this
 property to -1 will remove any existing selection.
 
-  **Kind**: instance property of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance property of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 <a name="module_SingleSelectionMixin..SingleSelection+selectedItem"></a>
 
 ### tabStrip.selectedItem : <code>object</code>
@@ -175,34 +175,34 @@ Setting this property to an object that is not in the list has no effect.
 TODO: Even if selectionRequired, can still explicitly set selectedItem to null.
 TODO: If selectionRequired, leave selection alone?
 
-  **Kind**: instance property of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance property of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 <a name="module_SingleSelectionMixin..SingleSelection+selectFirst"></a>
 
 ### tabStrip.selectFirst() ⇒ <code>Boolean</code>
 Select the first item in the list.
 
-  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 **Returns**: <code>Boolean</code> - True if the selection changed, false if not.  
 <a name="module_SingleSelectionMixin..SingleSelection+selectionRequired"></a>
 
 ### tabStrip.selectionRequired : <code>boolean</code>
 True if the list should always have a selection (if it has items).
 
-  **Kind**: instance property of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance property of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 **Default**: <code>false</code>  
 <a name="module_SingleSelectionMixin..SingleSelection+selectionWraps"></a>
 
 ### tabStrip.selectionWraps : <code>boolean</code>
 True if selection navigations wrap from last to first, and vice versa.
 
-  **Kind**: instance property of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance property of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 **Default**: <code>false</code>  
 <a name="module_SingleSelectionMixin..SingleSelection+selectLast"></a>
 
 ### tabStrip.selectLast() ⇒ <code>Boolean</code>
 Select the last item in the list.
 
-  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 **Returns**: <code>Boolean</code> - True if the selection changed, false if not.  
 <a name="module_SingleSelectionMixin..SingleSelection+selectNext"></a>
 
@@ -211,7 +211,7 @@ Select the next item in the list.
 
 If the list has no selection, the first item will be selected.
 
-  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 **Returns**: <code>Boolean</code> - True if the selection changed, false if not.  
 <a name="module_SingleSelectionMixin..SingleSelection+selectPrevious"></a>
 
@@ -220,7 +220,7 @@ Select the previous item in the list.
 
 If the list has no selection, the last item will be selected.
 
-  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 **Returns**: <code>Boolean</code> - True if the selection changed, false if not.  
 <a name="module_KeyboardDirectionMixin..KeyboardDirection+symbols.goDown"></a>
 
@@ -228,42 +228,42 @@ If the list has no selection, the last item will be selected.
 Invoked when the user wants to go/navigate down.
 The default implementation of this method does nothing.
 
-  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../elix-mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
+  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
 <a name="module_KeyboardDirectionMixin..KeyboardDirection+symbols.goEnd"></a>
 
 ### tabStrip.symbols.goEnd()
 Invoked when the user wants to go/navigate to the end (e.g., of a list).
 The default implementation of this method does nothing.
 
-  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../elix-mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
+  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
 <a name="module_KeyboardDirectionMixin..KeyboardDirection+symbols.goLeft"></a>
 
 ### tabStrip.symbols.goLeft()
 Invoked when the user wants to go/navigate left.
 The default implementation of this method does nothing.
 
-  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../elix-mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
+  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
 <a name="module_KeyboardDirectionMixin..KeyboardDirection+symbols.goRight"></a>
 
 ### tabStrip.symbols.goRight()
 Invoked when the user wants to go/navigate right.
 The default implementation of this method does nothing.
 
-  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../elix-mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
+  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
 <a name="module_KeyboardDirectionMixin..KeyboardDirection+symbols.goStart"></a>
 
 ### tabStrip.symbols.goStart()
 Invoked when the user wants to go/navigate to the start (e.g., of a
 list). The default implementation of this method does nothing.
 
-  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../elix-mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
+  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
 <a name="module_KeyboardDirectionMixin..KeyboardDirection+symbols.goUp"></a>
 
 ### tabStrip.symbols.goUp()
 Invoked when the user wants to go/navigate up.
 The default implementation of this method does nothing.
 
-  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../elix-mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
+  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:KeyboardDirectionMixin~KeyboardDirection](../mixins/docs/module:KeyboardDirectionMixin~KeyboardDirection.md)</code> mixin.
 <a name="module_SingleSelectionMixin..SingleSelection+symbols.itemAdded"></a>
 
 ### tabStrip.symbols.itemAdded(item)
@@ -272,7 +272,7 @@ Handle a new item being added to the list.
 The default implementation of this method simply sets the item's
 selection state to false.
 
-  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -286,7 +286,7 @@ Apply the indicate selection state to the item.
 The default implementation of this method does nothing. User-visible
 effects will typically be handled by other mixins.
 
-  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -301,7 +301,7 @@ Handle the indicated keyboard event.
 The default implementation of this method does nothing. This will
 typically be handled by other mixins.
 
-  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:KeyboardMixin~Keyboard](../elix-mixins/docs/module:KeyboardMixin~Keyboard.md)</code> mixin.
+  **Kind**: instance method of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:KeyboardMixin~Keyboard](../mixins/docs/module:KeyboardMixin~Keyboard.md)</code> mixin.
 **Returns**: <code>boolean</code> - true if the event was handled  
 
 | Param | Type | Description |
