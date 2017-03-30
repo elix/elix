@@ -9,5 +9,5 @@ an instance of `LabeledTabButton` for each panel in a set of tab panels.
 
   **Kind**: global class
 **Extends:** <code>HTMLElement</code>  
-**Mixes**: <code>[ShadowTemplateMixin](../elix-mixins/docs/ShadowTemplateMixin.md)</code>
+**Mixes**: <code>[ShadowTemplateMixin](../../mixins/docs/ShadowTemplateMixin.md)</code>
   

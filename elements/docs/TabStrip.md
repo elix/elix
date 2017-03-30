@@ -27,13 +27,13 @@ component.
 
   **Kind**: global class
 **Extends:** <code>HTMLElement</code>  
-**Mixes**: <code>[AttributeMarshallingMixin](../elix-mixins/docs/AttributeMarshallingMixin.md)</code>
-  , <code>[ClickSelectionMixin](../elix-mixins/docs/ClickSelectionMixin.md)</code>
-  , <code>[DirectionSelectionMixin](../elix-mixins/docs/DirectionSelectionMixin.md)</code>
-  , <code>[KeyboardMixin](../elix-mixins/docs/KeyboardMixin.md)</code>
-  , <code>[KeyboardDirectionMixin](../elix-mixins/docs/KeyboardDirectionMixin.md)</code>
-  , <code>[ShadowTemplateMixin](../elix-mixins/docs/ShadowTemplateMixin.md)</code>
-  , <code>[SingleSelectionMixin](../elix-mixins/docs/SingleSelectionMixin.md)</code>
+**Mixes**: <code>[AttributeMarshallingMixin](../../mixins/docs/AttributeMarshallingMixin.md)</code>
+  , <code>[ClickSelectionMixin](../../mixins/docs/ClickSelectionMixin.md)</code>
+  , <code>[DirectionSelectionMixin](../../mixins/docs/DirectionSelectionMixin.md)</code>
+  , <code>[KeyboardMixin](../../mixins/docs/KeyboardMixin.md)</code>
+  , <code>[KeyboardDirectionMixin](../../mixins/docs/KeyboardDirectionMixin.md)</code>
+  , <code>[ShadowTemplateMixin](../../mixins/docs/ShadowTemplateMixin.md)</code>
+  , <code>[SingleSelectionMixin](../../mixins/docs/SingleSelectionMixin.md)</code>
   
 
 * [TabStrip](#TabStrip) ⇐ <code>HTMLElement</code>

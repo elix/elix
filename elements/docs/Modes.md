@@ -12,10 +12,10 @@ implemented by the [Tabs](Tabs.md) component.
 
   **Kind**: global class
 **Extends:** <code>HTMLElement</code>  
-**Mixes**: <code>[AttributeMarshallingMixin](../elix-mixins/docs/AttributeMarshallingMixin.md)</code>
-  , <code>[ContentItemsMixin](../elix-mixins/docs/ContentItemsMixin.md)</code>
-  , <code>[DefaultSlotContentMixin](../elix-mixins/docs/DefaultSlotContentMixin.md)</code>
-  , <code>[SingleSelectionMixin](../elix-mixins/docs/SingleSelectionMixin.md)</code>
+**Mixes**: <code>[AttributeMarshallingMixin](../../mixins/docs/AttributeMarshallingMixin.md)</code>
+  , <code>[ContentItemsMixin](../../mixins/docs/ContentItemsMixin.md)</code>
+  , <code>[DefaultSlotContentMixin](../../mixins/docs/DefaultSlotContentMixin.md)</code>
+  , <code>[SingleSelectionMixin](../../mixins/docs/SingleSelectionMixin.md)</code>
   
 
 * [Modes](#Modes) ⇐ <code>HTMLElement</code>

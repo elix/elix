@@ -11,20 +11,20 @@ keyboard details.
 
   **Kind**: global class
 **Extends:** <code>HTMLElement</code>  
-**Mixes**: <code>[AttributeMarshallingMixin](../elix-mixins/docs/AttributeMarshallingMixin.md)</code>
-  , <code>[ClickSelectionMixin](../elix-mixins/docs/ClickSelectionMixin.md)</code>
-  , <code>[ContentItemsMixin](../elix-mixins/docs/ContentItemsMixin.md)</code>
-  , <code>[DefaultSlotContentMixin](../elix-mixins/docs/DefaultSlotContentMixin.md)</code>
-  , <code>[DirectionSelectionMixin](../elix-mixins/docs/DirectionSelectionMixin.md)</code>
-  , <code>[KeyboardDirectionMixin](../elix-mixins/docs/KeyboardDirectionMixin.md)</code>
-  , <code>[KeyboardMixin](../elix-mixins/docs/KeyboardMixin.md)</code>
-  , <code>[KeyboardPagedSelectionMixin](../elix-mixins/docs/KeyboardPagedSelectionMixin.md)</code>
-  , <code>[KeyboardPrefixSelectionMixin](../elix-mixins/docs/KeyboardPrefixSelectionMixin.md)</code>
-  , <code>[SelectedItemTextValueMixin](../elix-mixins/docs/SelectedItemTextValueMixin.md)</code>
-  , <code>[SelectionAriaMixin](../elix-mixins/docs/SelectionAriaMixin.md)</code>
-  , <code>[SelectionInViewMixin](../elix-mixins/docs/SelectionInViewMixin.md)</code>
-  , <code>[ShadowTemplateMixin](../elix-mixins/docs/ShadowTemplateMixin.md)</code>
-  , <code>[SingleSelectionMixin](../elix-mixins/docs/SingleSelectionMixin.md)</code>
+**Mixes**: <code>[AttributeMarshallingMixin](../../mixins/docs/AttributeMarshallingMixin.md)</code>
+  , <code>[ClickSelectionMixin](../../mixins/docs/ClickSelectionMixin.md)</code>
+  , <code>[ContentItemsMixin](../../mixins/docs/ContentItemsMixin.md)</code>
+  , <code>[DefaultSlotContentMixin](../../mixins/docs/DefaultSlotContentMixin.md)</code>
+  , <code>[DirectionSelectionMixin](../../mixins/docs/DirectionSelectionMixin.md)</code>
+  , <code>[KeyboardDirectionMixin](../../mixins/docs/KeyboardDirectionMixin.md)</code>
+  , <code>[KeyboardMixin](../../mixins/docs/KeyboardMixin.md)</code>
+  , <code>[KeyboardPagedSelectionMixin](../../mixins/docs/KeyboardPagedSelectionMixin.md)</code>
+  , <code>[KeyboardPrefixSelectionMixin](../../mixins/docs/KeyboardPrefixSelectionMixin.md)</code>
+  , <code>[SelectedItemTextValueMixin](../../mixins/docs/SelectedItemTextValueMixin.md)</code>
+  , <code>[SelectionAriaMixin](../../mixins/docs/SelectionAriaMixin.md)</code>
+  , <code>[SelectionInViewMixin](../../mixins/docs/SelectionInViewMixin.md)</code>
+  , <code>[ShadowTemplateMixin](../../mixins/docs/ShadowTemplateMixin.md)</code>
+  , <code>[SingleSelectionMixin](../../mixins/docs/SingleSelectionMixin.md)</code>
   
 
 * [ListBox](#ListBox) ⇐ <code>HTMLElement</code>
