@@ -8,9 +8,17 @@ const Readable = require('stream').Readable;
 const gutil = require('gulp-util');
 
 //
+// Array of peer directories for use in docsList
+//
+const sourceDirs = ['elements', 'mixins'];
+
+//
 // Build the global docsList array for use in building the package's README.md documentation
 //
-const docsList = buildDocsList('elements').concat(buildDocsList('mixins'));
+let docsList;
+sourceDirs.forEach((dir) => {
+  docsList = docsList ? docsList.concat(buildDocsList(dir)) : buildDocsList(dir);
+});
 
 //
 // Build the portion of docsList that represents the individual source files
@@ -127,7 +135,17 @@ function mergeMixinDocs(componentJson) {
   }
 
   const mixins = componentJson[0].mixes.map(mixin => {
-    return 'mixins/' + mixin + '.js';
+    const fileName = mixin + '.js';
+
+    for (let i = 0; i < sourceDirs.length; i++) {
+      const dir = sourceDirs[i];
+      const fullPath = `${dir}/${fileName}`;
+      if (fs.existsSync(fullPath)) {
+        return fullPath;
+      }  
+    }
+    
+    return '';
   });
 
   const hostId = componentJson[0].id;

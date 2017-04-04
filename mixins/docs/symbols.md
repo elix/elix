@@ -33,8 +33,8 @@ then create a property or method whose key is the desired Symbol.
     * [~goStart()](#module_symbols..goStart)
     * [~goUp()](#module_symbols..goUp)
     * [~itemAdded(item)](#module_symbols..itemAdded)
-    * [~itemsChanged()](#module_symbols..itemsChanged)
     * [~itemSelected(item, selected)](#module_symbols..itemSelected)
+    * [~itemsChanged()](#module_symbols..itemsChanged)
     * [~keydown(event)](#module_symbols..keydown)
     * [~raiseChangeEvents](#module_symbols..raiseChangeEvents) : <code>boolean</code>
     * [~shadowCreated()](#module_symbols..shadowCreated)
@@ -143,16 +143,6 @@ This method is invoked when a new item is added to a list.
 | --- | --- | --- |
 | item | <code>HTMLElement</code> | the item being selected/deselected |
 
-<a name="module_symbols..itemsChanged"></a>
-
-### symbols~itemsChanged()
-Symbol for the `itemsChanged` method.
-
-This method is invoked when the underlying contents change. It is also
-invoked on component initialization – since the items have "changed" from
-being nothing.
-
-  **Kind**: inner method of <code>[symbols](#module_symbols)</code>
 <a name="module_symbols..itemSelected"></a>
 
 ### symbols~itemSelected(item, selected)
@@ -167,6 +157,16 @@ This method is invoked when an item becomes selected or deselected.
 | item | <code>HTMLElement</code> | the item being selected/deselected |
 | selected | <code>boolean</code> | true if the item is selected, false if not |
 
+<a name="module_symbols..itemsChanged"></a>
+
+### symbols~itemsChanged()
+Symbol for the `itemsChanged` method.
+
+This method is invoked when the underlying contents change. It is also
+invoked on component initialization – since the items have "changed" from
+being nothing.
+
+  **Kind**: inner method of <code>[symbols](#module_symbols)</code>
 <a name="module_symbols..keydown"></a>
 
 ### symbols~keydown(event)
