@@ -26,14 +26,14 @@ selection.
     * [~SingleSelection](#module_SingleSelectionMixin..SingleSelection)
         * [.canSelectNext](#module_SingleSelectionMixin..SingleSelection+canSelectNext) : <code>boolean</code>
         * [.canSelectPrevious](#module_SingleSelectionMixin..SingleSelection+canSelectPrevious) : <code>boolean</code>
-        * [.selectedIndex](#module_SingleSelectionMixin..SingleSelection+selectedIndex) : <code>number</code>
-        * [.selectedItem](#module_SingleSelectionMixin..SingleSelection+selectedItem) : <code>object</code>
         * [.selectFirst()](#module_SingleSelectionMixin..SingleSelection+selectFirst) ⇒ <code>Boolean</code>
-        * [.selectionRequired](#module_SingleSelectionMixin..SingleSelection+selectionRequired) : <code>boolean</code>
-        * [.selectionWraps](#module_SingleSelectionMixin..SingleSelection+selectionWraps) : <code>boolean</code>
         * [.selectLast()](#module_SingleSelectionMixin..SingleSelection+selectLast) ⇒ <code>Boolean</code>
         * [.selectNext()](#module_SingleSelectionMixin..SingleSelection+selectNext) ⇒ <code>Boolean</code>
         * [.selectPrevious()](#module_SingleSelectionMixin..SingleSelection+selectPrevious) ⇒ <code>Boolean</code>
+        * [.selectedIndex](#module_SingleSelectionMixin..SingleSelection+selectedIndex) : <code>number</code>
+        * [.selectedItem](#module_SingleSelectionMixin..SingleSelection+selectedItem) : <code>object</code>
+        * [.selectionRequired](#module_SingleSelectionMixin..SingleSelection+selectionRequired) : <code>boolean</code>
+        * [.selectionWraps](#module_SingleSelectionMixin..SingleSelection+selectionWraps) : <code>boolean</code>
         * [.symbols.itemAdded(item)](#module_SingleSelectionMixin..SingleSelection+symbols.itemAdded)
         * [.symbols.itemSelected(item, selected)](#module_SingleSelectionMixin..SingleSelection+symbols.itemSelected)
 
@@ -47,14 +47,14 @@ The class prototype added by the mixin.
 * [~SingleSelection](#module_SingleSelectionMixin..SingleSelection)
     * [.canSelectNext](#module_SingleSelectionMixin..SingleSelection+canSelectNext) : <code>boolean</code>
     * [.canSelectPrevious](#module_SingleSelectionMixin..SingleSelection+canSelectPrevious) : <code>boolean</code>
-    * [.selectedIndex](#module_SingleSelectionMixin..SingleSelection+selectedIndex) : <code>number</code>
-    * [.selectedItem](#module_SingleSelectionMixin..SingleSelection+selectedItem) : <code>object</code>
     * [.selectFirst()](#module_SingleSelectionMixin..SingleSelection+selectFirst) ⇒ <code>Boolean</code>
-    * [.selectionRequired](#module_SingleSelectionMixin..SingleSelection+selectionRequired) : <code>boolean</code>
-    * [.selectionWraps](#module_SingleSelectionMixin..SingleSelection+selectionWraps) : <code>boolean</code>
     * [.selectLast()](#module_SingleSelectionMixin..SingleSelection+selectLast) ⇒ <code>Boolean</code>
     * [.selectNext()](#module_SingleSelectionMixin..SingleSelection+selectNext) ⇒ <code>Boolean</code>
     * [.selectPrevious()](#module_SingleSelectionMixin..SingleSelection+selectPrevious) ⇒ <code>Boolean</code>
+    * [.selectedIndex](#module_SingleSelectionMixin..SingleSelection+selectedIndex) : <code>number</code>
+    * [.selectedItem](#module_SingleSelectionMixin..SingleSelection+selectedItem) : <code>object</code>
+    * [.selectionRequired](#module_SingleSelectionMixin..SingleSelection+selectionRequired) : <code>boolean</code>
+    * [.selectionWraps](#module_SingleSelectionMixin..SingleSelection+selectionWraps) : <code>boolean</code>
     * [.symbols.itemAdded(item)](#module_SingleSelectionMixin..SingleSelection+symbols.itemAdded)
     * [.symbols.itemSelected(item, selected)](#module_SingleSelectionMixin..SingleSelection+symbols.itemSelected)
 
@@ -72,29 +72,6 @@ True if the selection can be moved to the previous item, false if not
 (the selected item is the first one in the list).
 
   **Kind**: instance property of <code>[SingleSelection](#module_SingleSelectionMixin..SingleSelection)</code>
-<a name="module_SingleSelectionMixin..SingleSelection+selectedIndex"></a>
-
-#### singleSelection.selectedIndex : <code>number</code>
-The index of the item which is currently selected.
-
-The setter expects an integer or a string representing an integer.
-
-A `selectedIndex` of -1 indicates there is no selection. Setting this
-property to -1 will remove any existing selection.
-
-  **Kind**: instance property of <code>[SingleSelection](#module_SingleSelectionMixin..SingleSelection)</code>
-<a name="module_SingleSelectionMixin..SingleSelection+selectedItem"></a>
-
-#### singleSelection.selectedItem : <code>object</code>
-The currently selected item, or null if there is no selection.
-
-Setting this property to null deselects any currently-selected item.
-Setting this property to an object that is not in the list has no effect.
-
-TODO: Even if selectionRequired, can still explicitly set selectedItem to null.
-TODO: If selectionRequired, leave selection alone?
-
-  **Kind**: instance property of <code>[SingleSelection](#module_SingleSelectionMixin..SingleSelection)</code>
 <a name="module_SingleSelectionMixin..SingleSelection+selectFirst"></a>
 
 #### singleSelection.selectFirst() ⇒ <code>Boolean</code>
@@ -102,20 +79,6 @@ Select the first item in the list.
 
   **Kind**: instance method of <code>[SingleSelection](#module_SingleSelectionMixin..SingleSelection)</code>
 **Returns**: <code>Boolean</code> - True if the selection changed, false if not.  
-<a name="module_SingleSelectionMixin..SingleSelection+selectionRequired"></a>
-
-#### singleSelection.selectionRequired : <code>boolean</code>
-True if the list should always have a selection (if it has items).
-
-  **Kind**: instance property of <code>[SingleSelection](#module_SingleSelectionMixin..SingleSelection)</code>
-**Default**: <code>false</code>  
-<a name="module_SingleSelectionMixin..SingleSelection+selectionWraps"></a>
-
-#### singleSelection.selectionWraps : <code>boolean</code>
-True if selection navigations wrap from last to first, and vice versa.
-
-  **Kind**: instance property of <code>[SingleSelection](#module_SingleSelectionMixin..SingleSelection)</code>
-**Default**: <code>false</code>  
 <a name="module_SingleSelectionMixin..SingleSelection+selectLast"></a>
 
 #### singleSelection.selectLast() ⇒ <code>Boolean</code>
@@ -141,6 +104,43 @@ If the list has no selection, the last item will be selected.
 
   **Kind**: instance method of <code>[SingleSelection](#module_SingleSelectionMixin..SingleSelection)</code>
 **Returns**: <code>Boolean</code> - True if the selection changed, false if not.  
+<a name="module_SingleSelectionMixin..SingleSelection+selectedIndex"></a>
+
+#### singleSelection.selectedIndex : <code>number</code>
+The index of the item which is currently selected.
+
+The setter expects an integer or a string representing an integer.
+
+A `selectedIndex` of -1 indicates there is no selection. Setting this
+property to -1 will remove any existing selection.
+
+  **Kind**: instance property of <code>[SingleSelection](#module_SingleSelectionMixin..SingleSelection)</code>
+<a name="module_SingleSelectionMixin..SingleSelection+selectedItem"></a>
+
+#### singleSelection.selectedItem : <code>object</code>
+The currently selected item, or null if there is no selection.
+
+Setting this property to null deselects any currently-selected item.
+Setting this property to an object that is not in the list has no effect.
+
+TODO: Even if selectionRequired, can still explicitly set selectedItem to null.
+TODO: If selectionRequired, leave selection alone?
+
+  **Kind**: instance property of <code>[SingleSelection](#module_SingleSelectionMixin..SingleSelection)</code>
+<a name="module_SingleSelectionMixin..SingleSelection+selectionRequired"></a>
+
+#### singleSelection.selectionRequired : <code>boolean</code>
+True if the list should always have a selection (if it has items).
+
+  **Kind**: instance property of <code>[SingleSelection](#module_SingleSelectionMixin..SingleSelection)</code>
+**Default**: <code>false</code>  
+<a name="module_SingleSelectionMixin..SingleSelection+selectionWraps"></a>
+
+#### singleSelection.selectionWraps : <code>boolean</code>
+True if selection navigations wrap from last to first, and vice versa.
+
+  **Kind**: instance property of <code>[SingleSelection](#module_SingleSelectionMixin..SingleSelection)</code>
+**Default**: <code>false</code>  
 <a name="module_SingleSelectionMixin..SingleSelection+symbols.itemAdded"></a>
 
 #### singleSelection.symbols.itemAdded(item)
