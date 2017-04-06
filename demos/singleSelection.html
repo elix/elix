@@ -11,46 +11,50 @@
   <script src="../build/demos.js"></script>
   <link rel="stylesheet" href="demos.css">
 
-  <style>
-    single-selection-demo {
-      cursor: default;
-      display: inline-flex;
-      -webkit-tap-highlight-color: transparent;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-
-    single-selection-demo > * {
-      align-items: center;
-      border: 1px solid lightgray;
-      display: inline-flex;
-      height: 50px;
-      justify-content: center;
-      padding: 0.25em;
-      width: 50px;
-    }
-
-    single-selection-demo > .selected {
-      background-color: highlight;
-      color: highlighttext;
-    }
-  </style>
-
 </head>
 
 <body>
   <p>
     Click an item to select it:
   </p>
-  <single-selection-demo>
-    <div>One</div>
-    <div>Two</div>
-    <div>Three</div>
-    <div>Four</div>
-    <div>Five</div>
-  </single-selection-demo>
+  <div class="demo">
+
+    <style>
+      single-selection-demo {
+        cursor: default;
+        display: inline-flex;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      single-selection-demo > * {
+        align-items: center;
+        border: 1px solid lightgray;
+        display: inline-flex;
+        height: 50px;
+        justify-content: center;
+        padding: 0.25em;
+        width: 50px;
+      }
+
+      single-selection-demo > .selected {
+        background-color: highlight;
+        color: highlighttext;
+      }
+    </style>
+
+    <single-selection-demo>
+      <div>One</div>
+      <div>Two</div>
+      <div>Three</div>
+      <div>Four</div>
+      <div>Five</div>
+    </single-selection-demo>
+
+  </div>
 </body>
 
 </html>

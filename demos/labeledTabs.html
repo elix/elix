@@ -11,31 +11,6 @@
   <script src="../build/demos.js"></script>
   <link rel="stylesheet" href="demos.css">
 
-  <style>
-  elix-labeled-tabs {
-    height: 300px;
-    max-width: 100%;
-    width: 400px;
-  }
-
-  .panel {
-    align-items: center;
-    display: flex;
-    flex: 1;
-    justify-content: center;
-  }
-  </style>
-
-  <script>
-    function tabAlignChange(event) {
-      document.querySelector('elix-labeled-tabs').tabAlign = event.target.value;
-    }
-
-    function tabPositionChange(event) {
-      document.querySelector('elix-labeled-tabs').tabPosition = event.target.value;
-    }
-  </script>
-
 </head>
 
 <body>
@@ -46,26 +21,55 @@
     navigation tabs with custom tab buttons, see the
     <a href="toolbarTabs.html">toolbar tabs</a> demo.
   </p>
-  <elix-labeled-tabs>
-    <div class="panel" aria-label="One">Page one</div>
-    <div class="panel" aria-label="Two">Page two</div>
-    <div class="panel" aria-label="Three">Page three</div>
-  </elix-labeled-tabs>
-  <p>
-    Show tabs on: <select id="tabPosition" onchange="tabPositionChange(event)">
-      <option value="bottom">Bottom</option>
-      <option value="left">Left</option>
-      <option value="right">Right</option>
-      <option value="top" selected>Top</option>
-    </select>
-    &nbsp;&nbsp;&nbsp;
-    Align tabs: <select id="tabAlign" onchange="tabAlignChange(event)">
-      <option value="center">Center</option>
-      <option value="end">End</option>
-      <option value="start" selected>Start</option>
-      <option value="stretch">Stretch</option>
-    </select>
-  </p>
+  <div class="demo padded">
+
+    <style>
+    elix-labeled-tabs {
+      height: 250px;
+      max-width: 100%;
+      width: 300px;
+    }
+
+    .panel {
+      align-items: center;
+      display: flex;
+      flex: 1;
+      justify-content: center;
+    }
+    </style>
+
+    <elix-labeled-tabs>
+      <div class="panel" aria-label="One">Page one</div>
+      <div class="panel" aria-label="Two">Page two</div>
+      <div class="panel" aria-label="Three">Page three</div>
+    </elix-labeled-tabs>
+    <p>
+      Show tabs on: <select id="tabPosition" onchange="tabPositionChange(event)">
+        <option value="bottom">Bottom</option>
+        <option value="left">Left</option>
+        <option value="right">Right</option>
+        <option value="top" selected>Top</option>
+      </select>
+      &nbsp;&nbsp;&nbsp;
+      Align tabs: <select id="tabAlign" onchange="tabAlignChange(event)">
+        <option value="center">Center</option>
+        <option value="end">End</option>
+        <option value="start" selected>Start</option>
+        <option value="stretch">Stretch</option>
+      </select>
+    </p>
+
+    <script>
+      function tabAlignChange(event) {
+        document.querySelector('elix-labeled-tabs').tabAlign = event.target.value;
+      }
+
+      function tabPositionChange(event) {
+        document.querySelector('elix-labeled-tabs').tabPosition = event.target.value;
+      }
+    </script>
+
+  </div>
 </body>
 
 </html>

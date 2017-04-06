@@ -21,3 +21,27 @@ label {
   -ms-user-select: none;
   user-select: none;
 }
+
+.demo {
+  display: inline-block;
+  position: relative;
+}
+
+.small {
+  height: 180px;
+  width: 250px;
+}
+
+.medium {
+  height: 250px;
+  width: 300px;
+}
+
+.padded {
+  padding: 20px;
+}
+
+.fullScreen {
+  display: flex;
+  height: 100%;
+}

@@ -11,24 +11,6 @@
   <script src="../build/demos.js"></script>
   <link rel="stylesheet" href="demos.css">
 
-  <style>
-  modes-with-keyboard {
-    border: 1px solid gray;
-    height: 300px;
-    max-width: 100%;
-    width: 400px;
-  }
-
-  .panel {
-    display: -webkit-flex;
-    display: flex;
-    height: 100%;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-  }
-  </style>
-
 </head>
 
 <body>
@@ -39,11 +21,32 @@
     pattern that uses buttons to select the mode, see
     <a href="labeledTabs.html">elix-labeled-tabs</a>.
   </p>
-  <modes-with-keyboard aria-label="Panels">
-    <div class="panel">One</div>
-    <div class="panel">Two</div>
-    <div class="panel">Three</div>
-  </modes-with-keyboard>
+  <div class="demo small">
+
+    <style>
+      modes-with-keyboard {
+        border: 1px solid gray;
+        height: 100%;
+        width: 100%;
+      }
+
+      .panel {
+        display: -webkit-flex;
+        display: flex;
+        height: 100%;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+
+    <modes-with-keyboard aria-label="Panels">
+      <div class="panel">One</div>
+      <div class="panel">Two</div>
+      <div class="panel">Three</div>
+    </modes-with-keyboard>
+
+  </div>
 </body>
 
 </html>
