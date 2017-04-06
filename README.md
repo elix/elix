@@ -92,26 +92,22 @@ place. This makes it easy to clone, fork, and track issues and pull requests.
 
 # Demos
 
-The source for the
-[list box demo](https://janmiksovsky.github.io/elix/elements/demos/listBox.html)
-shown in the Elix talk at the February 2017 Web
-Components Remote Conf can be found on this [fork](https://github.com/JanMiksovsky/elix/tree/list-box).
+See https://elix.org.
 
 
 # Getting started
 
-1. **Clone or fork the project**
-2. **npm install -g yarn**
-3. **yarn install**
-4. **gulp** Depending on your OS, you’ll see available gulp tasks listed, or if
-   not, do this: *npm install -g gulp-cli*
-5. **gulp build** Builds distribution .js files for all components and mixins,
-   and builds elix-all.js which is a consolidated distribution file containing
-   everything. Also builds JSDoc-constructed README.md documentation files and
-   runs lint.
+1. Clone or fork the project.
+2. `npm install -g yarn`
+3. `yarn install`
+4. `gulp`. Depending on your OS, you’ll see available gulp tasks listed, or if
+   not, do this: `npm install -g gulp-cli`
+5. `gulp build`. Builds distribution .js files for all components and mixins,
+   as well as demos and unit tests. Also builds jsDoc-derived README.md
+   documentation files and runs lint.
 
 Note that the built document files are committed to the repo. After running
-‘gulp build’, a ‘git status’ should show nothing new or changed.
+`gulp build`, a `git status` should show nothing new or changed.
 
 
 # Unit tests
