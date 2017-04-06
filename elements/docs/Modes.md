@@ -6,16 +6,15 @@ Shows exactly one child element at a time. This can be useful, for example,
 if a given UI element has multiple modes that present substantially different
 elements.
 
-This component doesn't provide any UI for changing which mode is shown. A
-common pattern in which buttons select the mode are tabs, a pattern
-implemented by the [Tabs](Tabs.md) component.
+This component doesn't provide any UI for changing which mode is shown.
 
   **Kind**: global class
 **Extends:** <code>HTMLElement</code>  
-**Mixes**: <code>[AttributeMarshallingMixin](../../mixins/docs/AttributeMarshallingMixin.md)</code>
-  , <code>[ContentItemsMixin](../../mixins/docs/ContentItemsMixin.md)</code>
-  , <code>[DefaultSlotContentMixin](../../mixins/docs/DefaultSlotContentMixin.md)</code>
-  , <code>[SingleSelectionMixin](../../mixins/docs/SingleSelectionMixin.md)</code>
+**Mixes**: <code>[AttributeMarshallingMixin](../elix-mixins/docs/AttributeMarshallingMixin.md)</code>
+  , <code>[ContentItemsMixin](../elix-mixins/docs/ContentItemsMixin.md)</code>
+  , <code>[DefaultSlotContentMixin](../elix-mixins/docs/DefaultSlotContentMixin.md)</code>
+  , <code>[ShadowTemplateMixin](../elix-mixins/docs/ShadowTemplateMixin.md)</code>
+  , <code>[SingleSelectionMixin](../elix-mixins/docs/SingleSelectionMixin.md)</code>
   
 
 * [Modes](#Modes) ⇐ <code>HTMLElement</code>
@@ -48,41 +47,41 @@ implemented by the [Tabs](Tabs.md) component.
 Fires when the canSelectNext property changes in response to internal
 component activity.
 
-  **Kind**: event emitted by <code>[Modes](#Modes)</code>. Defined by <code>[SingleSelection](../mixins/docs/SingleSelection.md)</code> mixin.
+  **Kind**: event emitted by <code>[Modes](#Modes)</code>. Defined by <code>[SingleSelection](../elix-mixins/docs/SingleSelection.md)</code> mixin.
 <a name="SingleSelection.event_can-select-previous-changed"></a>
 
 ### "can-select-previous-changed"
 Fires when the canSelectPrevious property changes in response to internal
 component activity.
 
-  **Kind**: event emitted by <code>[Modes](#Modes)</code>. Defined by <code>[SingleSelection](../mixins/docs/SingleSelection.md)</code> mixin.
+  **Kind**: event emitted by <code>[Modes](#Modes)</code>. Defined by <code>[SingleSelection](../elix-mixins/docs/SingleSelection.md)</code> mixin.
 <a name="module_SingleSelectionMixin..SingleSelection+canSelectNext"></a>
 
 ### modes.canSelectNext : <code>boolean</code>
 True if the selection can be moved to the next item, false if not (the
 selected item is the last item in the list).
 
-  **Kind**: instance property of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance property of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 <a name="module_SingleSelectionMixin..SingleSelection+canSelectPrevious"></a>
 
 ### modes.canSelectPrevious : <code>boolean</code>
 True if the selection can be moved to the previous item, false if not
 (the selected item is the first one in the list).
 
-  **Kind**: instance property of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance property of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 <a name="module_ContentItemsMixin..ContentItems+items"></a>
 
 ### modes.items : <code>Array.&lt;HTMLElement&gt;</code>
 The current set of items in the list. See the top-level documentation for
 mixin for a description of how items differ from plain content.
 
-  **Kind**: instance property of <code>[Modes](#Modes)</code>. Defined by <code>[module:ContentItemsMixin~ContentItems](../mixins/docs/module:ContentItemsMixin~ContentItems.md)</code> mixin.
+  **Kind**: instance property of <code>[Modes](#Modes)</code>. Defined by <code>[module:ContentItemsMixin~ContentItems](../elix-mixins/docs/module:ContentItemsMixin~ContentItems.md)</code> mixin.
 <a name="ContentItems.event_items-changed"></a>
 
 ### "items-changed"
 Fires when the items in the list change.
 
-  **Kind**: event emitted by <code>[Modes](#Modes)</code>. Defined by <code>[ContentItems](../mixins/docs/ContentItems.md)</code> mixin.
+  **Kind**: event emitted by <code>[Modes](#Modes)</code>. Defined by <code>[ContentItems](../elix-mixins/docs/ContentItems.md)</code> mixin.
 <a name="module_AttributeMarshallingMixin..AttributeMarshalling+reflectAttribute"></a>
 
 ### modes.reflectAttribute(attribute, value)
@@ -94,7 +93,7 @@ important limitation of custom element consturctors is that they cannot
 set attributes. A call to `reflectAttribute` during the constructor will
 be deferred until the element is connected to the document.
 
-  **Kind**: instance method of <code>[Modes](#Modes)</code>. Defined by <code>[module:AttributeMarshallingMixin~AttributeMarshalling](../mixins/docs/module:AttributeMarshallingMixin~AttributeMarshalling.md)</code> mixin.
+  **Kind**: instance method of <code>[Modes](#Modes)</code>. Defined by <code>[module:AttributeMarshallingMixin~AttributeMarshalling](../elix-mixins/docs/module:AttributeMarshallingMixin~AttributeMarshalling.md)</code> mixin.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -113,7 +112,7 @@ set attributes, including the `class` attribute. A call to
 `reflectClass` during the constructor will be deferred until the element
 is connected to the document.
 
-  **Kind**: instance method of <code>[Modes](#Modes)</code>. Defined by <code>[module:AttributeMarshallingMixin~AttributeMarshalling](../mixins/docs/module:AttributeMarshallingMixin~AttributeMarshalling.md)</code> mixin.
+  **Kind**: instance method of <code>[Modes](#Modes)</code>. Defined by <code>[module:AttributeMarshallingMixin~AttributeMarshalling](../elix-mixins/docs/module:AttributeMarshallingMixin~AttributeMarshalling.md)</code> mixin.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -126,7 +125,7 @@ is connected to the document.
 Fires when the selectedIndex property changes in response to internal
 component activity.
 
-  **Kind**: event emitted by <code>[Modes](#Modes)</code>. Defined by <code>[SingleSelection](../mixins/docs/SingleSelection.md)</code> mixin.
+  **Kind**: event emitted by <code>[Modes](#Modes)</code>. Defined by <code>[SingleSelection](../elix-mixins/docs/SingleSelection.md)</code> mixin.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -138,7 +137,7 @@ component activity.
 Fires when the selectedItem property changes in response to internal
 component activity.
 
-  **Kind**: event emitted by <code>[Modes](#Modes)</code>. Defined by <code>[SingleSelection](../mixins/docs/SingleSelection.md)</code> mixin.
+  **Kind**: event emitted by <code>[Modes](#Modes)</code>. Defined by <code>[SingleSelection](../elix-mixins/docs/SingleSelection.md)</code> mixin.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -154,7 +153,7 @@ The setter expects an integer or a string representing an integer.
 A `selectedIndex` of -1 indicates there is no selection. Setting this
 property to -1 will remove any existing selection.
 
-  **Kind**: instance property of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance property of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 <a name="module_SingleSelectionMixin..SingleSelection+selectedItem"></a>
 
 ### modes.selectedItem : <code>object</code>
@@ -166,34 +165,34 @@ Setting this property to an object that is not in the list has no effect.
 TODO: Even if selectionRequired, can still explicitly set selectedItem to null.
 TODO: If selectionRequired, leave selection alone?
 
-  **Kind**: instance property of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance property of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 <a name="module_SingleSelectionMixin..SingleSelection+selectFirst"></a>
 
 ### modes.selectFirst() ⇒ <code>Boolean</code>
 Select the first item in the list.
 
-  **Kind**: instance method of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance method of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 **Returns**: <code>Boolean</code> - True if the selection changed, false if not.  
 <a name="module_SingleSelectionMixin..SingleSelection+selectionRequired"></a>
 
 ### modes.selectionRequired : <code>boolean</code>
 True if the list should always have a selection (if it has items).
 
-  **Kind**: instance property of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance property of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 **Default**: <code>false</code>  
 <a name="module_SingleSelectionMixin..SingleSelection+selectionWraps"></a>
 
 ### modes.selectionWraps : <code>boolean</code>
 True if selection navigations wrap from last to first, and vice versa.
 
-  **Kind**: instance property of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance property of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 **Default**: <code>false</code>  
 <a name="module_SingleSelectionMixin..SingleSelection+selectLast"></a>
 
 ### modes.selectLast() ⇒ <code>Boolean</code>
 Select the last item in the list.
 
-  **Kind**: instance method of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance method of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 **Returns**: <code>Boolean</code> - True if the selection changed, false if not.  
 <a name="module_SingleSelectionMixin..SingleSelection+selectNext"></a>
 
@@ -202,7 +201,7 @@ Select the next item in the list.
 
 If the list has no selection, the first item will be selected.
 
-  **Kind**: instance method of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance method of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 **Returns**: <code>Boolean</code> - True if the selection changed, false if not.  
 <a name="module_SingleSelectionMixin..SingleSelection+selectPrevious"></a>
 
@@ -211,7 +210,7 @@ Select the previous item in the list.
 
 If the list has no selection, the last item will be selected.
 
-  **Kind**: instance method of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance method of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 **Returns**: <code>Boolean</code> - True if the selection changed, false if not.  
 <a name="module_DefaultSlotContentMixin..DefaultSlotContent+symbols.content"></a>
 
@@ -219,7 +218,7 @@ If the list has no selection, the last item will be selected.
 The content of this component, defined to be the flattened set of
 nodes assigned to its default unnamed slot.
 
-  **Kind**: instance property of <code>[Modes](#Modes)</code>. Defined by <code>[module:DefaultSlotContentMixin~DefaultSlotContent](../mixins/docs/module:DefaultSlotContentMixin~DefaultSlotContent.md)</code> mixin.
+  **Kind**: instance property of <code>[Modes](#Modes)</code>. Defined by <code>[module:DefaultSlotContentMixin~DefaultSlotContent](../elix-mixins/docs/module:DefaultSlotContentMixin~DefaultSlotContent.md)</code> mixin.
 <a name="module_SingleSelectionMixin..SingleSelection+symbols.itemAdded"></a>
 
 ### modes.symbols.itemAdded(item)
@@ -228,7 +227,7 @@ Handle a new item being added to the list.
 The default implementation of this method simply sets the item's
 selection state to false.
 
-  **Kind**: instance method of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance method of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -241,7 +240,7 @@ This method is invoked when the underlying contents change. It is also
 invoked on component initialization – since the items have "changed" from
 being nothing.
 
-  **Kind**: instance method of <code>[Modes](#Modes)</code>. Defined by <code>[module:ContentItemsMixin~ContentItems](../mixins/docs/module:ContentItemsMixin~ContentItems.md)</code> mixin.
+  **Kind**: instance method of <code>[Modes](#Modes)</code>. Defined by <code>[module:ContentItemsMixin~ContentItems](../elix-mixins/docs/module:ContentItemsMixin~ContentItems.md)</code> mixin.
 <a name="module_SingleSelectionMixin..SingleSelection+symbols.itemSelected"></a>
 
 ### modes.symbols.itemSelected(item, selected)
@@ -250,7 +249,7 @@ Apply the indicate selection state to the item.
 The default implementation of this method does nothing. User-visible
 effects will typically be handled by other mixins.
 
-  **Kind**: instance method of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
+  **Kind**: instance method of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../elix-mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 
 | Param | Type | Description |
 | --- | --- | --- |

@@ -17,7 +17,7 @@ const buildTargets = {
   },
   './build/demos.js': {
     globItems: ['./globals.js', './demos/src/*.js'],
-    includes: [/\//, /demos/] 
+    includes: [/\//, /demos/]
   }
 };
 
