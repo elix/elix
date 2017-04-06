@@ -9,7 +9,8 @@
   "author": "info@component.kitchen",
   "dependencies": {
     "custom-elements": "webcomponents/custom-elements#master",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#1.0.0-rc.5"
+    "webcomponents.js": "webcomponents/webcomponentsjs#1.0.0-rc.7",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#1.0.0-rc.7"
   },
   "browserify": {
     "transform": [
