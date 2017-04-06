@@ -11,7 +11,6 @@ function helpTask() {
 
     gulp build (builds all elements minified and non-minified, docs, and tests)
     gulp devbuild (builds all elements non-minified)
-    gulp docs (builds all elements README.md files)
     gulp lint (runs jshint on all .js files)
     gulp watch (builds devbuild and watches changes to project files)
     gulp sauce-tests (runs tests on Sauce Labs)
