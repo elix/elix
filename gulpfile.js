@@ -4,7 +4,6 @@
 const gulp = require('gulp');
 
 const webpackTask = require('./gulp/tasks/webpack').webpackTask;
-const debugWebpackTask = require('./gulp/tasks/webpack').debugWebpackTask;
 const watchifyTask = require('./gulp/tasks/webpack').watchifyTask;
 const helpTask = require('./gulp/tasks/help');
 const lintTask = require('./gulp/tasks/lint');
@@ -24,19 +23,15 @@ const reportTask = require('./gulp/tasks/saucetests').reportTask;
 
 // Private
 gulp.task('webpack', [], webpackTask);
-gulp.task('debugWebpack', [], debugWebpackTask);
-gulp.task('debugWebpack-webpack', ['webpack'], debugWebpackTask);
 gulp.task('help', [], helpTask);
-gulp.task('lint-debugWebpack-webpack', ['debugWebpack-webpack'], lintTask);
-gulp.task('lint-debugWebpack', ['debugWebpack'], lintTask);
+gulp.task('lint-webpack', ['webpack'], lintTask);
 gulp.task('connect', [], connectTask);
 gulp.task('saucetests-connect', ['connect'], saucetestsTask);
 gulp.task('disconnect-saucetests-connect', ['saucetests-connect'], disconnectTask);
 gulp.task('report-disconnect-saucetests-connect', ['disconnect-saucetests-connect'], reportTask);
 
 // Public
-gulp.task('build', ['lint-debugWebpack-webpack']);
-gulp.task('devbuild', ['lint-debugWebpack']);
+gulp.task('build', ['lint-webpack']);
 gulp.task('default', ['help']);
 gulp.task('lint', [], lintTask);
 gulp.task('watch', [], watchifyTask);
