@@ -2,14 +2,14 @@ import Symbol from './Symbol';
 
 
 /**
- * A collection of (potentially polyfilled) Symbol objects for standard
+ * A collection of (potentially polyfilled) `Symbol` objects for standard
  * component properties and methods.
  *
- * These Symbol objects are used to allow mixins and a component to internally
+ * These `Symbol` objects are used to allow mixins and a component to internally
  * communicate, without exposing these properties and methods in the component's
  * public API.
  *
- * To use these Symbol objects in your own component, include this module and
+ * To use these `Symbol` objects in your own component, include this module and
  * then create a property or method whose key is the desired Symbol.
  *
  *     import 'SingleSelectionMixin' from 'elix/mixins/SingleSelectionMixin';
@@ -20,6 +20,10 @@ import Symbol from './Symbol';
  *         // This will be invoked whenever an item is selected/deselected.
  *       }
  *     }
+ *
+ * To support Internet Explorer 11, which does not have support for the
+ * `Symbol` class, you can use the [Symbol](Symbol) helper, or a `Symbol`
+ * polyfill of your choice.
  *
  * @module symbols
  */
@@ -70,7 +74,7 @@ const symbols = {
    *
    * This method can be applied to an item to return its text.
    *
-   * @function getText
+   * @function getItemText
    * @param {HTMLElement} item - the item to extract text from
    * @returns {string} - the text of the item
    */
@@ -231,6 +235,18 @@ const symbols = {
    * @var {boolean} raiseChangeEvents
    */
   raiseChangeEvents: Symbol('raiseChangeEvents'),
+
+  /**
+   * Symbol for the `scrollTarget` property.
+   *
+   * This property indicates which element in a component's shadow subtree
+   * should be scrolled. [SelectionInViewMixin](SelectionInViewMixin) can use
+   * this property to determine which element should be scrolled to keep the
+   * selected item in view.
+   *
+   * @var {HTMLElement} scrollTarget
+   */
+  scrollTarget: Symbol('scrollTarget'),
 
   /**
    * Symbol for the `shadowCreated` method.

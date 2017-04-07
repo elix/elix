@@ -52,7 +52,7 @@ const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
  * property.
  *
  * A `TabStrip` is often wrapped around a set of tab panels, a scenario which
- * can be handled with the separate [TabStripWrapper](TabStripWrapper.md)
+ * can be handled with the separate [TabStripWrapper](TabStripWrapper)
  * component.
  *
  * @extends HTMLElement

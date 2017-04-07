@@ -16,6 +16,11 @@ let listeningToWindowFocus = false;
  * focus via the keyboard. This is useful for buttons and other components that
  * don't generally show a focus ring for mouse/touch interaction.
  *
+ * The following demo shows button that display a focus ring only when
+ * you move the focus onto them via the keyboard, and not with the mouse or touch.
+ *
+ * [Button components using FocusRingMixin](/demos/focusRing.html)
+ *
  * This is inspired by work on the `:focus-ring` pseudo-selector.
  * See https://github.com/wicg/focus-ring for details.
  *

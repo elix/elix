@@ -34,7 +34,7 @@ let idCount = 0;
  * This mixin expects a set of members that manage the state of the selection:
  * `[symbols.itemSelected]`, `[symbols.itemAdded]`, and `selectedItem`. You can
  * supply these yourself, or do so via
- * [SingleSelectionMixin](SingleSelectionMixin.md).
+ * [SingleSelectionMixin](SingleSelectionMixin).
  *
  * @module
  * @param base {Class} the base class to extend

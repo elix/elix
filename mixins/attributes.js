@@ -1,5 +1,5 @@
 /**
- * Helpers for accessing a component's attributes.
+ * These are helper functions for accessing a component's attributes.
  *
  * @module attributes
  */

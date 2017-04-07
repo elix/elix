@@ -40,7 +40,7 @@ const settingSelectionSymbol = Symbol('settingSelection');
  * "l", the prefix will become "l", so "Lemon" would be selected.
  *
  * This mixin expects the component to invoke a `keydown` method when a key is
- * pressed. You can use [KeyboardMixin](KeyboardMixin.md) for that
+ * pressed. You can use [KeyboardMixin](KeyboardMixin) for that
  * purpose, or wire up your own keyboard handling and call `keydown` yourself.
  *
  * This mixin also expects the component to provide an `items` property. The

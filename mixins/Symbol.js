@@ -10,17 +10,21 @@ const symbolFunction = typeof window.Symbol === 'function' ?
   uniqueString;
 
 /**
- * Polyfill for ES6 symbol class.
+ * A helper function for simulating instances of the `Symbol` class in older
+ * browsers, notably Microsoft Internet Explorer 11.
  *
  * Mixins and component classes often want to associate private data with an
  * element instance, but JavaScript does not have direct support for true
- * private properties. One approach is to use the
- * [Symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol)
- * data type to set and retrieve data on an element.
+ * private properties. Elix uses `Symbol` instances as property keys to set and
+ * retrieve data on an element. This prevents accidental name collisions. While
+ * it does not make the properties completely private, it does make them
+ * somewhat harder to access, and hopefully discourages outside code from
+ * directly manipulating the properties.
  *
- * Unfortunately, the Symbol type is not available in Internet Explorer 11. In
- * lieu of returning a true Symbol, this polyfill returns a different string
- * each time it is called.
+ * In modern browsers that support `Symbol`, the Elix `Symbol` helper function
+ * simply returns a real `Symbol` instance. In browsers like IE that do not have
+ * support for `Symbol`, the Elix `Symbol` helper function returns a different
+ * string each time it is called.
  *
  * Usage:
  *
@@ -36,9 +40,9 @@ const symbolFunction = typeof window.Symbol === 'function' ?
  *     }
  *
  * In IE 11, this sample will "hide" data behind an instance property that looks
- * like this._foo0. The underscore is meant to reduce (not eliminate) potential
- * accidental access, and the unique number at the end is mean to avoid (not
- * eliminate) naming conflicts.
+ * like `this._foo0`, `this._foo1`, etc. The underscore is meant to reduce (not
+ * eliminate) potential accidental access, and the unique number at the end is
+ * mean to avoid (not eliminate) naming conflicts.
  *
  * @function Symbol
  * @param {string} description - A string to identify the symbol when debugging

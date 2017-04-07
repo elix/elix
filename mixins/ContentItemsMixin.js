@@ -25,7 +25,7 @@ const itemInitializedSymbol = Symbol('itemInitialized');
  *
  * This mixin expects a component to provide a `content` property returning a
  * raw set of elements. You can provide that yourself, or use
- * [DefaultSlotContentMixin](DefaultSlotContentMixin.md).
+ * [DefaultSlotContentMixin](DefaultSlotContentMixin).
  *
  * The most commonly referenced property defined by this mixin is the `items`
  * property. To avoid having to do work each time that property is requested,

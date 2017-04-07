@@ -11,7 +11,7 @@ import symbols from './symbols';
  *
  * This mixin expects a `selectedItem` property to be set when the selection
  * changes. You can supply that yourself, or use
- * [SingleSelectionMixin](SingleSelectionMixin.md).
+ * [SingleSelectionMixin](SingleSelectionMixin).
  *
  * @module SelectinInViewMixin
  * @param base {Class} the base class to extend

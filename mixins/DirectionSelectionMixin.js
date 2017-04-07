@@ -6,9 +6,9 @@ import symbols from './symbols';
  * semantics (selectPrevious, selectNext, etc.).
  *
  * This mixin can be used in conjunction with
- * [KeyboardDirectionMixin](KeyboardDirectionMixin.md) (which maps keyboard
+ * [KeyboardDirectionMixin](KeyboardDirectionMixin) (which maps keyboard
  * events to directions) and a mixin that handles selection like
- * [SingleSelectionMixin](SingleSelectionMixin.md).
+ * [SingleSelectionMixin](SingleSelectionMixin).
  *
  * @module DirectionSelectionMixin
  * @param base {Class} the base class to extend

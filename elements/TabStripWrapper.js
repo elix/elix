@@ -14,12 +14,12 @@ let idCount = 0;
  * The `TabStripWrapper` component does not define how a selected child is
  * represented. If you're looking for the standard behavior of just showing only
  * the selected child, you can use `TabStripWrapper` in combination with the
- * separate [Modes](Modes.md) component. The above combination is so common it
- * is provided as a single component, [Tabs](Tabs.md).
+ * separate [Modes](Modes) component. The above combination is so common it
+ * is provided as a single component, [Tabs](Tabs).
  *
  * `TabStripWrapper` defines a slot named "tabButtons" into which you can slot
  * the buttons that will be used to select the tab panels. That slot sits inside
- * a [TabStrip](TabStrip.md) instance, which handles keyboard navigation and
+ * a [TabStrip](TabStrip) instance, which handles keyboard navigation and
  * the ordering of the tab buttons.
  *
  * @module TabStripWrapper

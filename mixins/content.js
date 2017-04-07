@@ -1,5 +1,5 @@
 /**
- * Helpers for accessing a component's content.
+ * These functions help access component content.
  *
  * @module content
  */
@@ -11,6 +11,9 @@
  * members that are: a) instances of `Element` (`HTMLElement` or `SVGElement`),
  * and b) not on a blacklist of normally invisible elements (such as `style` or
  * `script`). Among other things, this filters out Text nodes.
+ *
+ * This is used by [ContentItemsMixin](ContentItemsMixin) to filter out nodes
+ * which are unlikely to be interesting as list items.
  *
  * @param {NodeList|Node[]} nodes - the list of nodes to filter
  * @returns {Element[]} - the filtered elements

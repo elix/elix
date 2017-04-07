@@ -24,7 +24,7 @@ const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
  *
  * This component doesn't provide any UI for changing which mode is shown. A
  * common pattern in which buttons select the mode are tabs, a pattern
- * implemented by the [Tabs](Tabs.md) component.
+ * implemented by the [Tabs](Tabs) component.
  *
  * @extends HTMLElement
  * @mixes AttributeMarshallingMixin
