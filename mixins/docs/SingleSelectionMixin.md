@@ -15,9 +15,9 @@ get and set that state by item position (`selectedIndex`) or item identity
 This mixin does not produce any user-visible effects to represent
 selection.
 
-**Returns**: <code>Class</code> - the extended class  
+**Returns**: <code>Class</code> - The extended class  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| base | <code>Class</code> | the base class to extend |
+| base | <code>Class</code> | The base class to extend |
 

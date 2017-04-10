@@ -18,7 +18,7 @@ Items differ from nodes contents in several ways:
 
 This mixin expects a component to provide a `content` property returning a
 raw set of elements. You can provide that yourself, or use
-[DefaultSlotContentMixin](DefaultSlotContentMixin.md).
+[DefaultSlotContentMixin](DefaultSlotContentMixin).
 
 The most commonly referenced property defined by this mixin is the `items`
 property. To avoid having to do work each time that property is requested,
@@ -31,9 +31,9 @@ use this mixin in conjunction with `DefaultSlotContentMixin`, the
 `contentChanged` method will be invoked for you when the element's children
 change, turning on the optimization automatically.
 
-**Returns**: <code>Class</code> - the extended class  
+**Returns**: <code>Class</code> - The extended class  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| base | <code>Class</code> | the base class to extend |
+| base | <code>Class</code> | The base class to extend |
 

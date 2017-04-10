@@ -10,11 +10,11 @@ should be brought into view so that the user can confirm their selection.
 
 This mixin expects a `selectedItem` property to be set when the selection
 changes. You can supply that yourself, or use
-[SingleSelectionMixin](SingleSelectionMixin.md).
+[SingleSelectionMixin](SingleSelectionMixin).
 
-**Returns**: <code>Class</code> - the extended class  
+**Returns**: <code>Class</code> - The extended class  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| base | <code>Class</code> | the base class to extend |
+| base | <code>Class</code> | The base class to extend |
 

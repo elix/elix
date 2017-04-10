@@ -2,14 +2,14 @@
 <a name="module_symbols"></a>
 
 ## symbols
-A collection of (potentially polyfilled) Symbol objects for standard
+A collection of (potentially polyfilled) `Symbol` objects for standard
 component properties and methods.
 
-These Symbol objects are used to allow mixins and a component to internally
+These `Symbol` objects are used to allow mixins and a component to internally
 communicate, without exposing these properties and methods in the component's
 public API.
 
-To use these Symbol objects in your own component, include this module and
+To use these `Symbol` objects in your own component, include this module and
 then create a property or method whose key is the desired Symbol.
 
     import 'SingleSelectionMixin' from 'elix/mixins/SingleSelectionMixin';
@@ -21,11 +21,15 @@ then create a property or method whose key is the desired Symbol.
       }
     }
 
+To support Internet Explorer 11, which does not have support for the
+`Symbol` class, you can use the [Symbol](Symbol) helper, or a `Symbol`
+polyfill of your choice.
+
 
 * [symbols](#module_symbols)
     * [~contentChanged()](#module_symbols..contentChanged)
     * [~defaults](#module_symbols..defaults) : <code>object</code>
-    * [~getText(item)](#module_symbols..getText) ⇒ <code>string</code>
+    * [~getItemText(item)](#module_symbols..getItemText) ⇒ <code>string</code>
     * [~goDown()](#module_symbols..goDown)
     * [~goEnd()](#module_symbols..goEnd)
     * [~goLeft()](#module_symbols..goLeft)
@@ -37,6 +41,7 @@ then create a property or method whose key is the desired Symbol.
     * [~itemSelected(item, selected)](#module_symbols..itemSelected)
     * [~keydown(event)](#module_symbols..keydown)
     * [~raiseChangeEvents](#module_symbols..raiseChangeEvents) : <code>boolean</code>
+    * [~scrollTarget](#module_symbols..scrollTarget) : <code>HTMLElement</code>
     * [~shadowCreated()](#module_symbols..shadowCreated)
 
 <a name="module_symbols..contentChanged"></a>
@@ -66,15 +71,15 @@ as follows:
     }
 
   **Kind**: inner property of <code>[symbols](#module_symbols)</code>
-<a name="module_symbols..getText"></a>
+<a name="module_symbols..getItemText"></a>
 
-### symbols~getText(item) ⇒ <code>string</code>
+### symbols~getItemText(item) ⇒ <code>string</code>
 Symbol for the `getItemText` method.
 
 This method can be applied to an item to return its text.
 
   **Kind**: inner method of <code>[symbols](#module_symbols)</code>
-**Returns**: <code>string</code> - - the text of the item  
+**Returns**: <code>string</code> - the text of the item  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -224,6 +229,17 @@ this property is `true`:
 In this way, programmatic attempts to set the `foo` property will not
 trigger the `foo-changed` event, but UI interactions that update that
 property will cause those events to be raised.
+
+  **Kind**: inner property of <code>[symbols](#module_symbols)</code>
+<a name="module_symbols..scrollTarget"></a>
+
+### symbols~scrollTarget : <code>HTMLElement</code>
+Symbol for the `scrollTarget` property.
+
+This property indicates which element in a component's shadow subtree
+should be scrolled. [SelectionInViewMixin](SelectionInViewMixin) can use
+this property to determine which element should be scrolled to keep the
+selected item in view.
 
   **Kind**: inner property of <code>[symbols](#module_symbols)</code>
 <a name="module_symbols..shadowCreated"></a>

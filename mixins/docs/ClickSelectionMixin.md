@@ -2,10 +2,10 @@
 <a name="module_ClickSelectionMixin"></a>
 
 ## ClickSelectionMixin ⇒ <code>Class</code>
-Mixin which maps a click (actually, a mousedown) to a selection.
+Mixin which maps a click (actually, a mousedown) to an item selection.
 
-This simple mixin is useful in list box-like elements, where a click on a
-list item implicitly selects it.
+This simple mixin is useful in list-like elements like [ListBox](ListBox),
+where a click on a list item implicitly selects it.
 
 The standard use for this mixin is in list-like elements. Native list
 boxes don't appear to be consistent with regard to whether they select
@@ -23,17 +23,16 @@ configured with `width=device-width`.
 
 This mixin expects the component to provide an `items` property. It also
 expects the component to define a `selectedItem` property; you can provide
-that yourself, or use [SingleSelectionMixin](SingleSelectionMixin.md).
+that yourself, or use [SingleSelectionMixin](SingleSelectionMixin).
 
 If the component receives a clicks that doesn't correspond to an item (e.g.,
 the user clicks on the element background visible between items), the
-selection will be removed. However, if the component defines a
-`selectionRequired` and this is true, a background click will *not* remove
-the selection.
+selection will be removed. However, if the component sets `selectionRequired`
+to true, a background click will *not* remove the selection.
 
-**Returns**: <code>Class</code> - the extended class  
+**Returns**: <code>Class</code> - The extended class  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| base | <code>Class</code> | the base class to extend |
+| base | <code>Class</code> | The base class to extend |
 

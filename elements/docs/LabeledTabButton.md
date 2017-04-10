@@ -4,7 +4,7 @@
 ## LabeledTabButton ⇐ <code>HTMLElement</code>
 A classic rounded tab button.
 
-This component is used by [LabeledTabs](LabeledTabs.md), which will generate
+This component is used by [LabeledTabs](LabeledTabs), which will generate
 an instance of `LabeledTabButton` for each panel in a set of tab panels.
 
   **Kind**: global class

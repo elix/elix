@@ -30,11 +30,11 @@ to any list item that does not already have a role specified.
 This mixin expects a set of members that manage the state of the selection:
 `[symbols.itemSelected]`, `[symbols.itemAdded]`, and `selectedItem`. You can
 supply these yourself, or do so via
-[SingleSelectionMixin](SingleSelectionMixin.md).
+[SingleSelectionMixin](SingleSelectionMixin).
 
-**Returns**: <code>Class</code> - the extended class  
+**Returns**: <code>Class</code> - The extended class  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| base | <code>Class</code> | the base class to extend |
+| base | <code>Class</code> | The base class to extend |
 

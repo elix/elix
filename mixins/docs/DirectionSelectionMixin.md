@@ -6,13 +6,13 @@ Mixin which maps direction semantics (goLeft, goRight, etc.) to selection
 semantics (selectPrevious, selectNext, etc.).
 
 This mixin can be used in conjunction with
-[KeyboardDirectionMixin](KeyboardDirectionMixin.md) (which maps keyboard
+[KeyboardDirectionMixin](KeyboardDirectionMixin) (which maps keyboard
 events to directions) and a mixin that handles selection like
-[SingleSelectionMixin](SingleSelectionMixin.md).
+[SingleSelectionMixin](SingleSelectionMixin).
 
-**Returns**: <code>Class</code> - the extended class  
+**Returns**: <code>Class</code> - The extended class  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| base | <code>Class</code> | the base class to extend |
+| base | <code>Class</code> | The base class to extend |
 

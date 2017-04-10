@@ -18,18 +18,18 @@ list boxes instead of those in OS X:
   the selected item visible.
 
 To ensure the selected item is in view following use of Page Up/Down, use
-the related [SelectionInViewMixin](SelectionInViewMixin.md).
+the related [SelectionInViewMixin](SelectionInViewMixin).
 
 This mixin expects the component to provide:
 
 * A `[symbols.keydown]` method invoked when a key is pressed. You can use
-  [KeyboardMixin](KeyboardMixin.md) for that purpose, or wire up your own
+  [KeyboardMixin](KeyboardMixin) for that purpose, or wire up your own
   keyboard handling and call `[symbols.keydown]` yourself.
 * A `selectedIndex` property that indicates the index of the selected item.
 
-**Returns**: <code>Class</code> - the extended class  
+**Returns**: <code>Class</code> - The extended class  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| base | <code>Class</code> | the base class to extend |
+| base | <code>Class</code> | The base class to extend |
 

@@ -38,9 +38,9 @@ A second feature provided by this mixin is that it implicitly makes the
 component a tab stop if it isn't already, by setting `tabIndex` to 0. This
 has the effect of adding the component to the tab order in document order.
 
-**Returns**: <code>Class</code> - the extended class  
+**Returns**: <code>Class</code> - The extended class  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| base | <code>Class</code> | the base class to extend |
+| base | <code>Class</code> | The base class to extend |
 

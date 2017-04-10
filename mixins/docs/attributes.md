@@ -2,7 +2,7 @@
 <a name="module_attributes"></a>
 
 ## attributes
-Helpers for accessing a component's attributes.
+These are helper functions for accessing a component's attributes.
 
 
 * [attributes](#module_attributes)

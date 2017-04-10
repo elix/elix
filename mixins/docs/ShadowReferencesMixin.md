@@ -2,7 +2,7 @@
 <a name="module_ShadowReferencesMixin"></a>
 
 ## ShadowReferencesMixin ⇒ <code>Class</code>
-Mixin to create references to elements in a component's Shadow DOM subtree.
+This mixin creates references to elements in a component's Shadow DOM subtree.
 
 This adds a member on the component called `this.$` that can be used to
 reference shadow elements with IDs. E.g., if component's shadow contains an
@@ -14,19 +14,20 @@ exchange, this mixin trades off a one-time cost of querying all elements in
 the shadow tree instead of paying an ongoing cost to query for an element
 each time the component wants to inspect or manipulate it.
 
-This mixin expects the component to define a Shadow DOM subtree. You can
-create that tree yourself, or make use of
-[ShadowTemplateMixin](ShadowTemplateMixin.md).
+This mixin expects the component to define a Shadow DOM subtree and, when
+that has been done, to invoke [symbols.shadowCreated](symbols#shadowCreated).
+You can create the shadow subtree yourself, or make use of
+[ShadowTemplateMixin](ShadowTemplateMixin).
 
 This mixin is inspired by Polymer's [automatic
 node finding](https://www.polymer-project.org/1.0/docs/devguide/local-dom.html#node-finding)
 feature.
 
-**Returns**: <code>Class</code> - the extended class  
+**Returns**: <code>Class</code> - The extended class  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| base | <code>Class</code> | the base class to extend |
+| base | <code>Class</code> | The base class to extend |
 
 <a name="module_ShadowReferencesMixin..$"></a>
 

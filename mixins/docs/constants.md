@@ -11,4 +11,7 @@ in things such as user interface timings.
 Time in milliseconds after which the user is considered to have stopped
 typing.
 
+This is used by
+[KeyboardPrefixSelectionMixin](KeyboardPrefixSelectionMixin).
+
   **Kind**: inner constant of <code>[constants](#module_constants)</code>

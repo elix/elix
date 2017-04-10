@@ -22,7 +22,7 @@ they control. You can adjust that positioning with the `tabPosition`
 property.
 
 A `TabStrip` is often wrapped around a set of tab panels, a scenario which
-can be handled with the separate [TabStripWrapper](TabStripWrapper.md)
+can be handled with the separate [TabStripWrapper](TabStripWrapper)
 component.
 
   **Kind**: global class
@@ -171,9 +171,6 @@ The currently selected item, or null if there is no selection.
 
 Setting this property to null deselects any currently-selected item.
 Setting this property to an object that is not in the list has no effect.
-
-TODO: Even if selectionRequired, can still explicitly set selectedItem to null.
-TODO: If selectionRequired, leave selection alone?
 
   **Kind**: instance property of <code>[TabStrip](#TabStrip)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 <a name="module_SingleSelectionMixin..SingleSelection+selectFirst"></a>

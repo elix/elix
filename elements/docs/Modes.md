@@ -8,7 +8,7 @@ elements.
 
 This component doesn't provide any UI for changing which mode is shown. A
 common pattern in which buttons select the mode are tabs, a pattern
-implemented by the [Tabs](Tabs.md) component.
+implemented by the [Tabs](Tabs) component.
 
   **Kind**: global class
 **Extends:** <code>HTMLElement</code>  
@@ -163,9 +163,6 @@ The currently selected item, or null if there is no selection.
 
 Setting this property to null deselects any currently-selected item.
 Setting this property to an object that is not in the list has no effect.
-
-TODO: Even if selectionRequired, can still explicitly set selectedItem to null.
-TODO: If selectionRequired, leave selection alone?
 
   **Kind**: instance property of <code>[Modes](#Modes)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 <a name="module_SingleSelectionMixin..SingleSelection+selectFirst"></a>

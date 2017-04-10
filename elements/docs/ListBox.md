@@ -233,9 +233,6 @@ The currently selected item, or null if there is no selection.
 Setting this property to null deselects any currently-selected item.
 Setting this property to an object that is not in the list has no effect.
 
-TODO: Even if selectionRequired, can still explicitly set selectedItem to null.
-TODO: If selectionRequired, leave selection alone?
-
   **Kind**: instance property of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:SingleSelectionMixin~SingleSelection](../mixins/docs/module:SingleSelectionMixin~SingleSelection.md)</code> mixin.
 <a name="module_SingleSelectionMixin..SingleSelection+selectFirst"></a>
 
@@ -265,9 +262,9 @@ Select the first item whose text content begins with the given prefix.
 
   **Kind**: instance method of <code>[ListBox](#ListBox)</code>. Defined by <code>[module:KeyboardPrefixSelectionMixin~KeyboardPrefixSelection](../mixins/docs/module:KeyboardPrefixSelectionMixin~KeyboardPrefixSelection.md)</code> mixin.
 
-| Param | Description |
-| --- | --- |
-| prefix | [String] The prefix string to search for |
+| Param | Type | Description |
+| --- | --- | --- |
+| prefix | <code>String</code> | The prefix string to search for |
 
 <a name="module_SingleSelectionMixin..SingleSelection+selectLast"></a>
 

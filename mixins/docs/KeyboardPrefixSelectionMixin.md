@@ -31,15 +31,15 @@ If, in the above example, the user waits a second between typing "b" and
 "l", the prefix will become "l", so "Lemon" would be selected.
 
 This mixin expects the component to invoke a `keydown` method when a key is
-pressed. You can use [KeyboardMixin](KeyboardMixin.md) for that
+pressed. You can use [KeyboardMixin](KeyboardMixin) for that
 purpose, or wire up your own keyboard handling and call `keydown` yourself.
 
 This mixin also expects the component to provide an `items` property. The
 `textContent` of those items will be used for purposes of prefix matching.
 
-**Returns**: <code>Class</code> - the extended class  
+**Returns**: <code>Class</code> - The extended class  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| base | <code>Class</code> | the base class to extend |
+| base | <code>Class</code> | The base class to extend |
 

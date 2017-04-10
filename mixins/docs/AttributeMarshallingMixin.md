@@ -41,9 +41,9 @@ the element. These helpers can be invoked during a component's constructor;
 any attributes or classes set during the constructor are applied when the
 component's `connectedCallback` is invoked.
 
-**Returns**: <code>Class</code> - the extended class  
+**Returns**: <code>Class</code> - The extended class  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| base | <code>Class</code> | the base class to extend |
+| base | <code>Class</code> | The base class to extend |
 
