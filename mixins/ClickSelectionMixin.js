@@ -31,8 +31,8 @@ import symbols from './symbols';
  * to true, a background click will *not* remove the selection.
  *
  * @module ClickSelectionMixin
- * @param base {Class} the base class to extend
- * @returns {Class} the extended class
+ * @param base {Class} - The base class to extend
+ * @returns {Class} The extended class
  */
 export default function ClickSelectionMixin(base) {
 

@@ -39,8 +39,8 @@ import symbols from './symbols';
  * has the effect of adding the component to the tab order in document order.
  *
  * @module KeyboardMixin
- * @param base {Class} the base class to extend
- * @returns {Class} the extended class
+ * @param base {Class} - The base class to extend
+ * @returns {Class} The extended class
  */
 export default function KeyboardMixin(base) {
 

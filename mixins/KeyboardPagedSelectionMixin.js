@@ -29,8 +29,8 @@ import symbols from './symbols';
  * * A `selectedIndex` property that indicates the index of the selected item.
  *
  * @module KeyboardPagedSelectionMixin
- * @param base {Class} the base class to extend
- * @returns {Class} the extended class
+ * @param base {Class} - The base class to extend
+ * @returns {Class} The extended class
  */
 export default function KeyboardPagedSelectionMixin(base) {
 

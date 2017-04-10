@@ -16,7 +16,7 @@
  * which are unlikely to be interesting as list items.
  *
  * @param {NodeList|Node[]} nodes - the list of nodes to filter
- * @returns {Element[]} - the filtered elements
+ * @returns {Element[]} the filtered elements
  */
 export function substantiveElements(nodes) {
 

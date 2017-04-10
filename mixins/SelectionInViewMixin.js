@@ -14,8 +14,8 @@ import symbols from './symbols';
  * [SingleSelectionMixin](SingleSelectionMixin).
  *
  * @module SelectinInViewMixin
- * @param base {Class} the base class to extend
- * @returns {Class} the extended class
+ * @param base {Class} - The base class to extend
+ * @returns {Class} The extended class
  */
 export default (base) => {
 

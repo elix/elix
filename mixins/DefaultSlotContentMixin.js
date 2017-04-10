@@ -47,8 +47,8 @@ const slotchangeFiredSymbol = Symbol('slotchangeFired');
  * root has been created and populated.
  *
  * @module DefaultSlotContentMixin
- * @param base {Class} the base class to extend
- * @returns {Class} the extended class
+ * @param base {Class} - The base class to extend
+ * @returns {Class} The extended class
  */
 export default function DefaultSlotContentMixin(base) {
 

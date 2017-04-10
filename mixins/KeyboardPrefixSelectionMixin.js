@@ -47,8 +47,8 @@ const settingSelectionSymbol = Symbol('settingSelection');
  * `textContent` of those items will be used for purposes of prefix matching.
  *
  * @module KeyboardPrefixSelectionMixin
- * @param base {Class} the base class to extend
- * @returns {Class} the extended class
+ * @param base {Class} - The base class to extend
+ * @returns {Class} The extended class
  */
 export default function KeyboardPrefixSelectionMixin(base) {
 
@@ -113,7 +113,7 @@ export default function KeyboardPrefixSelectionMixin(base) {
     /**
      * Select the first item whose text content begins with the given prefix.
      *
-     * @param prefix [String] The prefix string to search for
+     * @param prefix {String} - The prefix string to search for
      */
     selectItemWithTextPrefix(prefix) {
       if (super.selectItemWithTextPrefix) { super.selectItemWithTextPrefix(prefix); }

@@ -18,8 +18,8 @@ import symbols from './symbols';
  * of that property will constrain navigation to the horizontal or vertical axis.
  *
  * @module KeyboardDirectionMixin
- * @param base {Class} the base class to extend
- * @returns {Class} the extended class
+ * @param base {Class} - The base class to extend
+ * @returns {Class} The extended class
  */
 export default function KeyboardDirectionMixin(base) {
 

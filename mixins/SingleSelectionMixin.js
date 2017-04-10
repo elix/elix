@@ -46,8 +46,8 @@ const internalSelectedItemSymbol = Symbol('internalSelectedItem');
  * selection.
  *
  * @module SingleSelectionMixin
- * @param base {Class} the base class to extend
- * @returns {Class} the extended class
+ * @param base {Class} - The base class to extend
+ * @returns {Class} The extended class
  */
 export default function SingleSelectionMixin(base) {
 
@@ -208,11 +208,11 @@ export default function SingleSelectionMixin(base) {
      * Setting this property to null deselects any currently-selected item.
      * Setting this property to an object that is not in the list has no effect.
      *
-     * TODO: Even if selectionRequired, can still explicitly set selectedItem to null.
-     * TODO: If selectionRequired, leave selection alone?
-     *
      * @type {object}
      */
+    // REVIEW: Even if selectionRequired is true, caller can still explicitly
+    // set selectedItem to null. In that case, should we leave selection alone,
+    // or set it to null?
     get selectedItem() {
       return this[externalSelectedItemSymbol] || null;
     }

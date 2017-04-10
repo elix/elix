@@ -76,7 +76,7 @@ const symbols = {
    *
    * @function getItemText
    * @param {HTMLElement} item - the item to extract text from
-   * @returns {string} - the text of the item
+   * @returns {string} the text of the item
    */
   getItemText: Symbol('getText'),
 
