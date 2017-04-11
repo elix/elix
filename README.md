@@ -1,6 +1,6 @@
 # Elix ![Build status](https://travis-ci.org/elix/elix.svg?branch=master)
 
-![Elix logo](https://elix.org/static/images/elix.png)
+[![Elix logo](https://elix.org/static/images/elix.png)](https://elix.org)
 
 Elix is a community-driven collection of high-quality web components for common
 user interface patterns.
