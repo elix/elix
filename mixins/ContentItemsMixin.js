@@ -38,6 +38,9 @@ const itemInitializedSymbol = Symbol('itemInitialized');
  * `contentChanged` method will be invoked for you when the element's children
  * change, turning on the optimization automatically.
  *
+ * Most Elix [elements](elements) use `ContentItemsMixin`, including
+ * [ListBox](ListBox), [Modes](Modes), and [Tabs](Tabs).
+ *
  * @module ContentItemsMixin
  * @param base {Class} - The base class to extend
  * @returns {Class} The extended class

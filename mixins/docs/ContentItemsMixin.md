@@ -31,6 +31,9 @@ use this mixin in conjunction with `DefaultSlotContentMixin`, the
 `contentChanged` method will be invoked for you when the element's children
 change, turning on the optimization automatically.
 
+Most Elix [elements](elements) use `ContentItemsMixin`, including
+[ListBox](ListBox), [Modes](Modes), and [Tabs](Tabs).
+
 **Returns**: <code>Class</code> - The extended class  
 
 | Param | Type | Description |

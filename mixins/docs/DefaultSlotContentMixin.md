@@ -40,6 +40,9 @@ To receive `contentChanged` notification, this mixin expects a component to
 invoke a method called `symbols.shadowCreated` after the component's shadow
 root has been created and populated.
 
+Most Elix [elements](elements) use `DefaultSlotContentMixin`, including
+[ListBox](ListBox), [Modes](Modes), and [Tabs](Tabs).
+
 **Returns**: <code>Class</code> - The extended class  
 
 | Param | Type | Description |

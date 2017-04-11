@@ -30,6 +30,9 @@ the user clicks on the element background visible between items), the
 selection will be removed. However, if the component sets `selectionRequired`
 to true, a background click will *not* remove the selection.
 
+Examples of components using `ClickSelectionMixin` include [ListBox](ListBox)
+and [TabStrip](TabStrip).
+
 **Returns**: <code>Class</code> - The extended class  
 
 | Param | Type | Description |

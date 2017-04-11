@@ -23,6 +23,9 @@ import symbols from './symbols';
  * node finding](https://www.polymer-project.org/1.0/docs/devguide/local-dom.html#node-finding)
  * feature.
  *
+ * An example of code that uses `ShadowReferencesMixin` is
+ * [TabStripWrapper](TabStripWrapper).
+ *
  * @module ShadowReferencesMixin
  * @param base {Class} - The base class to extend
  * @returns {Class} The extended class

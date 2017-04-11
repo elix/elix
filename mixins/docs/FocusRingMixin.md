@@ -22,6 +22,9 @@ stylesheet should include a CSS rule of the form:
       outline: none;
     }
 
+An example of an element using `FocusRingMixin` is
+[LabeledTabButton](LabeledTabButton).
+
 **Returns**: <code>Class</code> - The extended class  
 
 | Param | Type | Description |

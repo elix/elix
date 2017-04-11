@@ -46,6 +46,9 @@ const slotchangeFiredSymbol = Symbol('slotchangeFired');
  * invoke a method called `symbols.shadowCreated` after the component's shadow
  * root has been created and populated.
  *
+ * Most Elix [elements](elements) use `DefaultSlotContentMixin`, including
+ * [ListBox](ListBox), [Modes](Modes), and [Tabs](Tabs).
+ *
  * @module DefaultSlotContentMixin
  * @param base {Class} - The base class to extend
  * @returns {Class} The extended class

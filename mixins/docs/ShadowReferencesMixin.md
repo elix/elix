@@ -23,6 +23,9 @@ This mixin is inspired by Polymer's [automatic
 node finding](https://www.polymer-project.org/1.0/docs/devguide/local-dom.html#node-finding)
 feature.
 
+An example of code that uses `ShadowReferencesMixin` is
+[TabStripWrapper](TabStripWrapper).
+
 **Returns**: <code>Class</code> - The extended class  
 
 | Param | Type | Description |
