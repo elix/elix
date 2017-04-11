@@ -22,15 +22,11 @@ const buildTargets = {
 };
 
 const watchifyTask = function(done) {
-  webpackHelperTask({minify: false, watch: true}, done);
+  webpackHelperTask({watch: true}, done);
 };
 
 const webpackTask = function(done) {
-  webpackHelperTask({minify: true, watch: false}, done);
-};
-
-const debugWebpackTask = function(done) {
-  webpackHelperTask({minify: false, watch: false}, done);
+  webpackHelperTask({watch: false}, done);
 };
 
 const webpackHelperTask = function(options, done) {
@@ -72,15 +68,6 @@ const webpackHelperTask = function(options, done) {
     });
 
     let filename = key.split('/').pop();
-    if (options.minify) {
-      let a = filename.split('.');
-      let ext = a.pop();
-      filename = '';
-      for (let i = 0; i < a.length; i++) {
-        filename += a[i];
-      }
-      filename += '.min.' + ext;
-    }
     let packOptions = {
       watch: options.watch,
       entry: entries,
@@ -101,15 +88,7 @@ const webpackHelperTask = function(options, done) {
             }
           }
         ]
-      },
-      plugins: options.minify ? [
-        new webpack.optimize.UglifyJsPlugin({
-          compress: {
-            warnings: false // https://github.com/webpack/webpack/issues/1496
-          }
-        })
-      ] :
-      []
+      }
     };
 
     packOptionsArray.push(packOptions);
@@ -124,6 +103,5 @@ const webpackHelperTask = function(options, done) {
 
 module.exports = {
   webpackTask,
-  debugWebpackTask,
   watchifyTask
 };
