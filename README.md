@@ -1,5 +1,7 @@
 # Elix ![Build status](https://travis-ci.org/elix/elix.svg?branch=master)
 
+![Elix logo](https://elix.org/static/images/elix.png)
+
 Elix is a community-driven collection of high-quality web components for common
 user interface patterns.
 
@@ -21,10 +23,7 @@ cost of creating the components across organizations, and ensures that the
 resulting components satisfy a broad range of concerns and can be used in many
 contexts.
 
-_Elix and its community-driven process are currently in a pilot phase. These
-components are not ready for production use. The Elix core team will share more
-about the project road map and our plans for open process as those plans come
-together._
+For full documentation and demos, see https://elix.org.
 
 
 # Core principles
@@ -77,21 +76,14 @@ together._
   Apple Safari and Mobile Safari, Google Chrome and Chrome for Android,
   Microsoft Edge and Internet Explorer 11, and Mozilla Firefox. The older
   browsers, notably IE 11, require the use of the web component v1 polyfills.
-* **Open process.** The process that drives the project is as important to use
-  as the code artifacts. We strive to incorporate feedback from a general web
-  audience, while at the same time imposing just enough structure to keep the
-  project moving forward at a consistent pace in a consistent direction.
-
-
-# Repository organization
-
-All core Elix work happens in this monorepo, keeping all sources in a single
-place. This makes it easy to clone, fork, and track issues and pull requests.
-
-
-# Demos
-
-See https://elix.org.
+* **Open process.**
+  The process behind Elix is as important to us as the code artifacts. We strive
+  to incorporate feedback from a general web audience, while at the same time
+  imposing just enough structure to keep the project moving forward at a
+  consistent pace in a consistent direction. To that end, all significant
+  changes to the project are proposed and tracked through Request for Comments
+  (RFC) documents tracked in the [Elix RFCs](https://github.com/elix/rfcs)
+  repository.
 
 
 # Getting started
