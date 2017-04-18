@@ -13,7 +13,7 @@ import symbols from './symbols';
  * changes. You can supply that yourself, or use
  * [SingleSelectionMixin](SingleSelectionMixin).
  *
- * @module SelectinInViewMixin
+ * @module SelectionInViewMixin
  * @param base {Class} - The base class to extend
  * @returns {Class} The extended class
  */

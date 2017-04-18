@@ -5,21 +5,34 @@ const gutil = require('gulp-util');
 const webpack = require('webpack');
 const glob = require('glob');
 
+let buildTargets = null;
 
-const buildTargets = {
-  './build/tests.js': {
-    globItems: ['./test/**/*.js'],
-    includes: [/mixins/, /elements/, /test/]
-  },
-  './build/elix.js': {
-    globItems: ['./globals.js'],
-    includes: [/\//]
-  },
-  './build/demos.js': {
-    globItems: ['./globals.js', './demos/src/*.js'],
-    includes: [/\//, /demos/]
+function buildBuildTargets(options) {
+  if (options.minify) {
+    buildTargets = {
+      './build/demos.js': {
+        globItems: ['./globals.js', './demos/src/*.js'],
+        includes: [/\//, /demos/]
+      }
+    };
   }
-};
+  else {
+    buildTargets = {
+      './build/tests.js': {
+        globItems: ['./test/**/*.js'],
+        includes: [/mixins/, /elements/, /test/]
+      },
+      './build/elix.js': {
+        globItems: ['./globals.js'],
+        includes: [/\//]
+      },
+      './build/demos.js': {
+        globItems: ['./globals.js', './demos/src/*.js'],
+        includes: [/\//, /demos/]
+      }
+    };
+  }
+}
 
 const watchifyTask = function(done) {
   webpackHelperTask({watch: true}, done);
@@ -49,13 +62,26 @@ const webpackHelperTask = function(options, done) {
           gutil.log('Now watching for changes...');
         }
         else {
-          done();
+          if (options.minify) {
+            done();
+          }
+          else {
+            options.minify = true;
+            webpackHelperTask(options, done);
+          }
         }
       }
     });
   }
 
-  gutil.log('Preparing build...');
+  if (options.minify) {
+    gutil.log('preparing build for demos.min.js...');
+  }
+  else {
+    gutil.log('Preparing build...');
+  }
+  
+  buildBuildTargets(options);
 
   /*jshint loopfunc: true */
   for (let key in buildTargets) {
@@ -68,6 +94,15 @@ const webpackHelperTask = function(options, done) {
     });
 
     let filename = key.split('/').pop();
+    if (options.minify) {
+      let a = filename.split('.');
+      let ext = a.pop();
+      filename = '';
+      for (let i = 0; i < a.length; i++) {
+        filename += a[i];
+      }
+      filename += '.min.' + ext;
+    }
     let packOptions = {
       watch: options.watch,
       entry: entries,
@@ -88,7 +123,15 @@ const webpackHelperTask = function(options, done) {
             }
           }
         ]
-      }
+      },
+      plugins: options.minify ? [
+        new webpack.optimize.UglifyJsPlugin({
+          compress: {
+            warnings: false // https://github.com/webpack/webpack/issues/1496
+          }
+        })
+      ] :
+      []
     };
 
     packOptionsArray.push(packOptions);
