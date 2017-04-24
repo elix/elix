@@ -1,3 +1,8 @@
+//
+// Copyright © 2016-2017 Component Kitchen, Inc. and contributors to the 
+// Elix Project
+//
+
 /**
  * This helper returns a guess as to what portion of the given element can be
  * scrolled. This is used by [SelectionInViewMixin](SelectionInViewMixin) to

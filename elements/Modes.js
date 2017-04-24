@@ -1,3 +1,8 @@
+//
+// Copyright © 2016-2017 Component Kitchen, Inc. and contributors to the 
+// Elix Project
+//
+
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin';
 import ContentItemsMixin from '../mixins/ContentItemsMixin';
 import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin';

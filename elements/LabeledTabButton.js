@@ -1,3 +1,8 @@
+//
+// Copyright © 2016-2017 Component Kitchen, Inc. and contributors to the 
+// Elix Project
+//
+
 import FocusRingMixin from '../mixins/FocusRingMixin';
 import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin';
 import symbols from '../mixins/symbols';

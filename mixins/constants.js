@@ -1,3 +1,8 @@
+//
+// Copyright © 2016-2017 Component Kitchen, Inc. and contributors to the 
+// Elix Project
+//
+
 /**
  * A collection of constants used by Elix mixins and components for consistency
  * in things such as user interface timings.

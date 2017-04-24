@@ -1,3 +1,8 @@
+//
+// Copyright © 2016-2017 Component Kitchen, Inc. and contributors to the 
+// Elix Project
+//
+
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin';
 import ClickSelectionMixin from '../mixins/ClickSelectionMixin';
 import ContentItemsMixin from '../mixins/ContentItemsMixin';

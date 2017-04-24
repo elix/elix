@@ -1,4 +1,9 @@
 //
+// Copyright © 2016-2017 Component Kitchen, Inc. and contributors to the 
+// Elix Project
+//
+
+//
 // Global state shared by all elements using this mixin.
 //
 
