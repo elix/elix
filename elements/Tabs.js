@@ -1,3 +1,8 @@
+//
+// Copyright © 2016-2017 Component Kitchen, Inc. and contributors to the 
+// Elix Project
+//
+
 import Modes from './Modes';
 import TabStripWrapper from './TabStripWrapper';
 

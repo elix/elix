@@ -1,3 +1,8 @@
+//
+// Copyright © 2016-2017 Component Kitchen, Inc. and contributors to the 
+// Elix Project
+//
+
 /*
  * This file is transpiled to create an ES5-compatible distribution in which
  * the package's main feature(s) are available via the window.Elix global.
