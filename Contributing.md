@@ -34,3 +34,26 @@
 * Write user interface specifications to document end-user visible behavior.
   It’s fine to reference such behavior in code comments, but try to avoid
   letting comments be the sole place where user-visible behavior is described.
+
+# Contributor understandings
+
+The Elix project is open source made available free of charge. Contributors 
+understand that all contributions to the Elix project will be licensed to 
+developers and other licensees pursuant to [this version](LICENSE) of the MIT
+License. If you do not want your contributions to 
+be licensed to developers and others pursuant to the MIT License, do not make 
+any contributions to the project. By making contributions to the project, 
+including contributions made through pull requests and other modifications, you 
+represent that you possess all rights, including intellectual property rights, 
+in and to your contributions necessary in order to license your contributions to 
+developers and others pursuant to the MIT License. If you have reason to believe 
+that someone other than you, including some other person or entity, may have 
+rights in or to a contribution, do not make that contribution to the project. 
+The Elix project is administered, as a courtesy, by Component Kitchen, Inc. for 
+the benefit of the project’s contributors and the developer community as a 
+whole. The code, software, web components, features and functionality, and other 
+contributions contributed to or otherwise made available in connection with the
+Elix project are provided “as is.” In no event will Component Kitchen, Inc. or 
+its officers, directors, or employees be liable for any claims, damages, or 
+other liabilities, whether in an action of contract, tort, or otherwise, arising 
+from, out of, or in connection with the same.
