@@ -10,6 +10,7 @@ import symbols from '../mixins/symbols';
  * an instance of `LabeledTabButton` for each panel in a set of tab panels.
  *
  * @extends HTMLElement
+ * @mixes FocusRingMixin
  * @mixes ShadowTemplateMixin
  */
 class LabeledTabButton extends FocusRingMixin(ShadowTemplateMixin(HTMLElement)) {
