@@ -30,9 +30,6 @@ import symbols from './symbols';
  * selection will be removed. However, if the component sets `selectionRequired`
  * to true, a background click will *not* remove the selection.
  *
- * Examples of components using `ClickSelectionMixin` include [ListBox](ListBox)
- * and [TabStrip](TabStrip).
- *
  * @module ClickSelectionMixin
  * @param base {Class} - The base class to extend
  * @returns {Class} The extended class
