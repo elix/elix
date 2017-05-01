@@ -32,9 +32,6 @@ let listeningToWindowFocus = false;
  *       outline: none;
  *     }
  *
- * An example of an element using `FocusRingMixin` is
- * [LabeledTabButton](LabeledTabButton).
- *
  * @module FocusRingMixin
  * @param base {Class} - The base class to extend
  * @returns {Class} The extended class
