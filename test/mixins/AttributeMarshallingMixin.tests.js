@@ -58,6 +58,7 @@ describe("AttributeMarshallingMixin", () => {
   it("defines observedAttributes for all custom property setters", () => {
     const observedAttributes = ElementWithCustomProperty.observedAttributes;
     assert.deepEqual(observedAttributes, ['custom-property']);
+    assert(false);
   });
 
   it("marshals hyphenated attribute to corresponding camelCase property", () => {
