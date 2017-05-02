@@ -2,7 +2,7 @@
 'use strict';
 
 const saucelabs = require('sauce-test-runner');
-const connect   = require('gulp-connect');
+const server = require('live-server');
 
 const port = 9999;
 
@@ -57,19 +57,20 @@ const config = {
   }
 };
 
-function reportTask() {
-  if (reportStatus) {
-    return process.exit(reportStatus);
-  }
-}
-
 function runTests() {
-  connect.server({port: port, root: './'});
+  const params = {
+    port: port,       // Set the server port. Defaults to 8080. 
+    host: '0.0.0.0',  // Set the address to bind to. Defaults to 0.0.0.0 or process.env.IP. 
+    root: './',       // Set root directory that's being served. Defaults to cwd. 
+    open: false,      // When false, it won't load your browser by default. 
+    logLevel: 0       // 0 = errors only, 1 = some, 2 = lots 
+  };
+  
+  server.start(params);  
 
   saucelabs(config)
   .then(() => {
-    connect.serverClose();
-    reportTask();
+    process.exit(reportStatus);
   });
 }
 

@@ -20,6 +20,7 @@
     "gulp-saucelabs": "^0.1.5",
     "gulp-util": "^3.0.7",
     "jshint": "^2.9.4",
+    "live-server": "^1.2.0",
     "mocha": "^3.2.0",
     "sauce-test-runner": "^0.1.7",
     "sinon": "^2.0.0-pre.5",
