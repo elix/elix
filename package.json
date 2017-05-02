@@ -21,6 +21,8 @@
     "gulp-util": "^3.0.7",
     "jshint": "^2.9.4",
     "mocha": "^3.2.0",
+    "sauce-connect-tunnel": "^0.1.0",
+    "sauce-test-runner": "^0.1.7",
     "sinon": "^2.0.0-pre.5",
     "webpack": "^1.14.0"
   }
