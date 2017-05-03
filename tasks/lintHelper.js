@@ -5,7 +5,6 @@ const spawn = require('child_process').spawn;
 const glob = require('glob');
 
 const lintFiles = [
-      'gulpfile.js',
       'elements/*.js',
       'mixins/*.js',
       'test/**/*.js',
