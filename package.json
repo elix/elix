@@ -24,6 +24,6 @@
     "build": "node tasks/build.js",
     "watch": "node tasks/watch.js",
     "lint": "node tasks/lint.js",
-    "saucetests": "node tasks/saucetests.js"
+    "sauce-tests": "node tasks/sauce-tests.js"
   }
 }
