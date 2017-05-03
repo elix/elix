@@ -1,4 +1,3 @@
-import { assignedChildren } from './content';
 import Symbol from './Symbol';
 import symbols from './symbols';
 
