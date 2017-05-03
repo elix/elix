@@ -38,10 +38,14 @@ const watchifyTask = function() {
 };
 
 const webpackTask = function() {
-  webpackHelperTask({watch: false});
+  let promise = new Promise((resolve, reject) => {
+    webpackHelperTask({watch: false}, resolve);
+  });
+  
+  return promise;
 };
 
-const webpackHelperTask = function(options) {
+const webpackHelperTask = function(options, done) {
   let packOptionsArray = [];
   let processedCount = 0;
   let packOptionsCount = 0;
@@ -63,7 +67,10 @@ const webpackHelperTask = function(options) {
         else {
           if (!options.minify) {
             options.minify = true;
-            webpackHelperTask(options);
+            webpackHelperTask(options, done);
+          }
+          else if (done) {
+            done();
           }
         }
       }
