@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Elix overlays</title>
+
+  <script src="node_modules/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="demos.js"></script>
+  <script nomodule src="node_modules/custom-elements/src/native-shim.js"></script>
+  <script nomodule src="../build/demos.js"></script>
+  <link rel="stylesheet" href="demos.css">
+
+  <style>
+    html {
+      height: 100%;
+    }
+
+    body {
+      height: 200%; /* So the page always scrolls */
+    }
+
+    :not(:defined) {
+      display: none;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="demo">
+
+    <style>
+      #floating {
+        background: white;
+        z-index: 100;
+        position: relative;
+      }
+    </style>
+
+    <button id="openButton" onclick="dialog.open()">Open dialog</button>
+    <sample-dialog id="dialog" aria-label="Sample dialog">
+      Here's a sample dialog.
+    </sample-dialog>
+
+    <p id="floating">
+      This paragraph has a z-index, but should appear behind the overlays.
+    </p>
+
+    <p>
+      <button id="okCancelButton">OK/Cancel dialog</button>
+      <button id="yesNoCancelButton">Yes/No/Cancel dialog</button>
+    </p>
+
+    <p>
+      <button id="showPopup" onclick="popup.open()">Show popup</button>
+    </p>
+    <elix-popup id="popup">
+      <div style="padding: 1em;">
+        Here's a popup.
+      </div>
+    </elix-popup>
+
+    <p>
+      <button id="showPopup" onclick="toast.open()">Show toast</button>
+    </p>
+    <elix-transient-message id="toast">
+      <div style="padding: 1em;">
+        Hi, there.
+      </div>
+    </elix-transient-message>
+
+    <p>
+      <button onclick="drawer.open()">Open drawer</button>
+    </p>
+    <elix-drawer id="drawer">
+      <div style="margin: 2em;">
+        Drawer elements go here...
+      </div>
+    </elix-drawer>
+
+  </div>
+  <script>
+    okCancelButton.addEventListener('click', () => {
+      const dialog = document.createElement('elix-notification-dialog');
+      dialog.textContent = 'Hello, world';
+      dialog.choices = dialog.constructor.OK_CANCEL;
+      dialog.show()
+      .then(result => {
+        console.log(`You picked ${result}`);
+      });
+    });
+
+    yesNoCancelButton.addEventListener('click', () => {
+      const dialog = document.createElement('elix-notification-dialog');
+      dialog.textContent = 'Hello, world';
+      dialog.choices = ['Yes', 'No', 'Cancel'];
+      dialog.show()
+      .then(result => {
+        console.log(`You picked ${result}`);
+      });
+    });
+  </script>
+</body>
+
+</html>

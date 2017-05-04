@@ -7,6 +7,8 @@ import * as Elix from '../globals.js';
 import BrowserPluginList from './src/BrowserPluginList.js';
 import FocusRingTest from './src/FocusRingTest.js';
 import ModesWithKeyboard from './src/ModesWithKeyboard.js';
+import QuietButton from './src/QuietButton.js';
+import SampleDialog from './src/SampleDialog.js';
 import SingleSelectionDemo from './src/SingleSelectionDemo.js';
 import ToolbarTab from './src/ToolbarTab.js';
 

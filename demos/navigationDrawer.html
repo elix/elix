@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Navigation drawer</title>
+
+  <script src="node_modules/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="demos.js"></script>
+  <script nomodule src="node_modules/custom-elements/src/native-shim.js"></script>
+  <script nomodule src="../build/demos.js"></script>
+  <link rel="stylesheet" href="demos.css">
+
+  <style>
+    body {
+      padding: 0;
+    }
+
+    .demo {
+      display: block;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="demo">
+
+    <style>
+      header {
+        background: #e0e0e0;
+        position: sticky;
+        top: 0;
+      }
+
+      header,
+      #sideNavigation {
+        display: flex;
+        font-size: 16px;
+      }
+
+      #sideNavigation {
+        bottom: 0;
+        box-sizing: border-box;
+        flex-direction: column;
+        height: 100%;
+        padding: 0 1em;
+        position: relative;
+        top: 0;
+        width: 100%;
+      }
+
+      .toolbarButton {
+        display: block;
+        padding: 1em;
+      }
+
+      a.toolbarButton {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      #menuButton svg {
+        display: block;
+        margin: 1em;
+      }
+
+      .desktop {
+        display: none;
+      }
+
+      p {
+        margin: 1em;
+      }
+
+      @media (min-width: 600px) {
+
+        .mobile {
+          display: none;
+        }
+
+        .desktop {
+          display: inline-block;
+        }
+
+      }
+    </style>
+
+    <header>
+      <quiet-button id="menuButton" class="mobile" onclick="drawer.open()" aria-label="Open navigation">
+        <!-- From Google's Material Icons collection -->
+        <svg fill="#000000" height="18" viewBox="0 0 18 18" width="18" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0h24v24H0z" fill="none"/>
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+        </svg>
+      </quiet-button>
+      <a class="toolbarButton desktop" href="javascript:">Home</a>
+      <a class="toolbarButton desktop" href="javascript:">Products</a>
+      <a class="toolbarButton desktop" href="javascript:">Search</a>
+      <a class="toolbarButton desktop" href="javascript:">Account</a>
+      <a class="toolbarButton desktop" href="javascript:">About Us</a>
+    </header>
+    <elix-drawer id="drawer" role="navigation">
+      <div id="sideNavigation" role="none">
+        <a class="toolbarButton" onclick="closeDrawer()" href="javascript:">Home</a>
+        <a class="toolbarButton" onclick="closeDrawer()" href="javascript:">Products</a>
+        <a class="toolbarButton" onclick="closeDrawer()" href="javascript:">Search</a>
+        <a class="toolbarButton" onclick="closeDrawer()" href="javascript:">Account</a>
+        <a class="toolbarButton" onclick="closeDrawer()" href="javascript:">About Us</a>
+      </div>
+    </elix-drawer>
+
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit amet
+      facilisis augue, sit amet dignissim felis. Curabitur in blandit justo.
+      Duis ornare sem vitae enim feugiat, ultrices facilisis velit luctus.
+      Aliquam porttitor sollicitudin nibh. Nulla lobortis quam venenatis,
+      aliquam risus non, lacinia purus. Nulla a lectus non urna suscipit blandit
+      id eget libero. Suspendisse ac bibendum arcu. Nunc consequat maximus
+      aliquet. Nullam facilisis purus neque, sit amet egestas purus malesuada
+      nec. In luctus tempus diam sit amet egestas.
+    </p>
+    <p>
+      Pellentesque ipsum dolor, consequat ut nunc at, congue semper nisl. Duis
+      id cursus orci, sit amet sollicitudin libero. Proin a vehicula neque, eget
+      placerat arcu. Nullam ultricies ullamcorper rutrum. Donec nunc augue,
+      porttitor in metus sit amet, molestie egestas magna. Donec eget neque
+      elementum, feugiat erat eu, sagittis felis. Quisque vitae urna rhoncus
+      sapien condimentum suscipit. Cras luctus sollicitudin urna sit amet
+      tincidunt. Suspendisse potenti. Fusce pretium libero et augue lobortis,
+      quis iaculis est vehicula.
+    </p>
+    <p>
+      Nam varius et mauris dictum consectetur. Nulla venenatis, ante auctor
+      scelerisque feugiat, nulla nisl elementum neque, nec facilisis quam erat
+      eu orci. Integer rhoncus quam eu neque volutpat, et pulvinar nibh
+      suscipit. In laoreet odio et sem bibendum rhoncus. Nunc dictum scelerisque
+      gravida. Suspendisse volutpat nibh lectus, sit amet cursus ligula ultrices
+      a. Mauris tempor eget risus sed laoreet. Proin fermentum lobortis sapien,
+      et ultrices turpis vestibulum a. Morbi mollis nec orci at cursus. Nunc
+      euismod neque dui, eu efficitur risus finibus sit amet. Duis felis augue,
+      pretium vel felis a, scelerisque hendrerit nibh. Mauris efficitur
+      consectetur molestie. Donec ac dolor nec odio mollis placerat. Etiam vel
+      sem elementum, luctus nisi ac, volutpat ex. Curabitur auctor bibendum
+      placerat. Aenean maximus ante nulla, eget vehicula tortor sagittis a.
+    </p>
+
+    <script>
+      function closeDrawer() {
+        drawer.close();
+      }
+    </script>
+
+  </div>
+
+</body>
+
+</html>
