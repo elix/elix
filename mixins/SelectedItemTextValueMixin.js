@@ -18,9 +18,6 @@ import symbols from './symbols.js';
  * of `selectedIndex` and `selectedItem` properties, which can be obtained
  * from [SingleSelectionMixin](SingleSelectionMixin).
  *
- * An example of an element using `SelectedItemTextValueMixin` is
- * [ListBox](ListBox).
- *
  * @module SelectedItemTextValueMixin
  * @param base {Class} - The base class to extend
  * @returns {Class} The extended class

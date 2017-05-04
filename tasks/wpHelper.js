@@ -1,7 +1,6 @@
 /*jslint node: true */
 'use strict';
 
-const gutil = require('gulp-util');
 const webpack = require('webpack');
 const glob = require('glob');
 
@@ -34,12 +33,16 @@ function buildBuildTargets(options) {
   }
 }
 
-const watchifyTask = function(done) {
-  webpackHelperTask({watch: true}, done);
+const watchifyTask = function() {
+  webpackHelperTask({watch: true});
 };
 
-const webpackTask = function(done) {
-  webpackHelperTask({watch: false}, done);
+const webpackTask = function() {
+  let promise = new Promise((resolve, reject) => {
+    webpackHelperTask({watch: false}, resolve);
+  });
+
+  return promise;
 };
 
 const webpackHelperTask = function(options, done) {
@@ -50,24 +53,24 @@ const webpackHelperTask = function(options, done) {
   function packIt(packOptions) {
     webpack(packOptions, function(err, stats) {
       if (err) {
-        throw new gutil.PluginError('webpack', err);
+        throw new Error(`webpack: ${err}`);
       }
 
-      gutil.log(`Processed ${packOptions.entry} and wrote ${packOptions.output.path}${packOptions.output.filename}`);
-      //gutil.log('[webpack]', stats.toString({}));
+      console.log(`Processed ${packOptions.entry} and wrote ${packOptions.output.path}${packOptions.output.filename}`);
+      //console.log('[webpack]', stats.toString({}));
       processedCount++;
       if (processedCount >= packOptionsCount) {
         if (options.watch) {
           // Do not call task completion callback in the watch case
-          gutil.log('Now watching for changes...');
+          console.log('Now watching for changes...');
         }
         else {
-          if (options.minify) {
-            done();
-          }
-          else {
+          if (!options.minify) {
             options.minify = true;
             webpackHelperTask(options, done);
+          }
+          else if (done) {
+            done();
           }
         }
       }
@@ -75,10 +78,10 @@ const webpackHelperTask = function(options, done) {
   }
 
   if (options.minify) {
-    gutil.log('preparing build for demos.min.js...');
+    console.log('preparing build for demos.min.js...');
   }
   else {
-    gutil.log('Preparing build...');
+    console.log('Preparing build...');
   }
 
   buildBuildTargets(options);
