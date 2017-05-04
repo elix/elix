@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import ClassNameGoesHere from '../src/ClassNameGoesHere'; // jshint ignore:line
+import ClassNameGoesHere from '../src/ClassNameGoesHere.js'; // jshint ignore:line
 
 
 describe("ClassNameGoesHere", () => {

@@ -1,5 +1,5 @@
-import defaultScrollTarget from './defaultScrollTarget';
-import symbols from './symbols';
+import defaultScrollTarget from './defaultScrollTarget.js';
+import symbols from './symbols.js';
 
 
 /**

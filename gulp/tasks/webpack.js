@@ -11,7 +11,7 @@ function buildBuildTargets(options) {
   if (options.minify) {
     buildTargets = {
       './build/demos.js': {
-        globItems: ['./globals.js', './demos/src/*.js'],
+        globItems: ['./demos/demos.js'],
         includes: [/\//, /demos/]
       }
     };
@@ -80,7 +80,7 @@ const webpackHelperTask = function(options, done) {
   else {
     gutil.log('Preparing build...');
   }
-  
+
   buildBuildTargets(options);
 
   /*jshint loopfunc: true */

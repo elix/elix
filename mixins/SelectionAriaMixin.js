@@ -1,4 +1,4 @@
-import symbols from './symbols';
+import symbols from './symbols.js';
 
 
 // Used to assign unique IDs to item elements without IDs.

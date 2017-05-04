@@ -1,6 +1,5 @@
-import { assignedChildren } from './content';
-import Symbol from './Symbol';
-import symbols from './symbols';
+import Symbol from './Symbol.js';
+import symbols from './symbols.js';
 
 
 // Symbols for private data members on an element.

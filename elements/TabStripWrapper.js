@@ -1,6 +1,6 @@
-import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin';
-import symbols from '../mixins/symbols';
-import TabStrip from './TabStrip'; // jshint ignore:line
+import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
+import symbols from '../mixins/symbols.js';
+import TabStrip from './TabStrip.js'; // jshint ignore:line
 
 
 // Used to assign unique IDs to tabs for ARIA purposes.

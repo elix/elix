@@ -4,19 +4,19 @@
  */
 
 
-import AttributeMarshallingMixin from '../../mixins/AttributeMarshallingMixin';
-import ClickSelectionMixin from '../../mixins/ClickSelectionMixin';
-import ContentItemsMixin from '../../mixins/ContentItemsMixin';
-import DirectionSelectionMixin from '../../mixins/DirectionSelectionMixin';
-import KeyboardDirectionMixin from '../../mixins/KeyboardDirectionMixin';
-import KeyboardMixin from '../../mixins/KeyboardMixin';
-import KeyboardPagedSelectionMixin from '../../mixins/KeyboardPagedSelectionMixin';
-import KeyboardPrefixSelectionMixin from '../../mixins/KeyboardPrefixSelectionMixin';
-import SelectionAriaMixin from '../../mixins/SelectionAriaMixin';
-import SelectionInViewMixin from '../../mixins/SelectionInViewMixin';
-import ShadowTemplateMixin from '../../mixins/ShadowTemplateMixin';
-import SingleSelectionMixin from '../../mixins/SingleSelectionMixin';
-import symbols from '../../mixins/symbols';
+import AttributeMarshallingMixin from '../../mixins/AttributeMarshallingMixin.js';
+import ClickSelectionMixin from '../../mixins/ClickSelectionMixin.js';
+import ContentItemsMixin from '../../mixins/ContentItemsMixin.js';
+import DirectionSelectionMixin from '../../mixins/DirectionSelectionMixin.js';
+import KeyboardDirectionMixin from '../../mixins/KeyboardDirectionMixin.js';
+import KeyboardMixin from '../../mixins/KeyboardMixin.js';
+import KeyboardPagedSelectionMixin from '../../mixins/KeyboardPagedSelectionMixin.js';
+import KeyboardPrefixSelectionMixin from '../../mixins/KeyboardPrefixSelectionMixin.js';
+import SelectionAriaMixin from '../../mixins/SelectionAriaMixin.js';
+import SelectionInViewMixin from '../../mixins/SelectionInViewMixin.js';
+import ShadowTemplateMixin from '../../mixins/ShadowTemplateMixin.js';
+import SingleSelectionMixin from '../../mixins/SingleSelectionMixin.js';
+import symbols from '../../mixins/symbols.js';
 
 
 // We want to apply a number of mixin functions to HTMLElement.

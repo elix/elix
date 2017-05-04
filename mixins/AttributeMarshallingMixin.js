@@ -1,4 +1,4 @@
-import * as attributes from './attributes';
+import * as attributes from './attributes.js';
 
 
 // Memoized maps of attribute to property names and vice versa.

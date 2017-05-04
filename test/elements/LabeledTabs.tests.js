@@ -1,6 +1,6 @@
 import { assert } from 'chai';
-import flushPolyfills from '../flushPolyfills';
-import LabeledTabs from '../../elements/LabeledTabs'; // jshint ignore:line
+import flushPolyfills from '../flushPolyfills.js';
+import LabeledTabs from '../../elements/LabeledTabs.js'; // jshint ignore:line
 
 
 describe("LabeledTabs", () => {

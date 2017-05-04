@@ -1,5 +1,5 @@
-import Modes from './Modes';
-import TabStripWrapper from './TabStripWrapper';
+import Modes from './Modes.js';
+import TabStripWrapper from './TabStripWrapper.js';
 
 
 /**

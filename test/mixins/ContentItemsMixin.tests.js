@@ -1,6 +1,6 @@
 import { assert } from 'chai';
-import ContentItemsMixin from '../../mixins//ContentItemsMixin';
-import symbols from '../../mixins//symbols';
+import ContentItemsMixin from '../../mixins//ContentItemsMixin.js';
+import symbols from '../../mixins//symbols.js';
 
 
 class ContentItemsTest extends ContentItemsMixin(HTMLElement) {

@@ -1,14 +1,14 @@
-import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin';
-import ClickSelectionMixin from '../mixins/ClickSelectionMixin';
-import ContentItemsMixin from '../mixins/ContentItemsMixin';
-import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin';
-import DirectionSelectionMixin from '../mixins/DirectionSelectionMixin';
-import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin';
-import KeyboardMixin from '../mixins/KeyboardMixin';
-import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin';
-import SingleSelectionMixin from '../mixins/SingleSelectionMixin';
-import Symbol from '../mixins/Symbol';
-import symbols from '../mixins/symbols';
+import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
+import ClickSelectionMixin from '../mixins/ClickSelectionMixin.js';
+import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
+import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
+import DirectionSelectionMixin from '../mixins/DirectionSelectionMixin.js';
+import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin.js';
+import KeyboardMixin from '../mixins/KeyboardMixin.js';
+import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
+import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
+import Symbol from '../mixins/Symbol.js';
+import symbols from '../mixins/symbols.js';
 
 
 // Symbols for private data members on an element.

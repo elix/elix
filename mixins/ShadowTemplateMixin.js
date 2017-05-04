@@ -1,4 +1,4 @@
-import symbols from './symbols';
+import symbols from './symbols.js';
 
 
 // A cache of processed templates.

@@ -1,5 +1,5 @@
-import SingleSelectionMixin from '../../mixins/SingleSelectionMixin';
-import symbols from '../../mixins/symbols';
+import SingleSelectionMixin from '../../mixins/SingleSelectionMixin.js';
+import symbols from '../../mixins/symbols.js';
 
 
 /*
@@ -7,7 +7,7 @@ import symbols from '../../mixins/symbols';
  *
  * For a more complete demo using SingleSelectionMixin, see the ListBox demo.
  */
-export default class SingleSelectionDemo extends SingleSelectionMixin(HTMLElement) {
+class SingleSelectionDemo extends SingleSelectionMixin(HTMLElement) {
 
   constructor() {
     super();
@@ -45,3 +45,4 @@ export default class SingleSelectionDemo extends SingleSelectionMixin(HTMLElemen
 
 
 customElements.define('single-selection-demo', SingleSelectionDemo);
+export default SingleSelectionDemo;

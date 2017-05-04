@@ -1,7 +1,7 @@
 import { assert } from 'chai';
-import flushPolyfills from '../../test/flushPolyfills';
-import SingleSelectionMixin from '../../mixins//SingleSelectionMixin';
-import symbols from '../../mixins//symbols';
+import flushPolyfills from '../../test/flushPolyfills.js';
+import SingleSelectionMixin from '../../mixins//SingleSelectionMixin.js';
+import symbols from '../../mixins//symbols.js';
 
 
 class SingleSelectionTest extends SingleSelectionMixin(HTMLElement) {

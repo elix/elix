@@ -1,6 +1,6 @@
 import { assert } from 'chai';
-import AttributeMarshallingMixin from '../../mixins/AttributeMarshallingMixin';
-import flushPolyfills from '../flushPolyfills';
+import AttributeMarshallingMixin from '../../mixins/AttributeMarshallingMixin.js';
+import flushPolyfills from '../flushPolyfills.js';
 
 
 let defaultPropertyValue;

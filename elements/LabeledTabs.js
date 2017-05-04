@@ -1,7 +1,7 @@
-import LabeledTabButton from './LabeledTabButton';
-import renderArrayAsElements from '../mixins/renderArrayAsElements';
-import Tabs from './Tabs';
-import symbols from '../mixins/symbols';
+import LabeledTabButton from './LabeledTabButton.js';
+import renderArrayAsElements from '../mixins/renderArrayAsElements.js';
+import Tabs from './Tabs.js';
+import symbols from '../mixins/symbols.js';
 
 
 /**

@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import renderArrayAsElements from '../../mixins/renderArrayAsElements';
+import renderArrayAsElements from '../../mixins/renderArrayAsElements.js';
 
 
 function renderItemAsDiv(item, element) {

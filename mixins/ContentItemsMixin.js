@@ -1,6 +1,6 @@
-import * as content from './content';
-import Symbol from './Symbol';
-import symbols from './symbols';
+import * as content from './content.js';
+import Symbol from './Symbol.js';
+import symbols from './symbols.js';
 
 
 // Symbols for private data members on an element.

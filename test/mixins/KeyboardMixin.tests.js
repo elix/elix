@@ -1,8 +1,8 @@
 import { assert } from 'chai';
-import flushPolyfills from '../../test/flushPolyfills';
-import KeyboardMixin from '../../mixins//KeyboardMixin';
-import * as mockInteractions from '../../test/mockInteractions';
-import symbols from '../../mixins//symbols';
+import flushPolyfills from '../../test/flushPolyfills.js';
+import KeyboardMixin from '../../mixins//KeyboardMixin.js';
+import * as mockInteractions from '../../test/mockInteractions.js';
+import symbols from '../../mixins//symbols.js';
 
 
 class KeyboardTest extends KeyboardMixin(HTMLElement) {}

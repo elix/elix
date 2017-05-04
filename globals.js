@@ -7,40 +7,41 @@
 
 
 // Import mixins
-import AttributeMarshallingMixin from './mixins/AttributeMarshallingMixin';
-import * as attributes from './mixins/attributes';
-import ClickSelectionMixin from './mixins/ClickSelectionMixin';
-import constants from './mixins/constants';
-import * as content from './mixins/content';
-import ContentItemsMixin from './mixins/ContentItemsMixin';
-import defaultScrollTarget from './mixins/defaultScrollTarget';
-import DefaultSlotContentMixin from './mixins/DefaultSlotContentMixin';
-import DirectionSelectionMixin from './mixins/DirectionSelectionMixin';
-import KeyboardDirectionMixin from './mixins/KeyboardDirectionMixin';
-import KeyboardMixin from './mixins/KeyboardMixin';
-import KeyboardPagedSelectionMixin from './mixins/KeyboardPagedSelectionMixin';
-import KeyboardPrefixSelectionMixin from './mixins/KeyboardPrefixSelectionMixin';
-import renderArrayAsElements from './mixins/renderArrayAsElements';
-import SelectionAriaMixin from './mixins/SelectionAriaMixin';
-import SelectionInViewMixin from './mixins/SelectionInViewMixin';
-import ShadowReferencesMixin from './mixins/ShadowReferencesMixin';
-import ShadowTemplateMixin from './mixins/ShadowTemplateMixin';
-import SingleSelectionMixin from './mixins/SingleSelectionMixin';
-import Symbol from './mixins/Symbol';
-import symbols from './mixins/symbols';
+import AttributeMarshallingMixin from './mixins/AttributeMarshallingMixin.js';
+import * as attributes from './mixins/attributes.js';
+import ClickSelectionMixin from './mixins/ClickSelectionMixin.js';
+import constants from './mixins/constants.js';
+import * as content from './mixins/content.js';
+import ContentItemsMixin from './mixins/ContentItemsMixin.js';
+import defaultScrollTarget from './mixins/defaultScrollTarget.js';
+import DefaultSlotContentMixin from './mixins/DefaultSlotContentMixin.js';
+import DirectionSelectionMixin from './mixins/DirectionSelectionMixin.js';
+import KeyboardDirectionMixin from './mixins/KeyboardDirectionMixin.js';
+import KeyboardMixin from './mixins/KeyboardMixin.js';
+import KeyboardPagedSelectionMixin from './mixins/KeyboardPagedSelectionMixin.js';
+import KeyboardPrefixSelectionMixin from './mixins/KeyboardPrefixSelectionMixin.js';
+import NotificationDialog from './elements/NotificationDialog.js';
+import renderArrayAsElements from './mixins/renderArrayAsElements.js';
+import SelectionAriaMixin from './mixins/SelectionAriaMixin.js';
+import SelectionInViewMixin from './mixins/SelectionInViewMixin.js';
+import ShadowReferencesMixin from './mixins/ShadowReferencesMixin.js';
+import ShadowTemplateMixin from './mixins/ShadowTemplateMixin.js';
+import SingleSelectionMixin from './mixins/SingleSelectionMixin.js';
+import Symbol from './mixins/Symbol.js';
+import symbols from './mixins/symbols.js';
 
 // Import elements
-import LabeledTabButton from './elements/LabeledTabButton';
-import LabeledTabs from './elements/LabeledTabs';
-import ListBox from './elements/ListBox';
-import Modes from './elements/Modes';
-import Tabs from './elements/Tabs';
-import TabStrip from './elements/TabStrip';
-import TabStripWrapper from './elements/TabStripWrapper';
+import LabeledTabButton from './elements/LabeledTabButton.js';
+import LabeledTabs from './elements/LabeledTabs.js';
+import ListBox from './elements/ListBox.js';
+import Modes from './elements/Modes.js';
+import Tabs from './elements/Tabs.js';
+import TabStrip from './elements/TabStrip.js';
+import TabStripWrapper from './elements/TabStripWrapper.js';
 
 
-// Create (or add to) Elix global, and add in all mixins and elements.
-window.Elix = Object.assign(window.Elix || {}, {
+// The complete list of all mixins and elements.
+const Elix = {
   AttributeMarshallingMixin,
   attributes,
   ClickSelectionMixin,
@@ -69,4 +70,11 @@ window.Elix = Object.assign(window.Elix || {}, {
   Tabs,
   TabStrip,
   TabStripWrapper
-});
+};
+
+
+// Create (or add to) Elix global.
+window.Elix = Object.assign(window.Elix || {}, Elix);
+
+
+export default Elix;

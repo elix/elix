@@ -1,7 +1,7 @@
 import { assert } from 'chai';
-import flushPolyfills from '../flushPolyfills';
-import symbols from '../../mixins/symbols';
-import ShadowReferencesMixin from '../../mixins/ShadowReferencesMixin';
+import flushPolyfills from '../flushPolyfills.js';
+import symbols from '../../mixins/symbols.js';
+import ShadowReferencesMixin from '../../mixins/ShadowReferencesMixin.js';
 
 
 /* Element with shadow elements that have `id` attributes. */

@@ -1,9 +1,9 @@
-import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin';
-import ContentItemsMixin from '../mixins/ContentItemsMixin';
-import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin';
-import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin';
-import SingleSelectionMixin from '../mixins/SingleSelectionMixin';
-import symbols from '../mixins/symbols';
+import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
+import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
+import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
+import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
+import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
+import symbols from '../mixins/symbols.js';
 
 
 const mixins = [

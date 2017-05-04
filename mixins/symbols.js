@@ -1,4 +1,4 @@
-import Symbol from './Symbol';
+import Symbol from './Symbol.js';
 
 
 /**

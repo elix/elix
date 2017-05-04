@@ -1,6 +1,6 @@
 import { assert } from 'chai';
-import SingleSelectionMixin from '../../mixins/SingleSelectionMixin';
-import SelectedItemTextValueMixin from '../../mixins/SelectedItemTextValueMixin';
+import SingleSelectionMixin from '../../mixins/SingleSelectionMixin.js';
+import SelectedItemTextValueMixin from '../../mixins/SelectedItemTextValueMixin.js';
 
 
 /* Element that exposes a value property */
