@@ -19,7 +19,7 @@ function buildBuildTargets(options) {
   else {
     buildTargets = {
       './build/tests.js': {
-        globItems: ['./test/**/*.js'],
+        globItems: ['./test/tests.js'],
         includes: [/mixins/, /elements/, /test/]
       },
       './build/elix.js': {
@@ -27,7 +27,7 @@ function buildBuildTargets(options) {
         includes: [/\//]
       },
       './build/demos.js': {
-        globItems: ['./globals.js', './demos/src/*.js'],
+        globItems: ['./demos/demos.js'],
         includes: [/\//, /demos/]
       }
     };
