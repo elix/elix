@@ -45,3 +45,7 @@ label {
   display: flex;
   height: 100%;
 }
+
+:not(:defined) {
+  display: none;
+}

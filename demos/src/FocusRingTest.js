@@ -1,6 +1,6 @@
-import FocusRingMixin from '../../mixins/FocusRingMixin.js';
-import ShadowTemplateMixin from '../../mixins/ShadowTemplateMixin.js';
-import symbols from '../../mixins/symbols.js';
+import FocusRingMixin from '../../mixins/FocusRingMixin';
+import ShadowTemplateMixin from '../../mixins/ShadowTemplateMixin';
+import symbols from '../../mixins/symbols';
 
 
 class FocusRingTest extends FocusRingMixin(ShadowTemplateMixin(HTMLElement)) {
@@ -37,4 +37,7 @@ class FocusRingTest extends FocusRingMixin(ShadowTemplateMixin(HTMLElement)) {
   }
 
 }
+
+
 customElements.define('focus-ring-test', FocusRingTest);
+export default FocusRingTest;

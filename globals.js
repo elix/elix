@@ -20,7 +20,6 @@ import KeyboardDirectionMixin from './mixins/KeyboardDirectionMixin.js';
 import KeyboardMixin from './mixins/KeyboardMixin.js';
 import KeyboardPagedSelectionMixin from './mixins/KeyboardPagedSelectionMixin.js';
 import KeyboardPrefixSelectionMixin from './mixins/KeyboardPrefixSelectionMixin.js';
-import NotificationDialog from './elements/NotificationDialog.js';
 import renderArrayAsElements from './mixins/renderArrayAsElements.js';
 import SelectionAriaMixin from './mixins/SelectionAriaMixin.js';
 import SelectionInViewMixin from './mixins/SelectionInViewMixin.js';
@@ -55,6 +54,10 @@ const Elix = {
   KeyboardMixin,
   KeyboardPagedSelectionMixin,
   KeyboardPrefixSelectionMixin,
+  LabeledTabButton,
+  LabeledTabs,
+  ListBox,
+  Modes,
   renderArrayAsElements,
   SelectionAriaMixin,
   SelectionInViewMixin,
@@ -63,10 +66,6 @@ const Elix = {
   SingleSelectionMixin,
   Symbol,
   symbols,
-  LabeledTabButton,
-  LabeledTabs,
-  ListBox,
-  Modes,
   Tabs,
   TabStrip,
   TabStripWrapper
