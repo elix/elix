@@ -16,10 +16,10 @@ export default function OpenCloseTransitionMixin(base) {
 
         // Set up to handle a transitionend event once.
         this[transitionendListener] = (event) => {
-          this.$.popupContent.removeEventListener('transitionend', this[transitionendListener]);
+          this.$.overlayContent.removeEventListener('transitionend', this[transitionendListener]);
           resolve();
         };
-        this.$.popupContent.addEventListener('transitionend', this[transitionendListener]);
+        this.$.overlayContent.addEventListener('transitionend', this[transitionendListener]);
 
         // Apply the transition.
         requestAnimationFrame(() => {
@@ -29,9 +29,22 @@ export default function OpenCloseTransitionMixin(base) {
       return base.then(() => animationPromise);
     }
 
+    get opened() {
+      return super.opened;
+    }
+    set opened(opened) {
+      const parsedOpened = String(opened) === 'true';
+      const changed = parsedOpened !== this.opened;
+      if ('opened' in base.prototype) { super.opened = parsedOpened; }
+      if (changed) {
+        const transition = parsedOpened ? 'opening' : 'closing';
+        this[symbols.transition](transition);
+      }
+    }
+    
     [symbols.skipTransition](transition) {
       if (super[symbols.skipTransition]) { super[symbols.skipTransition](transition); }
-      this.$.popupContent.removeEventListener('transitionend', this[transitionendListener]);
+      this.$.overlayContent.removeEventListener('transitionend', this[transitionendListener]);
     }
   }
 

@@ -1,13 +1,29 @@
-import Dialog from './Dialog.js';
+import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
+import DialogWrapper from './DialogWrapper.js';
+import KeyboardMixin from '../mixins/KeyboardMixin.js';
+import OpenCloseMixin from '../mixins/OpenCloseMixin.js';
 import renderArrayAsElements from '../mixins/renderArrayAsElements.js';
-import Symbol from '../mixins/Symbol.js';
+import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
+import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import symbols from '../mixins/symbols.js';
 
 
 const choices = Symbol('choices');
 
 
-class NotificationDialog extends Dialog {
+const mixins = [
+  AttributeMarshallingMixin,
+  KeyboardMixin,
+  OpenCloseMixin,
+  ShadowReferencesMixin,
+  ShadowTemplateMixin
+];
+
+// Apply the above mixins to HTMLElement.
+const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
+
+
+class NotificationDialogCore extends base {
 
   [symbols.shadowCreated]() {
     if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
@@ -42,8 +58,7 @@ class NotificationDialog extends Dialog {
   }
 
   get [symbols.template]() {
-    const baseTemplate = super[symbols.template];
-    const injectTemplate = `
+    return `
       <style>
         #container {
           padding: 1em;
@@ -69,10 +84,12 @@ class NotificationDialog extends Dialog {
         </div>
       </div>
     `;
-    return baseTemplate.replace(`<slot></slot>`, injectTemplate);
   }
 
 }
+
+
+class NotificationDialog extends DialogWrapper(NotificationDialogCore) {}
 
 
 customElements.define('elix-notification-dialog', NotificationDialog);

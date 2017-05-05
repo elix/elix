@@ -6,7 +6,7 @@ const resolveOpenSymbol = Symbol('resolveOpen');
 const previousFocusedElementSymbol = Symbol('previousFocusedElement');
 
 
-export default function OverlayMixin(base) {
+export default function OverlayWrapper(base) {
 
   // The class prototype added by the mixin.
   class Overlay extends base {
@@ -21,10 +21,10 @@ export default function OverlayMixin(base) {
       }
     }
 
-    [symbols.applyTransition](transition) {
-      // Default transition does nothing.
-      return super[symbols.applyTransition] ? super[symbols.applyTransition](transition) : Promise.resolve();
-    }
+    // [symbols.applyTransition](transition) {
+    //   // Default transition does nothing.
+    //   return super[symbols.applyTransition] ? super[symbols.applyTransition](transition) : Promise.resolve();
+    // }
 
     [symbols.beforeTransition](transition) {
       if (super[symbols.beforeTransition]) { super[symbols.beforeTransition](transition); }
@@ -79,6 +79,23 @@ export default function OverlayMixin(base) {
       return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
     }
 
+    get opened() {
+      return super.opened;
+    }
+    set opened(opened) {
+      const parsedOpened = String(opened) === 'true';
+      const changed = parsedOpened !== this.opened;
+      if ('opened' in base.prototype) { super.opened = parsedOpened; }
+      if (changed) {
+        if (!this[symbols.applyTransition]) {
+          // Do synchronous open/close.
+          const transition = parsedOpened ? 'opening' : 'closing';
+          this[symbols.beforeTransition](transition);
+          this[symbols.afterTransition](transition);
+        }
+      }
+    }
+
     show() {
       document.body.appendChild(this);
       this.open();
@@ -89,6 +106,10 @@ export default function OverlayMixin(base) {
     }
 
     get [symbols.template]() {
+      let baseTemplate = super[symbols.template] || '';
+      if (baseTemplate instanceof HTMLTemplateElement) {
+        baseTemplate = baseTemplate.innerHTML; // Downgrade to string.
+      }
       return `
         <style>
           :host {
@@ -114,13 +135,13 @@ export default function OverlayMixin(base) {
             width: 100%;
           }
 
-          #popupContent {
+          #overlayContent {
             position: relative;
           }
         </style>
         <div id="backdrop" role="none"></div>
-        <div id="popupContent" role="none">
-          <slot></slot>
+        <div id="overlayContent" role="none">
+          ${baseTemplate}
         </div>
       `;
     }

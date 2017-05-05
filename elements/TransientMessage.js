@@ -57,14 +57,14 @@ class TransientMessage extends OpenCloseTransitionMixin(Popup) {
           background: none;
         }
 
-        #popupContent {
+        #overlayContent {
           margin-bottom: 1em;
           transform: translateY(100%);
           transition: transform 0.25s ease-in;
           will-change: transform;
         }
 
-        :host(.opened) #popupContent {
+        :host(.opened) #overlayContent {
           transform: translateY(0);
           transition-timing-function: ease-out;
         }

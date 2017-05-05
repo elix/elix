@@ -48,21 +48,13 @@ export default function OpenCloseMixin(base) {
       return this[openedSymbol];
     }
     set opened(opened) {
-      const previousOpened = this[openedSymbol];
       const parsedOpened = String(opened) === 'true';
+      const changed = parsedOpened !== this[openedSymbol];
       this[openedSymbol] = parsedOpened;
       if ('opened' in base.prototype) { super.opened = parsedOpened; }
-      if (parsedOpened !== previousOpened) {
-        const transition = parsedOpened ? 'opening' : 'closing';
-        const promise = super[symbols.transition] ?
-          super[symbols.transition](transition) :
-          Promise.resolve();
-        if (this[symbols.raiseChangeEvents]) {
-          promise.then(() => {
-            const event = new CustomEvent('opened-changed');
-            this.dispatchEvent(event);
-          });
-        }
+      if (changed && this[symbols.raiseChangeEvents]) {
+        const event = new CustomEvent('opened-changed');
+        this.dispatchEvent(event);
       }
     }
 

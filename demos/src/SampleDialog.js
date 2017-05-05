@@ -1,8 +1,25 @@
-import Dialog from '../../elements/Dialog.js';
+import AttributeMarshallingMixin from '../../mixins/AttributeMarshallingMixin.js';
+import DialogWrapper from '../../elements/DialogWrapper.js';
+import KeyboardMixin from '../../mixins/KeyboardMixin.js';
+import OpenCloseMixin from '../../mixins/OpenCloseMixin.js';
+import ShadowReferencesMixin from '../../mixins/ShadowReferencesMixin.js';
+import ShadowTemplateMixin from '../../mixins/ShadowTemplateMixin.js';
 import symbols from '../../mixins/symbols.js';
 
 
-class SampleDialog extends Dialog {
+const mixins = [
+  AttributeMarshallingMixin,
+  KeyboardMixin,
+  OpenCloseMixin,
+  ShadowReferencesMixin,
+  ShadowTemplateMixin
+];
+
+// Apply the above mixins to HTMLElement.
+const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
+
+
+class SampleDialogCore extends base {
 
   [symbols.shadowCreated]() {
     if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
@@ -12,8 +29,7 @@ class SampleDialog extends Dialog {
   }
 
   get [symbols.template]() {
-    const baseTemplate = super[symbols.template];
-    const injectTemplate = `
+    return `
       <style>
         #container {
           padding: 1em;
@@ -35,10 +51,12 @@ class SampleDialog extends Dialog {
         </div>
       </div>
     `;
-    return baseTemplate.replace(`<slot></slot>`, injectTemplate);
   }
 
 }
+
+
+class SampleDialog extends DialogWrapper(SampleDialogCore) {}
 
 
 customElements.define('sample-dialog', SampleDialog);

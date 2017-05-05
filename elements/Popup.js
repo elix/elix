@@ -2,7 +2,7 @@ import AsyncTransitionMixin from '../mixins/AsyncTransitionMixin.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import OpenCloseMixin from '../mixins/OpenCloseMixin.js';
-import OverlayMixin from '../mixins/OverlayMixin.js';
+import OverlayWrapper from './OverlayWrapper.js';
 import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
 import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import Symbol from '../mixins/Symbol.js';
@@ -19,7 +19,7 @@ const mixins = [
   AttributeMarshallingMixin,
   KeyboardMixin,
   OpenCloseMixin,
-  OverlayMixin,
+  OverlayWrapper,
   ShadowReferencesMixin,
   ShadowTemplateMixin
 ];
@@ -84,7 +84,7 @@ class Popup extends base {
           justify-content: center;
         }
 
-        #popupContent {
+        #overlayContent {
           background: white;
           border: 1px solid rgba(0, 0, 0, 0.2);
           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);

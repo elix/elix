@@ -24,7 +24,7 @@ import KeyboardPrefixSelectionMixin from './mixins/KeyboardPrefixSelectionMixin.
 import NotificationDialog from './elements/NotificationDialog.js';
 import OpenCloseMixin from './mixins/OpenCloseMixin.js';
 import OpenCloseTransitionMixin from './mixins/OpenCloseTransitionMixin.js';
-import OverlayMixin from './mixins/OverlayMixin.js';
+import OverlayWrapper from './elements/OverlayWrapper.js';
 import renderArrayAsElements from './mixins/renderArrayAsElements.js';
 import SelectionAriaMixin from './mixins/SelectionAriaMixin.js';
 import SelectionInViewMixin from './mixins/SelectionInViewMixin.js';
@@ -35,7 +35,7 @@ import Symbol from './mixins/Symbol.js';
 import symbols from './mixins/symbols.js';
 
 // Import elements
-import Dialog from './elements/Dialog.js';
+import DialogWrapper from './elements/DialogWrapper.js';
 import Drawer from './elements/Drawer.js';
 import LabeledTabButton from './elements/LabeledTabButton.js';
 import LabeledTabs from './elements/LabeledTabs.js';
@@ -59,7 +59,7 @@ const Elix = {
   ContentItemsMixin,
   defaultScrollTarget,
   DefaultSlotContentMixin,
-  Dialog,
+  DialogWrapper,
   DirectionSelectionMixin,
   Drawer,
   KeyboardDirectionMixin,
@@ -73,7 +73,7 @@ const Elix = {
   NotificationDialog,
   OpenCloseMixin,
   OpenCloseTransitionMixin,
-  OverlayMixin,
+  OverlayWrapper,
   Popup,
   renderArrayAsElements,
   SelectionAriaMixin,
