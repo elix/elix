@@ -1,3 +1,4 @@
+import AsyncTransitionMixin from '../mixins/AsyncTransitionMixin.js';
 import OpenCloseTransitionMixin from '../mixins/OpenCloseTransitionMixin.js';
 import Popup from './Popup.js';
 import symbols from '../mixins/symbols.js';
@@ -7,7 +8,16 @@ const timeout = Symbol('timeout');
 const transitionendListener = Symbol('transitionendListener');
 
 
-class TransientMessage extends OpenCloseTransitionMixin(Popup) {
+const mixins = [
+  AsyncTransitionMixin,
+  OpenCloseTransitionMixin,
+];
+
+// Apply the above mixins to Popup.
+const base = mixins.reduce((cls, mixin) => mixin(cls), Popup);
+
+
+class TransientMessage extends base {
 
   [symbols.afterTransition](transition) {
     if (super[symbols.afterTransition]) { super[symbols.afterTransition](transition); }
@@ -45,7 +55,7 @@ class TransientMessage extends OpenCloseTransitionMixin(Popup) {
 
   get [symbols.template]() {
     const baseTemplate = super[symbols.template];
-    const injectTemplate = `
+    const contentTemplate = `
       <style>
         :host {
           align-items: center;
@@ -71,7 +81,7 @@ class TransientMessage extends OpenCloseTransitionMixin(Popup) {
       </style>
       <slot></slot>
     `;
-    return baseTemplate.replace(`<slot></slot>`, injectTemplate);
+    return baseTemplate.replace(`<slot></slot>`, contentTemplate);
   }
 
 }

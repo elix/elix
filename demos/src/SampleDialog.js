@@ -6,38 +6,27 @@ class SampleDialog extends Dialog {
 
   [symbols.shadowCreated]() {
     if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
-    this.$.okButton.addEventListener('click', () => {
+    this.$.overlayContent.addEventListener('click', () => {
       this.close('OK');
     });
   }
 
-  get [Dialog.contentTemplateKey]() {
-    let baseTemplate = super[Dialog.contentTemplateKey];
+  get [symbols.template]() {
+    let baseTemplate = super[symbols.template];
     if (baseTemplate instanceof HTMLTemplateElement) {
       baseTemplate = baseTemplate.innerHTML; // Downgrade to string.
     }
-    return `
+    const contentTemplate = `
       <style>
-        #container {
+        #message {
           padding: 1em;
         }
-
-        #buttonContainer {
-          margin-top: 1em;
-        }
-
-        button {
-          font-family: inherit;
-          font-size: inherit;
-        }
       </style>
-      <div id="container">
-        ${baseTemplate}
-        <div id="buttonContainer">
-          <button id="okButton">OK</button>
-        </div>
+      <div id="message">
+        Tap/click here or press Esc to cancel.
       </div>
     `;
+    return baseTemplate.replace(`<slot></slot>`, contentTemplate);
   }
 
 }

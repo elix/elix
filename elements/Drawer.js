@@ -1,29 +1,19 @@
 import AsyncTransitionMixin from '../mixins/AsyncTransitionMixin.js';
-import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
-import DialogWrapper from './DialogWrapper.js';
-import KeyboardMixin from '../mixins/KeyboardMixin.js';
-import OpenCloseMixin from '../mixins/OpenCloseMixin.js';
+import Dialog from './Dialog.js';
 import OpenCloseTransitionMixin from '../mixins/OpenCloseTransitionMixin.js';
-import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
-import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import symbols from '../mixins/symbols.js';
 
 
 const mixins = [
   AsyncTransitionMixin,
-  AttributeMarshallingMixin,
-  KeyboardMixin,
-  OpenCloseMixin,
   OpenCloseTransitionMixin,
-  ShadowReferencesMixin,
-  ShadowTemplateMixin
 ];
 
-// Apply the above mixins to HTMLElement.
-const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
+// Apply the above mixins to Dialog.
+const base = mixins.reduce((cls, mixin) => mixin(cls), Dialog);
 
 
-class DrawerPanelCore extends base {
+class Drawer extends base {
 
   [symbols.shadowCreated]() {
     if (super[symbols.shadowCreated]) { super[symbols.shadowCreated]() }
@@ -34,7 +24,11 @@ class DrawerPanelCore extends base {
   }
 
   get [symbols.template]() {
-    return `
+    let baseTemplate = super[symbols.template];
+    if (baseTemplate instanceof HTMLTemplateElement) {
+      baseTemplate = baseTemplate.innerHTML; // Downgrade to string.
+    }
+    const contentTemplate = `
       <style>
         :host {
           align-items: stretch;
@@ -64,13 +58,11 @@ class DrawerPanelCore extends base {
       </style>
       <slot></slot>
     `;
+    return baseTemplate.replace(`<slot></slot>`, contentTemplate);
   }
 
 }
 
 
-class DrawerPanel extends DialogWrapper(DrawerPanelCore) {}
-
-
-customElements.define('elix-drawer', DrawerPanel);
-export default DrawerPanel;
+customElements.define('elix-drawer', Drawer);
+export default Drawer;

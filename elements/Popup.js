@@ -1,4 +1,3 @@
-import AsyncTransitionMixin from '../mixins/AsyncTransitionMixin.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import OpenCloseMixin from '../mixins/OpenCloseMixin.js';
@@ -15,7 +14,6 @@ const wrappingFocusSymbol = Symbol('wrappingFocus');
 
 
 const mixins = [
-  AsyncTransitionMixin,
   AttributeMarshallingMixin,
   KeyboardMixin,
   OpenCloseMixin,
@@ -28,7 +26,7 @@ const mixins = [
 const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
 
 
-class Popup extends base {
+class PopupCore extends base {
 
   connectedCallback() {
     if (super.connectedCallback) { super.connectedCallback(); }
@@ -74,8 +72,7 @@ class Popup extends base {
   }
 
   get [symbols.template]() {
-    const baseTemplate = super[symbols.template];
-    const injectTemplate = `
+    return `
       <style>
         :host {
           align-items: center;
@@ -92,10 +89,12 @@ class Popup extends base {
       </style>
       <slot></slot>
     `;
-    return baseTemplate.replace(`<slot></slot>`, injectTemplate);
   }
 
 }
+
+
+class Popup extends OverlayWrapper(PopupCore) {}
 
 
 customElements.define('elix-popup', Popup);

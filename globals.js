@@ -35,7 +35,7 @@ import Symbol from './mixins/Symbol.js';
 import symbols from './mixins/symbols.js';
 
 // Import elements
-import DialogWrapper from './elements/DialogWrapper.js';
+import Dialog from './elements/Dialog.js';
 import Drawer from './elements/Drawer.js';
 import LabeledTabButton from './elements/LabeledTabButton.js';
 import LabeledTabs from './elements/LabeledTabs.js';
@@ -59,7 +59,7 @@ const Elix = {
   ContentItemsMixin,
   defaultScrollTarget,
   DefaultSlotContentMixin,
-  DialogWrapper,
+  Dialog,
   DirectionSelectionMixin,
   Drawer,
   KeyboardDirectionMixin,
