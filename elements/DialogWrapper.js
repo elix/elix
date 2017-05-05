@@ -80,7 +80,7 @@ export default function DialogWrapper(base) {
     }
 
     get [symbols.template]() {
-      let baseTemplate = super[symbols.template] || '';
+      let baseTemplate = super[symbols.template] || '<slot></slot>';
       if (baseTemplate instanceof HTMLTemplateElement) {
         baseTemplate = baseTemplate.innerHTML; // Downgrade to string.
       }

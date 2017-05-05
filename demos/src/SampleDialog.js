@@ -1,25 +1,8 @@
-import AttributeMarshallingMixin from '../../mixins/AttributeMarshallingMixin.js';
-import DialogWrapper from '../../elements/DialogWrapper.js';
-import KeyboardMixin from '../../mixins/KeyboardMixin.js';
-import OpenCloseMixin from '../../mixins/OpenCloseMixin.js';
-import ShadowReferencesMixin from '../../mixins/ShadowReferencesMixin.js';
-import ShadowTemplateMixin from '../../mixins/ShadowTemplateMixin.js';
+import Dialog from '../../elements/Dialog.js';
 import symbols from '../../mixins/symbols.js';
 
 
-const mixins = [
-  AttributeMarshallingMixin,
-  KeyboardMixin,
-  OpenCloseMixin,
-  ShadowReferencesMixin,
-  ShadowTemplateMixin
-];
-
-// Apply the above mixins to HTMLElement.
-const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
-
-
-class SampleDialogCore extends base {
+class SampleDialog extends Dialog {
 
   [symbols.shadowCreated]() {
     if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
@@ -28,7 +11,11 @@ class SampleDialogCore extends base {
     });
   }
 
-  get [symbols.template]() {
+  get [Dialog.contentTemplateKey]() {
+    let baseTemplate = super[Dialog.contentTemplateKey];
+    if (baseTemplate instanceof HTMLTemplateElement) {
+      baseTemplate = baseTemplate.innerHTML; // Downgrade to string.
+    }
     return `
       <style>
         #container {
@@ -45,7 +32,7 @@ class SampleDialogCore extends base {
         }
       </style>
       <div id="container">
-        <slot></slot>
+        ${baseTemplate}
         <div id="buttonContainer">
           <button id="okButton">OK</button>
         </div>
@@ -54,9 +41,6 @@ class SampleDialogCore extends base {
   }
 
 }
-
-
-class SampleDialog extends DialogWrapper(SampleDialogCore) {}
 
 
 customElements.define('sample-dialog', SampleDialog);
