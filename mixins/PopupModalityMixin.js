@@ -6,11 +6,20 @@ import symbols from './symbols.js';
 const closeListenerSymbol = Symbol('closeListener');
 
 
-// Expects: keydown, opened, backdrop, shadowCreated
+// Expects: keydown, opened, shadowCreated
 export default function PopupModalityMixin(base) {
 
   // The class prototype added by the mixin.
   class PopupModality extends base {
+
+    constructor() {
+      super();
+
+      // Implicitly close on any unhandled clicks (inside or outside).
+      this.addEventListener('click', () => {
+        this.close();
+      });
+    }
 
     // Close on Esc key.
     [symbols.keydown](event) {
@@ -35,29 +44,18 @@ export default function PopupModalityMixin(base) {
       if ('opened' in base.prototype) { super.opened = opened; }
       if (changed) {
         if (opened) {
+          // Close on window blur/resize/scroll.
           this[closeListenerSymbol] = () => this.close();
           window.addEventListener('scroll', this[closeListenerSymbol]);
           window.addEventListener('blur', this[closeListenerSymbol]);
           window.addEventListener('resize', this[closeListenerSymbol]);
         } else {
+          // Stop closing on window blur/resize/scroll.
           window.removeEventListener('scroll', this[closeListenerSymbol]);
           window.removeEventListener('blur', this[closeListenerSymbol]);
           window.removeEventListener('resize', this[closeListenerSymbol]);
         }
       }
-    }
-
-    [symbols.shadowCreated]() {
-      if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
-
-      // Implicitly close on background clicks.
-      const backdrop = this.backdrop;
-      if (!backdrop) {
-        console.warn('PopupModalityMixin expects a component to define an "backdrop" property.');
-      }
-      backdrop.addEventListener('click', () => {
-        this.close();
-      });
     }
   }
 

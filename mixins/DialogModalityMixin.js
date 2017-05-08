@@ -42,6 +42,7 @@ export default function DialogModalityMixin(base) {
           this[previousBodyStyleOverflow] = document.body.style.overflow;
           document.body.style.overflow = 'hidden';
         } else {
+          // Restore body's previous degree of scrollability.
           document.body.style.overflow = this[previousBodyStyleOverflow];
           this[previousBodyStyleOverflow] = null;
         }

@@ -24,10 +24,6 @@ const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
 
 class PopupCore extends base {
 
-  get backdrop() {
-    return this.shadowRoot.querySelector('#backdrop');
-  }
-
   connectedCallback() {
     if (super.connectedCallback) { super.connectedCallback(); }
 
