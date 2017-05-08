@@ -1,4 +1,5 @@
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
+import FocusCaptureWrapper from './FocusCaptureWrapper.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import OpenCloseMixin from '../mixins/OpenCloseMixin.js';
 import OverlayWrapper from './OverlayWrapper.js';
@@ -8,7 +9,7 @@ import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
 
 
-const wrappingFocus = Symbol('wrappingFocus');
+// Symbols for private data members on an element.
 const previousBodyStyleOverflow = Symbol('previousBodyStyleOverflow');
 
 
@@ -73,25 +74,6 @@ class DialogCore extends base {
         disableEvent(event);
       }
     });
-
-    this.$.focusCatcher.addEventListener('focus', event => {
-      if (!this[wrappingFocus]) {
-        // Wrap focus back to the dialog.
-        this.focus();
-      }
-    });
-    this.addEventListener('keydown', event => {
-      if (document.activeElement === this &&
-          this.shadowRoot.activeElement === null &&
-          event.keyCode === 9 && event.shiftKey) {
-        // Set focus to focus catcher.
-        // The Shift+Tab keydown event should continue bubbling, and the default
-        // behavior should cause it to end up on the last focusable element.
-        this[wrappingFocus] = true;
-        this.$.focusCatcher.focus();
-        this[wrappingFocus] = false;
-      }
-    });
   }
 
   get [symbols.template]() {
@@ -116,14 +98,13 @@ class DialogCore extends base {
         }
       </style>
       <slot></slot>
-      <div id="focusCatcher" tabindex="0"></div>
     `;
   }
 
 }
 
 
-class Dialog extends OverlayWrapper(DialogCore) {}
+class Dialog extends OverlayWrapper(FocusCaptureWrapper(DialogCore)) {}
 
 
 customElements.define('elix-dialog', Dialog);
