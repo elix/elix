@@ -86,7 +86,7 @@
       const dialog = document.createElement('elix-notification-dialog');
       dialog.textContent = 'Hello, world';
       dialog.choices = dialog.constructor.OK_CANCEL;
-      dialog.show()
+      dialog.open()
       .then(result => {
         console.log(`You picked ${result}`);
       });
@@ -96,7 +96,7 @@
       const dialog = document.createElement('elix-notification-dialog');
       dialog.textContent = 'Hello, world';
       dialog.choices = ['Yes', 'No', 'Cancel'];
-      dialog.show()
+      dialog.open()
       .then(result => {
         console.log(`You picked ${result}`);
       });

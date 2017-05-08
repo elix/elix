@@ -5,6 +5,7 @@ import symbols from './symbols.js';
 
 // Symbols for private data members on an element.
 const openedSymbol = Symbol('opened');
+const resolveOpenSymbol = Symbol('resolveOpen');
 
 
 /**
@@ -32,10 +33,19 @@ export default function OpenCloseMixin(base) {
     /**
      * Close the component.
      *
-     * This is equivalent to setting the `opened` property to false.
+     * This sets the `opened` property to true. If the `close` call was
+     * preceded by an `open` call, then this resolves the promise returned by
+     * `open`.
      */
-    close() {
+    close(result) {
+      if (super.close) { super.close(); }
       this.opened = false;
+      if (this[resolveOpenSymbol]) {
+        // Dialog was invoked with show().
+        const resolve = this[resolveOpenSymbol];
+        this[resolveOpenSymbol] = null;
+        resolve(result);
+      }
     }
 
     /**
@@ -67,10 +77,17 @@ export default function OpenCloseMixin(base) {
     /**
      * Open the component.
      *
-     * This is equivalent to setting the `opened` property to true.
+     * This sets the `opened` property to true, and returns a promise that will
+     * be invoked when a corresponding `close` method call is made. The
+     * resolution of the promise will be whatever parameter was passed to
+     * `close`.
      */
     open() {
       this.opened = true;
+      const promise = new Promise((resolve, reject) => {
+        this[resolveOpenSymbol] = resolve;
+      });
+      return promise;
     }
 
     /**

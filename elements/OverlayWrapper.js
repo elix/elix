@@ -2,7 +2,7 @@ import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
 
 
-const resolveOpenSymbol = Symbol('resolveOpen');
+const appendedToDocumentSymbol = Symbol('appendedToDocumentSymbol');
 const previousFocusedElementSymbol = Symbol('previousFocusedElement');
 
 
@@ -21,11 +21,6 @@ export default function OverlayWrapper(base) {
       }
     }
 
-    // [symbols.applyTransition](transition) {
-    //   // Default transition does nothing.
-    //   return super[symbols.applyTransition] ? super[symbols.applyTransition](transition) : Promise.resolve();
-    // }
-
     [symbols.beforeTransition](transition) {
       if (super[symbols.beforeTransition]) { super[symbols.beforeTransition](transition); }
       switch (transition) {
@@ -42,17 +37,6 @@ export default function OverlayWrapper(base) {
             this[previousFocusedElementSymbol].focus();
           }
           break;
-      }
-    }
-
-    close(result) {
-      if (super.close) { super.close(); }
-      if (this[resolveOpenSymbol]) {
-        // Dialog was invoked with show().
-        const resolve = this[resolveOpenSymbol];
-        this[resolveOpenSymbol] = null;
-        this.parentNode.removeChild(this);
-        resolve(result);
       }
     }
 
@@ -87,22 +71,27 @@ export default function OverlayWrapper(base) {
       const changed = parsedOpened !== this.opened;
       if ('opened' in base.prototype) { super.opened = parsedOpened; }
       if (changed) {
+        if (parsedOpened) {
+          // Opening
+          if (!isElementInDocument(this)) {
+            this[appendedToDocumentSymbol] = true;
+            document.body.appendChild(this);
+          }
+        }
         if (!this[symbols.applyTransition]) {
           // Do synchronous open/close.
           const transition = parsedOpened ? 'opening' : 'closing';
           this[symbols.beforeTransition](transition);
           this[symbols.afterTransition](transition);
         }
+        if (!parsedOpened) {
+          // Closing
+          if (this[appendedToDocumentSymbol]) {
+            this.parentNode.removeChild(this);
+            this[appendedToDocumentSymbol] = false;
+          }
+        }
       }
-    }
-
-    show() {
-      document.body.appendChild(this);
-      this.open();
-      const promise = new Promise((resolve, reject) => {
-        this[resolveOpenSymbol] = resolve;
-      });
-      return promise;
     }
 
     get [symbols.template]() {
@@ -149,6 +138,20 @@ export default function OverlayWrapper(base) {
 
   return Overlay;
 
+}
+
+
+// Return true if the element is in the document.
+// This is like document.contains(), but also returns true for elements in
+// shadow trees.
+function isElementInDocument(element) {
+  if (document.contains(element)) {
+    return true;
+  }
+  const parent = element.parentNode || element.host;
+  return parent ?
+    isElementInDocument(parent) :
+    false;
 }
 
 
