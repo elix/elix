@@ -1,20 +1,17 @@
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import FocusCaptureWrapper from './FocusCaptureWrapper.js';
+import DialogModalityMixin from '../mixins/DialogModalityMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import OpenCloseMixin from '../mixins/OpenCloseMixin.js';
 import OverlayWrapper from './OverlayWrapper.js';
 import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
 import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
-import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
-
-
-// Symbols for private data members on an element.
-const previousBodyStyleOverflow = Symbol('previousBodyStyleOverflow');
 
 
 const mixins = [
   AttributeMarshallingMixin,
+  DialogModalityMixin,
   KeyboardMixin,
   OpenCloseMixin,
   ShadowReferencesMixin,
@@ -26,6 +23,10 @@ const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
 
 
 class DialogCore extends base {
+
+  get backdrop() {
+    return this.shadowRoot.querySelector('#backdrop');
+  }
 
   connectedCallback() {
     if (super.connectedCallback) { super.connectedCallback(); }
@@ -40,40 +41,6 @@ class DialogCore extends base {
     const defaults = super[symbols.defaults] || {};
     defaults.role = 'dialog';
     return defaults;
-  }
-
-  get opened() {
-    return super.opened;
-  }
-  set opened(opened) {
-    const changed = opened !== this.opened;
-    if ('opened' in base.prototype) { super.opened = opened; }
-    if (changed) {
-      if (opened) {
-        // Mark body as non-scrollable, to absorb space bar keypresses and other
-        // means of scrolling the top-level document.
-        // TODO: Walk up the dialog's parent hierarchy and do the same for any
-        // scrollable parents in it.
-        this[previousBodyStyleOverflow] = document.body.style.overflow;
-        document.body.style.overflow = 'hidden';
-      } else {
-        document.body.style.overflow = this[previousBodyStyleOverflow];
-        this[previousBodyStyleOverflow] = null;
-      }
-    }
-  }
-
-  [symbols.shadowCreated]() {
-    if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
-
-    // Disable scrolling of the background while dialog is open.
-    this.$.backdrop.addEventListener('mousewheel', event => disableEvent(event));
-    this.$.backdrop.addEventListener('touchmove', event => {
-      // Don't disable multi-touch gestures like pinch-zoom.
-      if (event.touches.length === 1) {
-        disableEvent(event);
-      }
-    });
   }
 
   get [symbols.template]() {
@@ -109,9 +76,3 @@ class Dialog extends OverlayWrapper(FocusCaptureWrapper(DialogCore)) {}
 
 customElements.define('elix-dialog', Dialog);
 export default Dialog;
-
-
-function disableEvent(event) {
-  event.preventDefault();
-  event.stopPropagation();
-}

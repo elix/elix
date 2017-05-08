@@ -2,22 +2,18 @@ import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import OpenCloseMixin from '../mixins/OpenCloseMixin.js';
 import OverlayWrapper from './OverlayWrapper.js';
+import PopupModalityMixin from '../mixins/PopupModalityMixin.js';
 import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
 import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
 
 
-const closeListenerSymbol = Symbol('closeListener');
-const resolvePromiseSymbol = Symbol('resolvePromise');
-const wrappingFocusSymbol = Symbol('wrappingFocus');
-
-
 const mixins = [
   AttributeMarshallingMixin,
   KeyboardMixin,
   OpenCloseMixin,
-  OverlayWrapper,
+  PopupModalityMixin,
   ShadowReferencesMixin,
   ShadowTemplateMixin
 ];
@@ -27,6 +23,10 @@ const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
 
 
 class PopupCore extends base {
+
+  get backdrop() {
+    return this.shadowRoot.querySelector('#backdrop');
+  }
 
   connectedCallback() {
     if (super.connectedCallback) { super.connectedCallback(); }
@@ -41,34 +41,6 @@ class PopupCore extends base {
     const defaults = super[symbols.defaults] || {};
     defaults.role = 'tooltip';
     return defaults;
-  }
-
-  get opened() {
-    return super.opened;
-  }
-  set opened(opened) {
-    const changed = opened !== this.opened;
-    if ('opened' in base.prototype) { super.opened = opened; }
-    if (changed) {
-      if (opened) {
-        this[closeListenerSymbol] = () => this.close();
-        window.addEventListener('scroll', this[closeListenerSymbol]);
-        window.addEventListener('blur', this[closeListenerSymbol]);
-        window.addEventListener('resize', this[closeListenerSymbol]);
-      } else {
-        window.removeEventListener('scroll', this[closeListenerSymbol]);
-        window.removeEventListener('blur', this[closeListenerSymbol]);
-        window.removeEventListener('resize', this[closeListenerSymbol]);
-      }
-    }
-  }
-
-  [symbols.shadowCreated]() {
-    super[symbols.shadowCreated]();
-    // Implicitly close on background clicks.
-    this.$.backdrop.addEventListener('click', () => {
-      this.close();
-    });
   }
 
   get [symbols.template]() {

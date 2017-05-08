@@ -49,20 +49,6 @@ export default function OverlayWrapper(base) {
       }
     }
 
-    [symbols.keydown](event) {
-      let handled = false;
-
-      switch (event.keyCode) {
-        case 27: // Escape
-          this.close();
-          handled = true;
-          break;
-      }
-
-      // Prefer mixin result if it's defined, otherwise use base result.
-      return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
-    }
-
     get opened() {
       return super.opened;
     }

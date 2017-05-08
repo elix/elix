@@ -1,4 +1,3 @@
-import Symbol from './Symbol.js';
 import symbols from './symbols.js';
 
 

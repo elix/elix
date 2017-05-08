@@ -45,14 +45,6 @@ class TransientMessage extends base {
     }
   }
 
-  [symbols.shadowCreated]() {
-    super[symbols.shadowCreated]();
-    // Implicitly close on background clicks.
-    this.$.backdrop.addEventListener('click', () => {
-      this.close();
-    });
-  }
-
   get [symbols.template]() {
     const baseTemplate = super[symbols.template];
     const contentTemplate = `
