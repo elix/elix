@@ -24,6 +24,7 @@ const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
 
 class DialogCore extends base {
 
+  // TODO: Make `backdrop` a symbol.
   get backdrop() {
     return this.shadowRoot.querySelector('#backdrop');
   }

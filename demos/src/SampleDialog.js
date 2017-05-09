@@ -23,7 +23,7 @@ class SampleDialog extends Dialog {
         }
       </style>
       <div id="message">
-        Tap/click here or press Esc to cancel.
+        <slot></slot>
       </div>
     `;
     return baseTemplate.replace(`<slot></slot>`, contentTemplate);

@@ -24,6 +24,14 @@
     :not(:defined) {
       display: none;
     }
+
+    /* HACK: Force the scroll bar to appear while we're working on this. */
+    body::-webkit-scrollbar {
+      background: lightgray;
+    }
+    body::-webkit-scrollbar-thumb {
+      background: darkgray;
+    }
   </style>
 
 </head>
@@ -41,7 +49,7 @@
 
     <button id="openButton" onclick="dialog.open()">Open dialog</button>
     <sample-dialog id="dialog" aria-label="Sample dialog">
-      Here's a sample dialog.
+      Tap/click here or press Esc to cancel.
     </sample-dialog>
 
     <p id="floating">
