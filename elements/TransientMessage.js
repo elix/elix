@@ -4,8 +4,7 @@ import Popup from './Popup.js';
 import symbols from '../mixins/symbols.js';
 
 
-const timeout = Symbol('timeout');
-const transitionendListener = Symbol('transitionendListener');
+const timeoutKey = Symbol('timeout');
 
 
 const mixins = [
@@ -23,10 +22,10 @@ class TransientMessage extends base {
     if (super[symbols.afterTransition]) { super[symbols.afterTransition](transition); }
     switch (transition) {
       case 'opening':
-        if (this[timeout]) {
-          clearTimeout(this[timeout]);
+        if (this[timeoutKey]) {
+          clearTimeout(this[timeoutKey]);
         }
-        this[timeout] = setTimeout(() => {
+        this[timeoutKey] = setTimeout(() => {
           this.close();
         }, 1000);
         break;
@@ -39,9 +38,9 @@ class TransientMessage extends base {
   set opened(opened) {
     const changed = opened !== this.opened;
     super.opened = opened;
-    if (changed && !opened && this[timeout]) {
-      clearTimeout(this[timeout]);
-      this[timeout] = null;
+    if (changed && !opened && this[timeoutKey]) {
+      clearTimeout(this[timeoutKey]);
+      this[timeoutKey] = null;
     }
   }
 

@@ -16,7 +16,7 @@ const base = mixins.reduce((cls, mixin) => mixin(cls), Dialog);
 class Drawer extends base {
 
   [symbols.shadowCreated]() {
-    if (super[symbols.shadowCreated]) { super[symbols.shadowCreated]() }
+    if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
     // Implicitly close on background clicks.
     this.$.backdrop.addEventListener('click', () => {
       this.close();

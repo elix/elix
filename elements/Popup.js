@@ -5,7 +5,6 @@ import OverlayWrapper from './OverlayWrapper.js';
 import PopupModalityMixin from '../mixins/PopupModalityMixin.js';
 import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
 import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
-import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
 
 
