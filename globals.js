@@ -24,7 +24,7 @@ import KeyboardPrefixSelectionMixin from './mixins/KeyboardPrefixSelectionMixin.
 import NotificationDialog from './elements/NotificationDialog.js';
 import OpenCloseMixin from './mixins/OpenCloseMixin.js';
 import OpenCloseTransitionMixin from './mixins/OpenCloseTransitionMixin.js';
-import OverlayWrapper from './elements/OverlayWrapper.js';
+import OverlayMixin from './mixins/OverlayMixin.js';
 import renderArrayAsElements from './mixins/renderArrayAsElements.js';
 import SelectionAriaMixin from './mixins/SelectionAriaMixin.js';
 import SelectionInViewMixin from './mixins/SelectionInViewMixin.js';
@@ -73,7 +73,7 @@ const Elix = {
   NotificationDialog,
   OpenCloseMixin,
   OpenCloseTransitionMixin,
-  OverlayWrapper,
+  OverlayMixin,
   Popup,
   renderArrayAsElements,
   SelectionAriaMixin,

@@ -14,9 +14,8 @@ export default function PopupModalityMixin(base) {
 
     constructor() {
       super();
-
-      // Implicitly close on any unhandled clicks (inside or outside).
-      this.addEventListener('click', () => {
+      // Implicitly close on loss of focus.
+      this.addEventListener('blur', () => {
         this.close();
       });
     }
@@ -44,16 +43,35 @@ export default function PopupModalityMixin(base) {
       if ('opened' in base.prototype) { super.opened = opened; }
       if (changed) {
         if (opened) {
-          // Close on window blur/resize/scroll.
-          this[closeListenerSymbol] = () => this.close();
-          window.addEventListener('scroll', this[closeListenerSymbol]);
-          window.addEventListener('blur', this[closeListenerSymbol]);
-          window.addEventListener('resize', this[closeListenerSymbol]);
+
+          // General purpose listener for events that happen outside the
+          // component.
+          this[closeListenerSymbol] = event => {
+            const insideEvent = this === event.target ||
+              (event.target instanceof Node && this.contains(event.target));
+            if (!insideEvent) {
+              this.close();
+            }
+          };
+
+          // Wait a tick before wiring up events — if the popup was opened
+          // because the user clicked something, that opening click event may
+          // still be bubbling up, and we only want to start listening after
+          // it's been processed.
+          setTimeout(() => {
+            document.addEventListener('click', this[closeListenerSymbol]);
+            document.addEventListener('keydown', this[closeListenerSymbol]);
+            window.addEventListener('blur', this[closeListenerSymbol]);
+            window.addEventListener('resize', this[closeListenerSymbol]);
+            window.addEventListener('scroll', this[closeListenerSymbol]);
+          });
         } else {
           // Stop closing on window blur/resize/scroll.
-          window.removeEventListener('scroll', this[closeListenerSymbol]);
+          document.removeEventListener('click', this[closeListenerSymbol]);
+          document.removeEventListener('keydown', this[closeListenerSymbol]);
           window.removeEventListener('blur', this[closeListenerSymbol]);
           window.removeEventListener('resize', this[closeListenerSymbol]);
+          window.removeEventListener('scroll', this[closeListenerSymbol]);
         }
       }
     }

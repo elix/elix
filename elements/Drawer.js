@@ -17,6 +17,7 @@ class Drawer extends base {
 
   [symbols.shadowCreated]() {
     if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
+
     // Implicitly close on background clicks.
     this.$.backdrop.addEventListener('click', () => {
       this.close();

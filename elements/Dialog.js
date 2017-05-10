@@ -1,9 +1,10 @@
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
+import BackdropWrapper from './BackdropWrapper.js';
 import FocusCaptureWrapper from './FocusCaptureWrapper.js';
 import DialogModalityMixin from '../mixins/DialogModalityMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import OpenCloseMixin from '../mixins/OpenCloseMixin.js';
-import OverlayWrapper from './OverlayWrapper.js';
+import OverlayMixin from '../mixins/OverlayMixin.js';
 import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
 import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import symbols from '../mixins/symbols.js';
@@ -11,9 +12,11 @@ import symbols from '../mixins/symbols.js';
 
 const mixins = [
   AttributeMarshallingMixin,
+  BackdropWrapper,
   DialogModalityMixin,
   KeyboardMixin,
   OpenCloseMixin,
+  OverlayMixin,
   ShadowReferencesMixin,
   ShadowTemplateMixin
 ];
@@ -72,7 +75,7 @@ class DialogCore extends base {
 }
 
 
-class Dialog extends OverlayWrapper(FocusCaptureWrapper(DialogCore)) {}
+class Dialog extends BackdropWrapper(FocusCaptureWrapper(DialogCore)) {}
 
 
 customElements.define('elix-dialog', Dialog);
