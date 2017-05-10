@@ -45,7 +45,7 @@ import Popup from './elements/Popup.js';
 import Tabs from './elements/Tabs.js';
 import TabStrip from './elements/TabStrip.js';
 import TabStripWrapper from './elements/TabStripWrapper.js';
-import TransientMessage from './elements/TransientMessage.js';
+import Toast from './elements/Toast.js';
 
 
 // The complete list of all mixins and elements.
@@ -86,7 +86,7 @@ const Elix = {
   Tabs,
   TabStrip,
   TabStripWrapper,
-  TransientMessage
+  Toast
 };
 
 

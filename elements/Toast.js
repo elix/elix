@@ -16,7 +16,7 @@ const mixins = [
 const base = mixins.reduce((cls, mixin) => mixin(cls), Popup);
 
 
-class TransientMessage extends base {
+class Toast extends base {
 
   [symbols.afterTransition](transition) {
     if (super[symbols.afterTransition]) { super[symbols.afterTransition](transition); }
@@ -78,5 +78,5 @@ class TransientMessage extends base {
 }
 
 
-customElements.define('elix-transient-message', TransientMessage);
-export default TransientMessage;
+customElements.define('elix-toast', Toast);
+export default Toast;
