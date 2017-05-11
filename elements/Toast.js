@@ -18,16 +18,25 @@ const base = mixins.reduce((cls, mixin) => mixin(cls), Popup);
 
 class Toast extends base {
 
+  constructor() {
+    super();
+
+    // If the user moves the mouse over the element, stop the timer.
+    this.addEventListener('mouseover', () => {
+      clearTimer(this);
+    });
+
+    // If the user moves the mouse away, restart the timer.
+    this.addEventListener('mouseout', () => {
+      startTimer(this);
+    });
+  }
+
   [symbols.afterTransition](transition) {
     if (super[symbols.afterTransition]) { super[symbols.afterTransition](transition); }
     switch (transition) {
       case 'opening':
-        if (this[timeoutKey]) {
-          clearTimeout(this[timeoutKey]);
-        }
-        this[timeoutKey] = setTimeout(() => {
-          this.close();
-        }, 1000);
+        startTimer(this);
         break;
     }
   }
@@ -38,9 +47,8 @@ class Toast extends base {
   set opened(opened) {
     const changed = opened !== this.opened;
     super.opened = opened;
-    if (changed && !opened && this[timeoutKey]) {
-      clearTimeout(this[timeoutKey]);
-      this[timeoutKey] = null;
+    if (changed && !opened) {
+      clearTimer(this);
     }
   }
 
@@ -80,3 +88,20 @@ class Toast extends base {
 
 customElements.define('elix-toast', Toast);
 export default Toast;
+
+
+function clearTimer(element) {
+  if (element[timeoutKey]) {
+    console.log('clearTimer');
+    clearTimeout(element[timeoutKey]);
+    element[timeoutKey] = null;
+  }
+}
+
+function startTimer(element) {
+  console.log('startTimer');
+  clearTimer(element);
+  element[timeoutKey] = setTimeout(() => {
+    element.close();
+  }, 1000);
+}
