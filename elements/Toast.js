@@ -96,14 +96,12 @@ export default Toast;
 
 function clearTimer(element) {
   if (element[timeoutKey]) {
-    console.log('clearTimer');
     clearTimeout(element[timeoutKey]);
     element[timeoutKey] = null;
   }
 }
 
 function startTimer(element) {
-  console.log('startTimer');
   clearTimer(element);
   element[timeoutKey] = setTimeout(() => {
     element.close();

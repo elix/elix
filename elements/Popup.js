@@ -26,7 +26,7 @@ const mixins = [
 const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
 
 
-class PopupCore extends base {
+class Popup extends base {
 
   connectedCallback() {
     if (super.connectedCallback) { super.connectedCallback(); }
@@ -78,9 +78,6 @@ class PopupCore extends base {
   }
 
 }
-
-
-class Popup extends PopupCore {}
 
 
 customElements.define('elix-popup', Popup);
