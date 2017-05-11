@@ -1,3 +1,7 @@
+//
+// NOTE: This is a prototype, and not yet ready for real use.
+//
+
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import BackdropWrapper from './BackdropWrapper.js';
 import FocusCaptureWrapper from './FocusCaptureWrapper.js';

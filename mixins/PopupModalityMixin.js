@@ -1,3 +1,7 @@
+//
+// NOTE: This is a prototype, and not yet ready for real use.
+//
+
 import Symbol from '../mixins/Symbol.js';
 import symbols from './symbols.js';
 

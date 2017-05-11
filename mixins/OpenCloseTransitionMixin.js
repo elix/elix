@@ -1,3 +1,7 @@
+//
+// NOTE: This is a prototype, and not yet ready for real use.
+//
+
 import Symbol from './Symbol.js';
 import symbols from '../mixins/symbols.js';
 
@@ -41,7 +45,7 @@ export default function OpenCloseTransitionMixin(base) {
         this[symbols.transition](transition);
       }
     }
-    
+
     [symbols.skipTransition](transition) {
       if (super[symbols.skipTransition]) { super[symbols.skipTransition](transition); }
       this.$.overlayContent.removeEventListener('transitionend', this[transitionendListener]);

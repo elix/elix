@@ -1,3 +1,7 @@
+//
+// NOTE: This is a prototype, and not yet ready for real use.
+//
+
 import AsyncTransitionMixin from '../mixins/AsyncTransitionMixin.js';
 import Dialog from './Dialog.js';
 import OpenCloseTransitionMixin from '../mixins/OpenCloseTransitionMixin.js';
