@@ -29,6 +29,7 @@ class Drawer extends base {
   }
 
   get [symbols.template]() {
+    // Inject our template into the base template.
     let baseTemplate = super[symbols.template];
     if (baseTemplate instanceof HTMLTemplateElement) {
       baseTemplate = baseTemplate.innerHTML; // Downgrade to string.
