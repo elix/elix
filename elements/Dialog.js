@@ -16,7 +16,6 @@ import symbols from '../mixins/symbols.js';
 
 const mixins = [
   AttributeMarshallingMixin,
-  BackdropWrapper,
   DialogModalityMixin,
   KeyboardMixin,
   OpenCloseMixin,
