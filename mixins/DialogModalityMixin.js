@@ -98,7 +98,7 @@ export default function DialogModalityMixin(base) {
 }
 
 
-function disableEvent(event) {
-  event.preventDefault();
-  event.stopPropagation();
-}
+// function disableEvent(event) {
+//   event.preventDefault();
+//   event.stopPropagation();
+// }
