@@ -44,6 +44,7 @@
         background: white;
         z-index: 100;
         position: relative;
+        max-width: initial;
       }
     </style>
 
@@ -51,10 +52,6 @@
     <sample-dialog id="dialog" aria-label="Sample dialog">
       Tap/click here or press Esc to cancel.
     </sample-dialog>
-
-    <p id="floating">
-      This paragraph has a z-index, but should appear behind the overlays.
-    </p>
 
     <p>
       <button id="okCancelButton">OK/Cancel dialog</button>
@@ -87,6 +84,21 @@
         Drawer elements go here...
       </div>
     </elix-drawer>
+
+    <p id="floating">
+      This paragraph has a z-index, but should appear behind the overlays.
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sed
+      lorem scelerisque, blandit libero vitae, dapibus nisl. Sed turpis diam,
+      placerat a feugiat sed, maximus at velit. Ut sit amet semper sapien. Donec
+      vitae leo ex. Duis eget quam sed metus tempor lobortis eget feugiat elit.
+      Cras varius, arcu ac commodo tincidunt, lectus dui convallis nunc, quis
+      maximus nisl erat ac mi. Phasellus et velit diam. Sed rutrum eu enim at
+      dictum. Proin orci turpis, consectetur id dolor sit amet, hendrerit
+      condimentum dolor. Donec et mauris at lorem scelerisque sollicitudin
+      tristique convallis leo. Phasellus commodo augue mi, a sagittis justo
+      vehicula sed. Aenean congue, sapien ut malesuada fermentum, urna eros
+      consectetur ante, ut tincidunt urna massa et dui.
+    </p>
 
   </div>
   <script>
