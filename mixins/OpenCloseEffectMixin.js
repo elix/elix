@@ -9,13 +9,15 @@ import symbols from '../mixins/symbols.js';
 const transitionendListener = Symbol('transitionendListener');
 
 
+// For now, assumes transition effects are applied at least to the overlay
+// content element, and that all effects finish at the same time.
 export default function OpenCloseEffectMixin(base) {
 
   // The class prototype added by the mixin.
   class OpenCloseEffect extends base {
 
     [symbols.applyEffect](effect) {
-      const base = super.applyEffect ? super._applyEffect(effect) : Promise.resolve();
+      const base = super.applyEffect ? super[symbols.applyEffect](effect) : Promise.resolve();
       const animationPromise = new Promise((resolve, reject) => {
 
         // Set up to handle a transitionend event once.
@@ -23,6 +25,7 @@ export default function OpenCloseEffectMixin(base) {
           this.$.overlayContent.removeEventListener('transitionend', this[transitionendListener]);
           resolve();
         };
+
         this.$.overlayContent.addEventListener('transitionend', this[transitionendListener]);
 
         // Apply the effect.
