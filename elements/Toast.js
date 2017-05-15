@@ -85,6 +85,12 @@ class Toast extends base {
           transform: translateY(0);
           transition-timing-function: ease-out;
         }
+
+        @media (prefers-reduced-motion) {
+          #overlayContent {
+            transition-duration: 0.001s;
+          }
+        }
       </style>
       <slot></slot>
     `;

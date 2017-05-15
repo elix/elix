@@ -61,7 +61,14 @@ class Drawer extends base {
           transform: translateX(0);
           transition-timing-function: ease-out;
         }
-      </style>
+
+        @media (prefers-reduced-motion) {
+          #backdrop,
+          #overlayContent {
+            transition-duration: 0.001s;
+          }
+        }
+        </style>
       <slot></slot>
     `;
     return baseTemplate.replace(`<slot></slot>`, contentTemplate);
