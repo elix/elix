@@ -2,8 +2,8 @@
 // NOTE: This is a prototype, and not yet ready for real use.
 //
 
-import AsyncTransitionMixin from '../mixins/AsyncTransitionMixin.js';
-import OpenCloseTransitionMixin from '../mixins/OpenCloseTransitionMixin.js';
+import AsyncEffectMixin from '../mixins/AsyncEffectMixin.js';
+import OpenCloseEffectMixin from '../mixins/OpenCloseEffectMixin.js';
 import Popup from './Popup.js';
 import symbols from '../mixins/symbols.js';
 
@@ -12,8 +12,8 @@ const timeoutKey = Symbol('timeout');
 
 
 const mixins = [
-  AsyncTransitionMixin,
-  OpenCloseTransitionMixin,
+  AsyncEffectMixin,
+  OpenCloseEffectMixin,
 ];
 
 // Apply the above mixins to Popup.
@@ -36,9 +36,9 @@ class Toast extends base {
     });
   }
 
-  [symbols.afterTransition](transition) {
-    if (super[symbols.afterTransition]) { super[symbols.afterTransition](transition); }
-    switch (transition) {
+  [symbols.afterEffect](effect) {
+    if (super[symbols.afterEffect]) { super[symbols.afterEffect](effect); }
+    switch (effect) {
       case 'opening':
         startTimer(this);
         break;

@@ -9,13 +9,13 @@ import symbols from '../mixins/symbols.js';
 const transitionendListener = Symbol('transitionendListener');
 
 
-export default function OpenCloseTransitionMixin(base) {
+export default function OpenCloseEffectMixin(base) {
 
   // The class prototype added by the mixin.
-  class OpenCloseTransition extends base {
+  class OpenCloseEffect extends base {
 
-    [symbols.applyTransition](transition) {
-      const base = super.applyTransition ? super._applyTransition(transition) : Promise.resolve();
+    [symbols.applyEffect](effect) {
+      const base = super.applyEffect ? super._applyEffect(effect) : Promise.resolve();
       const animationPromise = new Promise((resolve, reject) => {
 
         // Set up to handle a transitionend event once.
@@ -25,9 +25,9 @@ export default function OpenCloseTransitionMixin(base) {
         };
         this.$.overlayContent.addEventListener('transitionend', this[transitionendListener]);
 
-        // Apply the transition.
+        // Apply the effect.
         requestAnimationFrame(() => {
-          this.classList.toggle('opened', transition === 'opening');
+          this.classList.toggle('opened', effect === 'opening');
         });
       });
       return base.then(() => animationPromise);
@@ -41,16 +41,16 @@ export default function OpenCloseTransitionMixin(base) {
       const changed = parsedOpened !== this.opened;
       if ('opened' in base.prototype) { super.opened = parsedOpened; }
       if (changed) {
-        const transition = parsedOpened ? 'opening' : 'closing';
-        this[symbols.transition](transition);
+        const effect = parsedOpened ? 'opening' : 'closing';
+        this[symbols.showEffect](effect);
       }
     }
 
-    [symbols.skipTransition](transition) {
-      if (super[symbols.skipTransition]) { super[symbols.skipTransition](transition); }
+    [symbols.skipEffect](effect) {
+      if (super[symbols.skipEffect]) { super[symbols.skipEffect](effect); }
       this.$.overlayContent.removeEventListener('transitionend', this[transitionendListener]);
     }
   }
 
-  return OpenCloseTransition;
+  return OpenCloseEffect;
 }

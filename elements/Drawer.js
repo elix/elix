@@ -2,15 +2,15 @@
 // NOTE: This is a prototype, and not yet ready for real use.
 //
 
-import AsyncTransitionMixin from '../mixins/AsyncTransitionMixin.js';
+import AsyncEffectMixin from '../mixins/AsyncEffectMixin.js';
 import Dialog from './Dialog.js';
-import OpenCloseTransitionMixin from '../mixins/OpenCloseTransitionMixin.js';
+import OpenCloseEffectMixin from '../mixins/OpenCloseEffectMixin.js';
 import symbols from '../mixins/symbols.js';
 
 
 const mixins = [
-  AsyncTransitionMixin,
-  OpenCloseTransitionMixin,
+  AsyncEffectMixin,
+  OpenCloseEffectMixin,
 ];
 
 // Apply the above mixins to Dialog.

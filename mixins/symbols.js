@@ -275,8 +275,7 @@ const symbols = {
   beforeEffect: Symbol('beforeEffect'),
   cancelEffect: Symbol('cancelEffect'),
   currentEffect: Symbol('currentEffect'),
-  showEffect: Symbol('showEffect'),
-  openedChanged: Symbol('openedChanged')
+  showEffect: Symbol('showEffect')
 };
 
 export default symbols;

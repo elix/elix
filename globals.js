@@ -7,7 +7,7 @@
 
 
 // Import mixins
-import AsyncTransitionMixin from './mixins/AsyncTransitionMixin.js';
+import AsyncEffectMixin from './mixins/AsyncEffectMixin.js';
 import AttributeMarshallingMixin from './mixins/AttributeMarshallingMixin.js';
 import * as attributes from './mixins/attributes.js';
 import ClickSelectionMixin from './mixins/ClickSelectionMixin.js';
@@ -23,7 +23,7 @@ import KeyboardPagedSelectionMixin from './mixins/KeyboardPagedSelectionMixin.js
 import KeyboardPrefixSelectionMixin from './mixins/KeyboardPrefixSelectionMixin.js';
 import NotificationDialog from './elements/NotificationDialog.js';
 import OpenCloseMixin from './mixins/OpenCloseMixin.js';
-import OpenCloseTransitionMixin from './mixins/OpenCloseTransitionMixin.js';
+import OpenCloseEffectMixin from './mixins/OpenCloseEffectMixin.js';
 import OverlayMixin from './mixins/OverlayMixin.js';
 import renderArrayAsElements from './mixins/renderArrayAsElements.js';
 import SelectionAriaMixin from './mixins/SelectionAriaMixin.js';
@@ -50,7 +50,7 @@ import Toast from './elements/Toast.js';
 
 // The complete list of all mixins and elements.
 const Elix = {
-  AsyncTransitionMixin,
+  AsyncEffectMixin,
   AttributeMarshallingMixin,
   attributes,
   ClickSelectionMixin,
@@ -72,7 +72,7 @@ const Elix = {
   Modes,
   NotificationDialog,
   OpenCloseMixin,
-  OpenCloseTransitionMixin,
+  OpenCloseEffectMixin,
   OverlayMixin,
   Popup,
   renderArrayAsElements,

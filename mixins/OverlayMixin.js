@@ -15,9 +15,9 @@ export default function OverlayMixin(base) {
   // The class prototype added by the mixin.
   class Overlay extends base {
 
-    [symbols.afterTransition](transition) {
-      if (super[symbols.afterTransition]) { super[symbols.afterTransition](transition); }
-      switch (transition) {
+    [symbols.afterEffect](effect) {
+      if (super[symbols.afterEffect]) { super[symbols.afterEffect](effect); }
+      switch (effect) {
         case 'closing':
           makeVisible(this, false);
           this.style.zIndex = null;
@@ -25,9 +25,9 @@ export default function OverlayMixin(base) {
       }
     }
 
-    [symbols.beforeTransition](transition) {
-      if (super[symbols.beforeTransition]) { super[symbols.beforeTransition](transition); }
-      switch (transition) {
+    [symbols.beforeEffect](effect) {
+      if (super[symbols.beforeEffect]) { super[symbols.beforeEffect](effect); }
+      switch (effect) {
         case 'opening':
           this[previousFocusedElementSymbol] = document.activeElement;
           const zIndex = maxZIndexInUse();
@@ -68,11 +68,11 @@ export default function OverlayMixin(base) {
             document.body.appendChild(this);
           }
         }
-        if (!this[symbols.applyTransition]) {
+        if (!this[symbols.applyEffect]) {
           // Do synchronous open/close.
-          const transition = parsedOpened ? 'opening' : 'closing';
-          this[symbols.beforeTransition](transition);
-          this[symbols.afterTransition](transition);
+          const effect = parsedOpened ? 'opening' : 'closing';
+          this[symbols.beforeEffect](effect);
+          this[symbols.afterEffect](effect);
         }
         if (!parsedOpened) {
           // Closing
