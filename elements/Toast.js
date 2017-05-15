@@ -8,6 +8,7 @@ import Popup from './Popup.js';
 import symbols from '../mixins/symbols.js';
 
 
+const durationKey = Symbol('duration');
 const timeoutKey = Symbol('timeout');
 
 
@@ -34,6 +35,10 @@ class Toast extends base {
     this.addEventListener('mouseout', () => {
       startTimer(this);
     });
+
+    if (typeof this.duration === 'undefined') {
+      this.duration = this[symbols.defaults].duration;
+    }
   }
 
   [symbols.afterEffect](effect) {
@@ -43,6 +48,20 @@ class Toast extends base {
         startTimer(this);
         break;
     }
+  }
+
+  get [symbols.defaults]() {
+    const defaults = super[symbols.defaults] || {};
+    defaults.duration = 1000; /* milliseconds */
+    return defaults;
+  }
+
+  get duration() {
+    return this[durationKey];
+  }
+  set duration(duration) {
+    this[durationKey] = parseInt(duration);
+    if ('duration' in base.prototype) { super.duration = duration; }
   }
 
   get opened() {
@@ -115,5 +134,5 @@ function startTimer(element) {
   clearTimer(element);
   element[timeoutKey] = setTimeout(() => {
     element.close();
-  }, 1000);
+  }, element.duration);
 }
