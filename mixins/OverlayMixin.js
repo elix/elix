@@ -6,8 +6,9 @@ import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
 
 
-const appendedToDocumentSymbol = Symbol('appendedToDocumentSymbol');
-const previousFocusedElementSymbol = Symbol('previousFocusedElement');
+const appendedToDocumentKey = Symbol('appendedToDocument');
+const previousFocusedElementKey = Symbol('previousFocusedElement');
+const previousZIndexKey = Symbol('previousZIndex');
 
 
 export default function OverlayMixin(base) {
@@ -20,7 +21,10 @@ export default function OverlayMixin(base) {
       switch (effect) {
         case 'closing':
           makeVisible(this, false);
-          this.style.zIndex = null;
+          if (this[previousZIndexKey] === '') {
+            this.style.zIndex = null;
+          }
+          this[previousZIndexKey] = null;
           break;
       }
     }
@@ -29,16 +33,20 @@ export default function OverlayMixin(base) {
       if (super[symbols.beforeEffect]) { super[symbols.beforeEffect](effect); }
       switch (effect) {
         case 'opening':
-          this[previousFocusedElementSymbol] = document.activeElement;
-          const zIndex = maxZIndexInUse();
-          this.style.zIndex = zIndex + 1;
+          this[previousFocusedElementKey] = document.activeElement;
+          this[previousZIndexKey] = this.style.zIndex;
+          if (getComputedStyle(this).zIndex === 'auto') {
+            // Assign default z-index.
+            this.style.zIndex = maxZIndexInUse() + 1;
+          }
           makeVisible(this, true);
           this.focus();
           break;
 
         case 'closing':
-          if (this[previousFocusedElementSymbol]) {
-            this[previousFocusedElementSymbol].focus();
+          if (this[previousFocusedElementKey]) {
+            this[previousFocusedElementKey].focus();
+            this[previousFocusedElementKey] = null;
           }
           break;
       }
@@ -64,7 +72,7 @@ export default function OverlayMixin(base) {
         if (parsedOpened) {
           // Opening
           if (!isElementInDocument(this)) {
-            this[appendedToDocumentSymbol] = true;
+            this[appendedToDocumentKey] = true;
             document.body.appendChild(this);
           }
         }
@@ -76,9 +84,9 @@ export default function OverlayMixin(base) {
         }
         if (!parsedOpened) {
           // Closing
-          if (this[appendedToDocumentSymbol]) {
+          if (this[appendedToDocumentKey]) {
             this.parentNode.removeChild(this);
-            this[appendedToDocumentSymbol] = false;
+            this[appendedToDocumentKey] = false;
           }
         }
       }
