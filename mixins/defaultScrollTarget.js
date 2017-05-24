@@ -10,7 +10,7 @@
  *
  * @param {HTMLElement} element – the component to examine for a scrolling
  * element
- * @type {HTMLElement}
+ * @return {HTMLElement}
  */
 function defaultScrollTarget(element) {
   const root = element.shadowRoot;

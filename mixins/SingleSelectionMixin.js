@@ -46,15 +46,14 @@ const internalSelectedItemSymbol = Symbol('internalSelectedItem');
  * selection.
  *
  * @module SingleSelectionMixin
- * @param base {Class} - The base class to extend
- * @returns {Class} The extended class
  */
-export default function SingleSelectionMixin(base) {
+export default function SingleSelectionMixin(Base) {
 
   // The class prototype added by the mixin.
-  class SingleSelection extends base {
+  class SingleSelection extends Base {
 
     constructor() {
+      // @ts-ignore
       super();
       // Set defaults.
       if (typeof this.selectionRequired === 'undefined') {
@@ -77,7 +76,7 @@ export default function SingleSelectionMixin(base) {
     set canSelectNext(canSelectNext) {
       const changed = canSelectNext !== this[canSelectNextSymbol];
       this[canSelectNextSymbol] = canSelectNext;
-      if ('canSelectNext' in base.prototype) { super.canSelectNext = canSelectNext; }
+      if ('canSelectNext' in Base.prototype) { super.canSelectNext = canSelectNext; }
       if (this[symbols.raiseChangeEvents] && changed) {
         this.dispatchEvent(new CustomEvent('can-select-next-changed'));
       }
@@ -95,7 +94,7 @@ export default function SingleSelectionMixin(base) {
     set canSelectPrevious(canSelectPrevious) {
       const changed = canSelectPrevious !== this[canSelectPreviousSymbol];
       this[canSelectPreviousSymbol] = canSelectPrevious;
-      if ('canSelectPrevious' in base.prototype) { super.canSelectPrevious = canSelectPrevious; }
+      if ('canSelectPrevious' in Base.prototype) { super.canSelectPrevious = canSelectPrevious; }
       if (this[symbols.raiseChangeEvents] && changed) {
         this.dispatchEvent(new CustomEvent('can-select-previous-changed'));
       }
@@ -114,7 +113,7 @@ export default function SingleSelectionMixin(base) {
      * The default implementation of this method simply sets the item's
      * selection state to false.
      *
-     * @param {HTMLElement} item - the item being added
+     * @param {Element} item - the item being added
      */
     [symbols.itemAdded](item) {
       if (super[symbols.itemAdded]) { super[symbols.itemAdded](item); }
@@ -137,7 +136,7 @@ export default function SingleSelectionMixin(base) {
      * The default implementation of this method does nothing. User-visible
      * effects will typically be handled by other mixins.
      *
-     * @param {HTMLElement} item - the item being selected/deselected
+     * @param {Element} item - the item being selected/deselected
      * @param {boolean} selected - true if the item is selected, false if not
      */
     [symbols.itemSelected](item, selected) {
@@ -159,15 +158,18 @@ export default function SingleSelectionMixin(base) {
         this[externalSelectedIndexSymbol] :
         -1;
     }
+    /**
+     * @param {number|string} index
+     */
     set selectedIndex(index) {
       // See notes at top about internal vs. external copies of this property.
       const changed = index !== this[internalSelectedIndexSymbol];
       let item;
-      let parsedIndex = parseInt(index);
+      let parsedIndex = typeof index === 'string' ? parseInt(index) : index;
       if (parsedIndex !== this[externalSelectedIndexSymbol]) {
         // Store the new index and the corresponding item.
-        const items = this.items;
-        const hasItems = items && items.length > 0;
+        const items = this.items || [];
+        const hasItems = items.length > 0;
         if (!(hasItems && parsedIndex >= 0 && parsedIndex < items.length)) {
           parsedIndex = -1; // No item at that index.
         }
@@ -179,7 +181,7 @@ export default function SingleSelectionMixin(base) {
       }
 
       // Now let super do any work.
-      if ('selectedIndex' in base.prototype) { super.selectedIndex = index; }
+      if ('selectedIndex' in Base.prototype) { super.selectedIndex = parsedIndex; }
 
       if (changed) {
         // The selected index changed.
@@ -208,7 +210,7 @@ export default function SingleSelectionMixin(base) {
      * Setting this property to null deselects any currently-selected item.
      * Setting this property to an object that is not in the list has no effect.
      *
-     * @type {object}
+     * @type {Element|null}
      */
     // REVIEW: Even if selectionRequired is true, caller can still explicitly
     // set selectedItem to null. In that case, should we leave selection alone,
@@ -216,10 +218,14 @@ export default function SingleSelectionMixin(base) {
     get selectedItem() {
       return this[externalSelectedItemSymbol] || null;
     }
+    /**
+     * @param {Element|null} item
+     */
     set selectedItem(item) {
       // See notes at top about internal vs. external copies of this property.
       const previousSelectedItem = this[internalSelectedItemSymbol];
       const changed = item !== previousSelectedItem;
+      /** @type {number} */
       let index;
       if (item !== this[externalSelectedItemSymbol]) {
         // Store item and look up corresponding index.
@@ -230,13 +236,13 @@ export default function SingleSelectionMixin(base) {
         if (index < 0) {
           item = null; // The indicated item isn't actually in `items`.
         }
-        this[externalSelectedItemSymbol] = item;
+        this[externalSelectedItemSymbol] = index >= 0 ? item : null;
       } else {
         index = this[externalSelectedIndexSymbol];
       }
 
       // Now let super do any work.
-      if ('selectedItem' in base.prototype) { super.selectedItem = item; }
+      if ('selectedItem' in Base.prototype) { super.selectedItem = item; }
 
       if (changed) {
         // The selected item changed.
@@ -293,7 +299,7 @@ export default function SingleSelectionMixin(base) {
       const parsed = String(selectionRequired) === 'true';
       const changed = parsed !== this[selectionRequiredSymbol];
       this[selectionRequiredSymbol] = parsed;
-      if ('selectionRequired' in base.prototype) { super.selectionRequired = selectionRequired; }
+      if ('selectionRequired' in Base.prototype) { super.selectionRequired = selectionRequired; }
       if (changed) {
         if (this[symbols.raiseChangeEvents]) {
           const event = new CustomEvent('selection-required-changed');
@@ -318,7 +324,7 @@ export default function SingleSelectionMixin(base) {
       const parsed = String(selectionWraps) === 'true';
       const changed = parsed !== this[selectionWrapsSymbol];
       this[selectionWrapsSymbol] = parsed;
-      if ('selectionWraps' in base.prototype) { super.selectionWraps = selectionWraps; }
+      if ('selectionWraps' in Base.prototype) { super.selectionWraps = selectionWraps; }
       if (changed) {
         if (this[symbols.raiseChangeEvents]) {
           const event = new CustomEvent('selection-wraps-changed');
@@ -335,7 +341,9 @@ export default function SingleSelectionMixin(base) {
      */
     selectLast() {
       if (super.selectLast) { super.selectLast(); }
-      return selectIndex(this, this.items.length - 1);
+      return this.items ?
+        selectIndex(this, this.items.length - 1) :
+        false;
     }
 
     /**
@@ -359,10 +367,14 @@ export default function SingleSelectionMixin(base) {
      */
     selectPrevious() {
       if (super.selectPrevious) { super.selectPrevious(); }
-      const newIndex = this.selectedIndex < 0 ?
-        this.items.length - 1 :     // No selection yet; select last item.
-        this.selectedIndex - 1;
-      return selectIndex(this, newIndex);
+      if (this.items) {
+        const newIndex = this.selectedIndex < 0 ?
+          this.items.length - 1 :     // No selection yet; select last item.
+          this.selectedIndex - 1;
+        return selectIndex(this, newIndex);
+      } else {
+        return false;
+      }
     }
 
     /**
@@ -405,8 +417,10 @@ export default function SingleSelectionMixin(base) {
 }
 
 
-// Ensure the given index is within bounds, and select it if it's not already
-// selected.
+/**
+ * Ensure the given index is within bounds, and select it if it's not already
+ * selected.
+ */
 function selectIndex(element, index) {
 
   const items = element.items;
@@ -433,25 +447,29 @@ function selectIndex(element, index) {
   }
 }
 
-// Following a change in the set of items, or in the value of the
-// `selectionRequired` property, reacquire the selected item. If it's moved,
-// update `selectedIndex`. If it's been removed, and a selection is required,
-// try to select another item.
+/**
+ * Following a change in the set of items, or in the value of the
+ * `selectionRequired` property, reacquire the selected item. If it's moved,
+ * update `selectedIndex`. If it's been removed, and a selection is required,
+ * try to select another item.
+ */
 function trackSelectedItem(element) {
 
   const items = element.items;
   const itemCount = items ? items.length : 0;
 
   const previousSelectedItem = element.selectedItem;
-  if (!previousSelectedItem) {
+  if (itemCount === 0) {
+    if (previousSelectedItem) {
+      // We've lost the selection, and there's nothing left to select.
+      element.selectedItem = null;
+    }
+  } else if (!previousSelectedItem) {
     // No item was previously selected.
     if (element.selectionRequired) {
       // Select the first item by default.
       element.selectedIndex = 0;
     }
-  } else if (itemCount === 0) {
-    // We've lost the selection, and there's nothing left to select.
-    element.selectedItem = null;
   } else {
     // Try to find the previously-selected item in the current set of items.
     const indexInCurrentItems = Array.prototype.indexOf.call(items, previousSelectedItem);
@@ -470,8 +488,10 @@ function trackSelectedItem(element) {
   }
 }
 
-// Following a change in selection, report whether it's now possible to
-// go next/previous from the given index.
+/**
+ * Following a change in selection, report whether it's now possible to
+ * go next/previous from the given index.
+ */
 function updatePossibleNavigations(element) {
   let canSelectNext;
   let canSelectPrevious;

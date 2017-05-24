@@ -24,7 +24,17 @@ class LabeledTabs extends Tabs {
 
     // Create one tab button for each panel.
     const tabStrip = this.tabStrip;
+    if (!this.shadowRoot) {
+      console.warn(`LabeledTabs couldn't find its own shadowRoot.`);
+      return;
+    }
+
     const slot = this.shadowRoot.querySelector('slot[name="tabButtons"]');
+    if (!slot) {
+      console.warn(`LabeledTabs couldn't find a slot named "tabButtons".`);
+      return;
+    }
+
     const tabPosition = this.tabPosition;
     renderArrayAsElements(this.items, slot, (tabPanel, tabButton) => {
       if (!tabButton || !(tabButton instanceof LabeledTabButton)) {

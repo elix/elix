@@ -16,19 +16,18 @@ const tabAlignSymbol = Symbol('tabAlign');
 const tabPositionSymbol = Symbol('tabPosition');
 
 
-const mixins = [
-  AttributeMarshallingMixin,
-  ClickSelectionMixin,
-  ContentItemsMixin,
-  DefaultSlotContentMixin,
-  DirectionSelectionMixin,
-  KeyboardDirectionMixin,
-  KeyboardMixin,
-  ShadowTemplateMixin,
-  SingleSelectionMixin
-];
-
-const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
+const Base =
+  AttributeMarshallingMixin(
+  ClickSelectionMixin(
+  ContentItemsMixin(
+  DefaultSlotContentMixin(
+  DirectionSelectionMixin(
+  KeyboardDirectionMixin(
+  KeyboardMixin(
+  ShadowTemplateMixin(
+  SingleSelectionMixin(
+    HTMLElement
+  )))))))));
 
 
 /**
@@ -64,7 +63,7 @@ const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
  * @mixes ShadowTemplateMixin
  * @mixes SingleSelectionMixin
  */
-class TabStrip extends base {
+class TabStrip extends Base {
 
   constructor() {
     super();
@@ -128,7 +127,7 @@ class TabStrip extends base {
     // Give mixins a chance to do work.
     handled = handled || (super[symbols.keydown] && super[symbols.keydown](event));
 
-    if (handled && this.selectedItem) {
+    if (handled && this.selectedItem instanceof HTMLElement) {
       // If the event resulted in a change of selection, move the focus to the
       // newly-selected tab.
       this.selectedItem.focus();
@@ -137,6 +136,9 @@ class TabStrip extends base {
     return handled;
   }
 
+  /**
+   * @type {string}
+   */
   get tabAlign() {
     return this[tabAlignSymbol];
   }

@@ -6,21 +6,23 @@ import symbols from '../../mixins/symbols.js';
  * A very simple component to show the application of SingleSelectionMixin.
  *
  * For a more complete demo using SingleSelectionMixin, see the ListBox demo.
+ * 
  */
 class SingleSelectionDemo extends SingleSelectionMixin(HTMLElement) {
 
   constructor() {
     super();
     this.addEventListener('mousedown', event => {
-      this[symbols.raiseChangeEvents] = true;
-      this.selectedItem = event.target;
-      event.stopPropagation();
-      this[symbols.raiseChangeEvents] = false;
+      if (event.target instanceof Element) {
+        this[symbols.raiseChangeEvents] = true;
+        this.selectedItem = event.target;
+        event.stopPropagation();
+        this[symbols.raiseChangeEvents] = false;
+      }
     });
   }
 
   attributeChangedCallback(attributeName, oldValue, newValue) {
-    if (super.attributeChangedCallback) { super.attributeChangedCallback(attributeName, oldValue, newValue); }
     if (attributeName === 'selected-index') {
       this.selectedIndex = newValue;
     }

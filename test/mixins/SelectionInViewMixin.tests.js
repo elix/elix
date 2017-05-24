@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import flushPolyfills from '../../test/flushPolyfills.js';
-import SelectionInViewMixin from '../../mixins//SelectionInViewMixin.js';
+import SelectionInViewMixin from '../../mixins/SelectionInViewMixin.js';
 
 const itemHeight = '100';
 

@@ -29,13 +29,11 @@ import symbols from './symbols.js';
  * * A `selectedIndex` property that indicates the index of the selected item.
  *
  * @module KeyboardPagedSelectionMixin
- * @param base {Class} - The base class to extend
- * @returns {Class} The extended class
  */
-export default function KeyboardPagedSelectionMixin(base) {
+export default function KeyboardPagedSelectionMixin(Base) {
 
   // The class prototype added by the mixin.
-  class KeyboardPagedSelection extends base {
+  class KeyboardPagedSelection extends Base {
 
     [symbols.keydown](event) {
       let handled = false;
@@ -72,7 +70,9 @@ export default function KeyboardPagedSelectionMixin(base) {
 
     /* Provide a default scrollTarget implementation if none exists. */
     get [symbols.scrollTarget]() {
-      return super[symbols.scrollTarget] || defaultScrollTarget(this);
+      /** @type {any} */
+      const element = this;
+      return super[symbols.scrollTarget] || defaultScrollTarget(element);
     }
 
   }
@@ -81,12 +81,15 @@ export default function KeyboardPagedSelectionMixin(base) {
 }
 
 
-// Return the item whose content spans the given y position (relative to the
-// top of the list's scrolling client area), or null if not found.
-//
-// If downward is true, move down the list of items to find the first item
-// found at the given y position; if downward is false, move up the list of
-// items to find the last item at that position.
+/**
+ * Return the item whose content spans the given y position (relative to the
+ * top of the list's scrolling client area), or null if not found.
+ * 
+ * If downward is true, move down the list of items to find the first item
+ * found at the given y position; if downward is false, move up the list of
+ * 
+ * items to find the last item at that position.
+ */
 function getIndexOfItemAtY(element, scrollTarget, y, downward) {
 
   const items = element.items;
@@ -122,8 +125,8 @@ function getIndexOfItemAtY(element, scrollTarget, y, downward) {
   // TODO: If the item has a border, then padding should be included in
   // considering a hit.
   const itemStyle = getComputedStyle(item);
-  const itemPaddingTop = parseFloat(itemStyle.paddingTop);
-  const itemPaddingBottom = parseFloat(itemStyle.paddingBottom);
+  const itemPaddingTop = itemStyle.paddingTop ? parseFloat(itemStyle.paddingTop) : 0;
+  const itemPaddingBottom = itemStyle.paddingBottom ? parseFloat(itemStyle.paddingBottom) : 0;
   const contentTop = itemTop + item.clientTop + itemPaddingTop;
   const contentBottom = contentTop + item.clientHeight - itemPaddingTop - itemPaddingBottom;
   if (downward && contentTop <= y || !downward && contentBottom >= y) {
@@ -137,8 +140,10 @@ function getIndexOfItemAtY(element, scrollTarget, y, downward) {
   }
 }
 
-// Move by one page downward (if downward is true), or upward (if false).
-// Return true if we ended up changing the selection, false if not.
+/**
+ * Move by one page downward (if downward is true), or upward (if false).
+ * Return true if we ended up changing the selection, false if not.
+ */
 function scrollOnePage(element, downward) {
 
   // Determine the item visible just at the edge of direction we're heading.
@@ -148,7 +153,9 @@ function scrollOnePage(element, downward) {
   const indexOfItemAtEdge = getIndexOfItemAtY(element, scrollTarget, edge, downward);
 
   const selectedIndex = element.selectedIndex;
+
   let newIndex;
+  
   if (indexOfItemAtEdge && selectedIndex === indexOfItemAtEdge) {
     // The item at the edge was already selected, so scroll in the indicated
     // direction by one page. Leave the new item at that edge selected.

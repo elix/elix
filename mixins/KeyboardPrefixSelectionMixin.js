@@ -47,13 +47,11 @@ const settingSelectionSymbol = Symbol('settingSelection');
  * `textContent` of those items will be used for purposes of prefix matching.
  *
  * @module KeyboardPrefixSelectionMixin
- * @param base {Class} - The base class to extend
- * @returns {Class} The extended class
  */
-export default function KeyboardPrefixSelectionMixin(base) {
+export default function KeyboardPrefixSelectionMixin(Base) {
 
   // The class prototype added by the mixin.
-  class KeyboardPrefixSelection extends base {
+  class KeyboardPrefixSelection extends Base {
 
     // Default implementation returns an item's `alt` attribute or its
     // `textContent`, in that order.
@@ -102,7 +100,7 @@ export default function KeyboardPrefixSelectionMixin(base) {
       return super.selectedIndex;
     }
     set selectedIndex(index) {
-      if ('selectedIndex' in base.prototype) { super.selectedIndex = index; }
+      if ('selectedIndex' in Base.prototype) { super.selectedIndex = index; }
       if (!this[settingSelectionSymbol]) {
         // Someone else (not this mixin) has changed the selection. In response,
         // we invalidate the prefix under construction.
@@ -113,12 +111,13 @@ export default function KeyboardPrefixSelectionMixin(base) {
     /**
      * Select the first item whose text content begins with the given prefix.
      *
-     * @param prefix {String} - The prefix string to search for
+     * @param {string} prefix - The prefix string to search for
+     * @return {boolean}
      */
     selectItemWithTextPrefix(prefix) {
       if (super.selectItemWithTextPrefix) { super.selectItemWithTextPrefix(prefix); }
       if (prefix == null || prefix.length === 0) {
-        return;
+        return false;
       }
       const index = getIndexOfItemWithTextPrefix(this, prefix);
       if (index >= 0) {
@@ -128,6 +127,9 @@ export default function KeyboardPrefixSelectionMixin(base) {
         this[settingSelectionSymbol] = true;
         this.selectedIndex = index;
         this[settingSelectionSymbol] = false;
+        return true;
+      } else {
+        return false;
       }
     }
 

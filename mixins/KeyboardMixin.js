@@ -39,15 +39,14 @@ import symbols from './symbols.js';
  * has the effect of adding the component to the tab order in document order.
  *
  * @module KeyboardMixin
- * @param base {Class} - The base class to extend
- * @returns {Class} The extended class
  */
-export default function KeyboardMixin(base) {
+export default function KeyboardMixin(Base) {
 
   // The class prototype added by the mixin.
-  class Keyboard extends base {
+  class Keyboard extends Base {
 
     constructor() {
+      // @ts-ignore
       super();
       this.addEventListener('keydown', event => {
         this[symbols.raiseChangeEvents] = true;
@@ -85,6 +84,7 @@ export default function KeyboardMixin(base) {
      */
     [symbols.keydown](event) {
       if (super[symbols.keydown]) { return super[symbols.keydown](event); }
+      return false;
     }
 
   }

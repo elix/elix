@@ -33,14 +33,13 @@ let listeningToWindowFocus = false;
  *     }
  *
  * @module FocusRingMixin
- * @param base {Class} - The base class to extend
- * @returns {Class} The extended class
  */
-export default function FocusRingMixin(base) {
+export default function FocusRingMixin(Base) {
 
   // The class prototype added by the mixin.
-  class FocusRing extends base {
+  class FocusRing extends Base {
     constructor() {
+      // @ts-ignore
       super();
 
       // We only want to start listening to window focus events if an element

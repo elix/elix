@@ -1,8 +1,7 @@
 import { assert } from 'chai';
 import flushPolyfills from '../../test/flushPolyfills.js';
-import SingleSelectionMixin from '../../mixins//SingleSelectionMixin.js';
-import symbols from '../../mixins//symbols.js';
-
+import SingleSelectionMixin from '../../mixins/SingleSelectionMixin.js';
+import symbols from '../../mixins/symbols.js';
 
 class SingleSelectionTest extends SingleSelectionMixin(HTMLElement) {
 
@@ -256,12 +255,16 @@ describe("SingleSelectionMixin", () => {
 
     fixture[symbols.raiseChangeEvents] = true; // Simulate user interaction
     fixture.selectLast();
+    fixture.fooBar();
     fixture[symbols.raiseChangeEvents] = false;
   });
 
 });
 
 
+/**
+ * @return {SingleSelectionTest}
+ */
 function createSampleElement() {
   const fixture = document.createElement('items-selection-test');
   ['Zero', 'One', 'Two'].forEach(text => {

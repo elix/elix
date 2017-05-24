@@ -47,15 +47,13 @@ const propertyNamesToAttributes = {};
  * component's `connectedCallback` is invoked.
  *
  * @module AttributeMarshallingMixin
- * @param base {Class} - The base class to extend
- * @returns {Class} The extended class
  */
-export default function AttributeMarshallingMixin(base) {
+export default function AttributeMarshallingMixin(Base) {
 
   // The class prototype added by the mixin.
-  class AttributeMarshalling extends base {
+  class AttributeMarshalling extends Base {
 
-    /*
+    /**
      * Handle a change to the attribute with the given name.
      */
     attributeChangedCallback(attributeName, oldValue, newValue) {
@@ -70,11 +68,15 @@ export default function AttributeMarshallingMixin(base) {
     connectedCallback() {
       if (super.connectedCallback) { super.connectedCallback(); }
       // Reflect any attributes set during constructor.
-      attributes.writePendingAttributes(this);
+      /** @type {any} */
+      const element = this;
+      attributes.writePendingAttributes(element);
     }
 
     static get observedAttributes() {
-      return attributesForClass(this);
+      /** @type {any} */
+      const elementClass = this;
+      return attributesForClass(elementClass);
     }
 
     /**
@@ -104,7 +106,7 @@ export default function AttributeMarshallingMixin(base) {
      * is connected to the document.
      *
      * @param {string} className - The name of the class to set.
-     * @param {object} value - True to set the class, false to remove it.
+     * @param {boolean} value - True to set the class, false to remove it.
      */
     reflectClass(className, value) {
       return attributes.toggleClass(this, className, value);
@@ -116,7 +118,9 @@ export default function AttributeMarshallingMixin(base) {
 }
 
 
-// Return the custom attributes for the given class.
+/**
+ * Return the custom attributes for the given class.
+ */
 function attributesForClass(classFn) {
 
   // We treat the HTMLElement base class as if it has no attributes, since we
@@ -150,7 +154,9 @@ function attributesForClass(classFn) {
   return baseAttributes.concat(diff);
 }
 
-// Convert hyphenated foo-bar attribute name to camel case fooBar property name.
+/**
+ * Convert hyphenated foo-bar attribute name to camel case fooBar property name.
+ */
 function attributeToPropertyName(attributeName) {
   let propertyName = attributeToPropertyNames[attributeName];
   if (!propertyName) {
@@ -163,7 +169,9 @@ function attributeToPropertyName(attributeName) {
   return propertyName;
 }
 
-// Convert a camel case fooBar property name to a hyphenated foo-bar attribute.
+/**
+ * Convert a camel case fooBar property name to a hyphenated foo-bar attribute.
+ */
 function propertyNameToAttribute(propertyName) {
   let attribute = propertyNamesToAttributes[propertyName];
   if (!attribute) {

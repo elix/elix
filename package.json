@@ -18,12 +18,14 @@
     "mocha": "^3.2.0",
     "sauce-test-runner": "^0.1.7",
     "sinon": "^2.0.0-pre.5",
+    "typescript": "next",
     "webpack": "^2.3.2"
   },
   "scripts": {
     "build": "node tasks/build.js",
     "watch": "node tasks/watch.js",
     "lint": "node tasks/lint.js",
-    "sauce-tests": "node tasks/sauce-tests.js"
+    "sauce-tests": "node tasks/sauce-tests.js",
+    "typecheck": "tsc"
   }
 }

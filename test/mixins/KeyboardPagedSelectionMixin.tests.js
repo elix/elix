@@ -1,6 +1,6 @@
 import { assert } from 'chai';
-import KeyboardPagedSelectionMixin from '../../mixins//KeyboardPagedSelectionMixin.js';
-import symbols from '../../mixins//symbols.js';
+import KeyboardPagedSelectionMixin from '../../mixins/KeyboardPagedSelectionMixin.js';
+import symbols from '../../mixins/symbols.js';
 
 
 const itemHeight = '100';

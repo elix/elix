@@ -1,6 +1,6 @@
-import FocusRingMixin from '../../mixins/FocusRingMixin';
-import ShadowTemplateMixin from '../../mixins/ShadowTemplateMixin';
-import symbols from '../../mixins/symbols';
+import FocusRingMixin from '../../mixins/FocusRingMixin.js';
+import ShadowTemplateMixin from '../../mixins/ShadowTemplateMixin.js';
+import symbols from '../../mixins/symbols.js';
 
 
 class FocusRingTest extends FocusRingMixin(ShadowTemplateMixin(HTMLElement)) {
@@ -33,6 +33,7 @@ class FocusRingTest extends FocusRingMixin(ShadowTemplateMixin(HTMLElement)) {
   }
 
   connectedCallback() {
+    super.connectedCallback();
     this.setAttribute('tabindex', '0');
   }
 

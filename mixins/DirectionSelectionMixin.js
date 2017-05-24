@@ -11,18 +11,17 @@ import symbols from './symbols.js';
  * [SingleSelectionMixin](SingleSelectionMixin).
  *
  * @module DirectionSelectionMixin
- * @param base {Class} - The base class to extend
- * @returns {Class} The extended class
  */
-export default function DirectionSelectionMixin(base) {
+export default function DirectionSelectionMixin(Base) {
 
   // The class prototype added by the mixin.
-  class DirectionSelection extends base {
+  class DirectionSelection extends Base {
 
     [symbols.goDown]() {
       if (super[symbols.goDown]) { super[symbols.goDown](); }
       if (!this.selectNext) {
         console.warn(`DirectionSelectionMixin expects a component to define a "selectNext" method.`);
+        return false;
       } else {
         return this.selectNext();
       }
@@ -32,6 +31,7 @@ export default function DirectionSelectionMixin(base) {
       if (super[symbols.goEnd]) { super[symbols.goEnd](); }
       if (!this.selectLast) {
         console.warn(`DirectionSelectionMixin expects a component to define a "selectLast" method.`);
+        return false;
       } else {
         return this.selectLast();
       }
@@ -41,6 +41,7 @@ export default function DirectionSelectionMixin(base) {
       if (super[symbols.goLeft]) { super[symbols.goLeft](); }
       if (!this.selectPrevious) {
         console.warn(`DirectionSelectionMixin expects a component to define a "selectPrevious" method.`);
+        return false;
       } else {
         return this.selectPrevious();
       }
@@ -50,6 +51,7 @@ export default function DirectionSelectionMixin(base) {
       if (super[symbols.goRight]) { super[symbols.goRight](); }
       if (!this.selectNext) {
         console.warn(`DirectionSelectionMixin expects a component to define a "selectNext" method.`);
+        return false;
       } else {
         return this.selectNext();
       }
@@ -59,6 +61,7 @@ export default function DirectionSelectionMixin(base) {
       if (super[symbols.goStart]) { super[symbols.goStart](); }
       if (!this.selectFirst) {
         console.warn(`DirectionSelectionMixin expects a component to define a "selectFirst" method.`);
+        return false;
       } else {
         return this.selectFirst();
       }
@@ -68,6 +71,7 @@ export default function DirectionSelectionMixin(base) {
       if (super[symbols.goUp]) { super[symbols.goUp](); }
       if (!this.selectPrevious) {
         console.warn(`DirectionSelectionMixin expects a component to define a "selectPrevious" method.`);
+        return false;
       } else {
         return this.selectPrevious();
       }

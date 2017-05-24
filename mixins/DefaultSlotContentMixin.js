@@ -49,13 +49,11 @@ const slotchangeFiredSymbol = Symbol('slotchangeFired');
  * [ListBox](ListBox), [Modes](Modes), and [Tabs](Tabs).
  *
  * @module DefaultSlotContentMixin
- * @param base {Class} - The base class to extend
- * @returns {Class} The extended class
  */
-export default function DefaultSlotContentMixin(base) {
+export default function DefaultSlotContentMixin(Base) {
 
   // The class prototype added by the mixin.
-  class DefaultSlotContent extends base {
+  class DefaultSlotContent extends Base {
 
     connectedCallback() {
       if (super.connectedCallback) { super.connectedCallback(); }
@@ -77,7 +75,7 @@ export default function DefaultSlotContentMixin(base) {
      * The content of this component, defined to be the flattened set of
      * nodes assigned to its default unnamed slot.
      *
-     * @type {HTMLElement[]}
+     * @type {Element[]}
      */
     get [symbols.content]() {
       const slot = defaultSlot(this);

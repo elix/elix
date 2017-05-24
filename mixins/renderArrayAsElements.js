@@ -35,9 +35,9 @@
  * it as is.
  *
  * @param {Array} items - the items to render
- * @param {HTMLElement} container - the parent that will hold the elements
- * @param {function} renderItem - returns a new element for an item, or
- *                                repurposes an existing element for an item
+ * @param {Element} container - the parent that will hold the elements
+ * @param {Function} renderItem - returns a new
+ *   element for an item, or repurposes an existing element for an item
  */
 function renderArrayAsElements(items, container, renderItem) {
   // Create a new set of elements for the current items.
@@ -50,8 +50,10 @@ function renderArrayAsElements(items, container, renderItem) {
       } else if (newElement !== oldElement) {
         container.replaceChild(newElement, oldElement);
       }
+      // @ts-ignore
       if (window.ShadyCSS && !window.ShadyCSS.nativeShadow) {
         // Apply styling
+        // @ts-ignore
         window.ShadyCSS.styleElement(newElement);
       }
     }

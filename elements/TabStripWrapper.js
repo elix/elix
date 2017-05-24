@@ -23,12 +23,10 @@ let idCount = 0;
  * the ordering of the tab buttons.
  *
  * @module TabStripWrapper
- * @param base {Class} - The base class to extend
- * @returns {Class} The extended class
  */
-export default function TabStripWrapper(base) {
+export default function TabStripWrapper(Base) {
 
-  class TabStripWrap extends ShadowReferencesMixin(base) {
+  class TabStripWrap extends ShadowReferencesMixin(Base) {
 
     connectedCallback() {
       if (super.connectedCallback) { super.connectedCallback(); }
@@ -59,6 +57,10 @@ export default function TabStripWrapper(base) {
     [symbols.itemsChanged]() {
       if (super[symbols.itemsChanged]) { super[symbols.itemsChanged](); }
 
+      if (!this.items) {
+        return;
+      }
+
       const baseId = this.id ?
         "_" + this.id + "Panel" :
         "_panel";
@@ -78,7 +80,7 @@ export default function TabStripWrapper(base) {
       return super.selectedIndex;
     }
     set selectedIndex(value) {
-      if ('selectedIndex' in base.prototype) { super.selectedIndex = value; }
+      if ('selectedIndex' in Base.prototype) { super.selectedIndex = value; }
       if (this.tabStrip.selectedIndex !== value) {
         this.tabStrip.selectedIndex = value;
       }
@@ -87,7 +89,9 @@ export default function TabStripWrapper(base) {
     [symbols.shadowCreated]() {
       if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
       this.$.tabStrip.addEventListener('selected-index-changed', event => {
-        this.selectedIndex = event.detail.selectedIndex;
+        if (event instanceof CustomEvent) {
+          this.selectedIndex = event.detail.selectedIndex;
+        }
       });
     }
 
@@ -126,7 +130,9 @@ export default function TabStripWrapper(base) {
       const lastElement = topOrLeft ?
         this.$.pages :
         this.$.tabStrip;
-      if (firstElement.nextSibling !== lastElement) {
+      if (!this.shadowRoot) {
+        console.warn(`TabStripWrapper expects a component to define a shadowRoot.`);
+      } else if (firstElement.nextSibling !== lastElement) {
         this.shadowRoot.insertBefore(firstElement, lastElement);
       }
     }
@@ -135,6 +141,9 @@ export default function TabStripWrapper(base) {
       return this.tabStrip.items;
     }
 
+    /**
+     * @type {TabStrip}
+     */
     get tabStrip() {
       return this.$.tabStrip;
     }

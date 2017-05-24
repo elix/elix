@@ -19,13 +19,11 @@ import symbols from './symbols.js';
  * from [SingleSelectionMixin](SingleSelectionMixin).
  *
  * @module SelectedItemTextValueMixin
- * @param base {Class} - The base class to extend
- * @returns {Class} The extended class
  */
-export default function SelectedItemTextValueMixin(base) {
+export default function SelectedItemTextValueMixin(Base) {
 
   // The class prototype added by the mixin.
-  class SelectedItemTextValue extends base {
+  class SelectedItemTextValue extends Base {
 
     /**
      * The text content of the selected item.
@@ -48,6 +46,9 @@ export default function SelectedItemTextValueMixin(base) {
 
       // Find the item with the indicated text.
       const items = this.items;
+      if (items == null) {
+        return;
+      }
       for (let i = 0, length = items.length; i < length; i++) {
         if (items[i].textContent === text) {
           newIndex = i;

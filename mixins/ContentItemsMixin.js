@@ -42,13 +42,11 @@ const itemInitializedSymbol = Symbol('itemInitialized');
  * [ListBox](ListBox), [Modes](Modes), and [Tabs](Tabs).
  *
  * @module ContentItemsMixin
- * @param base {Class} - The base class to extend
- * @returns {Class} The extended class
  */
-export default function ContentItemsMixin(base) {
+export default function ContentItemsMixin(Base) {
 
   // The class prototype added by the mixin.
-  class ContentItems extends base {
+  class ContentItems extends Base {
 
     [symbols.contentChanged]() {
       if (super[symbols.contentChanged]) { super[symbols.contentChanged](); }
@@ -66,7 +64,7 @@ export default function ContentItemsMixin(base) {
      * The current set of items in the list. See the top-level documentation for
      * mixin for a description of how items differ from plain content.
      *
-     * @type {HTMLElement[]}
+     * @type {Element[]}
      */
     get items() {
       let items;

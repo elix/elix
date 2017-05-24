@@ -74,6 +74,7 @@ export function toggleClass(element, className, value) {
       element[pendingClassesSymbol] = {};
     }
     element[pendingClassesSymbol][className] = value;
+    return value;
   }
 }
 

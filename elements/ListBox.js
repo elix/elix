@@ -15,25 +15,23 @@ import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import symbols from '../mixins/symbols.js';
 
 
-const mixins = [
-  AttributeMarshallingMixin,
-  ClickSelectionMixin,
-  ContentItemsMixin,
-  DefaultSlotContentMixin,
-  DirectionSelectionMixin,
-  KeyboardDirectionMixin,
-  KeyboardMixin,
-  KeyboardPagedSelectionMixin,
-  KeyboardPrefixSelectionMixin,
-  SelectedItemTextValueMixin,
-  SelectionAriaMixin,
-  SelectionInViewMixin,
-  ShadowTemplateMixin,
-  SingleSelectionMixin
-];
-
-// Apply the above mixins to HTMLElement.
-const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
+const Base =
+  AttributeMarshallingMixin(
+  ClickSelectionMixin(
+  ContentItemsMixin(
+  DefaultSlotContentMixin(
+  DirectionSelectionMixin(
+  KeyboardDirectionMixin(
+  KeyboardMixin(
+  KeyboardPagedSelectionMixin(
+  KeyboardPrefixSelectionMixin(
+  SelectedItemTextValueMixin(
+  SelectionAriaMixin(
+  SelectionInViewMixin(
+  ShadowTemplateMixin(
+  SingleSelectionMixin(
+    HTMLElement
+  ))))))))))))));
 
 
 /**
@@ -44,7 +42,7 @@ const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
  * `KeyboardPagedSelectionMixin`, and `KeyboardPrefixSelectionMixin` for
  * keyboard details.
  *
- * @extends HTMLElement
+ * @extends {HTMLElement}
  * @mixes AttributeMarshallingMixin
  * @mixes ClickSelectionMixin
  * @mixes ContentItemsMixin
@@ -60,7 +58,7 @@ const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
  * @mixes ShadowTemplateMixin
  * @mixes SingleSelectionMixin
  */
-class ListBox extends base {
+class ListBox extends Base {
 
   get [symbols.defaults]() {
     const defaults = super[symbols.defaults] || {};
@@ -70,6 +68,10 @@ class ListBox extends base {
   }
 
   // Map item selection to a `selected` CSS class.
+  /**
+   * @param {Element} item 
+   * @param {boolean} selected 
+   */
   [symbols.itemSelected](item, selected) {
     if (super[symbols.itemSelected]) { super[symbols.itemSelected](item, selected); }
     item.classList.toggle('selected', selected);
@@ -88,7 +90,8 @@ class ListBox extends base {
   set orientation(value) {
     const changed = value !== this[symbols.orientation];
     this[symbols.orientation] = value;
-    if ('orientation' in base) { super.orientation = value; }
+    // @ts-ignore
+    if ('orientation' in Base) { super.orientation = value; }
     // Reflect attribute for styling
     this.reflectAttribute('orientation', value);
     if (changed && this[symbols.raiseChangeEvents]) {

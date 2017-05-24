@@ -24,12 +24,10 @@ import symbols from './symbols.js';
  * feature.
  *
  * @module ShadowReferencesMixin
- * @param base {Class} - The base class to extend
- * @returns {Class} The extended class
  */
-export default function ShadowReferencesMixin(base) {
+export default function ShadowReferencesMixin(Base) {
 
-  class ShadowReferences extends base {
+  class ShadowReferences extends Base {
 
     [symbols.shadowCreated]() {
       if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
@@ -44,9 +42,10 @@ export default function ShadowReferencesMixin(base) {
           this.$ = {};
         }
         const nodesWithIds = this.shadowRoot.querySelectorAll('[id]');
+        const $ = this.$;
         [].forEach.call(nodesWithIds, node => {
           const id = node.getAttribute('id');
-          this.$[id] = node;
+          $[id] = node;
         });
       }
     }

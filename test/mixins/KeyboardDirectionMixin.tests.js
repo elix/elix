@@ -1,7 +1,7 @@
 import { assert } from 'chai';
-import KeyboardDirectionMixin from '../../mixins//KeyboardDirectionMixin.js';
+import KeyboardDirectionMixin from '../../mixins/KeyboardDirectionMixin.js';
 import sinon from 'sinon';
-import symbols from '../../mixins//symbols.js';
+import symbols from '../../mixins/symbols.js';
 
 
 class KeyboardDirectionMixinTest extends KeyboardDirectionMixin(HTMLElement) {

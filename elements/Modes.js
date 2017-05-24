@@ -6,16 +6,14 @@ import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import symbols from '../mixins/symbols.js';
 
 
-const mixins = [
-  AttributeMarshallingMixin,
-  ContentItemsMixin,
-  DefaultSlotContentMixin,
-  ShadowTemplateMixin,
-  SingleSelectionMixin
-];
-
-const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
-
+const Base =
+  AttributeMarshallingMixin(
+  ContentItemsMixin(
+  DefaultSlotContentMixin(
+  ShadowTemplateMixin(
+  SingleSelectionMixin(
+    HTMLElement
+  )))));
 
 /**
  * Shows exactly one child element at a time. This can be useful, for example,
@@ -33,7 +31,7 @@ const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
  * @mixes ShadowTemplateMixin
  * @mixes SingleSelectionMixin
  */
-class Modes extends base {
+class Modes extends Base {
 
   get [symbols.defaults]() {
     const defaults = super[symbols.defaults] || {};

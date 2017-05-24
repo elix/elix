@@ -14,13 +14,11 @@ import symbols from './symbols.js';
  * [SingleSelectionMixin](SingleSelectionMixin).
  *
  * @module SelectionInViewMixin
- * @param base {Class} - The base class to extend
- * @returns {Class} The extended class
  */
-export default (base) => {
+export default function (Base) {
 
   // The class prototype added by the mixin.
-  class SelectionInView extends base {
+  class SelectionInView extends Base {
 
     connectedCallback() {
       if (super.connectedCallback) { super.connectedCallback(); }
@@ -42,7 +40,7 @@ export default (base) => {
      * property. See that property for a discussion of the default value of
      * that property.
      *
-     * @param {HTMLElement} item - the item to scroll into view.
+     * @param {Element} item - the item to scroll into view.
      */
     scrollItemIntoView(item) {
       if (super.scrollItemIntoView) { super.scrollItemIntoView(); }
@@ -76,14 +74,16 @@ export default (base) => {
 
     /* Provide a default scrollTarget implementation if none exists. */
     get [symbols.scrollTarget]() {
-      return super[symbols.scrollTarget] || defaultScrollTarget(this);
+      /** @type {any} */
+      const element = this;
+      return super[symbols.scrollTarget] || defaultScrollTarget(element);
     }
 
     get selectedItem() {
       return super.selectedItem;
     }
     set selectedItem(item) {
-      if ('selectedItem' in base.prototype) { super.selectedItem = item; }
+      if ('selectedItem' in Base.prototype) { super.selectedItem = item; }
       if (item) {
         // Keep the selected item in view.
         this.scrollItemIntoView(item);
@@ -92,4 +92,4 @@ export default (base) => {
   }
 
   return SelectionInView;
-};
+}

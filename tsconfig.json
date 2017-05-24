@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "strictNullChecks": true,
+    "target": "ES6"
+  },
+  "include": [
+    "mixins/**/*.js",
+    "elements/**/*.js",
+    "demos/src/*.js",
+    "tests/**/*.js"
+  ],
+  "exclude": [
+    "elements/boilerplate/*"
+  ]
+}

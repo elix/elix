@@ -31,15 +31,14 @@ import symbols from './symbols.js';
  * to true, a background click will *not* remove the selection.
  *
  * @module ClickSelectionMixin
- * @param base {Class} - The base class to extend
- * @returns {Class} The extended class
  */
-export default function ClickSelectionMixin(base) {
+export default function ClickSelectionMixin(Base) {
 
   // The class prototype added by the mixin.
-  class ClickSelection extends base {
+  class ClickSelection extends Base {
 
     constructor() {
+      // @ts-ignore
       super();
       this.addEventListener('mousedown', event => {
 
@@ -56,6 +55,7 @@ export default function ClickSelectionMixin(base) {
         // target will be the component, not the item that was clicked on.
         // Instead of using the event target, we get the first node in the
         // event's composed path.
+        // @ts-ignore
         const target = event.composedPath()[0];
 
         // Find which item was clicked on and, if found, select it. For elements
@@ -86,8 +86,8 @@ export default function ClickSelectionMixin(base) {
 }
 
 
-/*
- * Return the list item that is, or contains, the indicated target element.
+/**
+ * Return the list item that is, or contains, the indicated target node.
  * Return null if not found.
  *
  * This is sufficiently flexible to accommodate the possibility of the target
@@ -109,7 +109,7 @@ function itemForTarget(listElement, target) {
     }
 
     current = current.parentNode;
-    if (current instanceof ShadowRoot) {
+    if (current.host) {
       current = current.host;
     }
   }

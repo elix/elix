@@ -10,7 +10,6 @@ import symbols from './symbols.js';
 //
 const mapTagToTemplate = {};
 
-
 /**
  * Mixin which adds stamping a template into a Shadow DOM subtree upon component
  * instantiation.
@@ -29,28 +28,23 @@ const mapTagToTemplate = {};
  * shadow root. If your component does not define a `template` property, this
  * mixin has no effect.
  *
- * For the time being, this extension retains support for Shadow DOM v0. That
- * will eventually be deprecated as browsers (and the Shadow DOM polyfill)
- * implement Shadow DOM v1.
- *
  * @module ShadowTemplateMixin
- * @param base {Class} - The base class to extend
- * @returns {Class} The extended class
  */
-export default function ShadowTemplateMixin(base) {
+export default function ShadowTemplateMixin(Base) {
 
   // The class prototype added by the mixin.
-  class ShadowTemplate extends base {
+  class ShadowTemplate extends Base {
 
     /*
      * If the component defines a template, a shadow root will be created on the
      * component instance, and the template stamped into it.
      */
     constructor() {
+      // @ts-ignore
       super();
 
       const tag = this.localName;
-      let template = mapTagToTemplate[tag];
+      let template = tag && mapTagToTemplate[tag];
 
       // See if we've already processed a template for this tag.
       if (!template) {
@@ -70,13 +64,17 @@ export default function ShadowTemplateMixin(base) {
           template.innerHTML = templateText;
         }
 
+        // @ts-ignore
         if (window.ShadyCSS && !window.ShadyCSS.nativeShadow) {
           // Let the CSS polyfill do its own initialization.
+          // @ts-ignore
           window.ShadyCSS.prepareTemplate(template, tag);
         }
 
-        // Store this for the next time we create the same type of element.
-        mapTagToTemplate[tag] = template;
+        if (tag) {
+          // Store this for the next time we create the same type of element.
+          mapTagToTemplate[tag] = template;
+        }
       }
 
       // Stamp the template into a new shadow root.
@@ -92,7 +90,9 @@ export default function ShadowTemplateMixin(base) {
 
     connectedCallback() {
       if (super.connectedCallback) { super.connectedCallback(); }
+      // @ts-ignore
       if (window.ShadyCSS && !window.ShadyCSS.nativeShadow) {
+        // @ts-ignore
         window.ShadyCSS.styleElement(this);
       }
     }

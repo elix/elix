@@ -37,13 +37,11 @@ let idCount = 0;
  * [SingleSelectionMixin](SingleSelectionMixin).
  *
  * @module
- * @param base {Class} - The base class to extend
- * @returns {Class} The extended class
  */
-export default function (base) {
+export default function(Base) {
 
   // The class prototype added by the mixin.
-  class SelectionAria extends base {
+  class SelectionAria extends Base {
 
     connectedCallback() {
       if (super.connectedCallback) { super.connectedCallback(); }
@@ -100,7 +98,7 @@ export default function (base) {
       return super.selectedItem;
     }
     set selectedItem(item) {
-      if ('selectedItem' in base.prototype) { super.selectedItem = item; }
+      if ('selectedItem' in Base.prototype) { super.selectedItem = item; }
       if (item == null) {
         // Selection was removed.
         this.removeAttribute('aria-activedescendant');

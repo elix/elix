@@ -5,15 +5,13 @@ import Modes from '../../elements/Modes.js';
 import SelectionAriaMixin from '../../mixins/SelectionAriaMixin.js';
 
 
-const mixins = [
-  DirectionSelectionMixin,
-  KeyboardDirectionMixin,
-  KeyboardMixin,
-  SelectionAriaMixin
-];
-
-
-const ModesWithKeyboard = mixins.reduce((cls, mixin) => mixin(cls), Modes);
+const ModesWithKeyboard =
+  DirectionSelectionMixin(
+  KeyboardDirectionMixin(
+  KeyboardMixin(
+  SelectionAriaMixin(
+    Modes
+  ))));
 
 customElements.define('modes-with-keyboard', ModesWithKeyboard);
 export default ModesWithKeyboard;

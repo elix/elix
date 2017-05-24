@@ -44,7 +44,13 @@ const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
 class BrowserPluginList extends base {
 
   get [symbols.content]() {
-    return this.shadowRoot.querySelector('#devicesContainer').children;
+    if (this.shadowRoot) {
+      const container = this.shadowRoot.querySelector('#devicesContainer');
+      if (container) {
+        return container.children;
+      }
+    }
+    return [];
   }
 
   // We define a collection of default property values which can be set in
@@ -73,7 +79,7 @@ class BrowserPluginList extends base {
 
   [symbols.shadowCreated]() {
     if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
-    const choices = [...navigator.plugins].map(plugin => plugin.name);
+    const choices = Array.prototype.map.call(navigator.plugins, plugin => plugin.name);
     const sorted = choices.sort();
     setOptions(this, sorted);
   }

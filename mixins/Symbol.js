@@ -1,13 +1,13 @@
 /* The number of fake symbols we've served up */
 let count = 0;
 
+/**
+ * @param {any} description
+ * @return {string}
+ */
 function uniqueString(description) {
   return `_${description}${count++}`;
 }
-
-const symbolFunction = typeof window.Symbol === 'function' ?
-  window.Symbol :
-  uniqueString;
 
 /**
  * A helper function for simulating instances of the `Symbol` class in older
@@ -45,8 +45,12 @@ const symbolFunction = typeof window.Symbol === 'function' ?
  * mean to avoid (not eliminate) naming conflicts.
  *
  * @function Symbol
- * @param {string} description - A string to identify the symbol when debugging
- * @returns {Symbol|string} — A Symbol (in ES6 browsers) or unique string ID (in
+ * @param {any} description - A string to identify the symbol when debugging
+ * @returns {symbol|string} — A Symbol (in ES6 browsers) or unique string ID (in
  * ES5).
  */
-export default symbolFunction;
+export default function(description) {
+  return typeof Symbol === 'function' ?
+    Symbol(description) :
+    uniqueString(description);
+}
