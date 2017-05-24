@@ -3,13 +3,18 @@
 
 const webpack = require('webpack');
 const glob = require('glob');
+const path = require('path');
 
 let buildTargets = null;
 
 function buildBuildTargets(options) {
+  const demosPath = path.resolve('./build/demos.js');
+  const testsPath = path.resolve('./build/tests.js');
+  const elixPath = path.resolve('./build/elix.js');
+
   if (options.minify) {
     buildTargets = {
-      './build/demos.js': {
+      [`${demosPath}`]: {
         globItems: ['./demos/demos.js'],
         includes: [/\//, /demos/]
       }
@@ -17,15 +22,15 @@ function buildBuildTargets(options) {
   }
   else {
     buildTargets = {
-      './build/tests.js': {
+      [`${testsPath}`]: {
         globItems: ['./test/tests.js'],
         includes: [/mixins/, /elements/, /test/]
       },
-      './build/elix.js': {
+      [`${elixPath}`]: {
         globItems: ['./globals.js'],
         includes: [/\//]
       },
-      './build/demos.js': {
+      [`${demosPath}`]: {
         globItems: ['./demos/demos.js'],
         includes: [/\//, /demos/]
       }
