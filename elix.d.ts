@@ -32,7 +32,7 @@ type Constructor<T> = new() => T;
  * Often, a member will appear in both the set of base expectations and the set
  * of members the mixin defines. Suppose a mixin defines a `foo` property. The
  * mixin might the say, "The base class I'm given _may_ have a foo property. The
- * class I return will _definitely_ has a foo property."
+ * class I return will _definitely_ have a foo property."
  */
 type Mixin<BaseExpectations, MixinMembers> =
   <T extends HTMLElement & BaseExpectations>(Base: Constructor<T>) => 
