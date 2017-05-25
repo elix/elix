@@ -68,7 +68,6 @@ class Toast extends Base {
   }
 
   [symbols.openedChanged](opened) {
-    console.log(`Toast.openedChanged ${opened}`);
     super[symbols.openedChanged](opened);
     if (!opened) {
       clearTimer(this);
