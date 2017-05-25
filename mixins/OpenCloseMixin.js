@@ -72,9 +72,14 @@ export default function OpenCloseMixin(Base) {
       const changed = parsedOpened !== this[openedSymbol];
       this[openedSymbol] = parsedOpened;
       if ('opened' in Base.prototype) { super.opened = parsedOpened; }
-      if (changed && this[symbols.raiseChangeEvents]) {
-        const event = new CustomEvent('opened-changed');
-        this.dispatchEvent(event);
+      if (changed) {
+        if (this[symbols.openedChanged]) {
+          this[symbols.openedChanged](parsedOpened);
+        }
+        if (this[symbols.raiseChangeEvents]) {
+          const event = new CustomEvent('opened-changed');
+          this.dispatchEvent(event);
+        }
       }
     }
 

@@ -36,7 +36,6 @@ export default function DialogModalityMixin(Base) {
         //   // Disable bubbling keyboard events that could potentially scroll
         //   // the page.
         //   if (event.target === this) {
-        //     console.log(event);
         //     disableEvent(event);
         //     handled = true;
         //   }
@@ -47,11 +46,8 @@ export default function DialogModalityMixin(Base) {
       return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
     }
 
-    get opened() {
-      return super.opened;
-    }
-    set opened(opened) {
-      if ('opened' in Base.prototype) { super.opened = opened; }
+    [symbols.openedChanged](opened) {
+      if (super[symbols.openedChanged]) { super[symbols.openedChanged](opened); }
       if (opened) {
         // Mark body as non-scrollable, to absorb space bar keypresses and other
         // means of scrolling the top-level document.

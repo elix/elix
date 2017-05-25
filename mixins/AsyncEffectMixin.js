@@ -5,10 +5,10 @@
 import symbols from './symbols.js';
 
 
-export default function AsyncEffectMixin(base) {
+export default function AsyncEffectMixin(Base) {
 
   // The class prototype added by the mixin.
-  class AsyncEffect extends base {
+  class AsyncEffect extends Base {
 
     // Asynchronous
     // Executes: beforeEffect, applyEffect, afterEffect

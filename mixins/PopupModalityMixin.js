@@ -21,7 +21,9 @@ export default function PopupModalityMixin(Base) {
       super();
       // Implicitly close on loss of focus.
       this.addEventListener('blur', () => {
-        this.close();
+        this[symbols.raiseChangeEvents] = true;
+        // this.close();
+        this[symbols.raiseChangeEvents] = false;
       });
     }
 
@@ -40,44 +42,44 @@ export default function PopupModalityMixin(Base) {
       return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
     }
 
-    get opened() {
-      return super.opened;
-    }
-    set opened(opened) {
-      const changed = opened !== this.opened;
-      if ('opened' in Base.prototype) { super.opened = opened; }
-      if (changed) {
-        if (opened) {
+    [symbols.openedChanged](opened) {
+      if (super[symbols.openedChanged]) { super[symbols.openedChanged](opened); }
+      if (opened) {
 
-          // General purpose listener for events that happen outside the
-          // component.
-          this[closeListenerSymbol] = event => {
-            const insideEvent = this === event.target ||
-              (event.target instanceof Node && this.contains(event.target));
-            if (!insideEvent) {
-              this.close();
-            }
-          };
+        // General purpose listener for events that happen outside the
+        // component.
+        this[closeListenerSymbol] = event => {
+          const insideEvent = this === event.target ||
+            (event.target instanceof Node && this.contains(event.target));
+          if (!insideEvent) {
+            this[symbols.raiseChangeEvents] = true;
+            this.close();
+            this[symbols.raiseChangeEvents] = false;
+          }
+        };
 
-          // Wait a tick before wiring up events — if the popup was opened
-          // because the user clicked something, that opening click event may
-          // still be bubbling up, and we only want to start listening after
-          // it's been processed.
-          setTimeout(() => {
+        // Wait a tick before wiring up events — if the popup was opened
+        // because the user clicked something, that opening click event may
+        // still be bubbling up, and we only want to start listening after
+        // it's been processed.
+        setTimeout(() => {
+          // It's conceivable the popup was closed before the timeout completed,
+          // so double-check that it's still opened before listening to events.
+          if (this.opened) {
             document.addEventListener('click', this[closeListenerSymbol]);
             document.addEventListener('keydown', this[closeListenerSymbol]);
             window.addEventListener('blur', this[closeListenerSymbol]);
             window.addEventListener('resize', this[closeListenerSymbol]);
             window.addEventListener('scroll', this[closeListenerSymbol]);
-          });
-        } else {
-          // Stop closing on window blur/resize/scroll.
-          document.removeEventListener('click', this[closeListenerSymbol]);
-          document.removeEventListener('keydown', this[closeListenerSymbol]);
-          window.removeEventListener('blur', this[closeListenerSymbol]);
-          window.removeEventListener('resize', this[closeListenerSymbol]);
-          window.removeEventListener('scroll', this[closeListenerSymbol]);
-        }
+          }
+        });
+      } else {
+        // Stop closing on window blur/resize/scroll.
+        document.removeEventListener('click', this[closeListenerSymbol]);
+        document.removeEventListener('keydown', this[closeListenerSymbol]);
+        window.removeEventListener('blur', this[closeListenerSymbol]);
+        window.removeEventListener('resize', this[closeListenerSymbol]);
+        window.removeEventListener('scroll', this[closeListenerSymbol]);
       }
     }
   }

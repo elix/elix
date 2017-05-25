@@ -63,35 +63,28 @@ export default function OverlayMixin(Base) {
       }
     }
 
-    get opened() {
-      return super.opened;
-    }
-    set opened(opened) {
-      const parsedOpened = String(opened) === 'true';
-      const changed = parsedOpened !== this.opened;
-      if ('opened' in Base.prototype) { super.opened = parsedOpened; }
-      if (changed) {
-        if (parsedOpened) {
-          // Opening
-          if (!isElementInDocument(this)) {
-            this[appendedToDocumentKey] = true;
-            /** @type {any} */
-            const element = this;
-            document.body.appendChild(element);
-          }
+    [symbols.openedChanged](opened) {
+      if (super[symbols.openedChanged]) { super[symbols.openedChanged](opened); }
+      if (opened) {
+        // Opening
+        if (!isElementInDocument(this)) {
+          this[appendedToDocumentKey] = true;
+          /** @type {any} */
+          const element = this;
+          document.body.appendChild(element);
         }
-        if (!this[symbols.applyEffect]) {
-          // Do synchronous open/close.
-          const effect = parsedOpened ? 'opening' : 'closing';
-          this[symbols.beforeEffect](effect);
-          this[symbols.afterEffect](effect);
-        }
-        if (!parsedOpened) {
-          // Closing
-          if (this[appendedToDocumentKey]) {
-            this.parentNode.removeChild(this);
-            this[appendedToDocumentKey] = false;
-          }
+      }
+      if (!this[symbols.applyEffect]) {
+        // Do synchronous open/close.
+        const effect = opened ? 'opening' : 'closing';
+        this[symbols.beforeEffect](effect);
+        this[symbols.afterEffect](effect);
+      }
+      if (!opened) {
+        // Closing
+        if (this[appendedToDocumentKey]) {
+          this.parentNode.removeChild(this);
+          this[appendedToDocumentKey] = false;
         }
       }
     }

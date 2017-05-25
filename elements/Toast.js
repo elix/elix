@@ -64,16 +64,13 @@ class Toast extends Base {
    * @param {number} duration
    */
   set duration(duration) {
-    this[durationKey] = typeof duration === 'string' ? parseInt(duration) : 0;
+    this[durationKey] = typeof duration === 'string' ? parseInt(duration) : duration;
   }
 
-  get opened() {
-    return super.opened;
-  }
-  set opened(opened) {
-    const changed = opened !== this.opened;
-    super.opened = opened;
-    if (changed && !opened) {
+  [symbols.openedChanged](opened) {
+    console.log(`Toast.openedChanged ${opened}`);
+    super[symbols.openedChanged](opened);
+    if (!opened) {
       clearTimer(this);
     }
   }
@@ -136,6 +133,8 @@ function clearTimer(element) {
 function startTimer(element) {
   clearTimer(element);
   element[timeoutKey] = setTimeout(() => {
+    element[symbols.raiseChangeEvents] = true;
     element.close();
+    element[symbols.raiseChangeEvents] = false;
   }, element.duration);
 }

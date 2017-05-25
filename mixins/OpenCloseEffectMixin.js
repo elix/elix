@@ -11,10 +11,10 @@ const transitionendListener = Symbol('transitionendListener');
 
 // For now, assumes transition effects are applied at least to the overlay
 // content element, and that all effects finish at the same time.
-export default function OpenCloseEffectMixin(base) {
+export default function OpenCloseEffectMixin(Base) {
 
   // The class prototype added by the mixin.
-  class OpenCloseEffect extends base {
+  class OpenCloseEffect extends Base {
 
     [symbols.applyEffect](effect) {
       const base = super.applyEffect ? super[symbols.applyEffect](effect) : Promise.resolve();
@@ -36,17 +36,10 @@ export default function OpenCloseEffectMixin(base) {
       return base.then(() => animationPromise);
     }
 
-    get opened() {
-      return super.opened;
-    }
-    set opened(opened) {
-      const parsedOpened = String(opened) === 'true';
-      const changed = parsedOpened !== this.opened;
-      if ('opened' in base.prototype) { super.opened = parsedOpened; }
-      if (changed) {
-        const effect = parsedOpened ? 'opening' : 'closing';
-        this[symbols.showEffect](effect);
-      }
+    [symbols.openedChanged](opened) {
+      if (super[symbols.openedChanged]) { super[symbols.openedChanged](opened); }
+      const effect = opened ? 'opening' : 'closing';
+      this[symbols.showEffect](effect);
     }
 
     [symbols.skipEffect](effect) {
