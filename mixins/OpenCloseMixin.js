@@ -8,8 +8,9 @@ import symbols from './symbols.js';
 
 
 // Symbols for private data members on an element.
-const openedSymbol = Symbol('opened');
-const resolveOpenSymbol = Symbol('resolveOpen');
+const openedKey = Symbol('opened');
+const closePromiseKey = Symbol('closePromise');
+const closeResolveKey = Symbol('resolveOpen');
 
 
 /**
@@ -46,12 +47,15 @@ export default function OpenCloseMixin(Base) {
      */
     close(result) {
       if (super.close) { super.close(); }
-      this.opened = false;
-      if (this[resolveOpenSymbol]) {
-        // Dialog was invoked with show().
-        const resolve = this[resolveOpenSymbol];
-        this[resolveOpenSymbol] = null;
-        resolve(result);
+      if (this.opened) {
+        this.opened = false;
+        if (this[closeResolveKey]) {
+          // Element was opened with open().
+          const resolve = this[closeResolveKey];
+          this[closeResolveKey] = null;
+          this[closePromiseKey] = null;
+          resolve(result);
+        }
       }
     }
 
@@ -62,15 +66,15 @@ export default function OpenCloseMixin(Base) {
      * @default false
      */
     get opened() {
-      return this[openedSymbol];
+      return this[openedKey];
     }
     /**
      * @param {boolean} opened
      */
     set opened(opened) {
       const parsedOpened = String(opened) === 'true';
-      const changed = parsedOpened !== this[openedSymbol];
-      this[openedSymbol] = parsedOpened;
+      const changed = parsedOpened !== this[openedKey];
+      this[openedKey] = parsedOpened;
       if ('opened' in Base.prototype) { super.opened = parsedOpened; }
       if (changed) {
         if (this[symbols.openedChanged]) {
@@ -98,11 +102,13 @@ export default function OpenCloseMixin(Base) {
      * `close`.
      */
     open() {
-      this.opened = true;
-      const promise = new Promise((resolve, reject) => {
-        this[resolveOpenSymbol] = resolve;
-      });
-      return promise;
+      if (!this.opened) {
+        this[closePromiseKey] = new Promise((resolve, reject) => {
+          this[closeResolveKey] = resolve;
+        });
+        this.opened = true;
+      }
+      return this[closePromiseKey];
     }
 
     /**
