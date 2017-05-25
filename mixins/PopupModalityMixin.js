@@ -11,12 +11,13 @@ const closeListenerSymbol = Symbol('closeListener');
 
 
 // Expects: keydown, opened, shadowCreated
-export default function PopupModalityMixin(base) {
+export default function PopupModalityMixin(Base) {
 
   // The class prototype added by the mixin.
-  class PopupModality extends base {
+  class PopupModality extends Base {
 
     constructor() {
+      // @ts-ignore
       super();
       // Implicitly close on loss of focus.
       this.addEventListener('blur', () => {
@@ -44,7 +45,7 @@ export default function PopupModalityMixin(base) {
     }
     set opened(opened) {
       const changed = opened !== this.opened;
-      if ('opened' in base.prototype) { super.opened = opened; }
+      if ('opened' in Base.prototype) { super.opened = opened; }
       if (changed) {
         if (opened) {
 

@@ -11,10 +11,10 @@ const previousFocusedElementKey = Symbol('previousFocusedElement');
 const previousZIndexKey = Symbol('previousZIndex');
 
 
-export default function OverlayMixin(base) {
+export default function OverlayMixin(Base) {
 
   // The class prototype added by the mixin.
-  class Overlay extends base {
+  class Overlay extends Base {
 
     [symbols.afterEffect](effect) {
       if (super[symbols.afterEffect]) { super[symbols.afterEffect](effect); }
@@ -35,7 +35,9 @@ export default function OverlayMixin(base) {
         case 'opening':
           this[previousFocusedElementKey] = document.activeElement;
           this[previousZIndexKey] = this.style.zIndex;
-          if (getComputedStyle(this).zIndex === 'auto') {
+          /** @type {any} */
+          const element = this;
+          if (getComputedStyle(element).zIndex === 'auto') {
             // Assign default z-index.
             this.style.zIndex = maxZIndexInUse() + 1;
           }
@@ -67,13 +69,15 @@ export default function OverlayMixin(base) {
     set opened(opened) {
       const parsedOpened = String(opened) === 'true';
       const changed = parsedOpened !== this.opened;
-      if ('opened' in base.prototype) { super.opened = parsedOpened; }
+      if ('opened' in Base.prototype) { super.opened = parsedOpened; }
       if (changed) {
         if (parsedOpened) {
           // Opening
           if (!isElementInDocument(this)) {
             this[appendedToDocumentKey] = true;
-            document.body.appendChild(this);
+            /** @type {any} */
+            const element = this;
+            document.body.appendChild(element);
           }
         }
         if (!this[symbols.applyEffect]) {
@@ -123,7 +127,7 @@ function maxZIndexInUse() {
     const style = getComputedStyle(element);
     let zIndex = 0;
     if (style.position !== 'static' && style.zIndex !== 'auto') {
-      const parsed = parseInt(style.zIndex);
+      const parsed = style.zIndex ? parseInt(style.zIndex) : 0;
       zIndex = !isNaN(parsed) ? parsed : 0;
     }
     return zIndex;

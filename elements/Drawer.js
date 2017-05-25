@@ -8,16 +8,14 @@ import OpenCloseEffectMixin from '../mixins/OpenCloseEffectMixin.js';
 import symbols from '../mixins/symbols.js';
 
 
-const mixins = [
-  AsyncEffectMixin,
-  OpenCloseEffectMixin,
-];
-
-// Apply the above mixins to Dialog.
-const base = mixins.reduce((cls, mixin) => mixin(cls), Dialog);
+const Base =
+  AsyncEffectMixin(
+  OpenCloseEffectMixin(
+    Dialog
+  ));
 
 
-class Drawer extends base {
+class Drawer extends Base {
 
   [symbols.shadowCreated]() {
     if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }

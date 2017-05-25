@@ -18,7 +18,9 @@ export default function FocusCaptureWrapper(base) {
     [symbols.keydown](event) {
       let handled;
 
-      if (document.activeElement === this &&
+      /** @type {any} */
+      const element = this;
+      if (document.activeElement === element &&
           this.shadowRoot.activeElement === null &&
           event.keyCode === 9 && event.shiftKey) {
         // Set focus to focus catcher.

@@ -12,16 +12,14 @@ const durationKey = Symbol('duration');
 const timeoutKey = Symbol('timeout');
 
 
-const mixins = [
-  AsyncEffectMixin,
-  OpenCloseEffectMixin,
-];
-
-// Apply the above mixins to Popup.
-const base = mixins.reduce((cls, mixin) => mixin(cls), Popup);
+const Base = 
+  AsyncEffectMixin(
+  OpenCloseEffectMixin(
+    Popup
+  ));
 
 
-class Toast extends base {
+class Toast extends Base {
 
   constructor() {
     super();
@@ -56,12 +54,17 @@ class Toast extends base {
     return defaults;
   }
 
+  /**
+   * @type {number}
+   */
   get duration() {
     return this[durationKey];
   }
+  /**
+   * @param {number} duration
+   */
   set duration(duration) {
-    this[durationKey] = parseInt(duration);
-    if ('duration' in base.prototype) { super.duration = duration; }
+    this[durationKey] = typeof duration === 'string' ? parseInt(duration) : 0;
   }
 
   get opened() {

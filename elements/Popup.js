@@ -12,21 +12,19 @@ import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import symbols from '../mixins/symbols.js';
 
 
-const mixins = [
-  AttributeMarshallingMixin,
-  KeyboardMixin,
-  OpenCloseMixin,
-  OverlayMixin,
-  PopupModalityMixin,
-  ShadowReferencesMixin,
-  ShadowTemplateMixin
-];
-
-// Apply the above mixins to HTMLElement.
-const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
+const Base = 
+  AttributeMarshallingMixin(
+  KeyboardMixin(
+  OpenCloseMixin(
+  OverlayMixin(
+  PopupModalityMixin(
+  ShadowReferencesMixin(
+  ShadowTemplateMixin(
+    HTMLElement
+  )))))));
 
 
-class Popup extends base {
+class Popup extends Base {
 
   connectedCallback() {
     if (super.connectedCallback) { super.connectedCallback(); }

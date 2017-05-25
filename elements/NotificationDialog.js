@@ -16,8 +16,10 @@ class NotificationDialog extends Dialog {
     if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
     this.$.buttonContainer.addEventListener('click', event => {
       // TODO: Ignore clicks on buttonContainer background.
-      const button = event.target;
-      this.close(button.textContent);
+      if (event.target instanceof HTMLElement) {
+        const button = event.target;
+        this.close(button.textContent);
+      }
     });
   }
 
@@ -26,7 +28,15 @@ class NotificationDialog extends Dialog {
   }
   set choices(choices) {
     this[choices] = choices;
+    if (!this.shadowRoot) {
+      console.warn(`NotificationDialog couldn't find its own shadowRoot.`);
+      return;
+    }
     const slot = this.shadowRoot.querySelector('slot[name="buttons"]');
+    if (!slot) {
+      console.warn(`NotificationDialog couldn't find its default slot.`);
+      return;
+    }
     renderArrayAsElements(choices, slot, (choice, button) => {
       if (!button) {
         button = document.createElement('button');

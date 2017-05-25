@@ -14,24 +14,26 @@ import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import symbols from '../mixins/symbols.js';
 
 
-const mixins = [
-  AttributeMarshallingMixin,
-  DialogModalityMixin,
-  KeyboardMixin,
-  OpenCloseMixin,
-  OverlayMixin,
-  ShadowReferencesMixin,
-  ShadowTemplateMixin
-];
-
-// Apply the above mixins to HTMLElement.
-const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
+const Base =
+  AttributeMarshallingMixin(
+  DialogModalityMixin(
+  KeyboardMixin(
+  OpenCloseMixin(
+  OverlayMixin(
+  ShadowReferencesMixin(
+  ShadowTemplateMixin(
+    HTMLElement
+  )))))));
 
 
-class DialogCore extends base {
+class DialogCore extends Base {
 
   // TODO: Make `backdrop` a symbol.
   get backdrop() {
+    if (!this.shadowRoot) {
+      console.warn(`Dialog couldn't find its own shadowRoot.`);
+      return;
+    }
     return this.shadowRoot.querySelector('#backdrop');
   }
 

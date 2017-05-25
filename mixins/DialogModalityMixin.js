@@ -8,10 +8,10 @@ const previousDocumentMarginRight = Symbol('previousDocumentMarginRight');
 
 
 // Expects: keydown, opened, backdrop, shadowCreated
-export default function DialogModalityMixin(base) {
+export default function DialogModalityMixin(Base) {
 
   // The class prototype added by the mixin.
-  class DialogModality extends base {
+  class DialogModality extends Base {
 
     [symbols.keydown](event) {
       let handled = false;
@@ -51,7 +51,7 @@ export default function DialogModalityMixin(base) {
       return super.opened;
     }
     set opened(opened) {
-      if ('opened' in base.prototype) { super.opened = opened; }
+      if ('opened' in Base.prototype) { super.opened = opened; }
       if (opened) {
         // Mark body as non-scrollable, to absorb space bar keypresses and other
         // means of scrolling the top-level document.

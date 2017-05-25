@@ -20,12 +20,13 @@ const resolveOpenSymbol = Symbol('resolveOpen');
  * opened, and a `opened` class if opened. It also invokes a `render`
  * function that can be overridden to apply custom effects.
  */
-export default function OpenCloseMixin(base) {
+export default function OpenCloseMixin(Base) {
 
   // The class prototype added by the mixin.
-  class OpenClose extends base {
+  class OpenClose extends Base {
 
     constructor() {
+      // @ts-ignore
       super();
       // Set defaults.
       // TODO: Support opening by default.
@@ -40,6 +41,8 @@ export default function OpenCloseMixin(base) {
      * This sets the `opened` property to true. If the `close` call was
      * preceded by an `open` call, then this resolves the promise returned by
      * `open`.
+     * 
+     * @param {any} [result] - The result of closing the overlay
      */
     close(result) {
       if (super.close) { super.close(); }
@@ -61,11 +64,14 @@ export default function OpenCloseMixin(base) {
     get opened() {
       return this[openedSymbol];
     }
+    /**
+     * @param {boolean} opened
+     */
     set opened(opened) {
       const parsedOpened = String(opened) === 'true';
       const changed = parsedOpened !== this[openedSymbol];
       this[openedSymbol] = parsedOpened;
-      if ('opened' in base.prototype) { super.opened = parsedOpened; }
+      if ('opened' in Base.prototype) { super.opened = parsedOpened; }
       if (changed && this[symbols.raiseChangeEvents]) {
         const event = new CustomEvent('opened-changed');
         this.dispatchEvent(event);
