@@ -11,23 +11,18 @@ class SampleDialog extends Dialog {
     });
   }
 
-  get [symbols.template]() {
-    // Inject our template into the base template.
-    let baseTemplate = super[symbols.template];
-    if (baseTemplate instanceof HTMLTemplateElement) {
-      baseTemplate = baseTemplate.innerHTML; // Downgrade to string.
-    }
-    const contentTemplate = `
+  [symbols.template](fills = {}) {
+    const template = `
       <style>
         #message {
           padding: 1em;
         }
       </style>
       <div id="message">
-        <slot></slot>
+        ${fills.default || `<slot></slot>`}
       </div>
-    `;
-    return baseTemplate.replace(`<slot></slot>`, contentTemplate);
+    `
+    return super[symbols.template]({ default: template });
   }
 
 }

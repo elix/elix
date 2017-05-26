@@ -4,7 +4,7 @@ import symbols from '../../mixins/symbols.js';
 
 
 class QuietButton extends FocusRingMixin(ShadowTemplateMixin(HTMLElement)) {
-  get [symbols.template]() {
+  [symbols.template]() {
     return `
       <style>
         :host {

@@ -41,7 +41,7 @@ class Popup extends Base {
     return defaults;
   }
 
-  get [symbols.template]() {
+  [symbols.template](fills = {}) {
     return `
       <style>
         :host {
@@ -70,7 +70,7 @@ class Popup extends Base {
         }
       </style>
       <div id="overlayContent">
-        <slot></slot>
+        ${fills.default || `<slot></slot>`}
       </div>
     `;
   }

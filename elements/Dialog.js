@@ -15,6 +15,10 @@ import symbols from '../mixins/symbols.js';
 
 
 const Base =
+  // Relative order of wrapper application matters.
+  BackdropWrapper(
+  FocusCaptureWrapper(
+
   AttributeMarshallingMixin(
   DialogModalityMixin(
   KeyboardMixin(
@@ -23,10 +27,10 @@ const Base =
   ShadowReferencesMixin(
   ShadowTemplateMixin(
     HTMLElement
-  )))))));
+  )))))))));
 
 
-class DialogCore extends Base {
+class Dialog extends Base {
 
   // TODO: Make `backdrop` a symbol.
   get backdrop() {
@@ -52,8 +56,8 @@ class DialogCore extends Base {
     return defaults;
   }
 
-  get [symbols.template]() {
-    return `
+  [symbols.template](fills = {}) {
+    const template = `
       <style>
         :host {
           align-items: center;
@@ -73,14 +77,12 @@ class DialogCore extends Base {
           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
       </style>
-      <slot></slot>
+      ${fills.default || `<slot></slot>`}
     `;
+    return super[symbols.template]({ default: template });
   }
 
 }
-
-
-class Dialog extends BackdropWrapper(FocusCaptureWrapper(DialogCore)) {}
 
 
 customElements.define('elix-dialog', Dialog);

@@ -26,13 +26,8 @@ class Drawer extends Base {
     });
   }
 
-  get [symbols.template]() {
-    // Inject our template into the base template.
-    let baseTemplate = super[symbols.template];
-    if (baseTemplate instanceof HTMLTemplateElement) {
-      baseTemplate = baseTemplate.innerHTML; // Downgrade to string.
-    }
-    const contentTemplate = `
+  [symbols.template](fills = {}) {
+    const template = `
       <style>
         :host {
           align-items: stretch;
@@ -66,10 +61,10 @@ class Drawer extends Base {
             transition-duration: 0.001s;
           }
         }
-        </style>
-      <slot></slot>
+      </style>
+      ${ fills.default || `<slot></slot>`}
     `;
-    return baseTemplate.replace(`<slot></slot>`, contentTemplate);
+    return super[symbols.template]({ default: template });
   }
 
 }

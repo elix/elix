@@ -54,12 +54,10 @@ class NotificationDialog extends Dialog {
     return ['OK', 'Cancel'];
   }
 
-  get [symbols.template]() {
-    let baseTemplate = super[symbols.template];
-    if (baseTemplate instanceof HTMLTemplateElement) {
-      baseTemplate = baseTemplate.innerHTML; // Downgrade to string.
-    }
-    const contentTemplate = `
+  [symbols.template](fills = {}) {
+    const defaultSlot = fills.default || `<slot></slot>`;
+    const buttonsSlot = fills.buttons || `<slot name="buttons"><button>OK</button></slot>`;
+    const template = `
       <style>
         #container {
           padding: 1em;
@@ -79,13 +77,13 @@ class NotificationDialog extends Dialog {
         }
       </style>
       <div id="container">
-        <slot></slot>
+        ${defaultSlot}
         <div id="buttonContainer">
-          <slot name="buttons"><button>OK</button></slot>
+          ${buttonsSlot}
         </div>
       </div>
     `;
-    return baseTemplate.replace(`<slot></slot>`, contentTemplate);
+    return super[symbols.template]({ default: template });
   }
 
 }
