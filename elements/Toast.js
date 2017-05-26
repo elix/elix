@@ -3,7 +3,7 @@
 //
 
 import AsyncEffectMixin from '../mixins/AsyncEffectMixin.js';
-import OpenCloseEffectMixin from '../mixins/OpenCloseEffectMixin.js';
+import TransitionEffectMixin from '../mixins/TransitionEffectMixin.js';
 import Popup from './Popup.js';
 import symbols from '../mixins/symbols.js';
 
@@ -14,7 +14,7 @@ const timeoutKey = Symbol('timeout');
 
 const Base = 
   AsyncEffectMixin(
-  OpenCloseEffectMixin(
+  TransitionEffectMixin(
     Popup
   ));
 
@@ -94,12 +94,16 @@ class Toast extends Base {
 
         #overlayContent {
           margin-bottom: 1em;
+          opacity: 0;
           transform: translateY(100%);
-          transition: transform 0.25s ease-in;
-          will-change: transform;
+          transition-duration: 0.25s;
+          transition-property: opacity transform;
+          transition-timing-function: ease-in;
+          will-change: opactiy transform;
         }
 
-        :host(.opened) #overlayContent {
+        :host(.opening-effect) #overlayContent {
+          opacity: 1.0;
           transform: translateY(0);
           transition-timing-function: ease-out;
         }

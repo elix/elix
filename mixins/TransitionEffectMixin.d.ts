@@ -3,10 +3,10 @@
 
 /// <reference path="../elix.d.ts"/>
 
-declare const OpenCloseEffectMixin: Mixin<{
+declare const TransitionEffectMixin: Mixin<{
   opened?: boolean;
 }, {
   opened: boolean;
 }>;
 
-export default OpenCloseEffectMixin;
+export default TransitionEffectMixin;

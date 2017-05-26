@@ -3,10 +3,6 @@
 
 /// <reference path="../elix.d.ts"/>
 
-declare const DialogModalityMixin: Mixin<{
-  opened?: boolean;
-}, {
-  opened: boolean;
-}>;
+declare const DialogModalityMixin: Mixin<{}, {}>;
 
 export default DialogModalityMixin;

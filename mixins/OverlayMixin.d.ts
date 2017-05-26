@@ -5,10 +5,8 @@
 
 declare const OverlayMixin: Mixin<{
   connectedCallback?(): void;
-  opened?: boolean;
 }, {
   connectedCallback(): void;
-  opened: boolean;
 }>;
 
 export default OverlayMixin;

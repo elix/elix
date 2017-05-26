@@ -25,6 +25,10 @@ export default function OverlayMixin(Base) {
             this.style.zIndex = null;
           }
           this[previousZIndexKey] = null;
+          if (this[appendedToDocumentKey]) {
+            this.parentNode.removeChild(this);
+            this[appendedToDocumentKey] = false;
+          }
           break;
       }
     }
@@ -74,18 +78,15 @@ export default function OverlayMixin(Base) {
           document.body.appendChild(element);
         }
       }
-      if (!this[symbols.applyEffect]) {
-        // Do synchronous open/close.
-        const effect = opened ? 'opening' : 'closing';
+      const effect = opened ? 'opening' : 'closing';
+      // Does component support async effects?
+      if (this[symbols.applyEffect]) {
+        // Trigger asynchronous open/close.
+        this[symbols.showEffect](effect);
+      } else {
+        // Handle synchronous open/close ourselves.
         this[symbols.beforeEffect](effect);
         this[symbols.afterEffect](effect);
-      }
-      if (!opened) {
-        // Closing
-        if (this[appendedToDocumentKey]) {
-          this.parentNode.removeChild(this);
-          this[appendedToDocumentKey] = false;
-        }
       }
     }
   }

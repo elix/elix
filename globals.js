@@ -23,7 +23,6 @@ import KeyboardPagedSelectionMixin from './mixins/KeyboardPagedSelectionMixin.js
 import KeyboardPrefixSelectionMixin from './mixins/KeyboardPrefixSelectionMixin.js';
 import NotificationDialog from './elements/NotificationDialog.js';
 import OpenCloseMixin from './mixins/OpenCloseMixin.js';
-import OpenCloseEffectMixin from './mixins/OpenCloseEffectMixin.js';
 import OverlayMixin from './mixins/OverlayMixin.js';
 import renderArrayAsElements from './mixins/renderArrayAsElements.js';
 import SelectionAriaMixin from './mixins/SelectionAriaMixin.js';
@@ -33,6 +32,7 @@ import ShadowTemplateMixin from './mixins/ShadowTemplateMixin.js';
 import SingleSelectionMixin from './mixins/SingleSelectionMixin.js';
 import Symbol from './mixins/Symbol.js';
 import symbols from './mixins/symbols.js';
+import TransitionEffectMixin from './mixins/TransitionEffectMixin.js';
 
 // Import elements
 import Dialog from './elements/Dialog.js';
@@ -72,7 +72,6 @@ const Elix = {
   Modes,
   NotificationDialog,
   OpenCloseMixin,
-  OpenCloseEffectMixin,
   OverlayMixin,
   Popup,
   renderArrayAsElements,
@@ -86,6 +85,7 @@ const Elix = {
   Tabs,
   TabStrip,
   TabStripWrapper,
+  TransitionEffectMixin,
   Toast
 };
 

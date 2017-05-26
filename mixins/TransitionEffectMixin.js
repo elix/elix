@@ -11,10 +11,10 @@ const transitionendListener = Symbol('transitionendListener');
 
 // For now, assumes transition effects are applied at least to the overlay
 // content element, and that all effects finish at the same time.
-export default function OpenCloseEffectMixin(Base) {
+export default function TransitionEffectMixin(Base) {
 
   // The class prototype added by the mixin.
-  class OpenCloseEffect extends Base {
+  class TransitionEffect extends Base {
 
     [symbols.applyEffect](effect) {
       const base = super.applyEffect ? super[symbols.applyEffect](effect) : Promise.resolve();
@@ -30,16 +30,10 @@ export default function OpenCloseEffectMixin(Base) {
 
         // Apply the effect.
         requestAnimationFrame(() => {
-          this.classList.toggle('opened', effect === 'opening');
+          applyEffectClass(this, effect);
         });
       });
       return base.then(() => animationPromise);
-    }
-
-    [symbols.openedChanged](opened) {
-      if (super[symbols.openedChanged]) { super[symbols.openedChanged](opened); }
-      const effect = opened ? 'opening' : 'closing';
-      this[symbols.showEffect](effect);
     }
 
     [symbols.skipEffect](effect) {
@@ -48,5 +42,18 @@ export default function OpenCloseEffectMixin(Base) {
     }
   }
 
-  return OpenCloseEffect;
+  return TransitionEffect;
+}
+
+
+function applyEffectClass(element, effect) {
+  // Remove any classes left over from applying other effects.
+  const classList = element.classList;
+  classList.forEach(className => {
+    if (className.endsWith('-effect')) {
+      element.classList.remove(className);
+    }
+  });
+  // Add the class for the effect now being applied.
+  element.classList.add(`${effect}-effect`);
 }

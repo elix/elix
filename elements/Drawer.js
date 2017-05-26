@@ -4,13 +4,13 @@
 
 import AsyncEffectMixin from '../mixins/AsyncEffectMixin.js';
 import Dialog from './Dialog.js';
-import OpenCloseEffectMixin from '../mixins/OpenCloseEffectMixin.js';
+import TransitionEffectMixin from '../mixins/TransitionEffectMixin.js';
 import symbols from '../mixins/symbols.js';
 
 
 const Base =
   AsyncEffectMixin(
-  OpenCloseEffectMixin(
+  TransitionEffectMixin(
     Dialog
   ));
 
@@ -45,7 +45,7 @@ class Drawer extends Base {
           transition: opacity 0.25s linear;
         }
 
-        :host(.opened) #backdrop {
+        :host(.opening-effect) #backdrop {
           opacity: 0.4;
         }
 
@@ -55,7 +55,7 @@ class Drawer extends Base {
           will-change: transform;
         }
 
-        :host(.opened) #overlayContent {
+        :host(.opening-effect) #overlayContent {
           transform: translateX(0);
           transition-timing-function: ease-out;
         }
