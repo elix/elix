@@ -20,15 +20,21 @@ export default function OverlayMixin(Base) {
       if (super[symbols.afterEffect]) { super[symbols.afterEffect](effect); }
       switch (effect) {
         case 'closing':
+          // Hide the element.
           makeVisible(this, false);
-          if (this[previousZIndexKey] === '') {
-            this.style.zIndex = null;
-          }
+
+          // Restore z-index.
+          this.style.zIndex = this[previousZIndexKey] === '' ?
+            null :
+            this[previousZIndexKey];
           this[previousZIndexKey] = null;
+
+          // If we added it to the document when opening, remove it now.
           if (this[appendedToDocumentKey]) {
             this.parentNode.removeChild(this);
             this[appendedToDocumentKey] = false;
           }
+
           break;
       }
     }
@@ -36,8 +42,20 @@ export default function OverlayMixin(Base) {
     [symbols.beforeEffect](effect) {
       if (super[symbols.beforeEffect]) { super[symbols.beforeEffect](effect); }
       switch (effect) {
+
         case 'opening':
+          // Remember which element had the focus before we opened.
           this[previousFocusedElementKey] = document.activeElement;
+
+          // Add the element to the document if it's not present yet.
+          if (!isElementInDocument(this)) {
+            this[appendedToDocumentKey] = true;
+            /** @type {any} */
+            const element = this;
+            document.body.appendChild(element);
+          }
+
+          // Remember the element's current z-index.
           this[previousZIndexKey] = this.style.zIndex;
           /** @type {any} */
           const element = this;
@@ -45,11 +63,15 @@ export default function OverlayMixin(Base) {
             // Assign default z-index.
             this.style.zIndex = maxZIndexInUse() + 1;
           }
+
+          // Finally make it visible and give it focus.
           makeVisible(this, true);
           this.focus();
+
           break;
 
         case 'closing':
+          // Restore previously focused element before closing.
           if (this[previousFocusedElementKey]) {
             this[previousFocusedElementKey].focus();
             this[previousFocusedElementKey] = null;
@@ -69,18 +91,9 @@ export default function OverlayMixin(Base) {
 
     [symbols.openedChanged](opened) {
       if (super[symbols.openedChanged]) { super[symbols.openedChanged](opened); }
-      if (opened) {
-        // Opening
-        if (!isElementInDocument(this)) {
-          this[appendedToDocumentKey] = true;
-          /** @type {any} */
-          const element = this;
-          document.body.appendChild(element);
-        }
-      }
       const effect = opened ? 'opening' : 'closing';
       // Does component support async effects?
-      if (this[symbols.applyEffect]) {
+      if (this[symbols.showEffect]) {
         // Trigger asynchronous open/close.
         this[symbols.showEffect](effect);
       } else {
