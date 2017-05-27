@@ -56,8 +56,8 @@ class Dialog extends Base {
     return defaults;
   }
 
-  [symbols.template](fills = {}) {
-    const template = `
+  [symbols.template](filler) {
+    return super[symbols.template](`
       <style>
         :host {
           align-items: center;
@@ -77,9 +77,8 @@ class Dialog extends Base {
           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
       </style>
-      ${fills.default || `<slot></slot>`}
-    `;
-    return super[symbols.template]({ default: template });
+      ${filler || `<slot></slot>`}
+    `);
   }
 
 }

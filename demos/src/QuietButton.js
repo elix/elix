@@ -4,7 +4,7 @@ import symbols from '../../mixins/symbols.js';
 
 
 class QuietButton extends FocusRingMixin(ShadowTemplateMixin(HTMLElement)) {
-  [symbols.template]() {
+  [symbols.template](filler) {
     return `
       <style>
         :host {
@@ -23,7 +23,7 @@ class QuietButton extends FocusRingMixin(ShadowTemplateMixin(HTMLElement)) {
       </style>
 
       <button tabindex="0">
-        <slot></slot>
+        ${ filler || `<slot></slot>`}
       </button>
     `;
   }

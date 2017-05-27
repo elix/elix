@@ -47,13 +47,13 @@ export default function FocusCaptureWrapper(base) {
       });
     }
 
-    [symbols.template](fills = {}) {
+    [symbols.template](filler) {
       const template = `
-        ${fills.default || `<slot></slot>`}
+        ${filler || `<slot></slot>`}
         <div id="focusCatcher" tabindex="0"></div>
       `;
-      return super[symbols.template] ? 
-        super[symbols.template]({ default: template }) :
+      return super[symbols.template] ?
+        super[symbols.template](template) :
         template;
     }
 

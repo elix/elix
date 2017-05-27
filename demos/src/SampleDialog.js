@@ -11,18 +11,17 @@ class SampleDialog extends Dialog {
     });
   }
 
-  [symbols.template](fills = {}) {
-    const template = `
+  [symbols.template](filler) {
+    return super[symbols.template](`
       <style>
         #message {
           padding: 1em;
         }
       </style>
       <div id="message">
-        ${fills.default || `<slot></slot>`}
+        ${filler || `<slot></slot>`}
       </div>
-    `
-    return super[symbols.template]({ default: template });
+    `);
   }
 
 }

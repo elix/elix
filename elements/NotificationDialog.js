@@ -54,10 +54,12 @@ class NotificationDialog extends Dialog {
     return ['OK', 'Cancel'];
   }
 
-  [symbols.template](fills = {}) {
-    const defaultSlot = fills.default || `<slot></slot>`;
-    const buttonsSlot = fills.buttons || `<slot name="buttons"><button>OK</button></slot>`;
-    const template = `
+  [symbols.template](fillers = {}) {
+    const defaultFiller = typeof fillers === 'string' ?
+      fillers :
+      fillers.default || `<slot></slot>`;
+    const buttonFiller = fillers.buttons || `<slot name="buttons"><button>OK</button></slot>`;
+    return super[symbols.template](`
       <style>
         #container {
           padding: 1em;
@@ -77,13 +79,12 @@ class NotificationDialog extends Dialog {
         }
       </style>
       <div id="container">
-        ${defaultSlot}
+        ${defaultFiller}
         <div id="buttonContainer">
-          ${buttonsSlot}
+          ${buttonFiller}
         </div>
       </div>
-    `;
-    return super[symbols.template]({ default: template });
+    `);
   }
 
 }

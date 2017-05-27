@@ -26,8 +26,8 @@ class Drawer extends Base {
     });
   }
 
-  [symbols.template](fills = {}) {
-    const template = `
+  [symbols.template](filler) {
+    return super[symbols.template](`
       <style>
         :host {
           align-items: stretch;
@@ -62,9 +62,8 @@ class Drawer extends Base {
           }
         }
       </style>
-      ${ fills.default || `<slot></slot>`}
-    `;
-    return super[symbols.template]({ default: template });
+      ${ filler || `<slot></slot>`}
+    `);
   }
 
 }

@@ -74,8 +74,8 @@ class Toast extends Base {
     }
   }
 
-  [symbols.template](fills = {}) {
-    const template = `
+  [symbols.template](filler) {
+    return super[symbols.template](`
       <style>
         :host {
           align-items: center;
@@ -109,9 +109,8 @@ class Toast extends Base {
           }
         }
       </style>
-      ${fills.default || `<slot></slot>`}
-    `;
-    return super[symbols.template]({ default: template });
+      ${filler || `<slot></slot>`}
+    `);
   }
 
 }

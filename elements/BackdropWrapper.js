@@ -10,8 +10,8 @@ export default function BackdropWrapper(base) {
   // The class prototype added by the mixin.
   class Backdrop extends base {
 
-    [symbols.template](fills = {}) {
-    const template = `
+    [symbols.template](filler) {
+      const template = `
         <style>
           :host {
             height: 100%;
@@ -42,11 +42,11 @@ export default function BackdropWrapper(base) {
         </style>
         <div id="backdrop" role="none"></div>
         <div id="overlayContent" role="none">
-          ${fills.default || `<slot></slot>`}
+          ${filler || `<slot></slot>`}
         </div>
       `;
-      return super[symbols.template] ? 
-        super[symbols.template]({ default: template }) :
+      return super[symbols.template] ?
+        super[symbols.template](template) :
         template;
     }
   }
