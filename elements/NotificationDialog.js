@@ -7,7 +7,7 @@ import renderArrayAsElements from '../mixins/renderArrayAsElements.js';
 import symbols from '../mixins/symbols.js';
 
 
-const choices = Symbol('choices');
+const choicesKey = Symbol('choices');
 
 
 class NotificationDialog extends Dialog {
@@ -24,10 +24,10 @@ class NotificationDialog extends Dialog {
   }
 
   get choices() {
-    return this[choices];
+    return this[choicesKey];
   }
   set choices(choices) {
-    this[choices] = choices;
+    this[choicesKey] = choices;
     if (!this.shadowRoot) {
       console.warn(`NotificationDialog couldn't find its own shadowRoot.`);
       return;
@@ -44,6 +44,23 @@ class NotificationDialog extends Dialog {
       button.textContent = choice;
       return button;
     });
+  }
+
+  // Let the user select a choice by pressing its initial letter.
+  [symbols.keydown](event) {
+    let handled = false;
+
+    // Loop over choices to see if one of them starts with the key.
+    // TODO: Loop over buttons instead of choices?
+    const choiceIndex = this.choices.findIndex(choice =>
+      choice.charCodeAt(0) === event.keyCode);
+    if (choiceIndex >= 0) {
+      this.close(this.choices[choiceIndex]);
+      handled = true;
+    }
+
+    // Prefer mixin result if it's defined, otherwise use base result.
+    return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
   }
 
   static get OK() {
