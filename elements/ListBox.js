@@ -100,7 +100,7 @@ class ListBox extends Base {
     }
   }
 
-  get [symbols.template]() {
+  [symbols.template](filler) {
     return `
       <style>
       :host {
@@ -139,7 +139,7 @@ class ListBox extends Base {
       </style>
 
       <div id="itemsContainer" role="none">
-        <slot></slot>
+        ${filler || `<slot></slot>`}
       </div>
     `;
   }

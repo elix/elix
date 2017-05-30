@@ -6,7 +6,7 @@ import ShadowTemplateMixin from '../../mixins/ShadowTemplateMixin.js';
 
 /* Element with a simple template */
 class ElementWithStringTemplate extends ShadowTemplateMixin(HTMLElement) {
-  get [symbols.template]() {
+  [symbols.template]() {
     return "<div>Hello</div>";
   }
 }
@@ -17,7 +17,7 @@ customElements.define('element-with-string-template', ElementWithStringTemplate)
 const template = document.createElement('template');
 template.innerHTML = "Hello";
 class ElementWithRealTemplate extends ShadowTemplateMixin(HTMLElement) {
-  get [symbols.template]() {
+  [symbols.template]() {
     return template;
   }
 }
@@ -26,7 +26,7 @@ customElements.define('element-with-real-template', ElementWithRealTemplate);
 
 /* Element with styles to polyfill. */
 class ElementWithStylesInTemplate extends ShadowTemplateMixin(HTMLElement) {
-  get [symbols.template]() {
+  [symbols.template]() {
     return `
       <style>
         /* Use a style that will get polyfilled. */
