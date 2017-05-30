@@ -15,7 +15,9 @@ import symbols from '../mixins/symbols.js';
 
 
 const Base =
-  // Relative order of wrapper application matters.
+  // Relative order of wrapper application matters: first focus capture
+  // wrapper, then backdrop wrapper. Remaining mixins can be applied in
+  // any order.
   BackdropWrapper(
   FocusCaptureWrapper(
 
