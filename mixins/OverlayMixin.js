@@ -59,7 +59,12 @@ export default function OverlayMixin(Base) {
           this[previousZIndexKey] = this.style.zIndex;
           /** @type {any} */
           const element = this;
-          if (getComputedStyle(element).zIndex === 'auto') {
+          // It seems like it should be possible to rely on inspecting zIndex
+          // via getComputedStyle. However, unit testing reveals at least one
+          // case where an inline zIndex style change made immediately before
+          // opening the overlay was not reflected by getComputedStyle. Hence,
+          // we also check the inline style value.
+          if (element.style.zIndex === '' && getComputedStyle(element).zIndex === 'auto') {
             // Assign default z-index.
             this.style.zIndex = maxZIndexInUse() + 1;
           }
