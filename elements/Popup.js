@@ -12,7 +12,7 @@ import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import symbols from '../mixins/symbols.js';
 
 
-const Base = 
+const Base =
   AttributeMarshallingMixin(
   KeyboardMixin(
   OpenCloseMixin(

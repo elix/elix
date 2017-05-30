@@ -3,20 +3,29 @@
 //
 
 import AsyncEffectMixin from '../mixins/AsyncEffectMixin.js';
-import TransitionEffectMixin from '../mixins/TransitionEffectMixin.js';
-import Popup from './Popup.js';
+import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
+import OpenCloseMixin from '../mixins/OpenCloseMixin.js';
+import OverlayMixin from '../mixins/OverlayMixin.js';
+import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
+import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import symbols from '../mixins/symbols.js';
+import TransitionEffectMixin from '../mixins/TransitionEffectMixin.js';
 
 
 const durationKey = Symbol('duration');
 const timeoutKey = Symbol('timeout');
 
 
-const Base = 
+const Base =
   AsyncEffectMixin(
+  AttributeMarshallingMixin(
+  OpenCloseMixin(
+  OverlayMixin(
+  ShadowReferencesMixin(
+  ShadowTemplateMixin(
   TransitionEffectMixin(
-    Popup
-  ));
+    HTMLElement
+  )))))));
 
 
 class Toast extends Base {
@@ -43,14 +52,26 @@ class Toast extends Base {
     if (super[symbols.afterEffect]) { super[symbols.afterEffect](effect); }
     switch (effect) {
       case 'opening':
-        startTimer(this);
+        if (this.duration != null) {
+          startTimer(this);
+        }
         break;
+    }
+  }
+
+  connectedCallback() {
+    if (super.connectedCallback) { super.connectedCallback(); }
+
+    // Set default ARIA role for the dialog.
+    if (this.getAttribute('role') == null && this[symbols.defaults].role) {
+      this.setAttribute('role', this[symbols.defaults].role);
     }
   }
 
   get [symbols.defaults]() {
     const defaults = super[symbols.defaults] || {};
-    defaults.duration = 1000; /* milliseconds */
+    defaults.duration = 3000; /* milliseconds */
+    defaults.role = 'tooltip';
     return defaults;
   }
 
@@ -75,21 +96,33 @@ class Toast extends Base {
   }
 
   [symbols.template](filler) {
-    return super[symbols.template](`
+    return `
       <style>
         :host {
           align-items: center;
+          display: flex;
           flex-direction: column;
+          height: 100%;
           justify-content: flex-end;
+          left: 0;
+          outline: none;
+          pointer-events: none;
+          position: fixed;
+          top: 0;
+          width: 100%;
         }
 
-        #backdrop {
-          background: none;
+        :host(:not(.visible)) {
+          display: none;
         }
 
         #overlayContent {
+          background: white;
+          border: 1px solid rgba(0, 0, 0, 0.2);
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
           margin-bottom: 1em;
           opacity: 0;
+          pointer-events: initial;
           transform: translateY(100%);
           transition-duration: 0.25s;
           transition-property: opacity transform;
@@ -109,8 +142,10 @@ class Toast extends Base {
           }
         }
       </style>
-      ${filler || `<slot></slot>`}
-    `);
+      <div id="overlayContent">
+        ${filler || `<slot></slot>`}
+      </div>
+    `;
   }
 
 }
