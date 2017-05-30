@@ -82,7 +82,7 @@ class BrowserPluginList extends Base {
 
   // Define a template that will be stamped into the Shadow DOM by the
   // ShadowTemplateMixin.
-  get [symbols.template]() {
+  [symbols.template]() {
     return `
       <style>
       :host {

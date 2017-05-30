@@ -14,18 +14,18 @@ const mapTagToTemplate = {};
  * Mixin which adds stamping a template into a Shadow DOM subtree upon component
  * instantiation.
  *
- * To use this mixin, define a `template` property as a string or HTML
+ * To use this mixin, define a `template` method that returns a string or HTML
  * `<template>` element:
  *
  *     class MyElement extends ShadowTemplateMixin(HTMLElement) {
- *       get [symbols.template]() {
+ *       [symbols.template]() {
  *         return `Hello, <em>world</em>.`;
  *       }
  *     }
  *
  * When your component class is instantiated, a shadow root will be created on
  * the instance, and the contents of the template will be cloned into the
- * shadow root. If your component does not define a `template` property, this
+ * shadow root. If your component does not define a `template` method, this
  * mixin has no effect.
  *
  * @module ShadowTemplateMixin
@@ -51,9 +51,9 @@ export default function ShadowTemplateMixin(Base) {
         // This is the first time we've created an instance of this tag.
 
         // Get the template and perform initial processing.
-        template = this[symbols.template];
+        template = this[symbols.template]();
         if (!template) {
-          console.warn(`ShadowTemplateMixin expects a component to define a property called [symbols.template].`);
+          console.warn(`ShadowTemplateMixin expects a component to define a method called [symbols.template].`);
           return;
         }
 

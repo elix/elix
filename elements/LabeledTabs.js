@@ -56,20 +56,24 @@ class LabeledTabs extends Tabs {
   // https://github.com/w3c/webcomponents/issues/631. This bug comes into play
   // when a LabeledTabs component has tabAlign set to "stretch". We work around
   // this bug by adding a style rule that explicitly styles slot children.
-  get [symbols.template]() {
-    let baseTemplate = super[symbols.template] || '';
-    if (baseTemplate instanceof HTMLTemplateElement) {
-      baseTemplate = baseTemplate.innerHTML; // Downgrade to string.
-    }
-    return `
-      ${baseTemplate}
+  [symbols.template](fillers) {
+    const defaultFiller = typeof fillers === 'string' ?
+      fillers :
+      (fillers && fillers.default) || `<slot></slot>`;
+    const tabButtonsFiller = fillers && fillers.tabButtons;
+    /* Styling workaround: see note above */
+    const template = `
+      ${defaultFiller}
       <style>
-        /* Workaround: see note above */
         :host([tab-align="stretch"]) slot[name="tabButtons"] > * {
           flex: 1;
         }
       </style>
     `;
+    return super[symbols.template]({
+      default: template,
+      tabButtons: tabButtonsFiller
+    });
   }
 
 }

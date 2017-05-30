@@ -8,7 +8,7 @@ import symbols from '../../mixins/symbols.js';
  * Simple element with a slot.
  */
 class ChildrenTest extends ShadowTemplateMixin(HTMLElement) {
-  get [symbols.template]() {
+  [symbols.template]() {
     return `
       <div id="static">This is static content</div>
       <slot></slot>
@@ -22,7 +22,7 @@ customElements.define('children-test', ChildrenTest);
  * Element containing an instance of the above, so we can test redistribution.
  */
 class RedistributionTest extends ShadowTemplateMixin(HTMLElement) {
-  get [symbols.template]() {
+  [symbols.template]() {
     return `<children-test><slot></slot></children-test>`;
   }
 }

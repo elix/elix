@@ -4,7 +4,7 @@ import symbols from '../../mixins/symbols.js';
 
 
 class ToolbarTab extends FocusRingMixin(ShadowTemplateMixin(HTMLElement)) {
-  get [symbols.template]() {
+  [symbols.template](filler) {
     return `
       <style>
         :host {
@@ -36,7 +36,7 @@ class ToolbarTab extends FocusRingMixin(ShadowTemplateMixin(HTMLElement)) {
       </style>
 
       <button tabindex="-1">
-        <slot></slot>
+        ${filler || `<slot></slot>`}
       </button>
     `;
   }

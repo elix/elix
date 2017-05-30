@@ -95,11 +95,6 @@ class TabStrip extends Base {
     item.setAttribute('tabindex', 0);
   }
 
-  // [symbols.itemsChanged]() {
-  //   if (super[symbols.itemsChanged]) { super[symbols.itemsChanged](); }
-  //   console.log(this.items);
-  // }
-
   [symbols.itemSelected](item, selected) {
     if (super[symbols.itemSelected]) { super[symbols.itemSelected](item, selected); }
     if (selected) {
@@ -172,7 +167,7 @@ class TabStrip extends Base {
     });
   }
 
-  get [symbols.template]() {
+  [symbols.template](filler) {
     return `
       <style>
         :host {
@@ -219,7 +214,7 @@ class TabStrip extends Base {
       </style>
 
       <div id="tabButtonContainer" role="none">
-        <slot></slot>
+        ${filler || `<slot></slot>`}
       </div>
     `;
   }
