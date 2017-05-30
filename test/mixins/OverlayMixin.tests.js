@@ -68,7 +68,7 @@ describe("OverlayMixin", function() {
     assert(afterEffectSpy.calledWith('opening'));
   });
 
-  it('invokes beforeEffect and afterEffect asynchronously if showEffect is defined', () => {
+  it('doesn\'t invoke beforeEffect and afterEffect if showEffect is defined', () => {
     const fixture = document.createElement('overlay-test');
     container.appendChild(fixture);
     const beforeEffectSpy = sinon.spy(fixture, symbols.beforeEffect);
