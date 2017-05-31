@@ -37,7 +37,7 @@ class Popup extends Base {
 
   get [symbols.defaults]() {
     const defaults = super[symbols.defaults] || {};
-    defaults.role = 'tooltip';
+    defaults.role = 'alert';
     return defaults;
   }
 

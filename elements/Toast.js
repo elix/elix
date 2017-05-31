@@ -69,7 +69,7 @@ class Toast extends Base {
   get [symbols.defaults]() {
     const defaults = super[symbols.defaults] || {};
     defaults.duration = 2500; /* milliseconds */
-    defaults.role = 'tooltip';
+    defaults.role = 'alert';
     return defaults;
   }
 
