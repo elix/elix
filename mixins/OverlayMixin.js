@@ -48,7 +48,7 @@ export default function OverlayMixin(Base) {
           this[previousFocusedElementKey] = document.activeElement;
 
           // Add the element to the document if it's not present yet.
-          if (!isElementInDocument(this)) {
+          if (!isElementInBody(this)) {
             this[appendedToDocumentKey] = true;
             /** @type {any} */
             const element = this;
@@ -114,16 +114,16 @@ export default function OverlayMixin(Base) {
 }
 
 
-// Return true if the element is in the document.
-// This is like document.contains(), but also returns true for elements in
+// Return true if the element is in the document body.
+// This is like document.body.contains(), but also returns true for elements in
 // shadow trees.
-function isElementInDocument(element) {
-  if (document.contains(element)) {
+function isElementInBody(element) {
+  if (document.body.contains(element)) {
     return true;
   }
   const parent = element.parentNode || element.host;
   return parent ?
-    isElementInDocument(parent) :
+    isElementInBody(parent) :
     false;
 }
 
