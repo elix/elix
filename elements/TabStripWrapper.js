@@ -1,4 +1,3 @@
-import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
 import symbols from '../mixins/symbols.js';
 import TabStrip from './TabStrip.js'; // jshint ignore:line
 
@@ -26,7 +25,7 @@ let idCount = 0;
  */
 export default function TabStripWrapper(Base) {
 
-  class TabStripWrap extends ShadowReferencesMixin(Base) {
+  class TabStripWrap extends Base {
 
     connectedCallback() {
       if (super.connectedCallback) { super.connectedCallback(); }
@@ -76,6 +75,10 @@ export default function TabStripWrapper(Base) {
       });
     }
 
+    get pages() {
+      return this.shadowRoot.querySelector('#pages');
+    }
+
     get selectedIndex() {
       return super.selectedIndex;
     }
@@ -88,7 +91,7 @@ export default function TabStripWrapper(Base) {
 
     [symbols.shadowCreated]() {
       if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
-      this.$.tabStrip.addEventListener('selected-index-changed', event => {
+      this.tabStrip.addEventListener('selected-index-changed', event => {
         if (event instanceof CustomEvent) {
           this.selectedIndex = event.detail.selectedIndex;
         }
@@ -125,11 +128,11 @@ export default function TabStripWrapper(Base) {
       // the controls.
       const topOrLeft = (tabPosition === 'top' || tabPosition === 'left');
       const firstElement = topOrLeft ?
-        this.$.tabStrip :
-        this.$.pages;
+        this.tabStrip :
+        this.pages;
       const lastElement = topOrLeft ?
-        this.$.pages :
-        this.$.tabStrip;
+        this.pages :
+        this.tabStrip;
       if (!this.shadowRoot) {
         console.warn(`TabStripWrapper expects a component to define a shadowRoot.`);
       } else if (firstElement.nextSibling !== lastElement) {
@@ -145,7 +148,7 @@ export default function TabStripWrapper(Base) {
      * @type {TabStrip}
      */
     get tabStrip() {
-      return this.$.tabStrip;
+      return this.shadowRoot.querySelector('#tabStrip');
     }
 
     [symbols.template](fillers = {}) {

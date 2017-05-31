@@ -88,17 +88,13 @@ For full documentation and demos, see https://elix.org.
 
 # Getting started
 
-1. Clone or fork the project.
-2. `npm install -g yarn`
-3. `yarn install`
-4. `gulp`. Depending on your OS, you’ll see available gulp tasks listed, or if
-   not, do this: `npm install -g gulp-cli`
-5. `gulp build`. Builds distribution .js files for all components and mixins,
-   as well as demos and unit tests. Also builds jsDoc-derived README.md
-   documentation files and runs lint.
+We generally prefer `yarn`, although `npm` also works.
 
-Note that the built document files are committed to the repo. After running
-`gulp build`, a `git status` should show nothing new or changed.
+1. Clone or fork the project.
+2. `yarn install` (or `npm install`).
+3. `yarn build` (or `npm run build`). Builds distribution .js files for all
+   components and mixins, as well as demos and unit tests. Note: in browsers
+   that support native ES6 modules, no build is necessary to run the demos.
 
 
 # Unit tests
@@ -106,16 +102,16 @@ Note that the built document files are committed to the repo. After running
 Unit tests can be run on Sauce Labs. Do do so, you will need to set the
 following environment variables:
 
-````
+```
 export SAUCE_USERNAME=elix
 export SAUCE_ACCESS_KEY=<ask a core team member for this key>
-````
+```
 
 Invoke the unit tests to be run on Sauce Labs with:
 
-````
+```
 gulp sauce-tests
-````
+```
 
 
 # Contributing
