@@ -6,7 +6,6 @@ import AsyncEffectMixin from '../mixins/AsyncEffectMixin.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import OpenCloseMixin from '../mixins/OpenCloseMixin.js';
 import OverlayMixin from '../mixins/OverlayMixin.js';
-import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
 import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import symbols from '../mixins/symbols.js';
 import TransitionEffectMixin from '../mixins/TransitionEffectMixin.js';
@@ -21,11 +20,10 @@ const Base =
   AttributeMarshallingMixin(
   OpenCloseMixin(
   OverlayMixin(
-  ShadowReferencesMixin(
   ShadowTemplateMixin(
   TransitionEffectMixin(
     HTMLElement
-  )))))));
+  ))))));
 
 
 class Toast extends Base {
@@ -70,7 +68,7 @@ class Toast extends Base {
 
   get [symbols.defaults]() {
     const defaults = super[symbols.defaults] || {};
-    defaults.duration = 3000; /* milliseconds */
+    defaults.duration = 2500; /* milliseconds */
     defaults.role = 'tooltip';
     return defaults;
   }

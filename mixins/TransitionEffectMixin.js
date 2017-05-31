@@ -22,11 +22,11 @@ export default function TransitionEffectMixin(Base) {
 
         // Set up to handle a transitionend event once.
         this[transitionendListener] = (event) => {
-          this.$.overlayContent.removeEventListener('transitionend', this[transitionendListener]);
+          this.shadowRoot.removeEventListener('transitionend', this[transitionendListener]);
           resolve();
         };
 
-        this.$.overlayContent.addEventListener('transitionend', this[transitionendListener]);
+        this.shadowRoot.addEventListener('transitionend', this[transitionendListener]);
 
         // Apply the effect.
         requestAnimationFrame(() => {
@@ -38,7 +38,7 @@ export default function TransitionEffectMixin(Base) {
 
     [symbols.skipEffect](effect) {
       if (super[symbols.skipEffect]) { super[symbols.skipEffect](effect); }
-      this.$.overlayContent.removeEventListener('transitionend', this[transitionendListener]);
+      this.shadowRoot.removeEventListener('transitionend', this[transitionendListener]);
     }
   }
 
