@@ -64,7 +64,9 @@ describe("OverlayMixin", function() {
     const beforeEffectSpy = sinon.spy(fixture, symbols.beforeEffect);
     const afterEffectSpy = sinon.spy(fixture, symbols.afterEffect);
     fixture[symbols.openedChanged](true);
+    assert(beforeEffectSpy.calledOnce);
     assert(beforeEffectSpy.calledWith('opening'));
+    assert(beforeEffectSpy.calledImmediatelyBefore(afterEffectSpy));
     assert(afterEffectSpy.calledWith('opening'));
   });
 

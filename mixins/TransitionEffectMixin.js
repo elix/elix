@@ -21,8 +21,8 @@ export default function TransitionEffectMixin(Base) {
       const animationPromise = new Promise((resolve, reject) => {
 
         // Set up to handle a transitionend event once.
+        // The handler will be removed when the promise resolves.
         this[transitionendListener] = (event) => {
-          this.shadowRoot.removeEventListener('transitionend', this[transitionendListener]);
           resolve();
         };
 
@@ -36,9 +36,11 @@ export default function TransitionEffectMixin(Base) {
       return base.then(() => animationPromise);
     }
 
-    [symbols.skipEffect](effect) {
-      if (super[symbols.skipEffect]) { super[symbols.skipEffect](effect); }
-      this.shadowRoot.removeEventListener('transitionend', this[transitionendListener]);
+    [symbols.afterEffect](effect) {
+      if (super[symbols.afterEffect]) { super[symbols.afterEffect](effect); }
+      if (this[transitionendListener]) {
+        this.shadowRoot.removeEventListener('transitionend', this[transitionendListener]);
+      }
     }
   }
 

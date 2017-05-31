@@ -16,11 +16,8 @@ export default function AsyncEffectMixin(Base) {
 
       if (super[symbols.effect]) { super[symbols.effect](effect); }
 
-      // Shortcut any effect currently in progress.
-      if (this[symbols.currentEffect]) {
-        if (this[symbols.skipEffect]) {
-          this[symbols.skipEffect](this[symbols.currentEffect]);
-        }
+      // Tell any effect currently in progress to finish / clean up.
+      if (this[symbols.currentEffect] && this[symbols.afterEffect]) {
         this[symbols.afterEffect](this[symbols.currentEffect]);
       }
 
