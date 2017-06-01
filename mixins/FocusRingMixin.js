@@ -1,3 +1,6 @@
+import { toggleClass } from './attributes.js';
+
+
 //
 // Global state shared by all elements using this mixin.
 //
@@ -58,7 +61,7 @@ export default function FocusRingMixin(Base) {
       }
 
       this.addEventListener('focus', event => {
-        this.classList.toggle('focus-ring', focusedWithKeyboard);
+        toggleClass(this, 'focus-ring', focusedWithKeyboard);
 
         // Remember how focus changed in case window loses focus.
         previousFocusedWithKeyboard = focusedWithKeyboard;

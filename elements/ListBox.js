@@ -13,6 +13,7 @@ import SelectionInViewMixin from '../mixins/SelectionInViewMixin.js';
 import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import symbols from '../mixins/symbols.js';
+import { toggleClass } from '../mixins/attributes.js';
 
 
 const Base =
@@ -74,7 +75,7 @@ class ListBox extends Base {
    */
   [symbols.itemSelected](item, selected) {
     if (super[symbols.itemSelected]) { super[symbols.itemSelected](item, selected); }
-    item.classList.toggle('selected', selected);
+    toggleClass(item, 'selected', selected);
   }
 
   /**

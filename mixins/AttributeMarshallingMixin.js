@@ -109,7 +109,7 @@ export default function AttributeMarshallingMixin(Base) {
      * @param {boolean} value - True to set the class, false to remove it.
      */
     reflectClass(className, value) {
-      return attributes.toggleClass(this, className, value);
+      return attributes.setClass(this, className, value);
     }
 
   }

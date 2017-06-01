@@ -17,6 +17,7 @@ import SelectionInViewMixin from '../../mixins/SelectionInViewMixin.js';
 import ShadowTemplateMixin from '../../mixins/ShadowTemplateMixin.js';
 import SingleSelectionMixin from '../../mixins/SingleSelectionMixin.js';
 import symbols from '../../mixins/symbols.js';
+import { toggleClass } from '../../mixins/attributes.js';
 
 
 // We want to apply a number of mixin functions to HTMLElement.
@@ -74,7 +75,7 @@ class BrowserPluginList extends base {
   // Map item selection to a `selected` CSS class.
   [symbols.itemSelected](item, selected) {
     if (super[symbols.itemSelected]) { super[symbols.itemSelected](item, selected); }
-    item.classList.toggle('selected', selected);
+    toggleClass(item, 'selected', selected);
   }
 
   [symbols.shadowCreated]() {
