@@ -1,5 +1,6 @@
 import SingleSelectionMixin from '../../mixins/SingleSelectionMixin.js';
 import symbols from '../../mixins/symbols.js';
+import { toggleClass } from '../../mixins/attributes.js';
 
 
 /*
@@ -31,7 +32,7 @@ class SingleSelectionDemo extends SingleSelectionMixin(HTMLElement) {
   // Map item selection to a `selected` CSS class.
   [symbols.itemSelected](item, selected) {
     if (super[symbols.itemSelected]) { super[symbols.itemSelected](item, selected); }
-    item.classList.toggle('selected', selected);
+    toggleClass(item, 'selected', selected);
   }
 
   // Simplistic implementation of items property — doesn't handle redistribution.

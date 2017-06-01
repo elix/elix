@@ -23,6 +23,7 @@ const pendingClassesSymbol = Symbol('pendingClasses');
  * set attributes. A call to `setAttribute` during the constructor will
  * be deferred until the element is connected to the document.
  *
+ * @param {Element} element - The element to modify.
  * @param {string} attribute - The name of the *attribute* (not property) to set.
  * @param {object} value - The value to set. If null, the attribute will be removed.
  */
@@ -39,6 +40,7 @@ export function setAttribute(element, attribute, value) {
   }
 }
 
+
 /**
  * Set/unset the class with the indicated name.
  *
@@ -46,28 +48,18 @@ export function setAttribute(element, attribute, value) {
  * set a default property value that should be reflected as as class. An
  * important limitation of custom element consturctors is that they cannot
  * set attributes, including the `class` attribute. A call to
- * `toggleClass` during the constructor will be deferred until the element
+ * `setClass` during the constructor will be deferred until the element
  * is connected to the document.
  *
- * @param {string} className - The name of the class to set.
+ * @param {Element} element - The element to modify.
+ * @param {string} className - The name of the class to set/unset.
  * @param {boolean} [value] - True to set the class, false to remove it. If
  * omitted, the class will be toggled.
  */
-export function toggleClass(element, className, value) {
+export function setClass(element, className, value) {
   if (element[safeToSetAttributesSymbol]) {
     // Safe to set class immediately.
-    // Since IE 11's native `toggleClass` implementation is deficient, we
-    // set or unset the class by hand.
-    const classList = element.classList;
-    const addClass = typeof value === 'undefined' ?
-      !classList.contains(className) :
-      value;
-    if (addClass) {
-      classList.add(className);
-    } else {
-      classList.remove(className);
-    }
-    return addClass;
+    return toggleClass(element, className, value);
   } else {
     // Defer setting class until the first time we're connected.
     if (!element[pendingClassesSymbol]) {
@@ -78,10 +70,36 @@ export function toggleClass(element, className, value) {
   }
 }
 
+
+/**
+ * Immediately toggle the indicated class.
+ * 
+ * This method exists only to support IE 11, whose `classList.toggle`
+ * implementation is deficient.
+ *
+ * @param {Element} element - The element to modify.
+ * @param {string} className - The name of the class to set/unset.
+ * @param {boolean} [value] - True to set the class, false to remove it. If
+ * omitted, the class will be toggled.
+ */
+export function toggleClass(element, className, value) {
+  const classList = element.classList;
+  const addClass = typeof value === 'undefined' ?
+    !classList.contains(className) :
+    value;
+  if (addClass) {
+    classList.add(className);
+  } else {
+    classList.remove(className);
+  }
+  return addClass;
+}
+
+
 /**
  * Perform any pending updates to attributes and classes.
  *
- * This writes any `setAttribute` or `toggleClass` values that were performed
+ * This writes any `setAttribute` or `setClass` values that were performed
  * before an element was attached to the document for the first time.
  *
  * This method should be called by mixins/components in their
