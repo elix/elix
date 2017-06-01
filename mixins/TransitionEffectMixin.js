@@ -26,7 +26,9 @@ export default function TransitionEffectMixin(Base) {
           resolve();
         };
 
-        this.shadowRoot.addEventListener('transitionend', this[transitionendListener]);
+        getEffectElements(this, effect).forEach(element => {
+          element.addEventListener('transitionend', this[transitionendListener]);
+        });
 
         // Apply the effect.
         requestAnimationFrame(() => {
@@ -39,7 +41,9 @@ export default function TransitionEffectMixin(Base) {
     [symbols.afterEffect](effect) {
       if (super[symbols.afterEffect]) { super[symbols.afterEffect](effect); }
       if (this[transitionendListener]) {
-        this.shadowRoot.removeEventListener('transitionend', this[transitionendListener]);
+        getEffectElements(this, effect).forEach(element => {
+          element.removeEventListener('transitionend', this[transitionendListener]);
+        });
       }
     }
   }
@@ -54,9 +58,14 @@ function applyEffectClass(element, effect) {
   const effectClasses = [].filter.call(element.classList, className => 
     className.endsWith('-effect'));
   effectClasses.forEach(className => {
-    element.classList.remove(className);
+    element.classList.remove(effectClasses);
   });
 
   // Add the class for the effect now being applied.
   element.classList.add(`${effect}-effect`);
+}
+
+
+function getEffectElements(element, effect) {
+  return element[symbols.effectElements](effect) || [element];
 }

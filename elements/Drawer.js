@@ -16,6 +16,10 @@ const Base =
 
 
 class Drawer extends Base {
+  
+  [symbols.effectElements](effect) {
+    return [this.$.overlayContent];
+  }
 
   [symbols.shadowCreated]() {
     if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }

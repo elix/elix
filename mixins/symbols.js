@@ -276,6 +276,8 @@ const symbols = {
   cancelEffect: Symbol('cancelEffect'),
   currentEffect: Symbol('currentEffect'),
   showEffect: Symbol('showEffect'),
+  effectElements: Symbol('effectElements'),
+
   openedChanged: Symbol('openedChanged')
 };
 
