@@ -49,13 +49,14 @@ export default function TransitionEffectMixin(Base) {
 
 
 function applyEffectClass(element, effect) {
+
   // Remove any classes left over from applying other effects.
-  const classList = element.classList;
-  classList.forEach(className => {
-    if (className.endsWith('-effect')) {
-      element.classList.remove(className);
-    }
+  const effectClasses = [].filter.call(element.classList, className => 
+    className.endsWith('-effect'));
+  effectClasses.forEach(className => {
+    element.classList.remove(className);
   });
+
   // Add the class for the effect now being applied.
   element.classList.add(`${effect}-effect`);
 }
