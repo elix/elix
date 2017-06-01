@@ -55,8 +55,10 @@ export default function TransitionEffectMixin(Base) {
 function applyEffectClass(element, effect) {
 
   // Remove any classes left over from applying other effects.
+  const effectMarker = 'effect';
   const effectClasses = [].filter.call(element.classList, className => 
-    className.endsWith('-effect'));
+    // Stupid IE doesn't have String.endsWith()
+    className.slice(-effectMarker.length) === effectMarker);
   effectClasses.forEach(className => {
     element.classList.remove(effectClasses);
   });

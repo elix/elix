@@ -4,6 +4,7 @@
 
 import Dialog from './Dialog.js';
 import renderArrayAsElements from '../mixins/renderArrayAsElements.js';
+import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
 
 
@@ -52,10 +53,17 @@ class NotificationDialog extends Dialog {
 
     // Loop over choices to see if one of them starts with the key.
     // TODO: Loop over buttons instead of choices?
-    const choiceIndex = this.choices.findIndex(choice =>
-      choice.charCodeAt(0) === event.keyCode);
-    if (choiceIndex >= 0) {
-      this.close(this.choices[choiceIndex]);
+    let found = false;
+    let index = 0;
+    while (index < this.choices.length && !found) {
+      if (this.choices[index].charCodeAt(0) === event.keyCode) {
+        found = true;
+      } else {
+        index++;
+      }
+    }
+    if (index >= 0) {
+      this.close(this.choices[index]);
       handled = true;
     }
 

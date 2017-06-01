@@ -8,6 +8,7 @@ import OpenCloseMixin from '../mixins/OpenCloseMixin.js';
 import OverlayMixin from '../mixins/OverlayMixin.js';
 import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
 import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
+import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
 import TransitionEffectMixin from '../mixins/TransitionEffectMixin.js';
 

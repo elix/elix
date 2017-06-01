@@ -2,6 +2,7 @@
 // NOTE: This is a prototype, and not yet ready for real use.
 //
 
+import { toggleClass } from '../mixins/attributes.js';
 import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
 
@@ -129,7 +130,7 @@ function isElementInBody(element) {
 
 
 function makeVisible(element, visible) {
-  element.classList.toggle('visible', visible);
+  toggleClass(element, 'visible', visible);
 }
 
 
