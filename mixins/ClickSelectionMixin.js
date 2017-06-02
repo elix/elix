@@ -1,3 +1,4 @@
+import deepContains from './deepContains.js';
 import symbols from './symbols.js';
 
 
@@ -93,26 +94,13 @@ export default function ClickSelectionMixin(Base) {
  * This is sufficiently flexible to accommodate the possibility of the target
  * being inside arbitrarily deep layers of shadow DOM containment.
  */
-function itemForTarget(listElement, target) {
-
-  const items = listElement.items;
-  const itemCount = items ? items.length : 0;
-
-  let current = target;
-  while (current !== listElement) {
-
-    for (let i = 0; i < itemCount; i++) {
-      let item = items[i];
-      if (item === current || item.contains(current)) {
-        return item;
-      }
-    }
-
-    current = current.parentNode;
-    if (current.host) {
-      current = current.host;
+function itemForTarget(element, target) {
+  const items = element.items;
+  for (const index in element.items) {
+    const item = items[index];
+    if (deepContains(item, target)) {
+      return item;
     }
   }
-
   return null;
 }
