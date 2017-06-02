@@ -7,6 +7,7 @@ declare const ShadowTemplateMixin: Mixin<{
   connectedCallback?(): void;
 }, {
   connectedCallback(): void;
+  shadowRoot: ShadowRoot;
 }>;
 
 export default ShadowTemplateMixin;
