@@ -151,18 +151,18 @@ export default function TabStripWrapper(Base) {
       return this.shadowRoot.querySelector('#tabStrip');
     }
 
-    get [symbols.template]() {
-      let baseTemplate = super[symbols.template] || '';
-      if (baseTemplate instanceof HTMLTemplateElement) {
-        baseTemplate = baseTemplate.innerHTML; // Downgrade to string.
-      }
-      return `
+    [symbols.template](fillers = {}) {
+      const defaultFiller = typeof fillers === 'string' ?
+        fillers :
+        fillers.default || `<slot></slot>`;
+      const tabButtonsFiller = fillers.tabButtons || `<slot name="tabButtons"></slot>`;
+      return super[symbols.template](`
         <elix-tab-strip id="tabStrip">
-          <slot name="tabButtons"></slot>
+          ${tabButtonsFiller}
         </elix-tab-strip>
 
         <div id="pages">
-          ${baseTemplate}
+          ${defaultFiller}
         </div>
 
         <style>
@@ -196,7 +196,7 @@ export default function TabStripWrapper(Base) {
             box-sizing: border-box;
           }
         </style>
-      `;
+      `);
     }
 
   }

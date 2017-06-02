@@ -56,14 +56,14 @@ class Modes extends Base {
     // item.setAttribute('aria-hidden', !selected);
   }
 
-  get [symbols.template]() {
+  [symbols.template](filler) {
     return `
       <style>
         :host {
           display: inline-block;
         }
       </style>
-      <slot></slot>
+      ${filler || `<slot></slot>`}
     `;
   }
 

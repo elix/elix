@@ -260,13 +260,25 @@ const symbols = {
   shadowCreated: Symbol('shadowCreated'),
 
   /**
-   * Symbol for the `template` property.
+   * Symbol for the `template` method.
    *
-   * This property returns a component's template.
+   * This method should return a component's template.
    *
+   * @param {string|object} [filler]
    * @type {string|HTMLTemplateElement}
    */
-  template: Symbol('template')
+  template: Symbol('template'),
+
+  // TODO: documentation
+  afterEffect: Symbol('afterEffect'),
+  applyEffect: Symbol('applyEffect'),
+  beforeEffect: Symbol('beforeEffect'),
+  cancelEffect: Symbol('cancelEffect'),
+  currentEffect: Symbol('currentEffect'),
+  showEffect: Symbol('showEffect'),
+  effectElements: Symbol('effectElements'),
+
+  openedChanged: Symbol('openedChanged')
 };
 
 export default symbols;

@@ -14,7 +14,7 @@ import symbols from '../mixins/symbols.js';
  * @mixes ShadowTemplateMixin
  */
 class LabeledTabButton extends FocusRingMixin(ShadowTemplateMixin(HTMLElement)) {
-  get [symbols.template]() {
+  [symbols.template](filler) {
     return `
       <style>
         :host {
@@ -36,7 +36,7 @@ class LabeledTabButton extends FocusRingMixin(ShadowTemplateMixin(HTMLElement)) 
           outline: none;
           padding: 0.5em 0.75em;
           position: relative;
-          transition: border-color 0.25s;
+          effect: border-color 0.25s;
         }
 
         :host(.selected) button {
@@ -98,7 +98,7 @@ class LabeledTabButton extends FocusRingMixin(ShadowTemplateMixin(HTMLElement)) 
       </style>
 
       <button tabindex="-1">
-        <slot></slot>
+        ${filler || `<slot></slot>`}
       </button>
     `;
   }

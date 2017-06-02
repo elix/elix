@@ -19,8 +19,7 @@ const slotchangeFiredSymbol = Symbol('slotchangeFired');
  * Example:
  *
  * ```
- * let base = DefaultSlotContentMixin(HTMLElement);
- * class CountingElement extends base {
+ * class CountingElement extends DefaultSlotContentMixin(HTMLElement) {
  *
  *   constructor() {
  *     super();

@@ -7,6 +7,7 @@
 
 
 // Import mixins
+import AsyncEffectMixin from './mixins/AsyncEffectMixin.js';
 import AttributeMarshallingMixin from './mixins/AttributeMarshallingMixin.js';
 import * as attributes from './mixins/attributes.js';
 import ClickSelectionMixin from './mixins/ClickSelectionMixin.js';
@@ -20,6 +21,9 @@ import KeyboardDirectionMixin from './mixins/KeyboardDirectionMixin.js';
 import KeyboardMixin from './mixins/KeyboardMixin.js';
 import KeyboardPagedSelectionMixin from './mixins/KeyboardPagedSelectionMixin.js';
 import KeyboardPrefixSelectionMixin from './mixins/KeyboardPrefixSelectionMixin.js';
+import NotificationDialog from './elements/NotificationDialog.js';
+import OpenCloseMixin from './mixins/OpenCloseMixin.js';
+import OverlayMixin from './mixins/OverlayMixin.js';
 import renderArrayAsElements from './mixins/renderArrayAsElements.js';
 import SelectionAriaMixin from './mixins/SelectionAriaMixin.js';
 import SelectionInViewMixin from './mixins/SelectionInViewMixin.js';
@@ -28,19 +32,25 @@ import ShadowTemplateMixin from './mixins/ShadowTemplateMixin.js';
 import SingleSelectionMixin from './mixins/SingleSelectionMixin.js';
 import Symbol from './mixins/Symbol.js';
 import symbols from './mixins/symbols.js';
+import TransitionEffectMixin from './mixins/TransitionEffectMixin.js';
 
 // Import elements
+import Dialog from './elements/Dialog.js';
+import Drawer from './elements/Drawer.js';
 import LabeledTabButton from './elements/LabeledTabButton.js';
 import LabeledTabs from './elements/LabeledTabs.js';
 import ListBox from './elements/ListBox.js';
 import Modes from './elements/Modes.js';
+import Popup from './elements/Popup.js';
 import Tabs from './elements/Tabs.js';
 import TabStrip from './elements/TabStrip.js';
 import TabStripWrapper from './elements/TabStripWrapper.js';
+import Toast from './elements/Toast.js';
 
 
 // The complete list of all mixins and elements.
 const Elix = {
+  AsyncEffectMixin,
   AttributeMarshallingMixin,
   attributes,
   ClickSelectionMixin,
@@ -49,7 +59,9 @@ const Elix = {
   ContentItemsMixin,
   defaultScrollTarget,
   DefaultSlotContentMixin,
+  Dialog,
   DirectionSelectionMixin,
+  Drawer,
   KeyboardDirectionMixin,
   KeyboardMixin,
   KeyboardPagedSelectionMixin,
@@ -58,6 +70,10 @@ const Elix = {
   LabeledTabs,
   ListBox,
   Modes,
+  NotificationDialog,
+  OpenCloseMixin,
+  OverlayMixin,
+  Popup,
   renderArrayAsElements,
   SelectionAriaMixin,
   SelectionInViewMixin,
@@ -68,7 +84,9 @@ const Elix = {
   symbols,
   Tabs,
   TabStrip,
-  TabStripWrapper
+  TabStripWrapper,
+  TransitionEffectMixin,
+  Toast
 };
 
 

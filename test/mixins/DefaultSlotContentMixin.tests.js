@@ -24,7 +24,7 @@ class DefaultSlotContentTest extends DefaultSlotContentMixin(ShadowTemplateMixin
     this.contentChangedCallCount++;
   }
 
-  get [symbols.template]() {
+  [symbols.template]() {
     return `
       <div id="static">This is static content</div>
       <slot></slot>
@@ -40,7 +40,7 @@ customElements.define('default-slot-content-test', DefaultSlotContentTest);
  * changes in final distribution (not just direct slot assignments).
  */
 class WrappedContentTest extends ShadowTemplateMixin(HTMLElement) {
-  get [symbols.template]() {
+  [symbols.template]() {
     return `<default-slot-content-test><slot></slot></default-slotcontent-test>`;
   }
 }
