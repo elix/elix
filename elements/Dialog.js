@@ -68,6 +68,10 @@ class Dialog extends Base {
           justify-content: center;
         }
 
+        :host(:not(.visible)) {
+          display: none;
+        }
+
         #backdrop {
           background: black;
           opacity: 0.2;

@@ -22,7 +22,7 @@ export default function PopupModalityMixin(Base) {
       // Implicitly close on loss of focus.
       this.addEventListener('blur', () => {
         this[symbols.raiseChangeEvents] = true;
-        // this.close();
+        this.close();
         this[symbols.raiseChangeEvents] = false;
       });
     }

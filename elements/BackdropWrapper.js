@@ -22,10 +22,6 @@ export default function BackdropWrapper(base) {
             width: 100%;
           }
 
-          :host(:not(.visible)) {
-            display: none;
-          }
-
           #backdrop {
             height: 100%;
             left: 0;
