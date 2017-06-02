@@ -57,6 +57,8 @@ const Base =
  * @extends HTMLElement
  * @mixes AttributeMarshallingMixin
  * @mixes ClickSelectionMixin
+ * @mixes ContentItemsMixin
+ * @mixes DefaultSlotContentMixin
  * @mixes DirectionSelectionMixin
  * @mixes KeyboardMixin
  * @mixes KeyboardDirectionMixin
