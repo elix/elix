@@ -3,7 +3,7 @@ let count = 0;
 
 /**
  * @param {any} description
- * @return {string}
+ * @returns {string}
  */
 function uniqueString(description) {
   return `_${description}${count++}`;

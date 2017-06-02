@@ -80,7 +80,7 @@ export default function KeyboardMixin(Base) {
      * typically be handled by other mixins.
      *
      * @param {KeyboardEvent} event - the keyboard event
-     * @return {boolean} true if the event was handled
+     * @returns {boolean} true if the event was handled
      */
     [symbols.keydown](event) {
       if (super[symbols.keydown]) { return super[symbols.keydown](event); }
