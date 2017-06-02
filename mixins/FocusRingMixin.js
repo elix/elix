@@ -61,7 +61,9 @@ export default function FocusRingMixin(Base) {
       }
 
       this.addEventListener('focus', event => {
-        toggleClass(this, 'focus-ring', focusedWithKeyboard);
+        /** @type {any} */
+        const element = this;
+        toggleClass(element, 'focus-ring', focusedWithKeyboard);
 
         // Remember how focus changed in case window loses focus.
         previousFocusedWithKeyboard = focusedWithKeyboard;

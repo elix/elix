@@ -92,7 +92,9 @@ export default function AttributeMarshallingMixin(Base) {
      * @param {object} value - The value to set. If null, the attribute will be removed.
      */
     reflectAttribute(attribute, value) {
-      return attributes.setAttribute(this, attribute, value);
+      /** @type {any} */
+      const element = this;
+      return attributes.setAttribute(element, attribute, value);
     }
 
     /**
@@ -109,7 +111,9 @@ export default function AttributeMarshallingMixin(Base) {
      * @param {boolean} value - True to set the class, false to remove it.
      */
     reflectClass(className, value) {
-      return attributes.setClass(this, className, value);
+      /** @type {any} */
+      const element = this;
+      return attributes.setClass(element, className, value);
     }
 
   }
