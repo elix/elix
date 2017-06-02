@@ -20,29 +20,24 @@ import symbols from '../../mixins/symbols.js';
 import { toggleClass } from '../../mixins/attributes.js';
 
 
-// We want to apply a number of mixin functions to HTMLElement.
-const mixins = [
-  AttributeMarshallingMixin,
-  ClickSelectionMixin,
-  ContentItemsMixin,
-  DirectionSelectionMixin,
-  KeyboardDirectionMixin,
-  KeyboardMixin,
-  KeyboardPagedSelectionMixin,
-  KeyboardPrefixSelectionMixin,
-  SelectionAriaMixin,
-  SelectionInViewMixin,
-  ShadowTemplateMixin,
-  SingleSelectionMixin
-];
-
-// The mixins are functions, so an efficient way to apply them all is with
-// reduce. This is just function composition. We end up with a base class we
-// can extend below.
-const base = mixins.reduce((cls, mixin) => mixin(cls), HTMLElement);
+const Base =
+  AttributeMarshallingMixin(
+  ClickSelectionMixin(
+  ContentItemsMixin(
+  DirectionSelectionMixin(
+  KeyboardDirectionMixin(
+  KeyboardMixin(
+  KeyboardPagedSelectionMixin(
+  KeyboardPrefixSelectionMixin(
+  SelectionAriaMixin(
+  SelectionInViewMixin(
+  ShadowTemplateMixin(
+  SingleSelectionMixin(
+    HTMLElement
+  ))))))))))));
 
 
-class BrowserPluginList extends base {
+class BrowserPluginList extends Base {
 
   get [symbols.content]() {
     if (this.shadowRoot) {
