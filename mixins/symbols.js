@@ -267,16 +267,7 @@ const symbols = {
    * @param {string|object} [filler]
    * @type {string|HTMLTemplateElement}
    */
-  template: Symbol('template'),
-
-  // TODO: documentation
-  afterEffect: Symbol('afterEffect'),
-  applyEffect: Symbol('applyEffect'),
-  beforeEffect: Symbol('beforeEffect'),
-  cancelEffect: Symbol('cancelEffect'),
-  currentEffect: Symbol('currentEffect'),
-  showEffect: Symbol('showEffect'),
-  openedChanged: Symbol('openedChanged')
+  template: Symbol('template')
 };
 
 export default symbols;
