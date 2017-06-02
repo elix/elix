@@ -2,6 +2,7 @@
 // NOTE: This is a prototype, and not yet ready for real use.
 //
 
+import deepContains from './deepContains.js';
 import { toggleClass } from '../mixins/attributes.js';
 import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
@@ -49,17 +50,16 @@ export default function OverlayMixin(Base) {
           this[previousFocusedElementKey] = document.activeElement;
 
           // Add the element to the document if it's not present yet.
-          if (!isElementInBody(this)) {
+          /** @type {any} */
+          const element = this;
+          const isElementInBody = deepContains(document.body, element);
+          if (!isElementInBody) {
             this[appendedToDocumentKey] = true;
-            /** @type {any} */
-            const element = this;
             document.body.appendChild(element);
           }
 
           // Remember the element's current z-index.
           this[previousZIndexKey] = this.style.zIndex;
-          /** @type {any} */
-          const element = this;
           // It seems like it should be possible to rely on inspecting zIndex
           // via getComputedStyle. However, unit testing reveals at least one
           // case where an inline zIndex style change made immediately before
@@ -112,20 +112,6 @@ export default function OverlayMixin(Base) {
 
   return Overlay;
 
-}
-
-
-// Return true if the element is in the document body.
-// This is like document.body.contains(), but also returns true for elements in
-// shadow trees.
-function isElementInBody(element) {
-  if (document.body.contains(element)) {
-    return true;
-  }
-  const parent = element.parentNode || element.host;
-  return parent ?
-    isElementInBody(parent) :
-    false;
 }
 
 
