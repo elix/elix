@@ -112,7 +112,7 @@ export default function KeyboardPrefixSelectionMixin(Base) {
      * Select the first item whose text content begins with the given prefix.
      *
      * @param {string} prefix - The prefix string to search for
-     * @return {boolean}
+     * @returns {boolean}
      */
     selectItemWithTextPrefix(prefix) {
       if (super.selectItemWithTextPrefix) { super.selectItemWithTextPrefix(prefix); }

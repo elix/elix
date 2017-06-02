@@ -263,7 +263,7 @@ describe("SingleSelectionMixin", () => {
 
 
 /**
- * @return {SingleSelectionTest}
+ * @returns {SingleSelectionTest}
  */
 function createSampleElement() {
   const fixture = document.createElement('items-selection-test');
