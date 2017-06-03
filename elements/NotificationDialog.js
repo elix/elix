@@ -62,7 +62,7 @@ class NotificationDialog extends Dialog {
         index++;
       }
     }
-    if (index >= 0) {
+    if (found && index >= 0) {
       this.close(this.choices[index]);
       handled = true;
     }
