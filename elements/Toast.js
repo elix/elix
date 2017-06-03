@@ -89,7 +89,7 @@ class Toast extends Base {
     this[durationKey] = typeof duration === 'string' ? parseInt(duration) : duration;
   }
 
-  [symbols.effectElements](effect) {
+  [symbols.elementsWithEffectTransitions](effect) {
     return [this.$.overlayContent];
   }
 

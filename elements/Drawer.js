@@ -17,7 +17,7 @@ const Base =
 
 class Drawer extends Base {
   
-  [symbols.effectElements](effect) {
+  [symbols.elementsWithEffectTransitions](effect) {
     return [this.$.overlayContent];
   }
 

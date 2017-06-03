@@ -26,7 +26,7 @@ export default function TransitionEffectMixin(Base) {
           resolve();
         };
 
-        getEffectElements(this, effect).forEach(element => {
+        getTransitionElements(this, effect).forEach(element => {
           element.addEventListener('transitionend', this[transitionendListener]);
         });
 
@@ -41,7 +41,7 @@ export default function TransitionEffectMixin(Base) {
     [symbols.afterEffect](effect) {
       if (super[symbols.afterEffect]) { super[symbols.afterEffect](effect); }
       if (this[transitionendListener]) {
-        getEffectElements(this, effect).forEach(element => {
+        getTransitionElements(this, effect).forEach(element => {
           element.removeEventListener('transitionend', this[transitionendListener]);
         });
       }
@@ -68,6 +68,6 @@ function applyEffectClass(element, effect) {
 }
 
 
-function getEffectElements(element, effect) {
-  return element[symbols.effectElements](effect) || [element];
+function getTransitionElements(element, effect) {
+  return element[symbols.elementsWithEffectTransitions](effect) || [element];
 }
