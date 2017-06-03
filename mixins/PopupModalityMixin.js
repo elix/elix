@@ -27,6 +27,21 @@ export default function PopupModalityMixin(Base) {
       });
     }
 
+    connectedCallback() {
+      if (super.connectedCallback) { super.connectedCallback(); }
+
+      // Set default ARIA role for the popup.
+      if (this.getAttribute('role') == null && this[symbols.defaults].role) {
+        this.setAttribute('role', this[symbols.defaults].role);
+      }
+    }
+
+    get [symbols.defaults]() {
+      const defaults = super[symbols.defaults] || {};
+      defaults.role = 'alert';
+      return defaults;
+    }
+
     // Close on Esc key.
     [symbols.keydown](event) {
       let handled = false;

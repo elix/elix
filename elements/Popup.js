@@ -26,21 +26,6 @@ const Base =
 
 class Popup extends Base {
 
-  connectedCallback() {
-    if (super.connectedCallback) { super.connectedCallback(); }
-
-    // Set default ARIA role for the dialog.
-    if (this.getAttribute('role') == null && this[symbols.defaults].role) {
-      this.setAttribute('role', this[symbols.defaults].role);
-    }
-  }
-
-  get [symbols.defaults]() {
-    const defaults = super[symbols.defaults] || {};
-    defaults.role = 'alert';
-    return defaults;
-  }
-
   [symbols.template](filler) {
     return `
       <style>
