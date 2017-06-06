@@ -14,6 +14,7 @@ import TransitionEffectMixin from '../mixins/TransitionEffectMixin.js';
 
 
 const durationKey = Symbol('duration');
+const fromEdgeKey = Symbol('fromEdge');
 const timeoutKey = Symbol('timeout');
 
 
@@ -44,8 +45,12 @@ class Toast extends Base {
       startTimer(this);
     });
 
+    // Set defaults.
     if (typeof this.duration === 'undefined') {
       this.duration = this[symbols.defaults].duration;
+    }
+    if (typeof this.fromEdge === 'undefined') {
+      this.fromEdge = this[symbols.defaults].fromEdge;
     }
   }
 
@@ -63,6 +68,7 @@ class Toast extends Base {
   get [symbols.defaults]() {
     const defaults = super[symbols.defaults] || {};
     defaults.duration = 2500; /* milliseconds */
+    defaults.fromEdge = 'bottom';
     return defaults;
   }
 
@@ -83,6 +89,17 @@ class Toast extends Base {
     return [this.$.overlayContent];
   }
 
+  /**
+   * @type {"top"|"bottom"}
+   */
+  get fromEdge() {
+    return this[fromEdgeKey];
+  }
+  set fromEdge(fromEdge) {
+    this[fromEdgeKey] = fromEdge;
+    this.reflectAttribute('from-edge', fromEdge);
+  }
+
   [symbols.openedChanged](opened) {
     super[symbols.openedChanged](opened);
     if (!opened) {
@@ -94,11 +111,9 @@ class Toast extends Base {
     return `
       <style>
         :host {
-          align-items: center;
           display: flex;
           flex-direction: column;
           height: 100%;
-          justify-content: flex-end;
           left: 0;
           outline: none;
           pointer-events: none;
@@ -115,10 +130,9 @@ class Toast extends Base {
           background: white;
           border: 1px solid rgba(0, 0, 0, 0.2);
           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-          margin-bottom: 1em;
+          margin: 1em;
           opacity: 0;
           pointer-events: initial;
-          transform: translateY(100%);
           transition-duration: 0.25s;
           transition-property: opacity transform;
           transition-timing-function: ease-in;
@@ -127,8 +141,41 @@ class Toast extends Base {
 
         :host(.opening-effect) #overlayContent {
           opacity: 1.0;
-          transform: translateY(0);
           transition-timing-function: ease-out;
+        }
+
+        /* from-edge="bottom" by default */
+        :host([from-edge="bottom"]) {
+          align-items: center;
+          justify-content: flex-end;
+        }
+        :host([from-edge="bottom"]) #overlayContent {
+          transform: translateY(100%);
+        }
+        :host([from-edge="bottom"].opening-effect) #overlayContent {
+          transform: translateY(0);
+        }
+
+        /* from-edge="top" */
+        :host([from-edge="top"]) {
+          align-items: center;
+        }
+        :host([from-edge="top"]) #overlayContent {
+          transform: translateY(-100%);
+        }
+        :host([from-edge="top"].opening-effect) #overlayContent {
+          transform: translateY(0);
+        }
+
+        /* from-edge="top-end" */
+        :host([from-edge="top-end"]) {
+          align-items: flex-end;
+        }
+        :host([from-edge="top-end"]) #overlayContent {
+          transform: translateX(100%);
+        }
+        :host([from-edge="top-end"].opening-effect) #overlayContent {
+          transform: translateX(0);
         }
 
         @media (prefers-reduced-motion) {
