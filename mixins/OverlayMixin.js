@@ -55,6 +55,14 @@ export default function OverlayMixin(Base) {
       if (super[symbols.beforeEffect]) { super[symbols.beforeEffect](effect); }
       switch (effect) {
 
+        case 'closing':
+          // Restore previously focused element before closing.
+          if (this[previousFocusedElementKey]) {
+            this[previousFocusedElementKey].focus();
+            this[previousFocusedElementKey] = null;
+          }
+          break;
+
         case 'opening':
           // Remember which element had the focus before we opened.
           this[previousFocusedElementKey] = document.activeElement;
@@ -83,16 +91,8 @@ export default function OverlayMixin(Base) {
           // Finally make it visible and give it focus.
           makeVisible(this, true);
           this.focus();
-
           break;
 
-        case 'closing':
-          // Restore previously focused element before closing.
-          if (this[previousFocusedElementKey]) {
-            this[previousFocusedElementKey].focus();
-            this[previousFocusedElementKey] = null;
-          }
-          break;
       }
     }
 

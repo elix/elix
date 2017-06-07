@@ -8,10 +8,12 @@ import symbols from './symbols.js';
 
 
 // Symbols for private data members on an element.
-const openedKey = Symbol('opened');
 const closePromiseKey = Symbol('closePromise');
-const closeResolveKey = Symbol('resolveOpen');
+const closeResolveKey = Symbol('closeResolve');
 const closeResultKey = Symbol('closeResult');
+const openedKey = Symbol('opened');
+const openPromiseKey = Symbol('openPromise');
+const openResolveKey = Symbol('openResolve');
 
 
 /**
@@ -30,6 +32,8 @@ export default function OpenCloseMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
+      createOpenPromise(this);
+      createClosePromise(this);
       // Set defaults.
       // TODO: Support opening by default.
       // if (typeof this.opened === 'undefined') {
@@ -40,11 +44,20 @@ export default function OpenCloseMixin(Base) {
     [symbols.afterEffect](effect) {
       if (super[symbols.afterEffect]) { super[symbols.afterEffect](effect); }
       switch (effect) {
+
         case 'closing':
           if (this[closeResolveKey]) {
-            const resolve = this[closeResolveKey];
+            const resolveClose = this[closeResolveKey];
             this[closeResolveKey] = null;
-            resolve(this[closeResultKey]);
+            resolveClose(this[closeResultKey]);
+          }
+          break;
+
+        case 'opening':
+          if (this[openResolveKey]) {
+            const resolveOpen = this[openResolveKey];
+            this[openResolveKey] = null;
+            resolveOpen();
           }
           break;
       }
@@ -61,8 +74,8 @@ export default function OpenCloseMixin(Base) {
      */
     close(result) {
       if (super.close) { super.close(); }
-      this[closeResultKey] = result;
       if (this.opened) {
+        this[closeResultKey] = result;
         this.opened = false;
       }
       return this[closePromiseKey];
@@ -86,11 +99,12 @@ export default function OpenCloseMixin(Base) {
       this[openedKey] = parsedOpened;
       if ('opened' in Base.prototype) { super.opened = parsedOpened; }
       if (changed) {
+
+        // Set up a new promise for opposite of action we're doing.
         if (opened) {
-          // New promise for open/close.
-          this[closePromiseKey] = new Promise((resolve, reject) => {
-            this[closeResolveKey] = resolve;
-          });
+          createClosePromise(this);
+        } else {
+          createOpenPromise(this);
         }
 
         if (this[symbols.openedChanged]) {
@@ -135,7 +149,7 @@ export default function OpenCloseMixin(Base) {
       if (!this.opened) {
         this.opened = true;
       }
-      return this[closePromiseKey];
+      return this[openPromiseKey];
     }
 
     /**
@@ -145,7 +159,36 @@ export default function OpenCloseMixin(Base) {
       this.opened = !this.opened;
     }
 
+    /**
+     * @returns {Promise} A promise resolved when the element has completely closed,
+     * including the completion of any asynchronous opening effect.
+     */
+    get whenClosed() {
+      return this[closePromiseKey];
+    }
+
+    /**
+     * @returns {Promise} A promise resolved when the element has completely opened,
+     * including the completion of any asynchronous closing effect.
+     */
+    get whenOpened() {
+      return this[openPromiseKey];
+    }
+
   }
 
   return OpenClose;
+}
+
+
+function createClosePromise(element) {
+  element[closePromiseKey] = new Promise((resolve, reject) => {
+    element[closeResolveKey] = resolve;
+  });
+}
+
+function createOpenPromise(element) {
+  element[openPromiseKey] = new Promise((resolve, reject) => {
+    element[openResolveKey] = resolve;
+  });
 }
