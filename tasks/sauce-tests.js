@@ -71,7 +71,15 @@ function runTests() {
   saucelabs(config)
   .then(() => {
     process.exit(reportStatus);
+  })
+  .catch(error => {
+    process.exit(reportStatus);
   });
 }
 
-runTests();
+try {
+  runTests();
+}
+catch(e) {
+  process.exit(reportStatus);
+}

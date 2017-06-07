@@ -16,7 +16,7 @@
     "jshint": "^2.9.4",
     "live-server": "^1.2.0",
     "mocha": "^3.2.0",
-    "sauce-test-runner": "^0.1.7",
+    "sauce-test-runner": "^0.2.0",
     "sinon": "^2.0.0-pre.5",
     "typescript": "next",
     "webpack": "^2.3.2"
