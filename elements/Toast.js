@@ -102,7 +102,10 @@ class Toast extends Base {
   }
 
   /**
-   * @type {"top"|"bottom"}
+   * Note that the meanings of "left" and "right" are flipped for right-to-left
+   * languages.
+   *
+   * @type {"bottom"|"bottom-left"|"bottom-right"|"top"|"top-left"|"top-right"|null}
    */
   get fromEdge() {
     return this[fromEdgeKey];
@@ -113,7 +116,6 @@ class Toast extends Base {
   }
 
   [symbols.openedChanged](opened) {
-    super[symbols.openedChanged](opened);
     if (!opened) {
       clearTimer(this);
     }
@@ -156,7 +158,7 @@ class Toast extends Base {
           transition-timing-function: ease-out;
         }
 
-        /* from-edge="bottom" by default */
+        /* From bottom edge (the default) */
         :host([from-edge="bottom"]) {
           align-items: center;
           justify-content: flex-end;
@@ -168,7 +170,37 @@ class Toast extends Base {
           transform: translateY(0);
         }
 
-        /* from-edge="top" */
+        /* From bottom-left corner */
+        :host([from-edge="bottom-left"]) {
+          align-items: flex-start;
+          justify-content: flex-end;
+        }
+        :host([from-edge="bottom-left"]) #overlayContent {
+          transform: translateX(-100%);
+        }
+        :host([from-edge="bottom-left"][dir="rtl"]) #overlayContent {
+          transform: translateX(100%);
+        }
+        :host([from-edge="bottom-left"].opening-effect) #overlayContent {
+          transform: translateX(0);
+        }
+
+        /* From bottom-right corner */
+        :host([from-edge="bottom-right"]) {
+          align-items: flex-end;
+          justify-content: flex-end;
+        }
+        :host([from-edge="bottom-right"]) #overlayContent {
+          transform: translateX(100%);
+        }
+        :host([from-edge="bottom-right"][dir="rtl"]) #overlayContent {
+          transform: translateX(-100%);
+        }
+        :host([from-edge="bottom-right"].opening-effect) #overlayContent {
+          transform: translateX(0);
+        }
+
+        /* From top edge */
         :host([from-edge="top"]) {
           align-items: center;
         }
@@ -179,17 +211,31 @@ class Toast extends Base {
           transform: translateY(0);
         }
 
-        /* from-edge="top-end" */
-        :host([from-edge="top-end"]) {
-          align-items: flex-end;
+        /* From top-left corner */
+        :host([from-edge="top-left"]) {
+          align-items: flex-start;
         }
-        :host([from-edge="top-end"]) #overlayContent {
-          transform: translateX(100%);
-        }
-        :host([from-edge="top-end"][dir="rtl"]) #overlayContent {
+        :host([from-edge="top-left"]) #overlayContent {
           transform: translateX(-100%);
         }
-        :host([from-edge="top-end"].opening-effect) #overlayContent {
+        :host([from-edge="top-left"][dir="rtl"]) #overlayContent {
+          transform: translateX(100%);
+        }
+        :host([from-edge="top-left"].opening-effect) #overlayContent {
+          transform: translateX(0);
+        }
+
+        /* From top-right corner */
+        :host([from-edge="top-right"]) {
+          align-items: flex-end;
+        }
+        :host([from-edge="top-right"]) #overlayContent {
+          transform: translateX(100%);
+        }
+        :host([from-edge="top-right"][dir="rtl"]) #overlayContent {
+          transform: translateX(-100%);
+        }
+        :host([from-edge="top-right"].opening-effect) #overlayContent {
           transform: translateX(0);
         }
 

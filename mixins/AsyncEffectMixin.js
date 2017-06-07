@@ -40,9 +40,9 @@ export default function AsyncEffectMixin(Base) {
       return applyPromise
       .then(() => {
         // After
+        this[symbols.currentEffect] = null;
         if (this[symbols.afterEffect]) {
           this[symbols.afterEffect](effect);
-          this[symbols.currentEffect] = null;
         }
       });
     }

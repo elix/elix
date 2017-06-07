@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Elix overlays</title>
+
+  <link rel="stylesheet" href="demos.css">
+  <script src="node_modules/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="demos.js"></script>
+  <script nomodule src="node_modules/custom-elements/src/native-shim.js"></script>
+  <script nomodule src="../build/demos.js"></script>
+
+</head>
+
+<body>
+
+  <div class="demo">
+
+    <style>
+      .buttonContainer {
+        background: lightgray;
+        height: 250px;
+        position: relative;
+        width: 300px;
+      }
+
+      .buttonRow {
+        display: flex;
+        justify-content: space-between;
+      }
+      [dir="rtl"] .buttonRow {
+        flex-direction: row-reverse;
+      }
+
+      .buttonRow button {
+        height: 50px;
+        width: 50px;
+      }
+
+      .bottom {
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        right: 0;
+      }
+    </style>
+
+    <script>
+      // This page reuses a single toast to open it from multiple locations,
+      // which is pretty unusual. Normally, opening a toast is just a matter
+      // of invoking its `open` method.
+      function toggleToast(fromEdge) {
+        // If a toast is currently open, close it.
+        const closeOpenToast = toast.opened;
+        const closePromise = closeOpenToast ? toast.close() : Promise.resolve();
+        closePromise.then(function() {
+          const edgeChanged = toast.fromEdge !== fromEdge;
+          if (edgeChanged) {
+            toast.fromEdge = fromEdge;
+          }
+          if (!closeOpenToast || edgeChanged) {
+            // Open new toast.
+            toast.open();
+          }
+        });
+      }
+
+      function toggleDocumentDirection() {
+        document.dir = document.dir === 'rtl' ? 'ltr' : 'rtl';
+        toast.dir = document.dir;
+      }
+    </script>
+
+    <p>
+      <p>Click a button to toggle a toast from that location:</p>
+      <div class="buttonContainer">
+        <div class="buttonRow">
+          <button alt="top left" onclick="toggleToast('top-left')"></button>
+          <button alt="top" onclick="toggleToast('top')"></button>
+          <button alt="top right" onclick="toggleToast('top-right')"></button>
+        </div>
+        <div class="buttonRow bottom">
+          <button alt="bottom left" onclick="toggleToast('bottom-left')"></button>
+          <button alt="bottom" onclick="toggleToast('bottom')"></button>
+          <button alt="bottom right" onclick="toggleToast('bottom-right')"></button>
+        </div>
+      </div>
+    </p>
+    <p>
+      <label><input type="checkbox" onchange="toggleDocumentDirection()"> Make document right-to-left to test international support</label>
+    </p>
+    <elix-toast id="toast">
+      <div style="padding: 1em;">
+        Mmm... toast...
+      </div>
+    </elix-toast>
+
+  </div>
+
+</body>
+
+</html>

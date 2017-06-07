@@ -18,6 +18,16 @@ export default function OverlayMixin(Base) {
   // The class prototype added by the mixin.
   class Overlay extends Base {
 
+    constructor() {
+      // @ts-ignore
+      super();
+      this.addEventListener('blur', () => {
+        // The focus was taken from us, perhaps because the focus was set
+        // elsewhere, so we don't want to try to restore focus when closing.
+        this[previousFocusedElementKey] = null;
+      });
+    }
+
     [symbols.afterEffect](effect) {
       if (super[symbols.afterEffect]) { super[symbols.afterEffect](effect); }
       switch (effect) {
@@ -92,20 +102,6 @@ export default function OverlayMixin(Base) {
       this.setAttribute('tabindex', '0');
       if (this.opened) {
         makeVisible(this, this.opened);
-      }
-    }
-
-    [symbols.openedChanged](opened) {
-      if (super[symbols.openedChanged]) { super[symbols.openedChanged](opened); }
-      const effect = opened ? 'opening' : 'closing';
-      // Does component support async effects?
-      if (this[symbols.showEffect]) {
-        // Trigger asynchronous open/close.
-        this[symbols.showEffect](effect);
-      } else {
-        // Handle synchronous open/close ourselves.
-        this[symbols.beforeEffect](effect);
-        this[symbols.afterEffect](effect);
       }
     }
   }

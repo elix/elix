@@ -11,6 +11,7 @@ import symbols from './symbols.js';
 const openedKey = Symbol('opened');
 const closePromiseKey = Symbol('closePromise');
 const closeResolveKey = Symbol('resolveOpen');
+const closeResultKey = Symbol('closeResult');
 
 
 /**
@@ -36,6 +37,19 @@ export default function OpenCloseMixin(Base) {
       // }
     }
 
+    [symbols.afterEffect](effect) {
+      if (super[symbols.afterEffect]) { super[symbols.afterEffect](effect); }
+      switch (effect) {
+        case 'closing':
+          if (this[closeResolveKey]) {
+            const resolve = this[closeResolveKey];
+            this[closeResolveKey] = null;
+            resolve(this[closeResultKey]);
+          }
+          break;
+      }
+    }
+
     /**
      * Close the component.
      *
@@ -47,16 +61,11 @@ export default function OpenCloseMixin(Base) {
      */
     close(result) {
       if (super.close) { super.close(); }
+      this[closeResultKey] = result;
       if (this.opened) {
         this.opened = false;
-        if (this[closeResolveKey]) {
-          // Element was opened with open().
-          const resolve = this[closeResolveKey];
-          this[closeResolveKey] = null;
-          this[closePromiseKey] = null;
-          resolve(result);
-        }
       }
+      return this[closePromiseKey];
     }
 
     /**
@@ -77,9 +86,30 @@ export default function OpenCloseMixin(Base) {
       this[openedKey] = parsedOpened;
       if ('opened' in Base.prototype) { super.opened = parsedOpened; }
       if (changed) {
+        if (opened) {
+          // New promise for open/close.
+          this[closePromiseKey] = new Promise((resolve, reject) => {
+            this[closeResolveKey] = resolve;
+          });
+        }
+
         if (this[symbols.openedChanged]) {
           this[symbols.openedChanged](parsedOpened);
         }
+
+        const effect = opened ? 'opening' : 'closing';
+        // Does component support async effects?
+        if (this[symbols.showEffect]) {
+          // Trigger asynchronous open/close.
+          this[symbols.showEffect](effect);
+        } else {
+          // Invoke synchronous open/close.
+          if (this[symbols.beforeEffect]) {
+            this[symbols.beforeEffect](effect);
+          }
+          this[symbols.afterEffect](effect);
+        }
+
         if (this[symbols.raiseChangeEvents]) {
           const event = new CustomEvent('opened-changed');
           this.dispatchEvent(event);
@@ -103,9 +133,6 @@ export default function OpenCloseMixin(Base) {
      */
     open() {
       if (!this.opened) {
-        this[closePromiseKey] = new Promise((resolve, reject) => {
-          this[closeResolveKey] = resolve;
-        });
         this.opened = true;
       }
       return this[closePromiseKey];
