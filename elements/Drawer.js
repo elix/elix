@@ -17,6 +17,18 @@ const Base =
 
 class Drawer extends Base {
   
+  connectedCallback() {
+    if (super.connectedCallback) { super.connectedCallback(); }
+    // We can't seem to write a CSS rule that lets a shadow element be sensitive
+    // to the `dir` attribute of an ancestor, so we reflect the inherited
+    // direction to the component. We can then write styles that key off of
+    // that.
+    const direction = getComputedStyle(this).direction;
+    if (direction === 'rtl' && !this.dir) {
+      this.setAttribute('dir', 'rtl');
+    }
+  }
+
   [symbols.elementsWithEffectTransitions](effect) {
     return [this.$.overlayContent];
   }
@@ -52,6 +64,10 @@ class Drawer extends Base {
           transform: translateX(-100%);
           transition: transform 0.25s ease-in;
           will-change: transform;
+        }
+
+        :host([dir="rtl"]) #overlayContent {
+          transform: translateX(100%);
         }
 
         :host(.opening-effect) #overlayContent {

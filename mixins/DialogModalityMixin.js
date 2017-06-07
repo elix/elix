@@ -13,6 +13,37 @@ export default function DialogModalityMixin(Base) {
   // The class prototype added by the mixin.
   class DialogModality extends Base {
 
+    [symbols.afterEffect](effect) {
+      if (super[symbols.afterEffect]) { super[symbols.afterEffect](effect); }
+      if (effect === 'closing') {
+        // Restore body's previous degree of scrollability.
+        document.body.style.overflow = this[previousBodyStyleOverflow];
+        document.documentElement.style.marginRight = this[previousDocumentMarginRight];
+      }
+    }
+
+    [symbols.beforeEffect](effect) {
+      if (super[symbols.beforeEffect]) { super[symbols.beforeEffect](effect); }
+      if (effect === 'opening') {
+        // Mark body as non-scrollable, to absorb space bar keypresses and other
+        // means of scrolling the top-level document.
+        // HACK: This tries to play with the document margin to minimize page
+        // reflow. This is just an experiment to get a feel for how awful this
+        // would be.
+        // TODO: Walk up the dialog's parent hierarchy and do the same for any
+        // scrollable parents in it.
+        const scrollBarWidth = window.innerWidth - document.body.clientWidth;
+        this[previousBodyStyleOverflow] = document.body.style.overflow;
+        this[previousDocumentMarginRight] = scrollBarWidth > 0 ?
+          document.documentElement.style.marginRight :
+          null;
+        document.body.style.overflow = 'hidden';
+        if (scrollBarWidth) {
+          document.documentElement.style.marginRight = `${scrollBarWidth}px`;
+        }
+      }
+    }
+
     connectedCallback() {
       if (super.connectedCallback) { super.connectedCallback(); }
 
@@ -59,32 +90,6 @@ export default function DialogModalityMixin(Base) {
 
       // Prefer mixin result if it's defined, otherwise use base result.
       return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
-    }
-
-    [symbols.openedChanged](opened) {
-      if (super[symbols.openedChanged]) { super[symbols.openedChanged](opened); }
-      if (opened) {
-        // Mark body as non-scrollable, to absorb space bar keypresses and other
-        // means of scrolling the top-level document.
-        // HACK: This tries to play with the document margin to minimize page
-        // reflow. This is just an experiment to get a feel for how awful this
-        // would be.
-        // TODO: Walk up the dialog's parent hierarchy and do the same for any
-        // scrollable parents in it.
-        const scrollBarWidth = window.innerWidth - document.body.clientWidth;
-        this[previousBodyStyleOverflow] = document.body.style.overflow;
-        this[previousDocumentMarginRight] = scrollBarWidth > 0 ?
-          document.documentElement.style.marginRight :
-          null;
-        document.body.style.overflow = 'hidden';
-        if (scrollBarWidth) {
-          document.documentElement.style.marginRight = `${scrollBarWidth}px`;
-        }
-      } else {
-        // Restore body's previous degree of scrollability.
-        document.body.style.overflow = this[previousBodyStyleOverflow];
-        document.documentElement.style.marginRight = this[previousDocumentMarginRight];
-      }
     }
 
     // [symbols.shadowCreated]() {

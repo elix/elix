@@ -54,6 +54,18 @@ class Toast extends Base {
     }
   }
 
+  connectedCallback() {
+    if (super.connectedCallback) { super.connectedCallback(); }
+    // We can't seem to write a CSS rule that lets a shadow element be sensitive
+    // to the `dir` attribute of an ancestor, so we reflect the inherited
+    // direction to the component. We can then write styles that key off of
+    // that.
+    const direction = getComputedStyle(this).direction;
+    if (direction === 'rtl' && !this.dir) {
+      this.setAttribute('dir', 'rtl');
+    }
+  }
+
   [symbols.afterEffect](effect) {
     if (super[symbols.afterEffect]) { super[symbols.afterEffect](effect); }
     switch (effect) {
@@ -134,9 +146,9 @@ class Toast extends Base {
           opacity: 0;
           pointer-events: initial;
           transition-duration: 0.25s;
-          transition-property: opacity transform;
+          transition-property: opacity, transform;
           transition-timing-function: ease-in;
-          will-change: opactiy transform;
+          will-change: opacity, transform;
         }
 
         :host(.opening-effect) #overlayContent {
@@ -173,6 +185,9 @@ class Toast extends Base {
         }
         :host([from-edge="top-end"]) #overlayContent {
           transform: translateX(100%);
+        }
+        :host([from-edge="top-end"][dir="rtl"]) #overlayContent {
+          transform: translateX(-100%);
         }
         :host([from-edge="top-end"].opening-effect) #overlayContent {
           transform: translateX(0);
