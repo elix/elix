@@ -79,7 +79,7 @@
     <p>
       <button onclick="drawer.open()">Open drawer</button>
     </p>
-    <elix-drawer id="drawer">
+    <elix-drawer id="drawer" force-append-to-body="true">
       <div style="margin: 2em;">
         Drawer elements go here...
       </div>
@@ -107,7 +107,7 @@
       dialog.textContent = 'Hello, world';
       dialog.choices = dialog.constructor.OK_CANCEL;
       dialog.open();
-      dialog.whenClosed.then(function(result) {
+      dialog.whenClosed().then(function(result) {
         console.log('You picked ' + result);
       });
     });
@@ -117,7 +117,7 @@
       dialog.textContent = 'Hello, world';
       dialog.choices = ['Yes', 'No', 'Cancel'];
       dialog.open();
-      dialog.whenClosed.then(function(result) {
+      dialog.whenClosed().then(function(result) {
         console.log('You picked ' + result);
       });
     });

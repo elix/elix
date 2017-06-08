@@ -9,6 +9,8 @@ import symbols from '../mixins/symbols.js';
 
 
 const appendedToDocumentKey = Symbol('appendedToDocument');
+const forceAppendToBodyKey = Symbol('forceAppendToBody');
+const placeholderKey = Symbol('placeholder');
 const previousFocusedElementKey = Symbol('previousFocusedElement');
 const previousZIndexKey = Symbol('previousZIndex');
 
@@ -41,10 +43,15 @@ export default function OverlayMixin(Base) {
             this[previousZIndexKey];
           this[previousZIndexKey] = null;
 
-          // If we added it to the document when opening, remove it now.
           if (this[appendedToDocumentKey]) {
+            // The overlay wasn't in the document when opened, so we added it.
+            // Remove it now.
             this.parentNode.removeChild(this);
             this[appendedToDocumentKey] = false;
+          } else if (this[placeholderKey]) {
+            // The overlay was moved; return it to its original location.
+            this[placeholderKey].parentNode.replaceChild(this, this[placeholderKey]);
+            this[placeholderKey] = null;
           }
 
           break;
@@ -71,7 +78,16 @@ export default function OverlayMixin(Base) {
           /** @type {any} */
           const element = this;
           const isElementInBody = deepContains(document.body, element);
-          if (!isElementInBody) {
+          if (isElementInBody) {
+            if (this.forceAppendToBody) {
+              // Swap a placeholder for the overlay and move the overlay to the
+              // top level of the document body.
+              this[placeholderKey] = createPlaceholder(this);
+              this.parentNode.replaceChild(this[placeholderKey], this);
+              document.body.appendChild(element);
+            }
+          } else {
+            // Overlay isn't in document yet.
             this[appendedToDocumentKey] = true;
             document.body.appendChild(element);
           }
@@ -104,10 +120,35 @@ export default function OverlayMixin(Base) {
         makeVisible(this, this.opened);
       }
     }
+
+    /**
+     * @type {boolean}
+     * @default false
+     */
+    get forceAppendToBody() {
+      return this[forceAppendToBodyKey];
+    }
+    set forceAppendToBody(forceAppendToBody) {
+      const parsed = String(forceAppendToBody) === 'true';
+      this[forceAppendToBodyKey] = parsed;
+      if ('forceAppendToBody' in Base.prototype) { super.opened = parsed; }
+    }
   }
 
   return Overlay;
 
+}
+
+
+/*
+ * Return a placeholder element used to hold an overlay's position in the DOM if
+ * it is using forceAppendToBody, so that we can return the overlay to its
+ * original location when it's closed.
+ */
+function createPlaceholder(element) {
+  const placeholder = new Comment();
+  placeholder.textContent = ` Placeholder for the open ${element.localName}, which will return here when closed. `;
+  return placeholder;
 }
 
 

@@ -163,7 +163,7 @@ export default function OpenCloseMixin(Base) {
      * @returns {Promise} A promise resolved when the element has completely closed,
      * including the completion of any asynchronous opening effect.
      */
-    get whenClosed() {
+    whenClosed() {
       return this[closePromiseKey];
     }
 
@@ -171,7 +171,7 @@ export default function OpenCloseMixin(Base) {
      * @returns {Promise} A promise resolved when the element has completely opened,
      * including the completion of any asynchronous closing effect.
      */
-    get whenOpened() {
+    whenOpened() {
       return this[openPromiseKey];
     }
 
