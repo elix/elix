@@ -4,7 +4,25 @@ import symbols from '../../mixins/symbols.js';
 import sinon from 'sinon';
 
 
-class OverlayTest extends OverlayMixin(HTMLElement) {}
+class OverlayTest extends OverlayMixin(HTMLElement) {
+
+  constructor() {
+    super();
+    this._opened = false;
+  }
+
+  // Simplistic implementation of opened.
+  get opened() {
+    return this._opened;
+  }
+  set opened(opened) {
+    this._opened = opened;
+    const effect = opened ? 'opening' : 'closing';
+    this[symbols.beforeEffect](effect);
+    this[symbols.afterEffect](effect);
+  }
+}
+
 customElements.define('overlay-test', OverlayTest);
 
 
@@ -23,7 +41,7 @@ describe("OverlayMixin", function() {
   it('sets a default z-index', () => {
     const fixture = document.createElement('overlay-test');
     container.appendChild(fixture);
-    fixture[symbols.openedChanged](true);
+    fixture.opened = true;
     // Mocha test runner has element with z-index of 1, so we expect the
     // overlay to get a default z-index of 2.
     assert.equal(fixture.style.zIndex, '2');
@@ -33,7 +51,7 @@ describe("OverlayMixin", function() {
     const fixture = document.createElement('overlay-test');
     container.appendChild(fixture);
     fixture.style.zIndex = 10;
-    fixture[symbols.openedChanged](true);
+    fixture.opened = true;
     assert.equal(fixture.style.zIndex, '10');
   });
 
@@ -43,18 +61,18 @@ describe("OverlayMixin", function() {
     const input = document.createElement('input');
     container.appendChild(input);
     input.focus();
-    fixture[symbols.openedChanged](true);
+    fixture.opened = true;
     assert.equal(document.activeElement, fixture);
-    fixture[symbols.openedChanged](false);
+    fixture.opened = false;
     assert.equal(document.activeElement, input);    
   });
 
   it('adds overlay to document if it not already present, removes it when done', () => {
     const fixture = document.createElement('overlay-test');
     assert.equal(fixture.parentNode, null);
-    fixture[symbols.openedChanged](true);
+    fixture.opened = true;
     assert.equal(fixture.parentNode, document.body);
-    fixture[symbols.openedChanged](false);
+    fixture.opened = false;
     assert.equal(fixture.parentNode, null);
   });
 
@@ -63,7 +81,7 @@ describe("OverlayMixin", function() {
     container.appendChild(fixture);
     const beforeEffectSpy = sinon.spy(fixture, symbols.beforeEffect);
     const afterEffectSpy = sinon.spy(fixture, symbols.afterEffect);
-    fixture[symbols.openedChanged](true);
+    fixture.opened = true;
     assert(beforeEffectSpy.calledOnce);
     assert(beforeEffectSpy.calledWith('opening'));
     assert(beforeEffectSpy.calledImmediatelyBefore(afterEffectSpy));
@@ -79,7 +97,7 @@ describe("OverlayMixin", function() {
       assert(!beforeEffectSpy.called);
       assert(!afterEffectSpy.called);
     };
-    fixture[symbols.openedChanged](true);
+    fixture.opened = true;
   });
 
 });

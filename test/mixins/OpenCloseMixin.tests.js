@@ -20,14 +20,14 @@ describe("OpenCloseMixin", function() {
   it('opens and closes with open and close methods', done => {
     const fixture = document.createElement('open-close-test');
     assert(!fixture.opened);
-    const closePromise = fixture.open();
-    closePromise.then(result => {
-      assert(result);
-      done();
+    fixture.open().then(() => {
+      assert(fixture.opened);
+      fixture.close(true).then(result => {
+        assert(!fixture.opened);
+        assert(result);
+        done();
+      })
     });
-    assert(fixture.opened);
-    fixture.close(true);
-    assert(!fixture.opened);
   });
 
   it('opens and closes with toggle method', () => {
