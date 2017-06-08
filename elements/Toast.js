@@ -56,6 +56,12 @@ class Toast extends Base {
 
   connectedCallback() {
     if (super.connectedCallback) { super.connectedCallback(); }
+    
+    // Set default ARIA role for the popup.
+    if (this.getAttribute('role') == null && this[symbols.defaults].role) {
+      this.setAttribute('role', this[symbols.defaults].role);
+    }
+
     // We can't seem to write a CSS rule that lets a shadow element be sensitive
     // to the `dir` attribute of an ancestor, so we reflect the inherited
     // direction to the component. We can then write styles that key off of
@@ -81,6 +87,7 @@ class Toast extends Base {
     const defaults = super[symbols.defaults] || {};
     defaults.duration = 2500; /* milliseconds */
     defaults.fromEdge = 'bottom';
+    defaults.role = 'alert';
     return defaults;
   }
 
