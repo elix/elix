@@ -20,10 +20,11 @@
 
     <style>
       .buttonContainer {
-        background: lightgray;
+        background: #ddd;
         height: 250px;
         position: relative;
-        width: 300px;
+        width: 100%;
+        max-width: 300px;
       }
 
       .buttonRow {
@@ -35,6 +36,7 @@
       }
 
       .buttonRow button {
+        border: 1px solid gray;
         height: 50px;
         width: 50px;
       }
@@ -68,8 +70,7 @@
       }
 
       function toggleDocumentDirection() {
-        document.dir = document.dir === 'rtl' ? 'ltr' : 'rtl';
-        toast.dir = document.dir;
+        toast.dir = toast.dir === 'rtl' ? 'ltr' : 'rtl';
       }
     </script>
 
@@ -89,7 +90,7 @@
       </div>
     </p>
     <p>
-      <label><input type="checkbox" onchange="toggleDocumentDirection()"> Make document right-to-left to test international support</label>
+      <label><input type="checkbox" onchange="toggleDocumentDirection()"> Flip directions to test right-to-left language support</label>
     </p>
     <elix-toast id="toast">
       <div style="padding: 1em;">
