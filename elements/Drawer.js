@@ -30,7 +30,10 @@ class Drawer extends Base {
   }
 
   [symbols.elementsWithEffectTransitions](effect) {
-    return [this.$.overlayContent];
+    return [
+      this.$.backdrop,
+      this.$.overlayContent
+    ];
   }
 
   [symbols.shadowCreated]() {
@@ -53,28 +56,41 @@ class Drawer extends Base {
 
         #backdrop {
           opacity: 0;
-          transition: opacity 0.25s linear;
+          will-change: opacity;
         }
 
-        :host(.opening-effect) #backdrop {
+        :host(.opened:not(.effect)) #backdrop {
           opacity: 0.4;
+        }
+        :host(.effect) #backdrop {
+          opacity: 0.4;
+          transition: opacity 0.25s linear;
         }
 
         #overlayContent {
           transform: translateX(-100%);
-          transition: transform 0.25s ease-in;
           will-change: transform;
         }
-
         :host([dir="rtl"]) #overlayContent {
           transform: translateX(100%);
         }
 
-        :host(.opening-effect) #overlayContent {
+        :host(.opened:not(.effect)) #overlayContent {
+          transform: translateX(0);
+        }
+
+        :host(.effect) #overlayContent {
+          transition: transform 0.25s;
+        }
+        :host(.effect.opening) #overlayContent {
           transform: translateX(0);
           transition-timing-function: ease-out;
         }
+        :host(.effect.closing) #overlayContent {
+          transition-timing-function: ease-in;
+        }
 
+        /* TODO: Use matchMedia('(prefers-reduced-motion)').matches instead. */
         @media (prefers-reduced-motion) {
           #backdrop,
           #overlayContent {

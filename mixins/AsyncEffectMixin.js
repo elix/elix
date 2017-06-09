@@ -5,10 +5,22 @@
 import symbols from './symbols.js';
 
 
+const enableEffectsKey = Symbol('enableEffects');
+
+
 export default function AsyncEffectMixin(Base) {
 
   // The class prototype added by the mixin.
   class AsyncEffect extends Base {
+
+    connectedCallback() {
+      if (super.connectedCallback) { super.connectedCallback(); }
+
+      // After other connected aspects are handled, allow async effects.
+      requestAnimationFrame(() => {
+        this[enableEffectsKey] = true;
+      });
+    }
 
     // Asynchronous
     // Executes: beforeEffect, applyEffect, afterEffect
@@ -30,7 +42,9 @@ export default function AsyncEffectMixin(Base) {
 
       // Apply
       let applyPromise;
-      if (this[symbols.applyEffect]) {
+      if (!this[enableEffectsKey]) {
+        applyPromise = Promise.resolve();
+      } else if (this[symbols.applyEffect]) {
         applyPromise = this[symbols.applyEffect](effect);
       } else {
         console.warn('AsyncEffectMixin expects a component to define an "applyEffect" method.');

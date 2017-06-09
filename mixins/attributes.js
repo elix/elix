@@ -30,7 +30,7 @@ const pendingClassesSymbol = Symbol('pendingClasses');
 export function setAttribute(element, attribute, value) {
   if (element[safeToSetAttributesSymbol]) {
     // Safe to set attributes immediately.
-    setAttributeToElement(element, attribute, value);
+    reflectAttributeToElement(element, attribute, value);
   } else {
     // Defer setting attributes until the first time we're connected.
     if (!element[pendingAttributesSymbol]) {
@@ -117,7 +117,7 @@ export function writePendingAttributes(element) {
   if (pendingAttributes) {
     for (let attribute in pendingAttributes) {
       const value = pendingAttributes[attribute];
-      setAttributeToElement(element, attribute, value);
+      reflectAttributeToElement(element, attribute, value);
     }
     element[pendingAttributesSymbol] = null;
   }
@@ -140,7 +140,7 @@ export function writePendingAttributes(element) {
 
 // Reflect the attribute to the given element.
 // If the value is null, remove the attribute.
-function setAttributeToElement(element, attributeName, value) {
+function reflectAttributeToElement(element, attributeName, value) {
   if (value === null || typeof value === 'undefined') {
     element.removeAttribute(attributeName);
   } else {

@@ -32,7 +32,8 @@ export default function TransitionEffectMixin(Base) {
 
         // Apply the effect.
         requestAnimationFrame(() => {
-          applyEffectClass(this, effect);
+          this.classList.add(effect);
+          this.classList.add('effect');
         });
       });
       return base.then(() => animationPromise);
@@ -40,6 +41,8 @@ export default function TransitionEffectMixin(Base) {
 
     [symbols.afterEffect](effect) {
       if (super[symbols.afterEffect]) { super[symbols.afterEffect](effect); }
+      this.classList.remove(effect);
+      this.classList.remove('effect');
       if (this[transitionendListener]) {
         getTransitionElements(this, effect).forEach(element => {
           element.removeEventListener('transitionend', this[transitionendListener]);
@@ -49,22 +52,6 @@ export default function TransitionEffectMixin(Base) {
   }
 
   return TransitionEffect;
-}
-
-
-function applyEffectClass(element, effect) {
-
-  // Remove any classes left over from applying other effects.
-  const effectMarker = 'effect';
-  const effectClasses = [].filter.call(element.classList, className => 
-    // Stupid IE doesn't have String.endsWith()
-    className.slice(-effectMarker.length) === effectMarker);
-  effectClasses.forEach(className => {
-    element.classList.remove(effectClasses);
-  });
-
-  // Add the class for the effect now being applied.
-  element.classList.add(`${effect}-effect`);
 }
 
 

@@ -2,8 +2,8 @@
 // NOTE: This is a prototype, and not yet ready for real use.
 //
 
+import * as attributes from './attributes.js';
 import Symbol from './Symbol.js';
-// import attributes from './attributes.js';
 import symbols from './symbols.js';
 
 
@@ -30,22 +30,27 @@ export default function OpenCloseMixin(Base) {
   class OpenClose extends Base {
 
     constructor() {
+
       // @ts-ignore
       super();
+
       createOpenPromise(this);
       createClosePromise(this);
+
       // Set defaults.
-      // TODO: Support opening by default.
-      // if (typeof this.opened === 'undefined') {
-      //   this.opened = this[symbols.defaults].opened;
-      // }
+      if (typeof this.opened === 'undefined') {
+        this.opened = this[symbols.defaults].opened;
+      }
     }
 
     [symbols.afterEffect](effect) {
       if (super[symbols.afterEffect]) { super[symbols.afterEffect](effect); }
+      /** @type {any} */
+      const element = this;
       switch (effect) {
 
         case 'closing':
+          attributes.setClass(element, 'opened', false);
           if (this[closeResolveKey]) {
             const resolveClose = this[closeResolveKey];
             this[closeResolveKey] = null;
@@ -54,6 +59,7 @@ export default function OpenCloseMixin(Base) {
           break;
 
         case 'opening':
+          attributes.setClass(element, 'opened', true);
           if (this[openResolveKey]) {
             const resolveOpen = this[openResolveKey];
             this[openResolveKey] = null;
@@ -79,6 +85,12 @@ export default function OpenCloseMixin(Base) {
         this.opened = false;
       }
       return this[closePromiseKey];
+    }
+
+    get [symbols.defaults]() {
+      const defaults = super[symbols.defaults] || {};
+      defaults.opened = false;
+      return defaults;
     }
 
     /**
@@ -129,12 +141,6 @@ export default function OpenCloseMixin(Base) {
           this.dispatchEvent(event);
         }
       }
-    }
-
-    get [symbols.defaults]() {
-      const defaults = super[symbols.defaults] || {};
-      defaults.opened = false;
-      return defaults;
     }
 
     /**

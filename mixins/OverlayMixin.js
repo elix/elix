@@ -2,8 +2,8 @@
 // NOTE: This is a prototype, and not yet ready for real use.
 //
 
+import * as attributes from './attributes.js';
 import deepContains from './deepContains.js';
-import { toggleClass } from '../mixins/attributes.js';
 import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
 
@@ -114,7 +114,9 @@ export default function OverlayMixin(Base) {
 
     connectedCallback() {
       if (super.connectedCallback) { super.connectedCallback(); }
-      // attributes.writePendingAttributes(this);
+      /** @type {any} */
+      const element = this;
+      attributes.writePendingAttributes(element);
       this.setAttribute('tabindex', '0');
       if (this.opened) {
         makeVisible(this, this.opened);
@@ -153,7 +155,7 @@ function createPlaceholder(element) {
 
 
 function makeVisible(element, visible) {
-  toggleClass(element, 'visible', visible);
+  attributes.setClass(element, 'visible', visible);
 }
 
 
