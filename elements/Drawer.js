@@ -62,9 +62,7 @@ class Drawer extends Base {
         :host(.effect) #backdrop {
           transition: opacity 0.25s linear;
         }
-        :host(.opened:not(.effect)) #backdrop {
-          opacity: 0.4;
-        }
+        :host(.opened:not(.effect)) #backdrop,
         :host(.effect.opening) #backdrop {
           opacity: 0.4;
         }
@@ -77,7 +75,8 @@ class Drawer extends Base {
           transform: translateX(100%);
         }
 
-        :host(.opened:not(.effect)) #overlayContent {
+        :host(.opened:not(.effect)) #overlayContent,
+        :host(.effect.opening) #overlayContent {
           transform: translateX(0);
         }
 
@@ -85,7 +84,6 @@ class Drawer extends Base {
           transition: transform 0.25s;
         }
         :host(.effect.opening) #overlayContent {
-          transform: translateX(0);
           transition-timing-function: ease-out;
         }
         :host(.effect.closing) #overlayContent {

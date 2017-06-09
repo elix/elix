@@ -156,7 +156,9 @@ class Toast extends Base {
           pointer-events: initial;
           will-change: opacity, transform;
         }
-        :host(.opened:not(.effect)) #overlayContent {
+
+        :host(.opened:not(.effect)) #overlayContent,
+        :host(.effect.opening) #overlayContent {
           opacity: 1.0;
         }
 
@@ -165,7 +167,6 @@ class Toast extends Base {
           transition-property: opacity, transform;
         }
         :host(.effect.opening) #overlayContent {
-          opacity: 1.0;
           transition-timing-function: ease-out;
         }
         :host(.effect.closing) #overlayContent {
@@ -180,9 +181,7 @@ class Toast extends Base {
         :host([from-edge="bottom"]) #overlayContent {
           transform: translateY(100%);
         }
-        :host([from-edge="bottom"].opened:not(.effect)) #overlayContent {
-          transform: translateY(0);
-        }
+        :host([from-edge="bottom"].opened:not(.effect)) #overlayContent,
         :host([from-edge="bottom"].effect.opening) #overlayContent {
           transform: translateY(0);
         }
@@ -198,9 +197,7 @@ class Toast extends Base {
         :host([from-edge="bottom-left"][dir="rtl"]) #overlayContent {
           transform: translateX(100%);
         }
-        :host([from-edge="bottom-left"].opened:not(.effect)) #overlayContent {
-          transform: translateX(0);
-        }
+        :host([from-edge="bottom-left"].opened:not(.effect)) #overlayContent,
         :host([from-edge="bottom-left"].effect.opening) #overlayContent {
           transform: translateX(0);
         }
@@ -216,9 +213,7 @@ class Toast extends Base {
         :host([from-edge="bottom-right"][dir="rtl"]) #overlayContent {
           transform: translateX(-100%);
         }
-        :host([from-edge="bottom-right"].opened:not(.effect)) #overlayContent {
-          transform: translateX(0);
-        }
+        :host([from-edge="bottom-right"].opened:not(.effect)) #overlayContent,
         :host([from-edge="bottom-right"].effect.opening) #overlayContent {
           transform: translateX(0);
         }
@@ -230,9 +225,7 @@ class Toast extends Base {
         :host([from-edge="top"]) #overlayContent {
           transform: translateY(-100%);
         }
-        :host([from-edge="top"].opened:not(.effect)) #overlayContent {
-          transform: translateY(0);
-        }
+        :host([from-edge="top"].opened:not(.effect)) #overlayContent,
         :host([from-edge="top"].effect.opening) #overlayContent {
           transform: translateY(0);
         }
@@ -247,9 +240,7 @@ class Toast extends Base {
         :host([from-edge="top-left"][dir="rtl"]) #overlayContent {
           transform: translateX(100%);
         }
-        :host([from-edge="top-left"].opened:not(.effect)) #overlayContent {
-          transform: translateX(0);
-        }
+        :host([from-edge="top-left"].opened:not(.effect)) #overlayContent,
         :host([from-edge="top-left"].effect.opening) #overlayContent {
           transform: translateX(0);
         }
@@ -264,9 +255,7 @@ class Toast extends Base {
         :host([from-edge="top-right"][dir="rtl"]) #overlayContent {
           transform: translateX(-100%);
         }
-        :host([from-edge="top-right"].opened:not(.effect)) #overlayContent {
-          transform: translateX(0);
-        }
+        :host([from-edge="top-right"].opened:not(.effect)) #overlayContent,
         :host([from-edge="top-right"].effect.opening) #overlayContent {
           transform: translateX(0);
         }
