@@ -89,14 +89,6 @@ class Drawer extends Base {
         :host(.effect.closing) #overlayContent {
           transition-timing-function: ease-in;
         }
-
-        /* TODO: Use matchMedia('(prefers-reduced-motion)').matches instead. */
-        @media (prefers-reduced-motion) {
-          #backdrop,
-          #overlayContent {
-            transition-duration: 0.001s;
-          }
-        }
       </style>
       ${ filler || `<slot></slot>`}
     `);

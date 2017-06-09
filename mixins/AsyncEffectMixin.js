@@ -40,9 +40,13 @@ export default function AsyncEffectMixin(Base) {
 
       this[symbols.currentEffect] = effect;
 
+      // Don't show effects if user has set accessibility preference for reduced
+      // motion.
+      const prefersReducedMotion = matchMedia('(prefers-reduced-motion)').matches;
+
       // Apply
       let applyPromise;
-      if (!this[enableEffectsKey]) {
+      if (!this[enableEffectsKey] || prefersReducedMotion) {
         applyPromise = Promise.resolve();
       } else if (this[symbols.applyEffect]) {
         applyPromise = this[symbols.applyEffect](effect);

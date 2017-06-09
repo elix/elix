@@ -259,12 +259,6 @@ class Toast extends Base {
         :host([from-edge="top-right"].effect.opening) #overlayContent {
           transform: translateX(0);
         }
-
-        @media (prefers-reduced-motion) {
-          #overlayContent {
-            transition-duration: 0.001s;
-          }
-        }
       </style>
       <div id="overlayContent">
         ${filler || `<slot></slot>`}
