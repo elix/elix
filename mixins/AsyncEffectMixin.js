@@ -33,12 +33,12 @@ export default function AsyncEffectMixin(Base) {
         this[symbols.afterEffect](this[symbols.currentEffect]);
       }
 
-      this[symbols.currentEffect] = effect;
-
       // Before
       if (this[symbols.beforeEffect]) {
         this[symbols.beforeEffect](effect);
       }
+
+      this[symbols.currentEffect] = effect;
 
       // Apply
       let applyPromise;
@@ -54,9 +54,11 @@ export default function AsyncEffectMixin(Base) {
       return applyPromise
       .then(() => {
         // After
-        this[symbols.currentEffect] = null;
-        if (this[symbols.afterEffect]) {
-          this[symbols.afterEffect](effect);
+        if (this[symbols.currentEffect] === effect) {
+          this[symbols.currentEffect] = null;
+          if (this[symbols.afterEffect]) {
+            this[symbols.afterEffect](effect);
+          }
         }
       });
     }

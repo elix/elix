@@ -59,12 +59,14 @@ class Drawer extends Base {
           will-change: opacity;
         }
 
+        :host(.effect) #backdrop {
+          transition: opacity 0.25s linear;
+        }
         :host(.opened:not(.effect)) #backdrop {
           opacity: 0.4;
         }
-        :host(.effect) #backdrop {
+        :host(.effect.opening) #backdrop {
           opacity: 0.4;
-          transition: opacity 0.25s linear;
         }
 
         #overlayContent {

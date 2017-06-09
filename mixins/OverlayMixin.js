@@ -118,9 +118,6 @@ export default function OverlayMixin(Base) {
       const element = this;
       attributes.writePendingAttributes(element);
       this.setAttribute('tabindex', '0');
-      if (this.opened) {
-        makeVisible(this, this.opened);
-      }
     }
 
     /**
