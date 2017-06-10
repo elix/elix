@@ -31,12 +31,12 @@ export default function AsyncEffectMixin(Base) {
         this[symbols.afterEffect](this[symbols.currentEffect]);
       }
 
+      this[symbols.currentEffect] = effect;
+
       // Before
       if (this[symbols.beforeEffect]) {
         this[symbols.beforeEffect](effect);
       }
-
-      this[symbols.currentEffect] = effect;
 
       // Don't show effects if user has set accessibility preference for reduced
       // motion.
