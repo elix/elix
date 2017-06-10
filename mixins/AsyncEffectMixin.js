@@ -16,10 +16,8 @@ export default function AsyncEffectMixin(Base) {
     connectedCallback() {
       if (super.connectedCallback) { super.connectedCallback(); }
 
-      // After other connected aspects are handled, allow async effects.
-      requestAnimationFrame(() => {
-        this[enableEffectsKey] = true;
-      });
+      // Allow async effects.
+      this[enableEffectsKey] = true;
     }
 
     // Asynchronous

@@ -31,6 +31,7 @@ describe("AsyncEffectMixin", function() {
     const beforeEffectSpy = sinon.spy(fixture, symbols.beforeEffect);
     const applyEffectSpy = sinon.spy(fixture, symbols.applyEffect);
     const afterEffectSpy = sinon.spy(fixture, symbols.afterEffect);
+    container.appendChild(fixture);
     fixture[symbols.showEffect]('test')
     .then(() => {
       assert(beforeEffectSpy.calledOnce);
