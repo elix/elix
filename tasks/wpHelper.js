@@ -16,7 +16,7 @@ function buildBuildTargets(options) {
     buildTargets = {
       [`${demosPath}`]: {
         globItems: ['./demos/demos.js'],
-        includes: [/\//, /demos/]
+        includes: [/(\/|\\)/, /demos/]
       }
     };
   }
@@ -28,11 +28,11 @@ function buildBuildTargets(options) {
       },
       [`${elixPath}`]: {
         globItems: ['./globals.js'],
-        includes: [/\//]
+        includes: [/(\/|\\)/]
       },
       [`${demosPath}`]: {
         globItems: ['./demos/demos.js'],
-        includes: [/\//, /demos/]
+        includes: [/(\/|\\)/, /demos/]
       }
     };
   }
