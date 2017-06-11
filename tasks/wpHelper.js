@@ -101,21 +101,16 @@ const webpackHelperTask = function(options, done) {
       Array.prototype.push.apply(entries, a);
     });
 
-    let filename = key.split('/').pop();
+    let filename = path.basename(key);
     if (options.minify) {
-      let a = filename.split('.');
-      let ext = a.pop();
-      filename = '';
-      for (let i = 0; i < a.length; i++) {
-        filename += a[i];
-      }
-      filename += '.min.' + ext;
+      let ext = path.extname(filename);
+      filename = path.basename(filename, ext) + '.min' + ext;
     }
     let packOptions = {
       watch: options.watch,
       entry: entries,
       output: {
-        path: key.substring(0, key.lastIndexOf('/') + 1),
+        path: path.dirname(key) + path.sep,
         filename: filename,
         sourceMapFilename: filename + '.map'
       },
