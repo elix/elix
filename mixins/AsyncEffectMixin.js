@@ -28,6 +28,7 @@ export default function AsyncEffectMixin(Base) {
 
       // Tell any effect currently in progress to finish / clean up.
       if (this[symbols.currentEffect] && this[symbols.afterEffect]) {
+        console.log(`* after ${this[symbols.currentEffect]}`);
         this[symbols.afterEffect](this[symbols.currentEffect]);
       }
 
@@ -35,6 +36,7 @@ export default function AsyncEffectMixin(Base) {
 
       // Before
       if (this[symbols.beforeEffect]) {
+        console.log(`before ${effect}`);
         this[symbols.beforeEffect](effect);
       }
 
@@ -47,6 +49,7 @@ export default function AsyncEffectMixin(Base) {
       if (!this[enableEffectsKey] || prefersReducedMotion) {
         applyPromise = Promise.resolve();
       } else if (this[symbols.applyEffect]) {
+        console.log(`apply ${effect}`);
         applyPromise = this[symbols.applyEffect](effect);
       } else {
         console.warn('AsyncEffectMixin expects a component to define an "applyEffect" method.');
@@ -56,6 +59,7 @@ export default function AsyncEffectMixin(Base) {
       return applyPromise
       .then(() => {
         // After
+        console.log(`after ${effect}`);
         if (this[symbols.currentEffect] === effect) {
           this[symbols.currentEffect] = null;
           if (this[symbols.afterEffect]) {

@@ -18,35 +18,50 @@ export default function TransitionEffectMixin(Base) {
 
     [symbols.applyEffect](effect) {
       const base = super.applyEffect ? super[symbols.applyEffect](effect) : Promise.resolve();
-      const animationPromise = new Promise((resolve, reject) => {
 
+      const animationEndPromise = new Promise((resolve, reject) => {
         // Set up to handle a transitionend event once.
         // The handler will be removed when the promise resolves.
+        const temp = effect;
         this[transitionendListener] = (event) => {
+          console.log(`  resolving animationEndPromise ${temp}`);
+          console.log(event.target);
+          event.stopPropagation();
           resolve();
         };
+      });
 
-        getTransitionElements(this, effect).forEach(element => {
-          element.addEventListener('transitionend', this[transitionendListener]);
-        });
-
+      const animationStartPromise = new Promise((resolve, reject) => {
         // Apply the effect.
         requestAnimationFrame(() => {
+
+          getTransitionElements(this, effect).forEach(element => {
+            element.addEventListener('transitionend', this[transitionendListener]);
+          });
+          
           this.classList.add(effect);
           this.classList.add('effect');
+          console.log(`  added ${effect} => ${this.classList}`);
+          resolve();
         });
       });
-      return base.then(() => animationPromise);
+
+      return base
+      .then(() => animationStartPromise)
+      .then(() => animationEndPromise);
     }
 
     [symbols.afterEffect](effect) {
       if (super[symbols.afterEffect]) { super[symbols.afterEffect](effect); }
       this.classList.remove(effect);
       this.classList.remove('effect');
+      console.log(`  removed ${effect} => ${this.classList}`);
       if (this[transitionendListener]) {
+        console.log(`  removing event listeners`);
         getTransitionElements(this, effect).forEach(element => {
           element.removeEventListener('transitionend', this[transitionendListener]);
         });
+        this[transitionendListener] = null;
       }
     }
   }

@@ -159,6 +159,7 @@ function createPlaceholder(element) {
 
 function makeVisible(element, visible) {
   attributes.setClass(element, 'visible', visible);
+  console.log(`  ${visible ? 'added' : 'removed'} visible => ${element.classList}`);
 }
 
 
