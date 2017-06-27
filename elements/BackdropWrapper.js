@@ -10,6 +10,11 @@ export default function BackdropWrapper(base) {
   // The class prototype added by the mixin.
   class Backdrop extends base {
 
+    // TODO: Make `backdrop` a symbol.
+    get backdrop() {
+      return this.shadowRoot.querySelector('#backdrop');
+    }
+
     [symbols.template](filler) {
       const template = `
         <style>

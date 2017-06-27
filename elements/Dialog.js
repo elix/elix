@@ -34,11 +34,6 @@ const Base =
 
 class Dialog extends Base {
 
-  // TODO: Make `backdrop` a symbol.
-  get backdrop() {
-    return this.shadowRoot.querySelector('#backdrop');
-  }
-
   [symbols.template](filler) {
     return super[symbols.template](`
       <style>
