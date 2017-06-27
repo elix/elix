@@ -137,6 +137,9 @@ export default function OverlayMixin(Base) {
       const parsed = String(teleportToBodyOnOpen) === 'true';
       this[forceAppendToBodyKey] = parsed;
       if ('teleportToBodyOnOpen' in Base.prototype) { super.opened = parsed; }
+      /** @type {any} */
+      const element = this;
+      attributes.setAttribute(element, 'teleport-to-body-on-open', parsed);
     }
   }
 

@@ -25,7 +25,7 @@ const pendingClassesSymbol = Symbol('pendingClasses');
  *
  * @param {Element} element - The element to modify.
  * @param {string} attribute - The name of the *attribute* (not property) to set.
- * @param {object} value - The value to set. If null, the attribute will be removed.
+ * @param {string|boolean|number} value - The value to set. If null, the attribute will be removed.
  */
 export function setAttribute(element, attribute, value) {
   if (element[safeToSetAttributesSymbol]) {
