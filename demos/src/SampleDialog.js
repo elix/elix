@@ -6,7 +6,7 @@ class SampleDialog extends Dialog {
 
   [symbols.shadowCreated]() {
     if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
-    this.$.overlayContent.addEventListener('click', () => {
+    this.shadowRoot.querySelector('#overlayContent').addEventListener('click', () => {
       this.close('OK');
     });
   }

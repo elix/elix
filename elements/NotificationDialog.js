@@ -5,13 +5,14 @@
 import Dialog from './Dialog.js';
 import renderArrayAsElements from '../mixins/renderArrayAsElements.js';
 import Symbol from '../mixins/Symbol.js';
+import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
 import symbols from '../mixins/symbols.js';
 
 
 const choicesKey = Symbol('choices');
 
 
-class NotificationDialog extends Dialog {
+class NotificationDialog extends ShadowReferencesMixin(Dialog) {
 
   [symbols.shadowCreated]() {
     if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }

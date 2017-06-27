@@ -7,7 +7,6 @@ import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import OpenCloseMixin from '../mixins/OpenCloseMixin.js';
 import OverlayMixin from '../mixins/OverlayMixin.js';
 import PopupModalityMixin from '../mixins/PopupModalityMixin.js';
-import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
 import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import symbols from '../mixins/symbols.js';
 
@@ -18,10 +17,9 @@ const Base =
   OpenCloseMixin(
   OverlayMixin(
   PopupModalityMixin(
-  ShadowReferencesMixin(
   ShadowTemplateMixin(
     HTMLElement
-  )))))));
+  ))))));
 
 
 class Popup extends Base {

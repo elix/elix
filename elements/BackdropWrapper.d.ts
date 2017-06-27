@@ -3,6 +3,8 @@
 
 /// <reference path="../elix.d.ts"/>
 
-declare const BackdropWrapper: Mixin<{}, {}>;
+declare const BackdropWrapper: Mixin<{}, {
+  backdrop: HTMLElement;
+}>;
 
 export default BackdropWrapper;

@@ -31,8 +31,8 @@ class Drawer extends Base {
 
   [symbols.elementsWithEffectTransitions](effect) {
     return [
-      this.$.backdrop,
-      this.$.overlayContent
+      this.backdrop,
+      this.shadowRoot.querySelector('#overlayContent')
     ];
   }
 
@@ -40,7 +40,7 @@ class Drawer extends Base {
     if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
 
     // Implicitly close on background clicks.
-    this.$.backdrop.addEventListener('click', () => {
+    this.backdrop.addEventListener('click', () => {
       this.close();
     });
   }

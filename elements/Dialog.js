@@ -9,7 +9,6 @@ import DialogModalityMixin from '../mixins/DialogModalityMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import OpenCloseMixin from '../mixins/OpenCloseMixin.js';
 import OverlayMixin from '../mixins/OverlayMixin.js';
-import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
 import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import symbols from '../mixins/symbols.js';
 
@@ -26,10 +25,9 @@ const Base =
   KeyboardMixin(
   OpenCloseMixin(
   OverlayMixin(
-  ShadowReferencesMixin(
   ShadowTemplateMixin(
     HTMLElement
-  )))))))));
+  ))))))));
 
 
 class Dialog extends Base {

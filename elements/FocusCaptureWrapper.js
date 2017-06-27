@@ -27,7 +27,8 @@ export default function FocusCaptureWrapper(base) {
         // The Shift+Tab keydown event should continue bubbling, and the default
         // behavior should cause it to end up on the last focusable element.
         this[wrappingFocusKey] = true;
-        this.$.focusCatcher.focus();
+        const focusCatcher = this.shadowRoot.querySelector('#focusCatcher');
+        focusCatcher.focus();
         this[wrappingFocusKey] = false;
         handled = true;
       }
@@ -39,7 +40,8 @@ export default function FocusCaptureWrapper(base) {
     [symbols.shadowCreated]() {
       if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
 
-      this.$.focusCatcher.addEventListener('focus', event => {
+      const focusCatcher = this.shadowRoot.querySelector('#focusCatcher');
+      focusCatcher.addEventListener('focus', event => {
         if (!this[wrappingFocusKey]) {
           // Wrap focus back to the dialog.
           this.focus();
