@@ -79,7 +79,7 @@ export default function OverlayMixin(Base) {
           const element = this;
           const isElementInBody = deepContains(document.body, element);
           if (isElementInBody) {
-            if (this.forceAppendToBody) {
+            if (this.teleportToBodyOnOpen) {
               // Swap a placeholder for the overlay and move the overlay to the
               // top level of the document body.
               this[placeholderKey] = createPlaceholder(this);
@@ -130,13 +130,13 @@ export default function OverlayMixin(Base) {
      * @type {boolean}
      * @default false
      */
-    get forceAppendToBody() {
+    get teleportToBodyOnOpen() {
       return this[forceAppendToBodyKey];
     }
-    set forceAppendToBody(forceAppendToBody) {
-      const parsed = String(forceAppendToBody) === 'true';
+    set teleportToBodyOnOpen(teleportToBodyOnOpen) {
+      const parsed = String(teleportToBodyOnOpen) === 'true';
       this[forceAppendToBodyKey] = parsed;
-      if ('forceAppendToBody' in Base.prototype) { super.opened = parsed; }
+      if ('teleportToBodyOnOpen' in Base.prototype) { super.opened = parsed; }
     }
   }
 
