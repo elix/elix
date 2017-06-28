@@ -18,7 +18,7 @@
     "mocha": "^3.2.0",
     "sauce-test-runner": "^0.2.0",
     "sinon": "^2.0.0-pre.5",
-    "typescript": "next",
+    "typescript": "^2.4.0",
     "webpack": "^2.3.2"
   },
   "scripts": {
