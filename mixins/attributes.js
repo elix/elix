@@ -9,9 +9,9 @@ import Symbol from './Symbol.js';
 
 
 // Symbols for private data members on an element.
-const safeToSetAttributesSymbol = Symbol('safeToSetAttributes');
-const pendingAttributesSymbol = Symbol('pendingAttributes');
-const pendingClassesSymbol = Symbol('pendingClasses');
+const safeToSetAttributesKey = Symbol('safeToSetAttributes');
+const pendingAttributesKey = Symbol('pendingAttributes');
+const pendingClassesKey = Symbol('pendingClasses');
 
 
 /**
@@ -28,15 +28,15 @@ const pendingClassesSymbol = Symbol('pendingClasses');
  * @param {object} value - The value to set. If null, the attribute will be removed.
  */
 export function setAttribute(element, attribute, value) {
-  if (element[safeToSetAttributesSymbol]) {
+  if (element[safeToSetAttributesKey]) {
     // Safe to set attributes immediately.
     setAttributeToElement(element, attribute, value);
   } else {
     // Defer setting attributes until the first time we're connected.
-    if (!element[pendingAttributesSymbol]) {
-      element[pendingAttributesSymbol] = {};
+    if (!element[pendingAttributesKey]) {
+      element[pendingAttributesKey] = {};
     }
-    element[pendingAttributesSymbol][attribute] = value;
+    element[pendingAttributesKey][attribute] = value;
   }
 }
 
@@ -57,15 +57,15 @@ export function setAttribute(element, attribute, value) {
  * omitted, the class will be toggled.
  */
 export function setClass(element, className, value) {
-  if (element[safeToSetAttributesSymbol]) {
+  if (element[safeToSetAttributesKey]) {
     // Safe to set class immediately.
     return toggleClass(element, className, value);
   } else {
     // Defer setting class until the first time we're connected.
-    if (!element[pendingClassesSymbol]) {
-      element[pendingClassesSymbol] = {};
+    if (!element[pendingClassesKey]) {
+      element[pendingClassesKey] = {};
     }
-    element[pendingClassesSymbol][className] = value;
+    element[pendingClassesKey][className] = value;
     return value;
   }
 }
@@ -110,26 +110,26 @@ export function toggleClass(element, className, value) {
  * @param {HTMLElement} element - The element being added to the document.
  */
 export function writePendingAttributes(element) {
-  element[safeToSetAttributesSymbol] = true;
+  element[safeToSetAttributesKey] = true;
 
   // Set any pending attributes.
-  const pendingAttributes = element[pendingAttributesSymbol];
+  const pendingAttributes = element[pendingAttributesKey];
   if (pendingAttributes) {
     for (let attribute in pendingAttributes) {
       const value = pendingAttributes[attribute];
       setAttributeToElement(element, attribute, value);
     }
-    element[pendingAttributesSymbol] = null;
+    element[pendingAttributesKey] = null;
   }
 
   // Set any pending classes.
-  const pendingClasses = element[pendingClassesSymbol];
+  const pendingClasses = element[pendingClassesKey];
   if (pendingClasses) {
     for (let className in pendingClasses) {
       const value = pendingClasses[className];
       toggleClass(element, className, value);
     }
-    element[pendingClassesSymbol] = null;
+    element[pendingClassesKey] = null;
   }
 }
 

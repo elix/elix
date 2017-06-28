@@ -4,10 +4,10 @@ import symbols from './symbols.js';
 
 
 // Symbols for private data members on an element.
-const itemTextContentsSymbol = Symbol('itemTextContents');
-const typedPrefixSymbol = Symbol('typedPrefix');
-const prefixTimeoutSymbol = Symbol('prefixTimeout');
-const settingSelectionSymbol = Symbol('settingSelection');
+const itemTextContentsKey = Symbol('itemTextContents');
+const typedPrefixKey = Symbol('typedPrefix');
+const prefixTimeoutKey = Symbol('prefixTimeout');
+const settingSelectionKey = Symbol('settingSelection');
 
 
 /**
@@ -63,7 +63,7 @@ export default function KeyboardPrefixSelectionMixin(Base) {
     // rebuild our cache of item text the next time we're asked for it.
     [symbols.itemsChanged]() {
       if (super[symbols.itemsChanged]) { super[symbols.itemsChanged](); }
-      this[itemTextContentsSymbol] = null;
+      this[itemTextContentsKey] = null;
       resetTypedPrefix(this);
     }
 
@@ -101,7 +101,7 @@ export default function KeyboardPrefixSelectionMixin(Base) {
     }
     set selectedIndex(index) {
       if ('selectedIndex' in Base.prototype) { super.selectedIndex = index; }
-      if (!this[settingSelectionSymbol]) {
+      if (!this[settingSelectionKey]) {
         // Someone else (not this mixin) has changed the selection. In response,
         // we invalidate the prefix under construction.
         resetTypedPrefix(this);
@@ -124,9 +124,9 @@ export default function KeyboardPrefixSelectionMixin(Base) {
         // Update the selection. During that operation, set the flag that lets
         // us know that we are the cause of the selection change. See note at
         // this mixin's `selectedIndex` implementation.
-        this[settingSelectionSymbol] = true;
+        this[settingSelectionKey] = true;
         this.selectedIndex = index;
-        this[settingSelectionSymbol] = false;
+        this[settingSelectionKey] = false;
         return true;
       } else {
         return false;
@@ -155,52 +155,52 @@ function getIndexOfItemWithTextPrefix(element, prefix) {
 // Return an array of the text content (in lowercase) of all items.
 // Cache these results.
 function getItemTextContents(element) {
-  if (!element[itemTextContentsSymbol]) {
+  if (!element[itemTextContentsKey]) {
     const items = element.items;
-    element[itemTextContentsSymbol] = Array.prototype.map.call(items, item => {
+    element[itemTextContentsKey] = Array.prototype.map.call(items, item => {
       const text = element[symbols.getItemText](item);
       return text.toLowerCase();
     });
   }
-  return element[itemTextContentsSymbol];
+  return element[itemTextContentsKey];
 }
 
 // Handle the Backspace key: remove the last character from the prefix.
 function handleBackspace(element) {
-  const length = element[typedPrefixSymbol] ? element[typedPrefixSymbol].length : 0;
+  const length = element[typedPrefixKey] ? element[typedPrefixKey].length : 0;
   if (length > 0) {
-    element[typedPrefixSymbol] = element[typedPrefixSymbol].substr(0, length - 1);
+    element[typedPrefixKey] = element[typedPrefixKey].substr(0, length - 1);
   }
-  element.selectItemWithTextPrefix(element[typedPrefixSymbol]);
+  element.selectItemWithTextPrefix(element[typedPrefixKey]);
   setPrefixTimeout(element);
 }
 
 // Add a plain character to the prefix.
 function handlePlainCharacter(element, char) {
-  const prefix = element[typedPrefixSymbol] || '';
-  element[typedPrefixSymbol] = prefix + char.toLowerCase();
-  element.selectItemWithTextPrefix(element[typedPrefixSymbol]);
+  const prefix = element[typedPrefixKey] || '';
+  element[typedPrefixKey] = prefix + char.toLowerCase();
+  element.selectItemWithTextPrefix(element[typedPrefixKey]);
   setPrefixTimeout(element);
 }
 
 // Stop listening for typing.
 function resetPrefixTimeout(element) {
-  if (element[prefixTimeoutSymbol]) {
-    clearTimeout(element[prefixTimeoutSymbol]);
-    element[prefixTimeoutSymbol] = false;
+  if (element[prefixTimeoutKey]) {
+    clearTimeout(element[prefixTimeoutKey]);
+    element[prefixTimeoutKey] = false;
   }
 }
 
 // Clear the prefix under construction.
 function resetTypedPrefix(element) {
-  element[typedPrefixSymbol] = '';
+  element[typedPrefixKey] = '';
   resetPrefixTimeout(element);
 }
 
 // Wait for the user to stop typing.
 function setPrefixTimeout(element) {
   resetPrefixTimeout(element);
-  element[prefixTimeoutSymbol] = setTimeout(() => {
+  element[prefixTimeoutKey] = setTimeout(() => {
     resetTypedPrefix(element);
   }, constants.TYPING_TIMEOUT_DURATION);
 }

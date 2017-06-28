@@ -3,10 +3,10 @@ import symbols from './symbols.js';
 
 
 // Symbols for private data members on an element.
-const canSelectNextSymbol = Symbol('canSelectNext');
-const canSelectPreviousSymbol = Symbol('canSelectPrevious');
-const selectionRequiredSymbol = Symbol('selectionRequired');
-const selectionWrapsSymbol = Symbol('selectionWraps');
+const canSelectNextKey = Symbol('canSelectNext');
+const canSelectPreviousKey = Symbol('canSelectPrevious');
+const selectionRequiredKey = Symbol('selectionRequired');
+const selectionWrapsKey = Symbol('selectionWraps');
 
 // We want to expose both selectedIndex and selectedItem as independent
 // properties but keep them in sync. This allows a component user to reference
@@ -25,10 +25,10 @@ const selectionWrapsSymbol = Symbol('selectionWraps');
 // new value. Once we've begun that processing, we store the new value as the
 // internal value to indicate we've handled it.
 //
-const externalSelectedIndexSymbol = Symbol('externalSelectedIndex');
-const externalSelectedItemSymbol = Symbol('externalSelectedItem');
-const internalSelectedIndexSymbol = Symbol('internalSelectedIndex');
-const internalSelectedItemSymbol = Symbol('internalSelectedItem');
+const externalSelectedIndexKey = Symbol('externalSelectedIndex');
+const externalSelectedItemKey = Symbol('externalSelectedItem');
+const internalSelectedIndexKey = Symbol('internalSelectedIndex');
+const internalSelectedItemKey = Symbol('internalSelectedItem');
 
 
 /**
@@ -71,11 +71,11 @@ export default function SingleSelectionMixin(Base) {
      * @type {boolean}
      */
     get canSelectNext() {
-      return this[canSelectNextSymbol];
+      return this[canSelectNextKey];
     }
     set canSelectNext(canSelectNext) {
-      const changed = canSelectNext !== this[canSelectNextSymbol];
-      this[canSelectNextSymbol] = canSelectNext;
+      const changed = canSelectNext !== this[canSelectNextKey];
+      this[canSelectNextKey] = canSelectNext;
       if ('canSelectNext' in Base.prototype) { super.canSelectNext = canSelectNext; }
       if (this[symbols.raiseChangeEvents] && changed) {
         this.dispatchEvent(new CustomEvent('can-select-next-changed'));
@@ -89,11 +89,11 @@ export default function SingleSelectionMixin(Base) {
      * @type {boolean}
      */
     get canSelectPrevious() {
-      return this[canSelectPreviousSymbol];
+      return this[canSelectPreviousKey];
     }
     set canSelectPrevious(canSelectPrevious) {
-      const changed = canSelectPrevious !== this[canSelectPreviousSymbol];
-      this[canSelectPreviousSymbol] = canSelectPrevious;
+      const changed = canSelectPrevious !== this[canSelectPreviousKey];
+      this[canSelectPreviousKey] = canSelectPrevious;
       if ('canSelectPrevious' in Base.prototype) { super.canSelectPrevious = canSelectPrevious; }
       if (this[symbols.raiseChangeEvents] && changed) {
         this.dispatchEvent(new CustomEvent('can-select-previous-changed'));
@@ -154,8 +154,8 @@ export default function SingleSelectionMixin(Base) {
      * @type {number}
      */
     get selectedIndex() {
-      return this[externalSelectedIndexSymbol] != null ?
-        this[externalSelectedIndexSymbol] :
+      return this[externalSelectedIndexKey] != null ?
+        this[externalSelectedIndexKey] :
         -1;
     }
     /**
@@ -163,21 +163,21 @@ export default function SingleSelectionMixin(Base) {
      */
     set selectedIndex(index) {
       // See notes at top about internal vs. external copies of this property.
-      const changed = index !== this[internalSelectedIndexSymbol];
+      const changed = index !== this[internalSelectedIndexKey];
       let item;
       let parsedIndex = typeof index === 'string' ? parseInt(index) : index;
-      if (parsedIndex !== this[externalSelectedIndexSymbol]) {
+      if (parsedIndex !== this[externalSelectedIndexKey]) {
         // Store the new index and the corresponding item.
         const items = this.items || [];
         const hasItems = items.length > 0;
         if (!(hasItems && parsedIndex >= 0 && parsedIndex < items.length)) {
           parsedIndex = -1; // No item at that index.
         }
-        this[externalSelectedIndexSymbol] = parsedIndex;
+        this[externalSelectedIndexKey] = parsedIndex;
         item = hasItems && parsedIndex >= 0 ? items[parsedIndex] : null;
-        this[externalSelectedItemSymbol] = item;
+        this[externalSelectedItemKey] = item;
       } else {
-        item = this[externalSelectedItemSymbol];
+        item = this[externalSelectedItemKey];
       }
 
       // Now let super do any work.
@@ -185,7 +185,7 @@ export default function SingleSelectionMixin(Base) {
 
       if (changed) {
         // The selected index changed.
-        this[internalSelectedIndexSymbol] = parsedIndex;
+        this[internalSelectedIndexKey] = parsedIndex;
 
         if (this[symbols.raiseChangeEvents]) {
           const event = new CustomEvent('selected-index-changed', {
@@ -198,7 +198,7 @@ export default function SingleSelectionMixin(Base) {
         }
       }
 
-      if (this[internalSelectedItemSymbol] !== item) {
+      if (this[internalSelectedItemKey] !== item) {
         // Update selectedItem property so it can have its own effects.
         this.selectedItem = item;
       }
@@ -216,29 +216,29 @@ export default function SingleSelectionMixin(Base) {
     // set selectedItem to null. In that case, should we leave selection alone,
     // or set it to null?
     get selectedItem() {
-      return this[externalSelectedItemSymbol] || null;
+      return this[externalSelectedItemKey] || null;
     }
     /**
      * @param {Element|null} item
      */
     set selectedItem(item) {
       // See notes at top about internal vs. external copies of this property.
-      const previousSelectedItem = this[internalSelectedItemSymbol];
+      const previousSelectedItem = this[internalSelectedItemKey];
       const changed = item !== previousSelectedItem;
       /** @type {number} */
       let index;
-      if (item !== this[externalSelectedItemSymbol]) {
+      if (item !== this[externalSelectedItemKey]) {
         // Store item and look up corresponding index.
         const items = this.items;
         const hasItems = items && items.length > 0;
         index = hasItems ? Array.prototype.indexOf.call(items, item) : -1;
-        this[externalSelectedIndexSymbol] = index;
+        this[externalSelectedIndexKey] = index;
         if (index < 0) {
           item = null; // The indicated item isn't actually in `items`.
         }
-        this[externalSelectedItemSymbol] = index >= 0 ? item : null;
+        this[externalSelectedItemKey] = index >= 0 ? item : null;
       } else {
-        index = this[externalSelectedIndexSymbol];
+        index = this[externalSelectedIndexKey];
       }
 
       // Now let super do any work.
@@ -246,7 +246,7 @@ export default function SingleSelectionMixin(Base) {
 
       if (changed) {
         // The selected item changed.
-        this[internalSelectedItemSymbol] = item;
+        this[internalSelectedItemKey] = item;
 
         if (previousSelectedItem) {
           // Update selection state of old item.
@@ -270,7 +270,7 @@ export default function SingleSelectionMixin(Base) {
         }
       }
 
-      if (this[internalSelectedIndexSymbol] !== index) {
+      if (this[internalSelectedIndexKey] !== index) {
         // Update selectedIndex property so it can have its own effects.
         this.selectedIndex = index;
       }
@@ -293,12 +293,12 @@ export default function SingleSelectionMixin(Base) {
      * @default false
      */
     get selectionRequired() {
-      return this[selectionRequiredSymbol];
+      return this[selectionRequiredKey];
     }
     set selectionRequired(selectionRequired) {
       const parsed = String(selectionRequired) === 'true';
-      const changed = parsed !== this[selectionRequiredSymbol];
-      this[selectionRequiredSymbol] = parsed;
+      const changed = parsed !== this[selectionRequiredKey];
+      this[selectionRequiredKey] = parsed;
       if ('selectionRequired' in Base.prototype) { super.selectionRequired = selectionRequired; }
       if (changed) {
         if (this[symbols.raiseChangeEvents]) {
@@ -318,12 +318,12 @@ export default function SingleSelectionMixin(Base) {
      * @default false
      */
     get selectionWraps() {
-      return this[selectionWrapsSymbol];
+      return this[selectionWrapsKey];
     }
     set selectionWraps(selectionWraps) {
       const parsed = String(selectionWraps) === 'true';
-      const changed = parsed !== this[selectionWrapsSymbol];
-      this[selectionWrapsSymbol] = parsed;
+      const changed = parsed !== this[selectionWrapsKey];
+      this[selectionWrapsKey] = parsed;
       if ('selectionWraps' in Base.prototype) { super.selectionWraps = selectionWraps; }
       if (changed) {
         if (this[symbols.raiseChangeEvents]) {

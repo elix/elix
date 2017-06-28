@@ -28,14 +28,14 @@ function uniqueString(description) {
  *
  * Usage:
  *
- *     const fooSymbol = Symbol('foo');
+ *     const fooKey = Symbol('foo');
  *
  *     class MyElement extends HTMLElement {
  *       get foo() {
- *         return this[fooSymbol];
+ *         return this[fooKey];
  *       }
  *       set foo(value) {
- *         this[fooSymbol] = value;
+ *         this[fooKey] = value;
  *       }
  *     }
  *

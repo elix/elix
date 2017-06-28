@@ -12,8 +12,8 @@ import symbols from '../mixins/symbols.js';
 
 
 // Symbols for private data members on an element.
-const tabAlignSymbol = Symbol('tabAlign');
-const tabPositionSymbol = Symbol('tabPosition');
+const tabAlignKey = Symbol('tabAlign');
+const tabPositionKey = Symbol('tabPosition');
 
 
 const Base =
@@ -137,10 +137,10 @@ class TabStrip extends Base {
    * @type {string}
    */
   get tabAlign() {
-    return this[tabAlignSymbol];
+    return this[tabAlignKey];
   }
   set tabAlign(tabAlign) {
-    this[tabAlignSymbol] = tabAlign;
+    this[tabAlignKey] = tabAlign;
     this.reflectAttribute('tab-align', tabAlign);
   }
 
@@ -152,10 +152,10 @@ class TabStrip extends Base {
    * @type {string}
    */
   get tabPosition() {
-    return this[tabPositionSymbol];
+    return this[tabPositionKey];
   }
   set tabPosition(tabPosition) {
-    this[tabPositionSymbol] = tabPosition;
+    this[tabPositionKey] = tabPosition;
     this.reflectAttribute('tab-position', tabPosition);
     this.navigationAxis = (tabPosition === 'top' || tabPosition === 'bottom') ?
       'horizontal' :
