@@ -26,7 +26,7 @@ function runLint() {
     let task = spawn(
       'jshint', 
       args,
-      {stdio: 'inherit'});
+      {stdio: 'inherit', shell: true});
       
     task.on('close', code => {
       console.log('...jshint complete');

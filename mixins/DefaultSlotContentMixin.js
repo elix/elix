@@ -3,7 +3,7 @@ import symbols from './symbols.js';
 
 
 // Symbols for private data members on an element.
-const slotchangeFiredSymbol = Symbol('slotchangeFired');
+const slotchangeFiredKey = Symbol('slotchangeFired');
 
 
 /**
@@ -60,7 +60,7 @@ export default function DefaultSlotContentMixin(Base) {
       // See https://bugs.chromium.org/p/chromium/issues/detail?id=696659
       setTimeout(() => {
         // By this point, the slotchange event should have fired.
-        if (!this[slotchangeFiredSymbol]) {
+        if (!this[slotchangeFiredKey]) {
           // slotchange event didn't fire; we're in Blink. Force the invocation
           // of contentChanged that would have happened on slotchange.
           if (this[symbols.contentChanged]) {
@@ -88,7 +88,7 @@ export default function DefaultSlotContentMixin(Base) {
       // Listen to changes on the default slot.
       const slot = defaultSlot(this);
       slot.addEventListener('slotchange', event => {
-        this[slotchangeFiredSymbol] = true;
+        this[slotchangeFiredKey] = true;
         if (this[symbols.contentChanged]) {
           this[symbols.contentChanged]();
         }

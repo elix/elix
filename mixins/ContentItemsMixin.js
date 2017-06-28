@@ -4,8 +4,8 @@ import symbols from './symbols.js';
 
 
 // Symbols for private data members on an element.
-const itemsSymbol = Symbol('items');
-const itemInitializedSymbol = Symbol('itemInitialized');
+const itemsKey = Symbol('items');
+const itemInitializedKey = Symbol('itemInitialized');
 
 
 /**
@@ -55,7 +55,7 @@ export default function ContentItemsMixin(Base) {
       // the set of items changes later. We turn on memoization of the items
       // property by setting our internal property to null (instead of
       // undefined).
-      this[itemsSymbol] = null;
+      this[itemsKey] = null;
 
       this[symbols.itemsChanged]();
     }
@@ -68,17 +68,17 @@ export default function ContentItemsMixin(Base) {
      */
     get items() {
       let items;
-      if (this[itemsSymbol] == null) {
+      if (this[itemsKey] == null) {
         items = content.substantiveElements(this[symbols.content]);
         // Note: test for *equality* with null, since we use `undefined` to
         // indicate that we're not yet caching items.
-        if (this[itemsSymbol] === null) {
+        if (this[itemsKey] === null) {
           // Memoize the set of items.
-          this[itemsSymbol] = items;
+          this[itemsKey] = items;
         }
       } else {
         // Return the memoized items.
-        items = this[itemsSymbol];
+        items = this[itemsKey];
       }
       return items;
     }
@@ -94,9 +94,9 @@ export default function ContentItemsMixin(Base) {
       // Perform per-item initialization if `itemAdded` is defined.
       if (this[symbols.itemAdded]) {
         Array.prototype.forEach.call(this.items, item => {
-          if (!item[itemInitializedSymbol]) {
+          if (!item[itemInitializedKey]) {
             this[symbols.itemAdded](item);
-            item[itemInitializedSymbol] = true;
+            item[itemInitializedKey] = true;
           }
         });
       }

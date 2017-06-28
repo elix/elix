@@ -97,6 +97,24 @@ We generally prefer `yarn`, although `npm` also works.
    that support native ES6 modules, no build is necessary to run the demos.
 
 
+# Including Elix in your project
+
+Add Elix to your package.json dependencies:
+```
+{
+  "dependencies": {
+    "@elix/elix": "*"
+  }
+}
+```
+
+where `"*"` can be replaced with an appropriate `semver` value. You can also 
+specify `"next"` for Elix's nightly build.
+
+Note that `"@elix/elix"` is the required organization/package string for
+referencing the Elix package in the npm registry.
+
+
 # Unit tests
 
 Unit tests can be run on Sauce Labs. Do do so, you will need to set the
@@ -110,7 +128,7 @@ export SAUCE_ACCESS_KEY=<ask a core team member for this key>
 Invoke the unit tests to be run on Sauce Labs with:
 
 ```
-gulp sauce-tests
+npm run sauce-tests
 ```
 
 
