@@ -150,12 +150,12 @@ export default function OverlayMixin(Base) {
 
 /*
  * Return a placeholder element used to hold an overlay's position in the DOM if
- * it is using forceAppendToBody, so that we can return the overlay to its
+ * it is using teleportToBodyOnOpen, so that we can return the overlay to its
  * original location when it's closed.
  */
 function createPlaceholder(element) {
-  const placeholder = new Comment();
-  placeholder.textContent = ` Placeholder for the open ${element.localName}, which will return here when closed. `;
+  const message = ` Placeholder for the open ${element.localName}, which will return here when closed. `;
+  const placeholder = document.createComment(message);
   return placeholder;
 }
 
@@ -166,6 +166,15 @@ function makeVisible(element, visible) {
 }
 
 
+/*
+ * Return the highest z-index currently in use in the document's light DOM.
+ * 
+ * This calculation looks at all light DOM elements, so is theoretically
+ * expensive. That said, it only runs when an overlay is opening, and is only used
+ * if an overlay doesn't have a z-index already. In cases where performance is
+ * an issue, this calculation can be completely circumvented by manually
+ * applying a z-index to an overlay.
+ */
 function maxZIndexInUse() {
   const elements = document.body.querySelectorAll('*');
   const zIndices = Array.prototype.map.call(elements, element => {
