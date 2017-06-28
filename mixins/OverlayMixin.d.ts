@@ -5,8 +5,10 @@
 
 declare const OverlayMixin: Mixin<{
   connectedCallback?(): void;
+  teleportToBodyOnOpen?: boolean;
 }, {
   connectedCallback(): void;
+  teleportToBodyOnOpen: boolean;
 }>;
 
 export default OverlayMixin;

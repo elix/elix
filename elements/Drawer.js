@@ -2,17 +2,15 @@
 // NOTE: This is a prototype, and not yet ready for real use.
 //
 
-import AsyncEffectMixin from '../mixins/AsyncEffectMixin.js';
 import Dialog from './Dialog.js';
 import TransitionEffectMixin from '../mixins/TransitionEffectMixin.js';
 import symbols from '../mixins/symbols.js';
 
 
 const Base =
-  AsyncEffectMixin(
   TransitionEffectMixin(
     Dialog
-  ));
+  );
 
 
 class Drawer extends Base {

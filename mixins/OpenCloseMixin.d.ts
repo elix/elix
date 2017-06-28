@@ -6,8 +6,8 @@
 declare const OpenCloseMixin: Mixin<{
   opened?: boolean;
 }, {
-  close(result?: any): void;
-  open(): void;
+  close(result?: any): Promise<object>;
+  open(): Promise<object>;
   opened: boolean;
   toggle(): void;
 }>;

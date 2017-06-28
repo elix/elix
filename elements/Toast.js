@@ -2,7 +2,6 @@
 // NOTE: This is a prototype, and not yet ready for real use.
 //
 
-import AsyncEffectMixin from '../mixins/AsyncEffectMixin.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import OpenCloseMixin from '../mixins/OpenCloseMixin.js';
 import OverlayMixin from '../mixins/OverlayMixin.js';
@@ -19,7 +18,6 @@ const timeoutKey = Symbol('timeout');
 
 
 const Base =
-  AsyncEffectMixin(
   AttributeMarshallingMixin(
   OpenCloseMixin(
   OverlayMixin(
@@ -27,7 +25,7 @@ const Base =
   ShadowTemplateMixin(
   TransitionEffectMixin(
     HTMLElement
-  )))))));
+  ))))));
 
 
 class Toast extends Base {

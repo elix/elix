@@ -4,9 +4,9 @@
 /// <reference path="../elix.d.ts"/>
 
 declare const TransitionEffectMixin: Mixin<{
-  opened?: boolean;
+  connectedCallback?(): void;
 }, {
-  opened: boolean;
+  connectedCallback(): void;
 }>;
 
 export default TransitionEffectMixin;

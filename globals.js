@@ -7,7 +7,6 @@
 
 
 // Import mixins
-import AsyncEffectMixin from './mixins/AsyncEffectMixin.js';
 import AttributeMarshallingMixin from './mixins/AttributeMarshallingMixin.js';
 import * as attributes from './mixins/attributes.js';
 import ClickSelectionMixin from './mixins/ClickSelectionMixin.js';
@@ -50,7 +49,6 @@ import Toast from './elements/Toast.js';
 
 // The complete list of all mixins and elements.
 const Elix = {
-  AsyncEffectMixin,
   AttributeMarshallingMixin,
   attributes,
   ClickSelectionMixin,

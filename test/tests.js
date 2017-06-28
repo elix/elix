@@ -1,7 +1,6 @@
 // jshint ignore:start
 
 // Mixin tests
-import * as AsyncEffectMixinTests from './mixins/AsyncEffectMixin.tests.js';
 import * as AttributeMarshallingMixinTests from './mixins/AttributeMarshallingMixin.tests.js';
 import * as ClickSelectionMixinTests from './mixins/ClickSelectionMixin.tests.js';
 import * as ContentItemsMixinTests from './mixins/ContentItemsMixin.tests.js';
@@ -21,6 +20,7 @@ import * as ShadowTemplateMixinTests from './mixins/ShadowTemplateMixin.tests.js
 import * as SingleSelectionMixinTests from './mixins/SingleSelectionMixin.tests.js';
 import * as contentTests from './mixins/content.tests.js';
 import * as renderArrayAsElementsTests from './mixins/renderArrayAsElements.tests.js';
+// import * as TransitionEffectMixinTests from './mixins/TransitionEffectMixin.tests.js';
 
 // Element tests
 import * as LabeledTabsTests from './elements/LabeledTabs.tests.js';

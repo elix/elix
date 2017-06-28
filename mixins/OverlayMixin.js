@@ -8,6 +8,7 @@ import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
 
 
+// Symbols for private data members on an element.
 const appendedToDocumentKey = Symbol('appendedToDocument');
 const forceAppendToBodyKey = Symbol('forceAppendToBody');
 const placeholderKey = Symbol('placeholder');
