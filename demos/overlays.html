@@ -25,7 +25,7 @@
       display: none;
     }
 
-    /* HACK: Force the scroll bar to appear while we're working on this. */
+    /* Force the scroll bar to appear so we see it hide when overlay opens. */
     body::-webkit-scrollbar {
       background: lightgray;
     }
@@ -42,9 +42,9 @@
     <style>
       #floating {
         background: white;
-        z-index: 100;
-        position: relative;
         max-width: initial;
+        position: relative;
+        z-index: 100;
       }
     </style>
 
