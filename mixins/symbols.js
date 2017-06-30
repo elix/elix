@@ -276,8 +276,7 @@ const symbols = {
   cancelEffect: Symbol('cancelEffect'),
   currentEffect: Symbol('currentEffect'),
   showEffect: Symbol('showEffect'),
-  elementsWithEffectTransitions: Symbol('elementsWithEffectTransitions'),
-
+  elementsWithTransitions: Symbol('elementsWithTransitions'),
   openedChanged: Symbol('openedChanged')
 };
 

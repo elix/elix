@@ -11,8 +11,6 @@ const enableEffectsKey = Symbol('enableEffects');
 const transitionendListenerKey = Symbol('transitionendListener');
 
 
-// For now, assumes transition effects are applied at least to the overlay
-// content element, and that all effects finish at the same time.
 export default function TransitionEffectMixin(Base) {
 
   // The class prototype added by the mixin.
@@ -125,5 +123,7 @@ export default function TransitionEffectMixin(Base) {
 
 
 function getTransitionElements(element, effect) {
-  return element[symbols.elementsWithEffectTransitions](effect) || [element];
+  return element[symbols.elementsWithTransitions] ?
+    element[symbols.elementsWithTransitions](effect) :
+    [element];
 }

@@ -27,7 +27,7 @@ class Drawer extends Base {
     }
   }
 
-  [symbols.elementsWithEffectTransitions](effect) {
+  [symbols.elementsWithTransitions](effect) {
     return [
       this.backdrop,
       this.shadowRoot.querySelector('#overlayContent')

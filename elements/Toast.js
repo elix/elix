@@ -5,7 +5,6 @@
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import OpenCloseMixin from '../mixins/OpenCloseMixin.js';
 import OverlayMixin from '../mixins/OverlayMixin.js';
-import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
 import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
@@ -21,11 +20,10 @@ const Base =
   AttributeMarshallingMixin(
   OpenCloseMixin(
   OverlayMixin(
-  ShadowReferencesMixin(
   ShadowTemplateMixin(
   TransitionEffectMixin(
     HTMLElement
-  ))))));
+  )))));
 
 
 class Toast extends Base {
@@ -102,8 +100,8 @@ class Toast extends Base {
     this[durationKey] = typeof duration === 'string' ? parseInt(duration) : duration;
   }
 
-  [symbols.elementsWithEffectTransitions](effect) {
-    return [this.$.overlayContent];
+  [symbols.elementsWithTransitions](effect) {
+    return [this.shadowRoot.querySelector('#overlayContent')];
   }
 
   /**
