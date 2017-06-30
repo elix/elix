@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Overlay trapped by container</title>
+
+  <link rel="stylesheet" href="demos.css">
+  <script src="node_modules/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="demos.js"></script>
+  <script nomodule src="node_modules/custom-elements/src/native-shim.js"></script>
+  <script nomodule src="../build/demos.js"></script>
+
+</head>
+
+<body>
+  <div class="demo">
+
+    <style>
+      #container {
+        transform: translateZ(0);
+      }
+    </style>
+
+    <p id="floating">
+      The dialog below is sitting inside a container that has a CSS transform
+      applied to it, which forces the creation of a stacking context. As a
+      result, the dialog does not appear over other page elements as expected.
+      (The text of this paragraph, for example, is selectable even when the
+      dialog is open.) It is also positioned with respect to the stacking
+      context's boundaries, rather than with respect to the page as desired.
+    </p>
+
+    <button id="openButton" onclick="dialog.toggle()">Toggle dialog</button>
+
+    <div id="container">
+      <sample-dialog id="dialog" aria-label="Sample dialog">
+        This dialog isn't really on top.
+      </sample-dialog>
+    </div>
+
+  </div>
+
+</body>
+
+</html>

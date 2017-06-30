@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Overlay trapped by container</title>
+
+  <link rel="stylesheet" href="demos.css">
+  <script src="node_modules/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="demos.js"></script>
+  <script nomodule src="node_modules/custom-elements/src/native-shim.js"></script>
+  <script nomodule src="../build/demos.js"></script>
+
+</head>
+
+<body>
+  <div class="demo">
+
+    <style>
+      #container {
+        transform: translateZ(0);
+      }
+    </style>
+
+    <p id="floating">
+      The dialog below is sitting inside a container that has a CSS transform
+      applied to it, which forces the creation of a stacking context. That would
+      normally clip the dialog inside the container. An appropriate fix for that
+      problem would be to adjust the styling of the container, or move the
+      dialog elsewhere on the page. In cases where that is not possible,
+      however, the dialogs <code>teleportToBodyOnOpen</code> property can be
+      set. The dialog below uses that property to move itself to the document
+      body, thereby breaking the dialog out of its container's stacking context.
+    </p>
+
+    <button id="openButton" onclick="dialog.open()">Open dialog</button>
+
+    <div id="container">
+      <sample-dialog id="dialog" aria-label="Sample dialog" teleport-to-body-on-open="true">
+        This dialog is on top.
+      </sample-dialog>
+    </div>
+
+  </div>
+
+</body>
+
+</html>
