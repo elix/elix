@@ -2,15 +2,34 @@
 // NOTE: This is a prototype, and not yet ready for real use.
 //
 
-import Dialog from './Dialog.js';
-import TransitionEffectMixin from '../mixins/TransitionEffectMixin.js';
+import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
+import BackdropWrapper from './BackdropWrapper.js';
+import DialogModalityMixin from '../mixins/DialogModalityMixin.js';
+import FocusCaptureWrapper from './FocusCaptureWrapper.js';
+import KeyboardMixin from '../mixins/KeyboardMixin.js';
+import OpenCloseMixin from '../mixins/OpenCloseMixin.js';
+import OverlayMixin from '../mixins/OverlayMixin.js';
+import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import symbols from '../mixins/symbols.js';
+import TransitionEffectMixin from '../mixins/TransitionEffectMixin.js';
 
 
 const Base =
+  // Relative order of wrapper application matters: first focus capture
+  // wrapper, then backdrop wrapper. Remaining mixins can be applied in
+  // any order.
+  BackdropWrapper(
+  FocusCaptureWrapper(
+
+  AttributeMarshallingMixin(
+  DialogModalityMixin(
+  KeyboardMixin(
+  OpenCloseMixin(
+  OverlayMixin(
+  ShadowTemplateMixin(
   TransitionEffectMixin(
-    Dialog
-  );
+    HTMLElement
+  )))))))));
 
 
 class Drawer extends Base {
@@ -47,12 +66,18 @@ class Drawer extends Base {
     return super[symbols.template](`
       <style>
         :host {
+          display: flex;
           align-items: stretch;
           flex-direction: row;
           justify-content: flex-start;
         }
 
+        :host(:not(.visible)) {
+          display: none;
+        }
+
         #backdrop {
+          background: black;
           opacity: 0;
           will-change: opacity;
         }
@@ -66,6 +91,9 @@ class Drawer extends Base {
         }
 
         #overlayContent {
+          background: white;
+          border: 1px solid rgba(0, 0, 0, 0.2);
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
           transform: translateX(-100%);
           will-change: transform;
         }
