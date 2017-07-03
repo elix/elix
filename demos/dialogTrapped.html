@@ -27,9 +27,11 @@
       The dialog below is sitting inside a container that has a CSS transform
       applied to it, which forces the creation of a stacking context. As a
       result, the dialog does not appear over other page elements as expected.
-      (The text of this paragraph, for example, is selectable even when the
-      dialog is open.) It is also positioned with respect to the stacking
-      context's boundaries, rather than with respect to the page as desired.
+      The text of this paragraph, for example, is selectable even when the
+      dialog is open, and buttons on the page can still be clicked. The dialog
+      is also positioned with respect to the stacking context's boundaries,
+      rather than with respect to the page as desired. Finally, the dialog's
+      semi-transparent backdrop cannot be seen.
     </p>
 
     <button id="openButton" onclick="dialog.toggle()">Toggle dialog</button>
