@@ -12,7 +12,7 @@ import symbols from '../mixins/symbols.js';
 const choicesKey = Symbol('choices');
 
 
-class NotificationDialog extends ShadowReferencesMixin(Dialog) {
+class AlertDialog extends ShadowReferencesMixin(Dialog) {
 
   [symbols.shadowCreated]() {
     if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
@@ -116,5 +116,5 @@ class NotificationDialog extends ShadowReferencesMixin(Dialog) {
 }
 
 
-customElements.define('elix-notification-dialog', NotificationDialog);
-export default NotificationDialog;
+customElements.define('elix-alert-dialog', AlertDialog);
+export default AlertDialog;

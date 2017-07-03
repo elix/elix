@@ -48,16 +48,6 @@
       }
     </style>
 
-    <button id="openButton" onclick="dialog.open()">Open dialog</button>
-    <sample-dialog id="dialog" aria-label="Sample dialog">
-      Tap/click here or press Esc to cancel.
-    </sample-dialog>
-
-    <p>
-      <button id="okCancelButton">OK/Cancel dialog</button>
-      <button id="yesNoCancelButton">Yes/No/Cancel dialog</button>
-    </p>
-
     <p>
       <button id="showPopup" onclick="popup.open()">Show popup</button>
     </p>
@@ -101,27 +91,7 @@
     </p>
 
   </div>
-  <script>
-    okCancelButton.addEventListener('click', function(event) {
-      const dialog = document.createElement('elix-notification-dialog');
-      dialog.textContent = 'Hello, world';
-      dialog.choices = dialog.constructor.OK_CANCEL;
-      dialog.open();
-      dialog.whenClosed().then(function(result) {
-        console.log('You picked ' + result);
-      });
-    });
-
-    yesNoCancelButton.addEventListener('click', function(event) {
-      const dialog = document.createElement('elix-notification-dialog');
-      dialog.textContent = 'Hello, world';
-      dialog.choices = ['Yes', 'No', 'Cancel'];
-      dialog.open();
-      dialog.whenClosed().then(function(result) {
-        console.log('You picked ' + result);
-      });
-    });
-  </script>
+  
 </body>
 
 </html>

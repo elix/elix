@@ -7,11 +7,11 @@
 
 
 // Import mixins
-import AttributeMarshallingMixin from './mixins/AttributeMarshallingMixin.js';
 import * as attributes from './mixins/attributes.js';
+import * as content from './mixins/content.js';
+import AttributeMarshallingMixin from './mixins/AttributeMarshallingMixin.js';
 import ClickSelectionMixin from './mixins/ClickSelectionMixin.js';
 import constants from './mixins/constants.js';
-import * as content from './mixins/content.js';
 import ContentItemsMixin from './mixins/ContentItemsMixin.js';
 import defaultScrollTarget from './mixins/defaultScrollTarget.js';
 import DefaultSlotContentMixin from './mixins/DefaultSlotContentMixin.js';
@@ -20,7 +20,6 @@ import KeyboardDirectionMixin from './mixins/KeyboardDirectionMixin.js';
 import KeyboardMixin from './mixins/KeyboardMixin.js';
 import KeyboardPagedSelectionMixin from './mixins/KeyboardPagedSelectionMixin.js';
 import KeyboardPrefixSelectionMixin from './mixins/KeyboardPrefixSelectionMixin.js';
-import NotificationDialog from './elements/NotificationDialog.js';
 import OpenCloseMixin from './mixins/OpenCloseMixin.js';
 import OverlayMixin from './mixins/OverlayMixin.js';
 import renderArrayAsElements from './mixins/renderArrayAsElements.js';
@@ -34,6 +33,7 @@ import symbols from './mixins/symbols.js';
 import TransitionEffectMixin from './mixins/TransitionEffectMixin.js';
 
 // Import elements
+import AlertDialog from './elements/AlertDialog.js';
 import Dialog from './elements/Dialog.js';
 import Drawer from './elements/Drawer.js';
 import LabeledTabButton from './elements/LabeledTabButton.js';
@@ -68,7 +68,7 @@ const Elix = {
   LabeledTabs,
   ListBox,
   Modes,
-  NotificationDialog,
+  AlertDialog,
   OpenCloseMixin,
   OverlayMixin,
   Popup,
