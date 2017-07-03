@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Elix overlays</title>
+
+  <link rel="stylesheet" href="demos.css">
+  <script src="node_modules/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="demos.js"></script>
+  <script nomodule src="node_modules/custom-elements/src/native-shim.js"></script>
+  <script nomodule src="../build/demos.js"></script>
+
+</head>
+
+<body>
+  <div class="demo">
+
+    <p>
+      <button id="showPopup" onclick="popup.open()">Show popup</button>
+    </p>
+    <elix-popup id="popup">
+      <div style="padding: 1em;">
+        Here's a popup.
+      </div>
+    </elix-popup>
+
+  </div>
+  
+</body>
+
+</html>
