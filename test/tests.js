@@ -20,7 +20,7 @@ import * as ShadowTemplateMixinTests from './mixins/ShadowTemplateMixin.tests.js
 import * as SingleSelectionMixinTests from './mixins/SingleSelectionMixin.tests.js';
 import * as contentTests from './mixins/content.tests.js';
 import * as renderArrayAsElementsTests from './mixins/renderArrayAsElements.tests.js';
-// import * as TransitionEffectMixinTests from './mixins/TransitionEffectMixin.tests.js';
+import * as TransitionEffectMixinTests from './mixins/TransitionEffectMixin.tests.js';
 
 // Element tests
 import * as LabeledTabsTests from './elements/LabeledTabs.tests.js';
