@@ -36,7 +36,8 @@ class LabeledTabButton extends FocusRingMixin(ShadowTemplateMixin(HTMLElement)) 
           outline: none;
           padding: 0.5em 0.75em;
           position: relative;
-          effect: border-color 0.25s;
+          -webkit-tap-highlight-color: transparent;
+          transition: border-color 0.25s;
         }
 
         :host(.selected) button {

@@ -6,6 +6,7 @@
 
 
 import Symbol from './Symbol.js';
+import * as utilities from './utilities.js';
 
 
 // Symbols for private data members on an element.
@@ -150,4 +151,5 @@ function reflectAttributeToElement(element, attributeName, value) {
       element.setAttribute(attributeName, value);
     }
   }
+  utilities.webkitForceStyleUpdate(element);
 }
