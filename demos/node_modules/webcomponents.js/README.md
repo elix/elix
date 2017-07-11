@@ -35,7 +35,11 @@ Alternatively, this repo also comes with `webcomponents-loader.js`, a client-sid
 loader that dynamically loads the minimum polyfill bundle, using feature detection.
 Note that because the bundle will be loaded asynchronously, you should wait for the `WebComponentsReady` before you can safely assume that all the polyfills have
 loaded and are ready to be used (i.e. if you want to dynamically load other custom
-elements, etc.). Here's an example:
+elements, etc.).
+
+Additionally, you can check if `window.WebComponents` exists to know if the `WebComponentsReady` event will fire, and you can check if `window.WebComponents.ready` is true to check if the `WebComponentsReady` event has already fired.
+
+Here's an example:
 
 ```html
 <!-- Load polyfills; note that "loader" will load these async -->
@@ -68,7 +72,7 @@ To work around this, load `custom-elements-es5-adapter.js` before declaring new 
 **The adapter must NOT be compiled.**
 
 ```html
-<!-- Load Custom Elements es5 adapter --> 
+<!-- Load Custom Elements es5 adapter -->
 <script src="bower_components/webcomponentsjs/custom-elements-es5-adapter.js"></script>
 <!-- Load polyfills; note that "loader" will load these async -->
 <script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
@@ -142,9 +146,13 @@ window.addEventListener('WebComponentsReady', function(e) {
 
 ## Known Issues
 
+  * [ShadowDOM CSS is not encapsulated out of the box](#shadycss)
   * [Custom element's constructor property is unreliable](#constructor)
   * [Contenteditable elements do not trigger MutationObserver](#contentedit)
   * [ShadyCSS: :host(.zot:not(.bar:nth-child(2))) doesn't work](#nestedparens)
+  
+### ShadowDOM CSS is not encapsulated out of the box <a id="shadycss"></a>
+The ShadowDOM polyfill is not able to encapsulate CSS in ShadowDOM out of the box. You need to use specific code from the ShadyCSS library, included with the polyfill. See [ShadyCSS instructions](https://github.com/webcomponents/shadycss).
 
 ### Custom element's constructor property is unreliable <a id="constructor"></a>
 See [#215](https://github.com/webcomponents/webcomponentsjs/issues/215) for background.

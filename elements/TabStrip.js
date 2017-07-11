@@ -9,6 +9,7 @@ import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
+import * as utilities from '../mixins/utilities.js';
 
 
 // Symbols for private data members on an element.
@@ -103,6 +104,7 @@ class TabStrip extends Base {
       item.classList.remove('selected');
     }
     item.setAttribute('aria-selected', selected);
+    utilities.webkitForceStyleUpdate(item);
   }
 
   [symbols.keydown](event) {
@@ -164,6 +166,7 @@ class TabStrip extends Base {
     // Let tabs know their tab position, too.
     [].forEach.call(this.items, tab => {
       tab.setAttribute('tab-position', tabPosition);
+      utilities.webkitForceStyleUpdate(tab);
     });
   }
 

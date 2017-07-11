@@ -27,6 +27,7 @@ class ToolbarTab extends FocusRingMixin(ShadowTemplateMixin(HTMLElement)) {
           font-size: inherit;
           outline: none;
           padding: 6px;
+          -webkit-tap-highlight-color: transparent;
         }
 
         :host(.selected) button,

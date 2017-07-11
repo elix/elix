@@ -2,10 +2,6 @@
 # yarn lockfile v1
 
 
-custom-elements@webcomponents/custom-elements#master:
-  version "1.0.0-alpha.3"
-  resolved "https://codeload.github.com/webcomponents/custom-elements/tar.gz/36451e1dbe4e3b77d98499fc12132573d91d4a8b"
-
-webcomponents.js@webcomponents/webcomponentsjs#1.0.0-rc.7, webcomponentsjs@webcomponents/webcomponentsjs#1.0.0-rc.7:
-  version "1.0.0-rc.7"
-  resolved "https://codeload.github.com/webcomponents/webcomponentsjs/tar.gz/9b0c8b24b11d709fc6f725afe38250e682b86c4d"
+webcomponents.js@webcomponents/webcomponentsjs#v1.0.1:
+  version "1.0.1"
+  resolved "https://codeload.github.com/webcomponents/webcomponentsjs/tar.gz/e3558c3b9128f27c4f41c54f4fb59553e23748ce"
