@@ -46,7 +46,7 @@ function uniqueString(description) {
  *
  * @function Symbol
  * @param {any} description - A string to identify the symbol when debugging
- * @returns {symbol|string} — A Symbol (in ES6 browsers) or unique string ID (in
+ * @returns {symbol|string} - A Symbol (in ES6 browsers) or unique string ID (in
  * ES5).
  */
 export default function(description) {

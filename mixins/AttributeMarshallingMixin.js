@@ -89,7 +89,7 @@ export default function AttributeMarshallingMixin(Base) {
      * be deferred until the element is connected to the document.
      *
      * @param {string} attribute - The name of the *attribute* (not property) to set.
-     * @param {object} value - The value to set. If null, the attribute will be removed.
+     * @param {string|boolean|number} value - The value to set. If null, the attribute will be removed.
      */
     reflectAttribute(attribute, value) {
       /** @type {any} */

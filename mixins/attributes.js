@@ -25,12 +25,12 @@ const pendingClassesKey = Symbol('pendingClasses');
  *
  * @param {Element} element - The element to modify.
  * @param {string} attribute - The name of the *attribute* (not property) to set.
- * @param {object} value - The value to set. If null, the attribute will be removed.
+ * @param {string|boolean|number} value - The value to set. If null, the attribute will be removed.
  */
 export function setAttribute(element, attribute, value) {
   if (element[safeToSetAttributesKey]) {
     // Safe to set attributes immediately.
-    setAttributeToElement(element, attribute, value);
+    reflectAttributeToElement(element, attribute, value);
   } else {
     // Defer setting attributes until the first time we're connected.
     if (!element[pendingAttributesKey]) {
@@ -117,7 +117,7 @@ export function writePendingAttributes(element) {
   if (pendingAttributes) {
     for (let attribute in pendingAttributes) {
       const value = pendingAttributes[attribute];
-      setAttributeToElement(element, attribute, value);
+      reflectAttributeToElement(element, attribute, value);
     }
     element[pendingAttributesKey] = null;
   }
@@ -140,7 +140,7 @@ export function writePendingAttributes(element) {
 
 // Reflect the attribute to the given element.
 // If the value is null, remove the attribute.
-function setAttributeToElement(element, attributeName, value) {
+function reflectAttributeToElement(element, attributeName, value) {
   if (value === null || typeof value === 'undefined') {
     element.removeAttribute(attributeName);
   } else {
