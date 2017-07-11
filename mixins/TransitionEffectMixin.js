@@ -4,6 +4,7 @@
 
 import Symbol from './Symbol.js';
 import symbols from '../mixins/symbols.js';
+import * as utilities from './utilities.js';
 
 
 // Symbols for private data members on an element.
@@ -20,6 +21,9 @@ export default function TransitionEffectMixin(Base) {
       if (super[symbols.afterEffect]) { super[symbols.afterEffect](effect); }
       this.classList.remove(effect);
       this.classList.remove('effect');
+      if (this instanceof HTMLElement) {
+        utilities.webkitForceStyleUpdate(this);
+      }
       console.log(`  removed ${effect} => ${this.classList}`);
       if (this[transitionendListenerKey]) {
         console.log(`  removing event listeners`);
@@ -55,6 +59,9 @@ export default function TransitionEffectMixin(Base) {
           
           this.classList.add(effect);
           this.classList.add('effect');
+          if (this instanceof HTMLElement) {
+            utilities.webkitForceStyleUpdate(this);
+          }
           console.log(`  added ${effect} => ${this.classList}`);
           resolve();
         });
