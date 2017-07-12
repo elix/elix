@@ -24,6 +24,7 @@ export default function BackdropWrapper(base) {
             outline: none;
             position: fixed;
             top: 0;
+            -webkit-tap-highlight-color: transparent;
             width: 100%;
           }
 
@@ -33,7 +34,6 @@ export default function BackdropWrapper(base) {
             position: absolute;
             top: 0;
             user-select: none;
-            -webkit-tap-highlight-color: transparent;
             width: 100%;
           }
 
