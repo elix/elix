@@ -24,9 +24,7 @@ export default function TransitionEffectMixin(Base) {
       if (this instanceof HTMLElement) {
         utilities.webkitForceStyleUpdate(this);
       }
-      console.log(`  removed ${effect} => ${this.classList}`);
       if (this[transitionendListenerKey]) {
-        console.log(`  removing event listeners`);
         getTransitionElements(this, effect).forEach(element => {
           element.removeEventListener('transitionend', this[transitionendListenerKey]);
         });
@@ -40,10 +38,7 @@ export default function TransitionEffectMixin(Base) {
       const animationEndPromise = new Promise((resolve, reject) => {
         // Set up to handle a transitionend event once.
         // The handler will be removed when the promise resolves.
-        const temp = effect;
         this[transitionendListenerKey] = (event) => {
-          console.log(`  resolving animationEndPromise ${temp}`);
-          console.log(event.target);
           event.stopPropagation();
           resolve();
         };
@@ -62,7 +57,6 @@ export default function TransitionEffectMixin(Base) {
           if (this instanceof HTMLElement) {
             utilities.webkitForceStyleUpdate(this);
           }
-          console.log(`  added ${effect} => ${this.classList}`);
           resolve();
         });
       });
@@ -87,7 +81,6 @@ export default function TransitionEffectMixin(Base) {
 
       // Tell any effect currently in progress to finish / clean up.
       if (this[symbols.currentEffect]) {
-        console.log(`* after ${this[symbols.currentEffect]}`);
         this[symbols.afterEffect](this[symbols.currentEffect]);
       }
 
@@ -95,7 +88,6 @@ export default function TransitionEffectMixin(Base) {
 
       // Before
       if (this[symbols.beforeEffect]) {
-        console.log(`before ${effect}`);
         this[symbols.beforeEffect](effect);
       }
 
@@ -108,14 +100,12 @@ export default function TransitionEffectMixin(Base) {
       if (!this[enableEffectsKey] || prefersReducedMotion) {
         applyPromise = Promise.resolve();
       } else {
-        console.log(`apply ${effect}`);
         applyPromise = this[symbols.applyEffect](effect);
       }
 
       return applyPromise
       .then(() => {
         // After
-        console.log(`after ${effect}`);
         if (this[symbols.currentEffect] === effect) {
           this[symbols.currentEffect] = null;
           this[symbols.afterEffect](effect);

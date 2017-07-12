@@ -51,7 +51,6 @@ export default function OpenCloseMixin(Base) {
 
         case 'closing':
           attributes.setClass(element, 'opened', false);
-          console.log(`  removed opened => ${this.classList}`);
           if (this[closeResolveKey]) {
             const resolveClose = this[closeResolveKey];
             this[closeResolveKey] = null;
@@ -61,7 +60,6 @@ export default function OpenCloseMixin(Base) {
 
         case 'opening':
           attributes.setClass(element, 'opened', true);
-          console.log(`  added opened => ${this.classList}`);
           if (this[openResolveKey]) {
             const resolveOpen = this[openResolveKey];
             this[openResolveKey] = null;
