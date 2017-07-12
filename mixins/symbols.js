@@ -30,6 +30,36 @@ import Symbol from './Symbol.js';
 const symbols = {
 
   /**
+   * Symbol for the `afterEffect` method.
+   * 
+   * This method is invoked after a visual effect has completed. Implement
+   * this method to perform any necessary cleanup.
+   * 
+   * @param {string} effect - The name of the effect that has completed
+   */
+  afterEffect: Symbol('afterEffect'),
+
+  /**
+   * Symbol for the `applyEffect` method.
+   * 
+   * This method is invoked to trigger the execution of a visual effect.
+   * 
+   * @param {string} effect - The name of the effect to apply
+   * @returns {Promise} A Promise that resolves when the effect completes
+   */
+  applyEffect: Symbol('applyEffect'),
+
+  /**
+   * Symbol for the `beforeEffect` method.
+   * 
+   * This method is invoked before a visual effect has begun. Implement this
+   * method to prepare the element for the effect.
+   * 
+   * @param {string} effect - The name of the effect that has completed
+   */
+  beforeEffect: Symbol('beforeEffect'),
+
+  /**
    * Symbols for the `content` property.
    *
    * This property returns the component's content -- however the component
@@ -51,6 +81,13 @@ const symbols = {
   contentChanged: Symbol('contentChanged'),
 
   /**
+   * The name of the visual effect currently begin shown.
+   * 
+   * @returns {string}
+   */
+  currentEffect: Symbol('currentEffect'),
+
+  /**
    * Symbol for the `defaults` property.
    *
    * This property can be used to set or override defaults that will be applied
@@ -68,6 +105,17 @@ const symbols = {
    * @var {object} defaults
    */
   defaults: Symbol('defaults'),
+
+  /**
+   * Symbol for the `elementsWithTransitions` property.
+   * 
+   * A component can implement this method to indicate which element(s) have CSS
+   * transitions that will be triggered if the given effect is shown.
+   * 
+   * @param {string} effect - The effect under consideration
+   * @returns {[HTMLElement]} The elements with CSS transitions
+   */
+  elementsWithTransitions: Symbol('elementsWithTransitions'),
 
   /**
    * Symbol for the `getItemText` method.
@@ -179,6 +227,20 @@ const symbols = {
   keydown: Symbol('keydown'),
 
   /**
+   * Symbol for the `openedChanged` method.
+   * 
+   * This method is invoked when the `opened` property has changed. There are
+   * two advantages to using `openedChanged` rather than implementing a setter
+   * for the `opened` property: 1) `openedChanged` will supply the _parsed_
+   * value of the `opened` property, whereas the `opened` property might be
+   * passed a string as an attribute value, and 2) `openedChanged` only executes
+   * when the value of `opened` has actually changed.
+   * 
+   * @param {boolean} opened - The new value of the `opened` property
+   */
+  openedChanged: Symbol('openedChanged'),
+
+  /**
    * Indicates the general horizontal and/or vertical orientation of the
    * component. This may affect both presentation and behavior (e.g., of
    * keyboard navigation).
@@ -249,6 +311,18 @@ const symbols = {
   scrollTarget: Symbol('scrollTarget'),
 
   /**
+   * Symbol for the `showEffect` method.
+   * 
+   * This method invokes an asynchronous visual effect. It will invoke
+   * the `beforeEffect`, `applyEffect`, and `afterEffect` methods in
+   * turn. The first and last of those are synchronous, but `applyEffect`
+   * is asynchronous.
+   * 
+   * @param {string} effect - The name of the effect that has completed
+   */
+  showEffect: Symbol('showEffect'),
+
+  /**
    * Symbol for the `shadowCreated` method.
    *
    * This method is invoked when the component's shadow root has been attached
@@ -267,17 +341,7 @@ const symbols = {
    * @param {string|object} [filler]
    * @type {string|HTMLTemplateElement}
    */
-  template: Symbol('template'),
-
-  // TODO: documentation
-  afterEffect: Symbol('afterEffect'),
-  applyEffect: Symbol('applyEffect'),
-  beforeEffect: Symbol('beforeEffect'),
-  cancelEffect: Symbol('cancelEffect'),
-  currentEffect: Symbol('currentEffect'),
-  showEffect: Symbol('showEffect'),
-  elementsWithTransitions: Symbol('elementsWithTransitions'),
-  openedChanged: Symbol('openedChanged')
+  template: Symbol('template')
 };
 
 export default symbols;
