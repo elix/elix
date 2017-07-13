@@ -1,7 +1,3 @@
-//
-// NOTE: This is a prototype, and not yet ready for real use.
-//
-
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import BackdropWrapper from './BackdropWrapper.js';
 import DialogModalityMixin from '../mixins/DialogModalityMixin.js';
@@ -32,6 +28,26 @@ const Base =
   )))))))));
 
 
+/**
+ * A drawer is a modal container generally used to provide navigation in
+ * situations where: a) screen real estate is constrained and b) the navigation
+ * UI is not critical to completing the user’s primary goal (and, hence, not
+ * critical to the application’s business goal).
+ * 
+ * Dialog uses `BackdropWrapper` to add a backdrop behind the main overlay
+ * content. Both the backdrop and the dialog itself can be styled.
+ * 
+ * @extends {HTMLElement}
+ * @mixes AttributeMarshallingMixin
+ * @mixes BackdropWrapper
+ * @mixes DialogModalityMixin
+ * @mixes FocusCaptureWrapper
+ * @mixes KeyboardMixin
+ * @mixes OpenCloseMixin
+ * @mixes OverlayMixin
+ * @mixes ShadowTemplateMixin
+ * @mixes TransitionEffectMixin
+ */
 class Drawer extends Base {
   
   connectedCallback() {

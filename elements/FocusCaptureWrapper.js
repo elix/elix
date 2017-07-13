@@ -1,7 +1,3 @@
-//
-// NOTE: This is a prototype, and not yet ready for real use.
-//
-
 import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
 
@@ -10,7 +6,21 @@ import symbols from '../mixins/symbols.js';
 const wrappingFocusKey = Symbol('wrappingFocus');
 
 
-// Expects: shadowCreated, keydown
+/**
+ * This mixin wraps a component’s template such that, once the component gains
+ * the keyboard focus, Tab and Shift+Tab operations will cycle the focus within
+ * the component.
+ * 
+ * This wrapper expects the component to provide:
+ * 
+ * * A template-stamping mechanism compatible with `ShadowTemplateMixin`.
+ * 
+ * The wrapper provides these features to the component:
+ * 
+ * * Template elements and event handlers that will cause the keyboard focus to wrap.
+ *
+ * @module FocusCaptureWrapper
+ */
 export default function FocusCaptureWrapper(base) {
 
   class FocusCapture extends base {

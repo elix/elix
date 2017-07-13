@@ -1,7 +1,3 @@
-//
-// NOTE: This is a prototype, and not yet ready for real use.
-//
-
 import Symbol from '../mixins/Symbol.js';
 import symbols from './symbols.js';
 
@@ -10,7 +6,27 @@ import symbols from './symbols.js';
 const closeListenerKey = Symbol('closeListener');
 
 
-// Expects: keydown, opened, shadowCreated
+/**
+ * This mixin makes an overlay behave like a popup by dismissing it when certain
+ * user interactions occur.
+ * 
+ * This mixin expects the component to provide:
+ * 
+ * * An open/close API compatible with `OpenCloseMixin`.
+ * 
+ * The mixin provides these features to the component:
+ * 
+ * * Event handlers that close the element if the user clicks outside the
+ *   element, presses the Esc key, moves the focus outside the element, scrolls
+ *   the document, resizes the document, or switches focus away from the
+ *   document.
+ * * A default ARIA role of `alert`.
+ * 
+ * For modal overlays, use `DialogModalityMixin` instead. See the documentation
+ * of that mixin for a comparison of modality behaviors.
+ * 
+ * @module PopupModalityMixin
+ */
 export default function PopupModalityMixin(Base) {
 
   // The class prototype added by the mixin.

@@ -1,7 +1,3 @@
-//
-// NOTE: This is a prototype, and not yet ready for real use.
-//
-
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import BackdropWrapper from './BackdropWrapper.js';
 import FocusCaptureWrapper from './FocusCaptureWrapper.js';
@@ -30,6 +26,24 @@ const Base =
   ))))))));
 
 
+/**
+ * This component presents its children as a basic modal dialog which appears on
+ * top of the main page content and which the user must interact with before
+ * they can return to the page.
+ * 
+ * Dialog uses `BackdropWrapper` to add a backdrop behind the main overlay
+ * content. Both the backdrop and the dialog itself can be styled.
+ * 
+ * @extends {HTMLElement}
+ * @mixes AttributeMarshallingMixin
+ * @mixes BackdropWrapper
+ * @mixes DialogModalityMixin
+ * @mixes FocusCaptureWrapper
+ * @mixes KeyboardMixin
+ * @mixes OpenCloseMixin
+ * @mixes OverlayMixin
+ * @mixes ShadowTemplateMixin
+ */
 class Dialog extends Base {
 
   [symbols.template](filler) {

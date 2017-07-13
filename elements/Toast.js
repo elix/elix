@@ -1,7 +1,3 @@
-//
-// NOTE: This is a prototype, and not yet ready for real use.
-//
-
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import OpenCloseMixin from '../mixins/OpenCloseMixin.js';
 import OverlayMixin from '../mixins/OverlayMixin.js';
@@ -26,6 +22,17 @@ const Base =
   )))));
 
 
+/**
+ * A lightweight popup intended to display a short, non-critical message until a
+ * specified `duration` elapses or the user dismisses it.
+ * 
+ * @extends {HTMLElement}
+ * @mixes AttributeMarshallingMixin
+ * @mixes OpenCloseMixin
+ * @mixes OverlayMixin
+ * @mixes ShadowTemplateMixin
+ * @mixes TransitionEffectMixin
+ */
 class Toast extends Base {
 
   constructor() {
@@ -88,13 +95,26 @@ class Toast extends Base {
   }
 
   /**
+   * This property specifies in milliseconds how long a toast should remain open
+   * before being implicitly closed. The default value is 2500 milliseconds (2.5
+   * seconds).
+   * 
+   * To support interactivity within a toast, the timer is disabled if the user
+   * moves the mouse inside the toast or taps within it. When/if the user later
+   * moves the mouse outside the toast, or taps outside it, the timer will be
+   * restarted at zero.
+   * 
+   * Setting `duration` to `null` will disable the timer, allowing the toast to
+   * remain open indefinitely.
+   * 
    * @type {number}
+   * @default 2500
    */
   get duration() {
     return this[durationKey];
   }
   /**
-   * @param {number} duration
+   * @param {number} duration - The duration to show the toast, in milliseconds
    */
   set duration(duration) {
     this[durationKey] = typeof duration === 'string' ? parseInt(duration) : duration;
@@ -105,8 +125,22 @@ class Toast extends Base {
   }
 
   /**
-   * Note that the meanings of "left" and "right" are flipped for right-to-left
-   * languages.
+   * The `fromEdge` property determines the edge from which the toast will slide
+   * into view. Supported values are:
+   * 
+   * * "bottom" (the default): slides in from the center of the bottom of the
+   *   window.
+   * * "bottom-left"
+   * * "bottom-right"
+   * * "top"
+   * * "top-left"
+   * * "top-right"
+   * 
+   * The `Toast` component supports right-to-left languages such as Arabic and
+   * Hebrew. If the effective value of the element’s `dir` attribute is set to
+   * "rtl" (right to left), then the interpretation of the `fromEdge` property
+   * will be flipped horizontally: for example, setting `from-edge=“top-right”`
+   * will cause the `Toast` to appear from the top _left_.
    *
    * @type {"bottom"|"bottom-left"|"bottom-right"|"top"|"top-left"|"top-right"|null}
    */

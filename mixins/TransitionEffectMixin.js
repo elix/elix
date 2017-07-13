@@ -1,7 +1,3 @@
-//
-// NOTE: This is a prototype, and not yet ready for real use.
-//
-
 import Symbol from './Symbol.js';
 import symbols from '../mixins/symbols.js';
 import * as utilities from './utilities.js';
@@ -12,6 +8,46 @@ const enableEffectsKey = Symbol('enableEffects');
 const transitionendListenerKey = Symbol('transitionendListener');
 
 
+/**
+ * This mixin enables asynchronous visual effects by applying CSS classes that
+ * can trigger CSS transitions. It provides a standard timing model so that work
+ * can be performed both before and after the asynchronous effects run.
+ * 
+ * Thix mixin expects the component to provide:
+ * 
+ * * Styling with CSS transitions triggered by the application of CSS classes.
+ * 
+ * The mixin provides these features to the component:
+ * 
+ * * A `symbols.showEffect` method that invokes the following methods on the
+ *   component in order: `symbols.beforeEffect`, `symbols.applyEffect`, and
+ *   `symbols.afterEffect`.
+ * * A `symbols.applyEffect` method implementation that applies CSS classes to
+ *   the component host to trigger the start of the CSS transition.
+ * * Suppresses effect application if requested before an element’s
+ *   connectedCallback is invoked.
+ * * Suppresses effects if the user has expressed an accessibility preference
+ *   for reduced motion. See
+ *   https://webkit.org/blog/7551/responsive-design-for-motion/.
+ * 
+ * If the component defines the following optional members, the mixin will take
+ * advantage of them:
+ * 
+ * * `symbols.beforeEffect` method which runs synchronously before applyEffect
+ *   is invoked.
+ * * `symbols.afterEffect` method which runs synchronously after applyEffect has
+ *   completed.
+ * * `symbols.elementsWithTransitions` method that returns an array of elements
+ *   that will be affected by the transitions.
+ * 
+ * The timing model imposed by `TransitionEffectMixin` is designed to be
+ * replicated in other mixins. For example, Elix expects to eventually create a
+ * mixin to trigger effects that use the Web Animations API. That mixin will use
+ * the same timing model so that it could be used as a drop-in replacement for
+ * `TransitionEffectMixin`.
+ * 
+ * @module TransitionEffectMixin
+ */
 export default function TransitionEffectMixin(Base) {
 
   // The class prototype added by the mixin.
@@ -73,8 +109,6 @@ export default function TransitionEffectMixin(Base) {
       this[enableEffectsKey] = true;
     }
 
-    // Asynchronous
-    // Executes: beforeEffect, applyEffect, afterEffect
     [symbols.showEffect](effect) {
 
       if (super[symbols.effect]) { super[symbols.effect](effect); }
