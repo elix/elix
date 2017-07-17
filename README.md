@@ -102,8 +102,7 @@ where `"*"` can be replaced with an appropriate `semver` value.
 
 # Building and running locally
 
-Install the project's `devDependencies` with `npm` version 5 or greater: `npm
-install -g npm`:
+Install the project's `devDependencies` with `npm` version 5 or greater:
 
 1. Clone or fork the project.
 2. `npm install`.
