@@ -88,11 +88,11 @@ For full documentation and demos, see https://elix.org.
 
 # Getting started
 
-We generally prefer `yarn`, although `npm` also works.
+You need to install `npm` version 5 or greater: `npm install -g npm`
 
 1. Clone or fork the project.
-2. `yarn install` (or `npm install`).
-3. `yarn build` (or `npm run build`). Builds distribution .js files for all
+2. `npm install`.
+3. `npm run build`. Builds distribution .js files for all
    components and mixins, as well as demos and unit tests. Note: in browsers
    that support native ES6 modules, no build is necessary to run the demos.
 
