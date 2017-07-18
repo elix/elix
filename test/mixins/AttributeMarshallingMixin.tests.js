@@ -54,6 +54,10 @@ describe("AttributeMarshallingMixin", () => {
   afterEach(() => {
     container.innerHTML = '';
   });
+  
+  it("forces an error for testing purposes", () => {
+    assert(false);
+  });
 
   it("defines observedAttributes for all custom property setters", () => {
     const observedAttributes = ElementWithCustomProperty.observedAttributes;
