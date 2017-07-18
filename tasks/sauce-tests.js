@@ -20,7 +20,7 @@ const config = {
     {
       browserName: 'chrome',
       platform: 'OS X 10.11'
-    }/*,
+    },
     {
       browserName: 'chrome',
       platform: 'Windows 10'
@@ -45,7 +45,7 @@ const config = {
     {
       browserName: 'safari',
       platform: 'OS X 10.11',
-    }*/
+    }
   ],
   onTestSuiteComplete: (status) => {
     if (status) {
