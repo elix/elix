@@ -1,6 +1,6 @@
 {
   "name": "@elix/elix",
-  "version": "1.0.0-dev.YYYYMMDD",
+  "version": "1.0.0-alpha",
   "description": "Elix",
   "license": "MIT",
   "repository": {
