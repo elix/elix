@@ -78,9 +78,20 @@ export default function DefaultSlotContentMixin(Base) {
      */
     get [symbols.content]() {
       const slot = defaultSlot(this);
-      return slot ?
-        slot.assignedNodes({ flatten: true }) :
-        [];
+      let assignedNodes;
+      // As of 18 July 2017, the polyfill contains a bug
+      // (https://github.com/webcomponents/shadydom/issues/165)
+      // that throws an exception if assignedNodes is read during a constructor
+      // Until that bug is fixed, we work around the problem by catching the
+      // exception.
+      try {
+        assignedNodes = slot ?
+          slot.assignedNodes({ flatten: true }) :
+          [];
+      } catch (e) {
+        assignedNodes = [];
+      }
+      return assignedNodes;
     }
 
     [symbols.shadowCreated]() {
