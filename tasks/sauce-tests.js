@@ -40,7 +40,8 @@ const config = {
     },
     {
       browserName: 'MicrosoftEdge',
-      platform: 'Windows 10',
+      version: '14',
+      platform: 'Windows 10'
     },
     {
       browserName: 'safari',
