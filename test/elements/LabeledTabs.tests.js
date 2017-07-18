@@ -41,7 +41,9 @@ describe("LabeledTabs", () => {
       });
     });
   } else {
-    it.skip("creates LabeledTabButton instances for each tab panel");
+    it("creates LabeledTabButton instances for each tab panel - skipped", done => {
+      done();
+    });
   }
 
 });
