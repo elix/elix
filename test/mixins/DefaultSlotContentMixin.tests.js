@@ -4,6 +4,11 @@ import flushPolyfills from '../../test/flushPolyfills.js';
 import ShadowTemplateMixin from '../../mixins/ShadowTemplateMixin.js';
 import symbols from '../../mixins/symbols.js';
 
+  
+// Hack to avoid failing test on ie11
+// https://stackoverflow.com/questions/21825157/internet-explorer-11-detection
+const isIE11 = !!window.MSInputMethodContext && !!document.documentMode;
+
 
 /*
  * Simple element using the DefaultSlotContentMixin mixin.
@@ -50,9 +55,6 @@ customElements.define('wrapped-default-slot-content-test', WrappedContentTest);
 describe("DefaultSlotContentMixin", () => {
 
   let container;
-  // Hack to avoid failing test on ie11
-  // https://stackoverflow.com/questions/21825157/internet-explorer-11-detection
-  let isIE11 = !!window.MSInputMethodContext && !!document.documentMode;
 
   before(() => {
     container = document.getElementById('container');
@@ -77,9 +79,8 @@ describe("DefaultSlotContentMixin", () => {
       const fixture = wrapper.shadowRoot.querySelector('default-slot-content-test');
       assert.equal(fixture[symbols.content].length, 3);
     });
-  }
-  else {
-    it.skip("returns distributed nodes as content");
+  } else {
+    it.skip("returns distributed nodes as content [skip in IE 11]");
   }
 
   if (!isIE11) {
@@ -93,9 +94,8 @@ describe("DefaultSlotContentMixin", () => {
         done();
       });
     });
-  }
-  else {
-    it.skip("makes initial call to contentChanged when component is created");
+  } else {
+    it.skip("makes initial call to contentChanged when component is created [skip in IE 11]");
   }
 
   it("calls contentChanged when textContent changes", done => {
@@ -146,9 +146,8 @@ describe("DefaultSlotContentMixin", () => {
         done();
       });
     });
-  }
-  else {
-    it.skip("calls contentChanged when redistributed content changes");
+  } else {
+    it.skip("calls contentChanged when redistributed content changes [skip in IE 11]");
   }
 
   it("doesn't call contentChanged for changes in the component's shadow tree", done => {

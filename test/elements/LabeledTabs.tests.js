@@ -41,7 +41,7 @@ describe("LabeledTabs", () => {
       });
     });
   } else {
-    it.skip("creates LabeledTabButton instances for each tab panel");
+    it.skip("creates LabeledTabButton instances for each tab panel [skip in polyfill]");
   }
 
 });
