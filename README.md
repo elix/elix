@@ -88,11 +88,11 @@ For full documentation and demos, see https://elix.org.
 
 # Including Elix in your project
 
-Add the Elix package to your package.json as `@elix/elix`:
+Add the Elix package to your package.json as `elix`:
 ```
 {
   "dependencies": {
-    "@elix/elix": "*"
+    "elix": "*"
   }
 }
 ```
