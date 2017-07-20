@@ -8,7 +8,7 @@
   },
   "author": "info@component.kitchen",
   "dependencies": {
-    "webcomponents.js": "webcomponents/webcomponentsjs#v1.0.1"
+    "@webcomponents/webcomponentsjs": "^1.0.3"
   },
   "browserify": {
     "transform": [

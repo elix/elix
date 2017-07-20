@@ -86,33 +86,31 @@ For full documentation and demos, see https://elix.org.
   repository.
 
 
-# Getting started
-
-We generally prefer `yarn`, although `npm` also works.
-
-1. Clone or fork the project.
-2. `yarn install` (or `npm install`).
-3. `yarn build` (or `npm run build`). Builds distribution .js files for all
-   components and mixins, as well as demos and unit tests. Note: in browsers
-   that support native ES6 modules, no build is necessary to run the demos.
-
-
 # Including Elix in your project
 
-Add Elix to your package.json dependencies:
+Add the Elix package to your package.json as `elix`:
 ```
 {
   "dependencies": {
-    "@elix/elix": "*"
+    "elix": "*"
   }
 }
 ```
 
-where `"*"` can be replaced with an appropriate `semver` value. You can also 
-specify `"next"` for Elix's nightly build.
+where `"*"` can be replaced with an appropriate `semver` value.
 
-Note that `"@elix/elix"` is the required organization/package string for
-referencing the Elix package in the npm registry.
+
+# Building and running locally
+
+Install the project's `devDependencies` with `npm` version 5 or greater:
+
+1. Clone or fork the project.
+2. `npm install`.
+3. `npm run build`. Builds distribution .js files for all components and mixins,
+   as well as demos and unit tests. (Note: All Elix components and mixins are
+   written in ES6, and can be loaded with native `import` statements on browsers
+   that support those. The build step is only required to create demos and tests
+   that can run on older browsers.)
 
 
 # Unit tests

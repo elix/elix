@@ -1,6 +1,6 @@
 {
-  "name": "@elix/elix",
-  "version": "1.0.0-dev.YYYYMMDD",
+  "name": "elix",
+  "version": "1.0.0-alpha",
   "description": "Elix",
   "license": "MIT",
   "repository": {
@@ -27,5 +27,9 @@
     "lint": "node tasks/lint.js",
     "sauce-tests": "node tasks/sauce-tests.js",
     "typecheck": "tsc"
+  },
+  "engines": {
+    "node": "6.11.0",
+    "npm": "5.3.0"
   }
 }

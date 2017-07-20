@@ -6,7 +6,7 @@ const server = require('live-server');
 
 const port = 9999;
 
-let reportStatus = 0;
+let reportStatus = 1;
 
 const config = {
   urls: [`http://127.0.0.1:${port}/test/sauce-tests.html`],
@@ -40,7 +40,8 @@ const config = {
     },
     {
       browserName: 'MicrosoftEdge',
-      platform: 'Windows 10',
+      version: '14',
+      platform: 'Windows 10'
     },
     {
       browserName: 'safari',
@@ -50,9 +51,10 @@ const config = {
   onTestSuiteComplete: (status) => {
     if (status) {
       console.log('All tests passed!');
+      reportStatus = 0;
     }
     else {
-      reportStatus = 1;
+      console.log('One or more tests failed');
     }
   }
 };
