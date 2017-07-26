@@ -79,9 +79,7 @@ class Toast extends Base {
     if (super[symbols.afterEffect]) { super[symbols.afterEffect](effect); }
     switch (effect) {
       case 'opening':
-        if (this.duration != null) {
-          startTimer(this);
-        }
+        startTimer(this);
         break;
     }
   }
@@ -312,9 +310,12 @@ function clearTimer(element) {
 
 function startTimer(element) {
   clearTimer(element);
-  element[timeoutKey] = setTimeout(() => {
-    element[symbols.raiseChangeEvents] = true;
-    element.close();
-    element[symbols.raiseChangeEvents] = false;
-  }, element.duration);
+  const duration = element.duration;
+  if (duration != null && duration > 0) {
+    element[timeoutKey] = setTimeout(() => {
+      element[symbols.raiseChangeEvents] = true;
+      element.close();
+      element[symbols.raiseChangeEvents] = false;
+    }, duration);
+  }
 }
