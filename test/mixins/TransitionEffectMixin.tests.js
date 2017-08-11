@@ -1,6 +1,8 @@
 import { assert } from 'chai';
+import flushPolyfills from '../flushPolyfills.js';
 import sinon from 'sinon';
 import symbols from '../../mixins/symbols.js';
+import ShadowTemplateMixin from '../../mixins/ShadowTemplateMixin.js';
 import TransitionEffectMixin from '../../mixins/TransitionEffectMixin.js';
 
 
@@ -14,11 +16,10 @@ class AsyncEffectTest extends TransitionEffectMixin(HTMLElement) {
 customElements.define('async-effect-test', AsyncEffectTest);
 
 
-class TransitionEffectTest extends TransitionEffectMixin(HTMLElement) {
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-    this.shadowRoot.innerHTML = `
+class TransitionEffectTest extends
+    TransitionEffectMixin(ShadowTemplateMixin(HTMLElement)) {
+  [symbols.template]() {
+    return `
       <style>
         :host {
           opacity: 0;

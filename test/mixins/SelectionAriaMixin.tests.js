@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import flushPolyfills from '../../test/flushPolyfills.js';
+import flushPolyfills from '../flushPolyfills.js';
 import SelectionAriaMixin from '../../mixins/SelectionAriaMixin.js';
 import SingleSelectionMixin from '../../mixins/SingleSelectionMixin.js';
 import symbols from '../../mixins/symbols.js';
