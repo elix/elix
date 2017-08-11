@@ -26,7 +26,7 @@ describe("OpenCloseMixin", function() {
         assert(!fixture.opened);
         assert(result);
         done();
-      })
+      });
     });
   });
 

@@ -142,11 +142,11 @@ export default function OverlayMixin(Base) {
           // we also check the inline style value.
           // Also note that Safari returns a default zIndex of "0" for elements
           // with position: fixed, while Blink returns "auto".
-          const style = getComputedStyle(element)
+          const style = getComputedStyle(element);
           const computedZIndex = style.zIndex;
-          if (element.style.zIndex === ''
-              && (computedZIndex === 'auto' ||
-                (style.position === 'fixed' && computedZIndex === '0'))) {
+          if (element.style.zIndex === '' &&
+              (computedZIndex === 'auto' ||
+              (style.position === 'fixed' && computedZIndex === '0'))) {
             // Assign default z-index.
             this.style.zIndex = maxZIndexInUse() + 1;
           }

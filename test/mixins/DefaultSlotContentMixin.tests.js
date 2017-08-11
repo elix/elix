@@ -142,8 +142,10 @@ describe("DefaultSlotContentMixin", () => {
       // Wait for slotchange event to be processed.
       flushPolyfills();
       setTimeout(() => {
-        assert(fixture.contentChangedCallCount === 1 /* WebKit, polyfil */
-            || fixture.contentChangedCallCount === 2 /* Blink */);
+        assert(
+          fixture.contentChangedCallCount === 1 || /* WebKit, polyfil */
+          fixture.contentChangedCallCount === 2 /* Blink */
+        );
         done();
       });
     });
