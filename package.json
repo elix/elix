@@ -27,9 +27,5 @@
     "lint": "node tasks/lint.js",
     "sauce-tests": "node tasks/sauce-tests.js",
     "typecheck": "tsc"
-  },
-  "engines": {
-    "node": "6.11.0",
-    "npm": "5.3.0"
   }
 }
