@@ -1,3 +1,4 @@
+/*jslint node: true */
 'use strict';
 
 // Given a function that takes a Node-style callback, return a function that

@@ -199,10 +199,10 @@ function updateMixinUsedBy(json, objectName) {
   const name = json[0].name;
   
   const searchItem = extendedDocumentationMap[objectName];
-  if (searchItem
-      && searchItem[0].mixes 
-      && searchItem[0].mixes.length > 0 
-      && searchItem[0].mixes.includes(name)) {
+  if (searchItem &&
+      searchItem[0].mixes &&
+      searchItem[0].mixes.length > 0 &&
+      searchItem[0].mixes.includes(name)) {
     
     if (json[0].mixinUsedBy === undefined) {
       json[0].mixinUsedBy = [];
@@ -221,10 +221,10 @@ function updateClassInheritedBy(json, objectName) {
   const name = json[0].name;
   
   const searchItem = extendedDocumentationMap[objectName];
-  if (searchItem
-      && searchItem[0].inheritance 
-      && searchItem[0].inheritance.length > 0 
-      && searchItem[0].inheritance[0] === name) {
+  if (searchItem &&
+      searchItem[0].inheritance &&
+      searchItem[0].inheritance.length > 0 &&
+      searchItem[0].inheritance[0] === name) {
     
     if (json[0].classInheritedBy === undefined) {
       json[0].classInheritedBy = [];
@@ -276,9 +276,9 @@ function buildAugmentsListAndExtendMixinsArray(json, augmentsArray, mixinArray) 
     return;
   }
 
-  if (augmentsItem[0].mixes != null 
-      && augmentsItem[0].mixes !== undefined 
-      && augmentsItem[0].mixes.length > 0) {
+  if (augmentsItem[0].mixes != null &&
+      augmentsItem[0].mixes !== undefined &&
+      augmentsItem[0].mixes.length > 0) {
         
     for (let i = 0; i < augmentsItem[0].mixes.length; i++) {
       mixinArray.push({mixin: augmentsItem[0].mixes[i], source: augmentsName});
@@ -463,7 +463,7 @@ function createOutputPathDirectory(path) {
 // sequential order.
 //
 function mapAndChain(array, promiseFn) {
-  if (array == null || array.length == 0) {
+  if (array == null || array.length === 0) {
     return Promise.resolve();
   }
   
