@@ -113,7 +113,7 @@ const symbols = {
    * transitions that will be triggered if the given effect is shown.
    * 
    * @param {string} effect - The effect under consideration
-   * @returns {[HTMLElement]} The elements with CSS transitions
+   * @returns {HTMLElement[]} The elements with CSS transitions
    */
   elementsWithTransitions: Symbol('elementsWithTransitions'),
 

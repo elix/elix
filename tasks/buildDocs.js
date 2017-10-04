@@ -4,5 +4,5 @@
 const bd = require('./buildDocsHelper');
 
 bd.setInputPath('./');
-bd.setOutputPath('./build/Docs/');
+bd.setOutputPath('./build/docs/');
 bd.buildDocs();

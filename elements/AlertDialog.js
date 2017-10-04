@@ -47,13 +47,13 @@ class AlertDialog extends ShadowReferencesMixin(Dialog) {
    *     const alert = new AlertDialog();
    *     alert.choices = AlertDialog.OK_CANCEL;
    *  
-   * @type {[string]}
+   * @type {string[]}
    */
   get choices() {
     return this[choicesKey];
   }
   /**
-   * @param {[string]} choices - The choices to present to the user
+   * @param {string[]} choices - The choices to present to the user
    */
   set choices(choices) {
     this[choicesKey] = choices;
@@ -102,7 +102,7 @@ class AlertDialog extends ShadowReferencesMixin(Dialog) {
   /**
    * An array with a single item: the string "OK".
    * 
-   * @type {[string]}
+   * @type {string[]}
    */
   static get OK() {
     return ['OK'];
@@ -111,7 +111,7 @@ class AlertDialog extends ShadowReferencesMixin(Dialog) {
   /**
    * An array containing two strings: "OK" and "Cancel".
    * 
-   * @type {[string]}
+   * @type {string[]}
    */
   static get OK_CANCEL() {
     return ['OK', 'Cancel'];
