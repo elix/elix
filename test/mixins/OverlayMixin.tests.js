@@ -100,7 +100,7 @@ describe("OverlayMixin", function() {
     assert.equal(fixture.parentNode, div);
   });
 
-  it('invokes beforeEffect and afterEffect synchronously', () => {
+  it.skip('invokes beforeEffect and afterEffect synchronously', () => {
     const fixture = document.createElement('overlay-test');
     container.appendChild(fixture);
     const beforeEffectSpy = sinon.spy(fixture, symbols.beforeEffect);

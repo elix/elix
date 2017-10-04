@@ -2,14 +2,6 @@
 let count = 0;
 
 /**
- * @param {any} description
- * @returns {string}
- */
-function uniqueString(description) {
-  return `_${description}${count++}`;
-}
-
-/**
  * A helper function for simulating instances of the `Symbol` class in older
  * browsers, notably Microsoft Internet Explorer 11.
  *
@@ -53,4 +45,12 @@ export default function(description) {
   return typeof Symbol === 'function' ?
     Symbol(description) :
     uniqueString(description);
+}
+
+/**
+ * @param {any} description
+ * @returns {string}
+ */
+function uniqueString(description) {
+  return `_${description}${count++}`;
 }
