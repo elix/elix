@@ -4,6 +4,7 @@
 const webpack = require('webpack');
 const glob = require('glob');
 const path = require('path');
+const fs = require('fs-extra');
 
 let buildTargets = null;
 
@@ -22,10 +23,6 @@ function buildBuildTargets(options) {
   }
   else {
     buildTargets = {
-      [`${testsPath}`]: {
-        globItems: ['./test/tests.js'],
-        includes: [/mixins/, /elements/, /test/]
-      },
       [`${elixPath}`]: {
         globItems: ['./globals.js'],
         includes: [/(\/|\\)/]
@@ -35,6 +32,18 @@ function buildBuildTargets(options) {
         includes: [/(\/|\\)/, /demos/]
       }
     };
+
+    // The tests may not exist in the case where elix.org
+    // wants to build the elix dependency. In that case,
+    // npm may not pull the test folder. So we would skip building
+    // tests in that case.
+    const testGlob = './test/tests.js';
+    if (fs.existsSync(testGlob)) {
+      buildTargets[`${testsPath}`] = {
+        globItems: [testGlob],
+        includes: [/mixins/, /elements/, /test/]
+      };
+    }
   }
 }
 
