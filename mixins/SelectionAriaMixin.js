@@ -68,6 +68,12 @@ export default function SelectionAriaMixin(Base) {
       );
     }
 
+    get defaultState() {
+      return Object.assign({}, super.defaultState, {
+        role: this.getAttribute('role') || 'listbox'
+      });
+    }
+
     hostProps() {
       const base = super.hostProps ? super.hostProps() : {};
       const selectedItem = this.state.selectedIndex >= 0 && this.items ?
@@ -76,7 +82,7 @@ export default function SelectionAriaMixin(Base) {
       const selectedItemId = selectedItem && selectedItem.id;
       return Object.assign({}, base, {
         'aria-activedescendant': selectedItemId,
-        'role': base.role || 'listbox'
+        'role': this.state.role
       });
     }
 

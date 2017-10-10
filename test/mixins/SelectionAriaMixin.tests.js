@@ -1,15 +1,21 @@
 import { assert } from 'chai';
 import flushPolyfills from '../flushPolyfills.js';
+import ContentItemsMixin from '../../mixins/ContentItemsMixin.js';
+import ReactiveMixin from '../../mixins/ReactiveMixin.js'
 import SelectionAriaMixin from '../../mixins/SelectionAriaMixin.js';
-import SingleSelectionMixin from '../../mixins/SingleSelectionMixin.js';
 import symbols from '../../mixins/symbols.js';
 
 
-class SelectionAriaActiveTest extends SelectionAriaMixin(SingleSelectionMixin(HTMLElement)) {
-  get items() {
+class SelectionAriaActiveTest extends
+    ContentItemsMixin(ReactiveMixin(SelectionAriaMixin(HTMLElement))) {
+
+  connectedCallback() {
+    if (super.connectedCallback) { super.connectedCallback(); }
     // Convert children to array in a way IE 11 can handle.
-    return Array.prototype.slice.call(this.children);
+    const content = Array.prototype.slice.call(this.children);
+    this.setState({ content });
   }
+
 }
 customElements.define('selection-aria-test', SelectionAriaActiveTest);
 
@@ -35,9 +41,6 @@ describe("SelectionAriaMixin", () => {
     const item2 = document.createElement('div');
     // Leave item2 without an ID.
     fixture.appendChild(item2);
-    // Initialize items using private API.
-    fixture[symbols.itemAdded](item1);
-    fixture[symbols.itemAdded](item2);
     container.appendChild(fixture);
     flushPolyfills();
     assert.equal(fixture.getAttribute('role'), 'listbox'); // default role
@@ -55,14 +58,12 @@ describe("SelectionAriaMixin", () => {
     fixture.appendChild(item1);
     const item2 = document.createElement('div');
     fixture.appendChild(item2);
-    // Initialize items using private API.
-    fixture[symbols.itemAdded](item1);
-    fixture[symbols.itemAdded](item2);
-    fixture.selectedItem = item1;
+    container.appendChild(fixture);
+    fixture.setState({ selectedIndex: 0 });
     assert.equal(fixture.getAttribute('aria-activedescendant'), item1.id);
     assert.equal(item1.getAttribute('aria-selected'), 'true');
     assert.equal(item2.getAttribute('aria-selected'), 'false');
-    fixture.selectedItem = item2;
+    fixture.setState({ selectedIndex: 1 });
     assert.equal(fixture.getAttribute('aria-activedescendant'), item2.id);
     assert.equal(item1.getAttribute('aria-selected'), 'false');
     assert.equal(item2.getAttribute('aria-selected'), 'true');
@@ -75,9 +76,9 @@ describe("SelectionAriaMixin", () => {
     assert.equal(fixture.getAttribute('role'), 'listbox');
   });
 
-  it("doesn't overwrite an explicit role", () => {
-    const fixture = document.createElement('selection-aria-test');
-    fixture.setAttribute('role', 'tabs');
+  it("doesn't overwrite an explicit role in markup", () => {
+    container.innerHTML = `<selection-aria-test role="tabs"></selection-aria-test>`;
+    const fixture = container.querySelector('selection-aria-test');
     container.appendChild(fixture);
     assert.equal(fixture.getAttribute('role'), 'tabs');
   });

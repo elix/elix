@@ -2,10 +2,16 @@ import { assert } from 'chai';
 import flushPolyfills from '../../test/flushPolyfills.js';
 import KeyboardMixin from '../../mixins/KeyboardMixin.js';
 import * as mockInteractions from '../../test/mockInteractions.js';
+import ReactiveMixin from '../../mixins/ReactiveMixin.js'
 import symbols from '../../mixins/symbols.js';
 
 
-class KeyboardTest extends KeyboardMixin(HTMLElement) {}
+class KeyboardTest extends KeyboardMixin(ReactiveMixin(HTMLElement)) {
+  connectedCallback() {
+    if (super.connectedCallback) { super.connectedCallback(); }
+    this.render();
+  }
+}
 customElements.define('keyboard-test', KeyboardTest);
 
 
@@ -28,10 +34,9 @@ describe("KeyboardMixin", () => {
     assert.equal(fixture.getAttribute('tabindex'), '0');
   });
 
-  it("doesn't overwrite an explicit tabindex", () => {
-    const fixture = document.createElement('keyboard-test');
-    fixture.setAttribute('tabindex', '1');
-    container.appendChild(fixture);
+  it("doesn't overwrite an explicit tabindex in markup", () => {
+    container.innerHTML = `<keyboard-test tabindex="1"></keyboard-test>`;
+    const fixture = container.querySelector('keyboard-test');
     assert.equal(fixture.getAttribute('tabindex'), '1');
   });
 

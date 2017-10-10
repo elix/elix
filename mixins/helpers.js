@@ -60,7 +60,7 @@ export function updateProps(element, props) {
       Object.assign(element.style, value);
     } else if (isAttribute(key) && element.getAttribute(key) !== value) {
       // Update attribute
-      if (value) {
+      if (value != null) {
         element.setAttribute(key, value);
       } else {
         element.removeAttribute(key);

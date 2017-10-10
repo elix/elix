@@ -67,8 +67,8 @@ export default function ClickSelectionMixin(Base) {
       // Find which item was clicked on and, if found, select it. For elements
       // which don't require a selection, a background click will determine
       // the item was null, in which we case we'll remove the selection.
-      const targetIndex = this.indexOfTarget(target);
-      const selectionRequired = this.state.selectionRequired;
+      const targetIndex = indexOfTarget(this, target);
+      const selectionRequired = this.state && this.state.selectionRequired;
       if (targetIndex >= 0 || !selectionRequired) {
         this.updateSelectedIndex(targetIndex);
 
@@ -82,4 +82,20 @@ export default function ClickSelectionMixin(Base) {
     }
 
   };
+}
+
+
+/**
+ * Return the index of the list child that is, or contains, the indicated target
+ * node. Return -1 if not found.
+ */
+function indexOfTarget(element, target) {
+  const items = element.items;
+  for (let index = 0; index < items.length; index++) {
+    const item = items[index];
+    if (item.contains(target)) {
+      return index;
+    }
+  }
+  return -1;
 }

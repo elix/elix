@@ -13,7 +13,7 @@ class DirectionSelectionTest extends DirectionSelectionMixin(HTMLElement) {
 customElements.define('direction-selection-test', DirectionSelectionTest);
 
 
-describe("DirectionSelectionMixin", function() {
+describe("DirectionSelectionMixin", () => {
 
   it("maps direction method calls to selection method calls", () => {
     const fixture = document.createElement('direction-selection-test');

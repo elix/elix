@@ -36,7 +36,8 @@ export default function ReactiveMixin(Base) {
     }
 
     setState(state) {
-      Object.assign(this[stateKey], state);
+      this[stateKey] = Object.assign({}, this[stateKey], state);
+      Object.freeze(this[stateKey]);
       if (this.parentNode) {
         this.render();
       }

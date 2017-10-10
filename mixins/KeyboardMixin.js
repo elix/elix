@@ -61,7 +61,7 @@ export default function KeyboardMixin(Base) {
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
-        tabIndex: 0
+        tabIndex: this.getAttribute('tabindex') || 0
       });
     }
 

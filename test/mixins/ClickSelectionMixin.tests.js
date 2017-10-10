@@ -4,15 +4,19 @@ import * as mockInteractions from '../../test/mockInteractions.js';
 
 class ClickSelectionTest extends ClickSelectionMixin(HTMLElement) {
 
+  constructor() {
+    super();
+    this.state = {
+      selectedIndex: -1
+    };
+  }
+
   get items() {
     return this.children;
   }
 
-  get selectedItem() {
-    return this._selectedItem || null;
-  }
-  set selectedItem(item) {
-    this._selectedItem = item;
+  updateSelectedIndex(selectedIndex) {
+    this.state.selectedIndex = selectedIndex;
   }
 
 }
@@ -34,10 +38,10 @@ describe("ClickSelectionMixin", function() {
   it("sets the clicked item as the selected item", done => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
-    assert.equal(fixture.selectedItem, null);
+    assert.equal(fixture.state.selectedIndex, -1);
     const item = fixture.items[0];
     fixture.addEventListener('mousedown', () => {
-      assert.equal(fixture.selectedItem, item);
+      assert.equal(fixture.state.selectedIndex, 0);
       done();
     });
     mockInteractions.dispatchSyntheticMouseEvent(item, 'mousedown');
@@ -46,10 +50,10 @@ describe("ClickSelectionMixin", function() {
   it("ignores right clicks", done => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
-    assert.equal(fixture.selectedItem, null);
+    assert.equal(fixture.state.selectedIndex, -1);
     const item = fixture.items[0];
     fixture.addEventListener('mousedown', () => {
-      assert.equal(fixture.selectedItem, null, "handled mousedown even when right button was pressed");
+      assert.equal(fixture.state.selectedIndex, -1, "handled mousedown even when right button was pressed");
       done();
     });
     mockInteractions.dispatchSyntheticMouseEvent(item, 'mousedown', {

@@ -133,7 +133,10 @@ export default function SingleSelectionMixin(Base) {
      */
     selectPrevious() {
       if (super.selectPrevious) { super.selectPrevious(); }
-      return selectIndex(this, this.state.selectedIndex - 1);
+      const newIndex = this.items && this.state.selectedIndex < 0 ?
+        this.items.length - 1 :     // No selection yet; select last item.
+        this.state.selectedIndex - 1;
+      return selectIndex(this, newIndex);
     }
 
     // TODO: Make Symbol

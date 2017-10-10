@@ -5,16 +5,27 @@ import symbols from '../../mixins/symbols.js';
 
 class KeyboardPrefixSelectionTest extends KeyboardPrefixSelectionMixin(HTMLElement) {
 
+  constructor() {
+    super();
+    this.state = {
+      selectedIndex: -1
+    };
+  }
+
   get items() {
     return this.children;
   }
 
-  get selectedIndex() {
-    return this._selectedIndex || -1;
+  setState(state) {
+    Object.assign(this.state, state);
   }
-  set selectedIndex(index) {
-    super.selectedIndex = index;
-    this._selectedIndex = index;
+
+  updateSelectedIndex(selectedIndex) {
+    const changed = this.state.selectedIndex !== selectedIndex;
+    if (changed) {
+      this.setState({ selectedIndex });
+    }
+    return changed;
   }
 
 }
@@ -39,15 +50,15 @@ describe("KeyboardPrefixSelectionMixin", () => {
 
     // Typing "b" moves to "Banana".
     fixture[symbols.keydown]({ keyCode: prefix.charCodeAt(0) });
-    assert.equal(fixture.selectedIndex, 4);
+    assert.equal(fixture.state.selectedIndex, 4);
 
     // Typing "l" moves to "Blackberry".
     fixture[symbols.keydown]({ keyCode: prefix.charCodeAt(1) });
-    assert.equal(fixture.selectedIndex, 5);
+    assert.equal(fixture.state.selectedIndex, 5);
 
     // Typing "u" moves to "Blueberry".
     fixture[symbols.keydown]({ keyCode: prefix.charCodeAt(2) });
-    assert.equal(fixture.selectedIndex, 6);
+    assert.equal(fixture.state.selectedIndex, 6);
   });
 
   it("backspace removes the last character added to the prefix", () => {
@@ -56,22 +67,22 @@ describe("KeyboardPrefixSelectionMixin", () => {
 
     // Typing "b" moves to "Banana".
     fixture[symbols.keydown]({ keyCode: prefix.charCodeAt(0) });
-    assert.equal(fixture.selectedIndex, 4);
+    assert.equal(fixture.state.selectedIndex, 4);
 
     // Typing "l" moves to "Blackberry".
     fixture[symbols.keydown]({ keyCode: prefix.charCodeAt(1) });
-    assert.equal(fixture.selectedIndex, 5);
+    assert.equal(fixture.state.selectedIndex, 5);
 
     // Typing Backspace moves back to "Banana".
     fixture[symbols.keydown]({ keyCode: 8 });
-    assert.equal(fixture.selectedIndex, 4);
+    assert.equal(fixture.state.selectedIndex, 4);
   });
 
   it("ignores typed keys that don't match", () => {
     const fixture = createSampleElement();
     // Typing "x" leaves selection alone (since it doesn't match).
     fixture[symbols.keydown]({ keyCode: 'x'.charCodeAt(0) });
-    assert.equal(fixture.selectedIndex, -1);
+    assert.equal(fixture.state.selectedIndex, -1);
   });
 
 });
@@ -96,6 +107,5 @@ function createSampleElement() {
     div.textContent = text;
     fixture.appendChild(div);
   });
-  fixture[symbols.itemsChanged]();
   return fixture;
 }

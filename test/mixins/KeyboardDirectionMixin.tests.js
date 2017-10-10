@@ -27,7 +27,9 @@ describe("KeyboardDirectionMixin", () => {
 
   it("ignores a Right arrow key when orientation is vertical", () => {
     const fixture = document.createElement('keyboard-direction-test');
-    fixture[symbols.orientation] = 'vertical';
+    fixture.state = {
+      orientation: 'vertical'
+    };
     const spy = sinon.spy(fixture, symbols.goRight);
     const result = fixture[symbols.keydown]({
       keyCode: 39

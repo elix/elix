@@ -1,13 +1,22 @@
 import { assert } from 'chai';
 import flushPolyfills from '../../test/flushPolyfills.js';
+import ReactiveMixin from '../../mixins/ReactiveMixin.js';
 import SelectionInViewMixin from '../../mixins/SelectionInViewMixin.js';
 
 const itemHeight = '100';
 
-class SelectionInViewTest extends SelectionInViewMixin(HTMLElement) {
+class SelectionInViewTest extends SelectionInViewMixin(ReactiveMixin(HTMLElement)) {
+
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      selectedIndex: -1
+    });
+  }
+
   get items() {
     return this.children;
   }
+
 }
 customElements.define('selection-in-view-test', SelectionInViewTest);
 
@@ -33,24 +42,30 @@ describe("SelectionInViewMixin", function() {
       assert.equal(fixture.scrollTop, 50);
       done();
     });
-    fixture.selectedItem = fixture.children[1];
+    fixture.setState({ selectedIndex: 1 });
   });
 
-  it("Scrolls down to bring item below bottom edge fully into view", () => {
+  it("Scrolls down to bring item below bottom edge fully into view", done => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
-    fixture.selectedItem = fixture.children[2];
     flushPolyfills();
-    assert.equal(fixture.scrollTop, 150);
+    fixture.addEventListener('scroll', () => {
+      assert.equal(fixture.scrollTop, 150);
+      done();
+    });
+    fixture.setState({ selectedIndex: 2 });
   });
 
-  it("Scrolls up to bring item above top edge fully into view", () => {
+  it("Scrolls up to bring item above top edge fully into view", done => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     fixture.scrollTop = 150; // Scrolled all the way to bottom.
-    fixture.selectedItem = fixture.children[0];
     flushPolyfills();
-    assert.equal(fixture.scrollTop, 0);
+    fixture.addEventListener('scroll', () => {
+      assert.equal(fixture.scrollTop, 0);
+      done();
+    });
+    fixture.setState({ selectedIndex: 0 });
   });
 
 });

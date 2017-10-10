@@ -1,7 +1,6 @@
 import { assert } from 'chai';
 import DefaultSlotContentMixin from '../../mixins/DefaultSlotContentMixin.js';
 import flushPolyfills from '../../test/flushPolyfills.js';
-import ShadowTemplateMixin from '../../mixins/ShadowTemplateMixin.js';
 import symbols from '../../mixins/symbols.js';
 
   
@@ -13,27 +12,21 @@ const isIE11 = !!window.MSInputMethodContext && !!document.documentMode;
 /*
  * Simple element using the DefaultSlotContentMixin mixin.
  */
-class DefaultSlotContentTest extends DefaultSlotContentMixin(ShadowTemplateMixin(HTMLElement)) {
+class DefaultSlotContentTest extends DefaultSlotContentMixin(HTMLElement) {
 
   constructor() {
     super();
-    this.contentChangedCallCount = 0;
-  }
-
-  // We define our own call-counting logic here instead of using Sinon because
-  // the polyfill won't let us attach spies to this method on an un-upgraded
-  // element, and by the time the element's upgraded, this method will have
-  // already fired.
-  [symbols.contentChanged]() {
-    if (super[symbols.contentChanged]) { super[symbols.contentChanged](); }
-    this.contentChangedCallCount++;
-  }
-
-  [symbols.template]() {
-    return `
+    const root = this.attachShadow({ mode: 'open' });
+    this.shadowRoot.innerHTML = `
       <div id="static">This is static content</div>
       <slot></slot>
     `;
+    this.state = this.defaultState;
+    this[symbols.shadowCreated]();
+  }
+
+  setState(state) {
+    Object.assign(this.state, state);
   }
 
 }
@@ -44,9 +37,11 @@ customElements.define('default-slot-content-test', DefaultSlotContentTest);
  * Element wrapping an instance of the above, so we can test detection of
  * changes in final distribution (not just direct slot assignments).
  */
-class WrappedContentTest extends ShadowTemplateMixin(HTMLElement) {
-  [symbols.template]() {
-    return `<default-slot-content-test><slot></slot></default-slotcontent-test>`;
+class WrappedContentTest extends HTMLElement {
+  constructor() {
+    super();
+    const root = this.attachShadow({ mode: 'open' });
+    this.shadowRoot.innerHTML = `<default-slot-content-test><slot></slot></default-slotcontent-test>`;
   }
 }
 customElements.define('wrapped-default-slot-content-test', WrappedContentTest);
@@ -64,59 +59,67 @@ describe("DefaultSlotContentMixin", () => {
     container.innerHTML = '';
   });
 
-  it("returns direct assigned nodes as content", () => {
+  it("returns direct assigned nodes as content", done => {
     const fixture = document.createElement('default-slot-content-test');
     fixture.innerHTML = `<div>One</div><div>Two</div><div>Three</div>`;
+    // Wait for initial content.
     flushPolyfills();
-    assert.equal(fixture[symbols.content].length, 3);
+    setTimeout(() => {
+      assert.equal(fixture.state.content.length, 3);
+      done();
+    });
   });
 
   if (!isIE11) {
-    it("returns distributed nodes as content", () => {
+    it("returns distributed nodes as content", done => {
       const wrapper = document.createElement('wrapped-default-slot-content-test');
       wrapper.innerHTML = `<div>One</div><div>Two</div><div>Three</div>`;
       flushPolyfills();
       const fixture = wrapper.shadowRoot.querySelector('default-slot-content-test');
-      assert.equal(fixture[symbols.content].length, 3);
+      // Wait for initial content.
+      flushPolyfills();
+      setTimeout(() => {
+        assert.equal(fixture.state.content.length, 3);
+        done();
+      });
     });
   } else {
     it.skip("returns distributed nodes as content [skip in IE 11]");
   }
 
   if (!isIE11) {
-    it("makes initial call to contentChanged when component is created", done => {
+    it("sets content when defined component is parsed", done => {
       container.innerHTML = `<default-slot-content-test>beaver</default-slot-content-test>`;
       const fixture = container.querySelector('default-slot-content-test');
-      // Wait for initial contentChanged call to complete.
+      // Wait for initial content.
       flushPolyfills();
       setTimeout(() => {
-        assert(fixture.contentChangedCallCount === 1);
+        assert.equal(fixture.state.content[0].textContent, 'beaver');
         done();
       });
     });
   } else {
-    it.skip("makes initial call to contentChanged when component is created [skip in IE 11]");
+    it.skip("sets content when defined component is parsed [skip in IE 11]");
   }
 
-  it("calls contentChanged when textContent changes", done => {
+  it("updates content when textContent changes", done => {
     const fixture = document.createElement('default-slot-content-test');
     container.appendChild(fixture);
-    // Wait for initial contentChanged call to complete.
+    // Wait for initial content.
     flushPolyfills();
-    fixture.contentChangedCallCount = 0;
     fixture.textContent = 'chihuahua';
     // Wait for slotchange event to be processed.
     flushPolyfills();
     setTimeout(() => {
-      assert(fixture.contentChangedCallCount === 1);
+      assert.equal(fixture.state.content[0].textContent, 'chihuahua');
       done();
     });
   });
 
-  it("calls contentChanged when children change", done => {
+  it("updates content when children change", done => {
     const fixture = document.createElement('default-slot-content-test');
     container.appendChild(fixture);
-    // Wait for initial contentChanged call to complete.
+    // Wait for initial content.
     flushPolyfills();
     fixture.contentChangedCallCount = 0;
     const div = document.createElement('div');
@@ -125,41 +128,38 @@ describe("DefaultSlotContentMixin", () => {
     // Wait for slotchange event to be processed.
     flushPolyfills();
     setTimeout(() => {
-      assert(fixture.contentChangedCallCount === 1);
+      assert.equal(fixture.state.content[0].textContent, 'dingo');
       done();
     });
   });
 
   if (!isIE11) {
-    it("calls contentChanged when redistributed content changes", done => {
+    it("updates content when redistributed content changes", done => {
       const wrapper = document.createElement('wrapped-default-slot-content-test');
       const fixture = wrapper.shadowRoot.querySelector('default-slot-content-test');
       container.appendChild(wrapper);
-      // Wait for initial contentChanged call to complete.
+      // Wait for initial content.
       flushPolyfills();
       fixture.contentChangedCallCount = 0;
       wrapper.textContent = 'echidna';
       // Wait for slotchange event to be processed.
       flushPolyfills();
       setTimeout(() => {
-        assert(
-          fixture.contentChangedCallCount === 1 || /* WebKit, polyfil */
-          fixture.contentChangedCallCount === 2 /* Blink */
-        );
+        assert.equal(fixture.state.content[0].textContent, 'echidna');
         done();
       });
     });
   } else {
-    it.skip("calls contentChanged when redistributed content changes [skip in IE 11]");
+    it.skip("updates content when redistributed content changes [skip in IE 11]");
   }
 
-  it("doesn't call contentChanged for changes in the component's shadow tree", done => {
+  it("doesn't update content for changes in the component's shadow tree", done => {
     const fixture = document.createElement('default-slot-content-test');
     container.appendChild(fixture);
-    // Wait for initial contentChanged call to complete.
+    // Wait for initial content.
     flushPolyfills();
     setTimeout(() => {
-      fixture.contentChangedCallCount = 0;
+      const previousContent = fixture.state.content;
 
       // Modify an element in the shadow, which shouldn't trigger contentChanged.
       // Since contentChanged uses MutationObservers, and those only monitor light
@@ -171,7 +171,7 @@ describe("DefaultSlotContentMixin", () => {
 
       flushPolyfills();
       setTimeout(() => {
-        assert(fixture.contentChangedCallCount === 0);
+        assert.equal(fixture.state.content, previousContent);
 
         // Now add an element to the light DOM, which we *do* expect to trigger
         // contentChanged. Use a timeout to ensure that contentChanged has had a
@@ -181,7 +181,8 @@ describe("DefaultSlotContentMixin", () => {
         // Wait for slotchange event to be processed.
         flushPolyfills();
         setTimeout(() => {
-          assert(fixture.contentChangedCallCount === 1);
+          assert.notEqual(fixture.state.content, previousContent);
+          assert.equal(fixture.state.content[0].textContent, 'fox');
           done();
         });
       });
@@ -191,10 +192,10 @@ describe("DefaultSlotContentMixin", () => {
   it("doesn't call contentChanged when node is removed from shadow DOM", done => {
     const fixture = document.createElement('default-slot-content-test');
     container.appendChild(fixture);
-    // Wait for initial contentChanged call to complete.
+    // Wait for initial content.
     flushPolyfills();
     setTimeout(() => {
-      fixture.contentChangedCallCount = 0;
+      const previousContent = fixture.state.content;
 
       // Remove an element from the shadow, which shouldn't trigger contentChanged.
       const shadowElement = fixture.shadowRoot.querySelector('#static');
@@ -202,7 +203,7 @@ describe("DefaultSlotContentMixin", () => {
 
       flushPolyfills();
       setTimeout(() => {
-        assert(fixture.contentChangedCallCount === 0);
+        assert.equal(fixture.state.content, previousContent);
 
         // Now add an element to the light DOM, which we do expect to trigger
         // contentChanged.
@@ -211,31 +212,31 @@ describe("DefaultSlotContentMixin", () => {
         // Wait for slotchange event to be processed.
         flushPolyfills();
         setTimeout(() => {
-          assert(fixture.contentChangedCallCount === 1);
+          assert.notEqual(fixture.state.content, previousContent);
+          assert.equal(fixture.state.content[0].textContent, 'gorilla');
           done();
         });
       });
     });
   });
 
-  it("*does* call contentChanged if node is removed from light DOM", done => {
+  it("updates content if node is removed from light DOM", done => {
     const fixture = document.createElement('default-slot-content-test');
     const div = document.createElement('div');
     div.textContent = 'hippopotamus';
     fixture.appendChild(div);
     container.appendChild(fixture);
-    // Wait for initial contentChanged call to complete and for first
+    // Wait for initial content and for first
     // slotchange event to be processed.
     flushPolyfills();
-    fixture.contentChangedCallCount = 0;
 
-    // Remove a light DOM child, which should trigger contentChanged.
+    // Remove a light DOM child, which should trigger content update.
     fixture.removeChild(div);
 
     // Wait for second slotchange event to be processed.
     flushPolyfills();
     setTimeout(() => {
-      assert(fixture.contentChangedCallCount === 1);
+      assert.equal(fixture.state.content.length, 0);
       done();
     });
   });

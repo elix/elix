@@ -37,7 +37,7 @@ export default function KeyboardPagedSelectionMixin(Base) {
 
     [symbols.keydown](event) {
       let handled = false;
-      const orientation = this.state.orientation || 'both';
+      const orientation = this.state && this.state.orientation || 'both';
       if (orientation !== 'horizontal') {
         switch (event.keyCode) {
           case 33: // Page Up

@@ -75,7 +75,7 @@ export default function KeyboardDirectionMixin(Base) {
     [symbols.keydown](event) {
       let handled = false;
 
-      const orientation = this.state.orientation || 'both';
+      const orientation = this.state && this.state.orientation || 'both';
       const horizontal = (orientation === 'horizontal' || orientation === 'both');
       const vertical = (orientation === 'vertical' || orientation === 'both');
 
