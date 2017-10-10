@@ -60,27 +60,6 @@ const symbols = {
   beforeEffect: Symbol('beforeEffect'),
 
   /**
-   * Symbols for the `content` property.
-   *
-   * This property returns the component's content -- however the component
-   * wants to define that. This could, for example, return the component's
-   * distributed children.
-   *
-   * @type {HTMLElement[]}
-   */
-  content: Symbol('content'),
-
-  /**
-   * Symbol for the `contentChanged` method.
-   *
-   * For components that define a `content` property, this method should be
-   * invoked when that property changes.
-   *
-   * @function contentChanged
-   */
-  contentChanged: Symbol('contentChanged'),
-
-  /**
    * The name of the visual effect currently begin shown.
    * 
    * @returns {string}
@@ -297,6 +276,8 @@ const symbols = {
    * @var {boolean} raiseChangeEvents
    */
   raiseChangeEvents: Symbol('raiseChangeEvents'),
+
+  rendering: Symbol('rendering'),
 
   /**
    * Symbol for the `scrollTarget` property.

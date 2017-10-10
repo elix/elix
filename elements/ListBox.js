@@ -1,3 +1,5 @@
+import { formatStyle, mergeDeep, parseStyle } from '../mixins/helpers.js';
+import { html } from '../node_modules/lit-html/lit-html.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ClickSelectionMixin from '../mixins/ClickSelectionMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
@@ -7,13 +9,12 @@ import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import KeyboardPagedSelectionMixin from '../mixins/KeyboardPagedSelectionMixin.js';
 import KeyboardPrefixSelectionMixin from '../mixins/KeyboardPrefixSelectionMixin.js';
-import SelectedItemTextValueMixin from '../mixins/SelectedItemTextValueMixin.js';
+import LitHtmlShadowMixin from '../mixins/LitHtmlShadowMixin.js';
+import ReactiveMixin from '../mixins/ReactiveMixin.js';
 import SelectionAriaMixin from '../mixins/SelectionAriaMixin.js';
 import SelectionInViewMixin from '../mixins/SelectionInViewMixin.js';
-import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import symbols from '../mixins/symbols.js';
-import { toggleClass } from '../mixins/attributes.js';
 
 
 const Base =
@@ -26,10 +27,10 @@ const Base =
   KeyboardMixin(
   KeyboardPagedSelectionMixin(
   KeyboardPrefixSelectionMixin(
-  SelectedItemTextValueMixin(
+  LitHtmlShadowMixin(
+  ReactiveMixin(
   SelectionAriaMixin(
   SelectionInViewMixin(
-  ShadowTemplateMixin(
   SingleSelectionMixin(
     HTMLElement
   ))))))))))))));
@@ -59,101 +60,76 @@ const Base =
  * @mixes ShadowTemplateMixin
  * @mixes SingleSelectionMixin
  */
-class ListBox extends Base {
+export default class ListBox extends Base {
 
-  get [symbols.defaults]() {
-    const defaults = super[symbols.defaults] || {};
-    // By default, we assume the list presents list items vertically.
-    defaults.orientation = 'vertical';
-    return defaults;
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      orientation: 'vertical'
+    });
   }
 
-  // Map item selection to a `selected` CSS class.
-  /**
-   * @param {Element} item 
-   * @param {boolean} selected 
-   */
-  [symbols.itemSelected](item, selected) {
-    if (super[symbols.itemSelected]) { super[symbols.itemSelected](item, selected); }
-    toggleClass(item, 'selected', selected);
+  hostProps() {
+    const base = super.hostProps && super.hostProps();
+    const style = Object.assign(
+      parseStyle(this),
+      {
+        'border': '1px solid gray',
+        'box-sizing': 'border-box',
+        'cursor': 'default',
+        'display': 'flex',
+        '-webkit-tap-highlight-color': 'rgba(0, 0, 0, 0)'
+      }
+    );
+    return mergeDeep(base, { style });
   }
 
-  /**
-   * The vertical (default) or horizontal orientation of the list.
-   *
-   * Supported values are "horizontal" or "vertical".
-   *
-   * @type {string}
-   */
-  get orientation() {
-    return this[symbols.orientation] || this[symbols.defaults].orientation;
-  }
-  set orientation(value) {
-    const changed = value !== this[symbols.orientation];
-    this[symbols.orientation] = value;
-    // @ts-ignore
-    if ('orientation' in Base) { super.orientation = value; }
-    // Reflect attribute for styling
-    this.reflectAttribute('orientation', value);
-    if (changed && this[symbols.raiseChangeEvents]) {
-      const event = new CustomEvent('orientation-changed');
-      this.dispatchEvent(event);
+  itemProps(item, index) {
+    const base = super.itemProps ? super.itemProps(item, index) : {};
+    const selected = index === this.state.selectedIndex;
+    const style = Object.assign(
+      parseStyle(item),
+      {
+        'background': 'inherit',
+        'color': 'inherit',
+        'padding': '0.25em',
+      },
+      selected && {
+        'background': 'highlight',
+        'color': 'highlighttext'
+      }
+    );
+    let className;
+    if (selected) {
+      className = `${base.class ? base.class + ' ' : ''}selected`;
     }
+    return mergeDeep(base, {
+      class: className,
+      style
+    });
   }
 
-  [symbols.template](filler) {
-    return `
-      <style>
-      :host {
-        border: 1px solid gray;
-        box-sizing: border-box;
-        cursor: default;
-        display: flex;
-        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-      }
-
-      #itemsContainer {
-        flex: 1;
-        -webkit-overflow-scrolling: touch; /* for momentum scrolling */
-        overflow-x: hidden;
-        overflow-y: scroll;
-      }
-      :host([orientation="horizontal"]) #itemsContainer {
-        display: flex;
-        overflow-x: scroll;
-        overflow-y: hidden;
-      }
-
-      #itemsContainer ::slotted(*) {
-        cursor: default;
-        padding: 0.25em;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-      }
-
-      #itemsContainer ::slotted(.selected) {
-        background: var(--elix-selected-background, highlight);
-        color: var(--elix-selected-color, highlighttext);
-      }
-      </style>
-
-      <div id="itemsContainer" role="none">
-        ${filler || `<slot></slot>`}
+  get template() {
+    const containerStyle = {
+      'flex': '1',
+      '-webkit-overflow-scrolling': 'touch', /* for momentum scrolling */
+      'overflow-x': 'hidden',
+      'overflow-y': 'scroll'
+    };
+    const template = html`
+      <div id="itemsContainer" role="none" style=${formatStyle(containerStyle)}>
+        <slot></slot>
       </div>
     `;
+    return template;
   }
 
-  /**
-   * Fires when the orientation property changes in response to internal
-   * component activity.
-   *
-   * @memberof ListBox
-   * @event orientation-changed
-   */
+  get [symbols.scrollTarget]() {
+    const root = this.shadowRoot || this;
+    const itemsContainer = root.querySelector('#itemsContainer');
+    return itemsContainer;
+  }
+
 }
 
 
 customElements.define('elix-list-box', ListBox);
-export default ListBox;

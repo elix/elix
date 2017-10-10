@@ -75,40 +75,47 @@ export default function KeyboardDirectionMixin(Base) {
     [symbols.keydown](event) {
       let handled = false;
 
-      const orientation = this[symbols.orientation] || 'both';
+      const orientation = this.state.orientation || 'both';
       const horizontal = (orientation === 'horizontal' || orientation === 'both');
       const vertical = (orientation === 'vertical' || orientation === 'both');
 
       // Ignore Left/Right keys when metaKey or altKey modifier is also pressed,
       // as the user may be trying to navigate back or forward in the browser.
       switch (event.keyCode) {
+
         case 35: // End
           handled = this[symbols.goEnd]();
           break;
+
         case 36: // Home
           handled = this[symbols.goStart]();
           break;
+
         case 37: // Left
           if (horizontal && !event.metaKey && !event.altKey) {
             handled = this[symbols.goLeft]();
           }
           break;
+
         case 38: // Up
           if (vertical) {
             handled = event.altKey ? this[symbols.goStart]() : this[symbols.goUp]();
           }
           break;
+
         case 39: // Right
           if (horizontal && !event.metaKey && !event.altKey) {
             handled = this[symbols.goRight]();
           }
           break;
+
         case 40: // Down
           if (vertical) {
             handled = event.altKey ? this[symbols.goEnd]() : this[symbols.goDown]();
           }
           break;
       }
+
       // Prefer mixin result if it's defined, otherwise use base result.
       return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
     }

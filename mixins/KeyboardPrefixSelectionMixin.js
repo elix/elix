@@ -7,7 +7,6 @@ import symbols from './symbols.js';
 const itemTextContentsKey = Symbol('itemTextContents');
 const typedPrefixKey = Symbol('typedPrefix');
 const prefixTimeoutKey = Symbol('prefixTimeout');
-const settingSelectionKey = Symbol('settingSelection');
 
 
 /**
@@ -53,18 +52,15 @@ export default function KeyboardPrefixSelectionMixin(Base) {
   // The class prototype added by the mixin.
   class KeyboardPrefixSelection extends Base {
 
+    constructor() {
+      super();
+      resetTypedPrefix(this);
+    }
+
     // Default implementation returns an item's `alt` attribute or its
     // `textContent`, in that order.
     [symbols.getItemText](item) {
       return item.getAttribute('alt') || item.textContent;
-    }
-
-    // If the set of items has changed, reset the prefix. We'll also need to
-    // rebuild our cache of item text the next time we're asked for it.
-    [symbols.itemsChanged]() {
-      if (super[symbols.itemsChanged]) { super[symbols.itemsChanged](); }
-      this[itemTextContentsKey] = null;
-      resetTypedPrefix(this);
     }
 
     [symbols.keydown](event) {
@@ -77,9 +73,11 @@ export default function KeyboardPrefixSelectionMixin(Base) {
           handled = true;
           resetPrefix = false;
           break;
+
         case 27: // Escape
           handled = true;
           break;
+          
         default:
           if (!event.ctrlKey && !event.metaKey && !event.altKey &&
               event.which !== 32 /* Space */) {
@@ -96,18 +94,6 @@ export default function KeyboardPrefixSelectionMixin(Base) {
       return handled || (super[symbols.keydown] && super[symbols.keydown](event));
     }
 
-    get selectedIndex() {
-      return super.selectedIndex;
-    }
-    set selectedIndex(index) {
-      if ('selectedIndex' in Base.prototype) { super.selectedIndex = index; }
-      if (!this[settingSelectionKey]) {
-        // Someone else (not this mixin) has changed the selection. In response,
-        // we invalidate the prefix under construction.
-        resetTypedPrefix(this);
-      }
-    }
-
     /**
      * Select the first item whose text content begins with the given prefix.
      *
@@ -121,18 +107,11 @@ export default function KeyboardPrefixSelectionMixin(Base) {
       }
       const index = getIndexOfItemWithTextPrefix(this, prefix);
       if (index >= 0) {
-        // Update the selection. During that operation, set the flag that lets
-        // us know that we are the cause of the selection change. See note at
-        // this mixin's `selectedIndex` implementation.
-        this[settingSelectionKey] = true;
-        this.selectedIndex = index;
-        this[settingSelectionKey] = false;
-        return true;
+        return this.updateSelectedIndex(index);
       } else {
         return false;
       }
     }
-
   }
 
   return KeyboardPrefixSelection;
@@ -140,8 +119,8 @@ export default function KeyboardPrefixSelectionMixin(Base) {
 
 
 // Return the index of the first item with the given prefix, else -1.
-function getIndexOfItemWithTextPrefix(element, prefix) {
-  const itemTextContents = getItemTextContents(element);
+function getIndexOfItemWithTextPrefix(component, prefix) {
+  const itemTextContents = getItemTextContents(component);
   const prefixLength = prefix.length;
   for (let i = 0; i < itemTextContents.length; i++) {
     const itemTextContent = itemTextContents[i];
@@ -154,15 +133,15 @@ function getIndexOfItemWithTextPrefix(element, prefix) {
 
 // Return an array of the text content (in lowercase) of all items.
 // Cache these results.
-function getItemTextContents(element) {
-  if (!element[itemTextContentsKey]) {
-    const items = element.items;
-    element[itemTextContentsKey] = Array.prototype.map.call(items, item => {
-      const text = element[symbols.getItemText](item);
+function getItemTextContents(component) {
+  if (!component[itemTextContentsKey]) {
+    const items = component.items;
+    component[itemTextContentsKey] = Array.prototype.map.call(items, item => {
+      const text = component[symbols.getItemText](item);
       return text.toLowerCase();
     });
   }
-  return element[itemTextContentsKey];
+  return component[itemTextContentsKey];
 }
 
 // Handle the Backspace key: remove the last character from the prefix.

@@ -15,22 +15,19 @@ import symbols from './symbols.js';
  *
  * @module SelectionInViewMixin
  */
-export default function (Base) {
+export default function SelectionInViewMixin(Base) {
 
   // The class prototype added by the mixin.
   class SelectionInView extends Base {
 
-    connectedCallback() {
-      if (super.connectedCallback) { super.connectedCallback(); }
-      const selectedItem = this.selectedItem;
-      if (selectedItem) {
-        this.scrollItemIntoView(selectedItem);
-      }
+    componentDidUpdate() {
+      if (super.componentDidUpdate) { super.componentDidUpdate(); }
+      this.scrollSelectionIntoView();
     }
 
     /**
-     * Scroll the given element completely into view, minimizing the degree of
-     * scrolling performed.
+     * Scroll the selected item element completely into view, minimizing the
+     * degree of scrolling performed.
      *
      * Blink has a `scrollIntoViewIfNeeded()` function that does something
      * similar, but unfortunately it's non-standard, and in any event often ends
@@ -39,19 +36,26 @@ export default function (Base) {
      * This scrolls the containing element defined by the `scrollTarget`
      * property. See that property for a discussion of the default value of
      * that property.
-     *
-     * @param {Element} item - the item to scroll into view.
      */
-    scrollItemIntoView(item) {
-      if (super.scrollItemIntoView) { super.scrollItemIntoView(); }
+    scrollSelectionIntoView() {
+      if (super.scrollSelectionIntoView) { super.scrollSelectionIntoView(); }
 
       const scrollTarget = this[symbols.scrollTarget];
+      const selectedIndex = this.state.selectedIndex;
+      if (selectedIndex < 0) {
+        return;
+      }
+      
+      const selectedItem = this.items && this.items[selectedIndex];
+      if (!selectedItem) {
+        return;
+      }
 
       // Determine the bounds of the scroll target and item. We use
       // getBoundingClientRect instead of .offsetTop, etc., because the latter
       // round values, and we want to handle fractional values.
       const scrollTargetRect = scrollTarget.getBoundingClientRect();
-      const itemRect = item.getBoundingClientRect();
+      const itemRect = selectedItem.getBoundingClientRect();
 
       // Determine how far the item is outside the viewport.
       const bottomDelta = itemRect.bottom - scrollTargetRect.bottom;
@@ -74,22 +78,9 @@ export default function (Base) {
 
     /* Provide a default scrollTarget implementation if none exists. */
     get [symbols.scrollTarget]() {
-      /** @type {any} */
-      const element = this;
-      return super[symbols.scrollTarget] || defaultScrollTarget(element);
+      return super[symbols.scrollTarget] || defaultScrollTarget(this);
     }
-
-    get selectedItem() {
-      return super.selectedItem;
-    }
-    set selectedItem(item) {
-      if ('selectedItem' in Base.prototype) { super.selectedItem = item; }
-      if (item) {
-        // Keep the selected item in view.
-        this.scrollItemIntoView(item);
-      }
-    }
-  }
+  };
 
   return SelectionInView;
 }

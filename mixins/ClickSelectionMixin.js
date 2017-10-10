@@ -1,5 +1,4 @@
-import deepContains from './deepContains.js';
-import symbols from './symbols.js';
+// import symbols from './symbols.js';
 
 
 /**
@@ -34,73 +33,53 @@ import symbols from './symbols.js';
  * @module ClickSelectionMixin
  */
 export default function ClickSelectionMixin(Base) {
-
-  // The class prototype added by the mixin.
-  class ClickSelection extends Base {
+  return class ClickSelection extends Base {
 
     constructor() {
-      // @ts-ignore
       super();
-      this.addEventListener('mousedown', event => {
-
-        // Only process events for the main (usually left) button.
-        if (event.button !== 0) {
-          return;
-        }
-
-        this[symbols.raiseChangeEvents] = true;
-
-        // In some situations, the event target will not be the child which was
-        // originally clicked on. E.g.,  If the item clicked on is a button, the
-        // event seems to be raised in phase 2 (AT_TARGET) — but the event
-        // target will be the component, not the item that was clicked on.
-        // Instead of using the event target, we get the first node in the
-        // event's composed path.
-        // @ts-ignore
-        const target = event.composedPath()[0];
-
-        // Find which item was clicked on and, if found, select it. For elements
-        // which don't require a selection, a background click will determine
-        // the item was null, in which we case we'll remove the selection.
-        const item = itemForTarget(this, target);
-        if (item || !this.selectionRequired) {
-
-          if (!('selectedItem' in this)) {
-            console.warn(`ClickSelectionMixin expects a component to define a "selectedItem" property.`);
-          } else {
-            this.selectedItem = item;
-          }
-
-          // We don't call preventDefault here. The default behavior for
-          // mousedown includes setting keyboard focus if the element doesn't
-          // already have the focus, and we want to preserve that behavior.
-          event.stopPropagation();
-        }
-
-        this[symbols.raiseChangeEvents] = false;
-      });
+      this.addEventListener('mousedown', event => this.click(event));
     }
 
-  }
+    // TODO: Make Symbol.
+    click(event) {
 
-  return ClickSelection;
-}
+      if (super.click) { super.click(event); }
 
+      // Only process events for the main (usually left) button.
+      if (event.button !== 0) {
+        return;
+      }
 
-/**
- * Return the list item that is, or contains, the indicated target node.
- * Return null if not found.
- *
- * This is sufficiently flexible to accommodate the possibility of the target
- * being inside arbitrarily deep layers of shadow DOM containment.
- */
-function itemForTarget(element, target) {
-  const items = element.items;
-  for (const index in element.items) {
-    const item = items[index];
-    if (deepContains(item, target)) {
-      return item;
+      // TODO: Restore raiseChangeEvents handling.
+      // this[symbols.raiseChangeEvents] = true;
+
+      // In some situations, the event target will not be the child which was
+      // originally clicked on. E.g.,  If the item clicked on is a button, the
+      // event seems to be raised in phase 2 (AT_TARGET) — but the event
+      // target will be the component, not the item that was clicked on.
+      // Instead of using the event target, we get the first node in the
+      // event's composed path.
+      // @ts-ignore
+      const target = event.composedPath ?
+        event.composedPath()[0] :
+        event.target;
+
+      // Find which item was clicked on and, if found, select it. For elements
+      // which don't require a selection, a background click will determine
+      // the item was null, in which we case we'll remove the selection.
+      const targetIndex = this.indexOfTarget(target);
+      const selectionRequired = this.state.selectionRequired;
+      if (targetIndex >= 0 || !selectionRequired) {
+        this.updateSelectedIndex(targetIndex);
+
+        // We don't call preventDefault here. The default behavior for
+        // mousedown includes setting keyboard focus if the element doesn't
+        // already have the focus, and we want to preserve that behavior.
+        event.stopPropagation();
+      }
+
+      // this[symbols.raiseChangeEvents] = false;
     }
-  }
-  return null;
+
+  };
 }

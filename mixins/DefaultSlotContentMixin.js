@@ -1,3 +1,4 @@
+// import { html } from '../../node_modules/lit-html/lit-html.js';
 import Symbol from './Symbol.js';
 import symbols from './symbols.js';
 
@@ -56,42 +57,25 @@ export default function DefaultSlotContentMixin(Base) {
 
     connectedCallback() {
       if (super.connectedCallback) { super.connectedCallback(); }
-      // HACK for Blink, which doesn't correctly fire initial slotchange.
-      // See https://bugs.chromium.org/p/chromium/issues/detail?id=696659
+      // console.log(`connectedCallback`);
       setTimeout(() => {
-        // By this point, the slotchange event should have fired.
+        // Some browsers fire slotchange when the slot's initial nodes are
+        // assigned; others don't. If we haven't already received a slotchange
+        // event by now, then act as if we did so the component can set things
+        // up based on its initial content.
         if (!this[slotchangeFiredKey]) {
-          // slotchange event didn't fire; we're in Blink. Force the invocation
-          // of contentChanged that would have happened on slotchange.
-          if (this[symbols.contentChanged]) {
-            this[symbols.contentChanged]();
-          }
+          // Invoke contentChanged as would have happened on slotchange.
+          // console.log(`timeout`);
+          this[slotchangeFiredKey] = true;
+          assignedNodesChanged(this);
         }
       });
     }
 
-    /**
-     * The content of this component, defined to be the flattened set of
-     * nodes assigned to its default unnamed slot.
-     *
-     * @type {Element[]}
-     */
-    get [symbols.content]() {
-      const slot = defaultSlot(this);
-      let assignedNodes;
-      // As of 18 July 2017, the polyfill contains a bug
-      // (https://github.com/webcomponents/shadydom/issues/165)
-      // that throws an exception if assignedNodes is read during a constructor
-      // Until that bug is fixed, we work around the problem by catching the
-      // exception.
-      try {
-        assignedNodes = slot ?
-          slot.assignedNodes({ flatten: true }) :
-          [];
-      } catch (e) {
-        assignedNodes = [];
-      }
-      return assignedNodes;
+    get defaultState() {
+      return Object.assign({}, super.defaultState, {
+        content: null
+      });
     }
 
     [symbols.shadowCreated]() {
@@ -100,22 +84,51 @@ export default function DefaultSlotContentMixin(Base) {
       const slot = defaultSlot(this);
       if (slot) {
         slot.addEventListener('slotchange', event => {
+          // console.log(`slotchange`);
           this[slotchangeFiredKey] = true;
-          if (this[symbols.contentChanged]) {
-            this[symbols.contentChanged]();
-          }
+          assignedNodesChanged(this);
         });
       }
     }
+
   }
 
   return DefaultSlotContent;
 }
 
 
+
+/**
+ * The content of this component, defined to be the flattened set of
+ * nodes assigned to its default unnamed slot.
+ *
+ * @type {Element[]}
+ */
+function assignedNodesChanged(component) {
+
+  const slot = defaultSlot(component);
+  let content;
+
+  // As of 18 July 2017, the polyfill contains a bug
+  // (https://github.com/webcomponents/shadydom/issues/165)
+  // that throws an exception if assignedNodes is read during a constructor
+  // Until that bug is fixed, we work around the problem by catching the
+  // exception.
+  try {
+    content = slot ?
+      slot.assignedNodes({ flatten: true }) :
+      null;
+  } catch (e) {
+    content = [];
+  }
+
+  component.setState({ content });
+}
+
+
 function defaultSlot(element) {
   const defaultSlot = element.shadowRoot && element.shadowRoot.querySelector('slot:not([name])');
-  if (element.shadowRoot && !defaultSlot) {
+  if (!element.shadowRoot || !defaultSlot) {
     console.warn(`DefaultSlotContentMixin expects a component to define a shadow tree that includes a default (unnamed) slot.`);
   }
   return defaultSlot;

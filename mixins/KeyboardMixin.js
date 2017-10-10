@@ -46,42 +46,32 @@ export default function KeyboardMixin(Base) {
   class Keyboard extends Base {
 
     constructor() {
-      // @ts-ignore
       super();
       this.addEventListener('keydown', event => {
-        this[symbols.raiseChangeEvents] = true;
+        // TODO Restore raiseChangeEvents handling.
+        // this[symbols.raiseChangeEvents] = true;
         const handled = this[symbols.keydown](event);
         if (handled) {
           event.preventDefault();
           event.stopPropagation();
         }
-        this[symbols.raiseChangeEvents] = false;
+        // this[symbols.raiseChangeEvents] = false;
       });
     }
 
-    connectedCallback() {
-      if (super.connectedCallback) { super.connectedCallback(); }
-      if (this.getAttribute('tabindex') == null && this[symbols.defaults].tabindex !== null) {
-        this.setAttribute('tabindex', this[symbols.defaults].tabindex);
-      }
+    get defaultState() {
+      return Object.assign({}, super.defaultState, {
+        tabIndex: 0
+      });
     }
 
-    get [symbols.defaults]() {
-      const defaults = super[symbols.defaults] || {};
-      // The default tab index is 0 (document order).
-      defaults.tabindex = 0;
-      return defaults;
+    hostProps() {
+      const base = super.hostProps && super.hostProps();
+      return Object.assign({}, base, {
+        tabIndex: this.state.tabIndex
+      });
     }
 
-    /**
-     * Handle the indicated keyboard event.
-     *
-     * The default implementation of this method does nothing. This will
-     * typically be handled by other mixins.
-     *
-     * @param {KeyboardEvent} event - the keyboard event
-     * @returns {boolean} true if the event was handled
-     */
     [symbols.keydown](event) {
       if (super[symbols.keydown]) { return super[symbols.keydown](event); }
       return false;

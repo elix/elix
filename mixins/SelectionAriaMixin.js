@@ -1,6 +1,3 @@
-import symbols from './symbols.js';
-
-
 // Used to assign unique IDs to item elements without IDs.
 let idCount = 0;
 
@@ -38,35 +35,14 @@ let idCount = 0;
  *
  * @module
  */
-export default function(Base) {
+export default function SelectionAriaMixin(Base) {
 
   // The class prototype added by the mixin.
   class SelectionAria extends Base {
 
-    connectedCallback() {
-      if (super.connectedCallback) { super.connectedCallback(); }
-
-      // Set default ARIA role for the overall component.
-      if (this.getAttribute('role') == null && this[symbols.defaults].role) {
-        this.setAttribute('role', this[symbols.defaults].role);
-      }
-    }
-
-    get [symbols.defaults]() {
-      const defaults = super[symbols.defaults] || {};
-      defaults.role = 'listbox';
-      defaults.itemRole = 'option';
-      return defaults;
-    }
-
-    [symbols.itemAdded](item) {
-      if (super[symbols.itemAdded]) { super[symbols.itemAdded](item); }
-
-      if (!item.getAttribute('role')) {
-        // Assign a default ARIA role for an individual item.
-        item.setAttribute('role', this[symbols.defaults].itemRole);
-      }
-
+    itemProps(item, index) {
+      const base = super.itemProps ? super.itemProps(item, index) : {};
+      const selected = index === this.state.selectedIndex;
       // Ensure each item has an ID so we can set aria-activedescendant on the
       // overall list whenever the selection changes.
       //
@@ -77,35 +53,34 @@ export default function(Base) {
       // "_option1". Item IDs are prefixed with an underscore to differentiate
       // them from manually-assigned IDs, and to minimize the potential for ID
       // conflicts.
+      let id;
       if (!item.id) {
         const baseId = this.id ?
-            "_" + this.id + "Option" :
-            "_option";
-        item.id = baseId + idCount++;
+          "_" + this.id + "Option" :
+          "_option";
+        id = baseId + idCount++;
       }
+      return Object.assign({}, base, {
+        'aria-selected': selected,
+        'role': base.role || 'option'
+        },
+        id && { id }
+      );
     }
 
-    [symbols.itemSelected](item, selected) {
-      if (super[symbols.itemSelected]) { super[symbols.itemSelected](item, selected); }
-      item.setAttribute('aria-selected', selected);
-      const itemId = item.id;
-      if (itemId && selected) {
-        this.setAttribute('aria-activedescendant', itemId);
-      }
+    hostProps() {
+      const base = super.hostProps ? super.hostProps() : {};
+      const selectedItem = this.state.selectedIndex >= 0 && this.items ?
+        this.items[this.state.selectedIndex] :
+        null;
+      const selectedItemId = selectedItem && selectedItem.id;
+      return Object.assign({}, base, {
+        'aria-activedescendant': selectedItemId,
+        'role': base.role || 'listbox'
+      });
     }
 
-    get selectedItem() {
-      return super.selectedItem;
-    }
-    set selectedItem(item) {
-      if ('selectedItem' in Base.prototype) { super.selectedItem = item; }
-      if (item == null) {
-        // Selection was removed.
-        this.removeAttribute('aria-activedescendant');
-      }
-    }
-
-  }
+  };
 
   return SelectionAria;
 }

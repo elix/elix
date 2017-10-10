@@ -37,17 +37,19 @@ export default function KeyboardPagedSelectionMixin(Base) {
 
     [symbols.keydown](event) {
       let handled = false;
-      const orientation = this[symbols.orientation];
+      const orientation = this.state.orientation || 'both';
       if (orientation !== 'horizontal') {
         switch (event.keyCode) {
           case 33: // Page Up
-          handled = this.pageUp();
-          break;
+            handled = this.pageUp();
+            break;
+
           case 34: // Page Down
-          handled = this.pageDown();
-          break;
+            handled = this.pageDown();
+            break;
         }
       }
+
       // Prefer mixin result if it's defined, otherwise use base result.
       return handled || (super[symbols.keydown] && super[symbols.keydown](event));
     }
@@ -70,11 +72,8 @@ export default function KeyboardPagedSelectionMixin(Base) {
 
     /* Provide a default scrollTarget implementation if none exists. */
     get [symbols.scrollTarget]() {
-      /** @type {any} */
-      const element = this;
-      return super[symbols.scrollTarget] || defaultScrollTarget(element);
+      return super[symbols.scrollTarget] || defaultScrollTarget(this);
     }
-
   }
 
   return KeyboardPagedSelection;
@@ -90,9 +89,8 @@ export default function KeyboardPagedSelectionMixin(Base) {
  * 
  * items to find the last item at that position.
  */
-function getIndexOfItemAtY(element, scrollTarget, y, downward) {
+function getIndexOfItemAtY(items, scrollTarget, y, downward) {
 
-  const items = element.items;
   const start = downward ? 0 : items.length - 1;
   const end = downward ? items.length : 0;
   const step = downward ? 1 : -1;
@@ -144,23 +142,23 @@ function getIndexOfItemAtY(element, scrollTarget, y, downward) {
  * Move by one page downward (if downward is true), or upward (if false).
  * Return true if we ended up changing the selection, false if not.
  */
-function scrollOnePage(element, downward) {
+function scrollOnePage(component, downward) {
+  
+  const scrollTarget = component[symbols.scrollTarget];
+  const items = component.items;
+  const selectedIndex = component.state.selectedIndex;
 
   // Determine the item visible just at the edge of direction we're heading.
   // We'll select that item if it's not already selected.
-  const scrollTarget = element[symbols.scrollTarget];
   const edge = scrollTarget.scrollTop + (downward ? scrollTarget.clientHeight : 0);
-  const indexOfItemAtEdge = getIndexOfItemAtY(element, scrollTarget, edge, downward);
-
-  const selectedIndex = element.selectedIndex;
+  const indexOfItemAtEdge = getIndexOfItemAtY(items, scrollTarget, edge, downward);
 
   let newIndex;
-  
   if (indexOfItemAtEdge && selectedIndex === indexOfItemAtEdge) {
     // The item at the edge was already selected, so scroll in the indicated
     // direction by one page. Leave the new item at that edge selected.
     const delta = (downward ? 1 : -1) * scrollTarget.clientHeight;
-    newIndex = getIndexOfItemAtY(element, scrollTarget, edge + delta, downward);
+    newIndex = getIndexOfItemAtY(items, scrollTarget, edge + delta, downward);
   }
   else {
     // The item at the edge wasn't selected yet. Instead of scrolling, we'll
@@ -172,14 +170,8 @@ function scrollOnePage(element, downward) {
   if (!newIndex) {
     // We can't find an item in the direction we want to travel. Select the
     // last item (if moving downward) or first item (if moving upward).
-    newIndex = (downward ? element.items.length - 1 : 0);
+    newIndex = (downward ? items.length - 1 : 0);
   }
 
-  if (newIndex !== selectedIndex) {
-    element.selectedIndex = newIndex;
-    return true; // We handled the page up/down ourselves.
-  }
-  else {
-    return false; // We didn't do anything.
-  }
+  return component.updateSelectedIndex(newIndex);
 }

@@ -1,11 +1,12 @@
-import * as content from './content.js';
+import { substantiveElements } from './content.js';
 import Symbol from './Symbol.js';
 import symbols from './symbols.js';
+import { updateProps } from '../mixins/helpers.js';
 
 
 // Symbols for private data members on an element.
 const itemsKey = Symbol('items');
-const itemInitializedKey = Symbol('itemInitialized');
+const previousContentKey = Symbol('previousContent');
 
 
 /**
@@ -44,75 +45,48 @@ const itemInitializedKey = Symbol('itemInitialized');
  * @module ContentItemsMixin
  */
 export default function ContentItemsMixin(Base) {
-
-  // The class prototype added by the mixin.
-  class ContentItems extends Base {
-
-    [symbols.contentChanged]() {
-      if (super[symbols.contentChanged]) { super[symbols.contentChanged](); }
-
-      // Since we got the contentChanged call, we'll assume we'll be notified if
-      // the set of items changes later. We turn on memoization of the items
-      // property by setting our internal property to null (instead of
-      // undefined).
-      this[itemsKey] = null;
-
-      this[symbols.itemsChanged]();
-    }
+  return class ContentItems extends Base {
 
     /**
-     * The current set of items in the list. See the top-level documentation for
-     * mixin for a description of how items differ from plain content.
-     *
-     * @type {Element[]}
+     * Return the index of the list child that is, or contains, the indicated target
+     * node. Return -1 if not found.
      */
-    get items() {
-      let items;
-      if (this[itemsKey] == null) {
-        items = content.substantiveElements(this[symbols.content]);
-        // Note: test for *equality* with null, since we use `undefined` to
-        // indicate that we're not yet caching items.
-        if (this[itemsKey] === null) {
-          // Memoize the set of items.
-          this[itemsKey] = items;
+    indexOfTarget(target) {
+      const items = this.items;
+      for (let index = 0; index < items.length; index++) {
+        const item = items[index];
+        if (item.contains(target)) {
+          return index;
         }
-      } else {
-        // Return the memoized items.
-        items = this[itemsKey];
       }
-      return items;
+      return -1;
     }
 
-    /**
-     * This method is invoked when the underlying contents change. It is also
-     * invoked on component initialization – since the items have "changed" from
-     * being nothing.
-     */
-    [symbols.itemsChanged]() {
-      if (super[symbols.itemsChanged]) { super[symbols.itemsChanged](); }
+    get items() {
+      const base = super.items;
+      if (base) {
+        // Prefer base result if it's defined.
+        return base;
+      }
+      const content = this.state.content;
+      if (this[previousContentKey] !== content) {
+        // Memoize
+        this[itemsKey] = content ?
+          substantiveElements(content) :
+          [];
+        this[previousContentKey] = content;
+      }
+      return this[itemsKey];
+    }
 
-      // Perform per-item initialization if `itemAdded` is defined.
-      if (this[symbols.itemAdded]) {
-        Array.prototype.forEach.call(this.items, item => {
-          if (!item[itemInitializedKey]) {
-            this[symbols.itemAdded](item);
-            item[itemInitializedKey] = true;
-          }
+    render() {
+      if (super.render) { super.render(); }
+      if (this.itemProps) {
+        const items = this.items || [];
+        items.forEach((item, index) => {
+          updateProps(item, this.itemProps(item, index));
         });
       }
-
-      if (this[symbols.raiseChangeEvents]) {
-        this.dispatchEvent(new CustomEvent('items-changed'));
-      }
     }
-
-    /**
-     * Fires when the items in the list change.
-     *
-     * @memberof ContentItems
-     * @event items-changed
-     */
   }
-
-  return ContentItems;
 }
