@@ -131,7 +131,8 @@ const webpackHelperTask = function(options, done) {
             loader: 'babel-loader',
             include: includes,
             query: {
-              presets: ['es2015']
+              plugins: ['transform-object-assign'],
+              presets: ['env']
             }
           }
         ]
