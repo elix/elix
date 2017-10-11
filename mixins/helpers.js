@@ -35,6 +35,19 @@ export function mergeDeep(...sources) {
 }
 
 
+export function currentProps(element) {
+  const attributes = [...element.attributes];
+  const props = {};
+  attributes.forEach(attribute => {
+    const value = attribute.name === 'style' ?
+      parseStyle(element) :
+      attribute.value
+    props[attribute.name] = value;
+  });
+  return props;
+}
+
+
 export function parseStyle(element) {
   const styleProps = {};
   [...element.style].forEach(key => {
@@ -48,7 +61,8 @@ export function updateProps(element, props) {
   Object.keys(props).forEach(key => {
     const value = props[key];
     if (key === 'style') {
-      updateStyle(element, value);
+      element.style.cssText = '';
+      Object.assign(element.style, value);
     } else if (isAttribute(key) && element.getAttribute(key) !== value) {
       // Update attribute
       if (value != null) {
@@ -61,10 +75,4 @@ export function updateProps(element, props) {
       element[key] = value;
     }
   });
-}
-
-
-function updateStyle(element, style) {
-  element.style.cssText = '';
-  Object.assign(element.style, style);
 }

@@ -1,5 +1,5 @@
+import { currentProps, updateProps } from '../mixins/helpers.js';
 import Symbol from './Symbol.js';
-import { parseStyle, updateProps } from '../mixins/helpers.js';
 
 
 const originalPropsKey = Symbol('originalProps');
@@ -28,9 +28,7 @@ export default function ReactiveMixin(Base) {
       // console.log(`ReactiveMixin: render`);
       if (this.hostProps) {
         if (this[originalPropsKey] === undefined) {
-          this[originalPropsKey] = {
-            style: parseStyle(this)
-          };
+          this[originalPropsKey] = currentProps(this);
         }
         const hostProps = this.hostProps(this[originalPropsKey]);
         updateProps(this, hostProps);

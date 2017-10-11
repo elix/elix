@@ -1,5 +1,11 @@
+import Symbol from './Symbol.js';
+
+
 // Used to assign unique IDs to item elements without IDs.
 let idCount = 0;
+
+
+const generatedIdKey = Symbol('generatedId');
 
 
 /**
@@ -53,24 +59,18 @@ export default function SelectionAriaMixin(Base) {
       // "_option1". Item IDs are prefixed with an underscore to differentiate
       // them from manually-assigned IDs, and to minimize the potential for ID
       // conflicts.
-      let id;
-      if (!item.id) {
-        const baseId = this.id ?
+      let id = original.id || base.id || item[generatedIdKey];
+      if (!id) {
+        const hostId = this.id ?
           "_" + this.id + "Option" :
           "_option";
-        id = baseId + idCount++;
+        id = hostId + idCount++;
+        item[generatedIdKey] = id;
       }
       return Object.assign({}, base, {
         'aria-selected': selected,
-        'role': base.role || 'option'
-        },
-        id && { id }
-      );
-    }
-
-    get defaultState() {
-      return Object.assign({}, super.defaultState, {
-        role: this.getAttribute('role') || 'listbox'
+        id,
+        'role': original.role || base.role || 'option'
       });
     }
 
@@ -82,7 +82,7 @@ export default function SelectionAriaMixin(Base) {
       const selectedItemId = selectedItem && selectedItem.id;
       return Object.assign({}, base, {
         'aria-activedescendant': selectedItemId,
-        'role': this.state.role
+        'role': original.role || base.role || 'listbox'
       });
     }
 

@@ -1,6 +1,6 @@
 import { substantiveElements } from './content.js';
 import Symbol from './Symbol.js';
-import { parseStyle, updateProps } from '../mixins/helpers.js';
+import { currentProps, updateProps } from '../mixins/helpers.js';
 
 
 // Symbols for private data members on an element.
@@ -70,9 +70,7 @@ export default function ContentItemsMixin(Base) {
         const items = this.items || [];
         items.forEach((item, index) => {
           if (item[originalPropsKey] === undefined) {
-            item[originalPropsKey] = {
-              style: parseStyle(item)
-            };
+            item[originalPropsKey] = currentProps(item);
           }
           updateProps(item, this.itemProps(item, index, item[originalPropsKey]));
         });
