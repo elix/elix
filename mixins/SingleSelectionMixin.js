@@ -48,7 +48,7 @@ export default function SingleSelectionMixin(Base) {
     }
 
     get defaultState() {
-      return Object.assign({}, super.defaults, {
+      return Object.assign({}, super.defaultState, {
         selectedIndex: -1,
         selectionRequired: false,
         selectionWraps: false
