@@ -3,7 +3,15 @@ import sinon from 'sinon';
 import ReactiveMixin from '../../mixins/ReactiveMixin.js';
 
 
-class ReactiveTest extends ReactiveMixin(HTMLElement) {}
+class ReactiveTest extends ReactiveMixin(HTMLElement) {
+
+  componentDidUpdate() {}
+
+  get defaultState() {
+    return this.constructor.defaults || {};
+  }
+
+}
 customElements.define('reactive-test', ReactiveTest);
 
 
@@ -24,27 +32,35 @@ describe("ReactiveMixin", function () {
     assert.deepEqual(fixture.state, {});
   });
 
+  it("starts with defaultState if defined", () => {
+    ReactiveTest.defaults = {
+      message: 'aardvark'
+    };
+    const fixture = document.createElement('reactive-test');
+    assert.deepEqual(fixture.state, { message: 'aardvark' });
+    ReactiveTest.defaults = undefined;
+  });
+
   it("setState updates state", () => {
     const fixture = document.createElement('reactive-test');
     fixture.setState({
-      message: 'aardvark'
+      message: 'badger'
     });
-    assert.deepEqual(fixture.state, { message: 'aardvark' });
+    assert.deepEqual(fixture.state, { message: 'badger' });
   });
 
   it("state is immutable", () => {
     const fixture = document.createElement('reactive-test');
     assert.throws(() => fixture.state = {});
-    assert.throws(() => fixture.state.message = 'badger');
+    assert.throws(() => fixture.state.message = 'chihuahua');
   });
 
   it("setState skips render if component is not in document", done => {
     const fixture = document.createElement('reactive-test');
     const renderSpy = sinon.spy(fixture, 'render');
     fixture.setState({
-      message: 'chihuahua'
-    });
-    Promise.resolve().then(() => {
+      message: 'dingo'
+    }).then(() => {
       assert.equal(renderSpy.callCount, 0);
       done();
     });
@@ -55,12 +71,37 @@ describe("ReactiveMixin", function () {
     container.appendChild(fixture);
     const renderSpy = sinon.spy(fixture, 'render');
     fixture.setState({
-      message: 'dingo'
-    });
-    Promise.resolve().then(() => {
+      message: 'echidna'
+    }).then(() => {
       assert.equal(renderSpy.callCount, 1);
       done();
     });
   });
+
+  it("consecutive setState calls batched into single render call", done => {
+    const fixture = document.createElement('reactive-test');
+    container.appendChild(fixture);
+    const renderSpy = sinon.spy(fixture, 'render');
+    fixture.setState({
+      message: 'fox'
+    });
+    fixture.setState({
+      message: 'gorilla'
+    }).then(() => {
+      assert.equal(renderSpy.callCount, 1);
+      assert.equal(fixture.state.message, 'gorilla');
+      done();
+    });
+  });
+
+  it("render invokes componentDidUpdate if defined", done => {
+    const fixture = document.createElement('reactive-test');
+    const componentDidUpdateSpy = sinon.spy(fixture, 'componentDidUpdate');
+    fixture.renderAndUpdate()
+    .then(() => {
+      assert.equal(componentDidUpdateSpy.callCount, 1);
+      done();
+    });
+  })
 
 });

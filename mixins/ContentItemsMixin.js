@@ -65,16 +65,19 @@ export default function ContentItemsMixin(Base) {
     }
 
     render() {
-      if (super.render) { super.render(); }
-      if (this.itemProps) {
-        const items = this.items || [];
-        items.forEach((item, index) => {
-          if (item[originalPropsKey] === undefined) {
-            item[originalPropsKey] = currentProps(item);
-          }
-          updateProps(item, this.itemProps(item, index, item[originalPropsKey]));
-        });
-      }
+      const base = super.render ? super.render() : Promise.resolve();
+      return base.then(() => {
+        if (this.itemProps) {
+          const items = this.items || [];
+          items.forEach((item, index) => {
+            if (item[originalPropsKey] === undefined) {
+              item[originalPropsKey] = currentProps(item);
+            }
+            updateProps(item, this.itemProps(item, index, item[originalPropsKey]));
+          });
+        }
+      });
     }
+    
   }
 }
