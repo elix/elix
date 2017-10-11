@@ -8,15 +8,14 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 */
 'use strict';
+import ES6Promise from '../node_modules/es6-promise/lib/es6-promise/promise.js';
 
 /*
- * Polyfills loaded: HTML Imports, Custom Elements, Shady DOM/Shady CSS
- * Used in: Safari 9, Firefox, Edge
- */
-
-import '../node_modules/@webcomponents/html-imports/src/html-imports.js';
-import '../node_modules/@webcomponents/shadydom/src/shadydom.js';
-import '../node_modules/@webcomponents/custom-elements/src/custom-elements.js';
-import '../node_modules/@webcomponents/shadycss/entrypoints/scoping-shim.js';
-import '../src/post-polyfill.js';
-import '../src/unresolved.js';
+Assign the ES6 promise polyfill to window ourselves instead of using the "auto" polyfill
+to work around https://github.com/webcomponents/webcomponentsjs/issues/837
+*/
+if (!window.Promise) {
+  window.Promise = ES6Promise;
+  // save catch function with a string name to prevent renaming and dead code eliminiation with closure
+  ES6Promise.prototype['catch'] = ES6Promise.prototype.catch;
+}
