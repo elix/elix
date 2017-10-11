@@ -68,10 +68,11 @@ export default class ListBox extends Base {
     });
   }
 
-  hostProps() {
-    const base = super.hostProps && super.hostProps();
+  hostProps(original) {
+    const base = super.hostProps && super.hostProps(original);
     const style = Object.assign(
-      parseStyle(this),
+      {},
+      original.style,
       {
         'border': '1px solid gray',
         'box-sizing': 'border-box',
@@ -83,15 +84,14 @@ export default class ListBox extends Base {
     return mergeDeep(base, { style });
   }
 
-  itemProps(item, index) {
-    const base = super.itemProps ? super.itemProps(item, index) : {};
+  itemProps(item, index, original) {
+    const base = super.itemProps ? super.itemProps(item, index, original) : {};
     const selected = index === this.state.selectedIndex;
     const style = Object.assign(
-      parseStyle(item),
+      {},
+      original.style,
       {
-        'background': 'inherit',
-        'color': 'inherit',
-        'padding': '0.25em',
+        'padding': '0.25em'
       },
       selected && {
         'background': 'highlight',

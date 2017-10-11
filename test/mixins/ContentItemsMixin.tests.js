@@ -5,7 +5,7 @@ import symbols from '../../mixins/symbols.js';
 
 class ContentItemsTest extends ContentItemsMixin(HTMLElement) {
 
-  itemProps(item, index) {
+  itemProps(item, index, original) {
     return {
       hidden: index % 2 === 0
     };

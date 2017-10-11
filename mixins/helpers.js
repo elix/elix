@@ -3,15 +3,6 @@ const attributeWhiteList = [
   'role',
 ];
 
-// See if `style` can be set as a property, or requires an attribute.
-const test = document.createElement('div');
-try {
-  test.style = 'color: red';
-} catch (e) {
-  // IE 11
-  attributeWhiteList.push('style');
-}
-
 
 export function formatStyle(styleProps) {
   if (!styleProps) {
@@ -57,7 +48,7 @@ export function updateProps(element, props) {
   Object.keys(props).forEach(key => {
     const value = props[key];
     if (key === 'style') {
-      Object.assign(element.style, value);
+      updateStyle(element, value);
     } else if (isAttribute(key) && element.getAttribute(key) !== value) {
       // Update attribute
       if (value != null) {
@@ -70,4 +61,10 @@ export function updateProps(element, props) {
       element[key] = value;
     }
   });
+}
+
+
+function updateStyle(element, style) {
+  element.style.cssText = '';
+  Object.assign(element.style, style);
 }

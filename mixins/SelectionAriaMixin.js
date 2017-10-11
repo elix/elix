@@ -40,8 +40,8 @@ export default function SelectionAriaMixin(Base) {
   // The class prototype added by the mixin.
   class SelectionAria extends Base {
 
-    itemProps(item, index) {
-      const base = super.itemProps ? super.itemProps(item, index) : {};
+    itemProps(item, index, original) {
+      const base = super.itemProps ? super.itemProps(item, index, original) : {};
       const selected = index === this.state.selectedIndex;
       // Ensure each item has an ID so we can set aria-activedescendant on the
       // overall list whenever the selection changes.
@@ -74,8 +74,8 @@ export default function SelectionAriaMixin(Base) {
       });
     }
 
-    hostProps() {
-      const base = super.hostProps ? super.hostProps() : {};
+    hostProps(original) {
+      const base = super.hostProps ? super.hostProps(original) : {};
       const selectedItem = this.state.selectedIndex >= 0 && this.items ?
         this.items[this.state.selectedIndex] :
         null;

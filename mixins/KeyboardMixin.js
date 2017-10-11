@@ -65,8 +65,8 @@ export default function KeyboardMixin(Base) {
       });
     }
 
-    hostProps() {
-      const base = super.hostProps && super.hostProps();
+    hostProps(original) {
+      const base = super.hostProps && super.hostProps(original);
       return Object.assign({}, base, {
         tabIndex: this.state.tabIndex
       });

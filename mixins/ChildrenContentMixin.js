@@ -4,7 +4,6 @@ import Symbol from './Symbol.js';
 import symbols from './symbols.js';
 
 
-const initializedKey = Symbol('initialized');
 const initialContentObserverKey = Symbol('initialContentObserver');
 const initialContentTimeoutKey = Symbol('initialContentTimeout');
 
