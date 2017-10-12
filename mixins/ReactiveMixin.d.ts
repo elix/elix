@@ -4,8 +4,10 @@
 /// <reference path="../elix.d.ts"/>
 
 declare const ReactiveMixin: Mixin<{
+  componentDidUpdate?(): void;
   connectedCallback?(): void;
 }, {
+  componentDidUpdate(): void;
   connectedCallback(): void;
   defaultState: object;
   render: Promise<void>;

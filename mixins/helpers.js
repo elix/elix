@@ -4,6 +4,12 @@ const attributeWhiteList = [
 ];
 
 
+export function formatClasses(classProps) {
+  const classes = Object.keys(classProps).filter(key => classProps[key]);
+  return classes.join(' ');
+}
+
+
 export function formatStyle(styleProps) {
   if (!styleProps) {
     return '';
@@ -39,12 +45,34 @@ export function currentProps(element) {
   const attributes = [...element.attributes];
   const props = {};
   attributes.forEach(attribute => {
-    const value = attribute.name === 'style' ?
-      parseStyle(element) :
-      attribute.value
-    props[attribute.name] = value;
+    let key = attribute.name;
+    let value;
+    switch (attribute.name) {
+      case 'class':
+        key = 'classes';
+        value = parseClasses(element);
+        break;
+
+      case 'style':
+        value = parseStyle(element);
+        break;
+      
+      default:
+        value = attribute.value;
+        break;
+    }
+    props[key] = value;
   });
   return props;
+}
+
+
+export function parseClasses(element) {
+  const result = {};
+  [...element.classList].forEach(className =>
+    result[className] = true
+  );
+  return result;
 }
 
 
@@ -60,19 +88,31 @@ export function parseStyle(element) {
 export function updateProps(element, props) {
   Object.keys(props).forEach(key => {
     const value = props[key];
-    if (key === 'style') {
-      element.style.cssText = '';
-      Object.assign(element.style, value);
-    } else if (isAttribute(key) && element.getAttribute(key) !== value) {
-      // Update attribute
-      if (value != null) {
-        element.setAttribute(key, value);
-      } else {
-        element.removeAttribute(key);
-      }
-    } else if (element[key] !== value) {
-      // Update property
-      element[key] = value;
+    switch (key) {
+      case 'classes':
+        if (element.getAttribute('class') !== value) {
+          element.setAttribute('class', formatClasses(value));
+        }
+        break;
+      
+      case 'style':
+        element.style.cssText = '';
+        Object.assign(element.style, value);
+        break;
+      
+      default:
+        if (isAttribute(key) && element.getAttribute(key) !== value) {
+          // Update attribute
+          if (value != null) {
+            element.setAttribute(key, value);
+          } else {
+            element.removeAttribute(key);
+          }
+        } else if (element[key] !== value) {
+          // Update property
+          element[key] = value;
+        }
+        break;
     }
   });
 }

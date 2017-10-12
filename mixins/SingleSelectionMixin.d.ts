@@ -26,6 +26,7 @@ declare const SingleSelectionMixin: Mixin<{
   selectionWraps: boolean;
   selectNext(): boolean;
   selectPrevious(): boolean;
+  updateSelectedIndex(number): boolean;
 }>;
 
 export default SingleSelectionMixin;

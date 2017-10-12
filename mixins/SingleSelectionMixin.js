@@ -79,6 +79,19 @@ export default function SingleSelectionMixin(Base) {
       this.updateSelectedIndex(selectedIndex);
     }
 
+    get selectedItem() {
+      return this.items && this.items[this.state.selectedIndex];
+    }
+    set selectedItem(selectedItem) {
+      if (!this.items) {
+        return;
+      }
+      const index = this.items.indexOf(selectedItem);
+      if (index >= 0) {
+        this.updateSelectedIndex(index);
+      }
+    }
+
     /**
      * True if the list should always have a selection (if it has items).
      *

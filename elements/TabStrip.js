@@ -1,3 +1,5 @@
+import { html } from '../node_modules/lit-html/lit-html.js';
+import { mergeDeep } from '../mixins/helpers.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ClickSelectionMixin from '../mixins/ClickSelectionMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
@@ -5,16 +7,12 @@ import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
 import DirectionSelectionMixin from '../mixins/DirectionSelectionMixin.js';
 import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
-import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
+// import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin';
+import LitHtmlShadowMixin from '../mixins/LitHtmlShadowMixin.js';
+import ReactiveMixin from '../mixins/ReactiveMixin.js';
+import SelectionAriaMixin from '../mixins/SelectionAriaMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
-import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
-import * as utilities from '../mixins/utilities.js';
-
-
-// Symbols for private data members on an element.
-const tabAlignKey = Symbol('tabAlign');
-const tabPositionKey = Symbol('tabPosition');
 
 
 const Base =
@@ -25,10 +23,12 @@ const Base =
   DirectionSelectionMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
-  ShadowTemplateMixin(
+  LitHtmlShadowMixin(
+  ReactiveMixin(
+  SelectionAriaMixin(
   SingleSelectionMixin(
     HTMLElement
-  )))))))));
+  )))))))))));
 
 
 /**
@@ -68,43 +68,120 @@ const Base =
  */
 class TabStrip extends Base {
 
-  constructor() {
-    super();
+  componentDidUpdate() {
+    if (super.componentDidUpdate) { super.componentDidUpdate(); }
 
-    // Set defaults.
-    const defaults = this[symbols.defaults];
-    if (typeof this.tabAlign === 'undefined') {
-      this.tabAlign = defaults.tabAlign;
-    }
-    if (typeof this.tabPosition === 'undefined') {
-      this.tabPosition = defaults.tabPosition;
+    // If the selectedIndex changes due to keyboard action within this
+    // component, the old tab button might still have focus. Ensure the new
+    // selected tab button has the focus.
+    const selectedItem = this.selectedItem;
+    if (selectedItem &&
+      this.contains(document.activeElement) &&
+      selectedItem !== document.activeElement &&
+      selectedItem instanceof HTMLElement) {
+      selectedItem.focus();
     }
   }
 
-  get [symbols.defaults]() {
-    const defaults = super[symbols.defaults] || {};
-    defaults.tabindex = null;
-    defaults.tabAlign = 'start';
-    defaults.tabPosition = 'top';
-    defaults.selectionRequired = true;
-    return defaults;
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      orientation: 'horizontal',
+      selectionRequired: true,
+      tabAlign: 'start',
+      tabButtonRole: 'tab',
+      tabPosition: 'top'
+    });
   }
 
-  [symbols.itemAdded](item) {
-    if (super[symbols.itemAdded]) { super[symbols.itemAdded](item); }
-    item.setAttribute('role', 'tab');
-    item.setAttribute('tabindex', 0);
+  hostProps(original) {
+    const base = super.hostProps ? super.hostProps(original) : {};
+
+    const tabPosition = this.state.tabPosition;
+    const lateralPosition = tabPosition === 'left' || tabPosition === 'right';
+    const lateralStyle = {
+      'flexDirection': 'column'
+    };
+
+    const tabAlign = this.state.tabAlign;
+    const alignStyles = {
+      'center': {
+        'justifyContent': 'center'
+      },
+      'end': {
+        'justifyContent': 'flex-end'
+      },
+      'start': {
+        'justifyContent': 'flex-start'
+      }
+      // No style needed for "stretch"
+    };
+    const alignStyle = alignStyles[tabAlign];
+
+    const style = Object.assign(
+      {},
+      original.style,
+      base.style,
+      {
+        'display': 'flex',
+      },
+      lateralPosition && lateralStyle,
+      alignStyle
+    );
+    const role = original.role || 'tablist';
+    return mergeDeep(base, {
+      role,
+      style
+    });
   }
 
-  [symbols.itemSelected](item, selected) {
-    if (super[symbols.itemSelected]) { super[symbols.itemSelected](item, selected); }
-    if (selected) {
-      item.classList.add('selected');
-    } else {
-      item.classList.remove('selected');
-    }
-    item.setAttribute('aria-selected', selected);
-    utilities.webkitForceStyleUpdate(item);
+  itemProps(item, index, original) {
+    const base = super.itemProps ? super.itemProps(item, index, original) : {};
+
+    const itemStyle = {
+      'cursor': 'pointer',
+      'fontFamily': 'inherit',
+      'fontSize': 'inherit',
+      // 'outline': 'none',
+      // 'position': 'relative',
+      'WebkitTapHighlightColor': 'transparent',
+    };
+
+    const tabAlign = this.state.tabAlign;
+    const tabPosition = this.state.tabPosition;
+
+    const selected = index === this.state.selectedIndex;
+
+    const classes = Object.assign(
+      {},
+      original.classes,
+      base.classes,
+      { selected }
+    );
+
+    const role = original.tabButtonRole || this.state.tabButtonRole;
+    const style = Object.assign(
+      {},
+      base.style,
+      itemStyle
+    );
+
+    // const isComponent = typeof item.type === 'function';
+    // const componentProps = {
+    //   index,
+    //   selected,
+    //   tabAlign,
+    //   tabPosition
+    // };
+
+    return mergeDeep(
+      base,
+      {
+        classes,
+        role,
+        style
+      },
+      // isComponent && componentProps
+    );
   }
 
   [symbols.keydown](event) {
@@ -115,112 +192,29 @@ class TabStrip extends Base {
     switch (event.keyCode) {
       case 13: /* Enter */
       case 32: /* Space */
-        const index = this.items.indexOf(event.target);
-        if (index !== this.selectedIndex) {
-          this.selectedIndex = index;
-          handled = true;
-        }
+        // TODO
+        // const index = this.indexOfTarget(event.target);
+        const index = this.items && this.items.indexOf(event.target);
+        handled = this.updateSelectedIndex(index);
         break;
     }
 
-    // Give mixins a chance to do work.
-    handled = handled || (super[symbols.keydown] && super[symbols.keydown](event));
-
-    if (handled && this.selectedItem instanceof HTMLElement) {
-      // If the event resulted in a change of selection, move the focus to the
-      // newly-selected tab.
-      this.selectedItem.focus();
-    }
-
-    return handled;
+    // Prefer mixin result if it's defined, otherwise use base result.
+    return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
   }
 
-  /**
-   * @type {string}
-   */
-  get tabAlign() {
-    return this[tabAlignKey];
-  }
-  set tabAlign(tabAlign) {
-    this[tabAlignKey] = tabAlign;
-    this.reflectAttribute('tab-align', tabAlign);
-  }
-
-  /**
-   * The position of the tab strip relative to the element's children. Valid
-   * values are "top", "left", "right", and "bottom".
-   *
-   * @default "top"
-   * @type {string}
-   */
-  get tabPosition() {
-    return this[tabPositionKey];
-  }
-  set tabPosition(tabPosition) {
-    this[tabPositionKey] = tabPosition;
-    this.reflectAttribute('tab-position', tabPosition);
-    this.navigationAxis = (tabPosition === 'top' || tabPosition === 'bottom') ?
+  // TabStrip orientation depends on tabPosition property.
+  get orientation() {
+    const tabPosition = this.state.tabPosition;
+    return tabPosition === 'top' || tabPosition === 'bottom' ?
       'horizontal' :
       'vertical';
-
-    // Let tabs know their tab position, too.
-    [].forEach.call(this.items, tab => {
-      tab.setAttribute('tab-position', tabPosition);
-      utilities.webkitForceStyleUpdate(tab);
-    });
   }
 
-  [symbols.template](filler) {
-    return `
-      <style>
-        :host {
-          display: inline-flex;
-        }
-
-        /*
-         * Avoid having tab container stretch across. User won't be able to see
-         * it, but since it handles the keyboard, in Mobile Safari a tap on the
-         * container background will cause the region to flash. Aligning the
-         * region collapses it down to hold its contents.
-         */
-        #tabButtonContainer {
-          /* For IE bug (clicking tab produces gap between tab and page). */
-          display: flex;
-          flex-direction: row;
-          flex: 1;
-          /*
-           * Try to obtain fast-tap behavior on all tabs.
-           * See https://webkit.org/blog/5610/more-responsive-tapping-on-ios/.
-           */
-          touch-action: manipulation;
-        }
-
-        /* Left/right positions */
-        :host([tab-position="left"]) #tabButtonContainer,
-        :host([tab-position="right"]) #tabButtonContainer {
-          flex-direction: column;
-        }
-
-        /* Alignment */
-        :host([tab-align="start"]) #tabButtonContainer {
-          justify-content: flex-start;
-        }
-        :host([tab-align="center"]) #tabButtonContainer {
-          justify-content: center;
-        }
-        :host([tab-align="end"]) #tabButtonContainer {
-          justify-content: flex-end;
-        }
-        :host([tab-align="stretch"]) #tabButtonContainer > ::slotted(*) {
-          flex: 1;
-        }
-      </style>
-
-      <div id="tabButtonContainer" role="none">
-        ${filler || `<slot></slot>`}
-      </div>
-    `;
+  get template() {
+    return html`<slot></slot>`;
   }
+
 }
 
 

@@ -98,12 +98,16 @@ export default class ListBox extends Base {
         'color': 'highlighttext'
       }
     );
-    let className;
-    if (selected) {
-      className = `${base.class ? base.class + ' ' : ''}selected`;
-    }
+
+    const classes = Object.assign(
+      {},
+      original.classes,
+      base.classes,
+      { selected }
+    );
+
     return mergeDeep(base, {
-      class: className,
+      classes,
       style
     });
   }

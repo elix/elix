@@ -23,6 +23,10 @@ export default function ReactiveMixin(Base) {
       this.setState(this.defaultState);
     }
 
+    componentDidUpdate() {
+      if (super.componentDidUpdate) { super.componentDidUpdate(); }
+    }
+
     connectedCallback() {
       if (super.connectedCallback) { super.connectedCallback(); }
       this[connectedKey] = true;
@@ -68,9 +72,7 @@ export default function ReactiveMixin(Base) {
           // console.log(`render`);
           return this[symbols.render]()
           .then(() => {
-            if (this.componentDidUpdate) {
-              this.componentDidUpdate();
-            }
+            this.componentDidUpdate();
           });
         }
       });

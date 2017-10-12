@@ -41,6 +41,15 @@ class Modes extends Base {
     });
   }
 
+  hostProps() {
+    const base = super.hostProps ? super.hostProps() : {};
+    const style = {
+      'display': 'inline-block',
+      'position': 'relative'
+    };
+    return mergeDeep(base, { style });
+  }
+
   itemProps(item, index, original) {
     const base = super.itemProps ? super.itemProps(item, index, original) : {};
     const hidden = original.hidden || index !== this.state.selectedIndex;
@@ -49,15 +58,6 @@ class Modes extends Base {
       hidden,
       style
     });
-  }
-
-  hostProps() {
-    const base = super.hostProps ? super.hostProps() : {};
-    const style = {
-      'display': 'inline-block',
-      'position': 'relative'
-    };
-    return mergeDeep(base, { style });
   }
 
   get template() {
