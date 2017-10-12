@@ -1,19 +1,22 @@
+import { html } from '../node_modules/lit-html/lit-html.js';
+import { mergeDeep } from '../mixins/helpers.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
-import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
+import LitHtmlShadowMixin from '../mixins/LitHtmlShadowMixin.js';
+import ReactiveMixin from '../mixins/ReactiveMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
-import symbols from '../mixins/symbols.js';
 
 
 const Base =
   AttributeMarshallingMixin(
   ContentItemsMixin(
   DefaultSlotContentMixin(
-  ShadowTemplateMixin(
+  LitHtmlShadowMixin(
+  ReactiveMixin(
   SingleSelectionMixin(
     HTMLElement
-  )))));
+  ))))));
 
 /**
  * Shows exactly one child element at a time. This can be useful, for example,
@@ -28,43 +31,37 @@ const Base =
  * @mixes AttributeMarshallingMixin
  * @mixes ContentItemsMixin
  * @mixes DefaultSlotContentMixin
- * @mixes ShadowTemplateMixin
  * @mixes SingleSelectionMixin
  */
 class Modes extends Base {
 
-  get [symbols.defaults]() {
-    const defaults = super[symbols.defaults] || {};
-    defaults.selectionRequired = true;
-    return defaults;
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      selectionRequired: true
+    });
   }
 
-  [symbols.itemAdded](item) {
-    if (super[symbols.itemAdded]) { super[symbols.itemAdded](item); }
-    // TODO: See node about aria-hidden below.
-    // item.setAttribute('aria-hidden', 'false');
+  itemProps(item, index, original) {
+    const base = super.itemProps ? super.itemProps(item, index, original) : {};
+    const hidden = original.hidden || index !== this.state.selectedIndex;
+    const style = original.style;
+    return mergeDeep(base, {
+      hidden,
+      style
+    });
   }
 
-  [symbols.itemSelected](item, selected) {
-    if (super[symbols.itemSelected]) { super[symbols.itemSelected](item, selected); }
-    item.style.display = selected ? '' : 'none';
-    // TODO: Should the modes which are not visible be exposed to ARIA?
-    // Sometimes this will be desirable, as when an inactive mode should be
-    // both physically invisible and invisible to ARIA. In other cases, it
-    // might be desirable to let the user navigate the modes with the keyboard,
-    // in which case ARIA should be able to see the inactive modes.
-    // item.setAttribute('aria-hidden', !selected);
+  hostProps() {
+    const base = super.hostProps ? super.hostProps() : {};
+    const style = {
+      'display': 'inline-block',
+      'position': 'relative'
+    };
+    return mergeDeep(base, { style });
   }
 
-  [symbols.template](filler) {
-    return `
-      <style>
-        :host {
-          display: inline-block;
-        }
-      </style>
-      ${filler || `<slot></slot>`}
-    `;
+  get template() {
+    return html`<slot></slot>`;
   }
 
 }

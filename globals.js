@@ -39,7 +39,7 @@
 // import LabeledTabButton from './elements/LabeledTabButton.js';
 // import LabeledTabs from './elements/LabeledTabs.js';
 import ListBox from './elements/ListBox.js';
-// import Modes from './elements/Modes.js';
+import Modes from './elements/Modes.js';
 // import Popup from './elements/Popup.js';
 // import Tabs from './elements/Tabs.js';
 // import TabStrip from './elements/TabStrip.js';
@@ -67,7 +67,7 @@ const Elix = {
   // LabeledTabButton,
   // LabeledTabs,
   ListBox,
-  // Modes,
+  Modes,
   // AlertDialog,
   // OpenCloseMixin,
   // OverlayMixin,

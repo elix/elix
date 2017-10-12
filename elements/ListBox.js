@@ -1,5 +1,5 @@
-import { formatStyle, mergeDeep, parseStyle } from '../mixins/helpers.js';
 import { html } from '../node_modules/lit-html/lit-html.js';
+import { formatStyle, mergeDeep } from '../mixins/helpers.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ClickSelectionMixin from '../mixins/ClickSelectionMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
