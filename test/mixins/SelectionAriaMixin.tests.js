@@ -40,16 +40,15 @@ describe("SelectionAriaMixin", () => {
     fixture.appendChild(item1);
     const item2 = document.createElement('div');
     // Leave item2 without an ID.
-    fixture.appendChild(item2);
-    container.appendChild(fixture);
-    flushPolyfills();
-    assert.equal(fixture.getAttribute('role'), 'listbox'); // default role
-    assert.equal(item1.id, 'explicitID'); // unchanged
-    assert.equal(item1.getAttribute('role'), 'option'); // default role
-    const expectedIdStart = '_testOption';
-    const idStart = item2.id.slice(0, expectedIdStart.length);
-    assert.equal(idStart, expectedIdStart); // implicitly assigned ID
-    assert.equal(item2.getAttribute('role'), 'option'); // default role
+    fixture.render(() => {
+      assert.equal(fixture.getAttribute('role'), 'listbox'); // default role
+      assert.equal(item1.id, 'explicitID'); // unchanged
+      assert.equal(item1.getAttribute('role'), 'option'); // default role
+      const expectedIdStart = '_testOption';
+      const idStart = item2.id.slice(0, expectedIdStart.length);
+      assert.equal(idStart, expectedIdStart); // implicitly assigned ID
+      assert.equal(item2.getAttribute('role'), 'option'); // default role
+    });
   });
 
   it("indicates the selection state on both the list and the item", () => {
@@ -58,22 +57,24 @@ describe("SelectionAriaMixin", () => {
     fixture.appendChild(item1);
     const item2 = document.createElement('div');
     fixture.appendChild(item2);
-    container.appendChild(fixture);
-    fixture.setState({ selectedIndex: 0 });
-    assert.equal(fixture.getAttribute('aria-activedescendant'), item1.id);
-    assert.equal(item1.getAttribute('aria-selected'), 'true');
-    assert.equal(item2.getAttribute('aria-selected'), 'false');
-    fixture.setState({ selectedIndex: 1 });
-    assert.equal(fixture.getAttribute('aria-activedescendant'), item2.id);
-    assert.equal(item1.getAttribute('aria-selected'), 'false');
-    assert.equal(item2.getAttribute('aria-selected'), 'true');
+    fixture.render(() => {
+      container.appendChild(fixture);
+      fixture.setState({ selectedIndex: 0 });
+      assert.equal(fixture.getAttribute('aria-activedescendant'), item1.id);
+      assert.equal(item1.getAttribute('aria-selected'), 'true');
+      assert.equal(item2.getAttribute('aria-selected'), 'false');
+      fixture.setState({ selectedIndex: 1 });
+      assert.equal(fixture.getAttribute('aria-activedescendant'), item2.id);
+      assert.equal(item1.getAttribute('aria-selected'), 'false');
+      assert.equal(item2.getAttribute('aria-selected'), 'true');
+    });
   });
 
   it("assigns a default role of 'listbox'", () => {
     const fixture = document.createElement('selection-aria-test');
-    container.appendChild(fixture);
-    flushPolyfills();
-    assert.equal(fixture.getAttribute('role'), 'listbox');
+    fixture.render(() => {
+      assert.equal(fixture.getAttribute('role'), 'listbox');
+    });
   });
 
   it("doesn't overwrite an explicit role in markup", () => {

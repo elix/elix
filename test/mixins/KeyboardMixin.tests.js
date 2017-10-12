@@ -29,9 +29,10 @@ describe("KeyboardMixin", () => {
 
   it("assigns a tabindex of 0 by default", () => {
     const fixture = document.createElement('keyboard-test');
-    container.appendChild(fixture);
-    flushPolyfills();
-    assert.equal(fixture.getAttribute('tabindex'), '0');
+    fixture.render()
+    .then(() => {
+      assert.equal(fixture.getAttribute('tabindex'), '0');
+    });
   });
 
   it("doesn't overwrite an explicit tabindex in markup", () => {

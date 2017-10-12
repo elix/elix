@@ -68,10 +68,12 @@ describe("SingleSelectionMixin", () => {
 
   it("tracks selection of first item when no item is selected", done => {
     const fixture = createSampleElement();
-    container.appendChild(fixture);
     assert.equal(fixture.state.selectedIndex, -1);
-    fixture.setState({ selectionRequired: true });
-    Promise.resolve().then(() => {
+    fixture.setState({
+      selectionRequired: true
+    })
+    .then(() => fixture.renderAndUpdate())
+    .then(() => {  
       assert.equal(fixture.state.selectedIndex, 0);
       done();
     });
@@ -79,31 +81,31 @@ describe("SingleSelectionMixin", () => {
 
   it("tracks selection when current item (not last place) is removed", done => {
     const fixture = createSampleElement();
-    container.appendChild(fixture);
     const items = fixture.items.slice();
     items.splice(0, 1);
     fixture.setState({
       items,
       selectedIndex: 0,
       selectionRequired: true
-    });
-    Promise.resolve().then(() => {
-      assert.equal(fixture.state.selectedIndex, 0);
-      done();
+    })
+    .then(() => fixture.renderAndUpdate())
+    .then(() => {
+        assert.equal(fixture.state.selectedIndex, 0);
+        done();
     });
   });
 
   it("tracks selection when current item in last place is removed", done => {
     const fixture = createSampleElement();
-    container.appendChild(fixture);
     const items = fixture.items.slice();
     items.splice(2, 1);
     fixture.setState({
       items,
       selectedIndex: 2,
       selectionRequired: true
-    });
-    Promise.resolve().then(() => {
+    })
+    .then(() => fixture.renderAndUpdate())
+    .then(() => {
       assert.equal(fixture.state.selectedIndex, 1);
       done();
     });
@@ -111,13 +113,13 @@ describe("SingleSelectionMixin", () => {
 
   it("drops selection when the last item is removed", done => {
     const fixture = createSampleElement();
-    container.appendChild(fixture);
     fixture.setState({
       items: [],
       selectedIndex: 0,
       selectionRequired: true
-    });
-    Promise.resolve().then(() => {
+    })
+    .then(() => fixture.renderAndUpdate())
+    .then(() => {
       assert.equal(fixture.state.selectedIndex, -1);
       done();
     });

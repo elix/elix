@@ -72,6 +72,13 @@ export default function SingleSelectionMixin(Base) {
       return selectIndex(this, 0);
     }
 
+    get selectedIndex() {
+      return this.state.selectedIndex;
+    }
+    set selectedIndex(selectedIndex) {
+      this.updateSelectedIndex(selectedIndex);
+    }
+
     /**
      * True if the list should always have a selection (if it has items).
      *
@@ -140,7 +147,7 @@ export default function SingleSelectionMixin(Base) {
     }
 
     // TODO: Make Symbol
-    // TODO: Rationalize with internal selectIndex().
+    // TODO: Rationalize with internal selectIndex(), selectedIndex setter.
     updateSelectedIndex(selectedIndex) {
       const changed = this.state.selectedIndex !== selectedIndex;
       if (changed) {
