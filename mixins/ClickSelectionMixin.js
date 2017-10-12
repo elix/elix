@@ -1,3 +1,4 @@
+import deepContains from './deepContains.js';
 // import symbols from './symbols.js';
 
 
@@ -93,7 +94,7 @@ function indexOfTarget(element, target) {
   const items = element.items;
   for (let index = 0; index < items.length; index++) {
     const item = items[index];
-    if (item.contains(target)) {
+    if (item === target || deepContains(item, target)) {
       return index;
     }
   }
