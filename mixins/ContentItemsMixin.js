@@ -1,6 +1,7 @@
 import { substantiveElements } from './content.js';
-import Symbol from './Symbol.js';
 import { currentProps, updateProps } from '../mixins/helpers.js';
+import Symbol from './Symbol.js';
+import symbols from './symbols.js';
 
 
 // Symbols for private data members on an element.
@@ -64,8 +65,8 @@ export default function ContentItemsMixin(Base) {
       return this[itemsKey];
     }
 
-    render() {
-      const base = super.render ? super.render() : Promise.resolve();
+    [symbols.render]() {
+      const base = super[symbols.render] ? super[symbols.render]() : Promise.resolve();
       return base.then(() => {
         if (this.itemProps) {
           const items = this.items || [];

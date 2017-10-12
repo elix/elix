@@ -61,7 +61,6 @@ export default function AttributeMarshallingMixin(Base) {
       const propertyName = attributeToPropertyName(attributeName);
       // If the attribute name corresponds to a property name, set the property.
       if (propertyName in this) {
-        console.log(`attribute changed: ${attributeName}`);
         this[propertyName] = newValue;
       }
     }

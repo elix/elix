@@ -42,7 +42,7 @@ describe("ContentItemsMixin", () => {
       <div>2</div>
       <div>3</div>
     `;
-    fixture.render()
+    fixture[symbols.render]()
     .then(() => {
       assert(fixture.items[0].hidden);
       assert(!fixture.items[1].hidden);

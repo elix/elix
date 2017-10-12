@@ -1,6 +1,7 @@
 import { assert } from 'chai';
 import sinon from 'sinon';
 import ReactiveMixin from '../../mixins/ReactiveMixin.js';
+import symbols from '../../mixins/symbols.js';
 
 
 class ReactiveTest extends ReactiveMixin(HTMLElement) {
@@ -57,7 +58,7 @@ describe("ReactiveMixin", function () {
 
   it("setState skips render if component is not in document", done => {
     const fixture = document.createElement('reactive-test');
-    const renderSpy = sinon.spy(fixture, 'render');
+    const renderSpy = sinon.spy(fixture, symbols.render);
     fixture.setState({
       message: 'dingo'
     }).then(() => {
@@ -69,7 +70,7 @@ describe("ReactiveMixin", function () {
   it("setState invokes render if component is in document", done => {
     const fixture = document.createElement('reactive-test');
     container.appendChild(fixture);
-    const renderSpy = sinon.spy(fixture, 'render');
+    const renderSpy = sinon.spy(fixture, symbols.render);
     fixture.setState({
       message: 'echidna'
     }).then(() => {
@@ -81,7 +82,7 @@ describe("ReactiveMixin", function () {
   it("consecutive setState calls batched into single render call", done => {
     const fixture = document.createElement('reactive-test');
     container.appendChild(fixture);
-    const renderSpy = sinon.spy(fixture, 'render');
+    const renderSpy = sinon.spy(fixture, symbols.render);
     fixture.setState({
       message: 'fox'
     });
@@ -97,7 +98,7 @@ describe("ReactiveMixin", function () {
   it("render invokes componentDidUpdate if defined", done => {
     const fixture = document.createElement('reactive-test');
     const componentDidUpdateSpy = sinon.spy(fixture, 'componentDidUpdate');
-    fixture.renderAndUpdate()
+    fixture.render()
     .then(() => {
       assert.equal(componentDidUpdateSpy.callCount, 1);
       done();

@@ -8,8 +8,8 @@ import symbols from './symbols.js';
 export default function LitHtmlShadowMixin(Base) {
   return class LitHtmlShadow extends Base {
 
-    render() {
-      const base = super.render ? super.render() : Promise.resolve();
+    [symbols.render]() {
+      const base = super[symbols.render] ? super[symbols.render]() : Promise.resolve();
       return base.then(() => {
 
         // console.log(`rendering`);

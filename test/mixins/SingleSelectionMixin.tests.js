@@ -72,7 +72,7 @@ describe("SingleSelectionMixin", () => {
     fixture.setState({
       selectionRequired: true
     })
-    .then(() => fixture.renderAndUpdate())
+    .then(() => fixture.render())
     .then(() => {  
       assert.equal(fixture.state.selectedIndex, 0);
       done();
@@ -88,7 +88,7 @@ describe("SingleSelectionMixin", () => {
       selectedIndex: 0,
       selectionRequired: true
     })
-    .then(() => fixture.renderAndUpdate())
+    .then(() => fixture.render())
     .then(() => {
         assert.equal(fixture.state.selectedIndex, 0);
         done();
@@ -104,7 +104,7 @@ describe("SingleSelectionMixin", () => {
       selectedIndex: 2,
       selectionRequired: true
     })
-    .then(() => fixture.renderAndUpdate())
+    .then(() => fixture.render())
     .then(() => {
       assert.equal(fixture.state.selectedIndex, 1);
       done();
@@ -118,7 +118,7 @@ describe("SingleSelectionMixin", () => {
       selectedIndex: 0,
       selectionRequired: true
     })
-    .then(() => fixture.renderAndUpdate())
+    .then(() => fixture.render())
     .then(() => {
       assert.equal(fixture.state.selectedIndex, -1);
       done();

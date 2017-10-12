@@ -1,4 +1,5 @@
 import { currentProps, updateProps } from '../mixins/helpers.js';
+import symbols from './symbols.js';
 import Symbol from './Symbol.js';
 
 
@@ -27,7 +28,7 @@ export default function ReactiveMixin(Base) {
       this[connectedKey] = true;
       // If we haven't rendered yet, do so now.
       if (!this[renderedStateKey]) {
-        this.renderAndUpdate();
+        this.render();
       }
       // if (window.ShadyCSS && !window.ShadyCSS.nativeShadow) {
       //   window.ShadyCSS.styleElement(this);
@@ -38,8 +39,8 @@ export default function ReactiveMixin(Base) {
       return super.defaultState || {};
     }
 
-    render() {
-      const base = super.render ? super.render() : Promise.resolve();
+    [symbols.render]() {
+      const base = super[symbols.render] ? super[symbols.render]() : Promise.resolve();
       return base.then(() => {
         // console.log(`ReactiveMixin: render`);
 
@@ -58,14 +59,14 @@ export default function ReactiveMixin(Base) {
       });
     }
     
-    renderAndUpdate() {
+    render() {
       const base = super.renderAndUpdate ? super.renderAndUpdate() : Promise.resolve();
       return base.then(() => {
         // Only render if we haven't rendered this state object before.
         if (this[stateKey] !== this[renderedStateKey]) {
           this[renderedStateKey] = this[stateKey];
           // console.log(`render`);
-          return this.render()
+          return this[symbols.render]()
           .then(() => {
             if (this.componentDidUpdate) {
               this.componentDidUpdate();
@@ -88,7 +89,7 @@ export default function ReactiveMixin(Base) {
 
       // Only render if we're already connected to the document.
       return this[connectedKey] ?
-        this.renderAndUpdate() :
+        this.render() :
         Promise.resolve();
     }
 

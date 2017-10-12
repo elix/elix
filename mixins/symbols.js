@@ -277,6 +277,10 @@ const symbols = {
    */
   raiseChangeEvents: Symbol('raiseChangeEvents'),
 
+  // TODO: Document
+  render: Symbol('render'),
+  
+  // TODO: Document
   rendering: Symbol('rendering'),
 
   /**
