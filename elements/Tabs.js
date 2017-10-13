@@ -149,7 +149,7 @@ class Tabs extends Base {
     const tabStrip = html`
       <elix-tab-strip
         selected-index=${this.state.selectedIndex}
-        style=${props.formatStyleProps(tabStripStyle)}
+        style-additions=${props.formatStyleProps(tabStripStyle)}
         tab-align=${this.state.tabAlign}
         tab-position=${this.state.tabPosition}
         >
@@ -160,7 +160,7 @@ class Tabs extends Base {
     const tabPanels = html`
       <elix-modes
         selected-index=${this.state.selectedIndex}
-        style=${props.formatStyleProps(tabPanelsContainerStyle)}
+        style-additions=${props.formatStyleProps(tabPanelsContainerStyle)}
         >
         <slot></slot>
       </elix-modes>

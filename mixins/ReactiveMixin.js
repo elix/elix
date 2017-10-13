@@ -109,5 +109,16 @@ export default function ReactiveMixin(Base) {
     get state() {
       return this[stateKey];
     }
+
+    // HACK: Expose a string that can be set on a component to add to its
+    // existing styles. If/when lit-html supports setting properties directly,
+    // might at least be able to turn this into a styleProps-valued object.
+    get styleAdditions() {
+      return props.getStyleProps(this);
+    }
+    set styleAdditions(styleProps) {
+      const merged = [this.style.cssText, styleProps].join('; ');
+      this.style.cssText = merged;
+    }
   }
 }

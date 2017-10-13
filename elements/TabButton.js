@@ -54,30 +54,25 @@ class TabButton extends Base {
     const base = super.hostProps ? super.hostProps(original) : {};
 
     const stretch = this.state.tabAlign === 'stretch';
-    const stretchStyle = {
-      'flex': 1
-    };
 
     const index = this.state.index;
     const needsSpacer = index > 0;
     const tabPosition = this.tabPosition;
-    const spacerStyle = tabPosition === 'top' || tabPosition === 'bottom' ?
-      {
-        'margin-left': '0.2em'
-      } :
-      {
-        'margin-top': '0.2em'
-      };
+    const needsLeftSpacer = needsSpacer &&
+        (tabPosition === 'top' || tabPosition === 'bottom');
+    const needsTopSpacer = needsSpacer &&
+        (tabPosition === 'left' || tabPosition === 'right');
 
     const style = Object.assign(
       {},
       original.style,
       base.style,
       {
-        'display': 'inline-flex'
-      },
-      stretch && stretchStyle,
-      needsSpacer && spacerStyle,
+        'display': 'inline-flex',
+        'flex': stretch ? 1 : null,
+        'margin-left': needsLeftSpacer ? '0.2em' : null,
+        'margin-top': needsTopSpacer ? '0.2em' : null,
+      }
     );
 
     const tabindex = original.attributes.tabindex || this.state.tabindex;

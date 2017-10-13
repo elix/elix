@@ -107,20 +107,20 @@ class TabStrip extends Base {
 
     const tabPosition = this.state.tabPosition;
     const lateralPosition = tabPosition === 'left' || tabPosition === 'right';
-    const lateralStyle = {
-      'flexDirection': 'column'
-    };
 
     const tabAlign = this.state.tabAlign;
     const alignStyles = {
       'center': {
-        'justifyContent': 'center'
+        'justify-content': 'center'
       },
       'end': {
-        'justifyContent': 'flex-end'
+        'justify-content': 'flex-end'
       },
       'start': {
-        'justifyContent': 'flex-start'
+        'justify-content': 'flex-start'
+      },
+      'stretch': {
+        'justify-content': null
       }
       // No style needed for "stretch"
     };
@@ -132,8 +132,8 @@ class TabStrip extends Base {
       base.style,
       {
         'display': 'flex',
+        'flex-direction': lateralPosition ? 'column' : 'row'
       },
-      lateralPosition && lateralStyle,
       alignStyle
     );
     const role = original.attributes.role || 'tablist';
@@ -150,11 +150,11 @@ class TabStrip extends Base {
 
     const itemStyle = {
       'cursor': 'pointer',
-      'fontFamily': 'inherit',
-      'fontSize': 'inherit',
+      'font-family': 'inherit',
+      'font-size': 'inherit',
       // 'outline': 'none',
       // 'position': 'relative',
-      'WebkitTapHighlightColor': 'transparent',
+      '-webkit-tap-highlight-color': 'transparent',
     };
 
     const tabAlign = this.state.tabAlign;

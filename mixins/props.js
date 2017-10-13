@@ -50,17 +50,17 @@ function applyAttributeProps(element, attributeProps) {
 }
 
 
-function applyClassProps(element, classProps) {
+export function applyClassProps(element, classProps) {
   applyAttribute(element, 'class', formatClassProps(classProps));
 }
 
 
-function applyStyleProps(element, styleProps) {
+export function applyStyleProps(element, styleProps) {
   Object.assign(element.style, styleProps);
 }
 
 
-function applyAttribute(element, name, value) {
+export function applyAttribute(element, name, value) {
   if (element.getAttribute(name) !== value) {
     if (value !== null) {
       element.setAttribute(name, value);
@@ -93,7 +93,7 @@ export function getProps(element) {
 }
 
 
-function getClassProps(element) {
+export function getClassProps(element) {
   const result = {};
   [...element.classList].forEach(className =>
     result[className] = true
@@ -102,7 +102,7 @@ function getClassProps(element) {
 }
 
 
-function getStyleProps(element) {
+export function getStyleProps(element) {
   const styleProps = {};
   [...element.style].forEach(key => {
     styleProps[key] = element.style[key];
