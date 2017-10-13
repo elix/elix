@@ -1,5 +1,14 @@
-import { render } from '../node_modules/lit-html/lit-html.js';
+import { render, NodePart } from '../node_modules/lit-html/lit-html.js';
 import symbols from './symbols.js';
+
+
+// HACK: Workaround waiting for https://github.com/PolymerLabs/lit-html/pull/129
+var old = NodePart.prototype._setNode;
+NodePart.prototype._setNode = function (value) {
+  if (this._previousValue !== value) {
+    return old.call(this, value);
+  }
+}
 
 
 /**
