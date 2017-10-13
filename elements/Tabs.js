@@ -14,6 +14,8 @@ import symbols from '../mixins/symbols.js';
 
 
 const eventsWiredKey = Symbol('eventsWired');
+const previousItemsKey = Symbol('previousItems');
+const tabButtonsKey = Symbol('tabButtons');
 
 
 const Base =
@@ -67,6 +69,7 @@ class Tabs extends Base {
     return Object.assign({}, super.defaultState, {
       selectionRequired: true,
       tabAlign: 'start',
+      TabButtonClass: TabButton,
       tabPosition: 'top'
     });
   }
@@ -98,6 +101,27 @@ class Tabs extends Base {
   set tabAlign(tabAlign) {
     this.setState({ tabAlign });
   }
+  
+  /**
+   * Default implementation of tabButtons property uses elix-tab-button elements for
+   * the tab buttons.
+   */
+  get tabButtons() {
+    if (this.items !== this[previousItemsKey]) {
+      // Items have changed; create new buttons set.
+      this[tabButtonsKey] = this.items.map((panel, index) => {
+        const label = panel.getAttribute('aria-label');
+        const panelId = panel.getAttribute('id') || `_panel${index}`;
+        const TabButtonClass = this.state.TabButtonClass;
+        const tabButton = new TabButtonClass();
+        tabButton.setAttribute('aria-controls', panelId);
+        tabButton.textContent = label;
+        return tabButton;
+      });
+      this[previousItemsKey] = this.items;
+    }
+    return this[tabButtonsKey];
+  }
 
   get tabPosition() {
     return this.state.tabPosition;
@@ -105,24 +129,6 @@ class Tabs extends Base {
   set tabPosition(tabPosition) {
     this.setState({ tabPosition });
   }
-
-  /**
-   * Default implementation of tabButtons property uses TabButton components for
-   * the tab buttons.
-   */
-  // tabButtons() {
-  //   if (this.state.tabButtons) {
-  //     return this.state.tabButtons;
-  //   }
-  //   return this.state.children.map((panel, index) => {
-  //     const label = panel.props['aria-label'];
-  //     const panelId = panel.props.id || `_panel${index}`;
-  //     const TabButtonClass = this.state.tabButtonClass || TabButton;
-  //     return (
-  //       <TabButtonClass key={index} aria-controls={panelId} tabIndex="0">{label}</TabButtonClass>
-  //     );
-  //   });
-  // }
 
   get [symbols.template]() {
 
@@ -147,7 +153,7 @@ class Tabs extends Base {
         tab-align=${this.state.tabAlign}
         tab-position=${this.state.tabPosition}
         >
-        <slot name="tabButtons"></slot>
+        <slot name="tabButtons">${this.tabButtons}</slot>
       </elix-tab-strip>
     `;
 

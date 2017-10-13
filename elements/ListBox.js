@@ -87,15 +87,15 @@ export default class ListBox extends Base {
   itemProps(item, index, original) {
     const base = super.itemProps ? super.itemProps(item, index, original) : {};
     const selected = index === this.state.selectedIndex;
+    const color = selected ? 'highlighttext' : original.style.color || null;
+    const backgroundColor = selected ? 'highlight' : original.style.backgroundColor || null;
     const style = Object.assign(
       {},
       original.style,
       {
+        'background-color': backgroundColor,
+        color,
         'padding': '0.25em'
-      },
-      selected && {
-        'background': 'highlight',
-        'color': 'highlighttext'
       }
     );
 

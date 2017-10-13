@@ -33,7 +33,7 @@ class TabButton extends Base {
       index: 0,
       selected: false,
       tabAlign: 'start',
-      tabindex: 0,
+      tabindex: '0',
       tabPosition: 'top'
     });
   }
@@ -42,7 +42,12 @@ class TabButton extends Base {
     return this.state.index;
   }
   set index(index) {
-    this.setState({ index });
+    const selectedIndex = typeof index === 'string' ?
+      parseInt(index) :
+      index;
+    this.setState({
+      index: selectedIndex
+    });
   }
 
   hostProps(original) {

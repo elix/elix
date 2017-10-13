@@ -3,6 +3,7 @@ import { mergeProps } from '../mixins/props.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ClickSelectionMixin from '../mixins/ClickSelectionMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
+import deepContains from '../mixins/deepContains.js';
 import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
 import DirectionSelectionMixin from '../mixins/DirectionSelectionMixin.js';
 import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin.js';
@@ -73,15 +74,12 @@ class TabStrip extends Base {
 
     // Does this component, or any of its assigned nodes, have focus?
     // This is a surprisingly hard question to answer.
-    let focused = this === document.activeElement;
-    if (!focused) {
-      for (let i = 0; i < this.items.length; i++) {
-        if (this.items[i] === document.activeElement) {
-          focused = true;
-          break;
-        }
-      }
+    // Try finding the deepest active element, then walking up.
+    let activeElement = document.activeElement;
+    while (activeElement.shadowRoot && activeElement.shadowRoot.activeElement) {
+      activeElement = activeElement.shadowRoot.activeElement;
     }
+    const focused = deepContains(this, activeElement);
 
     // Ensure the selected tab button has the focus.
     const selectedItem = this.selectedItem;
