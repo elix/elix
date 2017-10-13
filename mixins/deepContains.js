@@ -14,7 +14,7 @@ export default function deepContains(container, target) {
   /** @type {any} */
   let current = target;
   while (current) {
-    const parent = current.parentNode || current.host;
+    const parent = current.assignedSlot || current.parentNode || current.host;
     if (parent === container) {
       return true;
     }
