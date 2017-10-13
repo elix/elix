@@ -1,5 +1,5 @@
 import { html } from '../node_modules/lit-html/lit-html.js';
-import { formatStyle, mergeDeep } from '../mixins/helpers.js';
+import * as props from '../mixins/props.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ClickSelectionMixin from '../mixins/ClickSelectionMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
@@ -81,7 +81,7 @@ export default class ListBox extends Base {
         '-webkit-tap-highlight-color': 'rgba(0, 0, 0, 0)'
       }
     );
-    return mergeDeep(base, { style });
+    return props.mergeProps(base, { style });
   }
 
   itemProps(item, index, original) {
@@ -106,7 +106,7 @@ export default class ListBox extends Base {
       { selected }
     );
 
-    return mergeDeep(base, {
+    return props.mergeProps(base, {
       classes,
       style
     });
@@ -120,7 +120,7 @@ export default class ListBox extends Base {
       'overflow-y': 'scroll'
     };
     const template = html`
-      <div id="itemsContainer" role="none" style=${formatStyle(containerStyle)}>
+      <div id="itemsContainer" role="none" style=${props.formatStyleProps(containerStyle)}>
         <slot></slot>
       </div>
     `;

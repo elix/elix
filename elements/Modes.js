@@ -1,5 +1,5 @@
 import { html } from '../node_modules/lit-html/lit-html.js';
-import { mergeDeep } from '../mixins/helpers.js';
+import { mergeProps } from '../mixins/props.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
@@ -48,14 +48,14 @@ class Modes extends Base {
       'display': 'inline-block',
       'position': 'relative'
     };
-    return mergeDeep(base, { style });
+    return mergeProps(base, { style });
   }
 
   itemProps(item, index, original) {
     const base = super.itemProps ? super.itemProps(item, index, original) : {};
     const hidden = original.hidden || index !== this.state.selectedIndex;
     const style = original.style;
-    return mergeDeep(base, {
+    return mergeProps(base, {
       hidden,
       style
     });

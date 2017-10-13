@@ -1,3 +1,4 @@
+import * as props from './props.js';
 import symbols from './symbols.js';
 
 
@@ -61,15 +62,17 @@ export default function KeyboardMixin(Base) {
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
-        tabindex: this.getAttribute('tabindex') || 0
+        tabindex: 0
       });
     }
 
     hostProps(original) {
       const base = super.hostProps && super.hostProps(original);
-      const tabindex = original.tabindex || this.state.tabindex;
-      return Object.assign({}, base, {
-        tabindex
+      const tabindex = original.attributes.tabindex || this.state.tabindex;
+      return props.mergeProps(base, {
+        attributes: {
+          tabindex
+        }
       });
     }
 

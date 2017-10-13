@@ -1,5 +1,5 @@
 import { html } from '../node_modules/lit-html/lit-html.js';
-import { mergeDeep } from '../mixins/helpers.js';
+import { mergeProps } from '../mixins/props.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ClickSelectionMixin from '../mixins/ClickSelectionMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
@@ -128,9 +128,11 @@ class TabStrip extends Base {
       lateralPosition && lateralStyle,
       alignStyle
     );
-    const role = original.role || 'tablist';
-    return mergeDeep(base, {
-      role,
+    const role = original.attributes.role || 'tablist';
+    return mergeProps(base, {
+      attributes: {
+        role
+      },
       style
     });
   }
@@ -159,7 +161,7 @@ class TabStrip extends Base {
       { selected }
     );
 
-    const role = original.tabButtonRole || this.state.tabButtonRole;
+    const role = original.attributes.role || this.state.tabButtonRole;
     const style = Object.assign(
       {},
       base.style,
@@ -168,17 +170,17 @@ class TabStrip extends Base {
 
     const attributes = {
       index,
+      role,
       selected,
       'tab-align': tabAlign,
       'tab-position': tabPosition
     };
 
-    return mergeDeep(
+    return mergeProps(
       base,
       {
         attributes,
         classes,
-        role,
         style
       }
     );

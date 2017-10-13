@@ -1,5 +1,5 @@
 import { html } from '../node_modules/lit-html/lit-html.js';
-import { formatStyle, mergeDeep } from '../mixins/helpers.js';
+import { formatStyleProps, mergeProps } from '../mixins/props.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
 import LitHtmlShadowMixin from '../mixins/LitHtmlShadowMixin.js';
@@ -71,7 +71,7 @@ class Tabs extends Base {
       },
       lateralPosition && lateralStyle
     );
-    return mergeDeep(base, { style });
+    return mergeProps(base, { style });
   }
 
   get tabAlign() {
@@ -125,7 +125,7 @@ class Tabs extends Base {
     const tabStrip = html`
       <elix-tab-strip
         selected-index=${this.state.selectedIndex}
-        style=${formatStyle(tabStripStyle)}
+        style=${formatStyleProps(tabStripStyle)}
         tabAlign=${this.state.tabAlign}
         tabPosition=${this.state.tabPosition}
         >
@@ -136,7 +136,7 @@ class Tabs extends Base {
     const tabPanels = html`
       <elix-modes
         selected-index=${this.state.selectedIndex}
-        style=${formatStyle(tabPanelsContainerStyle)}
+        style=${formatStyleProps(tabPanelsContainerStyle)}
         >
         <slot></slot>
       </elix-modes>

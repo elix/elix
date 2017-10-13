@@ -1,4 +1,4 @@
-import { currentProps, updateProps } from '../mixins/helpers.js';
+import * as props from '../mixins/props.js';
 import symbols from './symbols.js';
 import Symbol from './Symbol.js';
 
@@ -43,6 +43,7 @@ export default function ReactiveMixin(Base) {
       return super.defaultState || {};
     }
 
+    // TODO: Make render itself synchronous?
     [symbols.render]() {
       const base = super[symbols.render] ? super[symbols.render]() : Promise.resolve();
       return base.then(() => {
@@ -53,18 +54,18 @@ export default function ReactiveMixin(Base) {
         if (this.hostProps) {
           // First gather the original attributes on the component.
           if (this[originalPropsKey] === undefined) {
-            this[originalPropsKey] = currentProps(this);
+            this[originalPropsKey] = props.getProps(this);
           }
           // Collect an updated set of properties/attributes.
           const hostProps = this.hostProps(this[originalPropsKey]);
           // Apply those to the host.
-          updateProps(this, hostProps);
+          props.applyProps(this, hostProps);
         }
       });
     }
     
     render() {
-      const base = super.renderAndUpdate ? super.renderAndUpdate() : Promise.resolve();
+      const base = super.render ? super.render() : Promise.resolve();
       return base.then(() => {
         // Only render if we haven't rendered this state object before.
         if (this[stateKey] !== this[renderedStateKey]) {

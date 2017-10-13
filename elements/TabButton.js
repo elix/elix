@@ -1,5 +1,5 @@
 import { html } from '../node_modules/lit-html/lit-html.js';
-import { formatStyle, mergeDeep } from '../mixins/helpers.js';
+import { formatStyleProps, mergeProps } from '../mixins/props.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
 // import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin';
@@ -47,9 +47,11 @@ class TabButton extends Base {
 
   hostProps(original) {
     const base = super.hostProps ? super.hostProps(original) : {};
-    const tabindex = original.tabindex || this.state.tabindex;
-    return mergeDeep(base, {
-      tabindex
+    const tabindex = original.attributes.tabindex || this.state.tabindex;
+    return mergeProps(base, {
+      attributes: {
+        tabindex
+      }
     });
   }
 
@@ -151,7 +153,7 @@ class TabButton extends Base {
     );
 
     return html`
-      <button style=${formatStyle(buttonStyle)} tabindex="-1">
+      <button style=${formatStyleProps(buttonStyle)} tabindex="-1">
         <slot></slot>
       </button>
     `;

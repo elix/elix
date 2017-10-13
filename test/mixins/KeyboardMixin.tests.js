@@ -27,18 +27,22 @@ describe("KeyboardMixin", () => {
     container.innerHTML = '';
   });
 
-  it("assigns a tabindex of 0 by default", () => {
+  it("assigns a tabindex of 0 by default", done => {
     const fixture = document.createElement('keyboard-test');
     fixture.render()
     .then(() => {
       assert.equal(fixture.getAttribute('tabindex'), '0');
+      done();
     });
   });
 
-  it("doesn't overwrite an explicit tabindex in markup", () => {
+  it("doesn't overwrite an explicit tabindex in markup", done => {
     container.innerHTML = `<keyboard-test tabindex="1"></keyboard-test>`;
     const fixture = container.querySelector('keyboard-test');
-    assert.equal(fixture.getAttribute('tabindex'), '1');
+    Promise.resolve().then(() => {
+      assert.equal(fixture.getAttribute('tabindex'), '1');
+      done();
+    });
   });
 
   it("listens to keydown and fires the keydown() method", done => {

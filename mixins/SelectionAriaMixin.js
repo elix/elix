@@ -1,3 +1,4 @@
+import * as props from './props.js';
 import Symbol from './Symbol.js';
 
 
@@ -67,10 +68,12 @@ export default function SelectionAriaMixin(Base) {
         id = hostId + idCount++;
         item[generatedIdKey] = id;
       }
-      return Object.assign({}, base, {
-        'aria-selected': selected,
-        id,
-        'role': original.role || base.role || 'option'
+      return props.mergeProps(base, {
+        attributes: {
+          'aria-selected': selected,
+          'role': original.role || base.role || 'option'
+        },
+        id
       });
     }
 
@@ -80,9 +83,11 @@ export default function SelectionAriaMixin(Base) {
         this.items[this.state.selectedIndex] :
         null;
       const selectedItemId = selectedItem && selectedItem.id;
-      return Object.assign({}, base, {
-        'aria-activedescendant': selectedItemId,
-        'role': original.role || base.role || 'listbox'
+      return props.mergeProps(base, {
+        attributes: {
+          'aria-activedescendant': selectedItemId,
+          'role': original.role || base.role || 'listbox'
+        }
       });
     }
 
