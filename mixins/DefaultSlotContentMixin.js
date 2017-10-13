@@ -122,6 +122,9 @@ function assignedNodesChanged(component) {
     content = [];
   }
 
+  // Make immutable.
+  Object.freeze(content);
+  
   component.setState({ content });
 }
 
