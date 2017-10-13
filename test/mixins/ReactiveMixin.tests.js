@@ -6,8 +6,6 @@ import symbols from '../../mixins/symbols.js';
 
 class ReactiveTest extends ReactiveMixin(HTMLElement) {
 
-  componentDidUpdate() {}
-
   get defaultState() {
     return this.constructor.defaults || {};
   }
@@ -104,5 +102,23 @@ describe("ReactiveMixin", function () {
       done();
     });
   })
+
+  it("leaves state object alone if there are no changes", done => {
+    const fixture = document.createElement('reactive-test');
+    let previousState;
+    fixture.setState({
+      message: 'hamster'
+    })
+    .then(() => {
+      previousState = fixture.state;
+      return fixture.setState({
+        message: 'hamster'
+      });
+    })
+    .then(() => {
+      assert.equal(fixture.state, previousState);
+      done();
+    });
+  });
 
 });

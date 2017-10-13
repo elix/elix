@@ -19,7 +19,6 @@ export default function ReactiveMixin(Base) {
       super();
       // Set the initial state from the default state defined by the component
       // and its mixins.
-      this[stateKey] = {};
       this.setState(this.defaultState);
     }
 
@@ -80,15 +79,26 @@ export default function ReactiveMixin(Base) {
     }
 
     setState(state) {
-      // console.log(state);
-
       // Create a new state object that's the old one with the new changes
-      // applied on top of it.
-      this[stateKey] = Object.assign({}, this[stateKey], state);
+      // applied on top of it. Track whether there were any changes.
+      const newState = Object.assign({}, this[stateKey]);
+      let stateChanged = !this[stateKey];
+      Object.keys(state).forEach(key => {
+        if (newState[key] !== state[key]) {
+          newState[key] = state[key];
+          stateChanged = true;
+        }
+      });
 
+      if (!stateChanged) {
+        return Promise.resolve();
+      }
+      
       // Freeze the new state so that it's immutable. This prevents accidental
       // attempts to set state without going through setState.
-      Object.freeze(this[stateKey]);
+      Object.freeze(newState);
+
+      this[stateKey] = newState;
 
       // Only render if we're already connected to the document.
       return this[connectedKey] ?
