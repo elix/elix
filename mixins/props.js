@@ -56,7 +56,6 @@ function applyClassProps(element, classProps) {
 
 
 function applyStyleProps(element, styleProps) {
-  element.style.cssText = '';
   Object.assign(element.style, styleProps);
 }
 
