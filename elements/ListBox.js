@@ -112,7 +112,7 @@ export default class ListBox extends Base {
     });
   }
 
-  get template() {
+  get [symbols.template]() {
     const containerStyle = {
       'flex': '1',
       '-webkit-overflow-scrolling': 'touch', /* for momentum scrolling */

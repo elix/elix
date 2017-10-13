@@ -1,5 +1,24 @@
+import { html } from '../node_modules/lit-html/lit-html.js';
+import { formatStyle, mergeDeep } from '../mixins/helpers.js';
+import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
+import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
+import LitHtmlShadowMixin from '../mixins/LitHtmlShadowMixin.js';
 import Modes from './Modes.js';
-import TabStripWrapper from './TabStripWrapper.js';
+import ReactiveMixin from '../mixins/ReactiveMixin.js';
+import SingleSelectionMixin from '../mixins/SingleSelectionMixin';
+import TabButton from './TabButton.js';
+import TabStrip from './TabStrip.js';
+import symbols from '../mixins/symbols.js';
+
+
+const Base =
+  ContentItemsMixin(
+  DefaultSlotContentMixin(
+  LitHtmlShadowMixin(
+  ReactiveMixin(
+  SingleSelectionMixin(
+    HTMLElement
+  )))));
 
 
 /**
@@ -24,10 +43,126 @@ import TabStripWrapper from './TabStripWrapper.js';
  * tab buttons for you.
  *
  * @extends Modes
- * @mixes TabStripWrapper
  */
-class Tabs extends TabStripWrapper(Modes) {}
+class Tabs extends Base {
 
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      selectionRequired: true,
+      tabAlign: 'start',
+      tabPosition: 'top'
+    });
+  }
+
+  hostProps(original) {
+    const base = super.hostProps ? super.hostProps(original) : {};
+    const tabPosition = this.state.tabPosition;
+    const lateralPosition = tabPosition === 'left' || tabPosition === 'right';
+    const lateralStyle = {
+      'flexDirection': 'row'
+    };
+    const style = Object.assign(
+      {},
+      original.style,
+      {
+        'display': 'inline-flex',
+        'flexDirection': 'column',
+        'position': 'relative'
+      },
+      lateralPosition && lateralStyle
+    );
+    return mergeDeep(base, { style });
+  }
+
+  get tabAlign() {
+    return this.state.tabAlign;
+  }
+  set tabAlign(tabAlign) {
+    this.setState({ tabAlign });
+  }
+
+  get tabPosition() {
+    return this.state.tabPosition;
+  }
+  set tabPosition(tabPosition) {
+    this.setState({ tabPosition });
+  }
+
+  /**
+   * Default implementation of tabButtons property uses TabButton components for
+   * the tab buttons.
+   */
+  // tabButtons() {
+  //   if (this.state.tabButtons) {
+  //     return this.state.tabButtons;
+  //   }
+  //   return this.state.children.map((panel, index) => {
+  //     const label = panel.props['aria-label'];
+  //     const panelId = panel.props.id || `_panel${index}`;
+  //     const TabButtonClass = this.state.tabButtonClass || TabButton;
+  //     return (
+  //       <TabButtonClass key={index} aria-controls={panelId} tabIndex="0">{label}</TabButtonClass>
+  //     );
+  //   });
+  // }
+
+  get [symbols.template]() {
+
+    const tabStripStyle = {
+      'zIndex': 1
+    };
+
+    const tabPanelsContainerStyle = {
+      'background': 'white',
+      'border': '1px solid #ccc',
+      'box-sizing': 'border-box',
+      'display': 'flex',
+      'flex': 1
+    };
+
+    // Create the tab strip and tab panels.
+    // TODO: handle selected-index-changed
+    const tabStrip = html`
+      <elix-tab-strip
+        selected-index=${this.state.selectedIndex}
+        style=${formatStyle(tabStripStyle)}
+        tabAlign=${this.state.tabAlign}
+        tabPosition=${this.state.tabPosition}
+        >
+        <slot name="tabButtons"></slot>
+      </elix-tab-strip>
+    `;
+
+    const tabPanels = html`
+      <elix-modes
+        selected-index=${this.state.selectedIndex}
+        style=${formatStyle(tabPanelsContainerStyle)}
+        >
+        <slot></slot>
+      </elix-modes>
+    `;
+
+    // Physically reorder the tabs and panels to reflect the desired arrangement.
+    // We could change the visual appearance by reversing the order of the flex
+    // box, but then the visual order wouldn't reflect the document order, which
+    // determines focus order. That would surprise a user trying to tab through
+    // the controls.
+    const tabPosition = this.state.tabPosition;
+    const topOrLeftPosition = (tabPosition === 'top' || tabPosition === 'left');
+    const firstElement = topOrLeftPosition ?
+      tabStrip :
+      tabPanels;
+    const lastElement = topOrLeftPosition ?
+      tabPanels :
+      tabStrip;
+
+    return html`
+      ${firstElement}
+      ${lastElement}
+    `;
+  }
+
+}
 
 customElements.define('elix-tabs', Tabs);
 export default Tabs;

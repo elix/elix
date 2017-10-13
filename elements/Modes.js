@@ -6,6 +6,7 @@ import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
 import LitHtmlShadowMixin from '../mixins/LitHtmlShadowMixin.js';
 import ReactiveMixin from '../mixins/ReactiveMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
+import symbols from '../mixins/symbols.js';
 
 
 const Base =
@@ -60,7 +61,7 @@ class Modes extends Base {
     });
   }
 
-  get template() {
+  get [symbols.template]() {
     return html`<slot></slot>`;
   }
 

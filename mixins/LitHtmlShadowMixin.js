@@ -21,7 +21,11 @@ export default function LitHtmlShadowMixin(Base) {
           newShadow = true;
         }
 
-        const template = this.template;
+        const template = this[symbols.template];
+        if (!template) {
+          console.warn(`LitHtmlShadowMixin expects ${this.constructor.name} to define a method called [symbols.template].`);
+          return;
+        }
         
         if (newShadow && window.ShadyCSS && !window.ShadyCSS.nativeShadow) {
           // Let the CSS polyfill do its own initialization.

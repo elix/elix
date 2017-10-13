@@ -211,7 +211,7 @@ class TabStrip extends Base {
       'vertical';
   }
 
-  get template() {
+  get [symbols.template]() {
     return html`<slot></slot>`;
   }
 

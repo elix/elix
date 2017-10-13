@@ -5,6 +5,7 @@ import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
 // import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin';
 import LitHtmlShadowMixin from '../mixins/LitHtmlShadowMixin.js';
 import ReactiveMixin from '../mixins/ReactiveMixin.js';
+import symbols from '../mixins/symbols.js';
 
 
 const Base =
@@ -75,7 +76,7 @@ class TabButton extends Base {
     this.setState({ tabPosition });
   }
 
-  get template() {
+  get [symbols.template]() {
 
     const tabAlign = this.state.tabAlign;
     const alignStyle = tabAlign === 'stretch' && {
