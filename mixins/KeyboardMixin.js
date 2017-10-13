@@ -35,7 +35,7 @@ import symbols from './symbols.js';
  * test keys using the legacy `keyCode` property, not `key`.
  *
  * A second feature provided by this mixin is that it implicitly makes the
- * component a tab stop if it isn't already, by setting `tabIndex` to 0. This
+ * component a tab stop if it isn't already, by setting `tabindex` to 0. This
  * has the effect of adding the component to the tab order in document order.
  *
  * @module KeyboardMixin
@@ -61,14 +61,15 @@ export default function KeyboardMixin(Base) {
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
-        tabIndex: this.getAttribute('tabindex') || 0
+        tabindex: this.getAttribute('tabindex') || 0
       });
     }
 
     hostProps(original) {
       const base = super.hostProps && super.hostProps(original);
+      const tabindex = original.tabindex || this.state.tabindex;
       return Object.assign({}, base, {
-        tabIndex: this.state.tabIndex
+        tabindex
       });
     }
 

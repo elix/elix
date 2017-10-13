@@ -89,6 +89,7 @@ class TabStrip extends Base {
       selectionRequired: true,
       tabAlign: 'start',
       tabButtonRole: 'tab',
+      tabindex: null,
       tabPosition: 'top'
     });
   }
@@ -165,22 +166,21 @@ class TabStrip extends Base {
       itemStyle
     );
 
-    // const isComponent = typeof item.type === 'function';
-    // const componentProps = {
-    //   index,
-    //   selected,
-    //   tabAlign,
-    //   tabPosition
-    // };
+    const attributes = {
+      index,
+      selected,
+      'tab-align': tabAlign,
+      'tab-position': tabPosition
+    };
 
     return mergeDeep(
       base,
       {
+        attributes,
         classes,
         role,
         style
-      },
-      // isComponent && componentProps
+      }
     );
   }
 

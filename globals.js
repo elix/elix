@@ -42,7 +42,7 @@ import ListBox from './elements/ListBox.js';
 import Modes from './elements/Modes.js';
 // import Popup from './elements/Popup.js';
 // import Tabs from './elements/Tabs.js';
-// import TabStrip from './elements/TabStrip.js';
+import TabStrip from './elements/TabStrip.js';
 // import TabStripWrapper from './elements/TabStripWrapper.js';
 // import Toast from './elements/Toast.js';
 
@@ -81,7 +81,7 @@ const Elix = {
   // Symbol,
   // symbols,
   // Tabs,
-  // TabStrip,
+  TabStrip,
   // TabStripWrapper,
   // TransitionEffectMixin,
   // Toast

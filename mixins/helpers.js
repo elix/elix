@@ -1,6 +1,6 @@
 const attributeWhiteList = [
-  'class',
   'role',
+  'tabindex'
 ];
 
 
@@ -89,6 +89,12 @@ export function updateProps(element, props) {
   Object.keys(props).forEach(key => {
     const value = props[key];
     switch (key) {
+      case 'attributes':
+        Object.keys(value).forEach(name => {
+          updateAttribute(element, name, value[name]);
+        });
+        break;
+      
       case 'classes':
         if (element.getAttribute('class') !== value) {
           element.setAttribute('class', formatClasses(value));
@@ -101,13 +107,8 @@ export function updateProps(element, props) {
         break;
       
       default:
-        if (isAttribute(key) && element.getAttribute(key) !== value) {
-          // Update attribute
-          if (value != null) {
-            element.setAttribute(key, value);
-          } else {
-            element.removeAttribute(key);
-          }
+        if (isAttribute(key)) {
+          updateAttribute(element, key, value);
         } else if (element[key] !== value) {
           // Update property
           element[key] = value;
@@ -115,4 +116,15 @@ export function updateProps(element, props) {
         break;
     }
   });
+}
+
+
+function updateAttribute(element, name, value) {
+  if (element.getAttribute(name) !== value) {
+    if (value != null) {
+      element.setAttribute(name, value);
+    } else {
+      element.removeAttribute(name);
+    }
+  }
 }
