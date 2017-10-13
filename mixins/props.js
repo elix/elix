@@ -1,4 +1,7 @@
 export function formatClassProps(classProps) {
+  if (!classProps) {
+    return '';
+  }
   const classes = Object.keys(classProps).filter(key => classProps[key]);
   return classes.join(' ');
 }
@@ -38,10 +41,12 @@ export function applyProps(element, props) {
 }
 
 
-function applyAttributeProps(element, value) {
-  Object.keys(value).forEach(name => {
-    applyAttribute(element, name, value[name]);
-  });
+function applyAttributeProps(element, attributeProps) {
+  if (attributeProps) {
+    Object.keys(attributeProps).forEach(name => {
+      applyAttribute(element, name, attributeProps[name]);
+    });
+  }
 }
 
 
@@ -79,16 +84,6 @@ export function getProps(element) {
   const classes = getClassProps(element);
   const style = getStyleProps(element);
 
-  // const props = {};
-  // if (Object.keys(attributeProps).length > 0) {
-  //   props.attributes = attributeProps;
-  // }
-  // if (Object.keys(classProps).length > 0) {
-  //   props.classes = classProps;
-  // }
-  // if (Object.keys(styleProps).length > 0) {
-  //   props.style = styleProps;
-  // }
   const props = {
     attributes,
     classes,

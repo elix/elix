@@ -12,7 +12,7 @@ import Symbol from './Symbol.js';
  * To use these `Symbol` objects in your own component, include this module and
  * then create a property or method whose key is the desired Symbol.
  *
- *     import 'SingleSelectionMixin' from 'elix/mixins/SingleSelectionMixin';
+ *     import SingleSelectionMixin from 'elix/mixins/SingleSelectionMixin';
  *     import 'symbols' from 'elix/mixins/symbols';
  *
  *     class MyElement extends SingleSelectionMixin(HTMLElement) {

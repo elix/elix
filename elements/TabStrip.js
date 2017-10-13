@@ -71,14 +71,24 @@ class TabStrip extends Base {
   componentDidUpdate() {
     if (super.componentDidUpdate) { super.componentDidUpdate(); }
 
-    // If the selectedIndex changes due to keyboard action within this
-    // component, the old tab button might still have focus. Ensure the new
-    // selected tab button has the focus.
+    // Does this component, or any of its assigned nodes, have focus?
+    // This is a surprisingly hard question to answer.
+    let focused = this === document.activeElement;
+    if (!focused) {
+      for (let i = 0; i < this.items.length; i++) {
+        if (this.items[i] === document.activeElement) {
+          focused = true;
+          break;
+        }
+      }
+    }
+
+    // Ensure the selected tab button has the focus.
     const selectedItem = this.selectedItem;
-    if (selectedItem &&
-      this.contains(document.activeElement) &&
-      selectedItem !== document.activeElement &&
-      selectedItem instanceof HTMLElement) {
+    if (focused &&
+      selectedItem &&
+      selectedItem instanceof HTMLElement &&
+      selectedItem !== document.activeElement) {
       selectedItem.focus();
     }
   }
@@ -164,6 +174,7 @@ class TabStrip extends Base {
     const role = original.attributes.role || this.state.tabButtonRole;
     const style = Object.assign(
       {},
+      original.style,
       base.style,
       itemStyle
     );
@@ -211,6 +222,20 @@ class TabStrip extends Base {
     return tabPosition === 'top' || tabPosition === 'bottom' ?
       'horizontal' :
       'vertical';
+  }
+
+  get tabAlign() {
+    return this.state.tabAlign;
+  }
+  set tabAlign(tabAlign) {
+    this.setState({ tabAlign });
+  }
+
+  get tabPosition() {
+    return this.state.tabPosition;
+  }
+  set tabPosition(tabPosition) {
+    this.setState({ tabPosition });
   }
 
   get [symbols.template]() {

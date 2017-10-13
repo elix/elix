@@ -1,24 +1,30 @@
 import { html } from '../node_modules/lit-html/lit-html.js';
-import { formatStyleProps, mergeProps } from '../mixins/props.js';
+import * as props from '../mixins/props.js';
+import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
 import LitHtmlShadowMixin from '../mixins/LitHtmlShadowMixin.js';
 import Modes from './Modes.js';
 import ReactiveMixin from '../mixins/ReactiveMixin.js';
-import SingleSelectionMixin from '../mixins/SingleSelectionMixin';
+import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import TabButton from './TabButton.js';
 import TabStrip from './TabStrip.js';
+import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
 
 
+const eventsWiredKey = Symbol('eventsWired');
+
+
 const Base =
+  AttributeMarshallingMixin(  
   ContentItemsMixin(
   DefaultSlotContentMixin(
   LitHtmlShadowMixin(
   ReactiveMixin(
   SingleSelectionMixin(
     HTMLElement
-  )))));
+  ))))));
 
 
 /**
@@ -46,6 +52,17 @@ const Base =
  */
 class Tabs extends Base {
 
+  componentDidUpdate() {
+    if (super.componentDidUpdate) { super.componentDidUpdate(); }
+    if (!this[eventsWiredKey]) {
+      const tabStrip = this.shadowRoot.querySelector('elix-tab-strip');
+      tabStrip.addEventListener('selected-index-changed', event => {
+        this.updateSelectedIndex(event.detail.selectedIndex);
+      });
+      this[eventsWiredKey] = true;
+    }
+  }
+
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       selectionRequired: true,
@@ -64,6 +81,7 @@ class Tabs extends Base {
     const style = Object.assign(
       {},
       original.style,
+      base.style,
       {
         'display': 'inline-flex',
         'flexDirection': 'column',
@@ -71,7 +89,7 @@ class Tabs extends Base {
       },
       lateralPosition && lateralStyle
     );
-    return mergeProps(base, { style });
+    return props.mergeProps(base, { style });
   }
 
   get tabAlign() {
@@ -109,7 +127,7 @@ class Tabs extends Base {
   get [symbols.template]() {
 
     const tabStripStyle = {
-      'zIndex': 1
+      'z-index': 1
     };
 
     const tabPanelsContainerStyle = {
@@ -125,9 +143,9 @@ class Tabs extends Base {
     const tabStrip = html`
       <elix-tab-strip
         selected-index=${this.state.selectedIndex}
-        style=${formatStyleProps(tabStripStyle)}
-        tabAlign=${this.state.tabAlign}
-        tabPosition=${this.state.tabPosition}
+        style=${props.formatStyleProps(tabStripStyle)}
+        tab-align=${this.state.tabAlign}
+        tab-position=${this.state.tabPosition}
         >
         <slot name="tabButtons"></slot>
       </elix-tab-strip>
@@ -136,7 +154,7 @@ class Tabs extends Base {
     const tabPanels = html`
       <elix-modes
         selected-index=${this.state.selectedIndex}
-        style=${formatStyleProps(tabPanelsContainerStyle)}
+        style=${props.formatStyleProps(tabPanelsContainerStyle)}
         >
         <slot></slot>
       </elix-modes>

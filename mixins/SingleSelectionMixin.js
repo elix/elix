@@ -1,3 +1,6 @@
+import symbols from './symbols.js';
+
+
 /**
  * Mixin which adds single-selection semantics for items in a list.
  *
@@ -76,7 +79,10 @@ export default function SingleSelectionMixin(Base) {
       return this.state.selectedIndex;
     }
     set selectedIndex(selectedIndex) {
-      this.updateSelectedIndex(selectedIndex);
+      const parsedIndex = typeof selectedIndex === 'string' ?
+        parseInt(selectedIndex) :
+        selectedIndex;
+      this.updateSelectedIndex(parsedIndex);
     }
 
     get selectedItem() {
@@ -165,6 +171,15 @@ export default function SingleSelectionMixin(Base) {
       const changed = this.state.selectedIndex !== selectedIndex;
       if (changed) {
         this.setState({ selectedIndex });
+        if (this[symbols.raiseChangeEvents]) {
+          const event = new CustomEvent('selected-index-changed', {
+            detail: {
+              selectedIndex,
+              value: selectedIndex // for Polymer binding. TODO: Verify still necessary
+            }
+          });
+          this.dispatchEvent(event);
+        }
       }
       return changed;
     }

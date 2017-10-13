@@ -1,5 +1,5 @@
 import { html } from '../node_modules/lit-html/lit-html.js';
-import { mergeProps } from '../mixins/props.js';
+import * as props from '../mixins/props.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
@@ -42,20 +42,25 @@ class Modes extends Base {
     });
   }
 
-  hostProps() {
-    const base = super.hostProps ? super.hostProps() : {};
-    const style = {
-      'display': 'inline-block',
-      'position': 'relative'
-    };
-    return mergeProps(base, { style });
+  hostProps(original) {
+    const base = super.hostProps ? super.hostProps(original) : {};
+    const style = Object.assign(
+      {},
+      original.style,
+      base.style,
+      {
+        'display': original.style.display || 'inline-block',
+        'position': 'relative'
+      }
+    );
+    return props.mergeProps(base, { style });
   }
 
   itemProps(item, index, original) {
     const base = super.itemProps ? super.itemProps(item, index, original) : {};
     const hidden = original.hidden || index !== this.state.selectedIndex;
     const style = original.style;
-    return mergeProps(base, {
+    return props.mergeProps(base, {
       hidden,
       style
     });

@@ -1,5 +1,5 @@
 import deepContains from './deepContains.js';
-// import symbols from './symbols.js';
+import symbols from './symbols.js';
 
 
 /**
@@ -51,8 +51,7 @@ export default function ClickSelectionMixin(Base) {
         return;
       }
 
-      // TODO: Restore raiseChangeEvents handling.
-      // this[symbols.raiseChangeEvents] = true;
+      this[symbols.raiseChangeEvents] = true;
 
       // In some situations, the event target will not be the child which was
       // originally clicked on. E.g.,  If the item clicked on is a button, the
@@ -79,7 +78,7 @@ export default function ClickSelectionMixin(Base) {
         event.stopPropagation();
       }
 
-      // this[symbols.raiseChangeEvents] = false;
+      this[symbols.raiseChangeEvents] = false;
     }
 
   };

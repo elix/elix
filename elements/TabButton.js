@@ -47,11 +47,41 @@ class TabButton extends Base {
 
   hostProps(original) {
     const base = super.hostProps ? super.hostProps(original) : {};
+
+    const stretch = this.state.tabAlign === 'stretch';
+    const stretchStyle = {
+      'flex': 1
+    };
+
+    const index = this.state.index;
+    const needsSpacer = index > 0;
+    const tabPosition = this.tabPosition;
+    const spacerStyle = tabPosition === 'top' || tabPosition === 'bottom' ?
+      {
+        'margin-left': '0.2em'
+      } :
+      {
+        'margin-top': '0.2em'
+      };
+
+    const style = Object.assign(
+      {},
+      original.style,
+      base.style,
+      {
+        'display': 'inline-flex'
+      },
+      stretch && stretchStyle,
+      needsSpacer && spacerStyle,
+    );
+
     const tabindex = original.attributes.tabindex || this.state.tabindex;
+
     return mergeProps(base, {
       attributes: {
         tabindex
-      }
+      },
+      style
     });
   }
 
@@ -80,11 +110,6 @@ class TabButton extends Base {
 
   get [symbols.template]() {
 
-    const tabAlign = this.state.tabAlign;
-    const alignStyle = tabAlign === 'stretch' && {
-      'flex': 1
-    };
-
     const tabPosition = this.state.tabPosition;
     const positionStyles = {
       bottom: {
@@ -106,20 +131,10 @@ class TabButton extends Base {
     };
     const positionStyle = positionStyles[tabPosition];
 
-    const index = this.state.index;
-    const needsSpacer = index > 0;
-    const spacerStyle = tabPosition === 'top' || tabPosition === 'bottom' ?
-      {
-        'margin-left': '0.2em'
-      } :
-      {
-        'margin-top': '0.2em'
-      };
-
     const selected = this.state.selected;
     const selectedStyle = {
       'opacity': 1,
-      'zIndex': 1
+      'z-index': 1
     };
     const borderSides = {
       'bottom': 'border-top-color',
@@ -139,6 +154,7 @@ class TabButton extends Base {
         'border-style': 'solid',
         'border-top-color': '#ccc',
         'border-width': '1px',
+        'flex': 1,
         'font-family': 'inherit',
         'font-size': 'inherit',
         'margin': '0',
@@ -146,9 +162,7 @@ class TabButton extends Base {
         'transition': 'border-color 0.25s',
         'white-space': 'nowrap'
       },
-      alignStyle,
       positionStyle,
-      needsSpacer && spacerStyle,
       selected && selectedStyle
     );
 

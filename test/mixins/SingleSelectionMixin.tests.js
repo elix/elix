@@ -165,25 +165,25 @@ describe("SingleSelectionMixin", () => {
     assert(fixture.canSelectPrevious);
   });
 
-  it.skip("changing selection through (simulated) user interaction raises the selected-item-changed event", done => {
+  it("changing selection through (simulated) user interaction raises the selected-index-changed event", done => {
     const fixture = createSampleElement();
-    fixture.addEventListener('selected-item-changed', () => {
+    fixture.addEventListener('selected-index-changed', () => {
       done();
     });
     container.appendChild(fixture);
 
     fixture[symbols.raiseChangeEvents] = true; // Simulate user interaction
-    fixture.setState({ selectedIndex: 1 });
+    fixture.selectedIndex = 1;
     fixture[symbols.raiseChangeEvents] = false;
   });
 
-  it.skip("changing selection programmatically does not raise the selected-item-changed event", done => {
+  it("changing selection programmatically does not raise the selected-index-changed event", done => {
     const fixture = createSampleElement();
-    fixture.addEventListener('selected-item-changed', () => {
-      assert.fail(null, null, 'selected-item-changed event should not have been raised in response to programmatic property change');
+    fixture.addEventListener('selected-index-changed', () => {
+      assert.fail(null, null, 'selected-index-changed event should not have been raised in response to programmatic property change');
     });
     container.appendChild(fixture);
-    fixture.setState({ selectedIndex: 1 }); // This should not trigger events.
+    fixture.selectedIndex = 1; // This should not trigger events.
     // Give event handler a chance to run (but it shouldn't).
     setTimeout(done);
   });
