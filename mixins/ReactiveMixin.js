@@ -70,12 +70,23 @@ export default function ReactiveMixin(Base) {
         if (this[stateKey] !== this[renderedStateKey]) {
           this[renderedStateKey] = this[stateKey];
           // console.log(`render`);
+          this[symbols.rendering] = true;
           return this[symbols.render]()
           .then(() => {
+            this[symbols.rendering] = false;
             this.componentDidUpdate();
           });
         }
       });
+    }
+
+    setAttribute(name, value) {
+      if (name === 'style' && !this[symbols.rendering]) {
+        // console.log(`${this.localName}: setAttribute style, ${value}`);
+        this.style = value;
+      } else {
+        super.setAttribute(name, value);
+      }
     }
 
     setState(state) {
@@ -110,6 +121,24 @@ export default function ReactiveMixin(Base) {
       return this[stateKey];
     }
 
+    get style() {
+      return super.style;
+    }
+    set style(style) {
+      let value = style;
+      if (!this[symbols.rendering]) {
+        // console.log(`${this.localName}: style = ${style}`);
+        const current = this.style.cssText;
+        if (style !== current) {
+          const styleProps = parseStyleProps(this.style.cssText);
+          const newProps = parseStyleProps(style);
+          Object.assign(styleProps, newProps);
+          value = props.formatStyleProps(styleProps);
+        }
+      }
+      super.style = value;
+    }
+
     // HACK: Expose a string that can be set on a component to add to its
     // existing styles. If/when lit-html supports setting properties directly,
     // might at least be able to turn this into a styleProps-valued object.
@@ -121,4 +150,19 @@ export default function ReactiveMixin(Base) {
       this.style.cssText = merged;
     }
   }
+}
+
+
+function parseStyleProps(text) {
+  const result = {};
+  const rules = text.split(';');
+  rules.forEach(rule => {
+    if (rule.length > 0) {
+      const parts = rule.split(':');
+      const name = parts[0].trim();
+      const value = parts[1].trim();
+      result[name] = value;
+    }
+  });
+  return result;
 }

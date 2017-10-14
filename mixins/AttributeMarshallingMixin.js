@@ -107,7 +107,14 @@ function attributesForClass(classFn) {
   // Merge.
   const diff = attributes.filter(attribute =>
       baseAttributes.indexOf(attribute) < 0);
-  return baseAttributes.concat(diff);
+  const result = baseAttributes.concat(diff);
+
+  // Remove standard `style` property.
+  const styleIndex = result.indexOf('style');
+  if (styleIndex >= 0) {
+    result.splice(styleIndex, 1);
+  }
+  return result;
 }
 
 /**
