@@ -109,6 +109,15 @@ class TabButton extends Base {
   }
 
   get [symbols.template]() {
+    const buttonStyle = this.buttonStyle();
+    return html`
+      <button style=${formatStyleProps(buttonStyle)} tabindex="-1">
+        <slot></slot>
+      </button>
+    `;
+  }
+
+  buttonStyle() {
 
     const tabPosition = this.state.tabPosition;
     const positionStyles = {
@@ -145,15 +154,16 @@ class TabButton extends Base {
     const borderSide = borderSides[tabPosition];
     selectedStyle[borderSide] = 'transparent';
 
-    const buttonStyle = Object.assign(
+    return Object.assign(
       {
-        'background': 'white',
+        'background': 'inherit',
         'border-bottom-color': '#ccc',
         'border-left-color': '#ccc',
         'border-right-color': '#ccc',
         'border-style': 'solid',
         'border-top-color': '#ccc',
         'border-width': '1px',
+        'color': 'inherit',
         'flex': 1,
         'font-family': 'inherit',
         'font-size': 'inherit',
@@ -165,12 +175,6 @@ class TabButton extends Base {
       positionStyle,
       selected && selectedStyle
     );
-
-    return html`
-      <button style=${formatStyleProps(buttonStyle)} tabindex="-1">
-        <slot></slot>
-      </button>
-    `;
   }
 
 }
