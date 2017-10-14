@@ -1,6 +1,3 @@
-import * as attributes from './attributes.js';
-
-
 // Memoized maps of attribute to property names and vice versa.
 const attributeToPropertyNames = {};
 const propertyNamesToAttributes = {};
@@ -65,55 +62,10 @@ export default function AttributeMarshallingMixin(Base) {
       }
     }
 
-    connectedCallback() {
-      if (super.connectedCallback) { super.connectedCallback(); }
-      // Reflect any attributes set during constructor.
-      /** @type {any} */
-      const element = this;
-      attributes.writePendingAttributes(element);
-    }
-
     static get observedAttributes() {
       /** @type {any} */
       const elementClass = this;
       return attributesForClass(elementClass);
-    }
-
-    /**
-     * Set/unset the attribute with the indicated name.
-     *
-     * This method exists primarily to handle the case where an element wants to
-     * set a default property value that should be reflected as an attribute. An
-     * important limitation of custom element consturctors is that they cannot
-     * set attributes. A call to `reflectAttribute` during the constructor will
-     * be deferred until the element is connected to the document.
-     *
-     * @param {string} attribute - The name of the *attribute* (not property) to set.
-     * @param {string|boolean|number} value - The value to set. If null, the attribute will be removed.
-     */
-    reflectAttribute(attribute, value) {
-      /** @type {any} */
-      const element = this;
-      return attributes.setAttribute(element, attribute, value);
-    }
-
-    /**
-     * Set/unset the class with the indicated name.
-     *
-     * This method exists primarily to handle the case where an element wants to
-     * set a default property value that should be reflected as as class. An
-     * important limitation of custom element consturctors is that they cannot
-     * set attributes, including the `class` attribute. A call to
-     * `reflectClass` during the constructor will be deferred until the element
-     * is connected to the document.
-     *
-     * @param {string} className - The name of the class to set.
-     * @param {boolean} value - True to set the class, false to remove it.
-     */
-    reflectClass(className, value) {
-      /** @type {any} */
-      const element = this;
-      return attributes.setClass(element, className, value);
     }
 
   }
