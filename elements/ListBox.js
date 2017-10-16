@@ -5,6 +5,7 @@ import ClickSelectionMixin from '../mixins/ClickSelectionMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
 import DirectionSelectionMixin from '../mixins/DirectionSelectionMixin.js';
+import HostPropsMixin from '../mixins/HostPropsMixin.js';
 import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import KeyboardPagedSelectionMixin from '../mixins/KeyboardPagedSelectionMixin.js';
@@ -23,6 +24,7 @@ const Base =
   ContentItemsMixin(
   DefaultSlotContentMixin(
   DirectionSelectionMixin(
+  HostPropsMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
   KeyboardPagedSelectionMixin(
@@ -33,7 +35,7 @@ const Base =
   SelectionInViewMixin(
   SingleSelectionMixin(
     HTMLElement
-  ))))))))))))));
+  )))))))))))))));
 
 
 /**
@@ -50,6 +52,7 @@ const Base =
  * @mixes ContentItemsMixin
  * @mixes DefaultSlotContentMixin
  * @mixes DirectionSelectionMixin
+ * @mixes HostPropsMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
  * @mixes KeyboardPagedSelectionMixin

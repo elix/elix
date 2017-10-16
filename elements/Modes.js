@@ -3,6 +3,7 @@ import * as props from '../mixins/props.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
+import HostPropsMixin from '../mixins/HostPropsMixin.js';
 import LitHtmlShadowMixin from '../mixins/LitHtmlShadowMixin.js';
 import ReactiveMixin from '../mixins/ReactiveMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
@@ -13,11 +14,12 @@ const Base =
   AttributeMarshallingMixin(
   ContentItemsMixin(
   DefaultSlotContentMixin(
+  HostPropsMixin(
   LitHtmlShadowMixin(
   ReactiveMixin(
   SingleSelectionMixin(
     HTMLElement
-  ))))));
+  )))))));
 
 /**
  * Shows exactly one child element at a time. This can be useful, for example,

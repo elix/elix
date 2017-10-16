@@ -2,6 +2,7 @@ import { html } from '../node_modules/lit-html/lit-html.js';
 import { formatStyleProps, mergeProps } from '../mixins/props.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
+import HostPropsMixin from '../mixins/HostPropsMixin.js';
 // import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin';
 import LitHtmlShadowMixin from '../mixins/LitHtmlShadowMixin.js';
 import ReactiveMixin from '../mixins/ReactiveMixin.js';
@@ -12,10 +13,11 @@ const Base =
   AttributeMarshallingMixin(
   DefaultSlotContentMixin(
   // FocusRingMixin(
+  HostPropsMixin(
   LitHtmlShadowMixin(
   ReactiveMixin(
     HTMLElement
-  ))));
+  )))));
 
 
 /**

@@ -6,6 +6,7 @@ import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import deepContains from '../mixins/deepContains.js';
 import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
 import DirectionSelectionMixin from '../mixins/DirectionSelectionMixin.js';
+import HostPropsMixin from '../mixins/HostPropsMixin.js';
 import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 // import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin';
@@ -22,6 +23,7 @@ const Base =
   ContentItemsMixin(
   DefaultSlotContentMixin(
   DirectionSelectionMixin(
+  HostPropsMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
   LitHtmlShadowMixin(
@@ -29,7 +31,7 @@ const Base =
   SelectionAriaMixin(
   SingleSelectionMixin(
     HTMLElement
-  )))))))))));
+  ))))))))))));
 
 
 /**
