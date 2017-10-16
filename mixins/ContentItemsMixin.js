@@ -68,18 +68,16 @@ export default function ContentItemsMixin(Base) {
     }
 
     [symbols.render]() {
-      const base = super[symbols.render] ? super[symbols.render]() : Promise.resolve();
-      return base.then(() => {
-        if (this.itemProps) {
-          const items = this.items || [];
-          items.forEach((item, index) => {
-            if (item[originalPropsKey] === undefined) {
-              item[originalPropsKey] = props.getProps(item);
-            }
-            props.applyProps(item, this.itemProps(item, index, item[originalPropsKey]));
-          });
-        }
-      });
+      if (super[symbols.render]) { super[symbols.render](); }
+      if (this.itemProps) {
+        const items = this.items || [];
+        items.forEach((item, index) => {
+          if (item[originalPropsKey] === undefined) {
+            item[originalPropsKey] = props.getProps(item);
+          }
+          props.applyProps(item, this.itemProps(item, index, item[originalPropsKey]));
+        });
+      }
     }
 
   }

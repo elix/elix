@@ -31,13 +31,10 @@ describe("HostPropsMixin", function () {
     container.innerHTML = '';
   });
 
-  it("updates host with hostProps", done => {
+  it("updates host with hostProps", () => {
     const fixture = new HostPropsTest();
     fixture[symbols.render]()
-    .then(() => {
-      assert.equal(fixture.style.color, 'red');
-      done();
-    });
+    assert.equal(fixture.style.color, 'red');
   });
 
 });

@@ -2,11 +2,12 @@ import { assert } from 'chai';
 import flushPolyfills from '../../test/flushPolyfills.js';
 import KeyboardMixin from '../../mixins/KeyboardMixin.js';
 import * as mockInteractions from '../../test/mockInteractions.js';
+import HostPropsMixin from '../../mixins/HostPropsMixin.js'
 import ReactiveMixin from '../../mixins/ReactiveMixin.js'
 import symbols from '../../mixins/symbols.js';
 
 
-class KeyboardTest extends KeyboardMixin(ReactiveMixin(HTMLElement)) {
+class KeyboardTest extends KeyboardMixin(HostPropsMixin(ReactiveMixin(HTMLElement))) {
   connectedCallback() {
     if (super.connectedCallback) { super.connectedCallback(); }
     this.render();
@@ -27,13 +28,10 @@ describe("KeyboardMixin", () => {
     container.innerHTML = '';
   });
 
-  it("assigns a tabindex of 0 by default", done => {
-    const fixture = document.createElement('keyboard-test');
-    fixture.render()
-    .then(() => {
-      assert.equal(fixture.getAttribute('tabindex'), '0');
-      done();
-    });
+  it("assigns a tabindex of 0 by default", () => {
+    const fixture = new KeyboardTest();
+    fixture.render();
+    assert.equal(fixture.getAttribute('tabindex'), '0');
   });
 
   it("doesn't overwrite an explicit tabindex in markup", done => {
@@ -46,7 +44,7 @@ describe("KeyboardMixin", () => {
   });
 
   it("listens to keydown and fires the keydown() method", done => {
-    const fixture = document.createElement('keyboard-test');
+    const fixture = new KeyboardTest();
     fixture[symbols.keydown] = (event) => {
       done();
     };

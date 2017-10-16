@@ -1,13 +1,14 @@
 import { assert } from 'chai';
 import flushPolyfills from '../flushPolyfills.js';
 import ContentItemsMixin from '../../mixins/ContentItemsMixin.js';
+import HostPropsMixin from '../../mixins/HostPropsMixin.js'
 import ReactiveMixin from '../../mixins/ReactiveMixin.js'
 import SelectionAriaMixin from '../../mixins/SelectionAriaMixin.js';
 import symbols from '../../mixins/symbols.js';
 
 
-class SelectionAriaActiveTest extends
-    ContentItemsMixin(ReactiveMixin(SelectionAriaMixin(HTMLElement))) {
+class SelectionAriaTest extends
+  ContentItemsMixin(HostPropsMixin(ReactiveMixin(SelectionAriaMixin(HTMLElement)))) {
 
   connectedCallback() {
     if (super.connectedCallback) { super.connectedCallback(); }
@@ -17,7 +18,7 @@ class SelectionAriaActiveTest extends
   }
 
 }
-customElements.define('selection-aria-test', SelectionAriaActiveTest);
+customElements.define('selection-aria-test', SelectionAriaTest);
 
 
 describe("SelectionAriaMixin", () => {
@@ -32,15 +33,17 @@ describe("SelectionAriaMixin", () => {
     container.innerHTML = '';
   });
 
-  it("assigns default roles to list and items, and default IDs to items without IDs", () => {
-    const fixture = document.createElement('selection-aria-test');
+  it("assigns default roles to list and items, and default IDs to items without IDs", done => {
+    const fixture = new SelectionAriaTest();;
     fixture.id = 'test'; // Will be used as basis for assigned item IDs.
     const item1 = document.createElement('div');
     item1.id = 'explicitID';
     fixture.appendChild(item1);
-    const item2 = document.createElement('div');
     // Leave item2 without an ID.
-    fixture.render(() => {
+    const item2 = document.createElement('div');
+    fixture.appendChild(item2);
+    container.appendChild(fixture);
+    Promise.resolve().then(() => {
       assert.equal(fixture.getAttribute('role'), 'listbox'); // default role
       assert.equal(item1.id, 'explicitID'); // unchanged
       assert.equal(item1.getAttribute('role'), 'option'); // default role
@@ -48,33 +51,36 @@ describe("SelectionAriaMixin", () => {
       const idStart = item2.id.slice(0, expectedIdStart.length);
       assert.equal(idStart, expectedIdStart); // implicitly assigned ID
       assert.equal(item2.getAttribute('role'), 'option'); // default role
+      done();
     });
   });
 
-  it("indicates the selection state on both the list and the item", () => {
-    const fixture = document.createElement('selection-aria-test');
+  it("indicates the selection state on both the list and the item", done => {
+    const fixture = new SelectionAriaTest();;
     const item1 = document.createElement('div');
     fixture.appendChild(item1);
     const item2 = document.createElement('div');
     fixture.appendChild(item2);
-    fixture.render(() => {
-      container.appendChild(fixture);
-      fixture.setState({ selectedIndex: 0 });
+    container.appendChild(fixture);
+    fixture.setState({ selectedIndex: 0 })
+    .then(() => {
       assert.equal(fixture.getAttribute('aria-activedescendant'), item1.id);
       assert.equal(item1.getAttribute('aria-selected'), 'true');
       assert.equal(item2.getAttribute('aria-selected'), 'false');
-      fixture.setState({ selectedIndex: 1 });
+      return fixture.setState({ selectedIndex: 1 });
+    })
+    .then(() => {
       assert.equal(fixture.getAttribute('aria-activedescendant'), item2.id);
       assert.equal(item1.getAttribute('aria-selected'), 'false');
       assert.equal(item2.getAttribute('aria-selected'), 'true');
+      done();
     });
   });
 
   it("assigns a default role of 'listbox'", () => {
-    const fixture = document.createElement('selection-aria-test');
-    fixture.render(() => {
-      assert.equal(fixture.getAttribute('role'), 'listbox');
-    });
+    const fixture = new SelectionAriaTest();;
+    fixture.render();
+    assert.equal(fixture.getAttribute('role'), 'listbox');
   });
 
   it("doesn't overwrite an explicit role in markup", () => {

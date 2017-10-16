@@ -14,23 +14,20 @@ export default function HostPropsMixin(Base) {
 
     // TODO: Make render itself synchronous?
     [symbols.render]() {
-      const base = super[symbols.render] ? super[symbols.render]() : Promise.resolve();
-      return base.then(() => {
-        // console.log(`ReactiveMixin: render`);
+      if (super[symbols.render]) { super[symbols.render](); }
 
-        // If the component or its mixins want to apply properties/attributes to
-        // the component host, collect those.
-        if (this.hostProps) {
-          // First gather the original attributes on the component.
-          if (this[originalPropsKey] === undefined) {
-            this[originalPropsKey] = props.getProps(this);
-          }
-          // Collect an updated set of properties/attributes.
-          const hostProps = this.hostProps(this[originalPropsKey]);
-          // Apply those to the host.
-          props.applyProps(this, hostProps);
+      // If the component or its mixins want to apply properties/attributes to
+      // the component host, collect those.
+      if (this.hostProps) {
+        // First gather the original attributes on the component.
+        if (this[originalPropsKey] === undefined) {
+          this[originalPropsKey] = props.getProps(this);
         }
-      });
+        // Collect an updated set of properties/attributes.
+        const hostProps = this.hostProps(this[originalPropsKey]);
+        // Apply those to the host.
+        props.applyProps(this, hostProps);
+      }
     }
 
     setAttribute(name, value) {

@@ -24,7 +24,7 @@ customElements.define('content-items-test', ContentItemsTest);
 describe("ContentItemsMixin", () => {
 
   it("returns contents as items", () => {
-    const fixture = document.createElement('content-items-test');
+    const fixture = new ContentItemsTest();
     fixture.innerHTML = `
       <div>1</div>
       <div>2</div>
@@ -36,18 +36,16 @@ describe("ContentItemsMixin", () => {
   });
 
   it("renders itemProps to items", () => {
-    const fixture = document.createElement('content-items-test');
+    const fixture = new ContentItemsTest();
     fixture.innerHTML = `
       <div>1</div>
       <div>2</div>
       <div>3</div>
     `;
-    fixture[symbols.render]()
-    .then(() => {
-      assert(fixture.items[0].hidden);
-      assert(!fixture.items[1].hidden);
-      assert(fixture.items[2].hidden);;
-    })
+    fixture[symbols.render]();
+    assert(fixture.items[0].hidden);
+    assert(!fixture.items[1].hidden);
+    assert(fixture.items[2].hidden);;
   });
 
 });

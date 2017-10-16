@@ -93,14 +93,11 @@ describe("ReactiveMixin", function () {
     });
   });
 
-  it("render invokes componentDidUpdate if defined", done => {
+  it("render invokes componentDidUpdate if defined", () => {
     const fixture = document.createElement('reactive-test');
     const componentDidUpdateSpy = sinon.spy(fixture, 'componentDidUpdate');
     fixture.render()
-    .then(() => {
-      assert.equal(componentDidUpdateSpy.callCount, 1);
-      done();
-    });
+    assert.equal(componentDidUpdateSpy.callCount, 1);
   })
 
   it("leaves state object alone if there are no changes", done => {

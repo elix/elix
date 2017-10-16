@@ -60,33 +60,41 @@ export default function SelectionAriaMixin(Base) {
       // "_option1". Item IDs are prefixed with an underscore to differentiate
       // them from manually-assigned IDs, and to minimize the potential for ID
       // conflicts.
-      let id = original.id || base.id || item[generatedIdKey];
+      let id = item[generatedIdKey] ||
+          original.attributes.id ||
+          base.attributes && base.attributes.id;
       if (!id) {
-        const hostId = this.id ?
-          "_" + this.id + "Option" :
-          "_option";
-        id = hostId + idCount++;
+        id = getIdForItem(this, item, index);
+        // Remember that we generated an ID for this item.
         item[generatedIdKey] = id;
       }
       return props.mergeProps(base, {
         attributes: {
           'aria-selected': selected,
+          id,
           'role': original.role || base.role || 'option'
         },
-        id
       });
     }
 
     hostProps(original) {
       const base = super.hostProps ? super.hostProps(original) : {};
+      const role = original.attributes.role ||
+        base.attributes && base.attributes.role ||
+        'listbox';
       const selectedItem = this.state.selectedIndex >= 0 && this.items ?
         this.items[this.state.selectedIndex] :
         null;
-      const selectedItemId = selectedItem && selectedItem.id;
+      // We need the ID for the selected item. It's possible an ID hasn't been
+      // assigned yet, so we spectulatively determine the ID that will be used
+      // on the subsequent call to itemProps for this item.
+      const selectedItemId = selectedItem ?
+        getIdForItem(this, selectedItem, this.state.selectedIndex) :
+        null;
       return props.mergeProps(base, {
         attributes: {
           'aria-activedescendant': selectedItemId,
-          'role': original.role || base.role || 'listbox'
+          role
         }
       });
     }
@@ -94,4 +102,17 @@ export default function SelectionAriaMixin(Base) {
   };
 
   return SelectionAria;
+}
+
+
+function getIdForItem(element, item, index) {
+  let id = item.id;
+  if (!id) {
+    // Determine a default ID unique to the scope of this element.
+    const hostId = element.id ?
+      "_" + element.id + "Option" :
+      "_option";
+    id = `${hostId}${index}`;
+  }
+  return id;
 }
