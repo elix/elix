@@ -7,6 +7,7 @@ import * as ContentItemsMixinTests from './mixins/ContentItemsMixin.tests.js';
 import * as contentTests from './mixins/content.tests.js';
 import * as DefaultSlotContentMixinTests from './mixins/DefaultSlotContentMixin.tests.js';
 import * as DirectionSelectionMixinTests from './mixins/DirectionSelectionMixin.tests.js';
+import * as HostPropsMixinTests from './mixins/HostPropsMixin.tests.js';
 import * as KeyboardDirectionMixinTests from './mixins/KeyboardDirectionMixin.tests.js';
 import * as KeyboardMixinTests from './mixins/KeyboardMixin.tests.js';
 import * as KeyboardPagedSelectionMixinTests from './mixins/KeyboardPagedSelectionMixin.tests.js';

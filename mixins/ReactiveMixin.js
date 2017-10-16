@@ -4,7 +4,6 @@ import Symbol from './Symbol.js';
 
 
 const connectedKey = Symbol('connected');
-const originalPropsKey = Symbol('originalProps');
 const renderedStateKey = Symbol('renderedState');
 const stateKey = Symbol('state');
 
@@ -44,23 +43,7 @@ export default function ReactiveMixin(Base) {
 
     // TODO: Make render itself synchronous?
     [symbols.render]() {
-      const base = super[symbols.render] ? super[symbols.render]() : Promise.resolve();
-      return base.then(() => {
-        // console.log(`ReactiveMixin: render`);
-
-        // If the component or its mixins want to apply properties/attributes to
-        // the component host, collect those.
-        if (this.hostProps) {
-          // First gather the original attributes on the component.
-          if (this[originalPropsKey] === undefined) {
-            this[originalPropsKey] = props.getProps(this);
-          }
-          // Collect an updated set of properties/attributes.
-          const hostProps = this.hostProps(this[originalPropsKey]);
-          // Apply those to the host.
-          props.applyProps(this, hostProps);
-        }
-      });
+      return super[symbols.render] ? super[symbols.render]() : Promise.resolve();
     }
     
     render() {
