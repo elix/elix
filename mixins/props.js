@@ -1,9 +1,18 @@
+/**
+ * Helpers for getting and setting component attributes and properties using
+ * JavaScript dictionary objects.
+ */
+
 import Symbol from './Symbol.js';
 
 
 const previousChildNodesKey = Symbol('previousChildNodes');
 
 
+/**
+ * @param {HTMLElement} element 
+ * @param {Object} props 
+ */
 export function apply(element, props) {
   Object.keys(props).forEach(key => {
     const value = props[key];
@@ -74,8 +83,19 @@ export function applyChildNodes(element, childNodes) {
 }
 
 
+export function applyClass(element, className, value) {
+  if (value) {
+    element.classList.add(className);
+  } else {
+    element.classList.remove(className);
+  }
+}
+
+
 export function applyClasses(element, classProps) {
-  applyAttribute(element, 'class', formatClassProps(classProps));
+  Object.keys(classProps).map(className => 
+    applyClass(element, className, classProps[className])
+  );
 }
 
 
@@ -102,6 +122,9 @@ export function formatStyleProps(styleProps) {
 }
 
 
+/**
+ * @param {HTMLElement} element
+ */
 export function get(element) {
   return {
     attributes: getAttributes(element),
@@ -141,6 +164,10 @@ export function getStyle(element) {
 }
 
 
+/**
+ * 
+ * @param {Object[]} sources 
+ */
 export function merge(...sources) {
   const specialProps = {
     'attributes': true,
