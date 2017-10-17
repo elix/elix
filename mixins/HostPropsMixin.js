@@ -4,6 +4,8 @@ import Symbol from './Symbol.js';
 
 
 const originalPropsKey = Symbol('originalProps');
+const originalStyleKey = Symbol('originalStyle');
+const latestStylePropsKey = Symbol('latestStyleProps');
 
 
 /**
@@ -22,9 +24,15 @@ export default function HostPropsMixin(Base) {
         // First gather the original attributes on the component.
         if (this[originalPropsKey] === undefined) {
           this[originalPropsKey] = props.getProps(this);
+          this[originalStyleKey] = this.style.cssText;
         }
+
         // Collect an updated set of properties/attributes.
         const hostProps = this.hostProps(this[originalPropsKey]);
+
+        // Save style props in case we need to apply them again later.
+        this[latestStylePropsKey] = hostProps.style;
+
         // Apply those to the host.
         props.applyProps(this, hostProps);
       }
@@ -32,7 +40,6 @@ export default function HostPropsMixin(Base) {
 
     setAttribute(name, value) {
       if (name === 'style' && !this[symbols.rendering]) {
-        // console.log(`${this.localName}: setAttribute style, ${value}`);
         this.style = value;
       } else {
         super.setAttribute(name, value);
@@ -45,14 +52,13 @@ export default function HostPropsMixin(Base) {
     set style(style) {
       let value = style;
       if (!this[symbols.rendering]) {
-        // console.log(`${this.localName}: style = ${style}`);
-        const current = this.style.cssText;
-        if (style !== current) {
-          const styleProps = parseStyleProps(this.style.cssText);
-          const newProps = parseStyleProps(style);
-          Object.assign(styleProps, newProps);
-          value = props.formatStyleProps(styleProps);
-        }
+        const newProps = parseStyleProps(style)
+        const styleProps = Object.assign(
+          {},
+          newProps,
+          this[latestStylePropsKey]
+        );
+        value = props.formatStyleProps(styleProps);
       }
       super.style = value;
     }
