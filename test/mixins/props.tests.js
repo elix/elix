@@ -98,4 +98,20 @@ describe("props helpers", () => {
     assert.equal(merged.customProperty2, true);
   });
 
+  it("props.applyAttribute handles regular attributes", () => {
+    const fixture = document.createElement('div');
+    props.applyAttribute(fixture, 'aria-selected', 'true');
+    assert.equal(fixture.getAttribute('aria-selected'), 'true');
+    props.applyAttribute(fixture, 'aria-selected', null);
+    assert.equal(fixture.getAttribute('aria-selected'), null);
+  });
+
+  it("props.applyAttribute handles boolean attributes", () => {
+    const fixture = document.createElement('button');
+    props.applyAttribute(fixture, 'disabled', true);
+    assert.equal(fixture.disabled, true);
+    props.applyAttribute(fixture, 'disabled', false);
+    assert.equal(fixture.disabled, false);
+  });
+
 });

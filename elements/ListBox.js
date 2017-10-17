@@ -74,45 +74,31 @@ export default class ListBox extends Base {
 
   hostProps(original) {
     const base = super.hostProps && super.hostProps(original);
-    const style = Object.assign(
-      {},
-      original.style,
-      {
+    return props.merge(base, {
+      style: {
         'border': '1px solid gray',
         'box-sizing': 'border-box',
         'cursor': 'default',
         'display': 'flex',
         '-webkit-tap-highlight-color': 'rgba(0, 0, 0, 0)'
       }
-    );
-    return props.merge(base, { style });
+    });
   }
 
   itemProps(item, index, original) {
     const base = super.itemProps ? super.itemProps(item, index, original) : {};
     const selected = index === this.state.selectedIndex;
-    const color = selected ? 'highlighttext' : original.style.color || null;
-    const backgroundColor = selected ? 'highlight' : original.style.backgroundColor || null;
-    const style = Object.assign(
-      {},
-      original.style,
-      {
+    const color = selected ? 'highlighttext' : original.style.color;
+    const backgroundColor = selected ? 'highlight' : original.style.backgroundColor;
+    return props.merge(base, {
+      classes: {
+        selected
+      },
+      style: {
         'background-color': backgroundColor,
         color,
         'padding': '0.25em'
       }
-    );
-
-    const classes = Object.assign(
-      {},
-      original.classes,
-      base.classes,
-      { selected }
-    );
-    
-    return props.merge(base, {
-      classes,
-      style
     });
   }
 

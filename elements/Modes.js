@@ -48,25 +48,20 @@ class Modes extends Base {
 
   hostProps(original) {
     const base = super.hostProps ? super.hostProps(original) : {};
-    const style = Object.assign(
-      {},
-      original.style,
-      base.style,
-      {
+    return props.merge(base, {
+      style: {
         'display': original.style.display || 'inline-block',
         'position': 'relative'
-      }merge
-    );
-    return props.merge(base, { style });
+      }
+    });
   }
 
   itemProps(item, index, original) {
     const base = super.itemProps ? super.itemProps(item, index, original) : {};
-    const hidden merge.hidden || index !== this.state.selectedIndex;
-    const style = original.style;
     return props.merge(base, {
-      hidden,
-      style
+      attributes: {
+        hidden: index !== this.state.selectedIndex
+      }
     });
   }
 

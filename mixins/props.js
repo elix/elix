@@ -6,6 +6,24 @@
 import Symbol from './Symbol.js';
 
 
+const specialProps = {
+  'attributes': true,
+  'classes': true,
+  'style': true
+};
+
+const booleanAttributes = {
+  checked: true,
+  defer: true,
+  disabled: true,
+  hidden: true,
+  ismap: true,
+  multiple: true,
+  noresize: true,
+  readonly: true,
+  selected: true
+};
+
 const previousChildNodesKey = Symbol('previousChildNodes');
 
 
@@ -38,8 +56,25 @@ export function apply(element, props) {
 }
 
 
+/**
+ * @param {HTMLElement} element 
+ * @param {string} name 
+ * @param {string|boolean|null} value 
+ */
 export function applyAttribute(element, name, value) {
-  if (element.getAttribute(name) !== value) {
+  const existingValue = element.getAttribute(name);
+  if (booleanAttributes[name]) {
+    // Boolean attribute
+    const changed = (existingValue === null) === value;
+    if (changed) {
+      if (value) {
+        element.setAttribute(name, '');
+      } else {   
+        element.removeAttribute(name);
+      }
+    }
+  } else if (existingValue !== value) {
+    // Regular string-valued attribute
     if (value !== null) {
       element.setAttribute(name, value);
     } else {
@@ -174,11 +209,6 @@ export function getStyle(element) {
  * @param {Object[]} sources 
  */
 export function merge(...sources) {
-  const specialProps = {
-    'attributes': true,
-    'classes': true,
-    'style': true
-  };
   const result = {};
   sources.forEach(source => {
     if (source) {
