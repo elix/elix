@@ -53,8 +53,7 @@ export default function HostPropsMixin(Base) {
       let value = style;
       if (!this[symbols.rendering]) {
         const newProps = parseStyleProps(style)
-        const styleProps = Object.assign(
-          {},
+        const styleProps = props.merge(
           newProps,
           this[latestStylePropsKey]
         );

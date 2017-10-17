@@ -9,12 +9,9 @@ class HostPropsTest extends HostPropsMixin(ReactiveMixin(HTMLElement)) {
 
   hostProps(original) {
     const base = super.hostProps ? super.hostProps(original) : {};
-    // const selected = this.state.selected;
-    // const color = selected && 'red';
-    // const style = color ? { color } : {};
     return props.merge(base, {
       style: {
-        color: this.state.selected ? 'red' : undefined
+        color: this.state.selected ? 'red' : original.style.color
       }
     });
   }
@@ -35,7 +32,7 @@ describe("HostPropsMixin", function () {
     container.innerHTML = '';
   });
 
-  it.skip("updates host with hostProps", done => {
+  it("updates host with hostProps", done => {
     const fixture = new HostPropsTest();
     container.appendChild(fixture);
     assert.equal(fixture.style.color, '');
@@ -50,7 +47,7 @@ describe("HostPropsMixin", function () {
     })
     .then(() => {
       // Should be back to original condition.
-      assert.equal(fixture.style.color, '');      
+      assert.equal(fixture.style.color, '');
       done();
     })
   });

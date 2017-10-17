@@ -100,7 +100,12 @@ export function applyClasses(element, classProps) {
 
 
 export function applyStyle(element, styleProps) {
-  Object.assign(element.style, styleProps);
+  // Object.assign(element.style, styleProps);
+  const style = element.style;
+  Object.keys(styleProps).forEach(key => {
+    const value = styleProps[key];
+    style[key] = value === undefined ? '' : value;
+  });
 }
 
 
@@ -174,16 +179,16 @@ export function merge(...sources) {
     'classes': true,
     'style': true
   };
-  const output = {};
+  const result = {};
   sources.forEach(source => {
     if (source) {
       Object.keys(source).forEach(key => {
         const value = source[key];
-        output[key] = specialProps[key] >= 0 ?
-          Object.assign(output[key] || {}, value) :
-          value;
+        result[key] = specialProps[key] ?
+          Object.assign(result[key] || {}, value) :
+          result[key] = value;
       });
     }
   })
-  return output;
+  return result;
 }
