@@ -5,17 +5,15 @@ import TabButton from '../../elements/TabButton.js';
 
 class ToolbarTab extends TabButton {
 
-  buttonStyle() {
-    const base = super.buttonStyle ? super.buttonStyle() : {};
-    const selected = this.state.selected;
-    return Object.assign(
-      {},
-      base,
-      {
+  buttonProps() {
+    const base = super.buttonProps ? super.buttonProps() : {};
+    const baseColor = base.style && base.style.color;
+    return props.merge(base, {
+      style: {
         'align-items': 'center',
         'background': 'transparent',
         'border': 'none',
-        'color': selected ? 'dodgerblue' : base.color || null,
+        'color': this.state.selected ? 'dodgerblue' : baseColor,
         'display': 'flex',
         'flex': '1',
         'flex-direction': 'column',
@@ -25,7 +23,7 @@ class ToolbarTab extends TabButton {
         'padding': '6px',
         '-webkit-tap-highlight-color': 'transparent'
       }
-    );
+    });
   }
   
 }

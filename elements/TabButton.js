@@ -1,5 +1,5 @@
 // import { html } from '../node_modules/lit-html/lit-html.js';
-import * as props from '../mergeps.js';
+import * as props from '../mixins/props.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
 import HostPropsMixin from '../mixins/HostPropsMixin.js';
@@ -131,37 +131,28 @@ class TabButton extends Base {
     const needsTopSpacer = needsSpacer &&
         (tabPosition === 'left' || tabPosition === 'right');
 
-    const style = Object.assign(
-      {},
-      original.style,
-      base.style,
-      {
-        'display': 'inline-flex',
-        'flex': stretch ? 1 : null,
-        'margin-left': needsLeftSpacer ? '0.2em' : null,
-        'margin-top': needsTopSpacer ? '0.2em' : null,
-      }
-    );
-
-    const tabindex = original.attributes.tabindex || this.state.tabindex;
-
     return props.merge(base, {
       attributes: {
-        tabindex
+        tabindex: original.attributes.tabindex || this.state.tabindex
       },
-      style
+      style: {
+        'display': 'inline-flex',
+        'flex': stretch ? 1 : original.style.flex,
+        'margin-left': needsLeftSpacer ? '0.2em' : original.style.marginLeft,
+        'margin-top': needsTopSpacer ? '0.2em' : original.style.marginTop,
+      }
     });
   }
 
   [symbols.render]() {
     if (super[symbols.render]) { super[symbols.render](); }
-    props.applyProps(this.$.button, this.buttonProps());
+    props.apply(this.$.button, this.buttonProps());
   }
 
-  get selected() {
+  get ariaSelected() {
     return this.state.selected;
   }
-  set selected(selected) {
+  set ariaSelected(selected) {
     this.setState({
       selected: String(selected) === 'true'
     });

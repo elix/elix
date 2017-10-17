@@ -80,21 +80,13 @@ class Tabs extends Base {
     const base = super.hostProps ? super.hostProps(original) : {};
     const tabPosition = this.state.tabPosition;
     const lateralPosition = tabPosition === 'left' || tabPosition === 'right';
-    const lateralStyle = {
-      'flexDirection': 'row'
-    };
-    const style = Object.assign(
-      {},
-      original.style,
-      base.style,
-      {
+    return props.merge(base, {
+      style: {
         'display': 'inline-flex',
-        'flexDirection': 'column',
+        'flexDirection': lateralPosition ? 'row' : 'column',
         'position': 'relative'
-      },
-      lateralPosition && lateralStyle
-    );
-    return props.merge(base, { style });
+      }
+    });
   }
 
   get tabAlign() {

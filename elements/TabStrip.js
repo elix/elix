@@ -1,5 +1,5 @@
 // import { html } from '../node_modules/lit-html/lit-html.js';
-import { merge } from '../mixins/props.js';
+import * as props from '../mixins/props.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ClickSelectionMixin from '../mixins/ClickSelectionMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
@@ -113,37 +113,24 @@ class TabStrip extends Base {
     const lateralPosition = tabPosition === 'left' || tabPosition === 'right';
 
     const tabAlign = this.state.tabAlign;
-    const alignStyles = {
-      'center': {
-        'justify-content': 'center'
-      },
-      'end': {
-        'justify-content': 'flex-end'
-      },
-      'start': {
-        'justify-content': 'flex-start'
-      },
-      'stretch': {
-        'justify-content': null
-      }
-      // No style needed for "stretch"
+    const justifyContent = {
+      'center': 'center',
+      'end': 'flex-end',
+      'start': 'flex-start',
+      'stretch': null // No style needed for "stretch"
     };
-    const alignStyle = alignStyles[tabAlign];
 
     const style = Object.assign(
-      {},
-      original.style,
-      base.style,
       {
         'display': 'flex',
-        'flex-direction': lateralPosition ? 'column' : 'row'
-      },
-      alignStyle
-    );merge
-    const role = original.attributes.role || 'tablist';
-    return mergeProps(base, {
+        'flex-direction': lateralPosition ? 'column' : 'row',
+        'justify-content': justifyContent[tabAlign] || original.style.justifyContent
+      }
+    );
+
+    return props.merge(base, {
       attributes: {
-        role
+        role: original.attributes.role || 'tablist'
       },
       style
     });
@@ -152,51 +139,29 @@ class TabStrip extends Base {
   itemProps(item, index, original) {
     const base = super.itemProps ? super.itemProps(item, index, original) : {};
 
-    const itemStyle = {
-      'cursor': 'pointer',
-      'font-family': 'inherit',
-      'font-size': 'inherit',
-      // 'outline': 'none',
-      // 'position': 'relative',
-      '-webkit-tap-highlight-color': 'transparent',
-    };
-
     const tabAlign = this.state.tabAlign;
     const tabPosition = this.state.tabPosition;
-
     const selected = index === this.state.selectedIndex;
 
-    const classes = Object.assign(
-      {},
-      original.classes,
-      base.classes,
-      { selected }
-    );
-
-    const role = original.attributes.role || this.state.tabButtonRole;
-    const style = Object.assign(
-      {},
-      original.style,
-      base.style,
-      itemStyle
-    );
-
-    const attributes = {
-      index,
-      role,
-      selected,
-      'tab-align': tabAlign,
-      'tab-position': tabPosition
-    };
-
-    return props.merge(
-      base,
-      {
-        attributes,
-        classes,
-        style
+    return props.merge(base, {
+      attributes: {
+        index,
+        role: original.attributes.role || this.state.tabButtonRole,
+        'tab-align': tabAlign,
+        'tab-position': tabPosition
+      },
+      classes: {
+        selected
+      },
+      style: {
+        'cursor': 'pointer',
+        'font-family': 'inherit',
+        'font-size': 'inherit',
+        // 'outline': 'none',
+        // 'position': 'relative',
+        '-webkit-tap-highlight-color': 'transparent',
       }
-    );
+    });
   }
 
   [symbols.keydown](event) {
