@@ -85,7 +85,7 @@ export default class ListBox extends Base {
         '-webkit-tap-highlight-color': 'rgba(0, 0, 0, 0)'
       }
     );merge
-    return props.mergeProps(base, { style });
+    return props.merge(base, { style });
   }
 
   itemProps(item, index, original) {
@@ -110,7 +110,7 @@ export default class ListBox extends Base {
       { selected }
     );
 merge
-    return props.mergeProps(base, {
+    return props.merge(base, {
       classes,
       style
     });

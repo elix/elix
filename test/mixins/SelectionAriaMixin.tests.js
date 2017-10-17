@@ -1,4 +1,3 @@
-import { assert } from 'chai';
 import flushPolyfills from '../flushPolyfills.js';
 import ContentItemsMixin from '../../mixins/ContentItemsMixin.js';
 import HostPropsMixin from '../../mixins/HostPropsMixin.js'

@@ -1,4 +1,3 @@
-import { assert } from 'chai';
 import ContentItemsMixin from '../../mixins/ContentItemsMixin.js';
 import symbols from '../../mixins/symbols.js';
 

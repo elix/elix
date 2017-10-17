@@ -1,4 +1,3 @@
-import { assert } from 'chai';
 import DefaultSlotContentMixin from '../../mixins/DefaultSlotContentMixin.js';
 import flushPolyfills from '../../test/flushPolyfills.js';
 import symbols from '../../mixins/symbols.js';

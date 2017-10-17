@@ -1,4 +1,3 @@
-import { assert } from 'chai';
 import flushPolyfills from '../../test/flushPolyfills.js';
 import symbols from '../../mixins/symbols.js';
 import ShadowTemplateMixin from '../../mixins/ShadowTemplateMixin.js';

@@ -145,7 +145,7 @@ class TabButton extends Base {
 
     const tabindex = original.attributes.tabindex || this.state.tabindex;
 
-    return props.mergeProps(base, {
+    return props.merge(base, {
       attributes: {
         tabindex
       },

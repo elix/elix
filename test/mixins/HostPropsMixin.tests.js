@@ -1,4 +1,3 @@
-import { assert } from 'chai';
 import * as props from '../../mixins/props.js';
 import HostPropsMixin from '../../mixins/HostPropsMixin.js';
 import ReactiveMixin from '../../mixins/ReactiveMixin.js';

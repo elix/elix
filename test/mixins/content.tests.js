@@ -1,4 +1,3 @@
-import { assert } from 'chai';
 import * as content from '../../mixins/content.js';
 import ShadowTemplateMixin from '../../mixins/ShadowTemplateMixin.js';
 import symbols from '../../mixins/symbols.js';

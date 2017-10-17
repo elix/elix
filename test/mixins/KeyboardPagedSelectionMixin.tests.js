@@ -1,4 +1,3 @@
-import { assert } from 'chai';
 import KeyboardPagedSelectionMixin from '../../mixins/KeyboardPagedSelectionMixin.js';
 import symbols from '../../mixins/symbols.js';
 

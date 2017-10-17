@@ -1,4 +1,3 @@
-import { assert } from 'chai';
 import flushPolyfills from '../../test/flushPolyfills.js';
 import ReactiveMixin from '../../mixins/ReactiveMixin.js';
 import SelectionInViewMixin from '../../mixins/SelectionInViewMixin.js';

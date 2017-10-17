@@ -1,4 +1,3 @@
-import { assert } from 'chai';
 import renderArrayAsElements from '../../mixins/renderArrayAsElements.js';
 
 

@@ -28,3 +28,5 @@ import * as SingleSelectionMixinTests from './mixins/SingleSelectionMixin.tests.
 // import * as LabeledTabsTests from './elements/LabeledTabs.tests.js';
 
 // jshint ignore:end
+
+mocha.run();

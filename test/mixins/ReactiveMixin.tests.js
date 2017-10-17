@@ -1,5 +1,3 @@
-import { assert } from 'chai';
-import sinon from 'sinon';
 import ReactiveMixin from '../../mixins/ReactiveMixin.js';
 import symbols from '../../mixins/symbols.js';
 

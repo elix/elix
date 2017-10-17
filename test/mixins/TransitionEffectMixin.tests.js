@@ -1,5 +1,3 @@
-import { assert } from 'chai';
-import sinon from 'sinon';
 import symbols from '../../mixins/symbols.js';
 import ShadowTemplateMixin from '../../mixins/ShadowTemplateMixin.js';
 import TransitionEffectMixin from '../../mixins/TransitionEffectMixin.js';

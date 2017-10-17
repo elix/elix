@@ -1,6 +1,4 @@
-import { assert } from 'chai';
 import KeyboardDirectionMixin from '../../mixins/KeyboardDirectionMixin.js';
-import sinon from 'sinon';
 import symbols from '../../mixins/symbols.js';
 
 

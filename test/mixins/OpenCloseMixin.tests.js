@@ -1,4 +1,3 @@
-import { assert } from 'chai';
 import OpenCloseMixin from '../../mixins/OpenCloseMixin.js';
 import symbols from '../../mixins/symbols.js';
 

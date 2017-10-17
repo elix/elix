@@ -1,4 +1,3 @@
-import { assert } from 'chai';
 import SingleSelectionMixin from '../../mixins/SingleSelectionMixin.js';
 import SelectedItemTextValueMixin from '../../mixins/SelectedItemTextValueMixin.js';
 

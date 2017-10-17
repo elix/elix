@@ -57,14 +57,14 @@ class Modes extends Base {
         'position': 'relative'
       }merge
     );
-    return props.mergeProps(base, { style });
+    return props.merge(base, { style });
   }
 
   itemProps(item, index, original) {
     const base = super.itemProps ? super.itemProps(item, index, original) : {};
     const hidden merge.hidden || index !== this.state.selectedIndex;
     const style = original.style;
-    return props.mergeProps(base, {
+    return props.merge(base, {
       hidden,
       style
     });

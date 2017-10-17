@@ -1,4 +1,3 @@
-import { assert } from 'chai';
 import KeyboardPrefixSelectionMixin from '../../mixins/KeyboardPrefixSelectionMixin.js';
 import symbols from '../../mixins/symbols.js';
 

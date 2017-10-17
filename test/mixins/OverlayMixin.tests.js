@@ -1,7 +1,5 @@
-import { assert } from 'chai';
 import OverlayMixin from '../../mixins/OverlayMixin.js';
 import symbols from '../../mixins/symbols.js';
-import sinon from 'sinon';
 
 
 class OverlayTest extends OverlayMixin(HTMLElement) {
