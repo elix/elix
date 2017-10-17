@@ -120,6 +120,8 @@ class Tabs extends Base {
         tabButton.textContent = label;
         return tabButton;
       });
+      // Make the array immutable.
+      Object.freeze(this[tabButtonsKey]);
       this[previousItemsKey] = this.items;
     }
     return this[tabButtonsKey];

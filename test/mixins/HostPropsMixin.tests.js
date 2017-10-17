@@ -33,7 +33,7 @@ describe("HostPropsMixin", function () {
     container.innerHTML = '';
   });
 
-  it("updates host with hostProps", done => {
+  it.skip("updates host with hostProps", done => {
     const fixture = new HostPropsTest();
     container.appendChild(fixture);
     assert.equal(fixture.style.color, '');

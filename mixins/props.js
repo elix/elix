@@ -1,3 +1,89 @@
+import Symbol from './Symbol.js';
+
+
+const previousValueKey = Symbol('previousValue');
+
+
+export function applyAttribute(element, name, value) {
+  if (element.getAttribute(name) !== value) {
+    if (value !== null) {
+      element.setAttribute(name, value);
+    } else {
+      element.removeAttribute(name);
+    }
+  }
+}
+
+
+function applyAttributeProps(element, attributeProps) {
+  if (attributeProps) {
+    Object.keys(attributeProps).forEach(name => {
+      applyAttribute(element, name, attributeProps[name]);
+    });
+  }
+}
+
+
+export function applyChildNodes(element, childNodes) {
+  // Quick dirty check if last array applied was frozen.
+  if (childNodes === element[previousValueKey]) {
+    return;
+  }
+
+  const oldLength = element.childNodes.length;
+  const newLength = childNodes.length;
+  const length = Math.max(oldLength, newLength);
+  for (let i = 0; i < length; i++) {
+    if (i < oldLength && i < newLength && element.childNodes[i] !== childNodes[i]) {
+      element.replaceChild(element.childNodes[i], childNodes[i]);
+    } else if (i >= oldLength) {
+      element.appendChild(childNodes[i]);
+    } else if (i >= newLength) {
+      element.removeChild(element.childNodes[i]);
+    }
+  }
+
+  element[previousValueKey] = Object.isFrozen(childNodes) ?
+    childNodes :
+    {};
+}
+
+
+export function applyClassProps(element, classProps) {
+  applyAttribute(element, 'class', formatClassProps(classProps));
+}
+
+
+export function applyProps(element, props) {
+  Object.keys(props).forEach(key => {
+    const value = props[key];
+    switch (key) {
+      case 'attributes':
+        applyAttributeProps(element, value);
+        break;
+
+      case 'classes':
+        applyClassProps(element, value);
+        break;
+
+      case 'style':
+        applyStyleProps(element, value);
+        break;
+
+      default:
+        // Update property
+        element[key] = value;
+        break;
+    }
+  });
+}
+
+
+export function applyStyleProps(element, styleProps) {
+  Object.assign(element.style, styleProps);
+}
+
+
 export function formatClassProps(classProps) {
   if (!classProps) {
     return '';
@@ -16,74 +102,12 @@ export function formatStyleProps(styleProps) {
 }
 
 
-export function applyChildNodes(element, childNodes) {
-  const oldLength = element.childNodes.length;
-  const newLength = childNodes.length;
-  const length = Math.max(oldLength, newLength);
-  for (let i = 0; i < length; i++) {
-    if (i < oldLength && i < newLength && element.childNodes[i] !== childNodes[i]) {
-      element.replaceChild(element.childNodes[i], childNodes[i]);
-    } else if (i >= oldLength) {
-      element.appendChild(childNodes[i]);
-    } else if (i >= newLength) {
-      element.removeChild(element.childNodes[i]);
-    }
-  }
-}
-
-
-export function applyProps(element, props) {
-  Object.keys(props).forEach(key => {
-    const value = props[key];
-    switch (key) {
-      case 'attributes':
-        applyAttributeProps(element, value);
-        break;
-      
-      case 'classes':
-        applyClassProps(element, value);
-        break;
-      
-      case 'style':
-        applyStyleProps(element, value);
-        break;
-      
-      default:
-        // Update property
-        element[key] = value;
-        break;
-    }
-  });
-}
-
-
-function applyAttributeProps(element, attributeProps) {
-  if (attributeProps) {
-    Object.keys(attributeProps).forEach(name => {
-      applyAttribute(element, name, attributeProps[name]);
-    });
-  }
-}
-
-
-export function applyClassProps(element, classProps) {
-  applyAttribute(element, 'class', formatClassProps(classProps));
-}
-
-
-export function applyStyleProps(element, styleProps) {
-  Object.assign(element.style, styleProps);
-}
-
-
-export function applyAttribute(element, name, value) {
-  if (element.getAttribute(name) !== value) {
-    if (value !== null) {
-      element.setAttribute(name, value);
-    } else {
-      element.removeAttribute(name);
-    }
-  }
+export function getClassProps(element) {
+  const result = {};
+  [...element.classList].forEach(className =>
+    result[className] = true
+  );
+  return result;
 }
 
 
@@ -106,15 +130,6 @@ export function getProps(element) {
   };
 
   return props;
-}
-
-
-export function getClassProps(element) {
-  const result = {};
-  [...element.classList].forEach(className =>
-    result[className] = true
-  );
-  return result;
 }
 
 
