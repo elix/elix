@@ -1,29 +1,22 @@
 import * as props from '../mixins/props.js';
-import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 // import FocusCaptureWrapper from './FocusCaptureWrapper.js';
 import DialogModalityMixin from '../mixins/DialogModalityMixin.js';
-import HostPropsMixin from '../mixins/HostPropsMixin.js';
+import ElementBase from './ElementBase.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import ModalBackdrop from './ModalBackdrop.js';
 import OverlayMixin from '../mixins/OverlayMixin.js';
-import ReactiveMixin from '../mixins/ReactiveMixin.js';
-import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import symbols from '../mixins/symbols.js';
 // import VisualStateMixin from '../mixins/VisualStateMixin.js';
 
 
 const Base =
-  AttributeMarshallingMixin(
   DialogModalityMixin(
   // FocusCaptureWrapper(
-  HostPropsMixin(
   KeyboardMixin(
   OverlayMixin(
-  ReactiveMixin(
-  ShadowTemplateMixin(
   // VisualStateMixin(
-    HTMLElement
-  )))))));
+    ElementBase
+  )));
 
 
 /**

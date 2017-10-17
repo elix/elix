@@ -1,19 +1,9 @@
-import HostPropsMixin from '../mixins/HostPropsMixin.js';
-import ReactiveMixin from '../mixins/ReactiveMixin.js';
+import ElementBase from './ElementBase.js';
 import * as props from '../mixins/props.js';
-import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import symbols from '../mixins/symbols.js';
 
 
-const Base =
-  HostPropsMixin(
-  ReactiveMixin(
-  ShadowTemplateMixin(
-    HTMLElement
-  )));
-
-
-class ModalBackdrop extends Base {
+class ModalBackdrop extends ElementBase {
 
   hostProps(original) {
     const base = super.hostProps ? super.hostProps() : {};
