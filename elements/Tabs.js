@@ -1,15 +1,17 @@
-import { html } from '../node_modules/lit-html/lit-html.js';
+// import { html } from '../node_modules/lit-html/lit-html.js';
 import * as props from '../mixins/props.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
 import HostPropsMixin from '../mixins/HostPropsMixin.js';
-import LitHtmlShadowMixin from '../mixins/LitHtmlShadowMixin.js';
+// import LitHtmlShadowMixin from '../mixins/LitHtmlShadowMixin.js';
 import Modes from './Modes.js';
 import ReactiveMixin from '../mixins/ReactiveMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import TabButton from './TabButton.js';
 import TabStrip from './TabStrip.js';
+import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
+import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
 
@@ -24,11 +26,13 @@ const Base =
   ContentItemsMixin(
   DefaultSlotContentMixin(
   HostPropsMixin(
-  LitHtmlShadowMixin(
+  // LitHtmlShadowMixin(
   ReactiveMixin(
+  ShadowReferencesMixin(
+  ShadowTemplateMixin(
   SingleSelectionMixin(
     HTMLElement
-  )))))));
+  ))))))));
 
 
 /**
@@ -56,15 +60,11 @@ const Base =
  */
 class Tabs extends Base {
 
-  componentDidUpdate() {
-    if (super.componentDidUpdate) { super.componentDidUpdate(); }
-    if (!this[eventsWiredKey]) {
-      const tabStrip = this.shadowRoot.querySelector('elix-tab-strip');
-      tabStrip.addEventListener('selected-index-changed', event => {
-        this.updateSelectedIndex(event.detail.selectedIndex);
-      });
-      this[eventsWiredKey] = true;
-    }
+  [symbols.shadowCreated]() {
+    if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
+    this.$.tabStrip.addEventListener('selected-index-changed', event => {
+      this.updateSelectedIndex(event.detail.selectedIndex);
+    });
   }
 
   get defaultState() {
@@ -132,6 +132,47 @@ class Tabs extends Base {
     this.setState({ tabPosition });
   }
 
+  [symbols.render]() {
+    if (super[symbols.render]) { super[symbols.render](); }
+
+    // Create the tab strip and tab panels.
+    // TODO: handle selected-index-changed
+    props.applyProps(this.$.tabStrip, {
+      attributes: {
+        'selected-index': this.state.selectedIndex,
+        'tab-align': this.state.tabAlign,
+        'tab-position': this.state.tabPosition
+      }
+    });
+
+    props.applyChildNodes(this.$.tabButtonsSlot, this.tabButtons);
+
+    props.applyProps(this.$.tabPanels, {
+      attributes: {
+        'selected-index': this.state.selectedIndex
+      }
+    });
+
+    // Physically reorder the tabs and panels to reflect the desired arrangement.
+    // We could change the visual appearance by reversing the order of the flex
+    // box, but then the visual order wouldn't reflect the document order, which
+    // determines focus order. That would surprise a user trying to tab through
+    // the controls.
+    const tabPosition = this.state.tabPosition;
+    const topOrLeftPosition = (tabPosition === 'top' || tabPosition === 'left');
+    const firstElement = topOrLeftPosition ?
+      this.$.tabStrip :
+      this.$.tabPanels;
+    const lastElement = topOrLeftPosition ?
+      this.$.tabPanels :
+      this.$.tabStrip;
+    if (!this.shadowRoot) {
+      console.warn(`Tabs expects a component to define a shadowRoot.`);
+    } else if (firstElement.nextSibling !== lastElement) {
+      this.shadowRoot.insertBefore(firstElement, lastElement);
+    }
+  }
+
   get [symbols.template]() {
 
     const tabStripStyle = {
@@ -146,45 +187,19 @@ class Tabs extends Base {
       'flex': 1
     };
 
-    // Create the tab strip and tab panels.
-    // TODO: handle selected-index-changed
-    const tabStrip = html`
+    return `
       <elix-tab-strip
-        selected-index=${this.state.selectedIndex}
-        style=${props.formatStyleProps(tabStripStyle)}
-        tab-align=${this.state.tabAlign}
-        tab-position=${this.state.tabPosition}
+        id="tabStrip"
+        style="${props.formatStyleProps(tabStripStyle)}"
         >
-        <slot name="tabButtons">${this.tabButtons}</slot>
+        <slot id="tabButtonsSlot" name="tabButtons"></slot>
       </elix-tab-strip>
-    `;
-
-    const tabPanels = html`
       <elix-modes
-        selected-index=${this.state.selectedIndex}
-        style=${props.formatStyleProps(tabPanelsContainerStyle)}
+        id="tabPanels"
+        style="${props.formatStyleProps(tabPanelsContainerStyle)}"
         >
         <slot></slot>
       </elix-modes>
-    `;
-
-    // Physically reorder the tabs and panels to reflect the desired arrangement.
-    // We could change the visual appearance by reversing the order of the flex
-    // box, but then the visual order wouldn't reflect the document order, which
-    // determines focus order. That would surprise a user trying to tab through
-    // the controls.
-    const tabPosition = this.state.tabPosition;
-    const topOrLeftPosition = (tabPosition === 'top' || tabPosition === 'left');
-    const firstElement = topOrLeftPosition ?
-      tabStrip :
-      tabPanels;
-    const lastElement = topOrLeftPosition ?
-      tabPanels :
-      tabStrip;
-
-    return html`
-      ${firstElement}
-      ${lastElement}
     `;
   }
 

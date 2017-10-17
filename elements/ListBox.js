@@ -1,4 +1,4 @@
-import { html } from '../node_modules/lit-html/lit-html.js';
+// import { html } from '../node_modules/lit-html/lit-html.js';
 import * as props from '../mixins/props.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ClickSelectionMixin from '../mixins/ClickSelectionMixin.js';
@@ -10,10 +10,11 @@ import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import KeyboardPagedSelectionMixin from '../mixins/KeyboardPagedSelectionMixin.js';
 import KeyboardPrefixSelectionMixin from '../mixins/KeyboardPrefixSelectionMixin.js';
-import LitHtmlShadowMixin from '../mixins/LitHtmlShadowMixin.js';
+// import LitHtmlShadowMixin from '../mixins/LitHtmlShadowMixin.js';
 import ReactiveMixin from '../mixins/ReactiveMixin.js';
 import SelectionAriaMixin from '../mixins/SelectionAriaMixin.js';
 import SelectionInViewMixin from '../mixins/SelectionInViewMixin.js';
+import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import symbols from '../mixins/symbols.js';
 
@@ -29,10 +30,10 @@ const Base =
   KeyboardMixin(
   KeyboardPagedSelectionMixin(
   KeyboardPrefixSelectionMixin(
-  LitHtmlShadowMixin(
   ReactiveMixin(
   SelectionAriaMixin(
   SelectionInViewMixin(
+  ShadowTemplateMixin(
   SingleSelectionMixin(
     HTMLElement
   )))))))))))))));
@@ -122,12 +123,11 @@ export default class ListBox extends Base {
       'overflow-x': 'hidden',
       'overflow-y': 'scroll'
     };
-    const template = html`
-      <div id="itemsContainer" role="none" style=${props.formatStyleProps(containerStyle)}>
+    return `
+      <div id="itemsContainer" role="none" style="${props.formatStyleProps(containerStyle)}">
         <slot></slot>
       </div>
     `;
-    return template;
   }
 
   get [symbols.scrollTarget]() {

@@ -39,10 +39,13 @@ export default function ShadowTemplateMixin(Base) {
      * If the component defines a template, a shadow root will be created on the
      * component instance, and the template stamped into it.
      */
-    constructor() {
-      // @ts-ignore
-      super();
-
+    [symbols.render]() {
+      if (super[symbols.render]) { super[symbols.render](); }
+      if (this.shadowRoot) {
+        // Already rendered
+        return;
+      }
+      
       const tag = this.localName;
       let template = tag && mapTagToTemplate[tag];
 
@@ -51,7 +54,7 @@ export default function ShadowTemplateMixin(Base) {
         // This is the first time we've created an instance of this tag.
 
         // Get the template and perform initial processing.
-        template = this[symbols.template]();
+        template = this[symbols.template];
         if (!template) {
           console.warn(`ShadowTemplateMixin expects a component to define a method called [symbols.template].`);
           return;

@@ -1,11 +1,12 @@
-import { html } from '../node_modules/lit-html/lit-html.js';
+// import { html } from '../node_modules/lit-html/lit-html.js';
 import * as props from '../mixins/props.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
 import HostPropsMixin from '../mixins/HostPropsMixin.js';
-import LitHtmlShadowMixin from '../mixins/LitHtmlShadowMixin.js';
+// import LitHtmlShadowMixin from '../mixins/LitHtmlShadowMixin.js';
 import ReactiveMixin from '../mixins/ReactiveMixin.js';
+import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import symbols from '../mixins/symbols.js';
 
@@ -15,8 +16,9 @@ const Base =
   ContentItemsMixin(
   DefaultSlotContentMixin(
   HostPropsMixin(
-  LitHtmlShadowMixin(
+  // LitHtmlShadowMixin(
   ReactiveMixin(
+  ShadowTemplateMixin(
   SingleSelectionMixin(
     HTMLElement
   )))))));
@@ -69,7 +71,7 @@ class Modes extends Base {
   }
 
   get [symbols.template]() {
-    return html`<slot></slot>`;
+    return `<slot></slot>`;
   }
 
 }

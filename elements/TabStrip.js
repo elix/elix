@@ -1,4 +1,4 @@
-import { html } from '../node_modules/lit-html/lit-html.js';
+// import { html } from '../node_modules/lit-html/lit-html.js';
 import { mergeProps } from '../mixins/props.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ClickSelectionMixin from '../mixins/ClickSelectionMixin.js';
@@ -10,8 +10,9 @@ import HostPropsMixin from '../mixins/HostPropsMixin.js';
 import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 // import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin';
-import LitHtmlShadowMixin from '../mixins/LitHtmlShadowMixin.js';
+// import LitHtmlShadowMixin from '../mixins/LitHtmlShadowMixin.js';
 import ReactiveMixin from '../mixins/ReactiveMixin.js';
+import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import SelectionAriaMixin from '../mixins/SelectionAriaMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import symbols from '../mixins/symbols.js';
@@ -26,9 +27,10 @@ const Base =
   HostPropsMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
-  LitHtmlShadowMixin(
+  // LitHtmlShadowMixin(
   ReactiveMixin(
   SelectionAriaMixin(
+  ShadowTemplateMixin(
   SingleSelectionMixin(
     HTMLElement
   ))))))))))));
@@ -239,7 +241,7 @@ class TabStrip extends Base {
   }
 
   get [symbols.template]() {
-    return html`<slot></slot>`;
+    return `<slot></slot>`;
   }
 
 }

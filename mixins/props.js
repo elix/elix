@@ -16,6 +16,22 @@ export function formatStyleProps(styleProps) {
 }
 
 
+export function applyChildNodes(element, childNodes) {
+  const oldLength = element.childNodes.length;
+  const newLength = childNodes.length;
+  const length = Math.max(oldLength, newLength);
+  for (let i = 0; i < length; i++) {
+    if (i < oldLength && i < newLength && element.childNodes[i] !== childNodes[i]) {
+      element.replaceChild(element.childNodes[i], childNodes[i]);
+    } else if (i >= oldLength) {
+      element.appendChild(childNodes[i]);
+    } else if (i >= newLength) {
+      element.removeChild(element.childNodes[i]);
+    }
+  }
+}
+
+
 export function applyProps(element, props) {
   Object.keys(props).forEach(key => {
     const value = props[key];
