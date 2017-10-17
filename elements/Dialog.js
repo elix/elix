@@ -55,7 +55,7 @@ class Dialog extends Base {
       style: {
         'background': 'white',
         'border': '1px solid rgba(0, 0, 0, 0.2)',
-        'boxShadow': '0 2px 10px rgba(0, 0, 0, 0.5)',
+        'box-shadow': '0 2px 10px rgba(0, 0, 0, 0.5)',
         'position': 'relative'
       }
     });
@@ -70,14 +70,14 @@ class Dialog extends Base {
       style: {
         'alignItems': 'center',
         display,
-        'flexDirection': 'column',
+        'flex-direction': 'column',
         'height': '100%',
-        'justifyContent': 'center',
+        'justify-content': 'center',
         'left': 0,
-        // 'outline': 'none',
+        'outline': 'none',
         'position': 'fixed',
         'top': 0,
-        'WebkitTapHighlightColor': 'transparent',
+        '-webkit-tap-highlight-color': 'transparent',
         'width': '100%'
       }
     });

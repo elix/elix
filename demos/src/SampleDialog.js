@@ -20,7 +20,7 @@ class SampleDialog extends Dialog {
     // many cases, you'll want to have a button ("OK", "Close", etc.) that
     // performs this action.
     this.shadowRoot.querySelector('#content').addEventListener('click', () => {
-      this.close('OK');
+      this.close();
     });
   }
 
