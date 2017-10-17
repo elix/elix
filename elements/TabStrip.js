@@ -1,5 +1,5 @@
 // import { html } from '../node_modules/lit-html/lit-html.js';
-import { mergeProps } from '../mixins/props.js';
+import { merge } from '../mixins/props.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ClickSelectionMixin from '../mixins/ClickSelectionMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
@@ -139,7 +139,7 @@ class TabStrip extends Base {
         'flex-direction': lateralPosition ? 'column' : 'row'
       },
       alignStyle
-    );
+    );merge
     const role = original.attributes.role || 'tablist';
     return mergeProps(base, {
       attributes: {
@@ -187,7 +187,7 @@ class TabStrip extends Base {
       selected,
       'tab-align': tabAlign,
       'tab-position': tabPosition
-    };
+    };merge
 
     return mergeProps(
       base,

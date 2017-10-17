@@ -1,5 +1,5 @@
 // import { html } from '../node_modules/lit-html/lit-html.js';
-import * as props from '../mixins/props.js';
+import * as props from '../mergeps.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
 import HostPropsMixin from '../mixins/HostPropsMixin.js';
@@ -79,7 +79,7 @@ class TabButton extends Base {
         'border-right-color': '#ccc',
         'border-style': 'solid',
         'border-top-color': '#ccc',
-        'border-width': '1px',
+        'bomerge': '1px',
         'color': 'inherit',
         'flex': 1,
         'font-family': 'inherit',

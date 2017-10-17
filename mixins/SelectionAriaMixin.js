@@ -68,7 +68,7 @@ export default function SelectionAriaMixin(Base) {
         // Remember that we generated an ID for this item.
         item[generatedIdKey] = id;
       }
-      return props.mergeProps(base, {
+      return props.merge(base, {
         attributes: {
           'aria-selected': selected,
           id,
@@ -91,7 +91,7 @@ export default function SelectionAriaMixin(Base) {
       const selectedItemId = selectedItem ?
         getIdForItem(this, selectedItem, this.state.selectedIndex) :
         null;
-      return props.mergeProps(base, {
+      return props.merge(base, {
         attributes: {
           'aria-activedescendant': selectedItemId,
           role

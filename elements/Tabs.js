@@ -94,7 +94,7 @@ class Tabs extends Base {
       },
       lateralPosition && lateralStyle
     );
-    return props.mergeProps(base, { style });
+    return props.merge(base, { style });
   }
 
   get tabAlign() {
@@ -137,9 +137,7 @@ class Tabs extends Base {
   [symbols.render]() {
     if (super[symbols.render]) { super[symbols.render](); }
 
-    // Create the tab strip and tab panels.
-    // TODO: handle selected-index-changed
-    props.applyProps(this.$.tabStrip, {
+    props.apply(this.$.tabStrip, {
       attributes: {
         'selected-index': this.state.selectedIndex,
         'tab-align': this.state.tabAlign,
@@ -149,7 +147,7 @@ class Tabs extends Base {
 
     props.applyChildNodes(this.$.tabButtonsSlot, this.tabButtons);
 
-    props.applyProps(this.$.tabPanels, {
+    props.apply(this.$.tabPanels, {
       attributes: {
         'selected-index': this.state.selectedIndex
       }

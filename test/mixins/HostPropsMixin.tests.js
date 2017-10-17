@@ -9,11 +9,13 @@ class HostPropsTest extends HostPropsMixin(ReactiveMixin(HTMLElement)) {
 
   hostProps(original) {
     const base = super.hostProps ? super.hostProps(original) : {};
-    const selected = this.state.selected;
-    const color = selected && 'red';
-    const style = color ? { color } : {};
-    return props.mergeProps(base, {
-      style
+    // const selected = this.state.selected;
+    // const color = selected && 'red';
+    // const style = color ? { color } : {};
+    return props.merge(base, {
+      style: {
+        color: this.state.selected ? 'red' : undefined
+      }
     });
   }
 

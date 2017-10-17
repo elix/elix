@@ -73,9 +73,9 @@ export default function ContentItemsMixin(Base) {
         const items = this.items || [];
         items.forEach((item, index) => {
           if (item[originalPropsKey] === undefined) {
-            item[originalPropsKey] = props.getProps(item);
+            item[originalPropsKey] = props.get(item);
           }
-          props.applyProps(item, this.itemProps(item, index, item[originalPropsKey]));
+          props.apply(item, this.itemProps(item, index, item[originalPropsKey]));
         });
       }
     }

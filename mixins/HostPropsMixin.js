@@ -23,7 +23,7 @@ export default function HostPropsMixin(Base) {
       if (this.hostProps) {
         // First gather the original attributes on the component.
         if (this[originalPropsKey] === undefined) {
-          this[originalPropsKey] = props.getProps(this);
+          this[originalPropsKey] = props.get(this);
           this[originalStyleKey] = this.style.cssText;
         }
 
@@ -34,7 +34,7 @@ export default function HostPropsMixin(Base) {
         this[latestStylePropsKey] = hostProps.style;
 
         // Apply those to the host.
-        props.applyProps(this, hostProps);
+        props.apply(this, hostProps);
       }
     }
 

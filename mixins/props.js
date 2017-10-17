@@ -1,7 +1,32 @@
 import Symbol from './Symbol.js';
 
 
-const previousValueKey = Symbol('previousValue');
+const previousChildNodesKey = Symbol('previousChildNodes');
+
+
+export function apply(element, props) {
+  Object.keys(props).forEach(key => {
+    const value = props[key];
+    switch (key) {
+      case 'attributes':
+        applyAttributes(element, value);
+        break;
+
+      case 'classes':
+        applyClasses(element, value);
+        break;
+
+      case 'style':
+        applyStyle(element, value);
+        break;
+
+      default:
+        // Update property
+        element[key] = value;
+        break;
+    }
+  });
+}
 
 
 export function applyAttribute(element, name, value) {
@@ -15,7 +40,7 @@ export function applyAttribute(element, name, value) {
 }
 
 
-function applyAttributeProps(element, attributeProps) {
+export function applyAttributes(element, attributeProps) {
   if (attributeProps) {
     Object.keys(attributeProps).forEach(name => {
       applyAttribute(element, name, attributeProps[name]);
@@ -26,7 +51,7 @@ function applyAttributeProps(element, attributeProps) {
 
 export function applyChildNodes(element, childNodes) {
   // Quick dirty check if last array applied was frozen.
-  if (childNodes === element[previousValueKey]) {
+  if (element[previousChildNodesKey] && childNodes === element[previousChildNodesKey]) {
     return;
   }
 
@@ -43,43 +68,18 @@ export function applyChildNodes(element, childNodes) {
     }
   }
 
-  element[previousValueKey] = Object.isFrozen(childNodes) ?
+  element[previousChildNodesKey] = Object.isFrozen(childNodes) ?
     childNodes :
-    {};
+    null;
 }
 
 
-export function applyClassProps(element, classProps) {
+export function applyClasses(element, classProps) {
   applyAttribute(element, 'class', formatClassProps(classProps));
 }
 
 
-export function applyProps(element, props) {
-  Object.keys(props).forEach(key => {
-    const value = props[key];
-    switch (key) {
-      case 'attributes':
-        applyAttributeProps(element, value);
-        break;
-
-      case 'classes':
-        applyClassProps(element, value);
-        break;
-
-      case 'style':
-        applyStyleProps(element, value);
-        break;
-
-      default:
-        // Update property
-        element[key] = value;
-        break;
-    }
-  });
-}
-
-
-export function applyStyleProps(element, styleProps) {
+export function applyStyle(element, styleProps) {
   Object.assign(element.style, styleProps);
 }
 
@@ -102,7 +102,28 @@ export function formatStyleProps(styleProps) {
 }
 
 
-export function getClassProps(element) {
+export function get(element) {
+  return {
+    attributes: getAttributes(element),
+    classes: getClasses(element),
+    style: getStyle(element)
+  };
+}
+
+
+export function getAttributes(element) {
+  const attributes = {};
+  [...element.attributes].forEach(attribute => {
+      // TODO: Convert custom attributes to properties
+      if (attribute.name !== 'class' && attribute.name !== 'style') {
+          attributes[attribute.name] = attribute.value;
+      }
+  });
+  return attributes;
+}
+
+
+export function getClasses(element) {
   const result = {};
   [...element.classList].forEach(className =>
     result[className] = true
@@ -111,29 +132,7 @@ export function getClassProps(element) {
 }
 
 
-export function getProps(element) {
-
-  const attributes = {};
-  [...element.attributes].forEach(attribute => {
-    // TODO: Convert custom attributes to properties
-    if (attribute.name !== 'class' && attribute.name !== 'style') {
-      attributes[attribute.name] = attribute.value;
-    }
-  });
-  const classes = getClassProps(element);
-  const style = getStyleProps(element);
-
-  const props = {
-    attributes,
-    classes,
-    style
-  };
-
-  return props;
-}
-
-
-export function getStyleProps(element) {
+export function getStyle(element) {
   const styleProps = {};
   [...element.style].forEach(key => {
     styleProps[key] = element.style[key];
@@ -142,18 +141,18 @@ export function getStyleProps(element) {
 }
 
 
-export function mergeProps(...sources) {
-  const specialProps = [
-    'attributes',
-    'classes',
-    'style'
-  ];
+export function merge(...sources) {
+  const specialProps = {
+    'attributes': true,
+    'classes': true,
+    'style': true
+  };
   const output = {};
   sources.forEach(source => {
     if (source) {
       Object.keys(source).forEach(key => {
         const value = source[key];
-        output[key] = specialProps.indexOf(key) >= 0 ?
+        output[key] = specialProps[key] >= 0 ?
           Object.assign(output[key] || {}, value) :
           value;
       });
