@@ -84,7 +84,7 @@ export default class ListBox extends Base {
         'display': 'flex',
         '-webkit-tap-highlight-color': 'rgba(0, 0, 0, 0)'
       }
-    );merge
+    );
     return props.merge(base, { style });
   }
 
@@ -109,7 +109,7 @@ export default class ListBox extends Base {
       base.classes,
       { selected }
     );
-merge
+    
     return props.merge(base, {
       classes,
       style

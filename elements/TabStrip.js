@@ -187,9 +187,9 @@ class TabStrip extends Base {
       selected,
       'tab-align': tabAlign,
       'tab-position': tabPosition
-    };merge
+    };
 
-    return mergeProps(
+    return props.merge(
       base,
       {
         attributes,
