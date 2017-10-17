@@ -1,4 +1,5 @@
 import * as props from '../../mixins/props.js';
+import flushPolyfills from '../flushPolyfills.js';
 import HostPropsMixin from '../../mixins/HostPropsMixin.js';
 import ReactiveMixin from '../../mixins/ReactiveMixin.js';
 import symbols from '../../mixins/symbols.js';
@@ -56,6 +57,7 @@ describe("HostPropsMixin", function () {
 
   it("merges styles on top of original styles", done => {
     container.innerHTML = `<host-props-test style="background-color: yellow; color: green;"></host-props-test>`;
+    flushPolyfills();
     const fixture = container.querySelector('host-props-test');
     fixture.setState({
       selected: true
