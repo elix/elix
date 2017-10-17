@@ -1,29 +1,29 @@
+import * as props from '../mixins/props.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
-import BackdropWrapper from './BackdropWrapper.js';
-import FocusCaptureWrapper from './FocusCaptureWrapper.js';
+// import FocusCaptureWrapper from './FocusCaptureWrapper.js';
 import DialogModalityMixin from '../mixins/DialogModalityMixin.js';
+import HostPropsMixin from '../mixins/HostPropsMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
-import OpenCloseMixin from '../mixins/OpenCloseMixin.js';
+import ModalBackdrop from './ModalBackdrop.js';
 import OverlayMixin from '../mixins/OverlayMixin.js';
+import ReactiveMixin from '../mixins/ReactiveMixin.js';
 import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import symbols from '../mixins/symbols.js';
+// import VisualStateMixin from '../mixins/VisualStateMixin.js';
 
 
 const Base =
-  // Relative order of wrapper application matters: first focus capture
-  // wrapper, then backdrop wrapper. Remaining mixins can be applied in
-  // any order.
-  BackdropWrapper(
-  FocusCaptureWrapper(
-
   AttributeMarshallingMixin(
   DialogModalityMixin(
+  // FocusCaptureWrapper(
+  HostPropsMixin(
   KeyboardMixin(
-  OpenCloseMixin(
   OverlayMixin(
+  ReactiveMixin(
   ShadowTemplateMixin(
+  // VisualStateMixin(
     HTMLElement
-  ))))))));
+  )))))));
 
 
 /**
@@ -40,39 +40,56 @@ const Base =
  * @mixes DialogModalityMixin
  * @mixes FocusCaptureWrapper
  * @mixes KeyboardMixin
- * @mixes OpenCloseMixin
  * @mixes OverlayMixin
  * @mixes ShadowTemplateMixin
  */
 class Dialog extends Base {
 
-  [symbols.template](filler) {
-    return super[symbols.template](`
-      <style>
-        :host {
-          align-items: center;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-        }
+  backdropProps() {
+    return super.backdropProps ? super.backdropProps() : {};
+  }
 
-        :host(:not(.visible)) {
-          display: none;
-        }
+  contentProps() {
+    const base = super.contentProps ? super.contentProps() : {};
+    return props.merge(base, {
+      style: {
+        'background': 'white',
+        'border': '1px solid rgba(0, 0, 0, 0.2)',
+        'boxShadow': '0 2px 10px rgba(0, 0, 0, 0.5)',
+        'position': 'relative'
+      }
+    });
+  }
 
-        #backdrop {
-          background: black;
-          opacity: 0.2;
-        }
+  hostProps(original) {
+    const base = super.hostProps ? super.hostProps(original) : {};
+    const display = this.closed ?
+      null :
+      base.style && base.style.display || 'flex';
+    return props.merge(base, {
+      style: {
+        'alignItems': 'center',
+        display,
+        'flexDirection': 'column',
+        'height': '100%',
+        'justifyContent': 'center',
+        'left': 0,
+        // 'outline': 'none',
+        'position': 'fixed',
+        'top': 0,
+        'WebkitTapHighlightColor': 'transparent',
+        'width': '100%'
+      }
+    });
+  }
 
-        #overlayContent {
-          background: white;
-          border: 1px solid rgba(0, 0, 0, 0.2);
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-        }
-      </style>
-      ${filler || `<slot></slot>`}
-    `);
+  get [symbols.template]() {
+    return `
+      <elix-modal-backdrop style="${props.formatStyleProps(this.backdropProps().style)}"></elix-modal-backdrop>
+      <div id="content" style="${props.formatStyleProps(this.contentProps().style)}">
+        <slot></slot>
+      </div>
+    `;
   }
 
 }

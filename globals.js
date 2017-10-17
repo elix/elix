@@ -34,7 +34,7 @@
 
 // Import elements
 // import AlertDialog from './elements/AlertDialog.js';
-// import Dialog from './elements/Dialog.js';
+import Dialog from './elements/Dialog.js';
 // import Drawer from './elements/Drawer.js';
 // import LabeledTabButton from './elements/LabeledTabButton.js';
 // import LabeledTabs from './elements/LabeledTabs.js';
