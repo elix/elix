@@ -41,6 +41,7 @@ import Drawer from './elements/Drawer.js';
 import ListBox from './elements/ListBox.js';
 import Modes from './elements/Modes.js';
 // import Popup from './elements/Popup.js';
+import Spread from './elements/Spread.js';
 import Tabs from './elements/Tabs.js';
 import TabStrip from './elements/TabStrip.js';
 // import TabStripWrapper from './elements/TabStripWrapper.js';
@@ -78,6 +79,7 @@ const Elix = {
   // ShadowReferencesMixin,
   // ShadowTemplateMixin,
   // SingleSelectionMixin,
+  Spread,
   // Symbol,
   // symbols,
   Tabs,
