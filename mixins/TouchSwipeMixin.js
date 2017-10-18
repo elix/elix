@@ -50,7 +50,7 @@ export default function TouchSwipeMixin(Base) {
     }
 
     get swipeTarget() {
-      return this;
+      return super.swipeTarget || this;
     }
 
     touchEnd(event) {

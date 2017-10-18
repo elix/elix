@@ -6,7 +6,7 @@ import OverlayMixin from '../mixins/OverlayMixin.js';
 import * as props from '../mixins/props.js';
 import symbols from '../mixins/symbols.js';
 import TouchSwipeMixin from '../mixins/TouchSwipeMixin.js';
-// import TrackpadSwipeMixin from '../../src/mixins/TrackpadSwipeMixin.js';
+import TrackpadSwipeMixin from '../mixins/TrackpadSwipeMixin.js';
 import VisualStateMixin from '../mixins/VisualStateMixin.js';
 import ElementBase from './ElementBase.js';
 
@@ -16,9 +16,10 @@ const Base =
   KeyboardMixin(
   OverlayMixin(
   TouchSwipeMixin(
+  TrackpadSwipeMixin(
   VisualStateMixin(
     ElementBase
-  )))));
+  ))))));
 
 
 /**
