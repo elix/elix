@@ -35,7 +35,7 @@
 // Import elements
 // import AlertDialog from './elements/AlertDialog.js';
 import Dialog from './elements/Dialog.js';
-// import Drawer from './elements/Drawer.js';
+import Drawer from './elements/Drawer.js';
 // import LabeledTabButton from './elements/LabeledTabButton.js';
 // import LabeledTabs from './elements/LabeledTabs.js';
 import ListBox from './elements/ListBox.js';
@@ -59,7 +59,7 @@ const Elix = {
   // DefaultSlotContentMixin,
   // Dialog,
   // DirectionSelectionMixin,
-  // Drawer,
+  Drawer,
   // KeyboardDirectionMixin,
   // KeyboardMixin,
   // KeyboardPagedSelectionMixin,
