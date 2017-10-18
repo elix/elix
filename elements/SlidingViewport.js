@@ -47,12 +47,15 @@ class SlidingViewport extends Base {
     const count = this.items.length;
     const dampedSelection = FractionalSelection.dampedListSelection(fractionalSelection, count);
     const fraction = dampedSelection / count;
+    const transition = swiping ?
+      'none' :
+      'transform 0.25s';
     
     props.apply(this.$.spread, {
       style: {
         'height': '100%',
         'transform': `translateX(${-sign * fraction * 100}%)`,
-        'transition': !swiping && 'transform 0.25s',
+        transition,
         'willChange': 'transform'
       }
     });

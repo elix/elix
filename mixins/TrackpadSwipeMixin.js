@@ -132,7 +132,7 @@ function handleWheel(component, event) {
     gesture = 'swipeRight';
   }
   if (gesture) {
-    if (component[gesture]()) {
+    if (component[gesture]) {
       component[gesture]();
     }
     postNavigate(component);

@@ -12,26 +12,30 @@ import TrackpadSwipeMixin from '../mixins/TrackpadSwipeMixin.js';
 
 const Base =
   DirectionSelectionMixin(
-  FocusMixin(
+  // FocusMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
-  LanguageDirectionMixin(
+  // LanguageDirectionMixin(
   SelectionAriaMixin(
   SwipeDirectionMixin(
   TouchSwipeMixin(
   TrackpadSwipeMixin(
     SlidingViewport
-  )))))))));
+  )))))));
 
 
-export default class SlidingCarousel extends Base {
+class SlidingCarousel extends Base {
 
-  rootProps() {
-    const base = super.rootProps ? super.rootProps() : {};
-    const style = Object.assign({}, base.style, {
-      'outline': !this.state.focusRing && 'none'
-    });
-    return Object.assign({}, base, { style });
-  }
+  // rootProps() {
+  //   const base = super.rootProps ? super.rootProps() : {};
+  //   const style = Object.assign({}, base.style, {
+  //     'outline': !this.state.focusRing && 'none'
+  //   });
+  //   return Object.assign({}, base, { style });
+  // }
 
 }
+
+
+customElements.define('elix-sliding-carousel', SlidingCarousel);
+export default SlidingCarousel;
