@@ -104,6 +104,11 @@ export default function ReactiveMixin(Base) {
      * render the component. Otherwise, this returns a resolved promise.
      */
     setState(changes) {
+      // There's no good reason to have a render method update state.
+      if (this[symbols.rendering]) {
+        console.warn(`Avoid calling setState while the component is being rendered.`);
+      }
+
       // Create a new state object that holds the old state, plus the new
       // changes merged on top of it.
       const nextState = Object.assign({}, this[stateKey], changes);
