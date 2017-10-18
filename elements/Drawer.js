@@ -1,31 +1,23 @@
-import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
-import BackdropWrapper from './BackdropWrapper.js';
 import DialogModalityMixin from '../mixins/DialogModalityMixin.js';
-import FocusCaptureWrapper from './FocusCaptureWrapper.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
-import OpenCloseMixin from '../mixins/OpenCloseMixin.js';
+// import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
+import ModalBackdrop from './ModalBackdrop.js';
 import OverlayMixin from '../mixins/OverlayMixin.js';
-import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
+import * as props from '../mixins/props.js';
 import symbols from '../mixins/symbols.js';
-import TransitionEffectMixin from '../mixins/TransitionEffectMixin.js';
-
+// import TouchSwipeMixin from '../mixins/TouchSwipeMixin.js';
+// import TrackpadSwipeMixin from '../../src/mixins/TrackpadSwipeMixin.js';
+import VisualStateMixin from '../mixins/VisualStateMixin.js';
+import ElementBase from './ElementBase.js';
 
 const Base =
-  // Relative order of wrapper application matters: first focus capture
-  // wrapper, then backdrop wrapper. Remaining mixins can be applied in
-  // any order.
-  BackdropWrapper(
-  FocusCaptureWrapper(
-
-  AttributeMarshallingMixin(
+  // FocusCaptureWrapper(
   DialogModalityMixin(
   KeyboardMixin(
-  OpenCloseMixin(
   OverlayMixin(
-  ShadowTemplateMixin(
-  TransitionEffectMixin(
-    HTMLElement
-  )))))))));
+  VisualStateMixin(
+    ElementBase
+  ))));
 
 
 /**
@@ -49,92 +41,146 @@ const Base =
  * @mixes TransitionEffectMixin
  */
 class Drawer extends Base {
-  
-  connectedCallback() {
-    if (super.connectedCallback) { super.connectedCallback(); }
-    // We can't seem to write a CSS rule that lets a shadow element be sensitive
-    // to the `dir` attribute of an ancestor, so we reflect the inherited
-    // direction to the component. We can then write styles that key off of
-    // that.
-    const direction = getComputedStyle(this).direction;
-    if (direction === 'rtl' && !this.dir) {
-      this.setAttribute('dir', 'rtl');
-    }
+
+  constructor() {
+    super();
+    this.immediateTransitions = {
+      'opened': 'expanded'
+    };
+    this.transitionEndTransitions = {
+      'collapsed': 'closed'
+    };
   }
 
-  [symbols.elementsWithTransitions](effect) {
-    return [
-      this.backdrop,
-      this.shadowRoot.querySelector('#overlayContent')
-    ];
+  backdropProps() {
+    const expanded = this.state.visualState === 'expanded';
+    // const swiping = this.state.swipeFraction !== null;
+    // const swipeFraction = Math.max(Math.min(this.state.swipeFraction, 1), 0);
+    // let opacity = 0.2;
+    // if (swiping) {
+    //   opacity *= 1 - swipeFraction;
+    // }
+    // const expandedBackdropStyle = {
+    //   opacity
+    // };
+    return {
+      style: {
+        'opacity': expanded ? 0.2 : 0,
+        // 'transition': !swiping && 'opacity 0.25s linear',
+        'transition': 'opacity 0.25s linear',
+        'willChange': 'opacity'
+      }
+    };
+  }
+
+  close() {
+    const nextVisualState = this.state.visualState === 'expanded' ?
+      'collapsed' :
+      'closed';
+    this.changeVisualState(nextVisualState);
+  }
+
+  contentProps() {
+    // const sign = this.rightToLeft ? -1 : 1;
+    const expanded = this.state.visualState === 'expanded';
+    // const swiping = this.state.swipeFraction !== null;
+    // const swipeFraction = Math.max(Math.min(sign * this.state.swipeFraction, 1), 0);
+    // const expandedContentStyle = {
+    //   'transform': `translateX(${-sign * swipeFraction * 100}%)`
+    // };
+    const transform = expanded ?
+      'translateX(0)' :
+      'translateX(-100%)';
+    return {
+      style: {
+        'background': 'white',
+        'border': '1px solid rgba(0, 0, 0, 0.2)',
+        'boxShadow': '0 2px 10px rgba(0, 0, 0, 0.5)',
+        'position': 'relative',
+        transform,
+        // 'transition': !swiping && 'transform 0.25s',
+        'transition': 'transform 0.25s',
+        'willChange': 'transform'
+      }
+    };
+  }
+
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      selectedIndex: 0
+    });
+  }
+
+  hostProps(original) {
+    const base = super.hostProps ? super.hostProps(original) : {};
+    const display = this.closed ?
+      null :
+      base.style && base.style.display || 'flex';
+    return props.merge(base, {
+      style: {
+        'alignItems': 'stretch',
+        display,
+        'flexDirection': 'row',
+        'left': 0,
+        'height': '100%',
+        'justifyContent': 'flex-start',
+        'outline': 'none',
+        'position': 'fixed',
+        'top': 0,
+        'WebkitTapHighlightColor': 'transparent',
+        'width': '100%'
+      }
+    });
+  }
+
+  open() {
+    this.changeVisualState('opened');
+  }
+
+  [symbols.render]() {
+    if (super[symbols.render]) { super[symbols.render](); }
+    props.apply(this.$.backdrop, this.backdropProps());
+    props.apply(this.$.content, this.contentProps());
   }
 
   [symbols.shadowCreated]() {
     if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
-
     // Implicitly close on background clicks.
-    this.backdrop.addEventListener('click', () => {
+    this.$.backdrop.addEventListener('click', () => {
       this.close();
     });
   }
 
-  [symbols.template](filler) {
-    return super[symbols.template](`
-      <style>
-        :host {
-          display: flex;
-          align-items: stretch;
-          flex-direction: row;
-          justify-content: flex-start;
-        }
-
-        :host(:not(.visible)) {
-          display: none;
-        }
-
-        #backdrop {
-          background: black;
-          opacity: 0;
-          will-change: opacity;
-        }
-
-        :host(.effect) #backdrop {
-          transition: opacity 0.25s linear;
-        }
-        :host(.opened:not(.effect)) #backdrop,
-        :host(.effect.opening) #backdrop {
-          opacity: 0.4;
-        }
-
-        #overlayContent {
-          background: white;
-          border: 1px solid rgba(0, 0, 0, 0.2);
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-          transform: translateX(-100%);
-          will-change: transform;
-        }
-        :host([dir="rtl"]) #overlayContent {
-          transform: translateX(100%);
-        }
-
-        :host(.opened:not(.effect)) #overlayContent,
-        :host(.effect.opening) #overlayContent {
-          transform: translateX(0);
-        }
-
-        :host(.effect) #overlayContent {
-          transition: transform 0.25s;
-        }
-        :host(.effect.opening) #overlayContent {
-          transition-timing-function: ease-out;
-        }
-        :host(.effect.closing) #overlayContent {
-          transition-timing-function: ease-in;
-        }
-      </style>
-      ${ filler || `<slot></slot>`}
-    `);
+  get [symbols.template]() {
+    return `
+      <elix-modal-backdrop id="backdrop"></elix-modal-backdrop>
+      <div id="content">
+        <slot></slot>
+      </div>
+    `;
   }
+
+  // swipeLeft() {
+  //   if (!this.rightToLeft) {
+  //     const visualState = this.state.swipeFraction >= 1 ?
+  //       'closed' :
+  //       'collapsed';
+  //     this.changeVisualState(visualState);
+  //   }
+  // }
+
+  // swipeRight() {
+  //   if (this.rightToLeft) {
+  //     const visualState = this.state.swipeFraction <= -1 ?
+  //       'closed' :
+  //       'collapsed';
+  //     this.changeVisualState(visualState);
+  //   }
+  // }
+
+  // get swipeTarget() {
+  //   return this.contentElement;
+  // }
 
 }
 
