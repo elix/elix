@@ -137,6 +137,20 @@ class Drawer extends Base {
     this.changeVisualState('opened');
   }
 
+  // Define a property that can be set via an attribute.
+  get opened() {
+    return this.state.visualState === 'expanded';
+  }
+  set opened(opened) {
+    const parsed = String(opened) === 'true';
+    const visualState = parsed ?
+      'opened' :
+      this.state.visualState === 'expanded' ?
+        'collapsed' :
+        'closed';
+    this.changeVisualState(visualState);
+  }
+
   [symbols.render]() {
     if (super[symbols.render]) { super[symbols.render](); }
     props.apply(this.$.backdrop, this.backdropProps());
