@@ -30,10 +30,10 @@ export default function VisualStateMixin(Base) {
       }
     }
 
-    // componentDidMount() {
-    //   if (super.componentDidMount) { super.componentDidMount(); }
-    //   transitionToNextVisualState(this, this.immediateTransitions);
-    // }
+    componentDidMount() {
+      if (super.componentDidMount) { super.componentDidMount(); }
+      transitionToNextVisualState(this, this.immediateTransitions);
+    }
 
     componentDidUpdate() {
       if (super.componentDidUpdate) { super.componentDidUpdate(); }

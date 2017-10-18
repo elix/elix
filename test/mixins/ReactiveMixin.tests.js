@@ -4,8 +4,21 @@ import symbols from '../../mixins/symbols.js';
 
 class ReactiveTest extends ReactiveMixin(HTMLElement) {
 
+  componentDidMount() {
+    if (super.componentDidMount) { super.componentDidMount(); }
+  }
+
+  componentDidUpdate() {
+    if (super.componentDidUpdate) { super.componentDidUpdate(); }
+  }
+
   get defaultState() {
     return this.constructor.defaults || {};
+  }
+
+  [symbols.render]() {
+    if (super[symbols.render]) { super[symbols.render](); }
+    this.renderedResult = this.state.message;
   }
 
 }
@@ -71,6 +84,7 @@ describe("ReactiveMixin", function () {
       message: 'echidna'
     }).then(() => {
       assert.equal(renderSpy.callCount, 1);
+      assert.equal(fixture.renderedResult, 'echidna');
       done();
     });
   });
@@ -91,11 +105,24 @@ describe("ReactiveMixin", function () {
     });
   });
 
-  it("render invokes componentDidUpdate if defined", () => {
+  it("render invokes componentDidMount/componentDidUpdate if defined", done => {
     const fixture = document.createElement('reactive-test');
+    const componentDidMountSpy = sinon.spy(fixture, 'componentDidMount');
     const componentDidUpdateSpy = sinon.spy(fixture, 'componentDidUpdate');
-    fixture.render()
-    assert.equal(componentDidUpdateSpy.callCount, 1);
+    container.appendChild(fixture);
+    // connectedCallback should trigger first render with promise timing.
+    Promise.resolve(() => {
+      assert.equal(componentDidMountSpy.callCount, 1);
+      assert.equal(componentDidUpdateSpy.callCount, 0);
+      return fixture.setState({
+        message: 'iguana'
+      })
+    })
+    .then(() => {
+      assert.equal(componentDidMountSpy.callCount, 1);
+      assert.equal(componentDidUpdateSpy.callCount, 0);
+      done();
+    });
   })
 
   it("leaves state object alone if there are no changes", done => {

@@ -20,6 +20,11 @@ export default function SelectionInViewMixin(Base) {
   // The class prototype added by the mixin.
   class SelectionInView extends Base {
 
+    componentDidMount() {
+      if (super.componentDidMount) { super.componentDidMount(); }
+      this.scrollSelectionIntoView();
+    }
+
     componentDidUpdate() {
       if (super.componentDidUpdate) { super.componentDidUpdate(); }
       this.scrollSelectionIntoView();

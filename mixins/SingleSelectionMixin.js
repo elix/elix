@@ -58,9 +58,15 @@ export default function SingleSelectionMixin(Base) {
       });
     }
 
+    componentDidMount() {
+      if (super.componentDidMount) { super.componentDidMount(); }
+      // If the current state implies selection (e.g., via selectionRequired),
+      // set the selection now.
+      trackSelectedItem(this);
+    }
+
     componentDidUpdate() {
       if (super.componentDidUpdate) { super.componentDidUpdate(); }
-
       // In case selected item changed position or was removed.
       trackSelectedItem(this);
     }
