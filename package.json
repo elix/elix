@@ -8,9 +8,6 @@
     "url": "git://github.com/elix/elix.git"
   },
   "author": "info@component.kitchen",
-  "dependencies": {
-    "lit-html": "0.7.1"
-  },
   "devDependencies": {
     "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
