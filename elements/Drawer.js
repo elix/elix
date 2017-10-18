@@ -5,7 +5,7 @@ import ModalBackdrop from './ModalBackdrop.js';
 import OverlayMixin from '../mixins/OverlayMixin.js';
 import * as props from '../mixins/props.js';
 import symbols from '../mixins/symbols.js';
-// import TouchSwipeMixin from '../mixins/TouchSwipeMixin.js';
+import TouchSwipeMixin from '../mixins/TouchSwipeMixin.js';
 // import TrackpadSwipeMixin from '../../src/mixins/TrackpadSwipeMixin.js';
 import VisualStateMixin from '../mixins/VisualStateMixin.js';
 import ElementBase from './ElementBase.js';
@@ -15,9 +15,10 @@ const Base =
   DialogModalityMixin(
   KeyboardMixin(
   OverlayMixin(
+  TouchSwipeMixin(
   VisualStateMixin(
     ElementBase
-  ))));
+  )))));
 
 
 /**
@@ -54,20 +55,16 @@ class Drawer extends Base {
 
   backdropProps() {
     const expanded = this.state.visualState === 'expanded';
-    // const swiping = this.state.swipeFraction !== null;
-    // const swipeFraction = Math.max(Math.min(this.state.swipeFraction, 1), 0);
-    // let opacity = 0.2;
-    // if (swiping) {
-    //   opacity *= 1 - swipeFraction;
-    // }
-    // const expandedBackdropStyle = {
-    //   opacity
-    // };
+    const swiping = this.state.swipeFraction !== null;
+    const swipeFraction = Math.max(Math.min(this.state.swipeFraction, 1), 0);
+    let opacity = expanded ? 0.2 : 0;
+    if (swiping) {
+      opacity *= 1 - swipeFraction;
+    }
     return {
       style: {
-        'opacity': expanded ? 0.2 : 0,
-        // 'transition': !swiping && 'opacity 0.25s linear',
-        'transition': 'opacity 0.25s linear',
+        opacity,
+        'transition': !swiping && 'opacity 0.25s linear',
         'willChange': 'opacity'
       }
     };
@@ -81,15 +78,12 @@ class Drawer extends Base {
   }
 
   contentProps() {
-    // const sign = this.rightToLeft ? -1 : 1;
+    const sign = this.rightToLeft ? -1 : 1;
     const expanded = this.state.visualState === 'expanded';
-    // const swiping = this.state.swipeFraction !== null;
-    // const swipeFraction = Math.max(Math.min(sign * this.state.swipeFraction, 1), 0);
-    // const expandedContentStyle = {
-    //   'transform': `translateX(${-sign * swipeFraction * 100}%)`
-    // };
+    const swiping = this.state.swipeFraction !== null;
+    const swipeFraction = Math.max(Math.min(sign * this.state.swipeFraction, 1), 0);
     const transform = expanded ?
-      'translateX(0)' :
+      `translateX(${-sign * swipeFraction * 100}%)` :
       'translateX(-100%)';
     return {
       style: {
@@ -98,8 +92,7 @@ class Drawer extends Base {
         'boxShadow': '0 2px 10px rgba(0, 0, 0, 0.5)',
         'position': 'relative',
         transform,
-        // 'transition': !swiping && 'transform 0.25s',
-        'transition': 'transform 0.25s',
+        'transition': !swiping && 'transform 0.25s',
         'willChange': 'transform'
       }
     };
@@ -157,6 +150,11 @@ class Drawer extends Base {
     props.apply(this.$.content, this.contentProps());
   }
 
+  // TODO: Restore LanguageDirectionMixin
+  get rightToLeft() {
+    return false;
+  }
+
   [symbols.shadowCreated]() {
     if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
     // Implicitly close on background clicks.
@@ -174,27 +172,27 @@ class Drawer extends Base {
     `;
   }
 
-  // swipeLeft() {
-  //   if (!this.rightToLeft) {
-  //     const visualState = this.state.swipeFraction >= 1 ?
-  //       'closed' :
-  //       'collapsed';
-  //     this.changeVisualState(visualState);
-  //   }
-  // }
+  swipeLeft() {
+    if (!this.rightToLeft) {
+      const visualState = this.state.swipeFraction >= 1 ?
+        'closed' :
+        'collapsed';
+      this.changeVisualState(visualState);
+    }
+  }
 
-  // swipeRight() {
-  //   if (this.rightToLeft) {
-  //     const visualState = this.state.swipeFraction <= -1 ?
-  //       'closed' :
-  //       'collapsed';
-  //     this.changeVisualState(visualState);
-  //   }
-  // }
+  swipeRight() {
+    if (this.rightToLeft) {
+      const visualState = this.state.swipeFraction <= -1 ?
+        'closed' :
+        'collapsed';
+      this.changeVisualState(visualState);
+    }
+  }
 
-  // get swipeTarget() {
-  //   return this.contentElement;
-  // }
+  get swipeTarget() {
+    return this.$.content;
+  }
 
 }
 
