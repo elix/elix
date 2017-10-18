@@ -8,7 +8,13 @@ const stateKey = Symbol('state');
 
 
 /**
- * Mixin for managing a component's state.
+ * 
+ * Mixin for managing and rendering a component's state in a functional reactive
+ * style.
+ * 
+ * This is modeled after React/Preact's state management, and is adapted for
+ * use with web components. Applying this mixin to a component will give it
+ * FRP behavior similar to React's.
  */
 export default function ReactiveMixin(Base) {
   return class Reactive extends Base {
@@ -27,30 +33,54 @@ export default function ReactiveMixin(Base) {
       this.render();
     }
 
+    /**
+     * The default state for the component. This can be extended by mixins and
+     * classes to provide additional default state.
+     */
     get defaultState() {
       return super.defaultState || {};
     }
 
-    // Internal render method.
-    // The default implementation does nothing.
+    /**
+     * Internal render method.
+     * 
+     * The default implementation does nothing. This should be extended
+     * to provide mixin/component-specific rendering to the DOM.
+     */
     [symbols.render]() {
       if (super[symbols.render]) { super[symbols.render](); }
     }
 
-    // Public render method.
-    // Ensures all internal render methods complete before invoking
-    // componentDidMount/componentDidUpdate.
+    /**
+     * Render the component to the DOM.
+     * 
+     * This method does nothing if the state has not changed since the last
+     * render call.
+     * 
+     * This method invokes all internal render methods. It then invoked
+     * componentDidMount (for first render) or componentDidUpdate (for
+     * subsequent renders).
+     */
     render() {
-      if (super.render) { super.render(); }
-      // Only render if we haven't rendered this state object before.
+      // Only render if we haven't rendered this state object before. This
+      // ensures that consecutive calls to setState only cause a single render.
+      // Each setState call will update the state, queuing up a promise to
+      // render. By the time the first render call actually happens, the
+      // complete state is available. That is what is rendered. When the
+      // following render calls happen, they will see that the complete state
+      // has already been rendered, and skip doing any work.
       if (this[stateKey] !== this[renderedStateKey]) {
 
-        // Remember that we've rendered this state.
         const firstRender = this[renderedStateKey] === undefined;
+
+        // Remember that we've rendered (or about to render) this state.
         this[renderedStateKey] = this[stateKey];
 
-        // Invoke any internal render method implementations.
+        // We set a flag to indicate that rendering is happening. The component
+        // may use this to avoid triggering other updates during the render.
         this[symbols.rendering] = true;
+
+        // Invoke any internal render method implementations.
         this[symbols.render]();
         this[symbols.rendering] = false;
 
@@ -67,35 +97,64 @@ export default function ReactiveMixin(Base) {
       }
     }
 
-    setState(state) {
-      // Create a new state object that's the old one with the new changes
-      // applied on top of it. Do a shallow prop comparison to track whether
-      // there were any changes.
-      const newState = Object.assign({}, this[stateKey]);
-      let stateChanged = !this[stateKey];
-      Object.keys(state).forEach(key => {
-        if (newState[key] !== state[key]) {
-          newState[key] = state[key];
-          stateChanged = true;
-        }
-      });
+    /**
+     * Update the component's state by merging the specified changes on
+     * top of the existing state. If the component is connected to the document,
+     * and the new state has changed, this returns a promise to asynchronously
+     * render the component. Otherwise, this returns a resolved promise.
+     */
+    setState(changes) {
+      // Create a new state object that holds the old state, plus the new
+      // changes merged on top of it.
+      const nextState = Object.assign({}, this[stateKey], changes);
 
-      if (!stateChanged) {
-        return Promise.resolve();
-      }
-      
-      // Freeze the new state so that it's immutable. This prevents accidental
+      // Freeze the new state so it's immutable. This prevents accidental
       // attempts to set state without going through setState.
-      Object.freeze(newState);
-      this[stateKey] = newState;
+      Object.freeze(nextState);
 
-      // Render asynchronously.
-      return Promise.resolve().then(() => {
-        // Only render if we're already connected to the document.
+      // By default, return a resolved promise.
+      let promise = Promise.resolve();
+
+      // Is this our first setState, or does the component think something's changed?
+      if (this[stateKey] === undefined || this.shouldComponentUpdate(nextState)) {
+
+        // Set the new state.
+        this[stateKey] = nextState;
+
+        // We only need to render if we're actually in the document.
         if (this.isConnected) {
-          this.render();
+          // Extend promise so we render asynchronously.
+          promise = promise.then(() => {
+            this.render();
+          });
         }
-      });
+      }
+
+      return promise;
+    }
+
+    /**
+     * Return true if the component should update.
+     * 
+     * The default implementation does a shallow check of property values like
+     * React's PureComponent. This seems adequate for most web components. This
+     * can be overridden to always return true (like React's base Component
+     * class), or to perform more specific, deeper checks for changes in state.
+     */
+    shouldComponentUpdate(nextState) {
+      const base = super.shouldComponentUpdate && super.shouldComponentUpdate(nextState);
+      if (base) {
+        // Trust base result.
+        return true;
+      }
+      // Do a shallow prop comparison to track whether there were any changes.
+      for (let key in nextState) {
+        if (nextState[key] !== this.state[key]) {
+          return true;
+        }
+      };
+      // No changes.
+      return false;
     }
 
     get state() {
