@@ -4,6 +4,7 @@
   "eqnull": true,
   "esnext": true,
   "globals": {
+    "assert": false,
     "afterEach": false,
     "before": false,
     "console": false,
@@ -11,7 +12,9 @@
     "describe": false,
     "HTMLSlotElement": false,
     "it": false,
-    "ShadowRoot": false
+    "mocha": false,
+    "ShadowRoot": false,
+    "sinon": false
   },
   "undef": true,
   "unused": "vars",
