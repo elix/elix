@@ -190,7 +190,7 @@ export default function SingleSelectionMixin(Base) {
       return changed;
     }
 
-  };
+  }
 
   return SingleSelection;
 }

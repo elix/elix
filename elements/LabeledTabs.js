@@ -27,6 +27,7 @@ class LabeledTabs extends Tabs {
 
     const slot = this.shadowRoot.querySelector('slot[name="tabButtons"]');
     if (!slot) {
+      /* eslint-disable no-console */
       console.warn(`LabeledTabs couldn't find a slot named "tabButtons".`);
       return;
     }

@@ -4,11 +4,11 @@ import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import HostPropsMixin from '../mixins/HostPropsMixin.js';
 // import LitHtmlShadowMixin from '../mixins/LitHtmlShadowMixin.js';
-import Modes from './Modes.js';
+import Modes from './Modes.js'; // eslint-disable-line no-unused-vars
 import ReactiveMixin from '../mixins/ReactiveMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
-import TabButton from './TabButton.js';
-import TabStrip from './TabStrip.js';
+import TabButton from './TabButton.js'; // eslint-disable-line no-unused-vars
+import TabStrip from './TabStrip.js'; // eslint-disable-line no-unused-vars
 import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
 import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
@@ -16,7 +16,6 @@ import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
 
 
-const eventsWiredKey = Symbol('eventsWired');
 const previousItemsKey = Symbol('previousItems');
 const tabButtonsKey = Symbol('tabButtons');
 
@@ -159,6 +158,7 @@ class Tabs extends Base {
       this.$.tabPanels :
       this.$.tabStrip;
     if (!this.shadowRoot) {
+      /* eslint-disable no-console */
       console.warn(`Tabs expects a component to define a shadowRoot.`);
     } else if (firstElement.nextSibling !== lastElement) {
       this.shadowRoot.insertBefore(firstElement, lastElement);

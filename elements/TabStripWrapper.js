@@ -1,5 +1,5 @@
 import symbols from '../mixins/symbols.js';
-import TabStrip from './TabStrip.js'; // jshint ignore:line
+import TabStrip from './TabStrip.js'; // eslint-disable-line no-unused-vars
 
 
 // Used to assign unique IDs to tabs for ARIA purposes.
@@ -134,6 +134,7 @@ export default function TabStripWrapper(Base) {
         this.pages :
         this.tabStrip;
       if (!this.shadowRoot) {
+        /* eslint-disable no-console */
         console.warn(`TabStripWrapper expects a component to define a shadowRoot.`);
       } else if (firstElement.nextSibling !== lastElement) {
         this.shadowRoot.insertBefore(firstElement, lastElement);

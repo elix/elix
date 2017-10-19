@@ -76,6 +76,7 @@ export default function SlotContentMixin(Base) {
     get contentSlot() {
       const slot = this.shadowRoot && this.shadowRoot.querySelector('slot:not([name])');
       if (!this.shadowRoot || !slot) {
+        /* eslint-disable no-console */
         console.warn(`SlotContentMixin expects a component to define a shadow tree that includes a default (unnamed) slot.`);
       }
       return slot;
@@ -92,7 +93,7 @@ export default function SlotContentMixin(Base) {
       // Listen to changes on the default slot.
       const slot = this.contentSlot;
       if (slot) {
-        slot.addEventListener('slotchange', event => {
+        slot.addEventListener('slotchange', () => {
           // console.log(`slotchange`);
           this[slotchangeFiredKey] = true;
           assignedNodesChanged(this);

@@ -106,6 +106,7 @@ export default function TouchSwipeMixin(Base) {
 /*
  * Invoked when the user has finished a touch operation.
  */
+/* eslint-disable no-unused-vars */
 function gestureEnd(component, clientX, clientY) {
 
   let gesture;

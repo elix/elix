@@ -36,7 +36,7 @@ import * as props from '../mixins/props.js';
  *   component to use `TransitionEffectMixin` or a compatible mixin. In that
  *   case, `OverlayMixin` will simply perform its work synchronously.
  * 
- * All other aspects of overlay behavior are handled by other mixins and
+ * All other aspects of overlay behavior are handled by other mixins and
  * wrappers. For example, addition of a backdrop element behind the overlay is
  * handled by `BackdropWrapper`. Intercepting and responding to UI events is
  * handled by `PopupModalityMixin` and `DialogModalityMixin`. Management of

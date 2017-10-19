@@ -13,7 +13,7 @@ export default function VisualStateMixin(Base) {
       //   element.addEventListener('transitionend', this[transitionendListenerKey]);
       // });
       // HACK
-      this.$.content.addEventListener('transitionend', event => {
+      this.$.content.addEventListener('transitionend', () => {
         transitionToNextVisualState(this, this.transitionEndTransitions);
       });
     }
@@ -44,6 +44,7 @@ export default function VisualStateMixin(Base) {
 }
 
 
+/* eslint-disable no-unused-vars */
 function getTransitionElements(element, effect) {
   return element[symbols.elementsWithTransitions] ?
     element[symbols.elementsWithTransitions](effect) :

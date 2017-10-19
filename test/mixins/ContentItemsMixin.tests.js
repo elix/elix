@@ -4,6 +4,7 @@ import symbols from '../../mixins/symbols.js';
 
 class ContentItemsTest extends ContentItemsMixin(HTMLElement) {
 
+  /* eslint-disable no-unused-vars */
   itemProps(item, index, original) {
     return {
       hidden: index % 2 === 0
@@ -44,7 +45,7 @@ describe("ContentItemsMixin", () => {
     fixture[symbols.render]();
     assert(fixture.items[0].hidden);
     assert(!fixture.items[1].hidden);
-    assert(fixture.items[2].hidden);;
+    assert(fixture.items[2].hidden);
   });
 
 });

@@ -1,9 +1,7 @@
-import flushPolyfills from '../flushPolyfills.js';
 import ContentItemsMixin from '../../mixins/ContentItemsMixin.js';
 import HostPropsMixin from '../../mixins/HostPropsMixin.js'
 import ReactiveMixin from '../../mixins/ReactiveMixin.js'
 import SelectionAriaMixin from '../../mixins/SelectionAriaMixin.js';
-import symbols from '../../mixins/symbols.js';
 
 
 class SelectionAriaTest extends
@@ -33,7 +31,7 @@ describe("SelectionAriaMixin", () => {
   });
 
   it("assigns default roles to list and items, and default IDs to items without IDs", async () => {
-    const fixture = new SelectionAriaTest();;
+    const fixture = new SelectionAriaTest();
     fixture.id = 'test'; // Will be used as basis for assigned item IDs.
     const item1 = document.createElement('div');
     item1.id = 'explicitID';
@@ -53,7 +51,7 @@ describe("SelectionAriaMixin", () => {
   });
 
   it("indicates the selection state on both the list and the item", async () => {
-    const fixture = new SelectionAriaTest();;
+    const fixture = new SelectionAriaTest();
     const item1 = document.createElement('div');
     fixture.appendChild(item1);
     const item2 = document.createElement('div');
@@ -70,7 +68,7 @@ describe("SelectionAriaMixin", () => {
   });
 
   it("assigns a default role of 'listbox'", () => {
-    const fixture = new SelectionAriaTest();;
+    const fixture = new SelectionAriaTest();
     fixture.render();
     assert.equal(fixture.getAttribute('role'), 'listbox');
   });

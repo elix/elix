@@ -1,7 +1,7 @@
-import flushPolyfills from '../../test/flushPolyfills.js';
 import ReactiveMixin from '../../mixins/ReactiveMixin.js';
 import SingleSelectionMixin from '../../mixins/SingleSelectionMixin.js';
 import symbols from '../../mixins/symbols.js';
+
 
 class SingleSelectionTest extends ReactiveMixin(SingleSelectionMixin(HTMLElement)) {
 

@@ -20,6 +20,7 @@ export default function DirectionSelectionMixin(Base) {
     [symbols.goDown]() {
       if (super[symbols.goDown]) { super[symbols.goDown](); }
       if (!this.selectNext) {
+        /* eslint-disable no-console */
         console.warn(`DirectionSelectionMixin expects a component to define a "selectNext" method.`);
         return false;
       } else {
@@ -30,6 +31,7 @@ export default function DirectionSelectionMixin(Base) {
     [symbols.goEnd]() {
       if (super[symbols.goEnd]) { super[symbols.goEnd](); }
       if (!this.selectLast) {
+        /* eslint-disable no-console */
         console.warn(`DirectionSelectionMixin expects a component to define a "selectLast" method.`);
         return false;
       } else {
@@ -40,6 +42,7 @@ export default function DirectionSelectionMixin(Base) {
     [symbols.goLeft]() {
       if (super[symbols.goLeft]) { super[symbols.goLeft](); }
       if (!this.selectPrevious) {
+        /* eslint-disable no-console */
         console.warn(`DirectionSelectionMixin expects a component to define a "selectPrevious" method.`);
         return false;
       } else {
@@ -50,6 +53,7 @@ export default function DirectionSelectionMixin(Base) {
     [symbols.goRight]() {
       if (super[symbols.goRight]) { super[symbols.goRight](); }
       if (!this.selectNext) {
+        /* eslint-disable no-console */
         console.warn(`DirectionSelectionMixin expects a component to define a "selectNext" method.`);
         return false;
       } else {
@@ -60,6 +64,7 @@ export default function DirectionSelectionMixin(Base) {
     [symbols.goStart]() {
       if (super[symbols.goStart]) { super[symbols.goStart](); }
       if (!this.selectFirst) {
+        /* eslint-disable no-console */
         console.warn(`DirectionSelectionMixin expects a component to define a "selectFirst" method.`);
         return false;
       } else {
@@ -70,6 +75,7 @@ export default function DirectionSelectionMixin(Base) {
     [symbols.goUp]() {
       if (super[symbols.goUp]) { super[symbols.goUp](); }
       if (!this.selectPrevious) {
+        /* eslint-disable no-console */
         console.warn(`DirectionSelectionMixin expects a component to define a "selectPrevious" method.`);
         return false;
       } else {

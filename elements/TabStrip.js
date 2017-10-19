@@ -170,6 +170,7 @@ class TabStrip extends Base {
 
     // Let user select a tab button with Enter or Space.
     switch (event.keyCode) {
+      /* eslint-disable no-case-declarations */
       case 13: /* Enter */
       case 32: /* Space */
         // TODO

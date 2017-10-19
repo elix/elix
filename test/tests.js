@@ -1,4 +1,4 @@
-// jshint ignore:start
+/* eslint-disable */
 
 // Mixin tests
 import * as AttributeMarshallingMixinTests from './mixins/AttributeMarshallingMixin.tests.js';
@@ -28,6 +28,6 @@ import * as SlotContentMixinTests from './mixins/SlotContentMixin.tests.js';
 // Element tests
 // import * as LabeledTabsTests from './elements/LabeledTabs.tests.js';
 
-// jshint ignore:end
+/* eslint-enable */
 
 mocha.run();

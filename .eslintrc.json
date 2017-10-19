@@ -1,0 +1,25 @@
+{
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": 8,
+    "sourceType": "module"
+  },
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "rules": {
+    // Additional per-project rules...
+  },
+  "globals": {
+    "assert": false,
+    "afterEach": false,
+    "before": false,
+    "console": false,
+    "customElements": false,
+    "describe": false,
+    "it": false,
+    "mocha": false,
+    "sinon": false
+  }
+}

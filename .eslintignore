@@ -1,0 +1,5 @@
+build
+demos/*
+!demos/*.js
+!demos/src/*.js
+tasks

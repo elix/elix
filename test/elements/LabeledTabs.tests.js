@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import flushPolyfills from '../flushPolyfills.js';
-import LabeledTabs from '../../elements/LabeledTabs.js'; // jshint ignore:line
+import LabeledTabs from '../../elements/LabeledTabs.js'; // eslint-disable-line no-unused-vars
 
 
 describe("LabeledTabs", () => {

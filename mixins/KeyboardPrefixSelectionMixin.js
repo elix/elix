@@ -33,7 +33,7 @@ const prefixTimeoutKey = Symbol('prefixTimeout');
  * presses the "l" or "L" key quickly, the prefix to match becomes "bl", so
  * "Blackberry" will be selected.
  *
- * The prefix typing feature has a one second timeout — the prefix to match
+ * The prefix typing feature has a one second timeout — the prefix to match
  * will be reset after a second has passed since the user last typed a key.
  * If, in the above example, the user waits a second between typing "b" and
  * "l", the prefix will become "l", so "Lemon" would be selected.

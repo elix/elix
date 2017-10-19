@@ -118,6 +118,7 @@ class Toast extends Base {
     this[durationKey] = typeof duration === 'string' ? parseInt(duration) : duration;
   }
 
+  /* eslint-disable no-unused-vars */
   [symbols.elementsWithTransitions](effect) {
     return [this.shadowRoot.querySelector('#overlayContent')];
   }

@@ -105,6 +105,7 @@ export default function ReactiveMixin(Base) {
     async setState(changes) {
       // There's no good reason to have a render method update state.
       if (this[symbols.rendering]) {
+        /* eslint-disable no-console */
         console.warn(`Avoid calling setState while the component is being rendered.`);
       }
 
@@ -152,7 +153,7 @@ export default function ReactiveMixin(Base) {
         if (nextState[key] !== this.state[key]) {
           return true;
         }
-      };
+      }
       return false; // No changes.
     }
 

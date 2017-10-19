@@ -56,6 +56,7 @@ export default function ShadowTemplateMixin(Base) {
         // Get the template and perform initial processing.
         template = this[symbols.template];
         if (!template) {
+          /* eslint-disable no-console */
           console.warn(`ShadowTemplateMixin expects a component to define a method called [symbols.template].`);
           return;
         }

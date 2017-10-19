@@ -85,7 +85,7 @@ export default function SelectionInViewMixin(Base) {
     get [symbols.scrollTarget]() {
       return super[symbols.scrollTarget] || defaultScrollTarget(this);
     }
-  };
+  }
 
   return SelectionInView;
 }

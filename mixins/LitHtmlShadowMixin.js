@@ -29,6 +29,7 @@ export default function LitHtmlShadowMixin(Base) {
 
       const template = this[symbols.template];
       if (!template) {
+        /* eslint-disable no-console */
         console.warn(`LitHtmlShadowMixin expects ${this.constructor.name} to define a method called [symbols.template].`);
         return;
       }

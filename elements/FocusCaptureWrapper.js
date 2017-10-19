@@ -51,7 +51,7 @@ export default function FocusCaptureWrapper(base) {
       if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
 
       const focusCatcher = this.shadowRoot.querySelector('#focusCatcher');
-      focusCatcher.addEventListener('focus', event => {
+      focusCatcher.addEventListener('focus', () => {
         if (!this[wrappingFocusKey]) {
           // Wrap focus back to the dialog.
           this.focus();

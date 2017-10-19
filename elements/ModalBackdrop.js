@@ -5,6 +5,7 @@ import symbols from '../mixins/symbols.js';
 
 class ModalBackdrop extends ElementBase {
 
+  /* eslint-disable no-unused-vars */
   hostProps(original) {
     const base = super.hostProps ? super.hostProps() : {};
     const role = base.attributes && base.attributes.role || 'none';

@@ -58,11 +58,13 @@ class AlertDialog extends ShadowReferencesMixin(Dialog) {
   set choices(choices) {
     this[choicesKey] = choices;
     if (!this.shadowRoot) {
+      /* eslint-disable no-console */
       console.warn(`NotificationDialog couldn't find its own shadowRoot.`);
       return;
     }
     const slot = this.shadowRoot.querySelector('slot[name="buttons"]');
     if (!slot) {
+      /* eslint-disable no-console */
       console.warn(`NotificationDialog couldn't find its default slot.`);
       return;
     }

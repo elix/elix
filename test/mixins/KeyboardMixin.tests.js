@@ -1,4 +1,3 @@
-import flushPolyfills from '../../test/flushPolyfills.js';
 import KeyboardMixin from '../../mixins/KeyboardMixin.js';
 import * as mockInteractions from '../../test/mockInteractions.js';
 import HostPropsMixin from '../../mixins/HostPropsMixin.js'
@@ -42,7 +41,7 @@ describe("KeyboardMixin", () => {
 
   it("listens to keydown and fires the keydown() method", done => {
     const fixture = new KeyboardTest();
-    fixture[symbols.keydown] = (event) => {
+    fixture[symbols.keydown] = () => {
       done();
     };
     container.appendChild(fixture);

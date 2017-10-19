@@ -1,5 +1,4 @@
 import AttributeMarshallingMixin from '../../mixins/AttributeMarshallingMixin.js';
-import flushPolyfills from '../flushPolyfills.js';
 
 
 let defaultPropertyValue;

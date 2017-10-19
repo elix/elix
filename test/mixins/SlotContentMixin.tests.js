@@ -15,7 +15,7 @@ class SlotContentTest extends SlotContentMixin(HTMLElement) {
 
   constructor() {
     super();
-    const root = this.attachShadow({ mode: 'open' });
+    this.attachShadow({ mode: 'open' });
     this.shadowRoot.innerHTML = `
       <div id="static">This is static content</div>
       <slot></slot>
@@ -39,7 +39,7 @@ customElements.define('slot-content-test', SlotContentTest);
 class WrappedContentTest extends HTMLElement {
   constructor() {
     super();
-    const root = this.attachShadow({ mode: 'open' });
+    this.attachShadow({ mode: 'open' });
     this.shadowRoot.innerHTML = `<slot-content-test><slot></slot></default-slotcontent-test>`;
   }
 }

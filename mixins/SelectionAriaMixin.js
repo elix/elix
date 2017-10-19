@@ -2,10 +2,6 @@ import * as props from './props.js';
 import Symbol from './Symbol.js';
 
 
-// Used to assign unique IDs to item elements without IDs.
-let idCount = 0;
-
-
 const generatedIdKey = Symbol('generatedId');
 
 
@@ -99,7 +95,7 @@ export default function SelectionAriaMixin(Base) {
       });
     }
 
-  };
+  }
 
   return SelectionAria;
 }

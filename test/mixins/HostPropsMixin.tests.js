@@ -2,7 +2,6 @@ import * as props from '../../mixins/props.js';
 import flushPolyfills from '../flushPolyfills.js';
 import HostPropsMixin from '../../mixins/HostPropsMixin.js';
 import ReactiveMixin from '../../mixins/ReactiveMixin.js';
-import symbols from '../../mixins/symbols.js';
 
 
 class HostPropsTest extends HostPropsMixin(ReactiveMixin(HTMLElement)) {

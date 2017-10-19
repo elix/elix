@@ -14,6 +14,7 @@ export default function LanguageDirectionMixin(Base) {
           this.setState({ direction });
         }
       } else {
+        /* eslint-disable no-console */
         console.warn(`LanguageDirectionMixin expects a component to define a "ref" for its root element.`);
       }
     }

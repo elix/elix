@@ -89,7 +89,7 @@ export default function PopupModalityMixin(Base) {
           }
         };
 
-        // Wait a tick before wiring up events — if the popup was opened
+        // Wait a tick before wiring up events – if the popup was opened
         // because the user clicked something, that opening click event may
         // still be bubbling up, and we only want to start listening after
         // it's been processed.

@@ -60,7 +60,7 @@ export default function FocusRingMixin(Base) {
         listeningToWindowFocus = true;
       }
 
-      this.addEventListener('focus', event => {
+      this.addEventListener('focus', () => {
         /** @type {any} */
         const element = this;
         toggleClass(element, 'focus-ring', focusedWithKeyboard);
@@ -72,12 +72,12 @@ export default function FocusRingMixin(Base) {
         focusedWithKeyboard = true;
       });
 
-      this.addEventListener('mousedown', event => {
+      this.addEventListener('mousedown', () => {
         // If this element receives focus, it won't be because of the keyboard.
         focusedWithKeyboard = false;
       });
 
-      this.addEventListener('blur', event => {
+      this.addEventListener('blur', () => {
         this.classList.remove('focus-ring');
       });
     }
