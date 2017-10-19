@@ -65,82 +65,67 @@ describe("ReactiveMixin", function () {
     assert.throws(() => fixture.state.message = 'chihuahua');
   });
 
-  it("setState skips render if component is not in document", done => {
+  it("setState skips render if component is not in document", async () => {
     const fixture = document.createElement('reactive-test');
     const renderSpy = sinon.spy(fixture, symbols.render);
-    fixture.setState({
+    await fixture.setState({
       message: 'dingo'
-    }).then(() => {
-      assert.equal(renderSpy.callCount, 0);
-      done();
     });
+    assert.equal(renderSpy.callCount, 0);
   });
 
-  it("setState invokes render if component is in document", done => {
+  it("setState invokes render if component is in document", async () => {
     const fixture = document.createElement('reactive-test');
     container.appendChild(fixture);
     const renderSpy = sinon.spy(fixture, symbols.render);
-    fixture.setState({
+    await fixture.setState({
       message: 'echidna'
-    }).then(() => {
-      assert.equal(renderSpy.callCount, 1);
-      assert.equal(fixture.renderedResult, 'echidna');
-      done();
     });
+    assert.equal(renderSpy.callCount, 1);
+    assert.equal(fixture.renderedResult, 'echidna');
   });
 
-  it("consecutive setState calls batched into single render call", done => {
+  it("consecutive setState calls batched into single render call", async () => {
     const fixture = document.createElement('reactive-test');
     container.appendChild(fixture);
     const renderSpy = sinon.spy(fixture, symbols.render);
+    /* Do *not* await first call - invoke it synchronously. */
     fixture.setState({
       message: 'fox'
     });
-    fixture.setState({
+    await fixture.setState({
       message: 'gorilla'
-    }).then(() => {
-      assert.equal(renderSpy.callCount, 1);
-      assert.equal(fixture.state.message, 'gorilla');
-      done();
     });
+    assert.equal(renderSpy.callCount, 1);
+    assert.equal(fixture.state.message, 'gorilla');
   });
 
-  it("render invokes componentDidMount/componentDidUpdate if defined", done => {
+  it("render invokes componentDidMount/componentDidUpdate if defined", async () => {
     const fixture = document.createElement('reactive-test');
     const componentDidMountSpy = sinon.spy(fixture, 'componentDidMount');
     const componentDidUpdateSpy = sinon.spy(fixture, 'componentDidUpdate');
     container.appendChild(fixture);
     // connectedCallback should trigger first render with promise timing.
-    Promise.resolve(() => {
-      assert.equal(componentDidMountSpy.callCount, 1);
-      assert.equal(componentDidUpdateSpy.callCount, 0);
-      return fixture.setState({
-        message: 'iguana'
-      })
-    })
-    .then(() => {
-      assert.equal(componentDidMountSpy.callCount, 1);
-      assert.equal(componentDidUpdateSpy.callCount, 0);
-      done();
+    await Promise.resolve();
+    assert.equal(componentDidMountSpy.callCount, 1);
+    assert.equal(componentDidUpdateSpy.callCount, 0);
+    await fixture.setState({
+      message: 'iguana'
     });
+    assert.equal(componentDidMountSpy.callCount, 1);
+    assert.equal(componentDidUpdateSpy.callCount, 1);
   })
 
-  it("leaves state object alone if there are no changes", done => {
+  it("leaves state object alone if there are no changes", async () => {
     const fixture = document.createElement('reactive-test');
-    let previousState;
-    fixture.setState({
+    await fixture.setState({
       message: 'hamster'
-    })
-    .then(() => {
-      previousState = fixture.state;
-      return fixture.setState({
-        message: 'hamster'
-      });
-    })
-    .then(() => {
-      assert.equal(fixture.state, previousState);
-      done();
     });
+    const previousState = fixture.state;
+    await fixture.setState({
+      message: 'hamster'
+    });
+    assert.equal(fixture.state, previousState);
   });
 
 });

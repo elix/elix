@@ -1,4 +1,3 @@
-import * as props from '../mixins/props.js';
 import symbols from './symbols.js';
 import Symbol from './Symbol.js';
 
@@ -44,8 +43,8 @@ export default function ReactiveMixin(Base) {
     /**
      * Internal render method.
      * 
-     * The default implementation does nothing. This should be extended
-     * to provide mixin/component-specific rendering to the DOM.
+     * The default implementation does nothing. Augment this in your component
+     * (or another mixin) to render the component's state to the DOM.
      */
     [symbols.render]() {
       if (super[symbols.render]) { super[symbols.render](); }
@@ -103,7 +102,7 @@ export default function ReactiveMixin(Base) {
      * and the new state has changed, this returns a promise to asynchronously
      * render the component. Otherwise, this returns a resolved promise.
      */
-    setState(changes) {
+    async setState(changes) {
       // There's no good reason to have a render method update state.
       if (this[symbols.rendering]) {
         console.warn(`Avoid calling setState while the component is being rendered.`);
@@ -117,9 +116,6 @@ export default function ReactiveMixin(Base) {
       // attempts to set state without going through setState.
       Object.freeze(nextState);
 
-      // By default, return a resolved promise.
-      let promise = Promise.resolve();
-
       // Is this our first setState, or does the component think something's changed?
       if (this[stateKey] === undefined || this.shouldComponentUpdate(nextState)) {
 
@@ -128,29 +124,28 @@ export default function ReactiveMixin(Base) {
 
         // We only need to render if we're actually in the document.
         if (this.isConnected) {
-          // Extend promise so we render asynchronously.
-          promise = promise.then(() => {
-            this.render();
-          });
+          // Yield with promise timing. This lets any *synchronous* setState
+          // calls that happen after the current setState call complete first.
+          // Their effects on the state will be batched up before the render
+          // call below actually happens.
+          await Promise.resolve();
+          this.render();
         }
       }
-
-      return promise;
     }
 
     /**
      * Return true if the component should update.
      * 
      * The default implementation does a shallow check of property values like
-     * React's PureComponent. This seems adequate for most web components. This
-     * can be overridden to always return true (like React's base Component
+     * React's PureComponent. This seems adequate for most web components. You
+     * can override this to always return true (like React's base Component
      * class), or to perform more specific, deeper checks for changes in state.
      */
     shouldComponentUpdate(nextState) {
       const base = super.shouldComponentUpdate && super.shouldComponentUpdate(nextState);
       if (base) {
-        // Trust base result.
-        return true;
+        return true; // Trust base result.
       }
       // Do a shallow prop comparison to track whether there were any changes.
       for (let key in nextState) {
@@ -158,10 +153,13 @@ export default function ReactiveMixin(Base) {
           return true;
         }
       };
-      // No changes.
-      return false;
+      return false; // No changes.
     }
 
+    /**
+     * The component's current state.
+     * The returned state object is immutable. To update it, invoke `setState`.
+     */
     get state() {
       return this[stateKey];
     }

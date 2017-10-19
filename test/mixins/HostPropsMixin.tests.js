@@ -32,43 +32,35 @@ describe("HostPropsMixin", function () {
     container.innerHTML = '';
   });
 
-  it("updates host with hostProps", done => {
+  it("updates host with hostProps", async () => {
     const fixture = new HostPropsTest();
     container.appendChild(fixture);
     assert.equal(fixture.style.color, '');
-    fixture.setState({
+    await fixture.setState({
       selected: true
-    })
-    .then(() => {
-      assert.equal(fixture.style.color, 'red');
-      return fixture.setState({
-        selected: false
-      });
-    })
-    .then(() => {
-      // Should be back to original condition.
-      assert.equal(fixture.style.color, '');
-      done();
-    })
+    });
+    assert.equal(fixture.style.color, 'red');
+    await fixture.setState({
+      selected: false
+    });
+    // Should be back to original condition.
+    assert.equal(fixture.style.color, '');
   });
 
-  it("merges styles on top of original styles", done => {
+  it("merges styles on top of original styles", async () => {
     container.innerHTML = `<host-props-test style="background-color: yellow; color: green;"></host-props-test>`;
     flushPolyfills();
     const fixture = container.querySelector('host-props-test');
-    fixture.setState({
+    await fixture.setState({
       selected: true
     })
-    .then(() => {
-      assert.equal(fixture.style.backgroundColor, 'yellow');
-      assert.equal(fixture.style.color, 'red');
+    assert.equal(fixture.style.backgroundColor, 'yellow');
+    assert.equal(fixture.style.color, 'red');
       
-      // Dynamically modify style.
-      fixture.style = 'background-color: aqua; color: navy;';
-      assert.equal(fixture.style.backgroundColor, 'aqua');
-      assert.equal(fixture.style.color, 'red');
-      done();
-    });
+    // Dynamically modify style.
+    fixture.style = 'background-color: aqua; color: navy;';
+    assert.equal(fixture.style.backgroundColor, 'aqua');
+    assert.equal(fixture.style.color, 'red');
   });
 
 });

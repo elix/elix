@@ -32,7 +32,7 @@ describe("SelectionAriaMixin", () => {
     container.innerHTML = '';
   });
 
-  it("assigns default roles to list and items, and default IDs to items without IDs", done => {
+  it("assigns default roles to list and items, and default IDs to items without IDs", async () => {
     const fixture = new SelectionAriaTest();;
     fixture.id = 'test'; // Will be used as basis for assigned item IDs.
     const item1 = document.createElement('div');
@@ -42,38 +42,31 @@ describe("SelectionAriaMixin", () => {
     const item2 = document.createElement('div');
     fixture.appendChild(item2);
     container.appendChild(fixture);
-    Promise.resolve().then(() => {
-      assert.equal(fixture.getAttribute('role'), 'listbox'); // default role
-      assert.equal(item1.id, 'explicitID'); // unchanged
-      assert.equal(item1.getAttribute('role'), 'option'); // default role
-      const expectedIdStart = '_testOption';
-      const idStart = item2.id.slice(0, expectedIdStart.length);
-      assert.equal(idStart, expectedIdStart); // implicitly assigned ID
-      assert.equal(item2.getAttribute('role'), 'option'); // default role
-      done();
-    });
+    await Promise.resolve();
+    assert.equal(fixture.getAttribute('role'), 'listbox'); // default role
+    assert.equal(item1.id, 'explicitID'); // unchanged
+    assert.equal(item1.getAttribute('role'), 'option'); // default role
+    const expectedIdStart = '_testOption';
+    const idStart = item2.id.slice(0, expectedIdStart.length);
+    assert.equal(idStart, expectedIdStart); // implicitly assigned ID
+    assert.equal(item2.getAttribute('role'), 'option'); // default role
   });
 
-  it("indicates the selection state on both the list and the item", done => {
+  it("indicates the selection state on both the list and the item", async () => {
     const fixture = new SelectionAriaTest();;
     const item1 = document.createElement('div');
     fixture.appendChild(item1);
     const item2 = document.createElement('div');
     fixture.appendChild(item2);
     container.appendChild(fixture);
-    fixture.setState({ selectedIndex: 0 })
-    .then(() => {
-      assert.equal(fixture.getAttribute('aria-activedescendant'), item1.id);
-      assert.equal(item1.getAttribute('aria-selected'), 'true');
-      assert.equal(item2.getAttribute('aria-selected'), 'false');
-      return fixture.setState({ selectedIndex: 1 });
-    })
-    .then(() => {
-      assert.equal(fixture.getAttribute('aria-activedescendant'), item2.id);
-      assert.equal(item1.getAttribute('aria-selected'), 'false');
-      assert.equal(item2.getAttribute('aria-selected'), 'true');
-      done();
-    });
+    await fixture.setState({ selectedIndex: 0 });
+    assert.equal(fixture.getAttribute('aria-activedescendant'), item1.id);
+    assert.equal(item1.getAttribute('aria-selected'), 'true');
+    assert.equal(item2.getAttribute('aria-selected'), 'false');
+    await fixture.setState({ selectedIndex: 1 });
+    assert.equal(fixture.getAttribute('aria-activedescendant'), item2.id);
+    assert.equal(item1.getAttribute('aria-selected'), 'false');
+    assert.equal(item2.getAttribute('aria-selected'), 'true');
   });
 
   it("assigns a default role of 'listbox'", () => {

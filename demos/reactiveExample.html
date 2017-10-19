@@ -42,7 +42,6 @@
       // then update the DOM directly with DOM API calls. This isn't actually
       // too bad, and is the fastest possible way to render state to the DOM.
       [symbols.render]() {
-        if (super[symbols.render]) { super[symbols.render](); }
         if (!this.shadowRoot) {
           // First time we render, create the shadow subtree.
           const root = this.attachShadow({ mode: 'open' });

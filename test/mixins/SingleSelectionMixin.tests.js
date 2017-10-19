@@ -65,63 +65,51 @@ describe("SingleSelectionMixin", () => {
     assert.equal(fixture.state.selectedIndex, 0);
   });
 
-  it("tracks selection of first item when no item is selected", done => {
+  it("tracks selection of first item when no item is selected", async () => {
     const fixture = createSampleElement();
     assert.equal(fixture.state.selectedIndex, -1);
-    fixture.setState({
+    await fixture.setState({
       selectionRequired: true
-    })
-    .then(() => fixture.render())
-    .then(() => {  
-      assert.equal(fixture.state.selectedIndex, 0);
-      done();
     });
+    await fixture.render();
+    assert.equal(fixture.state.selectedIndex, 0);
   });
 
-  it("tracks selection when current item (not last place) is removed", done => {
+  it("tracks selection when current item (not last place) is removed", async () => {
     const fixture = createSampleElement();
     const items = fixture.items.slice();
     items.splice(0, 1);
-    fixture.setState({
+    await fixture.setState({
       items,
       selectedIndex: 0,
       selectionRequired: true
-    })
-    .then(() => fixture.render())
-    .then(() => {
-        assert.equal(fixture.state.selectedIndex, 0);
-        done();
     });
+    await fixture.render();
+    assert.equal(fixture.state.selectedIndex, 0);
   });
 
-  it("tracks selection when current item in last place is removed", done => {
+  it("tracks selection when current item in last place is removed", async () => {
     const fixture = createSampleElement();
     const items = fixture.items.slice();
     items.splice(2, 1);
-    fixture.setState({
+    await fixture.setState({
       items,
       selectedIndex: 2,
       selectionRequired: true
-    })
-    .then(() => fixture.render())
-    .then(() => {
-      assert.equal(fixture.state.selectedIndex, 1);
-      done();
     });
+    await fixture.render();
+    assert.equal(fixture.state.selectedIndex, 1);
   });
 
-  it("drops selection when the last item is removed", done => {
+  it("drops selection when the last item is removed", async () => {
     const fixture = createSampleElement();
-    fixture.setState({
+    await fixture.setState({
       items: [],
       selectedIndex: 0,
       selectionRequired: true
-    })
-    .then(() => fixture.render())
-    .then(() => {
-      assert.equal(fixture.state.selectedIndex, -1);
-      done();
     });
+    await fixture.render();
+    assert.equal(fixture.state.selectedIndex, -1);
   });
 
   it("sets canSelectNext/canSelectPrevious with no wrapping", () => {

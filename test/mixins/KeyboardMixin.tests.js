@@ -33,13 +33,11 @@ describe("KeyboardMixin", () => {
     assert.equal(fixture.getAttribute('tabindex'), '0');
   });
 
-  it("doesn't overwrite an explicit tabindex in markup", done => {
+  it("doesn't overwrite an explicit tabindex in markup", async () => {
     container.innerHTML = `<keyboard-test tabindex="1"></keyboard-test>`;
     const fixture = container.querySelector('keyboard-test');
-    Promise.resolve().then(() => {
-      assert.equal(fixture.getAttribute('tabindex'), '1');
-      done();
-    });
+    await Promise.resolve();
+    assert.equal(fixture.getAttribute('tabindex'), '1');
   });
 
   it("listens to keydown and fires the keydown() method", done => {

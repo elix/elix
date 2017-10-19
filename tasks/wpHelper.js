@@ -131,8 +131,20 @@ const webpackHelperTask = function(options, done) {
             loader: 'babel-loader',
             include: includes,
             query: {
-              plugins: ['transform-object-assign'],
-              presets: ['env']
+              plugins: [
+                'transform-object-assign',
+                'transform-runtime'
+              ],
+              presets: [
+                ['env', {
+                  targets: {
+                    browsers: [
+                      'defaults',
+                      'not IE < 11'
+                    ]
+                  }
+                }]
+              ]
             }
           }
         ]

@@ -32,7 +32,7 @@ class Spread extends Base {
         'objectFit': 'contain',
         'width': `${100 / this.items.length}%`
       }
-    })
+    });
   }
 
   get [symbols.template]() {
