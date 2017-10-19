@@ -4,7 +4,6 @@ import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ClickSelectionMixin from '../mixins/ClickSelectionMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import deepContains from '../mixins/deepContains.js';
-import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
 import DirectionSelectionMixin from '../mixins/DirectionSelectionMixin.js';
 import HostPropsMixin from '../mixins/HostPropsMixin.js';
 import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin.js';
@@ -15,6 +14,7 @@ import ReactiveMixin from '../mixins/ReactiveMixin.js';
 import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import SelectionAriaMixin from '../mixins/SelectionAriaMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
+import SlotContentMixin from '../mixins/SlotContentMixin.js';
 import symbols from '../mixins/symbols.js';
 
 
@@ -22,7 +22,6 @@ const Base =
   AttributeMarshallingMixin(
   ClickSelectionMixin(
   ContentItemsMixin(
-  DefaultSlotContentMixin(
   DirectionSelectionMixin(
   HostPropsMixin(
   KeyboardDirectionMixin(
@@ -32,6 +31,7 @@ const Base =
   SelectionAriaMixin(
   ShadowTemplateMixin(
   SingleSelectionMixin(
+  SlotContentMixin(
     HTMLElement
   ))))))))))));
 
@@ -64,12 +64,12 @@ const Base =
  * @mixes AttributeMarshallingMixin
  * @mixes ClickSelectionMixin
  * @mixes ContentItemsMixin
- * @mixes DefaultSlotContentMixin
  * @mixes DirectionSelectionMixin
- * @mixes KeyboardMixin
  * @mixes KeyboardDirectionMixin
+ * @mixes KeyboardMixin
  * @mixes ShadowTemplateMixin
  * @mixes SingleSelectionMixin
+ * @mixes SlotContentMixin
  */
 class TabStrip extends Base {
 

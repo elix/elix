@@ -9,7 +9,7 @@ const slotchangeFiredKey = Symbol('slotchangeFired');
 
 /**
  * Mixin which defines a component's `symbols.content` property as the flattened
- * set of nodes assigned to its default slot.
+ * set of nodes assigned to a slot.
  *
  * This also provides notification of changes to a component's content. It
  * will invoke a `symbols.contentChanged` method when the component is first
@@ -20,7 +20,7 @@ const slotchangeFiredKey = Symbol('slotchangeFired');
  * Example:
  *
  * ```
- * class CountingElement extends DefaultSlotContentMixin(HTMLElement) {
+ * class CountingElement extends SlotContentMixin(HTMLElement) {
  *
  *   constructor() {
  *     super();
@@ -38,22 +38,23 @@ const slotchangeFiredKey = Symbol('slotchangeFired');
  * }
  * ```
  *
- * To use this mixin, the component should define a default (unnamed) `slot`
- * element in its shadow subtree.
+ * By default, the mixin looks in the component's shadow subtree for a default
+ * (unnamed) `slot` element. You can specify that a different slot should be
+ * used by overriding the `contentSlot` property.
  *
  * To receive `contentChanged` notification, this mixin expects a component to
  * invoke a method called `symbols.shadowCreated` after the component's shadow
  * root has been created and populated.
  *
- * Most Elix [elements](elements) use `DefaultSlotContentMixin`, including
+ * Most Elix [elements](elements) use `SlotContentMixin`, including
  * [ListBox](ListBox), [Modes](Modes), and [Tabs](Tabs).
  *
- * @module DefaultSlotContentMixin
+ * @module SlotContentMixin
  */
-export default function DefaultSlotContentMixin(Base) {
+export default function SlotContentMixin(Base) {
 
   // The class prototype added by the mixin.
-  class DefaultSlotContent extends Base {
+  class SlotContent extends Base {
 
     connectedCallback() {
       if (super.connectedCallback) { super.connectedCallback(); }
@@ -72,6 +73,14 @@ export default function DefaultSlotContentMixin(Base) {
       });
     }
 
+    get contentSlot() {
+      const slot = this.shadowRoot && this.shadowRoot.querySelector('slot:not([name])');
+      if (!this.shadowRoot || !slot) {
+        console.warn(`SlotContentMixin expects a component to define a shadow tree that includes a default (unnamed) slot.`);
+      }
+      return slot;
+    }
+
     get defaultState() {
       return Object.assign({}, super.defaultState, {
         content: null
@@ -81,7 +90,7 @@ export default function DefaultSlotContentMixin(Base) {
     [symbols.shadowCreated]() {
       if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
       // Listen to changes on the default slot.
-      const slot = defaultSlot(this);
+      const slot = this.contentSlot;
       if (slot) {
         slot.addEventListener('slotchange', event => {
           // console.log(`slotchange`);
@@ -93,7 +102,7 @@ export default function DefaultSlotContentMixin(Base) {
 
   }
 
-  return DefaultSlotContent;
+  return SlotContent;
 }
 
 
@@ -106,7 +115,7 @@ export default function DefaultSlotContentMixin(Base) {
  */
 function assignedNodesChanged(component) {
 
-  const slot = defaultSlot(component);
+  const slot = component.contentSlot;
   let content;
 
   // As of 18 July 2017, the polyfill contains a bug
@@ -126,13 +135,4 @@ function assignedNodesChanged(component) {
   Object.freeze(content);
   
   component.setState({ content });
-}
-
-
-function defaultSlot(element) {
-  const defaultSlot = element.shadowRoot && element.shadowRoot.querySelector('slot:not([name])');
-  if (!element.shadowRoot || !defaultSlot) {
-    console.warn(`DefaultSlotContentMixin expects a component to define a shadow tree that includes a default (unnamed) slot.`);
-  }
-  return defaultSlot;
 }

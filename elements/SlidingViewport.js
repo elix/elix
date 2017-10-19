@@ -1,19 +1,19 @@
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
-import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
 import ElementBase from './ElementBase.js';
 import * as FractionalSelection from '../utilities/FractionalSelection.js';
 // import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
 import * as props from '../mixins/props.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
+import SlotContentMixin from '../mixins/SlotContentMixin.js';
 import Spread from './Spread.js';
 import symbols from '../mixins/symbols.js';
 
 
 const Base =
-  // LanguageDirectionMixin(
   ContentItemsMixin(
-  DefaultSlotContentMixin(
+  // LanguageDirectionMixin(
   SingleSelectionMixin(
+  SlotContentMixin(
     ElementBase
   )));
 

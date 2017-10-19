@@ -1,5 +1,5 @@
-import DefaultSlotContentMixin from '../../mixins/DefaultSlotContentMixin.js';
 import flushPolyfills from '../../test/flushPolyfills.js';
+import SlotContentMixin from '../../mixins/SlotContentMixin.js';
 import symbols from '../../mixins/symbols.js';
 
   
@@ -9,9 +9,9 @@ const isIE11 = !!window.MSInputMethodContext && !!document.documentMode;
 
 
 /*
- * Simple element using the DefaultSlotContentMixin mixin.
+ * Simple element using the SlotContentMixin mixin.
  */
-class DefaultSlotContentTest extends DefaultSlotContentMixin(HTMLElement) {
+class SlotContentTest extends SlotContentMixin(HTMLElement) {
 
   constructor() {
     super();
@@ -29,7 +29,7 @@ class DefaultSlotContentTest extends DefaultSlotContentMixin(HTMLElement) {
   }
 
 }
-customElements.define('default-slot-content-test', DefaultSlotContentTest);
+customElements.define('slot-content-test', SlotContentTest);
 
 
 /*
@@ -40,13 +40,13 @@ class WrappedContentTest extends HTMLElement {
   constructor() {
     super();
     const root = this.attachShadow({ mode: 'open' });
-    this.shadowRoot.innerHTML = `<default-slot-content-test><slot></slot></default-slotcontent-test>`;
+    this.shadowRoot.innerHTML = `<slot-content-test><slot></slot></default-slotcontent-test>`;
   }
 }
-customElements.define('wrapped-default-slot-content-test', WrappedContentTest);
+customElements.define('wrapped-slot-content-test', WrappedContentTest);
 
 
-describe("DefaultSlotContentMixin", () => {
+describe("SlotContentMixin", () => {
 
   let container;
 
@@ -58,8 +58,19 @@ describe("DefaultSlotContentMixin", () => {
     container.innerHTML = '';
   });
 
+  it("uses the component's default slot as the default slot for content", done => {
+    const fixture = document.createElement('slot-content-test');
+    // Wait for initial content.
+    flushPolyfills();
+    setTimeout(() => {
+      const slot = fixture.shadowRoot.children[1];
+      assert.equal(fixture.contentSlot, slot);
+      done();
+    });
+  });
+
   it("returns direct assigned nodes as content", done => {
-    const fixture = document.createElement('default-slot-content-test');
+    const fixture = document.createElement('slot-content-test');
     fixture.innerHTML = `<div>One</div><div>Two</div><div>Three</div>`;
     // Wait for initial content.
     flushPolyfills();
@@ -71,10 +82,10 @@ describe("DefaultSlotContentMixin", () => {
 
   if (!isIE11) {
     it("returns distributed nodes as content", done => {
-      const wrapper = document.createElement('wrapped-default-slot-content-test');
+      const wrapper = document.createElement('wrapped-slot-content-test');
       wrapper.innerHTML = `<div>One</div><div>Two</div><div>Three</div>`;
       flushPolyfills();
-      const fixture = wrapper.shadowRoot.querySelector('default-slot-content-test');
+      const fixture = wrapper.shadowRoot.querySelector('slot-content-test');
       // Wait for initial content.
       flushPolyfills();
       setTimeout(() => {
@@ -88,8 +99,8 @@ describe("DefaultSlotContentMixin", () => {
 
   if (!isIE11) {
     it("sets content when defined component is parsed", done => {
-      container.innerHTML = `<default-slot-content-test>beaver</default-slot-content-test>`;
-      const fixture = container.querySelector('default-slot-content-test');
+      container.innerHTML = `<slot-content-test>beaver</slot-content-test>`;
+      const fixture = container.querySelector('slot-content-test');
       // Wait for initial content.
       flushPolyfills();
       setTimeout(() => {
@@ -102,7 +113,7 @@ describe("DefaultSlotContentMixin", () => {
   }
 
   it("updates content when textContent changes", done => {
-    const fixture = document.createElement('default-slot-content-test');
+    const fixture = document.createElement('slot-content-test');
     container.appendChild(fixture);
     // Wait for initial content.
     flushPolyfills();
@@ -116,7 +127,7 @@ describe("DefaultSlotContentMixin", () => {
   });
 
   it("updates content when children change", done => {
-    const fixture = document.createElement('default-slot-content-test');
+    const fixture = document.createElement('slot-content-test');
     container.appendChild(fixture);
     // Wait for initial content.
     flushPolyfills();
@@ -134,8 +145,8 @@ describe("DefaultSlotContentMixin", () => {
 
   if (!isIE11) {
     it("updates content when redistributed content changes", done => {
-      const wrapper = document.createElement('wrapped-default-slot-content-test');
-      const fixture = wrapper.shadowRoot.querySelector('default-slot-content-test');
+      const wrapper = document.createElement('wrapped-slot-content-test');
+      const fixture = wrapper.shadowRoot.querySelector('slot-content-test');
       container.appendChild(wrapper);
       // Wait for initial content.
       flushPolyfills();
@@ -153,7 +164,7 @@ describe("DefaultSlotContentMixin", () => {
   }
 
   it("doesn't update content for changes in the component's shadow tree", done => {
-    const fixture = document.createElement('default-slot-content-test');
+    const fixture = document.createElement('slot-content-test');
     container.appendChild(fixture);
     // Wait for initial content.
     flushPolyfills();
@@ -189,7 +200,7 @@ describe("DefaultSlotContentMixin", () => {
   });
 
   it("doesn't call contentChanged when node is removed from shadow DOM", done => {
-    const fixture = document.createElement('default-slot-content-test');
+    const fixture = document.createElement('slot-content-test');
     container.appendChild(fixture);
     // Wait for initial content.
     flushPolyfills();
@@ -220,7 +231,7 @@ describe("DefaultSlotContentMixin", () => {
   });
 
   it("updates content if node is removed from light DOM", done => {
-    const fixture = document.createElement('default-slot-content-test');
+    const fixture = document.createElement('slot-content-test');
     const div = document.createElement('div');
     div.textContent = 'hippopotamus';
     fixture.appendChild(div);

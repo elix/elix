@@ -1,13 +1,13 @@
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
-import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
 import ElementBase from './ElementBase.js';
 import * as props from '../mixins/props.js';
+import SlotContentMixin from '../mixins/SlotContentMixin.js';
 import symbols from '../mixins/symbols.js';
 
 
 const Base = 
   ContentItemsMixin(
-  DefaultSlotContentMixin(
+  SlotContentMixin(
     ElementBase
   ));
 

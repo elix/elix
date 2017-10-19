@@ -5,7 +5,6 @@ import * as AttributeMarshallingMixinTests from './mixins/AttributeMarshallingMi
 import * as ClickSelectionMixinTests from './mixins/ClickSelectionMixin.tests.js';
 import * as ContentItemsMixinTests from './mixins/ContentItemsMixin.tests.js';
 import * as contentTests from './mixins/content.tests.js';
-import * as DefaultSlotContentMixinTests from './mixins/DefaultSlotContentMixin.tests.js';
 import * as DirectionSelectionMixinTests from './mixins/DirectionSelectionMixin.tests.js';
 import * as HostPropsMixinTests from './mixins/HostPropsMixin.tests.js';
 import * as KeyboardDirectionMixinTests from './mixins/KeyboardDirectionMixin.tests.js';
@@ -23,6 +22,7 @@ import * as SelectionInViewMixinTests from './mixins/SelectionInViewMixin.tests.
 // import * as ShadowReferencesMixinTests from './mixins/ShadowReferencesMixin.tests.js';
 // import * as ShadowTemplateMixinTests from './mixins/ShadowTemplateMixin.tests.js';
 import * as SingleSelectionMixinTests from './mixins/SingleSelectionMixin.tests.js';
+import * as SlotContentMixinTests from './mixins/SlotContentMixin.tests.js';
 // import * as TransitionEffectMixinTests from './mixins/TransitionEffectMixin.tests.js';
 
 // Element tests

@@ -3,10 +3,10 @@
 
 /// <reference path="../elix.d.ts"/>
 
-declare const DefaultSlotContentMixin: Mixin<{
+declare const SlotContentMixin: Mixin<{
   connectedCallback?(): void;
 }, {
   connectedCallback(): void;
 }>;
 
-export default DefaultSlotContentMixin;
+export default SlotContentMixin;

@@ -1,11 +1,11 @@
 import ChildrenContentMixin from './ChildrenContentMixin.js';
-import DefaultSlotContentMixin from './DefaultSlotContentMixin.js';
+import SlotContentMixin from './SlotContentMixin.js';
 
 export default function ContentCompatMixin(Base) {
   const shadyDOM = window.ShadyDOM && window.ShadyDOM.inUse;
   const nativeShadow = !shadyDOM && 'shadowRoot' in Element.prototype;
   const ContentMixin = nativeShadow ?
-    DefaultSlotContentMixin :
+    SlotContentMixin :
     ChildrenContentMixin;
   return ContentMixin(Base);
 }

@@ -14,7 +14,6 @@
 // import constants from './mixins/constants.js';
 // import ContentItemsMixin from './mixins/ContentItemsMixin.js';
 // import defaultScrollTarget from './mixins/defaultScrollTarget.js';
-// import DefaultSlotContentMixin from './mixins/DefaultSlotContentMixin.js';
 // import DirectionSelectionMixin from './mixins/DirectionSelectionMixin.js';
 // import KeyboardDirectionMixin from './mixins/KeyboardDirectionMixin.js';
 // import KeyboardMixin from './mixins/KeyboardMixin.js';
@@ -28,6 +27,7 @@
 // import ShadowReferencesMixin from './mixins/ShadowReferencesMixin.js';
 // import ShadowTemplateMixin from './mixins/ShadowTemplateMixin.js';
 // import SingleSelectionMixin from './mixins/SingleSelectionMixin.js';
+// import SlotContentMixin from './mixins/SlotContentMixin.js';
 // import Symbol from './mixins/Symbol.js';
 // import symbols from './mixins/symbols.js';
 // import TransitionEffectMixin from './mixins/TransitionEffectMixin.js';
@@ -57,7 +57,6 @@ const Elix = {
   // content,
   // ContentItemsMixin,
   // defaultScrollTarget,
-  // DefaultSlotContentMixin,
   // Dialog,
   // DirectionSelectionMixin,
   Drawer,
@@ -79,6 +78,7 @@ const Elix = {
   // ShadowReferencesMixin,
   // ShadowTemplateMixin,
   // SingleSelectionMixin,
+  // SlotContentMixin,
   Spread,
   // Symbol,
   // symbols,

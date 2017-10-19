@@ -27,7 +27,7 @@ const previousContentKey = Symbol('previousContent');
  *
  * This mixin expects a component to provide a `content` property returning a
  * raw set of elements. You can provide that yourself, or use
- * [DefaultSlotContentMixin](DefaultSlotContentMixin).
+ * [SlotContentMixin](SlotContentMixin).
  *
  * The most commonly referenced property defined by this mixin is the `items`
  * property. To avoid having to do work each time that property is requested,
@@ -36,9 +36,9 @@ const previousContentKey = Symbol('previousContent');
  * care of notifying it of future changes, and turns on the optimization. With
  * that on, the mixin saves a reference to the computed set of items, and will
  * return that immediately on subsequent calls to the `items` property. If you
- * use this mixin in conjunction with `DefaultSlotContentMixin`, the
- * `contentChanged` method will be invoked for you when the element's children
- * change, turning on the optimization automatically.
+ * use this mixin in conjunction with `SlotContentMixin`, the `contentChanged`
+ * method will be invoked for you when the element's children change, turning on
+ * the optimization automatically.
  *
  * Most Elix [elements](elements) use `ContentItemsMixin`, including
  * [ListBox](ListBox), [Modes](Modes), and [Tabs](Tabs).

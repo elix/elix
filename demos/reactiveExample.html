@@ -33,7 +33,14 @@
       }
 
       // Render the current state to the DOM.
-      // ReactiveMixin invokes this method when the state changes.
+      //
+      // ReactiveMixin invokes this method when the state changes. This method
+      // would typically invoke a rendering engine (virtual-dom, lit-html,
+      // etc.).
+      //
+      // In this example, we'll just populate the DOM with an HTML template,
+      // then update the DOM directly with DOM API calls. This isn't actually
+      // too bad, and is the fastest possible way to render state to the DOM.
       [symbols.render]() {
         if (super[symbols.render]) { super[symbols.render](); }
         if (!this.shadowRoot) {

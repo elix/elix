@@ -2,24 +2,24 @@
 import * as props from '../mixins/props.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
-import DefaultSlotContentMixin from '../mixins/DefaultSlotContentMixin.js';
 import HostPropsMixin from '../mixins/HostPropsMixin.js';
 // import LitHtmlShadowMixin from '../mixins/LitHtmlShadowMixin.js';
 import ReactiveMixin from '../mixins/ReactiveMixin.js';
 import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
+import SlotContentMixin from '../mixins/SlotContentMixin.js';
 import symbols from '../mixins/symbols.js';
 
 
 const Base =
   AttributeMarshallingMixin(
   ContentItemsMixin(
-  DefaultSlotContentMixin(
   HostPropsMixin(
   // LitHtmlShadowMixin(
   ReactiveMixin(
   ShadowTemplateMixin(
   SingleSelectionMixin(
+  SlotContentMixin(
     HTMLElement
   )))))));
 
@@ -35,7 +35,7 @@ const Base =
  * @extends HTMLElement
  * @mixes AttributeMarshallingMixin
  * @mixes ContentItemsMixin
- * @mixes DefaultSlotContentMixin
+ * @mixes SlotContentMixin
  * @mixes SingleSelectionMixin
  */
 class Modes extends Base {
