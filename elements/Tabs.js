@@ -1,9 +1,7 @@
-// import { html } from '../node_modules/lit-html/lit-html.js';
 import * as props from '../mixins/props.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import HostPropsMixin from '../mixins/HostPropsMixin.js';
-// import LitHtmlShadowMixin from '../mixins/LitHtmlShadowMixin.js';
 import Modes from './Modes.js'; // eslint-disable-line no-unused-vars
 import ReactiveMixin from '../mixins/ReactiveMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
@@ -24,7 +22,6 @@ const Base =
   AttributeMarshallingMixin(  
   ContentItemsMixin(
   HostPropsMixin(
-  // LitHtmlShadowMixin(
   ReactiveMixin(
   ShadowReferencesMixin(
   ShadowTemplateMixin(

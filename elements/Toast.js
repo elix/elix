@@ -1,10 +1,10 @@
-import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
-import OpenCloseMixin from '../mixins/OpenCloseMixin.js';
+import * as props from '../mixins/props.js';
+import ElementBase from './ElementBase.js';
+import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import OverlayMixin from '../mixins/OverlayMixin.js';
-import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
-import Symbol from '../mixins/Symbol.js';
+import PopupModalityMixin from '../mixins/PopupModalityMixin.js';
 import symbols from '../mixins/symbols.js';
-import TransitionEffectMixin from '../mixins/TransitionEffectMixin.js';
+import VisualStateMixin from '../mixins/VisualStateMixin.js';
 
 
 const durationKey = Symbol('duration');
@@ -13,13 +13,12 @@ const timeoutKey = Symbol('timeout');
 
 
 const Base =
-  AttributeMarshallingMixin(
-  OpenCloseMixin(
+  KeyboardMixin(
   OverlayMixin(
-  ShadowTemplateMixin(
-  TransitionEffectMixin(
-    HTMLElement
-  )))));
+  PopupModalityMixin(
+  VisualStateMixin(
+    ElementBase
+  ))));
 
 
 /**

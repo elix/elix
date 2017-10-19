@@ -10,8 +10,6 @@ declare const AttributeMarshallingMixin: Mixin<{
 }, {
   attributeChangedCallback(attributeName: string, oldValue: string, newValue: string);
   connectedCallback(): void;
-  reflectAttribute(string, object);
-  reflectClass(string, boolean);
 }>;
 
 export default AttributeMarshallingMixin;

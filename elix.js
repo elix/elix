@@ -8,7 +8,6 @@
 
 
  // Import mixins
-import * as attributes from './mixins/attributes.js';
 import * as content from './mixins/content.js';
 import AttributeMarshallingMixin from './mixins/AttributeMarshallingMixin.js';
 import ClickSelectionMixin from './mixins/ClickSelectionMixin.js';

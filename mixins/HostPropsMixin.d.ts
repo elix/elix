@@ -3,8 +3,6 @@
 
 /// <reference path="../utilities/shared.d.ts"/>
 
-declare const BackdropWrapper: Mixin<{}, {
-  backdrop: HTMLElement;
-}>;
+declare const HostPropsMixin: Mixin<{}, {}>;
 
-export default BackdropWrapper;
+export default HostPropsMixin;

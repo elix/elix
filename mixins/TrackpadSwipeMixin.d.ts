@@ -3,10 +3,6 @@
 
 /// <reference path="../utilities/shared.d.ts"/>
 
-declare const OverlayMixin: Mixin<{
-  connectedCallback?(): void;
-}, {
-  connectedCallback(): void;
-}>;
+declare const TrackpadSwipeMixin: Mixin<{}, {}>;
 
-export default OverlayMixin;
+export default TrackpadSwipeMixin;
