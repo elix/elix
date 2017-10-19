@@ -1,7 +1,7 @@
 // jshint ignore:start
 
-// We assume we'll want to provide demos of most or all of Elix itself.
-import * as Elix from '../globals.js';
+// We assume we'll want to provide demos of all of Elix itself.
+import * as elix from '../elix.js';
 
 // Additional demo components.
 // import BrowserPluginList from './src/BrowserPluginList.js';

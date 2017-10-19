@@ -24,7 +24,7 @@ function buildBuildTargets(options) {
   else {
     buildTargets = {
       [`${elixPath}`]: {
-        globItems: ['./globals.js'],
+        globItems: ['./elix.js'],
         includes: [/(\/|\\)/]
       },
       [`${demosPath}`]: {
