@@ -1,5 +1,6 @@
+import deepContains from './deepContains.js';
+import * as props from '../mixins/props.js';
 import Symbol from '../mixins/Symbol.js';
-import symbols from './symbols.js';
 
 
 // Symbols for private data members on an element.
@@ -33,33 +34,55 @@ export default function PopupModalityMixin(Base) {
   class PopupModality extends Base {
 
     constructor() {
-      // @ts-ignore
       super();
-      // Implicitly close on loss of focus.
-      this.addEventListener('blur', () => {
-        this[symbols.raiseChangeEvents] = true;
+      this.addEventListener('blur', event => {
         this.close();
-        this[symbols.raiseChangeEvents] = false;
-      });
+      });      
+      this[closeListenerKey] = event => {
+        const insideEvent = deepContains(this, event.target);
+        if (!insideEvent) {
+          this.close();
+        }
+      };
     }
 
-    connectedCallback() {
-      if (super.connectedCallback) { super.connectedCallback(); }
-
-      // Set default ARIA role for the popup.
-      if (this.getAttribute('role') == null && this[symbols.defaults].role) {
-        this.setAttribute('role', this[symbols.defaults].role);
+    componentDidUpdate() {
+      if (super.componentDidUpdate) { super.componentDidUpdate(); }
+      if (!this.closed) {
+        // Wait a tick before wiring up events – if the popup was opened
+        // because the user clicked something, that opening click event may
+        // still be bubbling up, and we only want to start listening after
+        // it's been processed.
+        setTimeout(() => {
+          // It's conceivable the popup was closed before the timeout completed,
+          // so double-check that it's still opened before listening to events.
+          if (!this.closed) {
+            addEventListeners(this);
+          }
+        });
+      } else {
+        removeEventListeners(this);
       }
     }
 
-    get [symbols.defaults]() {
-      const defaults = super[symbols.defaults] || {};
-      defaults.role = 'alert';
-      return defaults;
+    get defaultState() {
+      return Object.assign({}, super.defaultState, {
+        role: 'alert'
+      });
+    }
+
+    hostProps(original) {
+      const base = super.hostProps ? super.hostProps(original) : {};
+      const role = original.attributes && original.attributes.role || this.state.role;
+      return props.merge(base, {
+        attributes: {
+          role
+        }
+      });
     }
 
     // Close on Esc key.
-    [symbols.keydown](event) {
+    keydown(event) {
       let handled = false;
 
       switch (event.keyCode) {
@@ -70,50 +93,29 @@ export default function PopupModalityMixin(Base) {
       }
 
       // Prefer mixin result if it's defined, otherwise use base result.
-      return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
+      return handled || (super.keydown && super.keydown(event)) || false;
     }
 
-    [symbols.openedChanged](opened) {
-      if (super[symbols.openedChanged]) { super[symbols.openedChanged](opened); }
-      if (opened) {
-
-        // General purpose listener for events that happen outside the
-        // component.
-        this[closeListenerKey] = event => {
-          const insideEvent = this === event.target ||
-            (event.target instanceof Node && this.contains(event.target));
-          if (!insideEvent) {
-            this[symbols.raiseChangeEvents] = true;
-            this.close();
-            this[symbols.raiseChangeEvents] = false;
-          }
-        };
-
-        // Wait a tick before wiring up events – if the popup was opened
-        // because the user clicked something, that opening click event may
-        // still be bubbling up, and we only want to start listening after
-        // it's been processed.
-        setTimeout(() => {
-          // It's conceivable the popup was closed before the timeout completed,
-          // so double-check that it's still opened before listening to events.
-          if (this.opened) {
-            document.addEventListener('click', this[closeListenerKey]);
-            document.addEventListener('keydown', this[closeListenerKey]);
-            window.addEventListener('blur', this[closeListenerKey]);
-            window.addEventListener('resize', this[closeListenerKey]);
-            window.addEventListener('scroll', this[closeListenerKey]);
-          }
-        });
-      } else {
-        // Stop closing on window blur/resize/scroll.
-        document.removeEventListener('click', this[closeListenerKey]);
-        document.removeEventListener('keydown', this[closeListenerKey]);
-        window.removeEventListener('blur', this[closeListenerKey]);
-        window.removeEventListener('resize', this[closeListenerKey]);
-        window.removeEventListener('scroll', this[closeListenerKey]);
-      }
-    }
   }
 
   return PopupModality;
+}
+
+
+function addEventListeners(element) {
+  document.addEventListener('click', element[closeListenerKey]);
+  document.addEventListener('keydown', element[closeListenerKey]);
+  window.addEventListener('blur', element[closeListenerKey]);
+  window.addEventListener('resize', element[closeListenerKey]);
+  window.addEventListener('scroll', element[closeListenerKey]);
+}
+
+
+// Stop closing on window blur/resize/scroll.
+function removeEventListeners(element) {
+  document.removeEventListener('click', element[closeListenerKey]);
+  document.removeEventListener('keydown', element[closeListenerKey]);
+  window.removeEventListener('blur', element[closeListenerKey]);
+  window.removeEventListener('resize', element[closeListenerKey]);
+  window.removeEventListener('scroll', element[closeListenerKey]);
 }
