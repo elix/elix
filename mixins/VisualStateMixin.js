@@ -1,21 +1,18 @@
+import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
+
+
+const transitionEndListenerKey = Symbol('transitionEndListener');
 
 
 export default function VisualStateMixin(Base) {
   return class VisualState extends Base {
 
-    [symbols.shadowCreated]() {
-      if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
-      // const transitionEndHandler = (event) => {
-        
-      // }
-      // getTransitionElements(this, effect).forEach(element => {
-      //   element.addEventListener('transitionend', this[transitionendListenerKey]);
-      // });
-      // HACK
-      this.$.content.addEventListener('transitionend', () => {
+    constructor() {
+      super();
+      this[transitionEndListenerKey] = () => {
         transitionToNextVisualState(this, this.transitionEndTransitions);
-      });
+      };
     }
 
     changeVisualState(visualState) {
@@ -45,16 +42,22 @@ export default function VisualStateMixin(Base) {
 
 
 /* eslint-disable no-unused-vars */
-function getTransitionElements(element, effect) {
+function getTransitionElements(element, visualState) {
   return element[symbols.elementsWithTransitions] ?
-    element[symbols.elementsWithTransitions](effect) :
+    element[symbols.elementsWithTransitions](visualState) :
     [element];
 }
 
 
 function transitionToNextVisualState(element, transitions) {
-  const currentVisualState = element.state.visualState
+  const currentVisualState = element.state.visualState;
+  getTransitionElements(element, currentVisualState).forEach(element => {
+    element.removeEventListener('transitionend', element[transitionEndListenerKey]);
+  });
   const nextVisualState = transitions && transitions[currentVisualState];
+  getTransitionElements(element, nextVisualState).forEach(element => {
+    element.addEventListener('transitionend', element[transitionEndListenerKey]);
+  });
   if (nextVisualState) {
     element.changeVisualState(nextVisualState);
   }

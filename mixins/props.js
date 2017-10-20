@@ -28,8 +28,8 @@ const previousChildNodesKey = Symbol('previousChildNodes');
 
 
 /**
- * @param {HTMLElement} element 
- * @param {Object} props 
+ * @param {Element} element 
+ * @param {Object} props
  */
 export function apply(element, props) {
   Object.keys(props).forEach(key => {
@@ -57,7 +57,7 @@ export function apply(element, props) {
 
 
 /**
- * @param {HTMLElement} element 
+ * @param {Element} element 
  * @param {string} name 
  * @param {string|boolean|null} value 
  */
@@ -163,7 +163,7 @@ export function formatStyleProps(styleProps) {
 
 
 /**
- * @param {HTMLElement} element
+ * @param {Element} element
  */
 export function get(element) {
   return {

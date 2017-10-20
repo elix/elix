@@ -4,12 +4,13 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix toast</title>
+  <title>elix-toast</title>
 
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
-  <script src="node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js"></script>
-  <script src="../build/demos.js"></script>
+  <!-- <script nomodule src="node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js"></script> -->
+  <script type="module" src="../elements/Toast.js"></script>
+  <!-- <script nomodule src="../build/demos.js"></script> -->
 
 </head>
 
@@ -67,10 +68,6 @@
           }
         });
       }
-
-      function toggleDocumentDirection() {
-        toast.dir = toast.dir === 'rtl' ? 'ltr' : 'rtl';
-      }
     </script>
 
     <p>
@@ -88,10 +85,7 @@
         </div>
       </div>
     </p>
-    <p>
-      <label><input type="checkbox" onchange="toggleDocumentDirection()"> Flip directions to test right-to-left language support</label>
-    </p>
-    <elix-toast id="toast">
+    <elix-toast id="toast" duration="1500">
       <div style="padding: 1em;">
         Mmm... toast...
       </div>

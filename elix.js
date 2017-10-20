@@ -50,7 +50,6 @@ export default {
   // Popup,
   // Toast
   AttributeMarshallingMixin,
-  attributes,
   ClickSelectionMixin,
   constants,
   content,

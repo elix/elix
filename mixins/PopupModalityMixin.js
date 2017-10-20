@@ -35,7 +35,7 @@ export default function PopupModalityMixin(Base) {
 
     constructor() {
       super();
-      this.addEventListener('blur', event => {
+      this.addEventListener('blur', () => {
         this.close();
       });      
       this[closeListenerKey] = event => {

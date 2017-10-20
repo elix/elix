@@ -105,6 +105,11 @@ class Drawer extends Base {
     });
   }
 
+  /* eslint-disable no-unused-vars */
+  [symbols.elementsWithTransitions](visualState) {
+    return [this.$.content];
+  }
+
   hostProps(original) {
     const base = super.hostProps ? super.hostProps(original) : {};
     const display = this.closed ?

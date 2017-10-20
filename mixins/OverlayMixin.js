@@ -50,8 +50,8 @@ export default function OverlayMixin(Base) {
   // The class prototype added by the mixin.
   class Overlay extends Base {
 
-    close() {
-      this.setState({
+    async close() {
+      await this.setState({
         visualState: 'closed'
       });
     }
@@ -90,10 +90,14 @@ export default function OverlayMixin(Base) {
       });
     }
 
-    open() {
-      this.setState({
+    async open() {
+      await this.setState({
         visualState: 'opened'
       });
+    }
+
+    get opened() {
+      return this.state.visualState !== 'closed';
     }
   }
 
