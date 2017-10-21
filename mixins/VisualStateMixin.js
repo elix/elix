@@ -2,39 +2,40 @@ import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
 
 
-const transitionEndListenerKey = Symbol('transitionEndListener');
+const expectedTransitionEndStateKey = Symbol('expectedTransitionEndState');
+const transitionEndResolveKey = Symbol('transitionEndResolve');
 
 
 export default function VisualStateMixin(Base) {
   return class VisualState extends Base {
 
-    constructor() {
-      super();
-      this[transitionEndListenerKey] = () => {
-        transitionToNextVisualState(this, this.transitionEndTransitions);
-      };
-    }
-
-    changeVisualState(visualState) {
-      if (this.state.visualState !== visualState) {
-        // if (this.props.onChangeVisualState) {
-        //   // Controlled component
-        //   this.props.onChangeVisualState(visualState);
-        // } else {
-          // Uncontrolled component
-          this.setState({ visualState });
-        // }
-      }
-    }
-
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
-      transitionToNextVisualState(this, this.immediateTransitions);
+      const elements = getTransitionElements(this);
+      elements[0].addEventListener('transitionend', () => {
+        const expectedState = this[expectedTransitionEndStateKey];
+        this[expectedTransitionEndStateKey] = null;
+        if (this.state.visualState === expectedState) {
+          const resolve = this[transitionEndResolveKey];
+          this[transitionEndResolveKey] = null;
+          if (resolve) {
+            resolve();
+          }
+        }
+      });
+      this.transitionToNextVisualState();
     }
 
     componentDidUpdate() {
       if (super.componentDidUpdate) { super.componentDidUpdate(); }
-      transitionToNextVisualState(this, this.immediateTransitions);
+      this.transitionToNextVisualState();
+    }
+
+    whenTransitionEnds(visualState) {
+      this[expectedTransitionEndStateKey] = visualState;
+      return new Promise(resolve => {
+        this[transitionEndResolveKey] = resolve;
+      });
     }
 
   }
@@ -42,23 +43,8 @@ export default function VisualStateMixin(Base) {
 
 
 /* eslint-disable no-unused-vars */
-function getTransitionElements(element, visualState) {
+function getTransitionElements(element) {
   return element[symbols.elementsWithTransitions] ?
-    element[symbols.elementsWithTransitions](visualState) :
+    element[symbols.elementsWithTransitions]() :
     [element];
-}
-
-
-function transitionToNextVisualState(element, transitions) {
-  const currentVisualState = element.state.visualState;
-  getTransitionElements(element, currentVisualState).forEach(element => {
-    element.removeEventListener('transitionend', element[transitionEndListenerKey]);
-  });
-  const nextVisualState = transitions && transitions[currentVisualState];
-  getTransitionElements(element, nextVisualState).forEach(element => {
-    element.addEventListener('transitionend', element[transitionEndListenerKey]);
-  });
-  if (nextVisualState) {
-    element.changeVisualState(nextVisualState);
-  }
 }

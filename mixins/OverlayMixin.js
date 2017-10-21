@@ -51,13 +51,22 @@ export default function OverlayMixin(Base) {
   class Overlay extends Base {
 
     async close() {
-      await this.setState({
-        visualState: 'closed'
-      });
+      if (!this.closed) {
+        await this.setState({
+          visualState: this.visualStates.closed
+        });
+      }
     }
 
     get closed() {
-      return this.state.visualState === 'closed';
+      return this.state.visualState === this.visualStates.closed;
+    }
+    set closed(closed) {
+      const parsed = String(closed) === 'true';
+      const visualState = parsed ?
+        this.visualStates.closed :
+        this.visualStates.opened;
+      this.setState({ visualState });
     }
 
     // componentDidMount() {
@@ -77,7 +86,7 @@ export default function OverlayMixin(Base) {
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
-        visualState: 'closed'
+        visualState: this.visualStates.closed
       });
     }
 
@@ -91,13 +100,32 @@ export default function OverlayMixin(Base) {
     }
 
     async open() {
-      await this.setState({
-        visualState: 'opened'
-      });
+      if (!this.opened) {
+        await this.setState({
+          visualState: this.visualStates.opened
+        });
+      }
     }
 
     get opened() {
-      return this.state.visualState !== 'closed';
+      return this.state.visualState === this.visualStates.opened;
+    }
+    set opened(opened) {
+      const parsed = String(opened) === 'true';
+      const visualState = parsed ?
+        this.visualStates.opened :
+        this.visualStates.closed;
+      this.setState({ visualState });
+    }
+
+    get visualStates() {
+      // Defer to any definition in base class.
+      if ('visualStates' in super.prototype) { return super.visualStates; }
+      // By default, provide opened and closed states.
+      return {
+        closed: 'closed',
+        opened: 'opened'
+      };
     }
   }
 

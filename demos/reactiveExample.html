@@ -14,9 +14,10 @@
   </template>
 
   <script type="module">
-    import ReactiveMixin from '../mixins/ReactiveMixin.js';
-    import symbols from '../mixins/symbols.js';
+    import ReactiveMixin from 'https://cdn.rawgit.com/elix/elix/frp/mixins/ReactiveMixin.js';
+    import symbols from 'https://cdn.rawgit.com/elix/elix/frp/mixins/symbols.js';
 
+    // Create a native web component with reactive behavior.
     class IncrementDecrement extends ReactiveMixin(HTMLElement) {
 
       // Allow the value property to be set via an attribute.
@@ -26,10 +27,24 @@
         }
       }
 
+      // This property becomes the value of this.state at constructor time.
       get defaultState() {
         return Object.assign({}, super.defaultState, {
           value: 0
         });
+      }
+
+      // Expose "value" as an attribute.
+      static get observedAttributes() {
+        return ['value'];
+      }
+
+      // Provide a public property that gets/sets state.
+      get value() {
+        return this.state.value;
+      }
+      set value(value) {
+        this.setState({ value });
       }
 
       // Render the current state to the DOM.
@@ -57,19 +72,6 @@
         }
         // Render the state into the shadow.
         this.shadowRoot.querySelector('#value').textContent = this.state.value;
-      }
-
-      // Expose "value" as an attribute.
-      static get observedAttributes() {
-        return ['value'];
-      }
-
-      // Provide a public property that gets/sets state.
-      get value() {
-        return this.state.value;
-      }
-      set value(value) {
-        this.setState({ value });
       }
 
     }

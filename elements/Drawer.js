@@ -1,4 +1,5 @@
 import DialogModalityMixin from '../mixins/DialogModalityMixin.js';
+import ExpandCollapseMixin from '../mixins/ExpandCollapseMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 // import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
 import ModalBackdrop from './ModalBackdrop.js'; // eslint-disable-line no-unused-vars
@@ -13,13 +14,14 @@ import ElementBase from './ElementBase.js';
 const Base =
   // FocusCaptureWrapper(
   DialogModalityMixin(
+  ExpandCollapseMixin(
   KeyboardMixin(
   OverlayMixin(
   TouchSwipeMixin(
   TrackpadSwipeMixin(
   VisualStateMixin(
     ElementBase
-  ))))));
+  )))))));
 
 
 /**
@@ -44,24 +46,12 @@ const Base =
  */
 class Drawer extends Base {
 
-  constructor() {
-    super();
-    this.immediateTransitions = {
-      'opened': 'expanded'
-    };
-    this.transitionEndTransitions = {
-      'collapsed': 'closed'
-    };
-  }
-
   backdropProps() {
-    const expanded = this.state.visualState === 'expanded';
     const swiping = this.state.swipeFraction !== null;
     const swipeFraction = Math.max(Math.min(this.state.swipeFraction, 1), 0);
-    let opacity = expanded ? 0.2 : 0;
-    if (swiping) {
-      opacity *= 1 - swipeFraction;
-    }
+    const opacity = !this.opened ?
+      0 :
+      0.2 * (1 - swipeFraction);
     return {
       style: {
         opacity,
@@ -71,21 +61,13 @@ class Drawer extends Base {
     };
   }
 
-  close() {
-    const nextVisualState = this.state.visualState === 'expanded' ?
-      'collapsed' :
-      'closed';
-    this.changeVisualState(nextVisualState);
-  }
-
   contentProps() {
     const sign = this.rightToLeft ? -1 : 1;
-    const expanded = this.state.visualState === 'expanded';
     const swiping = this.state.swipeFraction !== null;
     const swipeFraction = Math.max(Math.min(sign * this.state.swipeFraction, 1), 0);
-    const transform = expanded ?
-      `translateX(${-sign * swipeFraction * 100}%)` :
-      'translateX(-100%)';
+    const transform = !this.opened ?
+      'translateX(-100%)' :
+      `translateX(${-sign * swipeFraction * 100}%)`;
     return {
       style: {
         'background': 'white',
@@ -97,6 +79,10 @@ class Drawer extends Base {
         'willChange': 'transform'
       }
     };
+  }
+
+  async close() {
+    await this.collapse();
   }
 
   get defaultState() {
@@ -132,28 +118,14 @@ class Drawer extends Base {
     });
   }
 
-  open() {
-    this.changeVisualState('opened');
-  }
-
-  // Define a property that can be set via an attribute.
-  get opened() {
-    return this.state.visualState === 'expanded';
-  }
-  set opened(opened) {
-    const parsed = String(opened) === 'true';
-    const visualState = parsed ?
-      'opened' :
-      this.state.visualState === 'expanded' ?
-        'collapsed' :
-        'closed';
-    this.changeVisualState(visualState);
-  }
-
   [symbols.render]() {
     if (super[symbols.render]) { super[symbols.render](); }
     props.apply(this.$.backdrop, this.backdropProps());
     props.apply(this.$.content, this.contentProps());
+  }
+
+  async open() {
+    await this.expand();
   }
 
   // TODO: Restore LanguageDirectionMixin
@@ -178,21 +150,21 @@ class Drawer extends Base {
     `;
   }
 
-  swipeLeft() {
+  async swipeLeft() {
     if (!this.rightToLeft) {
       const visualState = this.state.swipeFraction >= 1 ?
-        'closed' :
-        'collapsed';
-      this.changeVisualState(visualState);
+        this.visualStates.closed :
+        this.visualStates.collapsing;
+      await this.setState({ visualState });
     }
   }
 
-  swipeRight() {
+  async swipeRight() {
     if (this.rightToLeft) {
       const visualState = this.state.swipeFraction <= -1 ?
-        'closed' :
-        'collapsed';
-      this.changeVisualState(visualState);
+        this.visualStates.closed :
+        this.visualStates.collapsing;
+      await this.setState({ visualState });
     }
   }
 

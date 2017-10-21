@@ -49,10 +49,12 @@ class Toast extends Base {
   }
 
   async close() {
-    const visualState = this.state.visualState === 'expanded' ?
-      'collapsed' :
-      'closed';
-    await this.setState({ visualState });
+    if (this.state.visualState === 'opened' ||
+        this.state.visualState === 'expanded') {
+      await this.setState({
+        visualState: 'collapsed'
+      });
+    }
   }
 
   componentDidMount() {
