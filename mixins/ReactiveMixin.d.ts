@@ -9,10 +9,10 @@ declare const ReactiveMixin: Mixin<{
 }, {
   componentDidUpdate(): void;
   connectedCallback(): void;
-  defaultState: object;
+  defaultState: any;
   render: Promise<void>;
-  setState(object): Promise<void>;
-  state: object;
+  setState(any): Promise<void>;
+  state: any;
 }>;
 
 export default ReactiveMixin;
