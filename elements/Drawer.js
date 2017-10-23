@@ -1,27 +1,25 @@
 import DialogModalityMixin from '../mixins/DialogModalityMixin.js';
-import ExpandCollapseMixin from '../mixins/ExpandCollapseMixin.js';
+import OpenCloseTransitionMixin from '../mixins/OpenCloseTransitionMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 // import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
-import ModalBackdrop from './ModalBackdrop.js'; // eslint-disable-line no-unused-vars
+import ModalBackdrop from './ModalBackdrop.js'; /* eslint-disable-line no-unused-vars */
 import OverlayMixin from '../mixins/OverlayMixin.js';
 import * as props from '../mixins/props.js';
 import symbols from '../mixins/symbols.js';
 import TouchSwipeMixin from '../mixins/TouchSwipeMixin.js';
 import TrackpadSwipeMixin from '../mixins/TrackpadSwipeMixin.js';
-import VisualStateMixin from '../mixins/VisualStateMixin.js';
 import ElementBase from './ElementBase.js';
 
 const Base =
   // FocusCaptureWrapper(
   DialogModalityMixin(
-  ExpandCollapseMixin(
+  OpenCloseTransitionMixin(
   KeyboardMixin(
   OverlayMixin(
   TouchSwipeMixin(
   TrackpadSwipeMixin(
-  VisualStateMixin(
     ElementBase
-  )))))));
+  ))))));
 
 
 /**
@@ -82,7 +80,7 @@ class Drawer extends Base {
   }
 
   async close() {
-    await this.collapse();
+    await this.startClose();
   }
 
   get defaultState() {
@@ -115,7 +113,7 @@ class Drawer extends Base {
   }
 
   async open() {
-    await this.expand();
+    await this.startOpen();
   }
 
   // TODO: Restore LanguageDirectionMixin

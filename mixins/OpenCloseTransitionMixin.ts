@@ -3,12 +3,15 @@
 
 /// <reference path="../utilities/shared.d.ts"/>
 
-declare const VisualStateMixin: Mixin<{
+declare const OpenCloseTransitionMixin: Mixin<{
   componentDidMount?(): void;
   componentDidUpdate?(): void;
 }, {
   componentDidMount(): void;
   componentDidUpdate(): void;
+  startClose(): Promise<void>;
+  startOpen(): Promise<void>;
+  whenTransitionEnds(expectedState: string): Promise<void>;
 }>;
 
-export default VisualStateMixin;
+export default OpenCloseTransitionMixin;

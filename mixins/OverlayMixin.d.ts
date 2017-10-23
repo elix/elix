@@ -6,7 +6,11 @@
 declare const OverlayMixin: Mixin<{
   connectedCallback?(): void;
 }, {
+  close(): Promise<void>;
+  closed: boolean;
   connectedCallback(): void;
+  open(): Promise<void>;
+  opened: boolean;
 }>;
 
 export default OverlayMixin;

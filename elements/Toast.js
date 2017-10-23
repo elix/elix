@@ -4,7 +4,7 @@ import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import OverlayMixin from '../mixins/OverlayMixin.js';
 import PopupModalityMixin from '../mixins/PopupModalityMixin.js';
 import symbols from '../mixins/symbols.js';
-import VisualStateMixin from '../mixins/VisualStateMixin.js';
+import OpenCloseTransitionMixin from '../mixins/OpenCloseTransitionMixin.js';
 
 
 const timeoutKey = Symbol('timeout');
@@ -12,9 +12,9 @@ const timeoutKey = Symbol('timeout');
 
 const Base =
   KeyboardMixin(
+  OpenCloseTransitionMixin(
   OverlayMixin(
   PopupModalityMixin(
-  VisualStateMixin(
     ElementBase
   ))));
 
@@ -34,12 +34,6 @@ class Toast extends Base {
 
   constructor() {
     super();
-    this.immediateTransitions = {
-      'opened': 'expanded'
-    };
-    this.transitionEndTransitions = {
-      'collapsed': 'closed'
-    };
     this.addEventListener('mouseout', () => {
       startTimerIfExpanded(this);
     });

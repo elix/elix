@@ -3,6 +3,8 @@
 
 /// <reference path="../utilities/shared.d.ts"/>
 
-declare const HostPropsMixin: Mixin<{}, {}>;
+declare const HostPropsMixin: Mixin<{}, {
+  hostProps(original): any;
+}>;
 
 export default HostPropsMixin;

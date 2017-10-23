@@ -19,6 +19,7 @@ import KeyboardDirectionMixin from './mixins/KeyboardDirectionMixin.js';
 import KeyboardMixin from './mixins/KeyboardMixin.js';
 import KeyboardPagedSelectionMixin from './mixins/KeyboardPagedSelectionMixin.js';
 import KeyboardPrefixSelectionMixin from './mixins/KeyboardPrefixSelectionMixin.js';
+import OpenCloseTransitionMixin from './mixins/OpenCloseTransitionMixin.js';
 import OverlayMixin from './mixins/OverlayMixin.js';
 import SelectionAriaMixin from './mixins/SelectionAriaMixin.js';
 import SelectionInViewMixin from './mixins/SelectionInViewMixin.js';
@@ -28,7 +29,6 @@ import SingleSelectionMixin from './mixins/SingleSelectionMixin.js';
 import SlotContentMixin from './mixins/SlotContentMixin.js';
 import Symbol from './mixins/Symbol.js';
 import symbols from './mixins/symbols.js';
-import VisualStateMixin from './mixins/VisualStateMixin.js';
 
 // Import elements
 // import AlertDialog from './elements/AlertDialog.js';
@@ -64,6 +64,7 @@ export default {
   KeyboardPrefixSelectionMixin,
   ListBox,
   Modes,
+  OpenCloseTransitionMixin,
   OverlayMixin,
   SelectionAriaMixin,
   SelectionInViewMixin,
@@ -76,6 +77,5 @@ export default {
   symbols,
   TabButton,
   Tabs,
-  TabStrip,
-  VisualStateMixin,
+  TabStrip
 };
