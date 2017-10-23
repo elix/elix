@@ -1,10 +1,10 @@
 import * as props from '../mixins/props.js';
 import ElementBase from './ElementBase.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
+import OpenCloseTransitionMixin from '../mixins/OpenCloseTransitionMixin.js';
 import OverlayMixin from '../mixins/OverlayMixin.js';
 import PopupModalityMixin from '../mixins/PopupModalityMixin.js';
 import symbols from '../mixins/symbols.js';
-import OpenCloseTransitionMixin from '../mixins/OpenCloseTransitionMixin.js';
 
 
 const timeoutKey = Symbol('timeout');
@@ -35,7 +35,7 @@ class Toast extends Base {
   constructor() {
     super();
     this.addEventListener('mouseout', () => {
-      startTimerIfExpanded(this);
+      startTimerIfOpened(this);
     });
     this.addEventListener('mouseover', () => {
       clearTimer(this);
@@ -43,27 +43,20 @@ class Toast extends Base {
   }
 
   async close() {
-    if (this.state.visualState === 'opened' ||
-        this.state.visualState === 'expanded') {
-      await this.setState({
-        visualState: 'collapsed'
-      });
-    }
+    await this.startClose();
   }
 
-  componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
-    startTimerIfExpanded(this);
+  async componentDidMount() {
+    if (super.componentDidMount) { await super.componentDidMount(); }
+    startTimerIfOpened(this);
   }
 
-  componentDidUpdate() {
-    if (super.componentDidUpdate) { super.componentDidUpdate(); }
-    startTimerIfExpanded(this);
+  async componentDidUpdate() {
+    if (super.componentDidUpdate) { await super.componentDidUpdate(); }
+    startTimerIfOpened(this);
   }
 
   get contentProps() {
-    const base = super.contentProps ? super.contentProps() : {};
-
     const oppositeEdge = {
       'bottom-left': 'bottom-right',
       'bottom-right': 'bottom-left',
@@ -83,7 +76,7 @@ class Toast extends Base {
       'top-left': 'translateX(-100%)',
       'top-right': 'translateX(100%)'
     };
-    const expandedEdgeTransforms = {
+    const openEdgeTransforms = {
       'bottom': 'translateY(0)',
       'bottom-left': 'translateX(0)',
       'bottom-right': 'translateX(0)',
@@ -92,18 +85,18 @@ class Toast extends Base {
       'top-right': 'translateX(0)'
     };
 
-    const expanded = this.state.visualState === 'expanded';
-    const transform = expanded ?
-      expandedEdgeTransforms[languageAdjustedEdge] :
+    const opacity = this.opened ? 1 : 0;
+    const transform = this.opened ?
+      openEdgeTransforms[languageAdjustedEdge] :
       edgeTransforms[languageAdjustedEdge];
 
-    return props.merge(base, {
+    return {
       style: {
         'background': 'white',
         'border': '1px solid rgba(0, 0, 0, 0.2)',
         'boxShadow': '0 2px 10px rgba(0, 0, 0, 0.5)',
         'margin': '1em',
-        'opacity': expanded ? 1 : 0,
+        opacity,
         'pointerEvents': 'initial',
         'position': 'relative',
         transform,
@@ -111,7 +104,7 @@ class Toast extends Base {
         'transitionProperty': 'opacity, transform',
         'willChange': 'opacity, transform'
       }
-    });
+    };
   }
 
   get defaultState() {
@@ -192,6 +185,10 @@ class Toast extends Base {
     });
   }
 
+  async open() {
+    await this.startOpen();
+  }
+
   [symbols.render]() {
     if (super[symbols.render]) { super[symbols.render](); }
     props.apply(this.$.content, this.contentProps);
@@ -230,8 +227,8 @@ function startTimer(element) {
   }
 }
 
-function startTimerIfExpanded(element) {
-  if (element.state.visualState === 'expanded') {
+function startTimerIfOpened(element) {
+  if (element.opened) {
     startTimer(element);
   }
 }

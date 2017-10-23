@@ -323,7 +323,6 @@ const symbols = {
    *
    * This method should return a component's template.
    *
-   * @param {string|object} [filler]
    * @type {string|HTMLTemplateElement}
    */
   template: Symbol('template')

@@ -1,6 +1,7 @@
 import deepContains from './deepContains.js';
 import * as props from '../mixins/props.js';
 import Symbol from '../mixins/Symbol.js';
+import symbols from './symbols.js';
 
 
 // Symbols for private data members on an element.
@@ -36,12 +37,16 @@ export default function PopupModalityMixin(Base) {
     constructor() {
       super();
       this.addEventListener('blur', () => {
+        this[symbols.raiseChangeEvents] = true;
         this.close();
+        this[symbols.raiseChangeEvents] = false;
       });      
       this[closeListenerKey] = event => {
         const insideEvent = deepContains(this, event.target);
         if (!insideEvent) {
+          this[symbols.raiseChangeEvents] = true;
           this.close();
+          this[symbols.raiseChangeEvents] = false;
         }
       };
     }

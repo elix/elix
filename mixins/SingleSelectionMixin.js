@@ -223,6 +223,8 @@ function selectIndex(component, index) {
  * update `selectedIndex`. If it's been removed, and a selection is required,
  * try to select another item.
  */
+// TODO Export this and rely on libraries that change content to synchronously
+// update selectedIndex at the item they change content?
 function trackSelectedItem(component) {
 
   const items = component.items;

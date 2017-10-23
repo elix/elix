@@ -36,40 +36,40 @@ export default function OpenCloseTransitionMixin(Base) {
     }
 
     async startClose() {
-      if (!this.closed) {
-        await this.setState({ visualState: this.visualStates.collapsing });
+      if (this.opened) {
+        await updateVisualState(this, this.visualStates.closing);
       }
     }
 
     async startOpen() {
-      if (!this.opened) {
-        await this.setState({ visualState: this.visualStates.expanding });
+      if (this.closed) {
+        await updateVisualState(this, this.visualStates.opening);
       }
     }
 
     async transitionToNextVisualState() {
       let nextVisualState;
       switch (this.state.visualState) {
-        case 'expanding':
-          nextVisualState = 'opened';
+        case this.visualStates.opening:
+          nextVisualState = this.visualStates.opened;
           break;
 
-        case 'collapsing':
-          await this.whenTransitionEnds('collapsing');
-          nextVisualState = 'closed';
+        case this.visualStates.closing:
+          await this.whenTransitionEnds(this.visualStates.closing);
+          nextVisualState = this.visualStates.closed;
           break;
       }
       if (nextVisualState) {
-        this.setState({ visualState: nextVisualState });
+        await updateVisualState(this, nextVisualState);
       }
     }
 
     get visualStates() {
       return {
         closed: 'closed',
-        collapsing: 'collapsing',
-        expanding: 'expanding',
-        opened: 'opened'
+        closing: 'closing',
+        opened: 'opened',
+        opening: 'opening'
       };
     }
 
@@ -90,4 +90,24 @@ function getTransitionElements(element) {
   return element[symbols.elementsWithTransitions] ?
     element[symbols.elementsWithTransitions]() :
     [element];
+}
+
+
+async function updateVisualState(element, visualState) {
+  const changed = element.state.visualState !== visualState;
+  if (changed) {
+    await element.setState({ visualState });
+    // A single invocation of a method like startOpen() will cause the
+    // element to pass through multiple visual states. This makes it hard for
+    // external hosts of this component to know what visual state the component
+    // is in. Accordingly, we always raise an event if the visual state
+    // has changed, even if symbols.raiseChangeEvents is false.
+    const event = new CustomEvent('visual-state-changed', {
+      detail: {
+        visualState
+      }
+    });
+    element.dispatchEvent(event);
+  }
+  return changed;
 }
