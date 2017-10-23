@@ -136,8 +136,8 @@ class TabButton extends Base {
       style: {
         'display': 'inline-flex',
         'flex': stretch ? 1 : original.style.flex,
-        'margin-left': needsLeftSpacer ? '0.2em' : original.style.marginLeft,
-        'margin-top': needsTopSpacer ? '0.2em' : original.style.marginTop,
+        'margin-left': needsLeftSpacer ? '0.2em' : original.style['margin-left'],
+        'margin-top': needsTopSpacer ? '0.2em' : original.style['margin-top'],
       }
     });
   }

@@ -1,4 +1,8 @@
 import * as props from '../mixins/props.js';
+import Symbol from '../mixins/Symbol.js';
+
+
+const assignedZIndexKey = Symbol('assignedZIndex');
 
 
 /**
@@ -69,14 +73,19 @@ export default function OverlayMixin(Base) {
       this.setState({ visualState });
     }
 
-    // componentDidMount() {
-    //   if (super.componentDidMount) { super.componentDidMount(); }
-    //   updateStyle(this);
-    // }
+    componentDidMount() {
+      if (super.componentDidMount) { super.componentDidMount(); }
+      if (this.opened) {
+        this.focus();
+      }
+    }
 
     componentDidUpdate() {
       if (super.componentDidUpdate) { super.componentDidUpdate(); }
-      updateStyle(this);
+      if (this.opened) {
+        this.focus();
+      }
+      // TODO: Restore following check.
       // this.addEventListener('blur', () => {
       //   // The focus was taken from us, perhaps because the focus was set
       //   // elsewhere, so we don't want to try to restore focus when closing.
@@ -92,10 +101,27 @@ export default function OverlayMixin(Base) {
 
     hostProps(original) {
       const base = super.hostProps ? super.hostProps(original) : {};
+      let zIndex;
+      if (this.closed) {
+        zIndex = original.style['z-index'];
+        this[assignedZIndexKey] = null;
+      } else {
+        zIndex = original.style['z-index'] ||
+          base.style && base.style['z-index'] ||
+          this[assignedZIndexKey];
+        if (!zIndex) {
+          zIndex = maxZIndexInUse() + 1;
+          // Remember that we assigned a z-index for this component.
+          this[assignedZIndexKey] = zIndex;
+        }
+      }
       return props.merge(base, {
         attributes: {
           hidden: this.closed
         },
+        style: {
+          'z-index': zIndex
+        }
       });
     }
 
@@ -154,29 +180,4 @@ function maxZIndexInUse() {
     return zIndex;
   });
   return Math.max(...zIndices);
-}
-
-
-function updateStyle(element) {
-  if (element.closed) {
-    // Remove previously assigned z-index.
-    element.style.zIndex = null;
-
-    // TODO: Restore focus to previously-focused element.
-  } else {
-    // See if the element already has a z-index assigned via CSS. If no z-index
-    // is found, we'll calculate and apply a default z-index.
-    const style = getComputedStyle(element);
-    const computedZIndex = style.zIndex;
-    // Note that Safari returns a default zIndex of "0" for elements
-    // with position: fixed, while Blink returns "auto".
-    if (computedZIndex === 'auto' ||
-      (style.position === 'fixed' && computedZIndex === '0')) {
-      // Assign default z-index.
-      element.style.zIndex = maxZIndexInUse() + 1;
-    }
-
-    // Give the overlay focus.
-    element.focus();
-  }
 }

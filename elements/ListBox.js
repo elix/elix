@@ -76,7 +76,7 @@ export default class ListBox extends Base {
     const base = super.itemProps ? super.itemProps(item, index, original) : {};
     const selected = index === this.state.selectedIndex;
     const color = selected ? 'highlighttext' : original.style.color;
-    const backgroundColor = selected ? 'highlight' : original.style.backgroundColor;
+    const backgroundColor = selected ? 'highlight' : original.style['background-color'];
     return props.merge(base, {
       classes: {
         selected

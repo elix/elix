@@ -121,7 +121,7 @@ class TabStrip extends Base {
       {
         'display': 'flex',
         'flex-direction': lateralPosition ? 'column' : 'row',
-        'justify-content': justifyContent[tabAlign] || original.style.justifyContent
+        'justify-content': justifyContent[tabAlign] || original.style['justify-content']
       }
     );
 
