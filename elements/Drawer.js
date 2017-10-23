@@ -103,17 +103,7 @@ class Drawer extends Base {
       base.style && base.style.display || 'flex';
     return props.merge(base, {
       style: {
-        'alignItems': 'stretch',
-        display,
-        'flexDirection': 'row',
-        'left': 0,
-        'height': '100%',
-        'justifyContent': 'flex-start',
-        'outline': 'none',
-        'position': 'fixed',
-        'top': 0,
-        'WebkitTapHighlightColor': 'transparent',
-        'width': '100%'
+        display
       }
     });
   }
@@ -143,6 +133,20 @@ class Drawer extends Base {
 
   get [symbols.template]() {
     return `
+      <style>
+        :host {
+          align-items: stretch;
+          flex-direction: row;
+          left: 0;
+          height: 100%;
+          justify-content: flex-start;
+          outline: none;
+          position: fixed;
+          top: 0;
+          -webkit-tap-ighlight-color: transparent;
+          width: 100%;
+        }
+      </style>
       <elix-modal-backdrop id="backdrop"></elix-modal-backdrop>
       <div id="content">
         <slot></slot>

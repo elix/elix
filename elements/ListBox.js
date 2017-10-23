@@ -72,19 +72,6 @@ export default class ListBox extends Base {
     });
   }
 
-  hostProps(original) {
-    const base = super.hostProps && super.hostProps(original);
-    return props.merge(base, {
-      style: {
-        'border': '1px solid gray',
-        'box-sizing': 'border-box',
-        'cursor': 'default',
-        'display': 'flex',
-        '-webkit-tap-highlight-color': 'rgba(0, 0, 0, 0)'
-      }
-    });
-  }
-
   itemProps(item, index, original) {
     const base = super.itemProps ? super.itemProps(item, index, original) : {};
     const selected = index === this.state.selectedIndex;
@@ -103,14 +90,24 @@ export default class ListBox extends Base {
   }
 
   get [symbols.template]() {
-    const containerStyle = {
-      'flex': '1',
-      '-webkit-overflow-scrolling': 'touch', /* for momentum scrolling */
-      'overflow-x': 'hidden',
-      'overflow-y': 'scroll'
-    };
     return `
-      <div id="itemsContainer" role="none" style="${props.formatStyleProps(containerStyle)}">
+      <style>
+        :host {
+          border: 1px solid gray;
+          box-sizing: border-box;
+          cursor: default;
+          display: flex;
+          -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+
+        #itemsContainer {
+          flex: 1;
+          -webkit-overflow-scrolling: touch; /* for momentum scrolling */
+          overflow-x: hidden;
+          overflow-y: scroll;
+        }
+      </style>
+      <div id="itemsContainer" role="none">
         <slot></slot>
       </div>
     `;

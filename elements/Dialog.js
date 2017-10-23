@@ -6,7 +6,7 @@ import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import ModalBackdrop from './ModalBackdrop.js'; // eslint-disable-line no-unused-vars
 import OverlayMixin from '../mixins/OverlayMixin.js';
 import symbols from '../mixins/symbols.js';
-import VisualStateMixin from '../mixins/VisualStateMixin.js';
+// import VisualStateMixin from '../mixins/VisualStateMixin.js';
 
 
 const Base =
@@ -14,9 +14,9 @@ const Base =
   // FocusCaptureWrapper(
   KeyboardMixin(
   OverlayMixin(
-  VisualStateMixin(
+  // VisualStateMixin(
     ElementBase
-  ))));
+  )));
 
 
 /**

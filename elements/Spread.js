@@ -18,8 +18,6 @@ class Spread extends Base {
     const base = super.hostProps ? super.hostProps(original) : {};
     return props.merge(base, {
       style: {
-        'display': original.style && original.style.display || 'flex',
-        'position': 'relative',
         'width': `${this.items.length * 100}%`
       }
     });
@@ -36,7 +34,15 @@ class Spread extends Base {
   }
 
   get [symbols.template]() {
-    return `<slot></slot>`;
+    return `
+      <style>
+        :host {
+          display: flex;
+          position: relative;
+        }
+      </style>
+      <slot></slot>
+    `;
   }
 
 }

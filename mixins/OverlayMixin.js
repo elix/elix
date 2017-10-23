@@ -120,7 +120,7 @@ export default function OverlayMixin(Base) {
 
     get visualStates() {
       // Defer to any definition in base class.
-      if ('visualStates' in super.prototype) { return super.visualStates; }
+      if ('visualStates' in Base.prototype) { return super.visualStates; }
       // By default, provide opened and closed states.
       return {
         closed: 'closed',

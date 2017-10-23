@@ -4,16 +4,16 @@ import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import OverlayMixin from '../mixins/OverlayMixin.js';
 import PopupModalityMixin from '../mixins/PopupModalityMixin.js';
 import symbols from '../mixins/symbols.js';
-import VisualStateMixin from '../mixins/VisualStateMixin.js';
+// import VisualStateMixin from '../mixins/VisualStateMixin.js';
 
 
 const Base =
   KeyboardMixin(
   OverlayMixin(
   PopupModalityMixin(
-  VisualStateMixin(
+  // VisualStateMixin(
     ElementBase
-  ))));
+  )));
 
 
 /**

@@ -27,15 +27,15 @@ class SlidingViewport extends Base {
     });
   }
 
-  hostProps(original) {
-    const base = super.hostProps ? super.hostProps(original) : {};
-    return props.merge(base, {
-      style: {
-        'overflow': 'hidden',
-        'position': 'relative'
-      }
-    });
-  }
+  // hostProps(original) {
+  //   const base = super.hostProps ? super.hostProps(original) : {};
+  //   return props.merge(base, {
+  //     style: {
+  //       'overflow': 'hidden',
+  //       'position': 'relative'
+  //     }
+  //   });
+  // }
 
   [symbols.render]() {
     if (super[symbols.render]) { super[symbols.render](); }
@@ -53,10 +53,8 @@ class SlidingViewport extends Base {
     
     props.apply(this.$.spread, {
       style: {
-        'height': '100%',
         'transform': `translateX(${-sign * fraction * 100}%)`,
-        transition,
-        'willChange': 'transform'
+        transition
       }
     });
   }
@@ -68,6 +66,17 @@ class SlidingViewport extends Base {
 
   get [symbols.template]() {
     return `
+      <style>
+        :host {
+          overflow: hidden;
+          position: relative;
+        }
+
+        elix-spread {
+          height: 100%;
+          will-change: transform;
+        }
+      </style>
       <elix-spread id="spread" role="none">
         <slot></slot>
       </elix-spread>
