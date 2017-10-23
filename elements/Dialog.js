@@ -37,47 +37,45 @@ const Base =
 class Dialog extends Base {
 
   backdropProps() {
-    return super.backdropProps ? super.backdropProps() : {};
+    return {};
   }
 
   contentProps() {
-    const base = super.contentProps ? super.contentProps() : {};
-    return props.merge(base, {
-      style: {
-        'background': 'white',
-        'border': '1px solid rgba(0, 0, 0, 0.2)',
-        'box-shadow': '0 2px 10px rgba(0, 0, 0, 0.5)',
-        'position': 'relative'
-      }
-    });
+    return {};
   }
 
-  hostProps(original) {
-    const base = super.hostProps ? super.hostProps(original) : {};
-    const display = this.closed ?
-      null :
-      base.style && base.style.display || 'flex';
-    return props.merge(base, {
-      style: {
-        'alignItems': 'center',
-        display,
-        'flex-direction': 'column',
-        'height': '100%',
-        'justify-content': 'center',
-        'left': 0,
-        'outline': 'none',
-        'position': 'fixed',
-        'top': 0,
-        '-webkit-tap-highlight-color': 'transparent',
-        'width': '100%'
-      }
-    });
+  [symbols.render]() {
+    if (super[symbols.render]) { super[symbols.render](); }
+    props.apply(this.$.backdrop, this.backdropProps());
+    props.apply(this.$.content, this.contentProps());
   }
 
   get [symbols.template]() {
     return `
-      <elix-modal-backdrop style="${props.formatStyleProps(this.backdropProps().style)}"></elix-modal-backdrop>
-      <div id="content" style="${props.formatStyleProps(this.contentProps().style)}">
+      <style>
+        :host(:not([hidden])) {
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          justify-content: center;
+          left: 0;
+          outline: none;
+          position: fixed;
+          top: 0;
+          -webkit-tap-highlight-color: transparent;
+          width: 100%;
+        }
+
+        #content {
+          background: white;
+          border: 1px solid rgba(0, 0, 0, 0.2);
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+          position: relative;
+        }
+      </style>
+      <elix-modal-backdrop id="backdrop""></elix-modal-backdrop>
+      <div id="content">
         <slot></slot>
       </div>
     `;
