@@ -216,6 +216,7 @@ export function get(element) {
  */
 export function getAttributes(element) {
   const attributes = {};
+  // @ts-ignore
   [...element.attributes].forEach(attribute => {
       // TODO: Convert custom attributes to properties
       if (attribute.name !== 'class' && attribute.name !== 'style') {
@@ -245,6 +246,7 @@ export function getClasses(element) {
  */
 export function getStyle(element) {
   const styleProps = {};
+  // @ts-ignore
   [...element.style].forEach(key => {
     styleProps[key] = element.style[key];
   });

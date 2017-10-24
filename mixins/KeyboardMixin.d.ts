@@ -3,10 +3,15 @@
 
 /// <reference path="../utilities/shared.d.ts"/>
 
-declare const KeyboardMixin: Mixin<{
+declare const KeyboardMixin: StateMixin<{
   connectedCallback?(): void;
-}, {
+},
+{},
+{
   connectedCallback(): void;
+},
+{
+  tabindex: string
 }>;
 
 export default KeyboardMixin;

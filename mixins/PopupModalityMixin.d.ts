@@ -3,6 +3,8 @@
 
 /// <reference path="../utilities/shared.d.ts"/>
 
-declare const PopupModalityMixin: Mixin<{}, {}>;
+declare const PopupModalityMixin: StateMixin<{}, {}, {}, {
+  role: string
+}>;
 
 export default PopupModalityMixin;

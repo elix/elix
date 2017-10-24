@@ -3,6 +3,12 @@
 
 /// <reference path="../utilities/shared.d.ts"/>
 
-declare const TouchSwipeMixin: Mixin<{}, {}>;
+declare const TouchSwipeMixin: StateMixin<{},
+{},
+{},
+{
+  swipeFraction: number;
+  touchAction: string;
+}>;
 
 export default TouchSwipeMixin;

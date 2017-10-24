@@ -3,6 +3,8 @@
 
 /// <reference path="../utilities/shared.d.ts"/>
 
-declare const KeyboardDirectionMixin: Mixin<{}, {}>;
+declare const KeyboardDirectionMixin: StateMixin<{}, {}, {}, {
+  orientation: string;
+}>;
 
 export default KeyboardDirectionMixin;

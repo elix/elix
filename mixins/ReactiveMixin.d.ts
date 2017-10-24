@@ -6,13 +6,14 @@
 declare const ReactiveMixin: Mixin<{
   componentDidUpdate?(): void;
   connectedCallback?(): void;
+  defaultState?: PlainObject;
 }, {
   componentDidUpdate(): void;
   connectedCallback(): void;
-  defaultState: any;
+  defaultState: PlainObject;
   render: Promise<void>;
-  setState(any): Promise<void>;
-  state: any;
+  setState(changes: PlainObject): Promise<void>;
+  state: PlainObject;
 }>;
 
 export default ReactiveMixin;

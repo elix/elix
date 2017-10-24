@@ -27,16 +27,6 @@ class SlidingViewport extends Base {
     });
   }
 
-  // hostProps(original) {
-  //   const base = super.hostProps ? super.hostProps(original) : {};
-  //   return props.merge(base, {
-  //     style: {
-  //       'overflow': 'hidden',
-  //       'position': 'relative'
-  //     }
-  //   });
-  // }
-
   [symbols.render]() {
     if (super[symbols.render]) { super[symbols.render](); }
 

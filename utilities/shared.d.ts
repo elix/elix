@@ -34,6 +34,24 @@ type Constructor<T> = new() => T;
  * mixin might the say, "The base class I'm given _may_ have a foo property. The
  * class I return will _definitely_ have a foo property."
  */
-type Mixin<BaseExpectations, MixinMembers> =
-  <T extends HTMLElement & BaseExpectations>(Base: Constructor<T>) => 
+type Mixin<BaseMembers, MixinMembers> =
+  <T extends HTMLElement & BaseMembers>(Base: Constructor<T>) => 
     Constructor<T & MixinMembers>;
+
+
+/*
+ * State is generally represented with plain JavaScript object dictionaries.
+ */
+type PlainObject = {
+  [key: string]: any;
+};
+
+
+/*
+ * Mixins that add to state can indicate exactly what members they add to state.
+ * This requires us to indicate what the base state starts as, which for most
+ * component type definitions will be an empty object — i.e., the mixin makes no
+ * expectations about what state is provided by the base class.
+ */
+type StateMixin<BaseMembers, BaseState, MixinMembers, MixinState> =
+  Mixin<BaseMembers & {state?: BaseState}, MixinMembers & {state: BaseState & MixinState}>;

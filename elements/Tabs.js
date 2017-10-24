@@ -60,7 +60,7 @@ class Tabs extends Base {
 
   [symbols.shadowCreated]() {
     if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
-    this.$.tabStrip.addEventListener('selected-index-changed', event => {
+    this.$.tabStrip.addEventListener('selected-index-changed', () => {
       /** @type {any} */
       const tabStrip = this.$.tabStrip;
       this.updateSelectedIndex(tabStrip.selectedIndex);

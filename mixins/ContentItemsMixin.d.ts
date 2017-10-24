@@ -3,10 +3,15 @@
 
 /// <reference path="../utilities/shared.d.ts"/>
 
-declare const ContentItemsMixin: Mixin<{
+declare const ContentItemsMixin: StateMixin<{
   items?: Element[];
-}, {
+},
+{},
+{
   itemProps(item: Element, index: number, original: any): any;
+  items: Element[];
+},
+{
   items: Element[];
 }>;
 

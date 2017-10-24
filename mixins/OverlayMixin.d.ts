@@ -3,14 +3,21 @@
 
 /// <reference path="../utilities/shared.d.ts"/>
 
-declare const OverlayMixin: Mixin<{
+declare const OverlayMixin: StateMixin<{
   connectedCallback?(): void;
-}, {
+  state?: PlainObject;
+},
+{},
+{
   close(): Promise<void>;
   closed: boolean;
   connectedCallback(): void;
   open(): Promise<void>;
   opened: boolean;
-}>;
+},
+{
+  visualState: string
+}
+>;
 
 export default OverlayMixin;

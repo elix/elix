@@ -3,7 +3,7 @@
 
 /// <reference path="../utilities/shared.d.ts"/>
 
-declare const SingleSelectionMixin: Mixin<{
+declare const SingleSelectionMixin: StateMixin<{
   canSelectNext?: boolean;
   canSelectPrevious?: boolean;
   items?: Element[];
@@ -15,7 +15,9 @@ declare const SingleSelectionMixin: Mixin<{
   selectionWraps?: boolean;
   selectNext?(): boolean;
   selectPrevious?(): boolean;
-}, {
+},
+{},
+{
   canSelectNext: boolean;
   canSelectPrevious: boolean;
   selectedIndex: number;
@@ -27,6 +29,11 @@ declare const SingleSelectionMixin: Mixin<{
   selectNext(): boolean;
   selectPrevious(): boolean;
   updateSelectedIndex(number): boolean;
+},
+{
+  selectedIndex: number;
+  selectionRequired: boolean;
+  selectionWraps: boolean;
 }>;
 
 export default SingleSelectionMixin;
