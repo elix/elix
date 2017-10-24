@@ -35,6 +35,34 @@ describe("OverlayMixin", function() {
     container.innerHTML = '';
   });
 
+  it('opens and closes with opened property', () => {
+    const fixture = document.createElement('overlay-test');
+    assert(!fixture.opened);
+    fixture.opened = true;
+    assert(fixture.opened);
+    fixture.opened = false;
+  });
+
+  it('opens and closes with open and close methods', async () => {
+    const fixture = document.createElement('overlay-test');
+    assert(fixture.closed);
+    assert(!fixture.opened);
+    await fixture.open();
+    assert(!fixture.closed);
+    assert(fixture.opened);
+    await fixture.close(true);
+    assert(fixture.closed);
+    assert(!fixture.opened);
+  });
+
+  it('invokes openedChanged if defined', () => {
+    const fixture = document.createElement('overlay-test');
+    fixture[symbols.openedChanged] = (opened) => {
+      assert(opened);
+    };
+    fixture.opened = true;
+  });
+
   it('sets a default z-index', async () => {
     const fixture = document.createElement('overlay-test');
     container.appendChild(fixture);
