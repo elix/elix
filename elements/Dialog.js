@@ -3,6 +3,7 @@ import * as props from '../mixins/props.js';
 import DialogModalityMixin from '../mixins/DialogModalityMixin.js';
 import ElementBase from './ElementBase.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
+// @ts-ignore
 import ModalBackdrop from './ModalBackdrop.js'; // eslint-disable-line no-unused-vars
 import OverlayMixin from '../mixins/OverlayMixin.js';
 import symbols from '../mixins/symbols.js';

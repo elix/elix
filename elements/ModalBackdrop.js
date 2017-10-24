@@ -7,7 +7,7 @@ class ModalBackdrop extends ElementBase {
 
   /* eslint-disable no-unused-vars */
   hostProps(original) {
-    const base = super.hostProps ? super.hostProps() : {};
+    const base = super.hostProps ? super.hostProps(original) : {};
     const role = base.attributes && base.attributes.role || 'none';
     return props.merge(base, {
       attributes: {

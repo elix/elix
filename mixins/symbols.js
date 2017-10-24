@@ -225,8 +225,6 @@ const symbols = {
    * keyboard navigation).
    *
    * Accepted values are "horizontal", "vertical", or "both" (the default).
-   *
-   * @type {string}
    */
   orientation: Symbol('orientation'),
 
@@ -322,8 +320,6 @@ const symbols = {
    * Symbol for the `template` method.
    *
    * This method should return a component's template.
-   *
-   * @type {string|HTMLTemplateElement}
    */
   template: Symbol('template')
 };

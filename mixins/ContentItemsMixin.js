@@ -48,6 +48,12 @@ const previousContentKey = Symbol('previousContent');
 export default function ContentItemsMixin(Base) {
   return class ContentItems extends Base {
 
+    itemProps(item, index, original) {
+      return super.itemProps ?
+        super.itemProps(item, index, original) :
+        {};
+    }
+
     get items() {
       const base = super.items;
       if (base) {

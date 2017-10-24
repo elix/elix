@@ -1,4 +1,3 @@
-// import { html } from '../node_modules/lit-html/lit-html.js';
 import * as props from '../mixins/props.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import HostPropsMixin from '../mixins/HostPropsMixin.js';
@@ -32,6 +31,7 @@ const Base =
  */
 class TabButton extends Base {
 
+  /** @returns {any} */
   buttonProps() {
 
     const tabPosition = this.state.tabPosition;

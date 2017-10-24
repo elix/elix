@@ -2,6 +2,7 @@ import DialogModalityMixin from '../mixins/DialogModalityMixin.js';
 import OpenCloseTransitionMixin from '../mixins/OpenCloseTransitionMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 // import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
+// @ts-ignore
 import ModalBackdrop from './ModalBackdrop.js'; /* eslint-disable-line no-unused-vars */
 import OverlayMixin from '../mixins/OverlayMixin.js';
 import * as props from '../mixins/props.js';

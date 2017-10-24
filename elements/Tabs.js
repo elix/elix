@@ -2,10 +2,12 @@ import * as props from '../mixins/props.js';
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import HostPropsMixin from '../mixins/HostPropsMixin.js';
+// @ts-ignore
 import Modes from './Modes.js'; // eslint-disable-line no-unused-vars
 import ReactiveMixin from '../mixins/ReactiveMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import TabButton from './TabButton.js'; // eslint-disable-line no-unused-vars
+// @ts-ignore
 import TabStrip from './TabStrip.js'; // eslint-disable-line no-unused-vars
 import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
 import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
@@ -59,7 +61,9 @@ class Tabs extends Base {
   [symbols.shadowCreated]() {
     if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
     this.$.tabStrip.addEventListener('selected-index-changed', event => {
-      this.updateSelectedIndex(event.detail.selectedIndex);
+      /** @type {any} */
+      const tabStrip = this.$.tabStrip;
+      this.updateSelectedIndex(tabStrip.selectedIndex);
     });
   }
 

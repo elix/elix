@@ -11,6 +11,7 @@ declare const OpenCloseTransitionMixin: Mixin<{
   componentDidUpdate(): void;
   startClose(): Promise<void>;
   startOpen(): Promise<void>;
+  visualStates: any;
   whenTransitionEnds(expectedState: string): Promise<void>;
 }>;
 

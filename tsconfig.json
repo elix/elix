@@ -10,10 +10,9 @@
     "target": "ES6"
   },
   "include": [
-    "mixins/**/*.js",
-    "elements/**/*.js",
-    "demos/src/*.js",
-    "tests/**/*.js"
+    "elix.js",
+    "demos/demos.js",
+    "tests/tests.js"
   ],
   "exclude": [
     "elements/boilerplate/*"

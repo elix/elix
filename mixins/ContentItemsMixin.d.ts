@@ -6,6 +6,7 @@
 declare const ContentItemsMixin: Mixin<{
   items?: Element[];
 }, {
+  itemProps(item: Element, index: number, original: any): any;
   items: Element[];
 }>;
 
