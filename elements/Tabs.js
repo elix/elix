@@ -1,16 +1,12 @@
 import * as props from '../mixins/props.js';
-import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
-import HostPropsMixin from '../mixins/HostPropsMixin.js';
+import ElementBase from './ElementBase.js';
 // @ts-ignore
 import Modes from './Modes.js'; // eslint-disable-line no-unused-vars
-import ReactiveMixin from '../mixins/ReactiveMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import TabButton from './TabButton.js'; // eslint-disable-line no-unused-vars
 // @ts-ignore
 import TabStrip from './TabStrip.js'; // eslint-disable-line no-unused-vars
-import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
-import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
 import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
@@ -21,16 +17,11 @@ const tabButtonsKey = Symbol('tabButtons');
 
 
 const Base =
-  AttributeMarshallingMixin(  
   ContentItemsMixin(
-  HostPropsMixin(
-  ReactiveMixin(
-  ShadowReferencesMixin(
-  ShadowTemplateMixin(
   SingleSelectionMixin(
   SlotContentMixin(
-    HTMLElement
-  ))))))));
+    ElementBase
+  )));
 
 
 /**

@@ -1,24 +1,15 @@
 import * as props from '../mixins/props.js';
-import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
-import HostPropsMixin from '../mixins/HostPropsMixin.js';
+import ElementBase from './ElementBase.js';
 // import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin';
-import ReactiveMixin from '../mixins/ReactiveMixin.js';
-import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
-import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
 import symbols from '../mixins/symbols.js';
 
 
 const Base =
-  AttributeMarshallingMixin(
   // FocusRingMixin(
-  HostPropsMixin(
-  ReactiveMixin(
-  ShadowReferencesMixin(
-  ShadowTemplateMixin(
   SlotContentMixin(
-    HTMLElement
-  ))))));
+    ElementBase
+  );
 
 
 /**

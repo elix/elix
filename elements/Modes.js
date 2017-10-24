@@ -1,24 +1,17 @@
 import * as props from '../mixins/props.js';
-import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
-import HostPropsMixin from '../mixins/HostPropsMixin.js';
-import ReactiveMixin from '../mixins/ReactiveMixin.js';
-import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
+import ElementBase from './ElementBase.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
 import symbols from '../mixins/symbols.js';
 
 
 const Base =
-  AttributeMarshallingMixin(
   ContentItemsMixin(
-  HostPropsMixin(
-  ReactiveMixin(
-  ShadowTemplateMixin(
   SingleSelectionMixin(
   SlotContentMixin(
-    HTMLElement
-  )))))));
+        ElementBase
+  )));
 
 /**
  * Shows exactly one child element at a time. This can be useful, for example,
@@ -29,8 +22,7 @@ const Base =
  * common pattern in which buttons select the mode are tabs, a pattern
  * implemented by the [Tabs](Tabs) component.
  *
- * @extends HTMLElement
- * @mixes AttributeMarshallingMixin
+ * @extends ElementBase
  * @mixes ContentItemsMixin
  * @mixes SlotContentMixin
  * @mixes SingleSelectionMixin

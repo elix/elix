@@ -1,15 +1,12 @@
 import * as props from '../mixins/props.js';
-import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
 import ClickSelectionMixin from '../mixins/ClickSelectionMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import deepContains from '../mixins/deepContains.js';
 import DirectionSelectionMixin from '../mixins/DirectionSelectionMixin.js';
-import HostPropsMixin from '../mixins/HostPropsMixin.js';
+import ElementBase from './ElementBase.js';
 import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 // import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin';
-import ReactiveMixin from '../mixins/ReactiveMixin.js';
-import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 import SelectionAriaMixin from '../mixins/SelectionAriaMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
@@ -17,20 +14,16 @@ import symbols from '../mixins/symbols.js';
 
 
 const Base =
-  AttributeMarshallingMixin(
   ClickSelectionMixin(
   ContentItemsMixin(
   DirectionSelectionMixin(
-  HostPropsMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
-  ReactiveMixin(
   SelectionAriaMixin(
-  ShadowTemplateMixin(
   SingleSelectionMixin(
   SlotContentMixin(
-    HTMLElement
-  ))))))))))));
+    ElementBase
+  ))))))));
 
 
 /**
@@ -58,13 +51,11 @@ const Base =
  * component.
  *
  * @extends HTMLElement
- * @mixes AttributeMarshallingMixin
  * @mixes ClickSelectionMixin
  * @mixes ContentItemsMixin
  * @mixes DirectionSelectionMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
- * @mixes ShadowTemplateMixin
  * @mixes SingleSelectionMixin
  * @mixes SlotContentMixin
  */
