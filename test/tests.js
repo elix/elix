@@ -11,7 +11,7 @@ import * as KeyboardDirectionMixinTests from './mixins/KeyboardDirectionMixin.te
 import * as KeyboardMixinTests from './mixins/KeyboardMixin.tests.js';
 import * as KeyboardPagedSelectionMixinTests from './mixins/KeyboardPagedSelectionMixin.tests.js';
 import * as KeyboardPrefixSelectionMixinTests from './mixins/KeyboardPrefixSelectionMixin.tests.js';
-// import * as OverlayMixinTests from './mixins/OverlayMixin.tests.js';
+import * as OverlayMixinTests from './mixins/OverlayMixin.tests.js';
 // import * as OpenCloseMixinTests from './mixins/OpenCloseMixin.tests.js';
 import * as propsTests from './mixins/props.tests.js';
 import * as ReactiveMixinTests from './mixins/ReactiveMixin.tests.js';

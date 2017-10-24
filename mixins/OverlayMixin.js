@@ -2,7 +2,9 @@ import * as props from '../mixins/props.js';
 import Symbol from '../mixins/Symbol.js';
 
 
+const appendedToDocumentKey = Symbol('appendedToDocument');
 const assignedZIndexKey = Symbol('assignedZIndex');
+const previousFocusedElementKey = Symbol('previousFocusedElement');
 
 
 /**
@@ -54,6 +56,15 @@ export default function OverlayMixin(Base) {
   // The class prototype added by the mixin.
   class Overlay extends Base {
 
+    constructor() {
+      super();
+      this.addEventListener('blur', () => {
+        // The focus was taken from us, perhaps because the focus was set
+        // elsewhere, so we don't want to try to restore focus when closing.
+        this[previousFocusedElementKey] = null;
+      });
+    }
+
     async close() {
       if (!this.closed) {
         await this.setState({
@@ -82,15 +93,23 @@ export default function OverlayMixin(Base) {
 
     componentDidUpdate() {
       if (super.componentDidUpdate) { super.componentDidUpdate(); }
-      if (this.opened) {
+      if (this.closed) {
+        if (this[previousFocusedElementKey]) {
+          this[previousFocusedElementKey].focus();
+          this[previousFocusedElementKey] = null;
+        }
+        if (this[appendedToDocumentKey]) {
+          // The overlay wasn't in the document when opened, so we added it.
+          // Remove it now.
+          this.parentNode.removeChild(this);
+          this[appendedToDocumentKey] = false;
+        }
+      } else {
+        if (!this[previousFocusedElementKey]) {
+          this[previousFocusedElementKey] = document.activeElement;
+        }
         this.focus();
       }
-      // TODO: Restore following check.
-      // this.addEventListener('blur', () => {
-      //   // The focus was taken from us, perhaps because the focus was set
-      //   // elsewhere, so we don't want to try to restore focus when closing.
-      //   this[previousFocusedElementKey] = null;
-      // });
     }
 
     get defaultState() {
@@ -127,6 +146,11 @@ export default function OverlayMixin(Base) {
 
     async open() {
       if (!this.opened) {
+        if (!this.isConnected) {
+          // Overlay isn't in document yet.
+          this[appendedToDocumentKey] = true;
+          document.body.appendChild(this);
+        }
         await this.setState({
           visualState: this.visualStates.opened
         });
