@@ -17,7 +17,6 @@
     "babel-preset-env": "1.6.0",
     "chai": "4.1.2",
     "eslint": "4.9.0",
-    "eslint-config-google": "0.9.1",
     "fs-extra": "2.1.2",
     "jsdoc-api": "3.0.0",
     "jsdoc-parse": "3.0.0",
