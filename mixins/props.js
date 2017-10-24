@@ -44,7 +44,9 @@ export function apply(element, props) {
         break;
 
       case 'style':
-        applyStyle(element, value);
+        if (element instanceof HTMLElement) {
+          applyStyle(element, value);
+        }
         break;
 
       default:
@@ -84,6 +86,10 @@ export function applyAttribute(element, name, value) {
 }
 
 
+/**
+ * @param {Element} element 
+ * @param {any} attributeProps
+ */
 export function applyAttributes(element, attributeProps) {
   if (attributeProps) {
     Object.keys(attributeProps).forEach(name => {
@@ -93,6 +99,10 @@ export function applyAttributes(element, attributeProps) {
 }
 
 
+/**
+ * @param {Element} element 
+ * @param {NodeList|[Node]} childNodes
+ */
 export function applyChildNodes(element, childNodes) {
   // Quick dirty check if last array applied was frozen.
   if (element[previousChildNodesKey] && childNodes === element[previousChildNodesKey]) {
@@ -118,6 +128,11 @@ export function applyChildNodes(element, childNodes) {
 }
 
 
+/**
+ * @param {Element} element 
+ * @param {string} className
+ * @param {boolean} value
+ */
 export function applyClass(element, className, value) {
   if (value) {
     element.classList.add(className);
@@ -127,6 +142,10 @@ export function applyClass(element, className, value) {
 }
 
 
+/**
+ * @param {Element} element 
+ * @param {any} classProps
+ */
 export function applyClasses(element, classProps) {
   Object.keys(classProps).map(className => 
     applyClass(element, className, classProps[className])
@@ -134,8 +153,11 @@ export function applyClasses(element, classProps) {
 }
 
 
+/**
+ * @param {HTMLElement} element 
+ * @param {any} styleProps
+ */
 export function applyStyle(element, styleProps) {
-  // Object.assign(element.style, styleProps);
   const style = element.style;
   Object.keys(styleProps).forEach(key => {
     const value = styleProps[key];
@@ -144,6 +166,10 @@ export function applyStyle(element, styleProps) {
 }
 
 
+/**
+ * @param {any} classProps
+ * @returns string
+ */
 export function formatClassProps(classProps) {
   if (!classProps) {
     return '';
@@ -153,6 +179,10 @@ export function formatClassProps(classProps) {
 }
 
 
+/**
+ * @param {any} styleProps
+ * @returns string
+ */
 export function formatStyleProps(styleProps) {
   if (!styleProps) {
     return '';
@@ -164,16 +194,26 @@ export function formatStyleProps(styleProps) {
 
 /**
  * @param {Element} element
+ * @returns {any}
  */
 export function get(element) {
-  return {
-    attributes: getAttributes(element),
-    classes: getClasses(element),
-    style: getStyle(element)
-  };
+  return element instanceof HTMLElement ?
+    {
+      attributes: getAttributes(element),
+      classes: getClasses(element),
+      style: getStyle(element)
+    } :
+    {
+      attributes: getAttributes(element),
+      classes: getClasses(element),
+    };
 }
 
 
+/**
+ * @param {Element} element
+ * @returns {any}
+ */
 export function getAttributes(element) {
   const attributes = {};
   [...element.attributes].forEach(attribute => {
@@ -186,6 +226,10 @@ export function getAttributes(element) {
 }
 
 
+/**
+ * @param {Element} element
+ * @returns {any}
+ */
 export function getClasses(element) {
   const result = {};
   [...element.classList].forEach(className =>
@@ -195,6 +239,10 @@ export function getClasses(element) {
 }
 
 
+/**
+ * @param {HTMLElement} element
+ * @returns {any}
+ */
 export function getStyle(element) {
   const styleProps = {};
   [...element.style].forEach(key => {
@@ -205,8 +253,8 @@ export function getStyle(element) {
 
 
 /**
- * 
- * @param {Object[]} sources 
+ * @param {any[]} sources
+ * @returns {any}
  */
 export function merge(...sources) {
   const result = {};
