@@ -4,7 +4,7 @@ import Symbol from '../mixins/Symbol.js';
 
 const appendedToDocumentKey = Symbol('appendedToDocument');
 const assignedZIndexKey = Symbol('assignedZIndex');
-const previousFocusedElementKey = Symbol('previousFocusedElement');
+const restoreFocusToElementKey = Symbol('restoreFocusToElement');
 
 
 /**
@@ -58,10 +58,25 @@ export default function OverlayMixin(Base) {
 
     constructor() {
       super();
-      this.addEventListener('blur', () => {
-        // The focus was taken from us, perhaps because the focus was set
-        // elsewhere, so we don't want to try to restore focus when closing.
-        this[previousFocusedElementKey] = null;
+      this.addEventListener('blur', event => {
+        // What has the focus now?
+        const newFocusedElement = event.relatedTarget || document.activeElement;
+        if (newFocusedElement !== document.body) {
+          if (this.opened) {
+            // The user has most likely clicked on something in the background
+            // of a modeless overlay. Remember that element, and restore focus
+            // to it when the overlay finishes closing.
+            this[restoreFocusToElementKey] = newFocusedElement;
+          } else {
+            // A blur event fired, but the overlay closed itself before the blur
+            // event could be processed. In closing, we may have already
+            // restored the focus to the element that originally invoked the
+            // overlay. Since the user has clicked somewhere else to close the
+            // overlay, put the focus where they wanted it.
+            newFocusedElement.focus();
+            this[restoreFocusToElementKey] = null;
+          }
+        }
       });
     }
 
@@ -86,30 +101,12 @@ export default function OverlayMixin(Base) {
 
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
-      if (this.opened) {
-        this.focus();
-      }
+      updateOverlay(this);
     }
 
     componentDidUpdate() {
       if (super.componentDidUpdate) { super.componentDidUpdate(); }
-      if (this.closed) {
-        if (this[previousFocusedElementKey]) {
-          this[previousFocusedElementKey].focus();
-          this[previousFocusedElementKey] = null;
-        }
-        if (this[appendedToDocumentKey]) {
-          // The overlay wasn't in the document when opened, so we added it.
-          // Remove it now.
-          this.parentNode.removeChild(this);
-          this[appendedToDocumentKey] = false;
-        }
-      } else {
-        if (!this[previousFocusedElementKey]) {
-          this[previousFocusedElementKey] = document.activeElement;
-        }
-        this.focus();
-      }
+      updateOverlay(this);
     }
 
     get defaultState() {
@@ -146,14 +143,14 @@ export default function OverlayMixin(Base) {
 
     async open() {
       if (!this.opened) {
+        await this.setState({
+          visualState: this.visualStates.opened
+        });
         if (!this.isConnected) {
           // Overlay isn't in document yet.
           this[appendedToDocumentKey] = true;
           document.body.appendChild(this);
         }
-        await this.setState({
-          visualState: this.visualStates.opened
-        });
       }
     }
 
@@ -204,4 +201,31 @@ function maxZIndexInUse() {
     return zIndex;
   });
   return Math.max(...zIndices);
+}
+
+
+// Update the overlay following a mount or update.
+function updateOverlay(element) {
+  if (element.closed) {
+    if (element[restoreFocusToElementKey]) {
+      // Restore focus to the element that had the focus before the overlay was
+      // opened.
+      element[restoreFocusToElementKey].focus();
+      element[restoreFocusToElementKey] = null;
+    }
+    if (element[appendedToDocumentKey]) {
+      // The overlay wasn't in the document when opened, so we added it.
+      // Remove it now.
+      element.parentNode.removeChild(element);
+      element[appendedToDocumentKey] = false;
+    }
+  }
+  else {
+    if (!element[restoreFocusToElementKey] && document.activeElement !== document.body) {
+      // Remember which element had the focus before we were opened.
+      element[restoreFocusToElementKey] = document.activeElement;
+      element.foo = document.activeElement;
+    }
+    element.focus();
+  }
 }

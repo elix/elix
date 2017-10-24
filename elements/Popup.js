@@ -28,7 +28,7 @@ const Base =
  */
 class Popup extends Base {
 
-  contentProps() {
+  get contentProps() {
     const base = super.contentProps ? super.contentProps() : {};
     return props.merge(base, {
       style: {
@@ -55,6 +55,7 @@ class Popup extends Base {
         'justify-content': 'center',
         'left': 0,
         'outline': 'none',
+        'pointer-events': 'none',
         'position': 'fixed',
         'top': 0,
         '-webkit-tap-highlight-color': 'transparent',
@@ -63,9 +64,14 @@ class Popup extends Base {
     });
   }
 
+  [symbols.render]() {
+    if (super[symbols.render]) { super[symbols.render](); }
+    props.apply(this.$.content, this.contentProps);
+  }
+
   get [symbols.template]() {
     return `
-      <div id="content" style="${props.formatStyleProps(this.contentProps().style)}">
+      <div id="content">
         <slot></slot>
       </div>
     `;

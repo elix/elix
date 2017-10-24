@@ -46,7 +46,7 @@ const Base =
  */
 class Drawer extends Base {
 
-  backdropProps() {
+  get backdropProps() {
     const swiping = this.state.swipeFraction !== null;
     const swipeFraction = Math.max(Math.min(this.state.swipeFraction, 1), 0);
     const opacity = !this.opened ?
@@ -61,7 +61,7 @@ class Drawer extends Base {
     };
   }
 
-  contentProps() {
+  get contentProps() {
     const sign = this.rightToLeft ? -1 : 1;
     const swiping = this.state.swipeFraction !== null;
     const swipeFraction = Math.max(Math.min(sign * this.state.swipeFraction, 1), 0);
@@ -110,8 +110,8 @@ class Drawer extends Base {
 
   [symbols.render]() {
     if (super[symbols.render]) { super[symbols.render](); }
-    props.apply(this.$.backdrop, this.backdropProps());
-    props.apply(this.$.content, this.contentProps());
+    props.apply(this.$.backdrop, this.backdropProps);
+    props.apply(this.$.content, this.contentProps);
   }
 
   async open() {

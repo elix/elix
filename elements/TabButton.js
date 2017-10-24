@@ -32,7 +32,7 @@ const Base =
 class TabButton extends Base {
 
   /** @returns {any} */
-  buttonProps() {
+  get buttonProps() {
 
     const tabPosition = this.state.tabPosition;
     const positionStyles = {
@@ -144,7 +144,7 @@ class TabButton extends Base {
 
   [symbols.render]() {
     if (super[symbols.render]) { super[symbols.render](); }
-    props.apply(this.$.button, this.buttonProps());
+    props.apply(this.$.button, this.buttonProps);
   }
 
   get ariaSelected() {

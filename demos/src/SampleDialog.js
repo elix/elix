@@ -5,9 +5,8 @@ import symbols from '../../mixins/symbols.js';
 
 class SampleDialog extends Dialog {
 
-  contentProps() {
-    const base = super.contentProps ? super.contentProps() : {};
-    return props.merge(base, {
+  get contentProps() {
+    return props.merge(super.contentProps, {
       style: {
         padding: '1em'
       }

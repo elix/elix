@@ -5,8 +5,8 @@ import TabButton from '../../elements/TabButton.js';
 
 class ToolbarTab extends TabButton {
 
-  buttonProps() {
-    const base = super.buttonProps ? super.buttonProps() : {};
+  get buttonProps() {
+    const base = super.buttonProps;
     const baseColor = base.style && base.style.color;
     return props.merge(base, {
       style: {
