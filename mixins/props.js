@@ -44,7 +44,7 @@ export function apply(element, props) {
         break;
 
       case 'style':
-        if (element instanceof HTMLElement) {
+        if (element instanceof HTMLElement || element instanceof SVGElement) {
           applyStyle(element, value);
         }
         break;
@@ -156,7 +156,7 @@ export function applyClasses(element, classProps) {
 
 
 /**
- * @param {HTMLElement} element 
+ * @param {HTMLElement|SVGElement} element 
  * @param {any} styleProps
  */
 export function applyStyle(element, styleProps) {
@@ -243,7 +243,7 @@ export function getClasses(element) {
 
 
 /**
- * @param {HTMLElement} element
+ * @param {HTMLElement|SVGElement} element
  * @returns {any}
  */
 export function getStyle(element) {

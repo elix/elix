@@ -1,3 +1,4 @@
+import ArrowSelectionMixin from '../mixins/ArrowSelectionMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import DirectionSelectionMixin from '../mixins/DirectionSelectionMixin.js';
 import ElementBase from './ElementBase.js';
@@ -16,6 +17,7 @@ import TrackpadSwipeMixin from '../mixins/TrackpadSwipeMixin.js';
 
 
 const Base =
+  ArrowSelectionMixin(
   ContentItemsMixin(
   DirectionSelectionMixin(
   FocusRingMixin(
@@ -28,7 +30,7 @@ const Base =
   TouchSwipeMixin(
   TrackpadSwipeMixin(
     ElementBase
-  )))))))))));
+  ))))))))))));
 
 
 class SlidingCarousel extends Base {
@@ -70,9 +72,11 @@ class SlidingCarousel extends Base {
           flex: 1;
         }
       </style>
-      <elix-sliding-viewport id="viewport">
-        <slot></slot>
-      </elix-sliding-viewport>
+      ${this.wrapWithArrowSelection(`
+        <elix-sliding-viewport id="viewport">
+          <slot></slot>
+        </elix-sliding-viewport>
+      `)}
     `;
   }
 }
