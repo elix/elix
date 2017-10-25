@@ -115,7 +115,7 @@ describe("props helpers", () => {
   });
 
   it("props.applyChildNodes updates child nodes", () => {
-    const fixture = document.createElement('button');
+    const fixture = document.createElement('div');
     const existingChild = document.createTextNode('existing');
     fixture.appendChild(existingChild);
     const nodes = [
@@ -127,6 +127,26 @@ describe("props helpers", () => {
     assert.equal(fixture.childNodes[0], nodes[0]);
     assert.equal(fixture.childNodes[1], nodes[1]);
     assert.isNull(existingChild.parentNode);
+  });
+
+  it("props applies $ props to referenced elements", () => {
+    const fixture = document.createElement('div');
+    fixture.$ = {
+      child: document.createElement('button')
+    };
+    fixture.appendChild(fixture.$.child);
+    props.apply(fixture, {
+      $: {
+        child: {
+          attributes: {
+            'aria-label': 'Label',
+            disabled: true
+          }
+        }
+      }
+    });
+    assert(fixture.$.child.disabled);
+    assert.equal(fixture.$.child.getAttribute('aria-label'), 'Label');
   });
 
 });

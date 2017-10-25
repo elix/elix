@@ -73,9 +73,9 @@ export default function SelectionAriaMixin(Base) {
       });
     }
 
-    hostProps(original) {
-      const base = super.hostProps ? super.hostProps(original) : {};
-      const role = original.attributes.role ||
+    get props() {
+      const base = super.props || {};
+      const role = this.originalProps.attributes.role ||
         base.attributes && base.attributes.role ||
         'listbox';
       const selectedItem = this.state.selectedIndex >= 0 && this.items ?

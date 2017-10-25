@@ -53,11 +53,14 @@ class SlidingCarousel extends Base {
     return this.$.viewport.items;
   }
 
-  [symbols.render]() {
-    if (super[symbols.render]) { super[symbols.render](); }
-    props.apply(this.$.viewport, {
-      selectedIndex: this.state.selectedIndex,
-      swipeFraction: this.state.swipeFraction
+  get props() {
+    return props.merge(super.props, {
+      $: {
+        viewport: {
+          selectedIndex: this.state.selectedIndex,
+          swipeFraction: this.state.swipeFraction
+        }
+      }
     });
   }
 

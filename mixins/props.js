@@ -7,6 +7,7 @@ import Symbol from './Symbol.js';
 
 
 const specialProps = {
+  '$': true,
   'attributes': true,
   'classes': true,
   'style': true
@@ -32,9 +33,14 @@ const previousChildNodesKey = Symbol('previousChildNodes');
  * @param {Object} props
  */
 export function apply(element, props) {
-  Object.keys(props).forEach(key => {
+  for (let key in props) {
     const value = props[key];
     switch (key) {
+
+      case '$':
+        applyReferencedElementProps(element, value);
+        break;
+
       case 'attributes':
         applyAttributes(element, value);
         break;
@@ -54,7 +60,7 @@ export function apply(element, props) {
         element[key] = value;
         break;
     }
-  });
+  }
 }
 
 
@@ -92,9 +98,9 @@ export function applyAttribute(element, name, value) {
  */
 export function applyAttributes(element, attributeProps) {
   if (attributeProps) {
-    Object.keys(attributeProps).forEach(name => {
-      applyAttribute(element, name, attributeProps[name]);
-    });
+    for (let attributeName in attributeProps) {
+      applyAttribute(element, attributeName, attributeProps[attributeName]);
+    }
   }
 }
 
@@ -149,9 +155,18 @@ export function applyClass(element, className, value) {
  * @param {any} classProps
  */
 export function applyClasses(element, classProps) {
-  Object.keys(classProps).map(className => 
+  for (let className in classProps) {
     applyClass(element, className, classProps[className])
-  );
+  }
+}
+
+
+function applyReferencedElementProps(element, referencedElementProps) {
+  for (let key in referencedElementProps) {
+    const props = referencedElementProps[key];
+    const referencedElement = element.$[key];
+    apply(referencedElement, props);
+  }
 }
 
 
@@ -161,10 +176,10 @@ export function applyClasses(element, classProps) {
  */
 export function applyStyle(element, styleProps) {
   const style = element.style;
-  Object.keys(styleProps).forEach(key => {
-    const value = styleProps[key];
-    style[key] = value === undefined ? '' : value;
-  });
+  for (let styleName in styleProps) {
+    const value = styleProps[styleName];
+    style[styleName] = value === undefined ? '' : value;
+  };
 }
 
 
@@ -264,12 +279,12 @@ export function merge(...sources) {
   const result = {};
   sources.forEach(source => {
     if (source) {
-      Object.keys(source).forEach(key => {
+      for (let key in source) {
         const value = source[key];
         result[key] = specialProps[key] ?
           Object.assign(result[key] || {}, value) :
           result[key] = value;
-      });
+      }
     }
   })
   return result;

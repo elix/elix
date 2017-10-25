@@ -35,9 +35,7 @@ export default function ArrowSelectionMixin(Base) {
       assumeButtonFocus(this, this.$.arrowButtonRight);
     }
 
-    [symbols.render]() {
-      if (super[symbols.render]) { super[symbols.render](); }
-
+    get props() {
       const buttonProps = {
         style: {
           'bottom': 0,
@@ -50,7 +48,7 @@ export default function ArrowSelectionMixin(Base) {
       const canGoLeft = this.rightToLeft ?
         this.canSelectNext :
         this.canSelectPrevious;
-      props.apply(this.$.arrowButtonLeft, props.merge(buttonProps, {
+      const arrowButtonLeftProps = props.merge(buttonProps, {
         attributes: {
           disabled: !canGoLeft,
           hidden: supportsTouch()
@@ -58,12 +56,12 @@ export default function ArrowSelectionMixin(Base) {
         style: {
           left: 0
         }
-      }));
+      });
         
       const canGoRight = this.rightToLeft ?
         this.canSelectPrevious :
         this.canSelectNext;
-      props.apply(this.$.arrowButtonRight, props.merge(buttonProps, {
+      const arrowButtonRightProps = props.merge(buttonProps, {
         attributes: {
           disabled: !canGoRight,
           hidden: supportsTouch()
@@ -71,15 +69,21 @@ export default function ArrowSelectionMixin(Base) {
         style: {
           right: 0
         }
-      }));
+      });
 
       const arrowIconProps = this.arrowIconProps;
-      props.apply(this.$.arrowIconLeft, arrowIconProps);
-      props.apply(this.$.arrowIconRight, arrowIconProps);
 
-      props.apply(this.$.arrowSelection, {
-        style: {
-          'flex-direction': this.rightToLeft ? 'row-reverse' : 'row'
+      return props.merge(super.props, {
+        $: {
+          arrowButtonLeft: arrowButtonLeftProps,
+          arrowButtonRight: arrowButtonRightProps,
+          arrowIconLeft: arrowIconProps,
+          arrowIconRight: arrowIconProps,
+          arrowSelection: {
+            style: {
+              'flex-direction': this.rightToLeft ? 'row-reverse' : 'row'
+            }
+          }
         }
       });
     }
