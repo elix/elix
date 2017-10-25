@@ -1,6 +1,7 @@
 import * as props from '../mixins/props.js';
 import ElementBase from './ElementBase.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
+import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
 import OpenCloseTransitionMixin from '../mixins/OpenCloseTransitionMixin.js';
 import OverlayMixin from '../mixins/OverlayMixin.js';
 import PopupModalityMixin from '../mixins/PopupModalityMixin.js';
@@ -12,11 +13,12 @@ const timeoutKey = Symbol('timeout');
 
 const Base =
   KeyboardMixin(
+  LanguageDirectionMixin(
   OpenCloseTransitionMixin(
   OverlayMixin(
   PopupModalityMixin(
     ElementBase
-  ))));
+  )))));
 
 
 /**
@@ -192,11 +194,6 @@ class Toast extends Base {
   [symbols.render]() {
     if (super[symbols.render]) { super[symbols.render](); }
     props.apply(this.$.content, this.contentProps);
-  }
-
-  // TODO: Restore LanguageDirectionMixin
-  get rightToLeft() {
-    return false;
   }
 
   get [symbols.template]() {

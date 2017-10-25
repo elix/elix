@@ -1,7 +1,7 @@
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import ElementBase from './ElementBase.js';
 import * as FractionalSelection from '../utilities/FractionalSelection.js';
-// import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
+import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
 import * as props from '../mixins/props.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
@@ -11,11 +11,11 @@ import symbols from '../mixins/symbols.js';
 
 const Base =
   ContentItemsMixin(
-  // LanguageDirectionMixin(
+  LanguageDirectionMixin(
   SingleSelectionMixin(
   SlotContentMixin(
     ElementBase
-  )));
+  ))));
 
 
 class SlidingViewport extends Base {
@@ -47,11 +47,6 @@ class SlidingViewport extends Base {
         transition
       }
     });
-  }
-
-  // TODO: Restore LanguageDirectionMixin
-  get rightToLeft() {
-    return false;
   }
 
   get [symbols.template]() {

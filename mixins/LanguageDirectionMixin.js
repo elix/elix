@@ -7,20 +7,14 @@ export default function LanguageDirectionMixin(Base) {
     // end up rendering twice.
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
-      const root = this.root;
-      if (root) {
-        const direction = getComputedStyle(root).direction;
-        if (this.state.direction !== direction) {
-          this.setState({ direction });
-        }
-      } else {
-        /* eslint-disable no-console */
-        console.warn(`LanguageDirectionMixin expects a component to define a "ref" for its root element.`);
+      const languageDirection = getComputedStyle(this).direction;
+      if (this.state.languageDirection !== languageDirection) {
+        this.setState({ languageDirection });
       }
     }
 
     get rightToLeft() {
-      return this.state.direction === 'rtl';
+      return this.state.languageDirection === 'rtl';
     }
 
   }

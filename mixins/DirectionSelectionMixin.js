@@ -46,7 +46,9 @@ export default function DirectionSelectionMixin(Base) {
         console.warn(`DirectionSelectionMixin expects a component to define a "selectPrevious" method.`);
         return false;
       } else {
-        return this.selectPrevious();
+        return this.rightToLeft ?
+          this.selectNext() :
+          this.selectPrevious();
       }
     }
 
@@ -57,7 +59,9 @@ export default function DirectionSelectionMixin(Base) {
         console.warn(`DirectionSelectionMixin expects a component to define a "selectNext" method.`);
         return false;
       } else {
-        return this.selectNext();
+        return this.rightToLeft ?
+          this.selectPrevious() :
+          this.selectNext();
       }
     }
 

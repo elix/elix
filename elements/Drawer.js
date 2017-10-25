@@ -1,7 +1,7 @@
 import DialogModalityMixin from '../mixins/DialogModalityMixin.js';
 import OpenCloseTransitionMixin from '../mixins/OpenCloseTransitionMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
-// import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
+import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
 // @ts-ignore
 import ModalBackdrop from './ModalBackdrop.js'; // eslint-disable-line no-unused-vars
 import OverlayMixin from '../mixins/OverlayMixin.js';
@@ -17,11 +17,12 @@ const Base =
   DialogModalityMixin(
   OpenCloseTransitionMixin(
   KeyboardMixin(
+  LanguageDirectionMixin(
   OverlayMixin(
   TouchSwipeMixin(
   TrackpadSwipeMixin(
     ElementBase
-  ))))));
+  )))))));
 
 
 /**
@@ -47,11 +48,12 @@ const Base =
 class Drawer extends Base {
 
   get backdropProps() {
+    const sign = this.rightToLeft ? -1 : 1;
     const swiping = this.state.swipeFraction !== null;
-    const swipeFraction = Math.max(Math.min(this.state.swipeFraction, 1), 0);
-    const opacity = !this.opened ?
-      0 :
-      0.2 * (1 - swipeFraction);
+    const swipeFraction = Math.max(Math.min(sign * this.state.swipeFraction, 1), 0);
+    const opacity = this.opened ?
+      0.2 * (1 - swipeFraction) :
+      0;
     return {
       style: {
         opacity,
@@ -65,9 +67,10 @@ class Drawer extends Base {
     const sign = this.rightToLeft ? -1 : 1;
     const swiping = this.state.swipeFraction !== null;
     const swipeFraction = Math.max(Math.min(sign * this.state.swipeFraction, 1), 0);
-    const transform = !this.opened ?
-      'translateX(-100%)' :
-      `translateX(${-sign * swipeFraction * 100}%)`;
+    const translateFraction = this.opened ?
+      swipeFraction :
+      1;
+    const transform = `translateX(${-sign * translateFraction * 100}%)`;
     return {
       style: {
         'background': 'white',
@@ -118,11 +121,6 @@ class Drawer extends Base {
     await this.startOpen();
   }
 
-  // TODO: Restore LanguageDirectionMixin
-  get rightToLeft() {
-    return false;
-  }
-
   [symbols.shadowCreated]() {
     if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
     // Implicitly close on background clicks.
@@ -156,19 +154,13 @@ class Drawer extends Base {
 
   async swipeLeft() {
     if (!this.rightToLeft) {
-      const visualState = this.state.swipeFraction >= 1 ?
-        this.visualStates.closed :
-        this.visualStates.collapsing;
-      await this.setState({ visualState });
+      await this.startClose();
     }
   }
 
   async swipeRight() {
     if (this.rightToLeft) {
-      const visualState = this.state.swipeFraction <= -1 ?
-        this.visualStates.closed :
-        this.visualStates.collapsing;
-      await this.setState({ visualState });
+      await this.startClose();
     }
   }
 
