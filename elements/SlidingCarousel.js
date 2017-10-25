@@ -1,6 +1,5 @@
 import DirectionSelectionMixin from '../mixins/DirectionSelectionMixin.js';
-// import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
-// import FocusMixin from '../mixins/FocusMixin.js';
+import FocusRingMixin from '../mixins/FocusRingMixin.js';
 import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import SlidingViewport from './SlidingViewport';
@@ -12,29 +11,18 @@ import TrackpadSwipeMixin from '../mixins/TrackpadSwipeMixin.js';
 
 const Base =
   DirectionSelectionMixin(
-  // FocusMixin(
+  FocusRingMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
-  // LanguageDirectionMixin(
   SelectionAriaMixin(
   SwipeDirectionMixin(
   TouchSwipeMixin(
   TrackpadSwipeMixin(
     SlidingViewport
-  )))))));
+  ))))))));
 
 
-class SlidingCarousel extends Base {
-
-  // rootProps() {
-  //   const base = super.rootProps ? super.rootProps() : {};
-  //   const style = Object.assign({}, base.style, {
-  //     'outline': !this.state.focusRing && 'none'
-  //   });
-  //   return Object.assign({}, base, { style });
-  // }
-
-}
+class SlidingCarousel extends Base {}
 
 
 customElements.define('elix-sliding-carousel', SlidingCarousel);
