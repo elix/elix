@@ -7,8 +7,7 @@ const glob = require('glob');
 const lintFiles = [
       'elements/*.js',
       'mixins/*.js',
-      'test/**/*.js',
-      'tasks/*.js'
+      'test/**/*.js'
   ];
 
 //
@@ -22,14 +21,14 @@ function runLint() {
   });
   
   let promise = new Promise((resolve, reject) => {
-    console.log('Running jshint over sources...');
+    console.log('Running eslint over sources...');
     let task = spawn(
-      'jshint', 
+      'eslint', 
       args,
       {stdio: 'inherit', shell: true});
       
     task.on('close', code => {
-      console.log('...jshint complete');
+      console.log('...eslint complete');
       return resolve();
     });
   });
