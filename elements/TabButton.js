@@ -127,6 +127,7 @@ class TabButton extends Base {
         tabindex: original.attributes.tabindex || this.state.tabindex
       },
       style: {
+        'background-color': original.style && original.style['background-color'] || 'white',
         'display': 'inline-flex',
         'flex': stretch ? 1 : original.style.flex,
         'margin-left': needsLeftSpacer ? '0.2em' : original.style['margin-left'],
