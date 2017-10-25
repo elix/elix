@@ -1,4 +1,4 @@
-import { toggleClass } from './attributes.js';
+import * as props from './props.js';
 
 
 //
@@ -9,61 +9,26 @@ import { toggleClass } from './attributes.js';
 let focusedWithKeyboard = true;
 
 // Flag used to track keyboard focus state across window blur/focus events.
-let previousFocusedWithKeyboard = false;
+let previousFocusedWithKeyboard;
 
-let listeningToWindowFocus = false;
+// Shared event listener for all components using this mixin.
+let windowFocusListener;
 
 
-/**
- * Adds a `focus-ring` class to the element when (and only when) it receives
- * focus via the keyboard. This is useful for buttons and other components that
- * don't generally show a focus ring for mouse/touch interaction.
- *
- * The following demo shows button that display a focus ring only when
- * you move the focus onto them via the keyboard, and not with the mouse or touch.
- *
- * [Button components using FocusRingMixin](/demos/focusRing.html)
- *
- * This is inspired by work on the `:focus-ring` pseudo-selector.
- * See https://github.com/wicg/focus-ring for details.
- *
- * This mixin manages a `focus-ring` class on an element that be used to
- * suppress the default focus ring unless the keyboard was used. The element's
- * stylesheet should include a CSS rule of the form:
- *
- *     :host(:focus:not(.focus-ring)) {
- *       outline: none;
- *     }
- *
- * @module FocusRingMixin
- */
-export default function FocusRingMixin(Base) {
+export default function FocusMixin(Base) {
+  return class Focus extends Base {
 
-  // The class prototype added by the mixin.
-  class FocusRing extends Base {
     constructor() {
-      // @ts-ignore
       super();
-
-      // We only want to start listening to window focus events if an element
-      // using this mixin is actually instantiated, and we only do that for the
-      // first such element. All elements can share that window focus listeners.
-      if (!listeningToWindowFocus) {
-        window.addEventListener('focus', windowFocused);
-
-        // Firefox does not appear to listen to focus events on the window.
-        // We listen to focus events on the document instead. There does not
-        // appear to be a browser that listens to focus on both window and
-        // document, so wiring up focus listeners to both seems to be safe.
-        document.addEventListener('focus', windowFocused);
-
-        listeningToWindowFocus = true;
-      }
-
+      this.addEventListener('blur', () => {
+        this.setState({
+          focusRing: false
+        });
+      });
       this.addEventListener('focus', () => {
-        /** @type {any} */
-        const element = this;
-        toggleClass(element, 'focus-ring', focusedWithKeyboard);
+        this.setState({
+          focusRing: focusedWithKeyboard
+        });
 
         // Remember how focus changed in case window loses focus.
         previousFocusedWithKeyboard = focusedWithKeyboard;
@@ -71,29 +36,64 @@ export default function FocusRingMixin(Base) {
         // Go back to assuming use of the keyboard.
         focusedWithKeyboard = true;
       });
-
       this.addEventListener('mousedown', () => {
-        // If this element receives focus, it won't be because of the keyboard.
+        // If an element receives focus, it won't be because of the keyboard.
         focusedWithKeyboard = false;
       });
 
-      this.addEventListener('blur', () => {
-        this.classList.remove('focus-ring');
+      // We only want to start listening to window focus events if an element
+      // using this mixin is actually instantiated, and we only do that for the
+      // first such element. All elements can share that window focus listeners.
+      if (windowFocusListener == null) {
+        windowFocusListener = window.addEventListener('focus', windowFocused);
+
+        // Firefox does not appear to listen to focus events on the window.
+        // We listen to focus events on the document instead. There does not
+        // appear to be a browser that listens to focus on both window and
+        // document, so wiring up focus listeners to both seems to be safe.
+        document.addEventListener('focus', windowFocused);
+      }
+    }
+
+    get defaultState() {
+      return Object.assign({}, super.defaultState, {
+        focusRing: false
       });
     }
-  }
 
-  return FocusRing;
+    hostProps(original) {
+      const base = super.hostProps ? super.hostProps(original) : {};
+      const outline = base.style && base.style.outline ||
+          !this.state.focusRing && 'none' ||
+          undefined;
+      return props.merge(base, {
+        style: {
+          outline
+        }
+      });
+    }
+
+    // For use with KeyboardMixin
+    keydown(event) {
+      const result = super.keydown && super.keydown(event);
+      if (!this.state.focusRing) {
+        // User set focus on component with mouse, but is now using keyboard.
+        this.setState({
+          focusRing: true
+        });
+      }
+      return result;
+    }
+  }
 }
 
 
-// The window has regained focus after having lost it. If the last
-// element that had the focus obtained the focus via the keyboard,
-// set our keyboard input flag. That previously-focused element is
-// about to receive a focus event, and the handler for that can then
-// treat the situation as if the focus was obtained via the keyboard.
-// That helps a keyboard user reacquire the focused element when
-// returning to the window.
+// The window has regained focus after having lost it. If the last element that
+// had the focus obtained the focus via the keyboard, set our keyboard input
+// flag. That previously-focused element is about to receive a focus event, and
+// the handler for that can then treat the situation as if the focus was
+// obtained via the keyboard. That helps a keyboard user reacquire the focused
+// element when returning to the window.
 function windowFocused() {
   focusedWithKeyboard = previousFocusedWithKeyboard;
 }

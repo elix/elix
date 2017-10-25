@@ -1,5 +1,4 @@
 import * as props from '../../mixins/props.js';
-// import FocusRingMixin from '../../mixins/FocusRingMixin.js';
 import TabButton from '../../elements/TabButton.js';
 
 
@@ -19,7 +18,6 @@ class ToolbarTab extends TabButton {
         'flex-direction': 'column',
         'font-family': 'inherit',
         'font-size': 'inherit',
-        'outline': 'none',
         'padding': '6px',
         '-webkit-tap-highlight-color': 'transparent'
       }

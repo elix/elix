@@ -1,15 +1,16 @@
 import * as props from '../mixins/props.js';
 import ElementBase from './ElementBase.js';
+import FocusRingMixin from '../mixins/FocusRingMixin.js';
 // import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
 import symbols from '../mixins/symbols.js';
 
 
 const Base =
-  // FocusRingMixin(
+  FocusRingMixin(
   SlotContentMixin(
     ElementBase
-  );
+  ));
 
 
 /**
@@ -68,12 +69,13 @@ class TabButton extends Base {
         'border-right-color': '#ccc',
         'border-style': 'solid',
         'border-top-color': '#ccc',
-        'bomerge': '1px',
+        'border-width': '1px',
         'color': 'inherit',
         'flex': 1,
         'font-family': 'inherit',
         'font-size': 'inherit',
         'margin': '0',
+        'outline': 'none',
         'padding': '0.5em 0.75em',
         'transition': 'border-color 0.25s',
         'white-space': 'nowrap'
