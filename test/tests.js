@@ -26,5 +26,3 @@ import * as SlotContentMixinTests from './mixins/SlotContentMixin.tests.js';
 // import * as LabeledTabsTests from './elements/LabeledTabs.tests.js';
 
 /* eslint-enable */
-
-mocha.run();
