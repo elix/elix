@@ -114,4 +114,19 @@ describe("props helpers", () => {
     assert.equal(fixture.disabled, false);
   });
 
+  it("props.applyChildNodes updates child nodes", () => {
+    const fixture = document.createElement('button');
+    const existingChild = document.createTextNode('existing');
+    fixture.appendChild(existingChild);
+    const nodes = [
+      document.createTextNode('one'),
+      document.createTextNode('two')
+    ];
+    props.applyChildNodes(fixture, nodes);
+    assert.equal(fixture.childNodes.length, 2);
+    assert.equal(fixture.childNodes[0], nodes[0]);
+    assert.equal(fixture.childNodes[1], nodes[1]);
+    assert.isNull(existingChild.parentNode);
+  });
+
 });
