@@ -4,10 +4,12 @@
 /// <reference path="../utilities/shared.d.ts"/>
 
 declare const ReactiveMixin: Mixin<{
+  componentDidMount?(): void;
   componentDidUpdate?(): void;
   connectedCallback?(): void;
   defaultState?: PlainObject;
 }, {
+  componentDidMount(): void;
   componentDidUpdate(): void;
   connectedCallback(): void;
   defaultState: PlainObject;

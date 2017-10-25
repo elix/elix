@@ -180,8 +180,7 @@ export default function SingleSelectionMixin(Base) {
         if (this[symbols.raiseChangeEvents]) {
           const event = new CustomEvent('selected-index-changed', {
             detail: {
-              selectedIndex,
-              value: selectedIndex // for Polymer binding. TODO: Verify still necessary
+              selectedIndex
             }
           });
           this.dispatchEvent(event);

@@ -49,6 +49,16 @@ class SlidingViewport extends Base {
     });
   }
 
+  get swipeFraction() {
+    return this.state.swipeFraction;
+  }
+  set swipeFraction(swipeFraction) {
+    const parsed = swipeFraction && parseFloat(swipeFraction);
+    this.setState({
+      swipeFraction: parsed
+    });
+  }
+
   get [symbols.template]() {
     return `
       <style>
