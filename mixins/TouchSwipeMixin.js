@@ -40,11 +40,10 @@ export default function TouchSwipeMixin(Base) {
       });
     }
 
-    hostProps() {
-      const base = super.hostProps ? super.hostProps() : {};
-      return props.merge(base, {
+    get props() {
+      return props.merge(super.props, {
         style: {
-          touchAction: this.state.touchAction
+          'touch-action': this.state.touchAction
         }
       })
     }

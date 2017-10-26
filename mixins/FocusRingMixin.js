@@ -61,18 +61,6 @@ export default function FocusMixin(Base) {
       });
     }
 
-    hostProps(original) {
-      const base = super.hostProps ? super.hostProps(original) : {};
-      const outline = base.style && base.style.outline ||
-          !this.state.focusRing && 'none' ||
-          undefined;
-      return props.merge(base, {
-        style: {
-          outline
-        }
-      });
-    }
-
     // For use with KeyboardMixin
     keydown(event) {
       const result = super.keydown && super.keydown(event);
@@ -83,6 +71,18 @@ export default function FocusMixin(Base) {
         });
       }
       return result;
+    }
+
+    get props() {
+      const base = super.props || {};
+      const outline = base.style && base.style.outline ||
+        !this.state.focusRing && 'none' ||
+        undefined;
+      return props.merge(base, {
+        style: {
+          outline
+        }
+      });
     }
   }
 }

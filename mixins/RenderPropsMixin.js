@@ -3,6 +3,7 @@ import Symbol from './Symbol.js';
 import symbols from './symbols.js';
 
 
+const originalPropsKey = Symbol('originalProps');
 const originalStyleKey = Symbol('originalStyle');
 const latestStylePropsKey = Symbol('latestStyleProps');
 
@@ -14,12 +15,16 @@ export default function RenderPropsMixin(Base) {
       return super.props || {};
     }
 
+    get originalProps() {
+      return this[originalPropsKey];
+    }
+
     [symbols.render]() {
       if (super[symbols.render]) { super[symbols.render](); }
 
       // First gather the original attributes on the component.
-      if (this.originalProps === undefined) {
-        this.originalProps = props.get(this);
+      if (this[originalPropsKey] === undefined) {
+        this[originalPropsKey] = props.get(this);
         // this[originalStyleKey] = this.style.cssText;
       }
 
