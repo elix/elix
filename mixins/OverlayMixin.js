@@ -115,32 +115,6 @@ export default function OverlayMixin(Base) {
       });
     }
 
-    hostProps(original) {
-      const base = super.hostProps ? super.hostProps(original) : {};
-      let zIndex;
-      if (this.closed) {
-        zIndex = original.style['z-index'];
-        this[assignedZIndexKey] = null;
-      } else {
-        zIndex = original.style['z-index'] ||
-          base.style && base.style['z-index'] ||
-          this[assignedZIndexKey];
-        if (!zIndex) {
-          zIndex = maxZIndexInUse() + 1;
-          // Remember that we assigned a z-index for this component.
-          this[assignedZIndexKey] = zIndex;
-        }
-      }
-      return props.merge(base, {
-        attributes: {
-          hidden: this.closed
-        },
-        style: {
-          'z-index': zIndex
-        }
-      });
-    }
-
     async open() {
       if (!this.opened) {
         await this.setState({
@@ -163,6 +137,34 @@ export default function OverlayMixin(Base) {
         this.visualStates.opened :
         this.visualStates.closed;
       this.setState({ visualState });
+    }
+
+    get props() {
+      const base = super.props || {};
+      const original = this.originalProps;
+
+      let zIndex;
+      if (this.closed) {
+        zIndex = original.style['z-index'];
+        this[assignedZIndexKey] = null;
+      } else {
+        zIndex = original.style['z-index'] ||
+          base.style && base.style['z-index'] ||
+          this[assignedZIndexKey];
+        if (!zIndex) {
+          zIndex = maxZIndexInUse() + 1;
+          // Remember that we assigned a z-index for this component.
+          this[assignedZIndexKey] = zIndex;
+        }
+      }
+      return props.merge(base, {
+        attributes: {
+          hidden: this.closed
+        },
+        style: {
+          'z-index': zIndex
+        }
+      });
     }
 
     get visualStates() {

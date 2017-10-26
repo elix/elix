@@ -1,19 +1,20 @@
-import HostPropsMixin from '../../mixins/HostPropsMixin.js';
 import OverlayMixin from '../../mixins/OverlayMixin.js';
-import * as props from '../../mixins/props.js';
+import RenderPropsMixin from '../../mixins/RenderPropsMixin.js';
 import ReactiveMixin from '../../mixins/ReactiveMixin.js';
+import * as props from '../../mixins/props.js';
 import symbols from '../../mixins/symbols.js';
 
 
 const Base =
-  HostPropsMixin(
+  RenderPropsMixin(
   OverlayMixin(
   ReactiveMixin(
     HTMLElement
   )));
+
 class OverlayTest extends Base {
-  hostProps(original) {
-    return props.merge(super.hostProps(original), {
+  get props() {
+    return props.merge(super.props, {
       attributes: {
         tabindex: '0'
       }

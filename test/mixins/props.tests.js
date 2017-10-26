@@ -129,6 +129,23 @@ describe("props helpers", () => {
     assert.isNull(existingChild.parentNode);
   });
 
+  it("props.apply with childNodes updates child nodes", () => {
+    const fixture = document.createElement('div');
+    const existingChild = document.createTextNode('existing');
+    fixture.appendChild(existingChild);
+    const nodes = [
+      document.createTextNode('one'),
+      document.createTextNode('two')
+    ];
+    props.apply(fixture, {
+      childNodes: nodes
+    });
+    assert.equal(fixture.childNodes.length, 2);
+    assert.equal(fixture.childNodes[0], nodes[0]);
+    assert.equal(fixture.childNodes[1], nodes[1]);
+    assert.isNull(existingChild.parentNode);
+  });
+
   it("props applies $ props to referenced elements", () => {
     const fixture = document.createElement('div');
     fixture.$ = {

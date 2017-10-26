@@ -58,7 +58,68 @@ class Toast extends Base {
     startTimerIfOpened(this);
   }
 
-  get contentProps() {
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      duration: null,
+      fromEdge: 'bottom'
+    });
+  }
+
+  get duration() {
+    return this.state.duration;
+  }
+  set duration(duration) {
+    this.setState({ duration });
+  }
+
+  /* eslint-disable no-unused-vars */
+  [symbols.elementsWithTransitions](visualState) {
+    return [this.$.content];
+  }
+
+  get fromEdge() {
+    return this.state.fromEdge;
+  }
+  set fromEdge(fromEdge) {
+    this.setState({ fromEdge });
+  }
+
+  get props() {
+    const base = super.props || {};
+
+    // Host
+    const hostEdgeStyles = {
+      'bottom': {
+        'align-items': 'center',
+        'justify-content': 'flex-end',
+      },
+      'bottom-left': {
+        'align-items': 'flex-start',
+        'justify-content': 'flex-end',
+      },
+      'bottom-right': {
+        'align-items': 'flex-end',
+        'justify-content': 'flex-end',
+      },
+      'top': {
+        'align-items': 'center',
+        'justify-content': null
+      },
+      'top-left': {
+        'align-items': 'flex-start',
+        'justify-content': null
+      },
+      'top-right': {
+        'align-items': 'flex-end',
+        'justify-content': null
+      }
+    };
+    const hostEdgeStyle = hostEdgeStyles[this.state.fromEdge];
+    const display = this.closed ?
+      null :
+      base.style && base.style.display || 'flex';
+
+    // Content
     const oppositeEdge = {
       'bottom-left': 'bottom-right',
       'bottom-right': 'bottom-left',
@@ -92,97 +153,21 @@ class Toast extends Base {
       openEdgeTransforms[languageAdjustedEdge] :
       edgeTransforms[languageAdjustedEdge];
 
-    return {
+    const contentProps = {
       style: {
-        'background': 'white',
-        'border': '1px solid rgba(0, 0, 0, 0.2)',
-        'boxShadow': '0 2px 10px rgba(0, 0, 0, 0.5)',
-        'margin': '1em',
         opacity,
-        'pointerEvents': 'initial',
-        'position': 'relative',
-        transform,
-        'transitionDuration': '0.25s',
-        'transitionProperty': 'opacity, transform',
-        'willChange': 'opacity, transform'
+        transform
       }
     };
-  }
-
-  get defaultState() {
-    return Object.assign({}, super.defaultState, {
-      duration: null,
-      fromEdge: 'bottom'
-    });
-  }
-
-  get duration() {
-    return this.state.duration;
-  }
-  set duration(duration) {
-    this.setState({ duration });
-  }
-
-  /* eslint-disable no-unused-vars */
-  [symbols.elementsWithTransitions](visualState) {
-    return [this.$.content];
-  }
-
-  get fromEdge() {
-    return this.state.fromEdge;
-  }
-  set fromEdge(fromEdge) {
-    this.setState({ fromEdge });
-  }
-
-  hostProps(original) {
-    const base = super.hostProps ? super.hostProps(original) : {};
-    const rootEdgeStyles = {
-      'bottom': {
-        'align-items': 'center',
-        'justify-content': 'flex-end',
-      },
-      'bottom-left': {
-        'align-items': 'flex-start',
-        'justify-content': 'flex-end',
-      },
-      'bottom-right': {
-        'align-items': 'flex-end',
-        'justify-content': 'flex-end',
-      },
-      'top': {
-        'align-items': 'center',
-        'justify-content': null
-      },
-      'top-left': {
-        'align-items': 'flex-start',
-        'justify-content': null
-      },
-      'top-right': {
-        'align-items': 'flex-end',
-        'justify-content': null
-      }
-    };
-    const rootEdgeStyle = rootEdgeStyles[this.state.fromEdge];
-
-    const display = this.closed ?
-      null :
-      base.style && base.style.display || 'flex';
-
+    
     return props.merge(base, {
       style: {
-        'align-items': rootEdgeStyle['align-items'],
+        'align-items': hostEdgeStyle['align-items'],
         display,
-        'flex-direction': 'column',
-        'height': '100%',
-        'justify-content': rootEdgeStyle['justify-content'],
-        'left': 0,
-        'outline': 'none',
-        'pointer-events': 'none',
-        'position': 'fixed',
-        'top': 0,
-        '-webkit-tap-highlight-color': 'transparent',
-        'width': '100%'
+        'justify-content': hostEdgeStyle['justify-content'],
+      },
+      $: {
+        content: contentProps
       }
     });
   }
@@ -191,13 +176,33 @@ class Toast extends Base {
     await this.startOpen();
   }
 
-  [symbols.render]() {
-    if (super[symbols.render]) { super[symbols.render](); }
-    props.apply(this.$.content, this.contentProps);
-  }
-
   get [symbols.template]() {
     return `
+      <style>
+        :host {
+          flex-direction: column;
+          height: 100%;
+          left: 0;
+          outline: none;
+          pointer-events: none;
+          position: fixed;
+          top: 0;
+          -webkit-tap-highlight-color: transparent;
+          width: 100%;
+        }
+
+        #content {
+          background: white;
+          border: 1px solid rgba(0, 0, 0, 0.2);
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+          margin: 1em;
+          pointer-events: initial;
+          position: relative;
+          transition-duration: 0.25s;
+          transition-property: opacity, transform;
+          will-change: opacity, transform;
+        }
+      </style>
       <div id="content">
         <slot></slot>
       </div>

@@ -1,5 +1,4 @@
 import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
-import HostPropsMixin from '../mixins/HostPropsMixin.js';
 import RenderPropsMixin from '../mixins/RenderPropsMixin.js';
 import ReactiveMixin from '../mixins/ReactiveMixin.js';
 import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
@@ -7,12 +6,11 @@ import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
 
 const ElementBase =
   AttributeMarshallingMixin(
-  HostPropsMixin(
   ReactiveMixin(
   RenderPropsMixin(
   ShadowReferencesMixin(
   ShadowTemplateMixin(
     HTMLElement
-  ))))));
+  )))));
 
-export default ElementBase;
+export default ElementBase

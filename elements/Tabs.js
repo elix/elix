@@ -67,15 +67,30 @@ class Tabs extends Base {
     });
   }
 
-  hostProps(original) {
-    const base = super.hostProps ? super.hostProps(original) : {};
+  get props() {
     const tabPosition = this.state.tabPosition;
     const lateralPosition = tabPosition === 'left' || tabPosition === 'right';
-    return props.merge(base, {
+
+    return props.merge(super.props, {
       style: {
-        'display': 'inline-flex',
-        'flexDirection': lateralPosition ? 'row' : 'column',
-        'position': 'relative'
+        'flex-direction': lateralPosition ? 'row' : 'column'
+      },
+      $: {
+        tabStrip: {
+          attributes: {
+            'selected-index': this.state.selectedIndex,
+            'tab-align': this.state.tabAlign,
+            'tab-position': this.state.tabPosition
+          }
+        },
+        tabButtonsSlot: {
+          childNodes: this.tabButtons
+        },
+        tabPanels: {
+          attributes: {
+            'selected-index': this.state.selectedIndex
+          }
+        }
       }
     });
   }
@@ -120,22 +135,6 @@ class Tabs extends Base {
   [symbols.render]() {
     if (super[symbols.render]) { super[symbols.render](); }
 
-    props.apply(this.$.tabStrip, {
-      attributes: {
-        'selected-index': this.state.selectedIndex,
-        'tab-align': this.state.tabAlign,
-        'tab-position': this.state.tabPosition
-      }
-    });
-
-    props.applyChildNodes(this.$.tabButtonsSlot, this.tabButtons);
-
-    props.apply(this.$.tabPanels, {
-      attributes: {
-        'selected-index': this.state.selectedIndex
-      }
-    });
-
     // Physically reorder the tabs and panels to reflect the desired arrangement.
     // We could change the visual appearance by reversing the order of the flex
     // box, but then the visual order wouldn't reflect the document order, which
@@ -172,6 +171,12 @@ class Tabs extends Base {
     };
 
     return `
+      <style>
+        :host {
+          display: inline-flex;
+          position: relative;
+        }
+      </style>
       <elix-tab-strip
         id="tabStrip"
         style="${props.formatStyleProps(tabStripStyle)}"

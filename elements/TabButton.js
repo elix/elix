@@ -23,68 +23,13 @@ const Base =
  */
 class TabButton extends Base {
 
-  /** @returns {any} */
-  get buttonProps() {
-
-    const tabPosition = this.state.tabPosition;
-    const positionStyles = {
-      bottom: {
-        'border-radius': '0 0 0.25em 0.25em',
-        'margin-top': '-1px'
-      },
-      left: {
-        'border-radius': '0.25em 0 0 0.25em',
-        'margin-right': '-1px'
-      },
-      right: {
-        'border-radius': '0 0.25em 0.25em 0',
-        'margin-left': '-1px'
-      },
-      top: {
-        'border-radius': '0.25em 0.25em 0 0',
-        'margin-bottom': '-1px'
-      }
-    };
-    const positionStyle = positionStyles[tabPosition];
-
-    const selected = this.state.selected;
-    const selectedStyle = {
-      'opacity': 1,
-      'z-index': 1
-    };
-    const borderSides = {
-      'bottom': 'border-top-color',
-      'left': 'border-right-color',
-      'right': 'border-left-color',
-      'top': 'border-bottom-color'
-    };
-    const borderSide = borderSides[tabPosition];
-    selectedStyle[borderSide] = 'transparent';
-
-    const style = Object.assign(
-      {
-        'background': 'inherit',
-        'border-bottom-color': '#ccc',
-        'border-left-color': '#ccc',
-        'border-right-color': '#ccc',
-        'border-style': 'solid',
-        'border-top-color': '#ccc',
-        'border-width': '1px',
-        'color': 'inherit',
-        'flex': 1,
-        'font-family': 'inherit',
-        'font-size': 'inherit',
-        'margin': '0',
-        'outline': 'none',
-        'padding': '0.5em 0.75em',
-        'transition': 'border-color 0.25s',
-        'white-space': 'nowrap'
-      },
-      positionStyle,
-      selected && selectedStyle
-    );
-
-    return { style };
+  get ariaSelected() {
+    return this.state.selected;
+  }
+  set ariaSelected(selected) {
+    this.setState({
+      selected: String(selected) === 'true'
+    });
   }
 
   get defaultState() {
@@ -109,11 +54,12 @@ class TabButton extends Base {
     });
   }
 
-  hostProps(original) {
-    const base = super.hostProps ? super.hostProps(original) : {};
+  get props() {
+    const base = super.props || {};
+    const original = this.originalProps;
 
+    // Host
     const stretch = this.state.tabAlign === 'stretch';
-
     const index = this.state.index;
     const needsSpacer = index > 0;
     const tabPosition = this.tabPosition;
@@ -121,32 +67,71 @@ class TabButton extends Base {
         (tabPosition === 'top' || tabPosition === 'bottom');
     const needsTopSpacer = needsSpacer &&
         (tabPosition === 'left' || tabPosition === 'right');
+    
+    // Button
+    const positionStyles = {
+      bottom: {
+        'border-radius': '0 0 0.25em 0.25em',
+        'margin-top': '-1px'
+      },
+      left: {
+        'border-radius': '0.25em 0 0 0.25em',
+        'margin-right': '-1px'
+      },
+      right: {
+        'border-radius': '0 0.25em 0.25em 0',
+        'margin-left': '-1px'
+      },
+      top: {
+        'border-radius': '0.25em 0.25em 0 0',
+        'margin-bottom': '-1px'
+      }
+    };
+    const positionStyle = positionStyles[tabPosition];
+    const selected = this.state.selected;
+    const selectedStyle = {
+      'opacity': 1,
+      'z-index': 1
+    };
+    const borderStyle = {
+      'border-top-color': null,
+      'border-right-color': null,
+      'border-left-color': null,
+      'border-bottom-color': null
+    };
+    const borderSides = {
+      'bottom': 'border-top-color',
+      'left': 'border-right-color',
+      'right': 'border-left-color',
+      'top': 'border-bottom-color'
+    };
+    if (selected) {
+      const borderSide = borderSides[tabPosition];
+      borderStyle[borderSide] = 'transparent';
+    }
+    const buttonProps = {
+      style: Object.assign(
+        {
+          'background-color': original.style && original.style['background-color'] || 'white',
+        },
+        positionStyle,
+        borderStyle,
+        selected && selectedStyle
+      )
+    };
 
     return props.merge(base, {
       attributes: {
         tabindex: original.attributes.tabindex || this.state.tabindex
       },
       style: {
-        'background-color': original.style && original.style['background-color'] || 'white',
-        'display': 'inline-flex',
         'flex': stretch ? 1 : original.style.flex,
         'margin-left': needsLeftSpacer ? '0.2em' : original.style['margin-left'],
         'margin-top': needsTopSpacer ? '0.2em' : original.style['margin-top'],
+      },
+      $: {
+        button: buttonProps
       }
-    });
-  }
-
-  [symbols.render]() {
-    if (super[symbols.render]) { super[symbols.render](); }
-    props.apply(this.$.button, this.buttonProps);
-  }
-
-  get ariaSelected() {
-    return this.state.selected;
-  }
-  set ariaSelected(selected) {
-    this.setState({
-      selected: String(selected) === 'true'
     });
   }
 
@@ -166,6 +151,27 @@ class TabButton extends Base {
 
   get [symbols.template]() {
     return `
+      <style>
+        :host {
+          display: inline-flex;
+        }
+
+        #button {
+          background: inherit;
+          border-color: #ccc;
+          border-style: solid;
+          border-width: 1px;
+          color: inherit;
+          flex: 1;
+          font-family: inherit;
+          font-size: inherit;
+          margin: 0;
+          outline: none;
+          padding: 0.5em 0.75em;
+          transition: border-color 0.25s;
+          white-space: nowrap;
+        }
+      </style>
       <button id="button" tabindex="-1">
         <slot></slot>
       </button>

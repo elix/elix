@@ -76,16 +76,6 @@ export default function PopupModalityMixin(Base) {
       });
     }
 
-    hostProps(original) {
-      const base = super.hostProps ? super.hostProps(original) : {};
-      const role = original.attributes && original.attributes.role || this.state.role;
-      return props.merge(base, {
-        attributes: {
-          role
-        }
-      });
-    }
-
     // Close on Esc key.
     keydown(event) {
       let handled = false;
@@ -99,6 +89,16 @@ export default function PopupModalityMixin(Base) {
 
       // Prefer mixin result if it's defined, otherwise use base result.
       return handled || (super.keydown && super.keydown(event)) || false;
+    }
+
+    get props() {
+      const original = this.originalProps;
+      const role = original.attributes && original.attributes.role || this.state.role;
+      return props.merge(super.props, {
+        attributes: {
+          role
+        }
+      });
     }
 
   }

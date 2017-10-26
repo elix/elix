@@ -3,8 +3,11 @@
 
 /// <reference path="../utilities/shared.d.ts"/>
 
-declare const HostPropsMixin: Mixin<{}, {
-  hostProps(original): any;
+declare const RenderPropsMixin: Mixin<{
+  props?: PlainObject;
+}, {
+  props: PlainObject;
+  originalProps: PlainObject;
 }>;
 
-export default HostPropsMixin;
+export default RenderPropsMixin;

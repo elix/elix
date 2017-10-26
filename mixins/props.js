@@ -45,6 +45,9 @@ export function apply(element, props) {
         applyAttributes(element, value);
         break;
 
+      case 'childNodes':
+        applyChildNodes(element, value);
+
       case 'classes':
         applyClasses(element, value);
         break;

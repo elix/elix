@@ -1,25 +1,24 @@
 import * as props from '../../mixins/props.js';
 import flushPolyfills from '../flushPolyfills.js';
-import HostPropsMixin from '../../mixins/HostPropsMixin.js';
+import RenderPropsMixin from '../../mixins/RenderPropsMixin.js';
 import ReactiveMixin from '../../mixins/ReactiveMixin.js';
 
 
-class HostPropsTest extends HostPropsMixin(ReactiveMixin(HTMLElement)) {
+class RenderPropsTest extends RenderPropsMixin(ReactiveMixin(HTMLElement)) {
 
-  hostProps(original) {
-    const base = super.hostProps ? super.hostProps(original) : {};
-    return props.merge(base, {
+  get props() {
+    return props.merge(super.props, {
       style: {
-        color: this.state.selected ? 'red' : original.style.color
+        color: this.state.selected ? 'red' : this.originalProps.style.color
       }
     });
   }
 
 }
-customElements.define('host-props-test', HostPropsTest);
+customElements.define('render-props-test', RenderPropsTest);
 
 
-describe("HostPropsMixin", function () {
+describe("RenderPropsMixin", function () {
 
   let container;
 
@@ -31,8 +30,8 @@ describe("HostPropsMixin", function () {
     container.innerHTML = '';
   });
 
-  it("updates host with hostProps", async () => {
-    const fixture = new HostPropsTest();
+  it("updates host with props", async () => {
+    const fixture = new RenderPropsTest();
     container.appendChild(fixture);
     assert.equal(fixture.style.color, '');
     await fixture.setState({
@@ -47,9 +46,9 @@ describe("HostPropsMixin", function () {
   });
 
   it("merges styles on top of original styles", async () => {
-    container.innerHTML = `<host-props-test style="background-color: yellow; color: green;"></host-props-test>`;
+    container.innerHTML = `<render-props-test style="background-color: yellow; color: green;"></render-props-test>`;
     flushPolyfills();
-    const fixture = container.querySelector('host-props-test');
+    const fixture = container.querySelector('render-props-test');
     await fixture.setState({
       selected: true
     })

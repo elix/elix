@@ -79,7 +79,6 @@ class Drawer extends Base {
       style: {
         opacity,
         'transition': !swiping && 'opacity 0.25s linear',
-        'willChange': 'opacity'
       }
     };
 
@@ -89,13 +88,8 @@ class Drawer extends Base {
     const transform = `translateX(${-sign * translateFraction * 100}%)`;
     const contentProps = {
       style: {
-        'background': 'white',
-        'border': '1px solid rgba(0, 0, 0, 0.2)',
-        'boxShadow': '0 2px 10px rgba(0, 0, 0, 0.5)',
-        'position': 'relative',
         transform,
-        'transition': !swiping && 'transform 0.25s',
-        'willChange': 'transform'
+        'transition': !swiping && 'transform 0.25s'
       }
     };
 
@@ -134,8 +128,20 @@ class Drawer extends Base {
           outline: none;
           position: fixed;
           top: 0;
-          -webkit-tap-ighlight-color: transparent;
+          -webkit-tap-highlight-color: transparent;
           width: 100%;
+        }
+
+        #backdrop {
+          willChange: opacity;
+        }
+
+        #content {
+          background: white;
+          border: 1px solid rgba(0, 0, 0, 0.2);
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+          position: relative;
+          will-change: transform;
         }
       </style>
       <elix-modal-backdrop id="backdrop"></elix-modal-backdrop>

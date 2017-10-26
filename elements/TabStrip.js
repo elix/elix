@@ -94,36 +94,6 @@ class TabStrip extends Base {
     });
   }
 
-  hostProps(original) {
-    const base = super.hostProps ? super.hostProps(original) : {};
-
-    const tabPosition = this.state.tabPosition;
-    const lateralPosition = tabPosition === 'left' || tabPosition === 'right';
-
-    const tabAlign = this.state.tabAlign;
-    const justifyContent = {
-      'center': 'center',
-      'end': 'flex-end',
-      'start': 'flex-start',
-      'stretch': null // No style needed for "stretch"
-    };
-
-    const style = Object.assign(
-      {
-        'display': 'flex',
-        'flex-direction': lateralPosition ? 'column' : 'row',
-        'justify-content': justifyContent[tabAlign] || original.style['justify-content']
-      }
-    );
-
-    return props.merge(base, {
-      attributes: {
-        role: original.attributes.role || 'tablist'
-      },
-      style
-    });
-  }
-
   itemProps(item, index, original) {
     const base = super.itemProps ? super.itemProps(item, index, original) : {};
 
@@ -180,6 +150,31 @@ class TabStrip extends Base {
       'vertical';
   }
 
+  get props() {
+    const base = super.props || {};
+    const original = this.originalProps;
+
+    const tabPosition = this.state.tabPosition;
+    const lateralPosition = tabPosition === 'left' || tabPosition === 'right';
+    const tabAlign = this.state.tabAlign;
+    const justifyContent = {
+      'center': 'center',
+      'end': 'flex-end',
+      'start': 'flex-start',
+      'stretch': null // No style needed for "stretch"
+    };
+
+    return props.merge(base, {
+      attributes: {
+        role: original.attributes.role || 'tablist'
+      },
+      style: {
+        'flex-direction': lateralPosition ? 'column' : 'row',
+        'justify-content': justifyContent[tabAlign] || original.style['justify-content']
+      }
+    });
+  }
+
   get tabAlign() {
     return this.state.tabAlign;
   }
@@ -195,7 +190,14 @@ class TabStrip extends Base {
   }
 
   get [symbols.template]() {
-    return `<slot></slot>`;
+    return `
+      <style>
+        :host {
+          display: flex;
+        }
+      </style>
+      <slot></slot>
+    `;
   }
 
 }

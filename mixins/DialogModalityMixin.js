@@ -66,10 +66,10 @@ export default function DialogModalityMixin(Base) {
       return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
     }
 
-    hostProps(original) {
-      const base = super.hostProps ? super.hostProps(original) : {};
+    get props() {
+      const original = this.originalProps;
       const role = original.attributes && original.attributes.role || this.state.role;
-      return props.merge(base, {
+      return props.merge(super.props, {
         attributes: {
           role
         }
