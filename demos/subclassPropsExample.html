@@ -15,6 +15,7 @@
 
   <script type="module">
     import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
+    import * as props from '../mixins/props.js';
     import ReactiveMixin from '../mixins/ReactiveMixin.js';
     import RenderPropsMixin from '../mixins/RenderPropsMixin.js';
     import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
@@ -43,6 +44,15 @@
         });
       }
 
+      get conditions() {
+        const value = this.state.value;
+        return {
+          canDecrement: value > -5,
+          canIncrement: value < 5,
+          negative: value < 0
+        }
+      }
+
       // This property becomes the value of this.state at constructor time.
       get defaultState() {
         return Object.assign({}, super.defaultState, {
@@ -54,27 +64,27 @@
       // component host and elements in its shadow subtree during rendering of
       // the current state. This forms a pipeline:
       //
-      //     state (model) -> props (view changes) -> DOM (view)
+      //     state -> conditions -> props -> DOM
       //
       get props() {
-        const value = this.state.value;
+        const conditions = this.conditions;
         return {
           style: {
-            color: value < 0 ? 'red' : ''
+            color: conditions.negative ? 'red' : ''
           },
           $: {
             decrement: {
               attributes: {
-                disabled: value <= -5
+                disabled: !conditions.canDecrement
               }
             },
             increment: {
               attributes: {
-                disabled: value >= 5
+                disabled: !conditions.canIncrement
               }
             },
             value: {
-              textContent: value
+              textContent: this.state.value
             }
           }
         }
@@ -99,12 +109,47 @@
     }
 
     customElements.define('increment-decrement', IncrementDecrement);
+
+
+    class CustomIncrementDecrement extends IncrementDecrement {
+      get props() {
+        const buttonStyle = {
+          background: '#444',
+          border: 'none',
+          'border-radius': 0
+        };
+        const conditions = this.conditions;
+        return props.merge(super.props, {
+          style: {
+            background: 'lightgray',
+            color: conditions.negative ? 'dodgerblue' : '',
+            'font-family': 'Helvetica, Arial, sans-serif',
+            'font-weight': 'bold'
+          },
+          $: {
+            decrement: {
+              style: props.merge(buttonStyle, {
+                color: conditions.canDecrement ? 'white' : 'gray'
+              })
+            },
+            increment: {
+              style: props.merge(buttonStyle, {
+                color: conditions.canIncrement ? 'white' : 'gray'
+              })
+            }
+          }
+        });
+      }
+    }
+
+    customElements.define('custom-increment-decrement', CustomIncrementDecrement);
   </script>
 
 </head>
 
 <body>
-  <increment-decrement value="0"></increment-decrement>
+  <increment-decrement></increment-decrement>
+  <custom-increment-decrement></custom-increment-decrement>
 </body>
 
 </html>

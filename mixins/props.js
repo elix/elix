@@ -6,7 +6,7 @@
 import Symbol from './Symbol.js';
 
 
-const specialProps = {
+const mergedProperties = {
   '$': true,
   'attributes': true,
   'classes': true,
@@ -285,9 +285,14 @@ export function merge(...sources) {
     if (source) {
       for (let key in source) {
         const value = source[key];
-        result[key] = specialProps[key] ?
-          Object.assign(result[key] || {}, value) :
-          result[key] = value;
+        result[key] = !mergedProperties[key] ?
+          // Regular property overwrites existing value.
+          result[key] = value :
+          key === '$' ?
+            // Element subproperty requires deep (recursive) merge.
+            merge(result[key], value) :
+            // Other special property requires shallow merge.
+            Object.assign(result[key] || {}, value);
       }
     }
   })

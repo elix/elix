@@ -7,6 +7,7 @@ import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
 import * as props from '../mixins/props.js';
+import PageDotsMixin from '../mixins/PageDotsMixin.js';
 import SelectionAriaMixin from '../mixins/SelectionAriaMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
@@ -26,6 +27,7 @@ const Base =
   KeyboardDirectionMixin(
   KeyboardMixin(
   LanguageDirectionMixin(
+  PageDotsMixin(
   SelectionAriaMixin(
   SingleSelectionMixin(
   SlotContentMixin(
@@ -33,7 +35,7 @@ const Base =
   TouchSwipeMixin(
   TrackpadSwipeMixin(
     ElementBase
-  )))))))))))));
+  ))))))))))))));
 
 
 class SlidingCarousel extends Base {
@@ -74,11 +76,13 @@ class SlidingCarousel extends Base {
           flex: 1;
         }
       </style>
-      ${this.wrapWithArrowSelection(`
-        <elix-sliding-viewport id="viewport">
-          <slot></slot>
-        </elix-sliding-viewport>
-      `)}
+      ${this.wrapWithArrowSelection(
+        this.wrapWithPageDots(`
+          <elix-sliding-viewport id="viewport">
+            <slot></slot>
+          </elix-sliding-viewport>
+        `)
+      )}
     `;
   }
 }
