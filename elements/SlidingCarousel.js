@@ -9,6 +9,7 @@ import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
 import * as props from '../mixins/props.js';
 import SelectionAriaMixin from '../mixins/SelectionAriaMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
+import SlotContentMixin from '../mixins/SlotContentMixin.js';
 // @ts-ignore
 import SlidingViewport from './SlidingViewport.js'; // eslint-disable-line no-unused-vars
 import SwipeDirectionMixin from '../mixins/SwipeDirectionMixin.js';
@@ -27,11 +28,12 @@ const Base =
   LanguageDirectionMixin(
   SelectionAriaMixin(
   SingleSelectionMixin(
+  SlotContentMixin(
   SwipeDirectionMixin(
   TouchSwipeMixin(
   TrackpadSwipeMixin(
     ElementBase
-  ))))))))))));
+  )))))))))))));
 
 
 class SlidingCarousel extends Base {
@@ -48,10 +50,6 @@ class SlidingCarousel extends Base {
       orientation: 'horizontal',
       selectionRequired: true
     });
-  }
-
-  get items() {
-    return this.$.viewport.items;
   }
 
   get props() {
