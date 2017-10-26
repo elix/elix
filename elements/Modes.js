@@ -35,11 +35,11 @@ class Modes extends Base {
     });
   }
 
-  hostProps(original) {
-    const base = super.hostProps ? super.hostProps(original) : {};
+  get props() {
+    const base = super.props || {};
     return props.merge(base, {
       style: {
-        'display': original.style.display || 'inline-block',
+        'display': this.originalProps.style.display || 'inline-block',
         'position': 'relative'
       }
     });

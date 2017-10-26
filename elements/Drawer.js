@@ -47,43 +47,6 @@ const Base =
  */
 class Drawer extends Base {
 
-  get backdropProps() {
-    const sign = this.rightToLeft ? -1 : 1;
-    const swiping = this.state.swipeFraction !== null;
-    const swipeFraction = Math.max(Math.min(sign * this.state.swipeFraction, 1), 0);
-    const opacity = this.opened ?
-      0.2 * (1 - swipeFraction) :
-      0;
-    return {
-      style: {
-        opacity,
-        'transition': !swiping && 'opacity 0.25s linear',
-        'willChange': 'opacity'
-      }
-    };
-  }
-
-  get contentProps() {
-    const sign = this.rightToLeft ? -1 : 1;
-    const swiping = this.state.swipeFraction !== null;
-    const swipeFraction = Math.max(Math.min(sign * this.state.swipeFraction, 1), 0);
-    const translateFraction = this.opened ?
-      swipeFraction :
-      1;
-    const transform = `translateX(${-sign * translateFraction * 100}%)`;
-    return {
-      style: {
-        'background': 'white',
-        'border': '1px solid rgba(0, 0, 0, 0.2)',
-        'boxShadow': '0 2px 10px rgba(0, 0, 0, 0.5)',
-        'position': 'relative',
-        transform,
-        'transition': !swiping && 'transform 0.25s',
-        'willChange': 'transform'
-      }
-    };
-  }
-
   async close() {
     await this.startClose();
   }
@@ -99,26 +62,56 @@ class Drawer extends Base {
     return [this.$.content];
   }
 
-  hostProps(original) {
-    const base = super.hostProps ? super.hostProps(original) : {};
+  async open() {
+    await this.startOpen();
+  }
+
+  get props() {
+    const base = super.props || {};
+
+    const sign = this.rightToLeft ? -1 : 1;
+    const swiping = this.state.swipeFraction !== null;
+    const swipeFraction = Math.max(Math.min(sign * this.state.swipeFraction, 1), 0);
+    const opacity = this.opened ?
+      0.2 * (1 - swipeFraction) :
+      0;
+    const backdropProps = {
+      style: {
+        opacity,
+        'transition': !swiping && 'opacity 0.25s linear',
+        'willChange': 'opacity'
+      }
+    };
+
+    const translateFraction = this.opened ?
+      swipeFraction :
+      1;
+    const transform = `translateX(${-sign * translateFraction * 100}%)`;
+    const contentProps = {
+      style: {
+        'background': 'white',
+        'border': '1px solid rgba(0, 0, 0, 0.2)',
+        'boxShadow': '0 2px 10px rgba(0, 0, 0, 0.5)',
+        'position': 'relative',
+        transform,
+        'transition': !swiping && 'transform 0.25s',
+        'willChange': 'transform'
+      }
+    };
+
     const display = this.closed ?
       null :
       base.style && base.style.display || 'flex';
+
     return props.merge(base, {
       style: {
         display
+      },
+      $: {
+        backdrop: backdropProps,
+        content: contentProps
       }
     });
-  }
-
-  [symbols.render]() {
-    if (super[symbols.render]) { super[symbols.render](); }
-    props.apply(this.$.backdrop, this.backdropProps);
-    props.apply(this.$.content, this.contentProps);
-  }
-
-  async open() {
-    await this.startOpen();
   }
 
   [symbols.shadowCreated]() {

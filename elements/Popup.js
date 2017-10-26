@@ -28,25 +28,15 @@ const Base =
  */
 class Popup extends Base {
 
-  get contentProps() {
-    const base = super.contentProps ? super.contentProps() : {};
-    return props.merge(base, {
-      style: {
-        'background': 'white',
-        'border': '1px solid rgba(0, 0, 0, 0.2)',
-        'box-shadow': '0 2px 10px rgba(0, 0, 0, 0.5)',
-        'pointer-events': 'initial',
-        'position': 'relative'
-      }
-    });
-  }
+  get props() {
+    const base = super.props || {};
 
-  hostProps(original) {
-    const base = super.hostProps ? super.hostProps(original) : {};
     const display = this.closed ?
       null :
       base.style && base.style.display || 'flex';
+
     return props.merge(base, {
+      
       style: {
         'alignItems': 'center',
         display,
@@ -60,7 +50,20 @@ class Popup extends Base {
         'top': 0,
         '-webkit-tap-highlight-color': 'transparent',
         'width': '100%'
+      },
+
+      $: {
+        content: {
+          style: {
+            'background': 'white',
+            'border': '1px solid rgba(0, 0, 0, 0.2)',
+            'box-shadow': '0 2px 10px rgba(0, 0, 0, 0.5)',
+            'pointer-events': 'initial',
+            'position': 'relative'
+          }
+        }
       }
+
     });
   }
 

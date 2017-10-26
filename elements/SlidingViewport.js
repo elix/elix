@@ -27,9 +27,7 @@ class SlidingViewport extends Base {
     });
   }
 
-  [symbols.render]() {
-    if (super[symbols.render]) { super[symbols.render](); }
-
+  get props() {
     const sign = this.rightToLeft ? -1 : 1;
     const swiping = this.state.swipeFraction != null;
     const swipeFraction = this.state.swipeFraction || 0;
@@ -41,10 +39,14 @@ class SlidingViewport extends Base {
       'none' :
       'transform 0.25s';
     
-    props.apply(this.$.spread, {
-      style: {
-        'transform': `translateX(${-sign * fraction * 100}%)`,
-        transition
+    return props.merge(super.props, {
+      $: {
+        content: {
+          style: {
+            'transform': `translateX(${-sign * fraction * 100}%)`,
+            transition
+          }
+        }
       }
     });
   }
@@ -72,7 +74,7 @@ class SlidingViewport extends Base {
           will-change: transform;
         }
       </style>
-      <elix-spread id="spread" role="none">
+      <elix-spread id="content" role="none">
         <slot></slot>
       </elix-spread>
     `;

@@ -5,10 +5,14 @@ import symbols from '../../mixins/symbols.js';
 
 class SampleDialog extends Dialog {
 
-  get contentProps() {
-    return props.merge(super.contentProps, {
-      style: {
-        padding: '1em'
+  get props() {
+    return props.merge(super.props, {
+      $: {
+        content: {
+          style: {
+            padding: '1em'
+          }
+        }
       }
     });
   }

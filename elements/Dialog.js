@@ -37,20 +37,6 @@ const Base =
  */
 class Dialog extends Base {
 
-  get backdropProps() {
-    return {};
-  }
-
-  get contentProps() {
-    return {};
-  }
-
-  [symbols.render]() {
-    if (super[symbols.render]) { super[symbols.render](); }
-    props.apply(this.$.backdrop, this.backdropProps);
-    props.apply(this.$.content, this.contentProps);
-  }
-
   get [symbols.template]() {
     return `
       <style>

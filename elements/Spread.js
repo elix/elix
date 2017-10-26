@@ -14,9 +14,8 @@ const Base =
 
 class Spread extends Base {
 
-  hostProps(original) {
-    const base = super.hostProps ? super.hostProps(original) : {};
-    return props.merge(base, {
+  get props() {
+    return props.merge(super.props, {
       style: {
         'width': `${this.items.length * 100}%`
       }
