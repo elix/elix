@@ -4,7 +4,7 @@ import ElementBase from './ElementBase.js';
 // @ts-ignore
 import Modes from './Modes.js'; // eslint-disable-line no-unused-vars
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
-import TabButton from './TabButton.js'; // eslint-disable-line no-unused-vars
+import TabButton from './TabButton.js';
 // @ts-ignore
 import TabStrip from './TabStrip.js'; // eslint-disable-line no-unused-vars
 import SlotContentMixin from '../mixins/SlotContentMixin.js';

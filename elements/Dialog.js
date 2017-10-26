@@ -1,4 +1,3 @@
-import * as props from '../mixins/props.js';
 // import FocusCaptureWrapper from './FocusCaptureWrapper.js';
 import DialogModalityMixin from '../mixins/DialogModalityMixin.js';
 import ElementBase from './ElementBase.js';

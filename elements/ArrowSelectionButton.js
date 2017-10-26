@@ -59,11 +59,5 @@ class ArrowSelectionButton extends ElementBase {
 }
 
 
-// Simplistic detection of touch support.
-function supportsTouch() {
-  return 'ontouchstart' in window;
-}
-
-
 customElements.define('elix-arrow-selection-button', ArrowSelectionButton);
 export default ArrowSelectionButton;

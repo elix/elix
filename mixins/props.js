@@ -47,6 +47,7 @@ export function apply(element, props) {
 
       case 'childNodes':
         applyChildNodes(element, value);
+        break;
 
       case 'classes':
         applyClasses(element, value);
@@ -182,7 +183,7 @@ export function applyStyle(element, styleProps) {
   for (let styleName in styleProps) {
     const value = styleProps[styleName];
     style[styleName] = value === undefined ? '' : value;
-  };
+  }
 }
 
 

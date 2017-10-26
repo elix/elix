@@ -9,7 +9,8 @@ import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
 import * as props from '../mixins/props.js';
 import SelectionAriaMixin from '../mixins/SelectionAriaMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
-import SlidingViewport from './SlidingViewport.js';
+// @ts-ignore
+import SlidingViewport from './SlidingViewport.js'; // eslint-disable-line no-unused-vars
 import SwipeDirectionMixin from '../mixins/SwipeDirectionMixin.js';
 import symbols from '../mixins/symbols.js';
 import TouchSwipeMixin from '../mixins/TouchSwipeMixin.js';

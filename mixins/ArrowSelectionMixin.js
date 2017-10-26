@@ -1,21 +1,12 @@
-import ArrowSelectionButton from '../elements/ArrowSelectionButton.js';
+// @ts-ignore
+import ArrowSelectionButton from '../elements/ArrowSelectionButton.js'; // eslint-disable-line no-unused-vars
 import * as props from './props.js';
-import symbols from './symbols.js';
 
 
 export default function ArrowSelectionMixin(Base) {
 
   // The class prototype added by the mixin.
   class ArrowSelection extends Base {
-
-    get arrowIconProps() {
-      return props.merge(super.arrowIconProps, {
-        style: {
-          'height': '48px',
-          'width': '48px'
-        }
-      });
-    }
 
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
@@ -71,7 +62,12 @@ export default function ArrowSelectionMixin(Base) {
         }
       });
 
-      const arrowIconProps = this.arrowIconProps;
+      const arrowIconProps = {
+        style: {
+          'height': '48px',
+          'width': '48px'
+        }
+      };
 
       return props.merge(super.props, {
         $: {
