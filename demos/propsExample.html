@@ -50,6 +50,12 @@
         });
       }
 
+      // Props represent property/attribute assignments to apply to the
+      // component host and elements in its shadow subtree during rendering of
+      // the current state. This forms a pipeline:
+      //
+      //     state -> props -> DOM
+      //
       get props() {
         const value = this.state.value;
         return {
