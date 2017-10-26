@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Reactive web component example</title>
+
+  <template id="template">
+    <button id="decrement">-</button>
+    <span id="value"></span>
+    <button id="increment">+</button>
+  </template>
+
+  <script type="module">
+    import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
+    import ReactiveMixin from '../mixins/ReactiveMixin.js';
+    import RenderPropsMixin from '../mixins/RenderPropsMixin.js';
+    import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
+    import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
+    import symbols from '../mixins/symbols.js';
+
+    // Create a native web component with reactive behavior.
+    const Base =
+      AttributeMarshallingMixin(
+      ReactiveMixin(
+      RenderPropsMixin(
+      ShadowReferencesMixin(
+      ShadowTemplateMixin(
+        HTMLElement
+      )))));
+
+    class IncrementDecrement extends Base {
+
+      componentDidMount() {
+        if (super.componentDidMount) { super.componentDidMount(); }
+        this.$.decrement.addEventListener('click', () => {
+          this.value--;
+        });
+        this.$.increment.addEventListener('click', () => {
+          this.value++;
+        });
+      }
+
+      // This property becomes the value of this.state at constructor time.
+      get defaultState() {
+        return Object.assign({}, super.defaultState, {
+          value: 0
+        });
+      }
+
+      get props() {
+        const value = this.state.value;
+        return {
+          style: {
+            color: value < 0 ? 'red' : ''
+          },
+          $: {
+            decrement: {
+              attributes: {
+                disabled: value <= -5
+              }
+            },
+            increment: {
+              attributes: {
+                disabled: value >= 5
+              }
+            },
+            value: {
+              textContent: value
+            }
+          }
+        }
+      }
+
+      // Provide a public property that gets/sets state.
+      get value() {
+        return this.state.value;
+      }
+      set value(value) {
+        const parsed = parseInt(value);
+        const bounded = Math.max(Math.min(parsed, 5), -5);
+        this.setState({
+          value: bounded
+        });
+      }
+
+      get [symbols.template]() {
+        return template;
+      }
+
+    }
+
+    customElements.define('increment-decrement', IncrementDecrement);
+  </script>
+
+</head>
+
+<body>
+  <increment-decrement value="0"></increment-decrement>
+</body>
+
+</html>
