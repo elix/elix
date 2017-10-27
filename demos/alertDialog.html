@@ -8,8 +8,9 @@
 
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
-  <script src="node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js"></script>
-  <script src="../build/demos.js"></script>
+  <!-- <script nomodule src="node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js"></script> -->
+  <script type="module" src="../elements/AlertDialog.js"></script>
+  <!-- <script nomodule src="../build/demos.js"></script> -->
 
 </head>
 
@@ -26,7 +27,7 @@
   </div>
   <script>
     okCancelButton.addEventListener('click', function(event) {
-      showAlertWithChoices(Elix.AlertDialog.OK_CANCEL);
+      showAlertWithChoices(['OK', 'Cancel']);
     });
 
     yesNoCancelButton.addEventListener('click', function(event) {
@@ -38,9 +39,9 @@
       dialog.textContent = 'Hello, world';
       dialog.choices = choices;
       dialog.open();
-      dialog.whenClosed().then(function(result) {
-        response.textContent = 'You picked ' + result + '.';
-      });
+      // dialog.whenClosed().then(function(result) {
+      //   response.textContent = 'You picked ' + result + '.';
+      // });
     }
   </script>
 </body>

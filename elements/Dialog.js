@@ -1,6 +1,7 @@
 // import FocusCaptureWrapper from './FocusCaptureWrapper.js';
 import DialogModalityMixin from '../mixins/DialogModalityMixin.js';
 import ElementBase from './ElementBase.js';
+import FocusCaptureMixin from '../mixins/FocusCaptureMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 // @ts-ignore
 import ModalBackdrop from './ModalBackdrop.js'; // eslint-disable-line no-unused-vars
@@ -10,11 +11,11 @@ import symbols from '../mixins/symbols.js';
 
 const Base =
   DialogModalityMixin(
-  // FocusCaptureWrapper(
+  FocusCaptureMixin(
   KeyboardMixin(
   OverlayMixin(
     ElementBase
-  )));
+  ))));
 
 
 /**
@@ -62,7 +63,9 @@ class Dialog extends Base {
       </style>
       <elix-modal-backdrop id="backdrop""></elix-modal-backdrop>
       <div id="content">
-        <slot></slot>
+        ${this.wrapWithFocusCapture(`
+          <slot></slot>
+        `)}
       </div>
     `;
   }

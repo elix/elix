@@ -3,6 +3,8 @@
 
 /// <reference path="../utilities/shared.d.ts"/>
 
-declare const FocusCaptureWrapper: Mixin<{}, {}>;
+declare const FocusCaptureMixin: Mixin<{}, {
+  wrapWithFocusCapture(template: string): string;
+}>;
 
-export default FocusCaptureWrapper;
+export default FocusCaptureMixin;

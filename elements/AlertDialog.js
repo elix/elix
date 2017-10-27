@@ -1,11 +1,11 @@
 import Dialog from './Dialog.js';
-import renderArrayAsElements from '../mixins/renderArrayAsElements.js';
+import * as props from '../mixins/props.js';
 import Symbol from '../mixins/Symbol.js';
-import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
 import symbols from '../mixins/symbols.js';
 
 
-const choicesKey = Symbol('choices');
+const choiceButtonsKey= Symbol('choiceButtons');
+const previousChoicesKey = Symbol('previousChoices');
 
 
 /**
@@ -16,15 +16,16 @@ const choicesKey = Symbol('choices');
  * @extends {Dialog}
  * @mixes ShadowReferencesMixin
  */
-class AlertDialog extends ShadowReferencesMixin(Dialog) {
+class AlertDialog extends Dialog {
 
-  [symbols.shadowCreated]() {
-    if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
+  componentDidMount() {
+    if (super.componentDidMount) { super.componentDidMount(); }
     this.$.buttonContainer.addEventListener('click', event => {
       // TODO: Ignore clicks on buttonContainer background.
+      // TODO: Return value.
       if (event.target instanceof HTMLElement) {
-        const button = event.target;
-        this.close(button.textContent);
+        // const button = event.target;
+        this.close();
       }
     });
   }
@@ -49,31 +50,34 @@ class AlertDialog extends ShadowReferencesMixin(Dialog) {
    *  
    * @type {string[]}
    */
-  get choices() {
-    return this[choicesKey];
+  get choiceButtons() {
+    if (this.choices !== this[previousChoicesKey]) {
+      // Items have changed; create new buttons set.
+      this[choiceButtonsKey] = this.choices.map((choice, index) => {
+        const button = document.createElement('button');
+        button.textContent = choice;
+        return button;
+      });
+      // Make the array immutable.
+      Object.freeze(this[choiceButtonsKey]);
+      this[previousChoicesKey] = this.choices;
+    }
+    return this[choiceButtonsKey];
   }
+
   /**
    * @param {string[]} choices - The choices to present to the user
    */
+  get choices() {
+    return this.state.choices;
+  }
   set choices(choices) {
-    this[choicesKey] = choices;
-    if (!this.shadowRoot) {
-      /* eslint-disable no-console */
-      console.warn(`NotificationDialog couldn't find its own shadowRoot.`);
-      return;
-    }
-    const slot = this.shadowRoot.querySelector('slot[name="buttons"]');
-    if (!slot) {
-      /* eslint-disable no-console */
-      console.warn(`NotificationDialog couldn't find its default slot.`);
-      return;
-    }
-    renderArrayAsElements(choices, slot, (choice, button) => {
-      if (!button) {
-        button = document.createElement('button');
-      }
-      button.textContent = choice;
-      return button;
+    this.setState({ choices });
+  }
+
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      choices: AlertDialog.OK
     });
   }
 
@@ -119,14 +123,21 @@ class AlertDialog extends ShadowReferencesMixin(Dialog) {
     return ['OK', 'Cancel'];
   }
 
-  [symbols.template](fillers = {}) {
-    const defaultFiller = typeof fillers === 'string' ?
-      fillers :
-      fillers.default || `<slot></slot>`;
-    const buttonFiller = fillers.buttons || `<slot name="buttons"><button>OK</button></slot>`;
-    return super[symbols.template](`
+  get props() {
+    return props.merge(super.props, {
+      $: {
+        choiceButtonsSlot: {
+          childNodes: this.choiceButtons
+        }
+      }
+    });
+  }
+
+  get [symbols.template]() {
+    const base = super[symbols.template];
+    return base.replace('<slot></slot>', `
       <style>
-        #container {
+        #alertDialogContent {
           padding: 1em;
         }
 
@@ -143,10 +154,10 @@ class AlertDialog extends ShadowReferencesMixin(Dialog) {
           margin-left: 0.25em;
         }
       </style>
-      <div id="container">
-        ${defaultFiller}
+      <div id="alertDialogContent">
+        <slot></slot>
         <div id="buttonContainer">
-          ${buttonFiller}
+          <slot id="choiceButtonsSlot" name="choiceButtons"></slot>
         </div>
       </div>
     `);

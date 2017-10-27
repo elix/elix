@@ -25,9 +25,17 @@ export default function FocusCaptureWrapper(base) {
 
   class FocusCapture extends base {
 
-    [symbols.keydown](event) {
-      let handled;
+    componentDidMount() {
+      if (super.componentDidMount) { super.componentDidMount(); }
+      this.$.focusCatcher.addEventListener('focus', () => {
+        if (!this[wrappingFocusKey]) {
+          // Wrap focus back to the dialog.
+          this.focus();
+        }
+      });
+    }
 
+    [symbols.keydown](event) {
       /** @type {any} */
       const element = this;
       if (document.activeElement === element &&
@@ -37,36 +45,20 @@ export default function FocusCaptureWrapper(base) {
         // The Shift+Tab keydown event should continue bubbling, and the default
         // behavior should cause it to end up on the last focusable element.
         this[wrappingFocusKey] = true;
-        const focusCatcher = this.shadowRoot.querySelector('#focusCatcher');
-        focusCatcher.focus();
+        this.$.focusCatcher.focus();
         this[wrappingFocusKey] = false;
-        handled = true;
+        // Don't mark the event as handled, since we want it to keep bubbling up.
       }
 
       // Prefer mixin result if it's defined, otherwise use base result.
-      return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
+      return (super[symbols.keydown] && super[symbols.keydown](event)) || false;
     }
 
-    [symbols.shadowCreated]() {
-      if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
-
-      const focusCatcher = this.shadowRoot.querySelector('#focusCatcher');
-      focusCatcher.addEventListener('focus', () => {
-        if (!this[wrappingFocusKey]) {
-          // Wrap focus back to the dialog.
-          this.focus();
-        }
-      });
-    }
-
-    [symbols.template](filler) {
-      const template = `
-        ${filler || `<slot></slot>`}
+    wrapWithFocusCapture(template) {
+      return `
+        ${template}
         <div id="focusCatcher" tabindex="0"></div>
       `;
-      return super[symbols.template] ?
-        super[symbols.template](template) :
-        template;
     }
 
   }
