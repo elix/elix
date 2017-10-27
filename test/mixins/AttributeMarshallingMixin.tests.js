@@ -26,18 +26,6 @@ class ElementWithCustomProperty extends AttributeMarshallingMixin(HTMLElement) {
 customElements.define('element-with-custom-property', ElementWithCustomProperty);
 
 
-/* Element that adds a class to itself */
-class ElementWithClass extends AttributeMarshallingMixin(HTMLElement) {
-  constructor() {
-    super();
-    if (typeof defaultClass !== 'undefined') {
-      this.reflectClass(defaultClass, true);
-    }
-  }
-}
-customElements.define('element-with-class', ElementWithClass);
-
-
 describe("AttributeMarshallingMixin", () => {
 
   let container;
