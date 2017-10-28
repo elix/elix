@@ -7,6 +7,7 @@ import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import KeyboardPagedSelectionMixin from '../mixins/KeyboardPagedSelectionMixin.js';
 import KeyboardPrefixSelectionMixin from '../mixins/KeyboardPrefixSelectionMixin.js';
+import SelectedItemTextValueMixin from '../mixins/SelectedItemTextValueMixin.js';
 import SelectionAriaMixin from '../mixins/SelectionAriaMixin.js';
 import SelectionInViewMixin from '../mixins/SelectionInViewMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
@@ -22,12 +23,13 @@ const Base =
   KeyboardMixin(
   KeyboardPagedSelectionMixin(
   KeyboardPrefixSelectionMixin(
+  SelectedItemTextValueMixin(
   SelectionAriaMixin(
   SelectionInViewMixin(
   SingleSelectionMixin(
   SlotContentMixin(
     ElementBase
-  )))))))))));
+  ))))))))))));
 
 
 /**

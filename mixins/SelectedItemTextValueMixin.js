@@ -58,10 +58,6 @@ export default function SelectedItemTextValueMixin(Base) {
 
       if (newIndex !== currentIndex) {
         this.selectedIndex = newIndex;
-        if (this[symbols.raiseChangeEvents]) {
-          const event = new CustomEvent('value-changed');
-          this.dispatchEvent(event);
-        }
       }
     }
   }
