@@ -7,7 +7,6 @@ import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import KeyboardPagedSelectionMixin from '../mixins/KeyboardPagedSelectionMixin.js';
 import KeyboardPrefixSelectionMixin from '../mixins/KeyboardPrefixSelectionMixin.js';
-// import LitHtmlShadowMixin from '../mixins/LitHtmlShadowMixin.js';
 import SelectionAriaMixin from '../mixins/SelectionAriaMixin.js';
 import SelectionInViewMixin from '../mixins/SelectionInViewMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
@@ -78,6 +77,32 @@ export default class ListBox extends Base {
     });
   }
 
+  get orientation() {
+    return this.state.orientation;
+  }
+  set orientation(orientation) {
+    this.setState({ orientation });
+  }
+
+  get props() {
+    const style = this.state.orientation === 'vertical' ?
+      {
+        'flex-direction': 'column',
+        'overflow-x': 'hidden',
+        'overflow-y': 'scroll'
+      } :
+      {
+        'flex-direction': 'row',
+        'overflow-x': 'scroll',
+        'overflow-y': 'hidden'
+      };
+    return props.merge(super.props, {
+      $: {
+        itemsContainer: { style }
+      }
+    });
+  }
+
   get [symbols.template]() {
     return `
       <style>
@@ -90,10 +115,9 @@ export default class ListBox extends Base {
         }
 
         #itemsContainer {
+          display: flex;
           flex: 1;
           -webkit-overflow-scrolling: touch; /* for momentum scrolling */
-          overflow-x: hidden;
-          overflow-y: scroll;
         }
       </style>
       <div id="itemsContainer" role="none">

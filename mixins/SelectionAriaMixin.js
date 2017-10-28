@@ -78,6 +78,7 @@ export default function SelectionAriaMixin(Base) {
       const role = this.originalProps.attributes.role ||
         base.attributes && base.attributes.role ||
         'listbox';
+      const orientation = this.state.orientation === 'horizontal' ? 'horizontal' : null;
       const selectedItem = this.state.selectedIndex >= 0 && this.items ?
         this.items[this.state.selectedIndex] :
         null;
@@ -90,6 +91,7 @@ export default function SelectionAriaMixin(Base) {
       return props.merge(base, {
         attributes: {
           'aria-activedescendant': selectedItemId,
+          'aria-orientation': orientation,
           role
         }
       });
