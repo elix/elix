@@ -3,13 +3,19 @@
 
 let hasKeyboardEventConstructor;
 
-try {
-  new window.KeyboardEvent('keydown');
-  hasKeyboardEventConstructor = true;
-} catch (e) {
-  /* IE 11 */
-  hasKeyboardEventConstructor = false;
-}
+/*
+ * While real browsers can cope with a try/catch at the top level, Edge can't.
+ * We have to wrap this try/catch in an IIFE.
+ */
+(function () {
+  try {
+    new window.KeyboardEvent('keydown');
+    hasKeyboardEventConstructor = true;
+  } catch (e) {
+    /* IE 11 */
+    hasKeyboardEventConstructor = false;
+  }
+})();
 
 
 /**
@@ -62,15 +68,17 @@ export function dispatchSyntheticKeyboardEvent(element, eventType, init) {
  */
 export function dispatchSyntheticMouseEvent(element, eventType, init) {
 
-  const properties = {};
-  for (let key in init) {
-    properties[key] = init[key];
-  }
-  properties.bubbles = properties.bubbles || true;
-  properties.cancelable = properties.cancelable || true;
-  properties.clientX = properties.clientX || 0;
-  properties.clientY = properties.clientY || 0;
-  properties.button = properties.button || 0;
+  const properties = Object.assign(
+    /* Defaults */
+    {
+      bubbles: true,
+      cancelable: true,
+      clientX: 0,
+      clientY: 0,
+      button: 0
+    },
+    init
+  );
 
   const event = new MouseEvent(eventType, properties);
   element.dispatchEvent(event);

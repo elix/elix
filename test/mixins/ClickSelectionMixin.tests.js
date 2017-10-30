@@ -1,5 +1,6 @@
 import ClickSelectionMixin from '../../mixins/ClickSelectionMixin.js';
-import * as mockInteractions from '../../test/mockInteractions.js';
+import * as mockInteractions from '../mockInteractions.js';
+
 
 class ClickSelectionTest extends ClickSelectionMixin(HTMLElement) {
 
