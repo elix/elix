@@ -76,33 +76,25 @@ describe("SlotContentMixin", () => {
     assert.equal(fixture.state.content.length, 3);
   });
 
-  if (!isIE11) {
-    it("returns distributed nodes as content", async () => {
-      const wrapper = document.createElement('wrapped-slot-content-test');
-      wrapper.innerHTML = `<div>One</div><div>Two</div><div>Three</div>`;
-      flushPolyfills();
-      const fixture = wrapper.shadowRoot.querySelector('slot-content-test');
-      // Wait for initial content.
-      flushPolyfills();
-      await Promise.resolve();
-      assert.equal(fixture.state.content.length, 3);
-    });
-  } else {
-    it.skip("returns distributed nodes as content [skip in IE 11]");
-  }
+  it("returns distributed nodes as content", async () => {
+    const wrapper = document.createElement('wrapped-slot-content-test');
+    wrapper.innerHTML = `<div>One</div><div>Two</div><div>Three</div>`;
+    flushPolyfills();
+    const fixture = wrapper.shadowRoot.querySelector('slot-content-test');
+    // Wait for initial content.
+    flushPolyfills();
+    await Promise.resolve();
+    assert.equal(fixture.state.content.length, 3);
+  });
 
-  if (!isIE11) {
-    it("sets content when defined component is parsed", async () => {
-      container.innerHTML = `<slot-content-test>beaver</slot-content-test>`;
-      const fixture = container.querySelector('slot-content-test');
-      // Wait for initial content.
-      flushPolyfills();
-      await Promise.resolve();
-      assert.equal(fixture.state.content[0].textContent, 'beaver');
-    });
-  } else {
-    it.skip("sets content when defined component is parsed [skip in IE 11]");
-  }
+  it("sets content when defined component is parsed", async () => {
+    container.innerHTML = `<slot-content-test>beaver</slot-content-test>`;
+    const fixture = container.querySelector('slot-content-test');
+    // Wait for initial content.
+    flushPolyfills();
+    await Promise.resolve();
+    assert.equal(fixture.state.content[0].textContent, 'beaver');
+  });
 
   it("updates content when textContent changes", async () => {
     const fixture = document.createElement('slot-content-test');
@@ -131,23 +123,19 @@ describe("SlotContentMixin", () => {
     assert.equal(fixture.state.content[0].textContent, 'dingo');
   });
 
-  if (!isIE11) {
-    it("updates content when redistributed content changes", async () => {
-      const wrapper = document.createElement('wrapped-slot-content-test');
-      const fixture = wrapper.shadowRoot.querySelector('slot-content-test');
-      container.appendChild(wrapper);
-      // Wait for initial content.
-      flushPolyfills();
-      fixture.contentChangedCallCount = 0;
-      wrapper.textContent = 'echidna';
-      // Wait for slotchange event to be processed.
-      flushPolyfills();
-      await Promise.resolve();
-      assert.equal(fixture.state.content[0].textContent, 'echidna');
-    });
-  } else {
-    it.skip("updates content when redistributed content changes [skip in IE 11]");
-  }
+  it("updates content when redistributed content changes", async () => {
+    const wrapper = document.createElement('wrapped-slot-content-test');
+    const fixture = wrapper.shadowRoot.querySelector('slot-content-test');
+    container.appendChild(wrapper);
+    // Wait for initial content.
+    flushPolyfills();
+    fixture.contentChangedCallCount = 0;
+    wrapper.textContent = 'echidna';
+    // Wait for slotchange event to be processed.
+    flushPolyfills();
+    await Promise.resolve();
+    assert.equal(fixture.state.content[0].textContent, 'echidna');
+  });
 
   it("doesn't update content for changes in the component's shadow tree", async () => {
     const fixture = document.createElement('slot-content-test');
