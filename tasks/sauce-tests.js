@@ -33,7 +33,6 @@ const config = {
       browserName: 'firefox',
       platform: 'Windows 10'
     },
-    /*
     {
       browserName: 'internet explorer',
       platform: 'Windows 8.1',
@@ -44,7 +43,6 @@ const config = {
       version: '14',
       platform: 'Windows 10'
     },
-    */
     {
       browserName: 'safari',
       platform: 'OS X 10.12',
