@@ -17,8 +17,10 @@
     window.assert = chai.assert;
   </script>
 
-  <script nomodule src="../demos/node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js"></script>
-  <script type="module" src="./tests.js"></script>
+  <script type="module">
+    import * as tests from './tests.js';
+    mocha.run();
+  </script>
   
 </head>
 
@@ -29,15 +31,10 @@
   <!-- Where tests can put elements -->
   <div id="container"></div>
   
-  <!-- <script nomodule src="../build/tests.js"></script> -->
-  
-  <script type="module">
+  <script nomodule src="../build/tests.js"></script>
+  <script nomodule>
     mocha.run();
   </script>
-  
-  <!-- <script nomodule>
-    mocha.run();
-  </script> -->
 
 </body>
 

@@ -31,24 +31,22 @@ import Symbol from './mixins/Symbol.js';
 import symbols from './mixins/symbols.js';
 
 // Import elements
-// import AlertDialog from './elements/AlertDialog.js';
+import AlertDialog from './elements/AlertDialog.js';
 import Dialog from './elements/Dialog.js';
 import Drawer from './elements/Drawer.js';
 import ListBox from './elements/ListBox.js';
 import Modes from './elements/Modes.js';
-// import Popup from './elements/Popup.js';
+import Popup from './elements/Popup.js';
 import Spread from './elements/Spread.js';
 import TabButton from './elements/TabButton.js';
 import Tabs from './elements/Tabs.js';
 import TabStrip from './elements/TabStrip.js';
-// import Toast from './elements/Toast.js';
+import Toast from './elements/Toast.js';
 
 
 // The complete list of all mixins and elements.
 export default {
-  // AlertDialog,
-  // Popup,
-  // Toast
+  AlertDialog,
   AttributeMarshallingMixin,
   ClickSelectionMixin,
   constants,
@@ -66,6 +64,7 @@ export default {
   Modes,
   OpenCloseTransitionMixin,
   OverlayMixin,
+  Popup,
   SelectionAriaMixin,
   SelectionInViewMixin,
   ShadowReferencesMixin,
@@ -77,5 +76,6 @@ export default {
   symbols,
   TabButton,
   Tabs,
-  TabStrip
+  TabStrip,
+  Toast
 };
