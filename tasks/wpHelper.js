@@ -130,6 +130,7 @@ const webpackHelperTask = function(options, done) {
             test: /\.js$/,
             loader: 'babel-loader',
             include: includes,
+            exclude: /node_modules/,
             query: {
               plugins: [
                 'transform-object-assign',
