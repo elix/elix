@@ -18,9 +18,9 @@ describe("AutosizeTextarea", () => {
   it("sets initial value from initial innerHTML", async () => {
     container.innerHTML = '<elix-autosize-textarea>aardvark</elix-autosize-textarea>';
     const fixture = container.querySelector('elix-autosize-textarea');
-    // Wait for initial content.
     flushPolyfills();
-    await Promise.resolve();
+    // Wait for slotchange event.
+    await new Promise(resolve => setTimeout(resolve));
     assert.equal(fixture.value, 'aardvark');
   });
 
@@ -36,7 +36,6 @@ describe("AutosizeTextarea", () => {
     const fixture = document.createElement('elix-autosize-textarea');
     container.appendChild(fixture);
     fixture.innerHTML = 'chihuahua';
-    // flushPolyfills();
     // Give content time to change.
     await Promise.resolve();
     assert.equal(fixture.value, 'chihuahua');

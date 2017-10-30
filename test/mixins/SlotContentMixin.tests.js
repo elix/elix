@@ -230,4 +230,13 @@ describe("SlotContentMixin", () => {
     assert.equal(fixture.state.content.length, 0);
   });
 
+  it("gets initial content from initial innerHTML", async () => {
+    container.innerHTML = '<slot-content-test>iguana</slot-content-test>';
+    const fixture = container.querySelector('slot-content-test');
+    // Wait for initial content.
+    flushPolyfills();
+    await Promise.resolve();
+    assert.equal(fixture.state.content[0].textContent, 'iguana');
+  });
+
 });

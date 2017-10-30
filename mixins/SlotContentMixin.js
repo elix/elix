@@ -116,20 +116,9 @@ export default function SlotContentMixin(Base) {
 function assignedNodesChanged(component) {
 
   const slot = component.contentSlot;
-  let content;
-
-  // As of 18 July 2017, the polyfill contains a bug
-  // (https://github.com/webcomponents/shadydom/issues/165)
-  // that throws an exception if assignedNodes is read during a constructor
-  // Until that bug is fixed, we work around the problem by catching the
-  // exception.
-  try {
-    content = slot ?
-      slot.assignedNodes({ flatten: true }) :
-      null;
-  } catch (e) {
-    content = [];
-  }
+  const content = slot ?
+    slot.assignedNodes({ flatten: true }) :
+    null;
 
   // Make immutable.
   Object.freeze(content);
