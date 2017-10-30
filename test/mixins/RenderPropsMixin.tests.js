@@ -56,7 +56,7 @@ describe("RenderPropsMixin", function () {
     assert.equal(fixture.style.color, 'red');
       
     // Dynamically modify style.
-    fixture.style = 'background-color: aqua; color: navy;';
+    fixture.setAttribute('style', 'background-color: aqua; color: navy;');
     assert.equal(fixture.style.backgroundColor, 'aqua');
     assert.equal(fixture.style.color, 'red');
   });

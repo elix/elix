@@ -39,30 +39,34 @@ export default function RenderPropsMixin(Base) {
     }
 
     setAttribute(name, value) {
-      if (name === 'style' && !this[symbols.rendering]) {
-        this.style = value;
-      } else {
-        super.setAttribute(name, value);
-      }
+      const adjusted = name === 'style' && !this[symbols.rendering] ?
+        mergeLatestStyleUpdates(this, value) :
+        value; // No adjustments necessary
+      super.setAttribute(name, adjusted);
     }
 
     get style() {
       return super.style;
     }
     set style(style) {
-      let value = style;
-      if (!this[symbols.rendering]) {
-        const newProps = parseStyleProps(style)
-        const styleProps = props.merge(
-          newProps,
-          this[latestStylePropsKey]
-        );
-        value = props.formatStyleProps(styleProps);
-      }
-      super.style = value;
+      const adjusted = !this[symbols.rendering] ?
+        mergeLatestStyleUpdates(this, style) :
+        style; // No adjustments necessary
+      super.style = adjusted;
     }
 
   }
+}
+
+
+// Merge the latest style updates applied via props on top of the given style.
+function mergeLatestStyleUpdates(element, style) {
+  const newProps = parseStyleProps(style);
+  const styleProps = props.merge(
+    newProps,
+    element[latestStylePropsKey]
+  );
+  return props.formatStyleProps(styleProps);
 }
 
 
