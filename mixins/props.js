@@ -237,12 +237,11 @@ export function get(element) {
  */
 export function getAttributes(element) {
   const attributes = {};
-  // @ts-ignore
-  [...element.attributes].forEach(attribute => {
-      // TODO: Convert custom attributes to properties
-      if (attribute.name !== 'class' && attribute.name !== 'style') {
-          attributes[attribute.name] = attribute.value;
-      }
+  Array.prototype.forEach.call(element.attributes, attribute => {
+    // TODO: Convert custom attributes to properties
+    if (attribute.name !== 'class' && attribute.name !== 'style') {
+      attributes[attribute.name] = attribute.value;
+    }
   });
   return attributes;
 }
@@ -254,7 +253,7 @@ export function getAttributes(element) {
  */
 export function getClasses(element) {
   const result = {};
-  [...element.classList].forEach(className =>
+  Array.prototype.forEach.call(element.classList, className =>
     result[className] = true
   );
   return result;
@@ -267,8 +266,7 @@ export function getClasses(element) {
  */
 export function getStyle(element) {
   const styleProps = {};
-  // @ts-ignore
-  [...element.style].forEach(key => {
+  Array.prototype.forEach.call(element.style, key => {
     styleProps[key] = element.style[key];
   });
   return styleProps;
