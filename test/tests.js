@@ -14,7 +14,6 @@ import * as OverlayMixinTests from './mixins/OverlayMixin.tests.js';
 import * as propsTests from './mixins/props.tests.js';
 import * as ReactiveMixinTests from './mixins/ReactiveMixin.tests.js';
 import * as RenderPropsMixinTests from './mixins/RenderPropsMixin.tests.js';
-// import * as SelectedItemTextValueMixinTests from './mixins/SelectedItemTextValueMixin.tests.js';
 import * as SelectionAriaMixinTests from './mixins/SelectionAriaMixin.tests.js';
 import * as SelectionInViewMixinTests from './mixins/SelectionInViewMixin.tests.js';
 import * as ShadowReferencesMixinTests from './mixins/ShadowReferencesMixin.tests.js';
@@ -22,8 +21,8 @@ import * as ShadowTemplateMixinTests from './mixins/ShadowTemplateMixin.tests.js
 import * as SingleSelectionMixinTests from './mixins/SingleSelectionMixin.tests.js';
 import * as SlotContentMixinTests from './mixins/SlotContentMixin.tests.js';
 
-// Element tests
-// import * as LabeledTabsTests from './elements/LabeledTabs.tests.js';
+// // Element tests
+// // import * as LabeledTabsTests from './elements/LabeledTabs.tests.js';
 import * as AutosizeTextareaTests from './elements/AutosizeTextarea.tests.js';
 import * as WrappedStandardElementTests from './elements/WrappedStandardElement.tests.js';
 

@@ -33,6 +33,32 @@ describe("props helpers", () => {
     });
   });
 
+  it("props.applyClass turns a class on or off", () => {
+    const fixture = document.createElement('div');
+    props.applyClass(fixture, 'foo', true);
+    assert(fixture.classList.contains('foo'));
+    assert(!fixture.classList.contains('bar'));
+    props.applyClass(fixture, 'bar', true);
+    assert(fixture.classList.contains('foo'));
+    assert(fixture.classList.contains('bar'));
+    props.applyClass(fixture, 'foo', false);
+    assert(!fixture.classList.contains('foo'));
+    assert(fixture.classList.contains('bar'));
+    props.applyClass(fixture, 'bar', false);
+    assert(!fixture.classList.contains('foo'));
+    assert(!fixture.classList.contains('bar'));
+  });
+
+  it("props.applyClasses turns multiple classes on or off", () => {
+    const fixture = document.createElement('div');
+    props.applyClasses(fixture, { 'foo': true, 'bar': true });
+    assert(fixture.classList.contains('foo'));
+    assert(fixture.classList.contains('bar'));
+    props.applyClasses(fixture, { 'foo': false });
+    assert(!fixture.classList.contains('foo'));
+    assert(fixture.classList.contains('bar'));
+  });
+
   it("props.apply merges new props on top of existing attributes", () => {
     container.innerHTML = `
       <div class="foo bar" style="color: red;" aria-selected="false"></div>
@@ -51,7 +77,9 @@ describe("props helpers", () => {
       }
     });
     assert.equal(fixture.getAttribute('aria-selected'), 'true');
-    assert.equal(fixture.classList.value, 'bar bletch');
+    assert(!fixture.classList.contains('foo'));
+    assert(fixture.classList.contains('bar'));
+    assert(fixture.classList.contains('bletch'));
     assert.equal(fixture.style.color, 'green');
   });
 
