@@ -11,21 +11,25 @@ class ModalBackdrop extends ElementBase {
     return props.merge(base, {
       attributes: {
         role
-      },
-      style: {
-        background: 'black',
-        height: '100%',
-        left: 0,
-        opacity: 0.2,
-        position: 'absolute',
-        top: 0,
-        width: '100%'
       }
     });
   }
 
   get [symbols.template]() {
-    return `<slot></slot>`;
+    return `
+      <style>
+        :host {
+          background: black;
+          height: 100%;
+          left: 0;
+          opacity: 0.2;
+          position: absolute;
+          top: 0;
+          width: 100%;
+        }
+      </style>
+      <slot></slot>
+    `;
   }
 
 }
