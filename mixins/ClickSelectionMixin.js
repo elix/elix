@@ -1,4 +1,5 @@
 import deepContains from './deepContains.js';
+import * as props from './props.js';
 import symbols from './symbols.js';
 
 
@@ -79,6 +80,15 @@ export default function ClickSelectionMixin(Base) {
       }
 
       this[symbols.raiseChangeEvents] = false;
+    }
+
+    get props() {
+      return props.merge(super.props, {
+        style: {
+          '-ms-user-select': 'none',
+          'user-select': 'none'
+        }
+      });
     }
 
   };
