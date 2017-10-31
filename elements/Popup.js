@@ -30,16 +30,11 @@ class Popup extends Base {
 
   get props() {
     const base = super.props || {};
-
-    const display = this.closed ?
-      null :
-      base.style && base.style.display || 'flex';
-
-    return props.merge(base, {
+    return props.merge(super.props, {
       
       style: {
         'alignItems': 'center',
-        display,
+        'display': base.style && base.style.display || 'flex',
         'flex-direction': 'column',
         'height': '100%',
         'justify-content': 'center',
@@ -65,11 +60,6 @@ class Popup extends Base {
       }
 
     });
-  }
-
-  [symbols.render]() {
-    if (super[symbols.render]) { super[symbols.render](); }
-    props.apply(this.$.content, this.contentProps);
   }
 
   get [symbols.template]() {

@@ -92,14 +92,10 @@ class Drawer extends Base {
         'transition': !swiping && 'transform 0.25s'
       }
     };
-
-    const display = this.closed ?
-      null :
-      base.style && base.style.display || 'flex';
-
+    
     return props.merge(base, {
       style: {
-        display
+        display: base.style && base.style.display || 'flex'
       },
       $: {
         backdrop: backdropProps,

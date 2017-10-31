@@ -143,6 +143,17 @@ export default function OverlayMixin(Base) {
       const base = super.props || {};
       const original = this.originalProps;
 
+      // We'd like to just use the `hidden` attribute, but Edge/IE has trouble
+      // with that: if the hidden attribute is removed from an overlay to
+      // display it, Edge/IE may not paint it correctly. And a side-effect
+      // of styling with the hidden attribute is that naive styling of the
+      // component from the outside (to change to display: flex, say) will
+      // override the display: none implied by hidden. To work around both
+      // these problems, we use display: none when the overlay is closed.
+      const display = this.closed ?
+        'none' :
+        base.style && base.style.display;
+
       let zIndex;
       if (this.closed) {
         zIndex = original.style['z-index'];
@@ -157,11 +168,10 @@ export default function OverlayMixin(Base) {
           this[assignedZIndexKey] = zIndex;
         }
       }
+
       return props.merge(base, {
-        attributes: {
-          hidden: this.closed
-        },
         style: {
+          display,
           'z-index': zIndex
         }
       });
