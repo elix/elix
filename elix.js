@@ -32,6 +32,7 @@ import symbols from './mixins/symbols.js';
 
 // Import elements
 import AlertDialog from './elements/AlertDialog.js';
+import AutosizeTextarea from './elements/AutosizeTextarea.js';
 import Dialog from './elements/Dialog.js';
 import Drawer from './elements/Drawer.js';
 import ListBox from './elements/ListBox.js';
@@ -48,6 +49,7 @@ import Toast from './elements/Toast.js';
 export default {
   AlertDialog,
   AttributeMarshallingMixin,
+  AutosizeTextarea,
   ClickSelectionMixin,
   constants,
   content,
