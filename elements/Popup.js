@@ -28,42 +28,32 @@ const Base =
  */
 class Popup extends Base {
 
-  get props() {
-    const base = super.props || {};
-    return props.merge(super.props, {
-      
-      style: {
-        'alignItems': 'center',
-        'display': base.style && base.style.display || 'flex',
-        'flex-direction': 'column',
-        'height': '100%',
-        'justify-content': 'center',
-        'left': 0,
-        'outline': 'none',
-        'pointer-events': 'none',
-        'position': 'fixed',
-        'top': 0,
-        '-webkit-tap-highlight-color': 'transparent',
-        'width': '100%'
-      },
-
-      $: {
-        content: {
-          style: {
-            'background': 'white',
-            'border': '1px solid rgba(0, 0, 0, 0.2)',
-            'box-shadow': '0 2px 10px rgba(0, 0, 0, 0.5)',
-            'pointer-events': 'initial',
-            'position': 'relative'
-          }
-        }
-      }
-
-    });
-  }
-
   get [symbols.template]() {
     return `
+      <style>
+        :host {
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          justify-content: center;
+          left: 0;
+          outline: none;
+          pointer-events: none;
+          position: fixed;
+          top: 0;
+          -webkit-tap-highlight-color: transparent;
+          width: 100%;
+        }
+
+        #content {
+          background: white;
+          border: 1px solid rgba(0, 0, 0, 0.2);
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+          pointer-events: initial;
+          position: relative;
+        }
+      </style>
       <div id="content">
         <slot></slot>
       </div>
