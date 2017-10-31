@@ -66,7 +66,7 @@ class AlertDialog extends Dialog {
   }
 
   /**
-   * @param {string[]} choices - The choices to present to the user
+   * @type {string[]} choices - The choices to present to the user
    */
   get choices() {
     return this.state.choices;

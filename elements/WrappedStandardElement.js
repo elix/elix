@@ -3,6 +3,7 @@ import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
 
 
+const extendsKey = Symbol('extends');
 const mountedKey = Symbol('mounted');
 const pendingPropertiesKey = Symbol('pendingProperties');
 
@@ -215,6 +216,10 @@ class WrappedStandardElement extends ElementBase {
     safelySetInnerProperty(this, 'aria-label', label);
   }
 
+  get extends() {
+    return this.constructor[extendsKey];
+  }
+
   /**
    * Returns a reference to the inner standard HTML element.
    *
@@ -276,9 +281,9 @@ class WrappedStandardElement extends ElementBase {
 
     // Create the new class.
     class Wrapped extends WrappedStandardElement {}
-
+    
     // Indicate which tag it wraps.
-    Wrapped.prototype.extends = extendsTag;
+    Wrapped[extendsKey] = extendsTag;
 
     // Create getter/setters that delegate to the wrapped element.
     const element = document.createElement(extendsTag);

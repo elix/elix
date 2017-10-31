@@ -28,7 +28,7 @@ declare const SingleSelectionMixin: StateMixin<{
   selectionWraps: boolean;
   selectNext(): boolean;
   selectPrevious(): boolean;
-  updateSelectedIndex(number): boolean;
+  updateSelectedIndex(newSelectedIndex: number): boolean;
 },
 {
   selectedIndex: number;

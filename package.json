@@ -24,7 +24,7 @@
     "mocha": "4.0.1",
     "sauce-test-runner": "0.2.0",
     "sinon": "4.0.1",
-    "typescript": "2.5.3",
+    "typescript": "2.6.1",
     "webpack": "3.6.0"
   },
   "scripts": {

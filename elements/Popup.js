@@ -1,4 +1,3 @@
-import * as props from '../mixins/props.js';
 import ElementBase from './ElementBase.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import OverlayMixin from '../mixins/OverlayMixin.js';

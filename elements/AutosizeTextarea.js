@@ -1,6 +1,5 @@
 import WrappedStandardElement from './WrappedStandardElement.js';
 import * as props from '../mixins/props.js';
-import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
 
@@ -30,8 +29,10 @@ class AutosizeTextarea extends Base {
     if (super.componentDidMount) { super.componentDidMount(); }
 
     this.$.inner.addEventListener('input', () => {
+      /** @type {any} */
+      const inner = this.$.inner;
       this.setState({
-        value: this.$.inner.value
+        value: inner.value
       });
     });
 
@@ -40,7 +41,6 @@ class AutosizeTextarea extends Base {
     // Since those aspects are affected by CSS, we have to wait until the
     // element is in the document before we can update the text copy.
     const textareaStyle = getComputedStyle(this.$.inner);
-    const minHeight = this.minimumRows && `${parseFloat(textareaStyle.height)}px`;
     const lineHeight = this.$.extraSpace.clientHeight;
     this.setState({
       copyStyle: {
@@ -225,7 +225,6 @@ class AutosizeTextarea extends Base {
         this.dispatchEvent(event);
       }
     }
-    return changed;
   }
 }
 
