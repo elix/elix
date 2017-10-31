@@ -38,6 +38,13 @@ const Base =
 class Dialog extends Base {
 
   get [symbols.template]() {
+    /*
+     * Note: The simplest way to ensure the backdrop goes behind the content is
+     * to put the backdrop first in the document order. However, this seems to
+     * confuse the polyfill in IE. As a workaround, we put the backdrop after
+     * the content in the document order, then set a z-index on the content to
+     * put it over the backdrop.
+     */
     return `
       <style>
         :host {
@@ -59,13 +66,13 @@ class Dialog extends Base {
           border: 1px solid rgba(0, 0, 0, 0.2);
           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
           position: relative;
+          z-index: 1;
         }
       </style>
-      <elix-modal-backdrop id="backdrop"></elix-modal-backdrop>
       <div id="content">
-        This is dialog content.
         <slot></slot>
       </div>
+      <elix-modal-backdrop id="backdrop"></elix-modal-backdrop>
     `;
   }
 
