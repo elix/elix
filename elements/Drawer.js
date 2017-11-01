@@ -71,32 +71,57 @@ class Drawer extends Base {
 
     const sign = this.rightToLeft ? -1 : 1;
     const swiping = this.state.swipeFraction !== null;
-    const swipeFraction = Math.max(Math.min(sign * this.state.swipeFraction, 1), 0);
-    const opacity = this.opened ?
-      0.2 * (1 - swipeFraction) :
+    // Constrain the distance swiped to between 0 and a bit less than 1. A swipe
+    // distance of 1 itself would cause a tricky problem. The drawer would
+    // render itself completely off screen. This means the expected CSS
+    // transition would not occur, so the transitionend event wouldn't fire,
+    // leaving us waiting indefinitely for an event that will never come. By
+    // ensuring we always transition at least a tiny bit, we guarantee that a
+    // transition and its accompanying event will occur.
+    const swipeFraction = swiping ?
+      Math.max(Math.min(sign * this.state.swipeFraction, 0.999), 0) :
       0;
-    const backdropProps = {
-      style: {
-        opacity,
-        'transition': !swiping && 'opacity 0.25s linear',
-      }
-    };
+    const fullOpacity = 0.2;
+    const opacity = this.opened ?
+      fullOpacity * (1 - swipeFraction) :
+      0;
 
     const translateFraction = this.opened ?
       swipeFraction :
       1;
-    const transform = `translateX(${-sign * translateFraction * 100}%)`;
+    const translatePercentage = -sign * translateFraction * 100;
+
+    let duration = 0;
+    const visualState = this.state.visualState;
+    const showTransition = !swiping &&
+        (visualState === this.visualStates.opened ||
+        visualState === this.visualStates.closing);
+    if (showTransition) {
+      // The time require to show transitions depends on how far apart the
+      // elements currently are from their desired state. As a reference point,
+      // we compare the expected opacity of the backdrop to its current opacity.
+      const currentOpacity = parseFloat(this.$.backdrop.style.opacity) || 0;
+      const fullDuration = 0.25; // Quarter second
+      const opacityDifference = Math.abs(opacity - currentOpacity);
+      duration = opacityDifference / fullOpacity * fullDuration;
+    }
+    
+    const backdropProps = {
+      style: {
+        opacity,
+        'transition': showTransition ? `opacity ${duration}s linear` : undefined
+      }
+    };
+
+    const transform = `translateX(${translatePercentage}%)`;
     const contentProps = {
       style: {
         transform,
-        'transition': !swiping && 'transform 0.25s'
+        'transition': showTransition ? `transform ${duration}s` : undefined
       }
     };
 
     return props.merge(base, {
-      style: {
-        display: base.style && base.style.display || 'flex'
-      },
       $: {
         backdrop: backdropProps,
         content: contentProps
@@ -117,6 +142,7 @@ class Drawer extends Base {
       <style>
         :host {
           align-items: stretch;
+          display: flex;
           flex-direction: row;
           left: 0;
           height: 100%;
