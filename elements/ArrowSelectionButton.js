@@ -22,7 +22,7 @@ class ArrowSelectionButton extends ElementBase {
   get [symbols.template]() {
     return `
       <style>
-        :host {
+        :host(:not([hidden])) {
           display: flex;
         }
         
