@@ -11,11 +11,11 @@ import symbols from '../mixins/symbols.js';
 
 const Base =
   DialogModalityMixin(
-  // FocusCaptureMixin(
+  FocusCaptureMixin(
   KeyboardMixin(
   OverlayMixin(
     ElementBase
-  )));
+  ))));
 
 
 /**
@@ -69,9 +69,11 @@ class Dialog extends Base {
           z-index: 1;
         }
       </style>
-      <div id="content">
-        <slot></slot>
-      </div>
+      ${this.wrapWithFocusCapture(`
+        <div id="content">
+          <slot></slot>
+        </div>
+      `)}
       <elix-modal-backdrop id="backdrop"></elix-modal-backdrop>
     `;
   }

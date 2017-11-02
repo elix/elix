@@ -1,7 +1,8 @@
 import DialogModalityMixin from '../mixins/DialogModalityMixin.js';
-import OpenCloseTransitionMixin from '../mixins/OpenCloseTransitionMixin.js';
+import FocusCaptureMixin from '../mixins/FocusCaptureMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
+import OpenCloseTransitionMixin from '../mixins/OpenCloseTransitionMixin.js';
 // @ts-ignore
 import ModalBackdrop from './ModalBackdrop.js'; // eslint-disable-line no-unused-vars
 import OverlayMixin from '../mixins/OverlayMixin.js';
@@ -13,16 +14,16 @@ import ElementBase from './ElementBase.js';
 
 
 const Base =
-  // FocusCaptureWrapper(
   DialogModalityMixin(
-  OpenCloseTransitionMixin(
+  FocusCaptureMixin(
   KeyboardMixin(
   LanguageDirectionMixin(
+  OpenCloseTransitionMixin(
   OverlayMixin(
   TouchSwipeMixin(
   TrackpadSwipeMixin(
     ElementBase
-  )))))));
+  ))))))));
 
 
 /**
@@ -138,6 +139,7 @@ class Drawer extends Base {
   }
 
   get [symbols.template]() {
+    // See z-index notes at Dialog.js.
     return `
       <style>
         :host {
@@ -164,12 +166,15 @@ class Drawer extends Base {
           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
           position: relative;
           will-change: transform;
+          z-index: 1;
         }
       </style>
+      ${this.wrapWithFocusCapture(`
+        <div id="content">
+          <slot></slot>
+        </div>
+      `)}
       <elix-modal-backdrop id="backdrop"></elix-modal-backdrop>
-      <div id="content">
-        <slot></slot>
-      </div>
     `;
   }
 
