@@ -45,7 +45,6 @@ const Base =
  * specialized [LabeledTabs](LabeledTabs) component, which will generate text
  * tab buttons for you.
  *
- * @extends Modes
  */
 class Tabs extends Base {
 

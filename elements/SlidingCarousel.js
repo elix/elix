@@ -43,7 +43,9 @@ class SlidingCarousel extends Base {
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
     this.$.viewport.addEventListener('selected-index-changed', () => {
-      this.selectedIndex = this.$.viewport.selectedIndex;
+      /** @type {any} */
+      const viewport = this.$.viewport;
+      this.selectedIndex = viewport.selectedIndex;
     });
   }
 

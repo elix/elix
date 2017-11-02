@@ -40,7 +40,6 @@ const Base =
  * `KeyboardPagedSelectionMixin`, and `KeyboardPrefixSelectionMixin` for
  * keyboard details.
  *
- * @extends {HTMLElement}
  * @mixes ClickSelectionMixin
  * @mixes ContentItemsMixin
  * @mixes DirectionSelectionMixin

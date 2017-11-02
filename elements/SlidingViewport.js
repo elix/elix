@@ -5,6 +5,7 @@ import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
 import * as props from '../mixins/props.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
+// @ts-ignore
 import Spread from './Spread.js'; // eslint-disable-line no-unused-vars
 import symbols from '../mixins/symbols.js';
 

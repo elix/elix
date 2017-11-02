@@ -25,7 +25,6 @@ const Base =
  * A lightweight popup intended to display a short, non-critical message until a
  * specified `duration` elapses or the user dismisses it.
  * 
- * @extends {HTMLElement}
  * @mixes AttributeMarshallingMixin
  * @mixes OpenCloseMixin
  * @mixes OverlayMixin

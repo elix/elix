@@ -35,7 +35,6 @@ const Base =
  * Dialog uses `BackdropWrapper` to add a backdrop behind the main overlay
  * content. Both the backdrop and the dialog itself can be styled.
  * 
- * @extends {HTMLElement}
  * @mixes AttributeMarshallingMixin
  * @mixes BackdropWrapper
  * @mixes DialogModalityMixin
@@ -101,7 +100,9 @@ class Drawer extends Base {
       // The time require to show transitions depends on how far apart the
       // elements currently are from their desired state. As a reference point,
       // we compare the expected opacity of the backdrop to its current opacity.
-      const currentOpacity = parseFloat(this.$.backdrop.style.opacity) || 0;
+      /** @type {any} */
+      const backdrop = this.$.backdrop;
+      const currentOpacity = parseFloat(backdrop.style.opacity) || 0;
       const fullDuration = 0.25; // Quarter second
       const opacityDifference = Math.abs(opacity - currentOpacity);
       duration = opacityDifference / fullOpacity * fullDuration;

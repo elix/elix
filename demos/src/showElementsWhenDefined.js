@@ -52,11 +52,12 @@ export default function showElementsWhenDefined() {
 }
 
 function showPage() {
-  if (document.body && document.body.getAttribute('unresolved')) {
+  if (document.body && document.body.getAttribute('unresolved') !== null) {
     document.body.removeAttribute('unresolved');
   }
 }
 
+// @ts-ignore
 if (window.ShadyDOM && window.ShadyDOM.inUse) {
   window.addEventListener('WebComponentsReady', () => showElementsWhenDefined());
 } else {

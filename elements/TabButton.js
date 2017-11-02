@@ -19,7 +19,6 @@ const Base =
  * This component is used by [LabeledTabs](LabeledTabs), which will generate
  * an instance of `LabeledTabButton` for each panel in a set of tab panels.
  *
- * @extends HTMLElement
  */
 class TabButton extends Base {
 

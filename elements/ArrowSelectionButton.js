@@ -9,13 +9,13 @@ class ArrowSelectionButton extends ElementBase {
 
   // Delegate disabled attribute to inner button.
   get disabled() {
-    return this.$.button.disabled;
+    return this.$.button.getAttribute('disabled') !== null;
   }
   set disabled(disabled) {
     if (disabled === null) {
       this.$.button.removeAttribute('disabled');
     } else {
-      this.$.button.setAttribute('disabled', disabled);
+      this.$.button.setAttribute('disabled', String(disabled));
     }
   }
 

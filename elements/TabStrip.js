@@ -50,7 +50,6 @@ const Base =
  * can be handled with the separate [TabStripWrapper](TabStripWrapper)
  * component.
  *
- * @extends HTMLElement
  * @mixes ClickSelectionMixin
  * @mixes ContentItemsMixin
  * @mixes DirectionSelectionMixin

@@ -13,7 +13,6 @@ const previousChoicesKey = Symbol('previousChoices');
  * question and let them respond by clicking one of a small number of buttons
  * labeled with text.
  * 
- * @extends {Dialog}
  * @mixes ShadowReferencesMixin
  */
 class AlertDialog extends Dialog {
@@ -97,7 +96,9 @@ class AlertDialog extends Dialog {
       }
     }
     if (found && index >= 0) {
-      this.close(this.choices[index]);
+      // TODO: Handle return value.
+      // this.close(this.choices[index]);
+      this.close();
       handled = true;
     }
 

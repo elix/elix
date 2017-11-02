@@ -22,7 +22,6 @@ const Base =
  * common pattern in which buttons select the mode are tabs, a pattern
  * implemented by the [Tabs](Tabs) component.
  *
- * @extends ElementBase
  * @mixes ContentItemsMixin
  * @mixes SlotContentMixin
  * @mixes SingleSelectionMixin
