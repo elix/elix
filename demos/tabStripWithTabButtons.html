@@ -8,13 +8,14 @@
 
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="./src/showElementsWhenDefined.js"></script>
   <script type="module" src="../elements/TabStrip.js"></script>
   <script type="module" src="../elements/TabButton.js"></script>
   <script nomodule src="../build/demos.js"></script>
 
 </head>
 
-<body>
+<body role="main" unresolved>
   <div class="demo">
     <elix-tab-strip>
       <elix-tab-button aria-label="One">One</elix-tab-button>

@@ -9,6 +9,7 @@
 
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="./src/showElementsWhenDefined.js"></script>
   <script type="module" src="../elements/SlidingCarousel.js"></script>
   <script nomodule src="../build/demos.js"></script>
 
@@ -32,7 +33,7 @@
 
 </head>
 
-<body role="main">
+<body role="main" unresolved>
   <div class="demo fullScreen">
     <elix-sliding-carousel style="flex: 1;" aria-label="Nature scenes">
       <img src="images/image1.jpg" alt="Lake" />

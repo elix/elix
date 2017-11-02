@@ -1,6 +1,5 @@
 /* eslint-disable */
 
-
 // We assume we'll want to provide demos of all of Elix itself.
 // @ts-ignore
 import * as elix from '../elix.js';
@@ -16,5 +15,9 @@ import SampleDialog from './src/SampleDialog.js';
 // import SingleSelectionDemo from './src/SingleSelectionDemo.js';
 // @ts-ignore
 import ToolbarTab from './src/ToolbarTab.js';
+
+// Show custom elements on the page only when they've all been defined.
+// @ts-ignore
+import showElementsWhenDefined from './src/showElementsWhenDefined.js';
 
 /* eslint-enable */
