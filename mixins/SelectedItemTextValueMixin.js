@@ -1,6 +1,3 @@
-import symbols from './symbols.js';
-
-
 /**
  * Mixin which defines a `value` property that reflects the text content of a
  * selected item.

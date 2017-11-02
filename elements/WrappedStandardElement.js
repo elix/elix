@@ -187,7 +187,7 @@ class WrappedStandardElement extends ElementBase {
     // code appears to be required in the polyfill case as well.
     const eventNames = reraiseEvents[this.extends] || [];
     eventNames.forEach(eventName => {
-      this.inner.addEventListener(eventName, realEvent => {
+      this.inner.addEventListener(eventName, () => {
         const event = new Event(eventName, {
           bubbles: eventBubbles[eventName] || false
         });

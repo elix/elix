@@ -2,11 +2,6 @@ import flushPolyfills from '../../test/flushPolyfills.js';
 import SlotContentMixin from '../../mixins/SlotContentMixin.js';
 import symbols from '../../mixins/symbols.js';
 
-  
-// Hack to avoid failing test on ie11
-// https://stackoverflow.com/questions/21825157/internet-explorer-11-detection
-const isIE11 = !!window.MSInputMethodContext && !!document.documentMode;
-
 
 /*
  * Simple element using the SlotContentMixin mixin.

@@ -1,5 +1,6 @@
 import flushPolyfills from '../../test/flushPolyfills.js';
-import AutosizeTextarea from '../../elements/AutosizeTextarea.js';
+// @ts-ignore
+import AutosizeTextarea from '../../elements/AutosizeTextarea.js'; // eslint-disable-line no-unused-vars
 import symbols from '../../mixins/symbols.js';
 
 
@@ -56,7 +57,7 @@ describe("AutosizeTextarea", () => {
   it("raises a value-changed event when its value changes", done => {
     const fixture = document.createElement('elix-autosize-textarea');
     container.appendChild(fixture);
-    fixture.addEventListener('value-changed', event => {
+    fixture.addEventListener('value-changed', () => {
       assert.equal(fixture.value, 'fox');
       done();
     });

@@ -53,7 +53,7 @@ class AlertDialog extends Dialog {
   get choiceButtons() {
     if (this.choices !== this[previousChoicesKey]) {
       // Items have changed; create new buttons set.
-      this[choiceButtonsKey] = this.choices.map((choice, index) => {
+      this[choiceButtonsKey] = this.choices.map(choice => {
         const button = document.createElement('button');
         button.textContent = choice;
         return button;

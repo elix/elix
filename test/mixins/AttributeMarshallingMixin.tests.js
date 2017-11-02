@@ -2,7 +2,6 @@ import AttributeMarshallingMixin from '../../mixins/AttributeMarshallingMixin.js
 
 
 let defaultPropertyValue;
-let defaultClass;
 
 
 /* Element with camelCase property name */
@@ -33,7 +32,6 @@ describe("AttributeMarshallingMixin", () => {
   before(() => {
     container = document.getElementById('container');
     defaultPropertyValue = undefined;
-    defaultClass = undefined;
   });
 
   afterEach(() => {

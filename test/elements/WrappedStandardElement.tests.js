@@ -49,7 +49,7 @@ describe("WrappedStandardElement", () => {
   it("re-raises events not automatically retargetted by Shadow DOM", done => {
     const fixture = document.createElement('wrapped-img');
     container.appendChild(fixture);
-    fixture.addEventListener('load', event => {
+    fixture.addEventListener('load', () => {
       done();
     });
     // Load a 1x1 pixel image to trigger the load event.
