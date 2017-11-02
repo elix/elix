@@ -49,8 +49,8 @@ const Base =
  */
 class Tabs extends Base {
 
-  [symbols.shadowCreated]() {
-    if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
+  componentDidMount() {
+    if (super.componentDidMount) { super.componentDidMount(); }
     this.$.tabStrip.addEventListener('selected-index-changed', () => {
       /** @type {any} */
       const tabStrip = this.$.tabStrip;
@@ -71,6 +71,11 @@ class Tabs extends Base {
     const tabPosition = this.state.tabPosition;
     const lateralPosition = tabPosition === 'left' || tabPosition === 'right';
 
+    // Some of the styling applied to the tabStrip and tabPanels is static, and
+    // properly should be done through static CSS in the template. However,
+    // Edge's flex box implementation seems to struggle with dynamic changes to
+    // properties like flex-direction, and works better if we reapply the
+    // styling each time.
     return props.merge(super.props, {
       style: {
         'flex-direction': lateralPosition ? 'row' : 'column'
@@ -81,6 +86,9 @@ class Tabs extends Base {
             'selected-index': this.state.selectedIndex,
             'tab-align': this.state.tabAlign,
             'tab-position': this.state.tabPosition
+          },
+          style: {
+            'z-index': 1
           }
         },
         tabButtonsSlot: {
@@ -89,6 +97,12 @@ class Tabs extends Base {
         tabPanels: {
           attributes: {
             'selected-index': this.state.selectedIndex
+          },
+          style: {
+            'background': 'white',
+            'border': '1px solid #ccc',
+            'box-sizing': 'border-box',
+            'flex': 1
           }
         }
       }
@@ -157,19 +171,6 @@ class Tabs extends Base {
   }
 
   get [symbols.template]() {
-
-    const tabStripStyle = {
-      'z-index': 1
-    };
-
-    const tabPanelsContainerStyle = {
-      'background': 'white',
-      'border': '1px solid #ccc',
-      'box-sizing': 'border-box',
-      'display': 'flex',
-      'flex': 1
-    };
-
     return `
       <style>
         :host {
@@ -177,16 +178,10 @@ class Tabs extends Base {
           position: relative;
         }
       </style>
-      <elix-tab-strip
-        id="tabStrip"
-        style="${props.formatStyleProps(tabStripStyle)}"
-        >
+      <elix-tab-strip id="tabStrip">
         <slot id="tabButtonsSlot" name="tabButtons"></slot>
       </elix-tab-strip>
-      <elix-modes
-        id="tabPanels"
-        style="${props.formatStyleProps(tabPanelsContainerStyle)}"
-        >
+      <elix-modes id="tabPanels" style="display: flex; flex: 1;">
         <slot></slot>
       </elix-modes>
     `;
