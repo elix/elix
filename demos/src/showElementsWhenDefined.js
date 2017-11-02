@@ -52,7 +52,9 @@ export default function showElementsWhenDefined() {
 }
 
 function showPage() {
-  document.body.removeAttribute('unresolved');
+  if (document.body && document.body.getAttribute('unresolved')) {
+    document.body.removeAttribute('unresolved');
+  }
 }
 
 if (window.ShadyDOM && window.ShadyDOM.inUse) {

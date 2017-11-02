@@ -12,7 +12,8 @@ import ModesWithKeyboard from './src/ModesWithKeyboard.js';
 // import QuietButton from './src/QuietButton.js';
 // @ts-ignore
 import SampleDialog from './src/SampleDialog.js';
-// import SingleSelectionDemo from './src/SingleSelectionDemo.js';
+// @ts-ignore
+import SingleSelectionDemo from './src/SingleSelectionDemo.js';
 // @ts-ignore
 import ToolbarTab from './src/ToolbarTab.js';
 

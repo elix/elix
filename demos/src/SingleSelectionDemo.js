@@ -1,18 +1,29 @@
+import ContentItemsMixin from '../../mixins/ContentItemsMixin.js';
+import ReactiveMixin from '../../mixins/ReactiveMixin.js';
 import SingleSelectionMixin from '../../mixins/SingleSelectionMixin.js';
 import symbols from '../../mixins/symbols.js';
-import { toggleClass } from '../../mixins/attributes.js';
+
+
+const Base =
+  ContentItemsMixin(
+  ReactiveMixin(
+  SingleSelectionMixin(
+    HTMLElement
+  )));
 
 
 /*
- * A very simple component to show the application of SingleSelectionMixin.
+ * A very simple component to show the application of SingleSelectionMixin
+ * and ContentItemsMixin.
  *
  * For a more complete demo using SingleSelectionMixin, see the ListBox demo.
  * 
  */
-class SingleSelectionDemo extends SingleSelectionMixin(HTMLElement) {
+class SingleSelectionDemo extends Base {
 
   constructor() {
     super();
+    /* Clicking an item selects it. */
     this.addEventListener('mousedown', event => {
       if (event.target instanceof Element) {
         this[symbols.raiseChangeEvents] = true;
@@ -23,27 +34,21 @@ class SingleSelectionDemo extends SingleSelectionMixin(HTMLElement) {
     });
   }
 
-  attributeChangedCallback(attributeName, oldValue, newValue) {
-    if (attributeName === 'selected-index') {
-      this.selectedIndex = newValue;
+  get defaultState() {
+    /* Simplistic implementation of content returns light DOM children. */
+    return Object.assign({}, super.defaultState, {
+      content: this.children
+    });
+  }
+
+  itemProps(item, index, original) {
+    /* Map item selection to a `selected` CSS class. */
+    return {
+      classes: {
+        selected: index === this.selectedIndex
+      }
     }
   }
-
-  // Map item selection to a `selected` CSS class.
-  [symbols.itemSelected](item, selected) {
-    if (super[symbols.itemSelected]) { super[symbols.itemSelected](item, selected); }
-    toggleClass(item, 'selected', selected);
-  }
-
-  // Simplistic implementation of items property — doesn't handle redistribution.
-  get items() {
-    return this.children;
-  }
-
-  static get observedAttributes() {
-    return ['selected-index'];
-  }
-
 }
 
 
