@@ -13,8 +13,5 @@
     "elix.js",
     "demos/demos.js",
     "tests/tests.js"
-  ],
-  "exclude": [
-    "elements/boilerplate/*"
   ]
 }
