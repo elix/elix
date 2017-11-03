@@ -22,7 +22,7 @@ import * as SingleSelectionMixinTests from './mixins/SingleSelectionMixin.tests.
 import * as SlotContentMixinTests from './mixins/SlotContentMixin.tests.js';
 
 // Element tests
-// import * as LabeledTabsTests from './elements/LabeledTabs.tests.js';
+import * as TabsTests from './elements/Tabs.tests.js';
 import * as AutosizeTextareaTests from './elements/AutosizeTextarea.tests.js';
 import * as WrappedStandardElementTests from './elements/WrappedStandardElement.tests.js';
 

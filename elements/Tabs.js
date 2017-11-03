@@ -12,6 +12,7 @@ import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
 
 
+const generatedIdKey = Symbol('generatedId');
 const previousItemsKey = Symbol('previousItems');
 const tabButtonsKey = Symbol('tabButtons');
 
@@ -66,9 +67,43 @@ class Tabs extends Base {
     });
   }
 
+  itemProps(item, index, original) {
+    const base = super.itemProps ? super.itemProps(item, index, original) : {};
+    
+    // See notes in SelectionAriaMixin for similar handling of ID.
+    let id = item[generatedIdKey] ||
+    original.attributes.id ||
+    base.attributes && base.attributes.id;
+    if (!id) {
+      id = getIdForPanel(this, item, index);
+      // Remember that we generated an ID for this item.
+      item[generatedIdKey] = id;
+    }
+    
+    // Look up corresponding tab button.
+    const tabButtons = this.tabButtons;
+    const tabButton = tabButtons && index < tabButtons.length ?
+      tabButtons[index] :
+      null;
+    const tabButtonId = tabButton && tabButton.id;
+
+    return {
+      attributes: {
+        id,
+        'aria-labelledby': tabButtonId
+      }
+    }
+  }
+
   get props() {
     const tabPosition = this.state.tabPosition;
     const lateralPosition = tabPosition === 'left' || tabPosition === 'right';
+
+    // Generate tab buttons if necessary.
+    const assignedButtons = this.$.tabButtonsSlot.assignedNodes();
+    const tabButtons = assignedButtons.length > 0 ?
+      [] :
+      defaultTabButtons(this);
 
     // Some of the styling applied to the tabStrip and tabPanels is static, and
     // properly should be done through static CSS in the template. However,
@@ -91,7 +126,7 @@ class Tabs extends Base {
           }
         },
         tabButtonsSlot: {
-          childNodes: this.tabButtons
+          childNodes: tabButtons
         },
         tabPanels: {
           attributes: {
@@ -116,26 +151,15 @@ class Tabs extends Base {
   }
   
   /**
-   * Default implementation of tabButtons property uses elix-tab-button elements for
-   * the tab buttons.
+   * Default implementation of tabButtons property looks in the tab buttons slot
+   * for items. If nothing is distributed to that slot, it generates an array of
+   * elix-tab-button elements for use as tab buttons.
    */
   get tabButtons() {
-    if (this.items !== this[previousItemsKey]) {
-      // Items have changed; create new buttons set.
-      this[tabButtonsKey] = this.items.map((panel, index) => {
-        const label = panel.getAttribute('aria-label');
-        const panelId = panel.getAttribute('id') || `_panel${index}`;
-        const TabButtonClass = this.state.TabButtonClass;
-        const tabButton = new TabButtonClass();
-        tabButton.setAttribute('aria-controls', panelId);
-        tabButton.textContent = label;
-        return tabButton;
-      });
-      // Make the array immutable.
-      Object.freeze(this[tabButtonsKey]);
-      this[previousItemsKey] = this.items;
-    }
-    return this[tabButtonsKey];
+    const assignedButtons = this.$.tabButtonsSlot.assignedNodes();
+    return assignedButtons.length > 0 ?
+      assignedButtons :
+      defaultTabButtons(this);
   }
 
   get tabPosition() {
@@ -187,6 +211,51 @@ class Tabs extends Base {
   }
 
 }
+
+
+// Return the set of buttons generated for the given Tabs element.
+function defaultTabButtons(element) {
+  if (element.items !== element[previousItemsKey]) {
+    // Items have changed; create new buttons set.
+    element[tabButtonsKey] = element.items.map((panel, index) => {
+      const label = panel.getAttribute('aria-label');
+      const panelId = getIdForPanel(element, panel, index);
+      const TabButtonClass = element.state.TabButtonClass;
+      const tabButton = new TabButtonClass();
+      const id = getIdForTabButton(element, index);
+      tabButton.setAttribute('id', id);
+      tabButton.setAttribute('aria-controls', panelId);
+      tabButton.textContent = label;
+      return tabButton;
+    });
+    // Make the array immutable.
+    Object.freeze(element[tabButtonsKey]);
+    element[previousItemsKey] = element.items;
+  }
+  return element[tabButtonsKey];
+}
+
+
+function getIdForTabButton(element, index) {
+  const hostId = element.id ?
+    "_" + element.id + "Button" :
+    "_button";
+  const id = `${hostId}${index}`;
+  return id;
+}
+
+
+function getIdForPanel(element, panel, index) {
+  let id = panel.id;
+  if (!id) {
+    const hostId = element.id ?
+      "_" + element.id + "Panel" :
+      "_panel";
+    id = `${hostId}${index}`;
+  }
+  return id;
+}
+
 
 customElements.define('elix-tabs', Tabs);
 export default Tabs;

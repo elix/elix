@@ -18,11 +18,10 @@
 
 <body role="main" unresolved>
   <p>
-    The elix-labeled-tabs component applies a stock combination of a
-    <a href="tabStrip.html">elix-tab-strip</a> and an
-    <a href="modesWithKeyboard.html">elix-modes</a> element. For an example of
-    navigation tabs with custom tab buttons, see the
-    <a href="toolbarTabs.html">toolbar tabs</a> demo.
+    The elix-tabs component generates tab buttons for each tab panel, but you
+    can also supply a set of tab buttons. You could this if you want to use a
+    custom element for the tab buttons, or if you wanted to have the buttons and
+    panels to have different labels.
   </p>
   <div class="demo padded">
 
@@ -49,32 +48,6 @@
       <div class="panel" aria-label="Two">Page two</div>
       <div class="panel" aria-label="Three">Page three</div>
     </elix-tabs>
-    
-    <p>
-      Show tabs on: <select id="tabPosition" onchange="tabPositionChange(event)">
-        <option value="bottom">Bottom</option>
-        <option value="left">Left</option>
-        <option value="right">Right</option>
-        <option value="top" selected>Top</option>
-      </select>
-      &nbsp;&nbsp;&nbsp;
-      Align tabs: <select id="tabAlign" onchange="tabAlignChange(event)">
-        <option value="center">Center</option>
-        <option value="end">End</option>
-        <option value="start" selected>Start</option>
-        <option value="stretch">Stretch</option>
-      </select>
-    </p>
-
-    <script>
-      function tabAlignChange(event) {
-        document.querySelector('elix-tabs').tabAlign = event.target.value;
-      }
-
-      function tabPositionChange(event) {
-        document.querySelector('elix-tabs').tabPosition = event.target.value;
-      }
-    </script>
 
   </div>
 </body>
