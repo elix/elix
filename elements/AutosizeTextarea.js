@@ -191,7 +191,7 @@ class AutosizeTextarea extends Base {
         <textarea id="inner"></textarea>
         <div id="copyContainer"><span id="textCopy"></span><span id="extraSpace">&nbsp;</span></div>
       </div>
-      <div id="contentContainer" hidden>
+      <div hidden>
         <slot></slot>
       </div>
     `;

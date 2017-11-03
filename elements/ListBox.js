@@ -99,7 +99,7 @@ export default class ListBox extends Base {
       };
     return props.merge(super.props, {
       $: {
-        itemsContainer: { style }
+        content: { style }
       }
     });
   }
@@ -115,20 +115,20 @@ export default class ListBox extends Base {
           -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         }
 
-        #itemsContainer {
+        #content {
           display: flex;
           flex: 1;
           -webkit-overflow-scrolling: touch; /* for momentum scrolling */
         }
       </style>
-      <div id="itemsContainer" role="none">
+      <div id="content" role="none">
         <slot></slot>
       </div>
     `;
   }
 
   get [symbols.scrollTarget]() {
-    return this.$.itemsContainer;
+    return this.$.content;
   }
 
 }
