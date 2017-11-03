@@ -27,10 +27,10 @@ describe("Tabs", () => {
       <div aria-label="Label three">Page three</div>
     `;
     container.appendChild(fixture);
-    // Wait for content.
+    // Wait for component to render.
     flushPolyfills();
-    await Promise.resolve();
-    fixture.render();
+    // Wait for content, which requires event/timeout timing.
+    await new Promise(setTimeout);
     const tabButtons = fixture.tabButtons;
     assert.equal(tabButtons.length, 3);
     const tabButton = tabButtons[0];

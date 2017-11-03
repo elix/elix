@@ -92,7 +92,7 @@ class Tabs extends Base {
         id,
         'aria-labelledby': tabButtonId
       }
-    }
+    };
   }
 
   get props() {

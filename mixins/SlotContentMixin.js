@@ -57,7 +57,6 @@ export default function SlotContentMixin(Base) {
 
     connectedCallback() {
       if (super.connectedCallback) { super.connectedCallback(); }
-      // console.log(`connectedCallback`);
       setTimeout(() => {
         // Some browsers fire slotchange when the slot's initial nodes are
         // assigned; others don't. If we haven't already received a slotchange
@@ -65,7 +64,6 @@ export default function SlotContentMixin(Base) {
         // up based on its initial content.
         if (!this[slotchangeFiredKey]) {
           // Invoke contentChanged as would have happened on slotchange.
-          // console.log(`timeout`);
           this[slotchangeFiredKey] = true;
           assignedNodesChanged(this);
         }
@@ -93,9 +91,18 @@ export default function SlotContentMixin(Base) {
       const slot = this.contentSlot;
       if (slot) {
         slot.addEventListener('slotchange', () => {
-          // console.log(`slotchange`);
           this[slotchangeFiredKey] = true;
-          assignedNodesChanged(this);
+          // The polyfill seems to be able to trigger slotchange during
+          // rendering, which shouldn't happen in native Shadow DOM. We try to
+          // defend against this by deferring updating state. This feels hacky.
+          if (!this[symbols.rendering]) {
+            console.log(`rendering ${this.localName}: ${this[symbols.rendering]}`);
+            assignedNodesChanged(this);
+          } else {
+            Promise.resolve().then(() => {
+              assignedNodesChanged(this);              
+            });
+          }
         });
       }
     }
