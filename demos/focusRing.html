@@ -4,12 +4,13 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>focus-ring</title>
+  <title>FocusRingMixin</title>
 
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
-  <script src="node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js"></script>
-  <script src="../build/demos.js"></script>
+  <script type="module" src="./src/showElementsWhenDefined.js"></script>
+  <script type="module" src="./src/FocusRingTest.js"></script>
+  <script nomodule src="../build/demos.js"></script>
 
 </head>
 
@@ -17,7 +18,9 @@
   <p>
     The buttons below use <code>FocusRingMixin</code>. They should only show a
     focus ring when you move the focus onto them via the keyboard, and not with
-    the mouse or touch.
+    the mouse or touch. This is especially useful for mobile devices, where
+    users do not expect to see a keyboard focus unless they're actually using a
+    keyboard.
   </p>
   <div class="demo">
 

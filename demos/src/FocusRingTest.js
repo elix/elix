@@ -1,32 +1,35 @@
 import FocusRingMixin from '../../mixins/FocusRingMixin.js';
-import ShadowTemplateMixin from '../../mixins/ShadowTemplateMixin.js';
 import symbols from '../../mixins/symbols.js';
+import WrappedStandardElement from '../../elements/WrappedStandardElement.js';
 
 
-class FocusRingTest extends FocusRingMixin(ShadowTemplateMixin(HTMLElement)) {
+const Base =
+  FocusRingMixin(
+    WrappedStandardElement.wrap('button')
+  );
 
-  [symbols.template]() {
+class FocusRingTest extends Base {
+
+  get [symbols.template]() {
     return `
       <style>
         :host {
           display: inline-block;
         }
 
-        :host(:focus:not(.focus-ring)) {
-          outline: none;
-        }
-
-        button {
-          background: gray;
-          color: white;
+        #inner {
+          background: #888;
+          border-radius: 3px;
+          color: #eee;
           font-family: inherit;
           font-size: inherit;
           font-style: inherit;
           font-weight: inherit;
           outline: none;
+          padding: 6px 12px;
         }
       </style>
-      <button tabindex="-1">
+      <button id="inner" tabindex="-1">
         <slot></slot>
       </button>
     `;
