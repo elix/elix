@@ -5,11 +5,10 @@
 import * as elix from '../elix.js';
 
 // Additional demo components.
-// import BrowserPluginList from './src/BrowserPluginList.js';
-// import FocusRingTest from './src/FocusRingTest.js';
+// @ts-ignore
+import FocusRingTest from './src/FocusRingTest.js';
 // @ts-ignore
 import ModesWithKeyboard from './src/ModesWithKeyboard.js';
-// import QuietButton from './src/QuietButton.js';
 // @ts-ignore
 import SampleDialog from './src/SampleDialog.js';
 // @ts-ignore
