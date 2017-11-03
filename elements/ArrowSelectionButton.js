@@ -1,23 +1,11 @@
 /* Used by ArrowSelectionMixin  */
 
 
-import ElementBase from './ElementBase.js';
+import WrappedStandardElement from './WrappedStandardElement.js';
 import symbols from '../mixins/symbols.js';
 
 
-class ArrowSelectionButton extends ElementBase {
-
-  // Delegate disabled attribute to inner button.
-  get disabled() {
-    return this.$.button.getAttribute('disabled') !== null;
-  }
-  set disabled(disabled) {
-    if (disabled === null) {
-      this.$.button.removeAttribute('disabled');
-    } else {
-      this.$.button.setAttribute('disabled', String(disabled));
-    }
-  }
+class ArrowSelectionButton extends WrappedStandardElement.wrap('button') {
 
   get [symbols.template]() {
     return `
@@ -26,7 +14,7 @@ class ArrowSelectionButton extends ElementBase {
           display: flex;
         }
         
-        button {
+        #inner {
           background: transparent;
           border: 1px solid transparent;
           box-sizing: border-box;
@@ -40,17 +28,17 @@ class ArrowSelectionButton extends ElementBase {
           transition: opacity 1s;
         }
 
-        button:hover:not(:disabled) {
+        #inner:hover:not(:disabled) {
           background: rgba(255, 255, 255, 0.2);
           color: rgba(255, 255, 255, 0.8);
           cursor: pointer;
         }
 
-        button:disabled {
+        #inner:disabled {
           color: rgba(255, 255, 255, 0.3);
         }
       </style>
-      <button id="button">
+      <button id="inner">
         <slot></slot>
       </button>
     `;

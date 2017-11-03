@@ -10,6 +10,9 @@ customElements.define('wrapped-img', WrappedImg);
 const WrappedDiv = WrappedStandardElement.wrap('div');
 customElements.define('wrapped-div', WrappedDiv);
 
+const WrappedButton = WrappedStandardElement.wrap('button');
+customElements.define('wrapped-button', WrappedButton);
+
 
 describe("WrappedStandardElement", () => {
 
@@ -63,6 +66,24 @@ describe("WrappedStandardElement", () => {
     container.appendChild(fixtureDiv);
     assert.equal(getComputedStyle(fixtureA).display, 'inline-block');
     assert.equal(getComputedStyle(fixtureDiv).display, 'block');
+  });
+
+  it("correctly handles delegated boolean attributes", () => {
+    const fixture = document.createElement('wrapped-button');
+    container.appendChild(fixture);
+    fixture.disabled = true;
+    assert(fixture.inner.disabled);
+    fixture.disabled = false;
+    assert(!fixture.inner.disabled);
+    fixture.setAttribute('disabled', '');
+    assert(fixture.inner.disabled);
+    fixture.removeAttribute('disabled');    
+    assert(!fixture.inner.disabled);
+  });
+
+  it("generates static observedAttributes property for attributes on the wrapped element", () => {
+    const attributes = WrappedButton.observedAttributes;
+    assert(attributes.indexOf('disabled') >= 0);
   });
 
 });

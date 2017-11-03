@@ -1,4 +1,5 @@
 import ElementBase from './ElementBase.js';
+import * as props from '../mixins/props.js';
 import Symbol from '../mixins/Symbol.js';
 import symbols from '../mixins/symbols.js';
 
@@ -310,7 +311,7 @@ function createPropertyDelegate(name, descriptor) {
     };
   }
   if (descriptor.set) {
-    delegate.set = function (value) {
+    delegate.set = function(value) {
       safelySetInnerProperty(this, name, value);
     };
   }
@@ -326,7 +327,12 @@ function createPropertyDelegate(name, descriptor) {
 // the property until after the connectedCallback.
 function safelySetInnerProperty(element, name, value) {
   if (element[mountedKey]) {
-    element.inner[name] = value;
+    // Special case for boolean attributes, which may be passed as strings via
+    // calls to setAttribute.
+    const cast = props.booleanAttributes[name] && typeof(value) === 'string' ?
+      true :
+      value;
+    element.inner[name] = cast;
   } else {
     if (!element[pendingPropertiesKey]) {
       element[pendingPropertiesKey] = {};

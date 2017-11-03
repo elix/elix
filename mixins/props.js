@@ -13,7 +13,7 @@ const mergedProperties = {
   'style': true
 };
 
-const booleanAttributes = {
+export const booleanAttributes = {
   checked: true,
   defer: true,
   disabled: true,
