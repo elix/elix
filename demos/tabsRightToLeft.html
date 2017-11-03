@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>elix-tabs (Right to Left support)</title>
+
+  <link rel="stylesheet" href="demos.css">
+  <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="./src/showElementsWhenDefined.js"></script>
+  <script type="module" src="../elements/TabButton.js"></script>
+  <script type="module" src="../elements/Tabs.js"></script>
+  <script type="module" src="../elements/TabStrip.js"></script>
+  <script nomodule src="../build/demos.js"></script>
+
+</head>
+
+<body dir="rtl" role="main" unresolved>
+  <div class="demo padded">
+
+    <style>
+    elix-tabs {
+      height: 250px;
+      max-width: 100%;
+      width: 300px;
+    }
+
+    .panel {
+      align-items: center;
+      display: flex;
+      flex: 1;
+      justify-content: center;
+    }
+    </style>
+
+    <elix-tabs>
+      <div class="panel" aria-label="One">Page one</div>
+      <div class="panel" aria-label="Two">Page two</div>
+      <div class="panel" aria-label="Three">Page three</div>
+    </elix-tabs>
+    
+  </div>
+</body>
+
+</html>
