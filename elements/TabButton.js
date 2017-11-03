@@ -1,15 +1,15 @@
 import * as props from '../mixins/props.js';
-import ElementBase from './ElementBase.js';
 import FocusRingMixin from '../mixins/FocusRingMixin.js';
 // import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
 import symbols from '../mixins/symbols.js';
+import WrappedStandardElement from './WrappedStandardElement.js';
 
 
 const Base =
   FocusRingMixin(
   SlotContentMixin(
-    ElementBase
+    WrappedStandardElement.wrap('button')
   ));
 
 
@@ -108,10 +108,16 @@ class TabButton extends Base {
       const borderSide = borderSides[tabPosition];
       borderStyle[borderSide] = 'transparent';
     }
+    /** @type {any} */
+    const element = this;
+    const color = element.disabled ?
+      '#888' :
+      base.style && base.style.color;
     const buttonProps = {
       style: Object.assign(
         {
           'background-color': original.style && original.style['background-color'] || 'white',
+          color
         },
         positionStyle,
         borderStyle,
@@ -129,7 +135,7 @@ class TabButton extends Base {
         'margin-top': needsTopSpacer ? '0.2em' : original.style['margin-top'],
       },
       $: {
-        button: buttonProps
+        inner: buttonProps
       }
     });
   }
@@ -155,7 +161,7 @@ class TabButton extends Base {
           display: inline-flex;
         }
 
-        #button {
+        #inner {
           background: inherit;
           border-color: #ccc;
           border-style: solid;
@@ -171,7 +177,7 @@ class TabButton extends Base {
           white-space: nowrap;
         }
       </style>
-      <button id="button" tabindex="-1">
+      <button id="inner" tabindex="-1">
         <slot></slot>
       </button>
     `;

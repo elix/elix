@@ -9,7 +9,7 @@ class ToolbarTab extends TabButton {
     const baseColor = base.style && base.style.color;
     return props.merge(base, {
       $: {
-        button: {
+        inner: {
           style: {
             'align-items': 'center',
             'background': 'transparent',

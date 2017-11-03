@@ -114,9 +114,7 @@ class TabStrip extends Base {
         'cursor': 'pointer',
         'font-family': 'inherit',
         'font-size': 'inherit',
-        // 'outline': 'none',
-        // 'position': 'relative',
-        '-webkit-tap-highlight-color': 'transparent',
+        '-webkit-tap-highlight-color': 'transparent'
       }
     });
   }
