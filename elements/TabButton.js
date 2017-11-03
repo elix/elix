@@ -1,6 +1,6 @@
 import * as props from '../mixins/props.js';
 import FocusRingMixin from '../mixins/FocusRingMixin.js';
-// import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin';
+import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
 import symbols from '../mixins/symbols.js';
 import WrappedStandardElement from './WrappedStandardElement.js';
@@ -8,9 +8,10 @@ import WrappedStandardElement from './WrappedStandardElement.js';
 
 const Base =
   FocusRingMixin(
+  LanguageDirectionMixin(
   SlotContentMixin(
     WrappedStandardElement.wrap('button')
-  ));
+  )));
 
 
 /**
@@ -62,8 +63,10 @@ class TabButton extends Base {
     const index = this.state.index;
     const needsSpacer = index > 0;
     const tabPosition = this.tabPosition;
-    const needsLeftSpacer = needsSpacer &&
+    const needsSideSpacer = needsSpacer &&
         (tabPosition === 'top' || tabPosition === 'bottom');
+    const needsLeftSpacer = needsSideSpacer && !this.rightToLeft;
+    const needsRightSpacer = needsSideSpacer && this.rightToLeft;
     const needsTopSpacer = needsSpacer &&
         (tabPosition === 'left' || tabPosition === 'right');
     
@@ -132,6 +135,7 @@ class TabButton extends Base {
       style: {
         'flex': stretch ? 1 : original.style.flex,
         'margin-left': needsLeftSpacer ? '0.2em' : original.style['margin-left'],
+        'margin-right': needsRightSpacer ? '0.2em' : original.style['margin-left'],
         'margin-top': needsTopSpacer ? '0.2em' : original.style['margin-top'],
       },
       $: {

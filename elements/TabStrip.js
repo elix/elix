@@ -6,7 +6,7 @@ import DirectionSelectionMixin from '../mixins/DirectionSelectionMixin.js';
 import ElementBase from './ElementBase.js';
 import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
-// import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin';
+import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin';
 import SelectionAriaMixin from '../mixins/SelectionAriaMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
@@ -19,11 +19,12 @@ const Base =
   DirectionSelectionMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
+  LanguageDirectionMixin(
   SelectionAriaMixin(
   SingleSelectionMixin(
   SlotContentMixin(
     ElementBase
-  ))))))));
+  )))))))));
 
 
 /**
