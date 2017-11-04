@@ -96,7 +96,6 @@ export default function SlotContentMixin(Base) {
           // rendering, which shouldn't happen in native Shadow DOM. We try to
           // defend against this by deferring updating state. This feels hacky.
           if (!this[symbols.rendering]) {
-            console.log(`rendering ${this.localName}: ${this[symbols.rendering]}`);
             assignedNodesChanged(this);
           } else {
             Promise.resolve().then(() => {

@@ -175,37 +175,6 @@ describe("SingleSelectionMixin", () => {
     setTimeout(done);
   });
 
-  it.skip("raises can-select-previous-changed event", done => {
-    const fixture = createSampleElement();
-    fixture.addEventListener('can-select-previous-changed', () => {
-      assert.equal(fixture.state.selectedIndex, 0);
-      assert(!fixture.canSelectPrevious);
-      done();
-    });
-    container.appendChild(fixture);
-    assert(fixture.canSelectPrevious);
-
-    fixture[symbols.raiseChangeEvents] = true; // Simulate user interaction
-    fixture.selectFirst();
-    fixture[symbols.raiseChangeEvents] = false;
-  });
-
-  it.skip("raises can-select-next-changed event", done => {
-    const fixture = createSampleElement();
-    fixture.addEventListener('can-select-next-changed', () => {
-      assert.equal(fixture.state.selectedIndex, 2);
-      assert(!fixture.canSelectNext);
-      done();
-    });
-    container.appendChild(fixture);
-    assert(fixture.canSelectNext);
-
-    fixture[symbols.raiseChangeEvents] = true; // Simulate user interaction
-    fixture.selectLast();
-    fixture.fooBar();
-    fixture[symbols.raiseChangeEvents] = false;
-  });
-
 });
 
 
