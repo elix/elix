@@ -141,7 +141,7 @@ export default function OverlayMixin(Base) {
 
     get props() {
       const base = super.props || {};
-      const original = this.originalProps;
+      const original = this.state.original;
 
       // We'd like to just use the `hidden` attribute, but Edge/IE has trouble
       // with that: if the hidden attribute is removed from an overlay to

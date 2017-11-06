@@ -56,7 +56,7 @@ class TabButton extends Base {
 
   get props() {
     const base = super.props || {};
-    const original = this.originalProps;
+    const original = this.state.original;
 
     // Host
     const stretch = this.state.tabAlign === 'stretch';

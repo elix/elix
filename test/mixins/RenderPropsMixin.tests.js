@@ -8,8 +8,11 @@ class RenderPropsTest extends RenderPropsMixin(ReactiveMixin(HTMLElement)) {
 
   get props() {
     return props.merge(super.props, {
+      classes: {
+        selected: this.state.selected || this.state.original.classes.selected
+      },
       style: {
-        color: this.state.selected ? 'red' : this.originalProps.style.color
+        color: this.state.selected ? 'red' : this.state.original.style.color
       }
     });
   }
@@ -57,6 +60,7 @@ describe("RenderPropsMixin", function () {
       
     // Dynamically modify style.
     fixture.setAttribute('style', 'background-color: aqua; color: navy;');
+    await Promise.resolve();
     assert.equal(fixture.style.backgroundColor, 'aqua');
     assert.equal(fixture.style.color, 'red');
 
@@ -65,6 +69,43 @@ describe("RenderPropsMixin", function () {
     });
     assert.equal(fixture.style.backgroundColor, 'aqua');
     assert.equal(fixture.style.color, 'navy');    
+  });
+
+  it("merges classes on top of original classes", async () => {
+    container.innerHTML = `<render-props-test class='foo'></render-props-test>`;
+    flushPolyfills();
+    const fixture = container.querySelector('render-props-test');
+    assert(fixture.classList.contains('foo'));
+    assert(!fixture.classList.contains('selected'));
+
+    await fixture.setState({
+      selected: true
+    });
+    assert(fixture.classList.contains('foo'));
+    assert(fixture.classList.contains('selected'));
+
+    await fixture.setState({
+      selected: false
+    });
+    assert(fixture.classList.contains('foo'));
+    assert(!fixture.classList.contains('selected'));
+  });
+
+  it("respects original classes", async () => {
+    container.innerHTML = `<render-props-test class='selected'></render-props-test>`;
+    flushPolyfills();
+    const fixture = container.querySelector('render-props-test');
+    assert(fixture.classList.contains('selected'));
+
+    await fixture.setState({
+      selected: true
+    });
+    assert(fixture.classList.contains('selected'));
+
+    await fixture.setState({
+      selected: false
+    });
+    assert(fixture.classList.contains('selected'));
   });
 
 });

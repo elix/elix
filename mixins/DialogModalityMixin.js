@@ -67,7 +67,7 @@ export default function DialogModalityMixin(Base) {
     }
 
     get props() {
-      const original = this.originalProps;
+      const original = this.state.original;
       const role = original.attributes && original.attributes.role || this.state.role;
       return props.merge(super.props, {
         attributes: {

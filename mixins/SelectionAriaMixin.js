@@ -75,7 +75,7 @@ export default function SelectionAriaMixin(Base) {
 
     get props() {
       const base = super.props || {};
-      const role = this.originalProps.attributes.role ||
+      const role = this.state.original && this.state.original.attributes.role ||
         base.attributes && base.attributes.role ||
         'listbox';
       const orientation = this.state.orientation === 'horizontal' ? 'horizontal' : null;

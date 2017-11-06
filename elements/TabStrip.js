@@ -150,7 +150,7 @@ class TabStrip extends Base {
 
   get props() {
     const base = super.props || {};
-    const original = this.originalProps;
+    const original = this.state.original;
 
     const tabPosition = this.state.tabPosition;
     const lateralPosition = tabPosition === 'left' || tabPosition === 'right';

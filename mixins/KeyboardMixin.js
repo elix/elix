@@ -66,7 +66,8 @@ export default function KeyboardMixin(Base) {
     }
 
     get props() {
-      const tabindex = this.originalProps.attributes.tabindex || this.state.tabindex;
+      const tabindex = this.state.original && this.state.original.attributes.tabindex
+          || this.state.tabindex;
       return props.merge(super.props, {
         attributes: {
           tabindex

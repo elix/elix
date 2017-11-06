@@ -38,7 +38,7 @@ class Modes extends Base {
     const base = super.props || {};
     return props.merge(base, {
       style: {
-        'display': this.originalProps.style.display || 'inline-block',
+        'display': this.state.original.style.display || 'inline-block',
         'position': 'relative'
       }
     });

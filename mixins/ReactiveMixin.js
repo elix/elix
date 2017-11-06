@@ -7,13 +7,12 @@ const stateKey = Symbol('state');
 
 
 /**
- * 
  * Mixin for managing and rendering a component's state in a functional reactive
  * style.
  * 
  * This is modeled after React/Preact's state management, and is adapted for
  * use with web components. Applying this mixin to a component will give it
- * FRP behavior similar to React's.
+ * FRP behavior comparable to React's.
  */
 export default function ReactiveMixin(Base) {
   return class Reactive extends Base {
@@ -35,6 +34,8 @@ export default function ReactiveMixin(Base) {
     /**
      * The default state for the component. This can be extended by mixins and
      * classes to provide additional default state.
+     * 
+     * @type {object}
      */
     get defaultState() {
       return super.defaultState || {};
@@ -101,6 +102,8 @@ export default function ReactiveMixin(Base) {
      * top of the existing state. If the component is connected to the document,
      * and the new state has changed, this returns a promise to asynchronously
      * render the component. Otherwise, this returns a resolved promise.
+     * 
+     * @param {object} changes - the changes to apply to the element's state
      */
     async setState(changes) {
       // There's no good reason to have a render method update state.
@@ -142,6 +145,9 @@ export default function ReactiveMixin(Base) {
      * React's PureComponent. This seems adequate for most web components. You
      * can override this to always return true (like React's base Component
      * class), or to perform more specific, deeper checks for changes in state.
+     * 
+     * @param {object} nextState - the proposed new state for the element
+     * @return {boolean} - true if the component should update (rerender)
      */
     shouldComponentUpdate(nextState) {
       const base = super.shouldComponentUpdate && super.shouldComponentUpdate(nextState);
@@ -160,6 +166,8 @@ export default function ReactiveMixin(Base) {
     /**
      * The component's current state.
      * The returned state object is immutable. To update it, invoke `setState`.
+     * 
+     * @type {object}
      */
     get state() {
       return this[stateKey];

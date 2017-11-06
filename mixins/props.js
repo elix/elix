@@ -6,7 +6,7 @@
 import Symbol from './Symbol.js';
 
 
-const mergedProperties = {
+export const mergedProperties = {
   '$': true,
   'attributes': true,
   'classes': true,
@@ -30,7 +30,7 @@ const previousChildNodesKey = Symbol('previousChildNodes');
 
 /**
  * @param {Element} element 
- * @param {Object} props
+ * @param {object} props
  */
 export function apply(element, props) {
   for (let key in props) {
