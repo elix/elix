@@ -4,7 +4,6 @@ import symbols from './symbols.js';
 
 
 const originalPropsKey = Symbol('originalProps');
-const originalStyleKey = Symbol('originalStyle');
 const latestStylePropsKey = Symbol('latestStyleProps');
 
 
@@ -25,7 +24,6 @@ export default function RenderPropsMixin(Base) {
       // First gather the original attributes on the component.
       if (this[originalPropsKey] === undefined) {
         this[originalPropsKey] = props.get(this);
-        this[originalStyleKey] = this.style.cssText;
       }
 
       // Collect an updated set of properties/attributes.
@@ -39,9 +37,7 @@ export default function RenderPropsMixin(Base) {
     }
 
     setAttribute(name, value) {
-      const adjusted = name === 'style' && !this[symbols.rendering] ?
-        mergeLatestStyleUpdates(this, value) :
-        value; // No adjustments necessary
+      const adjusted = updateOriginalProp(this, name, value);
       super.setAttribute(name, adjusted);
     }
 
@@ -49,9 +45,7 @@ export default function RenderPropsMixin(Base) {
       return super.style;
     }
     set style(style) {
-      const adjusted = !this[symbols.rendering] ?
-        mergeLatestStyleUpdates(this, style) :
-        style; // No adjustments necessary
+      const adjusted = updateOriginalProp(this, 'style', style);
       super.style = adjusted;
     }
 
@@ -82,4 +76,30 @@ function parseStyleProps(text) {
     }
   });
   return result;
+}
+
+
+function updateOriginalProp(element, name, value) {
+  let adjusted = value;
+  if (!element[symbols.rendering]) {
+    if (name === 'style') {
+      const newProps = parseStyleProps(value);
+      if (element[originalPropsKey]) {
+        element[originalPropsKey][name] = newProps;
+      }
+      const styleProps = props.merge(
+        newProps,
+        element[latestStylePropsKey]
+      );
+      adjusted = props.formatStyleProps(styleProps);
+    } else if (element[originalPropsKey]) {
+      element[originalPropsKey].attributes[name] = value;
+    }
+    // Since calculated props may depend on originalProps, queue up a request to
+    // re-render.
+    Promise.resolve().then(() => {
+      element.render({ force: true });
+    });
+  }
+  return adjusted;
 }

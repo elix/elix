@@ -59,6 +59,12 @@ describe("RenderPropsMixin", function () {
     fixture.setAttribute('style', 'background-color: aqua; color: navy;');
     assert.equal(fixture.style.backgroundColor, 'aqua');
     assert.equal(fixture.style.color, 'red');
+
+    await fixture.setState({
+      selected: false
+    });
+    assert.equal(fixture.style.backgroundColor, 'aqua');
+    assert.equal(fixture.style.color, 'navy');    
   });
 
 });
