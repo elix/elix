@@ -53,17 +53,6 @@ export default function RenderPropsMixin(Base) {
 }
 
 
-// Merge the latest style updates applied via props on top of the given style.
-function mergeLatestStyleUpdates(element, style) {
-  const newProps = parseStyleProps(style);
-  const styleProps = props.merge(
-    newProps,
-    element[latestStylePropsKey]
-  );
-  return props.formatStyleProps(styleProps);
-}
-
-
 function parseStyleProps(text) {
   const result = {};
   const rules = text.split(';');

@@ -300,7 +300,9 @@ class WrappedStandardElement extends ElementBase {
     if (extendsTag === 'button' && names.indexOf('disabled') === -1) {
       Object.defineProperty(Wrapped.prototype, 'disabled', {
         get: function() {
-          return this.inner.disabled;
+          /** @type {any} */
+          const element = this;
+          return element.inner.disabled;
         },
         set: function(value) {
           safelySetInnerProperty(this, 'disabled', value);

@@ -100,7 +100,9 @@ class Tabs extends Base {
     const lateralPosition = tabPosition === 'left' || tabPosition === 'right';
 
     // Generate tab buttons if necessary.
-    const assignedButtons = this.$.tabButtonsSlot.assignedNodes();
+    /** @type {any} */
+    const tabButtonsSlot = this.$.tabButtonsSlot
+    const assignedButtons = tabButtonsSlot.assignedNodes();
     const tabButtons = assignedButtons.length > 0 ?
       [] :
       defaultTabButtons(this);
@@ -156,7 +158,9 @@ class Tabs extends Base {
    * elix-tab-button elements for use as tab buttons.
    */
   get tabButtons() {
-    const assignedButtons = this.$.tabButtonsSlot.assignedNodes();
+    /** @type {any} */
+    const tabButtonsSlot = this.$.tabButtonsSlot;
+    const assignedButtons = tabButtonsSlot.assignedNodes();
     return assignedButtons.length > 0 ?
       assignedButtons :
       defaultTabButtons(this);
