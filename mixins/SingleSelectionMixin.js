@@ -71,6 +71,13 @@ export default function SingleSelectionMixin(Base) {
       trackSelectedItem(this);
     }
 
+    itemCalcs(item, index) {
+      const base = super.itemCalcs ? super.itemCalcs(item, index) : null;
+      return Object.assign({}, base, {
+        selected: index === this.state.selectedIndex
+      });
+    }
+
     /**
      * Select the first item in the list.
      *

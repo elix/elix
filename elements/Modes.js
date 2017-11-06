@@ -44,10 +44,9 @@ class Modes extends Base {
     });
   }
 
-  itemProps(item, index, original) {
-    const base = super.itemProps ? super.itemProps(item, index, original) : {};
-    const selected = index === this.state.selectedIndex;
-    const display = !selected ?
+  itemProps(item, calcs, original) {
+    const base = super.itemProps ? super.itemProps(item, calcs, original) : {};
+    const display = !calcs.selected ?
       'none' :
       base.style && base.style.display;
     return props.merge(base, {

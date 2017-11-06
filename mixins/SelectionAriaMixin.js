@@ -43,9 +43,8 @@ export default function SelectionAriaMixin(Base) {
   // The class prototype added by the mixin.
   class SelectionAria extends Base {
 
-    itemProps(item, index, original) {
-      const base = super.itemProps ? super.itemProps(item, index, original) : {};
-      const selected = index === this.state.selectedIndex;
+    itemProps(item, calcs, original) {
+      const base = super.itemProps ? super.itemProps(item, calcs, original) : {};
       // Ensure each item has an ID so we can set aria-activedescendant on the
       // overall list whenever the selection changes.
       //
@@ -60,13 +59,13 @@ export default function SelectionAriaMixin(Base) {
           original.attributes.id ||
           base.attributes && base.attributes.id;
       if (!id) {
-        id = getIdForItem(this, item, index);
+        id = getIdForItem(this, item, calcs.index);
         // Remember that we generated an ID for this item.
         item[generatedIdKey] = id;
       }
       return props.merge(base, {
         attributes: {
-          'aria-selected': selected,
+          'aria-selected': calcs.selected,
           id,
           'role': original.role || base.role || 'option'
         },

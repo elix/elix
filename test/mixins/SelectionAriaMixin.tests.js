@@ -14,6 +14,14 @@ class SelectionAriaTest extends
     this.setState({ content });
   }
 
+  /* Copied from SingleSelectionMixin */
+  itemCalcs(item, index) {
+    const base = super.itemCalcs ? super.itemCalcs(item, index) : null;
+    return Object.assign({}, base, {
+      selected: index === this.state.selectedIndex
+    });
+  }
+
 }
 customElements.define('selection-aria-test', SelectionAriaTest);
 

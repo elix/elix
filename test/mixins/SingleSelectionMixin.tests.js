@@ -175,6 +175,23 @@ describe("SingleSelectionMixin", () => {
     setTimeout(done);
   });
 
+  it("adds selected calculation to itemCalcs", () => {
+    const fixture = createSampleElement();
+    const items = fixture.items;
+
+    // Start of list
+    fixture.selectFirst();
+    assert(fixture.itemCalcs(items[0], 0).selected);
+    assert(!fixture.itemCalcs(items[1], 1).selected);
+    assert(!fixture.itemCalcs(items[2], 2).selected);
+
+    // End of list
+    fixture.selectLast();
+    assert(!fixture.itemCalcs(items[0], 0).selected);
+    assert(!fixture.itemCalcs(items[1], 1).selected);
+    assert(fixture.itemCalcs(items[2], 2).selected);
+  });
+
 });
 
 

@@ -67,23 +67,23 @@ class Tabs extends Base {
     });
   }
 
-  itemProps(item, index, original) {
-    const base = super.itemProps ? super.itemProps(item, index, original) : {};
+  itemProps(item, calcs, original) {
+    const base = super.itemProps ? super.itemProps(item, calcs, original) : {};
     
     // See notes in SelectionAriaMixin for similar handling of ID.
     let id = item[generatedIdKey] ||
     original.attributes.id ||
     base.attributes && base.attributes.id;
     if (!id) {
-      id = getIdForPanel(this, item, index);
+      id = getIdForPanel(this, item, calcs.index);
       // Remember that we generated an ID for this item.
       item[generatedIdKey] = id;
     }
     
     // Look up corresponding tab button.
     const tabButtons = this.tabButtons;
-    const tabButton = tabButtons && index < tabButtons.length ?
-      tabButtons[index] :
+    const tabButton = tabButtons && calcs.index < tabButtons.length ?
+      tabButtons[calcs.index] :
       null;
     const tabButtonId = tabButton && tabButton.id;
 

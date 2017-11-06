@@ -41,11 +41,11 @@ class SingleSelectionDemo extends Base {
     });
   }
 
-  itemProps(item, index, original) {
+  itemProps(item, calcs, original) {
     /* Map item selection to a `selected` CSS class. */
     return {
       classes: {
-        selected: index === this.selectedIndex
+        selected: calcs.selected
       }
     }
   }

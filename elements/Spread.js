@@ -22,8 +22,8 @@ class Spread extends Base {
     });
   }
 
-  itemProps(item, index, original) {
-    const base = super.itemProps ? super.itemProps(item, index, original) : {};
+  itemProps(item, calcs, original) {
+    const base = super.itemProps ? super.itemProps(item, calcs, original) : {};
     return props.merge(base, {
       style: {
         'objectFit': 'contain',

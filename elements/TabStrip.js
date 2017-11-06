@@ -94,22 +94,21 @@ class TabStrip extends Base {
     });
   }
 
-  itemProps(item, index, original) {
-    const base = super.itemProps ? super.itemProps(item, index, original) : {};
+  itemProps(item, calcs, original) {
+    const base = super.itemProps ? super.itemProps(item, calcs, original) : {};
 
     const tabAlign = this.state.tabAlign;
     const tabPosition = this.state.tabPosition;
-    const selected = index === this.state.selectedIndex;
 
     return props.merge(base, {
       attributes: {
-        index,
+        index: calcs.index,
         role: original.attributes.role || this.state.tabButtonRole,
         'tab-align': tabAlign,
         'tab-position': tabPosition
       },
       classes: {
-        selected
+        selected: calcs.selected
       },
       style: {
         'cursor': 'pointer',

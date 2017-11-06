@@ -48,9 +48,14 @@ const previousContentKey = Symbol('previousContent');
 export default function ContentItemsMixin(Base) {
   return class ContentItems extends Base {
 
-    itemProps(item, index, original) {
+    itemCalcs(item, index) {
+      const base = super.itemCalcs ? super.itemCalcs(item, index) : {};
+      return Object.assign({ index }, base);
+    }
+
+    itemProps(item, calcs, original) {
       return super.itemProps ?
-        super.itemProps(item, index, original) :
+        super.itemProps(item, calcs, original) :
         {};
     }
 
@@ -81,7 +86,8 @@ export default function ContentItemsMixin(Base) {
           if (item[originalPropsKey] === undefined) {
             item[originalPropsKey] = props.get(item);
           }
-          props.apply(item, this.itemProps(item, index, item[originalPropsKey]));
+          const calcs = this.itemCalcs(item, index);
+          props.apply(item, this.itemProps(item, calcs, item[originalPropsKey]));
         });
       }
     }
