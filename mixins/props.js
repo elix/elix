@@ -111,7 +111,7 @@ export function applyAttributes(element, attributeProps) {
 
 /**
  * @param {Element} element 
- * @param {NodeList|[Node]} childNodes
+ * @param {NodeList|Node[]} childNodes
  */
 export function applyChildNodes(element, childNodes) {
   // Quick dirty check if last array applied was frozen.
