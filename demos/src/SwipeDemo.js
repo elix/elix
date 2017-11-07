@@ -17,7 +17,7 @@ class SwipeDemo extends Base {
   get props() {
     const swipeFraction = this.state.swipeFraction;
     const formatted = swipeFraction !== null ?
-      swipeFraction.toFixed(5) :
+      swipeFraction.toFixed(3) :
       '—';
     const transform = swipeFraction !== null ?
       `translateX(${-swipeFraction * 100}%)` :
@@ -44,6 +44,10 @@ class SwipeDemo extends Base {
           flex-direction: column;
         }
 
+        .section {
+          flex: 1;
+        }
+
         #message {
           font-size: smaller;
           padding: 1em;
@@ -52,35 +56,35 @@ class SwipeDemo extends Base {
         #container {
           align-items: center;
           display: flex;
-          flex: 1;
           flex-direction: column;
+          font-size: 48px;
           justify-content: center;
+          text-align: center;
         }
 
         #block {
           background: linear-gradient(to right, lightgray, gray);
-          height: 2em;
+          height: 1em;
           width: 100%;
           will-change: transform;
         }
-        
-        #swipeFraction {
-          font-size: 48px;
-          text-align: center;
-        }
       </style>
-      <div id="message">
-        This demo shows how a component can use TouchSwipeMixin and
-        TrackpadSwipeMixin to listen to horizontal touch swipes and trackpad
-        swipes, respectively. Swiping with either input method will show the
-        current swipe as a fraction of the demo width. It will also translate the
-        gray block by that fraction so the user feels like they are directly
-        manipulating it.
+      <div class="section">
+        <div id="message">
+          This demo shows how a component can use TouchSwipeMixin and
+          TrackpadSwipeMixin to listen to horizontal touch swipes and trackpad
+          swipes, respectively. Swiping with either input method will show the
+          current swipe distance as a fraction of the demo width. It will also
+          translate the gray block by that fraction so the user feels like they
+          are directly moving the block.
+        </div>
       </div>
-      <div id="container">
+      <div id="container" class="section">
         <div id="swipeFraction"></div>
         <div id="block"></div>
+        <div>&nbsp;</div>
       </div>
+      <div class="section"></div>
     `;
   }
 
