@@ -69,7 +69,7 @@ class Drawer extends Base {
   get props() {
     const base = super.props || {};
 
-    const sign = this.rightToLeft ? -1 : 1;
+    const sign = this.rightToLeft ? 1 : -1;
     const swiping = this.state.swipeFraction !== null;
     // Constrain the distance swiped to between 0 and a bit less than 1. A swipe
     // distance of 1 itself would cause a tricky problem. The drawer would
@@ -89,7 +89,7 @@ class Drawer extends Base {
     const translateFraction = this.opened ?
       swipeFraction :
       1;
-    const translatePercentage = -sign * translateFraction * 100;
+    const translatePercentage = sign * translateFraction * 100;
 
     let duration = 0;
     const visualState = this.state.visualState;
