@@ -2,7 +2,7 @@ import DirectionSelectionMixin from '../mixins/DirectionSelectionMixin.js';
 import FocusRingMixin from '../mixins/FocusRingMixin.js';
 import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
-import SlidingViewport from './SlidingViewport';
+import SlidingViewport from './SlidingViewport.js';
 import SelectionAriaMixin from '../mixins/SelectionAriaMixin.js';
 import SwipeDirectionMixin from '../mixins/SwipeDirectionMixin.js';
 import TouchSwipeMixin from '../mixins/TouchSwipeMixin.js';
