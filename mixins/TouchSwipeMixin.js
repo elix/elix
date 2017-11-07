@@ -2,12 +2,12 @@ import * as props from './props.js';
 import Symbol from './Symbol.js';
 
 
-const deltaXSymbol = Symbol('deltaX');
-const deltaYSymbol = Symbol('deltaY');
-const multiTouchSymbol = Symbol('multiTouch');
-const previousXSymbol = Symbol('previousX');
-const previousYSymbol = Symbol('previousY');
-const startXSymbol = Symbol('startX');
+const multiTouchKey = Symbol('multiTouch');
+const previousTimeKey = Symbol('previousTime');
+const previousVelocityKey = Symbol('previousVelocity');
+const previousXKey = Symbol('previousX');
+const previousYKey = Symbol('previousY');
+const startXKey = Symbol('startX');
 
 
 export default function TouchSwipeMixin(Base) {
@@ -44,18 +44,18 @@ export default function TouchSwipeMixin(Base) {
       } else {
         // Pointer events not supported -- listen to older touch events.
         this.addEventListener('touchstart', event => {
-          if (this[multiTouchSymbol]) {
+          if (this[multiTouchKey]) {
             return;
           } else if (event.touches.length === 1) {
             const clientX = event.changedTouches[0].clientX;
             const clientY = event.changedTouches[0].clientY;
             gestureStart(this, clientX, clientY);
           } else {
-            this[multiTouchSymbol] = true;
+            this[multiTouchKey] = true;
           }
         });
         this.addEventListener('touchmove', event => {
-          if (!this[multiTouchSymbol] && event.touches.length === 1) {
+          if (!this[multiTouchKey] && event.touches.length === 1) {
             const clientX = event.changedTouches[0].clientX;
             const clientY = event.changedTouches[0].clientY;
             const handled = gestureContinue(this, clientX, clientY);
@@ -67,13 +67,13 @@ export default function TouchSwipeMixin(Base) {
         this.addEventListener('touchend', event => {
           if (event.touches.length === 0) {
             // All touches removed; gesture is complete.
-            if (!this[multiTouchSymbol]) {
+            if (!this[multiTouchKey]) {
               // Single-touch swipe has finished.
               const clientX = event.changedTouches[0].clientX;
               const clientY = event.changedTouches[0].clientY;
               gestureEnd(this, clientX, clientY);
             }
-            this[multiTouchSymbol] = false;
+            this[multiTouchKey] = false;
           }
         });
       }
@@ -124,15 +124,26 @@ function isEventForPenOrPrimaryTouch(event) {
 /*
  * Invoked when the user has moved during a touch operation.
  */
-function gestureContinue(element, clientX, clientY) {
-  element[deltaXSymbol] = clientX - element[previousXSymbol];
-  element[deltaYSymbol] = clientY - element[previousYSymbol];
-  element[previousXSymbol] = clientX;
-  element[previousYSymbol] = clientY;
-  if (Math.abs(element[deltaXSymbol]) > Math.abs(element[deltaYSymbol])) {
+function gestureContinue(component, clientX, clientY) {
+
+  // Calculate and save the velocity since the last event. If this is the last
+  // movement of the gesture, this velocity will be used to determine whether
+  // the user is trying to flick.
+  const deltaX = clientX - component[previousXKey];
+  const deltaY = clientY - component[previousYKey];
+  const now = Date.now();
+  const deltaTime = now - component[previousTimeKey];
+  const velocity = deltaX / deltaTime * 1000;
+
+  component[previousXKey] = clientX;
+  component[previousYKey] = clientY;
+  component[previousTimeKey] = now;
+  component[previousVelocityKey] = velocity;
+
+  if (Math.abs(deltaX) > Math.abs(deltaY)) {
     // Move was mostly horizontal.
-    const swipeFraction = getSwipeFraction(element, clientX);
-    element.updateSwipeFraction(swipeFraction);
+    const swipeFraction = getSwipeFraction(component, clientX);
+    component.updateSwipeFraction(swipeFraction);
     // Indicate that the event was handled. It'd be nicer if we didn't have
     // to do this so that, e.g., a user could be swiping left and right
     // while simultaneously scrolling up and down. (Native touch apps can do
@@ -154,13 +165,14 @@ function gestureContinue(element, clientX, clientY) {
 function gestureEnd(component, clientX, clientY) {
 
   let gesture;
-  // TODO: Make flick gesture use timing instead of just distance so that it
-  // works better on Android.
-  if (component[deltaXSymbol] >= 20) {
-    // Finished going right at high speed.
+  // Examine velocity of last movement to see if user is flicking.
+  const velocity = component[previousVelocityKey];
+  const flickThresholdVelocity = 800; // speed in pixels/second
+  if (velocity >= flickThresholdVelocity) {
+    // Flicked right at high speed.
     gesture = 'swipeRight';
-  } else if (component[deltaXSymbol] <= -20) {
-    // Finished going left at high speed.
+  } else if (velocity <= -flickThresholdVelocity) {
+    // Flicked left at high speed.
     gesture = 'swipeLeft';
   } else {
     // Finished at low speed.
@@ -171,9 +183,6 @@ function gestureEnd(component, clientX, clientY) {
       gesture = 'swipeRight';
     }
   }
-
-  component[deltaXSymbol] = null;
-  component[deltaYSymbol] = null;
 
   // If component has method for indicated gesture, invoke it.
   if (gesture && component[gesture]) {
@@ -186,18 +195,18 @@ function gestureEnd(component, clientX, clientY) {
 /*
  * Invoked when the user has begun a touch operation.
  */
-function gestureStart(element, clientX, clientY) {
-  element[startXSymbol] = clientX;
-  element[previousXSymbol] = clientX;
-  element[previousYSymbol] = clientY;
-  element[deltaXSymbol] = 0;
-  element[deltaYSymbol] = 0;
-  element.updateSwipeFraction(0);
+function gestureStart(component, clientX, clientY) {
+  component[startXKey] = clientX;
+  component[previousXKey] = clientX;
+  component[previousYKey] = clientY;
+  component[previousTimeKey] = Date.now();
+  component[previousVelocityKey] = 0;
+  component.updateSwipeFraction(0);
 }
 
-function getSwipeFraction(element, x) {
-  const dragDistance = x - element[startXSymbol];
-  const width = element.swipeTarget.offsetWidth;
+function getSwipeFraction(component, x) {
+  const dragDistance = x - component[startXKey];
+  const width = component.swipeTarget.offsetWidth;
   const fraction = width > 0 ?
     dragDistance / width :
     0;
