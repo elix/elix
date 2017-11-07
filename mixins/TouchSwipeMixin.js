@@ -99,6 +99,7 @@ export default function TouchSwipeMixin(Base) {
     }
 
     updateSwipeFraction(swipeFraction) {
+      // TODO: Rationalize or clean this out.
       // const changed = this.state.swipeFraction !== swipeFraction;
       // if (changed) {
       //   if (this.props.onSwipeFractionChanged) {
