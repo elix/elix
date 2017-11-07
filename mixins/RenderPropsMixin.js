@@ -110,15 +110,18 @@ function parseStyleProps(text) {
 function updateOriginalProp(element, name, value) {
   let changes;
   switch (name) {
-    case 'class':
+    
+    case 'class': {
       const classes = parseClassProps(value);
       changes = { classes };
       break;
+    }
 
-    case 'style':
+    case 'style': {
       const style = parseStyleProps(value);
       changes = { style };
       break;
+    }
     
     default:
       changes = {
