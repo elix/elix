@@ -78,8 +78,8 @@ class SwipeDemo extends Base {
         manipulating it.
       </div>
       <div id="container">
-        <div id="block"></div>
         <div id="swipeFraction"></div>
+        <div id="block"></div>
       </div>
     `;
   }
