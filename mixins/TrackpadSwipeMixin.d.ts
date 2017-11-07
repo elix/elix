@@ -3,6 +3,11 @@
 
 /// <reference path="../utilities/shared.d.ts"/>
 
-declare const TrackpadSwipeMixin: Mixin<{}, {}>;
+declare const TrackpadSwipeMixin: StateMixin<{},
+  {},
+  {},
+  {
+    swipeFraction: number;
+  }>;
 
 export default TrackpadSwipeMixin;
