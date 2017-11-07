@@ -20,7 +20,7 @@ class SwipeDemo extends Base {
       swipeFraction.toFixed(3) :
       '—';
     const transform = swipeFraction !== null ?
-      `translateX(${-swipeFraction * 100}%)` :
+      `translateX(${swipeFraction * 100}%)` :
       'none';
     return props.merge(super.props, {
       $: {
@@ -42,6 +42,7 @@ class SwipeDemo extends Base {
         :host {
           display: flex;
           flex-direction: column;
+          overflow-x: hidden;
         }
 
         .section {

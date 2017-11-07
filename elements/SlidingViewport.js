@@ -29,13 +29,13 @@ class SlidingViewport extends Base {
   }
 
   get props() {
-    const sign = this.rightToLeft ? -1 : 1;
+    const sign = this.rightToLeft ? 1 : -1;
     const swiping = this.state.swipeFraction != null;
     const swipeFraction = this.state.swipeFraction || 0;
     const fractionalSelection = this.state.selectedIndex + sign * swipeFraction;
     const count = this.items.length;
     const dampedSelection = FractionalSelection.dampedListSelection(fractionalSelection, count);
-    const fraction = dampedSelection / count;
+    const fraction = sign * dampedSelection / count;
     const transition = swiping ?
       'none' :
       'transform 0.25s';
@@ -44,7 +44,7 @@ class SlidingViewport extends Base {
       $: {
         content: {
           style: {
-            'transform': `translateX(${-sign * fraction * 100}%)`,
+            'transform': `translateX(${fraction * 100}%)`,
             transition
           }
         }

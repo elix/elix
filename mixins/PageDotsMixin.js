@@ -55,9 +55,11 @@ export default function PageDotsMixin(Base) {
     [symbols.render]() {
       if (super[symbols.render]) { super[symbols.render](); }
       const selectedIndex = this.state.selectedIndex;
-      const swipeFraction = this.state.swipeFraction;
+      const sign = this.rightToLeft ? 1 : -1;
+      const swipeFraction = this.state.swipeFraction || 0;
+      const selectionFraction = sign * swipeFraction;
       this.pageDots.forEach((pageDot, index) => {
-        const opacity = opacityForDotWithIndex(index, selectedIndex, swipeFraction);
+        const opacity = opacityForDotWithIndex(index, selectedIndex, selectionFraction);
         props.applyStyle(pageDot, { opacity });
       });
     }
@@ -79,25 +81,25 @@ export default function PageDotsMixin(Base) {
 }
 
 
-function opacityForDotWithIndex(index, selectedIndex, swipeFraction) {
+function opacityForDotWithIndex(index, selectedIndex, selectionFraction) {
   // const dotCount = dots.length;
   const opacityMinimum = 0.4;
   const opacityMaximum = 0.95;
   const opacityRange = opacityMaximum - opacityMinimum;
-  const fractionalIndex = selectedIndex + swipeFraction;
+  const fractionalIndex = selectedIndex + selectionFraction;
   const leftIndex = Math.floor(fractionalIndex);
   const rightIndex = Math.ceil(fractionalIndex);
   // const selectionWraps = element.selectionWraps;
-  let awayIndex = swipeFraction >= 0 ? leftIndex : rightIndex;
-  let towardIndex = swipeFraction >= 0 ? rightIndex : leftIndex;
+  let awayIndex = selectionFraction >= 0 ? leftIndex : rightIndex;
+  let towardIndex = selectionFraction >= 0 ? rightIndex : leftIndex;
   // if (selectionWraps) {
   //   awayIndex = keepIndexWithinBounds(dotCount, awayIndex);
   //   towardIndex = keepIndexWithinBounds(dotCount, towardIndex);
   // }
   // Stupid IE doesn't have Math.trunc.
   // const truncatedSwipeFraction = Math.trunc(swipeFraction);
-  const truncatedSwipeFraction = swipeFraction < 0 ? Math.ceil(swipeFraction) : Math.floor(swipeFraction);
-  const progress = swipeFraction - truncatedSwipeFraction;
+  const truncatedSwipeFraction = selectionFraction < 0 ? Math.ceil(selectionFraction) : Math.floor(selectionFraction);
+  const progress = selectionFraction - truncatedSwipeFraction;
   const opacityProgressThroughRange = Math.abs(progress) * opacityRange;
 
   let opacity;

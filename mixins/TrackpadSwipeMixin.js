@@ -114,7 +114,7 @@ function handleWheel(component, event) {
     return true;
   }
 
-  component[wheelDistanceSymbol] += deltaX;
+  component[wheelDistanceSymbol] -= deltaX;
 
   // Update the travel fraction of the component being navigated.
   const width = component.swipeTarget.offsetWidth;
@@ -126,9 +126,9 @@ function handleWheel(component, event) {
   // If the user has dragged enough to reach the previous/next item, then
   // complete a navigation to that item.
   let gesture;
-  if (swipeFraction === 1) {
+  if (swipeFraction === -1) {
     gesture = 'swipeLeft';
-  } else if (swipeFraction === -1) {
+  } else if (swipeFraction === 1) {
     gesture = 'swipeRight';
   }
   if (gesture) {
@@ -182,9 +182,9 @@ function wheelTimedOut(component) {
   // Snap to the closest item.
   const swipeFraction = component.state.swipeFraction;
   let gesture;
-  if (swipeFraction >= 0.5) {
+  if (swipeFraction <= -0.5) {
     gesture = 'swipeLeft';
-  } else if (swipeFraction <= -0.5) {
+  } else if (swipeFraction >= 0.5) {
     gesture = 'swipeRight';
   }
 

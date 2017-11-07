@@ -165,9 +165,9 @@ function gestureEnd(component, clientX, clientY) {
   } else {
     // Finished at low speed.
     const swipeFraction = getSwipeFraction(component, clientX);
-    if (swipeFraction >= 0.5) {
+    if (swipeFraction <= -0.5) {
       gesture = 'swipeLeft';
-    } else if (swipeFraction <= -0.5) {
+    } else if (swipeFraction >= 0.5) {
       gesture = 'swipeRight';
     }
   }
@@ -196,8 +196,8 @@ function gestureStart(element, clientX, clientY) {
 }
 
 function getSwipeFraction(element, x) {
+  const dragDistance = x - element[startXSymbol];
   const width = element.swipeTarget.offsetWidth;
-  const dragDistance = element[startXSymbol] - x;
   const fraction = width > 0 ?
     dragDistance / width :
     0;

@@ -58,7 +58,7 @@ function showPage() {
 }
 
 // @ts-ignore
-if (window.ShadyDOM && window.ShadyDOM.inUse) {
+if (window.WebComponents && !window.WebComponents.ready) {
   window.addEventListener('WebComponentsReady', () => showElementsWhenDefined());
 } else {
   showElementsWhenDefined();
