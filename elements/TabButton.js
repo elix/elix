@@ -1,6 +1,6 @@
 import * as props from '../mixins/props.js';
 import FocusRingMixin from '../mixins/FocusRingMixin.js';
-import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin';
+import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
 import symbols from '../mixins/symbols.js';
 import WrappedStandardElement from './WrappedStandardElement.js';
