@@ -15,8 +15,9 @@ class SlotContentTest extends SlotContentMixin(HTMLElement) {
       <div id="static">This is static content</div>
       <slot></slot>
     `;
+    // Simulate key bits of ReactiveMixin.
     this.state = this.defaultState;
-    this[symbols.shadowCreated]();
+    this.componentDidMount();
   }
 
   setState(state) {

@@ -6,6 +6,9 @@
 declare const ShadowTemplateMixin: Mixin<{
   connectedCallback?(): void;
 }, {
+  $: {
+    [key: string]: Element;
+  },
   connectedCallback(): void;
   shadowRoot: ShadowRoot;
 }>;

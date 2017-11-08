@@ -16,7 +16,6 @@ import * as propsTests from './mixins/props.tests.js';
 import * as ReactiveMixinTests from './mixins/ReactiveMixin.tests.js';
 import * as SelectionAriaMixinTests from './mixins/SelectionAriaMixin.tests.js';
 import * as SelectionInViewMixinTests from './mixins/SelectionInViewMixin.tests.js';
-import * as ShadowReferencesMixinTests from './mixins/ShadowReferencesMixin.tests.js';
 import * as ShadowTemplateMixinTests from './mixins/ShadowTemplateMixin.tests.js';
 import * as SingleSelectionMixinTests from './mixins/SingleSelectionMixin.tests.js';
 import * as SlotContentMixinTests from './mixins/SlotContentMixin.tests.js';

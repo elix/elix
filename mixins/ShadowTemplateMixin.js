@@ -27,6 +27,11 @@ const mapTagToTemplate = {};
  * the instance, and the contents of the template will be cloned into the
  * shadow root. If your component does not define a `template` method, this
  * mixin has no effect.
+ * 
+ * This adds a member on the component called `this.$` that can be used to
+ * reference shadow elements with IDs. E.g., if component's shadow contains an
+ * element `<button id="foo">`, then this mixin will create a member
+ * `this.$.foo` that points to that button.
  *
  * @module ShadowTemplateMixin
  */
@@ -94,10 +99,7 @@ export default function ShadowTemplateMixin(Base) {
       const clone = document.importNode(template.content, true);
       root.appendChild(clone);
 
-      /* Let the component know the shadow tree has been populated. */
-      if (this[symbols.shadowCreated]) {
-        this[symbols.shadowCreated]();
-      }
+      this.$ = shadowElementReferences(this);
     }
 
     connectedCallback() {
@@ -109,7 +111,26 @@ export default function ShadowTemplateMixin(Base) {
       }
     }
 
+    /**
+     * The collection of references to the elements with IDs in a component's
+     * Shadow DOM subtree.
+     *
+     * @type {object}
+     * @member $
+     */
   }
 
   return ShadowTemplate;
+}
+
+
+// Look for elements in the shadow subtree that have id attributes.
+function shadowElementReferences(component) {
+  const result = {};
+  const nodesWithIds = component.shadowRoot.querySelectorAll('[id]');
+  Array.prototype.forEach.call(nodesWithIds, node => {
+    const id = node.getAttribute('id');
+    result[id] = node;
+  });
+  return result;
 }

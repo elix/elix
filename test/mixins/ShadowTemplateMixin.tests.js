@@ -12,7 +12,7 @@ class ElementWithStringTemplate extends ShadowTemplateMixin(HTMLElement) {
   }
 
   get [symbols.template]() {
-    return "<div>Hello</div>";
+    return `<div id="message">Hello</div>`;
   }
 
 }
@@ -21,7 +21,7 @@ customElements.define('element-with-string-template', ElementWithStringTemplate)
 
 /* Element with a real template */
 const template = document.createElement('template');
-template.innerHTML = "Hello";
+template.innerHTML = `Hello`;
 class ElementWithRealTemplate extends ShadowTemplateMixin(HTMLElement) {
 
   constructor() {
@@ -89,6 +89,13 @@ describe("ShadowTemplateMixin", () => {
     container.appendChild(fixture);
     flushPolyfills();
     assert.equal(getComputedStyle(fixture).backgroundColor, 'rgb(255, 0, 0)');
+  });
+
+  it("generates this.$ references for shadow elements with 'id' attributes", () => {
+    const fixture = document.createElement('element-with-string-template');
+    flushPolyfills();
+    const root = fixture.shadowRoot;
+    assert.equal(fixture.$.message, root.querySelector('#message'));
   });
 
 });

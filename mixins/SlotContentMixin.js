@@ -55,6 +55,28 @@ export default function SlotContentMixin(Base) {
   // The class prototype added by the mixin.
   class SlotContent extends Base {
 
+    componentDidMount() {
+      if (super.componentDidMount) { super.componentDidMount(); }
+
+      // Listen to changes on the default slot.
+      const slot = this.contentSlot;
+      if (slot) {
+        slot.addEventListener('slotchange', () => {
+          this[slotchangeFiredKey] = true;
+          // The polyfill seems to be able to trigger slotchange during
+          // rendering, which shouldn't happen in native Shadow DOM. We try to
+          // defend against this by deferring updating state. This feels hacky.
+          if (!this[symbols.rendering]) {
+            assignedNodesChanged(this);
+          } else {
+            Promise.resolve().then(() => {
+              assignedNodesChanged(this);
+            });
+          }
+        });
+      }
+    }
+
     connectedCallback() {
       if (super.connectedCallback) { super.connectedCallback(); }
       setTimeout(() => {
@@ -83,27 +105,6 @@ export default function SlotContentMixin(Base) {
       return Object.assign({}, super.defaultState, {
         content: null
       });
-    }
-
-    [symbols.shadowCreated]() {
-      if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
-      // Listen to changes on the default slot.
-      const slot = this.contentSlot;
-      if (slot) {
-        slot.addEventListener('slotchange', () => {
-          this[slotchangeFiredKey] = true;
-          // The polyfill seems to be able to trigger slotchange during
-          // rendering, which shouldn't happen in native Shadow DOM. We try to
-          // defend against this by deferring updating state. This feels hacky.
-          if (!this[symbols.rendering]) {
-            assignedNodesChanged(this);
-          } else {
-            Promise.resolve().then(() => {
-              assignedNodesChanged(this);              
-            });
-          }
-        });
-      }
     }
 
   }

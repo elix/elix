@@ -51,6 +51,14 @@ class Drawer extends Base {
     await this.startClose();
   }
 
+  componentDidMount() {
+    if (super.componentDidMount) { super.componentDidMount(); }
+    // Implicitly close on background clicks.
+    this.$.backdrop.addEventListener('click', () => {
+      this.close();
+    });
+  }
+
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       selectedIndex: 0
@@ -128,14 +136,6 @@ class Drawer extends Base {
         backdrop: backdropProps,
         content: contentProps
       }
-    });
-  }
-
-  [symbols.shadowCreated]() {
-    if (super[symbols.shadowCreated]) { super[symbols.shadowCreated](); }
-    // Implicitly close on background clicks.
-    this.$.backdrop.addEventListener('click', () => {
-      this.close();
     });
   }
 
