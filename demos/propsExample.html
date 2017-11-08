@@ -15,17 +15,17 @@
 
   <script type="module">
     import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
+    import PropsMixin from '../mixins/PropsMixin.js';
     import ReactiveMixin from '../mixins/ReactiveMixin.js';
-    import RenderPropsMixin from '../mixins/RenderPropsMixin.js';
-    import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
     import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
+    import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
     import symbols from '../mixins/symbols.js';
 
     // Create a native web component with reactive behavior.
     const Base =
       AttributeMarshallingMixin(
       ReactiveMixin(
-      RenderPropsMixin(
+      PropsMixin(
       ShadowReferencesMixin(
       ShadowTemplateMixin(
         HTMLElement

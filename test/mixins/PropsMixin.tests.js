@@ -1,10 +1,10 @@
 import * as props from '../../mixins/props.js';
 import flushPolyfills from '../flushPolyfills.js';
-import RenderPropsMixin from '../../mixins/RenderPropsMixin.js';
+import PropsMixin from '../../mixins/PropsMixin.js';
 import ReactiveMixin from '../../mixins/ReactiveMixin.js';
 
 
-class RenderPropsTest extends RenderPropsMixin(ReactiveMixin(HTMLElement)) {
+class PropsTest extends PropsMixin(ReactiveMixin(HTMLElement)) {
 
   get props() {
     return props.merge(super.props, {
@@ -18,10 +18,10 @@ class RenderPropsTest extends RenderPropsMixin(ReactiveMixin(HTMLElement)) {
   }
 
 }
-customElements.define('render-props-test', RenderPropsTest);
+customElements.define('props-test', PropsTest);
 
 
-describe("RenderPropsMixin", function () {
+describe("PropsMixin", function () {
 
   let container;
 
@@ -34,7 +34,7 @@ describe("RenderPropsMixin", function () {
   });
 
   it("updates host with props", async () => {
-    const fixture = new RenderPropsTest();
+    const fixture = new PropsTest();
     container.appendChild(fixture);
     assert.equal(fixture.style.color, '');
     await fixture.setState({
@@ -49,9 +49,9 @@ describe("RenderPropsMixin", function () {
   });
 
   it("merges styles on top of original styles", async () => {
-    container.innerHTML = `<render-props-test style="background-color: yellow; color: green;"></render-props-test>`;
+    container.innerHTML = `<props-test style="background-color: yellow; color: green;"></props-test>`;
     flushPolyfills();
-    const fixture = container.querySelector('render-props-test');
+    const fixture = container.querySelector('props-test');
     await fixture.setState({
       selected: true
     })
@@ -72,9 +72,9 @@ describe("RenderPropsMixin", function () {
   });
 
   it("merges classes on top of original classes", async () => {
-    container.innerHTML = `<render-props-test class='foo'></render-props-test>`;
+    container.innerHTML = `<props-test class='foo'></props-test>`;
     flushPolyfills();
-    const fixture = container.querySelector('render-props-test');
+    const fixture = container.querySelector('props-test');
     assert(fixture.classList.contains('foo'));
     assert(!fixture.classList.contains('selected'));
 
@@ -92,9 +92,9 @@ describe("RenderPropsMixin", function () {
   });
 
   it("respects original classes", async () => {
-    container.innerHTML = `<render-props-test class='selected'></render-props-test>`;
+    container.innerHTML = `<props-test class='selected'></props-test>`;
     flushPolyfills();
-    const fixture = container.querySelector('render-props-test');
+    const fixture = container.querySelector('props-test');
     assert(fixture.classList.contains('selected'));
 
     await fixture.setState({

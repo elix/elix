@@ -1,12 +1,12 @@
 import OverlayMixin from '../../mixins/OverlayMixin.js';
-import RenderPropsMixin from '../../mixins/RenderPropsMixin.js';
-import ReactiveMixin from '../../mixins/ReactiveMixin.js';
 import * as props from '../../mixins/props.js';
+import PropsMixin from '../../mixins/PropsMixin.js';
+import ReactiveMixin from '../../mixins/ReactiveMixin.js';
 import symbols from '../../mixins/symbols.js';
 
 
 const Base =
-  RenderPropsMixin(
+  PropsMixin(
   OverlayMixin(
   ReactiveMixin(
     HTMLElement

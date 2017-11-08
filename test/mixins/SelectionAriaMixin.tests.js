@@ -1,11 +1,11 @@
 import ContentItemsMixin from '../../mixins/ContentItemsMixin.js';
+import PropsMixin from '../../mixins/PropsMixin.js'
 import ReactiveMixin from '../../mixins/ReactiveMixin.js'
-import RenderPropsMixin from '../../mixins/RenderPropsMixin.js'
 import SelectionAriaMixin from '../../mixins/SelectionAriaMixin.js';
 
 
 class SelectionAriaTest extends
-  ContentItemsMixin(ReactiveMixin(RenderPropsMixin(SelectionAriaMixin(HTMLElement)))) {
+  ContentItemsMixin(ReactiveMixin(PropsMixin(SelectionAriaMixin(HTMLElement)))) {
 
   connectedCallback() {
     if (super.connectedCallback) { super.connectedCallback(); }

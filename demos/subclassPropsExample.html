@@ -16,17 +16,17 @@
   <script type="module">
     import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
     import * as props from '../mixins/props.js';
+    import PropsMixin from '../mixins/PropsMixin.js';
     import ReactiveMixin from '../mixins/ReactiveMixin.js';
-    import RenderPropsMixin from '../mixins/RenderPropsMixin.js';
-    import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
     import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
+    import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
     import symbols from '../mixins/symbols.js';
 
     // Create a native web component with reactive behavior.
     const Base =
       AttributeMarshallingMixin(
       ReactiveMixin(
-      RenderPropsMixin(
+      PropsMixin(
       ShadowReferencesMixin(
       ShadowTemplateMixin(
         HTMLElement
@@ -44,15 +44,6 @@
         });
       }
 
-      get conditions() {
-        const value = this.state.value;
-        return {
-          canDecrement: value > -5,
-          canIncrement: value < 5,
-          negative: value < 0
-        }
-      }
-
       // This property becomes the value of this.state at constructor time.
       get defaultState() {
         return Object.assign({}, super.defaultState, {
@@ -67,22 +58,11 @@
       //     state -> conditions -> props -> DOM
       //
       get props() {
-        const conditions = this.conditions;
         return {
           style: {
-            color: conditions.negative ? 'red' : ''
+            color: this.state.value < 0 ? 'red' : ''
           },
           $: {
-            decrement: {
-              attributes: {
-                disabled: !conditions.canDecrement
-              }
-            },
-            increment: {
-              attributes: {
-                disabled: !conditions.canIncrement
-              }
-            },
             value: {
               textContent: this.state.value
             }
@@ -95,10 +75,8 @@
         return this.state.value;
       }
       set value(value) {
-        const parsed = parseInt(value);
-        const bounded = Math.max(Math.min(parsed, 5), -5);
         this.setState({
-          value: bounded
+          value: parseInt(value)
         });
       }
 
@@ -112,33 +90,50 @@
 
 
     class CustomIncrementDecrement extends IncrementDecrement {
+
       get props() {
         const buttonStyle = {
           background: '#444',
           border: 'none',
           'border-radius': 0
         };
-        const conditions = this.conditions;
+        const canDecrement = this.state.value > -5;
+        const canIncrement = this.state.value < 5;
         return props.merge(super.props, {
           style: {
             background: 'lightgray',
-            color: conditions.negative ? 'dodgerblue' : '',
+            color: this.state.value < 0 ? 'dodgerblue' : '',
             'font-family': 'Helvetica, Arial, sans-serif',
             'font-weight': 'bold'
           },
           $: {
             decrement: {
+              attributes: {
+                disabled: !canDecrement
+              },
               style: props.merge(buttonStyle, {
-                color: conditions.canDecrement ? 'white' : 'gray'
+                color: canDecrement ? 'white' : 'gray'
               })
             },
             increment: {
+              attributes: {
+                disabled: !canIncrement
+              },
               style: props.merge(buttonStyle, {
-                color: conditions.canIncrement ? 'white' : 'gray'
+                color: canIncrement ? 'white' : 'gray'
               })
             }
           }
         });
+      }
+
+      get value() {
+        return super.value;
+      }
+      set value(value) {
+        const parsed = parseInt(value);
+        const bounded = Math.max(Math.min(parsed, 5), -5);
+        super.value = bounded;
       }
     }
 

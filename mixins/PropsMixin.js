@@ -6,8 +6,8 @@ import symbols from './symbols.js';
  * Mixin that facilitates setting properties on a component host element and
  * elements in the component's shadow subtree.
  */
-export default function RenderPropsMixin(Base) {
-  return class RenderProps extends Base {
+export default function PropsMixin(Base) {
+  return class Props extends Base {
 
     connectedCallback() {
       // Calculate original props before we call super. If, e.g., ReactiveMixin
