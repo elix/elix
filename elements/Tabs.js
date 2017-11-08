@@ -63,6 +63,7 @@ class Tabs extends Base {
       selectionRequired: true,
       tabAlign: 'start',
       TabButtonClass: TabButton,
+      tabPanelsTag: 'elix-modes',
       tabPosition: 'top'
     });
   }
@@ -198,6 +199,7 @@ class Tabs extends Base {
   }
 
   get [symbols.template]() {
+    const tabPanelsTag = this.state.tabPanelsTag;
     return `
       <style>
         :host {
@@ -208,9 +210,9 @@ class Tabs extends Base {
       <elix-tab-strip id="tabStrip">
         <slot id="tabButtonsSlot" name="tabButtons"></slot>
       </elix-tab-strip>
-      <elix-modes id="tabPanels" style="display: flex; flex: 1;">
+      <${tabPanelsTag} id="tabPanels" style="display: flex; flex: 1;">
         <slot></slot>
-      </elix-modes>
+      </${tabPanelsTag}>
     `;
   }
 
