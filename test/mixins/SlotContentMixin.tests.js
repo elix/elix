@@ -1,6 +1,5 @@
 import flushPolyfills from '../../test/flushPolyfills.js';
 import SlotContentMixin from '../../mixins/SlotContentMixin.js';
-import symbols from '../../mixins/symbols.js';
 
 
 /*

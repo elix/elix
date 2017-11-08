@@ -14,8 +14,8 @@ import symbols from './symbols.js';
  * direction keys to navigate a selection, use this mixin with
  * [DirectionSelectionMixin](DirectionSelectionMixin).
  *
- * If the component defines a property called `symbols.orientation`, the value
- * of that property will constrain navigation to the horizontal or vertical axis.
+ * If the component defines a property called `orientation`, the value of that
+ * property will constrain navigation to the horizontal or vertical axis.
  *
  * @module KeyboardDirectionMixin
  */
