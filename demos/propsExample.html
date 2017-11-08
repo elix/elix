@@ -63,16 +63,6 @@
             color: value < 0 ? 'red' : ''
           },
           $: {
-            decrement: {
-              attributes: {
-                disabled: value <= -5
-              }
-            },
-            increment: {
-              attributes: {
-                disabled: value >= 5
-              }
-            },
             value: {
               textContent: value
             }
@@ -85,10 +75,8 @@
         return this.state.value;
       }
       set value(value) {
-        const parsed = parseInt(value);
-        const bounded = Math.max(Math.min(parsed, 5), -5);
         this.setState({
-          value: bounded
+          value: parseInt(value)
         });
       }
 
