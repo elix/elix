@@ -21,8 +21,9 @@ import * as SingleSelectionMixinTests from './mixins/SingleSelectionMixin.tests.
 import * as SlotContentMixinTests from './mixins/SlotContentMixin.tests.js';
 
 // Element tests
-import * as TabsTests from './elements/Tabs.tests.js';
 import * as AutosizeTextareaTests from './elements/AutosizeTextarea.tests.js';
+import * as ListBoxTests from './elements/ListBox.tests.js';
+import * as TabsTests from './elements/Tabs.tests.js';
 import * as WrappedStandardElementTests from './elements/WrappedStandardElement.tests.js';
 
 /* eslint-enable */
