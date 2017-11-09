@@ -2,7 +2,6 @@ import Symbol from '../utilities/Symbol.js';
 import symbols from '../utilities/symbols.js';
 
 
-// Symbols for private data members on an element.
 const slotchangeFiredKey = Symbol('slotchangeFired');
 
 
@@ -61,8 +60,12 @@ export default function SlotContentMixin(Base) {
       // Listen to changes on the default slot.
       const slot = this.contentSlot;
       if (slot) {
-        slot.addEventListener('slotchange', () => {
+        slot.addEventListener('slotchange', event => {
+          
+          // Note that the event has fired. We use this flag in the
+          // normalization promise below.
           this[slotchangeFiredKey] = true;
+
           // The polyfill seems to be able to trigger slotchange during
           // rendering, which shouldn't happen in native Shadow DOM. We try to
           // defend against this by deferring updating state. This feels hacky.
@@ -74,24 +77,25 @@ export default function SlotContentMixin(Base) {
             });
           }
         });
+        
+        // Chrome and the polyfill will fire slotchange with the initial content,
+        // but Safari won't. We wait to see whether the event fires. (We'd prefer
+        // to synchronously call assignedNodesChanged, but then if a subsequent
+        // slotchange fires, we won't know whether it's an initial one or not.)
+        // We do our best to normalize the behavior so the component always gets
+        // a chance to process its initial content.
+        Promise.resolve().then(() => {
+          if (!this[slotchangeFiredKey]) {
+            // The event didn't fire, so we're most likely in Safari.
+            // Update our notion of the component content.
+            this[slotchangeFiredKey] = true;
+            assignedNodesChanged(this);
+          }
+        });
+
       }
     }
-
-    connectedCallback() {
-      if (super.connectedCallback) { super.connectedCallback(); }
-      setTimeout(() => {
-        // Some browsers fire slotchange when the slot's initial nodes are
-        // assigned; others don't. If we haven't already received a slotchange
-        // event by now, then act as if we did so the component can set things
-        // up based on its initial content.
-        if (!this[slotchangeFiredKey]) {
-          // Invoke contentChanged as would have happened on slotchange.
-          this[slotchangeFiredKey] = true;
-          assignedNodesChanged(this);
-        }
-      });
-    }
-
+    
     get contentSlot() {
       const slot = this.shadowRoot && this.shadowRoot.querySelector('slot:not([name])');
       if (!this.shadowRoot || !slot) {
@@ -131,4 +135,9 @@ function assignedNodesChanged(component) {
   Object.freeze(content);
   
   component.setState({ content });
+}
+
+
+class SlotchangeTest extends HTMLElement {
+
 }

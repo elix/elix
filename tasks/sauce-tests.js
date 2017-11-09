@@ -33,11 +33,11 @@ const config = {
       browserName: 'firefox',
       platform: 'Windows 10'
     },
-    {
-      browserName: 'internet explorer',
-      platform: 'Windows 8.1',
-      version: '11.0'
-    },
+    // {
+    //   browserName: 'internet explorer',
+    //   platform: 'Windows 8.1',
+    //   version: '11.0'
+    // },
     {
       browserName: 'MicrosoftEdge',
       version: '14',
