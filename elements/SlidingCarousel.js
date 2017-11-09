@@ -7,14 +7,14 @@ import FocusRingMixin from '../mixins/FocusRingMixin.js';
 import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
-import * as props from '../mixins/props.js';
+import * as props from '../utilities/props.js';
 import PageDotsMixin from '../mixins/PageDotsMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
 // @ts-ignore
 import SlidingViewport from './SlidingViewport.js'; // eslint-disable-line no-unused-vars
 import SwipeDirectionMixin from '../mixins/SwipeDirectionMixin.js';
-import symbols from '../mixins/symbols.js';
+import symbols from '../utilities/symbols.js';
 import TouchSwipeMixin from '../mixins/TouchSwipeMixin.js';
 import TrackpadSwipeMixin from '../mixins/TrackpadSwipeMixin.js';
 

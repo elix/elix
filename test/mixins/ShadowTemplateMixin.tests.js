@@ -1,5 +1,5 @@
 import flushPolyfills from '../../test/flushPolyfills.js';
-import symbols from '../../mixins/symbols.js';
+import symbols from '../../utilities/symbols.js';
 import ShadowTemplateMixin from '../../mixins/ShadowTemplateMixin.js';
 
 

@@ -1,8 +1,8 @@
 import OverlayMixin from '../../mixins/OverlayMixin.js';
-import * as props from '../../mixins/props.js';
+import * as props from '../../utilities/props.js';
 import PropsMixin from '../../mixins/PropsMixin.js';
 import ReactiveMixin from '../../mixins/ReactiveMixin.js';
-import symbols from '../../mixins/symbols.js';
+import symbols from '../../utilities/symbols.js';
 
 
 const Base =

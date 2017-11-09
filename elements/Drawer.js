@@ -6,8 +6,8 @@ import OpenCloseTransitionMixin from '../mixins/OpenCloseTransitionMixin.js';
 // @ts-ignore
 import ModalBackdrop from './ModalBackdrop.js'; // eslint-disable-line no-unused-vars
 import OverlayMixin from '../mixins/OverlayMixin.js';
-import * as props from '../mixins/props.js';
-import symbols from '../mixins/symbols.js';
+import * as props from '../utilities/props.js';
+import symbols from '../utilities/symbols.js';
 import TouchSwipeMixin from '../mixins/TouchSwipeMixin.js';
 import TrackpadSwipeMixin from '../mixins/TrackpadSwipeMixin.js';
 import ElementBase from './ElementBase.js';

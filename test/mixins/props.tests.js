@@ -1,4 +1,4 @@
-import * as props from '../../mixins/props.js';
+import * as props from '../../utilities/props.js';
 
 
 describe("props helpers", () => {

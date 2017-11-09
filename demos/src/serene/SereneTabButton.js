@@ -1,4 +1,4 @@
-import * as props from '../../../mixins/props.js';
+import * as props from '../../../utilities/props.js';
 import HoverMixin from '../../../mixins/HoverMixin.js';
 import TabButton from '../../../elements/TabButton.js';
 

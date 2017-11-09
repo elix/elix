@@ -1,7 +1,7 @@
 import Dialog from './Dialog.js';
-import * as props from '../mixins/props.js';
-import Symbol from '../mixins/Symbol.js';
-import symbols from '../mixins/symbols.js';
+import * as props from '../utilities/props.js';
+import Symbol from '../utilities/Symbol.js';
+import symbols from '../utilities/symbols.js';
 
 
 const choiceButtonsKey= Symbol('choiceButtons');

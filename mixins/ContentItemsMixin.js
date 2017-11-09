@@ -1,7 +1,7 @@
-import { substantiveElements } from './content.js';
-import * as props from '../mixins/props.js';
-import Symbol from './Symbol.js';
-import symbols from './symbols.js';
+import { substantiveElements } from '../utilities/content.js';
+import * as props from '../utilities/props.js';
+import Symbol from '../utilities/Symbol.js';
+import symbols from '../utilities/symbols.js';
 
 
 // Symbols for private data members on an element.

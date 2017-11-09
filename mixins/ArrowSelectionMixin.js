@@ -1,6 +1,6 @@
 // @ts-ignore
 import ArrowSelectionButton from '../elements/ArrowSelectionButton.js'; // eslint-disable-line no-unused-vars
-import * as props from './props.js';
+import * as props from '../utilities/props.js';
 
 
 export default function ArrowSelectionMixin(Base) {

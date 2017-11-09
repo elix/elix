@@ -1,4 +1,4 @@
-import symbols from './symbols.js';
+import symbols from '../utilities/symbols.js';
 
 
 export default function HoverMixin(Base) {

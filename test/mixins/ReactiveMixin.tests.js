@@ -1,5 +1,5 @@
 import ReactiveMixin from '../../mixins/ReactiveMixin.js';
-import symbols from '../../mixins/symbols.js';
+import symbols from '../../utilities/symbols.js';
 
 
 class ReactiveTest extends ReactiveMixin(HTMLElement) {

@@ -1,5 +1,5 @@
 import Dialog from '../../elements/Dialog.js';
-import * as props from '../../mixins/props.js';
+import * as props from '../../utilities/props.js';
 
 
 class SampleDialog extends Dialog {

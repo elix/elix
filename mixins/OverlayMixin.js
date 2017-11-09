@@ -1,5 +1,5 @@
-import * as props from '../mixins/props.js';
-import Symbol from '../mixins/Symbol.js';
+import * as props from '../utilities/props.js';
+import Symbol from '../utilities/Symbol.js';
 
 
 const appendedToDocumentKey = Symbol('appendedToDocument');

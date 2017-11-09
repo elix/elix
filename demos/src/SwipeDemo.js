@@ -1,7 +1,7 @@
 import TouchSwipeMixin from '../../mixins/TouchSwipeMixin.js';
 import TrackpadSwipeMixin from '../../mixins/TrackpadSwipeMixin.js';
-import * as props from '../../mixins/props.js';
-import symbols from '../../mixins/symbols.js';
+import * as props from '../../utilities/props.js';
+import symbols from '../../utilities/symbols.js';
 import ElementBase from '../../elements/ElementBase.js';
 
 

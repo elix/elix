@@ -1,5 +1,5 @@
-import Symbol from './Symbol.js';
-import symbols from './symbols.js';
+import Symbol from '../utilities/Symbol.js';
+import symbols from '../utilities/symbols.js';
 
 
 // Symbols for private data members on an element.

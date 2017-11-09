@@ -1,6 +1,6 @@
-import * as content from '../../mixins/content.js';
+import * as content from '../../utilities/content.js';
 import ShadowTemplateMixin from '../../mixins/ShadowTemplateMixin.js';
-import symbols from '../../mixins/symbols.js';
+import symbols from '../../utilities/symbols.js';
 
 
 /*

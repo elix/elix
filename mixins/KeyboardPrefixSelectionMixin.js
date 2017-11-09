@@ -1,6 +1,6 @@
-import constants from './constants.js';
-import Symbol from './Symbol.js';
-import symbols from './symbols.js';
+import constants from '../utilities/constants.js';
+import Symbol from '../utilities/Symbol.js';
+import symbols from '../utilities/symbols.js';
 
 
 // Symbols for private data members on an element.

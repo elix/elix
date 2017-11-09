@@ -1,5 +1,5 @@
-import Symbol from '../mixins/Symbol.js';
-import symbols from '../mixins/symbols.js';
+import Symbol from '../utilities/Symbol.js';
+import symbols from '../utilities/symbols.js';
 
 
 // Symbols for private data members on an element.

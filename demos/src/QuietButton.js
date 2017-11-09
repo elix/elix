@@ -1,5 +1,5 @@
 import FocusRingMixin from '../../mixins/FocusRingMixin.js';
-import symbols from '../../mixins/symbols.js';
+import symbols from '../../utilities/symbols.js';
 import WrappedStandardElement from '../../elements/WrappedStandardElement.js';
 
 

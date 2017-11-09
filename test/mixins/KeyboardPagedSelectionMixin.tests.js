@@ -1,5 +1,5 @@
 import KeyboardPagedSelectionMixin from '../../mixins/KeyboardPagedSelectionMixin.js';
-import symbols from '../../mixins/symbols.js';
+import symbols from '../../utilities/symbols.js';
 
 
 const itemHeight = '100';

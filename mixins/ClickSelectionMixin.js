@@ -1,6 +1,6 @@
 import deepContains from './deepContains.js';
-import * as props from './props.js';
-import symbols from './symbols.js';
+import * as props from '../utilities/props.js';
+import symbols from '../utilities/symbols.js';
 
 
 /**

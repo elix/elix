@@ -1,11 +1,11 @@
-import * as props from '../mixins/props.js';
+import * as props from '../utilities/props.js';
 import ElementBase from './ElementBase.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
 import OpenCloseTransitionMixin from '../mixins/OpenCloseTransitionMixin.js';
 import OverlayMixin from '../mixins/OverlayMixin.js';
 import PopupModalityMixin from '../mixins/PopupModalityMixin.js';
-import symbols from '../mixins/symbols.js';
+import symbols from '../utilities/symbols.js';
 
 
 const timeoutKey = Symbol('timeout');

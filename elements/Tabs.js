@@ -1,4 +1,4 @@
-import * as props from '../mixins/props.js';
+import * as props from '../utilities/props.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import ElementBase from './ElementBase.js';
 // @ts-ignore
@@ -8,8 +8,8 @@ import TabButton from './TabButton.js';
 // @ts-ignore
 import TabStrip from './TabStrip.js'; // eslint-disable-line no-unused-vars
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
-import Symbol from '../mixins/Symbol.js';
-import symbols from '../mixins/symbols.js';
+import Symbol from '../utilities/Symbol.js';
+import symbols from '../utilities/symbols.js';
 
 
 const generatedIdKey = Symbol('generatedId');

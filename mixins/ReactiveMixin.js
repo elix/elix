@@ -1,5 +1,5 @@
-import symbols from './symbols.js';
-import Symbol from './Symbol.js';
+import symbols from '../utilities/symbols.js';
+import Symbol from '../utilities/Symbol.js';
 
 
 const renderedStateKey = Symbol('renderedState');

@@ -1,9 +1,9 @@
-import * as props from '../mixins/props.js';
+import * as props from '../utilities/props.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import ElementBase from './ElementBase.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
-import symbols from '../mixins/symbols.js';
+import symbols from '../utilities/symbols.js';
 
 
 const Base =

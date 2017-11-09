@@ -2,8 +2,8 @@
 
 
 import ElementBase from './ElementBase.js';
-import * as props from '../mixins/props.js';
-import symbols from '../mixins/symbols.js';
+import * as props from '../utilities/props.js';
+import symbols from '../utilities/symbols.js';
 
 
 class PageDot extends ElementBase {

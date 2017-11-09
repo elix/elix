@@ -6,7 +6,7 @@ import KeyboardMixin from '../mixins/KeyboardMixin.js';
 // @ts-ignore
 import ModalBackdrop from './ModalBackdrop.js'; // eslint-disable-line no-unused-vars
 import OverlayMixin from '../mixins/OverlayMixin.js';
-import symbols from '../mixins/symbols.js';
+import symbols from '../utilities/symbols.js';
 
 
 const Base =

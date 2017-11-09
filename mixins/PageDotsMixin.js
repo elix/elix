@@ -1,7 +1,7 @@
 // @ts-ignore
 import PageDot from '../elements/PageDot.js'; // eslint-disable-line no-unused-vars
-import * as props from './props.js';
-import symbols from '../mixins/symbols.js';
+import * as props from '../utilities/props.js';
+import symbols from '../utilities/symbols.js';
 
 
 const previousItemsKey = Symbol('previousItems');

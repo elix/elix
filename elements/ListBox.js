@@ -8,12 +8,12 @@ import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import KeyboardPagedSelectionMixin from '../mixins/KeyboardPagedSelectionMixin.js';
 import KeyboardPrefixSelectionMixin from '../mixins/KeyboardPrefixSelectionMixin.js';
 import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
-import * as props from '../mixins/props.js';
+import * as props from '../utilities/props.js';
 import SelectedItemTextValueMixin from '../mixins/SelectedItemTextValueMixin.js';
 import SelectionInViewMixin from '../mixins/SelectionInViewMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
-import symbols from '../mixins/symbols.js';
+import symbols from '../utilities/symbols.js';
 
 
 const Base =

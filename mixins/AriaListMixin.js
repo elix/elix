@@ -1,5 +1,5 @@
-import * as props from './props.js';
-import Symbol from './Symbol.js';
+import * as props from '../utilities/props.js';
+import Symbol from '../utilities/Symbol.js';
 
 
 const generatedIdKey = Symbol('generatedId');

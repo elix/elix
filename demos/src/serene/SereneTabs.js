@@ -1,4 +1,4 @@
-import * as props from '../../../mixins/props.js';
+import * as props from '../../../utilities/props.js';
 import SereneModes from './SereneModes.js';
 import Tabs from '../../../elements/Tabs.js';
 

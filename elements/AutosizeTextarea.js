@@ -1,6 +1,6 @@
 import WrappedStandardElement from './WrappedStandardElement.js';
-import * as props from '../mixins/props.js';
-import symbols from '../mixins/symbols.js';
+import * as props from '../utilities/props.js';
+import symbols from '../utilities/symbols.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
 
 

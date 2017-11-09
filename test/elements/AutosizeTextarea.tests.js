@@ -1,7 +1,7 @@
 import flushPolyfills from '../../test/flushPolyfills.js';
 // @ts-ignore
 import AutosizeTextarea from '../../elements/AutosizeTextarea.js'; // eslint-disable-line no-unused-vars
-import symbols from '../../mixins/symbols.js';
+import symbols from '../../utilities/symbols.js';
 
 
 describe("AutosizeTextarea", () => {

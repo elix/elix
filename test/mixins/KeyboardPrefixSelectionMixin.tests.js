@@ -1,5 +1,5 @@
 import KeyboardPrefixSelectionMixin from '../../mixins/KeyboardPrefixSelectionMixin.js';
-import symbols from '../../mixins/symbols.js';
+import symbols from '../../utilities/symbols.js';
 
 
 class KeyboardPrefixSelectionTest extends KeyboardPrefixSelectionMixin(HTMLElement) {

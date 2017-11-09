@@ -2,7 +2,7 @@ import ElementBase from './ElementBase.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import OverlayMixin from '../mixins/OverlayMixin.js';
 import PopupModalityMixin from '../mixins/PopupModalityMixin.js';
-import symbols from '../mixins/symbols.js';
+import symbols from '../utilities/symbols.js';
 
 
 const Base =

@@ -1,5 +1,5 @@
 import ContentItemsMixin from '../../mixins/ContentItemsMixin.js';
-import symbols from '../../mixins/symbols.js';
+import symbols from '../../utilities/symbols.js';
 
 
 class ContentItemsTest extends ContentItemsMixin(HTMLElement) {

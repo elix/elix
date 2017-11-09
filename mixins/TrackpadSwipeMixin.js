@@ -1,4 +1,4 @@
-import Symbol from './Symbol.js';
+import Symbol from '../utilities/Symbol.js';
 
 
 const absorbDecelerationSymbol = Symbol('absorbDeceleration');

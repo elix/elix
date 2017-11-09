@@ -2,7 +2,7 @@
 
 
 import WrappedStandardElement from './WrappedStandardElement.js';
-import symbols from '../mixins/symbols.js';
+import symbols from '../utilities/symbols.js';
 
 
 class ArrowSelectionButton extends WrappedStandardElement.wrap('button') {

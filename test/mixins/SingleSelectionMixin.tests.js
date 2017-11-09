@@ -1,6 +1,6 @@
 import ReactiveMixin from '../../mixins/ReactiveMixin.js';
 import SingleSelectionMixin from '../../mixins/SingleSelectionMixin.js';
-import symbols from '../../mixins/symbols.js';
+import symbols from '../../utilities/symbols.js';
 
 
 class SingleSelectionTest extends ReactiveMixin(SingleSelectionMixin(HTMLElement)) {

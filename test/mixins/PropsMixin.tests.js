@@ -1,4 +1,4 @@
-import * as props from '../../mixins/props.js';
+import * as props from '../../utilities/props.js';
 import flushPolyfills from '../flushPolyfills.js';
 import PropsMixin from '../../mixins/PropsMixin.js';
 import ReactiveMixin from '../../mixins/ReactiveMixin.js';

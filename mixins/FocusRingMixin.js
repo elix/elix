@@ -1,4 +1,4 @@
-import * as props from './props.js';
+import * as props from '../utilities/props.js';
 
 
 //
