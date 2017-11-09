@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 // Mixin tests
+import * as AriaListMixinTests from './mixins/AriaListMixin.tests.js';
 import * as AttributeMarshallingMixinTests from './mixins/AttributeMarshallingMixin.tests.js';
 import * as ClickSelectionMixinTests from './mixins/ClickSelectionMixin.tests.js';
 import * as ContentItemsMixinTests from './mixins/ContentItemsMixin.tests.js';
@@ -14,7 +15,6 @@ import * as OverlayMixinTests from './mixins/OverlayMixin.tests.js';
 import * as PropsMixinTests from './mixins/PropsMixin.tests.js';
 import * as propsTests from './mixins/props.tests.js';
 import * as ReactiveMixinTests from './mixins/ReactiveMixin.tests.js';
-import * as SelectionAriaMixinTests from './mixins/SelectionAriaMixin.tests.js';
 import * as SelectionInViewMixinTests from './mixins/SelectionInViewMixin.tests.js';
 import * as ShadowTemplateMixinTests from './mixins/ShadowTemplateMixin.tests.js';
 import * as SingleSelectionMixinTests from './mixins/SingleSelectionMixin.tests.js';

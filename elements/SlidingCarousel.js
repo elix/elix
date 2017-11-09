@@ -1,3 +1,4 @@
+import AriaListMixin from '../mixins/AriaListMixin.js';
 import ArrowSelectionMixin from '../mixins/ArrowSelectionMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import DirectionSelectionMixin from '../mixins/DirectionSelectionMixin.js';
@@ -8,7 +9,6 @@ import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
 import * as props from '../mixins/props.js';
 import PageDotsMixin from '../mixins/PageDotsMixin.js';
-import SelectionAriaMixin from '../mixins/SelectionAriaMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
 // @ts-ignore
@@ -20,6 +20,7 @@ import TrackpadSwipeMixin from '../mixins/TrackpadSwipeMixin.js';
 
 
 const Base =
+  AriaListMixin(
   ArrowSelectionMixin(
   ContentItemsMixin(
   DirectionSelectionMixin(
@@ -28,7 +29,6 @@ const Base =
   KeyboardMixin(
   LanguageDirectionMixin(
   PageDotsMixin(
-  SelectionAriaMixin(
   SingleSelectionMixin(
   SlotContentMixin(
   SwipeDirectionMixin(

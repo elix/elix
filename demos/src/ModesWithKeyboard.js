@@ -1,15 +1,15 @@
+import AriaListMixin from '../../mixins/AriaListMixin.js';
 import DirectionSelectionMixin from '../../mixins/DirectionSelectionMixin.js';
 import KeyboardDirectionMixin from '../../mixins/KeyboardDirectionMixin.js';
 import KeyboardMixin from '../../mixins/KeyboardMixin.js';
 import Modes from '../../elements/Modes.js';
-import SelectionAriaMixin from '../../mixins/SelectionAriaMixin.js';
 
 
 const ModesWithKeyboard =
+  AriaListMixin(
   DirectionSelectionMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
-  SelectionAriaMixin(
     Modes
   ))));
 

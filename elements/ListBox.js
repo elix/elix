@@ -1,4 +1,4 @@
-import * as props from '../mixins/props.js';
+import AriaListMixin from '../mixins/AriaListMixin.js';
 import ClickSelectionMixin from '../mixins/ClickSelectionMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import DirectionSelectionMixin from '../mixins/DirectionSelectionMixin.js';
@@ -8,8 +8,8 @@ import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import KeyboardPagedSelectionMixin from '../mixins/KeyboardPagedSelectionMixin.js';
 import KeyboardPrefixSelectionMixin from '../mixins/KeyboardPrefixSelectionMixin.js';
 import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
+import * as props from '../mixins/props.js';
 import SelectedItemTextValueMixin from '../mixins/SelectedItemTextValueMixin.js';
-import SelectionAriaMixin from '../mixins/SelectionAriaMixin.js';
 import SelectionInViewMixin from '../mixins/SelectionInViewMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
@@ -17,6 +17,7 @@ import symbols from '../mixins/symbols.js';
 
 
 const Base =
+  AriaListMixin(
   ClickSelectionMixin(
   ContentItemsMixin(
   DirectionSelectionMixin(
@@ -26,7 +27,6 @@ const Base =
   KeyboardPrefixSelectionMixin(
   LanguageDirectionMixin(
   SelectedItemTextValueMixin(
-  SelectionAriaMixin(
   SelectionInViewMixin(
   SingleSelectionMixin(
   SlotContentMixin(
@@ -50,7 +50,7 @@ const Base =
  * @mixes KeyboardPagedSelectionMixin
  * @mixes KeyboardPrefixSelectionMixin
  * @mixes SelectedItemTextValueMixin
- * @mixes SelectionAriaMixin
+ * @mixes AriaListMixin
  * @mixes SelectionInViewMixin
  * @mixes SingleSelectionMixin
  * @mixes SlotContentMixin

@@ -3,10 +3,10 @@
 
 /// <reference path="../utilities/shared.d.ts"/>
 
-declare const SelectionAriaMixin: Mixin<{
+declare const AriaListMixin: Mixin<{
   connectedCallback?(): void;
 }, {
   connectedCallback(): void;
 }>;
 
-export default SelectionAriaMixin;
+export default AriaListMixin;

@@ -38,10 +38,10 @@ const generatedIdKey = Symbol('generatedId');
  *
  * @module
  */
-export default function SelectionAriaMixin(Base) {
+export default function AriaListMixin(Base) {
 
   // The class prototype added by the mixin.
-  class SelectionAria extends Base {
+  class AriaList extends Base {
 
     itemProps(item, calcs, original) {
       const base = super.itemProps ? super.itemProps(item, calcs, original) : {};
@@ -98,7 +98,7 @@ export default function SelectionAriaMixin(Base) {
 
   }
 
-  return SelectionAria;
+  return AriaList;
 }
 
 

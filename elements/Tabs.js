@@ -71,7 +71,7 @@ class Tabs extends Base {
   itemProps(item, calcs, original) {
     const base = super.itemProps ? super.itemProps(item, calcs, original) : {};
     
-    // See notes in SelectionAriaMixin for similar handling of ID.
+    // See notes in AriaListMixin for similar handling of ID.
     let id = item[generatedIdKey] ||
     original.attributes.id ||
     base.attributes && base.attributes.id;

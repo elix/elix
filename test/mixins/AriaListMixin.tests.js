@@ -1,11 +1,11 @@
 import ContentItemsMixin from '../../mixins/ContentItemsMixin.js';
 import PropsMixin from '../../mixins/PropsMixin.js'
 import ReactiveMixin from '../../mixins/ReactiveMixin.js'
-import SelectionAriaMixin from '../../mixins/SelectionAriaMixin.js';
+import AriaListMixin from '../../mixins/AriaListMixin.js';
 
 
-class SelectionAriaTest extends
-  ContentItemsMixin(ReactiveMixin(PropsMixin(SelectionAriaMixin(HTMLElement)))) {
+class AriaListTest extends
+  ContentItemsMixin(ReactiveMixin(PropsMixin(AriaListMixin(HTMLElement)))) {
 
   connectedCallback() {
     if (super.connectedCallback) { super.connectedCallback(); }
@@ -23,10 +23,10 @@ class SelectionAriaTest extends
   }
 
 }
-customElements.define('selection-aria-test', SelectionAriaTest);
+customElements.define('aria-list-test', AriaListTest);
 
 
-describe("SelectionAriaMixin", () => {
+describe("AriaListMixin", () => {
 
   let container;
 
@@ -39,7 +39,7 @@ describe("SelectionAriaMixin", () => {
   });
 
   it("assigns default roles to list and items, and default IDs to items without IDs", async () => {
-    const fixture = new SelectionAriaTest();
+    const fixture = new AriaListTest();
     fixture.id = 'test'; // Will be used as basis for assigned item IDs.
     const item1 = document.createElement('div');
     item1.id = 'explicitID';
@@ -59,7 +59,7 @@ describe("SelectionAriaMixin", () => {
   });
 
   it("indicates the selection state on both the list and the item", async () => {
-    const fixture = new SelectionAriaTest();
+    const fixture = new AriaListTest();
     const item1 = document.createElement('div');
     fixture.appendChild(item1);
     const item2 = document.createElement('div');
@@ -76,14 +76,15 @@ describe("SelectionAriaMixin", () => {
   });
 
   it("assigns a default role of 'listbox'", () => {
-    const fixture = new SelectionAriaTest();
+    const fixture = new AriaListTest();
     fixture.render();
     assert.equal(fixture.getAttribute('role'), 'listbox');
   });
 
   it("doesn't overwrite an explicit role in markup", () => {
-    container.innerHTML = `<selection-aria-test role="tabs"></selection-aria-test>`;
-    const fixture = container.querySelector('selection-aria-test');
+    container.innerHTML = `<aria-list-test role="tabs"></aria-list-test
+  >`;
+    const fixture = container.querySelector('aria-list-test');
     container.appendChild(fixture);
     assert.equal(fixture.getAttribute('role'), 'tabs');
   });

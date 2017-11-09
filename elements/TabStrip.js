@@ -1,4 +1,4 @@
-import * as props from '../mixins/props.js';
+import AriaListMixin from '../mixins/AriaListMixin.js';
 import ClickSelectionMixin from '../mixins/ClickSelectionMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import deepContains from '../mixins/deepContains.js';
@@ -7,20 +7,20 @@ import ElementBase from './ElementBase.js';
 import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
-import SelectionAriaMixin from '../mixins/SelectionAriaMixin.js';
+import * as props from '../mixins/props.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
 import symbols from '../mixins/symbols.js';
 
 
 const Base =
+  AriaListMixin(
   ClickSelectionMixin(
   ContentItemsMixin(
   DirectionSelectionMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
   LanguageDirectionMixin(
-  SelectionAriaMixin(
   SingleSelectionMixin(
   SlotContentMixin(
     ElementBase
