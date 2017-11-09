@@ -61,7 +61,7 @@ export default function ReactiveMixin(Base) {
      * componentDidMount (for first render) or componentDidUpdate (for
      * subsequent renders).
      */
-    render(options = {}) {
+    render() {
       // Only render if we haven't rendered this state object before. This
       // ensures that consecutive calls to setState only cause a single render.
       // Each setState call will update the state, queuing up a promise to
@@ -69,7 +69,7 @@ export default function ReactiveMixin(Base) {
       // complete state is available. That is what is rendered. When the
       // following render calls happen, they will see that the complete state
       // has already been rendered, and skip doing any work.
-      if (this[stateKey] !== this[renderedStateKey] || options.force) {
+      if (this[stateKey] !== this[renderedStateKey]) {
 
         const firstRender = this[renderedStateKey] === undefined;
 

@@ -54,7 +54,7 @@ class Tabs extends Base {
     this.$.tabStrip.addEventListener('selected-index-changed', () => {
       /** @type {any} */
       const tabStrip = this.$.tabStrip;
-      this.updateSelectedIndex(tabStrip.selectedIndex);
+      this.selectedIndex = tabStrip.selectedIndex;
     });
   }
 

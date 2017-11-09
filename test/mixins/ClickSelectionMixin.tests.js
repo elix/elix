@@ -15,7 +15,10 @@ class ClickSelectionTest extends ClickSelectionMixin(HTMLElement) {
     return this.children;
   }
 
-  updateSelectedIndex(selectedIndex) {
+  get selectedIndex() {
+    return this.state.selectedIndex;
+  }
+  set selectedIndex(selectedIndex) {
     this.state.selectedIndex = selectedIndex;
   }
 

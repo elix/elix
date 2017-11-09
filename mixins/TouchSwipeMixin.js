@@ -98,19 +98,6 @@ export default function TouchSwipeMixin(Base) {
       return super.swipeTarget || this;
     }
 
-    updateSwipeFraction(swipeFraction) {
-      // TODO: Rationalize or clean this out.
-      // const changed = this.state.swipeFraction !== swipeFraction;
-      // if (changed) {
-      //   if (this.props.onSwipeFractionChanged) {
-      //     this.props.onSwipeFractionChanged(swipeFraction);
-      //   } else {
-          this.setState({ swipeFraction });
-      //   }
-      // }
-      // return changed;
-    }
-
   }
 }
 
@@ -143,7 +130,7 @@ function gestureContinue(component, clientX, clientY) {
   if (Math.abs(deltaX) > Math.abs(deltaY)) {
     // Move was mostly horizontal.
     const swipeFraction = getSwipeFraction(component, clientX);
-    component.updateSwipeFraction(swipeFraction);
+    component.setState({ swipeFraction });
     // Indicate that the event was handled. It'd be nicer if we didn't have
     // to do this so that, e.g., a user could be swiping left and right
     // while simultaneously scrolling up and down. (Native touch apps can do
@@ -189,7 +176,7 @@ function gestureEnd(component, clientX, clientY) {
     component[gesture]();
   }
 
-  component.updateSwipeFraction(null);
+  component.setState({ swipeFraction: null });
 }
 
 /*
@@ -201,7 +188,7 @@ function gestureStart(component, clientX, clientY) {
   component[previousYKey] = clientY;
   component[previousTimeKey] = Date.now();
   component[previousVelocityKey] = 0;
-  component.updateSwipeFraction(0);
+  component.setState({ swipeFraction: 0 });
 }
 
 function getSwipeFraction(component, x) {

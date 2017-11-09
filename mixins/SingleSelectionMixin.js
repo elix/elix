@@ -85,7 +85,7 @@ export default function SingleSelectionMixin(Base) {
      */
     selectFirst() {
       if (super.selectFirst) { super.selectFirst(); }
-      return selectIndex(this, 0);
+      return this.updateSelectedIndex(0);
     }
 
     get selectedIndex() {
@@ -148,7 +148,7 @@ export default function SingleSelectionMixin(Base) {
      */
     selectLast() {
       if (super.selectLast) { super.selectLast(); }
-      return selectIndex(this, this.items.length - 1);
+      return this.updateSelectedIndex(this.items.length - 1);
     }
 
     /**
@@ -160,7 +160,7 @@ export default function SingleSelectionMixin(Base) {
      */
     selectNext() {
       if (super.selectNext) { super.selectNext(); }
-      return selectIndex(this, this.state.selectedIndex + 1);
+      return this.updateSelectedIndex(this.state.selectedIndex + 1);
     }
 
     /**
@@ -175,19 +175,52 @@ export default function SingleSelectionMixin(Base) {
       const newIndex = this.items && this.state.selectedIndex < 0 ?
         this.items.length - 1 :     // No selection yet; select last item.
         this.state.selectedIndex - 1;
-      return selectIndex(this, newIndex);
+      return this.updateSelectedIndex(newIndex);
     }
 
-    // TODO: Make Symbol
     // TODO: Rationalize with internal selectIndex(), selectedIndex setter.
+    /**
+     * Update `this.state.selectedIndex` and return true if the index was updated.
+     * This returns false if there are no items, or if the indicated index is
+     * already selected.
+     * 
+     * If an index is supplied that is outside the bounds of the `items` array,
+     * the closest item will be selected. If `this.state.selectionWraps` is set,
+     * the index will wrap around. E.g., attempting to select an index of 3 in
+     * a 3-item list will select the 0th item.
+     * 
+     * @param {number} selectedIndex - the index to select
+     */
+    // TODO: Make Symbol
     updateSelectedIndex(selectedIndex) {
-      const changed = this.state.selectedIndex !== selectedIndex;
+
+      const items = this.items;
+      if (items == null) {
+        // Nothing to select.
+        return false;
+      }
+
+      const count = items.length;
+      const boundedIndex = this.state.selectionWraps ?
+
+        // Wrap the index.
+        // JavaScript mod doesn't handle negative numbers the way we want to wrap.
+        // See http://stackoverflow.com/a/18618250/76472
+        ((selectedIndex % count) + count) % count :
+
+        // Don't wrap, force index within bounds of -1 (no selection) to
+        // the array length - 1.
+        Math.max(Math.min(selectedIndex, count - 1), -1);
+      
+      const changed = this.state.selectedIndex !== boundedIndex;
       if (changed) {
-        this.setState({ selectedIndex });
+        this.setState({
+          selectedIndex: boundedIndex
+        });
         if (this[symbols.raiseChangeEvents]) {
           const event = new CustomEvent('selected-index-changed', {
             detail: {
-              selectedIndex
+              boundedIndex
             }
           });
           this.dispatchEvent(event);
@@ -199,27 +232,6 @@ export default function SingleSelectionMixin(Base) {
   }
 
   return SingleSelection;
-}
-
-
-function selectIndex(component, index) {
-
-  const items = component.items;
-  if (items == null) {
-    // Nothing to select.
-    return false;
-  }
-
-  const count = items.length;
-  const boundedIndex = component.state.selectionWraps ?
-    // JavaScript mod doesn't handle negative numbers the way we want to wrap.
-    // See http://stackoverflow.com/a/18618250/76472
-    ((index % count) + count) % count :
-
-    // Keep index within bounds of array.
-    Math.max(Math.min(index, count - 1), 0);
-
-  return component.updateSelectedIndex(boundedIndex);
 }
 
 

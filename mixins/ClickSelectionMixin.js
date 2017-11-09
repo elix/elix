@@ -71,7 +71,7 @@ export default function ClickSelectionMixin(Base) {
       const targetIndex = indexOfTarget(this, target);
       const selectionRequired = this.state && this.state.selectionRequired;
       if (targetIndex >= 0 || !selectionRequired) {
-        this.updateSelectedIndex(targetIndex);
+        this.selectedIndex = targetIndex;
 
         // We don't call preventDefault here. The default behavior for
         // mousedown includes setting keyboard focus if the element doesn't
