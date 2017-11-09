@@ -12,8 +12,6 @@ const previousChoicesKey = Symbol('previousChoices');
  * An `AlertDialog` is a form of `Dialog` designed to ask the user a single
  * question and let them respond by clicking one of a small number of buttons
  * labeled with text.
- * 
- * @mixes ShadowReferencesMixin
  */
 class AlertDialog extends Dialog {
 

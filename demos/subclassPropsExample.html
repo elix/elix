@@ -18,7 +18,6 @@
     import * as props from '../mixins/props.js';
     import PropsMixin from '../mixins/PropsMixin.js';
     import ReactiveMixin from '../mixins/ReactiveMixin.js';
-    import ShadowReferencesMixin from '../mixins/ShadowReferencesMixin.js';
     import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
     import symbols from '../mixins/symbols.js';
 
@@ -27,10 +26,9 @@
       AttributeMarshallingMixin(
       ReactiveMixin(
       PropsMixin(
-      ShadowReferencesMixin(
       ShadowTemplateMixin(
         HTMLElement
-      )))));
+      ))));
 
     class IncrementDecrement extends Base {
 
