@@ -178,7 +178,6 @@ export default function SingleSelectionMixin(Base) {
       return this.updateSelectedIndex(newIndex);
     }
 
-    // TODO: Rationalize with internal selectIndex(), selectedIndex setter.
     /**
      * Update `this.state.selectedIndex` and return true if the index was updated.
      * This returns false if there are no items, or if the indicated index is
