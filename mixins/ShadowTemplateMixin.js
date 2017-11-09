@@ -62,7 +62,7 @@ export default function ShadowTemplateMixin(Base) {
         template = this[symbols.template];
         if (!template) {
           /* eslint-disable no-console */
-          console.warn(`ShadowTemplateMixin expects a component to define a method called [symbols.template].`);
+          console.warn(`ShadowTemplateMixin expects ${this.constructor.name} to define a property called [symbols.template].`);
           return;
         }
 

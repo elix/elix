@@ -21,7 +21,7 @@ export default function DirectionSelectionMixin(Base) {
       if (super[symbols.goDown]) { super[symbols.goDown](); }
       if (!this.selectNext) {
         /* eslint-disable no-console */
-        console.warn(`DirectionSelectionMixin expects a component to define a "selectNext" method.`);
+        console.warn(`DirectionSelectionMixin expects ${this.constructor.name} to define a "selectNext" method.`);
         return false;
       } else {
         return this.selectNext();
@@ -32,7 +32,7 @@ export default function DirectionSelectionMixin(Base) {
       if (super[symbols.goEnd]) { super[symbols.goEnd](); }
       if (!this.selectLast) {
         /* eslint-disable no-console */
-        console.warn(`DirectionSelectionMixin expects a component to define a "selectLast" method.`);
+        console.warn(`DirectionSelectionMixin expects ${this.constructor.name} to define a "selectLast" method.`);
         return false;
       } else {
         return this.selectLast();
@@ -43,7 +43,7 @@ export default function DirectionSelectionMixin(Base) {
       if (super[symbols.goLeft]) { super[symbols.goLeft](); }
       if (!this.selectPrevious) {
         /* eslint-disable no-console */
-        console.warn(`DirectionSelectionMixin expects a component to define a "selectPrevious" method.`);
+        console.warn(`DirectionSelectionMixin expects ${this.constructor.name} to define a "selectPrevious" method.`);
         return false;
       } else {
         return this.rightToLeft ?
@@ -56,7 +56,7 @@ export default function DirectionSelectionMixin(Base) {
       if (super[symbols.goRight]) { super[symbols.goRight](); }
       if (!this.selectNext) {
         /* eslint-disable no-console */
-        console.warn(`DirectionSelectionMixin expects a component to define a "selectNext" method.`);
+        console.warn(`DirectionSelectionMixin expects ${this.constructor.name} to define a "selectNext" method.`);
         return false;
       } else {
         return this.rightToLeft ?
@@ -69,7 +69,7 @@ export default function DirectionSelectionMixin(Base) {
       if (super[symbols.goStart]) { super[symbols.goStart](); }
       if (!this.selectFirst) {
         /* eslint-disable no-console */
-        console.warn(`DirectionSelectionMixin expects a component to define a "selectFirst" method.`);
+        console.warn(`DirectionSelectionMixin expects ${this.constructor.name} to define a "selectFirst" method.`);
         return false;
       } else {
         return this.selectFirst();
@@ -80,7 +80,7 @@ export default function DirectionSelectionMixin(Base) {
       if (super[symbols.goUp]) { super[symbols.goUp](); }
       if (!this.selectPrevious) {
         /* eslint-disable no-console */
-        console.warn(`DirectionSelectionMixin expects a component to define a "selectPrevious" method.`);
+        console.warn(`DirectionSelectionMixin expects ${this.constructor.name} to define a "selectPrevious" method.`);
         return false;
       } else {
         return this.selectPrevious();

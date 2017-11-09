@@ -106,7 +106,7 @@ export default class ListBox extends Base {
     });
   }
 
-  get [symbols.template]() {
+  get [symbols.templatex]() {
     return `
       <style>
         :host {
