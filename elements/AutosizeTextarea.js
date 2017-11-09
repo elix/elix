@@ -27,11 +27,19 @@ class AutosizeTextarea extends Base {
     if (super.componentDidMount) { super.componentDidMount(); }
 
     this.$.inner.addEventListener('input', () => {
+      this[symbols.raiseChangeEvents] = true;
       /** @type {any} */
       const inner = this.$.inner;
-      this.setState({
-        value: inner.value
-      });
+      const value = inner.value;
+      const changed = this.state.value !== value;
+      if (changed) {
+        this.setState({ value });
+        const event = new CustomEvent('value-changed', {
+          detail: { value }
+        });
+        this.dispatchEvent(event);
+      }
+      this[symbols.raiseChangeEvents] = false;
     });
 
     // For auto-sizing to work, we need the text copy to have the same border,
@@ -214,11 +222,12 @@ class AutosizeTextarea extends Base {
     const changed = this.state.value !== value;
     if (changed) {
       this.setState({ value });
+      // We already raise value-changed in response to input events, but we add
+      // an extra check here in case the value property has been set in reponse
+      // to other events.
       if (this[symbols.raiseChangeEvents]) {
         const event = new CustomEvent('value-changed', {
-          detail: {
-            value
-          }
+          detail: { value }
         });
         this.dispatchEvent(event);
       }
