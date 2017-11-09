@@ -192,7 +192,7 @@ class Tabs extends Base {
       this.$.tabStrip;
     if (!this.shadowRoot) {
       /* eslint-disable no-console */
-      console.warn(`Tabs expects ${this.constructor.name} to define a shadowRoot.`);
+      console.warn(`Tabs expects ${this.constructor.name} to define a shadowRoot.\nThis can be done with ShadowTemplateMixin: https://elix.org/documentation/ShadowTemplateMixin.`);
     } else if (firstElement.nextSibling !== lastElement) {
       this.shadowRoot.insertBefore(firstElement, lastElement);
     }

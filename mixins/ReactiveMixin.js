@@ -109,7 +109,7 @@ export default function ReactiveMixin(Base) {
       // There's no good reason to have a render method update state.
       if (this[symbols.rendering]) {
         /* eslint-disable no-console */
-        console.warn(`${this.constructor.name} called setState during rendering, which you should avoid.`);
+        console.warn(`${this.constructor.name} called setState during rendering, which you should avoid.\nSee https://elix.org/documentation/ReactiveMixin.`);
       }
 
       // Create a new state object that holds the old state, plus the new
