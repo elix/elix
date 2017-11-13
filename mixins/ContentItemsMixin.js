@@ -1,12 +1,12 @@
 import { substantiveElements } from '../utilities/content.js';
-import * as props from '../utilities/props.js';
+import * as updates from '../utilities/updates.js';
 import Symbol from '../utilities/Symbol.js';
 import symbols from '../utilities/symbols.js';
 
 
 // Symbols for private data members on an element.
 const itemsKey = Symbol('items');
-const originalPropsKey = Symbol('originalProps');
+const originalKey = Symbol('original');
 const previousContentKey = Symbol('previousContent');
 
 
@@ -53,12 +53,6 @@ export default function ContentItemsMixin(Base) {
       return Object.assign({ index }, base);
     }
 
-    itemProps(item, calcs, original) {
-      return super.itemProps ?
-        super.itemProps(item, calcs, original) :
-        {};
-    }
-
     get items() {
       const base = super.items;
       if (base) {
@@ -78,16 +72,22 @@ export default function ContentItemsMixin(Base) {
       return this[itemsKey];
     }
 
+    itemUpdates(item, calcs, original) {
+      return super.itemUpdates ?
+        super.itemUpdates(item, calcs, original) :
+        {};
+    }
+
     [symbols.render]() {
       if (super[symbols.render]) { super[symbols.render](); }
-      if (this.itemProps) {
+      if (this.itemUpdates) {
         const items = this.items || [];
         items.forEach((item, index) => {
-          if (item[originalPropsKey] === undefined) {
-            item[originalPropsKey] = props.get(item);
+          if (item[originalKey] === undefined) {
+            item[originalKey] = updates.get(item);
           }
           const calcs = this.itemCalcs(item, index);
-          props.apply(item, this.itemProps(item, calcs, item[originalPropsKey]));
+          updates.apply(item, this.itemUpdates(item, calcs, item[originalKey]));
         });
       }
     }

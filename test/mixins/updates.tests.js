@@ -1,7 +1,7 @@
-import * as props from '../../utilities/props.js';
+import * as updates from '../../utilities/updates.js';
 
 
-describe("props helpers", () => {
+describe("updates helpers", () => {
 
   let container;
 
@@ -13,12 +13,12 @@ describe("props helpers", () => {
     container.innerHTML = '';
   });
 
-  it("props.get gets existing props from an element", () => {
+  it("updates.get gets existing props from an element", () => {
     container.innerHTML = `
       <div class="foo bar" style="color: red;" aria-selected="false"></div>
     `;
     const fixture = container.children[0];
-    const fixtureProps = props.get(fixture);
+    const fixtureProps = updates.get(fixture);
     assert.deepEqual(fixtureProps, {
       attributes: {
         'aria-selected': 'false'
@@ -33,38 +33,38 @@ describe("props helpers", () => {
     });
   });
 
-  it("props.applyClass turns a class on or off", () => {
+  it("updates.applyClass turns a class on or off", () => {
     const fixture = document.createElement('div');
-    props.applyClass(fixture, 'foo', true);
+    updates.applyClass(fixture, 'foo', true);
     assert(fixture.classList.contains('foo'));
     assert(!fixture.classList.contains('bar'));
-    props.applyClass(fixture, 'bar', true);
+    updates.applyClass(fixture, 'bar', true);
     assert(fixture.classList.contains('foo'));
     assert(fixture.classList.contains('bar'));
-    props.applyClass(fixture, 'foo', false);
+    updates.applyClass(fixture, 'foo', false);
     assert(!fixture.classList.contains('foo'));
     assert(fixture.classList.contains('bar'));
-    props.applyClass(fixture, 'bar', false);
+    updates.applyClass(fixture, 'bar', false);
     assert(!fixture.classList.contains('foo'));
     assert(!fixture.classList.contains('bar'));
   });
 
-  it("props.applyClasses turns multiple classes on or off", () => {
+  it("updates.applyClasses turns multiple classes on or off", () => {
     const fixture = document.createElement('div');
-    props.applyClasses(fixture, { 'foo': true, 'bar': true });
+    updates.applyClasses(fixture, { 'foo': true, 'bar': true });
     assert(fixture.classList.contains('foo'));
     assert(fixture.classList.contains('bar'));
-    props.applyClasses(fixture, { 'foo': false });
+    updates.applyClasses(fixture, { 'foo': false });
     assert(!fixture.classList.contains('foo'));
     assert(fixture.classList.contains('bar'));
   });
 
-  it("props.apply merges new props on top of existing attributes", () => {
+  it("updates.apply merges new props on top of existing attributes", () => {
     container.innerHTML = `
       <div class="foo bar" style="color: red;" aria-selected="false"></div>
     `;
     const fixture = container.children[0];
-    props.apply(fixture, {
+    updates.apply(fixture, {
       attributes: {
         'aria-selected': 'true'
       },
@@ -83,12 +83,12 @@ describe("props helpers", () => {
     assert.equal(fixture.style.color, 'green');
   });
 
-  it("props.merge with no arguments returns an empty object", () => {
-    const fixture = props.merge();
+  it("updates.merge with no arguments returns an empty object", () => {
+    const fixture = updates.merge();
     assert.deepEqual(fixture, {});
   });
 
-  it("props.merge merges multiple props dictionaries together", () => {
+  it("updates.merge merges multiple props dictionaries together", () => {
     const props1 = {
       attributes: {
         'aria-selected': 'false'
@@ -116,7 +116,7 @@ describe("props helpers", () => {
       customProperty1: 1,
       customProperty2: true
     };
-    const merged = props.merge(props1, props2);
+    const merged = updates.merge(props1, props2);
     assert.equal(merged.attributes['aria-selected'], 'true');
     assert.deepEqual(merged.classes, { bar: true, foo: true });
     assert.equal(merged.style['background-color'], 'gray');
@@ -126,23 +126,23 @@ describe("props helpers", () => {
     assert.equal(merged.customProperty2, true);
   });
 
-  it("props.applyAttribute handles regular attributes", () => {
+  it("updates.applyAttribute handles regular attributes", () => {
     const fixture = document.createElement('div');
-    props.applyAttribute(fixture, 'aria-selected', 'true');
+    updates.applyAttribute(fixture, 'aria-selected', 'true');
     assert.equal(fixture.getAttribute('aria-selected'), 'true');
-    props.applyAttribute(fixture, 'aria-selected', null);
+    updates.applyAttribute(fixture, 'aria-selected', null);
     assert.equal(fixture.getAttribute('aria-selected'), null);
   });
 
-  it("props.applyAttribute handles boolean attributes", () => {
+  it("updates.applyAttribute handles boolean attributes", () => {
     const fixture = document.createElement('button');
-    props.applyAttribute(fixture, 'disabled', true);
+    updates.applyAttribute(fixture, 'disabled', true);
     assert.equal(fixture.disabled, true);
-    props.applyAttribute(fixture, 'disabled', false);
+    updates.applyAttribute(fixture, 'disabled', false);
     assert.equal(fixture.disabled, false);
   });
 
-  it("props.applyChildNodes updates child nodes", () => {
+  it("updates.applyChildNodes updates child nodes", () => {
     const fixture = document.createElement('div');
     const existingChild = document.createTextNode('existing');
     fixture.appendChild(existingChild);
@@ -150,14 +150,14 @@ describe("props helpers", () => {
       document.createTextNode('one'),
       document.createTextNode('two')
     ];
-    props.applyChildNodes(fixture, nodes);
+    updates.applyChildNodes(fixture, nodes);
     assert.equal(fixture.childNodes.length, 2);
     assert.equal(fixture.childNodes[0], nodes[0]);
     assert.equal(fixture.childNodes[1], nodes[1]);
     assert.isNull(existingChild.parentNode);
   });
 
-  it("props.apply with childNodes updates child nodes", () => {
+  it("updates.apply with childNodes updates child nodes", () => {
     const fixture = document.createElement('div');
     const existingChild = document.createTextNode('existing');
     fixture.appendChild(existingChild);
@@ -165,7 +165,7 @@ describe("props helpers", () => {
       document.createTextNode('one'),
       document.createTextNode('two')
     ];
-    props.apply(fixture, {
+    updates.apply(fixture, {
       childNodes: nodes
     });
     assert.equal(fixture.childNodes.length, 2);
@@ -180,7 +180,7 @@ describe("props helpers", () => {
       child: document.createElement('button')
     };
     fixture.appendChild(fixture.$.child);
-    props.apply(fixture, {
+    updates.apply(fixture, {
       $: {
         child: {
           attributes: {

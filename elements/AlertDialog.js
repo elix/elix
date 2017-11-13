@@ -1,5 +1,5 @@
+import { merge } from '../utilities/updates.js';
 import Dialog from './Dialog.js';
-import * as props from '../utilities/props.js';
 import Symbol from '../utilities/Symbol.js';
 import symbols from '../utilities/symbols.js';
 
@@ -122,16 +122,6 @@ class AlertDialog extends Dialog {
     return ['OK', 'Cancel'];
   }
 
-  get props() {
-    return props.merge(super.props, {
-      $: {
-        choiceButtonsSlot: {
-          childNodes: this.choiceButtons
-        }
-      }
-    });
-  }
-
   get [symbols.template]() {
     const base = super[symbols.template];
     return base.replace('<slot></slot>', `
@@ -160,6 +150,16 @@ class AlertDialog extends Dialog {
         </div>
       </div>
     `);
+  }
+
+  get updates() {
+    return merge(super.updates, {
+      $: {
+        choiceButtonsSlot: {
+          childNodes: this.choiceButtons
+        }
+      }
+    });
   }
 
 }

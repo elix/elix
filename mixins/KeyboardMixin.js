@@ -1,4 +1,4 @@
-import * as props from '../utilities/props.js';
+import { merge } from '../utilities/updates.js';
 import symbols from '../utilities/symbols.js';
 
 
@@ -64,20 +64,20 @@ export default function KeyboardMixin(Base) {
         tabindex: '0'
       });
     }
+    
+    [symbols.keydown](event) {
+      if (super[symbols.keydown]) { return super[symbols.keydown](event); }
+      return false;
+    }
 
-    get props() {
+    get updates() {
       const tabindex = this.state.original && this.state.original.attributes.tabindex
           || this.state.tabindex;
-      return props.merge(super.props, {
+      return merge(super.updates, {
         attributes: {
           tabindex
         }
       });
-    }
-
-    [symbols.keydown](event) {
-      if (super[symbols.keydown]) { return super[symbols.keydown](event); }
-      return false;
     }
 
   }

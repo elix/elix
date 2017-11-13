@@ -1,4 +1,4 @@
-import * as props from '../../../utilities/props.js';
+import { merge } from '../../../utilities/updates.js';
 import SereneModes from './SereneModes.js';
 import Tabs from '../../../elements/Tabs.js';
 
@@ -11,8 +11,8 @@ class SereneTabs extends Tabs {
     });
   }
 
-  get props() {
-    return props.merge(super.props, {
+  get updates() {
+    return merge(super.updates, {
       style: {
         display: 'flex'
       },

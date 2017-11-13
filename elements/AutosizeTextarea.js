@@ -1,7 +1,7 @@
-import WrappedStandardElement from './WrappedStandardElement.js';
-import * as props from '../utilities/props.js';
-import symbols from '../utilities/symbols.js';
+import { merge } from '../utilities/updates.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
+import symbols from '../utilities/symbols.js';
+import WrappedStandardElement from './WrappedStandardElement.js';
 
 
 const Base = 
@@ -105,34 +105,6 @@ class AutosizeTextarea extends Base {
       minimumRows: parsed
     });
   }
-
-  get props() {
-
-    const value = this.value;
-
-    let copyStyle = this.state.copyStyle;
-    if (copyStyle) {
-      const minHeight = this.state.minimumRows * this.state.lineHeight;
-      copyStyle = Object.assign({}, copyStyle, {
-        'min-height': `${minHeight}px`
-      });
-    }
-
-    return props.merge(super.props, {
-      $: {
-        copyContainer: {
-          style: copyStyle
-        },
-        inner: {
-          value
-        },
-        textCopy: {
-          textContent: value
-        }
-      }
-    })
-  }
-
   
   get [symbols.template]() {
     // Things to note:
@@ -201,6 +173,33 @@ class AutosizeTextarea extends Base {
         <slot></slot>
       </div>
     `;
+  }
+
+  get updates() {
+
+    const value = this.value;
+
+    let copyStyle = this.state.copyStyle;
+    if (copyStyle) {
+      const minHeight = this.state.minimumRows * this.state.lineHeight;
+      copyStyle = Object.assign({}, copyStyle, {
+        'min-height': `${minHeight}px`
+      });
+    }
+
+    return merge(super.updates, {
+      $: {
+        copyContainer: {
+          style: copyStyle
+        },
+        inner: {
+          value
+        },
+        textCopy: {
+          textContent: value
+        }
+      }
+    });
   }
 
   /**

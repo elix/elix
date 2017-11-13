@@ -1,4 +1,4 @@
-import * as props from '../utilities/props.js';
+import { merge } from '../utilities/updates.js';
 import FocusRingMixin from '../mixins/FocusRingMixin.js';
 import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
@@ -54,8 +54,51 @@ class TabButton extends Base {
     });
   }
 
-  get props() {
-    const base = super.props || {};
+  get tabAlign() {
+    return this.state.tabAlign;
+  }
+  set tabAlign(tabAlign) {
+    this.setState({ tabAlign });
+  }
+
+  get tabPosition() {
+    return this.state.tabPosition;
+  }
+  set tabPosition(tabPosition) {
+    this.setState({ tabPosition });
+  }
+
+  get [symbols.template]() {
+    return `
+      <style>
+        :host {
+          display: inline-flex;
+        }
+
+        #inner {
+          background: inherit;
+          border-color: #ccc;
+          border-style: solid;
+          border-width: 1px;
+          color: inherit;
+          flex: 1;
+          font-family: inherit;
+          font-size: inherit;
+          margin: 0;
+          outline: none;
+          padding: 0.5em 0.75em;
+          transition: border-color 0.25s;
+          white-space: nowrap;
+        }
+      </style>
+      <button id="inner" tabindex="-1">
+        <slot></slot>
+      </button>
+    `;
+  }
+
+  get updates() {
+    const base = super.updates || {};
     const original = this.state.original;
 
     // Host
@@ -64,12 +107,12 @@ class TabButton extends Base {
     const needsSpacer = index > 0;
     const tabPosition = this.tabPosition;
     const needsSideSpacer = needsSpacer &&
-        (tabPosition === 'top' || tabPosition === 'bottom');
+      (tabPosition === 'top' || tabPosition === 'bottom');
     const needsLeftSpacer = needsSideSpacer && !this.rightToLeft;
     const needsRightSpacer = needsSideSpacer && this.rightToLeft;
     const needsTopSpacer = needsSpacer &&
-        (tabPosition === 'left' || tabPosition === 'right');
-    
+      (tabPosition === 'left' || tabPosition === 'right');
+
     // Button
     const positionStyles = {
       bottom: {
@@ -128,7 +171,7 @@ class TabButton extends Base {
       )
     };
 
-    return props.merge(base, {
+    return merge(base, {
       attributes: {
         tabindex: original.attributes.tabindex || this.state.tabindex
       },
@@ -142,49 +185,6 @@ class TabButton extends Base {
         inner: buttonProps
       }
     });
-  }
-
-  get tabAlign() {
-    return this.state.tabAlign;
-  }
-  set tabAlign(tabAlign) {
-    this.setState({ tabAlign });
-  }
-
-  get tabPosition() {
-    return this.state.tabPosition;
-  }
-  set tabPosition(tabPosition) {
-    this.setState({ tabPosition });
-  }
-
-  get [symbols.template]() {
-    return `
-      <style>
-        :host {
-          display: inline-flex;
-        }
-
-        #inner {
-          background: inherit;
-          border-color: #ccc;
-          border-style: solid;
-          border-width: 1px;
-          color: inherit;
-          flex: 1;
-          font-family: inherit;
-          font-size: inherit;
-          margin: 0;
-          outline: none;
-          padding: 0.5em 0.75em;
-          transition: border-color 0.25s;
-          white-space: nowrap;
-        }
-      </style>
-      <button id="inner" tabindex="-1">
-        <slot></slot>
-      </button>
-    `;
   }
 
 }

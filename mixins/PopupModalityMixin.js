@@ -1,5 +1,5 @@
+import { merge } from '../utilities/updates.js';
 import deepContains from './deepContains.js';
-import * as props from '../utilities/props.js';
 import Symbol from '../utilities/Symbol.js';
 import symbols from '../utilities/symbols.js';
 
@@ -91,10 +91,10 @@ export default function PopupModalityMixin(Base) {
       return handled || (super.keydown && super.keydown(event)) || false;
     }
 
-    get props() {
+    get updates() {
       const original = this.state.original;
       const role = original.attributes && original.attributes.role || this.state.role;
-      return props.merge(super.props, {
+      return merge(super.updates, {
         attributes: {
           role
         }

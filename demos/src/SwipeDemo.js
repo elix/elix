@@ -1,8 +1,8 @@
+import { merge } from '../../utilities/updates.js';
+import ElementBase from '../../elements/ElementBase.js';
+import symbols from '../../utilities/symbols.js';
 import TouchSwipeMixin from '../../mixins/TouchSwipeMixin.js';
 import TrackpadSwipeMixin from '../../mixins/TrackpadSwipeMixin.js';
-import * as props from '../../utilities/props.js';
-import symbols from '../../utilities/symbols.js';
-import ElementBase from '../../elements/ElementBase.js';
 
 
 const Base =
@@ -13,28 +13,6 @@ const Base =
 
 
 class SwipeDemo extends Base {
-
-  get props() {
-    const swipeFraction = this.state.swipeFraction;
-    const formatted = swipeFraction !== null ?
-      swipeFraction.toFixed(3) :
-      '—';
-    const transform = swipeFraction !== null ?
-      `translateX(${swipeFraction * 100}%)` :
-      'none';
-    return props.merge(super.props, {
-      $: {
-        block: {
-          style: {
-            transform
-          }
-        },
-        swipeFraction: {
-          textContent: formatted
-        }
-      }
-    });
-  }
 
   get [symbols.template]() {
     return `
@@ -87,6 +65,28 @@ class SwipeDemo extends Base {
       </div>
       <div class="section"></div>
     `;
+  }
+
+  get updates() {
+    const swipeFraction = this.state.swipeFraction;
+    const formatted = swipeFraction !== null ?
+      swipeFraction.toFixed(3) :
+      '—';
+    const transform = swipeFraction !== null ?
+      `translateX(${swipeFraction * 100}%)` :
+      'none';
+    return merge(super.updates, {
+      $: {
+        block: {
+          style: {
+            transform
+          }
+        },
+        swipeFraction: {
+          textContent: formatted
+        }
+      }
+    });
   }
 
 }

@@ -1,5 +1,5 @@
+import { merge } from '../utilities/updates.js';
 import deepContains from './deepContains.js';
-import * as props from '../utilities/props.js';
 import symbols from '../utilities/symbols.js';
 
 
@@ -82,8 +82,8 @@ export default function ClickSelectionMixin(Base) {
       this[symbols.raiseChangeEvents] = false;
     }
 
-    get props() {
-      return props.merge(super.props, {
+    get updates() {
+      return merge(super.updates, {
         style: {
           '-ms-user-select': 'none',
           'user-select': 'none'

@@ -1,4 +1,4 @@
-import * as props from '../utilities/props.js';
+import { merge } from '../utilities/updates.js';
 
 
 //
@@ -73,12 +73,12 @@ export default function FocusMixin(Base) {
       return result;
     }
 
-    get props() {
-      const base = super.props || {};
+    get updates() {
+      const base = super.updates || {};
       const outline = base.style && base.style.outline ||
         !this.state.focusRing && 'none' ||
         undefined;
-      return props.merge(base, {
+      return merge(base, {
         style: {
           outline
         }

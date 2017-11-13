@@ -1,4 +1,4 @@
-import * as props from '../utilities/props.js';
+import { merge } from '../utilities/updates.js';
 import Symbol from '../utilities/Symbol.js';
 
 
@@ -85,19 +85,18 @@ export default function TouchSwipeMixin(Base) {
         touchAction: 'none'
       });
     }
-
-    get props() {
-      return props.merge(super.props, {
-        style: {
-          'touch-action': this.state.touchAction
-        }
-      })
-    }
-
+    
     get swipeTarget() {
       return super.swipeTarget || this;
     }
 
+    get updates() {
+      return merge(super.updates, {
+        style: {
+          'touch-action': this.state.touchAction
+        }
+      });
+    }
   }
 }
 

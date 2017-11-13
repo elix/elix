@@ -1,4 +1,4 @@
-import * as props from '../utilities/props.js';
+import { merge } from '../utilities/updates.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import ElementBase from './ElementBase.js';
 // @ts-ignore
@@ -68,8 +68,8 @@ class Tabs extends Base {
     });
   }
 
-  itemProps(item, calcs, original) {
-    const base = super.itemProps ? super.itemProps(item, calcs, original) : {};
+  itemUpdates(item, calcs, original) {
+    const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
     
     // See notes in AriaListMixin for similar handling of ID.
     let id = item[generatedIdKey] ||
@@ -96,7 +96,7 @@ class Tabs extends Base {
     };
   }
 
-  get props() {
+  get updates() {
     const tabPosition = this.state.tabPosition;
     const lateralPosition = tabPosition === 'left' || tabPosition === 'right';
 
@@ -113,7 +113,7 @@ class Tabs extends Base {
     // Edge's flex box implementation seems to struggle with dynamic changes to
     // properties like flex-direction, and works better if we reapply the
     // styling each time.
-    return props.merge(super.props, {
+    return merge(super.updates, {
       style: {
         'flex-direction': lateralPosition ? 'row' : 'column'
       },

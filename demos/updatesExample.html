@@ -15,8 +15,7 @@
 
   <script type="module">
     import AttributeMarshallingMixin from '../mixins/AttributeMarshallingMixin.js';
-    import * as props from '../utilities/props.js';
-    import PropsMixin from '../mixins/PropsMixin.js';
+    import RenderUpdatesMixin from '../mixins/RenderUpdatesMixin.js';
     import ReactiveMixin from '../mixins/ReactiveMixin.js';
     import ShadowTemplateMixin from '../mixins/ShadowTemplateMixin.js';
     import symbols from '../utilities/symbols.js';
@@ -25,7 +24,7 @@
     const Base =
       AttributeMarshallingMixin(
       ReactiveMixin(
-      PropsMixin(
+      RenderUpdatesMixin(
       ShadowTemplateMixin(
         HTMLElement
       ))));
@@ -53,19 +52,20 @@
       // component host and elements in its shadow subtree during rendering of
       // the current state. This forms a pipeline:
       //
-      //     state -> conditions -> props -> DOM
+      //     events → methods → setState → render → updates → DOM
       //
-      get props() {
+      get updates() {
+        const value = this.state.value;
         return {
           style: {
-            color: this.state.value < 0 ? 'red' : ''
+            color: value < 0 ? 'red' : ''
           },
           $: {
             value: {
-              textContent: this.state.value
+              textContent: value
             }
           }
-        }
+        };
       }
 
       // Provide a public property that gets/sets state.
@@ -85,64 +85,12 @@
     }
 
     customElements.define('increment-decrement', IncrementDecrement);
-
-
-    class CustomIncrementDecrement extends IncrementDecrement {
-
-      get props() {
-        const buttonStyle = {
-          background: '#444',
-          border: 'none',
-          'border-radius': 0
-        };
-        const canDecrement = this.state.value > -5;
-        const canIncrement = this.state.value < 5;
-        return props.merge(super.props, {
-          style: {
-            background: 'lightgray',
-            color: this.state.value < 0 ? 'dodgerblue' : '',
-            'font-family': 'Helvetica, Arial, sans-serif',
-            'font-weight': 'bold'
-          },
-          $: {
-            decrement: {
-              attributes: {
-                disabled: !canDecrement
-              },
-              style: props.merge(buttonStyle, {
-                color: canDecrement ? 'white' : 'gray'
-              })
-            },
-            increment: {
-              attributes: {
-                disabled: !canIncrement
-              },
-              style: props.merge(buttonStyle, {
-                color: canIncrement ? 'white' : 'gray'
-              })
-            }
-          }
-        });
-      }
-
-      get value() {
-        return super.value;
-      }
-      set value(value) {
-        const parsed = parseInt(value);
-        const bounded = Math.max(Math.min(parsed, 5), -5);
-        super.value = bounded;
-      }
-    }
-
-    customElements.define('custom-increment-decrement', CustomIncrementDecrement);
   </script>
 
 </head>
 
 <body>
-  <increment-decrement></increment-decrement>
-  <custom-increment-decrement></custom-increment-decrement>
+  <increment-decrement value="0"></increment-decrement>
 </body>
 
 </html>

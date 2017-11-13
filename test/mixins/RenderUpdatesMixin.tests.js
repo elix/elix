@@ -1,13 +1,13 @@
-import * as props from '../../utilities/props.js';
+import { merge } from '../../utilities/updates.js';
 import flushPolyfills from '../flushPolyfills.js';
-import PropsMixin from '../../mixins/PropsMixin.js';
+import RenderUpdatesMixin from '../../mixins/RenderUpdatesMixin.js';
 import ReactiveMixin from '../../mixins/ReactiveMixin.js';
 
 
-class PropsTest extends PropsMixin(ReactiveMixin(HTMLElement)) {
+class PropsTest extends RenderUpdatesMixin(ReactiveMixin(HTMLElement)) {
 
-  get props() {
-    return props.merge(super.props, {
+  get updates() {
+    return merge(super.updates, {
       classes: {
         selected: this.state.selected || this.state.original.classes.selected
       },
@@ -21,7 +21,7 @@ class PropsTest extends PropsMixin(ReactiveMixin(HTMLElement)) {
 customElements.define('props-test', PropsTest);
 
 
-describe("PropsMixin", function () {
+describe("RenderUpdatesMixin", function () {
 
   let container;
 

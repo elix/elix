@@ -1,3 +1,4 @@
+import { merge } from '../utilities/updates.js';
 import AriaListMixin from '../mixins/AriaListMixin.js';
 import ClickSelectionMixin from '../mixins/ClickSelectionMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
@@ -7,7 +8,6 @@ import ElementBase from './ElementBase.js';
 import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
-import * as props from '../utilities/props.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
 import symbols from '../utilities/symbols.js';
@@ -94,13 +94,13 @@ class TabStrip extends Base {
     });
   }
 
-  itemProps(item, calcs, original) {
-    const base = super.itemProps ? super.itemProps(item, calcs, original) : {};
+  itemUpdates(item, calcs, original) {
+    const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
 
     const tabAlign = this.state.tabAlign;
     const tabPosition = this.state.tabPosition;
 
-    return props.merge(base, {
+    return merge(base, {
       attributes: {
         index: calcs.index,
         role: original.attributes.role || this.state.tabButtonRole,
@@ -147,8 +147,8 @@ class TabStrip extends Base {
       'vertical';
   }
 
-  get props() {
-    const base = super.props || {};
+  get updates() {
+    const base = super.updates || {};
     const original = this.state.original;
 
     const tabPosition = this.state.tabPosition;
@@ -161,7 +161,7 @@ class TabStrip extends Base {
       'stretch': null // No style needed for "stretch"
     };
 
-    return props.merge(base, {
+    return merge(base, {
       attributes: {
         role: original.attributes.role || 'tablist'
       },

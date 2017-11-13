@@ -1,12 +1,12 @@
-import * as props from '../utilities/props.js';
 import symbols from '../utilities/symbols.js';
+import * as updates from '../utilities/updates.js';
 
 
 /**
  * Mixin that facilitates setting properties on a component host element and
  * elements in the component's shadow subtree.
  */
-export default function PropsMixin(Base) {
+export default function RenderUpdatesMixin(Base) {
   return class Props extends Base {
 
     connectedCallback() {
@@ -14,36 +14,24 @@ export default function PropsMixin(Base) {
       // is applied before this mixin, we want to get the original props before
       // we render.
       this.setState({
-        original: props.get(this)
+        original: updates.get(this)
       });
 
       if (super.connectedCallback) { super.connectedCallback(); }
-    }
-
-    /**
-     * The attributes and properies that should be applied to the component on
-     * render. By default, this is an empty plain object. Your mixin or
-     * component can extend this to identify the properties to set on the host
-     * element or elements in the shadow subtree.
-     * 
-     * @type {object}
-     */
-    get props() {
-      return super.props || {};
     }
 
     [symbols.render]() {
       if (super[symbols.render]) { super[symbols.render](); }
 
       // Collect an updated set of properties/attributes.
-      const newProps = this.props;
+      const newProps = this.updates;
 
       // Apply those to the host.
-      props.apply(this, newProps);
+      updates.apply(this, newProps);
     }
 
     // Override setAttribute so that, if this is called outside of rendering,
-    // we can update our notion of the component's original props.
+    // we can update our notion of the component's original updates.
     setAttribute(name, value) {
       if (!this[symbols.rendering]) {
         updateOriginalProp(this, name, value);
@@ -60,6 +48,18 @@ export default function PropsMixin(Base) {
         updateOriginalProp(this, 'style', style);
       }
       super.style = style;
+    }
+  
+    /**
+     * The attributes and properies that should be applied to the component on
+     * render. By default, this is an empty plain object. Your mixin or
+     * component can extend this to identify the properties to set on the host
+     * element or elements in the shadow subtree.
+     * 
+     * @type {object}
+     */
+    get updates() {
+      return super.updates || {};
     }
   }
 }
@@ -129,6 +129,6 @@ function updateOriginalProp(element, name, value) {
       };
       break;
   }
-  const original = props.merge(element.state.original, changes);
+  const original = updates.merge(element.state.original, changes);
   element.setState({ original });
 }

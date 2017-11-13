@@ -1,6 +1,6 @@
 // @ts-ignore
 import PageDot from '../elements/PageDot.js'; // eslint-disable-line no-unused-vars
-import * as props from '../utilities/props.js';
+import { merge } from '../utilities/updates.js';
 import symbols from '../utilities/symbols.js';
 
 
@@ -20,16 +20,6 @@ export default function PageDotsMixin(Base) {
         const dotIndex = this.pageDots.indexOf(dot);
         if (dotIndex >= 0) {
           this.selectedIndex = dotIndex;
-        }
-      });
-    }
-
-    get props() {
-      return props.merge(super.props, {
-        $: {
-          pageDots: {
-            childNodes: this.pageDots
-          }
         }
       });
     }
@@ -60,7 +50,17 @@ export default function PageDotsMixin(Base) {
       const selectionFraction = sign * swipeFraction;
       this.pageDots.forEach((pageDot, index) => {
         const opacity = opacityForDotWithIndex(index, selectedIndex, selectionFraction);
-        props.applyStyle(pageDot, { opacity });
+        pageDot.style.opacity = opacity;
+      });
+    }
+
+    get updates() {
+      return merge(super.updates, {
+        $: {
+          pageDots: {
+            childNodes: this.pageDots
+          }
+        }
       });
     }
 

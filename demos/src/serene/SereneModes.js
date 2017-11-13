@@ -1,12 +1,12 @@
-import * as props from '../../../utilities/props.js';
+import { merge } from '../../../utilities/updates.js';
 import Modes from '../../../elements/Modes.js';
 
 
 class SereneModes extends Modes {
 
-  itemProps(item, calcs, original) {
-    const base = super.itemProps(item, calcs, original);
-    return props.merge(base, {
+  itemUpdates(item, calcs, original) {
+    const base = super.itemUpdates(item, calcs, original);
+    return merge(base, {
       style: {
         'background': 'white',
         'display': '', /* override base */
@@ -18,8 +18,8 @@ class SereneModes extends Modes {
     });
   }
 
-  get props() {
-    return props.merge(super.props, {
+  get updates() {
+    return merge(super.updates, {
       style: {
         display: 'block'
       }

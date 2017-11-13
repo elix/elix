@@ -1,4 +1,4 @@
-import * as props from '../utilities/props.js';
+import { merge } from '../utilities/updates.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import ElementBase from './ElementBase.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
@@ -34,22 +34,12 @@ class Modes extends Base {
     });
   }
 
-  get props() {
-    const base = super.props || {};
-    return props.merge(base, {
-      style: {
-        'display': this.state.original.style.display || 'inline-block',
-        'position': 'relative'
-      }
-    });
-  }
-
-  itemProps(item, calcs, original) {
-    const base = super.itemProps ? super.itemProps(item, calcs, original) : {};
+  itemUpdates(item, calcs, original) {
+    const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
     const display = !calcs.selected ?
       'none' :
       base.style && base.style.display;
-    return props.merge(base, {
+    return merge(base, {
       style: {
         display
       }
@@ -58,6 +48,16 @@ class Modes extends Base {
 
   get [symbols.template]() {
     return `<slot></slot>`;
+  }
+
+  get updates() {
+    const base = super.updates || {};
+    return merge(base, {
+      style: {
+        'display': this.state.original.style.display || 'inline-block',
+        'position': 'relative'
+      }
+    });
   }
 
 }

@@ -41,7 +41,7 @@ class SingleSelectionDemo extends Base {
     });
   }
 
-  itemProps(item, calcs, original) {
+  itemUpdates(item, calcs, original) {
     /* Map item selection to a `selected` CSS class. */
     return {
       classes: {

@@ -1,4 +1,4 @@
-import * as props from '../../../utilities/props.js';
+import { merge } from '../../../utilities/updates.js';
 import HoverMixin from '../../../mixins/HoverMixin.js';
 import TabButton from '../../../elements/TabButton.js';
 
@@ -11,15 +11,15 @@ const Base =
 
 class SereneTabButton extends Base {
 
-  get props() {
-    const base = super.props || {};
+  get updates() {
+    const base = super.updates || {};
     const active = this.state.hover || this.state.focusRing;
     const background = this.state.selected ?
       '#666' :
       this.state.hover ?
         '#444' :
         '#222';
-    return props.merge(base, {
+    return merge(base, {
       style: {
         'margin-left': 0
       },

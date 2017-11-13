@@ -1,5 +1,5 @@
+import { merge } from '../../utilities/updates.js';
 import Dialog from '../../elements/Dialog.js';
-import * as props from '../../utilities/props.js';
 
 
 class SampleDialog extends Dialog {
@@ -14,8 +14,8 @@ class SampleDialog extends Dialog {
     });
   }
 
-  get props() {
-    return props.merge(super.props, {
+  get updates() {
+    return merge(super.updates, {
       $: {
         content: {
           style: {

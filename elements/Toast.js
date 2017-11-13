@@ -1,4 +1,4 @@
-import * as props from '../utilities/props.js';
+import { merge } from '../utilities/updates.js';
 import ElementBase from './ElementBase.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
@@ -83,8 +83,8 @@ class Toast extends Base {
     this.setState({ fromEdge });
   }
 
-  get props() {
-    const base = super.props || {};
+  get updates() {
+    const base = super.updates || {};
 
     // Host
     const hostEdgeStyles = {
@@ -159,7 +159,7 @@ class Toast extends Base {
       }
     };
     
-    return props.merge(base, {
+    return merge(base, {
       style: {
         'align-items': hostEdgeStyle['align-items'],
         display,

@@ -1,3 +1,4 @@
+import { merge } from '../utilities/updates.js';
 import AriaListMixin from '../mixins/AriaListMixin.js';
 import ClickSelectionMixin from '../mixins/ClickSelectionMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
@@ -8,7 +9,6 @@ import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import KeyboardPagedSelectionMixin from '../mixins/KeyboardPagedSelectionMixin.js';
 import KeyboardPrefixSelectionMixin from '../mixins/KeyboardPrefixSelectionMixin.js';
 import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
-import * as props from '../utilities/props.js';
 import SelectedItemTextValueMixin from '../mixins/SelectedItemTextValueMixin.js';
 import SelectionInViewMixin from '../mixins/SelectionInViewMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
@@ -63,12 +63,12 @@ export default class ListBox extends Base {
     });
   }
 
-  itemProps(item, calcs, original) {
-    const base = super.itemProps ? super.itemProps(item, calcs, original) : {};
+  itemUpdates(item, calcs, original) {
+    const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
     const selected = calcs.selected;
     const color = selected ? 'highlighttext' : original.style.color;
     const backgroundColor = selected ? 'highlight' : original.style['background-color'];
-    return props.merge(base, {
+    return merge(base, {
       classes: {
         selected
       },
@@ -87,23 +87,8 @@ export default class ListBox extends Base {
     this.setState({ orientation });
   }
 
-  get props() {
-    const style = this.state.orientation === 'vertical' ?
-      {
-        'flex-direction': 'column',
-        'overflow-x': 'hidden',
-        'overflow-y': 'scroll'
-      } :
-      {
-        'flex-direction': 'row',
-        'overflow-x': 'scroll',
-        'overflow-y': 'hidden'
-      };
-    return props.merge(super.props, {
-      $: {
-        content: { style }
-      }
-    });
+  get [symbols.scrollTarget]() {
+    return this.$.content;
   }
 
   get [symbols.template]() {
@@ -129,8 +114,23 @@ export default class ListBox extends Base {
     `;
   }
 
-  get [symbols.scrollTarget]() {
-    return this.$.content;
+  get updates() {
+    const style = this.state.orientation === 'vertical' ?
+      {
+        'flex-direction': 'column',
+        'overflow-x': 'hidden',
+        'overflow-y': 'scroll'
+      } :
+      {
+        'flex-direction': 'row',
+        'overflow-x': 'scroll',
+        'overflow-y': 'hidden'
+      };
+    return merge(super.updates, {
+      $: {
+        content: { style }
+      }
+    });
   }
 
 }

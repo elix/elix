@@ -1,6 +1,6 @@
+import { merge } from '../utilities/updates.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import ElementBase from './ElementBase.js';
-import * as props from '../utilities/props.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
 import symbols from '../utilities/symbols.js';
 
@@ -14,17 +14,9 @@ const Base =
 
 class Spread extends Base {
 
-  get props() {
-    return props.merge(super.props, {
-      style: {
-        'width': `${this.items.length * 100}%`
-      }
-    });
-  }
-
-  itemProps(item, calcs, original) {
-    const base = super.itemProps ? super.itemProps(item, calcs, original) : {};
-    return props.merge(base, {
+  itemUpdates(item, calcs, original) {
+    const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
+    return merge(base, {
       style: {
         'objectFit': 'contain',
         'width': `${100 / this.items.length}%`
@@ -42,6 +34,14 @@ class Spread extends Base {
       </style>
       <slot></slot>
     `;
+  }
+
+  get updates() {
+    return merge(super.updates, {
+      style: {
+        'width': `${this.items.length * 100}%`
+      }
+    });
   }
 
 }

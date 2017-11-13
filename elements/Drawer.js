@@ -1,3 +1,4 @@
+import { merge } from '../utilities/updates.js';
 import DialogModalityMixin from '../mixins/DialogModalityMixin.js';
 import FocusCaptureMixin from '../mixins/FocusCaptureMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
@@ -6,7 +7,6 @@ import OpenCloseTransitionMixin from '../mixins/OpenCloseTransitionMixin.js';
 // @ts-ignore
 import ModalBackdrop from './ModalBackdrop.js'; // eslint-disable-line no-unused-vars
 import OverlayMixin from '../mixins/OverlayMixin.js';
-import * as props from '../utilities/props.js';
 import symbols from '../utilities/symbols.js';
 import TouchSwipeMixin from '../mixins/TouchSwipeMixin.js';
 import TrackpadSwipeMixin from '../mixins/TrackpadSwipeMixin.js';
@@ -74,69 +74,20 @@ class Drawer extends Base {
     await this.startOpen();
   }
 
-  get props() {
-    const base = super.props || {};
-
-    const sign = this.rightToLeft ? 1 : -1;
-    const swiping = this.state.swipeFraction !== null;
-    // Constrain the distance swiped to between 0 and a bit less than 1. A swipe
-    // distance of 1 itself would cause a tricky problem. The drawer would
-    // render itself completely off screen. This means the expected CSS
-    // transition would not occur, so the transitionend event wouldn't fire,
-    // leaving us waiting indefinitely for an event that will never come. By
-    // ensuring we always transition at least a tiny bit, we guarantee that a
-    // transition and its accompanying event will occur.
-    const swipeFraction = swiping ?
-      Math.max(Math.min(sign * this.state.swipeFraction, 0.999), 0) :
-      0;
-    const fullOpacity = 0.2;
-    const opacity = this.opened ?
-      fullOpacity * (1 - swipeFraction) :
-      0;
-
-    const translateFraction = this.opened ?
-      swipeFraction :
-      1;
-    const translatePercentage = sign * translateFraction * 100;
-
-    let duration = 0;
-    const visualState = this.state.visualState;
-    const showTransition = !swiping &&
-        (visualState === this.visualStates.opened ||
-        visualState === this.visualStates.closing);
-    if (showTransition) {
-      // The time require to show transitions depends on how far apart the
-      // elements currently are from their desired state. As a reference point,
-      // we compare the expected opacity of the backdrop to its current opacity.
-      /** @type {any} */
-      const backdrop = this.$.backdrop;
-      const currentOpacity = parseFloat(backdrop.style.opacity) || 0;
-      const fullDuration = 0.25; // Quarter second
-      const opacityDifference = Math.abs(opacity - currentOpacity);
-      duration = opacityDifference / fullOpacity * fullDuration;
+  async swipeLeft() {
+    if (!this.rightToLeft) {
+      await this.startClose();
     }
-    
-    const backdropProps = {
-      style: {
-        opacity,
-        'transition': showTransition ? `opacity ${duration}s linear` : undefined
-      }
-    };
+  }
 
-    const transform = `translateX(${translatePercentage}%)`;
-    const contentProps = {
-      style: {
-        transform,
-        'transition': showTransition ? `transform ${duration}s` : undefined
-      }
-    };
+  async swipeRight() {
+    if (this.rightToLeft) {
+      await this.startClose();
+    }
+  }
 
-    return props.merge(base, {
-      $: {
-        backdrop: backdropProps,
-        content: contentProps
-      }
-    });
+  get swipeTarget() {
+    return this.$.content;
   }
 
   get [symbols.template]() {
@@ -179,20 +130,69 @@ class Drawer extends Base {
     `;
   }
 
-  async swipeLeft() {
-    if (!this.rightToLeft) {
-      await this.startClose();
-    }
-  }
+  get updates() {
+    const base = super.updates || {};
 
-  async swipeRight() {
-    if (this.rightToLeft) {
-      await this.startClose();
-    }
-  }
+    const sign = this.rightToLeft ? 1 : -1;
+    const swiping = this.state.swipeFraction !== null;
+    // Constrain the distance swiped to between 0 and a bit less than 1. A swipe
+    // distance of 1 itself would cause a tricky problem. The drawer would
+    // render itself completely off screen. This means the expected CSS
+    // transition would not occur, so the transitionend event wouldn't fire,
+    // leaving us waiting indefinitely for an event that will never come. By
+    // ensuring we always transition at least a tiny bit, we guarantee that a
+    // transition and its accompanying event will occur.
+    const swipeFraction = swiping ?
+      Math.max(Math.min(sign * this.state.swipeFraction, 0.999), 0) :
+      0;
+    const fullOpacity = 0.2;
+    const opacity = this.opened ?
+      fullOpacity * (1 - swipeFraction) :
+      0;
 
-  get swipeTarget() {
-    return this.$.content;
+    const translateFraction = this.opened ?
+      swipeFraction :
+      1;
+    const translatePercentage = sign * translateFraction * 100;
+
+    let duration = 0;
+    const visualState = this.state.visualState;
+    const showTransition = !swiping &&
+      (visualState === this.visualStates.opened ||
+        visualState === this.visualStates.closing);
+    if (showTransition) {
+      // The time require to show transitions depends on how far apart the
+      // elements currently are from their desired state. As a reference point,
+      // we compare the expected opacity of the backdrop to its current opacity.
+      /** @type {any} */
+      const backdrop = this.$.backdrop;
+      const currentOpacity = parseFloat(backdrop.style.opacity) || 0;
+      const fullDuration = 0.25; // Quarter second
+      const opacityDifference = Math.abs(opacity - currentOpacity);
+      duration = opacityDifference / fullOpacity * fullDuration;
+    }
+
+    const backdropProps = {
+      style: {
+        opacity,
+        'transition': showTransition ? `opacity ${duration}s linear` : undefined
+      }
+    };
+
+    const transform = `translateX(${translatePercentage}%)`;
+    const contentProps = {
+      style: {
+        transform,
+        'transition': showTransition ? `transform ${duration}s` : undefined
+      }
+    };
+
+    return merge(base, {
+      $: {
+        backdrop: backdropProps,
+        content: contentProps
+      }
+    });
   }
 
 }

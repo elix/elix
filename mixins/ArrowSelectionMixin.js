@@ -1,6 +1,6 @@
+import { merge } from '../utilities/updates.js';
 // @ts-ignore
 import ArrowSelectionButton from '../elements/ArrowSelectionButton.js'; // eslint-disable-line no-unused-vars
-import * as props from '../utilities/props.js';
 
 
 export default function ArrowSelectionMixin(Base) {
@@ -26,7 +26,7 @@ export default function ArrowSelectionMixin(Base) {
       assumeButtonFocus(this, this.$.arrowButtonRight);
     }
 
-    get props() {
+    get updates() {
       const buttonProps = {
         style: {
           'bottom': 0,
@@ -39,7 +39,7 @@ export default function ArrowSelectionMixin(Base) {
       const canGoLeft = this.rightToLeft ?
         this.canSelectNext :
         this.canSelectPrevious;
-      const arrowButtonLeftProps = props.merge(buttonProps, {
+      const arrowButtonLeftProps = merge(buttonProps, {
         attributes: {
           disabled: !canGoLeft,
           hidden: supportsTouch()
@@ -52,7 +52,7 @@ export default function ArrowSelectionMixin(Base) {
       const canGoRight = this.rightToLeft ?
         this.canSelectPrevious :
         this.canSelectNext;
-      const arrowButtonRightProps = props.merge(buttonProps, {
+      const arrowButtonRightProps = merge(buttonProps, {
         attributes: {
           disabled: !canGoRight,
           hidden: supportsTouch()
@@ -69,7 +69,7 @@ export default function ArrowSelectionMixin(Base) {
         }
       };
 
-      return props.merge(super.props, {
+      return merge(super.updates, {
         $: {
           arrowButtonLeft: arrowButtonLeftProps,
           arrowButtonRight: arrowButtonRightProps,

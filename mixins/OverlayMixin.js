@@ -1,4 +1,4 @@
-import * as props from '../utilities/props.js';
+import { merge } from '../utilities/updates.js';
 import Symbol from '../utilities/Symbol.js';
 
 
@@ -139,8 +139,8 @@ export default function OverlayMixin(Base) {
       this.setState({ visualState });
     }
 
-    get props() {
-      const base = super.props || {};
+    get updates() {
+      const base = super.updates || {};
       const original = this.state.original;
 
       // We'd like to just use the `hidden` attribute, but Edge/IE has trouble
@@ -169,7 +169,7 @@ export default function OverlayMixin(Base) {
         }
       }
 
-      return props.merge(base, {
+      return merge(base, {
         style: {
           display,
           'z-index': zIndex

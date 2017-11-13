@@ -13,14 +13,14 @@ import * as KeyboardPagedSelectionMixinTests from './mixins/KeyboardPagedSelecti
 import * as KeyboardPrefixSelectionMixinTests from './mixins/KeyboardPrefixSelectionMixin.tests.js';
 import * as ListBoxTests from './elements/ListBox.tests.js';
 import * as OverlayMixinTests from './mixins/OverlayMixin.tests.js';
-import * as PropsMixinTests from './mixins/PropsMixin.tests.js';
-import * as propsTests from './mixins/props.tests.js';
+import * as PropsMixinTests from './mixins/RenderUpdatesMixin.tests.js';
 import * as ReactiveMixinTests from './mixins/ReactiveMixin.tests.js';
 import * as SelectionInViewMixinTests from './mixins/SelectionInViewMixin.tests.js';
 import * as ShadowTemplateMixinTests from './mixins/ShadowTemplateMixin.tests.js';
 import * as SingleSelectionMixinTests from './mixins/SingleSelectionMixin.tests.js';
 import * as SlotContentMixinTests from './mixins/SlotContentMixin.tests.js';
 import * as TabsTests from './elements/Tabs.tests.js';
+import * as updatesTests from './mixins/updates.tests.js';
 import * as WrappedStandardElementTests from './elements/WrappedStandardElement.tests.js';
 
 /* eslint-enable */

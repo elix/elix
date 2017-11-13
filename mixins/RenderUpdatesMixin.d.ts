@@ -3,11 +3,11 @@
 
 /// <reference path="../utilities/shared.d.ts"/>
 
-declare const PropsMixin: Mixin<{
-  props?: PlainObject;
+declare const RenderUpdatesMixin: Mixin<{
+  updates?: PlainObject;
 }, {
-  props: PlainObject;
+  updates: PlainObject;
   originalProps: PlainObject;
 }>;
 
-export default PropsMixin;
+export default RenderUpdatesMixin;

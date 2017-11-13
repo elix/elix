@@ -1,4 +1,4 @@
-import * as props from '../utilities/props.js';
+import { merge } from '../utilities/updates.js';
 import Symbol from '../utilities/Symbol.js';
 
 
@@ -43,8 +43,8 @@ export default function AriaListMixin(Base) {
   // The class prototype added by the mixin.
   class AriaList extends Base {
 
-    itemProps(item, calcs, original) {
-      const base = super.itemProps ? super.itemProps(item, calcs, original) : {};
+    itemUpdates(item, calcs, original) {
+      const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
       // Ensure each item has an ID so we can set aria-activedescendant on the
       // overall list whenever the selection changes.
       //
@@ -63,7 +63,7 @@ export default function AriaListMixin(Base) {
         // Remember that we generated an ID for this item.
         item[generatedIdKey] = id;
       }
-      return props.merge(base, {
+      return merge(base, {
         attributes: {
           'aria-selected': calcs.selected,
           id,
@@ -72,8 +72,8 @@ export default function AriaListMixin(Base) {
       });
     }
 
-    get props() {
-      const base = super.props || {};
+    get updates() {
+      const base = super.updates || {};
       const role = this.state.original && this.state.original.attributes.role ||
         base.attributes && base.attributes.role ||
         'listbox';
@@ -83,11 +83,11 @@ export default function AriaListMixin(Base) {
         null;
       // We need the ID for the selected item. It's possible an ID hasn't been
       // assigned yet, so we spectulatively determine the ID that will be used
-      // on the subsequent call to itemProps for this item.
+      // on the subsequent call to itemUpdates for this item.
       const selectedItemId = selectedItem ?
         getIdForItem(this, selectedItem, this.state.selectedIndex) :
         null;
-      return props.merge(base, {
+      return merge(base, {
         attributes: {
           'aria-activedescendant': selectedItemId,
           'aria-orientation': orientation,

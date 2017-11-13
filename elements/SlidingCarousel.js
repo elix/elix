@@ -1,3 +1,4 @@
+import { merge } from '../utilities/updates.js';
 import AriaListMixin from '../mixins/AriaListMixin.js';
 import ArrowSelectionMixin from '../mixins/ArrowSelectionMixin.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
@@ -7,7 +8,6 @@ import FocusRingMixin from '../mixins/FocusRingMixin.js';
 import KeyboardDirectionMixin from '../mixins/KeyboardDirectionMixin.js';
 import KeyboardMixin from '../mixins/KeyboardMixin.js';
 import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
-import * as props from '../utilities/props.js';
 import PageDotsMixin from '../mixins/PageDotsMixin.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
@@ -56,17 +56,6 @@ class SlidingCarousel extends Base {
     });
   }
 
-  get props() {
-    return props.merge(super.props, {
-      $: {
-        viewport: {
-          selectedIndex: this.state.selectedIndex,
-          swipeFraction: this.state.swipeFraction
-        }
-      }
-    });
-  }
-
   get [symbols.template]() {
     return `
       <style>
@@ -86,6 +75,17 @@ class SlidingCarousel extends Base {
         `)
       )}
     `;
+  }
+
+  get updates() {
+    return merge(super.updates, {
+      $: {
+        viewport: {
+          selectedIndex: this.state.selectedIndex,
+          swipeFraction: this.state.swipeFraction
+        }
+      }
+    });
   }
 }
 

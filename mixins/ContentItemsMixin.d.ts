@@ -8,7 +8,7 @@ declare const ContentItemsMixin: StateMixin<{
 },
 {},
 {
-  itemProps(item: Element, index: number, original: any): any;
+  itemUpdates(item: Element, calcs: PlainObject, original: any): any;
   items: Element[];
 },
 {

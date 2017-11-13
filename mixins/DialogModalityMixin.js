@@ -1,4 +1,4 @@
-import * as props from '../utilities/props.js';
+import { merge } from '../utilities/updates.js';
 import Symbol from '../utilities/Symbol.js';
 import symbols from '../utilities/symbols.js';
 
@@ -66,10 +66,10 @@ export default function DialogModalityMixin(Base) {
       return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
     }
 
-    get props() {
+    get updates() {
       const original = this.state.original;
       const role = original.attributes && original.attributes.role || this.state.role;
-      return props.merge(super.props, {
+      return merge(super.updates, {
         attributes: {
           role
         }

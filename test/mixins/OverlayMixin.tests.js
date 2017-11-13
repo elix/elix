@@ -1,20 +1,20 @@
+import { merge } from '../../utilities/updates.js';
 import OverlayMixin from '../../mixins/OverlayMixin.js';
-import * as props from '../../utilities/props.js';
-import PropsMixin from '../../mixins/PropsMixin.js';
 import ReactiveMixin from '../../mixins/ReactiveMixin.js';
+import RenderUpdatesMixin from '../../mixins/RenderUpdatesMixin.js';
 import symbols from '../../utilities/symbols.js';
 
 
 const Base =
-  PropsMixin(
+  RenderUpdatesMixin(
   OverlayMixin(
   ReactiveMixin(
     HTMLElement
   )));
 
 class OverlayTest extends Base {
-  get props() {
-    return props.merge(super.props, {
+  get updates() {
+    return merge(super.updates, {
       attributes: {
         tabindex: '0'
       }

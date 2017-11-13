@@ -1,13 +1,13 @@
-import * as props from '../../utilities/props.js';
+import { merge } from '../../utilities/updates.js';
 import TabButton from '../../elements/TabButton.js';
 
 
 class ToolbarTab extends TabButton {
 
-  get props() {
-    const base = super.props || {};
+  get updates() {
+    const base = super.updates || {};
     const baseColor = base.style && base.style.color;
-    return props.merge(base, {
+    return merge(base, {
       $: {
         inner: {
           style: {

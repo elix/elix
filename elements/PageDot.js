@@ -1,24 +1,12 @@
 /* Used by PageDotsMixin  */
 
 
+import { merge } from '../utilities/updates.js';
 import ElementBase from './ElementBase.js';
-import * as props from '../utilities/props.js';
 import symbols from '../utilities/symbols.js';
 
 
 class PageDot extends ElementBase {
-
-  get props() {
-    const base = super.props || {};
-    const desktop = matchMedia('(min-width: 768px)').matches;
-    const size = desktop ? '12px' : null;
-    return props.merge(super.props, {
-      style: {
-        'height': size || base.style && base.style.height,
-        'width': size || base.style && base.style.width
-      }
-    });
-  }
 
   get [symbols.template]() {
     return `
@@ -37,6 +25,18 @@ class PageDot extends ElementBase {
         }
       </style>
     `;
+  }
+
+  get updates() {
+    const base = super.updates || {};
+    const desktop = matchMedia('(min-width: 768px)').matches;
+    const size = desktop ? '12px' : null;
+    return merge(super.updates, {
+      style: {
+        'height': size || base.style && base.style.height,
+        'width': size || base.style && base.style.width
+      }
+    });
   }
 
 }

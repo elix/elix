@@ -1,5 +1,5 @@
 import ElementBase from './ElementBase.js';
-import * as props from '../utilities/props.js';
+import * as updates from '../utilities/updates.js';
 import Symbol from '../utilities/Symbol.js';
 import symbols from '../utilities/symbols.js';
 
@@ -347,7 +347,7 @@ function safelySetInnerProperty(element, name, value) {
   if (element[mountedKey]) {
     // Special case for boolean attributes, which may be passed as strings via
     // calls to setAttribute.
-    const cast = props.booleanAttributes[name] && typeof(value) === 'string' ?
+    const cast = updates.booleanAttributes[name] && typeof(value) === 'string' ?
       true :
       value;
     element.inner[name] = cast;

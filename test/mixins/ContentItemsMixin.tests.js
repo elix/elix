@@ -12,7 +12,7 @@ class ContentItemsTest extends ContentItemsMixin(HTMLElement) {
   }
 
   /* eslint-disable no-unused-vars */
-  itemProps(item, calcs) {
+  itemUpdates(item, calcs, original) {
     return {
       hidden: calcs.even
     };
@@ -55,7 +55,7 @@ describe("ContentItemsMixin", () => {
     assert.equal(fixture.itemCalcs(items[2], 2).index, 2);
   });
 
-  it("renders itemProps to items", () => {
+  it("renders itemUpdates to items", () => {
     const fixture = new ContentItemsTest();
     fixture.innerHTML = `
       <div>1</div>

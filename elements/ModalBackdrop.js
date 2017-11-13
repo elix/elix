@@ -1,19 +1,9 @@
 import ElementBase from './ElementBase.js';
-import * as props from '../utilities/props.js';
+import { merge } from '../utilities/updates.js';
 import symbols from '../utilities/symbols.js';
 
 
 class ModalBackdrop extends ElementBase {
-
-  get props() {
-    const base = super.props || {};
-    const role = base.attributes && base.attributes.role || 'none';
-    return props.merge(base, {
-      attributes: {
-        role
-      }
-    });
-  }
 
   get [symbols.template]() {
     return `
@@ -30,6 +20,16 @@ class ModalBackdrop extends ElementBase {
       </style>
       <slot></slot>
     `;
+  }
+
+  get updates() {
+    const base = super.updates || {};
+    const role = base.attributes && base.attributes.role || 'none';
+    return merge(base, {
+      attributes: {
+        role
+      }
+    });
   }
 
 }

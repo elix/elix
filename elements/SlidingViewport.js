@@ -1,8 +1,8 @@
+import { merge } from '../utilities/updates.js';
+import * as FractionalSelection from '../utilities/FractionalSelection.js';
 import ContentItemsMixin from '../mixins/ContentItemsMixin.js';
 import ElementBase from './ElementBase.js';
-import * as FractionalSelection from '../utilities/FractionalSelection.js';
 import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
-import * as props from '../utilities/props.js';
 import SingleSelectionMixin from '../mixins/SingleSelectionMixin.js';
 import SlotContentMixin from '../mixins/SlotContentMixin.js';
 // @ts-ignore
@@ -25,30 +25,6 @@ class SlidingViewport extends Base {
     return Object.assign({}, super.defaultState, {
       orientation: 'horizontal',
       selectionRequired: true
-    });
-  }
-
-  get props() {
-    const sign = this.rightToLeft ? 1 : -1;
-    const swiping = this.state.swipeFraction != null;
-    const swipeFraction = this.state.swipeFraction || 0;
-    const fractionalSelection = this.state.selectedIndex + sign * swipeFraction;
-    const count = this.items.length;
-    const dampedSelection = FractionalSelection.dampedListSelection(fractionalSelection, count);
-    const fraction = sign * dampedSelection / count;
-    const transition = swiping ?
-      'none' :
-      'transform 0.25s';
-    
-    return props.merge(super.props, {
-      $: {
-        content: {
-          style: {
-            'transform': `translateX(${fraction * 100}%)`,
-            transition
-          }
-        }
-      }
     });
   }
 
@@ -79,6 +55,30 @@ class SlidingViewport extends Base {
         <slot></slot>
       </elix-spread>
     `;
+  }
+
+  get updates() {
+    const sign = this.rightToLeft ? 1 : -1;
+    const swiping = this.state.swipeFraction != null;
+    const swipeFraction = this.state.swipeFraction || 0;
+    const fractionalSelection = this.state.selectedIndex + sign * swipeFraction;
+    const count = this.items.length;
+    const dampedSelection = FractionalSelection.dampedListSelection(fractionalSelection, count);
+    const fraction = sign * dampedSelection / count;
+    const transition = swiping ?
+      'none' :
+      'transform 0.25s';
+
+    return merge(super.updates, {
+      $: {
+        content: {
+          style: {
+            'transform': `translateX(${fraction * 100}%)`,
+            transition
+          }
+        }
+      }
+    });
   }
 }
 
