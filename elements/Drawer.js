@@ -1,15 +1,15 @@
-import { merge } from '../utilities/updates.js';
-import DialogModalityMixin from '../mixins/DialogModalityMixin.js';
-import FocusCaptureMixin from '../mixins/FocusCaptureMixin.js';
-import KeyboardMixin from '../mixins/KeyboardMixin.js';
-import LanguageDirectionMixin from '../mixins/LanguageDirectionMixin.js';
-import OpenCloseTransitionMixin from '../mixins/OpenCloseTransitionMixin.js';
+import { merge } from '../src/updates.js';
+import DialogModalityMixin from '../src/DialogModalityMixin.js';
+import FocusCaptureMixin from '../src/FocusCaptureMixin.js';
+import KeyboardMixin from '../src/KeyboardMixin.js';
+import LanguageDirectionMixin from '../src/LanguageDirectionMixin.js';
+import OpenCloseTransitionMixin from '../src/OpenCloseTransitionMixin.js';
 // @ts-ignore
 import ModalBackdrop from './ModalBackdrop.js'; // eslint-disable-line no-unused-vars
-import OverlayMixin from '../mixins/OverlayMixin.js';
-import symbols from '../utilities/symbols.js';
-import TouchSwipeMixin from '../mixins/TouchSwipeMixin.js';
-import TrackpadSwipeMixin from '../mixins/TrackpadSwipeMixin.js';
+import OverlayMixin from '../src/OverlayMixin.js';
+import symbols from '../src/symbols.js';
+import TouchSwipeMixin from '../src/TouchSwipeMixin.js';
+import TrackpadSwipeMixin from '../src/TrackpadSwipeMixin.js';
 import ElementBase from './ElementBase.js';
 
 

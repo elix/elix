@@ -1,7 +1,7 @@
-import ContentItemsMixin from '../../mixins/ContentItemsMixin.js';
-import ReactiveMixin from '../../mixins/ReactiveMixin.js';
-import SingleSelectionMixin from '../../mixins/SingleSelectionMixin.js';
-import symbols from '../../utilities/symbols.js';
+import ContentItemsMixin from '../../src/ContentItemsMixin.js';
+import ReactiveMixin from '../../src/ReactiveMixin.js';
+import SingleSelectionMixin from '../../src/SingleSelectionMixin.js';
+import symbols from '../../src/symbols.js';
 
 
 const Base =

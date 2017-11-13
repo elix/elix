@@ -5,10 +5,9 @@ const spawn = require('child_process').spawn;
 const glob = require('glob');
 
 const lintFiles = [
-      'elements/*.js',
-      'mixins/*.js',
-      'test/**/*.js'
-  ];
+  'src/**/*.js',
+  'test/**/*.js'
+];
 
 //
 // Runs jshint

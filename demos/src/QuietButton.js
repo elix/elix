@@ -1,6 +1,6 @@
-import FocusRingMixin from '../../mixins/FocusRingMixin.js';
-import symbols from '../../utilities/symbols.js';
-import WrappedStandardElement from '../../elements/WrappedStandardElement.js';
+import FocusRingMixin from '../../src/FocusRingMixin.js';
+import symbols from '../../src/symbols.js';
+import WrappedStandardElement from '../../src/WrappedStandardElement.js';
 
 
 const Base =

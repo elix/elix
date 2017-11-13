@@ -1,5 +1,5 @@
-import { merge } from '../../../utilities/updates.js';
-import Modes from '../../../elements/Modes.js';
+import { merge } from '../../../src/updates.js';
+import Modes from '../../../src/Modes.js';
 
 
 class SereneModes extends Modes {

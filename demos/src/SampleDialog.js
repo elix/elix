@@ -1,5 +1,5 @@
-import { merge } from '../../utilities/updates.js';
-import Dialog from '../../elements/Dialog.js';
+import { merge } from '../../src/updates.js';
+import Dialog from '../../src/Dialog.js';
 
 
 class SampleDialog extends Dialog {

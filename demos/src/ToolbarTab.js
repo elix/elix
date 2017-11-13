@@ -1,5 +1,5 @@
-import { merge } from '../../utilities/updates.js';
-import TabButton from '../../elements/TabButton.js';
+import { merge } from '../../src/updates.js';
+import TabButton from '../../src/TabButton.js';
 
 
 class ToolbarTab extends TabButton {

@@ -11,7 +11,6 @@ let buildTargets = null;
 function buildBuildTargets(options) {
   const demosPath = path.resolve('./build/demos.js');
   const testsPath = path.resolve('./build/tests.js');
-  const elixPath = path.resolve('./build/elix.js');
 
   if (options.minify) {
     buildTargets = {
@@ -23,10 +22,6 @@ function buildBuildTargets(options) {
   }
   else {
     buildTargets = {
-      [`${elixPath}`]: {
-        globItems: ['./elix.js'],
-        includes: [/(\/|\\)/]
-      },
       [`${demosPath}`]: {
         globItems: ['./demos/demos.js'],
         includes: [/(\/|\\)/, /demos/]

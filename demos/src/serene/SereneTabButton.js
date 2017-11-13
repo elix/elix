@@ -1,6 +1,6 @@
-import { merge } from '../../../utilities/updates.js';
-import HoverMixin from '../../../mixins/HoverMixin.js';
-import TabButton from '../../../elements/TabButton.js';
+import { merge } from '../../../src/updates.js';
+import HoverMixin from '../../../src/HoverMixin.js';
+import TabButton from '../../../src/TabButton.js';
 
 
 const Base =

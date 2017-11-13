@@ -1,6 +1,6 @@
-import { merge } from '../../../utilities/updates.js';
+import { merge } from '../../../src/updates.js';
 import SereneModes from './SereneModes.js';
-import Tabs from '../../../elements/Tabs.js';
+import Tabs from '../../../src/Tabs.js';
 
 
 class SereneTabs extends Tabs {

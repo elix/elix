@@ -8,26 +8,26 @@
 
 
 // Import elements
-import AlertDialog from './elements/AlertDialog.js';
-import ArrowSelectionButton from './elements/ArrowSelectionButton.js';
-import AutosizeTextarea from './elements/AutosizeTextarea.js';
-import Dialog from './elements/Dialog.js';
-import Drawer from './elements/Drawer.js';
-import ElementBase from './elements/ElementBase.js';
-import ListBox from './elements/ListBox.js';
-import ModalBackdrop from './elements/ModalBackdrop.js';
-import Modes from './elements/Modes.js';
-import PageDot from './elements/PageDot.js';
-import Popup from './elements/Popup.js';
-import SlidingCarousel from './elements/SlidingCarousel.js';
-import SlidingPages from './elements/SlidingPages.js';
-import SlidingViewport from './elements/SlidingViewport.js';
-import Spread from './elements/Spread.js';
-import TabButton from './elements/TabButton.js';
-import Tabs from './elements/Tabs.js';
-import TabStrip from './elements/TabStrip.js';
-import Toast from './elements/Toast.js';
-import WrappedStandardElement from './elements/WrappedStandardElement.js';
+import AlertDialog from './src/AlertDialog.js';
+import ArrowSelectionButton from './src/ArrowSelectionButton.js';
+import AutosizeTextarea from './src/AutosizeTextarea.js';
+import Dialog from './src/Dialog.js';
+import Drawer from './src/Drawer.js';
+import ElementBase from './src/ElementBase.js';
+import ListBox from './src/ListBox.js';
+import ModalBackdrop from './src/ModalBackdrop.js';
+import Modes from './src/Modes.js';
+import PageDot from './src/PageDot.js';
+import Popup from './src/Popup.js';
+import SlidingCarousel from './src/SlidingCarousel.js';
+import SlidingPages from './src/SlidingPages.js';
+import SlidingViewport from './src/SlidingViewport.js';
+import Spread from './src/Spread.js';
+import TabButton from './src/TabButton.js';
+import Tabs from './src/Tabs.js';
+import TabStrip from './src/TabStrip.js';
+import Toast from './src/Toast.js';
+import WrappedStandardElement from './src/WrappedStandardElement.js';
 
 
 // The complete list of all mixins and elements.

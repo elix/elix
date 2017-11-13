@@ -1,8 +1,8 @@
-import AriaListMixin from '../../mixins/AriaListMixin.js';
-import DirectionSelectionMixin from '../../mixins/DirectionSelectionMixin.js';
-import KeyboardDirectionMixin from '../../mixins/KeyboardDirectionMixin.js';
-import KeyboardMixin from '../../mixins/KeyboardMixin.js';
-import Modes from '../../elements/Modes.js';
+import AriaListMixin from '../../src/AriaListMixin.js';
+import DirectionSelectionMixin from '../../src/DirectionSelectionMixin.js';
+import KeyboardDirectionMixin from '../../src/KeyboardDirectionMixin.js';
+import KeyboardMixin from '../../src/KeyboardMixin.js';
+import Modes from '../../src/Modes.js';
 
 
 const ModesWithKeyboard =

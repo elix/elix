@@ -1,8 +1,8 @@
-import { merge } from '../../utilities/updates.js';
-import ElementBase from '../../elements/ElementBase.js';
-import symbols from '../../utilities/symbols.js';
-import TouchSwipeMixin from '../../mixins/TouchSwipeMixin.js';
-import TrackpadSwipeMixin from '../../mixins/TrackpadSwipeMixin.js';
+import { merge } from '../../src/updates.js';
+import ElementBase from '../../src/ElementBase.js';
+import symbols from '../../src/symbols.js';
+import TouchSwipeMixin from '../../src/TouchSwipeMixin.js';
+import TrackpadSwipeMixin from '../../src/TrackpadSwipeMixin.js';
 
 
 const Base =
