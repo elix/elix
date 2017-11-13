@@ -84,7 +84,7 @@ export default function ContentItemsMixin(Base) {
         const items = this.items || [];
         items.forEach((item, index) => {
           if (item[originalKey] === undefined) {
-            item[originalKey] = updates.get(item);
+            item[originalKey] = updates.current(item);
           }
           const calcs = this.itemCalcs(item, index);
           updates.apply(item, this.itemUpdates(item, calcs, item[originalKey]));

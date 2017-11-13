@@ -188,6 +188,66 @@ export function applyStyle(element, styleProps) {
 
 
 /**
+ * @param {Element} element
+ * @returns {any}
+ */
+export function current(element) {
+  return element instanceof HTMLElement ?
+    {
+      attributes: currentAttributes(element),
+      classes: currentClasses(element),
+      style: currentStyle(element)
+    } :
+    {
+      attributes: currentAttributes(element),
+      classes: currentClasses(element),
+    };
+}
+
+
+/**
+ * @param {Element} element
+ * @returns {any}
+ */
+export function currentAttributes(element) {
+  const attributes = {};
+  Array.prototype.forEach.call(element.attributes, attribute => {
+    // TODO: Convert custom attributes to properties
+    if (attribute.name !== 'class' && attribute.name !== 'style') {
+      attributes[attribute.name] = attribute.value;
+    }
+  });
+  return attributes;
+}
+
+
+/**
+ * @param {Element} element
+ * @returns {any}
+ */
+export function currentClasses(element) {
+  const result = {};
+  Array.prototype.forEach.call(element.classList, className =>
+    result[className] = true
+  );
+  return result;
+}
+
+
+/**
+ * @param {HTMLElement|SVGElement} element
+ * @returns {any}
+ */
+export function currentStyle(element) {
+  const styleProps = {};
+  Array.prototype.forEach.call(element.style, key => {
+    styleProps[key] = element.style[key];
+  });
+  return styleProps;
+}
+
+
+/**
  * @param {any} classProps
  * @returns string
  */
@@ -210,66 +270,6 @@ export function formatStyleProps(styleProps) {
   }
   const attributes = Object.keys(styleProps).map(key => `${key}: ${styleProps[key]}`);
   return attributes.join('; ');
-}
-
-
-/**
- * @param {Element} element
- * @returns {any}
- */
-export function get(element) {
-  return element instanceof HTMLElement ?
-    {
-      attributes: getAttributes(element),
-      classes: getClasses(element),
-      style: getStyle(element)
-    } :
-    {
-      attributes: getAttributes(element),
-      classes: getClasses(element),
-    };
-}
-
-
-/**
- * @param {Element} element
- * @returns {any}
- */
-export function getAttributes(element) {
-  const attributes = {};
-  Array.prototype.forEach.call(element.attributes, attribute => {
-    // TODO: Convert custom attributes to properties
-    if (attribute.name !== 'class' && attribute.name !== 'style') {
-      attributes[attribute.name] = attribute.value;
-    }
-  });
-  return attributes;
-}
-
-
-/**
- * @param {Element} element
- * @returns {any}
- */
-export function getClasses(element) {
-  const result = {};
-  Array.prototype.forEach.call(element.classList, className =>
-    result[className] = true
-  );
-  return result;
-}
-
-
-/**
- * @param {HTMLElement|SVGElement} element
- * @returns {any}
- */
-export function getStyle(element) {
-  const styleProps = {};
-  Array.prototype.forEach.call(element.style, key => {
-    styleProps[key] = element.style[key];
-  });
-  return styleProps;
 }
 
 

@@ -14,7 +14,7 @@ export default function RenderUpdatesMixin(Base) {
       // is applied before this mixin, we want to get the original props before
       // we render.
       this.setState({
-        original: updates.get(this)
+        original: updates.current(this)
       });
 
       if (super.connectedCallback) { super.connectedCallback(); }

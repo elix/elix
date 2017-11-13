@@ -18,7 +18,7 @@ describe("updates helpers", () => {
       <div class="foo bar" style="color: red;" aria-selected="false"></div>
     `;
     const fixture = container.children[0];
-    const fixtureProps = updates.get(fixture);
+    const fixtureProps = updates.current(fixture);
     assert.deepEqual(fixtureProps, {
       attributes: {
         'aria-selected': 'false'
