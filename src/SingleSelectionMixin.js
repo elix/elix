@@ -188,38 +188,40 @@ export default function SingleSelectionMixin(Base) {
      * the index will wrap around. E.g., attempting to select an index of 3 in
      * a 3-item list will select the 0th item.
      * 
-     * @param {number} selectedIndex - the index to select
+     * @param {number} index - the index to select
      */
     // TODO: Make Symbol
-    updateSelectedIndex(selectedIndex) {
+    updateSelectedIndex(index) {
 
       const items = this.items;
-      if (items == null) {
-        // Nothing to select.
-        return false;
-      }
+      const count = items ? items.length : 0;
 
-      const count = items.length;
-      const boundedIndex = this.state.selectionWraps ?
-
+      let selectedIndex;
+      if (items === null) {
+        // No items yet. It's possible we're still waiting for items. We'll set
+        // the selectedIndex state so that, if/when items do arrive, we can
+        // select the appropriate item.
+        selectedIndex = index;
+      } else if (this.state.selectionWraps) {      
         // Wrap the index.
         // JavaScript mod doesn't handle negative numbers the way we want to wrap.
         // See http://stackoverflow.com/a/18618250/76472
-        ((selectedIndex % count) + count) % count :
-
+        selectedIndex = ((index % count) + count) % count;
+      } else {
         // Don't wrap, force index within bounds of -1 (no selection) to
         // the array length - 1.
-        Math.max(Math.min(selectedIndex, count - 1), -1);
+        selectedIndex = Math.max(Math.min(index, count - 1), -1);
+      }
       
-      const changed = this.state.selectedIndex !== boundedIndex;
+      const changed = this.state.selectedIndex !== selectedIndex;
       if (changed) {
         this.setState({
-          selectedIndex: boundedIndex
+          selectedIndex
         });
         if (this[symbols.raiseChangeEvents]) {
           const event = new CustomEvent('selected-index-changed', {
             detail: {
-              boundedIndex
+              selectedIndex
             }
           });
           this.dispatchEvent(event);
@@ -245,6 +247,11 @@ export default function SingleSelectionMixin(Base) {
 function trackSelectedItem(component) {
 
   const items = component.items;
+  if (!items) {
+    // No items yet, may still be waiting for them.
+    return;
+  }
+
   const itemCount = items ? items.length : 0;
   const previousSelectedIndex = component.state.selectedIndex;
 

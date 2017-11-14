@@ -222,20 +222,25 @@ class Tabs extends Base {
 // Return the set of buttons generated for the given Tabs element.
 function defaultTabButtons(element) {
   if (element.items !== element[previousItemsKey]) {
-    // Items have changed; create new buttons set.
-    element[tabButtonsKey] = element.items.map((panel, index) => {
-      const label = panel.getAttribute('aria-label');
-      const panelId = getIdForPanel(element, panel, index);
-      const TabButtonClass = element.state.TabButtonClass;
-      const tabButton = new TabButtonClass();
-      const id = getIdForTabButton(element, index);
-      tabButton.setAttribute('id', id);
-      tabButton.setAttribute('aria-controls', panelId);
-      tabButton.textContent = label;
-      return tabButton;
-    });
-    // Make the array immutable.
-    Object.freeze(element[tabButtonsKey]);
+    if (!element.items) {
+      // No items yet.
+      element[tabButtonsKey] = [];
+    } else {
+      // Items have changed; create new buttons set.
+      element[tabButtonsKey] = element.items.map((panel, index) => {
+        const label = panel.getAttribute('aria-label');
+        const panelId = getIdForPanel(element, panel, index);
+        const TabButtonClass = element.state.TabButtonClass;
+        const tabButton = new TabButtonClass();
+        const id = getIdForTabButton(element, index);
+        tabButton.setAttribute('id', id);
+        tabButton.setAttribute('aria-controls', panelId);
+        tabButton.textContent = label;
+        return tabButton;
+      });
+      // Make the array immutable.
+      Object.freeze(element[tabButtonsKey]);
+    }
     element[previousItemsKey] = element.items;
   }
   return element[tabButtonsKey];

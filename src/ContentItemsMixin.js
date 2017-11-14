@@ -64,7 +64,7 @@ export default function ContentItemsMixin(Base) {
         // Memoize
         this[itemsKey] = content ?
           substantiveElements(content) :
-          [];
+          null;
         // Make immutable.
         Object.freeze(this[itemsKey]);
         this[previousContentKey] = content;

@@ -33,6 +33,22 @@ describe("ListBox", () => {
     await eventPromise;
   });
 
+  it("accepts the selected-index attribute in markup", async () => {
+    container.innerHTML = `
+      <elix-list-box selected-index="2">
+        <div>Zero</div>
+        <div>One</div>
+        <div>Two</div>
+      </elix-list-box>
+    `;
+    const fixture = container.querySelector('elix-list-box');
+    // Wait for initial content.
+    flushPolyfills();
+    await Promise.resolve();
+    assert.equal(fixture.selectedIndex, 2);
+    assert.equal(fixture.selectedItem, fixture.children[2]);
+  });
+
 });
 
 
