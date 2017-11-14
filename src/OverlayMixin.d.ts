@@ -9,7 +9,7 @@ declare const OverlayMixin: StateMixin<{
 },
 {},
 {
-  close(): Promise<void>;
+  close(result?: any): Promise<void>;
   closed: boolean;
   connectedCallback(): void;
   open(): Promise<void>;

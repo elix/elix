@@ -19,10 +19,10 @@ class AlertDialog extends Dialog {
     if (super.componentDidMount) { super.componentDidMount(); }
     this.$.buttonContainer.addEventListener('click', event => {
       // TODO: Ignore clicks on buttonContainer background.
-      // TODO: Return value.
-      if (event.target instanceof HTMLElement) {
-        // const button = event.target;
-        this.close();
+      const button = event.target;
+      if (button instanceof HTMLElement) {
+        const result = button.textContent;
+        this.close(result);
       }
     });
   }
@@ -95,8 +95,7 @@ class AlertDialog extends Dialog {
     }
     if (found && index >= 0) {
       // TODO: Handle return value.
-      // this.close(this.choices[index]);
-      this.close();
+      this.close(this.choices[index]);
       handled = true;
     }
 

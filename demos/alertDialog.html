@@ -39,9 +39,11 @@
       dialog.textContent = 'Hello, world';
       dialog.choices = choices;
       dialog.open();
-      // dialog.whenClosed().then(function(result) {
-      //   response.textContent = 'You picked ' + result + '.';
-      // });
+      dialog.whenClosed().then(function(result) {
+        response.textContent = result ?
+          "You picked " + result + "." :
+          "You didn't make a choice.";
+      });
     }
   </script>
 </body>

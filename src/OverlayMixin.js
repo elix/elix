@@ -4,6 +4,8 @@ import Symbol from './Symbol.js';
 
 const appendedToDocumentKey = Symbol('appendedToDocument');
 const assignedZIndexKey = Symbol('assignedZIndex');
+const closePromiseKey = Symbol('closePromise');
+const closeResolveKey = Symbol('closeResolve');
 const restoreFocusToElementKey = Symbol('restoreFocusToElement');
 
 
@@ -80,9 +82,10 @@ export default function OverlayMixin(Base) {
       });
     }
 
-    async close() {
+    async close(result) {
       if (!this.closed) {
         await this.setState({
+          result,
           visualState: this.visualStates.closed
         });
       }
@@ -186,6 +189,24 @@ export default function OverlayMixin(Base) {
         opened: 'opened'
       };
     }
+
+    /**
+     * This method can be used as an alternative to listening to the
+     * "opened-changed" event, particularly in situations where you want to only
+     * handle the next time the component is closed.
+     * 
+     * @returns {Promise} A promise that resolves when the element has
+     * completely closed, including the completion of any asynchronous opening
+     * effect.
+     */
+    whenClosed() {
+      if (!this[closePromiseKey]) {
+        this[closePromiseKey] = new Promise((resolve, reject) => {
+          this[closeResolveKey] = resolve;
+        });
+      }
+      return this[closePromiseKey];
+    }
   }
 
   return Overlay;
@@ -217,27 +238,32 @@ function maxZIndexInUse() {
 
 
 // Update the overlay following a mount or update.
-function updateOverlay(element) {
-  if (element.closed) {
-    if (element[restoreFocusToElementKey]) {
+function updateOverlay(component) {
+  if (component.closed) {
+    if (component[restoreFocusToElementKey]) {
       // Restore focus to the element that had the focus before the overlay was
       // opened.
-      element[restoreFocusToElementKey].focus();
-      element[restoreFocusToElementKey] = null;
+      component[restoreFocusToElementKey].focus();
+      component[restoreFocusToElementKey] = null;
     }
-    if (element[appendedToDocumentKey]) {
+    if (component[appendedToDocumentKey]) {
       // The overlay wasn't in the document when opened, so we added it.
       // Remove it now.
-      element.parentNode.removeChild(element);
-      element[appendedToDocumentKey] = false;
+      component.parentNode.removeChild(component);
+      component[appendedToDocumentKey] = false;
+    }
+    if (component[closeResolveKey]) {
+      component[closeResolveKey](component.state.result);
+      component[closeResolveKey] = null;
+      component[closePromiseKey] = null;
     }
   }
   else {
-    if (!element[restoreFocusToElementKey] && document.activeElement !== document.body) {
+    if (!component[restoreFocusToElementKey] && document.activeElement !== document.body) {
       // Remember which element had the focus before we were opened.
-      element[restoreFocusToElementKey] = document.activeElement;
-      element.foo = document.activeElement;
+      component[restoreFocusToElementKey] = document.activeElement;
+      component.foo = document.activeElement;
     }
-    element.focus();
+    component.focus();
   }
 }
