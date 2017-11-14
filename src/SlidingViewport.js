@@ -62,7 +62,7 @@ class SlidingViewport extends Base {
     const swiping = this.state.swipeFraction != null;
     const swipeFraction = this.state.swipeFraction || 0;
     const fractionalSelection = this.state.selectedIndex + sign * swipeFraction;
-    const count = this.items.length;
+    const count = this.items ? this.items.length : 0;
     const dampedSelection = FractionalSelection.dampedListSelection(fractionalSelection, count);
     const fraction = sign * dampedSelection / count;
     const transition = swiping ?

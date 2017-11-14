@@ -31,12 +31,17 @@ export default function PageDotsMixin(Base) {
     get pageDots() {
       if (this.items !== this[previousItemsKey]) {
         // Items have changed; create new buttons set.
-        this[pageDotsKey] = this.items.map(() => {
-          const pageDot = new PageDot();
-          return pageDot;
-        });
-        // Make the array immutable.
-        Object.freeze(this[pageDotsKey]);
+        if (!this.items) {
+          // No items yet.
+          this[pageDotsKey] = [];
+        } else {
+          this[pageDotsKey] = this.items.map(() => {
+            const pageDot = new PageDot();
+            return pageDot;
+          });
+          // Make the array immutable.
+          Object.freeze(this[pageDotsKey]);
+        }
         this[previousItemsKey] = this.items;
       }
       return this[pageDotsKey];

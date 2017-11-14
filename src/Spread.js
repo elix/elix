@@ -37,9 +37,10 @@ class Spread extends Base {
   }
 
   get updates() {
+    const count = this.items ? this.items.length : 0;
     return merge(super.updates, {
       style: {
-        'width': `${this.items.length * 100}%`
+        'width': `${count * 100}%`
       }
     });
   }
