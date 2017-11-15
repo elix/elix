@@ -20,6 +20,9 @@ const Base =
  * This component is used by [LabeledTabs](LabeledTabs), which will generate
  * an instance of `LabeledTabButton` for each panel in a set of tab panels.
  *
+ * @mixes FocusRingMixin
+ * @mixes LanguageDirectionMixin
+ * @mixes SlotContentMixin
  */
 class TabButton extends Base {
 

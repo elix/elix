@@ -22,6 +22,19 @@ const Base =
   ))))))));
 
 
+/**
+ * Allows a user to navigate a horizontal set of items with touch, mouse,
+ * keyboard, or trackpad. Shows a sliding effect when moving between items.
+ * 
+ * @mixes AriaListMixin
+ * @mixes DirectionSelectionMixin
+ * @mixes FocusRingMixin
+ * @mixes KeyboardDirectionMixin
+ * @mixes KeyboardMixin
+ * @mixes SwipeDirectionMixin
+ * @mixes TouchSwipeMixin
+ * @mixes TrackpadSwipeMixin
+ */
 class SlidingPages extends Base {}
 
 

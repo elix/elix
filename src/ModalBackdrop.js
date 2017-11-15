@@ -1,8 +1,11 @@
-import ElementBase from './ElementBase.js';
 import { merge } from './updates.js';
+import ElementBase from './ElementBase.js';
 import symbols from './symbols.js';
 
 
+/**
+ * The backdrop shown behind a [Dialog](Dialog).
+ */
 class ModalBackdrop extends ElementBase {
 
   get [symbols.template]() {

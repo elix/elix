@@ -32,18 +32,18 @@ const Base =
  * UI is not critical to completing the user’s primary goal (and, hence, not
  * critical to the application’s business goal).
  * 
- * Dialog uses `BackdropWrapper` to add a backdrop behind the main overlay
- * content. Both the backdrop and the dialog itself can be styled.
+ * Dialog displays a [ModalBackdrop](ModalBackdrop) behind the main overlay
+ * content to help the user understand the modal condition. Both the backdrop
+ * and the dialog itself can be styled.
  * 
- * @mixes AttributeMarshallingMixin
- * @mixes BackdropWrapper
  * @mixes DialogModalityMixin
- * @mixes FocusCaptureWrapper
+ * @mixes FocusCaptureMixin
  * @mixes KeyboardMixin
- * @mixes OpenCloseMixin
+ * @mixes LanguageDirectionMixin
+ * @mixes OpenCloseTransitionMixin
  * @mixes OverlayMixin
- * @mixes ShadowTemplateMixin
- * @mixes TransitionEffectMixin
+ * @mixes TouchSwipeMixin
+ * @mixes TrackpadSwipeMixin
  */
 class Drawer extends Base {
 

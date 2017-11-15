@@ -17,12 +17,9 @@ const Base =
  * A `Popup` is a lightweight form of overlay that, when opened, displays its
  * children on top of other page elements.
  * 
- * @mixes AttributeMarshallingMixin
  * @mixes KeyboardMixin
- * @mixes OpenCloseMixin
  * @mixes OverlayMixin
  * @mixes PopupModalityMixin
- * @mixes ShadowTemplateMixin
  */
 class Popup extends Base {
 

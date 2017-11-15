@@ -20,6 +20,8 @@ const Base =
  * The component works by copying the text to an invisible element which will
  * automatically grow in size; the expanding copy will expand the container,
  * which in turn will vertically stretch the text area to match.
+ * 
+ * @mixes SlotContentMixin
  */
 class AutosizeTextarea extends Base {
 

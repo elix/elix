@@ -46,6 +46,9 @@ const Base =
  * specialized [LabeledTabs](LabeledTabs) component, which will generate text
  * tab buttons for you.
  *
+ * @mixes ContentItemsMixin
+ * @mixes SingleSelectionMixin
+ * @mixes SlotContentMixin
  */
 class Tabs extends Base {
 
@@ -96,6 +99,76 @@ class Tabs extends Base {
     };
   }
 
+  [symbols.render]() {
+    if (super[symbols.render]) { super[symbols.render](); }
+
+    // Physically reorder the tabs and panels to reflect the desired arrangement.
+    // We could change the visual appearance by reversing the order of the flex
+    // box, but then the visual order wouldn't reflect the document order, which
+    // determines focus order. That would surprise a user trying to tab through
+    // the controls.
+    const tabPosition = this.state.tabPosition;
+    const topOrLeftPosition = (tabPosition === 'top' || tabPosition === 'left');
+    const firstElement = topOrLeftPosition ?
+      this.$.tabStrip :
+      this.$.tabPanels;
+    const lastElement = topOrLeftPosition ?
+      this.$.tabPanels :
+      this.$.tabStrip;
+    if (!this.shadowRoot) {
+      /* eslint-disable no-console */
+      console.warn(`Tabs expects ${this.constructor.name} to define a shadowRoot.\nThis can be done with ShadowTemplateMixin: https://elix.org/documentation/ShadowTemplateMixin.`);
+    } else if (firstElement.nextSibling !== lastElement) {
+      this.shadowRoot.insertBefore(firstElement, lastElement);
+    }
+  }
+
+  get tabAlign() {
+    return this.state.tabAlign;
+  }
+  set tabAlign(tabAlign) {
+    this.setState({ tabAlign });
+  }
+  
+  /**
+   * Default implementation of tabButtons property looks in the tab buttons slot
+   * for items. If nothing is distributed to that slot, it generates an array of
+   * elix-tab-button elements for use as tab buttons.
+   */
+  get tabButtons() {
+    /** @type {any} */
+    const tabButtonsSlot = this.$.tabButtonsSlot;
+    const assignedButtons = tabButtonsSlot.assignedNodes();
+    return assignedButtons.length > 0 ?
+      assignedButtons :
+      defaultTabButtons(this);
+  }
+
+  get tabPosition() {
+    return this.state.tabPosition;
+  }
+  set tabPosition(tabPosition) {
+    this.setState({ tabPosition });
+  }
+
+  get [symbols.template]() {
+    const tabPanelsTag = this.state.tabPanelsTag;
+    return `
+      <style>
+        :host {
+          display: inline-flex;
+          position: relative;
+        }
+      </style>
+      <elix-tab-strip id="tabStrip">
+        <slot id="tabButtonsSlot" name="tabButtons"></slot>
+      </elix-tab-strip>
+      <${tabPanelsTag} id="tabPanels" style="display: flex; flex: 1;">
+        <slot></slot>
+      </${tabPanelsTag}>
+    `;
+  }
+
   get updates() {
     const tabPosition = this.state.tabPosition;
     const lateralPosition = tabPosition === 'left' || tabPosition === 'right';
@@ -144,76 +217,6 @@ class Tabs extends Base {
         }
       }
     });
-  }
-
-  get tabAlign() {
-    return this.state.tabAlign;
-  }
-  set tabAlign(tabAlign) {
-    this.setState({ tabAlign });
-  }
-  
-  /**
-   * Default implementation of tabButtons property looks in the tab buttons slot
-   * for items. If nothing is distributed to that slot, it generates an array of
-   * elix-tab-button elements for use as tab buttons.
-   */
-  get tabButtons() {
-    /** @type {any} */
-    const tabButtonsSlot = this.$.tabButtonsSlot;
-    const assignedButtons = tabButtonsSlot.assignedNodes();
-    return assignedButtons.length > 0 ?
-      assignedButtons :
-      defaultTabButtons(this);
-  }
-
-  get tabPosition() {
-    return this.state.tabPosition;
-  }
-  set tabPosition(tabPosition) {
-    this.setState({ tabPosition });
-  }
-
-  [symbols.render]() {
-    if (super[symbols.render]) { super[symbols.render](); }
-
-    // Physically reorder the tabs and panels to reflect the desired arrangement.
-    // We could change the visual appearance by reversing the order of the flex
-    // box, but then the visual order wouldn't reflect the document order, which
-    // determines focus order. That would surprise a user trying to tab through
-    // the controls.
-    const tabPosition = this.state.tabPosition;
-    const topOrLeftPosition = (tabPosition === 'top' || tabPosition === 'left');
-    const firstElement = topOrLeftPosition ?
-      this.$.tabStrip :
-      this.$.tabPanels;
-    const lastElement = topOrLeftPosition ?
-      this.$.tabPanels :
-      this.$.tabStrip;
-    if (!this.shadowRoot) {
-      /* eslint-disable no-console */
-      console.warn(`Tabs expects ${this.constructor.name} to define a shadowRoot.\nThis can be done with ShadowTemplateMixin: https://elix.org/documentation/ShadowTemplateMixin.`);
-    } else if (firstElement.nextSibling !== lastElement) {
-      this.shadowRoot.insertBefore(firstElement, lastElement);
-    }
-  }
-
-  get [symbols.template]() {
-    const tabPanelsTag = this.state.tabPanelsTag;
-    return `
-      <style>
-        :host {
-          display: inline-flex;
-          position: relative;
-        }
-      </style>
-      <elix-tab-strip id="tabStrip">
-        <slot id="tabButtonsSlot" name="tabButtons"></slot>
-      </elix-tab-strip>
-      <${tabPanelsTag} id="tabPanels" style="display: flex; flex: 1;">
-        <slot></slot>
-      </${tabPanelsTag}>
-    `;
   }
 
 }

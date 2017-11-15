@@ -38,10 +38,12 @@ const Base =
  * A simple single-selection list box.
  *
  * This component supports a generic visual style, ARIA support, and full
- * keyboard navigation. See `KeyboardDirectionMixin`,
- * `KeyboardPagedSelectionMixin`, and `KeyboardPrefixSelectionMixin` for
- * keyboard details.
+ * keyboard navigation. See [KeyboardDirectionMixin](KeyboardDirectionMixin),
+ * [KeyboardPagedSelectionMixin](KeyboardPagedSelectionMixin), and
+ * [KeyboardPrefixSelectionMixin](KeyboardPrefixSelectionMixin) for keyboard
+ * details.
  *
+ * @mixes AriaListMixin
  * @mixes ClickSelectionMixin
  * @mixes ContentItemsMixin
  * @mixes DirectionSelectionMixin
@@ -49,8 +51,8 @@ const Base =
  * @mixes KeyboardMixin
  * @mixes KeyboardPagedSelectionMixin
  * @mixes KeyboardPrefixSelectionMixin
+ * @mixes LanguageDirectionMixin
  * @mixes SelectedItemTextValueMixin
- * @mixes AriaListMixin
  * @mixes SelectionInViewMixin
  * @mixes SingleSelectionMixin
  * @mixes SlotContentMixin

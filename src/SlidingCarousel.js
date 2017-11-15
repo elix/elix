@@ -37,7 +37,30 @@ const Base =
     ElementBase
   ))))))))))))));
 
-
+/**
+ * A typical carousel with a sliding effect. The user can move between items with
+ * touch, the mouse, the keyboard, or a trackpad.
+ * 
+ * This carousel lets the user navigate the selection with left/right arrow
+ * buttons provided by [ArrowSelectionMixin](ArrowSelectionMixin) and small dots
+ * at the bottom of the carousel provided by [PageDotsMixin](PageDotsMixin). For
+ * a plain carousel without those extras, see [SlidingPages](SlidingPages).
+ * 
+ * @mixes AriaListMixin
+ * @mixes ArrowSelectionMixin
+ * @mixes ContentItemsMixin
+ * @mixes DirectionSelectionMixin
+ * @mixes FocusRingMixin
+ * @mixes KeyboardDirectionMixin
+ * @mixes KeyboardMixin
+ * @mixes LanguageDirectionMixin
+ * @mixes PageDotsMixin
+ * @mixes SingleSelectionMixin
+ * @mixes SlotContentMixin
+ * @mixes SwipeDirectionMixin
+ * @mixes TouchSwipeMixin
+ * @mixes TrackpadSwipeMixin
+ */
 class SlidingCarousel extends Base {
 
   componentDidMount() {

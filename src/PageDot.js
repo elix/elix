@@ -1,11 +1,12 @@
-/* Used by PageDotsMixin  */
-
-
 import { merge } from './updates.js';
 import ElementBase from './ElementBase.js';
 import symbols from './symbols.js';
 
 
+/**
+ * A small dot used by [PageDotsMixin](PageDotsMixin) to represent a carousel
+ * item.
+ */
 class PageDot extends ElementBase {
 
   get [symbols.template]() {

@@ -201,7 +201,7 @@ export default function OverlayMixin(Base) {
      */
     whenClosed() {
       if (!this[closePromiseKey]) {
-        this[closePromiseKey] = new Promise((resolve, reject) => {
+        this[closePromiseKey] = new Promise(resolve => {
           this[closeResolveKey] = resolve;
         });
       }

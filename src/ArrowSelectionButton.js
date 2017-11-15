@@ -1,10 +1,11 @@
-/* Used by ArrowSelectionMixin  */
-
-
 import WrappedStandardElement from './WrappedStandardElement.js';
 import symbols from './symbols.js';
 
 
+/**
+ * A button used by [ArrowSelectionMixin](ArrowSelectionMixin) to show its
+ * left/right arrow buttons.
+ */
 class ArrowSelectionButton extends WrappedStandardElement.wrap('button') {
 
   get [symbols.template]() {

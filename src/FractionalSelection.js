@@ -14,15 +14,15 @@
  * @param {number} itemCount - An integer for the number of items in the list
  * @returns {number} A real number representing the damped selection value.
  */
-export function dampedListSelection(selection, itemCount) {
+export function dampenListSelection(selection, itemCount) {
   const bound = itemCount - 1;
   let damped;
   if (selection < 0) {
     // Trying to go past beginning of list. Apply tension from the left edge.
-    damped = -damping(-selection);
+    damped = -dampen(-selection);
   } else if (selection >= bound) {
     // Trying to go past end of list. Apply tension from the right edge.
-    damped = bound + damping(selection - bound);
+    damped = bound + dampen(selection - bound);
   } else {
     // No damping required.
     damped = selection;
@@ -44,8 +44,11 @@ export function dampedListSelection(selection, itemCount) {
  * tangent to the diagonal line x=y at (0, 0). This ensures smooth continuity
  * with the normal drag behavior, in which the visible sliding is linear with
  * the distance the touchpoint has been dragged.
+ * 
+ * @param {number} x - The number of dampen
+ * @returns {number}
  */
-export function damping(x) {
+export function dampen(x) {
   const y = (-1 / (x + 1)) + 1;
   return y;
 }

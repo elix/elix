@@ -12,6 +12,13 @@ const Base =
   ));
 
 
+/**
+ * Spreads its items out evenly, so they take an equivalent fraction of the
+ * component's width.
+ * 
+ * @mixes ContentItemsMixin
+ * @mixes SlotContentMixin
+ */
 class Spread extends Base {
 
   itemUpdates(item, calcs, original) {

@@ -51,11 +51,13 @@ const Base =
  * can be handled with the separate [TabStripWrapper](TabStripWrapper)
  * component.
  *
+ * @mixes AriaListMixin
  * @mixes ClickSelectionMixin
  * @mixes ContentItemsMixin
  * @mixes DirectionSelectionMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
+ * @mixes LanguageDirectionMixin
  * @mixes SingleSelectionMixin
  * @mixes SlotContentMixin
  */
@@ -147,31 +149,6 @@ class TabStrip extends Base {
       'vertical';
   }
 
-  get updates() {
-    const base = super.updates || {};
-    const original = this.state.original;
-
-    const tabPosition = this.state.tabPosition;
-    const lateralPosition = tabPosition === 'left' || tabPosition === 'right';
-    const tabAlign = this.state.tabAlign;
-    const justifyContent = {
-      'center': 'center',
-      'end': 'flex-end',
-      'start': 'flex-start',
-      'stretch': null // No style needed for "stretch"
-    };
-
-    return merge(base, {
-      attributes: {
-        role: original.attributes.role || 'tablist'
-      },
-      style: {
-        'flex-direction': lateralPosition ? 'column' : 'row',
-        'justify-content': justifyContent[tabAlign] || original.style['justify-content']
-      }
-    });
-  }
-
   get tabAlign() {
     return this.state.tabAlign;
   }
@@ -195,6 +172,31 @@ class TabStrip extends Base {
       </style>
       <slot></slot>
     `;
+  }
+
+  get updates() {
+    const base = super.updates || {};
+    const original = this.state.original;
+
+    const tabPosition = this.state.tabPosition;
+    const lateralPosition = tabPosition === 'left' || tabPosition === 'right';
+    const tabAlign = this.state.tabAlign;
+    const justifyContent = {
+      'center': 'center',
+      'end': 'flex-end',
+      'start': 'flex-start',
+      'stretch': null // No style needed for "stretch"
+    };
+
+    return merge(base, {
+      attributes: {
+        role: original.attributes.role || 'tablist'
+      },
+      style: {
+        'flex-direction': lateralPosition ? 'column' : 'row',
+        'justify-content': justifyContent[tabAlign] || original.style['justify-content']
+      }
+    });
   }
 
 }

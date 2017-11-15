@@ -1,5 +1,5 @@
 import { merge } from './updates.js';
-import * as FractionalSelection from './FractionalSelection.js';
+import * as fractionalSelection from './fractionalSelection.js';
 import ContentItemsMixin from './ContentItemsMixin.js';
 import ElementBase from './ElementBase.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
@@ -19,6 +19,16 @@ const Base =
   ))));
 
 
+/**
+ * Displays a set of items on a horizontal axis, with a single item completely
+ * visible at a time. It shows a sliding transition when changing which item is
+ * selected.
+ * 
+ * @mixes ContentItemsMixin
+ * @mixes LanguageDirectionMixin
+ * @mixes SingleSelectionMixin
+ * @mixes SlotContentMixin
+ */
 class SlidingViewport extends Base {
 
   get defaultState() {
@@ -61,9 +71,9 @@ class SlidingViewport extends Base {
     const sign = this.rightToLeft ? 1 : -1;
     const swiping = this.state.swipeFraction != null;
     const swipeFraction = this.state.swipeFraction || 0;
-    const fractionalSelection = this.state.selectedIndex + sign * swipeFraction;
+    const selectionFraction = this.state.selectedIndex + sign * swipeFraction;
     const count = this.items ? this.items.length : 0;
-    const dampedSelection = FractionalSelection.dampedListSelection(fractionalSelection, count);
+    const dampedSelection = fractionalSelection.dampenListSelection(selectionFraction, count);
     const fraction = sign * dampedSelection / count;
     const transition = swiping ?
       'none' :

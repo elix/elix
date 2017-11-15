@@ -10,8 +10,9 @@ const Base =
   ContentItemsMixin(
   SingleSelectionMixin(
   SlotContentMixin(
-        ElementBase
+    ElementBase
   )));
+
 
 /**
  * Shows exactly one child element at a time. This can be useful, for example,
@@ -23,8 +24,8 @@ const Base =
  * implemented by the [Tabs](Tabs) component.
  *
  * @mixes ContentItemsMixin
- * @mixes SlotContentMixin
  * @mixes SingleSelectionMixin
+ * @mixes SlotContentMixin
  */
 class Modes extends Base {
 
