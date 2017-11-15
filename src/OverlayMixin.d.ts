@@ -14,6 +14,7 @@ declare const OverlayMixin: StateMixin<{
   connectedCallback(): void;
   open(): Promise<void>;
   opened: boolean;
+  whenClosed(): Promise<void>;
 },
 {
   visualState: string

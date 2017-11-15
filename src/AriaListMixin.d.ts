@@ -3,10 +3,6 @@
 
 /// <reference path="../src/shared.d.ts"/>
 
-declare const ShadowTemplateMixin: Mixin<{}, {
-  $: {
-    [key: string]: Element;
-  }
-}>;
+declare const AriaListMixin: Mixin<{}, {}>;
 
-export default ShadowTemplateMixin;
+export default AriaListMixin;

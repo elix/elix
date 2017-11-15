@@ -5,7 +5,7 @@
 
 declare const SelectedItemTextValueMixin: Mixin<{
   items?: Element[];
-  selectedItem?: Element;
+  selectedItem?: Element|null;
 }, {
   value: string;
 }>;

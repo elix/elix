@@ -4,16 +4,14 @@
 /// <reference path="../src/shared.d.ts"/>
 
 declare const ReactiveMixin: Mixin<{
-  componentDidMount?(): void;
-  componentDidUpdate?(): void;
   connectedCallback?(): void;
   defaultState?: PlainObject;
 }, {
-  componentDidMount(): void;
-  componentDidUpdate(): void;
+  componentDidMount?(): void;
+  componentDidUpdate?(): void;
   connectedCallback(): void;
   defaultState: PlainObject;
-  render: Promise<void>;
+  render(): Promise<void>;
   setState(changes: PlainObject): Promise<void>;
   state: PlainObject;
 }>;

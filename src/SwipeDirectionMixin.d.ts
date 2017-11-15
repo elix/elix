@@ -3,6 +3,9 @@
 
 /// <reference path="../src/shared.d.ts"/>
 
-declare const SwipeDirectionMixin: Mixin<{}, {}>;
+declare const SwipeDirectionMixin: Mixin<{}, {
+  swipeLeft(): void;
+  swipeRight(): void;
+}>;
 
 export default SwipeDirectionMixin;

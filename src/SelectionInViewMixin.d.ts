@@ -4,13 +4,13 @@
 /// <reference path="../src/shared.d.ts"/>
 
 declare const SelectionInViewMixin: Mixin<{
-  connectedCallback?(): void;
+  componentDidMount?(): void;
+  componentDidUpdate?(): void;
   scrollItemIntoView?(item: Element);
-  selectedItem?: Element;
 }, {
-  connectedCallback(): void;
+  componentDidMount(): void;
+  componentDidUpdate(): void;
   scrollItemIntoView(item: Element);
-  selectedItem: Element;
 }>;
 
 export default SelectionInViewMixin;

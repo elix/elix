@@ -6,10 +6,8 @@
 /** Here is a mixin */
 declare const AttributeMarshallingMixin: Mixin<{
   attributeChangedCallback?(attributeName: string, oldValue: string, newValue: string);
-  connectedCallback?(): void;
 }, {
   attributeChangedCallback(attributeName: string, oldValue: string, newValue: string);
-  connectedCallback(): void;
 }>;
 
 export default AttributeMarshallingMixin;

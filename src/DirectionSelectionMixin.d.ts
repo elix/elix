@@ -3,16 +3,6 @@
 
 /// <reference path="../src/shared.d.ts"/>
 
-declare const AttributeMarshallingMixin: Mixin<{
-  selectFirst?(): boolean;
-  selectLast?(): boolean;
-  selectNext?(): boolean;
-  selectPrevious?(): boolean;
-}, {
-  selectFirst(): boolean;
-  selectLast(): boolean;
-  selectNext(): boolean;
-  selectPrevious(): boolean;
-}>;
+declare const DirectionSelectionMixin: Mixin<{}, {}>;
 
-export default AttributeMarshallingMixin;
+export default DirectionSelectionMixin;

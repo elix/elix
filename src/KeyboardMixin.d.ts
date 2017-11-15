@@ -3,13 +3,10 @@
 
 /// <reference path="../src/shared.d.ts"/>
 
-declare const KeyboardMixin: StateMixin<{
-  connectedCallback?(): void;
-},
+declare const KeyboardMixin: StateMixin<
 {},
-{
-  connectedCallback(): void;
-},
+{},
+{},
 {
   tabindex: string
 }>;

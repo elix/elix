@@ -3,12 +3,14 @@
 
 /// <reference path="../src/shared.d.ts"/>
 
-declare const SlotContentMixin: StateMixin<{
-  connectedCallback?(): void;
+declare const SlotContentMixin: StateMixin<
+{
+  componentDidMount?(): void;
 },
 {},
 {
-  connectedCallback(): void;
+  componentDidMount(): void;
+  contentSlot: HTMLSlotElement
 },
 {
   content: NodeList|Node[];

@@ -88,6 +88,11 @@ export default function SingleSelectionMixin(Base) {
       return this.updateSelectedIndex(0);
     }
 
+    /**
+     * The index of the currently-selected item, or -1 if no item is selected.
+     * 
+     * @type {number}
+     */
     get selectedIndex() {
       return this.state.selectedIndex;
     }
@@ -98,6 +103,11 @@ export default function SingleSelectionMixin(Base) {
       this.updateSelectedIndex(parsedIndex);
     }
 
+    /**
+     * The currently-selected item, or null if no item is selected.
+     * 
+     * @type {Element|null}
+     */
     get selectedItem() {
       return this.items && this.items[this.state.selectedIndex];
     }

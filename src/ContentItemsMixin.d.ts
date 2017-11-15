@@ -11,8 +11,6 @@ declare const ContentItemsMixin: StateMixin<{
   itemUpdates(item: Element, calcs: PlainObject, original: any): any;
   items: Element[];
 },
-{
-  items: Element[];
-}>;
+{}>;
 
 export default ContentItemsMixin;

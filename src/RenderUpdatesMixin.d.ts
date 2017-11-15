@@ -3,11 +3,17 @@
 
 /// <reference path="../src/shared.d.ts"/>
 
-declare const RenderUpdatesMixin: Mixin<{
+declare const RenderUpdatesMixin: StateMixin<
+{
   updates?: PlainObject;
-}, {
+},
+{},
+{
   updates: PlainObject;
-  originalProps: PlainObject;
-}>;
+},
+{
+  original: PlainObject;
+}
+>;
 
 export default RenderUpdatesMixin;
