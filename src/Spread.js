@@ -23,10 +23,11 @@ class Spread extends Base {
 
   itemUpdates(item, calcs, original) {
     const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
+    const width = original.style.width || `${100 / this.items.length}%`;
     return merge(base, {
       style: {
         'objectFit': 'contain',
-        'width': `${100 / this.items.length}%`
+        width
       }
     });
   }
