@@ -35,4 +35,4 @@ const ElementBase =
     HTMLElement
   ))));
 
-export default ElementBase
+export default ElementBase;
