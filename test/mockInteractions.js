@@ -26,7 +26,7 @@ let hasKeyboardEventConstructor;
 export function dispatchSyntheticKeyboardEvent(element, eventType, init) {
 
   const properties = {};
-  for (let key in init) {
+  for (const key in init) {
     properties[key] = init[key];
   }
   properties.key = properties.key || 'Enter';

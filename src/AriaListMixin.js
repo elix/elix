@@ -45,6 +45,7 @@ export default function AriaListMixin(Base) {
 
     itemUpdates(item, calcs, original) {
       const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
+      
       // Ensure each item has an ID so we can set aria-activedescendant on the
       // overall list whenever the selection changes.
       //
@@ -63,11 +64,14 @@ export default function AriaListMixin(Base) {
         // Remember that we generated an ID for this item.
         item[generatedIdKey] = id;
       }
+
+      const role = original.role || base.role || this.state.itemRole || 'option';
+
       return merge(base, {
         attributes: {
           'aria-selected': calcs.selected,
           id,
-          'role': original.role || base.role || 'option'
+          role
         },
       });
     }

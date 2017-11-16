@@ -155,7 +155,7 @@ export default function ReactiveMixin(Base) {
         return true; // Trust base result.
       }
       // Do a shallow prop comparison to track whether there were any changes.
-      for (let key in nextState) {
+      for (const key in nextState) {
         if (nextState[key] !== this.state[key]) {
           return true;
         }

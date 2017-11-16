@@ -33,7 +33,7 @@ const previousChildNodesKey = Symbol('previousChildNodes');
  * @param {object} props
  */
 export function apply(element, props) {
-  for (let key in props) {
+  for (const key in props) {
     const value = props[key];
     switch (key) {
 
@@ -102,7 +102,7 @@ export function applyAttribute(element, name, value) {
  */
 export function applyAttributes(element, attributeProps) {
   if (attributeProps) {
-    for (let attributeName in attributeProps) {
+    for (const attributeName in attributeProps) {
       applyAttribute(element, attributeName, attributeProps[attributeName]);
     }
   }
@@ -159,14 +159,14 @@ export function applyClass(element, className, value) {
  * @param {any} classProps
  */
 export function applyClasses(element, classProps) {
-  for (let className in classProps) {
+  for (const className in classProps) {
     applyClass(element, className, classProps[className])
   }
 }
 
 
 function applyReferencedElementProps(element, referencedElementProps) {
-  for (let key in referencedElementProps) {
+  for (const key in referencedElementProps) {
     const props = referencedElementProps[key];
     const referencedElement = element.$[key];
     apply(referencedElement, props);
@@ -180,7 +180,7 @@ function applyReferencedElementProps(element, referencedElementProps) {
  */
 export function applyStyle(element, styleProps) {
   const style = element.style;
-  for (let styleName in styleProps) {
+  for (const styleName in styleProps) {
     const value = styleProps[styleName];
     style[styleName] = value === undefined ? '' : value;
   }
@@ -281,7 +281,7 @@ export function merge(...sources) {
   const result = {};
   sources.forEach(source => {
     if (source) {
-      for (let key in source) {
+      for (const key in source) {
         const value = source[key];
         result[key] = !mergedProperties[key] ?
           // Regular property overwrites existing value.
