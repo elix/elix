@@ -22,6 +22,18 @@ export default function SelectedItemTextValueMixin(Base) {
   // The class prototype added by the mixin.
   class SelectedItemTextValue extends Base {
 
+    componentDidUpdate() {
+      if (super.componentDidUpdate) { super.componentDidUpdate(); }
+      const items = this.items;
+      if (this.state.pendingValue && items) {
+        const index = indexOfItemWithText(items, this.state.pendingValue);
+        this.setState({
+          selectedIndex: index,
+          pendingValue: null
+        });
+      }
+    }
+
     /**
      * The text content of the selected item.
      *
@@ -37,27 +49,29 @@ export default function SelectedItemTextValueMixin(Base) {
         this.selectedItem.textContent;
     }
     set value(text) {
-
-      const currentIndex = this.selectedIndex;
-      let newIndex = -1; // Assume we won't find the text.
-
-      // Find the item with the indicated text.
       const items = this.items;
-      if (items == null) {
-        return;
-      }
-      for (let i = 0, length = items.length; i < length; i++) {
-        if (items[i].textContent === text) {
-          newIndex = i;
-          break;
-        }
-      }
-
-      if (newIndex !== currentIndex) {
-        this.selectedIndex = newIndex;
+      if (items === null) {
+        // No items yet, save and try again later.
+        this.setState({
+          pendingValue: text
+        });
+      } else {
+        // Select the index of the indicate text, if found.
+        const index = indexOfItemWithText(items, text);
+        this.updateSelectedIndex(index);
       }
     }
   }
 
   return SelectedItemTextValue;
+}
+
+
+function indexOfItemWithText(items, text) {
+  for (let i = 0, length = items.length; i < length; i++) {
+    if (items[i].textContent === text) {
+      return i
+    }
+  }
+  return -1;
 }
