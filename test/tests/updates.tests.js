@@ -13,7 +13,7 @@ describe("updates helpers", () => {
     container.innerHTML = '';
   });
 
-  it("updates.get gets existing props from an element", () => {
+  it("updates.get gets existing updates from an element", () => {
     container.innerHTML = `
       <div class="foo bar" style="color: red;" aria-selected="false"></div>
     `;
@@ -59,7 +59,7 @@ describe("updates helpers", () => {
     assert(fixture.classList.contains('bar'));
   });
 
-  it("updates.apply merges new props on top of existing attributes", () => {
+  it("updates.apply merges new updates on top of existing attributes", () => {
     container.innerHTML = `
       <div class="foo bar" style="color: red;" aria-selected="false"></div>
     `;
@@ -88,8 +88,8 @@ describe("updates helpers", () => {
     assert.deepEqual(fixture, {});
   });
 
-  it("updates.merge merges multiple props dictionaries together", () => {
-    const props1 = {
+  it("updates.merge merges multiple updates dictionaries together", () => {
+    const updates1 = {
       attributes: {
         'aria-selected': 'false'
       },
@@ -103,7 +103,7 @@ describe("updates helpers", () => {
       customProperty0: 'Hello',
       customProperty1: 0
     };
-    const props2 = {
+    const updates2 = {
       attributes: {
         'aria-selected': 'true'
       },
@@ -116,7 +116,7 @@ describe("updates helpers", () => {
       customProperty1: 1,
       customProperty2: true
     };
-    const merged = updates.merge(props1, props2);
+    const merged = updates.merge(updates1, updates2);
     assert.equal(merged.attributes['aria-selected'], 'true');
     assert.deepEqual(merged.classes, { bar: true, foo: true });
     assert.equal(merged.style['background-color'], 'gray');
@@ -174,7 +174,7 @@ describe("updates helpers", () => {
     assert.isNull(existingChild.parentNode);
   });
 
-  it("props applies $ props to referenced elements", () => {
+  it("updates applies $ updates to referenced elements", () => {
     const fixture = document.createElement('div');
     fixture.$ = {
       child: document.createElement('button')
@@ -192,6 +192,66 @@ describe("updates helpers", () => {
     });
     assert(fixture.$.child.disabled);
     assert.equal(fixture.$.child.getAttribute('aria-label'), 'Label');
+  });
+
+  it("merge can merge $ updates", () => {
+    const updates1 = {
+      $: {
+        one: {
+          attributes: {
+            'aria-selected': 'false'
+          },
+          style: {
+            'background-color': 'gray',
+            color: 'black'
+          }
+        },
+        two: {
+          classes: {
+            foo: true
+          }
+        }
+      }
+    };
+    const updates2 = {
+      $: {
+        one: {
+          attributes: {
+            hidden: false
+          },
+          style: {
+            color: 'red'
+          }
+        },
+        two: {
+          classes: {
+            bar: true
+          }
+        }
+      }
+    };
+    const actual = updates.merge(updates1, updates2);
+    const expected = {
+      $: {
+        one: {
+          attributes: {
+            'aria-selected': 'false',
+            hidden: false
+          },
+          style: {
+            'background-color': 'gray',
+            color: 'red'
+          }
+        },
+        two: {
+          classes: {
+            foo: true,
+            bar: true
+          }
+        }
+      }
+    };
+    assert.deepEqual(actual, expected);
   });
 
 });

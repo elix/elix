@@ -27,7 +27,7 @@ export default function ArrowSelectionMixin(Base) {
     }
 
     get updates() {
-      const buttonProps = {
+      const buttonUpdates = {
         style: {
           'bottom': 0,
           'position': 'absolute',
@@ -39,7 +39,7 @@ export default function ArrowSelectionMixin(Base) {
       const canGoLeft = this.rightToLeft ?
         this.canSelectNext :
         this.canSelectPrevious;
-      const arrowButtonLeftProps = merge(buttonProps, {
+      const arrowButtonLeftUpdates = merge(buttonUpdates, {
         attributes: {
           disabled: !canGoLeft,
           hidden: supportsTouch()
@@ -52,7 +52,7 @@ export default function ArrowSelectionMixin(Base) {
       const canGoRight = this.rightToLeft ?
         this.canSelectPrevious :
         this.canSelectNext;
-      const arrowButtonRightProps = merge(buttonProps, {
+      const arrowButtonRightUpdates = merge(buttonUpdates, {
         attributes: {
           disabled: !canGoRight,
           hidden: supportsTouch()
@@ -71,8 +71,8 @@ export default function ArrowSelectionMixin(Base) {
 
       return merge(super.updates, {
         $: {
-          arrowButtonLeft: arrowButtonLeftProps,
-          arrowButtonRight: arrowButtonRightProps,
+          arrowButtonLeft: arrowButtonLeftUpdates,
+          arrowButtonRight: arrowButtonRightUpdates,
           arrowIconLeft: arrowIconProps,
           arrowIconRight: arrowIconProps,
           arrowSelection: {
