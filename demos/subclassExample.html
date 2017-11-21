@@ -11,7 +11,7 @@
 
   <template id="template">
     <button id="decrement">-</button>
-    <span id="value"></span>
+    <span id="visibleValue"></span>
     <button id="increment">+</button>
   </template>
 
@@ -51,19 +51,19 @@
         });
       }
 
-      // Props represent property/attribute assignments to apply to the
+      // Udpates represent property/attribute assignments to apply to the
       // component host and elements in its shadow subtree during rendering of
-      // the current state. This forms a pipeline:
+      // the current state. This is part of a rendering pipeline:
       //
-      //     state -> conditions -> updates -> DOM
+      //     events -> methods/properties -> state -> render
       //
       get updates() {
         return {
           style: {
-            color: this.state.value < 0 ? 'red' : ''
+            color: this.state.value < 0 ? 'red' : null
           },
           $: {
-            value: {
+            visibleValue: {
               textContent: this.state.value
             }
           }
@@ -92,6 +92,12 @@
     class CustomIncrementDecrement extends IncrementDecrement {
 
       get updates() {
+
+        const base = super.updates;
+        // Pick a color if the base class didn't specify one.
+        const color = base.style && base.style.color ||
+          (this.state.value > 0 ? 'dodgerblue' : null);
+
         const buttonStyle = {
           background: '#444',
           border: 'none',
@@ -99,10 +105,14 @@
         };
         const canDecrement = this.state.value > -5;
         const canIncrement = this.state.value < 5;
+
+        // Merge updates on top of those defined by the base class.
+        // This lets us preserve some of the base rendering, while adding
+        // our own styling and some unique behavior.
         return merge(super.updates, {
           style: {
             background: 'lightgray',
-            color: this.state.value < 0 ? 'dodgerblue' : '',
+            color,
             'font-family': 'Helvetica, Arial, sans-serif',
             'font-weight': 'bold'
           },

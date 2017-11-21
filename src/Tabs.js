@@ -59,12 +59,21 @@ class Tabs extends Base {
       const tabStrip = this.$.tabStrip;
       this.selectedIndex = tabStrip.selectedIndex;
     });
+    this.$.tabButtonsSlot.addEventListener('slotchange', () => {
+      updateDefaultTabButtons(this);
+    });
+  }
+
+  componentDidUpdate() {
+    if (super.componentDidMount) { super.componentDidMount(); }
+    updateDefaultTabButtons(this);
   }
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       selectionRequired: true,
       tabAlign: 'start',
+      tabButtons: [],
       TabButtonClass: TabButton,
       tabPanelsTag: 'elix-modes',
       tabPosition: 'top'
@@ -138,7 +147,7 @@ class Tabs extends Base {
   get tabButtons() {
     /** @type {any} */
     const tabButtonsSlot = this.$.tabButtonsSlot;
-    const assignedButtons = tabButtonsSlot.assignedNodes();
+    const assignedButtons = tabButtonsSlot.assignedNodes({ flatten: true });
     return assignedButtons.length > 0 ?
       assignedButtons :
       defaultTabButtons(this);
@@ -160,9 +169,7 @@ class Tabs extends Base {
           position: relative;
         }
       </style>
-      <elix-tab-strip id="tabStrip">
-        <slot id="tabButtonsSlot" name="tabButtons"></slot>
-      </elix-tab-strip>
+      <elix-tab-strip id="tabStrip"><slot id="tabButtonsSlot" name="tabButtons"></slot></elix-tab-strip>
       <${tabPanelsTag} id="tabPanels" style="display: flex; flex: 1;">
         <slot></slot>
       </${tabPanelsTag}>
@@ -173,13 +180,17 @@ class Tabs extends Base {
     const tabPosition = this.state.tabPosition;
     const lateralPosition = tabPosition === 'left' || tabPosition === 'right';
 
-    // Generate tab buttons if necessary.
+    // Generate tab buttons if no nodes are assigned to the tabButtons slot.
+    // It'd be a lot cleaner if we could just stick the default tab buttons
+    // directly inside the slot as default content. However, both Safari and the
+    // polyfill have bugs that crop up when working with default slot content.
+    // Instead, if we need default tab buttons, we'll append them to the tab
+    // strip after the slot. We still need to leave the slot there so that, if
+    // nodes are later assigned to the slot, we can detect that and drop our
+    // default tab buttons.
     /** @type {any} */
-    const tabButtonsSlot = this.$.tabButtonsSlot
-    const assignedButtons = tabButtonsSlot.assignedNodes();
-    const tabButtons = assignedButtons.length > 0 ?
-      [] :
-      defaultTabButtons(this);
+    const tabButtons = this.state.tabButtons || [];
+    let tabStripChildNodes = [this.$.tabButtonsSlot, ...tabButtons];
 
     // Some of the styling applied to the tabStrip and tabPanels is static, and
     // properly should be done through static CSS in the template. However,
@@ -197,12 +208,10 @@ class Tabs extends Base {
             'tab-align': this.state.tabAlign,
             'tab-position': this.state.tabPosition
           },
+          childNodes: tabStripChildNodes,
           style: {
             'z-index': 1
           }
-        },
-        tabButtonsSlot: {
-          childNodes: tabButtons
         },
         tabPanels: {
           attributes: {
@@ -219,6 +228,15 @@ class Tabs extends Base {
     });
   }
 
+}
+
+
+// Return true if arrays a and b have the same elements.
+function arrayEquals(a, b) {
+  if ((a && !b) || (!a && b) || (!a && !b) || (a.length !== b.length)) {
+    return false;
+  }
+  return !a.some((element, index) => element !== b[index]);
 }
 
 
@@ -268,6 +286,24 @@ function getIdForPanel(element, panel, index) {
     id = `${hostId}${index}`;
   }
   return id;
+}
+
+
+// See if any nodes are assigned to the tabButtonsSlot and, if so, generate a
+// set of default tab buttons. Alternatively, if we previously needed default
+// tab buttons, but nodes have now been assigned to the slot, remove the default
+// buttons. If anything changed, set state and trigger a render.
+function updateDefaultTabButtons(element) {
+  /** @type {any} */
+  const tabButtonsSlot = element.$.tabButtonsSlot;
+  const assignedButtons = tabButtonsSlot.assignedNodes({ flatten: true });
+  const tabButtons = assignedButtons.length > 0 ?
+    [] :
+    defaultTabButtons(element);
+  const changed = !arrayEquals(tabButtons, element.state.tabButtons);
+  if (changed) {
+    element.setState({ tabButtons });
+  }
 }
 
 
