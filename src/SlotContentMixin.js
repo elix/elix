@@ -61,6 +61,13 @@ export default function SlotContentMixin(Base) {
       const slot = this.contentSlot;
       if (slot) {
         slot.addEventListener('slotchange', () => {
+
+          // Although slotchange isn't generally a user-driven event, it's
+          // impossible for us to know whether a change in slot content is going
+          // to result in effects that the host of this element can predict.
+          // To be on the safe side, we raise any change events that come up
+          // during the processing of this event.
+          this[symbols.raiseChangeEvents] = true;
           
           // Note that the event has fired. We use this flag in the
           // normalization promise below.
@@ -76,6 +83,8 @@ export default function SlotContentMixin(Base) {
               assignedNodesChanged(this);
             });
           }
+
+          this[symbols.raiseChangeEvents] = false;
         });
         
         // Chrome and the polyfill will fire slotchange with the initial content,

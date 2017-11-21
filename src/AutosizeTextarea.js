@@ -28,19 +28,16 @@ class AutosizeTextarea extends Base {
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
 
+    this.contentSlot.addEventListener('slotchange', () => {
+      this.setState({ valueTracksContent: true });
+    });
+
     this.$.inner.addEventListener('input', () => {
       this[symbols.raiseChangeEvents] = true;
+      this.setState({ valueTracksContent: false });
       /** @type {any} */
       const inner = this.$.inner;
-      const value = inner.value;
-      const changed = this.state.value !== value;
-      if (changed) {
-        this.setState({ value });
-        const event = new CustomEvent('value-changed', {
-          detail: { value }
-        });
-        this.dispatchEvent(event);
-      }
+      this.updateValue(inner.value);
       this[symbols.raiseChangeEvents] = false;
     });
 
@@ -69,10 +66,25 @@ class AutosizeTextarea extends Base {
     });
   }
 
+  componentDidUpdate() {
+    if (super.componentDidUpdate) { super.componentDidUpdate(); }
+    const contentValue = getTextFromContent(this.state.content);
+    if (this.state.valueTracksContent && this.state.value !== contentValue) {
+      // Content changed in response to a slotchange event.
+      // Because the host component has no easy way of knowing whether content
+      // changed, or that this will update `value`, we'll raise a change event
+      // in updateValue.
+      this[symbols.raiseChangeEvents] = true;
+      this.updateValue(contentValue);
+      this[symbols.raiseChangeEvents] = false;
+    }
+  }
+
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       minimumRows: 1,
-      value: null
+      value: null,
+      valueTracksContent: true
     });
   }
 
@@ -204,6 +216,19 @@ class AutosizeTextarea extends Base {
     });
   }
 
+  updateValue(value) {
+    const changed = this.state.value !== value;
+    if (changed) {
+      this.setState({ value });
+      if (this[symbols.raiseChangeEvents]) {
+        const event = new CustomEvent('value-changed', {
+          detail: { value }
+        });
+        this.dispatchEvent(event);
+      }
+    }
+  }
+
   /**
    * The text currently shown in the textarea.
    *
@@ -214,25 +239,13 @@ class AutosizeTextarea extends Base {
    * @type {string}
    */
   get value() {
-    // Explicitly setting value breaks automatic update of value from content.
-    return this.state.value === null ?
+    return this.state.valueTracksContent ?
       getTextFromContent(this.state.content) :
       this.state.value;
   }
   set value(value) {
-    const changed = this.state.value !== value;
-    if (changed) {
-      this.setState({ value });
-      // We already raise value-changed in response to input events, but we add
-      // an extra check here in case the value property has been set in reponse
-      // to other events.
-      if (this[symbols.raiseChangeEvents]) {
-        const event = new CustomEvent('value-changed', {
-          detail: { value }
-        });
-        this.dispatchEvent(event);
-      }
-    }
+    this.setState({ valueTracksContent: false });
+    this.updateValue(value);
   }
 }
 
@@ -256,6 +269,7 @@ function unescapeHtml(html) {
     .replace(/&quot;/g, '"')
     .replace(/&#039;/g, '\'');
 }
+
 
 
 customElements.define('elix-autosize-textarea', AutosizeTextarea);
