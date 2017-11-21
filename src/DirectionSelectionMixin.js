@@ -17,6 +17,26 @@ export default function DirectionSelectionMixin(Base) {
   // The class prototype added by the mixin.
   class DirectionSelection extends Base {
 
+    get [symbols.canGoLeft]() {
+      const canSelect = this.rightToLeft ?
+        this.canSelectNext :
+        this.canSelectPrevious; 
+      // Assume we can go left unless component tells us otherwise.
+      return typeof canSelect === undefined ?
+        true :
+        canSelect;
+    }
+
+    get [symbols.canGoRight]() {
+      const canSelect = this.rightToLeft ?
+        this.canSelectPrevious :
+        this.canSelectNext; 
+      // Assume we can go right unless component tells us otherwise.
+      return typeof canSelect === undefined ? 
+        true :
+        canSelect;
+    }
+
     [symbols.goDown]() {
       if (super[symbols.goDown]) { super[symbols.goDown](); }
       if (!this.selectNext) {

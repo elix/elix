@@ -3,10 +3,10 @@ import symbols from './symbols.js';
 
 
 /**
- * A button used by [ArrowSelectionMixin](ArrowSelectionMixin) to show its
+ * A button used by [ArrowDirectionMixin](ArrowDirectionMixin) to show its
  * left/right arrow buttons.
  */
-class ArrowSelectionButton extends WrappedStandardElement.wrap('button') {
+class ArrowDirectionButton extends WrappedStandardElement.wrap('button') {
 
   get [symbols.template]() {
     return `
@@ -48,5 +48,5 @@ class ArrowSelectionButton extends WrappedStandardElement.wrap('button') {
 }
 
 
-customElements.define('elix-arrow-selection-button', ArrowSelectionButton);
-export default ArrowSelectionButton;
+customElements.define('elix-arrow-direction-button', ArrowDirectionButton);
+export default ArrowDirectionButton;

@@ -1,26 +1,27 @@
 import { merge } from './updates.js';
 // @ts-ignore
-import ArrowSelectionButton from './ArrowSelectionButton.js'; // eslint-disable-line no-unused-vars
+import ArrowDirectionButton from './ArrowDirectionButton.js'; // eslint-disable-line no-unused-vars
+import symbols from './symbols.js';
 
 
-export default function ArrowSelectionMixin(Base) {
+export default function ArrowDirectionMixin(Base) {
 
   // The class prototype added by the mixin.
-  class ArrowSelection extends Base {
+  class ArrowDirection extends Base {
 
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
       this.$.arrowButtonLeft.addEventListener('click', event => {
-        this.rightToLeft ?
-          this.selectNext() :
-          this.selectPrevious();
-        event.stopPropagation();
+        const handled = this[symbols.goLeft]();
+        if (handled) {
+          event.stopPropagation();
+        }
       });
       this.$.arrowButtonRight.addEventListener('click', event => {
-        this.rightToLeft ?
-          this.selectPrevious() :
-          this.selectNext();
-        event.stopPropagation();
+        const handled = this[symbols.goRight]();
+        if (handled) {
+          event.stopPropagation();
+        }
       });
       assumeButtonFocus(this, this.$.arrowButtonLeft);
       assumeButtonFocus(this, this.$.arrowButtonRight);
@@ -36,9 +37,9 @@ export default function ArrowSelectionMixin(Base) {
         }
       };
 
-      const canGoLeft = this.rightToLeft ?
-        this.canSelectNext :
-        this.canSelectPrevious;
+      const canGoLeft = this[symbols.canGoLeft];
+      const canGoRight = this[symbols.canGoRight];
+
       const arrowButtonLeftUpdates = merge(buttonUpdates, {
         attributes: {
           disabled: !canGoLeft,
@@ -49,9 +50,6 @@ export default function ArrowSelectionMixin(Base) {
         }
       });
         
-      const canGoRight = this.rightToLeft ?
-        this.canSelectPrevious :
-        this.canSelectNext;
       const arrowButtonRightUpdates = merge(buttonUpdates, {
         attributes: {
           disabled: !canGoRight,
@@ -75,7 +73,7 @@ export default function ArrowSelectionMixin(Base) {
           arrowButtonRight: arrowButtonRightUpdates,
           arrowIconLeft: arrowIconProps,
           arrowIconRight: arrowIconProps,
-          arrowSelection: {
+          arrowDirection: {
             style: {
               'flex-direction': this.rightToLeft ? 'row-reverse' : 'row'
             }
@@ -84,10 +82,10 @@ export default function ArrowSelectionMixin(Base) {
       });
     }
 
-    wrapWithArrowSelection(template) {
+    wrapWithArrowDirection(template) {
       return `
-        <div id="arrowSelection" role="none" style="display: flex; flex: 1;">
-          <elix-arrow-selection-button
+        <div id="arrowDirection" role="none" style="display: flex; flex: 1;">
+          <elix-arrow-direction-button
             aria-hidden="true"
             id="arrowButtonLeft"
             tabIndex="-1"
@@ -97,11 +95,11 @@ export default function ArrowSelectionMixin(Base) {
                 <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
               </g>
             </svg>
-          </elix-arrow-selection-button>
+          </elix-arrow-direction-button>
           <div role="none" style="display: flex; flex: 1; position: relative;">
             ${template}
           </div>
-          <elix-arrow-selection-button
+          <elix-arrow-direction-button
             aria-hidden="true"
             id="arrowButtonRight"
             tabIndex="-1"
@@ -111,14 +109,14 @@ export default function ArrowSelectionMixin(Base) {
                 <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
               </g>
             </svg>
-          </elix-arrow-selection-button>
+          </elix-arrow-direction-button>
         </div>
       `;
     }
 
   }
 
-  return ArrowSelection;
+  return ArrowDirection;
 }
 
 

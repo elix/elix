@@ -1,6 +1,6 @@
 import { merge } from './updates.js';
 import AriaListMixin from './AriaListMixin.js';
-import ArrowSelectionMixin from './ArrowSelectionMixin.js';
+import ArrowDirectionMixin from './ArrowDirectionMixin.js';
 import ContentItemsMixin from './ContentItemsMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import ElementBase from './ElementBase.js';
@@ -21,7 +21,7 @@ import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 
 const Base =
   AriaListMixin(
-  ArrowSelectionMixin(
+  ArrowDirectionMixin(
   ContentItemsMixin(
   DirectionSelectionMixin(
   FocusRingMixin(
@@ -42,12 +42,12 @@ const Base =
  * touch, the mouse, the keyboard, or a trackpad.
  * 
  * This carousel lets the user navigate the selection with left/right arrow
- * buttons provided by [ArrowSelectionMixin](ArrowSelectionMixin) and small dots
+ * buttons provided by [ArrowDirectionMixin](ArrowDirectionMixin) and small dots
  * at the bottom of the carousel provided by [PageDotsMixin](PageDotsMixin). For
  * a plain carousel without those extras, see [SlidingPages](SlidingPages).
  * 
  * @mixes AriaListMixin
- * @mixes ArrowSelectionMixin
+ * @mixes ArrowDirectionMixin
  * @mixes ContentItemsMixin
  * @mixes DirectionSelectionMixin
  * @mixes FocusRingMixin
@@ -90,7 +90,7 @@ class SlidingCarousel extends Base {
           flex: 1;
         }
       </style>
-      ${this.wrapWithArrowSelection(
+      ${this.wrapWithArrowDirection(
         this.wrapWithPageDots(`
           <elix-sliding-viewport id="viewport">
             <slot></slot>
