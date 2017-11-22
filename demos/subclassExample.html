@@ -92,21 +92,21 @@
       get updates() {
 
         const base = super.updates;
+        const baseColor = base.style && base.style.color;
         // Pick a color if the base class didn't specify one.
-        const color = base.style && base.style.color ||
-          (this.state.value > 0 ? 'dodgerblue' : null);
+        const color =  baseColor || (this.state.value > 0 ? '#1E90FF' : null);
 
         const buttonStyle = {
           background: '#444',
           border: 'none',
           'border-radius': 0
         };
-        const canDecrement = this.state.value > -5;
-        const canIncrement = this.state.value < 5;
+        const decrementDisabled = this.state.value <= -5;
+        const incrementDisabled = this.state.value >= 5;
 
-        // Merge updates on top of those defined by the base class.
-        // This lets us preserve some of the base rendering, while adding
-        // our own styling and some unique behavior.
+        // Merge updates on top of those defined by the base class. This lets us
+        // preserve some of the base rendering, while adding our own styling and
+        // some unique behavior.
         return merge(super.updates, {
           style: {
             background: 'lightgray',
@@ -117,18 +117,18 @@
           $: {
             decrement: {
               attributes: {
-                disabled: !canDecrement
+                disabled: decrementDisabled
               },
               style: merge(buttonStyle, {
-                color: canDecrement ? 'white' : 'gray'
+                color: decrementDisabled ? 'gray' : 'white'
               })
             },
             increment: {
               attributes: {
-                disabled: !canIncrement
+                disabled: incrementDisabled
               },
               style: merge(buttonStyle, {
-                color: canIncrement ? 'white' : 'gray'
+                color: incrementDisabled ? 'gray' : 'white'
               })
             }
           }
@@ -139,6 +139,7 @@
         return super.value;
       }
       set value(value) {
+        // Enforce a bound of -5 to 5 on the value.
         const parsed = parseInt(value);
         const bounded = Math.max(Math.min(parsed, 5), -5);
         super.value = bounded;
