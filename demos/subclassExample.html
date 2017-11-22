@@ -5,9 +5,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Reactive web component example</title>
-
-  <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <title>Reactive web component example with subclassing</title>
 
   <template id="template">
     <button id="decrement">-</button>
@@ -153,6 +151,10 @@
 </head>
 
 <body>
+  <p>
+    This shows a plain increment/decrement component and a subclass with styling
+    and custom behavior.
+  </p>
   <increment-decrement></increment-decrement>
   <custom-increment-decrement></custom-increment-decrement>
 </body>
