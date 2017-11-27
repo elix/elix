@@ -65,7 +65,8 @@ export default function AriaListMixin(Base) {
         item[generatedIdKey] = id;
       }
 
-      const role = original.role || base.role || this.state.itemRole || 'option';
+      const defaultRole = item instanceof HTMLOptionElement ? null : 'option';
+      const role = original.role || base.role || this.state.itemRole || defaultRole;
 
       return merge(base, {
         attributes: {

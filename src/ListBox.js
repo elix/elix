@@ -109,6 +109,11 @@ export default class ListBox extends Base {
           flex: 1;
           -webkit-overflow-scrolling: touch; /* for momentum scrolling */
         }
+
+        #content > ::slotted(option) {
+          font-weight: inherit;
+          min-height: inherit;
+        }
       </style>
       <div id="content" role="none">
         <slot></slot>

@@ -89,4 +89,16 @@ describe("AriaListMixin", () => {
     assert.equal(fixture.getAttribute('role'), 'tabs');
   });
 
+  it("doesn't apply default role to <option> items", async () => {
+    const fixture = new AriaListTest();
+    const item1 = document.createElement('option');
+    const item2 = document.createElement('option');
+    fixture.appendChild(item1);
+    fixture.appendChild(item2);
+    container.appendChild(fixture);
+    await Promise.resolve();
+    assert.isNull(item1.getAttribute('role'));
+    assert.isNull(item2.getAttribute('role'));
+  });
+
 });
