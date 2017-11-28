@@ -102,7 +102,6 @@ export default function ShadowTemplateMixin(Base) {
       this.$ = shadowElementReferences(this);
     }
 
-    // TODO: Fold into render()?
     connectedCallback() {
       if (super.connectedCallback) { super.connectedCallback(); }
       // @ts-ignore
