@@ -35,6 +35,38 @@ export default function OpenCloseTransitionMixin(Base) {
       this.transitionToNextVisualState();
     }
 
+    // This definition for closed is compatible with that in OverlayMixin,
+    // so the two mixins can be used separately or together.
+    get closed() {
+      return this.state.visualState === this.visualStates.closed;
+    }
+    set closed(closed) {
+      const parsed = String(closed) === 'true';
+      const visualState = parsed ?
+        this.visualStates.closed :
+        this.visualStates.opened;
+      this.setState({ visualState });
+    }
+
+    get defaultState() {
+      return Object.assign({}, super.defaultState, {
+        visualState: this.visualStates.closed
+      });
+    }
+
+    // This definition for opened is compatible with that in OverlayMixin,
+    // so the two mixins can be used separately or together.
+    get opened() {
+      return this.state.visualState === this.visualStates.opened;
+    }
+    set opened(opened) {
+      const parsed = String(opened) === 'true';
+      const visualState = parsed ?
+        this.visualStates.opened :
+        this.visualStates.closed;
+      this.setState({ visualState });
+    }
+    
     async startClose() {
       if (this.opened) {
         await updateVisualState(this, this.visualStates.closing);

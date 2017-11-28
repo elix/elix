@@ -91,6 +91,9 @@ export default function OverlayMixin(Base) {
       }
     }
 
+    // This definition for closed is compatible with that in
+    // OpenCloseTransitionMixin, so the two mixins can be used separately or
+    // together.
     get closed() {
       return this.state.visualState === this.visualStates.closed;
     }
@@ -131,6 +134,9 @@ export default function OverlayMixin(Base) {
       }
     }
 
+    // This definition for opened is compatible with that in
+    // OpenCloseTransitionMixin, so the two mixins can be used separately or
+    // together.
     get opened() {
       return this.state.visualState === this.visualStates.opened;
     }
