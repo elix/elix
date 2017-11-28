@@ -5,8 +5,6 @@ import ElementBase from './ElementBase.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotContentMixin from './SlotContentMixin.js';
-// @ts-ignore
-import Spread from './Spread.js'; // eslint-disable-line no-unused-vars
 import symbols from './symbols.js';
 
 
@@ -49,6 +47,13 @@ class SlidingViewport extends Base {
   }
 
   get [symbols.template]() {
+    // The trick here is to give the slotted elements a flex-basis of 100%. This
+    // makes them each as big as the SlidingViewport component, spreading them
+    // out equally. The slidingViewportContent container will only big as big as
+    // the host too, but all the elements slotted inside it will still be
+    // visible even if they fall outside its bounds. By translating the
+    // container left or right, we can cause any individual slotted item to
+    // become the sole visible item.
     return `
       <style>
         :host {
@@ -56,14 +61,19 @@ class SlidingViewport extends Base {
           position: relative;
         }
 
-        elix-spread {
+        #slidingViewportContent {
+          display: flex;
           height: 100%;
           will-change: transform;
         }
+
+        #slidingViewportContent > ::slotted(*) {
+          flex: 0 0 100%;
+        }
       </style>
-      <elix-spread id="content" role="none">
+      <div id="slidingViewportContent" role="none">
         <slot></slot>
-      </elix-spread>
+      </div>
     `;
   }
 
@@ -71,19 +81,25 @@ class SlidingViewport extends Base {
     const sign = this.rightToLeft ? 1 : -1;
     const swiping = this.state.swipeFraction != null;
     const swipeFraction = this.state.swipeFraction || 0;
-    const selectionFraction = this.state.selectedIndex + sign * swipeFraction;
-    const count = this.items ? this.items.length : 0;
-    const dampedSelection = fractionalSelection.dampenListSelection(selectionFraction, count);
-    const fraction = sign * dampedSelection / count;
+    const selectedIndex = this.state.selectedIndex;
+    let translation;
+    if (selectedIndex >= 0) {
+      const selectionFraction = selectedIndex + sign * swipeFraction;
+      const count = this.items ? this.items.length : 0;
+      const dampedSelection = fractionalSelection.dampenListSelection(selectionFraction, count);
+      translation = sign * dampedSelection * 100;
+    } else {
+      translation = 0;
+    }
     const transition = swiping ?
       'none' :
       'transform 0.25s';
 
     return merge(super.updates, {
       $: {
-        content: {
+        slidingViewportContent: {
           style: {
-            'transform': `translateX(${fraction * 100}%)`,
+            'transform': `translateX(${translation}%)`,
             transition
           }
         }

@@ -8,7 +8,6 @@ input {
 body {
   margin: 0;
   padding: 25px;
-  /* transition: opacity ease-in 0.1s; */
 }
 
 p,
@@ -24,7 +23,6 @@ label {
 }
 
 .demo {
-  /* display: inline-block; */
   position: relative;
 }
 
