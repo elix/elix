@@ -3,6 +3,7 @@ import ElementBase from './ElementBase.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import TransitionEffectMixin from './TransitionEffectMixin.js';
+import OpenCloseMixin from './OpenCloseMixin.js';
 import OverlayMixin from './OverlayMixin.js';
 import PopupModalityMixin from './PopupModalityMixin.js';
 import symbols from './symbols.js';
@@ -14,11 +15,12 @@ const timeoutKey = Symbol('timeout');
 const Base =
   KeyboardMixin(
   LanguageDirectionMixin(
+  OpenCloseMixin(
   OverlayMixin(
   PopupModalityMixin(
   TransitionEffectMixin(
     ElementBase
-  )))));
+  ))))));
 
 
 /**
@@ -27,6 +29,7 @@ const Base =
  * 
  * @mixes KeyboardMixin
  * @mixes LanguageDirectionMixin
+ * @mixes OpenCloseMixin
  * @mixes OverlayMixin
  * @mixes PopupModalityMixin
  * @mixes TransitionEffectMixin
@@ -56,7 +59,10 @@ class Toast extends Base {
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       duration: null,
-      fromEdge: 'bottom'
+      effect: 'close',
+      effectPhase: 'after',
+      fromEdge: 'bottom',
+      openCloseEffects: true
     });
   }
 

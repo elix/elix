@@ -5,6 +5,7 @@ import FocusCaptureMixin from './FocusCaptureMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 // @ts-ignore
 import ModalBackdrop from './ModalBackdrop.js'; // eslint-disable-line no-unused-vars
+import OpenCloseMixin from './OpenCloseMixin.js';
 import OverlayMixin from './OverlayMixin.js';
 import symbols from './symbols.js';
 
@@ -13,9 +14,10 @@ const Base =
   DialogModalityMixin(
   FocusCaptureMixin(
   KeyboardMixin(
+  OpenCloseMixin(
   OverlayMixin(
     ElementBase
-  ))));
+  )))));
 
 
 /**
@@ -29,6 +31,7 @@ const Base =
  * @mixes DialogModalityMixin
  * @mixes FocusCaptureWrapper
  * @mixes KeyboardMixin
+ * @mixes OpenCloseMixin
  * @mixes OverlayMixin
  */
 class Dialog extends Base {

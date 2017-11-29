@@ -5,6 +5,7 @@ import KeyboardMixin from './KeyboardMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 // @ts-ignore
 import ModalBackdrop from './ModalBackdrop.js'; // eslint-disable-line no-unused-vars
+import OpenCloseMixin from './OpenCloseMixin.js';
 import OverlayMixin from './OverlayMixin.js';
 import symbols from './symbols.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
@@ -18,12 +19,13 @@ const Base =
   FocusCaptureMixin(
   KeyboardMixin(
   LanguageDirectionMixin(
+  OpenCloseMixin(
   OverlayMixin(
   TouchSwipeMixin(
   TrackpadSwipeMixin(
   TransitionEffectMixin(
     ElementBase
-  ))))))));
+  )))))))));
 
 
 /**
@@ -40,10 +42,11 @@ const Base =
  * @mixes FocusCaptureMixin
  * @mixes KeyboardMixin
  * @mixes LanguageDirectionMixin
- * @mixes TransitionEffectMixin
+ * @mixes OpenCloseMixin
  * @mixes OverlayMixin
  * @mixes TouchSwipeMixin
  * @mixes TrackpadSwipeMixin
+ * @mixes TransitionEffectMixin
  */
 class Drawer extends Base {
 
@@ -57,6 +60,9 @@ class Drawer extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      effect: 'close',
+      effectPhase: 'after',
+      openCloseEffects: true,
       selectedIndex: 0
     });
   }

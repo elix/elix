@@ -1,11 +1,10 @@
 import { merge } from './updates.js';
 import Symbol from './Symbol.js';
+import symbols from './symbols.js';
 
 
 const appendedToDocumentKey = Symbol('appendedToDocument');
 const assignedZIndexKey = Symbol('assignedZIndex');
-const closePromiseKey = Symbol('closePromise');
-const closeResolveKey = Symbol('closeResolve');
 const restoreFocusToElementKey = Symbol('restoreFocusToElement');
 
 
@@ -82,25 +81,6 @@ export default function OverlayMixin(Base) {
       });
     }
 
-    async close(result) {
-      this.setState({ result });
-      await this.toggle(false);
-    }
-
-    get closed() {
-      return !this.state.opened;
-    }
-    set closed(closed) {
-      const parsed = String(closed) === 'true';
-      this.toggle(!parsed);
-    }
-
-    get closeFinished() {
-      return this.state.openCloseEffects ?
-        this.state.effect === 'close' && this.state.effectPhase === 'after' :
-        this.closed;
-    }
-
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
       updateOverlay(this);
@@ -109,45 +89,21 @@ export default function OverlayMixin(Base) {
     componentDidUpdate() {
       if (super.componentDidUpdate) { super.componentDidUpdate(); }
       updateOverlay(this);
-    }
 
-    get defaultState() {
-      return Object.assign({}, super.defaultState, {
-        opened: false,
-        effect: super.defaultState.effect || null,
-        effectPhase: super.defaultState.effectPhase || null
-      });
-    }
-
-    async open() {
-      await this.toggle(true);
-    }
-
-    get opened() {
-      return this.state.opened;
-    }
-    set opened(opened) {
-      const parsed = String(opened) === 'true';
-      this.toggle(parsed);
+      // If we're finished closing an overlay that was automatically added to
+      // the document, remove it now. Note: we only do this when the component
+      // updates, not when it mounts, because we don't want an
+      // automatically-added element to be immediately removed during its
+      // connectedCallback.
+      if (this.closeFinished && this[appendedToDocumentKey]) {
+        this[appendedToDocumentKey] = false;
+        this.parentNode.removeChild(this);
+      }
     }
 
     async toggle(opened = !this.opened) {
-      const changed = opened !== this.state.opened;
-      if (changed) {
-        const changes = { opened };
-        if (this.state.openCloseEffects) {
-          changes.effect = opened ? 'open' : 'close';
-          if (this.state.effectPhase === 'after') {
-            changes.effectPhase = 'before';
-          }
-        }
-        await this.setState(changes);
-        if (opened && !this.isConnected) {
-          // Overlay isn't in document yet.
-          this[appendedToDocumentKey] = true;
-          document.body.appendChild(this);
-        }
-      }
+      if (super.toggle) { await super.toggle(opened); }
+      autoConnectToDocument(this, opened);
     }
 
     get updates() {
@@ -187,27 +143,18 @@ export default function OverlayMixin(Base) {
         }
       });
     }
-
-    /**
-     * This method can be used as an alternative to listening to the
-     * "opened-changed" event, particularly in situations where you want to only
-     * handle the next time the component is closed.
-     * 
-     * @returns {Promise} A promise that resolves when the element has
-     * completely closed, including the completion of any asynchronous opening
-     * effect.
-     */
-    whenClosed() {
-      if (!this[closePromiseKey]) {
-        this[closePromiseKey] = new Promise(resolve => {
-          this[closeResolveKey] = resolve;
-        });
-      }
-      return this[closePromiseKey];
-    }
   }
 
   return Overlay;
+}
+
+
+function autoConnectToDocument(element, connect) {
+  if (connect && !element.isConnected) {
+    // Overlay isn't in document yet.
+    element[appendedToDocumentKey] = true;
+    document.body.appendChild(element);
+  }
 }
 
 
@@ -253,17 +200,12 @@ function updateOverlay(element) {
       element[restoreFocusToElementKey] = null;
     }
     if (element.closeFinished) {
-      if (element[appendedToDocumentKey]) {
-        // The overlay wasn't in the document when opened, so we added it.
-        // Remove it now.
-        element.parentNode.removeChild(element);
-        element[appendedToDocumentKey] = false;
-      }
-      if (element[closeResolveKey]) {
-        element[closeResolveKey](element.state.result);
-        element[closeResolveKey] = null;
-        element[closePromiseKey] = null;
-      }
+      // TODO
+      // if (element[closeResolveKey]) {
+      //   element[closeResolveKey](element.state.result);
+      //   element[closeResolveKey] = null;
+      //   element[closePromiseKey] = null;
+      // }
     }
   }
 }

@@ -1,5 +1,6 @@
 import ElementBase from './ElementBase.js';
 import KeyboardMixin from './KeyboardMixin.js';
+import OpenCloseMixin from './OpenCloseMixin.js';
 import OverlayMixin from './OverlayMixin.js';
 import PopupModalityMixin from './PopupModalityMixin.js';
 import symbols from './symbols.js';
@@ -7,10 +8,11 @@ import symbols from './symbols.js';
 
 const Base =
   KeyboardMixin(
+  OpenCloseMixin(
   OverlayMixin(
   PopupModalityMixin(
     ElementBase
-  )));
+  ))));
 
 
 /**
@@ -18,6 +20,7 @@ const Base =
  * children on top of other page elements.
  * 
  * @mixes KeyboardMixin
+ * @mixes OpenCloseMixin
  * @mixes OverlayMixin
  * @mixes PopupModalityMixin
  */

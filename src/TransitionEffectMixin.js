@@ -33,14 +33,6 @@ export default function TransitionEffectMixin(Base) {
         }
       }
     }
-
-    get defaultState() {
-      return Object.assign({}, super.defaultState, {
-        effect: 'close',
-        effectPhase: 'after',
-        openCloseEffects: true
-      });
-    }
     
     async startEffect(effect) {
       await updateEffectPhase(this, effect, 'before');
