@@ -56,14 +56,6 @@ describe("OverlayMixin", function() {
     assert(!fixture.opened);
   });
 
-  it('invokes openedChanged if defined', () => {
-    const fixture = document.createElement('overlay-test');
-    fixture[symbols.openedChanged] = (opened) => {
-      assert(opened);
-    };
-    fixture.opened = true;
-  });
-
   it('sets a default z-index', async () => {
     const fixture = document.createElement('overlay-test');
     container.appendChild(fixture);
@@ -73,11 +65,11 @@ describe("OverlayMixin", function() {
     assert.equal(fixture.style.zIndex, '2');
   });
 
-  it('leaves the z-index alone if one is specified', () => {
+  it('leaves the z-index alone if one is specified', async () => {
     const fixture = document.createElement('overlay-test');
-    container.appendChild(fixture);
     fixture.style.zIndex = 10;
-    fixture.opened = true;
+    container.appendChild(fixture);
+    await fixture.open();
     assert.equal(fixture.style.zIndex, '10');
   });
 

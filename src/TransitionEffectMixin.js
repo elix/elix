@@ -21,11 +21,13 @@ export default function TransitionEffectMixin(Base) {
       if (super.componentDidUpdate) { super.componentDidUpdate(); }
 
       if (this.state.effect) {
-        // We read a layout property to force the browser to render the component
-        // with its current styles before we move to the next state. This ensures
-        // animated values will actually be applied before we move to the next
-        // state.
-        this.offsetHeight;
+        if (this.state.effectPhase !== 'after') {
+          // We read a layout property to force the browser to render the component
+          // with its current styles before we move to the next state. This ensures
+          // animated values will actually be applied before we move to the next
+          // state.
+          this.offsetHeight;
+        }
 
         if (this.state.effectPhase === 'before') {
           updateEffectPhase(this, this.state.effect, 'during');
@@ -35,8 +37,9 @@ export default function TransitionEffectMixin(Base) {
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
-        effect: null,
-        effectPhase: null
+        effect: 'close',
+        effectPhase: 'after',
+        openCloseEffects: true
       });
     }
     

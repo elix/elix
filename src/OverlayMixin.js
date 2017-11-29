@@ -83,26 +83,22 @@ export default function OverlayMixin(Base) {
     }
 
     async close(result) {
-      if (!this.closed) {
-        await this.setState({
-          result,
-          visualState: this.visualStates.closed
-        });
-      }
+      this.setState({ result });
+      await this.toggle(false);
     }
 
-    // This definition for closed is compatible with that in
-    // OpenCloseTransitionMixin, so the two mixins can be used separately or
-    // together.
     get closed() {
-      return this.state.visualState === this.visualStates.closed;
+      return !this.state.opened;
     }
     set closed(closed) {
       const parsed = String(closed) === 'true';
-      const visualState = parsed ?
-        this.visualStates.closed :
-        this.visualStates.opened;
-      this.setState({ visualState });
+      this.toggle(!parsed);
+    }
+
+    get closeFinished() {
+      return this.state.openCloseEffects ?
+        this.state.effect === 'close' && this.state.effectPhase === 'after' :
+        this.closed;
     }
 
     componentDidMount() {
@@ -117,35 +113,41 @@ export default function OverlayMixin(Base) {
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
-        visualState: this.visualStates.closed
+        opened: false,
+        effect: super.defaultState.effect || null,
+        effectPhase: super.defaultState.effectPhase || null
       });
     }
 
     async open() {
-      if (!this.opened) {
-        await this.setState({
-          visualState: this.visualStates.opened
-        });
-        if (!this.isConnected) {
+      await this.toggle(true);
+    }
+
+    get opened() {
+      return this.state.opened;
+    }
+    set opened(opened) {
+      const parsed = String(opened) === 'true';
+      this.toggle(parsed);
+    }
+
+    async toggle(opened = !this.opened) {
+      const changed = opened !== this.state.opened;
+      if (changed) {
+        const changes = { opened };
+        if (this.state.openCloseEffects) {
+          changes.effect = opened ? 'open' : 'close';
+          if (this.state.effectPhase === 'after') {
+            changes.effectPhase = 'before';
+          }
+        };
+        await this.setState(changes);
+        if (opened && !this.isConnected) {
           // Overlay isn't in document yet.
           this[appendedToDocumentKey] = true;
           document.body.appendChild(this);
         }
       }
-    }
-
-    // This definition for opened is compatible with that in
-    // OpenCloseTransitionMixin, so the two mixins can be used separately or
-    // together.
-    get opened() {
-      return this.state.visualState === this.visualStates.opened;
-    }
-    set opened(opened) {
-      const parsed = String(opened) === 'true';
-      const visualState = parsed ?
-        this.visualStates.opened :
-        this.visualStates.closed;
-      this.setState({ visualState });
     }
 
     get updates() {
@@ -159,12 +161,12 @@ export default function OverlayMixin(Base) {
       // component from the outside (to change to display: flex, say) will
       // override the display: none implied by hidden. To work around both
       // these problems, we use display: none when the overlay is closed.
-      const display = this.closed ?
+      const display = this.closeFinished ?
         'none' :
         base.style && base.style.display;
 
       let zIndex;
-      if (this.closed) {
+      if (closed) {
         zIndex = original.style['z-index'];
         this[assignedZIndexKey] = null;
       } else {
@@ -184,16 +186,6 @@ export default function OverlayMixin(Base) {
           'z-index': zIndex
         }
       });
-    }
-
-    get visualStates() {
-      // Defer to any definition in base class.
-      if ('visualStates' in Base.prototype) { return super.visualStates; }
-      // By default, provide opened and closed states.
-      return {
-        closed: 'closed',
-        opened: 'opened'
-      };
     }
 
     /**
@@ -244,32 +236,34 @@ function maxZIndexInUse() {
 
 
 // Update the overlay following a mount or update.
-function updateOverlay(component) {
-  if (component.closed) {
-    if (component[restoreFocusToElementKey]) {
+function updateOverlay(element) {
+  if (element.state.opened) {
+    // Opened
+    if (!element[restoreFocusToElementKey] && document.activeElement !== document.body) {
+      // Remember which element had the focus before we were opened.
+      element[restoreFocusToElementKey] = document.activeElement;
+    }
+    element.focus();
+  } else {
+    // Closed
+    if (element[restoreFocusToElementKey]) {
       // Restore focus to the element that had the focus before the overlay was
       // opened.
-      component[restoreFocusToElementKey].focus();
-      component[restoreFocusToElementKey] = null;
+      element[restoreFocusToElementKey].focus();
+      element[restoreFocusToElementKey] = null;
     }
-    if (component[appendedToDocumentKey]) {
-      // The overlay wasn't in the document when opened, so we added it.
-      // Remove it now.
-      component.parentNode.removeChild(component);
-      component[appendedToDocumentKey] = false;
+    if (element.closeFinished) {
+      if (element[appendedToDocumentKey]) {
+        // The overlay wasn't in the document when opened, so we added it.
+        // Remove it now.
+        element.parentNode.removeChild(element);
+        element[appendedToDocumentKey] = false;
+      }
+      if (element[closeResolveKey]) {
+        element[closeResolveKey](element.state.result);
+        element[closeResolveKey] = null;
+        element[closePromiseKey] = null;
+      }
     }
-    if (component[closeResolveKey]) {
-      component[closeResolveKey](component.state.result);
-      component[closeResolveKey] = null;
-      component[closePromiseKey] = null;
-    }
-  }
-  else {
-    if (!component[restoreFocusToElementKey] && document.activeElement !== document.body) {
-      // Remember which element had the focus before we were opened.
-      component[restoreFocusToElementKey] = document.activeElement;
-      component.foo = document.activeElement;
-    }
-    component.focus();
   }
 }

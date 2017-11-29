@@ -24,10 +24,10 @@ export default function RenderUpdatesMixin(Base) {
       if (super[symbols.render]) { super[symbols.render](); }
 
       // Collect an updated set of properties/attributes.
-      const newProps = this.updates;
+      const updatesToApply = this.updates;
 
       // Apply those to the host.
-      updates.apply(this, newProps);
+      updates.apply(this, updatesToApply);
     }
 
     // Override setAttribute so that, if this is called outside of rendering,

@@ -14,6 +14,13 @@ const Base =
 // when showing or hiding an element during an effect.
 class TransitionEffectTest extends Base {
 
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      effect: 'close',
+      effectPhase: 'after'
+    });
+  }
+
   get [symbols.template]() {
     return `
       <style>
@@ -27,7 +34,7 @@ class TransitionEffectTest extends Base {
   get updates() {
     const effect = this.state.effect;
     const phase = this.state.effectPhase;
-    const display = effect === null || (effect === 'close' && phase === 'after') ?
+    const display = effect === 'close' && phase === 'after' ?
       'none' :
       'block';
     const opacity = (effect === 'open' && phase !== 'before') ||

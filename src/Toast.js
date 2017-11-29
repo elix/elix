@@ -2,7 +2,7 @@ import { merge } from './updates.js';
 import ElementBase from './ElementBase.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
-import OpenCloseTransitionMixin from './OpenCloseTransitionMixin.js';
+import TransitionEffectMixin from './TransitionEffectMixin.js';
 import OverlayMixin from './OverlayMixin.js';
 import PopupModalityMixin from './PopupModalityMixin.js';
 import symbols from './symbols.js';
@@ -14,9 +14,9 @@ const timeoutKey = Symbol('timeout');
 const Base =
   KeyboardMixin(
   LanguageDirectionMixin(
-  OpenCloseTransitionMixin(
   OverlayMixin(
   PopupModalityMixin(
+  TransitionEffectMixin(
     ElementBase
   )))));
 
@@ -27,9 +27,9 @@ const Base =
  * 
  * @mixes KeyboardMixin
  * @mixes LanguageDirectionMixin
- * @mixes OpenCloseTransitionMixin
  * @mixes OverlayMixin
  * @mixes PopupModalityMixin
+ * @mixes TransitionEffectMixin
  */
 class Toast extends Base {
 
@@ -41,10 +41,6 @@ class Toast extends Base {
     this.addEventListener('mouseover', () => {
       clearTimer(this);
     });
-  }
-
-  async close() {
-    await this.startClose();
   }
 
   async componentDidMount() {
@@ -114,7 +110,7 @@ class Toast extends Base {
       }
     };
     const hostEdgeStyle = hostEdgeStyles[this.state.fromEdge];
-    const display = this.closed ?
+    const display = this.closeFinished ?
       null :
       base.style && base.style.display || 'flex';
 
@@ -147,8 +143,13 @@ class Toast extends Base {
       'top-right': 'translateX(0)'
     };
 
-    const opacity = this.opened ? 1 : 0;
-    const transform = this.opened ?
+    const effect = this.state.effect;
+    const phase = this.state.effectPhase;
+    const opened = (effect === 'open' && phase !== 'before') ||
+      (effect === 'close' && phase === 'before');
+
+    const opacity = opened ? 1 : 0;
+    const transform = opened ?
       openEdgeTransforms[languageAdjustedEdge] :
       edgeTransforms[languageAdjustedEdge];
 
@@ -169,10 +170,6 @@ class Toast extends Base {
         content: contentProps
       }
     });
-  }
-
-  async open() {
-    await this.startOpen();
   }
 
   get [symbols.template]() {

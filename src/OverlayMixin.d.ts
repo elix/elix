@@ -11,13 +11,14 @@ declare const OverlayMixin: StateMixin<{
 {
   close(result?: any): Promise<void>;
   closed: boolean;
+  closeFinished: boolean;
   connectedCallback(): void;
   open(): Promise<void>;
   opened: boolean;
   whenClosed(): Promise<void>;
 },
 {
-  visualState: string
+  opened: boolean
 }
 >;
 

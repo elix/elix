@@ -3,13 +3,13 @@ import DialogModalityMixin from './DialogModalityMixin.js';
 import FocusCaptureMixin from './FocusCaptureMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
-import OpenCloseTransitionMixin from './OpenCloseTransitionMixin.js';
 // @ts-ignore
 import ModalBackdrop from './ModalBackdrop.js'; // eslint-disable-line no-unused-vars
 import OverlayMixin from './OverlayMixin.js';
 import symbols from './symbols.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
+import TransitionEffectMixin from './TransitionEffectMixin.js';
 import ElementBase from './ElementBase.js';
 
 
@@ -18,10 +18,10 @@ const Base =
   FocusCaptureMixin(
   KeyboardMixin(
   LanguageDirectionMixin(
-  OpenCloseTransitionMixin(
   OverlayMixin(
   TouchSwipeMixin(
   TrackpadSwipeMixin(
+  TransitionEffectMixin(
     ElementBase
   ))))))));
 
@@ -40,16 +40,12 @@ const Base =
  * @mixes FocusCaptureMixin
  * @mixes KeyboardMixin
  * @mixes LanguageDirectionMixin
- * @mixes OpenCloseTransitionMixin
+ * @mixes TransitionEffectMixin
  * @mixes OverlayMixin
  * @mixes TouchSwipeMixin
  * @mixes TrackpadSwipeMixin
  */
 class Drawer extends Base {
-
-  async close() {
-    await this.startClose();
-  }
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
@@ -67,22 +63,20 @@ class Drawer extends Base {
 
   /* eslint-disable no-unused-vars */
   [symbols.elementsWithTransitions](visualState) {
-    return [this.$.content];
-  }
-
-  async open() {
-    await this.startOpen();
+    return [this.$.backdrop, this.$.content];
   }
 
   async swipeLeft() {
     if (!this.rightToLeft) {
-      await this.startClose();
+      this.setState({ effectPhase: 'during' });
+      await this.close();
     }
   }
-
+  
   async swipeRight() {
     if (this.rightToLeft) {
-      await this.startClose();
+      this.setState({ effectPhase: 'during' });
+      await this.close();
     }
   }
 
@@ -133,7 +127,12 @@ class Drawer extends Base {
   get updates() {
     const base = super.updates || {};
 
-    const sign = this.rightToLeft ? 1 : -1;
+    const effect = this.state.effect;
+    const phase = this.state.effectPhase;
+    const opened = (effect === 'open' && phase !== 'before') ||
+      (effect === 'close' && phase === 'before');
+
+      const sign = this.rightToLeft ? 1 : -1;
     const swiping = this.state.swipeFraction !== null;
     // Constrain the distance swiped to between 0 and a bit less than 1. A swipe
     // distance of 1 itself would cause a tricky problem. The drawer would
@@ -146,20 +145,17 @@ class Drawer extends Base {
       Math.max(Math.min(sign * this.state.swipeFraction, 0.999), 0) :
       0;
     const fullOpacity = 0.2;
-    const opacity = this.opened ?
+    const opacity = opened ?
       fullOpacity * (1 - swipeFraction) :
       0;
 
-    const translateFraction = this.opened ?
+    const translateFraction = opened ?
       swipeFraction :
       1;
     const translatePercentage = sign * translateFraction * 100;
 
     let duration = 0;
-    const visualState = this.state.visualState;
-    const showTransition = !swiping &&
-      (visualState === this.visualStates.opened ||
-        visualState === this.visualStates.closing);
+    const showTransition = !swiping && effect && phase === 'during';
     if (showTransition) {
       // The time require to show transitions depends on how far apart the
       // elements currently are from their desired state. As a reference point,
