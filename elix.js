@@ -9,7 +9,7 @@
 
 // Import elements
 import AlertDialog from './src/AlertDialog.js';
-import ArrowSelectionButton from './src/ArrowSelectionButton.js';
+import ArrowDirectionButton from './src/ArrowDirectionButton.js';
 import AutosizeTextarea from './src/AutosizeTextarea.js';
 import Dialog from './src/Dialog.js';
 import Drawer from './src/Drawer.js';
@@ -22,7 +22,6 @@ import Popup from './src/Popup.js';
 import SlidingCarousel from './src/SlidingCarousel.js';
 import SlidingPages from './src/SlidingPages.js';
 import SlidingViewport from './src/SlidingViewport.js';
-import Spread from './src/Spread.js';
 import TabButton from './src/TabButton.js';
 import Tabs from './src/Tabs.js';
 import TabStrip from './src/TabStrip.js';
@@ -33,7 +32,7 @@ import WrappedStandardElement from './src/WrappedStandardElement.js';
 // The complete list of all mixins and elements.
 export default {
   AlertDialog,
-  ArrowSelectionButton,
+  ArrowDirectionButton,
   AutosizeTextarea,
   Dialog,
   Drawer,
@@ -46,7 +45,6 @@ export default {
   SlidingCarousel,
   SlidingPages,
   SlidingViewport,
-  Spread,
   Symbol,
   TabButton,
   Tabs,

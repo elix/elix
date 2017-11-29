@@ -41,12 +41,12 @@ class TransitionEffectTest extends Base {
         (effect === 'close' && phase === 'before') ?
       1 :
       0;
-    return {
+    return merge(super.updates, {
       style: {
         display,
         opacity
       }
-    };
+    });
   }
 }
 customElements.define('transition-effect-test', TransitionEffectTest);

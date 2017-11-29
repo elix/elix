@@ -12,7 +12,6 @@ import * as KeyboardMixinTests from './tests/KeyboardMixin.tests.js';
 import * as KeyboardPagedSelectionMixinTests from './tests/KeyboardPagedSelectionMixin.tests.js';
 import * as KeyboardPrefixSelectionMixinTests from './tests/KeyboardPrefixSelectionMixin.tests.js';
 import * as ListBoxTests from './tests/ListBox.tests.js';
-import * as OpenCloseTransitionMixinTests from './tests/OpenCloseTransitionMixin.tests.js';
 import * as OverlayMixinTests from './tests/OverlayMixin.tests.js';
 import * as PropsMixinTests from './tests/RenderUpdatesMixin.tests.js';
 import * as ReactiveMixinTests from './tests/ReactiveMixin.tests.js';

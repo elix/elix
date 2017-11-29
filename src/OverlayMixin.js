@@ -140,7 +140,7 @@ export default function OverlayMixin(Base) {
           if (this.state.effectPhase === 'after') {
             changes.effectPhase = 'before';
           }
-        };
+        }
         await this.setState(changes);
         if (opened && !this.isConnected) {
           // Overlay isn't in document yet.
