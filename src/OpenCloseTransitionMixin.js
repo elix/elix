@@ -2,10 +2,6 @@ import Symbol from './Symbol.js';
 import symbols from './symbols.js';
 
 
-const expectedTransitionEndStateKey = Symbol('expectedTransitionEndState');
-const transitionEndResolveKey = Symbol('transitionEndResolve');
-
-
 export default function OpenCloseTransitionMixin(Base) {
 
   // The class prototype added by the mixin.
@@ -17,14 +13,10 @@ export default function OpenCloseTransitionMixin(Base) {
       // We assume all transitions complete at the same time. We only listen to
       // transitioneend on the first element.
       elements[0].addEventListener('transitionend', () => {
-        const expectedState = this[expectedTransitionEndStateKey];
-        this[expectedTransitionEndStateKey] = null;
-        if (this.state.visualState === expectedState) {
-          const resolve = this[transitionEndResolveKey];
-          this[transitionEndResolveKey] = null;
-          if (resolve) {
-            resolve();
-          }
+        // console.log(`got transitionend ${this.state.visualState}, going to ${this[stateAfterTransitionKey]}`);
+        const nextVisualState = this.state.stateAfterTransition;
+        if (nextVisualState) {
+          updateVisualState(this, nextVisualState, null);
         }
       });
       this.transitionToNextVisualState();
@@ -69,49 +61,55 @@ export default function OpenCloseTransitionMixin(Base) {
     
     async startClose() {
       if (this.opened) {
-        await updateVisualState(this, this.visualStates.closing);
+        await updateVisualState(this, this.visualStates.beforeClose);
       }
     }
 
     async startOpen() {
       if (this.closed) {
-        await updateVisualState(this, this.visualStates.opening);
+        await updateVisualState(this, this.visualStates.beforeOpen);
       }
     }
 
-    async transitionToNextVisualState() {
+    transitionToNextVisualState() {
       let nextVisualState;
+      let stateAfterTransition;
+      const visualStates = this.visualStates;
+      // console.log(`transitioning from ${this.state.visualState}, ${this.style.opacity}`);
       switch (this.state.visualState) {
-        case this.visualStates.opening:
-          nextVisualState = this.visualStates.opened;
+
+        case visualStates.beforeClose:
+          nextVisualState = visualStates.closing;
+          stateAfterTransition = visualStates.closed;
+          break;
+          
+        case visualStates.beforeOpen:
+          nextVisualState = visualStates.opening;
+          stateAfterTransition = visualStates.opened;
           break;
 
-        case this.visualStates.closing:
-          await this.whenTransitionEnds(this.visualStates.closing);
-          nextVisualState = this.visualStates.closed;
-          break;
       }
+      // We read a layout property to force the browser to render the component
+      // with its current styles before we move to the next state. This ensures
+      // animated values will actually be applied before we move to the next
+      // state.
+      this.offsetHeight;
       if (nextVisualState) {
-        await updateVisualState(this, nextVisualState);
+        // console.log(`${this.state.visualState} -> ${nextVisualState}, on transitionend will go to ${this[stateAfterTransitionKey]}`);
+        updateVisualState(this, nextVisualState, stateAfterTransition);
       }
     }
 
     get visualStates() {
       return {
+        beforeClose: 'beforeClose',
+        beforeOpen: 'beforeOpen',
         closed: 'closed',
         closing: 'closing',
         opened: 'opened',
         opening: 'opening'
       };
     }
-
-    whenTransitionEnds(expectedVisualState) {
-      this[expectedTransitionEndStateKey] = expectedVisualState;
-      return new Promise(resolve => {
-        this[transitionEndResolveKey] = resolve;
-      });
-    }
-
   }
 
   return OpenCloseTransition;
@@ -125,10 +123,13 @@ function getTransitionElements(element) {
 }
 
 
-async function updateVisualState(element, visualState) {
+async function updateVisualState(element, visualState, stateAfterTransition) {
   const changed = element.state.visualState !== visualState;
   if (changed) {
-    await element.setState({ visualState });
+    await element.setState({
+      visualState,
+      stateAfterTransition
+    });
     // A single invocation of a method like startOpen() will cause the
     // element to pass through multiple visual states. This makes it hard for
     // external hosts of this component to know what visual state the component

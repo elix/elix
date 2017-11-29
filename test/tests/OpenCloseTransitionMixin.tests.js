@@ -22,11 +22,22 @@ class OpenCloseTransitionTest extends Base {
   }
 
   get updates() {
+    const display = this.closed ? 'none' : 'block';
     const visualState = this.state.visualState;
+    const visualStates = this.visualStates;
+    const opacity = visualState === visualStates.opening ||
+        visualState === visualStates.opened ?
+      1 :
+      0;
+    /*
+    const opacity = this.state.effect === 'open' && this.state.effectPhase !== 'before' ?
+      1 :
+      0;
+    */
     return {
       style: {
-        display: this.closed ? 'none' : 'block',
-        opacity: this.opened ? 1 : 0
+        display,
+        opacity
       }
     };
   }
@@ -53,13 +64,14 @@ describe("OpenCloseTransitionMixin", function () {
     fixture.addEventListener('visual-state-changed', event => {
       states.push(event.detail.visualState);
       if (event.detail.visualState === 'opened') {
-        assert.deepEqual(states, ['opening', 'opened']);
+        assert.deepEqual(states, ['beforeOpen', 'opening', 'opened']);
         done();
       }
     })
+    // console.log(`startOpen`);
     fixture.startOpen();
   });
-
+  
   it('generates sequence of visual states when closed', done => {
     const fixture = new OpenCloseTransitionTest();
     fixture.opened = true;
@@ -68,13 +80,12 @@ describe("OpenCloseTransitionMixin", function () {
     fixture.addEventListener('visual-state-changed', event => {
       states.push(event.detail.visualState);
       if (event.detail.visualState === 'closed') {
-        assert.deepEqual(states, ['closing', 'closed']);
+        assert.deepEqual(states, ['beforeClose', 'closing', 'closed']);
         done();
       }
     });
-    setTimeout(() => {
-      fixture.startClose();
-    });
+    // console.log(`startClose`);
+    fixture.startClose();
   });
 
 });
