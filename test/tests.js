@@ -21,6 +21,7 @@ import * as ShadowTemplateMixinTests from './tests/ShadowTemplateMixin.tests.js'
 import * as SingleSelectionMixinTests from './tests/SingleSelectionMixin.tests.js';
 import * as SlotContentMixinTests from './tests/SlotContentMixin.tests.js';
 import * as TabsTests from './tests/Tabs.tests.js';
+import * as TransitionEffectMixinTests from './tests/TransitionEffectMixin.tests.js';
 import * as updatesTests from './tests/updates.tests.js';
 import * as WrappedStandardElementTests from './tests/WrappedStandardElement.tests.js';
 
