@@ -110,9 +110,7 @@ class Toast extends Base {
       }
     };
     const hostEdgeStyle = hostEdgeStyles[this.state.fromEdge];
-    const display = this.closeFinished ?
-      null :
-      base.style && base.style.display || 'flex';
+    const display = base.style && base.style.display || 'flex';
 
     // Content
     const oppositeEdge = {
