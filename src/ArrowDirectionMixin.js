@@ -84,7 +84,7 @@ export default function ArrowDirectionMixin(Base) {
 
     wrapWithArrowDirection(template) {
       return `
-        <div id="arrowDirection" role="none" style="display: flex; flex: 1;">
+        <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden;">
           <elix-arrow-direction-button
             aria-hidden="true"
             id="arrowButtonLeft"
@@ -96,7 +96,7 @@ export default function ArrowDirectionMixin(Base) {
               </g>
             </svg>
           </elix-arrow-direction-button>
-          <div role="none" style="display: flex; flex: 1; position: relative;">
+          <div role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;">
             ${template}
           </div>
           <elix-arrow-direction-button

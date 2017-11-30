@@ -70,6 +70,10 @@ class SlidingViewport extends Base {
         #slidingViewportContent > ::slotted(*) {
           flex: 0 0 100%;
         }
+
+        #slidingViewportContent > ::slotted(img) {
+          object-fit: contain;
+        }
       </style>
       <div id="slidingViewportContent" role="none">
         <slot></slot>
