@@ -16,7 +16,9 @@ class QuietButton extends Base {
         button {
           background: none;
           border: none;
+          height: 100%;
           padding: 0;
+          width: 100%;
         }
       </style>
 
