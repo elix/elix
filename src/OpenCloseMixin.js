@@ -31,9 +31,20 @@ export default function OpenCloseMixin(Base) {
     }
 
     get defaultState() {
-      return Object.assign({}, super.defaultState, {
+      const defaults = {
         opened: false
-      });
+      };
+      // If this component defines a `startEffect` method (e.g., by using
+      // TransitionEffectMixin), include default state for open/close effects.
+      // Since the component is closed by default, the default effect state is
+      // after the close effect has completed.
+      if (this.startEffect) {
+        Object.assign(defaults, {
+          effect: 'close',
+          effectPhase: 'after'
+        });
+      }
+      return Object.assign({}, super.defaultState, defaults);
     }
 
     async open() {
