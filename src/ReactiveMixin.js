@@ -88,6 +88,10 @@ export default function ReactiveMixin(Base) {
         // Remember that we've rendered (or about to render) this state.
         this[renderedStateKey] = this[stateKey];
 
+        // If at least one of the setState calls was made in response to user
+        // interaction or some other component-internal event, set the
+        // raiseChangeEvents flag so that componentDidMount/componentDidUpdate
+        // know whether to raise property change events.
         const saveRaiseChangeEvents = this[symbols.raiseChangeEvents];
         this[symbols.raiseChangeEvents] = this[raiseChangeEventsInNextRenderKey];
 
@@ -106,6 +110,7 @@ export default function ReactiveMixin(Base) {
           this.componentDidUpdate(previousState);
         }
 
+        // Restore state of event flags.
         this[symbols.raiseChangeEvents] = saveRaiseChangeEvents;
         this[raiseChangeEventsInNextRenderKey] = saveRaiseChangeEvents;
       }
