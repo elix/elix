@@ -65,8 +65,19 @@ export default function SingleSelectionMixin(Base) {
       trackSelectedItem(this);
     }
 
-    componentDidUpdate() {
-      if (super.componentDidUpdate) { super.componentDidUpdate(); }
+    componentDidUpdate(previousState) {
+      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
+
+      // TODO: Don't raise event if we're going to immediately change the index
+      // in trackSelectedItem below.
+      const selectedIndex = this.state.selectedIndex;
+      if (selectedIndex !== previousState.selectedIndex && this[symbols.raiseChangeEvents]) {
+        const event = new CustomEvent('selected-index-changed', {
+          detail: { selectedIndex }
+        });
+        this.dispatchEvent(event);
+      }
+      
       // In case selected item changed position or was removed.
       trackSelectedItem(this);
     }
@@ -228,14 +239,6 @@ export default function SingleSelectionMixin(Base) {
         this.setState({
           selectedIndex
         });
-        if (this[symbols.raiseChangeEvents]) {
-          const event = new CustomEvent('selected-index-changed', {
-            detail: {
-              selectedIndex
-            }
-          });
-          this.dispatchEvent(event);
-        }
       }
       return changed;
     }

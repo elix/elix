@@ -4,6 +4,7 @@ import Symbol from './Symbol.js';
 
 const renderedStateKey = Symbol('renderedState');
 const stateKey = Symbol('state');
+const raiseChangeEventsInNextRenderKey = Symbol('raiseChangeEventsInNextRender');
 
 
 /**
@@ -22,6 +23,14 @@ export default function ReactiveMixin(Base) {
       // Set the initial state from the default state defined by the component
       // and its mixins.
       this.setState(this.defaultState);
+    }
+
+    componentDidMount() {
+      if (super.componentDidMount) { super.componentDidMount(); }
+    }
+
+    componentDidUpdate(previousState) {
+      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
     }
 
     connectedCallback() {
@@ -62,6 +71,8 @@ export default function ReactiveMixin(Base) {
      * subsequent renders).
      */
     render() {
+      // console.log(`render: ${this[raiseChangeEventsInNextRenderKey]}`);
+
       // Only render if we haven't rendered this state object before. This
       // ensures that consecutive calls to setState only cause a single render.
       // Each setState call will update the state, queuing up a promise to
@@ -69,12 +80,16 @@ export default function ReactiveMixin(Base) {
       // complete state is available. That is what is rendered. When the
       // following render calls happen, they will see that the complete state
       // has already been rendered, and skip doing any work.
-      if (this[stateKey] !== this[renderedStateKey]) {
+      const previousState = this[renderedStateKey];
+      if (this[stateKey] !== previousState) {
 
-        const firstRender = this[renderedStateKey] === undefined;
+        const firstRender = previousState === undefined;
 
         // Remember that we've rendered (or about to render) this state.
         this[renderedStateKey] = this[stateKey];
+
+        const saveRaiseChangeEvents = this[symbols.raiseChangeEvents];
+        this[symbols.raiseChangeEvents] = this[raiseChangeEventsInNextRenderKey];
 
         // We set a flag to indicate that rendering is happening. The component
         // may use this to avoid triggering other updates during the render.
@@ -86,14 +101,13 @@ export default function ReactiveMixin(Base) {
 
         // Let the component know it was rendered.
         if (firstRender) {
-          if (this.componentDidMount) {
-            this.componentDidMount();
-          }
+          this.componentDidMount();
         } else {
-          if (this.componentDidUpdate) {
-            this.componentDidUpdate();
-          }
+          this.componentDidUpdate(previousState);
         }
+
+        this[symbols.raiseChangeEvents] = saveRaiseChangeEvents;
+        this[raiseChangeEventsInNextRenderKey] = saveRaiseChangeEvents;
       }
     }
 
@@ -128,11 +142,20 @@ export default function ReactiveMixin(Base) {
 
         // We only need to render if we're actually in the document.
         if (this.isConnected) {
+
+          // Remember whether we're supposed to raise property change events.
+          if (this[symbols.raiseChangeEvents]) {
+            this[raiseChangeEventsInNextRenderKey] = true;
+          }
+          // console.log(`before render: ${this[raiseChangeEventsInNextRenderKey]}`);
+          
           // Yield with promise timing. This lets any *synchronous* setState
           // calls that happen after the current setState call complete first.
           // Their effects on the state will be batched up before the render
           // call below actually happens.
           await Promise.resolve();
+          
+          // Render the component.
           this.render();
         }
       }

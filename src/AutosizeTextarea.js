@@ -37,7 +37,9 @@ class AutosizeTextarea extends Base {
       this.setState({ valueTracksContent: false });
       /** @type {any} */
       const inner = this.$.inner;
-      this.updateValue(inner.value);
+      this.setState({
+        value: inner.value
+      });
       this[symbols.raiseChangeEvents] = false;
     });
 
@@ -66,17 +68,20 @@ class AutosizeTextarea extends Base {
     });
   }
 
-  componentDidUpdate() {
-    if (super.componentDidUpdate) { super.componentDidUpdate(); }
-    const contentValue = getTextFromContent(this.state.content);
-    if (this.state.valueTracksContent && this.state.value !== contentValue) {
-      // Content changed in response to a slotchange event.
-      // Because the host component has no easy way of knowing whether content
-      // changed, or that this will update `value`, we'll raise a change event
-      // in updateValue.
-      this[symbols.raiseChangeEvents] = true;
-      this.updateValue(contentValue);
-      this[symbols.raiseChangeEvents] = false;
+  componentDidUpdate(previousState) {
+    if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
+
+    // See if value changed, taking into account the possibility that value
+    // may be calculated from content, or set directly.
+    const value = this.value;
+    const changed = this.state.valueTracksContent ?
+      value !== getTextFromContent(previousState.content) :
+      value !== previousState.value;
+    if (changed && this[symbols.raiseChangeEvents]) {
+      const event = new CustomEvent('value-changed', {
+        detail: { value }
+      });
+      this.dispatchEvent(event);
     }
   }
 
@@ -216,19 +221,6 @@ class AutosizeTextarea extends Base {
     });
   }
 
-  updateValue(value) {
-    const changed = this.state.value !== value;
-    if (changed) {
-      this.setState({ value });
-      if (this[symbols.raiseChangeEvents]) {
-        const event = new CustomEvent('value-changed', {
-          detail: { value }
-        });
-        this.dispatchEvent(event);
-      }
-    }
-  }
-
   /**
    * The text currently shown in the textarea.
    *
@@ -244,8 +236,10 @@ class AutosizeTextarea extends Base {
       this.state.value;
   }
   set value(value) {
-    this.setState({ valueTracksContent: false });
-    this.updateValue(value);
+    this.setState({
+      value,
+      valueTracksContent: false
+    });
   }
 }
 

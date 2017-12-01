@@ -64,7 +64,7 @@ class Tabs extends Base {
     });
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(previousState) {
     if (super.componentDidMount) { super.componentDidMount(); }
     updateDefaultTabButtons(this);
   }

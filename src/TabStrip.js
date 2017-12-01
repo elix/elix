@@ -63,8 +63,8 @@ const Base =
  */
 class TabStrip extends Base {
 
-  componentDidUpdate() {
-    if (super.componentDidUpdate) { super.componentDidUpdate(); }
+  componentDidUpdate(previousState) {
+    if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
 
     // Does this component, or any of its assigned nodes, have focus?
     // This is a surprisingly hard question to answer.

@@ -86,8 +86,8 @@ export default function OverlayMixin(Base) {
       updateOverlay(this);
     }
 
-    componentDidUpdate() {
-      if (super.componentDidUpdate) { super.componentDidUpdate(); }
+    componentDidUpdate(previousState) {
+      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
       updateOverlay(this);
 
       // If we're finished closing an overlay that was automatically added to

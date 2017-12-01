@@ -51,8 +51,8 @@ export default function PopupModalityMixin(Base) {
       };
     }
 
-    componentDidUpdate() {
-      if (super.componentDidUpdate) { super.componentDidUpdate(); }
+    componentDidUpdate(previousState) {
+      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
       if (!this.closed) {
         // Wait a tick before wiring up events – if the popup was opened
         // because the user clicked something, that opening click event may

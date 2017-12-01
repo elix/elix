@@ -8,8 +8,8 @@ class ReactiveTest extends ReactiveMixin(HTMLElement) {
     if (super.componentDidMount) { super.componentDidMount(); }
   }
 
-  componentDidUpdate() {
-    if (super.componentDidUpdate) { super.componentDidUpdate(); }
+  componentDidUpdate(previousState) {
+    if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
   }
 
   get defaultState() {

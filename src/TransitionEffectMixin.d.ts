@@ -6,12 +6,12 @@
 declare const TransitionEffectMixin: StateMixin<
 {
   componentDidMount?(): void;
-  componentDidUpdate?(): void;
+  componentDidUpdate?(previousState: PlainObject): void;
 },
 {},
 {
   componentDidMount(): void;
-  componentDidUpdate(): void;
+  componentDidUpdate(previousState: PlainObject): void;
   startEffect(effect: string): Promise<void>;
 },
 {

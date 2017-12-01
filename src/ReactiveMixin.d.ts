@@ -7,8 +7,8 @@ declare const ReactiveMixin: Mixin<{
   connectedCallback?(): void;
   defaultState?: PlainObject;
 }, {
-  componentDidMount?(): void;
-  componentDidUpdate?(): void;
+  componentDidMount(): void;
+  componentDidUpdate(previousState: PlainObject): void;
   connectedCallback(): void;
   defaultState: PlainObject;
   render(): Promise<void>;

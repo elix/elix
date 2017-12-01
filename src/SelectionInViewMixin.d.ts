@@ -5,11 +5,11 @@
 
 declare const SelectionInViewMixin: Mixin<{
   componentDidMount?(): void;
-  componentDidUpdate?(): void;
+  componentDidUpdate?(previousState: PlainObject): void;
   scrollItemIntoView?(item: Element);
 }, {
   componentDidMount(): void;
-  componentDidUpdate(): void;
+  componentDidUpdate(previousState: PlainObject): void;
   scrollItemIntoView(item: Element);
 }>;
 
