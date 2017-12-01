@@ -72,14 +72,20 @@ class Drawer extends Base {
 
   async swipeLeft() {
     if (!this.rightToLeft) {
-      this.setState({ effectPhase: 'during' });
+      this.setState({
+        effect: 'close',
+        effectPhase: 'during'
+      });
       await this.close();
     }
   }
   
   async swipeRight() {
     if (this.rightToLeft) {
-      this.setState({ effectPhase: 'during' });
+      this.setState({
+        effect: 'close',
+        effectPhase: 'during'
+      });
       await this.close();
     }
   }
@@ -148,9 +154,9 @@ class Drawer extends Base {
     const swipeFraction = swiping ?
       Math.max(Math.min(sign * this.state.swipeFraction, 0.999), 0) :
       0;
-    const fullOpacity = 0.2;
+    const maxOpacity = 0.2;
     const opacity = opened ?
-      fullOpacity * (1 - swipeFraction) :
+      maxOpacity * (1 - swipeFraction) :
       0;
 
     const translateFraction = opened ?
@@ -164,12 +170,17 @@ class Drawer extends Base {
       // The time require to show transitions depends on how far apart the
       // elements currently are from their desired state. As a reference point,
       // we compare the expected opacity of the backdrop to its current opacity.
+      // (We can't use the swipeFraction, because no swipe is in progress.)
       /** @type {any} */
       const backdrop = this.$.backdrop;
-      const currentOpacity = parseFloat(backdrop.style.opacity) || 0;
+      const opacityCurrent = parseFloat(backdrop.style.opacity) || 0;
+      // const opacityStart = effect === 'open' ? 0 : maxOpacity;
+      // const opacityEnd = opacity;
+      // const opacityRange = Math.abs(opacityEnd - opacityStart);
+      // const opacityProgress = Math.abs(opacityCurrent - opacityStart) / opacityRange;
+      const opacityRemaining = Math.abs(opacityCurrent - opacity);
       const fullDuration = 0.25; // Quarter second
-      const opacityDifference = Math.abs(opacity - currentOpacity);
-      duration = opacityDifference / fullOpacity * fullDuration;
+      duration = opacityRemaining / maxOpacity * fullDuration;
     }
 
     const backdropProps = {
