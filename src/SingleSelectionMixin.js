@@ -58,18 +58,9 @@ export default function SingleSelectionMixin(Base) {
       });
     }
 
-    componentDidMount() {
-      if (super.componentDidMount) { super.componentDidMount(); }
-      // If the current state implies selection (e.g., via selectionRequired),
-      // set the selection now.
-      trackSelectedItem(this);
-    }
-
     componentDidUpdate(previousState) {
       if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
 
-      // TODO: Don't raise event if we're going to immediately change the index
-      // in trackSelectedItem below.
       const selectedIndex = this.state.selectedIndex;
       if (selectedIndex !== previousState.selectedIndex && this[symbols.raiseChangeEvents]) {
         const event = new CustomEvent('selected-index-changed', {
@@ -77,9 +68,6 @@ export default function SingleSelectionMixin(Base) {
         });
         this.dispatchEvent(event);
       }
-      
-      // In case selected item changed position or was removed.
-      trackSelectedItem(this);
     }
 
     itemCalcs(item, index) {
@@ -209,20 +197,26 @@ export default function SingleSelectionMixin(Base) {
 
     validateState(state) {
       // Only validate if we've already received items.
-      const items = state.items;
+      const items = this.itemsForState ?
+        this.itemsForState(state) :
+        state.items;
       if (items) {
         const count = items ? items.length : 0;
         const selectedIndex = state.selectedIndex;
-        let validatedIndex = state.selectionWraps ?
-        
+
+        let validatedIndex;
+        if (selectedIndex === -1 && state.selectionRequired && count > 0) {
+          validatedIndex = 0;
+        } else if (state.selectionWraps) {
           // Wrap the index.
           // JavaScript mod doesn't handle negative numbers the way we want to wrap.
           // See http://stackoverflow.com/a/18618250/76472
-          ((selectedIndex % count) + count) % count :
-
+          validatedIndex = ((selectedIndex % count) + count) % count;
+        } else {
           // Don't wrap, force index within bounds of -1 (no selection) to the
           // array length - 1.
-          Math.max(Math.min(selectedIndex, count - 1), -1);
+          validatedIndex = Math.max(Math.min(selectedIndex, count - 1), -1);
+        }
 
         if (validatedIndex !== selectedIndex) {
           return {
@@ -236,37 +230,4 @@ export default function SingleSelectionMixin(Base) {
   }
 
   return SingleSelection;
-}
-
-
-/**
- * Following a change in the set of items, or in the value of the
- * `selectionRequired` property, reacquire the selected item. If it's moved,
- * update `selectedIndex`. If it's been removed, and a selection is required,
- * try to select another item.
- */
-// TODO Export this and rely on libraries that change content to synchronously
-// update selectedIndex at the item they change content?
-function trackSelectedItem(component) {
-
-  const items = component.items;
-  if (!items) {
-    // No items yet, may still be waiting for them.
-    return;
-  }
-
-  const itemCount = items ? items.length : 0;
-  const previousSelectedIndex = component.state.selectedIndex;
-
-  if (previousSelectedIndex >= 0) {
-    // Select the item at the same index (if it exists) or as close as possible.
-    // If there are no items, we'll set the index to -1 (no selection).
-    const selectedIndex = Math.min(previousSelectedIndex, itemCount - 1);
-    component.setState({ selectedIndex });
-  } else if (component.state.selectionRequired && itemCount > 0) {
-    // No item was previously selected; select the first item by default.
-    component.setState({
-      selectedIndex: 0
-    });
-  }
 }

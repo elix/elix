@@ -65,7 +65,7 @@ describe("SingleSelectionMixin", () => {
     assert.equal(fixture.state.selectedIndex, 0);
   });
 
-  it("tracks selection of first item when no item is selected", async () => {
+  it("selects first item when selection is required and no item is currently selected", async () => {
     const fixture = createSampleElement();
     assert.equal(fixture.state.selectedIndex, -1);
     await fixture.setState({
@@ -75,27 +75,13 @@ describe("SingleSelectionMixin", () => {
     assert.equal(fixture.state.selectedIndex, 0);
   });
 
-  it("tracks selection when current item (not last place) is removed", async () => {
-    const fixture = createSampleElement();
-    const items = fixture.items.slice();
-    items.splice(0, 1);
-    await fixture.setState({
-      items,
-      selectedIndex: 0,
-      selectionRequired: true
-    });
-    fixture.render();
-    assert.equal(fixture.state.selectedIndex, 0);
-  });
-
-  it("tracks selection when current item in last place is removed", async () => {
+  it("selects nearest item when item in last place is removed", async () => {
     const fixture = createSampleElement();
     const items = fixture.items.slice();
     items.splice(2, 1);
     await fixture.setState({
       items,
-      selectedIndex: 2,
-      selectionRequired: true
+      selectedIndex: 2
     });
     fixture.render();
     assert.equal(fixture.state.selectedIndex, 1);
@@ -105,8 +91,7 @@ describe("SingleSelectionMixin", () => {
     const fixture = createSampleElement();
     await fixture.setState({
       items: [],
-      selectedIndex: 0,
-      selectionRequired: true
+      selectedIndex: 0
     });
     fixture.render();
     assert.equal(fixture.state.selectedIndex, -1);

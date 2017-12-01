@@ -62,14 +62,18 @@ export default function ContentItemsMixin(Base) {
       const content = this.state.content;
       if (this[previousContentKey] !== content) {
         // Memoize
-        this[itemsKey] = content ?
-          substantiveElements(content) :
-          null;
+        this[itemsKey] = this.itemsForState(this.state);
         // Make immutable.
         Object.freeze(this[itemsKey]);
         this[previousContentKey] = content;
       }
       return this[itemsKey];
+    }
+
+    itemsForState(state) {
+      return state.content ?
+        substantiveElements(state.content) :
+        null;
     }
 
     itemUpdates(item, calcs, original) {
