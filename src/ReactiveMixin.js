@@ -71,7 +71,6 @@ export default function ReactiveMixin(Base) {
      * subsequent renders).
      */
     render() {
-      // console.log(`render: ${this[raiseChangeEventsInNextRenderKey]}`);
 
       // Only render if we haven't rendered this state object before. This
       // ensures that consecutive calls to setState only cause a single render.
@@ -123,6 +122,7 @@ export default function ReactiveMixin(Base) {
      * render the component. Otherwise, this returns a resolved promise.
      * 
      * @param {object} changes - the changes to apply to the element's state
+     * @returns {boolean} - true if the state changed
      */
     async setState(changes) {
       // There's no good reason to have a render method update state.
@@ -135,35 +135,41 @@ export default function ReactiveMixin(Base) {
       // changes merged on top of it.
       const nextState = Object.assign({}, this[stateKey], changes);
 
+      validateState(this, nextState);
+
       // Freeze the new state so it's immutable. This prevents accidental
       // attempts to set state without going through setState.
       Object.freeze(nextState);
 
       // Is this our first setState, or does the component think something's changed?
-      if (this[stateKey] === undefined || this.shouldComponentUpdate(nextState)) {
-
-        // Set the new state.
-        this[stateKey] = nextState;
-
-        // We only need to render if we're actually in the document.
-        if (this.isConnected) {
-
-          // Remember whether we're supposed to raise property change events.
-          if (this[symbols.raiseChangeEvents]) {
-            this[raiseChangeEventsInNextRenderKey] = true;
-          }
-          // console.log(`before render: ${this[raiseChangeEventsInNextRenderKey]}`);
-          
-          // Yield with promise timing. This lets any *synchronous* setState
-          // calls that happen after the current setState call complete first.
-          // Their effects on the state will be batched up before the render
-          // call below actually happens.
-          await Promise.resolve();
-          
-          // Render the component.
-          this.render();
-        }
+      const changed = this[stateKey] === undefined || this.shouldComponentUpdate(nextState);
+      if (!changed) {
+        // No need to render.
+        return false;
       }
+
+      // Set the new state.
+      this[stateKey] = nextState;
+
+      // We only need to render if we're actually in the document.
+      if (this.isConnected) {
+
+        // Remember whether we're supposed to raise property change events.
+        if (this[symbols.raiseChangeEvents]) {
+          this[raiseChangeEventsInNextRenderKey] = true;
+        }
+        
+        // Yield with promise timing. This lets any *synchronous* setState
+        // calls that happen after the current setState call complete first.
+        // Their effects on the state will be batched up before the render
+        // call below actually happens.
+        await Promise.resolve();
+        
+        // Render the component.
+        this.render();
+      }
+
+      return true;
     }
 
     /**
@@ -200,5 +206,19 @@ export default function ReactiveMixin(Base) {
     get state() {
       return this[stateKey];
     }
+
+    validateState(state) {
+      return super.validateState && super.validateState(state);
+    }
+  }
+}
+
+
+function validateState(element, state) {
+  // Repeatedly validate state until there are no more validations.
+  let changes = element.validateState(state);
+  while (changes && Object.keys(changes).length > 0) {
+    Object.assign(state, changes);
+    changes = element.validateState(state);
   }
 }

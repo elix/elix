@@ -1,32 +1,26 @@
 import KeyboardPagedSelectionMixin from '../../src/KeyboardPagedSelectionMixin.js';
+import ReactiveMixin from '../../src/ReactiveMixin.js';
 import symbols from '../../src/symbols.js';
 
 
 const itemHeight = '100';
 
-class KeyboardPagedSelectionTest extends KeyboardPagedSelectionMixin(HTMLElement) {
+const Base =
+  KeyboardPagedSelectionMixin(
+  ReactiveMixin(
+    HTMLElement
+  ));
 
-  constructor() {
-    super();
-    this.state = {
+class KeyboardPagedSelectionTest extends Base {
+
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
       selectedIndex: -1      
-    };
+    });
   }
 
   get items() {
     return this.children;
-  }
-
-  setState(state) {
-    Object.assign(this.state, state);
-  }
-
-  updateSelectedIndex(selectedIndex) {
-    const changed = this.state.selectedIndex !== selectedIndex;
-    if (changed) {
-      this.setState({ selectedIndex });
-    }
-    return changed;
   }
 
 }

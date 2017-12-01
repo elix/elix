@@ -148,11 +148,11 @@ function getIndexOfItemAtY(items, scrollTarget, y, downward) {
  * Move by one page downward (if downward is true), or upward (if false).
  * Return true if we ended up changing the selection, false if not.
  */
-function scrollOnePage(component, downward) {
+function scrollOnePage(element, downward) {
   
-  const scrollTarget = component[symbols.scrollTarget];
-  const items = component.items;
-  const selectedIndex = component.state.selectedIndex;
+  const scrollTarget = element[symbols.scrollTarget];
+  const items = element.items;
+  const selectedIndex = element.state.selectedIndex;
 
   // Determine the item visible just at the edge of direction we're heading.
   // We'll select that item if it's not already selected.
@@ -179,5 +179,10 @@ function scrollOnePage(component, downward) {
     newIndex = (downward ? items.length - 1 : 0);
   }
 
-  return component.updateSelectedIndex(newIndex);
+  element.setState({
+    selectedIndex: newIndex
+  });
+
+  const changed = element.state.selectedIndex !== selectedIndex;
+  return changed;
 }

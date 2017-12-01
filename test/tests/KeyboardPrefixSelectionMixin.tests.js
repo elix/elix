@@ -1,30 +1,24 @@
 import KeyboardPrefixSelectionMixin from '../../src/KeyboardPrefixSelectionMixin.js';
+import ReactiveMixin from '../../src/ReactiveMixin.js';
 import symbols from '../../src/symbols.js';
 
 
-class KeyboardPrefixSelectionTest extends KeyboardPrefixSelectionMixin(HTMLElement) {
+const Base =
+  KeyboardPrefixSelectionMixin(
+  ReactiveMixin(
+    HTMLElement
+  ));
 
-  constructor() {
-    super();
-    this.state = {
-      selectedIndex: -1
-    };
+class KeyboardPrefixSelectionTest extends Base {
+
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      selectedIndex: -1      
+    });
   }
 
   get items() {
     return this.children;
-  }
-
-  setState(state) {
-    Object.assign(this.state, state);
-  }
-
-  updateSelectedIndex(selectedIndex) {
-    const changed = this.state.selectedIndex !== selectedIndex;
-    if (changed) {
-      this.setState({ selectedIndex });
-    }
-    return changed;
   }
 
 }

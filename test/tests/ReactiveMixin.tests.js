@@ -21,6 +21,27 @@ class ReactiveTest extends ReactiveMixin(HTMLElement) {
     this.renderedResult = this.state.message;
   }
 
+  // This is a contrived state validation routine for testing purposes. If
+  // state.foo is set, this trims it. In a separate pass, it ensures that
+  // state.bar equals state.foo. In a normal component, you'd try to avoid
+  // maintaining state that could be trivially derived from other state members.
+  // You'd also perform validation in as few passes as possible; this routine
+  // here simulates multiple mixins contributing to validation.
+  validateState(state) {
+    if (state.foo) {
+      const trimmed = state.foo.trim();
+      if (trimmed !== state.foo) {
+        return {
+          foo: trimmed
+        };
+      } else if (state.bar !== state.foo) {
+        return {
+          bar: state.foo
+        };
+      }
+    }
+  }
+
 }
 customElements.define('reactive-test', ReactiveTest);
 
@@ -126,6 +147,17 @@ describe("ReactiveMixin", function () {
       message: 'hamster'
     });
     assert.equal(fixture.state, previousState);
+  });
+
+  it("can validate state", async () => {
+    const fixture = new ReactiveTest();
+    await fixture.setState({
+      foo: ' test '
+    });
+    assert.deepEqual(fixture.state, {
+      foo: 'test',
+      bar: 'test'
+    });
   });
 
 });

@@ -96,7 +96,9 @@ export default function SingleSelectionMixin(Base) {
      */
     selectFirst() {
       if (super.selectFirst) { super.selectFirst(); }
-      return this.updateSelectedIndex(0);
+      return this.setState({
+        selectedIndex: 0
+      });
     }
 
     /**
@@ -111,7 +113,9 @@ export default function SingleSelectionMixin(Base) {
       const parsedIndex = typeof selectedIndex === 'string' ?
         parseInt(selectedIndex) :
         selectedIndex;
-      this.updateSelectedIndex(parsedIndex);
+      this.setState({
+        selectedIndex: parsedIndex
+      });
     }
 
     /**
@@ -126,9 +130,9 @@ export default function SingleSelectionMixin(Base) {
       if (!this.items) {
         return;
       }
-      const index = this.items.indexOf(selectedItem);
-      if (index >= 0) {
-        this.updateSelectedIndex(index);
+      const selectedIndex = this.items.indexOf(selectedItem);
+      if (selectedIndex >= 0) {
+        this.setState({ selectedIndex });
       }
     }
 
@@ -169,7 +173,9 @@ export default function SingleSelectionMixin(Base) {
      */
     selectLast() {
       if (super.selectLast) { super.selectLast(); }
-      return this.updateSelectedIndex(this.items.length - 1);
+      return this.setState({
+        selectedIndex: this.items.length - 1
+      });
     }
 
     /**
@@ -181,7 +187,9 @@ export default function SingleSelectionMixin(Base) {
      */
     selectNext() {
       if (super.selectNext) { super.selectNext(); }
-      return this.updateSelectedIndex(this.state.selectedIndex + 1);
+      return this.setState({
+        selectedIndex: this.state.selectedIndex + 1
+      });
     }
 
     /**
@@ -193,54 +201,36 @@ export default function SingleSelectionMixin(Base) {
      */
     selectPrevious() {
       if (super.selectPrevious) { super.selectPrevious(); }
-      const newIndex = this.items && this.state.selectedIndex < 0 ?
+      const selectedIndex = this.items && this.state.selectedIndex < 0 ?
         this.items.length - 1 :     // No selection yet; select last item.
         this.state.selectedIndex - 1;
-      return this.updateSelectedIndex(newIndex);
+      return this.setState({ selectedIndex });
     }
 
-    /**
-     * Update `this.state.selectedIndex` and return true if the index was updated.
-     * This returns false if there are no items, or if the indicated index is
-     * already selected.
-     * 
-     * If an index is supplied that is outside the bounds of the `items` array,
-     * the closest item will be selected. If `this.state.selectionWraps` is set,
-     * the index will wrap around. E.g., attempting to select an index of 3 in
-     * a 3-item list will select the 0th item.
-     * 
-     * @param {number} index - the index to select
-     */
-    // TODO: Make Symbol
-    updateSelectedIndex(index) {
+    validateState(state) {
+      // Only validate if we've already received items.
+      const items = state.items;
+      if (items) {
+        const count = items ? items.length : 0;
+        const selectedIndex = state.selectedIndex;
+        let validatedIndex = state.selectionWraps ?
+        
+          // Wrap the index.
+          // JavaScript mod doesn't handle negative numbers the way we want to wrap.
+          // See http://stackoverflow.com/a/18618250/76472
+          ((selectedIndex % count) + count) % count :
 
-      const items = this.items;
-      const count = items ? items.length : 0;
+          // Don't wrap, force index within bounds of -1 (no selection) to the
+          // array length - 1.
+          Math.max(Math.min(selectedIndex, count - 1), -1);
 
-      let selectedIndex;
-      if (items === null) {
-        // No items yet. It's possible we're still waiting for items. We'll set
-        // the selectedIndex state so that, if/when items do arrive, we can
-        // select the appropriate item.
-        selectedIndex = index;
-      } else if (this.state.selectionWraps) {      
-        // Wrap the index.
-        // JavaScript mod doesn't handle negative numbers the way we want to wrap.
-        // See http://stackoverflow.com/a/18618250/76472
-        selectedIndex = ((index % count) + count) % count;
-      } else {
-        // Don't wrap, force index within bounds of -1 (no selection) to
-        // the array length - 1.
-        selectedIndex = Math.max(Math.min(index, count - 1), -1);
+        if (validatedIndex !== selectedIndex) {
+          return {
+            selectedIndex: validatedIndex
+          };
+        }
       }
-      
-      const changed = this.state.selectedIndex !== selectedIndex;
-      if (changed) {
-        this.setState({
-          selectedIndex
-        });
-      }
-      return changed;
+
     }
 
   }
@@ -271,10 +261,12 @@ function trackSelectedItem(component) {
   if (previousSelectedIndex >= 0) {
     // Select the item at the same index (if it exists) or as close as possible.
     // If there are no items, we'll set the index to -1 (no selection).
-    const newSelectedIndex = Math.min(previousSelectedIndex, itemCount - 1);
-    component.updateSelectedIndex(newSelectedIndex);
+    const selectedIndex = Math.min(previousSelectedIndex, itemCount - 1);
+    component.setState({ selectedIndex });
   } else if (component.state.selectionRequired && itemCount > 0) {
     // No item was previously selected; select the first item by default.
-    component.updateSelectedIndex(0);
+    component.setState({
+      selectedIndex: 0
+    });
   }
 }

@@ -132,8 +132,10 @@ class TabStrip extends Base {
       case 32: /* Space */
         // TODO
         // const index = this.indexOfTarget(event.target);
-        const index = this.items && this.items.indexOf(event.target);
-        handled = this.updateSelectedIndex(index);
+        const selectedIndex = this.items && this.items.indexOf(event.target);
+        const previousIndex = this.state.selectedIndex;
+        this.setState({ selectedIndex });
+        handled = this.state.selectedIndex !== previousIndex;
         break;
     }
 

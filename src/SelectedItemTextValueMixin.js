@@ -57,8 +57,8 @@ export default function SelectedItemTextValueMixin(Base) {
         });
       } else {
         // Select the index of the indicate text, if found.
-        const index = indexOfItemWithText(items, text);
-        this.updateSelectedIndex(index);
+        const selectedIndex = indexOfItemWithText(items, text);
+        this.setState({ selectedIndex });
       }
     }
   }
