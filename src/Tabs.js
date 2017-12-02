@@ -64,6 +64,7 @@ class Tabs extends Base {
     });
   }
 
+  /* eslint-disable no-unused-vars */
   componentDidUpdate(previousState) {
     if (super.componentDidMount) { super.componentDidMount(); }
     updateDefaultTabButtons(this);

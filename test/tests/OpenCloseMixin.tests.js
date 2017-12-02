@@ -1,4 +1,3 @@
-import { merge } from '../../src/updates.js';
 import OpenCloseMixin from '../../src/OpenCloseMixin.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
 import RenderUpdatesMixin from '../../src/RenderUpdatesMixin.js';

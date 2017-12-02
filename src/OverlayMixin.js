@@ -1,6 +1,5 @@
 import { merge } from './updates.js';
 import Symbol from './Symbol.js';
-import symbols from './symbols.js';
 
 
 const appendedToDocumentKey = Symbol('appendedToDocument');
