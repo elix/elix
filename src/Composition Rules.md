@@ -34,12 +34,14 @@ This is the simplest case. Your mixin method should check to see whether the
 base defines a method of the same name, and if so, invoke that method. In most
 cases, you should invoke the super method before performing your own mixin work.
 
-    let Mixin = (base) => class Mixin extends base {
-      method(...args) {
-        if (super.method) { super.method(...args); }
-        // Do your mixin work here.
-      }
-    };
+```js
+let Mixin = (base) => class Mixin extends base {
+  method(...args) {
+    if (super.method) { super.method(...args); }
+    // Do your mixin work here.
+  }
+};
+```
 
 Be sure to pass along any arguments to the base class’ method implementation.
 
@@ -50,13 +52,15 @@ before doing mixin work. Your mixin has the opportunity to modify the base
 method’s result, or can leave it unchanged. In any event, your mixin method
 should itself return a result.
 
-    let Mixin = (base) => class Mixin extends base {
-      method(...args) {
-        let result = super.method && super.method(...args);
-        // Do your mixin work here, potentially modifying result.
-        return result;
-      }
-    };
+```js
+let Mixin = (base) => class Mixin extends base {
+  method(...args) {
+    let result = super.method && super.method(...args);
+    // Do your mixin work here, potentially modifying result.
+    return result;
+  }
+};
+```
 
 
 # Property getter with no setter
@@ -73,14 +77,16 @@ use the idiom, `'name' in base.prototype`.
 Your getter will generally want to override the base class implementation, so it
 does not need to invoke super.
 
-    let Mixin = (base) => class Mixin extends base {
-      get property() {
-        // Do your mixin work here.
-      }
-      set property(value) {
-        if ('property' in base.prototype) { super.property = value; }
-      }
-    };
+```js
+let Mixin = (base) => class Mixin extends base {
+  get property() {
+    // Do your mixin work here.
+  }
+  set property(value) {
+    if ('property' in base.prototype) { super.property = value; }
+  }
+};
+```
 
 Note the use of `base.prototype` instead of `super` in the check — `'name' in
 super` is not legal ES6. However, the use of `super` *is* required in the
@@ -101,16 +107,17 @@ getter defined further up the prototype chain.) Your getter does not need to
 check to see whether it should invoke super — if the base class doesn’t define
 the property, the result will be undefined anyway.
 
-    let Mixin = (base) => class Mixin extends base {
-      get property() {
-        return super.property;
-      }
-      set property(value) {
-        if ('property' in base.prototype) { super.property = value; }
-        // Do your mixin work here.
-      }
-    };
-
+```js
+let Mixin = (base) => class Mixin extends base {
+  get property() {
+    return super.property;
+  }
+  set property(value) {
+    if ('property' in base.prototype) { super.property = value; }
+    // Do your mixin work here.
+  }
+};
+```
 
 # Property with both getter and setter
 
@@ -118,16 +125,17 @@ This is a combination of the above two rules. The getter will generally want to
 override the base class property, so it doesn’t need to invoke super. The setter
 should use the same technique above to see whether it should invoke super.
 
-    let Mixin = (base) => class Mixin extends base {
-      get property() {
-        // Do your mixin work here.
-      }
-      set property(value) {
-        if ('property' in base.prototype) { super.property = value; }
-        // Do your mixin work here.
-      }
-    };
-
+```js
+let Mixin = (base) => class Mixin extends base {
+  get property() {
+    // Do your mixin work here.
+  }
+  set property(value) {
+    if ('property' in base.prototype) { super.property = value; }
+    // Do your mixin work here.
+  }
+};
+```
 
 # Property with a getter and setter that "backs" a value
 
@@ -140,15 +148,17 @@ of the property *before* invoking `super`. This ensures that, if the superclass
 immediately inspects the property's value, the latest value will be returned.
 Other work of the mixin should be done *after* invoking `super`, as usual.
 
-    let propertySymbol = Symbol();
+```js
+let propertySymbol = Symbol();
 
-    let Mixin = (base) => class Mixin extends base {
-      get property() {
-        return this[propertySymbol];
-      }
-      set property(value) {
-        this[propertySymbol] = value;
-        if ('property' in base.prototype) { super.property = value; }
-        // Do any other mixin work here.
-      }
-    };
+let Mixin = (base) => class Mixin extends base {
+  get property() {
+    return this[propertySymbol];
+  }
+  set property(value) {
+    this[propertySymbol] = value;
+    if ('property' in base.prototype) { super.property = value; }
+    // Do any other mixin work here.
+  }
+};
+```
