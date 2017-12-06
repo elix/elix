@@ -1,6 +1,6 @@
 # Elix ![Build status](https://travis-ci.org/elix/elix.svg?branch=master)
 
-[![Elix logo](https://elix.org/static/images/elix.png)](https://elix.org)
+[![Elix logo](https://cdn.rawgit.com/elix/elix.org/3e158c0a/public/src/images/elix.png)](https://elix.org)
 
 Elix is a community-driven collection of high-quality web components for common
 user interface patterns.
@@ -89,7 +89,7 @@ For full documentation and demos, see https://elix.org.
 # Including Elix in your project
 
 Add the Elix package to your package.json as `elix`:
-```
+```json
 {
   "dependencies": {
     "elix": "*"
