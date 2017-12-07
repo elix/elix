@@ -14,6 +14,7 @@ declare const ReactiveMixin: Mixin<{
   render(): Promise<void>;
   setState(changes: PlainObject): Promise<void>;
   state: PlainObject;
+  validateState(state: PlainObject): PlainObject;
 }>;
 
 export default ReactiveMixin;
