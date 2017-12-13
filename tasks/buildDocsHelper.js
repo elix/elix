@@ -10,6 +10,12 @@ let outputPath;
 let inputPath;
 
 //
+// Diagnostic switch. Set to true to see unextendedDocumentationMap
+// written to disk - a diagnostic code path.
+//
+const WRITE_UNEXTENDEDONLY = false;
+
+//
 // Array of peer directories for use in docsList
 //
 let sourceDirs = [];
@@ -39,6 +45,7 @@ let docsList;
 // written to build/docs.
 //
 let unextendedDocumentationMap = {};
+
 
 //
 // extendedDocumentationMap the resulting dictionary of jsDoc objects
@@ -108,6 +115,18 @@ function buildUnextendedJson(docItem) {
 
   return parseScriptToJSDocJSON(docItem.src)
   .then(json => {
+    if (json.length === 0) {
+      const placeHolderJson = {
+        "id": docItem.name,
+        "longname": docItem.name,
+        "name": docItem.name,
+        "kind": "module",
+        "description": `Need documentation for ${docItem.name}`,
+        "order": 0
+      };
+      
+      json.push(placeHolderJson);
+    }
     unextendedDocumentationMap[docItem.name] = json;
   })
   .catch(error => {
@@ -237,17 +256,20 @@ function updateClassInheritedBy(json, objectName) {
 //
 // Writes an extendedDocumentationMap item to disk
 //
-function writeExtendedJson(docsListItem) {
-  const json = extendedDocumentationMap[docsListItem.name];
+function writeJson(docsListItem) {
+  const json = WRITE_UNEXTENDEDONLY ? 
+    unextendedDocumentationMap[docsListItem.name] :
+    extendedDocumentationMap[docsListItem.name];
   const dest = docsListItem.dest;
   const writeJsonPromise = promisify(fs.writeJson);
   
   console.log(`Writing ${dest}`);
   return writeJsonPromise(dest, json, {spaces: 2})
   .catch(error => {
-    console.error(`writeExtendedJson: ${error}`);
+    console.error(`writeJson: ${error}`);
   });
 }
+
 
 //
 // Recursive function that extends the root item's mixin array, and extends
@@ -322,6 +344,7 @@ function mergeExtensionDocs(componentJson) {
     componentJson[0].inheritance = augmentsList;
   }
 
+
   //
   // We update the object's mixes field to include those mixins contributed
   // by @extends objects. We create a mixinOrigins array that is identically
@@ -351,7 +374,7 @@ function mergeExtensionDocs(componentJson) {
   augmentsList.forEach((augmentsItem) => {
     mergeExtensionIntoBag(augmentsItem, componentJson, hostId);
   });
-
+  
   // Merge the @mixes class documentation into componentJson
   let mixes = componentJson[0].mixes;
   if (mixes != null && mixes !== undefined && mixes.length > 0) {
@@ -483,19 +506,28 @@ const buildDocs = function() {
     return mapAndChain(docsList, buildUnextendedJson);
   })
   .then(() => {
+    if (WRITE_UNEXTENDEDONLY) {
+      // Diagnostic path. Write out the unextended json and exit
+      // issuing an error to note this diagnostic path.
+      return mapAndChain(docsList, writeJson)
+      .then(() => {
+        process.exit(1);
+      });
+    }
+    
     return mapAndChain(docsList, buildAndMapExtendedJson);
   })
   .then(() => {
     return mapAndChain(docsList, analyzeAndUpdateExtendedJson);
   })
   .then(() => {
-    return mapAndChain(docsList, writeExtendedJson);
+    return mapAndChain(docsList, writeJson);
   });
 };
 
 const setInputPath = function(path) {
   inputPath = path;
-  sourceDirs = [`${inputPath}elements`, `${inputPath}mixins`];
+  sourceDirs = [`${inputPath}src`];
 };
 
 const setOutputPath = function(path) {

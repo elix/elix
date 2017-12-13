@@ -1,4 +1,3 @@
-// import FocusCaptureWrapper from './FocusCaptureWrapper.js';
 import DialogModalityMixin from './DialogModalityMixin.js';
 import ElementBase from './ElementBase.js';
 import FocusCaptureMixin from './FocusCaptureMixin.js';
@@ -29,7 +28,7 @@ const Base =
  * content. Both the backdrop and the dialog itself can be styled.
  * 
  * @mixes DialogModalityMixin
- * @mixes FocusCaptureWrapper
+ * @mixes FocusCaptureMixin
  * @mixes KeyboardMixin
  * @mixes OpenCloseMixin
  * @mixes OverlayMixin
