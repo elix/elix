@@ -33,6 +33,9 @@ class PageDot extends ElementBase {
     const desktop = matchMedia('(min-width: 768px)').matches;
     const size = desktop ? '12px' : null;
     return merge(super.updates, {
+      attributes: {
+        role: 'none'
+      },
       style: {
         'height': size || base.style && base.style.height,
         'width': size || base.style && base.style.width
