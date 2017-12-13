@@ -11,17 +11,17 @@ const wrappingFocusKey = Symbol('wrappingFocus');
  * the keyboard focus, Tab and Shift+Tab operations will cycle the focus within
  * the component.
  * 
- * This wrapper expects the component to provide:
+ * This mixin expects the component to provide:
  * 
  * * A template-stamping mechanism compatible with `ShadowTemplateMixin`.
  * 
- * The wrapper provides these features to the component:
+ * The mixin provides these features to the component:
  * 
  * * Template elements and event handlers that will cause the keyboard focus to wrap.
  *
- * @module FocusCaptureWrapper
+ * @module FocusCaptureMixin
  */
-export default function FocusCaptureWrapper(base) {
+export default function FocusCaptureMixin(base) {
 
   class FocusCapture extends base {
 

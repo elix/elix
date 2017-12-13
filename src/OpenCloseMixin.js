@@ -5,6 +5,11 @@ const closePromiseKey = Symbol('closePromise');
 const closeResolveKey = Symbol('closeResolve');
 
 
+/**
+ * The OpenCloseMixin needs documentation.
+ * 
+ * @module OpenCloseMixin
+ */
 export default function OpenCloseMixin(Base) {
 
   // The class prototype added by the mixin.

@@ -6,6 +6,8 @@
  * returns false if the supplied target node is sitting inside a shadow tree
  * within the container.
  * 
+ * @module deepContains
+ * 
  * @param {Node} container - The container to search within.
  * @param {Node} target - The node that may be inside the container.
  * @returns {boolean} - True if the container contains the target node.
