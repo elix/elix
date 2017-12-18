@@ -5,6 +5,8 @@ import * as updates from './updates.js';
 /**
  * Mixin that facilitates setting properties on a component host element and
  * elements in the component's shadow subtree.
+ * 
+ * @module RenderUpdatesMixin
  */
 export default function RenderUpdatesMixin(Base) {
   return class Props extends Base {

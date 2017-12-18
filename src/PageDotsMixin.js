@@ -8,6 +8,11 @@ const previousItemsKey = Symbol('previousItems');
 const pageDotsKey = Symbol('pageDots');
 
 
+/**
+ * The PageDotsMixin needs documentation.
+ * 
+ * @module PageDotsMixin
+ */
 export default function PageDotsMixin(Base) {
 
   // The class prototype added by the mixin.

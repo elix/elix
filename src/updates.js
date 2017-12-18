@@ -1,6 +1,8 @@
 /**
  * Helpers for getting and setting component attributes and properties using
  * JavaScript dictionary objects.
+ * 
+ * @module updates
  */
 
 import Symbol from './Symbol.js';

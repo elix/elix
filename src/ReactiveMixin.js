@@ -14,6 +14,8 @@ const raiseChangeEventsInNextRenderKey = Symbol('raiseChangeEventsInNextRender')
  * This is modeled after React/Preact's state management, and is adapted for
  * use with web components. Applying this mixin to a component will give it
  * FRP behavior comparable to React's.
+ * 
+ * @module ReactiveMixin
  */
 export default function ReactiveMixin(Base) {
   return class Reactive extends Base {

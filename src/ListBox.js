@@ -57,7 +57,7 @@ const Base =
  * @mixes SingleSelectionMixin
  * @mixes SlotContentMixin
  */
-export default class ListBox extends Base {
+class ListBox extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
@@ -144,3 +144,4 @@ export default class ListBox extends Base {
 
 
 customElements.define('elix-list-box', ListBox);
+export default ListBox;
