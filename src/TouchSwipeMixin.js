@@ -14,6 +14,7 @@ export default function TouchSwipeMixin(Base) {
   return class TouchSwipe extends Base {
 
     constructor() {
+      // @ts-ignore
       super();
 
       // In all touch events, only handle single touches. We don't want to
@@ -21,7 +22,7 @@ export default function TouchSwipeMixin(Base) {
       // TODO: Even better approach than below would be to ignore touches after
       // the first if the user has already begun a swipe.
       // TODO: Touch events should probably be factored out into its own mixin.
-      if (window.PointerEvent) {
+      if ('PointerEvent' in window) {
         // Prefer listening to standard pointer events.
         this.addEventListener('pointerdown', event => {
           if (isEventForPenOrPrimaryTouch(event)) {

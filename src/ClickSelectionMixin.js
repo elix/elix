@@ -38,6 +38,7 @@ export default function ClickSelectionMixin(Base) {
   return class ClickSelection extends Base {
 
     constructor() {
+      // @ts-ignore
       super();
       this.addEventListener('mousedown', event => this.click(event));
     }

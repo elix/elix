@@ -4,8 +4,9 @@ import symbols from './symbols.js';
 export default function HoverMixin(Base) {
   return class Hover extends Base {
 
-    constructor(props) {
-      super(props);
+    constructor() {
+      // @ts-ignore
+      super();
       this.addEventListener('mouseenter', event => {
         this[symbols.raiseChangeEvents] = true;
         this.mouseEnter(event);

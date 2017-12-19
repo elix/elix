@@ -19,6 +19,7 @@ export default function FocusMixin(Base) {
   return class Focus extends Base {
 
     constructor() {
+      // @ts-ignore
       super();
       this.addEventListener('blur', () => {
         this.setState({

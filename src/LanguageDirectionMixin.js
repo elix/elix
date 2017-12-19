@@ -7,7 +7,9 @@ export default function LanguageDirectionMixin(Base) {
     // end up rendering twice.
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
-      const languageDirection = getComputedStyle(this).direction;
+      /** @type {any} */
+      const element = this;
+      const languageDirection = getComputedStyle(element).direction;
       if (this.state.languageDirection !== languageDirection) {
         this.setState({ languageDirection });
       }

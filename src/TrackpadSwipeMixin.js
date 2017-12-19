@@ -12,6 +12,7 @@ export default function TrackpadSwipeMixin(Base) {
   return class TrackpadSwipe extends Base {
 
     constructor() {
+      // @ts-ignore
       super();
       this.addEventListener('wheel', event => {
         this.wheel(event);

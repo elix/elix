@@ -83,7 +83,9 @@ export default function SelectionInViewMixin(Base) {
 
     /* Provide a default scrollTarget implementation if none exists. */
     get [symbols.scrollTarget]() {
-      return super[symbols.scrollTarget] || defaultScrollTarget(this);
+      /** @type {any} */
+      const element = this;
+      return super[symbols.scrollTarget] || defaultScrollTarget(element);
     }
   }
 

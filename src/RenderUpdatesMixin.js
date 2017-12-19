@@ -15,8 +15,10 @@ export default function RenderUpdatesMixin(Base) {
       // Calculate original props before we call super. If, e.g., ReactiveMixin
       // is applied before this mixin, we want to get the original props before
       // we render.
+      /** @type {any} */
+      const element = this;
       this.setState({
-        original: updates.current(this)
+        original: updates.current(element)
       });
 
       if (super.connectedCallback) { super.connectedCallback(); }
@@ -29,7 +31,9 @@ export default function RenderUpdatesMixin(Base) {
       const updatesToApply = this.updates;
 
       // Apply those to the host.
-      updates.apply(this, updatesToApply);
+      /** @type {any} */
+      const element = this;
+      updates.apply(element, updatesToApply);
     }
 
     // Override setAttribute so that, if this is called outside of rendering,

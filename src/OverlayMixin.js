@@ -57,6 +57,7 @@ export default function OverlayMixin(Base) {
   class Overlay extends Base {
 
     constructor() {
+      // @ts-ignore
       super();
       this.addEventListener('blur', event => {
         // What has the focus now?

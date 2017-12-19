@@ -35,6 +35,7 @@ export default function PopupModalityMixin(Base) {
   class PopupModality extends Base {
 
     constructor() {
+      // @ts-ignore
       super();
       this.addEventListener('blur', () => {
         this[symbols.raiseChangeEvents] = true;
@@ -42,7 +43,9 @@ export default function PopupModalityMixin(Base) {
         this[symbols.raiseChangeEvents] = false;
       });      
       this[closeListenerKey] = event => {
-        const insideEvent = deepContains(this, event.target);
+        /** @type {any} */
+        const element = this;
+        const insideEvent = deepContains(element, event.target);
         if (!insideEvent) {
           this[symbols.raiseChangeEvents] = true;
           this.close();

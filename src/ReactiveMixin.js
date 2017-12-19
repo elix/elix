@@ -21,6 +21,7 @@ export default function ReactiveMixin(Base) {
   return class Reactive extends Base {
 
     constructor() {
+      // @ts-ignore
       super();
       // Set the initial state from the default state defined by the component
       // and its mixins.
@@ -124,7 +125,6 @@ export default function ReactiveMixin(Base) {
      * render the component. Otherwise, this returns a resolved promise.
      * 
      * @param {object} changes - the changes to apply to the element's state
-     * @returns {boolean} - true if the state changed
      */
     async setState(changes) {
       // There's no good reason to have a render method update state.

@@ -225,6 +225,7 @@ export default function SingleSelectionMixin(Base) {
         }
       }
 
+      return super.validateState && super.validateState(state);
     }
 
   }

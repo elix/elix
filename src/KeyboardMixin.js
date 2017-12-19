@@ -47,6 +47,7 @@ export default function KeyboardMixin(Base) {
   class Keyboard extends Base {
 
     constructor() {
+      // @ts-ignore
       super();
       this.addEventListener('keydown', event => {
         this[symbols.raiseChangeEvents] = true;

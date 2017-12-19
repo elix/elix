@@ -76,6 +76,8 @@ export default function AttributeMarshallingMixin(Base) {
 
 /**
  * Return the custom attributes for the given class.
+ * 
+ * @param {{new(...args: any[]): object}} classFn
  */
 function attributesForClass(classFn) {
 
@@ -98,9 +100,10 @@ function attributesForClass(classFn) {
 
   // Get attributes for this class.
   const propertyNames = Object.getOwnPropertyNames(classFn.prototype);
-  const setterNames = propertyNames.filter(propertyName =>
-    typeof Object.getOwnPropertyDescriptor(
-        classFn.prototype, propertyName).set === 'function');
+  const setterNames = propertyNames.filter(propertyName => {
+    const descriptor = Object.getOwnPropertyDescriptor(classFn.prototype, propertyName);
+    return descriptor && typeof descriptor.set === 'function';
+  });
   const attributes = setterNames.map(setterName =>
       propertyNameToAttribute(setterName));
 

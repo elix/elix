@@ -53,6 +53,7 @@ export default function KeyboardPrefixSelectionMixin(Base) {
   class KeyboardPrefixSelection extends Base {
 
     constructor() {
+      // @ts-ignore
       super();
       resetTypedPrefix(this);
     }
