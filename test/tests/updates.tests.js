@@ -33,22 +33,6 @@ describe("updates helpers", () => {
     });
   });
 
-  it("updates.applyClass turns a class on or off", () => {
-    const fixture = document.createElement('div');
-    updates.applyClass(fixture, 'foo', true);
-    assert(fixture.classList.contains('foo'));
-    assert(!fixture.classList.contains('bar'));
-    updates.applyClass(fixture, 'bar', true);
-    assert(fixture.classList.contains('foo'));
-    assert(fixture.classList.contains('bar'));
-    updates.applyClass(fixture, 'foo', false);
-    assert(!fixture.classList.contains('foo'));
-    assert(fixture.classList.contains('bar'));
-    updates.applyClass(fixture, 'bar', false);
-    assert(!fixture.classList.contains('foo'));
-    assert(!fixture.classList.contains('bar'));
-  });
-
   it("updates.applyClasses turns multiple classes on or off", () => {
     const fixture = document.createElement('div');
     updates.applyClasses(fixture, { 'foo': true, 'bar': true });

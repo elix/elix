@@ -73,21 +73,17 @@ export function apply(element, props) {
 /**
  * @param {Element} element 
  * @param {string} name 
- * @param {string|boolean|null} value 
+ * @param {string|boolean} value 
  */
 export function applyAttribute(element, name, value) {
-  const existingValue = element.getAttribute(name);
   if (booleanAttributes[name]) {
     // Boolean attribute
-    const changed = (existingValue === null) === value;
-    if (changed) {
-      if (value) {
-        element.setAttribute(name, '');
-      } else {   
-        element.removeAttribute(name);
-      }
+    if (value) {
+      element.setAttribute(name, '');
+    } else {
+      element.removeAttribute(name);
     }
-  } else if (existingValue !== value) {
+  } else {
     // Regular string-valued attribute
     if (value !== null) {
       element.setAttribute(name, value.toString());
@@ -144,25 +140,12 @@ export function applyChildNodes(element, childNodes) {
 
 /**
  * @param {Element} element 
- * @param {string} className
- * @param {boolean} value
- */
-export function applyClass(element, className, value) {
-  if (value) {
-    element.classList.add(className);
-  } else {
-    element.classList.remove(className);
-  }
-}
-
-
-/**
- * @param {Element} element 
  * @param {any} classProps
  */
 export function applyClasses(element, classProps) {
   for (const className in classProps) {
-    applyClass(element, className, classProps[className])
+    const value = classProps[className] || false;
+    element.classList.toggle(className, value);
   }
 }
 
@@ -246,32 +229,6 @@ export function currentStyle(element) {
     styleProps[key] = element.style[key];
   });
   return styleProps;
-}
-
-
-/**
- * @param {any} classProps
- * @returns string
- */
-export function formatClassProps(classProps) {
-  if (!classProps) {
-    return '';
-  }
-  const classes = Object.keys(classProps).filter(key => classProps[key]);
-  return classes.join(' ');
-}
-
-
-/**
- * @param {any} styleProps
- * @returns string
- */
-export function formatStyleProps(styleProps) {
-  if (!styleProps) {
-    return '';
-  }
-  const attributes = Object.keys(styleProps).map(key => `${key}: ${styleProps[key]}`);
-  return attributes.join('; ');
 }
 
 
