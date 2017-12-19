@@ -35,36 +35,21 @@ const previousChildNodesKey = Symbol('previousChildNodes');
  * @param {object} props
  */
 export function apply(element, props) {
+  const applyFunctionForProperty = {
+    '$': applyReferencedElementProps,
+    'attributes': applyAttributes,
+    'childNodes': applyChildNodes,
+    'classes': applyClasses,
+    'style': applyStyle
+  };
   for (const key in props) {
     const value = props[key];
-    switch (key) {
-
-      case '$':
-        applyReferencedElementProps(element, value);
-        break;
-
-      case 'attributes':
-        applyAttributes(element, value);
-        break;
-
-      case 'childNodes':
-        applyChildNodes(element, value);
-        break;
-
-      case 'classes':
-        applyClasses(element, value);
-        break;
-
-      case 'style':
-        if (element instanceof HTMLElement || element instanceof SVGElement) {
-          applyStyle(element, value);
-        }
-        break;
-
-      default:
-        // Update property
-        element[key] = value;
-        break;
+    const applyFunction = applyFunctionForProperty[key];
+    if (applyFunction) {
+      applyFunction(element, value);
+    } else {
+      // Property with no special apply function; just set the property.
+      element[key] = value;
     }
   }
 }
