@@ -35,5 +35,6 @@
     "lint": "node tasks/lint.js",
     "sauce-tests": "node tasks/sauce-tests.js",
     "typecheck": "tsc",
+    "test": "node test/headless-tests.js"
   }
 }
