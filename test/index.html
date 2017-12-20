@@ -19,7 +19,11 @@
 
   <script type="module">
     import * as tests from './tests.js';
-    mocha.run();
+    let errors = [];
+    mocha.run()
+      .on('fail', function(_, err) { errors.push(err.stack)})
+      .on('end', function() { console.log(`${this.failures ? JSON.stringify(errors): 'OK'}`)})
+    ;
   </script>
   
 </head>
