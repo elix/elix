@@ -33,6 +33,8 @@
     "watch": "node tasks/watch.js",
     "lint": "node tasks/lint.js",
     "sauce-tests": "node tasks/sauce-tests.js",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "puppeteer": "^0.13.0",
+    "test": ""
   }
 }
