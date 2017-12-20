@@ -25,7 +25,8 @@
     "sauce-test-runner": "0.2.0",
     "sinon": "4.0.1",
     "typescript": "2.6.1",
-    "webpack": "3.6.0"
+    "webpack": "3.6.0",
+    "puppeteer": "^0.13.0"
   },
   "scripts": {
     "build": "node tasks/build.js",
@@ -34,7 +35,5 @@
     "lint": "node tasks/lint.js",
     "sauce-tests": "node tasks/sauce-tests.js",
     "typecheck": "tsc",
-    "puppeteer": "^0.13.0",
-    "test": ""
   }
 }
