@@ -36,7 +36,7 @@ function buildBuildTargets(options) {
     if (fs.existsSync(testGlob)) {
       buildTargets[`${testsPath}`] = {
         globItems: [testGlob],
-        includes: [/mixins/, /elements/, /test/]
+        includes: [/src/, /test/]
       };
     }
   }
