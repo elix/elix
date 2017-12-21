@@ -3,7 +3,7 @@ const path = require('path');
 const getPort = require('get-port');
 const StaticServer = require('static-server');
 
-const startServer = async () => {
+const startStaticHttpServer = async () => {
   const server = new StaticServer({
     rootPath: path.join(__dirname, '..'),
     port: await getPort()
@@ -12,7 +12,7 @@ const startServer = async () => {
   return server;
 };
 
-const runTests = async (port) => {
+const runTestsInHeadlessChrome = async (port) => {
   const browser = await puppeteer.launch({headless: true});
   const page = await browser.newPage();
   await page.goto(`http://localhost:${port}/test/`, {waitUntil: 'domcontentloaded'});
@@ -24,8 +24,8 @@ const runTests = async (port) => {
 };
 
 (async () => {
-  const server = await startServer();
-  const testResult = await runTests(server.port);
+  const server = await startStaticHttpServer();
+  const testResult = await runTestsInHeadlessChrome(server.port);
   if (testResult === 'OK') {
     console.log('Tests passed.');
   } else {
