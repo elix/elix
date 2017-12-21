@@ -1,21 +1,39 @@
 const puppeteer = require('puppeteer');
 const assert = require('assert');
+const path = require('path');
+const util = require('util');
+const getPort = require('get-port');
+const StaticServer = require('static-server');
 
-const runTest = async () => {
+const startServer = async () => {
+  const server = new StaticServer({
+    rootPath: path.join(__dirname, '..'),
+    port: await getPort()
+  });
+  await new Promise((resolve) => {server.start(resolve)});
+  return server;
+};
+
+const runTest = async (port) => {
   const browser = await puppeteer.launch({headless: true});
   const page = await browser.newPage();
-  await page.goto('http://localhost:12345/test/', {waitUntil: 'domcontentloaded'});
+  await page.goto(`http://localhost:${port}/test/`, {waitUntil: 'domcontentloaded'});
   const consoleMsg = await new Promise((resolve) => {
     page.on('console', async ({text}) => resolve(text));
   });
   await browser.close();
-  assert.equal(consoleMsg, 'OK', consoleMsg);
+  return consoleMsg;
 };
 
-runTest()
-  .then(() => console.log('Tests passed.'))
-  .catch(({message}) => {
-    const errors = JSON.parse(message);
+(async () => {
+  const server = await startServer();
+  const testResult = await runTest(server.port);
+  if (testResult === 'OK') {
+    console.log('Tests passed.');
+  } else {
+    const errors = JSON.parse(testResult);
     errors.map(e => console.log(e));
     console.error(`\n${errors.length} Error(s)`);
-  });
+  }
+  server.stop();
+})();
