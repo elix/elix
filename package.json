@@ -26,7 +26,9 @@
     "sinon": "4.0.1",
     "typescript": "2.6.1",
     "webpack": "3.6.0",
-    "puppeteer": "^0.13.0"
+    "puppeteer": "^0.13.0",
+    "get-port": "^3.2.0",
+    "static-server": "^3.0.0"
   },
   "scripts": {
     "build": "node tasks/build.js",
@@ -37,9 +39,5 @@
     "typecheck": "tsc",
     "start": "static-server . --port 3718",
     "test": "node test/headless-tests.js"
-  },
-  "dependencies": {
-    "get-port": "^3.2.0",
-    "static-server": "^3.0.0"
   }
 }
