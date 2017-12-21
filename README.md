@@ -122,7 +122,7 @@ You have multiple options to run the tests.
 
 Run the tests locally against a headless browser.
 **Fast**, takes about 1-2 seconds.
-The **low coverage**. Only headless chrome currently.
+**Low coverage**, only headless chrome currently.
 ```
 npm test
 ```
