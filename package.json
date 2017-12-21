@@ -35,6 +35,7 @@
     "lint": "node tasks/lint.js",
     "sauce-tests": "node tasks/sauce-tests.js",
     "typecheck": "tsc",
+    "start": "static-server . --port 3718",
     "test": "node test/headless-tests.js"
   },
   "dependencies": {

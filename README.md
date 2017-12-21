@@ -111,9 +111,34 @@ Install the project's `devDependencies` with `npm` version 5 or greater:
    written in ES6, and can be loaded with native `import` statements on browsers
    that support those. The build step is only required to create demos and tests
    that can run on older browsers.)
+4. `npm start`. Go to [http://localhost:3718](http://localhost:3718) to see the demos and tests (if you like).
 
 
 # Unit tests
+
+You have multiple options to run the tests.
+
+## In a Headless Browser, Locally
+
+Run the tests locally against a headless browser.
+**Fast**, takes about 1-2 seconds.
+The **low coverage**. Only headless chrome currently.
+```
+npm test
+```
+
+## Local browser 
+
+**Fast**. As fast as you can reload the page :).
+But **low coverage**. Only the browser(s) you test it in will be covered.
+
+Run `npm start` which starts a local server, serving the files from the root
+of this repo. You can run the tests by going to [http://localhost:3718/test/](http://localhost:3718/test/) (don't miss the trailing slash).
+
+## Against Saucelabs 
+
+This way of testing will have the **best coverage**, since it runs in most browsers.
+But it is also the **slowest**.
 
 Unit tests can be run on Sauce Labs. Do do so, you will need to set the
 following environment variables:
