@@ -36,5 +36,9 @@
     "sauce-tests": "node tasks/sauce-tests.js",
     "typecheck": "tsc",
     "test": "node test/headless-tests.js"
+  },
+  "dependencies": {
+    "get-port": "^3.2.0",
+    "static-server": "^3.0.0"
   }
 }
