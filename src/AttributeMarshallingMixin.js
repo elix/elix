@@ -76,8 +76,6 @@ export default function AttributeMarshallingMixin(Base) {
 
 /**
  * Return the custom attributes for the given class.
- * 
- * @param {{new(...args: any[]): object}} classFn
  */
 function attributesForClass(classFn) {
 
