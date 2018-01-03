@@ -38,11 +38,6 @@ const propertyNamesToAttributes = {};
  * attributes to other types (numbers, booleans), you must implement parsing
  * yourself.
  *
- * This mixin also exposes helpers for reflecting attributes and classes to
- * the element. These helpers can be invoked during a component's constructor;
- * any attributes or classes set during the constructor are applied when the
- * component's `connectedCallback` is invoked.
- *
  * @module AttributeMarshallingMixin
  */
 export default function AttributeMarshallingMixin(Base) {
