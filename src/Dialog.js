@@ -8,7 +8,6 @@ import OpenCloseMixin from './OpenCloseMixin.js';
 import OverlayMixin from './OverlayMixin.js';
 import symbols from './symbols.js';
 
-
 const Base =
   DialogModalityMixin(
   FocusCaptureMixin(
@@ -27,11 +26,14 @@ const Base =
  * Dialog uses `BackdropWrapper` to add a backdrop behind the main overlay
  * content. Both the backdrop and the dialog itself can be styled.
  * 
+ * @extends ElementBase
+ *
  * @mixes DialogModalityMixin
  * @mixes FocusCaptureMixin
  * @mixes KeyboardMixin
  * @mixes OpenCloseMixin
  * @mixes OverlayMixin
+ * 
  */
 class Dialog extends Base {
 
