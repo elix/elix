@@ -26,7 +26,7 @@ const Base =
  * Dialog uses `BackdropWrapper` to add a backdrop behind the main overlay
  * content. Both the backdrop and the dialog itself can be styled.
  * 
- * @extends ElementBase
+ * @inherits ElementBase
  *
  * @mixes DialogModalityMixin
  * @mixes FocusCaptureMixin

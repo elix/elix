@@ -13,7 +13,7 @@ const previousChoicesKey = Symbol('previousChoices');
  * question and let them respond by clicking one of a small number of buttons
  * labeled with text.
  * 
- * @extends {Dialog}
+ * @inherits Dialog
  * 
  */
 class AlertDialog extends Dialog {
