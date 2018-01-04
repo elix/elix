@@ -27,7 +27,6 @@ const Base =
  * content. Both the backdrop and the dialog itself can be styled.
  * 
  * @inherits ElementBase
- *
  * @mixes DialogModalityMixin
  * @mixes FocusCaptureMixin
  * @mixes KeyboardMixin

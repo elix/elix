@@ -46,6 +46,7 @@ const Base =
  * specialized [LabeledTabs](LabeledTabs) component, which will generate text
  * tab buttons for you.
  *
+ * @inherits ElementBase
  * @mixes ContentItemsMixin
  * @mixes SingleSelectionMixin
  * @mixes SlotContentMixin

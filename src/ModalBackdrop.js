@@ -5,6 +5,9 @@ import symbols from './symbols.js';
 
 /**
  * The backdrop shown behind a [Dialog](Dialog).
+ * 
+ * @inherits ElementBase
+ * 
  */
 class ModalBackdrop extends ElementBase {
 

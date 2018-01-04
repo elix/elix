@@ -26,6 +26,7 @@ const Base =
  * Allows a user to navigate a horizontal set of items with touch, mouse,
  * keyboard, or trackpad. Shows a sliding effect when moving between items.
  * 
+ * @inherits SlidingViewport
  * @mixes AriaListMixin
  * @mixes DirectionSelectionMixin
  * @mixes FocusRingMixin

@@ -51,6 +51,7 @@ const Base =
  * can be handled with the separate [TabStripWrapper](TabStripWrapper)
  * component.
  *
+ * @inherits ElementBase
  * @mixes AriaListMixin
  * @mixes ClickSelectionMixin
  * @mixes ContentItemsMixin

@@ -21,6 +21,7 @@ const Base =
  * automatically grow in size; the expanding copy will expand the container,
  * which in turn will vertically stretch the text area to match.
  * 
+ * @inherits WrappedStandardElement
  * @mixes SlotContentMixin
  */
 class AutosizeTextarea extends Base {

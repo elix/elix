@@ -23,7 +23,6 @@ import ShadowTemplateMixin from './ShadowTemplateMixin.js';
  * achieved by applying the mixins yourself to `HTMLElement`.
  * 
  * @inherits HTMLElement
- * 
  * @mixes AttributeMarshallingMixin
  * @mixes ReactiveMixin
  * @mixes RenderUpdatesMixin

@@ -171,6 +171,9 @@ const blockElements = [
  *
  * Some elements, such as `<body>`, `<html>`, and `<style>` cannot be wrapped
  * and still achieve their standard behavior.
+ * 
+ * @inherits ElementBase
+ * 
  */
 class WrappedStandardElement extends ElementBase {
 
