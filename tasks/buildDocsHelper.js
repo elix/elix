@@ -270,6 +270,18 @@ function writeJson(docsListItem) {
   });
 }
 
+function getInheritsValue(json) {
+  if (json.customTags && 
+    json.customTags.length > 0 && 
+    json.customTags[0].tag === 'inherits') {
+  
+    return json.customTags[0].value;    
+  }
+  else {
+    return null;
+  }
+}
+
 
 //
 // Recursive function that extends the root item's mixin array, and extends
@@ -285,13 +297,14 @@ function writeJson(docsListItem) {
 // immediate class parent, the 1st index holding the grandparent, etc.
 //
 function buildAugmentsListAndExtendMixinsArray(json, augmentsArray, mixinArray) {
-  if (json[0].augments == null || json[0].augments === undefined) {
+  const inheritsValue = getInheritsValue(json[0]);
+  if (inheritsValue == null) {
     // Break the recursive chain by returning without another recursive call
     return;
-  }  
-  
+  }
+
   // We're interested only in single-inheritance
-  const augmentsName = json[0].augments[0];
+  const augmentsName = inheritsValue;
   const augmentsItem = unextendedDocumentationMap[augmentsName];
   if (augmentsItem == null || augmentsItem === undefined) {
     // Break the recursive chain by returning without another recursive call
