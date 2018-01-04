@@ -22,6 +22,7 @@ const Base =
  * visible at a time. It shows a sliding transition when changing which item is
  * selected.
  * 
+ * @inherits ElementBase
  * @mixes ContentItemsMixin
  * @mixes LanguageDirectionMixin
  * @mixes SingleSelectionMixin

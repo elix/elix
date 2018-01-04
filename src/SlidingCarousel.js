@@ -46,6 +46,7 @@ const Base =
  * at the bottom of the carousel provided by [PageDotsMixin](PageDotsMixin). For
  * a plain carousel without those extras, see [SlidingPages](SlidingPages).
  * 
+ * @inherits ElementBase
  * @mixes AriaListMixin
  * @mixes ArrowDirectionMixin
  * @mixes ContentItemsMixin

@@ -43,6 +43,7 @@ const Base =
  * [KeyboardPrefixSelectionMixin](KeyboardPrefixSelectionMixin) for keyboard
  * details.
  *
+ * @inherits ElementBase
  * @mixes AriaListMixin
  * @mixes ClickSelectionMixin
  * @mixes ContentItemsMixin

@@ -5,6 +5,9 @@ import symbols from './symbols.js';
 /**
  * A button used by [ArrowDirectionMixin](ArrowDirectionMixin) to show its
  * left/right arrow buttons.
+ * 
+ * @inherits WrappedStandardElement
+ * 
  */
 class ArrowDirectionButton extends WrappedStandardElement.wrap('button') {
 
