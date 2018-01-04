@@ -22,6 +22,8 @@ import ShadowTemplateMixin from './ShadowTemplateMixin.js';
  * `ElementBase` is simply provided as a convenience, and the same result can be
  * achieved by applying the mixins yourself to `HTMLElement`.
  * 
+ * @inherits HTMLElement
+ * 
  * @mixes AttributeMarshallingMixin
  * @mixes ReactiveMixin
  * @mixes RenderUpdatesMixin
