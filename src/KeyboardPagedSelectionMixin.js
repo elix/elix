@@ -26,7 +26,7 @@ import symbols from './symbols.js';
  * * A `[symbols.keydown]` method invoked when a key is pressed. You can use
  *   [KeyboardMixin](KeyboardMixin) for that purpose, or wire up your own
  *   keyboard handling and call `[symbols.keydown]` yourself.
- * * A `selectedIndex` property that indicates the index of the selected item.
+ * * A `selectedIndex` state member updatable via `setState`.
  *
  * @module KeyboardPagedSelectionMixin
  */
