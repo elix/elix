@@ -105,6 +105,14 @@ export default function SlotContentMixin(Base) {
       }
     }
     
+    /**
+     * Returns the slot element in the component's shadow tree that holds the
+     * component's content. By default, this is the first slot element with no
+     * "name" attribute. A component can override this to return a different
+     * slot.
+     * 
+     * @type {HTMLSlotElement}
+     */
     get contentSlot() {
       const slot = this.shadowRoot && this.shadowRoot.querySelector('slot:not([name])');
       if (!this.shadowRoot || !slot) {
