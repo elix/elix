@@ -151,6 +151,17 @@ const symbols = {
    *
    * This method is invoked when an element receives a `keydown` event.
    *
+   * An implementation of `symbols.keydown` should return `true` if it handled
+   * the event, and `false` otherwise. If `true` is returned (the event was
+   * handled), `KeyboardMixin` invokes the event's `preventDefault` and
+   * `stopPropagation` methods to let the browser know the event was handled.
+   * 
+   * The convention for handling `symbols.keydown` is that the last mixin
+   * applied wins. That is, if an implementation of `symbols.keydown` *did*
+   * handle the event, it can return immediately. If it did not, it should
+   * invoke `super` to let implementations further up the prototype chain have
+   * their chance.
+   *
    * @function keydown
    * @param {KeyboardEvent} event - the event being processed
    */
@@ -216,7 +227,7 @@ const symbols = {
    * should be scrolled. [SelectionInViewMixin](SelectionInViewMixin) can use
    * this property to determine which element should be scrolled to keep the
    * selected item in view.
-   *
+   * 
    * @var {HTMLElement} scrollTarget
    */
   scrollTarget: Symbol('scrollTarget'),

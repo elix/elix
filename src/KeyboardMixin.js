@@ -66,6 +66,9 @@ export default function KeyboardMixin(Base) {
       });
     }
     
+    /**
+     * See the [symbols](symbols#keydown) documentation for details.
+     */
     [symbols.keydown](event) {
       if (super[symbols.keydown]) { return super[symbols.keydown](event); }
       return false;

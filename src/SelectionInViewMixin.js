@@ -9,8 +9,10 @@ import symbols from './symbols.js';
  * When the selected item in a list-like component changes, the selected item
  * should be brought into view so that the user can confirm their selection.
  *
- * This mixin expects a `selectedItem` property to be set when the selection
- * changes. You can supply that yourself, or use
+ * This mixin expects an `items` collection, such as that provided by
+ * [ContentItemsMixin](ContentItemsMixin). It also expects a
+ * `state.selectedIndex` member indicating which item is curently selected. You
+ * can supply that yourself, or use
  * [SingleSelectionMixin](SingleSelectionMixin).
  *
  * @module SelectionInViewMixin
@@ -39,8 +41,7 @@ export default function SelectionInViewMixin(Base) {
      * up scrolling more than is absolutely necessary.
      *
      * This scrolls the containing element defined by the `scrollTarget`
-     * property. See that property for a discussion of the default value of
-     * that property.
+     * property. By default, it will scroll the element itself.
      */
     scrollSelectionIntoView() {
       if (super.scrollSelectionIntoView) { super.scrollSelectionIntoView(); }
@@ -81,7 +82,16 @@ export default function SelectionInViewMixin(Base) {
       }
     }
 
-    /* Provide a default scrollTarget implementation if none exists. */
+    
+    /**
+     * The element that should be scrolled to get the selected item into view.
+     * 
+     * By default, this uses the [defaultScrollTarget](defaultScrollTarget)
+     * helper to find the most likely candidate for scrolling. You can override
+     * this property to directly identify which element should be scrolled.
+     * 
+     * See also [symbols.scrollTarget](symbols#scrollTarget).
+     */
     get [symbols.scrollTarget]() {
       /** @type {any} */
       const element = this;
