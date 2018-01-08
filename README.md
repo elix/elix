@@ -118,7 +118,7 @@ Install the project's `devDependencies` with `npm` version 5 or greater:
 
 You have multiple options to run the tests.
 
-## In a Headless Browser, Locally
+## Local headless browser
 
 Run the tests locally against a headless browser.
 **Fast**, takes about 1-2 seconds.
@@ -133,9 +133,9 @@ npm test
 But **low coverage**. Only the browser(s) you test it in will be covered.
 
 Run `npm start` which starts a local server, serving the files from the root
-of this repo. You can run the tests by going to [http://localhost:3718/test/](http://localhost:3718/test/) (don't miss the trailing slash).
+of this repo. You can run the tests by going to [http://localhost:3718/test/](http://localhost:3000/test/) (don't miss the trailing slash).
 
-## Against Saucelabs 
+## Multiple browsers via Saucelabs 
 
 This way of testing will have the **best coverage**, since it runs in most browsers.
 But it is also the **slowest**.
