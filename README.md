@@ -133,7 +133,7 @@ npm test
 But **low coverage**. Only the browser(s) you test it in will be covered.
 
 Run `npm start` which starts a local server, serving the files from the root
-of this repo. You can run the tests by going to [http://localhost:3718/test/](http://localhost:3000/test/) (don't miss the trailing slash).
+of this repo. You can run the tests by going to [http://localhost:3000/test/](http://localhost:3000/test/) (don't miss the trailing slash).
 
 ## Multiple browsers via Saucelabs 
 
