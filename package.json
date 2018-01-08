@@ -25,7 +25,10 @@
     "sauce-test-runner": "0.2.0",
     "sinon": "4.0.1",
     "typescript": "2.6.1",
-    "webpack": "3.6.0"
+    "webpack": "3.6.0",
+    "puppeteer": "0.13.0",
+    "get-port": "3.2.0",
+    "static-server": "3.0.0"
   },
   "scripts": {
     "build": "node tasks/build.js",
@@ -33,6 +36,8 @@
     "watch": "node tasks/watch.js",
     "lint": "node tasks/lint.js",
     "sauce-tests": "node tasks/sauce-tests.js",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "start": "static-server . --port 3000",
+    "test": "node tasks/headless-tests.js"
   }
 }
