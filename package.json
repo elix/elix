@@ -18,17 +18,16 @@
     "chai": "4.1.2",
     "eslint": "4.9.0",
     "fs-extra": "2.1.2",
+    "get-port": "3.2.0",
     "jsdoc-api": "4.0.0",
     "jsdoc-parse": "3.0.0",
-    "live-server": "1.2.0",
     "mocha": "4.0.1",
+    "puppeteer": "0.13.0",
     "sauce-test-runner": "0.2.0",
     "sinon": "4.0.1",
+    "static-server": "3.0.0",
     "typescript": "2.6.1",
-    "webpack": "3.6.0",
-    "puppeteer": "0.13.0",
-    "get-port": "3.2.0",
-    "static-server": "3.0.0"
+    "webpack": "3.6.0"
   },
   "scripts": {
     "build": "node tasks/build.js",
