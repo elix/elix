@@ -36,6 +36,8 @@ import symbols from './symbols.js';
  * @module ClickSelectionMixin
  */
 export default function ClickSelectionMixin(Base) {
+  
+  // The class prototype added by the mixin.
   return class ClickSelection extends Base {
 
     constructor() {
