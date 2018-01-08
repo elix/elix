@@ -13,7 +13,11 @@
  * `script`). Among other things, this filters out Text nodes.
  *
  * This is used by [ContentItemsMixin](ContentItemsMixin) to filter out nodes
- * which are unlikely to be interesting as list items.
+ * which are unlikely to be interesting as list items. This is intended to
+ * satisfy the Gold Standard checklist criteria [Auxiliary
+ * Content](https://github.com/webcomponents/gold-standard/wiki/Auxiliary-Content),
+ * so that a component does not inadvertently treat `<style>` and other invisible
+ * items as element content.
  *
  * @param {NodeList|Node[]} nodes - the list of nodes to filter
  * @returns {Element[]} the filtered elements

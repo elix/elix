@@ -24,13 +24,14 @@ import symbols from './symbols.js';
  * configured with `width=device-width`.
  *
  * This mixin expects the component to provide an `items` property. It also
- * expects the component to define a `selectedItem` property; you can provide
- * that yourself, or use [SingleSelectionMixin](SingleSelectionMixin).
+ * expects the component to define a `state.selectedIndex` member; you can
+ * provide that yourself, or use [SingleSelectionMixin](SingleSelectionMixin).
  *
  * If the component receives a clicks that doesn't correspond to an item (e.g.,
  * the user clicks on the element background visible between items), the
- * selection will be removed. However, if the component sets `selectionRequired`
- * to true, a background click will *not* remove the selection.
+ * selection will be removed. However, if the component sets
+ * `state.selectionRequired` to true, a background click will *not* remove the
+ * selection.
  *
  * @module ClickSelectionMixin
  */
