@@ -2,7 +2,7 @@
 'use strict';
 
 const saucelabs = require('sauce-test-runner');
-const server = require('live-server');
+const StaticServer = require('static-server');
 
 const port = 9999;
 
@@ -60,22 +60,23 @@ const config = {
 };
 
 function runTests() {
-  const params = {
-    port: port,       // Set the server port. Defaults to 8080. 
-    host: '0.0.0.0',  // Set the address to bind to. Defaults to 0.0.0.0 or process.env.IP. 
-    root: './',       // Set root directory that's being served. Defaults to cwd. 
-    open: false,      // When false, it won't load your browser by default. 
-    logLevel: 0       // 0 = errors only, 1 = some, 2 = lots 
-  };
-  
-  server.start(params);  
+  const server = new StaticServer({
+    rootPath: '.',
+    name: 'elix-sauce-server',
+    port: port,
+    host: '0.0.0.0'
+  });
 
-  saucelabs(config)
-  .then(() => {
-    process.exit(reportStatus);
-  })
-  .catch(error => {
-    process.exit(reportStatus);
+  server.start(() => {
+    saucelabs(config)
+    .then(() => {
+      server.stop();
+      process.exit(reportStatus);
+    })
+    .catch(error => {
+      server.stop();
+      process.exit(reportStatus);
+    });
   });
 }
 
