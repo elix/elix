@@ -189,9 +189,16 @@ export default function SingleSelectionMixin(Base) {
      */
     selectPrevious() {
       if (super.selectPrevious) { super.selectPrevious(); }
-      const selectedIndex = this.items && this.state.selectedIndex < 0 ?
-        this.items.length - 1 :     // No selection yet; select last item.
-        this.state.selectedIndex - 1;
+      let selectedIndex;
+      if (this.items && this.state.selectedIndex < 0) {
+        // No selection yet; select last item.
+        selectedIndex = this.items.length - 1;
+      } else if (this.state.selectionWraps || this.state.selectedIndex > 0) {
+        selectedIndex = this.state.selectedIndex - 1;
+      } else {
+        // Already on first item, can't go previous.
+        return false;
+      }
       return this.setState({ selectedIndex });
     }
 
