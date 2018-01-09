@@ -8,7 +8,14 @@ const postNavigateDelayCompleteSymbol = Symbol('postNavigateDelayComplete');
 const wheelDistanceSymbol = Symbol('wheelDistance');
 
 
+/**
+ * Mixin which maps trackpad events to swipe gestures.
+ * 
+ * @module TrackpadSwipeMixin
+ */
 export default function TrackpadSwipeMixin(Base) {
+
+  // The class prototype added by the mixin.
   return class TrackpadSwipe extends Base {
 
     constructor() {

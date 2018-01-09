@@ -10,7 +10,14 @@ const previousYKey = Symbol('previousY');
 const startXKey = Symbol('startX');
 
 
+/**
+ * Mixin which maps touch events to swipe gestures.
+ * 
+ * @module TouchSwipeMixin
+ */
 export default function TouchSwipeMixin(Base) {
+
+  // The class prototype added by the mixin.
   return class TouchSwipe extends Base {
 
     constructor() {

@@ -36,7 +36,7 @@ const generatedIdKey = Symbol('generatedId');
  * supply these yourself, or do so via
  * [SingleSelectionMixin](SingleSelectionMixin).
  *
- * @module
+ * @module AriaListMixin
  */
 export default function AriaListMixin(Base) {
 

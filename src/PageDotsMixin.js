@@ -9,7 +9,8 @@ const pageDotsKey = Symbol('pageDots');
 
 
 /**
- * The PageDotsMixin needs documentation.
+ * Mixin which adds a row of small dots to a carousel-like component, one dot
+ * for each item in the component.
  * 
  * @module PageDotsMixin
  */

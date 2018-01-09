@@ -15,7 +15,15 @@ let previousFocusedWithKeyboard;
 let windowFocusListener;
 
 
-export default function FocusMixin(Base) {
+/**
+ * Mixin which tracks a component's focus state so that it can render a focus ring
+ * if and only if the user has used the keyboard to interact with the component.
+ * 
+ * @module FocusRingMixin
+ */
+export default function FocusRingMixin(Base) {
+
+  // The class prototype added by the mixin.
   return class Focus extends Base {
 
     constructor() {

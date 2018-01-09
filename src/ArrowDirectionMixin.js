@@ -4,6 +4,11 @@ import ArrowDirectionButton from './ArrowDirectionButton.js'; // eslint-disable-
 import symbols from './symbols.js';
 
 
+/**
+ * Mixin which adds left and right arrow buttons to a carousel-like component.
+ * 
+ * @module ArrowDirectionMixin
+ */
 export default function ArrowDirectionMixin(Base) {
 
   // The class prototype added by the mixin.

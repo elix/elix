@@ -6,7 +6,7 @@ const closeResolveKey = Symbol('closeResolve');
 
 
 /**
- * The OpenCloseMixin needs documentation.
+ * Mixin which tracks the open/close state of a component.
  * 
  * @module OpenCloseMixin
  */

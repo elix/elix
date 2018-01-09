@@ -1,7 +1,15 @@
 import symbols from './symbols.js';
 
 
+/**
+ * Mixin which tracks whether the user has moved the mouse over a component so
+ * the component can decide whether to render hover effects.
+ * 
+ * @module HoverMixin
+ */
 export default function HoverMixin(Base) {
+
+  // The class prototype added by the mixin.
   return class Hover extends Base {
 
     constructor() {

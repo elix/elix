@@ -1,6 +1,12 @@
 import symbols from './symbols.js';
 
 
+/**
+ * Mixin which helps a component provide state changes that depend upon
+ * completion of CSS transitions.
+ * 
+ * @module TransitionEffectMixin
+ */
 export default function TransitionEffectMixin(Base) {
 
   // The class prototype added by the mixin.
