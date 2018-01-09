@@ -1,4 +1,25 @@
-/*
+/**
+ * These functions help a component work with "fractional selection". This
+ * notion can be very helpful in modeling components such as carousels (e.g.,
+ * [SlidingCarousel](SlidingCarousel), in which the selection state during user
+ * interaction may be partway between one item and the next. With fractional
+ * selection, we add a real number between 0 and 1 to a selected index to obtain
+ * a fractional selection value.
+ * 
+ * Consider a carousel displaying a set of images. Suppose the image at index 3
+ * is selected. The carousel's `selectedIndex` state at this point is 3. The
+ * user begins dragging the carousel with their finger. Image 3 moves out of
+ * view, and the image 4 moves into view. When the user is halfway through this
+ * operation, we might say that the fractional selection value is 3.5.
+ * Eventually, the user releases their finger, and the carousel shows the image
+ * 4 selected; the `selectedIndex` is 4.
+ * 
+ * These functions help components work consistently with fractional selection.
+ * 
+ * @module fractionalSelection
+ */
+
+/**
  * Dampen a selection that goes past the beginning or end of a list. This is
  * generally used to produce a visual effect of tension as the user tries to
  * go further in a direction that has no more items.
@@ -30,7 +51,7 @@ export function dampenListSelection(selection, itemCount) {
   return damped;
 }
 
-/*
+/**
  * Calculate damping as a function of the distance past the minimum/maximum
  * values.
  *
@@ -38,12 +59,14 @@ export function dampenListSelection(selection, itemCount) {
  * below/above the actual minimum/maximum. This requires calculating a
  * hyperbolic function.
  *
- * See http://www.wolframalpha.com/input/?i=y+%3D+-1%2F%28x%2B1%29+%2B+1
- * for the one we use. The only portion of that function we care about is when
- * x is zero or greater. An important consideration is that the curve be
- * tangent to the diagonal line x=y at (0, 0). This ensures smooth continuity
- * with the normal drag behavior, in which the visible sliding is linear with
- * the distance the touchpoint has been dragged.
+ * We use the formula `y = (-1/(x+1))+1`.
+ * (See a [graph of this
+ * function](http://www.wolframalpha.com/input/?i=y+%3D+-1%2F%28x%2B1%29+%2B+1).)
+ * The only portion of that function we care about is when x is zero or greater.
+ * An important consideration is that the curve be tangent to the diagonal line
+ * x=y at (0, 0). This ensures smooth continuity with the normal drag behavior,
+ * in which the visible sliding is linear with the distance the touchpoint has
+ * been dragged.
  * 
  * @param {number} x - The number of dampen
  * @returns {number}
