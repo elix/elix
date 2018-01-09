@@ -202,14 +202,9 @@ class WrappedStandardElement extends ElementBase {
     writePendingProperties(this);
   }
 
-  /**
-   * A description for the user of the element's purpose on the page. Setting
-   * this applies the label to the inner element, ensuring that screen readers
-   * and other assistive technologies will provide a meaningful description to
-   * the user.
-   *
-   * @type {string}
-   */
+  // Define an ariaLabel property and delegate it to the inner element. This
+  // definition lets AttributeMarshallingMixin know it should handle this
+  // aria-label attribute.
   get ariaLabel() {
     return this.inner.getAttribute('aria-label');
   }

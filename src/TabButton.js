@@ -17,8 +17,8 @@ const Base =
 /**
  * A classic rounded tab button.
  *
- * This component is used by [LabeledTabs](LabeledTabs), which will generate
- * an instance of `LabeledTabButton` for each panel in a set of tab panels.
+ * This component is used by [Tabs](Tabs), which by default will generate an
+ * instance of `TabButton` for each panel in a set of tab panels.
  *
  * @inherits WrappedStandardElement
  * @mixes FocusRingMixin
@@ -58,6 +58,12 @@ class TabButton extends Base {
     });
   }
 
+  /**
+   * The alignment of the tabs within the tab strip.
+   * 
+   * @type {('start'|'center'|'end'|'stretch')}
+   * @default 'start'
+   */
   get tabAlign() {
     return this.state.tabAlign;
   }
@@ -65,6 +71,18 @@ class TabButton extends Base {
     this.setState({ tabAlign });
   }
 
+  /**
+   * The position of the tab strip with respect to the associated tab panels.
+   * 
+   * Setting this property does not actually change the tab buttons's position
+   * in the document, but lets the tab button know how it should display itself.
+   * The standard apperance of `TabButton` is to hide the visible border between
+   * the tab button and its associated panel, and `tabPosition` is used to
+   * determine which edge's border should be hidden.
+   * 
+   * @type {('bottom'|'left'|'right'|'top')}
+   * @default 'top'
+   */
   get tabPosition() {
     return this.state.tabPosition;
   }

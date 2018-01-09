@@ -152,6 +152,12 @@ class TabStrip extends Base {
       'vertical';
   }
 
+  /**
+   * The alignment of the tabs within the tab strip.
+   * 
+   * @type {('start'|'center'|'end'|'stretch')}
+   * @default 'start'
+   */
   get tabAlign() {
     return this.state.tabAlign;
   }
@@ -159,6 +165,18 @@ class TabStrip extends Base {
     this.setState({ tabAlign });
   }
 
+  /**
+   * The position of the tab strip with respect to the associated tab panels.
+   * 
+   * Setting this property does not actually change the tab strip's position in
+   * the document, but works as a signal to the contained tab buttons as to how
+   * they should present themselves. The standard [TabButton](TabButton) uses
+   * this information, for example, to remove the visible border between the tab
+   * button and its associated panel.
+   * 
+   * @type {('bottom'|'left'|'right'|'top')}
+   * @default 'top'
+   */
   get tabPosition() {
     return this.state.tabPosition;
   }

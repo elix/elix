@@ -26,21 +26,21 @@
   <div class="demo padded">
 
     <style>
-    elix-tabs {
-      height: 250px;
-      max-width: 100%;
-      width: 300px;
-    }
+      .tabsWithTabButtons {
+        height: 250px;
+        max-width: 100%;
+        width: 300px;
+      }
 
-    .panel {
-      align-items: center;
-      display: flex;
-      flex: 1;
-      justify-content: center;
-    }
+      .tabsWithTabButtons .panel {
+        align-items: center;
+        display: flex;
+        flex: 1;
+        justify-content: center;
+      }
     </style>
 
-    <elix-tabs>
+    <elix-tabs class="tabsWithTabButtons">
       <elix-tab-button slot="tabButtons">Un</elix-tab-button>
       <elix-tab-button slot="tabButtons">Deux</elix-tab-button>
       <elix-tab-button slot="tabButtons">Trois</elix-tab-button>

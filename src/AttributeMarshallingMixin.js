@@ -69,9 +69,7 @@ export default function AttributeMarshallingMixin(Base) {
 }
 
 
-/**
- * Return the custom attributes for the given class.
- */
+// Return the custom attributes for the given class.
 function attributesForClass(classFn) {
 
   // We treat the HTMLElement base class as if it has no attributes, since we
@@ -113,9 +111,8 @@ function attributesForClass(classFn) {
   return result;
 }
 
-/**
- * Convert hyphenated foo-bar attribute name to camel case fooBar property name.
- */
+
+// Convert hyphenated foo-bar attribute name to camel case fooBar property name.
 function attributeToPropertyName(attributeName) {
   let propertyName = attributeToPropertyNames[attributeName];
   if (!propertyName) {
@@ -128,9 +125,8 @@ function attributeToPropertyName(attributeName) {
   return propertyName;
 }
 
-/**
- * Convert a camel case fooBar property name to a hyphenated foo-bar attribute.
- */
+
+// Convert a camel case fooBar property name to a hyphenated foo-bar attribute.
 function propertyNameToAttribute(propertyName) {
   let attribute = propertyNamesToAttributes[propertyName];
   if (!attribute) {

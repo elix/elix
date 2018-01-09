@@ -134,6 +134,12 @@ class Tabs extends Base {
     }
   }
 
+  /**
+   * The alignment of the tabs within the tab strip.
+   * 
+   * @type {('start'|'center'|'end'|'stretch')}
+   * @default 'start'
+   */
   get tabAlign() {
     return this.state.tabAlign;
   }
@@ -142,9 +148,16 @@ class Tabs extends Base {
   }
   
   /**
-   * Default implementation of tabButtons property looks in the tab buttons slot
-   * for items. If nothing is distributed to that slot, it generates an array of
-   * elix-tab-button elements for use as tab buttons.
+   * Returns the set of tab buttons.
+   * 
+   * By default, this looks in the slot named `tabButtons` for items. If nothing
+   * is assigned to that slot, this generates an array of [TabButton](TabButton)
+   * elements for use as tab buttons, one for each tab panel.
+   * 
+   * You can override this if you want the component to treat a different
+   * collection of elements as the tab buttons.
+   * 
+   * @returns {Element[]}
    */
   get tabButtons() {
     /** @type {any} */
@@ -155,6 +168,12 @@ class Tabs extends Base {
       defaultTabButtons(this);
   }
 
+  /**
+   * The position of the tab strip with respect to the associated tab panels.
+   * 
+   * @type {('bottom'|'left'|'right'|'top')}
+   * @default 'top'
+   */
   get tabPosition() {
     return this.state.tabPosition;
   }
