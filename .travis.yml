@@ -1,11 +1,9 @@
 language: node_js
 sudo: false
 node_js:
-- '6'
-before_install:
-- npm install -g npm; npm --version
+- '8'
 before_script:
-- node tasks/build.js
+- webpack
 script:
 - node tasks/sauce-tests.js
 addons:

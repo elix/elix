@@ -27,16 +27,17 @@
     "sinon": "4.0.1",
     "static-server": "3.0.0",
     "typescript": "2.6.1",
+    "uglifyjs-webpack-plugin": "1.1.6",
     "webpack": "3.6.0"
   },
   "scripts": {
-    "build": "node tasks/build.js",
+    "build": "webpack",
     "buildDocs": "node tasks/buildDocs.js",
-    "watch": "node tasks/watch.js",
     "lint": "node tasks/lint.js",
     "sauce-tests": "node tasks/sauce-tests.js",
-    "typecheck": "tsc",
     "start": "static-server . --port 3000",
-    "test": "node tasks/headless-tests.js"
+    "test": "node tasks/headless-tests.js",
+    "typecheck": "tsc",
+    "watch": "webpack --watch"
   }
 }
