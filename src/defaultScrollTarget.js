@@ -1,4 +1,11 @@
 /**
+ * Helper for determining a default scroll target.
+ * 
+ * @module defaultScrollTarget
+ */
+
+
+/**
  * This helper returns a guess as to what portion of the given element can be
  * scrolled. This is used by [SelectionInViewMixin](SelectionInViewMixin) to
  * provide a default implementation of [symbols.scrollTarget].

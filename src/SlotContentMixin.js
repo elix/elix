@@ -135,12 +135,8 @@ export default function SlotContentMixin(Base) {
 
 
 
-/**
- * The content of this component, defined to be the flattened set of
- * nodes assigned to its default unnamed slot.
- *
- * @type {Element[]}
- */
+// The nodes assigned to the given component have changed.
+// Update the component's state to reflect the new content.
 function assignedNodesChanged(component) {
 
   const slot = component.contentSlot;

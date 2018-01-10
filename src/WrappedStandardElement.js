@@ -272,6 +272,7 @@ class WrappedStandardElement extends ElementBase {
    * will include an anchor element, but the class will *not* inherit from
    * HTMLAnchorElement.
    *
+   * @static
    * @param {string} extendsTag - the standard HTML element tag to extend
    */
   static wrap(extendsTag) {

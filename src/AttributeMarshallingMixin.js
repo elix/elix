@@ -45,9 +45,7 @@ export default function AttributeMarshallingMixin(Base) {
   // The class prototype added by the mixin.
   class AttributeMarshalling extends Base {
 
-    /**
-     * Handle a change to the attribute with the given name.
-     */
+    // Handle a change to the attribute with the given name.
     attributeChangedCallback(attributeName, oldValue, newValue) {
       if (super.attributeChangedCallback) { super.attributeChangedCallback(); }
       const propertyName = attributeToPropertyName(attributeName);
