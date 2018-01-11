@@ -33,7 +33,7 @@
   "scripts": {
     "build": "webpack",
     "buildDocs": "node tasks/buildDocs.js",
-    "lint": "node tasks/lint.js",
+    "lint": "eslint .",
     "sauce-tests": "node tasks/sauce-tests.js",
     "start": "static-server . --port 3000",
     "test": "node tasks/headless-tests.js",

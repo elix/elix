@@ -3,3 +3,4 @@ demos/*
 !demos/*.js
 !demos/src/*.js
 tasks
+webpack.config.js
