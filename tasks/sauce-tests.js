@@ -59,30 +59,36 @@ const config = {
   }
 };
 
-function runTests() {
+const startStaticHttpServer = async () => {
   const server = new StaticServer({
     rootPath: '.',
     name: 'elix-sauce-server',
     port: port,
     host: '0.0.0.0'
   });
+  
+  await new Promise((resolve) => {server.start(resolve);});
+  return server;
+};
 
-  server.start(() => {
-    saucelabs(config)
-    .then(() => {
-      server.stop();
-      process.exit(reportStatus);
-    })
-    .catch(error => {
-      server.stop();
-      process.exit(reportStatus);
-    });
-  });
-}
+async function runTests() {
+  let server;
 
-try {
-  runTests();
-}
-catch(e) {
+  try {
+    server = await startStaticHttpServer();
+  }
+  catch (e) {
+    console.error('Failed to start local http server');
+    process.exit(reportStatus);
+  }
+  
+  try {
+    await saucelabs(config);
+  }
+  catch (e) {}
+
+  server.stop();    
   process.exit(reportStatus);
 }
+
+runTests();
