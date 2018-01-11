@@ -9,7 +9,7 @@ const port = 9999;
 let reportStatus = 1;
 
 const config = {
-  urls: [`http://127.0.0.1:${port}/test/sauce-tests.html`],
+  urls: [`localhost:${port}/test/sauce-tests.html`],
   testname: 'Elix tests',
   framework: 'mocha',
   throttled: 3,
@@ -38,11 +38,11 @@ const config = {
     //   platform: 'Windows 8.1',
     //   version: '11.0'
     // },
-    // {
-    //   browserName: 'MicrosoftEdge',
-    //   version: '16',
-    //   platform: 'Windows 10'
-    // },
+    {
+      browserName: 'MicrosoftEdge',
+      version: '16',
+      platform: 'Windows 10'
+    },
     {
       browserName: 'safari',
       platform: 'OS X 10.12',
