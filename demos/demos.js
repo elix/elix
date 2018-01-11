@@ -6,6 +6,8 @@ import * as elix from '../elix.js';
 
 // Additional demo components.
 // @ts-ignore
+import CountryListBox from './src/CountryListBox.js';
+// @ts-ignore
 import FocusRingTest from './src/FocusRingTest.js';
 // @ts-ignore
 import ModesWithKeyboard from './src/ModesWithKeyboard.js';
