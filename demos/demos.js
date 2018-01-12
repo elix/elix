@@ -10,6 +10,8 @@ import CountryListBox from './src/CountryListBox.js';
 // @ts-ignore
 import FocusRingTest from './src/FocusRingTest.js';
 // @ts-ignore
+import IncrementDecrement from './src/IncrementDecrement.js';
+// @ts-ignore
 import ModesWithKeyboard from './src/ModesWithKeyboard.js';
 // @ts-ignore
 import QuietButton from './src/QuietButton.js';
