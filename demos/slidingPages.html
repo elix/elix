@@ -23,21 +23,25 @@
       height: 100%;
       padding: 0;
     }
-
-    img {
-      display: inline-block;
-      height: 100%;
-      object-fit: contain;
-      vertical-align: middle;
-      width: 100%;
-    }
   </style>
 
 </head>
 
 <body role="main" unresolved>
   <div class="demo fullScreen">
-    <elix-sliding-pages style="flex: 1;" aria-label="Nature scenes">
+      <style>
+        .slidingPages {
+          background: black;
+          flex: 1;
+        }
+        .slidingPages img {
+          display: inline-block;
+          height: 100%;
+          vertical-align: middle;
+          width: 100%;
+        }
+      </style>
+      <elix-sliding-pages class="slidingPages" aria-label="Nature scenes">
       <img src="images/image1.jpg" alt="Lake" />
       <img src="images/image2.jpg" alt="Horses" />
       <img src="images/image3.jpg" alt="Ladybug on wheat" />

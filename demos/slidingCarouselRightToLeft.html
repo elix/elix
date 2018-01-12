@@ -23,21 +23,26 @@
       height: 100%;
       padding: 0;
     }
-
-    img {
-      display: inline-block;
-      height: 100%;
-      object-fit: contain;
-      vertical-align: middle;
-      width: 100%;
-    }
   </style>
 
 </head>
 
 <body dir="rtl" role="main" unresolved>
   <div class="demo fullScreen">
-    <elix-sliding-carousel style="flex: 1;" aria-label="Nature scenes">
+      <style>
+        .slidingCarouselRightToLeft {
+          background: black;
+          flex: 1;
+        }
+
+        .slidingCarouselRightToLeft img {
+          display: inline-block;
+          height: 100%;
+          vertical-align: middle;
+          width: 100%;
+        }
+      </style>
+      <elix-sliding-carousel class="slidingCarouselRightToLeft" style="flex: 1;" aria-label="Nature scenes">
       <img src="images/image1.jpg" alt="Lake" />
       <img src="images/image2.jpg" alt="Horses" />
       <img src="images/image3.jpg" alt="Ladybug on wheat" />
