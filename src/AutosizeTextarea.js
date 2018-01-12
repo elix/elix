@@ -12,15 +12,18 @@ const Base =
 
 /**
  * A text area that makes itself big enough to show its content.
+ * 
+ * [This text area grows as you add text](/demos/autosizeTextarea.html)
  *
  * This text input component is useful in situations where you want to ask the
  * user to enter as much text as they want, but don't want to take up a lot of
  * room on the page.
- *
- * The component works by copying the text to an invisible element which will
- * automatically grow in size; the expanding copy will expand the container,
- * which in turn will vertically stretch the text area to match.
  * 
+ * *Note:* This component uses [WrappedStandardElement](WrappedStandardElement)
+ * to wrap a standard `<textarea>` element. This allows it to provide all
+ * standard `HTMLTextAreaElement` properties, methods, and events, in addition
+ * to those specifically listed in the `AutosizeTextarea` API.
+ *
  * @inherits WrappedStandardElement
  * @mixes SlotContentMixin
  */
@@ -126,23 +129,27 @@ class AutosizeTextarea extends Base {
     });
   }
   
+  /*
+   * Things to note about this component's DOM structure:
+   *
+   * * The component works by copying the text to an invisible element which
+   *   will automatically grow in size; the expanding copy will expand the
+   *   container, which in turn will vertically stretch the text area to match.
+   *
+   * * The invisible copyContainer contains an extra space element that ensures
+   *   that, even if the last line of the textarea is blank, there will be
+   *   something in the line that forces the text copy to grow by a line.
+   *
+   * * The inner text element has box-sizing: border-box, but the copy has
+   *   content-box. The latter makes it easier for us to set the minimum height
+   *   of the copy by just setting the height of the content, without having to
+   *   account for borders and padding.
+   *
+   * * We put the slot inside an element that's hidden. This gives us easy
+   *   access to assigned content so we can copy into the textarea, while
+   *   ensuring the original content doesn't show up directly.
+   */
   get [symbols.template]() {
-    // Things to note:
-    //
-    // * The invisible copyContainer contains an extra space element that
-    //   ensures that, even if the last line of the textarea is blank, there
-    //   will be something in the line that forces the text copy to grow by a
-    //   line.
-    //
-    // * The inner text element has box-sizing: border-box, but the copy has
-    //   content-box. The latter makes it easier for us to set the minimum
-    //   height of the copy by just setting the height of the content, without
-    //   having to account for borders and padding.
-    //
-    // * We put the slot inside an element that's hidden. This gives us easy
-    //   access to assigned content so we can copy into the textarea, while
-    //   ensuring the original content doesn't show up directly.
-    //
     return `
       <style>
         :host {
