@@ -59,23 +59,16 @@ const config = {
   }
 };
 
-const startStaticHttpServer = async () => {
+async function runTests() {
   const server = new StaticServer({
     rootPath: '.',
     name: 'elix-sauce-server',
     port: port,
     host: '0.0.0.0'
   });
-  
-  await new Promise((resolve) => {server.start(resolve);});
-  return server;
-};
 
-async function runTests() {
-  let server;
-
-  try {
-    server = await startStaticHttpServer();
+  try {  
+    await new Promise((resolve) => {server.start(resolve);});
   }
   catch (e) {
     console.error('Failed to start local http server');
