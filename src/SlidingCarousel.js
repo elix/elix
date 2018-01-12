@@ -86,6 +86,7 @@ class SlidingCarousel extends Base {
         :host {
           display: flex;
           overflow: hidden;
+          position: relative;
         }
 
         elix-sliding-viewport {
