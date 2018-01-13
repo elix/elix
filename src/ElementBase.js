@@ -8,8 +8,8 @@ import ShadowTemplateMixin from './ShadowTemplateMixin.js';
  * A general-purpose base class for web components.
  * 
  * This class simply bundles a small set of mixins that are useful for creating
- * web components in a functional-reactive programming (FRP) style. It is
- * defined this way:
+ * web components in a functional-reactive programming (FRP) style.
+ * It is defined this way:
  *
  *     const ElementBase =
  *       AttributeMarshallingMixin(
