@@ -1,4 +1,5 @@
 import { merge } from './updates.js';
+import symbols from './symbols.js';
 
 
 //
@@ -75,10 +76,11 @@ export default function FocusVisibleMixin(Base) {
     }
 
     // For use with KeyboardMixin
-    keydown(event) {
-      const result = super.keydown && super.keydown(event);
+    [symbols.keydown](event) {
+      const result = super[symbols.keydown] && super[symbols.keydown](event);
       if (!this.state.focusVisible) {
         // User set focus on component with mouse, but is now using keyboard.
+        previousFocusedWithKeyboard = true;
         this.setState({
           focusVisible: true
         });
