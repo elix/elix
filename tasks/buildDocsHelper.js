@@ -151,7 +151,7 @@ function buildAndMapExtendedJson(docsListItem) {
   // the mixes array, specifying the origin class inserting the mixin
   componentJson[0].mixinOrigins = [];
   if (componentJson[0].mixes != null && componentJson[0].mixes !== undefined) {
-    componentJson[0].mixinOrigins = componentJson[0].mixes.map(mixin => {
+    componentJson[0].mixinOrigins = componentJson[0].mixes.map(() => {
       return componentJson[0].name;
     });
   }
