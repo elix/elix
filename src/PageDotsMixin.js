@@ -37,8 +37,10 @@ export default function PageDotsMixin(Base) {
     }
 
     /**
-     * Default implementation of pageDots property uses elix-page-dot elements
-     * for the dots.
+     * Returns a collection of elements that can be used as page dots.
+     * 
+     * By default, this creates a [PageDot](PageDot) element for each item in
+     * the element's `items` property.
      */
     get pageDots() {
       if (this.items !== this[previousItemsKey]) {
@@ -81,6 +83,15 @@ export default function PageDotsMixin(Base) {
       });
     }
 
+    /**
+     * Wrap a base template with page dots.
+     * 
+     * Call this method in a components `symbols.template` property to add
+     * page dots.
+     *  
+     * @param {string} template for the element(s) controlled by the arrow buttons
+     * @returns {string} a template that includes page dots
+     */
     wrapWithPageDots(template) {
       return `
         <div id="pageDotsWrapper" role="none" style="display: flex; flex: 1; overflow: hidden;">

@@ -22,6 +22,8 @@ import SingleSelectionDemo from './src/SingleSelectionDemo.js';
 // @ts-ignore
 import SlidingPagesWithArrows from './src/SlidingPagesWithArrows.js';
 // @ts-ignore
+import SlidingPagesWithDots from './src/SlidingPagesWithDots.js';
+// @ts-ignore
 import ToolbarTab from './src/ToolbarTab.js';
 
 // Show custom elements on the page only when they've all been defined.

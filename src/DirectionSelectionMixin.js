@@ -17,6 +17,11 @@ export default function DirectionSelectionMixin(Base) {
   // The class prototype added by the mixin.
   class DirectionSelection extends Base {
 
+    /**
+     * Returns true if it's currently possible to go left.
+     * 
+     * @type {boolean}
+     */
     get [symbols.canGoLeft]() {
       const canSelect = this.rightToLeft ?
         this.canSelectNext :
@@ -27,6 +32,11 @@ export default function DirectionSelectionMixin(Base) {
         canSelect;
     }
 
+    /**
+     * Returns true if it's currently possible to go right.
+     * 
+     * @type {boolean}
+     */
     get [symbols.canGoRight]() {
       const canSelect = this.rightToLeft ?
         this.canSelectPrevious :
@@ -37,6 +47,9 @@ export default function DirectionSelectionMixin(Base) {
         canSelect;
     }
 
+    /**
+     * Invokes `selectNext` to select the next item.
+     */
     [symbols.goDown]() {
       if (super[symbols.goDown]) { super[symbols.goDown](); }
       if (!this.selectNext) {
@@ -48,6 +61,9 @@ export default function DirectionSelectionMixin(Base) {
       }
     }
 
+    /**
+     * Invokes `selectLast` to select the next item.
+     */
     [symbols.goEnd]() {
       if (super[symbols.goEnd]) { super[symbols.goEnd](); }
       if (!this.selectLast) {
@@ -59,6 +75,12 @@ export default function DirectionSelectionMixin(Base) {
       }
     }
 
+    /**
+     * Invokes `selectPrevious` to select the previous item.
+     * 
+     * If the element has a `rightToLeft` property and it is true, then this
+     * selects the _next_ item.
+     */
     [symbols.goLeft]() {
       if (super[symbols.goLeft]) { super[symbols.goLeft](); }
       if (!this.selectPrevious) {
@@ -72,6 +94,12 @@ export default function DirectionSelectionMixin(Base) {
       }
     }
 
+    /**
+     * Invokes `selectNext` to select the next item.
+     * 
+     * If the element has a `rightToLeft` property and it is true, then this
+     * selects the _previous_ item.
+     */
     [symbols.goRight]() {
       if (super[symbols.goRight]) { super[symbols.goRight](); }
       if (!this.selectNext) {
@@ -85,6 +113,9 @@ export default function DirectionSelectionMixin(Base) {
       }
     }
 
+    /**
+     * Invokes `selectFirst` to select the first item.
+     */
     [symbols.goStart]() {
       if (super[symbols.goStart]) { super[symbols.goStart](); }
       if (!this.selectFirst) {
@@ -96,6 +127,9 @@ export default function DirectionSelectionMixin(Base) {
       }
     }
 
+    /**
+     * Invokes `selectPrevious` to select the previous item.
+     */
     [symbols.goUp]() {
       if (super[symbols.goUp]) { super[symbols.goUp](); }
       if (!this.selectPrevious) {

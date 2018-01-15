@@ -5,12 +5,12 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Sliding pages with left/right arrow buttons</title>
+  <title>Sliding pages with page dots</title>
 
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
-  <script type="module" src="./src/SlidingPagesWithArrows.js"></script>
+  <script type="module" src="./src/SlidingPagesWithDots.js"></script>
   <script nomodule src="../build/demos.js"></script>
 
   <style>
@@ -38,25 +38,25 @@
 <body role="main" unresolved>
   <div class="demo fullScreen">
       <style>
-        .slidingPagesWithArrows {
+        .slidingPagesWithDots {
           background: black;
           flex: 1;
         }
 
-        .slidingPagesWithArrows img {
+        .slidingPagesWithDots img {
           display: inline-block;
           height: 100%;
           vertical-align: middle;
           width: 100%;
         }
       </style>
-      <sliding-pages-with-arrows class="slidingPagesWithArrows" aria-label="Nature scenes">
+      <sliding-pages-with-dots class="slidingPagesWithDots" aria-label="Nature scenes">
         <img src="images/image1.jpg" alt="Lake" />
         <img src="images/image2.jpg" alt="Horses" />
         <img src="images/image3.jpg" alt="Ladybug on wheat" />
         <img src="images/image4.jpg" alt="Mountain" />
         <img src="images/image5.jpg" alt="Palm tree" />
-      </sliding-pages-with-arrows>
+      </sliding-pages-with-dots>
   </div>
 </body>
 
