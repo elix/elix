@@ -4,7 +4,7 @@
 const fs = require('fs-extra');
 const jsdoc = require('jsdoc-api');
 const jsdocParse = require('jsdoc-parse');
-const promisify = require('./promisify');
+const promisify = require('util').promisify;
 
 let outputPath;
 let inputPath;
