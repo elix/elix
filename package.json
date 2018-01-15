@@ -39,6 +39,7 @@
     "test": "node tasks/headless-tests.js",
     "typecheck": "tsc",
     "watch": "webpack --watch",
-    "ci": "npm run lint && npm run sauce-tests"
+    "ci": "npm run lint && npm run sauce-tests",
+    "ci:fast": "npm run lint && npm run test"
   }
 }
