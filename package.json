@@ -38,6 +38,8 @@
     "start": "static-server . --port 3000",
     "test": "node tasks/headless-tests.js",
     "typecheck": "tsc",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "ci": "npm run lint && npm run sauce-tests",
+    "ci:fast": "npm run lint && npm run test"
   }
 }
