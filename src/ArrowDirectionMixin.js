@@ -32,6 +32,12 @@ export default function ArrowDirectionMixin(Base) {
       assumeButtonFocus(this, this.$.arrowButtonRight);
     }
 
+    get defaultState() {
+      return Object.assign({}, super.defaultState, {
+        orientation: 'horizontal'
+      });
+    }
+
     get updates() {
       const buttonUpdates = {
         style: {
@@ -87,6 +93,15 @@ export default function ArrowDirectionMixin(Base) {
       });
     }
 
+    /**
+     * Wrap a base template with left/right arrow buttons.
+     * 
+     * Call this method in a components `symbols.template` property to add
+     * left/right arrow buttons.
+     *  
+     * @param {string} template for the element(s) controlled by the arrow buttons
+     * @returns {string} a template that includes left/right arrow buttons
+     */
     wrapWithArrowDirection(template) {
       return `
         <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden;">

@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
-  <script type="module" src="../src/SlidingCarousel.js"></script>
+  <script type="module" src="./src/SlidingPagesWithArrows.js"></script>
   <script nomodule src="../build/demos.js"></script>
 
   <style>
@@ -38,25 +38,25 @@
 <body role="main" unresolved>
   <div class="demo fullScreen">
       <style>
-        .slidingCarousel {
+        .slidingPagesWithArrows {
           background: black;
           flex: 1;
         }
 
-        .slidingCarousel img {
+        .slidingPagesWithArrows img {
           display: inline-block;
           height: 100%;
           vertical-align: middle;
           width: 100%;
         }
       </style>
-      <elix-sliding-carousel class="slidingCarousel" aria-label="Nature scenes">
+      <sliding-pages-with-arrows class="slidingPagesWithArrows" aria-label="Nature scenes">
         <img src="images/image1.jpg" alt="Lake" />
         <img src="images/image2.jpg" alt="Horses" />
         <img src="images/image3.jpg" alt="Ladybug on wheat" />
         <img src="images/image4.jpg" alt="Mountain" />
         <img src="images/image5.jpg" alt="Palm tree" />
-      </elix-sliding-carousel>
+      </sliding-pages-with-arrows>
   </div>
 </body>
 

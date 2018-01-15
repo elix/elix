@@ -30,6 +30,12 @@ export default function PageDotsMixin(Base) {
       });
     }
 
+    get defaultState() {
+      return Object.assign({}, super.defaultState, {
+        orientation: 'horizontal'
+      });
+    }
+
     /**
      * Default implementation of pageDots property uses elix-page-dot elements
      * for the dots.

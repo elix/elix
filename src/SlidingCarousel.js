@@ -75,7 +75,6 @@ class SlidingCarousel extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      orientation: 'horizontal',
       selectionRequired: true
     });
   }
