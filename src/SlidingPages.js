@@ -1,6 +1,6 @@
 import AriaListMixin from './AriaListMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
-import FocusRingMixin from './FocusRingMixin.js';
+import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import SlidingViewport from './SlidingViewport.js';
@@ -12,7 +12,7 @@ import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 const Base =
   AriaListMixin(
   DirectionSelectionMixin(
-  FocusRingMixin(
+  FocusVisibleMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
   SwipeDirectionMixin(
@@ -29,7 +29,7 @@ const Base =
  * @inherits SlidingViewport
  * @mixes AriaListMixin
  * @mixes DirectionSelectionMixin
- * @mixes FocusRingMixin
+ * @mixes FocusVisibleMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
  * @mixes SwipeDirectionMixin

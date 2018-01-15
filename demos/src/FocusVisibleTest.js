@@ -1,14 +1,14 @@
-import FocusRingMixin from '../../src/FocusRingMixin.js';
+import FocusVisibleMixin from '../../src/FocusVisibleMixin.js';
 import symbols from '../../src/symbols.js';
 import WrappedStandardElement from '../../src/WrappedStandardElement.js';
 
 
 const Base =
-  FocusRingMixin(
+  FocusVisibleMixin(
     WrappedStandardElement.wrap('button')
   );
 
-class FocusRingTest extends Base {
+class FocusVisibleTest extends Base {
 
   get [symbols.template]() {
     return `
@@ -43,5 +43,5 @@ class FocusRingTest extends Base {
 }
 
 
-customElements.define('focus-ring-test', FocusRingTest);
-export default FocusRingTest;
+customElements.define('focus-visible-test', FocusVisibleTest);
+export default FocusVisibleTest;

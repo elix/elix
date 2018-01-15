@@ -16,27 +16,31 @@ let windowFocusListener;
 
 
 /**
- * Mixin which tracks a component's focus state so that it can render a focus ring
- * if and only if the user has used the keyboard to interact with the component.
+ * Mixin which tracks a component's focus state so that it can render a focus
+ * indication (e.g., a glowing outline) if and only if the user has used the
+ * keyboard to interact with the component.
  * 
- * @module FocusRingMixin
+ * This is modeled after the proposed
+ * [focus-visible](https://github.com/WICG/focus-visible) feature for CSS.
+ * 
+ * @module FocusVisibleMixin
  */
-export default function FocusRingMixin(Base) {
+export default function FocusVisibleMixin(Base) {
 
   // The class prototype added by the mixin.
-  return class Focus extends Base {
+  return class FocusVisible extends Base {
 
     constructor() {
       // @ts-ignore
       super();
       this.addEventListener('blur', () => {
         this.setState({
-          focusRing: false
+          focusVisible: false
         });
       });
       this.addEventListener('focus', () => {
         this.setState({
-          focusRing: focusedWithKeyboard
+          focusVisible: focusedWithKeyboard
         });
 
         // Remember how focus changed in case window loses focus.
@@ -66,17 +70,17 @@ export default function FocusRingMixin(Base) {
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
-        focusRing: false
+        focusVisible: false
       });
     }
 
     // For use with KeyboardMixin
     keydown(event) {
       const result = super.keydown && super.keydown(event);
-      if (!this.state.focusRing) {
+      if (!this.state.focusVisible) {
         // User set focus on component with mouse, but is now using keyboard.
         this.setState({
-          focusRing: true
+          focusVisible: true
         });
       }
       return result;
@@ -85,7 +89,7 @@ export default function FocusRingMixin(Base) {
     get updates() {
       const base = super.updates || {};
       const outline = base.style && base.style.outline ||
-        !this.state.focusRing && 'none' ||
+        !this.state.focusVisible && 'none' ||
         undefined;
       return merge(base, {
         style: {

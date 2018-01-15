@@ -1,10 +1,10 @@
-import FocusRingMixin from '../../src/FocusRingMixin.js';
+import FocusVisibleMixin from '../../src/FocusVisibleMixin.js';
 import symbols from '../../src/symbols.js';
 import WrappedStandardElement from '../../src/WrappedStandardElement.js';
 
 
 const Base =
-  FocusRingMixin(
+  FocusVisibleMixin(
     WrappedStandardElement.wrap('button')
   );
 

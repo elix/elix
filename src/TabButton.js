@@ -1,5 +1,5 @@
 import { merge } from './updates.js';
-import FocusRingMixin from './FocusRingMixin.js';
+import FocusVisibleMixin from './FocusVisibleMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import SlotContentMixin from './SlotContentMixin.js';
 import symbols from './symbols.js';
@@ -7,7 +7,7 @@ import WrappedStandardElement from './WrappedStandardElement.js';
 
 
 const Base =
-  FocusRingMixin(
+  FocusVisibleMixin(
   LanguageDirectionMixin(
   SlotContentMixin(
     WrappedStandardElement.wrap('button')
@@ -21,7 +21,7 @@ const Base =
  * instance of `TabButton` for each panel in a set of tab panels.
  *
  * @inherits WrappedStandardElement
- * @mixes FocusRingMixin
+ * @mixes FocusVisibleMixin
  * @mixes LanguageDirectionMixin
  * @mixes SlotContentMixin
  */

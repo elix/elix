@@ -3,8 +3,8 @@
 
 /// <reference path="../src/shared.d.ts"/>
 
-declare const FocusRingMixin: StateMixin<{}, {}, {}, {
-  focusRing: string;
+declare const FocusVisibleMixin: StateMixin<{}, {}, {}, {
+  focusVisible: string;
 }>;
 
-export default FocusRingMixin;
+export default FocusVisibleMixin;

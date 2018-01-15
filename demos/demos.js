@@ -8,7 +8,7 @@ import * as elix from '../elix.js';
 // @ts-ignore
 import CountryListBox from './src/CountryListBox.js';
 // @ts-ignore
-import FocusRingTest from './src/FocusRingTest.js';
+import FocusVisibleTest from './src/FocusVisibleTest.js';
 // @ts-ignore
 import IncrementDecrement from './src/IncrementDecrement.js';
 // @ts-ignore

@@ -4,7 +4,7 @@ import ArrowDirectionMixin from './ArrowDirectionMixin.js';
 import ContentItemsMixin from './ContentItemsMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import ElementBase from './ElementBase.js';
-import FocusRingMixin from './FocusRingMixin.js';
+import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
@@ -24,7 +24,7 @@ const Base =
   ArrowDirectionMixin(
   ContentItemsMixin(
   DirectionSelectionMixin(
-  FocusRingMixin(
+  FocusVisibleMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
   LanguageDirectionMixin(
@@ -51,7 +51,7 @@ const Base =
  * @mixes ArrowDirectionMixin
  * @mixes ContentItemsMixin
  * @mixes DirectionSelectionMixin
- * @mixes FocusRingMixin
+ * @mixes FocusVisibleMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
  * @mixes LanguageDirectionMixin
