@@ -33,12 +33,12 @@
   "scripts": {
     "build": "webpack; eslint .",
     "buildDocs": "node tasks/buildDocs.js",
+    "ci": "npm run lint && npm run sauce-tests",
     "lint": "eslint .; tsc",
     "sauce-tests": "node tasks/sauce-tests.js",
     "start": "static-server . --port 3000",
     "test": "node tasks/headless-tests.js",
     "typecheck": "tsc",
-    "watch": "webpack --watch",
-    "ci": "npm run lint && npm run sauce-tests"
+    "watch": "webpack --watch"
   }
 }
