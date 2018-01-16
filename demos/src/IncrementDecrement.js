@@ -54,15 +54,19 @@ class IncrementDecrement extends ReactiveMixin(HTMLElement) {
       const clone = document.importNode(template.content, true);
       root.appendChild(clone);
       // Wire up event handlers.
-      root.querySelector('#decrement').addEventListener('click', () => {
+      const decrementNode = root.querySelector('#decrement');
+      decrementNode && decrementNode.addEventListener('click', () => {
         this.value--;
       });
-      root.querySelector('#increment').addEventListener('click', () => {
+
+      const incrementNode = root.querySelector('#increment');
+      incrementNode && incrementNode.addEventListener('click', () => {
         this.value++;
       });
     }
     // Render the state into the shadow.
-    this.shadowRoot.querySelector('#value').textContent = this.state.value;
+    const valueNode = this.shadowRoot.querySelector('#value');
+    valueNode && (valueNode.textContent = this.state.value);
   }
 
 }
