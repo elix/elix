@@ -5,8 +5,8 @@ node_js:
 before_script:
 - webpack
 script:
+- node tasks/sauce-tests.js
 - eslint .
 - tsc
-- node tasks/sauce-tests.js
 addons:
   sauce_connect: true
