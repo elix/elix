@@ -6,6 +6,7 @@ node_js:
 before_script:
 - webpack
 script:
-- npm run ci:fast
+- 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then npm run ci:fast; fi'
+- 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run ci; fi'
 addons:
   sauce_connect: true
