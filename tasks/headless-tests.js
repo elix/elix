@@ -14,10 +14,10 @@ const startStaticHttpServer = async () => {
 };
 
 const runTestsInHeadlessChrome = async (port) => {
-
+  const argsNeededForTravisToWork = ['--no-sandbox']; // thx. see https://github.com/GoogleChrome/puppeteer/issues/536#issuecomment-324945531
   const options = {
     headless: true,
-    args: runInCi ? ['--no-sandbox'] : [],
+    args: runInCi ? argsNeededForTravisToWork : [],
   };
   const browser = await puppeteer.launch(options);
   const page = await browser.newPage();
