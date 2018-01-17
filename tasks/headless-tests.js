@@ -13,7 +13,7 @@ const startStaticHttpServer = async () => {
 };
 
 const runTestsInHeadlessChrome = async (port) => {
-  const browser = await puppeteer.launch({headless: true});
+  const browser = await puppeteer.launch({headless: true, args: ['--no-sandbox']});
   const page = await browser.newPage();
   await page.goto(`http://localhost:${port}/test/`, {waitUntil: 'domcontentloaded'});
   const consoleMsg = await new Promise((resolve) => {
