@@ -31,7 +31,7 @@
     "webpack": "3.6.0"
   },
   "scripts": {
-    "build": "webpack; eslint .",
+    "build": "npm run lint && webpack",
     "buildDocs": "node tasks/buildDocs.js",
     "ci": "npm run lint && npm run sauce-tests",
     "lint": "eslint .; tsc",
