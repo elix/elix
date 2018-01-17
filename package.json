@@ -34,7 +34,7 @@
     "build": "webpack; eslint .; tsc",
     "buildDocs": "node tasks/buildDocs.js",
     "ci": "npm run lint && npm run sauce-tests",
-    "ci:fast": "npm run lint && npm run test",
+    "ci:fast": "npm run lint && npm run test -- --run-in-ci",
     "lint": "eslint .; tsc",
     "sauce-tests": "node tasks/sauce-tests.js",
     "start": "static-server . --port 3000",

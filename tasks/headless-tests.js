@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer');
 const path = require('path');
 const getPort = require('get-port');
 const StaticServer = require('static-server');
+const runInCi = process.argv.indexOf('--run-in-ci');
 
 const startStaticHttpServer = async () => {
   const server = new StaticServer({
@@ -13,7 +14,12 @@ const startStaticHttpServer = async () => {
 };
 
 const runTestsInHeadlessChrome = async (port) => {
-  const browser = await puppeteer.launch({headless: true, args: ['--no-sandbox']});
+
+  const options = {
+    headless: true,
+    args: runInCi ? ['--no-sandbox'] : [],
+  };
+  const browser = await puppeteer.launch(options);
   const page = await browser.newPage();
   await page.goto(`http://localhost:${port}/test/`, {waitUntil: 'domcontentloaded'});
   const consoleMsg = await new Promise((resolve) => {
