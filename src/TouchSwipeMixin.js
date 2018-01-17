@@ -94,6 +94,18 @@ export default function TouchSwipeMixin(Base) {
       });
     }
     
+    /**
+     * Return the element that the user will be swiping. By default, this is the
+     * top-level element, but you can override this and have it return a shadow
+     * element.
+     * 
+     * This element's `offsetWidth` is used by the mixin to calculate the
+     * `state.swipeFraction` member when the user drags their finger. The
+     * `swipeFraction` is the distance the user has dragged in the current drag
+     * operation over that `offsetWidth`.
+     * 
+     * @type {HTMLElement}
+     */
     get swipeTarget() {
       return super.swipeTarget || this;
     }

@@ -11,10 +11,16 @@ export default function SwipeDirectionMixin(Base) {
   // The class prototype added by the mixin.
   return class SwipeDirection extends Base {
 
+    /**
+     * Invokes the [symbols.goRight](symbols#goRight) method.
+     */
     swipeLeft() {
       this[symbols.goRight]();
     }
 
+    /**
+     * Invokes the [symbols.goLeft](symbols#goLeft) method.
+     */
     swipeRight() {
       this[symbols.goLeft]();
     }

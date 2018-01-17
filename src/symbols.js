@@ -112,7 +112,10 @@ const symbols = {
   /**
    * Symbol for the `goLeft` method.
    *
-   * This method is invoked when the user wants to go/navigate left.
+   * This method is invoked when the user wants to go/navigate left. Mixins that
+   * make use of this method include
+   * [KeyboardDirectionMixin](KeyboardDirectionMixin) and
+   * [SwipeDirectionMixin](SwipeDirectionMixin).
    *
    * @function goLeft
    */
@@ -121,7 +124,10 @@ const symbols = {
   /**
    * Symbol for the `goRight` method.
    *
-   * This method is invoked when the user wants to go/navigate right.
+   * This method is invoked when the user wants to go/navigate right. Mixins
+   * that make use of this method include
+   * [KeyboardDirectionMixin](KeyboardDirectionMixin) and
+   * [SwipeDirectionMixin](SwipeDirectionMixin).
    *
    * @function goRight
    */

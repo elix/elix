@@ -12,7 +12,7 @@
   "include": [
     "elix.js",
     "src/*.js",
-    "demos/demos.js",
+    "demos/src/*.js",
     "tests/tests.js"
   ]
 }
