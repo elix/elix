@@ -3,8 +3,8 @@
 
 /// <reference path="../src/shared.d.ts"/>
 
-declare const PageDotsMixin: Mixin<{}, {
-  wrapWithPageDots(template: string): string;
-}>;
+declare const PageDotsMixin: Mixin<{}, {}> & {
+  wrap(string): string;
+};
 
 export default PageDotsMixin;

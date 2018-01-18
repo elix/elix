@@ -83,7 +83,7 @@ class SlidingPagesWithArrows extends Base {
           flex: 1;
         }
       </style>
-      ${this.wrapWithArrowDirection(`
+      ${ArrowDirectionMixin.wrap(`
         <elix-sliding-viewport id="viewport">
           <slot></slot>
         </elix-sliding-viewport>

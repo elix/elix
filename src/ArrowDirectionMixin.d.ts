@@ -3,8 +3,8 @@
 
 /// <reference path="../src/shared.d.ts"/>
 
-declare const ArrowDirectionMixin: Mixin<{}, {
-  wrapWithArrowDirection(string): string;
-}>;
+declare const ArrowDirectionMixin: Mixin<{}, {}> & {
+  wrap(string): string;
+};
 
 export default ArrowDirectionMixin;

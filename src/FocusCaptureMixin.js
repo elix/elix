@@ -21,7 +21,7 @@ const wrappingFocusKey = Symbol('wrappingFocus');
  *
  * @module FocusCaptureMixin
  */
-export default function FocusCaptureMixin(base) {
+function FocusCaptureMixin(base) {
 
   class FocusCapture extends base {
 
@@ -54,14 +54,32 @@ export default function FocusCaptureMixin(base) {
       return (super[symbols.keydown] && super[symbols.keydown](event)) || false;
     }
 
-    wrapWithFocusCapture(template) {
-      return `
-        ${template}
-        <div id="focusCatcher" tabindex="0"></div>
-      `;
-    }
-
   }
 
   return FocusCapture;
 }
+
+
+/**
+ * Wrap a base template with elements necessary to capture focus.
+ * 
+ * Call this method in a components `symbols.template` property.
+ * 
+ * Note: The `wrap` method hangs off of `FocusCaptureMixin` like a static
+ * method; the mixin does not add it to an element's prototype chain.
+ * Accordingly, you must invoke this method as
+ * `FocusCaptureMixin.wrap(template)`, not `this.wrap(template)`.
+ * 
+ * @memberof FocusCaptureMixin
+ * @param {string} template for the element(s) controlled by the arrow buttons
+ * @returns {string} a template that includes left/right arrow buttons
+ */
+FocusCaptureMixin.wrap = function wrap(template) {
+  return `
+    ${template}
+    <div id="focusCatcher" tabindex="0"></div>
+  `;
+};
+
+
+export default FocusCaptureMixin;

@@ -126,7 +126,7 @@ class Drawer extends Base {
           z-index: 1;
         }
       </style>
-      ${this.wrapWithFocusCapture(`
+      ${FocusCaptureMixin.wrap(`
         <div id="content">
           <slot></slot>
         </div>
