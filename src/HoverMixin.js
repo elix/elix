@@ -33,6 +33,13 @@ export default function HoverMixin(Base) {
       })
     }
 
+    /**
+     * Invoked when the user moves the mouse into the element.
+     * 
+     * The default implementation of this sets `state.hover` to true.
+     * 
+     * @param {MouseEvent} event 
+     */
     mouseEnter(event) {
       if (super.mouseEnter) { super.mouseEnter(event); }
       this.setState({
@@ -40,6 +47,13 @@ export default function HoverMixin(Base) {
       });
     }
 
+    /**
+     * Invoked when the user moves the mouse out of the element.
+     * 
+     * The default implementation of this sets `state.hover` to false.
+     * 
+     * @param {MouseEvent} event 
+     */
     mouseLeave(event) {
       if (super.mouseLeave) { super.mouseLeave(event); }
       this.setState({
