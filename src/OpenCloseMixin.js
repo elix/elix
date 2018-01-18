@@ -46,7 +46,8 @@ export default function OpenCloseMixin(Base) {
       if (this.startEffect) {
         Object.assign(defaults, {
           effect: 'close',
-          effectPhase: 'after'
+          effectPhase: 'after',
+          openCloseEffects: true
         });
       }
       return Object.assign({}, super.defaultState, defaults);

@@ -61,7 +61,6 @@ class Drawer extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      openCloseEffects: true,
       selectedIndex: 0
     });
   }

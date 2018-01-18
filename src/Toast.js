@@ -61,7 +61,6 @@ class Toast extends Base {
     return Object.assign({}, super.defaultState, {
       duration: null,
       fromEdge: 'bottom',
-      openCloseEffects: true
     });
   }
 
