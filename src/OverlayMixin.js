@@ -12,43 +12,6 @@ const restoreFocusToElementKey = Symbol('restoreFocusToElement');
  * hide or remove it when closed. This mixin and `OpenCloseMixin` form the core
  * overlay behavior for Elix components.
  * 
- * The mixin expects the component to provide:
- * 
- * * An invocation of `symbols.beforeEffect` and `symbols.afterEffect` methods
- *   for both "opening" and “closing” effects. This is generally implemented by
- *   using `OpenCloseMixin`.
- * 
- * The mixin provides these features to the component:
- * 
- * 1. Appends the element to the DOM when opened, if it’s not already in the
- *    DOM.
- * 2. Can calculate and apply a default z-index that in many cases will be
- *    sufficient to have the overlay appear on top of other page elements.
- * 3. Makes the element visible before any opening effects begin, and hides it
- *    after any closing effects complete.
- * 4. Remembers which element had the focus before the overlay was opened, and
- *    tries to restore the focus there when the overlay is closed.
- * 5. A `teleportToBodyOnOpen` property that optionally moves an element already
- *    in the DOM to the end of the document body when opened. This is intended
- *    only to address challenging overlay edge cases; see the discussion below.
- * 
- * If the component defines the following optional members, the mixin will take
- * advantage of them:
- * 
- * * An effect API compatible with `TransitionEffectMixin`. This allows an
- *   element to provide opening/closing effects. The effects are _not_ applied
- *   if the `opened` property is set in markup when the document is loading. The
- *   use of transition effects is not required. It is not necessary for a
- *   component to use `TransitionEffectMixin` or a compatible mixin. In that
- *   case, `OverlayMixin` will simply perform its work synchronously.
- * 
- * All other aspects of overlay behavior are handled by other mixins and
- * wrappers. For example, addition of a backdrop element behind the overlay is
- * handled by `BackdropWrapper`. Intercepting and responding to UI events is
- * handled by `PopupModalityMixin` and `DialogModalityMixin`. Management of
- * asynchronous visual opening/closing effects are provided by
- * `TransitionEffectMixin`.
- * 
  * @module OverlayMixin
  */
 export default function OverlayMixin(Base) {
@@ -110,6 +73,10 @@ export default function OverlayMixin(Base) {
       const base = super.updates || {};
       const original = this.state.original;
 
+      const closed = typeof this.closeFinished === 'undefined' ?
+        this.closed :
+        this.closeFinished;
+
       // We'd like to just use the `hidden` attribute, but Edge/IE has trouble
       // with that: if the hidden attribute is removed from an overlay to
       // display it, Edge/IE may not paint it correctly. And a side-effect
@@ -117,7 +84,7 @@ export default function OverlayMixin(Base) {
       // component from the outside (to change to display: flex, say) will
       // override the display: none implied by hidden. To work around both
       // these problems, we use display: none when the overlay is closed.
-      const display = this.closeFinished ?
+      const display = closed ?
         'none' :
         base.style && base.style.display;
 
