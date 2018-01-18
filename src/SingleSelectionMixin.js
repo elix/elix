@@ -109,7 +109,7 @@ export default function SingleSelectionMixin(Base) {
     /**
      * The currently-selected item, or null if no item is selected.
      * 
-     * @type {Element|null}
+     * @type {Element}
      */
     get selectedItem() {
       return this.items && this.items[this.state.selectedIndex];
