@@ -15,12 +15,27 @@ export default function OpenCloseMixin(Base) {
   // The class prototype added by the mixin.
   class OpenClose extends Base {
 
+    /**
+     * Close the component (if not already closed).
+     * 
+     * Some components like [AlertDialog](AlertDialog) want to indicate why or
+     * how they were closed. To support such scenarios, you can supply a value
+     * to the optional `result` parameter. This result will be made available
+     * in the `whenClosed` promise and the `state.result` member.
+     * 
+     * @param {object} [result] - an indication of how or why the element closed
+     */
     async close(result) {
       if (super.close) { await super.close(); }
       this.setState({ result });
       await this.toggle(false);
     }
 
+    /**
+     * True if the element is currently closed.
+     * 
+     * @type {boolean}
+     */
     get closed() {
       return !this.state.opened;
     }
@@ -29,6 +44,18 @@ export default function OpenCloseMixin(Base) {
       this.toggle(!parsed);
     }
 
+    /**
+     * True if the element has completely closed.
+     * 
+     * For components not using asynchronous open/close effects, this property
+     * returns the same value as the `closed` property. For elements that have a
+     * true value of `state.openCloseEffects` (e.g., elements using
+     * [TransitionEffectMixin](TransitionEffectMixin)), this property returns
+     * true only if `state.effect` is "close" and `state.effectPhase` is
+     * "after".
+     * 
+     * @type {boolean}
+     */
     get closeFinished() {
       return this.state.openCloseEffects ?
         this.state.effect === 'close' && this.state.effectPhase === 'after' :
@@ -53,11 +80,19 @@ export default function OpenCloseMixin(Base) {
       return Object.assign({}, super.defaultState, defaults);
     }
 
+    /**
+     * Open the element (if not already opened).
+     */
     async open() {
       if (super.open) { await super.open(); }
       await this.toggle(true);
     }
 
+    /**
+     * True if the element is currently closed.
+     * 
+     * @type {boolean}
+     */
     get opened() {
       return this.state.opened;
     }
@@ -66,6 +101,12 @@ export default function OpenCloseMixin(Base) {
       this.toggle(parsed);
     }
 
+    /**
+     * Toggle the open/close state of the element.
+     * 
+     * @param {boolean} [opened] - true if the element should be opened, false
+     * if closed.
+     */
     async toggle(opened = !this.opened) {
       if (super.toggle) { await super.toggle(opened); }
       const changed = opened !== this.state.opened;
