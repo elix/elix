@@ -111,7 +111,7 @@ function parseScriptToJSDocJSON(src) {
 // it in the unextendedDocumentationMap keyed on the object's name
 //
 function buildUnextendedJson(docItem) {
-  console.log(`Building cached and unextended jsdoc json for ${docItem.name} from ${docItem.src}`);
+  console.log(`Building jsdoc for ${docItem.src}`);
 
   return parseScriptToJSDocJSON(docItem.src)
   .then(json => {
