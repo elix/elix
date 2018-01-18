@@ -71,8 +71,7 @@ class Toast extends Base {
     this.setState({ duration });
   }
 
-  /* eslint-disable no-unused-vars */
-  [symbols.elementsWithTransitions](visualState) {
+  get [symbols.elementsWithTransitions]() {
     return [this.$.content];
   }
 

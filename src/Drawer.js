@@ -65,8 +65,7 @@ class Drawer extends Base {
     });
   }
 
-  /* eslint-disable no-unused-vars */
-  [symbols.elementsWithTransitions](visualState) {
+  get [symbols.elementsWithTransitions]() {
     return [this.$.backdrop, this.$.content];
   }
 

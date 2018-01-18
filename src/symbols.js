@@ -71,8 +71,9 @@ const symbols = {
   /**
    * Symbol for the `elementsWithTransitions` property.
    * 
-   * A component can implement this method to indicate which element(s) have CSS
-   * transitions that will be triggered if the given effect is shown.
+   * [TransitionEffectMixin](TransitionEffectMixin) inspects this property
+   * to determine which element(s) have CSS
+   * transitions applied to them for visual effects.
    * 
    * @param {string} effect - The effect under consideration
    * @returns {HTMLElement[]} The elements with CSS transitions

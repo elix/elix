@@ -2,8 +2,8 @@ import symbols from './symbols.js';
 
 
 /**
- * Mixin which helps a component provide state changes that depend upon
- * completion of CSS transitions.
+ * Mixin which manages state changes that depend upon completion of CSS
+ * transitions.
  * 
  * @module TransitionEffectMixin
  */
@@ -14,10 +14,10 @@ export default function TransitionEffectMixin(Base) {
 
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
-      const elements = getTransitionElements(this);
+      const elementsWithTransitions = this[symbols.elementsWithTransitions];
       // We assume all transitions complete at the same time. We only listen to
       // transitioneend on the first element.
-      elements[0].addEventListener('transitionend', () => {
+      elementsWithTransitions[0].addEventListener('transitionend', () => {
         // Advance to the next phase.
         this.setState({
           effectPhase: 'after'
@@ -32,7 +32,7 @@ export default function TransitionEffectMixin(Base) {
       const changed = effect !== previousState.effect ||
           effectPhase !== previousState.effectPhase;
       if (changed) {
-        // A single invocation of a method like startOpen() will cause the
+        // A single invocation of a method like startEffect() will cause the
         // element to pass through multiple visual states. This makes it hard for
         // external hosts of this component to know what visual state the component
         // is in. Accordingly, we always raise an event if the visual state
@@ -63,6 +63,22 @@ export default function TransitionEffectMixin(Base) {
         }
       }
     }
+
+    /**
+     * Return the elements that use CSS transitions to provide visual effects.
+     * 
+     * By default, this assumes the host element itself will have a CSS
+     * transition applied to it, and so returns an array containing the element.
+     * If you will be applying CSS transitions to other elements, override this
+     * property and return an array containing the implicated elements.
+     * 
+     * See the [symbols](symbols#elementsWithTransitions) documentation for details.
+     * 
+     * @type {HTMLElement[]}
+     */
+    get [symbols.elementsWithTransitions]() {
+      return super[symbols.elementsWithTransitions] || [this];
+    }
     
     async startEffect(effect) {
       await this.setState({
@@ -73,11 +89,4 @@ export default function TransitionEffectMixin(Base) {
   }
 
   return TransitionEffect;
-}
-
-
-function getTransitionElements(element) {
-  return element[symbols.elementsWithTransitions] ?
-    element[symbols.elementsWithTransitions]() :
-    [element];
 }
