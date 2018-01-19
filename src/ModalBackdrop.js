@@ -4,10 +4,12 @@ import symbols from './symbols.js';
 
 
 /**
- * The backdrop shown behind a [Dialog](Dialog).
+ * A simple backdrop for a modal overlay such as a [Dialog](Dialog) or
+ * [Drawer](Drawer). The backdrop slightly obscures the background elements,
+ * focusing the user's attention on the overlay. It also contributes to the
+ * modality by absorbing background clicks.
  * 
  * @inherits ElementBase
- * 
  */
 class ModalBackdrop extends ElementBase {
 
