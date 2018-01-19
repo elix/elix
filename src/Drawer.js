@@ -34,7 +34,7 @@ const Base =
  * UI is not critical to completing the user’s primary goal (and, hence, not
  * critical to the application’s business goal).
  * 
- * Dialog displays a [ModalBackdrop](ModalBackdrop) behind the main overlay
+ * Drawer displays a [ModalBackdrop](ModalBackdrop) behind the main overlay
  * content to help the user understand the modal condition. Both the backdrop
  * and the dialog itself can be styled.
  * 
