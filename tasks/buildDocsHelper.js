@@ -263,7 +263,6 @@ function writeJson(docsListItem) {
   const dest = docsListItem.dest;
   const writeJsonPromise = promisify(fs.writeJson);
   
-  console.log(`Writing ${dest}`);
   return writeJsonPromise(dest, json, {spaces: 2})
   .catch(error => {
     console.error(`writeJson: ${error}`);
