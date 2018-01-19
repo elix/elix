@@ -66,7 +66,11 @@ class AlertDialog extends Dialog {
   }
 
   /**
-   * @type {string[]} choices - The choices to present to the user
+   * The choices to present to the user.
+   * 
+   * By default, this is an array with a single choice, "OK".
+   * 
+   * @type {string[]}
    */
   get choices() {
     return this.state.choices;
@@ -77,7 +81,7 @@ class AlertDialog extends Dialog {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      choices: AlertDialog.OK
+      choices: ['OK']
     });
   }
 
@@ -104,24 +108,6 @@ class AlertDialog extends Dialog {
 
     // Prefer mixin result if it's defined, otherwise use base result.
     return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
-  }
-
-  /**
-   * An array with a single item: the string "OK".
-   * 
-   * @type {string[]}
-   */
-  static get OK() {
-    return ['OK'];
-  }
-
-  /**
-   * An array containing two strings: "OK" and "Cancel".
-   * 
-   * @type {string[]}
-   */
-  static get OK_CANCEL() {
-    return ['OK', 'Cancel'];
   }
 
   get [symbols.template]() {

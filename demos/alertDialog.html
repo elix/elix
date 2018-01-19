@@ -15,37 +15,38 @@
 </head>
 
 <body role="main" unresolved>
-  <div class="demo">
+  <div class="demo padded">
 
     <p>
-      <button id="okCancelButton">Open OK/Cancel alert</button>
-      <button id="yesNoCancelButton">Open Yes/No/Cancel alert</button>
+      <button id="okCancelButton" onclick="okCancelClick()">Open OK/Cancel alert</button>
+      <button id="yesNoCancelButton" onclick="yesNoCancelClick()">Open Yes/No/Cancel alert</button>
     </p>
 
     <p id="response"></p>
 
+    <script>
+      function okCancelClick(event) {
+        showAlertWithChoices(['OK', 'Cancel']);
+      }
+  
+      function yesNoCancelClick(event) {
+        showAlertWithChoices(['Yes', 'No', 'Cancel']);
+      }
+  
+      function showAlertWithChoices(choices) {
+        const dialog = document.createElement('elix-alert-dialog');
+        dialog.textContent = 'Hello, world';
+        dialog.choices = choices;
+        dialog.open();
+        dialog.whenClosed().then(function(result) {
+          response.textContent = result ?
+            "You picked " + result + "." :
+            "You didn't make a choice.";
+        });
+      }
+    </script>
+
   </div>
-  <script>
-    okCancelButton.addEventListener('click', function(event) {
-      showAlertWithChoices(['OK', 'Cancel']);
-    });
-
-    yesNoCancelButton.addEventListener('click', function(event) {
-      showAlertWithChoices(['Yes', 'No', 'Cancel']);
-    });
-
-    function showAlertWithChoices(choices) {
-      const dialog = document.createElement('elix-alert-dialog');
-      dialog.textContent = 'Hello, world';
-      dialog.choices = choices;
-      dialog.open();
-      dialog.whenClosed().then(function(result) {
-        response.textContent = result ?
-          "You picked " + result + "." :
-          "You didn't make a choice.";
-      });
-    }
-  </script>
 </body>
 
 </html>
