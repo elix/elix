@@ -120,6 +120,7 @@ function buildUnextendedJson(docItem) {
         "id": docItem.name,
         "longname": docItem.name,
         "name": docItem.name,
+        "noWrite": true,
         "kind": "module",
         "description": `Need documentation for ${docItem.name}`,
         "order": 0
@@ -262,7 +263,13 @@ function writeJson(docsListItem) {
     extendedDocumentationMap[docsListItem.name];
   const dest = docsListItem.dest;
   const writeJsonPromise = promisify(fs.writeJson);
-  
+
+  if (json[0].noWrite) {
+    console.log(`Skipping write of json for undocumented ${docsListItem.src}`);
+    return null;
+  }
+
+  console.log(`Writing json for ${docsListItem.src}`);
   return writeJsonPromise(dest, json, {spaces: 2})
   .catch(error => {
     console.error(`writeJson: ${error}`);
