@@ -2,28 +2,32 @@ import Symbol from './Symbol.js';
 
 
 /**
- * A collection of (potentially polyfilled) `Symbol` objects for standard
- * component properties and methods.
- *
- * These `Symbol` objects are used to allow mixins and a component to internally
- * communicate, without exposing these properties and methods in the component's
- * public API.
+ * A collection of `Symbol` objects for standard component properties and
+ * methods. These let mixins and a component internally communicate without
+ * exposing these properties and methods in the component's public API.
+ * They also help avoid unintentional name collisions — a component developer
+ * must specifically import the `symbols` module and reference one of its
+ * symbols.
  *
  * To use these `Symbol` objects in your own component, include this module and
- * then create a property or method whose key is the desired Symbol.
+ * then create a property or method whose key is the desired Symbol. E.g.,
+ * [ShadowTemplateMixin](ShadowTemplateMixin) expects a component to define
+ * a property called [symbol.template](#template):
  *
- *     import SingleSelectionMixin from 'elix/mixins/SingleSelectionMixin.js';
- *     import 'symbols' from 'elix/mixins/symbols.js';
- *
- *     class MyElement extends SingleSelectionMixin(HTMLElement) {
- *       [symbols.itemSelected](item, selected) {
- *         // This will be invoked whenever an item is selected/deselected.
+ *     import ShadowTemplateMixin from 'elix/src/ShadowTemplateMixin.js';
+ *     import 'symbols' from 'elix/src/symbols.js';
+ * 
+ *     class MyElement extends ShadowTemplateMixin(HTMLElement) {
+ *       [symbols.template]() {
+ *         return `Hello, <em>world</em>.`;
  *       }
  *     }
- *
- * To support Internet Explorer 11, which does not have support for the
- * `Symbol` class, you can use the [Symbol](Symbol) helper, or a `Symbol`
- * polyfill of your choice.
+ * 
+ * The above use of `symbols.template` lets the mixin find the component's
+ * template in a way that will not pollute the component's public API or
+ * interfere with other component logic. For example, if for some reason the
+ * component wants to define a separate property with the plain string name,
+ * "template", it can do so without affecting the above property setter.
  *
  * @module symbols
  */
@@ -48,25 +52,6 @@ const symbols = {
    * @var {boolean} canGoRight
    */
   canGoRight: Symbol('canGoRight'),
-
-  /**
-   * Symbol for the `defaults` property.
-   *
-   * This property can be used to set or override defaults that will be applied
-   * to a new component instance. When implementing this property, take care to
-   * first acquire any defaults defined by the superclass. The standard idiom is
-   * as follows:
-   *
-   *     get [symbols.defaults]() {
-   *       const defaults = super[symbols.defaults] || {};
-   *       // Set or override default values here
-   *       defaults.customProperty = false;
-   *       return defaults;
-   *     }
-   *
-   * @var {object} defaults
-   */
-  defaults: Symbol('defaults'),
 
   /**
    * Symbol for the `elementsWithTransitions` property.
@@ -222,9 +207,33 @@ const symbols = {
   raiseChangeEvents: Symbol('raiseChangeEvents'),
 
   // TODO: Document
+  /**
+   * Symbol for an internal `render` method.
+   * 
+   * [ReactiveMixin](ReactiveMixin) has a public [render](ReactiveMixin#render)
+   * method that can be invoked to force the component to render. That public
+   * method internally invokes an `symbols.render` method, which a component can
+   * implement to actually render itself.
+   * 
+   * You can implement a `symbols.render` method if necessary, but the most
+   * common way for Elix components to render themselves is to use
+   * [RenderUpdatesMixin](RenderUpdatesMixin),
+   * [ShadowTemplateMixin](ShadowTemplateMixin), and/or
+   * [ContentItemsMixin](ContentItemsMixin), all of which provide a
+   * `symbols.render` method.
+   * 
+   * @function render
+   */
   render: Symbol('render'),
   
-  // TODO: Document
+  /**
+   * Symbol for the `rendering` property.
+   * 
+   * [ReactiveMixin](ReactiveMixin) sets this property to true during rendering,
+   * at other times it will be false.
+   * 
+   * @var {boolean} rendering
+   */
   rendering: Symbol('rendering'),
 
   /**

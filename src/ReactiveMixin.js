@@ -53,7 +53,7 @@ export default function ReactiveMixin(Base) {
       return super.defaultState || {};
     }
 
-    /**
+    /*
      * Internal render method.
      * 
      * The default implementation does nothing. Augment this in your component
@@ -125,6 +125,7 @@ export default function ReactiveMixin(Base) {
      * render the component. Otherwise, this returns a resolved promise.
      * 
      * @param {object} changes - the changes to apply to the element's state
+     * @returns {Promise} - resolves when the new state has been rendered
      */
     async setState(changes) {
       // There's no good reason to have a render method update state.
