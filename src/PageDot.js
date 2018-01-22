@@ -3,12 +3,11 @@ import ElementBase from './ElementBase.js';
 import symbols from './symbols.js';
 
 
-/**
- * A small dot used by [PageDotsMixin](PageDotsMixin) to represent a carousel
- * item.
+/*
+ * A small dot used by PageDotsMixin to represent a carousel item.
  * 
- * @inherits ElementBase
- * 
+ * We don't expect this minor component to be used in other contexts, so it's
+ * not documented as a supported Elix component.
  */
 class PageDot extends ElementBase {
 

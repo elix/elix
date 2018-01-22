@@ -2,6 +2,12 @@ import WrappedStandardElement from './WrappedStandardElement.js';
 import symbols from './symbols.js';
 
 
+/*
+ * A button used by ArrowDirectionMixin for its left/right arrow buttons.
+ * 
+ * We don't expect this minor component to be used in other contexts, so it's
+ * not documented as a supported Elix component.
+ */
 class ArrowDirectionButton extends WrappedStandardElement.wrap('button') {
 
   get [symbols.template]() {

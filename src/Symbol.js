@@ -1,7 +1,7 @@
 /* The number of fake symbols we've served up */
 let count = 0;
 
-/**
+/*
  * A helper function for simulating instances of the `Symbol` class in older
  * browsers, notably Microsoft Internet Explorer 11.
  *
@@ -36,6 +36,11 @@ let count = 0;
  * eliminate) potential accidental access, and the unique number at the end is
  * mean to avoid (not eliminate) naming conflicts.
  *
+ * Note: Because IE 11 support is provisional, we're not including this class
+ * in our project documentation. This comment includes jsDoc annotations so
+ * project members can understand how to call it, but the comment itself will
+ * not be picked up by jsDoc.
+ * 
  * @function Symbol
  * @param {any} description - A string to identify the symbol when debugging
  * @returns {symbol|string} - A Symbol (in ES6 browsers) or unique string ID (in
@@ -47,10 +52,7 @@ export default function(description) {
     uniqueString(description);
 }
 
-/**
- * @param {any} description
- * @returns {string}
- */
+// Include the given description in a unique string.
 function uniqueString(description) {
   return `_${description}${count++}`;
 }
