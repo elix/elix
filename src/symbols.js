@@ -114,6 +114,9 @@ const symbols = {
    * Symbol for the `getItemText` method.
    *
    * This method can be applied to an item to return its text.
+   * [KeyboardPrefixSelectionMixin](KeyboardPrefixSelectionMixin) uses this to
+   * obtain the text for each item in a list, then matches keypresses again that
+   * text.
    *
    * @function getItemText
    * @param {HTMLElement} item - the item to extract text from
@@ -386,7 +389,8 @@ const symbols = {
   /**
    * Symbol for the `template` method.
    *
-   * This method should return a component's template.
+   * [ShadowTemplateMixin](ShadowTemplateMixin) uses this property to obtain a
+   * component's template, which it will clone into a component's shadow root.
    */
   template
 
