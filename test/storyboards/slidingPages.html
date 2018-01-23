@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SlidingPages storyboard</title>
+
+  <link rel="stylesheet" href="../../demos/demos.css">
+  <script src="../../demos/node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="./RenderState.js"></script>
+  <script type="module" src="../../src/SlidingPages.js"></script>
+  <script nomodule src="../../build/demos.js"></script>
+
+  <style>
+    elix-sliding-pages {
+      height: 170px;
+      width: 220px;
+    }
+
+    elix-sliding-pages div {
+      align-items: center;
+      background: #ddd;
+      border: 1px solid #888;
+      box-sizing: border-box;
+      color: white;
+      display: flex;
+      font-size: 128px;
+      font-weight: bold;
+      justify-content: center;
+      -webkit-text-stroke: 2px #444;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <h1>SlidingPages storyboard</h1>
+
+  <render-state>
+    <elix-sliding-pages>
+      <div>0</div>
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+    </elix-sliding-pages>
+  </render-state>
+
+  <render-state test-state='{"swipeFraction": -0.5}'>
+    <elix-sliding-pages>
+      <div>0</div>
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+    </elix-sliding-pages>
+    <p>
+      Halfway through a swipe to the left
+    </p>
+  </render-state>
+
+  <render-state test-state='{"selectedIndex": 1, "swipeFraction": 0}'>
+    <elix-sliding-pages>
+      <div>0</div>
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+    </elix-sliding-pages>
+    <p>
+      Completion of full swipe to the left
+    </p>
+  </render-state>
+      
+  <render-state test-state='{"selectedIndex": 3, "swipeFraction": 0}'>
+    <elix-sliding-pages>
+      <div>0</div>
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+    </elix-sliding-pages>
+    <p>
+      At end of items
+    </p>
+  </render-state>
+      
+  <render-state test-state='{"selectedIndex": 3, "swipeFraction": -0.5}'>
+    <elix-sliding-pages>
+      <div>0</div>
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+    </elix-sliding-pages>
+    <p>
+      Dragging past the last item produces increasing tension
+    </p>
+  </render-state>
+        
+  <render-state test-state='{"selectedIndex": 3, "swipeFraction": -1}'>
+    <elix-sliding-pages>
+      <div>0</div>
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+    </elix-sliding-pages>
+  </render-state>
+      
+  <render-state test-state='{"selectedIndex": 3, "swipeFraction": -2}'>
+    <elix-sliding-pages>
+      <div>0</div>
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+    </elix-sliding-pages>
+  </render-state>
+  
+</body>
+
+</html>

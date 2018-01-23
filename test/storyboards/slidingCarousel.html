@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>elix-sliding-carousel</title>
+
+  <link rel="stylesheet" href="../../demos/demos.css">
+  <script src="../../demos/node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="../../src/SlidingCarousel.js"></script>
+  <script nomodule src="../../build/demos.js"></script>
+
+  <style>
+    elix-sliding-carousel {
+      height: 170px;
+      width: 220px;
+    }
+
+    elix-sliding-carousel div {
+      align-items: center;
+      background: #ddd;
+      border: 1px solid #888;
+      box-sizing: border-box;
+      color: white;
+      display: flex;
+      font-size: 128px;
+      font-weight: bold;
+      justify-content: center;
+      -webkit-text-stroke: 2px #444;
+    }
+  </style>
+
+</head>
+
+<body>
+  <elix-sliding-carousel>
+    <div>0</div>
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+  </elix-sliding-carousel>
+</body>
+
+</html>
