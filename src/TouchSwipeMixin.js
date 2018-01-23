@@ -1,5 +1,6 @@
 import { merge } from './updates.js';
 import Symbol from './Symbol.js';
+import symbols from './symbols.js';
 
 
 const multiTouchKey = Symbol('multiTouch');
@@ -95,19 +96,12 @@ export default function TouchSwipeMixin(Base) {
     }
     
     /**
-     * Return the element that the user will be swiping. By default, this is the
-     * top-level element, but you can override this and have it return a shadow
-     * element.
-     * 
-     * This element's `offsetWidth` is used by the mixin to calculate the
-     * `state.swipeFraction` member when the user drags their finger. The
-     * `swipeFraction` is the distance the user has dragged in the current drag
-     * operation over that `offsetWidth`.
+     * See [symbols.swipeTarget](symbols#swipeTarget).
      * 
      * @type {HTMLElement}
      */
-    get swipeTarget() {
-      return super.swipeTarget || this;
+    get [symbols.swipeTarget]() {
+      return super[symbols.swipeTarget] || this;
     }
 
     get updates() {
@@ -176,17 +170,17 @@ function gestureEnd(component, clientX, clientY) {
   const flickThresholdVelocity = 800; // speed in pixels/second
   if (velocity >= flickThresholdVelocity) {
     // Flicked right at high speed.
-    gesture = 'swipeRight';
+    gesture = symbols.swipeRight;
   } else if (velocity <= -flickThresholdVelocity) {
     // Flicked left at high speed.
-    gesture = 'swipeLeft';
+    gesture = symbols.swipeLeft;
   } else {
     // Finished at low speed.
     const swipeFraction = getSwipeFraction(component, clientX);
     if (swipeFraction <= -0.5) {
-      gesture = 'swipeLeft';
+      gesture = symbols.swipeLeft;
     } else if (swipeFraction >= 0.5) {
-      gesture = 'swipeRight';
+      gesture = symbols.swipeRight;
     }
   }
 
@@ -212,7 +206,7 @@ function gestureStart(component, clientX, clientY) {
 
 function getSwipeFraction(component, x) {
   const dragDistance = x - component[startXKey];
-  const width = component.swipeTarget.offsetWidth;
+  const width = component[symbols.swipeTarget].offsetWidth;
   const fraction = width > 0 ?
     dragDistance / width :
     0;

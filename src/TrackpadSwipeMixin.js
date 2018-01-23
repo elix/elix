@@ -1,4 +1,5 @@
 import Symbol from './Symbol.js';
+import symbols from './symbols.js';
 
 
 const absorbDecelerationSymbol = Symbol('absorbDeceleration');
@@ -22,7 +23,10 @@ export default function TrackpadSwipeMixin(Base) {
       // @ts-ignore
       super();
       this.addEventListener('wheel', event => {
-        this.wheel(event);
+        const handled = handleWheel(this, event);
+        if (handled) {
+          event.preventDefault();
+        }
       });
       resetWheelTracking(this);
     }
@@ -33,15 +37,13 @@ export default function TrackpadSwipeMixin(Base) {
       });
     }
 
-    get swipeTarget() {
-      return super.swipeTarget || this;
-    }
-
-    wheel(event) {
-      const handled = handleWheel(this, event);
-      if (handled) {
-        event.preventDefault();
-      }
+    /**
+     * See [symbols.swipeTarget](symbols#swipeTarget).
+     * 
+     * @type {HTMLElement}
+     */
+    get [symbols.swipeTarget]() {
+      return super[symbols.swipeTarget] || this;
     }
   }
 }
@@ -112,7 +114,7 @@ function handleWheel(component, event) {
   component[wheelDistanceSymbol] -= deltaX;
 
   // Update the travel fraction of the component being navigated.
-  const width = component.swipeTarget.offsetWidth;
+  const width = component[symbols.swipeTarget].offsetWidth;
   let swipeFraction = width > 0 ?
     component[wheelDistanceSymbol] / width :
     0;
@@ -122,9 +124,9 @@ function handleWheel(component, event) {
   // complete a navigation to that item.
   let gesture;
   if (swipeFraction === -1) {
-    gesture = 'swipeLeft';
+    gesture = symbols.swipeLeft;
   } else if (swipeFraction === 1) {
-    gesture = 'swipeRight';
+    gesture = symbols.swipeRight;
   }
   if (gesture) {
     if (component[gesture]) {
@@ -178,9 +180,9 @@ function wheelTimedOut(component) {
   const swipeFraction = component.state.swipeFraction;
   let gesture;
   if (swipeFraction <= -0.5) {
-    gesture = 'swipeLeft';
+    gesture = symbols.swipeLeft;
   } else if (swipeFraction >= 0.5) {
-    gesture = 'swipeRight';
+    gesture = symbols.swipeRight;
   }
 
   // TODO: Listen for the transition to complete, and then restore

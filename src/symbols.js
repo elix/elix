@@ -1,13 +1,38 @@
 import Symbol from './Symbol.js';
 
 
+const canGoLeft = Symbol('canGoLeft');
+const canGoRight = Symbol('canGoRight');
+const contentSlot = Symbol('contentSlot');
+const elementsWithTransitions = Symbol('elementsWithTransitions');
+const getItemText = Symbol('getText');
+const goDown = Symbol('goDown');
+const goEnd = Symbol('goEnd');
+const goLeft = Symbol('goLeft');
+const goRight = Symbol('goRight');
+const goStart = Symbol('goStart');
+const goUp = Symbol('goUp');
+const keydown = Symbol('keydown');
+const mouseenter = Symbol('mouseenter');
+const mouseleave = Symbol('mouseleave');
+const raiseChangeEvents = Symbol('raiseChangeEvents');
+const render = Symbol('render');
+const rendering = Symbol('rendering');
+const rightToLeft = Symbol('rightToLeft');
+const scrollTarget = Symbol('scrollTarget');
+const startEffect = Symbol('startEffect');
+const swipeLeft = Symbol('swipeLeft');
+const swipeRight = Symbol('swipeRight');
+const swipeTarget = Symbol('swipeTarget');
+const template = Symbol('template');
+
+
 /**
  * A collection of `Symbol` objects for standard component properties and
  * methods. These let mixins and a component internally communicate without
- * exposing these properties and methods in the component's public API.
- * They also help avoid unintentional name collisions — a component developer
- * must specifically import the `symbols` module and reference one of its
- * symbols.
+ * exposing these properties and methods in the component's public API. They
+ * also help avoid unintentional name collisions, as a component developer must
+ * specifically import the `symbols` module and reference one of its symbols.
  *
  * To use these `Symbol` objects in your own component, include this module and
  * then create a property or method whose key is the desired Symbol. E.g.,
@@ -28,30 +53,50 @@ import Symbol from './Symbol.js';
  * interfere with other component logic. For example, if for some reason the
  * component wants to define a separate property with the plain string name,
  * "template", it can do so without affecting the above property setter.
+ * 
+ * While this project generally uses `Symbol` objects to hide component
+ * internals, Elix does make some exceptions for methods or properties that are
+ * very helpful to have handy during debugging. E.g.,
+ * [ReactiveMixin](ReactiveMixin) exposes its [setState](ReactiveMixin#setState)
+ * method publicly, even though invoking that method from outside a component is
+ * generally bad practice. The mixin exposes `setState` because it's very useful
+ * to have access to that in a debug console.
  *
  * @module symbols
  */
 const symbols = {
 
   /**
-   * Symbol for the 'canGoLeft' property.
+   * Symbol for the `canGoLeft` property.
    * 
    * A component can implement this property to indicate that the user is
    * currently able to move to the left.
    * 
    * @var {boolean} canGoLeft
    */
-  canGoLeft: Symbol('canGoLeft'),
+  canGoLeft,
 
   /**
-   * Symbol for the 'canGoRight' property.
+   * Symbol for the `canGoRight` property.
    * 
    * A component can implement this property to indicate that the user is
    * currently able to move to the right.
    * 
    * @var {boolean} canGoRight
    */
-  canGoRight: Symbol('canGoRight'),
+  canGoRight,
+
+  /**
+   * Symbol for the `contentSlot` property.
+   * 
+   * [SlotContentMixin](SlotContentMixin) uses this to identify which slot
+   * element in the component's shadow tree that holds the component's content.
+   * By default, this is the first slot element with no "name" attribute. You
+   * can override this to return a different slot.
+   * 
+   * @var {HTMLSlotElement} contentSlot
+   */
+  contentSlot,
 
   /**
    * Symbol for the `elementsWithTransitions` property.
@@ -63,7 +108,7 @@ const symbols = {
    * @param {string} effect - The effect under consideration
    * @returns {HTMLElement[]} The elements with CSS transitions
    */
-  elementsWithTransitions: Symbol('elementsWithTransitions'),
+  elementsWithTransitions,
 
   /**
    * Symbol for the `getItemText` method.
@@ -74,7 +119,7 @@ const symbols = {
    * @param {HTMLElement} item - the item to extract text from
    * @returns {string} the text of the item
    */
-  getItemText: Symbol('getText'),
+  getItemText,
 
   /**
    * Symbol for the `goDown` method.
@@ -83,7 +128,7 @@ const symbols = {
    *
    * @function goDown
    */
-  goDown: Symbol('goDown'),
+  goDown,
 
   /**
    * Symbol for the `goEnd` method.
@@ -93,7 +138,7 @@ const symbols = {
    *
    * @function goEnd
    */
-  goEnd: Symbol('goEnd'),
+  goEnd,
 
   /**
    * Symbol for the `goLeft` method.
@@ -105,7 +150,7 @@ const symbols = {
    *
    * @function goLeft
    */
-  goLeft: Symbol('goLeft'),
+  goLeft,
 
   /**
    * Symbol for the `goRight` method.
@@ -117,7 +162,7 @@ const symbols = {
    *
    * @function goRight
    */
-  goRight: Symbol('goRight'),
+  goRight,
 
   /**
    * Symbol for the `goStart` method.
@@ -127,7 +172,7 @@ const symbols = {
    *
    * @function goStart
    */
-  goStart: Symbol('goStart'),
+  goStart,
 
   /**
    * Symbol for the `goUp` method.
@@ -136,7 +181,7 @@ const symbols = {
    *
    * @function goUp
    */
-  goUp: Symbol('goUp'),
+  goUp,
 
   /**
    * Symbol for the `keydown` method.
@@ -157,7 +202,31 @@ const symbols = {
    * @function keydown
    * @param {KeyboardEvent} event - the event being processed
    */
-  keydown: Symbol('keydown'),
+  keydown,
+
+  /**
+   * Symbol for the `mouseenter` method.
+   * 
+   * [HoverMixin](HoverMixin) invokes this method when the user moves the
+   * mouse over a component. That mixin provides a base implementation of this
+   * method, but you can extend it to do additional work on `mouseenter`.
+   * 
+   * @function mouseenter
+   * @param {MouseEvent} event
+   */
+  mouseenter,
+
+  /**
+   * Symbol for the `mouseleave` method.
+   * 
+   * [HoverMixin](HoverMixin) invokes this method when the user moves off a
+   * component. That mixin provides a base implementation of this method, but
+   * you can extend it to do additional work on `mouseleave`.
+   * 
+   * @function mouseleave
+   * @param {MouseEvent} event
+   */
+  mouseleave,
 
   /**
    * Symbol for the `raiseChangeEvents` property.
@@ -204,7 +273,7 @@ const symbols = {
    *
    * @var {boolean} raiseChangeEvents
    */
-  raiseChangeEvents: Symbol('raiseChangeEvents'),
+  raiseChangeEvents,
 
   // TODO: Document
   /**
@@ -224,7 +293,7 @@ const symbols = {
    * 
    * @function render
    */
-  render: Symbol('render'),
+  render,
   
   /**
    * Symbol for the `rendering` property.
@@ -234,7 +303,21 @@ const symbols = {
    * 
    * @var {boolean} rendering
    */
-  rendering: Symbol('rendering'),
+  rendering,
+
+  /**
+   * Symbol for the `rightToLeft` property.
+   * 
+   * [LanguageDirectionMixin](LanguageDirectionMixin) sets this to true if the
+   * if the element is rendered right-to-left (the element has or inherits a
+   * `dir` attribute with the value `rtl`).
+   * 
+   * This property wraps the internal state member `state.languageDirection`,
+   * and is true if that member equals the string "rtl".
+   * 
+   * @var {boolean} rightToLeft
+   */
+  rightToLeft,
 
   /**
    * Symbol for the `scrollTarget` property.
@@ -246,14 +329,67 @@ const symbols = {
    * 
    * @var {HTMLElement} scrollTarget
    */
-  scrollTarget: Symbol('scrollTarget'),
+  scrollTarget,
+
+  /**
+   * Symbol for the `startEffect` method.
+   * 
+   * A component using [TransitionEffectMixin](TransitionEffectMixin) can invoke
+   * this method to trigger the application of a named, asynchronous CSS
+   * transition effect.
+   * 
+   * @function startEffect
+   * @param {string} effect - the name of the effect to start
+   */
+  startEffect,
+
+  /**
+   * Symbol for the `swipeLeft` method.
+   * 
+   * The swipe mixins [TouchSwipeMixin](TouchSwipeMixin) and
+   * [TrackpadSwipeMixin](TrackpadSwipeMixin) invoke this method when the user
+   * finishes a gesture to swipe left.
+   * 
+   * @function swipeLeft
+   */
+  swipeLeft,
+
+  /**
+   * Symbol for the `swipeLeft` method.
+   * 
+   * The swipe mixins [TouchSwipeMixin](TouchSwipeMixin) and
+   * [TrackpadSwipeMixin](TrackpadSwipeMixin) invoke this method when the user
+   * finishes a gesture to swipe left.
+   * 
+   * @function swipeRight
+   */
+  swipeRight,
+
+  /**
+   * Symbol for the `swipeTarget` property.
+   * 
+   * By default, the swipe mixins [TouchSwipeMixin](TouchSwipeMixin) and
+   * [TrackpadSwipeMixin](TrackpadSwipeMixin) assume that the element the user
+   * is swiping the top-level element. In some cases (e.g., [Drawer](Drawer)),
+   * the component wants to let the user swipe a shadow element. In such cases,
+   * this property should return the element that should be swiped.
+   * 
+   * The swipe target's `offsetWidth` is used by the mixin to calculate the
+   * `state.swipeFraction` member when the user drags their finger. The
+   * `swipeFraction` is the distance the user has dragged in the current drag
+   * operation over that `offsetWidth`.
+   * 
+   * @var {HTMLElement} swipeTarget
+   */
+  swipeTarget,
 
   /**
    * Symbol for the `template` method.
    *
    * This method should return a component's template.
    */
-  template: Symbol('template')
+  template
+
 };
 
 export default symbols;

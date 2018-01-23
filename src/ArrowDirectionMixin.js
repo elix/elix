@@ -86,7 +86,7 @@ function ArrowDirectionMixin(Base) {
           arrowIconRight: arrowIconProps,
           arrowDirection: {
             style: {
-              'flex-direction': this.rightToLeft ? 'row-reverse' : 'row'
+              'flex-direction': this[symbols.rightToLeft] ? 'row-reverse' : 'row'
             }
           }
         }

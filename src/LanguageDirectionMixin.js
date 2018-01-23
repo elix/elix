@@ -1,3 +1,6 @@
+import symbols from './symbols.js';
+
+
 /**
  * Mixin that helps an element determine whether it's in the context of
  * right-to-left text.
@@ -24,15 +27,9 @@ export default function LanguageDirectionMixin(Base) {
     }
 
     /**
-     * Returns true if the if the element is rendered right-to-left (the element
-     * has or inherits a `dir` attribute with the value `rtl`).
-     * 
-     * This property wraps the internal state member `state.languageDirection`,
-     * and is true if that member equals the string "rtl".
-     * 
-     * @returns {boolean}
+     * See [symbols.rightToLeft](symbols#rightToLeft).
      */
-    get rightToLeft() {
+    get [symbols.rightToLeft]() {
       return this.state.languageDirection === 'rtl';
     }
 

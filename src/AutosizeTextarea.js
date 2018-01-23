@@ -32,7 +32,7 @@ class AutosizeTextarea extends Base {
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
 
-    this.contentSlot.addEventListener('slotchange', () => {
+    this[symbols.contentSlot].addEventListener('slotchange', () => {
       this.setState({ valueTracksContent: true });
     });
 

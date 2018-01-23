@@ -84,7 +84,7 @@ class SlidingViewport extends Base {
   }
 
   get updates() {
-    const sign = this.rightToLeft ? 1 : -1;
+    const sign = this[symbols.rightToLeft] ? 1 : -1;
     const swiping = this.state.swipeFraction != null;
     const swipeFraction = this.state.swipeFraction || 0;
     const selectedIndex = this.state.selectedIndex;

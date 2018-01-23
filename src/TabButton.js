@@ -130,8 +130,8 @@ class TabButton extends Base {
     const tabPosition = this.tabPosition;
     const needsSideSpacer = needsSpacer &&
       (tabPosition === 'top' || tabPosition === 'bottom');
-    const needsLeftSpacer = needsSideSpacer && !this.rightToLeft;
-    const needsRightSpacer = needsSideSpacer && this.rightToLeft;
+    const needsLeftSpacer = needsSideSpacer && !this[symbols.rightToLeft];
+    const needsRightSpacer = needsSideSpacer && this[symbols.rightToLeft];
     const needsTopSpacer = needsSpacer &&
       (tabPosition === 'left' || tabPosition === 'right');
 

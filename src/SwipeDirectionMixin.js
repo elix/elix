@@ -14,14 +14,14 @@ export default function SwipeDirectionMixin(Base) {
     /**
      * Invokes the [symbols.goRight](symbols#goRight) method.
      */
-    swipeLeft() {
+    [symbols.swipeLeft]() {
       this[symbols.goRight]();
     }
 
     /**
      * Invokes the [symbols.goLeft](symbols#goLeft) method.
      */
-    swipeRight() {
+    [symbols.swipeRight]() {
       this[symbols.goLeft]();
     }
 

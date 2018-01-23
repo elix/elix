@@ -3,9 +3,12 @@
 
 /// <reference path="../src/shared.d.ts"/>
 
+import symbols from './symbols.js';
+
 declare const SwipeDirectionMixin: Mixin<{}, {
-  swipeLeft(): void;
-  swipeRight(): void;
+  // Uncomment these once TypeScript can deal with them.
+  // [symbols.swipeLeft](): void;
+  // [symbols.swipeRight](): void;
 }>;
 
 export default SwipeDirectionMixin;

@@ -80,7 +80,7 @@ export default function PopupModalityMixin(Base) {
     }
 
     // Close on Esc key.
-    keydown(event) {
+    [symbols.keydown](event) {
       let handled = false;
 
       switch (event.keyCode) {

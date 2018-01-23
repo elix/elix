@@ -75,7 +75,7 @@ describe("TransitionEffectMixin", function () {
         done();
       }
     });
-    fixture.startEffect('open');
+    fixture[symbols.startEffect]('open');
   });
   
   it('goes through effect phases when closed', done => {
@@ -90,7 +90,7 @@ describe("TransitionEffectMixin", function () {
         done();
       }
     });
-    fixture.startEffect('close');
+    fixture[symbols.startEffect]('close');
   });
 
 });

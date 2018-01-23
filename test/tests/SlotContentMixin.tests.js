@@ -1,5 +1,6 @@
 import flushPolyfills from '../flushPolyfills.js';
 import SlotContentMixin from '../../src/SlotContentMixin.js';
+import symbols from '../../src/symbols.js';
 
 
 /*
@@ -59,7 +60,7 @@ describe("SlotContentMixin", () => {
     flushPolyfills();
     await Promise.resolve();
     const slot = fixture.shadowRoot.children[1];
-    assert.equal(fixture.contentSlot, slot);
+    assert.equal(fixture[symbols.contentSlot], slot);
   });
 
   it("returns direct assigned nodes as content", async () => {

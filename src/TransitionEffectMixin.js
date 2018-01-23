@@ -80,7 +80,10 @@ export default function TransitionEffectMixin(Base) {
       return super[symbols.elementsWithTransitions] || [this];
     }
     
-    async startEffect(effect) {
+    /**
+     * See [symbols.startEffect](symbols#startEffect).
+     */
+    async [symbols.startEffect](effect) {
       await this.setState({
         effect,
         effectPhase: 'before'

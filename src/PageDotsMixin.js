@@ -64,7 +64,7 @@ function PageDotsMixin(Base) {
     [symbols.render]() {
       if (super[symbols.render]) { super[symbols.render](); }
       const selectedIndex = this.state.selectedIndex;
-      const sign = this.rightToLeft ? 1 : -1;
+      const sign = this[symbols.rightToLeft] ? 1 : -1;
       const swipeFraction = this.state.swipeFraction || 0;
       const selectionFraction = sign * swipeFraction;
       this.pageDots.forEach((pageDot, index) => {

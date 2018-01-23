@@ -58,7 +58,7 @@ export default function SlotContentMixin(Base) {
       if (super.componentDidMount) { super.componentDidMount(); }
 
       // Listen to changes on the default slot.
-      const slot = this.contentSlot;
+      const slot = this[symbols.contentSlot];
       if (slot) {
         slot.addEventListener('slotchange', () => {
 
@@ -104,16 +104,11 @@ export default function SlotContentMixin(Base) {
 
       }
     }
-    
+
     /**
-     * Returns the slot element in the component's shadow tree that holds the
-     * component's content. By default, this is the first slot element with no
-     * "name" attribute. A component can override this to return a different
-     * slot.
-     * 
-     * @type {HTMLSlotElement}
+     * See [symbols[symbols.contentSlot]](symbols#contentSlot).
      */
-    get contentSlot() {
+    get [symbols.contentSlot]() {
       const slot = this.shadowRoot && this.shadowRoot.querySelector('slot:not([name])');
       if (!this.shadowRoot || !slot) {
         /* eslint-disable no-console */
@@ -139,7 +134,7 @@ export default function SlotContentMixin(Base) {
 // Update the component's state to reflect the new content.
 function assignedNodesChanged(component) {
 
-  const slot = component.contentSlot;
+  const slot = component[symbols.contentSlot];
   const content = slot ?
     slot.assignedNodes({ flatten: true }) :
     null;

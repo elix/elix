@@ -1,4 +1,5 @@
 import Symbol from './Symbol.js';
+import symbols from './symbols.js';
 
 
 const closePromiseKey = Symbol('closePromise');
@@ -70,7 +71,7 @@ export default function OpenCloseMixin(Base) {
       // TransitionEffectMixin), include default state for open/close effects.
       // Since the component is closed by default, the default effect state is
       // after the close effect has completed.
-      if (this.startEffect) {
+      if (this[symbols.startEffect]) {
         Object.assign(defaults, {
           effect: 'close',
           effectPhase: 'after',

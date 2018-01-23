@@ -17,12 +17,12 @@ export default function HoverMixin(Base) {
       super();
       this.addEventListener('mouseenter', event => {
         this[symbols.raiseChangeEvents] = true;
-        this.mouseEnter(event);
+        this[symbols.mouseenter](event);
         this[symbols.raiseChangeEvents] = false;
       });
       this.addEventListener('mouseleave', event => {
         this[symbols.raiseChangeEvents] = true;
-        this.mouseLeave(event);
+        this[symbols.mouseleave](event);
         this[symbols.raiseChangeEvents] = false;
       });
     }
@@ -34,28 +34,20 @@ export default function HoverMixin(Base) {
     }
 
     /**
-     * Invoked when the user moves the mouse into the element.
-     * 
-     * The default implementation of this sets `state.hover` to true.
-     * 
-     * @param {MouseEvent} event 
+     * See [symbols.mouseenter](symbols#mouseenter).
      */
-    mouseEnter(event) {
-      if (super.mouseEnter) { super.mouseEnter(event); }
+    [symbols.mouseenter](event) {
+      if (super[symbols.mouseenter]) { super[symbols.mouseenter](event); }
       this.setState({
         hover: true
       });
     }
 
     /**
-     * Invoked when the user moves the mouse out of the element.
-     * 
-     * The default implementation of this sets `state.hover` to false.
-     * 
-     * @param {MouseEvent} event 
+     * See [symbols.mouseenter](symbols#mouseenter).
      */
-    mouseLeave(event) {
-      if (super.mouseLeave) { super.mouseLeave(event); }
+    [symbols.mouseleave](event) {
+      if (super[symbols.mouseleave]) { super[symbols.mouseleave](event); }
       this.setState({
         hover: false
       });

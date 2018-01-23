@@ -123,7 +123,7 @@ class Toast extends Base {
       'top-right': 'top-left'
     };
     const fromEdge = this.state.fromEdge;
-    const languageAdjustedEdge = this.rightToLeft ?
+    const languageAdjustedEdge = this[symbols.rightToLeft] ?
       (oppositeEdge[fromEdge] || fromEdge) :
       fromEdge;
 

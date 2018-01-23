@@ -23,7 +23,7 @@ export default function DirectionSelectionMixin(Base) {
      * @type {boolean}
      */
     get [symbols.canGoLeft]() {
-      const canSelect = this.rightToLeft ?
+      const canSelect = this[symbols.rightToLeft] ?
         this.canSelectNext :
         this.canSelectPrevious; 
       // Assume we can go left unless component tells us otherwise.
@@ -38,7 +38,7 @@ export default function DirectionSelectionMixin(Base) {
      * @type {boolean}
      */
     get [symbols.canGoRight]() {
-      const canSelect = this.rightToLeft ?
+      const canSelect = this[symbols.rightToLeft] ?
         this.canSelectPrevious :
         this.canSelectNext; 
       // Assume we can go right unless component tells us otherwise.
@@ -88,7 +88,7 @@ export default function DirectionSelectionMixin(Base) {
         console.warn(`DirectionSelectionMixin expects ${this.constructor.name} to define a "selectPrevious" method.`);
         return false;
       } else {
-        return this.rightToLeft ?
+        return this[symbols.rightToLeft] ?
           this.selectNext() :
           this.selectPrevious();
       }
@@ -107,7 +107,7 @@ export default function DirectionSelectionMixin(Base) {
         console.warn(`DirectionSelectionMixin expects ${this.constructor.name} to define a "selectNext" method.`);
         return false;
       } else {
-        return this.rightToLeft ?
+        return this[symbols.rightToLeft] ?
           this.selectPrevious() :
           this.selectNext();
       }
