@@ -14,14 +14,19 @@
   <script nomodule src="../../build/demos.js"></script>
 
   <style>
+    body {
+      padding: 3em 5em;
+    }
+
     elix-sliding-pages {
+      background: #555;
       height: 170px;
       width: 220px;
     }
 
     elix-sliding-pages div {
       align-items: center;
-      background: #ddd;
+      background: #ccc;
       border: 1px solid #888;
       box-sizing: border-box;
       color: white;
@@ -39,17 +44,24 @@
 
   <h1>SlidingPages storyboard</h1>
 
+  <p>
+    All scenes show a SlidingPages with 4 items labeled "0", "1", "2", and "3".
+  </p>
+
   <render-state>
-    <elix-sliding-pages>
+    <elix-sliding-pages slot="fixture">
       <div>0</div>
       <div>1</div>
       <div>2</div>
       <div>3</div>
     </elix-sliding-pages>
+    <p>
+      Default state
+    </p>
   </render-state>
 
-  <render-state test-state='{"swipeFraction": -0.5}'>
-    <elix-sliding-pages>
+  <render-state fixture-state='{"swipeFraction": -0.5}'>
+    <elix-sliding-pages slot="fixture">
       <div>0</div>
       <div>1</div>
       <div>2</div>
@@ -60,8 +72,8 @@
     </p>
   </render-state>
 
-  <render-state test-state='{"selectedIndex": 1, "swipeFraction": 0}'>
-    <elix-sliding-pages>
+  <render-state fixture-state='{"selectedIndex": 1, "swipeFraction": 0}'>
+    <elix-sliding-pages slot="fixture">
       <div>0</div>
       <div>1</div>
       <div>2</div>
@@ -72,8 +84,8 @@
     </p>
   </render-state>
       
-  <render-state test-state='{"selectedIndex": 3, "swipeFraction": 0}'>
-    <elix-sliding-pages>
+  <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": 0}'>
+    <elix-sliding-pages slot="fixture">
       <div>0</div>
       <div>1</div>
       <div>2</div>
@@ -84,8 +96,8 @@
     </p>
   </render-state>
       
-  <render-state test-state='{"selectedIndex": 3, "swipeFraction": -0.5}'>
-    <elix-sliding-pages>
+  <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": -0.5}'>
+    <elix-sliding-pages slot="fixture">
       <div>0</div>
       <div>1</div>
       <div>2</div>
@@ -96,8 +108,8 @@
     </p>
   </render-state>
         
-  <render-state test-state='{"selectedIndex": 3, "swipeFraction": -1}'>
-    <elix-sliding-pages>
+  <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": -1}'>
+    <elix-sliding-pages slot="fixture">
       <div>0</div>
       <div>1</div>
       <div>2</div>
@@ -105,8 +117,8 @@
     </elix-sliding-pages>
   </render-state>
       
-  <render-state test-state='{"selectedIndex": 3, "swipeFraction": -2}'>
-    <elix-sliding-pages>
+  <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": -2}'>
+    <elix-sliding-pages slot="fixture">
       <div>0</div>
       <div>1</div>
       <div>2</div>

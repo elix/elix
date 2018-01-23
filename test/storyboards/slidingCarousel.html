@@ -5,22 +5,28 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>elix-sliding-carousel</title>
+  <title>SlidingCarousel storyboard</title>
 
   <link rel="stylesheet" href="../../demos/demos.css">
   <script src="../../demos/node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="./RenderState.js"></script>
   <script type="module" src="../../src/SlidingCarousel.js"></script>
   <script nomodule src="../../build/demos.js"></script>
 
   <style>
+    body {
+      padding: 3em 5em;
+    }
+
     elix-sliding-carousel {
+      background: #555;
       height: 170px;
       width: 220px;
     }
 
     elix-sliding-carousel div {
       align-items: center;
-      background: #ddd;
+      background: #ccc;
       border: 1px solid #888;
       box-sizing: border-box;
       color: white;
@@ -35,12 +41,49 @@
 </head>
 
 <body>
-  <elix-sliding-carousel>
-    <div>0</div>
-    <div>1</div>
-    <div>2</div>
-    <div>3</div>
-  </elix-sliding-carousel>
+
+    <h1>SlidingCarousel storyboard</h1>
+
+    <p>
+      All scenes show a SlidingCarousel with 4 items labeled "0", "1", "2", and "3".
+    </p>
+  
+    <render-state>
+      <elix-sliding-carousel slot="fixture">
+        <div>0</div>
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+      </elix-sliding-carousel>
+      <p>
+        On the first item, the first dot is selected, and the left arrow button is disabled.
+      </p>
+    </render-state>
+  
+    <render-state fixture-state='{"selectedIndex": 1, "swipeFraction": 0}'>
+      <elix-sliding-carousel slot="fixture">
+        <div>0</div>
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+      </elix-sliding-carousel>
+      <p>
+        On items in the middle, both arrow buttons are enabled.
+      </p>
+    </render-state>
+  
+    <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": 0}'>
+      <elix-sliding-carousel slot="fixture">
+        <div>0</div>
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+      </elix-sliding-carousel>
+      <p>
+        On the last item, the right arrow button is disabled.
+      </p>
+    </render-state>
+
 </body>
 
 </html>

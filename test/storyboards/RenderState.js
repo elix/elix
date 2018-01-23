@@ -15,30 +15,15 @@ class RenderState extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      testState: {}
+      fixtureState: {}
     });
   }
 
-  get [symbols.template]() {
-    return `
-      <style>
-        :host {
-          display: block;
-          margin: 2em 0;
-        }
-
-        #testState {
-          color: #666;
-          margin-bottom: 1em;
-        }
-      </style>
-      <div id="testState"></div>
-      <slot></slot>
-    `;
+  get contentSlot() {
+    return this.$.fixtureSlot;
   }
 
-  [symbols.render]() {
-    if (super[symbols.render]) { super[symbols.render](); }
+  get fixture() {
     if (!this.state.content) {
       return;
     }
@@ -46,32 +31,85 @@ class RenderState extends Base {
     if (!elements || elements.length < 1) {
       return;
     }
-    const inner = elements[0];
-    customElements.whenDefined(inner.localName)
-    .then(() => {
-      inner.setState(this.state.testState);
+    // Look for an element (or subelement) with class "fixture".
+    const fixtures = elements.map(element =>
+      element.classList.contains('fixture') ?
+        element :
+        element.querySelector('.fixture')
+    ).filter(item => item !== null);
+
+    // If no fixture was found, return the first element.
+    const fixture = fixtures[0] || elements[0];
+    return fixture;
+  }
+
+  get fixtureState() {
+    return this.state.fixtureState;
+  }
+  set fixtureState(fixtureState) {
+    const parsed = typeof fixtureState === 'string' ?
+      JSON.parse(fixtureState) :
+      fixtureState;
+    this.setState({
+      fixtureState: parsed
     });
   }
 
-  get testState() {
-    return this.state.testState;
+  [symbols.render]() {
+    if (super[symbols.render]) { super[symbols.render](); }
+    const fixture = this.fixture;
+    if (fixture) {
+      customElements.whenDefined(fixture.localName)
+      .then(() => {
+        fixture.setState(this.state.fixtureState);
+      });
+    }
   }
-  set testState(testState) {
-    const parsed = typeof testState === 'string' ?
-      JSON.parse(testState) :
-      testState;
-    this.setState({
-      testState: parsed
-    });
+
+  get [symbols.template]() {
+    return `
+      <style>
+        :host {
+          display: flex;
+          margin: 5em 0;
+        }
+
+        #fixtureContainer {
+          overflow: hidden;
+          position: relative;
+        }
+
+        #description {
+          flex: 1;
+          margin-left: 3em;
+        }
+
+        ::slotted(p) {
+          margin-top: 0;
+        }
+        
+        #fixtureState {
+          color: #666;
+          margin-bottom: 1em;
+        }
+      </style>
+      <div id="fixtureContainer">
+        <slot id="fixtureSlot" name="fixture"></slot>
+      </div>
+      <div id="description">
+        <slot></slot>
+        <pre id="fixtureState"></pre>
+      </div>
+    `;
   }
 
   get updates() {
-    const textContent = Object.keys(this.state.testState).length > 0 ?
-      JSON.stringify(this.state.testState) :
-      'default state';
+    const textContent = Object.keys(this.state.fixtureState).length > 0 ?
+      JSON.stringify(this.state.fixtureState, null, 2) :
+      '';
     return merge(super.updates, {
       $: {
-        testState: { textContent }
+        fixtureState: { textContent }
       }
     });
   }
