@@ -4,6 +4,7 @@ import symbols from './symbols.js';
 
 
 // Symbols for private data members.
+const documentScrollingDisabledKey = Symbol('documentScrollingDisabled');
 const previousBodyOverflowKey = Symbol('previousBodyStyleOverflow');
 const previousDocumentMarginRightKey = Symbol('previousDocumentMarginRight');
 
@@ -32,10 +33,12 @@ export default function DialogModalityMixin(Base) {
 
     componentDidUpdate(previousState) {
       if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-      if (this.closed) {
-        enableDocumentScrolling(this);
-      } else {
+      if (this.opened && !this[documentScrollingDisabledKey]) {
         disableDocumentScrolling(this);
+        this[documentScrollingDisabledKey] = true;
+      } else if (this.closed && this[documentScrollingDisabledKey]) {
+        enableDocumentScrolling(this);
+        this[documentScrollingDisabledKey] = false;
       }
     }
 
