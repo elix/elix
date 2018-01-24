@@ -99,6 +99,28 @@ export default function ShadowTemplateMixin(Base) {
       const clone = document.importNode(template.content, true);
       root.appendChild(clone);
 
+      /**
+       * The collection of references to the elements with IDs in the
+       * component's Shadow DOM subtree.
+       *
+       * Example: if component's template contains a shadow element
+       * `<button id="foo">`, you can use the reference `this.$.foo` to obtain
+       * the corresponding button in the component instance's shadow tree.
+       * 
+       * Such references simplify a component's access to its own elements. In
+       * exchange, this mixin trades off a one-time cost of querying all
+       * elements in the shadow tree instead of paying an ongoing cost to query
+       * for an element each time the component wants to inspect or manipulate
+       * it.
+       * 
+       * These `$` references are calculated when the component is instantiated,
+       * and _not_ updated if you subsequently modify the shadow tree yourself
+       * (to replace one item with another, to add new items with `id`
+       * attributes, etc.).
+       *
+       * @name $
+       * @member {object}
+       */
       this.$ = shadowElementReferences(this);
     }
 
@@ -111,13 +133,6 @@ export default function ShadowTemplateMixin(Base) {
       }
     }
 
-    /**
-     * The collection of references to the elements with IDs in a component's
-     * Shadow DOM subtree.
-     *
-     * @type {object}
-     * @member $
-     */
   }
 
   return ShadowTemplate;
