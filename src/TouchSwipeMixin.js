@@ -98,6 +98,8 @@ export default function TouchSwipeMixin(Base) {
     /**
      * See [symbols.swipeTarget](symbols#swipeTarget).
      * 
+     * @property symbols.swipeTarget
+     * @memberof TouchSwipeMixin
      * @type {HTMLElement}
      */
     get [symbols.swipeTarget]() {

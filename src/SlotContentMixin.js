@@ -106,7 +106,7 @@ export default function SlotContentMixin(Base) {
     }
 
     /**
-     * See [symbols[symbols.contentSlot]](symbols#contentSlot).
+     * See [symbols.contentSlot](symbols#contentSlot).
      */
     get [symbols.contentSlot]() {
       const slot = this.shadowRoot && this.shadowRoot.querySelector('slot:not([name])');

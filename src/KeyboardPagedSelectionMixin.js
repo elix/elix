@@ -76,7 +76,13 @@ export default function KeyboardPagedSelectionMixin(Base) {
       return scrollOnePage(this, false);
     }
 
-    /* Provide a default scrollTarget implementation if none exists. */
+    /**
+     * See [symbols.scrollTarget](symbols#scrollTarget).
+     * 
+     * @property symbols.scrollTarget
+     * @memberof KeyboardPagedSelectionMixin
+     * @type {HTMLElement}
+     */
     get [symbols.scrollTarget]() {
       /** @type {any} */
       const element = this;

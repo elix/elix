@@ -28,6 +28,10 @@ export default function LanguageDirectionMixin(Base) {
 
     /**
      * See [symbols.rightToLeft](symbols#rightToLeft).
+     * 
+     * @property symbols.rightToLeft
+     * @memberof LanguageDirectionMixin
+     * @type {string}
      */
     get [symbols.rightToLeft]() {
       return this.state.languageDirection === 'rtl';

@@ -72,7 +72,8 @@ export default function TransitionEffectMixin(Base) {
      * If you will be applying CSS transitions to other elements, override this
      * property and return an array containing the implicated elements.
      * 
-     * See the [symbols](symbols#elementsWithTransitions) documentation for details.
+     * See [symbols.elementsWithTransitions](symbols#elementsWithTransitions)
+     * for details.
      * 
      * @type {HTMLElement[]}
      */

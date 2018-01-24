@@ -40,6 +40,8 @@ export default function TrackpadSwipeMixin(Base) {
     /**
      * See [symbols.swipeTarget](symbols#swipeTarget).
      * 
+     * @property symbols.swipeTarget
+     * @memberof TrackpadSwipeMixin
      * @type {HTMLElement}
      */
     get [symbols.swipeTarget]() {
