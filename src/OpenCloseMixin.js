@@ -63,6 +63,19 @@ export default function OpenCloseMixin(Base) {
         this.closed;
     }
 
+    componentDidUpdate(previousState) {
+      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
+
+      // If someone's waiting for the component to close, and it's completely
+      // finished closing, then resolve the close promise.
+      const closeResolve = this[closeResolveKey];
+      if (this.closeFinished && closeResolve) {
+        this[closeResolveKey] = null;
+        this[closePromiseKey] = null;
+        closeResolve(this.state.result);
+      }
+    }
+
     get defaultState() {
       const defaults = {
         opened: false

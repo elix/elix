@@ -173,13 +173,5 @@ function updateOverlay(element) {
       element[restoreFocusToElementKey].focus();
       element[restoreFocusToElementKey] = null;
     }
-    if (element.closeFinished) {
-      // TODO
-      // if (element[closeResolveKey]) {
-      //   element[closeResolveKey](element.state.result);
-      //   element[closeResolveKey] = null;
-      //   element[closePromiseKey] = null;
-      // }
-    }
   }
 }
