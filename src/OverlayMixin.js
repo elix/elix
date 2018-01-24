@@ -64,6 +64,13 @@ export default function OverlayMixin(Base) {
       }
     }
 
+    /*
+     * Override the toggle method (typically implemented by OpenCloseMixin)
+     * so that we can handle automatic addition of an overlay to the page.
+     * We'd much prefer to do this in componentDidUpdate, but if the
+     * component isn't in the DOM, ReactiveMixin won't even render it,
+     * and so componentDidUpdate won't get called.
+     */
     async toggle(opened = !this.opened) {
       if (super.toggle) { await super.toggle(opened); }
       autoConnectToDocument(this, opened);
