@@ -19,6 +19,9 @@ const wrappingFocusKey = Symbol('wrappingFocus');
  * 
  * * Template elements and event handlers that will cause the keyboard focus to wrap.
  *
+ * This mixin [contributes to a component's template](mixins#mixins-that-contribute-to-a-component-s-template).
+ * See that discussion for details on how to use such a mixin.
+ * 
  * @module FocusCaptureMixin
  */
 function FocusCaptureMixin(base) {
