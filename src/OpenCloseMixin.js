@@ -6,6 +6,9 @@ const closePromiseKey = Symbol('closePromise');
 const closeResolveKey = Symbol('closeResolve');
 
 
+let event;
+
+
 /**
  * Mixin which tracks the open/close state of a component.
  * 
@@ -65,6 +68,21 @@ export default function OpenCloseMixin(Base) {
 
     componentDidUpdate(previousState) {
       if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
+
+      if (this.state.opened !== previousState.opened && this[symbols.raiseChangeEvents]) {
+        /**
+         * Raised when the opened/closed state of the component changes.
+         * 
+         * @event OpenCloseMixin#opened-changed
+         * @type {CustomEvent}
+         */
+        const event = new CustomEvent('opened-changed', {
+          detail: {
+            opened: this.state.opened
+          }
+        });
+        this.dispatchEvent(event);
+      }
 
       // If someone's waiting for the component to close, and it's completely
       // finished closing, then resolve the close promise.
@@ -153,7 +171,6 @@ export default function OpenCloseMixin(Base) {
       }
       return this[closePromiseKey];
     }
-
   }
 
   return OpenClose;
