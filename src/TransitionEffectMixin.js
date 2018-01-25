@@ -32,11 +32,22 @@ export default function TransitionEffectMixin(Base) {
       const changed = effect !== previousState.effect ||
           effectPhase !== previousState.effectPhase;
       if (changed) {
-        // A single invocation of a method like startEffect() will cause the
-        // element to pass through multiple visual states. This makes it hard for
-        // external hosts of this component to know what visual state the component
-        // is in. Accordingly, we always raise an event if the visual state
-        // has changed, even if symbols.raiseChangeEvents is false.
+        /**
+         * Raised when [state.effect](TransitionEffectMixin#effect-phases) or
+         * [state.effectPhase](TransitionEffectMixin#effect-phases) changes.
+         * 
+         * Note: In general, Elix components do not raise events in response to
+         * outside manipulation. (See
+         * [symbols.raiseChangeEvents](symbols#raiseChangeEvents).) However, for
+         * a component using `TransitionEffectMixin`, a single invocation of the
+         * `startEffect` method will cause the element to pass through multiple
+         * visual states. This makes it hard for external hosts of this
+         * component to know what visual state the component is in. Accordingly,
+         * the mixin raises the `effect-phase-changed` event whenever the effect
+         * or phase changes, even if `symbols.raiseChangeEvents` is false.
+         * 
+         * @event TransitionEffectMixin#effect-phase-changed
+         */
         const event = new CustomEvent('effect-phase-changed', {
           detail: {
             effect,

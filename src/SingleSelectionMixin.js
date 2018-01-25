@@ -63,6 +63,11 @@ export default function SingleSelectionMixin(Base) {
 
       const selectedIndex = this.state.selectedIndex;
       if (selectedIndex !== previousState.selectedIndex && this[symbols.raiseChangeEvents]) {
+        /**
+         * Raised when the `selectedIndex` property changes.
+         * 
+         * @event SingleSelectionMixin#selected-index-changed
+         */
         const event = new CustomEvent('selected-index-changed', {
           detail: { selectedIndex }
         });
