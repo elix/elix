@@ -6,9 +6,6 @@ const closePromiseKey = Symbol('closePromise');
 const closeResolveKey = Symbol('closeResolve');
 
 
-let event;
-
-
 /**
  * Mixin which tracks the open/close state of a component.
  * 
