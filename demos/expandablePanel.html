@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>elix-expandable-panel</title>
+
+  <link rel="stylesheet" href="demos.css">
+  <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="./src/showElementsWhenDefined.js"></script>
+  <script type="module" src="../src/ExpandablePanel.js"></script>
+  <script nomodule src="../build/demos.js"></script>
+
+</head>
+
+<body role="main" unresolved>
+  <div class="demo medium padded">
+    <button onclick="sampleExpandablePanel.toggle()">Expand/collapse</button>
+    <elix-expandable-panel id="sampleExpandablePanel" style="min-height: 2.2em;">
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+        velit esse cillum dolore eu fugiat nulla pariatur.
+      </p>
+    </elix-expandable-panel>
+  </div>
+</body>
+
+</html>

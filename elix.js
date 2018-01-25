@@ -14,6 +14,7 @@ import AutosizeTextarea from './src/AutosizeTextarea.js';
 import Dialog from './src/Dialog.js';
 import Drawer from './src/Drawer.js';
 import ElementBase from './src/ElementBase.js';
+import ExpandablePanel from './src/ExpandablePanel.js';
 import ListBox from './src/ListBox.js';
 import ModalBackdrop from './src/ModalBackdrop.js';
 import Modes from './src/Modes.js';
@@ -37,6 +38,7 @@ export default {
   Dialog,
   Drawer,
   ElementBase,
+  ExpandablePanel,
   ListBox,
   ModalBackdrop,
   Modes,
