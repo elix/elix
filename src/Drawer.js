@@ -3,8 +3,7 @@ import DialogModalityMixin from './DialogModalityMixin.js';
 import FocusCaptureMixin from './FocusCaptureMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
-// @ts-ignore
-import ModalBackdrop from './ModalBackdrop.js'; // eslint-disable-line no-unused-vars
+import './ModalBackdrop.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import OverlayMixin from './OverlayMixin.js';
 import symbols from './symbols.js';
