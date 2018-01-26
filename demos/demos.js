@@ -1,22 +1,18 @@
-/* eslint-disable */
-
 // We assume we'll want to provide demos of all of Elix itself.
-import * as elix from '../elix.js';
+import '../elix.js';
 
 // Additional demo components.
-import CountryListBox from './src/CountryListBox.js';
-import FocusVisibleTest from './src/FocusVisibleTest.js';
-import IncrementDecrement from './src/IncrementDecrement.js';
-import ModesWithKeyboard from './src/ModesWithKeyboard.js';
-import QuietButton from './src/QuietButton.js';
-import SampleDialog from './src/SampleDialog.js';
-import SingleSelectionDemo from './src/SingleSelectionDemo.js';
-import SlidingPagesWithArrows from './src/SlidingPagesWithArrows.js';
-import SlidingPagesWithDots from './src/SlidingPagesWithDots.js';
-import SwipeDemo from './src/SwipeDemo.js';
-import ToolbarTab from './src/ToolbarTab.js';
+import './src/CountryListBox.js';
+import './src/FocusVisibleTest.js';
+import './src/IncrementDecrement.js';
+import './src/ModesWithKeyboard.js';
+import './src/QuietButton.js';
+import './src/SampleDialog.js';
+import './src/SingleSelectionDemo.js';
+import './src/SlidingPagesWithArrows.js';
+import './src/SlidingPagesWithDots.js';
+import './src/SwipeDemo.js';
+import './src/ToolbarTab.js';
 
 // Show custom elements on the page only when they've all been defined.
-import showElementsWhenDefined from './src/showElementsWhenDefined.js';
-
-/* eslint-enable */
+import './src/showElementsWhenDefined.js';
