@@ -1,12 +1,10 @@
 import { merge } from './updates.js';
 import ContentItemsMixin from './ContentItemsMixin.js';
 import ElementBase from './ElementBase.js';
-// @ts-ignore
-import Modes from './Modes.js'; // eslint-disable-line no-unused-vars
+import './Modes.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import TabButton from './TabButton.js';
-// @ts-ignore
-import TabStrip from './TabStrip.js'; // eslint-disable-line no-unused-vars
+import './TabStrip.js';
 import SlotContentMixin from './SlotContentMixin.js';
 import Symbol from './Symbol.js';
 import symbols from './symbols.js';

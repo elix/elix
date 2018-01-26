@@ -11,8 +11,7 @@ import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import PageDotsMixin from './PageDotsMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotContentMixin from './SlotContentMixin.js';
-// @ts-ignore
-import SlidingViewport from './SlidingViewport.js'; // eslint-disable-line no-unused-vars
+import './SlidingViewport.js';
 import SwipeDirectionMixin from './SwipeDirectionMixin.js';
 import symbols from './symbols.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';

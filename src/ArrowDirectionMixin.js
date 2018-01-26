@@ -1,6 +1,5 @@
 import { merge } from './updates.js';
-// @ts-ignore
-import ArrowDirectionButton from './ArrowDirectionButton.js'; // eslint-disable-line no-unused-vars
+import './ArrowDirectionButton.js';
 import symbols from './symbols.js';
 
 
