@@ -1,5 +1,4 @@
-// @ts-ignore
-import PageDot from './PageDot.js'; // eslint-disable-line no-unused-vars
+import PageDot from './PageDot.js';
 import { merge } from './updates.js';
 import symbols from './symbols.js';
 
