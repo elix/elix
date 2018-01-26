@@ -71,11 +71,6 @@ class ThumbnailsList1 extends Base {
           flex: 1;
           transition: transform 0.25s;
         }
-
-        #content > ::slotted(option) {
-          font-weight: inherit;
-          min-height: inherit;
-        }
       </style>
       <div id="content" role="none">
         <slot></slot>
@@ -87,14 +82,15 @@ class ThumbnailsList1 extends Base {
 
     const selectedIndex = this.state.selectedIndex;
     const selectedItem = this.items && this.items[selectedIndex];
-    let x;
+    let x; // The amount by which we'll shift content horizontally
     if (selectedItem) {
       const width = this.offsetWidth;
       const contentWidth = this.$.content.offsetWidth;
       const itemLeft = selectedItem.offsetLeft;
       const itemWidth = selectedItem.offsetWidth;
-      // const midpoint = itemLeft + (itemWidth / 2);
+      // Try to center the selected item.
       x = (width - itemWidth) / 2 - itemLeft;
+      // Constraint x to avoid showing space on either end.
       x = Math.min(x, 0);
       x = Math.max(x, width - contentWidth);
     } else {
