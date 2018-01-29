@@ -1,3 +1,4 @@
+import '../../src/SlidingViewport.js';
 import { merge } from '../../src/updates.js';
 import AriaListMixin from '../../src/AriaListMixin.js';
 import ArrowDirectionMixin from '../../src/ArrowDirectionMixin.js';
@@ -10,8 +11,6 @@ import KeyboardMixin from '../../src/KeyboardMixin.js';
 import LanguageDirectionMixin from '../../src/LanguageDirectionMixin.js';
 import SingleSelectionMixin from '../../src/SingleSelectionMixin.js';
 import SlotContentMixin from '../../src/SlotContentMixin.js';
-// @ts-ignore
-import SlidingViewport from '../../src/SlidingViewport.js'; // eslint-disable-line no-unused-vars
 import SwipeDirectionMixin from '../../src/SwipeDirectionMixin.js';
 import symbols from '../../src/symbols.js';
 import TouchSwipeMixin from '../../src/TouchSwipeMixin.js';

@@ -1,6 +1,5 @@
 import flushPolyfills from '../flushPolyfills.js';
-// @ts-ignore
-import Tabs from '../../src/Tabs.js'; // eslint-disable-line no-unused-vars
+import Tabs from '../../src/Tabs.js';
 
 
 describe("Tabs", () => {

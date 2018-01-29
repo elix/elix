@@ -1,6 +1,5 @@
+import '../../src/AutosizeTextarea.js';
 import flushPolyfills from '../flushPolyfills.js';
-// @ts-ignore
-import AutosizeTextarea from '../../src/AutosizeTextarea.js'; // eslint-disable-line no-unused-vars
 import symbols from '../../src/symbols.js';
 
 
