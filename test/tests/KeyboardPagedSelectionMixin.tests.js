@@ -1,6 +1,6 @@
 import KeyboardPagedSelectionMixin from '../../src/KeyboardPagedSelectionMixin.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
-import symbols from '../../src/symbols.js';
+import * as symbols from '../../src/symbols.js';
 
 
 const itemHeight = '100';

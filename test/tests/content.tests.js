@@ -1,6 +1,6 @@
 import * as content from '../../src/content.js';
+import * as symbols from '../../src/symbols.js';
 import ShadowTemplateMixin from '../../src/ShadowTemplateMixin.js';
-import symbols from '../../src/symbols.js';
 
 
 /*

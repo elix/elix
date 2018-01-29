@@ -1,7 +1,7 @@
 import { substantiveElements } from './content.js';
+import * as symbols from './symbols.js';
 import * as updates from './updates.js';
 import Symbol from './Symbol.js';
-import symbols from './symbols.js';
 
 
 // Symbols for private data members on an element.

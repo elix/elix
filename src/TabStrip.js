@@ -10,7 +10,7 @@ import KeyboardMixin from './KeyboardMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotContentMixin from './SlotContentMixin.js';
-import symbols from './symbols.js';
+import * as symbols from './symbols.js';
 
 
 const Base =

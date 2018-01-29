@@ -1,6 +1,6 @@
 import { merge } from './updates.js';
+import * as symbols from './symbols.js';
 import SlotContentMixin from './SlotContentMixin.js';
-import symbols from './symbols.js';
 import WrappedStandardElement from './WrappedStandardElement.js';
 
 

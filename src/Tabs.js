@@ -1,13 +1,13 @@
+import './Modes.js';
+import './TabStrip.js';
 import { merge } from './updates.js';
+import * as symbols from './symbols.js';
 import ContentItemsMixin from './ContentItemsMixin.js';
 import ElementBase from './ElementBase.js';
-import './Modes.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
-import TabButton from './TabButton.js';
-import './TabStrip.js';
 import SlotContentMixin from './SlotContentMixin.js';
 import Symbol from './Symbol.js';
-import symbols from './symbols.js';
+import TabButton from './TabButton.js';
 
 
 const generatedIdKey = Symbol('generatedId');

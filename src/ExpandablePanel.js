@@ -1,7 +1,7 @@
 import { merge } from './updates.js';
+import * as symbols from './symbols.js'
 import ElementBase from './ElementBase.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
-import symbols from './symbols.js'
 import TransitionEffectMixin from './TransitionEffectMixin.js';
 
 

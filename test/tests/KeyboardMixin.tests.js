@@ -1,8 +1,8 @@
-import KeyboardMixin from '../../src/KeyboardMixin.js';
 import * as mockInteractions from '../mockInteractions.js';
-import RenderUpdatesMixin from '../../src/RenderUpdatesMixin.js'
+import * as symbols from '../../src/symbols.js';
+import KeyboardMixin from '../../src/KeyboardMixin.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js'
-import symbols from '../../src/symbols.js';
+import RenderUpdatesMixin from '../../src/RenderUpdatesMixin.js'
 
 
 class KeyboardTest extends KeyboardMixin(ReactiveMixin(RenderUpdatesMixin(HTMLElement))) {

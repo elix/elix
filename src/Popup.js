@@ -1,9 +1,9 @@
+import * as symbols from './symbols.js';
 import ElementBase from './ElementBase.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import OverlayMixin from './OverlayMixin.js';
 import PopupModalityMixin from './PopupModalityMixin.js';
-import symbols from './symbols.js';
 
 
 const Base =

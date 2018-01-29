@@ -1,6 +1,6 @@
 import { merge } from './updates.js';
+import * as symbols from './symbols.js';
 import deepContains from './deepContains.js';
-import symbols from './symbols.js';
 
 
 /**

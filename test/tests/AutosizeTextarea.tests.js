@@ -1,6 +1,6 @@
 import '../../src/AutosizeTextarea.js';
+import * as symbols from '../../src/symbols.js';
 import flushPolyfills from '../flushPolyfills.js';
-import symbols from '../../src/symbols.js';
 
 
 describe("AutosizeTextarea", () => {

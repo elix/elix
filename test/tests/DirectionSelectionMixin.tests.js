@@ -1,5 +1,5 @@
+import * as symbols from '../../src/symbols.js';
 import DirectionSelectionMixin from '../../src/DirectionSelectionMixin.js';
-import symbols from '../../src/symbols.js';
 
 
 class DirectionSelectionTest extends DirectionSelectionMixin(HTMLElement) {

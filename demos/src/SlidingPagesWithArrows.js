@@ -12,7 +12,7 @@ import LanguageDirectionMixin from '../../src/LanguageDirectionMixin.js';
 import SingleSelectionMixin from '../../src/SingleSelectionMixin.js';
 import SlotContentMixin from '../../src/SlotContentMixin.js';
 import SwipeDirectionMixin from '../../src/SwipeDirectionMixin.js';
-import symbols from '../../src/symbols.js';
+import * as symbols from '../../src/symbols.js';
 import TouchSwipeMixin from '../../src/TouchSwipeMixin.js';
 import TrackpadSwipeMixin from '../../src/TrackpadSwipeMixin.js';
 

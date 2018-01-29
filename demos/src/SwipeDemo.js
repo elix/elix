@@ -1,6 +1,6 @@
 import { merge } from '../../src/updates.js';
+import * as symbols from '../../src/symbols.js';
 import ElementBase from '../../src/ElementBase.js';
-import symbols from '../../src/symbols.js';
 import TouchSwipeMixin from '../../src/TouchSwipeMixin.js';
 import TrackpadSwipeMixin from '../../src/TrackpadSwipeMixin.js';
 

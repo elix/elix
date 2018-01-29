@@ -1,5 +1,5 @@
+import * as symbols from '../../src/symbols.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
-import symbols from '../../src/symbols.js';
 
 
 // Create a native web component with reactive behavior.

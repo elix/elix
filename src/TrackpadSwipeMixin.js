@@ -1,5 +1,5 @@
+import * as symbols from './symbols.js';
 import Symbol from './Symbol.js';
-import symbols from './symbols.js';
 
 
 const absorbDecelerationSymbol = Symbol('absorbDeceleration');

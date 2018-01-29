@@ -1,5 +1,6 @@
 import '../../src/SlidingViewport.js';
 import { merge } from '../../src/updates.js';
+import * as symbols from '../../src/symbols.js';
 import AriaListMixin from '../../src/AriaListMixin.js';
 import ContentItemsMixin from '../../src/ContentItemsMixin.js';
 import DirectionSelectionMixin from '../../src/DirectionSelectionMixin.js';
@@ -12,7 +13,6 @@ import PageDotsMixin from '../../src/PageDotsMixin.js';
 import SingleSelectionMixin from '../../src/SingleSelectionMixin.js';
 import SlotContentMixin from '../../src/SlotContentMixin.js';
 import SwipeDirectionMixin from '../../src/SwipeDirectionMixin.js';
-import symbols from '../../src/symbols.js';
 import TouchSwipeMixin from '../../src/TouchSwipeMixin.js';
 import TrackpadSwipeMixin from '../../src/TrackpadSwipeMixin.js';
 

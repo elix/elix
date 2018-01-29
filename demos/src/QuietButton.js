@@ -1,5 +1,5 @@
+import * as symbols from '../../src/symbols.js';
 import FocusVisibleMixin from '../../src/FocusVisibleMixin.js';
-import symbols from '../../src/symbols.js';
 import WrappedStandardElement from '../../src/WrappedStandardElement.js';
 
 

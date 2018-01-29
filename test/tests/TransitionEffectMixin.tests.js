@@ -1,7 +1,7 @@
 import { merge } from '../../src/updates.js';
-import TransitionEffectMixin from '../../src/TransitionEffectMixin.js';
+import * as symbols from '../../src/symbols.js';
 import ElementBase from '../../src/ElementBase.js';
-import symbols from '../../src/symbols.js';
+import TransitionEffectMixin from '../../src/TransitionEffectMixin.js';
 
 
 const Base =

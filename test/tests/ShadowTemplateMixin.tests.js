@@ -1,5 +1,5 @@
+import * as symbols from '../../src/symbols.js';
 import flushPolyfills from '../flushPolyfills.js';
-import symbols from '../../src/symbols.js';
 import ShadowTemplateMixin from '../../src/ShadowTemplateMixin.js';
 
 

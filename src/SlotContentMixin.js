@@ -1,5 +1,5 @@
 import Symbol from './Symbol.js';
-import symbols from './symbols.js';
+import * as symbols from './symbols.js';
 
 
 const slotchangeFiredKey = Symbol('slotchangeFired');

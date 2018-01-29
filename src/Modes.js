@@ -1,9 +1,9 @@
 import { merge } from './updates.js';
+import * as symbols from './symbols.js';
 import ContentItemsMixin from './ContentItemsMixin.js';
 import ElementBase from './ElementBase.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotContentMixin from './SlotContentMixin.js';
-import symbols from './symbols.js';
 
 
 const Base =

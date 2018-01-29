@@ -6,7 +6,7 @@ import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import './ModalBackdrop.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import OverlayMixin from './OverlayMixin.js';
-import symbols from './symbols.js';
+import * as symbols from './symbols.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 import TransitionEffectMixin from './TransitionEffectMixin.js';

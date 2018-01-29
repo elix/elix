@@ -1,5 +1,5 @@
 import { merge } from './updates.js';
-import symbols from './symbols.js';
+import * as symbols from './symbols.js';
 
 
 //

@@ -1,6 +1,6 @@
+import * as symbols from './symbols.js';
 import constants from './constants.js';
 import Symbol from './Symbol.js';
-import symbols from './symbols.js';
 
 
 // Symbols for private data members on an element.

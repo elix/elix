@@ -1,6 +1,6 @@
+import * as symbols from '../../src/symbols.js';
 import KeyboardPrefixSelectionMixin from '../../src/KeyboardPrefixSelectionMixin.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
-import symbols from '../../src/symbols.js';
 
 
 const Base =

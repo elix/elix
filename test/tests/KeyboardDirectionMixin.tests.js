@@ -1,5 +1,5 @@
+import * as symbols from '../../src/symbols.js';
 import KeyboardDirectionMixin from '../../src/KeyboardDirectionMixin.js';
-import symbols from '../../src/symbols.js';
 
 
 class KeyboardDirectionMixinTest extends KeyboardDirectionMixin(HTMLElement) {

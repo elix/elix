@@ -1,12 +1,12 @@
 import { merge } from './updates.js';
+import * as symbols from './symbols.js';
 import ElementBase from './ElementBase.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
-import TransitionEffectMixin from './TransitionEffectMixin.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import OverlayMixin from './OverlayMixin.js';
 import PopupModalityMixin from './PopupModalityMixin.js';
-import symbols from './symbols.js';
+import TransitionEffectMixin from './TransitionEffectMixin.js';
 
 
 const timeoutKey = Symbol('timeout');

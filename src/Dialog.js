@@ -1,11 +1,12 @@
+import './ModalBackdrop.js';
+import * as symbols from './symbols.js';
 import DialogModalityMixin from './DialogModalityMixin.js';
 import ElementBase from './ElementBase.js';
 import FocusCaptureMixin from './FocusCaptureMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
-import './ModalBackdrop.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import OverlayMixin from './OverlayMixin.js';
-import symbols from './symbols.js';
+
 
 const Base =
   DialogModalityMixin(

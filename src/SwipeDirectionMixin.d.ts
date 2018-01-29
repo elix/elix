@@ -3,7 +3,7 @@
 
 /// <reference path="../src/shared.d.ts"/>
 
-import symbols from './symbols.js';
+import * as symbols from './symbols.js';
 
 declare const SwipeDirectionMixin: Mixin<{}, {
   // Uncomment these once TypeScript can deal with them.
