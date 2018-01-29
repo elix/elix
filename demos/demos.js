@@ -1,5 +1,5 @@
 // We assume we'll want to provide demos of all of Elix itself.
-import '../elix.js';
+import '../src/elix.js';
 
 // Additional demo components.
 import './src/CountryListBox.js';
