@@ -33,6 +33,7 @@ function ArrowDirectionMixin(Base) {
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
+        arrowButtonTag: 'elix-arrow-direction-button',
         orientation: 'horizontal'
       });
     }
@@ -114,10 +115,11 @@ function ArrowDirectionMixin(Base) {
  * @param {string} template for the element(s) controlled by the arrow buttons
  * @returns {string} a template that includes left/right arrow buttons
  */
-ArrowDirectionMixin.wrap = function wrap(template) {
+ArrowDirectionMixin.wrap = function wrap(element, template) {
+  const arrowButtonTag = element.state.arrowButtonTag;
   return `
     <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden;">
-      <elix-arrow-direction-button
+      <${arrowButtonTag}
         aria-hidden="true"
         id="arrowButtonLeft"
         tabIndex="-1"
@@ -127,11 +129,11 @@ ArrowDirectionMixin.wrap = function wrap(template) {
             <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
           </g>
         </svg>
-      </elix-arrow-direction-button>
+      </${arrowButtonTag}>
       <div role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;">
         ${template}
       </div>
-      <elix-arrow-direction-button
+      <${arrowButtonTag}
         aria-hidden="true"
         id="arrowButtonRight"
         tabIndex="-1"
@@ -141,7 +143,7 @@ ArrowDirectionMixin.wrap = function wrap(template) {
             <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
           </g>
         </svg>
-      </elix-arrow-direction-button>
+      </${arrowButtonTag}>
     </div>
   `;
 };
