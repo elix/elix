@@ -1,4 +1,5 @@
 import { merge } from '../../src/updates.js';
+import * as symbols from '../../src/symbols.js';
 import AriaListMixin from '../../src/AriaListMixin.js';
 import ClickSelectionMixin from '../../src/ClickSelectionMixin.js';
 import ContentItemsMixin from '../../src/ContentItemsMixin.js';
@@ -11,7 +12,6 @@ import LanguageDirectionMixin from '../../src/LanguageDirectionMixin.js';
 import SelectedItemTextValueMixin from '../../src/SelectedItemTextValueMixin.js';
 import SingleSelectionMixin from '../../src/SingleSelectionMixin.js';
 import SlotContentMixin from '../../src/SlotContentMixin.js';
-import symbols from '../../src/symbols.js';
 
 
 const Base =

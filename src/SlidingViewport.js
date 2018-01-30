@@ -58,7 +58,7 @@ class SlidingViewport extends Base {
     return `
       <style>
         :host {
-          display: inline-block;
+          display: inline-flex;
           overflow: hidden;
           position: relative;
         }
