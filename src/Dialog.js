@@ -1,5 +1,6 @@
 import './ModalBackdrop.js';
 import * as symbols from './symbols.js';
+import CustomTagsMixin from './CustomTagsMixin.js';
 import DialogModalityMixin from './DialogModalityMixin.js';
 import ElementBase from './ElementBase.js';
 import FocusCaptureMixin from './FocusCaptureMixin.js';
@@ -9,13 +10,14 @@ import OverlayMixin from './OverlayMixin.js';
 
 
 const Base =
+  CustomTagsMixin(  
   DialogModalityMixin(
   FocusCaptureMixin(
   KeyboardMixin(
   OpenCloseMixin(
   OverlayMixin(
     ElementBase
-  )))));
+  ))))));
 
 
 /**
@@ -36,7 +38,18 @@ const Base =
  */
 class Dialog extends Base {
 
+  get tags() {
+    const base = super.tags || {};
+    return Object.assign({}, super.tags, {
+      backdrop: base.backdrop || 'elix-modal-backdrop'
+    });
+  }
+  set tags(tags) {
+    super.tags = tags;
+  }
+
   get [symbols.template]() {
+    const backdropTag = this.tags.backdrop;
     return `
       <style>
         :host {
@@ -60,7 +73,7 @@ class Dialog extends Base {
           position: relative;
         }
       </style>
-      <elix-modal-backdrop id="backdrop"></elix-modal-backdrop>
+      <${backdropTag} id="backdrop"></${backdropTag}>
       ${FocusCaptureMixin.wrap(`
         <div id="content">
           <slot></slot>
