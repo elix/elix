@@ -27,7 +27,7 @@ export function substantiveElements(nodes) {
   // These are tags for elements that can appear in the document body, but do
   // not seem to have any user-visible manifestation.
   // See https://developer.mozilla.org/en-US/docs/Web/HTML/Element
-  const auxiliaryElementTags = [
+  const auxiliarycustomTags = [
     'applet',         // deprecated
     'basefont',       // deprecated
     'embed',
@@ -50,6 +50,6 @@ export function substantiveElements(nodes) {
 
   return [].filter.call(nodes,
     node => node instanceof Element &&
-        (!node.localName || auxiliaryElementTags.indexOf(node.localName) < 0)
+        (!node.localName || auxiliarycustomTags.indexOf(node.localName) < 0)
   );
 }

@@ -4,7 +4,7 @@
 /// <reference path="../src/shared.d.ts"/>
 
 declare const PageDotsMixin: Mixin<{}, {
-  elementTags: PlainObject
+  customTags: PlainObject
 }> & {
   inject: symbol;
 };

@@ -1,13 +1,15 @@
 import './CustomArrowButton.js';
+import './CustomPageDot.js';
 import { merge } from '../../src/updates.js';
 import SlidingCarousel from '../../src/SlidingCarousel.js';
 
 
 class CustomCarousel extends SlidingCarousel {
 
-  get elementTags() {
-    return merge(super.elementTags, {
-      arrowButtonTag: 'custom-arrow-button'
+  get customTags() {
+    return merge(super.customTags, {
+      arrowButtonTag: 'custom-arrow-button',
+      pageDotTag: 'custom-page-dot'
     });
   }
 

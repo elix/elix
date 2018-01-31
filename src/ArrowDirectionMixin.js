@@ -34,20 +34,20 @@ function ArrowDirectionMixin(Base) {
       assumeButtonFocus(this, this.$.arrowButtonRight);
     }
 
+    get customTags() {
+      return Object.assign({}, super.customTags, {
+        arrowButtonTag: 'elix-arrow-direction-button'
+      });
+    }
+
     get defaultState() {
       return Object.assign({}, super.defaultState, {
         orientation: 'horizontal'
       });
     }
 
-    get elementTags() {
-      return Object.assign({}, super.elementTags, {
-        arrowButtonTag: 'elix-arrow-direction-button'
-      });
-    }
-
     [inject](template) {
-      const arrowButtonTag = this.elementTags.arrowButtonTag;
+      const arrowButtonTag = this.customTags.arrowButtonTag;
       return `
         <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden;">
           <${arrowButtonTag}

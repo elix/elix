@@ -30,6 +30,12 @@ function PageDotsMixin(Base) {
       });
     }
 
+    get customTags() {
+      return Object.assign({}, super.customTags, {
+        pageDotTag: 'elix-page-dot'
+      });
+    }
+
     get defaultState() {
       return Object.assign({}, super.defaultState, {
         orientation: 'horizontal'
@@ -60,10 +66,10 @@ function PageDotsMixin(Base) {
           // No items yet.
           this[pageDotsKey] = [];
         } else {
-          this[pageDotsKey] = this.items.map(() => {
-            const pageDot = new PageDot();
-            return pageDot;
-          });
+          const pageDotTag = this.customTags.pageDotTag;
+          this[pageDotsKey] = this.items.map(() =>
+            document.createElement(pageDotTag)
+          );
           // Make the array immutable.
           Object.freeze(this[pageDotsKey]);
         }

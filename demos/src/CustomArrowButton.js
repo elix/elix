@@ -34,18 +34,22 @@ class CustomArrowButton extends Base {
       {
         background: 'rgba(255, 255, 255, 0.2)',
         'border-color': 'rgba(255, 255, 255, 0.7)',
-        color: 'rgba(255, 255, 255, 0.7)'
+        color: 'rgba(255, 255, 255, 0.7)',
+        transform: 'scale(1.0)'
       },
       this.state.hover && {
         background: 'rgba(255, 255, 255, 0.5)',
         'border-color': 'rgba(255, 255, 255, 0.8)',
         color: 'rgba(255, 255, 255, 0.8)',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        transform: 'scale(1.1)'
       },
       this.state.disabled && {
         background: '',
         'border-color': 'rgba(255, 255, 255, 0.2)',
-        color: 'rgba(255, 255, 255, 0.2)'
+        color: 'rgba(255, 255, 255, 0.2)',
+        cursor: '',
+        transform: 'scale(1.0)'
       }
     );
 
@@ -68,7 +72,6 @@ class CustomArrowButton extends Base {
         
         #inner {
           background: transparent;
-          border-radius: 24px;
           border: 2px solid transparent;
           box-sizing: border-box;
           color: inherit;
@@ -82,7 +85,7 @@ class CustomArrowButton extends Base {
           outline: none;
           padding: 0;
           position: relative;
-          transition: background 0.3s, border-color 0.3s, color 0.3s;
+          transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.3s;
           width: 48px;
         }
       </style>
