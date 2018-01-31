@@ -114,10 +114,6 @@ class AlertDialog extends Dialog {
     const base = super[symbols.template];
     return base.replace('<slot></slot>', `
       <style>
-        #alertDialogContent {
-          padding: 1em;
-        }
-
         #buttonContainer {
           margin-top: 1em;
         }

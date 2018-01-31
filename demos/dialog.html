@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
-  <script type="module" src="./src/SampleDialog.js"></script>
+  <script type="module" src="../src/Dialog.js"></script>
   <script nomodule src="../build/demos.js"></script>
 
   <style>
@@ -50,9 +50,12 @@
     <p>
       <button id="openButton" onclick="sampleDialog.open()">Open dialog</button>
     </p>
-    <sample-dialog id="sampleDialog" aria-label="Sample dialog">
-      Tap/click here or press Esc to cancel.
-    </sample-dialog>
+    <elix-dialog id="sampleDialog" aria-label="Sample dialog">
+      Here's a dialog.
+      <div style="margin-top: 1em; text-align: center;">
+        <button onclick="sampleDialog.close()">Close</button>
+      </div>
+    </elix-dialog>
 
     <p id="floating">
       This paragraph has a z-index, but should appear behind the dialog.

@@ -1,9 +1,9 @@
 import './ModalBackdrop.js';
+import './OverlayFrame.js';
 import * as symbols from './symbols.js';
 import CustomTagsMixin from './CustomTagsMixin.js';
 import DialogModalityMixin from './DialogModalityMixin.js';
 import ElementBase from './ElementBase.js';
-import FocusCaptureMixin from './FocusCaptureMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import OverlayMixin from './OverlayMixin.js';
@@ -12,12 +12,11 @@ import OverlayMixin from './OverlayMixin.js';
 const Base =
   CustomTagsMixin(  
   DialogModalityMixin(
-  FocusCaptureMixin(
   KeyboardMixin(
   OpenCloseMixin(
   OverlayMixin(
     ElementBase
-  ))))));
+  )))));
 
 
 /**
@@ -41,7 +40,8 @@ class Dialog extends Base {
   get tags() {
     const base = super.tags || {};
     return Object.assign({}, super.tags, {
-      backdrop: base.backdrop || 'elix-modal-backdrop'
+      backdrop: base.backdrop || 'elix-modal-backdrop',
+      frame: base.frame || 'elix-overlay-frame'
     });
   }
   set tags(tags) {
@@ -50,6 +50,7 @@ class Dialog extends Base {
 
   get [symbols.template]() {
     const backdropTag = this.tags.backdrop;
+    const frameTag = this.tags.frame;
     return `
       <style>
         :host {
@@ -65,20 +66,11 @@ class Dialog extends Base {
           -webkit-tap-highlight-color: transparent;
           width: 100%;
         }
-
-        #content {
-          background: white;
-          border: 1px solid rgba(0, 0, 0, 0.2);
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-          position: relative;
-        }
       </style>
       <${backdropTag} id="backdrop"></${backdropTag}>
-      ${FocusCaptureMixin.wrap(`
-        <div id="content">
-          <slot></slot>
-        </div>
-      `)}
+      <${frameTag} id="frame">
+        <slot></slot>
+      </${frameTag}>
     `;
   }
 

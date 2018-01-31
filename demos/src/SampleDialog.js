@@ -1,4 +1,5 @@
-import { merge } from '../../src/updates.js';
+import './CustomBackdrop.js';
+import './CustomOverlayFrame.js';
 import Dialog from '../../src/Dialog.js';
 
 
@@ -9,21 +10,19 @@ class SampleDialog extends Dialog {
     // Have the dialog close itself when the user clicks anywhere within it. In
     // many cases, you'll want to have a button ("OK", "Close", etc.) that
     // performs this action.
-    this.$.content.addEventListener('click', () => {
+    this.$.frame.addEventListener('click', () => {
       this.close();
     });
   }
 
-  get updates() {
-    return merge(super.updates, {
-      $: {
-        content: {
-          style: {
-            padding: '1em'
-          }
-        }
-      }
+  get tags() {
+    return Object.assign({}, super.tags, {
+      backdrop: 'custom-backdrop',
+      frame: 'custom-overlay-frame'
     });
+  }
+  set tags(tags) {
+    super.tags = tags;
   }
 
 }

@@ -4,7 +4,7 @@
 /// <reference path="shared.d.ts"/>
 
 declare const FocusCaptureMixin: Mixin<{}, {}> & {
-  wrap(string): string;
+  inject: symbol;
 };
 
 export default FocusCaptureMixin;

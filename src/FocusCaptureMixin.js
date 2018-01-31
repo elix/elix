@@ -3,6 +3,7 @@ import Symbol from './Symbol.js';
 
 
 // Symbols for private data members on an element.
+const inject = Symbol('inject');
 const wrappingFocusKey = Symbol('wrappingFocus');
 
 
@@ -38,6 +39,26 @@ function FocusCaptureMixin(base) {
       });
     }
 
+    /**
+     * Wrap a base template with elements necessary to capture focus.
+     * 
+     * Call this method in a components `symbols.template` property.
+     * 
+     * Note: The `wrap` method hangs off of `FocusCaptureMixin` like a static
+     * method; the mixin does not add it to an element's prototype chain.
+     * Accordingly, you must invoke this method as
+     * `FocusCaptureMixin.wrap(template)`, not `this.wrap(template)`.
+     * 
+     * @param {string} template for the element(s) controlled by the arrow buttons
+     * @returns {string} a template that includes left/right arrow buttons
+     */
+    [inject](template) {
+      return `
+        ${template}
+        <div id="focusCatcher" tabindex="0"></div>
+      `;
+    }
+
     [symbols.keydown](event) {
       /** @type {any} */
       const element = this;
@@ -63,26 +84,7 @@ function FocusCaptureMixin(base) {
 }
 
 
-/**
- * Wrap a base template with elements necessary to capture focus.
- * 
- * Call this method in a components `symbols.template` property.
- * 
- * Note: The `wrap` method hangs off of `FocusCaptureMixin` like a static
- * method; the mixin does not add it to an element's prototype chain.
- * Accordingly, you must invoke this method as
- * `FocusCaptureMixin.wrap(template)`, not `this.wrap(template)`.
- * 
- * @memberof FocusCaptureMixin
- * @param {string} template for the element(s) controlled by the arrow buttons
- * @returns {string} a template that includes left/right arrow buttons
- */
-FocusCaptureMixin.wrap = function wrap(template) {
-  return `
-    ${template}
-    <div id="focusCatcher" tabindex="0"></div>
-  `;
-};
+FocusCaptureMixin.inject = inject;
 
 
 export default FocusCaptureMixin;
