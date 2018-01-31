@@ -1,21 +1,20 @@
 import Symbol from './Symbol.js';
 
 
-const customTagsKey = Symbol('customTags');
+const tagsKey = Symbol('tags');
 
 
 export default function CustomTagsMixin(Base) {
 
   return class CustomTags extends Base {
 
-    get customTags() {
-      return Object.assign({}, super.customTags, this[customTagsKey]);
+    get tags() {
+      return Object.assign({}, super.tags, this[tagsKey]);
     }
-    set customTags(customTags) {
-      const parsed = typeof customTags === 'string' ?
-        parseTagsDeclarations(customTags) :
-        customTags;
-      this[customTagsKey] = parsed;
+    set tags(tags) {
+      this[tagsKey] = typeof tags === 'string' ?
+        parseTagsDeclarations(tags) :
+        tags;
     }
 
   };

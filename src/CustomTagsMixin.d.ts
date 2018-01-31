@@ -5,7 +5,7 @@
 
 declare const CustomTagsMixin: Mixin<{},
 {
-  customTags: PlainObject
+  tags: PlainObject
 }>;
 
 export default CustomTagsMixin;

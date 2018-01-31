@@ -41,9 +41,7 @@ function ArrowDirectionMixin(Base) {
     }
 
     [inject](template) {
-      const customTags = this.customTags;
-      const arrowButtonTag = customTags && customTags.arrowButtonTag ||
-          'elix-arrow-direction-button';
+      const arrowButtonTag = this.tags.arrowButton;
       return `
         <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden;">
           <${arrowButtonTag}
@@ -73,6 +71,16 @@ function ArrowDirectionMixin(Base) {
           </${arrowButtonTag}>
         </div>
       `;
+    }
+
+    get tags() {
+      const base = super.tags || {};
+      return Object.assign({}, super.tags, {
+        arrowButton: base.arrowButton || 'elix-arrow-direction-button'
+      });
+    }
+    set tags(tags) {
+      super.tags = tags;
     }
 
     get updates() {

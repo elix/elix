@@ -60,9 +60,7 @@ function PageDotsMixin(Base) {
           // No items yet.
           this[pageDotsKey] = [];
         } else {
-          const customTags = this.customTags;
-          const pageDotTag = customTags && customTags.pageDotTag ||
-              'elix-page-dot';
+          const pageDotTag = this.tags.pageDot;
           this[pageDotsKey] = this.items.map(() =>
             document.createElement(pageDotTag)
           );
@@ -84,6 +82,16 @@ function PageDotsMixin(Base) {
         const opacity = opacityForDotWithIndex(index, selectedIndex, selectionFraction);
         pageDot.style.opacity = opacity;
       });
+    }
+
+    get tags() {
+      const base = super.tags || {};
+      return Object.assign({}, super.tags, {
+        pageDot: base.pageDot || 'elix-page-dot'
+      });
+    }
+    set tags(tags) {
+      super.tags = tags;
     }
 
     get updates() {

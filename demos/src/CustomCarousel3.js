@@ -6,10 +6,10 @@ import SlidingCarousel from '../../src/SlidingCarousel.js';
 
 class CustomCarousel extends SlidingCarousel {
 
-  get customTags() {
-    return merge(super.customTags, {
-      arrowButtonTag: 'custom-arrow-button',
-      pageDotTag: 'custom-page-dot'
+  get tags() {
+    return merge(super.tags, {
+      arrowButton: 'custom-arrow-button',
+      pageDot: 'custom-page-dot'
     });
   }
 
