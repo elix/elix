@@ -3,6 +3,9 @@ import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 
 
+const inject = Symbol('inject');
+
+
 /**
  * Mixin which adds left and right arrow buttons to a carousel-like component.
  * 
@@ -36,6 +39,39 @@ function ArrowDirectionMixin(Base) {
         arrowButtonTag: 'elix-arrow-direction-button',
         orientation: 'horizontal'
       });
+    }
+
+    [inject](template) {
+      const arrowButtonTag = this.state.arrowButtonTag;
+      return `
+        <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden;">
+          <${arrowButtonTag}
+            aria-hidden="true"
+            id="arrowButtonLeft"
+            tabIndex="-1"
+            >
+            <svg id="arrowIconLeft" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+              <g>
+                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+              </g>
+            </svg>
+          </${arrowButtonTag}>
+          <div role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;">
+            ${template}
+          </div>
+          <${arrowButtonTag}
+            aria-hidden="true"
+            id="arrowButtonRight"
+            tabIndex="-1"
+            >
+            <svg id="arrowIconRight" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+              <g>
+                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+              </g>
+            </svg>
+          </${arrowButtonTag}>
+        </div>
+      `;
     }
 
     get updates() {
@@ -99,54 +135,7 @@ function ArrowDirectionMixin(Base) {
 }
 
 
-
-/**
- * Wrap a base template with left/right arrow buttons.
- * 
- * Call this method in a components `symbols.template` property to add
- * left/right arrow buttons.
- * 
- * Note: The `wrap` method hangs off of `ArrowDirectionMixin` like a static
- * method; the mixin does not add it to an element's prototype chain.
- * Accordingly, you must invoke this method as
- * `ArrowDirectionMixin.wrap(template)`, not `this.wrap(template)`.
- * 
- * @memberof ArrowDirectionMixin
- * @param {string} template for the element(s) controlled by the arrow buttons
- * @returns {string} a template that includes left/right arrow buttons
- */
-ArrowDirectionMixin.wrap = function wrap(element, template) {
-  const arrowButtonTag = element.state.arrowButtonTag;
-  return `
-    <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden;">
-      <${arrowButtonTag}
-        aria-hidden="true"
-        id="arrowButtonLeft"
-        tabIndex="-1"
-        >
-        <svg id="arrowIconLeft" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
-          <g>
-            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-          </g>
-        </svg>
-      </${arrowButtonTag}>
-      <div role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;">
-        ${template}
-      </div>
-      <${arrowButtonTag}
-        aria-hidden="true"
-        id="arrowButtonRight"
-        tabIndex="-1"
-        >
-        <svg id="arrowIconRight" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
-          <g>
-            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-          </g>
-        </svg>
-      </${arrowButtonTag}>
-    </div>
-  `;
-};
+ArrowDirectionMixin.inject = inject;
 
 
 /*

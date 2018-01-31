@@ -15,37 +15,12 @@ const Base =
 
 class CustomCarousel extends Base {
 
-  get defaultState() {
-    return Object.assign({}, super.defaultState, {
-      arrowButtonTag: 'custom-arrow-button'
-    });
-  }
-
   get [symbols.template]() {
-    return ArrowDirectionMixin.wrap(this,
-      PageDotsMixin.wrap(
+    return this[ArrowDirectionMixin.inject](
+      this[PageDotsMixin.inject](
         super[symbols.template]
       )
     );
-  }
-
-  get updates() {
-    const arrowButtonStyle = {
-      'font-size': '24px',
-      padding: '0.5em'
-    };
-    return merge(super.updates, {
-      $: {
-        arrowButtonLeft: {
-          style: arrowButtonStyle,
-          textContent: "◀"
-        },
-        arrowButtonRight: {
-          style: arrowButtonStyle,
-          textContent: "▶"
-        }
-      }
-    });
   }
 
 }

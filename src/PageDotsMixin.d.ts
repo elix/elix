@@ -4,7 +4,7 @@
 /// <reference path="../src/shared.d.ts"/>
 
 declare const PageDotsMixin: Mixin<{}, {}> & {
-  wrap(string): string;
+  inject: symbol;
 };
 
 export default PageDotsMixin;

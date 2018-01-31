@@ -63,6 +63,7 @@ class CustomArrowButton extends Base {
           display: flex;
           flex-direction: column;
           justify-content: center;
+          -webkit-tap-highlight-color: transparent;
         }
         
         #inner {
