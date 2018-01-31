@@ -3,8 +3,9 @@
 
 /// <reference path="../src/shared.d.ts"/>
 
-declare const ArrowDirectionMixin: Mixin<{}, {}> & {
-  inject: symbol;
-};
+declare const CustomTagsMixin: Mixin<{},
+{
+  customTags: PlainObject
+}>;
 
-export default ArrowDirectionMixin;
+export default CustomTagsMixin;

@@ -174,6 +174,7 @@ class WrappedStandardElement extends ElementBase {
   get inner() {
     const result = this.$ && this.$.inner;
     if (!result) {
+      /* eslint-disable no-console */
       console.warn('Attempted to get an inner standard element before it was instantiated.');
     }
     return result;

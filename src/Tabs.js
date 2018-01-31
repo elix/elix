@@ -3,6 +3,7 @@ import './TabStrip.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import ContentItemsMixin from './ContentItemsMixin.js';
+import CustomTagsMixin from './CustomTagsMixin.js';
 import ElementBase from './ElementBase.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotContentMixin from './SlotContentMixin.js';
@@ -17,10 +18,11 @@ const tabButtonsKey = Symbol('tabButtons');
 
 const Base =
   ContentItemsMixin(
+  CustomTagsMixin(
   SingleSelectionMixin(
   SlotContentMixin(
     ElementBase
-  )));
+  ))));
 
 
 /**

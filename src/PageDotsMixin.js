@@ -1,6 +1,6 @@
+import './PageDot.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
-import PageDot from './PageDot.js';
 
 
 const inject = Symbol('inject');

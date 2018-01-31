@@ -85,8 +85,11 @@ class ThumbnailsList1 extends Base {
     let x; // The amount by which we'll shift content horizontally
     if (selectedItem) {
       const width = this.offsetWidth;
+      // @ts-ignore
       const contentWidth = this.$.content.offsetWidth;
+      // @ts-ignore
       const itemLeft = selectedItem.offsetLeft;
+      // @ts-ignore
       const itemWidth = selectedItem.offsetWidth;
       // Try to center the selected item.
       x = (width - itemWidth) / 2 - itemLeft;

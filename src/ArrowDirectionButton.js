@@ -25,12 +25,15 @@ class ArrowDirectionButton extends Base {
   }
 
   get disabled() {
+    // @ts-ignore
     return super.disabled;
   }
   set disabled(disabled) {
-    super.disabled = disabled;
+    const parsed = disabled != null;
+    // @ts-ignore
+    super.disabled = parsed;
     this.setState({
-      disabled: super.disabled
+      disabled: parsed
     });
   }
 
