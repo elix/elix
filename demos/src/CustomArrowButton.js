@@ -68,21 +68,22 @@ class CustomArrowButton extends Base {
         
         #inner {
           background: transparent;
-          border: 2px solid transparent;
           border-radius: 24px;
+          border: 2px solid transparent;
           box-sizing: border-box;
           color: inherit;
           fill: currentColor;
           font-family: inherit;
-          font-size: inherit;
-          font-weight: inherit;
+          font-size: 28px;
+          font-weight: bold;
           height: 48px;
+          margin: 0.5em;
           width: 48px;
-          margin: 0;
           outline: none;
           padding: 0;
           position: relative;
           transition: background 0.3s, border-color 0.3s, color 0.3s;
+          width: 48px;
         }
       </style>
       <button id="inner">

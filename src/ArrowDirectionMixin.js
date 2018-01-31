@@ -36,13 +36,18 @@ function ArrowDirectionMixin(Base) {
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
-        arrowButtonTag: 'elix-arrow-direction-button',
         orientation: 'horizontal'
       });
     }
 
+    get elementTags() {
+      return Object.assign({}, super.elementTags, {
+        arrowButtonTag: 'elix-arrow-direction-button'
+      });
+    }
+
     [inject](template) {
-      const arrowButtonTag = this.state.arrowButtonTag;
+      const arrowButtonTag = this.elementTags.arrowButtonTag;
       return `
         <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden;">
           <${arrowButtonTag}

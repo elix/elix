@@ -91,8 +91,8 @@ class SlidingCarousel extends Base {
           flex: 1;
         }
       </style>
-      ${ArrowDirectionMixin.wrap(this,
-        PageDotsMixin.wrap(`
+      ${this[ArrowDirectionMixin.inject](
+        this[PageDotsMixin.inject](`
           <elix-sliding-viewport id="viewport">
             <slot></slot>
           </elix-sliding-viewport>
