@@ -3,8 +3,7 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const CustomTagsMixin: Mixin<{},
-{
+declare const CustomTagsMixin: Mixin<{}, {
   tags: PlainObject
 }>;
 

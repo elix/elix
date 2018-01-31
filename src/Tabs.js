@@ -1,4 +1,5 @@
 import './Modes.js';
+import './TabButton.js';
 import './TabStrip.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
@@ -76,8 +77,6 @@ class Tabs extends Base {
       selectionRequired: true,
       tabAlign: 'start',
       tabButtons: [],
-      TabButtonClass: TabButton,
-      tabPanelsTag: 'elix-modes',
       tabPosition: 'top'
     });
   }
@@ -181,8 +180,19 @@ class Tabs extends Base {
     this.setState({ tabPosition });
   }
 
+  get tags() {
+    const base = super.tags || {};
+    return Object.assign({}, super.tags, {
+      tabButton: base.tabButton || 'elix-tab-button',
+      tabPanels: base.tabPanels || 'elix-modes'
+    });
+  }
+  set tags(tags) {
+    super.tags = tags;
+  }
+
   get [symbols.template]() {
-    const tabPanelsTag = this.state.tabPanelsTag;
+    const tabPanelsTag = this.tags.tabPanels;
     return `
       <style>
         :host {
@@ -269,11 +279,12 @@ function defaultTabButtons(element) {
       element[tabButtonsKey] = [];
     } else {
       // Items have changed; create new buttons set.
+      const tabButtonTag = element.tags.tabButton;
       element[tabButtonsKey] = element.items.map((panel, index) => {
         const label = panel.getAttribute('aria-label');
         const panelId = getIdForPanel(element, panel, index);
         const TabButtonClass = element.state.TabButtonClass;
-        const tabButton = new TabButtonClass();
+        const tabButton = document.createElement(tabButtonTag);
         const id = getIdForTabButton(element, index);
         tabButton.setAttribute('id', id);
         tabButton.setAttribute('aria-controls', panelId);

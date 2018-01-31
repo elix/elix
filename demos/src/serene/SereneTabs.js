@@ -1,13 +1,15 @@
+import './SereneModes.js';
+import './SereneTabButton.js';
 import { merge } from '../../../src/updates.js';
-import SereneModes from './SereneModes.js';
 import Tabs from '../../../src/Tabs.js';
 
 
 class SereneTabs extends Tabs {
 
-  get defaultState() {
-    return Object.assign({}, super.defaultState, {
-      tabPanelsTag: 'serene-modes'
+  get tags() {
+    return Object.assign({}, super.tags, {
+      tabButton: 'serene-tab-button',
+      tabPanels: 'serene-modes'
     });
   }
 
