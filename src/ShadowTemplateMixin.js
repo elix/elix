@@ -135,7 +135,7 @@ export default function ShadowTemplateMixin(Base) {
      * @type {object} - a dictionary mapping shadow element IDs to elements
      */
     get $() {
-      if (!this[shadowReferencesKey]) {
+      if (!this[shadowReferencesKey] && this.shadowRoot) {
         this[shadowReferencesKey] = shadowElementReferences(this);
       }
       return this[shadowReferencesKey];

@@ -1,14 +1,16 @@
 import * as symbols from './symbols.js';
 import ArrowDirectionMixin from './ArrowDirectionMixin.js';
+import CustomTagsMixin from './CustomTagsMixin.js';
 import PageDotsMixin from './PageDotsMixin.js';
 import SlidingPages from './SlidingPages.js';
 
 
 const Base =
   ArrowDirectionMixin(
+  CustomTagsMixin(
   PageDotsMixin(
     SlidingPages
-  ));
+  )));
 
 
 /**

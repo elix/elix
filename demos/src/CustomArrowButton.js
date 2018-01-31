@@ -22,9 +22,10 @@ class CustomArrowButton extends Base {
     return super.disabled;
   }
   set disabled(disabled) {
-    super.disabled = disabled;
+    const parsed = disabled != null;
+    super.disabled = parsed;
     this.setState({
-      disabled: super.disabled
+      disabled: parsed
     });
   }
 

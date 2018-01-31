@@ -34,12 +34,6 @@ function ArrowDirectionMixin(Base) {
       assumeButtonFocus(this, this.$.arrowButtonRight);
     }
 
-    get customTags() {
-      return Object.assign({}, super.customTags, {
-        arrowButtonTag: 'elix-arrow-direction-button'
-      });
-    }
-
     get defaultState() {
       return Object.assign({}, super.defaultState, {
         orientation: 'horizontal'
@@ -47,7 +41,9 @@ function ArrowDirectionMixin(Base) {
     }
 
     [inject](template) {
-      const arrowButtonTag = this.customTags.arrowButtonTag;
+      const customTags = this.customTags;
+      const arrowButtonTag = customTags && customTags.arrowButtonTag ||
+          'elix-arrow-direction-button';
       return `
         <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden;">
           <${arrowButtonTag}

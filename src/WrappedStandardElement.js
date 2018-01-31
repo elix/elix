@@ -172,7 +172,11 @@ class WrappedStandardElement extends ElementBase {
    * @type {HTMLElement}
    */
   get inner() {
-    return this.$.inner;
+    const result = this.$ && this.$.inner;
+    if (!result) {
+      console.warn('Attempted to get an inner standard element before it was instantiated.');
+    }
+    return result;
   }
 
   /**
