@@ -15,7 +15,7 @@ class CustomOverlayFrame extends Base {
     return `
       <style>
         :host {
-          background: rgb(255, 250, 250);
+          background: rgb(255, 240, 240);
           border: 5px solid rgba(255, 0, 0, 0.2);
           border-radius: 10px;
           padding: 2em;
