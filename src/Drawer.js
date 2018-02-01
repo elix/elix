@@ -1,21 +1,22 @@
+import './ModalBackdrop.js';
+import './OverlayFrame.js';
 import { merge } from './updates.js';
+import * as symbols from './symbols.js';
+import CustomTagsMixin from './CustomTagsMixin.js';
 import DialogModalityMixin from './DialogModalityMixin.js';
-import FocusCaptureMixin from './FocusCaptureMixin.js';
+import ElementBase from './ElementBase.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
-import './ModalBackdrop.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import OverlayMixin from './OverlayMixin.js';
-import * as symbols from './symbols.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 import TransitionEffectMixin from './TransitionEffectMixin.js';
-import ElementBase from './ElementBase.js';
 
 
 const Base =
+  CustomTagsMixin(
   DialogModalityMixin(
-  FocusCaptureMixin(
   KeyboardMixin(
   LanguageDirectionMixin(
   OpenCloseMixin(
@@ -38,8 +39,8 @@ const Base =
  * and the dialog itself can be styled.
  * 
  * @inherits ElementBase
+ * @mixes CustomTagsMixin
  * @mixes DialogModalityMixin
- * @mixes FocusCaptureMixin
  * @mixes KeyboardMixin
  * @mixes LanguageDirectionMixin
  * @mixes OpenCloseMixin
@@ -65,7 +66,7 @@ class Drawer extends Base {
   }
 
   get [symbols.elementsWithTransitions]() {
-    return [this.$.backdrop, this.$.content];
+    return [this.$.backdrop, this.$.frame];
   }
 
   async [symbols.swipeLeft]() {
@@ -90,12 +91,24 @@ class Drawer extends Base {
 
   get [symbols.swipeTarget]() {
     /** @type {any} */
-    const element = this.$.content;
+    const element = this.$.frame;
     return element;
   }
 
+  get tags() {
+    const base = super.tags || {};
+    return Object.assign({}, base, {
+      backdrop: base.backdrop || 'elix-modal-backdrop',
+      frame: base.frame || 'elix-overlay-frame'
+    });
+  }
+  set tags(tags) {
+    super.tags = tags;
+  }
+
   get [symbols.template]() {
-    // See z-index notes at Dialog.js.
+    const backdropTag = this.tags.backdrop;
+    const frameTag = this.tags.frame;
     return `
       <style>
         :host {
@@ -116,21 +129,14 @@ class Drawer extends Base {
           will-change: opacity;
         }
 
-        #content {
-          background: white;
-          border: 1px solid rgba(0, 0, 0, 0.2);
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-          position: relative;
+        #frame {
           will-change: transform;
-          z-index: 1;
         }
       </style>
-      ${FocusCaptureMixin.wrap(`
-        <div id="content">
-          <slot></slot>
-        </div>
-      `)}
-      <elix-modal-backdrop id="backdrop"></elix-modal-backdrop>
+      <${backdropTag} id="backdrop"></${backdropTag}>
+      <${frameTag} id="frame">
+        <slot></slot>
+      </${frameTag}>
     `;
   }
 
@@ -191,7 +197,7 @@ class Drawer extends Base {
     };
 
     const transform = `translateX(${translatePercentage}%)`;
-    const contentProps = {
+    const frameProps = {
       style: {
         transform,
         'transition': showTransition ? `transform ${duration}s` : undefined
@@ -201,7 +207,7 @@ class Drawer extends Base {
     return merge(base, {
       $: {
         backdrop: backdropProps,
-        content: contentProps
+        frame: frameProps
       }
     });
   }

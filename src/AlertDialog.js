@@ -52,8 +52,9 @@ class AlertDialog extends Dialog {
   get choiceButtons() {
     if (this.choices !== this[previousChoicesKey]) {
       // Items have changed; create new buttons set.
+      const choiceButtonTag = this.tags.choiceButton;
       this[choiceButtonsKey] = this.choices.map(choice => {
-        const button = document.createElement('button');
+        const button = document.createElement(choiceButtonTag);
         button.textContent = choice;
         return button;
       });
@@ -122,8 +123,9 @@ class AlertDialog extends Dialog {
           font-size: inherit;
         }
 
-        button:not(:first-child) {
-          margin-left: 0.25em;
+        #choiceButtonsSlot > :not(:first-child),
+        #choiceButtonsSlot::slotted(:not(:first-child)) {
+          margin-left: 0.5em;
         }
       </style>
       <div id="alertDialogContent">
@@ -133,6 +135,16 @@ class AlertDialog extends Dialog {
         </div>
       </div>
     `);
+  }
+
+  get tags() {
+    const base = super.tags || {};
+    return Object.assign({}, base, {
+      choiceButton: base.choiceButton || 'button'
+    });
+  }
+  set tags(tags) {
+    super.tags = tags;
   }
 
   get updates() {

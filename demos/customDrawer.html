@@ -4,12 +4,15 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix popup</title>
+  <title>Custom drawer</title>
 
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
-  <script type="module" src="../src/Popup.js"></script>
+  <script type="module" src="../src/Drawer.js"></script>
+  <script type="module" src="./src/CustomButton.js"></script>
+  <script type="module" src="./src/CustomBackdrop.js"></script>
+  <script type="module" src="./src/CustomOverlayFrame.js"></script>
   <script nomodule src="../build/demos.js"></script>
 
 </head>
@@ -18,12 +21,11 @@
   <div class="demo padded">
 
     <p>
-      <button id="showPopup" onclick="samplePopup.open()">Open popup</button>
-      <input type="text"></input>
+      <custom-button onclick="sampleDrawer.open()">Open drawer</custom-button>
     </p>
-    <elix-popup id="samplePopup">
-      Here's a popup.
-    </elix-popup>
+    <elix-drawer id="sampleDrawer" tags="backdrop: custom-backdrop; frame: custom-overlay-frame">
+      Drawer elements go here...
+    </elix-drawer>
 
   </div>
   

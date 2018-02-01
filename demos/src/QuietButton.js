@@ -13,9 +13,16 @@ class QuietButton extends Base {
   get [symbols.template]() {
     return `
       <style>
+        :host {
+          display: inline-block;
+        }
+        
         button {
           background: none;
           border: none;
+          font-size: inherit;
+          font-family: inherit;
+          font-weight: inherit;
           height: 100%;
           padding: 0;
           width: 100%;

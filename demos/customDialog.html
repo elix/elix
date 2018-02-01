@@ -9,8 +9,9 @@
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
-  <script type="module" src="./src/SampleDialog.js"></script>
   <script type="module" src="./src/CustomBackdrop.js"></script>
+  <script type="module" src="./src/CustomButton.js"></script>
+  <script type="module" src="./src/SampleDialog.js"></script>
   <script nomodule src="../build/demos.js"></script>
 
 </head>
@@ -27,7 +28,7 @@
     </style>
 
     <p>
-      <button id="openButton" onclick="sampleDialog.open()">Open dialog</button>
+      <custom-button id="openButton" onclick="sampleDialog.open()">Open dialog</custom-button>
     </p>
     <sample-dialog id="sampleDialog" aria-label="Sample dialog">
       Tap/click here or press Esc to cancel.

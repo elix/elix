@@ -4,12 +4,15 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>elix-alert-dialog</title>
+  <title>Custom alert dialog</title>
 
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
   <script type="module" src="../src/AlertDialog.js"></script>
+  <script type="module" src="./src/CustomBackdrop.js"></script>
+  <script type="module" src="./src/CustomOverlayFrame.js"></script>
+  <script type="module" src="./src/CustomButton.js"></script>
   <script nomodule src="../build/demos.js"></script>
 
 </head>
@@ -18,11 +21,17 @@
   <div class="demo padded">
 
     <p>
-      <button id="okCancelButton" onclick="okCancelClick()">Open OK/Cancel alert</button>
-      <button id="yesNoCancelButton" onclick="yesNoCancelClick()">Open Yes/No/Cancel alert</button>
+      <custom-button id="okCancelButton" onclick="okCancelClick()">Open OK/Cancel alert</custom-button>
+      <custom-button id="yesNoCancelButton" onclick="yesNoCancelClick()">Open Yes/No/Cancel alert</custom-button>
     </p>
 
     <p id="response"></p>
+
+    <elix-alert-dialog
+      id="sampleDialog"
+      tags="backdrop: custom-backdrop; frame: custom-overlay-frame; choiceButton: custom-button">
+      Hello, world.
+    </elix-alert-dialog>
 
     <script>
       function okCancelClick(event) {
@@ -34,8 +43,7 @@
       }
   
       async function showAlertWithChoices(choices) {
-        const dialog = document.createElement('elix-alert-dialog');
-        dialog.textContent = 'Hello, world';
+        const dialog = document.querySelector('#sampleDialog');
         dialog.choices = choices;
         await dialog.open();
         const result = await dialog.whenClosed();
