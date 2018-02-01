@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Carousel with plain buttons for arrows and dots</title>
+
+  <link rel="stylesheet" href="demos.css">
+  <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="./src/showElementsWhenDefined.js"></script>
+  <script type="module" src="../src/SlidingCarousel.js"></script>
+  <script nomodule src="../build/demos.js"></script>
+
+  <style>
+    html {
+      height: 100%;
+    }
+
+    body {
+      background: black;
+      height: 100%;
+      padding: 0;
+    }
+
+    img {
+      display: inline-block;
+      height: 100%;
+      object-fit: contain;
+      vertical-align: middle;
+      width: 100%;
+    }
+  </style>
+
+</head>
+
+<body role="main" unresolved>
+  <div class="demo fullScreen">
+      <style>
+        custom-carousel {
+          background: black;
+          flex: 1;
+        }
+
+        custom-carousel img {
+          display: inline-block;
+          height: 100%;
+          vertical-align: middle;
+          width: 100%;
+        }
+      </style>
+      <!-- Create a carousel with plain buttons for the arrows and dots -->
+      <elix-sliding-carousel
+          aria-label="Nature scenes"
+          tags="arrowButton: button; pageDot: button">
+        <img src="images/image1.jpg" alt="Lake" />
+        <img src="images/image2.jpg" alt="Horses" />
+        <img src="images/image3.jpg" alt="Ladybug on wheat" />
+        <img src="images/image4.jpg" alt="Mountain" />
+        <img src="images/image5.jpg" alt="Palm tree" />
+      </custom-carousel>
+  </div>
+</body>
+
+</html>
