@@ -65,6 +65,14 @@ describe("SingleSelectionMixin", () => {
     assert.equal(fixture.state.selectedIndex, 0);
   });
 
+  it("can wrap the selection from the first to the last item", () => {
+    const fixture = createSampleElement();
+    fixture.selectionWraps = true;
+    fixture.setState({ selectedIndex: 0 });
+    fixture.selectPrevious();
+    assert.equal(fixture.state.selectedIndex, 2);
+  });
+
   it("selects first item when selection is required and no item is currently selected", async () => {
     const fixture = createSampleElement();
     assert.equal(fixture.state.selectedIndex, -1);
