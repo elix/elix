@@ -1,5 +1,4 @@
 import * as symbols from './symbols.js';
-import Symbol from './Symbol.js';
 
 
 const closePromiseKey = Symbol('closePromise');

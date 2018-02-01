@@ -18,8 +18,6 @@
  * @module updates
  */
 
-import Symbol from './Symbol.js';
-
 
 export const mergedProperties = {
   '$': true,

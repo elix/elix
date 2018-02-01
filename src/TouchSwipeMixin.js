@@ -1,6 +1,5 @@
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
-import Symbol from './Symbol.js';
 
 
 const multiTouchKey = Symbol('multiTouch');
