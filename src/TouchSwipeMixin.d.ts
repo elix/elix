@@ -3,9 +3,13 @@
 
 /// <reference path="shared.d.ts"/>
 
+import * as symbols from './symbols.js';
+
 declare const TouchSwipeMixin: StateMixin<{},
 {},
-{},
+{
+  [symbols.swipeTarget]: Element;
+},
 {
   swipeFraction: number;
   touchAction: string;

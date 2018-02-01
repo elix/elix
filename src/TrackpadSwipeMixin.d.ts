@@ -3,9 +3,13 @@
 
 /// <reference path="shared.d.ts"/>
 
+import * as symbols from './symbols.js';
+
 declare const TrackpadSwipeMixin: StateMixin<{},
   {},
-  {},
+  {
+    [symbols.swipeTarget]: HTMLElement;
+  },
   {
     swipeFraction: number;
   }>;

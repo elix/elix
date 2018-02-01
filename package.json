@@ -27,7 +27,7 @@
     "sauce-test-runner": "0.2.0",
     "sinon": "4.0.1",
     "static-server": "3.0.0",
-    "typescript": "2.6.1",
+    "typescript": "^2.7.1",
     "uglifyjs-webpack-plugin": "1.1.6",
     "webpack": "3.6.0"
   },

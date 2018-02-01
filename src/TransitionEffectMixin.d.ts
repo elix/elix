@@ -3,6 +3,8 @@
 
 /// <reference path="shared.d.ts"/>
 
+import * as symbols from './symbols.js';
+
 declare const TransitionEffectMixin: StateMixin<
 {
   componentDidMount?(): void;
@@ -13,6 +15,7 @@ declare const TransitionEffectMixin: StateMixin<
   componentDidMount(): void;
   componentDidUpdate(previousState: PlainObject): void;
   startEffect(effect: string): Promise<void>;
+  [symbols.elementsWithTransitions]: Element[];
 },
 {
   effect: string;

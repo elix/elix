@@ -1,7 +1,6 @@
 import { merge } from './updates.js';
-import Dialog from './Dialog.js';
-import Symbol from './Symbol.js';
 import * as symbols from './symbols.js';
+import Dialog from './Dialog.js';
 
 
 const choiceButtonsKey= Symbol('choiceButtons');

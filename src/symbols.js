@@ -37,9 +37,6 @@
  */
 
 
-import Symbol from './Symbol.js';
-
-
 /**
  * Symbol for the `canGoLeft` property.
  * 
@@ -79,7 +76,7 @@ export const contentSlot = Symbol('contentSlot');
  * to determine which element(s) have CSS
  * transitions applied to them for visual effects.
  * 
- * @returns {HTMLElement[]} The elements with CSS transitions
+ * @returns {Element[]} The elements with CSS transitions
  */
 export const elementsWithTransitions = Symbol('elementsWithTransitions');
 
@@ -107,6 +104,8 @@ export const getItemText = Symbol('getItemText');
  * @function goDown
  */
 export const goDown = Symbol('goDown');
+
+export const test = Symbol('test');
 
 /**
  * Symbol for the `goEnd` method.
@@ -310,7 +309,7 @@ export const rightToLeft = Symbol('rightToLeft');
  * this property to determine which element should be scrolled to keep the
  * selected item in view.
  * 
- * @var {HTMLElement} scrollTarget
+ * @var {Element} scrollTarget
  */
 export const scrollTarget = Symbol('scrollTarget');
 

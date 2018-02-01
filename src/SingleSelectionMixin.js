@@ -50,14 +50,6 @@ export default function SingleSelectionMixin(Base) {
         this.state.selectionWraps || selectedIndex < 0 || selectedIndex > 0;
     }
 
-    get defaultState() {
-      return Object.assign({}, super.defaultState, {
-        selectedIndex: -1,
-        selectionRequired: false,
-        selectionWraps: false
-      });
-    }
-
     componentDidUpdate(previousState) {
       if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
 
@@ -73,6 +65,14 @@ export default function SingleSelectionMixin(Base) {
         });
         this.dispatchEvent(event);
       }
+    }
+
+    get defaultState() {
+      return Object.assign({}, super.defaultState, {
+        selectedIndex: -1,
+        selectionRequired: false,
+        selectionWraps: false
+      });
     }
 
     itemCalcs(item, index) {
@@ -195,10 +195,13 @@ export default function SingleSelectionMixin(Base) {
     selectPrevious() {
       if (super.selectPrevious) { super.selectPrevious(); }
       let selectedIndex;
-      if (this.items && this.state.selectedIndex < 0) {
-        // No selection yet; select last item.
+      if ((this.items && this.state.selectedIndex < 0) ||
+          (this.state.selectionWraps && this.state.selectedIndex === 0)) {
+        // No selection yet, or we're on the first item, and selection wraps.
+        // In either case, select the last item.
         selectedIndex = this.items.length - 1;
-      } else if (this.state.selectionWraps || this.state.selectedIndex > 0) {
+      } else if (this.state.selectedIndex > 0) {
+        // Select the previous item.
         selectedIndex = this.state.selectedIndex - 1;
       } else {
         // Already on first item, can't go previous.
@@ -218,15 +221,18 @@ export default function SingleSelectionMixin(Base) {
 
         let validatedIndex;
         if (selectedIndex === -1 && state.selectionRequired && count > 0) {
+          // Ensure there's a selection.
           validatedIndex = 0;
-        } else if (state.selectionWraps) {
+        } else if (state.selectionWraps && count > 0) {
           // Wrap the index.
           // JavaScript mod doesn't handle negative numbers the way we want to wrap.
           // See http://stackoverflow.com/a/18618250/76472
           validatedIndex = ((selectedIndex % count) + count) % count;
         } else {
-          // Don't wrap, force index within bounds of -1 (no selection) to the
-          // array length - 1.
+          // Force index within bounds of -1 (no selection) to array length-1.
+          // This logic also handles the case where there are no items
+          // (count=0), which will produce a validated index of -1 (no
+          // selection) regardless of what selectedIndex was asked for.
           validatedIndex = Math.max(Math.min(selectedIndex, count - 1), -1);
         }
 

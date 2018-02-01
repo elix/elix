@@ -3,6 +3,8 @@
 
 /// <reference path="shared.d.ts"/>
 
+import * as symbols from './symbols.js';
+
 declare const SlotContentMixin: StateMixin<
 {
   componentDidMount?(): void;
@@ -10,7 +12,8 @@ declare const SlotContentMixin: StateMixin<
 {},
 {
   componentDidMount(): void;
-  contentSlot: HTMLSlotElement
+  contentSlot: HTMLSlotElement;
+  [symbols.contentSlot]: HTMLSlotElement;
 },
 {
   content: NodeList|Node[];

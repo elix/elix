@@ -1,7 +1,6 @@
-import ElementBase from './ElementBase.js';
-import * as updates from './updates.js';
-import Symbol from './Symbol.js';
 import * as symbols from './symbols.js';
+import * as updates from './updates.js';
+import ElementBase from './ElementBase.js';
 
 
 const extendsKey = Symbol('extends');
