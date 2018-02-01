@@ -1,28 +1,15 @@
 import './CustomArrowButton.js';
-import { merge } from '../../src/updates.js';
+import './CustomPageDot.js';
 import SlidingCarousel from '../../src/SlidingCarousel.js';
 
 
-// Shows how to change the glyphs used in the arrow buttons.
+// Shows how a carousel subclass can define custom tags for the arrows and dots.
 class CustomCarousel extends SlidingCarousel {
 
-  get updates() {
-    const arrowButtonStyle = {
-      'font-size': '28px',
-      'font-weight': 'bold',
-      padding: '0.5em'
-    };
-    return merge(super.updates, {
-      $: {
-        arrowButtonLeft: {
-          style: arrowButtonStyle,
-          textContent: "↫"
-        },
-        arrowButtonRight: {
-          style: arrowButtonStyle,
-          textContent: "↬"
-        }
-      }
+  get tags() {
+    return Object.assign({}, super.tags, {
+      arrowButton: 'custom-arrow-button',
+      pageDot: 'custom-page-dot'
     });
   }
 
