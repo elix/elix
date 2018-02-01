@@ -84,6 +84,8 @@ function ArrowDirectionMixin(Base) {
     }
 
     get updates() {
+      const base = super.updates;
+
       const buttonUpdates = {
         style: {
           'bottom': 0,
@@ -96,22 +98,26 @@ function ArrowDirectionMixin(Base) {
       const canGoLeft = this[symbols.canGoLeft];
       const canGoRight = this[symbols.canGoRight];
 
+      const arrowDisplay = supportsTouch() ?
+        'none' :
+        base.style && base.style.display || '';
+
       const arrowButtonLeftUpdates = merge(buttonUpdates, {
         attributes: {
-          disabled: !canGoLeft,
-          hidden: supportsTouch()
+          disabled: !canGoLeft
         },
         style: {
+          display: arrowDisplay,
           left: 0
         }
       });
         
       const arrowButtonRightUpdates = merge(buttonUpdates, {
         attributes: {
-          disabled: !canGoRight,
-          hidden: supportsTouch()
+          disabled: !canGoRight
         },
         style: {
+          display: arrowDisplay,
           right: 0
         }
       });
@@ -123,7 +129,7 @@ function ArrowDirectionMixin(Base) {
         }
       };
 
-      return merge(super.updates, {
+      return merge(base, {
         $: {
           arrowButtonLeft: arrowButtonLeftUpdates,
           arrowButtonRight: arrowButtonRightUpdates,
