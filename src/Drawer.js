@@ -89,7 +89,9 @@ class Drawer extends Base {
   }
 
   get [symbols.swipeTarget]() {
-    return this.$.content;
+    /** @type {any} */
+    const element = this.$.content;
+    return element;
   }
 
   get [symbols.template]() {

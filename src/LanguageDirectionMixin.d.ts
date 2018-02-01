@@ -3,10 +3,13 @@
 
 /// <reference path="../src/shared.d.ts"/>
 
+import * as symbols from './symbols.js';
+
 declare const LanguageDirectionMixin: StateMixin<{}, {}, {
   rightToLeft: boolean;
 }, {
-  languageDirection: string
+  languageDirection: string;
+  [symbols.rightToLeft]: boolean;
 }>;
 
 export default LanguageDirectionMixin;

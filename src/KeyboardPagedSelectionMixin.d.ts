@@ -3,6 +3,8 @@
 
 /// <reference path="../src/shared.d.ts"/>
 
+import * as symbols from './symbols.js';
+
 declare const KeyboardPagedSelectionMixin: Mixin<{
   items?: Element[];
   pageDown?(): boolean;
@@ -11,6 +13,7 @@ declare const KeyboardPagedSelectionMixin: Mixin<{
 }, {
   pageDown(): boolean;
   pageUp(): boolean;
+  [symbols.scrollTarget]: Element;
 }>;
 
 export default KeyboardPagedSelectionMixin;

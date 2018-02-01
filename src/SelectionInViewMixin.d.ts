@@ -3,6 +3,8 @@
 
 /// <reference path="../src/shared.d.ts"/>
 
+import * as symbols from './symbols.js';
+
 declare const SelectionInViewMixin: Mixin<{
   componentDidMount?(): void;
   componentDidUpdate?(previousState: PlainObject): void;
@@ -11,6 +13,7 @@ declare const SelectionInViewMixin: Mixin<{
   componentDidMount(): void;
   componentDidUpdate(previousState: PlainObject): void;
   scrollItemIntoView(item: Element);
+  [symbols.scrollTarget]: Element
 }>;
 
 export default SelectionInViewMixin;
