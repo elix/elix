@@ -1,27 +1,10 @@
 import './CustomArrowButton.js';
-import * as symbols from '../../src/symbols.js';
 import { merge } from '../../src/updates.js';
-import ArrowDirectionMixin from '../../src/ArrowDirectionMixin.js';
-import PageDotsMixin from '../../src/PageDotsMixin.js';
-import SlidingPages from '../../src/SlidingPages.js';
+import SlidingCarousel from '../../src/SlidingCarousel.js';
 
 
-const Base =
-  ArrowDirectionMixin(
-  PageDotsMixin(
-    SlidingPages
-  ));
-
-
-class CustomCarousel extends Base {
-
-  get [symbols.template]() {
-    return this[ArrowDirectionMixin.inject](
-      this[PageDotsMixin.inject](
-        super[symbols.template]
-      )
-    );
-  }
+// Shows how to change the glyphs used in the arrow buttons.
+class CustomCarousel extends SlidingCarousel {
 
   get updates() {
     const arrowButtonStyle = {
