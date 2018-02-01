@@ -37,9 +37,6 @@
  */
 
 
-import Symbol from './Symbol.js';
-
-
 /**
  * Symbol for the `canGoLeft` property.
  * 
@@ -107,6 +104,8 @@ export const getItemText = Symbol('getItemText');
  * @function goDown
  */
 export const goDown = Symbol('goDown');
+
+export const test = Symbol('test');
 
 /**
  * Symbol for the `goEnd` method.
