@@ -1,6 +1,3 @@
-import Symbol from './Symbol.js';
-
-
 const tagsKey = Symbol('tags');
 
 
