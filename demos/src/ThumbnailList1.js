@@ -1,3 +1,4 @@
+import './StripArrowDirectionButton.js'
 import * as symbols from '../../src/symbols.js';
 import ArrowDirectionMixin from '../../src/ArrowDirectionMixin.js';
 import ClickSelectionMixin from '../../src/ClickSelectionMixin.js';
@@ -20,6 +21,21 @@ const Base =
 
 
 class ThumbnailsList extends Base {
+
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      overlayArrows: false
+    });
+  }
+
+  get tags() {
+    return Object.assign({}, super.tags, {
+      arrowButton: 'strip-arrow-direction-button'
+    });
+  }
+  set tags(tags) {
+    super.tags = tags;
+  }
 
   get [symbols.template]() {
     const base = super[symbols.template];

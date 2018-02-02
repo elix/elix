@@ -36,7 +36,8 @@ function ArrowDirectionMixin(Base) {
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
-        orientation: 'horizontal'
+        orientation: 'horizontal',
+        overlayArrows: true
       });
     }
 
@@ -86,14 +87,17 @@ function ArrowDirectionMixin(Base) {
     get updates() {
       const base = super.updates;
 
-      const buttonUpdates = {
-        style: {
-          'bottom': 0,
-          'position': 'absolute',
-          'top': 0,
-          'z-index': 1
-        }
-      };
+      const overlayArrows = this.state.overlayArrows;
+      const buttonUpdates = overlayArrows ?
+        {
+          style: {
+            'bottom': 0,
+            'position': 'absolute',
+            'top': 0,
+            'z-index': 1
+          }
+        } :
+        {};
 
       const canGoLeft = this[symbols.canGoLeft];
       const canGoRight = this[symbols.canGoRight];
@@ -108,7 +112,7 @@ function ArrowDirectionMixin(Base) {
         },
         style: {
           display: arrowDisplay,
-          left: 0
+          left: overlayArrows ? 0 : ''
         }
       });
         
@@ -118,7 +122,7 @@ function ArrowDirectionMixin(Base) {
         },
         style: {
           display: arrowDisplay,
-          right: 0
+          right: overlayArrows ? 0 : ''
         }
       });
 

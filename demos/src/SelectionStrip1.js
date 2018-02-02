@@ -3,7 +3,8 @@ import * as symbols from '../../src/symbols.js';
 import AriaListMixin from '../../src/AriaListMixin.js';
 import ContentItemsMixin from '../../src/ContentItemsMixin.js';
 import ElementBase from '../../src/ElementBase.js';
-import LanguageDirectionMixin from '../../src/LanguageDirectionMixin.js';
+import FocusVisibleMixin from '../../src/FocusVisibleMixin.js';
+// import LanguageDirectionMixin from '../../src/LanguageDirectionMixin.js';
 import SingleSelectionMixin from '../../src/SingleSelectionMixin.js';
 import SlotContentMixin from '../../src/SlotContentMixin.js';
 
@@ -11,7 +12,8 @@ import SlotContentMixin from '../../src/SlotContentMixin.js';
 const Base =
   AriaListMixin(
   ContentItemsMixin(
-  LanguageDirectionMixin(
+  FocusVisibleMixin(
+  // LanguageDirectionMixin(
   SingleSelectionMixin(
   SlotContentMixin(
     ElementBase
@@ -29,8 +31,10 @@ class SelectionStrip extends Base {
   itemUpdates(item, calcs, original) {
     const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
     const selected = calcs.selected;
-    const color = selected ? 'highlighttext' : original.style.color;
-    const backgroundColor = selected ? 'highlight' : original.style['background-color'];
+    // const showSelection = selected && this.state.focusVisible;
+    const showSelection = selected;
+    const color = showSelection ? 'highlighttext' : original.style.color;
+    const backgroundColor = showSelection ? 'highlight' : original.style['background-color'];
     return merge(base, {
       classes: {
         selected
@@ -55,19 +59,27 @@ class SelectionStrip extends Base {
           box-sizing: border-box;
           cursor: default;
           display: flex;
-          overflow: hidden;
           -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         }
 
-        #content {
+        #stripContainer {
+          display: flex;
+          flex: 1;
+          overflow: hidden;
+          position: relative;
+        }
+
+        #strip {
           display: flex;
           flex-direction: row;
           flex: 1;
           transition: transform 0.25s;
         }
       </style>
-      <div id="content" role="none">
-        <slot></slot>
+      <div id="stripContainer" role="none">
+        <div id="strip" role="none">
+          <slot></slot>
+        </div>
       </div>
     `;
   }
@@ -78,18 +90,19 @@ class SelectionStrip extends Base {
     const selectedItem = this.items && this.items[selectedIndex];
     let x; // The amount by which we'll shift content horizontally
     if (selectedItem) {
-      const width = this.offsetWidth;
       // @ts-ignore
-      const contentWidth = this.$.content.offsetWidth;
+      const stripContainerWidth = this.$.stripContainer.offsetWidth;
+      // @ts-ignore
+      const stripWidth = this.$.strip.offsetWidth;
       // @ts-ignore
       const itemLeft = selectedItem.offsetLeft;
       // @ts-ignore
       const itemWidth = selectedItem.offsetWidth;
       // Try to center the selected item.
-      x = (width - itemWidth) / 2 - itemLeft;
+      x = (stripContainerWidth - itemWidth) / 2 - itemLeft;
       // Constraint x to avoid showing space on either end.
       x = Math.min(x, 0);
-      x = Math.max(x, width - contentWidth);
+      x = Math.max(x, stripContainerWidth - stripWidth);
     } else {
       x = 0;
     }
@@ -97,7 +110,7 @@ class SelectionStrip extends Base {
 
     return merge(super.updates, {
       $: {
-        content: {
+        strip: {
           style: { transform }
         }
       }
