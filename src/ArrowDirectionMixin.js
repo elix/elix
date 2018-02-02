@@ -43,7 +43,7 @@ function ArrowDirectionMixin(Base) {
     [inject](template) {
       const arrowButtonTag = this.tags.arrowButton;
       return `
-        <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden;">
+        <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;">
           <${arrowButtonTag}
             aria-hidden="true"
             id="arrowButtonLeft"
