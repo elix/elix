@@ -246,24 +246,6 @@ class WrappedStandardElement extends ElementBase {
       Object.defineProperty(Wrapped.prototype, name, delegate);
     });
 
-    // Special case for IE 11, which mysteriously doesn't expose `disabled` as a
-    // property on HTMLButtonElement, but nevertheless *does* provide a disabled
-    // property on buttons anyhow.
-    if (extendsTag === 'button' && names.indexOf('disabled') === -1) {
-      Object.defineProperty(Wrapped.prototype, 'disabled', {
-        get: function() {
-          /** @type {any} */
-          const element = this;
-          return element.inner.disabled;
-        },
-        set: function(value) {
-          safelySetInnerProperty(this, 'disabled', value);
-        },
-        enumerable: true,
-        configurable: true
-      });
-    }
-
     return Wrapped;
   }
 
@@ -283,6 +265,7 @@ function createPropertyDelegate(name, descriptor) {
   if (descriptor.set) {
     delegate.set = function(value) {
       safelySetInnerProperty(this, name, value);
+
     };
   }
   if (descriptor.writable) {
