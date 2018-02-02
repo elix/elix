@@ -252,6 +252,20 @@ class WrappedStandardElement extends ElementBase {
 }
 
 
+// If the given attribute name corresponds to a boolean attribute,
+// map the supplied string value to a boolean. Otherwise return as is.
+function castPotentialBooleanAttribute(attributeName, value) {
+  if (updates.booleanAttributes[attributeName]) {
+    if (typeof value === 'string') {
+      return true;
+    } else if (value === null) {
+      return false;
+    }
+  }
+  return value;
+}
+
+
 function createPropertyDelegate(name, descriptor) {
   const delegate = {
     configurable: descriptor.configurable,
@@ -264,8 +278,15 @@ function createPropertyDelegate(name, descriptor) {
   }
   if (descriptor.set) {
     delegate.set = function(value) {
-      safelySetInnerProperty(this, name, value);
-
+      // Special case for boolean attributes, which may be passed as strings via
+      // calls to setAttribute.
+      const cast = castPotentialBooleanAttribute(name, value);
+      safelySetInnerProperty(this, name, cast);
+      // The component may want to rerender when this property changes, so set
+      // it as state too.
+      this.setState({
+        [name]: cast
+      });
     };
   }
   if (descriptor.writable) {
@@ -280,12 +301,7 @@ function createPropertyDelegate(name, descriptor) {
 // the property until after the connectedCallback.
 function safelySetInnerProperty(element, name, value) {
   if (element[mountedKey]) {
-    // Special case for boolean attributes, which may be passed as strings via
-    // calls to setAttribute.
-    const cast = updates.booleanAttributes[name] && typeof(value) === 'string' ?
-      true :
-      value;
-    element.inner[name] = cast;
+    element.inner[name] = value;
   } else {
     if (!element[pendingPropertiesKey]) {
       element[pendingPropertiesKey] = {};

@@ -68,17 +68,29 @@ describe("WrappedStandardElement", () => {
     assert.equal(getComputedStyle(fixtureDiv).display, 'block');
   });
 
-  it("correctly handles delegated boolean attributes", () => {
+  it("delegates boolean attributes", async () => {
     const fixture = document.createElement('wrapped-button');
     container.appendChild(fixture);
+
+    // Disable via property.
     fixture.disabled = true;
     assert(fixture.inner.disabled);
+    assert(fixture.state.disabled);
+
+    // Re-enable via property.
     fixture.disabled = false;
     assert(!fixture.inner.disabled);
+    assert(!fixture.state.disabled);
+
+    // Disable via attribute.
     fixture.setAttribute('disabled', '');
     assert(fixture.inner.disabled);
+    assert(fixture.state.disabled);
+    
+    // Re-enable via attribute.
     fixture.removeAttribute('disabled');    
     assert(!fixture.inner.disabled);
+    assert(!fixture.state.disabled);
   });
 
   it("generates static observedAttributes property for attributes on the wrapped element", () => {
