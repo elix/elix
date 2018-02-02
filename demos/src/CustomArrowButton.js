@@ -1,95 +1,54 @@
-import { merge } from '../../src/updates.js';
 import * as symbols from '../../src/symbols.js';
-import HoverMixin from '../../src/HoverMixin.js';
 import WrappedStandardElement from '../../src/WrappedStandardElement.js';
 
 
-const Base = 
-  HoverMixin(
-    WrappedStandardElement.wrap('button')
-  );
-
-
-class CustomArrowButton extends Base {
-
-  get defaultState() {
-    return Object.assign({}, super.defaultState, {
-      disabled: false
-    });
-  }
-
-  get disabled() {
-    // @ts-ignore
-    return super.disabled;
-  }
-  set disabled(disabled) {
-    const parsed = disabled != null;
-    // @ts-ignore
-    super.disabled = parsed;
-    this.setState({
-      disabled: parsed
-    });
-  }
-
-  get updates() {
-
-    const style = Object.assign(
-      {
-        background: 'rgba(255, 255, 255, 0.2)',
-        'border-color': 'rgba(255, 255, 255, 0.7)',
-        color: 'rgba(255, 255, 255, 0.7)',
-        transform: 'scale(1.0)'
-      },
-      this.state.hover && {
-        background: 'rgba(255, 255, 255, 0.5)',
-        'border-color': 'rgba(255, 255, 255, 0.8)',
-        color: 'rgba(255, 255, 255, 0.8)',
-        cursor: 'pointer',
-        transform: 'scale(1.1)'
-      },
-      this.state.disabled && {
-        background: '',
-        'border-color': 'rgba(255, 255, 255, 0.2)',
-        color: 'rgba(255, 255, 255, 0.2)',
-        cursor: '',
-        transform: 'scale(1.0)'
-      }
-    );
-
-    return merge(super.updates, {
-      $: {
-        inner: { style }
-      }
-    });
-  }
+class CustomArrowButton extends WrappedStandardElement.wrap('button') {
 
   get [symbols.template]() {
     return `
       <style>
         :host {
+          align-items: center;
           display: flex;
-          flex-direction: column;
-          justify-content: center;
+          font-size: 28px;
+          font-weight: bold;
+          margin: 0.5em;
           -webkit-tap-highlight-color: transparent;
         }
         
         #inner {
-          background: transparent;
+          background: rgba(255, 255, 255, 0.2);
+          border-color: rgba(255, 255, 255, 0.7);
           border: 2px solid transparent;
           box-sizing: border-box;
           color: inherit;
+          color: rgba(255, 255, 255, 0.7);
           fill: currentColor;
+          flex: 1;
           font-family: inherit;
-          font-size: 28px;
-          font-weight: bold;
+          font-size: inherit;
+          font-weight: inherit;
           height: 48px;
-          margin: 0.5em;
-          width: 48px;
+          margin: 0;
           outline: none;
           padding: 0;
           position: relative;
+          transform: scale(1.0);
           transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.3s;
           width: 48px;
+        }
+
+        :host(:hover) #inner:not(:disabled) {
+          border-color: rgba(255, 255, 255, 0.8);
+          color: rgba(255, 255, 255, 0.8);
+          cursor: pointer;
+          transform: scale(1.1);
+        }
+
+        #inner:disabled {
+          border-color: rgba(255, 255, 255, 0.2);
+          color: rgba(255, 255, 255, 0.2);
+          transform: scale(1.0);
         }
       </style>
       <button id="inner">
