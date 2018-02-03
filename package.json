@@ -22,11 +22,11 @@
     "get-port": "3.2.0",
     "jsdoc-api": "4.0.0",
     "jsdoc-parse": "3.0.0",
+    "local-web-server": "^2.4.0",
     "mocha": "4.0.1",
     "puppeteer": "0.13.0",
     "sauce-test-runner": "0.2.0",
     "sinon": "4.0.1",
-    "static-server": "3.0.0",
     "typescript": "^2.7.1",
     "uglifyjs-webpack-plugin": "1.1.6",
     "webpack": "3.6.0"
@@ -38,7 +38,7 @@
     "ci:fast": "npm run lint && npm run test -- --run-in-ci",
     "lint": "eslint .; tsc",
     "sauce-tests": "node tasks/sauce-tests.js",
-    "start": "static-server . --port 3000",
+    "start": "ws --port 3000",
     "test": "node tasks/headless-tests.js",
     "typecheck": "tsc",
     "watch": "webpack --watch"
