@@ -1,10 +1,9 @@
 const getPort = require('get-port');
-const path = require('path');
 const StaticServer = require('static-server');
 
 const start = async ({directory}) => {
   const server = new StaticServer({
-    rootPath: path.join(directory, '..'),
+    rootPath: directory,
     port: await getPort()
   });
   await new Promise((resolve) => {server.start(resolve);});
