@@ -1,9 +1,9 @@
 const puppeteer = require('puppeteer');
-const path = require('path');
 const getPort = require('get-port');
-const StaticServer = require('static-server');
 const runInCi = process.argv.indexOf('--run-in-ci');
 
+const path = require('path');
+const StaticServer = require('static-server');
 const startStaticHttpServer = async () => {
   const server = new StaticServer({
     rootPath: path.join(__dirname, '..'),
