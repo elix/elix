@@ -10,7 +10,7 @@ const startStaticHttpServer = async () => {
     port: await getPort()
   });
   await new Promise((resolve) => {server.start(resolve);});
-  return server;
+  return {stop: () => server.stop(), port: server.port};
 };
 
 const runTestsInHeadlessChrome = async (port) => {
