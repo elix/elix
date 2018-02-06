@@ -16,6 +16,13 @@ const Base =
 // Shows creating a carousel with custom mixins.
 class CustomCarousel extends Base {
 
+  get defaultState() {
+    // Show arrow buttons if device has a fine-grained pointer (e.g., mouse).
+    return Object.assign({}, super.defaultState, {
+      showArrowButtons: window.matchMedia('(pointer:fine)').matches
+    });
+  }
+
   get [symbols.template]() {
     return this[ArrowDirectionMixin.inject](
       this[PageDotsMixin.inject](

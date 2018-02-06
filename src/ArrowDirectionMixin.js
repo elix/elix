@@ -36,9 +36,19 @@ function ArrowDirectionMixin(Base) {
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
-        arrowsForMouseOnly: false,
+        showArrowButtons: true,
         orientation: 'horizontal',
-        overlayArrows: true
+        overlayArrowButtons: true
+      });
+    }
+
+    get showArrowButtons() {
+      return this.state.showArrowButtons;
+    }
+    set showArrowButtons(showArrowButtons) {
+      const parsed = String(showArrowButtons) === 'true';
+      this.setState({
+        showArrowButtons: parsed
       });
     }
 
@@ -92,8 +102,8 @@ function ArrowDirectionMixin(Base) {
     get updates() {
       const base = super.updates;
 
-      const overlayArrows = this.state.overlayArrows;
-      const buttonUpdates = overlayArrows ?
+      const overlayArrowButtons = this.state.overlayArrowButtons;
+      const buttonUpdates = overlayArrowButtons ?
         {
           style: {
             'bottom': 0,
@@ -107,12 +117,9 @@ function ArrowDirectionMixin(Base) {
       const canGoLeft = this[symbols.canGoLeft];
       const canGoRight = this[symbols.canGoRight];
 
-      const showArrows = this.state.arrowsForMouseOnly ?
-        supportsMouse() :
-        true;
-      const arrowDisplay = !showArrows ?
-        'none' :
-        base.style && base.style.display || '';
+      const arrowDisplay = this.state.showArrowButtons ?
+        base.style && base.style.display || '' :
+        'none';
 
       const arrowButtonLeftUpdates = merge(buttonUpdates, {
         attributes: {
@@ -120,7 +127,7 @@ function ArrowDirectionMixin(Base) {
         },
         style: {
           display: arrowDisplay,
-          left: overlayArrows ? 0 : ''
+          left: overlayArrowButtons ? 0 : ''
         }
       });
         
@@ -130,7 +137,7 @@ function ArrowDirectionMixin(Base) {
         },
         style: {
           display: arrowDisplay,
-          right: overlayArrows ? 0 : ''
+          right: overlayArrowButtons ? 0 : ''
         }
       });
 
@@ -177,13 +184,6 @@ function assumeButtonFocus(element, button) {
     // Prevent the default focus-on-mousedown behavior.
     event.preventDefault();
   });
-}
-
-
-// Return true if the device has a fine-grained pointer (usually a mouse).
-function supportsMouse() {
-  const media = window.matchMedia('(pointer:fine)');
-  return media ? media.matches : false;
 }
 
 

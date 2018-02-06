@@ -19,6 +19,13 @@ const Base =
 // Customize everything.
 class CustomCarousel extends Base {
 
+  get defaultState() {
+    // Show arrow buttons if device has a fine-grained pointer (e.g., mouse).
+    return Object.assign({}, super.defaultState, {
+      showArrowButtons: window.matchMedia('(pointer:fine)').matches
+    });
+  }
+
   get tags() {
     return Object.assign({}, super.tags, {
       arrowButton: 'custom-arrow-button',

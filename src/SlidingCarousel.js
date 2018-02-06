@@ -29,8 +29,9 @@ const Base =
 class SlidingCarousel extends Base {
 
   get defaultState() {
+    // Show arrow buttons if device has a fine-grained pointer (e.g., mouse).
     return Object.assign({}, super.defaultState, {
-      arrowsForMouseOnly: true
+      showArrowButtons: window.matchMedia('(pointer:fine)').matches
     });
   }
 
