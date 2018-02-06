@@ -28,6 +28,12 @@ const Base =
  */
 class SlidingCarousel extends Base {
 
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      arrowsForMouseOnly: true
+    });
+  }
+
   get [symbols.template]() {
     return this[ArrowDirectionMixin.inject](
       this[PageDotsMixin.inject](

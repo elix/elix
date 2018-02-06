@@ -36,6 +36,7 @@ function ArrowDirectionMixin(Base) {
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
+        arrowsForMouseOnly: false,
         orientation: 'horizontal',
         overlayArrows: true
       });
@@ -106,7 +107,10 @@ function ArrowDirectionMixin(Base) {
       const canGoLeft = this[symbols.canGoLeft];
       const canGoRight = this[symbols.canGoRight];
 
-      const arrowDisplay = supportsTouch() ?
+      const showArrows = this.state.arrowsForMouseOnly ?
+        supportsMouse() :
+        true;
+      const arrowDisplay = !showArrows ?
         'none' :
         base.style && base.style.display || '';
 
@@ -176,9 +180,10 @@ function assumeButtonFocus(element, button) {
 }
 
 
-// Simplistic detection of touch support.
-function supportsTouch() {
-  return 'ontouchstart' in window;
+// Return true if the device has a fine-grained pointer (usually a mouse).
+function supportsMouse() {
+  const media = window.matchMedia('(pointer:fine)');
+  return media ? media.matches : false;
 }
 
 
