@@ -282,7 +282,6 @@ function defaultTabButtons(element) {
       element[tabButtonsKey] = element.items.map((panel, index) => {
         const label = panel.getAttribute('aria-label');
         const panelId = getIdForPanel(element, panel, index);
-        const TabButtonClass = element.state.TabButtonClass;
         const tabButton = document.createElement(tabButtonTag);
         const id = getIdForTabButton(element, index);
         tabButton.setAttribute('id', id);
