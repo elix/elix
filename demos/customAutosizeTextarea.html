@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Custom AutosizeTextarea</title>
+
+  <link rel="stylesheet" href="demos.css">
+  <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="./src/showElementsWhenDefined.js"></script>
+  <script nomodule src="../build/demos.js"></script>
+
+  <script type="module">
+    import { merge } from '../src/updates.js';
+    import AutosizeTextarea from '../src/AutosizeTextarea.js';
+
+    class CustomAutosizeTextarea extends AutosizeTextarea {
+      get updates() {
+        return merge(super.updates, {
+          $: {
+            inner: {
+              attributes: {
+                autocomplete: false,
+                spellcheck: false
+              },
+              style: {
+                'border': 'none',
+                'border-bottom': '1px solid #757575'
+              }
+            }
+          }
+        });
+      }
+    }
+
+    customElements.define('custom-autosize-textarea', CustomAutosizeTextarea);
+  </script>
+
+</head>
+
+<body unresolved>
+  <custom-autosize-textarea aria-label="Sample auto-sizing textarea" minimum-rows="2" placeholder="Type here">
+    Type all you want here!
+  </custom-autosize-textarea>
+</body>
+
+</html>
