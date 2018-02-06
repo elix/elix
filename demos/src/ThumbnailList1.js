@@ -24,7 +24,7 @@ class ThumbnailsList extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      overlayArrows: false
+      overlayArrowButtons: false
     });
   }
 

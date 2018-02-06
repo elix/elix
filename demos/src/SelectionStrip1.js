@@ -100,7 +100,7 @@ class SelectionStrip extends Base {
       const itemWidth = selectedItem.offsetWidth;
       // Try to center the selected item.
       x = (stripContainerWidth - itemWidth) / 2 - itemLeft;
-      // Constraint x to avoid showing space on either end.
+      // Constrain x to avoid showing space on either end.
       x = Math.min(x, 0);
       x = Math.max(x, stripContainerWidth - stripWidth);
     } else {
