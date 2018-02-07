@@ -16,16 +16,20 @@ function ArrowDirectionMixin(Base) {
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
       this.$.arrowButtonLeft.addEventListener('click', event => {
+        this[symbols.raiseChangeEvents] = true;
         const handled = this[symbols.goLeft]();
         if (handled) {
           event.stopPropagation();
         }
+        this[symbols.raiseChangeEvents] = false;
       });
       this.$.arrowButtonRight.addEventListener('click', event => {
+        this[symbols.raiseChangeEvents] = true;
         const handled = this[symbols.goRight]();
         if (handled) {
           event.stopPropagation();
         }
+        this[symbols.raiseChangeEvents] = false;
       });
       assumeButtonFocus(this, this.$.arrowButtonLeft);
       assumeButtonFocus(this, this.$.arrowButtonRight);
