@@ -32,26 +32,33 @@ export default function TouchSwipeMixin(Base) {
       if ('PointerEvent' in window) {
         // Prefer listening to standard pointer events.
         this.addEventListener('pointerdown', event => {
+          this[symbols.raiseChangeEvents] = true;
           if (isEventForPenOrPrimaryTouch(event)) {
             gestureStart(this, event.clientX, event.clientY);
           }
+          this[symbols.raiseChangeEvents] = false;
         });
         this.addEventListener('pointermove', event => {
+          this[symbols.raiseChangeEvents] = true;
           if (isEventForPenOrPrimaryTouch(event)) {
             const handled = gestureContinue(this, event.clientX, event.clientY);
             if (handled) {
               event.preventDefault();
             }
           }
+          this[symbols.raiseChangeEvents] = false;
         });
         this.addEventListener('pointerup', event => {
+          this[symbols.raiseChangeEvents] = true;
           if (isEventForPenOrPrimaryTouch(event)) {
             gestureEnd(this, event.clientX, event.clientY);
           }
+          this[symbols.raiseChangeEvents] = false;
         });
       } else {
         // Pointer events not supported -- listen to older touch events.
         this.addEventListener('touchstart', event => {
+          this[symbols.raiseChangeEvents] = true;
           if (this[multiTouchKey]) {
             return;
           } else if (event.touches.length === 1) {
@@ -61,8 +68,10 @@ export default function TouchSwipeMixin(Base) {
           } else {
             this[multiTouchKey] = true;
           }
+          this[symbols.raiseChangeEvents] = false;
         });
         this.addEventListener('touchmove', event => {
+          this[symbols.raiseChangeEvents] = true;
           if (!this[multiTouchKey] && event.touches.length === 1) {
             const clientX = event.changedTouches[0].clientX;
             const clientY = event.changedTouches[0].clientY;
@@ -71,8 +80,10 @@ export default function TouchSwipeMixin(Base) {
               event.preventDefault();
             }
           }
+          this[symbols.raiseChangeEvents] = false;
         });
         this.addEventListener('touchend', event => {
+          this[symbols.raiseChangeEvents] = true;
           if (event.touches.length === 0) {
             // All touches removed; gesture is complete.
             if (!this[multiTouchKey]) {
@@ -83,6 +94,7 @@ export default function TouchSwipeMixin(Base) {
             }
             this[multiTouchKey] = false;
           }
+          this[symbols.raiseChangeEvents] = false;
         });
       }
     }
