@@ -7,8 +7,9 @@ class StripArrowDirectionButton extends ArrowDirectionButton {
 
   get updates() {
     const base = super.updates;
+    const color = base.style && base.style.color || 'inherit';
     const style = Object.assign({}, base.style, {
-      color: 'inherit'
+      color
     });
     return merge(super.updates, {
       style

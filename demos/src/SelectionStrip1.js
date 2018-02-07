@@ -1,6 +1,5 @@
 import { merge } from '../../src/updates.js';
 import * as symbols from '../../src/symbols.js';
-import AriaListMixin from '../../src/AriaListMixin.js';
 import ContentItemsMixin from '../../src/ContentItemsMixin.js';
 import ElementBase from '../../src/ElementBase.js';
 import FocusVisibleMixin from '../../src/FocusVisibleMixin.js';
@@ -10,14 +9,13 @@ import SlotContentMixin from '../../src/SlotContentMixin.js';
 
 
 const Base =
-  AriaListMixin(
   ContentItemsMixin(
   FocusVisibleMixin(
   // LanguageDirectionMixin(
   SingleSelectionMixin(
   SlotContentMixin(
     ElementBase
-  )))));
+  ))));
 
 
 class SelectionStrip extends Base {
@@ -55,8 +53,6 @@ class SelectionStrip extends Base {
     return `
       <style>
         :host {
-          border: 1px solid gray;
-          box-sizing: border-box;
           cursor: default;
           display: flex;
           -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -65,14 +61,13 @@ class SelectionStrip extends Base {
         #stripContainer {
           display: flex;
           flex: 1;
+          justify-content: center;
           overflow: hidden;
           position: relative;
         }
 
         #strip {
-          display: flex;
-          flex-direction: row;
-          flex: 1;
+          display: inline-flex;
           transition: transform 0.25s;
         }
       </style>
@@ -94,15 +89,17 @@ class SelectionStrip extends Base {
       const stripContainerWidth = this.$.stripContainer.offsetWidth;
       // @ts-ignore
       const stripWidth = this.$.strip.offsetWidth;
-      // @ts-ignore
-      const itemLeft = selectedItem.offsetLeft;
-      // @ts-ignore
-      const itemWidth = selectedItem.offsetWidth;
-      // Try to center the selected item.
-      x = (stripContainerWidth - itemWidth) / 2 - itemLeft;
-      // Constrain x to avoid showing space on either end.
-      x = Math.min(x, 0);
-      x = Math.max(x, stripContainerWidth - stripWidth);
+      if (stripWidth > stripContainerWidth) {
+        // @ts-ignore
+        const itemLeft = selectedItem.offsetLeft;
+        // @ts-ignore
+        const itemWidth = selectedItem.offsetWidth;
+        // Try to center the selected item.
+        x = (stripContainerWidth - itemWidth) / 2 - itemLeft;
+        // Constrain x to avoid showing space on either end.
+        x = Math.min(x, 0);
+        x = Math.max(x, stripContainerWidth - stripWidth);
+      }
     } else {
       x = 0;
     }
