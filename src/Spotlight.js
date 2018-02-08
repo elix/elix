@@ -5,6 +5,7 @@ import ElementBase from './ElementBase.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 
 
+const avatarTagKey = Symbol('avatarTag');
 const castKey = Symbol('cast');
 const castTagKey = Symbol('castTag');
 const previousItemsKey = Symbol('previousItems');
@@ -19,6 +20,13 @@ const Base =
 
 
 class Spotlight extends Base {
+
+  get avatarTag() {
+    return this[avatarTagKey];
+  }
+  set avatarTag(avatarTag) {
+    this[avatarTagKey] = avatarTag;
+  }
 
   get cast() {
     /** @type {any} */
@@ -176,7 +184,7 @@ function arrayEquals(a, b) {
 
 function avatarForItem(element, item) {
   let avatar;
-  const avatarTag = element.tags.avatar;
+  const avatarTag = element.avatarTag || element.tags.avatar;
   if (avatarTag) {
     avatar = document.createElement(avatarTag);
     customElements.whenDefined(avatarTag)

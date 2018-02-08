@@ -60,8 +60,8 @@ class SpotlightCarousel extends Base {
     const base = super.tags || {};
     return Object.assign({}, base, {
       avatar: 'custom-thumbnail',
-      stage: 'elix-sliding-viewport',
-      cast: 'thumbnail-list'
+      cast: 'thumbnail-list',
+      stage: 'elix-sliding-viewport'
     })
   }
   set tags(tags) {
