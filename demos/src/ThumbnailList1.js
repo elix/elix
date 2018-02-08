@@ -1,6 +1,6 @@
 import './StripArrowDirectionButton.js'
 import * as symbols from '../../src/symbols.js';
-import AriaListMixin from '../../src/AriaListMixin.js';
+// import AriaListMixin from '../../src/AriaListMixin.js';
 import ArrowDirectionMixin from '../../src/ArrowDirectionMixin.js';
 import ClickSelectionMixin from '../../src/ClickSelectionMixin.js';
 import DirectionSelectionMixin from '../../src/DirectionSelectionMixin.js';
@@ -11,7 +11,7 @@ import SelectionStrip from './SelectionStrip1.js';
 
 
 const Base =
-  AriaListMixin(
+  // AriaListMixin(
   ArrowDirectionMixin(
   ClickSelectionMixin(
   DirectionSelectionMixin(
@@ -19,7 +19,7 @@ const Base =
   // KeyboardDirectionMixin(
   // KeyboardMixin(
     SelectionStrip
-  ))));
+  )));
 
 
 class ThumbnailsList extends Base {

@@ -1,6 +1,7 @@
 import '../demos/src/Thumbnail.js';
 import '../demos/src/ThumbnailList1.js';
 import './SlidingViewport.js';
+import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import AriaListMixin from './AriaListMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
@@ -44,12 +45,15 @@ class SpotlightCarousel extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      castPosition: 'bottom',
       orientation: 'horizontal'
     });
   }
 
   get [symbols.swipeTarget]() {
-    return this.$.stage;
+    /** @type {any} */
+    const element = this.$.stage;
+    return element;
   }
 
   get tags() {
@@ -62,6 +66,18 @@ class SpotlightCarousel extends Base {
   }
   set tags(tags) {
     super.tags = tags;
+  }
+
+  get updates() {
+    return merge(super.updates, {
+      $: {
+        cast: {
+          style: {
+            flex: '0.2'
+          }
+        }
+      }
+    });
   }
 
 }

@@ -29,6 +29,13 @@ class Spotlight extends Base {
       defaultCast(this);
   }
 
+  get castPosition() {
+    return this.state.castPosition;
+  }
+  set castPosition(castPosition) {
+    this.setState({ castPosition });
+  }
+
   get castTag() {
     return this[castTagKey];
   }
@@ -55,8 +62,38 @@ class Spotlight extends Base {
     updateDefaultCast(this);
   }
 
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      castPosition: 'top'
+    });
+  }
+
   get items() {
     return this.$.stage.items;
+  }
+
+  [symbols.render]() {
+    if (super[symbols.render]) { super[symbols.render](); }
+
+    // Physically reorder the cast and stage to reflect the desired arrangement.
+    // We could change the visual appearance by reversing the order of the flex
+    // box, but then the visual order wouldn't reflect the document order, which
+    // determines focus order. That would surprise a user trying to tab through
+    // the controls.
+    const castPosition = this.state.castPosition;
+    const topOrLeftPosition = (castPosition === 'top' || castPosition === 'left');
+    const firstElement = topOrLeftPosition ?
+      this.$.cast :
+      this.$.stage;
+    const lastElement = topOrLeftPosition ?
+      this.$.stage :
+      this.$.cast;
+    if (!this.shadowRoot) {
+      /* eslint-disable no-console */
+      console.warn(`Spotlight expects ${this.constructor.name} to define a shadowRoot.\nThis can be done with ShadowTemplateMixin: https://elix.org/documentation/ShadowTemplateMixin.`);
+    } else if (firstElement.nextSibling !== lastElement) {
+      this.shadowRoot.insertBefore(firstElement, lastElement);
+    }
   }
 
   get stageTag() {
@@ -99,6 +136,9 @@ class Spotlight extends Base {
   }
 
   get updates() {
+    const castPosition = this.state.castPosition;
+    const lateralPosition = castPosition === 'left' || castPosition === 'right';
+
     const selectedIndex = this.selectedIndex;
     const swipeFraction = this.state.swipeFraction;
 
@@ -106,6 +146,9 @@ class Spotlight extends Base {
     let castChildNodes = [this.$.castSlot, ...cast];
 
     return merge(super.updates, {
+      style: {
+        'flex-direction': lateralPosition ? 'row' : 'column'
+      },
       $: {
         stage: {
           selectedIndex,

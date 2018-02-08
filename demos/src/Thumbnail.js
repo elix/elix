@@ -31,20 +31,10 @@ class Thumbnail extends WrappedStandardElement.wrap('img') {
   }
 
   get updates() {
-    let src = '';
-    let height = '';
-    let width = '';
-    const item = this.state.item;
-    if (item) {
-      src = item.src;
-      height = `${item.naturalHeight / 10}px`;
-      width = `${item.naturalWidth / 10}px`;
-    }
+    const src = this.state.item ?
+      this.state.item.src :
+      '';
     return merge(super.updates, {
-      style: {
-        height,
-        width
-      },
       $: {
         inner: { src }
       }
