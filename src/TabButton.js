@@ -94,7 +94,7 @@ class TabButton extends Base {
     return `
       <style>
         :host {
-          display: inline-block;
+          display: inline-flex;
         }
 
         #inner {
@@ -103,6 +103,7 @@ class TabButton extends Base {
           border-style: solid;
           border-width: 1px;
           color: inherit;
+          flex: 1;
           font-family: inherit;
           font-size: inherit;
           margin: 0;

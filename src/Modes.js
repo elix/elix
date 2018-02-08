@@ -49,17 +49,15 @@ class Modes extends Base {
   }
 
   get [symbols.template]() {
-    return `<slot></slot>`;
-  }
-
-  get updates() {
-    const base = super.updates || {};
-    return merge(base, {
-      style: {
-        'display': this.state.original.style.display || 'inline-block',
-        'position': 'relative'
-      }
-    });
+    return `
+      <style>
+        :host {
+          display: inline-flex;
+          position: relative;
+        }
+      </style>
+      <slot></slot>
+    `;
   }
 
 }
