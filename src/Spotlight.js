@@ -104,6 +104,12 @@ class Spotlight extends Base {
     }
   }
 
+  setAvatarItem(avatar, item) {
+    if ('item' in Object.getPrototypeOf(avatar)) {
+      avatar.item = item;
+    }
+  }
+
   get stageTag() {
     return this[stageTagKey];
   }
@@ -187,12 +193,14 @@ function avatarForItem(element, item) {
   const avatarTag = element.avatarTag || element.tags.avatar;
   if (avatarTag) {
     avatar = document.createElement(avatarTag);
-    customElements.whenDefined(avatarTag)
-    .then(() => {
-      if ('item' in Object.getPrototypeOf(avatar)) {
-        avatar.item = item;
-      }
-    });
+    if (customElements.get(avatarTag)) {
+      element.setAvatarItem(avatar, item);
+    } else {
+      customElements.whenDefined(avatarTag)
+      .then(() => {
+        element.setAvatarItem(avatar, item);
+      });
+    }
   } else {
     avatar = item.cloneNode(true);
   }

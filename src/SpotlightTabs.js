@@ -29,6 +29,16 @@ class SpotlightTabs extends Base {
     });
   }
 
+  setAvatarItem(avatar, item) {
+    super.setAvatarItem(avatar, item);
+    const label = item.getAttribute('aria-label') || item.alt;
+    // const panelId = getIdForPanel(element, panel, index);
+    // const id = getIdForTabButton(element, index);
+    // avatar.setAttribute('id', id);
+    // avatar.setAttribute('aria-controls', panelId);
+    avatar.textContent = label;
+  }
+
   get tags() {
     const base = super.tags || {};
     return Object.assign({}, base, {
@@ -39,6 +49,18 @@ class SpotlightTabs extends Base {
   }
   set tags(tags) {
     super.tags = tags;
+  }
+
+  get updates() {
+    return merge(super.updates, {
+      $: {
+        cast: {
+          style: {
+            'z-index': '1'
+          }
+        }
+      }
+    });
   }
 
 }
