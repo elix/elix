@@ -1,7 +1,7 @@
 {
   "name": "elix",
-  "version": "1.0.0-alpha",
-  "description": "Elix",
+  "version": "1.0.0-rc1",
+  "description": "High-quality web components for common user interface patterns",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -9,6 +9,12 @@
   },
   "author": "info@component.kitchen",
   "main": "src/elix.js",
+  "keywords": [
+    "web components",
+    "custom elements",
+    "carousel",
+    "tabs"
+  ],
   "devDependencies": {
     "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
