@@ -92,12 +92,22 @@ Add the Elix package to your package.json as `elix`:
 ```json
 {
   "dependencies": {
-    "elix": "*"
+    "elix": "<latest version number here>"
   }
 }
 ```
 
-where `"*"` can be replaced with an appropriate `semver` value.
+We generally recommend locking your `package.json` to a fixed Elix version number (`1.0.0` rather than `^1.0.0` or `1.x`, for example).
+
+## A note on versioning
+
+Elix is an ambitious attempt to deconstruct complex user interface elements into constituent parts at various levels of abstraction. We regularly feel like the project is breaking new ground at the frontier of front-end design and implementation. That can be exciting, but also means that promising implementation strategies will sometimes turn out to be dead ends. Moving forward will often entail breaking changes.
+
+* Elix follows standard semantic version numbering, and signals breaking changes by incrementing its major project version number.
+* We do our best to announce breaking changes in advance, and to provide upgrade guidance as we can.
+* In some cases, we may retire a particular component or mixin and replace it with something fundamentally new.
+* These user interface components are extremely complex, and are designed to be customized to work in a wide range of applications and environments. This means that even minor Elix releases may accidentally introduce breaking changes, particularly in customized components. We’ll try to fix those when we can.
+* As recommended above, locking on to a specific Elix version number will let you evaluate new Elix releases — including minor releases — in a more controlled fashion.
 
 
 # Building and running locally
@@ -158,3 +168,5 @@ npm run sauce-tests
 # Contributing
 
 Please see our [Contributor's guide](Contributing.md).
+
+The Elix project is led by [Component Kitchen](https://component.kitchen), which offers professional support for Elix.
