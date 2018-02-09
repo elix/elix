@@ -20,7 +20,7 @@ const Base =
   )))));
 
 
-class SelectionStrip extends Base {
+class CenteredStrip extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
@@ -44,7 +44,6 @@ class SelectionStrip extends Base {
         #stripContainer {
           display: flex;
           flex: 1;
-          justify-content: center;
           overflow: hidden;
           position: relative;
         }
@@ -67,6 +66,7 @@ class SelectionStrip extends Base {
     const selectedIndex = this.state.selectedIndex;
     const selectedItem = this.items && this.items[selectedIndex];
     let x; // The amount by which we'll shift content horizontally
+    let justifyContent = '';
     if (selectedItem) {
       // @ts-ignore
       const stripContainerWidth = this.$.stripContainer.offsetWidth;
@@ -85,6 +85,7 @@ class SelectionStrip extends Base {
       }
     } else {
       x = 0;
+      justifyContent = 'center';
     }
     const transform = `translateX(${x}px)`;
 
@@ -92,6 +93,11 @@ class SelectionStrip extends Base {
       $: {
         strip: {
           style: { transform }
+        },
+        stripContainer: {
+          style: {
+            'justify-content': justifyContent
+          }
         }
       }
     });
@@ -100,5 +106,5 @@ class SelectionStrip extends Base {
 }
 
 
-customElements.define('selection-strip', SelectionStrip);
-export default SelectionStrip;
+customElements.define('selection-strip', CenteredStrip);
+export default CenteredStrip;

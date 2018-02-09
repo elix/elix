@@ -15,18 +15,34 @@
   <style>
     body {
       background: black;
+      padding: 0;
+    }
+
+    :root {
+      --elix-thumbnail-height: 90px;
+      --elix-thumbnail-width: 120px;
+    }
+
+    .demo {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      height: 600px;
+      max-height: 100%;
+      max-width: 100%;
+      padding: 1em;
+      width: 800px;
     }
   </style>
   
 </head>
 
 <body role="main" unresolved>
-  <div class="demo" style="height: 600px; width: 800px;">
+  <div class="demo">
     <style>
       #sampleCarousel {
         background: black;
-        height: 100%;
-        width: 100%;
+        flex: 1;
       }
 
       #sampleCarousel img {
@@ -38,11 +54,15 @@
       }
     </style>
     <elix-spotlight-carousel id="sampleCarousel" aria-label="Nature scenes">
-      <img src="images/image1.jpg" alt="Lake" />
-      <img src="images/image2.jpg" alt="Horses" />
-      <img src="images/image3.jpg" alt="Ladybug on wheat" />
-      <img src="images/image4.jpg" alt="Mountain" />
-      <img src="images/image5.jpg" alt="Palm tree" />
+      <img src="images/image1.jpg" alt="Lake">
+      <img src="images/image2.jpg" alt="Horses">
+      <img src="images/image3.jpg" alt="Ladybug on wheat">
+      <img src="images/image4.jpg" alt="Mountain">
+      <img src="images/image5.jpg" alt="Palm tree">
+      <img src="images/image6.jpg">
+      <img src="images/image7.jpg">
+      <img src="images/image8.jpg">
+      <img src="images/image9.jpg">
     </elix-spotlight-carousel>
   </div>
 </body>
