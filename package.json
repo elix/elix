@@ -29,7 +29,7 @@
     "jsdoc-api": "4.0.1",
     "jsdoc-parse": "3.0.1",
     "mocha": "5.0.0",
-    "puppeteer": "0.13.0",
+    "puppeteer": "1.0.0",
     "sauce-test-runner": "0.2.0",
     "sinon": "4.2.2",
     "static-server": "3.0.0",
