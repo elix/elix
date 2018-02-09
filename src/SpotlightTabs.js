@@ -1,5 +1,5 @@
 import './Modes.js';
-// import './TabButton';
+import './TabButton';
 import './TabStrip.js';
 import { merge } from './updates.js';
 import Spotlight from './Spotlight.js';
