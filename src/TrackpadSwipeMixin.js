@@ -22,10 +22,12 @@ export default function TrackpadSwipeMixin(Base) {
       // @ts-ignore
       super();
       this.addEventListener('wheel', event => {
+        this[symbols.raiseChangeEvents] = true;
         const handled = handleWheel(this, event);
         if (handled) {
           event.preventDefault();
         }
+        this[symbols.raiseChangeEvents] = false;
       });
       resetWheelTracking(this);
     }

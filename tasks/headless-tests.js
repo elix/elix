@@ -23,7 +23,7 @@ const runTestsInHeadlessChrome = async (port) => {
   const page = await browser.newPage();
   await page.goto(`http://localhost:${port}/test/`, {waitUntil: 'domcontentloaded'});
   const consoleMsg = await new Promise((resolve) => {
-    page.on('console', ({text}) => resolve(text));
+    page.on('console', (msg) => resolve(msg.text()));
   });
   await browser.close();
   return consoleMsg;
