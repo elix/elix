@@ -1,6 +1,7 @@
 import './Thumbnail.js';
 // import './CenteredStripHighlight.js';
 import './CenteredStripOpacity.js';
+import '../demos/src/SlidingViewportWithArrows.js';
 import './SlidingViewport.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
@@ -63,7 +64,8 @@ class SpotlightCarousel extends Base {
       avatar: 'custom-thumbnail',
       // cast: 'centered-strip-highlight',
       cast: 'centered-strip-opacity',
-      stage: 'elix-sliding-viewport'
+      // stage: 'elix-sliding-viewport'
+      stage: 'sliding-viewport-with-arrows'
     })
   }
   set tags(tags) {
@@ -73,11 +75,16 @@ class SpotlightCarousel extends Base {
   get updates() {
     return merge(super.updates, {
       $: {
-        cast: {
-          style: {
-            // flex: '0.2'
+        stage: {
+          attributes: {
+            tabindex: ''
           }
-        }
+        },
+        // cast: {
+        //   style: {
+        //     flex: '0.2'
+        //   }
+        // }
       }
     });
   }

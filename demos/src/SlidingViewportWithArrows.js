@@ -1,15 +1,17 @@
 import * as symbols from '../../src/symbols.js';
 import ArrowDirectionMixin from '../../src/ArrowDirectionMixin.js';
-import SlidingPages from '../../src/SlidingPages.js';
+import DirectionSelectionMixin from '../../src/DirectionSelectionMixin.js';
+import SlidingViewport from '../../src/SlidingViewport.js';
 
 
 const Base =
   ArrowDirectionMixin(
-    SlidingPages
-  );
+  DirectionSelectionMixin(
+    SlidingViewport
+  ));
 
 
-class SlidingPagesWithArrows extends Base {
+class SlidingViewportWithArrows extends Base {
 
   get defaultState() {
     // Show arrow buttons if device has a fine-grained pointer (e.g., mouse).
@@ -28,5 +30,5 @@ class SlidingPagesWithArrows extends Base {
 
 
 
-customElements.define('sliding-pages-with-arrows', SlidingPagesWithArrows);
-export default SlidingPagesWithArrows;
+customElements.define('sliding-viewport-with-arrows', SlidingViewportWithArrows);
+export default SlidingViewportWithArrows;
