@@ -9,36 +9,36 @@
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
-  <script type="module" src="../src/TabButton.js"></script>
-  <script type="module" src="../src/Tabs.js"></script>
-  <script type="module" src="../src/TabStrip.js"></script>
+  <script type="module" src="../src/SpotlightTabs.js"></script>
   <script nomodule src="../build/demos.js"></script>
 
 </head>
 
 <body role="main" unresolved>
-  <div class="demo padded">
+  <div class="demo medium padded">
 
     <style>
       .tabPositions {
-        height: 250px;
-        max-width: 100%;
-        width: 300px;
+        height: 100%;
+        width: 100%;
       }
 
       .tabPositions .panel {
         align-items: center;
+        background: white;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
         display: flex;
         flex: 1;
         justify-content: center;
       }
     </style>
 
-    <elix-tabs class="tabPositions">
+    <elix-spotlight-tabs class="tabPositions">
       <div class="panel" aria-label="One">Page one</div>
       <div class="panel" aria-label="Two">Page two</div>
       <div class="panel" aria-label="Three">Page three</div>
-    </elix-tabs>
+    </elix-spotlight-tabs>
     
     <p>
       Show tabs on: <select id="tabPosition" onchange="tabPositionChange(event)">
@@ -47,7 +47,8 @@
         <option value="right">Right</option>
         <option value="top" selected>Top</option>
       </select>
-      &nbsp;&nbsp;&nbsp;
+    </p>
+    <p>
       Align tabs: <select id="tabAlign" onchange="tabAlignChange(event)">
         <option value="center">Center</option>
         <option value="end">End</option>
@@ -62,7 +63,7 @@
       }
 
       function tabPositionChange(event) {
-        document.querySelector('.tabPositions').tabPosition = event.target.value;
+        document.querySelector('.tabPositions').castPosition = event.target.value;
       }
     </script>
 

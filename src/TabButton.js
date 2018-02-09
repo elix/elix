@@ -139,19 +139,19 @@ class TabButton extends Base {
     const positionStyles = {
       bottom: {
         'border-radius': '0 0 0.25em 0.25em',
-        'margin-top': '-1px'
+        'margin': '-1px 0 0 0'
       },
       left: {
         'border-radius': '0.25em 0 0 0.25em',
-        'margin-right': '-1px'
+        'margin': '0 -1px 0 0'
       },
       right: {
         'border-radius': '0 0.25em 0.25em 0',
-        'margin-left': '-1px'
+        'margin': '0 0 0 -1px'
       },
       top: {
         'border-radius': '0.25em 0.25em 0 0',
-        'margin-bottom': '-1px'
+        'margin': '0 0 -1px 0'
       }
     };
     const positionStyle = positionStyles[tabPosition];
@@ -199,9 +199,9 @@ class TabButton extends Base {
       },
       style: {
         'flex': stretch ? 1 : original.style.flex,
-        'margin-left': needsLeftSpacer ? '0.2em' : original.style['margin-left'],
-        'margin-right': needsRightSpacer ? '0.2em' : original.style['margin-left'],
-        'margin-top': needsTopSpacer ? '0.2em' : original.style['margin-top'],
+        'margin-left': needsLeftSpacer ? '0.2em' : '',
+        'margin-right': needsRightSpacer ? '0.2em' : '',
+        'margin-top': needsTopSpacer ? '0.2em' : ''
       },
       $: {
         inner: buttonProps

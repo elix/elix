@@ -44,7 +44,7 @@ const Base =
  * can adjust the alignment of the tabs with the `tabAlign` property.
  *
  * The component assumes that the tab buttons will appear above the tab panels
- * they control. You can adjust that positioning with the `tabPosition`
+ * they control. You can adjust that positioning with the `position`
  * property.
  *
  * A `TabStrip` is often wrapped around a set of tab panels, a scenario which
@@ -93,7 +93,7 @@ class TabStrip extends Base {
       tabAlign: 'start',
       tabButtonRole: 'tab',
       tabindex: null,
-      tabPosition: 'top'
+      position: 'top'
     });
   }
 
@@ -101,14 +101,14 @@ class TabStrip extends Base {
     const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
 
     const tabAlign = this.state.tabAlign;
-    const tabPosition = this.state.tabPosition;
+    const position = this.state.position;
 
     return merge(base, {
       attributes: {
         index: calcs.index,
         role: original.attributes.role || this.state.tabButtonRole,
         'tab-align': tabAlign,
-        'tab-position': tabPosition
+        'tab-position': position
       },
       classes: {
         selected: calcs.selected
@@ -144,10 +144,10 @@ class TabStrip extends Base {
     return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
   }
 
-  // TabStrip orientation depends on tabPosition property.
+  // TabStrip orientation depends on position property.
   get orientation() {
-    const tabPosition = this.state.tabPosition;
-    return tabPosition === 'top' || tabPosition === 'bottom' ?
+    const position = this.state.position;
+    return position === 'top' || position === 'bottom' ?
       'horizontal' :
       'vertical';
   }
@@ -177,11 +177,11 @@ class TabStrip extends Base {
    * @type {('bottom'|'left'|'right'|'top')}
    * @default 'top'
    */
-  get tabPosition() {
-    return this.state.tabPosition;
+  get position() {
+    return this.state.position;
   }
-  set tabPosition(tabPosition) {
-    this.setState({ tabPosition });
+  set position(position) {
+    this.setState({ position });
   }
 
   get [symbols.template]() {
@@ -199,8 +199,8 @@ class TabStrip extends Base {
     const base = super.updates || {};
     const original = this.state.original;
 
-    const tabPosition = this.state.tabPosition;
-    const lateralPosition = tabPosition === 'left' || tabPosition === 'right';
+    const position = this.state.position;
+    const lateralPosition = position === 'left' || position === 'right';
     const tabAlign = this.state.tabAlign;
     const justifyContent = {
       'center': 'center',

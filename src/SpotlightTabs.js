@@ -1,31 +1,16 @@
 import './Modes.js';
-import './TabButton';
+// import './TabButton';
 import './TabStrip.js';
 import { merge } from './updates.js';
-import * as symbols from './symbols.js';
-import AriaListMixin from './AriaListMixin.js';
-import DirectionSelectionMixin from './DirectionSelectionMixin.js';
-import FocusVisibleMixin from './FocusVisibleMixin.js';
-import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
-import KeyboardMixin from './KeyboardMixin.js';
 import Spotlight from './Spotlight.js';
 
 
-const Base =
-  AriaListMixin(
-  DirectionSelectionMixin(
-  FocusVisibleMixin(
-  KeyboardDirectionMixin(
-  KeyboardMixin(
-    Spotlight
-  )))));
-
-
-class SpotlightTabs extends Base {
+class SpotlightTabs extends Spotlight {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      orientation: 'horizontal'
+      orientation: 'horizontal',
+      tabAlign: 'start'
     });
   }
 
@@ -37,6 +22,19 @@ class SpotlightTabs extends Base {
     // avatar.setAttribute('id', id);
     // avatar.setAttribute('aria-controls', panelId);
     avatar.textContent = label;
+  }
+
+  /**
+   * The alignment of the tabs within the tab strip.
+   * 
+   * @type {('start'|'center'|'end'|'stretch')}
+   * @default 'start'
+   */
+  get tabAlign() {
+    return this.state.tabAlign;
+  }
+  set tabAlign(tabAlign) {
+    this.setState({ tabAlign });
   }
 
   get tags() {
@@ -55,8 +53,11 @@ class SpotlightTabs extends Base {
     return merge(super.updates, {
       $: {
         cast: {
+          attributes: {
+            'tab-align': this.state.tabAlign
+          },
           style: {
-            'z-index': '1'
+            'z-index': 1
           }
         }
       }
