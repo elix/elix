@@ -82,10 +82,11 @@ class CenteredStrip extends Base {
         // Constrain x to avoid showing space on either end.
         x = Math.min(x, 0);
         x = Math.max(x, stripContainerWidth - stripWidth);
+      } else {
+        justifyContent = 'center';
       }
     } else {
       x = 0;
-      justifyContent = 'center';
     }
     const transform = `translateX(${x}px)`;
 

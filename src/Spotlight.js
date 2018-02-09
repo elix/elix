@@ -80,6 +80,13 @@ class Spotlight extends Base {
     return this.$.stage.items;
   }
 
+  // TODO: Try to eliminate the need to inspect another component's state.
+  itemsForState(state) {
+    return this.$ && this.$.stage ?
+      this.$.stage.itemsForState(this.$.stage.state) :
+      null;
+  }
+
   [symbols.render]() {
     if (super[symbols.render]) { super[symbols.render](); }
 
