@@ -1,6 +1,6 @@
-import { merge } from '../../src/updates.js';
-import * as symbols from '../../src/symbols.js';
-import WrappedStandardElement from "../../src/WrappedStandardElement.js";
+import { merge } from './updates.js';
+import * as symbols from './symbols.js';
+import WrappedStandardElement from "./WrappedStandardElement.js";
 
 
 class Thumbnail extends WrappedStandardElement.wrap('img') {

@@ -171,7 +171,8 @@ class Spotlight extends Base {
         cast: {
           childNodes: castChildNodes,
           position: castPosition,
-          selectedIndex
+          selectedIndex,
+          swipeFraction
         }
       }
     });

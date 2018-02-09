@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
+  <script type="module" src="../src/CenteredStripOpacity.js"></script>
+  <script type="module" src="../src/PageDot.js"></script>
   <script type="module" src="../src/SpotlightCarousel.js"></script>
   <script nomodule src="../build/demos.js"></script>
 
@@ -37,7 +39,12 @@
         width: 100%;
       }
     </style>
-    <elix-spotlight-carousel id="sampleCarousel" aria-label="Nature scenes">
+    <elix-spotlight-carousel
+        id="sampleCarousel"
+        aria-label="Nature scenes"
+        cast-tag="centered-strip-opacity"
+        avatar-tag="elix-page-dot"
+        >
       <img src="images/image1.jpg" alt="Lake" />
       <img src="images/image2.jpg" alt="Horses" />
       <img src="images/image3.jpg" alt="Ladybug on wheat" />

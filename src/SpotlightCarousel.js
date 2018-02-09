@@ -1,5 +1,6 @@
-import '../demos/src/Thumbnail.js';
-import '../demos/src/ThumbnailList1.js';
+import './Thumbnail.js';
+// import './CenteredStripHighlight.js';
+import './CenteredStripOpacity.js';
 import './SlidingViewport.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
@@ -60,7 +61,8 @@ class SpotlightCarousel extends Base {
     const base = super.tags || {};
     return Object.assign({}, base, {
       avatar: 'custom-thumbnail',
-      cast: 'thumbnail-list',
+      // cast: 'centered-strip-highlight',
+      cast: 'centered-strip-opacity',
       stage: 'elix-sliding-viewport'
     })
   }
@@ -73,7 +75,7 @@ class SpotlightCarousel extends Base {
       $: {
         cast: {
           style: {
-            flex: '0.2'
+            // flex: '0.2'
           }
         }
       }

@@ -1,21 +1,23 @@
-import { merge } from '../../src/updates.js';
-import * as symbols from '../../src/symbols.js';
-import ContentItemsMixin from '../../src/ContentItemsMixin.js';
-import ElementBase from '../../src/ElementBase.js';
-import FocusVisibleMixin from '../../src/FocusVisibleMixin.js';
-// import LanguageDirectionMixin from '../../src/LanguageDirectionMixin.js';
-import SingleSelectionMixin from '../../src/SingleSelectionMixin.js';
-import SlotContentMixin from '../../src/SlotContentMixin.js';
+import { merge } from './updates.js';
+import * as symbols from './symbols.js';
+import ClickSelectionMixin from './ClickSelectionMixin.js';
+import ContentItemsMixin from './ContentItemsMixin.js';
+import ElementBase from './ElementBase.js';
+import FocusVisibleMixin from './FocusVisibleMixin.js';
+// import LanguageDirectionMixin from './LanguageDirectionMixin.js';
+import SingleSelectionMixin from './SingleSelectionMixin.js';
+import SlotContentMixin from './SlotContentMixin.js';
 
 
 const Base =
+  ClickSelectionMixin(
   ContentItemsMixin(
   FocusVisibleMixin(
   // LanguageDirectionMixin(
   SingleSelectionMixin(
   SlotContentMixin(
     ElementBase
-  ))));
+  )))));
 
 
 class SelectionStrip extends Base {
@@ -23,25 +25,6 @@ class SelectionStrip extends Base {
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       selectionRequired: true
-    });
-  }
-
-  itemUpdates(item, calcs, original) {
-    const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
-    const selected = calcs.selected;
-    // const showSelection = selected && this.state.focusVisible;
-    const showSelection = selected;
-    const color = showSelection ? 'highlighttext' : original.style.color;
-    const backgroundColor = showSelection ? 'highlight' : original.style['background-color'];
-    return merge(base, {
-      classes: {
-        selected
-      },
-      style: {
-        'background-color': backgroundColor,
-        color,
-        'padding': '0.25em'
-      }
     });
   }
 

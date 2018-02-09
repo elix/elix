@@ -1,6 +1,6 @@
-import { merge } from '../../src/updates.js';
-import * as fractionalSelection from '../../src/fractionalSelection.js';
-import Modes from '../../src/Modes.js';
+import { merge } from './updates.js';
+import * as fractionalSelection from './fractionalSelection.js';
+import Modes from './Modes.js';
 
 
 class CrossfadeStage extends Modes {
