@@ -8,7 +8,6 @@ import CustomTagsMixin from './CustomTagsMixin.js';
 import ElementBase from './ElementBase.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotContentMixin from './SlotContentMixin.js';
-import TabButton from './TabButton.js';
 
 
 const generatedIdKey = Symbol('generatedId');
