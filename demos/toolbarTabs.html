@@ -10,6 +10,7 @@
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
   <script type="module" src="./src/ToolbarTab.js"></script>
+  <script type="module" src="../src/SlidingPages.js"></script>
   <script type="module" src="../src/SpotlightTabs.js"></script>
   <script nomodule src="../build/demos.js"></script>
 
@@ -45,12 +46,11 @@
         box-sizing: border-box;
         color: initial;
         display: flex;
-        flex: 1;
         justify-content: center;
       }
     </style>
 
-    <elix-spotlight-tabs class="toolbarTabs" cast-position="bottom" tab-align="stretch">
+    <elix-spotlight-tabs class="toolbarTabs" cast-position="bottom" tab-align="stretch" stage-tag="elix-sliding-pages">
 
       <toolbar-tab slot="cast" aria-label="Home">
         <div class="material-icons">home</div>

@@ -66,6 +66,7 @@ class SlidingViewport extends Base {
         #slidingViewportContent {
           display: flex;
           height: 100%;
+          min-width: 100%;
           will-change: transform;
         }
 
