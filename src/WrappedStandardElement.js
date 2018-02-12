@@ -67,6 +67,23 @@ const reraiseEvents = {
 };
 
 
+/*
+ * Mouse events that should be disabled if the inner component is disabled.
+ */
+const mouseEventNames = [
+  'click',
+  'dblclick',
+  'mousedown',
+  'mouseenter',
+  'mouseleave',
+  'mousemove',
+  'mouseout',
+  'mouseover',
+  'mouseup',
+  'wheel'
+];
+
+
 // Keep track of which re-raised events should bubble.
 const eventBubbles = {
   abort: true,
@@ -144,6 +161,18 @@ class WrappedStandardElement extends ElementBase {
         this.dispatchEvent(event);
       });
     });
+
+    // If inner element can be disabled, then listen to mouse events on the
+    // *outer* element and absorb them if the inner element is disabled.
+    if ('disabled' in this.$.inner) {
+      mouseEventNames.forEach(eventName => {
+        this.addEventListener(eventName, event => {
+          if (this.$.inner.disabled) {
+            event.stopImmediatePropagation();
+          }
+        });
+      });
+    }
 
     // Apply any properties set via attributes before the component mounted.
     this[mountedKey] = true;
