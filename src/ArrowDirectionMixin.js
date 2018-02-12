@@ -63,7 +63,7 @@ function ArrowDirectionMixin(Base) {
           <${arrowButtonTag}
             aria-hidden="true"
             id="arrowButtonLeft"
-            tabIndex="-1"
+            tabIndex=""
             >
             <slot name="arrowButtonLeft">
               <svg id="arrowIconLeft" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
@@ -79,7 +79,7 @@ function ArrowDirectionMixin(Base) {
           <${arrowButtonTag}
             aria-hidden="true"
             id="arrowButtonRight"
-            tabIndex="-1"
+            tabIndex=""
             >
             <slot name="arrowButtonRight">
               <svg id="arrowIconRight" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">

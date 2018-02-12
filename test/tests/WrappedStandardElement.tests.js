@@ -59,7 +59,7 @@ describe("WrappedStandardElement", () => {
     fixture.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
   });
 
-  it.only("does not raise events if inner element is disabled", () => {
+  it("does not raise events if inner element is disabled", () => {
     const fixture = document.createElement('wrapped-button');
     container.appendChild(fixture);
     let count = 0;
