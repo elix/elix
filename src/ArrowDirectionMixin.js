@@ -34,8 +34,6 @@ function ArrowDirectionMixin(Base) {
         }
         this[symbols.raiseChangeEvents] = false;
       });
-      assumeButtonFocus(this, this.$.arrowButtonLeft);
-      assumeButtonFocus(this, this.$.arrowButtonRight);
     }
 
     get defaultState() {
@@ -174,21 +172,6 @@ function ArrowDirectionMixin(Base) {
 
 
 ArrowDirectionMixin.inject = inject;
-
-
-/*
- * By default, a button will always take focus on mousedown. For this component,
- * we want to override that behavior, such that a mousedown on a button keeps
- * the focus on the outer component.
- */
-function assumeButtonFocus(element, button) {
-  button.addEventListener('mousedown', event => {
-    // Given the main element the focus if it doesn't already have it.
-    element.focus();
-    // Prevent the default focus-on-mousedown behavior.
-    event.preventDefault();
-  });
-}
 
 
 export default ArrowDirectionMixin;
