@@ -124,7 +124,7 @@ ArrowDirectionMixin.wrap = function wrap(template) {
       <elix-arrow-direction-button
         aria-hidden="true"
         id="arrowButtonLeft"
-        tabIndex="-1"
+        tabIndex=""
         >
         <svg id="arrowIconLeft" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
           <g>
@@ -138,7 +138,7 @@ ArrowDirectionMixin.wrap = function wrap(template) {
       <elix-arrow-direction-button
         aria-hidden="true"
         id="arrowButtonRight"
-        tabIndex="-1"
+        tabIndex=""
         >
         <svg id="arrowIconRight" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
           <g>
