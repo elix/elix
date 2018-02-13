@@ -171,7 +171,9 @@ class WrappedStandardElement extends ElementBase {
     if ('disabled' in this.$.inner) {
       mouseEventNames.forEach(eventName => {
         this.addEventListener(eventName, event => {
-          if (this.$.inner.disabled) {
+          /** @type {any} */
+          const element = this.$.inner;
+          if (element.disabled) {
             event.stopImmediatePropagation();
           }
         });
