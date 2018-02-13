@@ -59,6 +59,19 @@ describe("WrappedStandardElement", () => {
     fixture.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
   });
 
+  it("does not raise events if inner element is disabled", () => {
+    const fixture = document.createElement('wrapped-button');
+    container.appendChild(fixture);
+    let count = 0;
+    fixture.addEventListener('click', () => {
+      count++;
+    });
+    fixture.click();
+    fixture.disabled = true;
+    fixture.click();
+    assert.equal(count, 1);
+  });
+
   it("chooses an appropriate :host display style based on the wrapped element", () => {
     const fixtureA = document.createElement('wrapped-a');
     container.appendChild(fixtureA);
