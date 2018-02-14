@@ -28,6 +28,7 @@
     "get-port": "3.2.0",
     "jsdoc-api": "4.0.1",
     "jsdoc-parse": "3.0.1",
+    "local-web-server": "^2.4.0",
     "mocha": "5.0.0",
     "puppeteer": "1.0.0",
     "sauce-test-runner": "0.2.0",
@@ -44,7 +45,7 @@
     "ci:fast": "npm run lint && npm run test -- --run-in-ci",
     "lint": "eslint .; tsc",
     "sauce-tests": "node tasks/sauce-tests.js",
-    "start": "static-server . --port 3000",
+    "start": "ws --port 3000",
     "test": "node tasks/headless-tests.js",
     "typecheck": "tsc",
     "watch": "webpack --watch"
