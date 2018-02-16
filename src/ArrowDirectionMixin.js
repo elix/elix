@@ -3,6 +3,7 @@ import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 
 
+const arrowButtonTagKey = Symbol('arrowButtonTag');
 const inject = Symbol('inject');
 
 
@@ -16,6 +17,13 @@ function ArrowDirectionMixin(Base) {
   // The class prototype added by the mixin.
   class ArrowDirection extends Base {
 
+    get arrowButtonTag() {
+      return this[arrowButtonTagKey];
+    }
+    set arrowButtonTag(arrowButtonTag) {
+      this[arrowButtonTagKey] = arrowButtonTag;
+    }
+  
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
       this.$.arrowButtonLeft.addEventListener('click', event => {
@@ -44,6 +52,13 @@ function ArrowDirectionMixin(Base) {
       });
     }
 
+    get defaultTags() {
+      const base = super.defaultTags || {};
+      return Object.assign({}, super.defaultTags, {
+        arrowButton: base.arrowButton || 'elix-arrow-direction-button'
+      });
+    }
+
     get showArrowButtons() {
       return this.state.showArrowButtons;
     }
@@ -55,7 +70,7 @@ function ArrowDirectionMixin(Base) {
     }
 
     [inject](template) {
-      const arrowButtonTag = this.tags.arrowButton;
+      const arrowButtonTag = this.arrowButtonTag || this.defaultTags.arrowButton;
       return `
         <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;">
           <${arrowButtonTag}
@@ -89,13 +104,6 @@ function ArrowDirectionMixin(Base) {
           </${arrowButtonTag}>
         </div>
       `;
-    }
-
-    get tags() {
-      const base = super.tags || {};
-      return Object.assign({}, super.tags, {
-        arrowButton: base.arrowButton || 'elix-arrow-direction-button'
-      });
     }
 
     get updates() {

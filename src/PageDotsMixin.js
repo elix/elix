@@ -5,6 +5,7 @@ import * as symbols from './symbols.js';
 
 const inject = Symbol('inject');
 const previousItemsKey = Symbol('previousItems');
+const pageDotTagKey = Symbol('pageDotTag');
 const pageDotsKey = Symbol('pageDots');
 
 
@@ -38,6 +39,13 @@ function PageDotsMixin(Base) {
       });
     }
 
+    get defaultTags() {
+      const base = super.defaultTags || {};
+      return Object.assign({}, super.defaultTags, {
+        pageDot: base.pageDot || 'elix-page-dot'
+      });
+    }
+
     [inject](template) {
       return `
         <div id="pageDotsWrapper" role="none" style="display: flex; flex: 1; overflow: hidden;">
@@ -62,7 +70,7 @@ function PageDotsMixin(Base) {
           // No items yet.
           this[pageDotsKey] = [];
         } else {
-          const pageDotTag = this.tags.pageDot;
+          const pageDotTag = this.pageDotTag || this.defaultTags.pageDot;
           this[pageDotsKey] = this.items.map(() =>
             document.createElement(pageDotTag)
           );
@@ -74,6 +82,13 @@ function PageDotsMixin(Base) {
       return this[pageDotsKey];
     }
 
+    get pageDotTag() {
+      return this[pageDotTagKey];
+    }
+    set pageDotTag(pageDotTag) {
+      this[pageDotTagKey] = pageDotTag;
+    }
+
     [symbols.render]() {
       if (super[symbols.render]) { super[symbols.render](); }
       const selectedIndex = this.state.selectedIndex;
@@ -83,13 +98,6 @@ function PageDotsMixin(Base) {
       this.pageDots.forEach((pageDot, index) => {
         const opacity = opacityForDotWithIndex(index, selectedIndex, selectionFraction);
         pageDot.style.opacity = opacity;
-      });
-    }
-
-    get tags() {
-      const base = super.tags || {};
-      return Object.assign({}, super.tags, {
-        pageDot: base.pageDot || 'elix-page-dot'
       });
     }
 

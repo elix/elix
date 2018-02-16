@@ -8,6 +8,10 @@ import OpenCloseMixin from './OpenCloseMixin.js';
 import OverlayMixin from './OverlayMixin.js';
 
 
+const backdropTagKey = Symbol('backdropTag');
+const frameTagKey = Symbol('frameTag');
+
+
 const Base =
   DialogModalityMixin(
   KeyboardMixin(
@@ -35,16 +39,30 @@ const Base =
  */
 class Dialog extends Base {
 
-  get tags() {
+  get defaultTags() {
     return {
       backdrop: 'elix-modal-backdrop',
       frame: 'elix-overlay-frame'
     };
   }
 
+  get backdropTag() {
+    return this[backdropTagKey];
+  }
+  set backdropTag(backdropTag) {
+    this[backdropTagKey] = backdropTag;
+  }
+
+  get frameTag() {
+    return this[frameTagKey];
+  }
+  set frameTag(frameTag) {
+    this[frameTagKey] = frameTag;
+  }
+
   get [symbols.template]() {
-    const backdropTag = this.tags.backdrop;
-    const frameTag = this.tags.frame;
+    const backdropTag = this.backdropTag || this.defaultTags.backdrop;
+    const frameTag = this.frameTag || this.defaultTags.frame;
     return `
       <style>
         :host {

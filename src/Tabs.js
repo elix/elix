@@ -77,6 +77,13 @@ class Tabs extends Base {
     });
   }
 
+  get defaultTags() {
+    return {
+      tabButton: 'elix-tab-button',
+      tabPanels: 'elix-modes'
+    };
+  }
+
   itemUpdates(item, calcs, original) {
     const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
     
@@ -176,15 +183,8 @@ class Tabs extends Base {
     this.setState({ tabPosition });
   }
 
-  get tags() {
-    return {
-      tabButton: 'elix-tab-button',
-      tabPanels: 'elix-modes'
-    };
-  }
-
   get [symbols.template]() {
-    const tabPanelsTag = this.tags.tabPanels;
+    const tabPanelsTag = this.defaultTags.tabPanels;
     return `
       <style>
         :host {

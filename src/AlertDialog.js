@@ -4,6 +4,7 @@ import Dialog from './Dialog.js';
 
 
 const choiceButtonsKey= Symbol('choiceButtons');
+const choiceButtonTagKey = Symbol('choiceButtonTag');
 const previousChoicesKey = Symbol('previousChoices');
 
 
@@ -52,7 +53,7 @@ class AlertDialog extends Dialog {
   get choiceButtons() {
     if (this.choices !== this[previousChoicesKey]) {
       // Items have changed; create new buttons set.
-      const choiceButtonTag = this.tags.choiceButton;
+      const choiceButtonTag = this.choiceButtonTag || this.defaultTags.choiceButton;
       this[choiceButtonsKey] = this.choices.map(choice => {
         const button = document.createElement(choiceButtonTag);
         button.textContent = choice;
@@ -63,6 +64,13 @@ class AlertDialog extends Dialog {
       this[previousChoicesKey] = this.choices;
     }
     return this[choiceButtonsKey];
+  }
+
+  get choiceButtonTag() {
+    return this[choiceButtonTagKey];
+  }
+  set choiceButtonTag(choiceButtonTag) {
+    this[choiceButtonTagKey] = choiceButtonTag;
   }
 
   /**
@@ -82,6 +90,13 @@ class AlertDialog extends Dialog {
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       choices: ['OK']
+    });
+  }
+
+  get defaultTags() {
+    const base = super.defaultTags || {};
+    return Object.assign({}, base, {
+      choiceButton: base.choiceButton || 'button'
     });
   }
 
@@ -135,13 +150,6 @@ class AlertDialog extends Dialog {
         </div>
       </div>
     `);
-  }
-
-  get tags() {
-    const base = super.tags || {};
-    return Object.assign({}, base, {
-      choiceButton: base.choiceButton || 'button'
-    });
   }
 
   get updates() {

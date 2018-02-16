@@ -74,6 +74,13 @@ class Spotlight extends Base {
     });
   }
 
+  get defaultTags() {
+    return {
+      stage: 'div',
+      cast: 'div'
+    };
+  }
+
   get items() {
     return this.$.stage.items;
   }
@@ -122,16 +129,9 @@ class Spotlight extends Base {
     this[stageTagKey] = stageTag;
   }
 
-  get tags() {
-    return {
-      stage: 'div',
-      cast: 'div'
-    };
-  }
-
   get [symbols.template]() {
-    const stageTag = this.stageTag || this.tags.stage;
-    const castTag = this.castTag || this.tags.cast;
+    const stageTag = this.stageTag || this.defaultTags.stage;
+    const castTag = this.castTag || this.defaultTags.cast;
     return `
       <style>
         :host {

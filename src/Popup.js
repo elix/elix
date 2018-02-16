@@ -7,6 +7,9 @@ import OverlayMixin from './OverlayMixin.js';
 import PopupModalityMixin from './PopupModalityMixin.js';
 
 
+const frameTagKey = Symbol('frameTag');
+
+
 const Base =
   KeyboardMixin(
   OpenCloseMixin(
@@ -28,14 +31,21 @@ const Base =
  */
 class Popup extends Base {
 
-  get tags() {
+  get defaultTags() {
     return {
       frame: 'elix-overlay-frame'
     };
   }
 
+  get frameTag() {
+    return this[frameTagKey];
+  }
+  set frameTag(frameTag) {
+    this[frameTagKey] = frameTag;
+  }
+
   get [symbols.template]() {
-    const frameTag = this.tags.frame;
+    const frameTag = this.frameTag || this.defaultTags.frame;
     return `
       <style>
         :host {

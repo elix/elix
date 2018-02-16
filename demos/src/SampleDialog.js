@@ -15,8 +15,8 @@ class SampleDialog extends Dialog {
     });
   }
 
-  get tags() {
-    return Object.assign({}, super.tags, {
+  get defaultTags() {
+    return Object.assign({}, super.defaultTags, {
       backdrop: 'custom-backdrop',
       frame: 'custom-overlay-frame'
     });

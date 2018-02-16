@@ -26,8 +26,8 @@ class CustomCarousel extends Base {
     });
   }
 
-  get tags() {
-    return Object.assign({}, super.tags, {
+  get defaultTags() {
+    return Object.assign({}, super.defaultTags, {
       arrowButton: 'custom-arrow-button',
       pageDot: 'custom-page-dot'
     });

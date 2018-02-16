@@ -13,6 +13,10 @@ import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 import TransitionEffectMixin from './TransitionEffectMixin.js';
 
 
+const backdropTagKey = Symbol('backdropTag');
+const frameTagKey = Symbol('frameTag');
+
+
 const Base =
   DialogModalityMixin(
   KeyboardMixin(
@@ -48,6 +52,13 @@ const Base =
  */
 class Drawer extends Base {
 
+  get backdropTag() {
+    return this[backdropTagKey];
+  }
+  set backdropTag(backdropTag) {
+    this[backdropTagKey] = backdropTag;
+  }
+  
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
     // Implicitly close on background clicks.
@@ -55,15 +66,29 @@ class Drawer extends Base {
       this.close();
     });
   }
-
+  
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       selectedIndex: 0
     });
   }
+  
+  get defaultTags() {
+    return {
+      backdrop: 'elix-modal-backdrop',
+      frame: 'elix-overlay-frame'
+    };
+  }
 
   get [symbols.elementsWithTransitions]() {
     return [this.$.backdrop, this.$.frame];
+  }
+
+  get frameTag() {
+    return this[frameTagKey];
+  }
+  set frameTag(frameTag) {
+    this[frameTagKey] = frameTag;
   }
 
   async [symbols.swipeLeft]() {
@@ -92,16 +117,9 @@ class Drawer extends Base {
     return element;
   }
 
-  get tags() {
-    return {
-      backdrop: 'elix-modal-backdrop',
-      frame: 'elix-overlay-frame'
-    };
-  }
-
   get [symbols.template]() {
-    const backdropTag = this.tags.backdrop;
-    const frameTag = this.tags.frame;
+    const backdropTag = this.backdropTag || this.defaultTags.backdrop;
+    const frameTag = this.frameTag || this.defaultTags.frame;
     return `
       <style>
         :host {

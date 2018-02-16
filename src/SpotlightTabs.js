@@ -14,6 +14,15 @@ class SpotlightTabs extends Spotlight {
     });
   }
 
+  get defaultTags() {
+    const base = super.defaultTags || {};
+    return Object.assign({}, base, {
+      avatar: 'elix-tab-button',
+      cast: 'elix-tab-strip',
+      stage: 'elix-modes'
+    })
+  }
+
   setAvatarItem(avatar, item) {
     super.setAvatarItem(avatar, item);
     const label = item.getAttribute('aria-label') || item.alt;
@@ -35,15 +44,6 @@ class SpotlightTabs extends Spotlight {
   }
   set tabAlign(tabAlign) {
     this.setState({ tabAlign });
-  }
-
-  get tags() {
-    const base = super.tags || {};
-    return Object.assign({}, base, {
-      avatar: 'elix-tab-button',
-      cast: 'elix-tab-strip',
-      stage: 'elix-modes'
-    })
   }
 
   get updates() {

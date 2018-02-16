@@ -52,14 +52,8 @@ class SpotlightCarousel extends Base {
     });
   }
 
-  get [symbols.swipeTarget]() {
-    /** @type {any} */
-    const element = this.$.stage;
-    return element;
-  }
-
-  get tags() {
-    const base = super.tags || {};
+  get defaultTags() {
+    const base = super.defaultTags || {};
     return Object.assign({}, base, {
       avatar: 'custom-thumbnail',
       // cast: 'centered-strip-highlight',
@@ -67,6 +61,12 @@ class SpotlightCarousel extends Base {
       // stage: 'elix-sliding-viewport'
       stage: 'sliding-viewport-with-arrows'
     })
+  }
+
+  get [symbols.swipeTarget]() {
+    /** @type {any} */
+    const element = this.$.stage;
+    return element;
   }
 
   get updates() {
