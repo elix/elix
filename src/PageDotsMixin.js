@@ -92,9 +92,6 @@ function PageDotsMixin(Base) {
         pageDot: base.pageDot || 'elix-page-dot'
       });
     }
-    set tags(tags) {
-      super.tags = tags;
-    }
 
     get updates() {
       return merge(super.updates, {

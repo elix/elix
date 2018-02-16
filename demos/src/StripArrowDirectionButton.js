@@ -1,5 +1,4 @@
 import { merge } from '../../src/updates.js';
-import * as symbols from '../../src/symbols.js';
 import ArrowDirectionButton from '../../src/ArrowDirectionButton.js';
 
 

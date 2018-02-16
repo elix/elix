@@ -3,7 +3,9 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const PageDotsMixin: Mixin<{}, {}> & {
+declare const PageDotsMixin: Mixin<{}, {
+  tags: PlainObject;
+}> & {
   inject: symbol;
 };
 

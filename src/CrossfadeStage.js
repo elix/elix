@@ -1,5 +1,4 @@
 import { merge } from './updates.js';
-import * as fractionalSelection from './fractionalSelection.js';
 import Modes from './Modes.js';
 
 

@@ -1,6 +1,5 @@
 import './OverlayFrame.js';
 import * as symbols from './symbols.js';
-import CustomTagsMixin from './CustomTagsMixin.js';
 import ElementBase from './ElementBase.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
@@ -9,13 +8,12 @@ import PopupModalityMixin from './PopupModalityMixin.js';
 
 
 const Base =
-  CustomTagsMixin(
   KeyboardMixin(
   OpenCloseMixin(
   OverlayMixin(
   PopupModalityMixin(
     ElementBase
-  )))));
+  ))));
 
 
 /**
@@ -31,13 +29,9 @@ const Base =
 class Popup extends Base {
 
   get tags() {
-    const base = super.tags || {};
-    return Object.assign({}, base, {
-      frame: base.frame || 'elix-overlay-frame'
-    });
-  }
-  set tags(tags) {
-    super.tags = tags;
+    return {
+      frame: 'elix-overlay-frame'
+    };
   }
 
   get [symbols.template]() {

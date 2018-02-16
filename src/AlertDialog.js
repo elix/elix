@@ -143,9 +143,6 @@ class AlertDialog extends Dialog {
       choiceButton: base.choiceButton || 'button'
     });
   }
-  set tags(tags) {
-    super.tags = tags;
-  }
 
   get updates() {
     return merge(super.updates, {

@@ -68,9 +68,6 @@ class SpotlightCarousel extends Base {
       stage: 'sliding-viewport-with-arrows'
     })
   }
-  set tags(tags) {
-    super.tags = tags;
-  }
 
   get updates() {
     return merge(super.updates, {

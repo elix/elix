@@ -97,9 +97,6 @@ function ArrowDirectionMixin(Base) {
         arrowButton: base.arrowButton || 'elix-arrow-direction-button'
       });
     }
-    set tags(tags) {
-      super.tags = tags;
-    }
 
     get updates() {
       const base = super.updates;

@@ -21,9 +21,6 @@ class SampleDialog extends Dialog {
       frame: 'custom-overlay-frame'
     });
   }
-  set tags(tags) {
-    super.tags = tags;
-  }
 
 }
 

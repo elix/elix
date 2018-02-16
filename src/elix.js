@@ -20,7 +20,6 @@ export { default as AttributeMarshallingMixin } from './AttributeMarshallingMixi
 export { default as AutosizeTextarea } from './AutosizeTextarea.js';
 export { default as ClickSelectionMixin } from './ClickSelectionMixin.js';
 export { default as ContentItemsMixin } from './ContentItemsMixin.js';
-export { default as CustomTagsMixin } from './CustomTagsMixin.js';
 export { default as Dialog } from './Dialog.js';
 export { default as DialogModalityMixin } from './DialogModalityMixin.js';
 export { default as DirectionSelectionMixin } from './DirectionSelectionMixin.js';

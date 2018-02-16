@@ -1,6 +1,5 @@
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
-import CustomTagsMixin from './CustomTagsMixin.js';
 import ElementBase from './ElementBase.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 
@@ -13,10 +12,9 @@ const stageTagKey = Symbol('stageTag');
 
 
 const Base =
-  CustomTagsMixin(
   SingleSelectionMixin(
     ElementBase
-  ));
+  );
 
 
 class Spotlight extends Base {
@@ -125,14 +123,10 @@ class Spotlight extends Base {
   }
 
   get tags() {
-    const base = super.tags || {};
-    return Object.assign({}, base, {
+    return {
       stage: 'div',
       cast: 'div'
-    });
-  }
-  set tags(tags) {
-    super.tags = tags;
+    };
   }
 
   get [symbols.template]() {

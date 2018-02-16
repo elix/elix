@@ -45,9 +45,6 @@ class SpotlightTabs extends Spotlight {
       stage: 'elix-modes'
     })
   }
-  set tags(tags) {
-    super.tags = tags;
-  }
 
   get updates() {
     return merge(super.updates, {

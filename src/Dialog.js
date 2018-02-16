@@ -1,7 +1,6 @@
 import './ModalBackdrop.js';
 import './OverlayFrame.js';
 import * as symbols from './symbols.js';
-import CustomTagsMixin from './CustomTagsMixin.js';
 import DialogModalityMixin from './DialogModalityMixin.js';
 import ElementBase from './ElementBase.js';
 import KeyboardMixin from './KeyboardMixin.js';
@@ -10,13 +9,12 @@ import OverlayMixin from './OverlayMixin.js';
 
 
 const Base =
-  CustomTagsMixin(
   DialogModalityMixin(
   KeyboardMixin(
   OpenCloseMixin(
   OverlayMixin(
     ElementBase
-  )))));
+  ))));
 
 
 /**
@@ -28,7 +26,6 @@ const Base =
  * content. Both the backdrop and the dialog itself can be styled.
  * 
  * @inherits ElementBase
- * @mixes CustomTagsMixin
  * @mixes DialogModalityMixin
  * @mixes FocusCaptureMixin
  * @mixes KeyboardMixin
@@ -39,14 +36,10 @@ const Base =
 class Dialog extends Base {
 
   get tags() {
-    const base = super.tags || {};
-    return Object.assign({}, base, {
-      backdrop: base.backdrop || 'elix-modal-backdrop',
-      frame: base.frame || 'elix-overlay-frame'
-    });
-  }
-  set tags(tags) {
-    super.tags = tags;
+    return {
+      backdrop: 'elix-modal-backdrop',
+      frame: 'elix-overlay-frame'
+    };
   }
 
   get [symbols.template]() {

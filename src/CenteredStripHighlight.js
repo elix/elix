@@ -1,5 +1,4 @@
 import { merge } from './updates.js';
-import * as symbols from './symbols.js';
 import CenteredStrip from './CenteredStrip.js';
 
 
