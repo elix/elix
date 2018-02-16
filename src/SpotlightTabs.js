@@ -14,13 +14,15 @@ class SpotlightTabs extends Spotlight {
     });
   }
 
-  get defaultTags() {
-    const base = super.defaultTags || {};
+  get defaults() {
+    const base = super.defaults || {};
     return Object.assign({}, base, {
-      avatar: 'elix-tab-button',
-      cast: 'elix-tab-strip',
-      stage: 'elix-modes'
-    })
+      tags: Object.assign({}, base.tags, {
+        avatar: 'elix-tab-button',
+        cast: 'elix-tab-strip',
+        stage: 'elix-modes'
+      })
+    });
   }
 
   setAvatarItem(avatar, item) {

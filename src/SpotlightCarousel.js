@@ -45,22 +45,24 @@ const Base =
  */
 class SpotlightCarousel extends Base {
 
+  get defaults() {
+    const base = super.defaults || {};
+    return Object.assign({}, base, {
+      tags: Object.assign({}, base.tags, {
+        avatar: 'custom-thumbnail',
+        // cast: 'centered-strip-highlight',
+        cast: 'centered-strip-opacity',
+        // stage: 'elix-sliding-viewport'
+        stage: 'sliding-viewport-with-arrows'
+      })
+    });
+  }
+
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       castPosition: 'bottom',
       orientation: 'horizontal'
     });
-  }
-
-  get defaultTags() {
-    const base = super.defaultTags || {};
-    return Object.assign({}, base, {
-      avatar: 'custom-thumbnail',
-      // cast: 'centered-strip-highlight',
-      cast: 'centered-strip-opacity',
-      // stage: 'elix-sliding-viewport'
-      stage: 'sliding-viewport-with-arrows'
-    })
   }
 
   get [symbols.swipeTarget]() {

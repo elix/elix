@@ -44,18 +44,20 @@ function ArrowDirectionMixin(Base) {
       });
     }
 
+    get defaults() {
+      const base = super.defaults || {};
+      return Object.assign({}, base, {
+        tags: Object.assign({}, base.tags, {
+          arrowButton: base.tags && base.tags.arrowButton || 'elix-arrow-direction-button'
+        })
+      });
+    }
+
     get defaultState() {
       return Object.assign({}, super.defaultState, {
         showArrowButtons: true,
         orientation: 'horizontal',
         overlayArrowButtons: true
-      });
-    }
-
-    get defaultTags() {
-      const base = super.defaultTags || {};
-      return Object.assign({}, super.defaultTags, {
-        arrowButton: base.arrowButton || 'elix-arrow-direction-button'
       });
     }
 
@@ -70,7 +72,7 @@ function ArrowDirectionMixin(Base) {
     }
 
     [inject](template) {
-      const arrowButtonTag = this.arrowButtonTag || this.defaultTags.arrowButton;
+      const arrowButtonTag = this.arrowButtonTag || this.defaults.tags.arrowButton;
       return `
         <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;">
           <${arrowButtonTag}

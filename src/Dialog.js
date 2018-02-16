@@ -39,10 +39,12 @@ const Base =
  */
 class Dialog extends Base {
 
-  get defaultTags() {
+  get defaults() {
     return {
-      backdrop: 'elix-modal-backdrop',
-      frame: 'elix-overlay-frame'
+      tags: {
+        backdrop: 'elix-modal-backdrop',
+        frame: 'elix-overlay-frame'
+      }
     };
   }
 
@@ -61,8 +63,8 @@ class Dialog extends Base {
   }
 
   get [symbols.template]() {
-    const backdropTag = this.backdropTag || this.defaultTags.backdrop;
-    const frameTag = this.frameTag || this.defaultTags.frame;
+    const backdropTag = this.backdropTag || this.defaults.tags.backdrop;
+    const frameTag = this.frameTag || this.defaults.tags.frame;
     return `
       <style>
         :host {

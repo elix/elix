@@ -66,18 +66,20 @@ class Drawer extends Base {
       this.close();
     });
   }
-  
+    
+  get defaults() {
+    return {
+      tags: {
+        backdrop: 'elix-modal-backdrop',
+        frame: 'elix-overlay-frame'
+      }
+    };
+  }
+
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       selectedIndex: 0
     });
-  }
-  
-  get defaultTags() {
-    return {
-      backdrop: 'elix-modal-backdrop',
-      frame: 'elix-overlay-frame'
-    };
   }
 
   get [symbols.elementsWithTransitions]() {
@@ -118,8 +120,8 @@ class Drawer extends Base {
   }
 
   get [symbols.template]() {
-    const backdropTag = this.backdropTag || this.defaultTags.backdrop;
-    const frameTag = this.frameTag || this.defaultTags.frame;
+    const backdropTag = this.backdropTag || this.defaults.tags.backdrop;
+    const frameTag = this.frameTag || this.defaults.tags.frame;
     return `
       <style>
         :host {

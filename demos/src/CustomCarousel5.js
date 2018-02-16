@@ -19,17 +19,20 @@ const Base =
 // Customize everything.
 class CustomCarousel extends Base {
 
+  get defaults() {
+    const base = super.defaults || {};
+    return Object.assign({}, base, {
+      tags: Object.assign({}, base.tags, {
+        arrowButton: 'custom-arrow-button',
+        pageDot: 'custom-page-dot'
+      })
+    });
+  }
+
   get defaultState() {
     // Show arrow buttons if device has a fine-grained pointer (e.g., mouse).
     return Object.assign({}, super.defaultState, {
       showArrowButtons: window.matchMedia('(pointer:fine)').matches
-    });
-  }
-
-  get defaultTags() {
-    return Object.assign({}, super.defaultTags, {
-      arrowButton: 'custom-arrow-button',
-      pageDot: 'custom-page-dot'
     });
   }
 

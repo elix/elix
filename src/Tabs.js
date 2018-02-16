@@ -12,6 +12,8 @@ import SlotContentMixin from './SlotContentMixin.js';
 const generatedIdKey = Symbol('generatedId');
 const previousItemsKey = Symbol('previousItems');
 const tabButtonsKey = Symbol('tabButtons');
+const tabButtonTagKey = Symbol('tabButtonTag');
+const tabPanelsTagKey = Symbol('tabPanelsTag');
 
 
 const Base =
@@ -68,6 +70,15 @@ class Tabs extends Base {
     updateDefaultTabButtons(this);
   }
 
+  get defaults() {
+    return {
+      tags: {
+        tabButton: 'elix-tab-button',
+        tabPanels: 'elix-modes'
+      }
+    };
+  }
+
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       selectionRequired: true,
@@ -75,13 +86,6 @@ class Tabs extends Base {
       tabButtons: [],
       tabPosition: 'top'
     });
-  }
-
-  get defaultTags() {
-    return {
-      tabButton: 'elix-tab-button',
-      tabPanels: 'elix-modes'
-    };
   }
 
   itemUpdates(item, calcs, original) {
@@ -170,6 +174,20 @@ class Tabs extends Base {
       defaultTabButtons(this);
   }
 
+  get tabButtonTag() {
+    return this[tabButtonTagKey];
+  }
+  set tabButtonTag(tabButtonTag) {
+    this[tabButtonTagKey] = tabButtonTag;
+  }
+
+  get tabPanelsTag() {
+    return this[tabPanelsTagKey];
+  }
+  set tabPanelsTag(tabPanelsTag) {
+    this[tabPanelsTagKey] = tabPanelsTag;
+  }
+
   /**
    * The position of the tab strip with respect to the associated tab panels.
    * 
@@ -184,7 +202,7 @@ class Tabs extends Base {
   }
 
   get [symbols.template]() {
-    const tabPanelsTag = this.defaultTags.tabPanels;
+    const tabPanelsTag = this.tabPanelsTag || this.defaults.tags.tabPanels;
     return `
       <style>
         :host {
@@ -271,7 +289,7 @@ function defaultTabButtons(element) {
       element[tabButtonsKey] = [];
     } else {
       // Items have changed; create new buttons set.
-      const tabButtonTag = element.tags.tabButton;
+      const tabButtonTag = element.tabButtonTag || element.defaults.tags.tabButton;
       element[tabButtonsKey] = element.items.map((panel, index) => {
         const label = panel.getAttribute('aria-label');
         const panelId = getIdForPanel(element, panel, index);

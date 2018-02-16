@@ -15,10 +15,13 @@ class SampleDialog extends Dialog {
     });
   }
 
-  get defaultTags() {
-    return Object.assign({}, super.defaultTags, {
-      backdrop: 'custom-backdrop',
-      frame: 'custom-overlay-frame'
+  get defaults() {
+    const base = super.defaults || {};
+    return Object.assign({}, base, {
+      tags: Object.assign({}, base.tags, {
+        backdrop: 'custom-backdrop',
+        frame: 'custom-overlay-frame'
+      })
     });
   }
 

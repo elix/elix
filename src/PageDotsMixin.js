@@ -33,16 +33,18 @@ function PageDotsMixin(Base) {
       });
     }
 
-    get defaultState() {
-      return Object.assign({}, super.defaultState, {
-        orientation: 'horizontal'
+    get defaults() {
+      const base = super.defaults || {};
+      return Object.assign({}, base, {
+        tags: Object.assign({}, base.tags, {
+          pageDot: base.tags && base.tags.pageDot || 'elix-page-dot'
+        })
       });
     }
 
-    get defaultTags() {
-      const base = super.defaultTags || {};
-      return Object.assign({}, super.defaultTags, {
-        pageDot: base.pageDot || 'elix-page-dot'
+    get defaultState() {
+      return Object.assign({}, super.defaultState, {
+        orientation: 'horizontal'
       });
     }
 
@@ -70,7 +72,7 @@ function PageDotsMixin(Base) {
           // No items yet.
           this[pageDotsKey] = [];
         } else {
-          const pageDotTag = this.pageDotTag || this.defaultTags.pageDot;
+          const pageDotTag = this.pageDotTag || this.defaults.tags.pageDot;
           this[pageDotsKey] = this.items.map(() =>
             document.createElement(pageDotTag)
           );

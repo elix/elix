@@ -4,7 +4,7 @@
 /// <reference path="shared.d.ts"/>
 
 declare const ArrowDirectionMixin: Mixin<{}, {
-  defaultTags: PlainObject;
+  defaults: PlainObject;
 }> & {
   inject: symbol;
 };

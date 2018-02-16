@@ -53,7 +53,7 @@ class AlertDialog extends Dialog {
   get choiceButtons() {
     if (this.choices !== this[previousChoicesKey]) {
       // Items have changed; create new buttons set.
-      const choiceButtonTag = this.choiceButtonTag || this.defaultTags.choiceButton;
+      const choiceButtonTag = this.choiceButtonTag || this.defaults.tags.choiceButton;
       this[choiceButtonsKey] = this.choices.map(choice => {
         const button = document.createElement(choiceButtonTag);
         button.textContent = choice;
@@ -87,16 +87,18 @@ class AlertDialog extends Dialog {
     this.setState({ choices });
   }
 
-  get defaultState() {
-    return Object.assign({}, super.defaultState, {
-      choices: ['OK']
+  get defaults() {
+    const base = super.defaults || {};
+    return Object.assign({}, base, {
+      tags: Object.assign({}, base.tags, {
+        choiceButton: base.tags && base.tags.choiceButton || 'button'
+      })
     });
   }
 
-  get defaultTags() {
-    const base = super.defaultTags || {};
-    return Object.assign({}, base, {
-      choiceButton: base.choiceButton || 'button'
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      choices: ['OK']
     });
   }
 

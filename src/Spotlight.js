@@ -68,17 +68,19 @@ class Spotlight extends Base {
     updateDefaultCast(this);
   }
 
+  get defaults() {
+    return {
+      tags: {
+        stage: 'div',
+        cast: 'div'
+      }
+    };
+  }
+
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       castPosition: 'top'
     });
-  }
-
-  get defaultTags() {
-    return {
-      stage: 'div',
-      cast: 'div'
-    };
   }
 
   get items() {
@@ -130,8 +132,8 @@ class Spotlight extends Base {
   }
 
   get [symbols.template]() {
-    const stageTag = this.stageTag || this.defaultTags.stage;
-    const castTag = this.castTag || this.defaultTags.cast;
+    const stageTag = this.stageTag || this.defaults.tags.stage;
+    const castTag = this.castTag || this.defaults.tags.cast;
     return `
       <style>
         :host {
@@ -193,7 +195,7 @@ function arrayEquals(a, b) {
 
 function avatarForItem(element, item) {
   let avatar;
-  const avatarTag = element.avatarTag || element.tags.avatar;
+  const avatarTag = element.avatarTag || element.defaults.tags.avatar;
   if (avatarTag) {
     avatar = document.createElement(avatarTag);
     if (customElements.get(avatarTag)) {

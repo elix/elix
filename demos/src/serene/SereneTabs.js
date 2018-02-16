@@ -6,10 +6,13 @@ import Tabs from '../../../src/Tabs.js';
 
 class SereneTabs extends Tabs {
 
-  get defaultTags() {
-    return Object.assign({}, super.defaultTags, {
-      tabButton: 'serene-tab-button',
-      tabPanels: 'serene-modes'
+  get defaults() {
+    const base = super.defaults || {};
+    return Object.assign({}, base, {
+      tags: Object.assign({}, base.tags, {
+        tabButton: 'serene-tab-button',
+        tabPanels: 'serene-modes'
+      })
     });
   }
 

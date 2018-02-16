@@ -31,9 +31,11 @@ const Base =
  */
 class Popup extends Base {
 
-  get defaultTags() {
+  get defaults() {
     return {
-      frame: 'elix-overlay-frame'
+      tags: {
+        frame: 'elix-overlay-frame'
+      }
     };
   }
 
@@ -45,7 +47,7 @@ class Popup extends Base {
   }
 
   get [symbols.template]() {
-    const frameTag = this.frameTag || this.defaultTags.frame;
+    const frameTag = this.frameTag || this.defaults.tags.frame;
     return `
       <style>
         :host {
