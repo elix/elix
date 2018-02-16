@@ -22,11 +22,13 @@ function PageDotsMixin(Base) {
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
       this.$.pageDots.addEventListener('click', event => {
+        this[symbols.raiseChangeEvents] = true;
         const dot = event.target;
         const dotIndex = this.pageDots.indexOf(dot);
         if (dotIndex >= 0) {
           this.selectedIndex = dotIndex;
         }
+        this[symbols.raiseChangeEvents] = false;
       });
     }
 
