@@ -3,15 +3,23 @@
 
 <head>
 
+  <!--
+
+  Shows extensive customization of a SlidingCarousel via a subclass that
+  sets tag properties for custom buttons, sets custom content via `updates`,
+  and applies a custom mixin that shows page numbers.
+
+  -->
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Carousel with multiple customizations</title>
 
-  <link rel="stylesheet" href="demos.css">
-  <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
-  <script type="module" src="./src/showElementsWhenDefined.js"></script>
-  <script type="module" src="./src/CustomCarousel5.js"></script>
-  <script nomodule src="../build/demos.js"></script>
+  <link rel="stylesheet" href="../demos.css">
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="../src/showElementsWhenDefined.js"></script>
+  <script type="module" src="../src/CustomCarousel5.js"></script>
+  <script nomodule src="../../build/demos.js"></script>
 
   <style>
     html {
@@ -51,11 +59,11 @@
         }
       </style>
       <custom-carousel aria-label="Nature scenes">
-        <img src="images/image01.jpg" alt="Lake" />
-        <img src="images/image02.jpg" alt="Horses" />
-        <img src="images/image03.jpg" alt="Ladybug on wheat" />
-        <img src="images/image04.jpg" alt="Mountain" />
-        <img src="images/image05.jpg" alt="Palm tree" />
+        <img src="../images/image01.jpg" alt="Mountain lake" />
+        <img src="../images/image02.jpg" alt="Terraced farm" />
+        <img src="../images/image03.jpg" alt="Winter trees" />
+        <img src="../images/image04.jpg" alt="Forest river" />
+        <img src="../images/image05.jpg" alt="Red panda" />
       </custom-carousel>
   </div>
 </body>

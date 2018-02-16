@@ -2,18 +2,24 @@
 <html lang="en">
 <head>
 
+  <!--
+
+  Shows how to customize AutosizeTextarea styling using `updates`.
+
+  -->
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Custom AutosizeTextarea</title>
 
-  <link rel="stylesheet" href="demos.css">
-  <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
-  <script type="module" src="./src/showElementsWhenDefined.js"></script>
-  <script nomodule src="../build/demos.js"></script>
+  <link rel="stylesheet" href="../demos.css">
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="../src/showElementsWhenDefined.js"></script>
+  <script nomodule src="../../build/demos.js"></script>
 
   <script type="module">
-    import { merge } from '../src/updates.js';
-    import AutosizeTextarea from '../src/AutosizeTextarea.js';
+    import { merge } from '../../src/updates.js';
+    import AutosizeTextarea from '../../src/AutosizeTextarea.js';
 
     class CustomAutosizeTextarea extends AutosizeTextarea {
       get updates() {

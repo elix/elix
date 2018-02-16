@@ -3,17 +3,24 @@
 
 <head>
 
+  <!--
+
+  Shows how to customize SlidingCarousel arrow buttons and page dots in HTML by
+  setting tag properties.
+
+  -->
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Carousel with markup for custom arrows and dots</title>
 
-  <link rel="stylesheet" href="demos.css">
-  <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
-  <script type="module" src="./src/showElementsWhenDefined.js"></script>
-  <script type="module" src="../src/SlidingCarousel.js"></script>
-  <script type="module" src="./src/CustomArrowButton.js"></script>
-  <script type="module" src="./src/CustomPageDot.js"></script>
-  <script nomodule src="../build/demos.js"></script>
+  <link rel="stylesheet" href="../demos.css">
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="../src/showElementsWhenDefined.js"></script>
+  <script type="module" src="../../src/SlidingCarousel.js"></script>
+  <script type="module" src="../src/CustomArrowButton.js"></script>
+  <script type="module" src="../src/CustomPageDot.js"></script>
+  <script nomodule src="../../build/demos.js"></script>
 
   <style>
     html {
@@ -56,11 +63,11 @@
       <elix-sliding-carousel
           aria-label="Nature scenes"
           tags="arrowButton: custom-arrow-button; pageDot: custom-page-dot">
-        <img src="images/image01.jpg" alt="Lake" />
-        <img src="images/image02.jpg" alt="Horses" />
-        <img src="images/image03.jpg" alt="Ladybug on wheat" />
-        <img src="images/image04.jpg" alt="Mountain" />
-        <img src="images/image05.jpg" alt="Palm tree" />
+        <img src="../images/image01.jpg" alt="Mountain lake" />
+        <img src="../images/image02.jpg" alt="Terraced farm" />
+        <img src="../images/image03.jpg" alt="Winter trees" />
+        <img src="../images/image04.jpg" alt="Forest river" />
+        <img src="../images/image05.jpg" alt="Red panda" />
       </elix-sliding-carousel>
   </div>
 </body>
