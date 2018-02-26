@@ -160,8 +160,6 @@ describe("updates helpers", () => {
 
   it("updates.apply removes extra child nodes", () => {
     const fixture = document.createElement('div');
-    const existingChild = document.createTextNode('existing');
-    fixture.appendChild(existingChild);
     const nodes = [
       document.createTextNode('one'),
       document.createTextNode('two')
