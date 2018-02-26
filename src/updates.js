@@ -185,17 +185,18 @@ export function applyChildNodes(element, childNodes) {
   const oldLength = element.childNodes.length;
   const newLength = childNodes.length;
   const length = Math.max(oldLength, newLength);
-  let oldIndex = 0;
-  for (let newIndex = 0; newIndex < length; newIndex++) {
-    const oldChild = element.childNodes[oldIndex];
-    const newChild = childNodes[newIndex];
-    if (newIndex < oldLength && newIndex < newLength && oldChild !== newChild) {
-      element.replaceChild(newChild, oldChild);
-      oldIndex++;
-    } else if (newIndex >= oldLength) {
+  for (let i = 0; i < length; i++) {
+    const oldChild = element.childNodes[i];
+    const newChild = childNodes[i];
+    if (i >= oldLength) {
+      // Add new item not in old set.
       element.appendChild(newChild);
-    } else if (newIndex >= newLength) {
-      element.removeChild(oldChild);
+    } else if (i >= newLength) {
+      // Remove old item past end of new set.
+      element.removeChild(element.childNodes[newLength]);
+    } else if (oldChild !== newChild) {
+      // Replace old item with new item.
+      element.replaceChild(newChild, oldChild);
     }
   }
 
