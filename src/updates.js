@@ -185,14 +185,16 @@ export function applyChildNodes(element, childNodes) {
   const oldLength = element.childNodes.length;
   const newLength = childNodes.length;
   const length = Math.max(oldLength, newLength);
-  for (let i = 0; i < length; i++) {
-    const oldChild = element.childNodes[i];
-    const newChild = childNodes[i];
-    if (i < oldLength && i < newLength && oldChild !== newChild) {
+  let oldIndex = 0;
+  for (let newIndex = 0; newIndex < length; newIndex++) {
+    const oldChild = element.childNodes[oldIndex];
+    const newChild = childNodes[newIndex];
+    if (newIndex < oldLength && newIndex < newLength && oldChild !== newChild) {
       element.replaceChild(newChild, oldChild);
-    } else if (i >= oldLength) {
+      oldIndex++;
+    } else if (newIndex >= oldLength) {
       element.appendChild(newChild);
-    } else if (i >= newLength) {
+    } else if (newIndex >= newLength) {
       element.removeChild(oldChild);
     }
   }

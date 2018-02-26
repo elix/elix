@@ -158,6 +158,24 @@ describe("updates helpers", () => {
     assert.isNull(existingChild.parentNode);
   });
 
+  it("updates.apply removes extra child nodes", () => {
+    const fixture = document.createElement('div');
+    const existingChild = document.createTextNode('existing');
+    fixture.appendChild(existingChild);
+    const nodes = [
+      document.createTextNode('one'),
+      document.createTextNode('two')
+    ];
+    updates.apply(fixture, {
+      childNodes: nodes
+    });
+    assert.equal(fixture.childNodes.length, 2);
+    updates.apply(fixture, {
+      childNodes: []
+    });
+    assert.equal(fixture.childNodes.length, 0);
+  });
+
   it("updates applies $ updates to referenced elements", () => {
     const fixture = document.createElement('div');
     fixture.$ = {
