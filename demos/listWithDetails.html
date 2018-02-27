@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>elix-spotlight</title>
+
+  <link rel="stylesheet" href="demos.css">
+  <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="./src/showElementsWhenDefined.js"></script>
+  <script type="module" src="../src/ListWithDetails.js"></script>
+  <script nomodule src="../build/demos.js"></script>
+
+  <style>
+    html {
+      height: 100%;
+    }
+
+    body {
+      height: 100%;
+      padding: 0;
+    }
+  </style>
+  
+</head>
+
+<body role="main" unresolved>
+  <div class="demo fullScreen">
+    <style>
+      #sampleListWithDetails {
+        height: 100%;
+        width: 100%;
+      }
+
+      #sampleListWithDetails img {
+        display: inline-block;
+        height: 100%;
+        object-fit: contain;
+        vertical-align: middle;
+        width: 100%;
+      }
+    </style>
+    <elix-list-with-details id="sampleListWithDetails" aria-label="Nature scenes">
+      <img src="images/image01.jpg" alt="Mountain lake">
+      <img src="images/image02.jpg" alt="Terraced farm">
+      <img src="images/image03.jpg" alt="Winter trees">
+      <img src="images/image04.jpg" alt="Forest river">
+      <img src="images/image05.jpg" alt="Red panda">
+      <img src="images/image06.jpg" alt="Snowy peaks">
+      <img src="images/image07.jpg" alt="Stone arch">
+      <img src="images/image08.jpg" alt="Snowy river">
+      <img src="images/image09.jpg" alt="Palm trees">
+      <img src="images/image10.jpg" alt="Sunset through palm trees">
+      <img src="images/image11.jpg" alt="River canyon">
+      <img src="images/image12.jpg" alt="Lake with milky water">
+      <img src="images/image13.jpg" alt="Dirt road lined with fallen leaves">
+      <img src="images/image14.jpg" alt="Iceberg">
+      <img src="images/image15.jpg" alt="River at sunrise">
+      <img src="images/image16.jpg" alt="Coastal mountains">
+      <img src="images/image17.jpg" alt="Hoodoo formations">
+      <img src="images/image18.jpg" alt="Sandy beach">
+      <img src="images/image19.jpg" alt="Autumn foliage on mountainside">
+      <img src="images/image20.jpg" alt="Sunset over rocky ocean pool">
+    </elix-list-with-details> 
+  </div>
+</body>
+
+</html>
