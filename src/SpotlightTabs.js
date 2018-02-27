@@ -1,4 +1,3 @@
-import './Modes.js';
 import './TabButton.js';
 import './TabStrip.js';
 import { merge } from './updates.js';
@@ -19,8 +18,7 @@ class SpotlightTabs extends Spotlight {
     return Object.assign({}, base, {
       tags: Object.assign({}, base.tags, {
         avatar: 'elix-tab-button',
-        cast: 'elix-tab-strip',
-        stage: 'elix-modes'
+        cast: 'elix-tab-strip'
       })
     });
   }

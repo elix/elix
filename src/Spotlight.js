@@ -1,3 +1,4 @@
+import './Modes.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import ElementBase from './ElementBase.js';
@@ -71,7 +72,8 @@ class Spotlight extends Base {
   get defaults() {
     return {
       tags: {
-        stage: 'div',
+        avatar: 'div',
+        stage: 'elix-modes',
         cast: 'div'
       }
     };
@@ -198,7 +200,8 @@ function avatarForItem(element, item) {
   const avatarTag = element.avatarTag || element.defaults.tags.avatar;
   if (avatarTag) {
     avatar = document.createElement(avatarTag);
-    if (customElements.get(avatarTag)) {
+    const isCustomElement = avatarTag.indexOf('-') >= 0;
+    if (!isCustomElement || customElements.get(avatarTag)) {
       element.setAvatarItem(avatar, item);
     } else {
       customElements.whenDefined(avatarTag)
