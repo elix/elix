@@ -52,10 +52,12 @@ class Spotlight extends Base {
 
   componentDidMount() {
     const handleSelectedIndexChanged = event => {
+      this[symbols.raiseChangeEvents] = true;
       const selectedIndex = event.detail.selectedIndex;
       if (this.selectedIndex !== selectedIndex) {
         this.selectedIndex = selectedIndex;
       }
+      this[symbols.raiseChangeEvents] = false;
     };
     this.$.stage.addEventListener('selected-index-changed', handleSelectedIndexChanged);
     this.$.cast.addEventListener('selected-index-changed', handleSelectedIndexChanged);
@@ -65,7 +67,7 @@ class Spotlight extends Base {
   }
 
   componentDidUpdate(previousState) {
-    if (super.componentDidMount) { super.componentDidMount(); }
+    if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
     updateDefaultCast(this);
   }
 
