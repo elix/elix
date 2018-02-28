@@ -78,12 +78,7 @@ class SpotlightCarousel extends Base {
           attributes: {
             tabindex: ''
           }
-        },
-        // cast: {
-        //   style: {
-        //     flex: '0.2'
-        //   }
-        // }
+        }
       }
     });
   }

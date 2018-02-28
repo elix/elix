@@ -75,8 +75,11 @@ export default function KeyboardMixin(Base) {
     }
 
     get updates() {
-      const tabindex = this.state.original && this.state.original.attributes.tabindex
-          || this.state.tabindex;
+      const originalTabIndex = this.state.original &&
+          this.state.original.attributes.tabindex;
+      const tabindex = originalTabIndex !== undefined ?
+        originalTabIndex :
+        this.state.tabindex;
       return merge(super.updates, {
         attributes: {
           tabindex
