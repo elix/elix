@@ -55,9 +55,11 @@ class Tabs extends Base {
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
     this.$.tabStrip.addEventListener('selected-index-changed', () => {
+      this[symbols.raiseChangeEvents] = true;
       /** @type {any} */
       const tabStrip = this.$.tabStrip;
       this.selectedIndex = tabStrip.selectedIndex;
+      this[symbols.raiseChangeEvents] = false;
     });
     this.$.tabButtonsSlot.addEventListener('slotchange', () => {
       updateDefaultTabButtons(this);
@@ -66,7 +68,7 @@ class Tabs extends Base {
 
   /* eslint-disable no-unused-vars */
   componentDidUpdate(previousState) {
-    if (super.componentDidMount) { super.componentDidMount(); }
+    if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
     updateDefaultTabButtons(this);
   }
 
