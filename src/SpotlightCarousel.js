@@ -5,7 +5,6 @@ import '../demos/src/SlidingViewportWithArrows.js';
 import './SlidingViewport.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
-import AriaListMixin from './AriaListMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
@@ -17,7 +16,6 @@ import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 
 
 const Base =
-  AriaListMixin(
   DirectionSelectionMixin(
   FocusVisibleMixin(
   KeyboardDirectionMixin(
@@ -26,7 +24,7 @@ const Base =
   TouchSwipeMixin(
   TrackpadSwipeMixin(
     Spotlight
-  ))))))));
+  )))))));
 
 
 /**
@@ -34,7 +32,6 @@ const Base =
  * keyboard, or trackpad. Shows a sliding effect when moving between items.
  * 
  * @inherits SlidingViewport
- * @mixes AriaListMixin
  * @mixes DirectionSelectionMixin
  * @mixes FocusVisibleMixin
  * @mixes KeyboardDirectionMixin

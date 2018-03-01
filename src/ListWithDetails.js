@@ -39,6 +39,18 @@ class ListWithDetails extends Base {
     });
   }
 
+  pageDown() {
+    /** @type {any} */
+    const cast = this.$.cast;
+    return cast.pageDown();
+  }
+
+  pageUp() {
+    /** @type {any} */
+    const cast = this.$.cast;
+    return cast.pageUp();
+  }
+
   setAvatarItem(avatar, item) {
     super.setAvatarItem(avatar, item);
     const label = item.getAttribute('aria-label') || item.alt;
@@ -54,6 +66,7 @@ class ListWithDetails extends Base {
       $: {
         cast: {
           attributes: {
+            role: 'none',
             tabindex: ''
           }
         }

@@ -1,9 +1,10 @@
 import './Modes.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
+import AriaListMixin from './AriaListMixin.js';
+import ContentItemsMixin from './ContentItemsMixin.js';
 import ElementBase from './ElementBase.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
-import ContentItemsMixin from './ContentItemsMixin';
 import SlotContentMixin from './SlotContentMixin.js';
 
 
@@ -16,11 +17,12 @@ const stageTagKey = Symbol('stageTag');
 
 
 const Base =
+  AriaListMixin(
   ContentItemsMixin(
   SingleSelectionMixin(
   SlotContentMixin(
     ElementBase
-  )));
+  ))));
 
 
 class Spotlight extends Base {
@@ -159,7 +161,7 @@ class Spotlight extends Base {
           flex: 1;
         }
       </style>
-      <${stageTag} id="stage">
+      <${stageTag} id="stage" role="none">
         <slot></slot>
       </${stageTag}>
       <${castTag} id="cast"><slot id="castSlot" name="cast"></slot></${castTag}>
