@@ -36,18 +36,18 @@ export default function PopupModalityMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this.addEventListener('blur', () => {
+      this.addEventListener('blur', async () => {
         this[symbols.raiseChangeEvents] = true;
-        this.close();
+        await this.close();
         this[symbols.raiseChangeEvents] = false;
       });      
-      this[closeListenerKey] = event => {
+      this[closeListenerKey] = async (event) => {
         /** @type {any} */
         const element = this;
         const insideEvent = deepContains(element, event.target);
         if (!insideEvent) {
           this[symbols.raiseChangeEvents] = true;
-          this.close();
+          await this.close();
           this[symbols.raiseChangeEvents] = false;
         }
       };

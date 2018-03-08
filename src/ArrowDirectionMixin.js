@@ -26,20 +26,22 @@ function ArrowDirectionMixin(Base) {
   
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
-      this.$.arrowButtonLeft.addEventListener('click', event => {
+      this.$.arrowButtonLeft.addEventListener('click', async (event) => {
         this[symbols.raiseChangeEvents] = true;
         const handled = this[symbols.goLeft]();
         if (handled) {
           event.stopPropagation();
         }
+        await Promise.resolve();
         this[symbols.raiseChangeEvents] = false;
       });
-      this.$.arrowButtonRight.addEventListener('click', event => {
+      this.$.arrowButtonRight.addEventListener('click', async (event) => {
         this[symbols.raiseChangeEvents] = true;
         const handled = this[symbols.goRight]();
         if (handled) {
           event.stopPropagation();
         }
+        await Promise.resolve();
         this[symbols.raiseChangeEvents] = false;
       });
     }

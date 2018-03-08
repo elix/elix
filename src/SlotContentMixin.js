@@ -59,7 +59,7 @@ export default function SlotContentMixin(Base) {
       // Listen to changes on the default slot.
       const slot = this[symbols.contentSlot];
       if (slot) {
-        slot.addEventListener('slotchange', () => {
+        slot.addEventListener('slotchange', async () => {
 
           // Although slotchange isn't generally a user-driven event, it's
           // impossible for us to know whether a change in slot content is going
@@ -83,6 +83,7 @@ export default function SlotContentMixin(Base) {
             });
           }
 
+          await Promise.resolve();
           this[symbols.raiseChangeEvents] = false;
         });
         
