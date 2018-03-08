@@ -31,14 +31,15 @@ export default function TouchSwipeMixin(Base) {
       // TODO: Touch events should probably be factored out into its own mixin.
       if ('PointerEvent' in window) {
         // Prefer listening to standard pointer events.
-        this.addEventListener('pointerdown', event => {
+        this.addEventListener('pointerdown', async (event) => {
           this[symbols.raiseChangeEvents] = true;
           if (isEventForPenOrPrimaryTouch(event)) {
             gestureStart(this, event.clientX, event.clientY);
           }
+          await Promise.resolve();
           this[symbols.raiseChangeEvents] = false;
         });
-        this.addEventListener('pointermove', event => {
+        this.addEventListener('pointermove', async (event) => {
           this[symbols.raiseChangeEvents] = true;
           if (isEventForPenOrPrimaryTouch(event)) {
             const handled = gestureContinue(this, event.clientX, event.clientY);
@@ -46,18 +47,20 @@ export default function TouchSwipeMixin(Base) {
               event.preventDefault();
             }
           }
+          await Promise.resolve();
           this[symbols.raiseChangeEvents] = false;
         });
-        this.addEventListener('pointerup', event => {
+        this.addEventListener('pointerup', async (event) => {
           this[symbols.raiseChangeEvents] = true;
           if (isEventForPenOrPrimaryTouch(event)) {
             gestureEnd(this, event.clientX, event.clientY);
           }
+          await Promise.resolve();
           this[symbols.raiseChangeEvents] = false;
         });
       } else {
         // Pointer events not supported -- listen to older touch events.
-        this.addEventListener('touchstart', event => {
+        this.addEventListener('touchstart', async (event) => {
           this[symbols.raiseChangeEvents] = true;
           if (this[multiTouchKey]) {
             return;
@@ -68,9 +71,10 @@ export default function TouchSwipeMixin(Base) {
           } else {
             this[multiTouchKey] = true;
           }
+          await Promise.resolve();
           this[symbols.raiseChangeEvents] = false;
         });
-        this.addEventListener('touchmove', event => {
+        this.addEventListener('touchmove', async (event) => {
           this[symbols.raiseChangeEvents] = true;
           if (!this[multiTouchKey] && event.touches.length === 1) {
             const clientX = event.changedTouches[0].clientX;
@@ -80,9 +84,10 @@ export default function TouchSwipeMixin(Base) {
               event.preventDefault();
             }
           }
+          await Promise.resolve();
           this[symbols.raiseChangeEvents] = false;
         });
-        this.addEventListener('touchend', event => {
+        this.addEventListener('touchend', async (event) => {
           this[symbols.raiseChangeEvents] = true;
           if (event.touches.length === 0) {
             // All touches removed; gesture is complete.
@@ -94,6 +99,7 @@ export default function TouchSwipeMixin(Base) {
             }
             this[multiTouchKey] = false;
           }
+          await Promise.resolve();
           this[symbols.raiseChangeEvents] = false;
         });
       }

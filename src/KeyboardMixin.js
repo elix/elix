@@ -49,13 +49,14 @@ export default function KeyboardMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this.addEventListener('keydown', event => {
+      this.addEventListener('keydown', async (event) => {
         this[symbols.raiseChangeEvents] = true;
         const handled = this[symbols.keydown](event);
         if (handled) {
           event.preventDefault();
           event.stopPropagation();
         }
+        await Promise.resolve();
         this[symbols.raiseChangeEvents] = false;
       });
     }

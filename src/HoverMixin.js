@@ -15,14 +15,16 @@ export default function HoverMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this.addEventListener('mouseenter', event => {
+      this.addEventListener('mouseenter', async (event) => {
         this[symbols.raiseChangeEvents] = true;
         this[symbols.mouseenter](event);
+        await Promise.resolve();
         this[symbols.raiseChangeEvents] = false;
       });
-      this.addEventListener('mouseleave', event => {
+      this.addEventListener('mouseleave', async (event) => {
         this[symbols.raiseChangeEvents] = true;
         this[symbols.mouseleave](event);
+        await Promise.resolve();
         this[symbols.raiseChangeEvents] = false;
       });
     }

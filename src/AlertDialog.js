@@ -19,12 +19,14 @@ class AlertDialog extends Dialog {
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
-    this.$.buttonContainer.addEventListener('click', event => {
+    this.$.buttonContainer.addEventListener('click', async (event) => {
       // TODO: Ignore clicks on buttonContainer background.
       const button = event.target;
       if (button instanceof HTMLElement) {
         const result = button.textContent;
-        this.close(result);
+        this[symbols.raiseChangeEvents] = true; 
+        await this.close(result);
+        this[symbols.raiseChangeEvents] = false;
       }
     });
   }
@@ -100,7 +102,6 @@ class AlertDialog extends Dialog {
       }
     }
     if (found && index >= 0) {
-      // TODO: Handle return value.
       this.close(this.choices[index]);
       handled = true;
     }
