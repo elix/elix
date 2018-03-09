@@ -180,6 +180,7 @@ class Tabs extends Base {
     return this[tabButtonTagKey];
   }
   set tabButtonTag(tabButtonTag) {
+    this[symbols.hasDynamicTemplate] = true;
     this[tabButtonTagKey] = tabButtonTag;
   }
 
@@ -187,6 +188,7 @@ class Tabs extends Base {
     return this[tabPanelsTagKey];
   }
   set tabPanelsTag(tabPanelsTag) {
+    this[symbols.hasDynamicTemplate] = true;
     this[tabPanelsTagKey] = tabPanelsTag;
   }
 

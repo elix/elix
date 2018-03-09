@@ -1,6 +1,9 @@
 import * as symbols from './symbols.js';
 
 
+// A cache of processed templates, indexed by element class.
+const classTemplateMap = new Map();
+
 const shadowReferencesKey = Symbol('shadowReferences');
 
 /**
@@ -99,14 +102,14 @@ export default function ShadowTemplateMixin(Base) {
 
 
 function getPreparedTemplate(element) {
-  let template = element[symbols.preparedTemplate];
+  const hasDynamicTemplate = element[symbols.hasDynamicTemplate];
+  let template = !hasDynamicTemplate && classTemplateMap.get(element.constructor);
   if (!template) {
     // This is the first time we've created an instance of this type.
     template = prepareTemplate(element);
-    if (template) {
+    if (!hasDynamicTemplate && template) {
       // Store prepared template for next creation of same type of element.
-      const prototype = Object.getPrototypeOf(element.constructor);
-      prototype[symbols.preparedTemplate] = template;
+      classTemplateMap.set(element.constructor, template);
     }
   }
   return template;

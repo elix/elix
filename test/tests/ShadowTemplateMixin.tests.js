@@ -60,6 +60,44 @@ class ElementWithStylesInTemplate extends ShadowTemplateMixin(HTMLElement) {
 customElements.define('element-with-styles-in-template', ElementWithStylesInTemplate);
 
 
+/* Normal element whose template will only be retrieved once. */
+let staticTemplateCount = 0;
+class ElementWithCachedTemplate extends ShadowTemplateMixin(HTMLElement) {
+
+  constructor() {
+    super();
+    this[symbols.render]();
+  }
+
+  get [symbols.template]() {
+    return `${staticTemplateCount++}`;
+  }
+
+}
+customElements.define('element-with-cached-template', ElementWithCachedTemplate);
+
+
+/* Element whose template should be retrieved each time. */
+let dynamicTemplateCount = 0;
+class ElementWithDynamicTemplate extends ShadowTemplateMixin(HTMLElement) {
+
+  constructor() {
+    super();
+    this[symbols.render]();
+  }
+
+  get [symbols.hasDynamicTemplate]() {
+    return true;
+  }
+
+  get [symbols.template]() {
+    return `${dynamicTemplateCount++}`;
+  }
+
+}
+customElements.define('element-with-dynamic-template', ElementWithDynamicTemplate);
+
+
 describe("ShadowTemplateMixin", () => {
 
   let container;
@@ -98,11 +136,18 @@ describe("ShadowTemplateMixin", () => {
     assert.equal(fixture.$.message, root.querySelector('#message'));
   });
 
-  it("caches the prepared HTMLTemplateElement", () => {
-    const prototype = Object.getPrototypeOf(ElementWithStringTemplate);
-    prototype[symbols.preparedTemplate] = null;
-    const fixture = document.createElement('element-with-string-template');
-    assert(prototype[symbols.preparedTemplate] instanceof HTMLTemplateElement);
+  it("caches the template for a component", () => {
+    const fixture1 = document.createElement('element-with-cached-template');
+    assert.equal(fixture1.shadowRoot.textContent.trim(), '0');
+    const fixture2 = document.createElement('element-with-cached-template');
+    assert.equal(fixture2.shadowRoot.textContent.trim(), '0');
+  });
+
+  it("retrieves a dynamic template each time", () => {
+    const fixture1 = document.createElement('element-with-dynamic-template');
+    assert.equal(fixture1.shadowRoot.textContent.trim(), '0');
+    const fixture2 = document.createElement('element-with-dynamic-template');
+    assert.equal(fixture2.shadowRoot.textContent.trim(), '1');
   });
 
 });

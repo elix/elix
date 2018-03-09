@@ -56,6 +56,7 @@ class Drawer extends Base {
     return this[backdropTagKey];
   }
   set backdropTag(backdropTag) {
+    this[symbols.hasDynamicTemplate] = true;
     this[backdropTagKey] = backdropTag;
   }
   
@@ -90,6 +91,7 @@ class Drawer extends Base {
     return this[frameTagKey];
   }
   set frameTag(frameTag) {
+    this[symbols.hasDynamicTemplate] = true;
     this[frameTagKey] = frameTag;
   }
 

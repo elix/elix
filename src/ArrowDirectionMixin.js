@@ -21,6 +21,7 @@ function ArrowDirectionMixin(Base) {
       return this[arrowButtonTagKey];
     }
     set arrowButtonTag(arrowButtonTag) {
+      this[symbols.hasDynamicTemplate] = true;
       this[arrowButtonTagKey] = arrowButtonTag;
     }
   

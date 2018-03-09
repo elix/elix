@@ -72,6 +72,7 @@ class AlertDialog extends Dialog {
     return this[choiceButtonTagKey];
   }
   set choiceButtonTag(choiceButtonTag) {
+    this[symbols.hasDynamicTemplate] = true;
     this[choiceButtonTagKey] = choiceButtonTag;
   }
 

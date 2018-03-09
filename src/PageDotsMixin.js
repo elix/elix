@@ -88,6 +88,7 @@ function PageDotsMixin(Base) {
       return this[pageDotTagKey];
     }
     set pageDotTag(pageDotTag) {
+      this[symbols.hasDynamicTemplate] = true;
       this[pageDotTagKey] = pageDotTag;
     }
 

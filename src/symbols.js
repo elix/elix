@@ -105,8 +105,6 @@ export const getItemText = Symbol('getItemText');
  */
 export const goDown = Symbol('goDown');
 
-export const test = Symbol('test');
-
 /**
  * Symbol for the `goEnd` method.
  *
@@ -161,6 +159,15 @@ export const goStart = Symbol('goStart');
 export const goUp = Symbol('goUp');
 
 /**
+ * Symbol for the `hasDynamicTemplate` property.
+ * 
+ * If your component class does not always use the same template, define a
+ * static class property getter with this symbol and have it return `true`.
+ * This will disable template caching for your component.
+ */
+export const hasDynamicTemplate = Symbol('hasDynamicTemplate');
+
+/**
  * Symbol for the `keydown` method.
  *
  * This method is invoked when an element receives a `keydown` event.
@@ -210,8 +217,6 @@ export const mouseenter = Symbol('mouseenter');
  * @function mouseleave
  */
 export const mouseleave = Symbol('mouseleave');
-
-export const preparedTemplate = Symbol('preparedTemplate');
 
 /**
  * Symbol for the `raiseChangeEvents` property.

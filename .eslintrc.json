@@ -8,9 +8,6 @@
     "browser": true,
     "es6": true
   },
-  "rules": {
-    // Additional per-project rules...
-  },
   "globals": {
     "assert": false,
     "afterEach": false,

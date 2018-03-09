@@ -43,6 +43,7 @@ class Popup extends Base {
     return this[frameTagKey];
   }
   set frameTag(frameTag) {
+    this[symbols.hasDynamicTemplate] = true;
     this[frameTagKey] = frameTag;
   }
 

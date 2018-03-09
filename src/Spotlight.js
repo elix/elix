@@ -24,6 +24,7 @@ class Spotlight extends Base {
     return this[avatarTagKey];
   }
   set avatarTag(avatarTag) {
+    this[symbols.hasDynamicTemplate] = true;
     this[avatarTagKey] = avatarTag;
   }
 
@@ -47,6 +48,7 @@ class Spotlight extends Base {
     return this[castTagKey];
   }
   set castTag(castTag) {
+    this[symbols.hasDynamicTemplate] = true;
     this[castTagKey] = castTag;
   }
 
@@ -132,6 +134,7 @@ class Spotlight extends Base {
     return this[stageTagKey];
   }
   set stageTag(stageTag) {
+    this[symbols.hasDynamicTemplate] = true;
     this[stageTagKey] = stageTag;
   }
 
