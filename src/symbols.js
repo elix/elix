@@ -211,6 +211,8 @@ export const mouseenter = Symbol('mouseenter');
  */
 export const mouseleave = Symbol('mouseleave');
 
+export const preparedTemplate = Symbol('preparedTemplate');
+
 /**
  * Symbol for the `raiseChangeEvents` property.
  *

@@ -1,15 +1,6 @@
 import * as symbols from './symbols.js';
 
 
-// A cache of processed templates.
-//
-// We maintain this as a map keyed by element tag (localName). We could store
-// an element's processed template on its element prototype. One scenario that
-// wouldn't support would be registration of the same constructor under multiple
-// tag names, which was a (perhaps theoretical) use case for Custom Elements.
-//
-const mapTagToTemplate = {};
-
 const shadowReferencesKey = Symbol('shadowReferences');
 
 /**
@@ -53,54 +44,15 @@ export default function ShadowTemplateMixin(Base) {
         return;
       }
       
-      const tag = this.localName;
-      let template = tag && mapTagToTemplate[tag];
-
-      // See if we've already processed a template for this tag.
-      if (!template) {
-        // This is the first time we've created an instance of this tag.
-
-        // Get the template and perform initial processing.
-        template = this[symbols.template];
-        if (!template) {
-          /* eslint-disable no-console */
-          console.warn(`ShadowTemplateMixin expects ${this.constructor.name} to define a property called [symbols.template].\nSee https://elix.org/documentation/ShadowTemplateMixin.`);
-          return;
-        }
-
-        if (typeof template === 'string') {
-          // Upgrade plain string to real template.
-          const templateText = template;
-          template = document.createElement('template');
-          template.innerHTML = templateText;
-          
-          // A polyfill bug under IE
-          // (probably https://github.com/webcomponents/webcomponentsjs/issues/474)
-          // prevents the template's innerHTML from being set properly if it
-          // contains other elements. We check to make sure the assignment stuck.
-          if (template.innerHTML !== templateText) {
-            template.innerHTML = templateText;
-          }
-        }
-
-        // @ts-ignore
-        if (window.ShadyCSS && !window.ShadyCSS.nativeShadow) {
-          // Let the CSS polyfill do its own initialization.
-          // @ts-ignore
-          window.ShadyCSS.prepareTemplate(template, tag);
-        }
-
-        if (tag) {
-          // Store this for the next time we create the same type of element.
-          mapTagToTemplate[tag] = template;
-        }
-      }
+      // See if we've already processed a template for this type of element.
+      const template = getPreparedTemplate(this);
 
       // Stamp the template into a new shadow root.
-      const root = this.attachShadow({ mode: 'open' });
-      const clone = document.importNode(template.content, true);
-      root.appendChild(clone);
-
+      if (template) {
+        const root = this.attachShadow({ mode: 'open' });
+        const clone = document.importNode(template.content, true);
+        root.appendChild(clone);
+      }
     }
 
     connectedCallback() {
@@ -143,6 +95,59 @@ export default function ShadowTemplateMixin(Base) {
   }
 
   return ShadowTemplate;
+}
+
+
+function getPreparedTemplate(element) {
+  let template = element[symbols.preparedTemplate];
+  if (!template) {
+    // This is the first time we've created an instance of this type.
+    template = prepareTemplate(element);
+    if (template) {
+      // Store prepared template for next creation of same type of element.
+      const prototype = Object.getPrototypeOf(element.constructor);
+      prototype[symbols.preparedTemplate] = template;
+    }
+  }
+  return template;
+}
+
+
+// Retrieve an element's template and prepare it for use.
+function prepareTemplate(element) {
+
+  let template = element[symbols.template];
+
+  if (!template) {
+    /* eslint-disable no-console */
+    console.warn(`ShadowTemplateMixin expects ${element.constructor.name} to define a property called [symbols.template].\nSee https://elix.org/documentation/ShadowTemplateMixin.`);
+    return;
+  }
+
+  if (typeof template === 'string') {
+    // Upgrade plain string to real template.
+    const templateText = template;
+    template = document.createElement('template');
+    template.innerHTML = templateText;
+    
+    // A polyfill bug under IE
+    // (probably https://github.com/webcomponents/webcomponentsjs/issues/474)
+    // prevents the template's innerHTML from being set properly if it
+    // contains other elements. We check to make sure the assignment stuck.
+    if (template.innerHTML !== templateText) {
+      template.innerHTML = templateText;
+    }
+  }
+
+  // @ts-ignore
+  if (window.ShadyCSS && !window.ShadyCSS.nativeShadow) {
+    // Let the CSS polyfill do its own initialization.
+    const tag = element.localName;
+    // @ts-ignore
+    window.ShadyCSS.prepareTemplate(template, tag);
+  }
+
+  return template;
 }
 
 

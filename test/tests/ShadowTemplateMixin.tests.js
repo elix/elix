@@ -98,4 +98,11 @@ describe("ShadowTemplateMixin", () => {
     assert.equal(fixture.$.message, root.querySelector('#message'));
   });
 
+  it("caches the prepared HTMLTemplateElement", () => {
+    const prototype = Object.getPrototypeOf(ElementWithStringTemplate);
+    prototype[symbols.preparedTemplate] = null;
+    const fixture = document.createElement('element-with-string-template');
+    assert(prototype[symbols.preparedTemplate] instanceof HTMLTemplateElement);
+  });
+
 });
