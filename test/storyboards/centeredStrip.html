@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SlidingPages storyboard</title>
+
+  <link rel="stylesheet" href="../../demos/demos.css">
+  <script src="../../demos/node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="./RenderState.js"></script>
+  <script type="module" src="../../src/CenteredStripOpacity.js"></script>
+  <script nomodule src="../../build/demos.js"></script>
+
+  <style>
+    body {
+      padding: 3em 5em;
+    }
+
+    elix-centered-strip-opacity {
+      background: #555;
+      height: 100px;
+      width: 500px;
+    }
+
+    elix-centered-strip-opacity div {
+      align-items: center;
+      background: #ccc;
+      border: 1px solid #888;
+      box-sizing: border-box;
+      color: white;
+      display: flex;
+      font-size: 72px;
+      font-weight: bold;
+      height: 100px;
+      justify-content: center;
+      -webkit-text-stroke: 2px #444;
+      width: 100px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <h1>CenteredStrip storyboard</h1>
+
+  <p>
+    All scenes show a CenteredStrip with 10 items labeled "0" through "9".
+  </p>
+
+  <render-state>
+    <elix-centered-strip-opacity slot="fixture">
+      <div>0</div>
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div>
+      <div>6</div>
+      <div>7</div>
+      <div>8</div>
+      <div>9</div>
+    </elix-centered-strip-opacity>
+    <p>
+      Default state
+    </p>
+  </render-state>
+
+  <render-state fixture-state='{"selectedIndex": 1}'>
+    <elix-centered-strip-opacity slot="fixture">
+      <div>0</div>
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div>
+      <div>6</div>
+      <div>7</div>
+      <div>8</div>
+      <div>9</div>
+    </elix-centered-strip-opacity>
+    <p>
+      Select first item. Since that item can't be centered without creating a
+      gap on the left, the strip remains left-aligned.
+    </p>
+  </render-state>
+
+  <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": 0}'>
+    <elix-centered-strip-opacity slot="fixture">
+      <div>0</div>
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div>
+      <div>6</div>
+      <div>7</div>
+      <div>8</div>
+      <div>9</div>
+    </elix-centered-strip-opacity>
+    <p>
+      Select 3rd item. Item can now be centered.
+    </p>
+  </render-state>
+  
+  <render-state fixture-state='{"selectedIndex": 9, "swipeFraction": 0}'>
+    <elix-centered-strip-opacity slot="fixture">
+      <div>0</div>
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div>
+      <div>6</div>
+      <div>7</div>
+      <div>8</div>
+      <div>9</div>
+    </elix-centered-strip-opacity>
+    <p>
+      Select last item. Strip is right-aligned.
+    </p>
+  </render-state>
+  
+</body>
+
+</html>

@@ -56,5 +56,5 @@ function opacityForItemWithIndex(index, selectedIndex, selectionFraction) {
 }
 
 
-customElements.define('centered-strip-opacity', CenteredStripOpacity);
+customElements.define('elix-centered-strip-opacity', CenteredStripOpacity);
 export default CenteredStripOpacity;

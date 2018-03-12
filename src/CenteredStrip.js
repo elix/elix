@@ -32,6 +32,13 @@ class CenteredStrip extends Base {
     return 'horizontal';
   }
 
+  get swipeFraction() {
+    return this.state.swipeFraction;
+  }
+  set swipeFraction(swipeFraction) {
+    this.setState({ swipeFraction });
+  }
+
   get [symbols.template]() {
     return `
       <style>
@@ -63,6 +70,7 @@ class CenteredStrip extends Base {
 
   get updates() {
 
+    const swiping = this.state.swipeFraction != null;
     const selectedIndex = this.state.selectedIndex;
     const selectedItem = this.items && this.items[selectedIndex];
     let x; // The amount by which we'll shift content horizontally
@@ -89,11 +97,17 @@ class CenteredStrip extends Base {
       x = 0;
     }
     const transform = `translateX(${x}px)`;
+    const transition = swiping ?
+      'none' :
+      'transform 0.25s';
 
     return merge(super.updates, {
       $: {
         strip: {
-          style: { transform }
+          style: {
+            transform,
+            transition
+          }
         },
         stripContainer: {
           style: {
@@ -107,5 +121,5 @@ class CenteredStrip extends Base {
 }
 
 
-customElements.define('selection-strip', CenteredStrip);
+customElements.define('elix-centered-strip', CenteredStrip);
 export default CenteredStrip;

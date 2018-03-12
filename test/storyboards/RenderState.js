@@ -19,7 +19,7 @@ class RenderState extends Base {
     });
   }
 
-  get contentSlot() {
+  get [symbols.contentSlot]() {
     return this.$.fixtureSlot;
   }
 

@@ -50,8 +50,8 @@ class SpotlightCarousel extends Base {
     return Object.assign({}, base, {
       tags: Object.assign({}, base.tags, {
         avatar: 'custom-thumbnail',
-        // cast: 'centered-strip-highlight',
-        cast: 'centered-strip-opacity',
+        // cast: 'elix-centered-strip-highlight',
+        cast: 'elix-centered-strip-opacity',
         // stage: 'elix-sliding-viewport'
         stage: 'sliding-viewport-with-arrows'
       })
