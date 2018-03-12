@@ -23,8 +23,6 @@ class Thumbnail extends WrappedStandardElement.wrap('img') {
         img {
           height: var(--elix-thumbnail-height, 100%);
           width: var(--elix-thumbnail-width, 100%);
-          /* max-height: 100%; */
-          /* max-width: 100%; */
           object-fit: contain;
         }
       </style>

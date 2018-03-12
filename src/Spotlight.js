@@ -3,19 +3,24 @@ import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import ElementBase from './ElementBase.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
+import ContentItemsMixin from './ContentItemsMixin';
+import SlotContentMixin from './SlotContentMixin.js';
 
 
 const avatarTagKey = Symbol('avatarTag');
 const castKey = Symbol('cast');
+const castSlotchangeFiredKey = Symbol('castSlotchangeFired');
 const castTagKey = Symbol('castTag');
 const previousItemsKey = Symbol('previousItems');
 const stageTagKey = Symbol('stageTag');
 
 
 const Base =
+  ContentItemsMixin(
   SingleSelectionMixin(
+  SlotContentMixin(
     ElementBase
-  );
+  )));
 
 
 class Spotlight extends Base {
@@ -28,6 +33,7 @@ class Spotlight extends Base {
     this[avatarTagKey] = avatarTag;
   }
 
+  // Return either the assigned cast (if present) or the default cast.
   get cast() {
     /** @type {any} */
     const castSlot = this.$.castSlot;
@@ -53,6 +59,7 @@ class Spotlight extends Base {
   }
 
   componentDidMount() {
+    if (super.componentDidMount) { super.componentDidMount(); }
     const handleSelectedIndexChanged = event => {
       this[symbols.raiseChangeEvents] = true;
       const selectedIndex = event.detail.selectedIndex;
@@ -63,14 +70,25 @@ class Spotlight extends Base {
     };
     this.$.stage.addEventListener('selected-index-changed', handleSelectedIndexChanged);
     this.$.cast.addEventListener('selected-index-changed', handleSelectedIndexChanged);
+
+    // Work around inconsistencies in slotchange timing; see SlotContentMixin.
     this.$.castSlot.addEventListener('slotchange', () => {
-      updateDefaultCast(this);
+      this[castSlotchangeFiredKey] = true;
+      updateCast(this);
+    });
+    Promise.resolve().then(() => {
+      if (!this[castSlotchangeFiredKey]) {
+        // The event didn't fire, so we're most likely in Safari.
+        // Update our notion of the component content.
+        this[castSlotchangeFiredKey] = true;
+        updateCast(this);
+      }
     });
   }
 
   componentDidUpdate(previousState) {
     if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-    updateDefaultCast(this);
+    updateCast(this);
   }
 
   get defaults() {
@@ -87,17 +105,6 @@ class Spotlight extends Base {
     return Object.assign({}, super.defaultState, {
       castPosition: 'top'
     });
-  }
-
-  get items() {
-    return this.$.stage.items;
-  }
-
-  // TODO: Try to eliminate the need to inspect another component's state.
-  itemsForState(state) {
-    return this.$ && this.$.stage ?
-      this.$.stage.itemsForState(this.$.stage.state) :
-      null;
   }
 
   [symbols.render]() {
@@ -240,7 +247,7 @@ function defaultCast(element) {
 }
 
 
-function updateDefaultCast(element) {
+function updateCast(element) {
   /** @type {any} */
   const castSlot = element.$.castSlot;
   const assignedButtons = castSlot.assignedNodes({ flatten: true });
