@@ -20,13 +20,6 @@ class CenteredStripOpacity extends CenteredStrip {
     });
   }
 
-  get swipeFraction() {
-    return this.state.swipeFraction;
-  }
-  set swipeFraction(swipeFraction) {
-    this.setState({ swipeFraction });
-  }
-
 }
 
 

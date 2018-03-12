@@ -4,7 +4,7 @@ import ClickSelectionMixin from './ClickSelectionMixin.js';
 import ContentItemsMixin from './ContentItemsMixin.js';
 import ElementBase from './ElementBase.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
-// import LanguageDirectionMixin from './LanguageDirectionMixin.js';
+import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotContentMixin from './SlotContentMixin.js';
 
@@ -13,11 +13,11 @@ const Base =
   ClickSelectionMixin(
   ContentItemsMixin(
   FocusVisibleMixin(
-  // LanguageDirectionMixin(
+  LanguageDirectionMixin(
   SingleSelectionMixin(
   SlotContentMixin(
     ElementBase
-  )))));
+  ))))));
 
 
 class CenteredStrip extends Base {
@@ -70,33 +70,58 @@ class CenteredStrip extends Base {
 
   get updates() {
 
+    const sign = this[symbols.rightToLeft] ? 1 : -1;
     const swiping = this.state.swipeFraction != null;
     const selectedIndex = this.state.selectedIndex;
-    const selectedItem = this.items && this.items[selectedIndex];
-    let x; // The amount by which we'll shift content horizontally
+    const swipeFraction = this.state.swipeFraction || 0;
+    const selectionFraction = selectedIndex + sign * swipeFraction;
+
+    // @ts-ignore
+    const stripContainerWidth = this.$.stripContainer.offsetWidth;
+    // @ts-ignore
+    const stripWidth = this.$.strip.offsetWidth;
+
+    let x = 0; // The amount by which we'll shift content horizontally
     let justifyContent = '';
-    if (selectedItem) {
-      // @ts-ignore
-      const stripContainerWidth = this.$.stripContainer.offsetWidth;
-      // @ts-ignore
-      const stripWidth = this.$.strip.offsetWidth;
-      if (stripWidth > stripContainerWidth) {
-        // @ts-ignore
-        const itemLeft = selectedItem.offsetLeft;
-        // @ts-ignore
-        const itemWidth = selectedItem.offsetWidth;
-        // Try to center the selected item.
-        x = (stripContainerWidth - itemWidth) / 2 - itemLeft;
-        // Constrain x to avoid showing space on either end.
-        x = Math.min(x, 0);
-        x = Math.max(x, stripContainerWidth - stripWidth);
-      } else {
-        justifyContent = 'center';
-      }
+    if (stripWidth <= stripContainerWidth) {
+      // Container can show all items. Center all items.
+      justifyContent = 'center';    
     } else {
-      x = 0;
+      // Items are wider than container can show.
+      // Center the selected item.
+      // During swipes, center a pro-rated point between the midpoints
+      // of the items on either side of the fractional selection.
+
+      const leftIndex = Math.floor(selectionFraction);
+      const leftItem = this.items && this.items[leftIndex];
+      const leftCenter = leftItem ?
+        leftItem.offsetLeft + leftItem.offsetWidth / 2 :
+        0;
+      const rightIndex = leftIndex + 1;
+      const rightItem = this.items && this.items[rightIndex];
+      const rightCenter = rightItem ?
+        rightItem.offsetLeft + rightItem.offsetWidth / 2 :
+        0;
+
+      let center = 0;
+      if (leftItem && !rightItem) {
+        center = leftCenter;
+      } else if (!leftItem && rightItem) {
+        center = rightCenter;
+      } else if (leftItem && rightItem) {
+        const offsetFraction = selectionFraction - leftIndex;
+        center = leftCenter + offsetFraction * (rightCenter - leftCenter);
+      }
+      
+      // Try to center the selected item.
+      x = center - (stripContainerWidth / 2);
+
+      // Constrain x to avoid showing space on either end.
+      x = Math.max(x, 0);
+      x = Math.min(x, stripWidth - stripContainerWidth);
     }
-    const transform = `translateX(${x}px)`;
+
+    const transform = `translateX(${-x}px)`;
     const transition = swiping ?
       'none' :
       'transform 0.25s';

@@ -68,6 +68,24 @@
     </p>
   </render-state>
 
+  <render-state fixture-state='{"selectedIndex": 0, "swipeFraction": -0.33}'>
+    <elix-centered-strip-opacity slot="fixture">
+      <div>0</div>
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div>
+      <div>6</div>
+      <div>7</div>
+      <div>8</div>
+      <div>9</div>
+    </elix-centered-strip-opacity>
+    <p>
+      Beginning swipe to left. Item 0 begins to fade out, item 1 begins to fade in.
+    </p>
+  </render-state>
+
   <render-state fixture-state='{"selectedIndex": 1}'>
     <elix-centered-strip-opacity slot="fixture">
       <div>0</div>
@@ -105,6 +123,42 @@
     </p>
   </render-state>
   
+  <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": -0.5}'>
+    <elix-centered-strip-opacity slot="fixture">
+      <div>0</div>
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div>
+      <div>6</div>
+      <div>7</div>
+      <div>8</div>
+      <div>9</div>
+    </elix-centered-strip-opacity>
+    <p>
+      Halfway to selecting 4th item.
+    </p>
+  </render-state>
+  
+  <render-state fixture-state='{"selectedIndex": 4, "swipeFraction": 0}'>
+    <elix-centered-strip-opacity slot="fixture">
+      <div>0</div>
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div>
+      <div>6</div>
+      <div>7</div>
+      <div>8</div>
+      <div>9</div>
+    </elix-centered-strip-opacity>
+    <p>
+      4th item selected and centered.
+    </p>
+  </render-state>
+  
   <render-state fixture-state='{"selectedIndex": 9, "swipeFraction": 0}'>
     <elix-centered-strip-opacity slot="fixture">
       <div>0</div>
@@ -122,7 +176,7 @@
       Select last item. Strip is right-aligned.
     </p>
   </render-state>
-  
+
 </body>
 
 </html>
