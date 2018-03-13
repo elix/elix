@@ -8,11 +8,6 @@
   },
   "author": "info@component.kitchen",
   "dependencies": {
-    "@webcomponents/webcomponentsjs": "1.0.20"
-  },
-  "browserify": {
-    "transform": [
-      "babelify"
-    ]
+    "@webcomponents/webcomponentsjs": "1.1.0"
   }
 }
