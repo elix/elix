@@ -56,7 +56,7 @@ export { default as SlotContentMixin } from './SlotContentMixin.js';
 export { default as SwipeDirectionMixin } from './SwipeDirectionMixin.js';
 export { default as TabButton } from './TabButton.js';
 export { default as TabStrip } from './TabStrip.js';
-export { default as Tabs } from './Tabs.js';
+export { Tabs as Tabs } from './Tabs.js';
 export { default as Toast } from './Toast.js';
 export { default as TouchSwipeMixin } from './TouchSwipeMixin.js';
 export { default as TrackpadSwipeMixin } from './TrackpadSwipeMixin.js';

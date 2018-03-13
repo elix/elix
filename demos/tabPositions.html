@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
-  <script type="module" src="../src/SpotlightTabs.js"></script>
+  <script type="module" src="../src/Tabs.js"></script>
   <script nomodule src="../build/demos.js"></script>
 
 </head>
@@ -34,11 +34,11 @@
       }
     </style>
 
-    <elix-spotlight-tabs class="tabPositions">
+    <elix-tabs class="tabPositions">
       <div class="panel" aria-label="One">Page one</div>
       <div class="panel" aria-label="Two">Page two</div>
       <div class="panel" aria-label="Three">Page three</div>
-    </elix-spotlight-tabs>
+    </elix-tabs>
     
     <p>
       Show tabs on: <select id="tabPosition" onchange="tabPositionChange(event)">
@@ -63,7 +63,7 @@
       }
 
       function tabPositionChange(event) {
-        document.querySelector('.tabPositions').castPosition = event.target.value;
+        document.querySelector('.tabPositions').listPosition = event.target.value;
       }
     </script>
 

@@ -9,37 +9,34 @@
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
-  <script type="module" src="../src/TabButton.js"></script>
   <script type="module" src="../src/Tabs.js"></script>
-  <script type="module" src="../src/TabStrip.js"></script>
   <script nomodule src="../build/demos.js"></script>
-
+  
 </head>
 
 <body role="main" unresolved>
-  <div class="demo padded">
-
+  <div class="demo medium padded">
     <style>
-      .plainTabs {
-        height: 250px;
-        max-width: 100%;
-        width: 300px;
+      #sampleTabs {
+        height: 100%;
+        width: 100%;
       }
 
-      .plainTabs .panel {
+      #sampleTabs .panel {
         align-items: center;
+        background: white;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
         display: flex;
         flex: 1;
         justify-content: center;
       }
     </style>
-
-    <elix-tabs class="plainTabs">
+    <elix-tabs id="sampleTabs">
       <div class="panel" aria-label="One">Page one</div>
       <div class="panel" aria-label="Two">Page two</div>
       <div class="panel" aria-label="Three">Page three</div>
     </elix-tabs>
-
   </div>
 </body>
 

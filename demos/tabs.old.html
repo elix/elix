@@ -4,39 +4,42 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>elix-spotlight</title>
+  <title>elix-tabs</title>
 
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
-  <script type="module" src="../src/SpotlightTabs.js"></script>
+  <script type="module" src="../src/TabButton.js"></script>
+  <script type="module" src="../src/Tabs.js"></script>
+  <script type="module" src="../src/TabStrip.js"></script>
   <script nomodule src="../build/demos.js"></script>
-  
+
 </head>
 
 <body role="main" unresolved>
-  <div class="demo medium padded">
+  <div class="demo padded">
+
     <style>
-      #sampleTabs {
-        height: 100%;
-        width: 100%;
+      .plainTabs {
+        height: 250px;
+        max-width: 100%;
+        width: 300px;
       }
 
-      #sampleTabs .panel {
+      .plainTabs .panel {
         align-items: center;
-        background: white;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
         display: flex;
         flex: 1;
         justify-content: center;
       }
     </style>
-    <elix-spotlight-tabs id="sampleTabs">
+
+    <elix-tabs class="plainTabs">
       <div class="panel" aria-label="One">Page one</div>
       <div class="panel" aria-label="Two">Page two</div>
       <div class="panel" aria-label="Three">Page three</div>
-    </elix-spotlight-tabs>
+    </elix-tabs>
+
   </div>
 </body>
 
