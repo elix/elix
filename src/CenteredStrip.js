@@ -94,12 +94,12 @@ class CenteredStrip extends Base {
 
       const leftIndex = Math.floor(selectionFraction);
       const leftItem = this.items && this.items[leftIndex];
-      const leftCenter = leftItem ?
+      const leftCenter = leftItem instanceof HTMLElement ?
         leftItem.offsetLeft + leftItem.offsetWidth / 2 :
         0;
       const rightIndex = leftIndex + 1;
       const rightItem = this.items && this.items[rightIndex];
-      const rightCenter = rightItem ?
+      const rightCenter = rightItem instanceof HTMLElement ?
         rightItem.offsetLeft + rightItem.offsetWidth / 2 :
         0;
 

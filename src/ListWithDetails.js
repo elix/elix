@@ -46,8 +46,7 @@ class ListWithDetails extends Base {
   }
 
   get [symbols.scrollTarget]() {
-    // HACK: Shouldn't need to access an element inside another.
-    return this.$.cast.$.content;
+    return this.$.cast[symbols.scrollTarget];
   }
 
   get updates() {

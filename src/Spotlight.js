@@ -236,7 +236,7 @@ function defaultCast(element) {
       element[castKey] = [];
     } else {
       // Items have changed; create new buttons set.
-      element[castKey] = element.items.map((item, index) =>
+      element[castKey] = element.items.map(item =>
         avatarForItem(element, item));
       // Make the array immutable.
       Object.freeze(element[castKey]);
