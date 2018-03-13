@@ -9,13 +9,18 @@ class CenteredStripOpacity extends CenteredStrip {
     const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
     const selectedIndex = this.state.selectedIndex;
     const sign = this[symbols.rightToLeft] ? 1 : -1;
+    const swiping = this.state.swipeFraction != null;
     const swipeFraction = this.state.swipeFraction || 0;
     const selectionFraction = sign * swipeFraction;
     const opacity = opacityForItemWithIndex(calcs.index, selectedIndex, selectionFraction);
+    const transition = swiping ?
+      'none' :
+      'opacity 0.25s';
 
     return merge(base, {
       style: {
-        opacity
+        opacity,
+        transition
       }
     });
   }
