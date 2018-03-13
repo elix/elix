@@ -42,13 +42,23 @@ class ListWithDetails extends Base {
   pageDown() {
     /** @type {any} */
     const cast = this.$.cast;
-    return cast.pageDown();
+    const result = cast.pageDown();
+    // Sync selectedIndex in case its changed.
+    this.setState({
+      selectedIndex: cast.selectedIndex
+    });
+    return result;
   }
 
   pageUp() {
     /** @type {any} */
     const cast = this.$.cast;
-    return cast.pageUp();
+    const result = cast.pageUp();
+    // Sync selectedIndex in case its changed.
+    this.setState({
+      selectedIndex: cast.selectedIndex
+    });
+    return result;
   }
 
   setAvatarItem(avatar, item) {
