@@ -1,10 +1,10 @@
 import './TabButton.js';
 import './TabStrip.js';
 import { merge } from './updates.js';
-import Spotlight from './Spotlight.js';
+import Explorer from './Explorer.js';
 
 
-class SpotlightTabs extends Spotlight {
+class SpotlightTabs extends Explorer {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
@@ -17,20 +17,20 @@ class SpotlightTabs extends Spotlight {
     const base = super.defaults || {};
     return Object.assign({}, base, {
       tags: Object.assign({}, base.tags, {
-        avatar: 'elix-tab-button',
-        cast: 'elix-tab-strip'
+        list: 'elix-tab-strip',
+        proxy: 'elix-tab-button'
       })
     });
   }
 
-  setAvatarItem(avatar, item) {
-    super.setAvatarItem(avatar, item);
+  setProxyItem(proxy, item) {
+    super.setProxyItem(proxy, item);
     const label = item.getAttribute('aria-label') || item.alt;
     // const panelId = getIdForPanel(element, panel, index);
     // const id = getIdForTabButton(element, index);
     // avatar.setAttribute('id', id);
     // avatar.setAttribute('aria-controls', panelId);
-    avatar.textContent = label;
+    proxy.textContent = label;
   }
 
   /**
@@ -49,7 +49,7 @@ class SpotlightTabs extends Spotlight {
   get updates() {
     return merge(super.updates, {
       $: {
-        cast: {
+        list: {
           attributes: {
             'tab-align': this.state.tabAlign
           },

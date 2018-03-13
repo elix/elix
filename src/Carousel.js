@@ -6,10 +6,10 @@ import './SlidingViewport.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
+import Explorer from './Explorer.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
-import Spotlight from './Spotlight.js';
 import SwipeDirectionMixin from './SwipeDirectionMixin.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
@@ -23,7 +23,7 @@ const Base =
   SwipeDirectionMixin(
   TouchSwipeMixin(
   TrackpadSwipeMixin(
-    Spotlight
+    Explorer
   )))))));
 
 
@@ -40,16 +40,14 @@ const Base =
  * @mixes TouchSwipeMixin
  * @mixes TrackpadSwipeMixin
  */
-class SpotlightCarousel extends Base {
+class Carousel extends Base {
 
   get defaults() {
     const base = super.defaults || {};
     return Object.assign({}, base, {
       tags: Object.assign({}, base.tags, {
-        avatar: 'custom-thumbnail',
-        // cast: 'elix-centered-strip-highlight',
-        cast: 'elix-centered-strip-opacity',
-        // stage: 'elix-sliding-viewport'
+        list: 'elix-centered-strip-opacity',
+        proxy: 'custom-thumbnail',
         stage: 'sliding-viewport-with-arrows'
       })
     });
@@ -57,7 +55,7 @@ class SpotlightCarousel extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      castPosition: 'bottom',
+      listPosition: 'bottom',
       orientation: 'horizontal'
     });
   }
@@ -83,5 +81,5 @@ class SpotlightCarousel extends Base {
 }
 
 
-customElements.define('elix-spotlight-carousel', SpotlightCarousel);
-export default SpotlightCarousel;
+customElements.define('elix-carousel', Carousel);
+export default Carousel;

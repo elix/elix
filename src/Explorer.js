@@ -8,10 +8,10 @@ import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotContentMixin from './SlotContentMixin.js';
 
 
-const avatarTagKey = Symbol('avatarTag');
-const castKey = Symbol('cast');
-const castSlotchangeFiredKey = Symbol('castSlotchangeFired');
-const castTagKey = Symbol('castTag');
+const proxyTagKey = Symbol('proxyTag');
+const listKey = Symbol('list');
+const proxySlotchangeFiredKey = Symbol('proxySlotchangeFired');
+const listTagKey = Symbol('listTag');
 const previousItemsKey = Symbol('previousItems');
 const stageTagKey = Symbol('stageTag');
 
@@ -25,40 +25,7 @@ const Base =
   ))));
 
 
-class Spotlight extends Base {
-
-  get avatarTag() {
-    return this[avatarTagKey];
-  }
-  set avatarTag(avatarTag) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[avatarTagKey] = avatarTag;
-  }
-
-  // Return either the assigned cast (if present) or the default cast.
-  get cast() {
-    /** @type {any} */
-    const castSlot = this.$.castSlot;
-    const assignedCast = castSlot.assignedNodes({ flatten: true });
-    return assignedCast.length > 0 ?
-      assignedCast :
-      defaultCast(this);
-  }
-
-  get castPosition() {
-    return this.state.castPosition;
-  }
-  set castPosition(castPosition) {
-    this.setState({ castPosition });
-  }
-
-  get castTag() {
-    return this[castTagKey];
-  }
-  set castTag(castTag) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[castTagKey] = castTag;
-  }
+class Explorer extends Base {
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
@@ -71,71 +38,105 @@ class Spotlight extends Base {
       this[symbols.raiseChangeEvents] = false;
     };
     this.$.stage.addEventListener('selected-index-changed', handleSelectedIndexChanged);
-    this.$.cast.addEventListener('selected-index-changed', handleSelectedIndexChanged);
+    this.$.list.addEventListener('selected-index-changed', handleSelectedIndexChanged);
 
     // Work around inconsistencies in slotchange timing; see SlotContentMixin.
-    this.$.castSlot.addEventListener('slotchange', () => {
-      this[castSlotchangeFiredKey] = true;
-      updateCast(this);
+    this.$.proxySlot.addEventListener('slotchange', () => {
+      this[proxySlotchangeFiredKey] = true;
+      updateDefaultProxies(this);
     });
     Promise.resolve().then(() => {
-      if (!this[castSlotchangeFiredKey]) {
+      if (!this[proxySlotchangeFiredKey]) {
         // The event didn't fire, so we're most likely in Safari.
         // Update our notion of the component content.
-        this[castSlotchangeFiredKey] = true;
-        updateCast(this);
+        this[proxySlotchangeFiredKey] = true;
+        updateDefaultProxies(this);
       }
     });
   }
 
   componentDidUpdate(previousState) {
     if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-    updateCast(this);
+    updateDefaultProxies(this);
   }
 
   get defaults() {
     return {
       tags: {
-        avatar: 'div',
-        stage: 'elix-modes',
-        cast: 'div'
+        list: 'div',
+        proxy: 'div',
+        stage: 'elix-modes'
       }
     };
   }
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      castPosition: 'top'
+      defaultProxies: [],
+      listPosition: 'top'
     });
+  }
+
+  get listPosition() {
+    return this.state.listPosition;
+  }
+  set listPosition(listPosition) {
+    this.setState({ listPosition });
+  }
+
+  get listTag() {
+    return this[listTagKey];
+  }
+  set listTag(listTag) {
+    this[symbols.hasDynamicTemplate] = true;
+    this[listTagKey] = listTag;
+  }
+
+  get proxyTag() {
+    return this[proxyTagKey];
+  }
+  set proxyTag(proxyTag) {
+    this[symbols.hasDynamicTemplate] = true;
+    this[proxyTagKey] = proxyTag;
+  }
+
+  // Return either the assigned proxies (if present) or the default proxies.
+  get proxies() {
+    /** @type {any} */
+    const proxySlot = this.$.proxySlot;
+    const assignedlist = proxySlot.assignedNodes({ flatten: true });
+    return assignedlist.length > 0 ?
+      assignedlist :
+      createDefaultProxies(this);
   }
 
   [symbols.render]() {
     if (super[symbols.render]) { super[symbols.render](); }
 
-    // Physically reorder the cast and stage to reflect the desired arrangement.
+    // Physically reorder the list and stage to reflect the desired arrangement.
     // We could change the visual appearance by reversing the order of the flex
     // box, but then the visual order wouldn't reflect the document order, which
     // determines focus order. That would surprise a user trying to tab through
     // the controls.
-    const castPosition = this.state.castPosition;
-    const topOrLeftPosition = (castPosition === 'top' || castPosition === 'left');
+    const listPosition = this.state.listPosition;
+    const topOrLeftPosition = (listPosition === 'top' || listPosition === 'left');
     const firstElement = topOrLeftPosition ?
-      this.$.cast :
+      this.$.list :
       this.$.stage;
     const lastElement = topOrLeftPosition ?
       this.$.stage :
-      this.$.cast;
+      this.$.list;
     if (!this.shadowRoot) {
       /* eslint-disable no-console */
-      console.warn(`Spotlight expects ${this.constructor.name} to define a shadowRoot.\nThis can be done with ShadowTemplateMixin: https://elix.org/documentation/ShadowTemplateMixin.`);
+      console.warn(`Explorer expects ${this.constructor.name} to define a shadowRoot.\nThis can be done with ShadowTemplateMixin: https://elix.org/documentation/ShadowTemplateMixin.`);
     } else if (firstElement.nextSibling !== lastElement) {
       this.shadowRoot.insertBefore(firstElement, lastElement);
     }
   }
 
-  setAvatarItem(avatar, item) {
-    if ('item' in Object.getPrototypeOf(avatar)) {
-      avatar.item = item;
+  setProxyItem(proxy, item) {
+    if ('item' in Object.getPrototypeOf(proxy)) {
+      proxy.item = item;
     }
   }
 
@@ -149,7 +150,7 @@ class Spotlight extends Base {
 
   get [symbols.template]() {
     const stageTag = this.stageTag || this.defaults.tags.stage;
-    const castTag = this.castTag || this.defaults.tags.cast;
+    const listTag = this.listTag || this.defaults.tags.list;
     return `
       <style>
         :host {
@@ -164,32 +165,31 @@ class Spotlight extends Base {
       <${stageTag} id="stage" role="none">
         <slot></slot>
       </${stageTag}>
-      <${castTag} id="cast"><slot id="castSlot" name="cast"></slot></${castTag}>
+      <${listTag} id="list"><slot id="proxySlot" name="proxy"></slot></${listTag}>
     `;
   }
 
   get updates() {
-    const castPosition = this.state.castPosition;
-    const lateralPosition = castPosition === 'left' || castPosition === 'right';
+    const listPosition = this.state.listPosition;
+    const lateralPosition = listPosition === 'left' || listPosition === 'right';
 
     const selectedIndex = this.selectedIndex;
     const swipeFraction = this.state.swipeFraction;
 
-    const cast = this.state.cast || [];
-    let castChildNodes = [this.$.castSlot, ...cast];
+    let listChildNodes = [this.$.proxySlot, ...this.state.defaultProxies];
 
     return merge(super.updates, {
       style: {
         'flex-direction': lateralPosition ? 'row' : 'column'
       },
       $: {
-        stage: {
+        list: {
+          childNodes: listChildNodes,
+          position: listPosition,
           selectedIndex,
           swipeFraction
         },
-        cast: {
-          childNodes: castChildNodes,
-          position: castPosition,
+        stage: {
           selectedIndex,
           swipeFraction
         }
@@ -209,59 +209,59 @@ function arrayEquals(a, b) {
 }
 
 
-function avatarForItem(element, item) {
-  let avatar;
-  const avatarTag = element.avatarTag || element.defaults.tags.avatar;
-  if (avatarTag) {
-    avatar = document.createElement(avatarTag);
-    const isCustomElement = avatarTag.indexOf('-') >= 0;
-    if (!isCustomElement || customElements.get(avatarTag)) {
-      element.setAvatarItem(avatar, item);
-    } else {
-      customElements.whenDefined(avatarTag)
-      .then(() => {
-        element.setAvatarItem(avatar, item);
-      });
-    }
-  } else {
-    avatar = item.cloneNode(true);
-  }
-  return avatar;
-}
-
-
-// Return the default cast generated for the given items.
-function defaultCast(element) {
+// Return the default list generated for the given items.
+function createDefaultProxies(element) {
   if (element.items !== element[previousItemsKey]) {
     if (!element.items) {
       // No items yet.
-      element[castKey] = [];
+      element[listKey] = [];
     } else {
       // Items have changed; create new buttons set.
-      element[castKey] = element.items.map(item =>
-        avatarForItem(element, item));
+      element[listKey] = element.items.map(item =>
+        proxyForItem(element, item));
       // Make the array immutable.
-      Object.freeze(element[castKey]);
+      Object.freeze(element[listKey]);
     }
     element[previousItemsKey] = element.items;
   }
-  return element[castKey];
+  return element[listKey];
 }
 
 
-function updateCast(element) {
+function proxyForItem(element, item) {
+  let proxy;
+  const proxyTag = element.proxyTag || element.defaults.tags.proxy;
+  if (proxyTag) {
+    proxy = document.createElement(proxyTag);
+    const isCustomElement = proxyTag.indexOf('-') >= 0;
+    if (!isCustomElement || customElements.get(proxyTag)) {
+      element.setProxyItem(proxy, item);
+    } else {
+      customElements.whenDefined(proxyTag)
+      .then(() => {
+        element.setProxyItem(proxy, item);
+      });
+    }
+  } else {
+    proxy = item.cloneNode(true);
+  }
+  return proxy;
+}
+
+
+function updateDefaultProxies(element) {
   /** @type {any} */
-  const castSlot = element.$.castSlot;
-  const assignedButtons = castSlot.assignedNodes({ flatten: true });
-  const cast = assignedButtons.length > 0 ?
+  const proxySlot = element.$.proxySlot;
+  const assignedButtons = proxySlot.assignedNodes({ flatten: true });
+  const defaultProxies = assignedButtons.length > 0 ?
     [] :
-    defaultCast(element);
-  const changed = !arrayEquals(cast, element.state.cast);
+    createDefaultProxies(element);
+  const changed = !arrayEquals(defaultProxies, element.state.defaultProxies);
   if (changed) {
-    element.setState({ cast });
+    element.setState({ defaultProxies });
   }
 }
 
 
-customElements.define('elix-spotlight', Spotlight);
-export default Spotlight;
+customElements.define('elix-explorer', Explorer);
+export default Explorer;

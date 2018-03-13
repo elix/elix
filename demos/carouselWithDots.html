@@ -4,14 +4,14 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>elix-spotlight-carousel with dots</title>
+  <title>elix-carousel with dots</title>
 
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
+  <script type="module" src="../src/Carousel.js"></script>
   <script type="module" src="../src/CenteredStripOpacity.js"></script>
   <script type="module" src="../src/PageDot.js"></script>
-  <script type="module" src="../src/SpotlightCarousel.js"></script>
   <script nomodule src="../build/demos.js"></script>
 
   <style>
@@ -39,18 +39,18 @@
         width: 100%;
       }
     </style>
-    <elix-spotlight-carousel
+    <elix-carousel
         id="sampleCarousel"
         aria-label="Nature scenes"
-        cast-tag="elix-centered-strip-opacity"
-        avatar-tag="elix-page-dot"
+        list-tag="elix-centered-strip-opacity"
+        proxy-tag="elix-page-dot"
         >
       <img src="images/image01.jpg" alt="Mountain lake">
       <img src="images/image02.jpg" alt="Terraced farm">
       <img src="images/image03.jpg" alt="Winter trees">
       <img src="images/image04.jpg" alt="Forest river">
       <img src="images/image05.jpg" alt="Red panda">
-    </elix-spotlight-carousel>
+    </elix-carousel>
   </div>
 </body>
 

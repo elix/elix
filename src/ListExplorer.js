@@ -6,7 +6,7 @@ import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import KeyboardPagedSelectionMixin from './KeyboardPagedSelectionMixin.js';
 import KeyboardPrefixSelectionMixin from './KeyboardPrefixSelectionMixin.js';
-import Spotlight from './Spotlight.js';
+import Explorer from './Explorer.js';
 import * as symbols from './symbols.js';
 
 
@@ -17,15 +17,15 @@ const Base =
   DirectionSelectionMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
-    Spotlight
+    Explorer
   ))))));
 
 
-class ListWithDetails extends Base {
+class ListExplorer extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      castPosition: 'left',
+      listPosition: 'left',
       orientation: 'vertical'
     });
   }
@@ -34,47 +34,47 @@ class ListWithDetails extends Base {
     const base = super.defaults || {};
     return Object.assign({}, base, {
       tags: Object.assign({}, base.tags, {
-        cast: 'elix-list-box'
+        list: 'elix-list-box'
       })
     });
   }
 
   pageDown() {
     /** @type {any} */
-    const cast = this.$.cast;
-    const result = cast.pageDown();
+    const list = this.$.list;
+    const result = list.pageDown();
     // Sync selectedIndex in case its changed.
     this.setState({
-      selectedIndex: cast.selectedIndex
+      selectedIndex: list.selectedIndex
     });
     return result;
   }
 
   pageUp() {
     /** @type {any} */
-    const cast = this.$.cast;
-    const result = cast.pageUp();
+    const list = this.$.list;
+    const result = list.pageUp();
     // Sync selectedIndex in case its changed.
     this.setState({
-      selectedIndex: cast.selectedIndex
+      selectedIndex: list.selectedIndex
     });
     return result;
   }
 
-  setAvatarItem(avatar, item) {
-    super.setAvatarItem(avatar, item);
-    const label = item.getAttribute('aria-label') || item.alt;
-    avatar.textContent = label;
+  get [symbols.scrollTarget]() {
+    return this.$.list[symbols.scrollTarget];
   }
 
-  get [symbols.scrollTarget]() {
-    return this.$.cast[symbols.scrollTarget];
+  setProxyItem(proxy, item) {
+    super.setProxyItem(proxy, item);
+    const label = item.getAttribute('aria-label') || item.alt;
+    proxy.textContent = label;
   }
 
   get updates() {
     return merge(super.updates, {
       $: {
-        cast: {
+        list: {
           attributes: {
             role: 'none',
             tabindex: ''
@@ -87,5 +87,5 @@ class ListWithDetails extends Base {
 }
 
 
-customElements.define('elix-list-with-details', ListWithDetails);
-export default ListWithDetails;
+customElements.define('elix-list-explorer', ListExplorer);
+export default ListExplorer;

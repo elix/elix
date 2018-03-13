@@ -20,6 +20,5 @@ class SlidingPagesWithDots extends Base {
 }
 
 
-
 customElements.define('sliding-pages-with-dots', SlidingPagesWithDots);
 export default SlidingPagesWithDots;
