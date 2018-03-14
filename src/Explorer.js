@@ -73,8 +73,16 @@ class Explorer extends Base {
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       defaultProxies: [],
+      listOverlap: false,
       listPosition: 'top'
     });
+  }
+
+  get listOverlap() {
+    return this.state.listOverlap;
+  }
+  set listOverlap(listOverlap) {
+    this.setState({ listOverlap });
   }
 
   get listPosition() {
@@ -161,6 +169,7 @@ class Explorer extends Base {
         :host {
           display: inline-flex;
           flex-direction: column;
+          position: relative;
         }
 
         #stage {
@@ -179,7 +188,27 @@ class Explorer extends Base {
     const selectedIndex = this.selectedIndex;
     const swipeFraction = this.state.swipeFraction;
 
-    let listChildNodes = [this.$.proxySlot, ...this.state.defaultProxies];
+    const listChildNodes = [this.$.proxySlot, ...this.state.defaultProxies];
+    const listStyle = {
+      bottom: '',
+      height: '',
+      left: '',
+      position: '',
+      right: '',
+      top: '',
+      width: '',
+      'z-index': ''
+    };
+    if (this.state.listOverlap) {
+      listStyle.position = 'absolute';
+      listStyle['z-index'] = '1';
+      if (lateralPosition) {
+        listStyle.height = '100%';
+      } else {
+        listStyle.width = '100%';
+      }
+      listStyle[listPosition] = '0';
+    }
 
     return merge(super.updates, {
       style: {
@@ -190,6 +219,7 @@ class Explorer extends Base {
           childNodes: listChildNodes,
           position: listPosition,
           selectedIndex,
+          style: listStyle,
           swipeFraction
         },
         stage: {

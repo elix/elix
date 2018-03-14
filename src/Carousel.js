@@ -1,6 +1,6 @@
 import './CenteredStripOpacity.js';
 import './SlidingViewport.js';
-import './Thumbnail.js';
+import './PageDot.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import ArrowDirectionMixin from './ArrowDirectionMixin.js';
@@ -12,9 +12,6 @@ import KeyboardMixin from './KeyboardMixin.js';
 import SwipeDirectionMixin from './SwipeDirectionMixin.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
-
-
-const arrowButtonTagKey = Symbol('arrowButtonTag');
 
 
 const Base =
@@ -50,7 +47,7 @@ class Carousel extends Base {
     return Object.assign({}, base, {
       tags: Object.assign({}, base.tags, {
         list: 'elix-centered-strip-opacity',
-        proxy: 'custom-thumbnail',
+        proxy: 'elix-page-dot',
         stage: 'elix-sliding-viewport'
       })
     });
@@ -61,6 +58,7 @@ class Carousel extends Base {
     const showArrowButtons = window.matchMedia('(pointer:fine)').matches;
     return Object.assign({}, super.defaultState, {
       listPosition: 'bottom',
+      listOverlap: true,
       orientation: 'horizontal',
       showArrowButtons
     });

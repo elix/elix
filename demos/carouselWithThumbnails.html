@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>elix-carousel with thumbnails</title>
+
+  <link rel="stylesheet" href="demos.css">
+  <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="./src/showElementsWhenDefined.js"></script>
+  <script type="module" src="../src/CarouselWithThumbnails.js"></script>
+  <script nomodule src="../build/demos.js"></script>
+
+  <style>
+    html {
+      height: 100%;
+    }
+
+    body {
+      background: black;
+      max-height: 100%;
+      padding: 0;
+    }
+
+    :root {
+      --elix-thumbnail-height: 60px;
+      --elix-thumbnail-width: 80px;
+    }
+
+    .demo {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      height: 600px;
+      max-height: 100%;
+      max-width: 100%;
+      padding: 1em;
+      width: 800px;
+    }
+  </style>
+  
+</head>
+
+<body role="main" unresolved>
+  <div class="demo" style="height: 600px; width: 800px;">
+    <style>
+      #sampleCarousel {
+        background: black;
+        height: 100%;
+        width: 100%;
+      }
+
+      #sampleCarousel .carouselItem {
+        display: inline-block;
+        height: 100%;
+        object-fit: contain;
+        vertical-align: middle;
+        width: 100%;
+      }
+    </style>
+    <elix-carousel-with-thumbnails id="sampleCarousel" aria-label="Nature scenes" >
+      <img class="carouselItem" src="images/image01.jpg" alt="Mountain lake">
+      <img class="carouselItem" src="images/image02.jpg" alt="Terraced farm">
+      <img class="carouselItem" src="images/image03.jpg" alt="Winter trees">
+      <img class="carouselItem" src="images/image04.jpg" alt="Forest river">
+      <img class="carouselItem" src="images/image05.jpg" alt="Red panda">
+      <img class="carouselItem" src="images/image06.jpg" alt="Snowy peaks">
+      <img class="carouselItem" src="images/image07.jpg" alt="Stone arch">
+      <img class="carouselItem" src="images/image08.jpg" alt="Snowy river">
+      <img class="carouselItem" src="images/image09.jpg" alt="Palm trees">
+      <img class="carouselItem" src="images/image10.jpg" alt="Sunset through palm trees">
+      <img class="carouselItem" src="images/image11.jpg" alt="River canyon">
+      <img class="carouselItem" src="images/image12.jpg" alt="Lake with milky water">
+      <img class="carouselItem" src="images/image13.jpg" alt="Dirt road lined with fallen leaves">
+      <img class="carouselItem" src="images/image14.jpg" alt="Iceberg">
+      <img class="carouselItem" src="images/image15.jpg" alt="River at sunrise">
+      <img class="carouselItem" src="images/image16.jpg" alt="Coastal mountains">
+      <img class="carouselItem" src="images/image17.jpg" alt="Hoodoo formations">
+      <img class="carouselItem" src="images/image18.jpg" alt="Sandy beach">
+      <img class="carouselItem" src="images/image19.jpg" alt="Autumn foliage on mountainside">
+      <img class="carouselItem" src="images/image20.jpg" alt="Sunset over rocky ocean pool">
+    </elix-carousel-with-thumbnails>
+  </div>
+</body>
+
+</html>

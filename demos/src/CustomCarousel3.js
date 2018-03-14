@@ -1,10 +1,10 @@
 import './CustomArrowButton.js';
 import { merge } from '../../src/updates.js';
-import SlidingCarousel from '../../src/SlidingCarousel.js';
+import Carousel from '../../src/Carousel.js';
 
 
 // Shows how to change the glyphs used in the arrow buttons.
-class CustomCarousel extends SlidingCarousel {
+class CustomCarousel extends Carousel {
 
   get updates() {
     const arrowButtonStyle = {
