@@ -100,6 +100,11 @@ class Explorer extends Base {
     this[listTagKey] = listTag;
   }
 
+  get listTemplate() {
+    const listTag = this.listTag || this.defaults.tags.list;
+    return `<${listTag} id="list"><slot id="proxySlot" name="proxy"></slot></${listTag}>`;
+  }
+
   get proxyTag() {
     return this[proxyTagKey];
   }
@@ -128,15 +133,13 @@ class Explorer extends Base {
     // the controls.
     const listPosition = this.state.listPosition;
     const topOrLeftPosition = (listPosition === 'top' || listPosition === 'left');
-    const stage = findChildContainingNode(this.shadowRoot, this.$.stage);
-    const list = findChildContainingNode(this.shadowRoot, this.$.list);
+    const container = this.$.explorerContainer;
+    const stage = findChildContainingNode(container, this.$.stage);
+    const list = findChildContainingNode(container, this.$.list);
     const firstElement = topOrLeftPosition ? list : stage;
     const lastElement = topOrLeftPosition ? stage : list;
-    if (!this.shadowRoot) {
-      /* eslint-disable no-console */
-      console.warn(`Explorer expects ${this.constructor.name} to define a shadowRoot.\nThis can be done with ShadowTemplateMixin: https://elix.org/documentation/ShadowTemplateMixin.`);
-    } else if (firstElement.nextSibling !== lastElement) {
-      this.shadowRoot.insertBefore(firstElement, lastElement);
+    if (firstElement.nextElementSibling !== lastElement) {
+      this.$.explorerContainer.insertBefore(firstElement, lastElement);
     }
   }
 
@@ -156,19 +159,26 @@ class Explorer extends Base {
 
   get stageTemplate() {
     const stageTag = this.stageTag || this.defaults.tags.stage;
-    return `<${stageTag} id="stage" role="none">
-      <slot></slot>
-    </${stageTag}>`;
+    return `<${stageTag} id="stage" role="none"><slot></slot></${stageTag}>`;
   }
 
   get [symbols.template]() {
-    const listTag = this.listTag || this.defaults.tags.list;
+    const listTemplate = this.listTemplate;
     const stageTemplate = this.stageTemplate;
+    const listPosition = this.state.listPosition;
+    const templates = listPosition === 'top' || listPosition === 'left' ?
+      `${listTemplate}${stageTemplate}` :
+      `${stageTemplate}${listTemplate}`;
     return `
       <style>
         :host {
           display: inline-flex;
           flex-direction: column;
+        }
+        
+        #explorerContainer {
+          display: flex;
+          flex: 1;
           position: relative;
         }
 
@@ -176,8 +186,9 @@ class Explorer extends Base {
           flex: 1;
         }
       </style>
-      ${stageTemplate}
-      <${listTag} id="list"><slot id="proxySlot" name="proxy"></slot></${listTag}>
+      <div id="explorerContainer" role="none">
+        ${templates}
+      </div>
     `;
   }
 
@@ -211,10 +222,12 @@ class Explorer extends Base {
     }
 
     return merge(super.updates, {
-      style: {
-        'flex-direction': lateralPosition ? 'row' : 'column'
-      },
       $: {
+        explorerContainer: {
+          style: {
+            'flex-direction': lateralPosition ? 'row' : 'column'
+          },
+        },
         list: {
           childNodes: listChildNodes,
           position: listPosition,
