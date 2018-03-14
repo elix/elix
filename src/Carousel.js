@@ -55,7 +55,13 @@ class Carousel extends Base {
   
   get defaultState() {
     // Show arrow buttons if device has a fine-grained pointer (e.g., mouse).
-    const showArrowButtons = window.matchMedia('(pointer:fine)').matches;
+    // As of Mar 14 2018, Firefox does not yet support pointer queries, in which
+    // case we assume use of a mouse.
+    const pointerQuery = '(pointer: fine)';
+    const mediaQueryList = window.matchMedia(pointerQuery);
+    const showArrowButtons = mediaQueryList.media === pointerQuery ?
+      mediaQueryList.matches :
+      true;
     return Object.assign({}, super.defaultState, {
       listPosition: 'bottom',
       listOverlap: true,

@@ -173,12 +173,12 @@ class Explorer extends Base {
       <style>
         :host {
           display: inline-flex;
-          flex-direction: column;
         }
         
         #explorerContainer {
           display: flex;
           flex: 1;
+          max-width: 100%; /* For Firefox */
           position: relative;
         }
 
