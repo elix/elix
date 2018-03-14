@@ -51,8 +51,11 @@ export default function FocusVisibleMixin(Base) {
         focusedWithKeyboard = true;
       });
       this.addEventListener('mousedown', () => {
-        // If an element receives focus, it won't be because of the keyboard.
-        focusedWithKeyboard = false;
+        if (!this.matches(':focus')) {
+          // If this element ultimately receives the focus, it won't be because
+          // of the keyboard.
+          focusedWithKeyboard = false;
+        }
       });
 
       // We only want to start listening to window focus events if an element

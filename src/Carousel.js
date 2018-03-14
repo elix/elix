@@ -77,6 +77,11 @@ class Carousel extends Base {
   get updates() {
     return merge(super.updates, {
       $: {
+        list: {
+          attributes: {
+            tabindex: ''
+          }
+        },
         stage: {
           attributes: {
             tabindex: ''

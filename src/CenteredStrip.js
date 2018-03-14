@@ -3,7 +3,6 @@ import * as symbols from './symbols.js';
 import ClickSelectionMixin from './ClickSelectionMixin.js';
 import ContentItemsMixin from './ContentItemsMixin.js';
 import ElementBase from './ElementBase.js';
-import FocusVisibleMixin from './FocusVisibleMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotContentMixin from './SlotContentMixin.js';
@@ -12,12 +11,11 @@ import SlotContentMixin from './SlotContentMixin.js';
 const Base =
   ClickSelectionMixin(
   ContentItemsMixin(
-  FocusVisibleMixin(
   LanguageDirectionMixin(
   SingleSelectionMixin(
   SlotContentMixin(
     ElementBase
-  ))))));
+  )))));
 
 
 class CenteredStrip extends Base {
