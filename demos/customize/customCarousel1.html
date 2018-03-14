@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="../demos.css">
   <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="../src/showElementsWhenDefined.js"></script>
-  <script type="module" src="../../src/SlidingCarousel.js"></script>
+  <script type="module" src="../../src/Carousel.js"></script>
   <script type="module" src="../src/CustomArrowButton.js"></script>
   <script type="module" src="../src/CustomPageDot.js"></script>
   <script nomodule src="../../build/demos.js"></script>
@@ -47,12 +47,12 @@
 <body role="main" unresolved>
   <div class="demo fullScreen">
       <style>
-        elix-sliding-carousel {
+        elix-carousel {
           background: black;
           flex: 1;
         }
 
-        elix-sliding-carousel img {
+        elix-carousel img {
           display: inline-block;
           height: 100%;
           vertical-align: middle;
@@ -60,16 +60,17 @@
         }
       </style>
       <!-- Create a carousel with custom elements for the arrows and dots -->
-      <elix-sliding-carousel
+      <elix-carousel
           aria-label="Nature scenes"
           arrow-button-tag="custom-arrow-button"
-          page-dot-tag="custom-page-dot">
+          proxy-tag="custom-page-dot"
+          >
         <img src="../images/image01.jpg" alt="Mountain lake">
         <img src="../images/image02.jpg" alt="Terraced farm">
         <img src="../images/image03.jpg" alt="Winter trees">
         <img src="../images/image04.jpg" alt="Forest river">
         <img src="../images/image05.jpg" alt="Red panda">
-      </elix-sliding-carousel>
+      </elix-carousel>
   </div>
 </body>
 

@@ -1,10 +1,9 @@
-import './Thumbnail.js';
-// import './CenteredStripHighlight.js';
 import './CenteredStripOpacity.js';
-import '../demos/src/SlidingViewportWithArrows.js';
 import './SlidingViewport.js';
+import './Thumbnail.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
+import ArrowDirectionMixin from './ArrowDirectionMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import Explorer from './Explorer.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
@@ -15,7 +14,11 @@ import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 
 
+const arrowButtonTagKey = Symbol('arrowButtonTag');
+
+
 const Base =
+  ArrowDirectionMixin(
   DirectionSelectionMixin(
   FocusVisibleMixin(
   KeyboardDirectionMixin(
@@ -24,7 +27,7 @@ const Base =
   TouchSwipeMixin(
   TrackpadSwipeMixin(
     Explorer
-  )))))));
+  ))))))));
 
 
 /**
@@ -48,16 +51,23 @@ class Carousel extends Base {
       tags: Object.assign({}, base.tags, {
         list: 'elix-centered-strip-opacity',
         proxy: 'custom-thumbnail',
-        stage: 'sliding-viewport-with-arrows'
+        stage: 'elix-sliding-viewport'
       })
     });
   }
-
+  
   get defaultState() {
+    // Show arrow buttons if device has a fine-grained pointer (e.g., mouse).
+    const showArrowButtons = window.matchMedia('(pointer:fine)').matches;
     return Object.assign({}, super.defaultState, {
       listPosition: 'bottom',
-      orientation: 'horizontal'
+      orientation: 'horizontal',
+      showArrowButtons
     });
+  }
+
+  get stageTemplate() {
+    return this[ArrowDirectionMixin.inject](super.stageTemplate);
   }
 
   get [symbols.swipeTarget]() {

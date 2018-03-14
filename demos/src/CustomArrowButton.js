@@ -46,7 +46,6 @@ class CustomArrowButton extends WrappedStandardElement.wrap('button') {
         }
 
         #inner:disabled {
-          border-color: rgba(255, 255, 255, 0.2);
           color: rgba(255, 255, 255, 0.2);
           transform: scale(1.0);
         }

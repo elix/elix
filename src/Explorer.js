@@ -120,12 +120,10 @@ class Explorer extends Base {
     // the controls.
     const listPosition = this.state.listPosition;
     const topOrLeftPosition = (listPosition === 'top' || listPosition === 'left');
-    const firstElement = topOrLeftPosition ?
-      this.$.list :
-      this.$.stage;
-    const lastElement = topOrLeftPosition ?
-      this.$.stage :
-      this.$.list;
+    const stage = findChildContainingNode(this.shadowRoot, this.$.stage);
+    const list = findChildContainingNode(this.shadowRoot, this.$.list);
+    const firstElement = topOrLeftPosition ? list : stage;
+    const lastElement = topOrLeftPosition ? stage : list;
     if (!this.shadowRoot) {
       /* eslint-disable no-console */
       console.warn(`Explorer expects ${this.constructor.name} to define a shadowRoot.\nThis can be done with ShadowTemplateMixin: https://elix.org/documentation/ShadowTemplateMixin.`);
@@ -148,9 +146,16 @@ class Explorer extends Base {
     this[stageTagKey] = stageTag;
   }
 
-  get [symbols.template]() {
+  get stageTemplate() {
     const stageTag = this.stageTag || this.defaults.tags.stage;
+    return `<${stageTag} id="stage" role="none">
+      <slot></slot>
+    </${stageTag}>`;
+  }
+
+  get [symbols.template]() {
     const listTag = this.listTag || this.defaults.tags.list;
+    const stageTemplate = this.stageTemplate;
     return `
       <style>
         :host {
@@ -162,9 +167,7 @@ class Explorer extends Base {
           flex: 1;
         }
       </style>
-      <${stageTag} id="stage" role="none">
-        <slot></slot>
-      </${stageTag}>
+      ${stageTemplate}
       <${listTag} id="list"><slot id="proxySlot" name="proxy"></slot></${listTag}>
     `;
   }
@@ -225,6 +228,15 @@ function createDefaultProxies(element) {
     element[previousItemsKey] = element.items;
   }
   return element[listKey];
+}
+
+
+// Find the child of root that is or contains the given node.
+function findChildContainingNode(root, node) {
+  const parentNode = node.parentNode;
+  return parentNode === root ?
+    node :
+    findChildContainingNode(root, parentNode);
 }
 
 
