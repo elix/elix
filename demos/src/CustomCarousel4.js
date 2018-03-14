@@ -1,5 +1,5 @@
 import * as symbols from '../../src/symbols.js';
-import PageNumbersMixin from './PageNumbersMixin.js';
+import PageNumbersMixin from '../../src/PageNumbersMixin.js';
 import Carousel from '../../src/Carousel.js';
 
 

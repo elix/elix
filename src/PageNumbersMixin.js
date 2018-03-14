@@ -1,4 +1,4 @@
-import { merge } from '../../src/updates.js';
+import { merge } from './updates.js';
 
 
 const inject = Symbol('inject');
@@ -11,7 +11,7 @@ function PageNumbersMixin(Base) {
     [inject](template) {
       return `
         <style>
-          #page {
+          #pageNumber {
             bottom: 0;
             color: white;
             padding: 0.5em;
@@ -23,7 +23,7 @@ function PageNumbersMixin(Base) {
           <div role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;">
             ${template}
           </div>
-          <div id="page"></div>
+          <div id="pageNumber"></div>
         </div>
       `;
     }
@@ -34,7 +34,7 @@ function PageNumbersMixin(Base) {
         '';
       return merge(super.updates, {
         $: {
-          page: {
+          pageNumber: {
             textContent
           }
         }

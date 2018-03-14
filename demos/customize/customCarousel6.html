@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="../demos.css">
   <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="../src/showElementsWhenDefined.js"></script>
-  <script type="module" src="../../src/SlidingCarousel.js"></script>
+  <script type="module" src="../../src/Carousel.js"></script>
   <script nomodule src="../../build/demos.js"></script>
 
   <style>
@@ -45,12 +45,12 @@
 <body role="main" unresolved>
   <div class="demo fullScreen">
       <style>
-        custom-carousel {
+        elix-carousel {
           background: black;
           flex: 1;
         }
 
-        custom-carousel img {
+        elix-carousel img {
           display: inline-block;
           height: 100%;
           vertical-align: middle;
@@ -58,16 +58,16 @@
         }
       </style>
       <!-- Create a carousel with plain buttons for the arrows and dots -->
-      <elix-sliding-carousel
+      <elix-carousel
           aria-label="Nature scenes"
           arrow-button-tag="button"
-          page-dot-tag="button">
+          proxy-tag="button">
         <img src="../images/image01.jpg" alt="Mountain lake">
         <img src="../images/image02.jpg" alt="Terraced farm">
         <img src="../images/image03.jpg" alt="Winter trees">
         <img src="../images/image04.jpg" alt="Forest river">
         <img src="../images/image05.jpg" alt="Red panda">
-      </custom-carousel>
+      </elix-carousel>
   </div>
 </body>
 

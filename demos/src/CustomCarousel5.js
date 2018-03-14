@@ -2,18 +2,14 @@ import './CustomArrowButton.js';
 import './CustomPageDot.js';
 import { merge } from '../../src/updates.js';
 import * as symbols from '../../src/symbols.js';
-import ArrowDirectionMixin from '../../src/ArrowDirectionMixin.js';
-import PageDotsMixin from '../../src/PageDotsMixin.js';
-import PageNumbersMixin from './PageNumbersMixin.js';
-import SlidingPages from '../../src/SlidingPages.js';
+import PageNumbersMixin from '../../src/PageNumbersMixin.js';
+import Carousel from '../../src/Carousel.js';
 
 
 const Base =
-  ArrowDirectionMixin(
-  PageDotsMixin(
   PageNumbersMixin(
-    SlidingPages
-  )));
+    Carousel
+  );
 
 
 // Customize everything.
@@ -24,26 +20,13 @@ class CustomCarousel extends Base {
     return Object.assign({}, base, {
       tags: Object.assign({}, base.tags, {
         arrowButton: 'custom-arrow-button',
-        pageDot: 'custom-page-dot'
+        proxy: 'custom-page-dot'
       })
     });
   }
 
-  get defaultState() {
-    // Show arrow buttons if device has a fine-grained pointer (e.g., mouse).
-    return Object.assign({}, super.defaultState, {
-      showArrowButtons: window.matchMedia('(pointer:fine)').matches
-    });
-  }
-
   get [symbols.template]() {
-    return this[ArrowDirectionMixin.inject](
-      this[PageDotsMixin.inject](
-        this[PageNumbersMixin.inject](
-          super[symbols.template]
-        )
-      )
-    );
+    return this[PageNumbersMixin.inject](super[symbols.template]);
   }
 
   get updates() {
