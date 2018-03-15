@@ -1,8 +1,9 @@
 import './CenteredStripOpacity.js';
-import './SlidingViewport.js';
 import './PageDot.js';
+import './SlidingViewport.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
+import AriaListMixin from './AriaListMixin.js';
 import ArrowDirectionMixin from './ArrowDirectionMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import Explorer from './Explorer.js';
@@ -15,6 +16,7 @@ import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 
 
 const Base =
+  AriaListMixin(
   ArrowDirectionMixin(
   DirectionSelectionMixin(
   FocusVisibleMixin(
@@ -24,7 +26,7 @@ const Base =
   TouchSwipeMixin(
   TrackpadSwipeMixin(
     Explorer
-  ))))))));
+  )))))))));
 
 
 /**

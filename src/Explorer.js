@@ -1,7 +1,6 @@
 import './Modes.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
-import AriaListMixin from './AriaListMixin.js';
 import ContentItemsMixin from './ContentItemsMixin.js';
 import ElementBase from './ElementBase.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
@@ -17,12 +16,11 @@ const stageTagKey = Symbol('stageTag');
 
 
 const Base =
-  AriaListMixin(
   ContentItemsMixin(
   SingleSelectionMixin(
   SlotContentMixin(
     ElementBase
-  ))));
+  )));
 
 
 class Explorer extends Base {
