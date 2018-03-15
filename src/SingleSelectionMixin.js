@@ -89,9 +89,7 @@ export default function SingleSelectionMixin(Base) {
      */
     selectFirst() {
       if (super.selectFirst) { super.selectFirst(); }
-      return this.setState({
-        selectedIndex: 0
-      });
+      return updateSelectedIndex(this, 0);
     }
 
     /**
@@ -166,9 +164,7 @@ export default function SingleSelectionMixin(Base) {
      */
     selectLast() {
       if (super.selectLast) { super.selectLast(); }
-      return this.setState({
-        selectedIndex: this.items.length - 1
-      });
+      return updateSelectedIndex(this, this.items.length - 1);
     }
 
     /**
@@ -180,9 +176,7 @@ export default function SingleSelectionMixin(Base) {
      */
     selectNext() {
       if (super.selectNext) { super.selectNext(); }
-      return this.setState({
-        selectedIndex: this.state.selectedIndex + 1
-      });
+      return updateSelectedIndex(this, this.state.selectedIndex + 1);
     }
 
     /**
@@ -207,7 +201,7 @@ export default function SingleSelectionMixin(Base) {
         // Already on first item, can't go previous.
         return false;
       }
-      return this.setState({ selectedIndex });
+      return updateSelectedIndex(this, selectedIndex);
     }
 
     validateState(state) {
@@ -216,27 +210,9 @@ export default function SingleSelectionMixin(Base) {
         this.itemsForState(state) :
         state.items;
       if (items) {
-        const count = items ? items.length : 0;
-        const selectedIndex = state.selectedIndex;
-
-        let validatedIndex;
-        if (selectedIndex === -1 && state.selectionRequired && count > 0) {
-          // Ensure there's a selection.
-          validatedIndex = 0;
-        } else if (state.selectionWraps && count > 0) {
-          // Wrap the index.
-          // JavaScript mod doesn't handle negative numbers the way we want to wrap.
-          // See http://stackoverflow.com/a/18618250/76472
-          validatedIndex = ((selectedIndex % count) + count) % count;
-        } else {
-          // Force index within bounds of -1 (no selection) to array length-1.
-          // This logic also handles the case where there are no items
-          // (count=0), which will produce a validated index of -1 (no
-          // selection) regardless of what selectedIndex was asked for.
-          validatedIndex = Math.max(Math.min(selectedIndex, count - 1), -1);
-        }
-
-        if (validatedIndex !== selectedIndex) {
+        const validatedIndex = validateIndex(this, items, state.selectedIndex,
+            state.selectionRequired, state.selectionWraps);
+        if (validatedIndex !== state.selectedIndex) {
           return {
             selectedIndex: validatedIndex
           };
@@ -249,4 +225,41 @@ export default function SingleSelectionMixin(Base) {
   }
 
   return SingleSelection;
+}
+
+
+function validateIndex(element, items, index, selectionRequired, selectionWraps) {
+  const count = items ? items.length : 0;
+  let validatedIndex;
+  if (index === -1 && selectionRequired && count > 0) {
+    // Ensure there's a selection.
+    validatedIndex = 0;
+  }
+  else if (selectionWraps && count > 0) {
+    // Wrap the index.
+    // JavaScript mod doesn't handle negative numbers the way we want to wrap.
+    // See http://stackoverflow.com/a/18618250/76472
+    validatedIndex = ((index % count) + count) % count;
+  }
+  else {
+    // Force index within bounds of -1 (no selection) to array length-1.
+    // This logic also handles the case where there are no items
+    // (count=0), which will produce a validated index of -1 (no
+    // selection) regardless of what selectedIndex was asked for.
+    validatedIndex = Math.max(Math.min(index, count - 1), -1);
+  }
+  return validatedIndex;
+}
+
+
+function updateSelectedIndex(element, selectedIndex) {
+  const validatedIndex = validateIndex(element, element.items, selectedIndex,
+      element.state.selectionRequired, element.state.selectionWraps);
+  const changed = element.state.selectedIndex !== validatedIndex;
+  if (changed) {
+    element.setState({
+      selectedIndex: validatedIndex
+    });
+  }
+  return changed;
 }

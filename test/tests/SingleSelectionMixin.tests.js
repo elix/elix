@@ -36,41 +36,49 @@ describe("SingleSelectionMixin", () => {
     assert.equal(fixture.state.selectedIndex, -1);
   });
 
-  it("can advance the selection to the next item", () => {
+  it("can advance the selection to the next item", async () => {
     const fixture = createSampleElement();
     assert.equal(fixture.state.selectedIndex, -1);
-    fixture.selectNext();
+    const selectionChanged0 = fixture.selectNext();
     assert.equal(fixture.state.selectedIndex, 0);
+    assert(selectionChanged0);
     fixture.selectNext();
-    fixture.selectNext();
+    const selectionChanged1 = fixture.selectNext();
     assert.equal(fixture.state.selectedIndex, 2);
-    fixture.selectNext(); // Moving past last item should have no effect.
+    assert(selectionChanged1);
+    // Moving past last item should have no effect.
+    const selectionChanged2 = fixture.selectNext();
     assert.equal(fixture.state.selectedIndex, 2);
+    assert(!selectionChanged2);
+    await Promise.resolve();
   });
 
-  it("can move the selection to the previous item", () => {
+  it("can move the selection to the previous item", async () => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     fixture.selectPrevious();
     assert.equal(fixture.state.selectedIndex, 2); // last item
     fixture.selectPrevious();
     assert.equal(fixture.state.selectedIndex, 1);
+    await Promise.resolve();
   });
 
-  it("can wrap the selection from the last to the first item", () => {
+  it("can wrap the selection from the last to the first item", async () => {
     const fixture = createSampleElement();
     fixture.selectionWraps = true;
     fixture.setState({ selectedIndex: 2 });
     fixture.selectNext();
     assert.equal(fixture.state.selectedIndex, 0);
+    await Promise.resolve();
   });
 
-  it("can wrap the selection from the first to the last item", () => {
+  it("can wrap the selection from the first to the last item", async () => {
     const fixture = createSampleElement();
     fixture.selectionWraps = true;
     fixture.setState({ selectedIndex: 0 });
     fixture.selectPrevious();
     assert.equal(fixture.state.selectedIndex, 2);
+    await Promise.resolve();
   });
 
   it("selects first item when selection is required and no item is currently selected", async () => {
@@ -79,7 +87,6 @@ describe("SingleSelectionMixin", () => {
     await fixture.setState({
       selectionRequired: true
     });
-    fixture.render();
     assert.equal(fixture.state.selectedIndex, 0);
   });
 
@@ -91,7 +98,6 @@ describe("SingleSelectionMixin", () => {
       items,
       selectedIndex: 2
     });
-    fixture.render();
     assert.equal(fixture.state.selectedIndex, 1);
   });
 
@@ -101,11 +107,10 @@ describe("SingleSelectionMixin", () => {
       items: [],
       selectedIndex: 0
     });
-    fixture.render();
     assert.equal(fixture.state.selectedIndex, -1);
   });
 
-  it("sets canSelectNext/canSelectPrevious with no wrapping", () => {
+  it("sets canSelectNext/canSelectPrevious with no wrapping", async () => {
     const fixture = createSampleElement();
     assert(!fixture.selectionWraps);
 
@@ -128,9 +133,11 @@ describe("SingleSelectionMixin", () => {
     fixture.selectLast();
     assert(!fixture.canSelectNext);
     assert(fixture.canSelectPrevious);
+
+    await Promise.resolve();
   });
 
-  it("sets canSelectNext/canSelectPrevious with wrapping", () => {
+  it("sets canSelectNext/canSelectPrevious with wrapping", async () => {
     const fixture = createSampleElement();
     fixture.selectionWraps = true;
 
@@ -143,6 +150,8 @@ describe("SingleSelectionMixin", () => {
     fixture.selectLast();
     assert(fixture.canSelectNext);
     assert(fixture.canSelectPrevious);
+
+    await Promise.resolve();
   });
 
   it("changing selection through (simulated) user interaction raises the selected-index-changed event", done => {
@@ -168,7 +177,7 @@ describe("SingleSelectionMixin", () => {
     setTimeout(done);
   });
 
-  it("adds selected calculation to itemCalcs", () => {
+  it("adds selected calculation to itemCalcs", async () => {
     const fixture = createSampleElement();
     const items = fixture.items;
 
@@ -183,6 +192,8 @@ describe("SingleSelectionMixin", () => {
     assert(!fixture.itemCalcs(items[0], 0).selected);
     assert(!fixture.itemCalcs(items[1], 1).selected);
     assert(fixture.itemCalcs(items[2], 2).selected);
+    
+    await Promise.resolve();
   });
 
 });
