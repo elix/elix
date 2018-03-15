@@ -1,5 +1,5 @@
 import * as symbols from './symbols.js';
-import constants from './constants.js';
+import { TYPING_TIMEOUT_DURATION } from './constants.js';
 
 
 // Symbols for private data members on an element.
@@ -183,5 +183,5 @@ function setPrefixTimeout(element) {
   resetPrefixTimeout(element);
   element[prefixTimeoutKey] = setTimeout(() => {
     resetTypedPrefix(element);
-  }, constants.TYPING_TIMEOUT_DURATION);
+  }, TYPING_TIMEOUT_DURATION);
 }

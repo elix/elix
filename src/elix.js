@@ -18,14 +18,22 @@ export { default as ArrowDirectionButton } from './ArrowDirectionButton.js';
 export { default as ArrowDirectionMixin } from './ArrowDirectionMixin.js';
 export { default as AttributeMarshallingMixin } from './AttributeMarshallingMixin.js';
 export { default as AutosizeTextarea } from './AutosizeTextarea.js';
+export { default as Carousel } from './Carousel.js';
+export { default as CarouselWithThumbnails } from './CarouselWithThumbnails.js';
+export { default as CenteredStrip } from './CenteredStrip.js';
+export { default as CenteredStripHighlight } from './CenteredStripHighlight.js';
+export { default as CenteredStripOpacity } from './CenteredStripOpacity.js';
 export { default as ClickSelectionMixin } from './ClickSelectionMixin.js';
 export { default as ContentItemsMixin } from './ContentItemsMixin.js';
+export { default as deepContains } from './deepContains.js';
+export { default as defaultScrollTarget } from './defaultScrollTarget.js';
 export { default as Dialog } from './Dialog.js';
 export { default as DialogModalityMixin } from './DialogModalityMixin.js';
 export { default as DirectionSelectionMixin } from './DirectionSelectionMixin.js';
 export { default as Drawer } from './Drawer.js';
 export { default as ElementBase } from './ElementBase.js';
 export { default as ExpandablePanel } from './ExpandablePanel.js';
+export { default as Explorer } from './Explorer.js';
 export { default as FocusCaptureMixin } from './FocusCaptureMixin.js';
 export { default as FocusVisibleMixin } from './FocusVisibleMixin.js';
 export { default as HoverMixin } from './HoverMixin.js';
@@ -35,12 +43,12 @@ export { default as KeyboardPagedSelectionMixin } from './KeyboardPagedSelection
 export { default as KeyboardPrefixSelectionMixin } from './KeyboardPrefixSelectionMixin.js';
 export { default as LanguageDirectionMixin } from './LanguageDirectionMixin.js';
 export { default as ListBox } from './ListBox.js';
+export { default as ListExplorer } from './ListExplorer.js';
 export { default as ModalBackdrop } from './ModalBackdrop.js';
 export { default as Modes } from './Modes.js';
 export { default as OpenCloseMixin } from './OpenCloseMixin.js';
 export { default as OverlayMixin } from './OverlayMixin.js';
 export { default as PageDot } from './PageDot.js';
-export { default as PageDotsMixin } from './PageDotsMixin.js';
 export { default as Popup } from './Popup.js';
 export { default as PopupModalityMixin } from './PopupModalityMixin.js';
 export { default as ReactiveMixin } from './ReactiveMixin.js';
@@ -49,33 +57,31 @@ export { default as SelectedItemTextValueMixin } from './SelectedItemTextValueMi
 export { default as SelectionInViewMixin } from './SelectionInViewMixin.js';
 export { default as ShadowTemplateMixin } from './ShadowTemplateMixin.js';
 export { default as SingleSelectionMixin } from './SingleSelectionMixin.js';
-export { default as SlidingCarousel } from './SlidingCarousel.js';
 export { default as SlidingPages } from './SlidingPages.js';
 export { default as SlidingViewport } from './SlidingViewport.js';
 export { default as SlotContentMixin } from './SlotContentMixin.js';
 export { default as SwipeDirectionMixin } from './SwipeDirectionMixin.js';
 export { default as TabButton } from './TabButton.js';
+export { default as Tabs } from './Tabs.js';
 export { default as TabStrip } from './TabStrip.js';
-export { Tabs as Tabs } from './Tabs.js';
 export { default as Toast } from './Toast.js';
 export { default as TouchSwipeMixin } from './TouchSwipeMixin.js';
 export { default as TrackpadSwipeMixin } from './TrackpadSwipeMixin.js';
 export { default as TransitionEffectMixin } from './TransitionEffectMixin.js';
 export { default as WrappedStandardElement } from './WrappedStandardElement.js';
-export { default as constants } from './constants.js';
-export { default as deepContains } from './deepContains.js';
-export { default as defaultScrollTarget } from './defaultScrollTarget.js';
 
 
 // Files that export multiple objects.
 // As of Jan 2018, there's no way to simultaneously import a collection of
 // objects and then export them as a named object, so we have to do the
 // import and export in separate steps.
+import * as constantsImport from './constants.js';
 import * as contentImport from './content.js';
 import * as fractionalSelectionImport from './fractionalSelection.js';
 import * as symbolsImport from './symbols.js';
 import * as updatesImport from './updates.js';
 
+export const constants = constantsImport;
 export const content = contentImport;
 export const fractionalSelection = fractionalSelectionImport;
 export const symbols = symbolsImport;
