@@ -77,9 +77,9 @@ class Carousel extends Base {
   }
 
   get [symbols.swipeTarget]() {
-    /** @type {any} */
-    const element = this.$.stage;
-    return element;
+    return this.$.stage instanceof HTMLElement ?
+      this.$.stage :
+      super[symbols.swipeTarget];
   }
 
   get updates() {
