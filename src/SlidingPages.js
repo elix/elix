@@ -1,3 +1,4 @@
+import * as symbols from './symbols.js';
 import AriaListMixin from './AriaListMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
@@ -36,7 +37,15 @@ const Base =
  * @mixes TouchSwipeMixin
  * @mixes TrackpadSwipeMixin
  */
-class SlidingPages extends Base {}
+class SlidingPages extends Base {
+
+  // Workaround Edge bug: https://github.com/Microsoft/ChakraCore/issues/4835.
+  // When that's fixed, we can remove this.
+  get [symbols.swipeTarget]() {
+    return this;
+  }
+
+}
 
 
 customElements.define('elix-sliding-pages', SlidingPages);
