@@ -11,8 +11,8 @@
   },
   "include": [
     "elix.js",
-    "src/*.js",
-    "demos/src/*.js",
-    "tests/tests.js"
+    "src/**/*.js",
+    "demos/src/**/*.js",
+    "tests/**/*.js"
   ]
 }

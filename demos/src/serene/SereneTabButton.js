@@ -13,7 +13,7 @@ class SereneTabButton extends Base {
 
   get updates() {
     const base = super.updates || {};
-    const active = this.state.hover || this.state.focusVisible;
+    // const active = this.state.hover || this.state.focusVisible;
     const background = this.state.selected ?
       '#666' :
       this.state.hover ?
