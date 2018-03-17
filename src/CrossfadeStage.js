@@ -9,7 +9,8 @@ class CrossfadeStage extends Modes {
     const selectedIndex = this.state.selectedIndex;
     // const sign = this[symbols.rightToLeft] ? 1 : -1;
     const sign = -1;
-    const swiping = this.state.swipeFraction !== null;
+    const swiping = this.state.swipeFraction != null;
+    // const swiping = false;
     const swipeFraction = this.state.swipeFraction || 0;
     const selectionFraction = sign * swipeFraction;
     const opacity = opacityForItemWithIndex(calcs.index, selectedIndex, selectionFraction);
@@ -17,8 +18,10 @@ class CrossfadeStage extends Modes {
     return merge(base, {
       style: {
         'display': '', /* override base */
+        'grid-column': 1,
+        'grid-row': 1,
         opacity,
-        'position': 'absolute',
+        // 'position': 'absolute',
         transition
       }
     });
@@ -34,7 +37,7 @@ class CrossfadeStage extends Modes {
   get updates() {
     return merge(super.updates, {
       style: {
-        display: 'block'
+        display: 'grid'
       }
     });
   }
@@ -68,5 +71,5 @@ function opacityForItemWithIndex(index, selectedIndex, selectionFraction) {
 }
 
 
-customElements.define('crossfade-stage', CrossfadeStage);
+customElements.define('elix-crossfade-stage', CrossfadeStage);
 export default CrossfadeStage;

@@ -1,4 +1,4 @@
-import './SereneModes.js';
+import '../../../src/CrossfadeStage.js'
 import './SereneTabButton.js';
 import { merge } from '../../../src/updates.js';
 import Tabs from '../../../src/Tabs.js';
@@ -10,8 +10,8 @@ class SereneTabs extends Tabs {
     const base = super.defaults || {};
     return Object.assign({}, base, {
       tags: Object.assign({}, base.tags, {
-        tabButton: 'serene-tab-button',
-        tabPanels: 'serene-modes'
+        proxy: 'serene-tab-button',
+        stage: 'elix-crossfade-stage'
       })
     });
   }
@@ -22,11 +22,17 @@ class SereneTabs extends Tabs {
         display: 'flex'
       },
       $: {
-        tabStrip: {
+        list: {
           style: {
             'background': '#222',
             'color': 'white',
             'font-family': 'Gentium Basic',
+            'padding': '0 33px'
+          }
+        },
+        stage: {
+          style: {
+            'background': 'white',
             'padding': '0 33px'
           }
         }
