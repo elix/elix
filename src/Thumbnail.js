@@ -5,13 +5,6 @@ import WrappedStandardElement from "./WrappedStandardElement.js";
 
 class Thumbnail extends WrappedStandardElement.wrap('img') {
 
-  get item() {
-    return this.state.item;
-  }
-  set item(item) {
-    this.setState({ item });
-  }
-
   get [symbols.template]() {
     return `
       <style>
@@ -20,7 +13,7 @@ class Thumbnail extends WrappedStandardElement.wrap('img') {
           position: relative;
         }
 
-        img {
+        #inner {
           height: var(--elix-thumbnail-height, 100%);
           width: var(--elix-thumbnail-width, 100%);
           object-fit: contain;
@@ -44,5 +37,5 @@ class Thumbnail extends WrappedStandardElement.wrap('img') {
 }
 
 
-customElements.define('custom-thumbnail', Thumbnail);
+customElements.define('elix-thumbnail', Thumbnail);
 export default Thumbnail;

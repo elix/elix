@@ -8,7 +8,7 @@ class CarouselWithThumbnails extends Carousel {
     const base = super.defaults || {};
     return Object.assign({}, base, {
       tags: Object.assign({}, base.tags, {
-        proxy: 'custom-thumbnail'
+        proxy: 'elix-thumbnail'
       })
     });
   }
@@ -17,6 +17,13 @@ class CarouselWithThumbnails extends Carousel {
     return Object.assign({}, super.defaultState, {
       listOverlap: false
     });
+  }
+
+  setProxyItem(proxy, item) {
+    super.setProxyItem(proxy, item);
+    if (item.src !== undefined) {
+      proxy.src = item.src;
+    }
   }
 
 }
