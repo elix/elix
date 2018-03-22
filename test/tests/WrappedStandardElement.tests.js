@@ -34,8 +34,8 @@ describe("WrappedStandardElement", () => {
 
   it("exposes getter/setters that proxy to the wrapped element", () => {
     const fixture = document.createElement('wrapped-a');
-    fixture.render();
     fixture.href = 'http://localhost/foo/bar.html';
+    container.appendChild(fixture);
     assert.equal(fixture.inner.href, 'http://localhost/foo/bar.html');
     assert.equal(fixture.protocol, 'http:');
     assert.equal(fixture.hostname, 'localhost');
@@ -44,8 +44,9 @@ describe("WrappedStandardElement", () => {
 
   it("marshals attributes to properties on the inner element", () => {
     const fixture = document.createElement('wrapped-a');
-    fixture.render();
+    container.appendChild(fixture);
     fixture.setAttribute('href', 'http://example.com/');
+    fixture.render();
     assert.equal(fixture.inner.href, 'http://example.com/');
   });
 
@@ -68,6 +69,7 @@ describe("WrappedStandardElement", () => {
     });
     fixture.click();
     fixture.disabled = true;
+    fixture.render();
     fixture.click();
     assert.equal(count, 1);
   });
@@ -84,26 +86,26 @@ describe("WrappedStandardElement", () => {
   it("delegates boolean attributes", async () => {
     const fixture = document.createElement('wrapped-button');
     container.appendChild(fixture);
-
+    
     // Disable via property.
     fixture.disabled = true;
+    fixture.render();
     assert(fixture.inner.disabled);
-    assert(fixture.state.disabled);
 
     // Re-enable via property.
     fixture.disabled = false;
+    fixture.render();
     assert(!fixture.inner.disabled);
-    assert(!fixture.state.disabled);
 
     // Disable via attribute.
     fixture.setAttribute('disabled', '');
+    fixture.render();
     assert(fixture.inner.disabled);
-    assert(fixture.state.disabled);
     
     // Re-enable via attribute.
     fixture.removeAttribute('disabled');    
+    fixture.render();
     assert(!fixture.inner.disabled);
-    assert(!fixture.state.disabled);
   });
 
   it("generates static observedAttributes property for attributes on the wrapped element", () => {

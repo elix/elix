@@ -1,11 +1,9 @@
+import { merge, booleanAttributes } from './updates.js';
 import * as symbols from './symbols.js';
-import * as updates from './updates.js';
 import ElementBase from './ElementBase.js';
 
 
 const extendsKey = Symbol('extends');
-const mountedKey = Symbol('mounted');
-const pendingPropertiesKey = Symbol('pendingProperties');
 
 
 /*
@@ -142,6 +140,17 @@ const blockElements = [
  */
 class WrappedStandardElement extends ElementBase {
 
+  // Define an ariaLabel property and delegate it to the inner element. This
+  // definition lets AttributeMarshallingMixin know it should handle this
+  // aria-label attribute.
+  get ariaLabel() {
+    return this.getAttribute('aria-label');
+  }
+  set ariaLabel(label) {
+    // Propagate the ARIA label to the inner textarea.
+    this.setInnerAttribute('aria-label', label);
+  }
+
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
 
@@ -179,27 +188,18 @@ class WrappedStandardElement extends ElementBase {
         });
       });
     }
-
-    // Apply any properties set via attributes before the component mounted.
-    this[mountedKey] = true;
-    writePendingProperties(this);
   }
 
-  // Define an ariaLabel property and delegate it to the inner element. This
-  // definition lets AttributeMarshallingMixin know it should handle this
-  // aria-label attribute.
-  get ariaLabel() {
-    return this.inner.getAttribute('aria-label');
-  }
-  set ariaLabel(label) {
-    // Propagate the ARIA label to the inner textarea.
-    safelySetInnerProperty(this, 'aria-label', label);
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      innerAttributes: {}
+    });
   }
 
   get extends() {
     return this.constructor[extendsKey];
   }
-
+  
   /**
    * Returns a reference to the inner standard HTML element.
    *
@@ -212,6 +212,36 @@ class WrappedStandardElement extends ElementBase {
       console.warn('Attempted to get an inner standard element before it was instantiated.');
     }
     return result;
+  }
+  
+  getInnerAttribute(name) {
+    // Prefer internal state value, which may not have rendered yet.
+    const value = this.state.innerAttributes[name];
+    return value !== undefined ? value : this.inner[name];
+  }
+
+  setInnerAttribute(name, value) {
+    // Special case for boolean attributes, which may be passed as strings via
+    // calls to setAttribute.
+    const cast = castPotentialBooleanAttribute(name, value);
+    const innerAttributes = Object.assign({}, this.state.innerAttributes, {
+      [name]: cast
+    });
+    this.setState({ innerAttributes });
+  }
+
+  shouldComponentUpdate(nextState) {
+    const base = super.shouldComponentUpdate && super.shouldComponentUpdate(nextState);
+    if (base) {
+      return true; // Trust base result.
+    }
+    // Do a shallow prop comparison of inner properties too.
+    for (const key in nextState.inner) {
+      if (nextState[key] !== this.state.innerAttributes[key]) {
+        return true;
+      }
+    }
+    return false; // No changes.
   }
 
   /**
@@ -249,6 +279,16 @@ class WrappedStandardElement extends ElementBase {
       'block' :
       'inline-block';
     return `<style>:host { display: ${display}}</style><${this.extends} id="inner"><slot></slot></${this.extends}`;
+  }
+
+  get updates() {
+    return merge(super.updates, {
+      $: {
+        inner: {
+          attributes: this.state.innerAttributes
+        }
+      }
+    });
   }
 
   /**
@@ -290,7 +330,7 @@ class WrappedStandardElement extends ElementBase {
 // If the given attribute name corresponds to a boolean attribute,
 // map the supplied string value to a boolean. Otherwise return as is.
 function castPotentialBooleanAttribute(attributeName, value) {
-  if (updates.booleanAttributes[attributeName]) {
+  if (booleanAttributes[attributeName]) {
     if (typeof value === 'string') {
       return true;
     } else if (value === null) {
@@ -307,50 +347,19 @@ function createPropertyDelegate(name, descriptor) {
     enumerable: descriptor.enumerable,
   };
   if (descriptor.get) {
-    delegate.get = function () {
-      return this.inner[name];
+    delegate.get = function() {
+      return this.getInnerAttribute(name); 
     };
   }
   if (descriptor.set) {
-    delegate.set = function(value) {
-      // Special case for boolean attributes, which may be passed as strings via
-      // calls to setAttribute.
-      const cast = castPotentialBooleanAttribute(name, value);
-      safelySetInnerProperty(this, name, cast);
-      // The component may want to rerender when this property changes, so set
-      // it as state too.
-      this.setState({
-        [name]: cast
-      });
+    delegate.set = function (value) {
+      this.setInnerAttribute(name, value);
     };
   }
   if (descriptor.writable) {
     delegate.writable = descriptor.writable;
   }
   return delegate;
-}
-
-
-// Set a property on the inner standard element with the given element.
-// If the element hasn't been mounted via connectedCallback yet, defer setting
-// the property until after the connectedCallback.
-function safelySetInnerProperty(element, name, value) {
-  if (element[mountedKey]) {
-    element.inner[name] = value;
-  } else {
-    if (!element[pendingPropertiesKey]) {
-      element[pendingPropertiesKey] = {};
-    }
-    element[pendingPropertiesKey][name] = value;
-  }
-}
-
-
-function writePendingProperties(element) {
-  if (element[mountedKey] && element[pendingPropertiesKey]) {
-    Object.assign(element, element[pendingPropertiesKey]);
-    element[pendingPropertiesKey] = null;
-  }
 }
 
 
