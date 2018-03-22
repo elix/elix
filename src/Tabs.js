@@ -49,16 +49,23 @@ class Tabs extends Explorer {
     });
   }
 
-  proxyUpdates(proxy, item, index) {
-    const base = super.proxyUpdates(proxy, item, index);
+  proxyUpdates(proxy, calcs) {
+    const base = super.proxyUpdates(proxy, calcs);
+    const item = calcs.item;
     const itemId = ensureId(item);
     const textContent = item.getAttribute('aria-label') || item.alt;
-    return merge(base, {
-      attributes: {
-        'aria-controls': itemId
-      },
+    const defaultProxyUpdates = calcs.isDefaultProxy && {
       textContent
-    });
+    };
+    return merge(
+      base,
+      {
+        attributes: {
+          'aria-controls': itemId
+        },
+      },
+      defaultProxyUpdates
+    );
   }
 
   /**

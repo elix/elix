@@ -20,8 +20,9 @@ class CarouselWithThumbnails extends Carousel {
     });
   }
 
-  proxyUpdates(proxy, item, index) {
-    const base = super.proxyUpdates(proxy, item, index);
+  proxyUpdates(proxy, calcs) {
+    const base = super.proxyUpdates(proxy, calcs);
+    const item = calcs.item;
     return merge(base, {
       attributes: {
         src: item.src

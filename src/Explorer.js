@@ -111,22 +111,26 @@ class Explorer extends Base {
     this[proxyTagKey] = proxyTag;
   }
 
-  // Return either the assigned proxies (if present) or the default proxies.
+  // Return either the default proxies (if defined) or the assigned proxies.
   get proxies() {
-    /** @type {any} */
-    const proxySlot = this.$.proxySlot;
-    const assignedlist = proxySlot.assignedNodes({ flatten: true });
-    return assignedlist.length > 0 ?
-      assignedlist :
-      createDefaultProxies(this);
+    let proxies;
+    if (this.state.defaultProxies.length > 0) {
+      proxies = this.state.defaultProxies;
+    } else {
+      /** @type {any} */
+      const proxySlot = this.$.proxySlot;
+      proxies = proxySlot.assignedNodes({ flatten: true });
+    }
+    return proxies;
   }
 
   proxyUpdates(proxy, item, index) {
-    const updates = {};
-    if ('item' in Object.getPrototypeOf(proxy)) {
-      updates.item = item;
-    }
-    return updates;
+    // const updates = {};
+    // if ('item' in Object.getPrototypeOf(proxy)) {
+    //   updates.item = item;
+    // }
+    // return updates;
+    return {};
   }
 
   [symbols.render]() {
@@ -151,9 +155,16 @@ class Explorer extends Base {
     const items = this.items;
     if (items) {
       // Render updates for proxies.
+      const proxies = this.proxies;
+      const isDefaultProxy = this.state.defaultProxies.length > 0;
       this.proxies.forEach((proxy, index) => {
         const item = items[index];
-        const updates = this.proxyUpdates(proxy, item, index);
+        const calcs = {
+          item,
+          index,
+          isDefaultProxy
+        };
+        const updates = this.proxyUpdates(proxy, calcs);
         // Apply those to the host.
         /** @type {any} */
         const element = proxy;
