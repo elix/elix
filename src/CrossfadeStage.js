@@ -4,24 +4,38 @@ import Modes from './Modes.js';
 
 class CrossfadeStage extends Modes {
 
+  componentDidMount() {
+    if (super.componentDidMount) { super.componentDidMount(); }
+    // Once everything's finished rendering, enable transition effects.
+    setTimeout(() => {
+      this.setState({
+        showTransition: true
+      });
+    });
+  }
+
+  get defaultState() {
+    // Suppress transition effects on page load.
+    return Object.assign({}, super.defaultState, {
+      showTransition: false
+    });
+  }
+
   itemUpdates(item, calcs, original) {
     const base = super.itemUpdates(item, calcs, original);
     const selectedIndex = this.state.selectedIndex;
-    // const sign = this[symbols.rightToLeft] ? 1 : -1;
-    const sign = -1;
     const swiping = this.state.swipeFraction != null;
-    // const swiping = false;
     const swipeFraction = this.state.swipeFraction || 0;
-    const selectionFraction = sign * swipeFraction;
+    const selectionFraction = -swipeFraction;
     const opacity = opacityForItemWithIndex(calcs.index, selectedIndex, selectionFraction);
-    const transition = swiping ? '' : 'opacity 0.75s';
+    const showTransition = this.state.showTransition || swiping;
+    const transition = showTransition ? 'opacity 0.75s' : '';
     return merge(base, {
       style: {
         'display': '', /* override base */
         'grid-column': 1,
         'grid-row': 1,
         opacity,
-        // 'position': 'absolute',
         transition
       }
     });
