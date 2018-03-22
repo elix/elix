@@ -135,7 +135,7 @@ export function applyAttribute(element, name, value) {
     }
   } else {
     // Regular string-valued attribute
-    if (value !== null) {
+    if (value != null) {
       element.setAttribute(name, value.toString());
     } else {
       element.removeAttribute(name);
