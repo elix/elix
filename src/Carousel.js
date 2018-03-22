@@ -10,6 +10,7 @@ import Explorer from './Explorer.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
+import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import SwipeDirectionMixin from './SwipeDirectionMixin.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
@@ -22,11 +23,12 @@ const Base =
   FocusVisibleMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
+  LanguageDirectionMixin(
   SwipeDirectionMixin(
   TouchSwipeMixin(
   TrackpadSwipeMixin(
     Explorer
-  )))))))));
+  ))))))))));
 
 
 /**

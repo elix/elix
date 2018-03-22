@@ -1,7 +1,7 @@
 /**
  * These functions help a component work with "fractional selection". This
  * notion can be very helpful in modeling components such as carousels (e.g.,
- * [SlidingCarousel](SlidingCarousel), in which the selection state during user
+ * [Carousel](Carousel), in which the selection state during user
  * interaction may be partway between one item and the next. With fractional
  * selection, we add a real number between 0 and 1 to a selected index to obtain
  * a fractional selection value.

@@ -5,12 +5,12 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>SlidingCarousel storyboard</title>
+  <title>Carousel storyboard</title>
 
   <link rel="stylesheet" href="../../demos/demos.css">
   <script src="../../demos/node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="./RenderState.js"></script>
-  <script type="module" src="../../src/SlidingCarousel.js"></script>
+  <script type="module" src="../../src/Carousel.js"></script>
   <script nomodule src="../../build/demos.js"></script>
 
   <style>
@@ -18,13 +18,13 @@
       padding: 3em 5em;
     }
 
-    elix-sliding-carousel {
+    elix-carousel {
       background: #555;
       height: 170px;
       width: 220px;
     }
 
-    elix-sliding-carousel div {
+    elix-carousel div {
       align-items: center;
       background: #ccc;
       border: 1px solid #888;
@@ -42,55 +42,55 @@
 
 <body>
 
-    <h1>SlidingCarousel storyboard</h1>
+    <h1>Carousel storyboard</h1>
 
     <p>
       All scenes show a SlidingCarousel with 4 items labeled "0", "1", "2", and "3".
     </p>
   
     <render-state>
-      <elix-sliding-carousel slot="fixture">
+      <elix-carousel slot="fixture">
         <div>0</div>
         <div>1</div>
         <div>2</div>
         <div>3</div>
-      </elix-sliding-carousel>
+      </elix-carousel>
       <p>
         On the first item, the first dot is selected, and the left arrow button is disabled.
       </p>
     </render-state>
   
     <render-state fixture-state='{"selectedIndex": 1, "swipeFraction": 0}'>
-      <elix-sliding-carousel slot="fixture">
+      <elix-carousel slot="fixture">
         <div>0</div>
         <div>1</div>
         <div>2</div>
         <div>3</div>
-      </elix-sliding-carousel>
+      </elix-carousel>
       <p>
         On items in the middle, both arrow buttons are enabled.
       </p>
     </render-state>
   
     <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": 0}'>
-      <elix-sliding-carousel slot="fixture">
+      <elix-carousel slot="fixture">
         <div>0</div>
         <div>1</div>
         <div>2</div>
         <div>3</div>
-      </elix-sliding-carousel>
+      </elix-carousel>
       <p>
         On the last item, the right arrow button is disabled.
       </p>
     </render-state>
   
     <render-state>
-      <elix-sliding-carousel slot="fixture" dir="rtl">
+      <elix-carousel slot="fixture" dir="rtl">
         <div>0</div>
         <div>1</div>
         <div>2</div>
         <div>3</div>
-      </elix-sliding-carousel>
+      </elix-carousel>
       <p>
         In right-to-left languages, items are ordered from right to left.
       </p>
