@@ -23,15 +23,26 @@ class Tabs extends Explorer {
     });
   }
 
-  setProxyItem(proxy, item) {
-    super.setProxyItem(proxy, item);
-    const label = item.getAttribute('aria-label') || item.alt;
-    // TODO
-    // const panelId = getIdForPanel(element, panel, index);
-    // const id = getIdForTabButton(element, index);
-    // avatar.setAttribute('id', id);
-    // avatar.setAttribute('aria-controls', panelId);
-    proxy.textContent = label;
+  itemUpdates(item, index) {
+    
+  }
+
+  proxyUpdates(proxy, item, index) {
+    const base = super.proxyUpdates(proxy, item, index);
+    const areaControls = item.id;
+    const textContent = item.getAttribute('aria-label') || item.alt;
+    // const itemId = getIdForSubelement(this, item, index, 'panel');
+    // const proxyId = getIdForSubelement(this, proxy, index, 'button');
+    // if (!proxy.id) {
+    //   proxy.setAttribute('id', proxyId);
+    // }
+    // proxy.setAttribute('aria-controls', panelId);
+    return merge(base, {
+      attributes: {
+        'aria-controls': areaControls
+      },
+      textContent
+    });
   }
 
   /**
@@ -62,6 +73,30 @@ class Tabs extends Explorer {
     });
   }
 
+}
+
+
+function getIdForSubelement(element, subelement, descriptor, index) {
+  let id = subelement.id;
+  if (!id) {
+    const hostId = element.id ?
+      `_${element.id}{descriptor.toUpperCase()}` :
+      `_${descriptor}`;
+    id = `${hostId}${index}`;
+  }
+  return id;
+}
+
+
+function getIdForPanel(element, panel, index) {
+  let id = panel.id;
+  if (!id) {
+    const hostId = element.id ?
+      "_" + element.id + "Panel" :
+      "_panel";
+    id = `${hostId}${index}`;
+  }
+  return id;
 }
 
 

@@ -1,4 +1,3 @@
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import WrappedStandardElement from "./WrappedStandardElement.js";
 
@@ -21,17 +20,6 @@ class Thumbnail extends WrappedStandardElement.wrap('img') {
       </style>
       <img id="inner">
     `;
-  }
-
-  get updates() {
-    const src = this.state.item ?
-      this.state.item.src :
-      '';
-    return merge(super.updates, {
-      $: {
-        inner: { src }
-      }
-    });
   }
 
 }

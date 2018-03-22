@@ -1,4 +1,5 @@
 import './Thumbnail.js';
+import { merge } from './updates.js'
 import Carousel from './Carousel.js';
 
 
@@ -19,11 +20,13 @@ class CarouselWithThumbnails extends Carousel {
     });
   }
 
-  setProxyItem(proxy, item) {
-    super.setProxyItem(proxy, item);
-    if (item.src !== undefined) {
-      proxy.src = item.src;
-    }
+  proxyUpdates(proxy, item, index) {
+    const base = super.proxyUpdates(proxy, item, index);
+    return merge(base, {
+      attributes: {
+        src: item.src
+      }
+    });
   }
 
 }

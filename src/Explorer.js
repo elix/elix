@@ -1,5 +1,5 @@
 import './Modes.js';
-import { merge } from './updates.js';
+import { apply, merge } from './updates.js';
 import * as symbols from './symbols.js';
 import ContentItemsMixin from './ContentItemsMixin.js';
 import ElementBase from './ElementBase.js';
@@ -121,6 +121,14 @@ class Explorer extends Base {
       createDefaultProxies(this);
   }
 
+  proxyUpdates(proxy, item, index) {
+    const updates = {};
+    if ('item' in Object.getPrototypeOf(proxy)) {
+      updates.item = item;
+    }
+    return updates;
+  }
+
   [symbols.render]() {
     if (super[symbols.render]) { super[symbols.render](); }
 
@@ -139,11 +147,18 @@ class Explorer extends Base {
     if (firstElement.nextElementSibling !== lastElement) {
       this.$.explorerContainer.insertBefore(firstElement, lastElement);
     }
-  }
 
-  setProxyItem(proxy, item) {
-    if ('item' in Object.getPrototypeOf(proxy)) {
-      proxy.item = item;
+    const items = this.items;
+    if (items) {
+      // Render updates for proxies.
+      this.proxies.forEach((proxy, index) => {
+        const item = items[index];
+        const updates = this.proxyUpdates(proxy, item, index);
+        // Apply those to the host.
+        /** @type {any} */
+        const element = proxy;
+        apply(element, updates);
+      });
     }
   }
 
@@ -282,22 +297,10 @@ function findChildContainingNode(root, node) {
 
 
 function proxyForItem(element, item) {
-  let proxy;
   const proxyTag = element.proxyTag || element.defaults.tags.proxy;
-  if (proxyTag) {
-    proxy = document.createElement(proxyTag);
-    const isCustomElement = proxyTag.indexOf('-') >= 0;
-    if (!isCustomElement || customElements.get(proxyTag)) {
-      element.setProxyItem(proxy, item);
-    } else {
-      customElements.whenDefined(proxyTag)
-      .then(() => {
-        element.setProxyItem(proxy, item);
-      });
-    }
-  } else {
-    proxy = item.cloneNode(true);
-  }
+  const proxy = proxyTag ?
+    document.createElement(proxyTag) :
+    item.cloneNode(true);
   return proxy;
 }
 

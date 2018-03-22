@@ -1,4 +1,5 @@
 import './ListBox.js';
+import { merge } from './updates.js'
 import Explorer from './Explorer.js';
 
 
@@ -20,10 +21,12 @@ class ListExplorer extends Explorer {
     });
   }
 
-  setProxyItem(proxy, item) {
-    super.setProxyItem(proxy, item);
+  proxyUpdates(proxy, item, index) {
+    const base = super.proxyUpdates(proxy, item, index);
     const label = item.getAttribute('aria-label') || item.alt;
-    proxy.textContent = label;
+    return merge(base, {
+      textContent: label
+    });
   }
 
 }
