@@ -1,25 +1,27 @@
-import ElementBase from '../../src/ElementBase.js';
+import { merge } from '../../src/updates.js';
+import * as symbols from '../../src/symbols.js'
 import Explorer from '../../src/Explorer.js';
 import flushPolyfills from '../flushPolyfills.js';
-import * as symbols from '../../src/symbols.js'
 
 
 const itemKey = Symbol('item');
-class ProxyTest extends ElementBase {
+class ExplorerTest extends Explorer {
 
-  get item() {
-    return this[itemKey];
-  }
-  set item(item) {
-    this[itemKey] = item;
+  proxyUpdates(proxy, calcs) {
+    const base = super.proxyUpdates(proxy, calcs);
+    const item = calcs.item;
+    const textContent = item.getAttribute('aria-label') || item.alt;
+    const defaultProxyUpdates = calcs.isDefaultProxy && {
+      textContent
+    };
+    return merge(
+      base,
+      defaultProxyUpdates
+    );
   }
 
-  get [symbols.template]() {
-    return `<slot></slot>`;
-  }
-  
 }
-customElements.define('proxy-test', ProxyTest);
+customElements.define('explorer-test', ExplorerTest);
 
 
 describe("Explorer", () => {
@@ -34,31 +36,12 @@ describe("Explorer", () => {
     container.innerHTML = '';
   });
 
-  it("creates default proxies for each item", async () => {
-    const fixture = new Explorer();
-    fixture.proxyTag = 'proxy-test';
-    fixture.innerHTML = `
-      <div aria-label="Label one">Item one</div>
-      <div aria-label="Label two">Item two</div>
-      <div aria-label="Label three">Item three</div>
-    `;
-    container.appendChild(fixture);
-    // Wait for component to render.
-    flushPolyfills();
-    // Wait for content, which requires event/timeout timing.
-    await new Promise(setTimeout);
-    const proxies = fixture.proxies;
-    const items = fixture.items;
-    assert.equal(proxies.length, 3);
-    assert.equal(proxies[0].item, items[0]);
-  });
-
   it("associates slotted proxies with each item", async () => {
     const fixture = new Explorer();
     fixture.innerHTML = `
-      <proxy-test slot="proxy">Proxy one</proxy-test>
-      <proxy-test slot="proxy">Proxy two</proxy-test>
-      <proxy-test slot="proxy">Proxy three</proxy-test>
+      <button slot="proxy">Proxy one</button>
+      <button slot="proxy">Proxy two</button>
+      <button slot="proxy">Proxy three</button>
       <div aria-label="Label one">Item one</div>
       <div aria-label="Label two">Item two</div>
       <div aria-label="Label three">Item three</div>
@@ -71,7 +54,44 @@ describe("Explorer", () => {
     const proxies = fixture.proxies;
     const items = fixture.items;
     assert.equal(proxies.length, 3);
-    assert.equal(proxies[0].item, items[0]);
+    assert.equal(proxies[0], fixture.children[0]);
+  });
+
+  it("creates default proxies for each item", async () => {
+    const fixture = new Explorer();
+    fixture.proxyTag = 'button';
+    fixture.innerHTML = `
+      <div aria-label="Label one">Item one</div>
+      <div aria-label="Label two">Item two</div>
+      <div aria-label="Label three">Item three</div>
+    `;
+    container.appendChild(fixture);
+    // Wait for component to render.
+    flushPolyfills();
+    // Wait for content, which requires event/timeout timing.
+    await new Promise(setTimeout);
+    const proxies = fixture.proxies;
+    const items = fixture.items;
+    assert.equal(proxies.length, 3);
+    assert(proxies[0] instanceof HTMLButtonElement);
+  });
+
+  it("asks component for updates to apply to proxies", async () => {
+    const fixture = new ExplorerTest();
+    fixture.proxyTag = 'button';
+    fixture.innerHTML = `
+      <div aria-label="Label one">Item one</div>
+      <div aria-label="Label two">Item two</div>
+      <div aria-label="Label three">Item three</div>
+    `;
+    container.appendChild(fixture);
+    // Wait for component to render.
+    flushPolyfills();
+    // Wait for content, which requires event/timeout timing.
+    await new Promise(setTimeout);
+    assert.equal(fixture.proxies[0].textContent, 'Label one');
+    assert.equal(fixture.proxies[1].textContent, 'Label two');
+    assert.equal(fixture.proxies[2].textContent, 'Label three');
   });
 
 });

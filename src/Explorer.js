@@ -157,7 +157,8 @@ class Explorer extends Base {
       // Render updates for proxies.
       const proxies = this.proxies;
       const isDefaultProxy = this.state.defaultProxies.length > 0;
-      this.proxies.forEach((proxy, index) => {
+      proxies.forEach((proxy, index) => {
+        // Ask component for any updates to this proxy.
         const item = items[index];
         const calcs = {
           item,
@@ -165,7 +166,7 @@ class Explorer extends Base {
           isDefaultProxy
         };
         const updates = this.proxyUpdates(proxy, calcs);
-        // Apply those to the host.
+        // Apply updates to the proxy.
         /** @type {any} */
         const element = proxy;
         apply(element, updates);
