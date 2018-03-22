@@ -1,7 +1,5 @@
 import { merge } from './updates.js';
-
-
-const generatedIdKey = Symbol('generatedId');
+import { ensureId } from './idGeneration.js';
 
 
 /**
@@ -47,22 +45,8 @@ export default function AriaListMixin(Base) {
       
       // Ensure each item has an ID so we can set aria-activedescendant on the
       // overall list whenever the selection changes.
-      //
-      // The ID will take the form of a base ID plus a unique integer. The base
-      // ID will be incorporate the component's own ID. E.g., if a component has
-      // ID "foo", then its items will have IDs that look like "_fooOption1". If
-      // the compnent has no ID itself, its items will get IDs that look like
-      // "_option1". Item IDs are prefixed with an underscore to differentiate
-      // them from manually-assigned IDs, and to minimize the potential for ID
-      // conflicts.
-      let id = item[generatedIdKey] ||
-          original.attributes.id ||
-          base.attributes && base.attributes.id;
-      if (!id) {
-        id = getIdForItem(this, item, calcs.index);
-        // Remember that we generated an ID for this item.
-        item[generatedIdKey] = id;
-      }
+      const baseId = base.attributes && base.attributes.id;
+      const id = baseId || ensureId(item);
 
       const defaultRole = item instanceof HTMLOptionElement ? null : 'option';
       const role = original.role || base.role || this.state.itemRole || defaultRole;
@@ -81,7 +65,7 @@ export default function AriaListMixin(Base) {
       const role = this.state.original && this.state.original.attributes.role ||
         base.attributes && base.attributes.role ||
         'listbox';
-      const orientation = this.state.orientation === 'horizontal' ? 'horizontal' : null;
+      const orientation = this.state.orientation;
       const selectedItem = this.state.selectedIndex >= 0 && this.items ?
         this.items[this.state.selectedIndex] :
         null;
@@ -89,7 +73,7 @@ export default function AriaListMixin(Base) {
       // assigned yet, so we spectulatively determine the ID that will be used
       // on the subsequent call to itemUpdates for this item.
       const selectedItemId = selectedItem ?
-        getIdForItem(this, selectedItem, this.state.selectedIndex) :
+        ensureId(selectedItem) :
         null;
       return merge(base, {
         attributes: {
@@ -103,17 +87,4 @@ export default function AriaListMixin(Base) {
   }
 
   return AriaList;
-}
-
-
-function getIdForItem(element, item, index) {
-  let id = item.id;
-  if (!id) {
-    // Determine a default ID unique to the scope of this element.
-    const hostId = element.id ?
-      "_" + element.id + "Option" :
-      "_option";
-    id = `${hostId}${index}`;
-  }
-  return id;
 }

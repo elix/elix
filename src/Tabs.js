@@ -1,5 +1,6 @@
 import './TabButton.js';
 import './TabStrip.js';
+import { ensureId } from './idGeneration.js';
 import { merge } from './updates.js';
 import Explorer from './Explorer.js';
 
@@ -8,6 +9,7 @@ class Tabs extends Explorer {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      itemRole: 'tabpanel',
       orientation: 'horizontal',
       tabAlign: 'start'
     });
@@ -23,23 +25,37 @@ class Tabs extends Explorer {
     });
   }
 
-  itemUpdates(item, index) {
-    
+  itemUpdates(item, calcs, original) {
+    const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
+
+    // Ensure each item has an ID.
+    const baseId = base.attributes && base.attributes.id;
+    const id = baseId || ensureId(item);
+    const role = original.role || base.role || this.state.itemRole;
+
+    // Get ID for corresponding proxy.
+    const proxies = this.proxies;
+    const proxy = proxies && proxies[calcs.index];
+    const proxyId = proxy ?
+      ensureId(proxy) :
+      null;
+
+    return merge(base, {
+      attributes: {
+        'aria-labelledby': proxyId,
+        id,
+        role
+      }
+    });
   }
 
   proxyUpdates(proxy, item, index) {
     const base = super.proxyUpdates(proxy, item, index);
-    const areaControls = item.id;
+    const itemId = ensureId(item);
     const textContent = item.getAttribute('aria-label') || item.alt;
-    // const itemId = getIdForSubelement(this, item, index, 'panel');
-    // const proxyId = getIdForSubelement(this, proxy, index, 'button');
-    // if (!proxy.id) {
-    //   proxy.setAttribute('id', proxyId);
-    // }
-    // proxy.setAttribute('aria-controls', panelId);
     return merge(base, {
       attributes: {
-        'aria-controls': areaControls
+        'aria-controls': itemId
       },
       textContent
     });
@@ -73,30 +89,6 @@ class Tabs extends Explorer {
     });
   }
 
-}
-
-
-function getIdForSubelement(element, subelement, descriptor, index) {
-  let id = subelement.id;
-  if (!id) {
-    const hostId = element.id ?
-      `_${element.id}{descriptor.toUpperCase()}` :
-      `_${descriptor}`;
-    id = `${hostId}${index}`;
-  }
-  return id;
-}
-
-
-function getIdForPanel(element, panel, index) {
-  let id = panel.id;
-  if (!id) {
-    const hostId = element.id ?
-      "_" + element.id + "Panel" :
-      "_panel";
-    id = `${hostId}${index}`;
-  }
-  return id;
 }
 
 

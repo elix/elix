@@ -147,10 +147,7 @@ class TabStrip extends Base {
 
   // TabStrip orientation depends on position property.
   get orientation() {
-    const position = this.state.position;
-    return position === 'top' || position === 'bottom' ?
-      'horizontal' :
-      'vertical';
+    return this.state.orientation;
   }
 
   /**
@@ -182,7 +179,13 @@ class TabStrip extends Base {
     return this.state.position;
   }
   set position(position) {
-    this.setState({ position });
+    const orientation = position === 'top' || position === 'bottom' ?
+      'horizontal' :
+      'vertical';
+    this.setState({
+      orientation,
+      position
+    });
   }
 
   get [symbols.template]() {

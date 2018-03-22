@@ -52,9 +52,7 @@ describe("AriaListMixin", () => {
     assert.equal(fixture.getAttribute('role'), 'listbox'); // default role
     assert.equal(item1.id, 'explicitID'); // unchanged
     assert.equal(item1.getAttribute('role'), 'option'); // default role
-    const expectedIdStart = '_testOption';
-    const idStart = item2.id.slice(0, expectedIdStart.length);
-    assert.equal(idStart, expectedIdStart); // implicitly assigned ID
+    assert.isNotEmpty(item2.id); // implicitly assigned ID
     assert.equal(item2.getAttribute('role'), 'option'); // default role
   });
 
