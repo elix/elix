@@ -13,6 +13,7 @@ declare const ReactiveMixin: Mixin<{
   defaultState: PlainObject;
   render(): Promise<void>;
   setState(changes: PlainObject): Promise<void>;
+  shouldComponentUpdate(nextState: PlainObject): boolean;
   state: PlainObject;
   validateState(state: PlainObject): PlainObject;
 }>;
