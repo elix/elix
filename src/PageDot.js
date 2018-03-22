@@ -4,7 +4,7 @@ import ElementBase from './ElementBase.js';
 
 
 /*
- * A small dot used by PageDotsMixin to represent a carousel item.
+ * A small dot that can be used to represent a carousel item.
  * 
  * We don't expect this minor component to be used in other contexts, so it's
  * not documented as a supported Elix component.
