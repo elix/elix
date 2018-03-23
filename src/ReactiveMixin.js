@@ -210,17 +210,14 @@ export default function ReactiveMixin(Base) {
     }
 
     validateState(state) {
-      return super.validateState && super.validateState(state);
+      return super.validateState ? super.validateState(state) : true;
     }
   }
 }
 
 
 function validateState(element, state) {
-  // Repeatedly validate state until there are no more validations.
-  let changes = element.validateState(state);
-  while (changes && Object.keys(changes).length > 0) {
-    Object.assign(state, changes);
-    changes = element.validateState(state);
-  }
+  // Repeatedly validate state until it's declared valid.
+  /* eslint-disable no-empty */
+  for (;!element.validateState(state);) {}
 }

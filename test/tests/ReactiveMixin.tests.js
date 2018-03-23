@@ -28,18 +28,22 @@ class ReactiveTest extends ReactiveMixin(HTMLElement) {
   // You'd also perform validation in as few passes as possible; this routine
   // here simulates multiple mixins contributing to validation.
   validateState(state) {
+    let result = super.validateState ? super.validateState(state) : true;
     if (state.foo) {
       const trimmed = state.foo.trim();
       if (trimmed !== state.foo) {
-        return {
+        Object.assign(state, {
           foo: trimmed
-        };
+        });
+        result = false;
       } else if (state.bar !== state.foo) {
-        return {
+        Object.assign(state, {
           bar: state.foo
-        };
+        });
+        result = false;
       }
     }
+    return result;
   }
 
 }

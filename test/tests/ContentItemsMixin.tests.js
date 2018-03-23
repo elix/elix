@@ -1,16 +1,17 @@
 import * as symbols from '../../src/symbols.js';
 import ContentItemsMixin from '../../src/ContentItemsMixin.js';
+import ReactiveMixin from '../../src/ReactiveMixin.js';
 
 
-class ContentItemsTest extends ContentItemsMixin(HTMLElement) {
-
+class ContentItemsTest extends ContentItemsMixin(ReactiveMixin(HTMLElement)) {
+  
   itemCalcs(item, index) {
     const base = super.itemCalcs ? super.itemCalcs(item, index) : null;
     return Object.assign({}, base, {
       even: index % 2 === 0
     });
   }
-
+  
   /* eslint-disable no-unused-vars */
   itemUpdates(item, calcs, original) {
     return {
@@ -18,10 +19,12 @@ class ContentItemsTest extends ContentItemsMixin(HTMLElement) {
     };
   }
 
-  get state() {
-    return {
-      content: this.children
-    };
+  // Force an update of state.
+  // Normally this would be handled automatically, e.g., via SlotContentMixin.
+  updateContent() {
+    this.setState({
+      content: [...this.children]
+    });
   }
 
 }
@@ -36,6 +39,7 @@ describe("ContentItemsMixin", () => {
       <div>1</div>
       <div>2</div>
     `;
+    fixture.updateContent();
     const items = fixture.items;
     assert.equal(items.length, 2);
     assert.equal(items[0].textContent, '1');
@@ -49,6 +53,7 @@ describe("ContentItemsMixin", () => {
       <div>2</div>
       <div>3</div>
     `;
+    fixture.updateContent();
     const items = fixture.items;
     assert.equal(fixture.itemCalcs(items[0], 0).index, 0);
     assert.equal(fixture.itemCalcs(items[1], 1).index, 1);
@@ -62,6 +67,7 @@ describe("ContentItemsMixin", () => {
       <div>2</div>
       <div>3</div>
     `;
+    fixture.updateContent();
     fixture[symbols.render]();
     assert(fixture.items[0].hidden);
     assert(!fixture.items[1].hidden);

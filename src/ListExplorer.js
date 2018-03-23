@@ -21,8 +21,9 @@ class ListExplorer extends Explorer {
     });
   }
 
-  proxyUpdates(proxy, item, index) {
-    const base = super.proxyUpdates(proxy, item, index);
+  proxyUpdates(proxy, calcs) {
+    const base = super.proxyUpdates(proxy, calcs);
+    const item = calcs.item;
     const label = item.getAttribute('aria-label') || item.alt;
     return merge(base, {
       textContent: label

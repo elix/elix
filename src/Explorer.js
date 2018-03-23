@@ -8,10 +8,8 @@ import SlotContentMixin from './SlotContentMixin.js';
 
 
 const proxyTagKey = Symbol('proxyTag');
-const listKey = Symbol('list');
 const proxySlotchangeFiredKey = Symbol('proxySlotchangeFired');
 const listTagKey = Symbol('listTag');
-const previousItemsKey = Symbol('previousItems');
 const stageTagKey = Symbol('stageTag');
 
 
@@ -41,21 +39,16 @@ class Explorer extends Base {
     // Work around inconsistencies in slotchange timing; see SlotContentMixin.
     this.$.proxySlot.addEventListener('slotchange', () => {
       this[proxySlotchangeFiredKey] = true;
-      updateDefaultProxies(this);
+      updateAssignedProxies(this);
     });
     Promise.resolve().then(() => {
       if (!this[proxySlotchangeFiredKey]) {
         // The event didn't fire, so we're most likely in Safari.
         // Update our notion of the component content.
         this[proxySlotchangeFiredKey] = true;
-        updateDefaultProxies(this);
+        updateAssignedProxies(this);
       }
     });
-  }
-
-  componentDidUpdate(previousState) {
-    if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-    updateDefaultProxies(this);
   }
 
   get defaults() {
@@ -70,6 +63,7 @@ class Explorer extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      assignedProxies: [],
       defaultProxies: [],
       listOverlap: false,
       listPosition: 'top'
@@ -113,23 +107,13 @@ class Explorer extends Base {
 
   // Return either the default proxies (if defined) or the assigned proxies.
   get proxies() {
-    let proxies;
-    if (this.state.defaultProxies.length > 0) {
-      proxies = this.state.defaultProxies;
-    } else {
-      /** @type {any} */
-      const proxySlot = this.$.proxySlot;
-      proxies = proxySlot.assignedNodes({ flatten: true });
-    }
-    return proxies;
+    return this.state.defaultProxies.length > 0 ?
+      this.state.defaultProxies :
+      this.state.assignedProxies;
   }
 
-  proxyUpdates(proxy, item, index) {
-    // const updates = {};
-    // if ('item' in Object.getPrototypeOf(proxy)) {
-    //   updates.item = item;
-    // }
-    // return updates;
+  /* eslint-disable no-unused-vars */
+  proxyUpdates(proxy, calcs) {
     return {};
   }
 
@@ -268,34 +252,48 @@ class Explorer extends Base {
     });
   }
 
-}
-
-
-// Return true if arrays a and b have the same items.
-function arrayEquals(a, b) {
-  if ((a && !b) || (!a && b) || (!a && !b) || (a.length !== b.length)) {
-    return false;
+  validateState(state) {
+    let result = super.validateState ? super.validateState(state) : true;
+    const assignedCount = state.assignedProxies.length;
+    const defaultCount = state.defaultProxies.length;
+    let defaultProxies;
+    let itemsForDefaultProxies;
+    if (assignedCount > 0 && defaultCount > 0) {
+      // Assigned proxies take precedence, remove default proxies.
+      defaultProxies = [];
+      itemsForDefaultProxies = null;
+    } else if (assignedCount === 0) {
+      const items = state.items;
+      const itemsChanged = items !== state.itemsForDefaultProxies;
+      if (itemsChanged) {
+        // Generate sufficient default proxies.
+        const proxyTag = this.proxyTag || this.defaults.tags.proxy;
+        defaultProxies = createDefaultProxies(items, proxyTag);
+        itemsForDefaultProxies = items;
+      }
+    }
+    if (defaultProxies) {
+      Object.freeze(defaultProxies);
+      Object.assign(state, {
+        defaultProxies,
+        itemsForDefaultProxies
+      });
+      result = false;
+    }
+    return result;
   }
-  return !a.some((item, index) => item !== b[index]);
+
 }
 
 
 // Return the default list generated for the given items.
-function createDefaultProxies(element) {
-  if (element.items !== element[previousItemsKey]) {
-    if (!element.items) {
-      // No items yet.
-      element[listKey] = [];
-    } else {
-      // Items have changed; create new buttons set.
-      element[listKey] = element.items.map(item =>
-        proxyForItem(element, item));
-      // Make the array immutable.
-      Object.freeze(element[listKey]);
-    }
-    element[previousItemsKey] = element.items;
-  }
-  return element[listKey];
+function createDefaultProxies(items, proxyTag) {
+  const proxies = items ?
+    items.map(() => document.createElement(proxyTag)) :
+    [];
+  // Make the array immutable to help update performance.
+  Object.freeze(proxies);
+  return proxies;
 }
 
 
@@ -308,26 +306,12 @@ function findChildContainingNode(root, node) {
 }
 
 
-function proxyForItem(element, item) {
-  const proxyTag = element.proxyTag || element.defaults.tags.proxy;
-  const proxy = proxyTag ?
-    document.createElement(proxyTag) :
-    item.cloneNode(true);
-  return proxy;
-}
-
-
-function updateDefaultProxies(element) {
-  /** @type {any} */
+function updateAssignedProxies(element) {
   const proxySlot = element.$.proxySlot;
-  const assignedButtons = proxySlot.assignedNodes({ flatten: true });
-  const defaultProxies = assignedButtons.length > 0 ?
-    [] :
-    createDefaultProxies(element);
-  const changed = !arrayEquals(defaultProxies, element.state.defaultProxies);
-  if (changed) {
-    element.setState({ defaultProxies });
-  }
+  const assignedProxies = proxySlot.assignedNodes({ flatten: true });
+  element.setState({
+    assignedProxies
+  });
 }
 
 

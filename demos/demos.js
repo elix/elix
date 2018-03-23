@@ -10,7 +10,6 @@ import './src/QuietButton.js';
 import './src/SampleDialog.js';
 import './src/SingleSelectionDemo.js';
 import './src/SlidingPagesWithArrows.js';
-import './src/SlidingPagesWithDots.js';
 import './src/SwipeDemo.js';
 import './src/ToolbarTab.js';
 

@@ -1,10 +1,8 @@
 import { merge } from '../../src/updates.js';
-import * as symbols from '../../src/symbols.js'
 import Explorer from '../../src/Explorer.js';
 import flushPolyfills from '../flushPolyfills.js';
 
 
-const itemKey = Symbol('item');
 class ExplorerTest extends Explorer {
 
   proxyUpdates(proxy, calcs) {
@@ -52,7 +50,6 @@ describe("Explorer", () => {
     // Wait for content, which requires event/timeout timing.
     await new Promise(setTimeout);
     const proxies = fixture.proxies;
-    const items = fixture.items;
     assert.equal(proxies.length, 3);
     assert.equal(proxies[0], fixture.children[0]);
   });
@@ -71,7 +68,6 @@ describe("Explorer", () => {
     // Wait for content, which requires event/timeout timing.
     await new Promise(setTimeout);
     const proxies = fixture.proxies;
-    const items = fixture.items;
     assert.equal(proxies.length, 3);
     assert(proxies[0] instanceof HTMLButtonElement);
   });

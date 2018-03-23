@@ -205,21 +205,23 @@ export default function SingleSelectionMixin(Base) {
     }
 
     validateState(state) {
+      let result = super.validateState ? super.validateState(state) : true;
+
       // Only validate if we've already received items.
-      const items = this.itemsForState ?
-        this.itemsForState(state) :
-        state.items;
+      const items = state.items;
       if (items) {
-        const validatedIndex = validateIndex(this, items, state.selectedIndex,
+        const selectedIndex = state.selectedIndex || state.selectedIndex;
+        const validatedIndex = validateIndex(items, selectedIndex,
             state.selectionRequired, state.selectionWraps);
-        if (validatedIndex !== state.selectedIndex) {
-          return {
+        if (validatedIndex !== selectedIndex) {
+          Object.assign(state, {
             selectedIndex: validatedIndex
-          };
+          });
+          result = false;
         }
       }
 
-      return super.validateState && super.validateState(state);
+      return result;
     }
 
   }
@@ -228,7 +230,7 @@ export default function SingleSelectionMixin(Base) {
 }
 
 
-function validateIndex(element, items, index, selectionRequired, selectionWraps) {
+function validateIndex(items, index, selectionRequired, selectionWraps) {
   const count = items ? items.length : 0;
   let validatedIndex;
   if (index === -1 && selectionRequired && count > 0) {
@@ -253,7 +255,7 @@ function validateIndex(element, items, index, selectionRequired, selectionWraps)
 
 
 function updateSelectedIndex(element, selectedIndex) {
-  const validatedIndex = validateIndex(element, element.items, selectedIndex,
+  const validatedIndex = validateIndex(element.items, selectedIndex,
       element.state.selectionRequired, element.state.selectionWraps);
   const changed = element.state.selectedIndex !== validatedIndex;
   if (changed) {

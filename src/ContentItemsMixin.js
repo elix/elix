@@ -4,9 +4,7 @@ import * as updates from './updates.js';
 
 
 // Symbols for private data members on an element.
-const itemsKey = Symbol('items');
 const originalKey = Symbol('original');
-const previousContentKey = Symbol('previousContent');
 
 
 /**
@@ -86,45 +84,10 @@ export default function ContentItemsMixin(Base) {
     /**
      * The current set of items drawn from the element's current state.
      * 
-     * This function invokes [itemsForState](#itemsForState) to extract the
-     * items from the element's `state`.
-     * 
      * @returns {Element[]|null} the element's current items
      */
     get items() {
-      const base = super.items;
-      if (base) {
-        // Prefer base result if it's defined.
-        return base;
-      }
-      const content = this.state.content;
-      if (this[previousContentKey] !== content) {
-        // Memoize
-        this[itemsKey] = this.itemsForState(this.state);
-        // Make immutable.
-        Object.freeze(this[itemsKey]);
-        this[previousContentKey] = content;
-      }
-      return this[itemsKey];
-    }
-
-    /**
-     * Given an element state (which might be its current state, or some other
-     * hypothetical state), return the items from that state.
-     * 
-     * By default, this inspects the state member `state.content`, then uses the
-     * helper function
-     * [content.substantiveElements](content#substantiveElements) to subtract
-     * out any nodes that would not normally be visible to the user. You can
-     * override this to provide an alternative mapping of state to items.
-     * 
-     * @param {object} state - the element state to extract items from
-     * @returns {Element[]|null} the items for the indicated state
-     */
-    itemsForState(state) {
-      return state.content ?
-        substantiveElements(state.content) :
-        null;
+      return this.state ? this.state.items : null;
     }
 
     /**
@@ -174,6 +137,22 @@ export default function ContentItemsMixin(Base) {
           updates.apply(item, this.itemUpdates(item, calcs, item[originalKey]));
         });
       }
+    }
+
+    validateState(state) {
+      let result = super.validateState ? super.validateState(state) : true;
+      const content = state.content;
+      const contentChanged = content !== state.contentForItems; 
+      if (contentChanged) {
+        const items = content ? substantiveElements(content) : null;
+        Object.freeze(items);
+        Object.assign(state, {
+          items,
+          contentForItems: content
+        });
+        result = false;
+      }
+      return result;
     }
 
   }
