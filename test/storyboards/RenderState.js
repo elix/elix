@@ -61,7 +61,10 @@ class RenderState extends Base {
     if (fixture) {
       customElements.whenDefined(fixture.localName)
       .then(() => {
-        fixture.setState(this.state.fixtureState);
+        // Give component a chance to render before forcing its state.
+        setTimeout(() => {
+          fixture.setState(this.state.fixtureState);
+        });
       });
     }
   }
