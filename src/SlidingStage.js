@@ -28,7 +28,7 @@ const Base =
  * @mixes SingleSelectionMixin
  * @mixes SlotContentMixin
  */
-class SlidingViewport extends Base {
+class SlidingStage extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
@@ -116,5 +116,5 @@ class SlidingViewport extends Base {
 }
 
 
-customElements.define('elix-sliding-viewport', SlidingViewport);
-export default SlidingViewport;
+customElements.define('elix-sliding-stage', SlidingStage);
+export default SlidingStage;

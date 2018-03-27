@@ -1,6 +1,6 @@
 import './CenteredStripOpacity.js';
 import './PageDot.js';
-import './SlidingViewport.js';
+import './SlidingStage.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import AriaListMixin from './AriaListMixin.js';
@@ -52,7 +52,7 @@ class Carousel extends Base {
       tags: Object.assign({}, base.tags, {
         list: 'elix-centered-strip-opacity',
         proxy: 'elix-page-dot',
-        stage: 'elix-sliding-viewport'
+        stage: 'elix-sliding-stage'
       })
     });
   }

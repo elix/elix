@@ -4,7 +4,7 @@ import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
-import SlidingViewport from './SlidingViewport.js';
+import SlidingStage from './SlidingStage.js';
 import SwipeDirectionMixin from './SwipeDirectionMixin.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
@@ -19,7 +19,7 @@ const Base =
   SwipeDirectionMixin(
   TouchSwipeMixin(
   TrackpadSwipeMixin(
-    SlidingViewport
+    SlidingStage
   ))))))));
 
 

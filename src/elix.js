@@ -58,7 +58,7 @@ export { default as SelectionInViewMixin } from './SelectionInViewMixin.js';
 export { default as ShadowTemplateMixin } from './ShadowTemplateMixin.js';
 export { default as SingleSelectionMixin } from './SingleSelectionMixin.js';
 export { default as SlidingPages } from './SlidingPages.js';
-export { default as SlidingViewport } from './SlidingViewport.js';
+export { default as SlidingStage } from './SlidingStage.js';
 export { default as SlotContentMixin } from './SlotContentMixin.js';
 export { default as SwipeDirectionMixin } from './SwipeDirectionMixin.js';
 export { default as TabButton } from './TabButton.js';
