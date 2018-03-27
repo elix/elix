@@ -68,7 +68,9 @@ class CenteredStrip extends Base {
 
   get updates() {
 
-    const sign = this[symbols.rightToLeft] ? 1 : -1;
+    const rightToLeft = this[symbols.rightToLeft];
+
+    const sign = rightToLeft ? 1 : -1;
     const swiping = this.state.swipeFraction != null;
     const selectedIndex = this.state.selectedIndex;
     const swipeFraction = this.state.swipeFraction || 0;
@@ -79,7 +81,7 @@ class CenteredStrip extends Base {
     // @ts-ignore
     const stripWidth = this.$.strip.offsetWidth;
 
-    let x = 0; // The amount by which we'll shift content horizontally
+    let translation = 0; // The amount by which we'll shift content horizontally
     let justifyContent = '';
     if (stripWidth <= stripContainerWidth) {
       // Container can show all items. Center all items.
@@ -108,18 +110,24 @@ class CenteredStrip extends Base {
         center = rightCenter;
       } else if (leftItem && rightItem) {
         const offsetFraction = selectionFraction - leftIndex;
+        // TODO: sign
         center = leftCenter + offsetFraction * (rightCenter - leftCenter);
+      }
+      if (rightToLeft) {
+        center = stripWidth - center;
       }
       
       // Try to center the selected item.
-      x = center - (stripContainerWidth / 2);
+      translation = center - (stripContainerWidth / 2);
 
       // Constrain x to avoid showing space on either end.
-      x = Math.max(x, 0);
-      x = Math.min(x, stripWidth - stripContainerWidth);
+      translation = Math.max(translation, 0);
+      translation = Math.min(translation, stripWidth - stripContainerWidth);
+
+      translation *= sign;
     }
 
-    const transform = `translateX(${-x}px)`;
+    const transform = `translateX(${translation}px)`;
     const transition = swiping ?
       'none' :
       'transform 0.25s';

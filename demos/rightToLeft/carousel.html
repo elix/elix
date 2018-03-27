@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>elix-carousel (Right to Left support)</title>
+
+  <link rel="stylesheet" href="../demos.css">
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="../src/showElementsWhenDefined.js"></script>
+  <script type="module" src="../../src/Carousel.js"></script>
+  <script nomodule src="../../build/demos.js"></script>
+
+  <style>
+    html {
+      height: 100%;
+    }
+
+    body {
+      background: black;
+      height: 100%;
+      padding: 0;
+    }
+  </style>
+
+</head>
+
+<body role="main" unresolved>
+  <div class="demo fullScreen" dir="rtl">
+      <style>
+        .carouselRightToLeft {
+          background: black;
+          flex: 1;
+        }
+
+        .carouselRightToLeft img {
+          display: inline-block;
+          height: 100%;
+          vertical-align: middle;
+          width: 100%;
+        }
+      </style>
+      <elix-carousel class="carouselRightToLeft" style="flex: 1;" aria-label="Nature scenes">
+        <img src="../images/image01.jpg" alt="Mountain lake">
+        <img src="../images/image02.jpg" alt="Terraced farm">
+        <img src="../images/image03.jpg" alt="Winter trees">
+        <img src="../images/image04.jpg" alt="Forest river">
+        <img src="../images/image05.jpg" alt="Red panda">
+      </elix-carousel>
+  </div>
+</body>
+
+</html>
