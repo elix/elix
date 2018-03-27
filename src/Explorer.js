@@ -3,6 +3,7 @@ import { apply, merge } from './updates.js';
 import * as symbols from './symbols.js';
 import ContentItemsMixin from './ContentItemsMixin.js';
 import ElementBase from './ElementBase.js';
+import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotContentMixin from './SlotContentMixin.js';
 
@@ -13,12 +14,22 @@ const listTagKey = Symbol('listTag');
 const stageTagKey = Symbol('stageTag');
 
 
+// Does a list position imply a lateral arrangement of list and stage?
+const lateralPositions = {
+  end: true,
+  left: true,
+  right: true,
+  start: true
+};
+
+
 const Base =
   ContentItemsMixin(
+  LanguageDirectionMixin(
   SingleSelectionMixin(
   SlotContentMixin(
     ElementBase
-  )));
+  ))));
 
 
 class Explorer extends Base {
@@ -125,13 +136,12 @@ class Explorer extends Base {
     // box, but then the visual order wouldn't reflect the document order, which
     // determines focus order. That would surprise a user trying to tab through
     // the controls.
-    const listPosition = this.state.listPosition;
-    const topOrLeftPosition = (listPosition === 'top' || listPosition === 'left');
+    const listInInitialPosition = isListInInitialPosition(this);
     const container = this.$.explorerContainer;
     const stage = findChildContainingNode(container, this.$.stage);
     const list = findChildContainingNode(container, this.$.list);
-    const firstElement = topOrLeftPosition ? list : stage;
-    const lastElement = topOrLeftPosition ? stage : list;
+    const firstElement = listInInitialPosition ? list : stage;
+    const lastElement = listInInitialPosition ? stage : list;
     if (firstElement.nextElementSibling !== lastElement) {
       this.$.explorerContainer.insertBefore(firstElement, lastElement);
     }
@@ -174,8 +184,7 @@ class Explorer extends Base {
   get [symbols.template]() {
     const listTemplate = this.listTemplate;
     const stageTemplate = this.stageTemplate;
-    const listPosition = this.state.listPosition;
-    const templates = listPosition === 'top' || listPosition === 'left' ?
+    const templates = isListInInitialPosition(this) ?
       `${listTemplate}${stageTemplate}` :
       `${stageTemplate}${listTemplate}`;
     return `
@@ -202,8 +211,23 @@ class Explorer extends Base {
   }
 
   get updates() {
+    // Map the relative position of the list vis-a-vis the stage to a position
+    // from the perspective of the list.
     const listPosition = this.state.listPosition;
-    const lateralPosition = listPosition === 'left' || listPosition === 'right';
+    const lateralPosition = lateralPositions[listPosition];
+    const rightToLeft = this[symbols.rightToLeft];
+    let position;
+    switch (listPosition) {
+      case 'end':
+        position = rightToLeft ? 'left' : 'right';
+        break;
+      case 'start':
+        position = rightToLeft ? 'right' : 'left';
+        break;
+      default:
+        position = listPosition;
+        break;
+    }
 
     const selectedIndex = this.selectedIndex;
     const swipeFraction = this.state.swipeFraction;
@@ -239,7 +263,7 @@ class Explorer extends Base {
         },
         list: {
           childNodes: listChildNodes,
-          position: listPosition,
+          position,
           selectedIndex,
           style: listStyle,
           swipeFraction
@@ -303,6 +327,16 @@ function findChildContainingNode(root, node) {
   return parentNode === root ?
     node :
     findChildContainingNode(root, parentNode);
+}
+
+
+function isListInInitialPosition(element) {
+  const listPosition = element.state.listPosition;
+  const rightToLeft = element[symbols.rightToLeft];
+  return listPosition === 'top' ||
+      listPosition === 'start' ||
+      listPosition === 'left' && !rightToLeft ||
+      listPosition === 'right' && rightToLeft;
 }
 
 

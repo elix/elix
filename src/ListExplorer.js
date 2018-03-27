@@ -7,7 +7,7 @@ class ListExplorer extends Explorer {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      listPosition: 'left',
+      listPosition: 'start',
       orientation: 'vertical'
     });
   }
