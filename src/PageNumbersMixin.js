@@ -29,8 +29,9 @@ function PageNumbersMixin(Base) {
     }
 
     get updates() {
-      const textContent = this.state.selectedIndex >= 0 && this.items ?
-        `${this.state.selectedIndex + 1} / ${this.items.length}` :
+      const selectedIndex = this.selectedIndex || this.state.selectedIndex;
+      const textContent = selectedIndex >= 0 && this.items ?
+        `${selectedIndex + 1} / ${this.items.length}` :
         '';
       return merge(super.updates, {
         $: {

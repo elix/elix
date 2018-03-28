@@ -23,7 +23,7 @@ class CrossfadeStage extends Modes {
 
   itemUpdates(item, calcs, original) {
     const base = super.itemUpdates(item, calcs, original);
-    const selectedIndex = this.state.selectedIndex;
+    const selectedIndex = this.selectedIndex;
     const swiping = this.state.swipeFraction != null;
     const swipeFraction = this.state.swipeFraction || 0;
     const selectionFraction = -swipeFraction;

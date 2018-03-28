@@ -82,6 +82,11 @@ export default function SingleSelectionMixin(Base) {
       });
     }
 
+    itemsForState(state) {
+      // Prefer base result
+      return super.itemsForState ? super.itemsForState(state) : state.items;
+    }
+
     /**
      * Select the first item in the list.
      *
@@ -98,7 +103,9 @@ export default function SingleSelectionMixin(Base) {
      * @type {number}
      */
     get selectedIndex() {
-      return this.state.selectedIndex;
+      return this.items && this.items.length > 0 ?
+        this.state.selectedIndex :
+        -1;
     }
     set selectedIndex(selectedIndex) {
       const parsedIndex = typeof selectedIndex === 'string' ?
@@ -207,11 +214,11 @@ export default function SingleSelectionMixin(Base) {
     validateState(state) {
       let result = super.validateState ? super.validateState(state) : true;
 
-      // Only validate if we've already received items.
-      const items = state.items;
-      if (items) {
+      // Only validate if we actually have items.
+      const items = this.itemsForState(state);
+      const count = items ? items.length : 0;
+      if (count > 0) {
         const { selectedIndex, selectionRequired, selectionWraps } = state;
-        const count = items.length;
         const validatedIndex = validateIndex(
           selectedIndex,
           count,

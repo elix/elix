@@ -107,9 +107,9 @@ export default function KeyboardPrefixSelectionMixin(Base) {
       }
       const selectedIndex = getIndexOfItemWithTextPrefix(this, prefix);
       if (selectedIndex >= 0) {
-        const previousIndex = this.state.selectedIndex;
+        const previousIndex = this.selectedIndex;
         this.setState({ selectedIndex });
-        return this.state.selectedIndex !== previousIndex;
+        return this.selectedIndex !== previousIndex;
       } else {
         return false;
       }

@@ -66,8 +66,9 @@ export default function AriaListMixin(Base) {
         base.attributes && base.attributes.role ||
         'listbox';
       const orientation = this.state.orientation;
-      const selectedItem = this.state.selectedIndex >= 0 && this.items ?
-        this.items[this.state.selectedIndex] :
+      const selectedIndex = this.selectedIndex || this.state.selectedIndex;
+      const selectedItem = selectedIndex >= 0 && this.items ?
+        this.items[selectedIndex] :
         null;
       // We need the ID for the selected item. It's possible an ID hasn't been
       // assigned yet, so we spectulatively determine the ID that will be used

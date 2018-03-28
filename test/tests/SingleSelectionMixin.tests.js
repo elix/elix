@@ -107,7 +107,8 @@ describe("SingleSelectionMixin", () => {
       items: [],
       selectedIndex: 0
     });
-    assert.equal(fixture.state.selectedIndex, -1);
+    assert.equal(fixture.state.selectedIndex, 0);
+    assert.equal(fixture.selectedIndex, -1);
   });
 
   it("sets canSelectNext/canSelectPrevious with no wrapping", async () => {

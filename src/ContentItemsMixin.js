@@ -65,7 +65,7 @@ export default function ContentItemsMixin(Base) {
      *     itemCalcs(item, index) {
      *       const base = super.itemCalcs ? super.itemCalcs(item, index) : null;
      *       return Object.assign({}, base, {
-     *         selected: index === this.state.selectedIndex
+     *         selected: index === this.selectedIndex
      *       });
      *     }
      *
@@ -88,6 +88,10 @@ export default function ContentItemsMixin(Base) {
      */
     get items() {
       return this.state ? this.state.items : null;
+    }
+
+    itemsForState(state) {
+      return state.content ? substantiveElements(state.content) : null;
     }
 
     /**
@@ -144,7 +148,7 @@ export default function ContentItemsMixin(Base) {
       const content = state.content;
       const contentChanged = content !== state.contentForItems; 
       if (contentChanged) {
-        const items = content ? substantiveElements(content) : null;
+        const items = this.itemsForState(state);
         Object.freeze(items);
         Object.assign(state, {
           items,
