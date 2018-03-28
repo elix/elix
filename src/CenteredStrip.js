@@ -55,6 +55,7 @@ class CenteredStrip extends Base {
 
         #strip {
           display: inline-flex;
+          flex: 1;
           position: relative;
           transition: transform 0.25s;
         }
@@ -84,9 +85,9 @@ class CenteredStrip extends Base {
 
     let translation = 0; // The amount by which we'll shift content horizontally
     let justifyContent = '';
-    if (stripWidth <= stripContainerWidth) {
+    if (stripWidth < stripContainerWidth) {
       // Container can show all items. Center all items.
-      justifyContent = 'center';    
+      justifyContent = 'center';
     } else {
       // Items are wider than container can show.
       // Center the selected item.

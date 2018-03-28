@@ -4,12 +4,12 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>thumbnails</title>
+  <title>elix-centered-strip-highlight</title>
 
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
-  <script type="module" src="./src/ThumbnailList1.js"></script>
+  <script type="module" src="../src/CenteredStripHighlight.js"></script>
   <script nomodule src="../build/demos.js"></script>
 
 </head>
@@ -18,7 +18,9 @@
   <div class="demo">
 
     <style>
-      thumbnail-list {
+      elix-centered-strip-highlight {
+        border: 1px solid gray;
+        box-sizing: border-box;
         max-width: 100%;
         width: 502px;
       }
@@ -35,7 +37,7 @@
       }
     </style>
 
-    <thumbnail-list aria-label="Face emoji">
+    <elix-centered-strip-highlight aria-label="Face emoji">
       <div class="emoji" alt="Grinning Face">😀</div>
       <div class="emoji" alt="Grinning Face With Smiling Eyes">😁</div>
       <div class="emoji" alt="Face With Tears of Joy">😂</div>
@@ -46,7 +48,7 @@
       <div class="emoji" alt="Face With Open Mouth">😮</div>
       <div class="emoji" alt="Face With Rolling Eyes">🙄</div>
       <div class="emoji" alt="Face Blowing a Kiss">😘</div>
-    </thumbnail-list>
+    </elix-centered-strip-highlight>
 
   </div>
 </body>
