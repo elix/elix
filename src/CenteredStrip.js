@@ -82,6 +82,13 @@ class CenteredStrip extends Base {
     // @ts-ignore
     const stripWidth = this.$.strip.offsetWidth;
 
+    // HACK: It seems Firefox can invoke this method before it's actually
+    // rendered the component and given the strip any width. If we detect that
+    // case, we bail out to avoid rendering incorrectly.
+    if (stripWidth === 0) {
+      return super.updates;
+    }
+
     let translation = 0; // The amount by which we'll shift content horizontally
     let justifyContent = '';
     if (stripWidth <= stripContainerWidth) {
