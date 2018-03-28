@@ -30,10 +30,22 @@ const Base =
  */
 class SlidingStage extends Base {
 
+  componentDidMount() {
+    if (super.componentDidMount) { super.componentDidMount(); }
+    // Once everything's finished rendering, enable transition effects.
+    setTimeout(() => {
+      this.setState({
+        showTransition: true
+      });
+    });
+  }
+
   get defaultState() {
+    // Suppress transition effects on page load.
     return Object.assign({}, super.defaultState, {
       orientation: 'horizontal',
-      selectionRequired: true
+      selectionRequired: true,
+      showTransition: false
     });
   }
 
@@ -88,7 +100,7 @@ class SlidingStage extends Base {
     const sign = this[symbols.rightToLeft] ? 1 : -1;
     const swiping = this.state.swipeFraction != null;
     const swipeFraction = this.state.swipeFraction || 0;
-    const selectedIndex = this.state.selectedIndex;
+    const selectedIndex = this.selectedIndex;
     let translation;
     if (selectedIndex >= 0) {
       const selectionFraction = selectedIndex + sign * swipeFraction;
@@ -98,9 +110,10 @@ class SlidingStage extends Base {
     } else {
       translation = 0;
     }
-    const transition = swiping ?
-      'none' :
-      'transform 0.25s';
+    const showTransition = this.state.showTransition || swiping;
+    const transition = showTransition ?
+      'transform 0.25s' :
+      'none';
 
     return merge(super.updates, {
       $: {

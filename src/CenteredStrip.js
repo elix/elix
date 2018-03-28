@@ -20,9 +20,21 @@ const Base =
 
 class CenteredStrip extends Base {
 
+  componentDidMount() {
+    if (super.componentDidMount) { super.componentDidMount(); }
+    // Once everything's finished rendering, enable transition effects.
+    setTimeout(() => {
+      this.setState({
+        showTransition: true
+      });
+    });
+  }
+
   get defaultState() {
+    // Suppress transition effects on page load.
     return Object.assign({}, super.defaultState, {
-      selectionRequired: true
+      selectionRequired: true,
+      showTransition: false
     });
   }
 
@@ -73,7 +85,7 @@ class CenteredStrip extends Base {
 
     const sign = rightToLeft ? 1 : -1;
     const swiping = this.state.swipeFraction != null;
-    const selectedIndex = this.state.selectedIndex;
+    const selectedIndex = this.selectedIndex;
     const swipeFraction = this.state.swipeFraction || 0;
     const selectionFraction = selectedIndex + sign * swipeFraction;
 
@@ -136,9 +148,11 @@ class CenteredStrip extends Base {
     }
 
     const transform = `translateX(${translation}px)`;
-    const transition = swiping ?
-      'none' :
-      'transform 0.25s';
+
+    const showTransition = this.state.showTransition || swiping;
+    const transition = showTransition ?
+      'transform 0.25s' :
+      'none';
 
     return merge(super.updates, {
       $: {
