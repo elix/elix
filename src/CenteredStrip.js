@@ -55,6 +55,7 @@ class CenteredStrip extends Base {
 
         #strip {
           display: inline-flex;
+          position: relative;
           transition: transform 0.25s;
         }
       </style>
