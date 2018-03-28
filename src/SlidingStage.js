@@ -49,12 +49,11 @@ class SlidingStage extends Base {
 
   get [symbols.template]() {
     // The trick here is to give the slotted elements a flex-basis of 100%. This
-    // makes them each as big as the SlidingViewport component, spreading them
-    // out equally. The slidingViewportContent container will only big as big as
-    // the host too, but all the elements slotted inside it will still be
-    // visible even if they fall outside its bounds. By translating the
-    // container left or right, we can cause any individual slotted item to
-    // become the sole visible item.
+    // makes them each as big as the component, spreading them out equally. The
+    // slidingStageContent container will only big as big as the host too, but
+    // all the elements slotted inside it will still be visible even if they
+    // fall outside its bounds. By translating the container left or right, we
+    // can cause any individual slotted item to become the sole visible item.
     return `
       <style>
         :host {
@@ -63,22 +62,23 @@ class SlidingStage extends Base {
           position: relative;
         }
 
-        #slidingViewportContent {
+        #slidingStageContent {
           display: flex;
           height: 100%;
           min-width: 100%;
           will-change: transform;
         }
 
-        #slidingViewportContent > ::slotted(*) {
+        #slidingStageContent > ::slotted(*) {
           flex: 0 0 100%;
+          max-width: 100%; /* For Firefox */
         }
 
-        #slidingViewportContent > ::slotted(img) {
+        #slidingStageContent > ::slotted(img) {
           object-fit: contain;
         }
       </style>
-      <div id="slidingViewportContent" role="none">
+      <div id="slidingStageContent" role="none">
         <slot></slot>
       </div>
     `;
@@ -104,7 +104,7 @@ class SlidingStage extends Base {
 
     return merge(super.updates, {
       $: {
-        slidingViewportContent: {
+        slidingStageContent: {
           style: {
             'transform': `translateX(${translation}%)`,
             transition
