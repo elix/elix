@@ -24,7 +24,7 @@
       width: 220px;
     }
 
-    elix-carousel div {
+    elix-carousel .page {
       align-items: center;
       background: #ccc;
       border: 1px solid #888;
@@ -50,10 +50,10 @@
   
     <render-state>
       <elix-carousel slot="fixture">
-        <div>0</div>
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
+        <div class="page">0</div>
+        <div class="page">1</div>
+        <div class="page">2</div>
+        <div class="page">3</div>
       </elix-carousel>
       <p>
         On the first item, the first dot is selected, and the left arrow button is disabled.
@@ -62,10 +62,10 @@
 
     <render-state fixture-state='{"selectedIndex": 1, "swipeFraction": 0}'>
       <elix-carousel slot="fixture">
-        <div>0</div>
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
+        <div class="page">0</div>
+        <div class="page">1</div>
+        <div class="page">2</div>
+        <div class="page">3</div>
       </elix-carousel>
       <p>
         On items in the middle, both arrow buttons are enabled.
@@ -74,10 +74,10 @@
   
     <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": 0}'>
       <elix-carousel slot="fixture">
-        <div>0</div>
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
+        <div class="page">0</div>
+        <div class="page">1</div>
+        <div class="page">2</div>
+        <div class="page">3</div>
       </elix-carousel>
       <p>
         On the last item, the right arrow button is disabled.
@@ -86,10 +86,10 @@
   
     <render-state>
       <elix-carousel slot="fixture" dir="rtl">
-        <div>0</div>
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
+        <div class="page">0</div>
+        <div class="page">1</div>
+        <div class="page">2</div>
+        <div class="page">3</div>
       </elix-carousel>
       <p>
         In right-to-left languages, items are ordered from right to left.

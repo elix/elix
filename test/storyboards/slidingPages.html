@@ -24,7 +24,7 @@
       width: 220px;
     }
 
-    elix-sliding-pages div {
+    elix-sliding-pages .page {
       align-items: center;
       background: #ccc;
       border: 1px solid #888;
@@ -50,10 +50,10 @@
 
   <render-state>
     <elix-sliding-pages slot="fixture">
-      <div>0</div>
-      <div>1</div>
-      <div>2</div>
-      <div>3</div>
+      <div class="page">0</div>
+      <div class="page">1</div>
+      <div class="page">2</div>
+      <div class="page">3</div>
     </elix-sliding-pages>
     <p>
       Default state
@@ -62,10 +62,10 @@
 
   <render-state fixture-state='{"swipeFraction": -0.5}'>
     <elix-sliding-pages slot="fixture">
-      <div>0</div>
-      <div>1</div>
-      <div>2</div>
-      <div>3</div>
+      <div class="page">0</div>
+      <div class="page">1</div>
+      <div class="page">2</div>
+      <div class="page">3</div>
     </elix-sliding-pages>
     <p>
       Halfway through a swipe to the left
@@ -74,10 +74,10 @@
 
   <render-state fixture-state='{"selectedIndex": 1, "swipeFraction": 0}'>
     <elix-sliding-pages slot="fixture">
-      <div>0</div>
-      <div>1</div>
-      <div>2</div>
-      <div>3</div>
+      <div class="page">0</div>
+      <div class="page">1</div>
+      <div class="page">2</div>
+      <div class="page">3</div>
     </elix-sliding-pages>
     <p>
       Completion of full swipe to the left
@@ -86,10 +86,10 @@
       
   <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": 0}'>
     <elix-sliding-pages slot="fixture">
-      <div>0</div>
-      <div>1</div>
-      <div>2</div>
-      <div>3</div>
+      <div class="page">0</div>
+      <div class="page">1</div>
+      <div class="page">2</div>
+      <div class="page">3</div>
     </elix-sliding-pages>
     <p>
       At end of items
@@ -98,10 +98,10 @@
       
   <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": -0.5}'>
     <elix-sliding-pages slot="fixture">
-      <div>0</div>
-      <div>1</div>
-      <div>2</div>
-      <div>3</div>
+      <div class="page">0</div>
+      <div class="page">1</div>
+      <div class="page">2</div>
+      <div class="page">3</div>
     </elix-sliding-pages>
     <p>
       Dragging past the last item produces increasing tension
@@ -110,19 +110,19 @@
         
   <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": -1}'>
     <elix-sliding-pages slot="fixture">
-      <div>0</div>
-      <div>1</div>
-      <div>2</div>
-      <div>3</div>
+      <div class="page">0</div>
+      <div class="page">1</div>
+      <div class="page">2</div>
+      <div class="page">3</div>
     </elix-sliding-pages>
   </render-state>
       
   <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": -2}'>
     <elix-sliding-pages slot="fixture">
-      <div>0</div>
-      <div>1</div>
-      <div>2</div>
-      <div>3</div>
+      <div class="page">0</div>
+      <div class="page">1</div>
+      <div class="page">2</div>
+      <div class="page">3</div>
     </elix-sliding-pages>
   </render-state>
   
