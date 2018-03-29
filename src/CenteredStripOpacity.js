@@ -3,6 +3,12 @@ import * as symbols from './symbols.js';
 import CenteredStrip from './CenteredStrip.js';
 
 
+/**
+ * A `CenteredStrip` that makes the selected item fully opaque, and other items
+ * partially transparent.
+ * 
+ * @inherits CenteredStrip
+ */
 class CenteredStripOpacity extends CenteredStrip {
 
   itemUpdates(item, calcs, original) {

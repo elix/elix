@@ -261,6 +261,11 @@ function writeJson(docsListItem) {
   const json = WRITE_UNEXTENDEDONLY ? 
     unextendedDocumentationMap[docsListItem.name] :
     extendedDocumentationMap[docsListItem.name];
+
+  if (!json) {
+    throw `Can't find documentation for ${docsListItem.name}`;
+  }
+
   const dest = docsListItem.dest;
   const writeJsonPromise = promisify(fs.writeJson);
 
@@ -439,7 +444,13 @@ function resolveOriginalMemberOf(omo) {
 // Merge a mixin or inherited class data into the root item's json
 //
 function mergeExtensionIntoBag(extensionName, componentJson, hostId) {
-  const extensionJson = cloneJSON(unextendedDocumentationMap[extensionName]);
+
+  const json = unextendedDocumentationMap[extensionName];
+  if (!json) {
+    throw `Can't find documentation for ${extensionName}`;
+  }
+
+  const extensionJson = cloneJSON(json);
 
   for (let i = 1; i < extensionJson.length; i++) {
     const originalmemberof = resolveOriginalMemberOf(extensionJson[i].memberof);

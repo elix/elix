@@ -2,6 +2,11 @@ import * as symbols from './symbols.js';
 import WrappedStandardElement from "./WrappedStandardElement.js";
 
 
+/**
+ * A thumbnail image.
+ * 
+ * @inherits WrappedStandardElement
+ */
 class Thumbnail extends WrappedStandardElement.wrap('img') {
 
   get [symbols.template]() {

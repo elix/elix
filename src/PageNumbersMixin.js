@@ -4,6 +4,12 @@ import { merge } from './updates.js';
 const inject = Symbol('inject');
 
 
+/**
+ * Mixin that adds a page (item) number and total page (item) count to a
+ * [Carousel](Carousel).
+ * 
+ * @module PageNumbersMixin
+ */
 function PageNumbersMixin(Base) {
 
   class PageNumbers extends Base {

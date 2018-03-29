@@ -5,6 +5,16 @@ import { merge } from './updates.js';
 import Explorer from './Explorer.js';
 
 
+/**
+ * A set of pages with a tab strip governing which page is shown.
+ *
+ * Use tabs when you want to provide a large set of options or elements than
+ * can comfortably fit inline, the options can be coherently grouped into pages,
+ * and you want to avoid making the user navigate to a separate page. Tabs work
+ * best if you only have a small handful of pages, say 2–7.
+ *
+ * @inherits Explorer
+ */
 class Tabs extends Explorer {
 
   get defaultState() {

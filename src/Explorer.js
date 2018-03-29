@@ -32,6 +32,17 @@ const Base =
   ))));
 
 
+/**
+ * A component that couples a list-type element for selecting an item from a
+ * collection with a stage-type element for focusing attention on a single
+ * selected item.
+ *
+ * @inherits ElementBase
+ * @mixes ContentItemsMixin
+ * @mixes LanguageDirectionMixin
+ * @mixes SingleSelectionMixin
+ * @mixes SlotContentMixin
+ */
 class Explorer extends Base {
 
   componentDidMount() {

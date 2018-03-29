@@ -33,13 +33,17 @@ const Base =
 
 /**
  * Allows a user to navigate a horizontal set of items with touch, mouse,
- * keyboard, or trackpad. Shows a sliding effect when moving between items.
+ * keyboard, or trackpad. This component shows a small dot for each of its
+ * items, and displays a sliding effect when moving between items.
  * 
- * @inherits SlidingViewport
+ * @inherits Explorer
+ * @mixes AriaListMixin
+ * @mixes ArrowDirectionMixin
  * @mixes DirectionSelectionMixin
  * @mixes FocusVisibleMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
+ * @mixes LanguageDirectionMixin
  * @mixes SwipeDirectionMixin
  * @mixes TouchSwipeMixin
  * @mixes TrackpadSwipeMixin

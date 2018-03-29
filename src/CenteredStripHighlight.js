@@ -2,6 +2,12 @@ import { merge } from './updates.js';
 import CenteredStrip from './CenteredStrip.js';
 
 
+/**
+ * A `CenteredStrip` that applies a default highlight color to the selected
+ * item.
+ * 
+ * @inherits CenteredStrip
+ */
 class CenteredStripHighlight extends CenteredStrip {
 
   itemUpdates(item, calcs, original) {

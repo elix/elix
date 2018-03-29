@@ -2,6 +2,12 @@ import { merge } from './updates.js';
 import Modes from './Modes.js';
 
 
+/**
+ * Like [Modes](Modes), this shows a single item at a time. It displays a
+ * crossfade effect when transitioning between items.
+ * 
+ * @inherits Modes
+ */
 class CrossfadeStage extends Modes {
 
   componentDidMount() {

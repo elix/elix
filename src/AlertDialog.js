@@ -12,7 +12,6 @@ const choiceButtonTagKey = Symbol('choiceButtonTag');
  * labeled with text.
  * 
  * @inherits Dialog
- * 
  */
 class AlertDialog extends Dialog {
 

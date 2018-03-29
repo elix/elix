@@ -22,6 +22,8 @@ const Base =
  * visible at a time. It shows a sliding transition when changing which item is
  * selected.
  * 
+ * This component is used as the main stage for a [Carousel](Carousel).
+ * 
  * @inherits ElementBase
  * @mixes ContentItemsMixin
  * @mixes LanguageDirectionMixin

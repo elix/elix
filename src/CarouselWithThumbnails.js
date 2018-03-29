@@ -3,6 +3,12 @@ import { merge } from './updates.js'
 import Carousel from './Carousel.js';
 
 
+/**
+ * A carousel for showing images. Each image is represented with a small
+ * thumbnail.
+ * 
+ * @inherits Carousel
+ */
 class CarouselWithThumbnails extends Carousel {
 
   get defaults() {

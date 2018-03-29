@@ -20,6 +20,18 @@ const Base =
   ))))));
 
 
+/**
+ * A horizontal strip of items. This generally keeps the selected item
+ * centered (unless the selected item is at either end of the list).
+ * 
+ * @inherits ElementBase
+ * @mixes ClickSelectionMixin
+ * @mixes ContentItemsMixin
+ * @mixes LanguageDirectionMixin
+ * @mixes ResizeMixin
+ * @mixes SingleSelectionMixin
+ * @mixes SlotContentMixin
+ */
 class CenteredStrip extends Base {
 
   componentDidMount() {
