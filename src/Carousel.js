@@ -90,6 +90,9 @@ class Carousel extends Base {
         list: {
           attributes: {
             tabindex: ''
+          },
+          style: {
+            outline: 'none'
           }
         },
         stage: {
