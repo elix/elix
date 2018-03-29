@@ -35,7 +35,7 @@ class SlidingStage extends Base {
     // Once everything's finished rendering, enable transition effects.
     setTimeout(() => {
       this.setState({
-        showTransition: true
+        enableTransitions: true
       });
     });
   }
@@ -45,7 +45,7 @@ class SlidingStage extends Base {
     return Object.assign({}, super.defaultState, {
       orientation: 'horizontal',
       selectionRequired: true,
-      showTransition: false
+      enableTransitions: false
     });
   }
 
@@ -110,7 +110,7 @@ class SlidingStage extends Base {
     } else {
       translation = 0;
     }
-    const showTransition = this.state.showTransition || swiping;
+    const showTransition = this.state.enableTransitions && !swiping;
     const transition = showTransition ?
       'transform 0.25s' :
       'none';

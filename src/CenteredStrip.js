@@ -25,7 +25,7 @@ class CenteredStrip extends Base {
     // Once everything's finished rendering, enable transition effects.
     setTimeout(() => {
       this.setState({
-        showTransition: true
+        enableTransitions: true
       });
     });
   }
@@ -34,7 +34,7 @@ class CenteredStrip extends Base {
     // Suppress transition effects on page load.
     return Object.assign({}, super.defaultState, {
       selectionRequired: true,
-      showTransition: false
+      enableTransitions: false
     });
   }
 
@@ -149,7 +149,7 @@ class CenteredStrip extends Base {
 
     const transform = `translateX(${translation}px)`;
 
-    const showTransition = this.state.showTransition || swiping;
+    const showTransition = this.state.enableTransitions && !swiping;
     const transition = showTransition ?
       'transform 0.25s' :
       'none';
