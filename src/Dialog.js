@@ -1,24 +1,15 @@
 import './ModalBackdrop.js';
-import './OverlayFrame.js';
-import * as symbols from './symbols.js';
+import { merge } from './updates.js';
 import DialogModalityMixin from './DialogModalityMixin.js';
-import ElementBase from './ElementBase.js';
 import KeyboardMixin from './KeyboardMixin.js';
-import OpenCloseMixin from './OpenCloseMixin.js';
-import OverlayMixin from './OverlayMixin.js';
-
-
-const backdropTagKey = Symbol('backdropTag');
-const frameTagKey = Symbol('frameTag');
+import Overlay from './Overlay.js'
 
 
 const Base =
   DialogModalityMixin(
   KeyboardMixin(
-  OpenCloseMixin(
-  OverlayMixin(
-    ElementBase
-  ))));
+    Overlay
+  ));
 
 
 /**
@@ -26,68 +17,27 @@ const Base =
  * top of the main page content and which the user must interact with before
  * they can return to the page.
  * 
- * Dialog uses `BackdropWrapper` to add a backdrop behind the main overlay
- * content. Both the backdrop and the dialog itself can be styled.
- * 
- * @inherits ElementBase
+ * @inherits Overlay
  * @mixes DialogModalityMixin
- * @mixes FocusCaptureMixin
  * @mixes KeyboardMixin
- * @mixes OpenCloseMixin
- * @mixes OverlayMixin
- * 
  */
 class Dialog extends Base {
 
   get defaults() {
-    return {
-      tags: {
-        backdrop: 'elix-modal-backdrop',
-        frame: 'elix-overlay-frame'
+    const base = super.defaults;
+    return Object.assign({}, base, {
+      tags: Object.assign({}, base.tags, {
+        backdrop: 'elix-modal-backdrop'
+      })
+    });
+  }
+
+  get updates() {
+    return merge(super.updates, {
+      style: {
+        'pointer-events': 'initial'
       }
-    };
-  }
-
-  get backdropTag() {
-    return this[backdropTagKey];
-  }
-  set backdropTag(backdropTag) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[backdropTagKey] = backdropTag;
-  }
-
-  get frameTag() {
-    return this[frameTagKey];
-  }
-  set frameTag(frameTag) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[frameTagKey] = frameTag;
-  }
-
-  get [symbols.template]() {
-    const backdropTag = this.backdropTag || this.defaults.tags.backdrop;
-    const frameTag = this.frameTag || this.defaults.tags.frame;
-    return `
-      <style>
-        :host {
-          align-items: center;
-          display: flex;
-          flex-direction: column;
-          height: 100%;
-          justify-content: center;
-          left: 0;
-          outline: none;
-          position: fixed;
-          top: 0;
-          -webkit-tap-highlight-color: transparent;
-          width: 100%;
-        }
-      </style>
-      <${backdropTag} id="backdrop"></${backdropTag}>
-      <${frameTag} id="frame">
-        <slot></slot>
-      </${frameTag}>
-    `;
+    });
   }
 
 }
