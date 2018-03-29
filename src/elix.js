@@ -53,6 +53,7 @@ export { default as Popup } from './Popup.js';
 export { default as PopupModalityMixin } from './PopupModalityMixin.js';
 export { default as ReactiveMixin } from './ReactiveMixin.js';
 export { default as RenderUpdatesMixin } from './RenderUpdatesMixin.js';
+export { default as ResizeMixin } from './ResizeMixin.js';
 export { default as SelectedItemTextValueMixin } from './SelectedItemTextValueMixin.js';
 export { default as SelectionInViewMixin } from './SelectionInViewMixin.js';
 export { default as ShadowTemplateMixin } from './ShadowTemplateMixin.js';

@@ -17,6 +17,7 @@
     "describe": false,
     "it": false,
     "mocha": false,
-    "sinon": false
+    "sinon": false,
+    "ResizeObserver": false
   }
 }

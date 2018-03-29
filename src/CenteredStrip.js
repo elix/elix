@@ -4,6 +4,7 @@ import ClickSelectionMixin from './ClickSelectionMixin.js';
 import ContentItemsMixin from './ContentItemsMixin.js';
 import ElementBase from './ElementBase.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
+import ResizeMixin from './ResizeMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotContentMixin from './SlotContentMixin.js';
 
@@ -12,10 +13,11 @@ const Base =
   ClickSelectionMixin(
   ContentItemsMixin(
   LanguageDirectionMixin(
+  ResizeMixin(
   SingleSelectionMixin(
   SlotContentMixin(
     ElementBase
-  )))));
+  ))))));
 
 
 class CenteredStrip extends Base {
