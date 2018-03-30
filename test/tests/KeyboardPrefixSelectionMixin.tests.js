@@ -13,12 +13,15 @@ class KeyboardPrefixSelectionTest extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      selectedIndex: -1      
+      selectedIndex: -1
     });
   }
 
   get items() {
-    return this.children;
+    return this.state.items;
+  }
+  set items(items) {
+    this.setState({ items });
   }
 
 }
@@ -83,7 +86,7 @@ describe("KeyboardPrefixSelectionMixin", () => {
 
 function createSampleElement() {
   const fixture = document.createElement('keyboard-prefix-selection-test');
-  const items = [
+  const texts = [
     'Acai',
     'Acerola',
     'Apple',
@@ -95,10 +98,11 @@ function createSampleElement() {
     'Cherry',
     'Cranberry'
   ];
-  items.forEach(text => {
+  const items = texts.map(text => {
     const div = document.createElement('div');
     div.textContent = text;
-    fixture.appendChild(div);
+    return div;
   });
+  fixture.items = items;
   return fixture;
 }

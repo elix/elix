@@ -3,7 +3,6 @@ import { TYPING_TIMEOUT_DURATION } from './constants.js';
 
 
 // Symbols for private data members on an element.
-const itemTextContentsKey = Symbol('itemTextContents');
 const typedPrefixKey = Symbol('typedPrefix');
 const prefixTimeoutKey = Symbol('prefixTimeout');
 
@@ -57,6 +56,13 @@ export default function KeyboardPrefixSelectionMixin(Base) {
       resetTypedPrefix(this);
     }
 
+    get defaultState() {
+      return Object.assign({}, super.defaultState, {
+        itemsForTexts: null,
+        texts: null
+      });
+    }
+
     // Default implementation returns an item's `alt` attribute or its
     // `textContent`, in that order.
     [symbols.getItemText](item) {
@@ -105,7 +111,7 @@ export default function KeyboardPrefixSelectionMixin(Base) {
       if (prefix == null || prefix.length === 0) {
         return false;
       }
-      const selectedIndex = getIndexOfItemWithTextPrefix(this, prefix);
+      const selectedIndex = getIndexOfTextWithPrefix(this.state.texts, prefix);
       if (selectedIndex >= 0) {
         const previousIndex = this.selectedIndex;
         this.setState({ selectedIndex });
@@ -114,6 +120,22 @@ export default function KeyboardPrefixSelectionMixin(Base) {
         return false;
       }
     }
+
+    validateState(state) {
+      let result = super.validateState ? super.validateState(state) : true;
+      const items = state.items || null;
+      const itemsChanged = items !== state.itemsForTexts;
+      if (itemsChanged) {
+        const texts = getTextsForItems(this, items);
+        Object.freeze(texts);
+        Object.assign(state, {
+          texts,
+          itemsForTexts: items
+        });
+        result = false;
+      }
+      return result;
+    }
   }
 
   return KeyboardPrefixSelection;
@@ -121,11 +143,10 @@ export default function KeyboardPrefixSelectionMixin(Base) {
 
 
 // Return the index of the first item with the given prefix, else -1.
-function getIndexOfItemWithTextPrefix(component, prefix) {
-  const itemTextContents = getItemTextContents(component);
+function getIndexOfTextWithPrefix(texts, prefix) {
   const prefixLength = prefix.length;
-  for (let i = 0; i < itemTextContents.length; i++) {
-    const itemTextContent = itemTextContents[i];
+  for (let i = 0; i < texts.length; i++) {
+    const itemTextContent = texts[i];
     if (itemTextContent.substr(0, prefixLength) === prefix) {
       return i;
     }
@@ -134,16 +155,12 @@ function getIndexOfItemWithTextPrefix(component, prefix) {
 }
 
 // Return an array of the text content (in lowercase) of all items.
-// Cache these results.
-function getItemTextContents(component) {
-  if (!component[itemTextContentsKey]) {
-    const items = component.items;
-    component[itemTextContentsKey] = Array.prototype.map.call(items, item => {
-      const text = component[symbols.getItemText](item);
-      return text.toLowerCase();
-    });
-  }
-  return component[itemTextContentsKey];
+function getTextsForItems(component, items) {
+  const texts = Array.prototype.map.call(items, item => {
+    const text = component[symbols.getItemText](item);
+    return text.toLowerCase();
+  });
+  return texts;
 }
 
 // Handle the Backspace key: remove the last character from the prefix.

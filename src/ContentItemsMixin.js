@@ -45,6 +45,13 @@ const originalKey = Symbol('original');
 export default function ContentItemsMixin(Base) {
   return class ContentItems extends Base {
 
+    get defaultState() {
+      return Object.assign({}, super.defaultState, {
+        contentForItems: null,
+        items: null
+      });
+    }
+
     /**
      * Returns a set of calculations about the given item that can be derived from
      * the component's current state.
@@ -145,7 +152,7 @@ export default function ContentItemsMixin(Base) {
 
     validateState(state) {
       let result = super.validateState ? super.validateState(state) : true;
-      const content = state.content;
+      const content = state.content || null;
       const contentChanged = content !== state.contentForItems; 
       if (contentChanged) {
         const items = this.itemsForState(state);
