@@ -8,9 +8,11 @@ declare const ContentItemsMixin: StateMixin<{
 },
 {},
 {
-  itemUpdates(item: Element, calcs: PlainObject, original: any): any;
+  itemUpdates(item: Element, calcs: PlainObject, original: PlainObject): PlainObject;
   items: Element[];
 },
-{}>;
+{
+  items: Element[];
+}>;
 
 export default ContentItemsMixin;

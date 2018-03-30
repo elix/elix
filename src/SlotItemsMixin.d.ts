@@ -5,19 +5,20 @@
 
 import * as symbols from './symbols.js';
 
-declare const SlotContentMixin: StateMixin<
+declare const SlotItemsMixin: StateMixin<
 {
   componentDidMount?(): void;
+  items?: Element[];
 },
 {},
 {
   componentDidMount(): void;
-  contentSlot: HTMLSlotElement;
   [symbols.contentSlot]: HTMLSlotElement;
+  itemUpdates(item: Element, calcs: PlainObject, original: PlainObject): PlainObject;
+  items: Element[];
 },
 {
   content: NodeList|Node[];
-  items: Element[];
 }>;
 
-export default SlotContentMixin;
+export default SlotItemsMixin;

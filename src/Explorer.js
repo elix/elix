@@ -1,11 +1,10 @@
 import './Modes.js';
 import { apply, merge } from './updates.js';
 import * as symbols from './symbols.js';
-import ContentItemsMixin from './ContentItemsMixin.js';
 import ElementBase from './ElementBase.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
-import SlotContentMixin from './SlotContentMixin.js';
+import SlotItemsMixin from './SlotItemsMixin.js';
 
 
 const proxyTagKey = Symbol('proxyTag');
@@ -24,12 +23,11 @@ const lateralPositions = {
 
 
 const Base =
-  ContentItemsMixin(
   LanguageDirectionMixin(
   SingleSelectionMixin(
-  SlotContentMixin(
+  SlotItemsMixin(
     ElementBase
-  ))));
+  )));
 
 
 /**
@@ -38,10 +36,9 @@ const Base =
  * selected item.
  *
  * @inherits ElementBase
- * @mixes ContentItemsMixin
  * @mixes LanguageDirectionMixin
  * @mixes SingleSelectionMixin
- * @mixes SlotContentMixin
+ * @mixes SlotItemsMixin
  */
 class Explorer extends Base {
 

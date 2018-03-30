@@ -2,7 +2,6 @@ import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import AriaListMixin from './AriaListMixin.js';
 import ClickSelectionMixin from './ClickSelectionMixin.js';
-import ContentItemsMixin from './ContentItemsMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import ElementBase from './ElementBase.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
@@ -13,13 +12,12 @@ import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SelectionInViewMixin from './SelectionInViewMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
-import SlotContentMixin from './SlotContentMixin.js';
+import SlotItemsMixin from './SlotItemsMixin.js';
 
 
 const Base =
   AriaListMixin(
   ClickSelectionMixin(
-  ContentItemsMixin(
   DirectionSelectionMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
@@ -29,9 +27,9 @@ const Base =
   SelectedItemTextValueMixin(
   SelectionInViewMixin(
   SingleSelectionMixin(
-  SlotContentMixin(
+  SlotItemsMixin(
     ElementBase
-  )))))))))))));
+  ))))))))))));
 
 
 /**
@@ -46,7 +44,6 @@ const Base =
  * @inherits ElementBase
  * @mixes AriaListMixin
  * @mixes ClickSelectionMixin
- * @mixes ContentItemsMixin
  * @mixes DirectionSelectionMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
@@ -56,7 +53,7 @@ const Base =
  * @mixes SelectedItemTextValueMixin
  * @mixes SelectionInViewMixin
  * @mixes SingleSelectionMixin
- * @mixes SlotContentMixin
+ * @mixes SlotItemsMixin
  */
 class ListBox extends Base {
 
