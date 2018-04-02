@@ -515,13 +515,21 @@ function createOutputPathDirectory(path) {
 // Promise.all(), while ensuring that the items are processed in a completely
 // sequential order.
 //
-function mapAndChain(array, promiseFn) {
-  if (array == null || array.length === 0) {
-    return Promise.resolve();
-  }
+// function mapAndChain(array, promiseFn) {
+//   if (array == null || array.length === 0) {
+//     return Promise.resolve();
+//   }
   
-  // Start the promise chain with a resolved promise.
-  return array.reduce((chain, item) => chain.then(() => promiseFn(item)), Promise.resolve());
+//   // Start the promise chain with a resolved promise.
+//   return array.reduce((chain, item) => chain.then(() => promiseFn(item)), Promise.resolve());
+// }
+
+// Experimental rewrite of above function. As of Node 9.x, it seems able to
+// avoid starting too many file operations. If this continues to work, we can
+// cut out the above dead code.
+function mapAndChain(array, promiseFn) {
+  const promises = array ? array.map(promiseFn) : [];
+  return Promise.all(promises);
 }
 
 const buildDocs = function() {
