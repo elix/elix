@@ -7,6 +7,8 @@ import SlotContentMixin from './SlotContentMixin.js';
  * as items. This is simply a combination of
  * [ContentItemsMixin](ContentItemsMixin) and
  * SlotContentMixin(SlotContentMixin).
+ * 
+ * @module SlotItemsMixin
  */
 export default function SlotItemsMixin(Base) {
   return ContentItemsMixin(SlotContentMixin(Base));
