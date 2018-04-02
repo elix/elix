@@ -4,194 +4,32 @@
 const fs = require('fs-extra');
 const jsdoc = require('jsdoc-api');
 const jsdocParse = require('jsdoc-parse');
+const path = require('path');
 const promisify = require('util').promisify;
 
-let outputPath;
-let inputPath;
+const ensureDirAsync = promisify(fs.ensureDir);
+const readdirAsync = promisify(fs.readdir);
+const removeAsync = promisify(fs.remove);
+const writeJsonAsync = promisify(fs.writeJson);
 
-//
 // Diagnostic switch. Set to true to see unextendedDocumentationMap
 // written to disk - a diagnostic code path.
-//
 const WRITE_UNEXTENDEDONLY = false;
 
-//
-// Array of peer directories for use in docsList
-//
-let sourceDirs = [];
 
-//
-// docsList is an array of objects listing the name, src, and dest of each
-// element/mixin/utility file:
-//
-// Eg:
-// [{name: MyClass, src: '.../myClass.js', dest: './build/docs/myClass.json'}, ...]
-//
-let docsList;
-
-//
-// unextendedDocumentationMap is the dictionary of object names to jsDoc
-// json documentation. The json documentation is the jsDoc for the
-// source file alone, not extended with @mixes or @extends references.
-//
-// Eg:
-// { 'myObject1': {docThing1: 'blah', docThing2: 'blah'},
-//   'myObject2': {docThing1: 'blah', docThing2: 'blah'},
-//   ...
-// }
-//
-// We use unextendedDocumentationMap as a cache of each file's raw jsDoc
-// documentation from which we build extended documentation that gets
-// written to build/docs.
-//
-let unextendedDocumentationMap = {};
-
-
-//
 // extendedDocumentationMap the resulting dictionary of jsDoc objects
 // with extended schema, and which get written to disk. We keep this
 // map in memory so we can do reverse-lookup sorts of analysis and extension,
 // such as "What objects use this mixin?" or "What objects inherit from
 // this class?".
-//
-let extendedDocumentationMap = {};
+const extendedDocumentationMap = {};
 
-function buildDocsList() {
-  return mapAndChain(sourceDirs, buildDocsListForDirectory)
-  .catch(error => {
-    console.error(`buildDocsList: ${error}`);
-  });
-}
 
-//
-// Build the portion of docsList that represents the individual source files
-// within the specified directory.
-//
-function buildDocsListForDirectory(dirName) {
-  const readdirPromise = promisify(fs.readdir);
-  
-  return readdirPromise(`${dirName}/`)
-  .then((files) => {
-    let array = files.filter(file => file.endsWith('.js'))
-    .map(file => {
-      const fileRoot = file.replace('.js', '');
-      let obj = {
-        name: fileRoot,
-        src: `${dirName}/${file}`,
-        dest: `${outputPath}${fileRoot}.json`
-      };
-      
-      // Prepare an entry in the unextendedDocumentationMap
-      unextendedDocumentationMap[obj.name] = {};
-      
-      return obj;
-    });
-    
-    docsList = docsList ? docsList.concat(array) : array;
-  })
-  .catch(error => {
-    console.error(`buildDocsListForDirectory: ${error}`);
-  });
-}
-
-//
-// Uses jsdoc-api to convert a .js file to jsDoc json
-//
-function parseScriptToJSDocJSON(src) {
-  return jsdoc.explain({
-    files: src
-  })
-  .then(json => {
-    return jsdocParse(json);
-  });
-}
-
-//
-// Build the jsDoc json for a specified source file and stuff
-// it in the unextendedDocumentationMap keyed on the object's name
-//
-function buildUnextendedJson(docItem) {
-  console.log(`Building jsdoc for ${docItem.src}`);
-
-  return parseScriptToJSDocJSON(docItem.src)
-  .then(json => {
-    if (json.length === 0) {
-      const placeHolderJson = {
-        "id": docItem.name,
-        "longname": docItem.name,
-        "name": docItem.name,
-        "noWrite": true,
-        "kind": "module",
-        "description": `Need documentation for ${docItem.name}`,
-        "order": 0
-      };
-      
-      json.push(placeHolderJson);
-    }
-    unextendedDocumentationMap[docItem.name] = json;
-  })
-  .catch(error => {
-    console.error(`buildUnextendedJson: ${error}`);
-  });
-}
-
-//
-// After the unextendedDocumentationMap cache is built, we build
-// the extended documentation for objects having @extend and @mixes
-// attributes.
-//
-// buildAndMapExtendedJson takes a single item from the docsList array
-// and builds the extended documentation for that item.
-//
-function buildAndMapExtendedJson(docsListItem) {
-  // Make a copy of the unextended json so we don't corrupt the cache
-  let srcJson = unextendedDocumentationMap[docsListItem.name];
-  let componentJson = cloneJSON(srcJson);
-  
-  // Initialize the componentJson with an array parallel to
-  // the mixes array, specifying the origin class inserting the mixin
-  componentJson[0].mixinOrigins = [];
-  if (componentJson[0].mixes != null && componentJson[0].mixes !== undefined) {
-    componentJson[0].mixinOrigins = componentJson[0].mixes.map(() => {
-      return componentJson[0].name;
-    });
-  }
-
-  return mergeExtensionDocs(componentJson)
-  .then((json) => {
-    // Sort the array, leaving the order:0 item alone at the
-    // front of the list (the class identifier section)
-    json.sort((a, b) => {
-      if (a.order === 0) { return -1; }
-      if (b.order === 0) { return 1; }
-
-      return a.name.localeCompare(b.name);
-    });
-
-    // Set the order value
-    json.map((item, index) => {
-      item.order = index;
-    });
-    
-    return json;
-  })
-  .then((json) => {
-    // Add the item to the extendedDocumentationMap
-    extendedDocumentationMap[json[0].name] = json;
-    return json;
-  })
-  .catch(error => {
-    console.error(`buildAndMapExtendedJson: ${error}`);
-  });
-}
-
-//
 // Once the extendedDocumentationMap is fully constructed, it can
 // be analyzed for reverse relationships such as classInheritedBy and
 // mixinUsedBy. Anything that needs to be done once the map is completed
 // is done here.
-//
-function analyzeAndUpdateExtendedJson(docsListItem) {
+function analyzeAndUpdateExtendedJson(docsList, docsListItem) {
   let json = extendedDocumentationMap[docsListItem.name];
   if (json) {
     let itemName = json[0].name;
@@ -206,117 +44,71 @@ function analyzeAndUpdateExtendedJson(docsListItem) {
       updateClassInheritedBy(json, docsListItem.name);
     });
   }
-
-  return Promise.resolve();
 }
 
-//
-// Updates the extended json by checking another extended json object
-// in the extendedDocumentationMap to see if this object is included
-// as a mixin.
-//
-function updateMixinUsedBy(json, objectName) {
-  const name = json[0].name;
+// After the unextendedDocumentationMap cache is built, we build
+// the extended documentation for objects having @extend and @mixes
+// attributes.
+// buildAndMapExtendedJson takes a single item from the docsList array
+// and builds the extended documentation for that item.
+function buildAndMapExtendedJson(docsListItem, docs) {
+  // Make a copy of the unextended json so we don't corrupt the cache
+  let srcJson = docs[docsListItem.name];
+  let componentJson = clone(srcJson);
   
-  const searchItem = extendedDocumentationMap[objectName];
-  if (searchItem &&
-      searchItem[0].mixes &&
-      searchItem[0].mixes.length > 0 &&
-      searchItem[0].mixes.includes(name)) {
-    
-    if (json[0].mixinUsedBy === undefined) {
-      json[0].mixinUsedBy = [];
-    }
-    
-    json[0].mixinUsedBy.push(objectName);
-  }    
-}
-
-//
-// Updates the extended json by checking another extended json object
-// in the extendedDocumentationMap to see if this object is
-// inherited from the other object.
-//
-function updateClassInheritedBy(json, objectName) {
-  const name = json[0].name;
-  
-  const searchItem = extendedDocumentationMap[objectName];
-  if (searchItem &&
-      searchItem[0].inheritance &&
-      searchItem[0].inheritance.length > 0 &&
-      searchItem[0].inheritance[0] === name) {
-    
-    if (json[0].classInheritedBy === undefined) {
-      json[0].classInheritedBy = [];
-    }    
-    
-    json[0].classInheritedBy.push(objectName);
-  }    
-}
-
-//
-// Writes an extendedDocumentationMap item to disk
-//
-function writeJson(docsListItem) {
-  const json = WRITE_UNEXTENDEDONLY ? 
-    unextendedDocumentationMap[docsListItem.name] :
-    extendedDocumentationMap[docsListItem.name];
-
-  if (!json) {
-    throw `Can't find documentation for ${docsListItem.name}`;
+  // Initialize the componentJson with an array parallel to
+  // the mixes array, specifying the origin class inserting the mixin
+  componentJson[0].mixinOrigins = [];
+  if (componentJson[0].mixes != null && componentJson[0].mixes !== undefined) {
+    componentJson[0].mixinOrigins = componentJson[0].mixes.map(() => {
+      return componentJson[0].name;
+    });
   }
 
-  const dest = docsListItem.dest;
-  const writeJsonPromise = promisify(fs.writeJson);
+  mergeExtensionDocs(componentJson, docs);
 
-  if (json[0].noWrite) {
-    console.log(`Skipping write of json for undocumented ${docsListItem.src}`);
-    return null;
-  }
+  // Sort the array, leaving the order:0 item alone at the
+  // front of the list (the class identifier section)
+  componentJson.sort((a, b) => {
+    if (a.order === 0) { return -1; }
+    if (b.order === 0) { return 1; }
 
-  console.log(`Writing json for ${docsListItem.src}`);
-  return writeJsonPromise(dest, json, {spaces: 2})
-  .catch(error => {
-    console.error(`writeJson: ${error}`);
+    return a.name.localeCompare(b.name);
   });
+
+  // Set the order value
+  componentJson.map((item, index) => {
+    item.order = index;
+  });
+    
+  // Add the item to the extendedDocumentationMap
+  extendedDocumentationMap[componentJson[0].name] = componentJson;
 }
 
-function getInheritsValue(json) {
-  if (json.customTags && 
-    json.customTags.length > 0 && 
-    json.customTags[0].tag === 'inherits') {
-  
-    return json.customTags[0].value;    
-  }
-  else {
-    return null;
-  }
-}
-
-
-//
 // Recursive function that extends the root item's mixin array, and extends
 // an array of names representing inheritance items that need to be parsed
 // and added to the root item.
-//
 // This function is first called with the root item as the json parameter.
 // There's nothing asynchronous about this work; the function is used as
 // a utility and does not return a Promise.
-//
 // Note that due to the recursive calling, the json array field, inheritance,
 // will be constructed in an ordered manner with the 0th index holding the
 // immediate class parent, the 1st index holding the grandparent, etc.
-//
-function buildAugmentsListAndExtendMixinsArray(json, augmentsArray, mixinArray) {
-  const inheritsValue = getInheritsValue(json[0]);
-  if (inheritsValue == null) {
+function buildAugmentsListAndExtendMixinsArray(json, augmentsArray, mixinArray, docs) {
+
+  // Extract @inherits value.
+  const inheritsValue = docs.customTags && 
+      docs.customTags.length > 0 && 
+      docs.customTags[0].tag === 'inherits' &&
+      docs.customTags[0].value;
+  if (!inheritsValue) {
     // Break the recursive chain by returning without another recursive call
     return;
   }
 
   // We're interested only in single-inheritance
   const augmentsName = inheritsValue;
-  const augmentsItem = unextendedDocumentationMap[augmentsName];
+  const augmentsItem = docs[augmentsName];
   if (augmentsItem == null || augmentsItem === undefined) {
     // Break the recursive chain by returning without another recursive call
     return;
@@ -332,51 +124,139 @@ function buildAugmentsListAndExtendMixinsArray(json, augmentsArray, mixinArray) 
   }
   
   augmentsArray.push(augmentsName);
-  return buildAugmentsListAndExtendMixinsArray(augmentsItem, augmentsArray, mixinArray);
+  return buildAugmentsListAndExtendMixinsArray(augmentsItem, augmentsArray, mixinArray, docs);
 }
 
-//
-// mergeExtensionDocs does the work of adding the @extends and @mixes
+// Build documentation for source files.
+// The paths argument is an object containing:
+// * inputPath: The directory to search for source files.
+// * outputPath: The directory to write documentation to.
+async function buildDocs(paths) {
+
+  const { inputPath, outputPath } = paths;
+
+  const sourceFiles = await sourceFilesInDirectory(inputPath);
+  const basicDocs = await docsFromSourceFiles(sourceFiles);
+  
+  // Skip extended documentation in diagnostic mode.
+  const docs = WRITE_UNEXTENDEDONLY ?
+    basicDocs :
+    extendDocs(sourceFiles, basicDocs);
+  
+  // Clean output folder by removing it then recreating it.
+  await removeAsync(outputPath);
+  await ensureDirAsync(outputPath);
+
+  await writeDocsToDirectory(sourceFiles, docs, outputPath);
+  
+  if (WRITE_UNEXTENDEDONLY) {
+    // Issue an error to note this diagnostic path.
+    process.exit(1);
+  }
+}
+
+// Make a deep copy of a object.
+function clone(object) {
+  return JSON.parse(JSON.stringify(object));
+}
+
+// Extract the basic JSDoc documentation from the specified source file.
+// This documentation is *not* extended with @mixes or @inherits references.
+// Sample result:
+//     {
+//       'myObject1': {docThing1: 'blah', docThing2: 'blah'},
+//       'myObject2': {docThing1: 'blah', docThing2: 'blah'},
+//       ...
+//     }
+async function docsFromSourceFile(file) {
+
+  const src = file.src;
+  console.log(`Reading ${path.basename(src)}`);
+
+  // Extract JSDoc from comments in source file. 
+  const jsdocJson = await jsdoc.explain({
+    files: src
+  });
+
+  // Process JSON into something more useful.
+  const docs = jsdocParse(jsdocJson);
+
+  if (docs.length === 0) {
+    // Return a placeholder.
+    return [{
+      "id": file.name,
+      "longname": file.name,
+      "name": file.name,
+      "noWrite": true,
+      "kind": "module",
+      "description": `Need documentation for ${file.name}`,
+      "order": 0
+    }];
+  }
+
+  return docs;
+}
+
+// Given a set of files, return a map of file name to the basic JSDoc
+// documentation for the objects in those files.
+async function docsFromSourceFiles(files) {
+  const docs = {};
+  await mapPromiseFn(files, async file => {
+    docs[file.name] = await docsFromSourceFile(file);
+  });
+  return docs;
+}
+
+// Extend the standard JSDoc results with @mixes and @inherits references.
+function extendDocs(files, basicDocs) {
+  files.forEach(file => buildAndMapExtendedJson(file, basicDocs));
+  files.forEach(file => {
+    analyzeAndUpdateExtendedJson(files, file);
+  });
+  return extendedDocumentationMap;
+}
+
+// Apply the given promise-returning function to each member of the array. Note:
+// Versions of before Node 9.x seemed to spin up too many file operations,
+// forcing us to execute the promises in sequence. As of 9.x, Node appears to be
+// sufficiently smart enough that we can kick off all operations at once.
+function mapPromiseFn(array, promiseFn) {
+  const promises = array ? array.map(promiseFn) : [];
+  return Promise.all(promises);
+}
+
+// mergeExtensionDocs does the work of adding the @inherits and @mixes
 // documentation to the original, unextended jsDoc documentation json object.
 // The componentJson object is the cloned json mapped from the
 // unextendedDocumentationMap cache, and is updated with extended documentation
 // and eventually written to file.
-//
-function mergeExtensionDocs(componentJson) {
+function mergeExtensionDocs(componentJson, docs) {
   if (componentJson.length === 0) {
-    return Promise.resolve(componentJson);
+    return;
   }
   
-  //
   // First, walk the inheritance list, adding to the root item's mixin array,
-  // and building an array of augments/extends items in the order of
+  // and building an array of augments/inherits items in the order of
   // ancestry.
-  //
-  
   let augmentsList = [];
   let mixinsList = [];
-  buildAugmentsListAndExtendMixinsArray(componentJson, augmentsList, mixinsList);
+  buildAugmentsListAndExtendMixinsArray(componentJson, augmentsList, mixinsList, docs);
 
-  //
   // We create a new field, "inheritance," which is an array of object names
   // the documented item inherits from, gleaned from walking each object's
   // augments array. We could have updated the augments array, but instead
   // we choose to create a new field so we don't tamper with augment's original
   // intention.
-  //
   if (augmentsList.length > 0) {
     componentJson[0].inheritance = augmentsList;
   }
 
-
-  //
   // We update the object's mixes field to include those mixins contributed
-  // by @extends objects. We create a mixinOrigins array that is identically
+  // by @inherits objects. We create a mixinOrigins array that is identically
   // sized to the mixins field, and contains the name of the contributing
   // class. The two arrays can be used to build documentation where we
   // specify, say, a method that is defined by FooMixin, and where
   // FooMixin is contributed by/inherited from class Bar.
-  //
   if (mixinsList.length > 0) {
     if (componentJson[0].mixes == null || componentJson[0].mixes === undefined) {
       componentJson[0].mixes = [];
@@ -394,82 +274,45 @@ function mergeExtensionDocs(componentJson) {
   
   const hostId = componentJson[0].id;
 
-  // Merge the @extends class documentation into componentJson
+  // Merge the @inherits class documentation into componentJson
   augmentsList.forEach((augmentsItem) => {
-    mergeExtensionIntoBag(augmentsItem, componentJson, hostId);
+    mergeExtensionIntoBag(augmentsItem, componentJson, hostId, docs);
   });
   
   // Merge the @mixes class documentation into componentJson
   let mixes = componentJson[0].mixes;
   if (mixes != null && mixes !== undefined && mixes.length > 0) {
     mixes.forEach(mixin => {
-      mergeExtensionIntoBag(mixin, componentJson, hostId);
+      mergeExtensionIntoBag(mixin, componentJson, hostId, docs);
     });
   }
-
-  return Promise.resolve(componentJson);
 }
 
-//
-// Helper function that resolves the name to be referenced
-// by the origininalmemberof field.
-//
-function resolveOriginalMemberOf(omo) {
-  if (omo !== undefined) {
-    let strings = omo.split(/:|~/);
-    switch (strings.length) {
-      case 1:
-        // First test to see if strings[0] represents an inherited object
-        const trial = strings[0];
-        if (unextendedDocumentationMap[trial] != null) {
-          omo = trial;
-        }
-        else {
-          omo = `${trial}Mixin`;
-        }
-        break;
-      case 2:
-      case 3:
-        omo = strings[1];
-        break;
-      default:
-        break;
-    }
-  }
-  
-  return omo;
-}
-
-//
 // Merge a mixin or inherited class data into the root item's json
-//
-function mergeExtensionIntoBag(extensionName, componentJson, hostId) {
+function mergeExtensionIntoBag(extensionName, componentJson, hostId, docs) {
 
-  const json = unextendedDocumentationMap[extensionName];
+  const json = docs[extensionName];
   if (!json) {
     throw `Can't find documentation for ${extensionName}`;
   }
 
-  const extensionJson = cloneJSON(json);
+  const extensionJson = clone(json);
 
   for (let i = 1; i < extensionJson.length; i++) {
-    const originalmemberof = resolveOriginalMemberOf(extensionJson[i].memberof);
+    const originalmemberof = resolveOriginalmemberof(docs, extensionJson[i].memberof);
     extensionJson[i].originalmemberof = originalmemberof;
     extensionJson[i].memberof = hostId;
     
-    //
-    // We specify that the new documentation item is inherited from the
+      // We specify that the new documentation item is inherited from the
     // originalmemberof object if we can find originalmemberof in the
     // root item's inheritance array.
-    //
-    // Otherwise, we test if the originalmemberof and memberof fields of
+      // Otherwise, we test if the originalmemberof and memberof fields of
     // the new documentation items are different, which would be the case
     // if the new documentation item is contributed from a mixin. In that
     // case, we look for originalmemberof within the root item's array
     // of mixins, and then map the inheritedfrom field from the root item's
     // mixinOrigins array.
-    //
-    if (componentJson[0].inheritance && componentJson[0].inheritance.indexOf(originalmemberof) >= 0) {
+      if (componentJson[0].inheritance && componentJson[0].inheritance.indexOf(originalmemberof) >= 0) {
       extensionJson[i].inheritedfrom = originalmemberof;
     }
     else if (extensionJson[i].originalmemberof !== extensionJson[i].memberof) {
@@ -484,96 +327,109 @@ function mergeExtensionIntoBag(extensionName, componentJson, hostId) {
   }
 }
 
-//
-// Make a copy of a json object. This is typically used to avoid corrupting
-// the cached json in unextendedDocumentationMap.
-//
-function cloneJSON(json) {
-  return JSON.parse(JSON.stringify(json));
-}
-
-//
-// Remove the outputPath folder and contents
-//
-function clean() {
-  const removePromise = promisify(fs.remove);
-  return removePromise(outputPath);
-}
-
-//
-// Creates the outputPath directory
-//
-function createOutputPathDirectory(path) {
-  const ensureDirPromise = promisify(fs.ensureDir);
-  return ensureDirPromise(path);
-}
-
-//
-// Apply the given promise-returning function to each member of the array.
-// Ensure each promise completes before starting the next one to avoid
-// spinning up too many file operations at once. This is effectively like
-// Promise.all(), while ensuring that the items are processed in a completely
-// sequential order.
-//
-// function mapAndChain(array, promiseFn) {
-//   if (array == null || array.length === 0) {
-//     return Promise.resolve();
-//   }
+// Helper function that resolves the name to be referenced by the
+// origininalmemberof field.
+function resolveOriginalmemberof(docs, memberOf) {
+  if (memberOf !== undefined) {
+    let strings = memberOf.split(/:|~/);
+    switch (strings.length) {
+      case 1:
+        // First test to see if strings[0] represents an inherited object
+        const trial = strings[0];
+        if (docs[trial] != null) {
+          memberOf = trial;
+        }
+        else {
+          memberOf = `${trial}Mixin`;
+        }
+        break;
+      case 2:
+      case 3:
+        memberOf = strings[1];
+        break;
+      default:
+        break;
+    }
+  }
   
-//   // Start the promise chain with a resolved promise.
-//   return array.reduce((chain, item) => chain.then(() => promiseFn(item)), Promise.resolve());
-// }
-
-// Experimental rewrite of above function. As of Node 9.x, it seems able to
-// avoid starting too many file operations. If this continues to work, we can
-// cut out the above dead code.
-function mapAndChain(array, promiseFn) {
-  const promises = array ? array.map(promiseFn) : [];
-  return Promise.all(promises);
+  return memberOf;
 }
 
-const buildDocs = function() {
-  clean()
-  .then(() => {
-    return createOutputPathDirectory(outputPath);
-  })
-  .then(() => {
-    return buildDocsList();
-  })
-  .then(() => {
-    return mapAndChain(docsList, buildUnextendedJson);
-  })
-  .then(() => {
-    if (WRITE_UNEXTENDEDONLY) {
-      // Diagnostic path. Write out the unextended json and exit
-      // issuing an error to note this diagnostic path.
-      return mapAndChain(docsList, writeJson)
-      .then(() => {
-        process.exit(1);
-      });
+// Return file descriptors for each source file in the given directory.
+async function sourceFilesInDirectory(path) {
+  const files = await readdirAsync(path);
+  const javascriptFiles = files.filter(file => file.endsWith('.js'));
+  return javascriptFiles.map(file => {
+    return {
+      name: file.replace('.js', ''),
+      src: `${path}/${file}`
+    };
+  });
+}
+
+// Updates the extended json by checking another extended json object
+// in the extendedDocumentationMap to see if this object is included
+// as a mixin.
+function updateMixinUsedBy(json, objectName) {
+  const name = json[0].name;
+  
+  const searchItem = extendedDocumentationMap[objectName];
+  if (searchItem &&
+      searchItem[0].mixes &&
+      searchItem[0].mixes.length > 0 &&
+      searchItem[0].mixes.includes(name)) {
+    
+    if (json[0].mixinUsedBy === undefined) {
+      json[0].mixinUsedBy = [];
     }
     
-    return mapAndChain(docsList, buildAndMapExtendedJson);
-  })
-  .then(() => {
-    return mapAndChain(docsList, analyzeAndUpdateExtendedJson);
-  })
-  .then(() => {
-    return mapAndChain(docsList, writeJson);
+    json[0].mixinUsedBy.push(objectName);
+  }    
+}
+
+// Updates the extended json by checking another extended json object
+// in the extendedDocumentationMap to see if this object is
+// inherited from the other object.
+function updateClassInheritedBy(json, objectName) {
+  const name = json[0].name;
+  
+  const searchItem = extendedDocumentationMap[objectName];
+  if (searchItem &&
+      searchItem[0].inheritance &&
+      searchItem[0].inheritance.length > 0 &&
+      searchItem[0].inheritance[0] === name) {
+    
+    if (json[0].classInheritedBy === undefined) {
+      json[0].classInheritedBy = [];
+    }    
+    
+    json[0].classInheritedBy.push(objectName);
+  }    
+}
+
+// Write all docs to the directory specified by the path.
+async function writeDocsToDirectory(sourceFiles, docs, directory) {
+  await mapPromiseFn(sourceFiles, async sourceFile => {
+    const name = sourceFile.name;
+    const fileDocs = docs[name];
+    const dest = path.join(directory, `${name}.json`);
+    await writeFileDocs(name, fileDocs, dest);
   });
-};
+}
 
-const setInputPath = function(path) {
-  inputPath = path;
-  sourceDirs = [`${inputPath}src`];
-};
+// Write documentation for the given source file to the destination.
+async function writeFileDocs(sourceFile, fileDocs, dest) {
+  const name = sourceFile.name;
+  if (!fileDocs) {
+    throw `Can't find documentation for ${name}`;
+  }
+  if (fileDocs[0].noWrite) {
+    console.log(`Skipping undocumented ${name}`);
+    return null;
+  }
+  console.log(`Writing ${path.basename(dest)}`);
+  await writeJsonAsync(dest, fileDocs, { spaces: 2 });
+}
 
-const setOutputPath = function(path) {
-  outputPath = path;
-};
 
-module.exports = {
-  buildDocs,
-  setInputPath,
-  setOutputPath
-};
+module.exports = buildDocs;
