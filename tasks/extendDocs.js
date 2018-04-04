@@ -45,20 +45,6 @@ function extendDocs(docs) {
   Object.values(docs).forEach(objectDocs => {
     extendObjectDocs(docs, objectDocs);
   });
-
-  // // Sort the array, leaving the order:0 item alone at the
-  // // front of the list (the class identifier section)
-  // objectDocs.sort((a, b) => {
-  //   if (a.order === 0) { return -1; }
-  //   if (b.order === 0) { return 1; }
-
-  //   return a.name.localeCompare(b.name);
-  // });
-
-  // // Set the order value
-  // objectDocs.map((item, index) => {
-  //   item.order = index;
-  // });
 }
 
 // For each documented object, create a new field, `inheritance`, holding an
@@ -67,10 +53,17 @@ function extendDocs(docs) {
 function extendObjectDocs(docs, objectDocs) {
 
   const objectDoclet = primaryDoclet(objectDocs);
-  const alreadyExtended = objectDoclet.inheritance !== undefined;
-  if (alreadyExtended) {
+
+  // Have we already taken care of extending this object's documentation?
+  if (objectDoclet.extended) {
     return;
   }
+  objectDoclet.extended = true;
+
+  // Indicate the object's own members as originally coming from this object.
+  memberDoclets(objectDocs).forEach(memberDoclet => {
+    memberDoclet.originalmemberof = objectDoclet.name;
+  });
 
   // Declare this object is origin of any mixins directly on it.
   if (!objectDoclet.mixes) {
@@ -82,15 +75,16 @@ function extendObjectDocs(docs, objectDocs) {
   // Process each mixin.
   objectDoclet.mixes.forEach((mixinName, index) => {
     const mixinDocs = docs[mixinName];
-    const mixinOrigin = objectDoclet.mixinOrigins[index];
-    extendClassDocsWithMixin(objectDocs, mixinDocs, mixinOrigin);
+    // Extend mixin docs before consuming.
+    extendObjectDocs(docs, mixinDocs);
+    extendClassDocsWithMixin(objectDocs, mixinDocs);
   });
 
   // Process base class if one is defined.
   const baseClassName = baseClassNameInDoclet(objectDoclet);
   if (baseClassName) {
     const baseClassDocs = docs[baseClassName];
-    // Recurse to extend base class docs.
+    // Extend base class docs before consuming.
     extendObjectDocs(docs, baseClassDocs);
     extendClassDocsWithBaseClass(objectDocs, baseClassDocs);
     const baseClassDoclet = primaryDoclet(baseClassDocs);
@@ -99,6 +93,9 @@ function extendObjectDocs(docs, objectDocs) {
   } else {
     objectDoclet.inheritance = [];
   }
+
+  // Reestablish sort order.
+  sortMembers(objectDocs);
 }
 
 function extendClassDocsWithBaseClass(classDocs, baseClassDocs) {
@@ -128,14 +125,15 @@ function extendClassDocsWithBaseClass(classDocs, baseClassDocs) {
   classDoclet.mixinOrigins = classDoclet.mixinOrigins.concat(baseMixinOrigins);
 }
 
-function extendClassDocsWithMixin(objectDocs, mixinDocs, mixinOrigin) {
+function extendClassDocsWithMixin(objectDocs, mixinDocs) {
 
-  // Add the mixin members to this class.
-  extendObjectDocsWithMembers(objectDocs, mixinDocs, mixinOrigin);
-
-  // Record that this mixin is being used by this object.
   const objectDoclet = primaryDoclet(objectDocs);
   const mixinDoclet = primaryDoclet(mixinDocs);
+
+  // Add the mixin members to this class.
+  extendObjectDocsWithMembers(objectDocs, mixinDocs, objectDoclet.name);
+
+  // Record that this mixin is being used by this object.
   if (!mixinDoclet.mixinUsedBy) {
     mixinDoclet.mixinUsedBy = [];
   }
@@ -149,8 +147,10 @@ function extendObjectDocsWithMembers(targetDocs, sourceDocs, inheritedfrom) {
   const sourceDoclet = primaryDoclet(sourceDocs);
   memberDoclets(sourceDocs).forEach(memberDoclet => {
     const docletCopy = clone(memberDoclet);
-    docletCopy.originalmemberof = sourceDoclet.name;
-    docletCopy.inheritedfrom = inheritedfrom;
+    docletCopy.memberof = targetDoclet.name;
+    if (inheritedfrom && !docletCopy.inheritedfrom) {
+      docletCopy.inheritedfrom = inheritedfrom;
+    }
     targetDocs.push(docletCopy);
   });
 }
@@ -169,6 +169,19 @@ function primaryDoclet(objectDocs) {
 function primaryDocletForName(docs, objectName) {
   const objectDocs = docs[objectName];
   return objectDocs && primaryDoclet(objectDocs);
+}
+
+function sortMembers(objectDocs) {
+  // Sort the array, leaving the primary doclet at index 0.
+  objectDocs.sort((a, b) => {
+    if (a.order === 0) { return -1; }
+    if (b.order === 0) { return 1; }
+    return a.name.localeCompare(b.name);
+  });
+  // Set the order value
+  objectDocs.map((doclet, index) => {
+    doclet.order = index;
+  });
 }
 
 module.exports = extendDocs;

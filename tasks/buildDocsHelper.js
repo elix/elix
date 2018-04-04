@@ -115,20 +115,19 @@ async function writeDocsToDirectory(docs, directory) {
   await mapPromiseFn(objectNames, async objectName => {
     const objectDocs = docs[objectName];
     const destinationPath = path.join(directory, `${objectName}.json`);
-    await writeFileDocs(objectName, objectDocs, destinationPath);
+    await writeFileDocs(objectDocs, destinationPath);
   });
 }
 
 // Write documentation for the given source file to the destination.
-async function writeFileDocs(objectName, objectDocs, destinationPath) {
-  if (!objectDocs) {
-    throw `Can't find documentation for ${objectName}`;
-  }
-  if (objectDocs[0].noWrite) {
-    console.log(`Skipping undocumented ${objectName}`);
+async function writeFileDocs(objectDocs, destinationPath) {
+  const primaryDoclet = objectDocs[0];
+  if (primaryDoclet.noWrite) {
+    // const objectName = primaryDoclet.name;
+    // console.log(`Skipping undocumented ${objectName}`);
     return null;
   }
-  console.log(`Writing ${path.basename(destinationPath)}`);
+  // console.log(`Writing ${path.basename(destinationPath)}`);
   await writeJsonAsync(destinationPath, objectDocs, { spaces: 2 });
 }
 
