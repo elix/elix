@@ -13,6 +13,7 @@
     "elix.js",
     "src/**/*.js",
     "demos/src/**/*.js",
+    "tasks/extendDocs.js",
     "tests/**/*.js"
   ]
 }

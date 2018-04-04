@@ -50,8 +50,10 @@ function clone(object) {
  * This is a destructive in-place operation.
  */
 function extendDocs(projectDocs) {
-  // Extend each documented object.
+  // @ts-ignore
   const objectsDocs = Object.values(projectDocs);
+
+  // Extend each documented object.
   objectsDocs.forEach(objectDocs => {
     extendObjectDocs(projectDocs, objectDocs);
   });
@@ -142,7 +144,6 @@ function extendClassDocsWithBaseClass(classDocs, baseClassDocs) {
  */
 function extendClassDocsWithMixin(objectDocs, mixinDocs) {
   const objectDoclet = primaryDoclet(objectDocs);
-  const mixinDoclet = primaryDoclet(mixinDocs);
   // Add the mixin members to this class.
   extendObjectDocsWithMembers(objectDocs, mixinDocs, objectDoclet.name);
 }
@@ -154,7 +155,6 @@ function extendClassDocsWithMixin(objectDocs, mixinDocs) {
  */
 function extendObjectDocsWithMembers(targetDocs, sourceDocs, inheritedfrom) {
   const targetDoclet = primaryDoclet(targetDocs);
-  const sourceDoclet = primaryDoclet(sourceDocs);
   memberDoclets(sourceDocs).forEach(memberDoclet => {
     const docletCopy = clone(memberDoclet);
     docletCopy.memberof = targetDoclet.name;
@@ -240,4 +240,5 @@ function updateMixinUsageRecords(projectDocs, objectDocs) {
 }
 
 
+// @ts-ignore
 module.exports = extendDocs;
