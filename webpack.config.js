@@ -19,10 +19,6 @@ const demosConfig = {
 				exclude: /node_modules/,
 				loader: 'babel-loader',
         query: {
-          plugins: [
-            'transform-object-assign',
-            'transform-runtime'
-          ],
           presets: [
             ['env', {
               targets: {
@@ -76,10 +72,6 @@ const testsConfig = {
 				exclude: /node_modules/,
 				loader: 'babel-loader',
         query: {
-          plugins: [
-            'transform-object-assign',
-            'transform-runtime'
-          ],
           presets: [
             ['env', {
               targets: {
