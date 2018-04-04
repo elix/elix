@@ -41,9 +41,19 @@ function clone(object) {
 // Extend the standard JSDoc results with @mixes and @inherits references.
 // This is a destructive operation.
 function extendDocs(docs) {
-  const objectNames = Object.keys(docs);
-  Object.values(docs).forEach(objectDocs => {
+  // Extend each documented object.
+  const objectsDocs = Object.values(docs)
+  objectsDocs.forEach(objectDocs => {
     extendObjectDocs(docs, objectDocs);
+  });
+
+  // Sort final classInheritedBy values.
+  objectsDocs.forEach(objectDocs => {
+    const objectDoclet = primaryDoclet(objectDocs);
+    const classInheritedBy = objectDoclet.classInheritedBy;
+    if (classInheritedBy) {
+      classInheritedBy.sort();
+    }
   });
 }
 
@@ -87,11 +97,7 @@ function extendObjectDocs(docs, objectDocs) {
     // Extend base class docs before consuming.
     extendObjectDocs(docs, baseClassDocs);
     extendClassDocsWithBaseClass(objectDocs, baseClassDocs);
-    const baseClassDoclet = primaryDoclet(baseClassDocs);
-    const baseInheritance = baseClassDoclet.inheritance || []
-    objectDoclet.inheritance = [baseClassName, ...baseInheritance];
-  } else {
-    objectDoclet.inheritance = [];
+    updateInheritanceRecords(docs, objectDocs);
   }
 
   // Reestablish sort order.
@@ -106,12 +112,6 @@ function extendClassDocsWithBaseClass(classDocs, baseClassDocs) {
   // Add the base class members to this class.
   extendObjectDocsWithMembers(classDocs, baseClassDocs, baseClassDoclet.name);
   
-  // Record that this base class is inherited by this object.
-  if (!baseClassDoclet.classInheritedBy) {
-    baseClassDoclet.classInheritedBy = []
-  }
-  baseClassDoclet.classInheritedBy.push(classDoclet.name);
-
   // Add the base class's mixins to the object's list of mixins.
   const baseMixins = baseClassDoclet.mixes || [];
   if (!classDoclet.mixes) {
@@ -182,6 +182,32 @@ function sortMembers(objectDocs) {
   objectDocs.map((doclet, index) => {
     doclet.order = index;
   });
+}
+
+// Record that the indicated class inherits from its base classes, and that
+// those classes are inherited by this class.
+function updateInheritanceRecords(docs, classDocs) {
+  const classDoclet = primaryDoclet(classDocs);
+  classDoclet.inheritance = [];
+  
+  // Walk up class hierarchy.
+  let baseClassName = baseClassNameInDoclet(classDoclet);
+  while (baseClassName) {
+    // This class inherits from this base class.
+    classDoclet.inheritance.push(baseClassName);
+    const baseClassDocs = docs[baseClassName];
+    if (baseClassDocs) {
+      const baseClassDoclet = primaryDoclet(baseClassDocs);
+      // This base class is inherited by this class.
+      if (!baseClassDoclet.classInheritedBy) {
+        baseClassDoclet.classInheritedBy = []
+      }
+      baseClassDoclet.classInheritedBy.push(classDoclet.name);
+      baseClassName = baseClassNameInDoclet(baseClassDoclet);
+    } else {
+      baseClassName = null;
+    }
+  }
 }
 
 module.exports = extendDocs;
