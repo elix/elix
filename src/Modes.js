@@ -1,6 +1,6 @@
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
-import ElementBase from './ElementBase.js';
+import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 
@@ -8,7 +8,7 @@ import SlotItemsMixin from './SlotItemsMixin.js';
 const Base =
   SingleSelectionMixin(
   SlotItemsMixin(
-    ElementBase
+    ReactiveElement
   ));
 
 
@@ -21,7 +21,7 @@ const Base =
  * common pattern in which buttons select the mode are tabs, a pattern
  * implemented by the [Tabs](Tabs) component.
  *
- * @inherits ElementBase
+ * @inherits ReactiveElement
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin
  */

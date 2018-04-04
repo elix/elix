@@ -1,8 +1,8 @@
 import * as symbols from '../../src/symbols.js';
-import ElementBase from '../../src/ElementBase.js';
+import ReactiveElement from '../../src/ReactiveElement.js';
 
 
-class CustomBackdrop extends ElementBase {
+class CustomBackdrop extends ReactiveElement {
 
   get [symbols.template]() {
     return `

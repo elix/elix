@@ -1,6 +1,6 @@
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
-import ElementBase from './ElementBase.js';
+import ReactiveElement from './ReactiveElement.js';
 
 
 /**
@@ -9,9 +9,9 @@ import ElementBase from './ElementBase.js';
  * focusing the user's attention on the overlay. It also contributes to the
  * modality by absorbing background clicks.
  * 
- * @inherits ElementBase
+ * @inherits ReactiveElement
  */
-class ModalBackdrop extends ElementBase {
+class ModalBackdrop extends ReactiveElement {
 
   get [symbols.template]() {
     return `

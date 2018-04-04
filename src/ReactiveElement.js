@@ -5,13 +5,12 @@ import ShadowTemplateMixin from './ShadowTemplateMixin.js';
 
 
 /**
- * A general-purpose base class for web components.
+ * A general-purpose base class for creating web components in a
+ * functional-reactive programming (FRP) style.
  * 
- * This class simply bundles a small set of mixins that are useful for creating
- * web components in a functional-reactive programming (FRP) style.
- * It is defined this way:
+ * This class simply bundles a small set of mixins:
  *
- *     const ElementBase =
+ *     const ReactiveElement =
  *       AttributeMarshallingMixin(
  *       ReactiveMixin(
  *       RenderUpdatesMixin(
@@ -19,7 +18,7 @@ import ShadowTemplateMixin from './ShadowTemplateMixin.js';
  *         HTMLElement
  *       ))));
  *
- * `ElementBase` is simply provided as a convenience, and the same result can be
+ * `ReactiveElement` is simply provided as a convenience, and the same result can be
  * achieved by applying the mixins yourself to `HTMLElement`.
  * 
  * @inherits HTMLElement
@@ -28,7 +27,7 @@ import ShadowTemplateMixin from './ShadowTemplateMixin.js';
  * @mixes RenderUpdatesMixin
  * @mixes ShadowTemplateMixin
  */
-const ElementBase =
+const ReactiveElement =
   AttributeMarshallingMixin(
   ReactiveMixin(
   RenderUpdatesMixin(
@@ -36,4 +35,4 @@ const ElementBase =
     HTMLElement
   ))));
 
-export default ElementBase;
+export default ReactiveElement;

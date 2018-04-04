@@ -1,12 +1,12 @@
 import { merge } from '../../src/updates.js';
 import * as symbols from '../../src/symbols.js';
-import ElementBase from '../../src/ElementBase.js';
+import ReactiveElement from '../../src/ReactiveElement.js';
 import TransitionEffectMixin from '../../src/TransitionEffectMixin.js';
 
 
 const Base =
   TransitionEffectMixin(
-    ElementBase
+    ReactiveElement
   );
 
 // An element with open and close effects. When completely closed, the element

@@ -1,6 +1,6 @@
 import { merge, booleanAttributes } from './updates.js';
 import * as symbols from './symbols.js';
-import ElementBase from './ElementBase.js';
+import ReactiveElement from './ReactiveElement.js';
 
 
 const extendsKey = Symbol('extends');
@@ -136,9 +136,9 @@ const blockElements = [
  * extended. The typical way to use this class is via its static `wrap`
  * method.
  * 
- * @inherits ElementBase
+ * @inherits ReactiveElement
  */
-class WrappedStandardElement extends ElementBase {
+class WrappedStandardElement extends ReactiveElement {
 
   // Define an ariaLabel property and delegate it to the inner element. This
   // definition lets AttributeMarshallingMixin know it should handle this

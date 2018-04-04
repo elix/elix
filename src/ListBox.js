@@ -3,12 +3,12 @@ import * as symbols from './symbols.js';
 import AriaListMixin from './AriaListMixin.js';
 import ClickSelectionMixin from './ClickSelectionMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
-import ElementBase from './ElementBase.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import KeyboardPagedSelectionMixin from './KeyboardPagedSelectionMixin.js';
 import KeyboardPrefixSelectionMixin from './KeyboardPrefixSelectionMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
+import ReactiveElement from './ReactiveElement.js';
 import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SelectionInViewMixin from './SelectionInViewMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
@@ -28,7 +28,7 @@ const Base =
   SelectionInViewMixin(
   SingleSelectionMixin(
   SlotItemsMixin(
-    ElementBase
+    ReactiveElement
   ))))))))))));
 
 
@@ -41,7 +41,7 @@ const Base =
  * [KeyboardPrefixSelectionMixin](KeyboardPrefixSelectionMixin) for keyboard
  * details.
  *
- * @inherits ElementBase
+ * @inherits ReactiveElement
  * @mixes AriaListMixin
  * @mixes ClickSelectionMixin
  * @mixes DirectionSelectionMixin

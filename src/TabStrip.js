@@ -1,15 +1,15 @@
 import { merge } from './updates.js';
+import * as symbols from './symbols.js';
 import AriaListMixin from './AriaListMixin.js';
 import ClickSelectionMixin from './ClickSelectionMixin.js';
 import deepContains from './deepContains.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
-import ElementBase from './ElementBase.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
+import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
-import * as symbols from './symbols.js';
 
 
 const Base =
@@ -21,7 +21,7 @@ const Base =
   LanguageDirectionMixin(
   SingleSelectionMixin(
   SlotItemsMixin(
-    ElementBase
+    ReactiveElement
   ))))))));
 
 
@@ -49,7 +49,7 @@ const Base =
  * can be handled with the separate [TabStripWrapper](TabStripWrapper)
  * component.
  *
- * @inherits ElementBase
+ * @inherits ReactiveElement
  * @mixes AriaListMixin
  * @mixes ClickSelectionMixin
  * @mixes DirectionSelectionMixin

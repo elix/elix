@@ -1,6 +1,6 @@
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
-import ElementBase from './ElementBase.js';
+import ReactiveElement from './ReactiveElement.js';
 
 
 /*
@@ -9,7 +9,7 @@ import ElementBase from './ElementBase.js';
  * We don't expect this minor component to be used in other contexts, so it's
  * not documented as a supported Elix component.
  */
-class PageDot extends ElementBase {
+class PageDot extends ReactiveElement {
 
   get [symbols.template]() {
     return `

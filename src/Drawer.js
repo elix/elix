@@ -3,11 +3,11 @@ import './OverlayFrame.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import DialogModalityMixin from './DialogModalityMixin.js';
-import ElementBase from './ElementBase.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import OverlayMixin from './OverlayMixin.js';
+import ReactiveElement from './ReactiveElement.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 import TransitionEffectMixin from './TransitionEffectMixin.js';
@@ -26,7 +26,7 @@ const Base =
   TouchSwipeMixin(
   TrackpadSwipeMixin(
   TransitionEffectMixin(
-    ElementBase
+    ReactiveElement
   ))))))));
 
 
@@ -40,7 +40,7 @@ const Base =
  * content to help the user understand the modal condition. Both the backdrop
  * and the dialog itself can be styled.
  * 
- * @inherits ElementBase
+ * @inherits ReactiveElement
  * @mixes DialogModalityMixin
  * @mixes KeyboardMixin
  * @mixes LanguageDirectionMixin

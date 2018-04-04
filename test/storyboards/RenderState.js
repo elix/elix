@@ -1,13 +1,13 @@
 import { merge } from '../../src/updates.js';
 import { substantiveElements } from '../../src/content.js';
-import ElementBase from '../../src/ElementBase.js';
-import SlotContentMixin from '../../src/SlotContentMixin.js';
 import * as symbols from '../../src/symbols.js';
+import ReactiveElement from '../../src/ReactiveElement.js';
+import SlotContentMixin from '../../src/SlotContentMixin.js';
 
 
 const Base =
   SlotContentMixin(
-    ElementBase
+    ReactiveElement
   );
 
 

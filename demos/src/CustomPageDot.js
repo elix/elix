@@ -1,8 +1,8 @@
 import * as symbols from '../../src/symbols.js';
-import ElementBase from '../../src/ElementBase.js';
+import ReactiveElement from '../../src/ReactiveElement.js';
 
 
-class CustomPageDot extends ElementBase {
+class CustomPageDot extends ReactiveElement {
 
   get [symbols.template]() {
     return `

@@ -1,8 +1,8 @@
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import ClickSelectionMixin from './ClickSelectionMixin.js';
-import ElementBase from './ElementBase.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
+import ReactiveElement from './ReactiveElement.js';
 import ResizeMixin from './ResizeMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
@@ -14,7 +14,7 @@ const Base =
   ResizeMixin(
   SingleSelectionMixin(
   SlotItemsMixin(
-    ElementBase
+    ReactiveElement
   )))));
 
 
@@ -22,7 +22,7 @@ const Base =
  * A horizontal strip of items. This generally keeps the selected item
  * centered (unless the selected item is at either end of the list).
  * 
- * @inherits ElementBase
+ * @inherits ReactiveElement
  * @mixes ClickSelectionMixin
  * @mixes LanguageDirectionMixin
  * @mixes ResizeMixin

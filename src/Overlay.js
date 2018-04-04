@@ -1,8 +1,8 @@
 import './OverlayFrame.js';
 import * as symbols from './symbols.js';
-import ElementBase from './ElementBase.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import OverlayMixin from './OverlayMixin.js';
+import ReactiveElement from './ReactiveElement.js';
 
 const backdropTagKey = Symbol('backdropTag');
 const frameTagKey = Symbol('frameTag');
@@ -11,12 +11,12 @@ const frameTagKey = Symbol('frameTag');
 const Base =
   OpenCloseMixin(
   OverlayMixin(
-    ElementBase
+    ReactiveElement
   ));
 
 
 /**
- * @inherits ElementBase
+ * @inherits ReactiveElement
  * @mixes OpenCloseMixin
  * @mixes OverlayMixin
  */

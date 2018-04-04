@@ -1,14 +1,14 @@
 import { merge } from './updates.js';
 import * as symbols from './symbols.js'
-import ElementBase from './ElementBase.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
+import ReactiveElement from './ReactiveElement.js';
 import TransitionEffectMixin from './TransitionEffectMixin.js';
 
 
 const Base =
   OpenCloseMixin(
   TransitionEffectMixin(
-    ElementBase
+    ReactiveElement
   ));
 
 
@@ -30,7 +30,7 @@ const Base =
  * not provide a user interface for the user to trigger the change in state;
  * you must provide that user interface yourself.
  * 
- * @inherits ElementBase
+ * @inherits ReactiveElement
  * @mixes OpenCloseMixin
  * @mixes TransitionEffectMixin
  */

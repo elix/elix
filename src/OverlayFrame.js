@@ -1,11 +1,11 @@
 import * as symbols from './symbols.js';
-import ElementBase from './ElementBase.js';
 import FocusCaptureMixin from './FocusCaptureMixin.js';
+import ReactiveElement from './ReactiveElement.js';
 
 
 const Base =
   FocusCaptureMixin(
-    ElementBase
+    ReactiveElement
   );
 
 

@@ -9,12 +9,12 @@ import AriaListMixin from '../../src/AriaListMixin.js';
 import ClickSelectionMixin from '../../src/ClickSelectionMixin.js';
 import ContentItemsMixin from '../../src/ContentItemsMixin.js';
 import DirectionSelectionMixin from '../../src/DirectionSelectionMixin.js';
-import ElementBase from '../../src/ElementBase.js';
 import KeyboardDirectionMixin from '../../src/KeyboardDirectionMixin.js';
 import KeyboardMixin from '../../src/KeyboardMixin.js';
 import KeyboardPagedSelectionMixin from '../../src/KeyboardPagedSelectionMixin.js';
 import KeyboardPrefixSelectionMixin from '../../src/KeyboardPrefixSelectionMixin.js';
 import LanguageDirectionMixin from '../../src/LanguageDirectionMixin.js';
+import ReactiveElement from '../../src/ReactiveElement.js';
 import SelectedItemTextValueMixin from '../../src/SelectedItemTextValueMixin.js';
 import SelectionInViewMixin from '../../src/SelectionInViewMixin.js';
 import SingleSelectionMixin from '../../src/SingleSelectionMixin.js';
@@ -33,7 +33,7 @@ const Base =
   SelectedItemTextValueMixin(
   SelectionInViewMixin(
   SingleSelectionMixin(
-    ElementBase
+    ReactiveElement
   ))))))))))));
 
 

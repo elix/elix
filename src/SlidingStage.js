@@ -1,8 +1,8 @@
 import { merge } from './updates.js';
 import * as fractionalSelection from './fractionalSelection.js';
 import * as symbols from './symbols.js';
-import ElementBase from './ElementBase.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
+import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 
@@ -11,7 +11,7 @@ const Base =
   LanguageDirectionMixin(
   SingleSelectionMixin(
   SlotItemsMixin(
-    ElementBase
+    ReactiveElement
   )));
 
 
@@ -22,7 +22,7 @@ const Base =
  * 
  * This component is used as the main stage for a [Carousel](Carousel).
  * 
- * @inherits ElementBase
+ * @inherits ReactiveElement
  * @mixes LanguageDirectionMixin
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin
