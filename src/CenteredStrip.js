@@ -1,23 +1,21 @@
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import ClickSelectionMixin from './ClickSelectionMixin.js';
-import ContentItemsMixin from './ContentItemsMixin.js';
 import ElementBase from './ElementBase.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import ResizeMixin from './ResizeMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
-import SlotContentMixin from './SlotContentMixin.js';
+import SlotItemsMixin from './SlotItemsMixin.js';
 
 
 const Base =
   ClickSelectionMixin(
-  ContentItemsMixin(
   LanguageDirectionMixin(
   ResizeMixin(
   SingleSelectionMixin(
-  SlotContentMixin(
+  SlotItemsMixin(
     ElementBase
-  ))))));
+  )))));
 
 
 /**
@@ -26,11 +24,10 @@ const Base =
  * 
  * @inherits ElementBase
  * @mixes ClickSelectionMixin
- * @mixes ContentItemsMixin
  * @mixes LanguageDirectionMixin
  * @mixes ResizeMixin
  * @mixes SingleSelectionMixin
- * @mixes SlotContentMixin
+ * @mixes SlotItemsMixin
  */
 class CenteredStrip extends Base {
 

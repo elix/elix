@@ -1,7 +1,6 @@
 import { merge } from './updates.js';
 import AriaListMixin from './AriaListMixin.js';
 import ClickSelectionMixin from './ClickSelectionMixin.js';
-import ContentItemsMixin from './ContentItemsMixin.js';
 import deepContains from './deepContains.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import ElementBase from './ElementBase.js';
@@ -9,22 +8,21 @@ import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
-import SlotContentMixin from './SlotContentMixin.js';
+import SlotItemsMixin from './SlotItemsMixin.js';
 import * as symbols from './symbols.js';
 
 
 const Base =
   AriaListMixin(
   ClickSelectionMixin(
-  ContentItemsMixin(
   DirectionSelectionMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
   LanguageDirectionMixin(
   SingleSelectionMixin(
-  SlotContentMixin(
+  SlotItemsMixin(
     ElementBase
-  )))))))));
+  ))))))));
 
 
 /**
@@ -54,13 +52,12 @@ const Base =
  * @inherits ElementBase
  * @mixes AriaListMixin
  * @mixes ClickSelectionMixin
- * @mixes ContentItemsMixin
  * @mixes DirectionSelectionMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
  * @mixes LanguageDirectionMixin
  * @mixes SingleSelectionMixin
- * @mixes SlotContentMixin
+ * @mixes SlotItemsMixin
  */
 class TabStrip extends Base {
 

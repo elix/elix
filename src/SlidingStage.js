@@ -1,20 +1,18 @@
 import { merge } from './updates.js';
 import * as fractionalSelection from './fractionalSelection.js';
 import * as symbols from './symbols.js';
-import ContentItemsMixin from './ContentItemsMixin.js';
 import ElementBase from './ElementBase.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
-import SlotContentMixin from './SlotContentMixin.js';
+import SlotItemsMixin from './SlotItemsMixin.js';
 
 
 const Base =
-  ContentItemsMixin(
   LanguageDirectionMixin(
   SingleSelectionMixin(
-  SlotContentMixin(
+  SlotItemsMixin(
     ElementBase
-  ))));
+  )));
 
 
 /**
@@ -25,10 +23,9 @@ const Base =
  * This component is used as the main stage for a [Carousel](Carousel).
  * 
  * @inherits ElementBase
- * @mixes ContentItemsMixin
  * @mixes LanguageDirectionMixin
  * @mixes SingleSelectionMixin
- * @mixes SlotContentMixin
+ * @mixes SlotItemsMixin
  */
 class SlidingStage extends Base {
 
