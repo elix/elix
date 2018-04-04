@@ -8,6 +8,7 @@ import Carousel from './Carousel.js';
  * thumbnail.
  * 
  * @inherits Carousel
+ * @elementtag {Thumbnail} proxy
  */
 class CarouselWithThumbnails extends Carousel {
 

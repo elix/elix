@@ -11,6 +11,7 @@ const inject = Symbol('inject');
  * Mixin which adds left and right arrow buttons to a carousel-like component.
  * 
  * @module ArrowDirectionMixin
+ * @elementtag {ArrowDirectionButton} arrowButton
  */
 function ArrowDirectionMixin(Base) {
 

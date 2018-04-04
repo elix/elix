@@ -9,6 +9,12 @@ const Base =
   );
 
 
+/**
+ * A simple frame for an overlay that displays a drop-shadow.
+ * 
+ * @inherits ReactiveMixin
+ * @mixes FocusCaptureMixin
+ */
 class OverlayFrame extends Base {
 
   get [symbols.template]() {

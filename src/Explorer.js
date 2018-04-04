@@ -39,6 +39,7 @@ const Base =
  * @mixes LanguageDirectionMixin
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin
+ * @elementtag {Modes} stage
  */
 class Explorer extends Base {
 

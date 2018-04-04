@@ -16,9 +16,13 @@ const Base =
 
 
 /**
+ * A base class for creating overlays. The main overlay content is presented
+ * within a frame on top of an optional backdrop.
+ * 
  * @inherits ReactiveElement
  * @mixes OpenCloseMixin
  * @mixes OverlayMixin
+ * @elementtag {OverlayFrame} frame
  */
 class Overlay extends Base {
 

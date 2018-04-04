@@ -3,6 +3,13 @@ import { merge } from './updates.js'
 import Explorer from './Explorer.js';
 
 
+/**
+ * A master/detail user interface pattern that presents a list of choices with a
+ * [ListBox](ListBox).
+ * 
+ * @inherits Explorer
+ * @elementtag {ListBox} list
+ */
 class ListExplorer extends Explorer {
 
   get defaultState() {

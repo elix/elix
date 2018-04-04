@@ -47,6 +47,9 @@ const Base =
  * @mixes SwipeDirectionMixin
  * @mixes TouchSwipeMixin
  * @mixes TrackpadSwipeMixin
+ * @elementtag {CenteredStripOpacity} list
+ * @elementtag {PageDot} proxy
+ * @elementtag {SlidingStage} stage
  */
 class Carousel extends Base {
 

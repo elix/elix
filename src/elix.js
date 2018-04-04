@@ -46,6 +46,8 @@ export { default as ListExplorer } from './ListExplorer.js';
 export { default as ModalBackdrop } from './ModalBackdrop.js';
 export { default as Modes } from './Modes.js';
 export { default as OpenCloseMixin } from './OpenCloseMixin.js';
+export { default as Overlay } from './Overlay.js';
+export { default as OverlayFrame } from './OverlayFrame.js';
 export { default as OverlayMixin } from './OverlayMixin.js';
 export { default as PageDot } from './PageDot.js';
 export { default as Popup } from './Popup.js';

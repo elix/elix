@@ -49,6 +49,8 @@ const Base =
  * @mixes TouchSwipeMixin
  * @mixes TrackpadSwipeMixin
  * @mixes TransitionEffectMixin
+ * @elementtag {ModalBackdrop} backdrop
+ * @elementtag {OverlayFrame} frame
  */
 class Drawer extends Base {
 

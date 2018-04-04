@@ -14,6 +14,8 @@ import Explorer from './Explorer.js';
  * best if you only have a small handful of pages, say 2–7.
  *
  * @inherits Explorer
+ * @elementtag {TabStrip} list
+ * @elementtag {TabButton} proxy
  */
 class Tabs extends Explorer {
 

@@ -23,14 +23,15 @@
 
 
 /*
- * Given a primaryDoclet, return the base class name if present.
+ * Given a primaryDoclet, return the base class name, identified by
+ * a custom @inherits tag.
+ * 
  * Ignore "HTMLElement" as a base class name.
  */
 function baseClassNameInDoclet(primaryDoclet) {
-  // Base class is identified by custom @inherits tag.
-  const customTags = primaryDoclet.customTags;
-  const baseClassName = customTags && customTags.length > 0 && 
-      customTags[0].tag === 'inherits' && customTags[0].value;
+  const inheritsTags = customTagsWithName(primaryDoclet, 'inherits');
+  const inheritsTag = inheritsTags[0];
+  const baseClassName = inheritsTag && inheritsTag.value;
   return baseClassName && baseClassName !== 'HTMLElement' ?
     baseClassName :
     null;
@@ -41,6 +42,39 @@ function baseClassNameInDoclet(primaryDoclet) {
  */
 function clone(object) {
   return JSON.parse(JSON.stringify(object));
+}
+
+function customTagsWithName(primaryDoclet, name) {
+  const customTags = primaryDoclet.customTags || [];
+  return customTags.filter(customTag => customTag.tag === name);
+}
+
+/*
+ * Compute the element tag map for the given object.
+ */
+function elementTagsForObject(projectDocs, objectDocs) {
+  const objectDoclet = primaryDoclet(objectDocs);
+  let tagMap = {};
+  const baseClassName = baseClassNameInDoclet(objectDoclet);
+  if (baseClassName) {
+    const baseClassDocs = projectDocs[baseClassName];
+    const baseClassDoclet = primaryDoclet(baseClassDocs);
+    Object.assign(tagMap, baseClassDoclet.elementTags);
+  }
+  const elementTags = customTagsWithName(objectDoclet, 'elementtag');
+  elementTags.forEach(elementTag => {
+    const value = elementTag.value;
+    const elementTagRegex = /{(.+)}\s+(.+)/;
+    const match = elementTagRegex.exec(value);
+    if (match) {
+      const elementClassName = match[1];
+      const elementTagName = match[2];
+      Object.assign(tagMap, {
+        [elementTagName]: elementClassName
+      });
+    }
+  });
+  return tagMap;
 }
 
 /*
@@ -63,6 +97,9 @@ function extendDocs(projectDocs) {
     const objectDoclet = primaryDoclet(objectDocs);
     if (objectDoclet.classInheritedBy) {
       objectDoclet.classInheritedBy.sort();
+    }
+    if (objectDoclet.elementUsedBy) {
+      objectDoclet.elementUsedBy.sort();
     }
     if (objectDoclet.mixes) {
       objectDoclet.mixes.sort();
@@ -110,9 +147,10 @@ function extendObjectDocs(projectDocs, objectDocs) {
     updateClassInheritanceRecords(projectDocs, objectDocs);
   }
 
-  // Mark this object's mixins (both its own and, now, inherited mixins) as
-  // being used by this object.
+  // Mark this object's mixins and element tags (both its own and, now,
+  // inherited) as being used by this object.
   updateMixinUsageRecords(projectDocs, objectDocs);
+  updateElementUsageRecords(projectDocs, objectDocs);
 
   // Reestablish member sort order.
   sortDoclets(objectDocs);
@@ -221,6 +259,25 @@ function updateClassInheritanceRecords(projectDocs, classDocs) {
       baseClassName = null;
     }
   }
+}
+
+/*
+ * Record any elements this object is using, and also that those elements are
+ * being used by this object.
+ */
+function updateElementUsageRecords(projectDocs, objectDocs) {
+  const objectDoclet = primaryDoclet(objectDocs);
+  const elementTags = elementTagsForObject(projectDocs, objectDocs);
+  objectDoclet.elementTags = elementTags;
+  // @ts-ignore
+  Object.values(elementTags).forEach(className => {
+    const classDocs = projectDocs[className];
+    const classDoclet = primaryDoclet(classDocs);
+    if (!classDoclet.elementUsedBy) {
+      classDoclet.elementUsedBy = [];
+    }
+    classDoclet.elementUsedBy.push(objectDoclet.name);
+  });
 }
 
 /*
