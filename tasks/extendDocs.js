@@ -9,7 +9,6 @@
  *   classes.
  * * `originalmemberof` field tracks which base class or mixin originally
  *   provided the member.
- * * `mixinOrigins` field tracks which class in the hierarchy provided a mixin.
  * * `inheritance` field tracks an object's list of base classes.
  * * `classInheritedBy` field tracks a classes list of subclasses (including
  *   subsubclasses, etc.).
@@ -57,12 +56,17 @@ function extendDocs(projectDocs) {
     extendObjectDocs(projectDocs, objectDocs);
   });
 
-  // Sort final classInheritedBy values.
+  // Now that inheritance lists, etc., are final, resort them.
   objectsDocs.forEach(objectDocs => {
     const objectDoclet = primaryDoclet(objectDocs);
-    const classInheritedBy = objectDoclet.classInheritedBy;
-    if (classInheritedBy) {
-      classInheritedBy.sort();
+    if (objectDoclet.classInheritedBy) {
+      objectDoclet.classInheritedBy.sort();
+    }
+    if (objectDoclet.mixes) {
+      objectDoclet.mixes.sort();
+    }
+    if (objectDoclet.mixinUsedBy) {
+      objectDoclet.mixinUsedBy.sort();
     }
   });
 }
@@ -85,15 +89,9 @@ function extendObjectDocs(projectDocs, objectDocs) {
     memberDoclet.originalmemberof = objectDoclet.name;
   });
 
-  // Declare this object is origin of any mixins directly on it.
-  if (!objectDoclet.mixes) {
-    objectDoclet.mixes = [];
-  }
-  objectDoclet.mixinOrigins = new Array(objectDoclet.mixes.length);
-  objectDoclet.mixinOrigins.fill(objectDoclet.name);
-
-  // Process each mixin.
-  objectDoclet.mixes.forEach((mixinName, index) => {
+  const mixinNames = objectDoclet.mixes || [];
+  // Process each mixin directly on this object.
+  mixinNames.forEach((mixinName, index) => {
     const mixinDocs = projectDocs[mixinName];
     // Extend mixin docs before consuming.
     extendObjectDocs(projectDocs, mixinDocs);
@@ -107,8 +105,12 @@ function extendObjectDocs(projectDocs, objectDocs) {
     // Extend base class docs before consuming.
     extendObjectDocs(projectDocs, baseClassDocs);
     extendClassDocsWithBaseClass(objectDocs, baseClassDocs);
-    updateInheritanceRecords(projectDocs, objectDocs);
+    updateClassInheritanceRecords(projectDocs, objectDocs);
   }
+
+  // Mark this object's mixins (both its own and, now, inherited mixins) as
+  // being used by this object.
+  updateMixinUsageRecords(projectDocs, objectDocs);
 
   // Reestablish member sort order.
   sortDoclets(objectDocs);
@@ -132,11 +134,6 @@ function extendClassDocsWithBaseClass(classDocs, baseClassDocs) {
     classDoclet.mixes = [];
   }
   classDoclet.mixes = classDoclet.mixes.concat(baseMixins);
-
-  // Record that this base class is the origin for these mixins.
-  const baseMixinOrigins = new Array(baseMixins.length);
-  baseMixinOrigins.fill(baseClassDoclet.name);
-  classDoclet.mixinOrigins = classDoclet.mixinOrigins.concat(baseMixinOrigins);
 }
 
 /*
@@ -144,18 +141,10 @@ function extendClassDocsWithBaseClass(classDocs, baseClassDocs) {
  * applied by the given mixin.
  */
 function extendClassDocsWithMixin(objectDocs, mixinDocs) {
-
   const objectDoclet = primaryDoclet(objectDocs);
   const mixinDoclet = primaryDoclet(mixinDocs);
-
   // Add the mixin members to this class.
   extendObjectDocsWithMembers(objectDocs, mixinDocs, objectDoclet.name);
-
-  // Record that this mixin is being used by this object.
-  if (!mixinDoclet.mixinUsedBy) {
-    mixinDoclet.mixinUsedBy = [];
-  }
-  mixinDoclet.mixinUsedBy.push(objectDoclet.name);
 }
 
 /*
@@ -210,7 +199,7 @@ function sortDoclets(objectDocs) {
  * Record that the indicated class inherits from its base classes, and that
  * those classes are inherited by this class.
  */
-function updateInheritanceRecords(projectDocs, classDocs) {
+function updateClassInheritanceRecords(projectDocs, classDocs) {
   const classDoclet = primaryDoclet(classDocs);
   classDoclet.inheritance = [];
   
@@ -232,6 +221,22 @@ function updateInheritanceRecords(projectDocs, classDocs) {
       baseClassName = null;
     }
   }
+}
+
+/*
+ * Record that the given object's mixins are being used by that object.
+ */
+function updateMixinUsageRecords(projectDocs, objectDocs) {
+  const objectDoclet = primaryDoclet(objectDocs);
+  const mixinNames = objectDoclet.mixes || [];
+  mixinNames.forEach((mixinName, index) => {
+    const mixinDocs = projectDocs[mixinName];
+    const mixinDoclet = primaryDoclet(mixinDocs);
+    if (!mixinDoclet.mixinUsedBy) {
+      mixinDoclet.mixinUsedBy = [];
+    }
+    mixinDoclet.mixinUsedBy.push(objectDoclet.name);
+  });
 }
 
 

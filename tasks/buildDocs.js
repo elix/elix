@@ -75,7 +75,7 @@ function mapPromiseFn(array, promiseFn) {
  */
 async function objectDocsFromSourceFile(filePath) {
 
-  console.log(`Reading ${path.basename(filePath)}`);
+  console.log(path.basename(filePath));
 
   // Extract JSDoc from comments in source file. 
   const jsdocJson = await jsdoc.explain({
