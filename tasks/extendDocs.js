@@ -1,30 +1,35 @@
-// Elix enhancements to JSDoc
+/*
+ * Elix enhancements to JSDoc
+ * 
+ * These include:
+ * * Using @inherits to indicate inheritance instead of @augments (so that JSDoc
+ *   doesn't try to process base classes).
+ * * Using @mixes to identify mixins.
+ * * Members from base classes and mixins are copied into their inherited
+ *   classes.
+ * * `originalmemberof` field tracks which base class or mixin originally
+ *   provided the member.
+ * * `mixinOrigins` field tracks which class in the hierarchy provided a mixin.
+ * * `inheritance` field tracks an object's list of base classes.
+ * * `classInheritedBy` field tracks a classes list of subclasses (including
+ *   subsubclasses, etc.).
+ * 
+ * These routines work with the following objects:
+ * "projectDocs": the complete set of JSDoc documentation for the project. This maps
+ * object names to their corresponding documentation ("objectDocs").
+ * "objectDocs": the JSDoc documentation for a single object.
+ * "primaryDoclet": the zeroth documentation item in an JSDoc array.
+ * "memberDoclets": all items in a JSDoc array after the zeroth item.
+ */
 
-// Return an array of names for the object's base classes.
-// function baseClassesForObject(docs, objectDocs) {
-//   const objectDoclet = primaryDoclet(objectDocs);
-//   if (objectDoclet.inheritance) {
-//     // We previously calculated the base classes for this class.
-//     return objectDoclet.inheritance;
-//   }
 
-//   // Base class is identified by custom @inherits tag.
-//   const customTags = objectDoclet.customTags;
-//   const baseClassName = customTags && customTags.length > 0 && 
-//       customTags[0].tag === 'inherits' && customTags[0].value;
-//   if (!baseClassName || baseClassName === 'HTMLElement') {
-//     return [];
-//   }
-//   const baseClassDocs = docs[baseClassName];
-//   const baseInheritance = baseClassDocs ?
-//     baseClassesForObject(docs, baseClassDocs) :
-//     [];
-//   return [baseClassName, ...baseInheritance];
-// }
-
-function baseClassNameInDoclet(objectDoclet) {
+/*
+ * Given a primaryDoclet, return the base class name if present.
+ * Ignore "HTMLElement" as a base class name.
+ */
+function baseClassNameInDoclet(primaryDoclet) {
   // Base class is identified by custom @inherits tag.
-  const customTags = objectDoclet.customTags;
+  const customTags = primaryDoclet.customTags;
   const baseClassName = customTags && customTags.length > 0 && 
       customTags[0].tag === 'inherits' && customTags[0].value;
   return baseClassName && baseClassName !== 'HTMLElement' ?
@@ -32,19 +37,24 @@ function baseClassNameInDoclet(objectDoclet) {
     null;
 }
 
-// Make a deep copy of a object.
+/*
+ * Make a deep copy of a object.
+ */
 function clone(object) {
   return JSON.parse(JSON.stringify(object));
 }
 
-
-// Extend the standard JSDoc results with @mixes and @inherits references.
-// This is a destructive operation.
-function extendDocs(docs) {
+/*
+ * Top-level entry point to add Elix documentation extensions to JSDoc project
+ * documentation.
+ * 
+ * This is a destructive in-place operation.
+ */
+function extendDocs(projectDocs) {
   // Extend each documented object.
-  const objectsDocs = Object.values(docs)
+  const objectsDocs = Object.values(projectDocs);
   objectsDocs.forEach(objectDocs => {
-    extendObjectDocs(docs, objectDocs);
+    extendObjectDocs(projectDocs, objectDocs);
   });
 
   // Sort final classInheritedBy values.
@@ -57,10 +67,10 @@ function extendDocs(docs) {
   });
 }
 
-// For each documented object, create a new field, `inheritance`, holding an
-// array of names of classes the documented item inherits from. We leave the
-// original `augments` array intact.
-function extendObjectDocs(docs, objectDocs) {
+/*
+ * Extend the documentation for a specific object.
+ */
+function extendObjectDocs(projectDocs, objectDocs) {
 
   const objectDoclet = primaryDoclet(objectDocs);
 
@@ -84,26 +94,30 @@ function extendObjectDocs(docs, objectDocs) {
 
   // Process each mixin.
   objectDoclet.mixes.forEach((mixinName, index) => {
-    const mixinDocs = docs[mixinName];
+    const mixinDocs = projectDocs[mixinName];
     // Extend mixin docs before consuming.
-    extendObjectDocs(docs, mixinDocs);
+    extendObjectDocs(projectDocs, mixinDocs);
     extendClassDocsWithMixin(objectDocs, mixinDocs);
   });
 
   // Process base class if one is defined.
   const baseClassName = baseClassNameInDoclet(objectDoclet);
   if (baseClassName) {
-    const baseClassDocs = docs[baseClassName];
+    const baseClassDocs = projectDocs[baseClassName];
     // Extend base class docs before consuming.
-    extendObjectDocs(docs, baseClassDocs);
+    extendObjectDocs(projectDocs, baseClassDocs);
     extendClassDocsWithBaseClass(objectDocs, baseClassDocs);
-    updateInheritanceRecords(docs, objectDocs);
+    updateInheritanceRecords(projectDocs, objectDocs);
   }
 
-  // Reestablish sort order.
-  sortMembers(objectDocs);
+  // Reestablish member sort order.
+  sortDoclets(objectDocs);
 }
 
+/*
+ * Update the documentation for the given class to reflect mixins and members
+ * inherited from the given base class.
+ */
 function extendClassDocsWithBaseClass(classDocs, baseClassDocs) {
 
   const classDoclet = primaryDoclet(classDocs);
@@ -125,6 +139,10 @@ function extendClassDocsWithBaseClass(classDocs, baseClassDocs) {
   classDoclet.mixinOrigins = classDoclet.mixinOrigins.concat(baseMixinOrigins);
 }
 
+/*
+ * Update the documentation for the given object to reflect mixins and members
+ * applied by the given mixin.
+ */
 function extendClassDocsWithMixin(objectDocs, mixinDocs) {
 
   const objectDoclet = primaryDoclet(objectDocs);
@@ -140,8 +158,11 @@ function extendClassDocsWithMixin(objectDocs, mixinDocs) {
   mixinDoclet.mixinUsedBy.push(objectDoclet.name);
 }
 
-// Copy the documented members of the source (a base class or mixin) to the
-// documented target.
+/*
+ * Copy the documented members of the source (a base class or mixin) to the
+ * documented target. Use the supplied inheritedfrom value to indicate how these
+ * members were inherited.
+ */
 function extendObjectDocsWithMembers(targetDocs, sourceDocs, inheritedfrom) {
   const targetDoclet = primaryDoclet(targetDocs);
   const sourceDoclet = primaryDoclet(sourceDocs);
@@ -155,23 +176,24 @@ function extendObjectDocsWithMembers(targetDocs, sourceDocs, inheritedfrom) {
   });
 }
 
+/*
+ * Return the array of member documentation for the given object.
+ */
 function memberDoclets(objectDocs) {
   return objectDocs.slice(1);
 }
 
+/*
+ * Return the primary JSDoc doclet for the given object.
+ */
 function primaryDoclet(objectDocs) {
   return objectDocs[0];
 }
 
-// We store extended information on the first item in the array of documentation
-// items for a given object. This should be the documentation for the top-level
-// class/module itself.
-function primaryDocletForName(docs, objectName) {
-  const objectDocs = docs[objectName];
-  return objectDocs && primaryDoclet(objectDocs);
-}
-
-function sortMembers(objectDocs) {
+/*
+ * Sort the JSDoc doclets for the given object.
+ */
+function sortDoclets(objectDocs) {
   // Sort the array, leaving the primary doclet at index 0.
   objectDocs.sort((a, b) => {
     if (a.order === 0) { return -1; }
@@ -184,9 +206,11 @@ function sortMembers(objectDocs) {
   });
 }
 
-// Record that the indicated class inherits from its base classes, and that
-// those classes are inherited by this class.
-function updateInheritanceRecords(docs, classDocs) {
+/*
+ * Record that the indicated class inherits from its base classes, and that
+ * those classes are inherited by this class.
+ */
+function updateInheritanceRecords(projectDocs, classDocs) {
   const classDoclet = primaryDoclet(classDocs);
   classDoclet.inheritance = [];
   
@@ -195,7 +219,7 @@ function updateInheritanceRecords(docs, classDocs) {
   while (baseClassName) {
     // This class inherits from this base class.
     classDoclet.inheritance.push(baseClassName);
-    const baseClassDocs = docs[baseClassName];
+    const baseClassDocs = projectDocs[baseClassName];
     if (baseClassDocs) {
       const baseClassDoclet = primaryDoclet(baseClassDocs);
       // This base class is inherited by this class.
@@ -209,5 +233,6 @@ function updateInheritanceRecords(docs, classDocs) {
     }
   }
 }
+
 
 module.exports = extendDocs;
