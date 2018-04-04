@@ -5,13 +5,15 @@ const demosConfig = {
 
   devtool: 'source-map',
 
+  mode: 'development',
+
   entry: {
     'demos': './demos/demos.js',
     'demos.min': './demos/demos.js'
   },
 
 	module: {
-		loaders: [
+		rules: [
 			{
 				test: /\.jsx?$/,
 				exclude: /node_modules/,
@@ -52,22 +54,23 @@ const demosConfig = {
 
   resolve: {
     extensions: ['.js', '.jsx'],
-  },
-
-  target: 'node'
+  }
 
 };
 
 
 const testsConfig = {
+
   devtool: 'source-map',
+
+  mode: 'production',
 
   entry: {
     'tests': './test/tests.js',
   },
 
 	module: {
-		loaders: [
+		rules: [
 			{
 				test: /\.jsx?$/,
 				exclude: /node_modules/,
@@ -102,9 +105,7 @@ const testsConfig = {
 
   resolve: {
     extensions: ['.js', '.jsx'],
-  },
-
-  target: 'node'
+  }
   
 };
 
