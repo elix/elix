@@ -272,11 +272,15 @@ function updateElementUsageRecords(projectDocs, objectDocs) {
   // @ts-ignore
   Object.values(elementTags).forEach(className => {
     const classDocs = projectDocs[className];
-    const classDoclet = primaryDoclet(classDocs);
-    if (!classDoclet.elementUsedBy) {
-      classDoclet.elementUsedBy = [];
+    // An element tag may refer to a standard HTMLxxx element for which we have
+    // no documentation.
+    if (classDocs) {
+      const classDoclet = primaryDoclet(classDocs);
+      if (!classDoclet.elementUsedBy) {
+        classDoclet.elementUsedBy = [];
+      }
+      classDoclet.elementUsedBy.push(objectDoclet.name);
     }
-    classDoclet.elementUsedBy.push(objectDoclet.name);
   });
 }
 
