@@ -15,12 +15,24 @@
 </head>
 
 <body role="main" unresolved>
-  <div class="demo medium padded">
+  <div class="demo padded">
 
+    <script>
+        function tabAlignChange(event) {
+          document.querySelector('.tabPositions').tabAlign = event.target.value;
+        }
+  
+        function tabPositionChange(event) {
+          document.querySelector('.tabPositions').proxyListPosition = event.target.value;
+        }
+      </script>
+    
     <style>
       .tabPositions {
-        height: 100%;
-        width: 100%;
+        height: 250px;
+        max-height: 100%;
+        max-width: 100%;
+        width: 300px;
       }
 
       .tabPositions .panel {
@@ -56,16 +68,6 @@
         <option value="stretch">Stretch</option>
       </select>
     </p>
-
-    <script>
-      function tabAlignChange(event) {
-        document.querySelector('.tabPositions').tabAlign = event.target.value;
-      }
-
-      function tabPositionChange(event) {
-        document.querySelector('.tabPositions').proxyListPosition = event.target.value;
-      }
-    </script>
 
   </div>
 </body>
