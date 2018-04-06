@@ -23,7 +23,7 @@ class CarouselWithThumbnails extends Carousel {
   
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      listOverlap: false
+      proxyListOverlap: false
     });
   }
 

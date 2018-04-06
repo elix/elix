@@ -14,7 +14,7 @@ class ListExplorer extends Explorer {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      listPosition: 'start',
+      proxyListPosition: 'start',
       orientation: 'vertical'
     });
   }

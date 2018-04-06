@@ -74,10 +74,19 @@ class Carousel extends Base {
       mediaQueryList.matches :
       true;
     return Object.assign({}, super.defaultState, {
-      listPosition: 'bottom',
-      listOverlap: true,
       orientation: 'horizontal',
+      proxyListOverlap: true,
+      proxyListPosition: 'bottom',
       showArrowButtons
+    });
+  }
+
+  proxyUpdates(proxy, calcs) {
+    const base = super.proxyUpdates(proxy, calcs);
+    return merge(base, {
+      attributes: {
+        'tabindex': ''
+      }
     });
   }
 

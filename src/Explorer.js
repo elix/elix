@@ -87,25 +87,52 @@ class Explorer extends Base {
     return Object.assign({}, super.defaultState, {
       assignedProxies: [],
       defaultProxies: [],
-      listOverlap: false,
-      listPosition: 'top'
+      proxyListOverlap: false,
+      proxyListPosition: 'top'
     });
   }
 
-  get listOverlap() {
-    return this.state.listOverlap;
-  }
-  set listOverlap(listOverlap) {
-    this.setState({ listOverlap });
-  }
-
-  get listPosition() {
-    return this.state.listPosition;
-  }
-  set listPosition(listPosition) {
-    this.setState({ listPosition });
+  // Return either the default proxies (if defined) or the assigned proxies.
+  get proxies() {
+    return this.state.defaultProxies.length > 0 ?
+      this.state.defaultProxies :
+      this.state.assignedProxies;
   }
 
+  /**
+   * True if the list of proxies should overlap the stage, false if not.
+   * 
+   * @type {boolean}
+   * @default {false}
+   */
+  get proxyListOverlap() {
+    return this.state.proxyListOverlap;
+  }
+  set proxyListOverlap(proxyListOverlap) {
+    this.setState({ proxyListOverlap });
+  }
+
+  /**
+   * The position of the proxy list relative to the stage.
+   * 
+   * The `start` and `end` values refer to text direction: in left-to-right languages
+   * such as English, these are equivalent to `left` and `right`, respectively.
+   * 
+   * @type {('bottom'|'end'|'left'|'right'|'start'|'top')}
+   * @default 'start'
+   */
+  get proxyListPosition() {
+    return this.state.proxyListPosition;
+  }
+  set proxyListPosition(proxyListPosition) {
+    this.setState({ proxyListPosition });
+  }
+
+  /**
+   * The tag used to create the Explorer's list of proxies.
+   * 
+   * @default 'div'
+   */
   get proxyListTag() {
     return this[proxyListTagKey];
   }
@@ -119,19 +146,17 @@ class Explorer extends Base {
     return `<${proxyListTag} id="list"><slot id="proxySlot" name="proxy"></slot></${proxyListTag}>`;
   }
 
+  /**
+   * The tag used to create default proxies for the list items.
+   * 
+   * @default 'div'
+   */
   get proxyTag() {
     return this[proxyTagKey];
   }
   set proxyTag(proxyTag) {
     this[symbols.hasDynamicTemplate] = true;
     this[proxyTagKey] = proxyTag;
-  }
-
-  // Return either the default proxies (if defined) or the assigned proxies.
-  get proxies() {
-    return this.state.defaultProxies.length > 0 ?
-      this.state.defaultProxies :
-      this.state.assignedProxies;
   }
 
   /**
@@ -199,6 +224,12 @@ class Explorer extends Base {
     }
   }
 
+  /**
+   * The tag used to create the main "stage" element showing a single item at a
+   * time.
+   * 
+   * @default 'elix-modes'
+   */
   get stageTag() {
     return this[stageTagKey];
   }
@@ -244,11 +275,11 @@ class Explorer extends Base {
   get updates() {
     // Map the relative position of the list vis-a-vis the stage to a position
     // from the perspective of the list.
-    const listPosition = this.state.listPosition;
-    const lateralPosition = lateralPositions[listPosition];
+    const proxyListPosition = this.state.proxyListPosition;
+    const lateralPosition = lateralPositions[proxyListPosition];
     const rightToLeft = this[symbols.rightToLeft];
     let position;
-    switch (listPosition) {
+    switch (proxyListPosition) {
       case 'end':
         position = rightToLeft ? 'left' : 'right';
         break;
@@ -256,7 +287,7 @@ class Explorer extends Base {
         position = rightToLeft ? 'right' : 'left';
         break;
       default:
-        position = listPosition;
+        position = proxyListPosition;
         break;
     }
 
@@ -274,7 +305,7 @@ class Explorer extends Base {
       width: '',
       'z-index': ''
     };
-    if (this.state.listOverlap) {
+    if (this.state.proxyListOverlap) {
       listStyle.position = 'absolute';
       listStyle['z-index'] = '1';
       if (lateralPosition) {
@@ -282,7 +313,7 @@ class Explorer extends Base {
       } else {
         listStyle.width = '100%';
       }
-      listStyle[listPosition] = '0';
+      listStyle[proxyListPosition] = '0';
     }
 
     return merge(super.updates, {
@@ -362,12 +393,12 @@ function findChildContainingNode(root, node) {
 
 
 function isListInInitialPosition(element) {
-  const listPosition = element.state.listPosition;
+  const proxyListPosition = element.state.proxyListPosition;
   const rightToLeft = element[symbols.rightToLeft];
-  return listPosition === 'top' ||
-      listPosition === 'start' ||
-      listPosition === 'left' && !rightToLeft ||
-      listPosition === 'right' && rightToLeft;
+  return proxyListPosition === 'top' ||
+      proxyListPosition === 'start' ||
+      proxyListPosition === 'left' && !rightToLeft ||
+      proxyListPosition === 'right' && rightToLeft;
 }
 
 
