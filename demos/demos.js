@@ -8,6 +8,7 @@ import './src/IncrementDecrement.js';
 import './src/ModesWithKeyboard.js';
 import './src/QuietButton.js';
 import './src/SampleDialog.js';
+import './src/serene/SereneTabs.js';
 import './src/SingleSelectionDemo.js';
 import './src/SlidingPagesWithArrows.js';
 import './src/SwipeDemo.js';

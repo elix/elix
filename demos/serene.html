@@ -13,17 +13,10 @@
   <script type="module" src="./src/serene/SereneTabButton.js"></script>
   <script nomodule src="../build/demos.js"></script>
 
-  <link href="https://fonts.googleapis.com/css?family=Gentium+Basic:400,700|Open+Sans:400,700" rel="stylesheet">
-
   <style>
     body {
       background: url(./images/serene/sereneTexture.png);
-      font-family: 'Open Sans';
       padding: 0;
-    }
-
-    h1 {
-      font-family: 'Gentium Basic';
     }
 
     @media (min-width: 768px) {
@@ -42,6 +35,20 @@
 
 <body unresolved>
   <div class="demo">
+    <link href="https://fonts.googleapis.com/css?family=Gentium+Basic:400,700|Open+Sans:400,700" rel="stylesheet">
+    <style>
+      serene-tabs {
+        font-family: 'Open Sans';
+      }
+
+      serene-tabs h1 {
+        color: black;
+        font-family: 'Gentium Basic';
+        font-size: 2em;
+        font-weight: bold;
+        margin: 1em 0;
+      }
+    </style>
     <serene-tabs>
       <div aria-label="Standard">
         <h1>Standard rooms</h1>
