@@ -64,8 +64,8 @@ class Tabs extends Explorer {
   proxyUpdates(proxy, calcs) {
     const base = super.proxyUpdates(proxy, calcs);
     const item = calcs.item;
-    const itemId = ensureId(item);
-    const textContent = item.getAttribute('aria-label') || item.alt;
+    const itemId = item ? ensureId(item) : '';
+    const textContent = item ? (item.getAttribute('aria-label') || item.alt) : '';
     const defaultProxyUpdates = calcs.isDefaultProxy && {
       textContent
     };
