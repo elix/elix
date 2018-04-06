@@ -105,7 +105,7 @@ class TabStrip extends Base {
         index: calcs.index,
         role: original.attributes.role || this.state.tabButtonRole,
         'tab-align': tabAlign,
-        'tab-position': position
+        position
       },
       classes: {
         selected: calcs.selected

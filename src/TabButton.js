@@ -42,7 +42,7 @@ class TabButton extends Base {
       selected: false,
       tabAlign: 'start',
       tabindex: '0',
-      tabPosition: 'top'
+      position: 'top'
     });
   }
 
@@ -59,6 +59,25 @@ class TabButton extends Base {
   }
 
   /**
+   * The position of the tab strip with respect to the associated tab panels.
+   * 
+   * Setting this property does not actually change the tab buttons's position
+   * in the document, but lets the tab button know how it should display itself.
+   * The standard apperance of `TabButton` is to hide the visible border between
+   * the tab button and its associated panel, and `position` is used to
+   * determine which edge's border should be hidden.
+   * 
+   * @type {('bottom'|'left'|'right'|'top')}
+   * @default 'top'
+   */
+  get position() {
+    return this.state.position;
+  }
+  set position(position) {
+    this.setState({ position });
+  }
+
+  /**
    * The alignment of the tabs within the tab strip.
    * 
    * @type {('start'|'center'|'end'|'stretch')}
@@ -69,25 +88,6 @@ class TabButton extends Base {
   }
   set tabAlign(tabAlign) {
     this.setState({ tabAlign });
-  }
-
-  /**
-   * The position of the tab strip with respect to the associated tab panels.
-   * 
-   * Setting this property does not actually change the tab buttons's position
-   * in the document, but lets the tab button know how it should display itself.
-   * The standard apperance of `TabButton` is to hide the visible border between
-   * the tab button and its associated panel, and `tabPosition` is used to
-   * determine which edge's border should be hidden.
-   * 
-   * @type {('bottom'|'left'|'right'|'top')}
-   * @default 'top'
-   */
-  get tabPosition() {
-    return this.state.tabPosition;
-  }
-  set tabPosition(tabPosition) {
-    this.setState({ tabPosition });
   }
 
   get [symbols.template]() {
@@ -127,13 +127,13 @@ class TabButton extends Base {
     const stretch = this.state.tabAlign === 'stretch';
     const index = this.state.index;
     const needsSpacer = index > 0;
-    const tabPosition = this.tabPosition;
+    const position = this.position;
     const needsSideSpacer = needsSpacer &&
-      (tabPosition === 'top' || tabPosition === 'bottom');
+      (position === 'top' || position === 'bottom');
     const needsLeftSpacer = needsSideSpacer && !this[symbols.rightToLeft];
     const needsRightSpacer = needsSideSpacer && this[symbols.rightToLeft];
     const needsTopSpacer = needsSpacer &&
-      (tabPosition === 'left' || tabPosition === 'right');
+      (position === 'left' || position === 'right');
 
     // Button
     const positionStyles = {
@@ -154,7 +154,7 @@ class TabButton extends Base {
         'margin': '0 0 -1px 0'
       }
     };
-    const positionStyle = positionStyles[tabPosition];
+    const positionStyle = positionStyles[position];
     const selected = this.state.selected;
     const selectedStyle = {
       'opacity': 1,
@@ -173,7 +173,7 @@ class TabButton extends Base {
       'top': 'border-bottom-color'
     };
     if (selected) {
-      const borderSide = borderSides[tabPosition];
+      const borderSide = borderSides[position];
       borderStyle[borderSide] = 'transparent';
     }
     /** @type {any} */
