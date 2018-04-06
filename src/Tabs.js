@@ -14,8 +14,8 @@ import Explorer from './Explorer.js';
  * best if you only have a small handful of pages, say 2–7.
  *
  * @inherits Explorer
- * @elementtag {TabStrip} list
  * @elementtag {TabButton} proxy
+ * @elementtag {TabStrip} proxyList
  */
 class Tabs extends Explorer {
 
@@ -31,8 +31,8 @@ class Tabs extends Explorer {
     const base = super.defaults || {};
     return Object.assign({}, base, {
       tags: Object.assign({}, base.tags, {
-        list: 'elix-tab-strip',
-        proxy: 'elix-tab-button'
+        proxy: 'elix-tab-button',
+        proxyList: 'elix-tab-strip'
       })
     });
   }

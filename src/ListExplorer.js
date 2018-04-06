@@ -8,7 +8,7 @@ import Explorer from './Explorer.js';
  * [ListBox](ListBox).
  * 
  * @inherits Explorer
- * @elementtag {ListBox} list
+ * @elementtag {ListBox} proxyList
  */
 class ListExplorer extends Explorer {
 
@@ -23,7 +23,7 @@ class ListExplorer extends Explorer {
     const base = super.defaults || {};
     return Object.assign({}, base, {
       tags: Object.assign({}, base.tags, {
-        list: 'elix-list-box'
+        proxyList: 'elix-list-box'
       })
     });
   }

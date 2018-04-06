@@ -47,8 +47,8 @@ const Base =
  * @mixes SwipeDirectionMixin
  * @mixes TouchSwipeMixin
  * @mixes TrackpadSwipeMixin
- * @elementtag {CenteredStripOpacity} list
  * @elementtag {PageDot} proxy
+ * @elementtag {CenteredStripOpacity} proxyList
  * @elementtag {SlidingStage} stage
  */
 class Carousel extends Base {
@@ -57,8 +57,8 @@ class Carousel extends Base {
     const base = super.defaults || {};
     return Object.assign({}, base, {
       tags: Object.assign({}, base.tags, {
-        list: 'elix-centered-strip-opacity',
         proxy: 'elix-page-dot',
+        proxyList: 'elix-centered-strip-opacity',
         stage: 'elix-sliding-stage'
       })
     });
