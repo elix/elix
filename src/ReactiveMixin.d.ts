@@ -11,11 +11,11 @@ declare const ReactiveMixin: Mixin<{
   componentDidUpdate(previousState: PlainObject): void;
   connectedCallback(): void;
   defaultState: PlainObject;
+  refineState(state: PlainObject): boolean;
   render(): Promise<void>;
   setState(changes: PlainObject): Promise<void>;
   shouldComponentUpdate(nextState: PlainObject): boolean;
   state: PlainObject;
-  validateState(state: PlainObject): boolean;
 }>;
 
 export default ReactiveMixin;

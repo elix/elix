@@ -195,6 +195,38 @@ class Explorer extends Base {
     return {};
   }
 
+  // If items for default proxies have changed, recreate the proxies.
+  refineState(state) {
+    let result = super.refineState ? super.refineState(state) : true;
+    const assignedCount = state.assignedProxies.length;
+    const defaultCount = state.defaultProxies.length;
+    let defaultProxies;
+    let itemsForDefaultProxies;
+    if (assignedCount > 0 && defaultCount > 0) {
+      // Assigned proxies take precedence, remove default proxies.
+      defaultProxies = [];
+      itemsForDefaultProxies = null;
+    } else if (assignedCount === 0) {
+      const items = state.items;
+      const itemsChanged = items !== state.itemsForDefaultProxies;
+      if (itemsChanged) {
+        // Generate sufficient default proxies.
+        const proxyTag = this.proxyTag || this.defaults.tags.proxy;
+        defaultProxies = createDefaultProxies(items, proxyTag);
+        itemsForDefaultProxies = items;
+      }
+    }
+    if (defaultProxies) {
+      Object.freeze(defaultProxies);
+      Object.assign(state, {
+        defaultProxies,
+        itemsForDefaultProxies
+      });
+      result = false;
+    }
+    return result;
+  }
+
   [symbols.render]() {
     if (super[symbols.render]) { super[symbols.render](); }
 
@@ -348,37 +380,6 @@ class Explorer extends Base {
         }
       }
     });
-  }
-
-  validateState(state) {
-    let result = super.validateState ? super.validateState(state) : true;
-    const assignedCount = state.assignedProxies.length;
-    const defaultCount = state.defaultProxies.length;
-    let defaultProxies;
-    let itemsForDefaultProxies;
-    if (assignedCount > 0 && defaultCount > 0) {
-      // Assigned proxies take precedence, remove default proxies.
-      defaultProxies = [];
-      itemsForDefaultProxies = null;
-    } else if (assignedCount === 0) {
-      const items = state.items;
-      const itemsChanged = items !== state.itemsForDefaultProxies;
-      if (itemsChanged) {
-        // Generate sufficient default proxies.
-        const proxyTag = this.proxyTag || this.defaults.tags.proxy;
-        defaultProxies = createDefaultProxies(items, proxyTag);
-        itemsForDefaultProxies = items;
-      }
-    }
-    if (defaultProxies) {
-      Object.freeze(defaultProxies);
-      Object.assign(state, {
-        defaultProxies,
-        itemsForDefaultProxies
-      });
-      result = false;
-    }
-    return result;
   }
 
 }

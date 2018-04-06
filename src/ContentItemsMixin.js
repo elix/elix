@@ -136,22 +136,8 @@ export default function ContentItemsMixin(Base) {
         {};
     }
 
-    [symbols.render]() {
-      if (super[symbols.render]) { super[symbols.render](); }
-      if (this.itemUpdates) {
-        const items = this.items || [];
-        items.forEach((item, index) => {
-          if (item[originalKey] === undefined) {
-            item[originalKey] = updates.current(item);
-          }
-          const calcs = this.itemCalcs(item, index);
-          updates.apply(item, this.itemUpdates(item, calcs, item[originalKey]));
-        });
-      }
-    }
-
-    validateState(state) {
-      let result = super.validateState ? super.validateState(state) : true;
+    refineState(state) {
+      let result = super.refineState ? super.refineState(state) : true;
       const content = state.content || null;
       const contentChanged = content !== state.contentForItems; 
       if (contentChanged) {
@@ -164,6 +150,20 @@ export default function ContentItemsMixin(Base) {
         result = false;
       }
       return result;
+    }
+
+    [symbols.render]() {
+      if (super[symbols.render]) { super[symbols.render](); }
+      if (this.itemUpdates) {
+        const items = this.items || [];
+        items.forEach((item, index) => {
+          if (item[originalKey] === undefined) {
+            item[originalKey] = updates.current(item);
+          }
+          const calcs = this.itemCalcs(item, index);
+          updates.apply(item, this.itemUpdates(item, calcs, item[originalKey]));
+        });
+      }
     }
 
   }

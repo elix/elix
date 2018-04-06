@@ -100,6 +100,22 @@ export default function KeyboardPrefixSelectionMixin(Base) {
       return handled || (super[symbols.keydown] && super[symbols.keydown](event));
     }
 
+    refineState(state) {
+      let result = super.refineState ? super.refineState(state) : true;
+      const items = state.items || null;
+      const itemsChanged = items !== state.itemsForTexts;
+      if (itemsChanged) {
+        const texts = getTextsForItems(this, items);
+        Object.freeze(texts);
+        Object.assign(state, {
+          texts,
+          itemsForTexts: items
+        });
+        result = false;
+      }
+      return result;
+    }
+
     /**
      * Select the first item whose text content begins with the given prefix.
      *
@@ -119,22 +135,6 @@ export default function KeyboardPrefixSelectionMixin(Base) {
       } else {
         return false;
       }
-    }
-
-    validateState(state) {
-      let result = super.validateState ? super.validateState(state) : true;
-      const items = state.items || null;
-      const itemsChanged = items !== state.itemsForTexts;
-      if (itemsChanged) {
-        const texts = getTextsForItems(this, items);
-        Object.freeze(texts);
-        Object.assign(state, {
-          texts,
-          itemsForTexts: items
-        });
-        result = false;
-      }
-      return result;
     }
   }
 

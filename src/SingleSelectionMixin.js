@@ -87,6 +87,32 @@ export default function SingleSelectionMixin(Base) {
       return super.itemsForState ? super.itemsForState(state) : state.items;
     }
 
+    // When new state is being applied, ensure selectedIndex is valid.
+    refineState(state) {
+      let result = super.refineState ? super.refineState(state) : true;
+
+      // Only refine if we actually have items.
+      const items = this.itemsForState(state);
+      const count = items ? items.length : 0;
+      if (count > 0) {
+        const { selectedIndex, selectionRequired, selectionWraps } = state;
+        const validatedIndex = validateIndex(
+          selectedIndex,
+          count,
+          selectionRequired,
+          selectionWraps
+        );
+        if (validatedIndex !== selectedIndex) {
+          Object.assign(state, {
+            selectedIndex: validatedIndex
+          });
+          result = false;
+        }
+      }
+
+      return result;
+    }
+
     /**
      * Select the first item in the list.
      *
@@ -209,31 +235,6 @@ export default function SingleSelectionMixin(Base) {
         return false;
       }
       return updateSelectedIndex(this, selectedIndex);
-    }
-
-    validateState(state) {
-      let result = super.validateState ? super.validateState(state) : true;
-
-      // Only validate if we actually have items.
-      const items = this.itemsForState(state);
-      const count = items ? items.length : 0;
-      if (count > 0) {
-        const { selectedIndex, selectionRequired, selectionWraps } = state;
-        const validatedIndex = validateIndex(
-          selectedIndex,
-          count,
-          selectionRequired,
-          selectionWraps
-        );
-        if (validatedIndex !== selectedIndex) {
-          Object.assign(state, {
-            selectedIndex: validatedIndex
-          });
-          result = false;
-        }
-      }
-
-      return result;
     }
 
   }

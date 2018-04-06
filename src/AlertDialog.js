@@ -103,6 +103,26 @@ class AlertDialog extends Dialog {
     return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
   }
 
+  refineState(state) {
+    let result = super.refineState ? super.refineState(state) : true;
+    if (state.choicesForChoiceButtons !== state.choices) {
+      // Choices have changed; create new buttons.
+      const choiceButtonTag = this.choiceButtonTag || this.defaults.tags.choiceButton;
+      const choiceButtons = state.choices.map(choice => {
+        const button = document.createElement(choiceButtonTag);
+        button.textContent = choice;
+        return button;
+      });
+      Object.freeze(choiceButtons);
+      Object.assign(state, {
+        choicesForChoiceButtons: state.choices,
+        choiceButtons
+      });
+      result = false;
+    }
+    return result;
+  }
+
   get [symbols.template]() {
     const base = super[symbols.template];
     return base.replace('<slot></slot>', `
@@ -136,26 +156,6 @@ class AlertDialog extends Dialog {
         }
       }
     });
-  }
-
-  validateState(state) {
-    let result = super.validateState ? super.validateState(state) : true;
-    if (state.choicesForChoiceButtons !== state.choices) {
-      // Choices have changed; create new buttons.
-      const choiceButtonTag = this.choiceButtonTag || this.defaults.tags.choiceButton;
-      const choiceButtons = state.choices.map(choice => {
-        const button = document.createElement(choiceButtonTag);
-        button.textContent = choice;
-        return button;
-      });
-      Object.freeze(choiceButtons);
-      Object.assign(state, {
-        choicesForChoiceButtons: state.choices,
-        choiceButtons
-      });
-      result = false;
-    }
-    return result;
   }
 
 }

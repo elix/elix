@@ -52,6 +52,10 @@ export default function ReactiveMixin(Base) {
       return super.defaultState || {};
     }
 
+    refineState(state) {
+      return super.refineState ? super.refineState(state) : true;
+    }
+
     /*
      * Internal render method.
      * 
@@ -137,7 +141,7 @@ export default function ReactiveMixin(Base) {
       // changes merged on top of it.
       const nextState = Object.assign({}, this[stateKey], changes);
 
-      validateState(this, nextState);
+      refineState(this, nextState);
 
       // Freeze the new state so it's immutable. This prevents accidental
       // attempts to set state without going through setState.
@@ -208,16 +212,12 @@ export default function ReactiveMixin(Base) {
     get state() {
       return this[stateKey];
     }
-
-    validateState(state) {
-      return super.validateState ? super.validateState(state) : true;
-    }
   }
 }
 
 
-function validateState(element, state) {
-  // Repeatedly validate state until it's declared valid.
+function refineState(element, state) {
+  // Repeatedly refine state until the refine operation returns true.
   /* eslint-disable no-empty */
-  for (;!element.validateState(state);) {}
+  for (;!element.refineState(state);) {}
 }
