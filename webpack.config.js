@@ -38,7 +38,8 @@ const demosConfig = {
   
   plugins: [
     new UglifyJsPlugin({
-      include: /\.min\.js$/
+      include: /\.min\.js$/,
+      sourceMap: true
     })
   ],
 
