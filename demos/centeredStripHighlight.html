@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>elix-centered-strip-highlight</title>
+
+  <link rel="stylesheet" href="demos.css">
+  <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="./src/showElementsWhenDefined.js"></script>
+  <script type="module" src="../src/CenteredStripHighlight.js"></script>
+  <script nomodule src="../build/demos.js"></script>
+
+</head>
+
+<body role="main" unresolved>
+  <div class="demo">
+
+    <style>
+      elix-centered-strip-highlight {
+        box-sizing: border-box;
+        max-width: 100%;
+        width: 502px;
+      }
+
+      .emoji {
+        align-items: center;
+        display: flex;
+        flex-shrink: 0;
+        font-size: 72px;
+        height: 100px;
+        justify-content: center;
+        padding: 0 !important;
+        width: 100px;
+      }
+    </style>
+
+    <elix-centered-strip-highlight aria-label="Face emoji">
+      <div class="emoji" alt="Grinning Face">😀</div>
+      <div class="emoji" alt="Grinning Face With Smiling Eyes">😁</div>
+      <div class="emoji" alt="Face With Tears of Joy">😂</div>
+      <div class="emoji" alt="Smiling Face With Heart-eyes">😍</div>
+      <div class="emoji" alt="Smiling Face With Smiling Eyes">😊</div>
+      <div class="emoji" alt="Thinking Face">🤔</div>
+      <div class="emoji" alt="Smiling Face With Open Mouth & Closed Eyes">😆</div>
+      <div class="emoji" alt="Face With Open Mouth">😮</div>
+      <div class="emoji" alt="Face With Rolling Eyes">🙄</div>
+      <div class="emoji" alt="Face Blowing a Kiss">😘</div>
+    </elix-centered-strip-highlight>
+
+  </div>
+</body>
+
+</html>
