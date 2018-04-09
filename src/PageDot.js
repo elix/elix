@@ -3,11 +3,10 @@ import * as symbols from './symbols.js';
 import ReactiveElement from './ReactiveElement.js';
 
 
-/*
- * A small dot that can be used to represent a carousel item.
+/**
+ * A small dot used as a proxy element for an item in a [Carousel](Carousel).
  * 
- * We don't expect this minor component to be used in other contexts, so it's
- * not documented as a supported Elix component.
+ * @inherits ReactiveElement
  */
 class PageDot extends ReactiveElement {
 

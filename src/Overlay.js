@@ -16,8 +16,17 @@ const Base =
 
 
 /**
- * A base class for creating overlays. The main overlay content is presented
- * within a frame on top of an optional backdrop.
+ * An element that appears over other page elements. The main overlay content is
+ * presented within a frame on top of an optional backdrop.
+ * 
+ * The overlay logic is provided by [OverlayMixin](OverlayMixin). `Overlay` adds
+ * the definition of customizable element tags: [frameTag](#frameTag) for the
+ * frame around the overlay content, and [backdropTag](#backdropTag) (if
+ * defined) for the optional element covering the page elements behind the
+ * overlay.
+ * 
+ * See [Dialog](Dialog) and [Popup](Popup) for modal and modeless subclasses,
+ * respectively.
  * 
  * @inherits ReactiveElement
  * @mixes OpenCloseMixin
@@ -35,6 +44,17 @@ class Overlay extends Base {
     };
   }
 
+  /**
+   * The tag used to create the optional backdrop element behind the overlay.
+   * 
+   * This can help focus the user's attention on the overlay content.
+   * Additionally, a backdrop can be used to absorb clicks on background page
+   * elements. For example, [Dialog](Dialog) uses [ModalBackdrop](ModalBackdrop)
+   * as an overlay backdrop in such a way.
+   * 
+   * @type {string}
+   * @default ''
+   */
   get backdropTag() {
     return this[backdropTagKey];
   }
@@ -43,6 +63,16 @@ class Overlay extends Base {
     this[backdropTagKey] = backdropTag;
   }
 
+  /**
+   * The tag used to contain the primary overlay content.
+   * 
+   * The frame element can be used to provide a border around the overlay
+   * content, and to provide visual effects such as a drop-shadow to help
+   * distinguish overlay content from background page elements.
+   * 
+   * @type {string}
+   * @default 'elix-overlay-frame'
+   */
   get frameTag() {
     return this[frameTagKey];
   }

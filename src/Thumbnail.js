@@ -3,7 +3,8 @@ import WrappedStandardElement from "./WrappedStandardElement.js";
 
 
 /**
- * A thumbnail image.
+ * A thumbnail image used as a proxy element to represent an image in a
+ * [CarouselWithThumbnails](CarouselWithThumbnails).
  * 
  * @inherits WrappedStandardElement
  */

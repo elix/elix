@@ -6,6 +6,8 @@ import CenteredStrip from './CenteredStrip.js';
  * A `CenteredStrip` that applies a default highlight color to the selected
  * item.
  * 
+ * [`CenteredStripHighlight` uses a system highlight, much like `ListBox`](/demos/centeredStripHighlight.html)
+ * 
  * @inherits CenteredStrip
  */
 class CenteredStripHighlight extends CenteredStrip {

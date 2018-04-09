@@ -18,7 +18,13 @@ function ArrowDirectionMixin(Base) {
   // The class prototype added by the mixin.
   class ArrowDirection extends Base {
 
-    get arrowButtonTag() {
+  /**
+   * The tag used to create the left and right arrow buttons.
+   * 
+   * @type {string}
+   * @default 'elix-arrow-direction-button'
+   */
+  get arrowButtonTag() {
       return this[arrowButtonTagKey];
     }
     set arrowButtonTag(arrowButtonTag) {

@@ -10,11 +10,9 @@ const Base =
   );
 
 
-/*
- * A button used by ArrowDirectionMixin for its left/right arrow buttons.
- * 
- * We don't expect this minor component to be used in other contexts, so it's
- * not documented as a supported Elix component.
+/**
+ * A button used by [ArrowDirectionMixin](ArrowDirectionMixin) for its
+ * left/right arrow buttons.
  */
 class ArrowDirectionButton extends Base {
 

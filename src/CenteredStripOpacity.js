@@ -7,6 +7,8 @@ import CenteredStrip from './CenteredStrip.js';
  * A `CenteredStrip` that makes the selected item fully opaque, and other items
  * partially transparent.
  * 
+ * [`CenteredStripOpacity` is used by `Carousel` for dots or thumbnails](/demos/centeredStripOpacity.html)
+ * 
  * @inherits CenteredStrip
  */
 class CenteredStripOpacity extends CenteredStrip {
