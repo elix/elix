@@ -52,15 +52,8 @@ function customTagsWithName(primaryDoclet, name) {
 /*
  * Compute the element tag map for the given object.
  */
-function elementTagsForObject(projectDocs, objectDocs) {
-  const objectDoclet = primaryDoclet(objectDocs);
+function elementTagsForObject(objectDoclet) {
   let tagMap = {};
-  const baseClassName = baseClassNameInDoclet(objectDoclet);
-  if (baseClassName) {
-    const baseClassDocs = projectDocs[baseClassName];
-    const baseClassDoclet = primaryDoclet(baseClassDocs);
-    Object.assign(tagMap, baseClassDoclet.elementTags);
-  }
   const elementTags = customTagsWithName(objectDoclet, 'elementtag');
   elementTags.forEach(elementTag => {
     const value = elementTag.value;
@@ -122,6 +115,10 @@ function extendObjectDocs(projectDocs, objectDocs) {
     return;
   }
   objectDoclet.extended = true;
+
+  // Calculate the initial map of element tags for the object (which element
+  // classes are used for which roles).
+  objectDoclet.elementTags = elementTagsForObject(objectDoclet);
 
   // Indicate the object's own members as originally coming from this object.
   memberDoclets(objectDocs).forEach(memberDoclet => {
@@ -192,6 +189,7 @@ function extendClassDocsWithMixin(objectDocs, mixinDocs) {
  * members were inherited.
  */
 function extendObjectDocsWithMembers(targetDocs, sourceDocs, inheritedfrom) {
+  // Copy over all member doclets.
   const targetDoclet = primaryDoclet(targetDocs);
   memberDoclets(sourceDocs).forEach(memberDoclet => {
     const docletCopy = clone(memberDoclet);
@@ -201,6 +199,15 @@ function extendObjectDocsWithMembers(targetDocs, sourceDocs, inheritedfrom) {
     }
     targetDocs.push(docletCopy);
   });
+
+  // Merge element tags defined by target *over* those of source, since target
+  // tags will take precedence.
+  const sourceDoclet = primaryDoclet(sourceDocs);
+  targetDoclet.elementTags = Object.assign(
+    {},
+    sourceDoclet.elementTags,
+    targetDoclet.elementTags
+  );
 }
 
 /*
@@ -267,10 +274,8 @@ function updateClassInheritanceRecords(projectDocs, classDocs) {
  */
 function updateElementUsageRecords(projectDocs, objectDocs) {
   const objectDoclet = primaryDoclet(objectDocs);
-  const elementTags = elementTagsForObject(projectDocs, objectDocs);
-  objectDoclet.elementTags = elementTags;
   // @ts-ignore
-  Object.values(elementTags).forEach(className => {
+  Object.values(objectDoclet.elementTags).forEach(className => {
     const classDocs = projectDocs[className];
     // An element tag may refer to a standard HTMLxxx element for which we have
     // no documentation.
