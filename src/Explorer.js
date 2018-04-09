@@ -56,7 +56,7 @@ class Explorer extends Base {
       this[symbols.raiseChangeEvents] = false;
     };
     this.$.stage.addEventListener('selected-index-changed', handleSelectedIndexChanged);
-    this.$.list.addEventListener('selected-index-changed', handleSelectedIndexChanged);
+    this.$.proxyList.addEventListener('selected-index-changed', handleSelectedIndexChanged);
 
     // Work around inconsistencies in slotchange timing; see SlotContentMixin.
     this.$.proxySlot.addEventListener('slotchange', () => {
@@ -152,7 +152,7 @@ class Explorer extends Base {
 
   get proxyListTemplate() {
     const proxyListTag = this.proxyListTag || this.defaults.tags.proxyList;
-    return `<${proxyListTag} id="list"><slot id="proxySlot" name="proxy"></slot></${proxyListTag}>`;
+    return `<${proxyListTag} id="proxyList"><slot id="proxySlot" name="proxy"></slot></${proxyListTag}>`;
   }
 
   /**
@@ -238,7 +238,7 @@ class Explorer extends Base {
     const listInInitialPosition = isListInInitialPosition(this);
     const container = this.$.explorerContainer;
     const stage = findChildContainingNode(container, this.$.stage);
-    const list = findChildContainingNode(container, this.$.list);
+    const list = findChildContainingNode(container, this.$.proxyList);
     const firstElement = listInInitialPosition ? list : stage;
     const lastElement = listInInitialPosition ? stage : list;
     if (firstElement.nextElementSibling !== lastElement) {
@@ -367,7 +367,7 @@ class Explorer extends Base {
             'flex-direction': lateralPosition ? 'row' : 'column'
           },
         },
-        list: {
+        proxyList: {
           childNodes: listChildNodes,
           position,
           selectedIndex,

@@ -22,7 +22,6 @@ class Tabs extends Explorer {
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       itemRole: 'tabpanel',
-      orientation: 'horizontal',
       tabAlign: 'start'
     });
   }
@@ -83,6 +82,9 @@ class Tabs extends Explorer {
   /**
    * The alignment of the tabs within the tab strip.
    * 
+   * The value of this property will be forwarded to the corresponding
+   * property
+   * 
    * @type {('start'|'center'|'end'|'stretch')}
    * @default 'start'
    */
@@ -96,7 +98,7 @@ class Tabs extends Explorer {
   get updates() {
     return merge(super.updates, {
       $: {
-        list: {
+        proxyList: {
           attributes: {
             'tab-align': this.state.tabAlign
           },

@@ -22,7 +22,7 @@ class SereneTabs extends Tabs {
         display: 'flex'
       },
       $: {
-        list: {
+        proxyList: {
           style: {
             'background': '#222',
             'color': 'white',

@@ -103,7 +103,7 @@ class Carousel extends Base {
   get updates() {
     return merge(super.updates, {
       $: {
-        list: {
+        proxyList: {
           attributes: {
             tabindex: ''
           },
