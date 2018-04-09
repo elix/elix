@@ -225,7 +225,11 @@ function applyReferencedElementUpdates(element, updates) {
   for (const key in updates) {
     const props = updates[key];
     const referencedElement = element.$[key];
-    apply(referencedElement, props);
+    if (referencedElement) {
+      apply(referencedElement, props);
+    } else {
+      throw `${element.constructor.name} attemped to update a shadow element with ID "${key}", but no such element exists.`;
+    }
   }
 }
 
