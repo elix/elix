@@ -32,12 +32,20 @@ class SingleSelectionDemo extends Base {
         this[symbols.raiseChangeEvents] = false;
       }
     });
+
+    // Simplistic tracking of element children as items.
+    // For real applications, use SlotItemsMixin.
+    const observer = new MutationObserver(() => {
+      this.setState({
+        content: [...this.children]
+      });
+    });
+    observer.observe(this, { childList: true });
   }
 
   get defaultState() {
-    /* Simplistic implementation of content returns light DOM children. */
     return Object.assign({}, super.defaultState, {
-      content: this.children
+      content: [...this.children]
     });
   }
 
