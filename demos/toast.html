@@ -45,6 +45,12 @@
         position: absolute;
         right: 0;
       }
+
+      #toastContent {
+        background: highlight;
+        color: highlighttext;
+        padding: 1em;
+      }
     </style>
   
     <div class="buttonContainer">
@@ -60,7 +66,7 @@
       </div>
     </div>
     <elix-toast id="sampleToast" duration="1500">
-      <div style="padding: 1em;">
+      <div id="toastContent">
         Mmm... toast...
       </div>
     </elix-toast>
