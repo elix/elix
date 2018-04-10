@@ -190,8 +190,7 @@ class Explorer extends Base {
    * @param {object} calcs - per-proxy calculations derived from element state
    * @returns {object} the DOM updates that should be applied to the item
    */
-  // eslint-disable no-unused-vars
-  proxyUpdates(proxy, calcs) {
+  proxyUpdates(/* eslint-disable no-unused-vars */ proxy, calcs) {
     return {};
   }
 

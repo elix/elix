@@ -18,8 +18,8 @@ import ShadowTemplateMixin from './ShadowTemplateMixin.js';
  *         HTMLElement
  *       ))));
  *
- * `ReactiveElement` is simply provided as a convenience, and the same result can be
- * achieved by applying the mixins yourself to `HTMLElement`.
+ * `ReactiveElement` is provided as a convenience. You can achieve the same
+ * result by applying the mixins yourself to `HTMLElement`.
  * 
  * @inherits HTMLElement
  * @mixes AttributeMarshallingMixin
