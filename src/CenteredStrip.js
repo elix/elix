@@ -67,6 +67,10 @@ class CenteredStrip extends Base {
           cursor: default;
           display: flex;
           -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+          -moz-user-select: none;
+          -ms-user-select: none;
+          -webkit-user-select: none;
+          user-select: none;
         }
 
         #stripContainer {

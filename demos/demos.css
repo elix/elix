@@ -23,6 +23,8 @@ label {
 }
 
 .demo {
+  box-sizing: border-box;
+  max-width: 100%;
   position: relative;
 }
 
