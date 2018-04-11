@@ -6,7 +6,7 @@ const inject = Symbol('inject');
 
 /**
  * Mixin that adds a page (item) number and total page (item) count to a
- * [Carousel](Carousel).
+ * component like [Carousel](Carousel) that renders its contents as pages.
  * 
  * @module PageNumbersMixin
  */
