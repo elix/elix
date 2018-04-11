@@ -1,4 +1,5 @@
 let resizeObserver;
+const windowResizeEntries = [];
 
 
 /**
@@ -6,13 +7,14 @@ let resizeObserver;
  * `clientHeight` and `clientWidth` state members.
  * 
  * This mixin can only guarantee results on browsers that support
- * `ResizeObserver` (as of 22 Mar 2018, only Google Chrome). On other browsers,
- * the mixin will check the component's size when it is first mounted, and
- * thereafter when it's finished rendering. This can catch most cases, but is
- * somewhat inefficient, and misses cases where a component changes size for
- * reasons beyond the component's awareness (e.g., CSS finished loading,
- * something else on the page changed that forced a change in the component's
- * size).
+ * `ResizeObserver` (as of 22 Mar 2018, only Google Chrome).
+ * 
+ * On other browsers, the mixin will check the component's size when it is first
+ * mounted and when it's finished rendering. It will also check the size if the
+ * window resizes. This can catch most cases, but is somewhat inefficient, and
+ * misses cases where a component changes size for reasons beyond the
+ * component's awareness (e.g., CSS finished loading, something else on the page
+ * changed that forced a change in the component's size).
  * 
  * @module ResizeMixin
  */
@@ -25,7 +27,6 @@ export default function ResizeMixin(Base) {
       const { clientHeight, clientWidth } = this;
       const sizeChanged = clientHeight !== this.state.clientHeight ||
           clientWidth !== this.state.clientWidth;
-      console.log(clientHeight, clientWidth, sizeChanged);
       if (sizeChanged) {
         this.setState({
           clientHeight,
@@ -33,10 +34,14 @@ export default function ResizeMixin(Base) {
         });
       }
     }
+
+    // TODO: Unobserve component if it's disconnected.
     connectedCallback() {
       if (super.connectedCallback) { super.connectedCallback(); }
       if (resizeObserver) {
         resizeObserver.observe(this);
+      } else {
+        windowResizeEntries.push(this);
       }
     }
 
@@ -68,9 +73,10 @@ export default function ResizeMixin(Base) {
 }
 
 
-// Create a ResizeObserve if that's supported.
+// Is ResizeObserve supported?
 const Observer = window['ResizeObserver'];
 if (typeof Observer !== 'undefined') {
+  // Use ResizeObserver.
   resizeObserver = new Observer(entries => {
     entries.forEach(entry => {
       // In theory, the "content size" reported by ResizeObserver appears to be
@@ -84,6 +90,13 @@ if (typeof Observer !== 'undefined') {
         clientHeight,
         clientWidth
       });
+    });
+  });
+} else {
+  // Fall back to only tracking window resize.
+  window.addEventListener('resize', () => {
+    windowResizeEntries.forEach(entry => {
+      entry.checkSize();
     });
   });
 }
