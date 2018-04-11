@@ -1,6 +1,6 @@
 {
   "name": "elix",
-  "version": "2.0.0-pre",
+  "version": "2.0.0",
   "description": "High-quality web components for common user interface patterns",
   "license": "MIT",
   "repository": {
@@ -13,6 +13,10 @@
     "web components",
     "custom elements",
     "carousel",
+    "dialog",
+    "drawer",
+    "overlay",
+    "popup",
     "tabs"
   ],
   "devDependencies": {
