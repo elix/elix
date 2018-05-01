@@ -5,17 +5,19 @@
  * Build Elix documentation from JSDoc comments in the source files.
  */
 
-const fs = require('fs-extra');
+const fs = require('fs');
 const extendDocs = require('./extendDocs');
 const jsdoc = require('jsdoc-api');
 const jsdocParse = require('jsdoc-parse');
 const path = require('path');
 const promisify = require('util').promisify;
 
-const ensureDirAsync = promisify(fs.ensureDir);
+const existsAsync = promisify(fs.exists);
+const mkdirAsync = promisify(fs.mkdir);
 const readdirAsync = promisify(fs.readdir);
-const removeAsync = promisify(fs.remove);
-const writeJsonAsync = promisify(fs.writeJson);
+const rmdirAsync = promisify(fs.rmdir);
+const unlinkAsync = promisify(fs.unlink);
+const writeFileAsync = promisify(fs.writeFile);
 
 // Diagnostic switch. Set to true to see unextendedDocumentationMap
 // written to disk - a diagnostic code path.
@@ -39,10 +41,20 @@ async function buildDocs(paths) {
   if (!WRITE_UNEXTENDEDONLY) {
     extendDocs(projectDocs);
   }
-  
-  // Clean output folder by removing it then recreating it.
-  await removeAsync(outputPath);
-  await ensureDirAsync(outputPath);
+
+  // Does output folder already exist?
+  const outputFolderExists = await existsAsync(outputPath);
+  if (!outputFolderExists) {
+    // No, create folder.
+    await mkdirAsync(outputPath);
+  } else {
+    // Yes, clean current folder contents.
+    const files = await readdirAsync(outputPath);
+    const promises = files.map(file =>
+      unlinkAsync(path.join(outputPath, file))
+    );
+    await Promise.all(promises);
+  }
 
   await writeProjectDocsToDirectory(projectDocs, outputPath);
   
@@ -132,7 +144,8 @@ async function writeObjectDocsToFile(objectDocs, destinationPath) {
   if (primaryDoclet.noWrite) {
     return null;
   }
-  await writeJsonAsync(destinationPath, objectDocs, { spaces: 2 });
+  const text = JSON.stringify(objectDocs, null, 2);
+  await writeFileAsync(destinationPath, text);
 }
 
 /*
