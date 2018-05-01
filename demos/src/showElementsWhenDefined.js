@@ -59,7 +59,12 @@ function showPage() {
 
 // @ts-ignore
 if (window.WebComponents && !window.WebComponents.ready) {
+  // Wait for polyfill.
   window.addEventListener('WebComponentsReady', () => showElementsWhenDefined());
+} else if (!document.body) {
+  // Wait for document to load.
+  window.addEventListener('load', () => showElementsWhenDefined());
 } else {
+  // Document loaded, can check now.
   showElementsWhenDefined();
 }
