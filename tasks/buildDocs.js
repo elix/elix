@@ -1,6 +1,3 @@
-/*jslint node: true */
-'use strict';
-
 /*
  * Build Elix documentation from JSDoc comments in the source files.
  */
@@ -37,32 +34,44 @@ async function buildDocs(paths) {
   const sourcePaths = await sourceFilesInDirectory(inputPath);
   const projectDocs = await projectDocsFromSourceFiles(sourcePaths);
   
-  // Skip extending documentation in diagnostic mode.
-  if (!WRITE_UNEXTENDEDONLY) {
+  if (WRITE_UNEXTENDEDONLY) {
+    // Skip extending documentation in diagnostic mode.
+    console.warn('Note: Elix extensions to JSDoc were skipped.')
+  } else {
     extendDocs(projectDocs);
   }
 
-  // Does output folder already exist?
-  const outputFolderExists = await existsAsync(outputPath);
-  if (!outputFolderExists) {
-    // No, create folder.
-    await mkdirAsync(outputPath);
-  } else {
-    // Yes, clean current folder contents.
-    const files = await readdirAsync(outputPath);
-    const promises = files.map(file =>
-      unlinkAsync(path.join(outputPath, file))
-    );
-    await Promise.all(promises);
-  }
+  // Create output folder if it doesn't already exist.
+  await createDirectory(outputPath);
+
+  // Clean current folder contents, if any.
+  const files = await readdirAsync(outputPath);
+  const promises = files.map(file =>
+    unlinkAsync(path.join(outputPath, file))
+  );
+  await Promise.all(promises);
 
   await writeProjectDocsToDirectory(projectDocs, outputPath);
-  
-  if (WRITE_UNEXTENDEDONLY) {
-    // Issue an error to note this diagnostic path.
-    process.exit(1);
-  }
 }
+
+
+// Create a directory at the indicated path if one does not exist.
+async function createDirectory(directoryPath) {
+  // The path may have multiple parts; create them one at a time.
+  const parts = directoryPath.split(path.sep);
+  for (index in parts) {
+    const partialPath = parts.slice(0, index + 1).join(path.sep);
+    try {
+      await mkdirAsync(partialPath);
+    } catch (exception) {
+      // We expect EEXIST (directory already exists), throw otherwise.
+      if (exception.code !== 'EEXIST') {
+        throw exception;
+      }
+    }
+  };
+}
+
 
 /*
  * Apply the given promise-returning function to each member of the array. Note:
@@ -168,7 +177,7 @@ module.exports = buildDocs;
 if (require.main === module) {
   // Build docs with default paths.
   buildDocs({
-    inputPath: './src',
-    outputPath: './build/docs'
+    inputPath: 'src',
+    outputPath: 'build/docs'
   });
 }
