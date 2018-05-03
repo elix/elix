@@ -56,6 +56,13 @@ class CrossfadeStage extends Modes {
     this.setState({ swipeFraction });
   }
 
+  get transitionDuration() {
+    return this.state.transitionDuration;
+  }
+  set transitionDuration(transitionDuration) {
+    this.setState({ transitionDuration });
+  }
+
   get updates() {
     return merge(super.updates, {
       style: {

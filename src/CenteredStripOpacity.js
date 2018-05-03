@@ -12,6 +12,12 @@ import CenteredStrip from './CenteredStrip.js';
  * @inherits CenteredStrip
  */
 class CenteredStripOpacity extends CenteredStrip {
+  
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      transitionDuration: 250
+    });
+  }
 
   itemUpdates(item, calcs, original) {
     const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
@@ -21,9 +27,9 @@ class CenteredStripOpacity extends CenteredStrip {
     const swipeFraction = this.state.swipeFraction || 0;
     const selectionFraction = sign * swipeFraction;
     const opacity = opacityForItemWithIndex(calcs.index, selectedIndex, selectionFraction);
-    const transition = swiping ?
-      'none' :
-      'opacity 0.25s';
+    const showTransition = !swiping;
+    const transitionDuration = this.state.transitionDuration / 1000;
+    const transition = showTransition ? `opacity ${transitionDuration}s linear` : '';
 
     return merge(base, {
       style: {
@@ -31,6 +37,13 @@ class CenteredStripOpacity extends CenteredStrip {
         transition
       }
     });
+  }
+
+  get transitionDuration() {
+    return this.state.transitionDuration;
+  }
+  set transitionDuration(transitionDuration) {
+    this.setState({ transitionDuration });
   }
 
 }
