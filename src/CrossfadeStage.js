@@ -23,7 +23,8 @@ class CrossfadeStage extends Modes {
   get defaultState() {
     // Suppress transition effects on page load.
     return Object.assign({}, super.defaultState, {
-      enableTransitions: false
+      enableTransitions: false,
+      transitionDuration: 750 // 3/4 of a second
     });
   }
 
@@ -35,7 +36,8 @@ class CrossfadeStage extends Modes {
     const selectionFraction = -swipeFraction;
     const opacity = opacityForItemWithIndex(calcs.index, selectedIndex, selectionFraction);
     const showTransition = this.state.enableTransitions && !swiping;
-    const transition = showTransition ? 'opacity 0.75s' : '';
+    const transitionDuration = this.state.transitionDuration / 1000;
+    const transition = showTransition ? `opacity ${transitionDuration}s linear` : '';
     return merge(base, {
       style: {
         'display': '', /* override base */

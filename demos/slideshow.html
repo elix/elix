@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Elix Slideshow</title>
+
+  <link rel="stylesheet" href="demos.css">
+  <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="./src/showElementsWhenDefined.js"></script>
+  <script type="module" src="../src/Slideshow.js"></script>
+  <script nomodule src="../build/demos.js"></script>
+
+  <style>
+    html {
+      height: 100%;
+    }
+
+    body {
+      background: black;
+      height: 100%;
+      padding: 0;
+    }
+  </style>
+  
+</head>
+
+<body role="main" unresolved>
+  <div class="demo fullScreen">
+    <style>
+      #sampleSlideshow {
+        background: black;
+        flex: 1;
+      }
+
+      #sampleSlideshow .slideshowItem {
+        display: inline-block;
+        height: 100%;
+        object-fit: contain;
+        vertical-align: middle;
+        width: 100%;
+      }
+    </style>
+    <elix-slideshow id="sampleSlideshow" aria-label="Nature scenes">
+      <img class="slideshowItem" src="images/image01.jpg" alt="Mountain lake">
+      <img class="slideshowItem" src="images/image02.jpg" alt="Terraced farm">
+      <img class="slideshowItem" src="images/image03.jpg" alt="Winter trees">
+      <img class="slideshowItem" src="images/image04.jpg" alt="Forest river">
+      <img class="slideshowItem" src="images/image05.jpg" alt="Red panda">
+    </elix-slideshow>
+  </div>
+</body>
+
+</html>
