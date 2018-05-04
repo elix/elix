@@ -1,6 +1,5 @@
 import * as symbols from './symbols.js';
 import { merge } from './updates.js';
-import { updates } from './elix.js';
 
 
 const inject = Symbol('inject');
@@ -17,17 +16,17 @@ export default function PlayControlsMixin(Base) {
 
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
-      this.$.previousButton.addEventListener('click', event => {
+      this.$.previousButton.addEventListener('click', () => {
         this.selectPrevious();
       });
-      this.$.playButton.addEventListener('click', event => {
+      this.$.playButton.addEventListener('click', () => {
         if (!this.playing) {
           this.play();
         } else {
           this.pause();
         }
       });
-      this.$.nextButton.addEventListener('click', event => {
+      this.$.nextButton.addEventListener('click', () => {
         this.selectNext();
       });
       assumeButtonFocus(this, this.$.previousButton);
@@ -155,7 +154,7 @@ export default function PlayControlsMixin(Base) {
   }
 
   return PlayControls;
-};
+}
 
 
 PlayControlsMixin.inject = inject;

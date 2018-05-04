@@ -1,6 +1,3 @@
-import * as symbols from './symbols';
-
-
 const timerTimeoutSymbol = Symbol('timerTimeout');
 
 
@@ -109,7 +106,7 @@ export default function TimerSelectionMixin(Base) {
   }
 
   return TimerSelection;
-};
+}
 
 
 function clearTimer(element) {
@@ -119,12 +116,12 @@ function clearTimer(element) {
   }
 }
 
-function restartTimer(element) {
-  clearTimer(element);
-  if (element.playing && element.items && element.items.length > 0) {
-    startTimer(element);
-  }
-}
+// function restartTimer(element) {
+//   clearTimer(element);
+//   if (element.playing && element.items && element.items.length > 0) {
+//     startTimer(element);
+//   }
+// }
 
 function startTimer(element) {
   // If play() is called more than once, cancel any existing timer.
