@@ -50,10 +50,17 @@ class Modes extends Base {
       <style>
         :host {
           display: inline-flex;
+        }
+        
+        #modesContainer {
+          display: flex;
+          flex: 1;
           position: relative;
         }
       </style>
-      <slot></slot>
+      <div id="modesContainer">
+        <slot></slot>
+      </div>
     `;
   }
 

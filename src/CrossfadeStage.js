@@ -65,8 +65,12 @@ class CrossfadeStage extends Modes {
 
   get updates() {
     return merge(super.updates, {
-      style: {
-        display: 'grid'
+      $: {
+        modesContainer: {
+          style: {
+            display: 'grid'
+          }
+        }
       }
     });
   }

@@ -38,10 +38,10 @@ export default function TimerSelectionMixin(Base) {
      * Begin automatic progression of the selection.
      */
     play() {
-      startTimer(this);
       this.setState({
         playing: true
       });
+      this.selectNext();
     }
 
     /**
