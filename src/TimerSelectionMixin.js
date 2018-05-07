@@ -1,6 +1,3 @@
-const timerTimeoutSymbol = Symbol('timerTimeout');
-
-
 /**
  * Mixin which provides for automatic timed changes in selection.
  */
@@ -11,23 +8,20 @@ export default function TimerSelectionMixin(Base) {
 
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
-      startTimerIfPlaying(this);
+      updateTimer(this);
     }
     
     componentDidUpdate(previousState) {
       if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-      startTimerIfPlaying(this);
+      updateTimer(this);
     }
-
-    // contentChanged() {
-    //   if (super.contentChanged) { super.contentChanged(); }
-    //   restartTimer(this);
-    // }
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
-        playing: false,
-        selectionTimerDuration: 1000
+        playing: true,
+        selectedIndexForTimer: null,
+        selectionTimerDuration: 1000,
+        timerTimeout: null
       });
     }
 
@@ -35,24 +29,26 @@ export default function TimerSelectionMixin(Base) {
      * Begin automatic progression of the selection.
      */
     play() {
-      this.setState({
-        playing: true
-      });
-      this.selectNext();
+      if (!this.playing) {
+        this.selectNext();
+        this.setState({
+          playing: true
+        });
+      }
     }
 
     /**
      * Pause automatic progression of the selection.
      */
     pause() {
-      clearTimer(this);
       this.setState({
         playing: false
       });
     }
 
     /**
-     * True if the selection is being automatically advanced.
+     * True if the element is playing — i.e., if the selection is being
+     * automatically advanced by a timer.
      *
      * @type {boolean}
      * @default false
@@ -70,22 +66,6 @@ export default function TimerSelectionMixin(Base) {
         }
       }
     }
-
-    /*
-     * When the selected item changes (because of something this mixin did, or
-     * was changed by an outside agent like the user), we wait before advancing
-     * to the next item. By triggering the next item this way, we implicitly get
-     * a desirable behavior: if the user changes the selection (e.g., in a
-     * carousel), we let them see that selection state for a while before
-     * advancing the selection ourselves.
-     */
-    // get selectedItem() {
-    //   return super.selectedItem;
-    // }
-    // set selectedItem(item) {
-    //   if ('selectedItem' in base.prototype) { super.selectedItem = item; }
-    //   restartTimer(this);
-    // }
 
     /**
      * The time in milliseconds that will elapse after the selection changes
@@ -110,32 +90,47 @@ export default function TimerSelectionMixin(Base) {
 
 
 function clearTimer(element) {
-  if (element[timerTimeoutSymbol]) {
-    clearTimeout(element[timerTimeoutSymbol]);
-    element[timerTimeoutSymbol] = null;
+  if (element.state.timerTimeout) {
+    clearTimeout(element.state.timerTimeout);
+    element.setState({
+      timerTimeout: null
+    });
   }
 }
 
-// function restartTimer(element) {
-//   clearTimer(element);
-//   if (element.playing && element.items && element.items.length > 0) {
-//     startTimer(element);
-//   }
-// }
+function restartTimer(element) {
+  if (element.state.timerTimeout) {
+    clearTimeout(element.state.timerTimeout);
+  }
+  if (element.items && element.items.length > 0) {
 
-function startTimer(element) {
-  // If play() is called more than once, cancel any existing timer.
-  clearTimer(element);
-  element[timerTimeoutSymbol] = setTimeout(() => {
-    element[timerTimeoutSymbol] = null;
-    element.selectNext();
-  }, element.selectionTimerDuration);
+    // When the timer times out, all we need to do is move to the next slide.
+    // When the component updates, the updateTimer function will notice the
+    // change in selection, and invoke restartTimer again to start a new timer
+    // for the next slide.
+    const timerTimeout = setTimeout(() => {
+      element.selectNext();
+    }, element.selectionTimerDuration);
+
+    // Set the timer as state, also noting which slide we're currently on.
+    element.setState({
+      selectedIndexForTimer: element.state.selectedIndex,
+      timerTimeout
+    });
+  }
 }
 
-function startTimerIfPlaying(element) {
-  if (element.playing && !element[timerTimeoutSymbol]) {
-    startTimer(element);
-  } else if (!element.playing && element[timerTimeoutSymbol]) {
+// Update the timer to match the element's `playing` state.
+function updateTimer(element) {
+  // If the element is playing and we haven't started a timer yet, do so now.
+  // Also, if the element's selectedIndex changed for any reason, restart the
+  // timer. This ensures that the timer restarts no matter why the selection
+  // changes: it could have been us moving to the next slide because the timer
+  // elapsed, or the user might have directly manipulated the selection, etc.
+  if (element.state.playing &&
+      (!element.state.timerTimeout || element.state.selectedIndex !== element.state.selectedIndexForTimer)) {
+    restartTimer(element);
+  } else if (!element.state.playing && element.state.timerTimeout) {
     clearTimer(element);
   }
 }
