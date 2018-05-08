@@ -17,8 +17,13 @@ export default class HamburgerMenu extends Base {
   componentDidMount() {
     this.$.menuButton.addEventListener('click', () => {
       this[symbols.raiseChangeEvents] = true;
-      this.$.drawer.open();
+      this.open();
       this[symbols.raiseChangeEvents] = false;
+    });
+    this.$.drawer.addEventListener('opened-changed', event => {
+      this.setState({
+        opened: event.detail.opened
+      });
     });
   }
 
