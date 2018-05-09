@@ -6,6 +6,10 @@ import ReactiveElement from './ReactiveElement.js';
 import * as symbols from './symbols.js';
 
 
+const menuTagKey = Symbol('menuTag');
+const menuButtonTagKey = Symbol('menuButtonTag');
+
+
 const Base =
   OpenCloseMixin(
     ReactiveElement
@@ -13,8 +17,13 @@ const Base =
 
 
 /**
- * A button that invokes a Drawer, typically used to provide navigation and
- * other UI on a mobile device.
+ * A button that invokes a menu (by default, a Drawer), typically used to
+ * provide navigation and other UI on a mobile device.
+ * 
+ * @inherits ReactiveElement
+ * @mixes OpenCloseMixin
+ * @elementtag {Drawer} menu
+ * @elementtag {QuietButton} menuButton
  */
 export default class HamburgerMenuButton extends Base {
 
@@ -24,7 +33,7 @@ export default class HamburgerMenuButton extends Base {
       this.open();
       this[symbols.raiseChangeEvents] = false;
     });
-    this.$.drawer.addEventListener('opened-changed', event => {
+    this.$.menu.addEventListener('opened-changed', event => {
       /** @type {any} */
       const cast = event;
       this.setState({
@@ -33,39 +42,74 @@ export default class HamburgerMenuButton extends Base {
     });
   }
 
+  get defaults() {
+    return {
+      tags: {
+        menu: 'elix-drawer',
+        menuButton: 'elix-quiet-button'
+      }
+    };
+  }
+
+  /**
+   * The tag used to create the menu (drawer).
+   * 
+   * @type {string}
+   * @default 'elix-drawer'
+   */
+  get menuTag() {
+    return this[menuTagKey];
+  }
+  set menuTag(menuTag) {
+    this[symbols.hasDynamicTemplate] = true;
+    this[menuTagKey] = menuTag;
+  }
+
+  /**
+   * The tag used to create the menu button element.
+   * 
+   * @type {string}
+   * @default 'elix-quiet-button'
+   */
+  get menuButtonTag() {
+    return this[menuButtonTagKey];
+  }
+  set menuButtonTag(menuButtonTag) {
+    this[symbols.hasDynamicTemplate] = true;
+    this[menuButtonTagKey] = menuButtonTag;
+  }
+
   get [symbols.template]() {
+    const menuTag = this.menuTag || this.defaults.tags.menu;
+    const menuButtonTag = this.menuButtonTag || this.defaults.tags.menuButton;
     return `
       <style>
         :host {
-          display: inline-block;
+          display: inline-flex;
+          height: 1em;
+          width: 1em;
         }
 
         #menuButton {
           display: block;
-          height: 1.5em;
-          width: 1.5em;
-        }
-
-        #hamburgerIcon {
-          height: 100%;
-          width: 100%;
+          flex: 1;
         }
       </style>
-      <elix-quiet-button id="menuButton" aria-label="Open menu">
-        <svg id="hamburgerIcon" viewBox="0 0 18 12" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 0 h18 v2 h-18 z m0 5 h18 v2 h-18 z m0 5 h18 v2 h-18 z"></path>
+      <${menuButtonTag} id="menuButton" aria-label="Open menu">
+        <svg id="hamburgerIcon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 3 h18 v2 h-18 z m0 5 h18 v2 h-18 z m0 5 h18 v2 h-18 z"></path>
         </svg>
-      </elix-quiet-button>
-      <elix-drawer id="drawer">
+      </${menuButtonTag}>
+      <${menuTag} id="menu">
         <slot></slot>
-      </elix-drawer>
+      </${menuTag}>
     `;
   }
 
   get updates() {
     return merge(super.updates, {
       $: {
-        drawer: {
+        menu: {
           opened: this.opened
         }
       }
