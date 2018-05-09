@@ -96,9 +96,11 @@ export default class HamburgerMenuButton extends Base {
         }
       </style>
       <${menuButtonTag} id="menuButton" aria-label="Open menu">
-        <svg id="hamburgerIcon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 3 h18 v2 h-18 z m0 5 h18 v2 h-18 z m0 5 h18 v2 h-18 z"></path>
-        </svg>
+        <slot name="hamburgerIcon">
+          <svg id="hamburgerIcon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 3 h18 v2 h-18 z m0 5 h18 v2 h-18 z m0 5 h18 v2 h-18 z"></path>
+          </svg>
+        </slot>
       </${menuButtonTag}>
       <${menuTag} id="menu">
         <slot></slot>
