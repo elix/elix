@@ -29,6 +29,17 @@ const Base =
 
 class SlideshowWithControls extends Base {
 
+  componentDidMount() {
+    if (super.componentDidMount) { super.componentDidMount(); }
+
+    // Clicking the slideshow toggles the playing state.
+    this.addEventListener('click', () => {
+      this[symbols.raiseChangeEvents] = true;
+      this.playing = !this.playing;
+      this[symbols.raiseChangeEvents] = false;
+    });
+  }
+
   get [symbols.template]() {
     return this[PlayControlsMixin.inject](
       super[symbols.template]

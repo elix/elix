@@ -1,13 +1,18 @@
-import * as symbols from './symbols.js';
+import './QuietButton';
 import { merge } from './updates.js';
+import * as symbols from './symbols.js';
 
 
 const inject = Symbol('inject');
+const controlButtonTagKey = Symbol('controlButtonTag');
 
 
 /**
  * Template mixin which adds buttons for managing playback of a slideshow, audio
  * playlist, etc.
+ * 
+ * @module PlayControlsMixin
+ * @elementtag {QuietButton} controlButton
  */
 export default function PlayControlsMixin(Base) {
 
@@ -16,25 +21,51 @@ export default function PlayControlsMixin(Base) {
 
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
-      this.$.previousButton.addEventListener('click', () => {
+      this.$.previousButton.addEventListener('click', event => {
         this.selectPrevious();
+        event.stopPropagation();
       });
-      this.$.playButton.addEventListener('click', () => {
+      this.$.playButton.addEventListener('click', event => {
         if (!this.playing) {
           this.play();
         } else {
           this.pause();
         }
+        event.stopPropagation();
       });
-      this.$.nextButton.addEventListener('click', () => {
+      this.$.nextButton.addEventListener('click', event => {
         this.selectNext();
+        event.stopPropagation();
       });
       assumeButtonFocus(this, this.$.previousButton);
       assumeButtonFocus(this, this.$.playButton);
       assumeButtonFocus(this, this.$.nextButton);
     }
 
+    get defaults() {
+      return {
+        tags: {
+          controlButton: 'elix-quiet-button'
+        }
+      };
+    }
+
+    /**
+     * The tag used to create the play control buttons.
+     * 
+     * @type {string}
+     * @default 'elix-quiet-button'
+     */
+    get controlButtonTag() {
+      return this[controlButtonTagKey];
+    }
+    set controlButtonTag(controlButtonTag) {
+      this[symbols.hasDynamicTemplate] = true;
+      this[controlButtonTagKey] = controlButtonTag;
+    }
+    
     [inject](template) {
+      const controlButtonTag = this.controlButtonTag || this.defaults.tags.controlButton;
       return `
         <style>
           #buttons {
@@ -47,21 +78,18 @@ export default function PlayControlsMixin(Base) {
             z-index: 1;
           }
 
-          button {
-            background: transparent;
-            border: none;
+          .controlButton {
             fill: rgba(255, 255, 255, 0.5);
-            padding: 0;
             transition: fill 0.5s;
             vertical-align: middle;
           }
-          :host(:hover) button {
+          :host(:hover) .controlButton {
             fill: rgba(255, 255, 255, 0.7);
           }
-          button:hover {
+          .controlButton:hover {
             fill: rgba(255, 255, 255, 0.85);
           }
-          button:active {
+          .controlButton:active {
             fill: white;
           }
 
@@ -85,32 +113,38 @@ export default function PlayControlsMixin(Base) {
         </style>
 
         <div id="buttons">
-          <button id="previousButton" aria-hidden="true">
-            <svg class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
-              <g id="skip-previous">
-                <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
-              </g>
-            </svg>
-          </button>
-          <button id="playButton" aria-hidden="true">
-            <svg id="playingIcon" class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
-              <g id="pause-circle-outline">
-                <path d="M9 16h2V8H9v8zm3-14C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-4h2V8h-2v8z"></path>
-              </g>
-            </svg>
-            <svg id="pausedIcon" class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
-              <g id="play-circle-outline">
-                <path d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
-              </g>
-            </svg>
-          </button>
-          <button id="nextButton" aria-hidden="true">
-            <svg class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
-              <g id="skip-next">
-                <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
-              </g>
-            </svg>
-          </button>
+          <${controlButtonTag} class="controlButton" id="previousButton" aria-hidden="true">
+            <slot name="previousButton">
+              <svg class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+                <g id="skip-previous">
+                  <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                </g>
+              </svg>
+            </slot>
+          </${controlButtonTag}>
+          <${controlButtonTag} class="controlButton" id="playButton" aria-hidden="true">
+            <slot name="playButton">
+              <svg id="playingIcon" class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+                <g id="pause-circle-outline">
+                  <path d="M9 16h2V8H9v8zm3-14C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-4h2V8h-2v8z"></path>
+                </g>
+              </svg>
+              <svg id="pausedIcon" class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+                <g id="play-circle-outline">
+                  <path d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
+                </g>
+              </svg>
+            </slot>
+          </${controlButtonTag}>
+          <${controlButtonTag} class="controlButton" id="nextButton" aria-hidden="true">
+            <slot name="nextButton">
+              <svg class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+                <g id="skip-next">
+                  <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                </g>
+              </svg>
+            </slot>
+          </${controlButtonTag}>
         </div>
 
         <div id="container" role="none">
