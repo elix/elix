@@ -47,8 +47,7 @@ export default function TimerSelectionMixin(Base) {
     }
 
     /**
-     * True if the element is playing — i.e., if the selection is being
-     * automatically advanced by a timer.
+     * True if the element is playing.
      *
      * @type {boolean}
      * @default false
