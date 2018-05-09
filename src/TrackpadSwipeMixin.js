@@ -21,12 +21,13 @@ export default function TrackpadSwipeMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this.addEventListener('wheel', event => {
+      this.addEventListener('wheel', async (event) => {
         this[symbols.raiseChangeEvents] = true;
         const handled = handleWheel(this, event);
         if (handled) {
           event.preventDefault();
         }
+        await Promise.resolve();
         this[symbols.raiseChangeEvents] = false;
       });
       resetWheelTracking(this);
@@ -83,8 +84,11 @@ function handleWheel(component, event) {
   if (component[lastWheelTimeoutSymbol]) {
     clearTimeout(component[lastWheelTimeoutSymbol]);
   }
-  component[lastWheelTimeoutSymbol] = setTimeout(() => {
+  component[lastWheelTimeoutSymbol] = setTimeout(async () => {
+    component[symbols.raiseChangeEvents] = true;
     wheelTimedOut(component);
+    await Promise.resolve();
+    component[symbols.raiseChangeEvents] = false;
   }, WHEEL_TIME);
 
   const deltaX = event.deltaX;
@@ -177,7 +181,7 @@ function sign(x) {
 
 // A sufficiently long period of time has passed since the last wheel event.
 // We snap the selection to the closest item, then reset our state.
-function wheelTimedOut(component) {
+async function wheelTimedOut(component) {
 
   // Snap to the closest item.
   const swipeFraction = component.state.swipeFraction;
@@ -194,6 +198,6 @@ function wheelTimedOut(component) {
   component.setState({ swipeFraction: null });
 
   if (gesture && component[gesture]) {
-    component[gesture]();
+    await component[gesture]();
   }
 }

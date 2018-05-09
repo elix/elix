@@ -65,8 +65,10 @@ class Drawer extends Base {
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
     // Implicitly close on background clicks.
-    this.$.backdrop.addEventListener('click', () => {
-      this.close();
+    this.$.backdrop.addEventListener('click', async () => {
+      this[symbols.raiseChangeEvents] = true;
+      await this.close();
+      this[symbols.raiseChangeEvents] = false;
     });
   }
     
