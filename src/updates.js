@@ -101,6 +101,9 @@ export function apply(element, updates) {
       applyFunction(element, value);
     } else {
       // Property with no special apply function; just set the property.
+      if (!(key in element)) {
+        console.warn(`Warning: attempted to set the "${key}" property of a ${element.localName}, which does not have such a property.`);
+      }
       element[key] = value;
     }
   }
