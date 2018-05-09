@@ -9,8 +9,7 @@
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
-  <script type="module" src="../src/Drawer.js"></script>
-  <script type="module" src="./src/QuietButton.js"></script>
+  <script type="module" src="../src/HamburgerMenuButton.js"></script>
   <script nomodule src="../build/demos.js"></script>
 
   <style>
@@ -62,9 +61,8 @@
         text-decoration: none;
       }
 
-      #menuButton svg {
-        display: block;
-        margin: 1em;
+      #hamburgerMenuButton {
+        padding: 1em;
       }
 
       .desktop {
@@ -89,28 +87,19 @@
     </style>
 
     <header>
-      <quiet-button id="menuButton" class="mobile" onclick="drawer.open()" aria-label="Open navigation">
-        <!-- From Google's Material Icons collection -->
-        <svg fill="#000000" height="18" viewBox="0 0 18 18" width="18" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
-        </svg>
-      </quiet-button>
+      <elix-hamburger-menu-button id="hamburgerMenuButton" class="mobile">
+        <a class="toolbarButton" onclick="closeMenu()" href="javascript:">Home</a>
+        <a class="toolbarButton" onclick="closeMenu()" href="javascript:">Products</a>
+        <a class="toolbarButton" onclick="closeMenu()" href="javascript:">Search</a>
+        <a class="toolbarButton" onclick="closeMenu()" href="javascript:">Account</a>
+        <a class="toolbarButton" onclick="closeMenu()" href="javascript:">About Us</a>  
+      </elix-hamburger-menu-button>
       <a class="toolbarButton desktop" href="javascript:">Home</a>
       <a class="toolbarButton desktop" href="javascript:">Products</a>
       <a class="toolbarButton desktop" href="javascript:">Search</a>
       <a class="toolbarButton desktop" href="javascript:">Account</a>
       <a class="toolbarButton desktop" href="javascript:">About Us</a>
     </header>
-    <elix-drawer id="drawer" role="navigation">
-      <div id="sideNavigation" role="none">
-        <a class="toolbarButton" onclick="closeDrawer()" href="javascript:">Home</a>
-        <a class="toolbarButton" onclick="closeDrawer()" href="javascript:">Products</a>
-        <a class="toolbarButton" onclick="closeDrawer()" href="javascript:">Search</a>
-        <a class="toolbarButton" onclick="closeDrawer()" href="javascript:">Account</a>
-        <a class="toolbarButton" onclick="closeDrawer()" href="javascript:">About Us</a>
-      </div>
-    </elix-drawer>
 
     <p>
       This page uses a responsive design for navigation buttons. At desktop window
@@ -153,8 +142,8 @@
     </p>
 
     <script>
-      function closeDrawer() {
-        drawer.close();
+      function closeMenu() {
+        hamburgerMenuButton.close();
       }
     </script>
 

@@ -1,6 +1,6 @@
-import * as symbols from '../../src/symbols.js';
-import FocusVisibleMixin from '../../src/FocusVisibleMixin.js';
-import WrappedStandardElement from '../../src/WrappedStandardElement.js';
+import * as symbols from './symbols.js';
+import FocusVisibleMixin from './FocusVisibleMixin.js';
+import WrappedStandardElement from './WrappedStandardElement.js';
 
 
 const Base =
@@ -37,5 +37,5 @@ class QuietButton extends Base {
 }
 
 
-customElements.define('quiet-button', QuietButton);
+customElements.define('elix-quiet-button', QuietButton);
 export default QuietButton;

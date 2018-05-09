@@ -1,9 +1,9 @@
-import '../../src/Drawer.js';
+import './Drawer.js';
 import './QuietButton.js';
-import { merge } from '../../src/updates.js';
-import OpenCloseMixin from '../../src/OpenCloseMixin.js';
-import ReactiveElement from '../../src/ReactiveElement.js';
-import * as symbols from '../../src/symbols.js';
+import { merge } from './updates.js';
+import OpenCloseMixin from './OpenCloseMixin.js';
+import ReactiveElement from './ReactiveElement.js';
+import * as symbols from './symbols.js';
 
 
 const Base =
@@ -16,7 +16,7 @@ const Base =
  * A button that invokes a Drawer, typically used to provide navigation and
  * other UI on a mobile device.
  */
-export default class HamburgerMenu extends Base {
+export default class HamburgerMenuButton extends Base {
 
   componentDidMount() {
     this.$.menuButton.addEventListener('click', () => {
@@ -51,11 +51,11 @@ export default class HamburgerMenu extends Base {
           width: 100%;
         }
       </style>
-      <quiet-button id="menuButton" aria-label="Open menu">
+      <elix-quiet-button id="menuButton" aria-label="Open menu">
         <svg id="hamburgerIcon" viewBox="0 0 18 12" xmlns="http://www.w3.org/2000/svg">
           <path d="M0 0 h18 v2 h-18 z m0 5 h18 v2 h-18 z m0 5 h18 v2 h-18 z"></path>
         </svg>
-      </quiet-button>
+      </elix-quiet-button>
       <elix-drawer id="drawer">
         <slot></slot>
       </elix-drawer>
@@ -75,4 +75,4 @@ export default class HamburgerMenu extends Base {
 }
 
 
-customElements.define('hamburger-menu', HamburgerMenu);
+customElements.define('elix-hamburger-menu-button', HamburgerMenuButton);
