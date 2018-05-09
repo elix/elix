@@ -10,6 +10,18 @@ const Base =
   );
 
 
+/**
+ * A slideshow with carousel controls.
+ * 
+ * [Carousel controls let the user directly access a specific page](/demos/carouselSlideshow.html)
+ * 
+ * For a variation that offers next/previous buttons and a pause/resume button,
+ * see [slideshowWithPlayControls](slideshowWithPlayControls). For a more basic
+ * variation with no controls, see [Slideshow](Slideshow).
+ * 
+ * @inherits Carousel
+ * @mixes TimerSelectionMixin
+ */
 class CarouselSlideshow extends Base {
 
   get defaults() {

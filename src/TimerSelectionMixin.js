@@ -1,5 +1,13 @@
 /**
  * Mixin which provides for automatic timed changes in selection.
+ * 
+ * [slideshowWithPlayControls uses TimerSelectionMixin for its timer](/demos/slideshowWithPlayControls.html)
+ * 
+ * If the user changes the selection, or the selection changes for any other reason,
+ * the timer resets. This ensures the user has a chance to look at the item they want
+ * before the timer advances the selection.
+ * 
+ * @module TimerSelectionMixin
  */
 export default function TimerSelectionMixin(Base) {
 

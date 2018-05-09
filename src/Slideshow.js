@@ -10,12 +10,15 @@ const Base =
 
 /**
  * Slideshow with a simple crossfade transition.
+ * 
+ * [A basic slideshow](/demos/slideshow.html)
  *
  * By default the slideshow will immediately begin playing when it is connected
- * to the document and advance every 3 seconds.
+ * to the document, and then advance every 3 seconds.
  *
- * This component can be used as is. To incorporate slideshow behavior into
- * a component of your own, apply
+ * This component provides no interactivity of its own. For an interactive
+ * version, see [SlideshowWithPlayControls](SlideshowWithPlayControls). To incorporate
+ * slideshow behavior into a component of your own, apply
  * [TimerSelectionMixin](TimerSelectionMixin).
  * 
  * @inherits CrossfadeStage

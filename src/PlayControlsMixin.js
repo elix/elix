@@ -11,6 +11,8 @@ const controlButtonTagKey = Symbol('controlButtonTag');
  * Template mixin which adds buttons for managing playback of a slideshow, audio
  * playlist, etc.
  * 
+ * [Play controls let the user go back, pause/resume, or forward](/demos/slideshowWithPlayControls.html)
+ * 
  * @module PlayControlsMixin
  * @elementtag {BorderlessButton} controlButton
  */

@@ -21,6 +21,7 @@ export { default as AutosizeTextarea } from './AutosizeTextarea.js';
 export { default as BorderlessButton } from './BorderlessButton.js';
 export { default as Carousel } from './Carousel.js';
 export { default as CarouselWithThumbnails } from './CarouselWithThumbnails.js';
+export { default as CarouselSlideshow } from './CarouselSlideshow.js';
 export { default as CenteredStrip } from './CenteredStrip.js';
 export { default as CenteredStripHighlight } from './CenteredStripHighlight.js';
 export { default as CenteredStripOpacity } from './CenteredStripOpacity.js';
@@ -62,6 +63,8 @@ export { default as SelectedItemTextValueMixin } from './SelectedItemTextValueMi
 export { default as SelectionInViewMixin } from './SelectionInViewMixin.js';
 export { default as ShadowTemplateMixin } from './ShadowTemplateMixin.js';
 export { default as SingleSelectionMixin } from './SingleSelectionMixin.js';
+export { default as Slideshow } from './Slideshow.js';
+export { default as SlideshowWithPlayControls } from './SlideshowWithPlayControls.js';
 export { default as SlidingPages } from './SlidingPages.js';
 export { default as SlidingStage } from './SlidingStage.js';
 export { default as SlotContentMixin } from './SlotContentMixin.js';

@@ -17,8 +17,10 @@ const Base =
 
 
 /**
- * A button that invokes a menu (by default, a Drawer), typically used to
- * provide navigation and other UI on a mobile device.
+ * A button that invokes a menu (by default, a Drawer), usually to provide
+ * navigation and other UI on a mobile device.
+ * 
+ * [A hamburger menu used to present navigation commands](/demos/hamburgerMenuButton.html)
  * 
  * @inherits ReactiveElement
  * @mixes OpenCloseMixin

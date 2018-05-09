@@ -4,12 +4,12 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix SlideshowWithControls</title>
+  <title>Elix SlideshowWithPlayControls</title>
 
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
-  <script type="module" src="../src/SlideshowWithControls.js"></script>
+  <script type="module" src="../src/slideshowWithPlayControls.js"></script>
   <script nomodule src="../build/demos.js"></script>
 
   <style>
@@ -29,12 +29,12 @@
 <body role="main" unresolved>
   <div class="demo fullScreen">
     <style>
-      #sampleSlideshowWithControls {
+      #sampleslideshowWithPlayControls {
         background: black;
         flex: 1;
       }
 
-      #sampleSlideshowWithControls .slideshowItem {
+      #sampleslideshowWithPlayControls .slideshowItem {
         display: inline-block;
         height: 100%;
         object-fit: contain;
@@ -42,13 +42,13 @@
         width: 100%;
       }
     </style>
-    <elix-slideshow-with-controls id="sampleSlideshowWithControls" aria-label="Nature scenes">
+    <elix-slideshow-with-play-controls id="sampleslideshowWithPlayControls" aria-label="Nature scenes">
       <img class="slideshowItem" src="images/image01.jpg" alt="Mountain lake">
       <img class="slideshowItem" src="images/image02.jpg" alt="Terraced farm">
       <img class="slideshowItem" src="images/image03.jpg" alt="Winter trees">
       <img class="slideshowItem" src="images/image04.jpg" alt="Forest river">
       <img class="slideshowItem" src="images/image05.jpg" alt="Red panda">
-    </elix-slideshow-with-controls>
+    </elix-slideshow-with-play-controls>
   </div>
 </body>
 

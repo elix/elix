@@ -6,7 +6,6 @@ import './src/CountryListBox.js';
 import './src/FocusVisibleTest.js';
 import './src/IncrementDecrement.js';
 import './src/ModesWithKeyboard.js';
-import './src/BorderlessButton.js';
 import './src/SampleDialog.js';
 import './src/serene/SereneTabs.js';
 import './src/SingleSelectionDemo.js';

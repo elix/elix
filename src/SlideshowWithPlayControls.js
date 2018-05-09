@@ -27,7 +27,29 @@ const Base =
   ))))))))));
 
 
-class SlideshowWithControls extends Base {
+/**
+ * A [Slideshow](./Slideshow) that uses [PlayControlsMixin](PlayControlsMixin)
+ * to add buttons for controlling slideshow playback.
+ * 
+ * [Play controls let the user go back, pause/resume, or forward](/demos/slideshowWithPlayControls.html)
+ * 
+ * For a variation that uses standard carousel controls (arrows and page dots),
+ * see [CarouselSlideshow](CarouselSlideshow). For a more basic variation with
+ * no controls, see [Slideshow](Slideshow).
+ * 
+ * @inherits Slideshow
+ * @mixes AriaListMixin
+ * @mixes DirectionSelectionMixin
+ * @mixes FocusVisibleMixin
+ * @mixes KeyboardDirectionMixin
+ * @mixes KeyboardMixin
+ * @mixes LanguageDirectionMixin
+ * @mixes PlayControlsMixin
+ * @mixes SwipeDirectionMixin
+ * @mixes TouchSwipeMixin
+ * @mixes TrackpadSwipeMixin
+ */
+class SlideshowWithPlayControls extends Base {
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
@@ -49,5 +71,5 @@ class SlideshowWithControls extends Base {
 }
 
 
-customElements.define('elix-slideshow-with-controls', SlideshowWithControls);
-export default SlideshowWithControls;
+customElements.define('elix-slideshow-with-play-controls', SlideshowWithPlayControls);
+export default SlideshowWithPlayControls;
