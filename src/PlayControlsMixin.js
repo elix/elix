@@ -113,7 +113,7 @@ export default function PlayControlsMixin(Base) {
         </style>
 
         <div id="buttons">
-          <${controlButtonTag} class="controlButton" id="previousButton" aria-hidden="true">
+          <${controlButtonTag} class="controlButton" id="previousButton" aria-hidden="true" tabindex="-1">
             <slot name="previousButton">
               <svg class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
                 <g id="skip-previous">
@@ -122,7 +122,7 @@ export default function PlayControlsMixin(Base) {
               </svg>
             </slot>
           </${controlButtonTag}>
-          <${controlButtonTag} class="controlButton" id="playButton" aria-hidden="true">
+          <${controlButtonTag} class="controlButton" id="playButton" aria-hidden="true" tabindex="-1">
             <slot name="playButton">
               <svg id="playingIcon" class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
                 <g id="pause-circle-outline">
@@ -136,7 +136,7 @@ export default function PlayControlsMixin(Base) {
               </svg>
             </slot>
           </${controlButtonTag}>
-          <${controlButtonTag} class="controlButton" id="nextButton" aria-hidden="true">
+          <${controlButtonTag} class="controlButton" id="nextButton" aria-hidden="true" tabindex="-1">
             <slot name="nextButton">
               <svg class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
                 <g id="skip-next">
@@ -153,12 +153,13 @@ export default function PlayControlsMixin(Base) {
       `;
     }
 
+    // Pressing Space is the same as clicking the button.
     [symbols.keydown](event) {
       let handled;
 
       switch (event.keyCode) {
         case 32: /* Space */
-          this.playing = !this.playing;
+          this.click();
           handled = true;
           break;
       }

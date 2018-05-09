@@ -1,18 +1,20 @@
 import { merge } from './updates.js';
-import * as symbols from './symbols.js';
 import HoverMixin from './HoverMixin.js';
-import WrappedStandardElement from './WrappedStandardElement.js';
+import BorderlessButton from './BorderlessButton.js';
 
 
 const Base = 
   HoverMixin(
-    WrappedStandardElement.wrap('button')
+    BorderlessButton
   );
 
 
 /**
  * A button used by [ArrowDirectionMixin](ArrowDirectionMixin) for its
  * left/right arrow buttons.
+ * 
+ * @inherits BorderlessButton
+ * @mixes HoverMixin
  */
 class ArrowDirectionButton extends Base {
 
@@ -20,7 +22,9 @@ class ArrowDirectionButton extends Base {
     const style = Object.assign(
       {
         background: '',
-        color: 'rgba(255, 255, 255, 0.7)'
+        color: 'rgba(255, 255, 255, 0.7)',
+        fill: 'currentColor',
+        outline: 'none'
       },
       this.state.hover && !this.state.innerAttributes.disabled && {
         background: 'rgba(255, 255, 255, 0.2)',
@@ -32,38 +36,15 @@ class ArrowDirectionButton extends Base {
       }
     );
     return merge(super.updates, {
-      style
+      style,
+      $: {
+        inner: {
+          style: {
+            color: 'inherit'
+          }
+        }
+      }
     });
-  }
-
-  get [symbols.template]() {
-    return `
-      <style>
-        :host {
-          display: flex;
-          -webkit-tap-highlight-color: transparent;
-        }
-        
-        #inner {
-          background: transparent;
-          border: none;
-          box-sizing: border-box;
-          color: inherit;
-          fill: currentColor;
-          flex: 1;
-          font-family: inherit;
-          font-size: inherit;
-          font-weight: inherit;
-          margin: 0;
-          outline: none;
-          padding: 0;
-          position: relative;
-        }
-      </style>
-      <button id="inner">
-        <slot></slot>
-      </button>
-    `;
   }
 
 }
