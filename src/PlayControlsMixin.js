@@ -1,4 +1,4 @@
-import './QuietButton';
+import './BorderlessButton';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 
@@ -12,7 +12,7 @@ const controlButtonTagKey = Symbol('controlButtonTag');
  * playlist, etc.
  * 
  * @module PlayControlsMixin
- * @elementtag {QuietButton} controlButton
+ * @elementtag {BorderlessButton} controlButton
  */
 export default function PlayControlsMixin(Base) {
 
@@ -45,7 +45,7 @@ export default function PlayControlsMixin(Base) {
     get defaults() {
       return {
         tags: {
-          controlButton: 'elix-quiet-button'
+          controlButton: 'elix-borderless-button'
         }
       };
     }
@@ -54,7 +54,7 @@ export default function PlayControlsMixin(Base) {
      * The tag used to create the play control buttons.
      * 
      * @type {string}
-     * @default 'elix-quiet-button'
+     * @default 'elix-borderless-button'
      */
     get controlButtonTag() {
       return this[controlButtonTagKey];

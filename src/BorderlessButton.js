@@ -9,7 +9,7 @@ const Base =
   );
 
 
-class QuietButton extends Base {
+class BorderlessButton extends Base {
   get [symbols.template]() {
     return `
       <style>
@@ -37,5 +37,5 @@ class QuietButton extends Base {
 }
 
 
-customElements.define('elix-quiet-button', QuietButton);
-export default QuietButton;
+customElements.define('elix-borderless-button', BorderlessButton);
+export default BorderlessButton;

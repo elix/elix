@@ -1,5 +1,5 @@
 import './Drawer.js';
-import './QuietButton.js';
+import './BorderlessButton.js';
 import { merge } from './updates.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import ReactiveElement from './ReactiveElement.js';
@@ -23,7 +23,7 @@ const Base =
  * @inherits ReactiveElement
  * @mixes OpenCloseMixin
  * @elementtag {Drawer} menu
- * @elementtag {QuietButton} menuButton
+ * @elementtag {BorderlessButton} menuButton
  */
 export default class HamburgerMenuButton extends Base {
 
@@ -46,7 +46,7 @@ export default class HamburgerMenuButton extends Base {
     return {
       tags: {
         menu: 'elix-drawer',
-        menuButton: 'elix-quiet-button'
+        menuButton: 'elix-borderless-button'
       }
     };
   }
@@ -69,7 +69,7 @@ export default class HamburgerMenuButton extends Base {
    * The tag used to create the menu button element.
    * 
    * @type {string}
-   * @default 'elix-quiet-button'
+   * @default 'elix-borderless-button'
    */
   get menuButtonTag() {
     return this[menuButtonTagKey];
