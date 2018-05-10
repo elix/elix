@@ -93,7 +93,7 @@ export default class HamburgerMenuButton extends Base {
         }
 
         #menuButton {
-          display: block;
+          display: inline-flex;
           flex: 1;
         }
       </style>
