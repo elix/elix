@@ -318,6 +318,7 @@ class Explorer extends Base {
   get updates() {
     // Map the relative position of the list vis-a-vis the stage to a position
     // from the perspective of the list.
+    const proxyListHasPosition = 'position' in this.$.proxyList;
     const proxyListPosition = this.state.proxyListPosition;
     const lateralPosition = lateralPositions[proxyListPosition];
     const rightToLeft = this[symbols.rightToLeft];
@@ -335,6 +336,8 @@ class Explorer extends Base {
     }
 
     const selectedIndex = this.selectedIndex;
+    const proxyListHasSwipeFraction = 'swipeFraction' in this.$.proxyList;
+    const stageHasSwipeFraction = 'swipeFraction' in this.$.stage;
     const swipeFraction = this.state.swipeFraction;
 
     const listChildNodes = [this.$.proxySlot, ...this.state.defaultProxies];
@@ -366,17 +369,27 @@ class Explorer extends Base {
             'flex-direction': lateralPosition ? 'row' : 'column'
           },
         },
-        proxyList: {
-          childNodes: listChildNodes,
-          position,
-          selectedIndex,
-          style: listStyle,
-          swipeFraction
-        },
-        stage: {
-          selectedIndex,
-          swipeFraction
-        }
+        proxyList: Object.assign(
+          {
+            childNodes: listChildNodes,
+            selectedIndex,
+            style: listStyle
+          },
+          proxyListHasPosition && {
+            position
+          },
+          proxyListHasSwipeFraction && {
+            swipeFraction
+          }
+        ),
+        stage: Object.assign(
+          {
+            selectedIndex
+          },
+          stageHasSwipeFraction && {
+            swipeFraction
+          }
+        )
       }
     });
   }
