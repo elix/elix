@@ -93,8 +93,14 @@ export default class HamburgerMenuButton extends Base {
         }
 
         #menuButton {
-          display: inline-flex;
+          display: inline-block;
           flex: 1;
+        }
+
+        #hamburgerIcon {
+          /* For Edge */
+          height: 100%;
+          width: 100%;
         }
       </style>
       <${menuButtonTag} id="menuButton" aria-label="Open menu">

@@ -12,7 +12,7 @@ const Base =
 
 
 /**
- * A button with no border or background used for clickable subelements inside a
+ * A button with no border or background, used for clickable subelements inside a
  * more complex component.
  * 
  * @inherits WrappedStandardElement

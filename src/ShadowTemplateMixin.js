@@ -82,7 +82,7 @@ export default function ShadowTemplateMixin(Base) {
      * it.
      * 
      * These shadow element references are established the first time you read
-     * the `$` property. They are * _not_ updated if you subsequently modify the
+     * the `$` property. They are _not_ updated if you subsequently modify the
      * shadow tree yourself (to replace one item with another, to add new items
      * with `id` attributes, etc.).
      *
