@@ -1,4 +1,4 @@
-import './BorderlessButton';
+import './BorderlessButton.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 
@@ -66,6 +66,11 @@ export default function PlayControlsMixin(Base) {
       this[controlButtonTagKey] = controlButtonTag;
     }
     
+    /**
+     * Add the play controls to a template.
+     * 
+     * @param {string} template - the inner template placed inside the play controls container
+     */
     [inject](template) {
       const controlButtonTag = this.controlButtonTag || this.defaults.tags.controlButton;
       return `
@@ -117,7 +122,7 @@ export default function PlayControlsMixin(Base) {
         <div id="buttons">
           <${controlButtonTag} class="controlButton" id="previousButton" aria-hidden="true" tabindex="-1">
             <slot name="previousButton">
-              <svg class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+              <svg id="previousIcon" class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
                 <g id="skip-previous">
                   <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
                 </g>
@@ -140,7 +145,7 @@ export default function PlayControlsMixin(Base) {
           </${controlButtonTag}>
           <${controlButtonTag} class="controlButton" id="nextButton" aria-hidden="true" tabindex="-1">
             <slot name="nextButton">
-              <svg class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+              <svg id="nextIcon" class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
                 <g id="skip-next">
                   <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
                 </g>
@@ -172,8 +177,19 @@ export default function PlayControlsMixin(Base) {
 
     get updates() {
       const playing = this.playing;
+
+      const rightToLeft = this[symbols.rightToLeft];
+      const transform = rightToLeft ?
+        'rotate(180deg)' :
+        '';
+
       return merge(super.updates, {
         $: {
+          nextIcon: {
+            style: {
+              transform
+            }
+          },
           pausedIcon: {
             style: {
               display: playing ? 'none' : ''
@@ -183,7 +199,12 @@ export default function PlayControlsMixin(Base) {
             style: {
               display: playing ? '' : 'none'
             }
-          }
+          },
+          previousIcon: {
+            style: {
+              transform
+            }
+          },
         }
       })
     }
