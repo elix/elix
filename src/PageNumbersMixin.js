@@ -14,6 +14,11 @@ function PageNumbersMixin(Base) {
 
   class PageNumbers extends Base {
 
+    /**
+     * Add the page numbers to a template.
+     * 
+     * @param {string} template - the inner template placed inside the page numbers container
+     */
     [inject](template) {
       return `
         <style>

@@ -83,6 +83,11 @@ function ArrowDirectionMixin(Base) {
       });
     }
 
+    /**
+     * Add the arrow buttons to a template.
+     * 
+     * @param {string} template - the inner template placed inside the button container
+     */
     [inject](template) {
       const arrowButtonTag = this.arrowButtonTag || this.defaults.tags.arrowButton;
       return `
