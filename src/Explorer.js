@@ -1,3 +1,4 @@
+import './ListBox.js';
 import './Modes.js';
 import { apply, merge } from './updates.js';
 import * as symbols from './symbols.js';
@@ -40,7 +41,7 @@ const Base =
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin
  * @elementtag {HTMLDivElement} proxy
- * @elementtag {HTMLDivElement} proxyList
+ * @elementtag {ListBox} proxyList
  * @elementtag {Modes} stage
  */
 class Explorer extends Base {
@@ -76,7 +77,7 @@ class Explorer extends Base {
   get defaults() {
     return {
       tags: {
-        proxyList: 'div',
+        proxyList: 'elix-list-box',
         proxy: 'div',
         stage: 'elix-modes'
       }

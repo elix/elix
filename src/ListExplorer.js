@@ -1,4 +1,3 @@
-import './ListBox.js';
 import { merge } from './updates.js'
 import Explorer from './Explorer.js';
 
@@ -8,7 +7,6 @@ import Explorer from './Explorer.js';
  * [ListBox](ListBox).
  * 
  * @inherits Explorer
- * @elementtag {ListBox} proxyList
  */
 class ListExplorer extends Explorer {
 
@@ -16,15 +14,6 @@ class ListExplorer extends Explorer {
     return Object.assign({}, super.defaultState, {
       proxyListPosition: 'start',
       orientation: 'vertical'
-    });
-  }
-
-  get defaults() {
-    const base = super.defaults || {};
-    return Object.assign({}, base, {
-      tags: Object.assign({}, base.tags, {
-        proxyList: 'elix-list-box'
-      })
     });
   }
 
