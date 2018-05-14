@@ -12,14 +12,14 @@ const Base =
 
 
 /**
- * A button with no border or background, used for clickable subelements inside a
- * more complex component.
+ * A button with no border or background in its normal state, generally used for
+ * clickable subelements inside a more complex component.
  * 
  * @inherits WrappedStandardElement
  * @mixes FocusVisibleMixin
  * @mixes KeyboardMixin
  */
-class BorderlessButton extends Base {
+class SeamlessButton extends Base {
 
   // Pressing Space is the same as clicking the button.
   [symbols.keydown](event) {
@@ -67,5 +67,5 @@ class BorderlessButton extends Base {
 }
 
 
-customElements.define('elix-borderless-button', BorderlessButton);
-export default BorderlessButton;
+customElements.define('elix-seamless-button', SeamlessButton);
+export default SeamlessButton;

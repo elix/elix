@@ -1,11 +1,11 @@
 import { merge } from './updates.js';
 import HoverMixin from './HoverMixin.js';
-import BorderlessButton from './BorderlessButton.js';
+import SeamlessButton from './SeamlessButton.js';
 
 
 const Base = 
   HoverMixin(
-    BorderlessButton
+    SeamlessButton
   );
 
 
@@ -13,7 +13,7 @@ const Base =
  * A button used by [ArrowDirectionMixin](ArrowDirectionMixin) for its
  * left/right arrow buttons.
  * 
- * @inherits BorderlessButton
+ * @inherits SeamlessButton
  * @mixes HoverMixin
  */
 class ArrowDirectionButton extends Base {

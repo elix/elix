@@ -1,4 +1,4 @@
-import './BorderlessButton.js';
+import './SeamlessButton.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 
@@ -14,7 +14,7 @@ const controlButtonTagKey = Symbol('controlButtonTag');
  * [Play controls let the user go back, pause/resume, or forward](/demos/slideshowWithPlayControls.html)
  * 
  * @module PlayControlsMixin
- * @elementtag {BorderlessButton} controlButton
+ * @elementtag {SeamlessButton} controlButton
  */
 export default function PlayControlsMixin(Base) {
 
@@ -47,7 +47,7 @@ export default function PlayControlsMixin(Base) {
     get defaults() {
       return {
         tags: {
-          controlButton: 'elix-borderless-button'
+          controlButton: 'elix-seamless-button'
         }
       };
     }
@@ -56,7 +56,7 @@ export default function PlayControlsMixin(Base) {
      * The tag used to create the play control buttons.
      * 
      * @type {string}
-     * @default 'elix-borderless-button'
+     * @default 'elix-seamless-button'
      */
     get controlButtonTag() {
       return this[controlButtonTagKey];
