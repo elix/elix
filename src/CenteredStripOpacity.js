@@ -13,8 +13,19 @@ import CenteredStrip from './CenteredStrip.js';
  */
 class CenteredStripOpacity extends CenteredStrip {
   
+  componentDidMount() {
+    if (super.componentDidMount) { super.componentDidMount(); }
+    // Once everything's finished rendering, enable transition effects.
+    setTimeout(() => {
+      this.setState({
+        enableTransitions: true
+      });
+    });
+  }
+
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      enableTransitions: false,
       transitionDuration: 250
     });
   }
@@ -27,7 +38,7 @@ class CenteredStripOpacity extends CenteredStrip {
     const swipeFraction = this.state.swipeFraction || 0;
     const selectionFraction = sign * swipeFraction;
     const opacity = opacityForItemWithIndex(calcs.index, selectedIndex, selectionFraction);
-    const showTransition = !swiping;
+    const showTransition = this.state.enableTransitions && !swiping;
     const transitionDuration = this.state.transitionDuration / 1000;
     const transition = showTransition ? `opacity ${transitionDuration}s linear` : '';
 

@@ -64,14 +64,22 @@ class Drawer extends Base {
   
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
+
     // Implicitly close on background clicks.
     this.$.backdrop.addEventListener('click', async () => {
       this[symbols.raiseChangeEvents] = true;
       await this.close();
       this[symbols.raiseChangeEvents] = false;
     });
+
+    // Once everything's finished rendering, enable transition effects.
+    setTimeout(() => {
+      this.setState({
+        enableTransitions: true
+      });
+    });
   }
-    
+
   get defaults() {
     return {
       tags: {
@@ -83,6 +91,7 @@ class Drawer extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      enableTransitions: false,
       selectedIndex: 0
     });
   }
@@ -190,7 +199,8 @@ class Drawer extends Base {
     const translatePercentage = sign * translateFraction * 100;
 
     let duration = 0;
-    const showTransition = !swiping && effect && phase === 'during';
+    const showTransition = this.state.enableTransitions && !swiping && 
+        effect && phase === 'during';
     if (showTransition) {
       // The time require to show transitions depends on how far apart the
       // elements currently are from their desired state. As a reference point,
