@@ -87,13 +87,15 @@ export default class HamburgerMenuButton extends Base {
     return `
       <style>
         :host {
+          align-items: center;
           display: inline-flex;
           height: 1em;
           width: 1em;
         }
 
         #menuButton {
-          display: inline-block;
+          align-items: center;
+          display: inline-flex;
           flex: 1;
         }
 

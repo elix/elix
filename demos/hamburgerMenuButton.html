@@ -13,12 +13,13 @@
   <script nomodule src="../build/demos.js"></script>
 
   <style>
-    body {
-      padding: 0;
+    html {
+      height: 100%;
     }
 
-    .demo {
-      display: block;
+    body {
+      height: 100%;
+      padding: 0;
     }
   </style>
 
@@ -26,12 +27,29 @@
 
 <body role="main" unresolved>
   <div class="demo fullScreen portrait">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
+      #sampleContent {
+        flex: 1;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch; /* for momentum scrolling */
+      }
+
+      p {
+        margin: 1em;
+      }
+
       #sampleToolbar {
+        align-items: center;
         background: #e0e0e0;
-        font-size: 16px;
-        position: sticky;
-        top: 0;
+        bottom: 0;
+        display: flex;
+        font-size: 18px;
+        padding: 1em 1em;
+      }
+
+      #hamburgerMenuButton {
+        font-size: 24px;
       }
 
       .toolbarButton {
@@ -41,32 +59,15 @@
 
       a.toolbarButton {
         color: inherit;
+        font-size: 16px;
         text-decoration: none;
       }
 
-      #hamburgerMenuButton {
-        height: 24px;
-        padding: 1em;
-        width: 24px;
-      }
-
-      #sampleContent {
-        overflow: auto;
-      }
-
-      p {
-        margin: 1em;
+      #logo {
+        flex: 1;
+        text-align: center;
       }
     </style>
-    <div id="sampleToolbar">
-      <elix-hamburger-menu-button id="hamburgerMenuButton">
-        <a class="toolbarButton" onclick="hamburgerMenuButton.close()" href="javascript:">Home</a>
-        <a class="toolbarButton" onclick="hamburgerMenuButton.close()" href="javascript:">Products</a>
-        <a class="toolbarButton" onclick="hamburgerMenuButton.close()" href="javascript:">Search</a>
-        <a class="toolbarButton" onclick="hamburgerMenuButton.close()" href="javascript:">Account</a>
-        <a class="toolbarButton" onclick="hamburgerMenuButton.close()" href="javascript:">About Us</a>  
-      </elix-hamburger-menu-button>
-    </div>
     <div id="sampleContent">
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit amet
@@ -102,6 +103,19 @@
         sem elementum, luctus nisi ac, volutpat ex. Curabitur auctor bibendum
         placerat. Aenean maximus ante nulla, eget vehicula tortor sagittis a.
       </p>
+    </div>
+    <div id="sampleToolbar">
+      <elix-hamburger-menu-button id="hamburgerMenuButton">
+        <a class="toolbarButton" onclick="hamburgerMenuButton.close()" href="javascript:">Home</a>
+        <a class="toolbarButton" onclick="hamburgerMenuButton.close()" href="javascript:">Products</a>
+        <a class="toolbarButton" onclick="hamburgerMenuButton.close()" href="javascript:">Search</a>
+        <a class="toolbarButton" onclick="hamburgerMenuButton.close()" href="javascript:">Account</a>
+        <a class="toolbarButton" onclick="hamburgerMenuButton.close()" href="javascript:">About Us</a>  
+      </elix-hamburger-menu-button>
+      <div id="logo">
+        LOGO
+      </div>
+      <div id="searchIcon" class="material-icons">search</div>
     </div>
   </div>
 
