@@ -102,6 +102,7 @@ export function apply(element, updates) {
     } else {
       // Property with no special apply function; just set the property.
       if (!(key in element)) {
+        /* eslint-disable no-console */
         console.warn(`Warning: attempted to set the "${key}" property of a ${element.localName}, which does not have such a property.`);
       }
       element[key] = value;
