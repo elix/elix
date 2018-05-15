@@ -16,12 +16,55 @@
 
 <body role="main" unresolved>
   <div class="demo padded">
-    <elix-popup-source id="samplePopup">
-      Open popup
-      <div slot="popup">
-        Here's a popup.
-      </div>
-    </elix-popup-source>
+    <style>
+      .buttonRow {
+        margin: 1em 0;
+      }
+      
+      .nowrap {
+        white-space: nowrap;
+      }
+    </style>
+    <div class="buttonRow">
+      <elix-popup-source>
+        Open below left
+        <div slot="popup" class="nowrap">
+          Here's a popup.
+        </div>
+      </elix-popup-source>
+      <elix-popup-source>
+        Open below stretch
+        <div slot="popup" horizontal-align="stretch">
+          Here's a popup.
+        </div>
+      </elix-popup-source>
+      <elix-popup-source horizontal-align="right">
+        Open below right
+        <div slot="popup" class="nowrap">
+          Here's a popup.
+        </div>
+      </elix-popup-source>
+    </div>
+    <div class="buttonRow">
+      <elix-popup-source preferred-position="above">
+        Open above left
+        <div slot="popup" class="nowrap">
+          Here's a popup.
+        </div>
+      </elix-popup-source>
+      <elix-popup-source preferred-position="above" horizontal-align="stretch">
+        Open above stretch
+        <div slot="popup">
+          Here's a popup.
+        </div>
+      </elix-popup-source>
+      <elix-popup-source preferred-position="above" horizontal-align="right">
+        Open above right
+        <div slot="popup" class="nowrap">
+          Here's a popup.
+        </div>
+      </elix-popup-source>
+    </div>
   </div>
   
 </body>
