@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PopupSource</title>
+
+  <link rel="stylesheet" href="demos.css">
+  <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="./src/showElementsWhenDefined.js"></script>
+  <script type="module" src="../src/PopupSource.js"></script>
+  <script nomodule src="../build/demos.js"></script>
+
+</head>
+
+<body role="main" unresolved>
+  <div class="demo padded">
+    <elix-popup-source id="samplePopup">
+      Open popup
+      <div slot="popup">
+        Here's a popup.
+      </div>
+    </elix-popup-source>
+  </div>
+  
+</body>
+
+</html>

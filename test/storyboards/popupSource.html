@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PopupSource storyboard</title>
+
+  <link rel="stylesheet" href="../../demos/demos.css">
+  <script src="../../demos/node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script type="module" src="./RenderState.js"></script>
+  <script type="module" src="../../src/PopupSource.js"></script>
+  <script nomodule src="../../build/demos.js"></script>
+
+  <style>
+    body {
+      padding: 3em 5em;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <h1>PopupSource storyboard</h1>
+
+  <render-state>
+    <elix-popup-source slot="fixture">
+      Click me
+      <div slot="popup">
+        Popup
+      </div>
+    </elix-popup-source>
+    <p>
+      Default closed state
+    </p>
+  </render-state>
+
+  <render-state fixture-state='{"opened": true}'>
+    <elix-popup-source slot="fixture">
+      Click me
+      <div slot="popup">
+        Popup
+      </div>
+    </elix-popup-source>
+    <p>
+      Default opened state is below, left aligned
+    </p>
+  </render-state>
+  
+</body>
+
+</html>

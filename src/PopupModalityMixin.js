@@ -110,8 +110,8 @@ export default function PopupModalityMixin(Base) {
 
 
 function addEventListeners(element) {
-  document.addEventListener('click', element[closeListenerKey]);
   document.addEventListener('keydown', element[closeListenerKey]);
+  document.addEventListener('mousedown', element[closeListenerKey]);
   window.addEventListener('blur', element[closeListenerKey]);
   window.addEventListener('resize', element[closeListenerKey]);
   window.addEventListener('scroll', element[closeListenerKey]);
@@ -120,8 +120,8 @@ function addEventListeners(element) {
 
 // Stop closing on window blur/resize/scroll.
 function removeEventListeners(element) {
-  document.removeEventListener('click', element[closeListenerKey]);
   document.removeEventListener('keydown', element[closeListenerKey]);
+  document.removeEventListener('mousedown', element[closeListenerKey]);
   window.removeEventListener('blur', element[closeListenerKey]);
   window.removeEventListener('resize', element[closeListenerKey]);
   window.removeEventListener('scroll', element[closeListenerKey]);
