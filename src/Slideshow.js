@@ -17,8 +17,9 @@ const Base =
  * to the document, and then advance every 3 seconds.
  *
  * This component provides no interactivity of its own. For an interactive
- * version, see [SlideshowWithPlayControls](SlideshowWithPlayControls). To incorporate
- * slideshow behavior into a component of your own, apply
+ * version, see [SlideshowWithPlayControls](SlideshowWithPlayControls) or
+ * [CarouselSlideshow](CarouselSlideshow). To incorporate slideshow behavior
+ * into a component of your own, apply
  * [TimerSelectionMixin](TimerSelectionMixin).
  * 
  * @inherits CrossfadeStage

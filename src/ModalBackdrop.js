@@ -1,41 +1,21 @@
 import { merge } from './updates.js';
-import * as symbols from './symbols.js';
-import ReactiveElement from './ReactiveElement.js';
+import Backdrop from './Backdrop.js';
 
 
 /**
  * A simple backdrop for a modal overlay such as a [Dialog](Dialog) or
  * [Drawer](Drawer). The backdrop slightly obscures the background elements,
- * focusing the user's attention on the overlay. It also contributes to the
- * modality by absorbing background clicks.
+ * focusing the user's attention on the overlay.
  * 
  * @inherits ReactiveElement
  */
-class ModalBackdrop extends ReactiveElement {
-
-  get [symbols.template]() {
-    return `
-      <style>
-        :host {
-          background: black;
-          height: 100%;
-          left: 0;
-          opacity: 0.2;
-          position: absolute;
-          top: 0;
-          width: 100%;
-        }
-      </style>
-      <slot></slot>
-    `;
-  }
+class ModalBackdrop extends Backdrop {
 
   get updates() {
-    const base = super.updates || {};
-    const role = base.attributes && base.attributes.role || 'none';
-    return merge(base, {
-      attributes: {
-        role
+    return merge(super.updates, {
+      style: {
+        background: 'black',
+        opacity: 0.2
       }
     });
   }

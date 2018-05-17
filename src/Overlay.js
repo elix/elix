@@ -100,7 +100,6 @@ class Overlay extends Base {
           justify-content: center;
           left: 0;
           outline: none;
-          pointer-events: none;
           position: fixed;
           top: 0;
           -webkit-tap-highlight-color: transparent;

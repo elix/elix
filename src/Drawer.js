@@ -209,10 +209,6 @@ class Drawer extends Base {
       /** @type {any} */
       const backdrop = this.$.backdrop;
       const opacityCurrent = parseFloat(backdrop.style.opacity) || 0;
-      // const opacityStart = effect === 'open' ? 0 : maxOpacity;
-      // const opacityEnd = opacity;
-      // const opacityRange = Math.abs(opacityEnd - opacityStart);
-      // const opacityProgress = Math.abs(opacityCurrent - opacityStart) / opacityRange;
       const opacityRemaining = Math.abs(opacityCurrent - opacity);
       const fullDuration = 0.25; // Quarter second
       duration = opacityRemaining / maxOpacity * fullDuration;

@@ -17,10 +17,9 @@ const closeListenerKey = Symbol('closeListener');
  * 
  * The mixin provides these features to the component:
  * 
- * * Event handlers that close the element if the user clicks outside the
- *   element, presses the Esc key, moves the focus outside the element, scrolls
- *   the document, resizes the document, or switches focus away from the
- *   document.
+ * * Event handlers that close the element presses the Esc key, moves the focus
+ *   outside the element, scrolls the document, resizes the document, or
+ *   switches focus away from the document.
  * * A default ARIA role of `alert`.
  * 
  * For modal overlays, use `DialogModalityMixin` instead. See the documentation
@@ -111,17 +110,14 @@ export default function PopupModalityMixin(Base) {
 
 function addEventListeners(element) {
   document.addEventListener('keydown', element[closeListenerKey]);
-  document.addEventListener('mousedown', element[closeListenerKey]);
   window.addEventListener('blur', element[closeListenerKey]);
   window.addEventListener('resize', element[closeListenerKey]);
   window.addEventListener('scroll', element[closeListenerKey]);
 }
 
 
-// Stop closing on window blur/resize/scroll.
 function removeEventListeners(element) {
   document.removeEventListener('keydown', element[closeListenerKey]);
-  document.removeEventListener('mousedown', element[closeListenerKey]);
   window.removeEventListener('blur', element[closeListenerKey]);
   window.removeEventListener('resize', element[closeListenerKey]);
   window.removeEventListener('scroll', element[closeListenerKey]);
