@@ -11,11 +11,11 @@
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
   <script type="module" src="../src/PopupSource.js"></script>
   <script nomodule src="../build/demos.js"></script>
-
+  
 </head>
 
 <body role="main" unresolved>
-  <div class="demo padded">
+  <div class="demo padded fullScreen">
     <style>
       .buttonRow {
         margin: 1em 0;
@@ -23,6 +23,12 @@
       
       .nowrap {
         white-space: nowrap;
+      }
+
+      #lowerRightButton {
+        bottom: 1em;
+        position: fixed;
+        right: 1em;
       }
     </style>
     <div class="buttonRow">
@@ -65,6 +71,12 @@
         </div>
       </elix-popup-source>
     </div>
+    <elix-popup-source id="lowerRightButton">
+        Open below right (insufficient room)
+        <div slot="popup" class="nowrap">
+          Here's a popup.
+        </div>
+    </elix-popup-source>
   </div>
   
 </body>
