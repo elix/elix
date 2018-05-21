@@ -18,7 +18,11 @@ class PopupSource extends Base {
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
     this.$.button.addEventListener('mousedown', event => {
-      if (!this.opened) {
+      // Only handle primary button mouse down to avoid interfering with
+      // right-click behavior.
+      /** @type {any} */
+      const cast = event;
+      if (cast.button === 0 && !this.opened) {
         setTimeout(() => {
           this[symbols.raiseChangeEvents] = true;
           this.open()
@@ -38,6 +42,11 @@ class PopupSource extends Base {
         this[symbols.raiseChangeEvents] = false;
       }
     });
+  }
+
+  componentDidUpdate(previousState) {
+    if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
+    
   }
 
   get defaultState() {
@@ -131,7 +140,12 @@ class PopupSource extends Base {
       'background-color': this.state.opened ? 'highlight' : ''
     };
 
-    const positionBelow = this.state.preferredPosition === 'below';
+    const preferPositionBelow = this.state.preferredPosition === 'below';
+    // const fitsBelow = popupFitsBelow();
+    // const fitsAbove = popupFitsAbove();
+    // const positionBelow = preferPositionBelow && (fitsBelow || !fitsAbove) ||
+    //   !preferPositionBelow && !fitsAbove && fitsBelow;
+    const positionBelow = preferPositionBelow;
 
     const popupContainerStyle = positionBelow ?
       {
