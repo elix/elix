@@ -28,22 +28,38 @@
 <body role="main" unresolved>
   <div class="demo padded fullScreen">
     <style>
+      .popup {
+        align-items: center;
+        display: flex;
+        height: 200px;
+        justify-content: center;
+      }
+
+      .wide {
+        width: 300px;
+      }
+
       .nowrap {
         white-space: nowrap;
       }
 
-      #halfwayDown {
-        top: calc(50% - 180px);
+      #quarterDown {
+        top: 25%;
         position: relative;
       }
 
-      #upperRightButton {
+      #halfwayDown {
+        top: calc(50% - 75px);
+        position: relative;
+      }
+
+      #upperRightButtons {
         top: 1em;
         position: fixed;
         right: 1em;
       }
 
-      #lowerRightButton {
+      #lowerRightButtons {
         bottom: 1em;
         position: fixed;
         right: 1em;
@@ -52,39 +68,39 @@
     <div class="buttonRow">
       <elix-popup-source>
         Open below left
-        <div slot="popup" class="nowrap">
+        <div slot="popup" class="popup nowrap">
           Here's a popup.
         </div>
       </elix-popup-source>
       <elix-popup-source>
         Open below stretch
-        <div slot="popup" horizontal-align="stretch">
+        <div slot="popup" class="popup" horizontal-align="stretch">
           Here's a popup.
         </div>
       </elix-popup-source>
       <elix-popup-source horizontal-align="right">
         Open below right
-        <div slot="popup" class="nowrap">
+        <div slot="popup" class="popup nowrap">
           Here's a popup.
         </div>
       </elix-popup-source>
     </div>
-    <div class="buttonRow" style="margin-top: 100px;">
+    <div class="buttonRow" id="quarterDown">
       <elix-popup-source popup-position="above">
         Open above left
-        <div slot="popup" class="nowrap">
+        <div slot="popup" class="popup nowrap">
           Here's a popup.
         </div>
       </elix-popup-source>
       <elix-popup-source popup-position="above" horizontal-align="stretch">
         Open above stretch
-        <div slot="popup">
+        <div slot="popup" class="popup">
           Here's a popup.
         </div>
       </elix-popup-source>
       <elix-popup-source popup-position="above" horizontal-align="right">
         Open above right
-        <div slot="popup" class="nowrap">
+        <div slot="popup" class="popup nowrap">
           Here's a popup.
         </div>
       </elix-popup-source>
@@ -92,23 +108,39 @@
     <div class="buttonRow" id="halfwayDown">
       <elix-popup-source>
         Open below left (force scroll)
-        <div slot="popup" class="nowrap">
+        <div slot="popup" class="popup nowrap">
           Here's a popup.
         </div>
       </elix-popup-source>
     </div>
-    <elix-popup-source id="upperRightButton" popup-position="above">
-      Open above right (insufficient room)
-      <div slot="popup" class="nowrap">
-        Here's a popup.
-      </div>
-    </elix-popup-source>
-    <elix-popup-source id="lowerRightButton">
-      Open below right (insufficient room)
-      <div slot="popup" class="nowrap">
-        Here's a popup.
-      </div>
-    </elix-popup-source>
+    <div id="upperRightButtons">
+      <elix-popup-source popup-position="above">
+        Open above (no room above)
+        <div slot="popup" class="popup wide nowrap">
+          Here's a popup.
+        </div>
+      </elix-popup-source>
+      <elix-popup-source popup-position="above">
+        Open above (no room above or right)
+        <div slot="popup" class="popup wide nowrap">
+          Here's a popup.
+        </div>
+      </elix-popup-source>
+    </div>
+    <div id="lowerRightButtons">
+      <elix-popup-source>
+        Open below (no room below)
+        <div slot="popup" class="popup wide nowrap">
+          Here's a popup.
+        </div>
+      </elix-popup-source>
+      <elix-popup-source>
+        Open below (no room below or right)
+        <div slot="popup" class="popup wide nowrap">
+          Here's a popup.
+        </div>
+      </elix-popup-source>
+    </div>
   </div>
   
 </body>

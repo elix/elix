@@ -17,6 +17,9 @@ class PopupSource extends Base {
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
+    // Desktop popups generally open on mousedown, not click/mouseup. On mobile,
+    // mousedown won't fire until the user releases their finger, so it behaves
+    // like a click.
     this.$.button.addEventListener('mousedown', event => {
       // Only handle primary button mouse down to avoid interfering with
       // right-click behavior.
@@ -49,12 +52,10 @@ class PopupSource extends Base {
     if (this.state.opened && !previousState.opened) {
       // Wait a tick to let the newly-opened component actually render.
       setTimeout(() => {
-        // See if the rendered component fits above or below the source.
-        const { fitsAbove, fitsBelow } = checkPopupFits(this, this.$.popup);
-        this.setState({
-          fitsAbove,
-          fitsBelow
-        });
+        // See if the rendered component fits above/below/left/right w.r.t. the
+        // source.
+        const fits = checkPopupFits(this, this.$.popup);
+        this.setState(fits);
       });
     }
   }
@@ -63,6 +64,8 @@ class PopupSource extends Base {
     return Object.assign({}, super.defaultState, {
       fitsAbove: true,
       fitsBelow: true,
+      fitsLeft: true,
+      fitsRight: true,
       horizontalAlign: 'left',
       popupPosition: 'below'
     });
@@ -104,12 +107,15 @@ class PopupSource extends Base {
 
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
-    if (state.opened && !this.opened && (!state.fitsAbove || !state.fitsBelow)) {
+    if (state.opened && !this.opened &&
+        (!state.fitsAbove || !state.fitsBelow || !state.fitsLeft || !state.fitsRight)) {
       // Reset our expectations of whether the opening component will fit above
       // and below. Assume it will fit in either direction.
       Object.assign(state, {
         fitsAbove: true,
-        fitsBelow: true
+        fitsBelow: true,
+        fitsLeft: true,
+        fitsRight: true
       });
       result = false;
     }
@@ -129,6 +135,7 @@ class PopupSource extends Base {
           background-color: transparent;
           border-style: solid;
           display: block;
+          margin: 0;
         }
 
         #popupContainer {
@@ -167,10 +174,16 @@ class PopupSource extends Base {
     };
 
     const preferPositionBelow = this.state.popupPosition === 'below';
-    const { fitsAbove, fitsBelow } = this.state;
+    const { fitsAbove, fitsBelow, fitsLeft, fitsRight } = this.state;
+
+    // If we're requested to position the popup below, we do so if there's room
+    // below; if not, we position above if there's room above. If there's no
+    // room in either direction, we position below.
+    // Same general rule applies if we're requested to position above.
     const positionBelow = preferPositionBelow && (fitsBelow || !fitsAbove) ||
       !preferPositionBelow && !fitsAbove && fitsBelow;
 
+    // Position container.
     const popupContainerStyle = positionBelow ?
       {
         bottom: '',
@@ -182,22 +195,30 @@ class PopupSource extends Base {
         position: 'absolute',
         top: 0
       };
-    
-    const popupStyle = positionBelow ?
-      {
-        bottom: ''
-      } :
-      {
-        bottom: 0
-      };
-    
+
+    // Position popup.
+    const bottom = positionBelow ? '' : 0;
+
+    let left;
+    let right;
     const horizontalAlign = this.state.horizontalAlign;
-    popupStyle.left = horizontalAlign === 'left' || horizontalAlign === 'stretch' ?
-      '0' :
-      '';
-    popupStyle.right = horizontalAlign === 'right' || horizontalAlign === 'stretch' ?
-      '0' :
-      '';
+    if (horizontalAlign === 'stretch') {
+      left = 0;
+      right = 0;
+    } else {
+      const preferLeftAlign = horizontalAlign === 'left';
+      // The above/below preference rules also apply to left/right positioning.
+      const positionLeft = preferLeftAlign && (fitsRight || !fitsLeft) ||
+        !preferLeftAlign && !fitsRight && fitsLeft;
+      left = positionLeft ? 0 : '';
+      right = !positionLeft ? 0 : '';
+    }
+
+    const popupStyle = {
+      bottom,
+      left,
+      right
+    };
 
     return merge(super.updates, {
       $: {
@@ -223,9 +244,13 @@ function checkPopupFits(source, popup) {
   const popupRect = popup.getBoundingClientRect();
   const fitsAbove = sourceRect.top >= popupRect.height;
   const fitsBelow = sourceRect.bottom + popupRect.height <= window.innerHeight;
+  const fitsLeft = sourceRect.right >= popupRect.width;
+  const fitsRight = sourceRect.left + popupRect.width <= window.innerWidth;
   return {
     fitsAbove,
-    fitsBelow
+    fitsBelow,
+    fitsLeft,
+    fitsRight
   };
 }
 
