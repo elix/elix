@@ -46,13 +46,25 @@ class PopupSource extends Base {
 
   componentDidUpdate(previousState) {
     if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-    
+    if (this.state.opened && !previousState.opened) {
+      // Wait a tick to let the newly-opened component actually render.
+      setTimeout(() => {
+        // See if the rendered component fits above or below the source.
+        const { fitsAbove, fitsBelow } = checkPopupFits(this, this.$.popup);
+        this.setState({
+          fitsAbove,
+          fitsBelow
+        });
+      });
+    }
   }
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      fitsAbove: true,
+      fitsBelow: true,
       horizontalAlign: 'left',
-      preferredPosition: 'below'
+      popupPosition: 'below'
     });
   }
 
@@ -81,13 +93,27 @@ class PopupSource extends Base {
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
   }
 
-  get preferredPosition() {
-    return this.state.preferredPosition;
+  get popupPosition() {
+    return this.state.popupPosition;
   }
-  set preferredPosition(preferredPosition) {
+  set popupPosition(popupPosition) {
     this.setState({
-      preferredPosition
+      popupPosition
     });
+  }
+
+  refineState(state) {
+    let result = super.refineState ? super.refineState(state) : true;
+    if (state.opened && !this.opened && (!state.fitsAbove || !state.fitsBelow)) {
+      // Reset our expectations of whether the opening component will fit above
+      // and below. Assume it will fit in either direction.
+      Object.assign(state, {
+        fitsAbove: true,
+        fitsBelow: true
+      });
+      result = false;
+    }
+    return result;
   }
 
   // TODO: Tags for popup and source
@@ -140,12 +166,10 @@ class PopupSource extends Base {
       'background-color': this.state.opened ? 'highlight' : ''
     };
 
-    const preferPositionBelow = this.state.preferredPosition === 'below';
-    // const fitsBelow = popupFitsBelow();
-    // const fitsAbove = popupFitsAbove();
-    // const positionBelow = preferPositionBelow && (fitsBelow || !fitsAbove) ||
-    //   !preferPositionBelow && !fitsAbove && fitsBelow;
-    const positionBelow = preferPositionBelow;
+    const preferPositionBelow = this.state.popupPosition === 'below';
+    const { fitsAbove, fitsBelow } = this.state;
+    const positionBelow = preferPositionBelow && (fitsBelow || !fitsAbove) ||
+      !preferPositionBelow && !fitsAbove && fitsBelow;
 
     const popupContainerStyle = positionBelow ?
       {
@@ -191,6 +215,18 @@ class PopupSource extends Base {
     });
   }
 
+}
+
+
+function checkPopupFits(source, popup) {
+  const sourceRect = source.getBoundingClientRect();
+  const popupRect = popup.getBoundingClientRect();
+  const fitsAbove = sourceRect.top >= popupRect.height;
+  const fitsBelow = sourceRect.bottom + popupRect.height <= window.innerHeight;
+  return {
+    fitsAbove,
+    fitsBelow
+  };
 }
 
 

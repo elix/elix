@@ -7,9 +7,9 @@ import * as symbols from './symbols.js';
 
 const Base =
   KeyboardMixin(
-  PopupModalityMixin(
+  // PopupModalityMixin(
     Overlay
-  ));
+  );
 
 
 /**

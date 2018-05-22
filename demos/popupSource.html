@@ -11,18 +11,36 @@
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
   <script type="module" src="../src/PopupSource.js"></script>
   <script nomodule src="../build/demos.js"></script>
+
+  <style>
+    html {
+      height: 100%;
+    }
+
+    body {
+      height: 200%; /* So we can test scrolling */
+      padding: 0;
+    }
+  </style>
   
 </head>
 
 <body role="main" unresolved>
   <div class="demo padded fullScreen">
     <style>
-      .buttonRow {
-        margin: 1em 0;
-      }
-      
       .nowrap {
         white-space: nowrap;
+      }
+
+      #halfwayDown {
+        top: calc(50% - 180px);
+        position: relative;
+      }
+
+      #upperRightButton {
+        top: 1em;
+        position: fixed;
+        right: 1em;
       }
 
       #lowerRightButton {
@@ -51,31 +69,45 @@
         </div>
       </elix-popup-source>
     </div>
-    <div class="buttonRow">
-      <elix-popup-source preferred-position="above">
+    <div class="buttonRow" style="margin-top: 100px;">
+      <elix-popup-source popup-position="above">
         Open above left
         <div slot="popup" class="nowrap">
           Here's a popup.
         </div>
       </elix-popup-source>
-      <elix-popup-source preferred-position="above" horizontal-align="stretch">
+      <elix-popup-source popup-position="above" horizontal-align="stretch">
         Open above stretch
         <div slot="popup">
           Here's a popup.
         </div>
       </elix-popup-source>
-      <elix-popup-source preferred-position="above" horizontal-align="right">
+      <elix-popup-source popup-position="above" horizontal-align="right">
         Open above right
         <div slot="popup" class="nowrap">
           Here's a popup.
         </div>
       </elix-popup-source>
     </div>
-    <elix-popup-source id="lowerRightButton">
-        Open below right (insufficient room)
+    <div class="buttonRow" id="halfwayDown">
+      <elix-popup-source>
+        Open below left (force scroll)
         <div slot="popup" class="nowrap">
           Here's a popup.
         </div>
+      </elix-popup-source>
+    </div>
+    <elix-popup-source id="upperRightButton" popup-position="above">
+      Open above right (insufficient room)
+      <div slot="popup" class="nowrap">
+        Here's a popup.
+      </div>
+    </elix-popup-source>
+    <elix-popup-source id="lowerRightButton">
+      Open below right (insufficient room)
+      <div slot="popup" class="nowrap">
+        Here's a popup.
+      </div>
     </elix-popup-source>
   </div>
   
