@@ -1,3 +1,4 @@
+import './Backdrop.js';
 import './OverlayFrame.js';
 import * as symbols from './symbols.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
@@ -31,6 +32,7 @@ const Base =
  * @inherits ReactiveElement
  * @mixes OpenCloseMixin
  * @mixes OverlayMixin
+ * @elementtag {Backdrop} backdrop
  * @elementtag {OverlayFrame} frame
  */
 class Overlay extends Base {
@@ -38,7 +40,7 @@ class Overlay extends Base {
   get defaults() {
     return {
       tags: {
-        backdrop: '',
+        backdrop: 'elix-backdrop',
         frame: 'elix-overlay-frame'
       }
     };

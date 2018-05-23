@@ -1,4 +1,3 @@
-import './Backdrop';
 import Overlay from './Overlay.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import PopupModalityMixin from './PopupModalityMixin.js';
@@ -30,15 +29,6 @@ class Popup extends Base {
       this[symbols.raiseChangeEvents] = false;
       event.preventDefault();
       event.stopPropagation();
-    });
-  }
-
-  get defaults() {
-    const base = super.defaults;
-    return Object.assign({}, base, {
-      tags: Object.assign({}, base.tags, {
-        backdrop: 'elix-backdrop'
-      })
     });
   }
 
