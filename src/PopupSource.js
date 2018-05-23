@@ -32,7 +32,6 @@ class PopupSource extends Base {
           this[symbols.raiseChangeEvents] = false;
         });
         event.stopPropagation();
-        event.preventDefault();
       }
     });
     this.$.popup.addEventListener('opened-changed', event => {
