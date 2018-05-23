@@ -53,14 +53,21 @@ class PopupSource extends Base {
       setTimeout(() => {
         // See if the rendered component fits above/below/left/right w.r.t. the
         // source.
-        const fits = checkPopupFits(this, this.$.popup);
-        this.setState(fits);
+        const { fitsAbove, fitsBelow, fitsLeft, fitsRight } = checkPopupFits(this, this.$.popup);
+        this.setState({
+          fitChecked: true,
+          fitsAbove,
+          fitsBelow,
+          fitsLeft,
+          fitsRight
+        });
       });
     }
   }
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      fitChecked: false,
       fitsAbove: true,
       fitsBelow: true,
       fitsLeft: true,
@@ -111,6 +118,7 @@ class PopupSource extends Base {
       // Reset our expectations of whether the opening component will fit above
       // and below. Assume it will fit in either direction.
       Object.assign(state, {
+        fitChecked: false,
         fitsAbove: true,
         fitsBelow: true,
         fitsLeft: true,
@@ -173,7 +181,7 @@ class PopupSource extends Base {
     };
 
     const preferPositionBelow = this.state.popupPosition === 'below';
-    const { fitsAbove, fitsBelow, fitsLeft, fitsRight } = this.state;
+    const { fitChecked, fitsAbove, fitsBelow, fitsLeft, fitsRight } = this.state;
 
     // If we're requested to position the popup below, we do so if there's room
     // below; if not, we position above if there's room above. If there's no
@@ -213,10 +221,15 @@ class PopupSource extends Base {
       right = !positionLeft ? 0 : '';
     }
 
+    // Until we've checked the rendered position of the popup, keep it in the
+    // layout but don't make it visible yet.
+    const visibility = fitChecked ? '' : 'hidden';
+
     const popupStyle = {
       bottom,
       left,
-      right
+      right,
+      visibility
     };
 
     return merge(super.updates, {
