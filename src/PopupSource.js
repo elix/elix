@@ -1,9 +1,14 @@
 import './Popup.js';
+import './PopupFrame.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import ReactiveElement from './ReactiveElement.js';
+
+const backdropTagKey = Symbol('backdropTag');
+const frameTagKey = Symbol('frameTag');
+const popupTagKey = Symbol('popupTag');
 
 
 const Base =
@@ -13,7 +18,20 @@ const Base =
   ));
 
 
+/**
+ * @elementtag {Backdrop} backdrop
+ * @elementtag {OverlayFrame} frame
+ * @elementtag {Popup} popup
+ */
 class PopupSource extends Base {
+
+  get backdropTag() {
+    return this[backdropTagKey];
+  }
+  set backdropTag(backdropTag) {
+    this[symbols.hasDynamicTemplate] = true;
+    this[backdropTagKey] = backdropTag;
+  }
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
@@ -65,6 +83,16 @@ class PopupSource extends Base {
     }
   }
 
+  get defaults() {
+    return {
+      tags: {
+        backdrop: 'elix-backdrop',
+        frame: 'elix-popup-frame', // TODO: Move to Popup
+        popup: 'elix-popup'
+      }
+    };
+  }
+
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       fitChecked: false,
@@ -75,6 +103,14 @@ class PopupSource extends Base {
       horizontalAlign: 'left',
       popupPosition: 'below'
     });
+  }
+
+  get frameTag() {
+    return this[frameTagKey];
+  }
+  set frameTag(frameTag) {
+    this[symbols.hasDynamicTemplate] = true;
+    this[frameTagKey] = frameTag;
   }
 
   // TODO: 'start', 'end'
@@ -111,6 +147,25 @@ class PopupSource extends Base {
     });
   }
 
+  get popupTag() {
+    return this[popupTagKey];
+  }
+  set popupTag(popupTag) {
+    this[symbols.hasDynamicTemplate] = true;
+    this[popupTagKey] = popupTag;
+  }
+
+  get popupTemplate() {
+    const backdropTag = this.backdropTag || this.defaults.tags.backdrop;
+    const frameTag = this.frameTag || this.defaults.tags.frame;
+    const popupTag = this.popupTag || this.defaults.tags.popup;
+    return `
+      <${popupTag} id="popup" backdrop-tag="${backdropTag}" frame-tag="${frameTag}">
+        <slot name="popup"></slot>
+      </${popupTag}>
+    `;
+  }
+
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
     if (state.opened && !this.opened &&
@@ -131,6 +186,7 @@ class PopupSource extends Base {
 
   // TODO: Tags for popup and source
   get [symbols.template]() {
+    const popupTemplate = this.popupTemplate;
     return `
       <style>
         :host {
@@ -142,6 +198,9 @@ class PopupSource extends Base {
           background-color: transparent;
           border-style: solid;
           display: block;
+          font-size: inherit;
+          font-family: inherit;
+          font-style: inherit;
           margin: 0;
         }
 
@@ -166,9 +225,7 @@ class PopupSource extends Base {
         <slot></slot>
       </button>
       <div id="popupContainer">
-        <elix-popup id="popup">
-          <slot name="popup"></slot>
-        </elix-popup>
+        ${popupTemplate}
       </div>
     `;
   }

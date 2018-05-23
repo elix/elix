@@ -10,6 +10,7 @@
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
   <script type="module" src="../src/PopupSource.js"></script>
+  <script type="module" src="../src/ModalBackdrop.js"></script>
   <script nomodule src="../build/demos.js"></script>
 
   <style>
@@ -66,7 +67,7 @@
       }
     </style>
     <div class="buttonRow">
-      <elix-popup-source>
+      <elix-popup-source backdrop-tag="elix-modal-backdrop">
         Open below left
         <div slot="popup" class="popup nowrap">
           Here's a popup.
