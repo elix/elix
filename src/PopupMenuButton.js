@@ -1,6 +1,7 @@
 import './Menu';
 import PopupSource from './PopupSource.js';
 import * as symbols from './symbols.js';
+import { merge } from './updates';
 
 
 class PopupMenuButton extends PopupSource {
@@ -45,7 +46,22 @@ class PopupMenuButton extends PopupSource {
       selectedItem: null
     });
   }
-  
+
+  get popupButtonTemplate() {
+    const base = super.popupButtonTemplate;
+    return base.replace('<slot></slot>', `
+      <slot></slot>
+      <slot name="popupIndicator">
+        <svg id="downIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
+          <path d="M 0 0 l5 5 5 -5 z"/>
+        </svg>
+        <svg id="upIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
+          <path d="M 0 5 l5 -5 5 5 z"/>
+        </svg>
+      </slot>
+    `);
+  }
+
   get popupTemplate() {
     const base = super.popupTemplate;
     const template = base.replace('<slot name="popup"></slot>', `
@@ -66,6 +82,32 @@ class PopupMenuButton extends PopupSource {
       result = false;
     }
     return result;
+  }
+
+  get updates() {
+    const popupPosition = this.state.popupPosition;
+    return merge(super.updates, {
+      $: {
+        button: {
+          style: {
+            'align-items': 'center',
+            display: 'flex'
+          }
+        },
+        downIcon: {
+          style: {
+            display: popupPosition === 'below' ? 'block' : 'none',
+            'margin-left': '0.25em',
+          }
+        },
+        upIcon: {
+          style: {
+            display: popupPosition === 'above' ? 'block' : 'none',
+            'margin-left': '0.25em',
+          }
+        }
+      }
+    });
   }
 
 }

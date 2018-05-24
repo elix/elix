@@ -8,6 +8,7 @@ import ReactiveElement from './ReactiveElement.js';
 
 const backdropTagKey = Symbol('backdropTag');
 const frameTagKey = Symbol('frameTag');
+const popupButtonTagKey = Symbol('popupButtonTag');
 const popupTagKey = Symbol('popupTag');
 
 
@@ -22,6 +23,7 @@ const Base =
  * @elementtag {Backdrop} backdrop
  * @elementtag {OverlayFrame} frame
  * @elementtag {Popup} popup
+ * @elementtag {HTMLButtonElement} popupButton
  */
 class PopupSource extends Base {
 
@@ -88,7 +90,8 @@ class PopupSource extends Base {
       tags: {
         backdrop: 'elix-backdrop',
         frame: 'elix-popup-frame', // TODO: Move to Popup
-        popup: 'elix-popup'
+        popup: 'elix-popup',
+        popupButton: 'button'
       }
     };
   }
@@ -138,6 +141,15 @@ class PopupSource extends Base {
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
   }
 
+  get popupButtonTemplate() {
+    const popupButtonTag = this.popupButtonTag || this.defaults.tags.popupButton;
+    return `
+      <${popupButtonTag} id="button" tabindex="-1">
+        <slot></slot>
+      </${popupButtonTag}>
+    `;
+  }
+
   get popupPosition() {
     return this.state.popupPosition;
   }
@@ -145,6 +157,14 @@ class PopupSource extends Base {
     this.setState({
       popupPosition
     });
+  }
+
+  get popupButtonTag() {
+    return this[popupButtonTagKey];
+  }
+  set popupButtonTag(popupButtonTag) {
+    this[symbols.hasDynamicTemplate] = true;
+    this[popupButtonTagKey] = popupButtonTag;
   }
 
   get popupTag() {
@@ -186,6 +206,7 @@ class PopupSource extends Base {
 
   // TODO: Tags for popup and source
   get [symbols.template]() {
+    const popupButtonTemplate = this.popupButtonTemplate;
     const popupTemplate = this.popupTemplate;
     return `
       <style>
@@ -195,8 +216,6 @@ class PopupSource extends Base {
         }
 
         #button {
-          background-color: transparent;
-          border-style: solid;
           display: block;
           font-size: inherit;
           font-family: inherit;
@@ -221,9 +240,7 @@ class PopupSource extends Base {
           width: initial;
         }
       </style>
-      <button id="button" tabindex="-1">
-        <slot></slot>
-      </button>
+      ${popupButtonTemplate}
       <div id="popupContainer">
         ${popupTemplate}
       </div>
