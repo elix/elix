@@ -7,7 +7,8 @@ class PopupFrame extends OverlayFrame {
   get updates() {
     return merge(super.updates, {
       style: {
-        padding: 0
+        padding: 0,
+        width: '100%'
       }
     });
   }

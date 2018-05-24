@@ -10,7 +10,6 @@
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
   <script type="module" src="../src/PopupSource.js"></script>
-  <script type="module" src="../src/ModalBackdrop.js"></script>
   <script nomodule src="../build/demos.js"></script>
 
   <style>
@@ -34,6 +33,7 @@
         display: flex;
         height: 200px;
         justify-content: center;
+        padding: 1em;
       }
 
       .wide {
@@ -67,15 +67,15 @@
       }
     </style>
     <div class="buttonRow">
-      <elix-popup-source backdrop-tag="elix-modal-backdrop">
+      <elix-popup-source>
         Open below left
         <div slot="popup" class="popup nowrap">
           Here's a popup.
         </div>
       </elix-popup-source>
-      <elix-popup-source>
+      <elix-popup-source horizontal-align="stretch">
         Open below stretch
-        <div slot="popup" class="popup" horizontal-align="stretch">
+        <div slot="popup" class="popup">
           Here's a popup.
         </div>
       </elix-popup-source>
@@ -113,6 +113,7 @@
           Here's a popup.
         </div>
       </elix-popup-source>
+      (Popup direction depends on page scroll position)
     </div>
     <div id="upperRightButtons">
       <elix-popup-source popup-position="above">

@@ -97,12 +97,14 @@ class PopupMenuButton extends PopupSource {
         downIcon: {
           style: {
             display: popupPosition === 'below' ? 'block' : 'none',
+            fill: 'currentColor',
             'margin-left': '0.25em',
           }
         },
         upIcon: {
           style: {
             display: popupPosition === 'above' ? 'block' : 'none',
+            fill: 'currentColor',
             'margin-left': '0.25em',
           }
         }

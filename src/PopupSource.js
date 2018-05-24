@@ -2,6 +2,7 @@ import './Popup.js';
 import './PopupFrame.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
+import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import ReactiveElement from './ReactiveElement.js';
@@ -13,10 +14,11 @@ const popupTagKey = Symbol('popupTag');
 
 
 const Base =
+  FocusVisibleMixin(
   KeyboardMixin(
   OpenCloseMixin(
     ReactiveElement
-  ));
+  )));
 
 
 /**
@@ -51,7 +53,6 @@ class PopupSource extends Base {
           this.open()
           this[symbols.raiseChangeEvents] = false;
         });
-        event.stopPropagation();
       }
     });
     this.$.popup.addEventListener('opened-changed', event => {
@@ -216,15 +217,23 @@ class PopupSource extends Base {
         }
 
         #button {
+          border-style: solid;
+          color: inherit;
           display: block;
           font-size: inherit;
           font-family: inherit;
           font-style: inherit;
           margin: 0;
+          outline: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          -webkit-user-select: none;
+          user-select: none;
         }
 
         #popupContainer {
           height: 0;
+          outline: none;
           position: absolute;
           width: 100%;
         }
@@ -235,6 +244,7 @@ class PopupSource extends Base {
           height: initial;
           justify-content: initial;
           left: initial;
+          outline: none;
           position: absolute;
           top: initial;
           width: initial;
@@ -250,8 +260,12 @@ class PopupSource extends Base {
   // TODO: Pressed state for button
   get updates() {
 
+    const base = super.updates;
+
+    const opened = this.state.opened;
     const buttonStyle = {
-      'background-color': this.state.opened ? 'highlight' : ''
+      'background-color': opened ? 'highlight' : '',
+      color: opened ? 'highlighttext' : ''
     };
 
     const preferPositionBelow = this.state.popupPosition === 'below';
@@ -265,17 +279,9 @@ class PopupSource extends Base {
       !preferPositionBelow && !fitsAbove && fitsBelow;
 
     // Position container.
-    const popupContainerStyle = positionBelow ?
-      {
-        bottom: '',
-        position: 'relative',
-        top: ''
-      } :
-      {
-        bottom: 0,
-        position: 'absolute',
-        top: 0
-      };
+    const popupContainerStyle = {
+      top: positionBelow ? '' : 0
+    };
 
     // Position popup.
     const bottom = positionBelow ? '' : 0;
@@ -306,7 +312,7 @@ class PopupSource extends Base {
       visibility
     };
 
-    return merge(super.updates, {
+    return merge(base, {
       $: {
         button: {
           style: buttonStyle
