@@ -4,20 +4,20 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix PopupMenuButton</title>
+  <title>Elix DropdownList</title>
 
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
-  <script type="module" src="../src/PopupMenuButton.js"></script>
+  <script type="module" src="../src/DropdownList.js"></script>
   <script nomodule src="../build/demos.js"></script>
   
 </head>
 
 <body role="main" unresolved>
   <div class="demo padded">
-    <elix-popup-menu-button id="popupMenuButton">
-      Fruit
+    <elix-dropdown-list selected-index="3">
+      Apple
       <li slot="popup">Apple</li>
       <li slot="popup">Banana</li>
       <li slot="popup">Blueberry</li>
@@ -28,14 +28,7 @@
       <li slot="popup">Raspberry</li>
       <li slot="popup">Strawberry</li>
       <li slot="popup">Watermelon</li>
-    </elix-popup-menu-button>
-    <p id="result"></p>
-    <script>
-      popupMenuButton.addEventListener('menu-item-selected', event => {
-        const selectedItem = event.detail.selectedItem;
-        result.textContent = `You picked: ${selectedItem.textContent}`;
-      });
-    </script>
+    </elix-dropdown-list>
   </div>
 </body>
 

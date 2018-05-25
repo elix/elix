@@ -27,17 +27,7 @@ class PopupMenuButton extends PopupSource {
 
     if (this.state.opened !== previousState.opened && this[symbols.raiseChangeEvents] &&
         this.state.selectedItem) {
-      /**
-       * Raised when the user selects a menu item.
-       * 
-       * @event PopupMenuButton#menu-item-selected
-       */
-      const event = new CustomEvent('menu-item-selected', {
-        detail: {
-          selectedItem: this.state.selectedItem
-        }
-      });
-      this.dispatchEvent(event);
+      this.itemSelected(this.state.selectedItem);
     }
   }
 
@@ -47,10 +37,26 @@ class PopupMenuButton extends PopupSource {
     });
   }
 
+  itemSelected(item) {
+    /**
+     * Raised when the user selects a menu item.
+     * 
+     * @event PopupMenuButton#menu-item-selected
+     */
+    const event = new CustomEvent('menu-item-selected', {
+      detail: {
+        selectedItem: item
+      }
+    });
+    this.dispatchEvent(event);
+  }
+
   get popupButtonTemplate() {
     const base = super.popupButtonTemplate;
     return base.replace('<slot></slot>', `
-      <slot></slot>
+      <div id="valueContainer">
+        <slot></slot>
+      </div>
       <slot name="popupIndicator">
         <svg id="downIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
           <path d="M 0 0 l5 5 5 -5 z"/>
@@ -87,6 +93,9 @@ class PopupMenuButton extends PopupSource {
   get updates() {
     const popupPosition = this.state.popupPosition;
     return merge(super.updates, {
+      attributes: {
+        'aria-haspopup': true
+      },
       $: {
         button: {
           style: {
