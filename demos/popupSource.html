@@ -54,16 +54,18 @@
         position: relative;
       }
 
-      #upperRightButtons {
-        top: 1em;
+      #fixedButtons {
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        padding: 1em;
         position: fixed;
-        right: 1em;
+        right: 0;
+        top: 0;
       }
 
-      #lowerRightButtons {
-        bottom: 1em;
-        position: fixed;
-        right: 1em;
+      #upperRightButtons {
+        flex: 1;
       }
     </style>
     <div class="buttonRow">
@@ -115,33 +117,35 @@
       </elix-popup-source>
       (Popup direction depends on page scroll position)
     </div>
-    <div id="upperRightButtons">
-      <elix-popup-source popup-position="above">
-        <span slot="source">Open above (no room above)</span>
-        <div class="popup wide nowrap">
-          Here's a popup.
-        </div>
-      </elix-popup-source>
-      <elix-popup-source popup-position="above">
-        <span slot="source">Open above (no room above or right)</span>
-        <div class="popup wide nowrap">
-          Here's a popup.
-        </div>
-      </elix-popup-source>
-    </div>
-    <div id="lowerRightButtons">
-      <elix-popup-source>
-        <span slot="source">Open below (no room below)</span>
-        <div class="popup wide nowrap">
-          Here's a popup.
-        </div>
-      </elix-popup-source>
-      <elix-popup-source>
-        <span slot="source">Open below (no room below or right)</span>
-        <div class="popup wide nowrap">
-          Here's a popup.
-        </div>
-      </elix-popup-source>
+    <div id="fixedButtons">
+      <div id="upperRightButtons">
+        <elix-popup-source popup-position="above">
+          <span slot="source">Open above (no room above)</span>
+          <div class="popup wide nowrap">
+            Here's a popup.
+          </div>
+        </elix-popup-source>
+        <elix-popup-source popup-position="above">
+          <span slot="source">Open above (no room above or right)</span>
+          <div class="popup wide nowrap">
+            Here's a popup.
+          </div>
+        </elix-popup-source>
+      </div>
+      <div id="lowerRightButtons">
+        <elix-popup-source>
+          <span slot="source">Open below (no room below)</span>
+          <div class="popup wide nowrap">
+            Here's a popup.
+          </div>
+        </elix-popup-source>
+        <elix-popup-source>
+          <span slot="source">Open below (no room below or right)</span>
+          <div class="popup wide nowrap">
+            Here's a popup.
+          </div>
+        </elix-popup-source>
+      </div>
     </div>
   </div>
   
