@@ -9,7 +9,7 @@ import ReactiveElement from './ReactiveElement.js';
 
 const backdropTagKey = Symbol('backdropTag');
 const frameTagKey = Symbol('frameTag');
-const popupButtonTagKey = Symbol('popupButtonTag');
+const sourceTagKey = Symbol('popupButtonTag');
 const popupTagKey = Symbol('popupTag');
 
 
@@ -25,7 +25,7 @@ const Base =
  * @elementtag {Backdrop} backdrop
  * @elementtag {OverlayFrame} frame
  * @elementtag {Popup} popup
- * @elementtag {HTMLButtonElement} popupButton
+ * @elementtag {HTMLButtonElement} source
  */
 class PopupSource extends Base {
 
@@ -42,7 +42,7 @@ class PopupSource extends Base {
     // Desktop popups generally open on mousedown, not click/mouseup. On mobile,
     // mousedown won't fire until the user releases their finger, so it behaves
     // like a click.
-    this.$.button.addEventListener('mousedown', event => {
+    this.$.source.addEventListener('mousedown', event => {
       // Only handle primary button mouse down to avoid interfering with
       // right-click behavior.
       /** @type {any} */
@@ -92,7 +92,7 @@ class PopupSource extends Base {
         backdrop: 'elix-backdrop',
         frame: 'elix-popup-frame', // TODO: Move to Popup
         popup: 'elix-popup',
-        popupButton: 'button'
+        source: 'button'
       }
     };
   }
@@ -142,23 +142,6 @@ class PopupSource extends Base {
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
   }
 
-  get popupButtonTag() {
-    return this[popupButtonTagKey];
-  }
-  set popupButtonTag(popupButtonTag) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[popupButtonTagKey] = popupButtonTag;
-  }
-
-  get popupButtonTemplate() {
-    const popupButtonTag = this.popupButtonTag || this.defaults.tags.popupButton;
-    return `
-      <${popupButtonTag} id="button" tabindex="-1">
-        <slot name="source"></slot>
-      </${popupButtonTag}>
-    `;
-  }
-
   get popupPosition() {
     return this.state.popupPosition;
   }
@@ -205,9 +188,26 @@ class PopupSource extends Base {
     return result;
   }
 
+  get sourceTag() {
+    return this[sourceTagKey];
+  }
+  set sourceTag(sourceTag) {
+    this[symbols.hasDynamicTemplate] = true;
+    this[sourceTagKey] = sourceTag;
+  }
+
+  get sourceTemplate() {
+    const sourceTag = this.sourceTag || this.defaults.tags.source;
+    return `
+      <${sourceTag} id="source" tabindex="-1">
+        <slot name="source"></slot>
+      </${sourceTag}>
+    `;
+  }
+
   // TODO: Tags for popup and source
   get [symbols.template]() {
-    const popupButtonTemplate = this.popupButtonTemplate;
+    const sourceTemplate = this.sourceTemplate;
     const popupTemplate = this.popupTemplate;
     return `
       <style>
@@ -216,7 +216,7 @@ class PopupSource extends Base {
           position: relative;
         }
 
-        #button {
+        #source {
           border-style: solid;
           color: inherit;
           display: block;
@@ -250,7 +250,7 @@ class PopupSource extends Base {
           width: initial;
         }
       </style>
-      ${popupButtonTemplate}
+      ${sourceTemplate}
       <div id="popupContainer">
         ${popupTemplate}
       </div>
@@ -263,7 +263,7 @@ class PopupSource extends Base {
     const base = super.updates;
 
     const opened = this.state.opened;
-    const buttonStyle = {
+    const sourceStyle = {
       'background-color': opened ? 'highlight' : '',
       color: opened ? 'highlighttext' : ''
     };
@@ -314,15 +314,15 @@ class PopupSource extends Base {
 
     return merge(base, {
       $: {
-        button: {
-          style: buttonStyle
-        },
         popup: {
           opened: this.state.opened,
           style: popupStyle
         },
         popupContainer: {
           style: popupContainerStyle
+        },
+        source: {
+          style: sourceStyle
         }
       }
     });

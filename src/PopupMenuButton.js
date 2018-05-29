@@ -51,8 +51,8 @@ class PopupMenuButton extends PopupSource {
     this.dispatchEvent(event);
   }
 
-  get popupButtonTemplate() {
-    const base = super.popupButtonTemplate;
+  get sourceTemplate() {
+    const base = super.sourceTemplate;
     return base.replace('<slot name="source"></slot>', `
       <div id="valueContainer">
         <slot name="source"></slot>
@@ -97,12 +97,6 @@ class PopupMenuButton extends PopupSource {
         'aria-haspopup': true
       },
       $: {
-        button: {
-          style: {
-            'align-items': 'center',
-            display: 'flex'
-          }
-        },
         downIcon: {
           style: {
             display: popupPosition === 'below' ? 'block' : 'none',
@@ -115,6 +109,12 @@ class PopupMenuButton extends PopupSource {
             display: popupPosition === 'above' ? 'block' : 'none',
             fill: 'currentColor',
             'margin-left': '0.25em',
+          }
+        },
+        source: {
+          style: {
+            'align-items': 'center',
+            display: 'flex'
           }
         }
       }
