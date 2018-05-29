@@ -35,16 +35,15 @@ export default function PopupModalityMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this.addEventListener('blur', async () => {
-        this[symbols.raiseChangeEvents] = true;
-        await this.close();
-        this[symbols.raiseChangeEvents] = false;
-      });      
+      this.addEventListener('blur', async (event) => {
+        if (!ownEvent(this, event)) {
+          this[symbols.raiseChangeEvents] = true;
+          await this.close();
+          this[symbols.raiseChangeEvents] = false;
+        }
+      });
       this[closeListenerKey] = async (event) => {
-        /** @type {any} */
-        const element = this;
-        const insideEvent = deepContains(element, event.target);
-        if (!insideEvent) {
+        if (!ownEvent(this, event)) {
           this[symbols.raiseChangeEvents] = true;
           await this.close();
           this[symbols.raiseChangeEvents] = false;
@@ -113,6 +112,14 @@ function addEventListeners(element) {
   window.addEventListener('blur', element[closeListenerKey]);
   window.addEventListener('resize', element[closeListenerKey]);
   window.addEventListener('scroll', element[closeListenerKey]);
+}
+
+
+// Return true if the event came from within the element or from the element
+// itself; false otherwise.
+function ownEvent(element, event) {
+  const eventSource = event.path[0];
+  return element === eventSource || deepContains(element, eventSource);
 }
 
 
