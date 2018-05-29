@@ -1,4 +1,5 @@
 import { merge } from './updates.js';
+import deepContains from './deepContains.js';
 
 
 const appendedToDocumentKey = Symbol('appendedToDocument');
@@ -24,7 +25,8 @@ export default function OverlayMixin(Base) {
       this.addEventListener('blur', event => {
         // What has the focus now?
         const newFocusedElement = event.relatedTarget || document.activeElement;
-        if (newFocusedElement !== document.body) {
+        const focusInside = deepContains(this, newFocusedElement);
+        if (!focusInside) {
           if (this.opened) {
             // The user has most likely clicked on something in the background
             // of a modeless overlay. Remember that element, and restore focus
