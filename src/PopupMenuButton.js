@@ -53,9 +53,9 @@ class PopupMenuButton extends PopupSource {
 
   get popupButtonTemplate() {
     const base = super.popupButtonTemplate;
-    return base.replace('<slot></slot>', `
+    return base.replace('<slot name="source"></slot>', `
       <div id="valueContainer">
-        <slot></slot>
+        <slot name="source"></slot>
       </div>
       <slot name="popupIndicator">
         <svg id="downIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
@@ -70,9 +70,9 @@ class PopupMenuButton extends PopupSource {
 
   get popupTemplate() {
     const base = super.popupTemplate;
-    const template = base.replace('<slot name="popup"></slot>', `
+    const template = base.replace('<slot></slot>', `
       <elix-menu>
-        <slot name="popup"></slot>
+        <slot></slot>
       </elix-menu>
     `);
     return template;

@@ -142,11 +142,19 @@ class PopupSource extends Base {
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
   }
 
+  get popupButtonTag() {
+    return this[popupButtonTagKey];
+  }
+  set popupButtonTag(popupButtonTag) {
+    this[symbols.hasDynamicTemplate] = true;
+    this[popupButtonTagKey] = popupButtonTag;
+  }
+
   get popupButtonTemplate() {
     const popupButtonTag = this.popupButtonTag || this.defaults.tags.popupButton;
     return `
       <${popupButtonTag} id="button" tabindex="-1">
-        <slot></slot>
+        <slot name="source"></slot>
       </${popupButtonTag}>
     `;
   }
@@ -158,14 +166,6 @@ class PopupSource extends Base {
     this.setState({
       popupPosition
     });
-  }
-
-  get popupButtonTag() {
-    return this[popupButtonTagKey];
-  }
-  set popupButtonTag(popupButtonTag) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[popupButtonTagKey] = popupButtonTag;
   }
 
   get popupTag() {
@@ -182,7 +182,7 @@ class PopupSource extends Base {
     const popupTag = this.popupTag || this.defaults.tags.popup;
     return `
       <${popupTag} id="popup" backdrop-tag="${backdropTag}" frame-tag="${frameTag}">
-        <slot name="popup"></slot>
+        <slot></slot>
       </${popupTag}>
     `;
   }
