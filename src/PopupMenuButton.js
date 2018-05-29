@@ -8,6 +8,14 @@ class PopupMenuButton extends PopupSource {
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
+    this.$.popup.addEventListener('focus', event => {
+      if (event.relatedTarget === this.$.menu) {
+        // User pressed Shift+Tab from menu.
+        this.close();
+      } else {
+        this.$.menu.focus();
+      }
+    });
     this.$.popup.addEventListener('mouseup', event => {
       // TODO: Without this, clicking popup button opens popup then immediately closes it.
       const target = event.target;
@@ -21,7 +29,7 @@ class PopupMenuButton extends PopupSource {
       }
     });
   }
-
+  
   componentDidUpdate(previousState) {
     if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
 
@@ -71,7 +79,7 @@ class PopupMenuButton extends PopupSource {
   get popupTemplate() {
     const base = super.popupTemplate;
     const template = base.replace('<slot></slot>', `
-      <elix-menu>
+      <elix-menu id="menu">
         <slot></slot>
       </elix-menu>
     `);
@@ -104,17 +112,17 @@ class PopupMenuButton extends PopupSource {
             'margin-left': '0.25em',
           }
         },
+        source: {
+          style: {
+            'align-items': 'center',
+            display: 'flex'
+          }
+        },
         upIcon: {
           style: {
             display: popupPosition === 'above' ? 'block' : 'none',
             fill: 'currentColor',
             'margin-left': '0.25em',
-          }
-        },
-        source: {
-          style: {
-            'align-items': 'center',
-            display: 'flex'
           }
         }
       }

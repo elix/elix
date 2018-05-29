@@ -80,10 +80,6 @@ export default function KeyboardPrefixSelectionMixin(Base) {
           resetPrefix = false;
           break;
 
-        case 27: // Escape
-          handled = true;
-          break;
-          
         default:
           if (!event.ctrlKey && !event.metaKey && !event.altKey &&
               event.which !== 32 /* Space */) {
