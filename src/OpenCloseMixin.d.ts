@@ -12,6 +12,7 @@ declare const OpenCloseMixin: StateMixin<{
   closeFinished: boolean;
   open(): Promise<void>;
   opened: boolean;
+  toggle(opened?: boolean): Promise<void>;
   whenClosed(): Promise<void>;
 },
 {
