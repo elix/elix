@@ -37,7 +37,7 @@ export default function OpenCloseMixin(Base) {
      * @type {boolean}
      */
     get closed() {
-      return !this.state.opened;
+      return this.state && !this.state.opened;
     }
     set closed(closed) {
       const parsed = String(closed) === 'true';
@@ -121,7 +121,7 @@ export default function OpenCloseMixin(Base) {
      * @type {boolean}
      */
     get opened() {
-      return this.state.opened;
+      return this.state && this.state.opened;
     }
     set opened(opened) {
       const parsed = String(opened) === 'true';
