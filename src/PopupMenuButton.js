@@ -16,18 +16,6 @@ class PopupMenuButton extends PopupSource {
         this.$.menu.focus();
       }
     });
-    this.$.popup.addEventListener('mouseup', event => {
-      // TODO: Without this, clicking popup button opens popup then immediately closes it.
-      const target = event.target;
-      if (target !== this.$.popup) {
-        this[symbols.raiseChangeEvents] = true;
-        this.setState({
-          selectedItem: target
-        });
-        this.close();
-        this[symbols.raiseChangeEvents] = false;
-      }
-    });
   }
   
   componentDidUpdate(previousState) {

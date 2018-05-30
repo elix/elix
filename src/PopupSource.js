@@ -129,12 +129,17 @@ class PopupSource extends Base {
 
   [symbols.keydown](event) {
     let handled;
+
     switch (event.key) {
-      // Pressing Enter or Space opens the popup.
-      case 'Enter':
+
+      // Space or Up/Down arrow keys open the popup.
       case ' ':
-        this.open();
-        handled = true;
+      case 'ArrowDown':
+      case 'ArrowUp':
+        if (this.closed) {
+          this.open();
+          handled = true;
+        }
         break;
     }
 
