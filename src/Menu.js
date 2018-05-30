@@ -1,5 +1,6 @@
 import ListBox from './ListBox.js';
 import * as symbols from './symbols.js';
+import { merge } from './updates.js';
 
 
 /**
@@ -10,34 +11,12 @@ import * as symbols from './symbols.js';
  */
 class Menu extends ListBox {
 
-  // get [symbols.template]() {
-  //   return `
-  //     <style>
-  //       :host {
-  //         -moz-user-select: none;
-  //         -ms-user-select: none;
-  //         -webkit-user-select: none;
-  //         user-select: none;
-  //       }
-
-  //       ::slotted(*) {
-  //         padding: 0.5em;
-  //       }
-
-  //       ::slotted(li) {
-  //         list-style: none;
-  //       }
-
-  //       ::slotted(:hover) {
-  //         background: highlight;
-  //         color: highlighttext;
-  //         font-weight: inherit;
-  //         min-height: inherit;
-  //       }
-  //     </style>
-  //     <slot></slot>
-  //   `;
-  // }
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      role: 'menu',
+      itemRole: 'menuitem'
+    });
+  }
 
 }
 

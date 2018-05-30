@@ -49,7 +49,8 @@ export default function AriaListMixin(Base) {
       const id = baseId || ensureId(item);
 
       const defaultRole = item instanceof HTMLOptionElement ? null : 'option';
-      const role = original.role || base.role || this.state.itemRole || defaultRole;
+      const originalAttributes = base.original ? base.original.attributes : {};
+      const role = originalAttributes.role || this.state.itemRole || defaultRole;
 
       return merge(base, {
         attributes: {
@@ -63,6 +64,7 @@ export default function AriaListMixin(Base) {
     get updates() {
       const base = super.updates || {};
       const role = this.state.original && this.state.original.attributes.role ||
+        this.state.role ||
         base.attributes && base.attributes.role ||
         'listbox';
       const orientation = this.state.orientation;
