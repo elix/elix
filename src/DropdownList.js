@@ -39,7 +39,9 @@ class DropdownList extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      itemRole: 'menuitem',
       menuSelectedIndex: -1,
+      role: 'button',
       selectionRequired: true
     });
   }
@@ -75,18 +77,47 @@ class DropdownList extends Base {
     return result;
   }
 
+  get sourceSlotContent() {
+    return `
+      <div id="value"></div>
+      <slot name="popupIndicator">
+        <svg id="downIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
+          <path d="M 0 0 l5 5 5 -5 z"/>
+        </svg>
+        <svg id="upIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
+          <path d="M 0 5 l5 -5 5 5 z"/>
+        </svg>
+      </slot>
+    `;
+  }
+
   get updates() {
     const base = super.updates;
     const outline = base && base.style && base.style.outline;
+    const popupPosition = this.state.popupPosition;
     return merge(base, {
       $: {
+        downIcon: {
+          style: {
+            display: popupPosition === 'below' ? 'block' : 'none',
+            fill: 'currentColor',
+            'margin-left': '0.25em',
+          }
+        },
         menu: {
           style: {
             outline
           },
           selectedIndex: this.state.menuSelectedIndex
         },
-        valueContainer: {
+        upIcon: {
+          style: {
+            display: popupPosition === 'above' ? 'block' : 'none',
+            fill: 'currentColor',
+            'margin-left': '0.25em',
+          }
+        },
+        value: {
           textContent: this.value
         }
       }

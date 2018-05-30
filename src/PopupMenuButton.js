@@ -59,23 +59,6 @@ class PopupMenuButton extends PopupSource {
     this.dispatchEvent(event);
   }
 
-  get sourceTemplate() {
-    const base = super.sourceTemplate;
-    return base.replace('<slot name="source"></slot>', `
-      <div id="valueContainer">
-        <slot name="source"></slot>
-      </div>
-      <slot name="popupIndicator">
-        <svg id="downIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
-          <path d="M 0 0 l5 5 5 -5 z"/>
-        </svg>
-        <svg id="upIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
-          <path d="M 0 5 l5 -5 5 5 z"/>
-        </svg>
-      </slot>
-    `);
-  }
-
   get popupTemplate() {
     const base = super.popupTemplate;
     const template = base.replace('<slot></slot>', `
@@ -98,31 +81,30 @@ class PopupMenuButton extends PopupSource {
     return result;
   }
 
+  get sourceSlotContent() {
+    // Default "..." icon from Google Material Design icons.
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+      </svg>
+    `;
+  }
+
   get updates() {
-    const popupPosition = this.state.popupPosition;
     return merge(super.updates, {
       attributes: {
         'aria-haspopup': true
       },
       $: {
-        downIcon: {
+        menu: {
           style: {
-            display: popupPosition === 'below' ? 'block' : 'none',
-            fill: 'currentColor',
-            'margin-left': '0.25em',
+            border: 'none'
           }
         },
         source: {
           style: {
             'align-items': 'center',
             display: 'flex'
-          }
-        },
-        upIcon: {
-          style: {
-            display: popupPosition === 'above' ? 'block' : 'none',
-            fill: 'currentColor',
-            'margin-left': '0.25em',
           }
         }
       }

@@ -169,7 +169,7 @@ class PopupSource extends Base {
     const frameTag = this.frameTag || this.defaults.tags.frame;
     const popupTag = this.popupTag || this.defaults.tags.popup;
     return `
-      <${popupTag} id="popup" backdrop-tag="${backdropTag}" frame-tag="${frameTag}">
+      <${popupTag} id="popup" backdrop-tag="${backdropTag}" frame-tag="${frameTag}" role="none">
         <slot></slot>
       </${popupTag}>
     `;
@@ -201,11 +201,15 @@ class PopupSource extends Base {
     this[sourceTagKey] = sourceTag;
   }
 
+  get sourceSlotContent() {
+    return '';
+  }
+
   get sourceTemplate() {
     const sourceTag = this.sourceTag || this.defaults.tags.source;
     return `
       <${sourceTag} id="source" tabindex="-1">
-        <slot name="source"></slot>
+        <slot name="source">${this.sourceSlotContent}</slot>
       </${sourceTag}>
     `;
   }
@@ -234,6 +238,7 @@ class PopupSource extends Base {
           -ms-user-select: none;
           -webkit-user-select: none;
           user-select: none;
+          width: 100%;
         }
 
         #popupContainer {
@@ -322,7 +327,7 @@ class PopupSource extends Base {
       outline,
       right
     };
-
+  
     return merge(base, {
       $: {
         popup: {
