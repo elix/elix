@@ -313,10 +313,13 @@ class PopupSource extends Base {
     // we have checked where it fits.
     const opacity = fitChecked ? '' : 0;
 
+    const outline = base && base.style && base.style.outline;
+
     const popupStyle = {
       bottom,
       left,
       opacity,
+      outline,
       right
     };
 

@@ -4,9 +4,9 @@ import ReactiveElement from './ReactiveElement.js';
 
 
 const Base =
-  FocusCaptureMixin(
+  // FocusCaptureMixin(
     ReactiveElement
-  );
+  ;
 
 
 /**
@@ -28,9 +28,9 @@ class OverlayFrame extends Base {
           position: relative;
         }
       </style>
-      ${this[FocusCaptureMixin.inject](`
+      ${`
         <slot></slot>
-      `)}
+      `}
     `;
   }
 

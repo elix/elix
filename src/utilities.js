@@ -36,7 +36,7 @@ export function deepContains(container, target) {
  * node. Return -1 if not found.
  */
 export function indexOfItemContainingTarget(element, target) {
-  const items = element.items;
+  const items = element.items || [];
   for (let index = 0; index < items.length; index++) {
     const item = items[index];
     if (item === target || deepContains(item, target)) {

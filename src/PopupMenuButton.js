@@ -1,13 +1,25 @@
 import './Menu';
-import PopupSource from './PopupSource.js';
-import * as symbols from './symbols.js';
 import { merge } from './updates';
+import { indexOfItemContainingTarget } from './utilities.js';
+import * as symbols from './symbols.js';
+import PopupSource from './PopupSource.js';
 
 
 class PopupMenuButton extends PopupSource {
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
+    // If user hovers mouse over an item, select it.
+    this.addEventListener('mousemove', event => {
+      const hoverIndex = indexOfItemContainingTarget(this, event.target);
+      if (hoverIndex >= 0 && hoverIndex !== this.state.menuSelectedIndex) {
+        this[symbols.raiseChangeEvents] = true;
+        this.setState({
+          menuSelectedIndex: hoverIndex
+        });
+        this[symbols.raiseChangeEvents] = false;
+      }
+    });
     this.$.popup.addEventListener('focus', event => {
       if (event.relatedTarget === this.$.menu) {
         // User pressed Shift+Tab from menu.
