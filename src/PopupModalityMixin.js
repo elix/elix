@@ -1,6 +1,6 @@
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
-import deepContains from './deepContains.js';
+import { deepContains } from './utilities.js';
 
 
 // Symbols for private data members on an element.

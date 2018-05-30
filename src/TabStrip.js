@@ -1,8 +1,8 @@
+import { deepContains } from './utilities.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import AriaListMixin from './AriaListMixin.js';
 import ClickSelectionMixin from './ClickSelectionMixin.js';
-import deepContains from './deepContains.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';

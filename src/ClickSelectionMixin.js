@@ -1,6 +1,6 @@
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
-import deepContains from './deepContains.js';
+import { indexOfItemContainingTarget } from './utilities.js';
 
 
 /**
@@ -84,7 +84,7 @@ function click(component, event) {
   // Find which item was clicked on and, if found, select it. For elements
   // which don't require a selection, a background click will determine
   // the item was null, in which we case we'll remove the selection.
-  const targetIndex = indexOfTarget(component, target);
+  const targetIndex = indexOfItemContainingTarget(component, target);
   const selectionRequired = component.state && component.state.selectionRequired;
   if (targetIndex >= 0 || !selectionRequired) {
     component.selectedIndex = targetIndex;
@@ -99,17 +99,4 @@ function click(component, event) {
 }
 
 
-/**
- * Return the index of the list child that is, or contains, the indicated target
- * node. Return -1 if not found.
- */
-function indexOfTarget(element, target) {
-  const items = element.items;
-  for (let index = 0; index < items.length; index++) {
-    const item = items[index];
-    if (item === target || deepContains(item, target)) {
-      return index;
-    }
-  }
-  return -1;
-}
+

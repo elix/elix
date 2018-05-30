@@ -1,5 +1,5 @@
 import { merge } from './updates.js';
-import deepContains from './deepContains.js';
+import { deepContains } from './utilities.js';
 
 
 const appendedToDocumentKey = Symbol('appendedToDocument');

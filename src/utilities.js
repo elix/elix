@@ -1,11 +1,11 @@
 /**
- * Helper for examining the Shadow DOM containment hierarchy.
+ * Component utilities
  * 
- * @module deepContains
+ * @module utilities
  */
 
 
-/**
+ /**
  * Returns true if the first node contains the second, even if the second node
  * is in a shadow tree.
  *
@@ -17,7 +17,7 @@
  * @param {Node} target - The node that may be inside the container.
  * @returns {boolean} - True if the container contains the target node.
  */
-function deepContains(container, target) {
+export function deepContains(container, target) {
   /** @type {any} */
   let current = target;
   while (current) {
@@ -31,4 +31,17 @@ function deepContains(container, target) {
 }
 
 
-export default deepContains;
+/**
+ * Return the index of the list child that is, or contains, the indicated target
+ * node. Return -1 if not found.
+ */
+export function indexOfItemContainingTarget(element, target) {
+  const items = element.items;
+  for (let index = 0; index < items.length; index++) {
+    const item = items[index];
+    if (item === target || deepContains(item, target)) {
+      return index;
+    }
+  }
+  return -1;
+}
