@@ -47,7 +47,8 @@ class MenuButton extends Base {
       });
     });
     this.$.popup.addEventListener('focus', event => {
-      if (event.relatedTarget === this.$.menu) {
+      const newFocusedElement = event.relatedTarget || document.activeElement;
+      if (newFocusedElement === this.$.menu) {
         // User pressed Shift+Tab from menu.
         this.close();
       } else {
