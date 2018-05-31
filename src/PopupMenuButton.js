@@ -1,11 +1,22 @@
 import './Menu';
-import { merge } from './updates';
 import { indexOfItemContainingTarget } from './utilities.js';
+import { merge } from './updates';
 import * as symbols from './symbols.js';
+import AriaListMixin from './AriaListMixin.js';
 import PopupSource from './PopupSource.js';
+import SingleSelectionMixin from './SingleSelectionMixin.js';
+import SlotItemsMixin from './SlotItemsMixin.js';
 
 
-class PopupMenuButton extends PopupSource {
+const Base = 
+  AriaListMixin(
+  SingleSelectionMixin(
+  SlotItemsMixin(
+    PopupSource
+  )));
+
+
+class PopupMenuButton extends Base {
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
@@ -19,6 +30,20 @@ class PopupMenuButton extends PopupSource {
         });
         this[symbols.raiseChangeEvents] = false;
       }
+    });
+    this.$.menu.addEventListener('mouseup', event => {
+      // TODO: Without this, clicking popup button opens popup then immediately closes it.
+      const target = event.target;
+      if (target !== this.$.menu) {
+        this[symbols.raiseChangeEvents] = true;
+        this.close();
+        this[symbols.raiseChangeEvents] = false;
+      }
+    });
+    this.$.menu.addEventListener('selected-index-changed', event => {
+      this.setState({
+        menuSelectedIndex: event.detail.selectedIndex
+      });
     });
     this.$.popup.addEventListener('focus', event => {
       if (event.relatedTarget === this.$.menu) {
@@ -41,6 +66,9 @@ class PopupMenuButton extends PopupSource {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      itemRole: 'menuitem',
+      menuSelectedIndex: -1,
+      role: 'button',
       selectedItem: null
     });
   }
@@ -57,6 +85,22 @@ class PopupMenuButton extends PopupSource {
       }
     });
     this.dispatchEvent(event);
+  }
+
+  [symbols.keydown](event) {
+    let handled;
+    switch (event.key) {
+      // When open, Enter closes popup.
+      case 'Enter':
+        if (this.opened) {
+          this.close();
+          handled = true;
+        }
+        break;
+    }
+
+    // Prefer mixin result if it's defined, otherwise use base result.
+    return handled || (super[symbols.keydown] && super[symbols.keydown](event));
   }
 
   get popupTemplate() {
@@ -91,15 +135,19 @@ class PopupMenuButton extends PopupSource {
   }
 
   get updates() {
-    return merge(super.updates, {
+    const base = super.updates;
+    const outline = base && base.style && base.style.outline;
+    return merge(base, {
       attributes: {
         'aria-haspopup': true
       },
       $: {
         menu: {
           style: {
-            border: 'none'
-          }
+            border: 'none',
+            outline
+          },
+          selectedIndex: this.state.menuSelectedIndex
         },
         source: {
           style: {
