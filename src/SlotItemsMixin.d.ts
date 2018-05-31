@@ -16,6 +16,7 @@ declare const SlotItemsMixin: StateMixin<
   [symbols.contentSlot]: HTMLSlotElement;
   itemUpdates(item: Element, calcs: PlainObject, original: PlainObject): PlainObject;
   items: Element[];
+  itemsForState(state: PlainObject): Element[]
 },
 {
   content: NodeList|Node[];

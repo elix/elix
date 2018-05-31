@@ -10,6 +10,7 @@ declare const ContentItemsMixin: StateMixin<{
 {
   itemUpdates(item: Element, calcs: PlainObject, original: PlainObject): PlainObject;
   items: Element[];
+  itemsForState(state: PlainObject): Element[]
 },
 {
   items: Element[];

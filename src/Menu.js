@@ -1,4 +1,5 @@
 import ListBox from './ListBox.js';
+import { merge } from './updates.js';
 
 
 /**
@@ -8,6 +9,14 @@ import ListBox from './ListBox.js';
  * bar that opens a menu.
  */
 class Menu extends ListBox {
+
+  // Filter the set of items to ignore disabled items.
+  itemsForState(state) {
+    const base = super.itemsForState(state);
+    return base ?
+      base.filter((/** @type {any} */ item) => !item.disabled) :
+      [];
+  }
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {

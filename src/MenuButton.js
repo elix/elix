@@ -23,7 +23,7 @@ class MenuButton extends Base {
     // If user hovers mouse over an item, select it.
     this.addEventListener('mousemove', event => {
       const hoverIndex = indexOfItemContainingTarget(this, event.target);
-      if (hoverIndex >= 0 && hoverIndex !== this.state.menuSelectedIndex) {
+      if (hoverIndex !== this.state.menuSelectedIndex) {
         this[symbols.raiseChangeEvents] = true;
         this.setState({
           menuSelectedIndex: hoverIndex
@@ -84,6 +84,12 @@ class MenuButton extends Base {
       role: 'button',
       selectedItem: null
     });
+  }
+
+  get items() {
+    return this.$ && this.$.menu ?
+      this.$.menu.items :
+      null;
   }
 
   itemSelected(item) {
@@ -164,6 +170,7 @@ class MenuButton extends Base {
       $: {
         menu: {
           style: {
+            background: 'window',
             border: 'none',
             outline
           },
