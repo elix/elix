@@ -124,11 +124,11 @@ class ListBox extends Base {
       {
         'flex-direction': 'column',
         'overflow-x': 'hidden',
-        'overflow-y': 'scroll'
+        'overflow-y': 'auto'
       } :
       {
         'flex-direction': 'row',
-        'overflow-x': 'scroll',
+        'overflow-x': 'auto',
         'overflow-y': 'hidden'
       };
     return merge(super.updates, {
