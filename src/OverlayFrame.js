@@ -1,5 +1,5 @@
 import * as symbols from './symbols.js';
-import FocusCaptureMixin from './FocusCaptureMixin.js';
+// import FocusCaptureMixin from './FocusCaptureMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
 

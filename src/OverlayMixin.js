@@ -25,7 +25,9 @@ export default function OverlayMixin(Base) {
       this.addEventListener('blur', event => {
         // What has the focus now?
         const newFocusedElement = event.relatedTarget || document.activeElement;
-        const focusInside = deepContains(this, newFocusedElement);
+        /** @type {any} */
+        const node = this;
+        const focusInside = deepContains(node, newFocusedElement);
         if (!focusInside) {
           if (this.opened) {
             // The user has most likely clicked on something in the background

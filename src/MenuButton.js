@@ -42,17 +42,23 @@ class MenuButton extends Base {
       }
     });
     this.$.menu.addEventListener('selected-index-changed', event => {
+      /** @type {any} */
+      const cast = event;
       this.setState({
-        menuSelectedIndex: event.detail.selectedIndex
+        menuSelectedIndex: cast.detail.selectedIndex
       });
     });
     this.$.popup.addEventListener('focus', event => {
-      const newFocusedElement = event.relatedTarget || document.activeElement;
+      /** @type {any} */
+      const cast = event;
+      const newFocusedElement = cast.relatedTarget || document.activeElement;
       if (newFocusedElement === this.$.menu) {
         // User pressed Shift+Tab from menu.
         this.close();
       } else {
-        this.$.menu.focus();
+        /** @type {any} */
+        const menu = this.$.menu;
+        menu.focus();
       }
     });
   }

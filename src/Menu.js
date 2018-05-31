@@ -1,6 +1,4 @@
 import ListBox from './ListBox.js';
-import * as symbols from './symbols.js';
-import { merge } from './updates.js';
 
 
 /**
