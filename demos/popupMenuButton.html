@@ -16,20 +16,23 @@
 
 <body role="main" unresolved>
   <div class="demo padded">
+    <style>
+      .menuItem {
+        white-space: nowrap;
+      }
+    </style>
     <elix-popup-menu-button id="popupMenuButton">
-      <div>Apple</div>
-      <div>Banana</div>
-      <div>Blueberry</div>
-      <div>Cherry</div>
-      <div>Grape</div>
-      <div>Orange</div>
-      <div>Peach</div>
-      <div>Raspberry</div>
-      <div>Strawberry</div>
-      <div>Watermelon</div>
+      <div class="menuItem">New Tab</div>
+      <div class="menuItem">New Window</div>
+      <div class="menuItem">History</div>
+      <div class="menuItem">Downloads</div>
+      <div class="menuItem">Bookmarks</div>
+      <div class="menuItem">Zoom</div>
+      <div class="menuItem">Settings</div>
     </elix-popup-menu-button>
     <p id="result"></p>
     <script>
+      // TODO: Which event to use?
       popupMenuButton.addEventListener('menu-item-selected', event => {
         const selectedItem = event.detail.selectedItem;
         result.textContent = `You picked: ${selectedItem.textContent}`;
