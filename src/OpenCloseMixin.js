@@ -20,14 +20,14 @@ export default function OpenCloseMixin(Base) {
      * 
      * Some components like [AlertDialog](AlertDialog) want to indicate why or
      * how they were closed. To support such scenarios, you can supply a value
-     * to the optional `result` parameter. This result will be made available
-     * in the `whenClosed` promise and the `state.result` member.
+     * to the optional `closeResult` parameter. This closeResult will be made
+     * available in the `whenClosed` promise and the `state.closeResult` member.
      * 
-     * @param {object} [result] - an indication of how or why the element closed
+     * @param {object} [closeResult] - an indication of how or why the element closed
      */
-    async close(result) {
+    async close(closeResult) {
       if (super.close) { await super.close(); }
-      this.setState({ result });
+      this.setState({ closeResult });
       await this.toggle(false);
     }
 
@@ -62,6 +62,10 @@ export default function OpenCloseMixin(Base) {
         this.closed;
     }
 
+    get closeResult() {
+      return this.state.closeResult;
+    }
+
     componentDidUpdate(previousState) {
       if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
 
@@ -73,6 +77,7 @@ export default function OpenCloseMixin(Base) {
          */
         const event = new CustomEvent('opened-changed', {
           detail: {
+            closeResult: this.state.closeResult,
             opened: this.state.opened
           }
         });
@@ -85,7 +90,7 @@ export default function OpenCloseMixin(Base) {
       if (this.closeFinished && closeResolve) {
         this[closeResolveKey] = null;
         this[closePromiseKey] = null;
-        closeResolve(this.state.result);
+        closeResolve(this.state.closeResult);
       }
     }
 
@@ -112,9 +117,10 @@ export default function OpenCloseMixin(Base) {
      */
     async open() {
       if (super.open) { await super.open(); }
+      this.setState({ closeResult: undefined });
       await this.toggle(true);
     }
-
+    
     /**
      * True if the element is currently closed.
      * 
@@ -125,6 +131,7 @@ export default function OpenCloseMixin(Base) {
     }
     set opened(opened) {
       const parsed = String(opened) === 'true';
+      this.setState({ closeResult: undefined });
       this.toggle(parsed);
     }
 

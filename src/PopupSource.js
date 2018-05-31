@@ -61,7 +61,13 @@ class PopupSource extends Base {
       const opened = cast.detail.opened;
       if (opened !== this.opened) {
         this[symbols.raiseChangeEvents] = true;
-        this.opened = opened;
+        // Popup opened/closed state becomes our own.
+        if (opened) {
+          this.open();
+        } else {
+          const closeResult = cast.detail.closeResult;
+          this.close(closeResult);
+        }
         this[symbols.raiseChangeEvents] = false;
       }
     });

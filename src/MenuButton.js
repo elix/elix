@@ -32,11 +32,12 @@ class MenuButton extends Base {
       }
     });
     this.$.menu.addEventListener('mouseup', event => {
-      // TODO: Without this, clicking popup button opens popup then immediately closes it.
+      // We only want to listen to events coming from the menu. (Without this,
+      // clicking popup button opens popup then immediately closes it.)
       const target = event.target;
       if (target !== this.$.menu) {
         this[symbols.raiseChangeEvents] = true;
-        this.close();
+        this.close(this.state.menuSelectedIndex);
         this[symbols.raiseChangeEvents] = false;
       }
     });
@@ -98,7 +99,7 @@ class MenuButton extends Base {
       // When open, Enter closes popup.
       case 'Enter':
         if (this.opened) {
-          this.close();
+          this.close(this.state.menuSelectedIndex);
           handled = true;
         }
         break;

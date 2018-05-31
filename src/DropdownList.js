@@ -25,10 +25,10 @@ class DropdownList extends Base {
 
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
-    const { menuSelectedIndex, selectedIndex } = state;
-    if (!state.opened && this.opened && selectedIndex !== menuSelectedIndex) {
+    const { closeResult, opened, selectedIndex } = state;
+    if (!opened && this.opened && closeResult && selectedIndex !== closeResult) {
       // Closing: Update our selection from menu selection.
-      state.selectedIndex = menuSelectedIndex;
+      state.selectedIndex = closeResult;
       result = false;
     }
     return result;
