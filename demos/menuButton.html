@@ -4,12 +4,12 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix PopupMenuButton</title>
+  <title>Elix MenuButton</title>
 
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
-  <script type="module" src="../src/PopupMenuButton.js"></script>
+  <script type="module" src="../src/MenuButton.js"></script>
   <script nomodule src="../build/demos.js"></script>
   
 </head>
@@ -21,7 +21,7 @@
         white-space: nowrap;
       }
     </style>
-    <elix-popup-menu-button id="popupMenuButton">
+    <elix-menu-button id="menuButton">
       <div class="menuItem">New Tab</div>
       <div class="menuItem">New Window</div>
       <div class="menuItem">History</div>
@@ -29,11 +29,11 @@
       <div class="menuItem">Bookmarks</div>
       <div class="menuItem">Zoom</div>
       <div class="menuItem">Settings</div>
-    </elix-popup-menu-button>
+    </elix-menu-button>
     <p id="result"></p>
     <script>
       // TODO: Which event to use?
-      popupMenuButton.addEventListener('menu-item-selected', event => {
+      menuButton.addEventListener('menu-item-selected', event => {
         const selectedItem = event.detail.selectedItem;
         result.textContent = `You picked: ${selectedItem.textContent}`;
       });

@@ -1,11 +1,11 @@
 import { merge } from './updates.js';
-import PopupMenuButton from './PopupMenuButton.js';
+import MenuButton from './MenuButton.js';
 import SelectedItemTextValueMixin from './SelectedItemTextValueMixin';
 
 
 const Base =
   SelectedItemTextValueMixin(
-    PopupMenuButton
+    MenuButton
   );
 
 

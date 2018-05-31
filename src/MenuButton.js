@@ -16,7 +16,7 @@ const Base =
   )));
 
 
-class PopupMenuButton extends Base {
+class MenuButton extends Base {
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
@@ -77,7 +77,7 @@ class PopupMenuButton extends Base {
     /**
      * Raised when the user selects a menu item.
      * 
-     * @event PopupMenuButton#menu-item-selected
+     * @event MenuButton#menu-item-selected
      */
     const event = new CustomEvent('menu-item-selected', {
       detail: {
@@ -162,5 +162,5 @@ class PopupMenuButton extends Base {
 }
 
 
-export default PopupMenuButton;
-customElements.define('elix-popup-menu-button', PopupMenuButton);
+export default MenuButton;
+customElements.define('elix-menu-button', MenuButton);
