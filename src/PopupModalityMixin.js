@@ -123,7 +123,7 @@ function addEventListeners(element) {
 // Return true if the event came from within the element or from the element
 // itself; false otherwise.
 function ownEvent(element, event) {
-  const eventSource = event.path[0];
+  const eventSource = event.composedPath()[0];
   return element === eventSource || deepContains(element, eventSource);
 }
 
