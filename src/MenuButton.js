@@ -64,6 +64,11 @@ class MenuButton extends Base {
     }
   }
 
+  // The index that will be selected by default when the menu opens.
+  get defaultMenuSelectedIndex() {
+    return -1;
+  }
+
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       itemRole: 'menuitem',
@@ -115,12 +120,19 @@ class MenuButton extends Base {
 
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
-    if (state.opened && !this.opened && state.selectedItem) {
-      // Clear any previously selected item.
-      Object.assign(state, {
-        selectedItem: null
-      });
-      result = false;
+    if (state.opened && !this.opened) {
+      // Opening
+      if (state.selectedItem) {
+        // Clear any previously selected item.
+        state.selectedItem = null;
+        result = false;
+      }
+      // Select the default item in the menu.
+      const defaultMenuSelectedIndex = this.defaultMenuSelectedIndex;
+      if (state.menuSelectedIndex !== defaultMenuSelectedIndex) {
+        state.menuSelectedIndex = defaultMenuSelectedIndex;
+        result = false;
+      }
     }
     return result;
   }

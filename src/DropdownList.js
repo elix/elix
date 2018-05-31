@@ -11,6 +11,12 @@ const Base =
 
 class DropdownList extends Base {
 
+  // By default, opening the menu re-selects the component item that's currently
+  // selected.
+  get defaultMenuSelectedIndex() {
+    return this.state.selectedIndex;
+  }
+
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       selectionRequired: true
@@ -20,11 +26,7 @@ class DropdownList extends Base {
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
     const { menuSelectedIndex, selectedIndex } = state;
-    if (state.opened && !this.opened && menuSelectedIndex !== selectedIndex) {
-      // Opening: Copy our selection to menu selection.
-      state.menuSelectedIndex = selectedIndex;
-      result = false;
-    } else if (!state.opened && this.opened && selectedIndex !== menuSelectedIndex) {
+    if (!state.opened && this.opened && selectedIndex !== menuSelectedIndex) {
       // Closing: Update our selection from menu selection.
       state.selectedIndex = menuSelectedIndex;
       result = false;
