@@ -71,6 +71,12 @@ class PopupSource extends Base {
         this[symbols.raiseChangeEvents] = false;
       }
     });
+    if (this.state.opened) {
+      // Popup is opened initially, which is somewhat unusual.
+      setTimeout(() => {
+        checkPopupFits(this)
+      });
+    }
   }
 
   componentDidUpdate(previousState) {
@@ -78,16 +84,7 @@ class PopupSource extends Base {
     if (this.state.opened && !previousState.opened) {
       // Wait a tick to let the newly-opened component actually render.
       setTimeout(() => {
-        // See if the rendered component fits above/below/left/right w.r.t. the
-        // source.
-        const { fitsAbove, fitsBelow, fitsLeft, fitsRight } = checkPopupFits(this, this.$.popup);
-        this.setState({
-          fitChecked: true,
-          fitsAbove,
-          fitsBelow,
-          fitsLeft,
-          fitsRight
-        });
+        checkPopupFits(this);
       });
     }
   }
@@ -353,19 +350,25 @@ class PopupSource extends Base {
 }
 
 
-function checkPopupFits(source, popup) {
-  const sourceRect = source.getBoundingClientRect();
-  const popupRect = popup.getBoundingClientRect();
+// See if the rendered component fits above/below/left/right w.r.t. the
+// source.
+function checkPopupFits(element) {
+  if (element.state.fitChecked) {
+    return;
+  }
+  const sourceRect = element.getBoundingClientRect();
+  const popupRect = element.$.popup.getBoundingClientRect();
   const fitsAbove = sourceRect.top >= popupRect.height;
   const fitsBelow = sourceRect.bottom + popupRect.height <= window.innerHeight;
   const fitsLeft = sourceRect.right >= popupRect.width;
   const fitsRight = sourceRect.left + popupRect.width <= window.innerWidth;
-  return {
+  element.setState({
+    fitChecked: true,
     fitsAbove,
     fitsBelow,
     fitsLeft,
     fitsRight
-  };
+  });
 }
 
 
