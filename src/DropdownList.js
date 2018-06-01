@@ -37,14 +37,14 @@ class DropdownList extends Base {
   get sourceSlotContent() {
     return `
       <div id="value"></div>
-      <slot name="popupIndicator">
+      <div>
         <svg id="downIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
           <path d="M 0 0 l5 5 5 -5 z"/>
         </svg>
         <svg id="upIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
           <path d="M 0 5 l5 -5 5 5 z"/>
         </svg>
-      </slot>
+      </div>
     `;
   }
 
