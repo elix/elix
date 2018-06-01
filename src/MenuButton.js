@@ -195,7 +195,8 @@ class MenuButton extends Base {
           style: {
             background: 'window',
             border: 'none',
-            outline
+            outline,
+            padding: '0.5em 0'
           },
           selectedIndex: this.state.menuSelectedIndex
         },

@@ -11,6 +11,10 @@ class MenuSeparator extends ReactiveElement {
   get [symbols.template]() {
     return `
       <style>
+        :host {
+          padding: 0 !important;
+        }
+
         hr {
           border-bottom-width: 0px;
           border-color: #fff; /* Ends up as light gray */

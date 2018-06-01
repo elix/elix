@@ -59,6 +59,11 @@ class DropdownList extends Base {
             'margin-left': '0.25em',
           }
         },
+        menu: {
+          style: {
+            padding: 0
+          }
+        },
         upIcon: {
           style: {
             display: popupPosition === 'above' ? 'block' : 'none',
