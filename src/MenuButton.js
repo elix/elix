@@ -42,19 +42,7 @@ class MenuButton extends PopupSource {
         menuSelectedIndex: cast.detail.selectedIndex
       });
     });
-    this.$.popup.addEventListener('focus', event => {
-      /** @type {any} */
-      const cast = event;
-      const newFocusedElement = cast.relatedTarget || document.activeElement;
-      if (newFocusedElement === this.$.menu) {
-        // User pressed Shift+Tab from menu.
-        this.close();
-      } else {
-        /** @type {any} */
-        const menu = this.$.menu;
-        menu.focus();
-      }
-    });
+    this.$.popup[symbols.firstFocusableElement] = this.$.menu;
   }
   
   componentDidUpdate(previousState) {
@@ -188,6 +176,11 @@ class MenuButton extends PopupSource {
             padding: '0.5em 0'
           },
           selectedIndex: this.state.menuSelectedIndex
+        },
+        popup: {
+          attributes: {
+            tabindex: '-1'
+          }
         },
         source: {
           style: {

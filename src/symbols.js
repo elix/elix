@@ -70,6 +70,14 @@ export const canGoRight = Symbol('canGoRight');
 export const contentSlot = Symbol('contentSlot');
 
 /**
+ * Symbol for the `firstFocusableElement` property.
+ * 
+ * [OverlayMixin](OverlayMixin) uses this, if defined, to determine where the
+ * focus should be put when an overlay is opened.
+ */
+export const firstFocusableElement = Symbol('firstFocusableElement');
+
+/**
  * Symbol for the `elementsWithTransitions` property.
  * 
  * [TransitionEffectMixin](TransitionEffectMixin) inspects this property

@@ -1,5 +1,6 @@
 import { merge } from './updates.js';
 import { deepContains } from './utilities.js';
+import * as symbols from './symbols.js';
 
 
 const appendedToDocumentKey = Symbol('appendedToDocument');
@@ -167,7 +168,8 @@ function updateOverlay(element) {
       // Remember which element had the focus before we were opened.
       element[restoreFocusToElementKey] = document.activeElement;
     }
-    element.focus();
+    const elementToFocus = element[symbols.firstFocusableElement] || element;
+    elementToFocus.focus();
   } else {
     // Closed
     if (element[restoreFocusToElementKey]) {
