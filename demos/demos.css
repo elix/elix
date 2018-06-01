@@ -48,6 +48,10 @@ label {
   height: 100%;
 }
 
+[unresolved] {
+  display: none;
+}
+
 :not(:defined) {
   display: none;
 }
