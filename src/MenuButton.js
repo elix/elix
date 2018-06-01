@@ -2,26 +2,15 @@ import './Menu';
 import { indexOfItemContainingTarget } from './utilities.js';
 import { merge } from './updates';
 import * as symbols from './symbols.js';
-import AriaListMixin from './AriaListMixin.js';
 import PopupSource from './PopupSource.js';
-import SingleSelectionMixin from './SingleSelectionMixin.js';
-import SlotItemsMixin from './SlotItemsMixin.js';
 
 const menuTagKey = Symbol('menuTag');
-
-
-const Base = 
-  AriaListMixin(
-  SingleSelectionMixin(
-  SlotItemsMixin(
-    PopupSource
-  )));
 
 
 /**
  * @elementtag {Menu} menu
  */
-class MenuButton extends Base {
+class MenuButton extends PopupSource {
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }

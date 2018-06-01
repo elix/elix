@@ -1,12 +1,18 @@
 import { merge } from './updates.js';
 import MenuButton from './MenuButton.js';
+import AriaListMixin from './AriaListMixin';
 import SelectedItemTextValueMixin from './SelectedItemTextValueMixin';
+import SingleSelectionMixin from './SingleSelectionMixin.js';
+import SlotItemsMixin from './SlotItemsMixin.js';
 
 
 const Base =
+  AriaListMixin(
   SelectedItemTextValueMixin(
+  SingleSelectionMixin(
+  SlotItemsMixin(
     MenuButton
-  );
+  ))));
 
 
 class DropdownList extends Base {
