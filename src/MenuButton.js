@@ -87,9 +87,9 @@ class MenuButton extends Base {
   }
 
   get items() {
-    return this.$ && this.$.menu ?
-      this.$.menu.items :
-      null;
+    /** @type {any} */
+    const menu = this.$ && this.$.menu;
+    return menu ? menu.items : null;
   }
 
   itemSelected(item) {
