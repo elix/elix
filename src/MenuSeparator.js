@@ -13,7 +13,7 @@ class MenuSeparator extends ReactiveElement {
       <style>
         hr {
           border-bottom-width: 0px;
-          border-color: inherit;
+          border-color: #fff; /* Ends up as light gray */
           border-top-width: 1px;
           margin: 0.25em 0;
         }

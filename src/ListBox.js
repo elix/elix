@@ -75,7 +75,7 @@ class ListBox extends Base {
       style: {
         'background-color': backgroundColor,
         color,
-        'padding': '0.25em'
+        // 'padding': '0.25em'
       }
     });
   }
@@ -106,6 +106,10 @@ class ListBox extends Base {
           display: flex;
           flex: 1;
           -webkit-overflow-scrolling: touch; /* for momentum scrolling */
+        }
+
+        #content > ::slotted(*) {
+          padding: 0.25em;
         }
 
         #content > ::slotted(option) {
