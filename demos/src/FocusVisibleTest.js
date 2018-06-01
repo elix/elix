@@ -1,12 +1,14 @@
 import * as symbols from '../../src/symbols.js';
 import FocusVisibleMixin from '../../src/FocusVisibleMixin.js';
+import KeyboardMixin from '../../src/KeyboardMixin.js';
 import WrappedStandardElement from '../../src/WrappedStandardElement.js';
 
 
 const Base =
   FocusVisibleMixin(
+  KeyboardMixin(
     WrappedStandardElement.wrap('button')
-  );
+  ));
 
 class FocusVisibleTest extends Base {
 

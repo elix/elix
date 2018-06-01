@@ -58,7 +58,7 @@ export default function FocusVisibleMixin(Base) {
       const base = super.updates || {};
       const outline = base.style && base.style.outline ||
         !this.state.focusVisible && 'none' ||
-        undefined;
+        null;
       return merge(base, {
         style: {
           outline
