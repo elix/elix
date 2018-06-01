@@ -67,6 +67,7 @@ class PopupSource extends Base {
         } else {
           const closeResult = cast.detail.closeResult;
           this.close(closeResult);
+          this[symbols.refreshFocus]();
         }
         this[symbols.raiseChangeEvents] = false;
       }
@@ -321,13 +322,13 @@ class PopupSource extends Base {
     // we have checked where it fits.
     const opacity = fitChecked ? '' : 0;
 
-    const outline = base && base.style && base.style.outline;
+    // const outline = base && base.style && base.style.outline;
 
     const popupStyle = {
       bottom,
       left,
       opacity,
-      outline,
+      // outline,
       right
     };
   

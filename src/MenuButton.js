@@ -28,8 +28,11 @@ class MenuButton extends PopupSource {
     this.$.menu.addEventListener('mouseup', event => {
       // We only want to listen to events coming from the menu. (Without this,
       // clicking popup button opens popup then immediately closes it.)
+      // Additionally, we ignore mouseup events on the menu background or
+      // child elements like menu separators.
       const target = event.target;
-      if (target !== this.$.menu) {
+      const menuSelectedIndex = this.state.menuSelectedIndex;
+      if (target !== this.$.menu && menuSelectedIndex >= 0) {
         this[symbols.raiseChangeEvents] = true;
         this.close(this.state.menuSelectedIndex);
         this[symbols.raiseChangeEvents] = false;
@@ -162,7 +165,7 @@ class MenuButton extends PopupSource {
 
   get updates() {
     const base = super.updates;
-    const outline = base && base.style && base.style.outline;
+    // const outline = base && base.style && base.style.outline;
     return merge(base, {
       attributes: {
         'aria-haspopup': true
@@ -172,7 +175,7 @@ class MenuButton extends PopupSource {
           style: {
             background: 'window',
             border: 'none',
-            outline,
+            // outline,
             padding: '0.5em 0'
           },
           selectedIndex: this.state.menuSelectedIndex

@@ -4,6 +4,15 @@ import * as symbols from './symbols.js';
 
 class MenuSeparator extends ReactiveElement {
 
+  // componentDidMount() {
+  //   if (super.componentDidMount) { super.componentDidMount(); }
+  //   // Absorb mousedown events.
+  //   this.addEventListener('mousedown', event => {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //   });
+  // }
+
   get disabled() {
     return true;
   }

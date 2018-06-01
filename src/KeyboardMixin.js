@@ -51,6 +51,14 @@ export default function KeyboardMixin(Base) {
       super();
       this.addEventListener('keydown', async (event) => {
         this[symbols.raiseChangeEvents] = true;
+        // For use with FocusVisibleMixin.
+        if (!this.state.focusVisible) {
+          // The user may have begun interacting with this element using the
+          // mouse/touch, but has now begun using the keyboard, so show focus.
+          this.setState({
+            focusVisible: true
+          });
+        }
         const handled = this[symbols.keydown](event);
         if (handled) {
           event.preventDefault();

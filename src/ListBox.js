@@ -3,6 +3,7 @@ import * as symbols from './symbols.js';
 import AriaListMixin from './AriaListMixin.js';
 import ClickSelectionMixin from './ClickSelectionMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
+import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import KeyboardPagedSelectionMixin from './KeyboardPagedSelectionMixin.js';
@@ -19,6 +20,7 @@ const Base =
   AriaListMixin(
   ClickSelectionMixin(
   DirectionSelectionMixin(
+  FocusVisibleMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
   KeyboardPagedSelectionMixin(
@@ -29,7 +31,7 @@ const Base =
   SingleSelectionMixin(
   SlotItemsMixin(
     ReactiveElement
-  ))))))))))));
+  )))))))))))));
 
 
 /**
