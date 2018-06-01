@@ -1,5 +1,4 @@
 import ListBox from './ListBox.js';
-import { merge } from './updates.js';
 
 
 /**

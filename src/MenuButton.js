@@ -7,6 +7,8 @@ import PopupSource from './PopupSource.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 
+const menuTagKey = Symbol('menuTag');
+
 
 const Base = 
   AriaListMixin(
@@ -16,6 +18,9 @@ const Base =
   )));
 
 
+/**
+ * @elementtag {Menu} menu
+ */
 class MenuButton extends Base {
 
   componentDidMount() {
@@ -77,6 +82,15 @@ class MenuButton extends Base {
     return -1;
   }
 
+  get defaults() {
+    const base = super.defaults || {};
+    return Object.assign({}, base, {
+      tags: Object.assign({}, base.tags, {
+        menu: 'elix-menu'
+      })
+    });
+  }
+
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       itemRole: 'menuitem',
@@ -122,12 +136,21 @@ class MenuButton extends Base {
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
   }
 
+  get menuTag() {
+    return this[menuTagKey];
+  }
+  set menuTag(menuTag) {
+    this[symbols.hasDynamicTemplate] = true;
+    this[menuTagKey] = menuTag;
+  }
+
   get popupTemplate() {
     const base = super.popupTemplate;
+    const menuTag = this.menuTag || this.defaults.tags.menu;
     const template = base.replace('<slot></slot>', `
-      <elix-menu id="menu">
+      <${menuTag} id="menu">
         <slot></slot>
-      </elix-menu>
+      </${menuTag}>
     `);
     return template;
   }
