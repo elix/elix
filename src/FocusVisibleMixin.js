@@ -10,14 +10,12 @@ import * as symbols from './symbols.js';
 // event since the last mousedown event.
 let keyboardActive = false;
 
-// Flag used to track keyboard active state across window blur/focus events.
-let previousKeyboardActive;
-
 
 /**
  * Mixin which tracks a component's focus state so that it can render a focus
  * indication (e.g., a glowing outline) if and only if the user has used the
- * keyboard to interact with the component.
+ * keyboard to interact with the component. The keyboard is considered to be
+ * active if a keyboard event has occurred since the last mouse/touch event.
  * 
  * This is modeled after the proposed
  * [focus-visible](https://github.com/WICG/focus-visible) feature for CSS.
@@ -69,9 +67,11 @@ export default function FocusVisibleMixin(Base) {
 }
 
 
-window.addEventListener('mousedown', () => {
-  keyboardActive = false;
-}, { capture: true });
+// Listen for top-level keydown and mousedown events.
+// Use capture phase so we detect events even if they're handled.
 window.addEventListener('keydown', () => {
   keyboardActive = true;
+}, { capture: true });
+window.addEventListener('mousedown', () => {
+  keyboardActive = false;
 }, { capture: true });
