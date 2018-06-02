@@ -45,10 +45,6 @@ class SeamlessButton extends Base {
           display: inline-flex;
           -webkit-tap-highlight-color: transparent;
         }
-
-        :host(:focus) {
-          background: pink;
-        }
         
         button {
           background: none;
