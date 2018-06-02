@@ -2,10 +2,6 @@ import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 
 
-//
-// Global state shared by all elements using this mixin.
-//
-
 // We consider the keyboard to be active if the window has received a keydown
 // event since the last mousedown event.
 let keyboardActive = false;
@@ -13,11 +9,11 @@ let keyboardActive = false;
 
 /**
  * Mixin which tracks a component's focus state so that it can render a focus
- * indication (e.g., a glowing outline) if and only if the user has used the
- * keyboard to interact with the component. The keyboard is considered to be
- * active if a keyboard event has occurred since the last mouse/touch event.
+ * indication (e.g., a glowing outline) if and only if the keyboard is active.
+ * The keyboard is considered to be active if a keyboard event has occurred
+ * since the last mouse/touch event.
  * 
- * This is modeled after the proposed
+ * This is loosely modeled after the proposed
  * [focus-visible](https://github.com/WICG/focus-visible) feature for CSS.
  * 
  * @module FocusVisibleMixin
@@ -46,6 +42,18 @@ export default function FocusVisibleMixin(Base) {
       });
     }
 
+    /**
+     * Components can invoke this method whenever the keyboard state
+     * may have changed outside of a focus or blur event.
+     * 
+     * For example, a [PopupSource](PopupSource) element contains a
+     * [Popup](Popup) as a subelement. When the PopupSource opens the Popup, the
+     * Popup gets focus. When the Popup closes, the PopupSource gets the focus
+     * back. However, since the Popup inside the PopupSource, the latter doesn't
+     * get a focus event when the Popup closes. To ensure the PopupSource
+     * visually reflects the current keyboard state, after closing the Popup it
+     * invokes this `refreshFocus` method to update its visible state.
+     */
     [symbols.refreshFocus]() {
       this.setState({
         focusVisible: keyboardActive
@@ -54,6 +62,10 @@ export default function FocusVisibleMixin(Base) {
 
     get updates() {
       const base = super.updates || {};
+      // Suppress the component's normal `outline` style unless we know the
+      // focus should be visible. If a base class (e.g., mixin further up the
+      // prototype chain) has a different opinion about the outline, defer to
+      // it.
       const outline = base.style && base.style.outline ||
         !this.state.focusVisible && 'none' ||
         null;
