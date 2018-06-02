@@ -1,6 +1,8 @@
 import './Drawer.js';
 import './SeamlessButton.js';
 import { merge } from './updates.js';
+import FocusVisibleMixin from './FocusVisibleMixin.js';
+import KeyboardMixin from './KeyboardMixin.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 import * as symbols from './symbols.js';
@@ -11,9 +13,11 @@ const menuButtonTagKey = Symbol('menuButtonTag');
 
 
 const Base =
+  FocusVisibleMixin(
+  KeyboardMixin(
   OpenCloseMixin(
     ReactiveElement
-  );
+  )));
 
 
 /**
@@ -23,6 +27,8 @@ const Base =
  * [A hamburger menu used to present navigation commands](/demos/hamburgerMenuButton.html)
  * 
  * @inherits ReactiveElement
+ * @mixes FocusVisibleMixin
+ * @mixes KeyboardMixin
  * @mixes OpenCloseMixin
  * @elementtag {Drawer} menu
  * @elementtag {SeamlessButton} menuButton
@@ -51,6 +57,23 @@ export default class HamburgerMenuButton extends Base {
         menuButton: 'elix-seamless-button'
       }
     };
+  }
+
+  // Pressing Space is the same as clicking the menu button.
+  [symbols.keydown](event) {
+    /** @type {any} */
+    const menuButton = this.$.menuButton;
+    
+    let handled;
+    switch (event.keyCode) {
+      case 32: /* Space */
+        menuButton.click();
+        handled = true;
+        break;
+    }
+
+    // Prefer mixin result if it's defined, otherwise use base result.
+    return handled || (super[symbols.keydown] && super[symbols.keydown](event));
   }
 
   /**
@@ -105,7 +128,7 @@ export default class HamburgerMenuButton extends Base {
           width: 100%;
         }
       </style>
-      <${menuButtonTag} id="menuButton" aria-label="Open menu">
+      <${menuButtonTag} id="menuButton" aria-label="Open menu" tabindex="-1">
         <slot name="hamburgerIcon">
           <svg id="hamburgerIcon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 3 h18 v2 h-18 z m0 5 h18 v2 h-18 z m0 5 h18 v2 h-18 z"></path>
