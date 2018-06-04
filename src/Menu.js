@@ -1,4 +1,5 @@
 import ListBox from './ListBox.js';
+import * as symbols from './symbols.js';
 
 
 /**
@@ -8,6 +9,20 @@ import ListBox from './ListBox.js';
  * bar that opens a menu.
  */
 class Menu extends ListBox {
+
+  componentDidMount() {
+    if (super.componentDidMount) { super.componentDidMount(); }
+
+    // Treat a pointerdown event as a click.
+    if ('PointerEvent' in window) {
+      // Prefer listening to standard pointer events.
+      this.addEventListener('pointerdown', event =>
+        this[symbols.click](event));
+    } else {
+      this.addEventListener('touchstart', event =>
+        this[symbols.click](event));
+    }
+}
 
   // Filter the set of items to ignore disabled items.
   itemsForState(state) {

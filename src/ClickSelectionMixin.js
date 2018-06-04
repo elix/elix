@@ -39,15 +39,48 @@ export default function ClickSelectionMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this.addEventListener('mousedown', event => click(this, event));
-      if ('PointerEvent' in window) {
-        // Prefer listening to standard pointer events.
-        this.addEventListener('pointerdown', event => click(this, event));
-      } else {
-        this.addEventListener('touchstart', event => click(this, event));
-      }
+      this.addEventListener('mousedown', event => {
+        // Only process events for the main (usually left) button.
+        if (event.button !== 0) {
+          return;
+        }
+        this[symbols.click](event);
+      });
     }
 
+    [symbols.click](event) {
+    
+      this[symbols.raiseChangeEvents] = true;
+    
+      // In some situations, the event target will not be the child which was
+      // originally clicked on. E.g.,  If the item clicked on is a button, the
+      // event seems to be raised in phase 2 (AT_TARGET) — but the event
+      // target will be the component, not the item that was clicked on.
+      // Instead of using the event target, we get the first node in the
+      // event's composed path.
+      // @ts-ignore
+      const target = event.composedPath ?
+        event.composedPath()[0] :
+        event.target;
+    
+      // Find which item was clicked on and, if found, select it. For elements
+      // which don't require a selection, a background click will determine
+      // the item was null, in which we case we'll remove the selection.
+      const targetIndex = indexOfItemContainingTarget(this, target);
+      const selectionRequired = this.state && this.state.selectionRequired;
+      if (targetIndex >= 0 || !selectionRequired &&
+          this.selectedIndex !== targetIndex) {
+        this.selectedIndex = targetIndex;
+    
+        // We don't call preventDefault here. The default behavior for
+        // mousedown includes setting keyboard focus if the element doesn't
+        // already have the focus, and we want to preserve that behavior.
+        event.stopPropagation();
+      }
+    
+      this[symbols.raiseChangeEvents] = false;
+    }
+    
     get updates() {
       return merge(super.updates, {
         style: {
@@ -61,45 +94,3 @@ export default function ClickSelectionMixin(Base) {
 
   };
 }
-
-
-function click(element, event) {
-
-  // Only process events for the main (usually left) button.
-  if (event.button !== 0) {
-    return;
-  }
-
-  element[symbols.raiseChangeEvents] = true;
-
-  // In some situations, the event target will not be the child which was
-  // originally clicked on. E.g.,  If the item clicked on is a button, the
-  // event seems to be raised in phase 2 (AT_TARGET) — but the event
-  // target will be the component, not the item that was clicked on.
-  // Instead of using the event target, we get the first node in the
-  // event's composed path.
-  // @ts-ignore
-  const target = event.composedPath ?
-    event.composedPath()[0] :
-    event.target;
-
-  // Find which item was clicked on and, if found, select it. For elements
-  // which don't require a selection, a background click will determine
-  // the item was null, in which we case we'll remove the selection.
-  const targetIndex = indexOfItemContainingTarget(element, target);
-  const selectionRequired = element.state && element.state.selectionRequired;
-  if (targetIndex >= 0 || !selectionRequired &&
-      element.selectedIndex !== targetIndex) {
-    element.selectedIndex = targetIndex;
-
-    // We don't call preventDefault here. The default behavior for
-    // mousedown includes setting keyboard focus if the element doesn't
-    // already have the focus, and we want to preserve that behavior.
-    event.stopPropagation();
-  }
-
-  element[symbols.raiseChangeEvents] = false;
-}
-
-
-

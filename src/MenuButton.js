@@ -25,6 +25,9 @@ class MenuButton extends PopupSource {
         this[symbols.raiseChangeEvents] = false;
       }
     });
+    // this.$.menu.addEventListener('mousemove', event => {
+    //   console.log(event);
+    // });
     this.$.menu.addEventListener('mouseup', event => {
       // We only want to listen to events coming from the menu. (Without this,
       // clicking popup button opens popup then immediately closes it.)
@@ -46,6 +49,9 @@ class MenuButton extends PopupSource {
       });
     });
     this.$.popup[symbols.firstFocusableElement] = this.$.menu;
+    // this.$.source.addEventListener('mouseleave', event => {
+    //   console.log(event);
+    // });
   }
   
   componentDidUpdate(previousState) {
@@ -165,7 +171,6 @@ class MenuButton extends PopupSource {
 
   get updates() {
     const base = super.updates;
-    // const outline = base && base.style && base.style.outline;
     return merge(base, {
       attributes: {
         'aria-haspopup': true
@@ -175,7 +180,6 @@ class MenuButton extends PopupSource {
           style: {
             background: 'window',
             border: 'none',
-            // outline,
             padding: '0.5em 0'
           },
           selectedIndex: this.state.menuSelectedIndex

@@ -58,6 +58,17 @@ export const canGoLeft = Symbol('canGoLeft');
 export const canGoRight = Symbol('canGoRight');
 
 /**
+ * Symbol for the `click` method.
+ *
+ * This method is invoked when an element receives an operation that should
+ * be interpreted as a click. [ClickSelectionMixin](ClickSelectionMixin)
+ * invokes this when the element receives a `mousedown` event, for example.
+ *
+ * @function click
+ */
+export const click = Symbol('click');
+
+/**
  * Symbol for the `contentSlot` property.
  * 
  * [SlotContentMixin](SlotContentMixin) uses this to identify which slot

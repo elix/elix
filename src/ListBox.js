@@ -76,8 +76,7 @@ class ListBox extends Base {
       },
       style: {
         'background-color': backgroundColor,
-        color,
-        // 'padding': '0.25em'
+        color
       }
     });
   }
@@ -112,6 +111,12 @@ class ListBox extends Base {
 
         #content > ::slotted(*) {
           padding: 0.25em;
+        }
+
+        @media (pointer: coarse) {
+          #content > ::slotted(*) {
+            padding: 1em;
+          }
         }
 
         #content > ::slotted(option) {
