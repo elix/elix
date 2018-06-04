@@ -1,6 +1,6 @@
-import './Menu';
+import './Menu.js';
 import { indexOfItemContainingTarget } from './utilities.js';
-import { merge } from './updates';
+import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import PopupSource from './PopupSource.js';
 
@@ -8,6 +8,9 @@ const menuTagKey = Symbol('menuTag');
 
 
 /**
+ * A button that invokes a menu.
+ * 
+ * @inherits PopupSource
  * @elementtag {Menu} menu
  */
 class MenuButton extends PopupSource {
@@ -16,18 +19,20 @@ class MenuButton extends PopupSource {
     if (super.componentDidMount) { super.componentDidMount(); }
     // If user hovers mouse over an item, select it.
     this.addEventListener('mousemove', event => {
-      const hoverIndex = indexOfItemContainingTarget(this, event.target);
-      if (hoverIndex !== this.state.menuSelectedIndex) {
-        this[symbols.raiseChangeEvents] = true;
-        this.setState({
-          menuSelectedIndex: hoverIndex
-        });
-        this[symbols.raiseChangeEvents] = false;
+      const target = event.target;
+      if (target) {
+        /** @type {any} */
+        const cast = target;
+        const hoverIndex = indexOfItemContainingTarget(this, cast);
+        if (hoverIndex !== this.state.menuSelectedIndex) {
+          this[symbols.raiseChangeEvents] = true;
+          this.setState({
+            menuSelectedIndex: hoverIndex
+          });
+          this[symbols.raiseChangeEvents] = false;
+        }
       }
     });
-    // this.$.menu.addEventListener('mousemove', event => {
-    //   console.log(event);
-    // });
     this.$.menu.addEventListener('mouseup', event => {
       // We only want to listen to events coming from the menu. (Without this,
       // clicking popup button opens popup then immediately closes it.)
@@ -49,9 +54,6 @@ class MenuButton extends PopupSource {
       });
     });
     this.$.popup[symbols.firstFocusableElement] = this.$.menu;
-    // this.$.source.addEventListener('mouseleave', event => {
-    //   console.log(event);
-    // });
   }
   
   componentDidUpdate(previousState) {

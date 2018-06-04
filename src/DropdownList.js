@@ -1,7 +1,7 @@
 import { merge } from './updates.js';
 import MenuButton from './MenuButton.js';
-import AriaListMixin from './AriaListMixin';
-import SelectedItemTextValueMixin from './SelectedItemTextValueMixin';
+import AriaListMixin from './AriaListMixin.js';
+import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 
@@ -15,6 +15,15 @@ const Base =
   ))));
 
 
+/**
+ * Shows a single choice made from a pop-up list of choices.
+ * 
+ * @inherits MenuButton
+ * @mixes AriaListMixin
+ * @mixes SelectedItemTextValueMixin
+ * @mixes SingleSelectionMixin
+ * @mixes SlotItemsMixin
+ */
 class DropdownList extends Base {
 
   // By default, opening the menu re-selects the component item that's currently
@@ -32,7 +41,8 @@ class DropdownList extends Base {
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
     const { closeResult, opened, selectedIndex } = state;
-    if (!opened && this.opened && closeResult && selectedIndex !== closeResult) {
+    if (!opened && this.opened && closeResult !== undefined &&
+        selectedIndex !== closeResult) {
       // Closing: Update our selection from menu selection.
       state.selectedIndex = closeResult;
       result = false;

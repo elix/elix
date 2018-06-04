@@ -32,11 +32,22 @@ export function deepContains(container, target) {
 
 
 /**
- * Return the index of the list child that is, or contains, the indicated target
- * node. Return -1 if not found.
+ * Search a list element for the item that contains the specified target.
+ * 
+ * When dealing with UI events (e.g., mouse clicks) that may occur in
+ * subelements inside a list item, you can use this routine to obtain the
+ * containing list item.
+ * 
+ * @param {Node} listElement - A list element containing a set of items
+ * @param {Node} target - A target element that may or may not be an item in the
+ * list.
+ * @returns {number} - The index of the list child that is or contains the
+ * indicated target node. Returns -1 if not found.
  */
-export function indexOfItemContainingTarget(element, target) {
-  const items = element.items || [];
+export function indexOfItemContainingTarget(listElement, target) {
+  /** @type {any} */
+  const cast = listElement;
+  const items = cast.items || [];
   for (let index = 0; index < items.length; index++) {
     const item = items[index];
     if (item === target || deepContains(item, target)) {

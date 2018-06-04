@@ -4,10 +4,12 @@ import { merge } from './updates.js';
 
 
 /**
- * A menu.
+ * A menu of choices or commands.
  * 
- * This holds the contents of the menu. This isn't a button or element in a menu
- * bar that opens a menu.
+ * This holds the contents of the menu, not the top-level UI element that invokes
+ * a menu. For that, see [MenuButton](MenuButton) or [PopupSource](PopupSource).
+ * 
+ * @inherits ListBox
  */
 class Menu extends ListBox {
 

@@ -22,6 +22,10 @@ const Base =
 
 
 /**
+ * @inherits ReactiveElement
+ * @mixes FocusVisibleMixin
+ * @mixes KeyboardMixin
+ * @mixes OpenCloseMixin
  * @elementtag {Backdrop} backdrop
  * @elementtag {OverlayFrame} frame
  * @elementtag {Popup} popup
