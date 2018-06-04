@@ -1,3 +1,4 @@
+import './DialogFrame.js';
 import './ModalBackdrop.js';
 import { merge } from './updates.js';
 import DialogModalityMixin from './DialogModalityMixin.js';
@@ -21,6 +22,7 @@ const Base =
  * @mixes DialogModalityMixin
  * @mixes KeyboardMixin
  * @elementtag {ModalBackdrop} backdrop
+ * @elementtag {DialogFrame} frame
  */
 class Dialog extends Base {
 
@@ -28,7 +30,8 @@ class Dialog extends Base {
     const base = super.defaults;
     return Object.assign({}, base, {
       tags: Object.assign({}, base.tags, {
-        backdrop: 'elix-modal-backdrop'
+        backdrop: 'elix-modal-backdrop',
+        frame: 'elix-dialog-frame'
       })
     });
   }

@@ -1,21 +1,13 @@
 import * as symbols from './symbols.js';
-// import FocusCaptureMixin from './FocusCaptureMixin.js';
 import ReactiveElement from './ReactiveElement.js';
-
-
-const Base =
-  // FocusCaptureMixin(
-    ReactiveElement
-  ;
 
 
 /**
  * A simple frame for an overlay that displays a drop-shadow.
  * 
  * @inherits ReactiveElement
- * @mixes FocusCaptureMixin
  */
-class OverlayFrame extends Base {
+class OverlayFrame extends ReactiveElement {
 
   get [symbols.template]() {
     return `
@@ -28,9 +20,7 @@ class OverlayFrame extends Base {
           position: relative;
         }
       </style>
-      ${`
-        <slot></slot>
-      `}
+      <slot></slot>
     `;
   }
 

@@ -1,5 +1,5 @@
+import './DialogFrame.js';
 import './ModalBackdrop.js';
-import './OverlayFrame.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import DialogModalityMixin from './DialogModalityMixin.js';
@@ -50,7 +50,7 @@ const Base =
  * @mixes TrackpadSwipeMixin
  * @mixes TransitionEffectMixin
  * @elementtag {ModalBackdrop} backdrop
- * @elementtag {OverlayFrame} frame
+ * @elementtag {DialogFrame} frame
  */
 class Drawer extends Base {
 
@@ -84,7 +84,7 @@ class Drawer extends Base {
     return {
       tags: {
         backdrop: 'elix-modal-backdrop',
-        frame: 'elix-overlay-frame'
+        frame: 'elix-dialog-frame'
       }
     };
   }
