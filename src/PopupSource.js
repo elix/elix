@@ -230,6 +230,7 @@ class PopupSource extends Base {
         }
 
         #source {
+          background: buttonface;
           border-style: solid;
           color: inherit;
           display: block;
@@ -238,6 +239,7 @@ class PopupSource extends Base {
           font-style: inherit;
           margin: 0;
           outline: none;
+          -webkit-tap-highlight-color: transparent;
           -moz-user-select: none;
           -ms-user-select: none;
           -webkit-user-select: none;
