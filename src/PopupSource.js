@@ -55,20 +55,23 @@ class PopupSource extends Base {
         });
       }
     });
-    this.$.popup.addEventListener('opened-changed', event => {
-      /** @type {any} */ 
-      const cast = event;
-      const opened = cast.detail.opened;
-      if (opened !== this.opened) {
+    this.$.popup.addEventListener('opened', () => {
+      if (!this.opened) {
+        // Popup's opened state becomes our own opened state.
         this[symbols.raiseChangeEvents] = true;
-        // Popup opened/closed state becomes our own.
-        if (opened) {
-          this.open();
-        } else {
-          const closeResult = cast.detail.closeResult;
-          this.close(closeResult);
-          this[symbols.refreshFocus]();
-        }
+        this.open();
+        this[symbols.raiseChangeEvents] = false;
+      }
+    });
+    this.$.popup.addEventListener('closed', event => {
+      if (!this.closed) {
+        // Popup's closed state becomes our own closed state.
+        this[symbols.raiseChangeEvents] = true;
+        /** @type {any} */ 
+        const cast = event;
+        const closeResult = cast.detail.closeResult;
+        this.close(closeResult);
+        this[symbols.refreshFocus]();
         this[symbols.raiseChangeEvents] = false;
       }
     });

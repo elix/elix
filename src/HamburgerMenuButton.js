@@ -41,11 +41,17 @@ export default class HamburgerMenuButton extends Base {
       this.open();
       this[symbols.raiseChangeEvents] = false;
     });
-    this.$.menu.addEventListener('opened-changed', event => {
+    this.$.menu.addEventListener('closed', event => {
       /** @type {any} */
       const cast = event;
       this.setState({
-        opened: cast.detail.opened
+        closeResult: cast.detail.closeResult,
+        opened: false
+      });
+    });
+    this.$.menu.addEventListener('opened', () => {
+      this.setState({
+        opened: true
       });
     });
   }

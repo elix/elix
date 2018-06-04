@@ -75,13 +75,35 @@ export default function OpenCloseMixin(Base) {
          * 
          * @event OpenCloseMixin#opened-changed
          */
-        const event = new CustomEvent('opened-changed', {
+        const openedChangedEvent = new CustomEvent('opened-changed', {
           detail: {
             closeResult: this.state.closeResult,
             opened: this.state.opened
           }
         });
-        this.dispatchEvent(event);
+        this.dispatchEvent(openedChangedEvent);
+
+        if (this.state.opened) {
+          /**
+           * Raised when the component opens.
+           * 
+           * @event OpenCloseMixin#opened
+           */
+          const openedEvent = new CustomEvent('opened');
+          this.dispatchEvent(openedEvent);
+        } else {
+          /**
+           * Raised when the component closes.
+           * 
+           * @event OpenCloseMixin#closed
+           */
+          const closedEvent = new CustomEvent('closed', {
+            detail: {
+              closeResult: this.state.closeResult
+            }
+          });
+          this.dispatchEvent(closedEvent);
+        }
       }
 
       // If someone's waiting for the component to close, and it's completely
