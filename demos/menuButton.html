@@ -16,7 +16,7 @@
 </head>
 
 <body role="main" unresolved>
-  <div class="demo padded">
+  <div class="demo medium padded">
     <style>
       .menuItem {
         /* Variety of system fonts */
@@ -40,10 +40,12 @@
     </elix-menu-button>
     <p id="result"></p>
     <script>
-      // TODO: Which event to use?
-      menuButton.addEventListener('menu-item-selected', event => {
-        const selectedItem = event.detail.selectedItem;
-        result.textContent = `You picked: ${selectedItem.textContent}`;
+      menuButton.addEventListener('closed', event => {
+        const closeResult = event.detail.closeResult;
+        const item = closeResult >= 0 && menuButton.items[closeResult].textContent;
+        result.textContent = item ?
+        `You picked: ${item}` :
+          `You didn't pick a menu item.`;
       });
     </script>
   </div>
