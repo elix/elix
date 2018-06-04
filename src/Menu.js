@@ -1,5 +1,6 @@
 import ListBox from './ListBox.js';
 import * as symbols from './symbols.js';
+import { merge } from './updates.js';
 
 
 /**
@@ -22,7 +23,7 @@ class Menu extends ListBox {
       this.addEventListener('touchstart', event =>
         this[symbols.click](event));
     }
-}
+  }
 
   // Filter the set of items to ignore disabled items.
   itemsForState(state) {
@@ -36,6 +37,14 @@ class Menu extends ListBox {
     return Object.assign({}, super.defaultState, {
       role: 'menu',
       itemRole: 'menuitem'
+    });
+  }
+
+  get updates() {
+    return merge(super.updates, {
+      style: {
+        'touch-action': 'manipulation'
+      }
     });
   }
 
