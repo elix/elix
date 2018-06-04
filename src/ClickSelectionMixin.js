@@ -4,7 +4,8 @@ import { indexOfItemContainingTarget } from './utilities.js';
 
 
 /**
- * Mixin which maps a click (actually, a mousedown) to an item selection.
+ * Mixin which maps a click (actually, a mousedown, touchstart, or pointerdown)
+ * event to an item selection.
  *
  * This simple mixin is useful in list-like elements like [ListBox](ListBox),
  * where a click on a list item implicitly selects it.
@@ -17,11 +18,6 @@ import { indexOfItemContainingTarget } from './utilities.js';
  * This mixin only listens to mousedown events for the primary mouse button
  * (typically the left button). Right-clicks are ignored so that the browser
  * may display a context menu.
- *
- * Much has been written about how to ensure "fast tap" behavior on mobile
- * devices. This mixin makes a very straightforward use of a standard event, and
- * this appears to perform well on mobile devices when, e.g., the viewport is
- * configured with `width=device-width`.
  *
  * This mixin expects the component to provide an `items` property. It also
  * expects the component to define a `state.selectedIndex` member; you can
@@ -44,6 +40,12 @@ export default function ClickSelectionMixin(Base) {
       // @ts-ignore
       super();
       this.addEventListener('mousedown', event => click(this, event));
+      if ('PointerEvent' in window) {
+        // Prefer listening to standard pointer events.
+        this.addEventListener('pointerdown', event => click(this, event));
+      } else {
+        this.addEventListener('touchstart', event => click(this, event));
+      }
     }
 
     get updates() {
@@ -61,14 +63,14 @@ export default function ClickSelectionMixin(Base) {
 }
 
 
-function click(component, event) {
+function click(element, event) {
 
   // Only process events for the main (usually left) button.
   if (event.button !== 0) {
     return;
   }
 
-  component[symbols.raiseChangeEvents] = true;
+  element[symbols.raiseChangeEvents] = true;
 
   // In some situations, the event target will not be the child which was
   // originally clicked on. E.g.,  If the item clicked on is a button, the
@@ -84,10 +86,11 @@ function click(component, event) {
   // Find which item was clicked on and, if found, select it. For elements
   // which don't require a selection, a background click will determine
   // the item was null, in which we case we'll remove the selection.
-  const targetIndex = indexOfItemContainingTarget(component, target);
-  const selectionRequired = component.state && component.state.selectionRequired;
-  if (targetIndex >= 0 || !selectionRequired) {
-    component.selectedIndex = targetIndex;
+  const targetIndex = indexOfItemContainingTarget(element, target);
+  const selectionRequired = element.state && element.state.selectionRequired;
+  if (targetIndex >= 0 || !selectionRequired &&
+      element.selectedIndex !== targetIndex) {
+    element.selectedIndex = targetIndex;
 
     // We don't call preventDefault here. The default behavior for
     // mousedown includes setting keyboard focus if the element doesn't
@@ -95,7 +98,7 @@ function click(component, event) {
     event.stopPropagation();
   }
 
-  component[symbols.raiseChangeEvents] = false;
+  element[symbols.raiseChangeEvents] = false;
 }
 
 
