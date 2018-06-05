@@ -131,7 +131,9 @@ function updateOriginalProp(element, name, value) {
     
     default:
       changes = {
-        name: value
+        attributes: {
+          [name]: value
+        }
       };
       break;
   }
