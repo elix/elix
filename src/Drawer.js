@@ -1,33 +1,19 @@
-import './DialogFrame.js';
-import './ModalBackdrop.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
-import DialogModalityMixin from './DialogModalityMixin.js';
-import KeyboardMixin from './KeyboardMixin.js';
+import Dialog from './Dialog.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
-import OpenCloseMixin from './OpenCloseMixin.js';
-import OverlayMixin from './OverlayMixin.js';
-import ReactiveElement from './ReactiveElement.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 import TransitionEffectMixin from './TransitionEffectMixin.js';
 
 
-const backdropTagKey = Symbol('backdropTag');
-const frameTagKey = Symbol('frameTag');
-
-
 const Base =
-  DialogModalityMixin(
-  KeyboardMixin(
   LanguageDirectionMixin(
-  OpenCloseMixin(
-  OverlayMixin(
   TouchSwipeMixin(
   TrackpadSwipeMixin(
   TransitionEffectMixin(
-    ReactiveElement
-  ))))))));
+    Dialog
+  ))));
 
 
 /**
@@ -36,31 +22,13 @@ const Base =
  * UI is not critical to completing the user’s primary goal (and, hence, not
  * critical to the application’s business goal).
  * 
- * Drawer displays a [ModalBackdrop](ModalBackdrop) behind the main overlay
- * content to help the user understand the modal condition. Both the backdrop
- * and the dialog itself can be styled.
- * 
- * @inherits ReactiveElement
- * @mixes DialogModalityMixin
- * @mixes KeyboardMixin
+ * @inherits Dialog
  * @mixes LanguageDirectionMixin
- * @mixes OpenCloseMixin
- * @mixes OverlayMixin
  * @mixes TouchSwipeMixin
  * @mixes TrackpadSwipeMixin
  * @mixes TransitionEffectMixin
- * @elementtag {ModalBackdrop} backdrop
- * @elementtag {DialogFrame} frame
  */
 class Drawer extends Base {
-
-  get backdropTag() {
-    return this[backdropTagKey];
-  }
-  set backdropTag(backdropTag) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[backdropTagKey] = backdropTag;
-  }
   
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
@@ -80,15 +48,6 @@ class Drawer extends Base {
     });
   }
 
-  get defaults() {
-    return {
-      tags: {
-        backdrop: 'elix-modal-backdrop',
-        frame: 'elix-dialog-frame'
-      }
-    };
-  }
-
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       enableTransitions: false,
@@ -98,14 +57,6 @@ class Drawer extends Base {
 
   get [symbols.elementsWithTransitions]() {
     return [this.$.backdrop, this.$.frame];
-  }
-
-  get frameTag() {
-    return this[frameTagKey];
-  }
-  set frameTag(frameTag) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[frameTagKey] = frameTag;
   }
 
   async [symbols.swipeLeft]() {
@@ -132,40 +83,6 @@ class Drawer extends Base {
     /** @type {any} */
     const element = this.$.frame;
     return element;
-  }
-
-  get [symbols.template]() {
-    const backdropTag = this.backdropTag || this.defaults.tags.backdrop;
-    const frameTag = this.frameTag || this.defaults.tags.frame;
-    return `
-      <style>
-        :host {
-          align-items: stretch;
-          display: flex;
-          flex-direction: row;
-          left: 0;
-          height: 100%;
-          justify-content: flex-start;
-          outline: none;
-          position: fixed;
-          top: 0;
-          -webkit-tap-highlight-color: transparent;
-          width: 100%;
-        }
-
-        #backdrop {
-          will-change: opacity;
-        }
-
-        #frame {
-          will-change: transform;
-        }
-      </style>
-      <${backdropTag} id="backdrop"></${backdropTag}>
-      <${frameTag} id="frame">
-        <slot></slot>
-      </${frameTag}>
-    `;
   }
 
   get updates() {
@@ -217,7 +134,8 @@ class Drawer extends Base {
     const backdropProps = {
       style: {
         opacity,
-        'transition': showTransition ? `opacity ${duration}s linear` : undefined
+        'transition': showTransition ? `opacity ${duration}s linear` : undefined,
+        'will-change': 'opacity'
       }
     };
 
@@ -225,11 +143,20 @@ class Drawer extends Base {
     const frameProps = {
       style: {
         transform,
-        'transition': showTransition ? `transform ${duration}s` : undefined
+        'transition': showTransition ? `transform ${duration}s` : undefined,
+        'will-change': 'opacity'
       }
     };
 
+    // Style for top-level element
+    const style = {
+      'align-items': 'stretch',
+      'flex-direction': 'row',
+      'justify-content': 'flex-start',
+    }
+
     return merge(base, {
+      style,
       $: {
         backdrop: backdropProps,
         frame: frameProps

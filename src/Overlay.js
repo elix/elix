@@ -37,6 +37,13 @@ const Base =
  */
 class Overlay extends Base {
 
+  get backdropTemplate() {
+    const backdropTag = this.backdropTag || this.defaults.tags.backdrop;
+    return backdropTag ?
+      `<${backdropTag} id="backdrop"></${backdropTag}>` :
+      '';
+  }
+
   get defaults() {
     return {
       tags: {
@@ -83,15 +90,18 @@ class Overlay extends Base {
     this[frameTagKey] = frameTag;
   }
 
-  get [symbols.template]() {
-
-    const backdropTag = this.backdropTag || this.defaults.tags.backdrop;
-    const backdropTemplate = backdropTag ?
-      `<${backdropTag} id="backdrop"></${backdropTag}>` :
-      '';
-
+  get frameTemplate() {
     const frameTag = this.frameTag || this.defaults.tags.frame;
+    return `
+      <${frameTag} id="frame">
+        <slot></slot>
+      </${frameTag}>
+    `;
+  }
 
+  get [symbols.template]() {
+    const backdropTemplate = this.backdropTemplate;
+    const frameTemplate = this.frameTemplate;
     return `
       <style>
         :host {
@@ -113,9 +123,7 @@ class Overlay extends Base {
         }
       </style>
       ${backdropTemplate}
-      <${frameTag} id="frame">
-        <slot></slot>
-      </${frameTag}>
+      ${frameTemplate}
     `;
   }
 
