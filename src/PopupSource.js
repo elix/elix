@@ -43,6 +43,18 @@ class PopupSource extends Base {
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
+
+    // If the top-level element gets the focus while the popup is open, the most
+    // likely expanation is that the user hit Shift+Tab to back up out of the
+    // popup. In that case, we should close.
+    this.addEventListener('focus', async (event) => {
+      if (this.opened) {
+        this[symbols.raiseChangeEvents] = true;
+        await this.close();
+        this[symbols.raiseChangeEvents] = false;
+      }
+    });
+
     // Desktop popups generally open on mousedown, not click/mouseup. On mobile,
     // mousedown won't fire until the user releases their finger, so it behaves
     // like a click.
@@ -59,17 +71,19 @@ class PopupSource extends Base {
         });
       }
     });
+
+    // Popup's opened state becomes our own opened state.
     this.$.popup.addEventListener('opened', () => {
       if (!this.opened) {
-        // Popup's opened state becomes our own opened state.
         this[symbols.raiseChangeEvents] = true;
         this.open();
         this[symbols.raiseChangeEvents] = false;
       }
     });
+
+    // Popup's closed state becomes our own closed state.
     this.$.popup.addEventListener('closed', event => {
       if (!this.closed) {
-        // Popup's closed state becomes our own closed state.
         this[symbols.raiseChangeEvents] = true;
         /** @type {any} */ 
         const cast = event;
@@ -79,6 +93,7 @@ class PopupSource extends Base {
         this[symbols.raiseChangeEvents] = false;
       }
     });
+    
     if (this.state.opened) {
       // Popup is opened initially, which is somewhat unusual.
       setTimeout(() => {

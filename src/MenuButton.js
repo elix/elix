@@ -17,6 +17,7 @@ class MenuButton extends PopupSource {
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
+
     // If user hovers mouse over an item, select it.
     this.addEventListener('mousemove', event => {
       const target = event.target;
@@ -33,19 +34,69 @@ class MenuButton extends PopupSource {
         }
       }
     });
-    this.$.menu.addEventListener('mouseup', event => {
+
+    // If the popup is open and user releases the mouse over the backdrop, close
+    // the popup.
+    this.addEventListener('mouseup', async (event) => {
+      if (this.opened) {
+        // If the user mouses up over the menu, the menu mouseup handler will
+        // handle that case. So if we get to this point and the popup is still
+        // open, the user either released over the popup source or the backdrop.
+        // Hit test to see if the event is over the source. If not, they were
+        // over the backdrop.
+        const x = event.clientX;
+        const y = event.clientY;
+        // Find all elements under the given point.
+        const hitTargets = this.shadowRoot.elementsFromPoint(x, y);
+        const overSource = hitTargets.indexOf(this.$.source) >= 0;
+        if (!overSource) {
+          // Mouse is likely over the backdrop, so close.
+          this[symbols.raiseChangeEvents] = true;
+          await this.close();
+          this[symbols.raiseChangeEvents] = false;
+        }
+      }
+    });
+
+    // Close the popup if menu loses focus.
+    this.$.menu.addEventListener('blur', async (event) => {
+      if (this.opened) {
+        this[symbols.raiseChangeEvents] = true;
+        await this.close();
+        this[symbols.raiseChangeEvents] = false;
+      }
+    });
+
+    // mousedown events on the menu will propagate up to the top-level element,
+    // which will then steal the focus. We want to keep the focus on the menu,
+    // both to permit keyboard use, and to avoid closing the menu on blur (see
+    // separate blur handler). To keep the focus on the menu, we prevent the
+    // default event behavior.
+    this.$.menu.addEventListener('mousedown', event => {
+      if (this.opened) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
+    });
+
+    this.$.menu.addEventListener('mouseup', async (event) => {
       // We only want to listen to events coming from the menu. (Without this,
       // clicking popup button opens popup then immediately closes it.)
       // Additionally, we ignore mouseup events on the menu background or
       // child elements like menu separators.
       const target = event.target;
       const menuSelectedIndex = this.state.menuSelectedIndex;
-      if (target !== this.$.menu && menuSelectedIndex >= 0) {
+      if (target !== this.$.menu) {
         this[symbols.raiseChangeEvents] = true;
-        this.close(this.state.menuSelectedIndex);
+        const closeResult = menuSelectedIndex >= 0 ?
+          menuSelectedIndex :
+          undefined;
+        await this.close(closeResult);
         this[symbols.raiseChangeEvents] = false;
       }
     });
+
+    // Track changes in the menu's selection state.
     this.$.menu.addEventListener('selected-index-changed', event => {
       /** @type {any} */
       const cast = event;
@@ -53,6 +104,8 @@ class MenuButton extends PopupSource {
         menuSelectedIndex: cast.detail.selectedIndex
       });
     });
+
+    // When OverlayMixin opens the popup, we want it to focus on the menu.
     this.$.popup[symbols.firstFocusableElement] = this.$.menu;
   }
   
@@ -210,6 +263,36 @@ class MenuButton extends PopupSource {
     });
   }
 
+}
+
+
+//
+// Return true if the client (x, y) point is:
+//
+// * over the popup source, or
+// * over a selectable menu item.
+//
+// We use this on mouseup to determine whether the user's released the mouse
+// over the source or menu (and therefore wants to select something). If not,
+// we conclude they released the mouse over the backdrop or something in the
+// menu that can't be selected (like padding or a separator), in which case
+// we'll return false. In that case, we'll close the popup.
+//
+function pointOverMenu(element, x, y) {
+  // Find all elements under the given point.
+  const hitTargets = element.shadowRoot.elementsFromPoint(x, y);
+  if (hitTargets.indexOf(element.$.source) >= 0) {
+    // User released over the button or other element that invokes the popup.
+    return true;
+  }
+  if (hitTargets.indexOf(element.$.menu) >= 0 &&
+    element.state.menuSelectedIndex >= 0) {
+    // The mouse is over the menu, and a menu item is currently selected. Since
+    // we track selection on hover, the mouse should be over a selectable menu
+    // item.
+    return true;
+  }
+  return false;
 }
 
 
