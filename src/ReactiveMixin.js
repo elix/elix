@@ -42,6 +42,13 @@ export default function ReactiveMixin(Base) {
       this.render();
     }
 
+    disconnectedCallback() {
+      if (super.disconnectedCallback) { super.disconnectedCallback(); }
+      // If element is later reattached, we want to treat it like an initial
+      // render, including invocation of componentDidMount.
+      this[renderedStateKey] = null;
+    }
+
     /**
      * The default state for the component. This can be extended by mixins and
      * classes to provide additional default state.
@@ -96,7 +103,7 @@ export default function ReactiveMixin(Base) {
       const previousState = this[renderedStateKey];
       if (this[stateKey] !== previousState) {
 
-        const firstRender = previousState === undefined;
+        const firstRender = previousState == null;
 
         // Remember that we've rendered (or about to render) this state.
         this[renderedStateKey] = this[stateKey];

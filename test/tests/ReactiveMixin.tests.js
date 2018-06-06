@@ -141,6 +141,20 @@ describe("ReactiveMixin", function () {
     assert.equal(componentDidUpdateSpy.callCount, 1);
   })
 
+  it("calls componentDidMount if component is reattached", async () => {
+    const fixture = document.createElement('reactive-test');
+    const componentDidMountSpy = sinon.spy(fixture, 'componentDidMount');
+    container.appendChild(fixture);
+    // connectedCallback should trigger first render with promise timing.
+    await Promise.resolve();
+    assert.equal(componentDidMountSpy.callCount, 1);
+    container.removeChild(fixture);
+    container.appendChild(fixture);
+    // connectedCallback should trigger rerender with promise timing.
+    await Promise.resolve();
+    assert.equal(componentDidMountSpy.callCount, 2);
+  });
+
   it("leaves state object alone if there are no changes", async () => {
     const fixture = document.createElement('reactive-test');
     await fixture.setState({
