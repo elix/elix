@@ -52,13 +52,20 @@ class MenuButton extends PopupSource {
         const x = event.clientX;
         const y = event.clientY;
         // Find all elements under the given point.
-        const hitTargets = this.shadowRoot.elementsFromPoint(x, y);
+        const hitTargets = this.shadowRoot.elementsFromPoint ?
+          this.shadowRoot.elementsFromPoint(x, y) :
+          document.elementsFromPoint(x, y);
         const overSource = hitTargets.indexOf(this.$.source) >= 0;
         if (!overSource) {
           // Mouse is likely over the backdrop, so close.
           this[symbols.raiseChangeEvents] = true;
           await this.close();
           this[symbols.raiseChangeEvents] = false;
+        } else {
+          // Since we got a mouse up, we're no longer doing a drag-select.
+          this.setState({
+            dragSelect: false
+          });
         }
       }
     };
@@ -85,20 +92,25 @@ class MenuButton extends PopupSource {
       }
     });
 
+    // If the user mouses up on a menu item, close the menu with that item as
+    // the close result.
     this.$.menu.addEventListener('mouseup', async (event) => {
-      // We only want to listen to events coming from the menu. (Without this,
-      // clicking popup button opens popup then immediately closes it.)
-      // Additionally, we ignore mouseup events on the menu background or
-      // child elements like menu separators.
-      const target = event.target;
+      // If we're doing a drag-select (user moused down on button, dragged
+      // mouse into menu, and released), we close. If we're not doing a
+      // drag-select (the user opened the menu with a complete click), and
+      // there's a selection, they clicked on an item, so also close.
+      // Otherwise, the user clicked the menu open, then clicked on a menu
+      // separator or menu padding; stay open.
       const menuSelectedIndex = this.state.menuSelectedIndex;
-      if (target !== this.$.menu) {
-        this[symbols.raiseChangeEvents] = true;
+      if (this.state.dragSelect || menuSelectedIndex >= 0) {
         const closeResult = menuSelectedIndex >= 0 ?
           menuSelectedIndex :
           undefined;
+        this[symbols.raiseChangeEvents] = true;
         await this.close(closeResult);
         this[symbols.raiseChangeEvents] = false;
+      } else {
+        event.stopPropagation();
       }
     });
 
@@ -140,6 +152,7 @@ class MenuButton extends PopupSource {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      dragSelect: true,
       itemRole: 'menuitem',
       menuSelectedIndex: -1,
       role: 'button',
@@ -213,6 +226,11 @@ class MenuButton extends PopupSource {
     let result = super.refineState ? super.refineState(state) : true;
     if (state.opened && !this.opened) {
       // Opening
+      if (!state.dragSelect) {
+        // Until we get a mouseup, we're doing a drag-select.
+        state.dragSelect = true;
+        result = false;
+      }
       if (state.selectedItem) {
         // Clear any previously selected item.
         state.selectedItem = null;
