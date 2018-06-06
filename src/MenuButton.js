@@ -1,5 +1,5 @@
 import './Menu.js';
-import { indexOfItemContainingTarget } from './utilities.js';
+import { indexOfItemContainingTarget, elementsFromPoint } from './utilities.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import PopupSource from './PopupSource.js';
@@ -49,12 +49,7 @@ class MenuButton extends PopupSource {
         // open, the user either released over the popup source or the backdrop.
         // Hit test to see if the event is over the source. If not, they were
         // over the backdrop.
-        const x = event.clientX;
-        const y = event.clientY;
-        // Find all elements under the given point.
-        const hitTargets = this.shadowRoot.elementsFromPoint ?
-          this.shadowRoot.elementsFromPoint(x, y) :
-          document.elementsFromPoint(x, y);
+        const hitTargets = elementsFromPoint(this, event.clientX, event.clientY);
         const overSource = hitTargets.indexOf(this.$.source) >= 0;
         if (!overSource) {
           // Mouse is likely over the backdrop, so close.

@@ -32,6 +32,31 @@ export function deepContains(container, target) {
 
 
 /**
+ * Polyfill for shadowRoot.elementsFromPoint, which (as of 6 June 2018) is
+ * not available in the webcomponents polyfill.
+ * See https://github.com/webcomponents/shadydom/issues/141.
+ * 
+ * @param {Element} element - element whose shadow root may contain elements
+ * at the specified point
+ * @param {number} x - x-coordinate of the indicated point
+ * @param {number} y - y-coordinate of the indicated point
+ * @returns {Element[]}
+ */
+export function elementsFromPoint(element, x, y) {
+  if (element.shadowRoot && element.shadowRoot.elementsFromPoint) {
+    return element.shadowRoot.elementsFromPoint(x, y);
+  } else if (document.elementsFromPoint) {
+    return document.elementsFromPoint(x, y);
+  } else {
+    // Microsoft Edge
+    const elements = document.msElementsFromPoint(x, y);
+    return elements ?
+      [...elements] :
+      [];
+  }
+}
+
+/**
  * Return true if the event came from within the element or from the element
  * itself; false otherwise.
  * 
