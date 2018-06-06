@@ -5,6 +5,7 @@ import * as symbols from './symbols.js';
 import PopupSource from './PopupSource.js';
 
 const menuTagKey = Symbol('menuTag');
+const documentMouseupListenerKey = Symbol('documentMouseupListener');
 
 
 /**
@@ -36,8 +37,12 @@ class MenuButton extends PopupSource {
     });
 
     // If the popup is open and user releases the mouse over the backdrop, close
-    // the popup.
-    this.addEventListener('mouseup', async (event) => {
+    // the popup. We need to listen to mouseup on the document, not this
+    // element. If the user mouses down on the source, then moves the mouse off
+    // the document before releasing the mouse, the element itself won't get the
+    // mouseup. The document will, however, so it's a more reliable source of
+    // mouse state.
+    this[documentMouseupListenerKey] = async (event) => {
       if (this.opened) {
         // If the user mouses up over the menu, the menu mouseup handler will
         // handle that case. So if we get to this point and the popup is still
@@ -56,7 +61,8 @@ class MenuButton extends PopupSource {
           this[symbols.raiseChangeEvents] = false;
         }
       }
-    });
+    };
+    document.addEventListener('mouseup', this[documentMouseupListenerKey]);
 
     // Close the popup if menu loses focus.
     this.$.menu.addEventListener('blur', async (event) => {
@@ -139,6 +145,13 @@ class MenuButton extends PopupSource {
       role: 'button',
       selectedItem: null
     });
+  }
+
+  disconnectedCallback() {
+    //@ts-ignore
+    if (super.disconnectedCallback) { super.disconnectedCallback(); }
+    document.removeEventListener('mouseup', this[documentMouseupListenerKey]);
+    this[documentMouseupListenerKey] = null;
   }
 
   get items() {
