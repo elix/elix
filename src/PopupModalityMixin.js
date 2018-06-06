@@ -1,10 +1,9 @@
+import { deepContains, ownEvent } from './utilities.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
-import { deepContains } from './utilities.js';
 
 
-// Symbols for private data members on an element.
-const closeListenerKey = Symbol('closeListener');
+const implicitCloseListenerKey = Symbol('implicitCloseListener');
 
 
 /**
@@ -35,15 +34,25 @@ export default function PopupModalityMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
+
+      // If we lose focus, and the new focus isn't inside us, then close.
       this.addEventListener('blur', async (event) => {
-        if (!ownEvent(this, event)) {
+        // What has the focus now?
+        const newFocusedElement = event.relatedTarget || document.activeElement;
+        /** @type {any} */
+        const cast = this;
+        if (!deepContains(cast, newFocusedElement)) {
           this[symbols.raiseChangeEvents] = true;
           await this.close();
           this[symbols.raiseChangeEvents] = false;
         }
       });
-      this[closeListenerKey] = async (event) => {
-        if (!ownEvent(this, event)) {
+
+      // Close handlers for window events.
+      this[implicitCloseListenerKey] = async (event) => {
+        /** @type {any} */
+        const cast = this;
+        if (!ownEvent(cast, event)) {
           this[symbols.raiseChangeEvents] = true;
           await this.close();
           this[symbols.raiseChangeEvents] = false;
@@ -113,24 +122,15 @@ export default function PopupModalityMixin(Base) {
 
 
 function addEventListeners(element) {
-  document.addEventListener('keydown', element[closeListenerKey]);
-  window.addEventListener('blur', element[closeListenerKey]);
-  window.addEventListener('resize', element[closeListenerKey]);
-  window.addEventListener('scroll', element[closeListenerKey]);
-}
-
-
-// Return true if the event came from within the element or from the element
-// itself; false otherwise.
-function ownEvent(element, event) {
-  const eventSource = event.composedPath()[0];
-  return element === eventSource || deepContains(element, eventSource);
+  // Window blur event tracks loss of focus of *window*, not just element.
+  window.addEventListener('blur', element[implicitCloseListenerKey]);
+  window.addEventListener('resize', element[implicitCloseListenerKey]);
+  window.addEventListener('scroll', element[implicitCloseListenerKey]);
 }
 
 
 function removeEventListeners(element) {
-  document.removeEventListener('keydown', element[closeListenerKey]);
-  window.removeEventListener('blur', element[closeListenerKey]);
-  window.removeEventListener('resize', element[closeListenerKey]);
-  window.removeEventListener('scroll', element[closeListenerKey]);
+  window.removeEventListener('blur', element[implicitCloseListenerKey]);
+  window.removeEventListener('resize', element[implicitCloseListenerKey]);
+  window.removeEventListener('scroll', element[implicitCloseListenerKey]);
 }
