@@ -32,6 +32,22 @@ export function deepContains(container, target) {
 
 
 /**
+ * Return true if the event came from within the element or from the element
+ * itself; false otherwise.
+ * 
+ * @param {Node} element
+ * @param {Event} event
+ * @returns {boolean}
+ */
+export function ownEvent(element, event) {
+  /** @type {any} */
+  const cast = event;
+  const eventSource = cast.composedPath()[0];
+  return element === eventSource || deepContains(element, eventSource);
+}
+
+
+/**
  * Search a list element for the item that contains the specified target.
  * 
  * When dealing with UI events (e.g., mouse clicks) that may occur in
