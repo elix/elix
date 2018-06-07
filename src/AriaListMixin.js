@@ -1,3 +1,4 @@
+import { defaultAriaRole } from './accessibility.js';
 import { merge } from './updates.js';
 import { ensureId } from './idGeneration.js';
 
@@ -43,9 +44,16 @@ export default function AriaListMixin(Base) {
     get defaultState() {
       const base = super.defaultState || {};
       return Object.assign({}, base, {
-        itemRole: 'option',
+        itemRole: base.itemRole || 'option',
         role: base.role || 'listbox'
       });
+    }
+
+    get itemRole() {
+      return this.state.itemRole;
+    }
+    set itemRole(itemRole) {
+      this.setState({ itemRole });
     }
 
     itemUpdates(item, calcs, original) {
@@ -56,19 +64,25 @@ export default function AriaListMixin(Base) {
       const baseId = base.attributes && base.attributes.id;
       const id = baseId || ensureId(item);
 
-      const defaultRole = item instanceof HTMLOptionElement ?
-        null :
+      const role = base.original && base.original.attributes.role ||
+        base.attributes && base.attributes.role ||
         this.state.itemRole;
-      const originalAttributes = base.original ? base.original.attributes : {};
-      const role = originalAttributes.role || defaultRole;
+      const setRole = role !== defaultAriaRole[item.localName];
 
-      return merge(base, {
-        attributes: {
-          'aria-selected': calcs.selected,
-          id,
-          role
+      return merge(
+        base,
+        {
+          attributes: {
+            'aria-selected': calcs.selected,
+            id
+          },
         },
-      });
+        setRole && {
+          attributes: {
+            role
+          }
+        }
+      );
     }
 
     get updates() {
