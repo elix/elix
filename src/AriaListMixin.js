@@ -40,6 +40,14 @@ export default function AriaListMixin(Base) {
   // The class prototype added by the mixin.
   class AriaList extends Base {
 
+    get defaultState() {
+      const base = super.defaultState || {};
+      return Object.assign({}, base, {
+        itemRole: 'option',
+        role: base.role || 'listbox'
+      });
+    }
+
     itemUpdates(item, calcs, original) {
       const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
       
@@ -48,9 +56,11 @@ export default function AriaListMixin(Base) {
       const baseId = base.attributes && base.attributes.id;
       const id = baseId || ensureId(item);
 
-      const defaultRole = item instanceof HTMLOptionElement ? null : 'option';
+      const defaultRole = item instanceof HTMLOptionElement ?
+        null :
+        this.state.itemRole;
       const originalAttributes = base.original ? base.original.attributes : {};
-      const role = originalAttributes.role || this.state.itemRole || defaultRole;
+      const role = originalAttributes.role || defaultRole;
 
       return merge(base, {
         attributes: {
@@ -64,9 +74,8 @@ export default function AriaListMixin(Base) {
     get updates() {
       const base = super.updates || {};
       const role = this.state.original && this.state.original.attributes.role ||
-        this.state.role ||
         base.attributes && base.attributes.role ||
-        'listbox';
+        this.state.role;
       const orientation = this.state.orientation;
       const selectedIndex = this.selectedIndex || this.state.selectedIndex;
       const selectedItem = selectedIndex >= 0 && this.items ?

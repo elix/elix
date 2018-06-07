@@ -7,12 +7,12 @@ import SlotItemsMixin from './SlotItemsMixin.js';
 
 
 const Base =
-  AriaListMixin(
+  // AriaListMixin(
   SelectedItemTextValueMixin(
   SingleSelectionMixin(
   SlotItemsMixin(
     MenuButton
-  ))));
+  )));
 
 
 /**

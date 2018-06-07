@@ -131,7 +131,8 @@ class PopupSource extends Base {
       fitsLeft: true,
       fitsRight: true,
       horizontalAlign: 'left',
-      popupPosition: 'below'
+      popupPosition: 'below',
+      role: 'button'
     });
   }
 
@@ -290,16 +291,19 @@ class PopupSource extends Base {
         }
       </style>
       ${sourceTemplate}
-      <div id="popupContainer">
+      <div id="popupContainer" role="none">
         ${popupTemplate}
       </div>
     `;
   }
 
-  // TODO: Pressed state for button
   get updates() {
 
     const base = super.updates;
+
+    const role = this.state.original && this.state.original.attributes.role ||
+      base.attributes && base.attributes.role ||
+      this.state.role;
 
     const opened = this.state.opened;
     const sourceStyle = {
@@ -347,17 +351,19 @@ class PopupSource extends Base {
     // we have checked where it fits.
     const opacity = fitChecked ? '' : 0;
 
-    // const outline = base && base.style && base.style.outline;
-
     const popupStyle = {
       bottom,
       left,
       opacity,
-      // outline,
       right
     };
   
     return merge(base, {
+      attributes: {
+        'aria-expanded': opened,
+        'aria-haspopup': true,
+        role
+      },
       $: {
         popup: {
           opened: this.state.opened,

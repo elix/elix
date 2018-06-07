@@ -253,9 +253,6 @@ class MenuButton extends PopupSource {
   get updates() {
     const base = super.updates;
     return merge(base, {
-      attributes: {
-        'aria-haspopup': true
-      },
       $: {
         menu: {
           style: {
@@ -289,36 +286,6 @@ class MenuButton extends PopupSource {
     });
   }
 
-}
-
-
-//
-// Return true if the client (x, y) point is:
-//
-// * over the popup source, or
-// * over a selectable menu item.
-//
-// We use this on mouseup to determine whether the user's released the mouse
-// over the source or menu (and therefore wants to select something). If not,
-// we conclude they released the mouse over the backdrop or something in the
-// menu that can't be selected (like padding or a separator), in which case
-// we'll return false. In that case, we'll close the popup.
-//
-function pointOverMenu(element, x, y) {
-  // Find all elements under the given point.
-  const hitTargets = element.shadowRoot.elementsFromPoint(x, y);
-  if (hitTargets.indexOf(element.$.source) >= 0) {
-    // User released over the button or other element that invokes the popup.
-    return true;
-  }
-  if (hitTargets.indexOf(element.$.menu) >= 0 &&
-    element.state.menuSelectedIndex >= 0) {
-    // The mouse is over the menu, and a menu item is currently selected. Since
-    // we track selection on hover, the mouse should be over a selectable menu
-    // item.
-    return true;
-  }
-  return false;
 }
 
 

@@ -93,7 +93,7 @@ class Overlay extends Base {
   get frameTemplate() {
     const frameTag = this.frameTag || this.defaults.tags.frame;
     return `
-      <${frameTag} id="frame">
+      <${frameTag} id="frame" role="none">
         <slot></slot>
       </${frameTag}>
     `;
