@@ -148,9 +148,7 @@ class MenuButton extends PopupSource {
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       dragSelect: true,
-      itemRole: 'menuitem',
       menuSelectedIndex: -1,
-      role: 'button',
       selectedItem: null
     });
   }
@@ -264,7 +262,7 @@ class MenuButton extends PopupSource {
         },
         popup: {
           attributes: {
-            tabindex: '-1'
+            tabindex: null
           }
         },
         source: {

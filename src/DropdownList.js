@@ -1,13 +1,12 @@
+import { defaultAriaRole } from './accessibility.js';
 import { merge } from './updates.js';
 import MenuButton from './MenuButton.js';
-import AriaListMixin from './AriaListMixin.js';
 import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 
 
 const Base =
-  // AriaListMixin(
   SelectedItemTextValueMixin(
   SingleSelectionMixin(
   SlotItemsMixin(
@@ -19,7 +18,6 @@ const Base =
  * Shows a single choice made from a pop-up list of choices.
  * 
  * @inherits MenuButton
- * @mixes AriaListMixin
  * @mixes SelectedItemTextValueMixin
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin
@@ -34,6 +32,7 @@ class DropdownList extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      itemRole: 'menuitemradio',
       selectionRequired: true
     });
   }
@@ -66,6 +65,7 @@ class DropdownList extends Base {
 
   get updates() {
     const popupPosition = this.state.popupPosition;
+    const itemRole = 'itemRole' in this.$.menu ? this.state.itemRole : null;
     return merge(super.updates, {
       $: {
         downIcon: {
@@ -75,11 +75,14 @@ class DropdownList extends Base {
             'margin-left': '0.25em',
           }
         },
-        menu: {
-          style: {
-            padding: 0
-          }
-        },
+        menu: Object.assign(
+          {
+            style: {
+              padding: 0
+            },
+          },
+          itemRole ? { itemRole } : null
+        ),
         upIcon: {
           style: {
             display: popupPosition === 'above' ? 'block' : 'none',
