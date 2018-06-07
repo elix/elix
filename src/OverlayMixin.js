@@ -50,12 +50,15 @@ export default function OverlayMixin(Base) {
 
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
-      updateOverlay(this);
+      openedChanged(this);
     }
 
     componentDidUpdate(previousState) {
       if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-      updateOverlay(this);
+
+      if (previousState.opened !== this.state.opened) {
+        openedChanged(this);
+      }
 
       // If we're finished closing an overlay that was automatically added to
       // the document, remove it now. Note: we only do this when the component
@@ -160,8 +163,8 @@ function maxZIndexInUse() {
 }
 
 
-// Update the overlay following a mount or update.
-function updateOverlay(element) {
+// Update the overlay following a change in opened state.
+function openedChanged(element) {
   if (element.state.opened) {
     // Opened
     if (!element[restoreFocusToElementKey] && document.activeElement !== document.body) {
