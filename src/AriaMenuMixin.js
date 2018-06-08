@@ -1,6 +1,5 @@
 import { defaultAriaRole } from './accessibility.js';
 import { merge } from './updates.js';
-import { ensureId } from './idGeneration.js';
 
 
 /**
