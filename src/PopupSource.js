@@ -89,7 +89,6 @@ class PopupSource extends Base {
         const cast = event;
         const closeResult = cast.detail.closeResult;
         this.close(closeResult);
-        this[symbols.refreshFocus]();
         this[symbols.raiseChangeEvents] = false;
       }
     });

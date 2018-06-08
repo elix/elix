@@ -6,6 +6,8 @@ import * as symbols from './symbols.js';
 // event since the last mousedown event.
 let keyboardActive = false;
 
+const focusVisibleChangedListenerKey = Symbol('focusVisibleChangedListener');
+
 
 /**
  * Mixin which tracks a component's focus state so that it can render a focus
@@ -30,9 +32,16 @@ export default function FocusVisibleMixin(Base) {
         this.setState({
           focusVisible: false
         });
+        document.removeEventListener('focus-visible-changed',
+          this[focusVisibleChangedListenerKey]);
       });
       this.addEventListener('focus', () => {
-        this[symbols.refreshFocus]();
+        this.setState({
+          focusVisible: keyboardActive
+        });
+        this[focusVisibleChangedListenerKey] = () => refreshFocus(this);
+        document.addEventListener('focus-visible-changed',
+          this[focusVisibleChangedListenerKey]);
       });
     }
 
@@ -40,24 +49,6 @@ export default function FocusVisibleMixin(Base) {
       return Object.assign({}, super.defaultState, {
         focusVisible: false
       });
-    }
-
-    /**
-     * Components can invoke this method whenever the keyboard state
-     * may have changed outside of a focus or blur event.
-     * 
-     * For example, a [PopupSource](PopupSource) element contains a
-     * [Popup](Popup) as a subelement. When the PopupSource opens the Popup, the
-     * Popup gets focus. When the Popup closes, the PopupSource gets the focus
-     * back. However, since the Popup inside the PopupSource, the latter doesn't
-     * get a focus event when the Popup closes. To ensure the PopupSource
-     * visually reflects the current keyboard state, after closing the Popup it
-     * invokes this `refreshFocus` method to update its visible state.
-     */
-    [symbols.refreshFocus]() {
-      this.setState({
-        focusVisible: keyboardActive
-      });    
     }
 
     get updates() {
@@ -79,11 +70,32 @@ export default function FocusVisibleMixin(Base) {
 }
 
 
+function refreshFocus(element) {
+  element.setState({
+    focusVisible: keyboardActive
+  });
+}
+
+
+function updateKeyboardActive(newKeyboardActive) {
+  if (keyboardActive !== newKeyboardActive) {
+    keyboardActive = newKeyboardActive;
+    const event = new CustomEvent('focus-visible-changed', {
+      detail: {
+        focusVisible: !keyboardActive
+      }
+    });
+    document.dispatchEvent(event);
+  }
+}
+
+
 // Listen for top-level keydown and mousedown events.
 // Use capture phase so we detect events even if they're handled.
 window.addEventListener('keydown', () => {
-  keyboardActive = true;
+  updateKeyboardActive(true);
 }, { capture: true });
+
 window.addEventListener('mousedown', () => {
-  keyboardActive = false;
+  updateKeyboardActive(false);
 }, { capture: true });
