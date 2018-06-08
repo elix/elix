@@ -186,12 +186,17 @@ export function applyChildNodes(element, childNodes) {
     return;
   }
 
+  // If the childNodes parameter is the actual childNodes of an element, then as
+  // we append those nodes to the indicated target element, they'll get removed
+  // from the original set. To keep the list stable, we make a copy.
+  const copy = [...childNodes];
+
   const oldLength = element.childNodes.length;
-  const newLength = childNodes.length;
+  const newLength = copy.length;
   const length = Math.max(oldLength, newLength);
   for (let i = 0; i < length; i++) {
     const oldChild = element.childNodes[i];
-    const newChild = childNodes[i];
+    const newChild = copy[i];
     if (i >= oldLength) {
       // Add new item not in old set.
       element.appendChild(newChild);
