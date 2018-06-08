@@ -19,7 +19,8 @@ declare const SlotItemsMixin: StateMixin<
   itemsForState(state: PlainObject): Element[]
 },
 {
-  content: NodeList|Node[];
+  content: Node[];
+  items: Element[];
 }>;
 
 export default SlotItemsMixin;

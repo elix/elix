@@ -16,8 +16,7 @@ declare const SlotContentMixin: StateMixin<
   [symbols.contentSlot]: HTMLSlotElement;
 },
 {
-  content: NodeList|Node[];
-  items: Element[];
+  content: Node[];
 }>;
 
 export default SlotContentMixin;
