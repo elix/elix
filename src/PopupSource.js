@@ -262,6 +262,7 @@ class PopupSource extends Base {
           font-style: inherit;
           margin: 0;
           outline: none;
+          padding: 0.25em 0.5em;
           -webkit-tap-highlight-color: transparent;
           touch-action: manipulation;
           -moz-user-select: none;

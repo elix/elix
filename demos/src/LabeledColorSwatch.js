@@ -16,20 +16,19 @@ class LabeledColorSwatch extends Base {
     return `
       <style>
         :host {
-          display: inline-block;
+          align-items: center;
+          display: inline-flex;
           white-space: nowrap;
         }
 
         #swatch {
-          border: 1px solid lightgray;
+          border-radius: 0.5em;
+          box-shadow: 0 0 5px gray;
+          box-sizing: border-box;
           display: inline-block;
           height: 1em;
-          vertical-align: middle;
+          margin-right: 0.25em;
           width: 1em;
-        }
-
-        #label {
-          vertical-align: middle;
         }
       </style>
       <span id="swatch"></span>
