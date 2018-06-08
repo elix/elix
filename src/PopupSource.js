@@ -47,7 +47,7 @@ class PopupSource extends Base {
     // If the top-level element gets the focus while the popup is open, the most
     // likely expanation is that the user hit Shift+Tab to back up out of the
     // popup. In that case, we should close.
-    this.addEventListener('focus', async (event) => {
+    this.addEventListener('focus', async () => {
       if (this.opened) {
         this[symbols.raiseChangeEvents] = true;
         await this.close();

@@ -1,4 +1,3 @@
-import { defaultAriaRole } from './accessibility.js';
 import { merge } from './updates.js';
 import MenuButton from './MenuButton.js';
 import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';

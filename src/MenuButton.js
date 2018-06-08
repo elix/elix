@@ -67,7 +67,7 @@ class MenuButton extends PopupSource {
     document.addEventListener('mouseup', this[documentMouseupListenerKey]);
 
     // Close the popup if menu loses focus.
-    this.$.menu.addEventListener('blur', async (event) => {
+    this.$.menu.addEventListener('blur', async () => {
       if (this.opened) {
         this[symbols.raiseChangeEvents] = true;
         await this.close();

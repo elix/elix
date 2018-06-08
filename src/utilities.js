@@ -45,7 +45,9 @@ export function deepContains(container, target) {
 export function elementsFromPoint(element, x, y) {
   if (element.shadowRoot && element.shadowRoot.elementsFromPoint) {
     return element.shadowRoot.elementsFromPoint(x, y);
+  //@ts-ignore
   } else if (document.elementsFromPoint) {
+    //@ts-ignore
     return document.elementsFromPoint(x, y);
   } else {
     // Microsoft Edge
