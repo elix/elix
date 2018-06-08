@@ -66,7 +66,7 @@ class PopupSource extends Base {
       if (cast.button === 0 && !this.opened) {
         setTimeout(() => {
           this[symbols.raiseChangeEvents] = true;
-          this.open()
+          this.open();
           this[symbols.raiseChangeEvents] = false;
         });
       }
@@ -97,7 +97,7 @@ class PopupSource extends Base {
     if (this.state.opened) {
       // Popup is opened initially, which is somewhat unusual.
       setTimeout(() => {
-        checkPopupFits(this)
+        measurePopup(this)
       });
     }
   }
@@ -107,7 +107,7 @@ class PopupSource extends Base {
     if (this.state.opened && !previousState.opened) {
       // Wait a tick to let the newly-opened component actually render.
       setTimeout(() => {
-        checkPopupFits(this);
+        measurePopup(this);
       });
     }
   }
@@ -125,14 +125,15 @@ class PopupSource extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      fitChecked: false,
-      fitsAbove: true,
-      fitsBelow: true,
-      fitsLeft: true,
-      fitsRight: true,
       horizontalAlign: 'left',
       popupPosition: 'below',
-      role: 'button'
+      role: 'button',
+      popupWidth: null,
+      popupHeight: null,
+      roomAbove: null,
+      roomBelow: null,
+      roomLeft: null,
+      roomRight: null
     });
   }
 
@@ -204,16 +205,16 @@ class PopupSource extends Base {
 
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
-    if (state.opened && !this.opened &&
-        (!state.fitsAbove || !state.fitsBelow || !state.fitsLeft || !state.fitsRight)) {
-      // Reset our expectations of whether the opening component will fit above
-      // and below. Assume it will fit in either direction.
+    const closing = !state.opened && this.opened;
+    if (closing && state.popupHeight !== null) {
+      // Reset our calculations of popup dimensions and room around the source.
       Object.assign(state, {
-        fitChecked: false,
-        fitsAbove: true,
-        fitsBelow: true,
-        fitsLeft: true,
-        fitsRight: true
+        popupHeight: null,
+        popupWidth: null,
+        roomAbove: null,
+        roomBelow: null,
+        roomLeft: null,
+        roomRight: null
       });
       result = false;
     }
@@ -312,15 +313,35 @@ class PopupSource extends Base {
       color: opened ? 'highlighttext' : ''
     };
 
-    const preferPositionBelow = this.state.popupPosition === 'below';
-    const { fitChecked, fitsAbove, fitsBelow, fitsLeft, fitsRight } = this.state;
+    const {
+      popupHeight,
+      popupWidth,
+      roomAbove,
+      roomBelow,
+      roomLeft,
+      roomRight
+    } = this.state;
+    const measured = popupHeight !== null;
+    const fitsAbove = popupHeight <= roomAbove;
+    const fitsBelow = popupHeight <= roomBelow;
+    const canLeftAlign = popupWidth <= roomRight;
+    const canRightAlign = popupWidth <= roomLeft;
 
-    // If we're requested to position the popup below, we do so if there's room
-    // below; if not, we position above if there's room above. If there's no
-    // room in either direction, we position below.
-    // Same general rule applies if we're requested to position above.
-    const positionBelow = preferPositionBelow && (fitsBelow || !fitsAbove) ||
-      !preferPositionBelow && !fitsAbove && fitsBelow;
+    const preferPositionBelow = this.state.popupPosition === 'below';
+
+    // We respect each position popup preference (above/below/right/right) if
+    // there's room in that direction. Otherwise, we use the horizontal/vertical
+    // position that maximizes the popup width/height.
+    const positionBelow =
+      (preferPositionBelow && (fitsBelow || roomBelow >= roomAbove)) ||
+      (!preferPositionBelow && !fitsAbove && roomBelow >= roomAbove);
+    const fitsVertically = positionBelow && fitsBelow ||
+      !positionBelow && fitsAbove;
+    const maxFrameHeight = fitsVertically ?
+      null :
+      positionBelow ?
+        roomBelow :
+        roomAbove;
 
     // Position container.
     const popupContainerStyle = {
@@ -332,29 +353,43 @@ class PopupSource extends Base {
 
     let left;
     let right;
+    let maxFrameWidth;
     const horizontalAlign = this.state.horizontalAlign;
     if (horizontalAlign === 'stretch') {
       left = 0;
       right = 0;
+      maxFrameWidth = null;
     } else {
       const preferLeftAlign = horizontalAlign === 'left';
-      // The above/below preference rules also apply to left/right positioning.
-      const positionLeft = preferLeftAlign && (fitsRight || !fitsLeft) ||
-        !preferLeftAlign && !fitsRight && fitsLeft;
-      left = positionLeft ? 0 : '';
-      right = !positionLeft ? 0 : '';
+      // The above/below preference rules also apply to left/right alignment.
+      const alignLeft =
+        (preferLeftAlign && (canLeftAlign || roomRight >= roomLeft)) ||
+        (!preferLeftAlign && !canRightAlign && roomRight >= roomLeft);
+      left = alignLeft ? 0 : '';
+      right = !alignLeft ? 0 : '';
+  
+      const fitsHorizontally = alignLeft && roomRight ||
+        !alignLeft && roomLeft;
+      maxFrameWidth = fitsHorizontally ?
+        null :
+        alignLeft ?
+          roomRight :
+          roomLeft;
     }
 
-    // Until we've checked the rendered position of the popup, keep it in the
+
+    // Until we've measured the rendered position of the popup, keep it in the
     // layout but don't make it visible yet. If we use `visibility: hidden` for
     // this purpose, the popup won't be able to receive the focus. Instead, we
     // use zero opacity as a way to make the popup temporarily invisible until
     // we have checked where it fits.
-    const opacity = fitChecked ? '' : 0;
+    const opacity = measured ? null : 0;
 
     const popupStyle = {
       bottom,
       left,
+      'max-height': maxFrameHeight ? `${maxFrameHeight}px` : null,
+      'max-width': maxFrameWidth ? `${maxFrameWidth}px` : null,
       opacity,
       right
     };
@@ -366,10 +401,18 @@ class PopupSource extends Base {
         role
       },
       $: {
-        popup: {
-          opened: this.state.opened,
-          style: popupStyle
-        },
+        popup: Object.assign(
+          {
+            opened: this.state.opened,
+            style: popupStyle
+          },
+          'maxFrameHeight' in this.$.popup && {
+            maxFrameHeight
+          },
+          'maxFrameWidth' in this.$.popup && {
+            maxFrameWidth
+          }
+        ),
         popupContainer: {
           style: popupContainerStyle
         },
@@ -383,24 +426,21 @@ class PopupSource extends Base {
 }
 
 
-// See if the rendered component fits above/below/left/right w.r.t. the
-// source.
-function checkPopupFits(element) {
-  if (element.state.fitChecked) {
+// If we haven't already measured the popup since it was opened, measure its
+// dimensions and the relevant distances in which the popup might be opened.
+function measurePopup(element) {
+  if (element.state.roomAbove !== null) {
     return;
   }
   const sourceRect = element.getBoundingClientRect();
   const popupRect = element.$.popup.getBoundingClientRect();
-  const fitsAbove = sourceRect.top >= popupRect.height;
-  const fitsBelow = sourceRect.bottom + popupRect.height <= window.innerHeight;
-  const fitsLeft = sourceRect.right >= popupRect.width;
-  const fitsRight = sourceRect.left + popupRect.width <= window.innerWidth;
   element.setState({
-    fitChecked: true,
-    fitsAbove,
-    fitsBelow,
-    fitsLeft,
-    fitsRight
+    popupHeight: popupRect.height,
+    popupWidth: popupRect.width,
+    roomAbove: sourceRect.top,
+    roomBelow: Math.ceil(window.innerHeight - sourceRect.bottom),
+    roomLeft: sourceRect.right,
+    roomRight: Math.ceil(window.innerWidth - sourceRect.left)
   });
 }
 

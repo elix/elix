@@ -30,6 +30,12 @@ class LabeledColorSwatch extends Base {
           margin-right: 0.25em;
           width: 1em;
         }
+
+        @media (pointer: coarse) {
+          #swatch {
+            margin-right: 0.5em;
+          }
+        }
       </style>
       <span id="swatch"></span>
       <span id="label">
