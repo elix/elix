@@ -65,6 +65,10 @@ class DropdownList extends Base {
   get updates() {
     const popupPosition = this.state.popupPosition;
     const itemRole = 'itemRole' in this.$.menu ? this.state.itemRole : null;
+    const clone = this.selectedItem ?
+      this.selectedItem.cloneNode(true) :
+      null;
+    const childNodes = clone ? clone.childNodes : [];
     return merge(super.updates, {
       $: {
         downIcon: {
@@ -90,7 +94,7 @@ class DropdownList extends Base {
           }
         },
         value: {
-          textContent: this.value
+          childNodes
         }
       }
     });
