@@ -263,6 +263,7 @@ class MenuButton extends PopupSource {
           style: {
             background: 'window',
             border: 'none',
+            'max-height': '100%',
             padding: '0.5em 0'
           },
           selectedIndex: this.state.menuSelectedIndex
