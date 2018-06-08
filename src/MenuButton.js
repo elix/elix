@@ -235,6 +235,13 @@ class MenuButton extends PopupSource {
         state.menuSelectedIndex = defaultMenuSelectedIndex;
         result = false;
       }
+    } else if (!state.opened && this.opened) {
+      // Closing
+      if (state.menuSelectedIndex !== -1) {
+        // Clear menu selection.
+        state.menuSelectedIndex = -1;
+        result = false;
+      }
     }
     return result;
   }
