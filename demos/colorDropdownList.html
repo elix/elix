@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Elix DropdownList</title>
+
+  <link rel="stylesheet" href="demos.css">
+  <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  <script type="module" src="./src/showElementsWhenDefined.js"></script>
+  <script type="module" src="../src/DropdownList.js"></script>
+  <script type="module" src="./src/LabeledColorSwatch.js"></script>
+  <script nomodule src="../build/demos.js"></script>
+  
+</head>
+
+<body role="main" unresolved>
+  <div class="demo padded">
+    <elix-dropdown-list aria-label="Colors" value-tag='labeled-color-swatch'>
+      <labeled-color-swatch>Black</labeled-color-swatch>
+      <labeled-color-swatch>Blue</labeled-color-swatch>
+      <labeled-color-swatch>Green</labeled-color-swatch>
+      <labeled-color-swatch>Orange</labeled-color-swatch>
+      <labeled-color-swatch>Purple</labeled-color-swatch>
+      <labeled-color-swatch>Red</labeled-color-swatch>
+      <labeled-color-swatch>White</labeled-color-swatch>
+      <labeled-color-swatch>Yellow</labeled-color-swatch>
+    </elix-dropdown-list>
+  </div>
+</body>
+
+</html>

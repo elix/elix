@@ -1,8 +1,12 @@
 import { merge } from './updates.js';
+import * as symbols from './symbols';
 import MenuButton from './MenuButton.js';
 import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
+
+
+const valueTagKey = Symbol('valueTag');
 
 
 const Base =
@@ -29,6 +33,15 @@ class DropdownList extends Base {
     return this.state.selectedIndex;
   }
 
+  get defaults() {
+    const base = super.defaults || {};
+    return Object.assign({}, base, {
+      tags: Object.assign({}, base.tags, {
+        value: 'div'
+      })
+    });
+  }
+
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       itemRole: 'menuitemradio',
@@ -49,8 +62,9 @@ class DropdownList extends Base {
   }
 
   get sourceSlotContent() {
+    const valueTag = this.valueTag || this.defaults.tags.value;
     return `
-      <div id="value"></div>
+      <${valueTag} id="value"></${valueTag}>
       <div>
         <svg id="downIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
           <path d="M 0 0 l5 5 5 -5 z"/>
@@ -98,6 +112,14 @@ class DropdownList extends Base {
         }
       }
     });
+  }
+
+  get valueTag() {
+    return this[valueTagKey];
+  }
+  set valueTag(valueTag) {
+    this[symbols.hasDynamicTemplate] = true;
+    this[valueTagKey] = valueTag;
   }
 
 }
