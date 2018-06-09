@@ -284,19 +284,6 @@ export const mouseleave = Symbol('mouseleave');
  */
 export const raiseChangeEvents = Symbol('raiseChangeEvents');
 
-
-/**
- * Symbol for an internal `refreshFocus` method.
- * 
- * [FocusVisibleMixin](FocusVisibleMixin) exposes this method, which updates
- * a component's `state.focusVisible` to true if the last user interaction
- * was via the keyboard instead of mouse/touch.
- * 
- * @function refreshFocus
- */
-export const refreshFocus = Symbol('refreshFocus');
-
-
 /**
  * Symbol for an internal `render` method.
  * 
