@@ -1,5 +1,4 @@
 import { merge } from './updates.js';
-import * as symbols from './symbols.js';
 
 
 // We consider the keyboard to be active if the window has received a keydown
