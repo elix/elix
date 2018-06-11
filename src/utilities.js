@@ -1,3 +1,6 @@
+import * as symbols from "./symbols.js";
+
+
 /**
  * Component utilities
  * 
@@ -56,6 +59,34 @@ export function elementsFromPoint(element, x, y) {
       [...elements] :
       [];
   }
+}
+
+/**
+ * Determine which shadow or child element the indicated element would
+ * like to treat as the default element to focus on.
+ * 
+ * This proceeds by starting with the indicated element, seeing whether
+ * it defines another element as the one which should receive the focus,
+ * and repeating that process.
+ * 
+ * [OverlayMixin](OverlayMixin) uses this utility to determine where the focus
+ * should be put when an overlay is opened.
+ * 
+ * @param {HTMLElement} element
+ * @returns {HTMLElement}
+ */
+export function defaultFocus(element) {
+  let result;
+  // Keep asking if the indicated element specifies a default focus and,
+  // if so, proceed there.
+  for (
+    result = element;
+    result[symbols.defaultFocus];
+    result = result[symbols.defaultFocus]
+  ) {
+    /* eslint-disable no-empty */
+  }
+  return result;
 }
 
 /**

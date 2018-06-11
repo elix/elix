@@ -1,5 +1,5 @@
 import './Menu.js';
-import { indexOfItemContainingTarget, elementsFromPoint } from './utilities.js';
+import { indexOfItemContainingTarget, elementsFromPoint, ownEvent } from './utilities.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import PopupSource from './PopupSource.js';
@@ -67,8 +67,8 @@ class MenuButton extends PopupSource {
     document.addEventListener('mouseup', this[documentMouseupListenerKey]);
 
     // Close the popup if menu loses focus.
-    this.$.menu.addEventListener('blur', async () => {
-      if (this.opened) {
+    this.$.menu.addEventListener('blur', async (event) => {
+      if (!ownEvent(this, event) && this.opened) {
         this[symbols.raiseChangeEvents] = true;
         await this.close();
         this[symbols.raiseChangeEvents] = false;
@@ -118,8 +118,9 @@ class MenuButton extends PopupSource {
       });
     });
 
-    // When OverlayMixin opens the popup, we want it to focus on the menu.
-    this.$.popup[symbols.firstFocusableElement] = this.$.menu;
+    // When OverlayMixin opens the popup, we want it to focus on the first menu
+    // item.
+    this.$.popup[symbols.defaultFocus] = this.$.menu;
   }
   
   componentDidUpdate(previousState) {

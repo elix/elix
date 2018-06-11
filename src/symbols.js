@@ -81,12 +81,12 @@ export const click = Symbol('click');
 export const contentSlot = Symbol('contentSlot');
 
 /**
- * Symbol for the `firstFocusableElement` property.
+ * Symbol for the `defaultFocus` property.
  * 
- * [OverlayMixin](OverlayMixin) uses this, if defined, to determine where the
- * focus should be put when an overlay is opened.
+ * This is used by the [defaultFocus](utilities#defaultFocus) utility to
+ * determine the default focus target for an element.
  */
-export const firstFocusableElement = Symbol('firstFocusableElement');
+export const defaultFocus = Symbol('defaultFocus');
 
 /**
  * Symbol for the `elementsWithTransitions` property.

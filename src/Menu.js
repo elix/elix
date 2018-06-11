@@ -70,6 +70,21 @@ class Menu extends Base {
     }
   }
 
+  componentDidUpdate(previousState) {
+    if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
+
+    // If a new item has become selected, give it the keyboard focus.
+    const selectedIndexChanged = this.state.selectedIndex >= 0 &&
+      this.state.selectedIndex !== previousState.selectedIndex;
+    if (selectedIndexChanged && this.selectedItem) {
+      this.selectedItem.focus();
+    }
+  }
+
+  get [symbols.defaultFocus]() {
+    return this.selectedItem;
+  }
+
   // Filter the set of items to ignore disabled items.
   itemsForState(state) {
     const base = super.itemsForState(state);
@@ -83,13 +98,18 @@ class Menu extends Base {
     const selected = calcs.selected;
     const color = selected ? 'highlighttext' : original.style.color;
     const backgroundColor = selected ? 'highlight' : original.style['background-color'];
+    const outline = this.state.focusVisible ? null : 'none';
     return merge(base, {
+      attributes: {
+        tabindex: original.attributes.tabindex || 0
+      },
       classes: {
         selected
       },
       style: {
         'background-color': backgroundColor,
-        color
+        color,
+        outline
       }
     });
   }
