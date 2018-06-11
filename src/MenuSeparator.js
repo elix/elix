@@ -2,16 +2,15 @@ import ReactiveElement from './ReactiveElement.js';
 import * as symbols from './symbols.js';
 
 
+/**
+ * A standard menu separator: an inactive item that helps group
+ * logically-related menu items together.
+ * 
+ * See [Menu](Menu) for sample usage.
+ * 
+ * @inherits ReactiveElement
+ */
 class MenuSeparator extends ReactiveElement {
-
-  // componentDidMount() {
-  //   if (super.componentDidMount) { super.componentDidMount(); }
-  //   // Absorb mousedown events.
-  //   this.addEventListener('mousedown', event => {
-  //     event.preventDefault();
-  //     event.stopPropagation();
-  //   });
-  // }
 
   get disabled() {
     return true;

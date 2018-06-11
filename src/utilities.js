@@ -90,18 +90,19 @@ export function defaultFocus(element) {
 }
 
 /**
- * Return true if the event came from within the element or from the element
- * itself; false otherwise.
+ * Return true if the event came from within the node (or from the node itself);
+ * false otherwise.
  * 
- * @param {Node} element
- * @param {Event} event
- * @returns {boolean}
+ * @param {Node} node - The node to consider in relation to the event
+ * @param {Event} event - The event which may have been raised within/by the
+ * node
+ * @returns {boolean} - True if the event was raised within or by the node
  */
-export function ownEvent(element, event) {
+export function ownEvent(node, event) {
   /** @type {any} */
   const cast = event;
   const eventSource = cast.composedPath()[0];
-  return element === eventSource || deepContains(element, eventSource);
+  return node === eventSource || deepContains(node, eventSource);
 }
 
 

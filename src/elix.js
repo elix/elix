@@ -47,6 +47,7 @@ export { default as ListBox } from './ListBox.js';
 export { default as ListExplorer } from './ListExplorer.js';
 export { default as Menu } from './Menu.js';
 export { default as MenuButton } from './MenuButton.js';
+export { default as MenuItem } from './MenuItem.js';
 export { default as MenuSeparator } from './MenuSeparator.js';
 export { default as ModalBackdrop } from './ModalBackdrop.js';
 export { default as Modes } from './Modes.js';
