@@ -182,19 +182,40 @@ class MenuButton extends PopupSource {
   }
 
   [symbols.keydown](event) {
-    let handled;
+
     switch (event.key) {
       // When open, Enter closes popup.
       case 'Enter':
         if (this.opened) {
           this.close(this.state.menuSelectedIndex);
-          handled = true;
+          return true;
         }
-        break;
     }
 
-    // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+    // Give superclass a chance to handle.
+    const base = super[symbols.keydown] && super[symbols.keydown](event);
+    if (base) {
+      return true;
+    }
+
+    // If they haven't already been handled, absorb keys that might cause the
+    // page to scroll in the background, which would in turn cause the popup to
+    // inadvertently close.
+    switch (event.key) {
+      case 'ArrowDown':
+      case 'ArrowLeft':
+      case 'ArrowRight':
+      case 'ArrowUp':
+      case 'End':
+      case 'Home':
+      case 'PageDown':
+      case 'PageUp':
+      case ' ':
+        return true;
+        break;
+    }
+    
+    return false;
   }
 
   get menuTag() {
