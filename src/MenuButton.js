@@ -212,7 +212,6 @@ class MenuButton extends PopupSource {
       case 'PageUp':
       case ' ':
         return true;
-        break;
     }
     
     return false;

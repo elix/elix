@@ -8,7 +8,7 @@ import * as symbols from './symbols.js';
  * 
  * This class is a convenient way to popuplate a [Menu](Menu) with items that
  * exhibit an appearance roughly consistent with operating system menu items.
- * Use of this class is not required, however — a `Menu` can contain any type
+ * Use of this class is not required, however -- a `Menu` can contain any type
  * of item you want.
  * 
  * @inherits ReactiveElement
