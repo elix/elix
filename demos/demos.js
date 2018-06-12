@@ -5,6 +5,7 @@ import '../src/elix.js';
 import './src/CountryListBox.js';
 import './src/FocusVisibleTest.js';
 import './src/IncrementDecrement.js';
+import './src/LabeledColorSwatch.js';
 import './src/ModesWithKeyboard.js';
 import './src/SampleDialog.js';
 import './src/serene/SereneTabs.js';
