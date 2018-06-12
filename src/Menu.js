@@ -85,6 +85,12 @@ class Menu extends Base {
     return this.selectedItem;
   }
 
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      orientation: 'vertical'
+    });
+  }
+
   // Filter the set of items to ignore disabled items.
   itemsForState(state) {
     const base = super.itemsForState(state);
