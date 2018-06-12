@@ -22,6 +22,8 @@ const Base =
 
 
 /**
+ * Positions a [Popup](Popup) with respect to a source element, usually a button.
+ * 
  * @inherits ReactiveElement
  * @mixes FocusVisibleMixin
  * @mixes KeyboardMixin
@@ -269,6 +271,7 @@ class PopupSource extends Base {
           -ms-user-select: none;
           -webkit-user-select: none;
           user-select: none;
+          white-space: nowrap;
           width: 100%;
         }
 
