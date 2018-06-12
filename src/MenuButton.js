@@ -198,20 +198,22 @@ class MenuButton extends PopupSource {
       return true;
     }
 
-    // If they haven't already been handled, absorb keys that might cause the
-    // page to scroll in the background, which would in turn cause the popup to
-    // inadvertently close.
-    switch (event.key) {
-      case 'ArrowDown':
-      case 'ArrowLeft':
-      case 'ArrowRight':
-      case 'ArrowUp':
-      case 'End':
-      case 'Home':
-      case 'PageDown':
-      case 'PageUp':
-      case ' ':
-        return true;
+    if (this.opened && !event.metaKey && !event.altKey) {
+      // If they haven't already been handled, absorb keys that might cause the
+      // page to scroll in the background, which would in turn cause the popup to
+      // inadvertently close.
+      switch (event.key) {
+        case 'ArrowDown':
+        case 'ArrowLeft':
+        case 'ArrowRight':
+        case 'ArrowUp':
+        case 'End':
+        case 'Home':
+        case 'PageDown':
+        case 'PageUp':
+        case ' ':
+          return true;
+      }
     }
     
     return false;
