@@ -145,6 +145,7 @@ class Menu extends Base {
         }
         
         #content > ::slotted(*) {
+          flex-shrink: 0;
           padding: 0.25em;
         }
 

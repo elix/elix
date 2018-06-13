@@ -389,18 +389,20 @@ class PopupSource extends Base {
           roomLeft;
     }
 
-
-    // Until we've measured the rendered position of the popup, keep it in the
-    // layout but don't make it visible yet. If we use `visibility: hidden` for
-    // this purpose, the popup won't be able to receive the focus. Instead, we
-    // use zero opacity as a way to make the popup temporarily invisible until
-    // we have checked where it fits.
+    // Until we've measured the rendered position of the popup, render it in
+    // fixed position (so it doesn't affect page layout or scrolling), and don't
+    // make it visible yet. If we use `visibility: hidden` for this purpose, the
+    // popup won't be able to receive the focus. Instead, we use zero opacity as
+    // a way to make the popup temporarily invisible until we have checked where
+    // it fits.
     const opacity = measured ? null : 0;
+    const position = measured ? 'absolute' : 'fixed';
 
     const popupStyle = {
       bottom,
       left,
       opacity,
+      position,
       right
     };
   
