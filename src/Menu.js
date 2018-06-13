@@ -142,7 +142,6 @@ class Menu extends Base {
           overflow-x: hidden;
           overflow-y: auto;
           -webkit-overflow-scrolling: touch; /* for momentum scrolling */
-          overscroll-behavior: contain;
         }
         
         #content > ::slotted(*) {

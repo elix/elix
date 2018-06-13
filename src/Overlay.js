@@ -37,20 +37,8 @@ const Base =
  */
 class Overlay extends Base {
 
-  get backdropTemplate() {
-    const backdropTag = this.backdropTag || this.defaults.tags.backdrop;
-    return backdropTag ?
-      `<${backdropTag} id="backdrop"></${backdropTag}>` :
-      '';
-  }
-
-  get defaults() {
-    return {
-      tags: {
-        backdrop: 'elix-backdrop',
-        frame: 'elix-overlay-frame'
-      }
-    };
+  get backdrop() {
+    return this.$ && this.$.backdrop;
   }
 
   /**
@@ -70,6 +58,26 @@ class Overlay extends Base {
   set backdropTag(backdropTag) {
     this[symbols.hasDynamicTemplate] = true;
     this[backdropTagKey] = backdropTag;
+  }
+
+  get backdropTemplate() {
+    const backdropTag = this.backdropTag || this.defaults.tags.backdrop;
+    return backdropTag ?
+      `<${backdropTag} id="backdrop"></${backdropTag}>` :
+      '';
+  }
+
+  get defaults() {
+    return {
+      tags: {
+        backdrop: 'elix-backdrop',
+        frame: 'elix-overlay-frame'
+      }
+    };
+  }
+
+  get frame() {
+    return this.$ && this.$.frame;
   }
 
   /**
@@ -108,20 +116,23 @@ class Overlay extends Base {
           align-items: center;
           display: flex;
           flex-direction: column;
-          height: 100%;
           justify-content: center;
           left: 0;
+          height: 100%;
+          max-height: 100vh;
+          max-width: 100vw;
           outline: none;
           position: fixed;
-          top: 0;
           -webkit-tap-highlight-color: transparent;
+          top: 0;
           width: 100%;
         }
 
         #frame {
           box-sizing: border-box;
-          max-height: 100vh;
-          max-width: 100vw;
+          max-height: 100%;
+          max-width: 100%;
+          overscroll-behavior: contain;
           pointer-events: initial;
         }
       </style>

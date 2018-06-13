@@ -118,6 +118,10 @@ class MenuButton extends PopupSource {
       });
     });
 
+    this.$.menu.addEventListener('scroll', event => {
+      console.log(event);
+    });
+
     // When OverlayMixin opens the popup, we want it to focus on the first menu
     // item.
     this.$.popup[symbols.defaultFocus] = this.$.menu;

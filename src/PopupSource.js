@@ -221,6 +221,17 @@ class PopupSource extends Base {
     return result;
   }
 
+  // Provide internal aliases for the inner backdrop and frame elements so that
+  // we can update them via `updates`.
+  // TODO: Find a better way to support updates of exposed subelements.
+  get $() {
+    const base = super.$;
+    return Object.assign({}, base, {
+      backdrop: base.popup.backdrop,
+      frame: base.popup.frame
+    });
+  }
+
   get sourceTag() {
     return this[sourceTagKey];
   }
@@ -389,8 +400,6 @@ class PopupSource extends Base {
     const popupStyle = {
       bottom,
       left,
-      'max-height': maxFrameHeight ? `${maxFrameHeight}px` : null,
-      'max-width': maxFrameWidth ? `${maxFrameWidth}px` : null,
       opacity,
       right
     };
@@ -402,18 +411,16 @@ class PopupSource extends Base {
         role
       },
       $: {
-        popup: Object.assign(
-          {
-            opened: this.state.opened,
-            style: popupStyle
-          },
-          'maxFrameHeight' in this.$.popup && {
-            maxFrameHeight
-          },
-          'maxFrameWidth' in this.$.popup && {
-            maxFrameWidth
+        frame: {
+          style: {
+            'max-height': maxFrameHeight ? `${maxFrameHeight}px` : null,
+            'max-width': maxFrameWidth ? `${maxFrameWidth}px` : null
           }
-        ),
+        },
+        popup: {
+          opened: this.state.opened,
+          style: popupStyle
+        },
         popupContainer: {
           style: popupContainerStyle
         },
