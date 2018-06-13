@@ -16,7 +16,6 @@ class OverlayFrame extends ReactiveElement {
           background: white;
           border: 1px solid rgba(0, 0, 0, 0.2);
           box-shadow: 0 0px 10px rgba(0, 0, 0, 0.5);
-          padding: 1em;
           position: relative;
         }
       </style>

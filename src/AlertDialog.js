@@ -153,6 +153,11 @@ class AlertDialog extends Dialog {
       $: {
         buttonContainer: {
           childNodes
+        },
+        frame: {
+          style: {
+            padding: '1em'
+          }
         }
       }
     });

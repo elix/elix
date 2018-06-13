@@ -1,5 +1,4 @@
 import './Popup.js';
-import './PopupFrame.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
@@ -117,7 +116,7 @@ class PopupSource extends Base {
     return {
       tags: {
         backdrop: 'elix-backdrop',
-        frame: 'elix-popup-frame', // TODO: Move to Popup
+        frame: 'elix-overlay-frame',
         popup: 'elix-popup',
         source: 'button'
       }
