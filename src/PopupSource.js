@@ -226,9 +226,11 @@ class PopupSource extends Base {
   // TODO: Find a better way to support updates of exposed subelements.
   get $() {
     const base = super.$;
+    /** @type {any} */
+    const cast = base.popup;
     return Object.assign({}, base, {
-      backdrop: base.popup.backdrop,
-      frame: base.popup.frame
+      backdrop: cast.backdrop,
+      frame: cast.frame
     });
   }
 
