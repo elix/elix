@@ -3,6 +3,7 @@ import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
+import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
@@ -15,9 +16,10 @@ const popupTagKey = Symbol('popupTag');
 const Base =
   FocusVisibleMixin(
   KeyboardMixin(
+  LanguageDirectionMixin(
   OpenCloseMixin(
     ReactiveElement
-  )));
+  ))));
 
 
 /**
@@ -125,7 +127,7 @@ class PopupSource extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      horizontalAlign: 'left',
+      horizontalAlign: 'start',
       popupPosition: 'below',
       role: 'button',
       popupWidth: null,
@@ -145,7 +147,9 @@ class PopupSource extends Base {
     this[frameTagKey] = frameTag;
   }
 
-  // TODO: 'start', 'end'
+  /**
+   * 
+   */
   get horizontalAlign() {
     return this.state.horizontalAlign;
   }
@@ -374,7 +378,10 @@ class PopupSource extends Base {
       right = 0;
       maxFrameWidth = null;
     } else {
-      const preferLeftAlign = horizontalAlign === 'left';
+      const preferLeftAlign = horizontalAlign === 'left' ||
+        (this[symbols.rightToLeft] ?
+          horizontalAlign === 'end' :
+          horizontalAlign === 'start');
       // The above/below preference rules also apply to left/right alignment.
       const alignLeft =
         (preferLeftAlign && (canLeftAlign || roomRight >= roomLeft)) ||

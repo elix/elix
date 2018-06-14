@@ -93,7 +93,7 @@ class Drawer extends Base {
     const opened = (effect === 'open' && phase !== 'before') ||
       (effect === 'close' && phase === 'before');
 
-      const sign = this[symbols.rightToLeft] ? 1 : -1;
+    const sign = this[symbols.rightToLeft] ? 1 : -1;
     const swiping = this.state.swipeFraction !== null;
     // Constrain the distance swiped to between 0 and a bit less than 1. A swipe
     // distance of 1 itself would cause a tricky problem. The drawer would
