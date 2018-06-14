@@ -18,8 +18,8 @@ class Backdrop extends ReactiveElement {
           height: 100%;
           left: 0;
           position: fixed;
-          touch-action: manipulation;
           top: 0;
+          touch-action: manipulation;
           width: 100%;
         }
       </style>
