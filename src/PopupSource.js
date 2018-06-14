@@ -36,6 +36,17 @@ const Base =
  */
 class PopupSource extends Base {
 
+  /**
+   * The tag used to create the optional backdrop element behind the overlay.
+   * 
+   * This can help focus the user's attention on the overlay content.
+   * Additionally, a backdrop can be used to absorb clicks on background page
+   * elements. For example, [Dialog](Dialog) uses [ModalBackdrop](ModalBackdrop)
+   * as an overlay backdrop in such a way.
+   * 
+   * @type {string}
+   * @default 'elix-backdrop'
+   */
   get backdropTag() {
     return this[backdropTagKey];
   }
@@ -139,6 +150,16 @@ class PopupSource extends Base {
     });
   }
 
+  /**
+   * The tag used to contain the popup content.
+   * 
+   * The frame element can be used to provide a border around the popup content,
+   * and to provide visual effects such as a drop-shadow to help distinguish
+   * popup content from background page elements.
+   * 
+   * @type {string}
+   * @default 'elix-overlay-frame'
+   */
   get frameTag() {
     return this[frameTagKey];
   }
@@ -148,7 +169,18 @@ class PopupSource extends Base {
   }
 
   /**
+   * The alignment of the popup with respect to the source button.
    * 
+   * * `start`: popup and source are aligned on the leading edge according to
+   *   the text direction
+   * * `end`: popup and source are aligned on the trailing edge according to the
+   *   text direction
+   * * `left`: popup and source are left-aligned
+   * * `right`: popup and source are right-aligned
+   * * `stretch: both left and right edges are aligned
+   * 
+   * @type {('start'|'end'|'left'|'right'|'stretch')}
+   * @default 'start'
    */
   get horizontalAlign() {
     return this.state.horizontalAlign;
@@ -179,6 +211,15 @@ class PopupSource extends Base {
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
   }
 
+  /**
+   * The preferred direction for the popup.
+   * 
+   * * `above`: popup should appear above the source
+   * * `below`: popup should appear below the source
+   * 
+   * @type {('above'|'below')}
+   * @default 'below'
+   */
   get popupPosition() {
     return this.state.popupPosition;
   }
@@ -188,6 +229,14 @@ class PopupSource extends Base {
     });
   }
 
+  /**
+   * The tag used to define the popup.
+   * 
+   * The popup element is responsible for handling overlay behavior.
+   * 
+   * @type {string}
+   * @default 'elix-popup'
+   */
   get popupTag() {
     return this[popupTagKey];
   }
@@ -238,6 +287,13 @@ class PopupSource extends Base {
     });
   }
 
+  /**
+   * The tag used to define the source button (or other element) that the
+   * popup will be positioned in relation to.
+   * 
+   * @type {string}
+   * @default 'button'
+   */
   get sourceTag() {
     return this[sourceTagKey];
   }
@@ -259,7 +315,6 @@ class PopupSource extends Base {
     `;
   }
 
-  // TODO: Tags for popup and source
   get [symbols.template]() {
     const sourceTemplate = this.sourceTemplate;
     const popupTemplate = this.popupTemplate;

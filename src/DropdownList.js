@@ -114,6 +114,13 @@ class DropdownList extends Base {
     });
   }
 
+  /**
+   * The tag used to define the element that will contain the DropdownList's
+   * current value.
+   * 
+   * @type {string}
+   * @default 'div'
+   */
   get valueTag() {
     return this[valueTagKey];
   }

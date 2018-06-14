@@ -219,6 +219,15 @@ class MenuButton extends PopupSource {
     return false;
   }
 
+  /**
+   * The tag used to define the menu.
+   * 
+   * The menu element is responsible for presenting the menu items and handling
+   * navigation between them.
+   * 
+   * @type {string}
+   * @default 'elix-menu'
+   */
   get menuTag() {
     return this[menuTagKey];
   }
