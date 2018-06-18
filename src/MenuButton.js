@@ -72,7 +72,10 @@ class MenuButton extends PopupSource {
         }
       }
     };
-    document.addEventListener('mouseup', this[documentMouseupListenerKey]);
+
+    if (this.state.opened) {
+      addDocumentListeners(this);
+    }
 
     // Close the popup if menu loses focus.
     this.$.menu.addEventListener('blur', async (event) => {
@@ -138,9 +141,16 @@ class MenuButton extends PopupSource {
   componentDidUpdate(previousState) {
     if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
 
-    if (this.state.opened !== previousState.opened && this[symbols.raiseChangeEvents] &&
-        this.state.selectedItem) {
-      this.itemSelected(this.state.selectedItem);
+    if (this.state.opened !== previousState.opened) {
+      if (this.state.opened) {
+        addDocumentListeners(this);
+      } else {
+        removeDocumentListeners(this);
+      }
+
+      if (this[symbols.raiseChangeEvents] && this.state.selectedItem) {
+        this.itemSelected(this.state.selectedItem);
+      }
     }
   }
 
@@ -336,6 +346,16 @@ class MenuButton extends PopupSource {
     });
   }
 
+}
+
+
+function addDocumentListeners(element) {
+  document.addEventListener('mouseup', element[documentMouseupListenerKey]);
+}
+
+
+function removeDocumentListeners(element) {
+  document.removeEventListener('mouseup', element[documentMouseupListenerKey]);
 }
 
 
