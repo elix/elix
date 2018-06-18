@@ -37,35 +37,36 @@ class MenuButton extends PopupSource {
       }
     });
 
-    this.$.source.addEventListener('mouseup', event => {
-     if (this.state.dragSelect && this.state.opened) {
-        // Since we got a mouse up, we're no longer doing a drag-select.
-        this[symbols.raiseChangeEvents] = true;
-        this.setState({
-          dragSelect: false
-        });
-        this[symbols.raiseChangeEvents] = false;
-        event.stopPropagation();
-      }
-    });
-
     // If the popup is open and user releases the mouse over the backdrop, close
     // the popup. We need to listen to mouseup on the document, not this
     // element. If the user mouses down on the source, then moves the mouse off
     // the document before releasing the mouse, the element itself won't get the
     // mouseup. The document will, however, so it's a more reliable source of
     // mouse state.
+    //
+    // Coincidentally, we *also* need to listen to mouseup on the document to
+    // tell whether the user released the mouse over the source button. When the
+    // user mouses down, the backdrop will appear and cover the source, so from
+    // that point on the source won't receive a mouseup event. Again, we can
+    // listen to mouseup on the document and do our own hit-testing to see if
+    // the user released the mouse over the source.
     this[documentMouseupListenerKey] = async (event) => {
+      const hitTargets = elementsFromPoint(this, event.clientX, event.clientY);
+      const overSource = hitTargets.indexOf(this.$.source) >= 0;
       if (this.opened) {
-        // If the user mouses up over the menu, the menu mouseup handler will
-        // handle that case. So if we get to this point and the popup is still
-        // open, the user either released over the popup source or the backdrop.
-        // Hit test to see if the event is over the source. If not, they were
-        // over the backdrop.
-        const hitTargets = elementsFromPoint(this, event.clientX, event.clientY);
-        const overSource = hitTargets.indexOf(this.$.source) >= 0;
-        if (!overSource) {
-          // Mouse is likely over the backdrop, so close.
+        if (overSource) {
+          // User released the mouse over the source button (behind the
+          // backdrop), so we're no longer doing a drag-select.
+          if (this.state.dragSelect) {
+            this[symbols.raiseChangeEvents] = true;
+            this.setState({
+              dragSelect: false
+            });
+            this[symbols.raiseChangeEvents] = false;
+          }
+        } else {
+          // If we get to this point, the user released over the backdrop with
+          // the popup open, so close.
           this[symbols.raiseChangeEvents] = true;
           await this.close();
           this[symbols.raiseChangeEvents] = false;
