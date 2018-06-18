@@ -76,7 +76,8 @@ class Menu extends Base {
     // If a new item has become selected, give it the keyboard focus.
     const selectedIndexChanged = this.state.selectedIndex >= 0 &&
       this.state.selectedIndex !== previousState.selectedIndex;
-    if (selectedIndexChanged && this.selectedItem) {
+    if (selectedIndexChanged && this.selectedItem &&
+      this.selectedItem instanceof HTMLElement) {
       this.selectedItem.focus();
     }
   }
