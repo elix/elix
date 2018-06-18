@@ -19,10 +19,11 @@ class MenuButton extends PopupSource {
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
 
-    // If user hovers mouse over an item, select it.
+    // If we're doing a drag-select, and the user hovers over an item, select
+    // it.
     this.addEventListener('mousemove', event => {
       const target = event.target;
-      if (target) {
+      if (target && this.state.dragSelect) {
         /** @type {any} */
         const cast = target;
         const hoverIndex = indexOfItemContainingTarget(this, cast);
@@ -33,6 +34,18 @@ class MenuButton extends PopupSource {
           });
           this[symbols.raiseChangeEvents] = false;
         }
+      }
+    });
+
+    this.$.source.addEventListener('mouseup', event => {
+     if (this.state.dragSelect && this.state.opened) {
+        // Since we got a mouse up, we're no longer doing a drag-select.
+        this[symbols.raiseChangeEvents] = true;
+        this.setState({
+          dragSelect: false
+        });
+        this[symbols.raiseChangeEvents] = false;
+        event.stopPropagation();
       }
     });
 
@@ -56,11 +69,6 @@ class MenuButton extends PopupSource {
           this[symbols.raiseChangeEvents] = true;
           await this.close();
           this[symbols.raiseChangeEvents] = false;
-        } else {
-          // Since we got a mouse up, we're no longer doing a drag-select.
-          this.setState({
-            dragSelect: false
-          });
         }
       }
     };
@@ -89,7 +97,7 @@ class MenuButton extends PopupSource {
 
     // If the user mouses up on a menu item, close the menu with that item as
     // the close result.
-    this.$.menu.addEventListener('mouseup', async (event) => {
+    const mouseupHandler = async (event) => {
       // If we're doing a drag-select (user moused down on button, dragged
       // mouse into menu, and released), we close. If we're not doing a
       // drag-select (the user opened the menu with a complete click), and
@@ -107,7 +115,11 @@ class MenuButton extends PopupSource {
       } else {
         event.stopPropagation();
       }
-    });
+    }
+    this.$.menu.addEventListener('mouseup', mouseupHandler);
+    // Also listen to touchend for fast-tap response on Safari.
+    // (Chrome doesn't need this, but it doesn't hurt.)
+    this.$.menu.addEventListener('touchend', mouseupHandler);
 
     // Track changes in the menu's selection state.
     this.$.menu.addEventListener('selected-index-changed', event => {

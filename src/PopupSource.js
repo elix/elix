@@ -72,19 +72,23 @@ class PopupSource extends Base {
     // Desktop popups generally open on mousedown, not click/mouseup. On mobile,
     // mousedown won't fire until the user releases their finger, so it behaves
     // like a click.
-    this.$.source.addEventListener('mousedown', event => {
+    const mousedownHandler = (event => {
       // Only handle primary button mouse down to avoid interfering with
       // right-click behavior.
-      /** @type {any} */
-      const cast = event;
-      if (cast.button === 0 && !this.opened) {
+      if (event.button && event.button !== 0) {
+        return;
+      }
+      if (!this.opened) {
         setTimeout(() => {
           this[symbols.raiseChangeEvents] = true;
           this.open();
           this[symbols.raiseChangeEvents] = false;
         });
       }
-    });
+    }).bind(this);
+    this.$.source.addEventListener('mousedown', mousedownHandler);
+    // For faster handling on Mobile Safari.
+    this.$.source.addEventListener('touchend', mousedownHandler);
 
     // Popup's opened state becomes our own opened state.
     this.$.popup.addEventListener('opened', () => {

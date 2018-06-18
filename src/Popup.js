@@ -23,13 +23,20 @@ class Popup extends Base {
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
-    this.$.backdrop.addEventListener('mousedown', async event => {
+    const mousedownHandler = async event => {
       this[symbols.raiseChangeEvents] = true;
       await this.close();
       this[symbols.raiseChangeEvents] = false;
       event.preventDefault();
       event.stopPropagation();
-    });
+    };
+    this.$.backdrop.addEventListener('mousedown', mousedownHandler);
+
+    // Mobile Safari doesn't seem to generate a mousedown handler on the
+    // backdrop in some cases that Mobile Chrome handles. For completeness, we
+    // also listen to touchend. (Since this is only for Safari, we don't need to
+    // also listen for the more-standard pointerup event.)
+    this.$.backdrop.addEventListener('touchend', mousedownHandler);
   }
 
 }
