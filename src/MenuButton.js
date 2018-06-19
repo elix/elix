@@ -340,6 +340,7 @@ class MenuButton extends PopupSource {
       $: {
         ellipsisIcon: {
           style: {
+            display: 'block',
             fill: 'currentColor'
           }
         }
