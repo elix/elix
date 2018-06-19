@@ -121,9 +121,30 @@ class MenuButton extends PopupSource {
       }
     }
     this.$.menu.addEventListener('mouseup', mouseupHandler);
-    // Also listen to touchend for fast-tap response on Safari.
-    // (Chrome doesn't need this, but it doesn't hurt.)
-    this.$.menu.addEventListener('touchend', mouseupHandler);
+
+    this.$.menu.addEventListener('touchstart', event => {
+      const touch = event.changedTouches[0];
+      this.setState({
+        touchstartX: touch.clientX,
+        touchstartY: touch.clientY
+      });
+    });
+
+    // Listen to touchend for fast-tap response on Safari. (Chrome has better
+    // touch/mouse heuristics, so doesn't need this, but it doesn't hurt.)
+    this.$.menu.addEventListener('touchend', event => {
+      const touch = event.changedTouches[0];
+      const { touchstartX, touchstartY } = this.state;
+      // A null touchstartX or touchstartY will be treated as 0.
+      const deltaX = Math.abs(touch.clientX - touchstartX);
+      const deltaY = Math.abs(touch.clientY - touchstartY);
+      const dragThreshold = 2; // pixels
+      const userDragged = deltaX > dragThreshold || deltaY > dragThreshold;
+      if (!userDragged) {
+        // User didn't drag; treat the tap as a (faster) mouseup.
+        return mouseupHandler(event);
+      }
+    });
 
     // Track changes in the menu's selection state.
     this.$.menu.addEventListener('selected-index-changed', event => {
@@ -173,7 +194,9 @@ class MenuButton extends PopupSource {
     return Object.assign({}, super.defaultState, {
       dragSelect: true,
       menuSelectedIndex: -1,
-      selectedItem: null
+      selectedItem: null,
+      touchstartX: null,
+      touchstartY: null
     });
   }
 
@@ -282,6 +305,12 @@ class MenuButton extends PopupSource {
       if (state.selectedItem) {
         // Clear any previously selected item.
         state.selectedItem = null;
+        result = false;
+      }
+      if (state.touchstartX !== null || state.touchstartY) {
+        // Clear previous touchstart point.
+        state.touchstartX = null;
+        state.touchstartY = null;
         result = false;
       }
       // Select the default item in the menu.
