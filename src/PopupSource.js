@@ -85,17 +85,21 @@ class PopupSource extends Base {
       if (event.button && event.button !== 0) {
         return;
       }
-      if (!this.opened) {
-        this[symbols.raiseChangeEvents] = true;
-        this.open();
-        this[symbols.raiseChangeEvents] = false;
-      }
+      // We give the default focus behavior time to run before opening the
+      // popup. See note below.
+      setTimeout(() => {
+        if (!this.opened) {
+          this[symbols.raiseChangeEvents] = true;
+          this.open();
+          this[symbols.raiseChangeEvents] = false;
+        }
+      });
       event.stopPropagation();
-      // Default behavior for mousedown gives focus to the target element. If we
-      // let that default behavior happen, OverlayMixin will focus on the popup,
-      // and *then* the default behavior will run -- which will move focus baack
-      // to the source button, and implicitly close the popup.
-      event.preventDefault();
+      // We don't prevent the default behavior for mousedown. Among other
+      // things, it sets the focus to the element the user moused down on.
+      // That's important for us, because OverlayMixin will remember that
+      // focused element (i.e., this element) when opening, and restore focus to
+      // it when the popup closes.
     }).bind(this);
     this.$.source.addEventListener('mousedown', mousedownHandler);
 

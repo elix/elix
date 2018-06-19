@@ -19,8 +19,7 @@ class MenuButton extends PopupSource {
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
 
-    // If we're doing a drag-select, and the user hovers over an item, select
-    // it.
+    // If the user hovers over an item, select it.
     this.addEventListener('mousemove', event => {
       const target = event.target;
       if (target) {
