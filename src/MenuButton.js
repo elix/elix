@@ -1,5 +1,5 @@
 import './Menu.js';
-import { indexOfItemContainingTarget, elementsFromPoint, ownEvent } from './utilities.js';
+import { deepContains, elementsFromPoint, indexOfItemContainingTarget } from './utilities.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import PopupSource from './PopupSource.js';
@@ -80,7 +80,8 @@ class MenuButton extends PopupSource {
 
     // Close the popup if menu loses focus.
     this.$.menu.addEventListener('blur', async (event) => {
-      if (!ownEvent(this, event) && this.opened) {
+      const newFocusedElement = event.relatedTarget || document.activeElement;
+      if (this.opened && !deepContains(this.$.menu, newFocusedElement)) {
         this[symbols.raiseChangeEvents] = true;
         await this.close();
         this[symbols.raiseChangeEvents] = false;
@@ -122,31 +123,34 @@ class MenuButton extends PopupSource {
     }
     this.$.menu.addEventListener('mouseup', mouseupHandler);
 
-    this.$.menu.addEventListener('touchstart', event => {
-      // Record the touch start location so we can later distinguish a fast tap
-      // from a scroll or drag.
-      const touch = event.changedTouches[0];
-      this.setState({
-        touchstartX: touch.clientX,
-        touchstartY: touch.clientY
+    // For faster handling on Mobile Safari.
+    if (!('PointerEvent' in window)) {
+      this.$.menu.addEventListener('touchstart', event => {
+        // Record the touch start location so we can later distinguish a fast tap
+        // from a scroll or drag.
+        const touch = event.changedTouches[0];
+        this.setState({
+          touchstartX: touch.clientX,
+          touchstartY: touch.clientY
+        });
       });
-    });
 
-    // Listen to touchend for fast-tap response on Safari. (Chrome has better
-    // touch/mouse heuristics, so doesn't need this, but it doesn't hurt.)
-    this.$.menu.addEventListener('touchend', event => {
-      const touch = event.changedTouches[0];
-      const { touchstartX, touchstartY } = this.state;
-      // A null touchstartX or touchstartY will be treated as 0.
-      const deltaX = Math.abs(touch.clientX - touchstartX);
-      const deltaY = Math.abs(touch.clientY - touchstartY);
-      const dragThreshold = 2; // pixels
-      const userDragged = deltaX > dragThreshold || deltaY > dragThreshold;
-      if (!userDragged) {
-        // User didn't drag; treat the tap as a (faster) mouseup.
-        return mouseupHandler(event);
-      }
-    });
+      // Listen to touchend for fast-tap response on Safari. (Chrome has better
+      // touch/mouse heuristics, so doesn't need this, but it doesn't hurt.)
+      this.$.menu.addEventListener('touchend', event => {
+        const touch = event.changedTouches[0];
+        const { touchstartX, touchstartY } = this.state;
+        // A null touchstartX or touchstartY will be treated as 0.
+        const deltaX = Math.abs(touch.clientX - touchstartX);
+        const deltaY = Math.abs(touch.clientY - touchstartY);
+        const dragThreshold = 2; // pixels
+        const userDragged = deltaX > dragThreshold || deltaY > dragThreshold;
+        if (!userDragged) {
+          // User didn't drag; treat the tap as a (faster) mouseup.
+          return mouseupHandler(event);
+        }
+      });
+    }
 
     // Track changes in the menu's selection state.
     this.$.menu.addEventListener('selected-index-changed', event => {

@@ -1,5 +1,6 @@
 import './Popup.js';
 import { merge } from './updates.js';
+import { ownEvent } from './utilities.js';
 import * as symbols from './symbols.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
@@ -61,8 +62,14 @@ class PopupSource extends Base {
     // If the top-level element gets the focus while the popup is open, the most
     // likely expanation is that the user hit Shift+Tab to back up out of the
     // popup. In that case, we should close.
-    this.addEventListener('focus', async () => {
-      if (this.opened) {
+    this.addEventListener('focus', async (event) => {
+      const hostFocused = !ownEvent(this.$.popup, event);
+      // It's possible to get a focus event in the initial mousedown on the
+      // source button before the popup is even rendered. We don't want to close
+      // in that case, so we check to see if we've already measured the popup
+      // dimensions (which will be true if the popup fully completed rendering).
+      const measured = this.state.popupHeight !== null;
+      if (hostFocused && this.opened && measured) {
         this[symbols.raiseChangeEvents] = true;
         await this.close();
         this[symbols.raiseChangeEvents] = false;
@@ -79,16 +86,23 @@ class PopupSource extends Base {
         return;
       }
       if (!this.opened) {
-        setTimeout(() => {
-          this[symbols.raiseChangeEvents] = true;
-          this.open();
-          this[symbols.raiseChangeEvents] = false;
-        });
+        this[symbols.raiseChangeEvents] = true;
+        this.open();
+        this[symbols.raiseChangeEvents] = false;
       }
+      event.stopPropagation();
+      // Default behavior for mousedown gives focus to the target element. If we
+      // let that default behavior happen, OverlayMixin will focus on the popup,
+      // and *then* the default behavior will run -- which will move focus baack
+      // to the source button, and implicitly close the popup.
+      event.preventDefault();
     }).bind(this);
     this.$.source.addEventListener('mousedown', mousedownHandler);
-    // For faster handling on Mobile Safari.
-    this.$.source.addEventListener('touchend', mousedownHandler);
+
+    if (!('PointerEvent' in window)) {
+      // For faster handling on Mobile Safari.
+      this.$.source.addEventListener('touchend', mousedownHandler);
+    }
 
     // Popup's opened state becomes our own opened state.
     this.$.popup.addEventListener('opened', () => {
