@@ -23,7 +23,7 @@ class MenuButton extends PopupSource {
     // it.
     this.addEventListener('mousemove', event => {
       const target = event.target;
-      if (target && this.state.dragSelect) {
+      if (target) {
         /** @type {any} */
         const cast = target;
         const hoverIndex = indexOfItemContainingTarget(this, cast);
