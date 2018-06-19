@@ -123,6 +123,8 @@ class MenuButton extends PopupSource {
     this.$.menu.addEventListener('mouseup', mouseupHandler);
 
     this.$.menu.addEventListener('touchstart', event => {
+      // Record the touch start location so we can later distinguish a fast tap
+      // from a scroll or drag.
       const touch = event.changedTouches[0];
       this.setState({
         touchstartX: touch.clientX,
