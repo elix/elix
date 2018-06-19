@@ -1,3 +1,4 @@
+import { deepContains } from './utilities.js';
 import { merge } from './updates.js';
 
 
@@ -12,7 +13,7 @@ const focusVisibleChangedListenerKey = Symbol('focusVisibleChangedListener');
  * Mixin which tracks a component's focus state so that it can render a focus
  * indication (e.g., a glowing outline) if and only if the keyboard is active.
  * The keyboard is considered to be active if a keyboard event has occurred
- * since the last mouse/touch event.
+ * since the last mousedown event.
  * 
  * This is loosely modeled after the proposed
  * [focus-visible](https://github.com/WICG/focus-visible) feature for CSS.
@@ -27,20 +28,36 @@ export default function FocusVisibleMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this.addEventListener('blur', () => {
-        this.setState({
-          focusVisible: false
-        });
-        document.removeEventListener('focus-visible-changed',
-          this[focusVisibleChangedListenerKey]);
+      // We listen to focusin/focusout instead of focus/blur because components
+      // like Menu want to handle focus visiblity for the items they contain,
+      // and those contained items can get the focus. Using focusin/focusout
+      // lets us know whether this element *or any element it contains* has the
+      // focus.
+      this.addEventListener('focusout', event => {
+        // What has the focus now?
+        const newFocusedElement = event.relatedTarget || document.activeElement;
+        /** @type {any} */
+        const cast = this;
+        if (!deepContains(cast, newFocusedElement)) {
+          this.setState({
+            focusVisible: false
+          });
+          document.removeEventListener('focus-visible-changed',
+            this[focusVisibleChangedListenerKey]);
+          this[focusVisibleChangedListenerKey] = null;
+        }
       });
-      this.addEventListener('focus', () => {
-        this.setState({
-          focusVisible: keyboardActive
-        });
-        this[focusVisibleChangedListenerKey] = () => refreshFocus(this);
-        document.addEventListener('focus-visible-changed',
-          this[focusVisibleChangedListenerKey]);
+      this.addEventListener('focusin', () => {
+        if (this.state.focusVisible !== keyboardActive) {
+          this.setState({
+            focusVisible: keyboardActive
+          });
+        }
+        if (!this[focusVisibleChangedListenerKey]) {
+          this[focusVisibleChangedListenerKey] = () => refreshFocus(this);
+          document.addEventListener('focus-visible-changed',
+            this[focusVisibleChangedListenerKey]);
+        }
       });
     }
 
