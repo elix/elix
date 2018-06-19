@@ -14,7 +14,7 @@ const shadowReferencesKey = Symbol('shadowReferences');
  * `<template>` element:
  *
  *     class MyElement extends ShadowTemplateMixin(HTMLElement) {
- *       [symbols.template]() {
+ *       get [symbols.template]() {
  *         return `Hello, <em>world</em>.`;
  *       }
  *     }
