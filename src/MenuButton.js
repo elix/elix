@@ -79,7 +79,9 @@ class MenuButton extends PopupSource {
 
     // Close the popup if menu loses focus.
     this.$.menu.addEventListener('blur', async (event) => {
-      const newFocusedElement = event.relatedTarget || document.activeElement;
+      /** @type {any} */
+      const cast = event;
+      const newFocusedElement = cast.relatedTarget || document.activeElement;
       if (this.opened && !deepContains(this.$.menu, newFocusedElement)) {
         this[symbols.raiseChangeEvents] = true;
         await this.close();
@@ -127,7 +129,9 @@ class MenuButton extends PopupSource {
       this.$.menu.addEventListener('touchstart', event => {
         // Record the touch start location so we can later distinguish a fast tap
         // from a scroll or drag.
-        const touch = event.changedTouches[0];
+        /** @type {any} */
+        const cast = event;
+        const touch = cast.changedTouches[0];
         this.setState({
           touchstartX: touch.clientX,
           touchstartY: touch.clientY
@@ -137,7 +141,9 @@ class MenuButton extends PopupSource {
       // Listen to touchend for fast-tap response on Safari. (Chrome has better
       // touch/mouse heuristics, so doesn't need this, but it doesn't hurt.)
       this.$.menu.addEventListener('touchend', event => {
-        const touch = event.changedTouches[0];
+        /** @type {any} */
+        const cast = event;
+        const touch = cast.changedTouches[0];
         const { touchstartX, touchstartY } = this.state;
         // A null touchstartX or touchstartY will be treated as 0.
         const deltaX = Math.abs(touch.clientX - touchstartX);
@@ -148,6 +154,7 @@ class MenuButton extends PopupSource {
           // User didn't drag; treat the tap as a (faster) mouseup.
           return mouseupHandler(event);
         }
+        return; // Silence TypeScript complaint about no return value
       });
     }
 
