@@ -73,12 +73,18 @@ class Menu extends Base {
   componentDidUpdate(previousState) {
     if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
 
-    // If a new item has become selected, give it the keyboard focus.
-    const selectedIndexChanged = this.state.selectedIndex >= 0 &&
-      this.state.selectedIndex !== previousState.selectedIndex;
-    if (selectedIndexChanged && this.selectedItem &&
-      this.selectedItem instanceof HTMLElement) {
-      this.selectedItem.focus();
+    const selectedIndexChanged = this.state.selectedIndex !== previousState.selectedIndex;
+    if (selectedIndexChanged && !this.state.selectionFocused) {
+      // The selected item needs the focus, but this is complicated. See notes
+      // in itemUpdates.
+      if (this.selectedItem instanceof HTMLElement) {
+        this.selectedItem.focus();
+      }
+      // Now that the selection has been focused, we can remove/reset the
+      // tabindex on any item that had previously been selected.
+      this.setState({
+        selectionFocused: true
+      });
     }
   }
 
@@ -88,6 +94,7 @@ class Menu extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      selectionFocused: false,
       orientation: 'vertical'
     });
   }
@@ -105,11 +112,40 @@ class Menu extends Base {
     const selected = calcs.selected;
     const color = selected ? 'highlighttext' : original.style.color;
     const backgroundColor = selected ? 'highlight' : original.style['background-color'];
-    const outline = this.state.focusVisible ? null : 'none';
+    const outline = selected && !this.state.focusVisible ?
+      'none' :
+      null;
+
+    // A menu has a complicated focus arrangement in which the selected item has
+    // focus, which means it needs a tabindex. However, we don't want any other
+    // item in the menu to have a tabindex, so that if the user presses Tab or
+    // Shift+Tab, they move away from the menu entirely (rather than just moving
+    // to the next or previous item).
+    // 
+    // That's already complex, but to make things worse, if we remove the
+    // tabindex from an item that has the focus, the focus gets moved to the
+    // document. In popup menus, the popup will conclude it's lost the focus,
+    // and implicitly close. So we want to move the focus in two phases: 1) set
+    // tabindex on newly-selected item so we can focus on it, 2) after the new
+    // item has been focused, remove the tabindex from any previously-selected
+    // item (via itemUpdates) and from the menu itself (via the updates
+    // property).
+    const originalTabindex = original.attributes.tabindex;
+    let attributes = {};
+    if (!this.state.selectionFocused) {
+      // Phase 1: Add tabindex to newly-selected item.
+      if (selected) {
+        attributes.tabindex = originalTabindex || 0;
+      }
+    } else {
+      // Phase 2: Remove tabindex from any previously-selected item.
+      if (!selected) {
+        attributes.tabindex = originalTabindex || null;
+      }
+    }
+
     return merge(base, {
-      attributes: {
-        tabindex: original.attributes.tabindex || 0
-      },
+      attributes,
       classes: {
         selected
       },
@@ -119,6 +155,17 @@ class Menu extends Base {
         outline
       }
     });
+  }
+
+  refineState(state) {
+    let result = super.refineState ? super.refineState(state) : true;
+    const selectedIndexChanged = state.selectedIndex !== this.state.selectedIndex;
+    if (selectedIndexChanged && state.selectionFocused) {
+      // The new selected item is not yet focused.
+      state.selectionFocused = false;
+      result = false;
+    }
+    return result;
   }
 
   get [symbols.scrollTarget]() {
@@ -168,7 +215,19 @@ class Menu extends Base {
   }
 
   get updates() {
-    return merge(super.updates, {
+    const base = super.updates;
+    const originalTabIndex = this.state.original &&
+      this.state.original.attributes.tabindex;
+    // We remove focus from the menu itself if a selected item has been focused.
+    // See notes at itemUpdates.
+    const tabindex = originalTabIndex ||
+      this.state.selectedIndex >= 0 && this.state.selectionFocused ?
+        null :
+        base.attributes && base.attributes.tabindex;
+    return merge(base, {
+      attributes: {
+        tabindex
+      },
       style: {
         'touch-action': 'manipulation'
       }
