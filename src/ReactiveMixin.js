@@ -225,7 +225,7 @@ export default function ReactiveMixin(Base) {
      * @type {object}
      */
     get state() {
-      return this[stateKey];
+      return this[stateKey] || Object.freeze({});
     }
   }
 }
