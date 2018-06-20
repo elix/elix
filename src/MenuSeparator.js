@@ -1,5 +1,6 @@
 import ReactiveElement from './ReactiveElement.js';
 import * as symbols from './symbols.js';
+import { merge } from './updates.js';
 
 
 /**
@@ -32,6 +33,14 @@ class MenuSeparator extends ReactiveElement {
       </style>
       <hr>
     `;
+  }
+
+  get updates() {
+    return merge(super.updates, {
+      attributes: {
+        'aria-hidden': true
+      }
+    });
   }
 
 }
