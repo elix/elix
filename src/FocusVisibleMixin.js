@@ -28,36 +28,54 @@ export default function FocusVisibleMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
+
       // We listen to focusin/focusout instead of focus/blur because components
       // like Menu want to handle focus visiblity for the items they contain,
       // and those contained items can get the focus. Using focusin/focusout
       // lets us know whether this element *or any element it contains* has the
       // focus.
+      //
+      // Focus events are problematic in that they can occur during rendering:
+      // if an element with the focus is updated so that its tabindex is
+      // removed, it will lose focus. Since these focus handlers need to set
+      // state, this could lead to setting state during rendering, which is bad.
+      // To avoid this problem, we use promise timing to defer the setting of
+      // state.
       this.addEventListener('focusout', event => {
-        // What has the focus now?
-        const newFocusedElement = event.relatedTarget || document.activeElement;
-        /** @type {any} */
-        const cast = this;
-        if (!deepContains(cast, newFocusedElement)) {
-          this.setState({
-            focusVisible: false
-          });
-          document.removeEventListener('focus-visible-changed',
-            this[focusVisibleChangedListenerKey]);
-          this[focusVisibleChangedListenerKey] = null;
-        }
+        Promise.resolve().then(() => {
+          // What has the focus now?
+          const newFocusedElement = event.relatedTarget || document.activeElement;
+          const isFocusedElement = this === newFocusedElement;
+          /** @type {any} */
+          const cast = this;
+          const containsFocus = deepContains(cast, newFocusedElement);
+          const lostFocus = !isFocusedElement && !containsFocus;
+          if (lostFocus) {
+            this.setState({
+              focusVisible: false
+            });
+            // No longer need to listen for changes in focus visibility.
+            document.removeEventListener('focus-visible-changed',
+              this[focusVisibleChangedListenerKey]);
+            this[focusVisibleChangedListenerKey] = null;
+          }
+        });
       });
       this.addEventListener('focusin', () => {
-        if (this.state.focusVisible !== keyboardActive) {
-          this.setState({
-            focusVisible: keyboardActive
-          });
-        }
-        if (!this[focusVisibleChangedListenerKey]) {
-          this[focusVisibleChangedListenerKey] = () => refreshFocus(this);
-          document.addEventListener('focus-visible-changed',
-            this[focusVisibleChangedListenerKey]);
-        }
+        Promise.resolve().then(() => {
+          if (this.state.focusVisible !== keyboardActive) {
+            // Show the element as focused if the keyboard has been used.
+            this.setState({
+              focusVisible: keyboardActive
+            });
+          }
+          if (!this[focusVisibleChangedListenerKey]) {
+            // Listen to subsequent changes in focus visibility.
+            this[focusVisibleChangedListenerKey] = () => refreshFocus(this);
+            document.addEventListener('focus-visible-changed',
+              this[focusVisibleChangedListenerKey]);
+          }
+        });
       });
     }
 
