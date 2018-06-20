@@ -58,6 +58,10 @@ class Menu extends Base {
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
+    
+    this.addEventListener('mousemove', event => {
+      this.suppressFocusVisibility();
+    });
 
     // Treat a pointerdown event as a click.
     if ('PointerEvent' in window) {
@@ -77,9 +81,11 @@ class Menu extends Base {
     if (selectedIndexChanged && !this.state.selectionFocused) {
       // The selected item needs the focus, but this is complicated. See notes
       // in itemUpdates.
-      if (this.selectedItem instanceof HTMLElement) {
-        this.selectedItem.focus();
-      }
+      const focusElement = this.selectedItem instanceof HTMLElement ?
+        this.selectedItem :
+        this;
+      focusElement.focus();
+
       // Now that the selection has been focused, we can remove/reset the
       // tabindex on any item that had previously been selected.
       this.setState({
@@ -94,8 +100,8 @@ class Menu extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      selectionFocused: false,
-      orientation: 'vertical'
+      orientation: 'vertical',
+      selectionFocused: false
     });
   }
 

@@ -85,6 +85,22 @@ export default function FocusVisibleMixin(Base) {
       });
     }
 
+    /**
+     * Temporarily suppress visibility of the keyboard focus until the next
+     * keydown event.
+     * 
+     * This can be useful in components like [Menu](Menu) that actively manage
+     * where the focus is in response to mouse hover activity. If the user uses
+     * the keyboard to invoke a menu, then changes to using the mouse, it can be
+     * distracting to see the focus indicator moving as well. In such
+     * situations, the component can invoke this method (e.g., in response to
+     * `mousemove`) to temporarily suppress focus visibility.
+     */
+    suppressFocusVisibility() {
+      keyboardActive = false;
+      refreshFocus(this);
+    }
+
     get updates() {
       const base = super.updates || {};
       // Suppress the component's normal `outline` style unless we know the

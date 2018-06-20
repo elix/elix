@@ -359,7 +359,7 @@ class MenuButton extends PopupSource {
         },
         popup: {
           attributes: {
-            tabindex: null
+            tabindex: -1
           }
         },
         source: {
