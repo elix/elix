@@ -132,7 +132,7 @@ function updateKeyboardActive(newKeyboardActive) {
     keyboardActive = newKeyboardActive;
     const event = new CustomEvent('focus-visible-changed', {
       detail: {
-        focusVisible: !keyboardActive
+        focusVisible: keyboardActive
       }
     });
     document.dispatchEvent(event);
