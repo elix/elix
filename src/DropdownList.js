@@ -1,5 +1,5 @@
 import { merge } from './updates.js';
-import * as symbols from './symbols';
+import * as symbols from './symbols.js';
 import MenuButton from './MenuButton.js';
 import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
