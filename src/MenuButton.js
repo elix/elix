@@ -124,8 +124,24 @@ class MenuButton extends PopupSource {
     }
     this.$.menu.addEventListener('mouseup', mouseupHandler);
 
-    // For faster handling on Mobile Safari.
-    if (!('PointerEvent' in window)) {
+
+    // As of 22 Jun 2018, Chrome has better fast-tap heuristics than Mobile Safari.
+    // On Safari, we use touch events for fast-tap behavior. However, we *don't*
+    // want to enable this fast-tap behavior in Chrome for iOS, because there it
+    // appears we can rely on Chrome's heuristics.
+    //
+    // HACK: We detect Safari by looking to see if the browser doesn't support
+    // Pointer Events (Safari is the only browser that doesn't) and rule out
+    // Chrome for iOS by examining the user agent string. This feels ugly and
+    // brittle, and we look forward to removing this if/when Safari offers
+    // better fast-tap by default.
+    const enableFastTap = !('PointerEvent' in window) &&
+      !navigator.userAgent.match('CriOS');
+    if (enableFastTap) {
+      // *Probably* on Safari
+
+      document.body.style.backgroundColor = 'pink';
+
       this.$.menu.addEventListener('touchstart', event => {
         // Record the touch start location so we can later distinguish a fast tap
         // from a scroll or drag.
@@ -138,8 +154,7 @@ class MenuButton extends PopupSource {
         });
       });
 
-      // Listen to touchend for fast-tap response on Safari. (Chrome has better
-      // touch/mouse heuristics, so doesn't need this, but it doesn't hurt.)
+      // Listen to touchend for fast-tap response.
       this.$.menu.addEventListener('touchend', event => {
         /** @type {any} */
         const cast = event;
