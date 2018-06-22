@@ -133,14 +133,14 @@ class MenuButton extends PopupSource {
     // HACK: We detect Safari by looking to see if the browser doesn't support
     // Pointer Events (Safari is the only browser that doesn't) and rule out
     // Chrome for iOS by examining the user agent string. This feels ugly and
-    // brittle, and we look forward to removing this if/when Safari offers
-    // better fast-tap by default.
+    // brittle. Among other things, according to
+    // https://developer.chrome.com/multidevice/user-agent, the user agent
+    // string changes if the user selects "Request Desktop Site". Still, this is
+    // the best workaround we can find for now. We look forward to removing this
+    // if/when Safari offers better fast-tap by default.
     const enableFastTap = !('PointerEvent' in window) &&
       !navigator.userAgent.match('CriOS');
     if (enableFastTap) {
-      // *Probably* on Safari
-
-      document.body.style.backgroundColor = 'pink';
 
       this.$.menu.addEventListener('touchstart', event => {
         // Record the touch start location so we can later distinguish a fast tap
