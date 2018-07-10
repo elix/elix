@@ -4,8 +4,7 @@ import { indexOfItemContainingTarget } from './utilities.js';
 
 
 /**
- * Mixin which maps a click (actually, a mousedown, touchstart, or pointerdown)
- * event to an item selection.
+ * Mixin which maps a click (actually, a mousedown) event to an item selection.
  *
  * This simple mixin is useful in list-like elements like [ListBox](ListBox),
  * where a click on a list item implicitly selects it.

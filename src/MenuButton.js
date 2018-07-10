@@ -124,55 +124,6 @@ class MenuButton extends PopupSource {
     }
     this.$.menu.addEventListener('mouseup', mouseupHandler);
 
-
-    // As of 22 Jun 2018, Chrome has better fast-tap heuristics than Mobile Safari.
-    // On Safari, we use touch events for fast-tap behavior. However, we *don't*
-    // want to enable this fast-tap behavior in Chrome for iOS, because there it
-    // appears we can rely on Chrome's heuristics.
-    //
-    // HACK: We detect Safari by looking to see if the browser doesn't support
-    // Pointer Events (Safari is the only browser that doesn't) and rule out
-    // Chrome for iOS by examining the user agent string. This feels ugly and
-    // brittle. Among other things, according to
-    // https://developer.chrome.com/multidevice/user-agent, the user agent
-    // string changes if the user selects "Request Desktop Site". Still, this is
-    // the best workaround we can find for now. We look forward to removing this
-    // if/when Safari offers better fast-tap by default.
-    const enableFastTap = !('PointerEvent' in window) &&
-      !navigator.userAgent.match('CriOS');
-    if (enableFastTap) {
-
-      this.$.menu.addEventListener('touchstart', event => {
-        // Record the touch start location so we can later distinguish a fast tap
-        // from a scroll or drag.
-        /** @type {any} */
-        const cast = event;
-        const touch = cast.changedTouches[0];
-        this.setState({
-          touchstartX: touch.clientX,
-          touchstartY: touch.clientY
-        });
-      });
-
-      // Listen to touchend for fast-tap response.
-      this.$.menu.addEventListener('touchend', event => {
-        /** @type {any} */
-        const cast = event;
-        const touch = cast.changedTouches[0];
-        const { touchstartX, touchstartY } = this.state;
-        // A null touchstartX or touchstartY will be treated as 0.
-        const deltaX = Math.abs(touch.clientX - touchstartX);
-        const deltaY = Math.abs(touch.clientY - touchstartY);
-        const dragThreshold = 2; // pixels
-        const userDragged = deltaX > dragThreshold || deltaY > dragThreshold;
-        if (!userDragged) {
-          // User didn't drag; treat the tap as a (faster) mouseup.
-          return mouseupHandler(event);
-        }
-        return; // Silence TypeScript complaint about no return value
-      });
-    }
-
     // Track changes in the menu's selection state.
     this.$.menu.addEventListener('selected-index-changed', event => {
       /** @type {any} */

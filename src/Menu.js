@@ -187,6 +187,7 @@ class Menu extends Base {
           cursor: default;
           display: flex;
           -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+          touch-action: manipulation;
         }
 
         #content {
@@ -201,6 +202,7 @@ class Menu extends Base {
         #content > ::slotted(*) {
           flex-shrink: 0;
           padding: 0.25em;
+          touch-action: manipulation;
         }
 
         @media (pointer: coarse) {
@@ -233,9 +235,6 @@ class Menu extends Base {
     return merge(base, {
       attributes: {
         tabindex
-      },
-      style: {
-        'touch-action': 'manipulation'
       }
     });
   }

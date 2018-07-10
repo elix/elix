@@ -79,10 +79,12 @@ class PopupSource extends Base {
     // Desktop popups generally open on mousedown, not click/mouseup. On mobile,
     // mousedown won't fire until the user releases their finger, so it behaves
     // like a click.
-    const mousedownHandler = (event => {
+    this.$.source.addEventListener('mousedown', event => {
       // Only handle primary button mouse down to avoid interfering with
       // right-click behavior.
-      if (event.button && event.button !== 0) {
+      /** @type {any} */
+      const cast = event;
+      if (cast.button && cast.button !== 0) {
         return;
       }
       // We give the default focus behavior time to run before opening the
@@ -100,13 +102,7 @@ class PopupSource extends Base {
       // That's important for us, because OverlayMixin will remember that
       // focused element (i.e., this element) when opening, and restore focus to
       // it when the popup closes.
-    }).bind(this);
-    this.$.source.addEventListener('mousedown', mousedownHandler);
-
-    if (!('PointerEvent' in window)) {
-      // For faster handling on Mobile Safari.
-      this.$.source.addEventListener('touchend', mousedownHandler);
-    }
+    });
 
     // Popup's opened state becomes our own opened state.
     this.$.popup.addEventListener('opened', () => {
