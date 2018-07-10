@@ -25,11 +25,11 @@ class RenderState extends Base {
 
   get fixture() {
     if (!this.state.content) {
-      return;
+      return null;
     }
     const elements = substantiveElements(this.state.content);
     if (!elements || elements.length < 1) {
-      return;
+      return null;
     }
     // Look for an element (or subelement) with class "fixture".
     const fixtures = elements.map(element =>
