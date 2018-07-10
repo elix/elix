@@ -1,8 +1,7 @@
+[![Build Status](https://travis-ci.org/webcomponents/webcomponentsjs.svg?branch=master)](https://travis-ci.org/webcomponents/webcomponentsjs)
+
 webcomponents.js (v1 spec polyfills)
 ================
-
-[![Build Status](https://travis-ci.org/webcomponents/webcomponentsjs.svg?branch=master)]
-(https://travis-ci.org/webcomponents/webcomponentsjs)
 
 > **Note**. For polyfills that work with the older Custom Elements and Shadow DOM v0 specs,
 see the [v0 branch](https://github.com/webcomponents/webcomponentsjs/tree/v0).
@@ -24,6 +23,10 @@ For browsers that need it, there are also some minor polyfills included:
 - [`URL constructor`](https://github.com/webcomponents/URL)
 
 ## How to use
+### Install polyfills
+```bash
+npm install @webcomponents/webcomponentsjs
+```
 
 ### Using `webcomponents-bundle.js`
 

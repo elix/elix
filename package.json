@@ -24,27 +24,19 @@
     "toast"
   ],
   "devDependencies": {
-    "babel-cli": "6.26.0",
-    "babel-core": "6.26.0",
-    "babel-loader": "7.1.4",
-    "babel-preset-env": "1.6.1",
     "chai": "4.1.2",
-    "eslint": "4.19.1",
+    "eslint": "5.1.0",
     "get-port": "3.2.0",
     "jsdoc-api": "4.0.3",
     "jsdoc-parse": "3.0.1",
-    "mocha": "5.0.5",
-    "puppeteer": "1.2.0",
+    "mocha": "5.2.0",
+    "puppeteer": "1.5.0",
     "sauce-test-runner": "0.2.0",
-    "sinon": "4.5.0",
+    "sinon": "6.1.3",
     "static-server": "2.2.1",
-    "typescript": "2.8.1",
-    "uglifyjs-webpack-plugin": "1.2.4",
-    "webpack-cli": "2.0.13",
-    "webpack": "4.5.0"
+    "typescript": "2.9.2"
   },
   "scripts": {
-    "build": "webpack; eslint .; tsc",
     "buildDocs": "node tasks/buildDocs.js",
     "ci": "npm run lint && npm run sauce-tests",
     "ci:fast": "npm run lint && npm run test -- --run-in-ci",
@@ -52,7 +44,6 @@
     "sauce-tests": "node tasks/sauce-tests.js",
     "start": "static-server . --port 3000",
     "test": "node tasks/headless-tests.js",
-    "typecheck": "tsc",
-    "watch": "webpack --watch"
+    "typecheck": "tsc"
   }
 }
