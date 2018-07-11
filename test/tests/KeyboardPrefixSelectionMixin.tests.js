@@ -45,15 +45,15 @@ describe("KeyboardPrefixSelectionMixin", () => {
     const prefix = 'blu'; // The keys we'll simulate.
 
     // Typing "b" moves to "Banana".
-    fixture[symbols.keydown]({ keyCode: prefix.charCodeAt(0) });
+    fixture[symbols.keydown]({ key: prefix.charCodeAt(0) });
     assert.equal(fixture.state.selectedIndex, 4);
 
     // Typing "l" moves to "Blackberry".
-    fixture[symbols.keydown]({ keyCode: prefix.charCodeAt(1) });
+    fixture[symbols.keydown]({ key: prefix.charCodeAt(1) });
     assert.equal(fixture.state.selectedIndex, 5);
 
     // Typing "u" moves to "Blueberry".
-    fixture[symbols.keydown]({ keyCode: prefix.charCodeAt(2) });
+    fixture[symbols.keydown]({ key: prefix.charCodeAt(2) });
     assert.equal(fixture.state.selectedIndex, 6);
   });
 
@@ -62,22 +62,22 @@ describe("KeyboardPrefixSelectionMixin", () => {
     const prefix = 'bl'; // The keys we'll simulate.
 
     // Typing "b" moves to "Banana".
-    fixture[symbols.keydown]({ keyCode: prefix.charCodeAt(0) });
+    fixture[symbols.keydown]({ key: prefix.charCodeAt(0) });
     assert.equal(fixture.state.selectedIndex, 4);
 
     // Typing "l" moves to "Blackberry".
-    fixture[symbols.keydown]({ keyCode: prefix.charCodeAt(1) });
+    fixture[symbols.keydown]({ key: prefix.charCodeAt(1) });
     assert.equal(fixture.state.selectedIndex, 5);
 
     // Typing Backspace moves back to "Banana".
-    fixture[symbols.keydown]({ keyCode: 8 });
+    fixture[symbols.keydown]({ key: 'Backspace' });
     assert.equal(fixture.state.selectedIndex, 4);
   });
 
   it("ignores typed keys that don't match", () => {
     const fixture = createSampleElement();
     // Typing "x" leaves selection alone (since it doesn't match).
-    fixture[symbols.keydown]({ keyCode: 'x'.charCodeAt(0) });
+    fixture[symbols.keydown]({ key: 'x'.charCodeAt(0) });
     assert.equal(fixture.state.selectedIndex, -1);
   });
 
