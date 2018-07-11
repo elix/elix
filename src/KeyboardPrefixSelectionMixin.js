@@ -71,18 +71,23 @@ export default function KeyboardPrefixSelectionMixin(Base) {
 
     [symbols.keydown](event) {
       let handled;
-      let resetPrefix = true;
+      let resetPrefix;
 
-      switch (event.keyCode) {
-        case 8: // Backspace
+      switch (event.key) {
+        case 'Backspace':
           handleBackspace(this);
           handled = true;
           resetPrefix = false;
           break;
 
+        case 'Escape':
+          // Pressing Escape lets user quickly start typing a new prefix.
+          resetPrefix = true;
+          break;
+
         default:
           if (!event.ctrlKey && !event.metaKey && !event.altKey &&
-              event.which !== 32 /* Space */) {
+              event.key !== ' ') {
             handlePlainCharacter(this, String.fromCharCode(event.keyCode));
           }
           resetPrefix = false;
