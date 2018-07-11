@@ -74,8 +74,8 @@ For full documentation and demos, see https://elix.org.
   effects or branding to blend seamlessly with your application’s own style.
 * **Work on all mainstream browsers.** This includes the latest versions of
   Apple Safari and Mobile Safari, Google Chrome and Chrome for Android,
-  Microsoft Edge and Internet Explorer 11, and Mozilla Firefox. The older
-  browsers, notably IE 11, require the use of the web component v1 polyfills.
+  Microsoft Edge, and Mozilla Firefox. The older browsers, notably Edge, require
+  the use of the web component v1 polyfills.
 * **Open process.**
   The process behind Elix is as important to us as the code artifacts. We strive
   to incorporate feedback from a general web audience, while at the same time
