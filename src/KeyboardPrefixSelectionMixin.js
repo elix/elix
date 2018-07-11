@@ -84,8 +84,7 @@ export default function KeyboardPrefixSelectionMixin(Base) {
           break;
 
         default:
-          if (!event.ctrlKey && !event.metaKey && !event.altKey &&
-              event.key !== ' ') {
+          if (!event.ctrlKey && !event.metaKey && !event.altKey) {
             handlePlainCharacter(this, String.fromCharCode(event.keyCode));
           }
       }

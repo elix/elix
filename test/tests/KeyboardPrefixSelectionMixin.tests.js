@@ -81,6 +81,23 @@ describe("KeyboardPrefixSelectionMixin", () => {
     assert.equal(fixture.state.selectedIndex, -1);
   });
 
+  it("handles spaces", () => {
+    const fixture = createSampleElement();
+    const prefix = 'e f'; // The keys we'll simulate.
+
+    // Typing "e" moves to "E berry".
+    fixture[symbols.keydown]({ keyCode: prefix.charCodeAt(0) });
+    assert.equal(fixture.state.selectedIndex, 10);
+
+    // Typing " " stays on "E berry".
+    fixture[symbols.keydown]({ keyCode: prefix.charCodeAt(1) });
+    assert.equal(fixture.state.selectedIndex, 10);
+
+    // Typing "f" moves to "E fruit".
+    fixture[symbols.keydown]({ keyCode: prefix.charCodeAt(2) });
+    assert.equal(fixture.state.selectedIndex, 11);
+  });
+
 });
 
 
@@ -96,7 +113,9 @@ function createSampleElement() {
     'Blueberry',
     'Cantaloupe',
     'Cherry',
-    'Cranberry'
+    'Cranberry',
+    'E berry',
+    'E fruit',
   ];
   const items = texts.map(text => {
     const div = document.createElement('div');
