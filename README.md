@@ -121,7 +121,7 @@ Install the project's `devDependencies` with `npm` version 5 or greater:
    written in ES6, and can be loaded with native `import` statements on browsers
    that support those. The build step is only required to create demos and tests
    that can run on older browsers.)
-4. `npm start`. Go to [http://localhost:3718](http://localhost:3718) to see the demos and tests (if you like).
+4. `npm start`. Go to [http://localhost:3000](http://localhost:3000) to see the demos and tests (if you like).
 
 
 # Unit tests
