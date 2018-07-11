@@ -45,15 +45,15 @@ describe("KeyboardPrefixSelectionMixin", () => {
     const prefix = 'blu'; // The keys we'll simulate.
 
     // Typing "b" moves to "Banana".
-    fixture[symbols.keydown]({ key: prefix[0] });
+    simulateKeydown(fixture, prefix[0]);
     assert.equal(fixture.state.selectedIndex, 4);
 
     // Typing "l" moves to "Blackberry".
-    fixture[symbols.keydown]({ key: prefix[1] });
+    simulateKeydown(fixture, prefix[1]);
     assert.equal(fixture.state.selectedIndex, 5);
 
     // Typing "u" moves to "Blueberry".
-    fixture[symbols.keydown]({ key: prefix[2] });
+    simulateKeydown(fixture, prefix[2]);
     assert.equal(fixture.state.selectedIndex, 6);
   });
 
@@ -62,39 +62,43 @@ describe("KeyboardPrefixSelectionMixin", () => {
     const prefix = 'bl'; // The keys we'll simulate.
 
     // Typing "b" moves to "Banana".
-    fixture[symbols.keydown]({ key: prefix[0] });
+    simulateKeydown(fixture, prefix[0]);
     assert.equal(fixture.state.selectedIndex, 4);
 
     // Typing "l" moves to "Blackberry".
-    fixture[symbols.keydown]({ key: prefix[1] });
+    simulateKeydown(fixture, prefix[1]);
     assert.equal(fixture.state.selectedIndex, 5);
 
     // Typing Backspace moves back to "Banana".
-    fixture[symbols.keydown]({ key: 'Backspace' });
+    simulateKeydown(fixture, 'Backspace');
     assert.equal(fixture.state.selectedIndex, 4);
   });
 
   it("ignores typed keys that don't match", () => {
     const fixture = createSampleElement();
     // Typing "x" leaves selection alone (since it doesn't match).
-    fixture[symbols.keydown]({ key: 'x' });
+    simulateKeydown(fixture, 'x');
     assert.equal(fixture.state.selectedIndex, -1);
   });
 
-  it("handles spaces", () => {
+  it("treats spaces in the typed prefix like regular characters", () => {
     const fixture = createSampleElement();
-    const prefix = 'e f'; // The keys we'll simulate.
+    const prefix = 'dried '; // The keys we'll simulate.
 
-    // Typing "e" moves to "E berry".
-    fixture[symbols.keydown]({ keyCode: prefix.charCodeAt(0) });
+    // Typing "dried" moves to "Dried Apricot".
+    simulateKeydown(fixture, prefix[0]);
+    simulateKeydown(fixture, prefix[1]);
+    simulateKeydown(fixture, prefix[2]);
+    simulateKeydown(fixture, prefix[3]);
+    simulateKeydown(fixture, prefix[4]);
     assert.equal(fixture.state.selectedIndex, 10);
 
-    // Typing " " stays on "E berry".
-    fixture[symbols.keydown]({ keyCode: prefix.charCodeAt(1) });
+    // Typing " " stays on "Dried Apricot".
+    simulateKeydown(fixture, prefix[5]);
     assert.equal(fixture.state.selectedIndex, 10);
 
-    // Typing "f" moves to "E fruit".
-    fixture[symbols.keydown]({ keyCode: prefix.charCodeAt(2) });
+    // Typing "c" moves to "Dried Cherry".
+    simulateKeydown(fixture, 'c');
     assert.equal(fixture.state.selectedIndex, 11);
   });
 
@@ -114,8 +118,8 @@ function createSampleElement() {
     'Cantaloupe',
     'Cherry',
     'Cranberry',
-    'E berry',
-    'E fruit',
+    'Dried Apricot',
+    'Dried Cherry',
   ];
   const items = texts.map(text => {
     const div = document.createElement('div');
@@ -124,4 +128,15 @@ function createSampleElement() {
   });
   fixture.items = items;
   return fixture;
+}
+
+
+function simulateKeydown(fixture, key) {
+  const keyCode = key.length === 1 ?
+    key.charCodeAt(0) :
+    null;
+  fixture[symbols.keydown]({
+    key,
+    keyCode
+  });
 }
