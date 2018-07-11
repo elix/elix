@@ -81,8 +81,7 @@ export default function KeyboardPrefixSelectionMixin(Base) {
           break;
 
         default:
-          if (!event.ctrlKey && !event.metaKey && !event.altKey &&
-              event.which !== 32 /* Space */) {
+          if (!event.ctrlKey && !event.metaKey && !event.altKey) {
             handlePlainCharacter(this, String.fromCharCode(event.keyCode));
           }
           resetPrefix = false;
