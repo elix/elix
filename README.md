@@ -110,18 +110,13 @@ Elix is an ambitious attempt to deconstruct complex user interface elements into
 * As recommended above, locking on to a specific Elix version number will let you evaluate new Elix releases — including minor releases — in a more controlled fashion.
 
 
-# Building and running locally
-
-Install the project's `devDependencies` with `npm` version 5 or greater:
+# Running locally
 
 1. Clone or fork the project.
 2. `npm install`.
-3. `npm run build`. Builds distribution .js files for all components and mixins,
-   as well as demos and unit tests. (Note: All Elix components and mixins are
-   written in ES6, and can be loaded with native `import` statements on browsers
-   that support those. The build step is only required to create demos and tests
-   that can run on older browsers.)
-4. `npm start`. Go to [http://localhost:3000](http://localhost:3000) to see the demos and tests (if you like).
+3. `npm start`. Go to [http://localhost:3000](http://localhost:3000) to see the demos and tests (if you like).
+
+The Elix project itself uses no build step. You are free to use your preferred tool to bundle the Elix modules for better network performance.
 
 
 # Unit tests
@@ -137,6 +132,7 @@ Run the tests locally against a headless browser.
 npm test
 ```
 
+
 ## Local browser 
 
 **Fast**. As fast as you can reload the page :).
@@ -144,6 +140,7 @@ But **low coverage**. Only the browser(s) you test it in will be covered.
 
 Run `npm start` which starts a local server, serving the files from the root
 of this repo. You can run the tests by going to [http://localhost:3000/test/](http://localhost:3000/test/) (don't miss the trailing slash).
+
 
 ## Multiple browsers via Saucelabs 
 
