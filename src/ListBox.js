@@ -1,4 +1,3 @@
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import AriaListMixin from './AriaListMixin.js';
 import ClickSelectionMixin from './ClickSelectionMixin.js';
@@ -14,6 +13,8 @@ import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SelectionInViewMixin from './SelectionInViewMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
+import { html } from './templates.js';
+import { merge } from './updates.js';
 
 
 const Base =
@@ -93,7 +94,7 @@ class ListBox extends Base {
   }
 
   get [symbols.template]() {
-    return `
+    return html`
       <style>
         :host {
           border: 1px solid gray;

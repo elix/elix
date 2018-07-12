@@ -1,9 +1,10 @@
-import './ModalBackdrop.js';
-import { merge } from './updates.js';
+import * as symbols from './symbols.js';
 import DialogModalityMixin from './DialogModalityMixin.js';
 import FocusCaptureMixin from './FocusCaptureMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
+import ModalBackdrop from './ModalBackdrop.js';
 import Overlay from './Overlay.js'
+import { merge } from './updates.js';
 
 
 const Base =
@@ -26,18 +27,18 @@ const Base =
  */
 class Dialog extends Base {
 
-  get defaults() {
-    const base = super.defaults;
-    return Object.assign({}, base, {
-      tags: Object.assign({}, base.tags, {
-        backdrop: 'elix-modal-backdrop'
-      })
+  constructor() {
+    super();
+    Object.assign(this.elementDescriptors, {
+      backdrop: ModalBackdrop
     });
   }
 
-  get frameTemplate() {
-    const base = super.frameTemplate;
-    return this[FocusCaptureMixin.inject](base);
+  get [symbols.template]() {
+    const result = super[symbols.template];
+    const frame = result.content.querySelector('#frame');
+    this[FocusCaptureMixin.wrap](frame);
+    return result;
   }
 
   get updates() {

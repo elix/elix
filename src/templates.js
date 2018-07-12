@@ -10,16 +10,19 @@ export function elementFromDescriptor(descriptor) {
 
 
 export function substituteElement(original, replacement) {
-  original.parentNode.replaceChild(replacement, original);
+  const element = replacement instanceof HTMLTemplateElement ?
+    replacement.content.cloneNode(true) :
+    replacement;
+  original.parentNode.replaceChild(element, original);
   // Copy over attributes which are not already present on replacement.
   for (const { name, value } of original.attributes) {
-    if (!replacement.getAttribute(name)) {
-      replacement.setAttribute(name, value);
+    if (!element.getAttribute(name)) {
+      element.setAttribute(name, value);
     }
   }
   // Copy over children.
   original.childNodes.forEach(child => {
-    replacement.appendChild(child.cloneNode(true));
+    element.appendChild(child.cloneNode(true));
   });
 }
 

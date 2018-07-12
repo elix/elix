@@ -1,18 +1,12 @@
 import * as symbols from '../../src/symbols.js';
-import FocusCaptureMixin from '../../src/FocusCaptureMixin.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
+import { html } from '../../src/templates.js';
 
 
-const Base =
-  FocusCaptureMixin(
-    ReactiveElement
-  );
-
-
-class CustomOverlayFrame extends Base {
+class CustomOverlayFrame extends ReactiveElement {
 
   get [symbols.template]() {
-    return `
+    return html`
       <style>
         :host {
           background: rgb(255, 240, 240);
@@ -22,9 +16,7 @@ class CustomOverlayFrame extends Base {
           position: relative;
         }
       </style>
-      ${this[FocusCaptureMixin.inject](`
-        <slot></slot>
-      `)}
+      <slot></slot>
     `;
   }
 

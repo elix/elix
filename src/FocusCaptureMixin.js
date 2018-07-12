@@ -1,8 +1,9 @@
 import * as symbols from './symbols.js';
+import { html } from './templates.js';
 
 
 // Symbols for private data members on an element.
-const inject = Symbol('inject');
+const wrap = Symbol('wrap');
 const wrappingFocusKey = Symbol('wrappingFocus');
 
 
@@ -38,26 +39,6 @@ function FocusCaptureMixin(base) {
       });
     }
 
-    /**
-     * Wrap a base template with elements necessary to capture focus.
-     * 
-     * Call this method in a components `symbols.template` property.
-     * 
-     * Note: The `wrap` method hangs off of `FocusCaptureMixin` like a static
-     * method; the mixin does not add it to an element's prototype chain.
-     * Accordingly, you must invoke this method as
-     * `FocusCaptureMixin.wrap(template)`, not `this.wrap(template)`.
-     * 
-     * @param {string} template for the element(s) controlled by the arrow buttons
-     * @returns {string} a template that includes left/right arrow buttons
-     */
-    [inject](template) {
-      return `
-        ${template}
-        <div id="focusCatcher" tabindex="0"></div>
-      `;
-    }
-
     [symbols.keydown](event) {
       /** @type {any} */
       const element = this;
@@ -77,13 +58,31 @@ function FocusCaptureMixin(base) {
       return (super[symbols.keydown] && super[symbols.keydown](event)) || false;
     }
 
+    /**
+     * Wrap a DOM tree with additional elements necessary to capture focus.
+     * 
+     * Call this method in a components `symbols.template` property.
+     * Invoke this method as `this[FocusCaptureMixin.wrap](element)`.
+     * 
+     * @param {Node} original - the element(s) in which focus should wrap
+     */
+    [wrap](original) {
+      const focusCatcher = html`<div id="focusCatcher" tabindex="0"></div>`;
+      if (original.parentNode) {
+        original.parentNode.insertBefore(focusCatcher.content, original.nextSibling);
+      } else {
+        /* eslint-disable no-console */
+        console.warn(`FocusCaptureMixin[wrap] can only wrap an element that has a parent.`);
+      }
+    }
+
   }
 
   return FocusCapture;
 }
 
 
-FocusCaptureMixin.inject = inject;
+FocusCaptureMixin.wrap = wrap;
 
 
 export default FocusCaptureMixin;

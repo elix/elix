@@ -1,12 +1,10 @@
-import './Backdrop.js';
-import './OverlayFrame.js';
 import * as symbols from './symbols.js';
+import Backdrop from './Backdrop.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
+import OverlayFrame from './OverlayFrame.js';
 import OverlayMixin from './OverlayMixin.js';
 import ReactiveElement from './ReactiveElement.js';
-
-const backdropTagKey = Symbol('backdropTag');
-const frameTagKey = Symbol('frameTag');
+import { substituteElement, elementFromDescriptor, html } from './templates.js';
 
 
 const Base =
@@ -37,6 +35,14 @@ const Base =
  */
 class Overlay extends Base {
 
+  constructor() {
+    super();
+    this.elementDescriptors = {
+      backdrop: Backdrop,
+      frame: OverlayFrame
+    };
+  }
+
   get backdrop() {
     return this.$ && this.$.backdrop;
   }
@@ -50,30 +56,14 @@ class Overlay extends Base {
    * as an overlay backdrop in such a way.
    * 
    * @type {string}
-   * @default ''
+   * @default {Backdrop}
    */
-  get backdropTag() {
-    return this[backdropTagKey];
+  get backdropDescriptor() {
+    return this.elementDescriptors.backdrop;
   }
-  set backdropTag(backdropTag) {
+  set backdropDescriptor(backdropDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this[backdropTagKey] = backdropTag;
-  }
-
-  get backdropTemplate() {
-    const backdropTag = this.backdropTag || this.defaults.tags.backdrop;
-    return backdropTag ?
-      `<${backdropTag} id="backdrop"></${backdropTag}>` :
-      '';
-  }
-
-  get defaults() {
-    return {
-      tags: {
-        backdrop: 'elix-backdrop',
-        frame: 'elix-overlay-frame'
-      }
-    };
+    this.elementDescriptors.backdrop = backdropDescriptor;
   }
 
   get frame() {
@@ -88,29 +78,18 @@ class Overlay extends Base {
    * distinguish overlay content from background page elements.
    * 
    * @type {string}
-   * @default 'elix-overlay-frame'
+   * @default {OverlayFrame}
    */
-  get frameTag() {
-    return this[frameTagKey];
+  get frameDescriptor() {
+    return this.elementDescriptors.frame;
   }
-  set frameTag(frameTag) {
+  set frameDescriptor(frameDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this[frameTagKey] = frameTag;
-  }
-
-  get frameTemplate() {
-    const frameTag = this.frameTag || this.defaults.tags.frame;
-    return `
-      <${frameTag} id="frame" role="none">
-        <slot></slot>
-      </${frameTag}>
-    `;
+    this.elementDescriptors.frame = frameDescriptor;
   }
 
   get [symbols.template]() {
-    const backdropTemplate = this.backdropTemplate;
-    const frameTemplate = this.frameTemplate;
-    return `
+    const result = html`
       <style>
         :host {
           align-items: center;
@@ -136,9 +115,20 @@ class Overlay extends Base {
           pointer-events: initial;
         }
       </style>
-      ${backdropTemplate}
-      ${frameTemplate}
+      <div id="backdrop"></div>
+      <div id="frame" role="none">
+        <slot></slot>
+      </div>
     `;
+    substituteElement(
+      result.content.querySelector('#backdrop'),
+      elementFromDescriptor(this.elementDescriptors.backdrop)
+    );
+    substituteElement(
+      result.content.querySelector('#frame'),
+      elementFromDescriptor(this.elementDescriptors.frame)
+    );
+    return result;
   }
 
 }

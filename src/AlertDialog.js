@@ -1,9 +1,7 @@
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import Dialog from './Dialog.js';
-
-
-const choiceButtonTagKey = Symbol('choiceButtonTag');
+import { elementFromDescriptor, html, substituteElement } from './templates.js';
+import { merge, apply } from './updates.js';
 
 
 /**
@@ -14,6 +12,13 @@ const choiceButtonTagKey = Symbol('choiceButtonTag');
  * @inherits Dialog
  */
 class AlertDialog extends Dialog {
+
+  constructor() {
+    super();
+    Object.assign(this.elementDescriptors, {
+      choiceButton: 'button'
+    });
+  }
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
@@ -39,12 +44,12 @@ class AlertDialog extends Dialog {
     return this.state.choiceButtons;
   }
 
-  get choiceButtonTag() {
-    return this[choiceButtonTagKey];
+  get choiceButtonDescriptor() {
+    return this.elementDescriptors.choiceButton;
   }
-  set choiceButtonTag(choiceButtonTag) {
+  set choiceButtonDescriptor(choiceButtonTag) {
     this[symbols.hasDynamicTemplate] = true;
-    this[choiceButtonTagKey] = choiceButtonTag;
+    this.elementDescriptors.choiceButton = choiceButtonTag;
   }
 
   /**
@@ -61,15 +66,6 @@ class AlertDialog extends Dialog {
   }
   set choices(choices) {
     this.setState({ choices });
-  }
-
-  get defaults() {
-    const base = super.defaults || {};
-    return Object.assign({}, base, {
-      tags: Object.assign({}, base.tags, {
-        choiceButton: base.tags && base.tags.choiceButton || 'button'
-      })
-    });
   }
 
   get defaultState() {
@@ -107,11 +103,10 @@ class AlertDialog extends Dialog {
 
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
-    if (state.choicesForChoiceButtons !== state.choices) {
+    if (state.opened && state.choicesForChoiceButtons !== state.choices) {
       // Choices have changed; create new buttons.
-      const choiceButtonTag = this.choiceButtonTag || this.defaults.tags.choiceButton;
       const choiceButtons = state.choices.map(choice => {
-        const button = document.createElement(choiceButtonTag);
+        const button = elementFromDescriptor(this.elementDescriptors.choiceButton);
         button.textContent = choice;
         return button;
       });
@@ -126,27 +121,40 @@ class AlertDialog extends Dialog {
   }
 
   get [symbols.template]() {
-    const base = super[symbols.template];
-    return base.replace('<slot></slot>', `
-      <style>
-        #buttonContainer {
-          margin-top: 1em;
+    const result = super[symbols.template];
+    apply(result.content, {
+      $: {
+        frame: {
+          style: {
+            padding: '1em'
+          }
         }
+      }
+    });
+    substituteElement(
+      result.content.querySelector('slot:not([name])'),
+      html`
+        <style>
+          #buttonContainer {
+            margin-top: 1em;
+          }
 
-        button {
-          font-family: inherit;
-          font-size: inherit;
-        }
+          button {
+            font-family: inherit;
+            font-size: inherit;
+          }
 
-        #buttonContainer > :not(:first-child) {
-          margin-left: 0.5em;
-        }
-      </style>
-      <div id="alertDialogContent">
-        <slot></slot>
-        <div id="buttonContainer"></div>
-      </div>
-    `);
+          #buttonContainer > :not(:first-child) {
+            margin-left: 0.5em;
+          }
+        </style>
+        <div id="alertDialogContent">
+          <slot></slot>
+          <div id="buttonContainer"></div>
+        </div>
+      `
+    );
+    return result;
   }
 
   get updates() {
@@ -155,11 +163,6 @@ class AlertDialog extends Dialog {
       $: {
         buttonContainer: {
           childNodes
-        },
-        frame: {
-          style: {
-            padding: '1em'
-          }
         }
       }
     });

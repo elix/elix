@@ -1,9 +1,17 @@
-import './CustomBackdrop.js';
-import './CustomOverlayFrame.js';
+import CustomBackdrop from './CustomBackdrop.js';
+import CustomOverlayFrame from './CustomOverlayFrame.js';
 import Dialog from '../../src/Dialog.js';
 
 
 class SampleDialog extends Dialog {
+
+  constructor() {
+    super();
+    Object.assign(this.elementDescriptors, {
+      backdrop: CustomBackdrop,
+      frame: CustomOverlayFrame
+    });
+  }
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
@@ -12,16 +20,6 @@ class SampleDialog extends Dialog {
     // performs this action.
     this.$.frame.addEventListener('click', () => {
       this.close();
-    });
-  }
-
-  get defaults() {
-    const base = super.defaults || {};
-    return Object.assign({}, base, {
-      tags: Object.assign({}, base.tags, {
-        backdrop: 'custom-backdrop',
-        frame: 'custom-overlay-frame'
-      })
     });
   }
 

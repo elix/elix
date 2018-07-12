@@ -83,7 +83,7 @@ const previousChildNodesKey = Symbol('previousChildNodes');
  * 
  *     element.foo = 'bar';
  * 
- * @param {Element} element - the element to update
+ * @param {Element|DocumentFragment} element - the element to update
  * @param {object} updates - the updates to apply
  */
 export function apply(element, updates) {

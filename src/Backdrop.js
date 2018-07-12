@@ -1,6 +1,7 @@
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import ReactiveElement from './ReactiveElement.js';
+import { html } from './templates.js';
+import { merge } from './updates.js';
 
 
 /**
@@ -12,7 +13,7 @@ import ReactiveElement from './ReactiveElement.js';
 class Backdrop extends ReactiveElement {
 
   get [symbols.template]() {
-    return `
+    return html`
       <style>
         :host {
           height: 100%;
