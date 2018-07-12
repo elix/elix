@@ -234,7 +234,9 @@ export function applyClasses(element, classes) {
 function applyReferencedElementUpdates(element, updates) {
   for (const key in updates) {
     const props = updates[key];
-    const referencedElement = element.$[key];
+    const referencedElement = element.$ ?
+      element.$[key] :
+      element.getElementById(key);
     if (referencedElement) {
       apply(referencedElement, props);
     } else {
