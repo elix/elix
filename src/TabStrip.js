@@ -125,10 +125,10 @@ class TabStrip extends Base {
     let handled;
 
     // Let user select a tab button with Enter or Space.
-    switch (event.keyCode) {
+    switch (event.key) {
       /* eslint-disable no-case-declarations */
-      case 13: /* Enter */
-      case 32: /* Space */
+      case 'Enter':
+      case ' ':
         // TODO
         // const index = this.indexOfTarget(event.target);
         const selectedIndex = this.items && this.items.indexOf(event.target);

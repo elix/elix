@@ -94,8 +94,8 @@ export default function PopupModalityMixin(Base) {
     [symbols.keydown](event) {
       let handled = false;
 
-      switch (event.keyCode) {
-        case 27: // Escape
+      switch (event.key) {
+        case 'Escape':
           this.close();
           handled = true;
           break;

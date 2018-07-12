@@ -44,7 +44,7 @@ describe("KeyboardPagedSelectionMixin", function() {
     container.appendChild(fixture);
     fixture.setState({ selectedIndex: 0 });
     const handled = fixture[symbols.keydown]({
-      keyCode: 34
+      key: 'PageDown',
     });
     assert(handled);
     assert.equal(fixture.state.selectedIndex, 1);
@@ -55,7 +55,7 @@ describe("KeyboardPagedSelectionMixin", function() {
     container.appendChild(fixture);
     fixture.setState({ selectedIndex: 1 });
     const handled = fixture[symbols.keydown]({
-      keyCode: 34
+      key: 'PageDown',
     });
     assert(handled);
     assert.equal(fixture.state.selectedIndex, 3);
@@ -67,7 +67,7 @@ describe("KeyboardPagedSelectionMixin", function() {
     fixture.setState({ selectedIndex: 3 });
     fixture.addEventListener('scroll', () => {
       const handled = fixture[symbols.keydown]({
-        keyCode: 34
+        key: 'PageDown',
       });
       assert(handled);
       assert.equal(fixture.state.selectedIndex, 4);
@@ -82,7 +82,7 @@ describe("KeyboardPagedSelectionMixin", function() {
     fixture.setState({ selectedIndex: 4 });
     fixture.addEventListener('scroll', () => {
       const handled = fixture[symbols.keydown]({
-        keyCode: 34
+        key: 'PageDown',
       });
       assert(!handled);
       assert.equal(fixture.state.selectedIndex, 4);

@@ -164,8 +164,8 @@ export default function PlayControlsMixin(Base) {
     [symbols.keydown](event) {
       let handled;
 
-      switch (event.keyCode) {
-        case 32: /* Space */
+      switch (event.key) {
+        case ' ':
           this.click();
           handled = true;
           break;

@@ -88,7 +88,7 @@ class AlertDialog extends Dialog {
     let found = false;
     let index = 0;
     while (index < this.choices.length && !found) {
-      if (this.choices[index].charCodeAt(0) === event.keyCode) {
+      if (event.key.length === 1 && this.choices[index][0] === event.key) {
         found = true;
       } else {
         index++;

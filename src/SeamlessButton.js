@@ -21,14 +21,15 @@ const Base =
  */
 class SeamlessButton extends Base {
 
-  // Pressing Space is the same as clicking the button.
+  // Pressing Enter or Space is the same as clicking the button.
   [symbols.keydown](event) {
     /** @type {any} */
     const button = this.inner;
     
     let handled;
-    switch (event.keyCode) {
-      case 32: /* Space */
+    switch (event.key) {
+      case 'Enter':
+      case ' ':
         button.click();
         handled = true;
         break;

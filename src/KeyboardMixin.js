@@ -24,16 +24,12 @@ import * as symbols from './symbols.js';
  *
  *     [symbols.keydown](event) {
  *       let handled;
- *       switch (event.keyCode) {
+ *       switch (event.key) {
  *         // Handle the keys you want, setting handled = true if appropriate.
  *       }
  *       // Prefer mixin result if it's defined, otherwise use base result.
  *       return handled || (super[symbols.keydown] && super[symbols.keydown](event));
  *     }
- *
- * Until iOS Safari supports the `KeyboardEvent.key` property
- * (see http://caniuse.com/#search=keyboardevent.key), mixins should generally
- * test keys using the legacy `keyCode` property, not `key`.
  *
  * A second feature provided by this mixin is that it implicitly makes the
  * component a tab stop if it isn't already, by setting `tabindex` to 0. This

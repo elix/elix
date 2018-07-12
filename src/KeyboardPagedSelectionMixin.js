@@ -39,12 +39,12 @@ export default function KeyboardPagedSelectionMixin(Base) {
       let handled = false;
       const orientation = this.orientation;
       if (orientation !== 'horizontal') {
-        switch (event.keyCode) {
-          case 33: // Page Up
+        switch (event.key) {
+          case 'PageUp':
             handled = this.pageUp();
             break;
 
-          case 34: // Page Down
+          case 'PageDown':
             handled = this.pageDown();
             break;
         }

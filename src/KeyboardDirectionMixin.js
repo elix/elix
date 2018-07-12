@@ -81,35 +81,35 @@ export default function KeyboardDirectionMixin(Base) {
 
       // Ignore Left/Right keys when metaKey or altKey modifier is also pressed,
       // as the user may be trying to navigate back or forward in the browser.
-      switch (event.keyCode) {
+      switch (event.key) {
 
-        case 35: // End
+        case 'End':
           handled = this[symbols.goEnd]();
           break;
 
-        case 36: // Home
+        case 'Home':
           handled = this[symbols.goStart]();
           break;
 
-        case 37: // Left
+        case 'ArrowLeft':
           if (horizontal && !event.metaKey && !event.altKey) {
             handled = this[symbols.goLeft]();
           }
           break;
 
-        case 38: // Up
+        case 'ArrowUp':
           if (vertical) {
             handled = event.altKey ? this[symbols.goStart]() : this[symbols.goUp]();
           }
           break;
 
-        case 39: // Right
+        case 'ArrowRight':
           if (horizontal && !event.metaKey && !event.altKey) {
             handled = this[symbols.goRight]();
           }
           break;
 
-        case 40: // Down
+        case 'ArrowDown':
           if (vertical) {
             handled = event.altKey ? this[symbols.goEnd]() : this[symbols.goDown]();
           }

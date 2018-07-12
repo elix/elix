@@ -55,9 +55,9 @@ export default function DialogModalityMixin(Base) {
     [symbols.keydown](event) {
       let handled = false;
 
-      switch (event.keyCode) {
+      switch (event.key) {
 
-        case 27: // Escape
+        case 'Escape':
           // Close on Esc key.
           this.close();
           handled = true;

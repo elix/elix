@@ -63,7 +63,7 @@ function FocusCaptureMixin(base) {
       const element = this;
       if (document.activeElement === element &&
           this.shadowRoot.activeElement === null &&
-          event.keyCode === 9 && event.shiftKey) {
+          event.key === 'Tab' && event.shiftKey) {
         // Set focus to focus catcher.
         // The Shift+Tab keydown event should continue bubbling, and the default
         // behavior should cause it to end up on the last focusable element.

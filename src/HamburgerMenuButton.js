@@ -65,14 +65,15 @@ export default class HamburgerMenuButton extends Base {
     };
   }
 
-  // Pressing Space is the same as clicking the menu button.
+  // Pressing Enter or Space is the same as clicking the menu button.
   [symbols.keydown](event) {
     /** @type {any} */
     const menuButton = this.$.menuButton;
     
     let handled;
-    switch (event.keyCode) {
-      case 32: /* Space */
+    switch (event.key) {
+      case 'Enter':
+      case ' ':
         menuButton.click();
         handled = true;
         break;
