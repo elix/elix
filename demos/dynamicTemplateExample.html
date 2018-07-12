@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Reactive web component example with subclassing</title>
+
+  <script type="module">
+    import ReactiveElement from '../src/ReactiveElement.js';
+    import { apply, merge } from '../src/updates.js';
+    import * as symbols from '../src/symbols.js';
+    import { elementFromDescriptor, html, substituteElement } from '../src/templates.js';
+
+    class IncrementDecrement extends ReactiveElement {
+
+      constructor() {
+        super();
+        this.elementDescriptors = {
+          button: 'button'
+        };
+      }
+
+      get buttonDescriptor() {
+        return this.elementDescriptors.button;
+      }
+      set buttonDescriptor(buttonDescriptor) {
+        this.elementDescriptors.button = buttonDescriptor;
+        this[symbols.hasDynamicTemplate] = true;
+      }
+
+      componentDidMount() {
+        if (super.componentDidMount) { super.componentDidMount(); }
+        this.$.decrement.addEventListener('click', () => {
+          this.value--;
+        });
+        this.$.increment.addEventListener('click', () => {
+          this.value++;
+        });
+      }
+
+      get defaultState() {
+        return {
+          value: 0
+        };
+      }
+
+      get updates() {
+        return {
+          style: {
+            color: this.state.value < 0 ? 'red' : null
+          },
+          $: {
+            visibleValue: {
+              textContent: this.state.value
+            }
+          }
+        }
+      }
+
+      // Provide a public property that gets/sets state.
+      get value() {
+        return this.state.value;
+      }
+      set value(value) {
+        this.setState({
+          value: parseInt(value)
+        });
+      }
+
+      get [symbols.template]() {
+        const result = html`
+          <button id="decrement">-</button>
+          <span id="visibleValue"></span>
+          <button id="increment">+</button>
+        `;
+        if (this.elementDescriptors.button !== 'button') {
+          result.content.querySelectorAll('button').forEach(button => {
+            substituteElement(
+              button,
+              elementFromDescriptor(this.elementDescriptors.button)
+            );
+          });
+        }
+        return result;
+      }
+
+    }
+
+    customElements.define('increment-decrement', IncrementDecrement);
+
+
+    class CustomButton extends ReactiveElement {
+      get [symbols.template]() {
+        return html`
+          <style>
+            button {
+              border: 1px solid gray;
+              background: darkgray;
+              color: white;
+            }
+          </style>
+          <button><slot></slot></button>
+        `;
+      }
+    }
+    customElements.define('custom-button', CustomButton);
+
+
+    class CustomIncrementDecrement extends IncrementDecrement {
+
+      constructor() {
+        super();
+        this.elementDescriptors.button = CustomButton;
+        // this.elementDescriptors.button = 'custom-button';
+        // const button = new CustomButton();
+        // this.elementDescriptors.button = button;
+      }
+
+      get [symbols.template]() {
+        const result = super[symbols.template];
+        // apply(result.content, {
+        //   $: {
+        //     visibleValue: {
+        //       style: {
+        //         'font-size': 'larger'
+        //       }
+        //     }
+        //   }
+        // });
+
+        // const visibleValue = result.content.querySelector('#visibleValue');
+        // const div = document.createElement('div');
+        // apply(div, {
+        //   style: {
+        //     display: 'inline-block',
+        //     'font-size': 'larger'
+        //   }
+        // });
+        // visibleValue.parentNode.replaceChild(div, visibleValue);
+        // div.appendChild(visibleValue);
+        return result;
+      }
+
+    }
+
+    customElements.define('custom-increment-decrement', CustomIncrementDecrement);
+  </script>
+
+</head>
+
+<body>
+  <p>
+    This shows a plain increment/decrement component and a subclass with styling
+    and custom behavior.
+  </p>
+  <increment-decrement></increment-decrement>
+  <increment-decrement button-descriptor="custom-button"></increment-decrement>
+  <custom-increment-decrement></custom-increment-decrement>
+</body>
+
+</html>

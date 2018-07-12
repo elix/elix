@@ -20,5 +20,6 @@ import './tests/ShadowTemplateMixin.tests.js';
 import './tests/SingleSelectionMixin.tests.js';
 import './tests/SlotContentMixin.tests.js';
 import './tests/TransitionEffectMixin.tests.js';
+import './tests/templates.tests.js';
 import './tests/updates.tests.js';
 import './tests/WrappedStandardElement.tests.js';
