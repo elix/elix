@@ -1,23 +1,37 @@
+/**
+ * 
+ * @param {Function|string|Node} descriptor 
+ * @returns {Node}
+ */
 export function elementFromDescriptor(descriptor) {
   if (typeof descriptor === 'function') {
     return new descriptor();
-  } else if (descriptor instanceof HTMLElement) {
+  } else if (descriptor instanceof Node) {
     return descriptor.cloneNode(true);
   } else {
     return document.createElement(descriptor);
   }
 }
 
-
+/**
+ * 
+ * @param {Node} original 
+ * @param {Node} replacement 
+ */
 export function substituteElement(original, replacement) {
+  if (!original.parentNode) {
+    throw 'An element must have a parent before it can be substituted.'
+  }
   const element = replacement instanceof HTMLTemplateElement ?
     replacement.content.cloneNode(true) :
     replacement;
   original.parentNode.replaceChild(element, original);
-  // Copy over attributes which are not already present on replacement.
-  for (const { name, value } of original.attributes) {
-    if (!element.getAttribute(name)) {
-      element.setAttribute(name, value);
+  if (original instanceof Element && element instanceof Element) {
+    // Copy over attributes which are not already present on replacement.
+    for (const { name, value } of original.attributes) {
+      if (!element.getAttribute(name)) {
+        element.setAttribute(name, value);
+      }
     }
   }
   // Copy over children.

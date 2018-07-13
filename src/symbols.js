@@ -398,5 +398,7 @@ export const swipeTarget = Symbol('swipeTarget');
  *
  * [ShadowTemplateMixin](ShadowTemplateMixin) uses this property to obtain a
  * component's template, which it will clone into a component's shadow root.
+ * 
+ * @var {HTMLTemplateElement} template
  */
 export const template = Symbol('template');
