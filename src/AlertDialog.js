@@ -83,20 +83,22 @@ class AlertDialog extends Dialog {
   [symbols.keydown](event) {
     let handled = false;
 
-    // Loop over choices to see if one of them starts with the key.
-    // TODO: Loop over buttons instead of choices?
-    let found = false;
-    let index = 0;
-    while (index < this.choices.length && !found) {
-      if (event.key.length === 1 && this.choices[index][0] === event.key) {
-        found = true;
-      } else {
-        index++;
+    const key = event.key.length === 1 && event.key.toLowerCase();
+    if (key) {
+      // Loop over choices to see if one of them starts with the key.
+      let found = false;
+      let index = 0;
+      while (index < this.choices.length && !found) {
+        if (this.choices[index][0].toLowerCase() === key) {
+          found = true;
+        } else {
+          index++;
+        }
       }
-    }
-    if (found && index >= 0) {
-      this.close(this.choices[index]);
-      handled = true;
+      if (found && index >= 0) {
+        this.close(this.choices[index]);
+        handled = true;
+      }
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.

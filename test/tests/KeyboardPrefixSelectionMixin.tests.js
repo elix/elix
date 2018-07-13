@@ -102,6 +102,15 @@ describe("KeyboardPrefixSelectionMixin", () => {
     assert.equal(fixture.state.selectedIndex, 11);
   });
 
+  it("is case-insensitive in matching prefixes", () => {
+    const fixture = createSampleElement();
+    simulateKeydown(fixture, 'c');
+    assert.equal(fixture.state.selectedIndex, 7); // Cherry
+    simulateKeydown(fixture, 'Escape'); // Escape key resets prefix
+    simulateKeydown(fixture, 'B');
+    assert.equal(fixture.state.selectedIndex, 4); // Banana
+  });
+
 });
 
 
