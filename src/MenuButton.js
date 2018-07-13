@@ -1,10 +1,11 @@
-import './Menu.js';
 import { deepContains, elementsFromPoint, indexOfItemContainingTarget } from './utilities.js';
-import { merge } from './updates.js';
+import { elementFromDescriptor, html, substituteElement } from './templates.js';
+import { merge, apply } from './updates.js';
 import * as symbols from './symbols.js';
+import Menu from './Menu.js';
 import PopupSource from './PopupSource.js';
 
-const menuTagKey = Symbol('menuTag');
+
 const documentMouseupListenerKey = Symbol('documentMouseupListener');
 
 
@@ -15,6 +16,13 @@ const documentMouseupListenerKey = Symbol('documentMouseupListener');
  * @elementtag {Menu} menu
  */
 class MenuButton extends PopupSource {
+
+  constructor() {
+    super();
+    Object.assign(this.elementDescriptors, {
+      menu: Menu
+    });
+  }
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
@@ -159,15 +167,6 @@ class MenuButton extends PopupSource {
     return -1;
   }
 
-  get defaults() {
-    const base = super.defaults || {};
-    return Object.assign({}, base, {
-      tags: Object.assign({}, base.tags, {
-        menu: 'elix-menu'
-      })
-    });
-  }
-
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       dragSelect: true,
@@ -249,26 +248,15 @@ class MenuButton extends PopupSource {
    * The menu element is responsible for presenting the menu items and handling
    * navigation between them.
    * 
-   * @type {string}
-   * @default 'elix-menu'
+   * @type {function|string|Node}
+   * @default {Menu}
    */
-  get menuTag() {
-    return this[menuTagKey];
+  get menuDescriptor() {
+    return this.elementDescriptors.menu;
   }
-  set menuTag(menuTag) {
+  set menuDescriptor(menuDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this[menuTagKey] = menuTag;
-  }
-
-  get popupTemplate() {
-    const base = super.popupTemplate;
-    const menuTag = this.menuTag || this.defaults.tags.menu;
-    const template = base.replace('<slot></slot>', `
-      <${menuTag} id="menu">
-        <slot></slot>
-      </${menuTag}>
-    `);
-    return template;
+    this.elementDescriptors.menu = menuDescriptor;
   }
 
   refineState(state) {
@@ -308,13 +296,29 @@ class MenuButton extends PopupSource {
     return result;
   }
 
-  get sourceSlotContent() {
-    // Default "..." icon from Google Material Design icons.
-    return `
+  get [symbols.template]() {
+    const result = super[symbols.template];
+
+    // Wrap default slot with a menu.
+    const defaultSlot = result.content.querySelector('slot:not([name])');
+    const menu = elementFromDescriptor(this.elementDescriptors.menu);
+    menu.setAttribute('id', 'menu');
+    substituteElement(defaultSlot, menu);
+    menu.appendChild(defaultSlot);
+
+    // Inject a "..." icon into the source slot.
+    // Default "..." icon is from Google Material Design icons.
+    const icon = html`
       <svg id="ellipsisIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
         <path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
       </svg>
     `;
+    const sourceSlot = result.content.querySelector('slot[name="source"]');
+    apply(sourceSlot, {
+      childNodes: icon.content.childNodes
+    });
+
+    return result;
   }
 
   get updates() {

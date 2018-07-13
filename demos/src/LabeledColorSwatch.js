@@ -1,7 +1,8 @@
+import { html } from '../../src/templates.js';
+import { merge } from '../../src/updates.js';
+import * as symbols from '../../src/symbols.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 import SlotContentMixin from '../../src/SlotContentMixin.js';
-import * as symbols from '../../src/symbols.js';
-import { merge } from '../../src/updates.js';
 
 
 const Base = 
@@ -13,7 +14,7 @@ const Base =
 class LabeledColorSwatch extends Base {
 
   get [symbols.template]() {
-    return `
+    return html`
       <style>
         :host {
           align-items: center;

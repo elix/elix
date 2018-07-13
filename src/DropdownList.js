@@ -1,12 +1,10 @@
-import { merge } from './updates.js';
+import { apply, merge } from './updates.js';
 import * as symbols from './symbols.js';
 import MenuButton from './MenuButton.js';
 import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
-
-
-const valueTagKey = Symbol('valueTag');
+import { elementFromDescriptor, html, substituteElement } from './templates.js';
 
 
 const Base =
@@ -27,19 +25,17 @@ const Base =
  */
 class DropdownList extends Base {
 
+  constructor() {
+    super();
+    Object.assign(this.elementDescriptors, {
+      value: 'div'
+    });
+  }
+
   // By default, opening the menu re-selects the component item that's currently
   // selected.
   get defaultMenuSelectedIndex() {
     return this.state.selectedIndex;
-  }
-
-  get defaults() {
-    const base = super.defaults || {};
-    return Object.assign({}, base, {
-      tags: Object.assign({}, base.tags, {
-        value: 'div'
-      })
-    });
   }
 
   get defaultState() {
@@ -61,10 +57,11 @@ class DropdownList extends Base {
     return result;
   }
 
-  get sourceSlotContent() {
-    const valueTag = this.valueTag || this.defaults.tags.value;
-    return `
-      <${valueTag} id="value"></${valueTag}>
+  get [symbols.template]() {
+    const result = super[symbols.template];
+    const sourceSlot = result.content.querySelector('slot[name="source"]');
+    const sourceSlotContent = html`
+      <div id="value"></div>
       <div>
         <svg id="downIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
           <path d="M 0 0 l5 5 5 -5 z"/>
@@ -74,6 +71,16 @@ class DropdownList extends Base {
         </svg>
       </div>
     `;
+    apply(sourceSlot, {
+      childNodes: sourceSlotContent.content.childNodes
+    });
+    if (this.elementDescriptors.value !== 'div') {
+      substituteElement(
+        result.content.querySelector('#value'),
+        elementFromDescriptor(this.elementDescriptors.value)
+      );
+    }
+    return result;
   }
 
   get updates() {
@@ -118,15 +125,15 @@ class DropdownList extends Base {
    * The tag used to define the element that will contain the DropdownList's
    * current value.
    * 
-   * @type {string}
+   * @type {function|string|Node}
    * @default 'div'
    */
-  get valueTag() {
-    return this[valueTagKey];
+  get valueDescriptor() {
+    return this.elementDescriptors.value;
   }
-  set valueTag(valueTag) {
+  set valueDescriptor(valueDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this[valueTagKey] = valueTag;
+    this.elementDescriptors.value = valueDescriptor;
   }
 
 }

@@ -1,6 +1,7 @@
-import ReactiveElement from './ReactiveElement.js';
-import * as symbols from './symbols.js';
+import { html } from './templates.js';
 import { merge } from './updates.js';
+import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js';
 
 
 /**
@@ -18,7 +19,7 @@ class MenuSeparator extends ReactiveElement {
   }
 
   get [symbols.template]() {
-    return `
+    return html`
       <style>
         :host {
           padding: 0 !important;

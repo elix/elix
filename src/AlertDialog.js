@@ -1,7 +1,7 @@
-import * as symbols from './symbols.js';
-import Dialog from './Dialog.js';
 import { elementFromDescriptor, html, substituteElement } from './templates.js';
 import { merge, apply } from './updates.js';
+import * as symbols from './symbols.js';
+import Dialog from './Dialog.js';
 
 
 /**

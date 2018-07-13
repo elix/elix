@@ -1,5 +1,6 @@
-import ReactiveElement from './ReactiveElement.js';
+import { html } from './templates.js';
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js';
 
 
 /**
@@ -17,7 +18,7 @@ class MenuItem extends ReactiveElement {
 
   get [symbols.template]() {
     /* Variety of system fonts */
-    return `
+    return html`
       <style>
         :host {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;

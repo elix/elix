@@ -1,10 +1,10 @@
+import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import DialogModalityMixin from './DialogModalityMixin.js';
 import FocusCaptureMixin from './FocusCaptureMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import ModalBackdrop from './ModalBackdrop.js';
 import Overlay from './Overlay.js'
-import { merge } from './updates.js';
 
 
 const Base =

@@ -1,17 +1,15 @@
-import './Popup.js';
+import { html, elementFromDescriptor, substituteElement } from './templates.js';
 import { merge } from './updates.js';
 import { ownEvent } from './utilities.js';
 import * as symbols from './symbols.js';
+import Backdrop from './Backdrop.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
+import OverlayFrame from './OverlayFrame.js';
+import Popup from './Popup.js';
 import ReactiveElement from './ReactiveElement.js';
-
-const backdropTagKey = Symbol('backdropTag');
-const frameTagKey = Symbol('frameTag');
-const sourceTagKey = Symbol('popupButtonTag');
-const popupTagKey = Symbol('popupTag');
 
 
 const Base =
@@ -37,6 +35,16 @@ const Base =
  */
 class PopupSource extends Base {
 
+  constructor() {
+    super();
+    this.elementDescriptors = {
+      backdrop: Backdrop,
+      frame: OverlayFrame,
+      popup: Popup,
+      source: 'button'
+    };
+  }
+
   /**
    * The tag used to create the optional backdrop element behind the overlay.
    * 
@@ -45,15 +53,15 @@ class PopupSource extends Base {
    * elements. For example, [Dialog](Dialog) uses [ModalBackdrop](ModalBackdrop)
    * as an overlay backdrop in such a way.
    * 
-   * @type {string}
-   * @default 'elix-backdrop'
+   * @type {function|string|Node}
+   * @default {Backdrop}
    */
-  get backdropTag() {
-    return this[backdropTagKey];
+  get backdropDescriptor() {
+    return this.elementDescriptors.backdrop;
   }
-  set backdropTag(backdropTag) {
+  set backdropDescriptor(backdropDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this[backdropTagKey] = backdropTag;
+    this.elementDescriptors.backdrop = backdropDescriptor;
   }
 
   componentDidMount() {
@@ -143,17 +151,6 @@ class PopupSource extends Base {
     }
   }
 
-  get defaults() {
-    return {
-      tags: {
-        backdrop: 'elix-backdrop',
-        frame: 'elix-overlay-frame',
-        popup: 'elix-popup',
-        source: 'button'
-      }
-    };
-  }
-
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       horizontalAlign: 'start',
@@ -175,15 +172,15 @@ class PopupSource extends Base {
    * and to provide visual effects such as a drop-shadow to help distinguish
    * popup content from background page elements.
    * 
-   * @type {string}
-   * @default 'elix-overlay-frame'
+   * @type {function|string|Node}
+   * @default {OverlayFrame}
    */
-  get frameTag() {
-    return this[frameTagKey];
+  get frameDescriptor() {
+    return this.elementDescriptors.frame;
   }
-  set frameTag(frameTag) {
+  set frameDescriptor(frameDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this[frameTagKey] = frameTag;
+    this.elementDescriptors.frame = frameDescriptor;
   }
 
   /**
@@ -252,26 +249,15 @@ class PopupSource extends Base {
    * 
    * The popup element is responsible for handling overlay behavior.
    * 
-   * @type {string}
-   * @default 'elix-popup'
+   * @type {function|string|Node}
+   * @default {Popup}
    */
-  get popupTag() {
-    return this[popupTagKey];
+  get popupDescriptor() {
+    return this.elementDescriptors.popup;
   }
-  set popupTag(popupTag) {
+  set popupDescriptor(popupDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this[popupTagKey] = popupTag;
-  }
-
-  get popupTemplate() {
-    const backdropTag = this.backdropTag || this.defaults.tags.backdrop;
-    const frameTag = this.frameTag || this.defaults.tags.frame;
-    const popupTag = this.popupTag || this.defaults.tags.popup;
-    return `
-      <${popupTag} id="popup" backdrop-tag="${backdropTag}" frame-tag="${frameTag}" role="none">
-        <slot></slot>
-      </${popupTag}>
-    `;
+    this.elementDescriptors.popup = popupDescriptor;
   }
 
   refineState(state) {
@@ -309,34 +295,19 @@ class PopupSource extends Base {
    * The tag used to define the source button (or other element) that the
    * popup will be positioned in relation to.
    * 
-   * @type {string}
+   * @type {function|string|Node}
    * @default 'button'
    */
-  get sourceTag() {
-    return this[sourceTagKey];
+  get sourceDescriptor() {
+    return this.elementDescriptors.source;
   }
-  set sourceTag(sourceTag) {
+  set sourceDescriptor(sourceDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this[sourceTagKey] = sourceTag;
-  }
-
-  get sourceSlotContent() {
-    return '';
-  }
-
-  get sourceTemplate() {
-    const sourceTag = this.sourceTag || this.defaults.tags.source;
-    return `
-      <${sourceTag} id="source" tabindex="-1">
-        <slot name="source">${this.sourceSlotContent}</slot>
-      </${sourceTag}>
-    `;
+    this.elementDescriptors.source = sourceDescriptor;
   }
 
   get [symbols.template]() {
-    const sourceTemplate = this.sourceTemplate;
-    const popupTemplate = this.popupTemplate;
-    return `
+    const result = html`
       <style>
         :host {
           display: inline-block;
@@ -383,11 +354,27 @@ class PopupSource extends Base {
           width: initial;
         }
       </style>
-      ${sourceTemplate}
+      <button id="source" tabindex="-1">
+        <slot name="source"></slot>
+      </button>
       <div id="popupContainer" role="none">
-        ${popupTemplate}
+        <div id="popup" role="none">
+          <slot></slot>
+        </div>
       </div>
     `;
+    if (this.elementDescriptors.source !== 'button') {
+      substituteElement(
+        result.content.querySelector('#source'),
+        elementFromDescriptor(this.elementDescriptors.source)
+      );
+    }
+    const popupPlaceholder = result.content.querySelector('#popup');
+    const popup = elementFromDescriptor(this.elementDescriptors.popup);
+    popup.backdropDescriptor = this.elementDescriptors.backdrop;
+    popup.frameDescriptor = this.elementDescriptors.frame;
+    substituteElement(popupPlaceholder, popup);
+    return result;
   }
 
   get updates() {
