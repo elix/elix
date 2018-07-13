@@ -28,8 +28,8 @@ class SeamlessButton extends Base {
     
     let handled;
     switch (event.key) {
-      case 'Enter':
       case ' ':
+      case 'Enter':
         button.click();
         handled = true;
         break;

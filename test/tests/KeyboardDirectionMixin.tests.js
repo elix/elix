@@ -17,7 +17,7 @@ describe("KeyboardDirectionMixin", () => {
     const fixture = document.createElement('keyboard-direction-test');
     const spy = sinon.spy(fixture, symbols.goRight);
     const result = fixture[symbols.keydown]({
-      key: 'ArrowRight',
+      key: 'ArrowRight'
     });
     assert(spy.calledOnce);
     assert(result);
@@ -30,7 +30,7 @@ describe("KeyboardDirectionMixin", () => {
     };
     const spy = sinon.spy(fixture, symbols.goRight);
     const result = fixture[symbols.keydown]({
-      key: 'ArrowRight',
+      key: 'ArrowRight'
     });
     assert(!spy.calledOnce);
     assert(!result);
@@ -41,7 +41,7 @@ describe("KeyboardDirectionMixin", () => {
     const spy = sinon.spy(fixture, symbols.goRight);
     const result = fixture[symbols.keydown]({
       altKey: true,
-      key: 'ArrowRight',
+      key: 'ArrowRight'
     });
     assert(!spy.calledOnce);
     assert(!result);

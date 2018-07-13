@@ -72,8 +72,8 @@ export default class HamburgerMenuButton extends Base {
     
     let handled;
     switch (event.key) {
-      case 'Enter':
       case ' ':
+      case 'Enter':
         menuButton.click();
         handled = true;
         break;

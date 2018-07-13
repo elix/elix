@@ -83,23 +83,15 @@ export default function KeyboardDirectionMixin(Base) {
       // as the user may be trying to navigate back or forward in the browser.
       switch (event.key) {
 
-        case 'End':
-          handled = this[symbols.goEnd]();
-          break;
-
-        case 'Home':
-          handled = this[symbols.goStart]();
+        case 'ArrowDown':
+          if (vertical) {
+            handled = event.altKey ? this[symbols.goEnd]() : this[symbols.goDown]();
+          }
           break;
 
         case 'ArrowLeft':
           if (horizontal && !event.metaKey && !event.altKey) {
             handled = this[symbols.goLeft]();
-          }
-          break;
-
-        case 'ArrowUp':
-          if (vertical) {
-            handled = event.altKey ? this[symbols.goStart]() : this[symbols.goUp]();
           }
           break;
 
@@ -109,10 +101,18 @@ export default function KeyboardDirectionMixin(Base) {
           }
           break;
 
-        case 'ArrowDown':
+        case 'ArrowUp':
           if (vertical) {
-            handled = event.altKey ? this[symbols.goEnd]() : this[symbols.goDown]();
+            handled = event.altKey ? this[symbols.goStart]() : this[symbols.goUp]();
           }
+          break;
+
+        case 'End':
+          handled = this[symbols.goEnd]();
+          break;
+
+        case 'Home':
+          handled = this[symbols.goStart]();
           break;
       }
 
