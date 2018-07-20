@@ -29,7 +29,7 @@ class Dialog extends Base {
 
   constructor() {
     super();
-    Object.assign(this.elementDescriptors, {
+    Object.assign(this[symbols.descriptors], {
       backdrop: ModalBackdrop
     });
   }

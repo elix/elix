@@ -37,7 +37,7 @@ class PopupSource extends Base {
 
   constructor() {
     super();
-    this.elementDescriptors = {
+    this[symbols.descriptors] = {
       backdrop: Backdrop,
       frame: OverlayFrame,
       popup: Popup,
@@ -57,11 +57,11 @@ class PopupSource extends Base {
    * @default {Backdrop}
    */
   get backdropDescriptor() {
-    return this.elementDescriptors.backdrop;
+    return this[symbols.descriptors].backdrop;
   }
   set backdropDescriptor(backdropDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this.elementDescriptors.backdrop = backdropDescriptor;
+    this[symbols.descriptors].backdrop = backdropDescriptor;
   }
 
   componentDidMount() {
@@ -176,11 +176,11 @@ class PopupSource extends Base {
    * @default {OverlayFrame}
    */
   get frameDescriptor() {
-    return this.elementDescriptors.frame;
+    return this[symbols.descriptors].frame;
   }
   set frameDescriptor(frameDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this.elementDescriptors.frame = frameDescriptor;
+    this[symbols.descriptors].frame = frameDescriptor;
   }
 
   /**
@@ -253,11 +253,11 @@ class PopupSource extends Base {
    * @default {Popup}
    */
   get popupDescriptor() {
-    return this.elementDescriptors.popup;
+    return this[symbols.descriptors].popup;
   }
   set popupDescriptor(popupDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this.elementDescriptors.popup = popupDescriptor;
+    this[symbols.descriptors].popup = popupDescriptor;
   }
 
   refineState(state) {
@@ -299,11 +299,11 @@ class PopupSource extends Base {
    * @default 'button'
    */
   get sourceDescriptor() {
-    return this.elementDescriptors.source;
+    return this[symbols.descriptors].source;
   }
   set sourceDescriptor(sourceDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this.elementDescriptors.source = sourceDescriptor;
+    this[symbols.descriptors].source = sourceDescriptor;
   }
 
   get [symbols.template]() {
@@ -363,16 +363,16 @@ class PopupSource extends Base {
         </div>
       </div>
     `;
-    if (this.elementDescriptors.source !== 'button') {
+    if (this[symbols.descriptors].source !== 'button') {
       substituteElement(
         result.content.querySelector('#source'),
-        elementFromDescriptor(this.elementDescriptors.source)
+        elementFromDescriptor(this[symbols.descriptors].source)
       );
     }
     const popupPlaceholder = result.content.querySelector('#popup');
-    const popup = elementFromDescriptor(this.elementDescriptors.popup);
-    popup.backdropDescriptor = this.elementDescriptors.backdrop;
-    popup.frameDescriptor = this.elementDescriptors.frame;
+    const popup = elementFromDescriptor(this[symbols.descriptors].popup);
+    popup.backdropDescriptor = this[symbols.descriptors].backdrop;
+    popup.frameDescriptor = this[symbols.descriptors].frame;
     substituteElement(popupPlaceholder, popup);
     return result;
   }

@@ -54,7 +54,7 @@ class Carousel extends Base {
 
   constructor() {
     super();
-    Object.assign(this.elementDescriptors, {
+    Object.assign(this[symbols.descriptors], {
       proxy: PageDot,
       proxyList: CenteredStripOpacity,
       stage: SlidingStage

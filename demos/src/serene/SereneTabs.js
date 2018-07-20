@@ -8,7 +8,7 @@ class SereneTabs extends Tabs {
 
   constructor() {
     super();
-    Object.assign(this.elementDescriptors, {
+    Object.assign(this[symbols.descriptors], {
       proxy: SereneTabButton,
       stage: CrossfadeStage
     })

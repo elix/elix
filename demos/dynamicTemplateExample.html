@@ -17,16 +17,16 @@
 
       constructor() {
         super();
-        this.elementDescriptors = {
+        this[symbols.descriptors] = {
           button: 'button'
         };
       }
 
       get buttonDescriptor() {
-        return this.elementDescriptors.button;
+        return this[symbols.descriptors].button;
       }
       set buttonDescriptor(buttonDescriptor) {
-        this.elementDescriptors.button = buttonDescriptor;
+        this[symbols.descriptors].button = buttonDescriptor;
         this[symbols.hasDynamicTemplate] = true;
       }
 
@@ -75,11 +75,11 @@
           <span id="visibleValue"></span>
           <button id="increment">+</button>
         `;
-        if (this.elementDescriptors.button !== 'button') {
+        if (this[symbols.descriptors].button !== 'button') {
           result.content.querySelectorAll('button').forEach(button => {
             substituteElement(
               button,
-              elementFromDescriptor(this.elementDescriptors.button)
+              elementFromDescriptor(this[symbols.descriptors].button)
             );
           });
         }
@@ -112,10 +112,10 @@
 
       constructor() {
         super();
-        this.elementDescriptors.button = CustomButton;
-        // this.elementDescriptors.button = 'custom-button';
+        this[symbols.descriptors].button = CustomButton;
+        // this[symbols.descriptors].button = 'custom-button';
         // const button = new CustomButton();
-        // this.elementDescriptors.button = button;
+        // this[symbols.descriptors].button = button;
       }
 
       get [symbols.template]() {

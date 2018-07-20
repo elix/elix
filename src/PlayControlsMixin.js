@@ -23,7 +23,7 @@ export default function PlayControlsMixin(Base) {
 
     constructor() {
       super();
-      this.elementDescriptors = {
+      this[symbols.descriptors] = {
         controlButton: SeamlessButton
       };
     }
@@ -58,11 +58,11 @@ export default function PlayControlsMixin(Base) {
      * @default 'elix-seamless-button'
      */
     get controlButtonDescriptor() {
-      return this.elementDescriptors.controlButton;
+      return this[symbols.descriptors].controlButton;
     }
     set controlButtonDescriptor(controlButtonDescriptor) {
       this[symbols.hasDynamicTemplate] = true;
-      this.elementDescriptors.controlButton = controlButtonDescriptor;
+      this[symbols.descriptors].controlButton = controlButtonDescriptor;
     }
 
     // Pressing Space is the same as clicking the button.

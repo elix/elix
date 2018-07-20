@@ -1,4 +1,5 @@
 import { merge } from './updates.js'
+import * as symbols from './symbols.js';
 import Carousel from './Carousel.js';
 import Thumbnail from './Thumbnail.js';
 
@@ -14,7 +15,7 @@ class CarouselWithThumbnails extends Carousel {
 
   constructor() {
     super();
-    Object.assign(this.elementDescriptors, {
+    Object.assign(this[symbols.descriptors], {
       proxy: Thumbnail
     });
   }

@@ -46,7 +46,7 @@ class Explorer extends Base {
 
   constructor() {
     super();
-    this.elementDescriptors = {
+    this[symbols.descriptors] = {
       proxy: 'div',
       proxyList: ListBox,
       stage: Modes
@@ -142,25 +142,24 @@ class Explorer extends Base {
    * @default 'div'
    */
   get proxyListDescriptor() {
-    return this.elementDescriptors.proxyList;
+    return this[symbols.descriptors].proxyList;
   }
   set proxyListDescriptor(proxyListDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this.elementDescriptors.proxyList = proxyListDescriptor;
+    this[symbols.descriptors].proxyList = proxyListDescriptor;
   }
 
   /**
    * The tag used to create default proxies for the list items.
    * 
    * @type {function|string|Node}
-   * @type {string}
    */
   get proxyDescriptor() {
-    return this.elementDescriptors.proxy;
+    return this[symbols.descriptors].proxy;
   }
   set proxyDescriptor(proxyDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this.elementDescriptors.proxy = proxyDescriptor;
+    this[symbols.descriptors].proxy = proxyDescriptor;
   }
 
   /**
@@ -204,8 +203,7 @@ class Explorer extends Base {
       const itemsChanged = items !== state.itemsForDefaultProxies;
       if (itemsChanged) {
         // Generate sufficient default proxies.
-        const proxyTag = this.proxyDescriptor || this.defaults.tags.proxy;
-        defaultProxies = createDefaultProxies(items, proxyTag);
+        defaultProxies = createDefaultProxies(items, this.proxyDescriptor);
         itemsForDefaultProxies = items;
       }
     }
@@ -255,11 +253,11 @@ class Explorer extends Base {
    * @default {Modes}
    */
   get stageDescriptor() {
-    return this.elementDescriptors.stage;
+    return this[symbols.descriptors].stage;
   }
   set stageDescriptor(stageDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this.elementDescriptors.stage = stageDescriptor;
+    this[symbols.descriptors].stage = stageDescriptor;
   }
 
   get [symbols.template]() {
@@ -285,13 +283,13 @@ class Explorer extends Base {
         <div id="stage" role="none"><slot></slot></div>
       </div>
     `;
-    if (this.elementDescriptors.proxyList !== 'div') {
+    if (this[symbols.descriptors].proxyList !== 'div') {
       substituteElement(
         result.content.querySelector('#proxyList'),
         elementFromDescriptor(this.proxyListDescriptor)
       );
     }
-    if (this.elementDescriptors.stage !== 'div') {
+    if (this[symbols.descriptors].stage !== 'div') {
       substituteElement(
         result.content.querySelector('#stage'),
         elementFromDescriptor(this.stageDescriptor)

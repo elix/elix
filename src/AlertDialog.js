@@ -15,7 +15,7 @@ class AlertDialog extends Dialog {
 
   constructor() {
     super();
-    Object.assign(this.elementDescriptors, {
+    Object.assign(this[symbols.descriptors], {
       choiceButton: 'button'
     });
   }
@@ -45,11 +45,11 @@ class AlertDialog extends Dialog {
   }
 
   get choiceButtonDescriptor() {
-    return this.elementDescriptors.choiceButton;
+    return this[symbols.descriptors].choiceButton;
   }
   set choiceButtonDescriptor(choiceButtonTag) {
     this[symbols.hasDynamicTemplate] = true;
-    this.elementDescriptors.choiceButton = choiceButtonTag;
+    this[symbols.descriptors].choiceButton = choiceButtonTag;
   }
 
   /**
@@ -106,7 +106,7 @@ class AlertDialog extends Dialog {
     if (state.opened && state.choicesForChoiceButtons !== state.choices) {
       // Choices have changed; create new buttons.
       const choiceButtons = state.choices.map(choice => {
-        const button = elementFromDescriptor(this.elementDescriptors.choiceButton);
+        const button = elementFromDescriptor(this[symbols.descriptors].choiceButton);
         button.textContent = choice;
         return button;
       });

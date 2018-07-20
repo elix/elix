@@ -27,7 +27,7 @@ class DropdownList extends Base {
 
   constructor() {
     super();
-    Object.assign(this.elementDescriptors, {
+    Object.assign(this[symbols.descriptors], {
       value: 'div'
     });
   }
@@ -74,10 +74,10 @@ class DropdownList extends Base {
     apply(sourceSlot, {
       childNodes: sourceSlotContent.content.childNodes
     });
-    if (this.elementDescriptors.value !== 'div') {
+    if (this[symbols.descriptors].value !== 'div') {
       substituteElement(
         result.content.querySelector('#value'),
-        elementFromDescriptor(this.elementDescriptors.value)
+        elementFromDescriptor(this[symbols.descriptors].value)
       );
     }
     return result;
@@ -129,11 +129,11 @@ class DropdownList extends Base {
    * @default 'div'
    */
   get valueDescriptor() {
-    return this.elementDescriptors.value;
+    return this[symbols.descriptors].value;
   }
   set valueDescriptor(valueDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this.elementDescriptors.value = valueDescriptor;
+    this[symbols.descriptors].value = valueDescriptor;
   }
 
 }

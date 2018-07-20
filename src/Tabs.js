@@ -21,7 +21,7 @@ class Tabs extends Explorer {
 
   constructor() {
     super();
-    Object.assign(this.elementDescriptors, {
+    Object.assign(this[symbols.descriptors], {
       proxy: TabButton,
       proxyList: TabStrip
     });

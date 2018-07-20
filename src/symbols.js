@@ -89,6 +89,18 @@ export const contentSlot = Symbol('contentSlot');
 export const defaultFocus = Symbol('defaultFocus');
 
 /**
+ * Symbol for the `descriptors` property.
+ * 
+ * A descriptor is a named role in an element's template that can be filled by
+ * an element tag (e.g., "div"), a custom element class constructor (e.g.,
+ * [SeamlessButton](SeamlessButton)), or a document fragment.
+ * 
+ * The `descriptors` property is a dictionary mapping a role name to the
+ * corresponding descriptor that should be instantiated to fill that role.
+ */
+export const descriptors = Symbol('descriptors');
+
+/**
  * Symbol for the `elementsWithTransitions` property.
  * 
  * [TransitionEffectMixin](TransitionEffectMixin) inspects this property

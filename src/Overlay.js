@@ -37,7 +37,7 @@ class Overlay extends Base {
 
   constructor() {
     super();
-    this.elementDescriptors = {
+    this[symbols.descriptors] = {
       backdrop: Backdrop,
       frame: OverlayFrame
     };
@@ -59,11 +59,11 @@ class Overlay extends Base {
    * @default {Backdrop}
    */
   get backdropDescriptor() {
-    return this.elementDescriptors.backdrop;
+    return this[symbols.descriptors].backdrop;
   }
   set backdropDescriptor(backdropDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this.elementDescriptors.backdrop = backdropDescriptor;
+    this[symbols.descriptors].backdrop = backdropDescriptor;
   }
 
   get frame() {
@@ -81,11 +81,11 @@ class Overlay extends Base {
    * @default {OverlayFrame}
    */
   get frameDescriptor() {
-    return this.elementDescriptors.frame;
+    return this[symbols.descriptors].frame;
   }
   set frameDescriptor(frameDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this.elementDescriptors.frame = frameDescriptor;
+    this[symbols.descriptors].frame = frameDescriptor;
   }
 
   get [symbols.template]() {
@@ -122,11 +122,11 @@ class Overlay extends Base {
     `;
     substituteElement(
       result.content.querySelector('#backdrop'),
-      elementFromDescriptor(this.elementDescriptors.backdrop)
+      elementFromDescriptor(this[symbols.descriptors].backdrop)
     );
     substituteElement(
       result.content.querySelector('#frame'),
-      elementFromDescriptor(this.elementDescriptors.frame)
+      elementFromDescriptor(this[symbols.descriptors].frame)
     );
     return result;
   }

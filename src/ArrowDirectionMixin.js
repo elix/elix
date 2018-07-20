@@ -20,7 +20,7 @@ function ArrowDirectionMixin(Base) {
 
     constructor() {
       super();
-      Object.assign(this.elementDescriptors, {
+      Object.assign(this[symbols.descriptors], {
         arrowButton: ArrowDirectionButton
       });
     }
@@ -32,11 +32,11 @@ function ArrowDirectionMixin(Base) {
      * @default {ArrowDirectionButton}
      */
     get arrowButtonDescriptor() {
-      return this.elementDescriptors.arrowButton;
+      return this[symbols.descriptors].arrowButton;
     }
     set arrowButtonDescriptor(arrowButtonDescriptor) {
       this[symbols.hasDynamicTemplate] = true;
-      this.elementDescriptors.arrowButton;
+      this[symbols.descriptors].arrowButton;
     }
   
     componentDidMount() {

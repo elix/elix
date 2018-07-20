@@ -19,7 +19,7 @@ class MenuButton extends PopupSource {
 
   constructor() {
     super();
-    Object.assign(this.elementDescriptors, {
+    Object.assign(this[symbols.descriptors], {
       menu: Menu
     });
   }
@@ -252,11 +252,11 @@ class MenuButton extends PopupSource {
    * @default {Menu}
    */
   get menuDescriptor() {
-    return this.elementDescriptors.menu;
+    return this[symbols.descriptors].menu;
   }
   set menuDescriptor(menuDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this.elementDescriptors.menu = menuDescriptor;
+    this[symbols.descriptors].menu = menuDescriptor;
   }
 
   refineState(state) {
@@ -301,7 +301,7 @@ class MenuButton extends PopupSource {
 
     // Wrap default slot with a menu.
     const defaultSlot = result.content.querySelector('slot:not([name])');
-    const menu = elementFromDescriptor(this.elementDescriptors.menu);
+    const menu = elementFromDescriptor(this[symbols.descriptors].menu);
     menu.setAttribute('id', 'menu');
     substituteElement(defaultSlot, menu);
     menu.appendChild(defaultSlot);

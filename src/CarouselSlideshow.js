@@ -1,8 +1,9 @@
 import './CrossfadeStage.js';
 import { merge } from './updates.js';
+import * as symbols from './symbols.js';
 import Carousel from './Carousel.js';
-import TimerSelectionMixin from './TimerSelectionMixin.js';
 import CrossfadeStage from './CrossfadeStage.js';
+import TimerSelectionMixin from './TimerSelectionMixin.js';
 
 
 const Base =
@@ -27,7 +28,7 @@ class CarouselSlideshow extends Base {
 
   constructor() {
     super();
-    Object.assign(this.elementDescriptors, {
+    Object.assign(this[symbols.descriptors], {
       stage: CrossfadeStage
     });
   }
