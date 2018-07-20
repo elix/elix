@@ -4,7 +4,7 @@
 /// <reference path="shared.d.ts"/>
 
 declare const PlayControlsMixin: Mixin<{}, {}> & {
-  inject: symbol;
+  patch: symbol;
 };
 
 export default PlayControlsMixin;

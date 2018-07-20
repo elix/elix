@@ -1,10 +1,10 @@
-import './SeamlessButton.js';
+import { elementFromDescriptor, html, substituteElement } from './templates.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
+import SeamlessButton from './SeamlessButton.js';
 
 
-const inject = Symbol('inject');
-const controlButtonTagKey = Symbol('controlButtonTag');
+const patch = Symbol('patch');
 
 
 /**
@@ -21,6 +21,13 @@ export default function PlayControlsMixin(Base) {
   // The class prototype added by the mixin.
   class PlayControls extends Base {
 
+    constructor() {
+      super();
+      this.elementDescriptors = {
+        controlButton: SeamlessButton
+      };
+    }
+  
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
       this.$.previousButton.addEventListener('click', event => {
@@ -44,36 +51,42 @@ export default function PlayControlsMixin(Base) {
       assumeButtonFocus(this, this.$.nextButton);
     }
 
-    get defaults() {
-      return {
-        tags: {
-          controlButton: 'elix-seamless-button'
-        }
-      };
-    }
-
     /**
      * The tag used to create the play control buttons.
      * 
-     * @type {string}
+     * @type {function|string|Node}
      * @default 'elix-seamless-button'
      */
-    get controlButtonTag() {
-      return this[controlButtonTagKey];
+    get controlButtonDescriptor() {
+      return this.elementDescriptors.controlButton;
     }
-    set controlButtonTag(controlButtonTag) {
+    set controlButtonDescriptor(controlButtonDescriptor) {
       this[symbols.hasDynamicTemplate] = true;
-      this[controlButtonTagKey] = controlButtonTag;
+      this.elementDescriptors.controlButton = controlButtonDescriptor;
+    }
+
+    // Pressing Space is the same as clicking the button.
+    [symbols.keydown](event) {
+      let handled;
+
+      switch (event.key) {
+        case ' ':
+          this.click();
+          handled = true;
+          break;
+      }
+
+      // Prefer mixin result if it's defined, otherwise use base result.
+      return handled || (super[symbols.keydown] && super[symbols.keydown](event));
     }
     
     /**
      * Add the play controls to a template.
      * 
-     * @param {string} template - the inner template placed inside the play controls container
+     * @param {Node} original - the element that should be wrapped by play controls
      */
-    [inject](template) {
-      const controlButtonTag = this.controlButtonTag || this.defaults.tags.controlButton;
-      return `
+    [patch](original) {
+      const playControlsTemplate = html`
         <style>
           #buttons {
             bottom: 0;
@@ -120,7 +133,7 @@ export default function PlayControlsMixin(Base) {
         </style>
 
         <div id="buttons">
-          <${controlButtonTag} class="controlButton" id="previousButton" aria-hidden="true" tabindex="-1">
+          <div class="controlButton" id="previousButton" aria-hidden="true" tabindex="-1">
             <slot name="previousButton">
               <svg id="previousIcon" class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
                 <g id="skip-previous">
@@ -128,8 +141,8 @@ export default function PlayControlsMixin(Base) {
                 </g>
               </svg>
             </slot>
-          </${controlButtonTag}>
-          <${controlButtonTag} class="controlButton" id="playButton" aria-hidden="true" tabindex="-1">
+          </div>
+          <div class="controlButton" id="playButton" aria-hidden="true" tabindex="-1">
             <slot name="playButton">
               <svg id="playingIcon" class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
                 <g id="pause-circle-outline">
@@ -142,8 +155,8 @@ export default function PlayControlsMixin(Base) {
                 </g>
               </svg>
             </slot>
-          </${controlButtonTag}>
-          <${controlButtonTag} class="controlButton" id="nextButton" aria-hidden="true" tabindex="-1">
+          </div>
+          <div class="controlButton" id="nextButton" aria-hidden="true" tabindex="-1">
             <slot name="nextButton">
               <svg id="nextIcon" class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
                 <g id="skip-next">
@@ -151,28 +164,22 @@ export default function PlayControlsMixin(Base) {
                 </g>
               </svg>
             </slot>
-          </${controlButtonTag}>
+          </div>
         </div>
 
-        <div id="container" role="none">
-          ${template}
-        </div>
+        <div id="container" role="none"></div>
       `;
-    }
-
-    // Pressing Space is the same as clicking the button.
-    [symbols.keydown](event) {
-      let handled;
-
-      switch (event.key) {
-        case ' ':
-          this.click();
-          handled = true;
-          break;
-      }
-
-      // Prefer mixin result if it's defined, otherwise use base result.
-      return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+      const playControls = playControlsTemplate.content;
+      const buttons = playControls.querySelectorAll('.controlButton');
+      buttons.forEach(button => {
+        substituteElement(
+          button,
+          elementFromDescriptor(this.controlButtonDescriptor)
+        );  
+      });
+      const container = playControls.querySelector('#container');
+      original.parentNode.replaceChild(playControls, original);
+      container.appendChild(original);
     }
 
     get updates() {
@@ -215,7 +222,7 @@ export default function PlayControlsMixin(Base) {
 }
 
 
-PlayControlsMixin.inject = inject;
+PlayControlsMixin.patch = patch;
 
 
 /*

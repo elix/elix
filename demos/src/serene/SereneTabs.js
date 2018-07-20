@@ -1,20 +1,19 @@
-import '../../../src/CrossfadeStage.js'
-import './SereneTabButton.js';
 import { merge } from '../../../src/updates.js';
+import CrossfadeStage from '../../../src/CrossfadeStage.js';
+import SereneTabButton from './SereneTabButton.js';
 import Tabs from '../../../src/Tabs.js';
 
 
 class SereneTabs extends Tabs {
 
-  get defaults() {
-    const base = super.defaults || {};
-    return Object.assign({}, base, {
-      tags: Object.assign({}, base.tags, {
-        proxy: 'serene-tab-button',
-        stage: 'elix-crossfade-stage'
-      })
-    });
+  constructor() {
+    super();
+    Object.assign(this.elementDescriptors, {
+      proxy: SereneTabButton,
+      stage: CrossfadeStage
+    })
   }
+
 
   get updates() {
     return merge(super.updates, {

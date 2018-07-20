@@ -1,3 +1,4 @@
+import { html } from './templates.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import ReactiveElement from './ReactiveElement.js';
@@ -46,7 +47,7 @@ class Modes extends Base {
   }
 
   get [symbols.template]() {
-    return `
+    return html`
       <style>
         :host {
           display: inline-flex;

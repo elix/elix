@@ -63,9 +63,10 @@ class SlideshowWithPlayControls extends Base {
   }
 
   get [symbols.template]() {
-    return this[PlayControlsMixin.inject](
-      super[symbols.template]
-    );
+    const result = super[symbols.template];
+    const modesContainer = result.content.querySelector('#modesContainer');
+    this[PlayControlsMixin.patch](modesContainer);
+    return result;
   }
 
 }

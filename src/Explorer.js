@@ -1,17 +1,15 @@
-import './ListBox.js';
-import './Modes.js';
 import { apply, merge } from './updates.js';
 import * as symbols from './symbols.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
+import ListBox from './ListBox.js';
+import Modes from './Modes.js';
 import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
+import { html, substituteElement, elementFromDescriptor } from './templates.js';
 
 
-const proxyTagKey = Symbol('proxyTag');
 const proxySlotchangeFiredKey = Symbol('proxySlotchangeFired');
-const proxyListTagKey = Symbol('listTag');
-const stageTagKey = Symbol('stageTag');
 
 
 // Does a list position imply a lateral arrangement of list and stage?
@@ -46,6 +44,15 @@ const Base =
  */
 class Explorer extends Base {
 
+  constructor() {
+    super();
+    this.elementDescriptors = {
+      proxy: 'div',
+      proxyList: ListBox,
+      stage: Modes
+    };
+  }
+
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
     const handleSelectedIndexChanged = event => {
@@ -74,20 +81,11 @@ class Explorer extends Base {
     });
   }
 
-  get defaults() {
-    return {
-      tags: {
-        proxyList: 'elix-list-box',
-        proxy: 'div',
-        stage: 'elix-modes'
-      }
-    };
-  }
-
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       assignedProxies: [],
       defaultProxies: [],
+      itemsForDefaultProxies: null,
       proxyListOverlap: false,
       proxyListPosition: 'top'
     });
@@ -140,34 +138,29 @@ class Explorer extends Base {
   /**
    * The tag used to create the Explorer's list of proxies.
    * 
-   * @type {string}
+   * @type {function|string|Node}
    * @default 'div'
    */
-  get proxyListTag() {
-    return this[proxyListTagKey];
+  get proxyListDescriptor() {
+    return this.elementDescriptors.proxyList;
   }
-  set proxyListTag(listTag) {
+  set proxyListDescriptor(proxyListDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this[proxyListTagKey] = listTag;
-  }
-
-  get proxyListTemplate() {
-    const proxyListTag = this.proxyListTag || this.defaults.tags.proxyList;
-    return `<${proxyListTag} id="proxyList"><slot id="proxySlot" name="proxy"></slot></${proxyListTag}>`;
+    this.elementDescriptors.proxyList = proxyListDescriptor;
   }
 
   /**
    * The tag used to create default proxies for the list items.
    * 
-   * @default 'div'
+   * @type {function|string|Node}
    * @type {string}
    */
-  get proxyTag() {
-    return this[proxyTagKey];
+  get proxyDescriptor() {
+    return this.elementDescriptors.proxy;
   }
-  set proxyTag(proxyTag) {
+  set proxyDescriptor(proxyDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this[proxyTagKey] = proxyTag;
+    this.elementDescriptors.proxy = proxyDescriptor;
   }
 
   /**
@@ -211,7 +204,7 @@ class Explorer extends Base {
       const itemsChanged = items !== state.itemsForDefaultProxies;
       if (itemsChanged) {
         // Generate sufficient default proxies.
-        const proxyTag = this.proxyTag || this.defaults.tags.proxy;
+        const proxyTag = this.proxyDescriptor || this.defaults.tags.proxy;
         defaultProxies = createDefaultProxies(items, proxyTag);
         itemsForDefaultProxies = items;
       }
@@ -230,20 +223,7 @@ class Explorer extends Base {
   [symbols.render]() {
     if (super[symbols.render]) { super[symbols.render](); }
 
-    // Physically reorder the list and stage to reflect the desired arrangement.
-    // We could change the visual appearance by reversing the order of the flex
-    // box, but then the visual order wouldn't reflect the document order, which
-    // determines focus order. That would surprise a user trying to tab through
-    // the controls.
-    const listInInitialPosition = isListInInitialPosition(this);
-    const container = this.$.explorerContainer;
-    const stage = findChildContainingNode(container, this.$.stage);
-    const list = findChildContainingNode(container, this.$.proxyList);
-    const firstElement = listInInitialPosition ? list : stage;
-    const lastElement = listInInitialPosition ? stage : list;
-    if (firstElement.nextElementSibling !== lastElement) {
-      this.$.explorerContainer.insertBefore(firstElement, lastElement);
-    }
+    setListAndStageOrder(this);
 
     const items = this.items;
     if (items) {
@@ -271,29 +251,19 @@ class Explorer extends Base {
    * The tag used to create the main "stage" element showing a single item at a
    * time.
    * 
-   * @type {string}
-   * @default 'elix-modes'
+   * @type {function|string|Node}
+   * @default {Modes}
    */
-  get stageTag() {
-    return this[stageTagKey];
+  get stageDescriptor() {
+    return this.elementDescriptors.stage;
   }
-  set stageTag(stageTag) {
+  set stageDescriptor(stageDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this[stageTagKey] = stageTag;
-  }
-
-  get stageTemplate() {
-    const stageTag = this.stageTag || this.defaults.tags.stage;
-    return `<${stageTag} id="stage" role="none"><slot></slot></${stageTag}>`;
+    this.elementDescriptors.stage = stageDescriptor;
   }
 
   get [symbols.template]() {
-    const listTemplate = this.proxyListTemplate;
-    const stageTemplate = this.stageTemplate;
-    const templates = isListInInitialPosition(this) ?
-      `${listTemplate}${stageTemplate}` :
-      `${stageTemplate}${listTemplate}`;
-    return `
+    const result = html`
       <style>
         :host {
           display: inline-flex;
@@ -311,9 +281,23 @@ class Explorer extends Base {
         }
       </style>
       <div id="explorerContainer" role="none">
-        ${templates}
+        <div id="proxyList"><slot id="proxySlot" name="proxy"></slot></div>
+        <div id="stage" role="none"><slot></slot></div>
       </div>
     `;
+    if (this.elementDescriptors.proxyList !== 'div') {
+      substituteElement(
+        result.content.querySelector('#proxyList'),
+        elementFromDescriptor(this.proxyListDescriptor)
+      );
+    }
+    if (this.elementDescriptors.stage !== 'div') {
+      substituteElement(
+        result.content.querySelector('#stage'),
+        elementFromDescriptor(this.stageDescriptor)
+      );
+    }
+    return result;
   }
 
   get updates() {
@@ -399,9 +383,9 @@ class Explorer extends Base {
 
 
 // Return the default list generated for the given items.
-function createDefaultProxies(items, proxyTag) {
+function createDefaultProxies(items, proxyDescriptor) {
   const proxies = items ?
-    items.map(() => document.createElement(proxyTag)) :
+    items.map(() => elementFromDescriptor(proxyDescriptor)) :
     [];
   // Make the array immutable to help update performance.
   Object.freeze(proxies);
@@ -418,13 +402,27 @@ function findChildContainingNode(root, node) {
 }
 
 
-function isListInInitialPosition(element) {
+// Physically reorder the list and stage to reflect the desired arrangement. We
+// could change the visual appearance by reversing the order of the flex box,
+// but then the visual order wouldn't reflect the document order, which
+// determines focus order. That would surprise a user trying to tab through the
+// controls.
+function setListAndStageOrder(element) {
   const proxyListPosition = element.state.proxyListPosition;
   const rightToLeft = element[symbols.rightToLeft];
-  return proxyListPosition === 'top' ||
+  const listInInitialPosition =
+      proxyListPosition === 'top' ||
       proxyListPosition === 'start' ||
       proxyListPosition === 'left' && !rightToLeft ||
       proxyListPosition === 'right' && rightToLeft;
+  const container = element.$.explorerContainer;
+  const stage = findChildContainingNode(container, element.$.stage);
+  const list = findChildContainingNode(container, element.$.proxyList);
+  const firstElement = listInInitialPosition ? list : stage;
+  const lastElement = listInInitialPosition ? stage : list;
+  if (firstElement.nextElementSibling !== lastElement) {
+    element.$.explorerContainer.insertBefore(firstElement, lastElement);
+  }
 }
 
 

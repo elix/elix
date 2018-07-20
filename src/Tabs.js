@@ -1,8 +1,8 @@
-import './TabButton.js';
-import './TabStrip.js';
 import { ensureId } from './idGeneration.js';
 import { merge } from './updates.js';
 import Explorer from './Explorer.js';
+import TabButton from './TabButton.js';
+import TabStrip from './TabStrip.js';
 
 
 /**
@@ -19,20 +19,18 @@ import Explorer from './Explorer.js';
  */
 class Tabs extends Explorer {
 
+  constructor() {
+    super();
+    Object.assign(this.elementDescriptors, {
+      proxy: TabButton,
+      proxyList: TabStrip
+    });
+  }
+
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       itemRole: 'tabpanel',
       tabAlign: 'start'
-    });
-  }
-
-  get defaults() {
-    const base = super.defaults || {};
-    return Object.assign({}, base, {
-      tags: Object.assign({}, base.tags, {
-        proxy: 'elix-tab-button',
-        proxyList: 'elix-tab-strip'
-      })
     });
   }
 

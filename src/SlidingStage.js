@@ -1,3 +1,4 @@
+import { html } from './templates.js';
 import { merge } from './updates.js';
 import * as fractionalSelection from './fractionalSelection.js';
 import * as symbols from './symbols.js';
@@ -65,7 +66,7 @@ class SlidingStage extends Base {
     // all the elements slotted inside it will still be visible even if they
     // fall outside its bounds. By translating the container left or right, we
     // can cause any individual slotted item to become the sole visible item.
-    return `
+    return html`
       <style>
         :host {
           display: inline-flex;

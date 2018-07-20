@@ -1,4 +1,5 @@
 import { deepContains } from './utilities.js';
+import { html } from './templates.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import AriaListMixin from './AriaListMixin.js';
@@ -186,7 +187,7 @@ class TabStrip extends Base {
   }
 
   get [symbols.template]() {
-    return `
+    return html`
       <style>
         :host {
           display: flex;

@@ -3,12 +3,12 @@ import { html } from './templates.js';
 
 
 // Symbols for private data members on an element.
-const wrap = Symbol('wrap');
+const patch = Symbol('patch');
 const wrappingFocusKey = Symbol('wrappingFocus');
 
 
 /**
- * This mixin wraps a component’s template such that, once the component gains
+ * This mixin patches a component’s template such that, once the component gains
  * the keyboard focus, Tab and Shift+Tab operations will cycle the focus within
  * the component.
  * 
@@ -59,20 +59,20 @@ function FocusCaptureMixin(base) {
     }
 
     /**
-     * Wrap a DOM tree with additional elements necessary to capture focus.
+     * Patch a DOM tree with additional elements necessary to capture focus.
      * 
      * Call this method in a components `symbols.template` property.
-     * Invoke this method as `this[FocusCaptureMixin.wrap](element)`.
+     * Invoke this method as `this[FocusCaptureMixin.patch](element)`.
      * 
-     * @param {Node} original - the element(s) in which focus should wrap
+     * @param {Node} original - the element within which focus should wrap
      */
-    [wrap](original) {
+    [patch](original) {
       const focusCatcher = html`<div id="focusCatcher" tabindex="0"></div>`;
       if (original.parentNode) {
         original.parentNode.insertBefore(focusCatcher.content, original.nextSibling);
       } else {
         /* eslint-disable no-console */
-        console.warn(`FocusCaptureMixin[wrap] can only wrap an element that has a parent.`);
+        console.warn(`FocusCaptureMixin[patch] can only patch an element that has a parent.`);
       }
     }
 
@@ -82,7 +82,7 @@ function FocusCaptureMixin(base) {
 }
 
 
-FocusCaptureMixin.wrap = wrap;
+FocusCaptureMixin.patch = patch;
 
 
 export default FocusCaptureMixin;

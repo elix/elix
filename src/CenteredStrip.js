@@ -1,3 +1,4 @@
+import { html } from './templates.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import ClickSelectionMixin from './ClickSelectionMixin.js';
@@ -61,7 +62,7 @@ class CenteredStrip extends Base {
   }
 
   get [symbols.template]() {
-    return `
+    return html`
       <style>
         :host {
           cursor: default;

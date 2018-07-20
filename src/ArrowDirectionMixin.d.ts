@@ -6,7 +6,7 @@
 declare const ArrowDirectionMixin: Mixin<{}, {
   defaults: PlainObject;
 }> & {
-  inject: symbol;
+  patch: symbol;
 };
 
 export default ArrowDirectionMixin;

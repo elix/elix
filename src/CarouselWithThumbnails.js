@@ -1,6 +1,6 @@
-import './Thumbnail.js';
 import { merge } from './updates.js'
 import Carousel from './Carousel.js';
+import Thumbnail from './Thumbnail.js';
 
 
 /**
@@ -12,12 +12,10 @@ import Carousel from './Carousel.js';
  */
 class CarouselWithThumbnails extends Carousel {
 
-  get defaults() {
-    const base = super.defaults || {};
-    return Object.assign({}, base, {
-      tags: Object.assign({}, base.tags, {
-        proxy: 'elix-thumbnail'
-      })
+  constructor() {
+    super();
+    Object.assign(this.elementDescriptors, {
+      proxy: Thumbnail
     });
   }
   

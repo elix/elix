@@ -1,3 +1,4 @@
+import { html } from './templates.js';
 import * as symbols from './symbols.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
@@ -40,7 +41,7 @@ class SeamlessButton extends Base {
   }
 
   get [symbols.template]() {
-    return `
+    return html`
       <style>
         :host {
           display: inline-flex;

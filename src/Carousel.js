@@ -1,16 +1,16 @@
-import './CenteredStripOpacity.js';
-import './PageDot.js';
-import './SlidingStage.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import AriaListMixin from './AriaListMixin.js';
 import ArrowDirectionMixin from './ArrowDirectionMixin.js';
+import CenteredStripOpacity from './CenteredStripOpacity.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import Explorer from './Explorer.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
+import PageDot from './PageDot.js';
+import SlidingStage from './SlidingStage.js';
 import SwipeDirectionMixin from './SwipeDirectionMixin.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
@@ -52,14 +52,12 @@ const Base =
  */
 class Carousel extends Base {
 
-  get defaults() {
-    const base = super.defaults || {};
-    return Object.assign({}, base, {
-      tags: Object.assign({}, base.tags, {
-        proxy: 'elix-page-dot',
-        proxyList: 'elix-centered-strip-opacity',
-        stage: 'elix-sliding-stage'
-      })
+  constructor() {
+    super();
+    Object.assign(this.elementDescriptors, {
+      proxy: PageDot,
+      proxyList: CenteredStripOpacity,
+      stage: SlidingStage
     });
   }
   
@@ -89,14 +87,17 @@ class Carousel extends Base {
     });
   }
 
-  get stageTemplate() {
-    return this[ArrowDirectionMixin.inject](super.stageTemplate);
-  }
-
   get [symbols.swipeTarget]() {
     return this.$.stage instanceof HTMLElement ?
       this.$.stage :
       super[symbols.swipeTarget];
+  }
+
+  get [symbols.template]() {
+    const result = super[symbols.template];
+    const stage = result.content.querySelector('#stage');
+    this[ArrowDirectionMixin.patch](stage);
+    return result;
   }
 
   get updates() {

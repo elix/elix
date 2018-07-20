@@ -1,10 +1,10 @@
-import './ArrowDirectionButton.js';
+import { elementFromDescriptor, html, substituteElement } from './templates.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
+import ArrowDirectionButton from './ArrowDirectionButton.js';
 
 
-const arrowButtonTagKey = Symbol('arrowButtonTag');
-const inject = Symbol('inject');
+const patch = Symbol('patch');
 
 
 /**
@@ -18,18 +18,25 @@ function ArrowDirectionMixin(Base) {
   // The class prototype added by the mixin.
   class ArrowDirection extends Base {
 
-  /**
-   * The tag used to create the left and right arrow buttons.
-   * 
-   * @type {string}
-   * @default 'elix-arrow-direction-button'
-   */
-  get arrowButtonTag() {
-      return this[arrowButtonTagKey];
+    constructor() {
+      super();
+      Object.assign(this.elementDescriptors, {
+        arrowButton: ArrowDirectionButton
+      });
     }
-    set arrowButtonTag(arrowButtonTag) {
+
+    /**
+     * The tag used to create the left and right arrow buttons.
+     * 
+     * @type {function|string|Node}
+     * @default {ArrowDirectionButton}
+     */
+    get arrowButtonDescriptor() {
+      return this.elementDescriptors.arrowButton;
+    }
+    set arrowButtonDescriptor(arrowButtonDescriptor) {
       this[symbols.hasDynamicTemplate] = true;
-      this[arrowButtonTagKey] = arrowButtonTag;
+      this.elementDescriptors.arrowButton;
     }
   
     componentDidMount() {
@@ -56,21 +63,61 @@ function ArrowDirectionMixin(Base) {
       assumeButtonFocus(this, this.$.arrowButtonRight);
     }
 
-    get defaults() {
-      const base = super.defaults || {};
-      return Object.assign({}, base, {
-        tags: Object.assign({}, base.tags, {
-          arrowButton: base.tags && base.tags.arrowButton || 'elix-arrow-direction-button'
-        })
-      });
-    }
-
     get defaultState() {
       return Object.assign({}, super.defaultState, {
         showArrowButtons: true,
         orientation: 'horizontal',
         overlayArrowButtons: true
       });
+    }
+
+    /**
+     * Add the arrow buttons to a template.
+     * 
+     * @param {Node} original - the element that should be wrapped by buttons
+     */
+    [patch](original) {
+      const arrowDirectionTemplate = html`
+        <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;">
+          <div
+            id="arrowButtonLeft"
+            aria-hidden="true"
+            >
+            <slot name="arrowButtonLeft">
+              <svg id="arrowIconLeft" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+                <g>
+                  <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
+                </g>
+              </svg>
+            </slot>
+          </div>
+          <div id="arrowDirectionContainer" role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;"></div>
+          <div
+            id="arrowButtonRight"
+            aria-hidden="true"
+            >
+            <slot name="arrowButtonRight">
+              <svg id="arrowIconRight" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+                <g>
+                  <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
+                </g>
+              </svg>
+            </slot>
+          </div>
+        </div>
+      `;
+      substituteElement(
+        arrowDirectionTemplate.content.querySelector('#arrowButtonLeft'),
+        elementFromDescriptor(this.arrowButtonDescriptor)
+      );
+      substituteElement(
+        arrowDirectionTemplate.content.querySelector('#arrowButtonRight'),
+        elementFromDescriptor(this.arrowButtonDescriptor)
+      );
+      const arrowDirection = arrowDirectionTemplate.content.querySelector('#arrowDirection');
+      original.parentNode.replaceChild(arrowDirection, original);
+      const container = arrowDirection.querySelector('#arrowDirectionContainer');
+      container.appendChild(original);
     }
 
     get showArrowButtons() {
@@ -81,46 +128,6 @@ function ArrowDirectionMixin(Base) {
       this.setState({
         showArrowButtons: parsed
       });
-    }
-
-    /**
-     * Add the arrow buttons to a template.
-     * 
-     * @param {string} template - the inner template placed inside the button container
-     */
-    [inject](template) {
-      const arrowButtonTag = this.arrowButtonTag || this.defaults.tags.arrowButton;
-      return `
-        <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;">
-          <${arrowButtonTag}
-            aria-hidden="true"
-            id="arrowButtonLeft"
-            >
-            <slot name="arrowButtonLeft">
-              <svg id="arrowIconLeft" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
-                <g>
-                  <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
-                </g>
-              </svg>
-            </slot>
-          </${arrowButtonTag}>
-          <div role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;">
-            ${template}
-          </div>
-          <${arrowButtonTag}
-            aria-hidden="true"
-            id="arrowButtonRight"
-            >
-            <slot name="arrowButtonRight">
-              <svg id="arrowIconRight" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
-                <g>
-                  <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
-                </g>
-              </svg>
-            </slot>
-          </${arrowButtonTag}>
-        </div>
-      `;
     }
 
     get updates() {
@@ -193,7 +200,7 @@ function ArrowDirectionMixin(Base) {
 }
 
 
-ArrowDirectionMixin.inject = inject;
+ArrowDirectionMixin.patch = patch;
 
 
 /*
