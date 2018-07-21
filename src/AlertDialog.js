@@ -47,9 +47,9 @@ class AlertDialog extends Dialog {
   get choiceButtonDescriptor() {
     return this[symbols.descriptors].choiceButton;
   }
-  set choiceButtonDescriptor(choiceButtonTag) {
+  set choiceButtonDescriptor(choiceButtonDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this[symbols.descriptors].choiceButton = choiceButtonTag;
+    this[symbols.descriptors].choiceButton = choiceButtonDescriptor;
   }
 
   /**

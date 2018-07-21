@@ -1,7 +1,8 @@
+import { html } from './templates.js';
 import { merge } from './updates.js';
 
 
-const inject = Symbol('inject');
+const wrap = Symbol('wrap');
 
 
 /**
@@ -17,26 +18,27 @@ function PageNumbersMixin(Base) {
     /**
      * Add the page numbers to a template.
      * 
-     * @param {string} template - the inner template placed inside the page numbers container
+     * @param {Node} original - the element that should be wrapped by page numbers
      */
-    [inject](template) {
-      return `
-        <style>
-          #pageNumber {
-            bottom: 0;
-            color: white;
-            padding: 0.5em;
-            position: absolute;
-            right: 0;
-          }
-        </style>
+    [wrap](original) {
+      const result = html`
         <div id="pageNumbers" role="none" style="display: flex; flex: 1; overflow: hidden;">
-          <div role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;">
-            ${template}
-          </div>
+          <style>
+            #pageNumber {
+              bottom: 0;
+              color: white;
+              padding: 0.5em;
+              position: absolute;
+              right: 0;
+            }
+          </style>
+          <div id="pageNumbersContainer" role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;"></div>
           <div id="pageNumber"></div>
         </div>
       `;
+      const container = result.content.querySelector('#pageNumbersContainer');
+      container.appendChild(original);
+      return result;
     }
 
     get updates() {
@@ -59,7 +61,7 @@ function PageNumbersMixin(Base) {
 }
 
 
-PageNumbersMixin.inject = inject;
+PageNumbersMixin.wrap = wrap;
 
 
 export default PageNumbersMixin;

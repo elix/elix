@@ -1,3 +1,4 @@
+import { html } from '../../src/templates.js';
 import * as symbols from '../../src/symbols.js';
 import WrappedStandardElement from '../../src/WrappedStandardElement.js';
 
@@ -5,7 +6,7 @@ import WrappedStandardElement from '../../src/WrappedStandardElement.js';
 class CustomArrowButton extends WrappedStandardElement.wrap('button') {
 
   get [symbols.template]() {
-    return `
+    return html`
       <style>
         :host {
           align-items: center;

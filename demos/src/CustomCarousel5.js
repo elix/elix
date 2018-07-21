@@ -1,9 +1,9 @@
-import './CustomArrowButton.js';
-import './CustomPageDot.js';
 import { merge } from '../../src/updates.js';
 import * as symbols from '../../src/symbols.js';
-import PageNumbersMixin from '../../src/PageNumbersMixin.js';
 import Carousel from '../../src/Carousel.js';
+import CustomArrowButton from './CustomArrowButton.js';
+import CustomPageDot from './CustomPageDot.js';
+import PageNumbersMixin from '../../src/PageNumbersMixin.js';
 
 
 const Base =
@@ -15,18 +15,17 @@ const Base =
 // Customize everything.
 class CustomCarousel extends Base {
 
-  get defaults() {
-    const base = super.defaults || {};
-    return Object.assign({}, base, {
-      tags: Object.assign({}, base.tags, {
-        arrowButton: 'custom-arrow-button',
-        proxy: 'custom-page-dot'
-      })
+  constructor() {
+    super();
+    Object.assign(this[symbols.descriptors], {
+      arrowButton: CustomArrowButton,
+      proxy: CustomPageDot
     });
   }
 
   get [symbols.template]() {
-    return this[PageNumbersMixin.inject](super[symbols.template]);
+    const base = super[symbols.template];
+    return this[PageNumbersMixin.wrap](base.content);
   }
 
   get updates() {

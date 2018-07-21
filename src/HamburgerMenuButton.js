@@ -1,15 +1,12 @@
-import './Drawer.js';
-import './SeamlessButton.js';
 import { merge } from './updates.js';
+import * as symbols from './symbols.js';
+import Drawer from './Drawer.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import ReactiveElement from './ReactiveElement.js';
-import * as symbols from './symbols.js';
-
-
-const menuTagKey = Symbol('menuTag');
-const menuButtonTagKey = Symbol('menuButtonTag');
+import SeamlessButton from './SeamlessButton.js';
+import { elementFromDescriptor, html, substituteElement } from './templates.js';
 
 
 const Base =
@@ -35,6 +32,14 @@ const Base =
  */
 export default class HamburgerMenuButton extends Base {
 
+  constructor() {
+    super();
+    this[symbols.descriptors] = {
+      menu: Drawer,
+      menuButton: SeamlessButton
+    };
+  }
+
   componentDidMount() {
     this.$.menuButton.addEventListener('click', () => {
       this[symbols.raiseChangeEvents] = true;
@@ -56,14 +61,6 @@ export default class HamburgerMenuButton extends Base {
     });
   }
 
-  get defaults() {
-    return {
-      tags: {
-        menu: 'elix-drawer',
-        menuButton: 'elix-seamless-button'
-      }
-    };
-  }
 
   // Pressing Enter or Space is the same as clicking the menu button.
   [symbols.keydown](event) {
@@ -86,35 +83,33 @@ export default class HamburgerMenuButton extends Base {
   /**
    * The tag used to create the menu (drawer).
    * 
-   * @type {string}
-   * @default 'elix-drawer'
+   * @type {function|string|Node}
+   * @default {Drawer}
    */
-  get menuTag() {
-    return this[menuTagKey];
+  get menuDescriptor() {
+    return this[symbols.descriptors].menu;
   }
-  set menuTag(menuTag) {
+  set menuDescriptor(menuDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this[menuTagKey] = menuTag;
+    this[symbols.descriptors].menu = menuDescriptor;
   }
 
   /**
    * The tag used to create the menu button element.
    * 
-   * @type {string}
-   * @default 'elix-seamless-button'
+   * @type {function|string|Node}
+   * @default {SeamlessButton}
    */
-  get menuButtonTag() {
-    return this[menuButtonTagKey];
+  get menuButtonDescriptor() {
+    return this[symbols.descriptors].menuButton;
   }
-  set menuButtonTag(menuButtonTag) {
+  set menuButtonDescriptor(menuButtonDescriptor) {
     this[symbols.hasDynamicTemplate] = true;
-    this[menuButtonTagKey] = menuButtonTag;
+    this[symbols.descriptors].menuButton = menuButtonDescriptor;
   }
 
   get [symbols.template]() {
-    const menuTag = this.menuTag || this.defaults.tags.menu;
-    const menuButtonTag = this.menuButtonTag || this.defaults.tags.menuButton;
-    return `
+    const result = html`
       <style>
         :host {
           align-items: center;
@@ -137,17 +132,26 @@ export default class HamburgerMenuButton extends Base {
           width: 100%;
         }
       </style>
-      <${menuButtonTag} id="menuButton" aria-label="Open menu" tabindex="-1">
+      <div id="menuButton" aria-label="Open menu" tabindex="-1">
         <slot name="hamburgerIcon">
           <svg id="hamburgerIcon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 3 h18 v2 h-18 z m0 5 h18 v2 h-18 z m0 5 h18 v2 h-18 z"></path>
           </svg>
         </slot>
-      </${menuButtonTag}>
-      <${menuTag} id="menu">
+      </div>
+      <div id="menu">
         <slot></slot>
-      </${menuTag}>
+      </div>
     `;
+    substituteElement(
+      result.content.querySelector('#menuButton'),
+      elementFromDescriptor(this.menuButtonDescriptor)
+    );
+    substituteElement(
+      result.content.querySelector('#menu'),
+      elementFromDescriptor(this.menuDescriptor)
+    );
+    return result;
   }
 
   get updates() {

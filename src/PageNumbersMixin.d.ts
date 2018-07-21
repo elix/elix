@@ -4,7 +4,7 @@
 /// <reference path="./shared.d.ts"/>
 
 declare const PageNumbersMixin: Mixin<{}, {}> & {
-  inject: symbol;
+  wrap: symbol;
 };
 
 export default PageNumbersMixin;
