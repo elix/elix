@@ -1,3 +1,4 @@
+import { html } from './templates.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import KeyboardMixin from './KeyboardMixin.js';
@@ -174,7 +175,7 @@ class Toast extends Base {
   }
 
   get [symbols.template]() {
-    return `
+    return html`
       <style>
         :host {
           flex-direction: column;

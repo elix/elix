@@ -1,3 +1,4 @@
+import { html } from './templates.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js'
 import OpenCloseMixin from './OpenCloseMixin.js';
@@ -81,7 +82,7 @@ class ExpandablePanel extends Base {
   }
   
   get [symbols.template]() {
-    return `
+    return html`
       <style>
         :host {
           display: block;

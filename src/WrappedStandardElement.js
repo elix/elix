@@ -1,3 +1,4 @@
+import { html } from './templates.js';
 import { merge, booleanAttributes } from './updates.js';
 import * as symbols from './symbols.js';
 import ReactiveElement from './ReactiveElement.js';
@@ -278,7 +279,7 @@ class WrappedStandardElement extends ReactiveElement {
     const display = blockElements.indexOf(this.extends) >= 0 ?
       'block' :
       'inline-block';
-    return `<style>:host { display: ${display}}</style><${this.extends} id="inner"><slot></slot></${this.extends}`;
+    return html`<style>:host { display: ${display}}</style><${this.extends} id="inner"><slot></slot></${this.extends}`;
   }
 
   get updates() {

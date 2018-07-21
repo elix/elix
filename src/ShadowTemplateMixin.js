@@ -13,9 +13,11 @@ const shadowReferencesKey = Symbol('shadowReferences');
  * To use this mixin, define a `template` method that returns a string or HTML
  * `<template>` element:
  *
+ *     import { html } from 'elix/src/templates.js';
+ * 
  *     class MyElement extends ShadowTemplateMixin(HTMLElement) {
  *       get [symbols.template]() {
- *         return `Hello, <em>world</em>.`;
+ *         return html`Hello, <em>world</em>.`;
  *       }
  *     }
  *

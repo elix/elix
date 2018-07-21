@@ -1,3 +1,4 @@
+import { html } from '../../src/templates.js';
 import { merge } from '../../src/updates.js';
 import { substantiveElements } from '../../src/content.js';
 import * as symbols from '../../src/symbols.js';
@@ -70,7 +71,7 @@ class RenderState extends Base {
   }
 
   get [symbols.template]() {
-    return `
+    return html`
       <style>
         :host {
           display: flex;

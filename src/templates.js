@@ -44,7 +44,9 @@ export function substituteElement(original, replacement) {
 export function html(strings, ...substitutions) {
   // Concatenate the strings and substitutions.
   const complete = strings.map((string, index) => {
-    const substitution = substitutions[index] || '';
+    const substitution = index < substitutions.length ?
+      substitutions[index] :
+      '';
     return `${string}${substitution}`;
   }).join('');
   const template = document.createElement('template');

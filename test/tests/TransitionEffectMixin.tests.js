@@ -1,3 +1,4 @@
+import { html } from '../../src/templates.js';
 import { merge } from '../../src/updates.js';
 import * as symbols from '../../src/symbols.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
@@ -22,7 +23,7 @@ class TransitionEffectTest extends Base {
   }
 
   get [symbols.template]() {
-    return `
+    return html`
       <style>
         :host {
           transition: opacity 0.01s;

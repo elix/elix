@@ -3,6 +3,7 @@
  */
 
 
+import { html } from '../../src/templates.js';
 import { merge } from '../../src/updates.js';
 import * as symbols from '../../src/symbols.js';
 import AriaListMixin from '../../src/AriaListMixin.js';
@@ -78,7 +79,7 @@ class CountryListBox extends Base {
   }
 
   get [symbols.template]() {
-    return `
+    return html`
       <style>
         :host {
           border: 1px solid gray;
