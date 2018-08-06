@@ -92,6 +92,7 @@ import * as constantsImport from './constants.js';
 import * as contentImport from './content.js';
 import * as fractionalSelectionImport from './fractionalSelection.js';
 import * as symbolsImport from './symbols.js';
+import * as templatesImport from './templates.js';
 import * as updatesImport from './updates.js';
 import * as utilitiesImport from './utilities.js';
 
@@ -99,5 +100,6 @@ export const constants = constantsImport;
 export const content = contentImport;
 export const fractionalSelection = fractionalSelectionImport;
 export const symbols = symbolsImport;
+export const templates = templatesImport;
 export const updates = updatesImport;
 export const utilities = utilitiesImport;
