@@ -43,7 +43,6 @@ const Base =
  * @mixes FocusVisibleMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
- * @mixes LanguageDirectionMixin
  * @mixes SwipeDirectionMixin
  * @mixes TouchSwipeMixin
  * @mixes TrackpadSwipeMixin
