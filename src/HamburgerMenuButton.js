@@ -120,6 +120,7 @@ export default class HamburgerMenuButton extends Base {
           align-items: center;
           display: inline-flex;
           height: 1em;
+          touch-action: manipulation;
           width: 1em;
         }
 
