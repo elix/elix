@@ -97,8 +97,10 @@ export default function SlotContentMixin(Base) {
           if (!this[slotchangeFiredKey]) {
             // The event didn't fire, so we're most likely in Safari.
             // Update our notion of the component content.
+            this[symbols.raiseChangeEvents] = true;
             this[slotchangeFiredKey] = true;
             assignedNodesChanged(this);
+            this[symbols.raiseChangeEvents] = false;
           }
         });
 
