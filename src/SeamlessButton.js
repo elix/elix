@@ -47,15 +47,17 @@ class SeamlessButton extends Base {
           -webkit-tap-highlight-color: transparent;
         }
         
-        button {
+        #inner {
           background: none;
           border: none;
           flex: 1;
           font-family: inherit;
           font-size: inherit;
           font-weight: inherit;
+          height: 100%;
           padding: 0;
           position: relative;
+          width: 100%;
         }
       </style>
 
