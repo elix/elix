@@ -131,6 +131,7 @@ export default class HamburgerMenuButton extends Base {
         }
 
         #hamburgerIcon {
+          display: block;
           /* For Edge */
           height: 100%;
           width: 100%;
