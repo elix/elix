@@ -28,6 +28,8 @@ For browsers that need it, there are also some minor polyfills included:
 npm install @webcomponents/webcomponentsjs
 ```
 
+You can also load the code from a CDN such as unpkg: https://unpkg.com/@webcomponents/webcomponentsjs@2.0.0/
+
 ### Using `webcomponents-bundle.js`
 
 The `webcomponents-bundle.js` contains all of the web components polyfills and is
@@ -45,7 +47,7 @@ Here's an example:
 
 ```html
 <!-- load webcomponents bundle, which includes all the necessary polyfills -->
-<script src="node_modules/webcomponentsjs/webcomponents-bundle.js"></script>
+<script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 
 <!-- load the element -->
 <script type="module" src="my-element.js"></script>
@@ -70,7 +72,7 @@ Here's an example:
 
 ```html
 <!-- load the webcomponents loader, which injects the necessary polyfill bundle -->
-<script src="node_modules/webcomponentsjs/webcomponents-loader.js"></script>
+<script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 
 <!-- load the element -->
 <script type="module" src="my-element.js"></script>
@@ -93,7 +95,7 @@ Here's an example:
 
 ```html
 <!-- Load polyfills; note that "loader" will load these async -->
-<script src="node_modules/webcomponentsjs/webcomponents-loader.js" defer></script>
+<script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js" defer></script>
 
 <!-- Load a custom element definitions in `waitFor` and return a promise -->
 <script type="module">
@@ -119,7 +121,7 @@ Here's a more complicated example:
 
 ```html
 <!-- Load polyfills; note that "loader" will load these async -->
-<script src="node_modules/webcomponentsjs/webcomponents-loader.js" defer></script>
+<script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js" defer></script>
 
 <script type="module">
   WebComponents.waitFor(async () => {
@@ -139,9 +141,9 @@ Here's a more complicated example:
 The `WebComponentsReady` event is fired when polyfills and user scripts have loaded and custom elements have been upgraded. This event is generally not needed; however, it may be useful in some cases like testing. If imperative code should wait until a specific custom element definition has loaded, it can use the platform `customElements.whenDefined` API.
 
 ### `custom-elements-es5-adapter.js`
-According to the spec, only ES6 classes (https://html.spec.whatwg.org/multipage/scripting.html#custom-element-conformance) may be passed to the _native_ `customElements.define` API. For best performnace, ES6 should be served to browsers that support it, and ES5 code should be serve to those that don't. Since this may not always be possible, it may make sense to compile and serve ES5 to all browsers. However, ES5-style custom element classes will **not** work on browsers with native Custom Elements because ES5-style classes cannot properly extend ES6 classes, like `HTMLElement`.
+According to the spec, only ES6 classes (https://html.spec.whatwg.org/multipage/scripting.html#custom-element-conformance) may be passed to the _native_ `customElements.define` API. For best performnace, ES6 should be served to browsers that support it, and ES5 code should be serve to those that don't. Since this may not always be possible, it may make sense to compile and serve ES5 to all browsers. However, if you do so, ES5-style custom element classes will now **not** work on browsers with native Custom Elements because ES5-style classes cannot properly extend ES6 classes, like `HTMLElement`.
 
-To work around this, load `custom-elements-es5-adapter.js` before defining Custom Elements.  This adapter will automatically wrap ES5.
+As a workaround, if your project has been compiled to ES5, load `custom-elements-es5-adapter.js` before defining Custom Elements.  This adapter will automatically wrap ES5.
 
 **The adapter must NOT be compiled.**
 
@@ -167,6 +169,7 @@ If you wish to build the bundles yourself, you'll need `node` and `npm` on your 
 
  * install [node.js](http://nodejs.org/) using the instructions on their website
  * use `npm` to install [gulp.js](http://gulpjs.com/): `npm install -g gulp`
+ * make sure you have Java installed per https://www.npmjs.com/package/google-closure-compiler#java-version
 
 Now you are ready to build the polyfills with:
 
