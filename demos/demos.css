@@ -49,9 +49,9 @@ label {
 }
 
 [unresolved] {
-  display: none;
+  visibility: hidden;
 }
 
 :not(:defined) {
-  display: none;
+  visibility: hidden;
 }
