@@ -1,6 +1,6 @@
-import { html } from '../../src/template.js';
 import { merge } from '../../src/updates.js';
 import * as symbols from '../../src/symbols.js';
+import * as template from '../../src/template.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 import TouchSwipeMixin from '../../src/TouchSwipeMixin.js';
 import TrackpadSwipeMixin from '../../src/TrackpadSwipeMixin.js';
@@ -16,7 +16,7 @@ const Base =
 class SwipeDemo extends Base {
 
   get [symbols.template]() {
-    return html`
+    return template.html`
       <style>
         :host {
           display: flex;

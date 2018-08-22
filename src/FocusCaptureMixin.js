@@ -1,5 +1,5 @@
 import * as symbols from './symbols.js';
-import { html } from './template.js';
+import * as template from './template.js';
 
 
 // Symbols for private data members on an element.
@@ -68,7 +68,7 @@ function FocusCaptureMixin(base) {
      * @param {Node} original - the element within which focus should wrap
      */
     [patch](original) {
-      const focusCatcher = html`<div id="focusCatcher" tabindex="0"></div>`;
+      const focusCatcher = template.html`<div id="focusCatcher" tabindex="0"></div>`;
       if (original.parentNode) {
         original.parentNode.insertBefore(focusCatcher.content, original.nextSibling);
       } else {

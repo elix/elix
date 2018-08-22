@@ -1,6 +1,6 @@
-import { html } from '../../src/template.js';
 import { merge } from '../../src/updates.js';
 import * as symbols from '../../src/symbols.js';
+import * as template from '../../src/template.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 import SlotContentMixin from '../../src/SlotContentMixin.js';
 
@@ -14,7 +14,7 @@ const Base =
 class LabeledColorSwatch extends Base {
 
   get [symbols.template]() {
-    return html`
+    return template.html`
       <style>
         :host {
           align-items: center;

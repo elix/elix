@@ -1,6 +1,6 @@
-import { html } from './template.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import SlotContentMixin from './SlotContentMixin.js';
 import WrappedStandardElement from './WrappedStandardElement.js';
 
@@ -151,7 +151,7 @@ class AutosizeTextarea extends Base {
    *   ensuring the original content doesn't show up directly.
    */
   get [symbols.template]() {
-    return html`
+    return template.html`
       <style>
         :host {
           display: block;

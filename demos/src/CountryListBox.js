@@ -3,9 +3,9 @@
  */
 
 
-import { html } from '../../src/template.js';
 import { merge } from '../../src/updates.js';
 import * as symbols from '../../src/symbols.js';
+import * as template from '../../src/template.js';
 import AriaListMixin from '../../src/AriaListMixin.js';
 import ClickSelectionMixin from '../../src/ClickSelectionMixin.js';
 import ContentItemsMixin from '../../src/ContentItemsMixin.js';
@@ -79,7 +79,7 @@ class CountryListBox extends Base {
   }
 
   get [symbols.template]() {
-    return html`
+    return template.html`
       <style>
         :host {
           border: 1px solid gray;

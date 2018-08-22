@@ -1,5 +1,5 @@
-import { html } from './template.js';
 import { merge } from './updates.js';
+import * as template from './template.js';
 
 
 const wrap = Symbol('wrap');
@@ -21,7 +21,7 @@ function PageNumbersMixin(Base) {
      * @param {Node} original - the element that should be wrapped by page numbers
      */
     [wrap](original) {
-      const result = html`
+      const result = template.html`
         <div id="pageNumbers" role="none" style="display: flex; flex: 1; overflow: hidden;">
           <style>
             #pageNumber {

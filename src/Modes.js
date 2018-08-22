@@ -1,6 +1,6 @@
-import { html } from './template.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
@@ -47,7 +47,7 @@ class Modes extends Base {
   }
 
   get [symbols.template]() {
-    return html`
+    return template.html`
       <style>
         :host {
           display: inline-flex;

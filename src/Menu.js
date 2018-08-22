@@ -1,6 +1,6 @@
-import { html } from './template.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import AriaMenuMixin from './AriaMenuMixin.js';
 import ClickSelectionMixin from './ClickSelectionMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
@@ -180,7 +180,7 @@ class Menu extends Base {
   }
 
   get [symbols.template]() {
-    return html`
+    return template.html`
       <style>
         :host {
           border: 1px solid gray;

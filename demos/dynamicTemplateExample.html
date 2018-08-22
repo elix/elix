@@ -8,10 +8,10 @@
   <title>Reactive web component example with subclassing</title>
 
   <script type="module">
-    import ReactiveElement from '../src/ReactiveElement.js';
     import { apply, merge } from '../src/updates.js';
     import * as symbols from '../src/symbols.js';
-    import { createElement, html, replace } from '../src/template.js';
+    import * as template from '../src/template.js';
+    import ReactiveElement from '../src/ReactiveElement.js';
 
     class IncrementDecrement extends ReactiveElement {
 
@@ -70,16 +70,16 @@
       }
 
       get [symbols.template]() {
-        const result = html`
+        const result = template.html`
           <button id="decrement">-</button>
           <span id="visibleValue"></span>
           <button id="increment">+</button>
         `;
         if (this[symbols.descriptors].button !== 'button') {
           result.content.querySelectorAll('button').forEach(button => {
-            replace(
+            template.replace(
               button,
-              createElement(this[symbols.descriptors].button)
+              template.createElement(this[symbols.descriptors].button)
             );
           });
         }
@@ -93,7 +93,7 @@
 
     class CustomButton extends ReactiveElement {
       get [symbols.template]() {
-        return html`
+        return template.html`
           <style>
             button {
               border: 1px solid gray;
@@ -113,33 +113,10 @@
       constructor() {
         super();
         this[symbols.descriptors].button = CustomButton;
-        // this[symbols.descriptors].button = 'custom-button';
-        // const button = new CustomButton();
-        // this[symbols.descriptors].button = button;
       }
 
       get [symbols.template]() {
         const result = super[symbols.template];
-        // apply(result.content, {
-        //   $: {
-        //     visibleValue: {
-        //       style: {
-        //         'font-size': 'larger'
-        //       }
-        //     }
-        //   }
-        // });
-
-        // const visibleValue = result.content.querySelector('#visibleValue');
-        // const div = document.createElement('div');
-        // apply(div, {
-        //   style: {
-        //     display: 'inline-block',
-        //     'font-size': 'larger'
-        //   }
-        // });
-        // visibleValue.parentNode.replaceChild(div, visibleValue);
-        // div.appendChild(visibleValue);
         return result;
       }
 

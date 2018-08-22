@@ -1,6 +1,6 @@
-import { html } from './template.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import SlotContentMixin from './SlotContentMixin.js';
@@ -92,7 +92,7 @@ class TabButton extends Base {
   }
 
   get [symbols.template]() {
-    return html`
+    return template.html`
       <style>
         :host {
           display: inline-flex;

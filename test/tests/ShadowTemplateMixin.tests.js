@@ -1,5 +1,5 @@
-import { html } from '../../src/template.js';
 import * as symbols from '../../src/symbols.js';
+import * as template from '../../src/template.js';
 import flushPolyfills from '../flushPolyfills.js';
 import ShadowTemplateMixin from '../../src/ShadowTemplateMixin.js';
 
@@ -13,7 +13,7 @@ class ElementWithStringTemplate extends ShadowTemplateMixin(HTMLElement) {
   }
 
   get [symbols.template]() {
-    return html`<div id="message">Hello</div>`;
+    return template.html`<div id="message">Hello</div>`;
   }
 
 }
@@ -47,7 +47,7 @@ class ElementWithStylesInTemplate extends ShadowTemplateMixin(HTMLElement) {
   }
 
   get [symbols.template]() {
-    return html`
+    return template.html`
       <style>
         /* Use a style that will get polyfilled. */
         :host {
@@ -71,7 +71,7 @@ class ElementWithCachedTemplate extends ShadowTemplateMixin(HTMLElement) {
   }
 
   get [symbols.template]() {
-    return html`${staticTemplateCount++}`;
+    return template.html`${staticTemplateCount++}`;
   }
 
 }
@@ -92,7 +92,7 @@ class ElementWithDynamicTemplate extends ShadowTemplateMixin(HTMLElement) {
   }
 
   get [symbols.template]() {
-    return html`${dynamicTemplateCount++}`;
+    return template.html`${dynamicTemplateCount++}`;
   }
 
 }

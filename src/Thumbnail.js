@@ -1,5 +1,5 @@
-import { html } from './template.js';
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import WrappedStandardElement from "./WrappedStandardElement.js";
 
 
@@ -12,7 +12,7 @@ import WrappedStandardElement from "./WrappedStandardElement.js";
 class Thumbnail extends WrappedStandardElement.wrap('img') {
 
   get [symbols.template]() {
-    return html`
+    return template.html`
       <style>
         :host {
           display: inline-block;

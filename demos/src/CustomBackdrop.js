@@ -1,12 +1,12 @@
 import * as symbols from '../../src/symbols.js';
+import * as template from '../../src/template.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
-import { html } from '../../src/template.js';
 
 
 class CustomBackdrop extends ReactiveElement {
 
   get [symbols.template]() {
-    return html`
+    return template.html`
       <style>
         :host {
           background: white;

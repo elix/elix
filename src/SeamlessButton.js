@@ -1,5 +1,5 @@
-import { html } from './template.js';
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import WrappedStandardElement from './WrappedStandardElement.js';
@@ -41,7 +41,7 @@ class SeamlessButton extends Base {
   }
 
   get [symbols.template]() {
-    return html`
+    return template.html`
       <style>
         :host {
           display: inline-flex;

@@ -1,8 +1,8 @@
+import { merge } from '../../src/updates.js';
 import * as symbols from '../../src/symbols.js';
+import * as template from '../../src/template.js';
 import FocusVisibleMixin from '../../src/FocusVisibleMixin.js';
 import WrappedStandardElement from '../../src/WrappedStandardElement.js';
-import { html } from '../../src/template.js';
-import { merge } from '../../src/updates.js';
 
 
 const Base =
@@ -14,7 +14,7 @@ const Base =
 class CustomButton extends Base {
 
   get [symbols.template]() {
-    return html`
+    return template.html`
       <style>
         :host {
           display: inline-block;

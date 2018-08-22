@@ -1,12 +1,12 @@
-import { html } from '../../src/template.js';
 import * as symbols from '../../src/symbols.js';
+import * as template from '../../src/template.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
 
 class CustomPageDot extends ReactiveElement {
 
   get [symbols.template]() {
-    return html`
+    return template.html`
       <style>
         :host {
           background: rgb(255, 255, 255);

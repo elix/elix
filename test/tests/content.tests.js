@@ -1,6 +1,6 @@
-import { html } from '../../src/template.js';
 import * as content from '../../src/content.js';
 import * as symbols from '../../src/symbols.js';
+import * as template from '../../src/template.js';
 import ShadowTemplateMixin from '../../src/ShadowTemplateMixin.js';
 
 
@@ -9,7 +9,7 @@ import ShadowTemplateMixin from '../../src/ShadowTemplateMixin.js';
  */
 class ChildrenTest extends ShadowTemplateMixin(HTMLElement) {
   [symbols.template]() {
-    return html`
+    return template.html`
       <div id="static">This is static content</div>
       <slot></slot>
     `;
@@ -23,7 +23,7 @@ customElements.define('children-test', ChildrenTest);
  */
 class RedistributionTest extends ShadowTemplateMixin(HTMLElement) {
   [symbols.template]() {
-    return html`<children-test><slot></slot></children-test>`;
+    return template.html`<children-test><slot></slot></children-test>`;
   }
 }
 customElements.define('redistribution-test', RedistributionTest);

@@ -1,6 +1,6 @@
-import { html } from './template.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import ReactiveElement from './ReactiveElement.js';
 
 
@@ -12,7 +12,7 @@ import ReactiveElement from './ReactiveElement.js';
 class PageDot extends ReactiveElement {
 
   get [symbols.template]() {
-    return html`
+    return template.html`
       <style>
         :host {
           background: rgb(255, 255, 255);

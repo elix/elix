@@ -1,6 +1,6 @@
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import ReactiveElement from './ReactiveElement.js';
-import { html } from './template.js';
 
 
 /**
@@ -11,7 +11,7 @@ import { html } from './template.js';
 class OverlayFrame extends ReactiveElement {
 
   get [symbols.template]() {
-    return html`
+    return template.html`
       <style>
         :host {
           background: white;
