@@ -4,6 +4,7 @@ import * as symbols from './symbols.js';
 // A cache of processed templates, indexed by element class.
 const classTemplateMap = new Map();
 
+/** @type {any} */
 const shadowReferencesKey = Symbol('shadowReferences');
 
 /**

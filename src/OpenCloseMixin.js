@@ -1,7 +1,9 @@
 import * as symbols from './symbols.js';
 
 
+/** @type {any} */
 const closePromiseKey = Symbol('closePromise');
+/** @type {any} */
 const closeResolveKey = Symbol('closeResolve');
 
 

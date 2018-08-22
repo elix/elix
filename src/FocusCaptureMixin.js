@@ -4,6 +4,7 @@ import { html } from './template.js';
 
 // Symbols for private data members on an element.
 const patch = Symbol('patch');
+/** @type {any} */
 const wrappingFocusKey = Symbol('wrappingFocus');
 
 

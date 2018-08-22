@@ -1,8 +1,11 @@
 import * as symbols from './symbols.js';
 
 
+/** @type {any} */
 const renderedStateKey = Symbol('renderedState');
+/** @type {any} */
 const stateKey = Symbol('state');
+/** @type {any} */
 const raiseChangeEventsInNextRenderKey = Symbol('raiseChangeEventsInNextRender');
 
 

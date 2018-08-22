@@ -2,6 +2,7 @@ import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 
 
+/** @type {any} */
 const multiTouchKey = Symbol('multiTouch');
 const previousTimeKey = Symbol('previousTime');
 const previousVelocityKey = Symbol('previousVelocity');

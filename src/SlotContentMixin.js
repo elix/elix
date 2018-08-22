@@ -1,6 +1,7 @@
 import * as symbols from './symbols.js';
 
 
+/** @type {any} */
 const slotchangeFiredKey = Symbol('slotchangeFired');
 
 

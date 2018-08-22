@@ -3,8 +3,11 @@ import * as symbols from './symbols.js';
 
 
 // Symbols for private data members.
+/** @type {any} */
 const documentScrollingDisabledKey = Symbol('documentScrollingDisabled');
+/** @type {any} */
 const previousBodyOverflowKey = Symbol('previousBodyStyleOverflow');
+/** @type {any} */
 const previousDocumentMarginRightKey = Symbol('previousDocumentMarginRight');
 
 

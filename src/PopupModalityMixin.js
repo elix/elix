@@ -3,6 +3,7 @@ import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 
 
+/** @type {any} */
 const implicitCloseListenerKey = Symbol('implicitCloseListener');
 
 

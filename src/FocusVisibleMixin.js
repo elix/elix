@@ -6,6 +6,7 @@ import { merge } from './updates.js';
 // event since the last mousedown event.
 let keyboardActive = false;
 
+/** @type {any} */
 const focusVisibleChangedListenerKey = Symbol('focusVisibleChangedListener');
 
 

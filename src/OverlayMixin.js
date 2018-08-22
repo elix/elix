@@ -2,8 +2,11 @@ import { merge } from './updates.js';
 import { deepContains, defaultFocus } from './utilities.js';
 
 
+/** @type {any} */
 const appendedToDocumentKey = Symbol('appendedToDocument');
+/** @type {any} */
 const assignedZIndexKey = Symbol('assignedZIndex');
+/** @type {any} */
 const restoreFocusToElementKey = Symbol('restoreFocusToElement');
 
 
