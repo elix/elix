@@ -37,12 +37,12 @@ class PopupSource extends Base {
 
   constructor() {
     super();
-    this[symbols.descriptors] = {
+    this[symbols.descriptors] = Object.assign({}, super[symbols.descriptors], {
       backdrop: Backdrop,
       frame: OverlayFrame,
       popup: Popup,
       source: 'button'
-    };
+    });
   }
 
   /**

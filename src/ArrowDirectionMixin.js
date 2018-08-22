@@ -1,6 +1,6 @@
-import { createElement, html, replace } from './template.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import ArrowDirectionButton from './ArrowDirectionButton.js';
 
 
@@ -20,7 +20,7 @@ function ArrowDirectionMixin(Base) {
 
     constructor() {
       super();
-      Object.assign(this[symbols.descriptors], {
+      this[symbols.descriptors] = Object.assign({}, super[symbols.descriptors], {
         arrowButton: ArrowDirectionButton
       });
     }
@@ -72,12 +72,12 @@ function ArrowDirectionMixin(Base) {
     }
 
     /**
-     * Add the arrow buttons to a template.
+     * Destructively wrap a node with arrow buttons.
      * 
-     * @param {Node} original - the element that should be wrapped by buttons
+     * @param {Node} original - the node that should be wrapped by buttons
      */
     [patch](original) {
-      const arrowDirectionTemplate = html`
+      const arrowDirectionTemplate = template.html`
         <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;">
           <div
             id="arrowButtonLeft"
@@ -106,18 +106,25 @@ function ArrowDirectionMixin(Base) {
           </div>
         </div>
       `;
-      replace(
+      template.replace(
         arrowDirectionTemplate.content.querySelector('#arrowButtonLeft'),
-        createElement(this.arrowButtonDescriptor)
+        template.createElement(this.arrowButtonDescriptor)
       );
-      replace(
+      template.replace(
         arrowDirectionTemplate.content.querySelector('#arrowButtonRight'),
-        createElement(this.arrowButtonDescriptor)
+        template.createElement(this.arrowButtonDescriptor)
       );
       const arrowDirection = arrowDirectionTemplate.content.querySelector('#arrowDirection');
-      original.parentNode.replaceChild(arrowDirection, original);
       const container = arrowDirection.querySelector('#arrowDirectionContainer');
-      container.appendChild(original);
+      if (original.parentNode) {
+        original.parentNode.replaceChild(arrowDirection, original);
+        container.appendChild(original);
+      } else if (original instanceof DocumentFragment) {
+        while (original.childNodes.length > 0) {
+          container.appendChild(original.childNodes[0]);
+        }
+        original.appendChild(arrowDirection);
+      }
     }
 
     get showArrowButtons() {

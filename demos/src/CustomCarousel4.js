@@ -13,7 +13,7 @@ const Base =
 class CustomCarousel extends Base {
 
   get [symbols.template]() {
-    return this[PageNumbersMixin.inject](super[symbols.template]);
+    return this[PageNumbersMixin.wrap](super[symbols.template].content);
   }
 
 }

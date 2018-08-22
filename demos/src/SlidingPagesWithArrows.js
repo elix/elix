@@ -24,9 +24,9 @@ class SlidingPagesWithArrows extends Base {
   }
 
   get [symbols.template]() {
-    return this[ArrowDirectionMixin.inject](
-      super[symbols.template]
-    );
+    const result = super[symbols.template];
+    this[ArrowDirectionMixin.patch](result.content);
+    return result;
   }
 
 }

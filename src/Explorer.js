@@ -46,11 +46,11 @@ class Explorer extends Base {
 
   constructor() {
     super();
-    this[symbols.descriptors] = {
+    this[symbols.descriptors] = Object.assign({}, super[symbols.descriptors], {
       proxy: 'div',
       proxyList: ListBox,
       stage: Modes
-    };
+    });
   }
 
   componentDidMount() {

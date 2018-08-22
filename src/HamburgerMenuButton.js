@@ -34,10 +34,10 @@ export default class HamburgerMenuButton extends Base {
 
   constructor() {
     super();
-    this[symbols.descriptors] = {
+    this[symbols.descriptors] = Object.assign({}, super[symbols.descriptors], {
       menu: Drawer,
       menuButton: SeamlessButton
-    };
+    });
   }
 
   componentDidMount() {

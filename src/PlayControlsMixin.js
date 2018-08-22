@@ -23,9 +23,9 @@ export default function PlayControlsMixin(Base) {
 
     constructor() {
       super();
-      this[symbols.descriptors] = {
+      this[symbols.descriptors] = Object.assign({}, super[symbols.descriptors], {
         controlButton: SeamlessButton
-      };
+      });
     }
   
     componentDidMount() {
