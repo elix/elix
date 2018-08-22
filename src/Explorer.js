@@ -1,12 +1,12 @@
 import { apply, merge } from './updates.js';
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import ListBox from './ListBox.js';
 import Modes from './Modes.js';
 import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
-import { html, substituteElement, elementFromDescriptor } from './templates.js';
 
 
 const proxySlotchangeFiredKey = Symbol('proxySlotchangeFired');
@@ -261,7 +261,7 @@ class Explorer extends Base {
   }
 
   get [symbols.template]() {
-    const result = html`
+    const result = template.html`
       <style>
         :host {
           display: inline-flex;
@@ -284,15 +284,15 @@ class Explorer extends Base {
       </div>
     `;
     if (this[symbols.descriptors].proxyList !== 'div') {
-      substituteElement(
+      template.replace(
         result.content.querySelector('#proxyList'),
-        elementFromDescriptor(this.proxyListDescriptor)
+        template.createElement(this.proxyListDescriptor)
       );
     }
     if (this[symbols.descriptors].stage !== 'div') {
-      substituteElement(
+      template.replace(
         result.content.querySelector('#stage'),
-        elementFromDescriptor(this.stageDescriptor)
+        template.createElement(this.stageDescriptor)
       );
     }
     return result;
@@ -383,7 +383,7 @@ class Explorer extends Base {
 // Return the default list generated for the given items.
 function createDefaultProxies(items, proxyDescriptor) {
   const proxies = items ?
-    items.map(() => elementFromDescriptor(proxyDescriptor)) :
+    items.map(() => template.createElement(proxyDescriptor)) :
     [];
   // Make the array immutable to help update performance.
   Object.freeze(proxies);

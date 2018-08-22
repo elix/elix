@@ -6,7 +6,7 @@ import KeyboardMixin from './KeyboardMixin.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 import SeamlessButton from './SeamlessButton.js';
-import { elementFromDescriptor, html, substituteElement } from './templates.js';
+import { createElement, html, replace } from './template.js';
 
 
 const Base =
@@ -143,13 +143,13 @@ export default class HamburgerMenuButton extends Base {
         <slot></slot>
       </div>
     `;
-    substituteElement(
+    replace(
       result.content.querySelector('#menuButton'),
-      elementFromDescriptor(this.menuButtonDescriptor)
+      createElement(this.menuButtonDescriptor)
     );
-    substituteElement(
+    replace(
       result.content.querySelector('#menu'),
-      elementFromDescriptor(this.menuDescriptor)
+      createElement(this.menuDescriptor)
     );
     return result;
   }

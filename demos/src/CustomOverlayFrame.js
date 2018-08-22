@@ -1,6 +1,6 @@
 import * as symbols from '../../src/symbols.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
-import { html } from '../../src/templates.js';
+import { html } from '../../src/template.js';
 
 
 class CustomOverlayFrame extends ReactiveElement {

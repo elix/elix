@@ -1,4 +1,4 @@
-import { elementFromDescriptor, html, substituteElement } from './templates.js';
+import { createElement, html, replace } from './template.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import SeamlessButton from './SeamlessButton.js';
@@ -172,9 +172,9 @@ export default function PlayControlsMixin(Base) {
       const playControls = playControlsTemplate.content;
       const buttons = playControls.querySelectorAll('.controlButton');
       buttons.forEach(button => {
-        substituteElement(
+        replace(
           button,
-          elementFromDescriptor(this.controlButtonDescriptor)
+          createElement(this.controlButtonDescriptor)
         );  
       });
       const container = playControls.querySelector('#container');

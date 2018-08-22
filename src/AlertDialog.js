@@ -1,4 +1,4 @@
-import { elementFromDescriptor, html, substituteElement } from './templates.js';
+import { createElement, html, replace } from './template.js';
 import { merge, apply } from './updates.js';
 import * as symbols from './symbols.js';
 import Dialog from './Dialog.js';
@@ -106,7 +106,7 @@ class AlertDialog extends Dialog {
     if (state.opened && state.choicesForChoiceButtons !== state.choices) {
       // Choices have changed; create new buttons.
       const choiceButtons = state.choices.map(choice => {
-        const button = elementFromDescriptor(this[symbols.descriptors].choiceButton);
+        const button = createElement(this[symbols.descriptors].choiceButton);
         button.textContent = choice;
         return button;
       });
@@ -131,7 +131,7 @@ class AlertDialog extends Dialog {
         }
       }
     });
-    substituteElement(
+    replace(
       result.content.querySelector('slot:not([name])'),
       html`
         <style>

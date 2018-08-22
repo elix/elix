@@ -1,4 +1,4 @@
-import { html } from './templates.js';
+import { html } from './template.js';
 import * as symbols from './symbols.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';

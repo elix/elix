@@ -4,7 +4,7 @@ import MenuButton from './MenuButton.js';
 import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
-import { elementFromDescriptor, html, substituteElement } from './templates.js';
+import { createElement, html, replace } from './template.js';
 
 
 const Base =
@@ -75,9 +75,9 @@ class DropdownList extends Base {
       childNodes: sourceSlotContent.content.childNodes
     });
     if (this[symbols.descriptors].value !== 'div') {
-      substituteElement(
+      replace(
         result.content.querySelector('#value'),
-        elementFromDescriptor(this[symbols.descriptors].value)
+        createElement(this[symbols.descriptors].value)
       );
     }
     return result;

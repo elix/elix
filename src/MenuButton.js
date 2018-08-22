@@ -1,5 +1,5 @@
 import { deepContains, elementsFromPoint, indexOfItemContainingTarget } from './utilities.js';
-import { elementFromDescriptor, html, substituteElement } from './templates.js';
+import { createElement, html, replace } from './template.js';
 import { merge, apply } from './updates.js';
 import * as symbols from './symbols.js';
 import Menu from './Menu.js';
@@ -301,9 +301,9 @@ class MenuButton extends PopupSource {
 
     // Wrap default slot with a menu.
     const defaultSlot = result.content.querySelector('slot:not([name])');
-    const menu = elementFromDescriptor(this[symbols.descriptors].menu);
+    const menu = createElement(this[symbols.descriptors].menu);
     menu.setAttribute('id', 'menu');
-    substituteElement(defaultSlot, menu);
+    replace(defaultSlot, menu);
     menu.appendChild(defaultSlot);
 
     // Inject a "..." icon into the source slot.

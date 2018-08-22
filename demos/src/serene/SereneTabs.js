@@ -1,3 +1,4 @@
+import * as symbols from '../../../src/symbols.js';
 import { merge } from '../../../src/updates.js';
 import CrossfadeStage from '../../../src/CrossfadeStage.js';
 import SereneTabButton from './SereneTabButton.js';

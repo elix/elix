@@ -1,4 +1,4 @@
-import { substituteElement, elementFromDescriptor, html } from './templates.js';
+import { replace, createElement, html } from './template.js';
 import * as symbols from './symbols.js';
 import Backdrop from './Backdrop.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
@@ -120,13 +120,13 @@ class Overlay extends Base {
         <slot></slot>
       </div>
     `;
-    substituteElement(
+    replace(
       result.content.querySelector('#backdrop'),
-      elementFromDescriptor(this[symbols.descriptors].backdrop)
+      createElement(this[symbols.descriptors].backdrop)
     );
-    substituteElement(
+    replace(
       result.content.querySelector('#frame'),
-      elementFromDescriptor(this[symbols.descriptors].frame)
+      createElement(this[symbols.descriptors].frame)
     );
     return result;
   }

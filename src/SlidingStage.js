@@ -1,4 +1,4 @@
-import { html } from './templates.js';
+import { html } from './template.js';
 import { merge } from './updates.js';
 import * as fractionalSelection from './fractionalSelection.js';
 import * as symbols from './symbols.js';

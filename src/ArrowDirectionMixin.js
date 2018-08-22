@@ -1,4 +1,4 @@
-import { elementFromDescriptor, html, substituteElement } from './templates.js';
+import { createElement, html, replace } from './template.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import ArrowDirectionButton from './ArrowDirectionButton.js';
@@ -106,13 +106,13 @@ function ArrowDirectionMixin(Base) {
           </div>
         </div>
       `;
-      substituteElement(
+      replace(
         arrowDirectionTemplate.content.querySelector('#arrowButtonLeft'),
-        elementFromDescriptor(this.arrowButtonDescriptor)
+        createElement(this.arrowButtonDescriptor)
       );
-      substituteElement(
+      replace(
         arrowDirectionTemplate.content.querySelector('#arrowButtonRight'),
-        elementFromDescriptor(this.arrowButtonDescriptor)
+        createElement(this.arrowButtonDescriptor)
       );
       const arrowDirection = arrowDirectionTemplate.content.querySelector('#arrowDirection');
       original.parentNode.replaceChild(arrowDirection, original);

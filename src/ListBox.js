@@ -13,7 +13,7 @@ import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SelectionInViewMixin from './SelectionInViewMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
-import { html } from './templates.js';
+import { html } from './template.js';
 import { merge } from './updates.js';
 
 

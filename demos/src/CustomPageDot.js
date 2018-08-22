@@ -1,4 +1,4 @@
-import { html } from '../../src/templates.js';
+import { html } from '../../src/template.js';
 import * as symbols from '../../src/symbols.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 

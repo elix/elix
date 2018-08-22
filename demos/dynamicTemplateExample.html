@@ -11,7 +11,7 @@
     import ReactiveElement from '../src/ReactiveElement.js';
     import { apply, merge } from '../src/updates.js';
     import * as symbols from '../src/symbols.js';
-    import { elementFromDescriptor, html, substituteElement } from '../src/templates.js';
+    import { createElement, html, replace } from '../src/template.js';
 
     class IncrementDecrement extends ReactiveElement {
 
@@ -77,9 +77,9 @@
         `;
         if (this[symbols.descriptors].button !== 'button') {
           result.content.querySelectorAll('button').forEach(button => {
-            substituteElement(
+            replace(
               button,
-              elementFromDescriptor(this[symbols.descriptors].button)
+              createElement(this[symbols.descriptors].button)
             );
           });
         }

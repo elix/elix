@@ -10,7 +10,7 @@
  * [ShadowTemplateMixin](ShadowTemplateMixin) expects a component to define
  * a property called [symbols.template](#template):
  *
- *     import { html } from 'elix/src/templates.js'
+ *     import { html } from 'elix/src/template.js'
  *     import * as symbols from 'elix/src/symbols.js';
  *     import ShadowTemplateMixin from 'elix/src/ShadowTemplateMixin.js';
  * 

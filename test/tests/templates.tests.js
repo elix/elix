@@ -1,4 +1,4 @@
-import { elementFromDescriptor, html, substituteElement } from '../../src/templates.js';
+import { createElement, html, replace } from '../../src/template.js';
 
 
 class TemplateTest extends HTMLElement {}
@@ -13,19 +13,19 @@ describe("templates", () => {
   });
 
   it("can create an element from a string descriptor", () => {
-    const fixture = elementFromDescriptor('div');
+    const fixture = createElement('div');
     assert(fixture instanceof HTMLDivElement);
   });
 
   it("can create an element from a class constructor", () => {
-    const fixture = elementFromDescriptor(TemplateTest);
+    const fixture = createElement(TemplateTest);
     assert(fixture instanceof TemplateTest);
   });
 
   it("can create an element by cloning an element", () => {
     const original = document.createElement('div');
     original.textContent = 'Hello';
-    const fixture = elementFromDescriptor(original);
+    const fixture = createElement(original);
     assert(fixture instanceof HTMLDivElement);
     assert.equal(fixture.textContent, 'Hello');
     fixture.textContent = 'Goodbye';
@@ -41,7 +41,7 @@ describe("templates", () => {
     fixture.appendChild(original);
     const replacement = document.createElement('a');
     replacement.setAttribute('id', 'replacement');
-    substituteElement(original, replacement);
+    replace(original, replacement);
     // Replacement should have taken place of original element.
     assert.equal(replacement.parentNode, fixture);
     assert.equal(original.parentNode, null);

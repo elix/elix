@@ -1,4 +1,4 @@
-import { html, elementFromDescriptor, substituteElement } from './templates.js';
+import { html, createElement, replace } from './template.js';
 import { merge } from './updates.js';
 import { ownEvent } from './utilities.js';
 import * as symbols from './symbols.js';
@@ -364,16 +364,16 @@ class PopupSource extends Base {
       </div>
     `;
     if (this[symbols.descriptors].source !== 'button') {
-      substituteElement(
+      replace(
         result.content.querySelector('#source'),
-        elementFromDescriptor(this[symbols.descriptors].source)
+        createElement(this[symbols.descriptors].source)
       );
     }
     const popupPlaceholder = result.content.querySelector('#popup');
-    const popup = elementFromDescriptor(this[symbols.descriptors].popup);
+    const popup = createElement(this[symbols.descriptors].popup);
     popup.backdropDescriptor = this[symbols.descriptors].backdrop;
     popup.frameDescriptor = this[symbols.descriptors].frame;
-    substituteElement(popupPlaceholder, popup);
+    replace(popupPlaceholder, popup);
     return result;
   }
 

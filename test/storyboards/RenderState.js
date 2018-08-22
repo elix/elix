@@ -1,4 +1,4 @@
-import { html } from '../../src/templates.js';
+import { html } from '../../src/template.js';
 import { merge } from '../../src/updates.js';
 import { substantiveElements } from '../../src/content.js';
 import * as symbols from '../../src/symbols.js';

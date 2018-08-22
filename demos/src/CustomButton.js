@@ -1,7 +1,7 @@
 import * as symbols from '../../src/symbols.js';
 import FocusVisibleMixin from '../../src/FocusVisibleMixin.js';
 import WrappedStandardElement from '../../src/WrappedStandardElement.js';
-import { html } from '../../src/templates.js';
+import { html } from '../../src/template.js';
 import { merge } from '../../src/updates.js';
 
 

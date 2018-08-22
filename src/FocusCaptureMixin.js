@@ -1,5 +1,5 @@
 import * as symbols from './symbols.js';
-import { html } from './templates.js';
+import { html } from './template.js';
 
 
 // Symbols for private data members on an element.
