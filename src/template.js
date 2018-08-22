@@ -3,9 +3,11 @@
  * @param {Function|string|Node} descriptor 
  * @returns {Node}
  */
-export function elementFromDescriptor(descriptor) {
+export function createElement(descriptor) {
   if (typeof descriptor === 'function') {
-    return new descriptor();
+    /** @type {any} */
+    const cast = descriptor;
+    return new cast();
   } else if (descriptor instanceof Node) {
     return descriptor.cloneNode(true);
   } else {
@@ -15,10 +17,13 @@ export function elementFromDescriptor(descriptor) {
 
 /**
  * 
- * @param {Node} original 
+ * @param {Node|null} original 
  * @param {Node} replacement 
  */
-export function substituteElement(original, replacement) {
+export function replace(original, replacement) {
+  if (!original) {
+    throw 'The original element could not be found.';
+  }
   if (!original.parentNode) {
     throw 'An element must have a parent before it can be substituted.'
   }
