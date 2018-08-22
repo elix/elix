@@ -1,6 +1,6 @@
-import { createElement, html, replace } from './template.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import SeamlessButton from './SeamlessButton.js';
 
 
@@ -22,6 +22,7 @@ export default function PlayControlsMixin(Base) {
   class PlayControls extends Base {
 
     constructor() {
+      // @ts-ignore
       super();
       this[symbols.descriptors] = Object.assign({}, super[symbols.descriptors], {
         controlButton: SeamlessButton
@@ -86,7 +87,7 @@ export default function PlayControlsMixin(Base) {
      * @param {Node} original - the element that should be wrapped by play controls
      */
     [patch](original) {
-      const playControlsTemplate = html`
+      const playControlsTemplate = template.html`
         <style>
           #buttons {
             bottom: 0;
@@ -122,12 +123,12 @@ export default function PlayControlsMixin(Base) {
             width: 40px;
           }
 
-          #container {
+          #playControlsContainer {
             display: flex;
             flex: 1;
           }
-          display: flex; flex: 1; overflow: hidden; position: relative;
-          #container ::slotted(*) {
+
+          #playControlsContainer ::slotted(*) {
             flex: 1;
           }
         </style>
@@ -167,19 +168,21 @@ export default function PlayControlsMixin(Base) {
           </div>
         </div>
 
-        <div id="container" role="none"></div>
+        <div id="playControlsContainer" role="none"></div>
       `;
       const playControls = playControlsTemplate.content;
       const buttons = playControls.querySelectorAll('.controlButton');
       buttons.forEach(button => {
-        replace(
+        template.replace(
           button,
-          createElement(this.controlButtonDescriptor)
+          template.createElement(this.controlButtonDescriptor)
         );  
       });
-      const container = playControls.querySelector('#container');
-      original.parentNode.replaceChild(playControls, original);
-      container.appendChild(original);
+      const container = playControls.querySelector('#playControlsContainer');
+      if (!container) {
+        throw `Couldn't find element with ID "playControlsContainer".`;
+      }
+      template.wrap(original, playControls, container);
     }
 
     get updates() {

@@ -1,7 +1,6 @@
 /**
  * 
  * @param {Function|string|Node} descriptor 
- * @returns {Node}
  */
 export function createElement(descriptor) {
   if (typeof descriptor === 'function') {
@@ -14,6 +13,21 @@ export function createElement(descriptor) {
     return document.createElement(descriptor);
   }
 }
+
+
+export function html(strings, ...substitutions) {
+  // Concatenate the strings and substitutions.
+  const complete = strings.map((string, index) => {
+    const substitution = index < substitutions.length ?
+      substitutions[index] :
+      '';
+    return `${string}${substitution}`;
+  }).join('');
+  const template = document.createElement('template');
+  template.innerHTML = complete;
+  return template;
+}
+
 
 /**
  * 
@@ -33,7 +47,9 @@ export function replace(original, replacement) {
   original.parentNode.replaceChild(element, original);
   if (original instanceof Element && element instanceof Element) {
     // Copy over attributes which are not already present on replacement.
-    for (const { name, value } of original.attributes) {
+    /** @type {any} */
+    const attributes = original.attributes;
+    for (const { name, value } of attributes) {
       if (!element.getAttribute(name)) {
         element.setAttribute(name, value);
       }
@@ -46,15 +62,20 @@ export function replace(original, replacement) {
 }
 
 
-export function html(strings, ...substitutions) {
-  // Concatenate the strings and substitutions.
-  const complete = strings.map((string, index) => {
-    const substitution = index < substitutions.length ?
-      substitutions[index] :
-      '';
-    return `${string}${substitution}`;
-  }).join('');
-  const template = document.createElement('template');
-  template.innerHTML = complete;
-  return template;
+/**
+ * @param original {Node} - the node to wrap
+ * @param wrapper {Node} - the node to wrap with
+ * @param destination {Node} - the node in the wrapper in which the original
+ * node should be put
+ */
+export function wrap(original, wrapper, destination) {
+  if (original.parentNode) {
+    original.parentNode.replaceChild(wrapper, original);
+    destination.appendChild(original);
+  } else if (original instanceof DocumentFragment) {
+    while (original.childNodes.length > 0) {
+      destination.appendChild(original.childNodes[0]);
+    }
+    original.appendChild(wrapper);
+  }
 }

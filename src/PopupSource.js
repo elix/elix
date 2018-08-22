@@ -371,8 +371,12 @@ class PopupSource extends Base {
     }
     const popupPlaceholder = result.content.querySelector('#popup');
     const popup = createElement(this[symbols.descriptors].popup);
-    popup.backdropDescriptor = this[symbols.descriptors].backdrop;
-    popup.frameDescriptor = this[symbols.descriptors].frame;
+    if ('backdropDescriptor' in popup) {
+      popup.backdropDescriptor = this[symbols.descriptors].backdrop;
+    }
+    if ('frameDescriptor' in popup) {
+      popup.frameDescriptor = this[symbols.descriptors].frame;
+    }
     replace(popupPlaceholder, popup);
     return result;
   }

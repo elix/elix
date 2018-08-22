@@ -3,9 +3,7 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const ArrowDirectionMixin: Mixin<{}, {
-  defaults: PlainObject;
-}> & {
+declare const ArrowDirectionMixin: Mixin<{}, {}> & {
   patch: symbol;
 };
 

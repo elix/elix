@@ -301,8 +301,13 @@ class MenuButton extends PopupSource {
 
     // Wrap default slot with a menu.
     const defaultSlot = result.content.querySelector('slot:not([name])');
+    if (!defaultSlot) {
+      throw `Couldn't find default slot.`;
+    }
     const menu = createElement(this[symbols.descriptors].menu);
-    menu.setAttribute('id', 'menu');
+    if (menu instanceof Element) {
+      menu.setAttribute('id', 'menu');
+    }
     replace(defaultSlot, menu);
     menu.appendChild(defaultSlot);
 
@@ -314,6 +319,9 @@ class MenuButton extends PopupSource {
       </svg>
     `;
     const sourceSlot = result.content.querySelector('slot[name="source"]');
+    if (!sourceSlot) {
+      throw `Couldn't find slot with name "source".`;
+    }
     apply(sourceSlot, {
       childNodes: icon.content.childNodes
     });

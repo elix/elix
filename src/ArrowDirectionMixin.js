@@ -19,6 +19,7 @@ function ArrowDirectionMixin(Base) {
   class ArrowDirection extends Base {
 
     constructor() {
+      // @ts-ignore
       super();
       this[symbols.descriptors] = Object.assign({}, super[symbols.descriptors], {
         arrowButton: ArrowDirectionButton
@@ -115,16 +116,14 @@ function ArrowDirectionMixin(Base) {
         template.createElement(this.arrowButtonDescriptor)
       );
       const arrowDirection = arrowDirectionTemplate.content.querySelector('#arrowDirection');
-      const container = arrowDirection.querySelector('#arrowDirectionContainer');
-      if (original.parentNode) {
-        original.parentNode.replaceChild(arrowDirection, original);
-        container.appendChild(original);
-      } else if (original instanceof DocumentFragment) {
-        while (original.childNodes.length > 0) {
-          container.appendChild(original.childNodes[0]);
-        }
-        original.appendChild(arrowDirection);
+      if (!arrowDirection) {
+        throw `Couldn't find element with ID "arrowDirection".`;
       }
+      const container = arrowDirection.querySelector('#arrowDirectionContainer');
+      if (!container) {
+        throw `Couldn't find element with ID "arrowDirectionContainer".`;
+      }
+      template.wrap(original, arrowDirection, container);
     }
 
     get showArrowButtons() {

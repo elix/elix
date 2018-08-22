@@ -60,6 +60,9 @@ class DropdownList extends Base {
   get [symbols.template]() {
     const result = super[symbols.template];
     const sourceSlot = result.content.querySelector('slot[name="source"]');
+    if (!sourceSlot) {
+      throw `Couldn't find slot with name "source".`;
+    }
     const sourceSlotContent = html`
       <div id="value"></div>
       <div>

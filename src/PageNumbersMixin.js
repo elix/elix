@@ -37,6 +37,9 @@ function PageNumbersMixin(Base) {
         </div>
       `;
       const container = result.content.querySelector('#pageNumbersContainer');
+      if (!container) {
+        throw `Couldn't find element with ID "pageNumbersContainer".`;
+      }
       container.appendChild(original);
       return result;
     }
