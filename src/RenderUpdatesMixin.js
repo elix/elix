@@ -9,7 +9,7 @@ import * as updates from './updates.js';
  * @module RenderUpdatesMixin
  */
 export default function RenderUpdatesMixin(Base) {
-  return class Props extends Base {
+  return class RenderUpdates extends Base {
 
     connectedCallback() {
       // Calculate original props before we call super. If, e.g., ReactiveMixin
