@@ -21,8 +21,8 @@ customElements.define('element-with-string-template', ElementWithStringTemplate)
 
 
 /* Element with a real template */
-const template = document.createElement('template');
-template.innerHTML = `Hello`;
+const elementTemplate = document.createElement('template');
+elementTemplate.innerHTML = `Hello`;
 class ElementWithRealTemplate extends ShadowTemplateMixin(HTMLElement) {
 
   constructor() {
@@ -31,7 +31,7 @@ class ElementWithRealTemplate extends ShadowTemplateMixin(HTMLElement) {
   }
 
   get [symbols.template]() {
-    return template;
+    return elementTemplate;
   }
 
 }
