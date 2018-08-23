@@ -4,7 +4,7 @@ import * as template from './template.js';
 import ArrowDirectionButton from './ArrowDirectionButton.js';
 
 
-const patch = Symbol('patch');
+const wrap = Symbol('wrap');
 
 
 /**
@@ -70,60 +70,6 @@ function ArrowDirectionMixin(Base) {
         orientation: 'horizontal',
         overlayArrowButtons: true
       });
-    }
-
-    /**
-     * Destructively wrap a node with arrow buttons.
-     * 
-     * @param {Node} original - the node that should be wrapped by buttons
-     */
-    [patch](original) {
-      const arrowDirectionTemplate = template.html`
-        <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;">
-          <div
-            id="arrowButtonLeft"
-            aria-hidden="true"
-            >
-            <slot name="arrowButtonLeft">
-              <svg id="arrowIconLeft" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
-                <g>
-                  <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
-                </g>
-              </svg>
-            </slot>
-          </div>
-          <div id="arrowDirectionContainer" role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;"></div>
-          <div
-            id="arrowButtonRight"
-            aria-hidden="true"
-            >
-            <slot name="arrowButtonRight">
-              <svg id="arrowIconRight" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
-                <g>
-                  <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
-                </g>
-              </svg>
-            </slot>
-          </div>
-        </div>
-      `;
-      template.replace(
-        arrowDirectionTemplate.content.querySelector('#arrowButtonLeft'),
-        template.createElement(this.arrowButtonDescriptor)
-      );
-      template.replace(
-        arrowDirectionTemplate.content.querySelector('#arrowButtonRight'),
-        template.createElement(this.arrowButtonDescriptor)
-      );
-      const arrowDirection = arrowDirectionTemplate.content.querySelector('#arrowDirection');
-      if (!arrowDirection) {
-        throw `Couldn't find element with ID "arrowDirection".`;
-      }
-      const container = arrowDirection.querySelector('#arrowDirectionContainer');
-      if (!container) {
-        throw `Couldn't find element with ID "arrowDirectionContainer".`;
-      }
-      template.wrap(original, arrowDirection, container);
     }
 
     get showArrowButtons() {
@@ -200,13 +146,62 @@ function ArrowDirectionMixin(Base) {
       });
     }
 
+    /**
+     * Destructively wrap a node with elements to show arrow buttons.
+     * 
+     * @param {Node} original - the node that should be wrapped by buttons
+     */
+    [wrap](original) {
+      const arrowDirectionTemplate = template.html`
+        <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;">
+          <div
+            id="arrowButtonLeft"
+            aria-hidden="true"
+            >
+            <slot name="arrowButtonLeft">
+              <svg id="arrowIconLeft" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+                <g>
+                  <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
+                </g>
+              </svg>
+            </slot>
+          </div>
+          <div id="arrowDirectionContainer" role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;"></div>
+          <div
+            id="arrowButtonRight"
+            aria-hidden="true"
+            >
+            <slot name="arrowButtonRight">
+              <svg id="arrowIconRight" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+                <g>
+                  <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
+                </g>
+              </svg>
+            </slot>
+          </div>
+        </div>
+      `;
+      template.replace(
+        arrowDirectionTemplate.content.querySelector('#arrowButtonLeft'),
+        template.createElement(this.arrowButtonDescriptor)
+      );
+      template.replace(
+        arrowDirectionTemplate.content.querySelector('#arrowButtonRight'),
+        template.createElement(this.arrowButtonDescriptor)
+      );
+      const container = arrowDirectionTemplate.content.querySelector('#arrowDirectionContainer');
+      if (!container) {
+        throw `Couldn't find element with ID "arrowDirectionContainer".`;
+      }
+      template.wrap(original, arrowDirectionTemplate.content, container);
+    }
   }
 
   return ArrowDirection;
 }
 
 
-ArrowDirectionMixin.patch = patch;
+ArrowDirectionMixin.wrap = wrap;
 
 
 /*

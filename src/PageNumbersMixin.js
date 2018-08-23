@@ -16,12 +16,12 @@ function PageNumbersMixin(Base) {
   class PageNumbers extends Base {
 
     /**
-     * Add the page numbers to a template.
+     * Destructively wrap a node with elements to show page numbers.
      * 
      * @param {Node} original - the element that should be wrapped by page numbers
      */
     [wrap](original) {
-      const result = template.html`
+      const pageNumbersTemplate = template.html`
         <div id="pageNumbers" role="none" style="display: flex; flex: 1; overflow: hidden;">
           <style>
             #pageNumber {
@@ -36,12 +36,11 @@ function PageNumbersMixin(Base) {
           <div id="pageNumber"></div>
         </div>
       `;
-      const container = result.content.querySelector('#pageNumbersContainer');
+      const container = pageNumbersTemplate.content.querySelector('#pageNumbersContainer');
       if (!container) {
         throw `Couldn't find element with ID "pageNumbersContainer".`;
       }
-      container.appendChild(original);
-      return result;
+      template.wrap(original, pageNumbersTemplate.content, container);;
     }
 
     get updates() {

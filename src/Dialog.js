@@ -37,7 +37,7 @@ class Dialog extends Base {
   get [symbols.template]() {
     const result = super[symbols.template];
     const frame = result.content.querySelector('#frame');
-    this[FocusCaptureMixin.patch](frame);
+    this[FocusCaptureMixin.wrap](frame);
     return result;
   }
 

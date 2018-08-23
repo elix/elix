@@ -96,7 +96,7 @@ class Carousel extends Base {
   get [symbols.template]() {
     const result = super[symbols.template];
     const stage = result.content.querySelector('#stage');
-    this[ArrowDirectionMixin.patch](stage);
+    this[ArrowDirectionMixin.wrap](stage);
     return result;
   }
 

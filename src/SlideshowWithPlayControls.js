@@ -65,7 +65,7 @@ class SlideshowWithPlayControls extends Base {
   get [symbols.template]() {
     const result = super[symbols.template];
     const modesContainer = result.content.querySelector('#modesContainer');
-    this[PlayControlsMixin.patch](modesContainer);
+    this[PlayControlsMixin.wrap](modesContainer);
     return result;
   }
 

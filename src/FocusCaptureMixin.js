@@ -3,13 +3,13 @@ import * as template from './template.js';
 
 
 // Symbols for private data members on an element.
-const patch = Symbol('patch');
+const wrap = Symbol('wrap');
 /** @type {any} */
 const wrappingFocusKey = Symbol('wrappingFocus');
 
 
 /**
- * This mixin patches a component’s template such that, once the component gains
+ * This mixin wraps a component’s template such that, once the component gains
  * the keyboard focus, Tab and Shift+Tab operations will cycle the focus within
  * the component.
  * 
@@ -60,21 +60,25 @@ function FocusCaptureMixin(base) {
     }
 
     /**
-     * Patch a DOM tree with additional elements necessary to capture focus.
+     * Destructively wrap a node with elements necessary to capture focus.
      * 
      * Call this method in a components `symbols.template` property.
-     * Invoke this method as `this[FocusCaptureMixin.patch](element)`.
+     * Invoke this method as `this[FocusCaptureMixin.wrap](element)`.
      * 
      * @param {Node} original - the element within which focus should wrap
      */
-    [patch](original) {
-      const focusCatcher = template.html`<div id="focusCatcher" tabindex="0"></div>`;
-      if (original.parentNode) {
-        original.parentNode.insertBefore(focusCatcher.content, original.nextSibling);
-      } else {
-        /* eslint-disable no-console */
-        console.warn(`FocusCaptureMixin[patch] can only patch an element that has a parent.`);
+    [wrap](original) {
+      const focusCaptureTemplate = template.html`
+        <div style="display: flex;">
+          <div id="focusCaptureContainer" style="display: flex;"></div>
+          <div id="focusCatcher" tabindex="0"></div>
+        </div>
+      `;
+      const container = focusCaptureTemplate.content.querySelector('#focusCaptureContainer');
+      if (!container) {
+        throw `Couldn't find element with ID "focusCaptureContainer".`;
       }
+      template.wrap(original, focusCaptureTemplate.content, container);
     }
 
   }
@@ -83,7 +87,7 @@ function FocusCaptureMixin(base) {
 }
 
 
-FocusCaptureMixin.patch = patch;
+FocusCaptureMixin.wrap = wrap;
 
 
 export default FocusCaptureMixin;

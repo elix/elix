@@ -24,8 +24,9 @@ class CustomCarousel extends Base {
   }
 
   get [symbols.template]() {
-    const base = super[symbols.template];
-    return this[PageNumbersMixin.wrap](base.content);
+    const result = super[symbols.template];
+    this[PageNumbersMixin.wrap](result.content);
+    return result;
   }
 
   get updates() {

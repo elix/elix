@@ -4,7 +4,7 @@ import * as template from './template.js';
 import SeamlessButton from './SeamlessButton.js';
 
 
-const patch = Symbol('patch');
+const wrap = Symbol('wrap');
 
 
 /**
@@ -80,13 +80,47 @@ export default function PlayControlsMixin(Base) {
       // Prefer mixin result if it's defined, otherwise use base result.
       return handled || (super[symbols.keydown] && super[symbols.keydown](event));
     }
+
+    get updates() {
+      const playing = this.playing;
+
+      const rightToLeft = this[symbols.rightToLeft];
+      const transform = rightToLeft ?
+        'rotate(180deg)' :
+        '';
+
+      return merge(super.updates, {
+        $: {
+          nextIcon: {
+            style: {
+              transform
+            }
+          },
+          pausedIcon: {
+            style: {
+              display: playing ? 'none' : ''
+            }
+          },
+          playingIcon: {
+            style: {
+              display: playing ? '' : 'none'
+            }
+          },
+          previousIcon: {
+            style: {
+              transform
+            }
+          },
+        }
+      })
+    }
     
     /**
-     * Add the play controls to a template.
+     * Destructively wrap a node with elements for play controls.
      * 
      * @param {Node} original - the element that should be wrapped by play controls
      */
-    [patch](original) {
+    [wrap](original) {
       const playControlsTemplate = template.html`
         <style>
           #buttons {
@@ -170,62 +204,26 @@ export default function PlayControlsMixin(Base) {
 
         <div id="playControlsContainer" role="none"></div>
       `;
-      const playControls = playControlsTemplate.content;
-      const buttons = playControls.querySelectorAll('.controlButton');
+      const buttons = playControlsTemplate.content.querySelectorAll('.controlButton');
       buttons.forEach(button => {
         template.replace(
           button,
           template.createElement(this.controlButtonDescriptor)
         );  
       });
-      const container = playControls.querySelector('#playControlsContainer');
+      const container = playControlsTemplate.content.querySelector('#playControlsContainer');
       if (!container) {
         throw `Couldn't find element with ID "playControlsContainer".`;
       }
-      template.wrap(original, playControls, container);
+      template.wrap(original, playControlsTemplate.content, container);
     }
-
-    get updates() {
-      const playing = this.playing;
-
-      const rightToLeft = this[symbols.rightToLeft];
-      const transform = rightToLeft ?
-        'rotate(180deg)' :
-        '';
-
-      return merge(super.updates, {
-        $: {
-          nextIcon: {
-            style: {
-              transform
-            }
-          },
-          pausedIcon: {
-            style: {
-              display: playing ? 'none' : ''
-            }
-          },
-          playingIcon: {
-            style: {
-              display: playing ? '' : 'none'
-            }
-          },
-          previousIcon: {
-            style: {
-              transform
-            }
-          },
-        }
-      })
-    }
-
   }
 
   return PlayControls;
 }
 
 
-PlayControlsMixin.patch = patch;
+PlayControlsMixin.wrap = wrap;
 
 
 /*
