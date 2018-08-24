@@ -55,7 +55,7 @@ class Carousel extends Base {
 
   constructor() {
     super();
-    this[symbols.descriptors] = Object.assign({}, this[symbols.descriptors], {
+    this[symbols.roles] = Object.assign({}, this[symbols.roles], {
       proxy: PageDot,
       proxyList: CenteredStripOpacity,
       stage: SlidingStage
@@ -95,7 +95,7 @@ class Carousel extends Base {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const result = super.template;
+    // Next line is same as: const result = super[symbols.template]
     const result = getSuperProperty(this, Carousel, symbols.template);
     const stage = result.content.querySelector('#stage');
     this[ArrowDirectionMixin.wrap](stage);

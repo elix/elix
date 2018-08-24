@@ -34,7 +34,7 @@ export default class HamburgerMenuButton extends Base {
 
   constructor() {
     super();
-    this[symbols.descriptors] = Object.assign({}, this[symbols.descriptors], {
+    this[symbols.roles] = Object.assign({}, this[symbols.roles], {
       menu: Drawer,
       menuButton: SeamlessButton
     });
@@ -86,12 +86,12 @@ export default class HamburgerMenuButton extends Base {
    * @type {function|string|Node}
    * @default {Drawer}
    */
-  get menuDescriptor() {
-    return this[symbols.descriptors].menu;
+  get menuRole() {
+    return this[symbols.roles].menu;
   }
-  set menuDescriptor(menuDescriptor) {
+  set menuRole(menuRole) {
     this[symbols.hasDynamicTemplate] = true;
-    this[symbols.descriptors].menu = menuDescriptor;
+    this[symbols.roles].menu = menuRole;
   }
 
   /**
@@ -100,12 +100,12 @@ export default class HamburgerMenuButton extends Base {
    * @type {function|string|Node}
    * @default {SeamlessButton}
    */
-  get menuButtonDescriptor() {
-    return this[symbols.descriptors].menuButton;
+  get menuButtonRole() {
+    return this[symbols.roles].menuButton;
   }
-  set menuButtonDescriptor(menuButtonDescriptor) {
+  set menuButtonRole(menuButtonRole) {
     this[symbols.hasDynamicTemplate] = true;
-    this[symbols.descriptors].menuButton = menuButtonDescriptor;
+    this[symbols.roles].menuButton = menuButtonRole;
   }
 
   get [symbols.template]() {
@@ -145,11 +145,11 @@ export default class HamburgerMenuButton extends Base {
     `;
     replace(
       result.content.querySelector('#menuButton'),
-      createElement(this.menuButtonDescriptor)
+      createElement(this.menuButtonRole)
     );
     replace(
       result.content.querySelector('#menu'),
-      createElement(this.menuDescriptor)
+      createElement(this.menuRole)
     );
     return result;
   }

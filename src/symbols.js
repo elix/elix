@@ -90,18 +90,6 @@ export const contentSlot = Symbol('contentSlot');
 export const defaultFocus = Symbol('defaultFocus');
 
 /**
- * Symbol for the `descriptors` property.
- * 
- * A descriptor is a named role in an element's template that can be filled by
- * an element tag (e.g., "div"), a custom element class constructor (e.g.,
- * [SeamlessButton](SeamlessButton)), or a document fragment.
- * 
- * The `descriptors` property is a dictionary mapping a role name to the
- * corresponding descriptor that should be instantiated to fill that role.
- */
-export const descriptors = Symbol('descriptors');
-
-/**
  * Symbol for the `elementsWithTransitions` property.
  * 
  * [TransitionEffectMixin](TransitionEffectMixin) inspects this property
@@ -339,6 +327,19 @@ export const rendering = Symbol('rendering');
  * @var {boolean} rightToLeft
  */
 export const rightToLeft = Symbol('rightToLeft');
+
+/**
+ * Symbol for the `roles` property.
+ * 
+ * A role is an element in a component template that can be replaced by an
+ * alternative element. The element filling the role can be identified an
+ * element tag (e.g., "div"), a custom element class constructor (e.g.,
+ * [SeamlessButton](SeamlessButton)), or a document fragment.
+ * 
+ * The `roles` property is a dictionary mapping a role name to the corresponding
+ * element that should be instantiated to fill that role.
+ */
+export const roles = Symbol('roles');
 
 /**
  * Symbol for the `scrollTarget` property.

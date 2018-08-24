@@ -9,7 +9,7 @@ class CustomCarousel extends Carousel {
 
   constructor() {
     super();
-    Object.assign(this[symbols.descriptors], {
+    Object.assign(this[symbols.roles], {
       arrowButton: CustomArrowButton,
       proxy: CustomPageDot
     });

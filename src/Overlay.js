@@ -37,7 +37,7 @@ class Overlay extends Base {
 
   constructor() {
     super();
-    this[symbols.descriptors] = Object.assign({}, this[symbols.descriptors], {
+    this[symbols.roles] = Object.assign({}, this[symbols.roles], {
       backdrop: Backdrop,
       frame: OverlayFrame
     });
@@ -58,12 +58,12 @@ class Overlay extends Base {
    * @type {function|string|Node}
    * @default {Backdrop}
    */
-  get backdropDescriptor() {
-    return this[symbols.descriptors].backdrop;
+  get backdropRole() {
+    return this[symbols.roles].backdrop;
   }
-  set backdropDescriptor(backdropDescriptor) {
+  set backdropRole(backdropRole) {
     this[symbols.hasDynamicTemplate] = true;
-    this[symbols.descriptors].backdrop = backdropDescriptor;
+    this[symbols.roles].backdrop = backdropRole;
   }
 
   get frame() {
@@ -80,12 +80,12 @@ class Overlay extends Base {
    * @type {function|string|Node}
    * @default {OverlayFrame}
    */
-  get frameDescriptor() {
-    return this[symbols.descriptors].frame;
+  get frameRole() {
+    return this[symbols.roles].frame;
   }
-  set frameDescriptor(frameDescriptor) {
+  set frameRole(frameRole) {
     this[symbols.hasDynamicTemplate] = true;
-    this[symbols.descriptors].frame = frameDescriptor;
+    this[symbols.roles].frame = frameRole;
   }
 
   get [symbols.template]() {
@@ -122,11 +122,11 @@ class Overlay extends Base {
     `;
     replace(
       result.content.querySelector('#backdrop'),
-      createElement(this[symbols.descriptors].backdrop)
+      createElement(this[symbols.roles].backdrop)
     );
     replace(
       result.content.querySelector('#frame'),
-      createElement(this[symbols.descriptors].frame)
+      createElement(this[symbols.roles].frame)
     );
     return result;
   }

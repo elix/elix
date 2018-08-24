@@ -15,7 +15,7 @@ class CarouselWithThumbnails extends Carousel {
 
   constructor() {
     super();
-    Object.assign(this[symbols.descriptors], {
+    Object.assign(this[symbols.roles], {
       proxy: Thumbnail
     });
   }

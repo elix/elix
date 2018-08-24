@@ -37,7 +37,7 @@ class PopupSource extends Base {
 
   constructor() {
     super();
-    this[symbols.descriptors] = Object.assign({}, this[symbols.descriptors], {
+    this[symbols.roles] = Object.assign({}, this[symbols.roles], {
       backdrop: Backdrop,
       frame: OverlayFrame,
       popup: Popup,
@@ -56,12 +56,12 @@ class PopupSource extends Base {
    * @type {function|string|Node}
    * @default {Backdrop}
    */
-  get backdropDescriptor() {
-    return this[symbols.descriptors].backdrop;
+  get backdropRole() {
+    return this[symbols.roles].backdrop;
   }
-  set backdropDescriptor(backdropDescriptor) {
+  set backdropRole(backdropRole) {
     this[symbols.hasDynamicTemplate] = true;
-    this[symbols.descriptors].backdrop = backdropDescriptor;
+    this[symbols.roles].backdrop = backdropRole;
   }
 
   componentDidMount() {
@@ -175,12 +175,12 @@ class PopupSource extends Base {
    * @type {function|string|Node}
    * @default {OverlayFrame}
    */
-  get frameDescriptor() {
-    return this[symbols.descriptors].frame;
+  get frameRole() {
+    return this[symbols.roles].frame;
   }
-  set frameDescriptor(frameDescriptor) {
+  set frameRole(frameRole) {
     this[symbols.hasDynamicTemplate] = true;
-    this[symbols.descriptors].frame = frameDescriptor;
+    this[symbols.roles].frame = frameRole;
   }
 
   /**
@@ -252,12 +252,12 @@ class PopupSource extends Base {
    * @type {function|string|Node}
    * @default {Popup}
    */
-  get popupDescriptor() {
-    return this[symbols.descriptors].popup;
+  get popupRole() {
+    return this[symbols.roles].popup;
   }
-  set popupDescriptor(popupDescriptor) {
+  set popupRole(popupRole) {
     this[symbols.hasDynamicTemplate] = true;
-    this[symbols.descriptors].popup = popupDescriptor;
+    this[symbols.roles].popup = popupRole;
   }
 
   refineState(state) {
@@ -298,12 +298,12 @@ class PopupSource extends Base {
    * @type {function|string|Node}
    * @default 'button'
    */
-  get sourceDescriptor() {
-    return this[symbols.descriptors].source;
+  get sourceRole() {
+    return this[symbols.roles].source;
   }
-  set sourceDescriptor(sourceDescriptor) {
+  set sourceRole(sourceRole) {
     this[symbols.hasDynamicTemplate] = true;
-    this[symbols.descriptors].source = sourceDescriptor;
+    this[symbols.roles].source = sourceRole;
   }
 
   get [symbols.template]() {
@@ -363,19 +363,19 @@ class PopupSource extends Base {
         </div>
       </div>
     `;
-    if (this[symbols.descriptors].source !== 'button') {
+    if (this[symbols.roles].source !== 'button') {
       replace(
         result.content.querySelector('#source'),
-        createElement(this[symbols.descriptors].source)
+        createElement(this[symbols.roles].source)
       );
     }
     const popupPlaceholder = result.content.querySelector('#popup');
-    const popup = createElement(this[symbols.descriptors].popup);
-    if ('backdropDescriptor' in popup) {
-      popup.backdropDescriptor = this[symbols.descriptors].backdrop;
+    const popup = createElement(this[symbols.roles].popup);
+    if ('backdropRole' in popup) {
+      popup.backdropRole = this[symbols.roles].backdrop;
     }
-    if ('frameDescriptor' in popup) {
-      popup.frameDescriptor = this[symbols.descriptors].frame;
+    if ('frameRole' in popup) {
+      popup.frameRole = this[symbols.roles].frame;
     }
     replace(popupPlaceholder, popup);
     return result;

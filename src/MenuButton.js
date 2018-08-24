@@ -20,7 +20,7 @@ class MenuButton extends PopupSource {
 
   constructor() {
     super();
-    Object.assign(this[symbols.descriptors], {
+    Object.assign(this[symbols.roles], {
       menu: Menu
     });
   }
@@ -252,12 +252,12 @@ class MenuButton extends PopupSource {
    * @type {function|string|Node}
    * @default {Menu}
    */
-  get menuDescriptor() {
-    return this[symbols.descriptors].menu;
+  get menuRole() {
+    return this[symbols.roles].menu;
   }
-  set menuDescriptor(menuDescriptor) {
+  set menuRole(menuRole) {
     this[symbols.hasDynamicTemplate] = true;
-    this[symbols.descriptors].menu = menuDescriptor;
+    this[symbols.roles].menu = menuRole;
   }
 
   refineState(state) {
@@ -298,7 +298,7 @@ class MenuButton extends PopupSource {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const result = super.template;
+    // Next line is same as: const result = super[symbols.template]
     const result = getSuperProperty(this, MenuButton, symbols.template);
 
     // Wrap default slot with a menu.
@@ -306,7 +306,7 @@ class MenuButton extends PopupSource {
     if (!defaultSlot) {
       throw `Couldn't find default slot.`;
     }
-    const menu = createElement(this[symbols.descriptors].menu);
+    const menu = createElement(this[symbols.roles].menu);
     if (menu instanceof Element) {
       menu.setAttribute('id', 'menu');
     }

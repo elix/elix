@@ -17,16 +17,16 @@
 
       constructor() {
         super();
-        this[symbols.descriptors] = {
+        this[symbols.roles] = {
           button: 'button'
         };
       }
 
-      get buttonDescriptor() {
-        return this[symbols.descriptors].button;
+      get buttonRole() {
+        return this[symbols.roles].button;
       }
-      set buttonDescriptor(buttonDescriptor) {
-        this[symbols.descriptors].button = buttonDescriptor;
+      set buttonRole(buttonRole) {
+        this[symbols.roles].button = buttonRole;
         this[symbols.hasDynamicTemplate] = true;
       }
 
@@ -75,11 +75,11 @@
           <span id="visibleValue"></span>
           <button id="increment">+</button>
         `;
-        if (this[symbols.descriptors].button !== 'button') {
+        if (this[symbols.roles].button !== 'button') {
           result.content.querySelectorAll('button').forEach(button => {
             template.replace(
               button,
-              template.createElement(this[symbols.descriptors].button)
+              template.createElement(this[symbols.roles].button)
             );
           });
         }
@@ -112,7 +112,7 @@
 
       constructor() {
         super();
-        this[symbols.descriptors].button = CustomButton;
+        this[symbols.roles].button = CustomButton;
       }
 
       get [symbols.template]() {
@@ -133,7 +133,7 @@
     and custom behavior.
   </p>
   <increment-decrement></increment-decrement>
-  <increment-decrement button-descriptor="custom-button"></increment-decrement>
+  <increment-decrement button-role="custom-button"></increment-decrement>
   <custom-increment-decrement></custom-increment-decrement>
 </body>
 

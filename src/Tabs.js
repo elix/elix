@@ -22,7 +22,7 @@ class Tabs extends Explorer {
 
   constructor() {
     super();
-    Object.assign(this[symbols.descriptors], {
+    Object.assign(this[symbols.roles], {
       proxy: TabButton,
       proxyList: TabStrip
     });

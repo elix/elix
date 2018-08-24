@@ -30,13 +30,13 @@ class Dialog extends Base {
 
   constructor() {
     super();
-    Object.assign(this[symbols.descriptors], {
+    Object.assign(this[symbols.roles], {
       backdrop: ModalBackdrop
     });
   }
 
   get [symbols.template]() {
-    // Next line is same as: const result = super.template;
+    // Next line is same as: const result = super[symbols.template]
     const result = getSuperProperty(this, Dialog, symbols.template);
     const frame = result.content.querySelector('#frame');
     this[FocusCaptureMixin.wrap](frame);

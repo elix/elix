@@ -24,7 +24,7 @@ export default function PlayControlsMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this[symbols.descriptors] = Object.assign({}, this[symbols.descriptors], {
+      this[symbols.roles] = Object.assign({}, this[symbols.roles], {
         controlButton: SeamlessButton
       });
     }
@@ -58,12 +58,12 @@ export default function PlayControlsMixin(Base) {
      * @type {function|string|Node}
      * @default 'elix-seamless-button'
      */
-    get controlButtonDescriptor() {
-      return this[symbols.descriptors].controlButton;
+    get controlButtonRole() {
+      return this[symbols.roles].controlButton;
     }
-    set controlButtonDescriptor(controlButtonDescriptor) {
+    set controlButtonRole(controlButtonRole) {
       this[symbols.hasDynamicTemplate] = true;
-      this[symbols.descriptors].controlButton = controlButtonDescriptor;
+      this[symbols.roles].controlButton = controlButtonRole;
     }
 
     // Pressing Space is the same as clicking the button.
@@ -208,7 +208,7 @@ export default function PlayControlsMixin(Base) {
       buttons.forEach(button => {
         template.replace(
           button,
-          template.createElement(this.controlButtonDescriptor)
+          template.createElement(this.controlButtonRole)
         );  
       });
       const container = playControlsTemplate.content.querySelector('#playControlsContainer');

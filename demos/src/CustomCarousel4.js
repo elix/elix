@@ -14,7 +14,7 @@ const Base =
 class CustomCarousel extends Base {
 
   get [symbols.template]() {
-    // Next line is same as: const result = super.template;
+    // Next line is same as: const result = super[symbols.template]
     const result = getSuperProperty(this, CustomCarousel, symbols.template);
     this[PageNumbersMixin.wrap](result.content);
     return result;

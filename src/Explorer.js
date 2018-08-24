@@ -46,7 +46,7 @@ class Explorer extends Base {
 
   constructor() {
     super();
-    this[symbols.descriptors] = Object.assign({}, this[symbols.descriptors], {
+    this[symbols.roles] = Object.assign({}, this[symbols.roles], {
       proxy: 'div',
       proxyList: ListBox,
       stage: Modes
@@ -141,12 +141,12 @@ class Explorer extends Base {
    * @type {function|string|Node}
    * @default 'div'
    */
-  get proxyListDescriptor() {
-    return this[symbols.descriptors].proxyList;
+  get proxyListRole() {
+    return this[symbols.roles].proxyList;
   }
-  set proxyListDescriptor(proxyListDescriptor) {
+  set proxyListRole(proxyListRole) {
     this[symbols.hasDynamicTemplate] = true;
-    this[symbols.descriptors].proxyList = proxyListDescriptor;
+    this[symbols.roles].proxyList = proxyListRole;
   }
 
   /**
@@ -154,12 +154,12 @@ class Explorer extends Base {
    * 
    * @type {function|string|Node}
    */
-  get proxyDescriptor() {
-    return this[symbols.descriptors].proxy;
+  get proxyRole() {
+    return this[symbols.roles].proxy;
   }
-  set proxyDescriptor(proxyDescriptor) {
+  set proxyRole(proxyRole) {
     this[symbols.hasDynamicTemplate] = true;
-    this[symbols.descriptors].proxy = proxyDescriptor;
+    this[symbols.roles].proxy = proxyRole;
   }
 
   /**
@@ -203,7 +203,7 @@ class Explorer extends Base {
       const itemsChanged = items !== state.itemsForDefaultProxies;
       if (itemsChanged) {
         // Generate sufficient default proxies.
-        defaultProxies = createDefaultProxies(items, this.proxyDescriptor);
+        defaultProxies = createDefaultProxies(items, this.proxyRole);
         itemsForDefaultProxies = items;
       }
     }
@@ -252,12 +252,12 @@ class Explorer extends Base {
    * @type {function|string|Node}
    * @default {Modes}
    */
-  get stageDescriptor() {
-    return this[symbols.descriptors].stage;
+  get stageRole() {
+    return this[symbols.roles].stage;
   }
-  set stageDescriptor(stageDescriptor) {
+  set stageRole(stageRole) {
     this[symbols.hasDynamicTemplate] = true;
-    this[symbols.descriptors].stage = stageDescriptor;
+    this[symbols.roles].stage = stageRole;
   }
 
   get [symbols.template]() {
@@ -283,16 +283,16 @@ class Explorer extends Base {
         <div id="stage" role="none"><slot></slot></div>
       </div>
     `;
-    if (this[symbols.descriptors].proxyList !== 'div') {
+    if (this[symbols.roles].proxyList !== 'div') {
       template.replace(
         result.content.querySelector('#proxyList'),
-        template.createElement(this.proxyListDescriptor)
+        template.createElement(this.proxyListRole)
       );
     }
-    if (this[symbols.descriptors].stage !== 'div') {
+    if (this[symbols.roles].stage !== 'div') {
       template.replace(
         result.content.querySelector('#stage'),
-        template.createElement(this.stageDescriptor)
+        template.createElement(this.stageRole)
       );
     }
     return result;
@@ -381,9 +381,9 @@ class Explorer extends Base {
 
 
 // Return the default list generated for the given items.
-function createDefaultProxies(items, proxyDescriptor) {
+function createDefaultProxies(items, proxyRole) {
   const proxies = items ?
-    items.map(() => template.createElement(proxyDescriptor)) :
+    items.map(() => template.createElement(proxyRole)) :
     [];
   // Make the array immutable to help update performance.
   Object.freeze(proxies);

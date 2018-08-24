@@ -25,7 +25,7 @@ class SlidingPagesWithArrows extends Base {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const result = super.template;
+    // Next line is same as: const result = super[symbols.template]
     const result = getSuperProperty(this, SlidingPagesWithArrows, symbols.template);
     this[ArrowDirectionMixin.wrap](result.content);
     return result;

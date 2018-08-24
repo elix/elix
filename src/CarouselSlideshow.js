@@ -28,7 +28,7 @@ class CarouselSlideshow extends Base {
 
   constructor() {
     super();
-    Object.assign(this[symbols.descriptors], {
+    Object.assign(this[symbols.roles], {
       stage: CrossfadeStage
     });
   }

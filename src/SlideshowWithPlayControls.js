@@ -64,7 +64,7 @@ class SlideshowWithPlayControls extends Base {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const result = super.template;
+    // Next line is same as: const result = super[symbols.template]
     const result = getSuperProperty(this, SlideshowWithPlayControls, symbols.template);
     const modesContainer = result.content.querySelector('#modesContainer');
     this[PlayControlsMixin.wrap](modesContainer);

@@ -16,7 +16,7 @@ class AlertDialog extends Dialog {
 
   constructor() {
     super();
-    Object.assign(this[symbols.descriptors], {
+    Object.assign(this[symbols.roles], {
       choiceButton: 'button'
     });
   }
@@ -45,12 +45,12 @@ class AlertDialog extends Dialog {
     return this.state.choiceButtons;
   }
 
-  get choiceButtonDescriptor() {
-    return this[symbols.descriptors].choiceButton;
+  get choiceButtonRole() {
+    return this[symbols.roles].choiceButton;
   }
-  set choiceButtonDescriptor(choiceButtonDescriptor) {
+  set choiceButtonRole(choiceButtonRole) {
     this[symbols.hasDynamicTemplate] = true;
-    this[symbols.descriptors].choiceButton = choiceButtonDescriptor;
+    this[symbols.roles].choiceButton = choiceButtonRole;
   }
 
   /**
@@ -107,7 +107,7 @@ class AlertDialog extends Dialog {
     if (state.opened && state.choicesForChoiceButtons !== state.choices) {
       // Choices have changed; create new buttons.
       const choiceButtons = state.choices.map(choice => {
-        const button = createElement(this[symbols.descriptors].choiceButton);
+        const button = createElement(this[symbols.roles].choiceButton);
         button.textContent = choice;
         return button;
       });
@@ -122,7 +122,7 @@ class AlertDialog extends Dialog {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const result = super.template;
+    // Next line is same as: const result = super[symbols.template]
     const result = getSuperProperty(this, AlertDialog, symbols.template);
     apply(result.content, {
       $: {

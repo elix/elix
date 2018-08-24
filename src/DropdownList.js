@@ -28,7 +28,7 @@ class DropdownList extends Base {
 
   constructor() {
     super();
-    Object.assign(this[symbols.descriptors], {
+    Object.assign(this[symbols.roles], {
       value: 'div'
     });
   }
@@ -59,7 +59,7 @@ class DropdownList extends Base {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const result = super.template;
+    // Next line is same as: const result = super[symbols.template]
     const result = getSuperProperty(this, DropdownList, symbols.template);
     const sourceSlot = result.content.querySelector('slot[name="source"]');
     if (!sourceSlot) {
@@ -79,10 +79,10 @@ class DropdownList extends Base {
     apply(sourceSlot, {
       childNodes: sourceSlotContent.content.childNodes
     });
-    if (this[symbols.descriptors].value !== 'div') {
+    if (this[symbols.roles].value !== 'div') {
       replace(
         result.content.querySelector('#value'),
-        createElement(this[symbols.descriptors].value)
+        createElement(this[symbols.roles].value)
       );
     }
     return result;
@@ -133,12 +133,12 @@ class DropdownList extends Base {
    * @type {function|string|Node}
    * @default 'div'
    */
-  get valueDescriptor() {
-    return this[symbols.descriptors].value;
+  get valueRole() {
+    return this[symbols.roles].value;
   }
-  set valueDescriptor(valueDescriptor) {
+  set valueRole(valueRole) {
     this[symbols.hasDynamicTemplate] = true;
-    this[symbols.descriptors].value = valueDescriptor;
+    this[symbols.roles].value = valueRole;
   }
 
 }

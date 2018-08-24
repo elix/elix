@@ -18,14 +18,14 @@ class CustomCarousel extends Base {
 
   constructor() {
     super();
-    Object.assign(this[symbols.descriptors], {
+    Object.assign(this[symbols.roles], {
       arrowButton: CustomArrowButton,
       proxy: CustomPageDot
     });
   }
 
   get [symbols.template]() {
-    // Next line is same as: const result = super.template;
+    // Next line is same as: const result = super[symbols.template]
     const result = getSuperProperty(this, CustomCarousel, symbols.template);
     this[PageNumbersMixin.wrap](result.content);
     return result;

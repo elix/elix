@@ -21,7 +21,7 @@ function ArrowDirectionMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this[symbols.descriptors] = Object.assign({}, this[symbols.descriptors], {
+      this[symbols.roles] = Object.assign({}, this[symbols.roles], {
         arrowButton: ArrowDirectionButton
       });
     }
@@ -32,12 +32,12 @@ function ArrowDirectionMixin(Base) {
      * @type {function|string|Node}
      * @default {ArrowDirectionButton}
      */
-    get arrowButtonDescriptor() {
-      return this[symbols.descriptors].arrowButton;
+    get arrowButtonRole() {
+      return this[symbols.roles].arrowButton;
     }
-    set arrowButtonDescriptor(arrowButtonDescriptor) {
+    set arrowButtonRole(arrowButtonRole) {
       this[symbols.hasDynamicTemplate] = true;
-      this[symbols.descriptors].arrowButton;
+      this[symbols.roles].arrowButton;
     }
   
     componentDidMount() {
@@ -183,11 +183,11 @@ function ArrowDirectionMixin(Base) {
       `;
       template.replace(
         arrowDirectionTemplate.content.querySelector('#arrowButtonLeft'),
-        template.createElement(this.arrowButtonDescriptor)
+        template.createElement(this.arrowButtonRole)
       );
       template.replace(
         arrowDirectionTemplate.content.querySelector('#arrowButtonRight'),
-        template.createElement(this.arrowButtonDescriptor)
+        template.createElement(this.arrowButtonRole)
       );
       const container = arrowDirectionTemplate.content.querySelector('#arrowDirectionContainer');
       if (!container) {

@@ -8,7 +8,7 @@ class SampleDialog extends Dialog {
 
   constructor() {
     super();
-    Object.assign(this[symbols.descriptors], {
+    Object.assign(this[symbols.roles], {
       backdrop: CustomBackdrop,
       frame: CustomOverlayFrame
     });
