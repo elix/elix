@@ -79,7 +79,7 @@ class DropdownList extends Base {
     apply(sourceSlot, {
       childNodes: sourceSlotContent.content.childNodes
     });
-    template.fillRole(result, 'div', this.valueRole);
+    template.fillRole(result, '#value', this.valueRole);
     return result;
   }
 

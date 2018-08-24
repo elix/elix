@@ -107,7 +107,7 @@ class AlertDialog extends Dialog {
     if (state.opened && state.choicesForChoiceButtons !== state.choices) {
       // Choices have changed; create new buttons.
       const choiceButtons = state.choices.map(choice => {
-        const button = createElement(this[symbols.roles].choiceButton);
+        const button = template.createElement(this.choiceButtonRole);
         button.textContent = choice;
         return button;
       });
