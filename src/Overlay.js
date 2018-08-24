@@ -1,5 +1,5 @@
-import { replace, createElement, html } from './template.js';
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import Backdrop from './Backdrop.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import OverlayFrame from './OverlayFrame.js';
@@ -89,7 +89,7 @@ class Overlay extends Base {
   }
 
   get [symbols.template]() {
-    const result = html`
+    const result = template.html`
       <style>
         :host {
           align-items: center;
@@ -120,14 +120,8 @@ class Overlay extends Base {
         <slot></slot>
       </div>
     `;
-    replace(
-      result.content.querySelector('#backdrop'),
-      createElement(this[symbols.roles].backdrop)
-    );
-    replace(
-      result.content.querySelector('#frame'),
-      createElement(this[symbols.roles].frame)
-    );
+    template.fillRole(result, '#backdrop', this.backdropRole);
+    template.fillRole(result, '#frame', this.frameRole);
     return result;
   }
 

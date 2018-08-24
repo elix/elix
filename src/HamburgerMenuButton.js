@@ -1,12 +1,12 @@
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import Drawer from './Drawer.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 import SeamlessButton from './SeamlessButton.js';
-import { createElement, html, replace } from './template.js';
 
 
 const Base =
@@ -109,7 +109,7 @@ export default class HamburgerMenuButton extends Base {
   }
 
   get [symbols.template]() {
-    const result = html`
+    const result = template.html`
       <style>
         :host {
           align-items: center;
@@ -143,14 +143,8 @@ export default class HamburgerMenuButton extends Base {
         <slot></slot>
       </div>
     `;
-    replace(
-      result.content.querySelector('#menuButton'),
-      createElement(this.menuButtonRole)
-    );
-    replace(
-      result.content.querySelector('#menu'),
-      createElement(this.menuRole)
-    );
+    template.fillRole(result, '#menuButton', this.menuButtonRole);
+    template.fillRole(result, '#menu', this.menuRole);
     return result;
   }
 

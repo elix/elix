@@ -1,7 +1,7 @@
 import { apply, merge } from './updates.js';
-import { createElement, html, replace } from './template.js';
 import { getSuperProperty } from './workarounds.js';
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import MenuButton from './MenuButton.js';
 import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
@@ -65,7 +65,7 @@ class DropdownList extends Base {
     if (!sourceSlot) {
       throw `Couldn't find slot with name "source".`;
     }
-    const sourceSlotContent = html`
+    const sourceSlotContent = template.html`
       <div id="value"></div>
       <div>
         <svg id="downIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
@@ -79,12 +79,7 @@ class DropdownList extends Base {
     apply(sourceSlot, {
       childNodes: sourceSlotContent.content.childNodes
     });
-    if (this[symbols.roles].value !== 'div') {
-      replace(
-        result.content.querySelector('#value'),
-        createElement(this[symbols.roles].value)
-      );
-    }
+    template.fillRole(result, 'div', this.valueRole);
     return result;
   }
 

@@ -1,7 +1,7 @@
-import { createElement, html, replace } from './template.js';
 import { getSuperProperty } from './workarounds.js';
 import { merge, apply } from './updates.js';
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import Dialog from './Dialog.js';
 
 
@@ -133,9 +133,9 @@ class AlertDialog extends Dialog {
         }
       }
     });
-    replace(
+    template.replace(
       result.content.querySelector('slot:not([name])'),
-      html`
+      template.html`
         <style>
           #buttonContainer {
             margin-top: 1em;

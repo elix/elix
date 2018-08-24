@@ -1,7 +1,7 @@
-import { html, createElement, replace } from './template.js';
 import { merge } from './updates.js';
 import { ownEvent } from './utilities.js';
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import Backdrop from './Backdrop.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
@@ -307,7 +307,7 @@ class PopupSource extends Base {
   }
 
   get [symbols.template]() {
-    const result = html`
+    const result = template.html`
       <style>
         :host {
           display: inline-block;
@@ -364,21 +364,16 @@ class PopupSource extends Base {
         </div>
       </div>
     `;
-    if (this[symbols.roles].source !== 'button') {
-      replace(
-        result.content.querySelector('#source'),
-        createElement(this[symbols.roles].source)
-      );
-    }
+    template.fillRole(result, '#source', this.sourceRole);
     const popupPlaceholder = result.content.querySelector('#popup');
-    const popup = createElement(this[symbols.roles].popup);
+    const popup = template.createElement(this[symbols.roles].popup);
     if ('backdropRole' in popup) {
       popup.backdropRole = this[symbols.roles].backdrop;
     }
     if ('frameRole' in popup) {
       popup.frameRole = this[symbols.roles].frame;
     }
-    replace(popupPlaceholder, popup);
+    template.replace(popupPlaceholder, popup);
     return result;
   }
 

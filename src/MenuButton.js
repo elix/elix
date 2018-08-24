@@ -1,8 +1,8 @@
-import { createElement, html, replace } from './template.js';
 import { deepContains, elementsFromPoint, indexOfItemContainingTarget } from './utilities.js';
 import { getSuperProperty } from './workarounds.js';
 import { merge, apply } from './updates.js';
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import Menu from './Menu.js';
 import PopupSource from './PopupSource.js';
 
@@ -306,11 +306,11 @@ class MenuButton extends PopupSource {
     if (!defaultSlot) {
       throw `Couldn't find default slot.`;
     }
-    const menu = createElement(this[symbols.roles].menu);
+    const menu = template.createElement(this.menuRole);
     if (menu instanceof Element) {
       menu.setAttribute('id', 'menu');
     }
-    replace(defaultSlot, menu);
+    template.replace(defaultSlot, menu);
     menu.appendChild(defaultSlot);
 
     // Inject a "..." icon into the source slot.
