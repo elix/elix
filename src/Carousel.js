@@ -1,4 +1,5 @@
 import { merge } from './updates.js';
+import { getSuperProperty } from './workarounds.js';
 import * as symbols from './symbols.js';
 import AriaListMixin from './AriaListMixin.js';
 import ArrowDirectionMixin from './ArrowDirectionMixin.js';
@@ -54,7 +55,7 @@ class Carousel extends Base {
 
   constructor() {
     super();
-    Object.assign(this[symbols.descriptors], {
+    this[symbols.descriptors] = Object.assign({}, this[symbols.descriptors], {
       proxy: PageDot,
       proxyList: CenteredStripOpacity,
       stage: SlidingStage
@@ -94,7 +95,8 @@ class Carousel extends Base {
   }
 
   get [symbols.template]() {
-    const result = super[symbols.template];
+    // Next line is same as: const result = super.template;
+    const result = getSuperProperty(this, Carousel, symbols.template);
     const stage = result.content.querySelector('#stage');
     this[ArrowDirectionMixin.wrap](stage);
     return result;

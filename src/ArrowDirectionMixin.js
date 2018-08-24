@@ -21,11 +21,11 @@ function ArrowDirectionMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this[symbols.descriptors] = Object.assign({}, super[symbols.descriptors], {
+      this[symbols.descriptors] = Object.assign({}, this[symbols.descriptors], {
         arrowButton: ArrowDirectionButton
       });
     }
-
+  
     /**
      * The tag used to create the left and right arrow buttons.
      * 

@@ -1,3 +1,4 @@
+import { getSuperProperty } from './workarounds.js';
 import * as symbols from './symbols.js';
 import AriaListMixin from './AriaListMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
@@ -63,7 +64,8 @@ class SlideshowWithPlayControls extends Base {
   }
 
   get [symbols.template]() {
-    const result = super[symbols.template];
+    // Next line is same as: const result = super.template;
+    const result = getSuperProperty(this, SlideshowWithPlayControls, symbols.template);
     const modesContainer = result.content.querySelector('#modesContainer');
     this[PlayControlsMixin.wrap](modesContainer);
     return result;

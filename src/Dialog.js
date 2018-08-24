@@ -1,3 +1,4 @@
+import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import DialogModalityMixin from './DialogModalityMixin.js';
@@ -35,7 +36,8 @@ class Dialog extends Base {
   }
 
   get [symbols.template]() {
-    const result = super[symbols.template];
+    // Next line is same as: const result = super.template;
+    const result = getSuperProperty(this, Dialog, symbols.template);
     const frame = result.content.querySelector('#frame');
     this[FocusCaptureMixin.wrap](frame);
     return result;

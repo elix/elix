@@ -47,8 +47,7 @@ export function replace(original, replacement) {
   original.parentNode.replaceChild(element, original);
   if (original instanceof Element && element instanceof Element) {
     // Copy over attributes which are not already present on replacement.
-    /** @type {any} */
-    const attributes = original.attributes;
+    const attributes = Array.from(original.attributes); // For Edge
     for (const { name, value } of attributes) {
       if (!element.getAttribute(name)) {
         element.setAttribute(name, value);

@@ -1,3 +1,4 @@
+import { getSuperProperty } from '../../src/workarounds.js';
 import { merge } from '../../src/updates.js';
 import * as symbols from '../../src/symbols.js';
 import Carousel from '../../src/Carousel.js';
@@ -24,7 +25,8 @@ class CustomCarousel extends Base {
   }
 
   get [symbols.template]() {
-    const result = super[symbols.template];
+    // Next line is same as: const result = super.template;
+    const result = getSuperProperty(this, CustomCarousel, symbols.template);
     this[PageNumbersMixin.wrap](result.content);
     return result;
   }

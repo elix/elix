@@ -46,7 +46,7 @@ class Explorer extends Base {
 
   constructor() {
     super();
-    this[symbols.descriptors] = Object.assign({}, super[symbols.descriptors], {
+    this[symbols.descriptors] = Object.assign({}, this[symbols.descriptors], {
       proxy: 'div',
       proxyList: ListBox,
       stage: Modes

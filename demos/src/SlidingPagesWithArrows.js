@@ -1,3 +1,4 @@
+import { getSuperProperty } from '../../src/workarounds.js';
 import * as symbols from '../../src/symbols.js';
 import ArrowDirectionMixin from '../../src/ArrowDirectionMixin.js';
 import SlidingPages from '../../src/SlidingPages.js';
@@ -24,7 +25,8 @@ class SlidingPagesWithArrows extends Base {
   }
 
   get [symbols.template]() {
-    const result = super[symbols.template];
+    // Next line is same as: const result = super.template;
+    const result = getSuperProperty(this, SlidingPagesWithArrows, symbols.template);
     this[ArrowDirectionMixin.wrap](result.content);
     return result;
   }

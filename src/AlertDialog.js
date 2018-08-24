@@ -1,4 +1,5 @@
 import { createElement, html, replace } from './template.js';
+import { getSuperProperty } from './workarounds.js';
 import { merge, apply } from './updates.js';
 import * as symbols from './symbols.js';
 import Dialog from './Dialog.js';
@@ -121,7 +122,8 @@ class AlertDialog extends Dialog {
   }
 
   get [symbols.template]() {
-    const result = super[symbols.template];
+    // Next line is same as: const result = super.template;
+    const result = getSuperProperty(this, AlertDialog, symbols.template);
     apply(result.content, {
       $: {
         frame: {
