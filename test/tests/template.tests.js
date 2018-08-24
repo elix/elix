@@ -27,10 +27,8 @@ describe("templates", () => {
     const fixtureTemplate = document.createElement('template');
     fixtureTemplate.innerHTML = `<div>Hello</div>`;
     const fixture = template.createElement(fixtureTemplate);
-    assert(fixture instanceof DocumentFragment);
-    assert.equal(fixture.childNodes.length, 1);
-    assert.equal(fixture.childNodes[0].localName, 'div');
-    assert.equal(fixture.childNodes[0].textContent, 'Hello');
+    assert(fixture instanceof HTMLDivElement);
+    assert.equal(fixture.textContent, 'Hello');
   });
 
   it("can substitute one element for another", () => {
@@ -82,10 +80,10 @@ describe("templates", () => {
     assert.equal(text.parentNode, paragraph);
   });
 
-  it("can fill roles in a template", () => {
+  it("can find and replace elements in a template", () => {
     const fixture = document.createElement('template');
     fixture.innerHTML = `<div>Hello</div><div>World</div>`;
-    template.fillRole(fixture, 'div', 'p');
+    template.findAndReplace(fixture, 'div', 'p');
     assert.equal(fixture.innerHTML, `<p>Hello</p><p>World</p>`);
   });
 

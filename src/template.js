@@ -9,6 +9,10 @@
  * Create an element from a role descriptor (a component class constructor,
  * an HTML tag name, or an HTML template).
  * 
+ * If the descriptor is an HTML template, and the resulting document fragment
+ * contains a single top-level node, that node is returned directly (instead of
+ * the fragment).
+ * 
  * @param {Function|string|HTMLTemplateElement} descriptor
  * @returns {Node} the new element
  */
