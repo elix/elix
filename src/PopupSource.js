@@ -366,12 +366,13 @@ class PopupSource extends Base {
     `;
     template.fillRole(result, '#source', this.sourceRole);
     const popupPlaceholder = result.content.querySelector('#popup');
-    const popup = template.createElement(this[symbols.roles].popup);
+    /** @type {any} */
+    const popup = template.createElement(this.popupRole);
     if ('backdropRole' in popup) {
-      popup.backdropRole = this[symbols.roles].backdrop;
+      popup.backdropRole = this.backdropRole;
     }
     if ('frameRole' in popup) {
-      popup.frameRole = this[symbols.roles].frame;
+      popup.frameRole = this.frameRole;
     }
     template.replace(popupPlaceholder, popup);
     return result;

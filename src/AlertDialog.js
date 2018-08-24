@@ -133,29 +133,27 @@ class AlertDialog extends Dialog {
         }
       }
     });
-    template.replace(
-      result.content.querySelector('slot:not([name])'),
-      template.html`
-        <style>
-          #buttonContainer {
-            margin-top: 1em;
-          }
+    const alertDialogTemplate = template.html`
+      <style>
+        #buttonContainer {
+          margin-top: 1em;
+        }
 
-          button {
-            font-family: inherit;
-            font-size: inherit;
-          }
+        button {
+          font-family: inherit;
+          font-size: inherit;
+        }
 
-          #buttonContainer > :not(:first-child) {
-            margin-left: 0.5em;
-          }
-        </style>
-        <div id="alertDialogContent">
-          <slot></slot>
-          <div id="buttonContainer"></div>
-        </div>
-      `
-    );
+        #buttonContainer > :not(:first-child) {
+          margin-left: 0.5em;
+        }
+      </style>
+      <div id="alertDialogContent">
+        <slot></slot>
+        <div id="buttonContainer"></div>
+      </div>
+    `;
+    template.fillRole(result, 'slot:not([name])', alertDialogTemplate);
     return result;
   }
 

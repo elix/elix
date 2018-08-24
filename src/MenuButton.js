@@ -302,31 +302,24 @@ class MenuButton extends PopupSource {
     const result = getSuperProperty(this, MenuButton, symbols.template);
 
     // Wrap default slot with a menu.
-    const defaultSlot = result.content.querySelector('slot:not([name])');
-    if (!defaultSlot) {
-      throw `Couldn't find default slot.`;
-    }
-    const menu = template.createElement(this.menuRole);
-    if (menu instanceof Element) {
-      menu.setAttribute('id', 'menu');
-    }
-    template.replace(defaultSlot, menu);
-    menu.appendChild(defaultSlot);
+    const menuTemplate = template.html`
+      <div id="menu">
+        <slot></slot>
+      </div>
+    `;
+    template.fillRole(menuTemplate, '#menu', this.menuRole);
+    template.fillRole(result, 'slot:not([name])', menuTemplate);
 
     // Inject a "..." icon into the source slot.
     // Default "..." icon is from Google Material Design icons.
-    const icon = template.html`
-      <svg id="ellipsisIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-        <path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-      </svg>
+    const sourceTemplate = template.html`
+      <slot>
+        <svg id="ellipsisIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+        </svg>
+      </slot>
     `;
-    const sourceSlot = result.content.querySelector('slot[name="source"]');
-    if (!sourceSlot) {
-      throw `Couldn't find slot with name "source".`;
-    }
-    apply(sourceSlot, {
-      childNodes: icon.content.childNodes
-    });
+    template.fillRole(result, 'slot[name="source"]', sourceTemplate);
 
     return result;
   }
