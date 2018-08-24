@@ -61,7 +61,7 @@ describe("templates", () => {
     const wrapper = document.createElement('div');
     const paragraph = document.createElement('p');
     wrapper.appendChild(paragraph);
-    template.wrap(span, wrapper, paragraph);
+    template.wrap(span, wrapper, 'p');
     assert.equal(fixture.childNodes.length, 1);
     assert.equal(fixture.childNodes[0], wrapper);
     assert.equal(span.parentNode, paragraph);
@@ -74,7 +74,7 @@ describe("templates", () => {
     const wrapper = document.createElement('div');
     const paragraph = document.createElement('p');
     wrapper.appendChild(paragraph);
-    template.wrap(fixture, wrapper, paragraph);
+    template.wrap(fixture, wrapper, 'p');
     assert.equal(fixture.childNodes.length, 1);
     assert.equal(fixture.childNodes[0], wrapper);
     assert.equal(text.parentNode, paragraph);

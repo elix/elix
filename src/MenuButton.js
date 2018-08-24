@@ -1,6 +1,6 @@
 import { deepContains, elementsFromPoint, indexOfItemContainingTarget } from './utilities.js';
 import { getSuperProperty } from './workarounds.js';
-import { merge, apply } from './updates.js';
+import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import Menu from './Menu.js';

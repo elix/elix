@@ -126,17 +126,21 @@ export function replace(original, replacement) {
  * destination node (which should be a node within the wrapper).
  * 
  * @param original {Node} - the node to wrap
- * @param wrapper {Node} - the node to wrap with
- * @param destination {Node} - the node in the wrapper in which the original
- * node should be put
+ * @param wrapper {DocumentFragment|Element} - the node to wrap with
+ * @param destination {string} - a CSS selector indicated a node in the wrapper
+ * in which the original node should be put
  */
 export function wrap(original, wrapper, destination) {
+  const destinationNode = wrapper.querySelector(destination);
+  if (!destinationNode) {
+    throw `Can't find the wrapper destination indicated by "${destination}".`;
+  }
   if (original.parentNode) {
     original.parentNode.replaceChild(wrapper, original);
-    destination.appendChild(original);
+    destinationNode.appendChild(original);
   } else if (original instanceof DocumentFragment) {
     while (original.childNodes.length > 0) {
-      destination.appendChild(original.childNodes[0]);
+      destinationNode.appendChild(original.childNodes[0]);
     }
     original.appendChild(wrapper);
   }

@@ -36,11 +36,7 @@ function PageNumbersMixin(Base) {
           <div id="pageNumber"></div>
         </div>
       `;
-      const container = pageNumbersTemplate.content.querySelector('#pageNumbersContainer');
-      if (!container) {
-        throw `Couldn't find element with ID "pageNumbersContainer".`;
-      }
-      template.wrap(original, pageNumbersTemplate.content, container);;
+      template.wrap(original, pageNumbersTemplate.content, '#pageNumbersContainer');
     }
 
     get updates() {

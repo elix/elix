@@ -74,11 +74,7 @@ function FocusCaptureMixin(base) {
           <div id="focusCatcher" tabindex="0"></div>
         </div>
       `;
-      const container = focusCaptureTemplate.content.querySelector('#focusCaptureContainer');
-      if (!container) {
-        throw `Couldn't find element with ID "focusCaptureContainer".`;
-      }
-      template.wrap(original, focusCaptureTemplate.content, container);
+      template.wrap(original, focusCaptureTemplate.content, '#focusCaptureContainer');
     }
 
   }
