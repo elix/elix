@@ -53,9 +53,9 @@ export default function PlayControlsMixin(Base) {
     }
 
     /**
-     * The tag used to create the play control buttons.
+     * The class or template used for the play control buttons.
      * 
-     * @type {function|string|Node}
+     * @type {function|string|HTMLTemplateElement}
      * @default 'elix-seamless-button'
      */
     get controlButtonRole() {

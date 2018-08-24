@@ -244,12 +244,12 @@ class MenuButton extends PopupSource {
   }
 
   /**
-   * The tag used to define the menu.
+   * The class or template used to define the menu.
    * 
    * The menu element is responsible for presenting the menu items and handling
    * navigation between them.
    * 
-   * @type {function|string|Node}
+   * @type {function|string|HTMLTemplateElement}
    * @default {Menu}
    */
   get menuRole() {

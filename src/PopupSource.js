@@ -46,14 +46,14 @@ class PopupSource extends Base {
   }
 
   /**
-   * The tag used to create the optional backdrop element behind the overlay.
+   * The class or template used for the optional backdrop element behind the overlay.
    * 
    * This can help focus the user's attention on the overlay content.
    * Additionally, a backdrop can be used to absorb clicks on background page
    * elements. For example, [Dialog](Dialog) uses [ModalBackdrop](ModalBackdrop)
    * as an overlay backdrop in such a way.
    * 
-   * @type {function|string|Node}
+   * @type {function|string|HTMLTemplateElement}
    * @default {Backdrop}
    */
   get backdropRole() {
@@ -166,13 +166,13 @@ class PopupSource extends Base {
   }
 
   /**
-   * The tag used to contain the popup content.
+   * The class or template used to contain the popup content.
    * 
    * The frame element can be used to provide a border around the popup content,
    * and to provide visual effects such as a drop-shadow to help distinguish
    * popup content from background page elements.
    * 
-   * @type {function|string|Node}
+   * @type {function|string|HTMLTemplateElement}
    * @default {OverlayFrame}
    */
   get frameRole() {
@@ -245,11 +245,11 @@ class PopupSource extends Base {
   }
 
   /**
-   * The tag used to define the popup.
+   * The class or template used to define the popup.
    * 
    * The popup element is responsible for handling overlay behavior.
    * 
-   * @type {function|string|Node}
+   * @type {function|string|HTMLTemplateElement}
    * @default {Popup}
    */
   get popupRole() {
@@ -292,10 +292,10 @@ class PopupSource extends Base {
   }
 
   /**
-   * The tag used to define the source button (or other element) that the
-   * popup will be positioned in relation to.
+   * The class or template used for the button (or other element) that will
+   * invoke the popup.
    * 
-   * @type {function|string|Node}
+   * @type {function|string|HTMLTemplateElement}
    * @default 'button'
    */
   get sourceRole() {

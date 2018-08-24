@@ -81,9 +81,9 @@ export default class HamburgerMenuButton extends Base {
   }
 
   /**
-   * The tag used to create the menu (drawer).
+   * The class or template used to create the menu (drawer).
    * 
-   * @type {function|string|Node}
+   * @type {function|string|HTMLTemplateElement}
    * @default {Drawer}
    */
   get menuRole() {
@@ -95,9 +95,9 @@ export default class HamburgerMenuButton extends Base {
   }
 
   /**
-   * The tag used to create the menu button element.
+   * The class or template used to create the menu button element.
    * 
-   * @type {function|string|Node}
+   * @type {function|string|HTMLTemplateElement}
    * @default {SeamlessButton}
    */
   get menuButtonRole() {

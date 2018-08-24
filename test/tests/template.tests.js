@@ -23,14 +23,14 @@ describe("templates", () => {
     assert(fixture instanceof TemplateTest);
   });
 
-  it("can create an element by cloning an element", () => {
-    const original = document.createElement('div');
-    original.textContent = 'Hello';
-    const fixture = template.createElement(original);
-    assert(fixture instanceof HTMLDivElement);
-    assert.equal(fixture.textContent, 'Hello');
-    fixture.textContent = 'Goodbye';
-    assert.equal(original.textContent, 'Hello'); // I.e., unaffected
+  it("can create an element by cloning a template", () => {
+    const fixtureTemplate = document.createElement('template');
+    fixtureTemplate.innerHTML = `<div>Hello</div>`;
+    const fixture = template.createElement(fixtureTemplate);
+    assert(fixture instanceof DocumentFragment);
+    assert.equal(fixture.childNodes.length, 1);
+    assert.equal(fixture.childNodes[0].localName, 'div');
+    assert.equal(fixture.childNodes[0].textContent, 'Hello');
   });
 
   it("can substitute one element for another", () => {

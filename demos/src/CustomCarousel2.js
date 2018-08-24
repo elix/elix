@@ -4,7 +4,7 @@ import CustomArrowButton from './CustomArrowButton.js';
 import CustomPageDot from './CustomPageDot.js';
 
 
-// Shows how a carousel subclass can define custom tags for the arrows and dots.
+// Shows how a carousel subclass can define custom roles for the arrows and dots.
 class CustomCarousel extends Carousel {
 
   constructor() {

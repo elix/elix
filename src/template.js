@@ -1,15 +1,18 @@
 /**
  * 
- * @param {Function|string|Node} role 
+ * @param {Function|string|HTMLTemplateElement} role 
  */
 export function createElement(role) {
   if (typeof role === 'function') {
+    // Component class constructor
     /** @type {any} */
     const cast = role;
     return new cast();
-  } else if (role instanceof Node) {
-    return role.cloneNode(true);
+  } else if (role instanceof HTMLTemplateElement) {
+    // Template
+    return document.importNode(role.content, true);
   } else {
+    // String tag name: e.g., 'div'
     return document.createElement(role);
   }
 }

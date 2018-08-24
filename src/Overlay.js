@@ -48,14 +48,15 @@ class Overlay extends Base {
   }
 
   /**
-   * The tag used to create the optional backdrop element behind the overlay.
+   * The class or template used for the optional backdrop element behind the
+   * overlay.
    * 
    * This can help focus the user's attention on the overlay content.
    * Additionally, a backdrop can be used to absorb clicks on background page
    * elements. For example, [Dialog](Dialog) uses [ModalBackdrop](ModalBackdrop)
    * as an overlay backdrop in such a way.
    * 
-   * @type {function|string|Node}
+   * @type {function|string|HTMLTemplateElement}
    * @default {Backdrop}
    */
   get backdropRole() {
@@ -71,13 +72,13 @@ class Overlay extends Base {
   }
 
   /**
-   * The tag used to contain the primary overlay content.
+   * The class or template used to contain the primary overlay content.
    * 
    * The frame element can be used to provide a border around the overlay
    * content, and to provide visual effects such as a drop-shadow to help
    * distinguish overlay content from background page elements.
    * 
-   * @type {function|string|Node}
+   * @type {function|string|HTMLTemplateElement}
    * @default {OverlayFrame}
    */
   get frameRole() {

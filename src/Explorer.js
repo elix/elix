@@ -136,9 +136,9 @@ class Explorer extends Base {
   }
 
   /**
-   * The tag used to create the Explorer's list of proxies.
+   * The class or template used to create the Explorer's list of proxies.
    * 
-   * @type {function|string|Node}
+   * @type {function|string|HTMLTemplateElement}
    * @default 'div'
    */
   get proxyListRole() {
@@ -150,9 +150,9 @@ class Explorer extends Base {
   }
 
   /**
-   * The tag used to create default proxies for the list items.
+   * The class or template used to create default proxies for the list items.
    * 
-   * @type {function|string|Node}
+   * @type {function|string|HTMLTemplateElement}
    */
   get proxyRole() {
     return this[symbols.roles].proxy;
@@ -246,10 +246,10 @@ class Explorer extends Base {
   }
 
   /**
-   * The tag used to create the main "stage" element showing a single item at a
-   * time.
+   * The class or template used for the main "stage" element that shows a single
+   * item at a time.
    * 
-   * @type {function|string|Node}
+   * @type {function|string|HTMLTemplateElement}
    * @default {Modes}
    */
   get stageRole() {

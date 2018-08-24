@@ -122,10 +122,9 @@ class DropdownList extends Base {
   }
 
   /**
-   * The tag used to define the element that will contain the DropdownList's
-   * current value.
+   * The class or template used to contain the DropdownList's current value.
    * 
-   * @type {function|string|Node}
+   * @type {function|string|HTMLTemplateElement}
    * @default 'div'
    */
   get valueRole() {
