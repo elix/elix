@@ -318,6 +318,7 @@ class PopupSource extends Base {
           background: buttonface;
           border-style: solid;
           color: inherit;
+          cursor: default;
           display: block;
           font-size: inherit;
           font-family: inherit;
