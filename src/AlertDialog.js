@@ -153,7 +153,7 @@ class AlertDialog extends Dialog {
         <div id="buttonContainer"></div>
       </div>
     `;
-    template.fillRole(result, 'slot:not([name])', alertDialogTemplate);
+    template.findAndReplace(result, 'slot:not([name])', alertDialogTemplate);
     return result;
   }
 

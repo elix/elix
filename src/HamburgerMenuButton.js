@@ -143,8 +143,8 @@ export default class HamburgerMenuButton extends Base {
         <slot></slot>
       </div>
     `;
-    template.fillRole(result, '#menuButton', this.menuButtonRole);
-    template.fillRole(result, '#menu', this.menuRole);
+    template.findAndReplace(result, '#menuButton', this.menuButtonRole);
+    template.findAndReplace(result, '#menu', this.menuRole);
     return result;
   }
 

@@ -37,23 +37,22 @@ export function createElement(descriptor) {
  * the given descriptor.
  * 
  * The descriptor used for the replacements can be a 1) component class
- * constructor,
- * 2) an HTML tag name, or 3) an HTML template. For #1 and #2, if the existing
- *    elements that match the selector are already of the desired class/tag
- *    name, the replacement operation is skipped.
+ * constructor, 2) an HTML tag name, or 3) an HTML template. For #1 and #2, if
+ * the existing elements that match the selector are already of the desired
+ * class/tag name, the replacement operation is skipped.
  * 
  * @param {HTMLTemplateElement|Element} template - the template to search
  * @param {string} selector - the CSS selector used for the search
  * @param {Function|string|HTMLTemplateElement} descriptor - the descriptor used
  * to generate replacement elements
  */
-export function fillRole(template, selector, descriptor) {
+export function findAndReplace(template, selector, descriptor) {
   const node = template instanceof HTMLTemplateElement ?
     template.content :
     template;
   node.querySelectorAll(selector).forEach(match => {
-    if ((typeof descriptor === 'function' && node.constructor === descriptor) ||
-    (typeof descriptor === 'string' && node.localName === descriptor)) {
+    if ((typeof descriptor === 'function' && match.constructor === descriptor) ||
+    (typeof descriptor === 'string' && match.localName === descriptor)) {
       // Already correct type of element
       return;
     }

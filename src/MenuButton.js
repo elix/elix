@@ -307,8 +307,8 @@ class MenuButton extends PopupSource {
         <slot></slot>
       </div>
     `;
-    template.fillRole(menuTemplate, '#menu', this.menuRole);
-    template.fillRole(result, 'slot:not([name])', menuTemplate);
+    template.findAndReplace(menuTemplate, '#menu', this.menuRole);
+    template.findAndReplace(result, 'slot:not([name])', menuTemplate);
 
     // Inject a "..." icon into the source slot.
     // Default "..." icon is from Google Material Design icons.
@@ -319,7 +319,7 @@ class MenuButton extends PopupSource {
         </svg>
       </slot>
     `;
-    template.fillRole(result, 'slot[name="source"]', sourceTemplate);
+    template.findAndReplace(result, 'slot[name="source"]', sourceTemplate);
 
     return result;
   }

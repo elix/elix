@@ -79,7 +79,7 @@ class DropdownList extends Base {
     apply(sourceSlot, {
       childNodes: sourceSlotContent.content.childNodes
     });
-    template.fillRole(result, '#value', this.valueRole);
+    template.findAndReplace(result, '#value', this.valueRole);
     return result;
   }
 
@@ -122,7 +122,7 @@ class DropdownList extends Base {
   }
 
   /**
-   * The class or template used to contain the DropdownList's current value.
+   * The class or template used to contain the dropdown list's current value.
    * 
    * @type {function|string|HTMLTemplateElement}
    * @default 'div'

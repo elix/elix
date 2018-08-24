@@ -283,8 +283,8 @@ class Explorer extends Base {
         <div id="stage" role="none"><slot></slot></div>
       </div>
     `;
-    template.fillRole(result, '#proxyList', this.proxyListRole);
-    template.fillRole(result, '#stage', this.stageRole);
+    template.findAndReplace(result, '#proxyList', this.proxyListRole);
+    template.findAndReplace(result, '#stage', this.stageRole);
     return result;
   }
 

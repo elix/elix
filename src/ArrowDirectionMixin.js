@@ -183,7 +183,7 @@ function ArrowDirectionMixin(Base) {
           </div>
         </div>
       `;
-      template.fillRole(arrowDirectionTemplate, '.arrowButton', this.arrowButtonRole);
+      template.findAndReplace(arrowDirectionTemplate, '.arrowButton', this.arrowButtonRole);
       const container = arrowDirectionTemplate.content.querySelector('#arrowDirectionContainer');
       if (!container) {
         throw `Couldn't find element with ID "arrowDirectionContainer".`;
