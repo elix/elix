@@ -283,18 +283,8 @@ class Explorer extends Base {
         <div id="stage" role="none"><slot></slot></div>
       </div>
     `;
-    if (this[symbols.roles].proxyList !== 'div') {
-      template.replace(
-        result.content.querySelector('#proxyList'),
-        template.createElement(this.proxyListRole)
-      );
-    }
-    if (this[symbols.roles].stage !== 'div') {
-      template.replace(
-        result.content.querySelector('#stage'),
-        template.createElement(this.stageRole)
-      );
-    }
+    template.fillRole(result, '#proxyList', this.proxyListRole);
+    template.fillRole(result, '#stage', this.stageRole);
     return result;
   }
 

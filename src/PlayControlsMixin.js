@@ -204,13 +204,7 @@ export default function PlayControlsMixin(Base) {
 
         <div id="playControlsContainer" role="none"></div>
       `;
-      const buttons = playControlsTemplate.content.querySelectorAll('.controlButton');
-      buttons.forEach(button => {
-        template.replace(
-          button,
-          template.createElement(this.controlButtonRole)
-        );  
-      });
+      template.fillRole(playControlsTemplate, '.controlButton', this.controlButtonRole);
       const container = playControlsTemplate.content.querySelector('#playControlsContainer');
       if (!container) {
         throw `Couldn't find element with ID "playControlsContainer".`;

@@ -75,14 +75,7 @@
           <span id="visibleValue"></span>
           <button id="increment">+</button>
         `;
-        if (this[symbols.roles].button !== 'button') {
-          result.content.querySelectorAll('button').forEach(button => {
-            template.replace(
-              button,
-              template.createElement(this[symbols.roles].button)
-            );
-          });
-        }
+        template.fillRole(result, 'button', this.buttonRole);
         return result;
       }
 

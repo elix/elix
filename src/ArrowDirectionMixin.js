@@ -156,6 +156,7 @@ function ArrowDirectionMixin(Base) {
         <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;">
           <div
             id="arrowButtonLeft"
+            class="arrowButton"
             aria-hidden="true"
             >
             <slot name="arrowButtonLeft">
@@ -169,6 +170,7 @@ function ArrowDirectionMixin(Base) {
           <div id="arrowDirectionContainer" role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;"></div>
           <div
             id="arrowButtonRight"
+            class="arrowButton"
             aria-hidden="true"
             >
             <slot name="arrowButtonRight">
@@ -181,14 +183,7 @@ function ArrowDirectionMixin(Base) {
           </div>
         </div>
       `;
-      template.replace(
-        arrowDirectionTemplate.content.querySelector('#arrowButtonLeft'),
-        template.createElement(this.arrowButtonRole)
-      );
-      template.replace(
-        arrowDirectionTemplate.content.querySelector('#arrowButtonRight'),
-        template.createElement(this.arrowButtonRole)
-      );
+      template.fillRole(arrowDirectionTemplate, '.arrowButton', this.arrowButtonRole);
       const container = arrowDirectionTemplate.content.querySelector('#arrowDirectionContainer');
       if (!container) {
         throw `Couldn't find element with ID "arrowDirectionContainer".`;

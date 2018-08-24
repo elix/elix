@@ -82,4 +82,11 @@ describe("templates", () => {
     assert.equal(text.parentNode, paragraph);
   });
 
+  it("can fill roles in a template", () => {
+    const fixture = document.createElement('template');
+    fixture.innerHTML = `<div>Hello</div><div>World</div>`;
+    template.fillRole(fixture, 'div', 'p');
+    assert.equal(fixture.innerHTML, `<p>Hello</p><p>World</p>`);
+  });
+
 });

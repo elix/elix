@@ -1,17 +1,32 @@
 /**
  * 
- * @param {Function|string|Node} descriptor 
+ * @param {Function|string|Node} role 
  */
-export function createElement(descriptor) {
-  if (typeof descriptor === 'function') {
+export function createElement(role) {
+  if (typeof role === 'function') {
     /** @type {any} */
-    const cast = descriptor;
+    const cast = role;
     return new cast();
-  } else if (descriptor instanceof Node) {
-    return descriptor.cloneNode(true);
+  } else if (role instanceof Node) {
+    return role.cloneNode(true);
   } else {
-    return document.createElement(descriptor);
+    return document.createElement(role);
   }
+}
+
+
+export function fillRole(template, selector, role) {
+  const node = template instanceof HTMLTemplateElement ?
+    template.content :
+    template;
+  node.querySelectorAll(selector).forEach(match => {
+    if ((typeof role === 'function' && node.constructor === role) ||
+    (typeof role === 'string' && node.localName === role)) {
+      // Already correct type of element
+      return;
+    }
+    replace(match, createElement(role));
+  });
 }
 
 
