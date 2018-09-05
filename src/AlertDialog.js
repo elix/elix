@@ -82,18 +82,12 @@ class AlertDialog extends Dialog {
 
     const key = event.key.length === 1 && event.key.toLowerCase();
     if (key) {
-      // Loop over choices to see if one of them starts with the key.
-      let found = false;
-      let index = 0;
-      while (index < this.choices.length && !found) {
-        if (this.choices[index][0].toLowerCase() === key) {
-          found = true;
-        } else {
-          index++;
-        }
-      }
-      if (found && index >= 0) {
-        this.close(this.choices[index]);
+      // See if one of the choices starts with the key.
+      const choiceForKey = this.choices.find(choice =>
+        choice[0].toLowerCase() === key
+      );
+      if (choiceForKey) {
+        this.close(choiceForKey);
         handled = true;
       }
     }
