@@ -19,7 +19,7 @@ const config = {
   browsers: [
     {
       browserName: 'chrome',
-      platform: 'OS X 10.11'
+      platform: 'OS X 10.13'
     },
     {
       browserName: 'chrome',
@@ -27,25 +27,20 @@ const config = {
     },
     {
       browserName: 'firefox',
-      platform: 'OS X 10.11',
+      platform: 'OS X 10.13',
     },
     {
       browserName: 'firefox',
       platform: 'Windows 10'
     },
-    // {
-    //   browserName: 'internet explorer',
-    //   platform: 'Windows 8.1',
-    //   version: '11.0'
-    // },
     {
       browserName: 'MicrosoftEdge',
-      version: '16',
+      version: '17',
       platform: 'Windows 10'
     },
     {
       browserName: 'safari',
-      platform: 'OS X 10.12',
+      platform: 'OS X 10.13',
     }
   ],
   onTestSuiteComplete: (status) => {
