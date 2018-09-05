@@ -20,7 +20,7 @@ class KeyboardPagedSelectionTest extends Base {
   }
 
   get items() {
-    return this.children;
+    return [...this.children];
   }
 
 }

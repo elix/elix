@@ -68,10 +68,5 @@ export default function SelectedItemTextValueMixin(Base) {
 
 
 function indexOfItemWithText(items, text) {
-  for (let i = 0, length = items.length; i < length; i++) {
-    if (items[i].textContent === text) {
-      return i
-    }
-  }
-  return -1;
+  return items.findIndex(item => item.textContent === text);
 }

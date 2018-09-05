@@ -125,11 +125,7 @@ export function indexOfItemContainingTarget(listElement, target) {
   /** @type {any} */
   const cast = listElement;
   const items = cast.items || [];
-  for (let index = 0; index < items.length; index++) {
-    const item = items[index];
-    if (item === target || deepContains(item, target)) {
-      return index;
-    }
-  }
-  return -1;
+  return items.findIndex(item =>
+    item === target || deepContains(item, target)
+  );
 }

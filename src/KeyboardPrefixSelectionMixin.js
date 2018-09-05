@@ -120,7 +120,9 @@ export default function KeyboardPrefixSelectionMixin(Base) {
       if (prefix == null || prefix.length === 0) {
         return false;
       }
-      const selectedIndex = getIndexOfTextWithPrefix(this.state.texts, prefix);
+      const selectedIndex = this.state.texts.findIndex(text => 
+        text.substr(0, prefix.length) === prefix
+      );
       if (selectedIndex >= 0) {
         const previousIndex = this.selectedIndex;
         this.setState({ selectedIndex });
@@ -132,19 +134,6 @@ export default function KeyboardPrefixSelectionMixin(Base) {
   }
 
   return KeyboardPrefixSelection;
-}
-
-
-// Return the index of the first item with the given prefix, else -1.
-function getIndexOfTextWithPrefix(texts, prefix) {
-  const prefixLength = prefix.length;
-  for (let i = 0; i < texts.length; i++) {
-    const itemTextContent = texts[i];
-    if (itemTextContent.substr(0, prefixLength) === prefix) {
-      return i;
-    }
-  }
-  return -1;
 }
 
 // Return an array of the text content (in lowercase) of all items.
