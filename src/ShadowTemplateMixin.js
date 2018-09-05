@@ -136,14 +136,6 @@ function prepareTemplate(element) {
     const templateText = template;
     template = document.createElement('template');
     template.innerHTML = templateText;
-    
-    // A polyfill bug under IE
-    // (probably https://github.com/webcomponents/webcomponentsjs/issues/474)
-    // prevents the template's innerHTML from being set properly if it
-    // contains other elements. We check to make sure the assignment stuck.
-    if (template.innerHTML !== templateText) {
-      template.innerHTML = templateText;
-    }
   }
 
   // @ts-ignore

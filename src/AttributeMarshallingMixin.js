@@ -71,10 +71,8 @@ export default function AttributeMarshallingMixin(Base) {
 function attributesForClass(classFn) {
 
   // We treat the HTMLElement base class as if it has no attributes, since we
-  // don't want to receive attributeChangedCallback for it. We'd like to do
-  // a simple check if classFn === HTMLElement, but this fails in the polyfill
-  // under IE, so we compare prototypes instead.
-  if (classFn.prototype === HTMLElement.prototype) {
+  // don't want to receive attributeChangedCallback for it.
+  if (classFn === HTMLElement) {
     return [];
   }
 

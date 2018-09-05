@@ -95,7 +95,7 @@ function handleWheel(component, event) {
   const deltaY = event.deltaY;
 
   // See if component event represents acceleration or deceleration.
-  const acceleration = sign(deltaX) * (deltaX - component[lastDeltaXSymbol]);
+  const acceleration = Math.sign(deltaX) * (deltaX - component[lastDeltaXSymbol]);
   component[lastDeltaXSymbol] = deltaX;
 
   if (Math.abs(deltaX) < Math.abs(deltaY)) {
@@ -125,7 +125,7 @@ function handleWheel(component, event) {
   let swipeFraction = width > 0 ?
     component[wheelDistanceSymbol] / width :
     0;
-  swipeFraction = sign(swipeFraction) * Math.min(Math.abs(swipeFraction), 1);
+  swipeFraction = Math.sign(swipeFraction) * Math.min(Math.abs(swipeFraction), 1);
 
   // If the user has dragged enough to reach the previous/next item, then
   // complete a navigation to that item.
@@ -168,15 +168,6 @@ function resetWheelTracking(component) {
     clearTimeout(component[lastWheelTimeoutSymbol]);
     component[lastWheelTimeoutSymbol] = null;
   }
-}
-
-// Define our own sign function, since IE doesn't supply Math.sign().
-function sign(x) {
-  return (x === 0) ?
-    0 :
-    (x > 0) ?
-      1 :
-      -1;
 }
 
 // A sufficiently long period of time has passed since the last wheel event.

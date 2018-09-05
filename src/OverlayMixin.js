@@ -93,9 +93,9 @@ export default function OverlayMixin(Base) {
         this.closed :
         this.closeFinished;
 
-      // We'd like to just use the `hidden` attribute, but Edge/IE has trouble
+      // We'd like to just use the `hidden` attribute, but Edge has trouble
       // with that: if the hidden attribute is removed from an overlay to
-      // display it, Edge/IE may not paint it correctly. And a side-effect
+      // display it, Edge may not paint it correctly. And a side-effect
       // of styling with the hidden attribute is that naive styling of the
       // component from the outside (to change to display: flex, say) will
       // override the display: none implied by hidden. To work around both

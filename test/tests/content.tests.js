@@ -47,19 +47,4 @@ describe("content helpers", () => {
     assert.equal(filtered[1].textContent, '1');
   });
 
-  // it("skips disabled items", () => {
-  //   const fixture = document.createElement('select');
-  //   fixture.innerHTML = `
-  //     <option>0</option>
-  //     <option>1</option>
-  //     <option disabled></option>
-  //     <option>2</option>
-  //     <option disabled></option>
-  //     <option>3</option>
-  //   `;
-  //   const filtered = content.substantiveElements(fixture.childNodes);
-  //   assert.equal(filtered.length, 4);
-  //   assert.equal(filtered[2].textContent, '2');
-  // });
-
 });
