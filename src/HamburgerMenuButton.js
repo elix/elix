@@ -61,6 +61,28 @@ export default class HamburgerMenuButton extends Base {
     });
   }
 
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      fromEdge: 'start'
+    });
+  }
+
+  /**
+   * The edge from which the menu will appear, in terms of the menu's container.
+   * 
+   * The `start` and `end` values refer to text direction: in left-to-right
+   * languages such as English, these are equivalent to `left` and `right`,
+   * respectively.
+   * 
+   * @type {('end'|'left'|'right'|'start')}
+   * @default 'start'
+   */
+  get fromEdge() {
+    return this.state.fromEdge;
+  }
+  set fromEdge(fromEdge) {
+    this.setState({ fromEdge });
+  }
 
   // Pressing Enter or Space is the same as clicking the menu button.
   [symbols.keydown](event) {
@@ -149,9 +171,11 @@ export default class HamburgerMenuButton extends Base {
   }
 
   get updates() {
+    const fromEdge = this.fromEdge;
     return merge(super.updates, {
       $: {
         menu: {
+          fromEdge,
           opened: this.opened
         }
       }

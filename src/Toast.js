@@ -65,6 +65,16 @@ class Toast extends Base {
     return [this.$.frame];
   }
 
+  /**
+   * The edge of the viewport from which the toast will appear.
+   * 
+   * The `start` and `end` values refer to text direction: in left-to-right
+   * languages such as English, these are equivalent to `left` and `right`,
+   * respectively.
+   * 
+   * @type {('bottom'|'end'|'left'|'right'|'start'|'top')}
+   * @default 'bottom'
+   */
   get fromEdge() {
     return this.state.fromEdge;
   }

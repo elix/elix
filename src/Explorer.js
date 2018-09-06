@@ -122,8 +122,9 @@ class Explorer extends Base {
   /**
    * The position of the proxy list relative to the stage.
    * 
-   * The `start` and `end` values refer to text direction: in left-to-right languages
-   * such as English, these are equivalent to `left` and `right`, respectively.
+   * The `start` and `end` values refer to text direction: in left-to-right
+   * languages such as English, these are equivalent to `left` and `right`,
+   * respectively.
    * 
    * @type {('bottom'|'end'|'left'|'right'|'start'|'top')}
    * @default 'start'

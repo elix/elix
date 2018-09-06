@@ -51,6 +51,7 @@ class Drawer extends Base {
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       enableTransitions: false,
+      fromEdge: 'start',
       selectedIndex: 0
     });
   }
@@ -59,8 +60,26 @@ class Drawer extends Base {
     return [this.$.backdrop, this.$.frame];
   }
 
+  /**
+   * The edge from which the drawer will appear, in terms of the drawer's
+   * container.
+   * 
+   * The `start` and `end` values refer to text direction: in left-to-right
+   * languages such as English, these are equivalent to `left` and `right`,
+   * respectively.
+   * 
+   * @type {('end'|'left'|'right'|'start')}
+   * @default 'start'
+   */
+  get fromEdge() {
+    return this.state.fromEdge;
+  }
+  set fromEdge(fromEdge) {
+    this.setState({ fromEdge });
+  }
+
   async [symbols.swipeLeft]() {
-    if (!this[symbols.rightToLeft]) {
+    if (drawerAppearsFromLeftEdge(this)) {
       this.setState({
         effect: 'close',
         effectPhase: 'during'
@@ -70,7 +89,7 @@ class Drawer extends Base {
   }
   
   async [symbols.swipeRight]() {
-    if (this[symbols.rightToLeft]) {
+    if (!drawerAppearsFromLeftEdge(this)) {
       this.setState({
         effect: 'close',
         effectPhase: 'during'
@@ -93,7 +112,11 @@ class Drawer extends Base {
     const opened = (effect === 'open' && phase !== 'before') ||
       (effect === 'close' && phase === 'before');
 
-    const sign = this[symbols.rightToLeft] ? 1 : -1;
+    const fromEdge = this.fromEdge;
+    const rightToLeft = this[symbols.rightToLeft];
+    const fromLeftEdge = drawerAppearsFromLeftEdge(this);
+
+    const sign = fromLeftEdge ? -1 : 1;
     const swiping = this.state.swipeFraction !== null;
     // Constrain the distance swiped to between 0 and a bit less than 1. A swipe
     // distance of 1 itself would cause a tricky problem. The drawer would
@@ -149,10 +172,18 @@ class Drawer extends Base {
     };
 
     // Style for top-level element
+    const mapFromEdgetoJustifyContent = {
+      'end': 'flex-end',
+      'left': rightToLeft ? 'flex-end' : 'flex-start',
+      'right': rightToLeft ? 'flex-start' : 'flex-end',
+      'start': 'flex-start'
+    };
+    const justifyContent = mapFromEdgetoJustifyContent[fromEdge];
+
     const style = {
       'align-items': 'stretch',
       'flex-direction': 'row',
-      'justify-content': 'flex-start',
+      'justify-content': justifyContent
     }
 
     return merge(base, {
@@ -164,6 +195,15 @@ class Drawer extends Base {
     });
   }
 
+}
+
+
+function drawerAppearsFromLeftEdge(element) {
+  const fromEdge = element.fromEdge;
+  const rightToLeft = element[symbols.rightToLeft];
+  return fromEdge === 'left' ||
+    fromEdge === 'start' && !rightToLeft ||
+    fromEdge === 'end' && rightToLeft;
 }
 
 
