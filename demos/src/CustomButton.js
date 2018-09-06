@@ -41,7 +41,7 @@ class CustomButton extends Base {
 
   get updates() {
     const base = super.updates || {};
-    const baseInnerStyle = base.$ && base.$.inner && base.$.inner.style
+    const baseInnerStyle = base.$ && base.$.inner && base.$.inner.style;
     const outline = baseInnerStyle && baseInnerStyle.outline ||
       !this.state.focusVisible && 'none' ||
       undefined;
