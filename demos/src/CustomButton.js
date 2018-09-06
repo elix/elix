@@ -1,60 +1,28 @@
-import { merge } from '../../src/updates.js';
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
-import FocusVisibleMixin from '../../src/FocusVisibleMixin.js';
-import WrappedStandardElement from '../../src/WrappedStandardElement.js';
+import SeamlessButton from '../../src/SeamlessButton.js';
+import { getSuperProperty } from '../../src/workarounds.js';
 
 
-const Base =
-  FocusVisibleMixin(
-    WrappedStandardElement.wrap('button')
-  );
-
-
-class CustomButton extends Base {
+class CustomButton extends SeamlessButton {
 
   get [symbols.template]() {
-    return template.html`
+    // Next line is same as: const result = super[symbols.template]
+    const result = getSuperProperty(this, CustomButton, symbols.template);
+    const styleTemplate = template.html`
       <style>
-        :host {
-          display: inline-block;
-        }
-        
-        button {
+        #inner {
           background: white;
           border-radius: 0.5em;
           border: 2px solid rgba(255, 0, 0, 0.2);
-          font-family: inherit;
-          font-size: inherit;
-          font-weight: inherit;
-          height: 100%;
           padding: 0.5em 1em;
-          width: 100%;
         }
       </style>
-
-      <button id="inner" tabindex="0">
-        <slot></slot>
-      </button>
     `;
+    result.content.appendChild(styleTemplate.content);
+    return result;
   }
 
-  get updates() {
-    const base = super.updates || {};
-    const baseInnerStyle = base.$ && base.$.inner && base.$.inner.style;
-    const outline = baseInnerStyle && baseInnerStyle.outline ||
-      !this.state.focusVisible && 'none' ||
-      undefined;
-    return merge(base, {
-      $: {
-        inner: {
-          style: {
-            outline
-          }
-        }
-      }
-    });
-  }
 }
 
 

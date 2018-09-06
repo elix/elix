@@ -1,3 +1,4 @@
+import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
@@ -68,6 +69,24 @@ class SeamlessButton extends Base {
     `;
   }
 
+  get updates() {
+    const base = super.updates || {};
+
+    const baseInnerStyle = base.$ && base.$.inner && base.$.inner.style;
+    const outline = baseInnerStyle && baseInnerStyle.outline ||
+      !this.state.focusVisible && 'none' ||
+      undefined;
+
+    return merge(base, {
+      $: {
+        inner: {
+          style: {
+            outline
+          }
+        }
+      }
+    });
+  }
 }
 
 
