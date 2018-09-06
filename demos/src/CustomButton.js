@@ -1,10 +1,10 @@
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
-import SeamlessButton from '../../src/SeamlessButton.js';
+import Button from '../../src/Button.js';
 import { getSuperProperty } from '../../src/workarounds.js';
 
 
-class CustomButton extends SeamlessButton {
+class CustomButton extends Button {
 
   get [symbols.template]() {
     // Next line is same as: const result = super[symbols.template]

@@ -18,6 +18,7 @@ export { default as ArrowDirectionButton } from './ArrowDirectionButton.js';
 export { default as ArrowDirectionMixin } from './ArrowDirectionMixin.js';
 export { default as AttributeMarshallingMixin } from './AttributeMarshallingMixin.js';
 export { default as AutosizeTextarea } from './AutosizeTextarea.js';
+export { default as Button } from './Button.js';
 export { default as Carousel } from './Carousel.js';
 export { default as CarouselSlideshow } from './CarouselSlideshow.js';
 export { default as CarouselWithThumbnails } from './CarouselWithThumbnails.js';

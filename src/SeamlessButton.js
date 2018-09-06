@@ -1,92 +1,33 @@
-import { merge } from './updates.js';
+import { getSuperProperty } from './workarounds.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
-import FocusVisibleMixin from './FocusVisibleMixin.js';
-import KeyboardMixin from './KeyboardMixin.js';
-import WrappedStandardElement from './WrappedStandardElement.js';
-
-
-const Base =
-  FocusVisibleMixin(
-  KeyboardMixin(
-    WrappedStandardElement.wrap('button')
-  ));
+import Button from './Button.js';
 
 
 /**
  * A button with no border or background in its normal state, generally used for
  * clickable subelements inside a more complex component.
  * 
- * @inherits WrappedStandardElement
- * @mixes FocusVisibleMixin
- * @mixes KeyboardMixin
+ * @inherits Button
  */
-class SeamlessButton extends Base {
-
-  // Pressing Enter or Space is the same as clicking the button.
-  [symbols.keydown](event) {
-    /** @type {any} */
-    const button = this.inner;
-    
-    let handled;
-    switch (event.key) {
-      case ' ':
-      case 'Enter':
-        button.click();
-        handled = true;
-        break;
-    }
-
-    // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[symbols.keydown] && super[symbols.keydown](event));
-  }
+class SeamlessButton extends Button {
 
   get [symbols.template]() {
-    return template.html`
+    // Next line is same as: const result = super[symbols.template]
+    const result = getSuperProperty(this, SeamlessButton, symbols.template);
+    const styleTemplate = template.html`
       <style>
-        :host {
-          display: inline-flex;
-          -webkit-tap-highlight-color: transparent;
-        }
-        
         #inner {
           background: none;
           border: none;
-          flex: 1;
-          font-family: inherit;
-          font-size: inherit;
-          font-weight: inherit;
-          height: 100%;
           padding: 0;
-          position: relative;
-          width: 100%;
         }
       </style>
-
-      <button id="inner" tabindex="-1">
-        <slot></slot>
-      </button>
     `;
+    result.content.appendChild(styleTemplate.content);
+    return result;
   }
 
-  get updates() {
-    const base = super.updates || {};
-
-    const baseInnerStyle = base.$ && base.$.inner && base.$.inner.style;
-    const outline = baseInnerStyle && baseInnerStyle.outline ||
-      !this.state.focusVisible && 'none' ||
-      undefined;
-
-    return merge(base, {
-      $: {
-        inner: {
-          style: {
-            outline
-          }
-        }
-      }
-    });
-  }
 }
 
 
