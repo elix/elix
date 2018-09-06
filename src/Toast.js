@@ -1,12 +1,9 @@
+import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
-import KeyboardMixin from './KeyboardMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
-import OpenCloseMixin from './OpenCloseMixin.js';
-import OverlayMixin from './OverlayMixin.js';
-import PopupModalityMixin from './PopupModalityMixin.js';
-import ReactiveElement from './ReactiveElement.js';
+import Popup from './Popup.js';
 import TransitionEffectMixin from './TransitionEffectMixin.js';
 
 
@@ -14,26 +11,18 @@ const timeoutKey = Symbol('timeout');
 
 
 const Base =
-  KeyboardMixin(
   LanguageDirectionMixin(
-  OpenCloseMixin(
-  OverlayMixin(
-  PopupModalityMixin(
   TransitionEffectMixin(
-    ReactiveElement
-  ))))));
+    Popup
+  ));
 
 
 /**
  * A lightweight popup intended to display a short, non-critical message until a
  * specified `duration` elapses or the user dismisses it.
  * 
- * @inherits ReactiveElement
- * @mixes KeyboardMixin
+ * @inherits Popup
  * @mixes LanguageDirectionMixin
- * @mixes OpenCloseMixin
- * @mixes OverlayMixin
- * @mixes PopupModalityMixin
  * @mixes TransitionEffectMixin
  */
 class Toast extends Base {
@@ -73,7 +62,7 @@ class Toast extends Base {
   }
 
   get [symbols.elementsWithTransitions]() {
-    return [this.$.content];
+    return [this.$.frame];
   }
 
   get fromEdge() {
@@ -81,6 +70,42 @@ class Toast extends Base {
   }
   set fromEdge(fromEdge) {
     this.setState({ fromEdge });
+  }
+
+  get [symbols.template]() {
+    // Next line is same as: const result = super[symbols.template]
+    const result = getSuperProperty(this, Toast, symbols.template);
+    const styleTemplate = template.html`
+      <style>
+        :host {
+          align-items: initial;
+          flex-direction: column;
+          height: 100%;
+          justify-content: initial;
+          left: 0;
+          outline: none;
+          pointer-events: none;
+          position: fixed;
+          top: 0;
+          -webkit-tap-highlight-color: transparent;
+          width: 100%;
+        }
+
+        #frame {
+          background: white;
+          border: 1px solid rgba(0, 0, 0, 0.2);
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+          margin: 1em;
+          pointer-events: initial;
+          position: relative;
+          transition-duration: 0.25s;
+          transition-property: opacity, transform;
+          will-change: opacity, transform;
+        }
+      </style>
+    `;
+    result.content.appendChild(styleTemplate.content);
+    return result;
   }
 
   get updates() {
@@ -155,7 +180,7 @@ class Toast extends Base {
       openEdgeTransforms[languageAdjustedEdge] :
       edgeTransforms[languageAdjustedEdge];
 
-    const contentProps = {
+    const frameProps = {
       style: {
         opacity,
         transform
@@ -169,42 +194,9 @@ class Toast extends Base {
         'justify-content': hostEdgeStyle['justify-content'],
       },
       $: {
-        content: contentProps
+        frame: frameProps
       }
     });
-  }
-
-  get [symbols.template]() {
-    return template.html`
-      <style>
-        :host {
-          flex-direction: column;
-          height: 100%;
-          left: 0;
-          outline: none;
-          pointer-events: none;
-          position: fixed;
-          top: 0;
-          -webkit-tap-highlight-color: transparent;
-          width: 100%;
-        }
-
-        #content {
-          background: white;
-          border: 1px solid rgba(0, 0, 0, 0.2);
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-          margin: 1em;
-          pointer-events: initial;
-          position: relative;
-          transition-duration: 0.25s;
-          transition-property: opacity, transform;
-          will-change: opacity, transform;
-        }
-      </style>
-      <div id="content">
-        <slot></slot>
-      </div>
-    `;
   }
 
 }
