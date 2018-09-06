@@ -1,6 +1,6 @@
 # Elix ![Build status](https://travis-ci.org/elix/elix.svg?branch=master)
 
-[![Elix logo](https://cdn.rawgit.com/elix/elix.org/3e158c0a/public/src/images/elix.png)](https://elix.org)
+[![Elix logo](demos/logo.png)](https://component.kitchen/elix)
 
 Elix is a community-driven collection of high-quality web components for common
 user interface patterns.
@@ -23,7 +23,7 @@ cost of creating the components across organizations, and ensures that the
 resulting components satisfy a broad range of concerns and can be used in many
 contexts.
 
-For full documentation and demos, see https://elix.org.
+For full details and demos, see the [Elix documentation](https://component.kitchen/elix).
 
 
 # Core principles
