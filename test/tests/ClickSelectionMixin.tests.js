@@ -12,7 +12,7 @@ class ClickSelectionTest extends ClickSelectionMixin(HTMLElement) {
   }
 
   get items() {
-    return [...this.children];
+    return Array.prototype.slice.call(this.children);
   }
 
   get selectedIndex() {

@@ -13,7 +13,7 @@ class SelectionInViewTest extends SelectionInViewMixin(ReactiveMixin(HTMLElement
   }
 
   get items() {
-    return [...this.children];
+    return Array.prototype.slice.call(this.children);
   }
 
 }
