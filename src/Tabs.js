@@ -15,8 +15,8 @@ import TabStrip from './TabStrip.js';
  * best if you only have a small handful of pages, say 2–7.
  *
  * @inherits Explorer
- * @elementtag {TabButton} proxy
- * @elementtag {TabStrip} proxyList
+ * @elementrole {TabButton} proxy
+ * @elementrole {TabStrip} proxyList
  */
 class Tabs extends Explorer {
 

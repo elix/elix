@@ -27,8 +27,8 @@ const Base =
  * @mixes FocusVisibleMixin
  * @mixes KeyboardMixin
  * @mixes OpenCloseMixin
- * @elementtag {Drawer} menu
- * @elementtag {SeamlessButton} menuButton
+ * @elementrole {Drawer} menu
+ * @elementrole {SeamlessButton} menuButton
  */
 export default class HamburgerMenuButton extends Base {
 
@@ -103,7 +103,7 @@ export default class HamburgerMenuButton extends Base {
   }
 
   /**
-   * The class or template used to create the menu (drawer).
+   * The class, tag, or template used to create the menu (drawer).
    * 
    * @type {function|string|HTMLTemplateElement}
    * @default {Drawer}
@@ -117,7 +117,7 @@ export default class HamburgerMenuButton extends Base {
   }
 
   /**
-   * The class or template used to create the menu button element.
+   * The class, tag, or template used to create the menu button element.
    * 
    * @type {function|string|HTMLTemplateElement}
    * @default {SeamlessButton}

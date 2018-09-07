@@ -16,8 +16,14 @@ class CustomPageDot extends ReactiveElement {
           height: 12px;
           margin: 7px 5px;
           padding: 0;
-          transition: opacity 0.2s;
+          transition: border-color 0.3s, color 0.3s, transform 0.3s !important;
           width: 12px;
+        }
+
+        :host(:hover) {
+          color: rgba(255, 255, 255, 0.8);
+          cursor: pointer;
+          transform: scale(1.3);
         }
       </style>
     `;

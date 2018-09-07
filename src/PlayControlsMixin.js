@@ -14,7 +14,7 @@ const wrap = Symbol('wrap');
  * [Play controls let the user go back, pause/resume, or forward](/demos/slideshowWithPlayControls.html)
  * 
  * @module PlayControlsMixin
- * @elementtag {SeamlessButton} controlButton
+ * @elementrole {SeamlessButton} controlButton
  */
 export default function PlayControlsMixin(Base) {
 
@@ -53,7 +53,7 @@ export default function PlayControlsMixin(Base) {
     }
 
     /**
-     * The class or template used for the play control buttons.
+     * The class, tag, or template used for the play control buttons.
      * 
      * @type {function|string|HTMLTemplateElement}
      * @default 'elix-seamless-button'

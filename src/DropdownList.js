@@ -122,7 +122,8 @@ class DropdownList extends Base {
   }
 
   /**
-   * The class or template used to contain the dropdown list's current value.
+   * The class, tag, or template used to contain the dropdown list's current
+   * value.
    * 
    * @type {function|string|HTMLTemplateElement}
    * @default 'div'

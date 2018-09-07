@@ -50,20 +50,20 @@ function customTagsWithName(primaryDoclet, name) {
 }
 
 /*
- * Compute the element tag map for the given object.
+ * Compute the element role map for the given object.
  */
-function elementTagsForObject(objectDoclet) {
+function elementRolesForObject(objectDoclet) {
   let tagMap = {};
-  const elementTags = customTagsWithName(objectDoclet, 'elementtag');
-  elementTags.forEach(elementTag => {
-    const value = elementTag.value;
-    const elementTagRegex = /{(.+)}\s+(.+)/;
-    const match = elementTagRegex.exec(value);
+  const elementRoles = customTagsWithName(objectDoclet, 'elementrole');
+  elementRoles.forEach(elementRole => {
+    const value = elementRole.value;
+    const elementRoleRegex = /{(.+)}\s+(.+)/;
+    const match = elementRoleRegex.exec(value);
     if (match) {
       const elementClassName = match[1];
-      const elementTagName = match[2];
+      const elementRoleName = match[2];
       Object.assign(tagMap, {
-        [elementTagName]: elementClassName
+        [elementRoleName]: elementClassName
       });
     }
   });
@@ -116,9 +116,9 @@ function extendObjectDocs(projectDocs, objectDocs) {
   }
   objectDoclet.extended = true;
 
-  // Calculate the initial map of element tags for the object (which element
+  // Calculate the initial map of element roles for the object (which element
   // classes are used for which roles).
-  objectDoclet.elementTags = elementTagsForObject(objectDoclet);
+  objectDoclet.elementRoles = elementRolesForObject(objectDoclet);
 
   // Indicate the object's own members as originally coming from this object.
   memberDoclets(objectDocs).forEach(memberDoclet => {
@@ -144,7 +144,7 @@ function extendObjectDocs(projectDocs, objectDocs) {
     updateClassInheritanceRecords(projectDocs, objectDocs);
   }
 
-  // Mark this object's mixins and element tags (both its own and, now,
+  // Mark this object's mixins and element roles (both its own and, now,
   // inherited) as being used by this object.
   updateMixinUsageRecords(projectDocs, objectDocs);
   updateElementUsageRecords(projectDocs, objectDocs);
@@ -200,13 +200,13 @@ function extendObjectDocsWithMembers(targetDocs, sourceDocs, inheritedfrom) {
     targetDocs.push(docletCopy);
   });
 
-  // Merge element tags defined by target *over* those of source, since target
+  // Merge element roles defined by target *over* those of source, since target
   // tags will take precedence.
   const sourceDoclet = primaryDoclet(sourceDocs);
-  targetDoclet.elementTags = Object.assign(
+  targetDoclet.elementRoles = Object.assign(
     {},
-    sourceDoclet.elementTags,
-    targetDoclet.elementTags
+    sourceDoclet.elementRoles,
+    targetDoclet.elementRoles
   );
 }
 
@@ -275,9 +275,9 @@ function updateClassInheritanceRecords(projectDocs, classDocs) {
 function updateElementUsageRecords(projectDocs, objectDocs) {
   const objectDoclet = primaryDoclet(objectDocs);
   // @ts-ignore
-  Object.values(objectDoclet.elementTags).forEach(className => {
+  Object.values(objectDoclet.elementRoles).forEach(className => {
     const classDocs = projectDocs[className];
-    // An element tag may refer to a standard HTMLxxx element for which we have
+    // An element role may refer to a standard HTMLxxx element for which we have
     // no documentation.
     if (classDocs) {
       const classDoclet = primaryDoclet(classDocs);

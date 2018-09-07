@@ -28,10 +28,10 @@ const Base =
  * @mixes FocusVisibleMixin
  * @mixes KeyboardMixin
  * @mixes OpenCloseMixin
- * @elementtag {Backdrop} backdrop
- * @elementtag {OverlayFrame} frame
- * @elementtag {Popup} popup
- * @elementtag {HTMLButtonElement} source
+ * @elementrole {Backdrop} backdrop
+ * @elementrole {OverlayFrame} frame
+ * @elementrole {Popup} popup
+ * @elementrole {HTMLButtonElement} source
  */
 class PopupSource extends Base {
 
@@ -46,7 +46,8 @@ class PopupSource extends Base {
   }
 
   /**
-   * The class or template used for the optional backdrop element behind the overlay.
+   * The class, tag, or template used for the optional backdrop element behind
+   * the overlay.
    * 
    * This can help focus the user's attention on the overlay content.
    * Additionally, a backdrop can be used to absorb clicks on background page
@@ -166,7 +167,7 @@ class PopupSource extends Base {
   }
 
   /**
-   * The class or template used to contain the popup content.
+   * The class, tag, or template used to contain the popup content.
    * 
    * The frame element can be used to provide a border around the popup content,
    * and to provide visual effects such as a drop-shadow to help distinguish
@@ -245,7 +246,7 @@ class PopupSource extends Base {
   }
 
   /**
-   * The class or template used to define the popup.
+   * The class, tag, or template used to define the popup.
    * 
    * The popup element is responsible for handling overlay behavior.
    * 
@@ -292,8 +293,8 @@ class PopupSource extends Base {
   }
 
   /**
-   * The class or template used for the button (or other element) that will
-   * invoke the popup.
+   * The class, tag, or template used for the button (or other element) that
+   * will invoke the popup.
    * 
    * @type {function|string|HTMLTemplateElement}
    * @default 'button'

@@ -30,8 +30,8 @@ const Base =
  * @inherits ReactiveElement
  * @mixes OpenCloseMixin
  * @mixes OverlayMixin
- * @elementtag {Backdrop} backdrop
- * @elementtag {OverlayFrame} frame
+ * @elementrole {Backdrop} backdrop
+ * @elementrole {OverlayFrame} frame
  */
 class Overlay extends Base {
 
@@ -48,8 +48,8 @@ class Overlay extends Base {
   }
 
   /**
-   * The class or template used for the optional backdrop element behind the
-   * overlay.
+   * The class, tag, or template used for the optional backdrop element behind
+   * the overlay.
    * 
    * This can help focus the user's attention on the overlay content.
    * Additionally, a backdrop can be used to absorb clicks on background page
@@ -72,7 +72,7 @@ class Overlay extends Base {
   }
 
   /**
-   * The class or template used to contain the primary overlay content.
+   * The class, tag, or template used to contain the primary overlay content.
    * 
    * The frame element can be used to provide a border around the overlay
    * content, and to provide visual effects such as a drop-shadow to help

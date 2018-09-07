@@ -3,6 +3,7 @@ import '../src/elix.js';
 
 // Additional demo components.
 import './src/CountryListBox.js';
+import './src/CustomCarousel2.js';
 import './src/FocusVisibleTest.js';
 import './src/IncrementDecrement.js';
 import './src/LabeledColorSwatch.js';

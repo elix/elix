@@ -38,9 +38,9 @@ const Base =
  * @mixes LanguageDirectionMixin
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin
- * @elementtag {HTMLDivElement} proxy
- * @elementtag {ListBox} proxyList
- * @elementtag {Modes} stage
+ * @elementrole {HTMLDivElement} proxy
+ * @elementrole {ListBox} proxyList
+ * @elementrole {Modes} stage
  */
 class Explorer extends Base {
 
@@ -137,7 +137,7 @@ class Explorer extends Base {
   }
 
   /**
-   * The class or template used to create the Explorer's list of proxies.
+   * The class, tag, or template used to create the Explorer's list of proxies.
    * 
    * @type {function|string|HTMLTemplateElement}
    * @default 'div'
@@ -151,7 +151,8 @@ class Explorer extends Base {
   }
 
   /**
-   * The class or template used to create default proxies for the list items.
+   * The class, tag, or template used to create default proxies for the list
+   * items.
    * 
    * @type {function|string|HTMLTemplateElement}
    */
@@ -247,8 +248,8 @@ class Explorer extends Base {
   }
 
   /**
-   * The class or template used for the main "stage" element that shows a single
-   * item at a time.
+   * The class, tag, or template used for the main "stage" element that shows a
+   * single item at a time.
    * 
    * @type {function|string|HTMLTemplateElement}
    * @default {Modes}

@@ -24,7 +24,7 @@ const Base =
  * @inherits Overlay
  * @mixes DialogModalityMixin
  * @mixes KeyboardMixin
- * @elementtag {ModalBackdrop} backdrop
+ * @elementrole {ModalBackdrop} backdrop
  */
 class Dialog extends Base {
 

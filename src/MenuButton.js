@@ -14,7 +14,7 @@ const documentMouseupListenerKey = Symbol('documentMouseupListener');
  * A button that invokes a menu.
  * 
  * @inherits PopupSource
- * @elementtag {Menu} menu
+ * @elementrole {Menu} menu
  */
 class MenuButton extends PopupSource {
 
@@ -244,7 +244,7 @@ class MenuButton extends PopupSource {
   }
 
   /**
-   * The class or template used to define the menu.
+   * The class, tag, or template used to define the menu.
    * 
    * The menu element is responsible for presenting the menu items and handling
    * navigation between them.
