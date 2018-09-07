@@ -13,7 +13,8 @@
  * contains a single top-level node, that node is returned directly (instead of
  * the fragment).
  * 
- * @param {Function|string|HTMLTemplateElement} descriptor
+ * @param {(Function|string|HTMLTemplateElement)} descriptor - the descriptor that
+ * will be used to create the element
  * @returns {Node} the new element
  */
 export function createElement(descriptor) {
@@ -45,9 +46,9 @@ export function createElement(descriptor) {
  * the existing elements that match the selector are already of the desired
  * class/tag name, the replacement operation is skipped.
  * 
- * @param {HTMLTemplateElement|Element} template - the template to search
+ * @param {(HTMLTemplateElement|Element)} template - the template to search
  * @param {string} selector - the CSS selector used for the search
- * @param {Function|string|HTMLTemplateElement} descriptor - the descriptor used
+ * @param {(Function|string|HTMLTemplateElement)} descriptor - the descriptor used
  * to generate replacement elements
  */
 export function findAndReplace(template, selector, descriptor) {
@@ -93,7 +94,7 @@ export function html(strings, ...substitutions) {
  * replacement node or template. The attributes and children of the original
  * node will be moved to the replacement.
  * 
- * @param {Node|null} original 
+ * @param {(Node|null)} original 
  * @param {Node} replacement 
  */
 export function replace(original, replacement) {

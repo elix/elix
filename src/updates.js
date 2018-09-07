@@ -83,7 +83,7 @@ const previousChildNodesKey = Symbol('previousChildNodes');
  * 
  *     element.foo = 'bar';
  * 
- * @param {Element|DocumentFragment} element - the element to update
+ * @param {(Element|DocumentFragment)} element - the element to update
  * @param {object} updates - the updates to apply
  */
 export function apply(element, updates) {
@@ -128,7 +128,7 @@ export function apply(element, updates) {
  * 
  * @param {Element} element - the element to update
  * @param {string} name - the attribute name
- * @param {string|boolean} value - the attribute value to set
+ * @param {(string|boolean)} value - the attribute value to set
  */
 export function applyAttribute(element, name, value) {
   if (booleanAttributes[name]) {
@@ -179,7 +179,7 @@ export function applyAttributes(element, attributes) {
  * the child nodes are already correct and does no work.
  * 
  * @param {Element} element - the element to update
- * @param {NodeList|Node[]} childNodes - the set of nodes to apply
+ * @param {(NodeList|Node[])} childNodes - the set of nodes to apply
  */
 export function applyChildNodes(element, childNodes) {
   // Quick dirty check if last array applied was frozen.
@@ -252,7 +252,7 @@ function applyReferencedElementUpdates(element, updates) {
  * This takes a dictionary in which each `name: value` is equivalent to calling
  * `style[name] = value`.
  * 
- * @param {HTMLElement|SVGElement} element - the element to update
+ * @param {(HTMLElement|SVGElement)} element - the element to update
  * @param {object} styles - a dictionary of styles to apply
  */
 export function applyStyles(element, styles) {
@@ -326,7 +326,7 @@ export function currentClasses(element) {
  * Returns a dictionary of the element's current styles, using the same
  * `name: value` format supported by [applyStyles](#applyStyles).
  *
- * @param {HTMLElement|SVGElement} element - the element to update
+ * @param {(HTMLElement|SVGElement)} element - the element to update
  * @returns {object} a dictionary of the element's current styles
  */
 export function currentStyles(element) {

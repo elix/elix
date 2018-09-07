@@ -34,7 +34,7 @@
  * 
  * @param {Object} obj 
  * @param {Object} cls - the starting point in the class hierarchy
- * @param {string|Symbol} property
+ * @param {(string|Symbol)} property
  */
 export function getSuperProperty(obj, cls, property) {
   const superProto = Object.getPrototypeOf(cls.prototype);

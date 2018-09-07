@@ -19,7 +19,7 @@
  * so that a component does not inadvertently treat `<style>` and other invisible
  * items as element content.
  *
- * @param {NodeList|Node[]} nodes - the list of nodes to filter
+ * @param {(NodeList|Node[])} nodes - the list of nodes to filter
  * @returns {Element[]} the filtered elements
  */
 export function substantiveElements(nodes) {
