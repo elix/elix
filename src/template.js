@@ -1,6 +1,11 @@
 /**
  * Helpers for working with component templates.
  * 
+ * The [ShadowTemplateMixin](ShadowTemplateMixin) lets you define a component
+ * template that will be used to popuplate the shadow subtree of new component
+ * instances. These helpers, especially the [html](#html) function, are intended
+ * to simplify the creation of such templates.
+ * 
  * @module template
  */
 
@@ -69,6 +74,15 @@ export function findAndReplace(template, selector, descriptor) {
 /**
  * A JavaScript template string literal that returns an HTML template.
  * 
+ * Example:
+ * 
+ *     const myTemplate = html`Hello, <em>world</em>.`
+ * 
+ * returns an `HTMLTemplateElement` whose `innerHTML` is `Hello, <em>world</em>.`
+ * 
+ * This function is called `html` so that it can be easily used with HTML
+ * syntax-highlighting extensions for various popular code editors.
+ * 
  * @param {TemplateStringsArray} strings - the strings passed to the JavaScript template
  * literal
  * @param {string[]} substitutions - the variable values passed to the
@@ -94,8 +108,8 @@ export function html(strings, ...substitutions) {
  * replacement node or template. The attributes and children of the original
  * node will be moved to the replacement.
  * 
- * @param {(Node|null)} original 
- * @param {Node} replacement 
+ * @param {(Node|null)} original - an existing node to be replaced
+ * @param {Node} replacement - the node to replace the existing node with
  */
 export function replace(original, replacement) {
   if (!original) {
@@ -126,9 +140,9 @@ export function replace(original, replacement) {
  * node. The contents of the original node/fragment are moved to the indicated
  * destination node (which should be a node within the wrapper).
  * 
- * @param original {Node} - the node to wrap
- * @param wrapper {DocumentFragment|Element} - the node to wrap with
- * @param destination {string} - a CSS selector indicated a node in the wrapper
+ * @param {Node} original - the node to wrap
+ * @param {(DocumentFragment|Element)} wrapper - the node to wrap with
+ * @param {string} destination - a CSS selector indicated a node in the wrapper
  * in which the original node should be put
  */
 export function wrap(original, wrapper, destination) {

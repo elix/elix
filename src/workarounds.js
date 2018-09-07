@@ -1,4 +1,10 @@
 /**
+ * Helper functions to work around problems in specific browsers.
+ * 
+ * @module workarounds
+ */
+
+/**
  * Return the superclass' value of a symbol-indexed property.
  * 
  * Edge 17 contains a nasty bug in which a symbol-indexed property implementation
@@ -32,9 +38,9 @@
  * If/when the Edge bug is fixed, calls to this function can be replaced with
  * a plain `super` call.
  * 
- * @param {Object} obj 
+ * @param {Object} obj - the object with the property to retrieve
  * @param {Object} cls - the starting point in the class hierarchy
- * @param {(string|Symbol)} property
+ * @param {(string|Symbol)} property - identifier for the desired property
  */
 export function getSuperProperty(obj, cls, property) {
   const superProto = Object.getPrototypeOf(cls.prototype);
