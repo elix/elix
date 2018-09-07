@@ -7,7 +7,7 @@ import Backdrop from './Backdrop.js';
  * [Drawer](Drawer). The backdrop slightly obscures the background elements,
  * focusing the user's attention on the overlay.
  * 
- * @inherits ReactiveElement
+ * @inherits Backdrop
  */
 class ModalBackdrop extends Backdrop {
 
