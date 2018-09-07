@@ -250,7 +250,7 @@ class MenuButton extends PopupSource {
    * navigation between them.
    * 
    * @type {function|string|HTMLTemplateElement}
-   * @default {Menu}
+   * @default Menu
    */
   get menuRole() {
     return this[symbols.roles].menu;

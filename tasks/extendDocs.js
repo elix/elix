@@ -100,6 +100,16 @@ function extendDocs(projectDocs) {
     if (objectDoclet.mixinUsedBy) {
       objectDoclet.mixinUsedBy.sort();
     }
+    if (objectDoclet.elementRoles) {
+      // Sort object keys
+      const elementRoles = objectDoclet.elementRoles;
+      const sortedRoles = Object.keys(elementRoles).sort().reduce((sorted, current) => {
+        sorted[current] = elementRoles[current];
+        return sorted;
+      }, {});
+      // Overwrite with sorted object.
+      objectDoclet.elementRoles = sortedRoles;
+    }
   });
 }
 

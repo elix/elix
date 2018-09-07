@@ -57,7 +57,7 @@ class Overlay extends Base {
    * as an overlay backdrop in such a way.
    * 
    * @type {function|string|HTMLTemplateElement}
-   * @default {Backdrop}
+   * @default Backdrop
    */
   get backdropRole() {
     return this[symbols.roles].backdrop;
@@ -79,7 +79,7 @@ class Overlay extends Base {
    * distinguish overlay content from background page elements.
    * 
    * @type {function|string|HTMLTemplateElement}
-   * @default {OverlayFrame}
+   * @default OverlayFrame
    */
   get frameRole() {
     return this[symbols.roles].frame;

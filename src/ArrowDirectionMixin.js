@@ -31,7 +31,7 @@ function ArrowDirectionMixin(Base) {
      * buttons.
      * 
      * @type {function|string|HTMLTemplateElement}
-     * @default {ArrowDirectionButton}
+     * @default ArrowDirectionButton
      */
     get arrowButtonRole() {
       return this[symbols.roles].arrowButton;

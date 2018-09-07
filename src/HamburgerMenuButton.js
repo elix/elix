@@ -106,7 +106,7 @@ export default class HamburgerMenuButton extends Base {
    * The class, tag, or template used to create the menu (drawer).
    * 
    * @type {function|string|HTMLTemplateElement}
-   * @default {Drawer}
+   * @default Drawer
    */
   get menuRole() {
     return this[symbols.roles].menu;
@@ -120,7 +120,7 @@ export default class HamburgerMenuButton extends Base {
    * The class, tag, or template used to create the menu button element.
    * 
    * @type {function|string|HTMLTemplateElement}
-   * @default {SeamlessButton}
+   * @default SeamlessButton
    */
   get menuButtonRole() {
     return this[symbols.roles].menuButton;

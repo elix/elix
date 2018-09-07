@@ -38,7 +38,7 @@ const Base =
  * @mixes LanguageDirectionMixin
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin
- * @elementrole {HTMLDivElement} proxy
+ * @elementrole {'div'} proxy
  * @elementrole {ListBox} proxyList
  * @elementrole {Modes} stage
  */
@@ -110,7 +110,7 @@ class Explorer extends Base {
    * True if the list of proxies should overlap the stage, false if not.
    * 
    * @type {boolean}
-   * @default {false}
+   * @default false
    */
   get proxyListOverlap() {
     return this.state.proxyListOverlap;
@@ -140,7 +140,7 @@ class Explorer extends Base {
    * The class, tag, or template used to create the Explorer's list of proxies.
    * 
    * @type {function|string|HTMLTemplateElement}
-   * @default 'div'
+   * @default ListBox
    */
   get proxyListRole() {
     return this[symbols.roles].proxyList;
@@ -155,6 +155,7 @@ class Explorer extends Base {
    * items.
    * 
    * @type {function|string|HTMLTemplateElement}
+   * @default 'div'
    */
   get proxyRole() {
     return this[symbols.roles].proxy;
@@ -252,7 +253,7 @@ class Explorer extends Base {
    * single item at a time.
    * 
    * @type {function|string|HTMLTemplateElement}
-   * @default {Modes}
+   * @default Modes
    */
   get stageRole() {
     return this[symbols.roles].stage;

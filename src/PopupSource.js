@@ -31,7 +31,7 @@ const Base =
  * @elementrole {Backdrop} backdrop
  * @elementrole {OverlayFrame} frame
  * @elementrole {Popup} popup
- * @elementrole {HTMLButtonElement} source
+ * @elementrole {'button'} source
  */
 class PopupSource extends Base {
 
@@ -55,7 +55,7 @@ class PopupSource extends Base {
    * as an overlay backdrop in such a way.
    * 
    * @type {function|string|HTMLTemplateElement}
-   * @default {Backdrop}
+   * @default Backdrop
    */
   get backdropRole() {
     return this[symbols.roles].backdrop;
@@ -174,7 +174,7 @@ class PopupSource extends Base {
    * popup content from background page elements.
    * 
    * @type {function|string|HTMLTemplateElement}
-   * @default {OverlayFrame}
+   * @default OverlayFrame
    */
   get frameRole() {
     return this[symbols.roles].frame;
@@ -251,7 +251,7 @@ class PopupSource extends Base {
    * The popup element is responsible for handling overlay behavior.
    * 
    * @type {function|string|HTMLTemplateElement}
-   * @default {Popup}
+   * @default Popup
    */
   get popupRole() {
     return this[symbols.roles].popup;
