@@ -1,13 +1,20 @@
-// import { merge } from './updates.js';
+import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import OpenCloseMixin from './OpenCloseMixin.js';
 import ReactiveElement from './ReactiveElement.js';
+
+
+const Base =
+  OpenCloseMixin(
+    ReactiveElement
+  );
 
 
 /**
  * @inherits ReactiveElement
  */
-class PullToRefresh extends ReactiveElement {
+class PullToRefresh extends Base {
 
   get [symbols.template]() {
     return template.html`
@@ -19,6 +26,7 @@ class PullToRefresh extends ReactiveElement {
         #pullToRefreshContainer {
           background: #eee;
           transform: translateY(0px);
+          transition: transform 0.3s;
         }
 
         #refreshHeader {
@@ -38,10 +46,20 @@ class PullToRefresh extends ReactiveElement {
     `;
   }
 
-  // get updates() {
-  //   return merge(super.updates, {
-  //   });
-  // }
+  get updates() {
+    const transform = this.opened ?
+      'translateY(17px)' :
+      'translateY(0)';
+    return merge(super.updates, {
+      $: {
+        pullToRefreshContainer: {
+          style: {
+            transform
+          }    
+        }
+      }
+    });
+  }
 
 }
 

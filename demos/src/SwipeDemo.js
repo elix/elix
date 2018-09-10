@@ -15,6 +15,19 @@ const Base =
 
 class SwipeDemo extends Base {
 
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      swipeAxis: 'horizontal'
+    });
+  }
+
+  get swipeAxis() {
+    return this.state.swipeAxis;
+  }
+  set swipeAxis(swipeAxis) {
+    this.setState({ swipeAxis });
+  }
+
   get [symbols.template]() {
     return template.html`
       <style>
@@ -51,12 +64,11 @@ class SwipeDemo extends Base {
       </style>
       <div class="section">
         <div id="message">
-          This demo shows how a component can use TouchSwipeMixin and
-          TrackpadSwipeMixin to listen to horizontal touch swipes and trackpad
-          swipes, respectively. Swiping with either input method will show the
-          current swipe distance as a fraction of the demo width. It will also
-          translate the gray block by that fraction so the user feels like they
-          are directly moving the block.
+          This demo shows how a component can use TouchSwipeMixin to listen to
+          vertical touch swipes and trackpad swipes, respectively. Swiping
+          will show the current swipe distance as a fraction of the demo width.
+          It will also translate the gray block by that fraction so the user
+          feels like they are directly moving the block.
         </div>
       </div>
       <div id="container" class="section">
@@ -69,18 +81,31 @@ class SwipeDemo extends Base {
   }
 
   get updates() {
+    const vertical = this.state.swipeAxis === 'vertical';
+
     const swipeFraction = this.state.swipeFraction;
     const formatted = swipeFraction !== null ?
       swipeFraction.toFixed(3) :
       '—';
+    const axis = vertical ? 'Y' : 'X';
     const transform = swipeFraction !== null ?
-      `translateX(${swipeFraction * 100}%)` :
+      `translate${axis}(${swipeFraction * 100}%)` :
       'none';
     return merge(super.updates, {
+      style: {
+        'flex-direction': vertical ? 'row' : 'column'
+      },
       $: {
         block: {
           style: {
-            transform
+            height: vertical ? '100%' : '1em',
+            transform,
+            width: vertical ? '1em' : '100%'
+          }
+        },
+        container: {
+          style: {
+            'flex-direction': vertical ? 'row-reverse' : 'column'
           }
         },
         swipeFraction: {

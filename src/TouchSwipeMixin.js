@@ -9,6 +9,7 @@ const previousVelocityKey = Symbol('previousVelocity');
 const previousXKey = Symbol('previousX');
 const previousYKey = Symbol('previousY');
 const startXKey = Symbol('startX');
+const startYKey = Symbol('startY');
 
 
 /**
@@ -108,6 +109,7 @@ export default function TouchSwipeMixin(Base) {
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
+        swipeAxis: 'horizontal',
         swipeFraction: null,
         touchAction: 'none'
       });
@@ -144,26 +146,30 @@ function isEventForPenOrPrimaryTouch(event) {
 /*
  * Invoked when the user has moved during a touch operation.
  */
-function gestureContinue(component, clientX, clientY) {
+function gestureContinue(element, clientX, clientY) {
 
   // Calculate and save the velocity since the last event. If this is the last
   // movement of the gesture, this velocity will be used to determine whether
   // the user is trying to flick.
-  const deltaX = clientX - component[previousXKey];
-  const deltaY = clientY - component[previousYKey];
+  const deltaX = clientX - element[previousXKey];
+  const deltaY = clientY - element[previousYKey];
   const now = Date.now();
-  const deltaTime = now - component[previousTimeKey];
+  const deltaTime = now - element[previousTimeKey];
   const velocity = deltaX / deltaTime * 1000;
 
-  component[previousXKey] = clientX;
-  component[previousYKey] = clientY;
-  component[previousTimeKey] = now;
-  component[previousVelocityKey] = velocity;
+  element[previousXKey] = clientX;
+  element[previousYKey] = clientY;
+  element[previousTimeKey] = now;
+  element[previousVelocityKey] = velocity;
 
-  if (Math.abs(deltaX) > Math.abs(deltaY)) {
-    // Move was mostly horizontal.
-    const swipeFraction = getSwipeFraction(component, clientX);
-    component.setState({ swipeFraction });
+  const verticalSwipe = Math.abs(deltaY) > Math.abs(deltaX);
+  const vertical = element.state.swipeAxis === 'vertical';
+  const swipeAlongAxis = vertical === verticalSwipe;
+
+  if (swipeAlongAxis) {
+    // Move was mostly along desired axis.
+    const swipeFraction = getSwipeFraction(element, clientX, clientY);
+    element.setState({ swipeFraction });
     // Indicate that the event was handled. It'd be nicer if we didn't have
     // to do this so that, e.g., a user could be swiping left and right
     // while simultaneously scrolling up and down. (Native touch apps can do
@@ -173,8 +179,8 @@ function gestureContinue(component, clientX, clientY) {
     // the event, and prevent default behavior.
     return true;
   } else {
-    // Move was mostly vertical.
-    return false; // Not handled
+    // Move was mostly along the other axis.
+    return false;
   }
 }
 
@@ -182,53 +188,67 @@ function gestureContinue(component, clientX, clientY) {
  * Invoked when the user has finished a touch operation.
  */
 /* eslint-disable no-unused-vars */
-function gestureEnd(component, clientX, clientY) {
+function gestureEnd(element, clientX, clientY) {
 
-  let gesture;
   // Examine velocity of last movement to see if user is flicking.
-  const velocity = component[previousVelocityKey];
+  const velocity = element[previousVelocityKey];
   const flickThresholdVelocity = 800; // speed in pixels/second
+
+  let flickPositive;
   if (velocity >= flickThresholdVelocity) {
-    // Flicked right at high speed.
-    gesture = symbols.swipeRight;
+    // Flicked right/down at high speed.
+    flickPositive = true;
   } else if (velocity <= -flickThresholdVelocity) {
-    // Flicked left at high speed.
-    gesture = symbols.swipeLeft;
+    // Flicked left/up at high speed.
+    flickPositive = false;
   } else {
     // Finished at low speed.
-    const swipeFraction = getSwipeFraction(component, clientX);
+    const swipeFraction = getSwipeFraction(element, clientX, clientY);
     if (swipeFraction <= -0.5) {
-      gesture = symbols.swipeLeft;
+      flickPositive = false;
     } else if (swipeFraction >= 0.5) {
-      gesture = symbols.swipeRight;
+      flickPositive = true;
     }
   }
 
-  // If component has method for indicated gesture, invoke it.
-  if (gesture && component[gesture]) {
-    component[gesture]();
+  if (typeof flickPositive !== 'undefined') {
+    const vertical = element.state.swipeAxis === 'vertical';
+    const gesture = vertical ?
+      (flickPositive ? symbols.swipeDown : symbols.swipeUp) :
+      (flickPositive ? symbols.swipeRight : symbols.swipeLeft);
+    // If component has method for indicated gesture, invoke it.
+    if (gesture && element[gesture]) {
+      element[gesture]();
+    }
   }
 
-  component.setState({ swipeFraction: null });
+  element.setState({ swipeFraction: null });
 }
 
 /*
  * Invoked when the user has begun a touch operation.
  */
-function gestureStart(component, clientX, clientY) {
-  component[startXKey] = clientX;
-  component[previousXKey] = clientX;
-  component[previousYKey] = clientY;
-  component[previousTimeKey] = Date.now();
-  component[previousVelocityKey] = 0;
-  component.setState({ swipeFraction: 0 });
+function gestureStart(element, clientX, clientY) {
+  element[startXKey] = clientX;
+  element[startYKey] = clientY;
+  element[previousXKey] = clientX;
+  element[previousYKey] = clientY;
+  element[previousTimeKey] = Date.now();
+  element[previousVelocityKey] = 0;
+  element.setState({ swipeFraction: 0 });
 }
 
-function getSwipeFraction(component, x) {
-  const dragDistance = x - component[startXKey];
-  const width = component[symbols.swipeTarget].offsetWidth;
-  const fraction = width > 0 ?
-    dragDistance / width :
+function getSwipeFraction(element, x, y) {
+  const vertical = element.state.swipeAxis === 'vertical';
+  const dragDistance = vertical ?
+    y - element[startYKey] :
+    x - element[startXKey];
+  const swipeTarget = element[symbols.swipeTarget];
+  const swipeTargetSize = vertical ?
+    swipeTarget.offsetHeight :
+    swipeTarget.offsetWidth;
+  const fraction = swipeTargetSize > 0 ?
+    dragDistance / swipeTargetSize :
     0;
   return fraction;
 }

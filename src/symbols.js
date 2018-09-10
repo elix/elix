@@ -368,6 +368,16 @@ export const scrollTarget = Symbol('scrollTarget');
 export const startEffect = Symbol('startEffect');
 
 /**
+ * Symbol for the `swipeDown` method.
+ * 
+ * The swipe mixin [TouchSwipeMixin](TouchSwipeMixin) invokes this method when
+ * the user finishes a gesture to swipe down.
+ * 
+ * @function swipeDown
+ */
+export const swipeDown = Symbol('swipeDown');
+
+/**
  * Symbol for the `swipeLeft` method.
  * 
  * The swipe mixins [TouchSwipeMixin](TouchSwipeMixin) and
@@ -388,6 +398,16 @@ export const swipeLeft = Symbol('swipeLeft');
  * @function swipeRight
  */
 export const swipeRight = Symbol('swipeRight');
+
+/**
+ * Symbol for the `swipeUp` method.
+ * 
+ * The swipe mixin [TouchSwipeMixin](TouchSwipeMixin) invokes this method when
+ * the user finishes a gesture to swipe up.
+ * 
+ * @function swipeUp
+ */
+export const swipeUp = Symbol('swipeUp');
 
 /**
  * Symbol for the `swipeTarget` property.

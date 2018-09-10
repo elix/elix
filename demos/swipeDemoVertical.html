@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Vertical touch swipe demo</title>
+
+  <link rel="stylesheet" href="demos.css">
+  <script src="node_modules/@webcomponents/webcomponentsjs/bundles/webcomponents-sd-ce.js"></script>
+  <script type="module" src="./src/showElementsWhenDefined.js"></script>
+  <script type="module" src="./src/SwipeDemo.js"></script>
+
+  <style>
+    html {
+      height: 100%;
+    }
+
+    body {
+      height: 100%;
+      padding: 0;
+    }
+  </style>
+
+</head>
+
+<body role="main" unresolved>
+  <div class="demo fullScreen">
+    <swipe-demo style="flex: 1;" swipe-axis="vertical"></swipe-demo>
+  </div>
+</body>
+
+</html>
