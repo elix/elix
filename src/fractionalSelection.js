@@ -61,7 +61,7 @@ export function dampenListSelection(selection, itemCount) {
  *
  * We use the formula `y = (-1/(x+1))+1`.
  * (See a [graph of this
- * function](http://www.wolframalpha.com/input/?i=y+%3D+-1%2F%28x%2B1%29+%2B+1).)
+ * function](http://www.wolframalpha.com/input/?i=y%3D(-1%2F(x%2B1))%2B1).)
  * The only portion of that function we care about is when x is zero or greater.
  * An important consideration is that the curve be tangent to the diagonal line
  * x=y at (0, 0). This ensures smooth continuity with the normal drag behavior,
