@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PullToRefresh storyboard</title>
+
+  <link rel="stylesheet" href="../../demos/demos.css">
+  <script src="../../demos/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+
+  <script>
+    // Disable all event listeners.
+    HTMLElement.prototype.addEventListener = function() {};
+  </script>
+  <script type="module" src="./RenderState.js"></script>
+  <script type="module" src="../../src/PullToRefresh.js"></script>
+
+  <style>
+    body {
+      padding: 3em 5em;
+    }
+
+    elix-pull-to-refresh {
+      background: #ddd;
+      height: 400px;
+      width: 300px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <h1>PullToRefresh storyboard</h1>
+
+  <render-state>
+    <elix-pull-to-refresh slot="fixture">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+      velit esse cillum dolore eu fugiat nulla pariatur.
+    </elix-pull-to-refresh>
+    <p>
+      Closed by default
+    </p>
+  </render-state>
+  
+  <render-state fixture-state='{ "swipeFraction": 0.025 }'>
+    <elix-pull-to-refresh slot="fixture">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+      velit esse cillum dolore eu fugiat nulla pariatur.
+    </elix-pull-to-refresh>
+    <p>
+      Beginning drag
+    </p>
+  </render-state>
+  
+  <render-state fixture-state='{ "swipeFraction": 0.25 }'>
+    <elix-pull-to-refresh slot="fixture">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+      velit esse cillum dolore eu fugiat nulla pariatur.
+    </elix-pull-to-refresh>
+    <p>
+      Drag past threshold
+    </p>
+  </render-state>
+  
+  <render-state fixture-state='{ "opened": true, "swipeFraction": 0 }'>
+    <elix-pull-to-refresh slot="fixture">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+      velit esse cillum dolore eu fugiat nulla pariatur.
+    </elix-pull-to-refresh>
+    <p>
+      Opened
+    </p>
+  </render-state>
+  
+</body>
+
+</html>
