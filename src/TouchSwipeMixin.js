@@ -31,36 +31,36 @@ export default function TouchSwipeMixin(Base) {
       // TODO: Even better approach than below would be to ignore touches after
       // the first if the user has already begun a swipe.
       // TODO: Touch events should probably be factored out into its own mixin.
-      if ('PointerEvent' in window) {
-        // Prefer listening to standard pointer events.
-        this.addEventListener('pointerdown', async (event) => {
-          this[symbols.raiseChangeEvents] = true;
-          if (isEventForPenOrPrimaryTouch(event)) {
-            gestureStart(this, event.clientX, event.clientY);
-          }
-          await Promise.resolve();
-          this[symbols.raiseChangeEvents] = false;
-        });
-        this.addEventListener('pointermove', async (event) => {
-          this[symbols.raiseChangeEvents] = true;
-          if (isEventForPenOrPrimaryTouch(event)) {
-            const handled = gestureContinue(this, event.clientX, event.clientY);
-            if (handled) {
-              event.preventDefault();
-            }
-          }
-          await Promise.resolve();
-          this[symbols.raiseChangeEvents] = false;
-        });
-        this.addEventListener('pointerup', async (event) => {
-          this[symbols.raiseChangeEvents] = true;
-          if (isEventForPenOrPrimaryTouch(event)) {
-            gestureEnd(this, event.clientX, event.clientY);
-          }
-          await Promise.resolve();
-          this[symbols.raiseChangeEvents] = false;
-        });
-      } else {
+      // if ('PointerEvent' in window) {
+      //   // Prefer listening to standard pointer events.
+      //   this.addEventListener('pointerdown', async (event) => {
+      //     this[symbols.raiseChangeEvents] = true;
+      //     if (isEventForPenOrPrimaryTouch(event)) {
+      //       gestureStart(this, event.clientX, event.clientY);
+      //     }
+      //     await Promise.resolve();
+      //     this[symbols.raiseChangeEvents] = false;
+      //   });
+      //   this.addEventListener('pointermove', async (event) => {
+      //     this[symbols.raiseChangeEvents] = true;
+      //     if (isEventForPenOrPrimaryTouch(event)) {
+      //       const handled = gestureContinue(this, event.clientX, event.clientY);
+      //       if (handled) {
+      //         event.preventDefault();
+      //       }
+      //     }
+      //     await Promise.resolve();
+      //     this[symbols.raiseChangeEvents] = false;
+      //   });
+      //   this.addEventListener('pointerup', async (event) => {
+      //     this[symbols.raiseChangeEvents] = true;
+      //     if (isEventForPenOrPrimaryTouch(event)) {
+      //       gestureEnd(this, event.clientX, event.clientY);
+      //     }
+      //     await Promise.resolve();
+      //     this[symbols.raiseChangeEvents] = false;
+      //   });
+      // } else {
         // Pointer events not supported -- listen to older touch events.
         this.addEventListener('touchstart', async (event) => {
           this[symbols.raiseChangeEvents] = true;
@@ -104,7 +104,7 @@ export default function TouchSwipeMixin(Base) {
           await Promise.resolve();
           this[symbols.raiseChangeEvents] = false;
         });
-      }
+      // }
     }
 
     get defaultState() {
@@ -169,12 +169,15 @@ function gestureContinue(element, clientX, clientY) {
   const swipeAlongAxis = vertical === verticalSwipe;
 
   if (swipeAlongAxis) {
-    if (element[symbols.swipeTarget].scrollTop > 0) {
+    if (isAnyAncestorScrolled(element[symbols.swipeTarget])) {
       // Don't interfere with scrolling.
       return false;
     }
     // Move was mostly along desired axis.
     const swipeFraction = getSwipeFraction(element, clientX, clientY);
+    if (swipeFraction < 0) {
+      return false;
+    }
     element.setState({ swipeFraction });
     // Indicate that the event was handled. It'd be nicer if we didn't have
     // to do this so that, e.g., a user could be swiping left and right
@@ -257,4 +260,14 @@ function getSwipeFraction(element, x, y) {
     dragDistance / swipeTargetSize :
     0;
   return fraction;
+}
+
+function isAnyAncestorScrolled(element) {
+  if (element.scrollTop > 0) {
+    return true;
+  } else if (element.parentNode) {
+    return isAnyAncestorScrolled(element.parentNode);
+  } else {
+    return false;
+  }
 }
