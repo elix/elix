@@ -33,7 +33,7 @@ class PullToRefresh extends Base {
         enableTransitions: true
       });
     });
-    
+
     let scrollTarget = defaultScrollTarget(this);
     if (scrollTarget === this) {
       scrollTarget = window;
@@ -101,7 +101,20 @@ class PullToRefresh extends Base {
     this.setState({
       refresh: refreshStates.started
     });
-    setTimeout(() => {
+    setTimeout(async () => {
+      const sounds = this.$.refreshSoundSlot.assignedNodes({ flatten: true });
+      const sound = sounds[0];
+      if (sound && sound.play) {
+        try {
+          await sound.play();
+        } catch (e) {
+          if (e.name === 'NotAllowedError') {
+            // Webkit doesn't want to play sounds
+          } else {
+            throw e;
+          }
+        }
+      }
       this.setState({
         refresh: refreshStates.done
       });
@@ -137,12 +150,17 @@ class PullToRefresh extends Base {
           box-sizing: border-box;
           padding: 1em;
         }
+
+        #refreshSoundSlot::slotted(*) {
+          display: none;
+        }
       </style>
 
       <div id="refreshHeader">
         <div id="refreshIndicator"></div>
       </div>
       <slot></slot>
+      <slot id="refreshSoundSlot" name="refreshSound"></slot>
     `;
   }
 
