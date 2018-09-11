@@ -110,8 +110,7 @@ export default function TouchSwipeMixin(Base) {
     get defaultState() {
       return Object.assign({}, super.defaultState, {
         swipeAxis: 'horizontal',
-        swipeFraction: null,
-        touchAction: 'none'
+        swipeFraction: null
       });
     }
     
@@ -127,9 +126,12 @@ export default function TouchSwipeMixin(Base) {
     }
 
     get updates() {
+      const touchAction = this.state.swipeAxis === 'vertical' ?
+        'pan-x' : // Let browser handle horizontal panning
+        'pan-y';  // Let browser handle vertical panning
       return merge(super.updates, {
         style: {
-          'touch-action': this.state.touchAction
+          'touch-action': `${touchAction} pinch-zoom`
         }
       });
     }
@@ -167,6 +169,10 @@ function gestureContinue(element, clientX, clientY) {
   const swipeAlongAxis = vertical === verticalSwipe;
 
   if (swipeAlongAxis) {
+    if (element[symbols.swipeTarget].scrollTop > 0) {
+      // Don't interfere with scrolling.
+      return false;
+    }
     // Move was mostly along desired axis.
     const swipeFraction = getSwipeFraction(element, clientX, clientY);
     element.setState({ swipeFraction });

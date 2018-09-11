@@ -11,8 +11,7 @@ declare const TouchSwipeMixin: StateMixin<{},
   [symbols.swipeTarget]: Element;
 },
 {
-  swipeFraction: number;
-  touchAction: string;
+  swipeFraction: number
 }>;
 
 export default TouchSwipeMixin;

@@ -1,7 +1,6 @@
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
-// import OpenCloseMixin from './OpenCloseMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 import { dampen } from './fractionalSelection.js';
@@ -15,7 +14,6 @@ const refreshStates = {
 
 
 const Base =
-  // OpenCloseMixin(
   TouchSwipeMixin(
     ReactiveElement
   );
@@ -78,6 +76,10 @@ class PullToRefresh extends Base {
     }, 2000);
   }
 
+  // get [symbols.swipeTarget]() {
+  //   return this.$.pullToRefreshContainer;
+  // }
+
   get [symbols.template]() {
     return template.html`
       <style>
@@ -110,7 +112,7 @@ class PullToRefresh extends Base {
   }
 
   get updates() {
-    const swiping = this.state.swipeFraction != null;
+    const swipingDown = this.state.swipeFraction != null && this.state.swipeFraction > 0;
     let y = getTranslationForSwipeFraction(this, this.state.swipeFraction);
     if (this.state.refresh === refreshStates.started) {
       y = Math.max(y, 47);
@@ -118,7 +120,7 @@ class PullToRefresh extends Base {
     const transform = y !== 0 ?
       `translateY(${y}px)` :
       'none';
-    const showTransition = this.state.enableTransitions && !swiping;
+    const showTransition = this.state.enableTransitions && !swipingDown;
     const transition = showTransition ?
       'transform 0.25s' :
       'none';
@@ -129,6 +131,9 @@ class PullToRefresh extends Base {
     };
     const indicator = refreshIndicators[this.state.refresh];
     return merge(super.updates, {
+      style: {
+        // 'touch-action': 'manipulation'
+      },
       $: {
         pullToRefreshContainer: {
           style: {
