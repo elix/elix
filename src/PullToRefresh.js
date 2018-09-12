@@ -1,3 +1,4 @@
+import './ProgressSpinner.js';
 import { dampen } from './fractionalSelection.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
@@ -67,7 +68,7 @@ class PullToRefresh extends Base {
     if (refreshState === refreshStates.notStarted &&
         swipeFraction > 0) {
       const y = getTranslationForSwipeFraction(this);
-      const threshold = this.$.refreshIndicator.offsetHeight;
+      const threshold = this.$.refreshIndicators.offsetHeight;
       if (y >= threshold) {
         this.refresh();
       }
@@ -119,6 +120,7 @@ class PullToRefresh extends Base {
     }, 2000);
   }
 
+  // TODO: Role for spinner, etc.
   get [symbols.template]() {
     return template.html`
       <style>
@@ -129,6 +131,7 @@ class PullToRefresh extends Base {
         }
 
         #refreshHeader {
+          align-items: center;
           background: #e0e0e0;
           color: #404040;
           display: flex;
@@ -137,18 +140,22 @@ class PullToRefresh extends Base {
           left: 0;
           overflow: visible;
           position: absolute;
-          text-align: center;
           top: 0;
           transform: translateY(-100%);
           width: 100%;
         }
 
-        #refreshIndicator {
+        #refreshIndicators {
           align-items: center;
           box-sizing: border-box;
-          display: flex;
-          flex-direction: column;
+          display: grid;
+          justify-items: center;
           padding: 1em;
+        }
+
+        #refreshIndicators > * {
+          grid-column: 1;
+          grid-row: 1;
         }
 
         #refreshSoundSlot::slotted(*) {
@@ -163,11 +170,13 @@ class PullToRefresh extends Base {
       </style>
 
       <div id="refreshHeader">
-        <div id="refreshIndicator">
-          <svg id="downArrow" viewBox="0 0 24 24">
-            <path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/>
-          </svg>
-          <div id="indicatorText"></div>
+        <div id="refreshIndicators">
+          <div id="startIndicator">
+            <svg id="downArrow" viewBox="0 0 24 24">
+              <path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/>
+            </svg>
+          </div>
+          <elix-progress-spinner id="refreshingIndicator"></elix-progress-spinner>
         </div>
       </div>
       <slot></slot>
@@ -188,29 +197,24 @@ class PullToRefresh extends Base {
     const transition = showTransition ?
       'transform 0.25s' :
       'none';
-    // const defaultIndicator = pullingDown ?
-    //   'Pull to refresh' :
-    //   '';
-    const refreshIndicators = {
-      notStarted: '',
-      started: 'Refreshing',
-      done: 'Done'
-    };
-    const indicator = refreshIndicators[this.state.refresh];
-    const showDownArrow = indicator === '' && pullingDown;
+    const showStartIndicator = this.state.refresh === refreshStates.notStarted && pullingDown;
+    const showRefreshingIndicator = this.state.refresh === refreshStates.started;
     return merge(super.updates, {
       style: {
         transform,
         transition
       },
       $: {
-        downArrow: {
+        startIndicator: {
           style: {
-            display: showDownArrow ? 'block' : 'none'
+            display: showStartIndicator ? 'block' : 'none'
           }
         },
-        indicatorText: {
-          textContent: indicator
+        refreshingIndicator: {
+          style: {
+            display: showRefreshingIndicator ? 'block' : 'none'
+          },
+          playing: showRefreshingIndicator
         }
       }
     });
