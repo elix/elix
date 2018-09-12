@@ -85,6 +85,7 @@ export default function ClickSelectionMixin(Base) {
     get updates() {
       return merge(super.updates, {
         style: {
+          'touch-action': 'manipulation', // for iOS Safari
           '-moz-user-select': 'none',
           '-ms-user-select': 'none',
           '-webkit-user-select': 'none',
