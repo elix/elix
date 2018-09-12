@@ -77,6 +77,7 @@ class PullToRefresh extends Base {
   get defaultState() {
     // Suppress transition effects on page load.
     return Object.assign({}, super.defaultState, {
+      enableNegativeSwipe: false,
       enableTransitions: false,
       refresh: refreshStates.notStarted,
       scrollPullDistance: null,
@@ -125,7 +126,6 @@ class PullToRefresh extends Base {
           display: block;
           overflow: visible;
           -webkit-overflow-scrolling: touch; /* for momentum scrolling */
-          touch-action: manipulation;
         }
 
         #refreshHeader {
@@ -164,9 +164,6 @@ class PullToRefresh extends Base {
 
       <div id="refreshHeader">
         <div id="refreshIndicator">
-          <!-- <svg id="downArrow">
-            <g><path d="M28.414 38.586a2.001 2.001 0 0 0-2.828 0L17 47.172V22c0-1.106-.894-2-2-2s-2 .894-2 2v25.172l-8.586-8.586a2 2 0 1 0-2.828 2.828l12 12c.39.39.9.586 1.414.586s1.024-.196 1.414-.586l12-12c.78-.78.78-2.046 0-2.828z"></path></g>
-          </svg> -->
           <svg id="downArrow" viewBox="0 0 24 24">
             <path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/>
           </svg>
@@ -203,7 +200,6 @@ class PullToRefresh extends Base {
     const showDownArrow = indicator === '' && pullingDown;
     return merge(super.updates, {
       style: {
-        'touch-action': '',
         transform,
         transition
       },

@@ -113,6 +113,8 @@ export default function TouchSwipeMixin(Base) {
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
+        enableNegativeSwipe: true,
+        enablePositiveSwipe: true,
         swipeAxis: 'horizontal',
         swipeFraction: null
       });
@@ -130,12 +132,14 @@ export default function TouchSwipeMixin(Base) {
     }
 
     get updates() {
-      const touchAction = this.state.swipeAxis === 'vertical' ?
-        'pan-x' : // Let browser handle horizontal panning
-        'pan-y';  // Let browser handle vertical panning
+      // We set touch-action: manipulation rather than determining a more
+      // specific touch-action value (pan-x or pan-y) based on the supported
+      // swipe axis. Because the element may be on a surface that scrolls in the
+      // same axis, we want to let the browser assume it will need to support
+      // (its own) touch gestures in that axis.
       return merge(super.updates, {
         style: {
-          'touch-action': `${touchAction} pinch-zoom`
+          'touch-action': 'manipulation'
         }
       });
     }
@@ -172,29 +176,36 @@ function gestureContinue(element, clientX, clientY) {
   const vertical = element.state.swipeAxis === 'vertical';
   const swipeAlongAxis = vertical === verticalSwipe;
 
-  if (swipeAlongAxis) {
-    if (vertical && isAnyAncestorScrolled(element[symbols.swipeTarget])) {
-      // Don't interfere with scrolling.
-      return false;
-    }
-    // Move was mostly along desired axis.
-    const swipeFraction = getSwipeFraction(element, clientX, clientY);
-    if (swipeFraction < 0) {
-      return false;
-    }
-    element.setState({ swipeFraction });
-    // Indicate that the event was handled. It'd be nicer if we didn't have
-    // to do this so that, e.g., a user could be swiping left and right
-    // while simultaneously scrolling up and down. (Native touch apps can do
-    // that.) However, Mobile Safari wants to handle swipe events near the
-    // page and interpret them as navigations. To avoid having a horiziontal
-    // swipe misintepreted as a navigation, we indicate that we've handled
-    // the event, and prevent default behavior.
-    return true;
-  } else {
+  if (!swipeAlongAxis) {
     // Move was mostly along the other axis.
     return false;
   }
+
+  // Move was mostly along desired axis.
+
+  if (vertical && isAnyAncestorScrolled(element[symbols.swipeTarget])) {
+    // Don't interfere with scrolling.
+    return false;
+  }
+
+  const swipeFraction = getSwipeFraction(element, clientX, clientY);
+
+  if (swipeFraction < 0 && !element.state.enableNegativeSwipe ||
+      swipeFraction > 0 && !element.state.enablePositiveSwipe) {
+    // Swipe was in a direction that's not explicitly enabled.
+    return false;
+  }
+
+  element.setState({ swipeFraction });
+  
+  // Indicate that the event was handled. It'd be nicer if we didn't have
+  // to do this so that, e.g., a user could be swiping left and right
+  // while simultaneously scrolling up and down. (Native touch apps can do
+  // that.) However, Mobile Safari wants to handle swipe events near the
+  // page and interpret them as navigations. To avoid having a horiziontal
+  // swipe misintepreted as a navigation, we indicate that we've handled
+  // the event, and prevent default behavior.
+  return true;
 }
 
 /*
