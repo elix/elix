@@ -31,37 +31,12 @@ export default function TouchSwipeMixin(Base) {
       // TODO: Even better approach than below would be to ignore touches after
       // the first if the user has already begun a swipe.
       // TODO: Touch events should probably be factored out into its own mixin.
-      // if ('PointerEvent' in window) {
-      //   // Prefer listening to standard pointer events.
-      //   this.addEventListener('pointerdown', async (event) => {
-      //     this[symbols.raiseChangeEvents] = true;
-      //     if (isEventForPenOrPrimaryTouch(event)) {
-      //       gestureStart(this, event.clientX, event.clientY);
-      //     }
-      //     await Promise.resolve();
-      //     this[symbols.raiseChangeEvents] = false;
-      //   });
-      //   this.addEventListener('pointermove', async (event) => {
-      //     this[symbols.raiseChangeEvents] = true;
-      //     if (isEventForPenOrPrimaryTouch(event)) {
-      //       const handled = gestureContinue(this, event.clientX, event.clientY);
-      //       if (handled) {
-      //         event.preventDefault();
-      //       }
-      //     }
-      //     await Promise.resolve();
-      //     this[symbols.raiseChangeEvents] = false;
-      //   });
-      //   this.addEventListener('pointerup', async (event) => {
-      //     this[symbols.raiseChangeEvents] = true;
-      //     if (isEventForPenOrPrimaryTouch(event)) {
-      //       gestureEnd(this, event.clientX, event.clientY);
-      //     }
-      //     await Promise.resolve();
-      //     this[symbols.raiseChangeEvents] = false;
-      //   });
-      // } else {
-        // Pointer events not supported -- listen to older touch events.
+
+      // Prefer using the older touch events if supported. As of Sept 2018, the
+      // more modern pointer events don't fire as expected in Chrome if the
+      // element is on a scrollable surface; touch events do not have that
+      // problem.
+      if ('TouchEvent' in window) {
         this.addEventListener('touchstart', async (event) => {
           this[symbols.raiseChangeEvents] = true;
           if (this[multiTouchKey]) {
@@ -104,7 +79,36 @@ export default function TouchSwipeMixin(Base) {
           await Promise.resolve();
           this[symbols.raiseChangeEvents] = false;
         });
-      // }
+      } else if ('PointerEvent' in window) {
+        // Use pointer events.
+        this.addEventListener('pointerdown', async (event) => {
+          this[symbols.raiseChangeEvents] = true;
+          if (isEventForPenOrPrimaryTouch(event)) {
+            gestureStart(this, event.clientX, event.clientY);
+          }
+          await Promise.resolve();
+          this[symbols.raiseChangeEvents] = false;
+        });
+        this.addEventListener('pointermove', async (event) => {
+          this[symbols.raiseChangeEvents] = true;
+          if (isEventForPenOrPrimaryTouch(event)) {
+            const handled = gestureContinue(this, event.clientX, event.clientY);
+            if (handled) {
+              event.preventDefault();
+            }
+          }
+          await Promise.resolve();
+          this[symbols.raiseChangeEvents] = false;
+        });
+        this.addEventListener('pointerup', async (event) => {
+          this[symbols.raiseChangeEvents] = true;
+          if (isEventForPenOrPrimaryTouch(event)) {
+            gestureEnd(this, event.clientX, event.clientY);
+          }
+          await Promise.resolve();
+          this[symbols.raiseChangeEvents] = false;
+        });
+      }
     }
 
     get defaultState() {
@@ -169,7 +173,7 @@ function gestureContinue(element, clientX, clientY) {
   const swipeAlongAxis = vertical === verticalSwipe;
 
   if (swipeAlongAxis) {
-    if (isAnyAncestorScrolled(element[symbols.swipeTarget])) {
+    if (vertical && isAnyAncestorScrolled(element[symbols.swipeTarget])) {
       // Don't interfere with scrolling.
       return false;
     }
