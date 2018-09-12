@@ -59,9 +59,6 @@ class PullToRefresh extends Base {
         });
       }
     });
-    // TODO: Don't show "Pull to Refresh" indicator until closing transition finishes.
-    // this.addEventListener('transitionend', () => {
-    // });
   }
 
   componentDidUpdate(previousState) {
@@ -147,17 +144,34 @@ class PullToRefresh extends Base {
         }
 
         #refreshIndicator {
+          align-items: center;
           box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
           padding: 1em;
         }
 
         #refreshSoundSlot::slotted(*) {
           display: none;
         }
+
+        #downArrow {
+          fill: currentColor;
+          height: 24px;
+          width: 24px;
+        }
       </style>
 
       <div id="refreshHeader">
-        <div id="refreshIndicator"></div>
+        <div id="refreshIndicator">
+          <!-- <svg id="downArrow">
+            <g><path d="M28.414 38.586a2.001 2.001 0 0 0-2.828 0L17 47.172V22c0-1.106-.894-2-2-2s-2 .894-2 2v25.172l-8.586-8.586a2 2 0 1 0-2.828 2.828l12 12c.39.39.9.586 1.414.586s1.024-.196 1.414-.586l12-12c.78-.78.78-2.046 0-2.828z"></path></g>
+          </svg> -->
+          <svg id="downArrow" viewBox="0 0 24 24">
+            <path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/>
+          </svg>
+          <div id="indicatorText"></div>
+        </div>
       </div>
       <slot></slot>
       <slot id="refreshSoundSlot" name="refreshSound"></slot>
@@ -166,21 +180,27 @@ class PullToRefresh extends Base {
 
   get updates() {
     const swipingDown = this.state.swipeFraction != null && this.state.swipeFraction > 0;
+    const scrollingDown = !!this.state.scrollPullDistance;
+    const pullingDown = swipingDown || scrollingDown;
     let y = getTranslationForSwipeFraction(this);
     if (this.state.refresh === refreshStates.started) {
-      y = Math.max(y, 47);
+      y = Math.max(y, 57);
     }
     const transform = `translate3D(0, ${y}px, 0)`;
-    const showTransition = this.state.enableTransitions && !swipingDown; // && this.state.scrollPullDistance === null;
+    const showTransition = this.state.enableTransitions && !swipingDown;
     const transition = showTransition ?
       'transform 0.25s' :
       'none';
+    // const defaultIndicator = pullingDown ?
+    //   'Pull to refresh' :
+    //   '';
     const refreshIndicators = {
-      notStarted: 'Pull to refresh',
+      notStarted: '',
       started: 'Refreshing',
       done: 'Done'
     };
     const indicator = refreshIndicators[this.state.refresh];
+    const showDownArrow = indicator === '' && pullingDown;
     return merge(super.updates, {
       style: {
         'touch-action': '',
@@ -188,7 +208,12 @@ class PullToRefresh extends Base {
         transition
       },
       $: {
-        refreshIndicator: {
+        downArrow: {
+          style: {
+            display: showDownArrow ? 'block' : 'none'
+          }
+        },
+        indicatorText: {
           textContent: indicator
         }
       }
