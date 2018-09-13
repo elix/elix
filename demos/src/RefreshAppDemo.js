@@ -5,7 +5,7 @@ import ReactiveElement from '../../src/ReactiveElement.js';
 import { merge } from '../../src/updates';
 
 
-const defaultTexts = [
+const texts = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed molestie molestie enim porta dapibus. Phasellus dolor quam, egestas eu viverra at, porttitor in diam. Donec risus tellus, accumsan eget ipsum sed, vestibulum blandit ante. Nullam rhoncus leo nec lobortis convallis. Donec posuere tellus a nibh dignissim, rhoncus viverra neque rutrum. Suspendisse rutrum at massa vitae venenatis. Suspendisse ut risus pellentesque lacus dictum aliquet. Cras a arcu id odio molestie imperdiet.`,
   `Pellentesque vitae eros ac nulla aliquam eleifend. Nunc ornare sollicitudin arcu id suscipit. Donec sed nisl libero. Nulla facilisi. Proin ornare feugiat molestie. Mauris velit mi, volutpat sit amet posuere quis, tristique et urna. Donec sit amet tellus magna. Aenean feugiat suscipit neque, ut porttitor diam auctor in. Sed faucibus finibus ipsum et pharetra. In hac habitasse platea dictumst. Cras facilisis justo eu lectus luctus, et interdum velit aliquet.`,
   `Aliquam vitae nulla efficitur turpis viverra placerat. Mauris fermentum tellus vel elementum aliquet. Integer vitae arcu et mi tristique lacinia. Cras placerat ultrices velit, id interdum ipsum commodo efficitur. Maecenas maximus odio a nisi dapibus, non dapibus nisl venenatis. Morbi tristique interdum leo, non tincidunt sapien efficitur ac. Nunc hendrerit turpis eget enim rhoncus sagittis. Aenean ac euismod magna. Phasellus et posuere nisi.`,
@@ -31,11 +31,9 @@ class RefreshAppDemo extends ReactiveElement {
   }
 
   get defaultState() {
-    const texts = defaultTexts;
     const paragraphs = createParagraphs(texts);
     return Object.assign({}, super.defaultState, {
-      paragraphs,
-      texts
+      paragraphs
     });
   }
 
@@ -43,14 +41,13 @@ class RefreshAppDemo extends ReactiveElement {
     setTimeout(async () => {
       await playSound(this.$.refreshSound);
       this.$.pullToRefresh.refreshing = false;
-      // Shuffle all text but first one, move first text to last place.
-      const first = this.state.texts[0];
-      const remainder = this.state.texts.slice(1);
+      // Shuffle all paragraphs but first one, move first to last place.
+      const first = this.state.paragraphs[0];
+      const remainder = this.state.paragraphs.slice(1);
       shuffle(remainder);
-      const texts = [...remainder, first];
-      const paragraphs = createParagraphs(texts);
+      const paragraphs = [...remainder, first];
+      Object.freeze(paragraphs);
       this.setState({
-        texts,
         paragraphs
       });
     }, 1000);
