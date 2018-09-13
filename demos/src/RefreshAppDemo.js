@@ -59,6 +59,10 @@ class RefreshAppDemo extends ReactiveElement {
   get [symbols.template]() {
     return template.html`
       <style>
+        :host {
+          display: block;
+        }
+        
         #pullToRefresh {
           padding: 1em;
         }

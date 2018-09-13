@@ -280,9 +280,10 @@ function getSwipeFraction(element, x, y) {
 function isAnyAncestorScrolled(element) {
   if (element.scrollTop > 0) {
     return true;
-  } else if (element.parentNode) {
-    return isAnyAncestorScrolled(element.parentNode);
   } else {
-    return false;
+    const parent = element.parentNode || element.host;
+    return parent ? 
+      isAnyAncestorScrolled(parent) :
+      false;
   }
 }
