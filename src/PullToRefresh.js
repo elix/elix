@@ -6,7 +6,6 @@ import * as template from './template.js';
 import { getScrollingParent } from './scrolling.js';
 import ReactiveElement from './ReactiveElement.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
-import { raiseChangeEvents } from './symbols.js';
 
 
 const Base =
@@ -42,7 +41,9 @@ class PullToRefresh extends Base {
     if ( this.state.swipeFraction > 0 &&
       !this.state.refreshing && !this.state.refreshTriggered) {
       const y = getTranslationForSwipeFraction(this);
-      const threshold = this.$.refreshIndicators.offsetHeight;
+      const threshold = this.$.refreshIndicators instanceof HTMLElement ?
+        this.$.refreshIndicators.offsetHeight :
+        0;
       if (y >= threshold) {
         this.refreshing = true;
       }

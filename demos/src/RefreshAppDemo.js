@@ -24,7 +24,9 @@ class RefreshAppDemo extends ReactiveElement {
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
     this.$.pullToRefresh.addEventListener('refreshing-changed', event => {
-      if (event.detail.refreshing) {
+      /** @type {any} */
+      const cast = event;
+      if (cast.detail.refreshing) {
         this.refresh();
       }
     });
@@ -40,7 +42,9 @@ class RefreshAppDemo extends ReactiveElement {
   refresh() {
     setTimeout(async () => {
       await playSound(this.$.refreshSound);
-      this.$.pullToRefresh.refreshing = false;
+      /** @type {any} */
+      const cast = this.$.pullToRefresh;
+      cast.refreshing = false;
       // Shuffle all paragraphs but first one, move first to last place.
       const first = this.state.paragraphs[0];
       const remainder = this.state.paragraphs.slice(1);
