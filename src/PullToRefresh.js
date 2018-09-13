@@ -58,8 +58,8 @@ class PullToRefresh extends Base {
   }
 
   componentDidUpdate(previousState) {
-    if (!this.state.refreshing && !this.state.refreshed &&
-        this.state.swipeFraction > 0) {
+    if ( this.state.swipeFraction > 0 &&
+      !this.state.refreshing && !this.state.refreshTriggered) {
       const y = getTranslationForSwipeFraction(this);
       const threshold = this.$.refreshIndicators.offsetHeight;
       if (y >= threshold) {
@@ -82,7 +82,7 @@ class PullToRefresh extends Base {
     return Object.assign({}, super.defaultState, {
       enableNegativeSwipe: false,
       enableTransitions: false,
-      refreshComplete: false,
+      refreshTriggered: false,
       refreshing: false,
       scrollPullDistance: null,
       scrollPullFinished: false,
@@ -92,8 +92,12 @@ class PullToRefresh extends Base {
 
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
-    if (state.swipeFraction === null && state.refreshComplete) {
-      state.refreshComplete = false;
+    if (state.refreshing && !state.refreshTriggered) {
+      state.refreshTriggered = true;
+      result = false;
+    } else if (state.swipeFraction === null && !state.refreshing &&
+        state.refreshTriggered) {
+      state.refreshTriggered = false;
       result = false;
     }
     return result;
@@ -178,7 +182,7 @@ class PullToRefresh extends Base {
       'transform 0.25s' :
       'none';
     const showStartIndicator = !this.state.refreshing &&
-      !this.state.refreshComplete &&
+      !this.state.refreshTriggered &&
       pullingDown;
     const showRefreshingIndicator = this.state.refreshing;
     return merge(super.updates, {
