@@ -1,9 +1,9 @@
-import './ProgressSpinner.js';
 import { dampen } from './fractionalSelection.js';
+import { getScrollingParent } from './scrolling.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
-import { getScrollingParent } from './scrolling.js';
+import ProgressSpinner from './ProgressSpinner.js';
 import ReactiveElement from './ReactiveElement.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 
@@ -15,9 +15,30 @@ const Base =
 
 
 /**
+ * A conventional pull-to-refresh pattern that lets a user trigger the refresh
+ * of data by swiping down until a particular threshold has been reached.
+ * 
  * @inherits ReactiveElement
+ * @mixes TouchSwipeMixin
+ * @elementrole pullIndicator
+ * @elementrole {ProgressSpinner} refreshingIndicator
  */
 class PullToRefresh extends Base {
+
+  constructor() {
+    super();
+
+    const downArrowTemplate = template.html`
+      <svg viewBox="0 0 24 24" style="fill: #404040; height: 24px; width: 24px;">
+        <path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/>
+      </svg>
+    `;
+
+    this[symbols.roles] = Object.assign({}, this[symbols.roles], {
+      pullIndicator: downArrowTemplate,
+      refreshingIndicator: ProgressSpinner
+    });
+  }
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
@@ -41,10 +62,8 @@ class PullToRefresh extends Base {
     if ( this.state.swipeFraction > 0 &&
       !this.state.refreshing && !this.state.refreshTriggered) {
       const y = getTranslationForSwipeFraction(this);
-      const threshold = this.$.refreshIndicators instanceof HTMLElement ?
-        this.$.refreshIndicators.offsetHeight :
-        0;
-      if (y >= threshold) {
+      if (y >= getSwipeThreshold(this)) {
+        // User has dragged element down far enough to trigger a refresh.
         this.refreshing = true;
       }
     } else if (this.state.refreshing !== previousState.refreshing) {
@@ -72,6 +91,22 @@ class PullToRefresh extends Base {
     });
   }
 
+  /**
+   * The class, tag, or template used for the element shown to let the user
+   * know they can pull to refresh.
+   * 
+   * By default, this is a down arrow icon.
+   * 
+   * @type {function|string|HTMLTemplateElement}
+   */
+  get pullIndicatorRole() {
+    return this[symbols.roles].pullIndicator;
+  }
+  set pullIndicatorRole(pullIndicatorRole) {
+    this[symbols.hasDynamicTemplate] = true;
+    this[symbols.roles].pullIndicator = pullIndicatorRole;
+  }
+
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
     if (state.refreshing && !state.refreshTriggered) {
@@ -92,9 +127,23 @@ class PullToRefresh extends Base {
     this.setState({ refreshing });
   }
 
-  // TODO: Role for spinner, etc.
+  /**
+   * The class, tag, or template used for the element shown to indicate the
+   * element is currently refreshing.
+   * 
+   * @type {function|string|HTMLTemplateElement}
+   * @default ProgressSpinner
+   */
+  get refreshingIndicatorRole() {
+    return this[symbols.roles].refreshingIndicator;
+  }
+  set refreshingIndicatorRole(refreshingIndicatorRole) {
+    this[symbols.hasDynamicTemplate] = true;
+    this[symbols.roles].refreshingIndicator = refreshingIndicatorRole;
+  }
+
   get [symbols.template]() {
-    return template.html`
+    const result = template.html`
       <style>
         :host {
           display: block;
@@ -126,26 +175,19 @@ class PullToRefresh extends Base {
           grid-column: 1;
           grid-row: 1;
         }
-
-        #downArrow {
-          fill: #404040;
-          height: 24px;
-          width: 24px;
-        }
       </style>
 
       <div id="refreshHeader">
         <div id="refreshIndicators">
-          <div id="startIndicator">
-            <svg id="downArrow" viewBox="0 0 24 24">
-              <path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/>
-            </svg>
-          </div>
-          <elix-progress-spinner id="refreshingIndicator"></elix-progress-spinner>
+          <div id="pullIndicator"></div>
+          <div id="refreshingIndicator"></div>
         </div>
       </div>
       <slot></slot>
     `;
+    template.findAndReplace(result, '#pullIndicator', this.pullIndicatorRole);
+    template.findAndReplace(result, '#refreshingIndicator', this.refreshingIndicatorRole);
+    return result;
   }
 
   get updates() {
@@ -154,15 +196,14 @@ class PullToRefresh extends Base {
     const pullingDown = swipingDown || scrollingDown;
     let y = getTranslationForSwipeFraction(this);
     if (this.state.refreshing) {
-      // TODO
-      y = Math.max(y, 57);
+      y = Math.max(y, getSwipeThreshold(this));
     }
     const transform = `translate3D(0, ${y}px, 0)`;
     const showTransition = this.state.enableTransitions && !swipingDown;
     const transition = showTransition ?
       'transform 0.25s' :
       'none';
-    const showStartIndicator = !this.state.refreshing &&
+    const showPullIndicator = !this.state.refreshing &&
       !this.state.refreshTriggered &&
       pullingDown;
     const showRefreshingIndicator = this.state.refreshing;
@@ -172,9 +213,9 @@ class PullToRefresh extends Base {
         transition
       },
       $: {
-        startIndicator: {
+        pullIndicator: {
           style: {
-            display: showStartIndicator ? 'block' : 'none'
+            display: showPullIndicator ? 'block' : 'none'
           }
         },
         refreshingIndicator: {
@@ -187,6 +228,13 @@ class PullToRefresh extends Base {
     });
   }
 
+}
+
+
+function getSwipeThreshold(element) {
+  return element.$.refreshIndicators instanceof HTMLElement ?
+    element.$.refreshIndicators.offsetHeight :
+    0;
 }
 
 
