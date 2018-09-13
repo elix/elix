@@ -1,4 +1,4 @@
-import '../../src/PullToRefresh';
+import '../../src/PullToRefresh.js';
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
