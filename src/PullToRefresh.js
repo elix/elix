@@ -3,9 +3,10 @@ import { dampen } from './fractionalSelection.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
-import defaultScrollTarget from './defaultScrollTarget.js';
+import { getScrollingParent } from './scrolling.js';
 import ReactiveElement from './ReactiveElement.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
+import { raiseChangeEvents } from './symbols.js';
 
 
 const Base =
@@ -28,31 +29,11 @@ class PullToRefresh extends Base {
       });
     });
 
-    let scrollTarget = defaultScrollTarget(this);
-    if (scrollTarget === this) {
-      scrollTarget = window;
-    }
-    scrollTarget.addEventListener('scroll', event => {
+    // Listen to scroll events in case the user scrolls up past the page's top.
+    let scrollTarget = getScrollingParent(this) || window;
+    scrollTarget.addEventListener('scroll', () => {
       this[symbols.raiseChangeEvents] = true;
-      const scrollTop = scrollTarget === window ?
-        document.body.scrollTop :
-        scrollTarget.scrollTop;
-      if (scrollTop < 0) {
-        // Most likely in WebKit.
-        // Simulate a drag in progress.
-        let scrollPullDistance = -scrollTop;
-        if (this.state.scrollPullDistance && 
-          !this.state.scrollPullFinished &&
-          scrollPullDistance < this.state.scrollPullDistance) {
-          this.setState({ scrollPullFinished: true });
-        }
-        this.setState({ scrollPullDistance });
-      } else if (this.state.scrollPullDistance !== null) {
-        this.setState({
-          scrollPullDistance: null,
-          scrollPullFinished: false,
-        });
-      }
+      handleScrollPull(this, scrollTarget);
       this[symbols.raiseChangeEvents] = false;
     });
   }
@@ -85,7 +66,7 @@ class PullToRefresh extends Base {
       refreshTriggered: false,
       refreshing: false,
       scrollPullDistance: null,
-      scrollPullFinished: false,
+      scrollPullMaxReached: false,
       swipeAxis: 'vertical'
     });
   }
@@ -116,7 +97,6 @@ class PullToRefresh extends Base {
       <style>
         :host {
           display: block;
-          overflow: visible;
           -webkit-overflow-scrolling: touch; /* for momentum scrolling */
         }
 
@@ -213,21 +193,67 @@ class PullToRefresh extends Base {
 // height), return the distance of the vertical translation we should apply to
 // the swipe target.
 function getTranslationForSwipeFraction(element) {
+
   const {
     swipeFraction,
     scrollPullDistance,
-    scrollPullFinished
+    scrollPullMaxReached
   } = element.state;
+
   // When damping, we halve the swipe fraction so the user has to drag twice as
   // far to get the usual damping. This produces the feel of a tighter, less
   // elastic surface.
   let result = swipeFraction ?
     element[symbols.swipeTarget].offsetHeight * dampen(swipeFraction / 2) :
     0;
-  if (!scrollPullFinished && scrollPullDistance) {
+
+  if (!scrollPullMaxReached && scrollPullDistance) {
     result += scrollPullDistance;
   }
+
   return result;
+}
+
+
+// If a user flicks down to quickly scroll up, and scrolls past the top of the
+// page, the area above the page may be shown briefly. We use that opportunity
+// to show the user the refresh header so they'll realize they can pull to
+// refresh. We call this operation a "scroll pull". It works a little like a
+// real touch drag, but cannot trigger a refresh.
+//
+// We can only handle a scroll pull in a browser like Mobile Safari that gives
+// us scroll events past the top of the page.
+//
+function handleScrollPull(element, scrollTarget) {
+
+  const scrollTop = scrollTarget === window ?
+    document.body.scrollTop :
+    scrollTarget.scrollTop;
+
+  if (scrollTop < 0) {
+    // Negative scroll top means we're probably in WebKit.
+    // Start a scroll pull operation.
+    let scrollPullDistance = -scrollTop;
+    if (element.state.scrollPullDistance &&
+      !element.state.scrollPullMaxReached &&
+      scrollPullDistance < element.state.scrollPullDistance) {
+      // The negative scroll events have started to head back to zero (most
+      // likely because the user let go and stopped scrolling), so we've reached
+      // the maximum extent of the scroll pull. From this point on, we want to
+      // stop our own translation effect and let the browser smoothly snap the
+      // page back to the top (zero) scroll position. If we don't do that, we'll
+      // be fighting with the browser effect, and the result will not be smooth.
+      element.setState({ scrollPullMaxReached: true });
+    }
+    element.setState({ scrollPullDistance });
+  } else if (element.state.scrollPullDistance !== null) {
+    // We've scrolled back into zero/positive territory, i.e., at or below the
+    // top of the page, so the scroll pull has finished.
+    element.setState({
+      scrollPullDistance: null,
+      scrollPullMaxReached: false,
+    });
+  }
 }
 
 

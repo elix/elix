@@ -1,5 +1,5 @@
 /**
- * Helper for determining a default scroll target.
+ * Helper for working with scrolling.
  * 
  * @module defaultScrollTarget
  */
@@ -19,7 +19,7 @@
  * element
  * @returns {HTMLElement}
  */
-function defaultScrollTarget(element) {
+export function defaultScrollTarget(element) {
   const root = element.shadowRoot;
   const slot = root && root.querySelector('slot:not([name])');
   const scrollingParent = slot && getScrollingParent(slot.parentNode);
@@ -29,7 +29,7 @@ function defaultScrollTarget(element) {
 
 // Return the parent of the given element that can be scrolled. If no such
 // element is found, return null.
-function getScrollingParent(element) {
+export function getScrollingParent(element) {
   // We test against DocumentFragment below instead of ShadowRoot, because the
   // polyfill doesn't define the latter, and instead uses the former. In native
   // Shadow DOM, a ShadowRoot is a subclass of DocumentFragment, so the same
@@ -49,6 +49,3 @@ function getScrollingParent(element) {
   // Keep looking higher in the hierarchy for a scrolling parent.
   return getScrollingParent(element.parentNode);
 }
-
-
-export default defaultScrollTarget;
