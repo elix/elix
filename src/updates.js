@@ -205,8 +205,15 @@ export function applyChildNodes(element, childNodes) {
       // Remove old item past end of new set.
       element.removeChild(element.childNodes[newLength]);
     } else if (oldChild !== newChild) {
-      // Replace old item with new item.
-      element.replaceChild(newChild, oldChild);
+      if (copy.indexOf(oldChild, i) >= i) {
+        // Old node comes later in final set. Insert the new node rather than
+        // replacing it so that we don't detach the old node only to have to
+        // reattach it later.
+        element.insertBefore(newChild, oldChild);
+      } else {
+        // Replace old item with new item.
+        element.replaceChild(newChild, oldChild);
+      }
     }
   }
 
