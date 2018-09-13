@@ -60,6 +60,8 @@ export { default as PageDot } from './PageDot.js';
 export { default as Popup } from './Popup.js';
 export { default as PopupModalityMixin } from './PopupModalityMixin.js';
 export { default as PopupSource } from './PopupSource.js';
+export { default as ProgressSpinner } from './ProgressSpinner.js';
+export { default as PullToRefresh } from './PullToRefresh.js';
 export { default as ReactiveElement } from './ReactiveElement.js';
 export { default as ReactiveMixin } from './ReactiveMixin.js';
 export { default as RenderUpdatesMixin } from './RenderUpdatesMixin.js';

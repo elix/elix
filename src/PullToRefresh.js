@@ -8,13 +8,6 @@ import ReactiveElement from './ReactiveElement.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 
 
-const refreshStates = {
-  notStarted: 'notStarted',
-  started: 'started',
-  done: 'done'
-};
-
-
 const Base =
   TouchSwipeMixin(
     ReactiveElement
@@ -40,6 +33,7 @@ class PullToRefresh extends Base {
       scrollTarget = window;
     }
     scrollTarget.addEventListener('scroll', event => {
+      this[symbols.raiseChangeEvents] = true;
       const scrollTop = scrollTarget === window ?
         document.body.scrollTop :
         scrollTarget.scrollTop;
@@ -59,18 +53,26 @@ class PullToRefresh extends Base {
           scrollPullFinished: false,
         });
       }
+      this[symbols.raiseChangeEvents] = false;
     });
   }
 
   componentDidUpdate(previousState) {
-    const swipeFraction = this.state.swipeFraction || 0;
-    const refreshState = this.state.refresh;
-    if (refreshState === refreshStates.notStarted &&
-        swipeFraction > 0) {
+    if (!this.state.refreshing && !this.state.refreshed &&
+        this.state.swipeFraction > 0) {
       const y = getTranslationForSwipeFraction(this);
       const threshold = this.$.refreshIndicators.offsetHeight;
       if (y >= threshold) {
-        this.refresh();
+        this.refreshing = true;
+      }
+    } else if (this.state.refreshing !== previousState.refreshing) {
+      if (this[symbols.raiseChangeEvents]) {
+        const event = new CustomEvent('refreshing-changed', {
+          detail: {
+            refreshing: this.state.refreshing
+          }
+        });
+        this.dispatchEvent(event);
       }
     }
   }
@@ -80,7 +82,8 @@ class PullToRefresh extends Base {
     return Object.assign({}, super.defaultState, {
       enableNegativeSwipe: false,
       enableTransitions: false,
-      refresh: refreshStates.notStarted,
+      refreshComplete: false,
+      refreshing: false,
       scrollPullDistance: null,
       scrollPullFinished: false,
       swipeAxis: 'vertical'
@@ -89,35 +92,18 @@ class PullToRefresh extends Base {
 
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
-    if (state.swipeFraction === null && state.refresh === refreshStates.done) {
-      state.refresh = refreshStates.notStarted;
+    if (state.swipeFraction === null && state.refreshComplete) {
+      state.refreshComplete = false;
       result = false;
     }
     return result;
   }
 
-  refresh() {
-    this.setState({
-      refresh: refreshStates.started
-    });
-    setTimeout(async () => {
-      const sounds = this.$.refreshSoundSlot.assignedNodes({ flatten: true });
-      const sound = sounds[0];
-      if (sound && sound.play) {
-        try {
-          await sound.play();
-        } catch (e) {
-          if (e.name === 'NotAllowedError') {
-            // Webkit doesn't want to play sounds
-          } else {
-            throw e;
-          }
-        }
-      }
-      this.setState({
-        refresh: refreshStates.done
-      });
-    }, 2000);
+  get refreshing() {
+    return this.state.refreshing;
+  }
+  set refreshing(refreshing) {
+    this.setState({ refreshing });
   }
 
   // TODO: Role for spinner, etc.
@@ -132,8 +118,6 @@ class PullToRefresh extends Base {
 
         #refreshHeader {
           align-items: center;
-          background: #e0e0e0;
-          color: #404040;
           display: flex;
           flex-direction: column-reverse;
           height: 100vh;
@@ -158,12 +142,8 @@ class PullToRefresh extends Base {
           grid-row: 1;
         }
 
-        #refreshSoundSlot::slotted(*) {
-          display: none;
-        }
-
         #downArrow {
-          fill: currentColor;
+          fill: #404040;
           height: 24px;
           width: 24px;
         }
@@ -180,7 +160,6 @@ class PullToRefresh extends Base {
         </div>
       </div>
       <slot></slot>
-      <slot id="refreshSoundSlot" name="refreshSound"></slot>
     `;
   }
 
@@ -189,7 +168,8 @@ class PullToRefresh extends Base {
     const scrollingDown = !!this.state.scrollPullDistance;
     const pullingDown = swipingDown || scrollingDown;
     let y = getTranslationForSwipeFraction(this);
-    if (this.state.refresh === refreshStates.started) {
+    if (this.state.refreshing) {
+      // TODO
       y = Math.max(y, 57);
     }
     const transform = `translate3D(0, ${y}px, 0)`;
@@ -197,8 +177,10 @@ class PullToRefresh extends Base {
     const transition = showTransition ?
       'transform 0.25s' :
       'none';
-    const showStartIndicator = this.state.refresh === refreshStates.notStarted && pullingDown;
-    const showRefreshingIndicator = this.state.refresh === refreshStates.started;
+    const showStartIndicator = !this.state.refreshing &&
+      !this.state.refreshComplete &&
+      pullingDown;
+    const showRefreshingIndicator = this.state.refreshing;
     return merge(super.updates, {
       style: {
         transform,

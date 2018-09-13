@@ -8,6 +8,7 @@ import './src/FocusVisibleTest.js';
 import './src/IncrementDecrement.js';
 import './src/LabeledColorSwatch.js';
 import './src/ModesWithKeyboard.js';
+import './src/RefreshAppDemo.js';
 import './src/SampleDialog.js';
 import './src/serene/SereneTabs.js';
 import './src/SingleSelectionDemo.js';
