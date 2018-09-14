@@ -62,8 +62,6 @@ class RefreshAppDemo extends ReactiveElement {
       <style>
         :host {
           display: block;
-          -webkit-overflow-scrolling: touch; /* for momentum scrolling */
-          overflow-y: auto;
         }
         
         #pullToRefresh {

@@ -147,7 +147,6 @@ class PullToRefresh extends Base {
       <style>
         :host {
           display: block;
-          -webkit-overflow-scrolling: touch; /* for momentum scrolling */
         }
 
         #refreshHeader {
