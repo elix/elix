@@ -1,5 +1,5 @@
 import { dampen } from './fractionalSelection.js';
-import { getScrollingParent } from './scrolling.js';
+import { getScrollableElement } from './scrolling.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
@@ -50,7 +50,7 @@ class PullToRefresh extends Base {
     });
 
     // Listen to scroll events in case the user scrolls up past the page's top.
-    let scrollTarget = getScrollingParent(this) || window;
+    let scrollTarget = getScrollableElement(this) || window;
     scrollTarget.addEventListener('scroll', () => {
       this[symbols.raiseChangeEvents] = true;
       handleScrollPull(this, scrollTarget);
@@ -83,8 +83,8 @@ class PullToRefresh extends Base {
     return Object.assign({}, super.defaultState, {
       enableNegativeSwipe: false,
       enableTransitions: false,
-      refreshTriggered: false,
       refreshing: false,
+      refreshTriggered: false,
       scrollPullDistance: null,
       scrollPullMaxReached: false,
       swipeAxis: 'vertical'
@@ -231,6 +231,7 @@ class PullToRefresh extends Base {
 }
 
 
+// Calculate how far the user must drag before we trigger a refresh.
 function getSwipeThreshold(element) {
   return element.$.refreshIndicators instanceof HTMLElement ?
     element.$.refreshIndicators.offsetHeight :
@@ -274,11 +275,9 @@ function getTranslationForSwipeFraction(element) {
 // us scroll events past the top of the page.
 //
 function handleScrollPull(element, scrollTarget) {
-
   const scrollTop = scrollTarget === window ?
     document.body.scrollTop :
     scrollTarget.scrollTop;
-
   if (scrollTop < 0) {
     // Negative scroll top means we're probably in WebKit.
     // Start a scroll pull operation.
