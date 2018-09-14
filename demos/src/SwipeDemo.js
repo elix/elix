@@ -64,19 +64,15 @@ class SwipeDemo extends Base {
       </style>
       <div class="section">
         <div id="message">
-          This demo shows how a component can use TouchSwipeMixin to listen to
-          vertical touch swipes and trackpad swipes, respectively. Swiping
-          will show the current swipe distance as a fraction of the demo width.
-          It will also translate the gray block by that fraction so the user
-          feels like they are directly moving the block.
+          <slot></slot>
         </div>
       </div>
       <div id="container" class="section">
         <div id="swipeFraction"></div>
         <div id="block"></div>
-        <div>&nbsp;</div>
+        <div id="space">&nbsp;</div>
       </div>
-      <div class="section"></div>
+      <div id="empty" class="section"></div>
     `;
   }
 
@@ -105,7 +101,18 @@ class SwipeDemo extends Base {
         },
         container: {
           style: {
-            'flex-direction': vertical ? 'row-reverse' : 'column'
+            'flex-direction': vertical ? 'row-reverse' : 'column',
+            'justify-content': vertical ? 'flex-end' : 'center'
+          }
+        },
+        empty: {
+          style: {
+            display: vertical ? 'none' : 'block'
+          }
+        },
+        space: {
+          style: {
+            display: vertical ? 'none' : 'block'
           }
         },
         swipeFraction: {

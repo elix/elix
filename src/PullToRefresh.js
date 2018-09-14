@@ -215,12 +215,12 @@ class PullToRefresh extends Base {
       $: {
         pullIndicator: {
           style: {
-            display: showPullIndicator ? 'block' : 'none'
+            visibility: showPullIndicator ? 'visible' : 'hidden'
           }
         },
         refreshingIndicator: {
           style: {
-            display: showRefreshingIndicator ? 'block' : 'none'
+            visibility: showRefreshingIndicator ? 'visible' : 'hidden'
           },
           playing: showRefreshingIndicator
         }

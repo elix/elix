@@ -21,6 +21,11 @@
     body {
       padding: 3em 5em;
     }
+    
+    .wrapper {
+      border: 1px solid gray;
+      box-sizing: border-box;
+    }
 
     elix-pull-to-refresh {
       background: #ddd;
@@ -36,54 +41,62 @@
   <h1>PullToRefresh storyboard</h1>
 
   <render-state>
-    <elix-pull-to-refresh slot="fixture">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-      velit esse cillum dolore eu fugiat nulla pariatur.
-    </elix-pull-to-refresh>
+    <div slot="fixture" class="wrapper">
+      <elix-pull-to-refresh class="fixture">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+        velit esse cillum dolore eu fugiat nulla pariatur.
+      </elix-pull-to-refresh>
+    </div>
     <p>
-      Closed by default
+      Default appearance hides refresh header
     </p>
   </render-state>
   
-  <render-state fixture-state='{ "swipeFraction": 0.025 }'>
-    <elix-pull-to-refresh slot="fixture">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-      velit esse cillum dolore eu fugiat nulla pariatur.
-    </elix-pull-to-refresh>
+  <render-state fixture-state='{ "swipeFraction": 0.20 }'>
+    <div slot="fixture" class="wrapper">
+      <elix-pull-to-refresh class="fixture">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+        velit esse cillum dolore eu fugiat nulla pariatur.
+      </elix-pull-to-refresh>
+    </div>
     <p>
-      Beginning drag
+      Dragging down
     </p>
   </render-state>
   
-  <render-state fixture-state='{ "swipeFraction": 0.25 }'>
-    <elix-pull-to-refresh slot="fixture">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-      velit esse cillum dolore eu fugiat nulla pariatur.
-    </elix-pull-to-refresh>
+  <render-state fixture-state='{ "swipeFraction": 0.50 }'>
+    <div slot="fixture" class="wrapper">
+      <elix-pull-to-refresh class="fixture">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+        velit esse cillum dolore eu fugiat nulla pariatur.
+      </elix-pull-to-refresh>
+    </div>
     <p>
-      Drag past threshold
+      Dragging down past threshold triggers refresh
     </p>
   </render-state>
   
-  <render-state fixture-state='{ "opened": true, "swipeFraction": 0 }'>
-    <elix-pull-to-refresh slot="fixture">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-      velit esse cillum dolore eu fugiat nulla pariatur.
-    </elix-pull-to-refresh>
+  <render-state fixture-state='{ "refreshing": true, "swipeFraction": 0 }'>
+    <div slot="fixture" class="wrapper">
+      <elix-pull-to-refresh class="fixture">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+        velit esse cillum dolore eu fugiat nulla pariatur.
+      </elix-pull-to-refresh>
+    </div>
     <p>
-      Opened
+      Refreshing
     </p>
   </render-state>
   
