@@ -41,15 +41,14 @@ class RefreshAppDemo extends ReactiveElement {
 
   refresh() {
     setTimeout(async () => {
-      await playSound(this.$.refreshSound);
       /** @type {any} */
       const cast = this.$.pullToRefresh;
       cast.refreshing = false;
-      // Shuffle all paragraphs but first one, move first to last place.
-      const first = this.state.paragraphs[0];
-      const remainder = this.state.paragraphs.slice(1);
-      shuffle(remainder);
-      const paragraphs = [...remainder, first];
+      await playSound(this.$.refreshSound);
+      // Rotate last paragraph to first place.
+      const paragraphs = [...this.state.paragraphs];
+      const last = paragraphs.pop();
+      paragraphs.unshift(last);
       Object.freeze(paragraphs);
       this.setState({
         paragraphs
@@ -126,22 +125,6 @@ async function playSound(sound) {
     }
   }
 }
-
-
-/*
- * Shuffle an array.
- * 
- * Performs a Fisher-Yates shuffle. From http://sedition.com/perl/javascript-fy.html
- */
-function shuffle(array) {
-  var i = array.length;
-  while (--i >= 0) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
-  }
-};
 
 
 customElements.define('refresh-app-demo', RefreshAppDemo);
