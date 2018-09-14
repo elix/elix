@@ -156,7 +156,6 @@ class PullToRefresh extends Base {
           flex-direction: column-reverse;
           height: 100vh;
           left: 0;
-          overflow: visible;
           position: absolute;
           top: 0;
           transform: translateY(-100%);

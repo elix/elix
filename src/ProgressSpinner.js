@@ -4,6 +4,15 @@ import * as template from './template.js';
 import ReactiveElement from './ReactiveElement.js';
 
 
+// The spinner has 12 discrete steps in its rotation.
+const rotations = 12;
+
+
+/**
+ * A simple spinning progress indicator.
+ * 
+ * @inherits ReactiveElement
+ */
 class ProgressSpinner extends ReactiveElement {
 
   componentDidMount() {
@@ -26,6 +35,12 @@ class ProgressSpinner extends ReactiveElement {
     });
   }
 
+  /**
+   * True if the progress spinner is currently spinning.
+   * 
+   * @type {boolean}
+   * @default true
+   */
   get playing() {
     return this.state.playing;
   }
@@ -48,7 +63,8 @@ class ProgressSpinner extends ReactiveElement {
   }
 
   get updates() {
-    const angle = (this.state.count * 30) % 360;
+    const step = 360 / rotations;
+    const angle = (this.state.count * step) % 360;
     const transform = `rotate(${angle}deg)`;
     return merge(super.updates, {
       $: {
@@ -65,6 +81,8 @@ class ProgressSpinner extends ReactiveElement {
 
 
 function tick(element) {
+  // Complete a full rotation in a second (1000 milliseconds).
+  const delay = 1000 / rotations;
   if (element.isConnected && element.state.playing) {
     setTimeout(() => {
       requestAnimationFrame(() => {
@@ -72,7 +90,7 @@ function tick(element) {
           count: element.state.count + 1
         });
       });
-    }, 100);  
+    }, delay);  
   }
 }
 

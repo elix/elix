@@ -2,7 +2,7 @@ import '../../src/PullToRefresh.js';
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
-import { merge } from '../../src/updates';
+import { merge } from '../../src/updates.js';
 
 
 const texts = [
@@ -62,6 +62,8 @@ class RefreshAppDemo extends ReactiveElement {
       <style>
         :host {
           display: block;
+          -webkit-overflow-scrolling: touch; /* for momentum scrolling */
+          overflow-y: auto;
         }
         
         #pullToRefresh {
@@ -85,7 +87,7 @@ class RefreshAppDemo extends ReactiveElement {
         }
       </style>
       <elix-pull-to-refresh id="pullToRefresh"></elix-pull-to-refresh>
-      <audio id="refreshSound" src="pop.mp3"></audio>
+      <audio id="refreshSound" src="resources/pop.mp3"></audio>
     `;
   }
 
