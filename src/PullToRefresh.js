@@ -51,9 +51,9 @@ class PullToRefresh extends Base {
 
     // Listen to scroll events in case the user scrolls up past the page's top.
     let scrollTarget = getScrollableElement(this) || window;
-    scrollTarget.addEventListener('scroll', () => {
+    scrollTarget.addEventListener('scroll', async () => {
       this[symbols.raiseChangeEvents] = true;
-      handleScrollPull(this, scrollTarget);
+      await handleScrollPull(this, scrollTarget);
       this[symbols.raiseChangeEvents] = false;
     });
   }
@@ -272,7 +272,7 @@ function getTranslationForSwipeFraction(element) {
 // We can only handle a scroll pull in a browser like Mobile Safari that gives
 // us scroll events past the top of the page.
 //
-function handleScrollPull(element, scrollTarget) {
+async function handleScrollPull(element, scrollTarget) {
   const scrollTop = scrollTarget === window ?
     document.body.scrollTop :
     scrollTarget.scrollTop;
@@ -291,11 +291,11 @@ function handleScrollPull(element, scrollTarget) {
       // be fighting with the browser effect, and the result will not be smooth.
       element.setState({ scrollPullMaxReached: true });
     }
-    element.setState({ scrollPullDistance });
+    await element.setState({ scrollPullDistance });
   } else if (element.state.scrollPullDistance !== null) {
     // We've scrolled back into zero/positive territory, i.e., at or below the
     // top of the page, so the scroll pull has finished.
-    element.setState({
+    await element.setState({
       scrollPullDistance: null,
       scrollPullMaxReached: false,
     });
