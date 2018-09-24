@@ -31,6 +31,7 @@
     "jsdoc-api": "4.0.3",
     "jsdoc-parse": "3.0.1",
     "mocha": "5.2.0",
+    "node-fetch": "^2.2.0",
     "puppeteer": "1.8.0",
     "sauce-test-runner": "0.2.0",
     "sinon": "6.2.0",
@@ -39,6 +40,7 @@
   },
   "scripts": {
     "buildDocs": "node tasks/buildDocs.js",
+    "buildWeekData": "node tasks/buildWeekData.js",
     "ci": "npm run lint && npm run sauce-tests",
     "ci:fast": "npm run lint && npm run test -- --run-in-ci",
     "lint": "eslint .; tsc",

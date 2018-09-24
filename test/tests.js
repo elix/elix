@@ -22,4 +22,5 @@ import './tests/SlotContentMixin.tests.js';
 import './tests/TransitionEffectMixin.tests.js';
 import './tests/template.tests.js';
 import './tests/updates.tests.js';
+import './tests/WeekDaysHeader.tests.js';
 import './tests/WrappedStandardElement.tests.js';
