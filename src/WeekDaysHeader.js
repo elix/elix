@@ -1,7 +1,7 @@
 import { merge } from './updates.js';
 import { symbols } from './elix.js';
+import * as calendar from './calendar.js';
 import * as template from './template.js';
-import weekData from './weekData.js';
 import ReactiveElement from './ReactiveElement.js';
 
 
@@ -10,7 +10,7 @@ class WeekDaysHeader extends ReactiveElement {
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       format: 'short',
-      locale: undefined
+      locale: navigator.language
     });
   }
 
@@ -65,11 +65,7 @@ class WeekDaysHeader extends ReactiveElement {
     });
     const date = new Date(2017, 0, 1); // A Sunday
 
-    const localeParts = locale ? locale.split('-') : null;
-    const region = localeParts ? localeParts[1] : null;
-    const firstDayOfWeek = region ?
-      weekData.firstDay[region] :
-      0; // Sunday by default
+    const firstDayOfWeek = calendar.firstDayOfWeek(locale);
 
     const dayUpdates = {};
     for (let i = 0; i <= 6; i++) {
