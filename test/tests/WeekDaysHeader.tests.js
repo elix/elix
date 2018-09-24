@@ -1,4 +1,4 @@
-import WeekDaysHeader from '../../src/WeekDaysHeader';
+import WeekDaysHeader from '../../src/WeekDaysHeader.js';
 
 
 describe("WeekDaysHeader", () => {
@@ -32,15 +32,15 @@ describe("WeekDaysHeader", () => {
 
   it("renders short French week days", async () => {
     const header = new WeekDaysHeader();
-    header.locale = 'fr';
+    header.locale = 'fr-FR';
     await header.render();
-    assert.equal(header.$.day0.textContent, 'dim.');
-    assert.equal(header.$.day1.textContent, 'lun.');
-    assert.equal(header.$.day2.textContent, 'mar.');
-    assert.equal(header.$.day3.textContent, 'mer.');
-    assert.equal(header.$.day4.textContent, 'jeu.');
-    assert.equal(header.$.day5.textContent, 'ven.');
-    assert.equal(header.$.day6.textContent, 'sam.');
+    assert.equal(header.$.day0.textContent, 'lun.'); // A Monday
+    assert.equal(header.$.day1.textContent, 'mar.');
+    assert.equal(header.$.day2.textContent, 'mer.');
+    assert.equal(header.$.day3.textContent, 'jeu.');
+    assert.equal(header.$.day4.textContent, 'ven.');
+    assert.equal(header.$.day5.textContent, 'sam.');
+    assert.equal(header.$.day6.textContent, 'dim.');
   });
 
 });

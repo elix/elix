@@ -58,14 +58,23 @@ class WeekDaysHeader extends ReactiveElement {
   }
 
   get updates() {
-    const formatter = new Intl.DateTimeFormat(this.state.locale, {
+    const locale = this.state.locale;
+
+    const formatter = new Intl.DateTimeFormat(locale, {
       weekday: this.state.format
     });
     const date = new Date(2017, 0, 1); // A Sunday
 
+    const localeParts = locale ? locale.split('-') : null;
+    const region = localeParts ? localeParts[1] : null;
+    const firstDayOfWeek = region ?
+      weekData.firstDay[region] :
+      0; // Sunday by default
+
     const dayUpdates = {};
     for (let i = 0; i <= 6; i++) {
-      date.setDate(1 + i);
+      const dayOfWeek = (firstDayOfWeek + i) % 7;
+      date.setDate(dayOfWeek + 1);
       dayUpdates[`day${i}`] = {
         textContent: formatter.format(date)
       };
