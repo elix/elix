@@ -4,36 +4,22 @@ import './CalendarWeekDaysHeader.js';
 import { merge } from './updates.js';
 import { symbols } from './elix.js';
 import * as template from './template.js';
+import CalendarElementMixin from './CalendarElementMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
 
-class CalendarMonth extends ReactiveElement {
+const Base =
+  CalendarElementMixin(
+    ReactiveElement
+  );
 
-  get date() {
-    return this.state.date;
-  }
-  set date(date) {
-    this.setState({ date });
-  }
+
+class CalendarMonth extends Base {
 
   get days() {
     return this.shadowRoot ?
       this.$.monthDays.days :
       null;
-  }
-
-  get defaultState() {
-    return Object.assign({}, super.defaultState, {
-      date: new Date,
-      locale: navigator.language
-    });
-  }
-
-  get locale() {
-    return this.state.locale;
-  }
-  set locale(locale) {
-    this.setState({ locale });
   }
 
   // TODO: roles
@@ -88,6 +74,12 @@ class CalendarMonth extends ReactiveElement {
         }
       }
     });
+  }
+
+  get weeks() {
+    return this.shadowRoot ?
+      this.$.monthDays.weeks :
+      null;
   }
 
 }

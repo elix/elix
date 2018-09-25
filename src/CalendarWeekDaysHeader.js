@@ -46,6 +46,10 @@ class CalendarWeekDaysHeader extends ReactiveElement {
           padding: 0.3em;
           text-align: center;
         }
+
+        .dayOfWeek.weekend {
+          color: gray;
+        }
       </style>
 
       <div id="day0" class="dayOfWeek"></div>
@@ -67,12 +71,18 @@ class CalendarWeekDaysHeader extends ReactiveElement {
     const date = new Date(2017, 0, 1); // A Sunday
 
     const firstDayOfWeek = calendar.firstDayOfWeek(locale);
+    const weekendStart = calendar.weekendStart(locale);
+    const weekendEnd = calendar.weekendEnd(locale);
 
     const dayUpdates = {};
     for (let i = 0; i <= 6; i++) {
       const dayOfWeek = (firstDayOfWeek + i) % 7;
       date.setDate(dayOfWeek + 1);
+      const weekend = dayOfWeek === weekendStart || dayOfWeek === weekendEnd;
       dayUpdates[`day${i}`] = {
+        classes: {
+          weekend
+        },
         textContent: formatter.format(date)
       };
     }

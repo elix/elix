@@ -3,17 +3,17 @@ import { merge } from './updates.js';
 import { symbols } from './elix.js';
 import * as calendar from './calendar.js';
 import * as template from './template.js';
+import CalendarElementMixin from './CalendarElementMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
 
-class CalendarWeek extends ReactiveElement {
+const Base =
+  CalendarElementMixin(
+    ReactiveElement
+  );
 
-  get date() {
-    return this.state.date;
-  }
-  set date(date) {
-    this.setState({ date });
-  }
+
+class CalendarWeek extends Base {
 
   get days() {
     return this.shadowRoot ?
@@ -31,17 +31,8 @@ class CalendarWeek extends ReactiveElement {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      date: new Date,
-      locale: navigator.language,
       outsideMonth: false
     });
-  }
-
-  get locale() {
-    return this.state.locale;
-  }
-  set locale(locale) {
-    this.setState({ locale });
   }
 
   get outsideMonth() {
@@ -77,6 +68,7 @@ class CalendarWeek extends ReactiveElement {
 
   get updates() {
     const referenceDate = this.state.date;
+    const locale = this.state.locale;
     const referenceYear = referenceDate.getFullYear();
     const referenceMonth = referenceDate.getMonth();
     const dateStart = calendar.firstDateOfWeek(referenceDate, this.state.locale);
@@ -92,7 +84,8 @@ class CalendarWeek extends ReactiveElement {
           insideMonth: !outsideMonth,
           outsideMonth
         },
-        date
+        date,
+        locale
       };
     }
 

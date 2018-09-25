@@ -3,23 +3,16 @@ import { symbols } from './elix.js';
 import * as calendar from './calendar.js';
 import * as template from './template.js';
 import ReactiveElement from './ReactiveElement.js';
+import CalendarElementMixin from './CalendarElementMixin.js';
 
 
-class CalendarDay extends ReactiveElement {
+const Base =
+  CalendarElementMixin(
+    ReactiveElement
+  );
 
-  get date() {
-    return this.state.date;
-  }
-  set date(date) {
-    this.setState({ date });
-  }
 
-  get defaultState() {
-    return Object.assign({}, super.defaultState, {
-      date: new Date,
-      locale: navigator.language
-    });
-  }
+class CalendarDay extends Base {
 
   get [symbols.template]() {
     return template.html`
@@ -53,15 +46,15 @@ class CalendarDay extends ReactiveElement {
   }
 
   get updates() {
-    const date = this.state.date;
 
-    var today = calendar.today();
-    var dayOfWeek = date.getDay();
-    var dayOfMonth = date.getDate();
-    var nextDate = calendar.offsetDateByDays(date, 1);
-    var daysFromToday = Math.round(date.getTime() - today.getTime()) / calendar.millisecondsPerDay;
-    // TODO: Respect locale weekend
-    var weekend = (dayOfWeek === 0 || dayOfWeek === 6);
+    const { date, locale } = this.state;
+    const today = calendar.today();
+    const dayOfWeek = date.getDay();
+    const dayOfMonth = date.getDate();
+    const nextDate = calendar.offsetDateByDays(date, 1);
+    const daysFromToday = Math.round(date.getTime() - today.getTime()) / calendar.millisecondsPerDay;
+    const weekend = dayOfWeek === calendar.weekendStart(locale) ||
+      dayOfWeek === calendar.weekendEnd(locale);
 
     return merge(super.updates, {
       classes: {

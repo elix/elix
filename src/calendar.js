@@ -23,7 +23,10 @@ export function daysSinceFirstDayOfWeek (date, locale) {
 
 export function firstDayOfWeek(locale) {
   const region = getLocaleRegion(locale);
-  return weekData.firstDay[region];
+  const firstDay = weekData.firstDay[region];
+  return firstDay !== undefined ?
+    firstDay :
+    weekData.firstDay[defaultRegion];
 }
 
 
@@ -64,6 +67,24 @@ export function offsetDateByDays(date, days) {
 // Returns midnight today.
 export function today() {
   return midnightOnDate(new Date());
+}
+
+
+export function weekendEnd(locale) {
+  const region = getLocaleRegion(locale);
+  const day = weekData.weekendEnd[region];
+  return day !== undefined ?
+    day :
+    weekData.weekendEnd[defaultRegion];
+}
+
+
+export function weekendStart(locale) {
+  const region = getLocaleRegion(locale);
+  const day = weekData.weekendStart[region];
+  return day !== undefined ?
+    day :
+    weekData.weekendStart[defaultRegion];
 }
 
 

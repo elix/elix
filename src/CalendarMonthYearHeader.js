@@ -1,35 +1,19 @@
 import { merge } from './updates.js';
 import { symbols } from './elix.js';
-import * as calendar from './calendar.js';
 import * as template from './template.js';
+import CalendarElementMixin from './CalendarElementMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
 
-class CalendarMonthYearHeader extends ReactiveElement {
+const Base =
+  CalendarElementMixin(
+    ReactiveElement
+  );
 
-  get date() {
-    return this.state.date;
-  }
-  set date(date) {
-    this.setState({ date });
-  }
 
-  get defaultState() {
-    return Object.assign({}, super.defaultState, {
-      date: new Date,
-      locale: navigator.language
-    });
-  }
-
-  get locale() {
-    return this.state.locale;
-  }
-  set locale(locale) {
-    this.setState({ locale });
-  }
+class CalendarMonthYearHeader extends Base {
 
   get [symbols.template]() {
-    // TODO: RTL
     return template.html`
       <style>
         :host {
