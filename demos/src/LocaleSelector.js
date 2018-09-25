@@ -299,7 +299,9 @@ class LocaleSelector extends ReactiveElement {
     if (super.componentDidMount) { super.componentDidMount(); }
     this.$.select.addEventListener('change', () => {
       this[symbols.raiseChangeEvents] = true;
-      this.value = this.$.select.value;
+      /** @type {any} */
+      const cast = this.$.select;
+      this.value = cast.value;
       this[symbols.raiseChangeEvents] = false;
     });
   }

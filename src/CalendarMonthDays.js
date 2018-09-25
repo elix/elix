@@ -16,17 +16,16 @@ const Base =
 class CalendarMonthDays extends Base {
 
   get days() {
-    if (!this.shadowRoot) {
+    const weeks = this.weeks;
+    if (!weeks) {
       return null;
     }
-    return [
-      ...this.$.week0.days,
-      ...this.$.week1.days,
-      ...this.$.week2.days,
-      ...this.$.week3.days,
-      ...this.$.week4.days,
-      ...this.$.week5.days,
-    ];
+    const weeksDays = weeks.map(week => {
+      /** @type {any} */
+      const cast = week;
+      return cast.days;
+    });
+    return [].concat(...weeksDays);
   }
 
   /**

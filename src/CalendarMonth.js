@@ -17,9 +17,12 @@ const Base =
 class CalendarMonth extends Base {
 
   get days() {
-    return this.shadowRoot ?
-      this.$.monthDays.days :
-      null;
+    if (!this.shadowRoot) {
+      return null;
+    }
+    /** @type {any} */
+    const cast = this.$.monthDays;
+    return cast.days;
   }
 
   // TODO: roles
@@ -77,9 +80,12 @@ class CalendarMonth extends Base {
   }
 
   get weeks() {
-    return this.shadowRoot ?
-      this.$.monthDays.weeks :
-      null;
+    if (!this.shadowRoot) {
+      return null;
+    }
+    /** @type {any} */
+    const cast = this.$.monthDays;
+    return cast.weeks;
   }
 
 }

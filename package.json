@@ -31,12 +31,12 @@
     "jsdoc-api": "4.0.3",
     "jsdoc-parse": "3.0.1",
     "mocha": "5.2.0",
-    "node-fetch": "^2.2.0",
+    "node-fetch": "2.2.0",
     "puppeteer": "1.8.0",
     "sauce-test-runner": "0.2.0",
     "sinon": "6.2.0",
     "static-server": "2.2.1",
-    "typescript": "^3.0.3"
+    "typescript": "3.0.3"
   },
   "scripts": {
     "buildDocs": "node tasks/buildDocs.js",
