@@ -62,6 +62,13 @@ class CalendarMonthDays extends ReactiveElement {
     return date;
   }
 
+  get locale() {
+    return this.state.locale;
+  }
+  set locale(locale) {
+    this.setState({ locale });
+  }
+
   get [symbols.template]() {
     return template.html`
       <style>
@@ -108,7 +115,8 @@ class CalendarMonthDays extends ReactiveElement {
       // const isWeekInMonth = (firstDateOfWeek.getMonth() === month || lastDateOfWeek.getMonth() === month);
       // week.classList.toggle('outsideMonth', !isWeekInMonth);
       weekUpdates[`week${i}`] = {
-        date
+        date,
+        locale
       };
     }
 
