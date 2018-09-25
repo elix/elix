@@ -15,6 +15,20 @@ class CalendarMonthDays extends ReactiveElement {
     this.setState({ date });
   }
 
+  get days() {
+    if (!this.shadowRoot) {
+      return null;
+    }
+    return [
+      ...this.$.week0.days,
+      ...this.$.week1.days,
+      ...this.$.week2.days,
+      ...this.$.week3.days,
+      ...this.$.week4.days,
+      ...this.$.week5.days,
+    ];
+  }
+
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       date: new Date,
@@ -76,47 +90,45 @@ class CalendarMonthDays extends ReactiveElement {
           display: table-row-group;
         }
 
-        basic-calendar-week.outsideMonth {
-          display: none;
+        .week.outsideMonth {
+          /* display: none; */
         }
-        
-        /* TODO: How to replace deprecated use of ::shadow?
-        basic-calendar-week::shadow .day.outsideMonth {
-          visibility: hidden;
-        }
-        */
       </style>
 
-      <elix-calendar-week id="week0"></elix-calendar-week>
-      <elix-calendar-week id="week1"></elix-calendar-week>
-      <elix-calendar-week id="week2"></elix-calendar-week>
-      <elix-calendar-week id="week3"></elix-calendar-week>
-      <elix-calendar-week id="week4"></elix-calendar-week>
-      <elix-calendar-week id="week5"></elix-calendar-week>
+      <elix-calendar-week id="week0" class="week"></elix-calendar-week>
+      <elix-calendar-week id="week1" class="week"></elix-calendar-week>
+      <elix-calendar-week id="week2" class="week"></elix-calendar-week>
+      <elix-calendar-week id="week3" class="week"></elix-calendar-week>
+      <elix-calendar-week id="week4" class="week"></elix-calendar-week>
+      <elix-calendar-week id="week5" class="week"></elix-calendar-week>
     `;
   }
 
   get updates() {
     const locale = this.state.locale;
     const firstDateOfMonth = this.firstDateOfMonth;
-    // const month = firstDateOfMonth.getMonth();
+    const month = firstDateOfMonth.getMonth();
     const weekUpdates = {};
     for (let i = 0; i <= 5; i++) {
       const referenceDate = calendar.offsetDateByDays(firstDateOfMonth, 7 * i);
       // For the first week of the month, use the first of the month as the
       // reference date of that week. For subsequent weeks, use the first of
       // the given week.
+      const firstDateOfWeek = calendar.firstDateOfWeek(referenceDate, locale);
       const date = (i === 0)
         ? referenceDate
-        : calendar.firstDateOfWeek(referenceDate, locale);
+        : firstDateOfWeek;
       // Hide weeks completely in another month (i.e., the next month).
       // Apply "hidden" class to preserve week's original "display" property.
-      // const lastDateOfWeek = this.offsetDateByDays(firstDateOfWeek, 6);
-      // const isWeekInMonth = (firstDateOfWeek.getMonth() === month || lastDateOfWeek.getMonth() === month);
-      // week.classList.toggle('outsideMonth', !isWeekInMonth);
+      const lastDateOfWeek = calendar.offsetDateByDays(firstDateOfWeek, 6);
+      const outsideMonth = !(firstDateOfWeek.getMonth() === month || lastDateOfWeek.getMonth() === month);
       weekUpdates[`week${i}`] = {
+        classes: {
+          outsideMonth
+        },
         date,
-        locale
+        locale,
+        outsideMonth
       };
     }
 

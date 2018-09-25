@@ -31,7 +31,16 @@ class CalendarMonthYearHeader extends ReactiveElement {
   get [symbols.template]() {
     // TODO: RTL
     return template.html`
-      <span id="formatted"></span>
+      <style>
+        :host {
+          display: inline-block;
+        }
+
+        #formatted {
+          text-align: center;
+        }
+      </style>
+      <div id="formatted"></div>
     `;
   }
 

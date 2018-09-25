@@ -1,3 +1,4 @@
+import './CalendarDay.js';
 import { merge } from './updates.js';
 import { symbols } from './elix.js';
 import * as calendar from './calendar.js';
@@ -31,7 +32,8 @@ class CalendarWeek extends ReactiveElement {
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       date: new Date,
-      locale: navigator.language
+      locale: navigator.language,
+      outsideMonth: false
     });
   }
 
@@ -40,6 +42,13 @@ class CalendarWeek extends ReactiveElement {
   }
   set locale(locale) {
     this.setState({ locale });
+  }
+
+  get outsideMonth() {
+    return this.state.outsideMonth;
+  }
+  set outsideMonth(outsideMonth) {
+    this.setState({ outsideMonth });
   }
 
   /// TODO: role for calendar day
@@ -56,13 +65,13 @@ class CalendarWeek extends ReactiveElement {
         }
       </style>
 
-      <div id="day0" class="day firstDayOfWeek"></div>
-      <div id="day1" class="day"></div>
-      <div id="day2" class="day"></div>
-      <div id="day3" class="day"></div>
-      <div id="day4" class="day"></div>
-      <div id="day5" class="day"></div>
-      <div id="day6" class="day lastDayOfWeek"></div>
+      <elix-calendar-day id="day0" class="day firstDayOfWeek"></elix-calendar-day>
+      <elix-calendar-day id="day1" class="day"></elix-calendar-day>
+      <elix-calendar-day id="day2" class="day"></elix-calendar-day>
+      <elix-calendar-day id="day3" class="day"></elix-calendar-day>
+      <elix-calendar-day id="day4" class="day"></elix-calendar-day>
+      <elix-calendar-day id="day5" class="day"></elix-calendar-day>
+      <elix-calendar-day id="day6" class="day lastDayOfWeek"></elix-calendar-day>
     `;
   }
 
@@ -76,14 +85,14 @@ class CalendarWeek extends ReactiveElement {
       const date = calendar.offsetDateByDays(dateStart, i);
       // Apply inside/outside month styles to days that fall outside of the
       // month of the reference date for this week.
-      const insideMonth = date.getFullYear() === referenceYear &&
-          date.getMonth() === referenceMonth;
+      const outsideMonth = this.state.outsideMonth ||
+        !(date.getFullYear() === referenceYear && date.getMonth() === referenceMonth);
       dayUpdates[`day${i}`] = {
         classes: {
-          insideMonth,
-          outsideMonth: !insideMonth
+          insideMonth: !outsideMonth,
+          outsideMonth
         },
-        textContent: date.getDate()
+        date
       };
     }
 

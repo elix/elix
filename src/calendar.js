@@ -60,6 +60,13 @@ export function offsetDateByDays(date, days) {
   return result;
 }
 
+
+// Returns midnight today.
+export function today() {
+  return midnightOnDate(new Date());
+}
+
+
 function getLocaleRegion(locale) {
   const localeParts = locale ? locale.split('-') : null;
   return localeParts ? localeParts[1] : defaultRegion;
