@@ -14,6 +14,20 @@ class CalendarWeek extends ReactiveElement {
     this.setState({ date });
   }
 
+  get days() {
+    return this.shadowRoot ?
+      [
+        this.$.day0,
+        this.$.day1,
+        this.$.day2,
+        this.$.day3,
+        this.$.day4,
+        this.$.day5,
+        this.$.day6
+      ] :
+      null;
+  }
+
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       date: new Date,

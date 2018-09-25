@@ -2,6 +2,7 @@ import './tests/AriaListMixin.tests.js';
 import './tests/AttributeMarshallingMixin.tests.js';
 import './tests/AutosizeTextarea.tests.js';
 import './tests/CalendarWeek.tests.js';
+import './tests/CalendarMonthDays.tests.js';
 import './tests/ClickSelectionMixin.tests.js';
 import './tests/content.tests.js';
 import './tests/ContentItemsMixin.tests.js';
