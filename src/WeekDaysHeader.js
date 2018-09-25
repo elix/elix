@@ -28,6 +28,7 @@ class WeekDaysHeader extends ReactiveElement {
     this.setState({ locale });
   }
 
+  // TODO: Role for day of week
   get [symbols.template]() {
     return template.html`
       <style>
