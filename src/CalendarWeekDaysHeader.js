@@ -5,7 +5,7 @@ import * as template from './template.js';
 import ReactiveElement from './ReactiveElement.js';
 
 
-class WeekDaysHeader extends ReactiveElement {
+class CalendarWeekDaysHeader extends ReactiveElement {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
@@ -85,5 +85,5 @@ class WeekDaysHeader extends ReactiveElement {
 }
 
 
-export default WeekDaysHeader;
-customElements.define('elix-week-days-header', WeekDaysHeader);
+export default CalendarWeekDaysHeader;
+customElements.define('elix-calendar-week-days-header', CalendarWeekDaysHeader);

@@ -1,10 +1,10 @@
-import WeekDaysHeader from '../../src/WeekDaysHeader.js';
+import CalendarWeekDaysHeader from '../../src/CalendarWeekDaysHeader.js';
 
 
-describe("WeekDaysHeader", () => {
+describe("CalendarWeekDaysHeader", () => {
 
   it("renders short English US week days", async () => {
-    const fixture = new WeekDaysHeader();
+    const fixture = new CalendarWeekDaysHeader();
     fixture.locale = 'en-US';
     await fixture.render();
     assert.equal(fixture.$.day0.textContent, 'Sun');
@@ -17,7 +17,7 @@ describe("WeekDaysHeader", () => {
   });
 
   it("renders narrow English US week days", async () => {
-    const fixture = new WeekDaysHeader();
+    const fixture = new CalendarWeekDaysHeader();
     fixture.locale = 'en-US';
     fixture.format = 'narrow';
     await fixture.render();
@@ -31,7 +31,7 @@ describe("WeekDaysHeader", () => {
   });
 
   it("renders short French week days", async () => {
-    const fixture = new WeekDaysHeader();
+    const fixture = new CalendarWeekDaysHeader();
     fixture.locale = 'fr-FR';
     await fixture.render();
     assert.equal(fixture.$.day0.textContent, 'lun.'); // A Monday
