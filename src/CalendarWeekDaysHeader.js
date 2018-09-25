@@ -43,7 +43,7 @@ class CalendarWeekDaysHeader extends ReactiveElement {
 
         /* TODO: Move to separate component? */
         .dayOfWeek {
-          padding: 4px;
+          padding: 0.3em;
           text-align: center;
         }
       </style>

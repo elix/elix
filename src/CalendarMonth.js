@@ -46,6 +46,9 @@ class CalendarMonth extends ReactiveElement {
 
         #monthYearHeader {
           display: block;
+          font-size: larger;
+          font-weight: bold;
+          padding: 0.3em;
         }
 
         #monthTable {
@@ -56,6 +59,7 @@ class CalendarMonth extends ReactiveElement {
 
         #weekDaysHeader {
           display: table-header-group;
+          font-size: smaller;
         }
       </style>
 

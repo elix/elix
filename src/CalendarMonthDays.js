@@ -91,7 +91,7 @@ class CalendarMonthDays extends ReactiveElement {
         }
 
         .week.outsideMonth {
-          /* display: none; */
+          display: none;
         }
       </style>
 

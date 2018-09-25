@@ -26,7 +26,7 @@ class CalendarDay extends ReactiveElement {
       <style>
         :host {
           display: inline-block;
-          padding: 4px;
+          padding: 0.3em;
         }
 
         :host(.today) {
@@ -35,6 +35,10 @@ class CalendarDay extends ReactiveElement {
         }
 
         :host(.outsideMonth) {
+          visibility: hidden;
+        }
+
+        :host(.weekend) {
           color: gray;
         }
 

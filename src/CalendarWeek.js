@@ -59,7 +59,7 @@ class CalendarWeek extends ReactiveElement {
           display: table-row;
         }
 
-        :host > :not(style) {
+        .day {
           display: table-cell;
           width: 14.285%; /* One seventh */
         }
