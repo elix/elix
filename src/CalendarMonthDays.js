@@ -1,9 +1,10 @@
-import './CalendarWeek.js';
 import { merge } from './updates.js';
 import { symbols } from './elix.js';
 import * as calendar from './calendar.js';
 import * as template from './template.js';
+import CalendarDay from './CalendarDay.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
+import CalendarWeek from './CalendarWeek.js';
 import ReactiveElement from './ReactiveElement.js';
 
 
@@ -13,7 +14,35 @@ const Base =
   );
 
 
+/**
+ * @inherits ReactiveElement
+ * @mixes CalendarElementMixin
+ * @elementrole {CalendarDay} day
+ * @elementrole {CalendarWeek} week
+ */
 class CalendarMonthDays extends Base {
+
+  constructor() {
+    super();
+    this[symbols.roles] = Object.assign({}, this[symbols.roles], {
+      day: 'elix-calendar-day',
+      week: CalendarWeek
+    });
+  }
+
+  /**
+   * The class, tag, or template used for the seven days of the week.
+   * 
+   * @type {function|string|HTMLTemplateElement}
+   * @default CalendarDay
+   */
+  get dayRole() {
+    return this[symbols.roles].day;
+  }
+  set dayRole(dayRole) {
+    this[symbols.hasDynamicTemplate] = true;
+    this[symbols.roles].day = dayRole;
+  }
 
   get days() {
     const weeks = this.weeks;
@@ -69,7 +98,7 @@ class CalendarMonthDays extends Base {
   }
 
   get [symbols.template]() {
-    return template.html`
+    const result = template.html`
       <style>
         :host {
           display: table-row-group;
@@ -80,13 +109,18 @@ class CalendarMonthDays extends Base {
         }
       </style>
 
-      <elix-calendar-week id="week0" class="week"></elix-calendar-week>
-      <elix-calendar-week id="week1" class="week"></elix-calendar-week>
-      <elix-calendar-week id="week2" class="week"></elix-calendar-week>
-      <elix-calendar-week id="week3" class="week"></elix-calendar-week>
-      <elix-calendar-week id="week4" class="week"></elix-calendar-week>
-      <elix-calendar-week id="week5" class="week"></elix-calendar-week>
+      <div id="week0" class="week"></div>
+      <div id="week1" class="week"></div>
+      <div id="week2" class="week"></div>
+      <div id="week3" class="week"></div>
+      <div id="week4" class="week"></div>
+      <div id="week5" class="week"></div>
     `;
+    template.findAndReplace(result, '.week', this.weekRole);
+    result.content.querySelectorAll('.week').forEach(week => {
+      week.setAttribute('day-role', this.dayRole);
+    });
+    return result;
   }
 
   get updates() {
@@ -120,6 +154,20 @@ class CalendarMonthDays extends Base {
     return merge(super.updates, {
       $: weekUpdates
     });
+  }
+
+  /**
+   * The class, tag, or template used for the weeks of the month.
+   * 
+   * @type {function|string|HTMLTemplateElement}
+   * @default CalendarWeek
+   */
+  get weekRole() {
+    return this[symbols.roles].week;
+  }
+  set weekRole(weekRole) {
+    this[symbols.hasDynamicTemplate] = true;
+    this[symbols.roles].week = weekRole;
   }
 
   get weeks() {

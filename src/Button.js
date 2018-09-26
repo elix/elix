@@ -53,6 +53,7 @@ class Button extends Base {
         #inner {
           background: none;
           border: none;
+          color: inherit;
           flex: 1;
           font-family: inherit;
           font-size: inherit;

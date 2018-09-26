@@ -1,8 +1,8 @@
-import './CalendarDay.js';
 import { merge } from './updates.js';
 import { symbols } from './elix.js';
 import * as calendar from './calendar.js';
 import * as template from './template.js';
+import CalendarDay from './CalendarDay.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
@@ -13,7 +13,33 @@ const Base =
   );
 
 
+/**
+ * @inherits ReactiveElement
+ * @mixes CalendarElementMixin
+ * @elementrole {CalendarDay} day
+ */
 class CalendarWeek extends Base {
+
+  constructor() {
+    super();
+    this[symbols.roles] = Object.assign({}, this[symbols.roles], {
+      day: CalendarDay
+    });
+  }
+
+  /**
+   * The class, tag, or template used for the seven days of the week.
+   * 
+   * @type {function|string|HTMLTemplateElement}
+   * @default CalendarDay
+   */
+  get dayRole() {
+    return this[symbols.roles].day;
+  }
+  set dayRole(dayRole) {
+    this[symbols.hasDynamicTemplate] = true;
+    this[symbols.roles].day = dayRole;
+  }
 
   get days() {
     return this.shadowRoot ?
@@ -44,7 +70,7 @@ class CalendarWeek extends Base {
 
   /// TODO: role for calendar day
   get [symbols.template]() {
-    return template.html`
+    const result = template.html`
       <style>
         :host {
           display: table-row;
@@ -56,14 +82,16 @@ class CalendarWeek extends Base {
         }
       </style>
 
-      <elix-calendar-day id="day0" class="day firstDayOfWeek"></elix-calendar-day>
-      <elix-calendar-day id="day1" class="day"></elix-calendar-day>
-      <elix-calendar-day id="day2" class="day"></elix-calendar-day>
-      <elix-calendar-day id="day3" class="day"></elix-calendar-day>
-      <elix-calendar-day id="day4" class="day"></elix-calendar-day>
-      <elix-calendar-day id="day5" class="day"></elix-calendar-day>
-      <elix-calendar-day id="day6" class="day lastDayOfWeek"></elix-calendar-day>
+      <div id="day0" class="day firstDayOfWeek"></div>
+      <div id="day1" class="day"></div>
+      <div id="day2" class="day"></div>
+      <div id="day3" class="day"></div>
+      <div id="day4" class="day"></div>
+      <div id="day5" class="day"></div>
+      <div id="day6" class="day lastDayOfWeek"></div>
     `;
+    template.findAndReplace(result, '.day', this.dayRole);
+    return result;
   }
 
   get updates() {
