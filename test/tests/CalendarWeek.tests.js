@@ -9,13 +9,13 @@ describe("CalendarWeek", () => {
     fixture.date = new Date('10 March 2015'); // A Tuesday
     await fixture.render();
     const days = fixture.days;
-    assert.equal(days[0].textContent, '8');
-    assert.equal(days[1].textContent, '9');
-    assert.equal(days[2].textContent, '10');
-    assert.equal(days[3].textContent, '11');
-    assert.equal(days[4].textContent, '12');
-    assert.equal(days[5].textContent, '13');
-    assert.equal(days[6].textContent, '14');
+    assert.equal(days[0].date.getDate(), 8); // A Sunday
+    assert.equal(days[1].date.getDate(), 9);
+    assert.equal(days[2].date.getDate(), 10);
+    assert.equal(days[3].date.getDate(), 11);
+    assert.equal(days[4].date.getDate(), 12);
+    assert.equal(days[5].date.getDate(), 13);
+    assert.equal(days[6].date.getDate(), 14);
   });
 
   it("renders a French week", async () => {
@@ -24,13 +24,13 @@ describe("CalendarWeek", () => {
     fixture.date = new Date('10 March 2015'); // A Tuesday
     await fixture.render();
     const days = fixture.days;
-    assert.equal(days[0].textContent, '9'); // A Monday
-    assert.equal(days[1].textContent, '10');
-    assert.equal(days[2].textContent, '11');
-    assert.equal(days[3].textContent, '12');
-    assert.equal(days[4].textContent, '13');
-    assert.equal(days[5].textContent, '14');
-    assert.equal(days[6].textContent, '15');
+    assert.equal(days[0].date.getDate(), 9); // A Monday
+    assert.equal(days[1].date.getDate(), 10);
+    assert.equal(days[2].date.getDate(), 11);
+    assert.equal(days[3].date.getDate(), 12);
+    assert.equal(days[4].date.getDate(), 13);
+    assert.equal(days[5].date.getDate(), 14);
+    assert.equal(days[6].date.getDate(), 15);
   });
 
 });
