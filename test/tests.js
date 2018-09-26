@@ -15,6 +15,7 @@ import './tests/OpenCloseMixin.tests.js';
 import './tests/OverlayMixin.tests.js';
 import './tests/ReactiveMixin.tests.js';
 import './tests/RenderUpdatesMixin.tests.js';
+import './tests/RolesMixin.tests.js';
 import './tests/SelectionInViewMixin.tests.js';
 import './tests/ShadowTemplateMixin.tests.js';
 import './tests/SingleSelectionMixin.tests.js';

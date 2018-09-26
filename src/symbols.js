@@ -328,6 +328,10 @@ export const rendering = Symbol('rendering');
  */
 export const rightToLeft = Symbol('rightToLeft');
 
+export const renderNodeWithRole = Symbol('renderNodeWithRole');
+export const renderedRoles = Symbol('renderedRoles');
+export const role = Symbol('role');
+
 /**
  * Symbol for the `roles` property.
  * 
