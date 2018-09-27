@@ -23,9 +23,17 @@ class CalendarWeek extends Base {
   constructor() {
     super();
     // The template already includes CalendarDay in the day role.
-    Object.assign(this[symbols.renderedRoles], {
+    this[symbols.renderedRoles] = {
       dayRole: CalendarDay
-    });
+    };
+  }
+
+  [symbols.beforeUpdate]() {
+    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+    if (this[symbols.renderedRoles].dayRole !== this.state.dayRole) {
+      template.transmute(this.days, this.state.dayRole);
+      this[symbols.renderedRoles].dayRole = this.state.dayRole;
+    }
   }
 
   /**
@@ -67,14 +75,6 @@ class CalendarWeek extends Base {
   }
   set outsideMonth(outsideMonth) {
     this.setState({ outsideMonth });
-  }
-
-  [symbols.renderRoles]() {
-    if (super[symbols.renderRoles]) { super[symbols.renderRoles](); }
-    if (this[symbols.renderedRoles].dayRole !== this.state.dayRole) {
-      template.transmute(this.days, this.state.dayRole);
-      this[symbols.renderedRoles].dayRole = this.state.dayRole;
-    }
   }
 
   get [symbols.template]() {
