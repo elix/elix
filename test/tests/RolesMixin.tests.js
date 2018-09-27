@@ -1,22 +1,9 @@
-// import { merge } from '../../src/updates.js';
-// import ReactiveElement from '../../src/ReactiveElement.js';
+import ReactiveElement from '../../src/ReactiveElement.js';
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
-import ReactiveMixin from '../../src/ReactiveMixin.js';
-import RenderUpdatesMixin from '../../src/RenderUpdatesMixin.js';
-import RolesMixin from '../../src/RolesMixin.js';
-import ShadowTemplateMixin from '../../src/ShadowTemplateMixin.js';
 
 
-const Base =
-  ReactiveMixin(
-  RenderUpdatesMixin(
-  RolesMixin(
-  ShadowTemplateMixin(
-    HTMLElement
-  ))));
-
-class DynamicRole extends Base {
+class DynamicRole extends ReactiveElement {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
@@ -43,7 +30,7 @@ class DynamicRole extends Base {
 customElements.define('dynamic-role', DynamicRole);
 
 
-class DynamicRoles extends Base {
+class DynamicRoles extends ReactiveElement {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {

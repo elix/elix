@@ -1,6 +1,7 @@
 import AttributeMarshallingMixin from './AttributeMarshallingMixin.js';
 import ReactiveMixin from './ReactiveMixin.js';
 import RenderUpdatesMixin from './RenderUpdatesMixin.js';
+import RolesMixin from './RolesMixin.js';
 import ShadowTemplateMixin from './ShadowTemplateMixin.js';
 
 
@@ -14,9 +15,10 @@ import ShadowTemplateMixin from './ShadowTemplateMixin.js';
  *       AttributeMarshallingMixin(
  *       ReactiveMixin(
  *       RenderUpdatesMixin(
+ *       RolesMixin(
  *       ShadowTemplateMixin(
  *         HTMLElement
- *       ))));
+ *       )))));
  *
  * `ReactiveElement` is provided as a convenience. You can achieve the same
  * result by applying the mixins yourself to `HTMLElement`.
@@ -25,14 +27,16 @@ import ShadowTemplateMixin from './ShadowTemplateMixin.js';
  * @mixes AttributeMarshallingMixin
  * @mixes ReactiveMixin
  * @mixes RenderUpdatesMixin
+ * @mixes RolesMixin
  * @mixes ShadowTemplateMixin
  */
 const ReactiveElement =
   AttributeMarshallingMixin(
   ReactiveMixin(
   RenderUpdatesMixin(
+  RolesMixin(
   ShadowTemplateMixin(
     HTMLElement
-  ))));
+  )))));
 
 export default ReactiveElement;
