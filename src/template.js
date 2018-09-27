@@ -142,6 +142,12 @@ export function replace(original, replacement) {
 }
 
 
+export function replaceWithNewElement(original, descriptor) {
+  const replacement = createElement(descriptor);
+  replace(original, replacement);
+}
+
+
 /**
  * Destructively wrap a node or document fragment with the indicated wrapper
  * node. The contents of the original node/fragment are moved to the indicated
@@ -165,5 +171,16 @@ export function wrap(original, wrapper, destination) {
       destinationNode.appendChild(original.childNodes[0]);
     }
     original.appendChild(wrapper);
+  }
+}
+
+
+function getHost(node) {
+  if (!node) {
+    return null;
+  } else if (node instanceof ShadowRoot) {
+    return node.host;
+  } else {
+    return getHost(node.parentNode);
   }
 }

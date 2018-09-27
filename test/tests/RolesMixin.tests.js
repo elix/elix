@@ -27,7 +27,7 @@ class DynamicRole extends Base {
   [symbols.renderRoles]() {
     if (super[symbols.renderRoles]) { super[symbols.renderRoles](); }
     if (this[symbols.renderedRoles].dynamicRole !== this.state.dynamicRole) {
-      this[symbols.renderNodeWithRole](this.$.dynamic, this.state.dynamicRole);
+      template.replaceWithNewElement(this.$.dynamic, this.state.dynamicRole);
       this[symbols.renderedRoles].dynamicRole = this.state.dynamicRole;
     }
   }
@@ -41,6 +41,34 @@ class DynamicRole extends Base {
 
 }
 customElements.define('dynamic-role', DynamicRole);
+
+
+class DynamicRoles extends Base {
+
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      dynamicRole: 'button'
+    });
+  }
+
+  [symbols.renderRoles]() {
+    if (super[symbols.renderRoles]) { super[symbols.renderRoles](); }
+    if (this[symbols.renderedRoles].dynamicRole !== this.state.dynamicRole) {
+      template.findAndReplace(this.shadowRoot, '.dynamic', this.state.dynamicRole);
+      this[symbols.renderedRoles].dynamicRole = this.state.dynamicRole;
+    }
+  }
+
+  get [symbols.template]() {
+    return template.html`
+      <div id="static">This doesn't change</div>
+      <div class="dynamic">This element changes</div>
+      <div class="dynamic">This changes too</div>
+    `;
+  }
+
+}
+customElements.define('dynamic-roles', DynamicRoles);
 
 
 describe("RolesMixin", function () {
@@ -76,6 +104,15 @@ describe("RolesMixin", function () {
     assert(fixture.$.dynamic instanceof HTMLAnchorElement);
     assert.equal(fixture.$.dynamic.getAttribute('id'), 'dynamic');
     assert.equal(fixture.$.dynamic.textContent, 'This element changes');
+  });
+
+  it("can apply role to multiple elements", async () => {
+    const fixture = new DynamicRoles();
+    fixture.render();
+    assert(fixture.$.static instanceof HTMLDivElement);
+    fixture.shadowRoot.querySelectorAll('.dynamic').forEach(element =>
+      assert(element instanceof HTMLButtonElement)
+    );
   });
 
 });

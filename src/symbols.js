@@ -329,6 +329,7 @@ export const rendering = Symbol('rendering');
 export const rightToLeft = Symbol('rightToLeft');
 
 export const renderNodeWithRole = Symbol('renderNodeWithRole');
+export const renderNodesWithRole = Symbol('renderNodesWithRole');
 export const renderedRoles = Symbol('renderedRoles');
 export const role = Symbol('role');
 

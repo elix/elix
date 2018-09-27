@@ -92,8 +92,14 @@ export default function ShadowTemplateMixin(Base) {
      * @type {object} - a dictionary mapping shadow element IDs to elements
      */
     get $() {
-      if (!this[shadowReferencesKey] && this.shadowRoot) {
-        this[shadowReferencesKey] = shadowElementReferences(this);
+      if (!this[shadowReferencesKey]) {
+        // Construct a proxy that maps $ -> getElementById.
+        const element = this;
+        this[shadowReferencesKey] = new Proxy({}, {
+          get(target, property, receiver) {
+            return element.shadowRoot.getElementById(property);
+          }
+        });
       }
       return this[shadowReferencesKey];
     }
@@ -147,16 +153,4 @@ function prepareTemplate(element) {
   }
 
   return template;
-}
-
-
-// Look for elements in the shadow subtree that have id attributes.
-function shadowElementReferences(component) {
-  const result = {};
-  const nodesWithIds = component.shadowRoot.querySelectorAll('[id]');
-  Array.prototype.forEach.call(nodesWithIds, node => {
-    const id = node.getAttribute('id');
-    result[id] = node;
-  });
-  return result;
 }
