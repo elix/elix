@@ -180,14 +180,3 @@ export function wrap(original, wrapper, destination) {
     original.appendChild(wrapper);
   }
 }
-
-
-function getHost(node) {
-  if (!node) {
-    return null;
-  } else if (node instanceof ShadowRoot) {
-    return node.host;
-  } else {
-    return getHost(node.parentNode);
-  }
-}
