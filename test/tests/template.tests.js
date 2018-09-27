@@ -1,8 +1,78 @@
+import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
+import ReactiveElement from '../../src/ReactiveElement.js';
 
 
 class TemplateTest extends HTMLElement {}
 customElements.define('template-test', TemplateTest);
+
+
+// A component with a template with a role applied to a single element.
+class DynamicSingle extends ReactiveElement {
+
+  constructor() {
+    super();
+    this[symbols.renderedRoles] = {};
+  }
+
+  [symbols.beforeUpdate]() {
+    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+    if (this[symbols.renderedRoles].dynamicRole !== this.state.dynamicRole) {
+      template.transmute(this.$.dynamic, this.state.dynamicRole);
+      this[symbols.renderedRoles].dynamicRole = this.state.dynamicRole;
+    }
+  }
+
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      dynamicRole: 'button'
+    });
+  }
+
+  get [symbols.template]() {
+    return template.html`
+      <div id="static">This doesn't change</div>
+      <div id="dynamic" class="foo">This element changes</div>
+    `;
+  }
+
+}
+customElements.define('dynamic-role', DynamicSingle);
+
+
+// A component with a template where a role is applied to multiple elements.
+class DynamicMultiple extends ReactiveElement {
+
+  constructor() {
+    super();
+    this[symbols.renderedRoles] = {};
+  }
+
+  [symbols.beforeUpdate]() {
+    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+    if (this[symbols.renderedRoles].dynamicRole !== this.state.dynamicRole) {
+      const dynamics = this.shadowRoot.querySelectorAll('.dynamic');
+      template.transmute(dynamics, this.state.dynamicRole);
+      this[symbols.renderedRoles].dynamicRole = this.state.dynamicRole;
+    }
+  }
+
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      dynamicRole: 'button'
+    });
+  }
+
+  get [symbols.template]() {
+    return template.html`
+      <div id="static">This doesn't change</div>
+      <div class="dynamic foo">This element changes</div>
+      <div class="dynamic foo">This changes too</div>
+    `;
+  }
+
+}
+customElements.define('dynamic-multiple', DynamicMultiple);
 
 
 describe("templates", () => {
@@ -85,6 +155,41 @@ describe("templates", () => {
     fixture.innerHTML = `<div>Hello</div><div>World</div>`;
     template.findAndTransmute(fixture, 'div', 'p');
     assert.equal(fixture.innerHTML, `<p>Hello</p><p>World</p>`);
+  });
+
+  it("supports an element with a role during initial rendering", async () => {
+    const fixture = new DynamicSingle();
+    fixture.render();
+    assert(fixture.$.static instanceof HTMLDivElement);
+    assert(fixture.$.dynamic instanceof HTMLButtonElement);
+    assert.equal(fixture.$.dynamic.getAttribute('id'), 'dynamic');
+    assert.equal(fixture.$.dynamic.textContent, 'This element changes');
+    assert(fixture.$.dynamic.classList.contains('foo'));
+  });
+
+  it("lets an element change a role after initial rendering", async () => {
+    const fixture = new DynamicSingle();
+    fixture.render();
+    assert(fixture.$.static instanceof HTMLDivElement);
+    assert(fixture.$.dynamic instanceof HTMLButtonElement);
+    fixture.setState({
+      dynamicRole: 'a'
+    });
+    fixture.render();
+    assert(fixture.$.dynamic instanceof HTMLAnchorElement);
+    assert.equal(fixture.$.dynamic.getAttribute('id'), 'dynamic');
+    assert.equal(fixture.$.dynamic.textContent, 'This element changes');
+    assert(fixture.$.dynamic.classList.contains('foo'));
+  });
+
+  it("supports an element with a role applied to multiple elements", async () => {
+    const fixture = new DynamicMultiple();
+    fixture.render();
+    assert(fixture.$.static instanceof HTMLDivElement);
+    fixture.shadowRoot.querySelectorAll('.dynamic').forEach(element => {
+      assert(element instanceof HTMLButtonElement);
+      assert(element.classList.contains('foo'));
+    });
   });
 
 });

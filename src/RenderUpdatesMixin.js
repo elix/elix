@@ -11,6 +11,10 @@ import * as updates from './updates.js';
 export default function RenderUpdatesMixin(Base) {
   return class RenderUpdates extends Base {
 
+    [symbols.beforeUpdate]() {
+      if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+    }
+
     connectedCallback() {
       // Calculate original props before we call super. If, e.g., ReactiveMixin
       // is applied before this mixin, we want to get the original props before
@@ -26,6 +30,9 @@ export default function RenderUpdatesMixin(Base) {
 
     [symbols.render]() {
       if (super[symbols.render]) { super[symbols.render](); }
+
+      // Give other mixins a chance to do work before updates are applied.
+      this[symbols.beforeUpdate]();
 
       // Collect an updated set of properties/attributes.
       const updatesToApply = this.updates;
