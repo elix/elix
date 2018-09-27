@@ -24,6 +24,7 @@ class CalendarMonthDays extends Base {
 
   constructor() {
     super();
+    // The template already includes CalendarWeek in the week role.
     Object.assign(this[symbols.renderedRoles], {
       weekRole: CalendarWeek
     });
@@ -105,7 +106,7 @@ class CalendarMonthDays extends Base {
   [symbols.renderRoles]() {
     if (super[symbols.renderRoles]) { super[symbols.renderRoles](); }
     if (this[symbols.renderedRoles].weekRole !== this.state.weekRole) {
-      template.transmute(this.days, this.state.weekRole);
+      template.transmute(this.weeks, this.state.weekRole);
       this[symbols.renderedRoles].weekRole = this.state.weekRole;
     }
   }

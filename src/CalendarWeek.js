@@ -22,6 +22,7 @@ class CalendarWeek extends Base {
 
   constructor() {
     super();
+    // The template already includes CalendarDay in the day role.
     Object.assign(this[symbols.renderedRoles], {
       dayRole: CalendarDay
     });
