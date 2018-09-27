@@ -365,7 +365,7 @@ class PopupSource extends Base {
         </div>
       </div>
     `;
-    template.findAndReplace(result, '#source', this.sourceRole);
+    template.findAndTransmute(result, '#source', this.sourceRole);
     const popupPlaceholder = result.content.querySelector('#popup');
     /** @type {any} */
     const popup = template.createElement(this.popupRole);

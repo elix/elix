@@ -183,8 +183,8 @@ class PullToRefresh extends Base {
       </div>
       <slot></slot>
     `;
-    template.findAndReplace(result, '#pullIndicator', this.pullIndicatorRole);
-    template.findAndReplace(result, '#refreshingIndicator', this.refreshingIndicatorRole);
+    template.findAndTransmute(result, '#pullIndicator', this.pullIndicatorRole);
+    template.findAndTransmute(result, '#refreshingIndicator', this.refreshingIndicatorRole);
     return result;
   }
 

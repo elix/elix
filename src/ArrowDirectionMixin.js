@@ -184,7 +184,7 @@ function ArrowDirectionMixin(Base) {
           </div>
         </div>
       `;
-      template.findAndReplace(arrowDirectionTemplate, '.arrowButton', this.arrowButtonRole);
+      template.findAndTransmute(arrowDirectionTemplate, '.arrowButton', this.arrowButtonRole);
       template.wrap(original, arrowDirectionTemplate.content, '#arrowDirectionContainer');
     }
   }

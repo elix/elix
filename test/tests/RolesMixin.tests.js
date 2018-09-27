@@ -27,7 +27,7 @@ class DynamicRole extends Base {
   [symbols.renderRoles]() {
     if (super[symbols.renderRoles]) { super[symbols.renderRoles](); }
     if (this[symbols.renderedRoles].dynamicRole !== this.state.dynamicRole) {
-      template.replaceWithNewElement(this.$.dynamic, this.state.dynamicRole);
+      template.transmute(this.$.dynamic, this.state.dynamicRole);
       this[symbols.renderedRoles].dynamicRole = this.state.dynamicRole;
     }
   }
@@ -54,7 +54,8 @@ class DynamicRoles extends Base {
   [symbols.renderRoles]() {
     if (super[symbols.renderRoles]) { super[symbols.renderRoles](); }
     if (this[symbols.renderedRoles].dynamicRole !== this.state.dynamicRole) {
-      template.findAndReplace(this.shadowRoot, '.dynamic', this.state.dynamicRole);
+      const dynamics = this.shadowRoot.querySelectorAll('.dynamic');
+      template.transmute(dynamics, this.state.dynamicRole);
       this[symbols.renderedRoles].dynamicRole = this.state.dynamicRole;
     }
   }

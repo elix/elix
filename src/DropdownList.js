@@ -79,7 +79,7 @@ class DropdownList extends Base {
     apply(sourceSlot, {
       childNodes: sourceSlotContent.content.childNodes
     });
-    template.findAndReplace(result, '#value', this.valueRole);
+    template.findAndTransmute(result, '#value', this.valueRole);
     return result;
   }
 

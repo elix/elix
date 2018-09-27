@@ -49,31 +49,26 @@ export function createElement(descriptor) {
 
 
 /**
- * Perform a find-and-replace of all elements in a template that match
- * a given CSS selector, replacing them with elements instantiated from
- * the given descriptor.
+ * Perform a find-and-replace of all elements in a tree that match a given CSS
+ * selector, replacing them with elements instantiated from the given
+ * descriptor.
  * 
  * The descriptor used for the replacements can be a 1) component class
  * constructor, 2) an HTML tag name, or 3) an HTML template. For #1 and #2, if
  * the existing elements that match the selector are already of the desired
  * class/tag name, the replacement operation is skipped.
  * 
- * @param {(HTMLTemplateElement|Element)} template - the template to search
+ * @param {(HTMLTemplateElement|Element)} tree - the tree to search
  * @param {string} selector - the CSS selector used for the search
  * @param {(Function|string|HTMLTemplateElement)} descriptor - the descriptor used
  * to generate replacement elements
  */
-export function findAndReplace(template, selector, descriptor) {
-  const node = template instanceof HTMLTemplateElement ?
-    template.content :
-    template;
+export function findAndTransmute(tree, selector, descriptor) {
+  const node = tree instanceof HTMLTemplateElement ?
+    tree.content :
+    tree;
   node.querySelectorAll(selector).forEach(match => {
-    if ((typeof descriptor === 'function' && match.constructor === descriptor) ||
-    (typeof descriptor === 'string' && match.localName === descriptor)) {
-      // Already correct type of element
-      return;
-    }
-    replace(match, createElement(descriptor));
+    transmute(match, descriptor);
   });
 }
 
@@ -142,9 +137,22 @@ export function replace(original, replacement) {
 }
 
 
-export function replaceWithNewElement(original, descriptor) {
-  const replacement = createElement(descriptor);
-  replace(original, replacement);
+export function transmute(original, descriptor) {
+  if (original instanceof Array) {
+    // Transmute an array.
+    original.forEach(node => transmute(node, descriptor));
+  } else if (original instanceof NodeList) {
+    // Transmute a list of nodes.
+    [...original].forEach(node => transmute(node, descriptor));
+  } else if ((typeof descriptor === 'function' && original.constructor === descriptor) ||
+    (typeof descriptor === 'string' && original.localName === descriptor)) {
+    // Already correct type of element, no transmutation necessary.
+    return;
+  } else {
+    // Transmute the single node.
+    const replacement = createElement(descriptor);
+    replace(original, replacement);
+  }
 }
 
 

@@ -83,7 +83,7 @@ describe("templates", () => {
   it("can find and replace elements in a template", () => {
     const fixture = document.createElement('template');
     fixture.innerHTML = `<div>Hello</div><div>World</div>`;
-    template.findAndReplace(fixture, 'div', 'p');
+    template.findAndTransmute(fixture, 'div', 'p');
     assert.equal(fixture.innerHTML, `<p>Hello</p><p>World</p>`);
   });
 

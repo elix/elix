@@ -121,8 +121,8 @@ class Overlay extends Base {
         <slot></slot>
       </div>
     `;
-    template.findAndReplace(result, '#backdrop', this.backdropRole);
-    template.findAndReplace(result, '#frame', this.frameRole);
+    template.findAndTransmute(result, '#backdrop', this.backdropRole);
+    template.findAndTransmute(result, '#frame', this.frameRole);
     return result;
   }
 
