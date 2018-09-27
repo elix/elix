@@ -24,9 +24,8 @@ class CalendarMonthDays extends Base {
 
   constructor() {
     super();
-    this[symbols.roles] = Object.assign({}, this[symbols.roles], {
-      day: 'elix-calendar-day',
-      week: CalendarWeek
+    Object.assign(this[symbols.renderedRoles], {
+      weekRole: CalendarWeek
     });
   }
 
@@ -37,11 +36,10 @@ class CalendarMonthDays extends Base {
    * @default CalendarDay
    */
   get dayRole() {
-    return this[symbols.roles].day;
+    return this.state.dayRole;
   }
   set dayRole(dayRole) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[symbols.roles].day = dayRole;
+    this.setState({ dayRole });
   }
 
   get days() {
@@ -55,6 +53,13 @@ class CalendarMonthDays extends Base {
       return cast.days;
     });
     return [].concat(...weeksDays);
+  }
+
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      dayRole: CalendarDay,
+      weekRole: CalendarWeek
+    });
   }
 
   /**
@@ -97,8 +102,16 @@ class CalendarMonthDays extends Base {
     return date;
   }
 
+  [symbols.renderRoles]() {
+    if (super[symbols.renderRoles]) { super[symbols.renderRoles](); }
+    if (this[symbols.renderedRoles].weekRole !== this.state.weekRole) {
+      template.transmute(this.days, this.state.weekRole);
+      this[symbols.renderedRoles].weekRole = this.state.weekRole;
+    }
+  }
+
   get [symbols.template]() {
-    const result = template.html`
+    return template.html`
       <style>
         :host {
           display: table-row-group;
@@ -109,22 +122,17 @@ class CalendarMonthDays extends Base {
         }
       </style>
 
-      <div id="week0" class="week"></div>
-      <div id="week1" class="week"></div>
-      <div id="week2" class="week"></div>
-      <div id="week3" class="week"></div>
-      <div id="week4" class="week"></div>
-      <div id="week5" class="week"></div>
+      <elix-calendar-week id="week0" class="week"></elix-calendar-week>
+      <elix-calendar-week id="week1" class="week"></elix-calendar-week>
+      <elix-calendar-week id="week2" class="week"></elix-calendar-week>
+      <elix-calendar-week id="week3" class="week"></elix-calendar-week>
+      <elix-calendar-week id="week4" class="week"></elix-calendar-week>
+      <elix-calendar-week id="week5" class="week"></elix-calendar-week>
     `;
-    template.findAndReplace(result, '.week', this.weekRole);
-    result.content.querySelectorAll('.week').forEach(week => {
-      week.setAttribute('day-role', this.dayRole);
-    });
-    return result;
   }
 
   get updates() {
-    const locale = this.state.locale;
+    const { dayRole, locale } = this.state;
     const firstDateOfMonth = this.firstDateOfMonth;
     const month = firstDateOfMonth.getMonth();
     const weekUpdates = {};
@@ -146,6 +154,7 @@ class CalendarMonthDays extends Base {
           outsideMonth
         },
         date,
+        dayRole,
         locale,
         outsideMonth
       };
@@ -163,11 +172,10 @@ class CalendarMonthDays extends Base {
    * @default CalendarWeek
    */
   get weekRole() {
-    return this[symbols.roles].week;
+    return this.state.weekRole;
   }
   set weekRole(weekRole) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[symbols.roles].week = weekRole;
+    this.setState({ weekRole });
   }
 
   get weeks() {

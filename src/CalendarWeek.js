@@ -1,6 +1,6 @@
 import { merge } from './updates.js';
-import { symbols } from './elix.js';
 import * as calendar from './calendar.js';
+import * as symbols from './symbols.js';
 import * as template from './template.js';
 import CalendarDay from './CalendarDay.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
@@ -22,8 +22,8 @@ class CalendarWeek extends Base {
 
   constructor() {
     super();
-    this[symbols.roles] = Object.assign({}, this[symbols.roles], {
-      day: CalendarDay
+    Object.assign(this[symbols.renderedRoles], {
+      dayRole: CalendarDay
     });
   }
 
@@ -34,11 +34,10 @@ class CalendarWeek extends Base {
    * @default CalendarDay
    */
   get dayRole() {
-    return this[symbols.roles].day;
+    return this.state.dayRole;
   }
   set dayRole(dayRole) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[symbols.roles].day = dayRole;
+    this.setState({ dayRole });
   }
 
   get days() {
@@ -57,6 +56,7 @@ class CalendarWeek extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      dayRole: CalendarDay,
       outsideMonth: false
     });
   }
@@ -68,9 +68,16 @@ class CalendarWeek extends Base {
     this.setState({ outsideMonth });
   }
 
-  /// TODO: role for calendar day
+  [symbols.renderRoles]() {
+    if (super[symbols.renderRoles]) { super[symbols.renderRoles](); }
+    if (this[symbols.renderedRoles].dayRole !== this.state.dayRole) {
+      template.transmute(this.days, this.state.dayRole);
+      this[symbols.renderedRoles].dayRole = this.state.dayRole;
+    }
+  }
+
   get [symbols.template]() {
-    const result = template.html`
+    return template.html`
       <style>
         :host {
           display: table-row;
@@ -82,16 +89,14 @@ class CalendarWeek extends Base {
         }
       </style>
 
-      <div id="day0" class="day firstDayOfWeek"></div>
-      <div id="day1" class="day"></div>
-      <div id="day2" class="day"></div>
-      <div id="day3" class="day"></div>
-      <div id="day4" class="day"></div>
-      <div id="day5" class="day"></div>
-      <div id="day6" class="day lastDayOfWeek"></div>
+      <elix-calendar-day id="day0" class="day firstDayOfWeek"></elix-calendar-day>
+      <elix-calendar-day id="day1" class="day"></elix-calendar-day>
+      <elix-calendar-day id="day2" class="day"></elix-calendar-day>
+      <elix-calendar-day id="day3" class="day"></elix-calendar-day>
+      <elix-calendar-day id="day4" class="day"></elix-calendar-day>
+      <elix-calendar-day id="day5" class="day"></elix-calendar-day>
+      <elix-calendar-day id="day6" class="day lastDayOfWeek"></elix-calendar-day>
     `;
-    template.findAndReplace(result, '.day', this.dayRole);
-    return result;
   }
 
   get updates() {
