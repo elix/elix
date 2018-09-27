@@ -24,10 +24,11 @@ class DynamicRole extends Base {
     });
   }
 
-  [symbols.renderRoles](changes) {
-    if (super[symbols.renderRoles]) { super[symbols.renderRoles](changes); }
-    if (changes.dynamicRole) {
+  [symbols.renderRoles]() {
+    if (super[symbols.renderRoles]) { super[symbols.renderRoles](); }
+    if (this[symbols.renderedRoles].dynamicRole !== this.state.dynamicRole) {
       this[symbols.renderNodeWithRole](this.$.dynamic, this.state.dynamicRole);
+      this[symbols.renderedRoles].dynamicRole = this.state.dynamicRole;
     }
   }
 

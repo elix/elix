@@ -12,33 +12,18 @@ export default function RolesMixin(Base) {
 
   return class Roles extends Base {
 
+    constructor() {
+      super();
+      this[symbols.renderedRoles] = {};
+    }
+
     [symbols.render]() {
       if (super[symbols.render]) { super[symbols.render](); }
-      if (!this[renderedRolesKey]) {
-        // First render: Calculate the roles for this component by looking for
-        // state members that end in the string "Role".
-        this[renderedRolesKey] = {};
-        Object.keys(this.state).forEach(key => {
-          if (key.endsWith(roleSuffix)) {
-            this[renderedRolesKey][key] = null;
-          }
-        })
-      }
+      this[symbols.renderRoles]();
+    }
 
-      // Calculate which roles have changed (or are new).
-      const changes = {};
-      Object.keys(this[renderedRolesKey]).forEach(role => {
-        if (this[renderedRolesKey] !== this.state[role]) {
-          changes[role] = this.state[role];
-        }
-      });
-
-      // Apply those changes
-      this[symbols.renderRoles](changes);
-
-      // Update our record of which roles were rendered so we can calculate
-      // changes next time.
-      Object.assign(this[renderedRolesKey], changes);
+    [symbols.renderRoles]() {
+      if (super[symbols.renderRoles]) { super[symbols.renderRoles](); }
     }
 
     [symbols.renderNodeWithRole](node, role) {
