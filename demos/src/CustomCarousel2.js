@@ -7,11 +7,10 @@ import CustomPageDot from './CustomPageDot.js';
 // Shows how a carousel subclass can define custom roles for the arrows and dots.
 class CustomCarousel extends Carousel {
 
-  constructor() {
-    super();
-    Object.assign(this[symbols.roles], {
-      arrowButton: CustomArrowButton,
-      proxy: CustomPageDot
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      arrowButtonRole: CustomArrowButton,
+      proxyRole: CustomPageDot
     });
   }
 

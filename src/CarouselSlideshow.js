@@ -26,19 +26,13 @@ const Base =
  */
 class CarouselSlideshow extends Base {
 
-  constructor() {
-    super();
-    Object.assign(this[symbols.roles], {
-      stage: CrossfadeStage
-    });
-  }
-  
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       playing: true,
       selectionRequired: true,
       selectionTimerDuration: 3000,
       selectionWraps: true,
+      stageRole: CrossfadeStage,
       transitionDuration: 1000
     });
   }

@@ -46,15 +46,12 @@ class Explorer extends Base {
 
   constructor() {
     super();
-    this[symbols.roles] = Object.assign({}, this[symbols.roles], {
-      proxy: 'div',
-      proxyList: ListBox,
-      stage: Modes
-    });
+    this[symbols.renderedRoles] = {};
   }
 
-  componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
+  [symbols.beforeUpdate]() {
+    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+
     const handleSelectedIndexChanged = event => {
       this[symbols.raiseChangeEvents] = true;
       const selectedIndex = event.detail.selectedIndex;
@@ -63,8 +60,22 @@ class Explorer extends Base {
       }
       this[symbols.raiseChangeEvents] = false;
     };
-    this.$.stage.addEventListener('selected-index-changed', handleSelectedIndexChanged);
-    this.$.proxyList.addEventListener('selected-index-changed', handleSelectedIndexChanged);
+
+    if (this[symbols.renderedRoles].proxyListRole !== this.state.proxyListRole) {
+      template.transmute(this.$.proxyList, this.state.proxyListRole);
+      this[symbols.renderedRoles].proxyListRole = this.state.proxyListRole;
+      this.$.proxyList.addEventListener('selected-index-changed', handleSelectedIndexChanged);
+    }
+
+    if (this[symbols.renderedRoles].stageRole !== this.state.stageRole) {
+      template.transmute(this.$.stage, this.state.stageRole);
+      this[symbols.renderedRoles].stageRole = this.state.stageRole;
+      this.$.stage.addEventListener('selected-index-changed', handleSelectedIndexChanged);
+    }
+  }
+
+  componentDidMount() {
+    if (super.componentDidMount) { super.componentDidMount(); }
 
     // Work around inconsistencies in slotchange timing; see SlotContentMixin.
     this.$.proxySlot.addEventListener('slotchange', () => {
@@ -86,8 +97,11 @@ class Explorer extends Base {
       assignedProxies: [],
       defaultProxies: [],
       itemsForDefaultProxies: null,
+      proxyRole: 'div',
       proxyListOverlap: false,
-      proxyListPosition: 'top'
+      proxyListPosition: 'top',
+      proxyListRole: ListBox,
+      stageRole: Modes
     });
   }
 
@@ -143,11 +157,10 @@ class Explorer extends Base {
    * @default ListBox
    */
   get proxyListRole() {
-    return this[symbols.roles].proxyList;
+    return this.state.proxyListRole;
   }
   set proxyListRole(proxyListRole) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[symbols.roles].proxyList = proxyListRole;
+    this.setState({ proxyListRole });
   }
 
   /**
@@ -158,11 +171,10 @@ class Explorer extends Base {
    * @default 'div'
    */
   get proxyRole() {
-    return this[symbols.roles].proxy;
+    return this.state.proxyRole;
   }
   set proxyRole(proxyRole) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[symbols.roles].proxy = proxyRole;
+    this.setState({ proxyRole });
   }
 
   /**
@@ -204,10 +216,16 @@ class Explorer extends Base {
     } else if (assignedCount === 0) {
       const items = state.items;
       const itemsChanged = items !== state.itemsForDefaultProxies;
-      if (itemsChanged) {
+      const proxyRoleChanged = !this[symbols.renderedRoles] ||
+        this[symbols.renderedRoles].proxyRole !== state.proxyRole;
+      if (proxyRoleChanged || itemsChanged) {
         // Generate sufficient default proxies.
-        defaultProxies = createDefaultProxies(items, this.proxyRole);
+        defaultProxies = createDefaultProxies(items, state.proxyRole);
         itemsForDefaultProxies = items;
+        if (!this[symbols.renderedRoles]) {
+          this[symbols.renderedRoles] = {};
+        }
+        this[symbols.renderedRoles].proxyRole = state.proxyRole;
       }
     }
     if (defaultProxies) {
@@ -256,15 +274,14 @@ class Explorer extends Base {
    * @default Modes
    */
   get stageRole() {
-    return this[symbols.roles].stage;
+    return this.state.stageRole;
   }
   set stageRole(stageRole) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[symbols.roles].stage = stageRole;
+    this.setState({ stageRole });
   }
 
   get [symbols.template]() {
-    const result = template.html`
+    return template.html`
       <style>
         :host {
           display: inline-flex;
@@ -286,9 +303,6 @@ class Explorer extends Base {
         <div id="stage" role="none"><slot></slot></div>
       </div>
     `;
-    template.findAndTransmute(result, '#proxyList', this.proxyListRole);
-    template.findAndTransmute(result, '#stage', this.stageRole);
-    return result;
   }
 
   get updates() {
@@ -315,6 +329,8 @@ class Explorer extends Base {
     const proxyListHasSwipeFraction = 'swipeFraction' in this.$.proxyList;
     const stageHasSwipeFraction = 'swipeFraction' in this.$.stage;
     const swipeFraction = this.state.swipeFraction;
+
+    const proxyListHasSelectionRequired = 'selectionRequired' in this.$.proxyList;
 
     const listChildNodes = [this.$.proxySlot, ...this.state.defaultProxies];
     const listStyle = {
@@ -356,6 +372,9 @@ class Explorer extends Base {
           },
           proxyListHasSwipeFraction && {
             swipeFraction
+          },
+          proxyListHasSelectionRequired && {
+            selectionRequired: true
           }
         ),
         stage: Object.assign(

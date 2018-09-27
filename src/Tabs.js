@@ -20,17 +20,11 @@ import TabStrip from './TabStrip.js';
  */
 class Tabs extends Explorer {
 
-  constructor() {
-    super();
-    Object.assign(this[symbols.roles], {
-      proxy: TabButton,
-      proxyList: TabStrip
-    });
-  }
-
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       itemRole: 'tabpanel',
+      proxyRole: TabButton,
+      proxyListRole: TabStrip,
       tabAlign: 'start'
     });
   }

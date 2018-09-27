@@ -17,14 +17,6 @@ function ArrowDirectionMixin(Base) {
 
   // The class prototype added by the mixin.
   class ArrowDirection extends Base {
-
-    constructor() {
-      // @ts-ignore
-      super();
-      this[symbols.roles] = Object.assign({}, this[symbols.roles], {
-        arrowButton: ArrowDirectionButton
-      });
-    }
   
     /**
      * The class, tag, or template used to create the left and right arrow
@@ -34,42 +26,46 @@ function ArrowDirectionMixin(Base) {
      * @default ArrowDirectionButton
      */
     get arrowButtonRole() {
-      return this[symbols.roles].arrowButton;
+      return this.state.arrowButtonRole;
     }
     set arrowButtonRole(arrowButtonRole) {
-      this[symbols.hasDynamicTemplate] = true;
-      this[symbols.roles].arrowButton;
-    }
-  
-    componentDidMount() {
-      if (super.componentDidMount) { super.componentDidMount(); }
-      this.$.arrowButtonLeft.addEventListener('click', async (event) => {
-        this[symbols.raiseChangeEvents] = true;
-        const handled = this[symbols.goLeft]();
-        if (handled) {
-          event.stopPropagation();
-        }
-        await Promise.resolve();
-        this[symbols.raiseChangeEvents] = false;
-      });
-      this.$.arrowButtonRight.addEventListener('click', async (event) => {
-        this[symbols.raiseChangeEvents] = true;
-        const handled = this[symbols.goRight]();
-        if (handled) {
-          event.stopPropagation();
-        }
-        await Promise.resolve();
-        this[symbols.raiseChangeEvents] = false;
-      });
-      assumeButtonFocus(this, this.$.arrowButtonLeft);
-      assumeButtonFocus(this, this.$.arrowButtonRight);
+      this.setState({ arrowButtonRole });
     }
 
+    [symbols.beforeUpdate]() {
+      if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+      if (this[symbols.renderedRoles].arrowButtonRole !== this.state.arrowButtonRole) {
+        const arrowButtons = this.shadowRoot.querySelectorAll('.arrowButton');
+        template.transmute(arrowButtons, this.state.arrowButtonRole);
+        this.$.arrowButtonLeft.addEventListener('click', async (event) => {
+          this[symbols.raiseChangeEvents] = true;
+          const handled = this[symbols.goLeft]();
+          if (handled) {
+            event.stopPropagation();
+          }
+          await Promise.resolve();
+          this[symbols.raiseChangeEvents] = false;
+        });
+        this.$.arrowButtonRight.addEventListener('click', async (event) => {
+          this[symbols.raiseChangeEvents] = true;
+          const handled = this[symbols.goRight]();
+          if (handled) {
+            event.stopPropagation();
+          }
+          await Promise.resolve();
+          this[symbols.raiseChangeEvents] = false;
+        });
+        assumeButtonFocus(this, this.$.arrowButtonLeft);
+        assumeButtonFocus(this, this.$.arrowButtonRight);
+      }
+    }
+  
     get defaultState() {
       return Object.assign({}, super.defaultState, {
-        showArrowButtons: true,
+        arrowButtonRole: ArrowDirectionButton,
         orientation: 'horizontal',
-        overlayArrowButtons: true
+        overlayArrowButtons: true,
+        showArrowButtons: true
       });
     }
 
@@ -125,6 +121,7 @@ function ArrowDirectionMixin(Base) {
         }
       });
 
+      const hasArrowIcons = !!this.$.arrowIconLeft;
       const arrowIconProps = {
         style: {
           'height': '48px',
@@ -133,17 +130,21 @@ function ArrowDirectionMixin(Base) {
       };
 
       return merge(base, {
-        $: {
-          arrowButtonLeft: arrowButtonLeftUpdates,
-          arrowButtonRight: arrowButtonRightUpdates,
-          arrowIconLeft: arrowIconProps,
-          arrowIconRight: arrowIconProps,
-          arrowDirection: {
-            style: {
-              'flex-direction': this[symbols.rightToLeft] ? 'row-reverse' : 'row'
+        $: Object.assign(
+          {
+            arrowButtonLeft: arrowButtonLeftUpdates,
+            arrowButtonRight: arrowButtonRightUpdates,
+            arrowDirection: {
+              style: {
+                'flex-direction': this[symbols.rightToLeft] ? 'row-reverse' : 'row'
+              }
             }
+          },
+          hasArrowIcons && {
+            arrowIconLeft: arrowIconProps,
+            arrowIconRight: arrowIconProps
           }
-        }
+        )
       });
     }
 
@@ -184,7 +185,6 @@ function ArrowDirectionMixin(Base) {
           </div>
         </div>
       `;
-      template.findAndTransmute(arrowDirectionTemplate, '.arrowButton', this.arrowButtonRole);
       template.wrap(original, arrowDirectionTemplate.content, '#arrowDirectionContainer');
     }
   }

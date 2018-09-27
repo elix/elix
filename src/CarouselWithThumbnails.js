@@ -13,16 +13,10 @@ import Thumbnail from './Thumbnail.js';
  */
 class CarouselWithThumbnails extends Carousel {
 
-  constructor() {
-    super();
-    Object.assign(this[symbols.roles], {
-      proxy: Thumbnail
-    });
-  }
-  
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      proxyListOverlap: false
+      proxyListOverlap: false,
+      proxyRole: Thumbnail
     });
   }
 

@@ -37,10 +37,25 @@ class Overlay extends Base {
 
   constructor() {
     super();
-    this[symbols.roles] = Object.assign({}, this[symbols.roles], {
+    // The template already includes elements in these roles.
+    this[symbols.renderedRoles] = {
       backdrop: Backdrop,
       frame: OverlayFrame
-    });
+    };
+  }
+
+  [symbols.beforeUpdate]() {
+    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+
+    if (this[symbols.renderedRoles].backdropRole !== this.state.backdropRole) {
+      template.transmute(this.$.backdrop, this.state.backdropRole);
+      this[symbols.renderedRoles].backdropRole = this.state.backdropRole;
+    }
+
+    if (this[symbols.renderedRoles].frameRole !== this.state.frameRole) {
+      template.transmute(this.$.frame, this.state.frameRole);
+      this[symbols.renderedRoles].frameRole = this.state.frameRole;
+    }
   }
 
   get backdrop() {
@@ -60,11 +75,17 @@ class Overlay extends Base {
    * @default Backdrop
    */
   get backdropRole() {
-    return this[symbols.roles].backdrop;
+    return this.state.backdropRole;
   }
   set backdropRole(backdropRole) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[symbols.roles].backdrop = backdropRole;
+    this.setState({ backdropRole });
+  }
+
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      backdropRole: Backdrop,
+      frameRole: OverlayFrame
+    });
   }
 
   get frame() {
@@ -82,15 +103,14 @@ class Overlay extends Base {
    * @default OverlayFrame
    */
   get frameRole() {
-    return this[symbols.roles].frame;
+    return this.state.frameRole;
   }
   set frameRole(frameRole) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[symbols.roles].frame = frameRole;
+    this.setState({ frameRole });
   }
 
   get [symbols.template]() {
-    const result = template.html`
+    return template.html`
       <style>
         :host {
           align-items: center;
@@ -116,14 +136,11 @@ class Overlay extends Base {
           pointer-events: initial;
         }
       </style>
-      <div id="backdrop"></div>
-      <div id="frame" role="none">
+      <elix-backdrop id="backdrop"></elix-backdrop>
+      <elix-overlay-frame id="frame" role="none">
         <slot></slot>
-      </div>
+      </elix-overlay-frame>
     `;
-    template.findAndTransmute(result, '#backdrop', this.backdropRole);
-    template.findAndTransmute(result, '#frame', this.frameRole);
-    return result;
   }
 
 }

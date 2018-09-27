@@ -52,15 +52,6 @@ const Base =
  * @elementrole {SlidingStage} stage
  */
 class Carousel extends Base {
-
-  constructor() {
-    super();
-    this[symbols.roles] = Object.assign({}, this[symbols.roles], {
-      proxy: PageDot,
-      proxyList: CenteredStripOpacity,
-      stage: SlidingStage
-    });
-  }
   
   get defaultState() {
     // Show arrow buttons if device has a fine-grained pointer (e.g., mouse).
@@ -75,7 +66,10 @@ class Carousel extends Base {
       orientation: 'horizontal',
       proxyListOverlap: true,
       proxyListPosition: 'bottom',
-      showArrowButtons
+      proxyListRole: CenteredStripOpacity,
+      proxyRole: PageDot,
+      showArrowButtons,
+      stageRole: SlidingStage
     });
   }
 

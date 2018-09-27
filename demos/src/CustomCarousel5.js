@@ -16,17 +16,22 @@ const Base =
 // Customize everything.
 class CustomCarousel extends Base {
 
-  constructor() {
-    super();
-    Object.assign(this[symbols.roles], {
-      arrowButton: CustomArrowButton,
-      proxy: CustomPageDot
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      arrowButtonRole: CustomArrowButton,
+      proxyRole: CustomPageDot
     });
   }
 
   get [symbols.template]() {
     // Next line is same as: const result = super[symbols.template]
     const result = getSuperProperty(this, CustomCarousel, symbols.template);
+    // Replace icons with glyphs.
+    const leftSlot = result.content.querySelector('slot[name="arrowButtonLeft"]');
+    leftSlot.textContent = "↫";
+    const rightSlot = result.content.querySelector('slot[name="arrowButtonRight"]');
+    rightSlot.textContent = "↬";
+    // Add page numbers.
     this[PageNumbersMixin.wrap](result.content);
     return result;
   }
@@ -40,12 +45,10 @@ class CustomCarousel extends Base {
     return merge(super.updates, {
       $: {
         arrowButtonLeft: {
-          style: arrowButtonStyle,
-          textContent: "↫"
+          style: arrowButtonStyle
         },
         arrowButtonRight: {
-          style: arrowButtonStyle,
-          textContent: "↬"
+          style: arrowButtonStyle
         }
       }
     });

@@ -28,10 +28,9 @@ const Base =
  */
 class Dialog extends Base {
 
-  constructor() {
-    super();
-    Object.assign(this[symbols.roles], {
-      backdrop: ModalBackdrop
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      backdropRole: ModalBackdrop
     });
   }
 

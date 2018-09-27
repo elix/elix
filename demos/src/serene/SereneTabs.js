@@ -1,4 +1,3 @@
-import * as symbols from '../../../src/symbols.js';
 import { merge } from '../../../src/updates.js';
 import CrossfadeStage from '../../../src/CrossfadeStage.js';
 import SereneTabButton from './SereneTabButton.js';
@@ -7,14 +6,14 @@ import Tabs from '../../../src/Tabs.js';
 
 class SereneTabs extends Tabs {
 
-  constructor() {
-    super();
-    Object.assign(this[symbols.roles], {
-      proxy: SereneTabButton,
-      stage: CrossfadeStage
-    })
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      itemRole: 'tabpanel',
+      proxyRole: SereneTabButton,
+      stageRole: CrossfadeStage,
+      tabAlign: 'start'
+    });
   }
-
 
   get updates() {
     return merge(super.updates, {

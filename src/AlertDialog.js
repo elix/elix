@@ -16,7 +16,7 @@ class AlertDialog extends Dialog {
 
   constructor() {
     super();
-    Object.assign(this[symbols.roles], {
+    Object.assign(this[symbols.renderedRoles], {
       choiceButton: 'button'
     });
   }
@@ -46,11 +46,10 @@ class AlertDialog extends Dialog {
   }
 
   get choiceButtonRole() {
-    return this[symbols.roles].choiceButton;
+    return this.state.choiceButtonRole;
   }
   set choiceButtonRole(choiceButtonRole) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[symbols.roles].choiceButton = choiceButtonRole;
+    this.setState({ choiceButtonRole });
   }
 
   /**
@@ -71,6 +70,7 @@ class AlertDialog extends Dialog {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      choiceButtonRole: 'button',
       choiceButtons: [],
       choices: ['OK']
     });
@@ -98,13 +98,20 @@ class AlertDialog extends Dialog {
 
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
-    if (state.opened && state.choicesForChoiceButtons !== state.choices) {
-      // Choices have changed; create new buttons.
+    const choicesChanged = state.choicesForChoiceButtons !== state.choices;
+    const roleChanged = !this[symbols.renderedRoles] ||
+      this[symbols.renderedRoles].choiceButtonRole !== state.choiceButtonRole;
+    if (state.opened && roleChanged || choicesChanged) {
+      // Role or choices have changed; create new buttons.
       const choiceButtons = state.choices.map(choice => {
-        const button = template.createElement(this.choiceButtonRole);
+        const button = template.createElement(state.choiceButtonRole);
         button.textContent = choice;
         return button;
       });
+      if (!this[symbols.renderedRoles]) {
+        this[symbols.renderedRoles] = {}
+      }
+      this[symbols.renderedRoles].choiceButtonRole = state.choiceButtonRole;
       Object.freeze(choiceButtons);
       Object.assign(state, {
         choicesForChoiceButtons: state.choices,
