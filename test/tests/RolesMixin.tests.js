@@ -22,7 +22,7 @@ class DynamicRole extends ReactiveElement {
   get [symbols.template]() {
     return template.html`
       <div id="static">This doesn't change</div>
-      <div id="dynamic">This element changes</div>
+      <div id="dynamic" class="foo">This element changes</div>
     `;
   }
 
@@ -50,8 +50,8 @@ class DynamicRoles extends ReactiveElement {
   get [symbols.template]() {
     return template.html`
       <div id="static">This doesn't change</div>
-      <div class="dynamic">This element changes</div>
-      <div class="dynamic">This changes too</div>
+      <div class="dynamic foo">This element changes</div>
+      <div class="dynamic foo">This changes too</div>
     `;
   }
 
@@ -78,6 +78,7 @@ describe("RolesMixin", function () {
     assert(fixture.$.dynamic instanceof HTMLButtonElement);
     assert.equal(fixture.$.dynamic.getAttribute('id'), 'dynamic');
     assert.equal(fixture.$.dynamic.textContent, 'This element changes');
+    assert(fixture.$.dynamic.classList.contains('foo'));
   });
 
   it("can change role after rendering", async () => {
@@ -92,15 +93,17 @@ describe("RolesMixin", function () {
     assert(fixture.$.dynamic instanceof HTMLAnchorElement);
     assert.equal(fixture.$.dynamic.getAttribute('id'), 'dynamic');
     assert.equal(fixture.$.dynamic.textContent, 'This element changes');
+    assert(fixture.$.dynamic.classList.contains('foo'));
   });
 
   it("can apply role to multiple elements", async () => {
     const fixture = new DynamicRoles();
     fixture.render();
     assert(fixture.$.static instanceof HTMLDivElement);
-    fixture.shadowRoot.querySelectorAll('.dynamic').forEach(element =>
-      assert(element instanceof HTMLButtonElement)
-    );
+    fixture.shadowRoot.querySelectorAll('.dynamic').forEach(element => {
+      assert(element instanceof HTMLButtonElement);
+      assert(element.classList.contains('foo'));
+    });
   });
 
 });

@@ -17,6 +17,9 @@
  */
 
 
+import { apply, current } from './updates.js';
+
+
 /**
  * Create an element from a role descriptor (a component class constructor,
  * an HTML tag name, or an HTML template).
@@ -122,13 +125,8 @@ export function replace(original, replacement) {
   }
   original.parentNode.replaceChild(replacement, original);
   if (original instanceof Element && replacement instanceof Element) {
-    // Copy over attributes which are not already present on replacement.
-    const attributes = Array.from(original.attributes); // For Edge
-    for (const { name, value } of attributes) {
-      if (!replacement.getAttribute(name)) {
-        replacement.setAttribute(name, value);
-      }
-    }
+    // Merge original attributes/classes/styles on top of replacement.
+    apply(replacement, current(original));
   }
   // Copy over children.
   original.childNodes.forEach(child => {
