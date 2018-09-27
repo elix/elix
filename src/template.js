@@ -17,7 +17,7 @@
  */
 
 
-import { apply, current } from './updates.js';
+import { apply, current, merge } from './updates.js';
 
 
 /**
@@ -125,8 +125,9 @@ export function replace(original, replacement) {
   }
   original.parentNode.replaceChild(replacement, original);
   if (original instanceof Element && replacement instanceof Element) {
-    // Merge original attributes/classes/styles on top of replacement.
-    apply(replacement, current(original));
+    // Merge replacement attributes/classes/styles on top of original.
+    const merged = merge(current(original), current(replacement));
+    apply(replacement, merged);
   }
   // Copy over children.
   original.childNodes.forEach(child => {
