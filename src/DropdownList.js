@@ -23,14 +23,24 @@ const Base =
  * @mixes SelectedItemTextValueMixin
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin
+ * @elementrole {'div'} value
  */
 class DropdownList extends Base {
 
   constructor() {
     super();
-    Object.assign(this[symbols.roles], {
-      value: 'div'
+    // Template will already have rendered this role.
+    Object.assign(this[symbols.renderedRoles], {
+      valueRole: 'div'
     });
+  }
+
+  [symbols.beforeUpdate]() {
+    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+    if (this[symbols.renderedRoles].valueRole !== this.state.valueRole) {
+      template.transmute(this.$.value, this.state.valueRole);
+      this[symbols.renderedRoles].valueRole = this.state.valueRole;
+    }
   }
 
   // By default, opening the menu re-selects the component item that's currently
@@ -42,7 +52,8 @@ class DropdownList extends Base {
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       itemRole: 'menuitemradio',
-      selectionRequired: true
+      selectionRequired: true,
+      valueRole: 'div'
     });
   }
 
@@ -79,7 +90,6 @@ class DropdownList extends Base {
     apply(sourceSlot, {
       childNodes: sourceSlotContent.content.childNodes
     });
-    template.findAndTransmute(result, '#value', this.valueRole);
     return result;
   }
 
@@ -129,11 +139,10 @@ class DropdownList extends Base {
    * @default 'div'
    */
   get valueRole() {
-    return this[symbols.roles].value;
+    return this.state.valueRole;
   }
   set valueRole(valueRole) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[symbols.roles].value = valueRole;
+    this.setState({ valueRole });
   }
 
 }

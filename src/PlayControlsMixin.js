@@ -22,48 +22,55 @@ export default function PlayControlsMixin(Base) {
   class PlayControls extends Base {
 
     constructor() {
-      // @ts-ignore
       super();
-      this[symbols.roles] = Object.assign({}, this[symbols.roles], {
-        controlButton: SeamlessButton
-      });
+      this[symbols.renderedRoles] = {};
     }
   
-    componentDidMount() {
-      if (super.componentDidMount) { super.componentDidMount(); }
-      this.$.previousButton.addEventListener('click', event => {
-        this.selectPrevious();
-        event.stopPropagation();
-      });
-      this.$.playButton.addEventListener('click', event => {
-        if (!this.playing) {
-          this.play();
-        } else {
-          this.pause();
-        }
-        event.stopPropagation();
-      });
-      this.$.nextButton.addEventListener('click', event => {
-        this.selectNext();
-        event.stopPropagation();
-      });
-      assumeButtonFocus(this, this.$.previousButton);
-      assumeButtonFocus(this, this.$.playButton);
-      assumeButtonFocus(this, this.$.nextButton);
+    [symbols.beforeUpdate]() {
+      if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+      if (this[symbols.renderedRoles].controlButtonRole !== this.state.controlButtonRole) {
+        const controlButtons = this.shadowRoot.querySelectorAll('.controlButton');
+        template.transmute(controlButtons, this.state.controlButtonRole);
+        this.$.previousButton.addEventListener('click', event => {
+          this.selectPrevious();
+          event.stopPropagation();
+        });
+        this.$.playButton.addEventListener('click', event => {
+          if (!this.playing) {
+            this.play();
+          } else {
+            this.pause();
+          }
+          event.stopPropagation();
+        });
+        this.$.nextButton.addEventListener('click', event => {
+          this.selectNext();
+          event.stopPropagation();
+        });
+        assumeButtonFocus(this, this.$.previousButton);
+        assumeButtonFocus(this, this.$.playButton);
+        assumeButtonFocus(this, this.$.nextButton);
+        this[symbols.renderedRoles].controlButtonRole = this.state.controlButtonRole;
+      }
     }
 
     /**
      * The class, tag, or template used for the play control buttons.
      * 
      * @type {function|string|HTMLTemplateElement}
-     * @default 'elix-seamless-button'
+     * @default SeamlessButton
      */
     get controlButtonRole() {
-      return this[symbols.roles].controlButton;
+      return this.state.controlButtonRole;
     }
     set controlButtonRole(controlButtonRole) {
-      this[symbols.hasDynamicTemplate] = true;
-      this[symbols.roles].controlButton = controlButtonRole;
+      this.setState({ controlButtonRole });
+    }
+
+    get defaultState() {
+      return Object.assign({}, super.defaultState, {
+        controlButtonRole: SeamlessButton
+      });
     }
 
     // Pressing Space is the same as clicking the button.

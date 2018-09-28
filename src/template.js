@@ -120,12 +120,20 @@ export function replace(original, replacement) {
   if (!original) {
     throw 'The original element could not be found.';
   }
-  if (!original.parentNode) {
+  const parent = original.parentNode;
+  if (!parent) {
     throw 'An element must have a parent before it can be substituted.'
   }
-  original.parentNode.replaceChild(replacement, original);
   if (original instanceof Element && replacement instanceof Element) {
-    // Merge replacement attributes/classes/styles on top of original.
+    // Merge replacement attributes/classes/styles on top of original,
+    // then apply merged result to the replacement. This lets any
+    // attributes/classes/styles directly set on the replacement
+    // win any conflicts with the original.
+    //
+    // We do this application now, before inserting the replacement
+    // into the tree, so that RenderUpdatesMixin's record-keeping
+    // will consider these values to be original (i.e., equivalent
+    // to having been set via markup).
     const merged = merge(current(original), current(replacement));
     apply(replacement, merged);
   }
@@ -133,6 +141,7 @@ export function replace(original, replacement) {
   original.childNodes.forEach(child => {
     replacement.appendChild(child.cloneNode(true));
   });
+  parent.replaceChild(replacement, original);
 }
 
 

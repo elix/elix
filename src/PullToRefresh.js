@@ -8,6 +8,13 @@ import ReactiveElement from './ReactiveElement.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 
 
+// Template for the default down arrow shown while pulling.
+const downArrowTemplate = template.html`
+  <svg viewBox="0 0 24 24" style="fill: #404040; height: 24px; width: 24px;">
+    <path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z" />
+  </svg>
+`;
+
 const Base =
   TouchSwipeMixin(
     ReactiveElement
@@ -27,17 +34,22 @@ class PullToRefresh extends Base {
 
   constructor() {
     super();
+    // This role is already applied in the template.
+    this[symbols.renderedRoles] = {
+      refreshingIndicatorRole: ProgressSpinner
+    };
+  }
 
-    const downArrowTemplate = template.html`
-      <svg viewBox="0 0 24 24" style="fill: #404040; height: 24px; width: 24px;">
-        <path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/>
-      </svg>
-    `;
-
-    this[symbols.roles] = Object.assign({}, this[symbols.roles], {
-      pullIndicator: downArrowTemplate,
-      refreshingIndicator: ProgressSpinner
-    });
+  [symbols.beforeUpdate]() {
+    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+    if (this[symbols.renderedRoles].pullIndicatorRole !== this.state.pullIndicatorRole) {
+      template.transmute(this.$.pullIndicator, this.pullIndicatorRole);
+      this[symbols.renderedRoles].pullIndicatorRole = this.state.pullIndicatorRole;
+    }
+    if (this[symbols.renderedRoles].refreshingIndicatorRole !== this.state.refreshingIndicatorRole) {
+      template.transmute(this.$.refreshingIndicator, this.refreshingIndicatorRole);
+      this[symbols.renderedRoles].refreshingIndicatorRole = this.state.refreshingIndicatorRole;
+    }
   }
 
   componentDidMount() {
@@ -83,7 +95,9 @@ class PullToRefresh extends Base {
     return Object.assign({}, super.defaultState, {
       enableNegativeSwipe: false,
       enableTransitions: false,
+      pullIndicatorRole: downArrowTemplate,
       refreshing: false,
+      refreshingIndicatorRole: ProgressSpinner,
       refreshTriggered: false,
       scrollPullDistance: null,
       scrollPullMaxReached: false,
@@ -100,11 +114,10 @@ class PullToRefresh extends Base {
    * @type {function|string|HTMLTemplateElement}
    */
   get pullIndicatorRole() {
-    return this[symbols.roles].pullIndicator;
+    return this.state.pullIndicatorRole;
   }
   set pullIndicatorRole(pullIndicatorRole) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[symbols.roles].pullIndicator = pullIndicatorRole;
+    this.setState({ pullIndicatorRole });
   }
 
   refineState(state) {
@@ -135,15 +148,14 @@ class PullToRefresh extends Base {
    * @default ProgressSpinner
    */
   get refreshingIndicatorRole() {
-    return this[symbols.roles].refreshingIndicator;
+    return this.state.refreshingIndicatorRole;
   }
   set refreshingIndicatorRole(refreshingIndicatorRole) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[symbols.roles].refreshingIndicator = refreshingIndicatorRole;
+    this.setState({ refreshingIndicatorRole });
   }
 
   get [symbols.template]() {
-    const result = template.html`
+    return template.html`
       <style>
         :host {
           display: block;
@@ -178,14 +190,11 @@ class PullToRefresh extends Base {
       <div id="refreshHeader">
         <div id="refreshIndicators">
           <div id="pullIndicator"></div>
-          <div id="refreshingIndicator"></div>
+          <elix-progress-spinner id="refreshingIndicator"></elix-progress-spinner>
         </div>
       </div>
       <slot></slot>
     `;
-    template.findAndTransmute(result, '#pullIndicator', this.pullIndicatorRole);
-    template.findAndTransmute(result, '#refreshingIndicator', this.refreshingIndicatorRole);
-    return result;
   }
 
   get updates() {
@@ -216,12 +225,16 @@ class PullToRefresh extends Base {
             visibility: showPullIndicator ? 'visible' : 'hidden'
           }
         },
-        refreshingIndicator: {
-          style: {
-            visibility: showRefreshingIndicator ? 'visible' : 'hidden'
+        refreshingIndicator: Object.assign(
+          {
+            style: {
+              visibility: showRefreshingIndicator ? 'visible' : 'hidden'
+            }
           },
-          playing: showRefreshingIndicator
-        }
+          'playing' in this.$.refreshingIndicator && {
+            playing: showRefreshingIndicator
+          }
+        )
       }
     });
   }

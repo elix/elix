@@ -18,11 +18,77 @@ const documentMouseupListenerKey = Symbol('documentMouseupListener');
  */
 class MenuButton extends PopupSource {
 
-  constructor() {
-    super();
-    Object.assign(this[symbols.roles], {
-      menu: Menu
-    });
+  [symbols.beforeUpdate]() {
+    const menuChanged = this[symbols.renderedRoles].menuRole !== this.state.menuRole;
+    const popupChanged = this[symbols.renderedRoles].popupRole !== this.state.popupRole;
+    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+
+    if (menuChanged) {
+      template.transmute(this.$.menu, this.state.menuRole);
+
+      // Close the popup if menu loses focus.
+      this.$.menu.addEventListener('blur', async (event) => {
+        /** @type {any} */
+        const cast = event;
+        const newFocusedElement = cast.relatedTarget || document.activeElement;
+        if (this.opened && !deepContains(this.$.menu, newFocusedElement)) {
+          this[symbols.raiseChangeEvents] = true;
+          await this.close();
+          this[symbols.raiseChangeEvents] = false;
+        }
+      });
+
+      // mousedown events on the menu will propagate up to the top-level element,
+      // which will then steal the focus. We want to keep the focus on the menu,
+      // both to permit keyboard use, and to avoid closing the menu on blur (see
+      // separate blur handler). To keep the focus on the menu, we prevent the
+      // default event behavior.
+      this.$.menu.addEventListener('mousedown', event => {
+        if (this.opened) {
+          event.stopPropagation();
+          event.preventDefault();
+        }
+      });
+
+      // If the user mouses up on a menu item, close the menu with that item as
+      // the close result.
+      this.$.menu.addEventListener('mouseup', async (event) => {
+        // If we're doing a drag-select (user moused down on button, dragged
+        // mouse into menu, and released), we close. If we're not doing a
+        // drag-select (the user opened the menu with a complete click), and
+        // there's a selection, they clicked on an item, so also close.
+        // Otherwise, the user clicked the menu open, then clicked on a menu
+        // separator or menu padding; stay open.
+        const menuSelectedIndex = this.state.menuSelectedIndex;
+        if (this.state.dragSelect || menuSelectedIndex >= 0) {
+          const closeResult = menuSelectedIndex >= 0 ?
+            menuSelectedIndex :
+            undefined;
+          this[symbols.raiseChangeEvents] = true;
+          await this.close(closeResult);
+          this[symbols.raiseChangeEvents] = false;
+        } else {
+          event.stopPropagation();
+        }
+      });
+
+      // Track changes in the menu's selection state.
+      this.$.menu.addEventListener('selected-index-changed', event => {
+        /** @type {any} */
+        const cast = event;
+        this.setState({
+          menuSelectedIndex: cast.detail.selectedIndex
+        });
+      });
+
+      this[symbols.renderedRoles].menuRole = this.state.menuRole;
+    }
+
+    if (menuChanged || popupChanged) {
+      // When OverlayMixin opens the popup, we want it to focus on the first menu
+      // item.
+      this.$.popup[symbols.defaultFocus] = this.$.menu;
+    }
   }
 
   componentDidMount() {
@@ -85,66 +151,6 @@ class MenuButton extends PopupSource {
     if (this.state.opened) {
       addDocumentListeners(this);
     }
-
-    // Close the popup if menu loses focus.
-    this.$.menu.addEventListener('blur', async (event) => {
-      /** @type {any} */
-      const cast = event;
-      const newFocusedElement = cast.relatedTarget || document.activeElement;
-      if (this.opened && !deepContains(this.$.menu, newFocusedElement)) {
-        this[symbols.raiseChangeEvents] = true;
-        await this.close();
-        this[symbols.raiseChangeEvents] = false;
-      }
-    });
-
-    // mousedown events on the menu will propagate up to the top-level element,
-    // which will then steal the focus. We want to keep the focus on the menu,
-    // both to permit keyboard use, and to avoid closing the menu on blur (see
-    // separate blur handler). To keep the focus on the menu, we prevent the
-    // default event behavior.
-    this.$.menu.addEventListener('mousedown', event => {
-      if (this.opened) {
-        event.stopPropagation();
-        event.preventDefault();
-      }
-    });
-
-    // If the user mouses up on a menu item, close the menu with that item as
-    // the close result.
-    const mouseupHandler = async (event) => {
-      // If we're doing a drag-select (user moused down on button, dragged
-      // mouse into menu, and released), we close. If we're not doing a
-      // drag-select (the user opened the menu with a complete click), and
-      // there's a selection, they clicked on an item, so also close.
-      // Otherwise, the user clicked the menu open, then clicked on a menu
-      // separator or menu padding; stay open.
-      const menuSelectedIndex = this.state.menuSelectedIndex;
-      if (this.state.dragSelect || menuSelectedIndex >= 0) {
-        const closeResult = menuSelectedIndex >= 0 ?
-          menuSelectedIndex :
-          undefined;
-        this[symbols.raiseChangeEvents] = true;
-        await this.close(closeResult);
-        this[symbols.raiseChangeEvents] = false;
-      } else {
-        event.stopPropagation();
-      }
-    }
-    this.$.menu.addEventListener('mouseup', mouseupHandler);
-
-    // Track changes in the menu's selection state.
-    this.$.menu.addEventListener('selected-index-changed', event => {
-      /** @type {any} */
-      const cast = event;
-      this.setState({
-        menuSelectedIndex: cast.detail.selectedIndex
-      });
-    });
-
-    // When OverlayMixin opens the popup, we want it to focus on the first menu
-    // item.
-    this.$.popup[symbols.defaultFocus] = this.$.menu;
   }
   
   componentDidUpdate(previousState) {
@@ -171,6 +177,7 @@ class MenuButton extends PopupSource {
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       dragSelect: true,
+      menuRole: Menu,
       menuSelectedIndex: -1,
       selectedItem: null,
       touchstartX: null,
@@ -253,11 +260,10 @@ class MenuButton extends PopupSource {
    * @default Menu
    */
   get menuRole() {
-    return this[symbols.roles].menu;
+    return this.state.menu;
   }
   set menuRole(menuRole) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[symbols.roles].menu = menuRole;
+    this.setState({ menuRole });
   }
 
   refineState(state) {
@@ -307,8 +313,8 @@ class MenuButton extends PopupSource {
         <slot></slot>
       </div>
     `;
-    template.findAndTransmute(menuTemplate, '#menu', this.menuRole);
-    template.findAndTransmute(result, 'slot:not([name])', menuTemplate);
+    const defaultSlot = result.content.querySelector('slot:not([name])');
+    template.transmute(defaultSlot, menuTemplate);
 
     // Inject a "..." icon into the source slot.
     // Default "..." icon is from Google Material Design icons.
@@ -319,7 +325,8 @@ class MenuButton extends PopupSource {
         </svg>
       </slot>
     `;
-    template.findAndTransmute(result, 'slot[name="source"]', sourceTemplate);
+    const sourceSlot = result.content.querySelector('slot[name="source"]');
+    template.transmute(sourceSlot, sourceTemplate);
 
     return result;
   }

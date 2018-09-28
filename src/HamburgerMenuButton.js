@@ -34,36 +34,44 @@ export default class HamburgerMenuButton extends Base {
 
   constructor() {
     super();
-    this[symbols.roles] = Object.assign({}, this[symbols.roles], {
-      menu: Drawer,
-      menuButton: SeamlessButton
-    });
+    this[symbols.renderedRoles] = {};
   }
 
-  componentDidMount() {
-    this.$.menuButton.addEventListener('click', () => {
-      this[symbols.raiseChangeEvents] = true;
-      this.open();
-      this[symbols.raiseChangeEvents] = false;
-    });
-    this.$.menu.addEventListener('closed', event => {
-      /** @type {any} */
-      const cast = event;
-      this.setState({
-        closeResult: cast.detail.closeResult,
-        opened: false
+  [symbols.beforeUpdate]() {
+    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+    if (this[symbols.renderedRoles].menuButtonRole !== this.state.menuButtonRole) {
+      template.transmute(this.$.menuButton, this.state.menuButtonRole);
+      this.$.menuButton.addEventListener('click', () => {
+        this[symbols.raiseChangeEvents] = true;
+        this.open();
+        this[symbols.raiseChangeEvents] = false;
       });
-    });
-    this.$.menu.addEventListener('opened', () => {
-      this.setState({
-        opened: true
+      this[symbols.renderedRoles].menuButtonRole = this.state.menuButtonRole;
+    }
+    if (this[symbols.renderedRoles].menuRole !== this.state.menuRole) {
+      template.transmute(this.$.menu, this.state.menuRole);
+      this.$.menu.addEventListener('closed', event => {
+        /** @type {any} */
+        const cast = event;
+        this.setState({
+          closeResult: cast.detail.closeResult,
+          opened: false
+        });
       });
-    });
+      this.$.menu.addEventListener('opened', () => {
+        this.setState({
+          opened: true
+        });
+      });
+      this[symbols.renderedRoles].menuRole = this.state.menuRole;
+    }
   }
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      fromEdge: 'start'
+      fromEdge: 'start',
+      menuButtonRole: SeamlessButton,
+      menuRole: Drawer
     });
   }
 
@@ -109,11 +117,10 @@ export default class HamburgerMenuButton extends Base {
    * @default Drawer
    */
   get menuRole() {
-    return this[symbols.roles].menu;
+    return this.state.menuRole;
   }
   set menuRole(menuRole) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[symbols.roles].menu = menuRole;
+    this.setState({ menuRole });
   }
 
   /**
@@ -123,15 +130,14 @@ export default class HamburgerMenuButton extends Base {
    * @default SeamlessButton
    */
   get menuButtonRole() {
-    return this[symbols.roles].menuButton;
+    return this.state.menuButtonRole;
   }
   set menuButtonRole(menuButtonRole) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[symbols.roles].menuButton = menuButtonRole;
+    this.setState({ menuButtonRole });
   }
 
   get [symbols.template]() {
-    const result = template.html`
+    return template.html`
       <style>
         :host {
           align-items: center;
@@ -154,30 +160,31 @@ export default class HamburgerMenuButton extends Base {
           width: 100%;
         }
       </style>
-      <div id="menuButton" aria-label="Open menu" tabindex="-1">
+      <elix-seamless-button id="menuButton" aria-label="Open menu" tabindex="-1">
         <slot name="hamburgerIcon">
           <svg id="hamburgerIcon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 3 h18 v2 h-18 z m0 5 h18 v2 h-18 z m0 5 h18 v2 h-18 z"></path>
           </svg>
         </slot>
-      </div>
-      <div id="menu">
+      </elix-seamless-button>
+      <elix-drawer id="menu">
         <slot></slot>
-      </div>
+      </elix-drawer>
     `;
-    template.findAndTransmute(result, '#menuButton', this.menuButtonRole);
-    template.findAndTransmute(result, '#menu', this.menuRole);
-    return result;
   }
 
   get updates() {
     const fromEdge = this.fromEdge;
     return merge(super.updates, {
       $: {
-        menu: {
-          fromEdge,
-          opened: this.opened
-        }
+        menu: Object.assign(
+          {
+            opened: this.opened
+          },
+          'fromEdge' in this.$.menu && {
+            fromEdge
+          }
+        )
       }
     });
   }

@@ -37,12 +37,7 @@ class PopupSource extends Base {
 
   constructor() {
     super();
-    this[symbols.roles] = Object.assign({}, this[symbols.roles], {
-      backdrop: Backdrop,
-      frame: OverlayFrame,
-      popup: Popup,
-      source: 'button'
-    });
+    this[symbols.renderedRoles] = {};
   }
 
   /**
@@ -58,11 +53,74 @@ class PopupSource extends Base {
    * @default Backdrop
    */
   get backdropRole() {
-    return this[symbols.roles].backdrop;
+    return this.state.backdropRole;
   }
   set backdropRole(backdropRole) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[symbols.roles].backdrop = backdropRole;
+    this.setState({ backdropRole });
+  }
+
+  [symbols.beforeUpdate]() {
+    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+
+    if (this[symbols.renderedRoles].sourceRole !== this.state.sourceRole) {
+      template.transmute(this.$.source, this.state.sourceRole);
+
+      // Desktop popups generally open on mousedown, not click/mouseup. On mobile,
+      // mousedown won't fire until the user releases their finger, so it behaves
+      // like a click.
+      this.$.source.addEventListener('mousedown', event => {
+        // Only handle primary button mouse down to avoid interfering with
+        // right-click behavior.
+        /** @type {any} */
+        const cast = event;
+        if (cast.button && cast.button !== 0) {
+          return;
+        }
+        // We give the default focus behavior time to run before opening the
+        // popup. See note below.
+        setTimeout(() => {
+          if (!this.opened) {
+            this[symbols.raiseChangeEvents] = true;
+            this.open();
+            this[symbols.raiseChangeEvents] = false;
+          }
+        });
+        event.stopPropagation();
+        // We don't prevent the default behavior for mousedown. Among other
+        // things, it sets the focus to the element the user moused down on.
+        // That's important for us, because OverlayMixin will remember that
+        // focused element (i.e., this element) when opening, and restore focus to
+        // it when the popup closes.
+      });
+
+      this[symbols.renderedRoles].sourceRole = this.state.sourceRole;
+    }
+    if (this[symbols.renderedRoles].popupRole !== this.state.popupRole) {
+      template.transmute(this.$.popup, this.state.popupRole);
+
+      // Popup's opened state becomes our own opened state.
+      this.$.popup.addEventListener('opened', () => {
+        if (!this.opened) {
+          this[symbols.raiseChangeEvents] = true;
+          this.open();
+          this[symbols.raiseChangeEvents] = false;
+        }
+      });
+
+      // Popup's closed state becomes our own closed state.
+      this.$.popup.addEventListener('closed', event => {
+        if (!this.closed) {
+          this[symbols.raiseChangeEvents] = true;
+          /** @type {any} */ 
+          const cast = event;
+          const closeResult = cast.detail.closeResult;
+          this.close(closeResult);
+          this[symbols.raiseChangeEvents] = false;
+        }
+      });
+
+      this[symbols.renderedRoles].popupRole = this.state.popupRole;
+    }
   }
 
   componentDidMount() {
@@ -81,55 +139,6 @@ class PopupSource extends Base {
       if (hostFocused && this.opened && measured) {
         this[symbols.raiseChangeEvents] = true;
         await this.close();
-        this[symbols.raiseChangeEvents] = false;
-      }
-    });
-
-    // Desktop popups generally open on mousedown, not click/mouseup. On mobile,
-    // mousedown won't fire until the user releases their finger, so it behaves
-    // like a click.
-    this.$.source.addEventListener('mousedown', event => {
-      // Only handle primary button mouse down to avoid interfering with
-      // right-click behavior.
-      /** @type {any} */
-      const cast = event;
-      if (cast.button && cast.button !== 0) {
-        return;
-      }
-      // We give the default focus behavior time to run before opening the
-      // popup. See note below.
-      setTimeout(() => {
-        if (!this.opened) {
-          this[symbols.raiseChangeEvents] = true;
-          this.open();
-          this[symbols.raiseChangeEvents] = false;
-        }
-      });
-      event.stopPropagation();
-      // We don't prevent the default behavior for mousedown. Among other
-      // things, it sets the focus to the element the user moused down on.
-      // That's important for us, because OverlayMixin will remember that
-      // focused element (i.e., this element) when opening, and restore focus to
-      // it when the popup closes.
-    });
-
-    // Popup's opened state becomes our own opened state.
-    this.$.popup.addEventListener('opened', () => {
-      if (!this.opened) {
-        this[symbols.raiseChangeEvents] = true;
-        this.open();
-        this[symbols.raiseChangeEvents] = false;
-      }
-    });
-
-    // Popup's closed state becomes our own closed state.
-    this.$.popup.addEventListener('closed', event => {
-      if (!this.closed) {
-        this[symbols.raiseChangeEvents] = true;
-        /** @type {any} */ 
-        const cast = event;
-        const closeResult = cast.detail.closeResult;
-        this.close(closeResult);
         this[symbols.raiseChangeEvents] = false;
       }
     });
@@ -154,15 +163,19 @@ class PopupSource extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      backdropRole: Backdrop,
+      frameRole: OverlayFrame,
       horizontalAlign: 'start',
-      popupPosition: 'below',
-      role: 'button',
-      popupWidth: null,
       popupHeight: null,
+      popupPosition: 'below',
+      popupRole: Popup,
+      popupWidth: null,
+      role: 'button',
       roomAbove: null,
       roomBelow: null,
       roomLeft: null,
-      roomRight: null
+      roomRight: null,
+      sourceRole: 'button'      
     });
   }
 
@@ -177,11 +190,10 @@ class PopupSource extends Base {
    * @default OverlayFrame
    */
   get frameRole() {
-    return this[symbols.roles].frame;
+    return this.state.frameRole;
   }
   set frameRole(frameRole) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[symbols.roles].frame = frameRole;
+    this.setState({ frameRole });
   }
 
   /**
@@ -254,11 +266,10 @@ class PopupSource extends Base {
    * @default Popup
    */
   get popupRole() {
-    return this[symbols.roles].popup;
+    return this.state.popupRole;
   }
   set popupRole(popupRole) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[symbols.roles].popup = popupRole;
+    this.setState({ popupRole });
   }
 
   refineState(state) {
@@ -279,19 +290,6 @@ class PopupSource extends Base {
     return result;
   }
 
-  // Provide internal aliases for the inner backdrop and frame elements so that
-  // we can update them via `updates`.
-  // TODO: Find a better way to support updates of exposed subelements.
-  get $() {
-    const base = super.$;
-    /** @type {any} */
-    const cast = base.popup;
-    return Object.assign({}, base, {
-      backdrop: cast.backdrop,
-      frame: cast.frame
-    });
-  }
-
   /**
    * The class, tag, or template used for the button (or other element) that
    * will invoke the popup.
@@ -300,15 +298,14 @@ class PopupSource extends Base {
    * @default 'button'
    */
   get sourceRole() {
-    return this[symbols.roles].source;
+    return this.state.sourceRole;
   }
   set sourceRole(sourceRole) {
-    this[symbols.hasDynamicTemplate] = true;
-    this[symbols.roles].source = sourceRole;
+    this.setState({ sourceRole });
   }
 
   get [symbols.template]() {
-    const result = template.html`
+    return template.html`
       <style>
         :host {
           display: inline-block;
@@ -365,18 +362,6 @@ class PopupSource extends Base {
         </div>
       </div>
     `;
-    template.findAndTransmute(result, '#source', this.sourceRole);
-    const popupPlaceholder = result.content.querySelector('#popup');
-    /** @type {any} */
-    const popup = template.createElement(this.popupRole);
-    if ('backdropRole' in popup) {
-      popup.backdropRole = this.backdropRole;
-    }
-    if ('frameRole' in popup) {
-      popup.frameRole = this.frameRole;
-    }
-    template.replace(popupPlaceholder, popup);
-    return result;
   }
 
   get updates() {
@@ -476,7 +461,7 @@ class PopupSource extends Base {
       position,
       right
     };
-  
+
     return merge(base, {
       attributes: {
         'aria-expanded': opened,
@@ -490,16 +475,43 @@ class PopupSource extends Base {
             'max-width': maxFrameWidth ? `${maxFrameWidth}px` : null
           }
         },
-        popup: {
-          opened: this.state.opened,
-          style: popupStyle
-        },
+        popup: Object.assign(
+          {
+            opened: this.state.opened,
+            style: popupStyle
+          },
+          'backdropRole' in this.$.popup && {
+            backdropRole: this.backdropRole
+          },
+          'frameRole' in this.$.popup && {
+            frameRole: this.frameRole
+          }
+        ),
         popupContainer: {
           style: popupContainerStyle
         },
         source: {
           style: sourceStyle
         }
+      }
+    });
+  }
+
+  // HACK: Provide internal aliases for the inner backdrop and frame elements so
+  // that we can update them via `updates`.
+  // TODO: Find a better way to support updates of exposed subelements.
+  get $() {
+    const base = super.$;
+    return new Proxy({}, {
+      get(target, property, receiver) {
+        switch (property) {
+          case 'backdrop':
+          case 'frame':
+            /** @type {any} */
+            const cast = base.popup;
+            return cast[property];
+        }
+        return base[property];
       }
     });
   }
