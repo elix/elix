@@ -25,7 +25,6 @@ import ShadowTemplateMixin from './ShadowTemplateMixin.js';
  * @mixes AttributeMarshallingMixin
  * @mixes ReactiveMixin
  * @mixes RenderUpdatesMixin
- * @mixes RolesMixin
  * @mixes ShadowTemplateMixin
  */
 const ReactiveElement =

@@ -11,6 +11,8 @@ export default function CalendarElementMixin(Base) {
      * This property can be set as a string, which will be parsed and converted
      * to a JavaScript `Date`.
      * 
+     * If not specified, the default `date` value is the current date.
+     * 
      * @type {Date|string}
      */
     get date() {
@@ -27,7 +29,7 @@ export default function CalendarElementMixin(Base) {
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
-        date: new Date,
+        date: new Date(),
         locale: navigator.language
       });
     }

@@ -1,8 +1,8 @@
 import './CalendarMonthDays.js';
 import './CalendarMonthYearHeader.js';
-import './CalendarWeekDaysHeader.js';
+import './CalendarDayNamesHeader.js';
 import { merge } from './updates.js';
-import { symbols } from './elix.js';
+import * as symbols from './symbols.js';;
 import * as template from './template.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import ReactiveElement from './ReactiveElement.js';
@@ -93,7 +93,7 @@ class CalendarMonth extends Base {
 
       <elix-calendar-month-year-header id="monthYearHeader"></elix-calendar-month-year-header>
       <div id="monthTable">
-        <elix-calendar-week-days-header id="weekDaysHeader" format="short"></elix-calendar-week-days-header>
+        <elix-calendar-day-names-header id="weekDaysHeader" format="short"></elix-calendar-day-names-header>
         <elix-calendar-month-days id="monthDays"></elix-calendar-month-days>
       </div>
     `;

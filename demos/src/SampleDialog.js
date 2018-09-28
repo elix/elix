@@ -1,7 +1,7 @@
+import * as symbols from '../../src/symbols.js';
 import CustomBackdrop from './CustomBackdrop.js';
 import CustomOverlayFrame from './CustomOverlayFrame.js';
 import Dialog from '../../src/Dialog.js';
-import { symbols } from '../../src/elix.js';
 
 
 class SampleDialog extends Dialog {

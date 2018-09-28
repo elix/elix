@@ -1,10 +1,10 @@
-import { merge } from './updates.js';
-import { symbols } from './elix.js';
-import * as calendar from './calendar.js';
-import * as template from './template.js';
-import CalendarElementMixin from './CalendarElementMixin.js';
-import Button from './Button.js';
 import { getSuperProperty } from './workarounds.js';
+import { merge } from './updates.js';
+import * as calendar from './calendar.js';
+import * as symbols from './symbols.js';;
+import * as template from './template.js';
+import Button from './Button.js';
+import CalendarElementMixin from './CalendarElementMixin.js';
 
 
 const Base =

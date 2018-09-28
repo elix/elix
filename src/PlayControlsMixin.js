@@ -18,12 +18,9 @@ const wrap = Symbol('wrap');
  */
 export default function PlayControlsMixin(Base) {
 
-  /** @type {{new(...args: any[]): object}} */
-  const Cast = Base;
-
   // The class prototype added by the mixin.
-  class PlayControls extends Cast {
-
+  class PlayControls extends Base {
+    
     constructor() {
       super();
       this[symbols.renderedRoles] = {};

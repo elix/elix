@@ -14,6 +14,20 @@ const Base =
 
 
 /**
+ * A single calendar week of seven days.
+ * 
+ * [The current week in your default locale](/demos/calendarWeek.html)
+ * 
+ * Given a reference `date` property, this component will show a week of days
+ * that includes the referenced date. The first day of the week is sensitive to
+ * the current `locale`. For example, a `CalendarWeek` in the U.S. will show a
+ * Sunday as the first day of the week, but in the U.K. will show a Monday as
+ * the first day.
+ * 
+ * [CalendarMonth](CalendarMonth) and [CalendarMonthDays](CalendarMonthDays)
+ * instantiate `CalendarWeek` as the default component for rendering the weeks
+ * of a month.
+ * 
  * @inherits ReactiveElement
  * @mixes CalendarElementMixin
  * @elementrole {CalendarDay} day

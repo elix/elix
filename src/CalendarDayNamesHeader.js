@@ -1,11 +1,27 @@
 import { merge } from './updates.js';
-import { symbols } from './elix.js';
+import * as symbols from './symbols.js';;
 import * as calendar from './calendar.js';
 import * as template from './template.js';
 import ReactiveElement from './ReactiveElement.js';
 
 
-class CalendarWeekDaysHeader extends ReactiveElement {
+/**
+ * Shows the names of the days of the week, e.g., for use as a calendar header.
+ * 
+ * Like the other Elix calendar components, `CalendarDayNamesHeader` leverages
+ * the browser's international support to the extent possible. See
+ * [CalendarElementMixin](CalendarElementMixin) for details.
+ * 
+ * In the case of this component, it will show the appropriate names of the days
+ * of the week for a specific locale (or, by default, the user's current
+ * locale). It will also correctly reflect the typical first day of the week for
+ * that locale. Example: U.S. calendars typically start with Sunday as the first
+ * day of a week, while British calendars typically start with Monday as the
+ * first day.
+ * 
+ * @inherits ReactiveElement
+ */
+class CalendarDayNamesHeader extends ReactiveElement {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
@@ -107,5 +123,5 @@ class CalendarWeekDaysHeader extends ReactiveElement {
 }
 
 
-export default CalendarWeekDaysHeader;
-customElements.define('elix-calendar-week-days-header', CalendarWeekDaysHeader);
+export default CalendarDayNamesHeader;
+customElements.define('elix-calendar-day-names-header', CalendarDayNamesHeader);

@@ -1,5 +1,5 @@
 import { merge } from './updates.js';
-import { symbols } from './elix.js';
+import * as symbols from './symbols.js';;
 import * as template from './template.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import ReactiveElement from './ReactiveElement.js';
