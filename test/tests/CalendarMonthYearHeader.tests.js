@@ -1,3 +1,4 @@
+import { trimMarks } from '../normalize.js';
 import CalendarMonthYearHeader from '../../src/CalendarMonthYearHeader.js';
 
 
@@ -8,7 +9,7 @@ describe("CalendarMonthYearHeader", () => {
     fixture.locale = 'en-US';
     fixture.date = new Date('10 March 2015');
     await fixture.render();
-    assert.equal(fixture.$.formatted.textContent, 'March 2015');
+    assert.equal(trimMarks(fixture.$.formatted.textContent), 'March 2015');
   });
 
   it("renders Japanese month header", async () => {
@@ -16,7 +17,7 @@ describe("CalendarMonthYearHeader", () => {
     fixture.locale = 'ja-JP';
     fixture.date = new Date('10 March 2015');
     await fixture.render();
-    assert.equal(fixture.$.formatted.textContent, '2015年3月');
+    assert.equal(trimMarks(fixture.$.formatted.textContent), '2015年3月');
   });
 
 });
