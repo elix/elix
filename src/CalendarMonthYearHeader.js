@@ -11,6 +11,26 @@ const Base =
   );
 
 
+/**
+ * The name of the current month and the year, suitable use as a header
+ * in a calendar.
+ * 
+ * [A default representation of the month and year in browser's default locale](/demos/calendarMonthYearHeader.html)
+ * 
+ * Given a reference `date` property, this component will show a calendar
+ * representation of that month and year.
+ * 
+ * All of the Elix calendar components attempt to provide full
+ * [international calendar support](CalendarMonth#international-support)
+ * to the extent currently possible in the user's web browser.
+ * 
+ * [CalendarMonth](CalendarMonth) instantiates `CalendarMonthYearHeader` to show
+ * the name of the current month and the year as a header for the calendar
+ * month.
+ * 
+ * @inherits ReactiveElement
+ * @mixes CalendarElementMixin
+ */
 class CalendarMonthYearHeader extends Base {
 
   get [symbols.template]() {

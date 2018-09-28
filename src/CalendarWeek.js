@@ -16,13 +16,19 @@ const Base =
 /**
  * A single calendar week of seven days.
  * 
- * [The current week in your default locale](/demos/calendarWeek.html)
+ * [A default representation of the current week in browser's default locale](/demos/calendarWeek.html)
  * 
  * Given a reference `date` property, this component will show a week of days
- * that includes the referenced date. The first day of the week is sensitive to
- * the current `locale`. For example, a `CalendarWeek` in the U.S. will show a
- * Sunday as the first day of the week, but in the U.K. will show a Monday as
- * the first day.
+ * that includes the referenced date.
+ * 
+ * All of the Elix calendar components attempt to provide full
+ * [international calendar support](CalendarMonth#international-support)
+ * to the extent currently possible in the user's web browser.
+ *
+ * The first day of the week is sensitive to the current `locale`. For example,
+ * a `CalendarWeek` in the U.S. will show a Sunday as the first day of the week,
+ * but in the U.K. will show a Monday as the first day. The day(s) associated
+ * with the weekend in that locale will also be indicated.
  * 
  * [CalendarMonth](CalendarMonth) and [CalendarMonthDays](CalendarMonthDays)
  * instantiate `CalendarWeek` as the default component for rendering the weeks

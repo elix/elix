@@ -15,6 +15,19 @@ const Base =
 
 
 /**
+ * The days of a single calendar month, optimized for a given locale.
+ * 
+ * [A default representation of days in the current month in browser's default locale](/demos/calendarMonthDays.html)
+ * 
+ * Given a reference `date` property, this component will show a calendar
+ * representation of the days of that month. [CalendarMonth](CalendarMonth) uses
+ * `CalendarMonthDays` to render the days portion of the month, to which it adds
+ * headers for the month/year and the days of the week.
+ * 
+ * All of the Elix calendar components attempt to provide full
+ * [international calendar support](CalendarMonth#international-support)
+ * to the extent currently possible in the user's web browser.
+ * 
  * @inherits ReactiveElement
  * @mixes CalendarElementMixin
  * @elementrole {CalendarDay} day

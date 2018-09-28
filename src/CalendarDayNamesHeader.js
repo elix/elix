@@ -8,16 +8,19 @@ import ReactiveElement from './ReactiveElement.js';
 /**
  * Shows the names of the days of the week, e.g., for use as a calendar header.
  * 
- * Like the other Elix calendar components, `CalendarDayNamesHeader` leverages
- * the browser's international support to the extent possible. See
- * [CalendarElementMixin](CalendarElementMixin) for details.
+ * [A default representation of day names in browser's default locale](/demos/calendarDayNamesHeader.html)
+ * 
+ * All of the Elix calendar components attempt to provide full
+ * [international calendar support](CalendarMonth#international-support)
+ * to the extent currently possible in the user's web browser.
  * 
  * In the case of this component, it will show the appropriate names of the days
  * of the week for a specific locale (or, by default, the user's current
- * locale). It will also correctly reflect the typical first day of the week for
- * that locale. Example: U.S. calendars typically start with Sunday as the first
- * day of a week, while British calendars typically start with Monday as the
- * first day.
+ * locale). The day(s) associated with the weekend in that locale will also be
+ * indicated. It will also correctly reflect the typical first day of the week
+ * for that locale. Example: U.S. calendars typically start with Sunday as the
+ * first day of a week, while British calendars typically start with Monday as
+ * the first day.
  * 
  * @inherits ReactiveElement
  */

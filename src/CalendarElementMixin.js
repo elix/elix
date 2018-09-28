@@ -1,3 +1,13 @@
+/**
+ * Mixin which adds locale-dependent date support to an element, typically for
+ * use in creating calendar components.
+ * 
+ * All of the Elix calendar components attempt to provide full
+ * [international calendar support](CalendarMonth#international-support)
+ * to the extent currently possible in the user's web browser.
+ *
+ * @module CalendarElementMixin
+ */
 export default function CalendarElementMixin(Base) {
 
   // The class prototype added by the mixin.

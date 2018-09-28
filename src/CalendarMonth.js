@@ -1,10 +1,12 @@
+import './CalendarDayNamesHeader.js';
 import './CalendarMonthDays.js';
 import './CalendarMonthYearHeader.js';
-import './CalendarDayNamesHeader.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';;
 import * as template from './template.js';
+import CalendarDay from './CalendarDay.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
+import CalendarWeek from './CalendarWeek.js';
 import ReactiveElement from './ReactiveElement.js';
 
 
@@ -14,6 +16,22 @@ const Base =
   );
 
 
+/**
+ * A single calendar month, optimized for a given locale.
+ * 
+ * [A default representation for the current month in browser's default locale](/demos/calendarMonth.html)
+ * 
+ * Given a reference `date` property, this component will show a calendar
+ * representation of that month. To the extent possible, this representation is
+ * sensitive to a specified locale: the names of the months and days of the week
+ * will be in the appropriate language, and the day(s) associated with the
+ * weekend in that locale will also be indicated.
+ * 
+ * @inherits ReactiveElement
+ * @mixes CalendarElementMixin
+ * @elementrole {CalendarDay} day
+ * @elementrole {CalendarWeek} week
+ */
 class CalendarMonth extends Base {
 
   /**
@@ -28,6 +46,19 @@ class CalendarMonth extends Base {
     const monthDays = this.$.monthDays;
     return monthDays && 'dayElementForDate' in monthDays &&
       monthDays.dayElementForDate(date);
+  }
+
+  /**
+   * The class, tag, or template used for the seven days of the week.
+   * 
+   * @type {function|string|HTMLTemplateElement}
+   * @default CalendarDay
+   */
+  get dayRole() {
+    return this.state.dayRole;
+  }
+  set dayRole(dayRole) {
+    this.setState({ dayRole });
   }
 
   /**
@@ -61,7 +92,9 @@ class CalendarMonth extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      daysOfWeekFormat: 'short'
+      dayRole: CalendarDay,
+      daysOfWeekFormat: 'short',
+      weekRole: CalendarWeek
     });
   }
 
@@ -100,12 +133,20 @@ class CalendarMonth extends Base {
   }
 
   get updates() {
-    const { date, daysOfWeekFormat, locale } = this.state;
+    const {
+      date,
+      dayRole,
+      daysOfWeekFormat,
+      locale,
+      weekRole
+    } = this.state;
     return merge(super.updates, {
       $: {
         monthDays: {
           date,
-          locale
+          dayRole,
+          locale,
+          weekRole
         },
         monthYearHeader: {
           date,
@@ -131,6 +172,19 @@ class CalendarMonth extends Base {
     const monthDays = this.$.monthDays;
     return monthDays && 'weekElementForDate' in monthDays &&
       monthDays.weekElementForDate(date);
+  }
+
+  /**
+   * The class, tag, or template used for the weeks of the month.
+   * 
+   * @type {function|string|HTMLTemplateElement}
+   * @default CalendarWeek
+   */
+  get weekRole() {
+    return this.state.weekRole;
+  }
+  set weekRole(weekRole) {
+    this.setState({ weekRole });
   }
 
   /**
