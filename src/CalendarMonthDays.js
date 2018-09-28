@@ -88,46 +88,6 @@ class CalendarMonthDays extends Base {
     });
   }
 
-  /**
-   * The date of the first day in the month.
-   *
-   * Note that there may be days from the previous month that appear (or are
-   * hidden) before this first day of the month.
-   *
-   * @property firstDateOfMonth
-   */
-  get firstDateOfMonth() {
-    const date = calendar.midnightOnDate(this.date);
-    date.setDate(1);
-    return date;
-  }
-
-  /**
-   * Returns true if the given date is in the month shown.
-   *
-   * @param date
-   */
-  isDateInMonth(date) {
-    const firstDateOfNextMonth = calendar.offsetDateByDays(this.lastDateOfMonth, 1);
-    return (date >= this.firstDateOfMonth && date < firstDateOfNextMonth);
-  }
-
-  /**
-   * The date of the last day in the month.
-   *
-   * Note that there may be days from the next month that appear (or are hidden)
-   * after this last day of the month.
-   *
-   * @property lastDateOfMonth
-   */
-  get lastDateOfMonth() {
-    // Get last day of month by going to first day of next month and backing up a day.
-    const date = this.firstDateOfMonth;
-    date.setMonth(date.getMonth() + 1);
-    date.setDate(date.getDate() - 1);
-    return date;
-  }
-
   get [symbols.template]() {
     return template.html`
       <style>
@@ -151,7 +111,7 @@ class CalendarMonthDays extends Base {
 
   get updates() {
     const { dayRole, locale } = this.state;
-    const firstDateOfMonth = this.firstDateOfMonth;
+    const firstDateOfMonth = calendar.firstDateOfMonth(this.state.date);
     const month = firstDateOfMonth.getMonth();
     const weekUpdates = {};
     for (let i = 0; i <= 5; i++) {
@@ -190,9 +150,11 @@ class CalendarMonthDays extends Base {
    * @returns {Element|null}
    */
   weekElementForDate(date) {
+    const monthDate = this.state.date;
     const locale = this.state.locale;
-    if (isDateInMonth(this, date)) {
-      const offset = calendar.daysSinceFirstDayOfWeek(this.firstDateOfMonth, locale);
+    if (calendar.monthContainsDate(monthDate, date)) {
+      const firstDateOfMonth = calendar.firstDateOfMonth(monthDate);
+      const offset = calendar.daysSinceFirstDayOfWeek(firstDateOfMonth, locale);
       const weekIndex = Math.floor((date.getDate() + offset - 1) / 7);
       const weeks = this.weeks;
       return weeks && weeks[weekIndex];
@@ -214,6 +176,11 @@ class CalendarMonthDays extends Base {
     this.setState({ weekRole });
   }
 
+  /**
+   * Returns the set of week elements used by the calendar.
+   * 
+   * @type {Element[]}
+   */
   get weeks() {
     return this.shadowRoot ?
       [
@@ -227,28 +194,6 @@ class CalendarMonthDays extends Base {
       null;
   }
 
-}
-
-
-function firstDateOfMonth(element) {
-  const date = calendar.midnightOnDate(element.date);
-  date.setDate(1);
-  return date;
-}
-
-
-function isDateInMonth(element, date) {
-  const firstDateOfNextMonth = calendar.offsetDateByDays(lastDateOfMonth(element), 1);
-  return date >= firstDateOfMonth(element) && date < firstDateOfNextMonth;
-}
-
-
-function lastDateOfMonth(element) {
-  // Get last day of month by going to first day of next month and backing up a day.
-  const date = firstDateOfMonth(element);
-  date.setMonth(date.getMonth() + 1);
-  date.setDate(date.getDate() - 1);
-  return date;
 }
 
 

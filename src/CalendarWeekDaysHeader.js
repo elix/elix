@@ -14,6 +14,12 @@ class CalendarWeekDaysHeader extends ReactiveElement {
     });
   }
 
+  /**
+   * The format used to render the day names.
+   * 
+   * @type {('long'|'narrow'|'short')}
+   * @default 'short'
+   */
   get format() {
     return this.state.format;
   }
@@ -21,6 +27,13 @@ class CalendarWeekDaysHeader extends ReactiveElement {
     this.setState({ format });
   }
 
+  /**
+   * A string that identifies a language and a region using a BCP 47 language
+   * tag. This works the same as the `CalendarElementMixin`
+   * [locale](CalendarElementMixin#locale) property.
+   * 
+   * @type {string}
+   */
   get locale() {
     return this.state.locale;
   }
@@ -28,7 +41,6 @@ class CalendarWeekDaysHeader extends ReactiveElement {
     this.setState({ locale });
   }
 
-  // TODO: Role for day of week
   get [symbols.template]() {
     return template.html`
       <style>

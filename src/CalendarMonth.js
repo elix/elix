@@ -30,6 +30,13 @@ class CalendarMonth extends Base {
       monthDays.dayElementForDate(date);
   }
 
+  /**
+   * Returns the day elements contained by this calendar. Note that this may
+   * include days from the previous/next month that fall in the same week as
+   * the first/last day of the present month.
+   * 
+   * @type {Element[]}
+   */
   get days() {
     if (!this.shadowRoot) {
       return null;
@@ -39,6 +46,12 @@ class CalendarMonth extends Base {
     return cast.days;
   }
 
+  /**
+   * The format used to render the day names in the week days header.
+   * 
+   * @type {('long'|'narrow'|'short')}
+   * @default 'short'
+   */
   get daysOfWeekFormat() {
     return this.state.daysOfWeekFormat;
   }
@@ -52,7 +65,6 @@ class CalendarMonth extends Base {
     });
   }
 
-  // TODO: roles
   get [symbols.template]() {
     return template.html`
       <style>
@@ -108,7 +120,8 @@ class CalendarMonth extends Base {
   }
 
   /**
-   * Returns the week element for the week containing the given date.
+   * Returns the week element for the week containing the given date, or null if
+   * the date falls outside the calendar's range.
    *
    * @param {Date} date - the date to search for
    * @returns {Element|null}
@@ -120,6 +133,11 @@ class CalendarMonth extends Base {
       monthDays.weekElementForDate(date);
   }
 
+  /**
+   * Returns the set of week elements used by the calendar.
+   * 
+   * @type {Element[]}
+   */
   get weeks() {
     if (!this.shadowRoot) {
       return null;

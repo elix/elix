@@ -38,6 +38,22 @@ export function firstDateOfWeek(date, locale) {
 }
 
 
+export function firstDateOfMonth(date) {
+  const result = midnightOnDate(date);
+  result.setDate(1);
+  return result;
+}
+
+
+export function lastDateOfMonth(date) {
+  // Get last day of month by going to first day of next month and backing up a day.
+  const result = firstDateOfMonth(date);
+  result.setMonth(result.getMonth() + 1);
+  result.setDate(result.getDate() - 1);
+  return result;
+}
+
+
 export function midnightOnDate(date) {
   const midnight = new Date(date.getTime());
   midnight.setHours(0);
@@ -45,6 +61,12 @@ export function midnightOnDate(date) {
   midnight.setSeconds(0);
   midnight.setMilliseconds(0);
   return midnight;
+}
+
+
+export function monthContainsDate(monthDate, searchDate) {
+  const firstDateOfNextMonth = offsetDateByDays(lastDateOfMonth(monthDate), 1);
+  return searchDate >= firstDateOfMonth(monthDate) && searchDate < firstDateOfNextMonth;
 }
 
 
