@@ -42,6 +42,20 @@ class CalendarMonthDays extends Base {
   }
 
   /**
+   * Returns the day element corresponding to the given date, or null if the
+   * date falls outside the range currently covered by this calendar.
+   *
+   * @param {Date} date - the date to search for
+   * @returns {Element|null}
+   */
+  dayElementForDate(date) {
+    /** @type {any} */
+    const week = this.weekElementForDate(date);
+    return week && 'dayElementForDate' in week &&
+      week.dayElementForDate(date);
+  }
+
+  /**
    * The class, tag, or template used for the seven days of the week.
    * 
    * @type {function|string|HTMLTemplateElement}
@@ -170,6 +184,24 @@ class CalendarMonthDays extends Base {
   }
 
   /**
+   * Returns the week element for the week containing the given date.
+   *
+   * @param {Date} date - the date to search for
+   * @returns {Element|null}
+   */
+  weekElementForDate(date) {
+    const locale = this.state.locale;
+    if (isDateInMonth(this, date)) {
+      const offset = calendar.daysSinceFirstDayOfWeek(this.firstDateOfMonth, locale);
+      const weekIndex = Math.floor((date.getDate() + offset - 1) / 7);
+      const weeks = this.weeks;
+      return weeks && weeks[weekIndex];
+    } else {
+      return null;
+    }
+  }
+
+  /**
    * The class, tag, or template used for the weeks of the month.
    * 
    * @type {function|string|HTMLTemplateElement}
@@ -195,6 +227,28 @@ class CalendarMonthDays extends Base {
       null;
   }
 
+}
+
+
+function firstDateOfMonth(element) {
+  const date = calendar.midnightOnDate(element.date);
+  date.setDate(1);
+  return date;
+}
+
+
+function isDateInMonth(element, date) {
+  const firstDateOfNextMonth = calendar.offsetDateByDays(lastDateOfMonth(element), 1);
+  return date >= firstDateOfMonth(element) && date < firstDateOfNextMonth;
+}
+
+
+function lastDateOfMonth(element) {
+  // Get last day of month by going to first day of next month and backing up a day.
+  const date = firstDateOfMonth(element);
+  date.setMonth(date.getMonth() + 1);
+  date.setDate(date.getDate() - 1);
+  return date;
 }
 
 

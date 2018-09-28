@@ -33,4 +33,16 @@ describe("CalendarWeek", () => {
     assert.equal(days[6].date.getDate(), 15);
   });
 
+  it("returns day elements inside the calendar's range", async () => {
+    const fixture = new CalendarWeek();
+    fixture.locale = 'en-US';
+    const date = new Date('10 March 2015');
+    fixture.date = date;
+    await fixture.render();
+    const days = fixture.days;
+    assert.equal(fixture.dayElementForDate(date), days[2]);
+    const dateOutOfRange = new Date('15 March 2015');
+    assert.isNull(fixture.dayElementForDate(dateOutOfRange));
+  });
+
 });

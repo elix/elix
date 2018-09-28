@@ -16,6 +16,20 @@ const Base =
 
 class CalendarMonth extends Base {
 
+  /**
+   * Returns the day element corresponding to the given date, or null if the
+   * date falls outside the range currently covered by this calendar.
+   *
+   * @param {Date} date - the date to search for
+   * @returns {Element|null}
+   */
+  dayElementForDate(date) {
+    /** @type {any} */
+    const monthDays = this.$.monthDays;
+    return monthDays && 'dayElementForDate' in monthDays &&
+      monthDays.dayElementForDate(date);
+  }
+
   get days() {
     if (!this.shadowRoot) {
       return null;
@@ -91,6 +105,19 @@ class CalendarMonth extends Base {
         }
       }
     });
+  }
+
+  /**
+   * Returns the week element for the week containing the given date.
+   *
+   * @param {Date} date - the date to search for
+   * @returns {Element|null}
+   */
+  weekElementForDate(date) {
+    /** @type {any} */
+    const monthDays = this.$.monthDays;
+    return monthDays && 'weekElementForDate' in monthDays &&
+      monthDays.weekElementForDate(date);
   }
 
   get weeks() {

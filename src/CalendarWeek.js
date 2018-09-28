@@ -40,6 +40,27 @@ class CalendarWeek extends Base {
   }
 
   /**
+   * Returns the day element corresponding to the given date, or null if the
+   * date falls outside this calendar week.
+   *
+   * @param {Date} date - the date to search for
+   */
+  dayElementForDate(date) {
+    const locale = this.state.locale;
+    const midnightOnDate = calendar.midnightOnDate(date);
+    const firstDateOfWeek = calendar.firstDateOfWeek(this.date, locale);
+    const firstDateOfNextWeek = calendar.offsetDateByDays(firstDateOfWeek, 7);
+    if (midnightOnDate >= firstDateOfWeek && midnightOnDate < firstDateOfNextWeek) {
+      const dayIndex = calendar.daysSinceFirstDayOfWeek(date, locale);
+      const days = this.days;
+      return days && days[dayIndex];
+    } else {
+      return null;
+    }
+  }
+
+
+  /**
    * The class, tag, or template used for the seven days of the week.
    * 
    * @type {function|string|HTMLTemplateElement}
