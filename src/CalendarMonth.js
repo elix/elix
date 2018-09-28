@@ -25,6 +25,19 @@ class CalendarMonth extends Base {
     return cast.days;
   }
 
+  get daysOfWeekFormat() {
+    return this.state.daysOfWeekFormat;
+  }
+  set daysOfWeekFormat(daysOfWeekFormat) {
+    this.setState({ daysOfWeekFormat });
+  }
+
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      daysOfWeekFormat: 'short'
+    });
+  }
+
   // TODO: roles
   get [symbols.template]() {
     return template.html`
@@ -61,7 +74,7 @@ class CalendarMonth extends Base {
   }
 
   get updates() {
-    const { date, locale } = this.state;
+    const { date, daysOfWeekFormat, locale } = this.state;
     return merge(super.updates, {
       $: {
         monthDays: {
@@ -73,6 +86,7 @@ class CalendarMonth extends Base {
           locale
         },
         weekDaysHeader: {
+          format: daysOfWeekFormat,
           locale
         }
       }

@@ -33,7 +33,10 @@ class CalendarMonthDays extends Base {
   [symbols.beforeUpdate]() {
     if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
     if (this[symbols.renderedRoles].weekRole !== this.state.weekRole) {
-      template.transmute(this.weeks, this.state.weekRole);
+      const weeks = this.weeks;
+      if (weeks) {
+        template.transmute(weeks, this.state.weekRole);
+      }
       this[symbols.renderedRoles].weekRole = this.state.weekRole;
     }
   }

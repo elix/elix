@@ -3,11 +3,26 @@ export default function CalendarElementMixin(Base) {
   // The class prototype added by the mixin.
   class CalendarElement extends Base {
 
+    /**
+     * The date that should be shown by the element. For elements that show a
+     * range of dates (a month, a week, etc.), the referenced date will be
+     * included in the range.
+     * 
+     * This property can be set as a string, which will be parsed and converted
+     * to a JavaScript `Date`.
+     * 
+     * @type {Date|string}
+     */
     get date() {
       return this.state.date;
     }
     set date(date) {
-      this.setState({ date });
+      const parsed = typeof date === 'string' ?
+        new Date(date) :
+        date;
+      this.setState({
+        date: parsed
+      });
     }
 
     get defaultState() {
@@ -17,6 +32,22 @@ export default function CalendarElementMixin(Base) {
       });
     }
 
+    /**
+     * A string that identifies a language and a region using a BCP 47
+     * language tag. This is the same format used by to identify a
+     * locale in the standard `Intl` internationalization API.
+     * See the
+     * [locales argument](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#locales_argument)
+     * documentation for details.
+     * 
+     * Calendar elements are region-sensitive, so language alone is
+     * insufficient. Accordingly, the locale should identify at least a language
+     * and a region. Examples: "en-US" identifies US English, while "en-GB"
+     * identifies English in Great Britain. The use of "en" on its own would
+     * be insufficient.
+     * 
+     * @type {string}
+     */
     get locale() {
       return this.state.locale;
     }

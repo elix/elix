@@ -31,7 +31,10 @@ class CalendarWeek extends Base {
   [symbols.beforeUpdate]() {
     if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
     if (this[symbols.renderedRoles].dayRole !== this.state.dayRole) {
-      template.transmute(this.days, this.state.dayRole);
+      const days = this.days;
+      if (days) {
+        template.transmute(days, this.state.dayRole);
+      }
       this[symbols.renderedRoles].dayRole = this.state.dayRole;
     }
   }
