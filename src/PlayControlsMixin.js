@@ -211,7 +211,6 @@ export default function PlayControlsMixin(Base) {
 
         <div id="playControlsContainer" role="none"></div>
       `;
-      template.findAndTransmute(playControlsTemplate, '.controlButton', this.controlButtonRole);
       template.wrap(original, playControlsTemplate.content, '#playControlsContainer');
     }
   }

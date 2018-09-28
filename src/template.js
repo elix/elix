@@ -52,27 +52,14 @@ export function createElement(descriptor) {
 
 
 /**
- * Perform a find-and-replace of all elements in a tree that match a given CSS
- * selector, replacing them with elements instantiated from the given
- * descriptor.
+ * Search a tree for a default slot — a slot with no "name" attribute. Return
+ * null if not found.
  * 
- * The descriptor used for the replacements can be a 1) component class
- * constructor, 2) an HTML tag name, or 3) an HTML template. For #1 and #2, if
- * the existing elements that match the selector are already of the desired
- * class/tag name, the replacement operation is skipped.
- * 
- * @param {(HTMLTemplateElement|Element)} tree - the tree to search
- * @param {string} selector - the CSS selector used for the search
- * @param {(Function|string|HTMLTemplateElement)} descriptor - the descriptor used
- * to generate replacement elements
+ * @param {DocumentFragment} tree - the tree to search
+ * @returns {Node|null}
  */
-export function findAndTransmute(tree, selector, descriptor) {
-  const node = tree instanceof HTMLTemplateElement ?
-    tree.content :
-    tree;
-  node.querySelectorAll(selector).forEach(match => {
-    transmute(match, descriptor);
-  });
+export function defaultSlot(tree) {
+  return tree.querySelector('slot:not([name])');
 }
 
 
@@ -110,11 +97,12 @@ export function html(strings, ...substitutions) {
 
 /**
  * Replace an original node in a tree or document fragment with the indicated
- * replacement node or template. The attributes and children of the original
- * node will be moved to the replacement.
+ * replacement node. The attributes, classes, styles, and child nodes of the
+ * original node will be moved to the replacement.
  * 
  * @param {(Node|null)} original - an existing node to be replaced
  * @param {Node} replacement - the node to replace the existing node with
+ * @returns {Node} the updated replacement node
  */
 export function replace(original, replacement) {
   if (!original) {
@@ -142,24 +130,42 @@ export function replace(original, replacement) {
     replacement.appendChild(child.cloneNode(true));
   });
   parent.replaceChild(replacement, original);
+  return replacement;
 }
 
 
+/**
+ * Replace a node or nodes with new element(s), transferring all attributes,
+ * classes, styles, and child nodes from the original(s) to the replacement(s).
+ * 
+ * The descriptor used for the replacements can be a 1) component class
+ * constructor, 2) an HTML tag name, or 3) an HTML template. For #1 and #2, if
+ * the existing elements that match the selector are already of the desired
+ * class/tag name, the replacement operation is skipped.
+ * 
+ * @param {(Array|NodeList|Node)} original - the node to replace
+ * @param {(Function|string|HTMLTemplateElement)} descriptor - the descriptor used
+ * to generate replacement elements
+ * @returns {Array|Node} the replacement node(s)
+ */
 export function transmute(original, descriptor) {
   if (original instanceof Array) {
     // Transmute an array.
-    original.forEach(node => transmute(node, descriptor));
+    const replacements = original.map(node => transmute(node, descriptor));
+    return replacements;
   } else if (original instanceof NodeList) {
     // Transmute a list of nodes.
-    [...original].forEach(node => transmute(node, descriptor));
+    const replacements = [...original].map(node => transmute(node, descriptor));
+    return replacements;
   } else if ((typeof descriptor === 'function' && original.constructor === descriptor) ||
     (typeof descriptor === 'string' && original.localName === descriptor)) {
     // Already correct type of element, no transmutation necessary.
-    return;
+    return original;
   } else {
     // Transmute the single node.
     const replacement = createElement(descriptor);
     replace(original, replacement);
+    return replacement;
   }
 }
 

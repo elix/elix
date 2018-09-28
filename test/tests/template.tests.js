@@ -150,13 +150,6 @@ describe("templates", () => {
     assert.equal(text.parentNode, paragraph);
   });
 
-  it("can find and replace elements in a template", () => {
-    const fixture = document.createElement('template');
-    fixture.innerHTML = `<div>Hello</div><div>World</div>`;
-    template.findAndTransmute(fixture, 'div', 'p');
-    assert.equal(fixture.innerHTML, `<p>Hello</p><p>World</p>`);
-  });
-
   it("supports an element with a role during initial rendering", async () => {
     const fixture = new DynamicSingle();
     fixture.render();

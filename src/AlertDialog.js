@@ -154,7 +154,10 @@ class AlertDialog extends Dialog {
         <div id="buttonContainer"></div>
       </div>
     `;
-    template.findAndTransmute(result, 'slot:not([name])', alertDialogTemplate);
+    const defaultSlot = template.defaultSlot(result.content);
+    if (defaultSlot) {
+      template.transmute(defaultSlot, alertDialogTemplate);
+    }
     return result;
   }
 
