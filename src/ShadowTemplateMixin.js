@@ -96,6 +96,7 @@ export default function ShadowTemplateMixin(Base) {
         // Construct a proxy that maps $ -> getElementById.
         const element = this;
         this[shadowReferencesKey] = new Proxy({}, {
+          /* eslint-disable no-unused-vars */
           get(target, property, receiver) {
             return element.shadowRoot.getElementById(property);
           }

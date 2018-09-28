@@ -52,7 +52,7 @@ export function createElement(descriptor) {
 
 
 /**
- * Search a tree for a default slot — a slot with no "name" attribute. Return
+ * Search a tree for a default slot: a slot with no "name" attribute. Return
  * null if not found.
  * 
  * @param {DocumentFragment} tree - the tree to search

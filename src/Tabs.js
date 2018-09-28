@@ -1,6 +1,5 @@
 import { ensureId } from './idGeneration.js';
 import { merge } from './updates.js';
-import * as symbols from './symbols.js';
 import Explorer from './Explorer.js';
 import TabButton from './TabButton.js';
 import TabStrip from './TabStrip.js';

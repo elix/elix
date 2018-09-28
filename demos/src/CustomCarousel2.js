@@ -1,4 +1,3 @@
-import * as symbols from '../../src/symbols.js'
 import Carousel from '../../src/Carousel.js';
 import CustomArrowButton from './CustomArrowButton.js';
 import CustomPageDot from './CustomPageDot.js';

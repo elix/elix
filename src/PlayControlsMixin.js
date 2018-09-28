@@ -18,8 +18,11 @@ const wrap = Symbol('wrap');
  */
 export default function PlayControlsMixin(Base) {
 
+  /** @type {{new(...args: any[]): object}} */
+  const Cast = Base;
+
   // The class prototype added by the mixin.
-  class PlayControls extends Base {
+  class PlayControls extends Cast {
 
     constructor() {
       super();

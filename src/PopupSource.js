@@ -502,18 +502,24 @@ class PopupSource extends Base {
   // TODO: Find a better way to support updates of exposed subelements.
   get $() {
     const base = super.$;
-    return new Proxy({}, {
+    /** @type {{[id: string]: Element}} */
+    const result = new Proxy({}, {
+      /* eslint-disable no-unused-vars */
       get(target, property, receiver) {
         switch (property) {
           case 'backdrop':
-          case 'frame':
+          case 'frame': {
             /** @type {any} */
             const cast = base.popup;
             return cast[property];
+          }
         }
-        return base[property];
+        /** @type {any} */
+        const cast = property;
+        return base[cast];
       }
     });
+    return result;
   }
 
 }
