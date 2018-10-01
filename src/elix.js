@@ -97,6 +97,8 @@ export { default as WrappedStandardElement } from './WrappedStandardElement.js';
 // As of Jan 2018, there's no way to simultaneously import a collection of
 // objects and then export them as a named object, so we have to do the
 // import and export in separate steps.
+import * as accessibilityImport from './accessibility.js';
+import * as calendarImport from './calendar.js';
 import * as constantsImport from './constants.js';
 import * as contentImport from './content.js';
 import * as fractionalSelectionImport from './fractionalSelection.js';
@@ -105,7 +107,10 @@ import * as symbolsImport from './symbols.js';
 import * as templatesImport from './template.js';
 import * as updatesImport from './updates.js';
 import * as utilitiesImport from './utilities.js';
+import * as workaroundsImport from './workarounds.js';
 
+export const accessibility = accessibilityImport;
+export const calendar = calendarImport;
 export const constants = constantsImport;
 export const content = contentImport;
 export const fractionalSelection = fractionalSelectionImport;
@@ -114,3 +119,4 @@ export const symbols = symbolsImport;
 export const templates = templatesImport;
 export const updates = updatesImport;
 export const utilities = utilitiesImport;
+export const workarounds = workaroundsImport;
