@@ -2,6 +2,7 @@
 import '../src/elix.js';
 
 // Additional demo components.
+import './src/CalendarDayMoonPhase.js';
 import './src/CountryListBox.js';
 import './src/CustomCarousel2.js';
 import './src/FocusVisibleTest.js';
