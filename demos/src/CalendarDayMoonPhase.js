@@ -83,30 +83,31 @@ class CalendarDayMoonPhase extends CalendarDay {
 // equations 46.4 and 46.1.
 function moonAngle(date) {
   const jd = jd0(date.getFullYear(), date.getMonth() + 1, date.getDate());
-  const T=(jd-2451545.0)/36525;
-  const T2=T*T;
-  const T3=T2*T;
-  const T4=T3*T;
-  // Moons mean longitude L'
-  const LP=218.3164477+481267.88123421*T-0.0015786*T2+T3/538841.0-T4/65194000.0;
+  const T = (jd-2451545.0)/36525;
+  const T2 = T*T;
+  const T3 = T2*T;
+  const T4 = T3*T;
   // Moons mean elongation
-  const D=297.8501921+445267.1114034*T-0.0018819*T2+T3/545868.0-T4/113065000.0;
+  const D = 297.8501921+445267.1114034*T-0.0018819*T2+T3/545868.0-T4/113065000.0;
   // Suns mean anomaly
-  const M=357.5291092+35999.0502909*T-0.0001536*T2+T3/24490000.0;
+  const M = 357.5291092+35999.0502909*T-0.0001536*T2+T3/24490000.0;
   // Moons mean anomaly M'
-  const MP=134.9633964+477198.8675055*T+0.0087414*T2+T3/69699.0-T4/14712000.0;
+  const MP = 134.9633964+477198.8675055*T+0.0087414*T2+T3/69699.0-T4/14712000.0;
   // phase angle
-  const pa=180.0-D-6.289*sind(MP)+2.1*sind(M)-1.274*sind(2*D-MP)
+  const pa = 180.0-D-6.289*sind(MP)+2.1*sind(M)-1.274*sind(2*D-MP)
           -0.658*sind(2*D)-0.214*sind(2*MP)-0.11*sind(D);
   return rev(pa);
 }
 
 
 // The Julian date at 0 hours UT at Greenwich
-function jd0(year,month,day) {
-  const y  = year;
-  const m = month;
-  if (m < 3) {m += 12; y -= 1};
+function jd0(year, month, day) {
+  let y  = year;
+  let m = month;
+  if (m < 3) {
+    m += 12;
+    y -= 1
+  };
   const a = Math.floor(y/100);
   const b = 2-a+Math.floor(a/4);
   const j = Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+day+b-1524.5;
