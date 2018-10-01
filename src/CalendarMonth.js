@@ -2,7 +2,7 @@ import './CalendarDayNamesHeader.js';
 import './CalendarMonthDays.js';
 import './CalendarMonthYearHeader.js';
 import { merge } from './updates.js';
-import * as symbols from './symbols.js';;
+import * as symbols from './symbols.js';
 import * as template from './template.js';
 import CalendarDay from './CalendarDay.js';
 import CalendarElementMixin from './CalendarElementMixin.js';

@@ -22,6 +22,7 @@ export default function PlayControlsMixin(Base) {
   class PlayControls extends Base {
     
     constructor() {
+      // @ts-ignore
       super();
       this[symbols.renderedRoles] = {};
     }

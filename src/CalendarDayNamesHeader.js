@@ -1,5 +1,5 @@
 import { merge } from './updates.js';
-import * as symbols from './symbols.js';;
+import * as symbols from './symbols.js';
 import * as calendar from './calendar.js';
 import * as template from './template.js';
 import ReactiveElement from './ReactiveElement.js';
@@ -76,6 +76,7 @@ class CalendarDayNamesHeader extends ReactiveElement {
         .dayOfWeek {
           padding: 0.3em;
           text-align: center;
+          white-space: nowrap;
         }
 
         .dayOfWeek.weekend {

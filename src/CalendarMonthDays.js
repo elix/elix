@@ -1,6 +1,6 @@
 import { merge } from './updates.js';
 import * as calendar from './calendar.js';
-import * as symbols from './symbols.js';;
+import * as symbols from './symbols.js';
 import * as template from './template.js';
 import CalendarDay from './CalendarDay.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
@@ -165,7 +165,7 @@ class CalendarMonthDays extends Base {
   weekElementForDate(date) {
     const monthDate = this.state.date;
     const locale = this.state.locale;
-    if (calendar.monthContainsDate(monthDate, date)) {
+    if (calendar.sameMonthAndYear(monthDate, date)) {
       const firstDateOfMonth = calendar.firstDateOfMonth(monthDate);
       const offset = calendar.daysSinceFirstDayOfWeek(firstDateOfMonth, locale);
       const weekIndex = Math.floor((date.getDate() + offset - 1) / 7);

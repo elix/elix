@@ -7,9 +7,8 @@ describe("calendar helpers", () => {
     const date = new Date('10 March 2015');
     assert.deepEqual(calendar.firstDateOfMonth(date), new Date('1 March 2015'));
     assert.deepEqual(calendar.lastDateOfMonth(date), new Date('31 March 2015'));
-    assert(calendar.monthContainsDate(date, new Date('12 March 2015')));
-    assert(!calendar.monthContainsDate(date, new Date('1 April 2015')));
+    assert(calendar.sameMonthAndYear(date, new Date('12 March 2015')));
+    assert(!calendar.sameMonthAndYear(date, new Date('1 April 2015')));
   });
 
 });
-
