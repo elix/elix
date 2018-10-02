@@ -80,7 +80,7 @@ describe("templates", () => {
   it("html template function returns an HTMLTemplateElement", () => {
     const fixture = template.html`<div>Hello</div>`;
     assert(fixture instanceof HTMLTemplateElement);
-    assert(fixture.innerHTML, `<div>Hello</div>`);
+    assert.equal(fixture.innerHTML, `<div>Hello</div>`);
   });
 
   it("can create an element from a string descriptor", () => {
