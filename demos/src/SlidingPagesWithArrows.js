@@ -12,6 +12,11 @@ const Base =
 
 class SlidingPagesWithArrows extends Base {
 
+  constructor() {
+    super();
+    this[symbols.renderedRoles] = {};
+  }
+
   get defaultState() {
     // Show arrow buttons if device has a fine-grained pointer (e.g., mouse).
     // Firefox doesn't support the pointer:fine media query, so we look for the
