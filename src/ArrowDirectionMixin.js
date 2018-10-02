@@ -57,6 +57,7 @@ function ArrowDirectionMixin(Base) {
         });
         assumeButtonFocus(this, this.$.arrowButtonLeft);
         assumeButtonFocus(this, this.$.arrowButtonRight);
+        this[symbols.renderedRoles].arrowButtonRole = this.state.arrowButtonRole;
       }
     }
   

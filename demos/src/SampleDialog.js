@@ -16,6 +16,7 @@ class SampleDialog extends Dialog {
       this.$.frame.addEventListener('click', () => {
         this.close();
       });
+      this[symbols.renderedRoles].frameRole = this.state.frameRole;
     }
   }
 
