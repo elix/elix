@@ -30,7 +30,6 @@ const Base =
 * 
  * @inherits ReactiveElement
  * @mixes CalendarElementMixin
- * @elementrole {CalendarDay} day
  */
 class CalendarDay extends Base {
 
