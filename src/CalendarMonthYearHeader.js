@@ -12,8 +12,7 @@ const Base =
 
 
 /**
- * The name of the current month and the year, suitable use as a header
- * in a calendar.
+ * Header showing a localized month name and the year
  * 
  * [A default representation of the month and year in browser's default locale](/demos/calendarMonthYearHeader.html)
  * 

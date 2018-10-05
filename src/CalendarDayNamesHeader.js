@@ -6,7 +6,7 @@ import ReactiveElement from './ReactiveElement.js';
 
 
 /**
- * Shows the names of the days of the week, e.g., for use as a calendar header.
+ * Header showing the localized days of the week
  * 
  * [A default representation of day names in browser's default locale](/demos/calendarDayNamesHeader.html)
  * 

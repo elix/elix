@@ -12,7 +12,7 @@ const Base =
 
 
 /**
- * A slideshow with carousel controls.
+ * Slideshow with carousel controls
  * 
  * [Carousel controls let the user directly access a specific page](/demos/carouselSlideshow.html)
  * 

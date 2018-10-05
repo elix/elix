@@ -29,10 +29,13 @@ const Base =
 
 
 /**
- * A [Slideshow](./Slideshow) that uses [PlayControlsMixin](PlayControlsMixin)
- * to add buttons for controlling slideshow playback.
+ * Slideshow with buttons for controlling playback
  * 
  * [Play controls let the user go back, pause/resume, or forward](/demos/slideshowWithPlayControls.html)
+ * 
+ * This component is simply a [Slideshow](./Slideshow) that uses
+ * [PlayControlsMixin](PlayControlsMixin) to add buttons for controlling
+ * slideshow playback.
  * 
  * For a variation that uses standard carousel controls (arrows and page dots),
  * see [CarouselSlideshow](CarouselSlideshow). For a more basic variation with

@@ -14,7 +14,7 @@ const Base =
 
 
 /**
- * A single calendar week of seven days.
+ * Calendar representation of a single week
  * 
  * [A default representation of the current week in browser's default locale](/demos/calendarWeek.html)
  * 

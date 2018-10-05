@@ -15,8 +15,10 @@ const Base =
 
 
 /**
- * An element that appears over other page elements. The main overlay content is
- * presented within a frame on top of an optional backdrop.
+ * An element that appears over other page elements
+ * 
+ * The main overlay content is presented within a frame on top of an optional
+ * backdrop.
  * 
  * The overlay logic is provided by [OverlayMixin](OverlayMixin). `Overlay` adds
  * the definition of customizable element tags: [frameTag](#frameTag) for the

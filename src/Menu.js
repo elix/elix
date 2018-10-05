@@ -36,7 +36,7 @@ const Base =
 
 
 /**
- * A menu of choices or commands.
+ * A menu of choices or commands
  * 
  * This holds the contents of the menu, not the top-level UI element that invokes
  * a menu. For that, see [MenuButton](MenuButton) or [PopupSource](PopupSource).

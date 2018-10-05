@@ -14,7 +14,7 @@ const Base =
 
 
 /**
- * A panel which expands/collapses vertically with an animated transition.
+ * Expands/collapses in place with an animated transition
  * 
  * [A region that can be expanded and collapsed](/demos/expandablePanel.html)
  *

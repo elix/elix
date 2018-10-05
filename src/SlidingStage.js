@@ -17,9 +17,10 @@ const Base =
 
 
 /**
- * Displays a set of items on a horizontal axis, with a single item completely
- * visible at a time. It shows a sliding transition when changing which item is
- * selected.
+ * Slides between selected items on a horizontal axis
+ * 
+ * This displays a single item completely visible at a time. When changing which
+ * item is selected, it displays a simple sliding transition.
  * 
  * This component is used as the main stage for a [Carousel](Carousel).
  * 

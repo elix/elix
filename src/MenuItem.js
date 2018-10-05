@@ -4,8 +4,7 @@ import ReactiveElement from './ReactiveElement.js';
 
 
 /**
- * Base class for menu items that want to exhibit a standard system menu item
- * appearance.
+ * A choice in a menu
  * 
  * This class is a convenient way to popuplate a [Menu](Menu) with items that
  * exhibit an appearance roughly consistent with operating system menu items.

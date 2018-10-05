@@ -5,8 +5,7 @@ import ReactiveElement from './ReactiveElement.js';
 
 
 /**
- * A standard menu separator: an inactive item that helps group
- * logically-related menu items together.
+ * Inactive item that helps group related menu items
  * 
  * See [Menu](Menu) for sample usage.
  * 

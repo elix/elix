@@ -18,8 +18,10 @@ const Base =
 
 
 /**
- * A lightweight popup intended to display a short, non-critical message until a
- * specified `duration` elapses or the user dismisses it.
+ * Lightweight popup intended to display a short, non-critical message
+ * 
+ * The message remains until  the user dismisses it or a specified `duration`
+ * elapses.
  * 
  * @inherits Popup
  * @mixes LanguageDirectionMixin

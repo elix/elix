@@ -20,8 +20,10 @@ const Base =
 
 
 /**
- * A horizontal strip of items. This generally keeps the selected item
- * centered (unless the selected item is at either end of the list).
+ * Horizontal strip of items with selected item centered
+ * 
+ * This keeps the selected item centered unless that item is at either end of
+ * the list.
  * 
  * @inherits ReactiveElement
  * @mixes ClickSelectionMixin

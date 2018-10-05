@@ -12,7 +12,7 @@ const Base =
 
 
 /**
- * A text area that makes itself big enough to show its content.
+ * Text area that grows to accommodate its content
  * 
  * [This text area grows as you add text](/demos/autosizeTextarea.html)
  *

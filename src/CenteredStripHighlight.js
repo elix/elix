@@ -3,8 +3,7 @@ import CenteredStrip from './CenteredStrip.js';
 
 
 /**
- * A `CenteredStrip` that applies a default highlight color to the selected
- * item.
+ * Centered strip showing selected item with a highlight color
  * 
  * [`CenteredStripHighlight` uses a system highlight, much like `ListBox`](/demos/centeredStripHighlight.html)
  * 

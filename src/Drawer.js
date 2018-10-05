@@ -17,6 +17,8 @@ const Base =
 
 
 /**
+ * Modal panel that slides in from the side of the page
+ * 
  * A drawer is a modal container generally used to provide navigation in
  * situations where: a) screen real estate is constrained and b) the navigation
  * UI is not critical to completing the user’s primary goal (and, hence, not

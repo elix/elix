@@ -27,7 +27,7 @@ const Base =
 
 
 /**
- * A container for a set of tab buttons.
+ * Strip of tab buttons
  *
  * `TabStrip` is specifically responsible for handling keyboard navigation
  * between tab buttons, and for the visual layout of the buttons.

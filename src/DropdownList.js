@@ -17,7 +17,7 @@ const Base =
 
 
 /**
- * Shows a single choice made from a pop-up list of choices.
+ * Shows a single choice made from a pop-up list of choices
  * 
  * @inherits MenuButton
  * @mixes SelectedItemTextValueMixin

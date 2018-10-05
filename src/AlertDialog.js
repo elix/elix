@@ -6,9 +6,7 @@ import Dialog from './Dialog.js';
 
 
 /**
- * An `AlertDialog` is a form of `Dialog` designed to ask the user a single
- * question and let them respond by clicking one of a small number of buttons
- * labeled with text.
+ * Asks a single question the user can answer with choice buttons
  * 
  * @inherits Dialog
  */

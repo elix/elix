@@ -33,6 +33,8 @@ const Base =
 
 
 /**
+ * Carousel with a sliding effect and navigation controls
+ * 
  * Allows a user to navigate a horizontal set of items with touch, mouse,
  * keyboard, or trackpad. This component shows a small dot for each of its
  * items, and displays a sliding effect when moving between items.

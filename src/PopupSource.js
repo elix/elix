@@ -22,7 +22,7 @@ const Base =
 
 
 /**
- * Positions a [Popup](Popup) with respect to a source element, usually a button.
+ * Positions a popup with respect to a source element
  * 
  * @inherits ReactiveElement
  * @mixes FocusVisibleMixin

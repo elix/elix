@@ -15,7 +15,7 @@ const Base =
 
 
 /**
- * The days of a single calendar month, optimized for a given locale.
+ * Days of a single calendar month without headers
  * 
  * [A default representation of days in the current month in browser's default locale](/demos/calendarMonthDays.html)
  * 

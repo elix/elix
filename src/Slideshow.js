@@ -9,7 +9,7 @@ const Base =
 
 
 /**
- * Slideshow with a simple crossfade transition.
+ * Slideshow with a simple crossfade transition
  * 
  * [A basic slideshow](/demos/slideshow.html)
  *

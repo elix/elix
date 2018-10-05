@@ -3,9 +3,11 @@ import Backdrop from './Backdrop.js';
 
 
 /**
- * A simple backdrop for a modal overlay such as a [Dialog](Dialog) or
- * [Drawer](Drawer). The backdrop slightly obscures the background elements,
- * focusing the user's attention on the overlay.
+ * Semi-transparent backdrop for a modal overlay
+ * 
+ * This type of backdrop is used by [Dialog](Dialog) and [Drawer](Drawer). The
+ * backdrop slightly obscures the background elements, focusing the user's
+ * attention on the overlay.
  * 
  * @inherits Backdrop
  */

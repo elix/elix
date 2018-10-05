@@ -17,7 +17,7 @@ const Base =
 
 
 /**
- * A single calendar month, optimized for a given locale.
+ * A single calendar month, optimized for a given locale
  * 
  * [A default representation for the current month in browser's default locale](/demos/calendarMonth.html)
  * 

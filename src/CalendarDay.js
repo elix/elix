@@ -13,7 +13,7 @@ const Base =
 
 
 /**
- * A single calendar day.
+ * Calendar representation of a single day
  * 
  * [A default representation of the current day in browser's default locale](/demos/calendarDay.html)
  * 

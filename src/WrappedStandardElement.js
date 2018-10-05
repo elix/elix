@@ -133,9 +133,9 @@ const blockElements = [
 
 
 /**
- * Wraps a standard HTML element so that the standard behavior can then be
- * extended. The typical way to use this class is via its static `wrap`
- * method.
+ * Wraps a standard HTML element so it can be extended
+ * 
+ * The typical way to use this class is via its static `wrap` method.
  * 
  * @inherits ReactiveElement
  */

@@ -4,10 +4,10 @@ import CenteredStrip from './CenteredStrip.js';
 
 
 /**
- * A `CenteredStrip` that makes the selected item fully opaque, and other items
- * partially transparent.
+ * Centered strip showing unselected items with partial opacity
  * 
- * [`CenteredStripOpacity` is used by `Carousel` for dots or thumbnails](/demos/centeredStripOpacity.html)
+ * [`CenteredStripOpacity` is used by `Carousel` for dots or
+ * thumbnails](/demos/centeredStripOpacity.html)
  * 
  * @inherits CenteredStrip
  */

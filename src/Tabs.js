@@ -6,7 +6,7 @@ import TabStrip from './TabStrip.js';
 
 
 /**
- * A set of pages with a tab strip governing which page is shown.
+ * Basic tabs structure for navigation and configuration
  *
  * Use tabs when you want to provide a large set of options or elements than
  * can comfortably fit inline, the options can be coherently grouped into pages,

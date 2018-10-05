@@ -4,8 +4,7 @@ import Thumbnail from './Thumbnail.js';
 
 
 /**
- * A carousel for showing images. Each image is represented with a small
- * thumbnail.
+ * Carousel showing a thumbnail for each image
  * 
  * @inherits Carousel
  * @elementrole {Thumbnail} proxy

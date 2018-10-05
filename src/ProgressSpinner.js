@@ -9,7 +9,7 @@ const rotations = 12;
 
 
 /**
- * A simple spinning progress indicator.
+ * Simple spinning progress indicator
  * 
  * @inherits ReactiveElement
  */

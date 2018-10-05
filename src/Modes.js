@@ -14,9 +14,11 @@ const Base =
 
 
 /**
- * Shows exactly one child element at a time. This can be useful, for example,
- * if a given UI element has multiple modes that present substantially different
- * elements.
+ * Shows a single panel at a time
+ * 
+ * This can be useful when a given UI element has multiple modes that present
+ * substantially different elements, or for displaying a single item from a set
+ * at a time.
  *
  * This component doesn't provide any UI for changing which mode is shown. A
  * common pattern in which buttons select the mode are tabs, a pattern

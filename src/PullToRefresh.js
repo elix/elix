@@ -22,8 +22,10 @@ const Base =
 
 
 /**
- * A conventional pull-to-refresh pattern that lets a user trigger the refresh
- * of data by swiping down until a particular threshold has been reached.
+ * Lets the user refresh content with a swipe down gesture
+ * 
+ * The user can trigger the refresh of data by swiping down until a particular
+ * threshold has been reached.
  * 
  * @inherits ReactiveElement
  * @mixes TouchSwipeMixin

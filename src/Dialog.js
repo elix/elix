@@ -17,6 +17,8 @@ const Base =
 
 
 /**
+ * Basic modal overlay
+ * 
  * This component presents its children as a basic modal dialog which appears on
  * top of the main page content and which the user must interact with before
  * they can return to the page.

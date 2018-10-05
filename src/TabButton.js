@@ -16,7 +16,7 @@ const Base =
 
 
 /**
- * A classic rounded tab button.
+ * Generic tab button with a text label
  *
  * This component is used by [Tabs](Tabs), which by default will generate an
  * instance of `TabButton` for each panel in a set of tab panels.
