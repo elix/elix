@@ -32,7 +32,7 @@ const Base =
  * @elementrole {Drawer} menu
  * @elementrole {SeamlessButton} menuButton
  */
-export default class HamburgerMenuButton extends Base {
+class HamburgerMenuButton extends Base {
 
   constructor() {
     super();
@@ -195,3 +195,4 @@ export default class HamburgerMenuButton extends Base {
 
 
 customElements.define('elix-hamburger-menu-button', HamburgerMenuButton);
+export default HamburgerMenuButton;
