@@ -1,5 +1,5 @@
 /**
- * Automatically update selection on a timer.
+ * Automatically updates selection on a timer.
  * 
  * [SlideshowWithPlayControls uses TimerSelectionMixin for its timer](/demos/slideshowWithPlayControls.html)
  * 

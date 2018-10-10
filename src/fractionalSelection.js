@@ -1,4 +1,6 @@
 /**
+ * Helpers for rendering transitions between selection states
+ * 
  * These functions help a component work with "fractional selection". This
  * notion can be very helpful in modeling components such as carousels (e.g.,
  * [Carousel](Carousel), in which the selection state during user

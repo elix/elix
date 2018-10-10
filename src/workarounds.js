@@ -7,12 +7,12 @@
 /**
  * Return the superclass' value of a symbol-indexed property.
  * 
- * Edge 17 contains a nasty bug in which a symbol-indexed property implementation
+ * Edge 18 contains a nasty bug in which a symbol-indexed property implementation
  * cannot correctly obtain a base class value by calling `super`.
  * See https://github.com/Microsoft/ChakraCore/issues/4835. Specifically, the
  * value of `this` will be incorrect inside the invoked superclass property.
  * 
- * E.g., the following will fail in Edge 17:
+ * E.g., the following will fail in Edge 18:
  * 
  *     class Carousel extends Explorer {
  *       get [symbols.template]() {

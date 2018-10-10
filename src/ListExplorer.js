@@ -3,8 +3,7 @@ import Explorer from './Explorer.js';
 
 
 /**
- * A master/detail user interface pattern that presents a list of choices with a
- * [ListBox](ListBox).
+ * Master/detail user interface pattern navigated with a list box.
  * 
  * @inherits Explorer
  */

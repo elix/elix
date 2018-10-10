@@ -1,5 +1,5 @@
 /**
- * These functions help work with element content.
+ * Helpers for working with element content.
  *
  * @module content
  */

@@ -12,14 +12,10 @@ const previousDocumentMarginRightKey = Symbol('previousDocumentMarginRight');
 
 
 /**
- * This mixin blocks various user interactions to make an overlay behave like a
- * modal dialog. This mixin is generally used in conjunction with a backdrop.
+ * Gives an overlay modal behavior.
  * 
- * This mixin expects the component to provide:
- * 
- * * An open/close API compatible with `OverlayMixin`.
- * 
- * The mixin provides these features to the component:
+ * This blocks various user interactions to make an overlay behave like a modal
+ * dialog:
  * 
  * * Disables scrolling on the background document. **This is a global
  *   side-effect of opening the component.**

@@ -5,7 +5,7 @@ import ShadowTemplateMixin from './ShadowTemplateMixin.js';
 
 
 /**
- * General-purpose component base class
+ * General-purpose base for writing components in functional-reactive style
  * 
  * This base class lets you create web components in a functional-reactive
  * programming (FRP) style. It simply bundles a small set of mixins:

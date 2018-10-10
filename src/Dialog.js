@@ -17,7 +17,7 @@ const Base =
 
 
 /**
- * Basic modal overlay
+ * Basic modal overlay that the user typically dismisses with an explicit action.
  * 
  * This component presents its children as a basic modal dialog which appears on
  * top of the main page content and which the user must interact with before

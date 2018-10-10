@@ -11,8 +11,8 @@ const focusVisibleChangedListenerKey = Symbol('focusVisibleChangedListener');
 
 
 /**
- * Mixin which tracks a component's focus state so that it can render a focus
- * indication (e.g., a glowing outline) if and only if the keyboard is active.
+ * Shows a focus indication if and only if the keyboard is active.
+ * 
  * The keyboard is considered to be active if a keyboard event has occurred
  * since the last mousedown event.
  * 

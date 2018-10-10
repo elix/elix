@@ -12,7 +12,7 @@ const Base =
 
 
 /**
- * Lightweight form of modeless overlay
+ * Lightweight form of modeless overlay that can be easily dismissed
  * 
  * When opened, the popup displays its children on top of other page elements.
  * 

@@ -3,7 +3,10 @@ import Modes from './Modes.js';
 
 
 /**
- * Like [Modes](Modes), this shows a single item at a time. It displays a
+ * Shows a crossfade effect when transitioning between a single selected item.
+ * 
+ * The base [Modes](Modes) component shows a single item at a time,
+ * transitioning instantly between them. `CrossfadeStage` adds a simple
  * crossfade effect when transitioning between items.
  * 
  * @inherits Modes

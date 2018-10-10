@@ -14,7 +14,7 @@ const Base =
 
 
 /**
- * Base class for creating custom buttons.
+ * Base class for custom buttons.
  * 
  * `Button` wraps a standard HTML `button` element, allowing for custom styling
  * and behavior while ensuring standard keyboard and focus behavior.

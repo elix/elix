@@ -1,5 +1,5 @@
 /**
- * Calendar helpers.
+ * Helpers for date math and locale-sensitive calendar preferences.
  * 
  * The visual representation of calendars varies quite a bit from place to
  * place; see the discussion at

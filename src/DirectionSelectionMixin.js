@@ -2,8 +2,10 @@ import * as symbols from './symbols.js';
 
 
 /**
- * Mixin which maps direction semantics (goLeft, goRight, etc.) to selection
- * semantics (selectPrevious, selectNext, etc.).
+ * Maps direction semantics to selection semantics.
+ * 
+ * This turns a movement in a direction (go left, go right) into a change in
+ * selection (select previous, select next).
  *
  * This mixin can be used in conjunction with
  * [KeyboardDirectionMixin](KeyboardDirectionMixin) (which maps keyboard

@@ -10,7 +10,7 @@ const Base =
 
 
 /**
- * A button that can be used as a left or right arrow button.
+ * Button that can be used as a left or right arrow button.
  * 
  * This component is used by [ArrowDirectionMixin](ArrowDirectionMixin) for its
  * default left/right arrow buttons.

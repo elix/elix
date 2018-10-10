@@ -18,7 +18,7 @@ const Base =
 
 
 /**
- * Button that invokes a mobile navigation menu
+ * Button that invokes a command menu, usually in a mobile context
  * 
  * The button invokes a menu (by default, a Drawer), usually to provide
  * navigation and other UI on a mobile device.

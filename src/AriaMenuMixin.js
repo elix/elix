@@ -3,7 +3,7 @@ import { merge } from './updates.js';
 
 
 /**
- * Tells ARIA to describe a list's items as a menu of choices.
+ * Tells assistive technologies to describe a list's items as a menu of choices.
  *
  * @module AriaMenuMixin
  */

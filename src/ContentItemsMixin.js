@@ -8,7 +8,7 @@ const originalKey = Symbol('original');
 
 
 /**
- * Mixin which maps content semantics (nodes) to list item semantics.
+ * Treats an element's content nodes as list items.
  *
  * Items differ from nodes contents in several ways:
  *

@@ -1,6 +1,8 @@
 /**
- * A collection of constants used by Elix mixins and components for consistency
- * in things such as user interface timings.
+ * Constants used by Elix mixins and components
+ * 
+ * Sharing these constants allows for greater consistency in things such as user
+ * interface timings.
  *
  * @module constants
  */

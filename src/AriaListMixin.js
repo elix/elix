@@ -4,7 +4,7 @@ import { ensureId } from './idGeneration.js';
 
 
 /**
- * Exposes a list's currently-selected item to ARIA.
+ * Exposes a list's currently-selected item to assistive technologies.
  *
  * Handling ARIA selection state properly is actually quite complex:
  *

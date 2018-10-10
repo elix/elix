@@ -4,7 +4,10 @@ import ReactiveElement from './ReactiveElement.js';
 
 
 /**
- * A simple frame for an overlay that displays a drop-shadow.
+ * A simple frame for overlay content.
+ * 
+ * The default appearance of `OverlayFrame` uses a simple drop-shadow to let the
+ * user see the framed content as being on top of the background page content.
  * 
  * @inherits ReactiveElement
  */

@@ -9,9 +9,7 @@ const wrappingFocusKey = Symbol('wrappingFocus');
 
 
 /**
- * This mixin wraps a component’s template such that, once the component gains
- * the keyboard focus, Tab and Shift+Tab operations will cycle the focus within
- * the component.
+ * Allows Tab and Shift+Tab operations to cycle the focus within the component.
  * 
  * This mixin expects the component to provide:
  * 

@@ -1,5 +1,5 @@
 /**
- * Collection of shared Symbol objects for standard properties and methods.
+ * Collection of shared Symbol objects for internal component communication.
  * 
  * The shared `Symbol` objects in this module let mixins and a component
  * internally communicate without exposing these properties and methods in the

@@ -6,7 +6,7 @@ const wrap = Symbol('wrap');
 
 
 /**
- * Adds a page number and total page count.
+ * Adds a page number and total page count to a carousel-like element.
  * 
  * This can be applied to components like [Carousel](Carousel) that renders
  * their content as pages.
