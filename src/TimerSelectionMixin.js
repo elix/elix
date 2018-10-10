@@ -85,8 +85,11 @@ export default function TimerSelectionMixin(Base) {
       return this.state.selectionTimerDuration;
     }
     set selectionTimerDuration(selectionTimerDuration) {
+      const parsed = typeof selectionTimerDuration === 'string' ?
+        parseInt(selectionTimerDuration) :
+        selectionTimerDuration;
       this.setState({
-        selectionTimerDuration: parseInt(selectionTimerDuration)
+        selectionTimerDuration: parsed
       });
     }
 
