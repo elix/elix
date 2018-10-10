@@ -5,8 +5,10 @@ import Button from './Button.js';
 
 
 /**
- * A button with no border or background in its normal state, generally used for
- * clickable subelements inside a more complex component.
+ * A button with no border or background in its normal state.
+ * 
+ * `SeamlessButton` is useful for clickable subelements inside a more complex
+ * component.
  * 
  * @inherits Button
  */

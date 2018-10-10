@@ -1,6 +1,5 @@
 /**
- * Mixin which defines a `value` property that reflects the text content of a
- * selected item.
+ * Defines a component's value as the text content of the selected item.
  *
  * This mixin exists for list-like components that want to provide a more
  * convenient way to get/set the selected item using text. It adds a `value`

@@ -8,8 +8,7 @@ const implicitCloseListenerKey = Symbol('implicitCloseListener');
 
 
 /**
- * This mixin makes an overlay behave like a popup by dismissing it when certain
- * user interactions occur.
+ * Gives an overlay lightweight popup-style behavior.
  * 
  * This mixin expects the component to provide:
  * 

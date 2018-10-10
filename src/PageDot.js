@@ -5,7 +5,9 @@ import ReactiveElement from './ReactiveElement.js';
 
 
 /**
- * A small dot used as a proxy element for an item in a [Carousel](Carousel).
+ * A small dot used as a proxy element for a carousel-like element.
+ * 
+ * This is used as the default proxy element in [Carousel](Carousel).
  * 
  * @inherits ReactiveElement
  */

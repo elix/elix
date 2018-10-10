@@ -2,7 +2,7 @@ import * as symbols from './symbols.js';
 
 
 /**
- * Mixin which adds single-selection semantics for items in a list.
+ * Adds single-selection semantics to a list-like element.
  *
  * This mixin expects a component to provide an `items` Array or NodeList of
  * all elements in the list.

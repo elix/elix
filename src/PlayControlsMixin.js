@@ -8,8 +8,7 @@ const wrap = Symbol('wrap');
 
 
 /**
- * Template mixin which adds buttons for managing playback of a slideshow, audio
- * playlist, etc.
+ * Adds buttons for managing playback of a slideshow, audio, etc.
  * 
  * [Play controls let the user go back, pause/resume, or forward](/demos/slideshowWithPlayControls.html)
  * 

@@ -14,9 +14,10 @@ const Base =
 
 
 /**
- * A base class for creating custom buttons. It wraps a standard HTML `button`
- * element and allows for custom styling and behavior while ensuring standard
- * keyboard and focus behavior.
+ * Base class for creating custom buttons.
+ * 
+ * `Button` wraps a standard HTML `button` element, allowing for custom styling
+ * and behavior while ensuring standard keyboard and focus behavior.
  * 
  * @inherits WrappedStandardElement
  * @mixes FocusVisibleMixin

@@ -3,8 +3,10 @@ const windowResizeEntries = [];
 
 
 /**
- * Mixin that notifies a component it has been resized by setting
- * `clientHeight` and `clientWidth` state members.
+ * Lets a component know when it has been resized.
+ * 
+ * If/when the component changes size, this mixin updates the `clientHeight` and
+ * `clientWidth` state members.
  * 
  * This mixin can only guarantee results on browsers that support
  * `ResizeObserver` (as of 22 Mar 2018, only Google Chrome).

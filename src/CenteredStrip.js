@@ -20,7 +20,7 @@ const Base =
 
 
 /**
- * Horizontal strip of items with selected item centered
+ * Horizontal strip of items with the selected item centered
  * 
  * This keeps the selected item centered unless that item is at either end of
  * the list.

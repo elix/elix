@@ -13,7 +13,7 @@ const startYKey = Symbol('startY');
 
 
 /**
- * Mixin which maps touch events to swipe gestures.
+ * Map touch events to swipe gestures.
  * 
  * @module TouchSwipeMixin
  */

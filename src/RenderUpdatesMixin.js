@@ -3,8 +3,7 @@ import * as updates from './updates.js';
 
 
 /**
- * Mixin that facilitates setting properties on a component host element and
- * elements in the component's shadow subtree.
+ * Renders changes in state as updates to the component and its shadow elements.
  * 
  * @module RenderUpdatesMixin
  */

@@ -2,8 +2,11 @@ import * as symbols from './symbols.js';
 
 
 /**
- * Mixin which tracks whether the user has moved the mouse over a component so
- * the component can decide whether to render hover effects.
+ * Tracks whether the mouse is over the component as component state.
+ * 
+ * By tracking the hover condition as component state, the component can perform
+ * arbitrary operations when the mouse enters or leaves the component. This goes
+ * beyond what's possible with the CSS `:hover` pseudo-class.
  * 
  * @module HoverMixin
  */

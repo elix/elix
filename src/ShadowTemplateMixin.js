@@ -8,8 +8,7 @@ const classTemplateMap = new Map();
 const shadowReferencesKey = Symbol('shadowReferences');
 
 /**
- * Mixin which adds stamping a template into a Shadow DOM subtree upon component
- * instantiation.
+ * Stamps a template into a component's Shadow DOM when instantiated
  *
  * To use this mixin, define a `template` method that returns a string or HTML
  * `<template>` element:

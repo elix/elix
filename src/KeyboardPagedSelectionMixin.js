@@ -3,8 +3,7 @@ import { defaultScrollTarget } from './scrolling.js';
 
 
 /**
- * Mixin which maps page keys (Page Up, Page Down) into operations that move
- * the selection by one page.
+ * Maps the Page Up and Page Down keys to selection operations.
  *
  * The keyboard interaction model generally follows that of Microsoft Windows'
  * list boxes instead of those in OS X:

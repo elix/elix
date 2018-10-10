@@ -3,8 +3,7 @@ import { defaultScrollTarget } from './scrolling.js';
 
 
 /**
- * Mixin which scrolls a container horizontally and/or vertically to ensure that
- * a newly-selected item is visible to the user.
+ * Scrolls to ensure the selected item is visible
  *
  * When the selected item in a list-like component changes, the selected item
  * should be brought into view so that the user can confirm their selection.

@@ -2,7 +2,7 @@ import * as symbols from './symbols.js';
 
 
 /**
- * Mixin which maps swipe gestures to direction semantics.
+ * Map swipe gestures to direction semantics.
  * 
  * @module SwipeDirectionMixin
  */

@@ -3,7 +3,7 @@ import { merge } from './updates.js';
 
 
 /**
- * Mixin which treats a list of items as a menu of choices for ARIA purposes.
+ * Tells ARIA to describe a list's items as a menu of choices.
  *
  * @module AriaMenuMixin
  */

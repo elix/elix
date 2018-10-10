@@ -1,5 +1,5 @@
 /**
- * Mixin which provides for automatic timed changes in selection.
+ * Automatically update selection on a timer.
  * 
  * [SlideshowWithPlayControls uses TimerSelectionMixin for its timer](/demos/slideshowWithPlayControls.html)
  * 

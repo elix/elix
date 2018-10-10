@@ -6,8 +6,10 @@ const wrap = Symbol('wrap');
 
 
 /**
- * Mixin that adds a page (item) number and total page (item) count to a
- * component like [Carousel](Carousel) that renders its contents as pages.
+ * Adds a page number and total page count.
+ * 
+ * This can be applied to components like [Carousel](Carousel) that renders
+ * their content as pages.
  * 
  * @module PageNumbersMixin
  */

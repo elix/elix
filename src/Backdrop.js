@@ -5,8 +5,11 @@ import ReactiveElement from './ReactiveElement.js';
 
 
 /**
- * A simple backdrop for an overlay. The backdrop is transparent, suggesting to
- * the user that they can click through it to reach the background elements.
+ * Background element shown behind an overlay's primary content
+ * 
+ * The backdrop is transparent by default, suggesting to the user that the
+ * overlay is modeless, and they can click through it to reach the background
+ * elements. For a modal variant, see [ModalBackdrop](ModalBackdrop).
  * 
  * @inherits ReactiveElement
  */

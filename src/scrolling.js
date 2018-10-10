@@ -1,5 +1,5 @@
 /**
- * Helpers for working with scrolling.
+ * Utilities for working with scrolling.
  * 
  * @module defaultScrollTarget
  */

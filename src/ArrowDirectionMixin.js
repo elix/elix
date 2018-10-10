@@ -8,7 +8,7 @@ const wrap = Symbol('wrap');
 
 
 /**
- * Mixin which adds left and right arrow buttons to a carousel-like component.
+ * Adds left and right arrow buttons to a carousel-like component.
  * 
  * @module ArrowDirectionMixin
  * @elementrole {ArrowDirectionButton} arrowButton

@@ -3,8 +3,9 @@ import SlotContentMixin from './SlotContentMixin.js';
 
 
 /**
- * Mixin which lets a component treats the elements assigned to its default slot
- * as items. This is simply a combination of
+ * Treats the elements assigned to the default slot as list items
+ * 
+ * This is simply a combination of
  * [ContentItemsMixin](ContentItemsMixin) and
  * [SlotContentMixin](SlotContentMixin).
  * 

@@ -1,6 +1,5 @@
 /**
- * Helpers for getting and setting component attributes and properties using
- * JavaScript dictionary objects.
+ * System for applying batch updates to component attributes and properties
  * 
  * The `Element` prototype exposes several properties that expose a collection
  * that can be modified but not set directly: attributes, childNodes, classList,

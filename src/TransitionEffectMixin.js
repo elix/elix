@@ -2,8 +2,7 @@ import * as symbols from './symbols.js';
 
 
 /**
- * Mixin which manages state changes that depend upon completion of CSS
- * transitions.
+ * Update state before, during, and after CSS transitions
  * 
  * @module TransitionEffectMixin
  */

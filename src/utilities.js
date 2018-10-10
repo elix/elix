@@ -2,7 +2,7 @@ import * as symbols from "./symbols.js";
 
 
 /**
- * Component utilities
+ * Miscellaneous utility functions for web components
  * 
  * @module utilities
  */

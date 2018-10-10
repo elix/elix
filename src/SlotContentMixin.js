@@ -6,8 +6,11 @@ const slotchangeFiredKey = Symbol('slotchangeFired');
 
 
 /**
- * Mixin which defines a component's `symbols.content` property as the flattened
- * set of nodes assigned to a slot.
+ * Defines a component's content as the flattened set of nodes assigned to a
+ * slot.
+ * 
+ * This mixin defines a component's `symbols.content` property as the flattened
+ * set of nodes assigned to a slot, typically the default slot.
  *
  * This also provides notification of changes to a component's content. It
  * will invoke a `symbols.contentChanged` method when the component is first

@@ -2,8 +2,11 @@ import * as symbols from './symbols.js';
 
 
 /**
- * Mixin which maps direction keys (Left, Right, etc.) to direction semantics
- * (go left, go right, etc.).
+ * Maps direction keys to direction semantics.
+ * 
+ * This mixin is useful for components that want to map direction keys (Left,
+ * Right, etc.) to movement in the indicated direction (go left, go right,
+ * etc.).
  *
  * This mixin expects the component to invoke a `keydown` method when a key is
  * pressed. You can use [KeyboardMixin](KeyboardMixin) for that

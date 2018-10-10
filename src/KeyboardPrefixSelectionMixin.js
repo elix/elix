@@ -8,9 +8,8 @@ const prefixTimeoutKey = Symbol('prefixTimeout');
 
 
 /**
- * Mixin that handles list box-style prefix typing, in which the user can type
- * a string to select the first item that begins with that string.
- *
+ * Lets a user select a list item by typing the first few characters
+ * 
  * Example: suppose a component using this mixin has the following items:
  *
  *     <sample-list-component>

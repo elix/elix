@@ -4,8 +4,10 @@ import WrappedStandardElement from "./WrappedStandardElement.js";
 
 
 /**
- * A thumbnail image used as a proxy element to represent an image in a
- * [CarouselWithThumbnails](CarouselWithThumbnails).
+ * A thumbnail image used to represent an image.
+ * 
+ * [CarouselWithThumbnails](CarouselWithThumbnails) uses `Thumbnail` as the
+ * default "proxy" element for list items.
  * 
  * @inherits WrappedStandardElement
  */

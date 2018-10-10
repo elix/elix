@@ -11,6 +11,9 @@ const rotations = 12;
 /**
  * Simple spinning progress indicator
  * 
+ * This component is used by [PullToRefresh](PullToRefresh) as the default
+ * indicator that a refresh operation is in progress.
+ * 
  * @inherits ReactiveElement
  */
 class ProgressSpinner extends ReactiveElement {

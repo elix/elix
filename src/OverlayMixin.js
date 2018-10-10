@@ -11,9 +11,11 @@ const restoreFocusToElementKey = Symbol('restoreFocusToElement');
 
 
 /**
- * This mixin makes an opened element appear on top of other page elements, then
- * hide or remove it when closed. This mixin and `OpenCloseMixin` form the core
- * overlay behavior for Elix components.
+ * Displays an opened element on top of other page elements.
+ * 
+ * This mixin handles showing and hiding an overlay element. It, together with
+ * [OpenCloseMixin](OpenCloseMixin), form the core behavior for [Overlay](Overlay),
+ * which in turn forms the basis of Elix's overlay components.
  * 
  * @module OverlayMixin
  */

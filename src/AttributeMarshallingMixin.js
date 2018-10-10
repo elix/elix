@@ -4,7 +4,7 @@ const propertyNamesToAttributes = {};
 
 
 /**
- * Mixin which marshalls attributes to properties and vice versa.
+ * Marshalls attributes to properties and vice versa.
  *
  * If your component exposes a setter for a property, it's generally a good
  * idea to let devs using your component be able to set that property in HTML

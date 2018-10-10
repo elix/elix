@@ -4,7 +4,7 @@ import { indexOfItemContainingTarget } from './utilities.js';
 
 
 /**
- * Mixin which maps a click (actually, a mousedown) event to an item selection.
+ * Maps a click on a list item to selection of that item
  *
  * This simple mixin is useful in list-like elements like [ListBox](ListBox),
  * where a click on a list item implicitly selects it.
@@ -14,9 +14,10 @@ import { indexOfItemContainingTarget } from './utilities.js';
  * on mousedown or click/mouseup. This mixin assumes the use of mousedown.
  * On touch devices, that event appears to trigger when the touch is *released*.
  *
- * This mixin only listens to mousedown events for the primary mouse button
- * (typically the left button). Right-clicks are ignored so that the browser
- * may display a context menu.
+ * This mixin actually listens to `mousedown` events, not `click` events. This
+ * mixin only listens to mousedown events for the primary mouse button
+ * (typically the left button). Right-clicks are ignored so that the browser may
+ * display a context menu.
  *
  * This mixin expects the component to provide an `items` property. It also
  * expects the component to define a `state.selectedIndex` member; you can

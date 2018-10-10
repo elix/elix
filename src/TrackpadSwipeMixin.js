@@ -9,7 +9,7 @@ const wheelDistanceSymbol = Symbol('wheelDistance');
 
 
 /**
- * Mixin which maps trackpad events to swipe gestures.
+ * Map trackpad events to swipe gestures.
  * 
  * @module TrackpadSwipeMixin
  */

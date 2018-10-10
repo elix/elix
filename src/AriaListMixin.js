@@ -4,8 +4,7 @@ import { ensureId } from './idGeneration.js';
 
 
 /**
- * Mixin which treats the selected item in a list as the active item in ARIA
- * accessibility terms.
+ * Exposes a list's currently-selected item to ARIA.
  *
  * Handling ARIA selection state properly is actually quite complex:
  *

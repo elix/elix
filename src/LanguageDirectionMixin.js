@@ -2,8 +2,7 @@ import * as symbols from './symbols.js';
 
 
 /**
- * Mixin that helps an element determine whether it's in the context of
- * right-to-left text.
+ * Lets an element determine whether it resides in right-to-left text.
  *
  * @module LanguageDirectionMixin
  */
@@ -31,7 +30,7 @@ export default function LanguageDirectionMixin(Base) {
      * 
      * @property symbols.rightToLeft
      * @memberof LanguageDirectionMixin
-     * @type {string}
+     * @type {boolean}
      */
     get [symbols.rightToLeft]() {
       return this.state.languageDirection === 'rtl';

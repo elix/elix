@@ -1,5 +1,5 @@
 /**
- * Helpers for working with component templates.
+ * Helpers for dynamically creating and patching component templates.
  * 
  * The [ShadowTemplateMixin](ShadowTemplateMixin) lets you define a component
  * template that will be used to popuplate the shadow subtree of new component

@@ -10,8 +10,10 @@ const Base =
 
 
 /**
- * A button used by [ArrowDirectionMixin](ArrowDirectionMixin) for its
- * left/right arrow buttons.
+ * A button that can be used as a left or right arrow button.
+ * 
+ * This component is used by [ArrowDirectionMixin](ArrowDirectionMixin) for its
+ * default left/right arrow buttons.
  * 
  * @inherits SeamlessButton
  * @mixes HoverMixin

@@ -1,6 +1,13 @@
 /**
  * Calendar helpers.
  * 
+ * The visual representation of calendars varies quite a bit from place to
+ * place; see the discussion at
+ * [CalendarMonth](CalendarMonth#international-support). The `calendar` helpers
+ * provide some assistance in determining a locale's calendar presentation
+ * preferences, and working with date math in general.
+ * 
+ * 
  * Where these functions take a `locale` string parameter, that should follow
  * the same format as the [locales
  * argument](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#locales_argument)

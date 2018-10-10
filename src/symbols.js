@@ -1,9 +1,11 @@
 /**
- * A collection of `Symbol` objects for standard component properties and
- * methods. These let mixins and a component internally communicate without
- * exposing these properties and methods in the component's public API. They
- * also help avoid unintentional name collisions, as a component developer must
- * specifically import the `symbols` module and reference one of its symbols.
+ * Collection of shared Symbol objects for standard properties and methods.
+ * 
+ * The shared `Symbol` objects in this module let mixins and a component
+ * internally communicate without exposing these properties and methods in the
+ * component's public API. They also help avoid unintentional name collisions,
+ * as a component developer must specifically import the `symbols` module and
+ * reference one of its symbols.
  *
  * To use these `Symbol` objects in your own component, include this module and
  * then create a property or method whose key is the desired Symbol. E.g.,

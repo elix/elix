@@ -3,7 +3,7 @@ import * as symbols from './symbols.js';
 
 
 /**
- * Mixin which manages the keydown handling for a component.
+ * Manages keyboard handling for a component.
  *
  * This mixin handles several keyboard-related features.
  *

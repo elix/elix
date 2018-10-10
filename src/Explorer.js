@@ -30,9 +30,7 @@ const Base =
 
 
 /**
- * A component that couples a list-type element for selecting an item from a
- * collection with a stage-type element for focusing attention on a single
- * selected item.
+ * Combines a list with an area focusing on a single selected item.
  *
  * @inherits ReactiveElement
  * @mixes LanguageDirectionMixin

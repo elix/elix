@@ -10,8 +10,7 @@ const raiseChangeEventsInNextRenderKey = Symbol('raiseChangeEventsInNextRender')
 
 
 /**
- * Mixin for managing and rendering a component's state in a functional reactive
- * style.
+ * Manages component state and renders changes in state
  * 
  * This is modeled after React/Preact's state management, and is adapted for
  * use with web components. Applying this mixin to a component will give it
