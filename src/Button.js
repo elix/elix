@@ -25,6 +25,34 @@ const Base =
  */
 class Button extends Base {
 
+  componentDidMount() {
+    if (super.componentDidMount) { super.componentDidMount(); }
+
+    // As of Oct 2018, browsers don't seem to do a good job dealing with
+    // clicks on light DOM nodes assigned to a slot in a focusable element
+    // like a button. We work around those limitations.
+    this.addEventListener('mousedown', event => {
+      /** @type {any} */
+      const cast = event;
+      const target = cast.target;
+      const containsTarget = this === target || this.shadowRoot.contains(target);
+      if (!containsTarget) {
+        // The user must be clicking/tapping on an element in the light DOM
+        // that's assigned to this element's slot.
+
+        // If this element can receive the focus, ensure it gets it.
+        const canReceiveFocus = this.tabIndex >= 0;
+        if (canReceiveFocus) {
+          this.focus();
+        }
+  
+        // The browser will try to steal the focus from the button; prevent
+        // that.
+        event.preventDefault();
+      }
+    });
+  }
+
   // Pressing Enter or Space is the same as clicking the button.
   [symbols.keydown](event) {
     /** @type {any} */
