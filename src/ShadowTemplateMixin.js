@@ -70,23 +70,14 @@ export default function ShadowTemplateMixin(Base) {
     }
 
     /**
-     * The collection of references to the elements with IDs in the
-     * component's Shadow DOM subtree.
+     * A convenient shortcut for looking up an element by ID in the component's
+     * Shadow DOM subtree.
      *
      * Example: if component's template contains a shadow element
      * `<button id="foo">`, you can use the reference `this.$.foo` to obtain
      * the corresponding button in the component instance's shadow tree.
-     * 
-     * Such references simplify a component's access to its own elements. In
-     * exchange, this mixin trades off a one-time cost of querying all
-     * elements in the shadow tree instead of paying an ongoing cost to query
-     * for an element each time the component wants to inspect or manipulate
-     * it.
-     * 
-     * These shadow element references are established the first time you read
-     * the `$` property. They are _not_ updated if you subsequently modify the
-     * shadow tree yourself (to replace one item with another, to add new items
-     * with `id` attributes, etc.).
+     * The `$` function is simply a shorthand for `getElementById`, so
+     * `this.$.foo` is the same as `this.shadowRoot.getElementById('foo')`.
      *
      * @type {object} - a dictionary mapping shadow element IDs to elements
      */
