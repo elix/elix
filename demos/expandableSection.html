@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Elix ExpandableSection</title>
+
+  <link rel="stylesheet" href="demos.css">
+  <script src="node_modules/@webcomponents/webcomponentsjs/bundles/webcomponents-sd-ce.js"></script>
+  <script type="module" src="./src/showElementsWhenDefined.js"></script>
+  <script type="module" src="../src/ExpandableSection.js"></script>
+
+</head>
+
+<body role="main" unresolved>
+  <div class="demo padded">
+    <style>
+      elix-expandable-section {
+        background: #eee;
+        border: 1px solid #bbb;
+        margin-bottom: 1em;
+      }
+
+      h2 {
+        margin: 0.5em;
+      }
+
+      .content {
+        background: white;
+        padding: 0.5em;
+      }
+    </style>
+    <elix-expandable-section opened="true">
+      <h2 slot="headerSlot">Section 1</h2>
+      <div class="content">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed molestie molestie enim porta dapibus. Phasellus dolor quam, egestas eu viverra at, porttitor in diam. Donec risus tellus, accumsan eget ipsum sed, vestibulum blandit ante. Nullam rhoncus leo nec lobortis convallis. Donec posuere tellus a nibh dignissim, rhoncus viverra neque rutrum. Suspendisse rutrum at massa vitae venenatis. Suspendisse ut risus pellentesque lacus dictum aliquet. Cras a arcu id odio molestie imperdiet.
+      </div>
+    </elix-expandable-section>
+    <elix-expandable-section>
+      <h2 slot="headerSlot">Section 2</h2>
+      <div class="content">
+        Pellentesque vitae eros ac nulla aliquam eleifend. Nunc ornare sollicitudin arcu id suscipit. Donec sed nisl libero. Nulla facilisi. Proin ornare feugiat molestie. Mauris velit mi, volutpat sit amet posuere quis, tristique et urna. Donec sit amet tellus magna. Aenean feugiat suscipit neque, ut porttitor diam auctor in. Sed faucibus finibus ipsum et pharetra. In hac habitasse platea dictumst. Cras facilisis justo eu lectus luctus, et interdum velit aliquet.
+      </div>
+    </elix-expandable-section>
+    <elix-expandable-section>
+      <h2 slot="headerSlot">Section 3</h2>
+      <div class="content">
+        Aliquam vitae nulla efficitur turpis viverra placerat. Mauris fermentum tellus vel elementum aliquet. Integer vitae arcu et mi tristique lacinia. Cras placerat ultrices velit, id interdum ipsum commodo efficitur. Maecenas maximus odio a nisi dapibus, non dapibus nisl venenatis. Morbi tristique interdum leo, non tincidunt sapien efficitur ac. Nunc hendrerit turpis eget enim rhoncus sagittis. Aenean ac euismod magna. Phasellus et posuere nisi.
+      </div>
+    </elix-expandable-section>
+  </div>
+</body>
+
+</html>
