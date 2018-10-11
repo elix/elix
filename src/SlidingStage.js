@@ -6,14 +6,16 @@ import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
+import TransitionMixin from './TransitionMixin.js';
 
 
 const Base =
   LanguageDirectionMixin(
   SingleSelectionMixin(
   SlotItemsMixin(
+  TransitionMixin(
     ReactiveElement
-  )));
+  ))));
 
 
 /**
@@ -28,25 +30,14 @@ const Base =
  * @mixes LanguageDirectionMixin
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin
+ * @mixes TransitionMixin
  */
 class SlidingStage extends Base {
 
-  componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
-    // Once everything's finished rendering, enable transition effects.
-    setTimeout(() => {
-      this.setState({
-        enableTransitions: true
-      });
-    });
-  }
-
   get defaultState() {
-    // Suppress transition effects on page load.
     return Object.assign({}, super.defaultState, {
       orientation: 'horizontal',
-      selectionRequired: true,
-      enableTransitions: false
+      selectionRequired: true
     });
   }
 

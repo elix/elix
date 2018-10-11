@@ -6,6 +6,7 @@ import * as template from './template.js';
 import ProgressSpinner from './ProgressSpinner.js';
 import ReactiveElement from './ReactiveElement.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
+import TransitionMixin from './TransitionMixin.js';
 
 
 // Template for the default down arrow shown while pulling.
@@ -17,8 +18,9 @@ const downArrowTemplate = template.html`
 
 const Base =
   TouchSwipeMixin(
+  TransitionMixin(
     ReactiveElement
-  );
+  ));
 
 
 /**
@@ -29,6 +31,7 @@ const Base =
  * 
  * @inherits ReactiveElement
  * @mixes TouchSwipeMixin
+ * @mixes TransitionMixin
  * @elementrole pullIndicator
  * @elementrole {ProgressSpinner} refreshingIndicator
  */
@@ -56,13 +59,6 @@ class PullToRefresh extends Base {
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
-    // Once everything's finished rendering, enable transition effects.
-    setTimeout(() => {
-      this.setState({
-        enableTransitions: true
-      });
-    });
-
     // Listen to scroll events in case the user scrolls up past the page's top.
     let scrollTarget = getScrollableElement(this) || window;
     scrollTarget.addEventListener('scroll', async () => {
@@ -96,7 +92,6 @@ class PullToRefresh extends Base {
     // Suppress transition effects on page load.
     return Object.assign({}, super.defaultState, {
       enableNegativeSwipe: false,
-      enableTransitions: false,
       pullIndicatorRole: downArrowTemplate,
       refreshing: false,
       refreshingIndicatorRole: ProgressSpinner,

@@ -5,15 +5,17 @@ import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 import TransitionEffectMixin from './TransitionEffectMixin.js';
+import TransitionMixin from './TransitionMixin.js';
 
 
 const Base =
   LanguageDirectionMixin(
   TouchSwipeMixin(
   TrackpadSwipeMixin(
+  TransitionMixin(
   TransitionEffectMixin(
     Dialog
-  ))));
+  )))));
 
 
 /**
@@ -28,6 +30,7 @@ const Base =
  * @mixes LanguageDirectionMixin
  * @mixes TouchSwipeMixin
  * @mixes TrackpadSwipeMixin
+ * @mixes TransitionMixin
  * @mixes TransitionEffectMixin
  */
 class Drawer extends Base {
@@ -41,18 +44,10 @@ class Drawer extends Base {
       await this.close();
       this[symbols.raiseChangeEvents] = false;
     });
-
-    // Once everything's finished rendering, enable transition effects.
-    setTimeout(() => {
-      this.setState({
-        enableTransitions: true
-      });
-    });
   }
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      enableTransitions: false,
       fromEdge: 'start',
       selectedIndex: 0
     });

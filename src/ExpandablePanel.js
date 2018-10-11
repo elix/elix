@@ -4,13 +4,15 @@ import * as template from './template.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 import TransitionEffectMixin from './TransitionEffectMixin.js';
+import TransitionMixin from './TransitionMixin.js';
 
 
 const Base =
   OpenCloseMixin(
+  TransitionMixin(
   TransitionEffectMixin(
     ReactiveElement
-  ));
+  )));
 
 
 /**
@@ -33,6 +35,7 @@ const Base =
  * 
  * @inherits ReactiveElement
  * @mixes OpenCloseMixin
+ * @mixes TransitionMixin
  * @mixes TransitionEffectMixin
  */
 class ExpandablePanel extends Base {
@@ -64,7 +67,11 @@ class ExpandablePanel extends Base {
       }
     };
     const height = phaseHeights[effect][phase];
-    const transition = phase === 'during' ? 'height 0.25s' : '';
+    
+    const showTransitions = this.state.enableTransitions;
+    const transition = showTransitions && phase === 'during' ?
+      'height 0.25s' :
+      '';
 
     return merge(super.updates, {
       attributes: {

@@ -1,5 +1,12 @@
 import { merge } from './updates.js';
 import Modes from './Modes.js';
+import TransitionMixin from './TransitionMixin.js';
+
+
+const Base =
+  TransitionMixin(
+    Modes
+  );
 
 
 /**
@@ -10,23 +17,12 @@ import Modes from './Modes.js';
  * crossfade effect when transitioning between items.
  * 
  * @inherits Modes
+ * @mixes TransitionMixin
  */
-class CrossfadeStage extends Modes {
-
-  componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
-    // Once everything's finished rendering, enable transition effects.
-    setTimeout(() => {
-      this.setState({
-        enableTransitions: true
-      });
-    });
-  }
+class CrossfadeStage extends Base {
 
   get defaultState() {
-    // Suppress transition effects on page load.
     return Object.assign({}, super.defaultState, {
-      enableTransitions: false,
       transitionDuration: 750 // 3/4 of a second
     });
   }

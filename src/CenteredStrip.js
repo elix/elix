@@ -7,6 +7,7 @@ import ReactiveElement from './ReactiveElement.js';
 import ResizeMixin from './ResizeMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
+import TransitionMixin from './TransitionMixin.js';
 
 
 const Base =
@@ -15,8 +16,9 @@ const Base =
   ResizeMixin(
   SingleSelectionMixin(
   SlotItemsMixin(
+  TransitionMixin(
     ReactiveElement
-  )))));
+  ))))));
 
 
 /**
@@ -31,24 +33,13 @@ const Base =
  * @mixes ResizeMixin
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin
+ * @mixes TransitionMixin
  */
 class CenteredStrip extends Base {
 
-  componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
-    // Once everything's finished rendering, enable transition effects.
-    setTimeout(() => {
-      this.setState({
-        enableTransitions: true
-      });
-    });
-  }
-
   get defaultState() {
-    // Suppress transition effects on page load.
     return Object.assign({}, super.defaultState, {
-      selectionRequired: true,
-      enableTransitions: false
+      selectionRequired: true
     });
   }
 

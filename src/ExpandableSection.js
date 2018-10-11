@@ -35,7 +35,6 @@ class ExpandableSection extends Base {
     const collapseIcon = this.$.collapseIcon;
     const expandIcon = this.$.expandIcon;
 
-    // TODO: Ensure that 'opened' initially true doesn't show animation.
     // TODO: Default header content pulls text from aria-label.
     const opened = this.opened;
     return merge(
@@ -84,6 +83,10 @@ class ExpandableSection extends Base {
 
         #headerBar {
           display: flex;
+        }
+
+        #headerBar:hover {
+          opacity: 0.66;
         }
 
         #headerBar > * {

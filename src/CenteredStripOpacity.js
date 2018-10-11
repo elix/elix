@@ -12,20 +12,9 @@ import CenteredStrip from './CenteredStrip.js';
  * @inherits CenteredStrip
  */
 class CenteredStripOpacity extends CenteredStrip {
-  
-  componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
-    // Once everything's finished rendering, enable transition effects.
-    setTimeout(() => {
-      this.setState({
-        enableTransitions: true
-      });
-    });
-  }
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      enableTransitions: false,
       transitionDuration: 250
     });
   }
