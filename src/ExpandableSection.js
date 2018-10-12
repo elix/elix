@@ -122,7 +122,7 @@ class ExpandableSection extends Base {
       </style>
       <elix-seamless-button id="headerBar">
         <div id="headerContainer">
-          <slot name="headerSlot"></slot>
+          <slot name="header"></slot>
         </div>
         <div id="toggleContainer">
           <slot name="toggleSlot">

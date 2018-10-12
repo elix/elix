@@ -16,10 +16,17 @@
 <body role="main" unresolved>
   <div class="demo padded">
 
-    <p>
-      <button id="okCancelButton" onclick="okCancelClick()">Open OK/Cancel alert</button>
-      <button id="yesNoCancelButton" onclick="yesNoCancelClick()">Open Yes/No/Cancel alert</button>
-    </p>
+    <style>
+      #response {
+        margin-bottom: 0;
+      }
+      #response:empty {
+        display: none;
+      }
+    </style>
+
+    <button id="okCancelButton" onclick="okCancelClick()">Open OK/Cancel alert</button>
+    <button id="yesNoCancelButton" onclick="yesNoCancelClick()">Open Yes/No/Cancel alert</button>
 
     <p id="response"></p>
 

@@ -25,10 +25,17 @@
 <body role="main" unresolved>
   <div class="demo padded">
 
-    <p>
-      <custom-button id="okCancelButton" onclick="okCancelClick()">Open OK/Cancel alert</custom-button>
-      <custom-button id="yesNoCancelButton" onclick="yesNoCancelClick()">Open Yes/No/Cancel alert</custom-button>
-    </p>
+    <style>
+      #response {
+        margin-bottom: 0;
+      }
+      #response:empty {
+        display: none;
+      }
+    </style>
+    
+    <custom-button id="okCancelButton" onclick="okCancelClick()">Open OK/Cancel alert</custom-button>
+    <custom-button id="yesNoCancelButton" onclick="yesNoCancelClick()">Open Yes/No/Cancel alert</custom-button>
 
     <p id="response"></p>
 
