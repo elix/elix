@@ -85,7 +85,7 @@ class ExpandableSection extends Base {
         }
 
         #headerBar:hover {
-          opacity: 0.66;
+          background: rgba(0, 0, 0, 0.05);
         }
 
         #headerBar > * {
