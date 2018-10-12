@@ -3,14 +3,16 @@ import './SeamlessButton.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js'
 import * as template from './template.js';
+import HoverMixin from './HoverMixin.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
 
 const Base =
+  HoverMixin(
   OpenCloseMixin(
     ReactiveElement
-  );
+  ));
 
 
 /**
@@ -26,8 +28,6 @@ class ExpandableSection extends Base {
     this.$.headerBar.addEventListener('click', () => {
       this.toggle();
     });
-    // HACK
-    this.$.headerBar.$.inner.style.display = 'flex';
   }
 
   get updates() {
@@ -43,8 +43,6 @@ class ExpandableSection extends Base {
           'aria-expanded': opened
         },
         $: {
-          headerBar: {
-          },
           panel: {
             opened
           }
@@ -67,7 +65,7 @@ class ExpandableSection extends Base {
             }
           }
         }
-      }
+      },
     );
   }
 
@@ -84,8 +82,10 @@ class ExpandableSection extends Base {
           display: flex;
         }
 
-        #headerBar:hover {
-          background: rgba(0, 0, 0, 0.05);
+        @media (hover: hover), (any-hover: hover) {
+          #headerBar:hover {
+            background: rgba(0, 0, 0, 0.05);
+          }
         }
 
         #headerBar > * {

@@ -83,6 +83,7 @@ class Button extends Base {
           background: none;
           border: none;
           color: inherit;
+          display: inline-flex;
           flex: 1;
           font-family: inherit;
           font-size: inherit;
