@@ -32,19 +32,36 @@ class ExpandableSection extends Base {
     });
   }
 
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      role: 'region'
+    });
+  }
+
   get updates() {
     
+    const base = super.updates;
+
     const collapseIcon = this.$.collapseIcon;
     const expandIcon = this.$.expandIcon;
 
+    const role = this.state.original && this.state.original.attributes.role ||
+      base.attributes && base.attributes.role ||
+      this.state.role;
+
     const opened = this.opened;
     return merge(
-      super.updates,
+      base,
       {
         attributes: {
-          'aria-expanded': opened
+          role
         },
         $: {
+          headerBar: {
+            attributes: {
+              'aria-expanded': opened
+            }
+          },
           panel: {
             opened
           }

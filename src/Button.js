@@ -54,6 +54,12 @@ class Button extends Base {
     });
   }
 
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      role: 'button'
+    });
+  }
+
   // Pressing Enter or Space raises a click event, as if the user had clicked
   // the inner button.
   [symbols.keydown](event) {
@@ -100,13 +106,14 @@ class Button extends Base {
         }
       </style>
 
-      <button id="inner" tabindex="-1">
+      <button id="inner" tabindex="-1" role="none">
         <slot></slot>
       </button>
     `;
   }
 
   get updates() {
+
     const base = super.updates || {};
 
     const baseInnerStyle = base.$ && base.$.inner && base.$.inner.style;
@@ -114,7 +121,17 @@ class Button extends Base {
       !this.state.focusVisible && 'none' ||
       undefined;
 
+    // Since it's the outer component that will typically get the keyboard
+    // focus, we make the outer component visible as a button to ARIA, and hide
+    // the inner button.
+    const role = this.state.original && this.state.original.attributes.role ||
+      base.attributes && base.attributes.role ||
+      this.state.role;
+
     return merge(base, {
+      attributes: {
+        role
+      },
       $: {
         inner: {
           style: {

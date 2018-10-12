@@ -73,9 +73,16 @@ class ExpandablePanel extends Base {
       'height 0.25s' :
       '';
 
+    // We only set aria-expanded if this component can get the keyboard focus
+    // (which it usually won't).
+    const canReceiveFocus = this.tabIndex >= 0;
+    const ariaExpanded = canReceiveFocus ?
+      this.opened :
+      null;
+
     return merge(super.updates, {
       attributes: {
-        'aria-expanded': this.opened
+        'aria-expanded': ariaExpanded
       },
       $: {
         outerContainer: {
