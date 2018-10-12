@@ -97,6 +97,12 @@ export default function SlotContentMixin(Base) {
         // slotchange fires, we won't know whether it's an initial one or not.)
         // We do our best to normalize the behavior so the component always gets
         // a chance to process its initial content.
+        //
+        // TODO: We filed WebKit bug
+        // https://bugs.webkit.org/show_bug.cgi?id=169718 to resolve this, which
+        // Apple fixed. We've verified in Safari Tech Preview that, with that
+        // fix, unit tests with the code below removed. When the fix lands in
+        // production (best guess: June 2019), this code can be removed.
         Promise.resolve().then(() => {
           if (!this[slotchangeFiredKey]) {
             // The event didn't fire, so we're most likely in Safari.
