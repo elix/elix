@@ -28,47 +28,52 @@ class Button extends Base {
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
 
-    // As of Oct 2018, browsers don't seem to do a good job dealing with
-    // clicks on light DOM nodes assigned to a slot in a focusable element
-    // like a button. We work around those limitations.
     this.addEventListener('mousedown', event => {
+
+      // If this element can receive the focus, ensure it gets it. As of Oct
+      // 2018, Safari and Firefox don't do this automatically. Chrome doesn't
+      // need this, but it doesn't appear to hurt either.
+      const canReceiveFocus = this.tabIndex >= 0;
+      if (canReceiveFocus) {
+        this.focus();
+      }
+
+      // As of Oct 2018, browsers don't seem to do a good job dealing with
+      // clicks on light DOM nodes assigned to a slot in a focusable element
+      // like a button. We work around those limitations.
       /** @type {any} */
       const cast = event;
       const target = cast.target;
       const containsTarget = this === target || this.shadowRoot.contains(target);
       if (!containsTarget) {
         // The user must be clicking/tapping on an element in the light DOM
-        // that's assigned to this element's slot.
-
-        // If this element can receive the focus, ensure it gets it.
-        const canReceiveFocus = this.tabIndex >= 0;
-        if (canReceiveFocus) {
-          this.focus();
-        }
-  
-        // The browser will try to steal the focus from the button; prevent
-        // that.
+        // that's assigned to this element's slot. The browser will try to steal
+        // the focus from the button; prevent that.
         event.preventDefault();
       }
     });
   }
 
-  // Pressing Enter or Space is the same as clicking the button.
+  // Pressing Enter or Space raises a click event, as if the user had clicked
+  // the inner button.
   [symbols.keydown](event) {
-    /** @type {any} */
-    const button = this.inner;
-    
     let handled;
     switch (event.key) {
       case ' ':
       case 'Enter':
-        button.click();
+        this[symbols.click]();
         handled = true;
         break;
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+  }
+
+  // Respond to a simulated click.
+  [symbols.click]() {
+    const clickEvent = new MouseEvent('click');
+    this.dispatchEvent(clickEvent);
   }
 
   get [symbols.template]() {

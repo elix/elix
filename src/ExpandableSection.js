@@ -26,7 +26,9 @@ class ExpandableSection extends Base {
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
     this.$.headerBar.addEventListener('click', () => {
+      this[symbols.raiseChangeEvents] = true;
       this.toggle();
+      this[symbols.raiseChangeEvents] = false;
     });
   }
 
