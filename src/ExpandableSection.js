@@ -35,7 +35,6 @@ class ExpandableSection extends Base {
     const collapseIcon = this.$.collapseIcon;
     const expandIcon = this.$.expandIcon;
 
-    // TODO: Default header content pulls text from aria-label.
     const opened = this.opened;
     return merge(
       super.updates,
