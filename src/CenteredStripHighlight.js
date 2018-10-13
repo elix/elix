@@ -7,6 +7,9 @@ import CenteredStrip from './CenteredStrip.js';
  * 
  * [`CenteredStripHighlight` uses a system highlight, much like `ListBox`](/demos/centeredStripHighlight.html)
  * 
+ * For a variation that uses opacity instead of a highlight color, see
+ * [CenteredStripOpacity](CenteredStripOpacity).
+ * 
  * @inherits CenteredStrip
  */
 class CenteredStripHighlight extends CenteredStrip {

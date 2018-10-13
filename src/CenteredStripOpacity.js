@@ -9,6 +9,9 @@ import CenteredStrip from './CenteredStrip.js';
  * [`CenteredStripOpacity` is used by `Carousel` for dots or
  * thumbnails](/demos/centeredStripOpacity.html)
  * 
+ * For a variation that uses a highlight color instead of opacity, see
+ * [CenteredStripHighlight](CenteredStripHighlight).
+ * 
  * @inherits CenteredStrip
  */
 class CenteredStripOpacity extends CenteredStrip {
