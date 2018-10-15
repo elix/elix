@@ -94,18 +94,22 @@ class HamburgerMenuButton extends Base {
     this.setState({ fromEdge });
   }
 
-  // Pressing Enter or Space is the same as clicking the menu button.
+  // When the menu is closed, pressing Enter or Space is the same as clicking
+  // the menu button.
   [symbols.keydown](event) {
     /** @type {any} */
     const menuButton = this.$.menuButton;
     
     let handled;
-    switch (event.key) {
-      case ' ':
-      case 'Enter':
-        menuButton.click();
-        handled = true;
-        break;
+
+    if (this.closed) {
+      switch (event.key) {
+        case ' ':
+        case 'Enter':
+          menuButton.click();
+          handled = true;
+          break;
+      }
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
