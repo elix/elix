@@ -102,6 +102,7 @@ class Button extends Base {
           height: 100%;
           padding: 0;
           position: relative;
+          text-align: initial; /* For Edge */
           width: 100%;
         }
       </style>

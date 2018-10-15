@@ -38,6 +38,59 @@ class ExpandableSection extends Base {
     });
   }
 
+  get [symbols.template]() {
+    // TODO: Roles
+    // Default expand/collapse icons from Google's Material Design collection.
+    return template.html`
+      <style>
+        :host {
+          display: block;
+        }
+
+        #headerBar {
+          display: flex;
+        }
+
+        @media (hover: hover), (any-hover: hover) {
+          #headerBar:hover {
+            background: rgba(0, 0, 0, 0.05);
+          }
+        }
+
+        .headerElement {
+          align-self: center;
+        }
+
+        #headerContainer {
+          flex: 1;
+          text-align: start;
+        }
+
+        #toggleContainer {
+          margin: 0.5em;
+        }
+      </style>
+      <elix-seamless-button id="headerBar">
+        <div id="headerContainer" class="headerElement">
+          <slot name="header"></slot>
+        </div>
+        <div id="toggleContainer" class="headerElement">
+          <slot name="toggleSlot">
+            <svg id="collapseIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"/>
+            </svg>
+            <svg id="expandIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/>
+            </svg>
+          </slot>
+        </div>
+      </elix-seamless-button>
+      <elix-expandable-panel id="panel" role="none">
+        <slot></slot>
+      </elix-expandable-panel>
+    `;
+  }
+
   get updates() {
     
     const base = super.updates;
@@ -86,59 +139,6 @@ class ExpandableSection extends Base {
         }
       },
     );
-  }
-
-  get [symbols.template]() {
-    // TODO: Roles
-    // Default expand/collapse icons from Google's Material Design collection.
-    return template.html`
-      <style>
-        :host {
-          display: block;
-        }
-
-        #headerBar {
-          display: flex;
-        }
-
-        @media (hover: hover), (any-hover: hover) {
-          #headerBar:hover {
-            background: rgba(0, 0, 0, 0.05);
-          }
-        }
-
-        #headerBar > * {
-          align-self: center;
-        }
-
-        #headerContainer {
-          flex: 1;
-          text-align: start;
-        }
-
-        #toggleContainer {
-          margin: 0.5em;
-        }
-      </style>
-      <elix-seamless-button id="headerBar">
-        <div id="headerContainer">
-          <slot name="header"></slot>
-        </div>
-        <div id="toggleContainer">
-          <slot name="toggleSlot">
-            <svg id="collapseIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-              <path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"/>
-            </svg>
-            <svg id="expandIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-              <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/>
-            </svg>
-          </slot>
-        </div>
-      </elix-seamless-button>
-      <elix-expandable-panel id="panel" role="none">
-        <slot></slot>
-      </elix-expandable-panel>
-    `;
   }
 
 }
