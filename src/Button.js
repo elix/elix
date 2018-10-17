@@ -91,6 +91,7 @@ class Button extends Base {
         }
         
         #inner {
+          align-items: center; /* Edge */
           background: none;
           border: none;
           color: inherit;
@@ -100,9 +101,10 @@ class Button extends Base {
           font-size: inherit;
           font-weight: inherit;
           height: 100%;
+          justify-content: center;
           padding: 0;
           position: relative;
-          text-align: initial; /* For Edge */
+          text-align: initial; /* Edge */
           width: 100%;
         }
       </style>
