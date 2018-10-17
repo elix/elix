@@ -17,7 +17,7 @@
 
 <body role="main" unresolved>
   <div class="demo medium padded">
-    <elix-menu-button id="menuButton" aria-label="Sample Menu">
+    <elix-menu-button id="sampleMenuButton" aria-label="Sample Menu">
       <elix-menu-item>New Tab</elix-menu-item>
       <elix-menu-item>New Window</elix-menu-item>
       <elix-menu-separator></elix-menu-separator>
@@ -30,9 +30,9 @@
     </elix-menu-button>
     <p id="result"></p>
     <script>
-      menuButton.addEventListener('closed', event => {
+      sampleMenuButton.addEventListener('closed', event => {
         const closeResult = event.detail.closeResult;
-        const item = closeResult >= 0 && menuButton.items[closeResult].textContent;
+        const item = closeResult >= 0 && sampleMenuButton.items[closeResult].textContent;
         result.textContent = item ?
         `You picked: ${item}` :
           `You didn't pick a menu item.`;
