@@ -26,7 +26,7 @@
  * 
  *     class Carousel extends Explorer {
  *       get [symbols.template]() {
- *         const base = getSuperSymbol(this, Carousel, symbols.template);
+ *         const base = getSuperProperty(this, Carousel, symbols.template);
  *         return base;
  *       }
  *     }
