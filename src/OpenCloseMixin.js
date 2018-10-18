@@ -146,7 +146,7 @@ export default function OpenCloseMixin(Base) {
     }
     
     /**
-     * True if the element is currently closed.
+     * True if the element is currently opened.
      * 
      * @type {boolean}
      */

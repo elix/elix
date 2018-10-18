@@ -14,10 +14,9 @@ const Base =
 
 
 /**
- * A document section with a header that can be used to expand or collapse
+ * A document section with a header that can be expanded or collapsed
  * 
  * @inherits ReactiveElement
- * @mixes 
  * @mixes OpenCloseMixin
  * @elementrole {SeamlessButton} header
  * @elementrole {ExpandablePanel} panel
