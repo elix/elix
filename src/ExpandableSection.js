@@ -1,31 +1,60 @@
-import './ExpandablePanel.js';
-import './SeamlessButton.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js'
 import * as template from './template.js';
-import HoverMixin from './HoverMixin.js';
+import ExpandablePanel from './ExpandablePanel.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import ReactiveElement from './ReactiveElement.js';
+import SeamlessButton from './SeamlessButton.js';
 
 
 const Base =
-  HoverMixin(
   OpenCloseMixin(
     ReactiveElement
-  ));
+  );
 
 
 /**
  * A document section with a header that can be used to expand or collapse
  * 
  * @inherits ReactiveElement
+ * @mixes 
  * @mixes OpenCloseMixin
+ * @elementrole {SeamlessButton} header
+ * @elementrole {ExpandablePanel} panel
  */
 class ExpandableSection extends Base {
 
+  constructor() {
+    super();
+    // These roles are already applied in the template.
+    this[symbols.renderedRoles] = {
+      headerRole: SeamlessButton,
+      panelRole: ExpandablePanel
+    };
+  }
+
+  [symbols.beforeUpdate]() {
+    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+
+    if (this[symbols.renderedRoles].headerRole !== this.state.headerRole) {
+      template.transmute(this.$.header, this.state.headerRole);
+      this[symbols.renderedRoles].headerRole = this.state.headerRole;
+      this.$.header.addEventListener('click', () => {
+        this[symbols.raiseChangeEvents] = true;
+        this.toggle();
+        this[symbols.raiseChangeEvents] = false;
+      });
+    }
+
+    if (this[symbols.renderedRoles].panelRole !== this.state.panelRole) {
+      template.transmute(this.$.panel, this.state.panelRole);
+      this[symbols.renderedRoles].panelRole = this.state.panelRole;
+    }
+  }
+
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
-    this.$.headerBar.addEventListener('click', () => {
+    this.$.header.addEventListener('click', () => {
       this[symbols.raiseChangeEvents] = true;
       this.toggle();
       this[symbols.raiseChangeEvents] = false;
@@ -34,12 +63,39 @@ class ExpandableSection extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      headerRole: SeamlessButton,
+      panelRole: ExpandablePanel,
       role: 'region'
     });
   }
 
+  /**
+   * The class, tag, or template used to create the clickable header.
+   * 
+   * @type {function|string|HTMLTemplateElement}
+   * @default SeamlessButton
+   */
+  get headerRole() {
+    return this.state.headerRole;
+  }
+  set headerRole(headerRole) {
+    this.setState({ headerRole });
+  }
+
+  /**
+   * The class, tag, or template used to create the expandable panel.
+   * 
+   * @type {function|string|HTMLTemplateElement}
+   * @default ExpandablePanel
+   */
+  get panelRole() {
+    return this.state.panelRole;
+  }
+  set panelRole(panelRole) {
+    this.setState({ panelRole });
+  }
+
   get [symbols.template]() {
-    // TODO: Roles
     // Default expand/collapse icons from Google's Material Design collection.
     return template.html`
       <style>
@@ -47,12 +103,12 @@ class ExpandableSection extends Base {
           display: block;
         }
 
-        #headerBar {
+        #header {
           display: flex;
         }
 
         @media (hover: hover), (any-hover: hover) {
-          #headerBar:hover {
+          #header:hover {
             background: rgba(0, 0, 0, 0.05);
           }
         }
@@ -70,7 +126,7 @@ class ExpandableSection extends Base {
           margin: 0.5em;
         }
       </style>
-      <elix-seamless-button id="headerBar">
+      <elix-seamless-button id="header">
         <div id="headerContainer" class="headerElement">
           <slot name="header"></slot>
         </div>
@@ -110,14 +166,17 @@ class ExpandableSection extends Base {
           role
         },
         $: {
-          headerBar: {
+          header: {
             attributes: {
               'aria-expanded': opened
             }
           },
-          panel: {
-            opened
-          }
+          panel: Object.assign(
+            {},
+            'opened' in this.$.panel && {
+              opened
+            }
+          )
         },
       },
       collapseIcon && {

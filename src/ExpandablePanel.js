@@ -16,7 +16,7 @@ const Base =
 
 
 /**
- * Expands/collapses in place with an animated transition
+ * Region that expands/collapses in place with an animated transition
  * 
  * [A region that can be expanded and collapsed](/demos/expandablePanel.html)
  *
@@ -24,11 +24,6 @@ const Base =
  * [TransitionEffectMixin](TransitionEffectMixin) and a simple CSS height
  * animation.
  * 
- * Note that animating an element's height [may not always produce the smoothest
- * results](https://developers.google.com/web/updates/2017/03/performant-expand-and-collapse).
- * However, animating height does have the advantage of letting you set the
- * height of the panel's collapsed state by setting the panel's `min-height`.
- *
  * This component handles only the duties of collapsing and expanding. It does
  * not provide a user interface for the user to trigger the change in state;
  * you must provide that user interface yourself.
@@ -67,7 +62,12 @@ class ExpandablePanel extends Base {
       }
     };
     const height = phaseHeights[effect][phase];
-    
+
+    // This animates an element's height, which may not produce the smoothest
+    // results. See
+    // https://developers.google.com/web/updates/2017/03/performant-expand-and-collapse.
+    // Animating height does have the advantage of letting you set the height of
+    // the panel's collapsed state by setting the panel's `min-height`.       
     const showTransitions = this.state.enableTransitions;
     const transition = showTransitions && phase === 'during' ?
       'height 0.25s' :
