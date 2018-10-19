@@ -5,14 +5,14 @@ import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 import TransitionEffectMixin from './TransitionEffectMixin.js';
-import TransitionMixin from './TransitionMixin.js';
+import EffectMixin from './EffectMixin.js';
 
 
 const Base =
   LanguageDirectionMixin(
   TouchSwipeMixin(
   TrackpadSwipeMixin(
-  TransitionMixin(
+  EffectMixin(
   TransitionEffectMixin(
     Dialog
   )))));
@@ -30,7 +30,7 @@ const Base =
  * @mixes LanguageDirectionMixin
  * @mixes TouchSwipeMixin
  * @mixes TrackpadSwipeMixin
- * @mixes TransitionMixin
+ * @mixes EffectMixin
  * @mixes TransitionEffectMixin
  */
 class Drawer extends Base {
@@ -136,7 +136,7 @@ class Drawer extends Base {
     const translatePercentage = sign * translateFraction * 100;
 
     let duration = 0;
-    const showTransition = this.state.enableTransitions && !swiping && 
+    const showTransition = this.state.enableEffects && !swiping && 
         effect && phase === 'during';
     if (showTransition) {
       // The time require to show transitions depends on how far apart the

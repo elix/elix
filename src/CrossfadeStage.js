@@ -1,10 +1,10 @@
 import { merge } from './updates.js';
 import Modes from './Modes.js';
-import TransitionMixin from './TransitionMixin.js';
+import EffectMixin from './EffectMixin.js';
 
 
 const Base =
-  TransitionMixin(
+  EffectMixin(
     Modes
   );
 
@@ -17,7 +17,7 @@ const Base =
  * crossfade effect when transitioning between items.
  * 
  * @inherits Modes
- * @mixes TransitionMixin
+ * @mixes EffectMixin
  */
 class CrossfadeStage extends Base {
 
@@ -34,7 +34,7 @@ class CrossfadeStage extends Base {
     const swipeFraction = this.state.swipeFraction || 0;
     const selectionFraction = -swipeFraction;
     const opacity = opacityForItemWithIndex(calcs.index, selectedIndex, selectionFraction);
-    const showTransition = this.state.enableTransitions && !swiping;
+    const showTransition = this.state.enableEffects && !swiping;
     const transitionDuration = this.state.transitionDuration / 1000;
     const transition = showTransition ? `opacity ${transitionDuration}s linear` : '';
     return merge(base, {

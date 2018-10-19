@@ -39,6 +39,7 @@ export { default as DialogModalityMixin } from './DialogModalityMixin.js';
 export { default as DirectionSelectionMixin } from './DirectionSelectionMixin.js';
 export { default as Drawer } from './Drawer.js';
 export { default as DropdownList } from './DropdownList.js';
+export { default as EffectMixin } from './EffectMixin.js';
 export { default as ExpandablePanel } from './ExpandablePanel.js';
 export { default as ExpandableSection } from './ExpandableSection.js';
 export { default as Explorer } from './Explorer.js';

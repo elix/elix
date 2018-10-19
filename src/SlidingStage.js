@@ -2,18 +2,18 @@ import { merge } from './updates.js';
 import * as fractionalSelection from './fractionalSelection.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import EffectMixin from './EffectMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
-import TransitionMixin from './TransitionMixin.js';
 
 
 const Base =
+  EffectMixin(
   LanguageDirectionMixin(
   SingleSelectionMixin(
   SlotItemsMixin(
-  TransitionMixin(
     ReactiveElement
   ))));
 
@@ -27,10 +27,10 @@ const Base =
  * This component is used as the main stage for a [Carousel](Carousel).
  * 
  * @inherits ReactiveElement
+ * @mixes EffectMixin
  * @mixes LanguageDirectionMixin
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin
- * @mixes TransitionMixin
  */
 class SlidingStage extends Base {
 
@@ -102,7 +102,7 @@ class SlidingStage extends Base {
     } else {
       translation = 0;
     }
-    const showTransition = this.state.enableTransitions && !swiping;
+    const showTransition = this.state.enableEffects && !swiping;
     const transition = showTransition ?
       'transform 0.25s' :
       'none';

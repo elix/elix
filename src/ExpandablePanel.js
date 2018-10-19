@@ -4,12 +4,12 @@ import * as template from './template.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 import TransitionEffectMixin from './TransitionEffectMixin.js';
-import TransitionMixin from './TransitionMixin.js';
+import EffectMixin from './EffectMixin.js';
 
 
 const Base =
   OpenCloseMixin(
-  TransitionMixin(
+  EffectMixin(
   TransitionEffectMixin(
     ReactiveElement
   )));
@@ -30,7 +30,7 @@ const Base =
  * 
  * @inherits ReactiveElement
  * @mixes OpenCloseMixin
- * @mixes TransitionMixin
+ * @mixes EffectMixin
  * @mixes TransitionEffectMixin
  */
 class ExpandablePanel extends Base {
@@ -68,7 +68,7 @@ class ExpandablePanel extends Base {
     // https://developers.google.com/web/updates/2017/03/performant-expand-and-collapse.
     // Animating height does have the advantage of letting you set the height of
     // the panel's collapsed state by setting the panel's `min-height`.       
-    const showTransitions = this.state.enableTransitions;
+    const showTransitions = this.state.enableEffects;
     const transition = showTransitions && phase === 'during' ?
       'height 0.25s' :
       '';

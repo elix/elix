@@ -30,7 +30,7 @@ class CenteredStripOpacity extends CenteredStrip {
     const swipeFraction = this.state.swipeFraction || 0;
     const selectionFraction = sign * swipeFraction;
     const opacity = opacityForItemWithIndex(calcs.index, selectedIndex, selectionFraction);
-    const showTransition = this.state.enableTransitions && !swiping;
+    const showTransition = this.state.enableEffects && !swiping;
     const transitionDuration = this.state.transitionDuration / 1000;
     const transition = showTransition ? `opacity ${transitionDuration}s linear` : '';
 

@@ -2,21 +2,21 @@ import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import ClickSelectionMixin from './ClickSelectionMixin.js';
+import EffectMixin from './EffectMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 import ResizeMixin from './ResizeMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
-import TransitionMixin from './TransitionMixin.js';
 
 
 const Base =
   ClickSelectionMixin(
+  EffectMixin(
   LanguageDirectionMixin(
   ResizeMixin(
   SingleSelectionMixin(
   SlotItemsMixin(
-  TransitionMixin(
     ReactiveElement
   ))))));
 
@@ -29,11 +29,11 @@ const Base =
  * 
  * @inherits ReactiveElement
  * @mixes ClickSelectionMixin
+ * @mixes EffectMixin
  * @mixes LanguageDirectionMixin
  * @mixes ResizeMixin
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin
- * @mixes TransitionMixin
  */
 class CenteredStrip extends Base {
 
@@ -158,7 +158,7 @@ class CenteredStrip extends Base {
 
     const transform = `translateX(${translation}px)`;
 
-    const showTransition = this.state.enableTransitions && !swiping;
+    const showTransition = this.state.enableEffects && !swiping;
     const transition = showTransition ?
       'transform 0.25s' :
       'none';

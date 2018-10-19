@@ -1,7 +1,12 @@
 /**
- * @module TransitionMixin
+ * Simple foundation for component with visual effects
+ * 
+ * At present, this mixin's only responsibility to ensure that a component
+ * does not show visual effects when it is initially rendered.
+ * 
+ * @module EffectMixin
  */
-export default function TransitionMixin(Base) {
+export default function EffectMixin(Base) {
 
  // The class prototype added by the mixin.
  class Transition extends Base {
@@ -12,14 +17,14 @@ export default function TransitionMixin(Base) {
     // Once everything's finished rendering, enable transition effects.
     setTimeout(() => {
       this.setState({
-        enableTransitions: true
+        enableEffects: true
       });
     });
   }
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
-        enableTransitions: false
+        enableEffects: false
       });
     }
   }

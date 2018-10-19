@@ -3,10 +3,10 @@ import { getScrollableElement } from './scrolling.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import EffectMixin from './EffectMixin.js';
 import ProgressSpinner from './ProgressSpinner.js';
 import ReactiveElement from './ReactiveElement.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
-import TransitionMixin from './TransitionMixin.js';
 
 
 // Template for the default down arrow shown while pulling.
@@ -17,8 +17,8 @@ const downArrowTemplate = template.html`
 `;
 
 const Base =
+  EffectMixin(
   TouchSwipeMixin(
-  TransitionMixin(
     ReactiveElement
   ));
 
@@ -30,8 +30,8 @@ const Base =
  * threshold has been reached.
  * 
  * @inherits ReactiveElement
+ * @mixes EffectMixin
  * @mixes TouchSwipeMixin
- * @mixes TransitionMixin
  * @elementrole pullIndicator
  * @elementrole {ProgressSpinner} refreshingIndicator
  */
@@ -203,7 +203,7 @@ class PullToRefresh extends Base {
       y = Math.max(y, getSwipeThreshold(this));
     }
     const transform = `translate3D(0, ${y}px, 0)`;
-    const showTransition = this.state.enableTransitions && !swipingDown;
+    const showTransition = this.state.enableEffects && !swipingDown;
     const transition = showTransition ?
       'transform 0.25s' :
       'none';
