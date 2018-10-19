@@ -1,3 +1,4 @@
+import { getSuperProperty } from './workarounds.js';
 import * as symbols from './symbols.js';
 
 
@@ -48,7 +49,9 @@ export default function TrackpadSwipeMixin(Base) {
      * @type {HTMLElement}
      */
     get [symbols.swipeTarget]() {
-      return super[symbols.swipeTarget] || this;
+      // Next line is same as: const base = super[symbols.swipeTarget]
+      const base = getSuperProperty(this, TrackpadSwipe, symbols.swipeTarget);
+      return base || this;
     }
   }
 }

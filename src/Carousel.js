@@ -85,9 +85,11 @@ class Carousel extends Base {
   }
 
   get [symbols.swipeTarget]() {
+    // Next line is same as: const base = super[symbols.swipeTarget]
+    const base = getSuperProperty(this, Carousel, symbols.swipeTarget);
     return this.$.stage instanceof HTMLElement ?
       this.$.stage :
-      super[symbols.swipeTarget];
+      base;
   }
 
   get [symbols.template]() {

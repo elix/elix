@@ -1,3 +1,4 @@
+import { getSuperProperty } from './workarounds.js';
 import * as symbols from './symbols.js';
 
 
@@ -88,7 +89,9 @@ export default function TransitionEffectMixin(Base) {
      * @type {HTMLElement[]}
      */
     get [symbols.elementsWithTransitions]() {
-      return super[symbols.elementsWithTransitions] || [this];
+      // Next line is same as: const base = super[symbols.elementsWithTransitions]
+      const base = getSuperProperty(this, TransitionEffect, symbols.elementsWithTransitions);
+      return base || [this];
     }
     
     /**
