@@ -2,7 +2,7 @@ import './tests/AriaListMixin.tests.js';
 import './tests/AttributeMarshallingMixin.tests.js';
 import './tests/AutosizeTextarea.tests.js';
 import './tests/calendar.tests.js';
-import './tests/CalendarDayNamesHeader.tests';
+import './tests/CalendarDayNamesHeader.tests.js';
 import './tests/CalendarMonthDays.tests.js';
 import './tests/CalendarMonthYearHeader.tests.js';
 import './tests/CalendarWeek.tests.js';

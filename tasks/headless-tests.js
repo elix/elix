@@ -1,21 +1,8 @@
-const express = require('express');
 const getPort = require('get-port');
-const path = require('path');
 const puppeteer = require('puppeteer');
 const runInCi = process.argv.indexOf('--run-in-ci');
-const StaticServer = require('static-server');
+const testServer = require('./testServer.js');
 
-
-const startStaticHttpServer = async (port) => {
-  const app = express();
-  const rootPath = path.join(__dirname, '..');
-  app.use('/', express.static(rootPath));
-  let server;
-  await new Promise(resolve => {
-    server = app.listen(port, resolve);
-  });
-  return server;
-};
 
 const runTestsInHeadlessChrome = async (port) => {
   const argsNeededForTravisToWork = ['--no-sandbox']; // thx. see https://github.com/GoogleChrome/puppeteer/issues/536#issuecomment-324945531
@@ -36,7 +23,7 @@ const runTestsInHeadlessChrome = async (port) => {
 (async () => {
   try {
     const port = await getPort();
-    const server = await startStaticHttpServer(port);
+    const server = await testServer(port);
     const testResult = await runTestsInHeadlessChrome(port);
     if (testResult === 'OK') {
       console.log('Tests passed.');

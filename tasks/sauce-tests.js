@@ -1,8 +1,5 @@
-/*jslint node: true */
-'use strict';
-
 const saucelabs = require('sauce-test-runner');
-const StaticServer = require('static-server');
+const testServer = require('./testServer.js');
 
 const port = 9999;
 
@@ -12,7 +9,7 @@ const config = {
   urls: [`localhost:${port}/test/sauce-tests.html`],
   testname: 'Elix tests',
   framework: 'mocha',
-  throttled: 3,
+  // throttled: 3,
   sauceConfig: {
     'video-upload-on-pass': false
   },
@@ -55,28 +52,15 @@ const config = {
 };
 
 async function runTests() {
-  const server = new StaticServer({
-    rootPath: '.',
-    name: 'elix-sauce-server',
-    port: port,
-    host: '0.0.0.0'
-  });
-
   try {  
-    await new Promise((resolve) => {server.start(resolve);});
-  }
-  catch (e) {
-    console.error('Failed to start local http server');
-    process.exit(reportStatus);
-  }
-  
-  try {
+    const server = await testServer(port);
     await saucelabs(config);
+    server.close();
+    process.exit(reportStatus);
+  } catch (e) {
+    console.error(e);
+    process.exit(1);
   }
-  catch (e) {}
-
-  server.stop();    
-  process.exit(reportStatus);
 }
 
 runTests();
