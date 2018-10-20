@@ -84,6 +84,9 @@ export default function DialogModalityMixin(Base) {
 // Mark body as non-scrollable, to absorb space bar keypresses and other
 // means of scrolling the top-level document.
 function disableDocumentScrolling(element) {
+  if (!document.documentElement) {
+    return;
+  }
   const documentWidth = document.documentElement.clientWidth;
   const scrollBarWidth = window.innerWidth - documentWidth;
   element[previousBodyOverflowKey] = document.body.style.overflow;
@@ -98,6 +101,9 @@ function disableDocumentScrolling(element) {
 
 
 function enableDocumentScrolling(element) {
+  if (!document.documentElement) {
+    return;
+  }
   if (element[previousBodyOverflowKey] != null) {
     document.body.style.overflow = element[previousBodyOverflowKey];
     element[previousBodyOverflowKey] = null;

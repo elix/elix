@@ -70,7 +70,7 @@ class CalendarMonth extends Base {
    */
   get days() {
     if (!this.shadowRoot) {
-      return null;
+      return [];
     }
     /** @type {any} */
     const cast = this.$.monthDays;
@@ -194,7 +194,7 @@ class CalendarMonth extends Base {
    */
   get weeks() {
     if (!this.shadowRoot) {
-      return null;
+      return [];
     }
     /** @type {any} */
     const cast = this.$.monthDays;

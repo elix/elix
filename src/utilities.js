@@ -83,7 +83,10 @@ export function elementsFromPoint(element, x, y) {
     return document.elementsFromPoint(x, y);
   } else {
     // Microsoft Edge
-    const elements = document.msElementsFromPoint(x, y);
+
+    /** @type {any} */
+    const cast = document;
+    const elements = cast.msElementsFromPoint(x, y);
     return elements ?
       [...elements] :
       [];

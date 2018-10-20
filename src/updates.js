@@ -103,8 +103,11 @@ export function apply(element, updates) {
       if (key in element) {
         element[key] = value;
       } else {
+        const nodeName = element instanceof Element ?
+          element.localName :
+          'DocumentFragment';
         /* eslint-disable no-console */
-        console.warn(`Warning: attempted to set the "${key}" property of a ${element.localName}, which does not have such a property.`);
+        console.warn(`Warning: attempted to set the "${key}" property of a ${nodeName}, which does not have such a property.`);
       }
     }
   }

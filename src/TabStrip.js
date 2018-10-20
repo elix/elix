@@ -68,11 +68,14 @@ class TabStrip extends Base {
     // Does this component, or any of its assigned nodes, have focus?
     // This is a surprisingly hard question to answer.
     // Try finding the deepest active element, then walking up.
+    let focused = false;
     let activeElement = document.activeElement;
-    while (activeElement.shadowRoot && activeElement.shadowRoot.activeElement) {
-      activeElement = activeElement.shadowRoot.activeElement;
+    if (activeElement) {
+      while (activeElement.shadowRoot && activeElement.shadowRoot.activeElement) {
+        activeElement = activeElement.shadowRoot.activeElement;
+      }
+      focused = deepContains(this, activeElement);
     }
-    const focused = deepContains(this, activeElement);
 
     // Ensure the selected tab button has the focus.
     const selectedItem = this.selectedItem;

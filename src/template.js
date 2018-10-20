@@ -158,7 +158,8 @@ export function transmute(original, descriptor) {
     const replacements = [...original].map(node => transmute(node, descriptor));
     return replacements;
   } else if ((typeof descriptor === 'function' && original.constructor === descriptor) ||
-    (typeof descriptor === 'string' && original.localName === descriptor)) {
+    (typeof descriptor === 'string' && original instanceof Element && 
+      original.localName === descriptor)) {
     // Already correct type of element, no transmutation necessary.
     return original;
   } else {

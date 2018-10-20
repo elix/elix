@@ -204,7 +204,7 @@ class WrappedStandardElement extends ReactiveElement {
   /**
    * Returns a reference to the inner standard HTML element.
    *
-   * @type {HTMLElement}
+   * @type {Element}
    */
   get inner() {
     const result = this.$ && this.$.inner;

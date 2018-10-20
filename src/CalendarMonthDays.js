@@ -204,7 +204,7 @@ class CalendarMonthDays extends Base {
         this.$.week4,
         this.$.week5
       ] :
-      null;
+      [];
   }
 
 }
