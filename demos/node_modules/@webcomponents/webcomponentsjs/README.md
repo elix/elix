@@ -63,6 +63,18 @@ minimum polyfill bundle, using feature detection.
 
 `webcomponents-loader.js` can be loaded synchronously, or asynchronously depending on your needs.
 
+#### Inlining
+
+If you have inlined the source of `webcomponent-loader.js`, then you should specify `window.WebComponents.root` as the root from which to load the polyfills.
+For example:
+
+```html
+<script>
+  window.WebComponents = window.WebComponents || {};
+  window.WebComponents.root = 'node_modules/@webcomponents/webcomponentsjs/';
+</script>
+```
+
 #### Synchronous
 When loaded synchronously, `webcomponents-loader.js` behaves similarly to `webcomponents-bundle.js`.
 
