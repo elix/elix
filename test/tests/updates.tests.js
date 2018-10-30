@@ -254,4 +254,17 @@ describe("updates helpers", () => {
     assert.deepEqual(actual, expected);
   });
 
+  it("can apply updates to an element-valued property", () => {
+    const fixture = document.createElement('div');
+    const button = document.createElement('button');
+    fixture.button = button;
+    updates.apply(fixture, {
+      button: {
+        disabled: true
+      }
+    });
+    assert.equal(fixture.button, button);
+    assert(fixture.button.disabled);
+  });
+
 });

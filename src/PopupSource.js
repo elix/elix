@@ -469,16 +469,16 @@ class PopupSource extends Base {
         role
       },
       $: {
-        frame: {
-          style: {
-            'max-height': maxFrameHeight ? `${maxFrameHeight}px` : null,
-            'max-width': maxFrameWidth ? `${maxFrameWidth}px` : null
-          }
-        },
         popup: Object.assign(
           {
+            frame: {
+              style: {
+                'max-height': maxFrameHeight ? `${maxFrameHeight}px` : null,
+                'max-width': maxFrameWidth ? `${maxFrameWidth}px` : null
+              }
+            },
             opened: this.state.opened,
-            style: popupStyle
+            style: popupStyle,
           },
           'backdropRole' in this.$.popup && {
             backdropRole: this.backdropRole
@@ -495,31 +495,6 @@ class PopupSource extends Base {
         }
       }
     });
-  }
-
-  // HACK: Provide internal aliases for the inner backdrop and frame elements so
-  // that we can update them via `updates`.
-  // TODO: Find a better way to support updates of exposed subelements.
-  get $() {
-    const base = super.$;
-    /** @type {object} */
-    const result = new Proxy({}, {
-      /* eslint-disable no-unused-vars */
-      get(target, property, receiver) {
-        switch (property) {
-          case 'backdrop':
-          case 'frame': {
-            /** @type {any} */
-            const cast = base.popup;
-            return cast[property];
-          }
-        }
-        /** @type {any} */
-        const cast = property;
-        return base[cast];
-      }
-    });
-    return result;
   }
 
 }

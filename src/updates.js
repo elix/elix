@@ -82,7 +82,7 @@ const previousChildNodesKey = Symbol('previousChildNodes');
  * 
  *     element.foo = 'bar';
  * 
- * @param {(Element|DocumentFragment)} element - the element to update
+ * @param {Element} element - the element to update
  * @param {object} updates - the updates to apply
  */
 export function apply(element, updates) {
@@ -100,15 +100,7 @@ export function apply(element, updates) {
       applyFunction(element, value);
     } else {
       // Property with no special apply function; just set the property.
-      if (key in element) {
-        element[key] = value;
-      } else {
-        const nodeName = element instanceof Element ?
-          element.localName :
-          'DocumentFragment';
-        /* eslint-disable no-console */
-        console.warn(`Warning: attempted to set the "${key}" property of a ${nodeName}, which does not have such a property.`);
-      }
+      applyProperty(element, key, value);
     }
   }
 }
@@ -236,6 +228,35 @@ export function applyClasses(element, classes) {
   for (const className in classes) {
     const value = classes[className] || false;
     element.classList.toggle(className, value);
+  }
+}
+
+
+/**
+ * Apply the indicated value to the element property with the given name.
+ * 
+ * If the value is plain JavaScript object, the value will be applied using the
+ * [apply](#apply) function. Otherwise, the indicated element property will be
+ * set directly to the indicated value.
+ * 
+ * @param {Element} element 
+ * @param {string} name 
+ * @param {object} value 
+ */
+export function applyProperty(element, name, value) {
+  if (!(name in element)) {
+    const nodeName = element.localName;
+    /* eslint-disable no-console */
+    console.warn(`Warning: attempted to set the "${name}" property of a ${nodeName}, which does not have such a property.`);
+    return;
+  }
+  const isPlainObject = value != null && Object.getPrototypeOf(value) === Object.prototype;
+  if (isPlainObject) {
+    // Apply value as updates.
+    apply(element[name], value);
+  } else {
+    // Set value directly.
+    element[name] = value;
   }
 }
 
