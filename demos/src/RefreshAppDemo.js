@@ -40,6 +40,9 @@ class RefreshAppDemo extends ReactiveElement {
   }
 
   refresh() {
+    if ('vibrate' in navigator) {
+      navigator.vibrate(5);
+    }
     setTimeout(async () => {
       /** @type {any} */
       const cast = this.$.pullToRefresh;
