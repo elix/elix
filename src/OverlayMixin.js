@@ -52,6 +52,14 @@ export default function OverlayMixin(Base) {
       });
     }
 
+    // TODO: Document
+    get autoFocus() {
+      return this.state.autoFocus;
+    }
+    set autoFocus(autoFocus) {
+      this.setState({ autoFocus });
+    }
+
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
       openedChanged(this);
@@ -73,6 +81,12 @@ export default function OverlayMixin(Base) {
         this[appendedToDocumentKey] = false;
         this.parentNode.removeChild(this);
       }
+    }
+
+    get defaultState() {
+      return Object.assign({}, super.defaultState, {
+        autoFocus: true
+      });
     }
 
     /*
@@ -169,21 +183,23 @@ function maxZIndexInUse() {
 
 // Update the overlay following a change in opened state.
 function openedChanged(element) {
-  if (element.state.opened) {
-    // Opened
-    if (!element[restoreFocusToElementKey] && document.activeElement !== document.body) {
-      // Remember which element had the focus before we were opened.
-      element[restoreFocusToElementKey] = document.activeElement;
-    }
-    const elementToFocus = defaultFocus(element);
-    elementToFocus.focus();
-  } else {
-    // Closed
-    if (element[restoreFocusToElementKey]) {
-      // Restore focus to the element that had the focus before the overlay was
-      // opened.
-      element[restoreFocusToElementKey].focus();
-      element[restoreFocusToElementKey] = null;
+  if (element.state.autoFocus) {
+    if (element.state.opened) {
+      // Opened
+      if (!element[restoreFocusToElementKey] && document.activeElement !== document.body) {
+        // Remember which element had the focus before we were opened.
+        element[restoreFocusToElementKey] = document.activeElement;
+      }
+      const elementToFocus = defaultFocus(element);
+      elementToFocus.focus();
+    } else {
+      // Closed
+      if (element[restoreFocusToElementKey]) {
+        // Restore focus to the element that had the focus before the overlay was
+        // opened.
+        element[restoreFocusToElementKey].focus();
+        element[restoreFocusToElementKey] = null;
+      }
     }
   }
 }

@@ -1,27 +1,40 @@
 import './SeamlessButton.js';
-import { merge } from './updates.js';
 import { getSuperProperty } from './workarounds.js';
+import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import KeyboardMixin from './KeyboardMixin.js';
 import PopupSource from './PopupSource.js';
 
 
-class ComboBox extends PopupSource {
+const Base =
+  KeyboardMixin(
+    PopupSource
+  );
+
+
+class ComboBox extends Base {
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
-    this.$.toggleButton.addEventListener('click', () => {
+    this.$.input.addEventListener('blur', () => {
+      // If we're open and lose focus, then close.
+      if (this.opened) {
+        this[symbols.raiseChangeEvents] = true;
+        this.close();
+        this[symbols.raiseChangeEvents] = false;
+      }
+    });
+    this.$.toggleButton.addEventListener('focus', () => {
+      // Sometimes the button tries to take focus; don't let it.
+      this.$.input.focus();
+    });
+    this.$.toggleButton.addEventListener('mousedown', event => {
       this[symbols.raiseChangeEvents] = true;
       this.toggle();
-      this[symbols.raiseChangeEvents] = false;
-    });
-    this.$.input.addEventListener('keydown', event => {
-      this[symbols.raiseChangeEvents] = true;
-      const handled = handleInputKeydown(this, event);
-      if (handled) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
+      // event.preventDefault();
+      // event.stopPropagation();
+      this.$.input.focus();
       this[symbols.raiseChangeEvents] = false;
     });
   }
@@ -29,13 +42,37 @@ class ComboBox extends PopupSource {
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       horizontalAlign: 'stretch',
+      orientation: 'vertical',
+      role: 'combobox',
       sourceRole: 'div',
       tabindex: null
     });
   }
 
-  get [symbols.defaultFocus]() {
-    return this.$.input;
+  [symbols.keydown](event) {
+    let handled;
+
+    switch (event.key) {
+
+      // Up/Down arrow keys open the popup.
+      case 'ArrowDown':
+      case 'ArrowUp':
+        if (this.closed) {
+          this.open();
+          handled = true;
+        }
+        break;
+    
+      // Escape closes popup.
+      case 'Enter':
+      case 'Escape':
+        this.close();
+        handled = true;
+        break;
+    }
+
+    // Prefer mixin result if it's defined, otherwise use base result.
+    return handled || (super[symbols.keydown] && super[symbols.keydown](event));
   }
 
   get [symbols.template]() {
@@ -77,12 +114,12 @@ class ComboBox extends PopupSource {
 
         #toggleButton {
           align-items: center;
-          bottom: 1px;
+          bottom: 3px;
           display: flex;
           padding: 2px;
           position: absolute;
-          right: 1px;
-          top: 1px;
+          right: 3px;
+          top: 3px;
           width: 1.5em;
         }
 
@@ -98,13 +135,16 @@ class ComboBox extends PopupSource {
 
   // TODO: Refactor arrow stuff and share with MenuButton.
   get updates() {
+    const base = super.updates;
     const popupPosition = this.state.popupPosition;
-    // const itemRole = 'itemRole' in this.$.menu ? this.state.itemRole : null;
-    // const clone = this.selectedItem ?
-    //   this.selectedItem.cloneNode(true) :
-    //   null;
-    // const childNodes = clone ? clone.childNodes : [];
-    return merge(super.updates, {
+    const value = this.value;
+    const role = this.state.original && this.state.original.attributes.role ||
+      base.attributes && base.attributes.role ||
+      this.state.role;
+    return merge(base, {
+      attributes: {
+        role
+      },
       $: {
         downIcon: {
           style: {
@@ -113,15 +153,11 @@ class ComboBox extends PopupSource {
             margin: '0.25em'
           }
         },
-        // menu: Object.assign(
-        //   {
-        //     style: {
-        //       padding: 0
-        //     },
-        //   },
-        //   itemRole ? { itemRole } : null
-        // ),
+        input: {
+          value
+        },
         popup: {
+          autoFocus: false,
           style: {
             'flex-direction': 'column'
           }
@@ -132,32 +168,11 @@ class ComboBox extends PopupSource {
             fill: 'currentColor',
             margin: '0.25em'
           }
-        },
-        // value: {
-        //   childNodes
-        // }
+        }
       }
     });
   }
 
-}
-
-
-function handleInputKeydown(element, event) {
-  let handled;
-  switch (event.key) {
-
-    // Up/Down arrow keys open the popup.
-    case 'ArrowDown':
-    case 'ArrowUp':
-      if (element.closed) {
-        element.open();
-        handled = true;
-      }
-      break;
-  }
-
-  return handled;
 }
 
 
