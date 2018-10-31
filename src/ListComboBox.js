@@ -6,7 +6,6 @@ import * as template from './template.js';
 import ComboBox from './ComboBox.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
-import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 
@@ -14,11 +13,10 @@ import SlotItemsMixin from './SlotItemsMixin.js';
 const Base =
   DirectionSelectionMixin(
   KeyboardDirectionMixin(
-  SelectedItemTextValueMixin(
   SingleSelectionMixin(
   SlotItemsMixin(
     ComboBox
-  )))));
+  ))));
 
 
 // TODO: Roles
@@ -54,6 +52,8 @@ class ListComboBox extends Base {
 
     switch (event.key) {
       // Up/Down arrow keys open the popup.
+      // ComboBox also handles these keys, but we need to redefine them here so
+      // that they can take priority over KeyboardDirectionMixin.
       case 'ArrowDown':
       case 'ArrowUp':
         if (this.closed) {
@@ -65,6 +65,40 @@ class ListComboBox extends Base {
 
     // Prefer mixin result if it's defined, otherwise use base result.
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+  }
+
+  refineState(state) {
+    let result = super.refineState ? super.refineState(state) : true;
+
+    const selectedIndexChanged = state.selectedIndex >= 0 &&
+      state.selectedIndex !== this.state.selectedIndex;
+    const valueChanged = state.value !== this.state.value;
+    if (selectedIndexChanged || valueChanged) {
+      const items = this.itemsForState(state);
+      if (items) {
+        if (selectedIndexChanged) {
+          const selectedItem = items[state.selectedIndex];
+          const selectedItemText = selectedItem && selectedItem.textContent;
+          if (state.value !== selectedItemText) {
+            Object.assign(state, {
+              value: selectedItemText
+            });
+            result = false;
+          }
+        } else if (valueChanged) {
+          const texts = getTextsForItems(this, items);
+          const indexOfValue = texts.indexOf(state.value.toLowerCase());
+          if (state.selectedIndex !== indexOfValue) {
+            Object.assign(state, {
+              selectedIndex: indexOfValue
+            });
+            result = false;
+          }
+        }          
+      }
+    }
+
+    return result;
   }
 
   get [symbols.template]() {
@@ -100,6 +134,18 @@ class ListComboBox extends Base {
     });
   }
 
+}
+
+
+// TODO: Share with KeyboardPrefixSelectionMixin
+// Return an array of the text content (in lowercase) of all items.
+function getTextsForItems(element, items) {
+  const texts = Array.prototype.map.call(items, item => {
+    // const text = element[symbols.getItemText](item);
+    const text = item.textContent;
+    return text.toLowerCase();
+  });
+  return texts;
 }
 
 

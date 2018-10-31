@@ -17,6 +17,7 @@ class ComboBox extends Base {
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
+
     this.$.input.addEventListener('blur', () => {
       // If we're open and lose focus, then close.
       if (this.opened) {
@@ -25,10 +26,29 @@ class ComboBox extends Base {
         this[symbols.raiseChangeEvents] = false;
       }
     });
+
+    this.$.input.addEventListener('input', () => {
+      this[symbols.raiseChangeEvents] = true;
+      const value = this.$.input.value;
+      this.setState({ value });
+      this[symbols.raiseChangeEvents] = false;
+    })
+
+    // If the user clicks on the input and the popup is closed, open it.
+    // TODO: Review whether we should keep this.
+    this.$.input.addEventListener('mousedown', () => {
+      this[symbols.raiseChangeEvents] = true;
+      if (this.closed) {
+        this.open();
+      }
+      this[symbols.raiseChangeEvents] = false;
+    });
+
+    // Sometimes the button tries to take focus; don't let it.
     this.$.toggleButton.addEventListener('focus', () => {
-      // Sometimes the button tries to take focus; don't let it.
       this.$.input.focus();
     });
+
     this.$.toggleButton.addEventListener('mousedown', event => {
       this[symbols.raiseChangeEvents] = true;
       this.toggle();
@@ -45,7 +65,8 @@ class ComboBox extends Base {
       orientation: 'vertical',
       role: 'combobox',
       sourceRole: 'div',
-      tabindex: null
+      tabindex: null,
+      value: '',
     });
   }
 
@@ -158,6 +179,12 @@ class ComboBox extends Base {
         },
         popup: {
           autoFocus: false,
+          backdrop: {
+            style: {
+              // TODO: Would be better if we could set backdropRole to null
+              display: 'none'
+            }
+          },
           style: {
             'flex-direction': 'column'
           }
@@ -171,6 +198,13 @@ class ComboBox extends Base {
         }
       }
     });
+  }
+
+  get value() {
+    return this.state.value;
+  }
+  set value(value) {
+    this.setState({ value });
   }
 
 }
