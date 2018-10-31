@@ -1,4 +1,5 @@
-import { apply, merge } from './updates.js';
+import './SeamlessButton.js';
+import { merge } from './updates.js';
 import { getSuperProperty } from './workarounds.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
@@ -7,11 +8,34 @@ import PopupSource from './PopupSource.js';
 
 class ComboBox extends PopupSource {
 
+  componentDidMount() {
+    if (super.componentDidMount) { super.componentDidMount(); }
+    this.$.toggleButton.addEventListener('click', () => {
+      this[symbols.raiseChangeEvents] = true;
+      this.toggle();
+      this[symbols.raiseChangeEvents] = false;
+    });
+    this.$.input.addEventListener('keydown', event => {
+      this[symbols.raiseChangeEvents] = true;
+      const handled = handleInputKeydown(this, event);
+      if (handled) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      this[symbols.raiseChangeEvents] = false;
+    });
+  }
+
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       horizontalAlign: 'stretch',
-      sourceRole: 'div'
+      sourceRole: 'div',
+      tabindex: null
     });
+  }
+
+  get [symbols.defaultFocus]() {
+    return this.$.input;
   }
 
   get [symbols.template]() {
@@ -23,35 +47,47 @@ class ComboBox extends PopupSource {
     if (!sourceSlot) {
       throw `Couldn't find slot with name "source".`;
     }
-    const sourceSlotContent = template.html`
+    const sourceTemplate = template.html`
       <input id="input"></input>
-      <div id="arrowContainer">
+      <elix-seamless-button id="toggleButton" tabindex="-1">
         <svg id="downIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
           <path d="M 0 0 l5 5 5 -5 z"/>
         </svg>
         <svg id="upIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
           <path d="M 0 5 l5 -5 5 5 z"/>
         </svg>
-      </div>
+      </elix-seamless-button>
     `;
-    apply(sourceSlot, {
-      childNodes: sourceSlotContent.content.childNodes
-    });
+    template.replace(sourceSlot, sourceTemplate.content);
 
-    // HACK: Disable button styling
-    // TODO: Refactor button out of PopupSource into PopupButton
     const styleTemplate = template.html`
       <style>
         #source {
-          background: inherit;
-          border-style: inherit;
-          display: flex;
-          padding: 0;
+          position: relative;
         }
 
-        #arrowContainer {
+        #input {
+          box-sizing: border-box;
+          font-family: inherit;
+          font-size: inherit;
+          font-style: inherit;
+          font-weight: inherit;
+          padding: 2px 1.5em 2px 2px;
+        }
+
+        #toggleButton {
           align-items: center;
+          bottom: 1px;
           display: flex;
+          padding: 2px;
+          position: absolute;
+          right: 1px;
+          top: 1px;
+          width: 1.5em;
+        }
+
+        #toggleButton:hover {
+          background: #eee;
         }
       </style>
     `;
@@ -104,6 +140,24 @@ class ComboBox extends PopupSource {
     });
   }
 
+}
+
+
+function handleInputKeydown(element, event) {
+  let handled;
+  switch (event.key) {
+
+    // Up/Down arrow keys open the popup.
+    case 'ArrowDown':
+    case 'ArrowUp':
+      if (element.closed) {
+        element.open();
+        handled = true;
+      }
+      break;
+  }
+
+  return handled;
 }
 
 

@@ -4,7 +4,7 @@ import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import Menu from './Menu.js';
-import PopupSource from './PopupSource.js';
+import PopupButton from './PopupButton.js';
 
 
 const documentMouseupListenerKey = Symbol('documentMouseupListener');
@@ -16,7 +16,7 @@ const documentMouseupListenerKey = Symbol('documentMouseupListener');
  * @inherits PopupSource
  * @elementrole {Menu} menu
  */
-class MenuButton extends PopupSource {
+class MenuButton extends PopupButton {
 
   [symbols.beforeUpdate]() {
     const menuChanged = this[symbols.renderedRoles].menuRole !== this.state.menuRole;
