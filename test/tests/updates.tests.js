@@ -67,49 +67,6 @@ describe("updates helpers", () => {
     assert.equal(fixture.style.color, 'green');
   });
 
-  it("updates.merge with no arguments returns an empty object", () => {
-    const fixture = updates.merge();
-    assert.deepEqual(fixture, {});
-  });
-
-  it("updates.merge merges multiple updates dictionaries together", () => {
-    const updates1 = {
-      attributes: {
-        'aria-selected': 'false'
-      },
-      classes: {
-        bar: true
-      },
-      style: {
-        'background-color': 'gray',
-        color: 'black'
-      },
-      customProperty0: 'Hello',
-      customProperty1: 0
-    };
-    const updates2 = {
-      attributes: {
-        'aria-selected': 'true'
-      },
-      classes: {
-        foo: true
-      },
-      style: {
-        color: 'red'
-      },
-      customProperty1: 1,
-      customProperty2: true
-    };
-    const merged = updates.merge(updates1, updates2);
-    assert.equal(merged.attributes['aria-selected'], 'true');
-    assert.deepEqual(merged.classes, { bar: true, foo: true });
-    assert.equal(merged.style['background-color'], 'gray');
-    assert.equal(merged.style.color, 'red');
-    assert.equal(merged.customProperty0, 'Hello');
-    assert.equal(merged.customProperty1, 1);
-    assert.equal(merged.customProperty2, true);
-  });
-
   it("updates.applyAttribute handles regular attributes", () => {
     const fixture = document.createElement('div');
     updates.applyAttribute(fixture, 'aria-selected', 'true');
@@ -194,6 +151,84 @@ describe("updates helpers", () => {
     assert.equal(fixture.$.child.getAttribute('aria-label'), 'Label');
   });
 
+  it("can apply updates to an element-valued property", () => {
+    const fixture = document.createElement('div');
+    const button = document.createElement('button');
+    fixture.button = button;
+    updates.apply(fixture, {
+      button: {
+        disabled: true
+      }
+    });
+    assert.equal(fixture.button, button);
+    assert(fixture.button.disabled);
+  });
+
+  it("updates.merge with no arguments returns an empty object", () => {
+    const fixture = updates.merge();
+    assert.deepEqual(fixture, {});
+  });
+
+  it("updates.merge merges multiple updates dictionaries together", () => {
+    const updates1 = {
+      attributes: {
+        'aria-selected': 'false'
+      },
+      classes: {
+        bar: true
+      },
+      style: {
+        'background-color': 'gray',
+        color: 'black'
+      },
+      customProperty0: 'Hello',
+      customProperty1: 0,
+      exposedSubelement: {
+        property0: true,
+        property1: true
+      }
+    };
+    const updates2 = {
+      attributes: {
+        'aria-selected': 'true'
+      },
+      classes: {
+        foo: true
+      },
+      style: {
+        color: 'red'
+      },
+      customProperty1: 1,
+      customProperty2: true,
+      exposedSubelement: {
+        property0: false,
+        property2: true
+      }
+    };
+    const merged = updates.merge(updates1, updates2);
+    assert.deepEqual(merged, {
+      attributes: {
+        'aria-selected': 'true'
+      },
+      classes: {
+        bar: true,
+        foo: true
+      },
+      customProperty0: 'Hello',
+      customProperty1: 1,
+      customProperty2: true,
+      exposedSubelement: {
+        property0: false,
+        property1: true,
+        property2: true
+      },
+      style: {
+        'background-color': 'gray',
+        color: 'red'
+      }
+    });
+  });
+
   it("merge can merge $ updates", () => {
     const updates1 = {
       $: {
@@ -252,19 +287,6 @@ describe("updates helpers", () => {
       }
     };
     assert.deepEqual(actual, expected);
-  });
-
-  it("can apply updates to an element-valued property", () => {
-    const fixture = document.createElement('div');
-    const button = document.createElement('button');
-    fixture.button = button;
-    updates.apply(fixture, {
-      button: {
-        disabled: true
-      }
-    });
-    assert.equal(fixture.button, button);
-    assert(fixture.button.disabled);
   });
 
 });

@@ -18,13 +18,6 @@
  */
 
 
-export const mergedProperties = {
-  '$': true,
-  'attributes': true,
-  'classes': true,
-  'style': true
-};
-
 export const booleanAttributes = {
   checked: true,
   defer: true,
@@ -250,8 +243,7 @@ export function applyProperty(element, name, value) {
     console.warn(`Warning: attempted to set the "${name}" property of a ${nodeName}, which does not have such a property.`);
     return;
   }
-  const isPlainObject = value != null && Object.getPrototypeOf(value) === Object.prototype;
-  if (isPlainObject) {
+  if (isPlainObject(value)) {
     // Apply value as updates.
     apply(element[name], value);
   } else {
@@ -368,23 +360,30 @@ export function currentStyles(element) {
 }
 
 
+function isPlainObject(o) {
+  return o != null && Object.getPrototypeOf(o) === Object.prototype
+}
+
+
 /**
  * Merge multiple sets of updates into a single update dictionary.
  * 
  * This is similar to `Object.assign`, but:
  * * A new dictionary is always returned instead of merging into the first
  *   argument.
- * * The special keys `attributes`, `childNodes`, `classes`, `style`, `$`
- *   are handled with a deep merge instead of a shallow merge.
+ * * The merge is a deep instead of shallow.
  * 
  * Example:
  * 
- *     merge({
- *       attributes: { role: 'listbox' },
- *       classes: { foo: true, bar: true }
- *     }, {
- *       classes: { foo: false, baz: true }
- *     });
+ *     merge(
+ *       {
+ *         attributes: { role: 'listbox' },
+ *         classes: { foo: true, bar: true }
+ *       },
+ *       {
+ *         classes: { foo: false, baz: true }
+ *       }
+ *     );
  * 
  * returns
  * 
@@ -401,53 +400,13 @@ export function merge(...sources) {
   sources.forEach(source => {
     if (source) {
       for (const key in source) {
-        const value = source[key];
-        if (!mergedProperties[key]) {
-          // Regular property overwrites existing value.
-          result[key] = value;
-        } else if (key === '$') {
-          // Subelement updates requires deep (recursive) merge.
-          result[key] = mergeSubelementUpdates(result[key], value);
-        } else if (result[key]) {
-          // Other special property requires shallow merge.
-          result[key] = Object.assign({}, result[key], value);
-        } else {
-          // Key doesn't exist on result yet, no need to merge.
-          result[key] = value;
-        }
+        result[key] = result[key] && isPlainObject(source[key]) ?
+          // Merge object.
+          merge(result[key], source[key]) :
+          // No need to merge.
+          source[key];
       }
     }
   })
-  return result;
-}
-
-
-/*
- * Return the merger of two sets of `$` updates for subelements, where each
- * set is like { subelement1: {...updates}, subelement2: {...updates}, ...}.
- * 
- * Given
- * 
- *   { foo: { style: { background: 'black', color: 'gray' }}}
- * 
- * and 
- * 
- *   { foo: { style: { color: 'red' }}}
- * 
- * This returns
- * 
- *   { foo: { style: { background: 'black', color: 'red' }}}
- */
-function mergeSubelementUpdates(updates1, updates2) {
-  const result = Object.assign({}, updates1);
-  for (const element in updates2) {
-    result[element] = result[element] ?
-
-      // Merge subelement updates.
-      merge(result[element], updates2[element]) :
-    
-      // Subelement only exists on updates2, so no need to merge.
-      updates2[element];
-  }
   return result;
 }
