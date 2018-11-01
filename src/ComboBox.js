@@ -13,6 +13,9 @@ const Base =
   );
 
 
+/**
+ * @elementrole {'input'} input
+ */
 class ComboBox extends Base {
 
   [symbols.beforeUpdate]() {
@@ -151,7 +154,6 @@ class ComboBox extends Base {
           font-size: inherit;
           font-style: inherit;
           font-weight: inherit;
-          padding: 2px 1.5em 2px 2px;
         }
 
         #toggleButton {
@@ -183,47 +185,75 @@ class ComboBox extends Base {
     const role = this.state.original && this.state.original.attributes.role ||
       base.attributes && base.attributes.role ||
       this.state.role;
-    return merge(base, {
-      attributes: {
-        role
-      },
-      $: {
-        downIcon: {
-          style: {
-            display: popupPosition === 'below' ? 'block' : 'none',
-            fill: 'currentColor',
-            margin: '0.25em'
-          }
+    
+    // We want to style the inner input if it's been created with
+    // WrappedStandardElement, otherwise style the input directly.
+    const hasInnerInput = 'inner' in this.$.input;
+    const inputUpdates = {
+      style: {
+        padding: '2px 1.5em 2px 2px'
+      }
+    }
+
+    return merge(
+      base,
+      {
+        attributes: {
+          role
         },
-        input: {
-          value
-        },
-        popup: {
-          autoFocus: false,
-          backdrop: {
+        $: {
+          downIcon: {
             style: {
-              // TODO: Would be better if we could set backdropRole to null
-              display: 'none'
+              display: popupPosition === 'below' ? 'block' : 'none',
+              fill: 'currentColor',
+              margin: '0.25em'
             }
           },
-          frame: {
-            style: {
-              display: 'flex'
+          input: {
+            value,
+            inner: {
+
             }
           },
-          style: {
-            'flex-direction': 'column'
-          }
-        },
-        upIcon: {
-          style: {
-            display: popupPosition === 'above' ? 'block' : 'none',
-            fill: 'currentColor',
-            margin: '0.25em'
+          popup: {
+            autoFocus: false,
+            backdrop: {
+              style: {
+                // TODO: Would be better if we could set backdropRole to null
+                display: 'none'
+              }
+            },
+            frame: {
+              style: {
+                display: 'flex'
+              }
+            },
+            style: {
+              'flex-direction': 'column'
+            }
+          },
+          upIcon: {
+            style: {
+              display: popupPosition === 'above' ? 'block' : 'none',
+              fill: 'currentColor',
+              margin: '0.25em'
+            }
           }
         }
+      },
+      hasInnerInput && {
+        $: {
+          input: {
+            inner: inputUpdates
+          }
+        }
+      },
+      !hasInnerInput && {
+        $: {
+          input: inputUpdates
+        }
       }
-    });
+    );
   }
 
   get value() {
