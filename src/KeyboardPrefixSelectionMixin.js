@@ -55,19 +55,6 @@ export default function KeyboardPrefixSelectionMixin(Base) {
       resetTypedPrefix(this);
     }
 
-    get defaultState() {
-      return Object.assign({}, super.defaultState, {
-        itemsForTexts: null,
-        texts: null
-      });
-    }
-
-    // Default implementation returns an item's `alt` attribute or its
-    // `textContent`, in that order.
-    [symbols.getItemText](item) {
-      return item.getAttribute('alt') || item.textContent;
-    }
-
     [symbols.keydown](event) {
       let handled;
 
@@ -92,22 +79,6 @@ export default function KeyboardPrefixSelectionMixin(Base) {
       return handled || (super[symbols.keydown] && super[symbols.keydown](event));
     }
 
-    refineState(state) {
-      let result = super.refineState ? super.refineState(state) : true;
-      const items = state.items || null;
-      const itemsChanged = items !== state.itemsForTexts;
-      if (itemsChanged) {
-        const texts = getTextsForItems(this, items);
-        Object.freeze(texts);
-        Object.assign(state, {
-          texts,
-          itemsForTexts: items
-        });
-        result = false;
-      }
-      return result;
-    }
-
     /**
      * Select the first item whose text content begins with the given prefix.
      *
@@ -119,8 +90,10 @@ export default function KeyboardPrefixSelectionMixin(Base) {
       if (prefix == null || prefix.length === 0) {
         return false;
       }
+      // Find item that begins with the prefix. Ignore case.
+      const searchText = prefix.toLowerCase();
       const selectedIndex = this.state.texts.findIndex(text => 
-        text.substr(0, prefix.length) === prefix
+        text.substr(0, prefix.length).toLowerCase() === searchText
       );
       if (selectedIndex >= 0) {
         const previousIndex = this.selectedIndex;
@@ -133,15 +106,6 @@ export default function KeyboardPrefixSelectionMixin(Base) {
   }
 
   return KeyboardPrefixSelection;
-}
-
-// Return an array of the text content (in lowercase) of all items.
-function getTextsForItems(component, items) {
-  const texts = Array.prototype.map.call(items, item => {
-    const text = component[symbols.getItemText](item);
-    return text.toLowerCase();
-  });
-  return texts;
 }
 
 // Handle the Backspace key: remove the last character from the prefix.
@@ -157,7 +121,7 @@ function handleBackspace(element) {
 // Add a plain character to the prefix.
 function handlePlainCharacter(element, char) {
   const prefix = element[typedPrefixKey] || '';
-  element[typedPrefixKey] = prefix + char.toLowerCase();
+  element[typedPrefixKey] = prefix + char;
   element.selectItemWithTextPrefix(element[typedPrefixKey]);
   setPrefixTimeout(element);
 }
