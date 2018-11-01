@@ -88,6 +88,10 @@ export default function ShadowTemplateMixin(Base) {
         this[shadowReferencesKey] = new Proxy({}, {
           /* eslint-disable no-unused-vars */
           get(target, property, receiver) {
+            if (!element.shadowRoot) {
+              /* eslint-disable no-console */
+              console.warn(`Tried to find shadow element "${property}" before the shadow root was rendered.`);
+            }
             return element.shadowRoot.getElementById(property);
           }
         });

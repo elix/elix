@@ -4,14 +4,17 @@ import WrappedStandardElement from '../../src/WrappedStandardElement.js';
 const WrappedA = WrappedStandardElement.wrap('a');
 customElements.define('wrapped-a', WrappedA);
 
-const WrappedImg = WrappedStandardElement.wrap('img');
-customElements.define('wrapped-img', WrappedImg);
+const WrappedButton = WrappedStandardElement.wrap('button');
+customElements.define('wrapped-button', WrappedButton);
 
 const WrappedDiv = WrappedStandardElement.wrap('div');
 customElements.define('wrapped-div', WrappedDiv);
 
-const WrappedButton = WrappedStandardElement.wrap('button');
-customElements.define('wrapped-button', WrappedButton);
+const WrappedImg = WrappedStandardElement.wrap('img');
+customElements.define('wrapped-img', WrappedImg);
+
+const WrappedInput = WrappedStandardElement.wrap('input');
+customElements.define('wrapped-input', WrappedInput);
 
 
 describe("WrappedStandardElement", () => {
@@ -111,6 +114,15 @@ describe("WrappedStandardElement", () => {
   it("generates static observedAttributes property for attributes on the wrapped element", () => {
     const attributes = WrappedButton.observedAttributes;
     assert(attributes.indexOf('disabled') >= 0);
+  });
+
+  it("delegates methods", async () => {
+    const fixture = new WrappedInput();
+    fixture.value = "Hello";
+    container.appendChild(fixture);
+    fixture.setSelectionRange(1, 4);
+    assert.equal(fixture.selectionStart, 1);
+    assert.equal(fixture.selectionEnd, 4);
   });
 
 });

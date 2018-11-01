@@ -149,7 +149,7 @@ class WrappedStandardElement extends ReactiveElement {
   }
   set ariaLabel(label) {
     // Propagate the ARIA label to the inner textarea.
-    this.setInnerAttribute('aria-label', label);
+    this.setInnerProperty('aria-label', label);
   }
 
   componentDidMount() {
@@ -193,7 +193,7 @@ class WrappedStandardElement extends ReactiveElement {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      innerAttributes: {}
+      innerProperties: {}
     });
   }
 
@@ -215,20 +215,21 @@ class WrappedStandardElement extends ReactiveElement {
     return result;
   }
   
-  getInnerAttribute(name) {
-    // Prefer internal state value, which may not have rendered yet.
-    const value = this.state.innerAttributes[name];
-    return value !== undefined ? value : this.inner[name];
+  getInnerProperty(name) {
+    // If we haven't rendered yet, use internal state value.
+    return this.shadowRoot ?
+      this.inner[name] :
+      this.state.innerProperties[name];
   }
 
-  setInnerAttribute(name, value) {
+  setInnerProperty(name, value) {
     // Special case for boolean attributes, which may be passed as strings via
     // calls to setAttribute.
     const cast = castPotentialBooleanAttribute(name, value);
-    const innerAttributes = Object.assign({}, this.state.innerAttributes, {
+    const innerProperties = Object.assign({}, this.state.innerProperties, {
       [name]: cast
     });
-    this.setState({ innerAttributes });
+    this.setState({ innerProperties });
   }
 
   shouldComponentUpdate(nextState) {
@@ -238,7 +239,7 @@ class WrappedStandardElement extends ReactiveElement {
     }
     // Do a shallow prop comparison of inner properties too.
     for (const key in nextState.inner) {
-      if (nextState[key] !== this.state.innerAttributes[key]) {
+      if (nextState[key] !== this.state.innerProperties[key]) {
         return true;
       }
     }
@@ -285,9 +286,7 @@ class WrappedStandardElement extends ReactiveElement {
   get updates() {
     return merge(super.updates, {
       $: {
-        inner: {
-          attributes: this.state.innerAttributes
-        }
+        inner: this.state.innerProperties
       }
     });
   }
@@ -318,8 +317,21 @@ class WrappedStandardElement extends ReactiveElement {
     const names = Object.getOwnPropertyNames(extendsPrototype);
     names.forEach(name => {
       const descriptor = Object.getOwnPropertyDescriptor(extendsPrototype, name);
-      const delegate = createPropertyDelegate(name, descriptor);
-      Object.defineProperty(Wrapped.prototype, name, delegate);
+      if (!descriptor) {
+        return;
+      }
+      let delegate;
+      if (typeof descriptor.value === 'function') {
+        if (name !== 'constructor') {
+          delegate = createMethodDelegate(name, descriptor);
+        }
+      } else if (typeof descriptor.get === 'function' ||
+        typeof descriptor.set === 'function') {
+        delegate = createPropertyDelegate(name, descriptor);
+      }
+      if (delegate) {
+        Object.defineProperty(Wrapped.prototype, name, delegate);
+      }
     });
 
     return Wrapped;
@@ -342,19 +354,33 @@ function castPotentialBooleanAttribute(attributeName, value) {
 }
 
 
-function createPropertyDelegate(name, descriptor) {
+function createMethodDelegate(name, descriptor) {
+  const value = function(...args) {
+    this.inner[name](...args);
+  };
   const delegate = {
     configurable: descriptor.configurable,
     enumerable: descriptor.enumerable,
+    value,
+    writable: descriptor.writable
+  };
+  return delegate;
+}
+
+
+function createPropertyDelegate(name, descriptor) {
+  const delegate = {
+    configurable: descriptor.configurable,
+    enumerable: descriptor.enumerable
   };
   if (descriptor.get) {
     delegate.get = function() {
-      return this.getInnerAttribute(name); 
+      return this.getInnerProperty(name);
     };
   }
   if (descriptor.set) {
-    delegate.set = function (value) {
-      this.setInnerAttribute(name, value);
+    delegate.set = function(value) {
+      this.setInnerProperty(name, value);
     };
   }
   if (descriptor.writable) {

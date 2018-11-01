@@ -13,6 +13,22 @@ const Base =
 // Or name this AutocompleteInput?
 class AutoCompleteInput extends Base {
 
+  componentDidUpdate(previousState) {
+    if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
+
+    if (this.state.autoCompleteStart) {
+      // We've finished rendering new auto-completed text.
+      // Leave that selected.
+      this.setSelectionRange(
+        this.state.autoCompleteStart,
+        this.value.length
+      );
+      this.setState({
+        autoCompleteStart: null
+      });
+    }
+  }
+
   // Keydown gives the best AutoComplete performance and behavior: among other
   // things, the AutoComplete happens as soon as the user begins typing.
   [symbols.keydown](event) {
@@ -38,14 +54,10 @@ class AutoCompleteInput extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      autoCompleteStart: null,
       tabindex: null,
       texts: []
     });
-  }
-
-  // TODO: WrappedStandardElement should do this for us.
-  setSelectionRange(selectionStart, selectionEnd, selectionDirection) {
-    this.$.inner.setSelectionRange(selectionStart, selectionEnd, selectionDirection);
   }
 
   get texts() {
@@ -53,14 +65,6 @@ class AutoCompleteInput extends Base {
   }
   set texts(texts) {
     this.setState({ texts });
-  }
-
-  // TODO: Have WrappedStandardElement do this instead of trying to setAttribute.
-  get value() {
-    return this.$.inner.value;
-  }
-  set value(value) {
-    this.$.inner.value = value;
   }
 
 }
@@ -80,8 +84,10 @@ function autoComplete(element) {
   // Complete the match.
   element.value = match;
 
-  // Leave the auto-completed portion selected.
-  element.setSelectionRange(value.length, match.length);
+  // Arrange to leave the auto-completed portion selected.
+  element.setState({
+    autoCompleteStart: value.length
+  });
 }
 
 
