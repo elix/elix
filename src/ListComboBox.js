@@ -5,18 +5,16 @@ import * as symbols from './symbols.js';
 import * as template from './template.js';
 import ComboBox from './ComboBox.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
-import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 
 
 const Base =
   DirectionSelectionMixin(
-  KeyboardDirectionMixin(
   SingleSelectionMixin(
   SlotItemsMixin(
     ComboBox
-  ))));
+  )));
 
 
 // TODO: Roles
@@ -47,20 +45,26 @@ class ListComboBox extends Base {
     });
   }
 
+  // We do our own handling of the Up and Down arrow keys, rather than relying
+  // on KeyboardDirectionMixin. The latter supports Home and End, and we don't
+  // want to handle those -- we want to let the text input handle them.
   [symbols.keydown](event) {
     let handled;
 
     switch (event.key) {
-      // Up/Down arrow keys open the popup.
-      // ComboBox also handles these keys, but we need to redefine them here so
-      // that they can take priority over KeyboardDirectionMixin.
+
       case 'ArrowDown':
-      case 'ArrowUp':
-        if (this.closed) {
-          this.open();
-          handled = true;
+        if (this.opened) {
+          handled = event.altKey ? this[symbols.goEnd]() : this[symbols.goDown]();
         }
         break;
+
+      case 'ArrowUp':
+        if (this.opened) {
+          handled = event.altKey ? this[symbols.goStart]() : this[symbols.goUp]();
+        }
+        break;
+
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
