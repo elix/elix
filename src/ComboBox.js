@@ -185,6 +185,11 @@ class ComboBox extends Base {
               display: 'none'
             }
           },
+          frame: {
+            style: {
+              display: 'flex'
+            }
+          },
           style: {
             'flex-direction': 'column'
           }

@@ -110,6 +110,7 @@ class ListComboBox extends Base {
       <style>
         #list {
           border: none;
+          flex: 1;
         }
       </style>
       <elix-list-box id="list" tabindex="-1">
