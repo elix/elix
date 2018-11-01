@@ -15,34 +15,43 @@ const Base =
 
 class ComboBox extends Base {
 
+  [symbols.beforeUpdate]() {
+    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+    if (this[symbols.renderedRoles].inputRole !== this.state.inputRole) {
+      template.transmute(this.$.input, this.state.inputRole);
+
+      this.$.input.addEventListener('blur', () => {
+        // If we're open and lose focus, then close.
+        if (this.opened) {
+          this[symbols.raiseChangeEvents] = true;
+          this.close();
+          this[symbols.raiseChangeEvents] = false;
+        }
+      });
+  
+      this.$.input.addEventListener('input', () => {
+        this[symbols.raiseChangeEvents] = true;
+        const value = this.$.input.value;
+        this.setState({ value });
+        this[symbols.raiseChangeEvents] = false;
+      })
+  
+      // If the user clicks on the input and the popup is closed, open it.
+      // TODO: Review whether we should keep this.
+      this.$.input.addEventListener('mousedown', () => {
+        this[symbols.raiseChangeEvents] = true;
+        if (this.closed) {
+          this.open();
+        }
+        this[symbols.raiseChangeEvents] = false;
+      });
+  
+      this[symbols.renderedRoles].inputRole = this.state.inputRole;
+    }
+  }
+
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
-
-    this.$.input.addEventListener('blur', () => {
-      // If we're open and lose focus, then close.
-      if (this.opened) {
-        this[symbols.raiseChangeEvents] = true;
-        this.close();
-        this[symbols.raiseChangeEvents] = false;
-      }
-    });
-
-    this.$.input.addEventListener('input', () => {
-      this[symbols.raiseChangeEvents] = true;
-      const value = this.$.input.value;
-      this.setState({ value });
-      this[symbols.raiseChangeEvents] = false;
-    })
-
-    // If the user clicks on the input and the popup is closed, open it.
-    // TODO: Review whether we should keep this.
-    this.$.input.addEventListener('mousedown', () => {
-      this[symbols.raiseChangeEvents] = true;
-      if (this.closed) {
-        this.open();
-      }
-      this[symbols.raiseChangeEvents] = false;
-    });
 
     this.$.toggleButton.addEventListener('mousedown', event => {
       this[symbols.raiseChangeEvents] = true;
@@ -60,12 +69,26 @@ class ComboBox extends Base {
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       horizontalAlign: 'stretch',
+      inputRole: 'input',
       orientation: 'vertical',
       role: 'combobox',
       sourceRole: 'div',
       tabindex: null,
       value: '',
     });
+  }
+
+  /**
+   * The class, tag, or template used to create the input element.
+   * 
+   * @type {function|string|HTMLTemplateElement}
+   * @default 'input'
+   */
+  get inputRole() {
+    return this.state.inputRole;
+  }
+  set inputRole(inputRole) {
+    this.setState({ inputRole });
   }
 
   [symbols.keydown](event) {

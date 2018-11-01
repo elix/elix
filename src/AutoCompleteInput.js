@@ -1,3 +1,5 @@
+import { getSuperProperty } from './workarounds.js';
+import { html } from './template.js';
 import * as symbols from './symbols.js';
 import KeyboardMixin from "./KeyboardMixin.js";
 import WrappedStandardElement from "./WrappedStandardElement.js";
@@ -26,6 +28,11 @@ class AutoCompleteInput extends Base {
       this.setState({
         autoCompleteStart: null
       });
+
+      // Dispatch an input event so that listeners can process the
+      // auto-completed text.
+      const event = new InputEvent('input');
+      this.dispatchEvent(event);
     }
   }
 
@@ -58,6 +65,23 @@ class AutoCompleteInput extends Base {
       tabindex: null,
       texts: []
     });
+  }
+
+  get [symbols.template]() {
+    // Next line is same as: const result = super[symbols.template]
+    const result = getSuperProperty(this, AutoCompleteInput, symbols.template);
+    const styleTemplate = html`
+      <style>
+        #inner {
+          font-family: inherit;
+          font-size: inherit;
+          font-style: inherit;
+          font-weight: inherit;
+        }
+      </style>
+    `;
+    result.content.appendChild(styleTemplate.content);
+    return result;
   }
 
   get texts() {

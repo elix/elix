@@ -1,3 +1,4 @@
+import './AutoCompleteInput.js';
 import './ListBox.js';
 import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
@@ -5,19 +6,25 @@ import * as symbols from './symbols.js';
 import * as template from './template.js';
 import ComboBox from './ComboBox.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
+import ItemsTextMixin from './ItemsTextMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
+import AutoCompleteInput from './AutoCompleteInput.js';
 
 
 const Base =
   DirectionSelectionMixin(
+  ItemsTextMixin(
   SingleSelectionMixin(
   SlotItemsMixin(
     ComboBox
-  )));
+  ))));
 
 
-// TODO: Roles
+// TODO: Remaining roles
+/**
+ * @elementrole {AutoCompleteInput} input
+ */
 class ListComboBox extends Base {
 
   componentDidMount() {
@@ -42,6 +49,12 @@ class ListComboBox extends Base {
         this.close();
         this[symbols.raiseChangeEvents] = false;
       }
+    });
+  }
+
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      inputRole: AutoCompleteInput
     });
   }
 
@@ -90,11 +103,13 @@ class ListComboBox extends Base {
             result = false;
           }
         } else if (valueChanged) {
-          const texts = getTextsForItems(this, items);
-          const indexOfValue = texts.indexOf(state.value.toLowerCase());
-          if (state.selectedIndex !== indexOfValue) {
+          const searchText = state.value.toLowerCase();
+          const selectedIndex = this.state.texts.findIndex(text => 
+            text.toLowerCase() === searchText
+          );
+          if (state.selectedIndex !== selectedIndex) {
             Object.assign(state, {
-              selectedIndex: indexOfValue
+              selectedIndex
             });
             result = false;
           }
@@ -130,27 +145,25 @@ class ListComboBox extends Base {
   }
 
   get updates() {
-    return merge(super.updates, {
-      $: {
-        list: {
-          selectedIndex: this.state.selectedIndex
+    return merge(
+      super.updates,
+      {
+        $: {
+          list: {
+            selectedIndex: this.state.selectedIndex
+          }
+        }
+      },
+      'texts' in this.$.input && {
+        $: {
+          input: {
+            texts: this.state.texts
+          }
         }
       }
-    });
+    );
   }
 
-}
-
-
-// TODO: Share with KeyboardPrefixSelectionMixin
-// Return an array of the text content (in lowercase) of all items.
-function getTextsForItems(element, items) {
-  const texts = Array.prototype.map.call(items, item => {
-    // const text = element[symbols.getItemText](item);
-    const text = item.textContent;
-    return text.toLowerCase();
-  });
-  return texts;
 }
 
 
