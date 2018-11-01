@@ -44,17 +44,15 @@ class ComboBox extends Base {
       this[symbols.raiseChangeEvents] = false;
     });
 
-    // Sometimes the button tries to take focus; don't let it.
-    this.$.toggleButton.addEventListener('focus', () => {
-      this.$.input.focus();
-    });
-
     this.$.toggleButton.addEventListener('mousedown', event => {
       this[symbols.raiseChangeEvents] = true;
       this.toggle();
-      // event.preventDefault();
-      // event.stopPropagation();
       this.$.input.focus();
+      // The toggle button may try to grab focus by default; we prevent that to
+      // keep the focus on the input, and to avoid having PopupModalityMixin
+      // immediately close the popup if the button gets focus.
+      event.preventDefault();
+      event.stopPropagation();
       this[symbols.raiseChangeEvents] = false;
     });
   }

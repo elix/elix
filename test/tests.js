@@ -1,5 +1,6 @@
 import './tests/AriaListMixin.tests.js';
 import './tests/AttributeMarshallingMixin.tests.js';
+import './tests/AutoCompleteInput.tests.js';
 import './tests/AutosizeTextarea.tests.js';
 import './tests/calendar.tests.js';
 import './tests/CalendarDayNamesHeader.tests.js';
