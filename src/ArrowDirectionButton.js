@@ -28,12 +28,12 @@ class ArrowDirectionButton extends Base {
         fill: 'currentColor',
         outline: 'none'
       },
-      this.state.hover && !this.state.innerProperties.disabled && {
+      this.state.hover && !this.disabled && {
         background: 'rgba(255, 255, 255, 0.2)',
         color: 'rgba(255, 255, 255, 0.8)',
         cursor: 'pointer'
       },
-      this.state.innerProperties.disabled && {
+      this.disabled && {
         color: 'rgba(255, 255, 255, 0.3)'
       }
     );

@@ -5,6 +5,7 @@ import ReactiveElement from './ReactiveElement.js';
 
 
 const extendsKey = Symbol('extends');
+const renderedKey = Symbol('rendered');
 
 
 /*
@@ -200,11 +201,7 @@ class WrappedStandardElement extends ReactiveElement {
       });
     }
 
-    // Now that we've rendered, no longer need to track properties as state.
-    this.setState({
-      innerAttributes: null,
-      innerProperties: null
-    });
+    this[renderedKey] = true;
   }
 
   get defaultState() {
@@ -255,13 +252,16 @@ class WrappedStandardElement extends ReactiveElement {
     if (this.shadowRoot) {
       // We've been rendered, so set property directly on inner element.
       this.inner[name] = value;
-    } else {
-      // Haven't been rendered yet, so save attribute in state.
-      const innerAttributes = Object.assign({}, this.state.innerAttributes, {
-        [name]: value
-      });
-      this.setState({ innerAttributes });
     }
+  
+    // Save attribute in state.
+    // This lets us save attributes set before the component is rendered,
+    // as well as letting us know whether we need to re-render in response
+    // to an attribute change.
+    const innerAttributes = Object.assign({}, this.state.innerAttributes, {
+      [name]: value
+    });
+    this.setState({ innerAttributes });
   }
 
   setInnerProperty(name, value) {
@@ -272,13 +272,36 @@ class WrappedStandardElement extends ReactiveElement {
     if (this.shadowRoot) {
       // We've been rendered, so set property directly on inner element.
       this.inner[name] = cast;
-    } else {
-      // Haven't been rendered yet, so save property assignment in state.
-      const innerProperties = Object.assign({}, this.state.innerProperties, {
-        [name]: cast
-      });
-      this.setState({ innerProperties });
     }
+
+    // Save property assignment in state.
+    // See setInnerAttribute for reasoning.
+    const innerProperties = Object.assign({}, this.state.innerProperties, {
+      [name]: cast
+    });
+    this.setState({ innerProperties });
+  }
+
+  shouldComponentUpdate(nextState) {
+    const base = super.shouldComponentUpdate && super.shouldComponentUpdate(nextState);
+    if (base) {
+      return true; // Trust base result.
+    }
+
+    // Do a shallow prop comparison of inner properties and attributes too.
+    for (const key in nextState.innerAttributes) {
+      if (nextState[key] !== this.state.innerAttributes[key]) {
+        return true;
+      }
+    }
+
+    for (const key in nextState.innerProperties) {
+      if (nextState[key] !== this.state.innerProperties[key]) {
+        return true;
+      }
+    }
+
+    return false; // No changes.
   }
 
   /**
@@ -319,18 +342,23 @@ class WrappedStandardElement extends ReactiveElement {
   }
 
   get updates() {
-    const innerUpdates = Object.assign(
-      {},
-      this.state.innerAttributes && {
-        attributes: this.state.innerAttributes
-      },
-      this.state.innerProperties
-    );
-    return merge(super.updates, {
-      $: {
-        inner: innerUpdates
-      }
-    });
+    // Only apply updates the first time. Thereafter, we apply
+    // property/attribute updates directly to inner element, so such updates
+    // aren't necessary.
+    const updates = this[renderedKey] ?
+      null :
+      {
+        $: {
+          inner: Object.assign(
+            {},
+            this.state.innerAttributes && {
+              attributes: this.state.innerAttributes
+            },
+            this.state.innerProperties
+          )
+        }
+      };
+    return merge(super.updates, updates);
   }
 
   /**
