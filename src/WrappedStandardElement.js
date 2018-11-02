@@ -152,6 +152,16 @@ class WrappedStandardElement extends ReactiveElement {
     this.setInnerAttribute('aria-label', label);
   }
 
+  // Delegate method defined by HTMLElement.
+  blur() {
+    this.inner.blur();
+  }
+
+  // Delegate method defined by HTMLElement.
+  click() {
+    this.inner.click();
+  }
+
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
 
@@ -208,7 +218,7 @@ class WrappedStandardElement extends ReactiveElement {
     return this.constructor[extendsKey];
   }
 
-  // TODO: Generate this
+  // Delegate method defined by HTMLElement.
   focus() {
     this.inner.focus();
   }
@@ -345,26 +355,7 @@ class WrappedStandardElement extends ReactiveElement {
 
     // Create getter/setters that delegate to the wrapped element.
     const element = document.createElement(extendsTag);
-    const extendsPrototype = element.constructor.prototype;
-    const names = Object.getOwnPropertyNames(extendsPrototype);
-    names.forEach(name => {
-      const descriptor = Object.getOwnPropertyDescriptor(extendsPrototype, name);
-      if (!descriptor) {
-        return;
-      }
-      let delegate;
-      if (typeof descriptor.value === 'function') {
-        if (name !== 'constructor') {
-          delegate = createMethodDelegate(name, descriptor);
-        }
-      } else if (typeof descriptor.get === 'function' ||
-        typeof descriptor.set === 'function') {
-        delegate = createPropertyDelegate(name, descriptor);
-      }
-      if (delegate) {
-        Object.defineProperty(Wrapped.prototype, name, delegate);
-      }
-    });
+    defineDelegates(Wrapped, Object.getPrototypeOf(element));
 
     return Wrapped;
   }
@@ -383,6 +374,19 @@ function castPotentialBooleanAttribute(attributeName, value) {
     }
   }
   return value;
+}
+
+
+function createDelegate(name, descriptor) {
+  if (typeof descriptor.value === 'function') {
+    if (name !== 'constructor') {
+      return createMethodDelegate(name, descriptor);
+    }
+  } else if (typeof descriptor.get === 'function' ||
+    typeof descriptor.set === 'function') {
+    return createPropertyDelegate(name, descriptor);
+  }
+  return null;
 }
 
 
@@ -419,6 +423,23 @@ function createPropertyDelegate(name, descriptor) {
     delegate.writable = descriptor.writable;
   }
   return delegate;
+}
+
+
+// Define delegates for the given class for each property/method on the
+// indicated prototype.
+function defineDelegates(cls, prototype) {
+  const names = Object.getOwnPropertyNames(prototype);
+  names.forEach(name => {
+    const descriptor = Object.getOwnPropertyDescriptor(prototype, name);
+    if (!descriptor) {
+      return;
+    }
+    const delegate = createDelegate(name, descriptor);
+    if (delegate) {
+      Object.defineProperty(cls.prototype, name, delegate);
+    }
+  });
 }
 
 

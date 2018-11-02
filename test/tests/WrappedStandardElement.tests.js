@@ -123,6 +123,8 @@ describe("WrappedStandardElement", () => {
     fixture.setSelectionRange(1, 4);
     assert.equal(fixture.selectionStart, 1);
     assert.equal(fixture.selectionEnd, 4);
+    fixture.focus();
+    assert.equal(fixture.shadowRoot.activeElement, fixture.inner);
   });
 
 });
