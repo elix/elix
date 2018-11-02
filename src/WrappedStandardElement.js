@@ -145,11 +145,11 @@ class WrappedStandardElement extends ReactiveElement {
   // definition lets AttributeMarshallingMixin know it should handle this
   // aria-label attribute.
   get ariaLabel() {
-    return this.getAttribute('aria-label');
+    return this.getInnerAttribute('aria-label');
   }
   set ariaLabel(label) {
     // Propagate the ARIA label to the inner textarea.
-    this.setInnerProperty('aria-label', label);
+    this.setInnerAttribute('aria-label', label);
   }
 
   componentDidMount() {
@@ -189,11 +189,18 @@ class WrappedStandardElement extends ReactiveElement {
         });
       });
     }
+
+    // Now that we've rendered, no longer need to track properties as state.
+    this.setState({
+      innerAttributes: null,
+      innerProperties: null
+    });
   }
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      innerProperties: {}
+      innerAttributes: null,
+      innerProperties: null
     });
   }
 
@@ -215,6 +222,13 @@ class WrappedStandardElement extends ReactiveElement {
     return result;
   }
   
+  getInnerAttribute(name) {
+    // If we haven't rendered yet, use internal state value.
+    return this.shadowRoot ?
+      this.inner[name] :
+      this.state.innerAttributes[name];
+  }
+  
   getInnerProperty(name) {
     // If we haven't rendered yet, use internal state value.
     return this.shadowRoot ?
@@ -222,28 +236,34 @@ class WrappedStandardElement extends ReactiveElement {
       this.state.innerProperties[name];
   }
 
+  setInnerAttribute(name, value) {
+    if (this.shadowRoot) {
+      // We've been rendered, so set property directly on inner element.
+      this.inner[name] = value;
+    } else {
+      // Haven't been rendered yet, so save attribute in state.
+      const innerAttributes = Object.assign({}, this.state.innerAttributes, {
+        [name]: value
+      });
+      this.setState({ innerAttributes });
+    }
+  }
+
   setInnerProperty(name, value) {
     // Special case for boolean attributes, which may be passed as strings via
     // calls to setAttribute.
     const cast = castPotentialBooleanAttribute(name, value);
-    const innerProperties = Object.assign({}, this.state.innerProperties, {
-      [name]: cast
-    });
-    this.setState({ innerProperties });
-  }
-
-  shouldComponentUpdate(nextState) {
-    const base = super.shouldComponentUpdate && super.shouldComponentUpdate(nextState);
-    if (base) {
-      return true; // Trust base result.
+    
+    if (this.shadowRoot) {
+      // We've been rendered, so set property directly on inner element.
+      this.inner[name] = cast;
+    } else {
+      // Haven't been rendered yet, so save property assignment in state.
+      const innerProperties = Object.assign({}, this.state.innerProperties, {
+        [name]: cast
+      });
+      this.setState({ innerProperties });
     }
-    // Do a shallow prop comparison of inner properties too.
-    for (const key in nextState.inner) {
-      if (nextState[key] !== this.state.innerProperties[key]) {
-        return true;
-      }
-    }
-    return false; // No changes.
   }
 
   /**
@@ -284,9 +304,16 @@ class WrappedStandardElement extends ReactiveElement {
   }
 
   get updates() {
+    const innerUpdates = Object.assign(
+      {},
+      this.state.innerAttributes && {
+        attributes: this.state.innerAttributes
+      },
+      this.state.innerProperties
+    );
     return merge(super.updates, {
       $: {
-        inner: this.state.innerProperties
+        inner: innerUpdates
       }
     });
   }
