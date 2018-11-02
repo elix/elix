@@ -37,7 +37,7 @@ class ListComboBox extends Base {
       const listSelectedIndex = cast.detail.selectedIndex;
       if (this.state.selectedIndex !== listSelectedIndex) {
         this.setState({
-          selectedIndex: listSelectedIndex
+          selectedIndex: listSelectedIndex,
         });
       }
     });
@@ -54,7 +54,8 @@ class ListComboBox extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      inputRole: AutoCompleteInput
+      inputRole: AutoCompleteInput,
+      selectText: false
     });
   }
 
@@ -94,15 +95,18 @@ class ListComboBox extends Base {
       const items = this.itemsForState(state);
       if (items) {
         if (selectedIndexChanged) {
+          // List selection changed, update value.
           const selectedItem = items[state.selectedIndex];
           const selectedItemText = selectedItem && selectedItem.textContent;
           if (state.value !== selectedItemText) {
             Object.assign(state, {
+              selectText: true,
               value: selectedItemText
             });
             result = false;
           }
         } else if (valueChanged) {
+          // Value changed, select that value in list (if it exists).
           const searchText = state.value.toLowerCase();
           const selectedIndex = this.state.texts.findIndex(text => 
             text.toLowerCase() === searchText
@@ -110,6 +114,14 @@ class ListComboBox extends Base {
           if (state.selectedIndex !== selectedIndex) {
             Object.assign(state, {
               selectedIndex
+            });
+            result = false;
+          }
+          if (state.selectText) {
+            // User probably changed value directly, so stop trying to select
+            // text.
+            Object.assign(state, {
+              selectText: false
             });
             result = false;
           }
@@ -156,9 +168,15 @@ class ListComboBox extends Base {
       },
       'texts' in this.$.input && {
         $: {
-          input: {
-            texts: this.state.texts
-          }
+          input: Object.assign(
+            {
+              texts: this.state.texts
+            },
+            this.state.selectText && {
+              selectionEnd: this.state.value.length,
+              selectionStart: 0
+            }
+          )
         }
       }
     );

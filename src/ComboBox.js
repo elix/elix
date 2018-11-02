@@ -210,10 +210,7 @@ class ComboBox extends Base {
             }
           },
           input: {
-            value,
-            inner: {
-
-            }
+            value
           },
           popup: {
             autoFocus: false,
