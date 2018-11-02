@@ -37,12 +37,17 @@ class ListComboBox extends Base {
       const listSelectedIndex = cast.detail.selectedIndex;
       if (this.state.selectedIndex !== listSelectedIndex) {
         this.setState({
-          selectedIndex: listSelectedIndex,
+          selectedIndex: listSelectedIndex
         });
       }
     });
 
-    this.$.list.addEventListener('click', () => {
+    this.$.list.addEventListener('mousedown', event => {
+      // By default the list will try to grab focus, which we don't want.
+      event.preventDefault();
+    });
+
+    this.$.list.addEventListener('click', event => {
       // Clicking a list item closes the popup.
       if (this.opened) {
         this[symbols.raiseChangeEvents] = true;
@@ -78,6 +83,16 @@ class ListComboBox extends Base {
           handled = event.altKey ? this[symbols.goStart]() : this[symbols.goUp]();
         }
         break;
+      
+      case 'Enter':
+        if (this.opened) {
+          // ComboBox will close the popup on Enter, but we'd also like to
+          // select the text when it closes.
+          this.setState({
+            selectText: true
+          });
+          // Don't mark as handled.
+        }
 
     }
 
@@ -176,7 +191,12 @@ class ListComboBox extends Base {
               selectionEnd: this.state.value.length,
               selectionStart: 0
             }
-          )
+          ),
+          list: {
+            attributes: {
+              tabindex: null
+            }
+          }
         }
       }
     );

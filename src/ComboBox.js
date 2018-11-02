@@ -59,12 +59,11 @@ class ComboBox extends Base {
     this.$.toggleButton.addEventListener('mousedown', event => {
       this[symbols.raiseChangeEvents] = true;
       this.toggle();
-      this.$.input.focus();
-      // The toggle button may try to grab focus by default; we prevent that to
-      // keep the focus on the input, and to avoid having PopupModalityMixin
-      // immediately close the popup if the button gets focus.
+      if (this.opened) {
+        this.$.input.focus();
+      }
+      // Prevent default behavior so button doesn't grab focus.
       event.preventDefault();
-      event.stopPropagation();
       this[symbols.raiseChangeEvents] = false;
     });
   }
@@ -213,6 +212,9 @@ class ComboBox extends Base {
             value
           },
           popup: {
+            attributes: {
+              tabindex: null
+            },
             autoFocus: false,
             backdrop: {
               style: {
@@ -227,6 +229,12 @@ class ComboBox extends Base {
             },
             style: {
               'flex-direction': 'column'
+            }
+          },
+          source: {
+            style: {
+              'background-color': null,
+              color: null
             }
           },
           upIcon: {

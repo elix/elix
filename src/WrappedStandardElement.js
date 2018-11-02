@@ -207,6 +207,11 @@ class WrappedStandardElement extends ReactiveElement {
   get extends() {
     return this.constructor[extendsKey];
   }
+
+  // TODO: Generate this
+  focus() {
+    this.inner.focus();
+  }
   
   /**
    * Returns a reference to the inner standard HTML element.
