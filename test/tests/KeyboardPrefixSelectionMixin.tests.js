@@ -1,13 +1,15 @@
 import * as symbols from '../../src/symbols.js';
+import ItemsTextMixin from '../../src/ItemsTextMixin.js';
 import KeyboardPrefixSelectionMixin from '../../src/KeyboardPrefixSelectionMixin.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
 
 
 const Base =
+  ItemsTextMixin(
   KeyboardPrefixSelectionMixin(
   ReactiveMixin(
     HTMLElement
-  ));
+  )));
 
 class KeyboardPrefixSelectionTest extends Base {
 
