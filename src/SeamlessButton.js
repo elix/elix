@@ -83,6 +83,7 @@ class SeamlessButton extends Button {
 
 
 function findFocusableAncestor(element) {
+  // @ts-ignore
   const parent = element.parentNode instanceof ShadowRoot ?
     element.parentNode.host :
     element.parentNode;

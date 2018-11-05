@@ -34,7 +34,9 @@ class ComboBox extends Base {
   
       this.$.input.addEventListener('input', () => {
         this[symbols.raiseChangeEvents] = true;
-        const value = this.$.input.value;
+        /** @type {any} */
+        const cast = this.$.input;
+        const value = cast.value;
         this.setState({ value });
         this[symbols.raiseChangeEvents] = false;
       })
@@ -56,11 +58,13 @@ class ComboBox extends Base {
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
 
-    this.$.toggleButton.addEventListener('mousedown', event => {
+    this.$.toggleButton.addEventListener('mousedown', () => {
       this[symbols.raiseChangeEvents] = true;
       this.toggle();
       if (this.opened) {
-        this.$.input.focus();
+        /** @type {any} */
+        const cast = this.$.input;
+        cast.focus();
       }
       this[symbols.raiseChangeEvents] = false;
     });

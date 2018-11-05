@@ -155,12 +155,16 @@ class WrappedStandardElement extends ReactiveElement {
 
   // Delegate method defined by HTMLElement.
   blur() {
-    this.inner.blur();
+    /** @type {any} */
+    const cast = this.inner;
+    cast.blur();
   }
 
   // Delegate method defined by HTMLElement.
   click() {
-    this.inner.click();
+    /** @type {any} */
+    const cast = this.inner;
+    cast.click();
   }
 
   componentDidMount() {
@@ -217,7 +221,9 @@ class WrappedStandardElement extends ReactiveElement {
 
   // Delegate method defined by HTMLElement.
   focus() {
-    this.inner.focus();
+    /** @type {any} */
+    const cast = this.inner;
+    cast.focus();
   }
   
   /**
@@ -420,6 +426,7 @@ function createDelegate(name, descriptor) {
 
 function createMethodDelegate(name, descriptor) {
   const value = function(...args) {
+    // @ts-ignore
     this.inner[name](...args);
   };
   const delegate = {

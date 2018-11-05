@@ -21,6 +21,8 @@ const Base =
 class ArrowDirectionButton extends Base {
 
   get updates() {
+    /** @type {any} */
+    const cast = this;
     const style = Object.assign(
       {
         background: '',
@@ -28,12 +30,12 @@ class ArrowDirectionButton extends Base {
         fill: 'currentColor',
         outline: 'none'
       },
-      this.state.hover && !this.disabled && {
+      this.state.hover && !cast.disabled && {
         background: 'rgba(255, 255, 255, 0.2)',
         color: 'rgba(255, 255, 255, 0.8)',
         cursor: 'pointer'
       },
-      this.disabled && {
+      cast.disabled && {
         color: 'rgba(255, 255, 255, 0.3)'
       }
     );

@@ -1,6 +1,4 @@
-// import flushPolyfills from '../flushPolyfills.js';
 import { dispatchSyntheticKeyboardEvent } from '../mockInteractions.js';
-import * as symbols from '../../src/symbols.js';
 import AutoCompleteInput from '../../src/AutoCompleteInput.js';
 
 

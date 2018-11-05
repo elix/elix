@@ -47,7 +47,7 @@ class ListComboBox extends Base {
       event.preventDefault();
     });
 
-    this.$.list.addEventListener('click', event => {
+    this.$.list.addEventListener('click', () => {
       // Clicking a list item closes the popup.
       if (this.opened) {
         this[symbols.raiseChangeEvents] = true;

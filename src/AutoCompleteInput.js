@@ -21,9 +21,11 @@ class AutoCompleteInput extends Base {
     if (this.state.autoCompleteStart) {
       // We've finished rendering new auto-completed text.
       // Leave that selected.
-      this.setSelectionRange(
+      /** @type {any} */
+      const cast = this;
+      cast.setSelectionRange(
         this.state.autoCompleteStart,
-        this.value.length
+        cast.value.length
       );
       this.setState({
         autoCompleteStart: null
@@ -31,6 +33,7 @@ class AutoCompleteInput extends Base {
 
       // Dispatch an input event so that listeners can process the
       // auto-completed text.
+      // @ts-ignore
       const event = new InputEvent('input');
       this.dispatchEvent(event);
     }
@@ -44,7 +47,9 @@ class AutoCompleteInput extends Base {
     // Only AutoComplete if the user has been typing at the end of the input.
     // Also, only AutoComplete on Space, or characters from zero (0) and up,
     // ignoring any combinations that involve command modifiers.
-    const typingAtEnd = this.$.inner.selectionEnd == this.value.length;
+    /** @type {any} */
+    const cast = this;
+    const typingAtEnd = cast.$.inner.selectionEnd == cast.value.length;
     if (typingAtEnd &&
       (event.keyCode == 32 || event.keyCode >= 48) &&
       !(event.altKey || event.ctrlKey || event.metaKey)) {
