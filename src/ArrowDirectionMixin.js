@@ -55,8 +55,6 @@ function ArrowDirectionMixin(Base) {
           await Promise.resolve();
           this[symbols.raiseChangeEvents] = false;
         });
-        assumeButtonFocus(this, this.$.arrowButtonLeft);
-        assumeButtonFocus(this, this.$.arrowButtonRight);
         this[symbols.renderedRoles].arrowButtonRole = this.state.arrowButtonRole;
       }
     }
@@ -111,7 +109,10 @@ function ArrowDirectionMixin(Base) {
           left: overlayArrowButtons ? 0 : ''
         }
       });
-        
+      if ('focusOnAncestor' in this.$.arrowButtonLeft) {
+        arrowButtonLeftUpdates.focusOnAncestor = true;
+      }
+
       const arrowButtonRightUpdates = merge(buttonUpdates, {
         attributes: {
           disabled: !canGoRight
@@ -121,6 +122,9 @@ function ArrowDirectionMixin(Base) {
           right: overlayArrowButtons ? 0 : ''
         }
       });
+      if ('focusOnAncestor' in this.$.arrowButtonRight) {
+        arrowButtonRightUpdates.focusOnAncestor = true;
+      }
 
       const hasArrowIcons = !!this.$.arrowIconLeft;
       const arrowIconProps = {
@@ -195,21 +199,6 @@ function ArrowDirectionMixin(Base) {
 
 
 ArrowDirectionMixin.wrap = wrap;
-
-
-/*
- * By default, a button will always take focus on mousedown. For this component,
- * we want to override that behavior, such that a mousedown on a button keeps
- * the focus on the outer component.
- */
-function assumeButtonFocus(element, button) {
-  button.addEventListener('mousedown', event => {
-    // Given the main element the focus if it doesn't already have it.
-    element.focus();
-    // Prevent the default focus-on-mousedown behavior.
-    event.preventDefault();
-  });
-}
 
 
 export default ArrowDirectionMixin;

@@ -62,8 +62,6 @@ class ComboBox extends Base {
       if (this.opened) {
         this.$.input.focus();
       }
-      // Prevent default behavior so button doesn't grab focus.
-      event.preventDefault();
       this[symbols.raiseChangeEvents] = false;
     });
   }
@@ -130,7 +128,7 @@ class ComboBox extends Base {
     }
     const sourceTemplate = template.html`
       <input id="input"></input>
-      <elix-seamless-button id="toggleButton" tabindex="-1">
+      <elix-seamless-button id="toggleButton" refer-focus="true" tabindex="-1">
         <svg id="downIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
           <path d="M 0 0 l5 5 5 -5 z"/>
         </svg>
