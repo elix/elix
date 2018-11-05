@@ -141,7 +141,7 @@ describe("ReactiveMixin", function () {
     assert.equal(componentDidUpdateSpy.callCount, 1);
   })
 
-  it("calls componentDidMount if component is reattached", async () => {
+  it("only calls componentDidMount once, even if component is reattached", async () => {
     const fixture = document.createElement('reactive-test');
     const componentDidMountSpy = sinon.spy(fixture, 'componentDidMount');
     container.appendChild(fixture);
@@ -150,9 +150,9 @@ describe("ReactiveMixin", function () {
     assert.equal(componentDidMountSpy.callCount, 1);
     container.removeChild(fixture);
     container.appendChild(fixture);
-    // connectedCallback should trigger rerender with promise timing.
+    // connectedCallback shouldn't trigger rerender.
     await Promise.resolve();
-    assert.equal(componentDidMountSpy.callCount, 2);
+    assert.equal(componentDidMountSpy.callCount, 1);
   });
 
   it("leaves state object alone if there are no changes", async () => {
