@@ -132,7 +132,7 @@ class ComboBox extends Base {
     }
     const sourceTemplate = template.html`
       <input id="input"></input>
-      <elix-seamless-button id="toggleButton" refer-focus="true" tabindex="-1">
+      <elix-seamless-button id="toggleButton" focus-on-ancestor="true" tabindex="-1">
         <svg id="downIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
           <path d="M 0 0 l5 5 5 -5 z"/>
         </svg>
@@ -161,7 +161,6 @@ class ComboBox extends Base {
           align-items: center;
           bottom: 3px;
           display: flex;
-          padding: 2px;
           position: absolute;
           right: 3px;
           top: 3px;
