@@ -172,34 +172,26 @@ class ListComboBox extends Base {
   }
 
   get updates() {
-    return merge(
-      super.updates,
-      {
-        $: {
-          list: {
-            selectedIndex: this.state.selectedIndex
+    return merge(super.updates, {
+      $: {
+        input: Object.assign(
+          {},
+          'texts' in this.$.input && {
+            texts: this.state.texts
+          },
+          this.state.selectText && {
+            selectionEnd: this.state.value.length,
+            selectionStart: 0
           }
-        }
-      },
-      'texts' in this.$.input && {
-        $: {
-          input: Object.assign(
-            {
-              texts: this.state.texts
-            },
-            this.state.selectText && {
-              selectionEnd: this.state.value.length,
-              selectionStart: 0
-            }
-          ),
-          list: {
-            attributes: {
-              tabindex: null
-            }
-          }
+        ),
+        list: {
+          attributes: {
+            tabindex: null
+          },
+          selectedIndex: this.state.selectedIndex
         }
       }
-    );
+    });
   }
 
 }

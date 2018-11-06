@@ -96,6 +96,21 @@ class AutoCompleteInput extends Base {
     this.setState({ texts });
   }
 
+  get value() {
+    return super.value;
+  }
+  set value(value) {
+    // Only set the value if it's actually different, because we want to avoid
+    // trampling on any selection in the input. Chrome's input handles this as
+    // we'd like: setting the value will leave the selection unaffected if the
+    // value is the same as before. Safari doesn't do what we want: setting the
+    // value collapses the selection, even if the value is the same as before.
+    // We want to emulate Chrome's behavior.
+    if (this.value !== value) {
+      super.value = value;
+    }
+  }
+
 }
 
 
