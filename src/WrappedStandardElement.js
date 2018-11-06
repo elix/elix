@@ -296,13 +296,13 @@ class WrappedStandardElement extends ReactiveElement {
 
     // Do a shallow prop comparison of inner properties and attributes too.
     for (const key in nextState.innerAttributes) {
-      if (nextState[key] !== this.state.innerAttributes[key]) {
+      if (nextState.innerAttributes[key] !== this.state.innerAttributes[key]) {
         return true;
       }
     }
 
     for (const key in nextState.innerProperties) {
-      if (nextState[key] !== this.state.innerProperties[key]) {
+      if (nextState.innerProperties[key] !== this.state.innerProperties[key]) {
         return true;
       }
     }
