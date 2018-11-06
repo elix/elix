@@ -47,45 +47,51 @@ export default function PopupModalityMixin(Base) {
           this[symbols.raiseChangeEvents] = false;
         }
       });
-
-      // Close handlers for window events.
-      this[implicitCloseListenerKey] = async (event) => {
-        /** @type {any} */
-        const cast = this;
-        if (!ownEvent(cast, event)) {
-          this[symbols.raiseChangeEvents] = true;
-          await this.close();
-          this[symbols.raiseChangeEvents] = false;
-        }
-      };
     }
 
     componentDidUpdate(previousState) {
       if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-      if (!this.closed) {
-        // Wait before wiring up events – if the popup was opened because the
-        // user clicked something, that opening click event may still be
-        // bubbling up, and we only want to start listening after it's been
-        // processed. Alternatively, if the popup caused the page to scroll, we
-        // don't want to immediately close because the page scrolled (only if
-        // the user scrolls).
-        const callback = 'requestIdleCallback' in window ?
-          window['requestIdleCallback'] :
-          setTimeout;
-        callback(() => {
-          // It's conceivable the popup was closed before the timeout completed,
-          // so double-check that it's still opened before listening to events.
-          if (!this.closed) {
-            addEventListeners(this);
-          }
-        });
-      } else {
-        removeEventListeners(this);
+      const openedChanged = this.state.opened !== previousState.opened;
+      if (openedChanged) {
+        if (this.opened) {
+          // Wait before wiring up events – if the popup was opened because the
+          // user clicked something, that opening click event may still be
+          // bubbling up, and we only want to start listening after it's been
+          // processed. Alternatively, if the popup caused the page to scroll, we
+          // don't want to immediately close because the page scrolled (only if
+          // the user scrolls).
+          const callback = 'requestIdleCallback' in window ?
+            window['requestIdleCallback'] :
+            setTimeout;
+          callback(() => {
+            // It's conceivable the popup was closed before the timeout completed,
+            // so double-check that it's still opened before listening to events.
+            if (this.opened) {
+              addEventListeners(this);
+            }
+          });
+        } else {
+          removeEventListeners(this);
+        }
       }
+    }
+
+    /**
+     * True if the popup should close if the user resizes the window.
+     * 
+     * @type {boolean}
+     * @default true
+     */
+    get closeOnWindowResize() {
+      return this.state.closeOnWindowResize;
+    }
+    set closeOnWindowResize(closeOnWindowResize) {
+      this.setState({ closeOnWindowResize });
     }
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
+        closeOnWindowResize: true,
         role: 'alert'
       });
     }
@@ -122,6 +128,17 @@ export default function PopupModalityMixin(Base) {
 
 
 function addEventListeners(element) {
+
+  // Close handlers for window events.
+  element[implicitCloseListenerKey] = async (event) => {
+    const handleEvent = event.type !== 'resize' || element.state.closeOnWindowResize;
+    if (!ownEvent(element, event) && handleEvent) {
+      element[symbols.raiseChangeEvents] = true;
+      await element.close();
+      element[symbols.raiseChangeEvents] = false;
+    }
+  };
+
   // Window blur event tracks loss of focus of *window*, not just element.
   window.addEventListener('blur', element[implicitCloseListenerKey]);
   window.addEventListener('resize', element[implicitCloseListenerKey]);
@@ -133,4 +150,5 @@ function removeEventListeners(element) {
   window.removeEventListener('blur', element[implicitCloseListenerKey]);
   window.removeEventListener('resize', element[implicitCloseListenerKey]);
   window.removeEventListener('scroll', element[implicitCloseListenerKey]);
+  element[implicitCloseListenerKey] = null;
 }

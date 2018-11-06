@@ -212,26 +212,31 @@ class ComboBox extends Base {
           input: {
             value
           },
-          popup: {
-            attributes: {
-              tabindex: null
-            },
-            autoFocus: false,
-            backdrop: {
+          popup: Object.assign(
+            {
+              attributes: {
+                tabindex: null
+              },
+              autoFocus: false,
+              backdrop: {
+                style: {
+                  // TODO: Would be better if we could set backdropRole to null
+                  display: 'none'
+                }
+              },
+              frame: {
+                style: {
+                  display: 'flex'
+                }
+              },
               style: {
-                // TODO: Would be better if we could set backdropRole to null
-                display: 'none'
+                'flex-direction': 'column'
               }
             },
-            frame: {
-              style: {
-                display: 'flex'
-              }
-            },
-            style: {
-              'flex-direction': 'column'
-            }
-          },
+            'closeOnWindowResize' in this.$.popup && {
+              closeOnWindowResize: false
+            },  
+          ),
           source: {
             style: {
               'background-color': null,
