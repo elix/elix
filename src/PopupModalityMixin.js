@@ -147,8 +147,10 @@ function addEventListeners(element) {
 
 
 function removeEventListeners(element) {
-  window.removeEventListener('blur', element[implicitCloseListenerKey]);
-  window.removeEventListener('resize', element[implicitCloseListenerKey]);
-  window.removeEventListener('scroll', element[implicitCloseListenerKey]);
-  element[implicitCloseListenerKey] = null;
+  if (element[implicitCloseListenerKey]) {
+    window.removeEventListener('blur', element[implicitCloseListenerKey]);
+    window.removeEventListener('resize', element[implicitCloseListenerKey]);
+    window.removeEventListener('scroll', element[implicitCloseListenerKey]);
+    element[implicitCloseListenerKey] = null;
+  }
 }

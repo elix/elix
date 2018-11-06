@@ -187,7 +187,7 @@ class Menu extends Base {
           box-sizing: border-box;
           cursor: default;
           display: flex;
-          -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+          -webkit-tap-highlight-color: transparent;
           touch-action: manipulation;
         }
 

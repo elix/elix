@@ -105,7 +105,7 @@ class ListBox extends Base {
           box-sizing: border-box;
           cursor: default;
           display: flex;
-          -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+          -webkit-tap-highlight-color: transparent;
         }
 
         #content {

@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix PopupSource (Right to Left support)</title>
+  <title>Elix PopupButton (Right to Left support)</title>
 
   <link rel="stylesheet" href="../demos.css">
   <script src="../node_modules/@webcomponents/webcomponentsjs/bundles/webcomponents-sd-ce.js"></script>
   <script type="module" src="../src/showElementsWhenDefined.js"></script>
-  <script type="module" src="../../src/PopupSource.js"></script>
+  <script type="module" src="../../src/PopupButton.js"></script>
 
   <style>
     html {
@@ -22,7 +21,7 @@
       padding: 0;
     }
   </style>
-
+  
 </head>
 
 <body role="main" unresolved>
@@ -34,12 +33,11 @@
         justify-content: center;
       }
 
-      elix-popup-source {
+      elix-popup-button {
         margin: 1em;
       }
-
-      elix-popup-source+elix-popup-source {
-        margin-right: 0;
+      elix-popup-button + elix-popup-button {
+        margin-left: 0;
       }
 
       .popup {
@@ -56,44 +54,44 @@
       }
     </style>
     <div class="buttonRow" style="flex: 1;">
-      <elix-popup-source>
+      <elix-popup-button>
         <span slot="source">Below start</span>
         <div class="popup">
           Popup
         </div>
-      </elix-popup-source>
-      <elix-popup-source horizontal-align="stretch">
+      </elix-popup-button>
+      <elix-popup-button horizontal-align="stretch">
         <span slot="source">Below stretch</span>
         <div class="popup">
           Popup
         </div>
-      </elix-popup-source>
-      <elix-popup-source horizontal-align="end">
+      </elix-popup-button>
+      <elix-popup-button horizontal-align="right">
         <span slot="source">Below end</span>
         <div class="popup">
           Popup
         </div>
-      </elix-popup-source>
+      </elix-popup-button>
     </div>
     <div class="buttonRow">
-      <elix-popup-source popup-position="above">
+        <elix-popup-button popup-position="above">
         <span slot="source">Above start</span>
         <div class="popup">
           Popup
         </div>
-      </elix-popup-source>
-      <elix-popup-source popup-position="above" horizontal-align="stretch">
+      </elix-popup-button>
+      <elix-popup-button popup-position="above" horizontal-align="stretch">
         <span slot="source">Above stretch</span>
         <div class="popup">
           Popup
         </div>
-      </elix-popup-source>
-      <elix-popup-source popup-position="above" horizontal-align="end">
+      </elix-popup-button>
+      <elix-popup-button popup-position="above" horizontal-align="right">
         <span slot="source">Above end</span>
         <div class="popup">
           Popup
         </div>
-      </elix-popup-source>
+      </elix-popup-button>
     </div>
   </div>
 </body>

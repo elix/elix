@@ -88,6 +88,7 @@ class Button extends Base {
         :host {
           display: inline-flex;
           -webkit-tap-highlight-color: transparent;
+          touch-action: manipulation;
         }
         
         #inner {

@@ -9,6 +9,8 @@ import OverlayFrame from './OverlayFrame.js';
 import Popup from './Popup.js';
 import ReactiveElement from './ReactiveElement.js';
 
+const resizeListenerKey = Symbol('resizeListener');
+
 
 const Base =
   FocusVisibleMixin(
@@ -96,19 +98,19 @@ class PopupSource extends Base {
     if (super.componentDidMount) { super.componentDidMount(); }    
     if (this.state.opened) {
       // Popup is opened initially, which is somewhat unusual.
-      setTimeout(() => {
-        measurePopup(this)
-      });
+      waitThenRenderOpened(this);
     }
   }
 
   componentDidUpdate(previousState) {
     if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-    if (this.state.opened && !previousState.opened) {
-      // Wait a tick to let the newly-opened component actually render.
-      setTimeout(() => {
-        measurePopup(this);
-      });
+    const openedChanged = this.state.opened !== previousState.opened;
+    if (openedChanged) {
+      if (this.opened && !previousState.opened) {
+        waitThenRenderOpened(this);
+      } else {
+        removeEventListeners(this);
+      }
     }
   }
 
@@ -117,15 +119,10 @@ class PopupSource extends Base {
       backdropRole: Backdrop,
       frameRole: OverlayFrame,
       horizontalAlign: 'start',
-      popupHeight: null,
       popupPosition: 'below',
+      popupMeasured: false,
       popupRole: Popup,
-      popupWidth: null,
       role: 'none',
-      roomAbove: null,
-      roomBelow: null,
-      roomLeft: null,
-      roomRight: null,
       sourceRole: 'div'      
     });
   }
@@ -206,15 +203,10 @@ class PopupSource extends Base {
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
     const closing = !state.opened && this.opened;
-    if (closing && state.popupHeight !== null) {
+    if (closing && state.popupMeasured) {
       // Reset our calculations of popup dimensions and room around the source.
       Object.assign(state, {
-        popupHeight: null,
-        popupWidth: null,
-        roomAbove: null,
-        roomBelow: null,
-        roomLeft: null,
-        roomRight: null
+        popupMeasured: false
       });
       result = false;
     }
@@ -244,6 +236,8 @@ class PopupSource extends Base {
         }
 
         #source {
+          -webkit-tap-highlight-color: transparent;
+          touch-action: manipulation;
           width: 100%;
         }
 
@@ -292,14 +286,21 @@ class PopupSource extends Base {
     };
 
     const {
-      popupHeight,
-      popupWidth,
-      roomAbove,
-      roomBelow,
-      roomLeft,
-      roomRight
+      popupMeasured,
+      windowHeight,
+      windowWidth
     } = this.state;
-    const measured = popupHeight !== null;
+
+    const popupRect = this.$.popup.getBoundingClientRect();
+    const popupHeight = popupRect.height;
+    const popupWidth = popupRect.width;
+    
+    const sourceRect = this.getBoundingClientRect();
+    const roomAbove = sourceRect.top;
+    const roomBelow = Math.ceil(windowHeight - sourceRect.bottom);
+    const roomLeft = sourceRect.right;
+    const roomRight = Math.ceil(windowWidth - sourceRect.left);
+    
     const fitsAbove = popupHeight <= roomAbove;
     const fitsBelow = popupHeight <= roomBelow;
     const canLeftAlign = popupWidth <= roomRight;
@@ -364,8 +365,8 @@ class PopupSource extends Base {
     // popup won't be able to receive the focus. Instead, we use zero opacity as
     // a way to make the popup temporarily invisible until we have checked where
     // it fits.
-    const opacity = measured ? null : 0;
-    const position = measured ? 'absolute' : 'fixed';
+    const opacity = popupMeasured ? null : 0;
+    const position = popupMeasured ? 'absolute' : 'fixed';
 
     const popupStyle = {
       bottom,
@@ -413,21 +414,66 @@ class PopupSource extends Base {
 }
 
 
+function addEventListeners(element) {
+  element[resizeListenerKey] = event => {
+    measureWindow(element);
+  }
+  window.addEventListener('resize', element[resizeListenerKey]);
+}
+
+
+function removeEventListeners(element) {
+  if (element[resizeListenerKey]) {
+    window.removeEventListener('resize', element[resizeListenerKey]);
+    element[resizeListenerKey] = null;
+  }
+}
+
+
 // If we haven't already measured the popup since it was opened, measure its
 // dimensions and the relevant distances in which the popup might be opened.
-function measurePopup(element) {
-  if (element.state.roomAbove !== null) {
-    return;
-  }
-  const sourceRect = element.getBoundingClientRect();
-  const popupRect = element.$.popup.getBoundingClientRect();
+function measureWindow(element) {
+  const windowHeight = window.innerHeight;
+  const windowWidth = window.innerWidth;
   element.setState({
-    popupHeight: popupRect.height,
-    popupWidth: popupRect.width,
-    roomAbove: sourceRect.top,
-    roomBelow: Math.ceil(window.innerHeight - sourceRect.bottom),
-    roomLeft: sourceRect.right,
-    roomRight: Math.ceil(window.innerWidth - sourceRect.left)
+    windowHeight,
+    windowWidth
+  });
+}
+
+//
+// When a popup is first rendered, we let it render invisibly so that it doesn't
+// affect the page layout.
+//
+// We then wait, for two reasons:
+// 
+// 1) We need to give the popup time to render invisibly. That lets us get the
+//    true size of the popup content.
+//
+// 2) Wire up events that can dismiss the popup. If the popup was opened because
+//    the user clicked something, that opening click event may still be bubbling
+//    up, and we only want to start listening after it's been processed.
+//    Along the same lines, if the popup caused the page to scroll, we don't
+//    want to immediately close because the page scrolled (only if the user
+//    scrolls).
+//
+// After waiting, we can take care of both of the above tasks.
+//
+function waitThenRenderOpened(element) {
+  // Wait a tick to let the newly-opened component actually render.
+  const callback = 'requestIdleCallback' in window ?
+    window['requestIdleCallback'] :
+    setTimeout;
+  callback(() => {
+    // It's conceivable the popup was closed before the timeout completed,
+    // so double-check that it's still opened before listening to events.
+    if (element.opened) {
+      measureWindow(element);
+      element.setState({
+        popupMeasured: true
+      });
+      addEventListeners(element);
+    }
   });
 }
 
