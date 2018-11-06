@@ -53,11 +53,21 @@ class AutoCompleteInput extends Base {
     if (typingAtEnd &&
       (event.keyCode == 32 || event.keyCode >= 48) &&
       !(event.altKey || event.ctrlKey || event.metaKey)) {
+      //
       // At this point, the input control's content won't actually reflect the
       // effects key the user just pressed down. We set a timeout to give the
       // keydown event a chance to bubble up and do its work, then do our
       // AutoComplete work against the resulting text.
-      setTimeout(() => autoComplete(this));
+      // 
+      // HACK: a 10 millisecond delay seems to be a sufficient delay for the
+      // input to update its value as a result of this key event, but it feels
+      // terrible to use an arbitrary delay like that. No delay is necessary in
+      // Chrome, but in Mobile Safari a 0 millisecond timeout completes before
+      // the input's value has been updated. Without a way to know for certain
+      // that the input has finished processing the key event, we seem to be
+      // stuck with this arbitrary delay.
+      //
+      setTimeout(() => autoComplete(this), 10);
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
