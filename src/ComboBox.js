@@ -42,7 +42,6 @@ class ComboBox extends Base {
       })
   
       // If the user clicks on the input and the popup is closed, open it.
-      // TODO: Review whether we should keep this.
       this.$.input.addEventListener('mousedown', () => {
         this[symbols.raiseChangeEvents] = true;
         if (this.closed) {

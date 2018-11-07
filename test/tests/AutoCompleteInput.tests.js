@@ -1,4 +1,3 @@
-import { dispatchSyntheticKeyboardEvent } from '../mockInteractions.js';
 import AutoCompleteInput from '../../src/AutoCompleteInput.js';
 
 
@@ -24,11 +23,9 @@ describe("AutoCompleteInput", () => {
     container.appendChild(fixture);
     // Synthetic event won't actually set value, so set it by hand.
     fixture.value = 'C';
-    // Now trigger the key that should trigger AutoComplete.
-    dispatchSyntheticKeyboardEvent(fixture, 'keydown', {
-      key: 'C',
-      keyCode: 'C'.charCodeAt(0)
-    });
+    // Trigger a synthentic input event.
+    const event = new InputEvent('input');
+    fixture.$.inner.dispatchEvent(event);
     // AutoComplete happens on a timeout, so wait.
     await new Promise(resolve => setTimeout(resolve));
     assert.equal(fixture.value, 'Canary');

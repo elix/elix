@@ -15,6 +15,58 @@ const Base =
 // Or name this AutocompleteInput?
 class AutoCompleteInput extends Base {
 
+  componentDidMount() {
+    if (super.componentDidMount) { super.componentDidMount(); }
+
+    // In many ways it would be cleaner to do AutoComplete work in a keydown
+    // listener. Unfortunately, Chrome for Android sets the keyCode on *all*
+    // keydown events to a mysterious 229 value, making it impossible for us to
+    // look at the keyCode and determine whether the user is typing a key that
+    // should trigger AutoComplete.
+    //
+    // Instead, we listen to input events. That comes with its own
+    // set of headaches, noted below.
+    this.$.inner.addEventListener('input', () => {
+      // Gboard will generate multiple input events for a single keypress. In
+      // particular, if we do AutoComplete and leave the text selected, then
+      // when the user types the next key, we'll get *three* input events: one
+      // for the actual change, and two other events (probably related to
+      // Gboard's own AutoComplete behavior). We give the input value a chance
+      // to stabilize by waiting a tick.
+      setTimeout(() => {
+        this[symbols.raiseChangeEvents] = true;
+          /** @type {any} */
+        const cast = this;
+        const inner = cast.$.inner;
+        const value = cast.value;
+        // We only AutoComplete if the user's typing at the end of the input.
+        const typingAtEnd = inner.selectionStart === value.length &&
+          inner.selectionEnd === value.length;
+        // Moreover, we only AutoComplete if we're sure the user's added
+        // text to the value seen on the previous input event.
+        const previousValue = this.state.previousValue;
+        const userAddedText = !previousValue.startsWith(value) &&
+          value.length === previousValue.length + 1;
+        if (typingAtEnd) {
+          if (userAddedText) {
+            autoComplete(this);
+          }
+          // Only update our notion of the previous value if the user was typing
+          // at the end. This unfortunately misses the case where the user makes
+          // an edit somewhere else in the text, then resumes typing at the end.
+          // AutoComplete won't start working again for them until they type a
+          // second character at the end. That's unfortunate, but does manage to
+          // work around the worse problem of having Gboard's magic input events
+          // corrupt our notion of what the user actually typed.
+          this.setState({
+            previousValue: value
+          });
+        }
+        this[symbols.raiseChangeEvents] = false;
+      });
+    });
+  }
+
   componentDidUpdate(previousState) {
     if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
 
@@ -39,52 +91,22 @@ class AutoCompleteInput extends Base {
     }
   }
 
-  // Keydown gives the best AutoComplete performance and behavior: among other
-  // things, the AutoComplete happens as soon as the user begins typing.
-  [symbols.keydown](event) {
-    let handled = false;
-
-    // Only AutoComplete if the user has been typing at the end of the input.
-    // Also, only AutoComplete on Space, or characters from zero (0) and up,
-    // ignoring any combinations that involve command modifiers.
-    /** @type {any} */
-    const cast = this;
-    const typingAtEnd = cast.$.inner.selectionEnd == cast.value.length;
-    if (typingAtEnd &&
-      (event.keyCode == 32 || event.keyCode >= 48) &&
-      !(event.altKey || event.ctrlKey || event.metaKey)) {
-      //
-      // At this point, the input control's content won't actually reflect the
-      // effects key the user just pressed down. We set a timeout to give the
-      // keydown event a chance to bubble up and do its work, then do our
-      // AutoComplete work against the resulting text.
-      // 
-      // HACK: a 10 millisecond delay seems to be a sufficient delay for the
-      // input to update its value as a result of this key event, but it feels
-      // terrible to use an arbitrary delay like that. No delay is necessary in
-      // Chrome, but in Mobile Safari a 0 millisecond timeout completes before
-      // the input's value has been updated. Without a way to know for certain
-      // that the input has finished processing the key event, we seem to be
-      // stuck with this arbitrary delay.
-      //
-      setTimeout(() => autoComplete(this), 10);
-    }
-
-    // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
-  }
-
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       autoCompleteStart: null,
       tabindex: null,
-      texts: []
+      texts: [],
+      previousValue: ''
     });
   }
 
   get [symbols.template]() {
     // Next line is same as: const result = super[symbols.template]
     const result = getSuperProperty(this, AutoCompleteInput, symbols.template);
+    const inner = result.content.getElementById('inner');
+    if (inner) {
+      inner.autocomplete = 'off';
+    }
     const styleTemplate = html`
       <style>
         #inner {
@@ -118,6 +140,11 @@ class AutoCompleteInput extends Base {
     // We want to emulate Chrome's behavior.
     if (this.value !== value) {
       super.value = value;
+      // Update our notion of what's been set as the value so the user can type
+      // at the end of it and get AutoComplete on the extended text.
+      this.setState({
+        previousValue: value
+      });
     }
   }
 
@@ -128,11 +155,11 @@ function autoComplete(element) {
   const value = element.value.toLowerCase();
   const texts = element.texts;
   if (value.length === 0 || !texts) {
-    return;
+    return null;
   }
   const match = texts.find(text => text.toLowerCase().startsWith(value));
   if (!match) {
-    return;
+    return null;
   }
 
   // Complete the match.
@@ -140,8 +167,10 @@ function autoComplete(element) {
 
   // Arrange to leave the auto-completed portion selected.
   element.setState({
-    autoCompleteStart: value.length
+    autoCompleteStart: value.length,
+    // previousValueLength: match.length
   });
+  return match;
 }
 
 
