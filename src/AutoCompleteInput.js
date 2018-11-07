@@ -129,6 +129,7 @@ class AutoCompleteInput extends Base {
   }
 
   get value() {
+    // @ts-ignore
     return super.value;
   }
   set value(value) {
@@ -139,6 +140,7 @@ class AutoCompleteInput extends Base {
     // value collapses the selection, even if the value is the same as before.
     // We want to emulate Chrome's behavior.
     if (this.value !== value) {
+      // @ts-ignore
       super.value = value;
       // Update our notion of what's been set as the value so the user can type
       // at the end of it and get AutoComplete on the extended text.
