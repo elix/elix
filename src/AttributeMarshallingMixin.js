@@ -47,7 +47,9 @@ export default function AttributeMarshallingMixin(Base) {
 
     // Handle a change to the attribute with the given name.
     attributeChangedCallback(attributeName, oldValue, newValue) {
-      if (super.attributeChangedCallback) { super.attributeChangedCallback(); }
+      if (super.attributeChangedCallback) {
+        super.attributeChangedCallback(attributeName, oldValue, newValue);
+      }
       const propertyName = attributeToPropertyName(attributeName);
       // If the attribute name corresponds to a property name, set the property.
       if (propertyName in this) {
