@@ -119,10 +119,16 @@ class PopupSource extends Base {
       backdropRole: Backdrop,
       frameRole: OverlayFrame,
       horizontalAlign: 'start',
-      popupPosition: 'below',
+      popupHeight: null,
       popupMeasured: false,
+      popupPosition: 'below',
       popupRole: Popup,
+      popupWidth: null,
       role: 'none',
+      roomAbove: null,
+      roomBelow: null,
+      roomLeft: null,
+      roomRight: null,
       sourceRole: 'div'      
     });
   }
@@ -206,7 +212,13 @@ class PopupSource extends Base {
     if (closing && state.popupMeasured) {
       // Reset our calculations of popup dimensions and room around the source.
       Object.assign(state, {
-        popupMeasured: false
+        popupHeight: null,
+        popupMeasured: false,
+        popupWidth: null,
+        roomAbove: null,
+        roomBelow: null,
+        roomLeft: null,
+        roomRight: null
       });
       result = false;
     }
@@ -286,20 +298,14 @@ class PopupSource extends Base {
     };
 
     const {
+      popupHeight,
       popupMeasured,
-      windowHeight,
-      windowWidth
+      popupWidth,
+      roomAbove,
+      roomBelow,
+      roomLeft,
+      roomRight
     } = this.state;
-
-    const popupRect = this.$.popup.getBoundingClientRect();
-    const popupHeight = popupRect.height;
-    const popupWidth = popupRect.width;
-    
-    const sourceRect = this.getBoundingClientRect();
-    const roomAbove = sourceRect.top;
-    const roomBelow = Math.ceil(windowHeight - sourceRect.bottom);
-    const roomLeft = sourceRect.right;
-    const roomRight = Math.ceil(windowWidth - sourceRect.left);
     
     const fitsAbove = popupHeight <= roomAbove;
     const fitsBelow = popupHeight <= roomBelow;
@@ -415,8 +421,8 @@ class PopupSource extends Base {
 
 
 function addEventListeners(element) {
-  element[resizeListenerKey] = event => {
-    measureWindow(element);
+  element[resizeListenerKey] = () => {
+    measurePopup(element);
   }
   window.addEventListener('resize', element[resizeListenerKey]);
 }
@@ -432,10 +438,31 @@ function removeEventListeners(element) {
 
 // If we haven't already measured the popup since it was opened, measure its
 // dimensions and the relevant distances in which the popup might be opened.
-function measureWindow(element) {
+function measurePopup(element) {
+
   const windowHeight = window.innerHeight;
   const windowWidth = window.innerWidth;
+
+  const popupRect = element.$.popup.getBoundingClientRect();
+  const popupHeight = popupRect.height;
+  const popupWidth = popupRect.width;
+  
+  const sourceRect = element.getBoundingClientRect();
+  const roomAbove = sourceRect.top;
+  const roomBelow = Math.ceil(windowHeight - sourceRect.bottom);
+  const roomLeft = sourceRect.right;
+  const roomRight = Math.ceil(windowWidth - sourceRect.left);
+
+  const popupMeasured = true;
+  
   element.setState({
+    popupHeight,
+    popupMeasured,
+    popupWidth,
+    roomAbove,
+    roomBelow,
+    roomLeft,
+    roomRight,
     windowHeight,
     windowWidth
   });
@@ -468,10 +495,7 @@ function waitThenRenderOpened(element) {
     // It's conceivable the popup was closed before the timeout completed,
     // so double-check that it's still opened before listening to events.
     if (element.opened) {
-      measureWindow(element);
-      element.setState({
-        popupMeasured: true
-      });
+      measurePopup(element);
       addEventListeners(element);
     }
   });
