@@ -1,15 +1,14 @@
-import './AutoCompleteInput.js';
-import './ListBox.js';
 import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import AutoCompleteInput from './AutoCompleteInput.js';
 import ComboBox from './ComboBox.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import ItemsTextMixin from './ItemsTextMixin.js';
+import ListBox from './ListBox.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
-import AutoCompleteInput from './AutoCompleteInput.js';
 
 
 const Base =
@@ -21,51 +20,57 @@ const Base =
   ))));
 
 
-// TODO: Remaining roles
 /**
  * @elementrole {AutoCompleteInput} input
+ * @elementRole {ListBox} list
  */
 class ListComboBox extends Base {
 
-  componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
+  [symbols.beforeUpdate]() {
+    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+    if (this[symbols.renderedRoles].listRole !== this.state.listRole) {
+      template.transmute(this.$.list, this.state.listRole);
+  
+      this.$.list.addEventListener('click', () => {
+        // Clicking a list item closes the popup.
+        if (this.opened) {
+          this[symbols.raiseChangeEvents] = true;
+          this.close();
+          this[symbols.raiseChangeEvents] = false;
+        }
+      });
 
-    // Track changes in the list's selection state.
-    // Known bug: this behavior seems to confuse Gboard on Chrome for Android.
-    // If we update our notion of the selection index, we'll ultimately update
-    // the text shown in the input and leave it selected. If the user then
-    // presses Backspace to delete that selected text, Gboard/Chrome seems to
-    // ignore the first press of the Backspace key. The user must press
-    // Backspace a second time to actually delete the selected text.
-    this.$.list.addEventListener('selected-index-changed', event => {
-      /** @type {any} */
-      const cast = event;
-      const listSelectedIndex = cast.detail.selectedIndex;
-      if (this.state.selectedIndex !== listSelectedIndex) {
-        this.setState({
-          selectedIndex: listSelectedIndex
-        });
-      }
-    });
+      this.$.list.addEventListener('mousedown', event => {
+        // By default the list will try to grab focus, which we don't want.
+        event.preventDefault();
+      });
 
-    this.$.list.addEventListener('mousedown', event => {
-      // By default the list will try to grab focus, which we don't want.
-      event.preventDefault();
-    });
+      // Track changes in the list's selection state.
+      // Known bug: this behavior seems to confuse Gboard on Chrome for Android.
+      // If we update our notion of the selection index, we'll ultimately update
+      // the text shown in the input and leave it selected. If the user then
+      // presses Backspace to delete that selected text, Gboard/Chrome seems to
+      // ignore the first press of the Backspace key. The user must press
+      // Backspace a second time to actually delete the selected text.
+      this.$.list.addEventListener('selected-index-changed', event => {
+        /** @type {any} */
+        const cast = event;
+        const listSelectedIndex = cast.detail.selectedIndex;
+        if (this.state.selectedIndex !== listSelectedIndex) {
+          this.setState({
+            selectedIndex: listSelectedIndex
+          });
+        }
+      });
 
-    this.$.list.addEventListener('click', () => {
-      // Clicking a list item closes the popup.
-      if (this.opened) {
-        this[symbols.raiseChangeEvents] = true;
-        this.close();
-        this[symbols.raiseChangeEvents] = false;
-      }
-    });
+      this[symbols.renderedRoles].listRole = this.state.listRole;
+    }
   }
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       inputRole: AutoCompleteInput,
+      listRole: ListBox,
       selectText: false
     });
   }
@@ -116,6 +121,19 @@ class ListComboBox extends Base {
 
     // Prefer mixin result if it's defined, otherwise use base result.
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+  }
+
+  /**
+   * The class, tag, or template used to create the list element.
+   * 
+   * @type {function|string|HTMLTemplateElement}
+   * @default ListBox
+   */
+  get listRole() {
+    return this.state.listRole;
+  }
+  set listRole(listRole) {
+    this.setState({ listRole });
   }
 
   refineState(state) {
@@ -175,11 +193,12 @@ class ListComboBox extends Base {
         #list {
           border: none;
           flex: 1;
+          width: 100%;
         }
       </style>
-      <elix-list-box id="list" tabindex="-1">
+      <div id="list" tabindex="-1">
         <slot></slot>
-      </elix-list-box>
+      </div>
     `;
     const defaultSlot = template.defaultSlot(result.content);
     if (defaultSlot) {

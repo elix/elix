@@ -184,7 +184,6 @@ class ComboBox extends Base {
     return result;
   }
 
-  // TODO: Refactor arrow stuff and share with MenuButton.
   get updates() {
     const base = super.updates;
     const popupPosition = this.state.popupPosition;
@@ -200,7 +199,7 @@ class ComboBox extends Base {
       style: {
         padding: '2px 1.5em 2px 2px'
       }
-    }
+    };
 
     return merge(
       base,
