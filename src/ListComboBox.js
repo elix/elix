@@ -103,6 +103,7 @@ class ListComboBox extends Base {
           });
           // Don't mark as handled.
         }
+        break;
 
       case 'PageDown':
         handled = list.pageDown && list.pageDown();
