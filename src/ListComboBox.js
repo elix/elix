@@ -73,8 +73,12 @@ class ListComboBox extends Base {
   // We do our own handling of the Up and Down arrow keys, rather than relying
   // on KeyboardDirectionMixin. The latter supports Home and End, and we don't
   // want to handle those -- we want to let the text input handle them.
+  // We also need to forward PageDown/PageUp to the list element.
   [symbols.keydown](event) {
+
     let handled;
+    /** @type {any} */
+    const list = this.$.list;
 
     switch (event.key) {
 
@@ -100,6 +104,13 @@ class ListComboBox extends Base {
           // Don't mark as handled.
         }
 
+      case 'PageDown':
+        handled = list.pageDown && list.pageDown();
+        break;
+        
+      case 'PageUp':
+        handled = list.pageUp && list.pageUp();
+        break;
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
