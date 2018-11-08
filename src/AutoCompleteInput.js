@@ -95,6 +95,7 @@ class AutoCompleteInput extends Base {
       // Dispatch an input event so that listeners can process the
       // auto-completed text.
       // @ts-ignore
+      const InputEvent = window.InputEvent || Event;
       const event = new InputEvent('input');
       this.dispatchEvent(event);
     }
