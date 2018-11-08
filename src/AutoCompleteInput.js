@@ -3,6 +3,7 @@ import { html } from './template.js';
 import * as symbols from './symbols.js';
 import KeyboardMixin from "./KeyboardMixin.js";
 import WrappedStandardElement from "./WrappedStandardElement.js";
+import { merge } from './updates.js';
 
 
 const Base = 
@@ -14,6 +15,14 @@ const Base =
 // TODO: Rename AutosizeTextarea to AutoSizeTextarea?
 // Or name this AutocompleteInput?
 class AutoCompleteInput extends Base {
+
+  // Delegate relevant ARIA attributes to inner element.
+  get ariaAutocomplete() {
+    return this.getInnerAttribute('aria-autocomplete');
+  }
+  set ariaAutocomplete(value) {
+    this.setInnerAttribute('aria-autocomplete', value);
+  }
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
@@ -103,10 +112,6 @@ class AutoCompleteInput extends Base {
   get [symbols.template]() {
     // Next line is same as: const result = super[symbols.template]
     const result = getSuperProperty(this, AutoCompleteInput, symbols.template);
-    const inner = result.content.getElementById('inner');
-    if (inner) {
-      inner.autocomplete = 'off';
-    }
     const styleTemplate = html`
       <style>
         #inner {
@@ -126,6 +131,14 @@ class AutoCompleteInput extends Base {
   }
   set texts(texts) {
     this.setState({ texts });
+  }
+
+  get updates() {
+    return merge(super.updates, {
+      attributes: {
+        'aria-hidden': 'true'
+      }
+    });
   }
 
   get value() {
@@ -153,7 +166,7 @@ class AutoCompleteInput extends Base {
 }
 
 
-function autoComplete(element) {
+export function autoComplete(element) {
   const value = element.value.toLowerCase();
   const texts = element.texts;
   if (value.length === 0 || !texts) {
@@ -169,8 +182,7 @@ function autoComplete(element) {
 
   // Arrange to leave the auto-completed portion selected.
   element.setState({
-    autoCompleteStart: value.length,
-    // previousValueLength: match.length
+    autoCompleteStart: value.length
   });
   return match;
 }

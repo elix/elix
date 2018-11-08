@@ -142,15 +142,26 @@ const blockElements = [
  */
 class WrappedStandardElement extends ReactiveElement {
 
-  // Define an ariaLabel property and delegate it to the inner element. This
-  // definition lets AttributeMarshallingMixin know it should handle this
-  // aria-label attribute.
+  // Delegate generally-useful ARIA attributes to inner element. These property
+  // definitions let AttributeMarshallingMixin know it should observe these
+  // attributes.
+  get ariaDescribedby() {
+    return this.getInnerAttribute('aria-describedby');
+  }
+  set ariaDescribedby(value) {
+    this.setInnerAttribute('aria-describedby', value);
+  }
   get ariaLabel() {
     return this.getInnerAttribute('aria-label');
   }
-  set ariaLabel(label) {
-    // Propagate the ARIA label to the inner textarea.
-    this.setInnerAttribute('aria-label', label);
+  set ariaLabel(value) {
+    this.setInnerAttribute('aria-label', value);
+  }
+  get ariaLabelledby() {
+    return this.getInnerAttribute('aria-label');
+  }
+  set ariaLabelledby(value) {
+    this.setInnerAttribute('aria-label', value);
   }
 
   // Delegate method defined by HTMLElement.
@@ -257,7 +268,13 @@ class WrappedStandardElement extends ReactiveElement {
   setInnerAttribute(name, value) {
     if (this.shadowRoot) {
       // We've been rendered, so set property directly on inner element.
-      this.inner[name] = value;
+      if (!name.includes('-')) {
+        // Set directly as property; works better for native attributes.
+        this.inner[name] = value;
+      } else {
+        // Set as attribute, fallback for things like ARIA attributes.
+        this.inner.setAttribute(name, value);
+      }
     }
   
     // Save attribute in state.

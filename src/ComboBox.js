@@ -17,6 +17,14 @@ const Base =
  * @elementrole {'input'} input
  */
 class ComboBox extends Base {
+  
+  // Forward any ARIA label to the input element.
+  get ariaLabel() {
+    return this.state.ariaLabel;
+  }
+  set ariaLabel(ariaLabel) {
+    this.setState({ ariaLabel });
+  }
 
   [symbols.beforeUpdate]() {
     if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
@@ -209,6 +217,9 @@ class ComboBox extends Base {
             }
           },
           input: {
+            attributes: {
+              'aria-label': this.state.ariaLabel
+            },
             value
           },
           popup: Object.assign(

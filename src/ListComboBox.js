@@ -179,9 +179,16 @@ class ListComboBox extends Base {
 
   get updates() {
     return merge(super.updates, {
+      attributes: {
+        'aria-haspopup': 'listbox'
+      },
       $: {
         input: Object.assign(
-          {},
+          {
+            attributes: {
+              'aria-autocomplete': 'both'
+            }
+          },
           'texts' in this.$.input && {
             texts: this.state.texts
           },
