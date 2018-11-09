@@ -488,10 +488,7 @@ function measurePopup(element) {
 //
 function waitThenRenderOpened(element) {
   // Wait a tick to let the newly-opened component actually render.
-  const callback = 'requestIdleCallback' in window ?
-    window['requestIdleCallback'] :
-    setTimeout;
-  callback(() => {
+  setTimeout(() => {
     // It's conceivable the popup was closed before the timeout completed,
     // so double-check that it's still opened before listening to events.
     if (element.opened) {

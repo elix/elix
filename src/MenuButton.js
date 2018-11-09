@@ -13,7 +13,7 @@ const documentMouseupListenerKey = Symbol('documentMouseupListener');
 /**
  * A button that invokes a menu.
  * 
- * @inherits PopupSource
+ * @inherits PopupButton
  * @elementrole {Menu} menu
  */
 class MenuButton extends PopupButton {
