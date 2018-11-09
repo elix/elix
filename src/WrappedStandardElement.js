@@ -171,14 +171,15 @@ class WrappedStandardElement extends ReactiveElement {
     cast.blur();
   }
 
-  // Delegate method defined by HTMLElement.
-  click() {
-    /** @type {any} */
-    const cast = this.inner;
-    if (!cast.disabled) {
-      cast.click();
-    }
-  }
+  // One HTMLElement we *don't* delegate is `click`. Generally speaking, a click
+  // on the outer wrapper should behave the same as a click on the inner
+  // element. Also, we want to ensure outside event listeners get a click event
+  // when the click method is invoked. But a click on the inner element will
+  // raise a click event that won't be re-raised by default across the shadow
+  // boundary. The precise behavior seems to be slightly different in Safari
+  // than other browsers, but it seems safer to not delegate click.
+  //
+  // click() {}
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
