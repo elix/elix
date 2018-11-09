@@ -14,8 +14,13 @@ const Base =
 
 
 /**
+ * A text input paired with a popup that can be used as an alternative to typing
+ * 
+ * @inherits PopupSource
+ * @mixes KeyboardMixin
  * @elementrole {'input'} input
- * @elementRole {SeamlessButton} toggleButton
+ * @elementrole {'div'} source
+ * @elementrole {SeamlessButton} toggleButton
  */
 class ComboBox extends Base {
   

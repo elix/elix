@@ -12,6 +12,13 @@ const Base =
     PopupSource
   );
 
+
+/**
+ * A button that invokes an attached popup
+ * 
+ * @inherits PopupSource
+ * @mixes KeyboardMixin
+ */
 class PopupButton extends Base {
 
   [symbols.beforeUpdate]() {

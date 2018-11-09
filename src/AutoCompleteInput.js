@@ -12,9 +12,14 @@ const Base =
   );
 
 
-// TODO: Rename AutosizeTextarea to AutoSizeTextarea?
-// Or name this AutocompleteInput?
+/**
+ * A text input box that completes text as the user types
+ * 
+ * @inherits WrappedStandardElement
+ * @mixes KeyboardMixin
+ */
 class AutoCompleteInput extends Base {
+  // TODO: Rename AutosizeTextarea to AutoSizeTextarea? Or name this AutocompleteInput?
 
   // Delegate relevant ARIA attributes to inner element.
   get ariaAutocomplete() {

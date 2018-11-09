@@ -21,6 +21,13 @@ const Base =
 
 
 /**
+ * A combo box whose popup presents a list of choices
+ * 
+ * @inherits ComboBox
+ * @mixes DirectionSelectionMixin
+ * @mixes ItemsTextMixin
+ * @mixes SingleSelectionMixin
+ * @mixes SlotItemsMixin
  * @elementrole {AutoCompleteInput} input
  * @elementRole {ListBox} list
  */
