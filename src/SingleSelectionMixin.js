@@ -77,8 +77,9 @@ export default function SingleSelectionMixin(Base) {
 
     itemCalcs(item, index) {
       const base = super.itemCalcs ? super.itemCalcs(item, index) : null;
+      const selectedIndex = this.state.selectedIndex;
       return Object.assign({}, base, {
-        selected: index === this.state.selectedIndex
+        selected: selectedIndex >= 0 && index === selectedIndex
       });
     }
 
