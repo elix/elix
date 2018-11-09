@@ -202,12 +202,6 @@ class ListComboBox extends Base {
           flex: 1;
           width: 100%;
         }
-
-        @media (max-width: 600px), (max-height: 600px) {
-          #list {
-            max-height: 50vh;
-          }
-        }
       </style>
       <div id="list" tabindex="-1">
         <slot></slot>
