@@ -175,7 +175,9 @@ class WrappedStandardElement extends ReactiveElement {
   click() {
     /** @type {any} */
     const cast = this.inner;
-    cast.click();
+    if (!cast.disabled) {
+      cast.click();
+    }
   }
 
   componentDidMount() {
