@@ -1,10 +1,10 @@
-import './SeamlessButton.js';
 import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import PopupSource from './PopupSource.js';
+import SeamlessButton from './SeamlessButton.js';
 
 
 const Base =
@@ -15,6 +15,7 @@ const Base =
 
 /**
  * @elementrole {'input'} input
+ * @elementRole {SeamlessButton} toggleButton
  */
 class ComboBox extends Base {
   
@@ -60,21 +61,21 @@ class ComboBox extends Base {
   
       this[symbols.renderedRoles].inputRole = this.state.inputRole;
     }
-  }
 
-  componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
-
-    this.$.toggleButton.addEventListener('mousedown', () => {
-      this[symbols.raiseChangeEvents] = true;
-      this.toggle();
-      if (this.opened) {
-        /** @type {any} */
-        const cast = this.$.input;
-        cast.focus();
-      }
-      this[symbols.raiseChangeEvents] = false;
-    });
+    if (this[symbols.renderedRoles].toggleButtonRole !== this.state.toggleButtonRole) {
+      template.transmute(this.$.toggleButton, this.state.toggleButtonRole);
+      this.$.toggleButton.addEventListener('mousedown', () => {
+        this[symbols.raiseChangeEvents] = true;
+        this.toggle();
+        if (this.opened) {
+          /** @type {any} */
+          const cast = this.$.input;
+          cast.focus();
+        }
+        this[symbols.raiseChangeEvents] = false;
+      });
+      this[symbols.renderedRoles].toggleButtonRole = this.state.toggleButtonRole;
+    }
   }
 
   get defaultState() {
@@ -85,6 +86,7 @@ class ComboBox extends Base {
       role: 'combobox',
       sourceRole: 'div',
       tabindex: null,
+      toggleButtonRole: SeamlessButton,
       value: '',
     });
   }
@@ -139,14 +141,14 @@ class ComboBox extends Base {
     }
     const sourceTemplate = template.html`
       <input id="input"></input>
-      <elix-seamless-button id="toggleButton" focus-on-ancestor="true" tabindex="-1">
+      <button id="toggleButton" focus-on-ancestor="true" tabindex="-1">
         <svg id="downIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
           <path d="M 0 0 l5 5 5 -5 z"/>
         </svg>
         <svg id="upIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
           <path d="M 0 5 l5 -5 5 5 z"/>
         </svg>
-      </elix-seamless-button>
+      </button>
     `;
     template.replace(sourceSlot, sourceTemplate.content);
 
@@ -168,6 +170,7 @@ class ComboBox extends Base {
           align-items: center;
           bottom: 3px;
           display: flex;
+          padding: 0;
           position: absolute;
           right: 3px;
           top: 3px;
@@ -182,6 +185,20 @@ class ComboBox extends Base {
     result.content.appendChild(styleTemplate.content);
 
     return result;
+  }
+
+  /**
+   * The class, tag, or template used to create the button that toggles the
+   * popup.
+   * 
+   * @type {function|string|HTMLTemplateElement}
+   * @default SeamlessButton
+   */
+  get toggleButtonRole() {
+    return this.state.toggleButtonRole;
+  }
+  set toggleButtonRole(toggleButtonRole) {
+    this.setState({ toggleButtonRole });
   }
 
   get updates() {
