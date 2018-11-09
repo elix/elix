@@ -47,9 +47,6 @@ export default function PlayControlsMixin(Base) {
           this.selectNext();
           event.stopPropagation();
         });
-        assumeButtonFocus(this, this.$.previousButton);
-        assumeButtonFocus(this, this.$.playButton);
-        assumeButtonFocus(this, this.$.nextButton);
         this[symbols.renderedRoles].controlButtonRole = this.state.controlButtonRole;
       }
     }
@@ -97,29 +94,42 @@ export default function PlayControlsMixin(Base) {
         '';
 
       return merge(super.updates, {
-        $: {
-          nextIcon: {
-            style: {
-              transform
+        $: Object.assign(
+          {
+            nextIcon: {
+              style: {
+                transform
+              }
+            },
+            pausedIcon: {
+              style: {
+                display: playing ? 'none' : ''
+              }
+            },
+            playingIcon: {
+              style: {
+                display: playing ? '' : 'none'
+              }
+            },
+            previousIcon: {
+              style: {
+                transform
+              }
             }
           },
-          pausedIcon: {
-            style: {
-              display: playing ? 'none' : ''
+          'focusOnAncestor' in this.$.playButton && {
+            nextButton: {
+              focusOnAncestor: true
+            },
+            playButton: {
+              focusOnAncestor: true
+            },
+            previousButton: {
+              focusOnAncestor: true
             }
-          },
-          playingIcon: {
-            style: {
-              display: playing ? '' : 'none'
-            }
-          },
-          previousIcon: {
-            style: {
-              transform
-            }
-          },
-        }
-      })
+          }
+        )
+      });
     }
     
     /**
@@ -220,18 +230,3 @@ export default function PlayControlsMixin(Base) {
 
 
 PlayControlsMixin.wrap = wrap;
-
-
-/*
- * By default, a button will always take focus on mousedown. For this component,
- * we want to override that behavior, such that a mousedown on a button keeps
- * the focus on the outer component.
- */
-function assumeButtonFocus(element, button) {
-  button.addEventListener('mousedown', event => {
-    // Given the main element the focus if it doesn't already have it.
-    element.focus();
-    // Prevent the default focus-on-mousedown behavior.
-    event.preventDefault();
-  });
-}
