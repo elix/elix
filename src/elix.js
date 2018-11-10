@@ -18,7 +18,7 @@ export { default as ArrowDirectionButton } from './ArrowDirectionButton.js';
 export { default as ArrowDirectionMixin } from './ArrowDirectionMixin.js';
 export { default as AttributeMarshallingMixin } from './AttributeMarshallingMixin.js';
 export { default as AutoCompleteInput } from './AutoCompleteInput.js';
-export { default as AutosizeTextarea } from './AutosizeTextarea.js';
+export { default as AutoSizeTextarea } from './AutoSizeTextarea.js';
 export { default as Button } from './Button.js';
 export { default as CalendarDay } from './CalendarDay.js';
 export { default as CalendarDayNamesHeader } from './CalendarDayNamesHeader.js';

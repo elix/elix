@@ -4,13 +4,13 @@
 
   <!--
 
-  Shows how to customize AutosizeTextarea styling using `updates`.
+  Shows how to customize AutoSizeTextarea styling using `updates`.
 
   -->
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Custom AutosizeTextarea</title>
+  <title>Custom AutoSizeTextarea</title>
 
   <link rel="stylesheet" href="../demos.css">
   <script src="../node_modules/@webcomponents/webcomponentsjs/bundles/webcomponents-sd-ce.js"></script>
@@ -18,9 +18,9 @@
 
   <script type="module">
     import { merge } from '../../src/updates.js';
-    import AutosizeTextarea from '../../src/AutosizeTextarea.js';
+    import AutoSizeTextarea from '../../src/AutoSizeTextarea.js';
 
-    class CustomAutosizeTextarea extends AutosizeTextarea {
+    class CustomAutoSizeTextarea extends AutoSizeTextarea {
       get updates() {
         return merge(super.updates, {
           $: {
@@ -39,7 +39,7 @@
       }
     }
 
-    customElements.define('custom-autosize-textarea', CustomAutosizeTextarea);
+    customElements.define('custom-autosize-textarea', CustomAutoSizeTextarea);
   </script>
 
 </head>

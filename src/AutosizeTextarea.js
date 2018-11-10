@@ -14,7 +14,7 @@ const Base =
 /**
  * Text area that grows to accommodate its content
  * 
- * [This text area grows as you add text](/demos/autosizeTextarea.html)
+ * [This text area grows as you add text](/demos/autoSizeTextarea.html)
  *
  * This text input component is useful in situations where you want to ask the
  * user to enter as much text as they want, but don't want to take up a lot of
@@ -23,12 +23,12 @@ const Base =
  * *Note:* This component uses [WrappedStandardElement](WrappedStandardElement)
  * to wrap a standard `<textarea>` element. This allows it to provide all
  * standard `HTMLTextAreaElement` properties, methods, and events, in addition
- * to those specifically listed in the `AutosizeTextarea` API.
+ * to those specifically listed in the `AutoSizeTextarea` API.
  *
  * @inherits WrappedStandardElement
  * @mixes SlotContentMixin
  */
-class AutosizeTextarea extends Base {
+class AutoSizeTextarea extends Base {
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
@@ -277,5 +277,5 @@ function unescapeHtml(html) {
 
 
 
-customElements.define('elix-autosize-textarea', AutosizeTextarea);
-export default AutosizeTextarea;
+customElements.define('elix-auto-size-textarea', AutoSizeTextarea);
+export default AutoSizeTextarea;
