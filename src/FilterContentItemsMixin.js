@@ -7,11 +7,8 @@ import * as updates from './updates.js';
 const originalKey = Symbol('original');
 
 
-/**
- *
- * @module FilterContentItemsMixin
- */
 export default function FilterContentItemsMixin(Base) {
+  
   return class FilterContentItems extends Base {
 
     get defaultState() {

@@ -39,27 +39,7 @@ const Base =
   )))))))))))))));
 
 
-/**
- * Single-selection list box that can filter its contents.
- *
- * @inherits ReactiveElement
- * @mixes AriaListMixin
- * @mixes ClickSelectionMixin
- * @mixes DirectionSelectionMixin
- * @mixes FilterContentItemsMixin
- * @mixes FocusVisibleMixin
- * @mixes ItemsTextMixin
- * @mixes KeyboardDirectionMixin
- * @mixes KeyboardMixin
- * @mixes KeyboardPagedSelectionMixin
- * @mixes KeyboardPrefixSelectionMixin
- * @mixes LanguageDirectionMixin
- * @mixes SelectedItemTextValueMixin
- * @mixes SelectionInViewMixin
- * @mixes SingleSelectionMixin
- * @mixes SlotContentMixin
- */
-class ListBox extends Base {
+class FilterListBox extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
@@ -156,5 +136,5 @@ class ListBox extends Base {
 }
 
 
-customElements.define('elix-filter-list-box', ListBox);
-export default ListBox;
+customElements.define('elix-filter-list-box', FilterListBox);
+export default FilterListBox;

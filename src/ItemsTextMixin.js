@@ -2,7 +2,7 @@ import * as symbols from './symbols.js';
 
 
 /**
- * Manages this.state.texts from this.state.items.
+ * Exposes the text content of a list's items as an array of strings.
  *
  * @module ItemsTextMixin
  */

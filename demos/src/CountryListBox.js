@@ -10,6 +10,7 @@ import AriaListMixin from '../../src/AriaListMixin.js';
 import ClickSelectionMixin from '../../src/ClickSelectionMixin.js';
 import ContentItemsMixin from '../../src/ContentItemsMixin.js';
 import DirectionSelectionMixin from '../../src/DirectionSelectionMixin.js';
+import ItemsTextMixin from '../../src/ItemsTextMixin.js';
 import KeyboardDirectionMixin from '../../src/KeyboardDirectionMixin.js';
 import KeyboardMixin from '../../src/KeyboardMixin.js';
 import KeyboardPagedSelectionMixin from '../../src/KeyboardPagedSelectionMixin.js';
@@ -26,6 +27,7 @@ const Base =
   ClickSelectionMixin(
   ContentItemsMixin(
   DirectionSelectionMixin(
+  ItemsTextMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
   KeyboardPagedSelectionMixin(
@@ -35,7 +37,7 @@ const Base =
   SelectionInViewMixin(
   SingleSelectionMixin(
     ReactiveElement
-  ))))))))))));
+  )))))))))))));
 
 
 
