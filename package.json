@@ -1,6 +1,6 @@
 {
   "name": "elix",
-  "version": "3.2.3",
+  "version": "3.3.0",
   "description": "High-quality web components for common user interface patterns",
   "license": "MIT",
   "repository": {
@@ -11,11 +11,14 @@
   "main": "src/elix.js",
   "keywords": [
     "web components",
+    "calendar",
+    "combo box",
     "custom elements",
     "carousel",
     "dialog",
     "drawer",
     "dropdown",
+    "list box",
     "menu",
     "overlay",
     "popup",
