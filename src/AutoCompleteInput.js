@@ -19,7 +19,6 @@ const Base =
  * @mixes KeyboardMixin
  */
 class AutoCompleteInput extends Base {
-  // TODO: Rename AutoSizeTextarea to AutoSizeTextarea? Or name this AutocompleteInput?
 
   // Delegate relevant ARIA attributes to inner element.
   get ariaAutocomplete() {
