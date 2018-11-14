@@ -17,6 +17,9 @@ class SeamlessButton extends Button {
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
+    // In Chrome/Safari, clicks on light DOM children of a button don't
+    // necessarily give the button focus. See
+    // https://github.com/w3c/webcomponents/issues/773.
     this.$.inner.addEventListener('mousedown', event => {
       if (this.state.focusOnAncestor) {
         // If we have a focusable ancestor, refer the focus to it.
