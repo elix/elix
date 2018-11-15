@@ -18,8 +18,8 @@ class ListWithSearch extends ReactiveElement {
     });
     this.$.input.addEventListener('keydown', event => {
       if (event.key === 'ArrowDown') {
-        if (this.$.list.selectedIndex < 0) {
-          this.$.list.selectedIndex = 0;
+        if (this.state.selectedIndex < 0) {
+          this.setState({ selectedIndex: 0 });
         }
         this.$.list.focus();
         event.preventDefault();
@@ -28,11 +28,23 @@ class ListWithSearch extends ReactiveElement {
     });
     this.$.list.addEventListener('keydown', event => {
       if (event.key === 'ArrowUp') {
-        if (this.$.list.selectedIndex === 0) {
+        if (this.state.selectedIndex === 0) {
           this.$.input.focus();
           event.preventDefault();
           event.stopPropagation();
         }
+      }
+    });
+
+    // Track changes in the list's selection state.
+    this.$.list.addEventListener('selected-index-changed', event => {
+      /** @type {any} */
+      const cast = event;
+      const listSelectedIndex = cast.detail.selectedIndex;
+      if (this.state.selectedIndex !== listSelectedIndex) {
+        this.setState({
+          selectedIndex: listSelectedIndex
+        });
       }
     });
   }
@@ -40,7 +52,8 @@ class ListWithSearch extends ReactiveElement {
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       filter: '',
-      placeholder: 'Search'
+      placeholder: 'Search',
+      selectedIndex: -1
     });
   }
 
@@ -74,14 +87,15 @@ class ListWithSearch extends ReactiveElement {
   }
 
   get updates() {
-    const { filter, placeholder } = this.state;
+    const { filter, placeholder, selectedIndex } = this.state;
     return merge(super.updates, {
       $: {
         input: {
           placeholder
         },
         list: {
-          filter
+          filter,
+          selectedIndex
         }
       }
     });

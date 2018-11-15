@@ -58,7 +58,7 @@ export default function KeyboardMixin(Base) {
         const handled = this[symbols.keydown](event);
         if (handled) {
           event.preventDefault();
-          event.stopPropagation();
+          event.stopImmediatePropagation();
         }
         await Promise.resolve();
         this[symbols.raiseChangeEvents] = false;

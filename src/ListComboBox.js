@@ -78,7 +78,8 @@ class ListComboBox extends Base {
     return Object.assign({}, super.defaultState, {
       inputRole: AutoCompleteInput,
       listRole: ListBox,
-      selectText: false
+      selectText: false,
+      selectedIndex: -1
     });
   }
 
