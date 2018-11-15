@@ -361,6 +361,9 @@ export const roles = Symbol('roles');
  */
 export const scrollTarget = Symbol('scrollTarget');
 
+// TODO: Document
+export const selectionDelegate = Symbol('selectionDelegate');
+
 /**
  * Symbol for the `startEffect` method.
  * 

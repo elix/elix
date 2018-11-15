@@ -38,6 +38,7 @@ export const rendering: '_rendering';
 export const rightToLeft: '_rightToLeft';
 export const roles: '_roles';
 export const scrollTarget: '_scrollTarget';
+export const selectionDelegate: '_selectionDelegate';
 export const startEffect: '_startEffect';
 export const swipeDown: '_swipeDown';
 export const swipeLeft: '_swipeLeft';
