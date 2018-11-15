@@ -92,23 +92,41 @@ export default function SingleSelectionMixin(Base) {
     refineState(state) {
       let result = super.refineState ? super.refineState(state) : true;
 
-      // Only refine if we actually have items.
       const items = this.itemsForState(state);
+      if (!items || items.length === 0) {
+        return result; // No items
+      }
+
       const count = items ? items.length : 0;
-      if (count > 0) {
-        const { selectedIndex, selectionRequired, selectionWraps } = state;
-        const validatedIndex = validateIndex(
-          selectedIndex,
-          count,
-          selectionRequired,
-          selectionWraps
-        );
-        if (validatedIndex !== selectedIndex) {
-          Object.assign(state, {
-            selectedIndex: validatedIndex
-          });
-          result = false;
+      const { selectedIndex, selectionRequired, selectionWraps } = state;
+
+      const selectedIndexChanged = selectedIndex !== this.state.selectedIndex;
+      let adjustedIndex = selectedIndex;
+      if (!selectedIndexChanged) {
+        // The index stayed the same, but the item may have moved.
+        const selectedItem = this.selectedItem;
+        if (items[selectedIndex] !== selectedItem) {
+          // The item moved or was removed. See if we can find the item
+          // again in the list of items.
+          const currentIndex = items.indexOf(selectedItem);
+          if (currentIndex >= 0) {
+            // Found the item again. Update the index to match.
+            adjustedIndex = currentIndex;
+          }
         }
+      }
+
+      const validatedIndex = validateIndex(
+        adjustedIndex,
+        count,
+        selectionRequired,
+        selectionWraps
+      );
+      if (validatedIndex !== selectedIndex) {
+        Object.assign(state, {
+          selectedIndex: validatedIndex
+        });
+        result = false;
       }
 
       return result;

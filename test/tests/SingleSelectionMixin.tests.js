@@ -90,6 +90,18 @@ describe("SingleSelectionMixin", () => {
     assert.equal(fixture.state.selectedIndex, 0);
   });
 
+  it("preserves selected item when items change and old selection exists in new set", async () => {
+    const fixture = createSampleElement();
+    fixture.setState({
+      selectedIndex: 1
+    });
+    assert.equal(fixture.state.selectedIndex, 1);
+    fixture.setState({
+      items: fixture.state.items.slice(1) // Removes item 0
+    });
+    assert.equal(fixture.state.selectedIndex, 0);
+  });
+
   it("selects nearest item when item in last place is removed", async () => {
     const fixture = createSampleElement();
     const items = fixture.items.slice();
