@@ -4,18 +4,18 @@ import { merge } from './updates.js'
 import * as symbols from './symbols.js';
 import DelegateSelectionMixin from './DelegateSelectionMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
+import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import ReactiveElement from './ReactiveElement.js';
-import SingleSelectionMixin from './SingleSelectionMixin';
-import SlotItemsMixin from './SlotItemsMixin.js';
+import SingleSelectionMixin from './SingleSelectionMixin.js';
 
 
 const Base =
   DelegateSelectionMixin(
   DirectionSelectionMixin(
   KeyboardMixin(
+  KeyboardDirectionMixin(
   SingleSelectionMixin(
-  SlotItemsMixin(
     ReactiveElement
   )))));
 
@@ -42,32 +42,40 @@ class ListWithSearch extends Base {
     });
   }
 
-  // We do our own handling of the Up and Down arrow keys, rather than relying
-  // on KeyboardDirectionMixin. The latter supports Home and End, and we don't
-  // want to handle those -- we want to let the text input handle them.
-  // We also need to forward PageDown/PageUp to the list element.
   [symbols.keydown](event) {
 
     let handled;
     /** @type {any} */
     const list = this.$.list;
 
+    // Forward Page Down/Page Up to the list element.
+    //
+    // This gets a little more complex than we'd like. The pageUp/pageDown
+    // methods may update the list's selectedIndex, which in turn will
+    // eventually update the selectedIndex of this component. In the meantime,
+    // other keydown processing can set state, which will trigger a render. When
+    // this component is asked for updates, it'll return the current (i.e. old)
+    // selectedIndex value, and overwrite the list's own, newer selectedIndex.
+    // To avoid this, we wait for the component to finish processing the keydown
+    // using timeout timing, then invoke pageUp/pageDown.
+    //
+    // This forces us to speculate about whether pageUp/pageDown will update the
+    // selection so that we can synchronously return an indication of whether
+    // the key event was handled. 
     switch (event.key) {
 
-      case 'ArrowDown':
-        handled = event.altKey ? this[symbols.goEnd]() : this[symbols.goDown]();
-        break;
-
-      case 'ArrowUp':
-        handled = event.altKey ? this[symbols.goStart]() : this[symbols.goUp]();
-        break;
-
       case 'PageDown':
-        handled = list.pageDown && list.pageDown();
+        if (list.pageDown) {
+          setTimeout(() => list.pageDown());
+          handled = this.selectedIndex < this.items.length - 1;
+        }
         break;
         
       case 'PageUp':
-        handled = list.pageUp && list.pageUp();
+        if (list.pageUp) {
+          setTimeout(() => list.pageUp());
+          handled = this.selectedIndex > 0;
+        }
         break;
     }
 
@@ -109,15 +117,14 @@ class ListWithSearch extends Base {
   }
 
   get updates() {
-    const { filter, placeholder, selectedIndex } = this.state;
+    const { filter, placeholder } = this.state;
     return merge(super.updates, {
       $: {
         input: {
           placeholder
         },
         list: {
-          filter,
-          selectedIndex
+          filter
         }
       }
     });

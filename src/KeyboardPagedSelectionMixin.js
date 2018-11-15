@@ -186,9 +186,17 @@ function scrollOnePage(element, downward) {
     newIndex = (downward ? items.length - 1 : 0);
   }
 
+  // If external code causes an operation that scrolls the page, it's impossible
+  // for it to predict where the selectedIndex is going to end up. Accordingly,
+  // we raise change events.
+  const saveRaiseChangesEvents = element[symbols.raiseChangeEvents];
+  element[symbols.raiseChangeEvents] = true;
+
   element.setState({
     selectedIndex: newIndex
   });
+
+  element[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
 
   const changed = element.state.selectedIndex !== selectedIndex;
   return changed;

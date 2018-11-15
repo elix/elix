@@ -6,6 +6,8 @@ const selectedIndexChangedListenerKey = Symbol('selectedIndexChangedListener');
 const previousSelectionDelegateKey = Symbol('previousSelectionDelegate');
 
 
+// TODO: Document that the component should define its own selectedIndex and
+// items properties, usually via SingleSelectionMixin.
 export default function DelegateSelectionMixin(Base) {
 
   // The class prototype added by the mixin.
@@ -25,37 +27,14 @@ export default function DelegateSelectionMixin(Base) {
       };
     }
 
-    componentDidUpdate(previousState) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-      const selectedIndex = this.state.selectedIndex;
-      if (selectedIndex !== previousState.selectedIndex && this[symbols.raiseChangeEvents]) {
-        /**
-         * Raised when the `selectedIndex` property changes.
-         * 
-         * @event DelegateSelectionMixin#selected-index-changed
-         */
-        const event = new CustomEvent('selected-index-changed', {
-          detail: { selectedIndex }
-        });
-        this.dispatchEvent(event);
-      }
-
-      const selectionDelegate = this[symbols.selectionDelegate];
-      const previousSelectionDelegate = this[previousSelectionDelegateKey];
-      if (selectionDelegate !== previousSelectionDelegate) {
-        if (previousSelectionDelegate) {
-          // Stop listening to selected-index-changed events on previous delegate.
-          previousSelectionDelegate.removeEventListener(this[selectedIndexChangedListenerKey]);
-        }
-        // Start listening to selected-index-changed events on new delegate.
-        selectionDelegate.addEventListener('selected-index-changed', this[selectedIndexChangedListenerKey]);
-      }
+    componentDidMount() {
+      if (super.componentDidMount) { super.componentDidMount(); }
+      listenToSelectedIndexChanged(this);
     }
 
-    get defaultState() {
-      return Object.assign({}, super.defaultState, {
-        selectedIndex: -1
-      });
+    componentDidUpdate(previousState) {
+      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
+      listenToSelectedIndexChanged(this);
     }
 
     // TODO: Track items as state, handle items-changed event.
@@ -93,4 +72,18 @@ export default function DelegateSelectionMixin(Base) {
   }
 
   return DelegateSelection;
+}
+
+
+function listenToSelectedIndexChanged(element) {
+  const selectionDelegate = element[symbols.selectionDelegate];
+  const previousSelectionDelegate = element[previousSelectionDelegateKey];
+  if (selectionDelegate !== previousSelectionDelegate) {
+    if (previousSelectionDelegate) {
+      // Stop listening to selected-index-changed events on previous delegate.
+      previousSelectionDelegate.removeEventListener(element[selectedIndexChangedListenerKey]);
+    }
+    // Start listening to selected-index-changed events on new delegate.
+    selectionDelegate.addEventListener('selected-index-changed', element[selectedIndexChangedListenerKey]);
+  }
 }

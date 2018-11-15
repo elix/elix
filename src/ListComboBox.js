@@ -5,29 +5,26 @@ import * as template from './template.js';
 import AutoCompleteInput from './AutoCompleteInput.js';
 import ComboBox from './ComboBox.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
-import ItemsTextMixin from './ItemsTextMixin.js';
 import ListBox from './ListBox.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
-import SlotItemsMixin from './SlotItemsMixin.js';
+import DelegateSelectionMixin from './DelegateSelectionMixin.js';
 
 
 const Base =
+  DelegateSelectionMixin(
   DirectionSelectionMixin(
-  ItemsTextMixin(
   SingleSelectionMixin(
-  SlotItemsMixin(
     ComboBox
-  ))));
+  )));
 
 
 /**
  * A combo box whose popup presents a list of choices
  * 
  * @inherits ComboBox
+ * @mixes DelegateSelectionMixin
  * @mixes DirectionSelectionMixin
- * @mixes ItemsTextMixin
  * @mixes SingleSelectionMixin
- * @mixes SlotItemsMixin
  * @elementrole {AutoCompleteInput} input
  * @elementRole {ListBox} list
  */
@@ -189,6 +186,10 @@ class ListComboBox extends Base {
     }
 
     return result;
+  }
+
+  get [symbols.selectionDelegate]() {
+    return this.$.list;
   }
 
   get [symbols.template]() {
