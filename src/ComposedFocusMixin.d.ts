@@ -3,8 +3,6 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const SingleSelectionMixin: Mixin<{}, {
-  forwardFocusTo: string|Node|null;
-}>;
+declare const ComposedFocusMixin: Mixin<{}, {}>;
 
-export default SingleSelectionMixin;
+export default ComposedFocusMixin;

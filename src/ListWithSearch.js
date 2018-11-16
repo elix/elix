@@ -8,6 +8,7 @@ import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
+import { forwardFocus } from './workarounds.js';
 
 
 const Base =
@@ -31,6 +32,10 @@ class ListWithSearch extends Base {
       });
       this[symbols.raiseChangeEvents] = false;
     });
+    if (this.$.list instanceof HTMLElement &&
+        this.$.input instanceof HTMLElement) {
+      forwardFocus(this.$.list, this.$.input);
+    }
   }
 
   get defaultState() {
@@ -109,7 +114,7 @@ class ListWithSearch extends Base {
         }
       </style>
       <input id="input">
-      <elix-filter-list-box forward-focus-to="input" id="list">
+      <elix-filter-list-box id="list">
         <slot></slot>
       </elix-filter-list-box>
     `;

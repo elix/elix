@@ -3,11 +3,11 @@ import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import Button from './Button.js';
-import ForwardFocusMixin from './ForwardFocusMixin.js';
+import ComposedFocusMixin from './ComposedFocusMixin.js';
 
 
 const Base =
-  ForwardFocusMixin(
+  ComposedFocusMixin(
     Button
   );
 

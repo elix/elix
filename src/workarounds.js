@@ -4,6 +4,81 @@
  * @module workarounds
  */
 
+
+const mousedownListenerKey = Symbol('mousedownListener');
+
+
+/**
+ * 
+ * @param {HTMLElement} origin
+ * @param {HTMLElement} target
+ */
+export function forwardFocus(origin, target) {
+  if (origin[mousedownListenerKey]) {
+    // Origin was previously forwarding focus, probably to a different target.
+    // Remove the previous event listener.
+    origin.removeEventListener('mousedown', origin[mousedownListenerKey]);
+  }
+  if (target) {
+    // Using forward focus implies no tab stop.
+    origin.setAttribute('tabindex', '-1');
+    origin[mousedownListenerKey] = (event) => {
+      // Only process events for the main (usually left) button.
+      if (event.button !== 0) {
+        return;
+      }
+      target.focus();
+      event.preventDefault();
+    };
+    origin.addEventListener('mousedown', origin[mousedownListenerKey]);
+  }
+}
+
+
+//
+// Return the closest focusable ancestor in the *composed* tree.
+//
+// The default behavior for mousedown should set the focus to the closest
+// ancestor of the clicked element that can take the focus. As of Nov 2018,
+// Chrome and Safari don't handle this as expected when the clicked element is
+// reassigned across more than one slot to end up inside a focusable element. In
+// such cases, the focus will end up on the body. See
+// https://github.com/w3c/webcomponents/issues/773.
+//
+// As a workaround, we walk up the composed tree to find the first element that
+// can take the focus and put the focus on it.
+//
+function findFocusableAncestor(element) {
+  if (element === document.body ||
+    (!(element instanceof HTMLSlotElement) && element.tabIndex >= 0)) {
+    return element;
+  }
+  // @ts-ignore
+  const parent = element.assignedSlot ?
+    element.assignedSlot :
+    element.parentNode instanceof ShadowRoot ?
+      element.parentNode.host :
+      element.parentNode;
+  return parent ?
+    findFocusableAncestor(parent) :
+    null;
+}
+
+
+// Walk up the class hierarch looking for a getter for the indicated property.
+function findPropertyGetter(prototype, property) {
+  let current = prototype;
+  while (current) {
+    const descriptor = Object.getOwnPropertyDescriptor(current, property);
+    if (descriptor && descriptor.get) {
+      return descriptor.get;
+    }
+    current = Object.getPrototypeOf(current);
+  }
+  return undefined;
+}
+
+
 /**
  * Return the superclass' value of a symbol-indexed property.
  * 
@@ -48,18 +123,4 @@ export function getSuperProperty(obj, cls, property) {
   if (getter) {
     return getter.call(obj);
   }
-}
-
-
-// Walk up the class hierarch looking for a getter for the indicated property.
-function findPropertyGetter(prototype, property) {
-  let current = prototype;
-  while (current) {
-    const descriptor = Object.getOwnPropertyDescriptor(current, property);
-    if (descriptor && descriptor.get) {
-      return descriptor.get;
-    }
-    current = Object.getPrototypeOf(current);
-  }
-  return undefined;
 }
