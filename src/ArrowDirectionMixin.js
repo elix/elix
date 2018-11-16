@@ -109,9 +109,6 @@ function ArrowDirectionMixin(Base) {
           left: overlayArrowButtons ? 0 : ''
         }
       });
-      if ('focusOnAncestor' in this.$.arrowButtonLeft) {
-        arrowButtonLeftUpdates.focusOnAncestor = true;
-      }
 
       const arrowButtonRightUpdates = merge(buttonUpdates, {
         attributes: {
@@ -122,9 +119,6 @@ function ArrowDirectionMixin(Base) {
           right: overlayArrowButtons ? 0 : ''
         }
       });
-      if ('focusOnAncestor' in this.$.arrowButtonRight) {
-        arrowButtonRightUpdates.focusOnAncestor = true;
-      }
 
       const hasArrowIcons = !!this.$.arrowIconLeft;
       const arrowIconProps = {
@@ -165,6 +159,7 @@ function ArrowDirectionMixin(Base) {
             id="arrowButtonLeft"
             class="arrowButton"
             aria-hidden="true"
+            tabindex="-1"
             >
             <slot name="arrowButtonLeft">
               <svg id="arrowIconLeft" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
@@ -179,6 +174,7 @@ function ArrowDirectionMixin(Base) {
             id="arrowButtonRight"
             class="arrowButton"
             aria-hidden="true"
+            tabindex="-1"
             >
             <slot name="arrowButtonRight">
               <svg id="arrowIconRight" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">

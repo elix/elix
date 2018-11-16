@@ -94,8 +94,7 @@ export default function PlayControlsMixin(Base) {
         '';
 
       return merge(super.updates, {
-        $: Object.assign(
-          {
+        $: {
             nextIcon: {
               style: {
                 transform
@@ -116,19 +115,7 @@ export default function PlayControlsMixin(Base) {
                 transform
               }
             }
-          },
-          'focusOnAncestor' in this.$.playButton && {
-            nextButton: {
-              focusOnAncestor: true
-            },
-            playButton: {
-              focusOnAncestor: true
-            },
-            previousButton: {
-              focusOnAncestor: true
-            }
-          }
-        )
+        }
       });
     }
     
