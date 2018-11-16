@@ -31,7 +31,6 @@ class ListWithSearch extends Base {
       });
       this[symbols.raiseChangeEvents] = false;
     });
-
   }
 
   get defaultState() {
@@ -110,7 +109,7 @@ class ListWithSearch extends Base {
         }
       </style>
       <input id="input">
-      <elix-filter-list-box id="list">
+      <elix-filter-list-box forward-focus-to="input" id="list">
         <slot></slot>
       </elix-filter-list-box>
     `;

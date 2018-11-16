@@ -73,24 +73,6 @@ export default function ClickSelectionMixin(Base) {
       if (targetIndex >= 0 || !selectionRequired &&
           this.selectedIndex !== targetIndex) {
         this.selectedIndex = targetIndex;
-    
-        // The default behavior for mousedown should set the focus to the
-        // closest ancestor of the clicked element that can take the focus.
-        // As of Nov 2018, Chrome and Safari don't handle this as expected when
-        // the clicked element is reassigned across more than one slot to end up
-        // inside a focusable element. In such cases, the focus will end up on
-        // the body. See https://github.com/w3c/webcomponents/issues/773.
-        // As a workaround, we walk up the event path to find the first element
-        // that can take the focus and put the focus on it.
-        if (event.composedPath) {
-          const focusable = event.composedPath().find(element =>
-            // Ignore slots, which have a default tabIndex of 0 (!?!).
-            !(element instanceof HTMLSlotElement) && element.tabIndex >= 0);
-          if (focusable) {
-            focusable.focus();
-            event.preventDefault();
-          }
-        }
         event.stopPropagation();
       }
     

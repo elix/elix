@@ -6,6 +6,7 @@ import ClickSelectionMixin from './ClickSelectionMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FilterContentItemsMixin from './FilterContentItemsMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
+import ForwardFocusMixin from './ForwardFocusMixin.js';
 import ItemsTextMixin from './ItemsTextMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
@@ -25,6 +26,7 @@ const Base =
   DirectionSelectionMixin(
   FilterContentItemsMixin(
   FocusVisibleMixin(
+  ForwardFocusMixin(
   ItemsTextMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
@@ -36,7 +38,7 @@ const Base =
   SingleSelectionMixin(
   SlotContentMixin(
     ReactiveElement
-  )))))))))))))));
+  ))))))))))))))));
 
 
 class FilterListBox extends Base {
