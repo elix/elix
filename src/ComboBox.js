@@ -79,6 +79,11 @@ class ComboBox extends Base {
         // Forward focus for new toggle button.
         forwardFocus(this.$.toggleButton, this.$.input);
       }
+      this.$.toggleButton.addEventListener('mousedown', () => {
+        this[symbols.raiseChangeEvents] = true;
+        this.toggle();
+        this[symbols.raiseChangeEvents] = false;
+      });
       this[symbols.renderedRoles].toggleButtonRole = this.state.toggleButtonRole;
     }
   }
