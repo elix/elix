@@ -38,7 +38,13 @@ export default function FilterContentItemsMixin(Base) {
       return this.state.filter;
     }
     set filter(filter) {
+      // If external code sets the filter, it's impossible for that code to
+      // predict the effects on the items and selection, so we'll need to raise
+      // change events.
+      const saveRaiseChangesEvents = this[symbols.raiseChangeEvents];
+      this[symbols.raiseChangeEvents] = true;
       this.setState({ filter });
+      this[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
     }
   
     /**

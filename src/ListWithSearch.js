@@ -42,7 +42,8 @@ class ListWithSearch extends Base {
     return Object.assign({}, super.defaultState, {
       filter: '',
       placeholder: 'Search',
-      tabindex: null
+      tabindex: null,
+      trackSelectedItem: false
     });
   }
 
