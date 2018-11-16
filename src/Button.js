@@ -1,16 +1,18 @@
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import ComposedFocusMixin from './ComposedFocusMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import WrappedStandardElement from './WrappedStandardElement.js';
 
 
 const Base =
+  ComposedFocusMixin(
   FocusVisibleMixin(
   KeyboardMixin(
     WrappedStandardElement.wrap('button')
-  ));
+  )));
 
 
 /**
@@ -24,35 +26,6 @@ const Base =
  * @mixes KeyboardMixin
  */
 class Button extends Base {
-
-  componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
-
-    this.addEventListener('mousedown', event => {
-
-      // If this element can receive the focus, ensure it gets it. As of Oct
-      // 2018, Safari and Firefox don't do this automatically. Chrome doesn't
-      // need this, but it doesn't appear to hurt either.
-      const canReceiveFocus = this.tabIndex >= 0;
-      if (canReceiveFocus) {
-        this.focus();
-      }
-
-      // As of Oct 2018, browsers don't seem to do a good job dealing with
-      // clicks on light DOM nodes assigned to a slot in a focusable element
-      // like a button. We work around those limitations.
-      /** @type {any} */
-      const cast = event;
-      const target = cast.target;
-      const containsTarget = this === target || this.shadowRoot.contains(target);
-      if (!containsTarget) {
-        // The user must be clicking/tapping on an element in the light DOM
-        // that's assigned to this element's slot. The browser will try to steal
-        // the focus from the button; prevent that.
-        event.preventDefault();
-      }
-    });
-  }
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {

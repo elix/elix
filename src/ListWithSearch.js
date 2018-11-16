@@ -8,7 +8,7 @@ import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
-import { forwardFocus } from './workarounds.js';
+import { forwardFocus } from './utilities.js';
 
 
 const Base =

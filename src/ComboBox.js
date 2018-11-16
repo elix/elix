@@ -1,3 +1,4 @@
+import { forwardFocus } from './utilities.js';
 import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
@@ -68,17 +69,16 @@ class ComboBox extends Base {
     }
 
     if (this[symbols.renderedRoles].toggleButtonRole !== this.state.toggleButtonRole) {
+      if (this.$.toggleButton instanceof HTMLElement) {
+        // Stop forwarding focus of current (old) toggle button.
+        forwardFocus(this.$.toggleButton, null);
+      }
       template.transmute(this.$.toggleButton, this.state.toggleButtonRole);
-      this.$.toggleButton.addEventListener('mousedown', () => {
-        this[symbols.raiseChangeEvents] = true;
-        this.toggle();
-        if (this.opened) {
-          /** @type {any} */
-          const cast = this.$.input;
-          cast.focus();
-        }
-        this[symbols.raiseChangeEvents] = false;
-      });
+      if (this.$.toggleButton instanceof HTMLElement &&
+          this.$.input instanceof HTMLElement) {
+        // Forward focus for new toggle button.
+        forwardFocus(this.$.toggleButton, this.$.input);
+      }
       this[symbols.renderedRoles].toggleButtonRole = this.state.toggleButtonRole;
     }
   }

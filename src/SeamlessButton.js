@@ -1,15 +1,7 @@
 import { getSuperProperty } from './workarounds.js';
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import Button from './Button.js';
-import ComposedFocusMixin from './ComposedFocusMixin.js';
-
-
-const Base =
-  ComposedFocusMixin(
-    Button
-  );
 
 
 /**
@@ -20,7 +12,7 @@ const Base =
  * 
  * @inherits Button
  */
-class SeamlessButton extends Base {
+class SeamlessButton extends Button {
 
   get [symbols.template]() {
     // Next line is same as: const result = super[symbols.template]
