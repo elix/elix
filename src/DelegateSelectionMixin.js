@@ -2,8 +2,9 @@ import * as symbols from './symbols.js';
 import { merge } from './updates.js';
 
 
-const selectedIndexChangedListenerKey = Symbol('selectedIndexChangedListener');
+const itemsChangedListenerKey = Symbol('itemsChangedListener');
 const previousSelectionDelegateKey = Symbol('previousSelectionDelegate');
+const selectedIndexChangedListenerKey = Symbol('selectedIndexChangedListener');
 
 
 // TODO: Document that the component should define its own selectedIndex and
@@ -15,6 +16,16 @@ export default function DelegateSelectionMixin(Base) {
 
     constructor() {
       super();
+      this[itemsChangedListenerKey] = event => {
+        /** @type {any} */
+        const cast = event.target;
+        const delegateItems = cast.items;
+        if (this.state.items !== delegateItems) {
+          this.setState({
+            items: delegateItems
+          });
+        }
+      };
       this[selectedIndexChangedListenerKey] = event => {
         /** @type {any} */
         const cast = event;
@@ -29,20 +40,26 @@ export default function DelegateSelectionMixin(Base) {
 
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
-      listenToSelectedIndexChanged(this);
+      listenToDelegateEvents(this);
     }
 
     componentDidUpdate(previousState) {
       if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-      listenToSelectedIndexChanged(this);
+      listenToDelegateEvents(this);
     }
 
-    // TODO: Track items as state, handle items-changed event.
+    get defaultState() {
+      return Object.assign({}, super.defaultState, {
+        items: null
+      });
+    }
+
     get items() {
-      const selectionDelegate = this[symbols.selectionDelegate];
-      return selectionDelegate ?
-        selectionDelegate.items :
-        null;
+      return this.state ? this.state.items : null;
+    }
+
+    itemsForState(state) {
+      return state.items;
     }
 
     get [symbols.selectionDelegate]() {
@@ -75,15 +92,17 @@ export default function DelegateSelectionMixin(Base) {
 }
 
 
-function listenToSelectedIndexChanged(element) {
+function listenToDelegateEvents(element) {
   const selectionDelegate = element[symbols.selectionDelegate];
   const previousSelectionDelegate = element[previousSelectionDelegateKey];
   if (selectionDelegate !== previousSelectionDelegate) {
     if (previousSelectionDelegate) {
-      // Stop listening to selected-index-changed events on previous delegate.
+      // Stop listening to events on previous delegate.
+      previousSelectionDelegate.removeEventListener(element[itemsChangedListenerKey]);
       previousSelectionDelegate.removeEventListener(element[selectedIndexChangedListenerKey]);
     }
-    // Start listening to selected-index-changed events on new delegate.
+    // Start listening to events on new delegate.
+    selectionDelegate.addEventListener('items-changed', element[itemsChangedListenerKey]);
     selectionDelegate.addEventListener('selected-index-changed', element[selectedIndexChangedListenerKey]);
   }
 }

@@ -4,6 +4,10 @@ import ReactiveMixin from '../../src/ReactiveMixin.js';
 
 
 class ContentItemsTest extends ContentItemsMixin(ReactiveMixin(HTMLElement)) {
+
+  connectedCallback() {
+    this.updateContent();
+  }
   
   itemCalcs(item, index) {
     const base = super.itemCalcs ? super.itemCalcs(item, index) : null;
@@ -34,6 +38,16 @@ customElements.define('content-items-test', ContentItemsTest);
 
 
 describe("ContentItemsMixin", () => {
+
+  let container;
+
+  before(() => {
+    container = document.getElementById('container');
+  });
+
+  afterEach(() => {
+    container.innerHTML = '';
+  });
 
   it("returns contents as items", () => {
     const fixture = new ContentItemsTest();
@@ -74,6 +88,25 @@ describe("ContentItemsMixin", () => {
     assert(fixture.items[0].hidden);
     assert(!fixture.items[1].hidden);
     assert(fixture.items[2].hidden);
+  });
+
+  it("raises items-changed event", done => {
+    const fixture = new ContentItemsTest();
+    fixture.addEventListener('items-changed', () => {
+      done();
+    });
+    // Arrange for raising of change events.
+    fixture[symbols.raiseChangeEvents] = true;
+    container.appendChild(fixture);
+    // Wait for first render.
+    Promise.resolve().then(() => {
+      fixture.innerHTML = `
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+      `;
+      fixture.updateContent();
+    });
   });
 
 });

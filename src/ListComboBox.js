@@ -4,18 +4,20 @@ import * as symbols from './symbols.js';
 import * as template from './template.js';
 import AutoCompleteInput from './AutoCompleteInput.js';
 import ComboBox from './ComboBox.js';
+import DelegateSelectionMixin from './DelegateSelectionMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
+import ItemsTextMixin from './ItemsTextMixin.js';
 import ListBox from './ListBox.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
-import DelegateSelectionMixin from './DelegateSelectionMixin.js';
 
 
 const Base =
   DelegateSelectionMixin(
   DirectionSelectionMixin(
+  ItemsTextMixin(
   SingleSelectionMixin(
     ComboBox
-  )));
+  ))));
 
 
 /**

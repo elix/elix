@@ -45,6 +45,20 @@ const originalKey = Symbol('original');
 export default function ContentItemsMixin(Base) {
   return class ContentItems extends Base {
 
+    componentDidUpdate(previousState) {
+      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
+      const itemsChanged = this.state.items !== previousState.items;
+      if (itemsChanged && this[symbols.raiseChangeEvents]) {
+        /**
+         * Raised when the `items` property changes.
+         * 
+         * @event SingleSelectionMixin#items-changed
+         */
+        const event = new CustomEvent('items-changed');
+        this.dispatchEvent(event);
+      }
+    }
+
     get defaultState() {
       return Object.assign({}, super.defaultState, {
         contentForItems: null,
