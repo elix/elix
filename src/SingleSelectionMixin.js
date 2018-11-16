@@ -71,7 +71,8 @@ export default function SingleSelectionMixin(Base) {
       return Object.assign({}, super.defaultState, {
         selectedIndex: -1,
         selectionRequired: false,
-        selectionWraps: false
+        selectionWraps: false,
+        trackSelectedItem: true
       });
     }
 
@@ -102,7 +103,7 @@ export default function SingleSelectionMixin(Base) {
 
       const selectedIndexChanged = selectedIndex !== this.state.selectedIndex;
       let adjustedIndex = selectedIndex;
-      if (!selectedIndexChanged) {
+      if (this.state.trackSelectedItem && !selectedIndexChanged) {
         // The index stayed the same, but the item may have moved.
         const selectedItem = this.selectedItem;
         if (items[selectedIndex] !== selectedItem) {

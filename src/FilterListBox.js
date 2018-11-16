@@ -45,7 +45,8 @@ class FilterListBox extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      orientation: 'vertical'
+      orientation: 'vertical',
+      trackSelectedItem: false
     });
   }
 
@@ -72,6 +73,18 @@ class FilterListBox extends Base {
   }
   set orientation(orientation) {
     this.setState({ orientation });
+  }
+
+  refineState(state) {
+    let result = super.refineState ? super.refineState(state) : true;
+    const filterChanged = state.filter !== this.state.filter;
+    if (filterChanged && state.selectedIndex > 0) {
+      Object.assign(state, {
+        selectedIndex: 0
+      });
+      result = false;
+    }
+    return result;
   }
 
   get [symbols.scrollTarget]() {

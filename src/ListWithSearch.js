@@ -98,6 +98,7 @@ class ListWithSearch extends Base {
     return this.$.list;
   }
 
+  // TODO: Roles
   get [symbols.template]() {
     return html`
       <style>
@@ -114,7 +115,7 @@ class ListWithSearch extends Base {
         }
       </style>
       <input id="input">
-      <elix-filter-list-box id="list">
+      <elix-filter-list-box id="list" selection-required="true">
         <slot></slot>
       </elix-filter-list-box>
     `;
