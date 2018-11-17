@@ -8,9 +8,10 @@ declare const ContentItemsMixin: StateMixin<{
 },
 {},
 {
-  itemUpdates(item: Element, calcs: PlainObject, original: PlainObject): PlainObject;
+  itemMatchesInState(item: Element, state: PlainObject): boolean;
   items: Element[];
-  itemsForState(state: PlainObject): Element[]
+  itemsForState(state: PlainObject): Element[];
+  itemUpdates(item: Element, calcs: PlainObject, original: PlainObject): PlainObject;
 },
 {
   items: Element[];

@@ -48,9 +48,9 @@ function findFocusableAncestor(element) {
     (!(element instanceof HTMLSlotElement) && element.tabIndex >= 0)) {
     return element;
   }
-  // @ts-ignore
   const parent = element.assignedSlot ?
     element.assignedSlot :
+    // @ts-ignore
     element.parentNode instanceof ShadowRoot ?
       element.parentNode.host :
       element.parentNode;

@@ -3,9 +3,6 @@ import { default as AutoCompleteInput, autoComplete } from '../../src/AutoComple
 
 describe("AutoCompleteInput", () => {
 
-  let container;
-
-
   it("can match against texts", async () => {
 
     const fixture = new AutoCompleteInput();

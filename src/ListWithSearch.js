@@ -2,7 +2,7 @@ import './FilterListBox.js';
 import { html } from './template.js';
 import { merge } from './updates.js'
 import * as symbols from './symbols.js';
-import DelegateSelectionMixin from './DelegateSelectionMixin.js';
+import DelegateSelectionMixin from './DelegateSelectionMixin';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
@@ -27,8 +27,10 @@ class ListWithSearch extends Base {
     if (super.componentDidMount) { super.componentDidMount(); }
     this.$.input.addEventListener('input', () => {
       this[symbols.raiseChangeEvents] = true;
+      /** @type {any} */
+      const cast = this.$.input;
       this.setState({
-        filter: this.$.input.value
+        filter: cast.value
       });
       this[symbols.raiseChangeEvents] = false;
     });
@@ -72,7 +74,10 @@ class ListWithSearch extends Base {
       case 'PageDown':
         if (list.pageDown) {
           setTimeout(() => list.pageDown());
-          handled = this.selectedIndex < this.items.length - 1;
+          const items = this.items;
+          if (items) {
+            handled = this.selectedIndex < items.length - 1;
+          }
         }
         break;
         

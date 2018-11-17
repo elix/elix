@@ -12,11 +12,12 @@ declare const SlotItemsMixin: StateMixin<
 },
 {},
 {
-  componentDidMount(): void;
   [symbols.contentSlot]: HTMLSlotElement;
-  itemUpdates(item: Element, calcs: PlainObject, original: PlainObject): PlainObject;
+  componentDidMount(): void;
+  itemMatchesInState(item: Element, state: PlainObject): boolean;
   items: Element[];
-  itemsForState(state: PlainObject): Element[]
+  itemsForState(state: PlainObject): Element[];
+  itemUpdates(item: Element, calcs: PlainObject, original: PlainObject): PlainObject;
 },
 {
   content: Node[];

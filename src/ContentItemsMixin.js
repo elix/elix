@@ -1,4 +1,4 @@
-import { substantiveElements, substantiveElement } from './content.js';
+import { substantiveElement } from './content.js';
 import * as symbols from './symbols.js';
 import * as updates from './updates.js';
 

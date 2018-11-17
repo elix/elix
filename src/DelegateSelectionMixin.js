@@ -16,6 +16,7 @@ export default function DelegateSelectionMixin(Base) {
 
     constructor() {
       super();
+      // @ts-ignore
       this[itemsChangedListenerKey] = event => {
         /** @type {any} */
         const cast = event.target;
@@ -26,6 +27,7 @@ export default function DelegateSelectionMixin(Base) {
           });
         }
       };
+      // @ts-ignore
       this[selectedIndexChangedListenerKey] = event => {
         /** @type {any} */
         const cast = event;
