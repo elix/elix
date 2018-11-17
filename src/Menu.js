@@ -107,11 +107,11 @@ class Menu extends Base {
   }
 
   // Filter the set of items to ignore disabled items.
-  itemsForState(state) {
-    const base = super.itemsForState(state);
-    return base ?
-      base.filter((/** @type {any} */ item) => !item.disabled) :
-      [];
+  itemMatchesInState(item, state) {
+    const base = super.itemMatchesInState ?
+      super.itemMatchesInState(item, state) :
+      true;
+    return base && !item.disabled;
   }
 
   itemUpdates(item, calcs, original) {

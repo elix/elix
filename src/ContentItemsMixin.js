@@ -120,7 +120,9 @@ export default function ContentItemsMixin(Base) {
 
     // TODO: Make Symbol
     itemMatchesInState(item, state) {
-      const base = super.itemMatchesInState ? super.itemMatchesInState(state) : true;
+      const base = super.itemMatchesInState ?
+        super.itemMatchesInState(item, state) :
+        true;
       return base && substantiveElement(item);
     }
 

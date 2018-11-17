@@ -25,43 +25,10 @@ export default function FilterItemsMixin(Base) {
       this[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
     }
 
-    /**
-     * Determine what updates should be applied to an item to reflect the current state,
-     * using the format defined by the [updates](updates) helpers.
-     * 
-     * By default, this returns an empty object. You should override this method
-     * (or use mixins that override this method) to indicate what updates should
-     * be applied to the given item during rendering.
-     * 
-     * Example: [AriaListMixin](AriaListMixin) uses code similar to the following to
-     * have an item's `aria-selected` attribute reflect its selection state:
-     * 
-     *     itemUpdates(item, calcs, original) {
-     *       const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
-     *       return merge(base, {
-     *         attributes: {
-     *           'aria-selected': calcs.selected
-     *         },
-     *       });
-     *     }
-     * 
-     * This code fragment is intended for use with
-     * [SingleSelectionMixin](SingleSelectionMixin), which provides the
-     * `calcs.selected` member.
-     * 
-     * @param {Element} item - the item to be updated
-     * @param {object} calcs - per-item calculations derived from element state
-     * @param {object} original - the item's original HTML attributes, classes, and style
-     * @returns {object} the DOM updates that should be applied to the item
-     */
-    itemUpdates(item, calcs, original) {
-      return super.itemUpdates ?
-        super.itemUpdates(item, calcs, original) :
-        {};
-    }
-
     itemMatchesInState(item, state) {
-      const base = super.itemMatchesInState ? super.itemMatchesInState(item) : true;
+      const base = super.itemMatchesInState ?
+        super.itemMatchesInState(item, state) :
+        true;
       if (!base) {
         return false;
       }
@@ -79,7 +46,7 @@ export default function FilterItemsMixin(Base) {
       const filterChanged = state.filter !== state.filterForItems;
       if (filterChanged) {
         Object.assign(state, {
-          items: null,  // Indicate that items needs to be recalculated.
+          items: null,  // Indicate that items need to be recalculated.
           filterForItems: state.filter
         });
         result = false;
