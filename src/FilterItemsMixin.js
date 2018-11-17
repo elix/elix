@@ -1,9 +1,9 @@
 import * as symbols from './symbols.js';
 
 
-export default function FilterContentItemsMixin(Base) {
+export default function FilterItemsMixin(Base) {
   
-  return class FilterContentItems extends Base {
+  return class FilterItems extends Base {
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
@@ -79,7 +79,7 @@ export default function FilterContentItemsMixin(Base) {
       const filterChanged = state.filter !== state.filterForItems;
       if (filterChanged) {
         Object.assign(state, {
-          contentForItems: null,
+          items: null,  // Indicate that items needs to be recalculated.
           filterForItems: state.filter
         });
         result = false;

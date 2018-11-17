@@ -1,10 +1,10 @@
 import { merge } from './updates.js';
-import FilterContentItemsMixin from './FilterContentItemsMixin.js';
+import FilterItemsMixin from './FilterItemsMixin.js';
 import ListBox from './ListBox.js';
 
 
 const Base =
-  FilterContentItemsMixin(
+  FilterItemsMixin(
     ListBox
   );
 

@@ -99,13 +99,12 @@ export default function ContentItemsMixin(Base) {
      */
     itemCalcs(item, index) {
       const base = super.itemCalcs ? super.itemCalcs(item, index) : {};
-      const matches = index >= 0;
       return Object.assign(
         {},
         base,
         {
           index,
-          matches
+          matches: index >= 0
         }
       );
     }
@@ -174,14 +173,14 @@ export default function ContentItemsMixin(Base) {
 
     refineState(state) {
       let result = super.refineState ? super.refineState(state) : true;
-      const content = state.content || null;
-      const contentChanged = content !== state.contentForItems; 
-      if (contentChanged) {
+      const contentChanged = state.content !== state.contentForItems;
+      const needItems = state.content && !state.items;
+      if (contentChanged || needItems) {
         const items = this.itemsForState(state);
         Object.freeze(items);
         Object.assign(state, {
           items,
-          contentForItems: content
+          contentForItems: state.content
         });
         result = false;
       }
