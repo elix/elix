@@ -1,4 +1,4 @@
-import { substantiveElements } from './content.js';
+import { substantiveElements, substantiveElement } from './content.js';
 import * as symbols from './symbols.js';
 import * as updates from './updates.js';
 
@@ -99,7 +99,15 @@ export default function ContentItemsMixin(Base) {
      */
     itemCalcs(item, index) {
       const base = super.itemCalcs ? super.itemCalcs(item, index) : {};
-      return Object.assign({ index }, base);
+      const matches = index >= 0;
+      return Object.assign(
+        {},
+        base,
+        {
+          index,
+          matches
+        }
+      );
     }
 
     /**
@@ -111,8 +119,22 @@ export default function ContentItemsMixin(Base) {
       return this.state ? this.state.items : null;
     }
 
+    // TODO: Make Symbol
+    itemMatchesInState(item, state) {
+      const base = super.itemMatchesInState ? super.itemMatchesInState(state) : true;
+      return base && substantiveElement(item);
+    }
+
     itemsForState(state) {
-      return state.content ? substantiveElements(state.content) : null;
+      const base = super.itemsForState ?
+        super.itemsForState(state) :
+        state.content;
+      if (base) {
+        return base.filter(item =>
+          this.itemMatchesInState(item, state));
+      } else {
+        return null;
+      }
     }
 
     /**
@@ -169,11 +191,16 @@ export default function ContentItemsMixin(Base) {
     [symbols.render]() {
       if (super[symbols.render]) { super[symbols.render](); }
       if (this.itemUpdates) {
-        const items = this.items || [];
-        items.forEach((item, index) => {
+        const content = this.state.content || [];
+        const elements = content.filter(node => node instanceof Element);
+        let itemCount = 0;
+        elements.forEach((item) => {
           if (item[originalKey] === undefined) {
             item[originalKey] = updates.current(item);
           }
+          const index = this.itemMatchesInState(item, this.state) ?
+            itemCount++ :
+            -1;
           const calcs = this.itemCalcs(item, index);
           updates.apply(item, this.itemUpdates(item, calcs, item[originalKey]));
         });

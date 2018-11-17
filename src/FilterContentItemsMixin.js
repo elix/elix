@@ -1,36 +1,14 @@
-import { substantiveElements } from './content.js';
 import * as symbols from './symbols.js';
-import * as updates from './updates.js';
-
-
-// Symbols for private data members on an element.
-const originalKey = Symbol('original');
 
 
 export default function FilterContentItemsMixin(Base) {
   
   return class FilterContentItems extends Base {
 
-    componentDidUpdate(previousState) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-      const itemsChanged = this.state.items !== previousState.items;
-      if (itemsChanged && this[symbols.raiseChangeEvents]) {
-        /**
-         * Raised when the `items` property changes.
-         * 
-         * @event FilterContentItemsMixin#items-changed
-         */
-        const event = new CustomEvent('items-changed');
-        this.dispatchEvent(event);
-      }
-    }
-
     get defaultState() {
       return Object.assign({}, super.defaultState, {
-        contentForItems: null,
         filter: null,
-        filterForItems: null,
-        items: null
+        filterForItems: null
       });
     }
 
@@ -45,66 +23,6 @@ export default function FilterContentItemsMixin(Base) {
       this[symbols.raiseChangeEvents] = true;
       this.setState({ filter });
       this[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
-    }
-  
-    /**
-     * Returns a set of calculations about the given item that can be derived from
-     * the component's current state.
-     *
-     * The goal of the `itemCalcs` step is to ensure that all mixins/classes use
-     * a consistent definition for facts about an item that can be derived from
-     * component state. By default, `itemCalcs` includes a member `index`
-     * containing the index of the indicated item. Other mixins/classes can
-     * extend the result of `itemCalcs` to include additional facts.
-     *
-     * For example, the [SingleSelectionMixin](SingleSelectionMixin) tracks
-     * selection at the component level through a state member
-     * `state.selectedIndex`. When rendering a specific item, a component
-     * generally wants to know, "Is this specific item the one which is
-     * selected?". `SingleSelectionMixin` does this with a defintion for
-     * `itemCalcs` that looks like this:
-     *
-     *     itemCalcs(item, index) {
-     *       const base = super.itemCalcs ? super.itemCalcs(item, index) : null;
-     *       return Object.assign({}, base, {
-     *         selected: index === this.selectedIndex
-     *       });
-     *     }
-     *
-     * This ensures that any other aspect of the component that wants to inspect
-     * the selected state of a given item uses a consistent definition for
-     * selection.
-     * 
-     * @param {Element} item - the item being considered
-     * @param {number} index - the item's position in the list
-     */
-    itemCalcs(item, index) {
-      const base = super.itemCalcs ? super.itemCalcs(item, index) : {};
-      const matches = this.itemMatchesInState(item, this.state);
-      return Object.assign(
-        {
-          index,
-          matches
-        },
-        base
-      );
-    }
-
-    /**
-     * The current set of items drawn from the element's current state.
-     * 
-     * @returns {Element[]|null} the element's current items
-     */
-    get items() {
-      return this.state ? this.state.items : null;
-    }
-
-    itemsForState(state) {
-      if (!state.content) {
-        return null;
-      }
-      const elements = substantiveElements(state.content);
-      return elements.filter(element => this.itemMatchesInState(element, state));
     }
 
     /**
@@ -143,6 +61,10 @@ export default function FilterContentItemsMixin(Base) {
     }
 
     itemMatchesInState(item, state) {
+      const base = super.itemMatchesInState ? super.itemMatchesInState(item) : true;
+      if (!base) {
+        return false;
+      }
       const text = item.textContent && item.textContent.toLowerCase();
       const filter = state.filter && state.filter.toLowerCase();
       return !filter ?
@@ -154,38 +76,15 @@ export default function FilterContentItemsMixin(Base) {
 
     refineState(state) {
       let result = super.refineState ? super.refineState(state) : true;
-      const content = state.content || null;
-      const contentChanged = content !== state.contentForItems;
       const filterChanged = state.filter !== state.filterForItems;
-      if (contentChanged || filterChanged) {
-        const items = this.itemsForState(state);
-        Object.freeze(items);
+      if (filterChanged) {
         Object.assign(state, {
-          items,
-          contentForItems: content,
+          contentForItems: null,
           filterForItems: state.filter
         });
         result = false;
       }
       return result;
-    }
-
-    [symbols.render]() {
-      if (super[symbols.render]) { super[symbols.render](); }
-      if (this.itemUpdates) {
-        const items = this.items || [];
-        const elements = this.state.content ?
-          substantiveElements(this.state.content) :
-          [];
-        elements.forEach((item) => {
-          if (item[originalKey] === undefined) {
-            item[originalKey] = updates.current(item);
-          }
-          const index = items.indexOf(item);
-          const calcs = this.itemCalcs(item, index);
-          updates.apply(item, this.itemUpdates(item, calcs, item[originalKey]));
-        });
-      }
     }
 
   }
