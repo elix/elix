@@ -2,7 +2,6 @@ import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
-import AutoCompleteInput from './AutoCompleteInput.js';
 import ComboBox from './ComboBox.js';
 import DelegateSelectionMixin from './DelegateSelectionMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
@@ -75,7 +74,7 @@ class ListComboBox extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      inputRole: AutoCompleteInput,
+      inputRole: 'input',
       listRole: ListBox,
       selectText: false,
       selectedIndex: -1
@@ -143,53 +142,6 @@ class ListComboBox extends Base {
     this.setState({ listRole });
   }
 
-  refineState(state) {
-    let result = super.refineState ? super.refineState(state) : true;
-
-    const selectedIndexChanged = state.selectedIndex >= 0 &&
-      state.selectedIndex !== this.state.selectedIndex;
-    const valueChanged = state.value !== this.state.value;
-    if (selectedIndexChanged || valueChanged) {
-      const items = state.items;
-      if (items) {
-        if (selectedIndexChanged) {
-          // List selection changed, update value.
-          const selectedItem = items[state.selectedIndex];
-          const selectedItemText = selectedItem && selectedItem.textContent;
-          if (state.value !== selectedItemText) {
-            Object.assign(state, {
-              selectText: true,
-              value: selectedItemText
-            });
-            result = false;
-          }
-        } else if (valueChanged) {
-          // Value changed, select that value in list (if it exists).
-          const searchText = state.value.toLowerCase();
-          const selectedIndex = this.state.texts.findIndex(text => 
-            text.toLowerCase() === searchText
-          );
-          if (state.selectedIndex !== selectedIndex) {
-            Object.assign(state, {
-              selectedIndex
-            });
-            result = false;
-          }
-          if (state.selectText) {
-            // User probably changed value directly, so stop trying to select
-            // text.
-            Object.assign(state, {
-              selectText: false
-            });
-            result = false;
-          }
-        }          
-      }
-    }
-
-    return result;
-  }
-
   get [symbols.selectionDelegate]() {
     return this.$.list;
   }
@@ -225,20 +177,11 @@ class ListComboBox extends Base {
         'aria-haspopup': 'listbox'
       },
       $: {
-        input: Object.assign(
-          {
-            attributes: {
-              'aria-autocomplete': 'both'
-            }
-          },
-          'texts' in this.$.input && {
-            texts: this.state.texts
-          },
-          this.state.selectText && {
-            selectionEnd: this.state.value.length,
-            selectionStart: 0
+        input: {
+          attributes: {
+            'aria-autocomplete': 'both'
           }
-        ),
+        },
         list: {
           attributes: {
             tabindex: null

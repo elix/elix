@@ -4,18 +4,19 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix ListWithSearch</title>
+  <title>Elix FilterComboBox</title>
 
   <link rel="stylesheet" href="demos.css">
   <script src="node_modules/@webcomponents/webcomponentsjs/bundles/webcomponents-sd-ce.js"></script>
   <script type="module" src="./src/showElementsWhenDefined.js"></script>
-  <script type="module" src="../src/ListWithSearch.js"></script>
+  <script type="module" src="../src/FilterComboBox.js"></script>
 
 </head>
 
 <body role="main" unresolved>
   <div class="demo medium">
-    <elix-list-with-search aria-label="Fruits" placeholder="Search for fruit" style="height: 100%;">
+    Fruit:
+    <elix-filter-combo-box aria-label="Fruits">
       <div>Acai</div>
       <div>Akee</div>
       <div>Apple</div>
@@ -112,8 +113,8 @@
       <div>Watermelon</div>
       <div>White currant</div>
       <div>White sapote</div>
-      <div>Yuzu</div>
-    </elix-list-with-search>
+      <div>Yuzu</div>  
+    </elix-filter-combo-box>
   </div>
 </body>
 
