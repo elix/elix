@@ -69,6 +69,7 @@ export default function SingleSelectionMixin(Base) {
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
+        itemsForSelectedIndex: null,
         selectedIndex: -1,
         selectionRequired: false,
         selectionWraps: false,
@@ -84,50 +85,57 @@ export default function SingleSelectionMixin(Base) {
       });
     }
 
-    itemsForState(state) {
-      // Prefer base result
-      return super.itemsForState ? super.itemsForState(state) : state.items;
-    }
-
     // When new state is being applied, ensure selectedIndex is valid.
     refineState(state) {
       let result = super.refineState ? super.refineState(state) : true;
 
-      const items = this.itemsForState(state);
-      if (!items || items.length === 0) {
-        return result; // No items
-      }
-
-      const count = items ? items.length : 0;
-      const { selectedIndex, selectionRequired, selectionWraps } = state;
-
-      const selectedIndexChanged = selectedIndex !== this.state.selectedIndex;
-      let adjustedIndex = selectedIndex;
-      if (this.state.trackSelectedItem && !selectedIndexChanged) {
-        // The index stayed the same, but the item may have moved.
-        const selectedItem = this.selectedItem;
-        if (items[selectedIndex] !== selectedItem) {
-          // The item moved or was removed. See if we can find the item
-          // again in the list of items.
-          const currentIndex = items.indexOf(selectedItem);
-          if (currentIndex >= 0) {
-            // Found the item again. Update the index to match.
-            adjustedIndex = currentIndex;
-          }
-        }
-      }
-
-      const validatedIndex = validateIndex(
-        adjustedIndex,
-        count,
+      const {
+        items,
+        itemsForSelectedIndex,
+        selectedIndex,
         selectionRequired,
         selectionWraps
-      );
-      if (validatedIndex !== selectedIndex) {
+      } = state;
+      const itemsChanged = items !== itemsForSelectedIndex;
+      const selectedIndexChanged = selectedIndex !== this.state.selectedIndex;
+      let adjustedIndex = selectedIndex;
+
+      if (itemsChanged) {
+        if (!selectedIndexChanged && this.state.trackSelectedItem) {
+          // The index stayed the same, but the item may have moved.
+          const selectedItem = this.selectedItem;
+          if (items[selectedIndex] !== selectedItem) {
+            // The item moved or was removed. See if we can find the item
+            // again in the list of items.
+            const currentIndex = items.indexOf(selectedItem);
+            if (currentIndex >= 0) {
+              // Found the item again. Update the index to match.
+              adjustedIndex = currentIndex;
+            }
+          }
+        }
         Object.assign(state, {
-          selectedIndex: validatedIndex
+          itemsForSelectedIndex: items
         });
         result = false;
+      }
+
+      // If items are null, we haven't received items yet. Don't validate the
+      // selected index, as it may be set through markup; we'll want to validate
+      // it only after we have items.
+      if (items) {
+        const validatedIndex = validateIndex(
+          adjustedIndex,
+          items.length,
+          selectionRequired,
+          selectionWraps
+        );
+        if (validatedIndex !== selectedIndex) {
+          Object.assign(state, {
+            selectedIndex: validatedIndex
+          });
+          result = false;
+        }
       }
 
       return result;

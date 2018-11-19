@@ -20,7 +20,6 @@ declare const SingleSelectionMixin: StateMixin<{
 {
   canSelectNext: boolean;
   canSelectPrevious: boolean;
-  itemsForState(state: PlainObject): Element[];
   selectedIndex: number;
   selectedItem: Element|null;
   selectFirst(): boolean;

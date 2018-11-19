@@ -10,7 +10,6 @@ declare const ContentItemsMixin: StateMixin<{
 {
   itemMatchesInState(item: Element, state: PlainObject): boolean;
   items: Element[];
-  itemsForState(state: PlainObject): Element[];
   itemUpdates(item: Element, calcs: PlainObject, original: PlainObject): PlainObject;
 },
 {

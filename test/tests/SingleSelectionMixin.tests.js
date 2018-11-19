@@ -119,7 +119,6 @@ describe("SingleSelectionMixin", () => {
       items: [],
       selectedIndex: 0
     });
-    assert.equal(fixture.state.selectedIndex, 0);
     assert.equal(fixture.selectedIndex, -1);
   });
 

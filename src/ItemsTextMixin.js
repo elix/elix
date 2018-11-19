@@ -26,12 +26,16 @@ export default function ItemsTextMixin(Base) {
 
     refineState(state) {
       let result = super.refineState ? super.refineState(state) : true;
-      const items = state.items || null;
+      const items = state.items;
       const itemsChanged = items !== state.itemsForTexts;
       if (itemsChanged) {
-        const texts = Array.prototype.map.call(items, item =>
-          this[symbols.getItemText](item));
-        Object.freeze(texts);
+        const texts = items ?
+          Array.prototype.map.call(items, item =>
+            this[symbols.getItemText](item)) :
+          null;
+        if (texts) {
+          Object.freeze(texts);
+        }
         Object.assign(state, {
           texts,
           itemsForTexts: items

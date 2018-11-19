@@ -126,18 +126,6 @@ export default function ContentItemsMixin(Base) {
       return base && substantiveElement(item);
     }
 
-    itemsForState(state) {
-      const base = super.itemsForState ?
-        super.itemsForState(state) :
-        state.content;
-      if (base) {
-        return base.filter(item =>
-          this.itemMatchesInState(item, state));
-      } else {
-        return null;
-      }
-    }
-
     /**
      * Determine what updates should be applied to an item to reflect the current state,
      * using the format defined by the [updates](updates) helpers.
@@ -175,14 +163,19 @@ export default function ContentItemsMixin(Base) {
 
     refineState(state) {
       let result = super.refineState ? super.refineState(state) : true;
-      const contentChanged = state.content !== state.contentForItems;
-      const needItems = state.content && !state.items;
-      if (contentChanged || needItems) {
-        const items = this.itemsForState(state);
-        Object.freeze(items);
+      const content = state.content;
+      const contentChanged = content !== state.contentForItems;
+      const needsItems = content && !state.items; // Signal from other mixins
+      if (contentChanged || needsItems) {
+        const items = content ?
+          content.filter(item => this.itemMatchesInState(item, state)) :
+          null;
+        if (items) {
+          Object.freeze(items);
+        }
         Object.assign(state, {
           items,
-          contentForItems: state.content
+          contentForItems: content
         });
         result = false;
       }

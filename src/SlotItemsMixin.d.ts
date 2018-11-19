@@ -16,7 +16,6 @@ declare const SlotItemsMixin: StateMixin<
   componentDidMount(): void;
   itemMatchesInState(item: Element, state: PlainObject): boolean;
   items: Element[];
-  itemsForState(state: PlainObject): Element[];
   itemUpdates(item: Element, calcs: PlainObject, original: PlainObject): PlainObject;
 },
 {

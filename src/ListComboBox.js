@@ -150,7 +150,7 @@ class ListComboBox extends Base {
       state.selectedIndex !== this.state.selectedIndex;
     const valueChanged = state.value !== this.state.value;
     if (selectedIndexChanged || valueChanged) {
-      const items = this.itemsForState(state);
+      const items = state.items;
       if (items) {
         if (selectedIndexChanged) {
           // List selection changed, update value.

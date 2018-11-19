@@ -60,10 +60,6 @@ export default function DelegateSelectionMixin(Base) {
       return this.state ? this.state.items : null;
     }
 
-    itemsForState(state) {
-      return state.items;
-    }
-
     get [symbols.selectionDelegate]() {
       const result = super[symbols.selectionDelegate];
       if (typeof result === 'undefined') {
