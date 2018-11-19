@@ -193,6 +193,34 @@ export const goUp = Symbol('goUp');
 export const hasDynamicTemplate = Symbol('hasDynamicTemplate');
 
 /**
+ * Symbol for the `itemMatchesState` method.
+ * 
+ * `ContentItemsMixin` uses this callback to determine whether a content node
+ * should be included in the `items` collection in the given state. By default,
+ * substantive, visible elements are considered items; other nodes (including
+ * text nodes, comment nodes, processing instructions) and invisible elements
+ * (including `script` and `style` tags) are not considered to be items.
+ * 
+ * Various mixins and components override this to refine the idea of what
+ * counts as an item. E.g., [Menu](Menu) overrides this to exclude disabled
+ * menu items, using code similar to this:
+ * 
+ *     // Filter the set of items to ignore disabled items.
+ *     [symbols.itemMatchesState](item, state) {
+ *       const base = super[symbols.itemMatchesState] ?
+ *         super[symbols.itemMatchesState](item, state) :
+ *         true;
+ *       return base && !item.disabled;
+ *     }
+ *
+ * @function itemMatchesState
+ * @param {Node} item - the node that may or may not belong in the given state
+ * @param {object} state - the state in question
+ * @returns {boolean}
+ */
+export const itemMatchesState = Symbol('itemMatchesState');
+
+/**
  * Symbol for the `keydown` method.
  *
  * This method is invoked when an element receives a `keydown` event.

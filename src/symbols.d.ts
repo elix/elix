@@ -28,6 +28,7 @@ export const goRight: '_goRight';
 export const goStart: '_goStart';
 export const goUp: '_goUp';
 export const hasDynamicTemplate: '_hasDynamicTemplate';
+export const itemMatchesState: '_itemMatchesState';
 export const keydown: '_keydown';
 export const mouseenter: '_mouseenter';
 export const mouseleave: '_mouseleave';

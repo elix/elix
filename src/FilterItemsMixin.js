@@ -25,9 +25,9 @@ export default function FilterItemsMixin(Base) {
       this[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
     }
 
-    itemMatchesInState(item, state) {
-      const base = super.itemMatchesInState ?
-        super.itemMatchesInState(item, state) :
+    [symbols.itemMatchesState](item, state) {
+      const base = super[symbols.itemMatchesState] ?
+        super[symbols.itemMatchesState](item, state) :
         true;
       if (!base) {
         return false;

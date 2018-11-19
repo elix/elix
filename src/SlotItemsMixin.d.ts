@@ -14,7 +14,6 @@ declare const SlotItemsMixin: StateMixin<
 {
   [symbols.contentSlot]: HTMLSlotElement;
   componentDidMount(): void;
-  itemMatchesInState(item: Element, state: PlainObject): boolean;
   items: Element[];
   itemUpdates(item: Element, calcs: PlainObject, original: PlainObject): PlainObject;
 },

@@ -30,6 +30,24 @@ const auxiliarycustomTags = [
 ];
 
 
+/**
+ * Return true if the given node is likely to be useful as component content.
+ * 
+ * This will be `true` for nodes that are: a) instances of `Element`
+ * (`HTMLElement` or `SVGElement`), and b) not on a blacklist of normally
+ * invisible elements (such as `style` or `script`). Among other things, this
+ * returns `false` for Text nodes.
+ * 
+ * This is used by [ContentItemsMixin](ContentItemsMixin) to filter out nodes
+ * which are unlikely to be interesting as list items. This is intended to
+ * satisfy the Gold Standard checklist criteria [Auxiliary
+ * Content](https://github.com/webcomponents/gold-standard/wiki/Auxiliary-Content),
+ * so that a component does not inadvertently treat `<style>` and other invisible
+ * items as element content.
+ * 
+ * @param {Node} node
+ * @returns {boolean}
+ */
 export function substantiveElement(node) {
   return node instanceof Element &&
     (!node.localName || auxiliarycustomTags.indexOf(node.localName) < 0)
@@ -43,13 +61,6 @@ export function substantiveElement(node) {
  * members that are: a) instances of `Element` (`HTMLElement` or `SVGElement`),
  * and b) not on a blacklist of normally invisible elements (such as `style` or
  * `script`). Among other things, this filters out Text nodes.
- *
- * This is used by [ContentItemsMixin](ContentItemsMixin) to filter out nodes
- * which are unlikely to be interesting as list items. This is intended to
- * satisfy the Gold Standard checklist criteria [Auxiliary
- * Content](https://github.com/webcomponents/gold-standard/wiki/Auxiliary-Content),
- * so that a component does not inadvertently treat `<style>` and other invisible
- * items as element content.
  *
  * @param {(NodeList|Node[])} nodes - the list of nodes to filter
  * @returns {Element[]} the filtered elements

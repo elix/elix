@@ -109,6 +109,13 @@ export default function ContentItemsMixin(Base) {
       );
     }
 
+    [symbols.itemMatchesState](item, state) {
+      const base = super[symbols.itemMatchesState] ?
+        super[symbols.itemMatchesState](item, state) :
+        true;
+      return base && substantiveElement(item);
+    }
+
     /**
      * The current set of items drawn from the element's current state.
      * 
@@ -116,14 +123,6 @@ export default function ContentItemsMixin(Base) {
      */
     get items() {
       return this.state ? this.state.items : null;
-    }
-
-    // TODO: Make Symbol
-    itemMatchesInState(item, state) {
-      const base = super.itemMatchesInState ?
-        super.itemMatchesInState(item, state) :
-        true;
-      return base && substantiveElement(item);
     }
 
     /**
@@ -168,7 +167,7 @@ export default function ContentItemsMixin(Base) {
       const needsItems = content && !state.items; // Signal from other mixins
       if (contentChanged || needsItems) {
         const items = content ?
-          content.filter(item => this.itemMatchesInState(item, state)) :
+          content.filter(item => this[symbols.itemMatchesState](item, state)) :
           null;
         if (items) {
           Object.freeze(items);
@@ -192,7 +191,7 @@ export default function ContentItemsMixin(Base) {
           if (item[originalKey] === undefined) {
             item[originalKey] = updates.current(item);
           }
-          const index = this.itemMatchesInState(item, this.state) ?
+          const index = this[symbols.itemMatchesState](item, this.state) ?
             itemCount++ :
             -1;
           const calcs = this.itemCalcs(item, index);
