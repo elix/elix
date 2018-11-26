@@ -111,6 +111,9 @@ class PopupSource extends Base {
       } else {
         removeEventListeners(this);
       }
+    } else if (this.opened && !this.state.popupMeasured) {
+      // Need to recalculate popup measurements.
+      measurePopup(this);
     }
   }
 
@@ -210,6 +213,17 @@ class PopupSource extends Base {
     let result = super.refineState ? super.refineState(state) : true;
     const closing = !state.opened && this.opened;
     if (closing && state.popupMeasured) {
+      state.popupMeasured = false;
+      result = false;
+    }
+    if (!state.popupMeasured &&
+      (state.popupHeight !== null ||
+      state.popupWidth !== null ||
+      state.popupWidth !== null ||
+      state.roomAbove !== null ||
+      state.roomBelow !== null ||
+      state.roomLeft !== null ||
+      state.roomRight !== null)) {
       // Reset our calculations of popup dimensions and room around the source.
       Object.assign(state, {
         popupHeight: null,

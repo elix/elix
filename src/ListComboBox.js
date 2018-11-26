@@ -75,6 +75,7 @@ class ListComboBox extends Base {
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       inputRole: 'input',
+      itemsForMeasurements: null,
       listRole: ListBox,
       selectText: false,
       selectedIndex: -1
@@ -140,6 +141,20 @@ class ListComboBox extends Base {
   }
   set listRole(listRole) {
     this.setState({ listRole });
+  }
+
+  refineState(state) {
+    let result = super.refineState ? super.refineState(state) : true;
+    const itemsChanged = state.itemsForMeasurements !== state.items;
+    if (itemsChanged) {
+      // When items change, we need to recalculate popup size.
+      Object.assign(state, {
+        itemsForMeasurements: state.items,
+        popupMeasured: false
+      });
+      result = false;
+    }
+    return result;
   }
 
   get [symbols.selectionDelegate]() {

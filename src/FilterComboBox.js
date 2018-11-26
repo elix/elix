@@ -17,21 +17,16 @@ class FilterComboBox extends ListComboBox {
         state.opened !== this.state.opened;
     const selectedItem = state.items && state.items[state.selectedIndex];
     const selectedItemText = selectedItem && selectedItem.textContent;
-    if (openedChanged) {
-      if (state.opened) {
-        // 
-      } else if (!state.opened && 
+    if (openedChanged && !state.opened && 
         selectedItemText && state.value !== selectedItemText) {
-        // When user closes combo box, update value and reset selection.
-        Object.assign(state, {
-          selectedIndex: -1,
-          selectText: true,
-          value: selectedItemText
-        });
-        result = false;
-      }
+      // When user closes combo box, update value and reset selection.
+      Object.assign(state, {
+        selectedIndex: -1,
+        selectText: true,
+        value: selectedItemText
+      });
+      result = false;
     }
-
     return result;
   }
 
