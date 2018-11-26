@@ -13,16 +13,21 @@ class FilterComboBox extends ListComboBox {
 
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
+    const valueChanged = state.value !== this.state.value;
+    const selectedIndexChanged = state.selectedIndex !== this.state.selectedIndex;
     const openedChanged = typeof this.state.opened !== 'undefined' &&
         state.opened !== this.state.opened;
     const selectedItem = state.items && state.items[state.selectedIndex];
     const selectedItemText = selectedItem && selectedItem.textContent;
-    if (openedChanged && !state.opened && 
+    if (valueChanged && !selectedIndexChanged && state.selectedIndex >= 0) {
+      // Changing the value directly resets the selection.
+      state.selectedIndex = -1;
+      result = false;
+    } else if (openedChanged && !state.opened && 
         selectedItemText && state.value !== selectedItemText) {
       // When user closes combo box, update value and reset selection.
       Object.assign(state, {
         selectedIndex: -1,
-        selectText: true,
         value: selectedItemText
       });
       result = false;

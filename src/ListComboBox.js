@@ -77,7 +77,6 @@ class ListComboBox extends Base {
       inputRole: 'input',
       itemsForMeasurements: null,
       listRole: ListBox,
-      selectText: false,
       selectedIndex: -1
     });
   }
@@ -103,17 +102,6 @@ class ListComboBox extends Base {
       case 'ArrowUp':
         if (this.opened) {
           handled = event.altKey ? this[symbols.goStart]() : this[symbols.goUp]();
-        }
-        break;
-      
-      case 'Enter':
-        if (this.opened) {
-          // ComboBox will close the popup on Enter, but we'd also like to
-          // select the text when it closes.
-          this.setState({
-            selectText: true
-          });
-          // Don't mark as handled.
         }
         break;
 
@@ -145,7 +133,10 @@ class ListComboBox extends Base {
 
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
+    // const valueChanged = state.value !== this.state.value;
+    // const selectedIndexChanged = state.selectedIndex !== this.state.selectedIndex;
     const itemsChanged = state.itemsForMeasurements !== state.items;
+    // if (valueChanged && !state.opened) 
     if (itemsChanged) {
       // When items change, we need to recalculate popup size.
       Object.assign(state, {

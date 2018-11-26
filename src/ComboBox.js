@@ -88,12 +88,28 @@ class ComboBox extends Base {
     }
   }
 
+  componentDidUpdate(previousState) {
+    if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
+    if (this.state.selectText) {
+      // Select the text in the input.
+      const value = this.value;
+      if (value > "") {
+        this.$.input.selectionStart = 0;
+        this.$.input.selectionEnd = value.length;
+      }
+      this.setState({
+        selectText: false
+      });
+    }  
+  }
+
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       horizontalAlign: 'stretch',
       inputRole: 'input',
       orientation: 'vertical',
       role: 'combobox',
+      selectText: false,
       sourceRole: 'div',
       tabindex: null,
       toggleButtonRole: SeamlessButton,
@@ -138,6 +154,17 @@ class ComboBox extends Base {
 
     // Prefer mixin result if it's defined, otherwise use base result.
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+  }
+
+  refineState(state) {
+    let result = super.refineState ? super.refineState(state) : true;
+    const openedChanged = state.opened !== this.state.opened;
+    if (openedChanged && !state.opened && !state.selectText) {
+      // Select text on closing.
+      state.selectText = true;
+      result = false;
+    }
+    return result;
   }
 
   get [symbols.template]() {
