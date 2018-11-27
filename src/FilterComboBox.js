@@ -1,12 +1,55 @@
 import { merge } from "./updates";
+import AutoCompleteInput from "./AutoCompleteInput.js";
 import FilterListBox from "./FilterListBox.js";
+import ItemsTextMixin from './ItemsTextMixin.js';
 import ListComboBox from "./ListComboBox.js";
+import * as symbols from './symbols.js';
+import SlotItemsMixin from "./SlotItemsMixin";
 
 
-class FilterComboBox extends ListComboBox {
+const Base =
+  SlotItemsMixin(
+  ItemsTextMixin(
+    ListComboBox
+  ));
 
+
+class FilterComboBox extends Base {
+
+  [symbols.beforeUpdate]() {
+    const inputRoleChanged = this[symbols.renderedRoles].inputRole !== this.state.inputRole;
+    const listRoleChanged = this[symbols.renderedRoles].listRole !== this.state.listRole;
+    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+    if (inputRoleChanged) {
+      this.$.input.addEventListener('input', () => {
+        // TODO: raise change events?
+        const selectionStart = this.$.input.selectionStart;
+        const value = this.$.input.value;
+        const selectedInputText = value.slice(0, selectionStart);
+        this.setState({
+          selectedInputText
+        });
+      });
+    }
+    if (listRoleChanged) {
+      this.$.list.addEventListener('selected-index-changed', event => {
+        /** @type {any} */
+        const cast = event;
+        const listSelectedIndex = cast.detail.selectedIndex;
+        // Translate list index to our index.
+        const listSelectedItem = this.$.list.items[listSelectedIndex];
+        const selectedIndex = this.items.indexOf(listSelectedItem);
+        this.setState({
+          selectedIndex
+        });
+      });
+    }
+  }
+  
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      selectedInputText: '',
+      inputRole: AutoCompleteInput,
       listRole: FilterListBox
     });
   }
@@ -36,9 +79,15 @@ class FilterComboBox extends ListComboBox {
   }
 
   get updates() {
-    const filter = this.state.value;
+    const filter = this.state.selectedInputText || this.state.value;
     return merge(super.updates, {
       $: {
+        input: Object.assign(
+          {},
+          'texts' in this.$.input && {
+            texts: this.state.texts
+          }
+        ),
         list: {
           filter
         }

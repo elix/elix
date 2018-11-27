@@ -1,9 +1,18 @@
 import { merge } from "./updates";
 import AutoCompleteInput from "./AutoCompleteInput.js";
+import DelegateSelectionMixin from './DelegateSelectionMixin.js';
 import ListComboBox from "./ListComboBox.js";
+import ItemsTextMixin from "./ItemsTextMixin";
 
 
-class AutoCompleteComboBox extends ListComboBox {
+const Base = 
+  DelegateSelectionMixin(
+  ItemsTextMixin(
+    ListComboBox
+  ));
+
+
+class AutoCompleteComboBox extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
