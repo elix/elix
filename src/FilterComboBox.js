@@ -1,6 +1,6 @@
 import { merge } from "./updates";
-import FilterListBox from "./FilterListBox";
-import ListComboBox from "./ListComboBox";
+import FilterListBox from "./FilterListBox.js";
+import ListComboBox from "./ListComboBox.js";
 
 
 class FilterComboBox extends ListComboBox {

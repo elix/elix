@@ -1,6 +1,6 @@
 import { merge } from "./updates";
-import AutoCompleteInput from "./AutoCompleteInput";
-import ListComboBox from "./ListComboBox";
+import AutoCompleteInput from "./AutoCompleteInput.js";
+import ListComboBox from "./ListComboBox.js";
 
 
 class AutoCompleteComboBox extends ListComboBox {
