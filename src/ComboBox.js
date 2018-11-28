@@ -97,8 +97,10 @@ class ComboBox extends Base {
       // Select the text in the input.
       const value = this.value;
       if (value > "") {
-        this.$.input.selectionStart = 0;
-        this.$.input.selectionEnd = value.length;
+        /** @type {any} */
+        const cast = this.$.input;
+        cast.selectionStart = 0;
+        cast.selectionEnd = value.length;
       }
       this.setState({
         selectText: false

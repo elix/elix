@@ -102,6 +102,7 @@ class AutoCompleteInput extends Base {
       const InputEvent = window.InputEvent || Event;
       const originalInput = cast.value.slice(0, this.state.autoCompleteStart);
       const event = new InputEvent('input', {
+        // @ts-ignore
         detail: {
           originalInput
         }

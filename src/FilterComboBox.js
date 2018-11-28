@@ -29,48 +29,24 @@ class FilterComboBox extends Base {
     if (inputRoleChanged) {
       this.$.input.addEventListener('input', event => {
         this[symbols.raiseChangeEvents] = true;
-        // const selectionStart = this.$.input.selectionStart;
-        // this.setState({
-        //   selectionStart
-        // });
-        const filter = event.detail ?
-          event.detail.originalInput :
+        /** @type {any} */
+        const cast = event;
+        const filter = cast.detail ?
+          cast.detail.originalInput :
           this.state.value;
         this.setState({
           filter
         });
         this[symbols.raiseChangeEvents] = false;
       });
-      // this.$.input.addEventListener('select', () => {
-      //   this[symbols.raiseChangeEvents] = true;
-      //   const selectionStart = this.$.input.selectionStart;
-      //   this.setState({
-      //     selectionStart
-      //   });
-      //   this[symbols.raiseChangeEvents] = false;
-      // });
     }
-    // if (listRoleChanged) {
-    //   this.$.list.addEventListener('selected-index-changed', event => {
-    //     /** @type {any} */
-    //     const cast = event;
-    //     const listSelectedIndex = cast.detail.selectedIndex;
-    //     // Translate list index to our index.
-    //     const listSelectedItem = this.$.list.items[listSelectedIndex];
-    //     const selectedIndex = this.items.indexOf(listSelectedItem);
-    //     this.setState({
-    //       selectedIndex
-    //     });
-    //   });
-    // }
   }
   
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       filter: '',
       inputRole: AutoCompleteInput,
-      listRole: FilterListBox,
-      // selectionStart: 0
+      listRole: FilterListBox
     });
   }
 
@@ -84,12 +60,9 @@ class FilterComboBox extends Base {
     const changed = stateChanged(state, state[previousStateKey]);
     const { content, filter, opened } = state;
     if (changed.content) {
-      const items = state.content.filter(element => substantiveElement(element));
+      const items = content.filter(element => substantiveElement(element));
       const texts = getTextsFromItems(items);
-      Object.assign(state, {
-        contentForTexts: content,
-        texts
-      });
+      state.texts = texts;
       result = false;
     }
     const closing = changed.opened && !opened;
@@ -103,15 +76,8 @@ class FilterComboBox extends Base {
   }
 
   get updates() {
-    const { filter, selectedIndex, value } = this.state;
-    // const selectedInputText = selectionStart > 0 ?
-    //   this.value.slice(0, selectionStart) :
-    //   null;
-    // const filter = filter;
+    const { filter, selectedIndex } = this.state;
     const applyFilter = filter === '' || selectedIndex === -1;
-    // const appliedFilter = selectedIndex === -1 ?
-    //   filter :
-    //   '';
     return merge(super.updates, {
       $: {
         input: Object.assign(
@@ -126,9 +92,6 @@ class FilterComboBox extends Base {
             filter
           }
         )
-        // list: {
-        //   filter: appliedFilter
-        // }
       }
     });
   }
