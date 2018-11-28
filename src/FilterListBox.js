@@ -11,12 +11,6 @@ const Base =
 
 class FilterListBox extends Base {
 
-  get defaultState() {
-    return Object.assign({}, super.defaultState, {
-      trackSelectedItem: false
-    });
-  }
-
   highlightTextInItem(textToHighlight, item) {
     const text = item.textContent;
     const start = text.toLowerCase().indexOf(textToHighlight);
@@ -59,18 +53,6 @@ class FilterListBox extends Base {
         childNodes
       })
     );
-  }
-
-  refineState(state) {
-    let result = super.refineState ? super.refineState(state) : true;
-    const filterChanged = state.filter !== this.state.filter;
-    if (filterChanged && state.selectedIndex > 0) {
-      Object.assign(state, {
-        selectedIndex: 0
-      });
-      result = false;
-    }
-    return result;
   }
 
 }

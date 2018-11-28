@@ -44,8 +44,7 @@ class ListWithSearch extends Base {
     return Object.assign({}, super.defaultState, {
       filter: '',
       placeholder: 'Search',
-      tabindex: null,
-      trackSelectedItem: false
+      tabindex: null
     });
   }
 
@@ -121,7 +120,7 @@ class ListWithSearch extends Base {
         }
       </style>
       <input id="input">
-      <elix-filter-list-box id="list" selection-required="true">
+      <elix-filter-list-box id="list">
         <slot></slot>
       </elix-filter-list-box>
     `;

@@ -1,4 +1,8 @@
+import { stateChanged } from './utilities.js';
 import * as symbols from './symbols.js';
+
+
+const previousStateKey = Symbol('previousSelection');
 
 
 export default function FilterItemsMixin(Base) {
@@ -7,8 +11,7 @@ export default function FilterItemsMixin(Base) {
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
-        filter: null,
-        filterForItems: null
+        filter: null
       });
     }
 
@@ -43,12 +46,13 @@ export default function FilterItemsMixin(Base) {
 
     refineState(state) {
       let result = super.refineState ? super.refineState(state) : true;
-      const filterChanged = state.filter !== state.filterForItems;
-      if (filterChanged) {
-        Object.assign(state, {
-          items: null,  // Indicate that items need to be recalculated.
-          filterForItems: state.filter
-        });
+      state[previousStateKey] = state[previousStateKey] || {
+        filter: null,
+      };
+      const changed = stateChanged(state, state[previousStateKey]);
+      if (changed.filter) {
+        // Indicate that items need to be recalculated.
+        state.items = null;
         result = false;
       }
       return result;
