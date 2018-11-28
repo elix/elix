@@ -55,7 +55,14 @@ class ComboBox extends Base {
         /** @type {any} */
         const cast = this.$.input;
         const value = cast.value;
-        this.setState({ value });
+        const changes = {
+          value
+        };
+        if (this.closed && value > '') {
+          // If user types while popup is closed, implicitly open it.
+          changes.opened = true
+        };
+        this.setState(changes);
         this[symbols.raiseChangeEvents] = false;
       })
   
