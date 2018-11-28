@@ -163,3 +163,20 @@ export function indexOfItemContainingTarget(listElement, target) {
     item === target || deepContains(item, target)
   );
 }
+
+
+/**
+ * 
+ * @param {object} state 
+ * @param {object} previousState 
+ * @returns {object}
+ */
+export function stateChanges(state, previousState) {
+  let changes = {};
+  for (const property in previousState) {
+    const propertyChanged = previousState[property] !== state[property];
+    changes[`${property}Changed`] = propertyChanged;
+    previousState[property] = state[property];
+  }
+  return changes;
+}

@@ -100,7 +100,12 @@ class AutoCompleteInput extends Base {
       // auto-completed text.
       // @ts-ignore
       const InputEvent = window.InputEvent || Event;
-      const event = new InputEvent('input');
+      const originalInput = cast.value.slice(0, this.state.autoCompleteStart);
+      const event = new InputEvent('input', {
+        detail: {
+          originalInput
+        }
+      });
       this.dispatchEvent(event);
     }
   }

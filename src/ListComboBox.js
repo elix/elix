@@ -1,11 +1,16 @@
+import { getItemText } from './ItemsTextMixin.js';
 import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
+import { stateChanges } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import ComboBox from './ComboBox.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import ListBox from './ListBox.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
+
+
+const previousSelectionKey = Symbol('previousSelection');
 
 
 const Base =
@@ -71,7 +76,6 @@ class ListComboBox extends Base {
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       inputRole: 'input',
-      itemsForMeasurements: null,
       listRole: ListBox,
       selectedIndex: -1
     });
@@ -129,16 +133,60 @@ class ListComboBox extends Base {
 
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
-    // const valueChanged = state.value !== this.state.value;
-    // const selectedIndexChanged = state.selectedIndex !== this.state.selectedIndex;
-    const itemsChanged = state.itemsForMeasurements !== state.items;
-    // if (valueChanged && !state.opened) 
+    state[previousSelectionKey] = state[previousSelectionKey] || {
+      items: null,
+      opened: false,
+      selectedIndex: null,
+      value: null
+    };
+    const {
+      itemsChanged,
+      openedChanged,
+      selectedIndexChanged,
+      valueChanged
+    } = stateChanges(state, state[previousSelectionKey]);
+    const { items, opened, selectedIndex, value } = state;
+    const closing = openedChanged && !opened;
+    if (items && value !== null && valueChanged || itemsChanged) {
+      // If value was changed directly, or items have updated,
+      // select the coresponding item in list.
+      const searchText = value.toLowerCase();
+      // const texts = this.state.texts || [];
+      // const itemIndex = texts.findIndex(text => 
+      //   text.toLowerCase() === searchText
+      // );
+      const itemIndex = items.findIndex(item => {
+        const itemText = getItemText(item);
+        return itemText.toLowerCase() === searchText
+      });
+      if (selectedIndex !== itemIndex) {
+        state.selectedIndex = itemIndex;
+        result = false;
+      }
+    } else if (selectedIndex >= 0 && (selectedIndexChanged || closing)) {
+      // If user selects new item, or combo is closing, make selected item the
+      // value.
+      const selectedItem = this.state.items[selectedIndex];
+      const selectedItemText = selectedItem && getItemText(selectedItem);
+      if (value !== selectedItemText) {
+        state.selectText = true;
+        state.value = selectedItemText;
+        result = false;
+      }
+    }
+    //   // When user closes combo box, update value and reset selection.
+    //   const selectedItemText = this.shadowRoot && this.$.list.value;
+    //   if (selectedItemText && value !== selectedItemText) {
+    //     Object.assign(state, {
+    //       selectedIndex: -1,
+    //       value: selectedItemText
+    //     });
+    //     result = false;
+    //   }
+    // }
     if (itemsChanged) {
       // When items change, we need to recalculate popup size.
-      Object.assign(state, {
-        itemsForMeasurements: state.items,
-        popupMeasured: false
-      });
+      state.popupMeasured = false;
       result = false;
     }
     return result;

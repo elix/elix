@@ -21,7 +21,7 @@ export default function ItemsTextMixin(Base) {
     // Default implementation returns an item's `alt` attribute or its
     // `textContent`, in that order.
     [symbols.getItemText](item) {
-      return item.getAttribute('alt') || item.textContent;
+      return getItemText(item);
     }
 
     refineState(state) {
@@ -29,10 +29,7 @@ export default function ItemsTextMixin(Base) {
       const items = state.items;
       const itemsChanged = items !== state.itemsForTexts;
       if (itemsChanged) {
-        const texts = items ?
-          Array.prototype.map.call(items, item =>
-            this[symbols.getItemText](item)) :
-          null;
+        const texts = getTextsFromItems(items, this[symbols.getItemText]);
         if (texts) {
           Object.freeze(texts);
         }
@@ -47,4 +44,16 @@ export default function ItemsTextMixin(Base) {
   }
 
   return ItemsText;
+}
+
+
+export function getItemText(item) {
+  return item.getAttribute('alt') || item.textContent;
+}
+
+
+export function getTextsFromItems(items, getText = getItemText) {
+  return items ?
+    Array.prototype.map.call(items, item => getText(item)) :
+    null;
 }

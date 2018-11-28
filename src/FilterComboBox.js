@@ -1,15 +1,17 @@
+import { getTextsFromItems } from './ItemsTextMixin.js';
 import { merge } from "./updates";
-import AutoCompleteInput from "./AutoCompleteInput.js";
-import FilterListBox from "./FilterListBox.js";
-import ItemsTextMixin from './ItemsTextMixin.js';
-import ListComboBox from "./ListComboBox.js";
+import { substantiveElement } from './content.js';
 import * as symbols from './symbols.js';
-import SlotItemsMixin from "./SlotItemsMixin";
+import AutoCompleteInput from "./AutoCompleteInput.js";
+import DelegateSelectionMixin from "./DelegateSelectionMixin";
+import FilterListBox from "./FilterListBox.js";
+import ListComboBox from "./ListComboBox.js";
+import SlotContentMixin from './SlotContentMixin.js';
 
 
 const Base =
-  SlotItemsMixin(
-  ItemsTextMixin(
+  DelegateSelectionMixin(
+  SlotContentMixin(
     ListComboBox
   ));
 
@@ -18,68 +20,131 @@ class FilterComboBox extends Base {
 
   [symbols.beforeUpdate]() {
     const inputRoleChanged = this[symbols.renderedRoles].inputRole !== this.state.inputRole;
-    const listRoleChanged = this[symbols.renderedRoles].listRole !== this.state.listRole;
+    // const listRoleChanged = this[symbols.renderedRoles].listRole !== this.state.listRole;
     if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
     if (inputRoleChanged) {
-      this.$.input.addEventListener('input', () => {
-        // TODO: raise change events?
-        const selectionStart = this.$.input.selectionStart;
-        const value = this.$.input.value;
-        const selectedInputText = value.slice(0, selectionStart);
+      this.$.input.addEventListener('input', event => {
+        this[symbols.raiseChangeEvents] = true;
+        // const selectionStart = this.$.input.selectionStart;
+        // this.setState({
+        //   selectionStart
+        // });
+        const filter = event.detail ?
+          event.detail.originalInput :
+          this.state.value;
         this.setState({
-          selectedInputText
+          filter
         });
+        this[symbols.raiseChangeEvents] = false;
       });
+      // this.$.input.addEventListener('select', () => {
+      //   this[symbols.raiseChangeEvents] = true;
+      //   const selectionStart = this.$.input.selectionStart;
+      //   this.setState({
+      //     selectionStart
+      //   });
+      //   this[symbols.raiseChangeEvents] = false;
+      // });
     }
-    if (listRoleChanged) {
-      this.$.list.addEventListener('selected-index-changed', event => {
-        /** @type {any} */
-        const cast = event;
-        const listSelectedIndex = cast.detail.selectedIndex;
-        // Translate list index to our index.
-        const listSelectedItem = this.$.list.items[listSelectedIndex];
-        const selectedIndex = this.items.indexOf(listSelectedItem);
-        this.setState({
-          selectedIndex
-        });
-      });
-    }
+    // if (listRoleChanged) {
+    //   this.$.list.addEventListener('selected-index-changed', event => {
+    //     /** @type {any} */
+    //     const cast = event;
+    //     const listSelectedIndex = cast.detail.selectedIndex;
+    //     // Translate list index to our index.
+    //     const listSelectedItem = this.$.list.items[listSelectedIndex];
+    //     const selectedIndex = this.items.indexOf(listSelectedItem);
+    //     this.setState({
+    //       selectedIndex
+    //     });
+    //   });
+    // }
   }
   
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      selectedInputText: '',
+      contentForTexts: null,
+      filter: '',
       inputRole: AutoCompleteInput,
-      listRole: FilterListBox
+      listRole: FilterListBox,
+      // selectionStart: 0
     });
   }
 
+  // refineState(state) {
+  //   let result = super.refineState ? super.refineState(state) : true;
+  //   const valueChanged = state.value !== this.state.value;
+  //   const selectedIndexChanged = state.selectedIndex !== this.state.selectedIndex;
+  //   const openedChanged = typeof this.state.opened !== 'undefined' &&
+  //       state.opened !== this.state.opened;
+  //   // Need to get selected item from list's (filtered) items, not from our
+  //   // (complete) list.
+  //   const selectedItemText = this.shadowRoot && this.$.list.value;
+  //   if (valueChanged && !selectedIndexChanged && state.selectedIndex >= 0) {
+  //     // Changing the value directly resets the selection.
+  //     state.selectedIndex = -1;
+  //     result = false;
+  //   } else if (openedChanged && !state.opened && 
+  //       selectedItemText && state.value !== selectedItemText) {
+  //     // When user closes combo box, update value and reset selection.
+  //     Object.assign(state, {
+  //       selectedIndex: -1,
+  //       value: selectedItemText
+  //     });
+  //     result = false;
+  //   }
+  //   return result;
+  // }
+
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
-    const valueChanged = state.value !== this.state.value;
-    const selectedIndexChanged = state.selectedIndex !== this.state.selectedIndex;
-    const openedChanged = typeof this.state.opened !== 'undefined' &&
-        state.opened !== this.state.opened;
-    const selectedItem = state.items && state.items[state.selectedIndex];
-    const selectedItemText = selectedItem && selectedItem.textContent;
-    if (valueChanged && !selectedIndexChanged && state.selectedIndex >= 0) {
-      // Changing the value directly resets the selection.
-      state.selectedIndex = -1;
-      result = false;
-    } else if (openedChanged && !state.opened && 
-        selectedItemText && state.value !== selectedItemText) {
-      // When user closes combo box, update value and reset selection.
+    // const selectedIndexChanged = state.selectedIndex >= 0 &&
+    //   state.selectedIndex !== this.state.selectedIndex;
+    // if (state.items && selectedIndexChanged) {
+    //   // List selection changed, update and select the value.
+    //   const selectedItem = state.items[state.selectedIndex];
+    //   const selectedItemText = selectedItem && selectedItem.textContent;
+    //   if (state.value !== selectedItemText) {
+    //     Object.assign(state, {
+    //       selectText: true,
+    //       value: selectedItemText
+    //     });
+    //     result = false;
+    //   }
+    // }
+    const { content, filter, opened } = state;
+    const contentChanged = content != state.contentForTexts;
+    if (contentChanged) {
+      const items = state.content.filter(element => substantiveElement(element));
+      const texts = getTextsFromItems(items);
       Object.assign(state, {
-        selectedIndex: -1,
-        value: selectedItemText
+        contentForTexts: content,
+        texts
       });
       result = false;
     }
+    const openedChanged = typeof opened !== 'undefined' &&
+      opened !== this.state.opened;
+    const closing = openedChanged && this.state.opened && !opened;
+    if (closing && filter) {
+      // Closing resets the filter.
+      state.filter = '';
+      result = false;
+    }
+
     return result;
   }
 
   get updates() {
-    const filter = this.state.selectedInputText || this.state.value;
+    const { filter, selectedIndex, value } = this.state;
+    // const selectedInputText = selectionStart > 0 ?
+    //   this.value.slice(0, selectionStart) :
+    //   null;
+    // const filter = filter;
+    const applyFilter = filter === '' || selectedIndex === -1;
+    // const appliedFilter = selectedIndex === -1 ?
+    //   filter :
+    //   '';
     return merge(super.updates, {
       $: {
         input: Object.assign(
@@ -88,9 +153,15 @@ class FilterComboBox extends Base {
             texts: this.state.texts
           }
         ),
-        list: {
-          filter
-        }
+        list: Object.assign(
+          {},
+          applyFilter && {
+            filter
+          }
+        )
+        // list: {
+        //   filter: appliedFilter
+        // }
       }
     });
   }
