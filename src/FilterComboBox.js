@@ -1,5 +1,6 @@
 import { getTextsFromItems } from './ItemsTextMixin.js';
 import { merge } from "./updates";
+import { stateChanged } from './utilities.js';
 import { substantiveElement } from './content.js';
 import * as symbols from './symbols.js';
 import AutoCompleteInput from "./AutoCompleteInput.js";
@@ -7,6 +8,9 @@ import DelegateSelectionMixin from "./DelegateSelectionMixin";
 import FilterListBox from "./FilterListBox.js";
 import ListComboBox from "./ListComboBox.js";
 import SlotContentMixin from './SlotContentMixin.js';
+
+
+const previousStateKey = Symbol('previousSelection');
 
 
 const Base =
@@ -63,7 +67,6 @@ class FilterComboBox extends Base {
   
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      contentForTexts: null,
       filter: '',
       inputRole: AutoCompleteInput,
       listRole: FilterListBox,
@@ -112,9 +115,14 @@ class FilterComboBox extends Base {
     //     result = false;
     //   }
     // }
+    state[previousStateKey] = state[previousStateKey] || {
+      content: null,
+      filter: null,
+      opened: false
+    };
+    const changed = stateChanged(state, state[previousStateKey]);
     const { content, filter, opened } = state;
-    const contentChanged = content != state.contentForTexts;
-    if (contentChanged) {
+    if (changed.content) {
       const items = state.content.filter(element => substantiveElement(element));
       const texts = getTextsFromItems(items);
       Object.assign(state, {
@@ -123,9 +131,7 @@ class FilterComboBox extends Base {
       });
       result = false;
     }
-    const openedChanged = typeof opened !== 'undefined' &&
-      opened !== this.state.opened;
-    const closing = openedChanged && this.state.opened && !opened;
+    const closing = changed.opened && !opened;
     if (closing && filter) {
       // Closing resets the filter.
       state.filter = '';

@@ -1,4 +1,5 @@
 import { merge } from './updates.js';
+import { stateChanged } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import Backdrop from './Backdrop.js';
@@ -9,6 +10,8 @@ import OverlayFrame from './OverlayFrame.js';
 import Popup from './Popup.js';
 import ReactiveElement from './ReactiveElement.js';
 
+
+const previousStateKey = Symbol('previousSelection');
 const resizeListenerKey = Symbol('resizeListener');
 
 
@@ -211,12 +214,17 @@ class PopupSource extends Base {
 
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
-    const closing = !state.opened && this.opened;
-    if (closing && state.popupMeasured) {
+    state[previousStateKey] = state[previousStateKey] || {
+      opened: null
+    };
+    const changed = stateChanged(state, state[previousStateKey]);
+    const { opened, popupMeasured } = state;
+    const closing = changed.opened && !opened;
+    if (closing && popupMeasured) {
       state.popupMeasured = false;
       result = false;
     }
-    if (!state.popupMeasured &&
+    if (!popupMeasured &&
       (state.popupHeight !== null ||
       state.popupWidth !== null ||
       state.popupWidth !== null ||
@@ -227,7 +235,6 @@ class PopupSource extends Base {
       // Reset our calculations of popup dimensions and room around the source.
       Object.assign(state, {
         popupHeight: null,
-        popupMeasured: false,
         popupWidth: null,
         roomAbove: null,
         roomBelow: null,

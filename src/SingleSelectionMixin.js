@@ -1,4 +1,8 @@
+import { stateChanged } from './utilities.js';
 import * as symbols from './symbols.js';
+
+
+const previousStateKey = Symbol('previousSelection');
 
 
 /**
@@ -69,7 +73,6 @@ export default function SingleSelectionMixin(Base) {
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
-        itemsForSelectedIndex: null,
         selectedIndex: -1,
         selectionRequired: false,
         selectionWraps: false,
@@ -89,35 +92,32 @@ export default function SingleSelectionMixin(Base) {
     refineState(state) {
       let result = super.refineState ? super.refineState(state) : true;
 
+      state[previousStateKey] = state[previousStateKey] || {
+        items: null,
+        selectedIndex: null
+      };
+      const changed = stateChanged(state, state[previousStateKey]);
       const {
         items,
-        itemsForSelectedIndex,
         selectedIndex,
         selectionRequired,
         selectionWraps
       } = state;
-      const itemsChanged = items !== itemsForSelectedIndex;
-      const selectedIndexChanged = selectedIndex !== this.state.selectedIndex;
+
       let adjustedIndex = selectedIndex;
 
-      if (itemsChanged) {
-        if (!selectedIndexChanged && this.state.trackSelectedItem) {
-          // The index stayed the same, but the item may have moved.
-          const selectedItem = this.selectedItem;
-          if (items[selectedIndex] !== selectedItem) {
-            // The item moved or was removed. See if we can find the item
-            // again in the list of items.
-            const currentIndex = items.indexOf(selectedItem);
-            if (currentIndex >= 0) {
-              // Found the item again. Update the index to match.
-              adjustedIndex = currentIndex;
-            }
+      if (changed.items && !changed.selectedIndex && this.state.trackSelectedItem) {
+        // The index stayed the same, but the item may have moved.
+        const selectedItem = this.selectedItem;
+        if (items[selectedIndex] !== selectedItem) {
+          // The item moved or was removed. See if we can find the item
+          // again in the list of items.
+          const currentIndex = items.indexOf(selectedItem);
+          if (currentIndex >= 0) {
+            // Found the item again. Update the index to match.
+            adjustedIndex = currentIndex;
           }
         }
-        Object.assign(state, {
-          itemsForSelectedIndex: items
-        });
-        result = false;
       }
 
       // If items are null, we haven't received items yet. Don't validate the
@@ -131,9 +131,7 @@ export default function SingleSelectionMixin(Base) {
           selectionWraps
         );
         if (validatedIndex !== selectedIndex) {
-          Object.assign(state, {
-            selectedIndex: validatedIndex
-          });
+          state.selectedIndex = validatedIndex;
           result = false;
         }
       }

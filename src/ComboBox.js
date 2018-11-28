@@ -1,4 +1,4 @@
-import { forwardFocus } from './utilities.js';
+import { forwardFocus, stateChanged } from './utilities.js';
 import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
@@ -6,6 +6,9 @@ import * as template from './template.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import PopupSource from './PopupSource.js';
 import SeamlessButton from './SeamlessButton.js';
+
+
+const previousStateKey = Symbol('previousSelection');
 
 
 const Base =
@@ -158,8 +161,12 @@ class ComboBox extends Base {
 
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
-    const openedChanged = state.opened !== this.state.opened;
-    if (openedChanged && !state.opened && !state.selectText) {
+    state[previousStateKey] = state[previousStateKey] || {
+      opened: null
+    };
+    const changed = stateChanged(state, state[previousStateKey]);
+    const closing = changed.opened && !state.opened;
+    if (closing && !state.selectText) {
       // Select text on closing.
       state.selectText = true;
       result = false;

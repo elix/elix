@@ -1,7 +1,7 @@
 import { getItemText } from './ItemsTextMixin.js';
 import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
-import { stateChanges } from './utilities.js';
+import { stateChanged } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import ComboBox from './ComboBox.js';
@@ -10,7 +10,7 @@ import ListBox from './ListBox.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 
 
-const previousSelectionKey = Symbol('previousSelection');
+const previousStateKey = Symbol('previousSelection');
 
 
 const Base =
@@ -133,21 +133,16 @@ class ListComboBox extends Base {
 
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
-    state[previousSelectionKey] = state[previousSelectionKey] || {
+    state[previousStateKey] = state[previousStateKey] || {
       items: null,
-      opened: false,
+      opened: null,
       selectedIndex: null,
       value: null
     };
-    const {
-      itemsChanged,
-      openedChanged,
-      selectedIndexChanged,
-      valueChanged
-    } = stateChanges(state, state[previousSelectionKey]);
+    const changed = stateChanged(state, state[previousStateKey]);
     const { items, opened, selectedIndex, value } = state;
-    const closing = openedChanged && !opened;
-    if (items && value !== null && valueChanged || itemsChanged) {
+    const closing = changed.opened && !opened;
+    if (items && value !== null && changed.value || changed.items) {
       // If value was changed directly, or items have updated,
       // select the coresponding item in list.
       const searchText = value.toLowerCase();
@@ -163,7 +158,7 @@ class ListComboBox extends Base {
         state.selectedIndex = itemIndex;
         result = false;
       }
-    } else if (selectedIndex >= 0 && (selectedIndexChanged || closing)) {
+    } else if (selectedIndex >= 0 && (changed.selectedIndex || closing)) {
       // If user selects new item, or combo is closing, make selected item the
       // value.
       const selectedItem = this.state.items[selectedIndex];
@@ -184,7 +179,7 @@ class ListComboBox extends Base {
     //     result = false;
     //   }
     // }
-    if (itemsChanged) {
+    if (changed.items && state.popupMeasured) {
       // When items change, we need to recalculate popup size.
       state.popupMeasured = false;
       result = false;

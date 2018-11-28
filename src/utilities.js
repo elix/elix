@@ -171,12 +171,11 @@ export function indexOfItemContainingTarget(listElement, target) {
  * @param {object} previousState 
  * @returns {object}
  */
-export function stateChanges(state, previousState) {
-  let changes = {};
+export function stateChanged(state, previousState) {
+  let changed = {};
   for (const property in previousState) {
-    const propertyChanged = previousState[property] !== state[property];
-    changes[`${property}Changed`] = propertyChanged;
+    changed[property] = previousState[property] !== state[property];
     previousState[property] = state[property];
   }
-  return changes;
+  return changed;
 }
