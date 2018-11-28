@@ -1,4 +1,5 @@
 import { merge } from './updates.js';
+import { stateChanged } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import AriaMenuMixin from './AriaMenuMixin.js';
@@ -15,6 +16,9 @@ import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SelectionInViewMixin from './SelectionInViewMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
+
+
+const previousStateKey = Symbol('previousSelection');
 
 
 const Base =
@@ -166,8 +170,11 @@ class Menu extends Base {
 
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
-    const selectedIndexChanged = state.selectedIndex !== this.state.selectedIndex;
-    if (selectedIndexChanged && state.selectionFocused) {
+    state[previousStateKey] = state[previousStateKey] || {
+      selectedIndex: null
+    };
+    const changed = stateChanged(state, state[previousStateKey]);
+    if (changed.selectedIndex && state.selectionFocused) {
       // The new selected item is not yet focused.
       state.selectionFocused = false;
       result = false;

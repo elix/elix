@@ -20,25 +20,6 @@ class AutoCompleteComboBox extends Base {
     });
   }
 
-  // refineState(state) {
-  //   let result = super.refineState ? super.refineState(state) : true;
-  //   const selectedIndexChanged = state.selectedIndex >= 0 &&
-  //     state.selectedIndex !== this.state.selectedIndex;
-  //   if (state.items && selectedIndexChanged) {
-  //     // List selection changed, update and select the value.
-  //     const selectedItem = state.items[state.selectedIndex];
-  //     const selectedItemText = selectedItem && selectedItem.textContent;
-  //     if (state.value !== selectedItemText) {
-  //       Object.assign(state, {
-  //         selectText: true,
-  //         value: selectedItemText
-  //       });
-  //       result = false;
-  //     }
-  //   }
-  //   return result;
-  // }
-
   get updates() {
     return merge(super.updates, {
       $: {

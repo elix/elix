@@ -1,8 +1,12 @@
 import { getSuperProperty } from './workarounds.js';
 import { merge, apply } from './updates.js';
+import { stateChanged } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import Dialog from './Dialog.js';
+
+
+const previousStateKey = Symbol('previousSelection');
 
 
 /**
@@ -96,10 +100,13 @@ class AlertDialog extends Dialog {
 
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
-    const choicesChanged = state.choicesForChoiceButtons !== state.choices;
+    state[previousStateKey] = state[previousStateKey] || {
+      choices: null
+    };
+    const changed = stateChanged(state, state[previousStateKey]);
     const roleChanged = !this[symbols.renderedRoles] ||
       this[symbols.renderedRoles].choiceButtonRole !== state.choiceButtonRole;
-    if (state.opened && roleChanged || choicesChanged) {
+    if (state.opened && (roleChanged || changed.choices)) {
       // Role or choices have changed; create new buttons.
       const choiceButtons = state.choices.map(choice => {
         const button = template.createElement(state.choiceButtonRole);

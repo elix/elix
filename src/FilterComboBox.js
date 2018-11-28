@@ -74,47 +74,8 @@ class FilterComboBox extends Base {
     });
   }
 
-  // refineState(state) {
-  //   let result = super.refineState ? super.refineState(state) : true;
-  //   const valueChanged = state.value !== this.state.value;
-  //   const selectedIndexChanged = state.selectedIndex !== this.state.selectedIndex;
-  //   const openedChanged = typeof this.state.opened !== 'undefined' &&
-  //       state.opened !== this.state.opened;
-  //   // Need to get selected item from list's (filtered) items, not from our
-  //   // (complete) list.
-  //   const selectedItemText = this.shadowRoot && this.$.list.value;
-  //   if (valueChanged && !selectedIndexChanged && state.selectedIndex >= 0) {
-  //     // Changing the value directly resets the selection.
-  //     state.selectedIndex = -1;
-  //     result = false;
-  //   } else if (openedChanged && !state.opened && 
-  //       selectedItemText && state.value !== selectedItemText) {
-  //     // When user closes combo box, update value and reset selection.
-  //     Object.assign(state, {
-  //       selectedIndex: -1,
-  //       value: selectedItemText
-  //     });
-  //     result = false;
-  //   }
-  //   return result;
-  // }
-
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
-    // const selectedIndexChanged = state.selectedIndex >= 0 &&
-    //   state.selectedIndex !== this.state.selectedIndex;
-    // if (state.items && selectedIndexChanged) {
-    //   // List selection changed, update and select the value.
-    //   const selectedItem = state.items[state.selectedIndex];
-    //   const selectedItemText = selectedItem && selectedItem.textContent;
-    //   if (state.value !== selectedItemText) {
-    //     Object.assign(state, {
-    //       selectText: true,
-    //       value: selectedItemText
-    //     });
-    //     result = false;
-    //   }
-    // }
     state[previousStateKey] = state[previousStateKey] || {
       content: null,
       filter: null,

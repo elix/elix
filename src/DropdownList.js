@@ -1,11 +1,15 @@
 import { apply, merge } from './updates.js';
 import { getSuperProperty } from './workarounds.js';
+import { stateChanged } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import MenuButton from './MenuButton.js';
 import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
+
+
+const previousStateKey = Symbol('previousSelection');
 
 
 const Base =
@@ -59,8 +63,12 @@ class DropdownList extends Base {
 
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
+    state[previousStateKey] = state[previousStateKey] || {
+      opened: null
+    };
+    const changed = stateChanged(state, state[previousStateKey]);
     const { closeResult, opened, selectedIndex } = state;
-    if (!opened && this.opened && closeResult !== undefined &&
+    if (changed.opened && !opened && closeResult !== undefined &&
         selectedIndex !== closeResult) {
       // Closing: Update our selection from menu selection.
       state.selectedIndex = closeResult;

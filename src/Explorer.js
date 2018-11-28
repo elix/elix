@@ -7,8 +7,10 @@ import Modes from './Modes.js';
 import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
+import { stateChanged } from './utilities.js';
 
 
+const previousStateKey = Symbol('previousSelection');
 const proxySlotchangeFiredKey = Symbol('proxySlotchangeFired');
 
 
@@ -94,7 +96,6 @@ class Explorer extends Base {
     return Object.assign({}, super.defaultState, {
       assignedProxies: [],
       defaultProxies: [],
-      itemsForDefaultProxies: null,
       proxyRole: 'div',
       proxyListOverlap: false,
       proxyListPosition: 'top',
@@ -203,35 +204,32 @@ class Explorer extends Base {
   // If items for default proxies have changed, recreate the proxies.
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
+    state[previousStateKey] = state[previousStateKey] || {
+      items: null
+    };
+    const changed = stateChanged(state, state[previousStateKey]);
     const assignedCount = state.assignedProxies.length;
     const defaultCount = state.defaultProxies.length;
     let defaultProxies;
-    let itemsForDefaultProxies;
     if (assignedCount > 0 && defaultCount > 0) {
       // Assigned proxies take precedence, remove default proxies.
       defaultProxies = [];
-      itemsForDefaultProxies = null;
     } else if (assignedCount === 0) {
       const items = state.items;
-      const itemsChanged = items !== state.itemsForDefaultProxies;
       const proxyRoleChanged = !this[symbols.renderedRoles] ||
         this[symbols.renderedRoles].proxyRole !== state.proxyRole;
-      if (proxyRoleChanged || itemsChanged) {
+      if (proxyRoleChanged || changed.items) {
         // Generate sufficient default proxies.
         defaultProxies = createDefaultProxies(items, state.proxyRole);
-        itemsForDefaultProxies = items;
         if (!this[symbols.renderedRoles]) {
           this[symbols.renderedRoles] = {};
         }
         this[symbols.renderedRoles].proxyRole = state.proxyRole;
       }
     }
-    if (defaultProxies) {
+    if (defaultProxies && defaultProxies !== state.defaultProxies) {
       Object.freeze(defaultProxies);
-      Object.assign(state, {
-        defaultProxies,
-        itemsForDefaultProxies
-      });
+      state.defaultProxies = defaultProxies;
       result = false;
     }
     return result;

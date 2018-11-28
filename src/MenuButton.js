@@ -1,12 +1,14 @@
 import { deepContains, elementsFromPoint, indexOfItemContainingTarget } from './utilities.js';
 import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
+import { stateChanged } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import Menu from './Menu.js';
 import PopupButton from './PopupButton.js';
 
 
+const previousStateKey = Symbol('previousSelection');
 const documentMouseupListenerKey = Symbol('documentMouseupListener');
 
 
@@ -268,7 +270,11 @@ class MenuButton extends PopupButton {
 
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
-    if (state.opened && !this.opened) {
+    state[previousStateKey] = state[previousStateKey] || {
+      opened: null
+    };
+    const changed = stateChanged(state, state[previousStateKey]);
+    if (changed.opened && state.opened) {
       // Opening
       if (!state.dragSelect) {
         // Until we get a mouseup, we're doing a drag-select.
@@ -292,7 +298,7 @@ class MenuButton extends PopupButton {
         state.menuSelectedIndex = defaultMenuSelectedIndex;
         result = false;
       }
-    } else if (!state.opened && this.opened) {
+    } else if (changed.opened && !state.opened) {
       // Closing
       if (state.menuSelectedIndex !== -1) {
         // Clear menu selection.

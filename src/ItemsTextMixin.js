@@ -1,4 +1,8 @@
+import { stateChanged } from './utilities.js';
 import * as symbols from './symbols.js';
+
+
+const previousStateKey = Symbol('previousSelection');
 
 
 /**
@@ -13,7 +17,6 @@ export default function ItemsTextMixin(Base) {
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
-        itemsForTexts: null,
         texts: null
       });
     }
@@ -26,9 +29,12 @@ export default function ItemsTextMixin(Base) {
 
     refineState(state) {
       let result = super.refineState ? super.refineState(state) : true;
+      state[previousStateKey] = state[previousStateKey] || {
+        items: null
+      };
+      const changed = stateChanged(state, state[previousStateKey]);
       const items = state.items;
-      const itemsChanged = items !== state.itemsForTexts;
-      if (itemsChanged) {
+      if (changed.items) {
         const texts = getTextsFromItems(items, this[symbols.getItemText]);
         if (texts) {
           Object.freeze(texts);

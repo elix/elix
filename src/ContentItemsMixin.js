@@ -1,9 +1,10 @@
+import { stateChanged } from './utilities.js';
 import { substantiveElement } from './content.js';
 import * as symbols from './symbols.js';
 import * as updates from './updates.js';
 
 
-// Symbols for private data members on an element.
+const previousStateKey = Symbol('previousSelection');
 const originalKey = Symbol('original');
 
 
@@ -162,10 +163,13 @@ export default function ContentItemsMixin(Base) {
 
     refineState(state) {
       let result = super.refineState ? super.refineState(state) : true;
+      state[previousStateKey] = state[previousStateKey] || {
+        content: null
+      };
+      const changed = stateChanged(state, state[previousStateKey]);
       const content = state.content;
-      const contentChanged = content !== state.contentForItems;
       const needsItems = content && !state.items; // Signal from other mixins
-      if (contentChanged || needsItems) {
+      if (changed.content || needsItems) {
         const items = content ?
           content.filter(item => this[symbols.itemMatchesState](item, state)) :
           null;
