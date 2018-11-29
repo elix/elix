@@ -143,13 +143,9 @@ class ListComboBox extends Base {
     const { items, opened, selectedIndex, value } = state;
     const closing = changed.opened && !opened;
     if (items && value != null && changed.value || changed.items) {
-      // If value was changed directly, or items have updated,
-      // select the coresponding item in list.
+      // If value was changed directly, or items have updated, select the
+      // coresponding item in list.
       const searchText = value.toLowerCase();
-      // const texts = this.state.texts || [];
-      // const itemIndex = texts.findIndex(text => 
-      //   text.toLowerCase() === searchText
-      // );
       const itemIndex = items.findIndex(item => {
         const itemText = getItemText(item);
         return itemText.toLowerCase() === searchText
@@ -161,7 +157,7 @@ class ListComboBox extends Base {
     } else if (selectedIndex >= 0 && (changed.selectedIndex || closing)) {
       // If user selects new item, or combo is closing, make selected item the
       // value.
-      const selectedItem = this.state.items[selectedIndex];
+      const selectedItem = items[selectedIndex];
       if (selectedItem) {
         const selectedItemText = getItemText(selectedItem);
         if (value !== selectedItemText) {
@@ -171,16 +167,6 @@ class ListComboBox extends Base {
         }
       }
     }
-    //   // When user closes combo box, update value and reset selection.
-    //   const selectedItemText = this.shadowRoot && this.$.list.value;
-    //   if (selectedItemText && value !== selectedItemText) {
-    //     Object.assign(state, {
-    //       selectedIndex: -1,
-    //       value: selectedItemText
-    //     });
-    //     result = false;
-    //   }
-    // }
     if (changed.items && state.popupMeasured) {
       // When items change, we need to recalculate popup size.
       state.popupMeasured = false;
