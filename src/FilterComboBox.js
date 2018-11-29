@@ -24,7 +24,6 @@ class FilterComboBox extends Base {
 
   [symbols.beforeUpdate]() {
     const inputRoleChanged = this[symbols.renderedRoles].inputRole !== this.state.inputRole;
-    // const listRoleChanged = this[symbols.renderedRoles].listRole !== this.state.listRole;
     if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
     if (inputRoleChanged) {
       this.$.input.addEventListener('input', event => {

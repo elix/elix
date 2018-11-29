@@ -74,8 +74,12 @@ export default function DelegateSelectionMixin(Base) {
       if (!selectionDelegateId) {
         throw `DelegateSelectionMixin requires ${this.constructor.name} to assign an ID to the element handling selection.`;
       }
+      const hasSelectedIndex = 'selectedIndex' in this.$[selectionDelegateId];
+      if (!hasSelectedIndex) {
+        console.warn(`Warning: DelegateSelectionMixin can't apply a selection to a delegated element unless it exposes a "selectedIndex" property.`);
+      }
       const selectedIndex = this.state.selectedIndex;
-      return merge(super.updates, {
+      return merge(super.updates, hasSelectedIndex && {
         $: {
           [selectionDelegateId]: {
             selectedIndex

@@ -1,51 +1,103 @@
-import './FilterListBox.js';
+import { forwardFocus } from './utilities.js';
 import { html } from './template.js';
 import { merge } from './updates.js'
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import DelegateSelectionMixin from './DelegateSelectionMixin';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
+import FilterListBox from './FilterListBox.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import ReactiveElement from './ReactiveElement.js';
+import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
-import { forwardFocus } from './utilities.js';
 
 
 const Base =
   DelegateSelectionMixin(
   DirectionSelectionMixin(
-  KeyboardMixin(
   KeyboardDirectionMixin(
+  KeyboardMixin(
+  SelectedItemTextValueMixin(
   SingleSelectionMixin(
     ReactiveElement
-  )))));
+  ))))));
 
 
 class ListWithSearch extends Base {
 
-  componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
-    this.$.input.addEventListener('input', () => {
-      this[symbols.raiseChangeEvents] = true;
-      /** @type {any} */
-      const cast = this.$.input;
-      this.setState({
-        filter: cast.value
+  constructor() {
+    super();
+    this[symbols.renderedRoles] = {
+      listRole: FilterListBox
+    };
+  }
+
+  // Forward any ARIA label to the input element.
+  get ariaLabel() {
+    return this.state.ariaLabel;
+  }
+  set ariaLabel(ariaLabel) {
+    this.setState({ ariaLabel });
+  }
+
+  [symbols.beforeUpdate]() {
+    const inputRoleChanged = this[symbols.renderedRoles].inputRole !== this.state.inputRole;
+    const listRoleChanged = this[symbols.renderedRoles].listRole !== this.state.listRole;
+    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+    if (inputRoleChanged) {
+      template.transmute(this.$.input, this.state.inputRole);
+      this.$.input.addEventListener('input', () => {
+        this[symbols.raiseChangeEvents] = true;
+        /** @type {any} */
+        const cast = this.$.input;
+        this.setState({
+          filter: cast.value
+        });
+        this[symbols.raiseChangeEvents] = false;
       });
-      this[symbols.raiseChangeEvents] = false;
-    });
-    if (this.$.list instanceof HTMLElement &&
-        this.$.input instanceof HTMLElement) {
+      this[symbols.renderedRoles].inputRole = this.state.inputRole;
+    }
+    if (listRoleChanged) {
+      template.transmute(this.$.list, this.state.listRole);
+      this[symbols.renderedRoles].listRole = this.state.listRole;
+    }
+    if ((inputRoleChanged || listRoleChanged) &&
+      this.$.list instanceof HTMLElement &&
+      this.$.input instanceof HTMLElement) {
       forwardFocus(this.$.list, this.$.input);
     }
   }
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      ariaLabel: '',
       filter: '',
+      inputRole: 'input',
+      listRole: FilterListBox,
       placeholder: 'Search',
       tabindex: null
     });
+  }
+  
+  get filter() {
+    return this.state.filter;
+  }
+  set filter(filter) {
+    this.setState({ filter });
+  }
+
+  /**
+   * The class, tag, or template used to create the input element.
+   * 
+   * @type {function|string|HTMLTemplateElement}
+   * @default 'input'
+   */
+  get inputRole() {
+    return this.state.inputRole;
+  }
+  set inputRole(inputRole) {
+    this.setState({ inputRole });
   }
 
   [symbols.keydown](event) {
@@ -79,7 +131,7 @@ class ListWithSearch extends Base {
           }
         }
         break;
-        
+
       case 'PageUp':
         if (list.pageUp) {
           setTimeout(() => list.pageUp());
@@ -90,6 +142,19 @@ class ListWithSearch extends Base {
 
     // Prefer mixin result if it's defined, otherwise use base result.
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+  }
+
+  /**
+   * The class, tag, or template used to create the list element.
+   * 
+   * @type {function|string|HTMLTemplateElement}
+   * @default ListBox
+   */
+  get listRole() {
+    return this.state.listRole;
+  }
+  set listRole(listRole) {
+    this.setState({ listRole });
   }
 
   get placeholder() {
@@ -103,7 +168,6 @@ class ListWithSearch extends Base {
     return this.$.list;
   }
 
-  // TODO: Roles
   get [symbols.template]() {
     return html`
       <style>
@@ -131,7 +195,11 @@ class ListWithSearch extends Base {
     return merge(super.updates, {
       $: {
         input: {
-          placeholder
+          attributes: {
+            'aria-label': this.state.ariaLabel
+          },
+          placeholder,
+          value: filter
         },
         list: {
           filter
