@@ -47,7 +47,6 @@ export { default as ExpandablePanel } from './ExpandablePanel.js';
 export { default as ExpandableSection } from './ExpandableSection.js';
 export { default as Explorer } from './Explorer.js';
 export { default as FilterComboBox } from './FilterComboBox.js';
-export { default as FilterItemsMixin } from './FilterItemsMixin.js';
 export { default as FocusCaptureMixin } from './FocusCaptureMixin.js';
 export { default as FocusVisibleMixin } from './FocusVisibleMixin.js';
 export { default as HamburgerMenuButton } from './HamburgerMenuButton.js';

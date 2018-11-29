@@ -1,15 +1,47 @@
 import { merge } from './updates.js';
-import FilterItemsMixin from './FilterItemsMixin.js';
+import { stateChanged } from './utilities.js';
+import * as symbols from './symbols.js';
 import ListBox from './ListBox.js';
 
 
-const Base =
-  FilterItemsMixin(
-    ListBox
-  );
+const previousStateKey = Symbol('previousSelection');
 
 
-class FilterListBox extends Base {
+/**
+ * List that only shows items containing a given text string
+ * 
+ * @inherits ListBox
+ */
+class FilterListBox extends ListBox {
+
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      filter: null
+    });
+  }
+
+  /**
+   * A text filter applied to the list's items. Only content elements whose
+   * text contains the indicated filter text will be included in the list's
+   * `items` property. The text search is case insensitive.
+   * 
+   * By default, the filter is empty, so all substantive content elements
+   * are included in `items`.
+   * 
+   * @type {string}
+   */
+  get filter() {
+    return this.state.filter;
+  }
+  set filter(filter) {
+    // If external code sets the filter, it's impossible for that code to
+    // predict the effects on the items and selection, so we'll need to raise
+    // change events.
+    const saveRaiseChangesEvents = this[symbols.raiseChangeEvents];
+    this[symbols.raiseChangeEvents] = true;
+    this.setState({ filter });
+    this[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
+  }
 
   highlightTextInItem(textToHighlight, item) {
     const text = item.textContent;
@@ -29,6 +61,23 @@ class FilterListBox extends Base {
     } else {
       return [new Text(text)];
     }
+  }
+
+  // An item only matches state if it passes the filter.
+  [symbols.itemMatchesState](item, state) {
+    const base = super[symbols.itemMatchesState] ?
+      super[symbols.itemMatchesState](item, state) :
+      true;
+    if (!base) {
+      return false;
+    }
+    const text = this[symbols.getItemText](item).toLowerCase();
+    const filter = state.filter && state.filter.toLowerCase();
+    return !filter ?
+      true :
+      !text ?
+        false :
+        text.includes(filter);
   }
 
   itemUpdates(item, calcs, original) {
@@ -53,6 +102,20 @@ class FilterListBox extends Base {
         childNodes
       })
     );
+  }
+
+  refineState(state) {
+    let result = super.refineState ? super.refineState(state) : true;
+    state[previousStateKey] = state[previousStateKey] || {
+      filter: null,
+    };
+    const changed = stateChanged(state, state[previousStateKey]);
+    if (changed.filter) {
+      // Indicate that items need to be recalculated.
+      state.items = null;
+      result = false;
+    }
+    return result;
   }
 
 }
