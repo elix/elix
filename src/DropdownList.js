@@ -9,7 +9,7 @@ import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 
 
-const previousStateKey = Symbol('previousSelection');
+const previousStateKey = Symbol('previousState');
 
 
 const Base =

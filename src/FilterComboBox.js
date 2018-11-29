@@ -10,7 +10,7 @@ import ListComboBox from "./ListComboBox.js";
 import SlotContentMixin from './SlotContentMixin.js';
 
 
-const previousStateKey = Symbol('previousSelection');
+const previousStateKey = Symbol('previousState');
 
 
 const Base =

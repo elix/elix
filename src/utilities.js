@@ -166,16 +166,44 @@ export function indexOfItemContainingTarget(listElement, target) {
 
 
 /**
+ * Compare a new state object against an older state object and:
+ * 1. Destructively update the old state so that its field values match those
+ *    of the corresponding fields in the newer state. (Fields in the new state
+ *    that are not present in the old state are skipped.)
+ * 2. Return a set of flags indicating which old state fields had to be changed
+ *    to match the new state.
  * 
- * @param {object} state 
- * @param {object} previousState 
- * @returns {object}
+ * E.g., suppose the old state contains
+ * 
+ *     { a: 1, b: 'Hello' }
+ * 
+ * and the new state contains
+ * 
+ *     { a: 1, b: 'Goodbye', c: true }
+ * 
+ * This function updates the old state to
+ * 
+ *     { a: 1, b: 'Goodbye' }
+ * 
+ * and returns the flags
+ * 
+ *     { a: false, b: true }
+ * 
+ * Because field `a` did not change, but field `b` did.
+ * 
+ * This function is used by [refineState](ReactiveMixin#refineState) functions
+ * that are interested in seeing whether specific state fields have changed
+ * since the last call to `refineState`.
+ * 
+ * @param {object} newState 
+ * @param {object} oldState 
+ * @returns {object} - flags for the state fields that changed
  */
-export function stateChanged(state, previousState) {
+export function stateChanged(newState, oldState) {
   let changed = {};
-  for (const property in previousState) {
-    changed[property] = previousState[property] !== state[property];
-    previousState[property] = state[property];
+  for (const property in oldState) {
+    changed[property] = oldState[property] !== newState[property];
+    oldState[property] = newState[property];
   }
   return changed;
 }

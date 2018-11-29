@@ -10,7 +10,7 @@ import SlotItemsMixin from './SlotItemsMixin.js';
 import { stateChanged } from './utilities.js';
 
 
-const previousStateKey = Symbol('previousSelection');
+const previousStateKey = Symbol('previousState');
 const proxySlotchangeFiredKey = Symbol('proxySlotchangeFired');
 
 

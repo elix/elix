@@ -58,7 +58,8 @@ class AutoCompleteInput extends Base {
         // Moreover, we only AutoComplete if we're sure the user's added
         // text to the value seen on the previous input event.
         const previousValue = this.state.previousValue;
-        const userAddedText = !previousValue.startsWith(value) &&
+        const userAddedText = previousValue != null &&
+          !previousValue.startsWith(value) &&
           value.length === previousValue.length + 1;
         if (typingAtEnd) {
           if (userAddedText) {
@@ -154,7 +155,7 @@ class AutoCompleteInput extends Base {
 
   get value() {
     // @ts-ignore
-    return super.value;
+    return super.value || '';
   }
   set value(value) {
     // Only set the value if it's actually different, because we want to avoid

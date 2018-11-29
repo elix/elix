@@ -6,7 +6,7 @@ import * as template from './template.js';
 import Dialog from './Dialog.js';
 
 
-const previousStateKey = Symbol('previousSelection');
+const previousStateKey = Symbol('previousState');
 
 
 /**

@@ -8,7 +8,7 @@ import Menu from './Menu.js';
 import PopupButton from './PopupButton.js';
 
 
-const previousStateKey = Symbol('previousSelection');
+const previousStateKey = Symbol('previousState');
 const documentMouseupListenerKey = Symbol('documentMouseupListener');
 
 

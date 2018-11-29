@@ -8,7 +8,7 @@ import PopupSource from './PopupSource.js';
 import SeamlessButton from './SeamlessButton.js';
 
 
-const previousStateKey = Symbol('previousSelection');
+const previousStateKey = Symbol('previousState');
 
 
 const Base =

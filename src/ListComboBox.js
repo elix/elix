@@ -10,7 +10,7 @@ import ListBox from './ListBox.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 
 
-const previousStateKey = Symbol('previousSelection');
+const previousStateKey = Symbol('previousState');
 
 
 const Base =
@@ -142,7 +142,7 @@ class ListComboBox extends Base {
     const changed = stateChanged(state, state[previousStateKey]);
     const { items, opened, selectedIndex, value } = state;
     const closing = changed.opened && !opened;
-    if (items && value !== null && changed.value || changed.items) {
+    if (items && value != null && changed.value || changed.items) {
       // If value was changed directly, or items have updated,
       // select the coresponding item in list.
       const searchText = value.toLowerCase();
@@ -162,11 +162,13 @@ class ListComboBox extends Base {
       // If user selects new item, or combo is closing, make selected item the
       // value.
       const selectedItem = this.state.items[selectedIndex];
-      const selectedItemText = selectedItem && getItemText(selectedItem);
-      if (value !== selectedItemText) {
-        state.selectText = true;
-        state.value = selectedItemText;
-        result = false;
+      if (selectedItem) {
+        const selectedItemText = getItemText(selectedItem);
+        if (value !== selectedItemText) {
+          state.selectText = true;
+          state.value = selectedItemText;
+          result = false;
+        }
       }
     }
     //   // When user closes combo box, update value and reset selection.

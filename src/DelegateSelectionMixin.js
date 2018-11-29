@@ -7,8 +7,12 @@ const previousSelectionDelegateKey = Symbol('previousSelectionDelegate');
 const selectedIndexChangedListenerKey = Symbol('selectedIndexChangedListener');
 
 
-// TODO: Document that the component should define its own selectedIndex and
-// items properties, usually via SingleSelectionMixin.
+/**
+ * Lets the selection state of a shadow element serve as the selection
+ * state of the component itself
+ * 
+ * @module DelegateSelectionMixin
+ */
 export default function DelegateSelectionMixin(Base) {
 
   // The class prototype added by the mixin.

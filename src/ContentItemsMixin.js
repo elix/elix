@@ -4,7 +4,7 @@ import * as symbols from './symbols.js';
 import * as updates from './updates.js';
 
 
-const previousStateKey = Symbol('previousSelection');
+const previousStateKey = Symbol('previousState');
 const originalKey = Symbol('original');
 
 

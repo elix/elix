@@ -2,7 +2,7 @@ import { stateChanged } from './utilities.js';
 import * as symbols from './symbols.js';
 
 
-const previousStateKey = Symbol('previousSelection');
+const previousStateKey = Symbol('previousState');
 
 
 /**

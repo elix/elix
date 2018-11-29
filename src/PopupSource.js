@@ -11,7 +11,7 @@ import Popup from './Popup.js';
 import ReactiveElement from './ReactiveElement.js';
 
 
-const previousStateKey = Symbol('previousSelection');
+const previousStateKey = Symbol('previousState');
 const resizeListenerKey = Symbol('resizeListener');
 
 

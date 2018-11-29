@@ -4,7 +4,7 @@ import * as symbols from './symbols.js';
 import ListBox from './ListBox.js';
 
 
-const previousStateKey = Symbol('previousSelection');
+const previousStateKey = Symbol('previousState');
 
 
 /**
