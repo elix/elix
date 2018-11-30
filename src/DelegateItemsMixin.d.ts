@@ -3,8 +3,8 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const SingleSelectionMixin: Mixin<{}, {
+declare const DelegateItemsMixin: Mixin<{}, {
   items?: Element[];
 }>;
 
-export default SingleSelectionMixin;
+export default DelegateItemsMixin;

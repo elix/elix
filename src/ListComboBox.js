@@ -5,6 +5,7 @@ import { stateChanged } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import ComboBox from './ComboBox.js';
+import DelegateItemsMixin from "./DelegateItemsMixin";
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import ListBox from './ListBox.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
@@ -14,16 +15,18 @@ const previousStateKey = Symbol('previousState');
 
 
 const Base =
+  DelegateItemsMixin(
   DirectionSelectionMixin(
   SingleSelectionMixin(
     ComboBox
-  ));
+  )));
 
 
 /**
  * A combo box whose popup presents a list of choices
  * 
  * @inherits ComboBox
+ * @mixes DelegateItemsMixin
  * @mixes DirectionSelectionMixin
  * @mixes SingleSelectionMixin
  * @elementRole {ListBox} list
@@ -172,7 +175,7 @@ class ListComboBox extends Base {
     return result;
   }
 
-  get [symbols.selectionDelegate]() {
+  get [symbols.itemsDelegate]() {
     return this.$.list;
   }
 

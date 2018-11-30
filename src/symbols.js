@@ -221,6 +221,17 @@ export const hasDynamicTemplate = Symbol('hasDynamicTemplate');
 export const itemMatchesState = Symbol('itemMatchesState');
 
 /**
+ * Symbol for the `itemsDelegate` property.
+ * 
+ * A component using [DelegateItemsMixin](DelegateItemsMixin) uses this property
+ * to indicate which one of its shadow elements is the one whose `items`
+ * property will be treated as the component's own `items`.
+ * 
+ * @var {Element} itemsDelegate
+ */
+export const itemsDelegate = Symbol('itemsDelegate');
+
+/**
  * Symbol for the `keydown` method.
  *
  * This method is invoked when an element receives a `keydown` event.
@@ -388,9 +399,6 @@ export const roles = Symbol('roles');
  * @var {Element} scrollTarget
  */
 export const scrollTarget = Symbol('scrollTarget');
-
-// TODO: Document
-export const selectionDelegate = Symbol('selectionDelegate');
 
 /**
  * Symbol for the `startEffect` method.

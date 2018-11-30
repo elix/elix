@@ -1,15 +1,13 @@
 import { merge } from "./updates.js";
 import AutoCompleteInput from "./AutoCompleteInput.js";
-import DelegateSelectionMixin from './DelegateSelectionMixin.js';
 import ListComboBox from "./ListComboBox.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
 
 
 const Base = 
-  DelegateSelectionMixin(
   ItemsTextMixin(
     ListComboBox
-  ));
+  );
 
 
 /**

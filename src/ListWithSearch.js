@@ -3,7 +3,7 @@ import { html } from './template.js';
 import { merge } from './updates.js'
 import * as symbols from './symbols.js';
 import * as template from './template.js';
-import DelegateSelectionMixin from './DelegateSelectionMixin.js';
+import DelegateItemsMixin from './DelegateItemsMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FilterListBox from './FilterListBox.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
@@ -14,7 +14,7 @@ import SingleSelectionMixin from './SingleSelectionMixin.js';
 
 
 const Base =
-  DelegateSelectionMixin(
+  DelegateItemsMixin(
   DirectionSelectionMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
@@ -28,7 +28,7 @@ const Base =
  * A list accompanied by a search box
  * 
  * @inherits ReactiveElement
- * @mixes DelegateSelectionMixin
+ * @mixes DelegateItemsMixin
  * @mixes DirectionSelectionMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
@@ -113,6 +113,10 @@ class ListWithSearch extends Base {
     this.setState({ inputRole });
   }
 
+  get [symbols.itemsDelegate]() {
+    return this.$.list;
+  }
+
   [symbols.keydown](event) {
 
     let handled;
@@ -175,10 +179,6 @@ class ListWithSearch extends Base {
   }
   set placeholder(placeholder) {
     this.setState({ placeholder });
-  }
-
-  get [symbols.selectionDelegate]() {
-    return this.$.list;
   }
 
   get [symbols.template]() {

@@ -3,20 +3,19 @@ import * as symbols from './symbols.js';
 
 
 const itemsChangedListenerKey = Symbol('itemsChangedListener');
-const previousSelectionDelegateKey = Symbol('previousSelectionDelegate');
+const previousItemsDelegateKey = Symbol('previousItemsDelegate');
 const selectedIndexChangedListenerKey = Symbol('selectedIndexChangedListener');
 
 
 /**
- * Lets the selection state of a shadow element serve as the selection
- * state of the component itself
+ * Treats the items inside a shadow element as the component's own items.
  * 
- * @module DelegateSelectionMixin
+ * @module DelegateItemsMixin
  */
-export default function DelegateSelectionMixin(Base) {
+export default function DelegateItemsMixin(Base) {
 
   // The class prototype added by the mixin.
-  class DelegateSelection extends Base {
+  class DelegateItems extends Base {
 
     constructor() {
       super();
@@ -70,23 +69,19 @@ export default function DelegateSelectionMixin(Base) {
     }
 
     get updates() {
-      const selectionDelegate = this[symbols.selectionDelegate];
-      if (typeof selectionDelegate === 'undefined') {
-        throw `To use DelegateSelectionMixin, ${this.constructor.name} must define a getter for [symbols.selectionDelegate].`;
+      const itemsDelegate = this[symbols.itemsDelegate];
+      if (typeof itemsDelegate === 'undefined') {
+        throw `To use DelegateItemsMixin, ${this.constructor.name} must define a getter for [symbols.itemsDelegate].`;
       }
-      const selectionDelegateId = selectionDelegate.id;
-      if (!selectionDelegateId) {
-        throw `DelegateSelectionMixin requires ${this.constructor.name} to assign an ID to the element handling selection.`;
+      const itemsDelegateId = itemsDelegate.id;
+      if (!itemsDelegateId) {
+        throw `DelegateItemsMixin requires ${this.constructor.name} to assign an ID to the element handling its items.`;
       }
-      const hasSelectedIndex = 'selectedIndex' in this.$[selectionDelegateId];
-      if (!hasSelectedIndex) {
-        /* eslint-disable no-console */
-        console.warn(`Warning: DelegateSelectionMixin can't apply a selection to a delegated element unless it exposes a "selectedIndex" property.`);
-      }
+      const hasSelectedIndex = 'selectedIndex' in this.$[itemsDelegateId];
       const selectedIndex = this.state.selectedIndex;
       return merge(super.updates, hasSelectedIndex && {
         $: {
-          [selectionDelegateId]: {
+          [itemsDelegateId]: {
             selectedIndex
           }
         }
@@ -95,21 +90,21 @@ export default function DelegateSelectionMixin(Base) {
 
   }
 
-  return DelegateSelection;
+  return DelegateItems;
 }
 
 
 function listenToDelegateEvents(element) {
-  const selectionDelegate = element[symbols.selectionDelegate];
-  const previousSelectionDelegate = element[previousSelectionDelegateKey];
-  if (selectionDelegate !== previousSelectionDelegate) {
-    if (previousSelectionDelegate) {
+  const itemsDelegate = element[symbols.itemsDelegate];
+  const previousItemsDelegate = element[previousItemsDelegateKey];
+  if (itemsDelegate !== previousItemsDelegate) {
+    if (previousItemsDelegate) {
       // Stop listening to events on previous delegate.
-      previousSelectionDelegate.removeEventListener(element[itemsChangedListenerKey]);
-      previousSelectionDelegate.removeEventListener(element[selectedIndexChangedListenerKey]);
+      previousItemsDelegate.removeEventListener(element[itemsChangedListenerKey]);
+      previousItemsDelegate.removeEventListener(element[selectedIndexChangedListenerKey]);
     }
     // Start listening to events on new delegate.
-    selectionDelegate.addEventListener('items-changed', element[itemsChangedListenerKey]);
-    selectionDelegate.addEventListener('selected-index-changed', element[selectedIndexChangedListenerKey]);
+    itemsDelegate.addEventListener('items-changed', element[itemsChangedListenerKey]);
+    itemsDelegate.addEventListener('selected-index-changed', element[selectedIndexChangedListenerKey]);
   }
 }

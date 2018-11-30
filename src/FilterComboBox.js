@@ -4,7 +4,6 @@ import { stateChanged } from './utilities.js';
 import { substantiveElement } from './content.js';
 import * as symbols from './symbols.js';
 import AutoCompleteInput from "./AutoCompleteInput.js";
-import DelegateSelectionMixin from "./DelegateSelectionMixin";
 import FilterListBox from "./FilterListBox.js";
 import ListComboBox from "./ListComboBox.js";
 import SlotContentMixin from './SlotContentMixin.js';
@@ -14,10 +13,9 @@ const previousStateKey = Symbol('previousState');
 
 
 const Base =
-  DelegateSelectionMixin(
   SlotContentMixin(
     ListComboBox
-  ));
+  );
 
 
 /**
@@ -53,7 +51,8 @@ class FilterComboBox extends Base {
     return Object.assign({}, super.defaultState, {
       filter: '',
       inputRole: AutoCompleteInput,
-      listRole: FilterListBox
+      listRole: FilterListBox,
+      texts: null
     });
   }
 
