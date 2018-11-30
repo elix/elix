@@ -6,6 +6,7 @@ import AriaMenuMixin from './AriaMenuMixin.js';
 import ClickSelectionMixin from './ClickSelectionMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
+import ItemsTextMixin from './ItemsTextMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import KeyboardPagedSelectionMixin from './KeyboardPagedSelectionMixin.js';
@@ -26,6 +27,7 @@ const Base =
   ClickSelectionMixin(
   DirectionSelectionMixin(
   FocusVisibleMixin(
+  ItemsTextMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
   KeyboardPagedSelectionMixin(
@@ -36,7 +38,7 @@ const Base =
   SingleSelectionMixin(
   SlotItemsMixin(
     ReactiveElement
-  )))))))))))));
+  ))))))))))))));
 
 
 /**
@@ -49,6 +51,8 @@ const Base =
  * @mixes AriaMenuMixin
  * @mixes ClickSelectionMixin
  * @mixes DirectionSelectionMixin
+ * @mixes FocusVisibleMixin
+ * @mixes ItemsTextMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
  * @mixes KeyboardPagedSelectionMixin
