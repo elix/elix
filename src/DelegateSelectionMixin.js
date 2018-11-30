@@ -1,4 +1,3 @@
-import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 
@@ -81,6 +80,7 @@ export default function DelegateSelectionMixin(Base) {
       }
       const hasSelectedIndex = 'selectedIndex' in this.$[selectionDelegateId];
       if (!hasSelectedIndex) {
+        /* eslint-disable no-console */
         console.warn(`Warning: DelegateSelectionMixin can't apply a selection to a delegated element unless it exposes a "selectedIndex" property.`);
       }
       const selectedIndex = this.state.selectedIndex;

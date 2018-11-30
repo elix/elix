@@ -61,7 +61,7 @@ class ComboBox extends Base {
         if (this.closed && value > '') {
           // If user types while popup is closed, implicitly open it.
           changes.opened = true
-        };
+        }
         this.setState(changes);
         this[symbols.raiseChangeEvents] = false;
       })
