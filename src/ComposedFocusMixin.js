@@ -23,17 +23,19 @@ export default function ComposedFocusMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this.addEventListener('mousedown', event => {
-        // Only process events for the main (usually left) button.
-        if (event.button !== 0) {
-          return;
-        }
-        const target = findFocusableAncestor(event.target);
-        if (target) {
-          target.focus();
-          event.preventDefault();
-        }
-      });
+      if ('HTMLSlotElement' in window) {
+        this.addEventListener('mousedown', event => {
+          // Only process events for the main (usually left) button.
+          if (event.button !== 0) {
+            return;
+          }
+          const target = findFocusableAncestor(event.target);
+          if (target) {
+            target.focus();
+            event.preventDefault();
+          }
+        });
+      }
     }
 
   }

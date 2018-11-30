@@ -1,5 +1,6 @@
-import * as symbols from './symbols.js';
+import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
+import * as symbols from './symbols.js';
 
 
 const itemsChangedListenerKey = Symbol('itemsChangedListener');
@@ -69,16 +70,11 @@ export default function DelegateSelectionMixin(Base) {
       return this.state ? this.state.items : null;
     }
 
-    get [symbols.selectionDelegate]() {
-      const result = super[symbols.selectionDelegate];
-      if (typeof result === 'undefined') {
-        throw `To use DelegateSelectionMixin, ${this.constructor.name} must define a getter for [symbols.selectionDelegate].`;
-      }
-      return result;
-    }
-
     get updates() {
       const selectionDelegate = this[symbols.selectionDelegate];
+      if (typeof selectionDelegate === 'undefined') {
+        throw `To use DelegateSelectionMixin, ${this.constructor.name} must define a getter for [symbols.selectionDelegate].`;
+      }
       const selectionDelegateId = selectionDelegate.id;
       if (!selectionDelegateId) {
         throw `DelegateSelectionMixin requires ${this.constructor.name} to assign an ID to the element handling selection.`;
