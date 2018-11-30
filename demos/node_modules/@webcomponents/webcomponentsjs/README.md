@@ -17,7 +17,7 @@ A suite of polyfills supporting the [Web Components](http://webcomponents.org) s
 
 For browsers that need it, there are also some minor polyfills included:
 - [`HTMLTemplateElement`](https://github.com/webcomponents/template)
-- [`Promise`](https://github.com/stefanpenner/es6-promise)
+- [`Promise`](https://github.com/taylorhakes/promise-polyfill)
 - `Event`, `CustomEvent`, `MouseEvent` constructors and `Object.assign`, `Array.from`
 (see [webcomponents-platform](https://github.com/webcomponents/webcomponents-platform))
 - [`URL constructor`](https://github.com/webcomponents/URL)
@@ -28,7 +28,7 @@ For browsers that need it, there are also some minor polyfills included:
 npm install @webcomponents/webcomponentsjs
 ```
 
-You can also load the code from a CDN such as unpkg: https://unpkg.com/@webcomponents/webcomponentsjs@2.0.0/
+You can also load the code from a CDN such as unpkg: https://unpkg.com/@webcomponents/webcomponentsjs@^2/
 
 ### Using `webcomponents-bundle.js`
 
@@ -213,7 +213,6 @@ ES modules.
 
   * [ShadowDOM CSS is not encapsulated out of the box](#shadycss)
   * [Custom element's constructor property is unreliable](#constructor)
-  * [Contenteditable elements do not trigger MutationObserver](#contentedit)
   * [ShadyCSS: :host(.zot:not(.bar:nth-child(2))) doesn't work](#nestedparens)
 
 ### ShadowDOM CSS is not encapsulated out of the box <a id="shadycss"></a>
@@ -225,10 +224,6 @@ See [#215](https://github.com/webcomponents/webcomponentsjs/issues/215) for back
 In Edge and IE, instances of Custom Elements have a `constructor` property of `HTMLUnknownElementConstructor` and `HTMLUnknownElement`, respectively. It's unsafe to rely on this property for checking element types.
 
 It's worth noting that `customElement.__proto__.__proto__.constructor` is `HTMLElementPrototype` and that the prototype chain isn't modified by the polyfills(onto `ElementPrototype`, etc.)
-
-### Contenteditable elements do not trigger MutationObserver <a id="contentedit"></a>
-Using the MutationObserver polyfill, it isn't possible to monitor mutations of an element marked `contenteditable`.
-See [the mailing list](https://groups.google.com/forum/#!msg/polymer-dev/LHdtRVXXVsA/v1sGoiTYWUkJ)
 
 ### ShadyCSS: :host(.zot:not(.bar:nth-child(2))) doesn't work <a id="nestedparens"></a>
 ShadyCSS `:host()` rules can only have (at most) 1-level of nested parentheses in its argument selector under ShadyCSS. For example, `:host(.zot)` and `:host(.zot:not(.bar))` both work, but `:host(.zot:not(.bar:nth-child(2)))` does not.
