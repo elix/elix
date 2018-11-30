@@ -24,7 +24,6 @@ const Base =
  * A combo box whose popup presents a list of choices
  * 
  * @inherits ComboBox
- * @mixes DelegateSelectionMixin
  * @mixes DirectionSelectionMixin
  * @mixes SingleSelectionMixin
  * @elementRole {ListBox} list
