@@ -171,7 +171,7 @@ export default function ContentItemsMixin(Base) {
       const needsItems = content && !state.items; // Signal from other mixins
       if (changed.content || needsItems) {
         const items = content ?
-          content.filter(item => this[symbols.itemMatchesState](item, state)) :
+          Array.prototype.filter.call(content, item => this[symbols.itemMatchesState](item, state)) :
           null;
         if (items) {
           Object.freeze(items);
@@ -189,7 +189,7 @@ export default function ContentItemsMixin(Base) {
       if (super[symbols.render]) { super[symbols.render](); }
       if (this.itemUpdates) {
         const content = this.state.content || [];
-        const elements = content.filter(node => node instanceof Element);
+        const elements = Array.prototype.filter.call(content, node => node instanceof Element);
         let itemCount = 0;
         elements.forEach((item) => {
           if (item[originalKey] === undefined) {
