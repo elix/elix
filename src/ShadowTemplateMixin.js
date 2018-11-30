@@ -91,6 +91,7 @@ export default function ShadowTemplateMixin(Base) {
             if (!element.shadowRoot) {
               /* eslint-disable no-console */
               console.warn(`Tried to find shadow element "${property.toString()}" before the shadow root was rendered.`);
+              return null;
             }
             return element.shadowRoot.getElementById(property);
           }
