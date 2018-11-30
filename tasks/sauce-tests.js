@@ -32,7 +32,6 @@ const config = {
     },
     {
       browserName: 'MicrosoftEdge',
-      version: '17',
       platform: 'Windows 10'
     },
     {
