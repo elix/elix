@@ -1,8 +1,8 @@
-import { merge } from "./updates";
+import { merge } from "./updates.js";
 import AutoCompleteInput from "./AutoCompleteInput.js";
 import DelegateSelectionMixin from './DelegateSelectionMixin.js';
 import ListComboBox from "./ListComboBox.js";
-import ItemsTextMixin from "./ItemsTextMixin";
+import ItemsTextMixin from "./ItemsTextMixin.js";
 
 
 const Base = 
@@ -12,6 +12,13 @@ const Base =
   ));
 
 
+/**
+ * A combo box that auto-completes the user's input against the list items
+ * 
+ * @inherits ListComboBox
+ * @mixes ItemsTextMixin
+ * @elementrole {AutoCompleteInput} input
+ */
 class AutoCompleteComboBox extends Base {
 
   get defaultState() {

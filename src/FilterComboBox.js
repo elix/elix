@@ -20,6 +20,14 @@ const Base =
   ));
 
 
+/**
+ * A combo box which applies its text input as a filter on its list items
+ * 
+ * @inherits ListComboBox
+ * @mixes SlotContentMixin
+ * @elementrole {AutoCompleteInput} input
+ * @elementrole {FilterListBox} list
+ */
 class FilterComboBox extends Base {
 
   [symbols.beforeUpdate]() {

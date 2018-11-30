@@ -3,7 +3,7 @@ import { html } from './template.js';
 import { merge } from './updates.js'
 import * as symbols from './symbols.js';
 import * as template from './template.js';
-import DelegateSelectionMixin from './DelegateSelectionMixin';
+import DelegateSelectionMixin from './DelegateSelectionMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FilterListBox from './FilterListBox.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
@@ -24,6 +24,19 @@ const Base =
   ))))));
 
 
+/**
+ * A list accompanied by a search box
+ * 
+ * @inherits ReactiveElement
+ * @mixes DelegateSelectionMixin
+ * @mixes DirectionSelectionMixin
+ * @mixes KeyboardDirectionMixin
+ * @mixes KeyboardMixin
+ * @mixes SelectedItemTextValueMixin
+ * @mixes SingleSelectionMixin
+ * @elementrole {AutoCompleteInput} input
+ * @elementRole {FilterListBox} list
+ */
 class ListWithSearch extends Base {
 
   constructor() {

@@ -60,6 +60,11 @@ export default function DelegateSelectionMixin(Base) {
       });
     }
 
+    /**
+     * The current set of items drawn from the element's current state.
+     * 
+     * @returns {Element[]|null} the element's current items
+     */
     get items() {
       return this.state ? this.state.items : null;
     }

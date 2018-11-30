@@ -27,7 +27,6 @@ const Base =
  * @mixes DelegateSelectionMixin
  * @mixes DirectionSelectionMixin
  * @mixes SingleSelectionMixin
- * @elementrole {AutoCompleteInput} input
  * @elementRole {ListBox} list
  */
 class ListComboBox extends Base {
@@ -75,7 +74,6 @@ class ListComboBox extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      inputRole: 'input',
       listRole: ListBox,
       selectedIndex: -1
     });
@@ -142,7 +140,7 @@ class ListComboBox extends Base {
     const changed = stateChanged(state, state[previousStateKey]);
     const { items, opened, selectedIndex, value } = state;
     const closing = changed.opened && !opened;
-    if (items && value != null && changed.value || changed.items) {
+    if (items && value != null && (changed.value || changed.items)) {
       // If value was changed directly, or items have updated, select the
       // coresponding item in list.
       const searchText = value.toLowerCase();
