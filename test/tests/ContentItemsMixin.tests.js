@@ -99,7 +99,7 @@ describe("ContentItemsMixin", () => {
     fixture[symbols.raiseChangeEvents] = true;
     container.appendChild(fixture);
     // Wait for first render.
-    Promise.resolve().then(() => {
+    setTimeout(() => {
       fixture.innerHTML = `
         <div>1</div>
         <div>2</div>

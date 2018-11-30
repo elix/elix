@@ -62,7 +62,6 @@ export default function ContentItemsMixin(Base) {
 
     get defaultState() {
       return Object.assign({}, super.defaultState, {
-        contentForItems: null,
         items: null
       });
     }
@@ -176,10 +175,7 @@ export default function ContentItemsMixin(Base) {
         if (items) {
           Object.freeze(items);
         }
-        Object.assign(state, {
-          items,
-          contentForItems: content
-        });
+        state.items = items;
         result = false;
       }
       return result;
