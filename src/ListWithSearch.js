@@ -6,7 +6,6 @@ import * as template from './template.js';
 import DelegateItemsMixin from './DelegateItemsMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FilterListBox from './FilterListBox.js';
-import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
@@ -16,12 +15,11 @@ import SingleSelectionMixin from './SingleSelectionMixin.js';
 const Base =
   DelegateItemsMixin(
   DirectionSelectionMixin(
-  KeyboardDirectionMixin(
   KeyboardMixin(
   SelectedItemTextValueMixin(
   SingleSelectionMixin(
     ReactiveElement
-  ))))));
+  )))));
 
 
 /**
@@ -30,7 +28,6 @@ const Base =
  * @inherits ReactiveElement
  * @mixes DelegateItemsMixin
  * @mixes DirectionSelectionMixin
- * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
  * @mixes SelectedItemTextValueMixin
  * @mixes SingleSelectionMixin
@@ -123,22 +120,35 @@ class ListWithSearch extends Base {
     /** @type {any} */
     const list = this.$.list;
 
-    // Forward Page Down/Page Up to the list element.
-    //
-    // This gets a little more complex than we'd like. The pageUp/pageDown
-    // methods may update the list's selectedIndex, which in turn will
-    // eventually update the selectedIndex of this component. In the meantime,
-    // other keydown processing can set state, which will trigger a render. When
-    // this component is asked for updates, it'll return the current (i.e. old)
-    // selectedIndex value, and overwrite the list's own, newer selectedIndex.
-    // To avoid this, we wait for the component to finish processing the keydown
-    // using timeout timing, then invoke pageUp/pageDown.
-    //
-    // This forces us to speculate about whether pageUp/pageDown will update the
-    // selection so that we can synchronously return an indication of whether
-    // the key event was handled. 
     switch (event.key) {
 
+      // We do our own handling of the Up and Down arrow keys, rather than
+      // relying on KeyboardDirectionMixin. The latter supports Home and End,
+      // and we don't want to handle those -- we want to let the text input
+      // handle them. We also need to forward PageDown/PageUp to the list
+      // element.
+      case 'ArrowDown':
+        handled = event.altKey ? this[symbols.goEnd]() : this[symbols.goDown]();
+        break;
+      case 'ArrowUp':
+        handled = event.altKey ? this[symbols.goStart]() : this[symbols.goUp]();
+        break;
+
+      // Forward Page Down/Page Up to the list element.
+      //
+      // This gets a little more complex than we'd like. The pageUp/pageDown
+      // methods may update the list's selectedIndex, which in turn will
+      // eventually update the selectedIndex of this component. In the meantime,
+      // other keydown processing can set state, which will trigger a render.
+      // When this component is asked for updates, it'll return the current
+      // (i.e. old) selectedIndex value, and overwrite the list's own, newer
+      // selectedIndex. To avoid this, we wait for the component to finish
+      // processing the keydown using timeout timing, then invoke
+      // pageUp/pageDown.
+      //
+      // This forces us to speculate about whether pageUp/pageDown will update
+      // the selection so that we can synchronously return an indication of
+      // whether the key event was handled. 
       case 'PageDown':
         if (list.pageDown) {
           setTimeout(() => list.pageDown());
@@ -148,7 +158,6 @@ class ListWithSearch extends Base {
           }
         }
         break;
-
       case 'PageUp':
         if (list.pageUp) {
           setTimeout(() => list.pageUp());
