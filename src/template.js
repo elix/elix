@@ -126,9 +126,12 @@ export function replace(original, replacement) {
     apply(replacement, merged);
   }
   // Copy over children.
-  original.childNodes.forEach(child => {
-    replacement.appendChild(child.cloneNode(true));
-  });
+  // We do this from last to first. As of Nov 2018, if we do something else,
+  // such as always moving over the first child, the polyfill may trigger a
+  // HierarchyRequestError in Edge.
+  for (let i = original.childNodes.length - 1; i >= 0; i--) {
+    replacement.appendChild(original.childNodes[i]);
+  }
   parent.replaceChild(replacement, original);
   return replacement;
 }
