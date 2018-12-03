@@ -6,7 +6,7 @@
  * Chrome and Safari don't handle this as expected when the clicked element is
  * reassigned across more than one slot to end up inside a focusable element. In
  * such cases, the focus will end up on the body. Firefox exhibits the behavior
- * we want. See https: *github.com/w3c/webcomponents/issues/773.
+ * we want. See https://github.com/w3c/webcomponents/issues/773.
  *
  * This mixin normalizes behavior to provide what Firefox does. When the user
  * mouses down inside anywhere inside the component's light DOM or Shadow DOM,
