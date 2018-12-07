@@ -132,12 +132,8 @@ function prepareTemplate(element) {
     return;
   }
 
-  if (typeof template === 'string') {
-    // Upgrade plain string to real template.
-    console.warn(`Warning: upgrade the deprecated string template for ${element.localName} to a real HTML template.`);
-    const templateText = template;
-    template = document.createElement('template');
-    template.innerHTML = templateText;
+  if (!(template instanceof HTMLTemplateElement)) {
+    throw `Warning: the [symbols.template] property for ${element.constructor.name} must return an HTMLTemplateElement.`;
   }
 
   // @ts-ignore
