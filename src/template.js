@@ -131,18 +131,19 @@ export function replace(original, replacement) {
   // HierarchyRequestError in Edge.
   for (let i = original.childNodes.length - 1; i >= 0; i--) {
     const child = original.childNodes[i];
+    let childToMove;
     // @ts-ignore
     if (child.localName === 'slot') {
       // More polyfill pain (different than issue noted above): As of Nov 2018,
       // the polyfill gets confused if we move a slot. As a workaround, we clone
       // any child that's a slot.
-      const clone = child.cloneNode(true);
-      replacement.appendChild(clone);
+      childToMove = child.cloneNode(true);
       original.removeChild(child);
     } else {
       // Just move the child.
-      replacement.appendChild(child);
+      childToMove = child;
     }
+    replacement.insertBefore(childToMove, replacement.firstChild);
   }
   parent.replaceChild(replacement, original);
   return replacement;
