@@ -13,6 +13,25 @@ export default function CalendarElementMixin(Base) {
   // The class prototype added by the mixin.
   class CalendarElement extends Base {
 
+    componentDidUpdate(previousState) {
+      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
+      const previousTime = previousState.date && previousState.date.getTime();
+      const date = this.state.date;
+      const time = date && date.getTime();
+      const dateChanged = time !== previousTime;
+      if (dateChanged) {
+        /**
+         * Raised when the `date` property changes.
+         * 
+         * @event SingleSelectionMixin#date-changed
+         */
+        const event = new CustomEvent('date-changed', {
+          detail: { date }
+        });
+        this.dispatchEvent(event);
+      }
+    }
+
     /**
      * The date that should be shown by the element. For elements that show a
      * range of dates (a month, a week, etc.), the referenced date will be

@@ -116,12 +116,13 @@ class CalendarMonthNavigator extends Base {
   }
 
   get updates() {
-    const { date, dayRole } = this.state;
+    const { date, dayRole, locale } = this.state;
     return merge(super.updates, {
       $: {
         calendar: {
           date,
-          dayRole
+          dayRole,
+          locale
         }
       }
     });

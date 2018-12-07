@@ -76,6 +76,7 @@ class ListComboBox extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      horizontalAlign: 'stretch',
       listRole: ListBox,
       selectedIndex: -1
     });
