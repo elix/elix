@@ -6,7 +6,6 @@ import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
 import CalendarDayButton from './CalendarDayButton.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
-import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import ReactiveElement from './ReactiveElement.js';
@@ -14,11 +13,10 @@ import ReactiveElement from './ReactiveElement.js';
 
 const Base =
   CalendarElementMixin(
-  DirectionSelectionMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
     ReactiveElement
-  ))));
+  )));
 
 
 class CalendarMonthNavigator extends Base {
@@ -47,24 +45,67 @@ class CalendarMonthNavigator extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      dayRole: CalendarDayButton,
-      orientation: 'horizontal'
+      dayRole: CalendarDayButton
     });
   }
 
-  selectNext() {
-    if (super.selectNext) { super.selectNext(); }
-    const date = calendar.offsetDateByMonths(this.state.date, 1);
+  [symbols.keydown](event) {
+    let handled = false;
+
+    switch (event.key) {
+
+      case 'Home':
+        this.setState({
+          date: calendar.today()
+        });
+        handled = true;
+        break;
+
+      case 'PageDown':
+        this.setState({
+          date: calendar.offsetDateByMonths(this.state.date, 1)
+        });
+        handled = true;
+        break;
+        
+      case 'PageUp':
+        this.setState({
+          date: calendar.offsetDateByMonths(this.state.date, -1)
+        });
+        handled = true;
+        break;
+
+    }
+
+    // Prefer mixin result if it's defined, otherwise use base result.
+    return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+  }
+
+  [symbols.goDown]() {
+    if (super[symbols.goDown]) { super[symbols.goDown](); }
     this.setState({
-      date
+      date: calendar.offsetDateByDays(this.state.date, 7)
     });
   }
 
-  selectPrevious() {
-    if (super.selectPrevious) { super.selectPrevious(); }
-    const date = calendar.offsetDateByMonths(this.state.date, -1);
+  [symbols.goLeft]() {
+    if (super[symbols.goLeft]) { super[symbols.goLeft](); }
     this.setState({
-      date
+      date: calendar.offsetDateByDays(this.state.date, -1)
+    });
+  }
+
+  [symbols.goRight]() {
+    if (super[symbols.goRight]) { super[symbols.goRight](); }
+    this.setState({
+      date: calendar.offsetDateByDays(this.state.date, 1)
+    });
+  }
+
+  [symbols.goUp]() {
+    if (super[symbols.goUp]) { super[symbols.goUp](); }
+    this.setState({
+      date: calendar.offsetDateByDays(this.state.date, -7)
     });
   }
 

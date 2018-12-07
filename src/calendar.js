@@ -127,6 +127,22 @@ export function midnightOnDate(date) {
 
 
 /**
+ * Returns noon on the indicated target date.
+ * 
+ * @param {Date} date - the target date
+ * @returns {Date}
+ */
+export function noonOnDate(date) {
+  const midnight = new Date(date.getTime());
+  midnight.setHours(12);
+  midnight.setMinutes(0);
+  midnight.setSeconds(0);
+  midnight.setMilliseconds(0);
+  return midnight;
+}
+
+
+/**
  * Return true if the two dates fall in the same month and year.
  * 
  * @param {Date} date1 - the first date to compare
@@ -152,11 +168,9 @@ export function offsetDateByDays(date, days) {
   // the hours might have changed).
   // TODO: Given the nature of date, there could easily be gnarly date math bugs
   // here. Ideally some time-geek library should be used for this calculation.
-  const noon = new Date(date.getTime());
-  noon.setHours(11);
-  const result = new Date(noon.getTime() + (days * millisecondsPerDay));
-  // Restore original hours
-  result.setHours(date.getHours());
+  const result = noonOnDate(date);
+  result.setDate(result.getDate() + days);
+  copyTimeFromDateToDate(date, result); // Restore original hours
   return result;
 }
 
@@ -169,8 +183,9 @@ export function offsetDateByDays(date, days) {
  * @returns {Date}
  */
 export function offsetDateByMonths(date, months) {
-  const result = new Date(date.getTime());
+  const result = noonOnDate(date);
   result.setMonth(date.getMonth() + months);
+  copyTimeFromDateToDate(date, result); // Restore original hours
   return result;
 }
 
@@ -216,6 +231,14 @@ export function weekendStart(locale) {
     weekData.weekendStart[defaultRegion];
 }
 
+
+// Update the time on date2 to match date1.
+function copyTimeFromDateToDate(date1, date2) {
+  date2.setHours(date1.getHours());
+  date2.setMinutes(date1.getMinutes());
+  date2.setSeconds(date1.getSeconds());
+  date2.setMilliseconds(date1.getMilliseconds());
+}
 
 function getLocaleRegion(locale) {
   const localeParts = locale ? locale.split('-') : null;

@@ -221,6 +221,7 @@ function createDays(state) {
     const day = template.createElement(dayRole);
     day.date = new Date(date.getTime());
     day.locale = locale;
+    day.setAttribute('tabindex', -1);
     days.push(day);
   }
   const firstDay = days[0];
