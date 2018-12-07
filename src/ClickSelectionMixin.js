@@ -66,9 +66,7 @@ export default function ClickSelectionMixin(Base) {
       // Find which item was clicked on and, if found, select it. For elements
       // which don't require a selection, a background click will determine
       // the item was null, in which we case we'll remove the selection.
-      /** @type {any} */
-      const cast = this;
-      const targetIndex = indexOfItemContainingTarget(cast, target);
+      const targetIndex = indexOfItemContainingTarget(this.items, target);
       const selectionRequired = this.state && this.state.selectionRequired;
       if (targetIndex >= 0 || !selectionRequired &&
           this.selectedIndex !== targetIndex) {

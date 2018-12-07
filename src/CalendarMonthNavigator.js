@@ -1,8 +1,10 @@
 import './CalendarMonth.js';
 import { html } from './template.js';
+import { indexOfItemContainingTarget } from './utilities.js';
 import { merge } from './updates.js';
 import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
+import CalendarDayButton from './CalendarDayButton.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
@@ -21,8 +23,31 @@ const Base =
 
 class CalendarMonthNavigator extends Base {
 
+  constructor() {
+    super();
+    this.addEventListener('mousedown', event => {
+      const target = event.composedPath()[0];
+      const days = this.days;
+      const index = indexOfItemContainingTarget(days, target);
+      const day = days[index];
+      if (day) {
+        const date = day.date;
+        this.setState({
+          date
+        });
+      }
+    });
+  }
+
+  get days() {
+    return this.shadowRoot ?
+      this.$.calendar.days :
+      [];
+  }
+
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      dayRole: CalendarDayButton,
       orientation: 'horizontal'
     });
   }
@@ -50,11 +75,12 @@ class CalendarMonthNavigator extends Base {
   }
 
   get updates() {
-    const date = this.state.date;
+    const { date, dayRole } = this.state;
     return merge(super.updates, {
       $: {
         calendar: {
-          date
+          date,
+          dayRole
         }
       }
     });

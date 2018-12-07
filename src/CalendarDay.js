@@ -33,6 +33,12 @@ const Base =
  */
 class CalendarDay extends Base {
 
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      selected: false
+    });
+  }
+
   get [symbols.template]() {
     return template.html`
       <style>
@@ -68,9 +74,18 @@ class CalendarDay extends Base {
     `;
   }
 
+  get selected() {
+    return this.state.selected;
+  }
+  set selected(selected) {
+    this.setState({
+      selected
+    });
+  }
+
   get updates() {
 
-    const { date, locale } = this.state;
+    const { date, locale, selected } = this.state;
     const today = calendar.today();
     const dayOfWeek = date.getDay();
     const dayOfMonth = date.getDate();
@@ -88,6 +103,7 @@ class CalendarDay extends Base {
         lastDayOfMonth: date.getMonth() !== nextDate.getMonth(),
         past: date < today,
         saturday: dayOfWeek === 6,
+        selected,
         sunday: dayOfWeek === 0,
         today: daysFromToday == 0,
         weekday: !weekend,

@@ -138,10 +138,7 @@ export function forwardFocus(origin, target) {
  * @returns {number} - The index of the list child that is or contains the
  * indicated target node. Returns -1 if not found.
  */
-export function indexOfItemContainingTarget(listElement, target) {
-  /** @type {any} */
-  const cast = listElement;
-  const items = cast.items || [];
+export function indexOfItemContainingTarget(items, target) {
   return items.findIndex(item =>
     item === target || deepContains(item, target)
   );

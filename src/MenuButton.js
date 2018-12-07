@@ -102,7 +102,7 @@ class MenuButton extends PopupButton {
       if (target) {
         /** @type {any} */
         const cast = target;
-        const hoverIndex = indexOfItemContainingTarget(this, cast);
+        const hoverIndex = indexOfItemContainingTarget(this.items, cast);
         if (hoverIndex !== this.state.menuSelectedIndex) {
           this[symbols.raiseChangeEvents] = true;
           this.setState({

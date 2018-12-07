@@ -100,9 +100,11 @@ class CalendarDays extends Base {
     const parsed = typeof endDate === 'string' ?
       new Date(endDate) :
       endDate;
-    this.setState({
-      endDate: parsed
-    });
+    if (this.state.endDate.getTime() !== endDate.getTime()) {
+      this.setState({
+        endDate: parsed
+      });
+    }
   }
 
   refineState(state) {
@@ -132,9 +134,11 @@ class CalendarDays extends Base {
     const parsed = typeof startDate === 'string' ?
       new Date(startDate) :
       startDate;
-    this.setState({
-      startDate: parsed
-    });
+    if (this.state.startDate.getTime() !== startDate.getTime()) {
+      this.setState({
+        startDate: parsed
+      });
+    }
   }
 
   get [symbols.template]() {
@@ -163,11 +167,13 @@ class CalendarDays extends Base {
     const referenceMonth = date.getMonth();
     const referenceYear = date.getFullYear();
     days.forEach(day => {
-      const dayDate = day.date;
-      const selected = dayDate.getDate() === referenceDate &&
-        dayDate.getMonth() === referenceMonth &&
-        dayDate.getFullYear() === referenceYear;
-      day.classList.toggle('selected', selected);
+      if ('selected' in day) {
+        const dayDate = day.date;
+        const selected = dayDate.getDate() === referenceDate &&
+          dayDate.getMonth() === referenceMonth &&
+          dayDate.getFullYear() === referenceYear;
+        day.selected = selected;
+      }
     });
   }
 
@@ -207,13 +213,14 @@ class CalendarDays extends Base {
 
 
 function createDays(state) {
-  const { dayRole } = state;
+  const { dayRole, locale } = state;
   const startDate = calendar.midnightOnDate(state.startDate);
   const endDate = calendar.midnightOnDate(state.endDate);
   const days = [];
   for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
     const day = template.createElement(dayRole);
     day.date = new Date(date.getTime());
+    day.locale = locale;
     days.push(day);
   }
   const firstDay = days[0];
