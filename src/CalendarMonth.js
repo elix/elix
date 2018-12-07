@@ -1,12 +1,12 @@
 import './CalendarDayNamesHeader.js';
-import './CalendarMonthDays.js';
+import './CalendarDays.js';
 import './CalendarMonthYearHeader.js';
 import { merge } from './updates.js';
+import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import CalendarDay from './CalendarDay.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
-import CalendarWeek from './CalendarWeek.js';
 import ReactiveElement from './ReactiveElement.js';
 
 
@@ -30,7 +30,6 @@ const Base =
  * @inherits ReactiveElement
  * @mixes CalendarElementMixin
  * @elementrole {CalendarDay} day
- * @elementrole {CalendarWeek} week
  */
 class CalendarMonth extends Base {
 
@@ -93,8 +92,7 @@ class CalendarMonth extends Base {
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       dayRole: CalendarDay,
-      daysOfWeekFormat: 'short',
-      weekRole: CalendarWeek
+      daysOfWeekFormat: 'short'
     });
   }
 
@@ -122,13 +120,17 @@ class CalendarMonth extends Base {
           display: table-header-group;
           font-size: smaller;
         }
+
+        #monthDays {
+          display: block;
+        }
       </style>
 
       <elix-calendar-month-year-header id="monthYearHeader"></elix-calendar-month-year-header>
       <div id="monthTable">
         <elix-calendar-day-names-header id="weekDaysHeader" format="short"></elix-calendar-day-names-header>
-        <elix-calendar-month-days id="monthDays"></elix-calendar-month-days>
       </div>
+      <elix-calendar-days id="monthDays"></elix-calendar-days>
     `;
   }
 
@@ -137,16 +139,18 @@ class CalendarMonth extends Base {
       date,
       dayRole,
       daysOfWeekFormat,
-      locale,
-      weekRole
+      locale
     } = this.state;
+    const startDate = calendar.firstDateOfMonth(date);
+    const endDate = calendar.lastDateOfMonth(date);
     return merge(super.updates, {
       $: {
         monthDays: {
           date,
           dayRole,
+          endDate,
           locale,
-          weekRole
+          startDate
         },
         monthYearHeader: {
           date,
@@ -158,47 +162,6 @@ class CalendarMonth extends Base {
         }
       }
     });
-  }
-
-  /**
-   * Returns the week element for the week containing the given date, or null if
-   * the date falls outside the calendar's range.
-   *
-   * @param {Date} date - the date to search for
-   * @returns {Element|null}
-   */
-  weekElementForDate(date) {
-    /** @type {any} */
-    const monthDays = this.$.monthDays;
-    return monthDays && 'weekElementForDate' in monthDays &&
-      monthDays.weekElementForDate(date);
-  }
-
-  /**
-   * The class, tag, or template used for the weeks of the month.
-   * 
-   * @type {function|string|HTMLTemplateElement}
-   * @default CalendarWeek
-   */
-  get weekRole() {
-    return this.state.weekRole;
-  }
-  set weekRole(weekRole) {
-    this.setState({ weekRole });
-  }
-
-  /**
-   * Returns the set of week elements used by the calendar.
-   * 
-   * @type {Element[]}
-   */
-  get weeks() {
-    if (!this.shadowRoot) {
-      return [];
-    }
-    /** @type {any} */
-    const cast = this.$.monthDays;
-    return cast.weeks;
   }
 
 }
