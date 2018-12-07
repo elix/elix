@@ -162,6 +162,20 @@ export function offsetDateByDays(date, days) {
 
 
 /**
+ * TODO: Docs
+ * 
+ * @param {Date} date 
+ * @param {number} months 
+ * @returns {Date}
+ */
+export function offsetDateByMonths(date, months) {
+  const result = new Date(date.getTime());
+  result.setMonth(date.getMonth() + months);
+  return result;
+}
+
+
+/**
  * Returns midnight today.
  * 
  * @returns {Date}

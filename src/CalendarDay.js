@@ -54,6 +54,10 @@ class CalendarDay extends Base {
           font-weight: bold;
         }
 
+        :host(.selected) {
+          background: #ddd;
+        }
+
         #day {
           display: block;
           text-align: right;
