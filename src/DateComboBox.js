@@ -1,4 +1,5 @@
 import './CalendarMonthNavigator.js'
+import './SeamlessButton.js';
 import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import { stateChanged } from './utilities.js';
@@ -73,9 +74,13 @@ class DateComboBox extends Base {
           /* flex: 1; */
           width: 100%;
         }
+
+        #todayButton {
+          padding: 0.5em;
+        }
       </style>
       <elix-calendar-month-navigator id="calendar"></elix-calendar-month-navigator>
-      <button id="todayButton">Today</button>
+      <elix-seamless-button id="todayButton">Today</elix-seamless-button>
     `;
     const defaultSlot = template.defaultSlot(result.content);
     if (defaultSlot) {

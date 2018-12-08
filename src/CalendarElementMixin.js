@@ -1,3 +1,6 @@
+import * as symbols from './symbols.js';
+
+
 /**
  * Adds locale-sensitive date support.
  * 
@@ -19,7 +22,7 @@ export default function CalendarElementMixin(Base) {
       const date = this.state.date;
       const time = date && date.getTime();
       const dateChanged = time !== previousTime;
-      if (dateChanged) {
+      if (dateChanged && this[symbols.raiseChangeEvents]) {
         /**
          * Raised when the `date` property changes.
          * 
