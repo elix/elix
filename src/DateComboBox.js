@@ -1,5 +1,6 @@
 import './CalendarMonthNavigator.js'
 import './SeamlessButton.js';
+import { calendar } from './elix.js';
 import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import { stateChanged } from './utilities.js';
@@ -7,7 +8,7 @@ import * as symbols from './symbols.js';
 import * as template from './template.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import ComboBox from './ComboBox.js';
-import { calendar } from './elix.js';
+import DateInput from './DateInput.js';
 
 
 const previousStateKey = Symbol('previousState');
@@ -23,16 +24,37 @@ class DateComboBox extends Base {
 
   componentDidUpdate(previousState) {
     if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-    this.$.todayButton.addEventListener('mousedown', event => {
-      this.date = calendar.today();
-    });
-    this.$.calendar.addEventListener('date-changed', event => {
+    this.$.input.addEventListener('date-changed', event => {
+      this[symbols.raiseChangeEvents] = true;
       /** @type {any} */
       const cast = event;
       const date = cast.detail.date;
       this.setState({
         date
       });
+      this[symbols.raiseChangeEvents] = false;
+    });
+    this.$.calendar.addEventListener('date-changed', event => {
+      this[symbols.raiseChangeEvents] = true;
+      /** @type {any} */
+      const cast = event;
+      const date = cast.detail.date;
+      this.setState({
+        date
+      });
+      this[symbols.raiseChangeEvents] = false;
+    });
+    this.$.todayButton.addEventListener('mousedown', event => {
+      this[symbols.raiseChangeEvents] = true;
+      this.date = calendar.today();
+      this[symbols.raiseChangeEvents] = false;
+    });
+  }
+
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      date: null,
+      inputRole: DateInput
     });
   }
 
@@ -40,18 +62,24 @@ class DateComboBox extends Base {
     let result = super.refineState ? super.refineState(state) : true;
     state[previousStateKey] = state[previousStateKey] || {
       date: null,
+      opened: false,
       value: null
     };
     const changed = stateChanged(state, state[previousStateKey]);
-    const { date, value } = state;
+    const { date, opened, value } = state;
     if (changed.date) {
       // Update value from date.
-      const formattedDate = date.toDateString();
+      const dateTimeFormat = new Intl.DateTimeFormat(state.locale, {
+        day: 'numeric',
+        month: 'numeric',
+        year: 'numeric'
+      });
+      const formattedDate = dateTimeFormat.format(date);
       if (state.value !== formattedDate) {
-        state.value = date.toDateString();
+        state.value = formattedDate;
         result = false;
       }
-    } else if (changed.value) {
+    } else if (changed.value && !opened) {
       // Update date from value.
       const parsedDate = new Date(value);
       const time = parsedDate.getTime();
@@ -94,10 +122,14 @@ class DateComboBox extends Base {
     const { date, locale, value } = this.state;
     return merge(super.updates, {
       $: {
-        calendar: {
-          date,
-          locale
-        },
+        calendar: Object.assign(
+          {
+            locale
+          },
+          date && {
+            date
+          }
+        ),
         input: {
           value
         }
