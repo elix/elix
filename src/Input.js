@@ -12,12 +12,14 @@ class Input extends Base {
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
     this.$.inner.addEventListener('input', event => {
+      this[symbols.raiseChangeEvents] = true;
       /** @type {any} */
       const cast = this.$.inner;
       const value = cast.value;
       this.setState({
         value
       });
+      this[symbols.raiseChangeEvents] = false;
     });
   }
 
