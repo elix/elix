@@ -1,5 +1,7 @@
+import { getSuperProperty } from './workarounds.js';
 import { stateChanged } from './utilities.js';
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import Input from './Input.js';
 
@@ -83,6 +85,20 @@ class DateInput extends Base {
         }
       }
     }
+    return result;
+  }
+
+  get [symbols.template]() {
+    // Next line is same as: const result = super[symbols.template]
+    const result = getSuperProperty(this, DateInput, symbols.template);
+    const styleTemplate = template.html`
+      <style>
+        #inner {
+          width: 8em;
+        }
+      </style>
+    `;
+    result.content.appendChild(styleTemplate.content);
     return result;
   }
 
