@@ -186,8 +186,9 @@ class ComboBox extends Base {
       opened: null
     };
     const changed = stateChanged(state, state[previousStateKey]);
-    const closing = changed.opened && !state.opened;
-    if (closing && !state.selectText) {
+    const { opened, selectText } = state;
+    const closing = changed.opened && !opened;
+    if (closing && !selectText) {
       // Select text on closing.
       state.selectText = true;
       result = false;
@@ -269,15 +270,11 @@ class ComboBox extends Base {
 
   get updates() {
     const base = super.updates;
-    const { focused, popupPosition, value } = this.state;
+    const { popupPosition, value } = this.state;
     const role = this.state.original && this.state.original.attributes.role ||
       base.attributes && base.attributes.role ||
       this.state.role;
 
-    // We only apply the value to the input if we're not focused. While we're
-    // focused, we let the input be the source of truth for the value.
-    const applyValue = !focused;
-    
     // We want to style the inner input if it's been created with
     // WrappedStandardElement, otherwise style the input directly.
     const hasInnerInput = 'inner' in this.$.input;
@@ -301,16 +298,12 @@ class ComboBox extends Base {
               margin: '0.25em'
             }
           },
-          input: Object.assign(
-            {
-              attributes: {
-                'aria-label': this.state.ariaLabel
-              }
+          input: {
+            attributes: {
+              'aria-label': this.state.ariaLabel
             },
-            applyValue && {
-              value
-            }
-          ),
+            value
+          },
           popup: Object.assign(
             {
               attributes: {

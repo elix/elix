@@ -24,6 +24,7 @@ class CalendarMonthNavigator extends Base {
   constructor() {
     super();
     this.addEventListener('mousedown', event => {
+      this[symbols.raiseChangeEvents] = true;
       const target = event.composedPath()[0];
       const days = this.days;
       const index = indexOfItemContainingTarget(days, target);
@@ -34,6 +35,7 @@ class CalendarMonthNavigator extends Base {
           date
         });
       }
+      this[symbols.raiseChangeEvents] = false;
     });
   }
 

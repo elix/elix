@@ -29,7 +29,7 @@ export default function ComposedFocusMixin(Base) {
           if (event.button !== 0) {
             return;
           }
-          const target = findFocusableAncestor(event.target);
+          const target = findFocusableAncestor(event.target, this);
           if (target) {
             target.focus();
             event.preventDefault();
@@ -45,10 +45,17 @@ export default function ComposedFocusMixin(Base) {
 
 
 // Return the closest focusable ancestor in the *composed* tree.
-function findFocusableAncestor(element) {
+// The optional root argument, if specified, identifies how far up to
+// look; if the root is reached without finding a focusable ancestor,
+// return null.
+function findFocusableAncestor(element, root) {
   if (element === document.body ||
     (!(element instanceof HTMLSlotElement) && element.tabIndex >= 0)) {
     return element;
+  }
+  if (root !== undefined && element === root) {
+    // We've searched as high up in the tree as we were told to look.
+    return null;
   }
   const parent = element.assignedSlot ?
     element.assignedSlot :

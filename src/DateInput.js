@@ -35,9 +35,24 @@ class DateInput extends Base {
     });
   }
 
+  get dateTimeFormatOptions() {
+    return this.state.dateTimeFormatOptions;
+  }
+  set dateTimeFormatOptions(dateTimeFormatOptions) {
+    this.setState({
+      dateTimeFormatOptions
+    });
+  }
+
   get defaultState() {
+    const dateTimeFormatOptions = {
+      day: 'numeric',
+      month: 'numeric',
+      year: 'numeric'
+    };
     return Object.assign({}, super.defaultState, {
       date: null,
+      dateTimeFormatOptions,
       focused: false
     });
   }
@@ -50,16 +65,12 @@ class DateInput extends Base {
       value: null
     };
     const changed = stateChanged(state, state[previousStateKey]);
-    const { date, focused, value } = state;
+    const { date, dateTimeFormatOptions, focused, value } = state;
     if (changed.date || changed.focused) {
       // Update value from date if we're not focused.
       if (!focused) {
         if (date !== null) {
-          const dateTimeFormat = new Intl.DateTimeFormat(state.locale, {
-            day: 'numeric',
-            month: 'numeric',
-            year: 'numeric'
-          });
+          const dateTimeFormat = new Intl.DateTimeFormat(state.locale, dateTimeFormatOptions);
           const formattedDate = dateTimeFormat.format(date);
           if (state.value !== formattedDate) {
             state.value = formattedDate;
@@ -100,6 +111,18 @@ class DateInput extends Base {
     `;
     result.content.appendChild(styleTemplate.content);
     return result;
+  }
+
+  get value() {
+    return super.value;
+  }
+  set value(value) {
+    // If external code sets the value, it's impossible for that code to predict
+    // the effects on the date, so we'll need to raise change events.
+    const saveRaiseChangesEvents = this[symbols.raiseChangeEvents];
+    this[symbols.raiseChangeEvents] = true;
+    super.value = value;
+    this[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
   }
 
 }
