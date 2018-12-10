@@ -45,11 +45,22 @@ class ComboBox extends Base {
         // If we're open and lose focus, then close.
         if (this.opened) {
           this[symbols.raiseChangeEvents] = true;
+          this.setState({
+            focused: false
+          });
           this.close();
           this[symbols.raiseChangeEvents] = false;
         }
       });
   
+      this.$.input.addEventListener('focus', () => {
+        this[symbols.raiseChangeEvents] = true;
+        this.setState({
+          focused: true
+        });
+        this[symbols.raiseChangeEvents] = false;
+      });
+
       this.$.input.addEventListener('input', () => {
         this[symbols.raiseChangeEvents] = true;
         /** @type {any} */
@@ -258,11 +269,14 @@ class ComboBox extends Base {
 
   get updates() {
     const base = super.updates;
-    const popupPosition = this.state.popupPosition;
-    const value = this.value;
+    const { focused, popupPosition, value } = this.state;
     const role = this.state.original && this.state.original.attributes.role ||
       base.attributes && base.attributes.role ||
       this.state.role;
+
+    // We only apply the value to the input if we're not focused. While we're
+    // focused, we let the input be the source of truth for the value.
+    const applyValue = !focused;
     
     // We want to style the inner input if it's been created with
     // WrappedStandardElement, otherwise style the input directly.
@@ -287,12 +301,16 @@ class ComboBox extends Base {
               margin: '0.25em'
             }
           },
-          input: {
-            attributes: {
-              'aria-label': this.state.ariaLabel
+          input: Object.assign(
+            {
+              attributes: {
+                'aria-label': this.state.ariaLabel
+              }
             },
-            value
-          },
+            applyValue && {
+              value
+            }
+          ),
           popup: Object.assign(
             {
               attributes: {
