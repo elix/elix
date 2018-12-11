@@ -65,6 +65,14 @@ class CalendarDays extends Base {
   //   }
   // }
 
+  get dayCount() {
+    return this.state.dayCount;
+  }
+  set dayCount(dayCount) {
+    this.setState({
+      dayCount
+    });
+  }
 
   /**
    * The class, tag, or template used for the seven days of the week.
@@ -86,36 +94,22 @@ class CalendarDays extends Base {
   get defaultState() {
     const today = calendar.today();
     return Object.assign({}, super.defaultState, {
+      dayCount: 1,
       dayRole: CalendarDay,
       days: null,
-      startDate: today,
-      endDate: today
+      startDate: today
     });
-  }
-
-  get endDate() {
-    return this.state.endDate;
-  }
-  set endDate(endDate) {
-    const parsed = typeof endDate === 'string' ?
-      new Date(endDate) :
-      endDate;
-    if (this.state.endDate.getTime() !== endDate.getTime()) {
-      this.setState({
-        endDate: parsed
-      });
-    }
   }
 
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
     state[previousStateKey] = state[previousStateKey] || {
+      dayCount: null,
       dayRole: null,
-      startDate: null,
-      endDate: null
+      startDate: null
     };
     const changed = stateChanged(state, state[previousStateKey]);
-    if (changed.dayRole || changed.startDate || changed.endDate) {
+    if (changed.dayRole || changed.startDate || changed.dayCount) {
       // Create new day elements.
       const days = createDays(state);
       Object.freeze(days);
@@ -125,6 +119,25 @@ class CalendarDays extends Base {
       result = false;
     }
     return result;
+  }
+
+  [symbols.render]() {
+    if (super[symbols.render]) { super[symbols.render](); }
+    const days = this.days || [];
+    // Ensure only current date has "selected" class.
+    const date = this.state.date;
+    const referenceDate = date.getDate();
+    const referenceMonth = date.getMonth();
+    const referenceYear = date.getFullYear();
+    days.forEach(day => {
+      if ('selected' in day) {
+        const dayDate = day.date;
+        const selected = dayDate.getDate() === referenceDate &&
+          dayDate.getMonth() === referenceMonth &&
+          dayDate.getFullYear() === referenceYear;
+        day.selected = selected;
+      }
+    });
   }
 
   get startDate() {
@@ -158,48 +171,7 @@ class CalendarDays extends Base {
     `;
   }
 
-  [symbols.render]() {
-    if (super[symbols.render]) { super[symbols.render](); }
-    const days = this.days || [];
-    // Ensure only current date has "selected" class.
-    const date = this.state.date;
-    const referenceDate = date.getDate();
-    const referenceMonth = date.getMonth();
-    const referenceYear = date.getFullYear();
-    days.forEach(day => {
-      if ('selected' in day) {
-        const dayDate = day.date;
-        const selected = dayDate.getDate() === referenceDate &&
-          dayDate.getMonth() === referenceMonth &&
-          dayDate.getFullYear() === referenceYear;
-        day.selected = selected;
-      }
-    });
-  }
-
   get updates() {
-    // const referenceDate = this.state.date;
-    // const locale = this.state.locale;
-    // const referenceYear = referenceDate.getFullYear();
-    // const referenceMonth = referenceDate.getMonth();
-    // const dateStart = calendar.firstDateOfWeek(referenceDate, this.state.locale);
-    // const dayUpdates = {};
-    // for (let i = 0; i <= 6; i++) {
-    //   const date = calendar.offsetDateByDays(dateStart, i);
-    //   // Apply inside/outside month styles to days that fall outside of the
-    //   // month of the reference date for this week.
-    //   const outsideMonth = this.state.outsideMonth ||
-    //     !(date.getFullYear() === referenceYear && date.getMonth() === referenceMonth);
-    //   dayUpdates[`day${i}`] = {
-    //     classes: {
-    //       insideMonth: !outsideMonth,
-    //       outsideMonth
-    //     },
-    //     date,
-    //     locale
-    //   };
-    // }
-
     return merge(super.updates, {
       $: {
         dayContainer: {
@@ -213,16 +185,17 @@ class CalendarDays extends Base {
 
 
 function createDays(state) {
-  const { dayRole, locale } = state;
+  const { dayCount, dayRole, locale } = state;
   const startDate = calendar.midnightOnDate(state.startDate);
-  const endDate = calendar.midnightOnDate(state.endDate);
   const days = [];
-  for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
+  let date = startDate;
+  for (let i = 0; i < dayCount; i++) {
     const day = template.createElement(dayRole);
     day.date = new Date(date.getTime());
     day.locale = locale;
     day.setAttribute('tabindex', -1);
     days.push(day);
+    date = calendar.offsetDateByDays(date, 1);
   }
   const firstDay = days[0];
   if (firstDay) {

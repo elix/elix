@@ -143,13 +143,14 @@ class CalendarMonth extends Base {
     } = this.state;
     const startDate = calendar.firstDateOfMonth(date);
     const endDate = calendar.lastDateOfMonth(date);
+    const dayCount = endDate.getDate();
     const firstDateOfMonth = calendar.firstDateOfMonth(date);
     return merge(super.updates, {
       $: {
         monthDays: {
           date,
+          dayCount,
           dayRole,
-          endDate,
           locale,
           startDate
         },
