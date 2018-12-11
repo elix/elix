@@ -126,6 +126,29 @@ export function forwardFocus(origin, target) {
 
 
 /**
+ * Search a list element for the item that contains the specified target.
+ * 
+ * When dealing with UI events (e.g., mouse clicks) that may occur in
+ * subelements inside a list item, you can use this routine to obtain the
+ * containing list item.
+ * 
+ * @param {NodeList|Node[]} items - A list element containing a set of items
+ * @param {Node} target - A target element that may or may not be an item in the
+ * list.
+ * @returns {number} - The index of the list child that is or contains the
+ * indicated target node. Returns -1 if not found.
+ */
+export function indexOfItemContainingTarget(listElement, target) {
+  /** @type {any} */
+  const cast = listElement;
+  const items = cast.items || [];
+  return items.findIndex(item =>
+    item === target || deepContains(item, target)
+  );
+}
+
+
+/**
  * Return true if the event came from within the node (or from the node itself);
  * false otherwise.
  * 
@@ -139,29 +162,6 @@ export function ownEvent(node, event) {
   const cast = event;
   const eventSource = cast.composedPath()[0];
   return node === eventSource || deepContains(node, eventSource);
-}
-
-
-/**
- * Search a list element for the item that contains the specified target.
- * 
- * When dealing with UI events (e.g., mouse clicks) that may occur in
- * subelements inside a list item, you can use this routine to obtain the
- * containing list item.
- * 
- * @param {Node} listElement - A list element containing a set of items
- * @param {Node} target - A target element that may or may not be an item in the
- * list.
- * @returns {number} - The index of the list child that is or contains the
- * indicated target node. Returns -1 if not found.
- */
-export function indexOfItemContainingTarget(listElement, target) {
-  /** @type {any} */
-  const cast = listElement;
-  const items = cast.items || [];
-  return items.findIndex(item =>
-    item === target || deepContains(item, target)
-  );
 }
 
 
