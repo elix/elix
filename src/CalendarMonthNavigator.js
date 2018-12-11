@@ -6,6 +6,7 @@ import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
 import CalendarDayButton from './CalendarDayButton.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
+import ComposedFocusMixin from './ComposedFocusMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import ReactiveElement from './ReactiveElement.js';
@@ -13,10 +14,11 @@ import ReactiveElement from './ReactiveElement.js';
 
 const Base =
   CalendarElementMixin(
+  ComposedFocusMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
     ReactiveElement
-  )));
+  ))));
 
 
 class CalendarMonthNavigator extends Base {

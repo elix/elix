@@ -143,6 +143,7 @@ class CalendarMonth extends Base {
     } = this.state;
     const startDate = calendar.firstDateOfMonth(date);
     const endDate = calendar.lastDateOfMonth(date);
+    const firstDateOfMonth = calendar.firstDateOfMonth(date);
     return merge(super.updates, {
       $: {
         monthDays: {
@@ -153,7 +154,7 @@ class CalendarMonth extends Base {
           startDate
         },
         monthYearHeader: {
-          date,
+          date: firstDateOfMonth,
           locale
         },
         weekDaysHeader: {
