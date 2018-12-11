@@ -24,13 +24,6 @@ class DateComboBox extends Base {
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
-    if (this.$.todayButton instanceof HTMLElement && this.$.input instanceof HTMLElement) {
-      forwardFocus(this.$.todayButton, this.$.input);
-    }
-  }
-
-  componentDidUpdate(previousState) {
-    if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
     this.$.calendar.addEventListener('date-changed', event => {
       this[symbols.raiseChangeEvents] = true;
       /** @type {any} */
@@ -44,8 +37,10 @@ class DateComboBox extends Base {
       this[symbols.raiseChangeEvents] = false;
     });
     this.$.calendar.addEventListener('mousedown', event => {
-      // Keep focus on input.
-      event.preventDefault();
+      this[symbols.raiseChangeEvents] = true;
+      this.close();
+      event.preventDefault(); // Keep focus on input.
+      this[symbols.raiseChangeEvents] = false;
     });
     this.$.input.addEventListener('date-changed', event => {
       this[symbols.raiseChangeEvents] = true;
@@ -63,10 +58,16 @@ class DateComboBox extends Base {
       const value = formatDate(date);
       this.setState({
         date,
+        selectText: true,
         value
       });
+      this.close();
+      event.preventDefault(); // Keep focus on input.
       this[symbols.raiseChangeEvents] = false;
     });
+    if (this.$.todayButton instanceof HTMLElement && this.$.input instanceof HTMLElement) {
+      forwardFocus(this.$.todayButton, this.$.input);
+    }
   }
 
   get dateTimeFormatOptions() {
@@ -129,7 +130,12 @@ class DateComboBox extends Base {
         }
 
         #todayButton {
+          border: 1px solid transparent;
           padding: 0.5em;
+        }
+
+        #todayButton:hover {
+          border-color: gray;
         }
       </style>
       <elix-calendar-month-navigator id="calendar"></elix-calendar-month-navigator>
