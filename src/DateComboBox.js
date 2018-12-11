@@ -102,7 +102,7 @@ class DateComboBox extends Base {
     const { date, opened } = state;
     const closing = changed.opened && !opened;
     if (closing) {
-      // Update value from date if we we're closing.
+      // Update value from date if we're closing.
       if (date !== null) {
         const formattedDate = formatDate(state, date);
         if (state.value !== formattedDate) {
