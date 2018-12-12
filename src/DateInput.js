@@ -72,7 +72,7 @@ class DateInput extends Base {
       // Update value from date if we're not focused.
       if (!focused) {
         if (date !== null) {
-          const dateTimeFormat = new Intl.DateTimeFormat(locale, dateTimeFormatOptions);
+          const dateTimeFormat = calendar.dateTimeFormat(locale, dateTimeFormatOptions);
           const formattedDate = dateTimeFormat.format(date);
           if (state.value !== formattedDate) {
             state.value = formattedDate;
@@ -124,7 +124,7 @@ class DateInput extends Base {
 
 
 function parseDate(text, locale, dateTimeFormatOptions) {
-  const fullFormat = new Intl.DateTimeFormat(locale, dateTimeFormatOptions);
+  const fullFormat = calendar.dateTimeFormat(locale, dateTimeFormatOptions);
   // Try parsing using requested options.
   const fullDate = calendar.parse(text, fullFormat);
   if (fullDate) {
@@ -139,7 +139,7 @@ function parseDate(text, locale, dateTimeFormatOptions) {
       year: undefined
     }
   );
-  const abbreviatedFormat = new Intl.DateTimeFormat(locale, abbreviatedOptions);
+  const abbreviatedFormat = calendar.dateTimeFormat(locale, abbreviatedOptions);
   const abbreviatedDate = calendar.parse(text, abbreviatedFormat);
   return abbreviatedDate;
 }

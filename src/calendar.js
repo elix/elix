@@ -30,8 +30,18 @@ const defaultRegion = '001';
 export const millisecondsPerDay = 24 * 60 * 60 * 1000;
 
 
+export function dateTimeFormat(locale, options) {
+  const caExtension = locale.includes('-ca-') ? '' : '-ca-gregory';
+  const nuExtension = locale.includes('-nu-') ? '' : '-nu-latn';
+  const extension = caExtension || nuExtension ? '-u' : '';
+  const extendedLocale = `${locale}${extension}${caExtension}${nuExtension}`;
+  return new Intl.DateTimeFormat(extendedLocale, options);
+}
+
+
 /**
- * TODO: Docs
+ * Return true if both date object represent the same point in time or are both
+ * null.
  * 
  * @param {Date|null} date1 
  * @param {Date|null} date2 
@@ -205,8 +215,13 @@ export function parse(text, dateTimeFormat) {
   });
   // @ts-ignore
   const { day, hour, minute, month, second, year } = groups;
+  // Adjust short year to current century.
+  const yearValue = year && parseInt(year);
+  const adjustedYear = yearValue < 100 ?
+    2000 + yearValue :
+    year;
   return new Date(
-    year || today.getFullYear(),
+    adjustedYear || today.getFullYear(),
     month !== undefined ? month - 1 : today.getMonth(),
     day || today.getDate(),
     hour || 0,

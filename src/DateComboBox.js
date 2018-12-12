@@ -199,7 +199,7 @@ class DateComboBox extends Base {
 
 
 function formatDate(state, date) {
-  const dateTimeFormat = new Intl.DateTimeFormat(
+  const dateTimeFormat = calendar.dateTimeFormat(
     state.locale,
     state.dateTimeFormatOptions
   );

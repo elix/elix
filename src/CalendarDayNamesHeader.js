@@ -97,7 +97,7 @@ class CalendarDayNamesHeader extends ReactiveElement {
   get updates() {
     const locale = this.state.locale;
 
-    const formatter = new Intl.DateTimeFormat(locale, {
+    const formatter = calendar.dateTimeFormat(locale, {
       weekday: this.state.format
     });
     const date = new Date(2017, 0, 1); // A Sunday
