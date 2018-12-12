@@ -106,10 +106,11 @@ class CalendarDays extends Base {
     state[previousStateKey] = state[previousStateKey] || {
       dayCount: null,
       dayRole: null,
+      locale: null,
       startDate: null
     };
     const changed = stateChanged(state, state[previousStateKey]);
-    if (changed.dayRole || changed.startDate || changed.dayCount) {
+    if (changed.dayRole || changed.locale || changed.startDate || changed.dayCount) {
       // Create new day elements.
       const days = createDays(state);
       Object.freeze(days);

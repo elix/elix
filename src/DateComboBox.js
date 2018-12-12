@@ -92,6 +92,33 @@ class DateComboBox extends Base {
     });
   }
 
+  [symbols.keydown](event) {
+    let handled = false;
+
+    const date = this.state.date || calendar.today();
+
+    switch (event.key) {
+
+      case 'PageDown':
+        this.setState({
+          date: calendar.offsetDateByMonths(date, 1)
+        });
+        handled = true;
+        break;
+        
+      case 'PageUp':
+        this.setState({
+          date: calendar.offsetDateByMonths(date, -1)
+        });
+        handled = true;
+        break;
+
+    }
+
+    // Prefer mixin result if it's defined, otherwise use base result.
+    return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+  }
+
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
     state[previousStateKey] = state[previousStateKey] || {
@@ -125,7 +152,6 @@ class DateComboBox extends Base {
     const calendarTemplate = template.html`
       <style>
         #calendar {
-          /* flex: 1; */
           width: 100%;
         }
 
@@ -162,7 +188,8 @@ class DateComboBox extends Base {
           }
         ),
         input : {
-          dateTimeFormatOptions
+          dateTimeFormatOptions,
+          locale
         }
       }
     });

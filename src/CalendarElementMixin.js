@@ -1,3 +1,4 @@
+import { calendar } from './elix.js';
 import * as symbols from './symbols.js';
 
 
@@ -18,11 +19,9 @@ export default function CalendarElementMixin(Base) {
 
     componentDidUpdate(previousState) {
       if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-      const previousTime = previousState.date && previousState.date.getTime();
       const date = this.state.date;
-      const time = date && date.getTime();
-      const dateChanged = time !== previousTime;
-      if (dateChanged && this[symbols.raiseChangeEvents]) {
+      const changed = !calendar.datesEqual(date, previousState.date);
+      if (changed && this[symbols.raiseChangeEvents]) {
         /**
          * Raised when the `date` property changes.
          * 
@@ -55,9 +54,7 @@ export default function CalendarElementMixin(Base) {
         new Date(date) :
         date;
       // Only update state if actual date value differs from current state.
-      const changed = (parsed !== null && this.state.date === null) ||
-        (parsed === null && this.state.date !== null) ||
-        (parsed.getTime() !== this.state.date.getTime());
+      const changed = !calendar.datesEqual(parsed, this.state.date);
       if (changed) {
         this.setState({
           date: parsed
@@ -66,8 +63,9 @@ export default function CalendarElementMixin(Base) {
     }
 
     get defaultState() {
+      const date = calendar.today();
       return Object.assign({}, super.defaultState, {
-        date: new Date(),
+        date,
         locale: navigator.language
       });
     }

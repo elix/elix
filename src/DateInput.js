@@ -62,15 +62,16 @@ class DateInput extends Base {
     state[previousStateKey] = state[previousStateKey] || {
       date: null,
       focused: false,
+      locale: null,
       value: null
     };
     const changed = stateChanged(state, state[previousStateKey]);
-    const { date, dateTimeFormatOptions, focused, value } = state;
-    if (changed.date || changed.focused) {
+    const { date, dateTimeFormatOptions, focused, locale, value } = state;
+    if (changed.date || changed.focused || changed.locale) {
       // Update value from date if we're not focused.
       if (!focused) {
         if (date !== null) {
-          const dateTimeFormat = new Intl.DateTimeFormat(state.locale, dateTimeFormatOptions);
+          const dateTimeFormat = new Intl.DateTimeFormat(locale, dateTimeFormatOptions);
           const formattedDate = dateTimeFormat.format(date);
           if (state.value !== formattedDate) {
             state.value = formattedDate;

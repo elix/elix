@@ -31,6 +31,24 @@ export const millisecondsPerDay = 24 * 60 * 60 * 1000;
 
 
 /**
+ * TODO: Docs
+ * 
+ * @param {Date} date1 
+ * @param {Date} date2 
+ * @returns {boolean}
+ */
+export function datesEqual(date1, date2) {
+  if (date1 === null && date2 === null) {
+    return true;
+  } else if (date1 !== null && date2 !== null) {
+    return date1.getTime() === date2.getTime();
+  } else {
+    return false;
+  }
+}
+
+
+/**
  * Returns the number of days between the first day of the calendar week in the
  * indicated locale and the given date. In other words, the result indicates
  * which column of a typical calendar the date would appear in.

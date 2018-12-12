@@ -1,15 +1,12 @@
-import './CalendarMonth.js';
-import { html } from './template.js';
 import { indexOfItemContainingTarget } from './utilities.js';
-import { merge } from './updates.js';
 import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
 import CalendarDayButton from './CalendarDayButton.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
+import CalendarMonth from './CalendarMonth.js';
 import ComposedFocusMixin from './ComposedFocusMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
-import ReactiveElement from './ReactiveElement.js';
 
 
 const Base =
@@ -17,7 +14,7 @@ const Base =
   ComposedFocusMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
-    ReactiveElement
+    CalendarMonth
   ))));
 
 
@@ -33,18 +30,14 @@ class CalendarMonthNavigator extends Base {
       const day = days[index];
       if (day) {
         const date = day.date;
-        this.setState({
-          date
-        });
+        if (!calendar.datesEqual(date, this.state.date)) {
+          this.setState({
+            date
+          });
+        }
       }
       this[symbols.raiseChangeEvents] = false;
     });
-  }
-
-  get days() {
-    return this.shadowRoot ?
-      this.$.calendar.days :
-      [];
   }
 
   get defaultState() {
@@ -110,25 +103,6 @@ class CalendarMonthNavigator extends Base {
     if (super[symbols.goUp]) { super[symbols.goUp](); }
     this.setState({
       date: calendar.offsetDateByDays(this.state.date, -7)
-    });
-  }
-
-  get [symbols.template]() {
-    return html`
-      <elix-calendar-month id="calendar"></elix-calendar-month>
-    `;
-  }
-
-  get updates() {
-    const { date, dayRole, locale } = this.state;
-    return merge(super.updates, {
-      $: {
-        calendar: {
-          date,
-          dayRole,
-          locale
-        }
-      }
     });
   }
 
