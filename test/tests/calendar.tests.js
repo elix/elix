@@ -17,7 +17,8 @@ describe("calendar helpers", () => {
       month: 'numeric',
       year: 'numeric'
     };
-    const actual = calendar.parse('1/2/2019', 'en-US', dateTimeFormatOptions);
+    const text = '1/2/2019'; // 2019 Jan 2
+    const actual = calendar.parse(text, 'en-US', dateTimeFormatOptions);
     const expected = new Date('2019 Jan 2');
     assert.equal(actual.getTime(), expected.getTime());
   });
@@ -27,7 +28,8 @@ describe("calendar helpers", () => {
       day: 'numeric',
       month: 'numeric'
     };
-    const actual = calendar.parse('1/2', 'en-US', dateTimeFormatOptions);
+    const text = '1/2'; // Jan 2
+    const actual = calendar.parse(text, 'en-US', dateTimeFormatOptions);
     const expected = new Date();
     expected.setDate(2);
     expected.setMonth(0); // January
@@ -44,7 +46,8 @@ describe("calendar helpers", () => {
       month: 'numeric',
       year: 'numeric'
     };
-    const actual = calendar.parse('1/2/2019', 'en-GB', dateTimeFormatOptions);
+    const text = '1/2/2019'; // 2019 Feb 1
+    const actual = calendar.parse(text, 'en-GB', dateTimeFormatOptions);
     const expected = new Date('2019 Feb 1');
     assert.equal(actual.getTime(), expected.getTime());
   });
@@ -54,7 +57,8 @@ describe("calendar helpers", () => {
       day: 'numeric',
       month: 'numeric'
     };
-    const actual = calendar.parse('1/2', 'en-GB', dateTimeFormatOptions);
+    const text = '1/2'; // Feb 1
+    const actual = calendar.parse(text, 'en-GB', dateTimeFormatOptions);
     const expected = new Date();
     expected.setDate(1);
     expected.setMonth(1); // February
