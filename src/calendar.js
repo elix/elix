@@ -172,15 +172,23 @@ export function parse(text, locale, dateTimeFormatOptions) {
   // Convert parts to a regex.
   const regExText = parts.map(part =>
     part.type === 'literal' ?
-      '\\D+' :
-      `(?<${part.type}>\\d+)`
+      '(\\D+)' :
+      // TODO: use named capture group: `(<${part.type}>\\d+)`
+      // when that's widely supported.
+      `(\\d+)`
   ).join('');
   const regEx = new RegExp(regExText);
+  // Match against the text.
   const match = regEx.exec(text);
   if (!match) {
     return null;
   }
-  const { day, month, year } = match.groups;
+  // Convert match values to (effectively) named capture groups.
+  const groups = {};
+  parts.forEach((part, index) => {
+    groups[part.type] = match[index + 1];
+  });
+  const { day, month, year } = groups;
   if (day) {
     date.setDate(day);
   }

@@ -19,7 +19,7 @@ describe("calendar helpers", () => {
     };
     const text = '1/2/2019'; // 2019 Jan 2
     const actual = calendar.parse(text, 'en-US', dateTimeFormatOptions);
-    const expected = new Date('2019 Jan 2');
+    const expected = new Date(2019, 0, 2); // 2019 Jan 2
     assert.equal(actual.getTime(), expected.getTime());
   });
 
@@ -48,7 +48,7 @@ describe("calendar helpers", () => {
     };
     const text = '1/2/2019'; // 2019 Feb 1
     const actual = calendar.parse(text, 'en-GB', dateTimeFormatOptions);
-    const expected = new Date('2019 Feb 1');
+    const expected = new Date(2019, 1, 1); // 2019 Feb 1
     assert.equal(actual.getTime(), expected.getTime());
   });
 
