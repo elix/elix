@@ -28,12 +28,7 @@ class DateComboBox extends Base {
       this[symbols.raiseChangeEvents] = true;
       /** @type {any} */
       const cast = event;
-      const date = cast.detail.date;
-      const value = formatDate(this.state, date);
-      this.setState({
-        date,
-        value
-      });
+      updateDateAndValue(this, cast.detail.date);
       this[symbols.raiseChangeEvents] = false;
     });
     this.$.calendar.addEventListener('mousedown', event => {
@@ -46,27 +41,21 @@ class DateComboBox extends Base {
       this[symbols.raiseChangeEvents] = true;
       /** @type {any} */
       const cast = event.target;
-      this.setState({
-        date: cast.date,
-        value: cast.value
-      });
+      updateDateAndValue(this, cast.date, cast.value);
       this[symbols.raiseChangeEvents] = false;
     });
     this.$.todayButton.addEventListener('mousedown', event => {
       this[symbols.raiseChangeEvents] = true;
-      const date = calendar.today();
-      const value = formatDate(date);
-      this.setState({
-        date,
-        selectText: true,
-        value
-      });
+      updateDateAndValue(this, calendar.today());
       this.close();
       event.preventDefault(); // Keep focus on input.
       this[symbols.raiseChangeEvents] = false;
     });
     if (this.$.todayButton instanceof HTMLElement && this.$.input instanceof HTMLElement) {
       forwardFocus(this.$.todayButton, this.$.input);
+    }
+    if (this.$.calendar instanceof HTMLElement && this.$.input instanceof HTMLElement) {
+      forwardFocus(this.$.calendar, this.$.input);
     }
   }
 
@@ -134,6 +123,7 @@ class DateComboBox extends Base {
         const formattedDate = formatDate(state, date);
         if (state.value !== formattedDate) {
           state.value = formattedDate;
+          state.selectText = true;
           result = false;
         }
       } else if (state.value !== '') {
@@ -204,6 +194,19 @@ function formatDate(state, date) {
     state.dateTimeFormatOptions
   );
   return dateTimeFormat.format(date);
+}
+
+
+function updateDateAndValue(element, date, value) {
+  if (value === undefined) {
+    value = formatDate(element.state, date);
+  }
+  if (!calendar.datesEqual(element.state.date, date)) {
+    element.setState({
+      date,
+      value
+    });
+  }
 }
 
 

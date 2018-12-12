@@ -67,7 +67,8 @@ class ComboBox extends Base {
         const cast = this.$.input;
         const value = cast.value;
         const changes = {
-          value
+          value,
+          selectText: false
         };
         if (this.closed && value > '') {
           // If user types while popup is closed, implicitly open it.
@@ -76,10 +77,21 @@ class ComboBox extends Base {
         this.setState(changes);
         this[symbols.raiseChangeEvents] = false;
       })
+
+      this.$.input.addEventListener('keydown', () => {
+        this[symbols.raiseChangeEvents] = true;
+        this.setState({
+          selectText: false
+        });
+        this[symbols.raiseChangeEvents] = false;
+      })
   
       // If the user clicks on the input and the popup is closed, open it.
       this.$.input.addEventListener('mousedown', () => {
         this[symbols.raiseChangeEvents] = true;
+        this.setState({
+          selectText: false
+        });
         if (this.closed) {
           this.open();
         }
@@ -117,12 +129,12 @@ class ComboBox extends Base {
       if (value > "") {
         /** @type {any} */
         const cast = this.$.input;
-        cast.selectionStart = 0;
-        cast.selectionEnd = value.length;
+        // Give the inner input a chance to render the value.
+        setTimeout(() => {
+          cast.selectionStart = 0;
+          cast.selectionEnd = cast.value.length;
+        });
       }
-      this.setState({
-        selectText: false
-      });
     }  
   }
 
