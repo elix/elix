@@ -33,8 +33,8 @@ export const millisecondsPerDay = 24 * 60 * 60 * 1000;
 /**
  * TODO: Docs
  * 
- * @param {Date} date1 
- * @param {Date} date2 
+ * @param {Date|null} date1 
+ * @param {Date|null} date2 
  * @returns {boolean}
  */
 export function datesEqual(date1, date2) {
@@ -157,6 +157,40 @@ export function noonOnDate(date) {
   midnight.setSeconds(0);
   midnight.setMilliseconds(0);
   return midnight;
+}
+
+
+export function parse(text, locale, dateTimeFormatOptions) {
+  // Separators we need to support: /‏/.年月. -
+  const dateTimeFormat = new Intl.DateTimeFormat(locale, dateTimeFormatOptions);
+  const date = new Date();
+  date.setHours(0);
+  date.setMinutes(0);
+  date.setSeconds(0);
+  date.setMilliseconds(0);
+  const parts = dateTimeFormat.formatToParts(date);
+  // Convert parts to a regex.
+  const regExText = parts.map(part =>
+    part.type === 'literal' ?
+      '\\D+' :
+      `(?<${part.type}>\\d+)`
+  ).join('');
+  const regEx = new RegExp(regExText);
+  const match = regEx.exec(text);
+  if (!match) {
+    return null;
+  }
+  const { day, month, year } = match.groups;
+  if (day) {
+    date.setDate(day);
+  }
+  if (month) {
+    date.setMonth(month - 1);
+  }
+  if (year) {
+    date.setFullYear(year);
+  }
+  return date;
 }
 
 

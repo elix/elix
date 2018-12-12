@@ -4,6 +4,7 @@ import * as symbols from './symbols.js';
 import * as template from './template.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import Input from './Input.js';
+import { calendar } from './elix.js';
 
 
 const previousStateKey = Symbol('previousState');
@@ -85,16 +86,9 @@ class DateInput extends Base {
     } else if (changed.value) {
       // Update date from value.
       const parsedDate = parseDate(value);
-      if (parsedDate === null) {
-        if (date !== null) {
-          state.date = null;
-          result = false;
-        }
-      } else {
-        if (date === null || parsedDate.getTime() !== date.getTime()) {
-          state.date = parsedDate;
-          result = false;
-        }
+      if (!calendar.datesEqual(state.date, parsedDate)) {
+        state.date = parsedDate;
+        result = false;
       }
     }
     return result;
