@@ -160,20 +160,37 @@ export function noonOnDate(date) {
 }
 
 
+/**
+ * Parse a text string as a date using the formatting preferences of the
+ * indicated locale and the `Intl.DateTimeFormat` formatting options.
+ * 
+ * The `Intl.DateTimeFormat` facility can format dates as text; this `parse`
+ * function performs the reverse operation.
+ * 
+ * Parsing is limited to supporting numeric day/month/year formats. The locale
+ * and options only dictate the presence of the day, month, and year, and the
+ * order in which they will be expected. Missing day/month/year values will
+ * be inferred from the current date.
+ * 
+ * @param {string} text - the text to parse as a date
+ * @param {string} locale - the calendar locale
+ * @param {object} dateTimeFormatOptions - options for `Intl.DateTimeFormat`
+ * @returns {Date|null} - the parsed date
+ */
 export function parse(text, locale, dateTimeFormatOptions) {
-  // Separators we need to support: /‏/.年月. -
   const dateTimeFormat = new Intl.DateTimeFormat(locale, dateTimeFormatOptions);
   const date = new Date();
-  date.setHours(0);
-  date.setMinutes(0);
-  date.setSeconds(0);
-  date.setMilliseconds(0);
+  // @ts-ignore
   const parts = dateTimeFormat.formatToParts(date);
   // Convert parts to a regex.
+  // For reference, literals/separators we need to support are: `/‏/.年月. -:`
+  // (Those two slashes are different Unicode characters.) That said, since
+  // we're only supporting numeric day/month/year, we just take anything
+  // that's not a digit as a separator.
   const regExText = parts.map(part =>
     part.type === 'literal' ?
       '(\\D+)' :
-      // TODO: use named capture group: `(<${part.type}>\\d+)`
+      // TODO: use named capture group `(<${part.type}>\\d+)`
       // when that's widely supported.
       `(\\d+)`
   ).join('');
@@ -188,17 +205,16 @@ export function parse(text, locale, dateTimeFormatOptions) {
   parts.forEach((part, index) => {
     groups[part.type] = match[index + 1];
   });
-  const { day, month, year } = groups;
-  if (day) {
-    date.setDate(day);
-  }
-  if (month) {
-    date.setMonth(month - 1);
-  }
-  if (year) {
-    date.setFullYear(year);
-  }
-  return date;
+  // @ts-ignore
+  const { day, hour, minute, month, second, year } = groups;
+  return new Date(
+    year || date.getFullYear(),
+    month !== undefined ? month - 1 : date.getMonth(),
+    day || date.getDate(),
+    hour || 0,
+    minute || 0,
+    second || 0
+  );
 }
 
 
