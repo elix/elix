@@ -85,7 +85,7 @@ class DateInput extends Base {
       }
     } else if (changed.value) {
       // Update date from value.
-      const parsedDate = parseDate(value);
+      const parsedDate = parseDate(value, locale, dateTimeFormatOptions);
       if (!calendar.datesEqual(state.date, parsedDate)) {
         state.date = parsedDate;
         result = false;
@@ -123,26 +123,25 @@ class DateInput extends Base {
 }
 
 
-// Parse the given text as a date.
-// Ignore whitespace at the beginning.
-// If there are no date separators, return null.
-// If there's only one date separator, add the current year.
-function parseDate(text) {
-  const dateRegex = /^\s*(\d+)[\/\-. ](\d+)(?:[\/\-. ](\d+))?/;
-  const match = dateRegex.exec(text);
-  if (!match) {
-    return null;
+function parseDate(text, locale, dateTimeFormatOptions) {
+  const fullFormat = new Intl.DateTimeFormat(locale, dateTimeFormatOptions);
+  // Try parsing using requested options.
+  const fullDate = calendar.parse(text, fullFormat);
+  if (fullDate) {
+    return fullDate;
   }
-  const time = Date.parse(text);
-  if (isNaN(time)) {
-    return null;
-  }
-  const date = new Date(time);
-  if (!match[3]) {
-    const currentYear = (new Date()).getFullYear();
-    date.setFullYear(currentYear);
-  }
-  return date;
+  // Try parsing without year. Create an identical DateTimeFormat options, but
+  // mark `year` as undefined so it won't be used.
+  const abbreviatedOptions = Object.assign(
+    {},
+    dateTimeFormatOptions,
+    {
+      year: undefined
+    }
+  );
+  const abbreviatedFormat = new Intl.DateTimeFormat(locale, abbreviatedOptions);
+  const abbreviatedDate = calendar.parse(text, abbreviatedFormat);
+  return abbreviatedDate;
 }
 
 

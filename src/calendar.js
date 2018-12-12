@@ -173,15 +173,13 @@ export function noonOnDate(date) {
  * be inferred from the current date.
  * 
  * @param {string} text - the text to parse as a date
- * @param {string} locale - the calendar locale
- * @param {object} dateTimeFormatOptions - options for `Intl.DateTimeFormat`
+ * @param {Intl.DateTimeFormat} dateTimeFormat - the format to parse
  * @returns {Date|null} - the parsed date
  */
-export function parse(text, locale, dateTimeFormatOptions) {
-  const dateTimeFormat = new Intl.DateTimeFormat(locale, dateTimeFormatOptions);
-  const date = new Date();
+export function parse(text, dateTimeFormat) {
+  const today = new Date();
   // @ts-ignore
-  const parts = dateTimeFormat.formatToParts(date);
+  const parts = dateTimeFormat.formatToParts(today);
   // Convert parts to a regex.
   // For reference, literals/separators we need to support are: `/‏/.年月. -:`
   // (Those two slashes are different Unicode characters.) That said, since
@@ -208,9 +206,9 @@ export function parse(text, locale, dateTimeFormatOptions) {
   // @ts-ignore
   const { day, hour, minute, month, second, year } = groups;
   return new Date(
-    year || date.getFullYear(),
-    month !== undefined ? month - 1 : date.getMonth(),
-    day || date.getDate(),
+    year || today.getFullYear(),
+    month !== undefined ? month - 1 : today.getMonth(),
+    day || today.getDate(),
     hour || 0,
     minute || 0,
     second || 0
