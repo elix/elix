@@ -12,24 +12,24 @@ describe("calendar helpers", () => {
   });
 
   it("can parse numeric en-US dates", () => {
-    const dateTimeFormatOptions = {
+    const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
       day: 'numeric',
       month: 'numeric',
       year: 'numeric'
-    };
+    });
     const text = '1/2/2019'; // 2019 Jan 2
-    const actual = calendar.parse(text, 'en-US', dateTimeFormatOptions);
+    const actual = calendar.parse(text, dateTimeFormat);
     const expected = new Date(2019, 0, 2); // 2019 Jan 2
     assert.equal(actual.getTime(), expected.getTime());
   });
 
   it("can parse short numeric en-US dates", () => {
-    const dateTimeFormatOptions = {
+    const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
       day: 'numeric',
       month: 'numeric'
-    };
+    });
     const text = '1/2'; // Jan 2
-    const actual = calendar.parse(text, 'en-US', dateTimeFormatOptions);
+    const actual = calendar.parse(text, dateTimeFormat);
     const expected = new Date();
     expected.setDate(2);
     expected.setMonth(0); // January
@@ -41,24 +41,24 @@ describe("calendar helpers", () => {
   });
 
   it("can parse numeric en-GB dates", () => {
-    const dateTimeFormatOptions = {
+    const dateTimeFormat = new Intl.DateTimeFormat('en-GB', {
       day: 'numeric',
       month: 'numeric',
       year: 'numeric'
-    };
+    });
     const text = '1/2/2019'; // 2019 Feb 1
-    const actual = calendar.parse(text, 'en-GB', dateTimeFormatOptions);
+    const actual = calendar.parse(text, dateTimeFormat);
     const expected = new Date(2019, 1, 1); // 2019 Feb 1
     assert.equal(actual.getTime(), expected.getTime());
   });
 
   it("can parse short numeric en-GB dates", () => {
-    const dateTimeFormatOptions = {
+    const dateTimeFormat = new Intl.DateTimeFormat('en-GB', {
       day: 'numeric',
       month: 'numeric'
-    };
+    });
     const text = '1/2'; // Feb 1
-    const actual = calendar.parse(text, 'en-GB', dateTimeFormatOptions);
+    const actual = calendar.parse(text, dateTimeFormat);
     const expected = new Date();
     expected.setDate(1);
     expected.setMonth(1); // February
