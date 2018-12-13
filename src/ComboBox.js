@@ -124,17 +124,20 @@ class ComboBox extends Base {
   componentDidUpdate(previousState) {
     if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
     if (this.state.selectText) {
-      // Select the text in the input.
-      const value = this.value;
-      if (value > "") {
-        /** @type {any} */
-        const cast = this.$.input;
-        // Give the inner input a chance to render the value.
-        setTimeout(() => {
-          cast.selectionStart = 0;
-          cast.selectionEnd = cast.value.length;
-        });
-      }
+      // Select the text in the input after giving the inner input a chance to render the value.
+      setTimeout(() => {
+        // Text selection might have been turned off in the interim;
+        // double-check that we still want to select text.
+        if (this.state.selectText) {
+          /** @type {any} */
+          const cast = this.$.input;
+          const value = cast.value;
+          if (value > '') {
+            cast.selectionStart = 0;
+            cast.selectionEnd = cast.value.length;
+          }
+        }
+      });
     }  
   }
 
