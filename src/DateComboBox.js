@@ -81,12 +81,72 @@ class DateComboBox extends Base {
     });
   }
 
+  [symbols.goDown]() {
+    if (super[symbols.goDown]) { super[symbols.goDown](); }
+    const date = this.state.date || new Date();
+    this.setState({
+      date: calendar.offsetDateByDays(date, 7)
+    });
+    return true;
+  }
+
+  [symbols.goLeft]() {
+    if (super[symbols.goLeft]) { super[symbols.goLeft](); }
+    const date = this.state.date || new Date();
+    this.setState({
+      date: calendar.offsetDateByDays(date, -1)
+    });
+    return true;
+  }
+
+  [symbols.goRight]() {
+    if (super[symbols.goRight]) { super[symbols.goRight](); }
+    const date = this.state.date || new Date();
+    this.setState({
+      date: calendar.offsetDateByDays(date, 1)
+    });
+    return true;
+  }
+
+  [symbols.goUp]() {
+    if (super[symbols.goUp]) { super[symbols.goUp](); }
+    const date = this.state.date || new Date();
+    this.setState({
+      date: calendar.offsetDateByDays(date, -7)
+    });
+    return true;
+  }
+
   [symbols.keydown](event) {
     let handled = false;
 
     const date = this.state.date || calendar.today();
 
     switch (event.key) {
+
+      case 'ArrowDown':
+        if (event.ctrlKey && event.shiftKey) {
+          handled = this[symbols.goDown]();
+        }
+        break;
+
+      case 'ArrowLeft':
+        if (event.ctrlKey && event.shiftKey) {
+          handled = this[symbols.goLeft]();
+        }
+        break;
+
+      case 'ArrowRight':
+        if (event.ctrlKey && event.shiftKey) {
+          handled = this[symbols.goRight]();
+        }
+        break;
+
+      case 'ArrowUp':
+        if (event.ctrlKey && event.shiftKey) {
+          handled = this[symbols.goUp]();
+        }
+        break;
 
       case 'PageDown':
         this.setState({
