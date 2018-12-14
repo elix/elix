@@ -147,6 +147,7 @@ class ComboBox extends Base {
       horizontalAlign: 'left',
       inputRole: 'input',
       orientation: 'vertical',
+      placeholder: '',
       role: 'combobox',
       selectText: false,
       sourceRole: 'div',
@@ -193,6 +194,20 @@ class ComboBox extends Base {
 
     // Prefer mixin result if it's defined, otherwise use base result.
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+  }
+
+  /**
+   * The prompt text shown in the input if it is empty.
+   * 
+   * @type {string}
+   */
+  get placeholder() {
+    return this.state.placeholder;
+  }
+  set placeholder(placeholder) {
+    this.setState({
+      placeholder
+    });
   }
 
   refineState(state) {
@@ -285,7 +300,7 @@ class ComboBox extends Base {
 
   get updates() {
     const base = super.updates;
-    const { popupPosition, value } = this.state;
+    const { placeholder, popupPosition, value } = this.state;
     const role = this.state.original && this.state.original.attributes.role ||
       base.attributes && base.attributes.role ||
       this.state.role;
@@ -317,6 +332,7 @@ class ComboBox extends Base {
             attributes: {
               'aria-label': this.state.ariaLabel
             },
+            placeholder,
             value
           },
           popup: Object.assign(
