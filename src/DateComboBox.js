@@ -202,7 +202,7 @@ class DateComboBox extends Base {
     const calendarTemplate = template.html`
       <style>
         #calendar {
-          width: 100%;
+          margin: 0.5em;
         }
 
         #todayButton {

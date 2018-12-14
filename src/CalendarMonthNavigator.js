@@ -1,6 +1,10 @@
+import { getSuperProperty } from './workarounds.js';
+import { html } from './template.js';
 import { indexOfItemContainingTarget } from './utilities.js';
+import { merge } from './updates.js';
 import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
+import ArrowDirectionMixin from './ArrowDirectionMixin.js';
 import CalendarDayButton from './CalendarDayButton.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import CalendarMonth from './CalendarMonth.js';
@@ -10,18 +14,20 @@ import KeyboardMixin from './KeyboardMixin.js';
 
 
 const Base =
+  ArrowDirectionMixin(
   CalendarElementMixin(
   ComposedFocusMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
     CalendarMonth
-  ))));
+  )))));
 
 
 class CalendarMonthNavigator extends Base {
 
   constructor() {
     super();
+    this[symbols.renderedRoles] = super[symbols.renderedRoles] || {};
     this.addEventListener('mousedown', event => {
       this[symbols.raiseChangeEvents] = true;
       const target = event.composedPath()[0];
@@ -40,9 +46,33 @@ class CalendarMonthNavigator extends Base {
     });
   }
 
+  arrowButtonLeft() {
+    this.setState({
+      date: calendar.offsetDateByMonths(this.state.date, -1)
+    });
+    return true;
+  }
+
+  arrowButtonRight() {
+    this.setState({
+      date: calendar.offsetDateByMonths(this.state.date, 1)
+    });
+    return true;
+  }
+
+  get [symbols.canGoLeft]() {
+    return true;
+  }
+
+  get [symbols.canGoRight]() {
+    return true;
+  }
+
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      dayRole: CalendarDayButton
+      dayRole: CalendarDayButton,
+      orientation: 'both',
+      overlayArrowButtons: false
     });
   }
 
@@ -103,6 +133,44 @@ class CalendarMonthNavigator extends Base {
     if (super[symbols.goUp]) { super[symbols.goUp](); }
     this.setState({
       date: calendar.offsetDateByDays(this.state.date, -7)
+    });
+  }
+
+  get [symbols.template]() {
+    // Next line is same as: const result = super[symbols.template]
+    const result = getSuperProperty(this, CalendarMonthNavigator, symbols.template);
+    const monthYearHeader = result.content.querySelector('#monthYearHeader');
+    this[ArrowDirectionMixin.wrap](monthYearHeader);
+
+    const styleTemplate = html`
+      <style>
+        #arrowButtonLeft,
+        #arrowButtonRight {
+          color: currentColor;
+        }
+
+        #arrowIconLeft,
+        #arrowIconRight {
+          font-size: 24px;
+        }
+      </style>
+    `;
+    result.content.appendChild(styleTemplate.content);
+
+    return result;
+  }
+
+  get updates() {
+    const arrowButtonUpdates = {
+      style: {
+        color: 'currentColor'
+      }
+    };
+    return merge(super.updates, {
+      $: {
+        arrowButtonLeft: arrowButtonUpdates,
+        arrowButtonRight: arrowButtonUpdates
+      }
     });
   }
 

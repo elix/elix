@@ -32,23 +32,40 @@ function ArrowDirectionMixin(Base) {
       this.setState({ arrowButtonRole });
     }
 
+    // TODO: Symbols
+    arrowButtonLeft() {
+      if (super.arrowButtonLeft) {
+        return super.arrowButtonLeft();
+      } else {
+        return this[symbols.goLeft]();
+      }
+    }
+
+    arrowButtonRight() {
+      if (super.arrowButtonRight) {
+        return super.arrowButtonRight();
+      } else {
+        return this[symbols.goRight]();
+      }
+    }
+
     [symbols.beforeUpdate]() {
       if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
       if (this[symbols.renderedRoles].arrowButtonRole !== this.state.arrowButtonRole) {
         const arrowButtons = this.shadowRoot.querySelectorAll('.arrowButton');
         template.transmute(arrowButtons, this.state.arrowButtonRole);
-        this.$.arrowButtonLeft.addEventListener('click', async (event) => {
+        this.$.arrowButtonLeft.addEventListener('mousedown', async (event) => {
           this[symbols.raiseChangeEvents] = true;
-          const handled = this[symbols.goLeft]();
+          const handled = this.arrowButtonLeft();
           if (handled) {
             event.stopPropagation();
           }
           await Promise.resolve();
           this[symbols.raiseChangeEvents] = false;
         });
-        this.$.arrowButtonRight.addEventListener('click', async (event) => {
+        this.$.arrowButtonRight.addEventListener('mousedown', async (event) => {
           this[symbols.raiseChangeEvents] = true;
-          const handled = this[symbols.goRight]();
+          const handled = this.arrowButtonRight();
           if (handled) {
             event.stopPropagation();
           }
@@ -120,14 +137,6 @@ function ArrowDirectionMixin(Base) {
         }
       });
 
-      const hasArrowIcons = !!this.$.arrowIconLeft;
-      const arrowIconProps = {
-        style: {
-          'height': '48px',
-          'width': '48px'
-        }
-      };
-
       return merge(base, {
         $: Object.assign(
           {
@@ -138,10 +147,6 @@ function ArrowDirectionMixin(Base) {
                 'flex-direction': this[symbols.rightToLeft] ? 'row-reverse' : 'row'
               }
             }
-          },
-          hasArrowIcons && {
-            arrowIconLeft: arrowIconProps,
-            arrowIconRight: arrowIconProps
           }
         )
       });
@@ -162,14 +167,14 @@ function ArrowDirectionMixin(Base) {
             tabindex="-1"
             >
             <slot name="arrowButtonLeft">
-              <svg id="arrowIconLeft" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+              <svg id="arrowIconLeft" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" style="height: 1em; width: 1em;">
                 <g>
                   <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
                 </g>
               </svg>
             </slot>
           </div>
-          <div id="arrowDirectionContainer" role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;"></div>
+          <div id="arrowDirectionContainer" role="none" style="flex: 1; overflow: hidden; position: relative;"></div>
           <div
             id="arrowButtonRight"
             class="arrowButton"
@@ -177,7 +182,7 @@ function ArrowDirectionMixin(Base) {
             tabindex="-1"
             >
             <slot name="arrowButtonRight">
-              <svg id="arrowIconRight" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+              <svg id="arrowIconRight" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" style="height: 1em; width: 1em;">
                 <g>
                   <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
                 </g>

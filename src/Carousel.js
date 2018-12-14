@@ -103,6 +103,16 @@ class Carousel extends Base {
   get updates() {
     return merge(super.updates, {
       $: {
+        arrowButtonLeft: {
+          style: {
+            'font-size': '48px'
+          }
+        },
+        arrowButtonRight: {
+          style: {
+            'font-size': '48px'
+          }
+        },
         proxyList: {
           attributes: {
             tabindex: ''
@@ -114,6 +124,10 @@ class Carousel extends Base {
         stage: {
           attributes: {
             tabindex: ''
+          },
+          style: {
+            height: '100%',
+            width: '100%'
           }
         }
       }
