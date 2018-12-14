@@ -111,12 +111,7 @@ class CalendarDays extends Base {
     };
     const changed = stateChanged(state, state[previousStateKey]);
     if (changed.dayRole || changed.locale || changed.startDate || changed.dayCount) {
-      // Create new day elements.
-      const days = createDays(state);
-      Object.freeze(days);
-      Object.assign(state, {
-        days
-      });
+      updateDays(state);
       result = false;
     }
     return result;
@@ -185,18 +180,29 @@ class CalendarDays extends Base {
 }
 
 
-function createDays(state) {
+// Create days as necessary for the given state.
+// Reuse existing day elements to the degree possible.
+function updateDays(state) {
   const { dayCount, dayRole, locale } = state;
   const startDate = calendar.midnightOnDate(state.startDate);
-  const days = [];
+  let days = state.days ? state.days.slice() : [];
   let date = startDate;
   for (let i = 0; i < dayCount; i++) {
-    const day = template.createElement(dayRole);
+    const existingDay = days[i];
+    const day = existingDay || template.createElement(dayRole);
     day.date = new Date(date.getTime());
     day.locale = locale;
-    day.setAttribute('tabindex', -1);
-    days.push(day);
+    if (day.getAttribute('tabindex') !== '-1') {
+      day.setAttribute('tabindex', -1);
+    }
+    if (!existingDay) {
+      days.push(day);
+    }
     date = calendar.offsetDateByDays(date, 1);
+  }
+  if (dayCount < days.length) {
+    // Trim days which are no longer needed.
+    days = days.slice(0, dayCount);
   }
   const firstDay = days[0];
   if (firstDay) {
@@ -205,7 +211,8 @@ function createDays(state) {
     const dayOfWeek = calendar.daysSinceFirstDayOfWeek(firstDay.date, state.locale);
     firstDay.style.gridColumn = dayOfWeek + 1;
   }
-  return days;
+  Object.freeze(days);
+  state.days = days;
 }
 
 
