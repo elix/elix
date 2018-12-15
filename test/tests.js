@@ -6,7 +6,6 @@ import './tests/calendar.tests.js';
 import './tests/CalendarDayNamesHeader.tests.js';
 import './tests/CalendarDays.tests.js';
 import './tests/CalendarMonthYearHeader.tests.js';
-import './tests/CalendarWeek.tests.js';
 import './tests/ClickSelectionMixin.tests.js';
 import './tests/content.tests.js';
 import './tests/ContentItemsMixin.tests.js';
