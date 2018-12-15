@@ -20,9 +20,8 @@ const Base =
  * Given a reference `date` property, this component will show a calendar
  * representation of that date.
  * 
- * [CalendarWeek](CalendarWeek), [CalendarMonth](CalendarMonth), and
- * [CalendarMonthDays](CalendarMonthDays) instantiate `CalendarDay` as the
- * default component for rendering days.
+ * [CalendarDays](CalendarDays), and [CalendarMonth](CalendarMonth) instantiate
+ * `CalendarDay` as the default component for rendering days.
   * 
  * All of the Elix calendar components attempt to provide full
  * [international calendar support](CalendarMonth#international-support)

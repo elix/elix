@@ -4,7 +4,7 @@ import './tests/AutoCompleteInput.tests.js';
 import './tests/AutoSizeTextarea.tests.js';
 import './tests/calendar.tests.js';
 import './tests/CalendarDayNamesHeader.tests.js';
-import './tests/CalendarMonthDays.tests.js';
+import './tests/CalendarDays.tests.js';
 import './tests/CalendarMonthYearHeader.tests.js';
 import './tests/CalendarWeek.tests.js';
 import './tests/ClickSelectionMixin.tests.js';

@@ -16,34 +16,26 @@ const Base =
     ReactiveElement
   );
 
-
 /**
- * TODO: Docs
+ * A 7-column grid of days for use in a month calendar or multi-week calendar.
+ * 
+ * [A default representation of days in the current month in browser's default locale](/demos/calendarMonth.html)
+ * 
+ * Given a `startDate` and `dayCount`, this component will show a calendar
+ * representation of that many days starting from the indicated date.
+ * [CalendarMonth](CalendarMonth) uses `CalendarDays` to render the days portion
+ * of the month, to which it adds headers for the month/year and the days of the
+ * week.
+ * 
+ * All of the Elix calendar components attempt to provide full
+ * [international calendar support](CalendarMonth#international-support)
+ * to the extent currently possible in the user's web browser.
  * 
  * @inherits ReactiveElement
  * @mixes CalendarElementMixin
  * @elementrole {CalendarDay} day
  */
 class CalendarDays extends Base {
-
-  constructor() {
-    super();
-    // The template already includes CalendarDay in the day role.
-    this[symbols.renderedRoles] = {
-      // dayRole: CalendarDay
-    };
-  }
-
-  // [symbols.beforeUpdate]() {
-  //   if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-  //   if (this[symbols.renderedRoles].dayRole !== this.state.dayRole) {
-  //     const days = this.days;
-  //     if (days) {
-  //       template.transmute(days, this.state.dayRole);
-  //     }
-  //     this[symbols.renderedRoles].dayRole = this.state.dayRole;
-  //   }
-  // }
 
   /**
    * Returns the day element corresponding to the given date, or null if the
@@ -211,7 +203,7 @@ function updateDays(state, forceCreation) {
     // Set the grid-column on the first day. This will cause all the subsequent
     // days to line up in the calendar grid.
     const dayOfWeek = calendar.daysSinceFirstDayOfWeek(firstDay.date, state.locale);
-    firstDay.style.gridColumn = dayOfWeek + 1;
+    firstDay.style.gridColumnStart = dayOfWeek + 1;
   }
   Object.freeze(days);
   state.days = days;
