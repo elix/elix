@@ -58,6 +58,18 @@ class DateInput extends Base {
     });
   }
 
+  get locale() {
+    return super.locale;
+  }
+  set locale(locale) {
+    // If external code sets the locale, it's impossible for that code to predict
+    // the effects on the value, so we'll need to raise change events.
+    const saveRaiseChangesEvents = this[symbols.raiseChangeEvents];
+    this[symbols.raiseChangeEvents] = true;
+    super.locale = locale;
+    this[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
+  }
+
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
     state[previousStateKey] = state[previousStateKey] || {

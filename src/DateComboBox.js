@@ -172,14 +172,15 @@ class DateComboBox extends Base {
     let result = super.refineState ? super.refineState(state) : true;
     state[previousStateKey] = state[previousStateKey] || {
       date: null,
+      locale: null,
       opened: false,
       value: null
     };
     const changed = stateChanged(state, state[previousStateKey]);
     const { date, opened } = state;
-    // Update value from date if we're closing or date is being changed while we
-    // are closed.
-    if ((changed.opened || changed.date) && !opened) {
+    if ((changed.date || changed.opened) && !opened) {
+      // Update value from date if we're closing or date is being changed while
+      // we are closed.
       if (date !== null) {
         const formattedDate = formatDate(state, date);
         if (state.value !== formattedDate) {
