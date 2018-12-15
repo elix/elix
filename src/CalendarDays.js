@@ -111,7 +111,7 @@ class CalendarDays extends Base {
     };
     const changed = stateChanged(state, state[previousStateKey]);
     if (changed.dayRole || changed.locale || changed.startDate || changed.dayCount) {
-      updateDays(state);
+      updateDays(state, changed.dayRole);
       result = false;
     }
     return result;
@@ -143,7 +143,7 @@ class CalendarDays extends Base {
     const parsed = typeof startDate === 'string' ?
       new Date(startDate) :
       startDate;
-    if (this.state.startDate.getTime() !== startDate.getTime()) {
+    if (!calendar.datesEqual(this.state.startDate, parsed)) {
       this.setState({
         startDate: parsed
       });
@@ -182,21 +182,23 @@ class CalendarDays extends Base {
 
 // Create days as necessary for the given state.
 // Reuse existing day elements to the degree possible.
-function updateDays(state) {
+function updateDays(state, forceCreation) {
   const { dayCount, dayRole, locale } = state;
   const startDate = calendar.midnightOnDate(state.startDate);
   let days = state.days ? state.days.slice() : [];
   let date = startDate;
   for (let i = 0; i < dayCount; i++) {
-    const existingDay = days[i];
-    const day = existingDay || template.createElement(dayRole);
+    const createNewElement = forceCreation || i >= days.length;
+    const day = createNewElement ?
+      template.createElement(dayRole) :
+      days[i];
     day.date = new Date(date.getTime());
     day.locale = locale;
     if (day.getAttribute('tabindex') !== '-1') {
       day.setAttribute('tabindex', -1);
     }
-    if (!existingDay) {
-      days.push(day);
+    if (createNewElement) {
+      days[i] = day;
     }
     date = calendar.offsetDateByDays(date, 1);
   }

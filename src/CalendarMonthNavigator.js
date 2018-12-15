@@ -35,12 +35,7 @@ class CalendarMonthNavigator extends Base {
       const index = indexOfItemContainingTarget(days, target);
       const day = days[index];
       if (day) {
-        const date = day.date;
-        if (!calendar.datesEqual(date, this.state.date)) {
-          this.setState({
-            date
-          });
-        }
+        this.date = day.date;
       }
       this[symbols.raiseChangeEvents] = false;
     });

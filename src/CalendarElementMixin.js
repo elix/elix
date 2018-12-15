@@ -54,8 +54,7 @@ export default function CalendarElementMixin(Base) {
         new Date(date) :
         date;
       // Only update state if actual date value differs from current state.
-      const changed = !calendar.datesEqual(parsed, this.state.date);
-      if (changed) {
+      if (!calendar.datesEqual(parsed, this.state.date)) {
         this.setState({
           date: parsed
         });
