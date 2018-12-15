@@ -43,19 +43,10 @@ class CalendarDays extends Base {
    *
    * @param {Date} date - the date to search for
    */
-  // dayElementForDate(date) {
-  //   const locale = this.state.locale;
-  //   const midnightOnDate = calendar.midnightOnDate(date);
-  //   const firstDateOfWeek = calendar.firstDateOfWeek(this.date, locale);
-  //   const firstDateOfNextWeek = calendar.offsetDateByDays(firstDateOfWeek, 7);
-  //   if (midnightOnDate >= firstDateOfWeek && midnightOnDate < firstDateOfNextWeek) {
-  //     const dayIndex = calendar.daysSinceFirstDayOfWeek(date, locale);
-  //     const days = this.days;
-  //     return days && days[dayIndex];
-  //   } else {
-  //     return null;
-  //   }
-  // }
+  dayElementForDate(date) {
+    const days = this.days || [];
+    return days.find(day => calendar.datesEqual(day.date, date));
+  }
 
   get dayCount() {
     return this.state.dayCount;
