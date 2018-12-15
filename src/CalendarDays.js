@@ -186,9 +186,6 @@ function updateDays(state, forceCreation) {
       days[i];
     day.date = new Date(date.getTime());
     day.locale = locale;
-    if (day.getAttribute('tabindex') !== '-1') {
-      day.setAttribute('tabindex', -1);
-    }
     if (createNewElement) {
       days[i] = day;
     }

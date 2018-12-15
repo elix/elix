@@ -64,6 +64,9 @@ class CalendarDayButton extends Base {
   get updates() {
     const { date, locale, selected } = this.state;
     return merge(super.updates, {
+      attributes: {
+        tabindex: '-1'
+      },
       $: {
         day: {
           date,
