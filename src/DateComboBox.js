@@ -1,15 +1,14 @@
 import './CalendarMonthNavigator.js'
 import './SeamlessButton.js';
-import { calendar } from './elix.js';
+import { forwardFocus, stateChanged } from './utilities.js';
 import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
-import { forwardFocus, stateChanged } from './utilities.js';
+import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import ComboBox from './ComboBox.js';
 import DateInput from './DateInput.js';
-import { dateTimeFormat } from './calendar.js';
 
 
 const previousStateKey = Symbol('previousState');
@@ -35,7 +34,7 @@ class DateComboBox extends Base {
       this[symbols.raiseChangeEvents] = true;
       /** @type {any} */
       const cast = event;
-      updateDateAndValue(this, cast.detail.date);
+      this.date = cast.detail.date;
       this[symbols.raiseChangeEvents] = false;
     });
     this.$.calendar.addEventListener('mousedown', event => {
@@ -44,16 +43,9 @@ class DateComboBox extends Base {
       event.preventDefault(); // Keep focus on input.
       this[symbols.raiseChangeEvents] = false;
     });
-    this.$.input.addEventListener('date-changed', event => {
-      this[symbols.raiseChangeEvents] = true;
-      /** @type {any} */
-      const cast = event.target;
-      updateDateAndValue(this, cast.date, cast.value);
-      this[symbols.raiseChangeEvents] = false;
-    });
     this.$.todayButton.addEventListener('mousedown', event => {
       this[symbols.raiseChangeEvents] = true;
-      updateDateAndValue(this, calendar.today());
+      this.date = calendar.today();
       this.close();
       event.preventDefault(); // Keep focus on input.
       this[symbols.raiseChangeEvents] = false;
@@ -64,6 +56,9 @@ class DateComboBox extends Base {
     if (this.$.calendar instanceof HTMLElement && this.$.input instanceof HTMLElement) {
       forwardFocus(this.$.calendar, this.$.input);
     }
+    this.setState({
+      hasShadow: true
+    });
   }
 
   get dateTimeFormatOptions() {
@@ -75,6 +70,16 @@ class DateComboBox extends Base {
     });
   }
 
+  get date() {
+    return super.date;
+  }
+  set date(date) {
+    super.date = date;
+    this.setState({
+      datePriority: true
+    });
+  }
+
   get defaultState() {
     const dateTimeFormatOptions = {
       day: 'numeric',
@@ -83,7 +88,9 @@ class DateComboBox extends Base {
     };
     return Object.assign({}, super.defaultState, {
       date: null,
+      datePriority: false,
       dateTimeFormatOptions,
+      hasShadow: false,
       inputRole: DateInput
     });
   }
@@ -190,15 +197,32 @@ class DateComboBox extends Base {
     let result = super.refineState ? super.refineState(state) : true;
     state[previousStateKey] = state[previousStateKey] || {
       date: null,
+      focused: false,
+      hasShadow: false,
       locale: null,
       opened: false,
       value: null
     };
     const changed = stateChanged(state, state[previousStateKey]);
-    const { date, dateTimeFormatOptions, locale, opened, value } = state;
-    if ((changed.date || changed.opened) && !opened) {
-      // Update value from date if we're closing or date is being changed while
-      // we are closed.
+    const {
+      date,
+      datePriority,
+      dateTimeFormatOptions,
+      focused,
+      hasShadow,
+      locale,
+      opened,
+      value
+    } = state;
+    const shadowCreated = changed.hasShadow && hasShadow;
+    const closing = changed.opened && !opened;
+    const blur = changed.focused && !focused;
+    if (closing || blur ||
+        (changed.date && !focused) ||
+        ((shadowCreated || changed.locale) && datePriority)) {
+      // Update value from date if we're closing, losing focus, the date is
+      // being changed from outside, or the locale is changing and the date
+      // was the last substantive property set.
       if (date !== null) {
         const formattedDate = this.formatDate(date, locale, dateTimeFormatOptions);
         if (state.value !== formattedDate) {
@@ -210,8 +234,10 @@ class DateComboBox extends Base {
         state.value = '';
         result = false;
       }
-    } else if (changed.value || changed.locale) {
-      // Update date from value.
+    } else if (changed.value ||
+        ((shadowCreated || changed.locale) && !datePriority)) {
+      // Update date from value if the value was changed, or the locale was
+      // changed and the value was the substantive property set.
       const parsedDate = this.parseDate(value, locale, dateTimeFormatOptions);
       if (parsedDate && !calendar.datesEqual(state.date, parsedDate)) {
         state.date = parsedDate;
@@ -283,19 +309,16 @@ class DateComboBox extends Base {
     });
   }
 
-}
-
-
-function updateDateAndValue(element, date, value) {
-  if (value === undefined) {
-    value = element.formatDate(date, element.state.locale, element.state.dateTimeFormatOptions);
+  get value() {
+    return super.value;
   }
-  if (!calendar.datesEqual(element.state.date, date)) {
-    element.setState({
-      date,
-      value
+  set value(value) {
+    super.value = value;
+    this.setState({
+      datePriority: false
     });
   }
+
 }
 
 

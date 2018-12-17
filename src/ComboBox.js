@@ -144,6 +144,7 @@ class ComboBox extends Base {
   get defaultState() {
     return Object.assign({}, super.defaultState, {
       ariaLabel: '',
+      focused: false,
       horizontalAlign: 'left',
       inputRole: 'input',
       orientation: 'vertical',
