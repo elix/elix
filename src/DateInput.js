@@ -1,10 +1,10 @@
 import { getSuperProperty } from './workarounds.js';
 import { stateChanged } from './utilities.js';
+import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import Input from './Input.js';
-import { calendar } from './elix.js';
 
 
 const previousStateKey = Symbol('previousState');

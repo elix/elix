@@ -1,4 +1,4 @@
-import { calendar } from './elix.js';
+import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
 
 
