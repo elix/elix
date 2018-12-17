@@ -158,6 +158,17 @@ class ComboBox extends Base {
   }
 
   /**
+   * The combo box's input element.
+   * 
+   * @type {Element|null}
+   */
+  get input() {
+    return this.shadowRoot ?
+      this.$.input :
+      null;
+  }
+
+  /**
    * The class, tag, or template used to create the input element.
    * 
    * @type {function|string|HTMLTemplateElement}

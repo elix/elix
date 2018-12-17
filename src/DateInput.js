@@ -58,6 +58,11 @@ class DateInput extends Base {
     });
   }
 
+  formatDate(date, locale, dateTimeFormatOptions) {
+    const dateTimeFormat = calendar.dateTimeFormat(locale, dateTimeFormatOptions);
+    return dateTimeFormat.format(date);
+  }
+
   get locale() {
     return super.locale;
   }
@@ -84,8 +89,7 @@ class DateInput extends Base {
       // Update value from date if we're not focused.
       if (!focused) {
         if (date !== null) {
-          const dateTimeFormat = calendar.dateTimeFormat(locale, dateTimeFormatOptions);
-          const formattedDate = dateTimeFormat.format(date);
+          const formattedDate = this.formatDate(date, locale, dateTimeFormatOptions);
           if (state.value !== formattedDate) {
             state.value = formattedDate;
             result = false;
@@ -97,7 +101,7 @@ class DateInput extends Base {
       }
     } else if (changed.value) {
       // Update date from value.
-      const parsedDate = parseDate(value, locale, dateTimeFormatOptions);
+      const parsedDate = this.parseDate(value, locale, dateTimeFormatOptions);
       if (!calendar.datesEqual(state.date, parsedDate)) {
         state.date = parsedDate;
         result = false;
@@ -106,6 +110,27 @@ class DateInput extends Base {
     return result;
   }
 
+  parseDate(text, locale, dateTimeFormatOptions) {
+    const fullFormat = calendar.dateTimeFormat(locale, dateTimeFormatOptions);
+    // Try parsing using requested options.
+    const fullDate = calendar.parse(text, fullFormat);
+    if (fullDate) {
+      return fullDate;
+    }
+    // Try parsing without year. Create an identical DateTimeFormat options, but
+    // mark `year` as undefined so it won't be used.
+    const abbreviatedOptions = Object.assign(
+      {},
+      dateTimeFormatOptions,
+      {
+        year: undefined
+      }
+    );
+    const abbreviatedFormat = calendar.dateTimeFormat(locale, abbreviatedOptions);
+    const abbreviatedDate = calendar.parse(text, abbreviatedFormat);
+    return abbreviatedDate;
+  }
+  
   get [symbols.template]() {
     // Next line is same as: const result = super[symbols.template]
     const result = getSuperProperty(this, DateInput, symbols.template);
@@ -132,28 +157,6 @@ class DateInput extends Base {
     this[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
   }
 
-}
-
-
-function parseDate(text, locale, dateTimeFormatOptions) {
-  const fullFormat = calendar.dateTimeFormat(locale, dateTimeFormatOptions);
-  // Try parsing using requested options.
-  const fullDate = calendar.parse(text, fullFormat);
-  if (fullDate) {
-    return fullDate;
-  }
-  // Try parsing without year. Create an identical DateTimeFormat options, but
-  // mark `year` as undefined so it won't be used.
-  const abbreviatedOptions = Object.assign(
-    {},
-    dateTimeFormatOptions,
-    {
-      year: undefined
-    }
-  );
-  const abbreviatedFormat = calendar.dateTimeFormat(locale, abbreviatedOptions);
-  const abbreviatedDate = calendar.parse(text, abbreviatedFormat);
-  return abbreviatedDate;
 }
 
 

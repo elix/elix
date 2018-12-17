@@ -9,6 +9,7 @@ import * as template from './template.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import ComboBox from './ComboBox.js';
 import DateInput from './DateInput.js';
+import { dateTimeFormat } from './calendar.js';
 
 
 const previousStateKey = Symbol('previousState');
@@ -21,6 +22,12 @@ const Base =
 
   
 class DateComboBox extends Base {
+
+  get calendar() {
+    return this.shadowRoot ?
+      this.$.calendar :
+      null;
+  }
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
@@ -79,6 +86,17 @@ class DateComboBox extends Base {
       dateTimeFormatOptions,
       inputRole: DateInput
     });
+  }
+
+  formatDate(date, locale, dateTimeFormatOptions) {
+    const input = this.input;
+    if (!input) {
+      return null; // Too early
+    } else if (input.formatDate) {
+      return input.formatDate(date, locale, dateTimeFormatOptions);
+    } else {
+      throw `DateComboBox requires the element in the "input" role to provide a method called "formatDate".`;
+    }
   }
 
   [symbols.goDown]() {
@@ -177,12 +195,12 @@ class DateComboBox extends Base {
       value: null
     };
     const changed = stateChanged(state, state[previousStateKey]);
-    const { date, opened } = state;
+    const { date, dateTimeFormatOptions, locale, opened, value } = state;
     if ((changed.date || changed.opened) && !opened) {
       // Update value from date if we're closing or date is being changed while
       // we are closed.
       if (date !== null) {
-        const formattedDate = formatDate(state, date);
+        const formattedDate = this.formatDate(date, locale, dateTimeFormatOptions);
         if (state.value !== formattedDate) {
           state.value = formattedDate;
           state.selectText = true;
@@ -192,8 +210,26 @@ class DateComboBox extends Base {
         state.value = '';
         result = false;
       }
+    } else if (changed.value || changed.locale) {
+      // Update date from value.
+      const parsedDate = this.parseDate(value, locale, dateTimeFormatOptions);
+      if (parsedDate && !calendar.datesEqual(state.date, parsedDate)) {
+        state.date = parsedDate;
+        result = false;
+      }
     }
     return result;
+  }
+
+  parseDate(text, locale, dateTimeFormatOptions) {
+    const input = this.input;
+    if (!input) {
+      return null; // Too early
+    } else if (input.parseDate) {
+      return input.parseDate(text, locale, dateTimeFormatOptions);
+    } else {
+      throw `DateComboBox requires the element in the "input" role to provide a method called "parseDate".`;
+    }
   }
 
   get [symbols.template]() {
@@ -250,18 +286,9 @@ class DateComboBox extends Base {
 }
 
 
-function formatDate(state, date) {
-  const dateTimeFormat = calendar.dateTimeFormat(
-    state.locale,
-    state.dateTimeFormatOptions
-  );
-  return dateTimeFormat.format(date);
-}
-
-
 function updateDateAndValue(element, date, value) {
   if (value === undefined) {
-    value = formatDate(element.state, date);
+    value = element.formatDate(date, element.state.locale, element.state.dateTimeFormatOptions);
   }
   if (!calendar.datesEqual(element.state.date, date)) {
     element.setState({
