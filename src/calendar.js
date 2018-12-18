@@ -238,6 +238,14 @@ export function parse(text, dateTimeFormat) {
 }
 
 
+/**
+ * Parse the indicated text as a date, first as a full date that includes the
+ * year or, if that fails to parse, as an abbreviated date that omits the year.
+ * 
+ * @param {string} text - the text to parse as a date
+ * @param {Intl.DateTimeFormat} dateTimeFormat - the format to parse
+ * @returns {Date|null} - the parsed date
+ */
 export function parseWithOptionalYear(text, dateTimeFormat) {
   // Try parsing using requested DateTimeFormat.
   const fullDate = parse(text, dateTimeFormat);
@@ -246,14 +254,20 @@ export function parseWithOptionalYear(text, dateTimeFormat) {
   }
   // Try parsing without year. Create an identical DateTimeFormat options, but
   // mark `year` as undefined so it won't be used.
-  const abbreviatedOptions = Object.assign(
-    {},
-    dateTimeFormat.resolvedOptions(),
-    {
-      year: undefined
-    }
-  );
-  const abbreviatedFormat = new Intl.DateTimeFormat(abbreviatedOptions);
+  const {
+    calendar,
+    day,
+    locale,
+    month,
+    numberingSystem
+  } = dateTimeFormat.resolvedOptions();
+  const abbreviatedFormat = new Intl.DateTimeFormat(locale, {
+    calendar,
+    day,
+    locale,
+    month,
+    numberingSystem
+  });
   const abbreviatedDate = parse(text, abbreviatedFormat);
   return abbreviatedDate;
 }

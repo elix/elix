@@ -83,15 +83,14 @@ class DateComboBox extends Base {
       year: 'numeric'
     };
     return Object.assign({}, super.defaultState, {
-      date: null,
+      date: null, // Don't pick a date by default
       datePriority: false,
+      dateTimeFormat: null,
       dateTimeFormatOptions
     });
   }
 
-  formatDate(date, options) {
-    const { locale, dateTimeFormatOptions } = options;
-    const dateTimeFormat = calendar.dateTimeFormat(locale, dateTimeFormatOptions);
+  formatDate(date, dateTimeFormat) {
     return dateTimeFormat.format(date);
   }
 
@@ -182,10 +181,24 @@ class DateComboBox extends Base {
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
   }
 
+  get locale() {
+    return super.locale;
+  }
+  set locale(locale) {
+    // If external code sets the locale, it's impossible for that code to predict
+    // the effects on the value, so we'll need to raise change events.
+    const saveRaiseChangesEvents = this[symbols.raiseChangeEvents];
+    this[symbols.raiseChangeEvents] = true;
+    super.locale = locale;
+    this[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
+  }
+
   refineState(state) {
     let result = super.refineState ? super.refineState(state) : true;
     state[previousStateKey] = state[previousStateKey] || {
       date: null,
+      dateTimeFormat: null,
+      dateTimeFormatOptions: null,
       focused: false,
       locale: null,
       opened: false,
@@ -195,6 +208,7 @@ class DateComboBox extends Base {
     const {
       date,
       datePriority,
+      dateTimeFormat,
       dateTimeFormatOptions,
       focused,
       locale,
@@ -204,39 +218,36 @@ class DateComboBox extends Base {
     const closing = changed.opened && !opened;
     const blur = changed.focused && !focused;
     if ((changed.date && !focused) || closing || blur ||
-        (changed.locale && datePriority)) {
+        (changed.dateTimeFormat && datePriority)) {
       // Update value from date if the date was changed from the outside, we're
-      // closing, losing focus, or the locale is changing and the date was the
+      // closing or losing focus, or the format changed and the date was the
       // last substantive property set.
       const formattedDate = date ?
-        this.formatDate(date, {
-          dateTimeFormatOptions,
-          locale
-        }) :
+        this.formatDate(date, dateTimeFormat) :
         '';
       if (state.value !== formattedDate) {
         state.value = formattedDate;
         state.selectText = formattedDate.length > 0;
         result = false;
       }
-    } else if (changed.value || (changed.locale && !datePriority)) {
+    } else if (dateTimeFormat &&
+      (changed.value || (changed.dateTimeFormat && !datePriority))) {
       // Update date from value if the value was changed, or the locale was
       // changed and the value was the last substantive property set.
-      const parsedDate = this.parseDate(value, {
-        dateTimeFormatOptions,
-        locale
-      });
+      const parsedDate = this.parseDate(value, dateTimeFormat);
       if (parsedDate && !calendar.datesEqual(state.date, parsedDate)) {
         state.date = parsedDate;
         result = false;
       }
     }
+    if (changed.locale || changed.dateTimeFormatOptions) {
+      state.dateTimeFormat = calendar.dateTimeFormat(locale, dateTimeFormatOptions);
+      result = false;
+    }
     return result;
   }
 
-  parseDate(text, options) {
-    const { locale, dateTimeFormatOptions } = options;
-    const dateTimeFormat = calendar.dateTimeFormat(locale, dateTimeFormatOptions);
+  parseDate(text, dateTimeFormat) {
     return calendar.parseWithOptionalYear(text, dateTimeFormat);
   }
 
@@ -272,7 +283,7 @@ class DateComboBox extends Base {
   }
 
   get updates() {
-    const { date, dateTimeFormatOptions, locale } = this.state;
+    const { date, locale } = this.state;
     return merge(super.updates, {
       $: {
         calendar: Object.assign(
@@ -291,10 +302,15 @@ class DateComboBox extends Base {
     return super.value;
   }
   set value(value) {
+    // If external code sets the value, it's impossible for that code to predict
+    // the effects on the date, so we'll need to raise change events.
+    const saveRaiseChangesEvents = this[symbols.raiseChangeEvents];
+    this[symbols.raiseChangeEvents] = true;
     super.value = value;
     this.setState({
       datePriority: false
     });
+    this[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
   }
 
 }

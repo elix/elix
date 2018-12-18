@@ -36,6 +36,16 @@ class DateInput extends Base {
     });
   }
 
+  get date() {
+    return super.date;
+  }
+  set date(date) {
+    super.date = date;
+    this.setState({
+      datePriority: true
+    });
+  }
+
   get dateTimeFormatOptions() {
     return this.state.dateTimeFormatOptions;
   }
@@ -52,15 +62,15 @@ class DateInput extends Base {
       year: 'numeric'
     };
     return Object.assign({}, super.defaultState, {
-      date: null,
+      date: null, // Don't pick a date by default
+      dateTimeFormat: null,
       dateTimeFormatOptions,
+      datePriority: false,
       focused: false
     });
   }
 
-  formatDate(date, options) {
-    const { locale, dateTimeFormatOptions } = options;
-    const dateTimeFormat = calendar.dateTimeFormat(locale, dateTimeFormatOptions);
+  formatDate(date, dateTimeFormat) {
     return dateTimeFormat.format(date);
   }
 
@@ -80,46 +90,54 @@ class DateInput extends Base {
     let result = super.refineState ? super.refineState(state) : true;
     state[previousStateKey] = state[previousStateKey] || {
       date: null,
+      dateTimeFormat: null,
+      dateTimeFormatOptions: null,
       focused: false,
       locale: null,
       value: null
     };
     const changed = stateChanged(state, state[previousStateKey]);
-    const { date, dateTimeFormatOptions, focused, locale, value } = state;
-    if (changed.date || changed.focused || changed.locale) {
-      // Update value from date if we're not focused.
-      if (!focused) {
-        if (date !== null) {
-          const formattedDate = this.formatDate(date, {
-            dateTimeFormatOptions,
-            locale
-          });
-          if (state.value !== formattedDate) {
-            state.value = formattedDate;
-            result = false;
-          }
-        } else if (state.value !== '') {
-          state.value = '';
-          result = false;
-        }
+    const {
+      date,
+      datePriority,
+      dateTimeFormat,
+      dateTimeFormatOptions,
+      focused,
+      locale,
+      value
+    } = state;
+    const blur = changed.focused && !focused;
+    if ((changed.date && !focused) || blur ||
+        (changed.dateTimeFormat && datePriority)) {
+      // Update value from date if the date was changed from the outside, we're
+      // losing focus, or the format changed and the date was the last
+      // substantive property set.
+      const formattedDate = date ?
+        this.formatDate(date, dateTimeFormat) :
+        '';
+      if (state.value !== formattedDate) {
+        state.value = formattedDate;
+        state.selectText = formattedDate.length > 0;
+        result = false;
       }
-    } else if (changed.value) {
-      // Update date from value.
-      const parsedDate = this.parseDate(value, {
-        dateTimeFormatOptions,
-        locale
-      });
-      if (!calendar.datesEqual(state.date, parsedDate)) {
+    } else if (dateTimeFormat &&
+      (changed.value || (changed.dateTimeFormat && !datePriority))) {
+      // Update date from value if the value was changed, or the format changed
+      // and the value was the last substantive property set.
+      const parsedDate = this.parseDate(value, dateTimeFormat);
+      if (parsedDate && !calendar.datesEqual(state.date, parsedDate)) {
         state.date = parsedDate;
         result = false;
       }
     }
+    if (changed.locale || changed.dateTimeFormatOptions) {
+      state.dateTimeFormat = calendar.dateTimeFormat(locale, dateTimeFormatOptions);
+      result = false;
+    }
     return result;
   }
 
-  parseDate(text, options) {
-    const { locale, dateTimeFormatOptions } = options;
-    const dateTimeFormat = calendar.dateTimeFormat(locale, dateTimeFormatOptions);
+  parseDate(text, dateTimeFormat) {
     return calendar.parseWithOptionalYear(text, dateTimeFormat);
   }
   
@@ -146,6 +164,9 @@ class DateInput extends Base {
     const saveRaiseChangesEvents = this[symbols.raiseChangeEvents];
     this[symbols.raiseChangeEvents] = true;
     super.value = value;
+    this.setState({
+      datePriority: false
+    });
     this[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
   }
 
