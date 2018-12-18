@@ -85,6 +85,7 @@ class DateComboBox extends Base {
     return Object.assign({}, super.defaultState, {
       date: null, // Don't pick a date by default
       datePriority: false,
+      dateSelected: false,
       dateTimeFormat: null,
       dateTimeFormatOptions,
       timeBias: null
@@ -210,6 +211,7 @@ class DateComboBox extends Base {
     const {
       date,
       datePriority,
+      dateSelected,
       dateTimeFormat,
       dateTimeFormatOptions,
       focused,
@@ -220,27 +222,41 @@ class DateComboBox extends Base {
     } = state;
     const closing = changed.opened && !opened;
     const blur = changed.focused && !focused;
-    if ((changed.date && !focused) || closing || blur ||
+    if (changed.date && focused) {
+      const hasDate = date != null;
+      if (dateSelected !== hasDate) {
+        state.dateSelected = hasDate;
+        result = false;
+      }
+    }
+    if ((changed.date && !focused) ||
+        (dateSelected && (closing || blur)) ||
         (changed.dateTimeFormat && datePriority)) {
-      // Update value from date if the date was changed from the outside, we're
-      // closing or losing focus, or the format changed and the date was the
-      // last substantive property set.
+      // Update value from date if:
+      // the date was changed from the outside,
+      // we're closing or losing focus and the user's changed the date,
+      // or the format changed and the date was the last substantive property set.
       const formattedDate = date ?
         this.formatDate(date, dateTimeFormat) :
         '';
       if (state.value !== formattedDate) {
-        state.value = formattedDate;
         state.selectText = formattedDate.length > 0;
+        state.value = formattedDate;
         result = false;
       }
     } else if (dateTimeFormat &&
-      (changed.value ||
-      (!datePriority && (changed.dateTimeFormat || changed.timeBias)))) {
+        (changed.value ||
+        (!datePriority && (changed.dateTimeFormat || changed.timeBias)))) {
       // Update date from value if the value was changed, or the locale was
       // changed and the value was the last substantive property set.
       const parsedDate = this.parseDate(value, dateTimeFormat, timeBias);
       if (parsedDate && !calendar.datesEqual(state.date, parsedDate)) {
         state.date = parsedDate;
+        result = false;
+      }
+      const hasValue = value > '';
+      if (focused && (dateSelected != hasValue)) {
+        state.dateSelected = hasValue;
         result = false;
       }
     }

@@ -63,6 +63,7 @@ class DateInput extends Base {
     };
     return Object.assign({}, super.defaultState, {
       date: null, // Don't pick a date by default
+      dateSelected: false,
       dateTimeFormat: null,
       dateTimeFormatOptions,
       datePriority: false,
@@ -102,6 +103,7 @@ class DateInput extends Base {
     const {
       date,
       datePriority,
+      dateSelected,
       dateTimeFormat,
       dateTimeFormatOptions,
       focused,
@@ -110,7 +112,15 @@ class DateInput extends Base {
       value
     } = state;
     const blur = changed.focused && !focused;
-    if ((changed.date && !focused) || blur ||
+    if (changed.date && focused) {
+      const hasDate = date != null;
+      if (dateSelected !== hasDate) {
+        state.dateSelected = hasDate;
+        result = false;
+      }
+    }
+    if ((changed.date && !focused) ||
+        (dateSelected && blur) ||
         (changed.dateTimeFormat && datePriority)) {
       // Update value from date if the date was changed from the outside, we're
       // losing focus, or the format changed and the date was the last
@@ -131,6 +141,11 @@ class DateInput extends Base {
       const parsedDate = this.parseDate(value, dateTimeFormat, timeBias);
       if (parsedDate && !calendar.datesEqual(state.date, parsedDate)) {
         state.date = parsedDate;
+        result = false;
+      }
+      const hasValue = value > '';
+      if (focused && (dateSelected != hasValue)) {
+        state.dateSelected = hasValue;
         result = false;
       }
     }
