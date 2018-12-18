@@ -244,9 +244,10 @@ export function parse(text, dateTimeFormat) {
  * 
  * @param {string} text - the text to parse as a date
  * @param {Intl.DateTimeFormat} dateTimeFormat - the format to parse
+ * @param {'future'|'past'} [timeBias] - bias towards future if true, past if false
  * @returns {Date|null} - the parsed date
  */
-export function parseWithOptionalYear(text, dateTimeFormat) {
+export function parseWithOptionalYear(text, dateTimeFormat, timeBias) {
   // Try parsing using requested DateTimeFormat.
   const fullDate = parse(text, dateTimeFormat);
   if (fullDate) {
@@ -269,6 +270,25 @@ export function parseWithOptionalYear(text, dateTimeFormat) {
     numberingSystem
   });
   const abbreviatedDate = parse(text, abbreviatedFormat);
+  if (abbreviatedDate && timeBias) {
+    const today = new Date();
+    const todayDay = today.getDate();
+    const todayMonth = today.getMonth();
+    const abbreviatedDay = abbreviatedDate.getDate();
+    const abbreviatedMonth = abbreviatedDate.getMonth();
+    const abbreviatedYear = abbreviatedDate.getFullYear();
+    if (timeBias === 'future') {
+      if (abbreviatedMonth < todayMonth ||
+        (abbreviatedMonth === todayMonth && abbreviatedDay < todayDay)) {
+        abbreviatedDate.setFullYear(abbreviatedYear + 1);
+      }
+    } else if (timeBias === 'past') {
+      if (abbreviatedMonth > todayMonth ||
+        (abbreviatedMonth === todayMonth && abbreviatedDay > todayDay)) {
+        abbreviatedDate.setFullYear(abbreviatedYear - 1);
+      }
+    }
+  }
   return abbreviatedDate;
 }
 

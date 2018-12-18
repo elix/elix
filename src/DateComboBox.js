@@ -86,7 +86,8 @@ class DateComboBox extends Base {
       date: null, // Don't pick a date by default
       datePriority: false,
       dateTimeFormat: null,
-      dateTimeFormatOptions
+      dateTimeFormatOptions,
+      timeBias: null
     });
   }
 
@@ -202,6 +203,7 @@ class DateComboBox extends Base {
       focused: false,
       locale: null,
       opened: false,
+      timeBias: null,
       value: null
     };
     const changed = stateChanged(state, state[previousStateKey]);
@@ -213,6 +215,7 @@ class DateComboBox extends Base {
       focused,
       locale,
       opened,
+      timeBias,
       value
     } = state;
     const closing = changed.opened && !opened;
@@ -231,10 +234,11 @@ class DateComboBox extends Base {
         result = false;
       }
     } else if (dateTimeFormat &&
-      (changed.value || (changed.dateTimeFormat && !datePriority))) {
+      (changed.value ||
+      (!datePriority && (changed.dateTimeFormat || changed.timeBias)))) {
       // Update date from value if the value was changed, or the locale was
       // changed and the value was the last substantive property set.
-      const parsedDate = this.parseDate(value, dateTimeFormat);
+      const parsedDate = this.parseDate(value, dateTimeFormat, timeBias);
       if (parsedDate && !calendar.datesEqual(state.date, parsedDate)) {
         state.date = parsedDate;
         result = false;
@@ -247,8 +251,8 @@ class DateComboBox extends Base {
     return result;
   }
 
-  parseDate(text, dateTimeFormat) {
-    return calendar.parseWithOptionalYear(text, dateTimeFormat);
+  parseDate(text, dateTimeFormat, timeBias) {
+    return calendar.parseWithOptionalYear(text, dateTimeFormat, timeBias);
   }
 
   get [symbols.template]() {
@@ -280,6 +284,27 @@ class DateComboBox extends Base {
     }
 
     return result;
+  }
+
+  /**
+   * If set, this indicates whether a date containing only a month and day
+   * should infer a year such that the time is in the future or in the past.
+   * 
+   * Example: the current date is July 1, the locale is "en-US", and the
+   * supplied value is "9/1" (September 1 in the U.S.), then if `timeBias` is
+   * not set, the inferred year is the present year. If `timeBias` is set to
+   * "past", the date is taken to be a past date, so the inferred year will be
+   * the _previous_ year.
+   * 
+   * @type {'future'|'past'|null}
+   */
+  get timeBias() {
+    return this.state.timeBias;
+  }
+  set timeBias(timeBias) {
+    this.setState({
+      timeBias
+    });
   }
 
   get updates() {

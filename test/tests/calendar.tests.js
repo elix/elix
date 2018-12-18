@@ -69,4 +69,34 @@ describe("calendar helpers", () => {
     assert.equal(actual.getTime(), expected.getTime());
   });
 
+  it("can parse short dates with future or past bias", () => {
+    const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
+      day: 'numeric',
+      month: 'numeric',
+      year: 'numeric'
+    });
+    const today = new Date();
+    const day = today.getDate();
+    const month = today.getMonth();
+    const year = today.getFullYear();
+    
+    // NOTE: This test will pass on December 31, but will not exercise the past
+    // bias, because the function considers today to be a date in the past.
+    const todayIsDec31 = month === 11 && day === 31;
+    const expectedPast = todayIsDec31 ?
+      new Date(year, 11, 31) :
+      new Date(year - 1, 11, 31);
+    const actualPast = calendar.parseWithOptionalYear('12/31', dateTimeFormat, 'past');
+    assert.equal(actualPast.getTime(), expectedPast.getTime());
+    
+    // NOTE: This test will pass on January 1, but will not exercise the future
+    // bias, because the function considers today to be a date in the future.
+    const todayIsJan1 = month === 0 && day === 1;
+    const expectedFuture = todayIsJan1 ?
+      new Date(year, 0, 1) :
+      new Date(year + 1, 0, 1);
+    const actualFuture = calendar.parseWithOptionalYear('1/1', dateTimeFormat, 'future');
+    assert.equal(actualFuture.getTime(), expectedFuture.getTime());
+  });
+
 });
