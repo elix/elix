@@ -123,6 +123,13 @@ export function firstDateOfMonth(date) {
 }
 
 
+export function formatDate(date, options) {
+  const { locale, dateTimeFormatOptions } = options;
+  const format = dateTimeFormat(locale, dateTimeFormatOptions);
+  return format.format(date);
+}
+
+
 /**
  * Returns the last date of the month that contains the indicated target date.
  * 
@@ -228,6 +235,27 @@ export function parse(text, dateTimeFormat) {
     minute || 0,
     second || 0
   );
+}
+
+
+export function parseWithOptionalYear(text, dateTimeFormat) {
+  // Try parsing using requested DateTimeFormat.
+  const fullDate = parse(text, dateTimeFormat);
+  if (fullDate) {
+    return fullDate;
+  }
+  // Try parsing without year. Create an identical DateTimeFormat options, but
+  // mark `year` as undefined so it won't be used.
+  const abbreviatedOptions = Object.assign(
+    {},
+    dateTimeFormat.resolvedOptions(),
+    {
+      year: undefined
+    }
+  );
+  const abbreviatedFormat = new Intl.DateTimeFormat(abbreviatedOptions);
+  const abbreviatedDate = parse(text, abbreviatedFormat);
+  return abbreviatedDate;
 }
 
 

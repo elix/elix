@@ -18,7 +18,6 @@ describe("DateComboBox", () => {
     const fixture = new DateComboBox();
     fixture.locale = 'en-US';
     fixture.value = '1/2/2019'; // 2 Jan 2019
-    container.appendChild(fixture);
     const expectedDate1 = new Date(2019, 0, 2); // 2 Jan 2019
     assert(calendar.datesEqual(fixture.date, expectedDate1));
     assert.equal(fixture.value, '1/2/2019'); // Unchanged
@@ -33,7 +32,6 @@ describe("DateComboBox", () => {
     const fixture = new DateComboBox();
     fixture.locale = 'en-US';
     fixture.date = new Date(2019, 0, 2); // 2 Jan 2019
-    container.appendChild(fixture);
     assert.equal(fixture.value, '1/2/2019');
     // Reformate date with new locale.
     fixture.locale = 'en-GB';

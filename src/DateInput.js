@@ -58,7 +58,8 @@ class DateInput extends Base {
     });
   }
 
-  formatDate(date, locale, dateTimeFormatOptions) {
+  formatDate(date, options) {
+    const { locale, dateTimeFormatOptions } = options;
     const dateTimeFormat = calendar.dateTimeFormat(locale, dateTimeFormatOptions);
     return dateTimeFormat.format(date);
   }
@@ -89,7 +90,10 @@ class DateInput extends Base {
       // Update value from date if we're not focused.
       if (!focused) {
         if (date !== null) {
-          const formattedDate = this.formatDate(date, locale, dateTimeFormatOptions);
+          const formattedDate = this.formatDate(date, {
+            dateTimeFormatOptions,
+            locale
+          });
           if (state.value !== formattedDate) {
             state.value = formattedDate;
             result = false;
@@ -101,7 +105,10 @@ class DateInput extends Base {
       }
     } else if (changed.value) {
       // Update date from value.
-      const parsedDate = this.parseDate(value, locale, dateTimeFormatOptions);
+      const parsedDate = this.parseDate(value, {
+        dateTimeFormatOptions,
+        locale
+      });
       if (!calendar.datesEqual(state.date, parsedDate)) {
         state.date = parsedDate;
         result = false;
@@ -110,25 +117,10 @@ class DateInput extends Base {
     return result;
   }
 
-  parseDate(text, locale, dateTimeFormatOptions) {
-    const fullFormat = calendar.dateTimeFormat(locale, dateTimeFormatOptions);
-    // Try parsing using requested options.
-    const fullDate = calendar.parse(text, fullFormat);
-    if (fullDate) {
-      return fullDate;
-    }
-    // Try parsing without year. Create an identical DateTimeFormat options, but
-    // mark `year` as undefined so it won't be used.
-    const abbreviatedOptions = Object.assign(
-      {},
-      dateTimeFormatOptions,
-      {
-        year: undefined
-      }
-    );
-    const abbreviatedFormat = calendar.dateTimeFormat(locale, abbreviatedOptions);
-    const abbreviatedDate = calendar.parse(text, abbreviatedFormat);
-    return abbreviatedDate;
+  parseDate(text, options) {
+    const { locale, dateTimeFormatOptions } = options;
+    const dateTimeFormat = calendar.dateTimeFormat(locale, dateTimeFormatOptions);
+    return calendar.parseWithOptionalYear(text, dateTimeFormat);
   }
   
   get [symbols.template]() {
