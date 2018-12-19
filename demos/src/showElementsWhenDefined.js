@@ -11,7 +11,7 @@
 export default function showElementsWhenDefined() {
 
   /* Find all tags for custom elements on the page. */
-  const tags = Array.prototype.map.call(
+  const tags = Array.from(
     document.querySelectorAll('*'),
     element => element.localName);
   const customTags = tags.filter(tag => tag.indexOf('-') >= 0);

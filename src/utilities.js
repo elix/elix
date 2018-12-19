@@ -139,7 +139,7 @@ export function forwardFocus(origin, target) {
  * indicated target node. Returns -1 if not found.
  */
 export function indexOfItemContainingTarget(items, target) {
-  return items.findIndex(item =>
+  return Array.prototype.findIndex.call(items, item =>
     item === target || deepContains(item, target)
   );
 }

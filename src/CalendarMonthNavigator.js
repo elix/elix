@@ -31,11 +31,14 @@ class CalendarMonthNavigator extends Base {
     this.addEventListener('mousedown', event => {
       this[symbols.raiseChangeEvents] = true;
       const target = event.composedPath()[0];
-      const days = this.days;
-      const index = indexOfItemContainingTarget(days, target);
-      const day = days[index];
-      if (day) {
-        this.date = day.date;
+      if (target instanceof Node) {
+        const days = this.days;
+        const index = indexOfItemContainingTarget(days, target);
+        /** @type {any} */
+        const day = days[index];
+        if (day) {
+          this.date = day.date;
+        }
       }
       this[symbols.raiseChangeEvents] = false;
     });

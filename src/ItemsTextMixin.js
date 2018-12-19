@@ -60,6 +60,6 @@ export function getItemText(item) {
 
 export function getTextsFromItems(items, getText = getItemText) {
   return items ?
-    Array.prototype.map.call(items, item => getText(item)) :
+    Array.from(items, item => getText(item)) :
     null;
 }

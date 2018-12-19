@@ -168,7 +168,7 @@ function autoConnectToDocument(element, connect) {
  */
 function maxZIndexInUse() {
   const elements = document.body.querySelectorAll('*');
-  const zIndices = Array.prototype.map.call(elements, element => {
+  const zIndices = Array.from(elements, element => {
     const style = getComputedStyle(element);
     let zIndex = 0;
     if (style.position !== 'static' && style.zIndex !== 'auto') {
