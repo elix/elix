@@ -62,9 +62,8 @@ export default function CalendarElementMixin(Base) {
     }
 
     get defaultState() {
-      const date = calendar.today();
       return Object.assign({}, super.defaultState, {
-        date,
+        date: null,
         locale: navigator.language
       });
     }

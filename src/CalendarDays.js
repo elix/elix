@@ -77,6 +77,7 @@ class CalendarDays extends Base {
   get defaultState() {
     const today = calendar.today();
     return Object.assign({}, super.defaultState, {
+      date: calendar.today(),
       dayCount: 1,
       dayRole: CalendarDay,
       days: null,

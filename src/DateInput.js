@@ -62,7 +62,6 @@ class DateInput extends Base {
       year: 'numeric'
     };
     return Object.assign({}, super.defaultState, {
-      date: null, // Don't pick a date by default
       dateSelected: false,
       dateTimeFormat: null,
       dateTimeFormatOptions,

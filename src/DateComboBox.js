@@ -83,7 +83,6 @@ class DateComboBox extends Base {
       year: 'numeric'
     };
     return Object.assign({}, super.defaultState, {
-      date: null, // Don't pick a date by default
       datePriority: false,
       dateSelected: false,
       dateTimeFormat: null,
@@ -286,6 +285,10 @@ class DateComboBox extends Base {
     // Replace default slot with calendar.
     const calendarTemplate = template.html`
       <style>
+        :host {
+          width: 8em;
+        }
+
         #calendar {
           margin: 0.5em;
         }

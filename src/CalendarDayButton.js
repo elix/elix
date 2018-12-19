@@ -1,6 +1,7 @@
 import './CalendarDay.js';
 import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
+import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import Button from './Button.js';
@@ -17,6 +18,7 @@ class CalendarDayButton extends Base {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
+      date: calendar.today(),
       selected: false
     });
   }
