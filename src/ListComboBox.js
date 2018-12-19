@@ -141,8 +141,15 @@ class ListComboBox extends Base {
       value: null
     };
     const changed = stateChanged(state, state[previousStateKey]);
-    const { items, opened, selectedIndex, value } = state;
+    const {
+      closeResult,
+      items,
+      opened,
+      selectedIndex,
+      value
+    } = state;
     const closing = changed.opened && !opened;
+    const canceled = closeResult && closeResult.canceled;
     if (items && value != null && (changed.value || changed.items)) {
       // If value was changed directly, or items have updated, select the
       // coresponding item in list.
@@ -155,7 +162,8 @@ class ListComboBox extends Base {
         state.selectedIndex = itemIndex;
         result = false;
       }
-    } else if (selectedIndex >= 0 && (changed.selectedIndex || closing)) {
+    } else if (selectedIndex >= 0 &&
+        (changed.selectedIndex || (closing && !canceled))) {
       // If user selects new item, or combo is closing, make selected item the
       // value.
       const selectedItem = items[selectedIndex];

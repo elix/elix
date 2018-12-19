@@ -102,7 +102,9 @@ export default function PopupModalityMixin(Base) {
 
       switch (event.key) {
         case 'Escape':
-          this.close();
+          this.close({
+            canceled: 'Escape'
+          });
           handled = true;
           break;
       }

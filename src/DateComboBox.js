@@ -135,46 +135,51 @@ class DateComboBox extends Base {
   [symbols.keydown](event) {
     let handled = false;
 
+    const opened = this.opened;
     const date = this.state.date || calendar.today();
 
     switch (event.key) {
 
       case 'ArrowDown':
-        if (event.ctrlKey && event.shiftKey) {
+        if (opened && event.ctrlKey && event.shiftKey) {
           handled = this[symbols.goDown]();
         }
         break;
 
       case 'ArrowLeft':
-        if (event.ctrlKey && event.shiftKey) {
+        if (opened && event.ctrlKey && event.shiftKey) {
           handled = this[symbols.goLeft]();
         }
         break;
 
       case 'ArrowRight':
-        if (event.ctrlKey && event.shiftKey) {
+        if (opened && event.ctrlKey && event.shiftKey) {
           handled = this[symbols.goRight]();
         }
         break;
 
       case 'ArrowUp':
-        if (event.ctrlKey && event.shiftKey) {
+        if (opened && event.ctrlKey && event.shiftKey) {
           handled = this[symbols.goUp]();
         }
         break;
 
       case 'PageDown':
-        this.setState({
-          date: calendar.offsetDateByMonths(date, 1)
-        });
-        handled = true;
+        if (opened) {
+          this.setState({
+            date: calendar.offsetDateByMonths(date, 1)
+          });
+          handled = true;
+        }
         break;
         
       case 'PageUp':
-        this.setState({
-          date: calendar.offsetDateByMonths(date, -1)
-        });
-        handled = true;
+        if (opened) {
+          this.setState({
+            date: calendar.offsetDateByMonths(date, -1)
+          });
+          handled = true;
+        }
         break;
 
     }
@@ -209,6 +214,7 @@ class DateComboBox extends Base {
     };
     const changed = stateChanged(state, state[previousStateKey]);
     const {
+      closeResult,
       date,
       datePriority,
       dateSelected,
@@ -221,6 +227,7 @@ class DateComboBox extends Base {
       value
     } = state;
     const closing = changed.opened && !opened;
+    const canceled = closeResult && closeResult.canceled;
     const blur = changed.focused && !focused;
     if (changed.date && focused) {
       const hasDate = date != null;
@@ -230,7 +237,8 @@ class DateComboBox extends Base {
       }
     }
     if ((changed.date && !focused) ||
-        (dateSelected && (closing || blur)) ||
+        (blur && dateSelected) ||
+        (closing && dateSelected && !canceled) ||
         (changed.dateTimeFormat && datePriority)) {
       // Update value from date if:
       // the date was changed from the outside,

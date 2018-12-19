@@ -120,6 +120,7 @@ export default function OpenCloseMixin(Base) {
 
     get defaultState() {
       const defaults = {
+        closeResult: null,
         opened: false
       };
       // If this component defines a `startEffect` method (e.g., by using

@@ -196,10 +196,16 @@ class ComboBox extends Base {
         }
         break;
     
-      // Escape closes popup.
       case 'Enter':
-      case 'Escape':
         this.close();
+        handled = true;
+        break;
+
+      // Escape closes popup and indicates why.
+      case 'Escape':
+        this.close({
+          canceled: 'Escape'
+        });
         handled = true;
         break;
     }

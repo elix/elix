@@ -58,7 +58,9 @@ export default function DialogModalityMixin(Base) {
 
         case 'Escape':
           // Close on Esc key.
-          this.close();
+          this.close({
+            canceled: 'Escape'
+          });
           handled = true;
           break;
       }
