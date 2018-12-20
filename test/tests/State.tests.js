@@ -89,7 +89,7 @@ describe("State", () => {
 
     // Machine with a rule that shouldn't run.
     const state = new State();
-    state.onChange('b', state => {
+    state.onChange('b', () => {
       ranRule = true;
     });
 

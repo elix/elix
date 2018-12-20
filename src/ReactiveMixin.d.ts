@@ -3,14 +3,15 @@
 
 /// <reference path="shared.d.ts"/>
 
+import State from './State.js';
+
 declare const ReactiveMixin: Mixin<{
   connectedCallback?(): void;
-  defaultState?: PlainObject;
 }, {
   componentDidMount(): void;
   componentDidUpdate(previousState: PlainObject): void;
   connectedCallback(): void;
-  defaultState: PlainObject;
+  defaultState: State;
   refineState(state: PlainObject): boolean;
   render(): Promise<void>;
   setState(changes: PlainObject): Promise<void>;

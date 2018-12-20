@@ -3,7 +3,7 @@ import ReactiveMixin from '../../src/ReactiveMixin.js';
 import SingleSelectionMixin from '../../src/SingleSelectionMixin.js';
 
 
-class SingleSelectionTest extends ReactiveMixin(SingleSelectionMixin(HTMLElement)) {
+class SingleSelectionTest extends SingleSelectionMixin(ReactiveMixin(HTMLElement)) {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
@@ -16,7 +16,7 @@ class SingleSelectionTest extends ReactiveMixin(SingleSelectionMixin(HTMLElement
   }
 
 }
-customElements.define('items-selection-test', SingleSelectionTest);
+customElements.define('single-selection-test', SingleSelectionTest);
 
 
 describe("SingleSelectionMixin", () => {
@@ -32,7 +32,7 @@ describe("SingleSelectionMixin", () => {
   });
 
   it("has selectedIndex initially -1", () => {
-    const fixture = document.createElement('items-selection-test');
+    const fixture = new SingleSelectionTest();
     assert.equal(fixture.state.selectedIndex, -1);
   });
 
@@ -215,7 +215,7 @@ describe("SingleSelectionMixin", () => {
  * @returns {SingleSelectionTest}
  */
 function createSampleElement() {
-  const fixture = document.createElement('items-selection-test');
+  const fixture = new SingleSelectionTest();
   // To keep this unit test collection focus on selection, and not on tracking
   // children as items, we just use a plain array of item objects instead.
   fixture.setState({

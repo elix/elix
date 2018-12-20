@@ -1,8 +1,4 @@
-import { stateChanged } from './utilities.js';
 import * as symbols from './symbols.js';
-
-
-const previousStateKey = Symbol('previousState');
 
 
 /**
@@ -16,9 +12,19 @@ export default function ItemsTextMixin(Base) {
   class ItemsText extends Base {
 
     get defaultState() {
-      return Object.assign({}, super.defaultState, {
+      const state = Object.assign(super.defaultState, {
         texts: null
       });
+      state.onChange('items', state => {
+        const { items } = state;
+        const texts = getTextsFromItems(items, this[symbols.getItemText]);
+        if (texts) {
+          Object.freeze(texts);
+          return { texts };
+        }
+        return null;
+      });
+      return state;
     }
 
     // Default implementation returns an item's `alt` attribute or its
@@ -27,26 +33,18 @@ export default function ItemsTextMixin(Base) {
       return getItemText(item);
     }
 
-    refineState(state) {
-      let result = super.refineState ? super.refineState(state) : true;
-      state[previousStateKey] = state[previousStateKey] || {
-        items: null
-      };
-      const changed = stateChanged(state, state[previousStateKey]);
-      const items = state.items;
-      if (changed.items) {
-        const texts = getTextsFromItems(items, this[symbols.getItemText]);
-        if (texts) {
-          Object.freeze(texts);
-        }
-        Object.assign(state, {
-          texts,
-          itemsForTexts: items
-        });
-        result = false;
-      }
-      return result;
-    }
+    // refineState(state) {
+    //   let result = super.refineState ? super.refineState(state) : true;
+    //   state[previousStateKey] = state[previousStateKey] || {
+    //     items: null
+    //   };
+    //   const changed = stateChanged(state, state[previousStateKey]);
+    //   const items = state.items;
+    //   if (changed.items) {
+    //     result = false;
+    //   }
+    //   return result;
+    // }
   }
 
   return ItemsText;

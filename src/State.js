@@ -36,7 +36,7 @@ export default class State {
   /**
    * 
    * @param {string[]|string} dependencies 
-   * @param {function} callback 
+   * @param {function} callback
    */
   onChange(dependencies, callback) {
     const array = dependencies instanceof Array ?

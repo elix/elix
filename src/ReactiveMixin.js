@@ -153,8 +153,6 @@ export default function ReactiveMixin(Base) {
       Object.assign(nextState, this[stateKey]);
       const changed = nextState.apply(changes);
 
-      // refineState(this, nextState);
-
       // Freeze the new state so it's immutable. This prevents accidental
       // attempts to set state without going through setState.
       Object.freeze(nextState);
@@ -221,11 +219,4 @@ export default function ReactiveMixin(Base) {
       return this[stateKey] || Object.freeze({});
     }
   }
-}
-
-
-function refineState(element, state) {
-  // Repeatedly refine state until the refine operation returns true.
-  /* eslint-disable no-empty */
-  for (;!element.refineState(state);) {}
 }

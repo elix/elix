@@ -1,10 +1,8 @@
-import { stateChanged } from './utilities.js';
 import { substantiveElement } from './content.js';
 import * as symbols from './symbols.js';
 import * as updates from './updates.js';
 
 
-const previousStateKey = Symbol('previousState');
 const originalKey = Symbol('original');
 
 
@@ -61,9 +59,24 @@ export default function ContentItemsMixin(Base) {
     }
 
     get defaultState() {
-      return Object.assign({}, super.defaultState, {
+      const state = Object.assign(super.defaultState, {
         items: null
       });
+      state.onChange(['content', 'items'], (state, changed) => {
+        const content = state.content;
+        const needsItems = content && !state.items; // Signal from other mixins
+        if (changed.content || needsItems) {
+          const items = content ?
+            Array.prototype.filter.call(content, item => this[symbols.itemMatchesState](item, state)) :
+            null;
+          if (items) {
+            Object.freeze(items);
+          }
+          return { items };
+        }
+        return null;
+      });
+      return state;
     }
 
     /**
@@ -160,26 +173,26 @@ export default function ContentItemsMixin(Base) {
         {};
     }
 
-    refineState(state) {
-      let result = super.refineState ? super.refineState(state) : true;
-      state[previousStateKey] = state[previousStateKey] || {
-        content: null
-      };
-      const changed = stateChanged(state, state[previousStateKey]);
-      const content = state.content;
-      const needsItems = content && !state.items; // Signal from other mixins
-      if (changed.content || needsItems) {
-        const items = content ?
-          Array.prototype.filter.call(content, item => this[symbols.itemMatchesState](item, state)) :
-          null;
-        if (items) {
-          Object.freeze(items);
-        }
-        state.items = items;
-        result = false;
-      }
-      return result;
-    }
+    // refineState(state) {
+    //   let result = super.refineState ? super.refineState(state) : true;
+    //   state[previousStateKey] = state[previousStateKey] || {
+    //     content: null
+    //   };
+    //   const changed = stateChanged(state, state[previousStateKey]);
+    //   const content = state.content;
+    //   const needsItems = content && !state.items; // Signal from other mixins
+    //   if (changed.content || needsItems) {
+    //     const items = content ?
+    //       Array.prototype.filter.call(content, item => this[symbols.itemMatchesState](item, state)) :
+    //       null;
+    //     if (items) {
+    //       Object.freeze(items);
+    //     }
+    //     state.items = items;
+    //     result = false;
+    //   }
+    //   return result;
+    // }
 
     [symbols.render]() {
       if (super[symbols.render]) { super[symbols.render](); }

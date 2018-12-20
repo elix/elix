@@ -51,9 +51,9 @@ const Base =
  * @inherits ReactiveElement
  * @mixes AriaListMixin
  * @mixes ClickSelectionMixin
+ * @mixes ComposedFocusMixin
  * @mixes DirectionSelectionMixin
  * @mixes FocusVisibleMixin
- * @mixes ComposedFocusMixin
  * @mixes ItemsTextMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
@@ -68,7 +68,7 @@ const Base =
 class ListBox extends Base {
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       orientation: 'vertical'
     });
   }
