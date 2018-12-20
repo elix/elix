@@ -167,7 +167,7 @@ describe("ReactiveMixin", function () {
     assert.equal(fixture.state, previousState);
   });
 
-  it("can refine state", async () => {
+  it.skip("can refine state", async () => {
     const fixture = new ReactiveTest();
     await fixture.setState({
       foo: ' test '
@@ -178,4 +178,38 @@ describe("ReactiveMixin", function () {
     });
   });
 
+  it("runs state change handlers when state changes", () => {
+    // Simple class, copies state member `a` to `b`.
+    class Fixture extends ReactiveMixin(Object) {
+      get defaultState() {
+        const state = super.defaultState;
+        state.onChange('a', state => ({ b: state.a }));
+        return state;
+      }
+    }
+    const fixture = new Fixture();
+    fixture.setState({ a: 1 });
+    assert(fixture.state.b === 1);
+    fixture.setState({ b: 2 }); // Shouldn't have any effect on `a`
+    assert(fixture.state.a === 1);
+    fixture.setState({ a: 3 });
+    assert(fixture.state.b === 3);
+  });
+  
+  it("runs state change handlers on initial state", () => {
+    class Fixture extends ReactiveMixin(Object) {
+      get defaultState() {
+        const state = super.defaultState;
+        state.a = 1;
+        state.onChange('a', state => ({ b: state.a }));
+        return state;
+      }
+    }
+    const fixture = new Fixture();
+    assert(fixture.state.a === 1);
+    assert(fixture.state.b === 1);
+    fixture.setState({ a: 2 });
+    assert(fixture.state.b === 2);
+  })
+  
 });

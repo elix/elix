@@ -1,4 +1,5 @@
 import * as symbols from './symbols.js';
+import State from './State.js';
 
 
 /** @type {any} */
@@ -48,10 +49,10 @@ export default function ReactiveMixin(Base) {
      * The default state for the component. This can be extended by mixins and
      * classes to provide additional default state.
      * 
-     * @type {object}
+     * @type {State}
      */
     get defaultState() {
-      return super.defaultState || {};
+      return new State();
     }
 
     /**
@@ -147,21 +148,24 @@ export default function ReactiveMixin(Base) {
         console.warn(`${this.constructor.name} called setState during rendering, which you should avoid.\nSee https://elix.org/documentation/ReactiveMixin.`);
       }
 
-      // Create a new state object that holds the old state, plus the new
-      // changes merged on top of it.
-      const nextState = Object.assign({}, this[stateKey], changes);
+      // Create a new state object that holds a copy of the old state.
+      const nextState = new State();
+      Object.assign(nextState, this[stateKey]);
+      const changed = nextState.apply(changes);
 
-      refineState(this, nextState);
+      // refineState(this, nextState);
 
       // Freeze the new state so it's immutable. This prevents accidental
       // attempts to set state without going through setState.
       Object.freeze(nextState);
 
       // Is this our first setState, or does the component think something's changed?
-      const changed = this[stateKey] === undefined || this.shouldComponentUpdate(nextState);
-      if (!changed) {
-        // No need to render.
-        return false;
+      const firstSetState = this[stateKey] === undefined;
+      if (!(firstSetState || changed)) {
+        if (!this.shouldComponentUpdate(nextState)) {
+          // No need to render.
+          return false;
+        }
       }
 
       // Set the new state.
@@ -191,6 +195,8 @@ export default function ReactiveMixin(Base) {
     /**
      * Return true if the component should update.
      * 
+     * TODO: Update comments
+     * 
      * The default implementation does a shallow check of property values like
      * React's PureComponent. This seems adequate for most web components. You
      * can override this to always return true (like React's base Component
@@ -200,17 +206,9 @@ export default function ReactiveMixin(Base) {
      * @return {boolean} - true if the component should update (rerender)
      */
     shouldComponentUpdate(nextState) {
-      const base = super.shouldComponentUpdate && super.shouldComponentUpdate(nextState);
-      if (base) {
-        return true; // Trust base result.
-      }
-      // Do a shallow prop comparison to track whether there were any changes.
-      for (const key in nextState) {
-        if (nextState[key] !== this.state[key]) {
-          return true;
-        }
-      }
-      return false; // No changes.
+      return super.shouldComponentUpdate ?
+        super.shouldComponentUpdate(nextState) :
+        false;
     }
 
     /**
