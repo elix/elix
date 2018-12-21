@@ -8,9 +8,6 @@ import ListComboBox from "./ListComboBox.js";
 import SlotContentMixin from './SlotContentMixin.js';
 
 
-const previousStateKey = Symbol('previousState');
-
-
 const Base =
   SlotContentMixin(
     ListComboBox
@@ -47,37 +44,38 @@ class FilterComboBox extends Base {
   }
   
   get defaultState() {
-    return Object.assign(super.defaultState, {
+    const state = Object.assign(super.defaultState, {
       filter: '',
       inputRole: AutoCompleteInput,
       listRole: FilterListBox,
       texts: null
     });
-  }
 
-  refineState(state) {
-    let result = super.refineState ? super.refineState(state) : true;
-    state[previousStateKey] = state[previousStateKey] || {
-      content: null,
-      filter: null,
-      opened: false
-    };
-    const changed = stateChanged(state, state[previousStateKey]);
-    const { content, filter, opened } = state;
-    if (changed.content) {
-      const items = content.filter(element => substantiveElement(element));
-      const texts = getTextsFromItems(items);
-      state.texts = texts;
-      result = false;
-    }
-    const closing = changed.opened && !opened;
-    if (closing && filter) {
-      // Closing resets the filter.
-      state.filter = '';
-      result = false;
-    }
+    // If content changes, regenerate texts.
+    state.onChange('content', state => {
+      const { content } = state;
+      const items = content ?
+        content.filter(element => substantiveElement(element)) :
+        null;
+      const texts = items ?
+        getTextsFromItems(items) :
+        [];
+      return {
+        texts
+      };
+    });
 
-    return result;
+    // Closing resets the filter.
+    state.onChange('opened', state => {
+      if (!state.opened) {
+        return {
+          filter: ''
+        };
+      }
+      return null;
+    });
+
+    return state;
   }
 
   get updates() {

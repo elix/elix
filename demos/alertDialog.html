@@ -45,8 +45,9 @@
         dialog.choices = choices;
         dialog.addEventListener('closed', event => {
           const closeResult = event.detail.closeResult;
-          response.textContent = closeResult ?
-            "You picked " + closeResult + "." :
+          const choice = closeResult && closeResult.choice;
+          response.textContent = choice ?
+            "You picked " + choice + "." :
             "You didn't make a choice.";
         })
         await dialog.open();

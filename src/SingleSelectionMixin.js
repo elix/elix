@@ -80,7 +80,8 @@ export default function SingleSelectionMixin(Base) {
         const { items, selectedIndex, selectionRequired, selectionWraps } = state;
 
         let adjustedIndex = selectedIndex;
-        if (changed.items && !changed.selectedIndex && state.trackSelectedItem) {
+        if (changed.items && items &&
+            !changed.selectedIndex && state.trackSelectedItem) {
           // The index stayed the same, but the item may have moved.
           const selectedItem = this.selectedItem;
           if (items[selectedIndex] !== selectedItem) {

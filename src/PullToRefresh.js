@@ -70,7 +70,7 @@ class PullToRefresh extends Base {
 
   componentDidUpdate(previousState) {
     if ( this.state.swipeFraction > 0 &&
-      !this.state.refreshing && !this.state.refreshTriggered) {
+      !this.state.refreshing && !this.state.pullTriggeredRefresh) {
       const y = getTranslationForSwipeFraction(this);
       if (y >= getSwipeThreshold(this)) {
         // User has dragged element down far enough to trigger a refresh.
@@ -90,16 +90,42 @@ class PullToRefresh extends Base {
   
   get defaultState() {
     // Suppress transition effects on page load.
-    return Object.assign(super.defaultState, {
+    const state = Object.assign(super.defaultState, {
       enableNegativeSwipe: false,
       pullIndicatorRole: downArrowTemplate,
+      pullTriggeredRefresh: false,
       refreshing: false,
       refreshingIndicatorRole: ProgressSpinner,
-      refreshTriggered: false,
       scrollPullDistance: null,
       scrollPullMaxReached: false,
       swipeAxis: 'vertical'
     });
+
+    // We use a pullTriggeredRefresh flag to track whether the current pull
+    // gesture has already triggered a refresh. If the user pulls down far
+    // enough to trigger a refresh, and the refresh completes while the user is
+    // still pulling down, we don't want further pulling to trigger a second
+    // refresh.
+    state.onChange(['refreshing', 'swipeFraction'], (state, changed) => {
+      const {
+        refreshing,
+        swipeFraction
+      } = state;
+      if (changed.refreshing && refreshing) {
+        // We've started a refresh; set flag.
+        return {
+          pullTriggeredRefresh: true
+        };
+      } else if (swipeFraction === null && !state.refreshing) {
+        // We're neither pulling nor refreshing, so reset flag.
+        return {
+          pullTriggeredRefresh: false
+        }
+      }
+      return null;
+    });
+
+    return state;
   }
 
   /**
@@ -115,19 +141,6 @@ class PullToRefresh extends Base {
   }
   set pullIndicatorRole(pullIndicatorRole) {
     this.setState({ pullIndicatorRole });
-  }
-
-  refineState(state) {
-    let result = super.refineState ? super.refineState(state) : true;
-    if (state.refreshing && !state.refreshTriggered) {
-      state.refreshTriggered = true;
-      result = false;
-    } else if (state.swipeFraction === null && !state.refreshing &&
-        state.refreshTriggered) {
-      state.refreshTriggered = false;
-      result = false;
-    }
-    return result;
   }
 
   get refreshing() {
@@ -208,7 +221,7 @@ class PullToRefresh extends Base {
       'transform 0.25s' :
       'none';
     const showPullIndicator = !this.state.refreshing &&
-      !this.state.refreshTriggered &&
+      !this.state.pullTriggeredRefresh &&
       pullingDown;
     const showRefreshingIndicator = this.state.refreshing;
     return merge(super.updates, {

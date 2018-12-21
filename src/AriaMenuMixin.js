@@ -13,8 +13,8 @@ export default function AriaListMixin(Base) {
   class AriaMenu extends Base {
 
     get defaultState() {
-      const base = super.defaultState || {};
-      return Object.assign({}, base, {
+      const base = super.defaultState;
+      return Object.assign(base, {
         itemRole: base.itemRole || 'menuitem',
         role: base.role || 'menu'
       });

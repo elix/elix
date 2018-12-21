@@ -6,9 +6,6 @@ import CalendarElementMixin from './CalendarElementMixin.js';
 import Input from './Input.js';
 
 
-const previousStateKey = Symbol('previousState');
-
-
 const Base =
   CalendarElementMixin(
     Input

@@ -9,7 +9,6 @@ import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 
 
-const previousStateKey = Symbol('previousState');
 const proxySlotchangeFiredKey = Symbol('proxySlotchangeFired');
 
 
@@ -92,7 +91,7 @@ class Explorer extends Base {
   }
 
   get defaultState() {
-    return Object.assign(super.defaultState, {
+    const state = Object.assign(super.defaultState, {
       assignedProxies: [],
       defaultProxies: [],
       proxyRole: 'div',
@@ -101,6 +100,30 @@ class Explorer extends Base {
       proxyListRole: ListBox,
       stageRole: Modes
     });
+
+    // If items for default proxies have changed, recreate the proxies.
+    state.onChange(['assignedProxies', 'items'], (state, changed) => {
+      const {
+        assignedProxies,
+        items,
+        proxyRole
+      } = state;
+      if (changed.assignedProxies && assignedProxies.length > 0) {
+        // Assigned proxies take precedence, remove default proxies.
+        return {
+          defaultProxies: []
+        };
+      } else if (assignedProxies.length === 0 && 
+          (changed.items || changed.proxyRole && changed.assignedProxies)) {
+        // Generate sufficient default proxies.
+        return {
+          defaultProxies: createDefaultProxies(items, proxyRole)
+        };
+      }
+      return null;
+    });
+
+    return state;
   }
 
   /**
@@ -198,40 +221,6 @@ class Explorer extends Base {
    */
   proxyUpdates(/* eslint-disable no-unused-vars */ proxy, calcs) {
     return {};
-  }
-
-  // If items for default proxies have changed, recreate the proxies.
-  refineState(state) {
-    let result = super.refineState ? super.refineState(state) : true;
-    state[previousStateKey] = state[previousStateKey] || {
-      items: null
-    };
-    const changed = stateChanged(state, state[previousStateKey]);
-    const assignedCount = state.assignedProxies.length;
-    const defaultCount = state.defaultProxies.length;
-    let defaultProxies;
-    if (assignedCount > 0 && defaultCount > 0) {
-      // Assigned proxies take precedence, remove default proxies.
-      defaultProxies = [];
-    } else if (assignedCount === 0) {
-      const items = state.items;
-      const proxyRoleChanged = !this[symbols.renderedRoles] ||
-        this[symbols.renderedRoles].proxyRole !== state.proxyRole;
-      if (proxyRoleChanged || changed.items) {
-        // Generate sufficient default proxies.
-        defaultProxies = createDefaultProxies(items, state.proxyRole);
-        if (!this[symbols.renderedRoles]) {
-          this[symbols.renderedRoles] = {};
-        }
-        this[symbols.renderedRoles].proxyRole = state.proxyRole;
-      }
-    }
-    if (defaultProxies && defaultProxies !== state.defaultProxies) {
-      Object.freeze(defaultProxies);
-      state.defaultProxies = defaultProxies;
-      result = false;
-    }
-    return result;
   }
 
   [symbols.render]() {

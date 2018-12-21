@@ -5,9 +5,6 @@ import * as template from './template.js';
 import Dialog from './Dialog.js';
 
 
-const previousStateKey = Symbol('previousState');
-
-
 /**
  * Asks a single question the user can answer with choice buttons
  * 
@@ -15,22 +12,15 @@ const previousStateKey = Symbol('previousState');
  */
 class AlertDialog extends Dialog {
 
-  constructor() {
-    super();
-    Object.assign(this[symbols.renderedRoles], {
-      choiceButton: 'button'
-    });
-  }
-
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
     this.$.buttonContainer.addEventListener('click', async (event) => {
       // TODO: Ignore clicks on buttonContainer background.
       const button = event.target;
       if (button instanceof HTMLElement) {
-        const result = button.textContent;
+        const choice = button.textContent;
         this[symbols.raiseChangeEvents] = true; 
-        await this.close(result);
+        await this.close({ choice });
         this[symbols.raiseChangeEvents] = false;
       }
     });
@@ -70,11 +60,26 @@ class AlertDialog extends Dialog {
   }
 
   get defaultState() {
-    return Object.assign(super.defaultState, {
+    const state = Object.assign(super.defaultState, {
       choiceButtonRole: 'button',
       choiceButtons: [],
       choices: ['OK']
     });
+
+    // When choices or choice button role changes, regenerate buttons.
+    state.onChange(['choiceButtonRole', 'choices'], state => {
+      const choiceButtons = state.choices.map(choice => {
+        const button = template.createElement(state.choiceButtonRole);
+        button.textContent = choice;
+        return button;
+      });
+      Object.freeze(choiceButtons);
+      return {
+        choiceButtons
+      };
+    });
+  
+    return state;
   }
 
   // Let the user select a choice by pressing its initial letter.
@@ -84,46 +89,19 @@ class AlertDialog extends Dialog {
     const key = event.key.length === 1 && event.key.toLowerCase();
     if (key) {
       // See if one of the choices starts with the key.
-      const choiceForKey = this.choices.find(choice =>
+      const choice = this.choices.find(choice =>
         choice[0].toLowerCase() === key
       );
-      if (choiceForKey) {
-        this.close(choiceForKey);
+      if (choice) {
+        this.close({
+          choice
+        });
         handled = true;
       }
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
     return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
-  }
-
-  refineState(state) {
-    let result = super.refineState ? super.refineState(state) : true;
-    state[previousStateKey] = state[previousStateKey] || {
-      choices: null
-    };
-    const changed = stateChanged(state, state[previousStateKey]);
-    const roleChanged = !this[symbols.renderedRoles] ||
-      this[symbols.renderedRoles].choiceButtonRole !== state.choiceButtonRole;
-    if (state.opened && (roleChanged || changed.choices)) {
-      // Role or choices have changed; create new buttons.
-      const choiceButtons = state.choices.map(choice => {
-        const button = template.createElement(state.choiceButtonRole);
-        button.textContent = choice;
-        return button;
-      });
-      if (!this[symbols.renderedRoles]) {
-        this[symbols.renderedRoles] = {}
-      }
-      this[symbols.renderedRoles].choiceButtonRole = state.choiceButtonRole;
-      Object.freeze(choiceButtons);
-      Object.assign(state, {
-        choicesForChoiceButtons: state.choices,
-        choiceButtons
-      });
-      result = false;
-    }
-    return result;
   }
 
   get [symbols.template]() {

@@ -8,9 +8,6 @@ import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 
 
-const previousStateKey = Symbol('previousState');
-
-
 const Base =
   SelectedItemTextValueMixin(
   SingleSelectionMixin(
@@ -53,27 +50,24 @@ class DropdownList extends Base {
   }
 
   get defaultState() {
-    return Object.assign(super.defaultState, {
+    const state = Object.assign(super.defaultState, {
       itemRole: 'menuitemradio',
       selectionRequired: true,
       valueRole: 'div'
     });
-  }
 
-  refineState(state) {
-    let result = super.refineState ? super.refineState(state) : true;
-    state[previousStateKey] = state[previousStateKey] || {
-      opened: null
-    };
-    const changed = stateChanged(state, state[previousStateKey]);
-    const { closeResult, opened, selectedIndex } = state;
-    if (changed.opened && !opened && closeResult !== undefined &&
-        selectedIndex !== closeResult) {
-      // Closing: Update our selection from menu selection.
-      state.selectedIndex = closeResult;
-      result = false;
-    }
-    return result;
+    // When the menu closes, update our selection from the menu selection.
+    state.onChange('opened', state => {
+      const { closeResult, opened } = state;
+      if (!opened && closeResult !== undefined) {
+        return {
+          selectedIndex: closeResult
+        };
+      }
+      return null;
+    });
+
+    return state;
   }
 
   get [symbols.template]() {

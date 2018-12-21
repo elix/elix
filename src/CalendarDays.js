@@ -7,9 +7,6 @@ import CalendarElementMixin from './CalendarElementMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
 
-const previousStateKey = Symbol('previousState');
-
-
 const Base =
   CalendarElementMixin(
     ReactiveElement

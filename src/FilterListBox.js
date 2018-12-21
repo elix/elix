@@ -3,9 +3,6 @@ import * as symbols from './symbols.js';
 import ListBox from './ListBox.js';
 
 
-const previousStateKey = Symbol('previousState');
-
-
 /**
  * List that only shows items containing a given text string
  * 
@@ -14,9 +11,18 @@ const previousStateKey = Symbol('previousState');
 class FilterListBox extends ListBox {
 
   get defaultState() {
-    return Object.assign(super.defaultState, {
+    const state = Object.assign(super.defaultState, {
       filter: null
     });
+
+    // When filter changes, let other mixins know items should be recalculated.
+    state.onChange('filter', () =>
+      ({
+        items: null
+      })
+    );
+
+    return state;
   }
 
   /**
@@ -101,20 +107,6 @@ class FilterListBox extends ListBox {
         childNodes
       })
     );
-  }
-
-  refineState(state) {
-    let result = super.refineState ? super.refineState(state) : true;
-    state[previousStateKey] = state[previousStateKey] || {
-      filter: null,
-    };
-    const changed = stateChanged(state, state[previousStateKey]);
-    if (changed.filter) {
-      // Indicate that items need to be recalculated.
-      state.items = null;
-      result = false;
-    }
-    return result;
   }
 
 }

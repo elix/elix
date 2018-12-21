@@ -13,7 +13,7 @@ class ReactiveTest extends ReactiveMixin(HTMLElement) {
   }
 
   get defaultState() {
-    return this.constructor.defaults || {};
+    return Object.assign(super.defaultState, this.constructor.defaults);
   }
 
   [symbols.render]() {

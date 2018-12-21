@@ -7,7 +7,6 @@ import Menu from './Menu.js';
 import PopupButton from './PopupButton.js';
 
 
-const previousStateKey = Symbol('previousState');
 const documentMouseupListenerKey = Symbol('documentMouseupListener');
 
 
@@ -176,7 +175,7 @@ class MenuButton extends PopupButton {
   }
 
   get defaultState() {
-    return Object.assign(super.defaultState, {
+    const state = Object.assign(super.defaultState, {
       dragSelect: true,
       menuRole: Menu,
       menuSelectedIndex: -1,
@@ -184,6 +183,36 @@ class MenuButton extends PopupButton {
       touchstartX: null,
       touchstartY: null
     });
+
+    // Set things when opening, or reset things when closing.
+    state.onChange('opened', state => {
+      if (state.opened) {
+        // Opening
+        return {
+          // Until we get a mouseup, we're doing a drag-select.
+          dragSelect: true,
+
+          // Select the default item in the menu.
+          menuSelectedIndex: this.defaultMenuSelectedIndex,
+
+          // Clear any previously selected item.
+          selectedItem: null,
+
+          // Clear previous touchstart point.
+          touchStartX: null,
+          touchStartY: null
+        };
+      } else {
+        // Closing
+        return {
+          // Clear menu selection.
+          menuSelectedIndex: -1
+        };
+      }
+      return null;
+    });
+
+    return state;
   }
 
   disconnectedCallback() {
@@ -265,47 +294,6 @@ class MenuButton extends PopupButton {
   }
   set menuRole(menuRole) {
     this.setState({ menuRole });
-  }
-
-  refineState(state) {
-    let result = super.refineState ? super.refineState(state) : true;
-    state[previousStateKey] = state[previousStateKey] || {
-      opened: null
-    };
-    const changed = stateChanged(state, state[previousStateKey]);
-    if (changed.opened && state.opened) {
-      // Opening
-      if (!state.dragSelect) {
-        // Until we get a mouseup, we're doing a drag-select.
-        state.dragSelect = true;
-        result = false;
-      }
-      if (state.selectedItem) {
-        // Clear any previously selected item.
-        state.selectedItem = null;
-        result = false;
-      }
-      if (state.touchstartX !== null || state.touchstartY) {
-        // Clear previous touchstart point.
-        state.touchstartX = null;
-        state.touchstartY = null;
-        result = false;
-      }
-      // Select the default item in the menu.
-      const defaultMenuSelectedIndex = this.defaultMenuSelectedIndex;
-      if (state.menuSelectedIndex !== defaultMenuSelectedIndex) {
-        state.menuSelectedIndex = defaultMenuSelectedIndex;
-        result = false;
-      }
-    } else if (changed.opened && !state.opened) {
-      // Closing
-      if (state.menuSelectedIndex !== -1) {
-        // Clear menu selection.
-        state.menuSelectedIndex = -1;
-        result = false;
-      }
-    }
-    return result;
   }
 
   get [symbols.template]() {

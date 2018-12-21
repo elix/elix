@@ -41,9 +41,9 @@
       }
 
       get defaultState() {
-        return {
+        return Object.assign(super.defaultState, {
           value: 0
-        };
+        });
       }
 
       get updates() {

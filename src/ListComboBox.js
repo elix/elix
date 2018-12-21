@@ -10,9 +10,6 @@ import ListBox from './ListBox.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 
 
-const previousStateKey = Symbol('previousState');
-
-
 const Base =
   DelegateItemsMixin(
   DirectionSelectionMixin(
@@ -74,11 +71,66 @@ class ListComboBox extends Base {
   }
 
   get defaultState() {
-    return Object.assign(super.defaultState, {
+    const state = Object.assign(super.defaultState, {
       horizontalAlign: 'stretch',
       listRole: ListBox,
       selectedIndex: -1
     });
+
+    // If value was changed directly or items have updated, select the
+    // corresponding item in list.
+    state.onChange(['items', 'value'], state => {
+      const {
+        items,
+        value
+      } = state;
+      if (items && value != null) {
+        const searchText = value.toLowerCase();
+        const selectedIndex = items.findIndex(item => {
+          const itemText = getItemText(item);
+          return itemText.toLowerCase() === searchText
+        });
+        return {
+          selectedIndex
+        };
+      }
+      return null;
+    });
+
+    // If user selects a new item, or combo is closing, make selected item the
+    // value.
+    state.onChange(['opened', 'selectedIndex'], (state, changed) => {
+      const {
+        closeResult,
+        items,
+        opened,
+        selectedIndex,
+        value
+      } = state;
+      const closing = changed.opened && !opened;
+      const canceled = closeResult && closeResult.canceled;
+      if (selectedIndex >= 0 &&
+          (changed.selectedIndex || (closing && !canceled))) {
+        const selectedItem = items[selectedIndex];
+        if (selectedItem) {
+          const selectedItemText = getItemText(selectedItem);
+          if (value !== selectedItemText) {
+            return {
+              selectText: true,
+              value: selectedItemText
+            };
+          }
+        }
+      }
+      return null;
+    });
+
+    // When items change, we need to recalculate popup size.
+    state.onChange('items', () => ({
+      popupMeasured: false
+    }));
+
+    return state;
   }
 
   // We do our own handling of the Up and Down arrow keys, rather than relying
@@ -131,58 +183,6 @@ class ListComboBox extends Base {
     this.setState({ listRole });
   }
 
-  refineState(state) {
-    let result = super.refineState ? super.refineState(state) : true;
-    state[previousStateKey] = state[previousStateKey] || {
-      items: null,
-      opened: null,
-      selectedIndex: null,
-      value: null
-    };
-    const changed = stateChanged(state, state[previousStateKey]);
-    const {
-      closeResult,
-      items,
-      opened,
-      selectedIndex,
-      value
-    } = state;
-    const closing = changed.opened && !opened;
-    const canceled = closeResult && closeResult.canceled;
-    if (items && value != null && (changed.value || changed.items)) {
-      // If value was changed directly, or items have updated, select the
-      // coresponding item in list.
-      const searchText = value.toLowerCase();
-      const itemIndex = items.findIndex(item => {
-        const itemText = getItemText(item);
-        return itemText.toLowerCase() === searchText
-      });
-      if (selectedIndex !== itemIndex) {
-        state.selectedIndex = itemIndex;
-        result = false;
-      }
-    } else if (selectedIndex >= 0 &&
-        (changed.selectedIndex || (closing && !canceled))) {
-      // If user selects new item, or combo is closing, make selected item the
-      // value.
-      const selectedItem = items[selectedIndex];
-      if (selectedItem) {
-        const selectedItemText = getItemText(selectedItem);
-        if (value !== selectedItemText) {
-          state.selectText = true;
-          state.value = selectedItemText;
-          result = false;
-        }
-      }
-    }
-    if (changed.items && state.popupMeasured) {
-      // When items change, we need to recalculate popup size.
-      state.popupMeasured = false;
-      result = false;
-    }
-    return result;
-  }
-
   get [symbols.itemsDelegate]() {
     return this.$.list;
   }
@@ -197,6 +197,7 @@ class ListComboBox extends Base {
         #list {
           border: none;
           flex: 1;
+          height: 100%;
           width: 100%;
         }
       </style>

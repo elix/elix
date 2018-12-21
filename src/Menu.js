@@ -18,9 +18,6 @@ import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 
 
-const previousStateKey = Symbol('previousState');
-
-
 const Base =
   AriaMenuMixin(
   ClickSelectionMixin(
@@ -107,10 +104,19 @@ class Menu extends Base {
   }
 
   get defaultState() {
-    return Object.assign(super.defaultState, {
+    const state = Object.assign(super.defaultState, {
       orientation: 'vertical',
       selectionFocused: false
     });
+
+    // When selection changes, we'll need to focus on it in componentDidUpdate.
+    state.onChange('selectedIndex', state => {
+      return {
+        selectionFocused: false
+      };
+    });
+
+    return state;
   }
 
   // Filter the set of items to ignore disabled items.
@@ -169,20 +175,6 @@ class Menu extends Base {
         outline
       }
     });
-  }
-
-  refineState(state) {
-    let result = super.refineState ? super.refineState(state) : true;
-    state[previousStateKey] = state[previousStateKey] || {
-      selectedIndex: null
-    };
-    const changed = stateChanged(state, state[previousStateKey]);
-    if (changed.selectedIndex && state.selectionFocused) {
-      // The new selected item is not yet focused.
-      state.selectionFocused = false;
-      result = false;
-    }
-    return result;
   }
 
   get [symbols.scrollTarget]() {
