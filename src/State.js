@@ -55,6 +55,14 @@ export default class State {
 }
 
 
+function equal(value1, value2) {
+  if (value1 instanceof Date && value2 instanceof Date) {
+    return value1.getTime() === value2.getTime();
+  }
+  return value1 === value2;
+}
+
+
 // Return true if o is an empty object.
 function isEmpty(o) {
   for (var key in o) {
@@ -69,13 +77,13 @@ function isEmpty(o) {
 function fieldsChanged(state, changes) {
   const changed = {};
   for (const field in changes) {
-    const fieldChanged = changes[field] !== state[field];
+    const fieldChanged = !equal(changes[field], state[field]);
     if (fieldChanged) {
       changed[field] = true;
     }
   }
   for (const symbol of Object.getOwnPropertySymbols(changes)) {
-    const valueChanged = changes[symbol] !== state[symbol];
+    const valueChanged = !equal(changes[symbol], state[symbol]);
     if (valueChanged) {
       changed[symbol] = true;
     }

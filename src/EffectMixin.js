@@ -23,7 +23,7 @@ export default function EffectMixin(Base) {
   }
 
     get defaultState() {
-      return Object.assign({}, super.defaultState, {
+      return Object.assign(super.defaultState, {
         enableEffects: false
       });
     }

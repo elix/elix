@@ -17,7 +17,7 @@ const Base =
 class CalendarDayButton extends Base {
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       date: calendar.today(),
       selected: false
     });

@@ -173,27 +173,6 @@ export default function ContentItemsMixin(Base) {
         {};
     }
 
-    // refineState(state) {
-    //   let result = super.refineState ? super.refineState(state) : true;
-    //   state[previousStateKey] = state[previousStateKey] || {
-    //     content: null
-    //   };
-    //   const changed = stateChanged(state, state[previousStateKey]);
-    //   const content = state.content;
-    //   const needsItems = content && !state.items; // Signal from other mixins
-    //   if (changed.content || needsItems) {
-    //     const items = content ?
-    //       Array.prototype.filter.call(content, item => this[symbols.itemMatchesState](item, state)) :
-    //       null;
-    //     if (items) {
-    //       Object.freeze(items);
-    //     }
-    //     state.items = items;
-    //     result = false;
-    //   }
-    //   return result;
-    // }
-
     [symbols.render]() {
       if (super[symbols.render]) { super[symbols.render](); }
       if (this.itemUpdates) {

@@ -21,31 +21,6 @@ class ReactiveTest extends ReactiveMixin(HTMLElement) {
     this.renderedResult = this.state.message;
   }
 
-  // This is a contrived state refinement routine for testing purposes. If
-  // state.foo is set, this trims it. In a separate pass, it ensures that
-  // state.bar equals state.foo. In a normal component, you'd try to avoid
-  // maintaining state that could be trivially derived from other state members.
-  // You'd also refine in as few passes as possible; this routine here simulates
-  // multiple mixins contributing to refinement.
-  refineState(state) {
-    let result = super.refineState ? super.refineState(state) : true;
-    if (state.foo) {
-      const trimmed = state.foo.trim();
-      if (trimmed !== state.foo) {
-        Object.assign(state, {
-          foo: trimmed
-        });
-        result = false;
-      } else if (state.bar !== state.foo) {
-        Object.assign(state, {
-          bar: state.foo
-        });
-        result = false;
-      }
-    }
-    return result;
-  }
-
 }
 customElements.define('reactive-test', ReactiveTest);
 

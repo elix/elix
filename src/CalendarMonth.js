@@ -90,7 +90,7 @@ class CalendarMonth extends Base {
   }
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       date: calendar.today(),
       dayRole: CalendarDay,
       daysOfWeekFormat: 'short'

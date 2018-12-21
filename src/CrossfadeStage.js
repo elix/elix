@@ -22,7 +22,7 @@ const Base =
 class CrossfadeStage extends Base {
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       transitionDuration: 750 // 3/4 of a second
     });
   }

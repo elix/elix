@@ -28,7 +28,7 @@ const Base =
 class Slideshow extends Base {
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       playing: true,
       selectionTimerDuration: 3000,
       selectionWraps: true,

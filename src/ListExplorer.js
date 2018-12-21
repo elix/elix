@@ -10,7 +10,7 @@ import Explorer from './Explorer.js';
 class ListExplorer extends Explorer {
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       proxyListPosition: 'start',
       orientation: 'vertical'
     });

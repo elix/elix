@@ -6,7 +6,7 @@ import SingleSelectionMixin from '../../src/SingleSelectionMixin.js';
 class SingleSelectionTest extends SingleSelectionMixin(ReactiveMixin(HTMLElement)) {
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       items: []
     });
   }

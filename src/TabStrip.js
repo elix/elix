@@ -88,7 +88,7 @@ class TabStrip extends Base {
   }
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       orientation: 'horizontal',
       selectionRequired: true,
       tabAlign: 'start',

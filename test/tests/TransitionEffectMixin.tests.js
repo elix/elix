@@ -16,7 +16,7 @@ const Base =
 class TransitionEffectTest extends Base {
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       effect: 'close',
       effectPhase: 'after'
     });

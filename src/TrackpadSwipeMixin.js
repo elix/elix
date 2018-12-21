@@ -35,7 +35,7 @@ export default function TrackpadSwipeMixin(Base) {
     }
 
     get defaultState() {
-      return Object.assign({}, super.defaultState, {
+      return Object.assign(super.defaultState, {
         swipeAxis: 'horizontal',
         swipeFraction: null
       });

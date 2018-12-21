@@ -113,7 +113,7 @@ class AutoCompleteInput extends Base {
   }
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       autoCompleteStart: null,
       tabindex: null,
       texts: [],

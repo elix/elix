@@ -32,19 +32,6 @@ export default function ItemsTextMixin(Base) {
     [symbols.getItemText](item) {
       return getItemText(item);
     }
-
-    // refineState(state) {
-    //   let result = super.refineState ? super.refineState(state) : true;
-    //   state[previousStateKey] = state[previousStateKey] || {
-    //     items: null
-    //   };
-    //   const changed = stateChanged(state, state[previousStateKey]);
-    //   const items = state.items;
-    //   if (changed.items) {
-    //     result = false;
-    //   }
-    //   return result;
-    // }
   }
 
   return ItemsText;

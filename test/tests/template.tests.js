@@ -24,7 +24,7 @@ class DynamicSingle extends ReactiveElement {
   }
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       dynamicRole: 'button'
     });
   }
@@ -58,7 +58,7 @@ class DynamicMultiple extends ReactiveElement {
   }
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       dynamicRole: 'button'
     });
   }

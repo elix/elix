@@ -12,7 +12,7 @@ import Thumbnail from './Thumbnail.js';
 class CarouselWithThumbnails extends Carousel {
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       proxyListOverlap: false,
       proxyRole: Thumbnail
     });

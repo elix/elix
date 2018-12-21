@@ -70,7 +70,7 @@ class HamburgerMenuButton extends Base {
   }
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       fromEdge: 'start',
       menuButtonRole: SeamlessButton,
       menuRole: Drawer

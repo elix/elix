@@ -38,7 +38,7 @@ class TabButton extends Base {
   }
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       index: 0,
       selected: false,
       tabAlign: 'start',

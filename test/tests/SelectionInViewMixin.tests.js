@@ -7,7 +7,7 @@ const itemHeight = '100';
 class SelectionInViewTest extends SelectionInViewMixin(ReactiveMixin(HTMLElement)) {
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       selectedIndex: -1
     });
   }

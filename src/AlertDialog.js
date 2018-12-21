@@ -1,6 +1,5 @@
 import { getSuperProperty } from './workarounds.js';
 import { merge, apply } from './updates.js';
-import { stateChanged } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import Dialog from './Dialog.js';
@@ -71,7 +70,7 @@ class AlertDialog extends Dialog {
   }
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       choiceButtonRole: 'button',
       choiceButtons: [],
       choices: ['OK']

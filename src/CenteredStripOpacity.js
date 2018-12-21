@@ -17,7 +17,7 @@ import CenteredStrip from './CenteredStrip.js';
 class CenteredStripOpacity extends CenteredStrip {
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       transitionDuration: 250
     });
   }

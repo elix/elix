@@ -1,6 +1,5 @@
 import { apply, merge } from './updates.js';
 import { getSuperProperty } from './workarounds.js';
-import { stateChanged } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import MenuButton from './MenuButton.js';
@@ -54,7 +53,7 @@ class DropdownList extends Base {
   }
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       itemRole: 'menuitemradio',
       selectionRequired: true,
       valueRole: 'div'

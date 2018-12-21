@@ -50,7 +50,7 @@ class Toast extends Base {
   }
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       duration: null,
       fromEdge: 'bottom',
     });

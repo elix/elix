@@ -25,7 +25,7 @@ export default function TimerSelectionMixin(Base) {
     }
 
     get defaultState() {
-      return Object.assign({}, super.defaultState, {
+      return Object.assign(super.defaultState, {
         playing: true,
         selectedIndexForTimer: null,
         selectionTimerDuration: 1000,

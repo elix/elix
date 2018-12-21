@@ -24,7 +24,7 @@ class SlidingPagesWithArrows extends Base {
     // Aug 2018, Firefox mobile usage is not significant. On desktop, at least,
     // Firefox will show the arrows.
     const finePointer = !window.matchMedia('(pointer:coarse)').matches;
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       showArrowButtons: finePointer
     });
   }

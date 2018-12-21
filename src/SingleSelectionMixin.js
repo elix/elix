@@ -74,6 +74,7 @@ export default function SingleSelectionMixin(Base) {
         selectionWraps: false,
         trackSelectedItem: true
       });
+      // Ensure selectedIndex is valid.
       state.onChange(['items', 'selectedIndex', 'selectionRequired'], (state, changed) => {
         const { items, selectedIndex, selectionRequired, selectionWraps } = state;
 
@@ -118,57 +119,6 @@ export default function SingleSelectionMixin(Base) {
         selected: selectedIndex >= 0 && index === selectedIndex
       });
     }
-
-    // When new state is being applied, ensure selectedIndex is valid.
-    // refineState(state) {
-    //   let result = super.refineState ? super.refineState(state) : true;
-
-    //   state[previousStateKey] = state[previousStateKey] || {
-    //     items: null,
-    //     selectedIndex: null
-    //   };
-    //   const changed = stateChanged(state, state[previousStateKey]);
-    //   const {
-    //     items,
-    //     selectedIndex,
-    //     selectionRequired,
-    //     selectionWraps
-    //   } = state;
-
-    //   let adjustedIndex = selectedIndex;
-
-    //   if (changed.items && !changed.selectedIndex && this.state.trackSelectedItem) {
-    //     // The index stayed the same, but the item may have moved.
-    //     const selectedItem = this.selectedItem;
-    //     if (items[selectedIndex] !== selectedItem) {
-    //       // The item moved or was removed. See if we can find the item
-    //       // again in the list of items.
-    //       const currentIndex = items.indexOf(selectedItem);
-    //       if (currentIndex >= 0) {
-    //         // Found the item again. Update the index to match.
-    //         adjustedIndex = currentIndex;
-    //       }
-    //     }
-    //   }
-
-    //   // If items are null, we haven't received items yet. Don't validate the
-    //   // selected index, as it may be set through markup; we'll want to validate
-    //   // it only after we have items.
-    //   if (items) {
-    //     const validatedIndex = validateIndex(
-    //       adjustedIndex,
-    //       items.length,
-    //       selectionRequired,
-    //       selectionWraps
-    //     );
-    //     if (validatedIndex !== selectedIndex) {
-    //       state.selectedIndex = validatedIndex;
-    //       result = false;
-    //     }
-    //   }
-
-    //   return result;
-    // }
 
     /**
      * Select the first item in the list.

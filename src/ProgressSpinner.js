@@ -32,7 +32,7 @@ class ProgressSpinner extends ReactiveElement {
   }
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       count: -1,
       playing: true
     });

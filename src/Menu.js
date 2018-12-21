@@ -1,5 +1,4 @@
 import { merge } from './updates.js';
-import { stateChanged } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import AriaMenuMixin from './AriaMenuMixin.js';
@@ -108,7 +107,7 @@ class Menu extends Base {
   }
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       orientation: 'vertical',
       selectionFocused: false
     });

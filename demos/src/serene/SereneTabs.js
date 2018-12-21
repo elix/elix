@@ -7,7 +7,7 @@ import Tabs from '../../../src/Tabs.js';
 class SereneTabs extends Tabs {
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       itemRole: 'tabpanel',
       proxyRole: SereneTabButton,
       stageRole: CrossfadeStage,

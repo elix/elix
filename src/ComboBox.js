@@ -1,4 +1,4 @@
-import { forwardFocus, stateChanged } from './utilities.js';
+import { forwardFocus } from './utilities.js';
 import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
@@ -6,9 +6,6 @@ import * as template from './template.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import PopupSource from './PopupSource.js';
 import SeamlessButton from './SeamlessButton.js';
-
-
-const previousStateKey = Symbol('previousState');
 
 
 const Base =
@@ -142,7 +139,8 @@ class ComboBox extends Base {
   }
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+
+    const state = Object.assign(super.defaultState, {
       ariaLabel: '',
       focused: false,
       horizontalAlign: 'left',
@@ -156,6 +154,18 @@ class ComboBox extends Base {
       toggleButtonRole: SeamlessButton,
       value: '',
     });
+
+    // Select text on closing.
+    state.onChange(['opened'], (state) => {
+      if (!state.opened) {
+        return {
+          selectText: true
+        };
+      }
+      return null;
+    });
+
+    return state;
   }
 
   /**
@@ -226,22 +236,6 @@ class ComboBox extends Base {
     this.setState({
       placeholder
     });
-  }
-
-  refineState(state) {
-    let result = super.refineState ? super.refineState(state) : true;
-    state[previousStateKey] = state[previousStateKey] || {
-      opened: null
-    };
-    const changed = stateChanged(state, state[previousStateKey]);
-    const { opened, selectText } = state;
-    const closing = changed.opened && !opened;
-    if (closing && !selectText) {
-      // Select text on closing.
-      state.selectText = true;
-      result = false;
-    }
-    return result;
   }
 
   get [symbols.template]() {

@@ -7,7 +7,7 @@ import CustomPageDot from './CustomPageDot.js';
 class CustomCarousel extends Carousel {
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       arrowButtonRole: CustomArrowButton,
       proxyRole: CustomPageDot
     });

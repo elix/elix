@@ -111,7 +111,7 @@ export default function TouchSwipeMixin(Base) {
     }
 
     get defaultState() {
-      return Object.assign({}, super.defaultState, {
+      return Object.assign(super.defaultState, {
         enableNegativeSwipe: true,
         enablePositiveSwipe: true,
         swipeAxis: 'horizontal',

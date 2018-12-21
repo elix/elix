@@ -1,7 +1,6 @@
 import { getItemText } from './ItemsTextMixin.js';
 import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
-import { stateChanged } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import ComboBox from './ComboBox.js';
@@ -75,7 +74,7 @@ class ListComboBox extends Base {
   }
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       horizontalAlign: 'stretch',
       listRole: ListBox,
       selectedIndex: -1

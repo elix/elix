@@ -1,5 +1,4 @@
 import { merge } from './updates.js';
-import { stateChanged } from './utilities.js';
 import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
@@ -76,29 +75,21 @@ class CalendarDays extends Base {
 
   get defaultState() {
     const today = calendar.today();
-    return Object.assign({}, super.defaultState, {
+    const state = Object.assign(super.defaultState, {
       date: calendar.today(),
       dayCount: 1,
       dayRole: CalendarDay,
       days: null,
       startDate: today
     });
-  }
 
-  refineState(state) {
-    let result = super.refineState ? super.refineState(state) : true;
-    state[previousStateKey] = state[previousStateKey] || {
-      dayCount: null,
-      dayRole: null,
-      locale: null,
-      startDate: null
-    };
-    const changed = stateChanged(state, state[previousStateKey]);
-    if (changed.dayRole || changed.locale || changed.startDate || changed.dayCount) {
-      updateDays(state, changed.dayRole);
-      result = false;
-    }
-    return result;
+    // If any date-related state changes, regenerate the set of days.
+    state.onChange(['dayCount', 'dayRole', 'locale', 'startDate'], (state, changed) => {
+      const days = updateDays(state, changed.dayRole);
+      return { days };
+    });
+
+    return state;
   }
 
   [symbols.render]() {
@@ -195,7 +186,7 @@ function updateDays(state, forceCreation) {
     firstDay.style.gridColumnStart = dayOfWeek + 1;
   }
   Object.freeze(days);
-  state.days = days;
+  return days;
 }
 
 

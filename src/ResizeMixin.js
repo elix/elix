@@ -58,7 +58,7 @@ export default function ResizeMixin(Base) {
     }
 
     get defaultState() {
-      return Object.assign({}, super.defaultState, {
+      return Object.assign(super.defaultState, {
         offsetHeight: this.offsetHeight,
         offsetWidth: this.offsetWidth
       });

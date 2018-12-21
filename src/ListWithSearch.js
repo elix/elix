@@ -80,7 +80,7 @@ class ListWithSearch extends Base {
   }
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       ariaLabel: '',
       filter: '',
       inputRole: 'input',

@@ -55,18 +55,6 @@ export default function ReactiveMixin(Base) {
       return new State();
     }
 
-    /**
-     * Apply changes to a proposed new state for the component to enforce
-     * necessary consistency between state members. See [Refining
-     * state](ReactiveMixin#refining-state) for details.
-     * 
-     * @param {object} state - a proposed new state for the component
-     * @returns {boolean} - true if the state is already acceptable as it is
-     */
-    refineState(state) {
-      return super.refineState ? super.refineState(state) : true;
-    }
-
     /*
      * Internal render method.
      * 

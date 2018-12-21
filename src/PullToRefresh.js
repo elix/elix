@@ -90,7 +90,7 @@ class PullToRefresh extends Base {
   
   get defaultState() {
     // Suppress transition effects on page load.
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       enableNegativeSwipe: false,
       pullIndicatorRole: downArrowTemplate,
       refreshing: false,

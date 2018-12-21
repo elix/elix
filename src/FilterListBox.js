@@ -1,5 +1,4 @@
 import { merge } from './updates.js';
-import { stateChanged } from './utilities.js';
 import * as symbols from './symbols.js';
 import ListBox from './ListBox.js';
 
@@ -15,7 +14,7 @@ const previousStateKey = Symbol('previousState');
 class FilterListBox extends ListBox {
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       filter: null
     });
   }

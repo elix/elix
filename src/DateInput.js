@@ -1,5 +1,4 @@
 import { getSuperProperty } from './workarounds.js';
-import { stateChanged } from './utilities.js';
 import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
@@ -61,7 +60,7 @@ class DateInput extends Base {
       month: 'numeric',
       year: 'numeric'
     };
-    return Object.assign({}, super.defaultState, {
+    const state = Object.assign(super.defaultState, {
       dateSelected: false,
       dateTimeFormat: null,
       dateTimeFormatOptions,
@@ -69,6 +68,78 @@ class DateInput extends Base {
       focused: false,
       timeBias: null
     });
+
+    // If the date changed while focused, assume user changed date.
+    state.onChange(['date', 'value'], state => {
+      if (state.focused) {
+        return {
+          userChangedDate: true
+        };
+      }
+      return null;
+    })
+
+    // Update value from date if:
+    // the date was changed from the outside,
+    // we're closing or losing focus and the user's changed the date,
+    // or the format changed and the date was the last substantive property set.
+    state.onChange(['date', 'dateTimeFormat', 'focused'], (state, changed) => {
+      const {
+        date,
+        datePriority,
+        dateTimeFormat,
+        focused,
+        userChangedDate
+      } = state;
+      const blur = changed.focused && !focused;
+      if ((changed.date && !focused) ||
+          (blur && userChangedDate) ||
+          (changed.dateTimeFormat && datePriority)) {
+        const formattedDate = date ?
+          this.formatDate(date, dateTimeFormat) :
+          '';
+        // if (state.value !== formattedDate) {
+        //   state.selectText = formattedDate.length > 0;
+        return {
+          selectText: formattedDate.length > 0,
+          value: formattedDate
+        };
+      }
+      return null;
+    });
+
+    // Update date from value if the value was changed, or the date format or
+    // time bias changed and the value was the last substantive property set.
+    state.onChange(['dateTimeFormat', 'timeBias', 'value'], (state, changed) => {
+      const {
+        datePriority,
+        dateTimeFormat,
+        timeBias,
+        value
+      } = state;
+      if (dateTimeFormat &&
+          (changed.value ||
+          (!datePriority && (changed.dateTimeFormat || changed.timeBias)))) {
+        const parsedDate = this.parseDate(value, dateTimeFormat, timeBias);
+        if (parsedDate) {
+          return {
+            date: parsedDate
+          };
+        }
+      }
+      return null;
+    });
+
+    // Update our time format if the locale or format options change.
+    state.onChange(['dateTimeFormatOptions', 'locale'], state => {
+      const { dateTimeFormatOptions, locale } = state;
+      const dateTimeFormat = calendar.dateTimeFormat(locale, dateTimeFormatOptions);
+      return {
+        dateTimeFormat
+      };
+    });
+
+    return state;
   }
 
   formatDate(date, dateTimeFormat) {
@@ -85,74 +156,6 @@ class DateInput extends Base {
     this[symbols.raiseChangeEvents] = true;
     super.locale = locale;
     this[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
-  }
-
-  refineState(state) {
-    let result = super.refineState ? super.refineState(state) : true;
-    state[previousStateKey] = state[previousStateKey] || {
-      date: null,
-      dateTimeFormat: null,
-      dateTimeFormatOptions: null,
-      focused: false,
-      locale: null,
-      timeBias: null,
-      value: null
-    };
-    const changed = stateChanged(state, state[previousStateKey]);
-    const {
-      date,
-      datePriority,
-      dateSelected,
-      dateTimeFormat,
-      dateTimeFormatOptions,
-      focused,
-      locale,
-      timeBias,
-      value
-    } = state;
-    const blur = changed.focused && !focused;
-    if (changed.date && focused) {
-      const hasDate = date != null;
-      if (dateSelected !== hasDate) {
-        state.dateSelected = hasDate;
-        result = false;
-      }
-    }
-    if ((changed.date && !focused) ||
-        (dateSelected && blur) ||
-        (changed.dateTimeFormat && datePriority)) {
-      // Update value from date if the date was changed from the outside, we're
-      // losing focus, or the format changed and the date was the last
-      // substantive property set.
-      const formattedDate = date ?
-        this.formatDate(date, dateTimeFormat) :
-        '';
-      if (state.value !== formattedDate) {
-        state.value = formattedDate;
-        state.selectText = formattedDate.length > 0;
-        result = false;
-      }
-    } else if (dateTimeFormat &&
-      (changed.value ||
-      (!datePriority && (changed.dateTimeFormat || changed.timeBias)))) {
-      // Update date from value if the value was changed, or the format changed
-      // and the value was the last substantive property set.
-      const parsedDate = this.parseDate(value, dateTimeFormat, timeBias);
-      if (parsedDate && !calendar.datesEqual(state.date, parsedDate)) {
-        state.date = parsedDate;
-        result = false;
-      }
-      const hasValue = value > '';
-      if (focused && (dateSelected != hasValue)) {
-        state.dateSelected = hasValue;
-        result = false;
-      }
-    }
-    if (changed.locale || changed.dateTimeFormatOptions) {
-      state.dateTimeFormat = calendar.dateTimeFormat(locale, dateTimeFormatOptions);
-      result = false;
-    }
-    return result;
   }
 
   parseDate(text, dateTimeFormat, timeBias) {

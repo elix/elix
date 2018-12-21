@@ -64,7 +64,7 @@ class Carousel extends Base {
     const showArrowButtons = mediaQueryList.media === pointerQuery ?
       mediaQueryList.matches :
       true;
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       orientation: 'horizontal',
       proxyListOverlap: true,
       proxyListPosition: 'bottom',

@@ -61,7 +61,7 @@ class ExpandableSection extends Base {
   }
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       headerRole: SeamlessButton,
       panelRole: ExpandablePanel,
       role: 'region'

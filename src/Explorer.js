@@ -7,7 +7,6 @@ import Modes from './Modes.js';
 import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
-import { stateChanged } from './utilities.js';
 
 
 const previousStateKey = Symbol('previousState');
@@ -93,7 +92,7 @@ class Explorer extends Base {
   }
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       assignedProxies: [],
       defaultProxies: [],
       proxyRole: 'div',

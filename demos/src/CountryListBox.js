@@ -50,7 +50,7 @@ class CountryListBox extends Base {
   }
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       orientation: 'vertical'
     });
   }

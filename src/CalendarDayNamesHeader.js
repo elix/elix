@@ -27,7 +27,7 @@ import ReactiveElement from './ReactiveElement.js';
 class CalendarDayNamesHeader extends ReactiveElement {
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       format: 'short',
       locale: navigator.language
     });

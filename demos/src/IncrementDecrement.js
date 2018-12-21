@@ -14,7 +14,7 @@ class IncrementDecrement extends ReactiveMixin(HTMLElement) {
 
   // This property becomes the value of this.state at constructor time.
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       value: 0
     });
   }

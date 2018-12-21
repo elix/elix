@@ -46,7 +46,7 @@ export default function DialogModalityMixin(Base) {
     }
 
     get defaultState() {
-      return Object.assign({}, super.defaultState, {
+      return Object.assign(super.defaultState, {
         role: 'dialog'
       });
     }

@@ -34,7 +34,7 @@ class RefreshAppDemo extends ReactiveElement {
 
   get defaultState() {
     const paragraphs = createParagraphs(texts);
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       paragraphs
     });
   }

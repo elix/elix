@@ -1,6 +1,5 @@
 import { getTextsFromItems } from './ItemsTextMixin.js';
 import { merge } from "./updates.js";
-import { stateChanged } from './utilities.js';
 import { substantiveElement } from './content.js';
 import * as symbols from './symbols.js';
 import AutoCompleteInput from "./AutoCompleteInput.js";
@@ -48,7 +47,7 @@ class FilterComboBox extends Base {
   }
   
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       filter: '',
       inputRole: AutoCompleteInput,
       listRole: FilterListBox,

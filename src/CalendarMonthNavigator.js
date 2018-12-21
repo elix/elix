@@ -67,7 +67,7 @@ class CalendarMonthNavigator extends Base {
   }
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       date: calendar.today(),
       dayRole: CalendarDayButton,
       orientation: 'both',

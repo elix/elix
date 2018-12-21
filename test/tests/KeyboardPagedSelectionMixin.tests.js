@@ -14,7 +14,7 @@ const Base =
 class KeyboardPagedSelectionTest extends Base {
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       selectedIndex: -1      
     });
   }

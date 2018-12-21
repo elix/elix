@@ -84,7 +84,7 @@ export default function OverlayMixin(Base) {
     }
 
     get defaultState() {
-      return Object.assign({}, super.defaultState, {
+      return Object.assign(super.defaultState, {
         autoFocus: true
       });
     }
