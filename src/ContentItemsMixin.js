@@ -62,6 +62,9 @@ export default function ContentItemsMixin(Base) {
       const state = Object.assign(super.defaultState, {
         items: null
       });
+
+      // Regenerate items when content changes, or if items has been nullified
+      // by another mixin (as a signal that items should be regenerated).
       state.onChange(['content', 'items'], (state, changed) => {
         const content = state.content;
         const needsItems = content && !state.items; // Signal from other mixins
@@ -76,6 +79,7 @@ export default function ContentItemsMixin(Base) {
         }
         return null;
       });
+
       return state;
     }
 

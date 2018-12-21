@@ -74,6 +74,7 @@ export default function SingleSelectionMixin(Base) {
         selectionWraps: false,
         trackSelectedItem: true
       });
+
       // Ensure selectedIndex is valid.
       state.onChange(['items', 'selectedIndex', 'selectionRequired'], (state, changed) => {
         const { items, selectedIndex, selectionRequired, selectionWraps } = state;
@@ -109,6 +110,7 @@ export default function SingleSelectionMixin(Base) {
         }
         return null;
       });
+      
       return state;
     }
 

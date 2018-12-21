@@ -15,6 +15,8 @@ export default function ItemsTextMixin(Base) {
       const state = Object.assign(super.defaultState, {
         texts: null
       });
+
+      // Regenerate texts when items change.
       state.onChange('items', state => {
         const { items } = state;
         const texts = getTextsFromItems(items, this[symbols.getItemText]);
@@ -24,6 +26,7 @@ export default function ItemsTextMixin(Base) {
         }
         return null;
       });
+      
       return state;
     }
 

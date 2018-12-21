@@ -155,7 +155,7 @@ class DateComboBox extends Base {
       return null;
     });
 
-    // Update our time format if the locale or format options change.
+    // Update our date format if the locale or format options change.
     state.onChange(['dateTimeFormatOptions', 'locale'], state => {
       const { dateTimeFormatOptions, locale } = state;
       const dateTimeFormat = calendar.dateTimeFormat(locale, dateTimeFormatOptions);
