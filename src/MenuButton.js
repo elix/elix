@@ -209,7 +209,6 @@ class MenuButton extends PopupButton {
           menuSelectedIndex: -1
         };
       }
-      return null;
     });
 
     return state;

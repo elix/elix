@@ -110,11 +110,9 @@ class Menu extends Base {
     });
 
     // When selection changes, we'll need to focus on it in componentDidUpdate.
-    state.onChange('selectedIndex', state => {
-      return {
-        selectionFocused: false
-      };
-    });
+    state.onChange('selectedIndex', () => ({
+      selectionFocused: false
+    }));
 
     return state;
   }
