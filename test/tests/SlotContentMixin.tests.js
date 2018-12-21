@@ -20,6 +20,10 @@ class SlotContentTest extends SlotContentMixin(HTMLElement) {
     this.componentDidMount();
   }
 
+  get defaultState() {
+    return {};
+  }
+
   setState(state) {
     Object.assign(this.state, state);
   }

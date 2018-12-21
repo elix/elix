@@ -12,7 +12,6 @@ declare const ReactiveMixin: Mixin<{
   componentDidUpdate(previousState: PlainObject): void;
   connectedCallback(): void;
   defaultState: State;
-  refineState(state: PlainObject): boolean;
   render(): Promise<void>;
   setState(changes: PlainObject): Promise<void>;
   shouldComponentUpdate(nextState: PlainObject): boolean;

@@ -5,7 +5,7 @@ import AriaListMixin from '../../src/AriaListMixin.js';
 
 
 class AriaListTest extends
-  ContentItemsMixin(ReactiveMixin(RenderUpdatesMixin(AriaListMixin(HTMLElement)))) {
+  AriaListMixin(ContentItemsMixin(ReactiveMixin(RenderUpdatesMixin(HTMLElement)))) {
 
   connectedCallback() {
     if (super.connectedCallback) { super.connectedCallback(); }
