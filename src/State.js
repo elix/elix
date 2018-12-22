@@ -1,36 +1,15 @@
 const changeHandlersKey = Symbol('changeHandlers');
 
 
+/**
+ * 
+ */
 export default class State {
 
   constructor(defaults) {
     if (defaults) {
-      this.apply(defaults);
+      this.set(defaults);
     }
-  }
-
-  apply(changes) {
-    let result = false;
-    for (
-      let changed;
-      changed = fieldsChanged(this, changes), !isEmpty(changed);
-    ) {
-      result = true; // There were real changes.
-      Object.assign(this, changes);
-      const nextChanges = {};
-      if (this[changeHandlersKey]) {
-        this[changeHandlersKey].forEach(handler => {
-          const { dependencies, callback } = handler;
-          const run = dependencies.some(dependency => changed[dependency]);
-          if (run) {
-            const updates = callback(this, changed);
-            Object.assign(nextChanges, updates);
-          }
-        });
-      }
-      changes = nextChanges;
-    }
-    return result;
   }
   
   /**
@@ -50,6 +29,49 @@ export default class State {
       this[changeHandlersKey] = [];
     }
     this[changeHandlersKey].push(changeHandler);
+  }
+
+  /**
+   * 
+   * @param {object} changes - the changes to apply to the state
+   * @returns {boolean} - true if any changes were actually applied
+   */
+  set(changes) {
+    let result = false;
+
+    // Applying the changes may produce a new round of changes, and that round
+    // might produce new changes, and so on. Loop until we complete a pass that
+    // produces no changes.
+    for (
+      let changed;
+      changed = fieldsChanged(this, changes), !isEmpty(changed);
+    ) {
+      // We do have some real changes to report.
+      result = true;
+
+      // Apply the changes to the state.
+      Object.assign(this, changes);
+
+      // Run the change handlers, gathering up the changes those produce.
+      const nextChanges = {};
+      if (this[changeHandlersKey]) {
+        this[changeHandlersKey].forEach(handler => {
+          const { dependencies, callback } = handler;
+          // Does this handler trigger on any of the changes we have?
+          const run = dependencies.some(dependency => changed[dependency]);
+          if (run) {
+            // Yes, run the change handler and collect its changes.
+            const handlerChanges = callback(this, changed);
+            Object.assign(nextChanges, handlerChanges);
+          }
+        });
+      }
+
+      // If the change handlers produced changes, we'll run the loop again.
+      changes = nextChanges;
+    }
+
+    return result;
   }
 
 }
@@ -74,6 +96,12 @@ function isEmpty(o) {
 }
 
 
+/**
+ * 
+ * @param {object} state 
+ * @param {object} changes 
+ * @returns {object}
+ */
 function fieldsChanged(state, changes) {
   const changed = {};
   for (const field in changes) {

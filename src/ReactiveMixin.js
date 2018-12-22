@@ -136,10 +136,15 @@ export default function ReactiveMixin(Base) {
         console.warn(`${this.constructor.name} called setState during rendering, which you should avoid.\nSee https://elix.org/documentation/ReactiveMixin.`);
       }
 
-      // Create a new state object that holds a copy of the old state.
+      // Create a new state object that holds a copy of the old state. If we
+      // pass the current state to the State constructor, we'll trigger the
+      // application of its change handlers, which will ultimately realize the
+      // state is already as refined as possible, and so do work for nothing. So
+      // we create the State, merge in the old state, then run the change
+      // handlers with just the present changes.
       const nextState = new State();
       Object.assign(nextState, this[stateKey]);
-      const changed = nextState.apply(changes);
+      const changed = nextState.set(changes);
 
       // Freeze the new state so it's immutable. This prevents accidental
       // attempts to set state without going through setState.
@@ -147,11 +152,9 @@ export default function ReactiveMixin(Base) {
 
       // Is this our first setState, or does the component think something's changed?
       const firstSetState = this[stateKey] === undefined;
-      if (!(firstSetState || changed)) {
-        if (!this.shouldComponentUpdate(nextState)) {
-          // No need to render.
-          return false;
-        }
+      if (!(firstSetState || changed || this.shouldComponentUpdate(nextState))) {
+        // No need to render.
+        return false;
       }
 
       // Set the new state.

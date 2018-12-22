@@ -90,6 +90,7 @@ export { default as SlideshowWithPlayControls } from './SlideshowWithPlayControl
 export { default as SlidingPages } from './SlidingPages.js';
 export { default as SlidingStage } from './SlidingStage.js';
 export { default as SlotContentMixin } from './SlotContentMixin.js';
+export { default as State } from './State.js';
 export { default as SwipeDirectionMixin } from './SwipeDirectionMixin.js';
 export { default as TabButton } from './TabButton.js';
 export { default as Tabs } from './Tabs.js';

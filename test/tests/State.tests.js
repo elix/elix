@@ -15,18 +15,18 @@ describe("State", () => {
     });
 
     // With no `text` field, refinement is a no-op.
-    state.apply({ ignored: true });
+    state.set({ ignored: true });
     assert(state.text === undefined);
     assert(Object.keys(state).length === 1);
 
     // Setting text should invoke refiner.
-    state.apply({ text: 'Hello' });
+    state.set({ text: 'Hello' });
     assert(state.text === 'Hello');
     assert(state.parens === '(Hello)');
     assert(state.callCount === 1);
 
     // Calling again with same text should not invoke refiner.
-    state.apply({ text: 'Hello' });
+    state.set({ text: 'Hello' });
     assert(state.callCount === 1);
   });
 
@@ -45,11 +45,11 @@ describe("State", () => {
       })
     );
 
-    state.apply({ text: '1' });
+    state.set({ text: '1' });
     assert(state.text === '1');
     assert(state.value === 1);
 
-    state.apply({ value: 2 });
+    state.set({ value: 2 });
     assert(state.text === '2');
     assert(state.value === 2);
   });
@@ -64,11 +64,11 @@ describe("State", () => {
       })
     );
 
-    state.apply({ a: true });
+    state.set({ a: true });
     assert(!state.aAndB);
     assert(state.aOrB);
 
-    state.apply({ b: true });
+    state.set({ b: true });
     assert(state.aAndB);
     assert(state.aOrB);
   });
@@ -80,7 +80,7 @@ describe("State", () => {
       state.value < 10 ? { value: state.value + 1 } : null
     );
 
-    state.apply({ value: 1 });
+    state.set({ value: 1 });
     assert(state.value === 10);
   });
 
@@ -93,7 +93,7 @@ describe("State", () => {
       ranRule = true;
     });
 
-    state.apply({ a: 1 });
+    state.set({ a: 1 });
     assert(!ranRule);
   });
 
