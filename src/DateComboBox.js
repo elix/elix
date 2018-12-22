@@ -123,8 +123,6 @@ class DateComboBox extends Base {
         const formattedDate = date ?
           this.formatDate(date, dateTimeFormat) :
           '';
-        // if (state.value !== formattedDate) {
-        //   state.selectText = formattedDate.length > 0;
         return {
           selectText: formattedDate.length > 0,
           value: formattedDate
