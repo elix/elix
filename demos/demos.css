@@ -48,10 +48,6 @@ label {
   height: 100%;
 }
 
-[unresolved] {
-  visibility: hidden;
-}
-
 :not(:defined) {
   visibility: hidden;
 }

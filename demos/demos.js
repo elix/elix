@@ -17,6 +17,3 @@ import './src/SingleSelectionDemo.js';
 import './src/SlidingPagesWithArrows.js';
 import './src/SwipeDemo.js';
 import './src/ToolbarTab.js';
-
-// Show custom elements on the page only when they've all been defined.
-import './src/showElementsWhenDefined.js';
