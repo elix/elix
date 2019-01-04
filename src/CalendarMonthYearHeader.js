@@ -35,7 +35,27 @@ class CalendarMonthYearHeader extends Base {
 
   get defaultState() {
     return Object.assign(super.defaultState, {
-      date: calendar.today()
+      date: calendar.today(),
+      monthFormat: 'long',
+      yearFormat: 'numeric'
+    });
+  }
+
+  get monthFormat() {
+    return this.state.monthFormat;
+  }
+  set monthFormat(monthFormat) {
+    this.setState({
+      monthFormat
+    });
+  }
+
+  get yearFormat() {
+    return this.state.yearFormat;
+  }
+  set yearFormat(yearFormat) {
+    this.setState({
+      yearFormat
     });
   }
 
@@ -44,9 +64,6 @@ class CalendarMonthYearHeader extends Base {
       <style>
         :host {
           display: inline-block;
-        }
-
-        #formatted {
           text-align: center;
         }
       </style>
@@ -55,11 +72,16 @@ class CalendarMonthYearHeader extends Base {
   }
 
   get updates() {
-    const formatter = calendar.dateTimeFormat(this.state.locale, {
-      month: 'long',
-      year: 'numeric'
-    });
-    const textContent = formatter.format(this.state.date);
+    const { date, locale, monthFormat, yearFormat } = this.state;
+    const formatOptions = {};
+    if (monthFormat) {
+      formatOptions.month = monthFormat;
+    }
+    if (yearFormat) {
+      formatOptions.year = yearFormat;
+    }
+    const formatter = calendar.dateTimeFormat(locale, formatOptions);
+    const textContent = formatter.format(date);
     return merge(super.updates, {
       $: {
         formatted: {

@@ -93,7 +93,27 @@ class CalendarMonth extends Base {
     return Object.assign(super.defaultState, {
       date: calendar.today(),
       dayRole: CalendarDay,
-      daysOfWeekFormat: 'short'
+      daysOfWeekFormat: 'short',
+      monthFormat: 'long',
+      yearFormat: 'numeric'
+    });
+  }
+
+  get monthFormat() {
+    return this.state.monthFormat;
+  }
+  set monthFormat(monthFormat) {
+    this.setState({
+      monthFormat
+    });
+  }
+
+  get yearFormat() {
+    return this.state.yearFormat;
+  }
+  set yearFormat(yearFormat) {
+    this.setState({
+      yearFormat
     });
   }
 
@@ -111,15 +131,9 @@ class CalendarMonth extends Base {
           padding: 0.3em;
         }
 
-        #monthTable {
-          border-collapse: collapse;
-          display: table;
-          width: 100%;
-        }
-
         #weekDaysHeader {
-          display: table-header-group;
           font-size: smaller;
+          width: 100%;
         }
 
         #monthDays {
@@ -128,9 +142,7 @@ class CalendarMonth extends Base {
       </style>
 
       <elix-calendar-month-year-header id="monthYearHeader"></elix-calendar-month-year-header>
-      <div id="monthTable">
-        <elix-calendar-day-names-header id="weekDaysHeader" format="short"></elix-calendar-day-names-header>
-      </div>
+      <elix-calendar-day-names-header id="weekDaysHeader" format="short"></elix-calendar-day-names-header>
       <elix-calendar-days id="monthDays"></elix-calendar-days>
     `;
   }
@@ -140,7 +152,9 @@ class CalendarMonth extends Base {
       date,
       dayRole,
       daysOfWeekFormat,
-      locale
+      locale,
+      monthFormat,
+      yearFormat
     } = this.state;
     const startDate = calendar.firstDateOfMonth(date);
     const endDate = calendar.lastDateOfMonth(date);
@@ -157,7 +171,9 @@ class CalendarMonth extends Base {
         },
         monthYearHeader: {
           date: firstDateOfMonth,
-          locale
+          locale,
+          monthFormat,
+          yearFormat
         },
         weekDaysHeader: {
           format: daysOfWeekFormat,
