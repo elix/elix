@@ -95,6 +95,7 @@ class CalendarMonth extends Base {
       dayRole: CalendarDay,
       daysOfWeekFormat: 'short',
       monthFormat: 'long',
+      showSelectedDay: false,
       yearFormat: 'numeric'
     });
   }
@@ -105,6 +106,15 @@ class CalendarMonth extends Base {
   set monthFormat(monthFormat) {
     this.setState({
       monthFormat
+    });
+  }
+
+  get showSelectedDay() {
+    return this.state.showSelectedDay;
+  }
+  set showSelectedDay(showSelectedDay) {
+    this.setState({
+      showSelectedDay
     });
   }
 
@@ -154,6 +164,7 @@ class CalendarMonth extends Base {
       daysOfWeekFormat,
       locale,
       monthFormat,
+      showSelectedDay,
       yearFormat
     } = this.state;
     const startDate = calendar.firstDateOfMonth(date);
@@ -167,6 +178,7 @@ class CalendarMonth extends Base {
           dayCount,
           dayRole,
           locale,
+          showSelectedDay,
           startDate
         },
         monthYearHeader: {

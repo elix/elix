@@ -71,7 +71,8 @@ class CalendarMonthNavigator extends Base {
       date: calendar.today(),
       dayRole: CalendarDayButton,
       orientation: 'both',
-      overlayArrowButtons: false
+      overlayArrowButtons: false,
+      showSelectedDay: true
     });
   }
 

@@ -77,6 +77,7 @@ class CalendarDays extends Base {
       dayCount: 1,
       dayRole: CalendarDay,
       days: null,
+      showSelectedDay: false,
       startDate: today
     });
 
@@ -91,6 +92,7 @@ class CalendarDays extends Base {
 
   [symbols.render]() {
     if (super[symbols.render]) { super[symbols.render](); }
+    const showSelectedDay = this.state.showSelectedDay;
     const days = this.days || [];
     // Ensure only current date has "selected" class.
     const date = this.state.date;
@@ -100,11 +102,21 @@ class CalendarDays extends Base {
     days.forEach(day => {
       if ('selected' in day) {
         const dayDate = day.date;
-        const selected = dayDate.getDate() === referenceDate &&
+        const selected = showSelectedDay &&
+          dayDate.getDate() === referenceDate &&
           dayDate.getMonth() === referenceMonth &&
           dayDate.getFullYear() === referenceYear;
         day.selected = selected;
       }
+    });
+  }
+
+  get showSelectedDay() {
+    return this.state.showSelectedDay;
+  }
+  set showSelectedDay(showSelectedDay) {
+    this.setState({
+      showSelectedDay
     });
   }
 
