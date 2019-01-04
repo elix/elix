@@ -64,15 +64,10 @@ class CalendarDayNamesHeader extends ReactiveElement {
     return template.html`
       <style>
         :host {
-          display: table-row;
+          display: grid;
+          grid-template-columns: repeat(7, 1fr);
         }
 
-        .dayOfWeek {
-          display: table-cell;
-          width: 14.285%; /* One seventh */
-        }
-
-        /* TODO: Move to separate component? */
         .dayOfWeek {
           padding: 0.3em;
           text-align: center;
