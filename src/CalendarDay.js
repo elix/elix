@@ -35,7 +35,17 @@ class CalendarDay extends Base {
   get defaultState() {
     return Object.assign(super.defaultState, {
       date: calendar.today(),
+      outsideRange: false,
       selected: false
+    });
+  }
+
+  get outsideRange() {
+    return this.state.outsideRange;
+  }
+  set outsideRange(outsideRange) {
+    this.setState({
+      outsideRange
     });
   }
 
@@ -47,12 +57,12 @@ class CalendarDay extends Base {
           padding: 0.3em;
         }
 
-        :host(.outsideMonth) {
-          visibility: hidden;
-        }
-
         :host(.weekend) {
           color: gray;
+        }
+
+        :host(.outsideRange) {
+          color: lightgray;
         }
 
         :host(.today) {
@@ -85,7 +95,7 @@ class CalendarDay extends Base {
 
   get updates() {
 
-    const { date, locale, selected } = this.state;
+    const { date, locale, outsideRange, selected } = this.state;
     const today = calendar.today();
     const dayOfWeek = date.getDay();
     const dayOfMonth = date.getDate();
@@ -101,6 +111,7 @@ class CalendarDay extends Base {
         firstWeek: dayOfMonth <= 7,
         future: date > today,
         lastDayOfMonth: date.getMonth() !== nextDate.getMonth(),
+        outsideRange,
         past: date < today,
         saturday: dayOfWeek === 6,
         selected,

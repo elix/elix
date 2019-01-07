@@ -72,6 +72,7 @@ class CalendarMonthNavigator extends Base {
       dayRole: CalendarDayButton,
       orientation: 'both',
       overlayArrowButtons: false,
+      showCompleteWeeks: true,
       showSelectedDay: true
     });
   }

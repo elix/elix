@@ -58,6 +58,12 @@ export function datesEqual(date1, date2) {
 }
 
 
+export function daysBetweenDates(date1, date2) {
+  const days = Math.round((date2.getTime() - date1.getTime()) / millisecondsPerDay);
+  return days;
+}
+
+
 /**
  * Returns the number of days between the first day of the calendar week in the
  * indicated locale and the given date. In other words, the result indicates
@@ -142,6 +148,21 @@ export function lastDateOfMonth(date) {
   result.setMonth(result.getMonth() + 1);
   result.setDate(result.getDate() - 1);
   return result;
+}
+
+
+/**
+ * Return the date of the last day of the week in the locale's calendar that
+ * contains the given date.
+ * 
+ * @param {Date} date - the target date
+ * @param {string} locale - the calendar locale
+ * @returns {Date}
+ */
+export function lastDateOfWeek(date, locale) {
+  const days = daysSinceFirstDayOfWeek(date, locale);
+  const firstDate = offsetDateByDays(date, 6-days);
+  return midnightOnDate(firstDate);
 }
 
 

@@ -77,12 +77,13 @@ class CalendarDays extends Base {
       dayCount: 1,
       dayRole: CalendarDay,
       days: null,
+      showCompleteWeeks: false,
       showSelectedDay: false,
       startDate: today
     });
 
     // If any date-related state changes, regenerate the set of days.
-    state.onChange(['dayCount', 'dayRole', 'locale', 'startDate'], (state, changed) => {
+    state.onChange(['dayCount', 'dayRole', 'locale', 'showCompleteWeeks', 'startDate'], (state, changed) => {
       const days = updateDays(state, changed.dayRole);
       return { days };
     });
@@ -94,20 +95,37 @@ class CalendarDays extends Base {
     if (super[symbols.render]) { super[symbols.render](); }
     const showSelectedDay = this.state.showSelectedDay;
     const days = this.days || [];
-    // Ensure only current date has "selected" class.
-    const date = this.state.date;
-    const referenceDate = date.getDate();
-    const referenceMonth = date.getMonth();
-    const referenceYear = date.getFullYear();
+    const { date, dayCount, startDate } = this.state;
+    const selectedDate = date.getDate();
+    const selectedMonth = date.getMonth();
+    const selectedYear = date.getFullYear();
+    const firstDateAfterRange = calendar.offsetDateByDays(startDate, dayCount);
     days.forEach(day => {
+      const dayDate = day.date;
       if ('selected' in day) {
-        const dayDate = day.date;
+        // Ensure only current date has "selected" class.
         const selected = showSelectedDay &&
-          dayDate.getDate() === referenceDate &&
-          dayDate.getMonth() === referenceMonth &&
-          dayDate.getFullYear() === referenceYear;
+          dayDate.getDate() === selectedDate &&
+          dayDate.getMonth() === selectedMonth &&
+          dayDate.getFullYear() === selectedYear;
         day.selected = selected;
       }
+      if ('outsideRange' in day) {
+        // Mark dates as inside or outside of range.
+        const dayTime = dayDate.getTime();
+        const outsideRange = dayTime < startDate.getTime() ||
+          dayTime >= firstDateAfterRange.getTime();
+        day.outsideRange = outsideRange;
+      }
+    });
+  }
+
+  get showCompleteWeeks() {
+    return this.state.showCompleteWeeks;
+  }
+  set showCompleteWeeks(showCompleteWeeks) {
+    this.setState({
+      showCompleteWeeks
     });
   }
 
@@ -167,33 +185,49 @@ class CalendarDays extends Base {
 // Create days as necessary for the given state.
 // Reuse existing day elements to the degree possible.
 function updateDays(state, forceCreation) {
-  const { dayCount, dayRole, locale } = state;
-  const startDate = calendar.midnightOnDate(state.startDate);
+  const { dayCount, dayRole, locale, showCompleteWeeks, startDate } = state;
+  const workingStartDate = showCompleteWeeks ?
+    calendar.firstDateOfWeek(startDate, locale) :
+    calendar.midnightOnDate(startDate);
+  let workingDayCount;
+  if (showCompleteWeeks) {
+    const endDate = calendar.offsetDateByDays(startDate, dayCount - 1);
+    const workingEndDate = calendar.lastDateOfWeek(endDate, locale);
+    workingDayCount = calendar.daysBetweenDates(workingStartDate, workingEndDate) + 1;
+  } else {
+    workingDayCount = dayCount;
+  }
+
   let days = state.days ? state.days.slice() : [];
-  let date = startDate;
-  for (let i = 0; i < dayCount; i++) {
+
+  let date = workingStartDate;
+  for (let i = 0; i < workingDayCount; i++) {
     const createNewElement = forceCreation || i >= days.length;
     const day = createNewElement ?
       template.createElement(dayRole) :
       days[i];
     day.date = new Date(date.getTime());
     day.locale = locale;
+    day.style.gridColumnStart = '';
     if (createNewElement) {
       days[i] = day;
     }
     date = calendar.offsetDateByDays(date, 1);
   }
-  if (dayCount < days.length) {
+
+  if (workingDayCount < days.length) {
     // Trim days which are no longer needed.
-    days = days.slice(0, dayCount);
+    days = days.slice(0, workingDayCount);
   }
+
   const firstDay = days[0];
-  if (firstDay) {
+  if (firstDay && !showCompleteWeeks) {
     // Set the grid-column on the first day. This will cause all the subsequent
     // days to line up in the calendar grid.
     const dayOfWeek = calendar.daysSinceFirstDayOfWeek(firstDay.date, state.locale);
     firstDay.style.gridColumnStart = dayOfWeek + 1;
   }
+
   Object.freeze(days);
   return days;
 }
