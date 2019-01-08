@@ -1,6 +1,6 @@
 /**
-  * @module DarkModeMixin
-  */
+ * @module DarkModeMixin
+ */
 export default function DarkModeMixin(Base) {
   return class DarkMode extends Base {
 
@@ -49,6 +49,7 @@ function findBackgroundColor(element) {
     // This element has no background, assume white.
     return 'rgb(255,255,255)';
   }
+  // @ts-ignore
   if (element instanceof ShadowRoot) {
     return findBackgroundColor(element.host);
   }
@@ -62,9 +63,9 @@ function findBackgroundColor(element) {
 }
 
 
-// Return the individual RGB values from a CSS color string.
+// Return the individual RGB values from a CSS RGB/RGBA color string.
 function parseRgb(rgbString) {
-  const rgbRegex = /rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*[\d\.]+\s*)?\)/;
+  const rgbRegex = /rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*[\d.]+\s*)?\)/;
   const match = rgbRegex.exec(rgbString);
   if (match) {
     const r = match[1];
