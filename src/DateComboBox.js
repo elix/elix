@@ -1,13 +1,15 @@
-import './CalendarMonthNavigator.js'
-import './SeamlessButton.js';
 import { forwardFocus } from './utilities.js';
 import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import ArrowDirectionButton from './ArrowDirectionButton.js';
+import CalendarDayButton from './CalendarDayButton.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
+import CalendarMonthNavigator from './CalendarMonthNavigator.js';
 import ComboBox from './ComboBox.js';
+import SeamlessButton from './SeamlessButton.js';
 
 
 const Base =
@@ -18,40 +20,73 @@ const Base =
   
 class DateComboBox extends Base {
 
+  get arrowButtonRole() {
+    return this.state.arrowButtonRole;
+  }
+  set arrowButtonRole(arrowButtonRole) {
+    this.setState({
+      arrowButtonRole
+    });
+  }
+
+  [symbols.beforeUpdate]() {
+    const inputChanged = this[symbols.renderedRoles].inputRole !== this.state.inputRole;
+    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+    const calendarChanged = this[symbols.renderedRoles].calendarRole !== this.state.calendarRole;
+    if (calendarChanged) {
+      template.transmute(this.$.calendar, this.state.calendarRole);
+      this.$.calendar.addEventListener('date-changed', event => {
+        this[symbols.raiseChangeEvents] = true;
+        /** @type {any} */
+        const cast = event;
+        this.date = cast.detail.date;
+        this[symbols.raiseChangeEvents] = false;
+      });
+      this.$.calendar.addEventListener('mousedown', event => {
+        this[symbols.raiseChangeEvents] = true;
+        this.close();
+        event.preventDefault(); // Keep focus on input.
+        this[symbols.raiseChangeEvents] = false;
+      });
+      this[symbols.renderedRoles].calendarRole = this.state.calendarRole;
+    }
+    const todayButtonChanged = this[symbols.renderedRoles].todayButtonRole !== this.state.todayButtonRole;
+    if (todayButtonChanged) {
+      template.transmute(this.$.todayButton, this.state.todayButtonRole);
+      this.$.todayButton.addEventListener('mousedown', event => {
+        this[symbols.raiseChangeEvents] = true;
+        this.date = calendar.today();
+        this.close();
+        event.preventDefault(); // Keep focus on input.
+        this[symbols.raiseChangeEvents] = false;
+      });
+      this[symbols.renderedRoles].todayButtonRole = this.state.todayButtonRole;
+    }
+    if (inputChanged || calendarChanged) {
+      if (this.$.calendar instanceof HTMLElement && this.$.input instanceof HTMLElement) {
+        forwardFocus(this.$.calendar, this.$.input);
+      }
+    }
+    if (inputChanged || todayButtonChanged) {
+      if (this.$.todayButton instanceof HTMLElement && this.$.input instanceof HTMLElement) {
+        forwardFocus(this.$.todayButton, this.$.input);
+      }
+    }
+  }
+  
   get calendar() {
     return this.shadowRoot ?
       this.$.calendar :
       null;
   }
 
-  componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
-    this.$.calendar.addEventListener('date-changed', event => {
-      this[symbols.raiseChangeEvents] = true;
-      /** @type {any} */
-      const cast = event;
-      this.date = cast.detail.date;
-      this[symbols.raiseChangeEvents] = false;
+  get calendarRole() {
+    return this.state.calendarRole;
+  }
+  set calendarRole(calendarRole) {
+    this.setState({
+      calendarRole
     });
-    this.$.calendar.addEventListener('mousedown', event => {
-      this[symbols.raiseChangeEvents] = true;
-      this.close();
-      event.preventDefault(); // Keep focus on input.
-      this[symbols.raiseChangeEvents] = false;
-    });
-    this.$.todayButton.addEventListener('mousedown', event => {
-      this[symbols.raiseChangeEvents] = true;
-      this.date = calendar.today();
-      this.close();
-      event.preventDefault(); // Keep focus on input.
-      this[symbols.raiseChangeEvents] = false;
-    });
-    if (this.$.todayButton instanceof HTMLElement && this.$.input instanceof HTMLElement) {
-      forwardFocus(this.$.todayButton, this.$.input);
-    }
-    if (this.$.calendar instanceof HTMLElement && this.$.input instanceof HTMLElement) {
-      forwardFocus(this.$.calendar, this.$.input);
-    }
   }
 
   get dateTimeFormatOptions() {
@@ -73,6 +108,15 @@ class DateComboBox extends Base {
     });
   }
 
+  get dayRole() {
+    return this.state.dayRole;
+  }
+  set dayRole(dayRole) {
+    this.setState({
+      dayRole
+    });
+  }
+
   get defaultState() {
 
     const dateTimeFormatOptions = {
@@ -82,10 +126,14 @@ class DateComboBox extends Base {
     };
 
     const state = Object.assign(super.defaultState, {
+      arrowButtonRole: ArrowDirectionButton,
+      calendarRole: CalendarMonthNavigator,
       datePriority: false,
       dateSelected: false,
       dateTimeFormat: null,
       dateTimeFormatOptions,
+      dayRole: CalendarDayButton,
+      todayButtonRole: SeamlessButton,
       timeBias: null
     });
 
@@ -301,8 +349,8 @@ class DateComboBox extends Base {
           border-color: gray;
         }
       </style>
-      <elix-calendar-month-navigator id="calendar"></elix-calendar-month-navigator>
-      <elix-seamless-button id="todayButton">Today</elix-seamless-button>
+      <div id="calendar"></div>
+      <button id="todayButton">Today</button>
     `;
     const defaultSlot = template.defaultSlot(result.content);
     if (defaultSlot) {
@@ -333,13 +381,29 @@ class DateComboBox extends Base {
     });
   }
 
+  get todayButtonRole() {
+    return this.state.todayButtonRole;
+  }
+  set todayButtonRole(todayButtonRole) {
+    this.setState({
+      todayButtonRole
+    });
+  }
+
   get updates() {
-    const { date, locale } = this.state;
+    const { arrowButtonRole, date, dayRole, locale } = this.state;
+    const calendar = this.$.calendar;
     return merge(super.updates, {
       $: {
         calendar: Object.assign(
           {
             locale
+          },
+          'arrowButtonRole' in calendar && {
+            arrowButtonRole
+          },
+          'dayRole' in calendar && {
+            dayRole
           },
           date && {
             date

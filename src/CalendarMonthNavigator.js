@@ -160,9 +160,12 @@ class CalendarMonthNavigator extends Base {
 
   get updates() {
     const darkMode = this.state.darkMode;
-    const arrowButtonUpdates = {
-      darkMode
-    };
+    const supportsDarkMode = 'darkMode' in this.$.arrowButtonLeft;
+    const arrowButtonUpdates = supportsDarkMode ?
+      {
+        darkMode
+      } : 
+      {};
     return merge(super.updates, {
       $: {
         arrowButtonLeft: arrowButtonUpdates,
