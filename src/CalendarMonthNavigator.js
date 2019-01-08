@@ -9,6 +9,7 @@ import CalendarDayButton from './CalendarDayButton.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import CalendarMonth from './CalendarMonth.js';
 import ComposedFocusMixin from './ComposedFocusMixin.js';
+import DarkModeMixin from './DarkModeMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 
@@ -17,10 +18,11 @@ const Base =
   ArrowDirectionMixin(
   CalendarElementMixin(
   ComposedFocusMixin(
+  DarkModeMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
     CalendarMonth
-  )))));
+  ))))));
 
 
 class CalendarMonthNavigator extends Base {
@@ -145,11 +147,6 @@ class CalendarMonthNavigator extends Base {
 
     const styleTemplate = html`
       <style>
-        #arrowButtonLeft,
-        #arrowButtonRight {
-          color: currentColor;
-        }
-
         #arrowIconLeft,
         #arrowIconRight {
           font-size: 24px;
@@ -162,10 +159,9 @@ class CalendarMonthNavigator extends Base {
   }
 
   get updates() {
+    const darkMode = this.state.darkMode;
     const arrowButtonUpdates = {
-      style: {
-        color: 'currentColor'
-      }
+      darkMode
     };
     return merge(super.updates, {
       $: {
