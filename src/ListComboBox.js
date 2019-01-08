@@ -114,9 +114,12 @@ class ListComboBox extends Base {
         const selectedItem = items[selectedIndex];
         if (selectedItem) {
           const selectedItemText = getItemText(selectedItem);
+          // See notes on mobile at ComboBox.defaultState.
+          const probablyMobile = matchMedia('(pointer: coarse)').matches;
+          const selectText = !probablyMobile;
           if (value !== selectedItemText) {
             return {
-              selectText: true,
+              selectText,
               value: selectedItemText
             };
           }

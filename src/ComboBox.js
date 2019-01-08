@@ -156,10 +156,18 @@ class ComboBox extends Base {
     });
 
     // Select text on closing.
+    // Exception: on mobile devices, leaving the text selected may show
+    // selection handles, which may suggest to the user that there's something
+    // more they should be doing with the text even though they're done with it.
+    // We therefore avoid leaving text selected if an on-screen keyboard is in
+    // use. Since we can't actually detect that, we use the absence of a
+    // fine-grained pointer (mouse) as a proxy for mobile.
     state.onChange(['opened'], (state) => {
       if (!state.opened) {
+        const probablyMobile = matchMedia('(pointer: coarse)').matches;
+        const selectText = !probablyMobile;
         return {
-          selectText: true
+          selectText
         };
       }
       return null;
