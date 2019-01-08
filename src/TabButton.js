@@ -107,13 +107,13 @@ class TabButton extends Base {
           flex: 1;
           font-family: inherit;
           font-size: inherit;
+          height: 100%;
           margin: 0;
-          min-height: 100%;
-          min-width: 100%;
           outline: none;
           padding: 0.5em 0.75em;
           transition: border-color 0.25s;
           white-space: nowrap;
+          width: 100%;
         }
       </style>
       <button id="inner" tabindex="-1">

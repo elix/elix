@@ -53,6 +53,8 @@ class Input extends Base {
           font-size: inherit;
           font-style: inherit;
           font-weight: inherit;
+          height: 100%;
+          width: 100%;
         }
       </style>
 

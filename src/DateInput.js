@@ -164,8 +164,8 @@ class DateInput extends Base {
     const result = getSuperProperty(this, DateInput, symbols.template);
     const styleTemplate = template.html`
       <style>
-        #inner {
-          width: 8em;
+        :host {
+          width: 6em;
         }
       </style>
     `;

@@ -252,6 +252,7 @@ class PopupSource extends Base {
         }
 
         #source {
+          height: 100%;
           -webkit-tap-highlight-color: transparent;
           touch-action: manipulation;
           width: 100%;

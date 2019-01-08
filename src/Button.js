@@ -75,12 +75,12 @@ class Button extends Base {
           font-size: inherit;
           font-style: inherit;
           font-weight: inherit;
+          height: 100%;
           justify-content: center;
-          min-height: 100%;
-          min-width: 100%;
           padding: 0;
           position: relative;
           text-align: initial; /* Edge */
+          width: 100%;
         }
       </style>
 
