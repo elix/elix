@@ -272,7 +272,7 @@ class ComboBox extends Base {
           font-size: inherit;
           font-style: inherit;
           font-weight: inherit;
-          width: 100%;
+          min-width: 100%;
         }
 
         #toggleButton {

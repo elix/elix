@@ -364,7 +364,7 @@ class WrappedStandardElement extends ReactiveElement {
     const display = blockElements.indexOf(this.extends) >= 0 ?
       'block' :
       'inline-block';
-    return template.html`<style>:host { display: ${display}} #inner { box-sizing: border-box; height: 100%; width: 100%; }</style><${this.extends} id="inner"><slot></slot></${this.extends}`;
+    return template.html`<style>:host { display: ${display}} #inner { box-sizing: border-box; min-height: 100%; min-width: 100%; }</style><${this.extends} id="inner"><slot></slot></${this.extends}`;
   }
 
   get updates() {

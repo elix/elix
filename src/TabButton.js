@@ -108,6 +108,8 @@ class TabButton extends Base {
           font-family: inherit;
           font-size: inherit;
           margin: 0;
+          min-height: 100%;
+          min-width: 100%;
           outline: none;
           padding: 0.5em 0.75em;
           transition: border-color 0.25s;

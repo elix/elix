@@ -49,13 +49,10 @@ class Input extends Base {
         }
         
         #inner {
-          box-sizing: border-box;
           font-family: inherit;
           font-size: inherit;
           font-style: inherit;
           font-weight: inherit;
-          min-height: 100%;
-          min-width: 100%;
         }
       </style>
 
