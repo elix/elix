@@ -45,9 +45,12 @@ export default function DarkModeMixin(Base) {
 // transparent value in Blink and Webkit), walk up the parent chain until a
 // non-transparent color is found.
 function findBackgroundColor(element) {
-  if (element == null || typeof element.style === 'undefined') {
+  if (element == null || element instanceof Document) {
     // This element has no background, assume white.
     return 'rgb(255,255,255)';
+  }
+  if (element instanceof ShadowRoot) {
+    return findBackgroundColor(element.host);
   }
   const backgroundColor = getComputedStyle(element).backgroundColor;
   if (backgroundColor === 'transparent' || backgroundColor === 'rgba(0, 0, 0, 0)') {

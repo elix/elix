@@ -1,12 +1,14 @@
 import { merge } from './updates.js';
 import HoverMixin from './HoverMixin.js';
 import SeamlessButton from './SeamlessButton.js';
+import DarkModeMixin from './DarkModeMixin.js';
 
 
 const Base = 
+  DarkModeMixin(
   HoverMixin(
     SeamlessButton
-  );
+  ));
 
 
 /**
@@ -23,22 +25,31 @@ class ArrowDirectionButton extends Base {
   get updates() {
     /** @type {any} */
     const cast = this;
-    const style = Object.assign(
-      {
-        background: '',
-        color: 'rgba(255, 255, 255, 0.7)',
-        fill: 'currentColor',
-        outline: 'none'
-      },
-      this.state.hover && !cast.disabled && {
-        background: 'rgba(255, 255, 255, 0.2)',
-        color: 'rgba(255, 255, 255, 0.8)',
-        cursor: 'pointer'
-      },
-      cast.disabled && {
-        color: 'rgba(255, 255, 255, 0.3)'
-      }
-    );
+    let style;
+    const darkMode = this.state.darkMode;
+    if (darkMode === null) {
+      // Initial render; wait for knowledge of dark mode.
+      style = {};
+    } else {
+      // Use white color value in dark mode, or black value in light mode.
+      const value = darkMode ? 255 : 0;
+      style = Object.assign(
+        {
+          background: '',
+          color: `rgba(${value}, ${value}, ${value}, 0.7)`,
+          fill: 'currentColor',
+          outline: 'none'
+        },
+        this.state.hover && !cast.disabled && {
+          background: `rgba(${value}, ${value}, ${value}, 0.2)`,
+          color: `rgba(${value}, ${value}, ${value}, 0.8)`,
+          cursor: 'pointer'
+        },
+        cast.disabled && {
+          color: `rgba(${value}, ${value}, ${value}, 0.3)`
+        }
+      );
+    }
     return merge(super.updates, {
       style,
       $: {
