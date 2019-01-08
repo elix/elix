@@ -1,7 +1,14 @@
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import DarkModeMixin from './DarkModeMixin.js';
 import ReactiveElement from './ReactiveElement.js';
+
+
+const Base =
+  DarkModeMixin(
+    ReactiveElement
+  );
 
 
 /**
@@ -11,13 +18,12 @@ import ReactiveElement from './ReactiveElement.js';
  * 
  * @inherits ReactiveElement
  */
-class PageDot extends ReactiveElement {
+class PageDot extends Base {
 
   get [symbols.template]() {
     return template.html`
       <style>
         :host {
-          background: rgb(255, 255, 255);
           border-radius: 7px;
           box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.5);
           box-sizing: border-box;
@@ -36,11 +42,18 @@ class PageDot extends ReactiveElement {
     const base = super.updates || {};
     const desktop = matchMedia('(min-width: 768px)').matches;
     const size = desktop ? '12px' : null;
+    const darkMode = this.state.darkMode;
+    const backgroundColor = darkMode === null ?
+      null : // Wait for knowledge of dark mode
+      darkMode ?
+      `rgb(255, 255, 255)` :
+      `rgb(0, 0, 0)`;
     return merge(super.updates, {
       attributes: {
         role: 'none'
       },
       style: {
+        'background-color': backgroundColor,
         'height': size || base.style && base.style.height,
         'width': size || base.style && base.style.width
       }

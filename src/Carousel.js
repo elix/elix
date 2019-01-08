@@ -1,9 +1,10 @@
-import { merge } from './updates.js';
 import { getSuperProperty } from './workarounds.js';
+import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import AriaListMixin from './AriaListMixin.js';
 import ArrowDirectionMixin from './ArrowDirectionMixin.js';
 import CenteredStripOpacity from './CenteredStripOpacity.js';
+import DarkModeMixin from './DarkModeMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import Explorer from './Explorer.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
@@ -20,6 +21,7 @@ import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 const Base =
   AriaListMixin(
   ArrowDirectionMixin(
+  DarkModeMixin(
   DirectionSelectionMixin(
   FocusVisibleMixin(
   KeyboardDirectionMixin(
@@ -29,7 +31,7 @@ const Base =
   TouchSwipeMixin(
   TrackpadSwipeMixin(
     Explorer
-  ))))))))));
+  )))))))))));
 
 
 /**
@@ -77,11 +79,21 @@ class Carousel extends Base {
 
   proxyUpdates(proxy, calcs) {
     const base = super.proxyUpdates(proxy, calcs);
-    return merge(base, {
-      attributes: {
-        'tabindex': ''
+    const proxies = this.proxies;
+    const proxiesSupportDarkMode = proxies && proxies[0] && 'darkMode' in proxies[0];
+    const darkMode = this.state.darkMode;
+    const setDarkMode = darkMode !== null && proxiesSupportDarkMode;
+    return merge(
+      base,
+      {
+        attributes: {
+          'tabindex': ''
+        }
+      },
+      setDarkMode && {
+        darkMode
       }
-    });
+    );
   }
 
   get [symbols.swipeTarget]() {
@@ -101,18 +113,21 @@ class Carousel extends Base {
   }
 
   get updates() {
+    const { darkMode } = this.state;
+    const arrowButtonUpdates = {
+      style: {
+        'font-size': '48px'
+      }
+    };
+    if (darkMode !== null) {
+      if ('darkMode' in this.$.arrowButtonLeft) {
+        arrowButtonUpdates.darkMode = darkMode;
+      }
+    }
     return merge(super.updates, {
       $: {
-        arrowButtonLeft: {
-          style: {
-            'font-size': '48px'
-          }
-        },
-        arrowButtonRight: {
-          style: {
-            'font-size': '48px'
-          }
-        },
+        arrowButtonLeft: arrowButtonUpdates,
+        arrowButtonRight: arrowButtonUpdates,
         proxyList: {
           attributes: {
             tabindex: ''
