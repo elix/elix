@@ -1,3 +1,6 @@
+import * as symbols from './symbols.js';
+
+
 let resizeObserver;
 const windowResizeEntries = [];
 
@@ -25,7 +28,8 @@ export default function ResizeMixin(Base) {
 
     // Check this element's current height and width and, if either has changed,
     // update the corresponding state members.
-    checkSize() {
+    [symbols.checkSize]() {
+      if (super[symbols.checkSize]) { super[symbols.checkSize](); }
       const { clientHeight, clientWidth } = this;
       const sizeChanged = clientHeight !== this.state.clientHeight ||
           clientWidth !== this.state.clientWidth;
@@ -49,18 +53,18 @@ export default function ResizeMixin(Base) {
 
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
-      this.checkSize();
+      this[symbols.checkSize]();
     }
     
     componentDidUpdate(previousState) {
       if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-      this.checkSize();
+      this[symbols.checkSize]();
     }
 
     get defaultState() {
       return Object.assign(super.defaultState, {
-        offsetHeight: this.offsetHeight,
-        offsetWidth: this.offsetWidth
+        clientHeight: this.clientHeight,
+        clientWidth: this.clientWidth
       });
     }
 
@@ -98,7 +102,7 @@ if (typeof Observer !== 'undefined') {
   // Fall back to only tracking window resize.
   window.addEventListener('resize', () => {
     windowResizeEntries.forEach(entry => {
-      entry.checkSize();
+      entry[symbols.checkSize]();
     });
   });
 }

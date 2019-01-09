@@ -5,13 +5,15 @@ import OpenCloseMixin from './OpenCloseMixin.js';
 import OverlayFrame from './OverlayFrame.js';
 import OverlayMixin from './OverlayMixin.js';
 import ReactiveElement from './ReactiveElement.js';
+import SlotContentMixin from './SlotContentMixin.js';
 
 
 const Base =
   OpenCloseMixin(
   OverlayMixin(
+  SlotContentMixin(
     ReactiveElement
-  ));
+  )));
 
 
 /**
@@ -81,6 +83,19 @@ class Overlay extends Base {
   }
   set backdropRole(backdropRole) {
     this.setState({ backdropRole });
+  }
+
+  componentDidUpdate(previousState) {
+    if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
+    const opened = !previousState.opened && this.state.opened;
+    if (opened && this.state.content) {
+      // If contents know how to size themselves, ask them to check their size.
+      this.state.content.forEach(element => {
+        if (element[symbols.checkSize]) {
+          element[symbols.checkSize]();
+        }
+      });
+    }
   }
 
   get defaultState() {

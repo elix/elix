@@ -15,6 +15,7 @@
 export const beforeUpdate: '_beforeUpdate';
 export const canGoLeft: '_canGoLeft';
 export const canGoRight: '_canGoRight';
+export const checkSize: '_checkSize';
 export const click: '_click';
 export const contentSlot: '_contentSlot';
 export const defaultFocus: '_defaultFocus';

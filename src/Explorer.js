@@ -74,6 +74,16 @@ class Explorer extends Base {
     }
   }
 
+  [symbols.checkSize]() {
+    if (super[symbols.checkSize]) { super[symbols.checkSize](); }
+    if (this.$.stage[symbols.checkSize]) {
+      this.$.stage[symbols.checkSize]();
+    }
+    if (this.$.proxyList[symbols.checkSize]) {
+      this.$.proxyList[symbols.checkSize]();
+    }
+  }
+
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
 

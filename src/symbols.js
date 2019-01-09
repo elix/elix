@@ -63,6 +63,9 @@ export const canGoLeft = Symbol('canGoLeft');
  */
 export const canGoRight = Symbol('canGoRight');
 
+// TODO: Docs
+export const checkSize = Symbol('checkSize');
+
 /**
  * Symbol for the `click` method.
  *
