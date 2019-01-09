@@ -1,8 +1,8 @@
-import { forwardFocus } from './utilities.js';
 import { html } from './template.js';
 import { merge } from './updates.js'
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import ComposedFocusMixin from './ComposedFocusMixin.js';
 import DelegateItemsMixin from './DelegateItemsMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FilterListBox from './FilterListBox.js';
@@ -13,13 +13,14 @@ import SingleSelectionMixin from './SingleSelectionMixin.js';
 
 
 const Base =
+  ComposedFocusMixin(
   DelegateItemsMixin(
   DirectionSelectionMixin(
   KeyboardMixin(
   SelectedItemTextValueMixin(
   SingleSelectionMixin(
     ReactiveElement
-  )))));
+  ))))));
 
 
 /**
@@ -52,10 +53,8 @@ class ListWithSearch extends Base {
   }
 
   [symbols.beforeUpdate]() {
-    const inputRoleChanged = this[symbols.renderedRoles].inputRole !== this.state.inputRole;
-    const listRoleChanged = this[symbols.renderedRoles].listRole !== this.state.listRole;
     if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-    if (inputRoleChanged) {
+    if (this[symbols.renderedRoles].inputRole !== this.state.inputRole) {
       template.transmute(this.$.input, this.state.inputRole);
       this.$.input.addEventListener('input', () => {
         this[symbols.raiseChangeEvents] = true;
@@ -68,14 +67,9 @@ class ListWithSearch extends Base {
       });
       this[symbols.renderedRoles].inputRole = this.state.inputRole;
     }
-    if (listRoleChanged) {
+    if (this[symbols.renderedRoles].listRole !== this.state.listRole) {
       template.transmute(this.$.list, this.state.listRole);
       this[symbols.renderedRoles].listRole = this.state.listRole;
-    }
-    if ((inputRoleChanged || listRoleChanged) &&
-      this.$.list instanceof HTMLElement &&
-      this.$.input instanceof HTMLElement) {
-      forwardFocus(this.$.list, this.$.input);
     }
   }
 
@@ -95,6 +89,10 @@ class ListWithSearch extends Base {
   }
   set filter(filter) {
     this.setState({ filter });
+  }
+
+  get [symbols.focusTarget]() {
+    return this.$.input;
   }
 
   /**
@@ -206,7 +204,7 @@ class ListWithSearch extends Base {
         }
       </style>
       <input id="input">
-      <elix-filter-list-box id="list">
+      <elix-filter-list-box id="list" tabindex="-1">
         <slot></slot>
       </elix-filter-list-box>
     `;

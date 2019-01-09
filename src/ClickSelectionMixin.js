@@ -39,25 +39,24 @@ export default function ClickSelectionMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this.addEventListener('mousedown', event => {
+      this.addEventListener('mousedown', event => {   
         // Only process events for the main (usually left) button.
         if (event.button !== 0) {
           return;
         }
+        this[symbols.raiseChangeEvents] = true;
         this[symbols.click](event);
+        this[symbols.raiseChangeEvents] = false;
       });
     }
 
     [symbols.click](event) {
-    
-      this[symbols.raiseChangeEvents] = true;
-    
       // In some situations, the event target will not be the child which was
-      // originally clicked on. E.g.,  If the item clicked on is a button, the
-      // event seems to be raised in phase 2 (AT_TARGET) — but the event
-      // target will be the component, not the item that was clicked on.
-      // Instead of using the event target, we get the first node in the
-      // event's composed path.
+      // originally clicked on. E.g., if the item clicked on is a button, the
+      // event seems to be raised in phase 2 (AT_TARGET) — but the event target
+      // will be the component, not the item that was clicked on. Instead of
+      // using the event target, we get the first node in the event's composed
+      // path.
       // @ts-ignore
       const target = event.composedPath ?
         event.composedPath()[0] :
@@ -72,9 +71,7 @@ export default function ClickSelectionMixin(Base) {
           this.selectedIndex !== targetIndex) {
         this.selectedIndex = targetIndex;
         event.stopPropagation();
-      }
-    
-      this[symbols.raiseChangeEvents] = false;
+      }    
     }
     
     get updates() {

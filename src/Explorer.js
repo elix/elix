@@ -7,6 +7,7 @@ import Modes from './Modes.js';
 import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
+import ComposedFocusMixin from './ComposedFocusMixin.js';
 
 
 const proxySlotchangeFiredKey = Symbol('proxySlotchangeFired');
@@ -22,11 +23,12 @@ const lateralPositions = {
 
 
 const Base =
+  ComposedFocusMixin(
   LanguageDirectionMixin(
   SingleSelectionMixin(
   SlotItemsMixin(
     ReactiveElement
-  )));
+  ))));
 
 
 /**

@@ -20,6 +20,7 @@ export const contentSlot: '_contentSlot';
 export const defaultFocus: '_defaultFocus';
 export const elementsWithTransitions: '_elementsWithTransitions';
 export const event: '_event';
+export const focusTarget: '_focusTarget';
 export const getItemText: '_getItemText';
 export const goDown: '_goDown';
 export const goEnd: '_goEnd';

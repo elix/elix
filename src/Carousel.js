@@ -87,7 +87,7 @@ class Carousel extends Base {
       base,
       {
         attributes: {
-          'tabindex': ''
+          tabindex: ''
         }
       },
       setDarkMode && {

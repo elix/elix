@@ -1,3 +1,6 @@
+import * as symbols from './symbols.js';
+
+
 /**
  * Normalizes focus treatment for custom elements with Shadow DOM.
  * 
@@ -7,6 +10,9 @@
  * reassigned across more than one slot to end up inside a focusable element. In
  * such cases, the focus will end up on the body. Firefox exhibits the behavior
  * we want. See https://github.com/w3c/webcomponents/issues/773.
+ * 
+ * TODO: Document.
+ * also need this for components that don't want to steal focus on mousedown
  *
  * This mixin normalizes behavior to provide what Firefox does. When the user
  * mouses down inside anywhere inside the component's light DOM or Shadow DOM,
@@ -29,7 +35,7 @@ export default function ComposedFocusMixin(Base) {
           if (event.button !== 0) {
             return;
           }
-          const target = findFocusableAncestor(event.target, this);
+          const target = findFocusableAncestor(event.target);
           if (target) {
             target.focus();
             event.preventDefault();
@@ -45,17 +51,19 @@ export default function ComposedFocusMixin(Base) {
 
 
 // Return the closest focusable ancestor in the *composed* tree.
-// The optional root argument, if specified, identifies how far up to
-// look; if the root is reached without finding a focusable ancestor,
-// return null.
-function findFocusableAncestor(element, root) {
-  if (element === document.body ||
-    (!(element instanceof HTMLSlotElement) && element.tabIndex >= 0)) {
-    return element;
-  }
-  if (root !== undefined && element === root) {
-    // We've searched as high up in the tree as we were told to look.
-    return null;
+// If no focusable ancestor is found, returns null.
+function findFocusableAncestor(element) {
+  if (!element.disabled) {
+    // If element wants focus to go to a specific subelement, return that.
+    const focusTarget = element[symbols.focusTarget];
+    if (focusTarget) {
+      return focusTarget;
+    }
+    // Slot elements have a tabindex of 0 (which is weird); we ignore them.
+    if (!(element instanceof HTMLSlotElement) && element.tabIndex >= 0) {
+      // Found an enabled component that wants the focus.
+      return element;
+    }
   }
   const parent = element.assignedSlot ?
     element.assignedSlot :

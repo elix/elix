@@ -1,4 +1,3 @@
-import { forwardFocus } from './utilities.js';
 import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import * as calendar from './calendar.js';
@@ -30,10 +29,8 @@ class DateComboBox extends Base {
   }
 
   [symbols.beforeUpdate]() {
-    const inputChanged = this[symbols.renderedRoles].inputRole !== this.state.inputRole;
     if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-    const calendarChanged = this[symbols.renderedRoles].calendarRole !== this.state.calendarRole;
-    if (calendarChanged) {
+    if (this[symbols.renderedRoles].calendarRole !== this.state.calendarRole) {
       template.transmute(this.$.calendar, this.state.calendarRole);
       this.$.calendar.addEventListener('date-changed', event => {
         this[symbols.raiseChangeEvents] = true;
@@ -50,8 +47,7 @@ class DateComboBox extends Base {
       });
       this[symbols.renderedRoles].calendarRole = this.state.calendarRole;
     }
-    const todayButtonChanged = this[symbols.renderedRoles].todayButtonRole !== this.state.todayButtonRole;
-    if (todayButtonChanged) {
+    if (this[symbols.renderedRoles].todayButtonRole !== this.state.todayButtonRole) {
       template.transmute(this.$.todayButton, this.state.todayButtonRole);
       this.$.todayButton.addEventListener('mousedown', event => {
         this[symbols.raiseChangeEvents] = true;
@@ -61,16 +57,6 @@ class DateComboBox extends Base {
         this[symbols.raiseChangeEvents] = false;
       });
       this[symbols.renderedRoles].todayButtonRole = this.state.todayButtonRole;
-    }
-    if (inputChanged || calendarChanged) {
-      if (this.$.calendar instanceof HTMLElement && this.$.input instanceof HTMLElement) {
-        forwardFocus(this.$.calendar, this.$.input);
-      }
-    }
-    if (inputChanged || todayButtonChanged) {
-      if (this.$.todayButton instanceof HTMLElement && this.$.input instanceof HTMLElement) {
-        forwardFocus(this.$.todayButton, this.$.input);
-      }
     }
   }
   
@@ -349,7 +335,7 @@ class DateComboBox extends Base {
           border-color: gray;
         }
       </style>
-      <div id="calendar"></div>
+      <div id="calendar" tabindex="-1"></div>
       <button id="todayButton">Today</button>
     `;
     const defaultSlot = template.defaultSlot(result.content);

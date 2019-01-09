@@ -1,5 +1,6 @@
 import { getItemText } from './ItemsTextMixin.js';
 import { getSuperProperty } from './workarounds.js';
+import { indexOfItemContainingTarget } from './utilities.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
@@ -34,18 +35,18 @@ class ListComboBox extends Base {
     if (this[symbols.renderedRoles].listRole !== this.state.listRole) {
       template.transmute(this.$.list, this.state.listRole);
   
-      this.$.list.addEventListener('click', () => {
-        // Clicking a list item closes the popup.
-        if (this.opened) {
-          this[symbols.raiseChangeEvents] = true;
-          this.close();
-          this[symbols.raiseChangeEvents] = false;
-        }
-      });
-
       this.$.list.addEventListener('mousedown', event => {
-        // By default the list will try to grab focus, which we don't want.
-        event.preventDefault();
+        // Mousing down inside a list item closes the popup.
+        /** @type {any} */
+        const target = event.target;
+        if (target) {
+          const targetIndex = indexOfItemContainingTarget(this.items, target);
+          if (this.opened && targetIndex >= 0) {
+            this[symbols.raiseChangeEvents] = true;
+            this.close();
+            this[symbols.raiseChangeEvents] = false;
+          }  
+        }
       });
 
       // Track changes in the list's selection state.
@@ -228,9 +229,6 @@ class ListComboBox extends Base {
           }
         },
         list: {
-          attributes: {
-            tabindex: null
-          },
           selectedIndex: this.state.selectedIndex
         }
       }

@@ -8,17 +8,19 @@ import ReactiveElement from './ReactiveElement.js';
 import ResizeMixin from './ResizeMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
+import ComposedFocusMixin from './ComposedFocusMixin.js';
 
 
 const Base =
   ClickSelectionMixin(
+  ComposedFocusMixin(
   EffectMixin(
   LanguageDirectionMixin(
   ResizeMixin(
   SingleSelectionMixin(
   SlotItemsMixin(
     ReactiveElement
-  ))))));
+  )))))));
 
 
 /**

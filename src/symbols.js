@@ -105,6 +105,9 @@ export const defaultFocus = Symbol('defaultFocus');
  */
 export const elementsWithTransitions = Symbol('elementsWithTransitions');
 
+// TODO: Document
+export const focusTarget = Symbol('focusTarget');
+
 /**
  * Symbol for the `getItemText` method.
  *

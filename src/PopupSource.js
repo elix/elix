@@ -2,6 +2,7 @@ import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import Backdrop from './Backdrop.js';
+import ComposedFocusMixin from './ComposedFocusMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
@@ -14,11 +15,12 @@ const resizeListenerKey = Symbol('resizeListener');
 
 
 const Base =
+  ComposedFocusMixin(
   FocusVisibleMixin(
   LanguageDirectionMixin(
   OpenCloseMixin(
     ReactiveElement
-  )));
+  ))));
 
 
 /**
