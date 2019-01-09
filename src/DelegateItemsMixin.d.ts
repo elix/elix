@@ -4,7 +4,7 @@
 /// <reference path="shared.d.ts"/>
 
 declare const DelegateItemsMixin: Mixin<{}, {
-  items?: Element[];
+  items: Element[];
 }>;
 
 export default DelegateItemsMixin;
