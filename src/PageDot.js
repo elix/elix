@@ -17,7 +17,8 @@ const Base =
  * 
  * This is used as the default proxy element in [Carousel](Carousel).
  * 
- * @inherits ReactiveElement
+ * @inherits SeamlessButton
+ * @mixes DarkModeMixin
  */
 class PageDot extends Base {
 
@@ -41,6 +42,7 @@ class PageDot extends Base {
     `;
     result.content.appendChild(styleTemplate.content);
     return result;
+    // return styleTemplate;
   }
 
   get updates() {
