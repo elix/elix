@@ -104,7 +104,7 @@ class Explorer extends Base {
     });
 
     // If items for default proxies have changed, recreate the proxies.
-    state.onChange(['assignedProxies', 'items'], (state, changed) => {
+    state.onChange(['assignedProxies', 'proxyRole', 'items'], (state, changed) => {
       const {
         assignedProxies,
         items,
@@ -115,8 +115,8 @@ class Explorer extends Base {
         return {
           defaultProxies: []
         };
-      } else if (assignedProxies.length === 0 && 
-          (changed.items || changed.proxyRole && changed.assignedProxies)) {
+      } else if ((changed.items || changed.proxyRole) &&
+          assignedProxies.length === 0) {
         // Generate sufficient default proxies.
         return {
           defaultProxies: createDefaultProxies(items, proxyRole)
