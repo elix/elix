@@ -1,7 +1,7 @@
 import { getSuperProperty } from './workarounds.js';
-import { html } from './template.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import DarkModeMixin from './DarkModeMixin.js';
 import SeamlessButton from './SeamlessButton.js';
 
@@ -25,7 +25,7 @@ class PageDot extends Base {
   get [symbols.template]() {
     // Next line is same as: const result = super[symbols.template]
     const result = getSuperProperty(this, PageDot, symbols.template);
-    const styleTemplate = html`
+    const styleTemplate = template.html`
       <style>
         :host {
           border-radius: 7px;
@@ -42,7 +42,6 @@ class PageDot extends Base {
     `;
     result.content.appendChild(styleTemplate.content);
     return result;
-    // return styleTemplate;
   }
 
   get updates() {

@@ -1,9 +1,9 @@
 import { getSuperProperty } from './workarounds.js';
-import { html } from './template.js';
 import { indexOfItemContainingTarget } from './utilities.js';
 import { merge } from './updates.js';
 import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import ArrowDirectionMixin from './ArrowDirectionMixin.js';
 import CalendarDayButton from './CalendarDayButton.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
@@ -156,7 +156,7 @@ class CalendarMonthNavigator extends Base {
     const monthYearHeader = result.content.querySelector('#monthYearHeader');
     this[ArrowDirectionMixin.wrap](monthYearHeader);
 
-    const styleTemplate = html`
+    const styleTemplate = template.html`
       <style>
         #arrowIconLeft,
         #arrowIconRight {
