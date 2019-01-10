@@ -51,9 +51,61 @@ export function createElement(descriptor) {
 }
 
 
+/**
+ * Returns a new template whose content is the concatenated content of the
+ * supplied templates.
+ * 
+ * This function is often used in an Elix convention for creating a subclass
+ * that extends a base class' template with custom styling:
+ * 
+ *     import * as template from 'elix/src/template.js';
+ * 
+ *     class BaseElement {
+ *       get [symbols.template]() {
+ *         return template.html`
+ *           <style>
+ *             button { background: white; color: black; }
+ *           </style>
+ *           <button>Ok</button>
+ *         `;
+ *       }       
+ *     }
+ * 
+ *     class CustomElement extends BaseElement {
+ *       get [symbols.template]() {
+ *         return template.concat(super[symbols.template], template.html`
+ *           <style>
+ *             button { color: red; }
+ *           </style>
+ *         `);
+ *       }
+ *     }
+ * 
+ * In this example, the resulting `CustomElement` subclass will have both the
+ * template content defined by `BaseElement` _and_ the custom template content
+ * it adds through `concat`. The resulting template will for a `CustomElement`
+ * instance will look like:
+ * 
+ *     <style>
+ *       button { background: white; color: black; }
+ *     </style>
+ *     <button>Ok</button>
+ *     <style>
+ *       button { color: red; }
+ *     </style>
+ * 
+ * As a result, the `button` inside a `CustomElement` will have a white
+ * background color and a red foreground color.
+ * 
+ * @param  {HTMLTemplateElement[]} templates
+ * @returns {HTMLTemplateElement}
+ */
 export function concat(...templates) {
   const result = document.createElement('template');
-  result.innerHTML = templates.map(template => template.innerHTML).join('');
+  templates.forEach(template => {
+    const clone = document.importNode(template.content, true);
+    result.content.appendChild(clone);
+  });
   return result;
 }
 
