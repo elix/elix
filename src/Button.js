@@ -30,7 +30,9 @@ class Button extends Base {
 
   get defaultState() {
     return Object.assign(super.defaultState, {
-      role: 'button'
+      role: 'button',
+      treatEnterAsClick: true,
+      treatSpaceAsClick: true
     });
   }
 
@@ -40,10 +42,18 @@ class Button extends Base {
     let handled;
     switch (event.key) {
       case ' ':
-      case 'Enter':
-        this[symbols.click]();
-        handled = true;
+        if (this.state.treatSpaceAsClick) {
+          this[symbols.click]();
+          handled = true;
+        }
         break;
+
+      case 'Enter':
+        if (this.state.treatEnterAsClick) {
+          this[symbols.click]();
+          handled = true;
+        }
+        break;        
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.

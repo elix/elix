@@ -4,6 +4,12 @@ import TabButton from '../../src/TabButton.js';
 
 class ToolbarTab extends TabButton {
 
+get defaultState() {
+  return Object.assign({}, super.defaultState, {
+    overlapPanel: false
+  });
+}
+
   get updates() {
     const base = super.updates || {};
     const baseColor = base.style && base.style.color;

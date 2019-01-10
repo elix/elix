@@ -204,23 +204,25 @@ class TabStrip extends Base {
     const base = super.updates || {};
     const original = this.state.original;
 
-    const position = this.state.position;
+    const { position, tabAlign } = this.state;
     const lateralPosition = position === 'left' || position === 'right';
-    const tabAlign = this.state.tabAlign;
-    const justifyContent = {
+    const flexDirection = lateralPosition ? 'column' : 'row';
+
+    const justifyContentForTabAlign = {
       'center': 'center',
       'end': 'flex-end',
       'start': 'flex-start',
       'stretch': null // No style needed for "stretch"
     };
+    const justifyContent = justifyContentForTabAlign[tabAlign] || original.style['justify-content']
 
     return merge(base, {
       attributes: {
         role: original.attributes.role || 'tablist'
       },
       style: {
-        'flex-direction': lateralPosition ? 'column' : 'row',
-        'justify-content': justifyContent[tabAlign] || original.style['justify-content']
+        'flex-direction': flexDirection,
+        'justify-content': justifyContent
       }
     });
   }

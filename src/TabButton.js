@@ -41,9 +41,12 @@ class TabButton extends Base {
   get defaultState() {
     return Object.assign(super.defaultState, {
       index: 0,
+      overlapPanel: true,
       selected: false,
       tabAlign: 'start',
       tabindex: '0',
+      treatEnterAsClick: false, // Let tab strip handle Enter.
+      treatSpaceAsClick: false, // Let tab strip handle Space.
       position: 'top'
     });
   }
@@ -116,51 +119,66 @@ class TabButton extends Base {
 
   get updates() {
     const base = super.updates || {};
-    const original = this.state.original;
+    const {
+      index,
+      original,
+      overlapPanel,
+      position,
+      selected,
+      tabAlign,
+      tabindex
+    } = this.state;
 
     // Host
-    const stretch = this.state.tabAlign === 'stretch';
-    const index = this.state.index;
+    const stretch = tabAlign === 'stretch';
     const needsSpacer = index > 0;
-    const position = this.position;
     const needsSideSpacer = needsSpacer &&
       (position === 'top' || position === 'bottom');
     const needsLeftSpacer = needsSideSpacer && !this[symbols.rightToLeft];
     const needsRightSpacer = needsSideSpacer && this[symbols.rightToLeft];
     const needsTopSpacer = needsSpacer &&
       (position === 'left' || position === 'right');
+    const hostStyle = {
+      flex: stretch ? 1 : original.style.flex
+    };
+    // Spread out tabs
+    hostStyle['margin-left'] = needsLeftSpacer ? '0.2em' : '';
+    hostStyle['margin-right'] = needsRightSpacer ? '0.2em' : '';
+    hostStyle['margin-top'] = needsTopSpacer ? '0.2em' : '';
+    if (overlapPanel) {
+      // Offset host so that it overlaps with tab panel.
+      const marginStylesForPosition = {
+        bottom: {
+          'margin-top': '-1px'
+        },
+        left: {
+          'margin-right': '-1px'
+        },
+        right: {
+          'margin-left': '-1px'
+        },
+        top: {
+          'margin-bottom': '-1px'
+        }
+      };
+      Object.assign(hostStyle, marginStylesForPosition[position]);
+    }
 
     // Button
-    const positionStyles = {
-      bottom: {
-        'border-radius': '0 0 0.25em 0.25em',
-        'margin': '-1px 0 0 0'
-      },
-      left: {
-        'border-radius': '0.25em 0 0 0.25em',
-        'margin': '0 -1px 0 0'
-      },
-      right: {
-        'border-radius': '0 0.25em 0.25em 0',
-        'margin': '0 0 0 -1px'
-      },
-      top: {
-        'border-radius': '0.25em 0.25em 0 0',
-        'margin': '0 0 -1px 0'
-      }
-    };
-    const positionStyle = positionStyles[position];
-    const selected = this.state.selected;
-    const selectedStyle = {
-      'opacity': 1,
-      'z-index': 1
-    };
-    const borderStyle = {
+    const buttonStyle = {
       'border-top-color': null,
       'border-right-color': null,
       'border-left-color': null,
       'border-bottom-color': null
     };
+    const borderRadiusForPosition = {
+      bottom: '0 0 0.25em 0.25em',
+      left: '0.25em 0 0 0.25em',
+      right: '0 0.25em 0.25em 0',
+      top: '0.25em 0.25em 0 0'
+    };
+    buttonStyle.borderRadius = borderRadiusForPosition[position];
+    buttonStyle['z-index'] = selected ? '1' : '';
     const borderSides = {
       'bottom': 'border-top-color',
       'left': 'border-right-color',
@@ -169,37 +187,25 @@ class TabButton extends Base {
     };
     if (selected) {
       const borderSide = borderSides[position];
-      borderStyle[borderSide] = 'transparent';
+      buttonStyle[borderSide] = 'transparent';
     }
     /** @type {any} */
     const element = this;
-    const color = element.disabled ?
+    buttonStyle.color = element.disabled ?
       '#888' :
       base.style && base.style.color;
-    const buttonProps = {
-      style: Object.assign(
-        {
-          'background-color': original.style && original.style['background-color'] || 'white',
-          color
-        },
-        positionStyle,
-        borderStyle,
-        selected && selectedStyle
-      )
-    };
+    const originalBackgroundColor = original.style && original.style['background-color'];
+    buttonStyle['background-color'] = originalBackgroundColor || 'white';
 
     return merge(base, {
       attributes: {
-        tabindex: original.attributes.tabindex || this.state.tabindex
+        tabindex: original.attributes.tabindex || tabindex
       },
-      style: {
-        'flex': stretch ? 1 : original.style.flex,
-        'margin-left': needsLeftSpacer ? '0.2em' : '',
-        'margin-right': needsRightSpacer ? '0.2em' : '',
-        'margin-top': needsTopSpacer ? '0.2em' : ''
-      },
+      style: hostStyle,
       $: {
-        inner: buttonProps
+        inner: {
+          style: buttonStyle
+        }
       }
     });
   }
