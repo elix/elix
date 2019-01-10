@@ -220,6 +220,17 @@ class WrappedStandardElement extends ReactiveElement {
     }
 
     this[renderedKey] = true;
+    reflectDisabledAttribute(this);
+  }
+
+  componentDidUpdate(previousState) {
+    if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
+    const disabled = this.state.innerProperties && this.state.innerProperties.disabled;
+    const previousDisabled = previousState.innerProperties && previousState.innerProperties.disabled;
+    const disabledChanged = disabled !== previousDisabled;
+    if (disabledChanged) {
+      reflectDisabledAttribute(this);
+    }
   }
 
   get defaultState() {
@@ -495,6 +506,12 @@ function defineDelegates(cls, prototype) {
       Object.defineProperty(cls.prototype, name, delegate);
     }
   });
+}
+
+
+// Reflect value of disabled property to the corresponding attribute.
+function reflectDisabledAttribute(element) {
+  element.toggleAttribute('disabled', element.disabled);
 }
 
 
