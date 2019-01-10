@@ -1,17 +1,18 @@
+import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import Button from './Button.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import SlotContentMixin from './SlotContentMixin.js';
-import WrappedStandardElement from './WrappedStandardElement.js';
 
 
 const Base =
   FocusVisibleMixin(
   LanguageDirectionMixin(
   SlotContentMixin(
-    WrappedStandardElement.wrap('button')
+    Button
   )));
 
 
@@ -92,34 +93,25 @@ class TabButton extends Base {
   }
 
   get [symbols.template]() {
-    return template.html`
+    // Next line is same as: const result = super[symbols.template]
+    const result = getSuperProperty(this, TabButton, symbols.template);
+    const styleTemplate = template.html`
       <style>
-        :host {
-          display: inline-flex;
-        }
-
         #inner {
           background: inherit;
           border-color: #ccc;
           border-style: solid;
           border-width: 1px;
           color: inherit;
-          flex: 1;
-          font-family: inherit;
-          font-size: inherit;
-          height: 100%;
           margin: 0;
-          outline: none;
           padding: 0.5em 0.75em;
           transition: border-color 0.25s;
           white-space: nowrap;
-          width: 100%;
         }
       </style>
-      <button id="inner" tabindex="-1">
-        <slot></slot>
-      </button>
     `;
+    result.content.appendChild(styleTemplate.content);
+    return result;
   }
 
   get updates() {
