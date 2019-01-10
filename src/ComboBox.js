@@ -88,7 +88,7 @@ class ComboBox extends Base {
         this.setState({
           selectText: false
         });
-        if (this.closed) {
+        if (this.closed && !this.disabled) {
           this.open();
         }
         this[symbols.raiseChangeEvents] = false;
@@ -125,7 +125,7 @@ class ComboBox extends Base {
           }
         }
       });
-    }  
+    }
   }
 
   get defaultState() {
@@ -251,7 +251,7 @@ class ComboBox extends Base {
     }
     const sourceTemplate = template.html`
       <input id="input"></input>
-      <button id="toggleButton" focus-on-ancestor="true" tabindex="-1">
+      <button id="toggleButton" tabindex="-1">
         <svg id="downIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
           <path d="M 0 0 l5 5 5 -5 z"/>
         </svg>
@@ -289,7 +289,11 @@ class ComboBox extends Base {
           width: 1.5em;
         }
 
-        #toggleButton:hover {
+        #toggleButton[disabled] {
+          opacity: 0.5;
+        }
+
+        #toggleButton:not([disabled]):hover {
           background: #eee;
         }
       </style>
@@ -315,7 +319,7 @@ class ComboBox extends Base {
 
   get updates() {
     const base = super.updates;
-    const { placeholder, popupPosition, value } = this.state;
+    const { disabled, placeholder, popupPosition, value } = this.state;
     const role = this.state.original && this.state.original.attributes.role ||
       base.attributes && base.attributes.role ||
       this.state.role;
@@ -347,6 +351,7 @@ class ComboBox extends Base {
             attributes: {
               'aria-label': this.state.ariaLabel
             },
+            disabled,
             placeholder,
             value
           },
@@ -381,6 +386,9 @@ class ComboBox extends Base {
               'background-color': null,
               color: null
             }
+          },
+          toggleButton: {
+            disabled
           },
           upIcon: {
             style: {
