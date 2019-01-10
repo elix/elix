@@ -34,6 +34,7 @@ const Base =
  * @inherits ReactiveElement
  * @mixes OpenCloseMixin
  * @mixes OverlayMixin
+ * @mixes SlotContentMixin
  * @elementrole {Backdrop} backdrop
  * @elementrole {OverlayFrame} frame
  */

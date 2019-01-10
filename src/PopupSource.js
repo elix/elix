@@ -29,6 +29,7 @@ const Base =
  * Positions a popup with respect to a source element
  * 
  * @inherits ReactiveElement
+ * @mixes ComposedFocusMixin
  * @mixes FocusVisibleMixin
  * @mixes KeyboardMixin
  * @mixes OpenCloseMixin

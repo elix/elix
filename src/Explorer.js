@@ -35,6 +35,7 @@ const Base =
  * Combines a list with an area focusing on a single selected item.
  *
  * @inherits ReactiveElement
+ * @mixes ComposedFocusMixin
  * @mixes LanguageDirectionMixin
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin

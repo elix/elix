@@ -12,6 +12,12 @@ const Base =
   );
 
 
+/**
+ * Input element that can parse dates in locale-specific formats
+ * 
+ * @inherits Input
+ * @mixes CalendarElementMixin
+ */
 class DateInput extends Base {
 
   componentDidMount() {

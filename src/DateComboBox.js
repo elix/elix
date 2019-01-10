@@ -16,7 +16,15 @@ const Base =
     ComboBox
   );
 
-  
+
+/**
+ * Combo box that lets the user type a date or pick one from a popup calendar
+ * 
+ * @inherits ComboBox
+ * @mixes CalendarElementMixin
+ * @elementrole {CalendarMonthNavigator} calendar
+ * @elementrole {SeamlessButton} todayButton
+ */
 class DateComboBox extends Base {
 
   get arrowButtonRole() {

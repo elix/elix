@@ -31,6 +31,7 @@ const Base =
  * 
  * @inherits ReactiveElement
  * @mixes ClickSelectionMixin
+ * @mixes ComposedFocusMixin
  * @mixes EffectMixin
  * @mixes LanguageDirectionMixin
  * @mixes ResizeMixin

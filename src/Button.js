@@ -22,6 +22,7 @@ const Base =
  * and behavior while ensuring standard keyboard and focus behavior.
  * 
  * @inherits WrappedStandardElement
+ * @mixes ComposedFocusMixin
  * @mixes FocusVisibleMixin
  * @mixes KeyboardMixin
  */

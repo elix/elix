@@ -7,6 +7,11 @@ import WrappedStandardElement from './WrappedStandardElement.js';
 const Base = WrappedStandardElement.wrap('input');
 
 
+/**
+ * Base class for custom input elements
+ * 
+ * @inherits WrappedStandardElement
+ */
 class Input extends Base {
 
   componentDidMount() {

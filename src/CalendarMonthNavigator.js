@@ -25,6 +25,17 @@ const Base =
   ))))));
 
 
+/**
+ * Interactive month calendar that lets the user select a date
+ * 
+ * @inherits CalendarMonth
+ * @mixes ArrowDirectionMixin
+ * @mixes CalendarElementMixin
+ * @mixes ComposedFocusMixin
+ * @mixes DarkModeMixin
+ * @mixes KeyboardDirectionMixin
+ * @mixes KeyboardMixin
+ */
 class CalendarMonthNavigator extends Base {
 
   constructor() {

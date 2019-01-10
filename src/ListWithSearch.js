@@ -27,6 +27,7 @@ const Base =
  * A list accompanied by a search box
  * 
  * @inherits ReactiveElement
+ * @mixes ComposedFocusMixin
  * @mixes DelegateItemsMixin
  * @mixes DirectionSelectionMixin
  * @mixes KeyboardMixin
