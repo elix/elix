@@ -142,17 +142,6 @@ describe("ReactiveMixin", function () {
     assert.equal(fixture.state, previousState);
   });
 
-  it.skip("can refine state", async () => {
-    const fixture = new ReactiveTest();
-    await fixture.setState({
-      foo: ' test '
-    });
-    assert.deepEqual(fixture.state, {
-      foo: 'test',
-      bar: 'test'
-    });
-  });
-
   it("runs state change handlers when state changes", () => {
     // Simple class, copies state member `a` to `b`.
     class Fixture extends ReactiveMixin(Object) {
