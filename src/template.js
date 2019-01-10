@@ -51,6 +51,13 @@ export function createElement(descriptor) {
 }
 
 
+export function concat(...templates) {
+  const result = document.createElement('template');
+  result.innerHTML = templates.map(template => template.innerHTML).join('');
+  return result;
+}
+
+
 /**
  * Search a tree for a default slot: a slot with no "name" attribute. Return
  * null if not found.
