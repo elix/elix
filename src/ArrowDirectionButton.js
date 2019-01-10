@@ -1,7 +1,10 @@
+import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
+import * as symbols from './symbols.js';
+import * as template from './template.js';
+import DarkModeMixin from './DarkModeMixin.js';
 import HoverMixin from './HoverMixin.js';
 import SeamlessButton from './SeamlessButton.js';
-import DarkModeMixin from './DarkModeMixin.js';
 
 
 const Base = 
@@ -22,6 +25,18 @@ const Base =
  */
 class ArrowDirectionButton extends Base {
 
+  get [symbols.template]() {
+    // Next line is same as: const base = super[symbols.template]
+    const base = getSuperProperty(this, ArrowDirectionButton, symbols.template);
+    return template.concat(base, template.html`
+      <style>
+        #inner {
+          fill: currentcolor;
+        }
+      </style>
+    `);
+  }
+
   get updates() {
     /** @type {any} */
     const cast = this;
@@ -37,8 +52,7 @@ class ArrowDirectionButton extends Base {
         {
           background: '',
           color: `rgba(${value}, ${value}, ${value}, 0.7)`,
-          fill: 'currentColor',
-          outline: 'none'
+          cursor: ''
         },
         this.state.hover && !cast.disabled && {
           background: `rgba(${value}, ${value}, ${value}, 0.2)`,
@@ -51,14 +65,7 @@ class ArrowDirectionButton extends Base {
       );
     }
     return merge(super.updates, {
-      style,
-      $: {
-        inner: {
-          style: {
-            color: 'inherit'
-          }
-        }
-      }
+      style
     });
   }
 

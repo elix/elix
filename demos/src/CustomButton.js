@@ -1,15 +1,15 @@
+import { getSuperProperty } from '../../src/workarounds.js';
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
 import Button from '../../src/Button.js';
-import { getSuperProperty } from '../../src/workarounds.js';
 
 
 class CustomButton extends Button {
 
   get [symbols.template]() {
-    // Next line is same as: const result = super[symbols.template]
-    const result = getSuperProperty(this, CustomButton, symbols.template);
-    const styleTemplate = template.html`
+    // Next line is same as: const base = super[symbols.template]
+    const base = getSuperProperty(this, CustomButton, symbols.template);
+    return template.concat(base, template.html`
       <style>
         #inner {
           background: white;
@@ -18,9 +18,7 @@ class CustomButton extends Button {
           padding: 0.5em 1em;
         }
       </style>
-    `;
-    result.content.appendChild(styleTemplate.content);
-    return result;
+    `);
   }
 
 }

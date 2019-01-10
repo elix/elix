@@ -104,9 +104,9 @@ class PopupButton extends Base {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const result = super[symbols.template]
-    const result = getSuperProperty(this, PopupButton, symbols.template);
-    const styleTemplate = template.html`
+    // Next line is same as: const base = super[symbols.template]
+    const base = getSuperProperty(this, PopupButton, symbols.template);
+    return template.concat(base, template.html`
       <style>
         #source {
           background: buttonface;
@@ -129,9 +129,7 @@ class PopupButton extends Base {
           white-space: nowrap;
         }
       </style>
-    `;
-    result.content.appendChild(styleTemplate.content);
-    return result;
+    `);
   }
 
   get updates() {

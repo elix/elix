@@ -85,9 +85,9 @@ class Toast extends Base {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const result = super[symbols.template]
-    const result = getSuperProperty(this, Toast, symbols.template);
-    const styleTemplate = template.html`
+    // Next line is same as: const base = super[symbols.template]
+    const base = getSuperProperty(this, Toast, symbols.template);
+    return template.concat(base, template.html`
       <style>
         :host {
           align-items: initial;
@@ -115,9 +115,7 @@ class Toast extends Base {
           will-change: opacity, transform;
         }
       </style>
-    `;
-    result.content.appendChild(styleTemplate.content);
-    return result;
+    `);
   }
 
   get updates() {

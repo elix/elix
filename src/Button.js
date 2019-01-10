@@ -77,8 +77,6 @@ class Button extends Base {
         
         #inner {
           align-items: center; /* Edge */
-          background: none;
-          border: none;
           color: inherit;
           display: inline-flex;
           flex: 1;

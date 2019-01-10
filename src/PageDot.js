@@ -23,9 +23,9 @@ const Base =
 class PageDot extends Base {
 
   get [symbols.template]() {
-    // Next line is same as: const result = super[symbols.template]
-    const result = getSuperProperty(this, PageDot, symbols.template);
-    const styleTemplate = template.html`
+    // Next line is same as: const base = super[symbols.template]
+    const base = getSuperProperty(this, PageDot, symbols.template);
+    return template.concat(base, template.html`
       <style>
         :host {
           border-radius: 7px;
@@ -39,9 +39,7 @@ class PageDot extends Base {
           width: 8px;
         }
       </style>
-    `;
-    result.content.appendChild(styleTemplate.content);
-    return result;
+    `);
   }
 
   get updates() {

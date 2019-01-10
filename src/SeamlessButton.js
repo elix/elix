@@ -15,9 +15,9 @@ import Button from './Button.js';
 class SeamlessButton extends Button {
 
   get [symbols.template]() {
-    // Next line is same as: const result = super[symbols.template]
-    const result = getSuperProperty(this, SeamlessButton, symbols.template);
-    const styleTemplate = template.html`
+    // Next line is same as: const base = super[symbols.template]
+    const base = getSuperProperty(this, SeamlessButton, symbols.template);
+    return template.concat(base, template.html`
       <style>
         #inner {
           background: none;
@@ -25,9 +25,7 @@ class SeamlessButton extends Button {
           padding: 0;
         }
       </style>
-    `;
-    result.content.appendChild(styleTemplate.content);
-    return result;
+    `);
   }
 
 }

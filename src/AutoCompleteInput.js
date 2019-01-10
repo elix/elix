@@ -122,9 +122,9 @@ class AutoCompleteInput extends Base {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const result = super[symbols.template]
-    const result = getSuperProperty(this, AutoCompleteInput, symbols.template);
-    const styleTemplate = template.html`
+    // Next line is same as: const base = super[symbols.template]
+    const base = getSuperProperty(this, AutoCompleteInput, symbols.template);
+    return template.concat(base, template.html`
       <style>
         #inner {
           font-family: inherit;
@@ -133,9 +133,7 @@ class AutoCompleteInput extends Base {
           font-weight: inherit;
         }
       </style>
-    `;
-    result.content.appendChild(styleTemplate.content);
-    return result;
+    `);
   }
 
   get texts() {

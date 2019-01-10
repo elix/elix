@@ -166,17 +166,15 @@ class DateInput extends Base {
   }
   
   get [symbols.template]() {
-    // Next line is same as: const result = super[symbols.template]
-    const result = getSuperProperty(this, DateInput, symbols.template);
-    const styleTemplate = template.html`
+    // Next line is same as: const base = super[symbols.template]
+    const base = getSuperProperty(this, DateInput, symbols.template);
+    return template.concat(base, template.html`
       <style>
         :host {
           width: 6em;
         }
       </style>
-    `;
-    result.content.appendChild(styleTemplate.content);
-    return result;
+    `);
   }
 
   /**
