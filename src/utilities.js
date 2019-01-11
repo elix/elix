@@ -8,9 +8,6 @@ import * as symbols from "./symbols.js";
  */
 
 
-const mousedownListenerKey = Symbol('mousedownListener');
-
-
  /**
  * Returns true if the first node contains the second, even if the second node
  * is in a shadow tree.
