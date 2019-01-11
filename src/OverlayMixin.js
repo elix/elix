@@ -3,8 +3,6 @@ import { deepContains, defaultFocus } from './utilities.js';
 
 
 /** @type {any} */
-const appendedToDocumentKey = Symbol('appendedToDocument');
-/** @type {any} */
 const assignedZIndexKey = Symbol('assignedZIndex');
 /** @type {any} */
 const restoreFocusToElementKey = Symbol('restoreFocusToElement');
@@ -67,19 +65,8 @@ export default function OverlayMixin(Base) {
 
     componentDidUpdate(previousState) {
       if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-
-      if (previousState.opened !== this.state.opened) {
+      if (this.state.opened !== previousState.opened) {
         openedChanged(this);
-      }
-
-      // If we're finished closing an overlay that was automatically added to
-      // the document, remove it now. Note: we only do this when the component
-      // updates, not when it mounts, because we don't want an
-      // automatically-added element to be immediately removed during its
-      // connectedCallback.
-      if (this.closeFinished && this[appendedToDocumentKey]) {
-        this[appendedToDocumentKey] = false;
-        this.parentNode.removeChild(this);
       }
     }
 
@@ -87,18 +74,6 @@ export default function OverlayMixin(Base) {
       return Object.assign(super.defaultState, {
         autoFocus: true
       });
-    }
-
-    /*
-     * Override the toggle method (typically implemented by OpenCloseMixin)
-     * so that we can handle automatic addition of an overlay to the page.
-     * We'd much prefer to do this in componentDidUpdate, but if the
-     * component isn't in the DOM, ReactiveMixin won't even render it,
-     * and so componentDidUpdate won't get called.
-     */
-    async toggle(opened = !this.opened) {
-      if (super.toggle) { await super.toggle(opened); }
-      autoConnectToDocument(this, opened);
     }
 
     get updates() {
@@ -145,15 +120,6 @@ export default function OverlayMixin(Base) {
   }
 
   return Overlay;
-}
-
-
-function autoConnectToDocument(element, connect) {
-  if (connect && !element.isConnected) {
-    // Overlay isn't in document yet.
-    element[appendedToDocumentKey] = true;
-    document.body.appendChild(element);
-  }
 }
 
 

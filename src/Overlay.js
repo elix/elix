@@ -8,6 +8,10 @@ import ReactiveElement from './ReactiveElement.js';
 import SlotContentMixin from './SlotContentMixin.js';
 
 
+/** @type {any} */
+const appendedToDocumentKey = Symbol('appendedToDocument');
+
+
 const Base =
   OpenCloseMixin(
   OverlayMixin(
@@ -27,6 +31,11 @@ const Base =
  * frame around the overlay content, and [backdropTag](#backdropTag) (if
  * defined) for the optional element covering the page elements behind the
  * overlay.
+ * 
+ * As a convenience, the `open` method of `Overlay` will automatically add the
+ * overlay to the end of the document body if the overlay isn't already in the
+ * document. If the overlay is automatically attached in this way, then when it
+ * closes, it will automatically be removed.
  * 
  * See [Dialog](Dialog) and [Popup](Popup) for modal and modeless subclasses,
  * respectively.
@@ -88,7 +97,7 @@ class Overlay extends Base {
 
   componentDidUpdate(previousState) {
     if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-    const opened = !previousState.opened && this.state.opened;
+    const opened = this.state.opened && !previousState.opened;
     if (opened && this.state.content) {
       // If contents know how to size themselves, ask them to check their size.
       this.state.content.forEach(element => {
@@ -96,6 +105,16 @@ class Overlay extends Base {
           element[symbols.checkSize]();
         }
       });
+    }
+    // If we're finished closing an overlay that was automatically added to the
+    // document, remove it now. Note: we only do this when the component
+    // updates, not when it mounts, because we don't want an automatically-added
+    // element to be immediately removed during its connectedCallback.
+    if (this.closeFinished && this[appendedToDocumentKey]) {
+      this[appendedToDocumentKey] = false;
+      if (this.parentNode) {
+        this.parentNode.removeChild(this);
+      }
     }
   }
 
@@ -125,6 +144,15 @@ class Overlay extends Base {
   }
   set frameRole(frameRole) {
     this.setState({ frameRole });
+  }
+
+  async open() {
+    if (!this.isConnected) {
+      // Overlay isn't in document yet.
+      this[appendedToDocumentKey] = true;
+      document.body.appendChild(this);
+    }
+    if (super.open) { await super.open(); }
   }
 
   get [symbols.template]() {
