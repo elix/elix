@@ -184,26 +184,15 @@ export function replace(original, replacement) {
     const merged = merge(current(original), current(replacement));
     apply(replacement, merged);
   }
-  // Copy over children.
-  // We do this from last to first. As of Nov 2018, if we do something else,
-  // such as always moving over the first child, the polyfill may trigger a
-  // HierarchyRequestError in Edge.
-  for (let i = original.childNodes.length - 1; i >= 0; i--) {
-    const child = original.childNodes[i];
-    let childToMove;
-    // @ts-ignore
-    if (child.localName === 'slot') {
-      // More polyfill pain (different than issue noted above): As of Nov 2018,
-      // the polyfill gets confused if we move a slot. As a workaround, we clone
-      // any child that's a slot.
-      childToMove = child.cloneNode(true);
-      original.removeChild(child);
-    } else {
-      // Just move the child.
-      childToMove = child;
-    }
-    replacement.insertBefore(childToMove, replacement.firstChild);
-  }
+  // Copy over children. As of January 2018, it is hard to do this without
+  // causing the polyfill to choke (e.g., with HierarchyRequestError). The
+  // polyfill has trouble if we:
+  // a) keep moving over the first child until there's no first child, or
+  // b) loop from last to first, inserting at the beginning of the replacement.
+  // The safest thing that seems to work is to create an array of the
+  // children, then loop over that array.
+  [...original.childNodes].forEach(child => replacement.appendChild(child));
+
   parent.replaceChild(replacement, original);
   return replacement;
 }
