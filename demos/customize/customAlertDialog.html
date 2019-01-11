@@ -38,15 +38,6 @@
 
     <p id="response"></p>
 
-    <elix-alert-dialog
-      id="sampleDialog"
-      backdrop-role="custom-backdrop"
-      choice-button-role="custom-button"
-      frame-role="custom-overlay-frame"
-      >
-      Hello, world.
-    </elix-alert-dialog>
-
     <script>
       function okCancelClick(event) {
         showAlertWithChoices(['OK', 'Cancel']);
@@ -58,8 +49,11 @@
   
       async function showAlertWithChoices(choices) {
         const dialog = document.createElement('elix-alert-dialog');
-        dialog.textContent = 'Hello, world';
+        dialog.backdropRole = "custom-backdrop";
+        dialog.choiceButtonRole = "custom-button";
+        dialog.frameRole = "custom-overlay-frame";
         dialog.choices = choices;
+        dialog.textContent = 'Hello, world';
         dialog.addEventListener('closed', event => {
           const closeResult = event.detail.closeResult;
           const choice = closeResult && closeResult.choice;
