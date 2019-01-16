@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Elix disabled</title>
+
+  <link rel="stylesheet" href="demos.css">
+  <script src="node_modules/@webcomponents/webcomponentsjs/bundles/webcomponents-sd-ce.js"></script>
+  <script type="module" src="../src/DropdownList.js"></script>
+
+</head>
+
+<body role="main">
+  <div class="demo padded">
+    <p>
+      <label>
+        <input type="checkbox" checked="true" onchange="sampleDropdownList.disabled = !sampleDropdownList.disabled">
+        Enable dropdown
+      </label>
+    </p>
+    <label>
+      Skill level:
+      <elix-dropdown-list id="sampleDropdownList">
+        <div>Beginner</div>
+        <div>Intermediate</div>
+        <div>Expert</div>
+      </elix-dropdown-list>
+    </label>
+  </div>
+</body>
+
+</html>

@@ -29,6 +29,11 @@ class PopupButton extends Base {
       // mousedown won't fire until the user releases their finger, so it behaves
       // like a click.
       this.$.source.addEventListener('mousedown', event => {
+        // mousedown events fire even if button is disabled, so we need
+        // to explicitly ignore those.
+        if (this.disabled) {
+          return;
+        }
         // Only handle primary button mouse down to avoid interfering with
         // right-click behavior.
         /** @type {any} */
@@ -110,7 +115,6 @@ class PopupButton extends Base {
       <style>
         #source {
           background: buttonface;
-          border-style: solid;
           color: inherit;
           cursor: default;
           display: block;
@@ -133,11 +137,15 @@ class PopupButton extends Base {
   }
 
   get updates() {
+    const { disabled } = this.state;
     return merge(super.updates, {
       $: {
         source: {
           attributes: {
             tabindex: -1
+          },
+          style: {
+            'border-style': disabled ? '' : 'solid'
           }
         }
       }

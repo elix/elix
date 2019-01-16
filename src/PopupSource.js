@@ -30,6 +30,7 @@ const Base =
  * 
  * @inherits ReactiveElement
  * @mixes ComposedFocusMixin
+ * @mixes DisabledMixin
  * @mixes FocusVisibleMixin
  * @mixes KeyboardMixin
  * @mixes OpenCloseMixin
@@ -301,7 +302,7 @@ class PopupSource extends Base {
       base.attributes && base.attributes.role ||
       this.state.role;
 
-    const opened = this.state.opened;
+    const { disabled, opened } = this.state;
     const sourceStyle = {
       'background-color': opened ? 'highlight' : '',
       color: opened ? 'highlighttext' : ''
@@ -420,9 +421,14 @@ class PopupSource extends Base {
         popupContainer: {
           style: popupContainerStyle
         },
-        source: {
-          style: sourceStyle
-        }
+        source: Object.assign(
+          {
+            style: sourceStyle
+          },
+          'disabled' in this.$.source && {
+            disabled
+          }
+        )
       }
     });
   }
