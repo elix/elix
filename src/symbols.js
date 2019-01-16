@@ -63,7 +63,20 @@ export const canGoLeft = Symbol('canGoLeft');
  */
 export const canGoRight = Symbol('canGoRight');
 
-// TODO: Docs
+/**
+ * Symbol for the `checkSize` method.
+ * 
+ * If defined, this method will be invoked by [ResizeMixin](ResizeMixin)
+ * when an element's size may have changed. The default implementation of
+ * this method compares the element's current `clientHeight` and `clientWidth`
+ * properties against the last known values of those properties (saved in
+ * `state.clienHeight` and `state.clientWidth`).
+ * 
+ * Components should override this method if they contain elements that may need
+ * to know about size changes as well. For example, when an [Overlay](Overlay)
+ * mixin opens, it invokes this method on any content elements that define it.
+ * This gives the contents a chance to resize in response to being displayed.
+ */
 export const checkSize = Symbol('checkSize');
 
 /**
@@ -108,7 +121,16 @@ export const defaultFocus = Symbol('defaultFocus');
  */
 export const elementsWithTransitions = Symbol('elementsWithTransitions');
 
-// TODO: Document
+/**
+ * Symbol for the `focusTarget` property.
+ * 
+ * Components can define this to indicate a specific subelement in their Shadow
+ * DOM tree that should receive the focus (instead of the component's host
+ * element). [ComposedFocusMixin](ComposedFocusMixin) uses this property when
+ * providing default focus behavior. See that mixin for details.
+ * 
+ * @var {Element} focusTarget
+ */
 export const focusTarget = Symbol('focusTarget');
 
 /**

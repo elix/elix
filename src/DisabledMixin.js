@@ -1,4 +1,6 @@
 /**
+ * Tracks the disabled state of a component that can be disabled
+ * 
  * @module DisabledMixin
  */
 export default function DisabledMixin(Base) {
@@ -41,6 +43,10 @@ export default function DisabledMixin(Base) {
      * write this instead
      * 
      *     my-component[disabled] { ... }
+     * 
+     * Like the native `disabled` attribute, this attribute is boolean. That
+     * means that it's *existence* in markup sets the attribute, even if set to
+     * an empty string or a string like "false".
      * 
      * @type {boolean}
      * @default false
