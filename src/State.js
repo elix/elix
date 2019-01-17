@@ -2,7 +2,7 @@ const changeHandlersKey = Symbol('changeHandlers');
 
 
 /**
- * 
+ * A state object that can reconcile changes from multiple sources.
  */
 export default class State {
 
@@ -13,6 +13,48 @@ export default class State {
   }
   
   /**
+   * Ask the `State` object to invoke the specified `callback` when any of the
+   * state members listed in the `dependencies` array change.
+   * 
+   * The `callback` should be a function that accepts:
+   * 
+   * * A `state` parameter indicating the current state.
+   * * A `changed` parameter. This will be a set of flags that indicate which
+   * state members have changed since the last time the callback was run.
+   * 
+   * The callback should return `null` if it finds the current state acceptable.
+   * If the callback wants to make changes to the state, it returns an object
+   * representing the changes that should be applied to the state. The callback
+   * does *not* need to check to see whether the changes actually need to be
+   * applied to the state; the `State` object itself will avoid applying
+   * unnecessary changes.
+   * 
+   * The common place to invoke `onChange` is when an element's `defaultState`
+   * is being constructed.
+   * 
+   * Example: a mixin like [SingleSelectionMixin](SingleSelectionMixin)
+   * wants to track a `selectedIndex` state member that always points to
+   * a valid member of an array tracked by a state member called `items`.
+   * The mixin wants to ensure that, if the `items` array changes,
+   * the `selectedIndex` will still fall within the bounds of the array.
+   * This can be accomplished like this:
+   * 
+   *     const SampleMixin = Base => class Sample extends Base {
+   *       get defaultState() {
+   *         const state = super.defaultState;
+   *         // Ask to be notified when `items` changes.
+   *         state.onChange('items', (state, changed) => {
+   *           const { items, selectedIndex } = state;
+   *           const length = items.length;
+   *           // Force index within bounds of -1 (no selection) to array length-1.
+   *           const index = Math.max(Math.min(selectedIndex, length-1), -1);
+   *           return {
+   *             selectedIndex: index
+   *           };
+   *         });
+   *         return state;
+   *       }
+   *     }
    * 
    * @param {string[]|string} dependencies 
    * @param {function} callback
@@ -32,6 +74,13 @@ export default class State {
   }
 
   /**
+   * Apply the desired changes to the state, invoking any registered
+   * `onChange` handlers that depend on the changed state members.
+   * 
+   * This is a destructive operation. You should not need to invoke
+   * this method yourself for a component's `state` object. Instead,
+   * [ReactiveMixin](ReactiveMixin) will take care of doing that
+   * when you invoke [setState](ReactiveMixin#setState).
    * 
    * @param {object} changes - the changes to apply to the state
    * @returns {boolean} - true if any changes were actually applied
