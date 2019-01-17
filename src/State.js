@@ -4,7 +4,7 @@ const changeHandlersKey = Symbol('changeHandlers');
 /**
  * A state object that can reconcile changes from multiple sources.
  */
-export default class State {
+class State {
 
   constructor(defaults) {
     if (defaults) {
@@ -39,25 +39,30 @@ export default class State {
    * the `selectedIndex` will still fall within the bounds of the array.
    * This can be accomplished like this:
    * 
-   *     const SampleMixin = Base => class Sample extends Base {
-   *       get defaultState() {
-   *         const state = super.defaultState;
-   *         // Ask to be notified when `items` changes.
-   *         state.onChange('items', (state, changed) => {
-   *           const { items, selectedIndex } = state;
-   *           const length = items.length;
-   *           // Force index within bounds of -1 (no selection) to array length-1.
-   *           const index = Math.max(Math.min(selectedIndex, length-1), -1);
-   *           return {
-   *             selectedIndex: index
-   *           };
-   *         });
-   *         return state;
-   *       }
-   *     }
+   * ```js
+   * const SampleMixin = Base => class Sample extends Base {
+   *   get defaultState() {
+   *     const state = super.defaultState;
+   *     // Ask to be notified when `items` changes.
+   *     state.onChange('items', (state, changed) => {
+   *       const { items, selectedIndex } = state;
+   *       const length = items.length;
+   *       // Force index within bounds of -1 (no selection)
+   *       // to array length - 1.
+   *       const index = Math.max(Math.min(selectedIndex, length-1), -1);
+   *       return {
+   *         selectedIndex: index
+   *       };
+   *     });
+   *     return state;
+   *   }
+   * }
+   * ```
    * 
-   * @param {string[]|string} dependencies 
-   * @param {function} callback
+   * @param {string[]|string} dependencies - the name(s) of the state members
+   * that should trigger the callback if they are changed
+   * @param {function} callback - the function to run when any of the
+   * dependencies changes
    */
   onChange(dependencies, callback) {
     const array = dependencies instanceof Array ?
@@ -167,3 +172,6 @@ function fieldsChanged(state, changes) {
   }
   return changed;
 }
+
+
+export default State;
