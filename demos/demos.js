@@ -1,7 +1,4 @@
-// We assume we'll want to provide demos of all of Elix itself.
-import '../src/elix.js';
-
-// Additional demo components.
+// Demo components.
 import './src/CalendarDayMoonPhase.js';
 import './src/CountryListBox.js';
 import './src/CustomCarousel2.js';
@@ -17,3 +14,6 @@ import './src/SingleSelectionDemo.js';
 import './src/SlidingPagesWithArrows.js';
 import './src/SwipeDemo.js';
 import './src/ToolbarTab.js';
+
+// We assume we'll want to provide demos of all of Elix itself.
+import '../src/elix.js';
