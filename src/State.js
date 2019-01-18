@@ -8,8 +8,33 @@ class State {
 
   constructor(defaults) {
     if (defaults) {
-      this.set(defaults);
+      applyStateChanges(this, defaults);
     }
+  }
+
+  /**
+   * Return a new copy of this state that includes the indicated changes,
+   * invoking any registered `onChange` handlers that depend on the changed
+   * state members.
+   * 
+   * There is no need to invoke this method yourself.
+   * [ReactiveMixin](ReactiveMixin) will take care of doing that when you invoke
+   * [setState](ReactiveMixin#setState).
+   * 
+   * @param {object} changes - the changes to apply to the state
+   * @returns {object} - the new `state`, and a `changed` flag indicating
+   * whether there were any substantive changes
+   */
+  copyWithChanges(changes) {
+    // Create a new state object that holds a copy of the old state. If we pass
+    // the current state to the State constructor, we'll trigger the application
+    // of its change handlers, which will ultimately realize the state is
+    // already as refined as possible, and so do work for nothing. So we create
+    // a new empty State, merge in the old state, then run the change handlers
+    // with the requested changes.
+    const state = Object.assign(new State(), this);
+    const changed = applyStateChanges(state, changes);
+    return { state, changed };
   }
   
   /**
@@ -20,7 +45,9 @@ class State {
    * 
    * * A `state` parameter indicating the current state.
    * * A `changed` parameter. This will be a set of flags that indicate which
-   * state members have changed since the last time the callback was run.
+   *   specified state members have changed since the last time the callback was
+   *   run. If the handler doesn't care about which specific members have
+   *   changed, this parameter can be omitted.
    * 
    * The callback should return `null` if it finds the current state acceptable.
    * If the callback wants to make changes to the state, it returns an object
@@ -31,34 +58,7 @@ class State {
    * 
    * The common place to invoke `onChange` is when an element's `defaultState`
    * is being constructed.
-   * 
-   * Example: a mixin like [SingleSelectionMixin](SingleSelectionMixin)
-   * wants to track a `selectedIndex` state member that always points to
-   * a valid member of an array tracked by a state member called `items`.
-   * The mixin wants to ensure that, if the `items` array changes,
-   * the `selectedIndex` will still fall within the bounds of the array.
-   * This can be accomplished like this:
-   * 
-   * ```js
-   * const SampleMixin = Base => class Sample extends Base {
-   *   get defaultState() {
-   *     const state = super.defaultState;
-   *     // Ask to be notified when `items` changes.
-   *     state.onChange('items', (state, changed) => {
-   *       const { items, selectedIndex } = state;
-   *       const length = items.length;
-   *       // Force index within bounds of -1 (no selection)
-   *       // to array length - 1.
-   *       const index = Math.max(Math.min(selectedIndex, length-1), -1);
-   *       return {
-   *         selectedIndex: index
-   *       };
-   *     });
-   *     return state;
-   *   }
-   * }
-   * ```
-   * 
+
    * @param {string[]|string} dependencies - the name(s) of the state members
    * that should trigger the callback if they are changed
    * @param {function} callback - the function to run when any of the
@@ -76,56 +76,6 @@ class State {
       this[changeHandlersKey] = [];
     }
     this[changeHandlersKey].push(changeHandler);
-  }
-
-  /**
-   * Apply the desired changes to the state, invoking any registered
-   * `onChange` handlers that depend on the changed state members.
-   * 
-   * This is a destructive operation. You should not need to invoke
-   * this method yourself for a component's `state` object. Instead,
-   * [ReactiveMixin](ReactiveMixin) will take care of doing that
-   * when you invoke [setState](ReactiveMixin#setState).
-   * 
-   * @param {object} changes - the changes to apply to the state
-   * @returns {boolean} - true if any changes were actually applied
-   */
-  set(changes) {
-    let result = false;
-
-    // Applying the changes may produce a new round of changes, and that round
-    // might produce new changes, and so on. Loop until we complete a pass that
-    // produces no changes.
-    for (
-      let changed;
-      changed = fieldsChanged(this, changes), !isEmpty(changed);
-    ) {
-      // We do have some real changes to report.
-      result = true;
-
-      // Apply the changes to the state.
-      Object.assign(this, changes);
-
-      // Run the change handlers, gathering up the changes those produce.
-      const nextChanges = {};
-      if (this[changeHandlersKey]) {
-        this[changeHandlersKey].forEach(handler => {
-          const { dependencies, callback } = handler;
-          // Does this handler trigger on any of the changes we have?
-          const run = dependencies.some(dependency => changed[dependency]);
-          if (run) {
-            // Yes, run the change handler and collect its changes.
-            const handlerChanges = callback(this, changed);
-            Object.assign(nextChanges, handlerChanges);
-          }
-        });
-      }
-
-      // If the change handlers produced changes, we'll run the loop again.
-      changes = nextChanges;
-    }
-
-    return result;
   }
 
 }
@@ -150,12 +100,6 @@ function isEmpty(o) {
 }
 
 
-/**
- * 
- * @param {object} state 
- * @param {object} changes 
- * @returns {object}
- */
 function fieldsChanged(state, changes) {
   const changed = {};
   for (const field in changes) {
@@ -171,6 +115,49 @@ function fieldsChanged(state, changes) {
     }
   }
   return changed;
+}
+
+
+// Destructively apply the indicated changes to the given state, running
+// any registered change handlers.
+// Return true if the supplied changes produced actual changes (i.e., didn't
+// simply duplicate existing field values).
+function applyStateChanges(state, changes) {
+  let result = false;
+
+  // Applying the changes may produce a new round of changes, and that round
+  // might produce new changes, and so on. Loop until we complete a pass that
+  // produces no changes.
+  for (
+    let changed;
+    changed = fieldsChanged(state, changes), !isEmpty(changed);
+  ) {
+    // We do have some real changes to report.
+    result = true;
+
+    // Apply the changes to the state.
+    Object.assign(state, changes);
+
+    // Run the change handlers, gathering up the changes those produce.
+    const nextChanges = {};
+    if (state[changeHandlersKey]) {
+      state[changeHandlersKey].forEach(handler => {
+        const { dependencies, callback } = handler;
+        // Does this handler trigger on any of the changes we have?
+        const run = dependencies.some(dependency => changed[dependency]);
+        if (run) {
+          // Yes, run the change handler and collect its changes.
+          const handlerChanges = callback(state, changed);
+          Object.assign(nextChanges, handlerChanges);
+        }
+      });
+    }
+
+    // If the change handlers produced changes, we'll run the loop again.
+    changes = nextChanges;
+  }
+
+  return result;
 }
 
 

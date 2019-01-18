@@ -3,19 +3,19 @@
 
 /// <reference path="shared.d.ts"/>
 
-import State from './State.js';
+import State from 'State';
 
 declare const ReactiveMixin: Mixin<{
   connectedCallback?(): void;
 }, {
   componentDidMount(): void;
-  componentDidUpdate(previousState: PlainObject): void;
+  componentDidUpdate(previousState: State): void;
   connectedCallback(): void;
   defaultState: State;
   render(): Promise<void>;
   setState(changes: PlainObject): Promise<void>;
-  shouldComponentUpdate(nextState: PlainObject): boolean;
-  state: PlainObject;
+  shouldComponentUpdate(nextState: State): boolean;
+  state: State;
 }>;
 
 export default ReactiveMixin;

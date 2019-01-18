@@ -136,29 +136,31 @@ export default function ReactiveMixin(Base) {
         console.warn(`${this.constructor.name} called setState during rendering, which you should avoid.\nSee https://elix.org/documentation/ReactiveMixin.`);
       }
 
-      // Create a new state object that holds a copy of the old state. If we
-      // pass the current state to the State constructor, we'll trigger the
-      // application of its change handlers, which will ultimately realize the
-      // state is already as refined as possible, and so do work for nothing. So
-      // we create the State, merge in the old state, then run the change
-      // handlers with just the present changes.
-      const nextState = new State();
-      Object.assign(nextState, this[stateKey]);
-      const changed = nextState.set(changes);
+      /** @type {State} */
+      let state;
+      /** @type {boolean} */
+      let changed;
+      if (this[stateKey] === undefined) {
+        state = new State(changes);
+        changed = true;
+      } else {
+        const copyResult = this[stateKey].copyWithChanges(changes);
+        state = copyResult.state;
+        changed = copyResult.changed;
+      }
 
       // Freeze the new state so it's immutable. This prevents accidental
       // attempts to set state without going through setState.
-      Object.freeze(nextState);
+      Object.freeze(state);
 
       // Is this our first setState, or does the component think something's changed?
-      const firstSetState = this[stateKey] === undefined;
-      if (!(firstSetState || changed || this.shouldComponentUpdate(nextState))) {
+      if (!(changed || this.shouldComponentUpdate(state))) {
         // No need to render.
         return false;
       }
 
       // Set the new state.
-      this[stateKey] = nextState;
+      this[stateKey] = state;
 
       // We only need to render if we're actually in the document.
       if (this.isConnected) {
@@ -184,14 +186,13 @@ export default function ReactiveMixin(Base) {
     /**
      * Return true if the component should update.
      * 
-     * TODO: Update comments
+     * By default, `ReactiveMixin` will perform a shallow check of property
+     * values like React's PureComponent. This seems adequate for most web
+     * components. You can override this to always return true (like React's
+     * base Component class), or to perform more specific, deeper checks for
+     * changes in state.
      * 
-     * The default implementation does a shallow check of property values like
-     * React's PureComponent. This seems adequate for most web components. You
-     * can override this to always return true (like React's base Component
-     * class), or to perform more specific, deeper checks for changes in state.
-     * 
-     * @param {object} nextState - the proposed new state for the element
+     * @param {State} nextState - the proposed new state for the element
      * @return {boolean} - true if the component should update (rerender)
      */
     shouldComponentUpdate(nextState) {
@@ -204,7 +205,7 @@ export default function ReactiveMixin(Base) {
      * The component's current state.
      * The returned state object is immutable. To update it, invoke `setState`.
      * 
-     * @type {object}
+     * @type {State}
      */
     get state() {
       return this[stateKey] || Object.freeze({});
