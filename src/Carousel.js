@@ -44,6 +44,7 @@ const Base =
  * @inherits Explorer
  * @mixes AriaListMixin
  * @mixes ArrowDirectionMixin
+ * @mixes DarkModeMixin
  * @mixes DirectionSelectionMixin
  * @mixes FocusVisibleMixin
  * @mixes KeyboardDirectionMixin

@@ -81,10 +81,10 @@ class CalendarMonthNavigator extends Base {
 
   get defaultState() {
     return Object.assign(super.defaultState, {
+      arrowButtonOverlap: false,
       date: calendar.today(),
       dayRole: CalendarDayButton,
       orientation: 'both',
-      overlayArrowButtons: false,
       showCompleteWeeks: true,
       showSelectedDay: true
     });

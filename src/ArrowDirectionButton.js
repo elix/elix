@@ -21,6 +21,7 @@ const Base =
  * default left/right arrow buttons.
  * 
  * @inherits SeamlessButton
+ * @mixes DarkModeMixin
  * @mixes HoverMixin
  */
 class ArrowDirectionButton extends Base {

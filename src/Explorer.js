@@ -164,7 +164,10 @@ class Explorer extends Base {
     return this.state.proxyListOverlap;
   }
   set proxyListOverlap(proxyListOverlap) {
-    this.setState({ proxyListOverlap });
+    const parsed = String(proxyListOverlap) === 'true';
+    this.setState({
+      proxyListOverlap: parsed
+    });
   }
 
   /**

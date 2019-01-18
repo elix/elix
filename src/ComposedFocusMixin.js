@@ -2,7 +2,7 @@ import * as symbols from './symbols.js';
 
 
 /**
- * Normalizes focus treatment for custom elements with Shadow DOM.
+ * Normalizes focus treatment for custom elements with Shadow DOM
  * 
  * The default behavior for mousedown should set the focus to the closest
  * ancestor of the clicked element that can take the focus. As of Nov 2018,

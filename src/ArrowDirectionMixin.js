@@ -17,6 +17,23 @@ function ArrowDirectionMixin(Base) {
 
   // The class prototype added by the mixin.
   class ArrowDirection extends Base {
+
+    /**
+     * True if the arrow buttons should overlap the component contents;
+     * false if they should appear to the side of the contents.
+     * 
+     * @type {boolean}
+     * @default true
+     */
+    get arrowButtonOverlap() {
+      return this.state.arrowButtonOverlap;
+    }
+    set arrowButtonOverlap(arrowButtonOverlap) {
+      const parsed = String(arrowButtonOverlap) === 'true';
+      this.setState({
+        arrowButtonOverlap: parsed
+      });
+    }
   
     /**
      * The class, tag, or template used to create the left and right arrow
@@ -78,9 +95,9 @@ function ArrowDirectionMixin(Base) {
   
     get defaultState() {
       return Object.assign(super.defaultState, {
+        arrowButtonOverlap: true,
         arrowButtonRole: ArrowDirectionButton,
         orientation: 'horizontal',
-        overlayArrowButtons: true,
         showArrowButtons: true
       });
     }
@@ -98,8 +115,8 @@ function ArrowDirectionMixin(Base) {
     get updates() {
       const base = super.updates;
 
-      const overlayArrowButtons = this.state.overlayArrowButtons;
-      const buttonUpdates = overlayArrowButtons ?
+      const arrowButtonOverlap = this.state.arrowButtonOverlap;
+      const buttonUpdates = arrowButtonOverlap ?
         {
           style: {
             'bottom': 0,
@@ -123,7 +140,7 @@ function ArrowDirectionMixin(Base) {
         },
         style: {
           display: arrowDisplay,
-          left: overlayArrowButtons ? 0 : ''
+          left: arrowButtonOverlap ? 0 : ''
         }
       });
 
@@ -133,7 +150,7 @@ function ArrowDirectionMixin(Base) {
         },
         style: {
           display: arrowDisplay,
-          right: overlayArrowButtons ? 0 : ''
+          right: arrowButtonOverlap ? 0 : ''
         }
       });
 

@@ -365,6 +365,7 @@ class DateComboBox extends Base {
    * the _previous_ year.
    * 
    * @type {'future'|'past'|null}
+   * @default null
    */
   get timeBias() {
     return this.state.timeBias;

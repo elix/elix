@@ -1,4 +1,6 @@
 /**
+ * Lets a component automatically or explicitly configure itself for dark backgrounds
+ * 
  * @module DarkModeMixin
  */
 export default function DarkModeMixin(Base) {
@@ -21,12 +23,27 @@ export default function DarkModeMixin(Base) {
       }
     }
 
+    /**
+     * True if the component should configure itself for display on a dark background;
+     * false if the component should assume a light background.
+     * 
+     * The default value of this property is inferred when the component is
+     * initially added to the page. The component will look up its hierarchy for
+     * an ancestor that has an explicit background color. If the color's
+     * lightness value in the HSL cylindrical-coordinate system is below 50%,
+     * the background is assumed to be dark and `darkMode` will default to true.
+     * If the color is lighter than that, or no explicit background color can be
+     * found, the default value of `darkMode` will be false.
+     * 
+     * @type {boolean}
+     */
     get darkMode() {
       return this.state.darkMode;
     }
     set darkMode(darkMode) {
+      const parsed = String(darkMode) === 'true';
       this.setState({
-        darkMode
+        darkMode: parsed
       });
     }
 
