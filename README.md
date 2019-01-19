@@ -26,6 +26,54 @@ contexts.
 For full details and demos, see the [Elix documentation](https://component.kitchen/elix).
 
 
+# Quick start
+
+For quick experiments, you can import specific Elix components using a `script` element and a service like unpkg. See a [Quick Carousel import example](https://codepen.io/JanMiksovsky/pen/gZNVQz?editors=1000).
+
+For regular use, add the Elix package to your package.json:
+
+```json
+{
+  "dependencies": {
+    "elix": "<latest version number here>"
+  }
+}
+```
+
+Then run `npm install`. We generally recommend locking your `package.json` to a fixed Elix version number (`1.0.0` rather than `^1.0.0` or `1.x`, for example). See more at [Versioning](#versioning).
+
+In markup, you can then reference the components you need:
+
+```html
+<html>
+  <head>
+    <script type="module" src="node_modules/elix/src/Carousel.js"></script>
+  </head>
+  <body>
+    <elix-carousel>
+      <!-- Images and other elements go here -->
+    </elix-carousel>
+  </body>
+</html>
+```
+
+In JavaScript, you can directly `import` components:
+
+```js
+import Carousel from 'elix/src/Carousel.js';
+
+const carousel = new Carousel();
+// Add images, etc., to the carousel.
+const image1 = new Image();
+image1.src = 'image1.jpg';
+carousel.appendChild(image1);
+// Add the carousel to the page.
+document.body.appendChild(carousel);
+```
+
+The Elix project itself _requires no build step_. You are free to use your preferred tools to bundle the Elix modules for better network performance.
+
+
 # Core principles
 
 * **Usability excellence.** All components are designed with the experience of
@@ -86,20 +134,7 @@ For full details and demos, see the [Elix documentation](https://component.kitch
   repository.
 
 
-# Including Elix in your project
-
-Add the Elix package to your package.json as `elix`:
-```json
-{
-  "dependencies": {
-    "elix": "<latest version number here>"
-  }
-}
-```
-
-We generally recommend locking your `package.json` to a fixed Elix version number (`1.0.0` rather than `^1.0.0` or `1.x`, for example).
-
-## A note on versioning
+# Versioning
 
 Elix is an ambitious attempt to deconstruct complex user interface elements into constituent parts at various levels of abstraction. We regularly feel like the project is breaking new ground at the frontier of front-end design and implementation. That can be exciting, but also means that promising implementation strategies will sometimes turn out to be dead ends. Moving forward will often entail breaking changes.
 
@@ -116,8 +151,6 @@ Elix is an ambitious attempt to deconstruct complex user interface elements into
 2. `npm install`.
 3. `npm start`. Go to [http://localhost:3000](http://localhost:3000) to see the demos and tests (if you like).
 
-The Elix project itself uses no build step. You are free to use your preferred tool to bundle the Elix modules for better network performance.
-
 
 # Unit tests
 
@@ -128,6 +161,7 @@ You have multiple options to run the tests.
 Run the tests locally against a headless browser.
 **Fast**, takes about 1-2 seconds.
 **Low coverage**, only headless chrome currently.
+
 ```
 npm test
 ```
