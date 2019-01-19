@@ -8,6 +8,6 @@
   },
   "author": "info@component.kitchen",
   "dependencies": {
-    "@webcomponents/webcomponentsjs": "2.2.1"
+    "@webcomponents/webcomponentsjs": "2.2.4"
   }
 }
