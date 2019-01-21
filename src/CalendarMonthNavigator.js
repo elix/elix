@@ -10,6 +10,7 @@ import CalendarElementMixin from './CalendarElementMixin.js';
 import CalendarMonth from './CalendarMonth.js';
 import ComposedFocusMixin from './ComposedFocusMixin.js';
 import DarkModeMixin from './DarkModeMixin.js';
+import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 
@@ -19,10 +20,11 @@ const Base =
   CalendarElementMixin(
   ComposedFocusMixin(
   DarkModeMixin(
+  FocusVisibleMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
     CalendarMonth
-  ))))));
+  )))))));
 
 
 /**
@@ -33,6 +35,7 @@ const Base =
  * @mixes CalendarElementMixin
  * @mixes ComposedFocusMixin
  * @mixes DarkModeMixin
+ * @mixes FocusVisibleMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
  */
