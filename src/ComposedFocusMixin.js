@@ -4,20 +4,34 @@ import * as symbols from './symbols.js';
 /**
  * Normalizes focus treatment for custom elements with Shadow DOM
  * 
- * The default behavior for mousedown should set the focus to the closest
- * ancestor of the clicked element that can take the focus. As of Nov 2018,
- * Chrome and Safari don't handle this as expected when the clicked element is
- * reassigned across more than one slot to end up inside a focusable element. In
- * such cases, the focus will end up on the body. Firefox exhibits the behavior
- * we want. See https://github.com/w3c/webcomponents/issues/773.
+ * This mixin exists for two reasons:
  * 
- * TODO: Document.
- * also need this for components that don't want to steal focus on mousedown
+ * 1. The default behavior for mousedown should set the focus to the closest
+ *    ancestor of the clicked element that can take the focus. As of Nov 2018,
+ *    Chrome and Safari don't handle this as expected when the clicked element
+ *    is reassigned across more than one slot to end up inside a focusable
+ *    element. In such cases, the focus will end up on the body. Firefox
+ *    exhibits the behavior we want. See
+ *    https://github.com/w3c/webcomponents/issues/773.
+ * 
+ * 2. Components may have interactive subelements that should not take the
+ *    focus, but instead keep the focus on the component host or a designated
+ *    subelement. E.g., a [ComboBox](ComboBox) has an arrow button that can be
+ *    clicked to toggle the opened/closed state of the popup. Pressing that
+ *    button would normally give that button the focus, even if the button
+ *    has `tabindex` of -1. However, the `ComboBox` wants to keep the focus on
+ *    the combo box's input element.
  *
- * This mixin normalizes behavior to provide what Firefox does. When the user
- * mouses down inside anywhere inside the component's light DOM or Shadow DOM,
- * we walk up the composed tree to find the first element that can take the
- * focus and put the focus on it.
+ * For point #1, this mixin normalizes behavior to provide what Firefox does.
+ * When the user mouses down inside anywhere inside the component's light DOM or
+ * Shadow DOM, we walk up the composed tree to find the first element that can
+ * take the focus and put the focus on it.
+ * 
+ * The above behavior also helps address point #2. In the `ComboBox` example,
+ * when the arrow button is pressed, the focus will not be given to the button,
+ * but rather to the combo box. The combo box defines a symbol,
+ * [symbols.focusTarget](symbols#focusTarget), which specifies that the combo
+ * box's input element should be given the focus.
  *
  * @module ComposedFocusMixin
  */
