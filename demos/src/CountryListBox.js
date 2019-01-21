@@ -7,7 +7,6 @@ import { merge } from '../../src/updates.js';
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
 import AriaListMixin from '../../src/AriaListMixin.js';
-import ClickSelectionMixin from '../../src/ClickSelectionMixin.js';
 import ContentItemsMixin from '../../src/ContentItemsMixin.js';
 import DirectionSelectionMixin from '../../src/DirectionSelectionMixin.js';
 import ItemsTextMixin from '../../src/ItemsTextMixin.js';
@@ -20,11 +19,11 @@ import ReactiveElement from '../../src/ReactiveElement.js';
 import SelectedItemTextValueMixin from '../../src/SelectedItemTextValueMixin.js';
 import SelectionInViewMixin from '../../src/SelectionInViewMixin.js';
 import SingleSelectionMixin from '../../src/SingleSelectionMixin.js';
+import TapSelectionMixin from '../../src/TapSelectionMixin.js';
 
 
 const Base =
   AriaListMixin(
-  ClickSelectionMixin(
   ContentItemsMixin(
   DirectionSelectionMixin(
   ItemsTextMixin(
@@ -36,6 +35,7 @@ const Base =
   SelectedItemTextValueMixin(
   SelectionInViewMixin(
   SingleSelectionMixin(
+  TapSelectionMixin(
     ReactiveElement
   )))))))))))));
 

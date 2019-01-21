@@ -2,7 +2,7 @@ import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import AriaMenuMixin from './AriaMenuMixin.js';
-import ClickSelectionMixin from './ClickSelectionMixin.js';
+import TapSelectionMixin from './TapSelectionMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import ItemsTextMixin from './ItemsTextMixin.js';
@@ -20,7 +20,7 @@ import SlotItemsMixin from './SlotItemsMixin.js';
 
 const Base =
   AriaMenuMixin(
-  ClickSelectionMixin(
+  TapSelectionMixin(
   DirectionSelectionMixin(
   FocusVisibleMixin(
   ItemsTextMixin(
@@ -45,7 +45,7 @@ const Base =
  * 
  * @inherits ReactiveElement
  * @mixes AriaMenuMixin
- * @mixes ClickSelectionMixin
+ * @mixes TapSelectionMixin
  * @mixes DirectionSelectionMixin
  * @mixes FocusVisibleMixin
  * @mixes ItemsTextMixin

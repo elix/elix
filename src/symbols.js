@@ -83,7 +83,7 @@ export const checkSize = Symbol('checkSize');
  * Symbol for the `click` method.
  *
  * This method is invoked when an element receives an operation that should
- * be interpreted as a click. [ClickSelectionMixin](ClickSelectionMixin)
+ * be interpreted as a click. [TapSelectionMixin](TapSelectionMixin)
  * invokes this when the element receives a `mousedown` event, for example.
  *
  * @function click

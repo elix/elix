@@ -1,8 +1,8 @@
-import ClickSelectionMixin from '../../src/ClickSelectionMixin.js';
+import TapSelectionMixin from '../../src/TapSelectionMixin.js';
 import * as mockInteractions from '../mockInteractions.js';
 
 
-class ClickSelectionTest extends ClickSelectionMixin(HTMLElement) {
+class TapSelectionTest extends TapSelectionMixin(HTMLElement) {
 
   constructor() {
     super();
@@ -23,10 +23,10 @@ class ClickSelectionTest extends ClickSelectionMixin(HTMLElement) {
   }
 
 }
-customElements.define('click-selection-test', ClickSelectionTest);
+customElements.define('tap-selection-test', TapSelectionTest);
 
 
-describe("ClickSelectionMixin", function() {
+describe("TapSelectionMixin", function() {
 
   let container;
 
@@ -38,7 +38,7 @@ describe("ClickSelectionMixin", function() {
     container.innerHTML = '';
   });
 
-  it("sets the clicked item as the selected item", done => {
+  it("sets the tapped item as the selected item", done => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     assert.equal(fixture.state.selectedIndex, -1);
@@ -67,7 +67,7 @@ describe("ClickSelectionMixin", function() {
 
 
 function createSampleElement() {
-  const fixture = document.createElement('click-selection-test');
+  const fixture = new TapSelectionTest();
   ['Zero', 'One', 'Two'].forEach(text => {
     const div = document.createElement('div');
     div.textContent = text;

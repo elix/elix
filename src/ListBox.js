@@ -2,10 +2,9 @@ import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import AriaListMixin from './AriaListMixin.js';
-import ClickSelectionMixin from './ClickSelectionMixin.js';
+import ComposedFocusMixin from './ComposedFocusMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
-import ComposedFocusMixin from './ComposedFocusMixin.js';
 import ItemsTextMixin from './ItemsTextMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
@@ -17,14 +16,14 @@ import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SelectionInViewMixin from './SelectionInViewMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
+import TapSelectionMixin from './TapSelectionMixin.js';
 
 
 const Base =
   AriaListMixin(
-  ClickSelectionMixin(
+  ComposedFocusMixin(
   DirectionSelectionMixin(
   FocusVisibleMixin(
-  ComposedFocusMixin(
   ItemsTextMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
@@ -35,6 +34,7 @@ const Base =
   SelectionInViewMixin(
   SingleSelectionMixin(
   SlotItemsMixin(
+  TapSelectionMixin(
     ReactiveElement
   )))))))))))))));
 
@@ -50,7 +50,7 @@ const Base =
  *
  * @inherits ReactiveElement
  * @mixes AriaListMixin
- * @mixes ClickSelectionMixin
+ * @mixes TapSelectionMixin
  * @mixes ComposedFocusMixin
  * @mixes DirectionSelectionMixin
  * @mixes FocusVisibleMixin

@@ -3,7 +3,7 @@ import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import AriaListMixin from './AriaListMixin.js';
-import ClickSelectionMixin from './ClickSelectionMixin.js';
+import TapSelectionMixin from './TapSelectionMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
@@ -15,7 +15,7 @@ import SlotItemsMixin from './SlotItemsMixin.js';
 
 const Base =
   AriaListMixin(
-  ClickSelectionMixin(
+  TapSelectionMixin(
   DirectionSelectionMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
@@ -52,7 +52,7 @@ const Base =
  *
  * @inherits ReactiveElement
  * @mixes AriaListMixin
- * @mixes ClickSelectionMixin
+ * @mixes TapSelectionMixin
  * @mixes DirectionSelectionMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin

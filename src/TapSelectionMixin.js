@@ -4,37 +4,36 @@ import { indexOfItemContainingTarget } from './utilities.js';
 
 
 /**
- * Maps a click on a list item to selection of that item
+ * Maps a tap/mousedown on a list item to selection of that item
  *
  * This simple mixin is useful in list-like elements like [ListBox](ListBox),
- * where a click on a list item implicitly selects it.
+ * where a tap/mousedown on a list item implicitly selects it.
  *
  * The standard use for this mixin is in list-like elements. Native list
  * boxes don't appear to be consistent with regard to whether they select
  * on mousedown or click/mouseup. This mixin assumes the use of mousedown.
  * On touch devices, that event appears to trigger when the touch is *released*.
  *
- * This mixin actually listens to `mousedown` events, not `click` events. This
- * mixin only listens to mousedown events for the primary mouse button
- * (typically the left button). Right-clicks are ignored so that the browser may
- * display a context menu.
+ * This mixin listens to `mousedown` events, not `click` events. This mixin only
+ * listens to mousedown events for the primary mouse button (typically the left
+ * button). Right clicks are ignored so that the browser may display a context
+ * menu.
  *
  * This mixin expects the component to provide an `items` property. It also
  * expects the component to define a `state.selectedIndex` member; you can
  * provide that yourself, or use [SingleSelectionMixin](SingleSelectionMixin).
  *
- * If the component receives a clicks that doesn't correspond to an item (e.g.,
- * the user clicks on the element background visible between items), the
- * selection will be removed. However, if the component sets
- * `state.selectionRequired` to true, a background click will *not* remove the
- * selection.
+ * If the component receives an event that doesn't correspond to an item (e.g.,
+ * the user taps on the element background visible between items), the selection
+ * will be removed. However, if the component sets `state.selectionRequired` to
+ * true, a background tap will *not* remove the selection.
  *
- * @module ClickSelectionMixin
+ * @module TapSelectionMixin
  */
-export default function ClickSelectionMixin(Base) {
+export default function TapSelectionMixin(Base) {
   
   // The class prototype added by the mixin.
-  return class ClickSelection extends Base {
+  return class TapSelection extends Base {
 
     constructor() {
       // @ts-ignore

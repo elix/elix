@@ -3,6 +3,6 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const ClickSelectionMixin: Mixin<{}, {}>;
+declare const TapSelectionMixin: Mixin<{}, {}>;
 
-export default ClickSelectionMixin;
+export default TapSelectionMixin;

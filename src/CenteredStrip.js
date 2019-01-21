@@ -1,24 +1,24 @@
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
-import ClickSelectionMixin from './ClickSelectionMixin.js';
+import ComposedFocusMixin from './ComposedFocusMixin.js';
 import EffectMixin from './EffectMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 import ResizeMixin from './ResizeMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
-import ComposedFocusMixin from './ComposedFocusMixin.js';
+import TapSelectionMixin from './TapSelectionMixin.js';
 
 
 const Base =
-  ClickSelectionMixin(
   ComposedFocusMixin(
   EffectMixin(
   LanguageDirectionMixin(
   ResizeMixin(
   SingleSelectionMixin(
   SlotItemsMixin(
+  TapSelectionMixin(
     ReactiveElement
   )))))));
 
@@ -30,13 +30,13 @@ const Base =
  * the list.
  * 
  * @inherits ReactiveElement
- * @mixes ClickSelectionMixin
  * @mixes ComposedFocusMixin
  * @mixes EffectMixin
  * @mixes LanguageDirectionMixin
  * @mixes ResizeMixin
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin
+ * @mixes TapSelectionMixin
  */
 class CenteredStrip extends Base {
 
