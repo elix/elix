@@ -1,9 +1,9 @@
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
-import WrappedStandardElement from '../../src/WrappedStandardElement.js';
+import SeamlessButton from '../../src/SeamlessButton.js';
 
 
-class CustomArrowButton extends WrappedStandardElement.wrap('button') {
+class CustomArrowButton extends SeamlessButton {
 
   get [symbols.template]() {
     return template.html`
