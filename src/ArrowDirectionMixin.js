@@ -72,6 +72,10 @@ function ArrowDirectionMixin(Base) {
         const arrowButtons = this.shadowRoot.querySelectorAll('.arrowButton');
         template.transmute(arrowButtons, this.state.arrowButtonRole);
         this.$.arrowButtonLeft.addEventListener('mousedown', async (event) => {
+          // Only process events for the main (usually left) button.
+          if (event.button !== 0) {
+            return;
+          }
           this[symbols.raiseChangeEvents] = true;
           const handled = this.arrowButtonLeft();
           if (handled) {
@@ -81,6 +85,10 @@ function ArrowDirectionMixin(Base) {
           this[symbols.raiseChangeEvents] = false;
         });
         this.$.arrowButtonRight.addEventListener('mousedown', async (event) => {
+          // Only process events for the main (usually left) button.
+          if (event.button !== 0) {
+            return;
+          }
           this[symbols.raiseChangeEvents] = true;
           const handled = this.arrowButtonRight();
           if (handled) {

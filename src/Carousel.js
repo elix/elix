@@ -1,6 +1,7 @@
 import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import AriaListMixin from './AriaListMixin.js';
 import ArrowDirectionMixin from './ArrowDirectionMixin.js';
 import CenteredStripOpacity from './CenteredStripOpacity.js';
@@ -106,20 +107,31 @@ class Carousel extends Base {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const result = super[symbols.template]
-    const result = getSuperProperty(this, Carousel, symbols.template);
-    const stage = result.content.querySelector('#stage');
+    // Next line is same as: const base = super[symbols.template]
+    const base = getSuperProperty(this, Carousel, symbols.template);
+    const stage = base.content.querySelector('#stage');
     this[ArrowDirectionMixin.wrap](stage);
-    return result;
+    return template.concat(base, template.html`
+      <style>
+        .arrowButton {
+          font-size: 48px;
+        }
+
+        #proxyList {
+          outline: none;
+        }
+
+        #stage {
+          height: 100%;
+          width: 100%;
+        }
+      </style>
+    `);
   }
 
   get updates() {
     const { darkMode } = this.state;
-    const arrowButtonUpdates = {
-      style: {
-        'font-size': '48px'
-      }
-    };
+    const arrowButtonUpdates = {};
     if (darkMode !== null) {
       if ('darkMode' in this.$.arrowButtonLeft) {
         arrowButtonUpdates.darkMode = darkMode;
@@ -132,18 +144,11 @@ class Carousel extends Base {
         proxyList: {
           attributes: {
             tabindex: ''
-          },
-          style: {
-            outline: 'none'
           }
         },
         stage: {
           attributes: {
             tabindex: ''
-          },
-          style: {
-            height: '100%',
-            width: '100%'
           }
         }
       }

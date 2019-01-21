@@ -39,7 +39,7 @@ export default function ClickSelectionMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this.addEventListener('mousedown', event => {   
+      this.addEventListener('mousedown', event => {
         // Only process events for the main (usually left) button.
         if (event.button !== 0) {
           return;
