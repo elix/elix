@@ -48,7 +48,7 @@ class CalendarMonth extends Base {
   }
 
   /**
-   * The class, tag, or template used for the seven days of the week.
+   * The class, tag, or template used to create the day elements.
    * 
    * @type {function|string|HTMLTemplateElement}
    * @default CalendarDay
@@ -79,6 +79,9 @@ class CalendarMonth extends Base {
   /**
    * The format used to render the day names in the week days header.
    * 
+   * The allowable formats are the same as the `weekday` formats in
+   * [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat).
+   * 
    * @type {('long'|'narrow'|'short')}
    * @default 'short'
    */
@@ -101,6 +104,15 @@ class CalendarMonth extends Base {
     });
   }
 
+  /**
+   * The format used to render the month name.
+   * 
+   * The allowable formats are the same as the `month` formats in
+   * [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat).
+   * 
+   * @type {('numeric'|'2-digit'|'long'|'short'|'narrow')}
+   * @default 'long'
+   */
   get monthFormat() {
     return this.state.monthFormat;
   }
@@ -125,15 +137,6 @@ class CalendarMonth extends Base {
   set showSelectedDay(showSelectedDay) {
     this.setState({
       showSelectedDay
-    });
-  }
-
-  get yearFormat() {
-    return this.state.yearFormat;
-  }
-  set yearFormat(yearFormat) {
-    this.setState({
-      yearFormat
     });
   }
 
@@ -204,6 +207,24 @@ class CalendarMonth extends Base {
           locale
         }
       }
+    });
+  }
+
+  /**
+   * The format used to render the year.
+   * 
+   * The allowable formats are the same as the `year` formats in
+   * [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat).
+   * 
+   * @type {('numeric'|'2-digit')}
+   * @default 'numeric'
+   */
+  get yearFormat() {
+    return this.state.yearFormat;
+  }
+  set yearFormat(yearFormat) {
+    this.setState({
+      yearFormat
     });
   }
 

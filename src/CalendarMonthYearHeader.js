@@ -41,21 +41,21 @@ class CalendarMonthYearHeader extends Base {
     });
   }
 
+  /**
+   * The format used to render the month name.
+   * 
+   * The allowable formats are the same as the `month` formats in
+   * [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat).
+   * 
+   * @type {('numeric'|'2-digit'|'long'|'short'|'narrow')}
+   * @default 'long'
+   */
   get monthFormat() {
     return this.state.monthFormat;
   }
   set monthFormat(monthFormat) {
     this.setState({
       monthFormat
-    });
-  }
-
-  get yearFormat() {
-    return this.state.yearFormat;
-  }
-  set yearFormat(yearFormat) {
-    this.setState({
-      yearFormat
     });
   }
 
@@ -89,7 +89,27 @@ class CalendarMonthYearHeader extends Base {
         }
       }
     });
-  }}
+  }
+
+  /**
+   * The format used to render the year.
+   * 
+   * The allowable formats are the same as the `year` formats in
+   * [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat).
+   * 
+   * @type {('numeric'|'2-digit')}
+   * @default 'numeric'
+   */
+  get yearFormat() {
+    return this.state.yearFormat;
+  }
+  set yearFormat(yearFormat) {
+    this.setState({
+      yearFormat
+    });
+  }
+
+}
 
 export default CalendarMonthYearHeader;
 customElements.define('elix-calendar-month-year-header', CalendarMonthYearHeader);

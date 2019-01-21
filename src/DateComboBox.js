@@ -27,6 +27,13 @@ const Base =
  */
 class DateComboBox extends Base {
 
+  /**
+   * The class, tag, or template used to create the left and right arrow
+   * buttons.
+   * 
+   * @type {function|string|HTMLTemplateElement}
+   * @default ArrowDirectionButton
+   */
   get arrowButtonRole() {
     return this.state.arrowButtonRole;
   }
@@ -74,6 +81,12 @@ class DateComboBox extends Base {
       null;
   }
 
+  /**
+   * The class, tag, or template used to create the calendar.
+   * 
+   * @type {function|string|HTMLTemplateElement}
+   * @default CalendarMonthNavigator
+   */
   get calendarRole() {
     return this.state.calendarRole;
   }
@@ -102,6 +115,12 @@ class DateComboBox extends Base {
     });
   }
 
+  /**
+   * The class, tag, or template used to create the day elements.
+   * 
+   * @type {function|string|HTMLTemplateElement}
+   * @default CalendarDay
+   */
   get dayRole() {
     return this.state.dayRole;
   }
@@ -376,6 +395,12 @@ class DateComboBox extends Base {
     });
   }
 
+  /**
+   * The class, tag, or template used to create the (Go to) "Today" button.
+   * 
+   * @type {function|string|HTMLTemplateElement}
+   * @default SeamlessButton
+   */
   get todayButtonRole() {
     return this.state.todayButtonRole;
   }

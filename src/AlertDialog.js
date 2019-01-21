@@ -36,6 +36,12 @@ class AlertDialog extends Dialog {
     return this.state.choiceButtons;
   }
 
+  /**
+   * The class, tag, or template used to create the choice buttons.
+   * 
+   * @type {function|string|HTMLTemplateElement}
+   * @default 'button'
+   */
   get choiceButtonRole() {
     return this.state.choiceButtonRole;
   }
