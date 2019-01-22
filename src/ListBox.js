@@ -50,7 +50,6 @@ const Base =
  *
  * @inherits ReactiveElement
  * @mixes AriaListMixin
- * @mixes TapSelectionMixin
  * @mixes ComposedFocusMixin
  * @mixes DirectionSelectionMixin
  * @mixes FocusVisibleMixin
@@ -64,6 +63,7 @@ const Base =
  * @mixes SelectionInViewMixin
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin
+ * @mixes TapSelectionMixin
  */
 class ListBox extends Base {
 

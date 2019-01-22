@@ -52,13 +52,13 @@ const Base =
  *
  * @inherits ReactiveElement
  * @mixes AriaListMixin
- * @mixes TapSelectionMixin
  * @mixes DirectionSelectionMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
  * @mixes LanguageDirectionMixin
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin
+ * @mixes TapSelectionMixin
  */
 class TabStrip extends Base {
 
