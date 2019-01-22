@@ -184,8 +184,11 @@ class DateComboBox extends Base {
         const formattedDate = date ?
           this.formatDate(date, dateTimeFormat) :
           '';
+        // See notes on mobile at ComboBox.defaultState.
+        const probablyMobile = matchMedia('(pointer: coarse)').matches;
+        const selectText = formattedDate.length > 0 && !probablyMobile;
         return {
-          selectText: formattedDate.length > 0,
+          selectText,
           value: formattedDate
         };
       }
