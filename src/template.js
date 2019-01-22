@@ -21,37 +21,6 @@ import { apply, current, merge } from './updates.js';
 
 
 /**
- * Create an element from a role descriptor (a component class constructor,
- * an HTML tag name, or an HTML template).
- * 
- * If the descriptor is an HTML template, and the resulting document fragment
- * contains a single top-level node, that node is returned directly (instead of
- * the fragment).
- * 
- * @param {(Function|string|HTMLTemplateElement)} descriptor - the descriptor that
- * will be used to create the element
- * @returns {Node} the new element
- */
-export function createElement(descriptor) {
-  if (typeof descriptor === 'function') {
-    // Component class constructor
-    /** @type {any} */
-    const cast = descriptor;
-    return new cast();
-  } else if (descriptor instanceof HTMLTemplateElement) {
-    // Template
-    const fragment = document.importNode(descriptor.content, true);
-    return fragment.children.length === 1 ?
-      fragment.children[0] :
-      fragment;
-  } else {
-    // String tag name: e.g., 'div'
-    return document.createElement(descriptor);
-  }
-}
-
-
-/**
  * Returns a new template whose content is the concatenated content of the
  * supplied templates.
  * 
@@ -97,8 +66,9 @@ export function createElement(descriptor) {
  * As a result, the `button` inside a `CustomElement` will have a white
  * background color and a red foreground color.
  * 
- * @param  {HTMLTemplateElement[]} templates
- * @returns {HTMLTemplateElement}
+ * @param  {HTMLTemplateElement[]} templates - the templates to concatenate
+ * @returns {HTMLTemplateElement} - a new template created by concatenating the
+ * input templates
  */
 export function concat(...templates) {
   const result = document.createElement('template');
@@ -107,6 +77,37 @@ export function concat(...templates) {
     result.content.appendChild(clone);
   });
   return result;
+}
+
+
+/**
+ * Create an element from a role descriptor (a component class constructor,
+ * an HTML tag name, or an HTML template).
+ * 
+ * If the descriptor is an HTML template, and the resulting document fragment
+ * contains a single top-level node, that node is returned directly (instead of
+ * the fragment).
+ * 
+ * @param {(Function|string|HTMLTemplateElement)} descriptor - the descriptor that
+ * will be used to create the element
+ * @returns {Node} the new element
+ */
+export function createElement(descriptor) {
+  if (typeof descriptor === 'function') {
+    // Component class constructor
+    /** @type {any} */
+    const cast = descriptor;
+    return new cast();
+  } else if (descriptor instanceof HTMLTemplateElement) {
+    // Template
+    const fragment = document.importNode(descriptor.content, true);
+    return fragment.children.length === 1 ?
+      fragment.children[0] :
+      fragment;
+  } else {
+    // String tag name: e.g., 'div'
+    return document.createElement(descriptor);
+  }
 }
 
 

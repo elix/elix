@@ -42,36 +42,36 @@
 
 <body role="main">
   <div class="demo fullScreen">
-      <style>
-        elix-carousel {
-          background: black;
-          flex: 1;
-          max-height: 100%;
-        }
+    <style>
+      #customCarousel7 {
+        background: black;
+        flex: 1;
+        max-height: 100%;
+      }
 
-        elix-carousel img {
-          display: inline-block;
-          height: 100%;
-          vertical-align: middle;
-          width: 100%;
-        }
+      #customCarousel7 img {
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+        width: 100%;
+      }
 
-        .customArrow {
-          font-size: 28px;
-          font-weight: bold;
-          padding: 0.5em;
-        }
-      </style>
-      <!-- Create a carousel with plain buttons for the arrows and dots -->
-      <elix-carousel aria-label="Nature scenes">
-        <div class="customArrow" slot="arrowButtonLeft">↫</div>
-        <div class="customArrow" slot="arrowButtonRight">↬</div>
-        <img src="../images/image01.jpg" alt="Mountain lake">
-        <img src="../images/image02.jpg" alt="Terraced farm">
-        <img src="../images/image03.jpg" alt="Winter trees">
-        <img src="../images/image04.jpg" alt="Forest river">
-        <img src="../images/image05.jpg" alt="Red panda">
-      </elix-carousel>
+      .customArrow {
+        font-size: 28px;
+        font-weight: bold;
+        padding: 0.5em;
+      }
+    </style>
+    <!-- Create a carousel with plain buttons for the arrows and dots -->
+    <elix-carousel id="customCarousel7" aria-label="Nature scenes">
+      <div class="customArrow" slot="arrowButtonLeft">↫</div>
+      <div class="customArrow" slot="arrowButtonRight">↬</div>
+      <img src="../images/image01.jpg" alt="Mountain lake">
+      <img src="../images/image02.jpg" alt="Terraced farm">
+      <img src="../images/image03.jpg" alt="Winter trees">
+      <img src="../images/image04.jpg" alt="Forest river">
+      <img src="../images/image05.jpg" alt="Red panda">
+    </elix-carousel>
   </div>
 </body>
 
