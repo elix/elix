@@ -1,6 +1,6 @@
 {
   "name": "elix",
-  "version": "4.0.0-beta.0",
+  "version": "4.0.0",
   "description": "High-quality web components for common user interface patterns",
   "license": "MIT",
   "repository": {
