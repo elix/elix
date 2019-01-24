@@ -121,15 +121,21 @@ class Menu extends Base {
   /**
    * Highlight the selected item.
    * 
-   * By default, this flashes the selected item off then back on,
-   * emulating the menu item selection effect in macOS.
+   * By default, this uses a heuristic to guess whether the menu was closed by a
+   * keyboard or mouse. If so, the menu flashes the selected item off then back
+   * on, emulating the menu item selection effect in macOS. Otherwise, it does
+   * nothing.
    */
   async highlightSelectedItem() {
-    const flashDuration = 75; // milliseconds
-    this.setState({ highlightSelection: false });
-    await new Promise(resolve => setTimeout(resolve, flashDuration));
-    this.setState({ highlightSelection: true });
-    await new Promise(resolve => setTimeout(resolve, flashDuration));
+    const keyboardActive = this.state.focusVisible;
+    const probablyDesktop = matchMedia('(pointer: fine)').matches;
+    if (keyboardActive || probablyDesktop) {
+      const flashDuration = 75; // milliseconds
+      this.setState({ highlightSelection: false });
+      await new Promise(resolve => setTimeout(resolve, flashDuration));
+      this.setState({ highlightSelection: true });
+      await new Promise(resolve => setTimeout(resolve, flashDuration));
+    }
   }
 
   // Filter the set of items to ignore disabled items.
