@@ -68,14 +68,14 @@ class Menu extends Base {
       this.suppressFocusVisibility();
     });
 
-    // Treat a pointerdown event as a click.
+    // Treat a pointerdown event as a tap.
     if ('PointerEvent' in window) {
       // Prefer listening to standard pointer events.
       this.addEventListener('pointerdown', event =>
-        this[symbols.click](event));
+        this[symbols.tap](event));
     } else {
       this.addEventListener('touchstart', event =>
-        this[symbols.click](event));
+        this[symbols.tap](event));
     }
   }
 

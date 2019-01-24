@@ -43,14 +43,14 @@ class Button extends Base {
     switch (event.key) {
       case ' ':
         if (this.state.treatSpaceAsClick) {
-          this[symbols.click]();
+          this[symbols.tap]();
           handled = true;
         }
         break;
 
       case 'Enter':
         if (this.state.treatEnterAsClick) {
-          this[symbols.click]();
+          this[symbols.tap]();
           handled = true;
         }
         break;        
@@ -61,7 +61,7 @@ class Button extends Base {
   }
 
   // Respond to a simulated click.
-  [symbols.click]() {
+  [symbols.tap]() {
     const clickEvent = new MouseEvent('click');
     this.dispatchEvent(clickEvent);
   }

@@ -43,12 +43,12 @@ export default function TapSelectionMixin(Base) {
           return;
         }
         this[symbols.raiseChangeEvents] = true;
-        this[symbols.click](event);
+        this[symbols.tap](event);
         this[symbols.raiseChangeEvents] = false;
       });
     }
 
-    [symbols.click](event) {
+    [symbols.tap](event) {
       // In some situations, the event target will not be the child which was
       // originally clicked on. E.g., if the item clicked on is a button, the
       // event seems to be raised in phase 2 (AT_TARGET) — but the event target

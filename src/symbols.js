@@ -80,17 +80,6 @@ export const canGoRight = Symbol('canGoRight');
 export const checkSize = Symbol('checkSize');
 
 /**
- * Symbol for the `click` method.
- *
- * This method is invoked when an element receives an operation that should
- * be interpreted as a click. [TapSelectionMixin](TapSelectionMixin)
- * invokes this when the element receives a `mousedown` event, for example.
- *
- * @function click
- */
-export const click = Symbol('click');
-
-/**
  * Symbol for the `contentSlot` property.
  * 
  * [SlotContentMixin](SlotContentMixin) uses this to identify which slot
@@ -501,6 +490,20 @@ export const swipeUp = Symbol('swipeUp');
  * @var {HTMLElement} swipeTarget
  */
 export const swipeTarget = Symbol('swipeTarget');
+
+/**
+ * Symbol for the `tap` method.
+ *
+ * This method is invoked when an element receives an operation that should
+ * be interpreted as a tap. [TapSelectionMixin](TapSelectionMixin)
+ * invokes this when the element receives a `mousedown` event, for example.
+ *
+ * @function tap
+ */
+export const tap = Symbol('tap');
+
+// TODO: Remove eventually.
+export const click = tap; // Deprecated
 
 /**
  * Symbol for the `template` method.
