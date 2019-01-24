@@ -18,6 +18,20 @@ const documentMouseupListenerKey = Symbol('documentMouseupListener');
  */
 class MenuButton extends PopupButton {
 
+  /**
+   * Highlight the selected item, then close the menu.
+   * 
+   * @param {object} [closeResult] - an indication of how or why the element closed
+   */
+  async highlightSelectedItemAndClose(closeResult) {
+    /** @type {any} */
+    const cast = this.$.menu;
+    if ('highlightSelectedItem' in cast) {
+      await cast.highlightSelectedItem();
+    }
+    await this.close(closeResult);
+  }
+
   [symbols.beforeUpdate]() {
     const menuChanged = this[symbols.renderedRoles].menuRole !== this.state.menuRole;
     const popupChanged = this[symbols.renderedRoles].popupRole !== this.state.popupRole;
@@ -61,11 +75,16 @@ class MenuButton extends PopupButton {
         // separator or menu padding; stay open.
         const menuSelectedIndex = this.state.menuSelectedIndex;
         if (this.state.dragSelect || menuSelectedIndex >= 0) {
+          // We don't want the document mouseup handler to close
+          // before we've asked the menu to highlight the selection.
+          // We need to stop event propagation here, before we enter
+          // any async code, to actually stop propagation.
+          event.stopPropagation();
           const closeResult = menuSelectedIndex >= 0 ?
             menuSelectedIndex :
             undefined;
           this[symbols.raiseChangeEvents] = true;
-          await this.close(closeResult);
+          await this.highlightSelectedItemAndClose(closeResult);
           this[symbols.raiseChangeEvents] = false;
         } else {
           event.stopPropagation();
@@ -247,7 +266,8 @@ class MenuButton extends PopupButton {
       // When open, Enter closes popup.
       case 'Enter':
         if (this.opened) {
-          this.close(this.state.menuSelectedIndex);
+          const closeResult = this.state.menuSelectedIndex;
+          this.highlightSelectedItemAndClose(closeResult);
           return true;
         }
     }

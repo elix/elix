@@ -105,6 +105,7 @@ class Menu extends Base {
 
   get defaultState() {
     const state = Object.assign(super.defaultState, {
+      highlightSelection: true,
       orientation: 'vertical',
       selectionFocused: false
     });
@@ -115,6 +116,20 @@ class Menu extends Base {
     }));
 
     return state;
+  }
+
+  /**
+   * Highlight the selected item.
+   * 
+   * By default, this flashes the selected item off then back on,
+   * emulating the menu item selection effect in macOS.
+   */
+  async highlightSelectedItem() {
+    const flashDuration = 75; // milliseconds
+    this.setState({ highlightSelection: false });
+    await new Promise(resolve => setTimeout(resolve, flashDuration));
+    this.setState({ highlightSelection: true });
+    await new Promise(resolve => setTimeout(resolve, flashDuration));
   }
 
   // Filter the set of items to ignore disabled items.
@@ -128,8 +143,9 @@ class Menu extends Base {
   itemUpdates(item, calcs, original) {
     const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
     const selected = calcs.selected;
-    const color = selected ? 'highlighttext' : original.style.color;
-    const backgroundColor = selected ? 'highlight' : original.style['background-color'];
+    const showSelection = selected && this.state.highlightSelection;
+    const color = showSelection ? 'highlighttext' : original.style.color;
+    const backgroundColor = showSelection ? 'highlight' : original.style['background-color'];
     const outline = selected && !this.state.focusVisible ?
       'none' :
       null;
