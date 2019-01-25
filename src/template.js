@@ -52,7 +52,7 @@ import { apply, current, merge } from './updates.js';
  * 
  * In this example, the resulting `CustomElement` subclass will have both the
  * template content defined by `BaseElement` _and_ the custom template content
- * it adds through `concat`. The resulting template will for a `CustomElement`
+ * it adds through `concat`. The resulting template for a `CustomElement`
  * instance will look like:
  * 
  *     <style>
