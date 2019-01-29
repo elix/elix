@@ -160,6 +160,7 @@ class CalendarDays extends Base {
         }
 
         #dayContainer {
+          direction: ltr;
           display: grid;
           grid-template-columns: repeat(7, 1fr);
         }

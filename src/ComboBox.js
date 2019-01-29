@@ -284,7 +284,6 @@ class ComboBox extends Base {
           display: flex;
           padding: 0;
           position: absolute;
-          right: 3px;
           top: 3px;
           width: 1.5em;
         }
@@ -329,7 +328,10 @@ class ComboBox extends Base {
     const hasInnerInput = 'inner' in this.$.input;
     const inputUpdates = {
       style: {
-        padding: '2px 1.5em 2px 2px'
+        'padding-bottom': '2px',
+        'padding-left': this[symbols.rightToLeft] ? '1.5em' : '2px',
+        'padding-right': this[symbols.rightToLeft] ? '2px' : '1.5em',
+        'padding-top': '2px'
       }
     };
 
@@ -388,7 +390,11 @@ class ComboBox extends Base {
             }
           },
           toggleButton: {
-            disabled
+            disabled,
+            style: {
+              left: this[symbols.rightToLeft] ? '3px' : '',
+              right: this[symbols.rightToLeft] ? '' : '3px',
+            }
           },
           upIcon: {
             style: {

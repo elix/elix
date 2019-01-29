@@ -13,6 +13,7 @@ import DarkModeMixin from './DarkModeMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
+import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 
 
 const Base =
@@ -23,8 +24,9 @@ const Base =
   FocusVisibleMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
+  LanguageDirectionMixin(
     CalendarMonth
-  )))))));
+  ))))))));
 
 
 /**
@@ -61,15 +63,17 @@ class CalendarMonthNavigator extends Base {
   }
 
   arrowButtonLeft() {
+    const months = this[symbols.rightToLeft] ? 1 : -1;
     this.setState({
-      date: calendar.offsetDateByMonths(this.state.date, -1)
+      date: calendar.offsetDateByMonths(this.state.date, months)
     });
     return true;
   }
 
   arrowButtonRight() {
+    const months = this[symbols.rightToLeft] ? -1 : 1;
     this.setState({
-      date: calendar.offsetDateByMonths(this.state.date, 1)
+      date: calendar.offsetDateByMonths(this.state.date, months)
     });
     return true;
   }
