@@ -17,31 +17,34 @@
 
       constructor() {
         super();
-        this[symbols.roles] = {
-          button: 'button'
-        };
+        this[symbols.renderedRoles] = {};
+      }
+
+      [symbols.beforeUpdate]() {
+        if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+        if (this[symbols.renderedRoles].buttonRole !== this.state.buttonRole) {
+          template.transmute(this.$.decrement, this.state.buttonRole);
+          this.$.decrement.addEventListener('click', () => {
+            this.value--;
+          });
+          template.transmute(this.$.increment, this.state.buttonRole);
+          this.$.increment.addEventListener('click', () => {
+            this.value++;
+          });
+          this[symbols.renderedRoles].buttonRole = this.state.buttonRole;
+        }
       }
 
       get buttonRole() {
-        return this[symbols.roles].button;
+        return this.state.button;
       }
       set buttonRole(buttonRole) {
-        this[symbols.roles].button = buttonRole;
-        this[symbols.hasDynamicTemplate] = true;
-      }
-
-      componentDidMount() {
-        if (super.componentDidMount) { super.componentDidMount(); }
-        this.$.decrement.addEventListener('click', () => {
-          this.value--;
-        });
-        this.$.increment.addEventListener('click', () => {
-          this.value++;
-        });
+        this.setState({ buttonRole });
       }
 
       get defaultState() {
         return Object.assign(super.defaultState, {
+          buttonRole: 'button',
           value: 0
         });
       }
@@ -70,13 +73,11 @@
       }
 
       get [symbols.template]() {
-        const result = template.html`
+        return template.html`
           <button id="decrement">-</button>
           <span id="visibleValue"></span>
           <button id="increment">+</button>
         `;
-        template.fillRole(result, 'button', this.buttonRole);
-        return result;
       }
 
     }
@@ -103,14 +104,10 @@
 
     class CustomIncrementDecrement extends IncrementDecrement {
 
-      constructor() {
-        super();
-        this[symbols.roles].button = CustomButton;
-      }
-
-      get [symbols.template]() {
-        const result = super[symbols.template];
-        return result;
+      get defaultState() {
+        return Object.assign({}, super.defaultState, {
+          buttonRole: CustomButton
+        });
       }
 
     }
