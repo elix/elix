@@ -37,7 +37,7 @@
     "puppeteer": "1.11.0",
     "sauce-test-runner": "0.2.0",
     "sinon": "7.2.2",
-    "typescript": "3.2.2"
+    "typescript": "3.2.4"
   },
   "scripts": {
     "buildWeekData": "node tasks/buildWeekData.js",
