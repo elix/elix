@@ -44,6 +44,7 @@ export { default as CrossfadeStage } from './CrossfadeStage.js';
 export { default as DarkModeMixin } from './DarkModeMixin.js';
 export { default as DateComboBox } from './DateComboBox.js';
 export { default as DateInput } from './DateInput.js';
+export { default as DelegateFocusMixin } from './DelegateFocusMixin.js';
 export { default as DelegateItemsMixin } from './DelegateItemsMixin.js';
 export { default as Dialog } from './Dialog.js';
 export { default as DialogModalityMixin } from './DialogModalityMixin.js';

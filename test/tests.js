@@ -10,6 +10,7 @@ import './tests/content.tests.js';
 import './tests/ContentItemsMixin.tests.js';
 import './tests/DarkModeMixin.tests.js';
 import './tests/DateComboBox.tests.js';
+import './tests/DelegateFocusMixin.tests.js';
 import './tests/DirectionSelectionMixin.tests.js';
 import './tests/Explorer.tests.js';
 import './tests/KeyboardDirectionMixin.tests.js';

@@ -53,8 +53,12 @@ export default function ShadowTemplateMixin(Base) {
       const template = getPreparedTemplate(this);
 
       // Stamp the template into a new shadow root.
+      const delegatesFocus = this.delegatesFocus;
       if (template) {
-        const root = this.attachShadow({ mode: 'open' });
+        const root = this.attachShadow({
+          delegatesFocus,
+          mode: 'open'
+        });
         const clone = document.importNode(template.content, true);
         root.appendChild(clone);
       }

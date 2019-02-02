@@ -52,7 +52,7 @@ export default function ComposedFocusMixin(Base) {
           const target = findFocusableAncestor(event.target);
           if (target) {
             target.focus();
-            event.preventDefault();
+            // event.preventDefault();
           }
         });
       }
