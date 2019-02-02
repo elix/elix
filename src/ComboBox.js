@@ -2,15 +2,17 @@ import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import DelegateFocusMixin from './DelegateFocusMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import PopupSource from './PopupSource.js';
 import SeamlessButton from './SeamlessButton.js';
 
 
 const Base =
+  DelegateFocusMixin(
   KeyboardMixin(
     PopupSource
-  );
+  ));
 
 
 /**
@@ -264,6 +266,10 @@ class ComboBox extends Base {
 
     const styleTemplate = template.html`
       <style>
+        :host {
+          outline: none;
+        }
+
         #source {
           position: relative;
         }
@@ -335,6 +341,8 @@ class ComboBox extends Base {
       }
     };
 
+    // const inputTabIndex = this.shadowRoot.delegatesFocus ? '' : '0';
+
     return merge(
       base,
       {
@@ -351,7 +359,8 @@ class ComboBox extends Base {
           },
           input: {
             attributes: {
-              'aria-label': this.state.ariaLabel
+              'aria-label': this.state.ariaLabel,
+              // tabindex: inputTabIndex
             },
             disabled,
             placeholder,

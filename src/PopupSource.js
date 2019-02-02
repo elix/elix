@@ -16,13 +16,13 @@ const resizeListenerKey = Symbol('resizeListener');
 
 
 const Base =
-  ComposedFocusMixin(
+  // ComposedFocusMixin(
   DisabledMixin(
-  FocusVisibleMixin(
+  // FocusVisibleMixin(
   LanguageDirectionMixin(
   OpenCloseMixin(
     ReactiveElement
-  )))));
+  )));
 
 
 /**
