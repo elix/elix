@@ -1,6 +1,7 @@
 import { merge, booleanAttributes } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import DelegateFocusMixin from './DelegateFocusMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
 
@@ -133,6 +134,12 @@ const blockElements = [
 ];
 
 
+const Base =
+  DelegateFocusMixin(
+    ReactiveElement
+  );
+
+
 /**
  * Wraps a standard HTML element so it can be extended
  * 
@@ -140,7 +147,7 @@ const blockElements = [
  * 
  * @inherits ReactiveElement
  */
-class WrappedStandardElement extends ReactiveElement {
+class WrappedStandardElement extends Base {
 
   // Delegate generally-useful ARIA attributes to inner element. These property
   // definitions let AttributeMarshallingMixin know it should observe these
@@ -242,13 +249,6 @@ class WrappedStandardElement extends ReactiveElement {
 
   get extends() {
     return this.constructor[extendsKey];
-  }
-
-  // Delegate method defined by HTMLElement.
-  focus() {
-    /** @type {any} */
-    const cast = this.inner;
-    cast.focus();
   }
   
   /**
