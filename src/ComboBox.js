@@ -324,7 +324,7 @@ class ComboBox extends Base {
 
   get updates() {
     const base = super.updates;
-    const { disabled, placeholder, popupPosition, value } = this.state;
+    const { disabled, focusVisible, placeholder, popupPosition, value } = this.state;
     const role = this.state.original && this.state.original.attributes.role ||
       base.attributes && base.attributes.role ||
       this.state.role;
@@ -334,14 +334,13 @@ class ComboBox extends Base {
     const hasInnerInput = 'inner' in this.$.input;
     const inputUpdates = {
       style: {
+        outline: focusVisible ? null : 'none',
         'padding-bottom': '2px',
         'padding-left': this[symbols.rightToLeft] ? '1.5em' : '2px',
         'padding-right': this[symbols.rightToLeft] ? '2px' : '1.5em',
         'padding-top': '2px'
       }
     };
-
-    // const inputTabIndex = this.shadowRoot.delegatesFocus ? '' : '0';
 
     return merge(
       base,
@@ -359,8 +358,7 @@ class ComboBox extends Base {
           },
           input: {
             attributes: {
-              'aria-label': this.state.ariaLabel,
-              // tabindex: inputTabIndex
+              'aria-label': this.state.ariaLabel
             },
             disabled,
             placeholder,

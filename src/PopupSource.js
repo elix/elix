@@ -18,11 +18,11 @@ const resizeListenerKey = Symbol('resizeListener');
 const Base =
   // ComposedFocusMixin(
   DisabledMixin(
-  // FocusVisibleMixin(
+  FocusVisibleMixin(
   LanguageDirectionMixin(
   OpenCloseMixin(
     ReactiveElement
-  )));
+  ))));
 
 
 /**
