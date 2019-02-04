@@ -2,6 +2,7 @@ import { merge } from './updates.js'
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import ComposedFocusMixin from './ComposedFocusMixin.js';
+import DelegateFocusMixin from './DelegateFocusMixin.js';
 import DelegateItemsMixin from './DelegateItemsMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FilterListBox from './FilterListBox.js';
@@ -13,13 +14,14 @@ import SingleSelectionMixin from './SingleSelectionMixin.js';
 
 const Base =
   ComposedFocusMixin(
+  DelegateFocusMixin(
   DelegateItemsMixin(
   DirectionSelectionMixin(
   KeyboardMixin(
   SelectedItemTextValueMixin(
   SingleSelectionMixin(
     ReactiveElement
-  ))))));
+  )))))));
 
 
 /**
