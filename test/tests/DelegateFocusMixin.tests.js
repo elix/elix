@@ -6,13 +6,6 @@ import * as template from '../../src/template.js';
 
 class DelegateFocusTest extends DelegateFocusMixin(ReactiveElement) {
 
-  connectedCallback() {
-    if (super.connectedCallback) { super.connectedCallback(); }
-    this[symbols.render]();
-    // Make host itself focusable.
-    this.setAttribute('tabindex', '0');
-  }
-
   get [symbols.template]() {
     return template.html`
       <input>

@@ -26,6 +26,10 @@ export default function DelegateFocusMixin(Base) {
     }
 
     get updates() {
+      // The delegatesFocus spec says that the focus outline should be shown on
+      // both the host and the focused subelement — which seems confusing and
+      // (in our opinion) looks ugly. If the browser supports delegatesFocus we
+      // suppress the host focus outline.
       const updates = this.shadowRoot.delegatesFocus ?
         {
           style: {
