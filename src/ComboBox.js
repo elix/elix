@@ -6,6 +6,7 @@ import DelegateFocusMixin from './DelegateFocusMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import PopupSource from './PopupSource.js';
 import SeamlessButton from './SeamlessButton.js';
+import { forwardFocus } from './utilities.js';
 
 
 const Base =
@@ -106,6 +107,11 @@ class ComboBox extends Base {
         this.toggle();
         this[symbols.raiseChangeEvents] = false;
       });
+      if (this.$.toggleButton instanceof HTMLElement &&
+          this.$.input instanceof HTMLElement) {
+        // Forward focus for new toggle button.
+        forwardFocus(this.$.toggleButton, this.$.input);
+      }
       this[symbols.renderedRoles].toggleButtonRole = this.state.toggleButtonRole;
     }
   }
@@ -324,7 +330,7 @@ class ComboBox extends Base {
 
   get updates() {
     const base = super.updates;
-    const { disabled, focusVisible, placeholder, popupPosition, value } = this.state;
+    const { disabled, placeholder, popupPosition, value } = this.state;
     const role = this.state.original && this.state.original.attributes.role ||
       base.attributes && base.attributes.role ||
       this.state.role;
@@ -334,7 +340,6 @@ class ComboBox extends Base {
     const hasInnerInput = 'inner' in this.$.input;
     const inputUpdates = {
       style: {
-        outline: focusVisible ? null : 'none',
         'padding-bottom': '2px',
         'padding-left': this[symbols.rightToLeft] ? '1.5em' : '2px',
         'padding-right': this[symbols.rightToLeft] ? '2px' : '1.5em',

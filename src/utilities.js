@@ -7,6 +7,8 @@ import * as symbols from "./symbols.js";
  * @module utilities
  */
 
+const mousedownListenerKey = Symbol('mousedownListener');
+
 
  /**
  * Returns true if the first node contains the second, even if the second node
@@ -90,6 +92,34 @@ export function elementsFromPoint(element, x, y) {
     return elements ?
       [...elements] :
       [];
+  }
+}
+
+
+/**
+ * TODO: Docs
+ * 
+ * @param {HTMLElement} origin
+ * @param {HTMLElement|null} target
+ */
+export function forwardFocus(origin, target) {
+  if (origin[mousedownListenerKey]) {
+    // Origin was previously forwarding focus, probably to a different target.
+    // Remove the previous event listener.
+    origin.removeEventListener('mousedown', origin[mousedownListenerKey]);
+  }
+  if (target) {
+    // Using forward focus implies no tab stop.
+    origin.setAttribute('tabindex', '-1');
+    origin[mousedownListenerKey] = (event) => {
+      // Only process events for the main (usually left) button.
+      if (event.button !== 0) {
+        return;
+      }
+      target.focus();
+      event.preventDefault();
+    };
+    origin.addEventListener('mousedown', origin[mousedownListenerKey]);
   }
 }
 
