@@ -35,11 +35,8 @@ class MenuButton extends PopupButton {
   }
 
   [symbols.beforeUpdate]() {
-    const menuChanged = this[symbols.renderedRoles].menuRole !== this.state.menuRole;
-    const popupChanged = this[symbols.renderedRoles].popupRole !== this.state.popupRole;
     if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-
-    if (menuChanged) {
+    if (this[symbols.renderedRoles].menuRole !== this.state.menuRole) {
       template.transmute(this.$.menu, this.state.menuRole);
 
       // Close the popup if menu loses focus.
@@ -100,12 +97,6 @@ class MenuButton extends PopupButton {
       });
 
       this[symbols.renderedRoles].menuRole = this.state.menuRole;
-    }
-
-    if (menuChanged || popupChanged) {
-      // When OverlayMixin opens the popup, we want it to focus on the first menu
-      // item.
-      this.$.popup[symbols.defaultFocus] = this.$.menu;
     }
   }
 

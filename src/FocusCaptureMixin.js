@@ -1,3 +1,4 @@
+import { firstFocusableElement } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 
@@ -32,18 +33,20 @@ function FocusCaptureMixin(base) {
       if (super.componentDidMount) { super.componentDidMount(); }
       this.$.focusCatcher.addEventListener('focus', () => {
         if (!this[wrappingFocusKey]) {
-          // Wrap focus back to the dialog.
-          this.focus();
+          // Wrap focus back to the first focusable element.
+          const focusElement = firstFocusableElement(this.shadowRoot);
+          if (focusElement) {
+            focusElement.focus();
+          }
         }
       });
     }
 
     [symbols.keydown](event) {
-      /** @type {any} */
-      const element = this;
-      if (document.activeElement === element &&
-          this.shadowRoot.activeElement === null &&
-          event.key === 'Tab' && event.shiftKey) {
+      const firstElement = firstFocusableElement(this.shadowRoot);
+      const onFirstElement = document.activeElement === firstElement ||
+        this.shadowRoot.activeElement === firstElement;
+      if (onFirstElement && event.key === 'Tab' && event.shiftKey) {
         // Set focus to focus catcher.
         // The Shift+Tab keydown event should continue bubbling, and the default
         // behavior should cause it to end up on the last focusable element.

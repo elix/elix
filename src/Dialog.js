@@ -46,6 +46,9 @@ class Dialog extends Base {
 
   get updates() {
     return merge(super.updates, {
+      attributes: {
+        tabindex: '-1'
+      },
       style: {
         'pointer-events': 'initial'
       }

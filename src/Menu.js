@@ -2,6 +2,7 @@ import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import AriaMenuMixin from './AriaMenuMixin.js';
+import DelegateFocusMixin from './DelegateFocusMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import ItemsTextMixin from './ItemsTextMixin.js';
@@ -20,6 +21,7 @@ import TapSelectionMixin from './TapSelectionMixin.js';
 
 const Base =
   AriaMenuMixin(
+  DelegateFocusMixin(
   DirectionSelectionMixin(
   FocusVisibleMixin(
   ItemsTextMixin(
@@ -34,7 +36,7 @@ const Base =
   SlotItemsMixin(
   TapSelectionMixin(
     ReactiveElement
-  ))))))))))))));
+  )))))))))))))));
 
 
 /**
@@ -99,9 +101,9 @@ class Menu extends Base {
     }
   }
 
-  get [symbols.defaultFocus]() {
-    return this.selectedItem;
-  }
+  // get [symbols.defaultFocus]() {
+  //   return this.selectedItem;
+  // }
 
   get defaultState() {
     const state = Object.assign(super.defaultState, {
@@ -152,9 +154,6 @@ class Menu extends Base {
     const showSelection = selected && this.state.highlightSelection;
     const color = showSelection ? 'highlighttext' : original.style.color;
     const backgroundColor = showSelection ? 'highlight' : original.style['background-color'];
-    const outline = selected && !this.state.focusVisible ?
-      'none' :
-      null;
 
     // A menu has a complicated focus arrangement in which the selected item has
     // focus, which means it needs a tabindex. However, we don't want any other
@@ -172,17 +171,22 @@ class Menu extends Base {
     // property).
     const originalTabindex = original.attributes.tabindex;
     let attributes = {};
+    const isDefaultFocusableItem = this.state.selectedIndex < 0 && calcs.index === 0;
     if (!this.state.selectionFocused) {
       // Phase 1: Add tabindex to newly-selected item.
-      if (selected) {
+      if (selected || isDefaultFocusableItem) {
         attributes.tabindex = originalTabindex || 0;
       }
     } else {
       // Phase 2: Remove tabindex from any previously-selected item.
-      if (!selected) {
+      if (!(selected || isDefaultFocusableItem)) {
         attributes.tabindex = originalTabindex || null;
       }
     }
+
+    const outline = (selected && !this.state.focusVisible) || isDefaultFocusableItem ?
+      'none' :
+      null;
 
     return merge(base, {
       attributes,
@@ -246,18 +250,9 @@ class Menu extends Base {
   }
 
   get updates() {
-    const base = super.updates;
-    const originalTabIndex = this.state.original &&
-      this.state.original.attributes.tabindex;
-    // We remove focus from the menu itself if a selected item has been focused.
-    // See notes at itemUpdates.
-    const tabindex = originalTabIndex ||
-      this.state.selectedIndex >= 0 && this.state.selectionFocused ?
-        null :
-        base.attributes && base.attributes.tabindex;
-    return merge(base, {
+    return merge(super.updates, {
       attributes: {
-        tabindex
+        tabindex: null
       }
     });
   }

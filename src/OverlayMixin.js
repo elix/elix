@@ -1,5 +1,5 @@
+import { deepContains, firstFocusableElement } from './utilities.js';
 import { merge } from './updates.js';
-import { deepContains, defaultFocus } from './utilities.js';
 
 
 /** @type {any} */
@@ -156,8 +156,12 @@ function openedChanged(element) {
         // Remember which element had the focus before we were opened.
         element[restoreFocusToElementKey] = document.activeElement;
       }
-      const elementToFocus = defaultFocus(element);
-      elementToFocus.focus();
+      // Focus on the element itself (if it's focusable), or the first focusable
+      // element inside it.
+      const focusElement = firstFocusableElement(element);
+      if (focusElement) {
+        focusElement.focus();
+      }
     } else {
       // Closed
       if (element[restoreFocusToElementKey]) {
