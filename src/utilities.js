@@ -10,6 +10,39 @@ import * as symbols from "./symbols.js";
 const mousedownListenerKey = Symbol('mousedownListener');
 
 
+// Walk the composed tree at the root for elements that pass the given filter.
+// This combines a standard TreeWalker with the expansion of nodes assigned to
+// slots so that it walks the entire composed tree.
+function* createComposedTreeWalker(root, filter) {
+  const nodeFilter = {
+    acceptNode(node) {
+      return filter(node) ?
+        NodeFilter.FILTER_ACCEPT :
+        NodeFilter.FILTER_SKIP;
+    }
+  };
+  const walker = document.createTreeWalker(
+    root,
+    NodeFilter.SHOW_ELEMENT,
+    nodeFilter
+  );
+  while (walker.nextNode()) {
+    const node = walker.currentNode;
+    if (node instanceof HTMLSlotElement) {
+      const assignedNodes = node.assignedNodes({ flatten: true });
+      for (let i = 0; i < assignedNodes.length; i++) {
+        const assignedNode = assignedNodes[i];
+        if (assignedNode instanceof Element && filter(assignedNode)) {
+          yield assignedNode;
+        }
+      }
+    } else if (node instanceof Element) {
+      yield node;
+    }
+  }
+}
+
+
  /**
  * Returns true if the first node contains the second, even if the second node
  * is in a shadow tree.
@@ -93,6 +126,37 @@ export function elementsFromPoint(element, x, y) {
       [...elements] :
       [];
   }
+}
+
+
+/**
+ * Return the first focusable element in the composed tree below the given root.
+ * The composed tree includes nodes assigned to slots.
+ *
+ * We do our best to approxiate the browser's sequential navigation algorithm,
+ * but such things tend to be extremely complex. There may easily be edge cases
+ * we have missed.
+ * 
+ * @param {HTMLElement} root - the root of the tree in which to search
+ * @returns {HTMLElement|null} - the first focusable element, or null if none
+ * was found
+ */
+export function firstFocusableElement(root) {
+  // CSS selectors for focusable elements from
+  // https://stackoverflow.com/a/30753870/76472
+  const focusableQuery = 'a[href],area[href],button:not([disabled]),details,iframe,input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[contentEditable="true"],[tabindex]';
+  // We want to look for elements matching the query above, plus slots.
+  const filter = node =>
+    (node.matches(focusableQuery) && node.tabIndex >= 0) ||
+      node instanceof HTMLSlotElement;
+  // Construct a composed tree walker and get the first value.
+  const walker = createComposedTreeWalker(root, filter);
+  const { value } = walker.next();
+  // value, if defined, will always be an HTMLElement, but we do the following
+  // check to pass static type checking.
+  return value instanceof HTMLElement ?
+    value :
+    null;
 }
 
 

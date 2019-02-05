@@ -32,4 +32,5 @@ import './tests/TapSelectionMixin.tests.js';
 import './tests/template.tests.js';
 import './tests/TransitionEffectMixin.tests.js';
 import './tests/updates.tests.js';
+import './tests/utilities.tests.js';
 import './tests/WrappedStandardElement.tests.js';
