@@ -9,7 +9,10 @@ describe("utilities", () => {
       <div></div>
       <input tabindex="-1">
       <button disabled>Disabled</button>
-      <button id="enabled"></button>
+      <div>
+        <button id="enabled"></button>
+      </div>
+      <a href="about:blank"></a>
     `;
     const element = firstFocusableElement(fixture.content);
     const button = fixture.content.querySelector('#enabled');
@@ -24,11 +27,17 @@ describe("utilities", () => {
       <button id="enabled"></button>
     `;
     fixture.attachShadow({ mode: 'open' });
-    const clone = document.importNode(fixtureTemplate.content, true);
-    fixture.shadowRoot.appendChild(clone);
-    const input = document.createElement('input');
-    fixture.appendChild(input);
+    const shadowContent = document.importNode(fixtureTemplate.content, true);
+    fixture.shadowRoot.appendChild(shadowContent);
+    const childrenTemplate = template.html`
+      <div>
+        <input>
+      </div>
+    `;
+    const childrenContent = document.importNode(childrenTemplate.content, true);
+    fixture.appendChild(childrenContent);
     const element = firstFocusableElement(fixture.shadowRoot);
+    const input = fixture.querySelector('input');
     assert.equal(element, input);
   });
 

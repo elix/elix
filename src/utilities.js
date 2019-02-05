@@ -10,39 +10,6 @@ import * as symbols from "./symbols.js";
 const mousedownListenerKey = Symbol('mousedownListener');
 
 
-// Walk the composed tree at the root for elements that pass the given filter.
-// This combines a standard TreeWalker with the expansion of nodes assigned to
-// slots so that it walks the entire composed tree.
-function* createComposedTreeWalker(root, filter) {
-  const nodeFilter = {
-    acceptNode(node) {
-      return filter(node) ?
-        NodeFilter.FILTER_ACCEPT :
-        NodeFilter.FILTER_SKIP;
-    }
-  };
-  const walker = document.createTreeWalker(
-    root,
-    NodeFilter.SHOW_ELEMENT,
-    nodeFilter
-  );
-  while (walker.nextNode()) {
-    const node = walker.currentNode;
-    if (node instanceof HTMLSlotElement) {
-      const assignedNodes = node.assignedNodes({ flatten: true });
-      for (let i = 0; i < assignedNodes.length; i++) {
-        const assignedNode = assignedNodes[i];
-        if (assignedNode instanceof Element && filter(assignedNode)) {
-          yield assignedNode;
-        }
-      }
-    } else if (node instanceof Element) {
-      yield node;
-    }
-  }
-}
-
-
  /**
  * Returns true if the first node contains the second, even if the second node
  * is in a shadow tree.
@@ -145,12 +112,13 @@ export function firstFocusableElement(root) {
   // CSS selectors for focusable elements from
   // https://stackoverflow.com/a/30753870/76472
   const focusableQuery = 'a[href],area[href],button:not([disabled]),details,iframe,input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[contentEditable="true"],[tabindex]';
-  // We want to look for elements matching the query above, plus slots.
-  const filter = node =>
-    (node.matches(focusableQuery) && node.tabIndex >= 0) ||
-      node instanceof HTMLSlotElement;
-  // Construct a composed tree walker and get the first value.
-  const walker = createComposedTreeWalker(root, filter);
+  // Walk the tree looking for nodes that match the above selectors.
+  const walker = walkComposedTree(root, node =>
+    node instanceof HTMLElement && 
+    node.matches(focusableQuery) &&
+    node.tabIndex >= 0
+  );
+  // We only actually need the first matching value.
   const { value } = walker.next();
   // value, if defined, will always be an HTMLElement, but we do the following
   // check to pass static type checking.
@@ -161,7 +129,12 @@ export function firstFocusableElement(root) {
 
 
 /**
- * TODO: Docs
+ * Trap any `mousedown` events on the `origin` element and prevent the default
+ * behavior from setting the focus on that element. Instead, put the focus on
+ * the `target` element.
+ * 
+ * If this method is called again with the same `origin` element, the old
+ * forwarding is overridden, and focus will now go to the new `target` element.
  * 
  * @param {HTMLElement} origin
  * @param {HTMLElement|null} target
@@ -222,4 +195,31 @@ export function ownEvent(node, event) {
   const cast = event;
   const eventSource = cast.composedPath()[0];
   return node === eventSource || deepContains(node, eventSource);
+}
+
+
+// Walk the composed tree at the root for elements that pass the given filter.
+function* walkComposedTree(node, filter) {
+  if (filter(node)) {
+    yield node;
+  }
+  let children;
+  if (node.shadowRoot) {
+    // Walk the shadow instead of the light DOM.
+    children = node.shadowRoot.children;
+  } else {
+    const assignedNodes = node instanceof HTMLSlotElement ?
+      node.assignedNodes({ flatten: true }) :
+      [];
+    children = assignedNodes.length > 0 ?
+      // Walk light DOM nodes assigned to this slot.
+      assignedNodes :
+      // Walk light DOM children.
+      node.children;
+  }
+  if (children) {
+    for (let i = 0; i < children.length; i++) {
+      yield* walkComposedTree(children[i], filter);
+    }
+  }
 }
