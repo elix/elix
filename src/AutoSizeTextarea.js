@@ -125,9 +125,11 @@ class AutoSizeTextarea extends Base {
   }
   set minimumRows(minimumRows) {
     const parsed = Number(minimumRows);
-    this.setState({
-      minimumRows: parsed
-    });
+    if (!isNaN(parsed)) {
+      this.setState({
+        minimumRows: parsed
+      });
+    }
   }
   
   /*
