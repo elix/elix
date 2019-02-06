@@ -55,12 +55,12 @@ class TabButton extends Base {
     return this.state.index;
   }
   set index(index) {
-    const selectedIndex = typeof index === 'string' ?
-      parseInt(index) :
-      index;
-    this.setState({
-      index: selectedIndex
-    });
+    const parsed = Number(index);
+    if (!isNaN(parsed)) {
+      this.setState({
+        index: parsed
+      });
+    }
   }
 
   /**

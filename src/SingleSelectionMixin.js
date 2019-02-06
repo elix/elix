@@ -144,12 +144,12 @@ export default function SingleSelectionMixin(Base) {
         -1;
     }
     set selectedIndex(selectedIndex) {
-      const parsedIndex = typeof selectedIndex === 'string' ?
-        parseInt(selectedIndex) :
-        selectedIndex;
-      this.setState({
-        selectedIndex: parsedIndex
-      });
+      const parsed = Number(selectedIndex);
+      if (!isNaN(parsed)) {
+        this.setState({
+          selectedIndex: parsed
+        });
+      }
     }
 
     /**

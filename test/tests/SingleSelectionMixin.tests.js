@@ -208,6 +208,12 @@ describe("SingleSelectionMixin", () => {
     await Promise.resolve();
   });
 
+  it("ignores a selectedIndex that's not a number", () => {
+    const fixture = createSampleElement();
+    fixture.selectedIndex = 'foo';
+    assert.equal(fixture.selectedIndex, -1);
+  });
+
 });
 
 

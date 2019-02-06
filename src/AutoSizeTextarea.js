@@ -124,9 +124,7 @@ class AutoSizeTextarea extends Base {
     return this.state.minimumRows;
   }
   set minimumRows(minimumRows) {
-    const parsed = typeof minimumRows === 'string' ?
-      parseInt(minimumRows) :
-      minimumRows;
+    const parsed = Number(minimumRows);
     this.setState({
       minimumRows: parsed
     });
