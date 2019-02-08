@@ -14,6 +14,8 @@ export default function DelegateFocusMixin(Base) {
       return true;
     }
 
+    // If someone tries to put the focus on us, delegate the focus to the first
+    // focusable element in the composed tree below our shadow root.
     focus(focusOptions) {
       if (this.shadowRoot.delegatesFocus) {
         // Native support for delegatesFocus, so don't need to do anything.
@@ -37,7 +39,7 @@ export default function DelegateFocusMixin(Base) {
             outline: 'none'
           }
         } :
-        {};
+        null;
       return merge(super.updates, updates);
     }
 

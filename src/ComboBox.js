@@ -174,9 +174,9 @@ class ComboBox extends Base {
     return state;
   }
 
-  get [symbols.focusTarget]() {
-    return this.$.input;
-  }
+  // get [symbols.focusTarget]() {
+  //   return this.$.input;
+  // }
 
   /**
    * The combo box's input element.

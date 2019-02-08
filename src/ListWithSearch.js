@@ -93,9 +93,9 @@ class ListWithSearch extends Base {
     this.setState({ filter });
   }
 
-  get [symbols.focusTarget]() {
-    return this.$.input;
-  }
+  // get [symbols.focusTarget]() {
+  //   return this.$.input;
+  // }
 
   /**
    * The class, tag, or template used to create the input element.
@@ -206,7 +206,7 @@ class ListWithSearch extends Base {
         }
       </style>
       <input id="input">
-      <elix-filter-list-box id="list" tabindex="-1">
+      <elix-filter-list-box id="list" tabindex="">
         <slot></slot>
       </elix-filter-list-box>
     `;
