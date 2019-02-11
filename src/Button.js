@@ -15,6 +15,23 @@ const Base =
   )));
 
 
+// Do we need to explicitly map Space/Enter keys to a button click?
+//
+// As of February 2019, Firefox automatically translates a Space/Enter key on a
+// button into a click event that bubbles to its host. Chrome/Safari do not do
+// this automatically, so we have to do it ourselves.
+//
+// It's gross to look for a specific browser (Firefox), but it seems extremely
+// hard to feature-detect this. Even if we try to create a button in a shadow at
+// runtime and send a key event to it, Chrome/Safari don't seem to do their
+// normal mapping of Space/Enter to a click for synthetic keyboard events.
+//
+// Firefox detection adapted from https://stackoverflow.com/a/9851769/76472
+// and adjusted to pass type checks.
+const firefox = 'InstallTrigger' in window;
+const mapKeysToClick = !firefox;
+
+
 /**
  * Base class for custom buttons.
  * 
@@ -38,22 +55,25 @@ class Button extends Base {
 
   // Pressing Enter or Space raises a click event, as if the user had clicked
   // the inner button.
+  // TODO: Space should raise the click on *keyup*.
   [symbols.keydown](event) {
     let handled;
-    switch (event.key) {
-      case ' ':
-        if (this.state.treatSpaceAsClick) {
-          this[symbols.tap]();
-          handled = true;
-        }
-        break;
+    if (mapKeysToClick) {
+      switch (event.key) {
+        case ' ':
+          if (this.state.treatSpaceAsClick) {
+            this[symbols.tap]();
+            handled = true;
+          }
+          break;
 
-      case 'Enter':
-        if (this.state.treatEnterAsClick) {
-          this[symbols.tap]();
-          handled = true;
-        }
-        break;        
+        case 'Enter':
+          if (this.state.treatEnterAsClick) {
+            this[symbols.tap]();
+            handled = true;
+          }
+          break;
+      }
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
@@ -91,9 +111,13 @@ class Button extends Base {
           text-align: initial; /* Edge */
           width: 100%;
         }
+
+        #inner:focus {
+          background: pink;
+        }
       </style>
 
-      <button id="inner" tabindex="-1" role="none">
+      <button id="inner" role="none">
         <slot></slot>
       </button>
     `;
