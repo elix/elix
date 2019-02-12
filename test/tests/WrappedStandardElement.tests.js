@@ -30,13 +30,13 @@ describe("WrappedStandardElement", () => {
   });
 
   it("creates an instance of the wrapped element", () => {
-    const fixture = document.createElement('wrapped-a');
+    const fixture = new WrappedA();
     fixture.render();
     assert(fixture.inner instanceof HTMLAnchorElement);
   });
 
   it("exposes getter/setters that proxy to the wrapped element", () => {
-    const fixture = document.createElement('wrapped-a');
+    const fixture = new WrappedA();
     fixture.href = 'http://localhost/foo/bar.html';
     container.appendChild(fixture);
     assert.equal(fixture.inner.href, 'http://localhost/foo/bar.html');
@@ -46,7 +46,7 @@ describe("WrappedStandardElement", () => {
   });
 
   it("marshals attributes to properties on the inner element", () => {
-    const fixture = document.createElement('wrapped-a');
+    const fixture = new WrappedA();
     container.appendChild(fixture);
     fixture.setAttribute('href', 'http://example.com/');
     fixture.render();
@@ -54,7 +54,7 @@ describe("WrappedStandardElement", () => {
   });
 
   it("re-raises events not automatically retargetted by Shadow DOM", done => {
-    const fixture = document.createElement('wrapped-img');
+    const fixture = new WrappedImg();
     container.appendChild(fixture);
     fixture.addEventListener('load', () => {
       done();
@@ -64,7 +64,7 @@ describe("WrappedStandardElement", () => {
   });
 
   it("does not raise events if inner element is disabled", () => {
-    const fixture = document.createElement('wrapped-button');
+    const fixture = new WrappedButton();
     container.appendChild(fixture);
     let count = 0;
     fixture.addEventListener('click', () => {
@@ -78,7 +78,7 @@ describe("WrappedStandardElement", () => {
   });
 
   it("chooses an appropriate :host display style based on the wrapped element", () => {
-    const fixtureA = document.createElement('wrapped-a');
+    const fixtureA = new WrappedA();
     container.appendChild(fixtureA);
     const fixtureDiv = document.createElement('wrapped-div');
     container.appendChild(fixtureDiv);
@@ -87,7 +87,7 @@ describe("WrappedStandardElement", () => {
   });
 
   it("delegates boolean attributes", async () => {
-    const fixture = document.createElement('wrapped-button');
+    const fixture = new WrappedButton();
     container.appendChild(fixture);
     
     // Disable via property.
@@ -95,7 +95,7 @@ describe("WrappedStandardElement", () => {
     fixture.render();
     assert(fixture.inner.disabled);
 
-    // Re-enable via property.
+    // // Re-enable via property.
     fixture.disabled = false;
     fixture.render();
     assert(!fixture.inner.disabled);
@@ -106,14 +106,29 @@ describe("WrappedStandardElement", () => {
     assert(fixture.inner.disabled);
     
     // Re-enable via attribute.
-    fixture.removeAttribute('disabled');    
+    fixture.removeAttribute('disabled');
     fixture.render();
     assert(!fixture.inner.disabled);
   });
 
-  it("generates static observedAttributes property for attributes on the wrapped element", () => {
-    const attributes = WrappedButton.observedAttributes;
-    assert(attributes.indexOf('disabled') >= 0);
+  it("delegates attributes like aria-label", () => {
+    const fixture = new WrappedInput();
+    fixture.setAttribute('aria-label', 'Label');
+    container.appendChild(fixture);
+    fixture.render();
+    assert.equal(fixture.inner.getAttribute('aria-label'), 'Label');
+  });
+
+  it("delegates tabindex attribute and tabIndex property", () => {
+    const fixture = new WrappedInput();
+    container.appendChild(fixture);
+    assert.equal(fixture.tabIndex, 0);
+    fixture.tabIndex = '1';
+    fixture.render();
+    assert.equal(fixture.inner.tabIndex, 1);
+    fixture.setAttribute('tabindex', 2);
+    fixture.render();
+    assert.equal(fixture.inner.tabIndex, 2);
   });
 
   it("delegates methods", async () => {

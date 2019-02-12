@@ -1,4 +1,5 @@
-import { merge, booleanAttributes } from './updates.js';
+import { merge } from './updates.js';
+import * as AttributeMarshallingMixin from './AttributeMarshallingMixin.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import DelegateFocusMixin from './DelegateFocusMixin.js';
@@ -149,28 +150,6 @@ const Base =
  */
 class WrappedStandardElement extends Base {
 
-  // Delegate generally-useful ARIA attributes to inner element. These property
-  // definitions let AttributeMarshallingMixin know it should observe these
-  // attributes.
-  get ariaDescribedby() {
-    return this.getInnerAttribute('aria-describedby');
-  }
-  set ariaDescribedby(value) {
-    this.setInnerAttribute('aria-describedby', value);
-  }
-  get ariaLabel() {
-    return this.getInnerAttribute('aria-label');
-  }
-  set ariaLabel(value) {
-    this.setInnerAttribute('aria-label', value);
-  }
-  get ariaLabelledby() {
-    return this.getInnerAttribute('aria-label');
-  }
-  set ariaLabelledby(value) {
-    this.setInnerAttribute('aria-label', value);
-  }
-
   // Delegate method defined by HTMLElement.
   blur() {
     /** @type {any} */
@@ -265,56 +244,18 @@ class WrappedStandardElement extends Base {
     return result;
   }
   
-  getInnerAttribute(name) {
-    // If we haven't rendered yet, use internal state value.
-    return this.shadowRoot ?
-      this.inner[name] :
-      this.state.innerAttributes[name];
-  }
-  
   getInnerProperty(name) {
     // If we haven't rendered yet, use internal state value.
+    // REVIEW: Feels hacky to use two sources of truth.
     return this.shadowRoot ?
       this.inner[name] :
       this.state.innerProperties[name];
   }
 
-  setInnerAttribute(name, value) {
-    if (this.shadowRoot) {
-      // We've been rendered, so set property directly on inner element.
-      if (!name.includes('-')) {
-        // Set directly as property; works better for native attributes.
-        this.inner[name] = value;
-      } else {
-        // Set as attribute, fallback for things like ARIA attributes.
-        this.inner.setAttribute(name, value);
-      }
-    }
-  
-    // Save attribute in state.
-    // This lets us save attributes set before the component is rendered,
-    // as well as letting us know whether we need to re-render in response
-    // to an attribute change.
-    const innerAttributes = Object.assign({}, this.state.innerAttributes, {
-      [name]: value
-    });
-    this.setState({ innerAttributes });
-  }
-
   setInnerProperty(name, value) {
-    // Special case for boolean attributes, which may be passed as strings via
-    // calls to setAttribute.
-    const cast = castPotentialBooleanAttribute(name, value);
-    
-    if (this.shadowRoot) {
-      // We've been rendered, so set property directly on inner element.
-      this.inner[name] = cast;
-    }
-
     // Save property assignment in state.
-    // See setInnerAttribute for reasoning.
     const innerProperties = Object.assign({}, this.state.innerProperties, {
-      [name]: cast
+      [name]: value
     });
     this.setState({ innerProperties });
   }
@@ -339,6 +280,15 @@ class WrappedStandardElement extends Base {
     }
 
     return false; // No changes.
+  }
+
+  // Expose inner tabIndex property. Because this is defined on HTMLElement, a
+  // getter/setter is not automatically generated for it.
+  get tabIndex() {
+    return this.getInnerProperty('tabIndex');
+  }
+  set tabIndex(tabIndex) {
+    this.setInnerProperty('tabIndex', tabIndex);
   }
 
   /**
@@ -379,23 +329,38 @@ class WrappedStandardElement extends Base {
   }
 
   get updates() {
-    // Only apply updates the first time. Thereafter, we apply
-    // property/attribute updates directly to inner element, so such updates
-    // aren't necessary.
-    const updates = this[renderedKey] ?
-      null :
-      {
-        $: {
-          inner: Object.assign(
-            {},
-            this.state.innerAttributes && {
-              attributes: this.state.innerAttributes
-            },
-            this.state.innerProperties
-          )
-        }
+    const innerUpdates = Object.assign({}, this.state.innerProperties);
+    const originalAttributes = this.state.original ?
+      this.state.original.attributes :
+      null;
+    if (originalAttributes) {
+      const skipAttributes = {
+        class: true,
+        id: true,
+        style: true
       };
-    return merge(super.updates, updates);
+      for (const key in originalAttributes) {
+        if (!skipAttributes[key]) {
+          const value = originalAttributes[key];
+          if (key.includes('-')) {
+            if (!innerUpdates.attributes) {
+              innerUpdates.attributes = {};
+            }
+            innerUpdates.attributes[key] = value;
+          } else if (key === 'tabindex') {
+            innerUpdates.tabIndex = value;
+          } else {
+            const cast = AttributeMarshallingMixin.castPotentialBooleanAttribute(key, value);
+            innerUpdates[key] = cast;
+          }
+        }
+      }
+    }
+    return merge(super.updates, {
+      $: {
+        inner: innerUpdates
+      }
+    });
   }
 
   /**
@@ -425,20 +390,6 @@ class WrappedStandardElement extends Base {
     return Wrapped;
   }
 
-}
-
-
-// If the given attribute name corresponds to a boolean attribute,
-// map the supplied string value to a boolean. Otherwise return as is.
-function castPotentialBooleanAttribute(attributeName, value) {
-  if (booleanAttributes[attributeName]) {
-    if (typeof value === 'string') {
-      return true;
-    } else if (value === null) {
-      return false;
-    }
-  }
-  return value;
 }
 
 

@@ -3,7 +3,7 @@
 
 /// <reference path="shared.d.ts"/>
 
-/** Here is a mixin */
+
 declare const AttributeMarshallingMixin: Mixin<{
   attributeChangedCallback?(attributeName: string, oldValue: string, newValue: string);
 }, {
@@ -11,3 +11,4 @@ declare const AttributeMarshallingMixin: Mixin<{
 }>;
 
 export default AttributeMarshallingMixin;
+export function castPotentialBooleanAttribute(attributeName: string, value: any): any;
