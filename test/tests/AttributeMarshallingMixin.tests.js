@@ -21,6 +21,13 @@ class ElementWithCustomProperty extends AttributeMarshallingMixin(HTMLElement) {
     this._customProperty = value;
   }
 
+  get disabled() {
+    return this._disabled;
+  }
+  set disabled(disabled) {
+    this._disabled = disabled;
+  }
+
 }
 customElements.define('element-with-custom-property', ElementWithCustomProperty);
 
@@ -40,14 +47,22 @@ describe("AttributeMarshallingMixin", () => {
 
   it("defines observedAttributes for all custom property setters", () => {
     const observedAttributes = ElementWithCustomProperty.observedAttributes;
-    assert.deepEqual(observedAttributes, ['custom-property']);
+    assert.deepEqual(observedAttributes, ['custom-property', 'disabled']);
   });
 
   it("marshals hyphenated attribute to corresponding camelCase property", () => {
-    const fixture = document.createElement('element-with-custom-property');
+    const fixture = new ElementWithCustomProperty();
     assert.isUndefined(fixture.customProperty);
-    fixture.setAttribute('custom-property', "Hello");
-    assert.equal(fixture.customProperty, "Hello");
+    fixture.setAttribute('custom-property', 'Hello');
+    assert.equal(fixture.customProperty, 'Hello');
   });
+
+  it("translates boolean attribute string|null to boolean value", () => {
+    const fixture = new ElementWithCustomProperty();
+    fixture.setAttribute('disabled', '');
+    assert(fixture.disabled);
+    fixture.removeAttribute('disabled');
+    assert(!fixture.disabled);
+  })
 
 });

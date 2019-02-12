@@ -1,6 +1,15 @@
+import { booleanAttributes } from "./updates";
+
+
 // Memoized maps of attribute to property names and vice versa.
-const attributeToPropertyNames = {};
-const propertyNamesToAttributes = {};
+// We initialize this with the special case of the tabindex (lowercase "i")
+// attribute, which is mapped to the tabIndex (capital "I") property.
+const attributeToPropertyNames = {
+  tabindex: 'tabIndex'
+};
+const propertyNamesToAttributes = {
+  tabIndex: 'tabindex'
+};
 
 
 /**
@@ -53,7 +62,7 @@ export default function AttributeMarshallingMixin(Base) {
       const propertyName = attributeToPropertyName(attributeName);
       // If the attribute name corresponds to a property name, set the property.
       if (propertyName in this) {
-        this[propertyName] = newValue;
+        this[propertyName] = castPotentialBooleanAttribute(attributeName, newValue);
       }
     }
 
@@ -121,6 +130,20 @@ function attributeToPropertyName(attributeName) {
     attributeToPropertyNames[attributeName] = propertyName;
   }
   return propertyName;
+}
+
+
+// If the given attribute name corresponds to a boolean attribute,
+// map the supplied string value to a boolean. Otherwise return as is.
+export function castPotentialBooleanAttribute(attributeName, value) {
+  if (booleanAttributes[attributeName]) {
+    if (typeof value === 'string') {
+      return true;
+    } else if (value === null) {
+      return false;
+    }
+  }
+  return value;
 }
 
 
