@@ -48,6 +48,14 @@ describe("RenderUpdatesMixin", function () {
     assert.equal(fixture.style.color, '');
   });
 
+  it("tracks original attribute values", () => {
+    const fixture = new PropsTest();
+    fixture.setAttribute('foo', 'bar');
+    assert.equal(fixture.state.original.attributes.foo, 'bar');
+    fixture.removeAttribute('foo');
+    assert(fixture.state.original.attributes.foo === undefined);
+  });
+
   it("merges styles on top of original styles", async () => {
     container.innerHTML = `<props-test style="background-color: yellow; color: green;"></props-test>`;
     flushPolyfills();
