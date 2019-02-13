@@ -151,9 +151,7 @@ export default function KeyboardMixin(Base) {
     get updates() {
       const { tabIndex } = this.state;
       return merge(super.updates, {
-        attributes: {
-          tabindex: tabIndex
-        }
+        tabIndex
       });
     }
 
