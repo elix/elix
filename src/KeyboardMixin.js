@@ -70,10 +70,24 @@ export default function KeyboardMixin(Base) {
       // tabindex on the host; we'll rely on the inner shadow elements to take
       // the focus and raise keyboard events. Otherwise, we do set a tabindex on
       // the host, so that we can get keyboard events.
-      const tabindex = this.delegatesFocus ? null : 0;
-      return Object.assign(super.defaultState, {
-        tabindex
+      const tabIndex = this.delegatesFocus ? null : 0;
+      const state = Object.assign(super.defaultState, {
+        tabIndex
       });
+
+      state.onChange('original', state => {
+        if (state.original.attributes && state.original.attributes.tabindex) {
+          const parsed = Number(state.original.attributes.tabindex);
+          if (!isNaN(parsed)) {
+            return {
+              tabIndex: parsed
+            };
+          }
+        }
+        return null;
+      });
+
+      return state;
     }
     
     /**
@@ -84,15 +98,61 @@ export default function KeyboardMixin(Base) {
       return false;
     }
 
+    // Record our own notion of the state of the tabIndex property so we can
+    // rerender if necessary.
+    get tabIndex() {
+      return super.tabIndex;
+    }
+    set tabIndex(tabIndex) {
+      // Parse the passed value, which could be a string or null.
+      let parsed = tabIndex !== null ? Number(tabIndex) : null;
+      if (parsed !== null && isNaN(parsed)) {
+        const defaultTabIndex = this[symbols.defaultTabIndex];
+        parsed = defaultTabIndex ? defaultTabIndex : 0;
+      }
+
+      // If parsed value isn't null and has changed, invoke the super setter.
+      if (parsed !== null && super.tabIndex !== parsed) {
+        super.tabIndex = parsed;
+      }
+
+      if (this.state.tabIndex !== parsed) {
+        // Record the new tabIndex in our state.
+        this.setState({
+          tabIndex: parsed
+        });
+
+        // If tabIndex is set outside of rendering, that's tantamount to setting
+        // the tabindex attribute. We update our notion of the "original"
+        // attribute value of the tabindex attribute. See
+        // RenderUpdatesMixin.setAttribute().
+        if (!this[symbols.rendering]) {
+          const attributes = Object.assign(
+            {},
+            this.state.original && this.state.original.attributes
+          );
+          if (parsed === null) {
+            delete attributes.tabindex;
+          } else {
+            attributes.tabindex = parsed.toString();
+          }
+          const original = Object.assign(
+            {},
+            this.state.original,
+            {
+              attributes
+            }
+          );
+          this.setState({ original });
+        }
+      }
+    }
+
     get updates() {
-      const originalTabIndex = this.state.original &&
-          this.state.original.attributes.tabindex;
-      const tabindex = originalTabIndex !== undefined ?
-        originalTabIndex :
-        this.state.tabindex;
+      const { tabIndex } = this.state;
       return merge(super.updates, {
         attributes: {
-          tabindex
+          tabindex: tabIndex
         }
       });
     }

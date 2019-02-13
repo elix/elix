@@ -39,6 +39,19 @@ describe("KeyboardMixin", () => {
     assert.equal(fixture.getAttribute('tabindex'), '1');
   });
 
+  it("reflects tabindex attribute and tabIndex property assignments in state", async () => {
+    const fixture = new KeyboardTest();
+    fixture.render();
+    assert.equal(fixture.state.tabIndex, 0);
+    fixture.setAttribute('tabindex', '1');
+    fixture.render();
+    assert.equal(fixture.state.tabIndex, 1);
+    assert.equal(fixture.tabIndex, 1);
+    fixture.tabIndex = 2;
+    assert.equal(fixture.state.tabIndex, 2);
+    assert.equal(fixture.getAttribute('tabindex'), 2);
+  });
+
   it("listens to keydown and fires the keydown() method", done => {
     const fixture = new KeyboardTest();
     fixture[symbols.keydown] = () => {
