@@ -100,9 +100,9 @@ export function elementsFromPoint(element, x, y) {
  * Return the first focusable element in the composed tree below the given root.
  * The composed tree includes nodes assigned to slots.
  *
- * We do our best to approxiate the browser's sequential navigation algorithm,
- * but such things tend to be extremely complex. There may easily be edge cases
- * we have missed.
+ * This heuristic considers only the document order of the elements below the
+ * root and whether a given element is focusable. It currently does not respect
+ * the tab sort order defined by tabindex values greater than zero.
  * 
  * @param {HTMLElement} root - the root of the tree in which to search
  * @returns {HTMLElement|null} - the first focusable element, or null if none
