@@ -11,9 +11,9 @@ describe("AutoCompleteInput", () => {
       'Cat',
       'Dog'
     ];
-    fixture.render();
     fixture.value = 'C';
     autoComplete(fixture);
+    fixture.render();
     assert.equal(fixture.value, 'Canary');
   });
 

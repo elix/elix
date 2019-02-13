@@ -305,7 +305,9 @@ class WrappedStandardElement extends Base {
     // the state of the inner element.
     return this.shadowRoot ?
       this.inner[name] :
-      this.state.innerProperties[name];
+      this.state.innerProperties ?
+        this.state.innerProperties[name] :
+        undefined;
   }
 
   // Save property assignment in state.
