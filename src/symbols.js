@@ -92,14 +92,6 @@ export const checkSize = Symbol('checkSize');
 export const contentSlot = Symbol('contentSlot');
 
 /**
- * Symbol for the `defaultFocus` property.
- * 
- * This is used by the [defaultFocus](utilities#defaultFocus) utility to
- * determine the default focus target for an element.
- */
-export const defaultFocus = Symbol('defaultFocus');
-
-/**
  * Symbol for the `defaultTabIndex` property.
  * 
  * [KeyboardMixin](KeyboardMixin) uses this if it is unable to successfully

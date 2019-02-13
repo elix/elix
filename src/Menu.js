@@ -101,10 +101,6 @@ class Menu extends Base {
     }
   }
 
-  // get [symbols.defaultFocus]() {
-  //   return this.selectedItem;
-  // }
-
   get defaultState() {
     const state = Object.assign(super.defaultState, {
       highlightSelection: true,
