@@ -226,6 +226,22 @@ class WrappedStandardElement extends Base {
     });
   }
 
+  get [symbols.defaultTabIndex]() {
+    const focusableByDefault = {
+      a: true,
+      area: true,
+      button: true,
+      details: true,
+      iframe: true,
+      input: true,
+      select: true,
+      textarea: true
+    };
+    return focusableByDefault[this.extends] ?
+      0 :
+      -1;
+  }
+
   get extends() {
     return this.constructor[extendsKey];
   }
@@ -245,19 +261,37 @@ class WrappedStandardElement extends Base {
   }
   
   getInnerProperty(name) {
-    // If we haven't rendered yet, use internal state value.
-    // REVIEW: Feels hacky to use two sources of truth.
+    // If we haven't rendered yet, use internal state value. Once we've
+    // rendered, we get the value from the wrapped element itself.
+    // REVIEW: Feels hacky to use two sources of truth. On the other hand, it
+    // may be prohibitively expensive, maybe impossible, to accurately reproduce
+    // the state of the inner element.
     return this.shadowRoot ?
       this.inner[name] :
       this.state.innerProperties[name];
   }
 
+  // Save property assignment in state.
   setInnerProperty(name, value) {
-    // Save property assignment in state.
-    const innerProperties = Object.assign({}, this.state.innerProperties, {
-      [name]: value
-    });
-    this.setState({ innerProperties });
+    // We normally don't check an existing state value before calling setState,
+    // relying instead on setState to do that check for us. However, we have
+    // dangers in this particular component of creating infinite loops.
+    //
+    // E.g., setting the tabindex attibute will call attributeChangedCallback,
+    // which will set the tabIndex property, which will want to set state, which
+    // will cause a render, which will try to reflect the current value of the
+    // tabIndex property to the tabindex attribute, causing a loop.
+    //
+    // To avoid this, we check the existing value before updating our state.
+    const current = this.state.innerProperties ?
+      this.state.innerProperties[name] :
+      undefined;
+    if (current !== value) {
+      const innerProperties = Object.assign({}, this.state.innerProperties, {
+        [name]: value
+      });
+      this.setState({ innerProperties });
+    }
   }
 
   shouldComponentUpdate(nextState) {
@@ -280,15 +314,6 @@ class WrappedStandardElement extends Base {
     }
 
     return false; // No changes.
-  }
-
-  // Expose inner tabIndex property. Because this is defined on HTMLElement, a
-  // getter/setter is not automatically generated for it.
-  get tabIndex() {
-    return this.getInnerProperty('tabIndex');
-  }
-  set tabIndex(tabIndex) {
-    this.setInnerProperty('tabIndex', tabIndex);
   }
 
   /**
@@ -329,10 +354,14 @@ class WrappedStandardElement extends Base {
   }
 
   get updates() {
-    const innerUpdates = Object.assign({}, this.state.innerProperties);
-    const originalAttributes = this.state.original ?
-      this.state.original.attributes :
-      null;
+    const innerUpdates = Object.assign(
+      {
+        attributes: {}
+      },
+      this.state.innerProperties
+    );
+    const { original, tabIndex } = this.state;
+    const originalAttributes = original ? original.attributes : null;
     if (originalAttributes) {
       const skipAttributes = {
         class: true,
@@ -343,19 +372,15 @@ class WrappedStandardElement extends Base {
         if (!skipAttributes[key]) {
           const value = originalAttributes[key];
           if (key.includes('-')) {
-            if (!innerUpdates.attributes) {
-              innerUpdates.attributes = {};
-            }
             innerUpdates.attributes[key] = value;
-          } else if (key === 'tabindex') {
-            innerUpdates.tabIndex = value;
-          } else {
+          } else if (key !== 'tabindex') { // tabindex handled below
             const cast = AttributeMarshallingMixin.castPotentialBooleanAttribute(key, value);
             innerUpdates[key] = cast;
           }
         }
       }
     }
+    innerUpdates.attributes.tabindex = tabIndex;
     return merge(super.updates, {
       $: {
         inner: innerUpdates

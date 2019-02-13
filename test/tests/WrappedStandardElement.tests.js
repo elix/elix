@@ -119,16 +119,13 @@ describe("WrappedStandardElement", () => {
     assert.equal(fixture.inner.getAttribute('aria-label'), 'Label');
   });
 
-  it("delegates tabindex attribute and tabIndex property", () => {
+  it("reflects tabindex state to inner element", async () => {
     const fixture = new WrappedInput();
     container.appendChild(fixture);
-    assert.equal(fixture.tabIndex, 0);
-    fixture.tabIndex = '1';
-    fixture.render();
+    // NB: tabIndex is not part of WrappedInput's regular state; we're just
+    // defining it. WrappedStandardElement should respect that.
+    await fixture.setState({ tabIndex: 1 });
     assert.equal(fixture.inner.tabIndex, 1);
-    fixture.setAttribute('tabindex', 2);
-    fixture.render();
-    assert.equal(fixture.inner.tabIndex, 2);
   });
 
   it("delegates methods", async () => {
