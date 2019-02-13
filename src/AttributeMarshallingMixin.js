@@ -59,10 +59,13 @@ export default function AttributeMarshallingMixin(Base) {
       if (super.attributeChangedCallback) {
         super.attributeChangedCallback(attributeName, oldValue, newValue);
       }
-      const propertyName = attributeToPropertyName(attributeName);
-      // If the attribute name corresponds to a property name, set the property.
-      if (propertyName in this) {
-        this[propertyName] = castPotentialBooleanAttribute(attributeName, newValue);
+      // Sometimes there's not actually any change.
+      if (newValue !== oldValue) {
+        const propertyName = attributeToPropertyName(attributeName);
+        // If the attribute name corresponds to a property name, set the property.
+        if (propertyName in this) {
+          this[propertyName] = castPotentialBooleanAttribute(attributeName, newValue);
+        }
       }
     }
 
