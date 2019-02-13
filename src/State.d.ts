@@ -3,7 +3,7 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare type ChangeHandler = (state: State, changes: PlainObject) => PlainObject|null;
+declare type ChangeHandler = (state: State, changed: PlainObject) => PlainObject|null;
 
 export default class State {
   constructor(defaults?: PlainObject);
