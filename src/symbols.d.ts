@@ -18,6 +18,7 @@ export const canGoRight: '_canGoRight';
 export const checkSize: '_checkSize';
 export const contentSlot: '_contentSlot';
 export const defaultFocus: '_defaultFocus';
+export const defaultTabIndex: '_defaultTabIndex';
 export const elementsWithTransitions: '_elementsWithTransitions';
 export const event: '_event';
 export const focusTarget: '_focusTarget';

@@ -100,6 +100,14 @@ export const contentSlot = Symbol('contentSlot');
 export const defaultFocus = Symbol('defaultFocus');
 
 /**
+ * Symbol for the `defaultTabIndex` property.
+ * 
+ * [KeyboardMixin](KeyboardMixin) uses this if it is unable to successfully
+ * parse a string tabindex attribute.
+ */
+export const defaultTabIndex = Symbol('defaultTabIndex');
+
+/**
  * Symbol for the `elementsWithTransitions` property.
  * 
  * [TransitionEffectMixin](TransitionEffectMixin) inspects this property
