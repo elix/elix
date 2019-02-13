@@ -29,12 +29,11 @@ export default function RenderUpdatesMixin(Base) {
 
     // See setAttribute
     removeAttribute(name) {
-      if (!this[symbols.rendering]) {
-        const original = Object.assign({}, this.state.original);
-        delete original.attributes[name];
-        this.setState({ original });
-      }
       super.removeAttribute(name);
+      if (!this[symbols.rendering] &&
+          this.state.original.attributes[name] != null) {
+        updateOriginalProp(this, name, null);
+      }
     }
 
     [symbols.render]() {

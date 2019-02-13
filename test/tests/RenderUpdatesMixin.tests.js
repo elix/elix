@@ -53,7 +53,7 @@ describe("RenderUpdatesMixin", function () {
     fixture.setAttribute('foo', 'bar');
     assert.equal(fixture.state.original.attributes.foo, 'bar');
     fixture.removeAttribute('foo');
-    assert(fixture.state.original.attributes.foo === undefined);
+    assert.isNull(fixture.state.original.attributes.foo);
   });
 
   it("merges styles on top of original styles", async () => {
