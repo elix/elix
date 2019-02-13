@@ -111,10 +111,6 @@ class Button extends Base {
           text-align: initial; /* Edge */
           width: 100%;
         }
-
-        #inner:focus {
-          background: pink;
-        }
       </style>
 
       <button id="inner" role="none">
