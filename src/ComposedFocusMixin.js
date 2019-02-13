@@ -72,10 +72,7 @@ function closestFocusableAncestor(element) {
       return focusTarget;
     }
     // Slot elements have a tabindex of 0 (which is weird); we ignore them.
-    // The check for `delegatesFocus` is used to allow cooperation with
-    // DelegateFocusMixin.
-    if (!(element instanceof HTMLSlotElement) &&
-      (element.tabIndex >= 0 || element.delegatesFocus)) {
+    if (element.tabIndex >= 0 && !(element instanceof HTMLSlotElement)) {
       // Found an enabled component that wants the focus.
       return element;
     }
