@@ -8,7 +8,7 @@ declare const KeyboardMixin: StateMixin<
 {},
 {},
 {
-  tabindex: string
+  tabIndex: number
 }>;
 
 export default KeyboardMixin;
