@@ -142,7 +142,7 @@ export function forwardFocus(origin, target) {
   }
   if (target) {
     // Using forward focus implies no tab stop.
-    origin.setAttribute('tabindex', '-1');
+    origin.tabIndex = -1;
     origin[mousedownListenerKey] = (event) => {
       // Only process events for the main (usually left) button.
       if (event.button !== 0) {
