@@ -81,8 +81,7 @@ class ListWithSearch extends Base {
       filter: '',
       inputRole: 'input',
       listRole: FilterListBox,
-      placeholder: 'Search',
-      tabindex: null
+      placeholder: 'Search'
     });
   }
   
@@ -206,7 +205,7 @@ class ListWithSearch extends Base {
         }
       </style>
       <input id="input">
-      <elix-filter-list-box id="list" tabindex="">
+      <elix-filter-list-box id="list" tabindex="-1">
         <slot></slot>
       </elix-filter-list-box>
     `;

@@ -23,12 +23,12 @@ const lateralPositions = {
 
 
 const Base =
-  ComposedFocusMixin(
+  // ComposedFocusMixin(
   LanguageDirectionMixin(
   SingleSelectionMixin(
   SlotItemsMixin(
     ReactiveElement
-  ))));
+  )));
 
 
 /**

@@ -132,7 +132,7 @@ class ListBox extends Base {
           min-height: inherit;
         }
       </style>
-      <div id="content" role="none" tabindex="-1">
+      <div id="content" role="none">
         <slot></slot>
       </div>
     `;

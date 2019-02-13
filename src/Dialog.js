@@ -32,7 +32,8 @@ class Dialog extends Base {
 
   get defaultState() {
     return Object.assign(super.defaultState, {
-      backdropRole: ModalBackdrop
+      backdropRole: ModalBackdrop,
+      tabIndex: -1
     });
   }
 
@@ -46,9 +47,6 @@ class Dialog extends Base {
 
   get updates() {
     return merge(super.updates, {
-      attributes: {
-        tabindex: '-1'
-      },
       style: {
         'pointer-events': 'initial'
       }

@@ -141,12 +141,10 @@ class PopupButton extends Base {
     return merge(super.updates, {
       $: {
         source: {
-          attributes: {
-            tabindex: -1
-          },
           style: {
             'border-style': disabled ? '' : 'solid'
-          }
+          },
+          tabIndex: -1
         }
       }
     });

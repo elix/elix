@@ -44,7 +44,6 @@ class TabButton extends Base {
       overlapPanel: true,
       selected: false,
       tabAlign: 'start',
-      tabindex: '0',
       treatEnterAsClick: false, // Let tab strip handle Enter.
       treatSpaceAsClick: false, // Let tab strip handle Space.
       position: 'top'
@@ -123,8 +122,7 @@ class TabButton extends Base {
       overlapPanel,
       position,
       selected,
-      tabAlign,
-      tabindex
+      tabAlign
     } = this.state;
 
     // Host
@@ -196,9 +194,6 @@ class TabButton extends Base {
     buttonStyle['background-color'] = originalBackgroundColor || 'white';
 
     return merge(base, {
-      attributes: {
-        tabindex: original.attributes.tabindex || tabindex
-      },
       style: hostStyle,
       $: {
         inner: {

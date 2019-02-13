@@ -93,7 +93,7 @@ class TabStrip extends Base {
       selectionRequired: true,
       tabAlign: 'start',
       tabButtonRole: 'tab',
-      tabindex: null,
+      tabIndex: -1,
       position: 'top'
     });
   }

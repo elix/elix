@@ -346,9 +346,7 @@ class MenuButton extends PopupButton {
           selectedIndex: this.state.menuSelectedIndex
         },
         popup: {
-          attributes: {
-            tabindex: -1
-          }
+          tabIndex: -1
         },
         source: {
           style: {

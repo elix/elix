@@ -148,7 +148,6 @@ class ComboBox extends Base {
       role: 'combobox',
       selectText: false,
       sourceRole: 'div',
-      tabindex: null,
       toggleButtonRole: SeamlessButton,
       value: '',
     });
@@ -173,10 +172,6 @@ class ComboBox extends Base {
 
     return state;
   }
-
-  // get [symbols.focusTarget]() {
-  //   return this.$.input;
-  // }
 
   /**
    * The combo box's input element.
