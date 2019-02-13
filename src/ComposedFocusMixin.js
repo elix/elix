@@ -55,7 +55,7 @@ export default function ComposedFocusMixin(Base) {
     }
 
     get defaultState() {
-      return Object.assign({}, super.defaultState, {
+      return Object.assign(super.defaultState, {
         composeFocus: polyfillDelegatesFocus
       });
     }
