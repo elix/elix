@@ -1,3 +1,4 @@
+import { forwardFocus } from './utilities.js';
 import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
@@ -58,6 +59,22 @@ const Base =
  * @elementrole {SlidingStage} stage
  */
 class Carousel extends Base {
+
+  [symbols.beforeUpdate]() {
+    const proxyListChanged = this[symbols.renderedRoles].proxyListRole
+      !== this.state.proxyListRole;
+    /** @type {any} */
+    const cast = this.$.proxyList;
+    if (proxyListChanged && cast) {
+      // Turn off focus handling for old proxy list.
+      forwardFocus(cast, null);
+    }
+    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+    if (proxyListChanged) {
+      // Keep focus off of the proxies and onto the carousel itself.
+      forwardFocus(cast, this);
+    }
+  }
   
   get defaultState() {
     // Show arrow buttons if device has a fine-grained pointer (e.g., mouse).

@@ -7,6 +7,29 @@
 const mousedownListenerKey = Symbol('mousedownListener');
 
 
+// Return the closest focusable ancestor in the *composed* tree.
+// If no focusable ancestor is found, returns null.
+export function closestFocusableAncestor(element) {
+  // We want an element that has a tabIndex of 0 or more. We ignore disabled
+  // elements, and slot elements (which oddly have a tabIndex of 0).
+  if (element.tabIndex >= 0 && !element.disabled
+    && !(element instanceof HTMLSlotElement)) {
+    // Found an enabled component that wants the focus.
+    return element;
+  }
+  // Not focusable; look higher in composed tree.
+  const parent = element.assignedSlot ?
+    element.assignedSlot :
+    // @ts-ignore
+    element.parentNode instanceof ShadowRoot ?
+      element.parentNode.host :
+      element.parentNode;
+  return parent ?
+    closestFocusableAncestor(parent) :
+    null;
+}
+
+
  /**
  * Returns true if the first node contains the second, even if the second node
  * is in a shadow tree.
@@ -99,10 +122,14 @@ export function firstFocusableElement(root) {
 /**
  * Trap any `mousedown` events on the `origin` element and prevent the default
  * behavior from setting the focus on that element. Instead, put the focus on
- * the `target` element.
+ * the `target` element (or, if the `target` is not focusable, on the target's
+ * closest focusable ancestor).
  * 
  * If this method is called again with the same `origin` element, the old
  * forwarding is overridden, and focus will now go to the new `target` element.
+ * 
+ * If the `target` parameter is `null`, focus handling will be removed from the
+ * indicated `origin`.
  * 
  * @param {HTMLElement} origin
  * @param {HTMLElement|null} target
@@ -121,7 +148,8 @@ export function forwardFocus(origin, target) {
       if (event.button !== 0) {
         return;
       }
-      target.focus();
+      const focusableTarget = closestFocusableAncestor(target);
+      focusableTarget.focus();
       event.preventDefault();
     };
     origin.addEventListener('mousedown', origin[mousedownListenerKey]);

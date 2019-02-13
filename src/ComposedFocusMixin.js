@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import { closestFocusableAncestor } from './utilities.js';
 
 
 // Quick detection of whether we'll need to handle focus.
@@ -33,17 +33,15 @@ const polyfillDelegatesFocus = 'HTMLSlotElement' in window &&
  */
 export default function ComposedFocusMixin(Base) {
 
-  if (!polyfillDelegatesFocus) {
-    // No need for the mixin to modify the supplied class
-    return Base;
-  }
-
   // The class prototype added by the mixin.
   class ComposedFocus extends Base {
 
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
       this.addEventListener('mousedown', event => {
+        if (!this.state.composeFocus) {
+          return;
+        }
         // Only process events for the main (usually left) button.
         if (event.button !== 0) {
           return;
@@ -56,34 +54,13 @@ export default function ComposedFocusMixin(Base) {
       });
     }
 
+    get defaultState() {
+      return Object.assign({}, super.defaultState, {
+        composeFocus: polyfillDelegatesFocus
+      });
+    }
+
   }
 
   return ComposedFocus;
-}
-
-
-// Return the closest focusable ancestor in the *composed* tree.
-// If no focusable ancestor is found, returns null.
-function closestFocusableAncestor(element) {
-  if (!element.disabled) {
-    // If element wants focus to go to a specific subelement, return that.
-    const focusTarget = element[symbols.focusTarget];
-    if (focusTarget) {
-      return focusTarget;
-    }
-    // Slot elements have a tabindex of 0 (which is weird); we ignore them.
-    if (element.tabIndex >= 0 && !(element instanceof HTMLSlotElement)) {
-      // Found an enabled component that wants the focus.
-      return element;
-    }
-  }
-  const parent = element.assignedSlot ?
-    element.assignedSlot :
-    // @ts-ignore
-    element.parentNode instanceof ShadowRoot ?
-      element.parentNode.host :
-      element.parentNode;
-  return parent ?
-    closestFocusableAncestor(parent) :
-    null;
 }

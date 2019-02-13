@@ -111,18 +111,6 @@ export const defaultTabIndex = Symbol('defaultTabIndex');
 export const elementsWithTransitions = Symbol('elementsWithTransitions');
 
 /**
- * Symbol for the `focusTarget` property.
- * 
- * Components can define this to indicate a specific subelement in their Shadow
- * DOM tree that should receive the focus (instead of the component's host
- * element). [ComposedFocusMixin](ComposedFocusMixin) uses this property when
- * providing default focus behavior. See that mixin for details.
- * 
- * @var {Element} focusTarget
- */
-export const focusTarget = Symbol('focusTarget');
-
-/**
  * Symbol for the `getItemText` method.
  *
  * This method can be applied to an item to return its text.
