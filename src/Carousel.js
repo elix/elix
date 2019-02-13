@@ -63,15 +63,17 @@ class Carousel extends Base {
   [symbols.beforeUpdate]() {
     const proxyListChanged = this[symbols.renderedRoles].proxyListRole
       !== this.state.proxyListRole;
-    /** @type {any} */
-    const cast = this.$.proxyList;
-    if (proxyListChanged && cast) {
+    if (proxyListChanged && this.$.proxyList) {
       // Turn off focus handling for old proxy list.
+      /** @type {any} */
+      const cast = this.$.proxyList;
       forwardFocus(cast, null);
     }
     if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
     if (proxyListChanged) {
       // Keep focus off of the proxies and onto the carousel itself.
+      /** @type {any} */
+      const cast = this.$.proxyList;
       forwardFocus(cast, this);
     }
   }
@@ -105,9 +107,7 @@ class Carousel extends Base {
     return merge(
       base,
       {
-        attributes: {
-          tabindex: ''
-        }
+        tabIndex: -1
       },
       setDarkMode && {
         darkMode
