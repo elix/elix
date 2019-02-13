@@ -20,14 +20,6 @@ const Base =
  */
 class AutoCompleteInput extends Base {
 
-  // Delegate relevant ARIA attributes to inner element.
-  get ariaAutocomplete() {
-    return this.getInnerAttribute('aria-autocomplete');
-  }
-  set ariaAutocomplete(value) {
-    this.setInnerAttribute('aria-autocomplete', value);
-  }
-
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
 
