@@ -40,13 +40,16 @@ class ArrowDirectionButton extends Base {
 
   get updates() {
     /** @type {any} */
-    const cast = this;
+    const { darkMode, innerProperties } = this.state;
     let style;
-    const darkMode = this.state.darkMode;
     if (darkMode === null) {
       // Initial render; wait for knowledge of dark mode.
       style = {};
     } else {
+      const disabled = innerProperties ?
+        innerProperties.disabled :
+        false;
+
       // Use white color value in dark mode, or black value in light mode.
       const value = darkMode ? 255 : 0;
       style = Object.assign(
@@ -55,12 +58,12 @@ class ArrowDirectionButton extends Base {
           color: `rgba(${value}, ${value}, ${value}, 0.7)`,
           cursor: ''
         },
-        this.state.hover && !cast.disabled && {
+        this.state.hover && !disabled && {
           background: `rgba(${value}, ${value}, ${value}, 0.2)`,
           color: `rgba(${value}, ${value}, ${value}, 0.8)`,
           cursor: 'pointer'
         },
-        cast.disabled && {
+        disabled && {
           color: `rgba(${value}, ${value}, ${value}, 0.3)`
         }
       );
