@@ -7,7 +7,6 @@ import Modes from './Modes.js';
 import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
-// import ComposedFocusMixin from './ComposedFocusMixin.js';
 
 
 const proxySlotchangeFiredKey = Symbol('proxySlotchangeFired');
@@ -23,7 +22,6 @@ const lateralPositions = {
 
 
 const Base =
-  // ComposedFocusMixin(
   LanguageDirectionMixin(
   SingleSelectionMixin(
   SlotItemsMixin(
@@ -35,7 +33,6 @@ const Base =
  * Combines a list with an area focusing on a single selected item.
  *
  * @inherits ReactiveElement
- * @mixes ComposedFocusMixin
  * @mixes LanguageDirectionMixin
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin

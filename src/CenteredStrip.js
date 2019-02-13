@@ -1,7 +1,6 @@
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
-import ComposedFocusMixin from './ComposedFocusMixin.js';
 import EffectMixin from './EffectMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import ReactiveElement from './ReactiveElement.js';
@@ -12,7 +11,6 @@ import TapSelectionMixin from './TapSelectionMixin.js';
 
 
 const Base =
-  ComposedFocusMixin(
   EffectMixin(
   LanguageDirectionMixin(
   ResizeMixin(
@@ -20,7 +18,7 @@ const Base =
   SlotItemsMixin(
   TapSelectionMixin(
     ReactiveElement
-  )))))));
+  ))))));
 
 
 /**
@@ -30,7 +28,6 @@ const Base =
  * the list.
  * 
  * @inherits ReactiveElement
- * @mixes ComposedFocusMixin
  * @mixes EffectMixin
  * @mixes LanguageDirectionMixin
  * @mixes ResizeMixin
