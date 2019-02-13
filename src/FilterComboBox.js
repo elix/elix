@@ -1,10 +1,10 @@
 import { getTextsFromItems } from './ItemsTextMixin.js';
-import { merge } from "./updates.js";
+import { merge } from './updates.js';
 import { substantiveElement } from './content.js';
 import * as symbols from './symbols.js';
-import AutoCompleteInput from "./AutoCompleteInput.js";
-import FilterListBox from "./FilterListBox.js";
-import ListComboBox from "./ListComboBox.js";
+import AutoCompleteInput from './AutoCompleteInput.js';
+import FilterListBox from './FilterListBox.js';
+import ListComboBox from './ListComboBox.js';
 import SlotContentMixin from './SlotContentMixin.js';
 
 

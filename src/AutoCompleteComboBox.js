@@ -1,7 +1,7 @@
-import { merge } from "./updates.js";
-import AutoCompleteInput from "./AutoCompleteInput.js";
-import ListComboBox from "./ListComboBox.js";
-import ItemsTextMixin from "./ItemsTextMixin.js";
+import { merge } from './updates.js';
+import AutoCompleteInput from './AutoCompleteInput.js';
+import ListComboBox from './ListComboBox.js';
+import ItemsTextMixin from './ItemsTextMixin.js';
 
 
 const Base = 

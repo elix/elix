@@ -1,5 +1,5 @@
-import { firstFocusableElement } from "./utilities";
-import { merge } from "./updates";
+import { firstFocusableElement } from './utilities.js';
+import { merge } from './updates.js';
 
 
 /**

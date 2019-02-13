@@ -20,7 +20,8 @@ class CalendarDayButton extends Base {
     return Object.assign(super.defaultState, {
       date: calendar.today(),
       outsideRange: false,
-      selected: false
+      selected: false,
+      tabIndex: -1
     });
   }
 
@@ -76,9 +77,6 @@ class CalendarDayButton extends Base {
   get updates() {
     const { date, locale, outsideRange, selected } = this.state;
     return merge(super.updates, {
-      attributes: {
-        tabindex: '-1'
-      },
       $: {
         day: {
           date,

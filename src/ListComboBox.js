@@ -5,7 +5,7 @@ import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import ComboBox from './ComboBox.js';
-import DelegateItemsMixin from "./DelegateItemsMixin.js";
+import DelegateItemsMixin from './DelegateItemsMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import ListBox from './ListBox.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';

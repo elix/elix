@@ -2,8 +2,8 @@ import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
-import KeyboardMixin from "./KeyboardMixin.js";
-import WrappedStandardElement from "./WrappedStandardElement.js";
+import KeyboardMixin from './KeyboardMixin.js';
+import WrappedStandardElement from './WrappedStandardElement.js';
 
 
 const Base = 

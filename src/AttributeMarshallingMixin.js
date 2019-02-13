@@ -1,4 +1,4 @@
-import { booleanAttributes } from "./updates";
+import { booleanAttributes } from './updates.js';
 
 
 // Memoized maps of attribute to property names and vice versa.
