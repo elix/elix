@@ -53,7 +53,6 @@ const reraiseEvents = {
   iframe: ['load'],
   img: ['abort', 'error', 'load'],
   input: ['abort', 'change', 'error', 'select', 'load'],
-  keygen: ['reset', 'select'],
   li: ['scroll'],
   link: ['load'],
   menu: ['scroll'],
@@ -132,6 +131,44 @@ const blockElements = [
   'tfoot',
   'ul',
   'video'
+];
+
+
+// Standard attributes that don't have corresponding properties.
+// These need to be delegated from the wrapper to the inner element.
+const attributesWithoutProperties = [
+  'accept-charset',
+  'autoplay',
+  'buffered',
+  'challenge',
+  'codebase',
+  'colspan',
+  'contenteditable',
+  'controls',
+  'crossorigin',
+  'datetime',
+  'dirname',
+  'for',
+  'formaction',
+  'http-equiv',
+  'icon',
+  'ismap',
+  'itemprop',
+  'keytype',
+  'language',
+  'loop',
+  'manifest',
+  'maxlength',
+  'minlength',
+  'muted',
+  'novalidate',
+  'preload',
+  'radiogroup',
+  'readonly',
+  'referrerpolicy',
+  'rowspan',
+  'scoped',
+  'usemap'
 ];
 
 
@@ -354,36 +391,32 @@ class WrappedStandardElement extends Base {
   }
 
   get updates() {
-    const innerUpdates = Object.assign(
-      {
-        attributes: {}
-      },
-      this.state.innerProperties
-    );
     const { original, tabIndex } = this.state;
+    const innerAttributes = {};
     const originalAttributes = original ? original.attributes : null;
     if (originalAttributes) {
-      const skipAttributes = {
-        class: true,
-        id: true,
-        style: true
-      };
+      // Delegate any ARIA attributes to the inner element, as well as any
+      // attributes that don't have corresponding properties. (Attributes
+      // that correspond to properties will be handled separately by our
+      // generated property delegates.)
       for (const key in originalAttributes) {
-        if (!skipAttributes[key]) {
+        if (key.startsWith('aria-') ||
+            attributesWithoutProperties.indexOf(key) >= 0) {
           const value = originalAttributes[key];
-          if (key.includes('-')) {
-            innerUpdates.attributes[key] = value;
-          } else if (key !== 'tabindex') { // tabindex handled below
-            const cast = AttributeMarshallingMixin.castPotentialBooleanAttribute(key, value);
-            innerUpdates[key] = cast;
-          }
+          const cast = AttributeMarshallingMixin.castPotentialBooleanAttribute(key, value);
+          innerAttributes[key] = cast;
         }
       }
     }
-    innerUpdates.attributes.tabindex = tabIndex;
     return merge(super.updates, {
       $: {
-        inner: innerUpdates
+        inner: Object.assign(
+          {
+            attributes: innerAttributes,
+            tabIndex
+          },
+          this.state.innerProperties
+        )
       }
     });
   }

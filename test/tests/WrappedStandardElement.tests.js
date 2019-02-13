@@ -111,7 +111,7 @@ describe("WrappedStandardElement", () => {
     assert(!fixture.inner.disabled);
   });
 
-  it("delegates attributes like aria-label", () => {
+  it("delegates ARIA attributes", () => {
     const fixture = new WrappedInput();
     fixture.setAttribute('aria-label', 'Label');
     container.appendChild(fixture);
@@ -119,7 +119,7 @@ describe("WrappedStandardElement", () => {
     assert.equal(fixture.inner.getAttribute('aria-label'), 'Label');
   });
 
-  it("reflects tabindex state to inner element", async () => {
+  it("delegates tabindex state to inner element", async () => {
     const fixture = new WrappedInput();
     container.appendChild(fixture);
     // NB: tabIndex is not part of WrappedInput's regular state; we're just
@@ -137,6 +137,13 @@ describe("WrappedStandardElement", () => {
     assert.equal(fixture.selectionEnd, 4);
     fixture.focus();
     assert.equal(fixture.shadowRoot.activeElement, fixture.inner);
+  });
+
+  it("delegates attributes that don't correspond to properties", async () => {
+    const fixture = new WrappedInput();
+    fixture.setAttribute('readonly', '');
+    fixture.render();
+    assert.equal(fixture.inner.getAttribute('readonly'), '');
   });
 
 });
