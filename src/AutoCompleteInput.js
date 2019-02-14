@@ -32,23 +32,26 @@ class AutoCompleteInput extends Input {
         this[symbols.raiseChangeEvents] = true;
           /** @type {any} */
         const inner = this.inner;
-        const value = this.value;
+        const text = this.value.toLowerCase();
         // We only AutoComplete if the user's typing at the end of the input.
-        const typingAtEnd = inner.selectionStart === value.length &&
-          inner.selectionEnd === value.length;
-        // Moreover, we only AutoComplete if we're sure the user's added text to
-        // the value seen on the previous input event. This unfortunately misses
-        // the case where the user makes an edit somewhere else in the text,
-        // then resumes typing at the end. AutoComplete won't start working
-        // again for them until they type a second character at the end. That's
-        // unfortunate, but does manage to work around the worse problem of
-        // having Gboard's magic input events corrupt our notion of what the
-        // user actually typed.
-        const autoCompletePrefix = this.state.autoCompletePrefix;
-        const userAddedText = value.startsWith(autoCompletePrefix) &&
-          value.length === autoCompletePrefix.length + 1;
+        // Read the selection start and end directly off the inner element to
+        // ensure they're up to date.
+        const typingAtEnd = inner.selectionStart === text.length &&
+          inner.selectionEnd === text.length;
+        // Moreover, we only AutoComplete if we're sure the user's added a
+        // single character to the value seen on the previous input event. Among
+        // other things, we want to ensure the user can delete text from the end
+        // without having AutoComplete kick in.
+        const originalInput = this.state.originalInput;
+        const userAddedText = text.startsWith(originalInput) &&
+          text.length === originalInput.length + 1;
         if (typingAtEnd && userAddedText) {
           autoComplete(this);
+        } else {
+          // Update our notion of what the user's typed.
+          this.setState({
+            originalInput: text
+          });
         }
         this[symbols.raiseChangeEvents] = false;
       });
@@ -58,18 +61,18 @@ class AutoCompleteInput extends Input {
   componentDidUpdate(previousState) {
     if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
 
-    const autoCompletePrefix = this.state.autoCompletePrefix;
-    if (autoCompletePrefix) {
+    const { autoCompleteSelect, originalInput } = this.state;
+    if (autoCompleteSelect) {
       // We've finished rendering new auto-completed text.
       // Leave that selected.
       /** @type {any} */
       const cast = this;
       cast.setSelectionRange(
-        autoCompletePrefix.length,
+        originalInput.length,
         this.value.length
       );
       this.setState({
-        autoCompletePrefix: ''
+        autoCompleteSelect: false
       });
 
       // Dispatch an input event so that listeners can process the
@@ -79,7 +82,7 @@ class AutoCompleteInput extends Input {
       const event = new InputEvent('input', {
         // @ts-ignore
         detail: {
-          originalInput: autoCompletePrefix
+          originalInput
         }
       });
       this.dispatchEvent(event);
@@ -88,9 +91,10 @@ class AutoCompleteInput extends Input {
 
   get defaultState() {
     return Object.assign(super.defaultState, {
-      autoCompletePrefix: '',
-      texts: [],
-      previousValue: ''
+      autoCompleteSelect: false,
+      originalInput: '',
+      previousValue: '',
+      texts: []
     });
   }
 
@@ -123,12 +127,15 @@ export function autoComplete(element) {
     return null;
   }
   
-  // Update the input value to the match.
+  // Update the input value to the match. This is just a convenient way to
+  // set state.innerProperties.value if the value actually changed.
   element.setInnerProperty('value', match);
 
-  // Arrange to update the value and leave the auto-completed portion selected.
+  // Leave the auto-completed portion selected, and remember what text input the
+  // user originally typed.
   element.setState({
-    autoCompletePrefix: value
+    autoCompleteSelect: true,
+    originalInput: value
   });
 
   return match;
