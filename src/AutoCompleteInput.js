@@ -31,33 +31,24 @@ class AutoCompleteInput extends Input {
       setTimeout(() => {
         this[symbols.raiseChangeEvents] = true;
           /** @type {any} */
-        // const cast = this;
         const inner = this.inner;
-        // const value = cast.value;
         const value = this.value;
         // We only AutoComplete if the user's typing at the end of the input.
         const typingAtEnd = inner.selectionStart === value.length &&
           inner.selectionEnd === value.length;
-        // Moreover, we only AutoComplete if we're sure the user's added
-        // text to the value seen on the previous input event.
-        const previousValue = this.state.previousValue;
-        const userAddedText = previousValue != null &&
-          !previousValue.startsWith(value) &&
-          value.length === previousValue.length + 1;
-        if (typingAtEnd) {
-          if (userAddedText) {
-            autoComplete(this);
-          }
-          // Only update our notion of the previous value if the user was typing
-          // at the end. This unfortunately misses the case where the user makes
-          // an edit somewhere else in the text, then resumes typing at the end.
-          // AutoComplete won't start working again for them until they type a
-          // second character at the end. That's unfortunate, but does manage to
-          // work around the worse problem of having Gboard's magic input events
-          // corrupt our notion of what the user actually typed.
-          this.setState({
-            previousValue: value
-          });
+        // Moreover, we only AutoComplete if we're sure the user's added text to
+        // the value seen on the previous input event. This unfortunately misses
+        // the case where the user makes an edit somewhere else in the text,
+        // then resumes typing at the end. AutoComplete won't start working
+        // again for them until they type a second character at the end. That's
+        // unfortunate, but does manage to work around the worse problem of
+        // having Gboard's magic input events corrupt our notion of what the
+        // user actually typed.
+        const autoCompletePrefix = this.state.autoCompletePrefix;
+        const userAddedText = value.startsWith(autoCompletePrefix) &&
+          value.length === autoCompletePrefix.length + 1;
+        if (typingAtEnd && userAddedText) {
+          autoComplete(this);
         }
         this[symbols.raiseChangeEvents] = false;
       });
@@ -67,28 +58,28 @@ class AutoCompleteInput extends Input {
   componentDidUpdate(previousState) {
     if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
 
-    if (this.state.autoCompleteStart) {
+    const autoCompletePrefix = this.state.autoCompletePrefix;
+    if (autoCompletePrefix) {
       // We've finished rendering new auto-completed text.
       // Leave that selected.
       /** @type {any} */
       const cast = this;
       cast.setSelectionRange(
-        this.state.autoCompleteStart,
-        cast.value.length
+        autoCompletePrefix.length,
+        this.value.length
       );
       this.setState({
-        autoCompleteStart: null
+        autoCompletePrefix: ''
       });
 
       // Dispatch an input event so that listeners can process the
       // auto-completed text.
       // @ts-ignore
       const InputEvent = window.InputEvent || Event;
-      const originalInput = cast.value.slice(0, this.state.autoCompleteStart);
       const event = new InputEvent('input', {
         // @ts-ignore
         detail: {
-          originalInput
+          originalInput: autoCompletePrefix
         }
       });
       this.dispatchEvent(event);
@@ -97,7 +88,7 @@ class AutoCompleteInput extends Input {
 
   get defaultState() {
     return Object.assign(super.defaultState, {
-      autoCompleteStart: null,
+      autoCompletePrefix: '',
       texts: [],
       previousValue: ''
     });
@@ -118,18 +109,6 @@ class AutoCompleteInput extends Input {
     });
   }
 
-  get value() {
-    return super.value;
-  }
-  set value(value) {
-    super.value = value;
-    // Update our notion of what's been set as the value so the user can type at
-    // the end of it and get AutoComplete on the extended text.
-    this.setState({
-      previousValue: value
-    });
-  }
-
 }
 
 
@@ -143,14 +122,15 @@ export function autoComplete(element) {
   if (!match) {
     return null;
   }
+  
+  // Update the input value to the match.
+  element.setInnerProperty('value', match);
 
-  // Complete the match.
-  element.value = match;
-
-  // Arrange to leave the auto-completed portion selected.
+  // Arrange to update the value and leave the auto-completed portion selected.
   element.setState({
-    autoCompleteStart: value.length
+    autoCompletePrefix: value
   });
+
   return match;
 }
 

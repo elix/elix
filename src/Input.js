@@ -1,4 +1,3 @@
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import WrappedStandardElement from './WrappedStandardElement.js';
@@ -21,9 +20,7 @@ class Input extends Base {
       /** @type {any} */
       const cast = this.$.inner;
       const value = cast.value;
-      this.setState({
-        value
-      });
+      this.setInnerProperty('value', value);
       this[symbols.raiseChangeEvents] = false;
     });
   }
@@ -38,12 +35,6 @@ class Input extends Base {
       });
       this.dispatchEvent(event);
     }
-  }
-
-  get defaultState() {
-    return Object.assign(super.defaultState, {
-      value: ''
-    });
   }
 
   get [symbols.template]() {
@@ -70,34 +61,22 @@ class Input extends Base {
     `;
   }
 
-  get updates() {
-    const { value } = this.state;
-    return merge(super.updates, {
-      $: {
-        inner: {
-          value
-        }
-      }
-    });
-  }
-
-  get value() {
-    return this.state.value;
-  }
-  set value(value) {
-    // Only set the value if it's actually different, because we want to avoid
-    // trampling on any selection in the input. Chrome's input handles this as
-    // we'd like: setting the value will leave the selection unaffected if the
-    // value is the same as before. Safari doesn't do what we want: setting the
-    // value collapses the selection, even if the value is the same as before.
-    // We want to emulate Chrome's behavior.
-    if (this.state.value !== value) {
-      // @ts-ignore
-      this.setState({
-        value
-      });
-    }
-  }
+  // get value() {
+  //   // @ts-ignore
+  //   return super.value;
+  // }
+  // set value(value) {
+  //   // Only set the value if it's actually different, because we want to avoid
+  //   // trampling on any selection in the input. Chrome's input handles this as
+  //   // we'd like: setting the value will leave the selection unaffected if the
+  //   // value is the same as before. Safari doesn't do what we want: setting the
+  //   // value collapses the selection, even if the value is the same as before.
+  //   // We want to emulate Chrome's behavior.
+  //   if (this.state.innerProperties.value !== value) {
+  //     // @ts-ignore
+  //     super.value = value;
+  //   }
+  // }
 
 }
 
