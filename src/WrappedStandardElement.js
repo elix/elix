@@ -248,8 +248,8 @@ class WrappedStandardElement extends Base {
 
   componentDidUpdate(previousState) {
     if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-    const disabled = this.state.innerProperties && this.state.innerProperties.disabled;
-    const previousDisabled = previousState.innerProperties && previousState.innerProperties.disabled;
+    const disabled = this.state.innerProperties.disabled;
+    const previousDisabled = previousState.innerProperties.disabled;
     const disabledChanged = disabled !== previousDisabled;
     if (disabledChanged) {
       reflectDisabledAttribute(this);
@@ -258,8 +258,7 @@ class WrappedStandardElement extends Base {
 
   get defaultState() {
     return Object.assign(super.defaultState, {
-      innerAttributes: null,
-      innerProperties: null
+      innerProperties: {}
     });
   }
 
@@ -315,8 +314,7 @@ class WrappedStandardElement extends Base {
     // in response to user interaction (e.g., an input element's value changes
     // as the user types), the component must listen to suitable events on the
     // inner element and update its state accordingly.
-    const value = this.state.innerProperties &&
-      this.state.innerProperties[name];
+    const value = this.state.innerProperties[name];
     return value || (this.shadowRoot && this.inner[name]);
   }
 
@@ -332,9 +330,7 @@ class WrappedStandardElement extends Base {
     // tabIndex property to the tabindex attribute, causing a loop.
     //
     // To avoid this, we check the existing value before updating our state.
-    const current = this.state.innerProperties ?
-      this.state.innerProperties[name] :
-      undefined;
+    const current = this.state.innerProperties[name];
     if (current !== value) {
       const innerProperties = Object.assign({}, this.state.innerProperties, {
         [name]: value
