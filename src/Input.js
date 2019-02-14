@@ -54,6 +54,7 @@ class Input extends Base {
         }
         
         #inner {
+          box-sizing: border-box;
           font-family: inherit;
           font-size: inherit;
           font-style: inherit;

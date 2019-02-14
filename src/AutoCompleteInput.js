@@ -1,24 +1,14 @@
-import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
-import * as template from './template.js';
-import KeyboardMixin from './KeyboardMixin.js';
-import WrappedStandardElement from './WrappedStandardElement.js';
-
-
-const Base = 
-  KeyboardMixin(
-    WrappedStandardElement.wrap('input')
-  );
+import Input from './Input.js';
 
 
 /**
  * A text input box that completes text as the user types
  * 
- * @inherits WrappedStandardElement
- * @mixes KeyboardMixin
+ * @inherits Input
  */
-class AutoCompleteInput extends Base {
+class AutoCompleteInput extends Input {
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
@@ -41,9 +31,10 @@ class AutoCompleteInput extends Base {
       setTimeout(() => {
         this[symbols.raiseChangeEvents] = true;
           /** @type {any} */
-        const cast = this;
-        const inner = cast.$.inner;
-        const value = cast.value;
+        // const cast = this;
+        const inner = this.inner;
+        // const value = cast.value;
+        const value = this.value;
         // We only AutoComplete if the user's typing at the end of the input.
         const typingAtEnd = inner.selectionStart === value.length &&
           inner.selectionEnd === value.length;
@@ -112,21 +103,6 @@ class AutoCompleteInput extends Base {
     });
   }
 
-  get [symbols.template]() {
-    // Next line is same as: const base = super[symbols.template]
-    const base = getSuperProperty(this, AutoCompleteInput, symbols.template);
-    return template.concat(base, template.html`
-      <style>
-        #inner {
-          font-family: inherit;
-          font-size: inherit;
-          font-style: inherit;
-          font-weight: inherit;
-        }
-      </style>
-    `);
-  }
-
   get texts() {
     return this.state.texts;
   }
@@ -143,25 +119,15 @@ class AutoCompleteInput extends Base {
   }
 
   get value() {
-    // @ts-ignore
-    return super.value || '';
+    return super.value;
   }
   set value(value) {
-    // Only set the value if it's actually different, because we want to avoid
-    // trampling on any selection in the input. Chrome's input handles this as
-    // we'd like: setting the value will leave the selection unaffected if the
-    // value is the same as before. Safari doesn't do what we want: setting the
-    // value collapses the selection, even if the value is the same as before.
-    // We want to emulate Chrome's behavior.
-    if (this.value !== value) {
-      // @ts-ignore
-      super.value = value;
-      // Update our notion of what's been set as the value so the user can type
-      // at the end of it and get AutoComplete on the extended text.
-      this.setState({
-        previousValue: value
-      });
-    }
+    super.value = value;
+    // Update our notion of what's been set as the value so the user can type at
+    // the end of it and get AutoComplete on the extended text.
+    this.setState({
+      previousValue: value
+    });
   }
 
 }
