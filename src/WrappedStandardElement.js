@@ -299,15 +299,25 @@ class WrappedStandardElement extends Base {
   
   getInnerProperty(name) {
     // If we haven't rendered yet, use internal state value. Once we've
-    // rendered, we get the value from the wrapped element itself.
-    // REVIEW: Feels hacky to use two sources of truth. On the other hand, it
-    // may be prohibitively expensive, maybe impossible, to accurately reproduce
-    // the state of the inner element.
-    return this.shadowRoot ?
-      this.inner[name] :
-      this.state.innerProperties ?
-        this.state.innerProperties[name] :
-        undefined;
+    // rendered, we get the value from the wrapped element itself. Return our
+    // concept of the current property value from state. If the property hasn't
+    // been defined, however, get the current value of the property from the
+    // inner element.
+    //
+    // This is intended to support cases like an anchor element. If someone sets
+    // `href` on a wrapped anchor, we'll know the value of `href` from state,
+    // but we won't know the value of href-dependent calculated properties like
+    // `protocol`. Using two sources of truth (state and the inner element)
+    // seems fragile, but it's unclear how else to handle this without
+    // reimplementing all HTML property interactions ourselves.
+    //
+    // This arrangement also means that, if an inner element property can change
+    // in response to user interaction (e.g., an input element's value changes
+    // as the user types), the component must listen to suitable events on the
+    // inner element and update its state accordingly.
+    const value = this.state.innerProperties &&
+      this.state.innerProperties[name];
+    return value || (this.shadowRoot && this.inner[name]);
   }
 
   // Save property assignment in state.
