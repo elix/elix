@@ -285,9 +285,10 @@ class WrappedStandardElement extends Base {
   /**
    * Returns a reference to the inner standard HTML element.
    *
-   * @type {Element}
+   * @type {HTMLElement}
    */
   get inner() {
+    /** @type {any} */
     const result = this.$ && this.$.inner;
     if (!result) {
       /* eslint-disable no-console */

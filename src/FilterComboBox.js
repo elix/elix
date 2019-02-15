@@ -33,7 +33,7 @@ class FilterComboBox extends Base {
         /** @type {any} */
         const cast = event;
         const filter = cast.detail ?
-          cast.detail.originalInput :
+          cast.detail.originalText :
           this.state.value;
         this.setState({
           filter

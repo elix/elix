@@ -1,4 +1,3 @@
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import Input from './Input.js';
 
@@ -42,17 +41,16 @@ class AutoCompleteInput extends Input {
         // single character to the value seen on the previous input event. Among
         // other things, we want to ensure the user can delete text from the end
         // without having AutoComplete kick in.
-        const originalInput = this.state.originalInput;
-        const userAddedText = text.startsWith(originalInput) &&
-          text.length === originalInput.length + 1;
+        const originalText = this.state.originalText;
+        const userAddedText = text.startsWith(originalText) &&
+          text.length === originalText.length + 1;
         if (typingAtEnd && userAddedText) {
           autoComplete(this);
-        } else {
-          // Update our notion of what the user's typed.
-          this.setState({
-            originalInput: text
-          });
         }
+        // Remember what the user typed for next time.
+        this.setState({
+          originalText: text
+        });
         this[symbols.raiseChangeEvents] = false;
       });
     });
@@ -61,19 +59,16 @@ class AutoCompleteInput extends Input {
   componentDidUpdate(previousState) {
     if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
 
-    const { autoCompleteSelect, originalInput } = this.state;
+    const { autoCompleteSelect, originalText } = this.state;
     if (autoCompleteSelect) {
       // We've finished rendering new auto-completed text.
-      // Leave that selected.
-      /** @type {any} */
-      const cast = this;
-      cast.setSelectionRange(
-        originalInput.length,
-        this.value.length
-      );
+      // Leave the auto-completed portion (after the part the user originally
+      // typed) selected.
       this.setState({
         autoCompleteSelect: false
       });
+      this.setInnerProperty('selectionStart', originalText.length);
+      this.setInnerProperty('selectionEnd', this.value.length);
 
       // Dispatch an input event so that listeners can process the
       // auto-completed text.
@@ -82,7 +77,7 @@ class AutoCompleteInput extends Input {
       const event = new InputEvent('input', {
         // @ts-ignore
         detail: {
-          originalInput
+          originalText
         }
       });
       this.dispatchEvent(event);
@@ -92,8 +87,7 @@ class AutoCompleteInput extends Input {
   get defaultState() {
     return Object.assign(super.defaultState, {
       autoCompleteSelect: false,
-      originalInput: '',
-      previousValue: '',
+      originalText: '',
       texts: []
     });
   }
@@ -105,12 +99,21 @@ class AutoCompleteInput extends Input {
     this.setState({ texts });
   }
 
-  get updates() {
-    return merge(super.updates, {
-      attributes: {
-        'aria-hidden': 'true'
-      }
-    });
+  // Setting the value from the outside is treated as if the user had typed the
+  // value. This way the component's value can be prepopulated, and the user can
+  // start typing at the end of it to get AutoComplete.
+  get value() {
+    return super.value;
+  }
+  set value(value) {
+    super.value = value;
+    // If the input has focus, we assume the user is typing, and rely on
+    // the `input` event to update the originalText state.
+    if (!this.inner.matches(':focus')) {
+      this.setState({
+        originalText: value
+      });
+    }
   }
 
 }
@@ -131,11 +134,9 @@ export function autoComplete(element) {
   // set state.innerProperties.value if the value actually changed.
   element.setInnerProperty('value', match);
 
-  // Leave the auto-completed portion selected, and remember what text input the
-  // user originally typed.
+  // Leave the auto-completed portion selected.
   element.setState({
-    autoCompleteSelect: true,
-    originalInput: value
+    autoCompleteSelect: true
   });
 
   return match;
