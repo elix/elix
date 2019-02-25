@@ -31,7 +31,12 @@ class Input extends Base {
     const value = this.state.innerProperties.value;
     const changed = value !== previousState.innerProperties.value;
     if (changed && this[symbols.raiseChangeEvents]) {
-      const event = new CustomEvent('value-changed', {
+        /**
+         * Raised when the user changes the input value.
+         * 
+         * @event Input#value-changed
+         */
+        const event = new CustomEvent('value-changed', {
         detail: { value }
       });
       this.dispatchEvent(event);

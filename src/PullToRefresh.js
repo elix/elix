@@ -78,6 +78,11 @@ class PullToRefresh extends Base {
       }
     } else if (this.state.refreshing !== previousState.refreshing) {
       if (this[symbols.raiseChangeEvents]) {
+        /**
+         * Raised when the `refreshing` state changes.
+         * 
+         * @event PullToRefresh#refreshing-changed
+         */
         const event = new CustomEvent('refreshing-changed', {
           detail: {
             refreshing: this.state.refreshing
