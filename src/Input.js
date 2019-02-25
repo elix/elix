@@ -28,8 +28,8 @@ class Input extends Base {
 
   componentDidUpdate(previousState) {
     if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-    const value = this.state.value;
-    const changed = value !== previousState.value;
+    const value = this.state.innerProperties.value;
+    const changed = value !== previousState.innerProperties.value;
     if (changed && this[symbols.raiseChangeEvents]) {
       const event = new CustomEvent('value-changed', {
         detail: { value }
@@ -91,10 +91,12 @@ class Input extends Base {
   set value(value) {
     // @ts-ignore
     super.value = value;
-    /** @type {any} */
-    const cast = this.inner;
-    this.setInnerProperty('selectionStart', cast.selectionStart);
-    this.setInnerProperty('selectionEnd', cast.selectionEnd);
+    if (this.shadowRoot) {
+      /** @type {any} */
+      const cast = this.inner;
+      this.setInnerProperty('selectionStart', cast.selectionStart);
+      this.setInnerProperty('selectionEnd', cast.selectionEnd);
+    }
   }
 
 }
