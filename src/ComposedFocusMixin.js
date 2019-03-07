@@ -16,7 +16,7 @@ const polyfillDelegatesFocus = 'HTMLSlotElement' in window &&
 /**
  * Normalizes focus treatment for custom elements with Shadow DOM
  * 
- * This mixin exists becauset he default behavior for mousedown should set the
+ * This mixin exists because the default behavior for mousedown should set the
  * focus to the closest ancestor of the clicked element that can take the focus.
  * As of Nov 2018, Chrome and Safari don't handle this as expected when the
  * clicked element is reassigned across more than one slot to end up inside a

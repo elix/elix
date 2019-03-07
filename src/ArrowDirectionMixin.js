@@ -1,3 +1,4 @@
+import { forwardFocus } from './utilities.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
@@ -67,10 +68,25 @@ function ArrowDirectionMixin(Base) {
     }
 
     [symbols.beforeUpdate]() {
+      const arrowButtonChanged = this[symbols.renderedRoles].arrowButtonRole
+        !== this.state.arrowButtonRole;
+      if (arrowButtonChanged && this.$.arrowButtonLeft) {
+        // Turn off focus handling for old left button.
+        forwardFocus(this.$.arrowButtonLeft, null);
+      }
+      if (arrowButtonChanged && this.$.arrowButtonRight) {
+        // Turn off focus handling for old right button.
+        forwardFocus(this.$.arrowButtonRight, null);
+      }
       if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-      if (this[symbols.renderedRoles].arrowButtonRole !== this.state.arrowButtonRole) {
+      if (arrowButtonChanged) {
         const arrowButtons = this.shadowRoot.querySelectorAll('.arrowButton');
         template.transmute(arrowButtons, this.state.arrowButtonRole);
+
+        /** @type {any} */
+        const cast = this;
+
+        forwardFocus(this.$.arrowButtonLeft, cast);
         this.$.arrowButtonLeft.addEventListener('mousedown', async (event) => {
           // Only process events for the main (usually left) button.
           if (event.button !== 0) {
@@ -84,6 +100,8 @@ function ArrowDirectionMixin(Base) {
           await Promise.resolve();
           this[symbols.raiseChangeEvents] = false;
         });
+        
+        forwardFocus(this.$.arrowButtonRight, cast);
         this.$.arrowButtonRight.addEventListener('mousedown', async (event) => {
           // Only process events for the main (usually left) button.
           if (event.button !== 0) {
@@ -97,6 +115,7 @@ function ArrowDirectionMixin(Base) {
           await Promise.resolve();
           this[symbols.raiseChangeEvents] = false;
         });
+
         this[symbols.renderedRoles].arrowButtonRole = this.state.arrowButtonRole;
       }
     }
