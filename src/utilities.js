@@ -141,8 +141,6 @@ export function forwardFocus(origin, target) {
     origin.removeEventListener('mousedown', origin[mousedownListenerKey]);
   }
   if (target) {
-    // Using forward focus implies no tab stop.
-    origin.tabIndex = -1;
     origin[mousedownListenerKey] = (event) => {
       // Only process events for the main (usually left) button.
       if (event.button !== 0) {
@@ -150,7 +148,7 @@ export function forwardFocus(origin, target) {
       }
       const focusableTarget = closestFocusableAncestor(target);
       focusableTarget.focus();
-      event.preventDefault();
+      event.preventDefault();  
     };
     origin.addEventListener('mousedown', origin[mousedownListenerKey]);
   }
