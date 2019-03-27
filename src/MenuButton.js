@@ -22,6 +22,7 @@ class MenuButton extends PopupButton {
    * Highlight the selected item (if one exists), then close the menu.
    */
   async highlightSelectedItemAndClose() {
+    const raiseChangeEvents = this[symbols.raiseChangeEvents];
     const selectionDefined = this.state.menuSelectedIndex >= 0;
     const closeResult = selectionDefined ?
       this.state.menuSelectedIndex :
@@ -31,7 +32,10 @@ class MenuButton extends PopupButton {
     if (selectionDefined && 'highlightSelectedItem' in cast) {
       await cast.highlightSelectedItem();
     }
+    const saveRaiseChangeEvents = this[symbols.raiseChangeEvents];
+    this[symbols.raiseChangeEvents] = raiseChangeEvents;
     await this.close(closeResult);
+    this[symbols.raiseChangeEvents] = saveRaiseChangeEvents;
   }
 
   [symbols.beforeUpdate]() {
@@ -161,7 +165,7 @@ class MenuButton extends PopupButton {
       addDocumentListeners(this);
     }
   }
-  
+
   componentDidUpdate(previousState) {
     if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
 
@@ -284,7 +288,7 @@ class MenuButton extends PopupButton {
           return true;
       }
     }
-    
+
     return false;
   }
 
@@ -322,7 +326,7 @@ class MenuButton extends PopupButton {
     const sourceTemplate = template.html`
       <slot>
         <svg id="ellipsisIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-          <path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+          <path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
         </svg>
       </slot>
     `;
@@ -334,38 +338,41 @@ class MenuButton extends PopupButton {
 
   get updates() {
     const base = super.updates;
-    return merge(base, {
-      $: {
-        menu: {
-          style: {
-            background: 'window',
-            border: 'none',
-            'max-height': '100%',
-            padding: '0.5em 0'
+    return merge(
+      base,
+      {
+        $: {
+          menu: {
+            style: {
+              background: 'window',
+              border: 'none',
+              'max-height': '100%',
+              padding: '0.5em 0'
+            },
+            selectedIndex: this.state.menuSelectedIndex
           },
-          selectedIndex: this.state.menuSelectedIndex
-        },
-        popup: {
-          tabIndex: -1
-        },
-        source: {
-          style: {
-            'align-items': 'center',
-            display: 'flex'
+          popup: {
+            tabIndex: -1
+          },
+          source: {
+            style: {
+              'align-items': 'center',
+              display: 'flex'
+            }
+          }
+        }
+      },
+      this.$.ellipsisIcon && {
+        $: {
+          ellipsisIcon: {
+            style: {
+              display: 'block',
+              fill: 'currentColor'
+            }
           }
         }
       }
-    },
-    this.$.ellipsisIcon && {
-      $: {
-        ellipsisIcon: {
-          style: {
-            display: 'block',
-            fill: 'currentColor'
-          }
-        }
-      }
-    });
+    );
   }
 
 }
