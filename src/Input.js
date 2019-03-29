@@ -78,7 +78,9 @@ class Input extends Base {
     // check, but here we need to do it to preserve selection in Safari.
     const base = super.updates;
     const value = this.state.innerProperties.value;
-    if (this.$.inner.value === value && base.$.inner.value === value) {
+    /** @type {any} */
+    const cast = this.$.inner;
+    if (cast.value === value && base.$.inner.value === value) {
       delete base.$.inner.value;
     }
     return merge(base, {
@@ -91,6 +93,7 @@ class Input extends Base {
   // Updating the value can also update the selectionStart and selectionEnd
   // properties, so we have to update our state to match.
   get value() {
+    // @ts-ignore
     return super.value;
   }
   set value(value) {
