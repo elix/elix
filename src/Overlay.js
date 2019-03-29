@@ -12,6 +12,8 @@ import SlotContentMixin from './SlotContentMixin.js';
 const appendedToDocumentKey = Symbol('appendedToDocument');
 
 
+// TODO: We'd like to use DelegateFocusMixin in this component, but see the note
+// at OverlayMixin's openedChanged function.
 const Base =
   OpenCloseMixin(
   OverlayMixin(

@@ -158,6 +158,12 @@ function openedChanged(element) {
       }
       // Focus on the element itself (if it's focusable), or the first focusable
       // element inside it.
+      // TODO: We'd prefer to require that overlays (like the Overlay base
+      // class) make use of delegatesFocus via DelegateFocusMixin, which would
+      // let us drop the need for this mixin here to do anything special with
+      // focus. However, an initial trial of this revealed an issue in
+      // MenuButton, where invoking the menu did not put the focus on the first
+      // menu item as expected. Needs more investigation.
       const focusElement = firstFocusableElement(element);
       if (focusElement) {
         focusElement.focus();
