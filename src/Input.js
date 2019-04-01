@@ -10,6 +10,9 @@ const Base = WrappedStandardElement.wrap('input');
 /**
  * Base class for custom input elements
  * 
+ * `Input` wraps a standard HTML `input` element, allowing for custom styling
+ * and behavior while ensuring standard keyboard and focus behavior.
+ * 
  * @inherits WrappedStandardElement
  */
 class Input extends Base {
