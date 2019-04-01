@@ -81,7 +81,7 @@ class PullToRefresh extends Base {
         /**
          * Raised when the `refreshing` state changes.
          * 
-         * @event PullToRefresh#refreshing-changed
+         * @event refreshing-changed
          */
         const event = new CustomEvent('refreshing-changed', {
           detail: {

@@ -75,7 +75,7 @@ export default function OpenCloseMixin(Base) {
         /**
          * Raised when the opened/closed state of the component changes.
          * 
-         * @event OpenCloseMixin#opened-changed
+         * @event opened-changed
          */
         const openedChangedEvent = new CustomEvent('opened-changed', {
           detail: {
@@ -89,7 +89,7 @@ export default function OpenCloseMixin(Base) {
           /**
            * Raised when the component opens.
            * 
-           * @event OpenCloseMixin#opened
+           * @event opened
            */
           const openedEvent = new CustomEvent('opened');
           this.dispatchEvent(openedEvent);
@@ -97,7 +97,7 @@ export default function OpenCloseMixin(Base) {
           /**
            * Raised when the component closes.
            * 
-           * @event OpenCloseMixin#closed
+           * @event closed
            */
           const closedEvent = new CustomEvent('closed', {
             detail: {

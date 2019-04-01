@@ -244,7 +244,7 @@ class MenuButton extends PopupButton {
     /**
      * Raised when the user selects a menu item.
      * 
-     * @event MenuButton#menu-item-selected
+     * @event menu-item-selected
      */
     const event = new CustomEvent('menu-item-selected', {
       detail: {

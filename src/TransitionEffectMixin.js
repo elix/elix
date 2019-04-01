@@ -46,7 +46,7 @@ export default function TransitionEffectMixin(Base) {
          * the mixin raises the `effect-phase-changed` event whenever the effect
          * or phase changes, even if `symbols.raiseChangeEvents` is false.
          * 
-         * @event TransitionEffectMixin#effect-phase-changed
+         * @event effect-phase-changed
          */
         const event = new CustomEvent('effect-phase-changed', {
           detail: {

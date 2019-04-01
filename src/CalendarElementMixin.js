@@ -25,7 +25,7 @@ export default function CalendarElementMixin(Base) {
         /**
          * Raised when the `date` property changes.
          * 
-         * @event SingleSelectionMixin#date-changed
+         * @event date-changed
          */
         const event = new CustomEvent('date-changed', {
           detail: { date }

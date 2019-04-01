@@ -51,7 +51,7 @@ export default function ContentItemsMixin(Base) {
         /**
          * Raised when the `items` property changes.
          * 
-         * @event SingleSelectionMixin#items-changed
+         * @event items-changed
          */
         const event = new CustomEvent('items-changed');
         this.dispatchEvent(event);

@@ -58,7 +58,7 @@ export default function SingleSelectionMixin(Base) {
         /**
          * Raised when the `selectedIndex` property changes.
          * 
-         * @event SingleSelectionMixin#selected-index-changed
+         * @event selected-index-changed
          */
         const event = new CustomEvent('selected-index-changed', {
           detail: { selectedIndex }
