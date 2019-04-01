@@ -37,6 +37,18 @@ class AutoSizeTextarea extends Base {
       this.setState({ valueTracksContent: true });
     });
 
+    // The following jsDoc comment doesn't directly apply to the statement which
+    // follows, but is placed there because the comment has to go somewhere to
+    // be visible to jsDoc, and the statement is at tangentially related.
+    /**
+     * Raised when the user changes the element's text content.
+     * 
+     * This is the standard `input` event; the component does not do any work to
+     * raise it. It is documented here to let people know it is available to
+     * detect when the user edits the content.
+     * 
+     * @event input
+     */
     this.$.inner.addEventListener('input', () => {
       this[symbols.raiseChangeEvents] = true;
       this.setState({ valueTracksContent: false });
@@ -71,23 +83,6 @@ class AutoSizeTextarea extends Base {
       },
       lineHeight
     });
-  }
-
-  componentDidUpdate(previousState) {
-    if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-
-    // See if value changed, taking into account the possibility that value
-    // may be calculated from content, or set directly.
-    const value = this.value;
-    const changed = this.state.valueTracksContent ?
-      value !== getTextFromContent(previousState.content) :
-      value !== previousState.value;
-    if (changed && this[symbols.raiseChangeEvents]) {
-      const event = new CustomEvent('value-changed', {
-        detail: { value }
-      });
-      this.dispatchEvent(event);
-    }
   }
 
   get defaultState() {
@@ -252,6 +247,7 @@ class AutoSizeTextarea extends Base {
       valueTracksContent: false
     });
   }
+
 }
 
 

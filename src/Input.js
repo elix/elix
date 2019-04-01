@@ -16,6 +16,19 @@ class Input extends Base {
 
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
+
+    // The following jsDoc comment doesn't directly apply to the statement which
+    // follows, but is placed there because the comment has to go somewhere to
+    // be visible to jsDoc, and the statement is at tangentially related.
+    /**
+     * Raised when the user changes the element's text content.
+     * 
+     * This is the standard `input` event; the component does not do any work to
+     * raise it. It is documented here to let people know it is available to
+     * detect when the user edits the content.
+     * 
+     * @event input
+     */
     this.$.inner.addEventListener('input', () => {
       this[symbols.raiseChangeEvents] = true;
       /** @type {any} */
@@ -24,23 +37,6 @@ class Input extends Base {
       this.value = cast.value;
       this[symbols.raiseChangeEvents] = false;
     });
-  }
-
-  componentDidUpdate(previousState) {
-    if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-    const value = this.state.innerProperties.value;
-    const changed = value !== previousState.innerProperties.value;
-    if (changed && this[symbols.raiseChangeEvents]) {
-        /**
-         * Raised when the user changes the input value.
-         * 
-         * @event Input#value-changed
-         */
-        const event = new CustomEvent('value-changed', {
-        detail: { value }
-      });
-      this.dispatchEvent(event);
-    }
   }
 
   get [symbols.template]() {

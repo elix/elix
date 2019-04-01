@@ -1,5 +1,4 @@
 import '../../src/AutoSizeTextarea.js';
-import * as symbols from '../../src/symbols.js';
 import flushPolyfills from '../flushPolyfills.js';
 
 
@@ -63,18 +62,6 @@ describe("AutoSizeTextarea", () => {
     // flushPolyfills();
     const fixture = container.querySelector('elix-auto-size-textarea');
     assert.equal(fixture.minimumRows, 10);
-  });
-
-  it("raises a value-changed event when its value changes", done => {
-    const fixture = document.createElement('elix-auto-size-textarea');
-    container.appendChild(fixture);
-    fixture.addEventListener('value-changed', () => {
-      assert.equal(fixture.value, 'fox');
-      done();
-    });
-    fixture[symbols.raiseChangeEvents] = true; // Simulate user interaction
-    fixture.value = 'fox';
-    fixture[symbols.raiseChangeEvents] = false;
   });
 
   it("autosizes to fit its contents", async () => {
