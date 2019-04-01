@@ -73,7 +73,7 @@ class DateInput extends Base {
     });
 
     // If the date changed while focused, assume user changed date.
-    state.onChange(['date', 'value'], state => {
+    state.onChange('date', state => {
       if (state.focused) {
         return {
           userChangedDate: true
@@ -101,11 +101,12 @@ class DateInput extends Base {
         const formattedDate = date ?
           this.formatDate(date, dateTimeFormat) :
           '';
-        // if (state.value !== formattedDate) {
-        //   state.selectText = formattedDate.length > 0;
-        return {
-          selectText: formattedDate.length > 0,
+        const innerProperties = Object.assign({}, state.innerProperties, {
           value: formattedDate
+        });
+        return {
+          innerProperties,
+          selectText: formattedDate.length > 0
         };
       }
       return null;
@@ -113,18 +114,25 @@ class DateInput extends Base {
 
     // Update date from value if the value was changed, or the date format or
     // time bias changed and the value was the last substantive property set.
-    state.onChange(['dateTimeFormat', 'timeBias', 'value'], (state, changed) => {
+    state.onChange(['dateTimeFormat', 'innerProperties', 'timeBias'], (state, changed) => {
       const {
+        date,
         datePriority,
         dateTimeFormat,
-        timeBias,
-        value
+        innerProperties,
+        timeBias
       } = state;
-      if (dateTimeFormat &&
-          (changed.value ||
+      const value = innerProperties.value;
+      // If the innerProperties changed, we don't know whether its was
+      // innerProperties.value that changed, or some other property of the inner
+      // input element. We conservatively assume it was the input. We'll then
+      // check to see whether the date actually changed -- a check we wouldn't
+      // normally need to make -- before deciding whether to return a new date.
+      if (dateTimeFormat && value &&
+          (changed.innerProperties ||
           (!datePriority && (changed.dateTimeFormat || changed.timeBias)))) {
         const parsedDate = this.parseDate(value, dateTimeFormat, timeBias);
-        if (parsedDate) {
+        if (parsedDate && !calendar.datesEqual(date, parsedDate)) {
           return {
             date: parsedDate
           };
