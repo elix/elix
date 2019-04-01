@@ -9,8 +9,8 @@ const focusTest = document.createElement('div');
 focusTest.attachShadow({ mode: 'open', delegatesFocus: true });
 /** @type {any} */
 const shadowRoot = focusTest.shadowRoot;
-const polyfillDelegatesFocus = 'HTMLSlotElement' in window &&
-  !shadowRoot.delegatesFocus;
+const nativeDelegatesFocus = 'HTMLSlotElement' in window &&
+  shadowRoot.delegatesFocus;
 
 
 /**
@@ -56,7 +56,7 @@ export default function ComposedFocusMixin(Base) {
 
     get defaultState() {
       return Object.assign(super.defaultState, {
-        composeFocus: polyfillDelegatesFocus
+        composeFocus: !nativeDelegatesFocus
       });
     }
 

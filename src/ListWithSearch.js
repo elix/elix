@@ -29,6 +29,7 @@ const Base =
  * 
  * @inherits ReactiveElement
  * @mixes ComposedFocusMixin
+ * @mixes DelegateFocusMixin
  * @mixes DelegateItemsMixin
  * @mixes DirectionSelectionMixin
  * @mixes KeyboardMixin

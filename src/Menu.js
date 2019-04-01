@@ -47,6 +47,7 @@ const Base =
  * 
  * @inherits ReactiveElement
  * @mixes AriaMenuMixin
+ * @mixes DelegateFocusMixin
  * @mixes DirectionSelectionMixin
  * @mixes FocusVisibleMixin
  * @mixes ItemsTextMixin

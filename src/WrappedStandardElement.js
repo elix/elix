@@ -184,6 +184,7 @@ const Base =
  * The typical way to use this class is via its static `wrap` method.
  * 
  * @inherits ReactiveElement
+ * @mixes DelegateFocusMixin
  */
 class WrappedStandardElement extends Base {
 

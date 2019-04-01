@@ -20,6 +20,7 @@ const Base =
  * A text input paired with a popup that can be used as an alternative to typing
  * 
  * @inherits PopupSource
+ * @mixes DelegateFocusMixin
  * @mixes KeyboardMixin
  * @elementrole {'input'} input
  * @elementrole {'div'} source

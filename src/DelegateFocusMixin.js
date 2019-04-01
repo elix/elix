@@ -3,6 +3,11 @@ import { merge } from './updates.js';
 
 
 /**
+ * Delegates a component's focus to its first focusable shadow element.
+ * 
+ * This mixin serves as a polyfill for the standard `delegatesFocus` shadow
+ * root property. As of April 2019, that property is only supported in Chrome.
+ * 
  * @module DelegateFocusMixin
  */
 export default function DelegateFocusMixin(Base) {
@@ -10,6 +15,15 @@ export default function DelegateFocusMixin(Base) {
   // The class prototype added by the mixin.
   class DelegateFocus extends Base {
 
+    /**
+     * Returns true if the component is delegating its focus.
+     * 
+     * A component using `DelegateFocusMixin` will always have this property be
+     * true unless a class takes measures to override it.
+     * 
+     * @type {boolean}
+     * @default true
+     */
     get delegatesFocus() {
       return true;
     }
