@@ -3,7 +3,7 @@ import State from './State.js';
 
 
 /** @type {any} */
-const renderedStateKey = Symbol('renderedState');
+const mountedKey = Symbol('mounted');
 /** @type {any} */
 const stateKey = Symbol('state');
 /** @type {any} */
@@ -34,8 +34,8 @@ export default function ReactiveMixin(Base) {
       if (super.componentDidMount) { super.componentDidMount(); }
     }
 
-    componentDidUpdate(previousState) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
+    componentDidUpdate(changed) {
+      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
     }
 
     connectedCallback() {
@@ -61,8 +61,8 @@ export default function ReactiveMixin(Base) {
      * The default implementation does nothing. Augment this in your component
      * (or another mixin) to render the component's state to the DOM.
      */
-    [symbols.render]() {
-      if (super[symbols.render]) { super[symbols.render](); }
+    [symbols.render](changed) {
+      if (super[symbols.render]) { super[symbols.render](changed); }
     }
 
     /**
@@ -77,20 +77,19 @@ export default function ReactiveMixin(Base) {
      */
     render() {
 
-      // Only render if we haven't rendered this state object before. This
+      // Determine what's changed since the last render.
+      const changed = this[stateKey].changeLog;
+
+      // This
       // ensures that consecutive calls to setState only cause a single render.
       // Each setState call will update the state, queuing up a promise to
       // render. By the time the first render call actually happens, the
       // complete state is available. That is what is rendered. When the
       // following render calls happen, they will see that the complete state
       // has already been rendered, and skip doing any work.
-      const previousState = this[renderedStateKey];
-      if (this[stateKey] !== previousState) {
 
-        const firstRender = previousState == null;
-
-        // Remember that we've rendered (or about to render) this state.
-        this[renderedStateKey] = this[stateKey];
+      // TODO: Refactor this check
+      if (Object.keys(changed).length > 0) {
 
         // If at least one of the setState calls was made in response to user
         // interaction or some other component-internal event, set the
@@ -104,14 +103,19 @@ export default function ReactiveMixin(Base) {
         this[symbols.rendering] = true;
 
         // Invoke any internal render method implementations.
-        this[symbols.render]();
+        this[symbols.render](changed);
         this[symbols.rendering] = false;
 
+        // Since we've now rendered all changes, clear the change log.
+        this[stateKey].clearChangeLog();
+
         // Let the component know it was rendered.
-        if (firstRender) {
+        // First time is consider mounting; subsequent times are updates.
+        if (!this[mountedKey]) {
           this.componentDidMount();
+          this[mountedKey] = true;
         } else {
-          this.componentDidUpdate(previousState);
+          this.componentDidUpdate(changed);
         }
 
         // Restore state of event flags.
@@ -138,11 +142,15 @@ export default function ReactiveMixin(Base) {
 
       /** @type {State} */
       let state;
-      /** @type {boolean} */
+      /** @type {PlainObject} */
       let changed;
       if (this[stateKey] === undefined) {
         state = new State(changes);
-        changed = true;
+        changed = {};
+        // By definition, everything's changed.
+        for (const field in changes) {
+          changed[field] = true;
+        }
       } else {
         const copyResult = this[stateKey].copyWithChanges(changes);
         state = copyResult.state;
@@ -153,32 +161,32 @@ export default function ReactiveMixin(Base) {
       // attempts to set state without going through setState.
       Object.freeze(state);
 
-      // Is this our first setState, or does the component think something's changed?
-      if (!(changed || this.shouldComponentUpdate(state))) {
-        // No need to render.
-        return false;
-      }
-
       // Set the new state.
       this[stateKey] = state;
 
-      // We only need to render if we're actually in the document.
-      if (this.isConnected) {
-
-        // Remember whether we're supposed to raise property change events.
-        if (this[symbols.raiseChangeEvents]) {
-          this[raiseChangeEventsInNextRenderKey] = true;
-        }
-        
-        // Yield with promise timing. This lets any *synchronous* setState
-        // calls that happen after the current setState call complete first.
-        // Their effects on the state will be batched up before the render
-        // call below actually happens.
-        await Promise.resolve();
-        
-        // Render the component.
-        this.render();
+      if (Object.keys(changed).length === 0 && !this.shouldComponentUpdate(state)) {
+        // Nothing's changed -- no need to render.
+        return false;
       }
+
+      if (!this.isConnected) {
+        // Not in document yet -- no need to render.
+        return false;
+      }
+
+      // Remember whether we're supposed to raise property change events.
+      if (this[symbols.raiseChangeEvents]) {
+        this[raiseChangeEventsInNextRenderKey] = true;
+      }
+      
+      // Yield with promise timing. This lets any *synchronous* setState
+      // calls that happen after the current setState call complete first.
+      // Their effects on the state will be batched up before the render
+      // call below actually happens.
+      await Promise.resolve();
+      
+      // Render the component.
+      this.render();
 
       return true;
     }

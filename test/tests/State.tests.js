@@ -97,4 +97,19 @@ describe("State", () => {
     assert(!ranRule);
   });
 
+  it("can report aggregate changes over multiple setState calls", () => {
+    const state1 = new State();
+    state1.onChange('a', state => ({
+      b: state.a + 1
+    }));
+    assert.deepEqual(state1.changeLog, {});
+    const { state: state2 } = state1.copyWithChanges({ a: 1 });
+    assert.equal(state2.b, 2);
+    assert.deepEqual(state2.changeLog, { a: true, b: true });
+    const { state: state3 } = state2.copyWithChanges({ c: 0 });
+    assert.deepEqual(state3.changeLog, { a: true, b: true, c: true });
+    state3.clearChangeLog();
+    assert.deepEqual(state3.changeLog, {});
+  });
+
 });

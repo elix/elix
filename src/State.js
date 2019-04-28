@@ -1,4 +1,5 @@
 const changeCallbacksKey = Symbol('changeCallbacks');
+const changeLogKey = Symbol('changeLog');
 
 
 /**
@@ -7,8 +8,19 @@ const changeCallbacksKey = Symbol('changeCallbacks');
 class State {
 
   constructor(defaults) {
+    this[changeLogKey] = {};
     if (defaults) {
       applyStateChanges(this, defaults);
+    }
+  }
+
+  get changeLog() {
+    return this[changeLogKey];
+  }
+
+  clearChangeLog() {
+    for (const field in this[changeLogKey]) {
+      delete this[changeLogKey][field];
     }
   }
 
@@ -32,7 +44,10 @@ class State {
     // already as refined as possible, and so do work for nothing. So we create
     // a new empty State, merge in the old state, then run the change handlers
     // with the requested changes.
-    const state = Object.assign(new State(), this);
+    // Also copy over the set of change callbacks.
+    const state = Object.assign(new State(), this, {
+      [changeCallbacksKey]: this[changeCallbacksKey]
+    });
     const changed = applyStateChanges(state, changes);
     return { state, changed };
   }
@@ -93,12 +108,12 @@ function equal(value1, value2) {
 
 // Return true if o is an empty object.
 function isEmpty(o) {
-  for (var key in o) {
+  for (const key in o) {
     if (o.hasOwnProperty(key)) {
       return false;
     }
   }
-  return Object.getOwnPropertySymbols(o).length === 0;
+  return true;
 }
 
 
@@ -110,12 +125,6 @@ function fieldsChanged(state, changes) {
       changed[field] = true;
     }
   }
-  for (const symbol of Object.getOwnPropertySymbols(changes)) {
-    const valueChanged = !equal(changes[symbol], state[symbol]);
-    if (valueChanged) {
-      changed[symbol] = true;
-    }
-  }
   return changed;
 }
 
@@ -125,7 +134,7 @@ function fieldsChanged(state, changes) {
 // Return true if the supplied changes produced actual changes (i.e., didn't
 // simply duplicate existing field values).
 function applyStateChanges(state, changes) {
-  let result = false;
+  let result = {};
 
   // Applying the changes may produce a new round of changes, and that round
   // might produce new changes, and so on. Loop until we complete a pass that
@@ -134,11 +143,12 @@ function applyStateChanges(state, changes) {
     let changed;
     changed = fieldsChanged(state, changes), !isEmpty(changed);
   ) {
-    // We do have some real changes to report.
-    result = true;
 
     // Apply the changes to the state.
     Object.assign(state, changes);
+
+    // Remember what actually changed.
+    Object.assign(result, changed);
 
     // Run the change handlers, gathering up the changes those produce.
     changes = {};
@@ -161,6 +171,9 @@ function applyStateChanges(state, changes) {
       Object.assign(changes, ...results);
     }
   }
+
+  // Log the changes.
+  Object.assign(state[changeLogKey], result);
 
   return result;
 }
