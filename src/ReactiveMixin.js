@@ -61,8 +61,8 @@ export default function ReactiveMixin(Base) {
      * The default implementation does nothing. Augment this in your component
      * (or another mixin) to render the component's state to the DOM.
      */
-    [symbols.render](changed) {
-      if (super[symbols.render]) { super[symbols.render](changed); }
+    [symbols.render](state, changed) {
+      if (super[symbols.render]) { super[symbols.render](state, changed); }
     }
 
     /**
@@ -103,7 +103,7 @@ export default function ReactiveMixin(Base) {
         this[symbols.rendering] = true;
 
         // Invoke any internal render method implementations.
-        this[symbols.render](changed);
+        this[symbols.render](this[stateKey], changed);
         this[symbols.rendering] = false;
 
         // Since we've now rendered all changes, clear the change log.

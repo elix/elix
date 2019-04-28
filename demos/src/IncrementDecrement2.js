@@ -5,15 +5,15 @@ import ReactiveElement2 from '../../src/ReactiveElement2.js';
 
 class IncrementDecrement extends ReactiveElement2 {
 
-  constructor() {
-    super();
-    this.renderOnChange('value', state => {
-      this.$.value.textContent = state.value;
-    });
-    this.renderOnChange('foo', state => {
-      console.log(`foo is ${state.foo}`);
-    });
-  }
+  // constructor() {
+  //   super();
+  //   this.renderOnChange('value', state => {
+  //     this.$.value.textContent = state.value;
+  //   });
+  //   this.renderOnChange('foo', state => {
+  //     console.log(`foo is ${state.foo}`);
+  //   });
+  // }
 
   // TODO: Pass in changes to componentDidUpdate
   componentDidMount() {
@@ -33,7 +33,15 @@ class IncrementDecrement extends ReactiveElement2 {
     });
   }
 
-  // [symbols.render]
+  [symbols.render](state, changed) {
+    if (super[symbols.render]) { super[symbols.render](state, changed); }
+    if (changed.value) {
+      this.$.value.textContent = state.value;
+    }
+    if (changed.foo) {
+      console.log(`foo is ${state.foo}`);
+    }
+  }
 
   // Provide a public property that gets/sets state.
   get value() {
@@ -56,11 +64,17 @@ customElements.define('increment-decrement', IncrementDecrement);
 
 
 class CustomIncrementDecrement extends IncrementDecrement {
-  constructor() {
-    super();
-    this.renderOnChange('value', state => {
+  // constructor() {
+  //   super();
+  //   this.renderOnChange('value', state => {
+  //     this.$.value.style.color = state.value < 0 ? 'red' : null;
+  //   });
+  // }
+  [symbols.render](state, changed) {
+    if (super[symbols.render]) { super[symbols.render](state, changed); }
+    if (changed.value) {
       this.$.value.style.color = state.value < 0 ? 'red' : null;
-    });
+    }
   }
 }
 customElements.define('custom-increment-decrement', CustomIncrementDecrement);

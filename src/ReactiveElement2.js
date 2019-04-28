@@ -30,9 +30,9 @@ import ShadowTemplateMixin from './ShadowTemplateMixin.js';
 const ReactiveElement =
   AttributeMarshallingMixin(
   ReactiveMixin(
-  RenderChangesMixin(
+  // RenderChangesMixin(
   ShadowTemplateMixin(
     HTMLElement
-  ))));
+  )));
 
 export default ReactiveElement;

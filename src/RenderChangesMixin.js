@@ -23,8 +23,8 @@ export default function RenderUpdatesMixin(Base) {
       });
     }
 
-    [symbols.render](changed) {
-      if (super[symbols.render]) { super[symbols.render](changed); }
+    [symbols.render](state, changed) {
+      if (super[symbols.render]) { super[symbols.render](state, changed); }
 
       // Give other mixins a chance to do work before updates are applied.
       // this[symbols.beforeUpdate]();
@@ -32,7 +32,8 @@ export default function RenderUpdatesMixin(Base) {
       // Get callbacks for fields that changed.
       const callbacks = [];
       for (const field in changed) {
-        const callbacksForField = this[renderCallbacksKey][field] || [];
+        const renderCallbacks = this[renderCallbacksKey] || {};
+        const callbacksForField = renderCallbacks[field] || [];
         callbacksForField.forEach(callback => {
           // A single callback may be triggered by multiple fields; only add a
           // callback to the list if it's not already there.
