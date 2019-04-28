@@ -1,4 +1,4 @@
-const changeHandlersKey = Symbol('changeHandlers');
+const changeCallbacksKey = Symbol('changeCallbacks');
 
 
 /**
@@ -59,23 +59,25 @@ class State {
    * The common place to invoke `onChange` is when an element's `defaultState`
    * is being constructed.
 
-   * @param {string[]|string} dependencies - the name(s) of the state members
+   * @param {string[]|string} dependencies - the name(s) of the state fields
    * that should trigger the callback if they are changed
    * @param {function} callback - the function to run when any of the
    * dependencies changes
    */
   onChange(dependencies, callback) {
+    if (!this[changeCallbacksKey]) {
+      this[changeCallbacksKey] = {};
+    }
     const array = dependencies instanceof Array ?
       dependencies :
       [dependencies];
-    const changeHandler = {
-      dependencies: array,
-      callback
-    };
-    if (!this[changeHandlersKey]) {
-      this[changeHandlersKey] = [];
-    }
-    this[changeHandlersKey].push(changeHandler);
+    // Register the callback for each dependent state field.
+    array.forEach(dependency => {
+      if (!this[changeCallbacksKey][dependency]) {
+        this[changeCallbacksKey][dependency] = []
+      }
+      this[changeCallbacksKey][dependency].push(callback);
+    });
   }
 
 }
@@ -139,22 +141,25 @@ function applyStateChanges(state, changes) {
     Object.assign(state, changes);
 
     // Run the change handlers, gathering up the changes those produce.
-    const nextChanges = {};
-    if (state[changeHandlersKey]) {
-      state[changeHandlersKey].forEach(handler => {
-        const { dependencies, callback } = handler;
-        // Does this handler trigger on any of the changes we have?
-        const run = dependencies.some(dependency => changed[dependency]);
-        if (run) {
-          // Yes, run the change handler and collect its changes.
-          const handlerChanges = callback(state, changed);
-          Object.assign(nextChanges, handlerChanges);
-        }
-      });
+    changes = {};
+    if (state[changeCallbacksKey]) {
+      // Get callbacks for fields that changed.
+      const callbacks = [];
+      for (const field in changed) {
+        const callbacksForField = state[changeCallbacksKey][field] || [];
+        callbacksForField.forEach(callback => {
+          // A single callback may be triggered by multiple fields; only add a
+          // callback to the list if it's not already there.
+          if (!callbacks.includes(callback)) {
+            callbacks.push(callback);
+          }
+        });
+      }
+      // Run the callbacks and collect their changes.
+      const results = callbacks.map(callback => callback(state, changed));
+      // If the change handlers produced changes, we'll run the loop again.
+      Object.assign(changes, ...results);
     }
-
-    // If the change handlers produced changes, we'll run the loop again.
-    changes = nextChanges;
   }
 
   return result;

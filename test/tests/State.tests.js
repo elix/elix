@@ -30,7 +30,7 @@ describe("State", () => {
     assert(state4.callCount === 1);
   });
 
-  it("allows mutually-update change handlers", () => {
+  it("allows mutually-updating change handlers", () => {
     const state1 = new State();
     // Convert text to number.
     state1.onChange('text', state =>
