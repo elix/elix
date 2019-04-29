@@ -1,4 +1,3 @@
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import SlotContentMixin from './SlotContentMixin.js';
@@ -126,6 +125,22 @@ class AutoSizeTextarea extends Base {
       });
     }
   }
+
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.copyStyle) {
+      Object.assign(this.$.copyContainer.style, state.copyStyle);
+    }
+    if (changed.lineHeight || changed.minimumRows && state.lineHeight != null) {
+      const minHeight = state.minimumRows * state.lineHeight;
+      this.$.copyContainer.style.minHeight = `${minHeight}px`;
+    }
+    if (changed.value) {
+      const value = state.value;
+      this.$.inner.value = value;
+      this.$.textCopy.textContent = value;
+    }
+  }
   
   /*
    * Things to note about this component's DOM structure:
@@ -198,33 +213,6 @@ class AutoSizeTextarea extends Base {
         <slot></slot>
       </div>
     `;
-  }
-
-  get updates() {
-
-    const value = this.value;
-
-    let copyStyle = this.state.copyStyle;
-    if (copyStyle) {
-      const minHeight = this.state.minimumRows * this.state.lineHeight;
-      copyStyle = Object.assign({}, copyStyle, {
-        'min-height': `${minHeight}px`
-      });
-    }
-
-    return merge(super.updates, {
-      $: {
-        copyContainer: {
-          style: copyStyle
-        },
-        inner: {
-          value
-        },
-        textCopy: {
-          textContent: value
-        }
-      }
-    });
   }
 
   /**
