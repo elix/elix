@@ -11,16 +11,16 @@ import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 
 
 const Base =
-  AriaListMixin(
+  // AriaListMixin(
   DirectionSelectionMixin(
-  FocusVisibleMixin(
-  KeyboardDirectionMixin(
-  KeyboardMixin(
+  // FocusVisibleMixin(
+  // KeyboardDirectionMixin(
+  // KeyboardMixin(
   SwipeDirectionMixin(
   TouchSwipeMixin(
   TrackpadSwipeMixin(
     SlidingStage
-  ))))))));
+  ))));
 
 
 /**

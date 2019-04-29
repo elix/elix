@@ -1,10 +1,9 @@
-import { merge } from './updates.js';
 import * as fractionalSelection from './fractionalSelection.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import EffectMixin from './EffectMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
-import ReactiveElement from './ReactiveElement.js';
+import ReactiveElement from './ReactiveElement2.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 
@@ -39,6 +38,33 @@ class SlidingStage extends Base {
       orientation: 'horizontal',
       selectionRequired: true
     });
+  }
+
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.enableEffects || changed.selectedIndex || changed.swipeFraction) {
+      const sign = this[symbols.rightToLeft] ? 1 : -1;
+      const swiping = state.swipeFraction != null;
+      const swipeFraction = state.swipeFraction || 0;
+      const { selectedIndex, items } = state;
+      let translation;
+      if (selectedIndex >= 0) {
+        const selectionFraction = selectedIndex + sign * swipeFraction;
+        const count = items ? items.length : 0;
+        const dampedSelection = fractionalSelection.dampenListSelection(selectionFraction, count);
+        translation = sign * dampedSelection * 100;
+      } else {
+        translation = 0;
+      }
+
+      const slidingStageContent = this.$.slidingStageContent;
+      slidingStageContent.style.transform = `translateX(${translation}%)`;
+
+      const showTransition = this.state.enableEffects && !swiping;
+      slidingStageContent.style.transition = showTransition ?
+        'transform 0.25s' :
+        'none';
+    }
   }
 
   get swipeFraction() {
@@ -86,37 +112,6 @@ class SlidingStage extends Base {
         <slot></slot>
       </div>
     `;
-  }
-
-  get updates() {
-    const sign = this[symbols.rightToLeft] ? 1 : -1;
-    const swiping = this.state.swipeFraction != null;
-    const swipeFraction = this.state.swipeFraction || 0;
-    const selectedIndex = this.selectedIndex;
-    let translation;
-    if (selectedIndex >= 0) {
-      const selectionFraction = selectedIndex + sign * swipeFraction;
-      const count = this.items ? this.items.length : 0;
-      const dampedSelection = fractionalSelection.dampenListSelection(selectionFraction, count);
-      translation = sign * dampedSelection * 100;
-    } else {
-      translation = 0;
-    }
-    const showTransition = this.state.enableEffects && !swiping;
-    const transition = showTransition ?
-      'transform 0.25s' :
-      'none';
-
-    return merge(super.updates, {
-      $: {
-        slidingStageContent: {
-          style: {
-            'transform': `translateX(${translation}%)`,
-            transition
-          }
-        }
-      }
-    });
   }
 }
 

@@ -110,29 +110,8 @@ export default function TouchSwipeMixin(Base) {
       }
     }
 
-    get defaultState() {
-      return Object.assign(super.defaultState, {
-        enableNegativeSwipe: true,
-        enablePositiveSwipe: true,
-        swipeAxis: 'horizontal',
-        swipeFraction: null
-      });
-    }
-    
-    /**
-     * See [symbols.swipeTarget](symbols#swipeTarget).
-     * 
-     * @property symbols.swipeTarget
-     * @memberof TouchSwipeMixin
-     * @type {HTMLElement}
-     */
-    get [symbols.swipeTarget]() {
-      // Next line is same as: const base = super[symbols.swipeTarget]
-      const base = getSuperProperty(this, TouchSwipe, symbols.swipeTarget);
-      return base || this;
-    }
-
-    get updates() {
+    componentDidMount() {
+      if (super.componentDidMount) { super.componentDidMount(); }
       //
       // Choosing a touch-action value is unfortunately fraught with issues.
       //
@@ -162,14 +141,31 @@ export default function TouchSwipeMixin(Base) {
       // scrolling surface in Edge won't be able to retain support for built-in
       // touch features like scrolling.
       //
-      const touchAction = 'TouchEvent' in window ?
+      this.style.touchAction = 'TouchEvent' in window ?
         'manipulation' :
         'none';
-      return merge(super.updates, {
-        style: {
-          'touch-action': touchAction
-        }
+    }
+
+    get defaultState() {
+      return Object.assign(super.defaultState, {
+        enableNegativeSwipe: true,
+        enablePositiveSwipe: true,
+        swipeAxis: 'horizontal',
+        swipeFraction: null
       });
+    }
+    
+    /**
+     * See [symbols.swipeTarget](symbols#swipeTarget).
+     * 
+     * @property symbols.swipeTarget
+     * @memberof TouchSwipeMixin
+     * @type {HTMLElement}
+     */
+    get [symbols.swipeTarget]() {
+      // Next line is same as: const base = super[symbols.swipeTarget]
+      const base = getSuperProperty(this, TouchSwipe, symbols.swipeTarget);
+      return base || this;
     }
   }
 }
