@@ -1,9 +1,9 @@
-import { merge } from './updates.js';
-import * as AttributeMarshallingMixin from './AttributeMarshallingMixin.js';
+import { castPotentialBooleanAttribute } from './AttributeMarshallingMixin.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import * as updates from './updates.js';
 import DelegateFocusMixin from './DelegateFocusMixin.js';
-import ReactiveElement from './ReactiveElement.js';
+import ReactiveElement from './ReactiveElement2.js';
 
 
 const extendsKey = Symbol('extends');
@@ -247,14 +247,9 @@ class WrappedStandardElement extends Base {
     reflectDisabledAttribute(this);
   }
 
-  componentDidUpdate(previousState) {
-    if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-    const disabled = this.state.innerProperties.disabled;
-    const previousDisabled = previousState.innerProperties.disabled;
-    const disabledChanged = disabled !== previousDisabled;
-    if (disabledChanged) {
-      reflectDisabledAttribute(this);
-    }
+  componentDidUpdate(changed) {
+    if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    reflectDisabledAttribute(this);
   }
 
   get defaultState() {
@@ -318,6 +313,31 @@ class WrappedStandardElement extends Base {
     // inner element and update its state accordingly.
     const value = this.state.innerProperties[name];
     return value || (this.shadowRoot && this.inner[name]);
+  }
+
+  [symbols.render](state, changed) {
+    if (super[symbols.render]) { super[symbols.render](state, changed); }
+    const inner = this.$.inner;
+    if (changed.tabIndex) {
+      inner.tabIndex = state.tabIndex;
+    }
+    // TODO: Check changed.original?
+    const original = state.original;
+    if (original && original.attributes) {
+      // Delegate any ARIA attributes to the inner element, as well as any
+      // attributes that don't have corresponding properties. (Attributes
+      // that correspond to properties will be handled separately by our
+      // generated property delegates.)
+      for (const key in original.attributes) {
+        if (key.startsWith('aria-') ||
+            attributesWithoutProperties.indexOf(key) >= 0) {
+          const value = original.attributes[key];
+          const cast = castPotentialBooleanAttribute(key, value);
+          updates.applyAttribute(inner, key, cast);
+        }
+      }
+    }
+    Object.assign(inner, state.innerProperties);
   }
 
   // Save property assignment in state.
@@ -398,37 +418,6 @@ class WrappedStandardElement extends Base {
       'block' :
       'inline-block';
     return template.html`<style>:host { display: ${display}} #inner { box-sizing: border-box; height: 100%; width: 100%; }</style><${this.extends} id="inner"><slot></slot></${this.extends}`;
-  }
-
-  get updates() {
-    const { original, tabIndex } = this.state;
-    const innerAttributes = {};
-    const originalAttributes = original ? original.attributes : null;
-    if (originalAttributes) {
-      // Delegate any ARIA attributes to the inner element, as well as any
-      // attributes that don't have corresponding properties. (Attributes
-      // that correspond to properties will be handled separately by our
-      // generated property delegates.)
-      for (const key in originalAttributes) {
-        if (key.startsWith('aria-') ||
-            attributesWithoutProperties.indexOf(key) >= 0) {
-          const value = originalAttributes[key];
-          const cast = AttributeMarshallingMixin.castPotentialBooleanAttribute(key, value);
-          innerAttributes[key] = cast;
-        }
-      }
-    }
-    return merge(super.updates, {
-      $: {
-        inner: Object.assign(
-          {
-            attributes: innerAttributes,
-            tabIndex
-          },
-          this.state.innerProperties
-        )
-      }
-    });
   }
 
   /**

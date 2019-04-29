@@ -114,7 +114,6 @@ describe("WrappedStandardElement", () => {
   it("delegates ARIA attributes", () => {
     const fixture = new WrappedInput();
     fixture.setAttribute('aria-label', 'Label');
-    container.appendChild(fixture);
     fixture.render();
     assert.equal(fixture.inner.getAttribute('aria-label'), 'Label');
   });
