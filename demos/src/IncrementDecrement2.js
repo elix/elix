@@ -5,15 +5,18 @@ import ReactiveElement2 from '../../src/ReactiveElement2.js';
 
 class IncrementDecrement extends ReactiveElement2 {
 
-  // constructor() {
-  //   super();
-  //   this.renderOnChange('value', state => {
-  //     this.$.value.textContent = state.value;
-  //   });
-  //   this.renderOnChange('foo', state => {
-  //     console.log(`foo is ${state.foo}`);
-  //   });
-  // }
+  constructor() {
+    super();
+    // this.renderOnChange('value', state => {
+    //   this.$.value.textContent = state.value;
+    // });
+    // this.renderOnChange('foo', state => {
+    //   console.log(`foo is ${state.foo}`);
+    // });
+    // this.state.onChange('value', state => ({
+    //   foo: state.value
+    // }));
+  }
 
   // TODO: Pass in changes to componentDidUpdate
   componentDidMount() {
@@ -26,15 +29,19 @@ class IncrementDecrement extends ReactiveElement2 {
     });
   }
 
-  // This property becomes the value of this.state at constructor time.
   get defaultState() {
-    return Object.assign(super.defaultState, {
+    const base = super.defaultState;
+    Object.assign(base, {
       value: 0
     });
+    // base.onChange('value', state => ({
+    //   foo: state.value
+    // }));
+    return base;
   }
 
   [symbols.render](state, changed) {
-    if (super[symbols.render]) { super[symbols.render](state, changed); }
+    super[symbols.render](state, changed);
     if (changed.value) {
       this.$.value.textContent = state.value;
     }
@@ -71,7 +78,7 @@ class CustomIncrementDecrement extends IncrementDecrement {
   //   });
   // }
   [symbols.render](state, changed) {
-    if (super[symbols.render]) { super[symbols.render](state, changed); }
+    super[symbols.render](state, changed);
     if (changed.value) {
       this.$.value.style.color = state.value < 0 ? 'red' : null;
     }

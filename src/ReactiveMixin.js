@@ -80,16 +80,18 @@ export default function ReactiveMixin(Base) {
       // Determine what's changed since the last render.
       const changed = this[stateKey].changeLog;
 
-      // This
-      // ensures that consecutive calls to setState only cause a single render.
-      // Each setState call will update the state, queuing up a promise to
-      // render. By the time the first render call actually happens, the
-      // complete state is available. That is what is rendered. When the
-      // following render calls happen, they will see that the complete state
-      // has already been rendered, and skip doing any work.
+      // We only render if the component's never been rendered before, or is
+      // something's actually changed since the last render. Consecutive
+      // synchronous setState calls will queue up corresponding async render
+      // calls. By the time the first render call actually happens, the complete
+      // state is available, and that is what is rendered. When the following
+      // render calls happen, they will see that the complete state has already
+      // been rendered, and skip doing any work.
 
       // TODO: Refactor this check
-      if (Object.keys(changed).length > 0) {
+      const needsRender = !this[mountedKey] || Object.keys(changed).length > 0;
+
+      if (needsRender) {
 
         // If at least one of the setState calls was made in response to user
         // interaction or some other component-internal event, set the
@@ -106,7 +108,9 @@ export default function ReactiveMixin(Base) {
         this[symbols.render](this[stateKey], changed);
         this[symbols.rendering] = false;
 
-        // Since we've now rendered all changes, clear the change log.
+        // Since we've now rendered all changes, clear the change log. If other
+        // async render calls are queued up behind this call, they'll see an
+        // empty change log, and so skip unnecessary render work.
         this[stateKey].clearChangeLog();
 
         // Let the component know it was rendered.
@@ -140,21 +144,17 @@ export default function ReactiveMixin(Base) {
         console.warn(`${this.constructor.name} called setState during rendering, which you should avoid.\nSee https://elix.org/documentation/ReactiveMixin.`);
       }
 
-      /** @type {State} */
-      let state;
-      /** @type {PlainObject} */
-      let changed;
-      if (this[stateKey] === undefined) {
-        state = new State(changes);
-        changed = {};
-        // By definition, everything's changed.
-        for (const field in changes) {
-          changed[field] = true;
-        }
-      } else {
-        const copyResult = this[stateKey].copyWithChanges(changes);
-        state = copyResult.state;
-        changed = copyResult.changed;
+      const firstSetState = this[stateKey] === undefined;
+      if (firstSetState) {
+        // Create temporary state as seed.
+        this[stateKey] = Object.freeze(new State());
+      }
+      const { state, changed } = this[stateKey].copyWithChanges(changes);
+
+      const hadChanges = firstSetState || Object.keys(changed).length > 0;
+      if (!hadChanges) {
+        // No need to update state.
+        return;
       }
 
       // Freeze the new state so it's immutable. This prevents accidental
@@ -164,14 +164,14 @@ export default function ReactiveMixin(Base) {
       // Set the new state.
       this[stateKey] = state;
 
-      if (Object.keys(changed).length === 0 && !this.shouldComponentUpdate(state)) {
-        // Nothing's changed -- no need to render.
-        return false;
+      if (!hadChanges && !this.shouldComponentUpdate(state)) {
+        // Component doesn't think it's necessary to render.
+        return;
       }
 
       if (!this.isConnected) {
         // Not in document yet -- no need to render.
-        return false;
+        return;
       }
 
       // Remember whether we're supposed to raise property change events.
@@ -187,8 +187,6 @@ export default function ReactiveMixin(Base) {
       
       // Render the component.
       this.render();
-
-      return true;
     }
 
     /**
@@ -216,7 +214,7 @@ export default function ReactiveMixin(Base) {
      * @type {State}
      */
     get state() {
-      return this[stateKey] || Object.freeze({});
+      return this[stateKey];
     }
   }
 }

@@ -44,10 +44,14 @@ class State {
     // already as refined as possible, and so do work for nothing. So we create
     // a new empty State, merge in the old state, then run the change handlers
     // with the requested changes.
-    // Also copy over the set of change callbacks.
-    const state = Object.assign(new State(), this, {
-      [changeCallbacksKey]: this[changeCallbacksKey]
-    });
+    const state = Object.assign(new State(), this);
+
+    // If the changes include new change callbacks, apply those too.
+    if (changes[changeCallbacksKey]) {
+      // Also copy over the set of change callbacks.
+      state[changeCallbacksKey] = changes[changeCallbacksKey];
+    }
+    
     const changed = applyStateChanges(state, changes);
     return { state, changed };
   }
