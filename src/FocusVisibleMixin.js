@@ -1,5 +1,5 @@
 import { deepContains } from './utilities.js';
-import { merge } from './updates.js';
+import * as symbols from './symbols.js';
 
 
 // We consider the keyboard to be active if the window has received a keydown
@@ -86,6 +86,15 @@ export default function FocusVisibleMixin(Base) {
       });
     }
 
+    [symbols.render](state, changed) {
+      if (super[symbols.render]) { super[symbols.render](state, changed); }
+      if (changed.focusVisible) {
+        // Suppress the component's normal `outline` style unless we know the
+        // focus should be visible.
+        this.style.outline = state.focusVisible ? '' : 'none';
+      }
+    }
+
     /**
      * Temporarily suppress visibility of the keyboard focus until the next
      * keydown event.
@@ -100,22 +109,6 @@ export default function FocusVisibleMixin(Base) {
     suppressFocusVisibility() {
       keyboardActive = false;
       refreshFocus(this);
-    }
-
-    get updates() {
-      const base = super.updates || {};
-      // Suppress the component's normal `outline` style unless we know the
-      // focus should be visible. If a base class (e.g., mixin further up the
-      // prototype chain) has a different opinion about the outline, defer to
-      // it.
-      const outline = base.style && base.style.outline ||
-        !this.state.focusVisible && 'none' ||
-        null;
-      return merge(base, {
-        style: {
-          outline
-        }
-      });
     }
   }
 }

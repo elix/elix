@@ -1,6 +1,7 @@
 import { defaultAriaRole } from './accessibility.js';
-import { merge } from './updates.js';
 import { ensureId } from './idGeneration.js';
+import { merge } from './updates.js';
+import * as symbols from './symbols.js';
 
 
 /**
@@ -84,31 +85,31 @@ export default function AriaListMixin(Base) {
       );
     }
 
-    get updates() {
-      const base = super.updates || {};
-      const role = this.state.original && this.state.original.attributes.role ||
-        base.attributes && base.attributes.role ||
-        this.state.role;
-      const orientation = this.state.orientation;
-      const selectedIndex = this.selectedIndex || this.state.selectedIndex;
-      const selectedItem = selectedIndex >= 0 && this.items ?
-        this.items[selectedIndex] :
-        null;
-      // We need the ID for the selected item. It's possible an ID hasn't been
-      // assigned yet, so we spectulatively determine the ID that will be used
-      // on the subsequent call to itemUpdates for this item.
-      const selectedItemId = selectedItem ?
-        ensureId(selectedItem) :
-        null;
-      return merge(base, {
-        attributes: {
-          'aria-activedescendant': selectedItemId,
-          'aria-orientation': orientation,
-          role
+    [symbols.render](state, changed) {
+      if (super[symbols.render]) { super[symbols.render](state, changed); }
+      if (changed.orientation) {
+        this.setAttribute('aria-orientation', state.orientation);
+      }
+      if (changed.role) {
+        const originalRole = state.original && state.original.attributes.role;
+        if (!originalRole) {
+          this.setAttribute('role', state.role);
         }
-      });
+      }
+      if (changed.selectedIndex) {
+        const { selectedIndex, items } = state;
+        const selectedItem = selectedIndex >= 0 && items ?
+          items[selectedIndex] :
+          null;
+        // We need the ID for the selected item. It's possible an ID hasn't been
+        // assigned yet, so we spectulatively determine the ID that will be used
+        // on the subsequent call to itemUpdates for this item.
+        const selectedItemId = selectedItem ?
+          ensureId(selectedItem) :
+          null;
+        this.setAttribute('aria-activedescendant', selectedItemId);
+      }
     }
-
   }
 
   return AriaList;

@@ -98,6 +98,13 @@ export default function KeyboardMixin(Base) {
       return false;
     }
 
+    [symbols.render](state, changed) {
+      if (super[symbols.render]) { super[symbols.render](state, changed); }
+      if (changed.tabIndex) {
+        this.tabIndex = state.tabIndex;
+      }
+    }
+
     // Record our own notion of the state of the tabIndex property so we can
     // rerender if necessary.
     get tabIndex() {
@@ -146,13 +153,6 @@ export default function KeyboardMixin(Base) {
           this.setState({ original });
         }
       }
-    }
-
-    get updates() {
-      const { tabIndex } = this.state;
-      return merge(super.updates, {
-        tabIndex
-      });
     }
 
   }
