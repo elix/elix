@@ -10,6 +10,10 @@ const stateKey = Symbol('state');
 const raiseChangeEventsInNextRenderKey = Symbol('raiseChangeEventsInNextRender');
 
 
+// Tracks total set of changes made to elements since their last render.
+const changedSinceLastRender = new WeakMap();
+
+
 /**
  * Manages component state and renders changes in state
  * 
@@ -78,7 +82,7 @@ export default function ReactiveMixin(Base) {
     render() {
 
       // Determine what's changed since the last render.
-      const changed = this[stateKey].changeLog;
+      const changed = changedSinceLastRender.get(this) || {};
 
       // We only render if the component's never been rendered before, or is
       // something's actually changed since the last render. Consecutive
@@ -111,7 +115,7 @@ export default function ReactiveMixin(Base) {
         // Since we've now rendered all changes, clear the change log. If other
         // async render calls are queued up behind this call, they'll see an
         // empty change log, and so skip unnecessary render work.
-        this[stateKey].clearChangeLog();
+        changedSinceLastRender.set(this, {});
 
         // Let the component know it was rendered.
         // First time is consider mounting; subsequent times are updates.
@@ -163,6 +167,11 @@ export default function ReactiveMixin(Base) {
 
       // Set the new state.
       this[stateKey] = state;
+
+      // Log the changes.
+      const log = changedSinceLastRender.get(this) || {};
+      Object.assign(log, changed);
+      changedSinceLastRender.set(this, log);
 
       if (!hadChanges && !this.shouldComponentUpdate(state)) {
         // Component doesn't think it's necessary to render.

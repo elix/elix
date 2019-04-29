@@ -1,5 +1,4 @@
 const changeCallbacksKey = Symbol('changeCallbacks');
-const changeLogKey = Symbol('changeLog');
 
 
 /**
@@ -8,19 +7,8 @@ const changeLogKey = Symbol('changeLog');
 class State {
 
   constructor(defaults) {
-    this[changeLogKey] = {};
     if (defaults) {
       applyStateChanges(this, defaults);
-    }
-  }
-
-  get changeLog() {
-    return this[changeLogKey];
-  }
-
-  clearChangeLog() {
-    for (const field in this[changeLogKey]) {
-      delete this[changeLogKey][field];
     }
   }
 
@@ -51,7 +39,7 @@ class State {
       // Also copy over the set of change callbacks.
       state[changeCallbacksKey] = changes[changeCallbacksKey];
     }
-    
+
     const changed = applyStateChanges(state, changes);
     return { state, changed };
   }
@@ -175,9 +163,6 @@ function applyStateChanges(state, changes) {
       Object.assign(changes, ...results);
     }
   }
-
-  // Log the changes.
-  Object.assign(state[changeLogKey], result);
 
   return result;
 }
