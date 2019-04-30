@@ -157,9 +157,11 @@ function ArrowDirectionMixin(Base) {
           changed.languageDirection ||
           changed.selectedIndex ||
           changed.selectionWraps) {
-        // TODO:
+        // We'd like to set the `disabled` property:
         // arrowButtonLeft.disabled = !this[symbols.canGoLeft];
         // arrowButtonRight.disabled = !this[symbols.canGoRight];
+        // But a bug in Chrome prevents this from working.
+        // TODO: Isolate repro case.
         updates.applyAttribute(arrowButtonLeft, 'disabled', !this[symbols.canGoLeft]);
         updates.applyAttribute(arrowButtonRight, 'disabled', !this[symbols.canGoRight]);
       }
