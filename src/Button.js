@@ -80,6 +80,21 @@ class Button extends Base {
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
   }
 
+  [symbols.render](state, changed) {
+    if (super[symbols.render]) { super[symbols.render](state, changed); }
+    if (changed.focusVisible) {
+      // Override host `outline` style supplied by FocusVisibleMixin.
+      this.style.outline = 'none';
+      this.$.inner.style.outline = state.focusVisible ? '' : 'none';
+    }
+    if (changed.role) {
+      const originalRole = state.original && state.original.attributes.role;
+      if (!originalRole) {
+        this.setAttribute('role', state.role);
+      }
+    }
+  }
+  
   // Respond to a simulated click.
   [symbols.tap]() {
     const clickEvent = new MouseEvent('click');
@@ -91,6 +106,7 @@ class Button extends Base {
       <style>
         :host {
           display: inline-flex;
+          outline: none;
           -webkit-tap-highlight-color: transparent;
           touch-action: manipulation;
         }
@@ -117,36 +133,6 @@ class Button extends Base {
         <slot></slot>
       </button>
     `;
-  }
-
-  get updates() {
-
-    const base = super.updates || {};
-
-    const baseInnerStyle = base.$ && base.$.inner && base.$.inner.style;
-    const outline = baseInnerStyle && baseInnerStyle.outline ||
-      !this.state.focusVisible && 'none' ||
-      undefined;
-
-    // Since it's the outer component that will typically get the keyboard
-    // focus, we make the outer component visible as a button to ARIA, and hide
-    // the inner button.
-    const role = this.state.original && this.state.original.attributes.role ||
-      base.attributes && base.attributes.role ||
-      this.state.role;
-
-    return merge(base, {
-      attributes: {
-        role
-      },
-      $: {
-        inner: {
-          style: {
-            outline
-          }
-        }
-      }
-    });
   }
 }
 

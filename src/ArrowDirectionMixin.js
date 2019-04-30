@@ -129,6 +129,51 @@ function ArrowDirectionMixin(Base) {
       });
     }
 
+    [symbols.render](state, changed) {
+      if (super[symbols.render]) { super[symbols.render](state, changed); }
+      const { arrowButtonLeft, arrowButtonRight } = this.$;
+      if (changed.arrowButtonOverlap) {
+        const buttonStyle = state.arrowButtonOverlap ?
+          {
+            'bottom': 0,
+            'position': 'absolute',
+            'top': 0,
+            'z-index': 1
+          } :
+          {
+            'bottom': null,
+            'position': null,
+            'top': null,
+            'z-index': null
+          };
+        Object.assign(arrowButtonLeft.style, buttonStyle, {
+          left: state.arrowButtonOverlap ? 0 : ''
+        });
+        Object.assign(arrowButtonRight.style, buttonStyle, {
+          right: state.arrowButtonOverlap ? 0 : ''
+        });
+      }
+      if (changed.items ||
+          changed.languageDirection ||
+          changed.selectedIndex ||
+          changed.selectionWraps) {
+        // if (state.items) {
+          arrowButtonLeft.disabled = !this[symbols.canGoLeft];
+          arrowButtonRight.disabled = !this[symbols.canGoRight];
+        // }
+      }
+      if (changed.languageDirection) {
+        this.$.arrowDirection.style.flexDirection = this[symbols.rightToLeft] ?
+          'row-reverse' :
+          'row';
+      }
+      if (changed.showArrowButtons) {
+        const display = state.showArrowButtons ? null : 'none';
+        arrowButtonLeft.style.display = display;
+        arrowButtonRight.style.display = display;
+      }
+    }
+
     get showArrowButtons() {
       return this.state.showArrowButtons;
     }
@@ -136,63 +181,6 @@ function ArrowDirectionMixin(Base) {
       const parsed = String(showArrowButtons) === 'true';
       this.setState({
         showArrowButtons: parsed
-      });
-    }
-
-    get updates() {
-      const base = super.updates;
-
-      const arrowButtonOverlap = this.state.arrowButtonOverlap;
-      const buttonUpdates = arrowButtonOverlap ?
-        {
-          style: {
-            'bottom': 0,
-            'position': 'absolute',
-            'top': 0,
-            'z-index': 1
-          }
-        } :
-        {};
-
-      const canGoLeft = this[symbols.canGoLeft];
-      const canGoRight = this[symbols.canGoRight];
-
-      const arrowDisplay = this.state.showArrowButtons ?
-        base.style && base.style.display || '' :
-        'none';
-
-      const arrowButtonLeftUpdates = merge(buttonUpdates, {
-        attributes: {
-          disabled: !canGoLeft
-        },
-        style: {
-          display: arrowDisplay,
-          left: arrowButtonOverlap ? 0 : ''
-        }
-      });
-
-      const arrowButtonRightUpdates = merge(buttonUpdates, {
-        attributes: {
-          disabled: !canGoRight
-        },
-        style: {
-          display: arrowDisplay,
-          right: arrowButtonOverlap ? 0 : ''
-        }
-      });
-
-      return merge(base, {
-        $: Object.assign(
-          {
-            arrowButtonLeft: arrowButtonLeftUpdates,
-            arrowButtonRight: arrowButtonRightUpdates,
-            arrowDirection: {
-              style: {
-                'flex-direction': this[symbols.rightToLeft] ? 'row-reverse' : 'row'
-              }
-            }
-          }
-        )
       });
     }
 

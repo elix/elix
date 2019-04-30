@@ -26,6 +26,37 @@ const Base =
  */
 class ArrowDirectionButton extends Base {
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.darkMode || changed.hover || changed.innerProperties) {
+      const { darkMode, innerProperties } = state;
+      // Wait for knowledge of dark mode to be set after initial render.
+      if (darkMode !== null) {
+        const disabled = innerProperties ?
+          innerProperties.disabled :
+          false;
+
+        // Use white color value in dark mode, or black value in light mode.
+        const value = darkMode ? 255 : 0;
+        Object.assign(this.style,
+          {
+            background: '',
+            color: `rgba(${value}, ${value}, ${value}, 0.7)`,
+            cursor: ''
+          },
+          state.hover && !disabled && {
+            background: `rgba(${value}, ${value}, ${value}, 0.2)`,
+            color: `rgba(${value}, ${value}, ${value}, 0.8)`,
+            cursor: 'pointer'
+          },
+          disabled && {
+            color: `rgba(${value}, ${value}, ${value}, 0.3)`
+          }
+        );
+      }
+    }
+  }
+
   get [symbols.template]() {
     // Next line is same as: const base = super[symbols.template]
     const base = getSuperProperty(this, ArrowDirectionButton, symbols.template);
@@ -36,41 +67,6 @@ class ArrowDirectionButton extends Base {
         }
       </style>
     `);
-  }
-
-  get updates() {
-    /** @type {any} */
-    const { darkMode, innerProperties } = this.state;
-    let style;
-    if (darkMode === null) {
-      // Initial render; wait for knowledge of dark mode.
-      style = {};
-    } else {
-      const disabled = innerProperties ?
-        innerProperties.disabled :
-        false;
-
-      // Use white color value in dark mode, or black value in light mode.
-      const value = darkMode ? 255 : 0;
-      style = Object.assign(
-        {
-          background: '',
-          color: `rgba(${value}, ${value}, ${value}, 0.7)`,
-          cursor: ''
-        },
-        this.state.hover && !disabled && {
-          background: `rgba(${value}, ${value}, ${value}, 0.2)`,
-          color: `rgba(${value}, ${value}, ${value}, 0.8)`,
-          cursor: 'pointer'
-        },
-        disabled && {
-          color: `rgba(${value}, ${value}, ${value}, 0.3)`
-        }
-      );
-    }
-    return merge(super.updates, {
-      style
-    });
   }
 
 }
