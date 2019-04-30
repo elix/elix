@@ -1,7 +1,7 @@
 import { forwardFocus } from './utilities.js';
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import * as updates from './updates.js';
 import ArrowDirectionButton from './ArrowDirectionButton.js';
 
 
@@ -157,10 +157,11 @@ function ArrowDirectionMixin(Base) {
           changed.languageDirection ||
           changed.selectedIndex ||
           changed.selectionWraps) {
-        // if (state.items) {
-          arrowButtonLeft.disabled = !this[symbols.canGoLeft];
-          arrowButtonRight.disabled = !this[symbols.canGoRight];
-        // }
+        // TODO:
+        // arrowButtonLeft.disabled = !this[symbols.canGoLeft];
+        // arrowButtonRight.disabled = !this[symbols.canGoRight];
+        updates.applyAttribute(arrowButtonLeft, 'disabled', !this[symbols.canGoLeft]);
+        updates.applyAttribute(arrowButtonRight, 'disabled', !this[symbols.canGoRight]);
       }
       if (changed.languageDirection) {
         this.$.arrowDirection.style.flexDirection = this[symbols.rightToLeft] ?
