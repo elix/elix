@@ -1,6 +1,6 @@
 import { getSuperProperty } from './workarounds.js';
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import DialogModalityMixin from './DialogModalityMixin.js';
 import FocusCaptureMixin from './FocusCaptureMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
@@ -42,15 +42,13 @@ class Dialog extends Base {
     const result = getSuperProperty(this, Dialog, symbols.template);
     const frame = result.content.querySelector('#frame');
     this[FocusCaptureMixin.wrap](frame);
-    return result;
-  }
-
-  get updates() {
-    return merge(super.updates, {
-      style: {
-        'pointer-events': 'initial'
-      }
-    });
+    return template.concat(result, template.html`
+      <style>
+        :host {
+          pointer-events: initial;
+        }
+      </style>
+    `);
   }
 
 }

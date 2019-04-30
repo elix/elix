@@ -1,12 +1,12 @@
 import { merge } from '../../src/updates.js';
 import OpenCloseMixin from '../../src/OpenCloseMixin.js';
+import OriginalAttributesMixin from '../../src/OriginalAttributesMixin.js'
 import OverlayMixin from '../../src/OverlayMixin.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
-import RenderUpdatesMixin from '../../src/RenderUpdatesMixin.js';
 
 
 const Base =
-  RenderUpdatesMixin(
+  OriginalAttributesMixin(
   OpenCloseMixin(
   OverlayMixin(
   ReactiveMixin(

@@ -36,8 +36,8 @@ export default function RenderUpdatesMixin(Base) {
       }
     }
 
-    [symbols.render]() {
-      if (super[symbols.render]) { super[symbols.render](); }
+    [symbols.render](state, changed) {
+      if (super[symbols.render]) { super[symbols.render](state, changed); }
 
       // Give other mixins a chance to do work before updates are applied.
       this[symbols.beforeUpdate]();

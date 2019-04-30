@@ -1,5 +1,5 @@
 import { deepContains, firstFocusableElement } from './utilities.js';
-import { merge } from './updates.js';
+import * as symbols from './symbols.js';
 
 
 /** @type {any} */
@@ -63,9 +63,9 @@ export default function OverlayMixin(Base) {
       openedChanged(this);
     }
 
-    componentDidUpdate(previousState) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-      if (this.state.opened !== previousState.opened) {
+    componentDidUpdate(changed) {
+      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+      if (changed.opened) {
         openedChanged(this);
       }
     }
@@ -76,46 +76,39 @@ export default function OverlayMixin(Base) {
       });
     }
 
-    get updates() {
-      const base = super.updates || {};
-      const original = this.state.original;
+    [symbols.render](state, changed) {
+      if (super[symbols.render]) { super[symbols.render](state, changed); }
+      if (changed.effectPhase || changed.opened) {
+        const closed = typeof this.closeFinished === 'undefined' ?
+          this.closed :
+          this.closeFinished;
 
-      const closed = typeof this.closeFinished === 'undefined' ?
-        this.closed :
-        this.closeFinished;
+        // We'd like to just use the `hidden` attribute, but Edge has trouble
+        // with that: if the hidden attribute is removed from an overlay to
+        // display it, Edge may not paint it correctly. And a side-effect
+        // of styling with the hidden attribute is that naive styling of the
+        // component from the outside (to change to display: flex, say) will
+        // override the display: none implied by hidden. To work around both
+        // these problems, we use display: none when the overlay is closed.
+        this.style.display = closed ? 'none' : null;
 
-      // We'd like to just use the `hidden` attribute, but Edge has trouble
-      // with that: if the hidden attribute is removed from an overlay to
-      // display it, Edge may not paint it correctly. And a side-effect
-      // of styling with the hidden attribute is that naive styling of the
-      // component from the outside (to change to display: flex, say) will
-      // override the display: none implied by hidden. To work around both
-      // these problems, we use display: none when the overlay is closed.
-      const display = closed ?
-        'none' :
-        base.style && base.style.display;
-
-      let zIndex;
-      if (closed) {
-        zIndex = original.style['z-index'];
-        this[assignedZIndexKey] = null;
-      } else {
-        zIndex = original.style['z-index'] ||
-          base.style && base.style['z-index'] ||
-          this[assignedZIndexKey];
-        if (!zIndex) {
-          zIndex = maxZIndexInUse() + 1;
-          // Remember that we assigned a z-index for this component.
-          this[assignedZIndexKey] = zIndex;
+        let zIndex = state.original && state.original.style ?
+          state.original.style['z-index'] :
+          null;
+        if (closed) {
+          this[assignedZIndexKey] = null;
+        } else {
+          if (this[assignedZIndexKey]) {
+            zIndex = this[assignedZIndexKey];
+          }
+          if (!zIndex) {
+            zIndex = maxZIndexInUse() + 1;
+            // Remember that we assigned a z-index for this component.
+            this[assignedZIndexKey] = zIndex;
+          }
         }
+        this.style.zIndex = zIndex;
       }
-
-      return merge(base, {
-        style: {
-          display,
-          'z-index': zIndex
-        }
-      });
     }
   }
 

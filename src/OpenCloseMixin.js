@@ -59,6 +59,7 @@ export default function OpenCloseMixin(Base) {
      * @type {boolean}
      */
     get closeFinished() {
+      // TODO: Define closeFinished as computed state
       return this.state.openCloseEffects ?
         this.state.effect === 'close' && this.state.effectPhase === 'after' :
         this.closed;
