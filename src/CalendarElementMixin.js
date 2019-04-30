@@ -17,11 +17,11 @@ export default function CalendarElementMixin(Base) {
   // The class prototype added by the mixin.
   class CalendarElement extends Base {
 
-    componentDidUpdate(previousState) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-      const date = this.state.date;
-      const changed = !calendar.datesEqual(date, previousState.date);
-      if (changed && this[symbols.raiseChangeEvents]) {
+    componentDidUpdate(changed) {
+      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+      // TODO: call calendar.datesEqual(date, previousState.date)?
+      if (changed.date && this[symbols.raiseChangeEvents]) {
+        const date = this.state.date;
         /**
          * Raised when the `date` property changes.
          * 
