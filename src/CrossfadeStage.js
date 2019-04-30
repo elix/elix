@@ -21,6 +21,11 @@ const Base =
  */
 class CrossfadeStage extends Base {
 
+  componentDidMount() {
+    if (super.componentDidMount) { super.componentDidMount(); }
+    this.$.modesContainer.style.display = 'grid';
+  }
+
   get defaultState() {
     return Object.assign(super.defaultState, {
       transitionDuration: 750 // 3/4 of a second
@@ -60,18 +65,6 @@ class CrossfadeStage extends Base {
   }
   set transitionDuration(transitionDuration) {
     this.setState({ transitionDuration });
-  }
-
-  get updates() {
-    return merge(super.updates, {
-      $: {
-        modesContainer: {
-          style: {
-            display: 'grid'
-          }
-        }
-      }
-    });
   }
 
 }
