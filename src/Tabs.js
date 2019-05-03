@@ -1,5 +1,8 @@
 import { ensureId } from './idGeneration.js';
+import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
+import * as symbols from './symbols.js';
+import * as template from './template.js';
 import Explorer from './Explorer.js';
 import TabButton from './TabButton.js';
 import TabStrip from './TabStrip.js';
@@ -71,6 +74,14 @@ class Tabs extends Explorer {
     );
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.tabAlign) {
+      if ('tabAlign' in this.$.proxyList)
+      this.$.proxyList.tabAlign = state.tabAlign;
+    }
+  }
+
   /**
    * The alignment of the tabs within the tab strip.
    * 
@@ -87,19 +98,16 @@ class Tabs extends Explorer {
     this.setState({ tabAlign });
   }
 
-  get updates() {
-    return merge(super.updates, {
-      $: {
-        proxyList: {
-          attributes: {
-            'tab-align': this.state.tabAlign
-          },
-          style: {
-            'z-index': 1
-          }
+  get [symbols.template]() {
+    // Next line is same as: const base = super[symbols.template]
+    const base = getSuperProperty(this, Tabs, symbols.template);
+    return template.concat(base, template.html`
+      <style>
+        #proxyList {
+          z-index: 1;
         }
-      }
-    });
+      </style>
+    `);
   }
 
 }

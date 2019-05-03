@@ -8,7 +8,7 @@ import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
-import ReactiveElement from './ReactiveElement.js';
+import ReactiveElement from './ReactiveElement2.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 
@@ -90,6 +90,7 @@ class TabStrip extends Base {
   get defaultState() {
     return Object.assign(super.defaultState, {
       orientation: 'horizontal',
+      role: 'tablist',
       selectionRequired: true,
       tabAlign: 'start',
       tabButtonRole: 'tab',
@@ -189,6 +190,32 @@ class TabStrip extends Base {
     });
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.original || changed.tabAlign) {
+      const { original, tabAlign } = this.state;  
+      const justifyContentForTabAlign = {
+        'center': 'center',
+        'end': 'flex-end',
+        'start': 'flex-start',
+        'stretch': null // No style needed for "stretch"
+      };
+      this.style.justifyContent = justifyContentForTabAlign[tabAlign] ||
+          original.style['justify-content'];
+    }
+    if (changed.position) {
+      const { position } = state;
+      const lateralPosition = position === 'left' || position === 'right';
+      this.style.flexDirection = lateralPosition ? 'column' : 'row';
+    }
+    if (changed.original || changed.role) {
+      const originalRole = state.original && state.original.attributes.role;
+      if (!originalRole) {
+        this.setAttribute('role', state.role);
+      }
+    }
+  }
+
   get [symbols.template]() {
     return template.html`
       <style>
@@ -198,33 +225,6 @@ class TabStrip extends Base {
       </style>
       <slot></slot>
     `;
-  }
-
-  get updates() {
-    const base = super.updates || {};
-    const original = this.state.original;
-
-    const { position, tabAlign } = this.state;
-    const lateralPosition = position === 'left' || position === 'right';
-    const flexDirection = lateralPosition ? 'column' : 'row';
-
-    const justifyContentForTabAlign = {
-      'center': 'center',
-      'end': 'flex-end',
-      'start': 'flex-start',
-      'stretch': null // No style needed for "stretch"
-    };
-    const justifyContent = justifyContentForTabAlign[tabAlign] || original.style['justify-content']
-
-    return merge(base, {
-      attributes: {
-        role: original.attributes.role || 'tablist'
-      },
-      style: {
-        'flex-direction': flexDirection,
-        'justify-content': justifyContent
-      }
-    });
   }
 
 }
