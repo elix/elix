@@ -1,7 +1,7 @@
 import { getSuperProperty } from './workarounds.js';
-import { merge, apply } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import * as updates from './updates.js';
 import Dialog from './Dialog.js';
 
 
@@ -110,18 +110,18 @@ class AlertDialog extends Dialog {
     return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.choiceButtons) {
+      updates.applyChildNodes(this.$.buttonContainer, state.choiceButtons);
+    }
+  }
+
   get [symbols.template]() {
     // Next line is same as: const result = super[symbols.template]
     const result = getSuperProperty(this, AlertDialog, symbols.template);
-    apply(result.content, {
-      $: {
-        frame: {
-          style: {
-            padding: '1em'
-          }
-        }
-      }
-    });
+    const frame = result.content.getElementById('frame');
+    frame.style.padding = '1em';
     const alertDialogTemplate = template.html`
       <style>
         #buttonContainer {
@@ -147,17 +147,6 @@ class AlertDialog extends Dialog {
       template.transmute(defaultSlot, alertDialogTemplate);
     }
     return result;
-  }
-
-  get updates() {
-    const childNodes = this.state.choiceButtons;
-    return merge(super.updates, {
-      $: {
-        buttonContainer: {
-          childNodes
-        }
-      }
-    });
   }
 
 }
