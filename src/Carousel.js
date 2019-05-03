@@ -61,6 +61,8 @@ class Carousel extends Base {
   [symbols.beforeUpdate]() {
     const proxyListChanged = this[symbols.renderedRoles].proxyListRole
       !== this.state.proxyListRole;
+    const stageChanged = this[symbols.renderedRoles].stageRole
+      !== this.state.stageRole;
     if (proxyListChanged && this.$.proxyList) {
       // Turn off focus handling for old proxy list.
       /** @type {any} */
@@ -73,6 +75,12 @@ class Carousel extends Base {
       /** @type {any} */
       const cast = this.$.proxyList;
       forwardFocus(cast, this);
+      cast.removeAttribute('tabindex');
+    }
+    if (stageChanged) {
+      /** @type {any} */
+      const cast = this.$.stage;
+      cast.removeAttribute('tabindex');      
     }
   }
   
@@ -113,6 +121,19 @@ class Carousel extends Base {
     );
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.darkMode) {
+      const supportsDarkMode = 'darkMode' in this.$.arrowButtonLeft;
+      // Wait for knowledge of dark mode
+      if (state.darkMode !== null && supportsDarkMode) {
+        const { darkMode } = state;
+        this.$.arrowButtonLeft.darkMode = darkMode;
+        this.$.arrowButtonRight.darkMode = darkMode;
+      }
+    }
+  }
+
   get [symbols.swipeTarget]() {
     // Next line is same as: const base = super[symbols.swipeTarget]
     const base = getSuperProperty(this, Carousel, symbols.swipeTarget);
@@ -126,7 +147,7 @@ class Carousel extends Base {
     const base = getSuperProperty(this, Carousel, symbols.template);
     const stage = base.content.querySelector('#stage');
     this[ArrowDirectionMixin.wrap](stage);
-    return template.concat(base, template.html`
+    const result = template.concat(base, template.html`
       <style>
         .arrowButton {
           font-size: 48px;
@@ -142,32 +163,9 @@ class Carousel extends Base {
         }
       </style>
     `);
-  }
-
-  get updates() {
-    const { darkMode } = this.state;
-    const arrowButtonUpdates = {};
-    if (darkMode !== null) {
-      if ('darkMode' in this.$.arrowButtonLeft) {
-        arrowButtonUpdates.darkMode = darkMode;
-      }
-    }
-    return merge(super.updates, {
-      $: {
-        arrowButtonLeft: arrowButtonUpdates,
-        arrowButtonRight: arrowButtonUpdates,
-        proxyList: {
-          attributes: {
-            tabindex: ''
-          }
-        },
-        stage: {
-          attributes: {
-            tabindex: ''
-          }
-        }
-      }
-    });
+    const proxyList = result.content.getElementById('proxyList');
+    proxyList.setAttribute('tabindex', '');
+    return result;
   }
 
 }

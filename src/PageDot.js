@@ -22,6 +22,11 @@ const Base =
  */
 class PageDot extends Base {
 
+  componentDidMount() {
+    super.componentDidMount();
+    this.setAttribute('role', 'none');    
+  }
+
   get [symbols.template]() {
     // Next line is same as: const base = super[symbols.template]
     const base = getSuperProperty(this, PageDot, symbols.template);
@@ -38,30 +43,27 @@ class PageDot extends Base {
           transition: opacity 0.2s;
           width: 8px;
         }
+
+        @media (min-width: 768px) {
+          :host {
+            height: 12px;
+            width: 12px;
+          }
+        }
       </style>
     `);
   }
 
-  get updates() {
-    const base = super.updates || {};
-    const desktop = matchMedia('(min-width: 768px)').matches;
-    const size = desktop ? '12px' : null;
-    const darkMode = this.state.darkMode;
-    const backgroundColor = darkMode === null ?
-      null : // Wait for knowledge of dark mode
-      darkMode ?
-      `rgb(255, 255, 255)` :
-      `rgb(0, 0, 0)`;
-    return merge(super.updates, {
-      attributes: {
-        role: 'none'
-      },
-      style: {
-        'background-color': backgroundColor,
-        'height': size || base.style && base.style.height,
-        'width': size || base.style && base.style.width
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.darkMode) {
+      // Wait for knowledge of dark mode
+      if (state.darkMode !== null) {
+        this.style.backgroundColor = state.darkMode ?
+          'rgb(255, 255, 255)' :
+          'rgb(0, 0, 0)';
       }
-    });
+    }
   }
 
 }
