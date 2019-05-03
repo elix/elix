@@ -1,4 +1,4 @@
-import { merge } from './updates.js';
+import * as symbols from './symbols.js';
 import * as template from './template.js';
 
 
@@ -16,6 +16,17 @@ const wrap = Symbol('wrap');
 function PageNumbersMixin(Base) {
 
   class PageNumbers extends Base {
+
+    [symbols.render](state, changed) {
+      if (super[symbols.render]) { super[symbols.render](state, changed); }
+      if (changed.selectedIndex) {
+        const { selectedIndex } = state;
+        const textContent = selectedIndex >= 0 && this.items ?
+          `${selectedIndex + 1} / ${this.items.length}` :
+          '';
+        this.$.pageNumber.textContent = textContent;
+      }
+    }
 
     /**
      * Destructively wrap a node with elements to show page numbers.
@@ -39,20 +50,6 @@ function PageNumbersMixin(Base) {
         </div>
       `;
       template.wrap(original, pageNumbersTemplate.content, '#pageNumbersContainer');
-    }
-
-    get updates() {
-      const selectedIndex = this.selectedIndex || this.state.selectedIndex;
-      const textContent = selectedIndex >= 0 && this.items ?
-        `${selectedIndex + 1} / ${this.items.length}` :
-        '';
-      return merge(super.updates, {
-        $: {
-          pageNumber: {
-            textContent
-          }
-        }
-      });
     }
 
   }
