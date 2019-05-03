@@ -1,4 +1,4 @@
-import { merge } from './updates.js';
+import * as symbols from './symbols.js';
 import AutoCompleteInput from './AutoCompleteInput.js';
 import ListComboBox from './ListComboBox.js';
 import ItemsTextMixin from './ItemsTextMixin.js';
@@ -25,17 +25,13 @@ class AutoCompleteComboBox extends Base {
     });
   }
 
-  get updates() {
-    return merge(super.updates, {
-      $: {
-        input: Object.assign(
-          {},
-          'texts' in this.$.input && {
-            texts: this.state.texts
-          }
-        )
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.texts) {
+      if ('texts' in this.$.input) {
+        this.$.input.texts = state.texts;
       }
-    });
+    }
   }
 
 }

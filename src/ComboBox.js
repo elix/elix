@@ -1,5 +1,4 @@
 import { getSuperProperty } from './workarounds.js';
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import DelegateFocusMixin from './DelegateFocusMixin.js';
@@ -37,7 +36,11 @@ class ComboBox extends Base {
   }
 
   [symbols.beforeUpdate]() {
+    const popupRoleChanged = this[symbols.renderedRoles].popupRole !==
+        this.state.popupRole;
+    
     if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+
     if (this[symbols.renderedRoles].inputRole !== this.state.inputRole) {
       template.transmute(this.$.input, this.state.inputRole);
 
@@ -114,6 +117,23 @@ class ComboBox extends Base {
         forwardFocus(this.$.toggleButton, this.$.input);
       }
       this[symbols.renderedRoles].toggleButtonRole = this.state.toggleButtonRole;
+    }
+
+    if (popupRoleChanged) {
+      const popup = this.$.popup;
+      popup.removeAttribute('tabindex');
+      if ('autoFocus' in popup) {
+        popup.autoFocus = false;
+      }
+      // TODO: Would be better if we could set backdropRole to null
+      popup.backdrop.style.display = 'none';
+      Object.assign(popup.frame.style, {
+        display: 'flex',
+        flexDirection: 'column'
+      });
+      if ('closeOnWindowResize' in popup) {
+        popup.closeOnWindowResize = false;
+      }
     }
   }
 
@@ -244,12 +264,64 @@ class ComboBox extends Base {
     });
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.ariaLabel) {
+      this.$.input.setAttribute('aria-label', state.ariaLabel);
+    }
+    if (changed.disabled) {
+      const { disabled } = state;
+      this.$.input.disabled = disabled;
+      this.$.toggleButton.disabled = disabled;
+    }
+    if (changed.languageDirection) {
+      const { languageDirection } = state;
+      const rightToLeft = languageDirection === 'rtl';
+      // We want to style the inner input if it's been created with
+      // WrappedStandardElement, otherwise style the input directly.
+      const input = 'inner' in this.$.input ?
+        this.$.input.inner :
+        this.$.input;
+      Object.assign(input.style, {
+        paddingBottom: '2px',
+        paddingLeft: rightToLeft ? '1.5em' : '2px',
+        paddingRight: rightToLeft ? '2px' : '1.5em',
+        paddingTop: '2px'
+      });
+      Object.assign(this.$.toggleButton.style, {
+        left: rightToLeft ? '3px' : '',
+        right: rightToLeft ? '' : '3px'
+      });
+    }
+    if (changed.original || changed.role) {
+      const originalRole = state.original && state.original.attributes.role;
+      if (!originalRole) {
+        this.setAttribute('role', state.role);
+      }
+    }
+    if (changed.placeholder) {
+      this.$.input.placeholder = state.placeholder;
+    }
+    if (changed.popupPosition) {
+      const { popupPosition } = state;
+      this.$.downIcon.style.display = popupPosition === 'below' ?
+        'block' :
+        'none';
+      this.$.upIcon.style.display = popupPosition === 'above' ?
+        'block' :
+        'none';
+    }
+    if (changed.value) {
+      this.$.input.value = state.value;
+    }
+  }
+
   get [symbols.template]() {
     // Next line is same as: const result = super[symbols.template]
-    const result = getSuperProperty(this, ComboBox, symbols.template);
+    const base = getSuperProperty(this, ComboBox, symbols.template);
 
     // Use an input element in the source.
-    const sourceSlot = result.content.querySelector('slot[name="source"]');
+    const sourceSlot = base.content.querySelector('slot[name="source"]');
     if (!sourceSlot) {
       throw `Couldn't find slot with name "source".`;
     }
@@ -266,13 +338,14 @@ class ComboBox extends Base {
     `;
     template.replace(sourceSlot, sourceTemplate.content);
 
-    const styleTemplate = template.html`
+    return template.concat(base, template.html`
       <style>
         :host {
           outline: none;
         }
 
         #source {
+          background-color: inherit;
           position: relative;
         }
 
@@ -303,11 +376,18 @@ class ComboBox extends Base {
         #toggleButton:not([disabled]):hover {
           background: #eee;
         }
-      </style>
-    `;
-    result.content.appendChild(styleTemplate.content);
 
-    return result;
+        #downIcon,
+        #upIcon {
+          fill: currentColor;
+          margin: 0.25em;
+        }
+
+        #popup {
+          flex-direction: column;
+        }
+      </style>
+    `);
   }
 
   /**
@@ -322,110 +402,6 @@ class ComboBox extends Base {
   }
   set toggleButtonRole(toggleButtonRole) {
     this.setState({ toggleButtonRole });
-  }
-
-  get updates() {
-    const base = super.updates;
-    const { disabled, placeholder, popupPosition, value } = this.state;
-    const role = this.state.original && this.state.original.attributes.role ||
-      base.attributes && base.attributes.role ||
-      this.state.role;
-
-    // We want to style the inner input if it's been created with
-    // WrappedStandardElement, otherwise style the input directly.
-    const hasInnerInput = 'inner' in this.$.input;
-    const inputUpdates = {
-      style: {
-        'padding-bottom': '2px',
-        'padding-left': this[symbols.rightToLeft] ? '1.5em' : '2px',
-        'padding-right': this[symbols.rightToLeft] ? '2px' : '1.5em',
-        'padding-top': '2px'
-      }
-    };
-
-    return merge(
-      base,
-      {
-        attributes: {
-          role
-        },
-        $: {
-          downIcon: {
-            style: {
-              display: popupPosition === 'below' ? 'block' : 'none',
-              fill: 'currentColor',
-              margin: '0.25em'
-            }
-          },
-          input: {
-            attributes: {
-              'aria-label': this.state.ariaLabel
-            },
-            disabled,
-            placeholder,
-            value
-          },
-          popup: Object.assign(
-            {
-              attributes: {
-                tabindex: null
-              },
-              autoFocus: false,
-              backdrop: {
-                style: {
-                  // TODO: Would be better if we could set backdropRole to null
-                  display: 'none'
-                }
-              },
-              frame: {
-                style: {
-                  display: 'flex',
-                  'flex-direction': 'column'
-                }
-              },
-              style: {
-                'flex-direction': 'column'
-              }
-            },
-            'closeOnWindowResize' in this.$.popup && {
-              closeOnWindowResize: false
-            },  
-          ),
-          source: {
-            style: {
-              'background-color': null,
-              color: null
-            }
-          },
-          toggleButton: {
-            disabled,
-            style: {
-              left: this[symbols.rightToLeft] ? '3px' : '',
-              right: this[symbols.rightToLeft] ? '' : '3px',
-            }
-          },
-          upIcon: {
-            style: {
-              display: popupPosition === 'above' ? 'block' : 'none',
-              fill: 'currentColor',
-              margin: '0.25em'
-            }
-          }
-        }
-      },
-      hasInnerInput && {
-        $: {
-          input: {
-            inner: inputUpdates
-          }
-        }
-      },
-      !hasInnerInput && {
-        $: {
-          input: inputUpdates
-        }
-      }
-    );
   }
 
   get value() {

@@ -78,25 +78,19 @@ class FilterComboBox extends Base {
     return state;
   }
 
-  get updates() {
-    const { filter, selectedIndex } = this.state;
-    const applyFilter = filter === '' || selectedIndex === -1;
-    return merge(super.updates, {
-      $: {
-        input: Object.assign(
-          {},
-          'texts' in this.$.input && {
-            texts: this.state.texts
-          }
-        ),
-        list: Object.assign(
-          {},
-          applyFilter && {
-            filter
-          }
-        )
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.filter || changed.selectedIndex) {
+      const { filter, selectedIndex } = state;
+      if (filter === '' || selectedIndex === -1) {
+        this.$.list.filter = filter;
       }
-    });
+    }
+    if (changed.texts) {
+      if ('texts' in this.$.input) {
+        this.$.input.texts = state.texts;
+      }
+    }
   }
 
 }

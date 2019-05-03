@@ -31,7 +31,16 @@ const Base =
 class ListComboBox extends Base {
 
   [symbols.beforeUpdate]() {
+
+    const inputRoleChanged = this[symbols.renderedRoles].inputRole !==
+        this.state.inputRole;
+    
     if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+
+    if (inputRoleChanged) {
+      this.$.input.setAttribute('aria-autocomplete', 'both');
+    }
+
     if (this[symbols.renderedRoles].listRole !== this.state.listRole) {
       template.transmute(this.$.list, this.state.listRole);
   
@@ -69,6 +78,11 @@ class ListComboBox extends Base {
 
       this[symbols.renderedRoles].listRole = this.state.listRole;
     }
+  }
+
+  componentDidMount() {
+    super.componentDidMount();
+    this.setAttribute('aria-haspopup', 'listbox');
   }
 
   get defaultState() {
@@ -217,22 +231,11 @@ class ListComboBox extends Base {
     return result;
   }
 
-  get updates() {
-    return merge(super.updates, {
-      attributes: {
-        'aria-haspopup': 'listbox'
-      },
-      $: {
-        input: {
-          attributes: {
-            'aria-autocomplete': 'both'
-          }
-        },
-        list: {
-          selectedIndex: this.state.selectedIndex
-        }
-      }
-    });
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.selectedIndex) {
+      this.$.list.selectedIndex = state.selectedIndex;
+    }
   }
 
 }
