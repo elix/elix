@@ -1,7 +1,6 @@
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
-import ReactiveElement from './ReactiveElement.js';
+import ReactiveElement from './ReactiveElement2.js';
 
 
 /**
@@ -12,6 +11,11 @@ import ReactiveElement from './ReactiveElement.js';
  * @inherits ReactiveElement
  */
 class MenuSeparator extends ReactiveElement {
+
+  componentDidMount() {
+    super.componentDidMount();
+    this.setAttribute('aria-hidden', 'true');
+  }
 
   get disabled() {
     return true;
@@ -33,14 +37,6 @@ class MenuSeparator extends ReactiveElement {
       </style>
       <hr>
     `;
-  }
-
-  get updates() {
-    return merge(super.updates, {
-      attributes: {
-        'aria-hidden': true
-      }
-    });
   }
 
 }
