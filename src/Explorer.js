@@ -1,16 +1,15 @@
-import { apply, merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import * as updates from './updates.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import ListBox from './ListBox.js';
 import Modes from './Modes.js';
-import ReactiveElement from './ReactiveElement.js';
+import ReactiveElement from './ReactiveElement2.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 
 
 const proxySlotchangeFiredKey = Symbol('proxySlotchangeFired');
-
 
 // Does a list position imply a lateral arrangement of list and stage?
 const lateralPositions = {
@@ -236,16 +235,17 @@ class Explorer extends Base {
     return {};
   }
 
-  [symbols.render]() {
-    if (super[symbols.render]) { super[symbols.render](); }
+  [symbols.render](state, changed) {
+    if (super[symbols.render]) { super[symbols.render](state, changed); }
 
-    setListAndStageOrder(this);
-
-    const items = this.items;
+    const items = state.items;
     if (items) {
       // Render updates for proxies.
-      const proxies = this.proxies;
-      const isDefaultProxy = this.state.defaultProxies.length > 0;
+      const items = state.items;
+      const proxies = state.defaultProxies.length > 0 ?
+        state.defaultProxies :
+        state.assignedProxies;
+      const isDefaultProxy = state.defaultProxies.length > 0;
       proxies.forEach((proxy, index) => {
         // Ask component for any updates to this proxy.
         const item = items[index];
@@ -254,12 +254,79 @@ class Explorer extends Base {
           index,
           isDefaultProxy
         };
-        const updates = this.proxyUpdates(proxy, calcs);
+        const proxyUpdates = this.proxyUpdates(proxy, calcs);
         // Apply updates to the proxy.
         /** @type {any} */
         const element = proxy;
-        apply(element, updates);
+        updates.apply(element, proxyUpdates);
       });
+    }
+    if (changed.defaultProxies) {
+      // Render the default proxies.
+      const childNodes = [this.$.proxySlot, ...this.state.defaultProxies];
+      updates.applyChildNodes(this.$.proxyList, childNodes);
+    }
+    if (changed.languageDirection || changed.proxyListPosition) {
+      // Map the relative position of the list vis-a-vis the stage to a position
+      // from the perspective of the list.
+      if ('position' in this.$.proxyList) {
+        const proxyListPosition = state.proxyListPosition;
+        const rightToLeft = state.languageDirection === 'rtl';
+        let position;
+        switch (proxyListPosition) {
+          case 'end':
+            position = rightToLeft ? 'left' : 'right';
+            break;
+          case 'start':
+            position = rightToLeft ? 'right' : 'left';
+            break;
+          default:
+            position = proxyListPosition;
+            break;
+        }
+        this.$.proxyList.position = position;
+      }
+    }
+    if (changed.proxyListOverlap) {
+      const { proxyListOverlap } = state;
+      const lateralPosition = lateralPositions[state.proxyListPosition];
+      Object.assign(this.$.proxyList.style, {
+        height: lateralPosition ? '100%' : '',
+        position: proxyListOverlap ? 'absolute' : '',
+        width: lateralPosition ? '' : '100%',
+        zIndex: proxyListOverlap ? '1' : ''
+      });
+    }
+    if (changed.proxyListPosition) {
+      setListAndStageOrder(this);
+      const { proxyListPosition } = state;
+      const lateralPosition = lateralPositions[proxyListPosition];
+      this.$.explorerContainer.style.flexDirection = lateralPosition ? 'row' : 'column';
+      Object.assign(this.$.proxyList.style, {
+        bottom: proxyListPosition === 'bottom' ? '0' : '',
+        left: proxyListPosition === 'left' ? '0' : '',
+        right: proxyListPosition === 'right' ? '0' : '',
+        top: proxyListPosition === 'top' ? '0' : '',
+      });
+    }
+    if (changed.selectedIndex) {
+      const { selectedIndex } = state;
+      this.$.proxyList.selectedIndex = selectedIndex;
+      this.$.stage.selectedIndex = selectedIndex;
+    }
+    if (changed.selectionRequired) {
+      if ('selectionRequired' in this.$.proxyList) {
+        this.$.proxyList.selectionRequired = state.selectionRequired;
+      }
+    }
+    if (changed.swipeFraction) {
+      const { swipeFraction } = state;
+      if ('swipeFraction' in this.$.proxyList) {
+        this.$.proxyList.swipeFraction = swipeFraction;
+      }
+      if ('swipeFraction' in this.$.stage) {
+        this.$.stage.swipeFraction = swipeFraction;
+      }
     }
   }
 
@@ -300,90 +367,6 @@ class Explorer extends Base {
         <div id="stage" role="none"><slot></slot></div>
       </div>
     `;
-  }
-
-  get updates() {
-    // Map the relative position of the list vis-a-vis the stage to a position
-    // from the perspective of the list.
-    const proxyListHasPosition = 'position' in this.$.proxyList;
-    const proxyListPosition = this.state.proxyListPosition;
-    const lateralPosition = lateralPositions[proxyListPosition];
-    const rightToLeft = this[symbols.rightToLeft];
-    let position;
-    switch (proxyListPosition) {
-      case 'end':
-        position = rightToLeft ? 'left' : 'right';
-        break;
-      case 'start':
-        position = rightToLeft ? 'right' : 'left';
-        break;
-      default:
-        position = proxyListPosition;
-        break;
-    }
-
-    const selectedIndex = this.selectedIndex;
-    const proxyListHasSwipeFraction = 'swipeFraction' in this.$.proxyList;
-    const stageHasSwipeFraction = 'swipeFraction' in this.$.stage;
-    const swipeFraction = this.state.swipeFraction;
-
-    const proxyListHasSelectionRequired = 'selectionRequired' in this.$.proxyList;
-
-    const listChildNodes = [this.$.proxySlot, ...this.state.defaultProxies];
-    const listStyle = {
-      bottom: '',
-      height: '',
-      left: '',
-      position: '',
-      right: '',
-      top: '',
-      width: '',
-      'z-index': ''
-    };
-    if (this.state.proxyListOverlap) {
-      listStyle.position = 'absolute';
-      listStyle['z-index'] = '1';
-      if (lateralPosition) {
-        listStyle.height = '100%';
-      } else {
-        listStyle.width = '100%';
-      }
-      listStyle[proxyListPosition] = '0';
-    }
-
-    return merge(super.updates, {
-      $: {
-        explorerContainer: {
-          style: {
-            'flex-direction': lateralPosition ? 'row' : 'column'
-          },
-        },
-        proxyList: Object.assign(
-          {
-            childNodes: listChildNodes,
-            selectedIndex,
-            style: listStyle
-          },
-          proxyListHasPosition && {
-            position
-          },
-          proxyListHasSwipeFraction && {
-            swipeFraction
-          },
-          proxyListHasSelectionRequired && {
-            selectionRequired: true
-          }
-        ),
-        stage: Object.assign(
-          {
-            selectedIndex
-          },
-          stageHasSwipeFraction && {
-            swipeFraction
-          }
-        )
-      }
-    });
   }
 
 }
