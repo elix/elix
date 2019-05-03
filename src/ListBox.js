@@ -11,7 +11,7 @@ import KeyboardMixin from './KeyboardMixin.js';
 import KeyboardPagedSelectionMixin from './KeyboardPagedSelectionMixin.js';
 import KeyboardPrefixSelectionMixin from './KeyboardPrefixSelectionMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
-import ReactiveElement from './ReactiveElement.js';
+import ReactiveElement from './ReactiveElement2.js';
 import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SelectionInViewMixin from './SelectionInViewMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
@@ -96,6 +96,24 @@ class ListBox extends Base {
     this.setState({ orientation });
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.orientation) {
+      const style = this.state.orientation === 'vertical' ?
+        {
+          flexDirection: 'column',
+          overflowX: 'hidden',
+          overflowY: 'auto'
+        } :
+        {
+          flexDirection: 'row',
+          overflowX: 'auto',
+          overflowY: 'hidden'
+        };
+      Object.assign(this.$.content.style, style);
+    }
+  }
+
   get [symbols.scrollTarget]() {
     return this.$.content;
   }
@@ -136,25 +154,6 @@ class ListBox extends Base {
         <slot></slot>
       </div>
     `;
-  }
-
-  get updates() {
-    const style = this.state.orientation === 'vertical' ?
-      {
-        'flex-direction': 'column',
-        'overflow-x': 'hidden',
-        'overflow-y': 'auto'
-      } :
-      {
-        'flex-direction': 'row',
-        'overflow-x': 'auto',
-        'overflow-y': 'hidden'
-      };
-    return merge(super.updates, {
-      $: {
-        content: { style }
-      }
-    });
   }
 
 }

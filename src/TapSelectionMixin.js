@@ -48,6 +48,17 @@ export default function TapSelectionMixin(Base) {
       });
     }
 
+    componentDidMount() {
+      if (super.componentDidMount) { super.componentDidMount(); }
+      Object.assign(this.style, {
+          touchAction: 'manipulation', // for iOS Safari
+          mozUserSelect: 'none',
+          msUserSelect: 'none',
+          webkitUserSelect: 'none',
+          userSelect: 'none'
+      });
+    }
+
     [symbols.tap](event) {
       // In some situations, the event target will not be the child which was
       // originally clicked on. E.g., if the item clicked on is a button, the
