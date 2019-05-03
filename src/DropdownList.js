@@ -6,6 +6,7 @@ import MenuButton from './MenuButton.js';
 import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
+import { updates } from './elix.js';
 
 
 const Base =
@@ -70,10 +71,37 @@ class DropdownList extends Base {
     return state;
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.itemRole) {
+      if ('itemRole' in this.$.menu) {
+        this.$.menu.itemRole = state.itemRole;
+      }
+    }
+    if (changed.popupPosition) {
+      const { popupPosition } = state;
+      this.$.downIcon.style.display = popupPosition === 'below' ?
+        'block' :
+        'none';
+      this.$.upIcon.style.display = popupPosition === 'above' ?
+        'block' :
+        'none';
+    }
+    if (changed.selectedIndex) {
+      const items = state.items || [];
+      const selectedItem = items[state.selectedIndex];
+      const clone = selectedItem ?
+        selectedItem.cloneNode(true) :
+        null;
+      const childNodes = clone ? clone.childNodes : [];
+      updates.applyChildNodes(this.$.value, childNodes);
+    }
+  }
+
   get [symbols.template]() {
     // Next line is same as: const result = super[symbols.template]
-    const result = getSuperProperty(this, DropdownList, symbols.template);
-    const sourceSlot = result.content.querySelector('slot[name="source"]');
+    const base = getSuperProperty(this, DropdownList, symbols.template);
+    const sourceSlot = base.content.querySelector('slot[name="source"]');
     if (!sourceSlot) {
       throw `Couldn't find slot with name "source".`;
     }
@@ -91,45 +119,22 @@ class DropdownList extends Base {
     apply(sourceSlot, {
       childNodes: sourceSlotContent.content.childNodes
     });
-    return result;
-  }
+    return template.concat(
+      base,
+      template.html`
+        <style>
+          #downIcon,
+          #upIcon {
+            fill: currentColor;
+            margin-left: 0.25em;
+          }
 
-  get updates() {
-    const popupPosition = this.state.popupPosition;
-    const itemRole = 'itemRole' in this.$.menu ? this.state.itemRole : null;
-    const clone = this.selectedItem ?
-      this.selectedItem.cloneNode(true) :
-      null;
-    const childNodes = clone ? clone.childNodes : [];
-    return merge(super.updates, {
-      $: {
-        downIcon: {
-          style: {
-            display: popupPosition === 'below' ? 'block' : 'none',
-            fill: 'currentColor',
-            'margin-left': '0.25em',
+          #menu {
+            padding: 0;
           }
-        },
-        menu: Object.assign(
-          {
-            style: {
-              padding: 0
-            },
-          },
-          itemRole ? { itemRole } : null
-        ),
-        upIcon: {
-          style: {
-            display: popupPosition === 'above' ? 'block' : 'none',
-            fill: 'currentColor',
-            'margin-left': '0.25em',
-          }
-        },
-        value: {
-          childNodes
-        }
-      }
-    });
+        </style>
+      `
+    );
   }
 
   /**

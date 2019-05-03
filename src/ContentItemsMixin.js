@@ -177,8 +177,8 @@ export default function ContentItemsMixin(Base) {
         {};
     }
 
-    [symbols.render]() {
-      if (super[symbols.render]) { super[symbols.render](); }
+    [symbols.render](state, changed) {
+      if (super[symbols.render]) { super[symbols.render](state, changed); }
       if (this.itemUpdates) {
         const content = this.state.content || [];
         const elements = Array.prototype.filter.call(content, node => node instanceof Element);

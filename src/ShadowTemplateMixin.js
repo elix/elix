@@ -42,8 +42,8 @@ export default function ShadowTemplateMixin(Base) {
      * If the component defines a template, a shadow root will be created on the
      * component instance, and the template stamped into it.
      */
-    [symbols.render]() {
-      if (super[symbols.render]) { super[symbols.render](); }
+    [symbols.render](state, changed) {
+      if (super[symbols.render]) { super[symbols.render](state, changed); }
       if (this.shadowRoot) {
         // Already rendered
         return;
