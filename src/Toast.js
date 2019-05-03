@@ -84,6 +84,84 @@ class Toast extends Base {
     this.setState({ fromEdge });
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.fromEdge) {
+      // Host
+      const hostEdgeStyles = {
+        'bottom': {
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+        },
+        'bottom-left': {
+          alignItems: 'flex-start',
+          justifyContent: 'flex-end',
+        },
+        'bottom-right': {
+          alignItems: 'flex-end',
+          justifyContent: 'flex-end',
+        },
+        'top': {
+          alignItems: 'center',
+          justifyContent: null
+        },
+        'top-left': {
+          alignItems: 'flex-start',
+          justifyContent: null
+        },
+        'top-right': {
+          alignItems: 'flex-end',
+          justifyContent: null
+        }
+      };
+      Object.assign(this.style, hostEdgeStyles[state.fromEdge]);
+    }
+    if (changed.effect || changed.effectPhase || changed.fromEdge
+        || changed.languageDirection) {
+      const { effect, effectPhase, fromEdge, languageDirection } = state;
+      const rightToLeft = languageDirection === 'rtl';
+      const oppositeEdge = {
+        'bottom-left': 'bottom-right',
+        'bottom-right': 'bottom-left',
+        'top-left': 'top-right',
+        'top-right': 'top-left'
+      };
+      const languageAdjustedEdge = rightToLeft ?
+        (oppositeEdge[fromEdge] || fromEdge) :
+        fromEdge;
+  
+      const edgeTransforms = {
+        'bottom': 'translateY(100%)',
+        'bottom-left': 'translateX(-100%)',
+        'bottom-right': 'translateX(100%)',
+        'top': 'translateY(-100%)',
+        'top-left': 'translateX(-100%)',
+        'top-right': 'translateX(100%)'
+      };
+      const openEdgeTransforms = {
+        'bottom': 'translateY(0)',
+        'bottom-left': 'translateX(0)',
+        'bottom-right': 'translateX(0)',
+        'top': 'translateY(0)',
+        'top-left': 'translateX(0)',
+        'top-right': 'translateX(0)'
+      };
+  
+      const opened = (effect === 'open' && effectPhase !== 'before') ||
+        (effect === 'close' && effectPhase === 'before');
+  
+      const opacity = opened ? 1 : 0;
+      const transform = opened ?
+        openEdgeTransforms[languageAdjustedEdge] :
+        edgeTransforms[languageAdjustedEdge];
+  
+      Object.assign(this.$.frame.style, {
+        opacity,
+        transform
+      });
+    }
+  }
+
   get [symbols.template]() {
     // Next line is same as: const base = super[symbols.template]
     const base = getSuperProperty(this, Toast, symbols.template);
@@ -91,6 +169,7 @@ class Toast extends Base {
       <style>
         :host {
           align-items: initial;
+          display: flex;
           flex-direction: column;
           height: 100%;
           justify-content: initial;
@@ -116,97 +195,6 @@ class Toast extends Base {
         }
       </style>
     `);
-  }
-
-  get updates() {
-    const base = super.updates || {};
-
-    // Host
-    const hostEdgeStyles = {
-      'bottom': {
-        'align-items': 'center',
-        'justify-content': 'flex-end',
-      },
-      'bottom-left': {
-        'align-items': 'flex-start',
-        'justify-content': 'flex-end',
-      },
-      'bottom-right': {
-        'align-items': 'flex-end',
-        'justify-content': 'flex-end',
-      },
-      'top': {
-        'align-items': 'center',
-        'justify-content': null
-      },
-      'top-left': {
-        'align-items': 'flex-start',
-        'justify-content': null
-      },
-      'top-right': {
-        'align-items': 'flex-end',
-        'justify-content': null
-      }
-    };
-    const hostEdgeStyle = hostEdgeStyles[this.state.fromEdge];
-    const display = base.style && base.style.display || 'flex';
-
-    // Content
-    const oppositeEdge = {
-      'bottom-left': 'bottom-right',
-      'bottom-right': 'bottom-left',
-      'top-left': 'top-right',
-      'top-right': 'top-left'
-    };
-    const fromEdge = this.state.fromEdge;
-    const languageAdjustedEdge = this[symbols.rightToLeft] ?
-      (oppositeEdge[fromEdge] || fromEdge) :
-      fromEdge;
-
-    const edgeTransforms = {
-      'bottom': 'translateY(100%)',
-      'bottom-left': 'translateX(-100%)',
-      'bottom-right': 'translateX(100%)',
-      'top': 'translateY(-100%)',
-      'top-left': 'translateX(-100%)',
-      'top-right': 'translateX(100%)'
-    };
-    const openEdgeTransforms = {
-      'bottom': 'translateY(0)',
-      'bottom-left': 'translateX(0)',
-      'bottom-right': 'translateX(0)',
-      'top': 'translateY(0)',
-      'top-left': 'translateX(0)',
-      'top-right': 'translateX(0)'
-    };
-
-    const effect = this.state.effect;
-    const phase = this.state.effectPhase;
-    const opened = (effect === 'open' && phase !== 'before') ||
-      (effect === 'close' && phase === 'before');
-
-    const opacity = opened ? 1 : 0;
-    const transform = opened ?
-      openEdgeTransforms[languageAdjustedEdge] :
-      edgeTransforms[languageAdjustedEdge];
-
-    const frameProps = {
-      style: {
-        opacity,
-        transform
-      }
-    };
-    
-    return merge(base, {
-      style: {
-        'align-items': hostEdgeStyle['align-items'],
-        display,
-        'justify-content': hostEdgeStyle['justify-content'],
-      },
-      $: {
-        frame: frameProps
-      }
-    });
   }
 
 }
