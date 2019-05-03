@@ -1,11 +1,12 @@
-import { merge } from './updates.js';
+import { getSuperProperty } from './workarounds.js';
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import Dialog from './Dialog.js';
+import EffectMixin from './EffectMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 import TransitionEffectMixin from './TransitionEffectMixin.js';
-import EffectMixin from './EffectMixin.js';
 
 
 const Base =
@@ -34,7 +35,7 @@ const Base =
  * @mixes TransitionEffectMixin
  */
 class Drawer extends Base {
-  
+
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
 
@@ -75,6 +76,89 @@ class Drawer extends Base {
     this.setState({ fromEdge });
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.effect || changed.effectPhase || changed.enableEffects ||
+        changed.fromEdge || changed.languageDirection || changed.swipeFraction) {
+      // Render the drawer.
+      const {
+        effect,
+        effectPhase,
+        enableEffects,
+        fromEdge,
+        languageDirection,
+        swipeFraction
+      } = state;
+      const opened = (effect === 'open' && effectPhase !== 'before') ||
+        (effect === 'close' && effectPhase === 'before');
+
+      const rightToLeft = languageDirection === 'rtl';
+      const fromLeftEdge = fromEdge === 'left' ||
+        fromEdge === 'start' && !rightToLeft ||
+        fromEdge === 'end' && rightToLeft;
+
+      const sign = fromLeftEdge ? -1 : 1;
+      const swiping = swipeFraction !== null;
+      // Constrain the distance swiped to between 0 and a bit less than 1. A swipe
+      // distance of 1 itself would cause a tricky problem. The drawer would
+      // render itself completely off screen. This means the expected CSS
+      // transition would not occur, so the transitionend event wouldn't fire,
+      // leaving us waiting indefinitely for an event that will never come. By
+      // ensuring we always transition at least a tiny bit, we guarantee that a
+      // transition and its accompanying event will occur.
+      const constrainedSwipeFraction = swiping ?
+        Math.max(Math.min(sign * swipeFraction, 0.999), 0) :
+        0;
+      const maxOpacity = 0.2;
+      const opacity = opened ?
+        maxOpacity * (1 - constrainedSwipeFraction) :
+        0;
+
+      const translateFraction = opened ?
+      constrainedSwipeFraction :
+        1;
+      const translatePercentage = sign * translateFraction * 100;
+
+      let duration = 0;
+      const showTransition = enableEffects && !swiping &&
+        effect && effectPhase === 'during';
+      if (showTransition) {
+        // The time require to show transitions depends on how far apart the
+        // elements currently are from their desired state. As a reference point,
+        // we compare the expected opacity of the backdrop to its current opacity.
+        // (We can't use the swipeFraction, because no swipe is in progress.)
+        /** @type {any} */
+        const backdrop = this.$.backdrop;
+        const opacityCurrent = parseFloat(backdrop.style.opacity) || 0;
+        const opacityRemaining = Math.abs(opacityCurrent - opacity);
+        const fullDuration = 0.25; // Quarter second
+        duration = opacityRemaining / maxOpacity * fullDuration;
+      }
+      const transform = `translateX(${translatePercentage}%)`;
+
+      Object.assign(this.$.backdrop.style, {
+        opacity,
+        'transition': showTransition ? `opacity ${duration}s linear` : undefined,
+      });
+      Object.assign(this.$.frame.style, {
+        transform,
+        'transition': showTransition ? `transform ${duration}s` : undefined,
+      });
+    }
+    if (changed.fromEdge || changed.languageDirection) {
+      // Dock drawer to appropriate edge
+      const { fromEdge, languageDirection } = state;
+      const rightToLeft = languageDirection === 'rtl';
+      const mapFromEdgetoJustifyContent = {
+        'end': 'flex-end',
+        'left': rightToLeft ? 'flex-end' : 'flex-start',
+        'right': rightToLeft ? 'flex-start' : 'flex-end',
+        'start': 'flex-start'
+      };
+      this.style.justifyContent = mapFromEdgetoJustifyContent[fromEdge];
+    }
+  }
+
   async [symbols.swipeLeft]() {
     if (drawerAppearsFromLeftEdge(this)) {
       this.setState({
@@ -84,7 +168,7 @@ class Drawer extends Base {
       await this.close();
     }
   }
-  
+
   async [symbols.swipeRight]() {
     if (!drawerAppearsFromLeftEdge(this)) {
       this.setState({
@@ -101,95 +185,25 @@ class Drawer extends Base {
     return element;
   }
 
-  get updates() {
-    const base = super.updates || {};
+  get [symbols.template]() {
+    // Next line is same as: const base = super[symbols.template]
+    const base = getSuperProperty(this, Drawer, symbols.template);
+    return template.concat(base, template.html`
+      <style>
+        :host {
+          align-items: stretch;
+          flex-direction: row;
+        }
 
-    const effect = this.state.effect;
-    const phase = this.state.effectPhase;
-    const opened = (effect === 'open' && phase !== 'before') ||
-      (effect === 'close' && phase === 'before');
+        #backdrop {
+          will-change: opacity;
+        }
 
-    const fromEdge = this.fromEdge;
-    const rightToLeft = this[symbols.rightToLeft];
-    const fromLeftEdge = drawerAppearsFromLeftEdge(this);
-
-    const sign = fromLeftEdge ? -1 : 1;
-    const swiping = this.state.swipeFraction !== null;
-    // Constrain the distance swiped to between 0 and a bit less than 1. A swipe
-    // distance of 1 itself would cause a tricky problem. The drawer would
-    // render itself completely off screen. This means the expected CSS
-    // transition would not occur, so the transitionend event wouldn't fire,
-    // leaving us waiting indefinitely for an event that will never come. By
-    // ensuring we always transition at least a tiny bit, we guarantee that a
-    // transition and its accompanying event will occur.
-    const swipeFraction = swiping ?
-      Math.max(Math.min(sign * this.state.swipeFraction, 0.999), 0) :
-      0;
-    const maxOpacity = 0.2;
-    const opacity = opened ?
-      maxOpacity * (1 - swipeFraction) :
-      0;
-
-    const translateFraction = opened ?
-      swipeFraction :
-      1;
-    const translatePercentage = sign * translateFraction * 100;
-
-    let duration = 0;
-    const showTransition = this.state.enableEffects && !swiping && 
-        effect && phase === 'during';
-    if (showTransition) {
-      // The time require to show transitions depends on how far apart the
-      // elements currently are from their desired state. As a reference point,
-      // we compare the expected opacity of the backdrop to its current opacity.
-      // (We can't use the swipeFraction, because no swipe is in progress.)
-      /** @type {any} */
-      const backdrop = this.$.backdrop;
-      const opacityCurrent = parseFloat(backdrop.style.opacity) || 0;
-      const opacityRemaining = Math.abs(opacityCurrent - opacity);
-      const fullDuration = 0.25; // Quarter second
-      duration = opacityRemaining / maxOpacity * fullDuration;
-    }
-
-    const backdropProps = {
-      style: {
-        opacity,
-        'transition': showTransition ? `opacity ${duration}s linear` : undefined,
-        'will-change': 'opacity'
-      }
-    };
-
-    const transform = `translateX(${translatePercentage}%)`;
-    const frameProps = {
-      style: {
-        transform,
-        'transition': showTransition ? `transform ${duration}s` : undefined,
-        'will-change': 'opacity'
-      }
-    };
-
-    // Style for top-level element
-    const mapFromEdgetoJustifyContent = {
-      'end': 'flex-end',
-      'left': rightToLeft ? 'flex-end' : 'flex-start',
-      'right': rightToLeft ? 'flex-start' : 'flex-end',
-      'start': 'flex-start'
-    };
-    const justifyContent = mapFromEdgetoJustifyContent[fromEdge];
-
-    const style = {
-      'align-items': 'stretch',
-      'flex-direction': 'row',
-      'justify-content': justifyContent
-    }
-
-    return merge(base, {
-      style,
-      $: {
-        backdrop: backdropProps,
-        frame: frameProps
-      }
-    });
+        #frame {
+          will-change: opacity;
+        }
+      </style>
+    `);
   }
 
 }

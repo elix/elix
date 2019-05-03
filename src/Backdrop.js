@@ -1,7 +1,6 @@
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
-import ReactiveElement from './ReactiveElement.js';
+import ReactiveElement from './ReactiveElement2.js';
 
 
 /**
@@ -14,6 +13,22 @@ import ReactiveElement from './ReactiveElement.js';
  * @inherits ReactiveElement
  */
 class Backdrop extends ReactiveElement {
+
+  get defaultState() {
+    return Object.assign({}, super.defaultState, {
+      role: 'none'
+    });
+  }
+
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.original || changed.role) {
+      const originalRole = state.original && state.original.attributes.role;
+      if (!originalRole) {
+        this.setAttribute('role', state.role);
+      }
+    }
+  }
 
   get [symbols.template]() {
     return template.html`
@@ -29,16 +44,6 @@ class Backdrop extends ReactiveElement {
       </style>
       <slot></slot>
     `;
-  }
-
-  get updates() {
-    const base = super.updates || {};
-    const role = base.attributes && base.attributes.role || 'none';
-    return merge(base, {
-      attributes: {
-        role
-      }
-    });
   }
 
 }

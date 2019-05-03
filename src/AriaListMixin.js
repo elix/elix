@@ -90,7 +90,7 @@ export default function AriaListMixin(Base) {
       if (changed.orientation) {
         this.setAttribute('aria-orientation', state.orientation);
       }
-      if (changed.role) {
+      if (changed.original || changed.role) {
         const originalRole = state.original && state.original.attributes.role;
         if (!originalRole) {
           this.setAttribute('role', state.role);

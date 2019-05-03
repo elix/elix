@@ -1,4 +1,6 @@
-import { merge } from './updates.js';
+import { getSuperProperty } from './workarounds.js';
+import * as symbols from './symbols.js';
+import * as template from './template.js';
 import Backdrop from './Backdrop.js';
 
 
@@ -33,13 +35,17 @@ class ModalBackdrop extends Backdrop {
     }
   }
 
-  get updates() {
-    return merge(super.updates, {
-      style: {
-        background: 'black',
-        opacity: 0.2
-      }
-    });
+  get [symbols.template]() {
+    // Next line is same as: const base = super[symbols.template]
+    const base = getSuperProperty(this, ModalBackdrop, symbols.template);
+    return template.concat(base, template.html`
+      <style>
+        :host {
+          background: black;
+          opacity: 0.2;
+        }
+      </style>
+    `);
   }
 
 }
