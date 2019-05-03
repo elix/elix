@@ -80,6 +80,8 @@ class Menu extends Base {
       this.addEventListener('touchstart', event =>
         this[symbols.tap](event));
     }
+
+    this.removeAttribute('tabindex');
   }
 
   componentDidUpdate(previousState) {
@@ -244,14 +246,6 @@ class Menu extends Base {
         <slot></slot>
       </div>
     `;
-  }
-
-  get updates() {
-    return merge(super.updates, {
-      attributes: {
-        tabindex: null
-      }
-    });
   }
 
 }

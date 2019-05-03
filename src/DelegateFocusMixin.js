@@ -15,6 +15,17 @@ export default function DelegateFocusMixin(Base) {
   // The class prototype added by the mixin.
   class DelegateFocus extends Base {
 
+    componentDidMount() {
+      if (super.componentDidMount) { super.componentDidMount(); }
+      // The delegatesFocus spec says that the focus outline should be shown on
+      // both the host and the focused subelement — which seems confusing and
+      // (in our opinion) looks ugly. If the browser supports delegatesFocus we
+      // suppress the host focus outline.
+      if (this.shadowRoot.delegatesFocus) {
+        this.style.outline = 'none';
+      }
+    }
+
     /**
      * Returns true if the component is delegating its focus.
      * 
@@ -40,20 +51,6 @@ export default function DelegateFocusMixin(Base) {
       if (focusElement) {
         focusElement.focus(focusOptions);
       }
-    }
-
-    get updates() {
-      // The delegatesFocus spec says that the focus outline should be shown on
-      // both the host and the focused subelement — which seems confusing and
-      // (in our opinion) looks ugly. If the browser supports delegatesFocus we
-      // suppress the host focus outline.
-      const updates = {}
-      if (this.shadowRoot.delegatesFocus) {
-        updates.style = {
-          outline: 'none'
-        };
-      }
-      return merge(super.updates, updates);
     }
 
   }

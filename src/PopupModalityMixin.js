@@ -113,14 +113,14 @@ export default function PopupModalityMixin(Base) {
       return handled || (super.keydown && super.keydown(event)) || false;
     }
 
-    get updates() {
-      const original = this.state.original;
-      const role = original.attributes && original.attributes.role || this.state.role;
-      return merge(super.updates, {
-        attributes: {
-          role
+    [symbols.render](state, changed) {
+      if (super[symbols.render]) { super[symbols.render](state, changed); }
+      if (changed.original || changed.role) {
+        const originalRole = state.original && state.original.attributes.role;
+        if (!originalRole) {
+          this.setAttribute('role', state.role);
         }
-      });
+      }
     }
 
   }

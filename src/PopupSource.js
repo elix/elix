@@ -1,4 +1,3 @@
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import Backdrop from './Backdrop.js';
@@ -8,7 +7,7 @@ import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import OverlayFrame from './OverlayFrame.js';
 import Popup from './Popup.js';
-import ReactiveElement from './ReactiveElement.js';
+import ReactiveElement from './ReactiveElement2.js';
 
 
 const resizeListenerKey = Symbol('resizeListener');
@@ -104,13 +103,13 @@ class PopupSource extends Base {
       // Popup is opened initially, which is somewhat unusual.
       waitThenRenderOpened(this);
     }
+    this.setAttribute('aria-haspopup', true);
   }
 
-  componentDidUpdate(previousState) {
-    if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-    const openedChanged = this.state.opened !== previousState.opened;
-    if (openedChanged) {
-      if (this.opened && !previousState.opened) {
+  componentDidUpdate(changed) {
+    if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    if (changed.opened) {
+      if (this.opened) {
         waitThenRenderOpened(this);
       } else {
         removeEventListeners(this);
@@ -123,7 +122,7 @@ class PopupSource extends Base {
 
   get defaultState() {
 
-    const state = Object.assign(super.defaultState, {
+    const result = Object.assign(super.defaultState, {
       backdropRole: Backdrop,
       frameRole: OverlayFrame,
       horizontalAlign: 'start',
@@ -141,7 +140,7 @@ class PopupSource extends Base {
     });
 
     // Closing popup resets our calculations of popup size and room.
-    state.onChange(['opened'], state => {
+    result.onChange(['opened'], state => {
       if (!state.opened) {
         return {
           popupHeight: null,
@@ -156,7 +155,7 @@ class PopupSource extends Base {
       return null;
     });
 
-    return state;
+    return result;
   }
 
   /**
@@ -232,6 +231,126 @@ class PopupSource extends Base {
     this.setState({ popupRole });
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.original || changed.role) {
+      const originalRole = state.original && state.original.attributes.role;
+      if (!originalRole) {
+        this.setAttribute('role', state.role);
+      }
+    }
+    if (changed.horizontalAlign || changed.popupMeasured) {
+      const {
+        horizontalAlign,
+        popupHeight,
+        popupMeasured,
+        popupWidth,
+        roomAbove,
+        roomBelow,
+        roomLeft,
+        roomRight
+      } = state;
+      
+      const fitsAbove = popupHeight <= roomAbove;
+      const fitsBelow = popupHeight <= roomBelow;
+      const canLeftAlign = popupWidth <= roomRight;
+      const canRightAlign = popupWidth <= roomLeft;
+
+      const preferPositionBelow = state.popupPosition === 'below';
+
+      // We respect each position popup preference (above/below/right/right) if
+      // there's room in that direction. Otherwise, we use the horizontal/vertical
+      // position that maximizes the popup width/height.
+      const positionBelow =
+        (preferPositionBelow && (fitsBelow || roomBelow >= roomAbove)) ||
+        (!preferPositionBelow && !fitsAbove && roomBelow >= roomAbove);
+      const fitsVertically = positionBelow && fitsBelow ||
+        !positionBelow && fitsAbove;
+      const maxFrameHeight = fitsVertically ?
+        null :
+        positionBelow ?
+          roomBelow :
+          roomAbove;
+
+      // Position popup.
+      const bottom = positionBelow ? null : 0;
+
+      let left;
+      let right;
+      let maxFrameWidth;
+      if (horizontalAlign === 'stretch') {
+        left = 0;
+        right = 0;
+        maxFrameWidth = null;
+      } else {
+        const preferLeftAlign = horizontalAlign === 'left' ||
+          (this[symbols.rightToLeft] ?
+            horizontalAlign === 'end' :
+            horizontalAlign === 'start');
+        // The above/below preference rules also apply to left/right alignment.
+        const alignLeft =
+          (preferLeftAlign && (canLeftAlign || roomRight >= roomLeft)) ||
+          (!preferLeftAlign && !canRightAlign && roomRight >= roomLeft);
+        left = alignLeft ? 0 : null;
+        right = !alignLeft ? 0 : null;
+    
+        const fitsHorizontally = alignLeft && roomRight ||
+          !alignLeft && roomLeft;
+        maxFrameWidth = fitsHorizontally ?
+          null :
+          alignLeft ?
+            roomRight :
+            roomLeft;
+      }
+
+      // Until we've measured the rendered position of the popup, render it in
+      // fixed position (so it doesn't affect page layout or scrolling), and don't
+      // make it visible yet. If we use `visibility: hidden` for this purpose, the
+      // popup won't be able to receive the focus. Instead, we use zero opacity as
+      // a way to make the popup temporarily invisible until we have checked where
+      // it fits.
+      const opacity = popupMeasured ? null : 0;
+      const position = popupMeasured ? 'absolute' : 'fixed';
+
+      Object.assign(this.$.popup.style, {
+        bottom,
+        left,
+        opacity,
+        position,
+        right
+      });
+      Object.assign(this.$.popup.frame.style, {
+        maxHeight: maxFrameHeight ? `${maxFrameHeight}px` : null,
+        maxWidth: maxFrameWidth ? `${maxFrameWidth}px` : null
+      });
+      this.$.popupContainer.style.top = positionBelow ? null : 0;
+    }
+    if (changed.opened) {
+      const { opened } = state;
+      Object.assign(this.$.source.style, {
+        backgroundColor: opened ? 'highlight' : null,
+        color: opened ? 'highlighttext' : null
+      });
+      this.$.popup.opened = opened;
+      this.setAttribute('aria-expanded', opened);
+    }
+    if (changed.backdropRole) {
+      if ('backdropRole' in this.$.popup) {
+        this.$.popup.backdropRole = state.backdropRole;
+      }
+    }
+    if (changed.frameRole) {
+      if ('frameRole' in this.$.popup) {
+        this.$.popup.frameRole = state.frameRole;
+      }
+    }
+    if (changed.disabled) {
+      if ('disabled' in this.$.source) {
+        this.$.source.disabled = state.disabled;
+      }
+    }
+  }
+
   /**
    * The class, tag, or template used for the button (or other element) that
    * will invoke the popup.
@@ -291,145 +410,6 @@ class PopupSource extends Base {
     `;
   }
 
-  get updates() {
-
-    const base = super.updates;
-
-    const role = this.state.original && this.state.original.attributes.role ||
-      base.attributes && base.attributes.role ||
-      this.state.role;
-
-    const { disabled, opened } = this.state;
-    const sourceStyle = {
-      'background-color': opened ? 'highlight' : '',
-      color: opened ? 'highlighttext' : ''
-    };
-
-    const {
-      popupHeight,
-      popupMeasured,
-      popupWidth,
-      roomAbove,
-      roomBelow,
-      roomLeft,
-      roomRight
-    } = this.state;
-    
-    const fitsAbove = popupHeight <= roomAbove;
-    const fitsBelow = popupHeight <= roomBelow;
-    const canLeftAlign = popupWidth <= roomRight;
-    const canRightAlign = popupWidth <= roomLeft;
-
-    const preferPositionBelow = this.state.popupPosition === 'below';
-
-    // We respect each position popup preference (above/below/right/right) if
-    // there's room in that direction. Otherwise, we use the horizontal/vertical
-    // position that maximizes the popup width/height.
-    const positionBelow =
-      (preferPositionBelow && (fitsBelow || roomBelow >= roomAbove)) ||
-      (!preferPositionBelow && !fitsAbove && roomBelow >= roomAbove);
-    const fitsVertically = positionBelow && fitsBelow ||
-      !positionBelow && fitsAbove;
-    const maxFrameHeight = fitsVertically ?
-      null :
-      positionBelow ?
-        roomBelow :
-        roomAbove;
-
-    // Position container.
-    const popupContainerStyle = {
-      top: positionBelow ? '' : 0
-    };
-
-    // Position popup.
-    const bottom = positionBelow ? '' : 0;
-
-    let left;
-    let right;
-    let maxFrameWidth;
-    const horizontalAlign = this.state.horizontalAlign;
-    if (horizontalAlign === 'stretch') {
-      left = 0;
-      right = 0;
-      maxFrameWidth = null;
-    } else {
-      const preferLeftAlign = horizontalAlign === 'left' ||
-        (this[symbols.rightToLeft] ?
-          horizontalAlign === 'end' :
-          horizontalAlign === 'start');
-      // The above/below preference rules also apply to left/right alignment.
-      const alignLeft =
-        (preferLeftAlign && (canLeftAlign || roomRight >= roomLeft)) ||
-        (!preferLeftAlign && !canRightAlign && roomRight >= roomLeft);
-      left = alignLeft ? 0 : '';
-      right = !alignLeft ? 0 : '';
-  
-      const fitsHorizontally = alignLeft && roomRight ||
-        !alignLeft && roomLeft;
-      maxFrameWidth = fitsHorizontally ?
-        null :
-        alignLeft ?
-          roomRight :
-          roomLeft;
-    }
-
-    // Until we've measured the rendered position of the popup, render it in
-    // fixed position (so it doesn't affect page layout or scrolling), and don't
-    // make it visible yet. If we use `visibility: hidden` for this purpose, the
-    // popup won't be able to receive the focus. Instead, we use zero opacity as
-    // a way to make the popup temporarily invisible until we have checked where
-    // it fits.
-    const opacity = popupMeasured ? null : 0;
-    const position = popupMeasured ? 'absolute' : 'fixed';
-
-    const popupStyle = {
-      bottom,
-      left,
-      opacity,
-      position,
-      right
-    };
-
-    return merge(base, {
-      attributes: {
-        'aria-expanded': opened,
-        'aria-haspopup': true,
-        role
-      },
-      $: {
-        popup: Object.assign(
-          {
-            frame: {
-              style: {
-                'max-height': maxFrameHeight ? `${maxFrameHeight}px` : null,
-                'max-width': maxFrameWidth ? `${maxFrameWidth}px` : null
-              }
-            },
-            opened: this.state.opened,
-            style: popupStyle,
-          },
-          'backdropRole' in this.$.popup && {
-            backdropRole: this.backdropRole
-          },
-          'frameRole' in this.$.popup && {
-            frameRole: this.frameRole
-          }
-        ),
-        popupContainer: {
-          style: popupContainerStyle
-        },
-        source: Object.assign(
-          {
-            style: sourceStyle
-          },
-          'disabled' in this.$.source && {
-            disabled
-          }
-        )
-      }
-    });
-  }
-
 }
 
 
@@ -452,30 +432,18 @@ function removeEventListeners(element) {
 // If we haven't already measured the popup since it was opened, measure its
 // dimensions and the relevant distances in which the popup might be opened.
 function measurePopup(element) {
-
   const windowHeight = window.innerHeight;
   const windowWidth = window.innerWidth;
-
   const popupRect = element.$.popup.getBoundingClientRect();
-  const popupHeight = popupRect.height;
-  const popupWidth = popupRect.width;
-  
   const sourceRect = element.getBoundingClientRect();
-  const roomAbove = sourceRect.top;
-  const roomBelow = Math.ceil(windowHeight - sourceRect.bottom);
-  const roomLeft = sourceRect.right;
-  const roomRight = Math.ceil(windowWidth - sourceRect.left);
-
-  const popupMeasured = true;
-  
   element.setState({
-    popupHeight,
-    popupMeasured,
-    popupWidth,
-    roomAbove,
-    roomBelow,
-    roomLeft,
-    roomRight,
+    popupHeight: popupRect.height,
+    popupMeasured: true,
+    popupWidth: popupRect.width,
+    roomAbove: sourceRect.top,
+    roomBelow: Math.ceil(windowHeight - sourceRect.bottom),
+    roomLeft: sourceRect.right,
+    roomRight: Math.ceil(windowWidth - sourceRect.left),
     windowHeight,
     windowWidth
   });

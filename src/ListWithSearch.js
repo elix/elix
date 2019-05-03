@@ -1,4 +1,3 @@
-import { merge } from './updates.js'
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import ComposedFocusMixin from './ComposedFocusMixin.js';
@@ -7,7 +6,7 @@ import DelegateItemsMixin from './DelegateItemsMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FilterListBox from './FilterListBox.js';
 import KeyboardMixin from './KeyboardMixin.js';
-import ReactiveElement from './ReactiveElement.js';
+import ReactiveElement from './ReactiveElement2.js';
 import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 
@@ -186,6 +185,20 @@ class ListWithSearch extends Base {
     this.setState({ placeholder });
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.ariaLabel) {
+      this.$.input.setAttribute('aria-label', state.ariaLabel);
+    }
+    if (changed.filter) {
+      this.$.input.value = state.filter;
+      this.$.list.filter = state.filter;
+    }
+    if (changed.placeholder) {
+      this.$.input.placeholder = state.placeholder;
+    }
+  }
+
   get [symbols.template]() {
     return template.html`
       <style>
@@ -206,24 +219,6 @@ class ListWithSearch extends Base {
         <slot></slot>
       </elix-filter-list-box>
     `;
-  }
-
-  get updates() {
-    const { filter, placeholder } = this.state;
-    return merge(super.updates, {
-      $: {
-        input: {
-          attributes: {
-            'aria-label': this.state.ariaLabel
-          },
-          placeholder,
-          value: filter
-        },
-        list: {
-          filter
-        }
-      }
-    });
   }
 
 }

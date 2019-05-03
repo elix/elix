@@ -1,5 +1,6 @@
 import { defaultAriaRole } from './accessibility.js';
 import { merge } from './updates.js';
+import * as symbols from './symbols.js';
 
 
 /**
@@ -50,16 +51,14 @@ export default function AriaListMixin(Base) {
       );
     }
 
-    get updates() {
-      const base = super.updates || {};
-      const role = this.state.original && this.state.original.attributes.role ||
-        base.attributes && base.attributes.role ||
-        this.state.role;
-      return merge(base, {
-        attributes: {
-          role
+    [symbols.render](state, changed) {
+      if (super[symbols.render]) { super[symbols.render](state, changed); }
+      if (changed.original || changed.role) {
+        const originalRole = state.original && state.original.attributes.role;
+        if (!originalRole) {
+          this.setAttribute('role', state.role);
         }
-      });
+      }
     }
 
   }

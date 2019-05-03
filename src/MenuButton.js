@@ -1,6 +1,5 @@
 import { deepContains, elementsFromPoint, indexOfItemContainingTarget } from './utilities.js';
 import { getSuperProperty } from './workarounds.js';
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import Menu from './Menu.js';
@@ -39,7 +38,12 @@ class MenuButton extends PopupButton {
   }
 
   [symbols.beforeUpdate]() {
+    const popupRoleChanged = this[symbols.renderedRoles].popupRole !==
+        this.state.popupRole;
     if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
+    if (popupRoleChanged) {
+      this.$.popup.tabIndex = -1;
+    }
     if (this[symbols.renderedRoles].menuRole !== this.state.menuRole) {
       template.transmute(this.$.menu, this.state.menuRole);
 
@@ -166,16 +170,15 @@ class MenuButton extends PopupButton {
     }
   }
 
-  componentDidUpdate(previousState) {
-    if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-
-    if (this.state.opened !== previousState.opened) {
+  componentDidUpdate(changed) {
+    if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    if (changed.opened) {
       if (this.state.opened) {
         addDocumentListeners(this);
       } else {
         removeDocumentListeners(this);
       }
-
+      // REVIEW: Shouldn't this only happen when the menu closes?
       if (this[symbols.raiseChangeEvents] && this.state.selectedItem) {
         this.itemSelected(this.state.selectedItem);
       }
@@ -308,9 +311,16 @@ class MenuButton extends PopupButton {
     this.setState({ menuRole });
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.menuSelectedIndex) {
+      this.$.menu.selectedIndex = state.menuSelectedIndex;
+    }
+  }
+
   get [symbols.template]() {
     // Next line is same as: const result = super[symbols.template]
-    const result = getSuperProperty(this, MenuButton, symbols.template);
+    const base = getSuperProperty(this, MenuButton, symbols.template);
 
     // Wrap default slot with a menu.
     const menuTemplate = template.html`
@@ -318,7 +328,7 @@ class MenuButton extends PopupButton {
         <slot></slot>
       </div>
     `;
-    const defaultSlot = result.content.querySelector('slot:not([name])');
+    const defaultSlot = base.content.querySelector('slot:not([name])');
     template.transmute(defaultSlot, menuTemplate);
 
     // Inject a "..." icon into the source slot.
@@ -330,48 +340,31 @@ class MenuButton extends PopupButton {
         </svg>
       </slot>
     `;
-    const sourceSlot = result.content.querySelector('slot[name="source"]');
+    const sourceSlot = base.content.querySelector('slot[name="source"]');
     template.transmute(sourceSlot, sourceTemplate);
 
-    return result;
-  }
-
-  get updates() {
-    const base = super.updates;
-    return merge(
+    return template.concat(
       base,
-      {
-        $: {
-          menu: {
-            style: {
-              background: 'window',
-              border: 'none',
-              'max-height': '100%',
-              padding: '0.5em 0'
-            },
-            selectedIndex: this.state.menuSelectedIndex
-          },
-          popup: {
-            tabIndex: -1
-          },
-          source: {
-            style: {
-              'align-items': 'center',
-              display: 'flex'
-            }
+      template.html`
+        <style>
+          #menu {
+            background: window;
+            border: none;
+            max-height: 100%;
+            padding: 0.5em 0;
           }
-        }
-      },
-      this.$.ellipsisIcon && {
-        $: {
-          ellipsisIcon: {
-            style: {
-              display: 'block',
-              fill: 'currentColor'
-            }
+
+          #source {
+            align-items: center;
+            display: flex;
           }
-        }
-      }
+
+          #ellipsisIcon {
+            display: block;
+            fill: currentColor;
+          }
+        </style>
+      `
     );
   }
 

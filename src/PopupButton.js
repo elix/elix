@@ -1,5 +1,4 @@
 import { getSuperProperty } from './workarounds.js';
-import { merge } from './updates.js';
 import { ownEvent } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
@@ -57,6 +56,7 @@ class PopupButton extends Base {
         // focused element (i.e., this element) when opening, and restore focus to
         // it when the popup closes.
       });
+      this.$.source.tabIndex = -1;
     }
   }
 
@@ -108,6 +108,13 @@ class PopupButton extends Base {
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.disabled) {
+      this.$.source.style.borderStyle = state.disabled ? null : 'solid';
+    }
+  }
+
   get [symbols.template]() {
     // Next line is same as: const base = super[symbols.template]
     const base = getSuperProperty(this, PopupButton, symbols.template);
@@ -134,20 +141,6 @@ class PopupButton extends Base {
         }
       </style>
     `);
-  }
-
-  get updates() {
-    const { disabled } = this.state;
-    return merge(super.updates, {
-      $: {
-        source: {
-          style: {
-            'border-style': disabled ? '' : 'solid'
-          },
-          tabIndex: -1
-        }
-      }
-    });
   }
 
 }
