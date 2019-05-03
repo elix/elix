@@ -134,15 +134,17 @@ class CalendarMonth extends Base {
     }
     if (changed.date) {
       const { date } = state;
-      const startDate = calendar.firstDateOfMonth(date);
-      const endDate = calendar.lastDateOfMonth(date);
-      const dayCount = endDate.getDate();
-      Object.assign(this.$.monthDays, {
-        date,
-        dayCount,
-        startDate
-      });
-      this.$.monthYearHeader.date = calendar.firstDateOfMonth(date);
+      if (date) {
+        const startDate = calendar.firstDateOfMonth(date);
+        const endDate = calendar.lastDateOfMonth(date);
+        const dayCount = endDate.getDate();
+        Object.assign(this.$.monthDays, {
+          date,
+          dayCount,
+          startDate
+        });
+        this.$.monthYearHeader.date = calendar.firstDateOfMonth(date);
+      }
     }
     if (changed.daysOfWeekFormat) {
       this.$.weekDaysHeader.format = state.daysOfWeekFormat;

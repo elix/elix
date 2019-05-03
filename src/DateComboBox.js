@@ -341,6 +341,26 @@ class DateComboBox extends Base {
     return calendar.parseWithOptionalYear(text, dateTimeFormat, timeBias);
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.arrowButtonRole) {
+      if ('arrowButtonRole' in calendar) {
+        this.$.calendar.arrowButtonRole = state.arrowButtonRole;
+      }
+    }
+    if (changed.date) {
+      this.$.calendar.date = state.date;
+    }
+    if (changed.dayRole) {
+      if ('dayRole' in calendar) {
+        this.$.calendar.dayRole = state.dayRole;
+      }
+    }
+    if (changed.locale) {
+      this.$.calendar.locale = state.locale;
+    }
+  }
+
   get [symbols.template]() {
     // Next line is same as: const result = super[symbols.template]
     const result = getSuperProperty(this, DateComboBox, symbols.template);
@@ -410,29 +430,6 @@ class DateComboBox extends Base {
   set todayButtonRole(todayButtonRole) {
     this.setState({
       todayButtonRole
-    });
-  }
-
-  get updates() {
-    const { arrowButtonRole, date, dayRole, locale } = this.state;
-    const calendar = this.$.calendar;
-    return merge(super.updates, {
-      $: {
-        calendar: Object.assign(
-          {
-            locale
-          },
-          'arrowButtonRole' in calendar && {
-            arrowButtonRole
-          },
-          'dayRole' in calendar && {
-            dayRole
-          },
-          date && {
-            date
-          }
-        )
-      }
     });
   }
 
