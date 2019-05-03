@@ -1,4 +1,3 @@
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import { indexOfItemContainingTarget } from './utilities.js';
 
@@ -81,18 +80,6 @@ export default function TapSelectionMixin(Base) {
         this.selectedIndex = targetIndex;
         event.stopPropagation();
       }    
-    }
-    
-    get updates() {
-      return merge(super.updates, {
-        style: {
-          'touch-action': 'manipulation', // for iOS Safari
-          '-moz-user-select': 'none',
-          '-ms-user-select': 'none',
-          '-webkit-user-select': 'none',
-          'user-select': 'none'
-        }
-      });
     }
 
   };

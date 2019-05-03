@@ -85,38 +85,21 @@ export default function PlayControlsMixin(Base) {
       return handled || (super[symbols.keydown] && super[symbols.keydown](event));
     }
 
-    get updates() {
-      const playing = this.playing;
-
-      const rightToLeft = this[symbols.rightToLeft];
-      const transform = rightToLeft ?
-        'rotate(180deg)' :
-        '';
-
-      return merge(super.updates, {
-        $: {
-            nextIcon: {
-              style: {
-                transform
-              }
-            },
-            pausedIcon: {
-              style: {
-                display: playing ? 'none' : ''
-              }
-            },
-            playingIcon: {
-              style: {
-                display: playing ? '' : 'none'
-              }
-            },
-            previousIcon: {
-              style: {
-                transform
-              }
-            }
-        }
-      });
+    [symbols.render](state, changed) {
+      super[symbols.render](state, changed);
+      if (changed.languageDirection) {
+        const rightToLeft = state.languageDirection === 'rtl';
+        const transform = rightToLeft ?
+          'rotate(180deg)' :
+          '';
+        this.$.nextIcon.style.transform = transform;
+        this.$.previousIcon.style.transform = transform;
+      }
+      if (changed.playing) {
+        const { playing } = state;
+        this.$.pausedIcon.style.display = playing ? 'none' : '';
+        this.$.playingIcon.style.display = playing ? '' : 'none';
+      }
     }
     
     /**

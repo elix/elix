@@ -1,5 +1,4 @@
-import './CrossfadeStage.js';
-import { merge } from './updates.js';
+import * as symbols from './symbols.js';
 import Carousel from './Carousel.js';
 import CrossfadeStage from './CrossfadeStage.js';
 import TimerSelectionMixin from './TimerSelectionMixin.js';
@@ -36,25 +35,24 @@ class CarouselSlideshow extends Base {
     });
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.transitionDuration) {
+      const { transitionDuration } = state;
+      if ('transitionDuration' in this.$.proxyList) {
+        this.$.proxyList.transitionDuration = transitionDuration;
+      }
+      if ('transitionDuration' in this.$.stage) {
+        this.$.stage.transitionDuration = transitionDuration;
+      }
+    }
+  }
+
   get transitionDuration() {
     return this.state.transitionDuration;
   }
   set transitionDuration(transitionDuration) {
     this.setState({ transitionDuration });
-  }
-
-  get updates() {
-    const transitionDuration = this.transitionDuration;
-    return merge(super.updates, {
-      $: {
-        proxyList: {
-          transitionDuration
-        },
-        stage: {
-          transitionDuration
-        }
-      }
-    });
   }
 
 }
