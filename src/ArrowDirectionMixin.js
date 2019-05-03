@@ -166,7 +166,8 @@ function ArrowDirectionMixin(Base) {
         updates.applyAttribute(arrowButtonRight, 'disabled', !this[symbols.canGoRight]);
       }
       if (changed.languageDirection) {
-        this.$.arrowDirection.style.flexDirection = this[symbols.rightToLeft] ?
+        const rightToLeft = state.languageDirection === 'rtl';
+        this.$.arrowDirection.style.flexDirection = rightToLeft ?
           'row-reverse' :
           'row';
       }

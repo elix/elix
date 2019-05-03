@@ -298,7 +298,7 @@ class Explorer extends Base {
       });
     }
     if (changed.proxyListPosition) {
-      setListAndStageOrder(this);
+      setListAndStageOrder(this, state.proxyListPosition);
       const { proxyListPosition } = state;
       const lateralPosition = lateralPositions[proxyListPosition];
       this.$.explorerContainer.style.flexDirection = lateralPosition ? 'row' : 'column';
@@ -397,9 +397,7 @@ function findChildContainingNode(root, node) {
 // but then the visual order wouldn't reflect the document order, which
 // determines focus order. That would surprise a user trying to tab through the
 // controls.
-function setListAndStageOrder(element) {
-  const proxyListPosition = element.state.proxyListPosition;
-  const rightToLeft = element[symbols.rightToLeft];
+function setListAndStageOrder(element, proxyListPosition) {
   const listInInitialPosition =
       proxyListPosition === 'top' ||
       proxyListPosition === 'start' ||
