@@ -70,18 +70,6 @@ export default function RenderUpdatesMixin(Base) {
       }
       super.style = style;
     }
-  
-    /**
-     * The attributes and properies that should be applied to the component on
-     * render. By default, this is an empty plain object. Your mixin or
-     * component can extend this to identify the properties to set on the host
-     * element or elements in the shadow subtree.
-     * 
-     * @type {object}
-     */
-    get updates() {
-      return super.updates || {};
-    }
   }
 }
 
