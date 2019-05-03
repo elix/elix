@@ -49,6 +49,42 @@ class CalendarDay extends Base {
     });
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    const classList = this.classList;
+    if (changed.date) {
+      const date = state.date;
+      const today = calendar.today();
+      const dayOfWeek = date.getDay();
+      const dayOfMonth = date.getDate();
+      const nextDate = calendar.offsetDateByDays(date, 1);
+      const daysFromToday = Math.round(date.getTime() - today.getTime()) / calendar.millisecondsPerDay;
+      classList.toggle('alternateMonth', Math.abs(date.getMonth() - today.getMonth()) % 2 === 1);
+      classList.toggle('firstDayOfMonth', dayOfMonth === 1);
+      classList.toggle('firstWeek', dayOfMonth <= 7);
+      classList.toggle('future', date > today);
+      classList.toggle('lastDayOfMonth', date.getMonth() !== nextDate.getMonth());
+      classList.toggle('past', date < today);
+      classList.toggle('saturday', dayOfWeek === 6);
+      classList.toggle('sunday', dayOfWeek === 0);
+      classList.toggle('today', daysFromToday == 0);
+      this.$.day.textContent = dayOfMonth.toString();
+    }
+    if (changed.date || changed.locale) {
+      const dayOfWeek = state.date.getDay();
+      const weekend = dayOfWeek === calendar.weekendStart(state.locale) ||
+        dayOfWeek === calendar.weekendEnd(state.locale);
+      classList.toggle('weekday', !weekend);
+      classList.toggle('weekend', weekend);
+    }
+    if (changed.outsideRange) {
+      classList.toggle('outsideRange', state.outsideRange);
+    }
+    if (changed.selected) {
+      classList.toggle('selected', state.selected);
+    }
+  }
+
   get [symbols.template]() {
     return template.html`
       <style>
@@ -90,41 +126,6 @@ class CalendarDay extends Base {
   set selected(selected) {
     this.setState({
       selected
-    });
-  }
-
-  get updates() {
-
-    const { date, locale, outsideRange, selected } = this.state;
-    const today = calendar.today();
-    const dayOfWeek = date.getDay();
-    const dayOfMonth = date.getDate();
-    const nextDate = calendar.offsetDateByDays(date, 1);
-    const daysFromToday = Math.round(date.getTime() - today.getTime()) / calendar.millisecondsPerDay;
-    const weekend = dayOfWeek === calendar.weekendStart(locale) ||
-      dayOfWeek === calendar.weekendEnd(locale);
-
-    return merge(super.updates, {
-      classes: {
-        alternateMonth: Math.abs(date.getMonth() - today.getMonth()) % 2 === 1,
-        firstDayOfMonth: dayOfMonth === 1,
-        firstWeek: dayOfMonth <= 7,
-        future: date > today,
-        lastDayOfMonth: date.getMonth() !== nextDate.getMonth(),
-        outsideRange,
-        past: date < today,
-        saturday: dayOfWeek === 6,
-        selected,
-        sunday: dayOfWeek === 0,
-        today: daysFromToday == 0,
-        weekday: !weekend,
-        weekend: weekend
-      },
-      $: {
-        day: {
-          textContent: date.getDate()
-        }
-      }
     });
   }
 

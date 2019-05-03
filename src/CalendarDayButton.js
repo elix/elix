@@ -1,6 +1,5 @@
 import './CalendarDay.js';
 import { getSuperProperty } from './workarounds.js';
-import { merge } from './updates.js';
 import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
@@ -32,6 +31,22 @@ class CalendarDayButton extends Base {
     this.setState({
       outsideRange
     });
+  }
+
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.date) {
+      this.$.day.date = state.date;
+    }
+    if (changed.locale) {
+      this.$.day.locale = state.locale;
+    }
+    if (changed.outsideRange) {
+      this.$.day.outsideRange = state.outsideRange;
+    }
+    if (changed.selected) {
+      this.$.day.selected = state.selected;
+    }
   }
 
   get selected() {
@@ -73,21 +88,6 @@ class CalendarDayButton extends Base {
     result.content.appendChild(styleTemplate.content);
     return result;
   }
-
-  get updates() {
-    const { date, locale, outsideRange, selected } = this.state;
-    return merge(super.updates, {
-      $: {
-        day: {
-          date,
-          locale,
-          outsideRange,
-          selected
-        }
-      }
-    });
-  }
-
 }
 
 

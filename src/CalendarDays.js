@@ -1,10 +1,10 @@
-import { merge } from './updates.js';
 import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import * as updates from './updates.js';
 import CalendarDay from './CalendarDay.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
-import ReactiveElement from './ReactiveElement.js';
+import ReactiveElement from './ReactiveElement2.js';
 
 
 const Base =
@@ -91,33 +91,45 @@ class CalendarDays extends Base {
     return state;
   }
 
-  [symbols.render]() {
-    if (super[symbols.render]) { super[symbols.render](); }
-    const showSelectedDay = this.state.showSelectedDay;
-    const days = this.days || [];
-    const { date, dayCount, startDate } = this.state;
-    const selectedDate = date.getDate();
-    const selectedMonth = date.getMonth();
-    const selectedYear = date.getFullYear();
-    const firstDateAfterRange = calendar.offsetDateByDays(startDate, dayCount);
-    days.forEach(day => {
-      const dayDate = day.date;
-      if ('selected' in day) {
-        // Ensure only current date has "selected" class.
-        const selected = showSelectedDay &&
-          dayDate.getDate() === selectedDate &&
-          dayDate.getMonth() === selectedMonth &&
-          dayDate.getFullYear() === selectedYear;
-        day.selected = selected;
-      }
-      if ('outsideRange' in day) {
-        // Mark dates as inside or outside of range.
-        const dayTime = dayDate.getTime();
-        const outsideRange = dayTime < startDate.getTime() ||
-          dayTime >= firstDateAfterRange.getTime();
-        day.outsideRange = outsideRange;
-      }
-    });
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.days) {
+      updates.applyChildNodes(this.$.dayContainer, state.days);
+    }
+    if (changed.date || changed.showSelectedDay) {
+      // Ensure only current date has "selected" class.
+      const showSelectedDay = state.showSelectedDay;
+      const { date } = state;
+      const selectedDate = date.getDate();
+      const selectedMonth = date.getMonth();
+      const selectedYear = date.getFullYear();
+      const days = this.days || [];
+      days.forEach(day => {
+        if ('selected' in day) {
+          const dayDate = day.date;
+          const selected = showSelectedDay &&
+            dayDate.getDate() === selectedDate &&
+            dayDate.getMonth() === selectedMonth &&
+            dayDate.getFullYear() === selectedYear;
+          day.selected = selected;
+        }  
+      });
+    }
+    if (changed.dayCount || changed.startDate) {
+      // Mark dates as inside or outside of range.
+      const { dayCount, startDate } = state;
+      const firstDateAfterRange = calendar.offsetDateByDays(startDate, dayCount);
+      const days = state.days || [];
+      days.forEach(day => {
+        if ('outsideRange' in day) {
+          const dayDate = day.date;
+          const dayTime = dayDate.getTime();
+          const outsideRange = dayTime < startDate.getTime() ||
+            dayTime >= firstDateAfterRange.getTime();
+          day.outsideRange = outsideRange;
+        }
+      });
+    }
   }
 
   get showCompleteWeeks() {
@@ -168,16 +180,6 @@ class CalendarDays extends Base {
 
       <div id="dayContainer"></div>
     `;
-  }
-
-  get updates() {
-    return merge(super.updates, {
-      $: {
-        dayContainer: {
-          childNodes: this.state.days
-        }
-      }
-    });
   }
 
 }

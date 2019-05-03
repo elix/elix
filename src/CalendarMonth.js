@@ -1,13 +1,12 @@
 import './CalendarDayNamesHeader.js';
 import './CalendarDays.js';
 import './CalendarMonthYearHeader.js';
-import { merge } from './updates.js';
 import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import CalendarDay from './CalendarDay.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
-import ReactiveElement from './ReactiveElement.js';
+import ReactiveElement from './ReactiveElement2.js';
 
 
 const Base =
@@ -122,6 +121,46 @@ class CalendarMonth extends Base {
     });
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.locale) {
+      const locale = state.locale;
+      this.$.monthDays.locale = locale;
+      this.$.monthYearHeader.locale = locale;
+      this.$.weekDaysHeader.locale = locale;
+    }
+    if (changed.dayRole) {
+      this.$.monthDays.dayRole = state.dayRole;
+    }
+    if (changed.date) {
+      const { date } = state;
+      const startDate = calendar.firstDateOfMonth(date);
+      const endDate = calendar.lastDateOfMonth(date);
+      const dayCount = endDate.getDate();
+      Object.assign(this.$.monthDays, {
+        date,
+        dayCount,
+        startDate
+      });
+      this.$.monthYearHeader.date = calendar.firstDateOfMonth(date);
+    }
+    if (changed.daysOfWeekFormat) {
+      this.$.weekDaysHeader.format = state.daysOfWeekFormat;
+    }
+    if (changed.showCompleteWeeks) {
+      this.$.monthDays.showCompleteWeeks = state.showCompleteWeeks;
+    }
+    if (changed.showSelectedDay) {
+      this.$.monthDays.showSelectedDay = state.showSelectedDay;
+    }
+    if (changed.monthFormat) {
+      this.$.monthYearHeader.monthFormat = state.monthFormat;
+    }
+    if (changed.yearFormat) {
+      this.$.monthYearHeader.yearFormat = state.yearFormat;
+    }
+  }
+
   get showCompleteWeeks() {
     return this.state.showCompleteWeeks;
   }
@@ -168,46 +207,6 @@ class CalendarMonth extends Base {
       <elix-calendar-day-names-header id="weekDaysHeader" format="short"></elix-calendar-day-names-header>
       <elix-calendar-days id="monthDays"></elix-calendar-days>
     `;
-  }
-
-  get updates() {
-    const {
-      date,
-      dayRole,
-      daysOfWeekFormat,
-      locale,
-      monthFormat,
-      showCompleteWeeks,
-      showSelectedDay,
-      yearFormat
-    } = this.state;
-    const startDate = calendar.firstDateOfMonth(date);
-    const endDate = calendar.lastDateOfMonth(date);
-    const dayCount = endDate.getDate();
-    const firstDateOfMonth = calendar.firstDateOfMonth(date);
-    return merge(super.updates, {
-      $: {
-        monthDays: {
-          date,
-          dayCount,
-          dayRole,
-          locale,
-          showCompleteWeeks,
-          showSelectedDay,
-          startDate
-        },
-        monthYearHeader: {
-          date: firstDateOfMonth,
-          locale,
-          monthFormat,
-          yearFormat
-        },
-        weekDaysHeader: {
-          format: daysOfWeekFormat,
-          locale
-        }
-      }
-    });
   }
 
   /**

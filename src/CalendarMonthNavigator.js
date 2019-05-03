@@ -156,6 +156,18 @@ class CalendarMonthNavigator extends Base {
     });
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.darkMode) {
+      const darkMode = state.darkMode;
+      const supportsDarkMode = 'darkMode' in this.$.arrowButtonLeft;
+      if (supportsDarkMode) {
+        this.$.arrowButtonLeft.darkMode = darkMode;
+        this.$.arrowButtonRight.darkMode = darkMode;
+      }
+    }
+  }
+
   get [symbols.template]() {
     // Next line is same as: const result = super[symbols.template]
     const result = getSuperProperty(this, CalendarMonthNavigator, symbols.template);
@@ -173,22 +185,6 @@ class CalendarMonthNavigator extends Base {
     result.content.appendChild(styleTemplate.content);
 
     return result;
-  }
-
-  get updates() {
-    const darkMode = this.state.darkMode;
-    const supportsDarkMode = 'darkMode' in this.$.arrowButtonLeft;
-    const arrowButtonUpdates = supportsDarkMode ?
-      {
-        darkMode
-      } : 
-      {};
-    return merge(super.updates, {
-      $: {
-        arrowButtonLeft: arrowButtonUpdates,
-        arrowButtonRight: arrowButtonUpdates
-      }
-    });
   }
 
 }
