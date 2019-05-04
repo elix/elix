@@ -1,11 +1,10 @@
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import Drawer from './Drawer.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
-import ReactiveElement from './ReactiveElement.js';
+import ReactiveElement from './ReactiveElement2.js';
 import SeamlessButton from './SeamlessButton.js';
 
 
@@ -142,6 +141,18 @@ class HamburgerMenuButton extends Base {
     this.setState({ menuButtonRole });
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.fromEdge) {
+      if ('fromEdge' in this.$.menu) {
+        this.$.menu.fromEdge = state.fromEdge;
+      }
+    }
+    if (changed.opened) {
+      this.$.menu.opened = state.opened;
+    }
+  }
+
   get [symbols.template]() {
     return template.html`
       <style>
@@ -177,22 +188,6 @@ class HamburgerMenuButton extends Base {
         <slot></slot>
       </elix-drawer>
     `;
-  }
-
-  get updates() {
-    const fromEdge = this.fromEdge;
-    return merge(super.updates, {
-      $: {
-        menu: Object.assign(
-          {
-            opened: this.opened
-          },
-          'fromEdge' in this.$.menu && {
-            fromEdge
-          }
-        )
-      }
-    });
   }
 
 }
