@@ -5,7 +5,7 @@ import * as symbols from './symbols.js';
 import * as template from './template.js';
 import EffectMixin from './EffectMixin.js';
 import ProgressSpinner from './ProgressSpinner.js';
-import ReactiveElement from './ReactiveElement.js';
+import ReactiveElement from './ReactiveElement2.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 
 
@@ -68,15 +68,16 @@ class PullToRefresh extends Base {
     });
   }
 
-  componentDidUpdate(previousState) {
-    if ( this.state.swipeFraction > 0 &&
+  componentDidUpdate(changed) {
+    super.componentDidUpdate(changed);
+    if (this.state.swipeFraction > 0 &&
       !this.state.refreshing && !this.state.pullTriggeredRefresh) {
-      const y = getTranslationForSwipeFraction(this);
+      const y = getTranslationForSwipeFraction(this.state, this[symbols.swipeTarget]);
       if (y >= getSwipeThreshold(this)) {
         // User has dragged element down far enough to trigger a refresh.
         this.refreshing = true;
       }
-    } else if (this.state.refreshing !== previousState.refreshing) {
+    } else if (changed.refreshing) {
       if (this[symbols.raiseChangeEvents]) {
         /**
          * Raised when the `refreshing` state changes.
@@ -169,6 +170,45 @@ class PullToRefresh extends Base {
     this.setState({ refreshingIndicatorRole });
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.refreshing) {
+      const { refreshing } = state;
+      this.$.refreshingIndicator.style.visibility = refreshing ?
+        'visible' :
+        'hidden';
+      if ('playing' in this.$.refreshingIndicator) {
+        this.$.refreshingIndicator.playing = refreshing;
+      }
+    }
+    if (changed.enableEffects || changed.refreshing || changed.swipeFraction) {
+      const swipingDown = state.swipeFraction != null && state.swipeFraction > 0;
+      let y = getTranslationForSwipeFraction(state, this[symbols.swipeTarget]);
+      if (state.refreshing) {
+        y = Math.max(y, getSwipeThreshold(this));
+      }
+      const showTransition = state.enableEffects && !swipingDown;
+      Object.assign(this.style, {
+        transform: `translate3D(0, ${y}px, 0)`,
+        transition: showTransition ?
+          'transform 0.25s' :
+          null
+      });
+    }
+    if (changed.pullTriggeredRefresh || changed.refreshing ||
+        changed.scrollPullDistance || changed.swipeFraction) {
+      const swipingDown = state.swipeFraction != null && state.swipeFraction > 0;
+      const scrollingDown = !!state.scrollPullDistance;
+      const pullingDown = swipingDown || scrollingDown;
+      const showPullIndicator = !state.refreshing &&
+        !state.pullTriggeredRefresh &&
+        pullingDown;
+      this.$.pullIndicator.style.visibility = showPullIndicator ?
+        'visible' :
+        'hidden';
+    }
+  }
+
   get [symbols.template]() {
     return template.html`
       <style>
@@ -212,48 +252,6 @@ class PullToRefresh extends Base {
     `;
   }
 
-  get updates() {
-    const swipingDown = this.state.swipeFraction != null && this.state.swipeFraction > 0;
-    const scrollingDown = !!this.state.scrollPullDistance;
-    const pullingDown = swipingDown || scrollingDown;
-    let y = getTranslationForSwipeFraction(this);
-    if (this.state.refreshing) {
-      y = Math.max(y, getSwipeThreshold(this));
-    }
-    const transform = `translate3D(0, ${y}px, 0)`;
-    const showTransition = this.state.enableEffects && !swipingDown;
-    const transition = showTransition ?
-      'transform 0.25s' :
-      'none';
-    const showPullIndicator = !this.state.refreshing &&
-      !this.state.pullTriggeredRefresh &&
-      pullingDown;
-    const showRefreshingIndicator = this.state.refreshing;
-    return merge(super.updates, {
-      style: {
-        transform,
-        transition
-      },
-      $: {
-        pullIndicator: {
-          style: {
-            visibility: showPullIndicator ? 'visible' : 'hidden'
-          }
-        },
-        refreshingIndicator: Object.assign(
-          {
-            style: {
-              visibility: showRefreshingIndicator ? 'visible' : 'hidden'
-            }
-          },
-          'playing' in this.$.refreshingIndicator && {
-            playing: showRefreshingIndicator
-          }
-        )
-      }
-    });
-  }
-
 }
 
 
@@ -268,19 +266,19 @@ function getSwipeThreshold(element) {
 // For a given swipe fraction (percentage of the element's swipe target's
 // height), return the distance of the vertical translation we should apply to
 // the swipe target.
-function getTranslationForSwipeFraction(element) {
+function getTranslationForSwipeFraction(state, swipeTarget) {
 
   const {
     swipeFraction,
     scrollPullDistance,
     scrollPullMaxReached
-  } = element.state;
+  } = state;
 
   // When damping, we halve the swipe fraction so the user has to drag twice as
   // far to get the usual damping. This produces the feel of a tighter, less
   // elastic surface.
   let result = swipeFraction ?
-    element[symbols.swipeTarget].offsetHeight * dampen(swipeFraction / 2) :
+    swipeTarget.offsetHeight * dampen(swipeFraction / 2) :
     0;
 
   if (!scrollPullMaxReached && scrollPullDistance) {

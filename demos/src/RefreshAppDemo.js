@@ -1,8 +1,8 @@
 import '../../src/PullToRefresh.js';
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
-import ReactiveElement from '../../src/ReactiveElement.js';
-import { merge } from '../../src/updates.js';
+import * as updates from '../../src/updates.js';
+import ReactiveElement from '../../src/ReactiveElement2.js';
 
 
 const texts = [
@@ -59,6 +59,13 @@ class RefreshAppDemo extends ReactiveElement {
     }, 1000);
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.paragraphs) {
+      updates.applyChildNodes(this.$.pullToRefresh, state.paragraphs);
+    }
+  }
+
   get [symbols.template]() {
     return template.html`
       <style>
@@ -89,16 +96,6 @@ class RefreshAppDemo extends ReactiveElement {
       <elix-pull-to-refresh id="pullToRefresh"></elix-pull-to-refresh>
       <audio id="refreshSound" src="resources/pop.mp3"></audio>
     `;
-  }
-
-  get updates() {
-    return merge(super.updates, {
-      $: {
-        pullToRefresh: {
-          childNodes: this.state.paragraphs
-        }
-      }
-    });
   }
 
 }
