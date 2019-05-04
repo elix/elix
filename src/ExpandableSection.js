@@ -1,4 +1,3 @@
-import { merge } from './updates.js';
 import * as symbols from './symbols.js'
 import * as template from './template.js';
 import ExpandablePanel from './ExpandablePanel.js';
@@ -94,6 +93,29 @@ class ExpandableSection extends Base {
     this.setState({ panelRole });
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.original || changed.role) {
+      const originalRole = state.original && state.original.attributes.role;
+      if (!originalRole) {
+        this.setAttribute('role', state.role);
+      }
+    }
+    if (changed.opened) {
+      const { opened } = state;
+      this.$.header.setAttribute('aria-expanded', opened);
+      if (this.$.collapseIcon) {
+        this.$.collapseIcon.style.display = opened ? 'block' : 'none';
+      }
+      if (this.$.expandIcon) {
+        this.$.expandIcon.style.display = opened ? 'none' : 'block';
+      }
+      if ('opened' in this.$.panel) {
+        this.$.panel.opened = opened;
+      }
+    }
+  }
+
   get [symbols.template]() {
     // Default expand/collapse icons from Google's Material Design collection.
     return template.html`
@@ -144,59 +166,6 @@ class ExpandableSection extends Base {
         <slot></slot>
       </elix-expandable-panel>
     `;
-  }
-
-  get updates() {
-    
-    const base = super.updates;
-
-    const collapseIcon = this.$.collapseIcon;
-    const expandIcon = this.$.expandIcon;
-
-    const role = this.state.original && this.state.original.attributes.role ||
-      base.attributes && base.attributes.role ||
-      this.state.role;
-
-    const opened = this.opened;
-    return merge(
-      base,
-      {
-        attributes: {
-          role
-        },
-        $: {
-          header: {
-            attributes: {
-              'aria-expanded': opened
-            }
-          },
-          panel: Object.assign(
-            {},
-            'opened' in this.$.panel && {
-              opened
-            }
-          )
-        },
-      },
-      collapseIcon && {
-        $: {
-          collapseIcon: {
-            style: {
-              display: opened ? 'block' : 'none'
-            }
-          }
-        }
-      },
-      expandIcon && {
-        $: {
-          expandIcon: {
-            style: {
-              display: opened ? 'none' : 'block'
-            }
-          }
-        }
-      },
-    );
   }
 
 }

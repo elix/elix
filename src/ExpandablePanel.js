@@ -1,8 +1,7 @@
-import { merge } from './updates.js';
 import * as symbols from './symbols.js'
 import * as template from './template.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
-import ReactiveElement from './ReactiveElement.js';
+import ReactiveElement from './ReactiveElement2.js';
 import TransitionEffectMixin from './TransitionEffectMixin.js';
 import EffectMixin from './EffectMixin.js';
 
@@ -39,60 +38,54 @@ class ExpandablePanel extends Base {
     return [this.$.outerContainer];
   }
   
-  get updates() {
-    
-    const effect = this.state.effect;
-    const phase = this.state.effectPhase;
-    
-    // The inner container lets us measure how tall the content wants to be.
-    const naturalHeight = this.$.innerContainer.getBoundingClientRect().height;
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.effect || changed.effectPhase || changed.enableEffects) {
+      const { effect, effectPhase, enableEffects } = state;
+      
+      // The inner container lets us measure how tall the content wants to be.
+      const naturalHeight = this.$.innerContainer.getBoundingClientRect().height;
 
-    // The effect phase (before, during, after) determines which height we apply
-    // to the outer container.
-    const phaseHeights = {
-      'open': {
-        'before': '0px',
-        'during': `${naturalHeight}px`,
-        'after': ''
-      },
-      'close': {
-        'before': `${naturalHeight}px`,
-        'during': '0px',
-        'after': '0px'
-      }
-    };
-    const height = phaseHeights[effect][phase];
-
-    // This animates an element's height, which may not produce the smoothest
-    // results. See
-    // https://developers.google.com/web/updates/2017/03/performant-expand-and-collapse.
-    // Animating height does have the advantage of letting you set the height of
-    // the panel's collapsed state by setting the panel's `min-height`.       
-    const showTransitions = this.state.enableEffects;
-    const transition = showTransitions && phase === 'during' ?
-      'height 0.25s' :
-      '';
-
-    // We only set aria-expanded if this component can get the keyboard focus
-    // (which it usually won't).
-    const canReceiveFocus = this.tabIndex >= 0;
-    const ariaExpanded = canReceiveFocus ?
-      this.opened :
-      null;
-
-    return merge(super.updates, {
-      attributes: {
-        'aria-expanded': ariaExpanded
-      },
-      $: {
-        outerContainer: {
-          style: {
-            height,
-            transition
-          }
+      // The effect phase (before, during, after) determines which height we apply
+      // to the outer container.
+      const phaseHeights = {
+        'open': {
+          'before': '0px',
+          'during': `${naturalHeight}px`,
+          'after': ''
+        },
+        'close': {
+          'before': `${naturalHeight}px`,
+          'during': '0px',
+          'after': '0px'
         }
+      };
+      const height = phaseHeights[effect][effectPhase];
+
+      // This animates an element's height, which may not produce the smoothest
+      // results. See
+      // https://developers.google.com/web/updates/2017/03/performant-expand-and-collapse.
+      // Animating height does have the advantage of letting you set the height of
+      // the panel's collapsed state by setting the panel's `min-height`.       
+      const transition = enableEffects && effectPhase === 'during' ?
+        'height 0.25s' :
+        null;
+
+      Object.assign(this.$.outerContainer.style, {
+        height,
+        transition
+      });
+    }
+    if (changed.opened || changed.tabIndex) {
+      // We only set aria-expanded if this component can get the keyboard focus
+      // (which it usually won't).
+      const canReceiveFocus = state.tabIndex >= 0;
+      if (canReceiveFocus) {
+        this.setAttribute('aria-expanded', state.opened);
+      } else {
+        this.removeAttribute('aria-expanded');
       }
-    });
+    }
   }
   
   get [symbols.template]() {
