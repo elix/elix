@@ -205,6 +205,13 @@ class ListComboBox extends Base {
     return this.$.list;
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.selectedIndex) {
+      this.$.list.selectedIndex = state.selectedIndex;
+    }
+  }
+
   get [symbols.template]() {
     // Next line is same as: const result = super[symbols.template]
     const result = getSuperProperty(this, ListComboBox, symbols.template);
@@ -229,13 +236,6 @@ class ListComboBox extends Base {
     }
 
     return result;
-  }
-
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
-    if (changed.selectedIndex) {
-      this.$.list.selectedIndex = state.selectedIndex;
-    }
   }
 
 }
