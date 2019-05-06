@@ -39,10 +39,6 @@
  * @module symbols
  */
 
-
-// TODO: Document
-export const beforeUpdate = Symbol('beforeUpdate');
-
 /**
  * Symbol for the `canGoLeft` property.
  * 
@@ -287,6 +283,9 @@ export const mouseenter = Symbol('mouseenter');
  */
 export const mouseleave = Symbol('mouseleave');
 
+// TODO: Document
+export const populate = Symbol('populate');
+
 /**
  * Symbol for the `raiseChangeEvents` property.
  *
@@ -342,13 +341,6 @@ export const raiseChangeEvents = Symbol('raiseChangeEvents');
  * method internally invokes an `symbols.render` method, which a component can
  * implement to actually render itself.
  * 
- * You can implement a `symbols.render` method if necessary, but the most
- * common way for Elix components to render themselves is to use
- * [RenderUpdatesMixin](RenderUpdatesMixin),
- * [ShadowTemplateMixin](ShadowTemplateMixin), and/or
- * [ContentItemsMixin](ContentItemsMixin), all of which provide a
- * `symbols.render` method.
- * 
  * @function render
  */
 export const render = Symbol('render');
@@ -376,22 +368,6 @@ export const rendering = Symbol('rendering');
  * @var {boolean} rightToLeft
  */
 export const rightToLeft = Symbol('rightToLeft');
-
-// TODO: Document
-export const renderedRoles = Symbol('renderedRoles');
-
-/**
- * Symbol for the `roles` property.
- * 
- * A role is an element in a component template that can be replaced by an
- * alternative element. The element filling the role can be identified an
- * element tag (e.g., "div"), a custom element class constructor (e.g.,
- * [SeamlessButton](SeamlessButton)), or a document fragment.
- * 
- * The `roles` property is a dictionary mapping a role name to the corresponding
- * element that should be instantiated to fill that role.
- */
-export const roles = Symbol('roles');
 
 /**
  * Symbol for the `scrollTarget` property.

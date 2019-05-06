@@ -38,41 +38,6 @@ export default function ShadowTemplateMixin(Base) {
   // The class prototype added by the mixin.
   class ShadowTemplate extends Base {
 
-    /*
-     * If the component defines a template, a shadow root will be created on the
-     * component instance, and the template stamped into it.
-     */
-    [symbols.render](state, changed) {
-      if (super[symbols.render]) { super[symbols.render](state, changed); }
-      if (this.shadowRoot) {
-        // Already rendered
-        return;
-      }
-      
-      // See if we've already processed a template for this type of element.
-      const template = getPreparedTemplate(this);
-
-      // Stamp the template into a new shadow root.
-      const delegatesFocus = this.delegatesFocus;
-      if (template) {
-        const root = this.attachShadow({
-          delegatesFocus,
-          mode: 'open'
-        });
-        const clone = document.importNode(template.content, true);
-        root.appendChild(clone);
-      }
-    }
-
-    connectedCallback() {
-      if (super.connectedCallback) { super.connectedCallback(); }
-      // @ts-ignore
-      if (window.ShadyCSS && !window.ShadyCSS.nativeShadow) {
-        // @ts-ignore
-        window.ShadyCSS.styleElement(this);
-      }
-    }
-
     /**
      * A convenient shortcut for looking up an element by ID in the component's
      * Shadow DOM subtree.
@@ -92,16 +57,49 @@ export default function ShadowTemplateMixin(Base) {
         this[shadowReferencesKey] = new Proxy({}, {
           /* eslint-disable no-unused-vars */
           get(target, property, receiver) {
-            if (!element.shadowRoot) {
-              /* eslint-disable no-console */
-              console.warn(`Tried to find shadow element "${property.toString()}" before the shadow root was rendered.`);
-              return null;
-            }
-            return element.shadowRoot.getElementById(property);
+            return element.shadowRoot ?
+              element.shadowRoot.getElementById(property) :
+              null;
           }
         });
       }
       return this[shadowReferencesKey];
+    }
+
+    connectedCallback() {
+      if (super.connectedCallback) { super.connectedCallback(); }
+      // @ts-ignore
+      if (window.ShadyCSS && !window.ShadyCSS.nativeShadow) {
+        // @ts-ignore
+        window.ShadyCSS.styleElement(this);
+      }
+    }
+
+    /*
+     * If the component defines a template, a shadow root will be created on the
+     * component instance, and the template stamped into it.
+     */
+    [symbols.populate](state, changed) {
+      if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+      if (this.shadowRoot) {
+        // Already rendered
+        return;
+      }
+      
+      // If this type of element defines a template, prepare it for use.
+      const template = getPreparedTemplate(this);
+      if (template) {
+        // Stamp the template into a new shadow root.
+        const delegatesFocus = this.delegatesFocus;
+        if (template) {
+          const root = this.attachShadow({
+            delegatesFocus,
+            mode: 'open'
+          });
+          const clone = document.importNode(template.content, true);
+          root.appendChild(clone);
+        }
+      }
     }
 
   }
@@ -112,11 +110,13 @@ export default function ShadowTemplateMixin(Base) {
 
 function getPreparedTemplate(element) {
   const hasDynamicTemplate = element[symbols.hasDynamicTemplate];
-  let template = !hasDynamicTemplate && classTemplateMap.get(element.constructor);
-  if (!template) {
+  let template = hasDynamicTemplate ?
+    undefined : // Always retrieve template
+    classTemplateMap.get(element.constructor);
+  if (template === undefined) {
     // This is the first time we've created an instance of this type.
     template = prepareTemplate(element);
-    if (!hasDynamicTemplate && template) {
+    if (!hasDynamicTemplate) {
       // Store prepared template for next creation of same type of element.
       classTemplateMap.set(element.constructor, template);
     }
@@ -127,26 +127,18 @@ function getPreparedTemplate(element) {
 
 // Retrieve an element's template and prepare it for use.
 function prepareTemplate(element) {
-
-  let template = element[symbols.template];
-
-  if (!template) {
-    /* eslint-disable no-console */
-    console.warn(`ShadowTemplateMixin expects ${element.constructor.name} to define a property called [symbols.template].\nSee https://elix.org/documentation/ShadowTemplateMixin.`);
-    return;
-  }
-
-  if (!(template instanceof HTMLTemplateElement)) {
-    throw `Warning: the [symbols.template] property for ${element.constructor.name} must return an HTMLTemplateElement.`;
-  }
-
-  // @ts-ignore
-  if (window.ShadyCSS && !window.ShadyCSS.nativeShadow) {
-    // Let the CSS polyfill do its own initialization.
-    const tag = element.localName;
+  const template = element[symbols.template] || null;
+  if (template) {
+    if (!(template instanceof HTMLTemplateElement)) {
+      throw `Warning: the [symbols.template] property for ${element.constructor.name} must return an HTMLTemplateElement.`;
+    }
     // @ts-ignore
-    window.ShadyCSS.prepareTemplate(template, tag);
+    if (window.ShadyCSS && !window.ShadyCSS.nativeShadow) {
+      // Let the CSS polyfill do its own initialization.
+      const tag = element.localName;
+      // @ts-ignore
+      window.ShadyCSS.prepareTemplate(template, tag);
+    }
   }
-
   return template;
 }

@@ -22,34 +22,6 @@ const Base =
  */
 class ExpandableSection extends Base {
 
-  constructor() {
-    super();
-    // These roles are already applied in the template.
-    this[symbols.renderedRoles] = {
-      headerRole: SeamlessButton,
-      panelRole: ExpandablePanel
-    };
-  }
-
-  [symbols.beforeUpdate]() {
-    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-
-    if (this[symbols.renderedRoles].headerRole !== this.state.headerRole) {
-      template.transmute(this.$.header, this.state.headerRole);
-      this[symbols.renderedRoles].headerRole = this.state.headerRole;
-      this.$.header.addEventListener('click', () => {
-        this[symbols.raiseChangeEvents] = true;
-        this.toggle();
-        this[symbols.raiseChangeEvents] = false;
-      });
-    }
-
-    if (this[symbols.renderedRoles].panelRole !== this.state.panelRole) {
-      template.transmute(this.$.panel, this.state.panelRole);
-      this[symbols.renderedRoles].panelRole = this.state.panelRole;
-    }
-  }
-
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
     this.$.header.addEventListener('click', () => {
@@ -91,6 +63,21 @@ class ExpandableSection extends Base {
   }
   set panelRole(panelRole) {
     this.setState({ panelRole });
+  }
+
+  [symbols.populate](state, changed) {
+    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    if (changed.headerRole) {
+      template.transmute(this.$.header, this.state.headerRole);
+      this.$.header.addEventListener('click', () => {
+        this[symbols.raiseChangeEvents] = true;
+        this.toggle();
+        this[symbols.raiseChangeEvents] = false;
+      });
+    }
+    if (changed.panelRole) {
+      template.transmute(this.$.panel, this.state.panelRole);
+    }
   }
 
   [symbols.render](state, changed) {

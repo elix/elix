@@ -41,7 +41,6 @@ class CalendarMonthNavigator extends Base {
 
   constructor() {
     super();
-    this[symbols.renderedRoles] = super[symbols.renderedRoles] || {};
     this.addEventListener('mousedown', event => {
       this[symbols.raiseChangeEvents] = true;
       const target = event.composedPath()[0];

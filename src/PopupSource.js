@@ -37,11 +37,6 @@ const Base =
  */
 class PopupSource extends Base {
 
-  constructor() {
-    super();
-    this[symbols.renderedRoles] = {};
-  }
-
   /**
    * The class, tag, or template used for the optional backdrop element behind
    * the overlay.
@@ -59,42 +54,6 @@ class PopupSource extends Base {
   }
   set backdropRole(backdropRole) {
     this.setState({ backdropRole });
-  }
-
-  [symbols.beforeUpdate]() {
-    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-
-    if (this[symbols.renderedRoles].sourceRole !== this.state.sourceRole) {
-      template.transmute(this.$.source, this.state.sourceRole);
-      this[symbols.renderedRoles].sourceRole = this.state.sourceRole;
-    }
-    
-    if (this[symbols.renderedRoles].popupRole !== this.state.popupRole) {
-      template.transmute(this.$.popup, this.state.popupRole);
-
-      // Popup's opened state becomes our own opened state.
-      this.$.popup.addEventListener('opened', () => {
-        if (!this.opened) {
-          this[symbols.raiseChangeEvents] = true;
-          this.open();
-          this[symbols.raiseChangeEvents] = false;
-        }
-      });
-
-      // Popup's closed state becomes our own closed state.
-      this.$.popup.addEventListener('closed', event => {
-        if (!this.closed) {
-          this[symbols.raiseChangeEvents] = true;
-          /** @type {any} */ 
-          const cast = event;
-          const closeResult = cast.detail.closeResult;
-          this.close(closeResult);
-          this[symbols.raiseChangeEvents] = false;
-        }
-      });
-
-      this[symbols.renderedRoles].popupRole = this.state.popupRole;
-    }
   }
 
   componentDidMount() {
@@ -196,6 +155,37 @@ class PopupSource extends Base {
     this.setState({
       horizontalAlign
     });
+  }
+
+  [symbols.populate](state, changed) {
+    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    if (changed.sourceRole) {
+      template.transmute(this.$.source, this.state.sourceRole);
+    }    
+    if (changed.popupRole) {
+      template.transmute(this.$.popup, this.state.popupRole);
+
+      // Popup's opened state becomes our own opened state.
+      this.$.popup.addEventListener('opened', () => {
+        if (!this.opened) {
+          this[symbols.raiseChangeEvents] = true;
+          this.open();
+          this[symbols.raiseChangeEvents] = false;
+        }
+      });
+
+      // Popup's closed state becomes our own closed state.
+      this.$.popup.addEventListener('closed', event => {
+        if (!this.closed) {
+          this[symbols.raiseChangeEvents] = true;
+          /** @type {any} */ 
+          const cast = event;
+          const closeResult = cast.detail.closeResult;
+          this.close(closeResult);
+          this[symbols.raiseChangeEvents] = false;
+        }
+      });
+    }
   }
 
   /**

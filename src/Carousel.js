@@ -57,32 +57,6 @@ const Base =
  * @elementrole {SlidingStage} stage
  */
 class Carousel extends Base {
-
-  [symbols.beforeUpdate]() {
-    const proxyListChanged = this[symbols.renderedRoles].proxyListRole
-      !== this.state.proxyListRole;
-    const stageChanged = this[symbols.renderedRoles].stageRole
-      !== this.state.stageRole;
-    if (proxyListChanged && this.$.proxyList) {
-      // Turn off focus handling for old proxy list.
-      /** @type {any} */
-      const cast = this.$.proxyList;
-      forwardFocus(cast, null);
-    }
-    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-    if (proxyListChanged) {
-      // Keep focus off of the proxies and onto the carousel itself.
-      /** @type {any} */
-      const cast = this.$.proxyList;
-      forwardFocus(cast, this);
-      cast.removeAttribute('tabindex');
-    }
-    if (stageChanged) {
-      /** @type {any} */
-      const cast = this.$.stage;
-      cast.removeAttribute('tabindex');      
-    }
-  }
   
   get defaultState() {
     // Show arrow buttons if device has a fine-grained pointer (e.g., mouse).
@@ -102,6 +76,28 @@ class Carousel extends Base {
       showArrowButtons,
       stageRole: SlidingStage
     });
+  }
+
+  [symbols.populate](state, changed) {
+    if (changed.proxyListRole && this.$.proxyList) {
+      // Turn off focus handling for old proxy list.
+      /** @type {any} */
+      const cast = this.$.proxyList;
+      forwardFocus(cast, null);
+    }
+    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    if (changed.proxyListRole) {
+      // Keep focus off of the proxies and onto the carousel itself.
+      /** @type {any} */
+      const cast = this.$.proxyList;
+      forwardFocus(cast, this);
+      cast.removeAttribute('tabindex');
+    }
+    if (changed.stageRole) {
+      /** @type {any} */
+      const cast = this.$.stage;
+      cast.removeAttribute('tabindex');      
+    }
   }
 
   proxyUpdates(proxy, calcs) {

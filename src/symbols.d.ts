@@ -12,7 +12,6 @@
  * Symbol objects to be used at runtime as desired.
  */
 
-export const beforeUpdate: '_beforeUpdate';
 export const canGoLeft: '_canGoLeft';
 export const canGoRight: '_canGoRight';
 export const checkSize: '_checkSize';
@@ -33,12 +32,11 @@ export const itemsDelegate: '_itemsDelegate';
 export const keydown: '_keydown';
 export const mouseenter: '_mouseenter';
 export const mouseleave: '_mouseleave';
+export const populate: '_populate';
 export const raiseChangeEvents: '_raiseChangeEvents';
 export const render: '_render';
-export const renderedRoles: '_renderedRoles';
 export const rendering: '_rendering';
 export const rightToLeft: '_rightToLeft';
-export const roles: '_roles';
 export const scrollTarget: '_scrollTarget';
 export const startEffect: '_startEffect';
 export const swipeDown: '_swipeDown';

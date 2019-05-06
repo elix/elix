@@ -41,36 +41,6 @@ const Base =
  */
 class Explorer extends Base {
 
-  constructor() {
-    super();
-    this[symbols.renderedRoles] = {};
-  }
-
-  [symbols.beforeUpdate]() {
-    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-
-    const handleSelectedIndexChanged = event => {
-      this[symbols.raiseChangeEvents] = true;
-      const selectedIndex = event.detail.selectedIndex;
-      if (this.selectedIndex !== selectedIndex) {
-        this.selectedIndex = selectedIndex;
-      }
-      this[symbols.raiseChangeEvents] = false;
-    };
-
-    if (this[symbols.renderedRoles].proxyListRole !== this.state.proxyListRole) {
-      template.transmute(this.$.proxyList, this.state.proxyListRole);
-      this[symbols.renderedRoles].proxyListRole = this.state.proxyListRole;
-      this.$.proxyList.addEventListener('selected-index-changed', handleSelectedIndexChanged);
-    }
-
-    if (this[symbols.renderedRoles].stageRole !== this.state.stageRole) {
-      template.transmute(this.$.stage, this.state.stageRole);
-      this[symbols.renderedRoles].stageRole = this.state.stageRole;
-      this.$.stage.addEventListener('selected-index-changed', handleSelectedIndexChanged);
-    }
-  }
-
   [symbols.checkSize]() {
     if (super[symbols.checkSize]) { super[symbols.checkSize](); }
     if (this.$.stage[symbols.checkSize]) {
@@ -133,6 +103,29 @@ class Explorer extends Base {
     });
 
     return state;
+  }
+
+  [symbols.populate](state, changed) {
+    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+
+    const handleSelectedIndexChanged = event => {
+      this[symbols.raiseChangeEvents] = true;
+      const selectedIndex = event.detail.selectedIndex;
+      if (this.selectedIndex !== selectedIndex) {
+        this.selectedIndex = selectedIndex;
+      }
+      this[symbols.raiseChangeEvents] = false;
+    };
+
+    if (changed.proxyListRole) {
+      template.transmute(this.$.proxyList, this.state.proxyListRole);
+      this.$.proxyList.addEventListener('selected-index-changed', handleSelectedIndexChanged);
+    }
+
+    if (changed.stageRole) {
+      template.transmute(this.$.stage, this.state.stageRole);
+      this.$.stage.addEventListener('selected-index-changed', handleSelectedIndexChanged);
+    }
   }
 
   /**

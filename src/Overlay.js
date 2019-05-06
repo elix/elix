@@ -51,29 +51,6 @@ const Base =
  */
 class Overlay extends Base {
 
-  constructor() {
-    super();
-    // The template already includes elements in these roles.
-    this[symbols.renderedRoles] = {
-      backdrop: Backdrop,
-      frame: OverlayFrame
-    };
-  }
-
-  [symbols.beforeUpdate]() {
-    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-
-    if (this[symbols.renderedRoles].backdropRole !== this.state.backdropRole) {
-      template.transmute(this.$.backdrop, this.state.backdropRole);
-      this[symbols.renderedRoles].backdropRole = this.state.backdropRole;
-    }
-
-    if (this[symbols.renderedRoles].frameRole !== this.state.frameRole) {
-      template.transmute(this.$.frame, this.state.frameRole);
-      this[symbols.renderedRoles].frameRole = this.state.frameRole;
-    }
-  }
-
   get backdrop() {
     return this.$ && this.$.backdrop;
   }
@@ -154,6 +131,16 @@ class Overlay extends Base {
       document.body.appendChild(this);
     }
     if (super.open) { await super.open(); }
+  }
+
+  [symbols.populate](state, changed) {
+    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    if (changed.backdropRole) {
+      template.transmute(this.$.backdrop, this.state.backdropRole);
+    }
+    if (changed.frameRole) {
+      template.transmute(this.$.frame, this.state.frameRole);
+    }
   }
 
   get [symbols.template]() {

@@ -59,6 +59,10 @@ export default function ReactiveMixin(Base) {
       return new State();
     }
 
+    [symbols.populate](state, changed) {
+      if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    }
+
     /*
      * Internal render method.
      * 

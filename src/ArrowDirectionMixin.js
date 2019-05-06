@@ -66,20 +66,29 @@ function ArrowDirectionMixin(Base) {
         return this[symbols.goRight]();
       }
     }
+  
+    get defaultState() {
+      return Object.assign(super.defaultState, {
+        arrowButtonOverlap: true,
+        arrowButtonRole: ArrowDirectionButton,
+        orientation: 'horizontal',
+        showArrowButtons: true
+      });
+    }
 
-    [symbols.beforeUpdate]() {
-      const arrowButtonChanged = this[symbols.renderedRoles].arrowButtonRole
-        !== this.state.arrowButtonRole;
-      if (arrowButtonChanged && this.$.arrowButtonLeft) {
-        // Turn off focus handling for old left button.
-        forwardFocus(this.$.arrowButtonLeft, null);
+    [symbols.populate](state, changed) {
+      if (changed.arrowButtonRole) {
+        if (this.$.arrowButtonLeft) {
+          // Turn off focus handling for old left button.
+          forwardFocus(this.$.arrowButtonLeft, null);
+        }
+        if (this.$.arrowButtonRight) {
+          // Turn off focus handling for old right button.
+          forwardFocus(this.$.arrowButtonRight, null);
+        }
       }
-      if (arrowButtonChanged && this.$.arrowButtonRight) {
-        // Turn off focus handling for old right button.
-        forwardFocus(this.$.arrowButtonRight, null);
-      }
-      if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-      if (arrowButtonChanged) {
+      if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+      if (changed.arrowButtonRole) {
         const arrowButtons = this.shadowRoot.querySelectorAll('.arrowButton');
         template.transmute(arrowButtons, this.state.arrowButtonRole);
 
@@ -115,18 +124,7 @@ function ArrowDirectionMixin(Base) {
           await Promise.resolve();
           this[symbols.raiseChangeEvents] = false;
         });
-
-        this[symbols.renderedRoles].arrowButtonRole = this.state.arrowButtonRole;
       }
-    }
-  
-    get defaultState() {
-      return Object.assign(super.defaultState, {
-        arrowButtonOverlap: true,
-        arrowButtonRole: ArrowDirectionButton,
-        orientation: 'horizontal',
-        showArrowButtons: true
-      });
     }
 
     [symbols.render](state, changed) {

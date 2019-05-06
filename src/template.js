@@ -178,10 +178,10 @@ export function replace(original, replacement) {
     // attributes/classes/styles directly set on the replacement
     // win any conflicts with the original.
     //
-    // We do this application now, before inserting the replacement
-    // into the tree, so that RenderUpdatesMixin's record-keeping
-    // will consider these values to be original (i.e., equivalent
-    // to having been set via markup).
+    // We do this application now, before inserting the replacement into the
+    // tree, so that OriginalAttributesMixin's record-keeping will consider
+    // these values to be original (i.e., equivalent to having been set via
+    // markup).
     const merged = merge(current(original), current(replacement));
     apply(replacement, merged);
   }

@@ -1,4 +1,4 @@
-import { merge } from '../../src/updates.js';
+import * as symbols from '../../src/symbols.js';
 import OpenCloseMixin from '../../src/OpenCloseMixin.js';
 import OriginalAttributesMixin from '../../src/OriginalAttributesMixin.js'
 import OverlayMixin from '../../src/OverlayMixin.js';
@@ -14,12 +14,9 @@ const Base =
   ))));
 
 class OverlayTest extends Base {
-  get updates() {
-    return merge(super.updates, {
-      attributes: {
-        tabindex: '0'
-      }
-    });
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    this.tabIndex = 0;
   }
 }
 customElements.define('overlay-test', OverlayTest);

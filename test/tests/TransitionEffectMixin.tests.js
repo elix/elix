@@ -1,7 +1,6 @@
-import { merge } from '../../src/updates.js';
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
-import ReactiveElement from '../../src/ReactiveElement.js';
+import ReactiveElement from '../../src/ReactiveElement2.js';
 import TransitionEffectMixin from '../../src/TransitionEffectMixin.js';
 
 
@@ -22,6 +21,23 @@ class TransitionEffectTest extends Base {
     });
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    const effect = this.state.effect;
+    const phase = this.state.effectPhase;
+    const display = effect === 'close' && phase === 'after' ?
+      'none' :
+      'block';
+    const opacity = (effect === 'open' && phase !== 'before') ||
+        (effect === 'close' && phase === 'before') ?
+      1 :
+      0;
+    Object.assign(this.style, {
+      display,
+      opacity
+    });
+  }
+  
   get [symbols.template]() {
     return template.html`
       <style>
@@ -32,23 +48,6 @@ class TransitionEffectTest extends Base {
     `;
   }
 
-  get updates() {
-    const effect = this.state.effect;
-    const phase = this.state.effectPhase;
-    const display = effect === 'close' && phase === 'after' ?
-      'none' :
-      'block';
-    const opacity = (effect === 'open' && phase !== 'before') ||
-        (effect === 'close' && phase === 'before') ?
-      1 :
-      0;
-    return merge(super.updates, {
-      style: {
-        display,
-        opacity
-      }
-    });
-  }
 }
 customElements.define('transition-effect-test', TransitionEffectTest);
 

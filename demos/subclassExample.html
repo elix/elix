@@ -14,21 +14,19 @@
   </template>
 
   <script type="module">
-    import AttributeMarshallingMixin from '../src/AttributeMarshallingMixin.js';
     import { merge } from '../src/updates.js';
-    import RenderUpdatesMixin from '../src/RenderUpdatesMixin.js';
+    import * as symbols from '../src/symbols.js';
+    import AttributeMarshallingMixin from '../src/AttributeMarshallingMixin.js';
     import ReactiveMixin from '../src/ReactiveMixin.js';
     import ShadowTemplateMixin from '../src/ShadowTemplateMixin.js';
-    import * as symbols from '../src/symbols.js';
 
     // Create a native web component with reactive behavior.
     const Base =
       AttributeMarshallingMixin(
       ReactiveMixin(
-      RenderUpdatesMixin(
       ShadowTemplateMixin(
         HTMLElement
-      ))));
+      )));
 
     class IncrementDecrement extends Base {
 

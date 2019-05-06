@@ -17,97 +17,6 @@ const documentMouseupListenerKey = Symbol('documentMouseupListener');
  */
 class MenuButton extends PopupButton {
 
-  /**
-   * Highlight the selected item (if one exists), then close the menu.
-   */
-  async highlightSelectedItemAndClose() {
-    const raiseChangeEvents = this[symbols.raiseChangeEvents];
-    const selectionDefined = this.state.menuSelectedIndex >= 0;
-    const closeResult = selectionDefined ?
-      this.state.menuSelectedIndex :
-      undefined;
-    /** @type {any} */
-    const cast = this.$.menu;
-    if (selectionDefined && 'highlightSelectedItem' in cast) {
-      await cast.highlightSelectedItem();
-    }
-    const saveRaiseChangeEvents = this[symbols.raiseChangeEvents];
-    this[symbols.raiseChangeEvents] = raiseChangeEvents;
-    await this.close(closeResult);
-    this[symbols.raiseChangeEvents] = saveRaiseChangeEvents;
-  }
-
-  [symbols.beforeUpdate]() {
-    const popupRoleChanged = this[symbols.renderedRoles].popupRole !==
-        this.state.popupRole;
-    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-    if (popupRoleChanged) {
-      this.$.popup.tabIndex = -1;
-    }
-    if (this[symbols.renderedRoles].menuRole !== this.state.menuRole) {
-      template.transmute(this.$.menu, this.state.menuRole);
-
-      // Close the popup if menu loses focus.
-      this.$.menu.addEventListener('blur', async (event) => {
-        /** @type {any} */
-        const cast = event;
-        const newFocusedElement = cast.relatedTarget || document.activeElement;
-        if (this.opened && !deepContains(this.$.menu, newFocusedElement)) {
-          this[symbols.raiseChangeEvents] = true;
-          await this.close();
-          this[symbols.raiseChangeEvents] = false;
-        }
-      });
-
-      // mousedown events on the menu will propagate up to the top-level element,
-      // which will then steal the focus. We want to keep the focus on the menu,
-      // both to permit keyboard use, and to avoid closing the menu on blur (see
-      // separate blur handler). To keep the focus on the menu, we prevent the
-      // default event behavior.
-      this.$.menu.addEventListener('mousedown', event => {
-        if (this.opened) {
-          event.stopPropagation();
-          event.preventDefault();
-        }
-      });
-
-      // If the user mouses up on a menu item, close the menu with that item as
-      // the close result.
-      this.$.menu.addEventListener('mouseup', async (event) => {
-        // If we're doing a drag-select (user moused down on button, dragged
-        // mouse into menu, and released), we close. If we're not doing a
-        // drag-select (the user opened the menu with a complete click), and
-        // there's a selection, they clicked on an item, so also close.
-        // Otherwise, the user clicked the menu open, then clicked on a menu
-        // separator or menu padding; stay open.
-        const menuSelectedIndex = this.state.menuSelectedIndex;
-        if (this.state.dragSelect || menuSelectedIndex >= 0) {
-          // We don't want the document mouseup handler to close
-          // before we've asked the menu to highlight the selection.
-          // We need to stop event propagation here, before we enter
-          // any async code, to actually stop propagation.
-          event.stopPropagation();
-          this[symbols.raiseChangeEvents] = true;
-          await this.highlightSelectedItemAndClose();
-          this[symbols.raiseChangeEvents] = false;
-        } else {
-          event.stopPropagation();
-        }
-      });
-
-      // Track changes in the menu's selection state.
-      this.$.menu.addEventListener('selected-index-changed', event => {
-        /** @type {any} */
-        const cast = event;
-        this.setState({
-          menuSelectedIndex: cast.detail.selectedIndex
-        });
-      });
-
-      this[symbols.renderedRoles].menuRole = this.state.menuRole;
-    }
-  }
-
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
 
@@ -237,6 +146,26 @@ class MenuButton extends PopupButton {
     this[documentMouseupListenerKey] = null;
   }
 
+  /**
+   * Highlight the selected item (if one exists), then close the menu.
+   */
+  async highlightSelectedItemAndClose() {
+    const raiseChangeEvents = this[symbols.raiseChangeEvents];
+    const selectionDefined = this.state.menuSelectedIndex >= 0;
+    const closeResult = selectionDefined ?
+      this.state.menuSelectedIndex :
+      undefined;
+    /** @type {any} */
+    const cast = this.$.menu;
+    if (selectionDefined && 'highlightSelectedItem' in cast) {
+      await cast.highlightSelectedItem();
+    }
+    const saveRaiseChangeEvents = this[symbols.raiseChangeEvents];
+    this[symbols.raiseChangeEvents] = raiseChangeEvents;
+    await this.close(closeResult);
+    this[symbols.raiseChangeEvents] = saveRaiseChangeEvents;
+  }
+
   get items() {
     /** @type {any} */
     const menu = this.$ && this.$.menu;
@@ -309,6 +238,73 @@ class MenuButton extends PopupButton {
   }
   set menuRole(menuRole) {
     this.setState({ menuRole });
+  }
+
+  [symbols.populate](state, changed) {
+    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    if (changed.popupRole) {
+      this.$.popup.tabIndex = -1;
+    }
+    if (changed.menuRole) {
+      template.transmute(this.$.menu, this.state.menuRole);
+
+      // Close the popup if menu loses focus.
+      this.$.menu.addEventListener('blur', async (event) => {
+        /** @type {any} */
+        const cast = event;
+        const newFocusedElement = cast.relatedTarget || document.activeElement;
+        if (this.opened && !deepContains(this.$.menu, newFocusedElement)) {
+          this[symbols.raiseChangeEvents] = true;
+          await this.close();
+          this[symbols.raiseChangeEvents] = false;
+        }
+      });
+
+      // mousedown events on the menu will propagate up to the top-level element,
+      // which will then steal the focus. We want to keep the focus on the menu,
+      // both to permit keyboard use, and to avoid closing the menu on blur (see
+      // separate blur handler). To keep the focus on the menu, we prevent the
+      // default event behavior.
+      this.$.menu.addEventListener('mousedown', event => {
+        if (this.opened) {
+          event.stopPropagation();
+          event.preventDefault();
+        }
+      });
+
+      // If the user mouses up on a menu item, close the menu with that item as
+      // the close result.
+      this.$.menu.addEventListener('mouseup', async (event) => {
+        // If we're doing a drag-select (user moused down on button, dragged
+        // mouse into menu, and released), we close. If we're not doing a
+        // drag-select (the user opened the menu with a complete click), and
+        // there's a selection, they clicked on an item, so also close.
+        // Otherwise, the user clicked the menu open, then clicked on a menu
+        // separator or menu padding; stay open.
+        const menuSelectedIndex = this.state.menuSelectedIndex;
+        if (this.state.dragSelect || menuSelectedIndex >= 0) {
+          // We don't want the document mouseup handler to close
+          // before we've asked the menu to highlight the selection.
+          // We need to stop event propagation here, before we enter
+          // any async code, to actually stop propagation.
+          event.stopPropagation();
+          this[symbols.raiseChangeEvents] = true;
+          await this.highlightSelectedItemAndClose();
+          this[symbols.raiseChangeEvents] = false;
+        } else {
+          event.stopPropagation();
+        }
+      });
+
+      // Track changes in the menu's selection state.
+      this.$.menu.addEventListener('selected-index-changed', event => {
+        /** @type {any} */
+        const cast = event;
+        this.setState({
+          menuSelectedIndex: cast.detail.selectedIndex
+        });
+      });
+    }
   }
 
   [symbols.render](state, changed) {

@@ -39,40 +39,12 @@ const Base =
  */
 class ListWithSearch extends Base {
 
-  constructor() {
-    super();
-    this[symbols.renderedRoles] = {
-      listRole: FilterListBox
-    };
-  }
-
   // Forward any ARIA label to the input element.
   get ariaLabel() {
     return this.state.ariaLabel;
   }
   set ariaLabel(ariaLabel) {
     this.setState({ ariaLabel });
-  }
-
-  [symbols.beforeUpdate]() {
-    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-    if (this[symbols.renderedRoles].inputRole !== this.state.inputRole) {
-      template.transmute(this.$.input, this.state.inputRole);
-      this.$.input.addEventListener('input', () => {
-        this[symbols.raiseChangeEvents] = true;
-        /** @type {any} */
-        const cast = this.$.input;
-        this.setState({
-          filter: cast.value
-        });
-        this[symbols.raiseChangeEvents] = false;
-      });
-      this[symbols.renderedRoles].inputRole = this.state.inputRole;
-    }
-    if (this[symbols.renderedRoles].listRole !== this.state.listRole) {
-      template.transmute(this.$.list, this.state.listRole);
-      this[symbols.renderedRoles].listRole = this.state.listRole;
-    }
   }
 
   get defaultState() {
@@ -183,6 +155,25 @@ class ListWithSearch extends Base {
   }
   set placeholder(placeholder) {
     this.setState({ placeholder });
+  }
+
+  [symbols.populate](state, changed) {
+    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    if (changed.inputRole) {
+      template.transmute(this.$.input, this.state.inputRole);
+      this.$.input.addEventListener('input', () => {
+        this[symbols.raiseChangeEvents] = true;
+        /** @type {any} */
+        const cast = this.$.input;
+        this.setState({
+          filter: cast.value
+        });
+        this[symbols.raiseChangeEvents] = false;
+      });
+    }
+    if (changed.listRole) {
+      template.transmute(this.$.list, this.state.listRole);
+    }
   }
 
   [symbols.render](state, changed) {

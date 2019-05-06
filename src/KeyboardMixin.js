@@ -100,8 +100,13 @@ export default function KeyboardMixin(Base) {
 
     [symbols.render](state, changed) {
       if (super[symbols.render]) { super[symbols.render](state, changed); }
-      if (changed.tabIndex) {
-        this.tabIndex = state.tabIndex;
+      if (changed.original || changed.tabIndex) {
+        const originalTabindex = state.original && state.original.attributes ?
+          state.original.attributes.tabindex :
+          null;
+        if (originalTabindex == null) {
+          this.tabIndex = state.tabIndex;
+        }
       }
     }
 
@@ -132,7 +137,7 @@ export default function KeyboardMixin(Base) {
         // If tabIndex is set outside of rendering, that's tantamount to setting
         // the tabindex attribute. We update our notion of the "original"
         // attribute value of the tabindex attribute. See
-        // RenderUpdatesMixin.setAttribute().
+        // OriginalAttributesMixin.setAttribute().
         if (!this[symbols.rendering]) {
           const attributes = Object.assign(
             {},

@@ -23,25 +23,6 @@ const Base =
  * @elementrole {FilterListBox} list
  */
 class FilterComboBox extends Base {
-
-  [symbols.beforeUpdate]() {
-    const inputRoleChanged = this[symbols.renderedRoles].inputRole !== this.state.inputRole;
-    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-    if (inputRoleChanged) {
-      this.$.input.addEventListener('input', event => {
-        this[symbols.raiseChangeEvents] = true;
-        /** @type {any} */
-        const cast = event;
-        const filter = cast.detail ?
-          cast.detail.originalText :
-          this.state.value;
-        this.setState({
-          filter
-        });
-        this[symbols.raiseChangeEvents] = false;
-      });
-    }
-  }
   
   get defaultState() {
     const state = Object.assign(super.defaultState, {
@@ -76,6 +57,24 @@ class FilterComboBox extends Base {
     });
 
     return state;
+  }
+
+  [symbols.populate](state, changed) {
+    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    if (changed.inputRole) {
+      this.$.input.addEventListener('input', event => {
+        this[symbols.raiseChangeEvents] = true;
+        /** @type {any} */
+        const cast = event;
+        const filter = cast.detail ?
+          cast.detail.originalText :
+          this.state.value;
+        this.setState({
+          filter
+        });
+        this[symbols.raiseChangeEvents] = false;
+      });
+    }
   }
 
   [symbols.render](state, changed) {

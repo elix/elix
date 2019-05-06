@@ -37,26 +37,6 @@ const Base =
  */
 class PullToRefresh extends Base {
 
-  constructor() {
-    super();
-    // This role is already applied in the template.
-    this[symbols.renderedRoles] = {
-      refreshingIndicatorRole: ProgressSpinner
-    };
-  }
-
-  [symbols.beforeUpdate]() {
-    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-    if (this[symbols.renderedRoles].pullIndicatorRole !== this.state.pullIndicatorRole) {
-      template.transmute(this.$.pullIndicator, this.pullIndicatorRole);
-      this[symbols.renderedRoles].pullIndicatorRole = this.state.pullIndicatorRole;
-    }
-    if (this[symbols.renderedRoles].refreshingIndicatorRole !== this.state.refreshingIndicatorRole) {
-      template.transmute(this.$.refreshingIndicator, this.refreshingIndicatorRole);
-      this[symbols.renderedRoles].refreshingIndicatorRole = this.state.refreshingIndicatorRole;
-    }
-  }
-
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
     // Listen to scroll events in case the user scrolls up past the page's top.
@@ -132,6 +112,16 @@ class PullToRefresh extends Base {
     });
 
     return state;
+  }
+
+  [symbols.populate](state, changed) {
+    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    if (changed.pullIndicatorRole) {
+      template.transmute(this.$.pullIndicator, this.pullIndicatorRole);
+    }
+    if (changed.refreshingIndicatorRole) {
+      template.transmute(this.$.refreshingIndicator, this.refreshingIndicatorRole);
+    }
   }
 
   /**

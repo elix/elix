@@ -20,46 +20,6 @@ const Base =
  */
 class PopupButton extends Base {
 
-  [symbols.beforeUpdate]() {
-    const sourceRoleChanged = this[symbols.renderedRoles].sourceRole !== this.state.sourceRole;
-    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-    if (sourceRoleChanged) {
-      // Desktop popups generally open on mousedown, not click/mouseup. On mobile,
-      // mousedown won't fire until the user releases their finger, so it behaves
-      // like a click.
-      this.$.source.addEventListener('mousedown', event => {
-        // mousedown events fire even if button is disabled, so we need
-        // to explicitly ignore those.
-        if (this.disabled) {
-          return;
-        }
-        // Only handle primary button mouse down to avoid interfering with
-        // right-click behavior.
-        /** @type {any} */
-        const cast = event;
-        if (cast.button && cast.button !== 0) {
-          return;
-        }
-        // We give the default focus behavior time to run before opening the
-        // popup. See note below.
-        setTimeout(() => {
-          if (!this.opened) {
-            this[symbols.raiseChangeEvents] = true;
-            this.open();
-            this[symbols.raiseChangeEvents] = false;
-          }
-        });
-        event.stopPropagation();
-        // We don't prevent the default behavior for mousedown. Among other
-        // things, it sets the focus to the element the user moused down on.
-        // That's important for us, because OverlayMixin will remember that
-        // focused element (i.e., this element) when opening, and restore focus to
-        // it when the popup closes.
-      });
-      this.$.source.tabIndex = -1;
-    }
-  }
-
   componentDidMount() {
     if (super.componentDidMount) { super.componentDidMount(); }
 
@@ -106,6 +66,45 @@ class PopupButton extends Base {
 
     // Prefer mixin result if it's defined, otherwise use base result.
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+  }
+
+  [symbols.populate](state, changed) {
+    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    if (changed.sourceRole) {
+      // Desktop popups generally open on mousedown, not click/mouseup. On mobile,
+      // mousedown won't fire until the user releases their finger, so it behaves
+      // like a click.
+      this.$.source.addEventListener('mousedown', event => {
+        // mousedown events fire even if button is disabled, so we need
+        // to explicitly ignore those.
+        if (this.disabled) {
+          return;
+        }
+        // Only handle primary button mouse down to avoid interfering with
+        // right-click behavior.
+        /** @type {any} */
+        const cast = event;
+        if (cast.button && cast.button !== 0) {
+          return;
+        }
+        // We give the default focus behavior time to run before opening the
+        // popup. See note below.
+        setTimeout(() => {
+          if (!this.opened) {
+            this[symbols.raiseChangeEvents] = true;
+            this.open();
+            this[symbols.raiseChangeEvents] = false;
+          }
+        });
+        event.stopPropagation();
+        // We don't prevent the default behavior for mousedown. Among other
+        // things, it sets the focus to the element the user moused down on.
+        // That's important for us, because OverlayMixin will remember that
+        // focused element (i.e., this element) when opening, and restore focus to
+        // it when the popup closes.
+      });
+      this.$.source.tabIndex = -1;
+    }
   }
 
   [symbols.render](state, changed) {

@@ -42,38 +42,6 @@ class DateComboBox extends Base {
       arrowButtonRole
     });
   }
-
-  [symbols.beforeUpdate]() {
-    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-    if (this[symbols.renderedRoles].calendarRole !== this.state.calendarRole) {
-      template.transmute(this.$.calendar, this.state.calendarRole);
-      this.$.calendar.addEventListener('date-changed', event => {
-        this[symbols.raiseChangeEvents] = true;
-        /** @type {any} */
-        const cast = event;
-        this.date = cast.detail.date;
-        this[symbols.raiseChangeEvents] = false;
-      });
-      this.$.calendar.addEventListener('mousedown', event => {
-        this[symbols.raiseChangeEvents] = true;
-        this.close();
-        event.preventDefault(); // Keep focus on input.
-        this[symbols.raiseChangeEvents] = false;
-      });
-      this[symbols.renderedRoles].calendarRole = this.state.calendarRole;
-    }
-    if (this[symbols.renderedRoles].todayButtonRole !== this.state.todayButtonRole) {
-      template.transmute(this.$.todayButton, this.state.todayButtonRole);
-      this.$.todayButton.addEventListener('mousedown', event => {
-        this[symbols.raiseChangeEvents] = true;
-        this.date = calendar.today();
-        this.close();
-        event.preventDefault(); // Keep focus on input.
-        this[symbols.raiseChangeEvents] = false;
-      });
-      this[symbols.renderedRoles].todayButtonRole = this.state.todayButtonRole;
-    }
-  }
   
   get calendar() {
     return this.shadowRoot ?
@@ -339,6 +307,36 @@ class DateComboBox extends Base {
 
   parseDate(text, dateTimeFormat, timeBias) {
     return calendar.parseWithOptionalYear(text, dateTimeFormat, timeBias);
+  }
+
+  [symbols.populate](state, changed) {
+    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    if (changed.calendarRole) {
+      template.transmute(this.$.calendar, this.state.calendarRole);
+      this.$.calendar.addEventListener('date-changed', event => {
+        this[symbols.raiseChangeEvents] = true;
+        /** @type {any} */
+        const cast = event;
+        this.date = cast.detail.date;
+        this[symbols.raiseChangeEvents] = false;
+      });
+      this.$.calendar.addEventListener('mousedown', event => {
+        this[symbols.raiseChangeEvents] = true;
+        this.close();
+        event.preventDefault(); // Keep focus on input.
+        this[symbols.raiseChangeEvents] = false;
+      });
+    }
+    if (changed.todayButtonRole) {
+      template.transmute(this.$.todayButton, this.state.todayButtonRole);
+      this.$.todayButton.addEventListener('mousedown', event => {
+        this[symbols.raiseChangeEvents] = true;
+        this.date = calendar.today();
+        this.close();
+        event.preventDefault(); // Keep focus on input.
+        this[symbols.raiseChangeEvents] = false;
+      });
+    }
   }
 
   [symbols.render](state, changed) {

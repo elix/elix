@@ -19,37 +19,6 @@ export default function PlayControlsMixin(Base) {
 
   // The class prototype added by the mixin.
   class PlayControls extends Base {
-    
-    constructor() {
-      // @ts-ignore
-      super();
-      this[symbols.renderedRoles] = {};
-    }
-  
-    [symbols.beforeUpdate]() {
-      if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-      if (this[symbols.renderedRoles].controlButtonRole !== this.state.controlButtonRole) {
-        const controlButtons = this.shadowRoot.querySelectorAll('.controlButton');
-        template.transmute(controlButtons, this.state.controlButtonRole);
-        this.$.previousButton.addEventListener('click', event => {
-          this.selectPrevious();
-          event.stopPropagation();
-        });
-        this.$.playButton.addEventListener('click', event => {
-          if (!this.playing) {
-            this.play();
-          } else {
-            this.pause();
-          }
-          event.stopPropagation();
-        });
-        this.$.nextButton.addEventListener('click', event => {
-          this.selectNext();
-          event.stopPropagation();
-        });
-        this[symbols.renderedRoles].controlButtonRole = this.state.controlButtonRole;
-      }
-    }
 
     /**
      * The class, tag, or template used for the play control buttons.
@@ -83,6 +52,30 @@ export default function PlayControlsMixin(Base) {
 
       // Prefer mixin result if it's defined, otherwise use base result.
       return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+    }
+
+    [symbols.populate](state, changed) {
+      if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+      if (changed.controlButtonRole) {
+        const controlButtons = this.shadowRoot.querySelectorAll('.controlButton');
+        template.transmute(controlButtons, this.state.controlButtonRole);
+        this.$.previousButton.addEventListener('click', event => {
+          this.selectPrevious();
+          event.stopPropagation();
+        });
+        this.$.playButton.addEventListener('click', event => {
+          if (!this.playing) {
+            this.play();
+          } else {
+            this.pause();
+          }
+          event.stopPropagation();
+        });
+        this.$.nextButton.addEventListener('click', event => {
+          this.selectNext();
+          event.stopPropagation();
+        });
+      }
     }
 
     [symbols.render](state, changed) {

@@ -1,16 +1,12 @@
 import * as mockInteractions from '../mockInteractions.js';
 import * as symbols from '../../src/symbols.js';
 import KeyboardMixin from '../../src/KeyboardMixin.js';
+import OriginalAttributesMixin from '../../src/OriginalAttributesMixin.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js'
-import RenderUpdatesMixin from '../../src/RenderUpdatesMixin.js'
 
 
-class KeyboardTest extends KeyboardMixin(ReactiveMixin(RenderUpdatesMixin(HTMLElement))) {
-  connectedCallback() {
-    if (super.connectedCallback) { super.connectedCallback(); }
-    this.render();
-  }
-}
+class KeyboardTest extends KeyboardMixin(
+    OriginalAttributesMixin(ReactiveMixin(HTMLElement))) {}
 customElements.define('keyboard-test', KeyboardTest);
 
 

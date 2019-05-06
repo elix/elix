@@ -1,10 +1,10 @@
 import { merge } from '../../src/updates.js';
 import flushPolyfills from '../flushPolyfills.js';
-import RenderUpdatesMixin from '../../src/RenderUpdatesMixin.js';
+import OriginalAttributes from '../../src/OriginalAttributes.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
 
 
-class PropsTest extends RenderUpdatesMixin(ReactiveMixin(HTMLElement)) {
+class PropsTest extends OriginalAttributes(ReactiveMixin(HTMLElement)) {
 
   get updates() {
     return merge(super.updates, {
@@ -21,7 +21,7 @@ class PropsTest extends RenderUpdatesMixin(ReactiveMixin(HTMLElement)) {
 customElements.define('props-test', PropsTest);
 
 
-describe("RenderUpdatesMixin", function () {
+describe("OriginalAttributes", function () {
 
   let container;
 

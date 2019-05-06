@@ -1,11 +1,10 @@
-import ContentItemsMixin from '../../src/ContentItemsMixin.js';
-import RenderUpdatesMixin from '../../src/RenderUpdatesMixin.js'
-import ReactiveMixin from '../../src/ReactiveMixin.js'
 import AriaListMixin from '../../src/AriaListMixin.js';
+import ContentItemsMixin from '../../src/ContentItemsMixin.js';
+import ReactiveElement from '../../src/ReactiveElement2.js';
 
 
 class AriaListTest extends
-  AriaListMixin(ContentItemsMixin(ReactiveMixin(RenderUpdatesMixin(HTMLElement)))) {
+  AriaListMixin(ContentItemsMixin(ReactiveElement)) {
 
   connectedCallback() {
     if (super.connectedCallback) { super.connectedCallback(); }

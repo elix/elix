@@ -30,56 +30,6 @@ const Base =
  */
 class ListComboBox extends Base {
 
-  [symbols.beforeUpdate]() {
-
-    const inputRoleChanged = this[symbols.renderedRoles].inputRole !==
-        this.state.inputRole;
-    
-    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-
-    if (inputRoleChanged) {
-      this.$.input.setAttribute('aria-autocomplete', 'both');
-    }
-
-    if (this[symbols.renderedRoles].listRole !== this.state.listRole) {
-      template.transmute(this.$.list, this.state.listRole);
-  
-      this.$.list.addEventListener('mousedown', event => {
-        // Mousing down inside a list item closes the popup.
-        /** @type {any} */
-        const target = event.target;
-        if (target) {
-          const targetIndex = indexOfItemContainingTarget(this.items, target);
-          if (this.opened && targetIndex >= 0) {
-            this[symbols.raiseChangeEvents] = true;
-            this.close();
-            this[symbols.raiseChangeEvents] = false;
-          }  
-        }
-      });
-
-      // Track changes in the list's selection state.
-      // Known bug: this behavior seems to confuse Gboard on Chrome for Android.
-      // If we update our notion of the selection index, we'll ultimately update
-      // the text shown in the input and leave it selected. If the user then
-      // presses Backspace to delete that selected text, Gboard/Chrome seems to
-      // ignore the first press of the Backspace key. The user must press
-      // Backspace a second time to actually delete the selected text.
-      this.$.list.addEventListener('selected-index-changed', event => {
-        /** @type {any} */
-        const cast = event;
-        const listSelectedIndex = cast.detail.selectedIndex;
-        if (this.state.selectedIndex !== listSelectedIndex) {
-          this.setState({
-            selectedIndex: listSelectedIndex
-          });
-        }
-      });
-
-      this[symbols.renderedRoles].listRole = this.state.listRole;
-    }
-  }
-
   componentDidMount() {
     super.componentDidMount();
     this.setAttribute('aria-haspopup', 'listbox');
@@ -203,6 +153,48 @@ class ListComboBox extends Base {
 
   get [symbols.itemsDelegate]() {
     return this.$.list;
+  }
+
+  [symbols.populate](state, changed) {
+    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    if (changed.inputRole) {
+      this.$.input.setAttribute('aria-autocomplete', 'both');
+    }
+    if (changed.listRole) {
+      template.transmute(this.$.list, this.state.listRole);
+  
+      this.$.list.addEventListener('mousedown', event => {
+        // Mousing down inside a list item closes the popup.
+        /** @type {any} */
+        const target = event.target;
+        if (target) {
+          const targetIndex = indexOfItemContainingTarget(this.items, target);
+          if (this.opened && targetIndex >= 0) {
+            this[symbols.raiseChangeEvents] = true;
+            this.close();
+            this[symbols.raiseChangeEvents] = false;
+          }  
+        }
+      });
+
+      // Track changes in the list's selection state.
+      // Known bug: this behavior seems to confuse Gboard on Chrome for Android.
+      // If we update our notion of the selection index, we'll ultimately update
+      // the text shown in the input and leave it selected. If the user then
+      // presses Backspace to delete that selected text, Gboard/Chrome seems to
+      // ignore the first press of the Backspace key. The user must press
+      // Backspace a second time to actually delete the selected text.
+      this.$.list.addEventListener('selected-index-changed', event => {
+        /** @type {any} */
+        const cast = event;
+        const listSelectedIndex = cast.detail.selectedIndex;
+        if (this.state.selectedIndex !== listSelectedIndex) {
+          this.setState({
+            selectedIndex: listSelectedIndex
+          });
+        }
+      });
+    }
   }
 
   [symbols.render](state, changed) {

@@ -35,108 +35,6 @@ class ComboBox extends Base {
     this.setState({ ariaLabel });
   }
 
-  [symbols.beforeUpdate]() {
-    const popupRoleChanged = this[symbols.renderedRoles].popupRole !==
-        this.state.popupRole;
-    
-    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-
-    if (this[symbols.renderedRoles].inputRole !== this.state.inputRole) {
-      template.transmute(this.$.input, this.state.inputRole);
-
-      this.$.input.addEventListener('blur', () => {
-        // If we're open and lose focus, then close.
-        if (this.opened) {
-          this[symbols.raiseChangeEvents] = true;
-          this.setState({
-            focused: false
-          });
-          this.close();
-          this[symbols.raiseChangeEvents] = false;
-        }
-      });
-  
-      this.$.input.addEventListener('focus', () => {
-        this[symbols.raiseChangeEvents] = true;
-        this.setState({
-          focused: true
-        });
-        this[symbols.raiseChangeEvents] = false;
-      });
-
-      this.$.input.addEventListener('input', () => {
-        this[symbols.raiseChangeEvents] = true;
-        /** @type {any} */
-        const cast = this.$.input;
-        const value = cast.value;
-        const changes = {
-          value,
-          selectText: false
-        };
-        if (this.closed && value > '') {
-          // If user types while popup is closed, implicitly open it.
-          changes.opened = true
-        }
-        this.setState(changes);
-        this[symbols.raiseChangeEvents] = false;
-      })
-
-      this.$.input.addEventListener('keydown', () => {
-        this[symbols.raiseChangeEvents] = true;
-        this.setState({
-          selectText: false
-        });
-        this[symbols.raiseChangeEvents] = false;
-      })
-  
-      // If the user clicks on the input and the popup is closed, open it.
-      this.$.input.addEventListener('mousedown', () => {
-        this[symbols.raiseChangeEvents] = true;
-        this.setState({
-          selectText: false
-        });
-        if (this.closed && !this.disabled) {
-          this.open();
-        }
-        this[symbols.raiseChangeEvents] = false;
-      });
-  
-      this[symbols.renderedRoles].inputRole = this.state.inputRole;
-    }
-
-    if (this[symbols.renderedRoles].toggleButtonRole !== this.state.toggleButtonRole) {
-      template.transmute(this.$.toggleButton, this.state.toggleButtonRole);
-      this.$.toggleButton.addEventListener('mousedown', () => {
-        this[symbols.raiseChangeEvents] = true;
-        this.toggle();
-        this[symbols.raiseChangeEvents] = false;
-      });
-      if (this.$.toggleButton instanceof HTMLElement &&
-          this.$.input instanceof HTMLElement) {
-        // Forward focus for new toggle button.
-        forwardFocus(this.$.toggleButton, this.$.input);
-      }
-      this[symbols.renderedRoles].toggleButtonRole = this.state.toggleButtonRole;
-    }
-
-    if (popupRoleChanged) {
-      const popup = this.$.popup;
-      popup.removeAttribute('tabindex');
-      if ('autoFocus' in popup) {
-        popup.autoFocus = false;
-      }
-      // TODO: Would be better if we could set backdropRole to null
-      popup.backdrop.style.display = 'none';
-      Object.assign(popup.frame.style, {
-        display: 'flex',
-        flexDirection: 'column'
-      });
-      if ('closeOnWindowResize' in popup) {
-        popup.closeOnWindowResize = false;
-      }
-    }
-  }
-
   componentDidUpdate(changed) {
     if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
     if (this.state.selectText) {
@@ -262,6 +160,101 @@ class ComboBox extends Base {
     this.setState({
       placeholder
     });
+  }
+
+  [symbols.populate](state, changed) {
+    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    if (changed.inputRole) {
+      template.transmute(this.$.input, this.state.inputRole);
+
+      this.$.input.addEventListener('blur', () => {
+        // If we're open and lose focus, then close.
+        if (this.opened) {
+          this[symbols.raiseChangeEvents] = true;
+          this.setState({
+            focused: false
+          });
+          this.close();
+          this[symbols.raiseChangeEvents] = false;
+        }
+      });
+  
+      this.$.input.addEventListener('focus', () => {
+        this[symbols.raiseChangeEvents] = true;
+        this.setState({
+          focused: true
+        });
+        this[symbols.raiseChangeEvents] = false;
+      });
+
+      this.$.input.addEventListener('input', () => {
+        this[symbols.raiseChangeEvents] = true;
+        /** @type {any} */
+        const cast = this.$.input;
+        const value = cast.value;
+        const changes = {
+          value,
+          selectText: false
+        };
+        if (this.closed && value > '') {
+          // If user types while popup is closed, implicitly open it.
+          changes.opened = true
+        }
+        this.setState(changes);
+        this[symbols.raiseChangeEvents] = false;
+      })
+
+      this.$.input.addEventListener('keydown', () => {
+        this[symbols.raiseChangeEvents] = true;
+        this.setState({
+          selectText: false
+        });
+        this[symbols.raiseChangeEvents] = false;
+      })
+  
+      // If the user clicks on the input and the popup is closed, open it.
+      this.$.input.addEventListener('mousedown', () => {
+        this[symbols.raiseChangeEvents] = true;
+        this.setState({
+          selectText: false
+        });
+        if (this.closed && !this.disabled) {
+          this.open();
+        }
+        this[symbols.raiseChangeEvents] = false;
+      });
+    }
+
+    if (changed.toggleButtonRole) {
+      template.transmute(this.$.toggleButton, this.state.toggleButtonRole);
+      this.$.toggleButton.addEventListener('mousedown', () => {
+        this[symbols.raiseChangeEvents] = true;
+        this.toggle();
+        this[symbols.raiseChangeEvents] = false;
+      });
+      if (this.$.toggleButton instanceof HTMLElement &&
+          this.$.input instanceof HTMLElement) {
+        // Forward focus for new toggle button.
+        forwardFocus(this.$.toggleButton, this.$.input);
+      }
+    }
+
+    if (changed.popupRole) {
+      const popup = this.$.popup;
+      popup.removeAttribute('tabindex');
+      if ('autoFocus' in popup) {
+        popup.autoFocus = false;
+      }
+      // TODO: Would be better if we could set backdropRole to null
+      popup.backdrop.style.display = 'none';
+      Object.assign(popup.frame.style, {
+        display: 'flex',
+        flexDirection: 'column'
+      });
+      if ('closeOnWindowResize' in popup) {
+        popup.closeOnWindowResize = false;
+      }
+    }
   }
 
   [symbols.render](state, changed) {

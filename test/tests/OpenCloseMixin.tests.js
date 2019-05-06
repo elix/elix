@@ -1,14 +1,12 @@
 import OpenCloseMixin from '../../src/OpenCloseMixin.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
-import RenderUpdatesMixin from '../../src/RenderUpdatesMixin.js';
 
 
 const Base =
-  RenderUpdatesMixin(
   OpenCloseMixin(
   ReactiveMixin(
     HTMLElement
-  )));
+  ));
 
 class OpenCloseTest extends Base {}
 customElements.define('open-close-test', OpenCloseTest);

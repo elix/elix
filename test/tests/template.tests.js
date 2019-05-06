@@ -1,6 +1,6 @@
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
-import ReactiveElement from '../../src/ReactiveElement.js';
+import ReactiveElement from '../../src/ReactiveElement2.js';
 
 
 class TemplateTest extends HTMLElement {}
@@ -10,23 +10,17 @@ customElements.define('template-test', TemplateTest);
 // A component with a template with a role applied to a single element.
 class DynamicSingle extends ReactiveElement {
 
-  constructor() {
-    super();
-    this[symbols.renderedRoles] = {};
-  }
-
-  [symbols.beforeUpdate]() {
-    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-    if (this[symbols.renderedRoles].dynamicRole !== this.state.dynamicRole) {
-      template.transmute(this.$.dynamic, this.state.dynamicRole);
-      this[symbols.renderedRoles].dynamicRole = this.state.dynamicRole;
-    }
-  }
-
   get defaultState() {
     return Object.assign(super.defaultState, {
       dynamicRole: 'button'
     });
+  }
+
+  [symbols.populate](state, changed) {
+    super[symbols.populate](state, changed);
+    if (changed.dynamicRole) {
+      template.transmute(this.$.dynamic, this.state.dynamicRole);
+    }
   }
 
   get [symbols.template]() {
@@ -43,24 +37,18 @@ customElements.define('dynamic-role', DynamicSingle);
 // A component with a template where a role is applied to multiple elements.
 class DynamicMultiple extends ReactiveElement {
 
-  constructor() {
-    super();
-    this[symbols.renderedRoles] = {};
-  }
-
-  [symbols.beforeUpdate]() {
-    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-    if (this[symbols.renderedRoles].dynamicRole !== this.state.dynamicRole) {
-      const dynamics = this.shadowRoot.querySelectorAll('.dynamic');
-      template.transmute(dynamics, this.state.dynamicRole);
-      this[symbols.renderedRoles].dynamicRole = this.state.dynamicRole;
-    }
-  }
-
   get defaultState() {
     return Object.assign(super.defaultState, {
       dynamicRole: 'button'
     });
+  }
+
+  [symbols.populate](state, changed) {
+    super[symbols.populate](state, changed);
+    if (changed.dynamicRole) {
+      const dynamics = this.shadowRoot.querySelectorAll('.dynamic');
+      template.transmute(dynamics, this.state.dynamicRole);
+    }
   }
 
   get [symbols.template]() {

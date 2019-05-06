@@ -1,4 +1,4 @@
-import { merge } from '../../src/updates.js';
+import * as symbols from '../../src/symbols.js';
 import flushPolyfills from '../flushPolyfills.js';
 import OriginalAttributesMixin from '../../src/OriginalAttributesMixin.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
@@ -6,15 +6,16 @@ import ReactiveMixin from '../../src/ReactiveMixin.js';
 
 class OriginalAttributesTest extends OriginalAttributesMixin(ReactiveMixin(HTMLElement)) {
 
-  get updates() {
-    return merge(super.updates, {
-      classes: {
-        selected: this.state.selected || this.state.original.classes.selected
-      },
-      style: {
-        color: this.state.selected ? 'red' : this.state.original.style.color
-      }
-    });
+  [symbols.render](state, changed) {
+    if (super[symbols.render]) { super[symbols.render](state, changed); }
+    if (changed.original || changed.selected) {
+      const selected = state.selected || state.original.classes.selected || false;
+      this.classList.toggle('selected', selected);
+      const color = selected ?
+        'red' :
+        state.original.style.color || null;
+      this.style.color = color;
+    }
   }
 
 }

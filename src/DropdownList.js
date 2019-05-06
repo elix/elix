@@ -28,22 +28,6 @@ const Base =
  */
 class DropdownList extends Base {
 
-  constructor() {
-    super();
-    // Template will already have rendered this role.
-    Object.assign(this[symbols.renderedRoles], {
-      valueRole: 'div'
-    });
-  }
-
-  [symbols.beforeUpdate]() {
-    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-    if (this[symbols.renderedRoles].valueRole !== this.state.valueRole) {
-      template.transmute(this.$.value, this.state.valueRole);
-      this[symbols.renderedRoles].valueRole = this.state.valueRole;
-    }
-  }
-
   // By default, opening the menu re-selects the component item that's currently
   // selected.
   get defaultMenuSelectedIndex() {
@@ -69,6 +53,13 @@ class DropdownList extends Base {
     });
 
     return state;
+  }
+
+  [symbols.populate](state, changed) {
+    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    if (changed.valueRole) {
+      template.transmute(this.$.value, this.state.valueRole);
+    }
   }
 
   [symbols.render](state, changed) {

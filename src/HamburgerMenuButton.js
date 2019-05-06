@@ -33,41 +33,6 @@ const Base =
  */
 class HamburgerMenuButton extends Base {
 
-  constructor() {
-    super();
-    this[symbols.renderedRoles] = {};
-  }
-
-  [symbols.beforeUpdate]() {
-    if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-    if (this[symbols.renderedRoles].menuButtonRole !== this.state.menuButtonRole) {
-      template.transmute(this.$.menuButton, this.state.menuButtonRole);
-      this.$.menuButton.addEventListener('click', () => {
-        this[symbols.raiseChangeEvents] = true;
-        this.open();
-        this[symbols.raiseChangeEvents] = false;
-      });
-      this[symbols.renderedRoles].menuButtonRole = this.state.menuButtonRole;
-    }
-    if (this[symbols.renderedRoles].menuRole !== this.state.menuRole) {
-      template.transmute(this.$.menu, this.state.menuRole);
-      this.$.menu.addEventListener('closed', event => {
-        /** @type {any} */
-        const cast = event;
-        this.setState({
-          closeResult: cast.detail.closeResult,
-          opened: false
-        });
-      });
-      this.$.menu.addEventListener('opened', () => {
-        this.setState({
-          opened: true
-        });
-      });
-      this[symbols.renderedRoles].menuRole = this.state.menuRole;
-    }
-  }
-
   get defaultState() {
     return Object.assign(super.defaultState, {
       fromEdge: 'start',
@@ -139,6 +104,34 @@ class HamburgerMenuButton extends Base {
   }
   set menuButtonRole(menuButtonRole) {
     this.setState({ menuButtonRole });
+  }
+
+  [symbols.populate](state, changed) {
+    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    if (changed.menuButtonRole) {
+      template.transmute(this.$.menuButton, this.state.menuButtonRole);
+      this.$.menuButton.addEventListener('click', () => {
+        this[symbols.raiseChangeEvents] = true;
+        this.open();
+        this[symbols.raiseChangeEvents] = false;
+      });
+    }
+    if (changed.menuRole) {
+      template.transmute(this.$.menu, this.state.menuRole);
+      this.$.menu.addEventListener('closed', event => {
+        /** @type {any} */
+        const cast = event;
+        this.setState({
+          closeResult: cast.detail.closeResult,
+          opened: false
+        });
+      });
+      this.$.menu.addEventListener('opened', () => {
+        this.setState({
+          opened: true
+        });
+      });
+    }
   }
 
   [symbols.render](state, changed) {

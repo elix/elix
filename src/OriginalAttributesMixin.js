@@ -3,16 +3,12 @@ import * as updates from './updates.js';
 
 
 /**
- * Renders changes in state as updates to the component and its shadow elements.
+ * Track an element's original class list, style, and other attributes.
  * 
- * @module RenderUpdatesMixin
+ * @module OriginalAttributesMixin
  */
-export default function RenderUpdatesMixin(Base) {
-  return class RenderUpdates extends Base {
-
-    [symbols.beforeUpdate]() {
-      if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-    }
+export default function OriginalAttributesMixin(Base) {
+  return class OriginalAttributes extends Base {
 
     connectedCallback() {
       // Calculate original props before we call super. If, e.g., ReactiveMixin
