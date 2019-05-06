@@ -1,8 +1,7 @@
-import { merge } from '../../src/updates.js';
 import { substantiveElements } from '../../src/content.js';
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
-import ReactiveElement from '../../src/ReactiveElement.js';
+import ReactiveElement from '../../src/ReactiveElement2.js';
 import SlotContentMixin from '../../src/SlotContentMixin.js';
 
 
@@ -15,9 +14,38 @@ const Base =
 class RenderState extends Base {
 
   get defaultState() {
-    return Object.assign(super.defaultState, {
+    const result = Object.assign(super.defaultState, {
+      fixture: null,
       fixtureState: {}
     });
+    result.onChange('content', state => {
+      if (!state.content) {
+        return {
+          fixture: null
+        };
+      }
+
+      const elements = substantiveElements(state.content);
+      if (!elements || elements.length < 1) {
+        return {
+          fixture: null
+        };
+      }
+
+      // Look for an element (or subelement) with class "fixture".
+      const fixtures = elements.map(element =>
+        element.classList.contains('fixture') ?
+          element :
+          element.querySelector('.fixture')
+      ).filter(item => item !== null);
+  
+      // If no fixture was found, return the first element.
+      const fixture = fixtures[0] || elements[0];
+      return {
+        fixture
+      };
+    });
+    return result;
   }
 
   get [symbols.contentSlot]() {
@@ -25,23 +53,7 @@ class RenderState extends Base {
   }
 
   get fixture() {
-    if (!this.state.content) {
-      return null;
-    }
-    const elements = substantiveElements(this.state.content);
-    if (!elements || elements.length < 1) {
-      return null;
-    }
-    // Look for an element (or subelement) with class "fixture".
-    const fixtures = elements.map(element =>
-      element.classList.contains('fixture') ?
-        element :
-        element.querySelector('.fixture')
-    ).filter(item => item !== null);
-
-    // If no fixture was found, return the first element.
-    const fixture = fixtures[0] || elements[0];
-    return fixture;
+    return this.state.fixture;
   }
 
   get fixtureState() {
@@ -56,17 +68,25 @@ class RenderState extends Base {
     });
   }
 
-  [symbols.render]() {
-    if (super[symbols.render]) { super[symbols.render](); }
-    const fixture = this.fixture;
-    if (fixture) {
-      customElements.whenDefined(fixture.localName)
-      .then(() => {
-        // Give component a chance to render before forcing its state.
-        setTimeout(() => {
-          fixture.setState(this.state.fixtureState);
+  [symbols.render](state, changed) {
+    if (super[symbols.render]) { super[symbols.render](state, changed); }
+    if (changed.fixture || changed.fixtureState) {
+      const { fixture, fixtureState } = state;
+      if (fixture && fixtureState) {
+        customElements.whenDefined(fixture.localName)
+        .then(() => {
+          // Wait for fixture to do its initial render.
+          return fixture.setState({});
+        })
+        .then(() => {
+          // Force an update of the fixture's state.
+          fixture.setState(fixtureState);
         });
-      });
+      }
+      const textContent = Object.keys(fixtureState).length > 0 ?
+        JSON.stringify(fixtureState, null, 2) :
+        '';
+      this.$.fixtureState.textContent = textContent;
     }
   }
 
@@ -105,17 +125,6 @@ class RenderState extends Base {
         <pre id="fixtureState"></pre>
       </div>
     `;
-  }
-
-  get updates() {
-    const textContent = Object.keys(this.state.fixtureState).length > 0 ?
-      JSON.stringify(this.state.fixtureState, null, 2) :
-      '';
-    return merge(super.updates, {
-      $: {
-        fixtureState: { textContent }
-      }
-    });
   }
 
 }

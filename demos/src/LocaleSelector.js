@@ -1,7 +1,7 @@
-import { merge } from "../../src/updates.js";
+import * as updates from "../../src/updates.js";
 import * as symbols from "../../src/symbols.js";
 import * as template from "../../src/template.js";
-import ReactiveElement from "../../src/ReactiveElement.js";
+import ReactiveElement from "../../src/ReactiveElement2.js";
 
 
 // Locale list from https://stackoverflow.com/questions/3191664/list-of-all-locales-and-their-short-codes/28357857#28357857
@@ -290,9 +290,6 @@ const locales = {
 };
 
 
-let localeOptions;
-
-
 class LocaleSelector extends ReactiveElement {
 
   componentDidMount() {
@@ -324,8 +321,15 @@ class LocaleSelector extends ReactiveElement {
     });
   }
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.value) {
+      this.$.select.value = state.value;
+    }
+  }
+
   get [symbols.template]() {
-    return template.html`
+    const result = template.html`
       <style>
         :host {
           display: inline-block;
@@ -333,18 +337,17 @@ class LocaleSelector extends ReactiveElement {
       </style>
       <select id="select"></select>
     `;
-  }
-
-  get updates() {
-    const value = this.state.value;
-    return merge(super.updates, {
-      $: {
-        select: {
-          childNodes: getLocaleOptions(),
-          value
-        }
-      }
+     // Create options for all locales.
+    const localeOptions = Object.keys(locales).map(locale => {
+      const option = document.createElement('option');
+      option.value = locale;
+      option.disabled = !localeSupported(locale);
+      option.textContent = locales[locale];
+      return option;
     });
+    const select = result.content.getElementById('select');
+    updates.applyChildNodes(select, localeOptions);
+    return result;
   }
 
   get value() {
@@ -354,22 +357,6 @@ class LocaleSelector extends ReactiveElement {
     this.setState({ value });
   }
 
-}
-
-
-// Create options for all locales and cache the result.
-function getLocaleOptions() {
-  if (!localeOptions) {
-    localeOptions = Object.keys(locales).map(locale => {
-      const option = document.createElement('option');
-      option.value = locale;
-      option.disabled = !localeSupported(locale);
-      option.textContent = locales[locale];
-      return option;
-    });
-    Object.freeze(localeOptions);
-  }
-  return localeOptions;
 }
 
 

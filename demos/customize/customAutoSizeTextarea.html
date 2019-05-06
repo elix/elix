@@ -16,25 +16,20 @@
   <script src="../node_modules/@webcomponents/webcomponentsjs/bundles/webcomponents-sd-ce.js"></script>
 
   <script type="module">
-    import { merge } from '../../src/updates.js';
+    import * as symbols from '../../src/symbols.js';
+    import * as template from '../../src/template.js';
     import AutoSizeTextarea from '../../src/AutoSizeTextarea.js';
 
     class CustomAutoSizeTextarea extends AutoSizeTextarea {
-      get updates() {
-        return merge(super.updates, {
-          $: {
-            inner: {
-              attributes: {
-                autocomplete: false,
-                spellcheck: false
-              },
-              style: {
-                'border': 'none',
-                'border-bottom': '1px solid #757575'
-              }
+      get [symbols.template]() {
+        return template.concat(super[symbols.template], template.html`
+          <style>
+            #inner {
+              border: none;
+              border-bottom: 1px solid #757575;
             }
-          }
-        });
+          </style>
+        `);
       }
     }
 

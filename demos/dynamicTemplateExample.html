@@ -11,29 +11,9 @@
     import { apply, merge } from '../src/updates.js';
     import * as symbols from '../src/symbols.js';
     import * as template from '../src/template.js';
-    import ReactiveElement from '../src/ReactiveElement.js';
+    import ReactiveElement from '../src/ReactiveElement2.js';
 
     class IncrementDecrement extends ReactiveElement {
-
-      constructor() {
-        super();
-        this[symbols.renderedRoles] = {};
-      }
-
-      [symbols.beforeUpdate]() {
-        if (super[symbols.beforeUpdate]) { super[symbols.beforeUpdate](); }
-        if (this[symbols.renderedRoles].buttonRole !== this.state.buttonRole) {
-          template.transmute(this.$.decrement, this.state.buttonRole);
-          this.$.decrement.addEventListener('click', () => {
-            this.value--;
-          });
-          template.transmute(this.$.increment, this.state.buttonRole);
-          this.$.increment.addEventListener('click', () => {
-            this.value++;
-          });
-          this[symbols.renderedRoles].buttonRole = this.state.buttonRole;
-        }
-      }
 
       get buttonRole() {
         return this.state.button;
@@ -49,16 +29,25 @@
         });
       }
 
-      get updates() {
-        return {
-          style: {
-            color: this.state.value < 0 ? 'red' : null
-          },
-          $: {
-            visibleValue: {
-              textContent: this.state.value
-            }
-          }
+      [symbols.populate](state, changed) {
+        if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+        if (changed.buttonRole) {
+          template.transmute(this.$.decrement, this.state.buttonRole);
+          this.$.decrement.addEventListener('click', () => {
+            this.value--;
+          });
+          template.transmute(this.$.increment, this.state.buttonRole);
+          this.$.increment.addEventListener('click', () => {
+            this.value++;
+          });
+        }
+      }
+
+      [symbols.render](state, changed) {
+        super[symbols.render](state, changed);
+        if (changed.value) {
+          this.style.color = state.value < 0 ? 'red' : null;
+          this.$.visibleValue.textContent = state.value;
         }
       }
 

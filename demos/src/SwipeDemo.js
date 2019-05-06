@@ -1,7 +1,6 @@
-import { merge } from '../../src/updates.js';
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
-import ReactiveElement from '../../src/ReactiveElement.js';
+import ReactiveElement from '../../src/ReactiveElement2.js';
 import TouchSwipeMixin from '../../src/TouchSwipeMixin.js';
 import TrackpadSwipeMixin from '../../src/TrackpadSwipeMixin.js';
 
@@ -19,6 +18,34 @@ class SwipeDemo extends Base {
     return Object.assign(super.defaultState, {
       swipeAxis: 'horizontal'
     });
+  }
+
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    const vertical = state.swipeAxis === 'vertical';
+    if (changed.swipeAxis) {
+      this.style.flexDirection = vertical ? 'row' : 'column';
+      Object.assign(this.$.block.style, {
+        height: vertical ? '100%' : '1em',
+        width: vertical ? '1em' : '100%'
+      });
+      Object.assign(this.$.container.style, {
+        'flex-direction': vertical ? 'row-reverse' : 'column',
+        'justify-content': vertical ? 'flex-end' : 'center'
+      });
+      this.$.empty.style.display = vertical ? 'none' : 'block';
+      this.$.space.style.display = vertical ? 'none' : 'block';
+    }
+    if (changed.swipeFraction) {
+      const axis = vertical ? 'Y' : 'X';
+      const swipeFraction = state.swipeFraction;
+      this.$.block.style.transform = swipeFraction !== null ?
+        `translate${axis}(${swipeFraction * 100}%)` :
+        null;
+      this.$.swipeFraction.textContent = swipeFraction !== null ?
+        swipeFraction.toFixed(3) :
+        '—';
+    }
   }
 
   get swipeAxis() {
@@ -74,52 +101,6 @@ class SwipeDemo extends Base {
       </div>
       <div id="empty" class="section"></div>
     `;
-  }
-
-  get updates() {
-    const vertical = this.state.swipeAxis === 'vertical';
-
-    const swipeFraction = this.state.swipeFraction;
-    const formatted = swipeFraction !== null ?
-      swipeFraction.toFixed(3) :
-      '—';
-    const axis = vertical ? 'Y' : 'X';
-    const transform = swipeFraction !== null ?
-      `translate${axis}(${swipeFraction * 100}%)` :
-      'none';
-    return merge(super.updates, {
-      style: {
-        'flex-direction': vertical ? 'row' : 'column'
-      },
-      $: {
-        block: {
-          style: {
-            height: vertical ? '100%' : '1em',
-            transform,
-            width: vertical ? '1em' : '100%'
-          }
-        },
-        container: {
-          style: {
-            'flex-direction': vertical ? 'row-reverse' : 'column',
-            'justify-content': vertical ? 'flex-end' : 'center'
-          }
-        },
-        empty: {
-          style: {
-            display: vertical ? 'none' : 'block'
-          }
-        },
-        space: {
-          style: {
-            display: vertical ? 'none' : 'block'
-          }
-        },
-        swipeFraction: {
-          textContent: formatted
-        }
-      }
-    });
   }
 
 }

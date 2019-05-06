@@ -1,6 +1,5 @@
-import { getSuperProperty } from '../../src/workarounds.js';
-import { merge } from '../../src/updates.js';
 import * as symbols from '../../src/symbols.js';
+import * as template from '../../src/template.js';
 import Carousel from '../../src/Carousel.js';
 import CustomArrowButton from './CustomArrowButton.js';
 import CustomPageDot from './CustomPageDot.js';
@@ -24,8 +23,15 @@ class CustomCarousel extends Base {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const result = super[symbols.template]
-    const result = getSuperProperty(this, CustomCarousel, symbols.template);
+    const result = template.concat(super[symbols.template], template.html`
+      <style>
+        .arrowButton {
+          font-size: 28px;
+          font-weight: bold;
+          padding: 0.5em;
+        }
+      </style>
+    `);
     // Replace icons with glyphs.
     const leftSlot = result.content.querySelector('slot[name="arrowButtonLeft"]');
     leftSlot.textContent = "↫";
@@ -34,24 +40,6 @@ class CustomCarousel extends Base {
     // Add page numbers.
     this[PageNumbersMixin.wrap](result.content);
     return result;
-  }
-
-  get updates() {
-    const arrowButtonStyle = {
-      'font-size': '28px',
-      'font-weight': 'bold',
-      padding: '0.5em'
-    };
-    return merge(super.updates, {
-      $: {
-        arrowButtonLeft: {
-          style: arrowButtonStyle
-        },
-        arrowButtonRight: {
-          style: arrowButtonStyle
-        }
-      }
-    });
   }
 
 }

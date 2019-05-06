@@ -16,6 +16,40 @@ import CalendarDay from '../../src/CalendarDay.js';
  */
 class CalendarDayMoonPhase extends CalendarDay {
 
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.date) {
+      // To determine quarter, we compare the moon's angle at midnight on the
+      // given date with the angle at midnight on the following date.
+      const date = this.state.date;
+      const angle = moonAngle(date);
+      const dateNext = new Date(date.getTime());
+      dateNext.setDate(dateNext.getDate() + 1); // Increment date.
+      const angleNext = moonAngle(dateNext);
+
+      // See if the moon's angle crosses a threshold during the given date.
+      let quarter;
+      if (angle >= 0 && angleNext > angle) {
+        quarter = "full"; // Full moon
+      } else if (angle >= 90 && angleNext < 90) {
+        quarter = "firstQuarter"; // First quarter
+      } else if (angle >= 180 && angleNext < 180) {
+        quarter = "new"; // New moon
+      } else if (angle >= 270 && angleNext < 270) {
+        quarter = "lastQuarter"; // Last quarter
+      } else {
+        quarter = null; // Nothing special
+      }
+
+      // Show or hide an icon as appropriate.
+      if (quarter) {
+        this.$.phaseIcon.src = `images/moon/${quarter}.svg`
+      } else {
+        this.$.phaseIcon.removeAttribute('src');
+      }
+    }
+  }
+
   get [symbols.template]() {
     // Next line is same as: const base = super[symbols.template]
     const base = getSuperProperty(this, CalendarDayMoonPhase, symbols.template);
@@ -26,49 +60,12 @@ class CalendarDayMoonPhase extends CalendarDay {
           width: 1.5em;
         }
         
-        #phaseIcon[src=""] {
+        #phaseIcon:not([src]) {
           visibility: hidden;
         }
       </style>
       <img id="phaseIcon">
     `);
-  }
-
-  get updates() {
-
-    // To determine quarter, we compare the moon's angle at midnight on the
-    // given date with the angle at midnight on the following date.
-    const date = this.state.date;
-    const angle = moonAngle(date);
-    const dateNext = new Date(date.getTime());
-    dateNext.setDate(dateNext.getDate() + 1); // Increment date.
-    const angleNext = moonAngle(dateNext);
-
-    // See if the moon's angle crosses a threshold during the given date.
-    let quarter;
-    if (angle >= 0 && angleNext > angle) {
-      quarter = "full"; // Full moon
-    } else if (angle >= 90 && angleNext < 90) {
-      quarter = "firstQuarter"; // First quarter
-    } else if (angle >= 180 && angleNext < 180) {
-      quarter = "new"; // New moon
-    } else if (angle >= 270 && angleNext < 270) {
-      quarter = "lastQuarter"; // Last quarter
-    } else {
-      quarter = null; // Nothing special
-    }
-
-    // Show or hide an icon as appropriate.
-    const src = quarter ?
-      `images/moon/${quarter}.svg` :
-      '';
-    return merge(super.updates, {
-      $: {
-        phaseIcon: {
-          src
-        }
-      }
-    });
   }
 
 }
