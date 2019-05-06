@@ -66,15 +66,6 @@ export default function ShadowTemplateMixin(Base) {
       return this[shadowReferencesKey];
     }
 
-    connectedCallback() {
-      if (super.connectedCallback) { super.connectedCallback(); }
-      // @ts-ignore
-      if (window.ShadyCSS && !window.ShadyCSS.nativeShadow) {
-        // @ts-ignore
-        window.ShadyCSS.styleElement(this);
-      }
-    }
-
     /*
      * If the component defines a template, a shadow root will be created on the
      * component instance, and the template stamped into it.
@@ -87,7 +78,7 @@ export default function ShadowTemplateMixin(Base) {
       }
       
       // If this type of element defines a template, prepare it for use.
-      const template = getPreparedTemplate(this);
+      const template = getTemplate(this);
       if (template) {
         // Stamp the template into a new shadow root.
         const delegatesFocus = this.delegatesFocus;
@@ -108,36 +99,20 @@ export default function ShadowTemplateMixin(Base) {
 }
 
 
-function getPreparedTemplate(element) {
+function getTemplate(element) {
   const hasDynamicTemplate = element[symbols.hasDynamicTemplate];
   let template = hasDynamicTemplate ?
     undefined : // Always retrieve template
-    classTemplateMap.get(element.constructor);
+    classTemplateMap.get(element.constructor); // See if we've cached it
   if (template === undefined) {
-    // This is the first time we've created an instance of this type.
-    template = prepareTemplate(element);
+    // Ask the component for its template.
+    template = element[symbols.template] || null;
+    if (template && !(template instanceof HTMLTemplateElement)) {
+      throw `Warning: the [symbols.template] property for ${element.constructor.name} must return an HTMLTemplateElement.`;
+    }
     if (!hasDynamicTemplate) {
       // Store prepared template for next creation of same type of element.
       classTemplateMap.set(element.constructor, template);
-    }
-  }
-  return template;
-}
-
-
-// Retrieve an element's template and prepare it for use.
-function prepareTemplate(element) {
-  const template = element[symbols.template] || null;
-  if (template) {
-    if (!(template instanceof HTMLTemplateElement)) {
-      throw `Warning: the [symbols.template] property for ${element.constructor.name} must return an HTMLTemplateElement.`;
-    }
-    // @ts-ignore
-    if (window.ShadyCSS && !window.ShadyCSS.nativeShadow) {
-      // Let the CSS polyfill do its own initialization.
-      const tag = element.localName;
-      // @ts-ignore
-      window.ShadyCSS.prepareTemplate(template, tag);
     }
   }
   return template;

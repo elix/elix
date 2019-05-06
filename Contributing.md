@@ -16,9 +16,6 @@
   developer but knows nothing about this project. Example: a modest degree of
   boilerplate code replicated in multiple places may be preferable to
   introducing a new, project-specific abstraction.
-* Keep in mind that code must run on IE 11, which has many limitations.
-* Try to avoid introducing the need for new polyfills. We currently do not
-  require any polyfills except the web components v1 polyfills.
 * Keep an element’s public API clean. Do not expose internals on an element as
   underscore-prefixed properties or methods. Instead, use closures and Symbol
   keys to keep internals hidden.

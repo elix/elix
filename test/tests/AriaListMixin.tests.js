@@ -8,8 +8,7 @@ class AriaListTest extends
 
   connectedCallback() {
     if (super.connectedCallback) { super.connectedCallback(); }
-    // Convert children to array in a way IE 11 can handle.
-    const content = Array.prototype.slice.call(this.children);
+    const content = [...this.children];
     this.setState({ content });
   }
 
