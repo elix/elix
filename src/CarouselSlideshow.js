@@ -40,10 +40,10 @@ class CarouselSlideshow extends Base {
     if (changed.transitionDuration) {
       const { transitionDuration } = state;
       if ('transitionDuration' in this.$.proxyList) {
-        this.$.proxyList.transitionDuration = transitionDuration;
+        /** @type {any} */ (this.$.proxyList).transitionDuration = transitionDuration;
       }
       if ('transitionDuration' in this.$.stage) {
-        this.$.stage.transitionDuration = transitionDuration;
+        /** @type {any} */ (this.$.stage).transitionDuration = transitionDuration;
       }
     }
   }

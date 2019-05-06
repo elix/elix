@@ -152,6 +152,7 @@ function applyStateChanges(state, changes) {
         callbacksForField.forEach(callback => {
           // A single callback may be triggered by multiple fields; only add a
           // callback to the list if it's not already there.
+          // @ts-ignore
           if (!callbacks.includes(callback)) {
             callbacks.push(callback);
           }

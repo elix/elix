@@ -163,10 +163,9 @@ class ListWithSearch extends Base {
       template.transmute(this.$.input, this.state.inputRole);
       this.$.input.addEventListener('input', () => {
         this[symbols.raiseChangeEvents] = true;
-        /** @type {any} */
-        const cast = this.$.input;
+        const filter = /** @type {any} */ (this.$.input).value;
         this.setState({
-          filter: cast.value
+          filter
         });
         this[symbols.raiseChangeEvents] = false;
       });
@@ -182,11 +181,11 @@ class ListWithSearch extends Base {
       this.$.input.setAttribute('aria-label', state.ariaLabel);
     }
     if (changed.filter) {
-      this.$.input.value = state.filter;
-      this.$.list.filter = state.filter;
+      /** @type {HTMLInputElement} */ (this.$.input).value = state.filter;
+      /** @type {any} */ (this.$.list).filter = state.filter;
     }
     if (changed.placeholder) {
-      this.$.input.placeholder = state.placeholder;
+      /** @type {HTMLInputElement} */ (this.$.input).placeholder = state.placeholder;
     }
   }
 

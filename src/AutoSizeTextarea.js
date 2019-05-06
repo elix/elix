@@ -137,7 +137,7 @@ class AutoSizeTextarea extends Base {
     }
     if (changed.value) {
       const value = state.value;
-      this.$.inner.value = value;
+      /** @type {HTMLTextAreaElement} */ (this.$.inner).value = value;
       this.$.textCopy.textContent = value;
     }
   }

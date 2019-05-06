@@ -1,6 +1,5 @@
 import { getItemText } from './ItemsTextMixin.js';
 import { indexOfItemContainingTarget } from './utilities.js';
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import ComboBox from './ComboBox.js';
@@ -199,7 +198,10 @@ class ListComboBox extends Base {
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
     if (changed.selectedIndex) {
-      this.$.list.selectedIndex = state.selectedIndex;
+      const list = /** @type {any} */ (this.$.list);
+      if ('selectedIndex' in list) {
+        list.selectedIndex = state.selectedIndex;
+      }
     }
   }
 

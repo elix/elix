@@ -73,7 +73,8 @@ class PopupButton extends Base {
       // Desktop popups generally open on mousedown, not click/mouseup. On mobile,
       // mousedown won't fire until the user releases their finger, so it behaves
       // like a click.
-      this.$.source.addEventListener('mousedown', event => {
+      const source = this.$.source;
+      source.addEventListener('mousedown', event => {
         // mousedown events fire even if button is disabled, so we need
         // to explicitly ignore those.
         if (this.disabled) {
@@ -102,7 +103,7 @@ class PopupButton extends Base {
         // focused element (i.e., this element) when opening, and restore focus to
         // it when the popup closes.
       });
-      this.$.source.tabIndex = -1;
+      source.tabIndex = -1;
     }
   }
 

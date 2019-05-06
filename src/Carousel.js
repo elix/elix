@@ -119,12 +119,15 @@ class Carousel extends Base {
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
     if (changed.darkMode) {
-      const supportsDarkMode = 'darkMode' in this.$.arrowButtonLeft;
       // Wait for knowledge of dark mode
-      if (state.darkMode !== null && supportsDarkMode) {
+      if (state.darkMode !== null) {
         const { darkMode } = state;
-        this.$.arrowButtonLeft.darkMode = darkMode;
-        this.$.arrowButtonRight.darkMode = darkMode;
+        if ('darkMode' in this.$.arrowButtonLeft) {
+          /** @type {any} */ (this.$.arrowButtonLeft).darkMode = darkMode;
+        }
+        if ('darkMode' in this.$.arrowButtonRight) {
+          /** @type {any} */ (this.$.arrowButtonRight).darkMode = darkMode;
+        }
       }
     }
   }
@@ -157,7 +160,9 @@ class Carousel extends Base {
       </style>
     `);
     const proxyList = result.content.getElementById('proxyList');
-    proxyList.setAttribute('tabindex', '');
+    if (proxyList) {
+      proxyList.setAttribute('tabindex', '');
+    }
     return result;
   }
 

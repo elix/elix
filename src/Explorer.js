@@ -231,6 +231,7 @@ class Explorer extends Base {
   [symbols.render](state, changed) {
     if (super[symbols.render]) { super[symbols.render](state, changed); }
 
+    // TODO: Rewrite to render directly
     const items = state.items;
     if (items) {
       // Render updates for proxies.
@@ -254,6 +255,9 @@ class Explorer extends Base {
         updates.apply(element, proxyUpdates);
       });
     }
+
+    const proxyList = this.$.proxyList;
+    const stage = this.$.stage;
     if (changed.defaultProxies) {
       // Render the default proxies.
       const childNodes = [this.$.proxySlot, ...this.state.defaultProxies];
@@ -262,7 +266,8 @@ class Explorer extends Base {
     if (changed.languageDirection || changed.proxyListPosition) {
       // Map the relative position of the list vis-a-vis the stage to a position
       // from the perspective of the list.
-      if ('position' in this.$.proxyList) {
+      const cast = /** @type {any} */ (proxyList);
+      if ('position' in cast) {
         const proxyListPosition = state.proxyListPosition;
         const rightToLeft = state.languageDirection === 'rtl';
         let position;
@@ -277,13 +282,13 @@ class Explorer extends Base {
             position = proxyListPosition;
             break;
         }
-        this.$.proxyList.position = position;
+        cast.position = position;
       }
     }
     if (changed.proxyListOverlap) {
       const { proxyListOverlap } = state;
       const lateralPosition = lateralPositions[state.proxyListPosition];
-      Object.assign(this.$.proxyList.style, {
+      Object.assign(proxyList.style, {
         height: lateralPosition ? '100%' : '',
         position: proxyListOverlap ? 'absolute' : '',
         width: lateralPosition ? '' : '100%',
@@ -291,11 +296,11 @@ class Explorer extends Base {
       });
     }
     if (changed.proxyListPosition) {
-      setListAndStageOrder(this, state.proxyListPosition);
+      setListAndStageOrder(this, state);
       const { proxyListPosition } = state;
       const lateralPosition = lateralPositions[proxyListPosition];
       this.$.explorerContainer.style.flexDirection = lateralPosition ? 'row' : 'column';
-      Object.assign(this.$.proxyList.style, {
+      Object.assign(proxyList.style, {
         bottom: proxyListPosition === 'bottom' ? '0' : '',
         left: proxyListPosition === 'left' ? '0' : '',
         right: proxyListPosition === 'right' ? '0' : '',
@@ -304,21 +309,25 @@ class Explorer extends Base {
     }
     if (changed.selectedIndex) {
       const { selectedIndex } = state;
-      this.$.proxyList.selectedIndex = selectedIndex;
-      this.$.stage.selectedIndex = selectedIndex;
+      if ('selectedIndex' in proxyList) {
+        /** @type {any} */ (proxyList).selectedIndex = selectedIndex;
+      }
+      if ('selectedIndex' in stage) {
+        /** @type {any} */ (stage).selectedIndex = selectedIndex;
+      }
     }
     if (changed.selectionRequired) {
-      if ('selectionRequired' in this.$.proxyList) {
-        this.$.proxyList.selectionRequired = state.selectionRequired;
+      if ('selectionRequired' in proxyList) {
+        /** @type {any} */ (proxyList).selectionRequired = state.selectionRequired;
       }
     }
     if (changed.swipeFraction) {
       const { swipeFraction } = state;
-      if ('swipeFraction' in this.$.proxyList) {
-        this.$.proxyList.swipeFraction = swipeFraction;
+      if ('swipeFraction' in proxyList) {
+        /** @type {any} */ (proxyList).swipeFraction = swipeFraction;
       }
-      if ('swipeFraction' in this.$.stage) {
-        this.$.stage.swipeFraction = swipeFraction;
+      if ('swipeFraction' in stage) {
+        /** @type {any} */ (stage).swipeFraction = swipeFraction;
       }
     }
   }
@@ -390,7 +399,9 @@ function findChildContainingNode(root, node) {
 // but then the visual order wouldn't reflect the document order, which
 // determines focus order. That would surprise a user trying to tab through the
 // controls.
-function setListAndStageOrder(element, proxyListPosition) {
+function setListAndStageOrder(element, state) {
+  const { languageDirection, proxyListPosition } = state;
+  const rightToLeft = languageDirection === 'rtl';
   const listInInitialPosition =
       proxyListPosition === 'top' ||
       proxyListPosition === 'start' ||

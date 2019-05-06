@@ -29,7 +29,7 @@ class AutoCompleteComboBox extends Base {
     super[symbols.render](state, changed);
     if (changed.texts) {
       if ('texts' in this.$.input) {
-        this.$.input.texts = state.texts;
+        /** @type {any} */ (this.$.input).texts = state.texts;
       }
     }
   }

@@ -136,13 +136,16 @@ class HamburgerMenuButton extends Base {
 
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
+    const menu = /** @type {any} */ (this.$.menu);
     if (changed.fromEdge) {
-      if ('fromEdge' in this.$.menu) {
-        this.$.menu.fromEdge = state.fromEdge;
+      if ('fromEdge' in menu) {
+        menu.fromEdge = state.fromEdge;
       }
     }
     if (changed.opened) {
-      this.$.menu.opened = state.opened;
+      if ('opened' in menu) {
+        menu.opened = state.opened;
+      }
     }
   }
 

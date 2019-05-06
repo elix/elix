@@ -190,9 +190,7 @@ class WrappedStandardElement extends Base {
 
   // Delegate method defined by HTMLElement.
   blur() {
-    /** @type {any} */
-    const cast = this.inner;
-    cast.blur();
+    this.inner.blur();
   }
 
   // One HTMLElement we *don't* delegate is `click`. Generally speaking, a click
@@ -317,7 +315,7 @@ class WrappedStandardElement extends Base {
 
   [symbols.render](state, changed) {
     if (super[symbols.render]) { super[symbols.render](state, changed); }
-    const inner = this.$.inner;
+    const inner = this.inner;
     if (changed.tabIndex) {
       inner.tabIndex = state.tabIndex;
     }

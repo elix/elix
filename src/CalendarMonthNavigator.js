@@ -157,10 +157,11 @@ class CalendarMonthNavigator extends Base {
     super[symbols.render](state, changed);
     if (changed.darkMode) {
       const darkMode = state.darkMode;
-      const supportsDarkMode = 'darkMode' in this.$.arrowButtonLeft;
-      if (supportsDarkMode) {
-        this.$.arrowButtonLeft.darkMode = darkMode;
-        this.$.arrowButtonRight.darkMode = darkMode;
+      if ('darkMode' in this.$.arrowButtonLeft) {
+        /** @type {any} */ (this.$.arrowButtonLeft).darkMode = darkMode;
+      }
+      if ('darkMode' in this.$.arrowButtonRight) {
+        /** @type {any} */ (this.$.arrowButtonRight).darkMode = darkMode;
       }
     }
   }

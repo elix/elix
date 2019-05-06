@@ -62,7 +62,7 @@ class PopupSource extends Base {
       // Popup is opened initially, which is somewhat unusual.
       waitThenRenderOpened(this);
     }
-    this.setAttribute('aria-haspopup', true);
+    this.setAttribute('aria-haspopup', 'true');
   }
 
   componentDidUpdate(changed) {
@@ -302,18 +302,20 @@ class PopupSource extends Base {
       const opacity = popupMeasured ? null : 0;
       const position = popupMeasured ? 'absolute' : 'fixed';
 
-      Object.assign(this.$.popup.style, {
+      const popup = this.$.popup;
+      Object.assign(popup.style, {
         bottom,
         left,
         opacity,
         position,
         right
       });
-      Object.assign(this.$.popup.frame.style, {
+      const frame = /** @type {any} */ (popup).frame;
+      Object.assign(frame.style, {
         maxHeight: maxFrameHeight ? `${maxFrameHeight}px` : null,
         maxWidth: maxFrameWidth ? `${maxFrameWidth}px` : null
       });
-      this.$.popupContainer.style.top = positionBelow ? null : 0;
+      this.$.popupContainer.style.top = positionBelow ? null : '0';
     }
     if (changed.opened) {
       const { opened } = state;
@@ -321,22 +323,22 @@ class PopupSource extends Base {
         backgroundColor: opened ? 'highlight' : null,
         color: opened ? 'highlighttext' : null
       });
-      this.$.popup.opened = opened;
+      /** @type {any} */ (this.$.popup).opened = opened;
       this.setAttribute('aria-expanded', opened);
     }
     if (changed.backdropRole) {
       if ('backdropRole' in this.$.popup) {
-        this.$.popup.backdropRole = state.backdropRole;
+        /** @type {any} */ (this.$.popup).backdropRole = state.backdropRole;
       }
     }
     if (changed.frameRole) {
       if ('frameRole' in this.$.popup) {
-        this.$.popup.frameRole = state.frameRole;
+        /** @type {any} */ (this.$.popup).frameRole = state.frameRole;
       }
     }
     if (changed.disabled) {
       if ('disabled' in this.$.source) {
-        this.$.source.disabled = state.disabled;
+        /** @type {any} */ (this.$.source).disabled = state.disabled;
       }
     }
   }

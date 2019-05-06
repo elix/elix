@@ -1,11 +1,10 @@
-import { apply, merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import * as updates from './updates.js';
 import MenuButton from './MenuButton.js';
 import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
-import { updates } from './elix.js';
 
 
 const Base =
@@ -65,7 +64,7 @@ class DropdownList extends Base {
     super[symbols.render](state, changed);
     if (changed.itemRole) {
       if ('itemRole' in this.$.menu) {
-        this.$.menu.itemRole = state.itemRole;
+        /** @type {any} */ (this.$.menu).itemRole = state.itemRole;
       }
     }
     if (changed.popupPosition) {
@@ -105,9 +104,7 @@ class DropdownList extends Base {
         </svg>
       </div>
     `;
-    apply(sourceSlot, {
-      childNodes: sourceSlotContent.content.childNodes
-    });
+    updates.applyChildNodes(sourceSlot, sourceSlotContent.content.childNodes);
     return template.concat(
       base,
       template.html`

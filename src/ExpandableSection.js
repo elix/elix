@@ -98,7 +98,7 @@ class ExpandableSection extends Base {
         this.$.expandIcon.style.display = opened ? 'none' : 'block';
       }
       if ('opened' in this.$.panel) {
-        this.$.panel.opened = opened;
+        /** @type {any} */ (this.$.panel).opened = opened;
       }
     }
   }

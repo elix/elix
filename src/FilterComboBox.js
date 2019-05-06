@@ -1,5 +1,4 @@
 import { getTextsFromItems } from './ItemsTextMixin.js';
-import { merge } from './updates.js';
 import { substantiveElement } from './content.js';
 import * as symbols from './symbols.js';
 import AutoCompleteInput from './AutoCompleteInput.js';
@@ -82,12 +81,16 @@ class FilterComboBox extends Base {
     if (changed.filter || changed.selectedIndex) {
       const { filter, selectedIndex } = state;
       if (filter === '' || selectedIndex === -1) {
-        this.$.list.filter = filter;
+        const list = /** @type {any} */ (this.$.list);
+        if ('filter' in list) {
+          list.filter = filter;
+        }
       }
     }
     if (changed.texts) {
-      if ('texts' in this.$.input) {
-        this.$.input.texts = state.texts;
+      const input = /** @type {any} */ (this.$.input);
+      if ('texts' in input) {
+        input.texts = state.texts;
       }
     }
   }

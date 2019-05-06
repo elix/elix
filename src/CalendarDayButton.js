@@ -34,17 +34,18 @@ class CalendarDayButton extends Base {
 
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
+    /** @type {any} */ const day = this.$.day;
     if (changed.date) {
-      this.$.day.date = state.date;
+      day.date = state.date;
     }
     if (changed.locale) {
-      this.$.day.locale = state.locale;
+      day.locale = state.locale;
     }
     if (changed.outsideRange) {
-      this.$.day.outsideRange = state.outsideRange;
+      day.outsideRange = state.outsideRange;
     }
     if (changed.selected) {
-      this.$.day.selected = state.selected;
+      day.selected = state.selected;
     }
   }
 

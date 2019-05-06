@@ -118,10 +118,12 @@ class AlertDialog extends Dialog {
 
   get [symbols.template]() {
     const result = super[symbols.template];
-    const frame = result.content.getElementById('frame');
-    frame.style.padding = '1em';
     const alertDialogTemplate = template.html`
       <style>
+        #frame {
+          padding: 1em;
+        }
+
         #buttonContainer {
           margin-top: 1em;
         }

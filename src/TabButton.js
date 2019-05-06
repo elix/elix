@@ -128,7 +128,7 @@ class TabButton extends Base {
         right: '0 0.25em 0.25em 0',
         top: '0.25em 0.25em 0 0'
       };
-      this.$.inner.style.borderRadius = borderRadiusForPosition[position];
+      this.inner.style.borderRadius = borderRadiusForPosition[position];
     }
     if (changed.position || changed.selected) {
       // Adjust selected appearance.
@@ -152,7 +152,7 @@ class TabButton extends Base {
         const borderSide = borderColorSideForPosition[position];
         buttonStyle[borderSide] = 'transparent';
       }
-      Object.assign(this.$.inner.style, buttonStyle);
+      Object.assign(this.inner.style, buttonStyle);
     }
     if (changed.innerProperties || changed.original) {
       // Adjust colors.
@@ -160,7 +160,7 @@ class TabButton extends Base {
       const originalColor = original.style && original.style.color;
       const originalBackgroundColor = original.style && original.style['background-color'];
       const disabled = innerProperties.disabled;
-      Object.assign(this.$.inner.style, {
+      Object.assign(this.inner.style, {
         color: disabled ? '#888' : originalColor,
         backgroundColor: originalBackgroundColor || 'white'
       });

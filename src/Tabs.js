@@ -76,8 +76,10 @@ class Tabs extends Explorer {
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
     if (changed.tabAlign) {
-      if ('tabAlign' in this.$.proxyList)
-      this.$.proxyList.tabAlign = state.tabAlign;
+      if ('tabAlign' in this.$.proxyList) {
+        const proxyList = /** @type {any} */ (this.$.proxyList);
+        proxyList.tabAlign = state.tabAlign;
+      }
     }
   }
 

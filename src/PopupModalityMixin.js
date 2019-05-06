@@ -1,5 +1,4 @@
 import { deepContains, ownEvent } from './utilities.js';
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 
 

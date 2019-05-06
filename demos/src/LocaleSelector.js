@@ -296,9 +296,7 @@ class LocaleSelector extends ReactiveElement {
     if (super.componentDidMount) { super.componentDidMount(); }
     this.$.select.addEventListener('change', () => {
       this[symbols.raiseChangeEvents] = true;
-      /** @type {any} */
-      const cast = this.$.select;
-      this.value = cast.value;
+      this.value = /** @type {any} */ (this.$.select).value;
       this[symbols.raiseChangeEvents] = false;
     });
   }
@@ -324,7 +322,7 @@ class LocaleSelector extends ReactiveElement {
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
     if (changed.value) {
-      this.$.select.value = state.value;
+      /** @type {HTMLSelectElement} */ (this.$.select).value = state.value;
     }
   }
 
@@ -346,7 +344,9 @@ class LocaleSelector extends ReactiveElement {
       return option;
     });
     const select = result.content.getElementById('select');
-    updates.applyChildNodes(select, localeOptions);
+    if (select) {
+      updates.applyChildNodes(select, localeOptions);
+    }
     return result;
   }
 

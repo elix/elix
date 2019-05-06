@@ -1,5 +1,4 @@
 import { firstFocusableElement } from './utilities.js';
-import { merge } from './updates.js';
 
 
 /**

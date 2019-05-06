@@ -242,16 +242,22 @@ class ComboBox extends Base {
       const popup = this.$.popup;
       popup.removeAttribute('tabindex');
       if ('autoFocus' in popup) {
-        popup.autoFocus = false;
+        /** @type {any} */ (popup).autoFocus = false;
       }
       // TODO: Would be better if we could set backdropRole to null
-      popup.backdrop.style.display = 'none';
-      Object.assign(popup.frame.style, {
-        display: 'flex',
-        flexDirection: 'column'
-      });
+      const backdrop = /** @type {any} */ (popup).backdrop;
+      if (backdrop) {
+        backdrop.style.display = 'none';
+      }
+      const frame = /** @type {any} */ (popup).frame;
+      if (frame) {
+        Object.assign(frame.style, {
+          display: 'flex',
+          flexDirection: 'column'
+        });
+      }
       if ('closeOnWindowResize' in popup) {
-        popup.closeOnWindowResize = false;
+        /** @type {any} */ (popup).closeOnWindowResize = false;
       }
     }
   }
@@ -263,17 +269,18 @@ class ComboBox extends Base {
     }
     if (changed.disabled) {
       const { disabled } = state;
-      this.$.input.disabled = disabled;
-      this.$.toggleButton.disabled = disabled;
+      /** @type {any} */ (this.$.input).disabled = disabled;
+      /** @type {any} */ (this.$.toggleButton).disabled = disabled;
     }
     if (changed.languageDirection) {
       const { languageDirection } = state;
       const rightToLeft = languageDirection === 'rtl';
       // We want to style the inner input if it's been created with
       // WrappedStandardElement, otherwise style the input directly.
-      const input = 'inner' in this.$.input ?
-        this.$.input.inner :
-        this.$.input;
+      const cast = /** @type {any} */ (this.$.input);
+      const input = 'inner' in cast ?
+        cast.inner :
+        cast;
       Object.assign(input.style, {
         paddingBottom: '2px',
         paddingLeft: rightToLeft ? '1.5em' : '2px',
@@ -292,7 +299,7 @@ class ComboBox extends Base {
       }
     }
     if (changed.placeholder) {
-      this.$.input.placeholder = state.placeholder;
+      /** @type {any} */ (this.$.input).placeholder = state.placeholder;
     }
     if (changed.popupPosition) {
       const { popupPosition } = state;
@@ -304,7 +311,7 @@ class ComboBox extends Base {
         'none';
     }
     if (changed.value) {
-      this.$.input.value = state.value;
+      /** @type {any} */ (this.$.input).value = state.value;
     }
   }
 

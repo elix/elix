@@ -67,12 +67,9 @@ class CalendarMonth extends Base {
    * @type {Element[]}
    */
   get days() {
-    if (!this.shadowRoot) {
-      return [];
-    }
-    /** @type {any} */
-    const cast = this.$.monthDays;
-    return cast.days;
+    return this.shadowRoot ?
+      /** @type {any} */ (this.$.monthDays).days :
+      [];
   }
 
   /**
@@ -125,12 +122,12 @@ class CalendarMonth extends Base {
     super[symbols.render](state, changed);
     if (changed.locale) {
       const locale = state.locale;
-      this.$.monthDays.locale = locale;
-      this.$.monthYearHeader.locale = locale;
-      this.$.weekDaysHeader.locale = locale;
+      /** @type {any} */ (this.$.monthDays).locale = locale;
+      /** @type {any} */ (this.$.monthYearHeader).locale = locale;
+      /** @type {any} */ (this.$.weekDaysHeader).locale = locale;
     }
     if (changed.dayRole) {
-      this.$.monthDays.dayRole = state.dayRole;
+      /** @type {any} */ (this.$.monthDays).dayRole = state.dayRole;
     }
     if (changed.date) {
       const { date } = state;
@@ -143,23 +140,23 @@ class CalendarMonth extends Base {
           dayCount,
           startDate
         });
-        this.$.monthYearHeader.date = calendar.firstDateOfMonth(date);
+        /** @type {any} */ (this.$.monthYearHeader).date = calendar.firstDateOfMonth(date);
       }
     }
     if (changed.daysOfWeekFormat) {
-      this.$.weekDaysHeader.format = state.daysOfWeekFormat;
+      /** @type {any} */ (this.$.weekDaysHeader).format = state.daysOfWeekFormat;
     }
     if (changed.showCompleteWeeks) {
-      this.$.monthDays.showCompleteWeeks = state.showCompleteWeeks;
+      /** @type {any} */ (this.$.monthDays).showCompleteWeeks = state.showCompleteWeeks;
     }
     if (changed.showSelectedDay) {
-      this.$.monthDays.showSelectedDay = state.showSelectedDay;
+      /** @type {any} */ (this.$.monthDays).showSelectedDay = state.showSelectedDay;
     }
     if (changed.monthFormat) {
-      this.$.monthYearHeader.monthFormat = state.monthFormat;
+      /** @type {any} */ (this.$.monthYearHeader).monthFormat = state.monthFormat;
     }
     if (changed.yearFormat) {
-      this.$.monthYearHeader.yearFormat = state.yearFormat;
+      /** @type {any} */ (this.$.monthYearHeader).yearFormat = state.yearFormat;
     }
   }
 

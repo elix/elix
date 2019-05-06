@@ -22,10 +22,8 @@ class MenuButton extends PopupButton {
     // If the user hovers over an item, select it.
     this.addEventListener('mousemove', event => {
       const target = event.target;
-      if (target) {
-        /** @type {any} */
-        const cast = target;
-        const hoverIndex = indexOfItemContainingTarget(this.items, cast);
+      if (target && target instanceof Node) {
+        const hoverIndex = indexOfItemContainingTarget(this.items, target);
         if (hoverIndex !== this.state.menuSelectedIndex) {
           this[symbols.raiseChangeEvents] = true;
           this.setState({
@@ -154,10 +152,9 @@ class MenuButton extends PopupButton {
     const closeResult = selectionDefined ?
       this.state.menuSelectedIndex :
       undefined;
-    /** @type {any} */
-    const cast = this.$.menu;
-    if (selectionDefined && 'highlightSelectedItem' in cast) {
-      await cast.highlightSelectedItem();
+    /** @type {any} */ const menu = this.$.menu;
+    if (selectionDefined && 'highlightSelectedItem' in menu) {
+      await menu.highlightSelectedItem();
     }
     const saveRaiseChangeEvents = this[symbols.raiseChangeEvents];
     this[symbols.raiseChangeEvents] = raiseChangeEvents;
@@ -309,7 +306,10 @@ class MenuButton extends PopupButton {
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
     if (changed.menuSelectedIndex) {
-      this.$.menu.selectedIndex = state.menuSelectedIndex;
+      const menu = /** @type {any} */ (this.$.menu);
+      if ('selectedIndex' in menu) {
+        menu.selectedIndex = state.menuSelectedIndex;
+      }
     }
   }
 
@@ -323,7 +323,9 @@ class MenuButton extends PopupButton {
       </div>
     `;
     const defaultSlot = base.content.querySelector('slot:not([name])');
-    template.transmute(defaultSlot, menuTemplate);
+    if (defaultSlot) {
+      template.transmute(defaultSlot, menuTemplate);
+    }
 
     // Inject a "..." icon into the source slot.
     // Default "..." icon is from Google Material Design icons.
@@ -335,7 +337,9 @@ class MenuButton extends PopupButton {
       </slot>
     `;
     const sourceSlot = base.content.querySelector('slot[name="source"]');
-    template.transmute(sourceSlot, sourceTemplate);
+    if (sourceSlot) {
+      template.transmute(sourceSlot, sourceTemplate);
+    }
 
     return template.concat(
       base,

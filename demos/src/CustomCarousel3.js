@@ -18,9 +18,13 @@ class CustomCarousel extends Carousel {
     `);
     // Replace icons with glyphs.
     const leftSlot = result.content.querySelector('slot[name="arrowButtonLeft"]');
-    leftSlot.textContent = "↫";
+    if (leftSlot) {
+      leftSlot.textContent = "↫";
+    }
     const rightSlot = result.content.querySelector('slot[name="arrowButtonRight"]');
-    rightSlot.textContent = "↬";
+    if (rightSlot) {
+      rightSlot.textContent = "↬";
+    }
     return result;
   }
 

@@ -1,6 +1,5 @@
 import { dampen } from './fractionalSelection.js';
 import { getScrollableElement } from './scrolling.js';
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import EffectMixin from './EffectMixin.js';
@@ -164,11 +163,12 @@ class PullToRefresh extends Base {
     super[symbols.render](state, changed);
     if (changed.refreshing) {
       const { refreshing } = state;
-      this.$.refreshingIndicator.style.visibility = refreshing ?
+      const refreshingIndicator = this.$.refreshingIndicator;
+      refreshingIndicator.style.visibility = refreshing ?
         'visible' :
         'hidden';
       if ('playing' in this.$.refreshingIndicator) {
-        this.$.refreshingIndicator.playing = refreshing;
+        /** @type {any} */ (refreshingIndicator).playing = refreshing;
       }
     }
     if (changed.enableEffects || changed.refreshing || changed.swipeFraction) {

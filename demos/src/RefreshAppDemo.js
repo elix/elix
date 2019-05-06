@@ -44,9 +44,7 @@ class RefreshAppDemo extends ReactiveElement {
       navigator.vibrate(5);
     }
     setTimeout(async () => {
-      /** @type {any} */
-      const cast = this.$.pullToRefresh;
-      cast.refreshing = false;
+      /** @type {any} */ (this.$.pullToRefresh).refreshing = false;
       await playSound(this.$.refreshSound);
       // Rotate last paragraph to first place.
       const paragraphs = [...this.state.paragraphs];

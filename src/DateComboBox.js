@@ -1,4 +1,3 @@
-import { merge } from './updates.js';
 import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
@@ -341,21 +340,22 @@ class DateComboBox extends Base {
 
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
+    const calendar = /** @type {any} */ (this.$.calendar);
     if (changed.arrowButtonRole) {
       if ('arrowButtonRole' in calendar) {
-        this.$.calendar.arrowButtonRole = state.arrowButtonRole;
+        calendar.arrowButtonRole = state.arrowButtonRole;
       }
     }
     if (changed.date) {
-      this.$.calendar.date = state.date;
+      calendar.date = state.date;
     }
     if (changed.dayRole) {
       if ('dayRole' in calendar) {
-        this.$.calendar.dayRole = state.dayRole;
+        calendar.dayRole = state.dayRole;
       }
     }
     if (changed.locale) {
-      this.$.calendar.locale = state.locale;
+      calendar.locale = state.locale;
     }
   }
 

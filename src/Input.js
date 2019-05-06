@@ -33,10 +33,8 @@ class Input extends Base {
      */
     this.$.inner.addEventListener('input', () => {
       this[symbols.raiseChangeEvents] = true;
-      /** @type {any} */
-      const cast = this.inner;
       // Invoke the value setter to fix up selectionStart/selectionEnd too.
-      this.value = cast.value;
+      this.value = /** @type {any} */ (this.inner).value;
       this[symbols.raiseChangeEvents] = false;
     });
 
@@ -78,10 +76,9 @@ class Input extends Base {
     // @ts-ignore
     super.value = value;
     if (this.shadowRoot) {
-      /** @type {any} */
-      const cast = this.inner;
-      this.setInnerProperty('selectionStart', cast.selectionStart);
-      this.setInnerProperty('selectionEnd', cast.selectionEnd);
+      /** @type {any} */ const inner = this.inner;
+      this.setInnerProperty('selectionStart', inner.selectionStart);
+      this.setInnerProperty('selectionEnd', inner.selectionEnd);
     }
   }
 

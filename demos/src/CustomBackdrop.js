@@ -1,6 +1,6 @@
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
-import ReactiveElement from '../../src/ReactiveElement.js';
+import ReactiveElement from '../../src/ReactiveElement2.js';
 
 
 class CustomBackdrop extends ReactiveElement {
