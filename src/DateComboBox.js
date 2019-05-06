@@ -109,6 +109,7 @@ class DateComboBox extends Base {
     const state = Object.assign(super.defaultState, {
       arrowButtonRole: ArrowDirectionButton,
       calendarRole: CalendarMonthNavigator,
+      date: calendar.today(),
       datePriority: false,
       dateSelected: false,
       dateTimeFormat: null,
@@ -149,7 +150,7 @@ class DateComboBox extends Base {
           (blur && userChangedDate) ||
           (closing && userChangedDate && !canceled) ||
           (changed.dateTimeFormat && datePriority)) {
-        const formattedDate = date ?
+        const formattedDate = date && dateTimeFormat ?
           this.formatDate(date, dateTimeFormat) :
           '';
         // See notes on mobile at ComboBox.defaultState.
