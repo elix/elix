@@ -1,5 +1,4 @@
 import * as symbols from '../../src/symbols.js';
-import flushPolyfills from '../flushPolyfills.js';
 import OriginalAttributesMixin from '../../src/OriginalAttributesMixin.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
 
@@ -59,7 +58,6 @@ describe("OriginalAttributesMixin", function () {
 
   it("merges styles on top of original styles", async () => {
     container.innerHTML = `<original-attributes-test style="background-color: yellow; color: green;"></original-attributes-test>`;
-    flushPolyfills();
     const fixture = container.querySelector('original-attributes-test');
     await fixture.setState({
       selected: true
@@ -82,7 +80,6 @@ describe("OriginalAttributesMixin", function () {
 
   it("merges classes on top of original classes", async () => {
     container.innerHTML = `<original-attributes-test class='foo'></original-attributes-test>`;
-    flushPolyfills();
     const fixture = container.querySelector('original-attributes-test');
     assert(fixture.classList.contains('foo'));
     assert(!fixture.classList.contains('selected'));
@@ -102,7 +99,6 @@ describe("OriginalAttributesMixin", function () {
 
   it("respects original classes", async () => {
     container.innerHTML = `<original-attributes-test class='selected'></original-attributes-test>`;
-    flushPolyfills();
     const fixture = container.querySelector('original-attributes-test');
     assert(fixture.classList.contains('selected'));
 

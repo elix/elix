@@ -1,5 +1,4 @@
 import '../../src/AutoSizeTextarea.js';
-import flushPolyfills from '../flushPolyfills.js';
 
 
 describe("AutoSizeTextarea", () => {
@@ -17,7 +16,6 @@ describe("AutoSizeTextarea", () => {
   it("sets initial value from initial innerHTML", async () => {
     container.innerHTML = '<elix-auto-size-textarea>aardvark</elix-auto-size-textarea>';
     const fixture = container.querySelector('elix-auto-size-textarea');
-    flushPolyfills();
     // Wait for slotchange event.
     await new Promise(resolve => setTimeout(resolve));
     assert.equal(fixture.value, 'aardvark');
@@ -27,7 +25,6 @@ describe("AutoSizeTextarea", () => {
     const fixture = document.createElement('elix-auto-size-textarea');
     fixture.value = 'beaver';
     fixture.render();
-    flushPolyfills();
     assert(fixture.inner.value, 'beaver');
   });
 
@@ -59,7 +56,6 @@ describe("AutoSizeTextarea", () => {
 
   it("marshalls the minimum-rows attribute to the minimumRows property", () => {
     container.innerHTML = '<elix-auto-size-textarea minimum-rows="10"></elix-auto-size-textarea>';
-    // flushPolyfills();
     const fixture = container.querySelector('elix-auto-size-textarea');
     assert.equal(fixture.minimumRows, 10);
   });
@@ -67,11 +63,9 @@ describe("AutoSizeTextarea", () => {
   it("autosizes to fit its contents", async () => {
     const fixture = document.createElement('elix-auto-size-textarea');
     container.appendChild(fixture);
-    // flushPolyfills();
     const originalHeight = fixture.clientHeight;
     fixture.value = 'One\nTwo\nThree';
     // Height with three lines of text should be over twice as big.
-    // flushPolyfills();
     await Promise.resolve();
     assert(fixture.clientHeight > originalHeight * 2);
   });
@@ -79,12 +73,10 @@ describe("AutoSizeTextarea", () => {
   it("applies minimumRows when text isn't tall enough", async () => {
     const fixture = document.createElement('elix-auto-size-textarea');
     container.appendChild(fixture);
-    // flushPolyfills();
     // Original height should be sufficient to hold single line of text.
     const originalHeight = fixture.clientHeight;
     fixture.minimumRows = 3;
     await Promise.resolve();
-    // flushPolyfills();
     // Height with minimumRows=3 should be over twice as big.
     assert(fixture.clientHeight > originalHeight * 2);
   });
@@ -94,7 +86,6 @@ describe("AutoSizeTextarea", () => {
     container.appendChild(fixture);
     const originalHeight = fixture.clientHeight;
     fixture.value = `<html>\n<body>\n<p>\nThis is a test\n</p>\n<div>\nSome more tests\n</div>\n</body>\n</html>`;
-    // flushPolyfills();
     await Promise.resolve();
     assert(fixture.clientHeight > originalHeight * 2);
   });
@@ -105,7 +96,6 @@ describe("AutoSizeTextarea", () => {
     container.appendChild(fixture);
     const originalHeight = fixture.clientHeight;
     fixture.value = "Lots of words to force wrapping. Lots of words to force wrapping. Lots of words to force wrapping. Lots of words to force wrapping. Lots of words to force wrapping. Lots of words to force wrapping. Lots of words to force wrapping. Lots of words to force wrapping. Lots of words to force wrapping.";
-    // flushPolyfills();
     await Promise.resolve();
     assert(fixture.clientHeight > originalHeight * 2);
   });
@@ -116,7 +106,6 @@ describe("AutoSizeTextarea", () => {
     container.appendChild(fixture);
     const originalHeight = fixture.clientHeight;
     fixture.value = "abcdefghijklmnopqrstuvwxyz.,;:+-abcdefghijklmnopqrstuvwxyz.,;:+-abcdefghijklmnopqrstuvwxyz.,;:+-abcdefghijklmnopqrstuvwxyz.,;:+-abcdefghijklmnopqrstuvwxyz.,;:+-abcdefghijklmnopqrstuvwxyz.,;:+-abcdefghijklmnopqrstuvwxyz.,;:+-abcdefghijklmnopqrstuvwxyz.,;:+-";
-    // flushPolyfills();
     await Promise.resolve();
     assert(fixture.clientHeight > originalHeight * 2);
   });
@@ -125,7 +114,6 @@ describe("AutoSizeTextarea", () => {
     const fixture = document.createElement('elix-auto-size-textarea');
     container.appendChild(fixture);
     fixture.placeholder = 'Placeholder';
-    // flushPolyfills();
     await Promise.resolve();
     assert.equal(fixture.inner.placeholder, 'Placeholder');
     assert.notEqual(fixture.value, 'Placeholder');

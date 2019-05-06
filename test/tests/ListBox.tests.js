@@ -1,4 +1,3 @@
-import flushPolyfills from '../flushPolyfills.js';
 import ListBox from '../../src/ListBox.js';
 import * as mockInteractions from '../mockInteractions.js';
 
@@ -19,7 +18,6 @@ describe("ListBox", () => {
     const fixture = createSampleListBox();
     container.appendChild(fixture);
     // Wait for initial content.
-    flushPolyfills();
     await Promise.resolve();
     assert.equal(fixture.state.selectedIndex, -1);
     const item = fixture.items[0];
@@ -43,7 +41,6 @@ describe("ListBox", () => {
     `;
     const fixture = container.querySelector('elix-list-box');
     // Wait for initial content.
-    flushPolyfills();
     await Promise.resolve();
     assert.equal(fixture.selectedIndex, 2);
     assert.equal(fixture.selectedItem, fixture.children[2]);

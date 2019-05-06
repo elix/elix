@@ -1,5 +1,4 @@
 import * as symbols from '../../src/symbols.js';
-import flushPolyfills from '../flushPolyfills.js';
 import SlotContentMixin from '../../src/SlotContentMixin.js';
 
 
@@ -61,7 +60,6 @@ describe("SlotContentMixin", () => {
   it("uses the component's default slot as the default slot for content", async () => {
     const fixture = document.createElement('slot-content-test');
     // Wait for initial content.
-    flushPolyfills();
     await Promise.resolve();
     const slot = fixture.shadowRoot.children[1];
     assert.equal(fixture[symbols.contentSlot], slot);
@@ -71,7 +69,6 @@ describe("SlotContentMixin", () => {
     const fixture = document.createElement('slot-content-test');
     fixture.innerHTML = `<div>One</div><div>Two</div><div>Three</div>`;
     // Wait for initial content.
-    flushPolyfills();
     await Promise.resolve();
     assert.equal(fixture.state.content.length, 3);
   });
@@ -79,10 +76,8 @@ describe("SlotContentMixin", () => {
   it("returns distributed nodes as content", async () => {
     const wrapper = document.createElement('wrapped-slot-content-test');
     wrapper.innerHTML = `<div>One</div><div>Two</div><div>Three</div>`;
-    flushPolyfills();
     const fixture = wrapper.shadowRoot.querySelector('slot-content-test');
     // Wait for initial content.
-    flushPolyfills();
     await Promise.resolve();
     assert.equal(fixture.state.content.length, 3);
   });
@@ -91,7 +86,6 @@ describe("SlotContentMixin", () => {
     container.innerHTML = `<slot-content-test>beaver</slot-content-test>`;
     const fixture = container.querySelector('slot-content-test');
     // Wait for initial content.
-    flushPolyfills();
     await Promise.resolve();
     assert.equal(fixture.state.content[0].textContent, 'beaver');
   });
@@ -100,10 +94,8 @@ describe("SlotContentMixin", () => {
     const fixture = document.createElement('slot-content-test');
     container.appendChild(fixture);
     // Wait for initial content.
-    flushPolyfills();
     fixture.textContent = 'chihuahua';
     // Wait for slotchange event to be processed.
-    flushPolyfills();
     await Promise.resolve();
     assert.equal(fixture.state.content[0].textContent, 'chihuahua');
   });
@@ -112,13 +104,11 @@ describe("SlotContentMixin", () => {
     const fixture = document.createElement('slot-content-test');
     container.appendChild(fixture);
     // Wait for initial content.
-    flushPolyfills();
     fixture.contentChangedCallCount = 0;
     const div = document.createElement('div');
     div.textContent = 'dingo';
     fixture.appendChild(div);
     // Wait for slotchange event to be processed.
-    flushPolyfills();
     await Promise.resolve();
     assert.equal(fixture.state.content[0].textContent, 'dingo');
   });
@@ -128,11 +118,9 @@ describe("SlotContentMixin", () => {
     const fixture = wrapper.shadowRoot.querySelector('slot-content-test');
     container.appendChild(wrapper);
     // Wait for initial content.
-    flushPolyfills();
     fixture.contentChangedCallCount = 0;
     wrapper.textContent = 'echidna';
     // Wait for slotchange event to be processed.
-    flushPolyfills();
     await Promise.resolve();
     assert.equal(fixture.state.content[0].textContent, 'echidna');
   });
@@ -141,7 +129,6 @@ describe("SlotContentMixin", () => {
     const fixture = document.createElement('slot-content-test');
     container.appendChild(fixture);
     // Wait for initial content.
-    flushPolyfills();
     await Promise.resolve();
 
     const previousContent = fixture.state.content;
@@ -154,7 +141,6 @@ describe("SlotContentMixin", () => {
     const shadowElement = fixture.shadowRoot.querySelector('#static');
     shadowElement.textContent = "This should be ignored";
 
-    flushPolyfills();
     await Promise.resolve();
     assert.equal(fixture.state.content, previousContent);
 
@@ -164,7 +150,6 @@ describe("SlotContentMixin", () => {
     fixture.textContent = 'fox';
 
     // Wait for slotchange event to be processed.
-    flushPolyfills();
     await Promise.resolve();
     assert.notEqual(fixture.state.content, previousContent);
     assert.equal(fixture.state.content[0].textContent, 'fox');
@@ -174,7 +159,6 @@ describe("SlotContentMixin", () => {
     const fixture = document.createElement('slot-content-test');
     container.appendChild(fixture);
     // Wait for initial content.
-    flushPolyfills();
     await Promise.resolve();
     const previousContent = fixture.state.content;
 
@@ -182,7 +166,6 @@ describe("SlotContentMixin", () => {
     const shadowElement = fixture.shadowRoot.querySelector('#static');
     shadowElement.parentNode.removeChild(shadowElement);
 
-    flushPolyfills();
     await Promise.resolve();
 
     assert.equal(fixture.state.content, previousContent);
@@ -192,7 +175,6 @@ describe("SlotContentMixin", () => {
     fixture.textContent = 'gorilla';
 
     // Wait for slotchange event to be processed.
-    flushPolyfills();
     await Promise.resolve();
 
     assert.notEqual(fixture.state.content, previousContent);
@@ -207,13 +189,11 @@ describe("SlotContentMixin", () => {
     container.appendChild(fixture);
     // Wait for initial content and for first
     // slotchange event to be processed.
-    flushPolyfills();
 
     // Remove a light DOM child, which should trigger content update.
     fixture.removeChild(div);
 
     // Wait for second slotchange event to be processed.
-    flushPolyfills();
     await Promise.resolve();
     assert.equal(fixture.state.content.length, 0);
   });
@@ -222,7 +202,6 @@ describe("SlotContentMixin", () => {
     container.innerHTML = '<slot-content-test>iguana</slot-content-test>';
     const fixture = container.querySelector('slot-content-test');
     // Wait for initial content.
-    flushPolyfills();
     await Promise.resolve();
     assert.equal(fixture.state.content[0].textContent, 'iguana');
   });

@@ -1,6 +1,5 @@
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
-import flushPolyfills from '../flushPolyfills.js';
 import ShadowTemplateMixin from '../../src/ShadowTemplateMixin.js';
 
 
@@ -123,16 +122,8 @@ describe("ShadowTemplateMixin", () => {
     assert.equal(fixture.shadowRoot.textContent.trim(), "Hello");
   });
 
-  it("polyfills styles when ShadyCSS is loaded", () => {
-    const fixture = document.createElement('element-with-styles-in-template');
-    container.appendChild(fixture);
-    flushPolyfills();
-    assert.equal(getComputedStyle(fixture).backgroundColor, 'rgb(255, 0, 0)');
-  });
-
   it("generates this.$ references for shadow elements with 'id' attributes", () => {
     const fixture = document.createElement('element-with-string-template');
-    flushPolyfills();
     const root = fixture.shadowRoot;
     assert.equal(fixture.$.message, root.querySelector('#message'));
   });

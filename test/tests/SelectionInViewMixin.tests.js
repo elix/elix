@@ -1,4 +1,3 @@
-import flushPolyfills from '../flushPolyfills.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
 import SelectionInViewMixin from '../../src/SelectionInViewMixin.js';
 
@@ -47,7 +46,6 @@ describe("SelectionInViewMixin", function() {
   it("Scrolls down to bring item below bottom edge fully into view", done => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
-    flushPolyfills();
     fixture.addEventListener('scroll', () => {
       assert.equal(fixture.scrollTop, 150);
       done();
@@ -59,7 +57,6 @@ describe("SelectionInViewMixin", function() {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     fixture.scrollTop = 150; // Scrolled all the way to bottom.
-    flushPolyfills();
     fixture.addEventListener('scroll', () => {
       assert.equal(fixture.scrollTop, 0);
       done();

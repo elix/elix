@@ -1,6 +1,5 @@
 import { merge } from '../../src/updates.js';
 import Explorer from '../../src/Explorer.js';
-import flushPolyfills from '../flushPolyfills.js';
 
 
 class ExplorerTest extends Explorer {
@@ -34,12 +33,7 @@ describe("Explorer", () => {
     container.innerHTML = '';
   });
 
-  // We skip this test in Edge because it's begun to fail.
-  // TODO: Investigate. FWIW, this issue is incredibly hard to follow.
-  // The buttons don't seem to be assigned to the "proxy" slot as expected.
-  // This test used to pass; it's possible a polyfill change broke it.
-  const polyfill = window.ShadyCSS && !window.ShadyCSS.nativeShadow;
-  (polyfill ? it.skip : it)("associates slotted proxies with each item", async () => {
+  it("associates slotted proxies with each item", async () => {
     const fixture = new Explorer();
     fixture.innerHTML = `
       <button slot="proxy">Proxy one</button>
@@ -51,7 +45,6 @@ describe("Explorer", () => {
     `;
     container.appendChild(fixture);
     // Wait for component to render.
-    flushPolyfills();
     // Wait for content, which requires event/timeout timing.
     await new Promise(setTimeout);
     const proxies = fixture.proxies;
@@ -69,7 +62,6 @@ describe("Explorer", () => {
     `;
     container.appendChild(fixture);
     // Wait for component to render.
-    flushPolyfills();
     // Wait for content, which requires event/timeout timing.
     await new Promise(setTimeout);
     const proxies = fixture.proxies;
@@ -87,7 +79,6 @@ describe("Explorer", () => {
     `;
     container.appendChild(fixture);
     // Wait for component to render.
-    flushPolyfills();
     // Wait for content, which requires event/timeout timing.
     await new Promise(setTimeout);
     assert.equal(fixture.proxies[0].textContent, 'Label one');
