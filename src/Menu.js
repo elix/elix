@@ -11,7 +11,7 @@ import KeyboardMixin from './KeyboardMixin.js';
 import KeyboardPagedSelectionMixin from './KeyboardPagedSelectionMixin.js';
 import KeyboardPrefixSelectionMixin from './KeyboardPrefixSelectionMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
-import ReactiveElement from './ReactiveElement.js';
+import ReactiveElement from './ReactiveElement2.js';
 import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SelectionInViewMixin from './SelectionInViewMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
@@ -84,11 +84,9 @@ class Menu extends Base {
     this.removeAttribute('tabindex');
   }
 
-  componentDidUpdate(previousState) {
-    if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-
-    const selectedIndexChanged = this.state.selectedIndex !== previousState.selectedIndex;
-    if (selectedIndexChanged && !this.state.selectionFocused) {
+  componentDidUpdate(changed) {
+    if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    if (changed.selectedIndex && !this.state.selectionFocused) {
       // The selected item needs the focus, but this is complicated. See notes
       // in itemUpdates.
       const focusElement = this.selectedItem instanceof HTMLElement ?

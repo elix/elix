@@ -69,10 +69,10 @@ export default function OpenCloseMixin(Base) {
       return this.state.closeResult;
     }
 
-    componentDidUpdate(previousState) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
+    componentDidUpdate(changed) {
+      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
 
-      if (this.state.opened !== previousState.opened && this[symbols.raiseChangeEvents]) {
+      if (changed.opened && this[symbols.raiseChangeEvents]) {
         /**
          * Raised when the opened/closed state of the component changes.
          * 

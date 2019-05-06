@@ -29,14 +29,16 @@ const previousDocumentMarginRightKey = Symbol('previousDocumentMarginRight');
 export default function DialogModalityMixin(Base) {
   return class DialogModality extends Base {
 
-    componentDidUpdate(previousState) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-      if (this.opened && !this[documentScrollingDisabledKey]) {
-        disableDocumentScrolling(this);
-        this[documentScrollingDisabledKey] = true;
-      } else if (this.closed && this[documentScrollingDisabledKey]) {
-        enableDocumentScrolling(this);
-        this[documentScrollingDisabledKey] = false;
+    componentDidUpdate(changed) {
+      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+      if (changed.opened) {
+        if (this.opened && !this[documentScrollingDisabledKey]) {
+          disableDocumentScrolling(this);
+          this[documentScrollingDisabledKey] = true;
+        } else if (this.closed && this[documentScrollingDisabledKey]) {
+          enableDocumentScrolling(this);
+          this[documentScrollingDisabledKey] = false;
+        }
       }
     }
 

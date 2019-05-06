@@ -108,7 +108,10 @@ export default function ReactiveMixin(Base) {
         // may use this to avoid triggering other updates during the render.
         this[symbols.rendering] = true;
 
-        // Invoke any internal render method implementations.
+        // Invoke any internal prerender implementations.
+        this[symbols.populate](this[stateKey], changed);
+
+        // Invoke any internal render implementations.
         this[symbols.render](this[stateKey], changed);
         this[symbols.rendering] = false;
 

@@ -19,8 +19,8 @@ export default function TimerSelectionMixin(Base) {
       updateTimer(this);
     }
     
-    componentDidUpdate(previousState) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
+    componentDidUpdate(changed) {
+      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
       updateTimer(this);
     }
 

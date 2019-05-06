@@ -5,13 +5,7 @@
 
 import * as symbols from './symbols.js';
 
-declare const SelectionInViewMixin: Mixin<{
-  componentDidMount?(): void;
-  componentDidUpdate?(previousState: PlainObject): void;
-  scrollItemIntoView?(item: Element);
-}, {
-  componentDidMount(): void;
-  componentDidUpdate(previousState: PlainObject): void;
+declare const SelectionInViewMixin: Mixin<{}, {
   scrollItemIntoView(item: Element);
   [symbols.scrollTarget]: Element
 }>;

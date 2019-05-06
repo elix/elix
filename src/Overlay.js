@@ -4,7 +4,7 @@ import Backdrop from './Backdrop.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import OverlayFrame from './OverlayFrame.js';
 import OverlayMixin from './OverlayMixin.js';
-import ReactiveElement from './ReactiveElement.js';
+import ReactiveElement from './ReactiveElement2.js';
 import SlotContentMixin from './SlotContentMixin.js';
 
 
@@ -97,10 +97,9 @@ class Overlay extends Base {
     this.setState({ backdropRole });
   }
 
-  componentDidUpdate(previousState) {
-    if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-    const opened = this.state.opened && !previousState.opened;
-    if (opened && this.state.content) {
+  componentDidUpdate(changed) {
+    if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    if (changed.opened && this.state.content) {
       // If contents know how to size themselves, ask them to check their size.
       this.state.content.forEach(element => {
         if (element[symbols.checkSize]) {

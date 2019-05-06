@@ -50,11 +50,10 @@ export default function SingleSelectionMixin(Base) {
         this.state.selectionWraps || selectedIndex < 0 || selectedIndex > 0;
     }
 
-    componentDidUpdate(previousState) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-
-      const selectedIndex = this.state.selectedIndex;
-      if (selectedIndex !== previousState.selectedIndex && this[symbols.raiseChangeEvents]) {
+    componentDidUpdate(changed) {
+      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+      if (changed.selectedIndex && this[symbols.raiseChangeEvents]) {
+        const selectedIndex = this.state.selectedIndex;
         /**
          * Raised when the `selectedIndex` property changes.
          * 

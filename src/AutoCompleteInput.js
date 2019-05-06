@@ -56,11 +56,11 @@ class AutoCompleteInput extends Input {
     });
   }
 
-  componentDidUpdate(previousState) {
-    if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
+  componentDidUpdate(changed) {
+    if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
 
     const { autoCompleteSelect, originalText } = this.state;
-    if (autoCompleteSelect) {
+    if (changed.originalText && autoCompleteSelect) {
       // We've finished rendering new auto-completed text.
       // Leave the auto-completed portion (after the part the user originally
       // typed) selected.

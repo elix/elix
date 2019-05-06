@@ -1,9 +1,8 @@
-import { merge } from './updates.js';
 import * as calendar from './calendar.js'
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
-import ReactiveElement from './ReactiveElement.js';
+import ReactiveElement from './ReactiveElement2.js';
 
 
 const Base =

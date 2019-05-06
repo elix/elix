@@ -9,10 +9,10 @@ declare const ReactiveMixin: Mixin<{
   connectedCallback?(): void;
 }, {
   componentDidMount(): void;
-  componentDidUpdate(previousState: State): void;
+  componentDidUpdate(changed: PlainObject): void;
   connectedCallback(): void;
   defaultState: State;
-  render(): Promise<void>;
+  render(changed: PlainObject): Promise<void>;
   setState(changes: PlainObject): Promise<void>;
   shouldComponentUpdate(nextState: State): boolean;
   state: State;

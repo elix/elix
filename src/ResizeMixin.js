@@ -56,8 +56,8 @@ export default function ResizeMixin(Base) {
       this[symbols.checkSize]();
     }
     
-    componentDidUpdate(previousState) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
+    componentDidUpdate(changed) {
+      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
       this[symbols.checkSize]();
     }
 

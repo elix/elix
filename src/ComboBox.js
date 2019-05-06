@@ -137,8 +137,8 @@ class ComboBox extends Base {
     }
   }
 
-  componentDidUpdate(previousState) {
-    if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
+  componentDidUpdate(changed) {
+    if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
     if (this.state.selectText) {
       // Select the text in the input after giving the inner input a chance to render the value.
       setTimeout(() => {

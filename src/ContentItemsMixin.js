@@ -44,10 +44,9 @@ const originalKey = Symbol('original');
 export default function ContentItemsMixin(Base) {
   return class ContentItems extends Base {
 
-    componentDidUpdate(previousState) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-      const itemsChanged = this.state.items !== previousState.items;
-      if (itemsChanged && this[symbols.raiseChangeEvents]) {
+    componentDidUpdate(changed) {
+      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+      if (changed.items && this[symbols.raiseChangeEvents]) {
         /**
          * Raised when the `items` property changes.
          * 

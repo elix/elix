@@ -6,14 +6,9 @@
 import * as symbols from './symbols.js';
 
 declare const TransitionEffectMixin: StateMixin<
-{
-  componentDidMount?(): void;
-  componentDidUpdate?(previousState: PlainObject): void;
-},
+{},
 {},
 {
-  componentDidMount(): void;
-  componentDidUpdate(previousState: PlainObject): void;
   startEffect(effect: string): Promise<void>;
   [symbols.elementsWithTransitions]: Element[];
 },

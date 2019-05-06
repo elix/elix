@@ -48,8 +48,8 @@ export default function DelegateItemsMixin(Base) {
       listenToDelegateEvents(this);
     }
 
-    componentDidUpdate(previousState) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
+    componentDidUpdate(changed) {
+      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
       listenToDelegateEvents(this);
     }
 

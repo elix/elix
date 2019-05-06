@@ -27,8 +27,8 @@ export default function SelectionInViewMixin(Base) {
       this.scrollSelectionIntoView();
     }
 
-    componentDidUpdate(previousState) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
+    componentDidUpdate(changed) {
+      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
       this.scrollSelectionIntoView();
     }
 

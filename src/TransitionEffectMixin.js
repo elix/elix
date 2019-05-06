@@ -25,13 +25,10 @@ export default function TransitionEffectMixin(Base) {
       });
     }
 
-    componentDidUpdate(previousState) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-
-      const { effect, effectPhase } = this.state;
-      const changed = effect !== previousState.effect ||
-          effectPhase !== previousState.effectPhase;
-      if (changed) {
+    componentDidUpdate(changed) {
+      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+      if (changed.effect || changed.effectPhase) {
+        const { effect, effectPhase } = this.state;
         /**
          * Raised when [state.effect](TransitionEffectMixin#effect-phases) or
          * [state.effectPhase](TransitionEffectMixin#effect-phases) changes.
@@ -55,22 +52,22 @@ export default function TransitionEffectMixin(Base) {
           }
         });
         this.dispatchEvent(event);
-      }
 
-      if (effect) {
-        if (effectPhase !== 'after') {
-          // We read a layout property to force the browser to render the component
-          // with its current styles before we move to the next state. This ensures
-          // animated values will actually be applied before we move to the next
-          // state.
-          this.offsetHeight;
-        }
+        if (effect) {
+          if (effectPhase !== 'after') {
+            // We read a layout property to force the browser to render the component
+            // with its current styles before we move to the next state. This ensures
+            // animated values will actually be applied before we move to the next
+            // state.
+            this.offsetHeight;
+          }
 
-        if (effectPhase === 'before') {
-          // Advance to the next phase.
-          this.setState({
-            effectPhase: 'during'
-          });
+          if (effectPhase === 'before') {
+            // Advance to the next phase.
+            this.setState({
+              effectPhase: 'during'
+            });
+          }
         }
       }
     }

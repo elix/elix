@@ -13,11 +13,9 @@ export default function DisabledMixin(Base) {
       reflectDisabledAttribute(this);
     }
 
-    componentDidUpdate(previousState) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(previousState); }
-      const disabled = this.state.disabled;
-      const disabledChanged = disabled !== previousState.disabled;
-      if (disabledChanged) {
+    componentDidUpdate(changed) {
+      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+      if (changed.disabled) {
         reflectDisabledAttribute(this);
       }
     }
