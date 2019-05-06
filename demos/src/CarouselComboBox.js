@@ -14,9 +14,7 @@ class CarouselComboBox extends AutoCompleteComboBox {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const base = super[symbols.template]
-    const base = getSuperProperty(this, CarouselComboBox, symbols.template);
-    return template.concat(base, template.html`
+    return template.concat(super[symbols.template], template.html`
       <style>
         #list {
           background: black;
