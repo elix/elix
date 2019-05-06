@@ -1,5 +1,4 @@
 import { forwardFocus, indexOfItemContainingTarget } from './utilities.js';
-import { getSuperProperty } from './workarounds.js';
 import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
@@ -167,8 +166,7 @@ class CalendarMonthNavigator extends Base {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const result = super[symbols.template]
-    const result = getSuperProperty(this, CalendarMonthNavigator, symbols.template);
+    const result = super[symbols.template];
     const monthYearHeader = result.content.querySelector('#monthYearHeader');
     this[ArrowDirectionMixin.wrap](monthYearHeader);
 

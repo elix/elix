@@ -1,5 +1,4 @@
 import { getItemText } from './ItemsTextMixin.js';
-import { getSuperProperty } from './workarounds.js';
 import { indexOfItemContainingTarget } from './utilities.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
@@ -205,8 +204,7 @@ class ListComboBox extends Base {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const result = super[symbols.template]
-    const result = getSuperProperty(this, ListComboBox, symbols.template);
+    const result = super[symbols.template];
 
     // Wrap default slot with a list.
     const listTemplate = template.html`

@@ -1,4 +1,3 @@
-import { getSuperProperty } from '../../src/workarounds.js';
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
 import TabButton from '../../src/TabButton.js';
@@ -33,9 +32,7 @@ class ToolbarTab extends TabButton {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const base = super[symbols.template]
-    const base = getSuperProperty(this, ToolbarTab, symbols.template);
-    return template.concat(base, template.html`
+    return template.concat(super[symbols.template], template.html`
       <style>
         #inner {
           align-items: center;

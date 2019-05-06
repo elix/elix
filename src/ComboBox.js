@@ -1,4 +1,3 @@
-import { getSuperProperty } from './workarounds.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import DelegateFocusMixin from './DelegateFocusMixin.js';
@@ -310,8 +309,7 @@ class ComboBox extends Base {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const result = super[symbols.template]
-    const base = getSuperProperty(this, ComboBox, symbols.template);
+    const base = super[symbols.template];
 
     // Use an input element in the source.
     const sourceSlot = base.content.querySelector('slot[name="source"]');

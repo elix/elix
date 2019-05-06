@@ -1,5 +1,3 @@
-import { getSuperProperty } from '../../src/workarounds.js';
-import { merge } from '../../src/updates.js';
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
 import CalendarDay from '../../src/CalendarDay.js';
@@ -51,9 +49,7 @@ class CalendarDayMoonPhase extends CalendarDay {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const base = super[symbols.template]
-    const base = getSuperProperty(this, CalendarDayMoonPhase, symbols.template);
-    return template.concat(base, template.html`
+    return template.concat(super[symbols.template], template.html`
       <style>
         #phaseIcon {
           height: 1.5em;

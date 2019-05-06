@@ -1,4 +1,3 @@
-import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 
@@ -163,8 +162,7 @@ export default function TouchSwipeMixin(Base) {
      * @type {HTMLElement}
      */
     get [symbols.swipeTarget]() {
-      // Next line is same as: const base = super[symbols.swipeTarget]
-      const base = getSuperProperty(this, TouchSwipe, symbols.swipeTarget);
+      const base = super[symbols.swipeTarget];
       return base || this;
     }
   }

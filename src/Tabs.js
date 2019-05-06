@@ -1,5 +1,4 @@
 import { ensureId } from './idGeneration.js';
-import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
@@ -99,9 +98,7 @@ class Tabs extends Explorer {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const base = super[symbols.template]
-    const base = getSuperProperty(this, Tabs, symbols.template);
-    return template.concat(base, template.html`
+    return template.concat(super[symbols.template], template.html`
       <style>
         #proxyList {
           z-index: 1;

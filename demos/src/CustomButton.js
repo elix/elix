@@ -1,4 +1,3 @@
-import { getSuperProperty } from '../../src/workarounds.js';
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
 import Button from '../../src/Button.js';
@@ -7,9 +6,7 @@ import Button from '../../src/Button.js';
 class CustomButton extends Button {
 
   get [symbols.template]() {
-    // Next line is same as: const base = super[symbols.template]
-    const base = getSuperProperty(this, CustomButton, symbols.template);
-    return template.concat(base, template.html`
+    return template.concat(super[symbols.template], template.html`
       <style>
         #inner {
           background: white;

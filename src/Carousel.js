@@ -1,5 +1,4 @@
 import { forwardFocus } from './utilities.js';
-import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
@@ -131,16 +130,14 @@ class Carousel extends Base {
   }
 
   get [symbols.swipeTarget]() {
-    // Next line is same as: const base = super[symbols.swipeTarget]
-    const base = getSuperProperty(this, Carousel, symbols.swipeTarget);
+    const base = super[symbols.swipeTarget];
     return this.$.stage instanceof HTMLElement ?
       this.$.stage :
       base;
   }
 
   get [symbols.template]() {
-    // Next line is same as: const base = super[symbols.template]
-    const base = getSuperProperty(this, Carousel, symbols.template);
+    const base = super[symbols.template];
     const stage = base.content.querySelector('#stage');
     this[ArrowDirectionMixin.wrap](stage);
     const result = template.concat(base, template.html`

@@ -136,7 +136,6 @@ import * as symbolsImport from './symbols.js';
 import * as templatesImport from './template.js';
 import * as updatesImport from './updates.js';
 import * as utilitiesImport from './utilities.js';
-import * as workaroundsImport from './workarounds.js';
 
 export const accessibility = accessibilityImport;
 export const calendar = calendarImport;
@@ -149,4 +148,3 @@ export const symbols = symbolsImport;
 export const templates = templatesImport;
 export const updates = updatesImport;
 export const utilities = utilitiesImport;
-export const workarounds = workaroundsImport;

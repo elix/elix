@@ -1,4 +1,3 @@
-import { getSuperProperty } from '../../src/workarounds.js';
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
 import AutoCompleteComboBox from '../../src/AutoCompleteComboBox.js';

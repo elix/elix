@@ -1,5 +1,4 @@
 import { defaultScrollTarget } from './scrolling.js';
-import { getSuperProperty } from './workarounds.js';
 import * as symbols from './symbols.js';
 
 
@@ -93,8 +92,7 @@ export default function SelectionInViewMixin(Base) {
      * See also [symbols.scrollTarget](symbols#scrollTarget).
      */
     get [symbols.scrollTarget]() {
-      // Next line is same as: const base = super[symbols.scrollTarget]
-      const base = getSuperProperty(this, SelectionInView, symbols.scrollTarget);
+      const base = super[symbols.scrollTarget];
       /** @type {any} */
       const element = this;
       return base || defaultScrollTarget(element);

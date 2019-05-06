@@ -1,5 +1,4 @@
 import { apply, merge } from './updates.js';
-import { getSuperProperty } from './workarounds.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import MenuButton from './MenuButton.js';
@@ -90,8 +89,7 @@ class DropdownList extends Base {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const result = super[symbols.template]
-    const base = getSuperProperty(this, DropdownList, symbols.template);
+    const base = super[symbols.template];
     const sourceSlot = base.content.querySelector('slot[name="source"]');
     if (!sourceSlot) {
       throw `Couldn't find slot with name "source".`;

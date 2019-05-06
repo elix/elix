@@ -1,4 +1,3 @@
-import { getSuperProperty } from './workarounds.js';
 import { merge } from './updates.js';
 import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
@@ -361,8 +360,7 @@ class DateComboBox extends Base {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const result = super[symbols.template]
-    const result = getSuperProperty(this, DateComboBox, symbols.template);
+    const result = super[symbols.template];
 
     // Replace default slot with calendar.
     const calendarTemplate = template.html`

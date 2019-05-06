@@ -1,4 +1,3 @@
-import { getSuperProperty } from '../../src/workarounds.js';
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
 import ArrowDirectionMixin from '../../src/ArrowDirectionMixin.js';
@@ -31,8 +30,7 @@ class SlidingPagesWithArrows extends Base {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const base = super[symbols.template]
-    const base = getSuperProperty(this, SlidingPagesWithArrows, symbols.template);
+    const base = super[symbols.template];
     this[ArrowDirectionMixin.wrap](base.content);
     return template.concat(base, template.html`
       <style>

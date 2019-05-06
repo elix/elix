@@ -1,5 +1,4 @@
 import './CalendarDay.js';
-import { getSuperProperty } from './workarounds.js';
 import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
@@ -59,8 +58,7 @@ class CalendarDayButton extends Base {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const result = super[symbols.template]
-    const result = getSuperProperty(this, CalendarDayButton, symbols.template);
+    const result = super[symbols.template];
     // Replace default slot with calendar day.
     const defaultSlot = template.defaultSlot(result.content);
     if (defaultSlot) {

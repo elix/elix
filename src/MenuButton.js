@@ -1,5 +1,4 @@
 import { deepContains, elementsFromPoint, indexOfItemContainingTarget } from './utilities.js';
-import { getSuperProperty } from './workarounds.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import Menu from './Menu.js';
@@ -315,8 +314,7 @@ class MenuButton extends PopupButton {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const result = super[symbols.template]
-    const base = getSuperProperty(this, MenuButton, symbols.template);
+    const base = super[symbols.template];
 
     // Wrap default slot with a menu.
     const menuTemplate = template.html`

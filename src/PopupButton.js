@@ -1,4 +1,3 @@
-import { getSuperProperty } from './workarounds.js';
 import { ownEvent } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
@@ -115,9 +114,7 @@ class PopupButton extends Base {
   }
 
   get [symbols.template]() {
-    // Next line is same as: const base = super[symbols.template]
-    const base = getSuperProperty(this, PopupButton, symbols.template);
-    return template.concat(base, template.html`
+    return template.concat(super[symbols.template], template.html`
       <style>
         #source {
           background: buttonface;
