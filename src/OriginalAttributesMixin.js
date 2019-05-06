@@ -36,21 +36,6 @@ export default function RenderUpdatesMixin(Base) {
       }
     }
 
-    [symbols.render](state, changed) {
-      if (super[symbols.render]) { super[symbols.render](state, changed); }
-
-      // Give other mixins a chance to do work before updates are applied.
-      this[symbols.beforeUpdate]();
-
-      // Collect an updated set of properties/attributes.
-      const updatesToApply = this.updates;
-
-      // Apply those to the host.
-      /** @type {any} */
-      const element = this;
-      updates.apply(element, updatesToApply);
-    }
-
     // Override setAttribute so that, if this is called outside of rendering,
     // we can update our notion of the component's original updates.
     setAttribute(name, value) {
