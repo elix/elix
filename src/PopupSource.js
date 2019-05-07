@@ -7,7 +7,7 @@ import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import OverlayFrame from './OverlayFrame.js';
 import Popup from './Popup.js';
-import ReactiveElement from './ReactiveElement2.js';
+import ReactiveElement from './ReactiveElement.js';
 
 
 const resizeListenerKey = Symbol('resizeListener');

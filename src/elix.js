@@ -92,7 +92,7 @@ export { default as PopupModalityMixin } from './PopupModalityMixin.js';
 export { default as PopupSource } from './PopupSource.js';
 export { default as ProgressSpinner } from './ProgressSpinner.js';
 export { default as PullToRefresh } from './PullToRefresh.js';
-export { default as ReactiveElement } from './ReactiveElement2.js';
+export { default as ReactiveElement } from './ReactiveElement.js';
 export { default as ReactiveMixin } from './ReactiveMixin.js';
 export { default as ResizeMixin } from './ResizeMixin.js';
 export { default as SeamlessButton } from './SeamlessButton.js';

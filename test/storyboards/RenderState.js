@@ -1,7 +1,7 @@
 import { substantiveElements } from '../../src/content.js';
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
-import ReactiveElement from '../../src/ReactiveElement2.js';
+import ReactiveElement from '../../src/ReactiveElement.js';
 import SlotContentMixin from '../../src/SlotContentMixin.js';
 
 

@@ -15,7 +15,7 @@ import KeyboardMixin from '../../src/KeyboardMixin.js';
 import KeyboardPagedSelectionMixin from '../../src/KeyboardPagedSelectionMixin.js';
 import KeyboardPrefixSelectionMixin from '../../src/KeyboardPrefixSelectionMixin.js';
 import LanguageDirectionMixin from '../../src/LanguageDirectionMixin.js';
-import ReactiveElement from '../../src/ReactiveElement2.js';
+import ReactiveElement from '../../src/ReactiveElement.js';
 import SelectedItemTextValueMixin from '../../src/SelectedItemTextValueMixin.js';
 import SelectionInViewMixin from '../../src/SelectionInViewMixin.js';
 import SingleSelectionMixin from '../../src/SingleSelectionMixin.js';

@@ -6,7 +6,7 @@ import * as symbols from './symbols.js';
 import * as template from './template.js';
 import CalendarDay from './CalendarDay.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
-import ReactiveElement from './ReactiveElement2.js';
+import ReactiveElement from './ReactiveElement.js';
 
 
 const Base =

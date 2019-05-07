@@ -4,7 +4,7 @@ import * as updates from './updates.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import ListBox from './ListBox.js';
 import Modes from './Modes.js';
-import ReactiveElement from './ReactiveElement2.js';
+import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 

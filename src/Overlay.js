@@ -4,7 +4,7 @@ import Backdrop from './Backdrop.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import OverlayFrame from './OverlayFrame.js';
 import OverlayMixin from './OverlayMixin.js';
-import ReactiveElement from './ReactiveElement2.js';
+import ReactiveElement from './ReactiveElement.js';
 import SlotContentMixin from './SlotContentMixin.js';
 
 

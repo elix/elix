@@ -1,6 +1,6 @@
 import AriaListMixin from '../../src/AriaListMixin.js';
 import ContentItemsMixin from '../../src/ContentItemsMixin.js';
-import ReactiveElement from '../../src/ReactiveElement2.js';
+import ReactiveElement from '../../src/ReactiveElement.js';
 
 
 class AriaListTest extends

@@ -1,7 +1,7 @@
 import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
-import ReactiveElement from './ReactiveElement2.js';
+import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 

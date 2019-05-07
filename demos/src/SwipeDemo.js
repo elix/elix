@@ -1,6 +1,6 @@
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
-import ReactiveElement from '../../src/ReactiveElement2.js';
+import ReactiveElement from '../../src/ReactiveElement.js';
 import TouchSwipeMixin from '../../src/TouchSwipeMixin.js';
 import TrackpadSwipeMixin from '../../src/TrackpadSwipeMixin.js';
 

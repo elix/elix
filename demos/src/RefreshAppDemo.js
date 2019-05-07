@@ -2,7 +2,7 @@ import '../../src/PullToRefresh.js';
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
 import * as updates from '../../src/updates.js';
-import ReactiveElement from '../../src/ReactiveElement2.js';
+import ReactiveElement from '../../src/ReactiveElement.js';
 
 
 const texts = [

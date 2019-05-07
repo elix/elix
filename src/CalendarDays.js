@@ -4,7 +4,7 @@ import * as template from './template.js';
 import * as updates from './updates.js';
 import CalendarDay from './CalendarDay.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
-import ReactiveElement from './ReactiveElement2.js';
+import ReactiveElement from './ReactiveElement.js';
 
 
 const Base =

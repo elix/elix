@@ -1,5 +1,5 @@
 import DelegateFocusMixin from '../../src/DelegateFocusMixin.js';
-import ReactiveElement from '../../src/ReactiveElement2.js';
+import ReactiveElement from '../../src/ReactiveElement.js';
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
 

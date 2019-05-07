@@ -2,7 +2,7 @@ import * as symbols from './symbols.js'
 import * as template from './template.js';
 import ExpandablePanel from './ExpandablePanel.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
-import ReactiveElement from './ReactiveElement2.js';
+import ReactiveElement from './ReactiveElement.js';
 import SeamlessButton from './SeamlessButton.js';
 
 

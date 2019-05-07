@@ -4,7 +4,7 @@ import * as symbols from './symbols.js';
 import * as template from './template.js';
 import EffectMixin from './EffectMixin.js';
 import ProgressSpinner from './ProgressSpinner.js';
-import ReactiveElement from './ReactiveElement2.js';
+import ReactiveElement from './ReactiveElement.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 
 

@@ -1,6 +1,6 @@
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
-import ReactiveElement2 from '../../src/ReactiveElement2.js';
+import ReactiveElement2 from '../../src/ReactiveElement.js';
 
 
 class IncrementDecrement extends ReactiveElement2 {
