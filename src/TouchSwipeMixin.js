@@ -32,7 +32,7 @@ export default function TouchSwipeMixin(Base) {
       // TODO: Touch events should probably be factored out into its own mixin.
 
       // Prefer using the older touch events if supported.
-      // See the rationale for this in the comments for updates().
+      // See the rationale for this in the comments for componentDidMount.
       if ('TouchEvent' in window) {
         this.addEventListener('touchstart', async (event) => {
           this[symbols.raiseChangeEvents] = true;

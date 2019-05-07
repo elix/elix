@@ -1,7 +1,6 @@
 import { forwardFocus } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
-import * as updates from './updates.js';
 import ArrowDirectionButton from './ArrowDirectionButton.js';
 
 
@@ -160,8 +159,8 @@ function ArrowDirectionMixin(Base) {
         // arrowButtonRight.disabled = !this[symbols.canGoRight];
         // But a bug in Chrome prevents this from working.
         // TODO: Isolate repro case.
-        updates.applyAttribute(arrowButtonLeft, 'disabled', !this[symbols.canGoLeft]);
-        updates.applyAttribute(arrowButtonRight, 'disabled', !this[symbols.canGoRight]);
+        arrowButtonLeft.toggleAttribute('disabled', !this[symbols.canGoLeft]);
+        arrowButtonRight.toggleAttribute('disabled', !this[symbols.canGoRight]);
       }
       if (changed.languageDirection) {
         const rightToLeft = state.languageDirection === 'rtl';
