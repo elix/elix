@@ -30,10 +30,11 @@ const config = {
       browserName: 'firefox',
       platform: 'Windows 10'
     },
-    {
-      browserName: 'MicrosoftEdge',
-      platform: 'Windows 10'
-    },
+    // TODO: Test with Chromium-based Edge when available
+    // {
+    //   browserName: 'MicrosoftEdge',
+    //   platform: 'Windows 10'
+    // },
     {
       browserName: 'safari',
       platform: 'OS X 10.13',
