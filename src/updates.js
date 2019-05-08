@@ -18,28 +18,16 @@
  */
 
 
-const previousChildNodesKey = Symbol('previousChildNodes');
-
-
 /**
  * Sets the element's `childNodes` to the given set of nodes.
  * 
  * This adds or removes the element's `childNodes` as necessary to match the
  * nodes indicated in the `childNodes` parameter.
  * 
- * As a performance optimization, if the supplied `childNodes` value is frozen
- * and equivalent to the last call made to this function, the function assumes
- * the child nodes are already correct and does no work.
- * 
  * @param {Element} element - the element to update
  * @param {(NodeList|Node[])} childNodes - the set of nodes to apply
  */
 export function applyChildNodes(element, childNodes) {
-  // Quick dirty check if last array applied was frozen.
-  if (element[previousChildNodesKey] && childNodes === element[previousChildNodesKey]) {
-    return;
-  }
-
   // If the childNodes parameter is the actual childNodes of an element, then as
   // we append those nodes to the indicated target element, they'll get removed
   // from the original set. To keep the list stable, we make a copy.
@@ -69,8 +57,4 @@ export function applyChildNodes(element, childNodes) {
       }
     }
   }
-
-  element[previousChildNodesKey] = Object.isFrozen(childNodes) ?
-    childNodes :
-    null;
 }
