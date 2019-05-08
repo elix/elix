@@ -100,12 +100,12 @@ class SlidingStage extends Base {
           will-change: transform;
         }
 
-        #slidingStageContent > ::slotted(*) {
+        ::slotted(*) {
           flex: 0 0 100%;
           max-width: 100%; /* For Firefox */
         }
 
-        #slidingStageContent > ::slotted(img) {
+        ::slotted(img) {
           object-fit: contain;
         }
       </style>

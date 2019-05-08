@@ -129,22 +129,22 @@ class ListBox extends Base {
           -webkit-overflow-scrolling: touch; /* for momentum scrolling */
         }
 
-        #content > ::slotted(*) {
+        ::slotted(*) {
           padding: 0.25em;
         }
 
-        #content > ::slotted(.selected) {
+        ::slotted(.selected) {
           background: highlight;
           color: highlighttext;
         }
 
         @media (pointer: coarse) {
-          #content > ::slotted(*) {
+          ::slotted(*) {
             padding: 1em;
           }
         }
 
-        #content > ::slotted(option) {
+        ::slotted(option) {
           font-weight: inherit;
           min-height: inherit;
         }
