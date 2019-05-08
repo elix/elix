@@ -1,9 +1,8 @@
 import { deepContains } from './utilities.js';
-import { merge } from './updates.js';
+import { defaultAriaRole } from './accessibility.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import AriaListMixin from './AriaListMixin.js';
-import TapSelectionMixin from './TapSelectionMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
@@ -11,6 +10,7 @@ import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
+import TapSelectionMixin from './TapSelectionMixin.js';
 
 
 const Base =
@@ -99,32 +99,6 @@ class TabStrip extends Base {
     });
   }
 
-  itemUpdates(item, calcs, original) {
-    const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
-
-    const tabAlign = this.state.tabAlign;
-    const position = this.state.position;
-
-    return merge(base, {
-      attributes: {
-        index: calcs.index,
-        role: original.attributes.role || this.state.tabButtonRole,
-        'tab-align': tabAlign,
-        position
-      },
-      classes: {
-        selected: calcs.selected
-      },
-      style: {
-        'cursor': 'pointer',
-        'font-family': 'inherit',
-        'font-size': 'inherit',
-        '-webkit-tap-highlight-color': 'transparent',
-        'z-index': 1
-      }
-    });
-  }
-
   [symbols.keydown](event) {
 
     let handled;
@@ -150,19 +124,6 @@ class TabStrip extends Base {
   // TabStrip orientation depends on position property.
   get orientation() {
     return this.state.orientation;
-  }
-
-  /**
-   * The alignment of the tabs within the tab strip.
-   * 
-   * @type {('start'|'center'|'end'|'stretch')}
-   * @default 'start'
-   */
-  get tabAlign() {
-    return this.state.tabAlign;
-  }
-  set tabAlign(tabAlign) {
-    this.setState({ tabAlign });
   }
 
   /**
@@ -192,6 +153,33 @@ class TabStrip extends Base {
 
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
+    const { items } = state;
+    if (changed.items && items) {
+      const { tabButtonRole } = state;
+      items.forEach((item, index) => {
+        if ('index' in item) {
+          item.index = index;
+        }
+        const original = this.originalItemAttributes(item);
+        const originalRole = original && original.attributes ?
+          original.attributes.role :
+          null;
+        const role = originalRole || tabButtonRole;
+        if (role === defaultAriaRole[item.localName]) {
+          item.removeAttribute('role');
+        } else {
+          item.setAttribute('role', role);
+        }
+      });
+    }
+    if ((changed.items || changed.selectedIndex) && items) {
+      // Apply `selected` style to the selected item only.
+      const { selectedIndex } = state;
+      items.forEach((item, index) => {
+        const selected = index === selectedIndex;
+        item.classList.toggle('selected', selected);
+      });
+    }
     if (changed.original || changed.tabAlign) {
       const { original, tabAlign } = this.state;  
       const justifyContentForTabAlign = {
@@ -203,17 +191,45 @@ class TabStrip extends Base {
       this.style.justifyContent = justifyContentForTabAlign[tabAlign] ||
           original.style['justify-content'];
     }
-    if (changed.position) {
-      const { position } = state;
-      const lateralPosition = position === 'left' || position === 'right';
-      this.style.flexDirection = lateralPosition ? 'column' : 'row';
-    }
     if (changed.original || changed.role) {
       const originalRole = state.original && state.original.attributes.role;
       if (!originalRole) {
         this.setAttribute('role', state.role);
       }
     }
+    if (changed.items || changed.position) {
+      const { position } = state;
+      const lateralPosition = position === 'left' || position === 'right';
+      this.style.flexDirection = lateralPosition ? 'column' : 'row';
+      if (items) {
+        items.forEach(item => {
+          if ('position' in item) {
+            item.position = position;
+          }
+        });
+      }
+    }
+    if ((changed.items || changed.tabAlign) && items) {
+      const { tabAlign } = state;
+      items.forEach(item => {
+        if ('tabAlign' in item) {
+          item.tabAlign = tabAlign;
+        }
+      });
+    }
+  }
+
+  /**
+   * The alignment of the tabs within the tab strip.
+   * 
+   * @type {('start'|'center'|'end'|'stretch')}
+   * @default 'start'
+   */
+  get tabAlign() {
+    return this.state.tabAlign;
+  }
+  set tabAlign(tabAlign) {
+    this.setState({ tabAlign });
   }
 
   get [symbols.template]() {
@@ -221,6 +237,14 @@ class TabStrip extends Base {
       <style>
         :host {
           display: flex;
+        }
+
+        ::slotted(*) {
+          cursor: pointer;
+          font-family: inherit;
+          font-size: inherit;
+          -webkit-tap-highlight-color: transparent;
+          z-index: 1;
         }
       </style>
       <slot></slot>

@@ -1,4 +1,3 @@
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import CenteredStrip from './CenteredStrip.js';
 
@@ -22,24 +21,37 @@ class CenteredStripOpacity extends CenteredStrip {
     });
   }
 
-  itemUpdates(item, calcs, original) {
-    const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
-    const selectedIndex = this.selectedIndex;
-    const sign = this[symbols.rightToLeft] ? 1 : -1;
-    const swiping = this.state.swipeFraction != null;
-    const swipeFraction = this.state.swipeFraction || 0;
-    const selectionFraction = sign * swipeFraction;
-    const opacity = opacityForItemWithIndex(calcs.index, selectedIndex, selectionFraction);
-    const showTransition = this.state.enableEffects && !swiping;
-    const transitionDuration = this.state.transitionDuration / 1000;
-    const transition = showTransition ? `opacity ${transitionDuration}s linear` : '';
-
-    return merge(base, {
-      style: {
-        opacity,
-        transition
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.enableEffects || changed.languageDirection || changed.items ||
+        changed.selectedIndex || changed.swipeFraction || changed.transitionDuration) {
+      // Apply opacity based on selection state.
+      const {
+        enableEffects,
+        items,
+        languageDirection,
+        selectedIndex,
+        swipeFraction,
+        transitionDuration
+      } = state;
+      if (items) {
+        const rightToLeft = languageDirection === 'rtl';
+        const sign = rightToLeft ? 1 : -1;
+        const swiping = swipeFraction != null;
+        const selectionFraction = sign * (swipeFraction || 0);
+        const showTransition = enableEffects && !swiping;
+        const transition = showTransition ?
+          `opacity ${transitionDuration / 1000}s linear` :
+          null;
+        items.forEach((item, index) => {
+          const opacity = opacityForItemWithIndex(index, selectedIndex, selectionFraction);
+          Object.assign(item.style, {
+            opacity,
+            transition
+          });
+        });
       }
-    });
+    }
   }
 
   get transitionDuration() {

@@ -1,5 +1,4 @@
 import { defaultAriaRole } from './accessibility.js';
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 
 
@@ -28,35 +27,43 @@ export default function AriaListMixin(Base) {
       this.setState({ itemRole });
     }
 
-    itemUpdates(item, calcs, original) {
-      const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
-
-      const role = base.original && base.original.attributes.role ||
-        base.attributes && base.attributes.role ||
-        this.state.itemRole;
-      const setRole = role !== defaultAriaRole[item.localName];
-
-      return merge(
-        base,
-        {
-          attributes: {
-            'aria-checked': calcs.selected ? 'true' : null,
-          },
-        },
-        setRole && {
-          attributes: {
-            role
-          }
-        }
-      );
-    }
-
     [symbols.render](state, changed) {
       if (super[symbols.render]) { super[symbols.render](state, changed); }
+      const { selectedIndex, items } = state;
+      if ((changed.items || changed.itemRole) && items) {
+        // Give each item a role.
+        items.forEach(item => {
+          const original = this.originalItemAttributes ?
+            this.originalItemAttributes(item) :
+            null;
+          const originalRole = original && original.attributes ?
+            original.attributes.role :
+            null;
+          const role = originalRole || state.itemRole;
+          if (role === defaultAriaRole[item.localName]) {
+            item.removeAttribute('role');
+          } else {
+            item.setAttribute('role', role);
+          }
+        });
+      }
       if (changed.original || changed.role) {
-        const originalRole = state.original && state.original.attributes.role;
+        // Apply top-level role.
+        const { original, role } = state;
+        const originalRole = original && original.attributes ?
+          original.attributes.role :
+          null;
         if (!originalRole) {
-          this.setAttribute('role', state.role);
+          this.setAttribute('role', role);
+        }
+      }
+      if (changed.items || changed.selectedIndex) {
+        // Reflect the selection state to each item.
+        if (items) {
+          items.forEach((item, index) => {
+            const selected = index === selectedIndex;
+            item.setAttribute('aria-checked', selected);
+          });
         }
       }
     }

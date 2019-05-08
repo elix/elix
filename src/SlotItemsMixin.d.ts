@@ -16,6 +16,7 @@ declare const SlotItemsMixin: StateMixin<
   componentDidMount(): void;
   items: Element[];
   itemUpdates(item: Element, calcs: PlainObject, original: PlainObject): PlainObject;
+  originalItemAttributes(item: Element): PlainObject;
 },
 {
   content: Node[];

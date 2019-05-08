@@ -1,6 +1,7 @@
-import { merge } from './updates.js';
-import Modes from './Modes.js';
+import * as symbols from './symbols.js';
+import * as template from './template.js';
 import EffectMixin from './EffectMixin.js';
+import Modes from './Modes.js';
 
 
 const Base =
@@ -21,36 +22,44 @@ const Base =
  */
 class CrossfadeStage extends Base {
 
-  componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
-    this.$.modesContainer.style.display = 'grid';
-  }
-
   get defaultState() {
     return Object.assign(super.defaultState, {
       transitionDuration: 750 // 3/4 of a second
     });
   }
 
-  itemUpdates(item, calcs, original) {
-    const base = super.itemUpdates(item, calcs, original);
-    const selectedIndex = this.selectedIndex;
-    const swiping = this.state.swipeFraction != null;
-    const swipeFraction = this.state.swipeFraction || 0;
-    const selectionFraction = -swipeFraction;
-    const opacity = opacityForItemWithIndex(calcs.index, selectedIndex, selectionFraction);
-    const showTransition = this.state.enableEffects && !swiping;
-    const transitionDuration = this.state.transitionDuration / 1000;
-    const transition = showTransition ? `opacity ${transitionDuration}s linear` : '';
-    return merge(base, {
-      style: {
-        'display': '', /* override base */
-        'grid-column': 1,
-        'grid-row': 1,
-        opacity,
-        transition
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.enableEffects || changed.languageDirection || changed.items ||
+        changed.selectedIndex || changed.swipeFraction || changed.transitionDuration) {
+      // Apply opacity based on selection state.
+      const {
+        enableEffects,
+        items,
+        languageDirection,
+        selectedIndex,
+        swipeFraction,
+        transitionDuration
+      } = state;
+      if (items) {
+        const rightToLeft = languageDirection === 'rtl';
+        const sign = rightToLeft ? 1 : -1;
+        const swiping = swipeFraction != null;
+        const selectionFraction = sign * (swipeFraction || 0);
+        const showTransition = enableEffects && !swiping;
+        const transition = showTransition ?
+          `opacity ${transitionDuration / 1000}s linear` :
+          null;
+        items.forEach((item, index) => {
+          const opacity = opacityForItemWithIndex(index, selectedIndex, selectionFraction);
+          Object.assign(item.style, {
+            display: null, // Override Modes
+            opacity,
+            transition
+          });
+        });
       }
-    });
+    }
   }
 
   get swipeFraction() {
@@ -65,6 +74,21 @@ class CrossfadeStage extends Base {
   }
   set transitionDuration(transitionDuration) {
     this.setState({ transitionDuration });
+  }
+
+  get [symbols.template]() {
+    return template.concat(super[symbols.template], template.html`
+      <style>
+        #modesContainer {
+          display: grid;
+        }
+
+        ::slotted(*) {
+          grid-column: 1;
+          grid-row: 1;
+        }
+      </style>
+    `);
   }
 
 }

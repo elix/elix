@@ -1,4 +1,5 @@
-import { merge } from './updates.js';
+import * as symbols from './symbols.js';
+import * as template from './template.js';
 import CenteredStrip from './CenteredStrip.js';
 
 
@@ -14,25 +15,34 @@ import CenteredStrip from './CenteredStrip.js';
  */
 class CenteredStripHighlight extends CenteredStrip {
 
-  itemUpdates(item, calcs, original) {
-    const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
-    const selected = calcs.selected;
-    // const showSelection = selected && this.state.focusVisible;
-    const showSelection = selected;
-    const color = showSelection ? 'highlighttext' : original.style.color;
-    const backgroundColor = showSelection ? 'highlight' : original.style['background-color'];
-    return merge(base, {
-      classes: {
-        selected
-      },
-      style: {
-        'background-color': backgroundColor,
-        color,
-        'padding': '0.25em'
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.items || changed.selectedIndex) {
+      // Apply `selected` style to the selected item only.
+      const { selectedIndex, items } = state;
+      if (items) {
+        items.forEach((item, index) => {
+          const selected = index === selectedIndex;
+          item.classList.toggle('selected', selected);
+        });
       }
-    });
+    }
   }
 
+  get [symbols.template]() {
+    return template.concat(super[symbols.template], template.html`
+      <style>
+        ::slotted(*) {
+          padding: 0.25em;
+        }
+
+        ::slotted(.selected) {
+          background: highlight;
+          color: highlighttext;
+        }
+      </style>
+    `);
+  }
 }
 
 

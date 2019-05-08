@@ -82,6 +82,7 @@ class ListBox extends Base {
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
     if (changed.orientation) {
+      // Update list orientation styling.
       const style = this.state.orientation === 'vertical' ?
         {
           flexDirection: 'column',
@@ -96,6 +97,7 @@ class ListBox extends Base {
       Object.assign(this.$.content.style, style);
     }
     if (changed.items || changed.selectedIndex) {
+      // Apply `selected` style to the selected item only.
       const { selectedIndex, items } = state;
       if (items) {
         items.forEach((item, index) => {

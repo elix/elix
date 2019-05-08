@@ -1,5 +1,5 @@
 import { getTextsFromItems } from './ItemsTextMixin.js';
-import { substantiveElement } from './content.js';
+import { isSubstantiveElement } from './content.js';
 import * as symbols from './symbols.js';
 import AutoCompleteInput from './AutoCompleteInput.js';
 import FilterListBox from './FilterListBox.js';
@@ -35,7 +35,7 @@ class FilterComboBox extends Base {
     state.onChange('content', state => {
       const { content } = state;
       const items = content ?
-        content.filter(element => substantiveElement(element)) :
+        content.filter(element => isSubstantiveElement(element)) :
         null;
       const texts = items ?
         getTextsFromItems(items) :

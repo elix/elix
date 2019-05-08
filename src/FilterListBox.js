@@ -1,5 +1,5 @@
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
+import * as updates from './updates.js';
 import ListBox from './ListBox.js';
 
 
@@ -50,8 +50,10 @@ class FilterListBox extends ListBox {
 
   highlightTextInItem(textToHighlight, item) {
     const text = item.textContent;
-    const start = text.toLowerCase().indexOf(textToHighlight);
-    if (textToHighlight && start >= 0) {
+    const start = textToHighlight ?
+      text.toLowerCase().indexOf(textToHighlight.toLowerCase()) :
+      -1;
+    if (start >= 0) {
       const end = start + textToHighlight.length;
       const part1 = text.substr(0, start);
       const part2 = text.substring(start, end);
@@ -85,28 +87,33 @@ class FilterListBox extends ListBox {
         text.includes(filter);
   }
 
-  itemUpdates(item, calcs, original) {
-    const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
-    const { matches } = calcs;
-    const display = matches ? original.style.display : 'none';
-    const singleTextNode = item.childNodes.length === 1 &&
-      item.childNodes[0] instanceof Text;
-    const textToHighlight = matches && this.state.filter ?
-      this.state.filter.toLowerCase() :
-      null;
-    const childNodes = singleTextNode && !matches ?
-      null :
-      this.highlightTextInItem(textToHighlight, item);
-    return merge(base, Object.assign(
-      {
-        style: {
-          display
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    const { content, filter } = state;
+    // We inspect `content` instead of `items` so that we can render even those
+    // elements that don't match the current filter.
+    if ((changed.filter || changed.content) && content) {
+      content.forEach(content => {
+        if (content instanceof HTMLElement || content instanceof SVGElement) {
+
+          // Hide content elements that don't match the filter.
+          const matches = this[symbols.itemMatchesState](content, state);
+          const original = this.originalItemAttributes(content);
+          const originalDisplay = original && original.style ?
+            original.style.display :
+            null;
+          content.style.display = matches ?
+            originalDisplay || null :
+            'none';
+
+          // For matching items, highlight the matching text.
+          if (matches) {
+            const childNodes = this.highlightTextInItem(filter, content);
+            updates.applyChildNodes(content, childNodes);
+          }
         }
-      },
-      childNodes && {
-        childNodes
-      })
-    );
+      });
+    }
   }
 
 }

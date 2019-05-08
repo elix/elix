@@ -1,5 +1,5 @@
+import { defaultAriaRole } from './accessibility.js';
 import { ensureId } from './idGeneration.js';
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import Explorer from './Explorer.js';
@@ -30,41 +30,48 @@ class Tabs extends Explorer {
     });
   }
 
-  itemUpdates(item, calcs, original) {
-    const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
-
-    // Ensure each item has an ID.
-    const baseId = base.attributes && base.attributes.id;
-    const id = baseId || ensureId(item);
-    const role = original.role || base.role || this.state.itemRole;
-
-    // Get ID for corresponding proxy.
-    const proxies = this.proxies;
-    const proxy = proxies && proxies[calcs.index];
-    const proxyId = proxy ?
-      ensureId(proxy) :
-      null;
-
-    return merge(base, {
-      attributes: {
-        'aria-labelledby': proxyId,
-        id,
-        role
-      }
-    });
-  }
-
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
-    const usingDefaultProxies = state.defaultProxies.length > 0;
+    const { assignedProxies, defaultProxies, items } = state;
+    const usingDefaultProxies = defaultProxies.length > 0;
     const proxies = usingDefaultProxies ?
-      state.defaultProxies :
-      state.assignedProxies;
+      defaultProxies :
+      assignedProxies;
     if ((changed.assignedProxies || changed.defaultProxies || changed.items)
-        && proxies) {
+      && items && proxies) {
+
+      // Recreate association between items and proxies.
+      const { itemRole } = state;
+
+      // Create role for each item.
+      items.forEach((item, index) => {
+
+        const original = this.originalItemAttributes(item);
+        const originalRole = original && original.attributes ?
+          original.attributes.role :
+          null;
+        const role = originalRole || itemRole;
+        if (role === defaultAriaRole[item.localName]) {
+          item.removeAttribute('role');
+        } else {
+          item.setAttribute('role', role);
+        }
+
+        // Point the item at the proxy.
+        const proxy = proxies && proxies[index];
+        if (proxy) {
+          const proxyId = ensureId(proxy);
+          if (!proxy.id) {
+            proxy.id = proxyId;
+          }
+          item.setAttribute('aria-labelledby', proxyId);
+        } else {
+          item.removeAttribute('aria-labelledby');
+        }
+      });
+
       // Update default proxy text from item labels.
       // Also indicate which item is controlled by each proxy.
-      const { items } = state;
       proxies.forEach((proxy, index) => {
         const item = items[index];
         if (item) {
@@ -72,8 +79,14 @@ class Tabs extends Explorer {
             const label = item.getAttribute('aria-label') || item.alt;
             proxy.textContent = label;
           }
-          const id = item ? ensureId(item) : '';
-          proxy.setAttribute('aria-controls', id);
+          // Point the proxy at the item.
+          const itemId = ensureId(item);
+          if (!item.id) {
+            item.id = itemId;
+          }
+          proxy.setAttribute('aria-controls', itemId);
+        } else {
+          proxy.removeAttribute('aria-controls');
         }
       });
     }

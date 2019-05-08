@@ -77,6 +77,7 @@ class Explorer extends Base {
       proxyListOverlap: false,
       proxyListPosition: 'top',
       proxyListRole: ListBox,
+      selectionRequired: true,
       stageRole: Modes
     });
 
@@ -234,49 +235,51 @@ class Explorer extends Base {
         cast.position = position;
       }
     }
-    if (changed.proxyListOverlap) {
+    if (changed.proxyListOverlap || changed.proxyListPosition || changed.proxyListRole) {
       const { proxyListOverlap } = state;
       const lateralPosition = lateralPositions[state.proxyListPosition];
       Object.assign(proxyList.style, {
-        height: lateralPosition ? '100%' : '',
-        position: proxyListOverlap ? 'absolute' : '',
-        width: lateralPosition ? '' : '100%',
-        zIndex: proxyListOverlap ? '1' : ''
+        height: lateralPosition ? '100%' : null,
+        position: proxyListOverlap ? 'absolute' : null,
+        width: lateralPosition ? null : '100%',
+        zIndex: proxyListOverlap ? '1' : null
       });
     }
-    if (changed.proxyListPosition) {
+    if (changed.proxyListPosition || changed.proxyListRole) {
       setListAndStageOrder(this, state);
       const { proxyListPosition } = state;
       const lateralPosition = lateralPositions[proxyListPosition];
       this.$.explorerContainer.style.flexDirection = lateralPosition ? 'row' : 'column';
       Object.assign(proxyList.style, {
-        bottom: proxyListPosition === 'bottom' ? '0' : '',
-        left: proxyListPosition === 'left' ? '0' : '',
-        right: proxyListPosition === 'right' ? '0' : '',
-        top: proxyListPosition === 'top' ? '0' : '',
+        bottom: proxyListPosition === 'bottom' ? '0' : null,
+        left: proxyListPosition === 'left' ? '0' : null,
+        right: proxyListPosition === 'right' ? '0' : null,
+        top: proxyListPosition === 'top' ? '0' : null,
       });
     }
-    if (changed.selectedIndex) {
-      const { selectedIndex } = state;
+    if (changed.selectedIndex || changed.proxyListRole) {
       if ('selectedIndex' in proxyList) {
-        /** @type {any} */ (proxyList).selectedIndex = selectedIndex;
-      }
-      if ('selectedIndex' in stage) {
-        /** @type {any} */ (stage).selectedIndex = selectedIndex;
+        /** @type {any} */ (proxyList).selectedIndex = state.selectedIndex;
       }
     }
-    if (changed.selectionRequired) {
+    if (changed.selectedIndex || changed.stageRole) {
+      if ('selectedIndex' in stage) {
+        /** @type {any} */ (stage).selectedIndex = state.selectedIndex;
+      }
+    }
+    if (changed.selectionRequired || changed.proxyListRole) {
       if ('selectionRequired' in proxyList) {
         /** @type {any} */ (proxyList).selectionRequired = state.selectionRequired;
       }
     }
-    if (changed.swipeFraction) {
-      const { swipeFraction } = state;
+    if (changed.swipeFraction || changed.proxyListRole) {
       if ('swipeFraction' in proxyList) {
-        /** @type {any} */ (proxyList).swipeFraction = swipeFraction;
+        /** @type {any} */ (proxyList).swipeFraction = state.swipeFraction;
       }
+    }
+    if (changed.swipeFraction || changed.stageRole) {
       if ('swipeFraction' in stage) {
-        /** @type {any} */ (stage).swipeFraction = swipeFraction;
+        /** @type {any} */ (stage).swipeFraction = state.swipeFraction;
       }
     }
   }

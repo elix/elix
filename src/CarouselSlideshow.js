@@ -27,7 +27,6 @@ class CarouselSlideshow extends Base {
   get defaultState() {
     return Object.assign(super.defaultState, {
       playing: true,
-      selectionRequired: true,
       selectionTimerDuration: 3000,
       selectionWraps: true,
       stageRole: CrossfadeStage,

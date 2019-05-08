@@ -58,36 +58,36 @@ export default function AriaListMixin(Base) {
     [symbols.render](state, changed) {
       if (super[symbols.render]) { super[symbols.render](state, changed); }
       const { selectedIndex, items } = state;
-      if (changed.items) {
-        if (items) {
-          items.forEach((item, index) => {
-            const selected = index === selectedIndex;
-            item.setAttribute('aria-selected', selected);
-          });
-        }
+      if (changed.items && items) {
+        // Give each item an ID.
+        items.forEach(item => {
+          if (!item.id) {
+            item.id = ensureId(item);
+          }
+        });
       }
-      if (changed.items || changed.itemRole) {
-        if (items) {
-          items.forEach(item => {
-            const original = this.originalItemAttributes ?
-              this.originalItemAttributes(item) :
-              null;
-            const originalRole = original && original.attributes ?
-              original.attributes.role :
-              null;
-            const role = originalRole || state.itemRole;
-            if (role === defaultAriaRole[item.localName]) {
-              item.removeAttribute('role');
-            } else {
-              item.setAttribute('role', role);
-            }
-          });
-        }
+      if ((changed.items || changed.itemRole) && items) {
+        // Give each item a role.
+        items.forEach(item => {
+          const original = this.originalItemAttributes ?
+            this.originalItemAttributes(item) :
+            null;
+          const originalRole = original && original.attributes ?
+            original.attributes.role :
+            null;
+          const role = originalRole || state.itemRole;
+          if (role === defaultAriaRole[item.localName]) {
+            item.removeAttribute('role');
+          } else {
+            item.setAttribute('role', role);
+          }
+        });
       }
       if (changed.orientation) {
         this.setAttribute('aria-orientation', state.orientation);
       }
       if (changed.original || changed.role) {
+        // Apply top-level role.
         const { original, role } = state;
         const originalRole = original && original.attributes ?
           original.attributes.role :
@@ -96,18 +96,19 @@ export default function AriaListMixin(Base) {
           this.setAttribute('role', role);
         }
       }
-      if (changed.selectedIndex) {
+      if (changed.items || changed.selectedIndex) {
+        // Reflect the selection state to each item.
         if (items) {
           items.forEach((item, index) => {
             const selected = index === selectedIndex;
             item.setAttribute('aria-selected', selected);
           });
         }
+        // Point the top element at the selected item.
         const selectedItem = selectedIndex >= 0 && items ?
           items[selectedIndex] :
           null;
         if (selectedItem) {
-          // If no ID has been assigned, generate one.
           if (!selectedItem.id) {
             selectedItem.id = ensureId(selectedItem);
           }
@@ -116,7 +117,7 @@ export default function AriaListMixin(Base) {
           this.removeAttribute('aria-activedescendant');
         }
       }
-    }    
+    }
   }
 
   return AriaList;

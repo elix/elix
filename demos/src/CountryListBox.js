@@ -55,25 +55,22 @@ class CountryListBox extends Base {
     });
   }
 
-  itemUpdates(item, calcs, original) {
-    const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
-    const selected = calcs.selected;
-    const color = selected ? 'highlighttext' : original.style.color;
-    const backgroundColor = selected ? 'highlight' : original.style['background-color'];
-    return merge(base, {
-      classes: {
-        selected
-      },
-      style: {
-        'background-color': backgroundColor,
-        color,
-        'padding': '0.25em'
-      }
-    });
-  }
-
   get orientation() {
     return this.state.orientation;
+  }
+
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.items || changed.selectedIndex) {
+      // Apply `selected` style to the selected item only.
+      const { selectedIndex, items } = state;
+      if (items) {
+        items.forEach((item, index) => {
+          const selected = index === selectedIndex;
+          item.classList.toggle('selected', selected);
+        });
+      }
+    }
   }
 
   get [symbols.scrollTarget]() {
@@ -100,9 +97,13 @@ class CountryListBox extends Base {
           overflow-y: scroll;
         }
 
-        #content > ::slotted(option) {
-          font-weight: inherit;
-          min-height: inherit;
+        #content > * {
+          padding: 0.25em;
+        }
+
+        #content > .selected {
+          background: highlight;
+          color: highlighttext;
         }
       </style>
       <div id="content" role="none">

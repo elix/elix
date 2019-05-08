@@ -49,14 +49,19 @@ class SingleSelectionDemo extends Base {
     });
   }
 
-  itemUpdates(item, calcs, original) {
-    /* Map item selection to a `selected` CSS class. */
-    return {
-      classes: {
-        selected: calcs.selected
-      }
+  // Map item selection to a `selected` CSS class.
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    const { selectedIndex, items } = state;
+    if (changed.items || changed.selectedIndex && items) {
+      // Apply `selected` style to the selected item only.
+      items.forEach((item, index) => {
+        const selected = index === selectedIndex;
+        item.classList.toggle('selected', selected);
+      });
     }
   }
+
 }
 
 
