@@ -1,4 +1,14 @@
-import { booleanAttributes } from './updates.js';
+export const booleanAttributes = {
+  checked: true,
+  defer: true,
+  disabled: true,
+  hidden: true,
+  ismap: true,
+  multiple: true,
+  noresize: true,
+  readonly: true,
+  selected: true
+};
 
 
 // Memoized maps of attribute to property names and vice versa.
@@ -138,7 +148,7 @@ function attributeToPropertyName(attributeName) {
 
 // If the given attribute name corresponds to a boolean attribute,
 // map the supplied string value to a boolean. Otherwise return as is.
-export function castPotentialBooleanAttribute(attributeName, value) {
+function castPotentialBooleanAttribute(attributeName, value) {
   if (booleanAttributes[attributeName]) {
     if (typeof value === 'string') {
       return true;

@@ -18,18 +18,6 @@
  */
 
 
-export const booleanAttributes = {
-  checked: true,
-  defer: true,
-  disabled: true,
-  hidden: true,
-  ismap: true,
-  multiple: true,
-  noresize: true,
-  readonly: true,
-  selected: true
-};
-
 const previousChildNodesKey = Symbol('previousChildNodes');
 
 

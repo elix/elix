@@ -11,4 +11,4 @@ declare const AttributeMarshallingMixin: Mixin<{
 }>;
 
 export default AttributeMarshallingMixin;
-export function castPotentialBooleanAttribute(attributeName: string, value: any): any;
+export const booleanAttributes: { [key: string]: boolean };
