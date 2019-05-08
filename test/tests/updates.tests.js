@@ -13,26 +13,6 @@ describe("updates helpers", () => {
     container.innerHTML = '';
   });
 
-  it("updates.get gets existing updates from an element", () => {
-    container.innerHTML = `
-      <div class="foo bar" style="color: red;" aria-selected="false"></div>
-    `;
-    const fixture = container.children[0];
-    const fixtureProps = updates.current(fixture);
-    assert.deepEqual(fixtureProps, {
-      attributes: {
-        'aria-selected': 'false'
-      },
-      classes: {
-        bar: true,
-        foo: true
-      },
-      style: {
-        color: 'red'
-      }
-    });
-  });
-
   it("updates.applyClasses turns multiple classes on or off", () => {
     const fixture = document.createElement('div');
     updates.applyClasses(fixture, { 'foo': true, 'bar': true });

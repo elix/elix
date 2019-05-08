@@ -1,7 +1,6 @@
-import { castPotentialBooleanAttribute } from './AttributeMarshallingMixin.js';
+import { booleanAttributes } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
-import * as updates from './updates.js';
 import DelegateFocusMixin from './DelegateFocusMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
@@ -330,8 +329,7 @@ class WrappedStandardElement extends Base {
         if (key.startsWith('aria-') ||
             attributesWithoutProperties.indexOf(key) >= 0) {
           const value = original.attributes[key];
-          const cast = castPotentialBooleanAttribute(key, value);
-          updates.applyAttribute(inner, key, cast);
+          applyAttribute(inner, key, value);
         }
       }
     }
@@ -445,6 +443,31 @@ class WrappedStandardElement extends Base {
     return Wrapped;
   }
 
+}
+
+
+// Update the given attribute on an element.
+// 
+// Passing a non-null `value` acts like a call to `setAttribute(name, value)`.
+// If the supplied `value` is nullish, this acts like a call to
+// `removeAttribute(name)`.
+//
+export function applyAttribute(element, name, value) {
+  if (booleanAttributes[name]) {
+    // Boolean attribute
+    if (typeof value === 'string') {
+      element.setAttribute(name, '');
+    } else if (value === null) {
+      element.removeAttribute(name);
+    }
+  } else {
+    // Regular string-valued attribute
+    if (value != null) {
+      element.setAttribute(name, value.toString());
+    } else {
+      element.removeAttribute(name);
+    }
+  }
 }
 
 

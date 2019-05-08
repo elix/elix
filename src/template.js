@@ -17,9 +17,6 @@
  */
 
 
-import { apply, current, merge } from './updates.js';
-
-
 /**
  * Returns a new template whose content is the concatenated content of the
  * supplied templates.
@@ -172,18 +169,32 @@ export function replace(original, replacement) {
   if (!parent) {
     throw 'An element must have a parent before it can be substituted.'
   }
-  if (original instanceof Element && replacement instanceof Element) {
-    // Merge replacement attributes/classes/styles on top of original,
-    // then apply merged result to the replacement. This lets any
-    // attributes/classes/styles directly set on the replacement
-    // win any conflicts with the original.
-    //
-    // We do this application now, before inserting the replacement into the
-    // tree, so that OriginalAttributesMixin's record-keeping will consider
-    // these values to be original (i.e., equivalent to having been set via
-    // markup).
-    const merged = merge(current(original), current(replacement));
-    apply(replacement, merged);
+  if ((original instanceof HTMLElement && replacement instanceof HTMLElement) ||
+      (original instanceof SVGElement && replacement instanceof SVGElement)) {
+    // Copy attributes/classes/styles from original to replacement, letting
+    // replacement win conflicts. We do this now, before inserting the
+    // replacement into the tree, so that OriginalAttributesMixin's
+    // record-keeping will consider these values to be original (i.e.,
+    // equivalent to having been set via markup).
+    
+    // Merge in attributes. (Handle classes and styles below.)
+    Array.prototype.forEach.call(original.attributes, attribute => {
+      if (!replacement.getAttribute(attribute.name) &&
+          attribute.name !== 'class' && attribute.name !== 'style') {
+        replacement.setAttribute(attribute.name, attribute.value);
+      }
+    });
+    // Merge in classes.
+    Array.prototype.forEach.call(original.classList, className => {
+      replacement.classList.add(className);
+    });
+    // Merge in styles.
+    Array.prototype.forEach.call(original.style, key => {
+      if (!replacement.style[key]) {
+        replacement.style[key] = original.style[key];
+      }
+    });
+
   }
   // Copy over children. As of January 2018, it is hard to do this without
   // causing the polyfill to choke (e.g., with HierarchyRequestError). The

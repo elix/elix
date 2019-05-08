@@ -1,5 +1,4 @@
 import * as symbols from './symbols.js';
-import * as updates from './updates.js';
 
 
 /**
@@ -14,10 +13,10 @@ export default function OriginalAttributesMixin(Base) {
       // Calculate original props before we call super. If, e.g., ReactiveMixin
       // is applied before this mixin, we want to get the original props before
       // we render.
-      /** @type {any} */
-      const element = this;
+      /** @type {any} */ const element = this;
+      const original = current(element);
       this.setState({
-        original: updates.current(element)
+        original
       });
 
       if (super.connectedCallback) { super.connectedCallback(); }
@@ -52,6 +51,78 @@ export default function OriginalAttributesMixin(Base) {
       super.style = style;
     }
   }
+}
+
+
+/**
+ * Returns a dictionary of the current attributes, classes, and styles of the
+ * indicated element.
+ * 
+ * The returned dictionary is in the same format as that supported by
+ * [apply](#apply).
+ * 
+ * @param {Element} element - the element to examine
+ * @returns {object} a dictionary of the current attributes, classes, and styles
+ */
+export function current(element) {
+  return element instanceof HTMLElement ?
+    {
+      attributes: currentAttributes(element),
+      classes: currentClasses(element),
+      style: currentStyles(element)
+    } :
+    {
+      attributes: currentAttributes(element),
+      classes: currentClasses(element),
+    };
+}
+
+
+/**
+ * Returns a dictionary of the element's current attributes.
+ * 
+ * @param {Element} element - the element to examine
+ * @returns {object} a dictionary of the element's current attributes
+ */
+export function currentAttributes(element) {
+  const attributes = {};
+  Array.prototype.forEach.call(element.attributes, attribute => {
+    // TODO: Convert custom attributes to properties
+    if (attribute.name !== 'class' && attribute.name !== 'style') {
+      attributes[attribute.name] = attribute.value;
+    }
+  });
+  return attributes;
+}
+
+
+/**
+ * Returns a dictionary of the element's current classes.
+ * 
+ * @param {Element} element - the element to examine
+ * @returns {object} a dictionary of the element's current classes
+ */
+export function currentClasses(element) {
+  const result = {};
+  Array.prototype.forEach.call(element.classList, className =>
+    result[className] = true
+  );
+  return result;
+}
+
+
+/**
+ * Returns a dictionary of the element's current styles.
+ *
+ * @param {(HTMLElement|SVGElement)} element - the element to update
+ * @returns {object} a dictionary of the element's current styles
+ */
+export function currentStyles(element) {
+  const styleProps = {};
+  Array.prototype.forEach.call(element.style, key => {
+    styleProps[key] = element.style[key];
+  });
+  return styleProps;
 }
 
 
@@ -98,29 +169,27 @@ function parseStyleProps(text) {
 // tabindex of zero.
 //
 function updateOriginalProp(element, name, value) {
-  let changes;
+  const original = Object.assign({}, element.state.original);
   switch (name) {
     
-    case 'class': {
-      const classes = parseClassProps(value);
-      changes = { classes };
+    case 'class':
+      Object.assign(original, {
+        classes: parseClassProps(value)
+      });
       break;
-    }
 
-    case 'style': {
-      const style = parseStyleProps(value);
-      changes = { style };
+    case 'style':
+      Object.assign(original, {
+        style: parseStyleProps(value)
+      });
       break;
-    }
     
     default:
-      changes = {
-        attributes: {
-          [name]: value
-        }
-      };
+      if (!original.attributes) {
+        original.attributes = {};
+      }
+      original.attributes[name] = value;
       break;
   }
-  const original = updates.merge(element.state.original, changes);
   element.setState({ original });
 }

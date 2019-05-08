@@ -33,6 +33,24 @@ describe("OriginalAttributesMixin", function () {
     container.innerHTML = '';
   });
 
+  it("initializes state to track original attributes, classes, and styles", () => {
+    container.innerHTML = `<original-attributes-test class="foo bar" style="color: red;" aria-selected="false"></original-attributes-test>`;
+    const fixture = container.querySelector('original-attributes-test');
+    container.appendChild(fixture);
+    assert.deepEqual(fixture.state.original, {
+      attributes: {
+        'aria-selected': 'false'
+      },
+      classes: {
+        bar: true,
+        foo: true
+      },
+      style: {
+        color: 'red'
+      }
+    });
+  });
+
   it("updates host with props", async () => {
     const fixture = new OriginalAttributesTest();
     container.appendChild(fixture);
