@@ -1,6 +1,5 @@
 import { defaultAriaRole } from './accessibility.js';
 import { ensureId } from './idGeneration.js';
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 
 
@@ -56,37 +55,35 @@ export default function AriaListMixin(Base) {
       this.setState({ itemRole });
     }
 
-    itemUpdates(item, calcs, original) {
-      const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
-      
-      // Ensure each item has an ID so we can set aria-activedescendant on the
-      // overall list whenever the selection changes.
-      const baseId = base.attributes && base.attributes.id;
-      const id = baseId || ensureId(item);
-
-      const role = base.original && base.original.attributes.role ||
-        base.attributes && base.attributes.role ||
-        this.state.itemRole;
-      const setRole = role !== defaultAriaRole[item.localName];
-
-      return merge(
-        base,
-        {
-          attributes: {
-            'aria-selected': calcs.selected,
-            id
-          },
-        },
-        setRole && {
-          attributes: {
-            role
-          }
-        }
-      );
-    }
-
     [symbols.render](state, changed) {
       if (super[symbols.render]) { super[symbols.render](state, changed); }
+      const { selectedIndex, items } = state;
+      if (changed.items) {
+        if (items) {
+          items.forEach((item, index) => {
+            const selected = index === selectedIndex;
+            item.setAttribute('aria-selected', selected);
+          });
+        }
+      }
+      if (changed.items || changed.itemRole) {
+        if (items) {
+          items.forEach(item => {
+            const original = this.originalItemAttributes ?
+              this.originalItemAttributes(item) :
+              null;
+            const originalRole = original && original.attributes ?
+              original.attributes.role :
+              null;
+            const role = originalRole || state.itemRole;
+            if (role === defaultAriaRole[item.localName]) {
+              item.removeAttribute('role');
+            } else {
+              item.setAttribute('role', role);
+            }
+          });
+        }
+      }
       if (changed.orientation) {
         this.setAttribute('aria-orientation', state.orientation);
       }
@@ -97,19 +94,26 @@ export default function AriaListMixin(Base) {
         }
       }
       if (changed.selectedIndex) {
-        const { selectedIndex, items } = state;
+        if (items) {
+          items.forEach((item, index) => {
+            const selected = index === selectedIndex;
+            item.setAttribute('aria-selected', selected);
+          });
+        }
         const selectedItem = selectedIndex >= 0 && items ?
           items[selectedIndex] :
           null;
-        // We need the ID for the selected item. It's possible an ID hasn't been
-        // assigned yet, so we spectulatively determine the ID that will be used
-        // on the subsequent call to itemUpdates for this item.
-        const selectedItemId = selectedItem ?
-          ensureId(selectedItem) :
-          null;
-        this.setAttribute('aria-activedescendant', selectedItemId);
+        if (selectedItem) {
+          // If no ID has been assigned, generate one.
+          if (!selectedItem.id) {
+            selectedItem.id = ensureId(selectedItem);
+          }
+          this.setAttribute('aria-activedescendant', selectedItem.id);
+        } else {
+          this.removeAttribute('aria-activedescendant');
+        }
       }
-    }
+    }    
   }
 
   return AriaList;

@@ -176,6 +176,10 @@ export default function ContentItemsMixin(Base) {
         {};
     }
 
+    originalItemAttributes(item) {
+      return item[originalKey];
+    }
+
     [symbols.render](state, changed) {
       if (super[symbols.render]) { super[symbols.render](state, changed); }
       if (this.itemUpdates) {

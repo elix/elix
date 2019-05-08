@@ -1,4 +1,3 @@
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import AriaListMixin from './AriaListMixin.js';
@@ -73,22 +72,6 @@ class ListBox extends Base {
     });
   }
 
-  itemUpdates(item, calcs, original) {
-    const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
-    const selected = calcs.selected;
-    const color = selected ? 'highlighttext' : original.style.color;
-    const backgroundColor = selected ? 'highlight' : original.style['background-color'];
-    return merge(base, {
-      classes: {
-        selected
-      },
-      style: {
-        'background-color': backgroundColor,
-        color
-      }
-    });
-  }
-
   get orientation() {
     return this.state.orientation;
   }
@@ -111,6 +94,15 @@ class ListBox extends Base {
           overflowY: 'hidden'
         };
       Object.assign(this.$.content.style, style);
+    }
+    if (changed.items || changed.selectedIndex) {
+      const { selectedIndex, items } = state;
+      if (items) {
+        items.forEach((item, index) => {
+          const selected = index === selectedIndex;
+          item.classList.toggle('selected', selected);
+        });
+      }
     }
   }
 
@@ -137,6 +129,11 @@ class ListBox extends Base {
 
         #content > ::slotted(*) {
           padding: 0.25em;
+        }
+
+        #content > ::slotted(.selected) {
+          background: highlight;
+          color: highlighttext;
         }
 
         @media (pointer: coarse) {

@@ -1,4 +1,3 @@
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import ReactiveElement from './ReactiveElement.js';
@@ -36,16 +35,17 @@ class Modes extends Base {
     });
   }
 
-  itemUpdates(item, calcs, original) {
-    const base = super.itemUpdates ? super.itemUpdates(item, calcs, original) : {};
-    const display = !calcs.selected ?
-      'none' :
-      base.style && base.style.display;
-    return merge(base, {
-      style: {
-        display
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    if (changed.items || changed.selectedIndex) {
+      const { selectedIndex, items } = state;
+      if (items) {
+        items.forEach((item, index) => {
+          const selected = index === selectedIndex;
+          item.style.display = selected ? null : 'none';
+        });
       }
-    });
+    }
   }
 
   get [symbols.template]() {
