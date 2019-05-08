@@ -64,7 +64,7 @@ export default function OriginalAttributesMixin(Base) {
  * @param {Element} element - the element to examine
  * @returns {object} a dictionary of the current attributes, classes, and styles
  */
-export function current(element) {
+function current(element) {
   return element instanceof HTMLElement ?
     {
       attributes: currentAttributes(element),
@@ -84,7 +84,7 @@ export function current(element) {
  * @param {Element} element - the element to examine
  * @returns {object} a dictionary of the element's current attributes
  */
-export function currentAttributes(element) {
+function currentAttributes(element) {
   const attributes = {};
   Array.prototype.forEach.call(element.attributes, attribute => {
     // TODO: Convert custom attributes to properties
@@ -102,7 +102,7 @@ export function currentAttributes(element) {
  * @param {Element} element - the element to examine
  * @returns {object} a dictionary of the element's current classes
  */
-export function currentClasses(element) {
+function currentClasses(element) {
   const result = {};
   Array.prototype.forEach.call(element.classList, className =>
     result[className] = true
@@ -117,7 +117,7 @@ export function currentClasses(element) {
  * @param {(HTMLElement|SVGElement)} element - the element to update
  * @returns {object} a dictionary of the element's current styles
  */
-export function currentStyles(element) {
+function currentStyles(element) {
   const styleProps = {};
   Array.prototype.forEach.call(element.style, key => {
     styleProps[key] = element.style[key];
