@@ -1,4 +1,4 @@
-import { firstFocusableElement } from '../../src/utilities.js';
+import { applyChildNodes, firstFocusableElement } from '../../src/utilities.js';
 import * as template from '../../src/template.js';
 
 
@@ -39,6 +39,21 @@ describe("utilities", () => {
     const element = firstFocusableElement(fixture.shadowRoot);
     const input = fixture.querySelector('input');
     assert.equal(element, input);
+  });
+
+  it("applyChildNodes updates child nodes", () => {
+    const fixture = document.createElement('div');
+    const existingChild = document.createTextNode('existing');
+    fixture.appendChild(existingChild);
+    const nodes = [
+      document.createTextNode('one'),
+      document.createTextNode('two')
+    ];
+    applyChildNodes(fixture, nodes);
+    assert.equal(fixture.childNodes.length, 2);
+    assert.equal(fixture.childNodes[0], nodes[0]);
+    assert.equal(fixture.childNodes[1], nodes[1]);
+    assert.isNull(existingChild.parentNode);
   });
 
 });

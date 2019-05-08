@@ -1,6 +1,6 @@
+import { applyChildNodes } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
-import * as updates from './updates.js';
 import MenuButton from './MenuButton.js';
 import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
@@ -83,7 +83,7 @@ class DropdownList extends Base {
         selectedItem.cloneNode(true) :
         null;
       const childNodes = clone ? clone.childNodes : [];
-      updates.applyChildNodes(this.$.value, childNodes);
+      applyChildNodes(this.$.value, childNodes);
     }
   }
 
@@ -104,7 +104,7 @@ class DropdownList extends Base {
         </svg>
       </div>
     `;
-    updates.applyChildNodes(sourceSlot, sourceSlotContent.content.childNodes);
+    applyChildNodes(sourceSlot, sourceSlotContent.content.childNodes);
     return template.concat(
       base,
       template.html`

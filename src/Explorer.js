@@ -1,6 +1,6 @@
+import { applyChildNodes } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
-import * as updates from './updates.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import ListBox from './ListBox.js';
 import Modes from './Modes.js';
@@ -211,7 +211,7 @@ class Explorer extends Base {
     if (changed.defaultProxies) {
       // Render the default proxies.
       const childNodes = [this.$.proxySlot, ...this.state.defaultProxies];
-      updates.applyChildNodes(this.$.proxyList, childNodes);
+      applyChildNodes(this.$.proxyList, childNodes);
     }
     if (changed.languageDirection || changed.proxyListPosition) {
       // Map the relative position of the list vis-a-vis the stage to a position

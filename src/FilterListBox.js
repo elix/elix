@@ -1,5 +1,5 @@
+import { applyChildNodes } from './utilities.js';
 import * as symbols from './symbols.js';
-import * as updates from './updates.js';
 import ListBox from './ListBox.js';
 
 
@@ -109,7 +109,7 @@ class FilterListBox extends ListBox {
           // For matching items, highlight the matching text.
           if (matches) {
             const childNodes = this.highlightTextInItem(filter, content);
-            updates.applyChildNodes(content, childNodes);
+            applyChildNodes(content, childNodes);
           }
         }
       });

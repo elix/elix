@@ -1,10 +1,10 @@
+import { forwardFocus } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import DelegateFocusMixin from './DelegateFocusMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import PopupSource from './PopupSource.js';
 import SeamlessButton from './SeamlessButton.js';
-import { forwardFocus } from './utilities.js';
 
 
 const Base =

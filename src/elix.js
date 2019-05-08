@@ -134,7 +134,6 @@ import * as idGenerationImport from './idGeneration.js';
 import * as scrollingImport from './scrolling.js';
 import * as symbolsImport from './symbols.js';
 import * as templatesImport from './template.js';
-import * as updatesImport from './updates.js';
 import * as utilitiesImport from './utilities.js';
 
 export const accessibility = accessibilityImport;
@@ -146,5 +145,4 @@ export const idGeneration = idGenerationImport;
 export const scrolling = scrollingImport;
 export const symbols = symbolsImport;
 export const templates = templatesImport;
-export const updates = updatesImport;
 export const utilities = utilitiesImport;

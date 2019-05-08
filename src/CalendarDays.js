@@ -1,7 +1,7 @@
+import { applyChildNodes } from './utilities.js';
 import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
-import * as updates from './updates.js';
 import CalendarDay from './CalendarDay.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import ReactiveElement from './ReactiveElement.js';
@@ -94,7 +94,7 @@ class CalendarDays extends Base {
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
     if (changed.days) {
-      updates.applyChildNodes(this.$.dayContainer, state.days);
+      applyChildNodes(this.$.dayContainer, state.days);
     }
     if (changed.date || changed.showSelectedDay) {
       // Ensure only current date has "selected" class.

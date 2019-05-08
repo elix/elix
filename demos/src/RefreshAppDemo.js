@@ -1,7 +1,7 @@
 import '../../src/PullToRefresh.js';
+import { applyChildNodes } from '../../src/utilities.js';
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
-import * as updates from '../../src/updates.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
 
@@ -60,7 +60,7 @@ class RefreshAppDemo extends ReactiveElement {
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
     if (changed.paragraphs) {
-      updates.applyChildNodes(this.$.pullToRefresh, state.paragraphs);
+      applyChildNodes(this.$.pullToRefresh, state.paragraphs);
     }
   }
 

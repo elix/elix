@@ -1,6 +1,6 @@
+import { applyChildNodes } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
-import * as updates from './updates.js';
 import Dialog from './Dialog.js';
 
 
@@ -112,7 +112,7 @@ class AlertDialog extends Dialog {
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
     if (changed.choiceButtons) {
-      updates.applyChildNodes(this.$.buttonContainer, state.choiceButtons);
+      applyChildNodes(this.$.buttonContainer, state.choiceButtons);
     }
   }
 

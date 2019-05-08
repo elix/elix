@@ -1,7 +1,7 @@
-import * as updates from "../../src/updates.js";
-import * as symbols from "../../src/symbols.js";
-import * as template from "../../src/template.js";
-import ReactiveElement from "../../src/ReactiveElement.js";
+import { applyChildNodes } from '../../src/utilities.js';
+import * as symbols from '../../src/symbols.js';
+import * as template from '../../src/template.js';
+import ReactiveElement from '../../src/ReactiveElement.js';
 
 
 // Locale list from https://stackoverflow.com/questions/3191664/list-of-all-locales-and-their-short-codes/28357857#28357857
@@ -345,7 +345,7 @@ class LocaleSelector extends ReactiveElement {
     });
     const select = result.content.getElementById('select');
     if (select) {
-      updates.applyChildNodes(select, localeOptions);
+      applyChildNodes(select, localeOptions);
     }
     return result;
   }

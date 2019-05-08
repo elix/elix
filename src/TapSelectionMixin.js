@@ -1,5 +1,5 @@
-import * as symbols from './symbols.js';
 import { indexOfItemContainingTarget } from './utilities.js';
+import * as symbols from './symbols.js';
 
 
 /**
