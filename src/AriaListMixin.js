@@ -88,9 +88,12 @@ export default function AriaListMixin(Base) {
         this.setAttribute('aria-orientation', state.orientation);
       }
       if (changed.original || changed.role) {
-        const originalRole = state.original && state.original.attributes.role;
+        const { original, role } = state;
+        const originalRole = original && original.attributes ?
+          original.attributes.role :
+          null;
         if (!originalRole) {
-          this.setAttribute('role', state.role);
+          this.setAttribute('role', role);
         }
       }
       if (changed.selectedIndex) {

@@ -150,6 +150,17 @@ function ArrowDirectionMixin(Base) {
           right: state.arrowButtonOverlap ? 0 : ''
         });
       }
+    // Wait for knowledge of dark mode
+    if (changed.darkMode && state.darkMode !== null) {
+        // Apply dark mode to buttons.
+        const { darkMode } = state;
+        if ('darkMode' in this.$.arrowButtonLeft) {
+          /** @type {any} */ (this.$.arrowButtonLeft).darkMode = darkMode;
+        }
+        if ('darkMode' in this.$.arrowButtonRight) {
+          /** @type {any} */ (this.$.arrowButtonRight).darkMode = darkMode;
+        }
+      }  
       if (changed.items ||
           changed.languageDirection ||
           changed.selectedIndex ||

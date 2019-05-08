@@ -54,28 +54,31 @@ class Tabs extends Explorer {
     });
   }
 
-  proxyUpdates(proxy, calcs) {
-    const base = super.proxyUpdates(proxy, calcs);
-    const item = calcs.item;
-    const itemId = item ? ensureId(item) : '';
-    const textContent = item ? (item.getAttribute('aria-label') || item.alt) : '';
-    const defaultProxyUpdates = calcs.isDefaultProxy && {
-      textContent
-    };
-    return merge(
-      base,
-      {
-        attributes: {
-          'aria-controls': itemId
-        },
-      },
-      defaultProxyUpdates
-    );
-  }
-
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
+    const usingDefaultProxies = state.defaultProxies.length > 0;
+    const proxies = usingDefaultProxies ?
+      state.defaultProxies :
+      state.assignedProxies;
+    if ((changed.assignedProxies || changed.defaultProxies || changed.items)
+        && proxies) {
+      // Update default proxy text from item labels.
+      // Also indicate which item is controlled by each proxy.
+      const { items } = state;
+      proxies.forEach((proxy, index) => {
+        const item = items[index];
+        if (item) {
+          if (usingDefaultProxies) {
+            const label = item.getAttribute('aria-label') || item.alt;
+            proxy.textContent = label;
+          }
+          const id = item ? ensureId(item) : '';
+          proxy.setAttribute('aria-controls', id);
+        }
+      });
+    }
     if (changed.tabAlign) {
+      // Apply alignment to proxy list.
       if ('tabAlign' in this.$.proxyList) {
         const proxyList = /** @type {any} */ (this.$.proxyList);
         proxyList.tabAlign = state.tabAlign;

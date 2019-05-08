@@ -153,19 +153,6 @@ class CalendarMonthNavigator extends Base {
     });
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
-    if (changed.darkMode) {
-      const darkMode = state.darkMode;
-      if ('darkMode' in this.$.arrowButtonLeft) {
-        /** @type {any} */ (this.$.arrowButtonLeft).darkMode = darkMode;
-      }
-      if ('darkMode' in this.$.arrowButtonRight) {
-        /** @type {any} */ (this.$.arrowButtonRight).darkMode = darkMode;
-      }
-    }
-  }
-
   get [symbols.template]() {
     const result = super[symbols.template];
     const monthYearHeader = result.content.querySelector('#monthYearHeader');

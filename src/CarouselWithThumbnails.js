@@ -1,4 +1,4 @@
-import { merge } from './updates.js'
+import * as symbols from './symbols.js';
 import Carousel from './Carousel.js';
 import Thumbnail from './Thumbnail.js';
 
@@ -18,14 +18,22 @@ class CarouselWithThumbnails extends Carousel {
     });
   }
 
-  proxyUpdates(proxy, calcs) {
-    const base = super.proxyUpdates(proxy, calcs);
-    const item = calcs.item;
-    return merge(base, {
-      attributes: {
-        src: item.src
-      }
-    });
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    const proxies = state.defaultProxies.length > 0 ?
+      state.defaultProxies :
+      state.assignedProxies;
+    if ((changed.assignedProxies || changed.defaultProxies || changed.items)
+        && proxies) {
+      // Update thumbnails.
+      const { items } = state;
+      proxies.forEach((proxy, index) => {
+        const item = items[index];
+        if (item) {
+          proxy.src = items[index].src;
+        }
+      });
+    }
   }
 
 }

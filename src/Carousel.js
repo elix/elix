@@ -99,36 +99,25 @@ class Carousel extends Base {
     }
   }
 
-  proxyUpdates(proxy, calcs) {
-    const base = super.proxyUpdates(proxy, calcs);
-    const proxies = this.proxies;
-    const proxiesSupportDarkMode = proxies && proxies[0] && 'darkMode' in proxies[0];
-    const darkMode = this.state.darkMode;
-    const setDarkMode = darkMode !== null && proxiesSupportDarkMode;
-    return merge(
-      base,
-      {
-        tabIndex: -1
-      },
-      setDarkMode && {
-        darkMode
-      }
-    );
-  }
-
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
-    if (changed.darkMode) {
-      // Wait for knowledge of dark mode
-      if (state.darkMode !== null) {
-        const { darkMode } = state;
-        if ('darkMode' in this.$.arrowButtonLeft) {
-          /** @type {any} */ (this.$.arrowButtonLeft).darkMode = darkMode;
+    const proxies = state.defaultProxies.length > 0 ?
+      state.defaultProxies :
+      state.assignedProxies;
+    // Wait for knowledge of dark mode
+    if ((changed.assignedProxies || changed.darkMode || changed.defaultProxies)
+        && state.darkMode !== null && proxies) {
+      // Apply dark mode to proxies.
+      const { darkMode } = state;
+      proxies.forEach(proxy => {
+        if ('darkMode' in proxy) {
+          proxy.darkMode = darkMode;
         }
-        if ('darkMode' in this.$.arrowButtonRight) {
-          /** @type {any} */ (this.$.arrowButtonRight).darkMode = darkMode;
-        }
-      }
+      });
+    }
+    if ((changed.assignedProxies || changed.defaultProxies) && proxies) {
+      // Make proxies not focusable.
+      proxies.forEach(proxy => proxy.tabIndex = -1);
     }
   }
 

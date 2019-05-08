@@ -1,4 +1,4 @@
-import { merge } from './updates.js'
+import * as symbols from './symbols.js';
 import Explorer from './Explorer.js';
 
 
@@ -16,13 +16,24 @@ class ListExplorer extends Explorer {
     });
   }
 
-  proxyUpdates(proxy, calcs) {
-    const base = super.proxyUpdates(proxy, calcs);
-    const item = calcs.item;
-    const label = item.getAttribute('aria-label') || item.alt;
-    return merge(base, {
-      textContent: label
-    });
+  [symbols.render](state, changed) {
+    super[symbols.render](state, changed);
+    const usingDefaultProxies = state.defaultProxies.length > 0;
+    const proxies = usingDefaultProxies ?
+      state.defaultProxies :
+      state.assignedProxies;
+    if ((changed.assignedProxies || changed.defaultProxies || changed.items)
+        && proxies) {
+      // Update default proxy text from item labels.
+      const { items } = state;
+      proxies.forEach((proxy, index) => {
+        const item = items[index];
+        if (item && usingDefaultProxies) {
+          const label = item.getAttribute('aria-label') || item.alt;
+          proxy.textContent = label;
+        }
+      });
+    }
   }
 
 }
