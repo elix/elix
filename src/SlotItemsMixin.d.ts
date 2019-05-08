@@ -6,21 +6,17 @@
 import * as symbols from './symbols.js';
 
 declare const SlotItemsMixin: StateMixin<
-{
-  componentDidMount?(): void;
-  items?: Element[];
-},
+{},
 {},
 {
   [symbols.contentSlot]: HTMLSlotElement;
   componentDidMount(): void;
-  items: Element[];
-  itemUpdates(item: Element, calcs: PlainObject, original: PlainObject): PlainObject;
+  items: (HTMLElement|SVGElement)[];
   originalItemAttributes(item: Element): PlainObject;
 },
 {
   content: Node[];
-  items: Element[];
+  items: (HTMLElement|SVGElement)[];
 }>;
 
 export default SlotItemsMixin;

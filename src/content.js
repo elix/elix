@@ -48,7 +48,7 @@ const auxiliarycustomTags = [
  * @param {Node} node
  * @returns {boolean}
  */
-export function substantiveElement(node) {
+export function isSubstantiveElement(node) {
   return node instanceof Element &&
     (!node.localName || auxiliarycustomTags.indexOf(node.localName) < 0)
 }
@@ -63,10 +63,10 @@ export function substantiveElement(node) {
  * `script`). Among other things, this filters out Text nodes.
  *
  * @param {(NodeList|Node[])} nodes - the list of nodes to filter
- * @returns {Element[]} the filtered elements
+ * @returns {(HTMLElement|SVGElement)[]} the filtered elements
  */
 export function substantiveElements(nodes) {
   return [].filter.call(nodes,
-    node => substantiveElement(node)
+    node => isSubstantiveElement(node)
   );
 }

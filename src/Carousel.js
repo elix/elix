@@ -1,5 +1,4 @@
 import { forwardFocus } from './utilities.js';
-import { merge } from './updates.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import AriaListMixin from './AriaListMixin.js';

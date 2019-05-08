@@ -9,20 +9,6 @@ class ContentItemsTest extends ContentItemsMixin(ReactiveMixin(HTMLElement)) {
     this.updateContent();
   }
   
-  itemCalcs(item, index) {
-    const base = super.itemCalcs ? super.itemCalcs(item, index) : null;
-    return Object.assign({}, base, {
-      even: index % 2 === 0
-    });
-  }
-  
-  /* eslint-disable no-unused-vars */
-  itemUpdates(item, calcs, original) {
-    return {
-      hidden: calcs.even
-    };
-  }
-
   // Force an update of state.
   // Normally this would be handled automatically, e.g., via SlotContentMixin.
   updateContent() {
@@ -49,9 +35,10 @@ describe("ContentItemsMixin", () => {
     container.innerHTML = '';
   });
 
-  it("returns contents as items", () => {
+  it("returns substantive content elements as items", () => {
     const fixture = new ContentItemsTest();
     fixture.innerHTML = `
+      <style></style>
       <div>1</div>
       <div>2</div>
     `;
@@ -60,34 +47,6 @@ describe("ContentItemsMixin", () => {
     assert.equal(items.length, 2);
     assert.equal(items[0].textContent, '1');
     assert.equal(items[1].textContent, '2');
-  });
-
-  it("includes item index in itemCalcs", () => {
-    const fixture = new ContentItemsTest();
-    fixture.innerHTML = `
-      <div>1</div>
-      <div>2</div>
-      <div>3</div>
-    `;
-    fixture.updateContent();
-    const items = fixture.items;
-    assert.equal(fixture.itemCalcs(items[0], 0).index, 0);
-    assert.equal(fixture.itemCalcs(items[1], 1).index, 1);
-    assert.equal(fixture.itemCalcs(items[2], 2).index, 2);
-  });
-
-  it("renders itemUpdates to items", () => {
-    const fixture = new ContentItemsTest();
-    fixture.innerHTML = `
-      <div>1</div>
-      <div>2</div>
-      <div>3</div>
-    `;
-    fixture.updateContent();
-    fixture[symbols.render]();
-    assert(fixture.items[0].hidden);
-    assert(!fixture.items[1].hidden);
-    assert(fixture.items[2].hidden);
   });
 
   it("raises items-changed event", done => {

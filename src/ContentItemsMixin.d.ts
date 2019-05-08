@@ -4,16 +4,14 @@
 /// <reference path="shared.d.ts"/>
 
 declare const ContentItemsMixin: StateMixin<{
-  items?: Element[];
 },
 {},
 {
-  items: Element[];
-  itemUpdates(item: Element, calcs: PlainObject, original: PlainObject): PlainObject;
+  items: (HTMLElement|SVGElement)[];
   originalItemAttributes(item: Element): PlainObject;
 },
 {
-  items: Element[];
+  items: (HTMLElement|SVGElement)[];
 }>;
 
 export default ContentItemsMixin;

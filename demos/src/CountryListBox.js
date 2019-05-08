@@ -3,7 +3,6 @@
  */
 
 
-import { merge } from '../../src/updates.js';
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
 import AriaListMixin from '../../src/AriaListMixin.js';

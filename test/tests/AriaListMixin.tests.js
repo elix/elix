@@ -4,20 +4,12 @@ import ReactiveElement from '../../src/ReactiveElement.js';
 
 
 class AriaListTest extends
-  AriaListMixin(ContentItemsMixin(ReactiveElement)) {
+    AriaListMixin(ContentItemsMixin(ReactiveElement)) {
 
   connectedCallback() {
     if (super.connectedCallback) { super.connectedCallback(); }
     const content = [...this.children];
     this.setState({ content });
-  }
-
-  /* Copied from SingleSelectionMixin */
-  itemCalcs(item, index) {
-    const base = super.itemCalcs ? super.itemCalcs(item, index) : null;
-    return Object.assign({}, base, {
-      selected: index === this.state.selectedIndex
-    });
   }
 
 }
