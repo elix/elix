@@ -8,11 +8,13 @@ class OriginalAttributesTest extends OriginalAttributesMixin(ReactiveMixin(HTMLE
   [symbols.render](state, changed) {
     if (super[symbols.render]) { super[symbols.render](state, changed); }
     if (changed.original || changed.selected) {
-      const selected = state.selected || state.original.classes.selected || false;
+      const selected = state.selected || 
+        (state.original && state.original.classes && state.original.classes.selected)
+        || false;
       this.classList.toggle('selected', selected);
       const color = selected ?
         'red' :
-        state.original.style.color || null;
+        (state.original && state.original.style && state.original.style.color) || null;
       this.style.color = color;
     }
   }
@@ -31,6 +33,12 @@ describe("OriginalAttributesMixin", function () {
 
   afterEach(() => {
     container.innerHTML = '';
+  });
+
+  it("doesn't set any state for an element with no attributes, classes, or styles", () => {
+    const fixture = new OriginalAttributesTest();
+    container.appendChild(fixture);
+    assert(fixture.state.original === undefined);
   });
 
   it("initializes state to track original attributes, classes, and styles", () => {

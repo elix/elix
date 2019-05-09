@@ -13,11 +13,22 @@ export default function OriginalAttributesMixin(Base) {
       // Calculate original props before we call super. If, e.g., ReactiveMixin
       // is applied before this mixin, we want to get the original props before
       // we render.
-      /** @type {any} */ const element = this;
-      const original = current(element);
-      this.setState({
-        original
-      });
+      const attributes = currentAttributes(this);
+      const classes = currentClasses(this);
+      const style = currentStyles(this);
+      if (attributes || classes || style) {
+        const original = {};
+        if (attributes) {
+          original.attributes = attributes;
+        }
+        if (classes) {
+          original.classes = classes;
+        }
+        if (style) {
+          original.style = style;
+        }
+        this.setState({ original });
+      }
 
       if (super.connectedCallback) { super.connectedCallback(); }
     }
@@ -55,39 +66,17 @@ export default function OriginalAttributesMixin(Base) {
 
 
 /**
- * Returns a dictionary of the current attributes, classes, and styles of the
- * indicated element.
- * 
- * The returned dictionary is in the same format as that supported by
- * [apply](#apply).
- * 
- * @param {Element} element - the element to examine
- * @returns {object} a dictionary of the current attributes, classes, and styles
- */
-function current(element) {
-  return element instanceof HTMLElement ?
-    {
-      attributes: currentAttributes(element),
-      classes: currentClasses(element),
-      style: currentStyles(element)
-    } :
-    {
-      attributes: currentAttributes(element),
-      classes: currentClasses(element),
-    };
-}
-
-
-/**
  * Returns a dictionary of the element's current attributes.
  * 
  * @param {Element} element - the element to examine
- * @returns {object} a dictionary of the element's current attributes
+ * @returns {object|null} a dictionary of the element's current attributes
  */
 function currentAttributes(element) {
-  const attributes = {};
+  let attributes = null;
   Array.prototype.forEach.call(element.attributes, attribute => {
-    // TODO: Convert custom attributes to properties
+    if (!attributes) {
+      attributes = {};
+    }
     if (attribute.name !== 'class' && attribute.name !== 'style') {
       attributes[attribute.name] = attribute.value;
     }
@@ -100,14 +89,17 @@ function currentAttributes(element) {
  * Returns a dictionary of the element's current classes.
  * 
  * @param {Element} element - the element to examine
- * @returns {object} a dictionary of the element's current classes
+ * @returns {object|null} a dictionary of the element's current classes
  */
 function currentClasses(element) {
-  const result = {};
-  Array.prototype.forEach.call(element.classList, className =>
-    result[className] = true
-  );
-  return result;
+  let classes = null;
+  Array.prototype.forEach.call(element.classList, className => {
+    if (!classes) {
+      classes = {};
+    }
+    classes[className] = true;
+  });
+  return classes;
 }
 
 
@@ -115,14 +107,19 @@ function currentClasses(element) {
  * Returns a dictionary of the element's current styles.
  *
  * @param {(HTMLElement|SVGElement)} element - the element to update
- * @returns {object} a dictionary of the element's current styles
+ * @returns {object|null} a dictionary of the element's current styles
  */
 function currentStyles(element) {
-  const styleProps = {};
-  Array.prototype.forEach.call(element.style, key => {
-    styleProps[key] = element.style[key];
-  });
-  return styleProps;
+  let style = null;
+  if (HTMLElement) {
+    Array.prototype.forEach.call(element.style, key => {
+      if (!style) {
+        style = {};
+      }
+      style[key] = element.style[key];
+    });  
+  }
+  return style;
 }
 
 
