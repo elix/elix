@@ -175,6 +175,9 @@ class TabStrip extends Base {
       items.forEach((item, index) => {
         const selected = index === selectedIndex;
         item.classList.toggle('selected', selected);
+        if ('selected' in item) {
+          item.selected = selected;
+        }
       });
     }
     if (changed.orientation) {

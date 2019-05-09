@@ -27,15 +27,6 @@ const Base =
  */
 class TabButton extends Base {
 
-  get ariaSelected() {
-    return this.state.selected;
-  }
-  set ariaSelected(selected) {
-    this.setState({
-      selected: String(selected) === 'true'
-    });
-  }
-
   get defaultState() {
     return Object.assign(super.defaultState, {
       overlapPanel: true,
@@ -68,6 +59,17 @@ class TabButton extends Base {
 
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
+    if (changed.innerProperties || changed.originalStyle) {
+      // Adjust colors.
+      const { innerProperties, originalStyle } = state;
+      const originalColor = originalStyle && originalStyle.color;
+      const originalBackgroundColor = originalStyle && originalStyle['background-color'];
+      const disabled = innerProperties.disabled;
+      Object.assign(this.inner.style, {
+        color: disabled ? '#888' : originalColor,
+        backgroundColor: originalBackgroundColor || 'white'
+      });
+    }
     if (changed.overlapPanel || changed.position) {
       // Adjust margins.
       const { overlapPanel, position } = state;
@@ -121,23 +123,21 @@ class TabButton extends Base {
       }
       Object.assign(this.inner.style, buttonStyle);
     }
-    if (changed.innerProperties || changed.originalStyle) {
-      // Adjust colors.
-      const { innerProperties, originalStyle } = state;
-      const originalColor = originalStyle && originalStyle.color;
-      const originalBackgroundColor = originalStyle && originalStyle['background-color'];
-      const disabled = innerProperties.disabled;
-      Object.assign(this.inner.style, {
-        color: disabled ? '#888' : originalColor,
-        backgroundColor: originalBackgroundColor || 'white'
-      });
-    }
     if (changed.tabAlign) {
       // Stretch tabs if necessary for tab alignment.
       const { tabAlign } = state;
       const stretch = tabAlign === 'stretch';
       this.style.flex = stretch ? '1' : null;
     }
+  }
+
+  get selected() {
+    return this.state.selected;
+  }
+  set selected(selected) {
+    this.setState({
+      selected
+    });
   }
 
   /**
