@@ -98,22 +98,15 @@ function equal(value1, value2) {
 }
 
 
-// Return true if o is an empty object.
-function isEmpty(o) {
-  for (const key in o) {
-    if (o.hasOwnProperty(key)) {
-      return false;
-    }
-  }
-  return true;
-}
-
-
+// Return a dictionary of flags indicating which of the indicated changes to the
+// state are actually changes. Return null if there were no changes.
 function fieldsChanged(state, changes) {
-  const changed = {};
+  let changed = null;
   for (const field in changes) {
-    const fieldChanged = !equal(changes[field], state[field]);
-    if (fieldChanged) {
+    if (!equal(changes[field], state[field])) {
+      if (!changed) {
+        changed = {};
+      }
       changed[field] = true;
     }
   }
@@ -123,23 +116,26 @@ function fieldsChanged(state, changes) {
 
 // Destructively apply the indicated changes to the given state, running
 // any registered change handlers.
-// Return true if the supplied changes produced actual changes (i.e., didn't
-// simply duplicate existing field values).
+// Return a dictionary of flags indicating which fields actually changed,
+// or null if there were no changes.
 function applyStateChanges(state, changes) {
-  let result = {};
+  let result = null;
 
   // Applying the changes may produce a new round of changes, and that round
   // might produce new changes, and so on. Loop until we complete a pass that
   // produces no changes.
   for (
     let changed;
-    changed = fieldsChanged(state, changes), !isEmpty(changed);
+    changed = fieldsChanged(state, changes), changed;
   ) {
 
     // Apply the changes to the state.
     Object.assign(state, changes);
 
     // Remember what actually changed.
+    if (!result) {
+      result = {};
+    }
     Object.assign(result, changed);
 
     // Run the change handlers, gathering up the changes those produce.

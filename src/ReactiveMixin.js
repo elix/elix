@@ -3,7 +3,7 @@ import State from './State.js';
 
 
 /** @type {any} */
-const mountedKey = Symbol('mounted');
+const renderedKey = Symbol('mounted');
 /** @type {any} */
 const stateKey = Symbol('state');
 /** @type {any} */
@@ -86,7 +86,7 @@ export default function ReactiveMixin(Base) {
     render() {
 
       // Determine what's changed since the last render.
-      const changed = changedSinceLastRender.get(this) || {};
+      const changed = changedSinceLastRender.get(this);
 
       // We only render if the component's never been rendered before, or is
       // something's actually changed since the last render. Consecutive
@@ -95,11 +95,7 @@ export default function ReactiveMixin(Base) {
       // state is available, and that is what is rendered. When the following
       // render calls happen, they will see that the complete state has already
       // been rendered, and skip doing any work.
-
-      // TODO: Refactor this check
-      const needsRender = !this[mountedKey] || Object.keys(changed).length > 0;
-
-      if (needsRender) {
+      if (!this[renderedKey] || changed !== null) {
 
         // If at least one of the setState calls was made in response to user
         // interaction or some other component-internal event, set the
@@ -122,13 +118,13 @@ export default function ReactiveMixin(Base) {
         // Since we've now rendered all changes, clear the change log. If other
         // async render calls are queued up behind this call, they'll see an
         // empty change log, and so skip unnecessary render work.
-        changedSinceLastRender.set(this, {});
+        changedSinceLastRender.set(this, null);
 
         // Let the component know it was rendered.
         // First time is consider mounting; subsequent times are updates.
-        if (!this[mountedKey]) {
+        if (!this[renderedKey]) {
           this.componentDidMount();
-          this[mountedKey] = true;
+          this[renderedKey] = true;
         } else {
           this.componentDidUpdate(changed);
         }
@@ -160,10 +156,11 @@ export default function ReactiveMixin(Base) {
         // Create temporary state as seed.
         this[stateKey] = Object.freeze(new State());
       }
+
       const { state, changed } = this[stateKey].copyWithChanges(changes);
 
-      const hadChanges = firstSetState || Object.keys(changed).length > 0;
-      if (!hadChanges) {
+      const renderWorthy = firstSetState || changed;
+      if (!renderWorthy) {
         // No need to update state.
         return;
       }
@@ -180,13 +177,8 @@ export default function ReactiveMixin(Base) {
       Object.assign(log, changed);
       changedSinceLastRender.set(this, log);
 
-      if (!hadChanges && !this.shouldComponentUpdate(state)) {
-        // Component doesn't think it's necessary to render.
-        return;
-      }
-
-      if (!this.isConnected) {
-        // Not in document yet -- no need to render.
+      if (!(this.isConnected && renderWorthy)) {
+        // Not in document or no worthwhile changes to render.
         return;
       }
 
@@ -203,24 +195,6 @@ export default function ReactiveMixin(Base) {
       
       // Render the component.
       this.render();
-    }
-
-    /**
-     * Return true if the component should update.
-     * 
-     * By default, `ReactiveMixin` will perform a shallow check of property
-     * values like React's PureComponent. This seems adequate for most web
-     * components. You can override this to always return true (like React's
-     * base Component class), or to perform more specific, deeper checks for
-     * changes in state.
-     * 
-     * @param {State} nextState - the proposed new state for the element
-     * @return {boolean} - true if the component should update (rerender)
-     */
-    shouldComponentUpdate(nextState) {
-      return super.shouldComponentUpdate ?
-        super.shouldComponentUpdate(nextState) :
-        false;
     }
 
     /**
