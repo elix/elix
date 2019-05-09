@@ -43,6 +43,17 @@ export default function OriginalAttributesMixin(Base) {
       }
     }
 
+    // Override role for same reasons as setAttribute.
+    get role() {
+      return super.role;
+    }
+    set role(role) {
+      if (!this[symbols.rendering]) {
+        updateOriginalProp(this, 'role', role);
+      }
+      super.role = role;
+    }
+
     // Override setAttribute so that, if this is called outside of rendering,
     // we can update our notion of the component's original updates.
     setAttribute(name, value) {
