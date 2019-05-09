@@ -1,4 +1,4 @@
-import { deepContains, elementsFromPoint, indexOfItemContainingTarget } from './utilities.js';
+import { deepContains, indexOfItemContainingTarget } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import Menu from './Menu.js';
@@ -48,7 +48,7 @@ class MenuButton extends PopupButton {
     // listen to mouseup on the document and do our own hit-testing to see if
     // the user released the mouse over the source.
     this[documentMouseupListenerKey] = async (event) => {
-      const hitTargets = elementsFromPoint(this, event.clientX, event.clientY);
+      const hitTargets = this.shadowRoot.elementsFromPoint(event.clientX, event.clientY);
       const overSource = hitTargets.indexOf(this.$.source) >= 0;
       if (this.opened) {
         if (overSource) {
