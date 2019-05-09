@@ -38,8 +38,17 @@ class Input extends Base {
       this[symbols.raiseChangeEvents] = false;
     });
 
-    // TODO: This also sets aria-hidden on the inner input, which we don't want.
+    // This also sets aria-hidden on the inner input, which we don't want,
+    // so we have to undo that when rendering.
     this.setAttribute('aria-hidden', 'true');
+  }
+
+  [symbols.render](state, changed) {
+    if (super[symbols.render]) { super[symbols.render](state, changed); }
+    if (changed.originalAttributes) {
+      // See note in componentDidMount.
+      this.$.inner.removeAttribute('aria-hidden');
+    }
   }
 
   get [symbols.template]() {
