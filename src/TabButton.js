@@ -38,7 +38,6 @@ class TabButton extends Base {
 
   get defaultState() {
     return Object.assign(super.defaultState, {
-      index: 0,
       overlapPanel: true,
       selected: false,
       tabAlign: 'start',
@@ -46,18 +45,6 @@ class TabButton extends Base {
       treatSpaceAsClick: false, // Let tab strip handle Space.
       position: 'top'
     });
-  }
-
-  get index() {
-    return this.state.index;
-  }
-  set index(index) {
-    const parsed = Number(index);
-    if (!isNaN(parsed)) {
-      this.setState({
-        index: parsed
-      });
-    }
   }
 
   /**
@@ -81,42 +68,22 @@ class TabButton extends Base {
 
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
-    if (changed.index || changed.languageDirection ||
-        changed.overlapPanel || changed.position) {
+    if (changed.overlapPanel || changed.position) {
       // Adjust margins.
-      const { index, languageDirection, overlapPanel, position } = state;
-      const rightToLeft = languageDirection === 'rtl';
-      const needsSpacer = index > 0;
-      const needsSideSpacer = needsSpacer &&
-        (position === 'top' || position === 'bottom');
-      const needsLeftSpacer = needsSideSpacer && !rightToLeft;
-      const needsRightSpacer = needsSideSpacer && rightToLeft;
-      const needsTopSpacer = needsSpacer &&
-        (position === 'left' || position === 'right');
-      const margins = {
-        marginBottom: '',
-        marginLeft: needsLeftSpacer ? '0.2em' : '',
-        marginRight: needsRightSpacer ? '0.2em' : '',
-        marginTop: needsTopSpacer ? '0.2em' : ''
-      };
-      if (overlapPanel) {
-        // Offset host so that it overlaps with tab panel.
-        const marginStylesForPosition = {
-          bottom: {
-            'margin-top': '-1px'
-          },
-          left: {
-            'margin-right': '-1px'
-          },
-          right: {
-            'margin-left': '-1px'
-          },
-          top: {
-            'margin-bottom': '-1px'
-          }
+      const { overlapPanel, position } = state;
+      const margins = overlapPanel ?
+        {
+          marginBottom: position === 'top' ? '-1px' : null,
+          marginLeft: position === 'right' ? '-1px' : null,
+          marginRight: position === 'left' ? '-1px' : null,
+          marginTop: position === 'bottom' ? '-1px' : null
+        } :
+        {
+          marginBottom: null,
+          marginLeft: null,
+          marginRight: null,
+          marginTop: null
         };
-        Object.assign(margins, marginStylesForPosition[position]);
-      }
       Object.assign(this.style, margins);
     }
     if (changed.position) {

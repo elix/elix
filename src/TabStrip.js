@@ -156,10 +156,7 @@ class TabStrip extends Base {
     const { items } = state;
     if (changed.items && items) {
       const { tabButtonRole } = state;
-      items.forEach((item, index) => {
-        if ('index' in item) {
-          item.index = index;
-        }
+      items.forEach(item => {
         const original = this.originalItemAttributes(item);
         const originalRole = original && original.attributes ?
           original.attributes.role :
@@ -180,13 +177,18 @@ class TabStrip extends Base {
         item.classList.toggle('selected', selected);
       });
     }
+    if (changed.orientation) {
+      this.style.gridAutoFlow = state.orientation === 'vertical' ?
+        'row' :
+        'column';
+    }
     if (changed.originalStyle || changed.tabAlign) {
       const { originalStyle, tabAlign } = this.state;  
       const justifyContentForTabAlign = {
         'center': 'center',
-        'end': 'flex-end',
-        'start': 'flex-start',
-        'stretch': null // No style needed for "stretch"
+        'end': 'end',
+        'start': 'start',
+        'stretch': 'stretch' // No style needed for "stretch"
       };
       this.style.justifyContent = justifyContentForTabAlign[tabAlign] ||
           (originalStyle && originalStyle['justify-content']) ||
@@ -237,7 +239,9 @@ class TabStrip extends Base {
     return template.html`
       <style>
         :host {
-          display: flex;
+          display: grid;
+          grid-auto-flow: column;
+          grid-gap: 0.25em;
         }
 
         ::slotted(*) {
