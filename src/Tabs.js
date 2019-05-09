@@ -3,8 +3,15 @@ import { ensureId } from './idGeneration.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import Explorer from './Explorer.js';
+import GenericMixin from './GenericMixin.js';
 import TabButton from './TabButton.js';
 import TabStrip from './TabStrip.js';
+
+
+const Base =
+  GenericMixin(
+    Explorer
+  );
 
 
 /**
@@ -16,10 +23,11 @@ import TabStrip from './TabStrip.js';
  * best if you only have a small handful of pages, say 2–7.
  *
  * @inherits Explorer
+ * @mixes GenericMixin
  * @elementrole {TabButton} proxy
  * @elementrole {TabStrip} proxyList
  */
-class Tabs extends Explorer {
+class Tabs extends Base {
 
   get defaultState() {
     return Object.assign(super.defaultState, {
@@ -85,6 +93,21 @@ class Tabs extends Explorer {
           proxy.removeAttribute('aria-controls');
         }
       });
+    }
+    if (changed.generic) {
+      if ('generic' in this.$.proxyList) {
+        /** @type {any} */ (this.$.proxyList).generic = state.generic;
+      }
+    }
+    if ((changed.generic || changed.proxies || changed.proxiesAssigned) &&
+        proxies) {
+      if (!state.proxiesAssigned) {
+        proxies.forEach(proxy => {
+          if ('generic' in proxy) {
+            proxy.generic = state.generic;
+          }
+        });
+      }
     }
     if (changed.tabAlign) {
       // Apply alignment to proxy list.

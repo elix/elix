@@ -2,16 +2,18 @@ import * as symbols from './symbols.js';
 import * as template from './template.js';
 import Button from './Button.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
+import GenericMixin from './GenericMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import SlotContentMixin from './SlotContentMixin.js';
 
 
 const Base =
   FocusVisibleMixin(
+  GenericMixin(
   LanguageDirectionMixin(
   SlotContentMixin(
     Button
-  )));
+  ))));
 
 
 /**
@@ -22,6 +24,7 @@ const Base =
  *
  * @inherits WrappedStandardElement
  * @mixes FocusVisibleMixin
+ * @mixes GenericMixin
  * @mixes LanguageDirectionMixin
  * @mixes SlotContentMixin
  */
@@ -29,7 +32,6 @@ class TabButton extends Base {
 
   get defaultState() {
     return Object.assign(super.defaultState, {
-      overlapPanel: true,
       selected: false,
       tabAlign: 'start',
       treatEnterAsClick: false, // Let tab strip handle Enter.
@@ -70,10 +72,13 @@ class TabButton extends Base {
         backgroundColor: originalBackgroundColor || 'white'
       });
     }
-    if (changed.overlapPanel || changed.position) {
+    if (changed.generic) {
+      this.$.inner.classList.toggle('generic', state.generic);
+    }
+    if (changed.generic || changed.position) {
       // Adjust margins.
-      const { overlapPanel, position } = state;
-      const margins = overlapPanel ?
+      const { generic, position } = state;
+      const margins = generic ?
         {
           marginBottom: position === 'top' ? '-1px' : null,
           marginLeft: position === 'right' ? '-1px' : null,
@@ -87,21 +92,21 @@ class TabButton extends Base {
           marginTop: null
         };
       Object.assign(this.style, margins);
-    }
-    if (changed.position) {
+
       // Adjust which corners are rounded.
-      const { position } = state;
       const borderRadiusForPosition = {
         bottom: '0 0 0.25em 0.25em',
         left: '0.25em 0 0 0.25em',
         right: '0 0.25em 0.25em 0',
         top: '0.25em 0.25em 0 0'
       };
-      this.inner.style.borderRadius = borderRadiusForPosition[position];
+      this.inner.style.borderRadius = generic ?
+        borderRadiusForPosition[position] :
+        null;
     }
-    if (changed.position || changed.selected) {
+    if (changed.generic || changed.position || changed.selected) {
       // Adjust selected appearance.
-      const { position, selected } = state;
+      const { generic, position, selected } = state;
       const buttonStyle = {
         borderBottomColor: null,
         borderLeftColor: null,
@@ -109,7 +114,7 @@ class TabButton extends Base {
         borderTopColor: null,
         zIndex: selected ? '1' : ''
       };
-      if (selected) {
+      if (generic && selected) {
         // We style the border opposite the button's position: if the button is
         // on the left, we style the right border, and so on.
         const borderColorSideForPosition = {
@@ -158,14 +163,20 @@ class TabButton extends Base {
       <style>
         #inner {
           background: inherit;
+          color: inherit;
+          margin: 0;
+        }
+
+        #inner.generic {
           border-color: #ccc;
           border-style: solid;
           border-width: 1px;
-          color: inherit;
-          margin: 0;
           padding: 0.5em 0.75em;
-          transition: border-color 0.25s;
           white-space: nowrap;
+        }
+
+        :host(.selected) #inner.generic {
+          z-index: 1;
         }
       </style>
     `);

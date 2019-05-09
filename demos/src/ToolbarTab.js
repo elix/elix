@@ -7,28 +7,8 @@ class ToolbarTab extends TabButton {
 
   get defaultState() {
     return Object.assign({}, super.defaultState, {
-      overlapPanel: false
+      generic: false
     });
-  }
-
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
-    if (changed.index || changed.languageDirection ||
-      changed.overlapPanel || changed.position) {
-      this.$.inner.style.margin = null;
-    }
-    if (changed.position) {
-      this.$.inner.style.borderRadius = null;
-    }
-    if (changed.position || changed.selected) {
-      this.$.inner.style.borderColor = null;
-    }
-    if (changed.innerProperties || changed.original || changed.selected) {
-      Object.assign(this.$.inner.style, {
-        backgroundColor: 'transparent',
-        color: state.selected ? 'dodgerblue' : null
-      });
-    }
   }
 
   get [symbols.template]() {
@@ -45,6 +25,11 @@ class ToolbarTab extends TabButton {
           font-size: inherit;
           padding: 6px;
           -webkit-tap-highlight-color: transparent;
+        }
+
+        :host(.selected) {
+          color: dodgerblue;
+          z-index: 1;
         }
       </style>
     `);

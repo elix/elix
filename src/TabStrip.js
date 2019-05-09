@@ -4,6 +4,7 @@ import * as symbols from './symbols.js';
 import * as template from './template.js';
 import AriaListMixin from './AriaListMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
+import GenericMixin from './GenericMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
@@ -17,13 +18,14 @@ const Base =
   AriaListMixin(
   TapSelectionMixin(
   DirectionSelectionMixin(
+  GenericMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
   LanguageDirectionMixin(
   SingleSelectionMixin(
   SlotItemsMixin(
     ReactiveElement
-  ))))))));
+  )))))))));
 
 
 /**
@@ -180,6 +182,9 @@ class TabStrip extends Base {
         }
       });
     }
+    if (changed.generic) {
+      this.style.gridGap = state.generic ? '0.25em' : null;
+    }
     if (changed.orientation) {
       this.style.gridAutoFlow = state.orientation === 'vertical' ?
         'row' :
@@ -244,7 +249,6 @@ class TabStrip extends Base {
         :host {
           display: grid;
           grid-auto-flow: column;
-          grid-gap: 0.25em;
         }
 
         ::slotted(*) {
@@ -252,7 +256,6 @@ class TabStrip extends Base {
           font-family: inherit;
           font-size: inherit;
           -webkit-tap-highlight-color: transparent;
-          z-index: 1;
         }
       </style>
       <slot></slot>
