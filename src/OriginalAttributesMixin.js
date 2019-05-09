@@ -66,12 +66,7 @@ export default function OriginalAttributesMixin(Base) {
 }
 
 
-/**
- * Returns a dictionary of the element's current attributes.
- * 
- * @param {Element} element - the element to examine
- * @returns {object|null} a dictionary of the element's current attributes
- */
+// Returns a dictionary of the element's current attributes.
 function currentAttributes(element) {
   let attributes = null;
   Array.prototype.forEach.call(element.attributes, attribute => {
@@ -86,12 +81,7 @@ function currentAttributes(element) {
 }
 
 
-/**
- * Returns a dictionary of the element's current classes.
- * 
- * @param {Element} element - the element to examine
- * @returns {object|null} a dictionary of the element's current classes
- */
+// Returns a dictionary of the element's current classes.
 function currentClasses(element) {
   let classes = null;
   Array.prototype.forEach.call(element.classList, className => {
@@ -104,12 +94,7 @@ function currentClasses(element) {
 }
 
 
-/**
- * Returns a dictionary of the element's current styles.
- *
- * @param {(HTMLElement|SVGElement)} element - the element to update
- * @returns {object|null} a dictionary of the element's current styles
- */
+// Returns a dictionary of the element's current styles.
 function currentStyles(element) {
   let style = null;
   if (HTMLElement) {
@@ -181,7 +166,7 @@ function updateOriginalProp(element, name, value) {
       });
       break;
     
-    default:
+    default: {
       const originalAttributes = Object.assign(
         {},
         element.state.originalAttributes,
@@ -193,5 +178,6 @@ function updateOriginalProp(element, name, value) {
         originalAttributes
       });
       break;
+    }
   }
 }
