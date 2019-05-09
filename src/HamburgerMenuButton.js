@@ -168,9 +168,8 @@ class HamburgerMenuButton extends Base {
 
         #hamburgerIcon {
           display: block;
-          /* For Edge */
-          height: 100%;
-          width: 100%;
+          height: 24px;
+          width: 24px;
         }
       </style>
       <elix-seamless-button id="menuButton" aria-label="Open menu" tabindex="-1">
