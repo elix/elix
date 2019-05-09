@@ -100,11 +100,9 @@ class Carousel extends Base {
 
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
-    const proxies = state.defaultProxies.length > 0 ?
-      state.defaultProxies :
-      state.assignedProxies;
+    const { proxies } = state;
     // Wait for knowledge of dark mode
-    if ((changed.assignedProxies || changed.darkMode || changed.defaultProxies)
+    if ((changed.darkMode || changed.proxies)
         && state.darkMode !== null && proxies) {
       // Apply dark mode to proxies.
       const { darkMode } = state;
@@ -114,7 +112,7 @@ class Carousel extends Base {
         }
       });
     }
-    if ((changed.assignedProxies || changed.defaultProxies) && proxies) {
+    if (changed.proxies && proxies) {
       // Make proxies not focusable.
       proxies.forEach(proxy => proxy.tabIndex = -1);
     }

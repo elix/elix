@@ -32,16 +32,12 @@ class Tabs extends Explorer {
 
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
-    const { assignedProxies, defaultProxies, items } = state;
-    const usingDefaultProxies = defaultProxies.length > 0;
-    const proxies = usingDefaultProxies ?
-      defaultProxies :
-      assignedProxies;
-    if ((changed.assignedProxies || changed.defaultProxies || changed.items)
+    const { items, proxies } = state;
+    if ((changed.items || changed.proxies)
       && items && proxies) {
 
       // Recreate association between items and proxies.
-      const { itemRole } = state;
+      const { proxiesAssigned, itemRole } = state;
 
       // Create role for each item.
       items.forEach((item, index) => {
@@ -75,7 +71,7 @@ class Tabs extends Explorer {
       proxies.forEach((proxy, index) => {
         const item = items[index];
         if (item) {
-          if (usingDefaultProxies) {
+          if (!proxiesAssigned) {
             const label = item.getAttribute('aria-label') || item.alt;
             proxy.textContent = label;
           }

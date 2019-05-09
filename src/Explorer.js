@@ -57,22 +57,22 @@ class Explorer extends Base {
     // Work around inconsistencies in slotchange timing; see SlotContentMixin.
     this.$.proxySlot.addEventListener('slotchange', () => {
       this[proxySlotchangeFiredKey] = true;
-      updateAssignedProxies(this);
+      assignedProxiesChanged(this);
     });
     Promise.resolve().then(() => {
       if (!this[proxySlotchangeFiredKey]) {
         // The event didn't fire, so we're most likely in Safari.
         // Update our notion of the component content.
         this[proxySlotchangeFiredKey] = true;
-        updateAssignedProxies(this);
+        assignedProxiesChanged(this);
       }
     });
   }
 
   get defaultState() {
     const state = Object.assign(super.defaultState, {
-      assignedProxies: [],
-      defaultProxies: [],
+      proxies: [],
+      proxiesAssigned: false,
       proxyRole: 'div',
       proxyListOverlap: false,
       proxyListPosition: 'top',
@@ -82,22 +82,17 @@ class Explorer extends Base {
     });
 
     // If items for default proxies have changed, recreate the proxies.
-    state.onChange(['assignedProxies', 'proxyRole', 'items'], (state, changed) => {
+    // If nodes have been assigned to the proxy slot, use those instead.
+    state.onChange(['items', 'proxiesAssigned', 'proxyRole'], (state, changed) => {
       const {
-        assignedProxies,
         items,
+        proxiesAssigned,
         proxyRole
       } = state;
-      if (changed.assignedProxies && assignedProxies.length > 0) {
-        // Assigned proxies take precedence, remove default proxies.
-        return {
-          defaultProxies: []
-        };
-      } else if ((changed.items || changed.proxyRole) &&
-          assignedProxies.length === 0) {
+      if ((changed.items || changed.proxyRole) && !proxiesAssigned) {
         // Generate sufficient default proxies.
         return {
-          defaultProxies: createDefaultProxies(items, proxyRole)
+          proxies: createDefaultProxies(items, proxyRole)
         };
       }
       return null;
@@ -139,9 +134,7 @@ class Explorer extends Base {
    * @type {Element[]}
    */
   get proxies() {
-    return this.state.defaultProxies.length > 0 ?
-      this.state.defaultProxies :
-      this.state.assignedProxies;
+    return this.state.proxies;
   }
 
   /**
@@ -208,9 +201,11 @@ class Explorer extends Base {
     if (super[symbols.render]) { super[symbols.render](state, changed); }
     const proxyList = this.$.proxyList;
     const stage = this.$.stage;
-    if (changed.defaultProxies) {
+    if (changed.proxies || changed.proxiesAssigned) {
       // Render the default proxies.
-      const childNodes = [this.$.proxySlot, ...this.state.defaultProxies];
+      const childNodes = state.proxiesAssigned ?
+        [this.$.proxySlot] :
+        [this.$.proxySlot, ...state.proxies];
       applyChildNodes(this.$.proxyList, childNodes);
     }
     if (changed.languageDirection || changed.proxyListPosition) {
@@ -326,6 +321,25 @@ class Explorer extends Base {
 }
 
 
+function assignedProxiesChanged(element) {
+  const proxySlot = element.$.proxySlot;
+  const proxies = proxySlot.assignedNodes({ flatten: true });
+  const proxiesAssigned = proxies.length > 0;
+  if (proxiesAssigned) {
+    // Nodes assigned to slot become proxies.
+    element.setState({
+      proxiesAssigned,
+      proxies
+    });
+  } else {
+    // No nodes assigned -- we'll need to generate proxies.
+    element.setState({
+      proxiesAssigned
+    });
+  }
+}
+
+
 // Return the default list generated for the given items.
 function createDefaultProxies(items, proxyRole) {
   const proxies = items ?
@@ -367,15 +381,6 @@ function setListAndStageOrder(element, state) {
   if (firstElement.nextElementSibling !== lastElement) {
     element.$.explorerContainer.insertBefore(firstElement, lastElement);
   }
-}
-
-
-function updateAssignedProxies(element) {
-  const proxySlot = element.$.proxySlot;
-  const assignedProxies = proxySlot.assignedNodes({ flatten: true });
-  element.setState({
-    assignedProxies
-  });
 }
 
 

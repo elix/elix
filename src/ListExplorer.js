@@ -18,17 +18,12 @@ class ListExplorer extends Explorer {
 
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
-    const usingDefaultProxies = state.defaultProxies.length > 0;
-    const proxies = usingDefaultProxies ?
-      state.defaultProxies :
-      state.assignedProxies;
-    if ((changed.assignedProxies || changed.defaultProxies || changed.items)
-        && proxies) {
+    const { items, proxies, proxiesAssigned } = state;
+    if ((changed.proxies || changed.items) && proxies && !proxiesAssigned) {
       // Update default proxy text from item labels.
-      const { items } = state;
       proxies.forEach((proxy, index) => {
         const item = items[index];
-        if (item && usingDefaultProxies) {
+        if (item) {
           const label = item.getAttribute('aria-label') || item.alt;
           proxy.textContent = label;
         }
