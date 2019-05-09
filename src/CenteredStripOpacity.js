@@ -1,5 +1,10 @@
 import * as symbols from './symbols.js';
+import * as template from './template.js';
 import CenteredStrip from './CenteredStrip.js';
+
+
+const opacityMinimum = 0.4;
+const opacityMaximum = 1.0;
 
 
 /**
@@ -54,6 +59,16 @@ class CenteredStripOpacity extends CenteredStrip {
     }
   }
 
+  get [symbols.template]() {
+    return template.concat(super[symbols.template], template.html`
+      <style>
+        ::slotted(*) {
+          opacity: ${opacityMinimum.toString()}
+        }
+      </style>
+    `);
+  }
+
   get transitionDuration() {
     return this.state.transitionDuration;
   }
@@ -65,8 +80,6 @@ class CenteredStripOpacity extends CenteredStrip {
 
 
 function opacityForItemWithIndex(index, selectedIndex, selectionFraction) {
-  const opacityMinimum = 0.4;
-  const opacityMaximum = 1.0;
   const opacityRange = opacityMaximum - opacityMinimum;
   const fractionalIndex = selectedIndex + selectionFraction;
   const leftIndex = Math.floor(fractionalIndex);
@@ -83,7 +96,7 @@ function opacityForItemWithIndex(index, selectedIndex, selectionFraction) {
   } else if (index === towardIndex) {
     opacity = opacityMinimum + opacityProgressThroughRange;
   } else {
-    opacity = opacityMinimum;
+    opacity = null; // Element will pick up minimum opacity from CSS.
   }
 
   return opacity;
