@@ -46,17 +46,11 @@ class CenteredStrip extends Base {
     return 'horizontal';
   }
 
-  get swipeFraction() {
-    return this.state.swipeFraction;
-  }
-  set swipeFraction(swipeFraction) {
-    this.setState({ swipeFraction });
-  }
-
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
-    if (changed.enableEffects || changed.selectedIndex ||
-        changed.swipeFraction || changed.languageDirection) {
+    if (changed.clientWidth || changed.enableEffects || 
+        changed.selectedIndex || changed.swipeFraction ||
+        changed.languageDirection) {
       const rightToLeft = state.languageDirection === 'rtl';
       const sign = rightToLeft ? 1 : -1;
       const swiping = state.swipeFraction != null;
@@ -131,6 +125,13 @@ class CenteredStrip extends Base {
       this.$.stripContainer.style.justifyContent = justifyContent;
     }
 
+  }
+
+  get swipeFraction() {
+    return this.state.swipeFraction;
+  }
+  set swipeFraction(swipeFraction) {
+    this.setState({ swipeFraction });
   }
 
   get [symbols.template]() {

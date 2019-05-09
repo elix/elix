@@ -6,8 +6,7 @@
 declare const ResizeMixin: StateMixin<
 {},
 {},
-{
-},
+{},
 {
   contentHeight: number;
   contentWidth: number;
