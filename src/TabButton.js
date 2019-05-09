@@ -33,7 +33,6 @@ class TabButton extends Base {
   get defaultState() {
     return Object.assign(super.defaultState, {
       selected: false,
-      tabAlign: 'start',
       treatEnterAsClick: false, // Let tab strip handle Enter.
       treatSpaceAsClick: false, // Let tab strip handle Space.
       position: 'top'
@@ -61,17 +60,6 @@ class TabButton extends Base {
 
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
-    if (changed.innerProperties || changed.originalStyle) {
-      // Adjust colors.
-      const { innerProperties, originalStyle } = state;
-      const originalColor = originalStyle && originalStyle.color;
-      const originalBackgroundColor = originalStyle && originalStyle['background-color'];
-      const disabled = innerProperties.disabled;
-      Object.assign(this.inner.style, {
-        color: disabled ? '#888' : originalColor,
-        backgroundColor: originalBackgroundColor || 'white'
-      });
-    }
     if (changed.generic) {
       this.$.inner.classList.toggle('generic', state.generic);
     }
@@ -100,7 +88,7 @@ class TabButton extends Base {
         right: '0 0.25em 0.25em 0',
         top: '0.25em 0.25em 0 0'
       };
-      this.inner.style.borderRadius = generic ?
+      this.$.inner.style.borderRadius = generic ?
         borderRadiusForPosition[position] :
         null;
     }
@@ -128,12 +116,6 @@ class TabButton extends Base {
       }
       Object.assign(this.inner.style, buttonStyle);
     }
-    if (changed.tabAlign) {
-      // Stretch tabs if necessary for tab alignment.
-      const { tabAlign } = state;
-      const stretch = tabAlign === 'stretch';
-      this.style.flex = stretch ? '1' : null;
-    }
   }
 
   get selected() {
@@ -143,19 +125,6 @@ class TabButton extends Base {
     this.setState({
       selected
     });
-  }
-
-  /**
-   * The alignment of the tabs within the tab strip.
-   * 
-   * @type {('start'|'center'|'end'|'stretch')}
-   * @default 'start'
-   */
-  get tabAlign() {
-    return this.state.tabAlign;
-  }
-  set tabAlign(tabAlign) {
-    this.setState({ tabAlign });
   }
 
   get [symbols.template]() {
@@ -168,6 +137,7 @@ class TabButton extends Base {
         }
 
         #inner.generic {
+          background: white;
           border-color: #ccc;
           border-style: solid;
           border-width: 1px;
@@ -177,6 +147,10 @@ class TabButton extends Base {
 
         :host(.selected) #inner.generic {
           z-index: 1;
+        }
+
+        #inner.generic:disabled {
+          color: #888;
         }
       </style>
     `);

@@ -198,9 +198,11 @@ class TabStrip extends Base {
         'start': 'start',
         'stretch': 'stretch' // No style needed for "stretch"
       };
-      this.style.justifyContent = justifyContentForTabAlign[tabAlign] ||
-          (originalStyle && originalStyle['justify-content']) ||
-          null;
+      const placeContent = justifyContentForTabAlign[tabAlign] ||
+        (originalStyle && originalStyle['justify-content']) ||
+        null;
+      // @ts-ignore
+      this.style.placeContent = placeContent;
     }
     if (changed.originalAttributes || changed.role) {
       const originalRole = state.originalAttributes && state.originalAttributes.role;
@@ -210,8 +212,6 @@ class TabStrip extends Base {
     }
     if (changed.items || changed.position) {
       const { position } = state;
-      const lateralPosition = position === 'left' || position === 'right';
-      this.style.flexDirection = lateralPosition ? 'column' : 'row';
       if (items) {
         items.forEach(item => {
           if ('position' in item) {
@@ -219,14 +219,6 @@ class TabStrip extends Base {
           }
         });
       }
-    }
-    if ((changed.items || changed.tabAlign) && items) {
-      const { tabAlign } = state;
-      items.forEach(item => {
-        if ('tabAlign' in item) {
-          item.tabAlign = tabAlign;
-        }
-      });
     }
   }
 

@@ -9,10 +9,10 @@ class SereneTabs extends Tabs {
 
   get defaultState() {
     return Object.assign(super.defaultState, {
+      generic: false,
       itemRole: 'tabpanel',
       proxyRole: SereneTabButton,
-      stageRole: CrossfadeStage,
-      tabAlign: 'start'
+      stageRole: CrossfadeStage
     });
   }
 
