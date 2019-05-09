@@ -17,17 +17,17 @@ export default function OriginalAttributesMixin(Base) {
       const classes = currentClasses(this);
       const style = currentStyles(this);
       if (attributes || classes || style) {
-        const original = {};
+        const changes = {};
         if (attributes) {
-          original.attributes = attributes;
+          changes.originalAttributes = attributes;
         }
         if (classes) {
-          original.classes = classes;
+          changes.originalClasses = classes;
         }
         if (style) {
-          original.style = style;
+          changes.originalStyle = style;
         }
-        this.setState({ original });
+        this.setState(changes);
       }
 
       if (super.connectedCallback) { super.connectedCallback(); }
@@ -37,7 +37,8 @@ export default function OriginalAttributesMixin(Base) {
     removeAttribute(name) {
       super.removeAttribute(name);
       if (!this[symbols.rendering] &&
-          this.state.original.attributes[name] != null) {
+          this.state.originalAttributes &&
+          this.state.originalAttributes[name] != null) {
         updateOriginalProp(this, name, null);
       }
     }
@@ -74,10 +75,10 @@ export default function OriginalAttributesMixin(Base) {
 function currentAttributes(element) {
   let attributes = null;
   Array.prototype.forEach.call(element.attributes, attribute => {
-    if (!attributes) {
-      attributes = {};
-    }
     if (attribute.name !== 'class' && attribute.name !== 'style') {
+      if (!attributes) {
+        attributes = {};
+      }
       attributes[attribute.name] = attribute.value;
     }
   });
@@ -166,27 +167,31 @@ function parseStyleProps(text) {
 // tabindex of zero.
 //
 function updateOriginalProp(element, name, value) {
-  const original = Object.assign({}, element.state.original);
   switch (name) {
     
     case 'class':
-      Object.assign(original, {
-        classes: parseClassProps(value)
+      element.setState({
+        originalClasses: parseClassProps(value)
       });
       break;
 
     case 'style':
-      Object.assign(original, {
-        style: parseStyleProps(value)
+      element.setState({
+        originalStyle: parseStyleProps(value)
       });
       break;
     
     default:
-      if (!original.attributes) {
-        original.attributes = {};
-      }
-      original.attributes[name] = value;
+      const originalAttributes = Object.assign(
+        {},
+        element.state.originalAttributes,
+        {
+          [name]: value
+        }
+      );
+      element.setState({
+        originalAttributes
+      });
       break;
   }
-  element.setState({ original });
 }

@@ -86,12 +86,10 @@ export default function AriaListMixin(Base) {
       if (changed.orientation) {
         this.setAttribute('aria-orientation', state.orientation);
       }
-      if (changed.original || changed.role) {
+      if (changed.originalAttributes || changed.role) {
         // Apply top-level role.
-        const { original, role } = state;
-        const originalRole = original && original.attributes ?
-          original.attributes.role :
-          null;
+        const { originalAttributes, role } = state;
+        const originalRole = originalAttributes && originalAttributes.role;
         if (!originalRole) {
           this.setAttribute('role', role);
         }

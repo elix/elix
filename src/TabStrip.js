@@ -180,8 +180,8 @@ class TabStrip extends Base {
         item.classList.toggle('selected', selected);
       });
     }
-    if (changed.original || changed.tabAlign) {
-      const { original, tabAlign } = this.state;  
+    if (changed.originalStyle || changed.tabAlign) {
+      const { originalStyle, tabAlign } = this.state;  
       const justifyContentForTabAlign = {
         'center': 'center',
         'end': 'flex-end',
@@ -189,10 +189,11 @@ class TabStrip extends Base {
         'stretch': null // No style needed for "stretch"
       };
       this.style.justifyContent = justifyContentForTabAlign[tabAlign] ||
-          original.style['justify-content'];
+          (originalStyle && originalStyle['justify-content']) ||
+          null;
     }
-    if (changed.original || changed.role) {
-      const originalRole = state.original && state.original.attributes.role;
+    if (changed.originalAttributes || changed.role) {
+      const originalRole = state.originalAttributes && state.originalAttributes.role;
       if (!originalRole) {
         this.setAttribute('role', state.role);
       }

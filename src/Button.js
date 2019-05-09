@@ -86,8 +86,8 @@ class Button extends Base {
       this.style.outline = 'none';
       this.$.inner.style.outline = state.focusVisible ? '' : 'none';
     }
-    if (changed.original || changed.role) {
-      const originalRole = state.original && state.original.attributes.role;
+    if (changed.originalAttributes || changed.role) {
+      const originalRole = state.originalAttributes && state.originalAttributes.role;
       if (!originalRole) {
         this.setAttribute('role', state.role);
       }

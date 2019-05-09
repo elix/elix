@@ -74,9 +74,9 @@ export default function KeyboardMixin(Base) {
         tabIndex
       });
 
-      state.onChange('original', state => {
-        if (state.original.attributes && state.original.attributes.tabindex) {
-          const parsed = Number(state.original.attributes.tabindex);
+      state.onChange('originalAttributes', state => {
+        if (state.originalAttributes.tabindex) {
+          const parsed = Number(state.originalAttributes.tabindex);
           if (!isNaN(parsed)) {
             return {
               tabIndex: parsed
@@ -99,9 +99,9 @@ export default function KeyboardMixin(Base) {
 
     [symbols.render](state, changed) {
       if (super[symbols.render]) { super[symbols.render](state, changed); }
-      if (changed.original || changed.tabIndex) {
-        const originalTabindex = state.original && state.original.attributes ?
-          state.original.attributes.tabindex :
+      if (changed.originalAttributes || changed.tabIndex) {
+        const originalTabindex = state.originalAttributes ?
+          state.originalAttributes.tabindex :
           null;
         if (originalTabindex == null) {
           this.tabIndex = state.tabIndex;
@@ -138,23 +138,16 @@ export default function KeyboardMixin(Base) {
         // attribute value of the tabindex attribute. See
         // OriginalAttributesMixin.setAttribute().
         if (!this[symbols.rendering]) {
-          const attributes = Object.assign(
-            {},
-            this.state.original && this.state.original.attributes
-          );
+          const hadOriginalAttributes = this.state.originalAttributes !== undefined;
+          let originalAttributes = Object.assign({}, this.state.originalAttributes);
           if (parsed === null) {
-            delete attributes.tabindex;
-          } else {
-            attributes.tabindex = parsed.toString();
-          }
-          const original = Object.assign(
-            {},
-            this.state.original,
-            {
-              attributes
+            if (hadOriginalAttributes) {
+              delete originalAttributes.tabindex;
             }
-          );
-          this.setState({ original });
+          } else {
+            originalAttributes.tabindex = parsed.toString();
+          }
+          this.setState({ originalAttributes });
         }
       }
     }

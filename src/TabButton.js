@@ -154,11 +154,11 @@ class TabButton extends Base {
       }
       Object.assign(this.inner.style, buttonStyle);
     }
-    if (changed.innerProperties || changed.original) {
+    if (changed.innerProperties || changed.originalStyle) {
       // Adjust colors.
-      const { innerProperties, original } = state;
-      const originalColor = original.style && original.style.color;
-      const originalBackgroundColor = original.style && original.style['background-color'];
+      const { innerProperties, originalStyle } = state;
+      const originalColor = originalStyle && originalStyle.color;
+      const originalBackgroundColor = originalStyle && originalStyle['background-color'];
       const disabled = innerProperties.disabled;
       Object.assign(this.inner.style, {
         color: disabled ? '#888' : originalColor,

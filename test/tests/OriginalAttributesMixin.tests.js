@@ -7,14 +7,14 @@ class OriginalAttributesTest extends OriginalAttributesMixin(ReactiveMixin(HTMLE
 
   [symbols.render](state, changed) {
     if (super[symbols.render]) { super[symbols.render](state, changed); }
-    if (changed.original || changed.selected) {
+    if (changed.originalClasses || changed.originalStyle || changed.selected) {
       const selected = state.selected || 
-        (state.original && state.original.classes && state.original.classes.selected)
+        (state.originalClasses && state.originalClasses.selected)
         || false;
       this.classList.toggle('selected', selected);
       const color = selected ?
         'red' :
-        (state.original && state.original.style && state.original.style.color) || null;
+        (state.originalStyle && state.originalStyle.color) || null;
       this.style.color = color;
     }
   }
@@ -45,17 +45,15 @@ describe("OriginalAttributesMixin", function () {
     container.innerHTML = `<original-attributes-test class="foo bar" style="color: red;" aria-selected="false"></original-attributes-test>`;
     const fixture = container.querySelector('original-attributes-test');
     container.appendChild(fixture);
-    assert.deepEqual(fixture.state.original, {
-      attributes: {
-        'aria-selected': 'false'
-      },
-      classes: {
-        bar: true,
-        foo: true
-      },
-      style: {
-        color: 'red'
-      }
+    assert.deepEqual(fixture.state.originalAttributes, {
+      'aria-selected': 'false'
+    });
+    assert.deepEqual(fixture.state.originalClasses, {
+      bar: true,
+      foo: true
+    });
+    assert.deepEqual(fixture.state.originalStyle, {
+      color: 'red'
     });
   });
 
@@ -77,9 +75,9 @@ describe("OriginalAttributesMixin", function () {
   it("tracks original attribute values", () => {
     const fixture = new OriginalAttributesTest();
     fixture.setAttribute('foo', 'bar');
-    assert.equal(fixture.state.original.attributes.foo, 'bar');
+    assert.equal(fixture.state.originalAttributes.foo, 'bar');
     fixture.removeAttribute('foo');
-    assert.isNull(fixture.state.original.attributes.foo);
+    assert.isNull(fixture.state.originalAttributes.foo);
   });
 
   it("merges styles on top of original styles", async () => {

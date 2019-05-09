@@ -82,8 +82,8 @@ class ExpandableSection extends Base {
 
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
-    if (changed.original || changed.role) {
-      const originalRole = state.original && state.original.attributes.role;
+    if (changed.originalAttributes || changed.role) {
+      const originalRole = state.originalAttributes && state.originalAttributes.role;
       if (!originalRole) {
         this.setAttribute('role', state.role);
       }

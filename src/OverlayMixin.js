@@ -92,8 +92,8 @@ export default function OverlayMixin(Base) {
         // these problems, we use display: none when the overlay is closed.
         this.style.display = closed ? 'none' : null;
 
-        let zIndex = state.original && state.original.style ?
-          state.original.style['z-index'] :
+        let zIndex = state.originalStyle ?
+          state.originalStyle['z-index'] :
           null;
         if (closed) {
           this[assignedZIndexKey] = null;
