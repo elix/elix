@@ -1,6 +1,3 @@
-import * as symbols from './symbols.js';
-
-
 /**
  * Lets an element determine whether it resides in right-to-left text.
  *
@@ -17,23 +14,11 @@ export default function LanguageDirectionMixin(Base) {
     // end up rendering twice.
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
-      /** @type {any} */
-      const element = this;
+      /** @type {any} */ const element = this;
       const languageDirection = getComputedStyle(element).direction;
-      if (this.state.languageDirection !== languageDirection) {
-        this.setState({ languageDirection });
-      }
-    }
-
-    /**
-     * See [symbols.rightToLeft](symbols#rightToLeft).
-     * 
-     * @property symbols.rightToLeft
-     * @memberof LanguageDirectionMixin
-     * @type {boolean}
-     */
-    get [symbols.rightToLeft]() {
-      return this.state.languageDirection === 'rtl';
+      this.setState({
+        languageDirection
+      });
     }
 
   }

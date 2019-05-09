@@ -356,20 +356,6 @@ export const render = Symbol('render');
 export const rendering = Symbol('rendering');
 
 /**
- * Symbol for the `rightToLeft` property.
- * 
- * [LanguageDirectionMixin](LanguageDirectionMixin) sets this to true if the
- * if the element is rendered right-to-left (the element has or inherits a
- * `dir` attribute with the value `rtl`).
- * 
- * This property wraps the internal state member `state.languageDirection`,
- * and is true if that member equals the string "rtl".
- * 
- * @var {boolean} rightToLeft
- */
-export const rightToLeft = Symbol('rightToLeft');
-
-/**
  * Symbol for the `scrollTarget` property.
  *
  * This property indicates which element in a component's shadow subtree

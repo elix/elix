@@ -9,7 +9,6 @@ declare const LanguageDirectionMixin: StateMixin<{}, {}, {
   rightToLeft: boolean;
 }, {
   languageDirection: string;
-  [symbols.rightToLeft]: boolean;
 }>;
 
 export default LanguageDirectionMixin;

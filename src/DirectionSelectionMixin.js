@@ -25,7 +25,7 @@ export default function DirectionSelectionMixin(Base) {
      * @type {boolean}
      */
     get [symbols.canGoLeft]() {
-      const canSelect = this[symbols.rightToLeft] ?
+      const canSelect = this.state && this.state.languageDirection === 'rtl' ?
         this.canSelectNext :
         this.canSelectPrevious; 
       // Assume we can go left unless component tells us otherwise.
@@ -40,7 +40,7 @@ export default function DirectionSelectionMixin(Base) {
      * @type {boolean}
      */
     get [symbols.canGoRight]() {
-      const canSelect = this[symbols.rightToLeft] ?
+      const canSelect = this.state && this.state.languageDirection === 'rtl' ?
         this.canSelectPrevious :
         this.canSelectNext; 
       // Assume we can go right unless component tells us otherwise.
@@ -90,7 +90,7 @@ export default function DirectionSelectionMixin(Base) {
         console.warn(`DirectionSelectionMixin expects ${this.constructor.name} to define a "selectPrevious" method.`);
         return false;
       } else {
-        return this[symbols.rightToLeft] ?
+        return this.state && this.state.languageDirection === 'rtl' ?
           this.selectNext() :
           this.selectPrevious();
       }
@@ -109,7 +109,7 @@ export default function DirectionSelectionMixin(Base) {
         console.warn(`DirectionSelectionMixin expects ${this.constructor.name} to define a "selectNext" method.`);
         return false;
       } else {
-        return this[symbols.rightToLeft] ?
+        return this.state && this.state.languageDirection === 'rtl' ?
           this.selectPrevious() :
           this.selectNext();
       }

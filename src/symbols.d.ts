@@ -36,7 +36,6 @@ export const populate: '_populate';
 export const raiseChangeEvents: '_raiseChangeEvents';
 export const render: '_render';
 export const rendering: '_rendering';
-export const rightToLeft: '_rightToLeft';
 export const scrollTarget: '_scrollTarget';
 export const startEffect: '_startEffect';
 export const swipeDown: '_swipeDown';

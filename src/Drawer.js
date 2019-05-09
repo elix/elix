@@ -208,7 +208,7 @@ class Drawer extends Base {
 
 function drawerAppearsFromLeftEdge(element) {
   const fromEdge = element.fromEdge;
-  const rightToLeft = element[symbols.rightToLeft];
+  const rightToLeft = element.state.languageDirection === 'rtl';
   return fromEdge === 'left' ||
     fromEdge === 'start' && !rightToLeft ||
     fromEdge === 'end' && rightToLeft;

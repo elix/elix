@@ -229,9 +229,11 @@ class PopupSource extends Base {
         this.setAttribute('role', state.role);
       }
     }
-    if (changed.horizontalAlign || changed.popupMeasured) {
+    if (changed.horizontalAlign || changed.languageDirection ||
+        changed.popupMeasured) {
       const {
         horizontalAlign,
+        languageDirection,
         popupHeight,
         popupMeasured,
         popupWidth,
@@ -273,10 +275,11 @@ class PopupSource extends Base {
         right = 0;
         maxFrameWidth = null;
       } else {
+        const rightToLeft = languageDirection === 'rtl';
         const preferLeftAlign = horizontalAlign === 'left' ||
-          (this[symbols.rightToLeft] ?
+          rightToLeft ?
             horizontalAlign === 'end' :
-            horizontalAlign === 'start');
+            horizontalAlign === 'start';
         // The above/below preference rules also apply to left/right alignment.
         const alignLeft =
           (preferLeftAlign && (canLeftAlign || roomRight >= roomLeft)) ||
