@@ -104,7 +104,6 @@ describe("SlotContentMixin", () => {
     const fixture = document.createElement('slot-content-test');
     container.appendChild(fixture);
     // Wait for initial content.
-    fixture.contentChangedCallCount = 0;
     const div = document.createElement('div');
     div.textContent = 'dingo';
     fixture.appendChild(div);
@@ -118,67 +117,10 @@ describe("SlotContentMixin", () => {
     const fixture = wrapper.shadowRoot.querySelector('slot-content-test');
     container.appendChild(wrapper);
     // Wait for initial content.
-    fixture.contentChangedCallCount = 0;
     wrapper.textContent = 'echidna';
     // Wait for slotchange event to be processed.
     await Promise.resolve();
     assert.equal(fixture.state.content[0].textContent, 'echidna');
-  });
-
-  it("doesn't update content for changes in the component's shadow tree", async () => {
-    const fixture = document.createElement('slot-content-test');
-    container.appendChild(fixture);
-    // Wait for initial content.
-    await Promise.resolve();
-
-    const previousContent = fixture.state.content;
-
-    // Modify an element in the shadow, which shouldn't trigger contentChanged.
-    // Since contentChanged uses MutationObservers, and those only monitor light
-    // DOM content, this is not an issue on Shadow DOM. But under the polyfill,
-    // the mutation handler will need to filter out mutations that occur in
-    // Shady DOM elements.
-    const shadowElement = fixture.shadowRoot.querySelector('#static');
-    shadowElement.textContent = "This should be ignored";
-
-    await Promise.resolve();
-    assert.equal(fixture.state.content, previousContent);
-
-    // Now add an element to the light DOM, which we *do* expect to trigger
-    // contentChanged. Use a timeout to ensure that contentChanged has had a
-    // chance to pick up (and ignore)the DOM mutation above.
-    fixture.textContent = 'fox';
-
-    // Wait for slotchange event to be processed.
-    await Promise.resolve();
-    assert.notEqual(fixture.state.content, previousContent);
-    assert.equal(fixture.state.content[0].textContent, 'fox');
-  });
-
-  it("doesn't call contentChanged when node is removed from shadow DOM", async () => {
-    const fixture = document.createElement('slot-content-test');
-    container.appendChild(fixture);
-    // Wait for initial content.
-    await Promise.resolve();
-    const previousContent = fixture.state.content;
-
-    // Remove an element from the shadow, which shouldn't trigger contentChanged.
-    const shadowElement = fixture.shadowRoot.querySelector('#static');
-    shadowElement.parentNode.removeChild(shadowElement);
-
-    await Promise.resolve();
-
-    assert.equal(fixture.state.content, previousContent);
-
-    // Now add an element to the light DOM, which we do expect to trigger
-    // contentChanged.
-    fixture.textContent = 'gorilla';
-
-    // Wait for slotchange event to be processed.
-    await Promise.resolve();
-
-    assert.notEqual(fixture.state.content, previousContent);
-    assert.equal(fixture.state.content[0].textContent, 'gorilla');
   });
 
   it("updates content if node is removed from light DOM", async () => {
