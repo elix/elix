@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ReactiveElement example</title>
+  
+  <template id="incrementDecrementTemplate">
+      <button id="decrement">-</button>
+      <span id="value"></span>
+      <button id="increment">+</button>
+    </template>
+  
+  <script type="module">
+    import * as symbols from '../src/symbols.js';
+    import ReactiveElement from '../src/ReactiveElement.js';
+
+    // Create a native web component with reactive behavior.
+    class IncrementDecrement extends ReactiveElement {
+
+      componentDidMount() {
+        super.componentDidMount();
+        this.$.decrement.addEventListener('click', () => {
+          this.value--;
+        });
+        this.$.increment.addEventListener('click', () => {
+          this.value++;
+        });
+      }
+
+      // This property becomes the value of this.state at constructor time.
+      get defaultState() {
+        return Object.assign(super.defaultState, {
+          value: 0
+        });
+      }
+
+      // Render the current state to the DOM.
+      [symbols.render](state, changed) {
+        super[symbols.render](state, changed);
+        if (changed.value) {
+          this.$.value.textContent = state.value;
+        }
+      }
+
+      get [symbols.template]() {
+        return incrementDecrementTemplate;
+      }
+
+      // Provide a public property that gets/sets state.
+      get value() {
+        return this.state.value;
+      }
+      set value(value) {
+        this.setState({ value });
+      }
+
+    }
+
+customElements.define('increment-decrement', IncrementDecrement);
+  </script>
+
+</head>
+
+<body role="main">
+  <div class="demo padded">
+    <increment-decrement></increment-decrement>
+  </div>
+</body>
+
+</html>
