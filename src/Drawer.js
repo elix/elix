@@ -35,17 +35,6 @@ const Base =
  */
 class Drawer extends Base {
 
-  componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
-
-    // Implicitly close on background clicks.
-    this.$.backdrop.addEventListener('click', async () => {
-      this[symbols.raiseChangeEvents] = true;
-      await this.close();
-      this[symbols.raiseChangeEvents] = false;
-    });
-  }
-
   get defaultState() {
     return Object.assign(super.defaultState, {
       fromEdge: 'start',
@@ -73,6 +62,18 @@ class Drawer extends Base {
   }
   set fromEdge(fromEdge) {
     this.setState({ fromEdge });
+  }
+
+  [symbols.populate](state, changed) {
+    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    if (changed.backdropRole) {
+      // Implicitly close on background clicks.
+      this.$.backdrop.addEventListener('click', async () => {
+        this[symbols.raiseChangeEvents] = true;
+        await this.close();
+        this[symbols.raiseChangeEvents] = false;
+      });
+    }
   }
 
   [symbols.render](state, changed) {

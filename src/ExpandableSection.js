@@ -22,15 +22,6 @@ const Base =
  */
 class ExpandableSection extends Base {
 
-  componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
-    this.$.header.addEventListener('click', () => {
-      this[symbols.raiseChangeEvents] = true;
-      this.toggle();
-      this[symbols.raiseChangeEvents] = false;
-    });
-  }
-
   get defaultState() {
     return Object.assign(super.defaultState, {
       headerRole: SeamlessButton,

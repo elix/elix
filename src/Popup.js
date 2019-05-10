@@ -22,22 +22,24 @@ const Base =
  */
 class Popup extends Base {
 
-  componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
-    const mousedownHandler = async event => {
-      this[symbols.raiseChangeEvents] = true;
-      await this.close();
-      this[symbols.raiseChangeEvents] = false;
-      event.preventDefault();
-      event.stopPropagation();
-    };
-    this.$.backdrop.addEventListener('mousedown', mousedownHandler);
+  [symbols.populate](state, changed) {
+    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    if (changed.backdropRole) {
+      const mousedownHandler = async event => {
+        this[symbols.raiseChangeEvents] = true;
+        await this.close();
+        this[symbols.raiseChangeEvents] = false;
+        event.preventDefault();
+        event.stopPropagation();
+      };
+      this.$.backdrop.addEventListener('mousedown', mousedownHandler);
 
-    // Mobile Safari doesn't seem to generate a mousedown handler on the
-    // backdrop in some cases that Mobile Chrome handles. For completeness, we
-    // also listen to touchend.
-    if (!('PointerEvent' in window)) {
-      this.$.backdrop.addEventListener('touchend', mousedownHandler);
+      // Mobile Safari doesn't seem to generate a mousedown handler on the
+      // backdrop in some cases that Mobile Chrome handles. For completeness, we
+      // also listen to touchend.
+      if (!('PointerEvent' in window)) {
+        this.$.backdrop.addEventListener('touchend', mousedownHandler);
+      }
     }
   }
 
