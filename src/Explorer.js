@@ -52,7 +52,7 @@ class Explorer extends Base {
   }
 
   componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
+    super.componentDidMount();
 
     // Work around inconsistencies in slotchange timing; see SlotContentMixin.
     this.$.proxySlot.addEventListener('slotchange', () => {
@@ -102,7 +102,7 @@ class Explorer extends Base {
   }
 
   [symbols.populate](state, changed) {
-    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    super[symbols.populate](state, changed);
 
     const handleSelectedIndexChanged = event => {
       this[symbols.raiseChangeEvents] = true;
@@ -198,7 +198,7 @@ class Explorer extends Base {
   }
 
   [symbols.render](state, changed) {
-    if (super[symbols.render]) { super[symbols.render](state, changed); }
+    super[symbols.render](state, changed);
     const proxyList = this.$.proxyList;
     const stage = this.$.stage;
     if (changed.proxies || changed.proxiesAssigned) {

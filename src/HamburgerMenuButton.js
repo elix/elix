@@ -107,7 +107,7 @@ class HamburgerMenuButton extends Base {
   }
 
   [symbols.populate](state, changed) {
-    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    super[symbols.populate](state, changed);
     if (changed.menuButtonRole) {
       template.transmute(this.$.menuButton, this.state.menuButtonRole);
       this.$.menuButton.addEventListener('click', () => {

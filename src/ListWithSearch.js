@@ -158,7 +158,7 @@ class ListWithSearch extends Base {
   }
 
   [symbols.populate](state, changed) {
-    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    super[symbols.populate](state, changed);
     if (changed.inputRole) {
       template.transmute(this.$.input, this.state.inputRole);
       this.$.input.addEventListener('input', () => {

@@ -309,7 +309,7 @@ class DateComboBox extends Base {
   }
 
   [symbols.populate](state, changed) {
-    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    super[symbols.populate](state, changed);
     if (changed.calendarRole) {
       template.transmute(this.$.calendar, this.state.calendarRole);
       this.$.calendar.addEventListener('date-changed', event => {

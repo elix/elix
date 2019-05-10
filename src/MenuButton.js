@@ -17,7 +17,7 @@ const documentMouseupListenerKey = Symbol('documentMouseupListener');
 class MenuButton extends PopupButton {
 
   componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
+    super.componentDidMount();
 
     // If the user hovers over an item, select it.
     this.addEventListener('mousemove', event => {
@@ -77,7 +77,7 @@ class MenuButton extends PopupButton {
   }
 
   componentDidUpdate(changed) {
-    if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    super.componentDidUpdate(changed);
     if (changed.opened) {
       if (this.state.opened) {
         addDocumentListeners(this);
@@ -237,7 +237,7 @@ class MenuButton extends PopupButton {
   }
 
   [symbols.populate](state, changed) {
-    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    super[symbols.populate](state, changed);
     if (changed.popupRole) {
       this.$.popup.tabIndex = -1;
     }

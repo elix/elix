@@ -18,12 +18,12 @@ const rotations = 12;
 class ProgressSpinner extends ReactiveElement {
 
   componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
+    super.componentDidMount();
     tick(this);
   }
 
   componentDidUpdate(changed) {
-    if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    super.componentDidUpdate(changed);
     if (changed.count ||
         (changed.playing && this.state.playing)) {
       tick(this);

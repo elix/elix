@@ -83,7 +83,7 @@ class Carousel extends Base {
       const cast = this.$.proxyList;
       forwardFocus(cast, null);
     }
-    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    super[symbols.populate](state, changed);
     if (changed.proxyListRole) {
       // Keep focus off of the proxies and onto the carousel itself.
       /** @type {any} */

@@ -202,7 +202,7 @@ class WrappedStandardElement extends Base {
   // click() {}
 
   componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
+    super.componentDidMount();
 
     // Listen for any events raised by the inner element which will not
     // automatically be retargetted across the Shadow DOM boundary, and re-raise
@@ -240,7 +240,7 @@ class WrappedStandardElement extends Base {
   }
 
   componentDidUpdate(changed) {
-    if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    super.componentDidUpdate(changed);
     reflectDisabledAttribute(this);
   }
 
@@ -308,7 +308,7 @@ class WrappedStandardElement extends Base {
   }
 
   [symbols.render](state, changed) {
-    if (super[symbols.render]) { super[symbols.render](state, changed); }
+    super[symbols.render](state, changed);
     const inner = this.inner;
     if (changed.tabIndex) {
       inner.tabIndex = state.tabIndex;

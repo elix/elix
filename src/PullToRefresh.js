@@ -37,7 +37,7 @@ const Base =
 class PullToRefresh extends Base {
 
   componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
+    super.componentDidMount();
     // Listen to scroll events in case the user scrolls up past the page's top.
     let scrollTarget = getScrollableElement(this) || window;
     scrollTarget.addEventListener('scroll', async () => {
@@ -114,7 +114,7 @@ class PullToRefresh extends Base {
   }
 
   [symbols.populate](state, changed) {
-    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    super[symbols.populate](state, changed);
     if (changed.pullIndicatorRole) {
       template.transmute(this.$.pullIndicator, this.pullIndicatorRole);
     }

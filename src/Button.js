@@ -80,7 +80,7 @@ class Button extends Base {
   }
 
   [symbols.render](state, changed) {
-    if (super[symbols.render]) { super[symbols.render](state, changed); }
+    super[symbols.render](state, changed);
     if (changed.focusVisible) {
       // Override host `outline` style supplied by FocusVisibleMixin.
       this.style.outline = 'none';

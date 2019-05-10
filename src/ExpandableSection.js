@@ -57,7 +57,7 @@ class ExpandableSection extends Base {
   }
 
   [symbols.populate](state, changed) {
-    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    super[symbols.populate](state, changed);
     if (changed.headerRole) {
       template.transmute(this.$.header, this.state.headerRole);
       this.$.header.addEventListener('click', () => {

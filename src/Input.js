@@ -17,7 +17,7 @@ const Base = WrappedStandardElement.wrap('input');
 class Input extends Base {
 
   componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
+    super.componentDidMount();
 
     // The following jsDoc comment doesn't directly apply to the statement which
     // follows, but is placed there because the comment has to go somewhere to
@@ -44,7 +44,7 @@ class Input extends Base {
   }
 
   [symbols.render](state, changed) {
-    if (super[symbols.render]) { super[symbols.render](state, changed); }
+    super[symbols.render](state, changed);
     if (changed.originalAttributes) {
       // See note in componentDidMount.
       this.$.inner.removeAttribute('aria-hidden');

@@ -35,7 +35,7 @@ class ComboBox extends Base {
   }
 
   componentDidUpdate(changed) {
-    if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    super.componentDidUpdate(changed);
     if (this.state.selectText) {
       // Select the text in the input after giving the inner input a chance to render the value.
       setTimeout(() => {
@@ -162,7 +162,7 @@ class ComboBox extends Base {
   }
 
   [symbols.populate](state, changed) {
-    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    super[symbols.populate](state, changed);
     if (changed.inputRole) {
       template.transmute(this.$.input, this.state.inputRole);
 

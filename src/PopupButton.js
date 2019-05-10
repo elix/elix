@@ -20,7 +20,7 @@ const Base =
 class PopupButton extends Base {
 
   componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
+    super.componentDidMount();
 
     // If the top-level element gets the focus while the popup is open, the most
     // likely expanation is that the user hit Shift+Tab to back up out of the
@@ -68,7 +68,7 @@ class PopupButton extends Base {
   }
 
   [symbols.populate](state, changed) {
-    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    super[symbols.populate](state, changed);
     if (changed.sourceRole) {
       // Desktop popups generally open on mousedown, not click/mouseup. On mobile,
       // mousedown won't fire until the user releases their finger, so it behaves

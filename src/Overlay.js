@@ -75,7 +75,7 @@ class Overlay extends Base {
   }
 
   componentDidUpdate(changed) {
-    if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    super.componentDidUpdate(changed);
     if (changed.opened && this.state.content) {
       // If contents know how to size themselves, ask them to check their size.
       this.state.content.forEach(element => {
@@ -134,7 +134,7 @@ class Overlay extends Base {
   }
 
   [symbols.populate](state, changed) {
-    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    super[symbols.populate](state, changed);
     if (changed.backdropRole) {
       template.transmute(this.$.backdrop, this.state.backdropRole);
     }

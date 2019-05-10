@@ -64,7 +64,7 @@ const Base =
 class Menu extends Base {
 
   componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
+    super.componentDidMount();
     
     this.addEventListener('mousemove', () => {
       this.suppressFocusVisibility();
@@ -84,7 +84,7 @@ class Menu extends Base {
   }
 
   componentDidUpdate(changed) {
-    if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    super.componentDidUpdate(changed);
     if (changed.selectedIndex && !this.state.selectionFocused) {
       // The selected item needs the focus, but this is complicated. See notes
       // in render.

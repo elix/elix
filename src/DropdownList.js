@@ -54,7 +54,7 @@ class DropdownList extends Base {
   }
 
   [symbols.populate](state, changed) {
-    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    super[symbols.populate](state, changed);
     if (changed.valueRole) {
       template.transmute(this.$.value, this.state.valueRole);
     }

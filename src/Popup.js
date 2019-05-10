@@ -23,7 +23,7 @@ const Base =
 class Popup extends Base {
 
   [symbols.populate](state, changed) {
-    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    super[symbols.populate](state, changed);
     if (changed.backdropRole) {
       const mousedownHandler = async event => {
         this[symbols.raiseChangeEvents] = true;

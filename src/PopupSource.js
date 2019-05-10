@@ -57,7 +57,7 @@ class PopupSource extends Base {
   }
 
   componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }    
+    super.componentDidMount();
     if (this.state.opened) {
       // Popup is opened initially, which is somewhat unusual.
       waitThenRenderOpened(this);
@@ -66,7 +66,7 @@ class PopupSource extends Base {
   }
 
   componentDidUpdate(changed) {
-    if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    super.componentDidUpdate(changed);
     if (changed.opened) {
       if (this.opened) {
         waitThenRenderOpened(this);
@@ -158,7 +158,7 @@ class PopupSource extends Base {
   }
 
   [symbols.populate](state, changed) {
-    if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    super[symbols.populate](state, changed);
     if (changed.sourceRole) {
       template.transmute(this.$.source, this.state.sourceRole);
     }    

@@ -10,7 +10,7 @@ import Input from './Input.js';
 class AutoCompleteInput extends Input {
 
   componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
+    super.componentDidMount();
 
     // In many ways it would be cleaner to do AutoComplete work in a keydown
     // listener. Unfortunately, Chrome for Android sets the keyCode on *all*
@@ -57,7 +57,7 @@ class AutoCompleteInput extends Input {
   }
 
   componentDidUpdate(changed) {
-    if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    super.componentDidUpdate(changed);
 
     const { autoCompleteSelect, originalText } = this.state;
     if (changed.originalText && autoCompleteSelect) {

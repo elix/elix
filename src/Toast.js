@@ -38,12 +38,12 @@ class Toast extends Base {
   }
 
   async componentDidMount() {
-    if (super.componentDidMount) { await super.componentDidMount(); }
+    await super.componentDidMount();
     startTimerIfOpened(this);
   }
 
   async componentDidUpdate(changed) {
-    if (super.componentDidUpdate) { await super.componentDidUpdate(changed); }
+    await super.componentDidUpdate(changed);
     startTimerIfOpened(this);
   }
 

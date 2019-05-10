@@ -20,7 +20,7 @@ const Base =
 class DateInput extends Base {
 
   componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
+    super.componentDidMount();
     this.$.inner.addEventListener('blur', () => {
       this[symbols.raiseChangeEvents] = true;
       this.setState({
