@@ -20,20 +20,9 @@ const originalKey = Symbol('original');
  *   elements. This filtering ensures that those auxiliary elements can be
  *   used in markup inside of a list without being treated as list items.
  *
- * This mixin expects a component to provide a `content` property returning a
- * raw set of elements. You can provide that yourself, or use
+ * This mixin expects a component to provide a `content` state member returning
+ * a raw set of elements. You can provide that yourself, or use
  * [SlotContentMixin](SlotContentMixin).
- *
- * The most commonly referenced property defined by this mixin is the `items`
- * property. To avoid having to do work each time that property is requested,
- * this mixin supports an optimized mode. If you invoke the `contentChanged`
- * method when the set of items changes, the mixin concludes that you'll take
- * care of notifying it of future changes, and turns on the optimization. With
- * that on, the mixin saves a reference to the computed set of items, and will
- * return that immediately on subsequent calls to the `items` property. If you
- * use this mixin in conjunction with `SlotContentMixin`, the `contentChanged`
- * method will be invoked for you when the element's children change, turning on
- * the optimization automatically.
  *
  * Most Elix [elements](elements) use `ContentItemsMixin`, including
  * [ListBox](ListBox), [Modes](Modes), and [Tabs](Tabs).

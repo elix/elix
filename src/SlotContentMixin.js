@@ -9,43 +9,17 @@ const slotchangeFiredKey = Symbol('slotchangeFired');
  * Defines a component's content as the flattened set of nodes assigned to a
  * slot.
  * 
- * This mixin defines a component's `symbols.content` property as the flattened
+ * This mixin defines a component's `content` state member as the flattened
  * set of nodes assigned to a slot, typically the default slot.
  *
- * This also provides notification of changes to a component's content. It
- * will invoke a `symbols.contentChanged` method when the component is first
- * instantiated, and whenever its distributed children change. This is intended
- * to satisfy the Gold Standard checklist item for monitoring
+ * If the set of assigned nodes changes, the `content` state will be updated.
+ * This helps a component satisfy the Gold Standard checklist item for
+ * monitoring
  * [Content Changes](https://github.com/webcomponents/gold-standard/wiki/Content-Changes).
- *
- * Example:
- *
- * ```
- * class CountingElement extends SlotContentMixin(HTMLElement) {
- *
- *   constructor() {
- *     super();
- *     let root = this.attachShadow({ mode: 'open' });
- *     root.innerHTML = `<slot></slot>`;
- *     this[symbols.shadowCreated]();
- *   }
- *
- *   [symbols.contentChanged]() {
- *     if (super[symbols.contentChanged]) { super[symbols.contentChanged](); }
- *     // Count the component's children, both initially and when changed.
- *     this.count = this.distributedChildren.length;
- *   }
- *
- * }
- * ```
  *
  * By default, the mixin looks in the component's shadow subtree for a default
  * (unnamed) `slot` element. You can specify that a different slot should be
- * used by overriding the `contentSlot` property.
- *
- * To receive `contentChanged` notification, this mixin expects a component to
- * invoke a method called `symbols.shadowCreated` after the component's shadow
- * root has been created and populated.
+ * used by overriding the `symbols.contentSlot` property.
  *
  * Most Elix [elements](elements) use `SlotContentMixin`, including
  * [ListBox](ListBox), [Modes](Modes), and [Tabs](Tabs).
