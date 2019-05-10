@@ -37,29 +37,6 @@ class ElementWithRealTemplate extends ShadowTemplateMixin(HTMLElement) {
 customElements.define('element-with-real-template', ElementWithRealTemplate);
 
 
-/* Element with styles to polyfill. */
-class ElementWithStylesInTemplate extends ShadowTemplateMixin(HTMLElement) {
-
-  constructor() {
-    super();
-    this[symbols.populate]();
-  }
-
-  get [symbols.template]() {
-    return template.html`
-      <style>
-        /* Use a style that will get polyfilled. */
-        :host {
-          background: rgb(255, 0, 0);
-        }
-      </style>
-    `;
-  }
-
-}
-customElements.define('element-with-styles-in-template', ElementWithStylesInTemplate);
-
-
 /* Normal element whose template will only be retrieved once. */
 let staticTemplateCount = 0;
 class ElementWithCachedTemplate extends ShadowTemplateMixin(HTMLElement) {

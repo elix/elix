@@ -39,15 +39,7 @@ const Base =
  * @mixes TouchSwipeMixin
  * @mixes TrackpadSwipeMixin
  */
-class SlidingPages extends Base {
-
-  // Workaround Edge bug: https://github.com/Microsoft/ChakraCore/issues/4835.
-  // When that's fixed, we can remove this.
-  get [symbols.swipeTarget]() {
-    return this;
-  }
-
-}
+class SlidingPages extends Base {}
 
 
 customElements.define('elix-sliding-pages', SlidingPages);

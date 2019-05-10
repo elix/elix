@@ -3,14 +3,12 @@ import { closestFocusableAncestor } from './utilities.js';
 
 // Quick detection of whether we'll need to handle focus.
 // As of February 2019, we don't need to handle this in Chrome, perhaps because
-// they already support delegatesFocus (which handles related focus issues). We
-// also don't need to handle the focus specially in the web components polyfill.
+// they already support delegatesFocus (which handles related focus issues).
 const focusTest = document.createElement('div');
 focusTest.attachShadow({ mode: 'open', delegatesFocus: true });
 /** @type {any} */
 const shadowRoot = focusTest.shadowRoot;
-const nativeDelegatesFocus = 'HTMLSlotElement' in window &&
-  shadowRoot.delegatesFocus;
+const nativeDelegatesFocus = shadowRoot.delegatesFocus;
 
 
 /**

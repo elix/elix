@@ -36,11 +36,7 @@ export function defaultScrollTarget(element) {
  * @returns {Element|null}
  */
 export function getScrollableElement(element) {
-  // We test against DocumentFragment below instead of ShadowRoot, because the
-  // polyfill doesn't define the latter, and instead uses the former. In native
-  // Shadow DOM, a ShadowRoot is a subclass of DocumentFragment, so the same
-  // test works then too.
-  if (element instanceof DocumentFragment) {
+  if (element instanceof ShadowRoot) {
     // Didn't find a scrollable ancestor.
     return null;
   }

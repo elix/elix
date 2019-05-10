@@ -196,14 +196,10 @@ export function replace(original, replacement) {
     });
 
   }
-  // Copy over children. As of January 2018, it is hard to do this without
-  // causing the polyfill to choke (e.g., with HierarchyRequestError). The
-  // polyfill has trouble if we:
-  // a) keep moving over the first child until there's no first child, or
-  // b) loop from last to first, inserting at the beginning of the replacement.
-  // The safest thing that seems to work is to create an array of the
-  // children, then loop over that array.
-  [...original.childNodes].forEach(child => replacement.appendChild(child));
+  // Copy over children.
+  while(original.childNodes.length > 0) {
+    replacement.appendChild(original.childNodes[0]);
+  }
 
   parent.replaceChild(replacement, original);
   return replacement;

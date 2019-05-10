@@ -121,9 +121,9 @@ The Elix project itself _requires no build step_. You are free to use your prefe
   styling. They can be styled with CSS to achieve more distinctive visual
   effects or branding to blend seamlessly with your application’s own style.
 * **Work on all mainstream browsers.** This includes the latest versions of
-  Apple Safari and Mobile Safari, Google Chrome and Chrome for Android,
-  Microsoft Edge, and Mozilla Firefox. The older browsers, notably Edge, require
-  the use of the web component v1 polyfills.
+  Apple Safari and Mobile Safari, Google Chrome and Chrome for Android, and
+  Mozilla Firefox. Microsoft Edge support will arrive once it switches to using
+  the Chromium engine.
 * **Open process.**
   The process behind Elix is as important to us as the code artifacts. We strive
   to incorporate feedback from a general web audience, while at the same time

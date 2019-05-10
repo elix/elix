@@ -11,8 +11,7 @@ const renderedKey = Symbol('rendered');
 
 /*
  * A set of events which, if fired by the inner standard element, should be
- * re-raised by the custom element. (We only need to do that under native
- * Shadow DOM, not the polyfill.)
+ * re-raised by the custom element.
  *
  * These are events which are spec'ed to NOT get retargetted across a Shadow DOM
  * boundary, organized by which element(s) raise the events. To properly
@@ -208,10 +207,6 @@ class WrappedStandardElement extends Base {
     // Listen for any events raised by the inner element which will not
     // automatically be retargetted across the Shadow DOM boundary, and re-raise
     // those events when they happen.
-    //
-    // Note: It's unclear why we need to do this in the Shadow DOM polyfill.
-    // In theory, events in the light DOM should bubble as normal. But this
-    // code appears to be required in the polyfill case as well.
     const eventNames = reraiseEvents[this.extends] || [];
     eventNames.forEach(eventName => {
       this.inner.addEventListener(eventName, () => {

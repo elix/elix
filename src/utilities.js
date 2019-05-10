@@ -55,7 +55,7 @@ export function closestFocusableAncestor(element) {
   // We want an element that has a tabIndex of 0 or more. We ignore disabled
   // elements, and slot elements (which oddly have a tabIndex of 0).
   if (element.tabIndex >= 0 && !element.disabled
-    && !isSlot(element)) {
+    && !(element instanceof HTMLSlotElement)) {
     // Found an enabled component that wants the focus.
     return element;
   }
@@ -186,14 +186,6 @@ export function indexOfItemContainingTarget(items, target) {
 }
 
 
-// For polyfill
-function isSlot(node) {
-  return 'HTMLSlotElement' in window ?
-    node instanceof HTMLSlotElement :
-    node.localName === 'slot';  // Polyfill
-}
-
-
 /**
  * Return true if the event came from within the node (or from the node itself);
  * false otherwise.
@@ -221,7 +213,7 @@ function* walkComposedTree(node, filter) {
     // Walk the shadow instead of the light DOM.
     children = node.shadowRoot.children;
   } else {
-    const assignedNodes = isSlot(node) ?
+    const assignedNodes = node instanceof HTMLSlotElement ?
       node.assignedNodes({ flatten: true }) :
       [];
     children = assignedNodes.length > 0 ?

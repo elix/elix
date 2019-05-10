@@ -13,9 +13,7 @@ class ContentItemsTest extends ContentItemsMixin(ReactiveMixin(HTMLElement)) {
   // Normally this would be handled automatically, e.g., via SlotContentMixin.
   updateContent() {
     // Copy content.
-    // Use Array.slice because polyfill (no longer) seems to provide expected
-    // API on this.children.
-    const content = Array.prototype.slice.call(this.children, 0);
+    const content = [...this.children];
     this.setState({ content });
   }
 
