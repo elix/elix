@@ -383,6 +383,7 @@ class ComboBox extends Base {
 
         #popup {
           flex-direction: column;
+          overflow: hidden;
         }
       </style>
     `);
