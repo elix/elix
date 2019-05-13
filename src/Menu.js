@@ -223,6 +223,7 @@ class Menu extends Base {
           display: flex;
           flex: 1;
           flex-direction: column;
+          max-height: 100%;
           overflow-x: hidden;
           overflow-y: auto;
           -webkit-overflow-scrolling: touch; /* for momentum scrolling */

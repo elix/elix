@@ -126,6 +126,8 @@ class ListBox extends Base {
         #content {
           display: flex;
           flex: 1;
+          max-height: 100%;
+          max-width: 100%;
           -webkit-overflow-scrolling: touch; /* for momentum scrolling */
         }
 
