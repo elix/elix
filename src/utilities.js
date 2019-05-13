@@ -1,3 +1,6 @@
+import * as symbols from './symbols.js';
+
+
 /**
  * Miscellaneous utility functions for web components
  * 
@@ -157,7 +160,10 @@ export function forwardFocus(origin, target) {
       if (event.button !== 0) {
         return;
       }
-      const focusableTarget = closestFocusableAncestor(target);
+      // What element wants the focus?
+      const desiredTarget = target[symbols.focusTarget] || target;
+      // What ancestor can actually take the focus?
+      const focusableTarget = closestFocusableAncestor(desiredTarget);
       focusableTarget.focus();
       event.preventDefault();  
     };

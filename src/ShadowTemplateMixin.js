@@ -81,7 +81,7 @@ export default function ShadowTemplateMixin(Base) {
       const template = getTemplate(this);
       if (template) {
         // Stamp the template into a new shadow root.
-        const delegatesFocus = this.delegatesFocus;
+        const delegatesFocus = this[symbols.delegatesFocus];
         if (template) {
           const root = this.attachShadow({
             delegatesFocus,

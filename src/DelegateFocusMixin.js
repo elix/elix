@@ -1,4 +1,5 @@
 import { firstFocusableElement } from './utilities.js';
+import * as symbols from './symbols.js';
 
 
 /**
@@ -34,7 +35,7 @@ export default function DelegateFocusMixin(Base) {
      * @type {boolean}
      * @default true
      */
-    get delegatesFocus() {
+    get [symbols.delegatesFocus]() {
       return true;
     }
 
@@ -46,10 +47,16 @@ export default function DelegateFocusMixin(Base) {
         super.focus(focusOptions);
         return;
       }
-      const focusElement = firstFocusableElement(this.shadowRoot);
+      const focusElement = this[symbols.focusTarget];
       if (focusElement) {
         focusElement.focus(focusOptions);
       }
+    }
+
+    get [symbols.focusTarget]() {
+      return this.shadowRoot.delegatesFocus ?
+        this :
+        firstFocusableElement(this.shadowRoot);
     }
 
   }
