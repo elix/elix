@@ -215,6 +215,8 @@ class ListComboBox extends Base {
           border: none;
           flex: 1;
           height: 100%;
+          max-height: 100%;
+          overscroll-behavior: contain;
           width: 100%;
         }
       </style>
