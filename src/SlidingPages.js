@@ -1,4 +1,3 @@
-import * as symbols from './symbols.js';
 import AriaListMixin from './AriaListMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
