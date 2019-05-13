@@ -32,10 +32,6 @@ class AutoSizeTextarea extends Base {
   componentDidMount() {
     super.componentDidMount();
 
-    this[symbols.contentSlot].addEventListener('slotchange', () => {
-      this.setState({ valueTracksContent: true });
-    });
-
     // The following jsDoc comment doesn't directly apply to the statement which
     // follows, but is placed there because the comment has to go somewhere to
     // be visible to jsDoc, and the statement is at tangentially related.
@@ -85,11 +81,24 @@ class AutoSizeTextarea extends Base {
   }
 
   get defaultState() {
-    return Object.assign(super.defaultState, {
+    const state = Object.assign(super.defaultState, {
       minimumRows: 1,
       value: null,
       valueTracksContent: true
     });
+
+    state.onChange(['content', 'valueTracksContent'], (state, changed) => {
+      if ((changed.content || changed.valueTracksContent)
+          && state.valueTracksContent) {
+        const value = getTextFromContent(state.content);
+        return {
+          value
+        };
+      }
+      return null;
+    });
+
+    return state;
   }
 
   /**
@@ -225,9 +234,7 @@ class AutoSizeTextarea extends Base {
    * @type {string}
    */
   get value() {
-    return this.state.valueTracksContent ?
-      getTextFromContent(this.state.content) :
-      this.state.value;
+    return this.state.value;
   }
   set value(value) {
     this.setState({

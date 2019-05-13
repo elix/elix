@@ -39,14 +39,21 @@ describe("AutoSizeTextarea", () => {
 
   it("value property tracks content until value is directly set", async () => {
     const fixture = document.createElement('elix-auto-size-textarea');
+    fixture.textContent = 'dingo';
     container.appendChild(fixture);
-    assert(fixture.state.valueTracksContent);
-    fixture.value = 'dingo';
-    assert(!fixture.state.valueTracksContent);
-    fixture.textContent = 'echidna';
     // Give content time to change.
     await Promise.resolve();
-    assert(fixture.state.valueTracksContent);    
+    assert(fixture.state.valueTracksContent);
+    assert.equal(fixture.value, 'dingo');
+    fixture.value = 'echidna';
+    // Give content time to change. Value should track content.
+    assert(!fixture.state.valueTracksContent);
+    assert.equal(fixture.value, 'echidna');
+    fixture.textContent = 'fox';
+    // Give content time to change. Value should remain unchanged.
+    await Promise.resolve();
+    assert(!fixture.state.valueTracksContent);    
+    assert.equal(fixture.value, 'echidna');
   });
 
   it("sets minimumRows to 1 by default", () => {
