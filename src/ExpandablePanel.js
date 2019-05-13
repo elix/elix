@@ -95,10 +95,6 @@ class ExpandablePanel extends Base {
           display: block;
           overflow: hidden;
         }
-
-        #outerContainer {
-          overflow-y: hidden;
-        }
       </style>
       <div id="outerContainer" role="none">
         <div id="innerContainer" role="none">
