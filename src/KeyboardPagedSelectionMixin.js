@@ -102,29 +102,25 @@ export default function KeyboardPagedSelectionMixin(Base) {
  * 
  * items to find the last item at that position.
  */
-function getIndexOfItemAtY(items, scrollTarget, y, downward) {
+function getIndexOfItemAtY(items, y, downward) {
 
   const start = downward ? 0 : items.length - 1;
   const end = downward ? items.length : 0;
   const step = downward ? 1 : -1;
 
-  const topOfClientArea = scrollTarget.offsetTop + scrollTarget.clientTop;
-
   // Find the item spanning the indicated y coordinate.
+  let index;
   let item;
-  let itemIndex = start;
-  let itemTop;
+  let itemRect;
   let found = false;
-  while (itemIndex !== end) {
-    item = items[itemIndex];
-    itemTop = item.offsetTop - topOfClientArea;
-    const itemBottom = itemTop + item.offsetHeight;
-    if (itemTop <= y && itemBottom >= y) {
+  for (index = start; index !== end; index += step) {
+    item = items[index];
+    itemRect = item.getBoundingClientRect();
+    if (itemRect.top <= y && y <= itemRect.bottom) {
       // Item spans the indicated y coordinate.
       found = true;
       break;
     }
-    itemIndex += step;
   }
 
   if (!found) {
@@ -138,16 +134,16 @@ function getIndexOfItemAtY(items, scrollTarget, y, downward) {
   const itemStyle = getComputedStyle(item);
   const itemPaddingTop = itemStyle.paddingTop ? parseFloat(itemStyle.paddingTop) : 0;
   const itemPaddingBottom = itemStyle.paddingBottom ? parseFloat(itemStyle.paddingBottom) : 0;
-  const contentTop = itemTop + item.clientTop + itemPaddingTop;
+  const contentTop = itemRect.top + itemPaddingTop;
   const contentBottom = contentTop + item.clientHeight - itemPaddingTop - itemPaddingBottom;
   if (downward && contentTop <= y || !downward && contentBottom >= y) {
     // The indicated coordinate hits the actual item content.
-    return itemIndex;
+    return index;
   }
   else {
     // The indicated coordinate falls within the item's padding. Back up to
     // the item below/above the item we found and return that.
-    return itemIndex - step;
+    return index - step;
   }
 }
 
@@ -163,17 +159,23 @@ function scrollOnePage(element, downward) {
 
   // Determine the item visible just at the edge of direction we're heading.
   // We'll select that item if it's not already selected.
-  const edge = scrollTarget.scrollTop + (downward ? scrollTarget.clientHeight : 0);
-  const indexOfItemAtEdge = getIndexOfItemAtY(items, scrollTarget, edge, downward);
+  const targetRect = scrollTarget.getBoundingClientRect();
+  const edge = downward ? targetRect.bottom : targetRect.top;
+  const indexOfItemAtEdge = getIndexOfItemAtY(items, edge, downward);
 
   let newIndex;
   if (indexOfItemAtEdge && selectedIndex === indexOfItemAtEdge) {
     // The item at the edge was already selected, so scroll in the indicated
-    // direction by one page. Leave the new item at that edge selected.
-    const delta = (downward ? 1 : -1) * scrollTarget.clientHeight;
-    newIndex = getIndexOfItemAtY(items, scrollTarget, edge + delta, downward);
-  }
-  else {
+    // direction by one page, measuring from the bounds of the currently
+    // selected item. Leave the new item at that edge selected.
+    const selectedItem = items[selectedIndex];
+    const selectedRect = selectedItem.getBoundingClientRect();
+    const pageHeight = scrollTarget.clientHeight;
+    const y = downward ?
+      selectedRect.bottom + pageHeight :
+      selectedRect.top - pageHeight;
+    newIndex = getIndexOfItemAtY(items, y, downward);
+  } else {
     // The item at the edge wasn't selected yet. Instead of scrolling, we'll
     // just select that item. That is, the first attempt to page up/down
     // usually just moves the selection to the edge in that direction.
