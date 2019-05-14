@@ -1,15 +1,13 @@
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import DarkModeMixin from './DarkModeMixin.js';
-import HoverMixin from './HoverMixin.js';
 import SeamlessButton from './SeamlessButton.js';
 
 
 const Base = 
   DarkModeMixin(
-  HoverMixin(
     SeamlessButton
-  ));
+  );
 
 
 /**
@@ -20,38 +18,14 @@ const Base =
  * 
  * @inherits SeamlessButton
  * @mixes DarkModeMixin
- * @mixes HoverMixin
  */
 class ArrowDirectionButton extends Base {
 
   [symbols.render](state, changed) {
     super[symbols.render](state, changed);
-    if (changed.darkMode || changed.hover || changed.innerProperties) {
-      const { darkMode, innerProperties } = state;
-      // Wait for knowledge of dark mode to be set after initial render.
-      if (darkMode !== null) {
-        const disabled = innerProperties ?
-          innerProperties.disabled :
-          false;
-
-        // Use white color value in dark mode, or black value in light mode.
-        const value = darkMode ? 255 : 0;
-        Object.assign(this.style,
-          {
-            background: '',
-            color: `rgba(${value}, ${value}, ${value}, 0.7)`,
-            cursor: ''
-          },
-          state.hover && !disabled && {
-            background: `rgba(${value}, ${value}, ${value}, 0.2)`,
-            color: `rgba(${value}, ${value}, ${value}, 0.8)`,
-            cursor: 'pointer'
-          },
-          disabled && {
-            color: `rgba(${value}, ${value}, ${value}, 0.3)`
-          }
-        );
-      }
+    // Wait for knowledge of dark mode to be set after initial render.
+    if (changed.darkMode && state.darkMode !== null) {
+      this.$.inner.classList.toggle('darkMode', state.darkMode);
     }
   }
 
@@ -59,7 +33,31 @@ class ArrowDirectionButton extends Base {
     return template.concat(super[symbols.template], template.html`
       <style>
         #inner {
+          color: rgba(0, 0, 0, 0.7);
           fill: currentcolor;
+        }
+
+        #inner:hover:not(:disabled) {
+          background: rgba(0, 0, 0, 0.2);
+          color: rgba(0, 0, 0, 0.8);
+          cursor: pointer;
+        }
+
+        #inner:disabled {
+          color: rgba(0, 0, 0, 0.3);
+        }
+
+        #inner.darkMode {
+          color: rgba(255, 255, 255, 0.7);
+        }
+
+        #inner.darkMode:hover:not(:disabled) {
+          background: rgba(255, 255, 255, 0.2);
+          color: rgba(255, 255, 255, 0.8);
+        }
+
+        #inner.darkMode:disabled {
+          color: rgba(255, 255, 255, 0.3);
         }
       </style>
     `);
