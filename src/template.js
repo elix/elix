@@ -169,32 +169,31 @@ export function replace(original, replacement) {
   if (!parent) {
     throw 'An element must have a parent before it can be substituted.'
   }
-  if ((original instanceof HTMLElement && replacement instanceof HTMLElement) ||
-      (original instanceof SVGElement && replacement instanceof SVGElement)) {
-    // Copy attributes/classes/styles from original to replacement, letting
-    // replacement win conflicts. We do this now, before inserting the
-    // replacement into the tree, so that OriginalAttributesMixin's
-    // record-keeping will consider these values to be original (i.e.,
-    // equivalent to having been set via markup).
-    
-    // Merge in attributes. (Handle classes and styles below.)
+  if ((original instanceof HTMLElement || original instanceof SVGElement) &&
+      (replacement instanceof HTMLElement || replacement instanceof SVGElement)) {
+    // Merge attributes from original to replacement, letting replacement win
+    // conflicts. We do this now, before inserting the replacement into the
+    // tree, so that OriginalAttributesMixin's record-keeping will consider
+    // these values to be original (i.e., equivalent to having been set via
+    // markup).
+    // Handle classes and styles separately (below).
     Array.prototype.forEach.call(original.attributes, attribute => {
       if (!replacement.getAttribute(attribute.name) &&
           attribute.name !== 'class' && attribute.name !== 'style') {
         replacement.setAttribute(attribute.name, attribute.value);
       }
     });
-    // Merge in classes.
+    // Copy classes/styles from original to replacement, letting replacement win
+    // conflicts. As with attributes (above), we want to do this before
+    // OriginalAttributesMixin looks at classes and styles.
     Array.prototype.forEach.call(original.classList, className => {
       replacement.classList.add(className);
     });
-    // Merge in styles.
     Array.prototype.forEach.call(original.style, key => {
       if (!replacement.style[key]) {
         replacement.style[key] = original.style[key];
       }
     });
-
   }
   // Copy over children.
   while(original.childNodes.length > 0) {
