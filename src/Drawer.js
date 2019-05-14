@@ -64,8 +64,8 @@ class Drawer extends Base {
     this.setState({ fromEdge });
   }
 
-  [symbols.populate](state, changed) {
-    super[symbols.populate](state, changed);
+  [symbols.populate](changed) {
+    super[symbols.populate](changed);
     if (changed.backdropRole) {
       // Implicitly close on background clicks.
       this.$.backdrop.addEventListener('click', async () => {
@@ -76,8 +76,8 @@ class Drawer extends Base {
     }
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.effect || changed.effectPhase || changed.enableEffects ||
         changed.fromEdge || changed.languageDirection || changed.swipeFraction) {
       // Render the drawer.
@@ -88,7 +88,7 @@ class Drawer extends Base {
         fromEdge,
         languageDirection,
         swipeFraction
-      } = state;
+      } = this.state;
       const opened = (effect === 'open' && effectPhase !== 'before') ||
         (effect === 'close' && effectPhase === 'before');
 
@@ -147,7 +147,7 @@ class Drawer extends Base {
     }
     if (changed.fromEdge || changed.languageDirection) {
       // Dock drawer to appropriate edge
-      const { fromEdge, languageDirection } = state;
+      const { fromEdge, languageDirection } = this.state;
       const rightToLeft = languageDirection === 'rtl';
       const mapFromEdgetoJustifyContent = {
         'end': 'flex-end',

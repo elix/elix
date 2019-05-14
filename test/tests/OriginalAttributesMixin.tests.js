@@ -5,16 +5,17 @@ import ReactiveMixin from '../../src/ReactiveMixin.js';
 
 class OriginalAttributesTest extends OriginalAttributesMixin(ReactiveMixin(HTMLElement)) {
 
-  [symbols.render](state, changed) {
-    if (super[symbols.render]) { super[symbols.render](state, changed); }
+  [symbols.render](changed) {
+    if (super[symbols.render]) { super[symbols.render](changed); }
     if (changed.originalClasses || changed.originalStyle || changed.selected) {
-      const selected = state.selected || 
-        (state.originalClasses && state.originalClasses.selected)
+      const { originalClasses, originalStyle } = this.state;
+      const selected = this.state.selected || 
+        (originalClasses && originalClasses.selected)
         || false;
       this.classList.toggle('selected', selected);
       const color = selected ?
         'red' :
-        (state.originalStyle && state.originalStyle.color) || null;
+        (originalStyle && originalStyle.color) || null;
       this.style.color = color;
     }
   }

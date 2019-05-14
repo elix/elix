@@ -58,11 +58,11 @@ class CountryListBox extends Base {
     return this.state.orientation;
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.items || changed.selectedIndex) {
       // Apply `selected` style to the selected item only.
-      const { selectedIndex, items } = state;
+      const { selectedIndex, items } = this.state;
       if (items) {
         items.forEach((item, index) => {
           const selected = index === selectedIndex;

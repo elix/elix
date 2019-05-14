@@ -12,8 +12,8 @@ const Base =
 
 class LabeledColorSwatch extends Base {
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.content) {
       const content = this.state.content;
       const strings = content ? 

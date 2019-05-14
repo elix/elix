@@ -8,7 +8,6 @@
   <title>Reactive web component example with subclassing</title>
 
   <script type="module">
-    import { apply, merge } from '../src/updates.js';
     import * as symbols from '../src/symbols.js';
     import * as template from '../src/template.js';
     import ReactiveElement from '../src/ReactiveElement.js';
@@ -29,8 +28,8 @@
         });
       }
 
-      [symbols.populate](state, changed) {
-        if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+      [symbols.populate](changed) {
+        if (super[symbols.populate]) { super[symbols.populate](changed); }
         if (changed.buttonRole) {
           template.transmute(this.$.decrement, this.state.buttonRole);
           this.$.decrement.addEventListener('click', () => {
@@ -43,11 +42,12 @@
         }
       }
 
-      [symbols.render](state, changed) {
-        super[symbols.render](state, changed);
+      [symbols.render](changed) {
+        super[symbols.render](changed);
         if (changed.value) {
-          this.style.color = state.value < 0 ? 'red' : null;
-          this.$.visibleValue.textContent = state.value;
+          const { value } = this.state;
+          this.style.color = value < 0 ? 'red' : null;
+          this.$.visibleValue.textContent = value;
         }
       }
 
@@ -94,7 +94,7 @@
     class CustomIncrementDecrement extends IncrementDecrement {
 
       get defaultState() {
-        return Object.assign({}, super.defaultState, {
+        return Object.assign(super.defaultState, {
           buttonRole: CustomButton
         });
       }

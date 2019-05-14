@@ -76,8 +76,8 @@ export default function OverlayMixin(Base) {
       });
     }
 
-    [symbols.render](state, changed) {
-      if (super[symbols.render]) { super[symbols.render](state, changed); }
+    [symbols.render](changed) {
+      if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.effectPhase || changed.opened) {
         const closed = typeof this.closeFinished === 'undefined' ?
           this.closed :
@@ -92,8 +92,9 @@ export default function OverlayMixin(Base) {
         // these problems, we use display: none when the overlay is closed.
         this.style.display = closed ? 'none' : null;
 
-        let zIndex = state.originalStyle ?
-          state.originalStyle['z-index'] :
+        const { originalStyle } = this.state;
+        let zIndex = originalStyle ?
+          originalStyle['z-index'] :
           null;
         if (closed) {
           this[assignedZIndexKey] = null;

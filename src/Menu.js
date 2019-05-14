@@ -144,9 +144,9 @@ class Menu extends Base {
     return base && !item.disabled;
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
-    const { selectedIndex, items } = state;    
+  [symbols.render](changed) {
+    super[symbols.render](changed);
+    const { selectedIndex, items } = this.state;    
     if ((changed.items || changed.selectedIndex) && items) {
         // Reflect the selection state to the item.
       items.forEach((item, index) => {
@@ -177,7 +177,7 @@ class Menu extends Base {
           original.attributes.tabindex :
           null;
         const isDefaultFocusableItem = selectedIndex < 0 && index === 0;
-        if (!state.selectionFocused) {
+        if (!this.state.selectionFocused) {
           // Phase 1: Add tabindex to newly-selected item.
           if (selected || isDefaultFocusableItem) {
             item.tabIndex = originalTabindex || 0;

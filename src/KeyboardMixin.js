@@ -97,14 +97,15 @@ export default function KeyboardMixin(Base) {
       return false;
     }
 
-    [symbols.render](state, changed) {
-      if (super[symbols.render]) { super[symbols.render](state, changed); }
+    [symbols.render](changed) {
+      if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.originalAttributes || changed.tabIndex) {
-        const originalTabindex = state.originalAttributes ?
-          state.originalAttributes.tabindex :
+        const { originalAttributes, tabIndex } = this.state;
+        const originalTabindex = originalAttributes ?
+          originalAttributes.tabindex :
           null;
         if (originalTabindex == null) {
-          this.tabIndex = state.tabIndex;
+          this.tabIndex = tabIndex;
         }
       }
     }

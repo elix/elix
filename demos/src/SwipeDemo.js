@@ -20,9 +20,10 @@ class SwipeDemo extends Base {
     });
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
-    const vertical = state.swipeAxis === 'vertical';
+  [symbols.render](changed) {
+    super[symbols.render](changed);
+    const { swipeAxis, swipeFraction } = this.state;
+    const vertical = swipeAxis === 'vertical';
     if (changed.swipeAxis) {
       this.style.flexDirection = vertical ? 'row' : 'column';
       Object.assign(this.$.block.style, {
@@ -38,7 +39,6 @@ class SwipeDemo extends Base {
     }
     if (changed.swipeFraction) {
       const axis = vertical ? 'Y' : 'X';
-      const swipeFraction = state.swipeFraction;
       this.$.block.style.transform = swipeFraction !== null ?
         `translate${axis}(${swipeFraction * 100}%)` :
         null;

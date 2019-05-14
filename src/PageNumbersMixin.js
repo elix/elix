@@ -17,10 +17,10 @@ function PageNumbersMixin(Base) {
 
   class PageNumbers extends Base {
 
-    [symbols.render](state, changed) {
-      if (super[symbols.render]) { super[symbols.render](state, changed); }
+    [symbols.render](changed) {
+      if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.selectedIndex) {
-        const { selectedIndex } = state;
+        const { selectedIndex } = this.state;
         const textContent = selectedIndex >= 0 && this.items ?
           `${selectedIndex + 1} / ${this.items.length}` :
           '';

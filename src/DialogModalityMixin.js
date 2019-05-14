@@ -70,12 +70,13 @@ export default function DialogModalityMixin(Base) {
       return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
     }
 
-    [symbols.render](state, changed) {
-      if (super[symbols.render]) { super[symbols.render](state, changed); }
+    [symbols.render](changed) {
+      if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.originalAttributes || changed.role) {
-        const originalRole = state.originalAttributes && state.originalAttributes.role;
+        const { originalAttributes, role } = this.state;
+        const originalRole = originalAttributes && originalAttributes.role;
         if (!originalRole) {
-          this.setAttribute('role', state.role);
+          this.setAttribute('role', role);
         }
       }
     }

@@ -46,16 +46,16 @@ class CenteredStrip extends Base {
     return 'horizontal';
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.clientWidth || changed.enableEffects || 
         changed.selectedIndex || changed.swipeFraction ||
         changed.languageDirection) {
-      const rightToLeft = state.languageDirection === 'rtl';
+      const rightToLeft = this.state.languageDirection === 'rtl';
       const sign = rightToLeft ? 1 : -1;
-      const swiping = state.swipeFraction != null;
-      const selectedIndex = this.selectedIndex;
-      const swipeFraction = state.swipeFraction || 0;
+      const swiping = this.state.swipeFraction != null;
+      const selectedIndex = this.state.selectedIndex;
+      const swipeFraction = this.state.swipeFraction || 0;
       const selectionFraction = selectedIndex + sign * swipeFraction;
   
       // @ts-ignore
@@ -116,7 +116,7 @@ class CenteredStrip extends Base {
         translation *= sign;
       }
   
-      const showTransition = state.enableEffects && !swiping;
+      const showTransition = this.state.enableEffects && !swiping;
       Object.assign(this.$.strip.style, {
         transform: `translateX(${translation}px)`,
         transition: showTransition ? 'transform 0.25s' : 'none'

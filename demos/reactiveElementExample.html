@@ -38,8 +38,8 @@
       }
 
       // Render the current state to the DOM.
-      [symbols.render](state, changed) {
-        super[symbols.render](state, changed);
+      [symbols.render](changed) {
+        super[symbols.render](changed);
         if (changed.value) {
           this.$.value.textContent = state.value;
         }

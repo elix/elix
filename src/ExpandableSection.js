@@ -56,8 +56,8 @@ class ExpandableSection extends Base {
     this.setState({ panelRole });
   }
 
-  [symbols.populate](state, changed) {
-    super[symbols.populate](state, changed);
+  [symbols.populate](changed) {
+    super[symbols.populate](changed);
     if (changed.headerRole) {
       template.transmute(this.$.header, this.state.headerRole);
       this.$.header.addEventListener('click', () => {
@@ -71,17 +71,18 @@ class ExpandableSection extends Base {
     }
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.originalAttributes || changed.role) {
-      const originalRole = state.originalAttributes && state.originalAttributes.role;
+      const { originalAttributes, role } = this.state;
+      const originalRole = originalAttributes && originalAttributes.role;
       if (!originalRole) {
-        this.setAttribute('role', state.role);
+        this.setAttribute('role', role);
       }
     }
     if (changed.opened) {
-      const { opened } = state;
-      this.$.header.setAttribute('aria-expanded', opened);
+      const { opened } = this.state;
+      this.$.header.setAttribute('aria-expanded', opened.toString());
       if (this.$.collapseIcon) {
         this.$.collapseIcon.style.display = opened ? 'block' : 'none';
       }

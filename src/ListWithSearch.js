@@ -157,8 +157,8 @@ class ListWithSearch extends Base {
     this.setState({ placeholder });
   }
 
-  [symbols.populate](state, changed) {
-    super[symbols.populate](state, changed);
+  [symbols.populate](changed) {
+    super[symbols.populate](changed);
     if (changed.inputRole) {
       template.transmute(this.$.input, this.state.inputRole);
       this.$.input.addEventListener('input', () => {
@@ -175,17 +175,20 @@ class ListWithSearch extends Base {
     }
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.ariaLabel) {
-      this.$.input.setAttribute('aria-label', state.ariaLabel);
+      const { ariaLabel } = this.state;
+      this.$.input.setAttribute('aria-label', ariaLabel);
     }
     if (changed.filter) {
-      /** @type {HTMLInputElement} */ (this.$.input).value = state.filter;
-      /** @type {any} */ (this.$.list).filter = state.filter;
+      const { filter } = this.state;
+      /** @type {HTMLInputElement} */ (this.$.input).value = filter;
+      /** @type {any} */ (this.$.list).filter = filter;
     }
     if (changed.placeholder) {
-      /** @type {HTMLInputElement} */ (this.$.input).placeholder = state.placeholder;
+      const { placeholder } = this.state;
+      /** @type {HTMLInputElement} */ (this.$.input).placeholder = placeholder;
     }
   }
 

@@ -48,11 +48,11 @@ class CalendarDay extends Base {
     });
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     const classList = this.classList;
+    const { date } = this.state;
     if (changed.date) {
-      const date = state.date;
       const today = calendar.today();
       const dayOfWeek = date.getDay();
       const dayOfMonth = date.getDate();
@@ -70,17 +70,18 @@ class CalendarDay extends Base {
       this.$.day.textContent = dayOfMonth.toString();
     }
     if (changed.date || changed.locale) {
-      const dayOfWeek = state.date.getDay();
-      const weekend = dayOfWeek === calendar.weekendStart(state.locale) ||
-        dayOfWeek === calendar.weekendEnd(state.locale);
+      const dayOfWeek = date.getDay();
+      const { locale } = this.state;
+      const weekend = dayOfWeek === calendar.weekendStart(locale) ||
+        dayOfWeek === calendar.weekendEnd(locale);
       classList.toggle('weekday', !weekend);
       classList.toggle('weekend', weekend);
     }
     if (changed.outsideRange) {
-      classList.toggle('outsideRange', state.outsideRange);
+      classList.toggle('outsideRange', this.state.outsideRange);
     }
     if (changed.selected) {
-      classList.toggle('selected', state.selected);
+      classList.toggle('selected', this.state.selected);
     }
   }
 

@@ -43,8 +43,8 @@ class Input extends Base {
     this.setAttribute('aria-hidden', 'true');
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.originalAttributes) {
       // See note in componentDidMount.
       this.$.inner.removeAttribute('aria-hidden');

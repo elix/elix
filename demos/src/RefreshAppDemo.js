@@ -57,10 +57,10 @@ class RefreshAppDemo extends ReactiveElement {
     }, 1000);
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.paragraphs) {
-      applyChildNodes(this.$.pullToRefresh, state.paragraphs);
+      applyChildNodes(this.$.pullToRefresh, this.state.paragraphs);
     }
   }
 

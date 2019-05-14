@@ -40,14 +40,14 @@ class SlidingStage extends Base {
     });
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.enableEffects || changed.selectedIndex || changed.swipeFraction) {
-      const rightToLeft = state.languageDirection === 'rtl';
+      const { languageDirection, selectedIndex, items } = this.state;
+      const rightToLeft = languageDirection === 'rtl';
       const sign = rightToLeft ? 1 : -1;
-      const swiping = state.swipeFraction != null;
-      const swipeFraction = state.swipeFraction || 0;
-      const { selectedIndex, items } = state;
+      const swiping = this.state.swipeFraction != null;
+      const swipeFraction = this.state.swipeFraction || 0;
       let translation;
       if (selectedIndex >= 0) {
         const selectionFraction = selectedIndex + sign * swipeFraction;

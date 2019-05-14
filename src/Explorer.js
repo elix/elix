@@ -101,8 +101,8 @@ class Explorer extends Base {
     return state;
   }
 
-  [symbols.populate](state, changed) {
-    super[symbols.populate](state, changed);
+  [symbols.populate](changed) {
+    super[symbols.populate](changed);
 
     const handleSelectedIndexChanged = event => {
       this[symbols.raiseChangeEvents] = true;
@@ -197,15 +197,16 @@ class Explorer extends Base {
     this.setState({ proxyRole });
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     const proxyList = this.$.proxyList;
     const stage = this.$.stage;
     if (changed.proxies || changed.proxiesAssigned) {
       // Render the default proxies.
-      const childNodes = state.proxiesAssigned ?
+      const { proxies, proxiesAssigned } = this.state;
+      const childNodes = proxiesAssigned ?
         [this.$.proxySlot] :
-        [this.$.proxySlot, ...state.proxies];
+        [this.$.proxySlot, ...proxies];
       applyChildNodes(this.$.proxyList, childNodes);
     }
     if (changed.languageDirection || changed.proxyListPosition) {
@@ -213,8 +214,8 @@ class Explorer extends Base {
       // from the perspective of the list.
       const cast = /** @type {any} */ (proxyList);
       if ('position' in cast) {
-        const proxyListPosition = state.proxyListPosition;
-        const rightToLeft = state.languageDirection === 'rtl';
+        const { languageDirection, proxyListPosition } = this.state;
+        const rightToLeft = languageDirection === 'rtl';
         let position;
         switch (proxyListPosition) {
           case 'end':
@@ -231,8 +232,8 @@ class Explorer extends Base {
       }
     }
     if (changed.proxyListOverlap || changed.proxyListPosition || changed.proxyListRole) {
-      const { proxyListOverlap } = state;
-      const lateralPosition = lateralPositions[state.proxyListPosition];
+      const { proxyListOverlap, proxyListPosition } = this.state;
+      const lateralPosition = lateralPositions[proxyListPosition];
       Object.assign(proxyList.style, {
         height: lateralPosition ? '100%' : null,
         position: proxyListOverlap ? 'absolute' : null,
@@ -241,8 +242,8 @@ class Explorer extends Base {
       });
     }
     if (changed.proxyListPosition || changed.proxyListRole) {
-      setListAndStageOrder(this, state);
-      const { proxyListPosition } = state;
+      setListAndStageOrder(this, this.state);
+      const { proxyListPosition } = this.state;
       const lateralPosition = lateralPositions[proxyListPosition];
       this.$.explorerContainer.style.flexDirection = lateralPosition ? 'row' : 'column';
       Object.assign(proxyList.style, {
@@ -254,27 +255,32 @@ class Explorer extends Base {
     }
     if (changed.selectedIndex || changed.proxyListRole) {
       if ('selectedIndex' in proxyList) {
-        /** @type {any} */ (proxyList).selectedIndex = state.selectedIndex;
+        const { selectedIndex } = this.state;
+        /** @type {any} */ (proxyList).selectedIndex = selectedIndex;
       }
     }
     if (changed.selectedIndex || changed.stageRole) {
       if ('selectedIndex' in stage) {
-        /** @type {any} */ (stage).selectedIndex = state.selectedIndex;
+        const { selectedIndex } = this.state;
+        /** @type {any} */ (stage).selectedIndex = selectedIndex;
       }
     }
     if (changed.selectionRequired || changed.proxyListRole) {
       if ('selectionRequired' in proxyList) {
-        /** @type {any} */ (proxyList).selectionRequired = state.selectionRequired;
+        const { selectionRequired } = this.state;
+        /** @type {any} */ (proxyList).selectionRequired = selectionRequired;
       }
     }
     if (changed.swipeFraction || changed.proxyListRole) {
       if ('swipeFraction' in proxyList) {
-        /** @type {any} */ (proxyList).swipeFraction = state.swipeFraction;
+        const { swipeFraction } = this.state;
+        /** @type {any} */ (proxyList).swipeFraction = swipeFraction;
       }
     }
     if (changed.swipeFraction || changed.stageRole) {
       if ('swipeFraction' in stage) {
-        /** @type {any} */ (stage).swipeFraction = state.swipeFraction;
+        const { swipeFraction } = this.state;
+        /** @type {any} */ (stage).swipeFraction = swipeFraction;
       }
     }
   }

@@ -14,8 +14,8 @@ import CalendarDay from '../../src/CalendarDay.js';
  */
 class CalendarDayMoonPhase extends CalendarDay {
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.date) {
       // To determine quarter, we compare the moon's angle at midnight on the
       // given date with the angle at midnight on the following date.

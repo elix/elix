@@ -26,8 +26,8 @@ class CenteredStripOpacity extends CenteredStrip {
     });
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.enableEffects || changed.languageDirection || changed.items ||
         changed.selectedIndex || changed.swipeFraction || changed.transitionDuration) {
       // Apply opacity based on selection state.
@@ -38,7 +38,7 @@ class CenteredStripOpacity extends CenteredStrip {
         selectedIndex,
         swipeFraction,
         transitionDuration
-      } = state;
+      } = this.state;
       if (items) {
         const rightToLeft = languageDirection === 'rtl';
         const sign = rightToLeft ? 1 : -1;

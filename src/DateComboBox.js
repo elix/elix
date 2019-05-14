@@ -308,8 +308,8 @@ class DateComboBox extends Base {
     return calendar.parseWithOptionalYear(text, dateTimeFormat, timeBias);
   }
 
-  [symbols.populate](state, changed) {
-    super[symbols.populate](state, changed);
+  [symbols.populate](changed) {
+    super[symbols.populate](changed);
     if (changed.calendarRole) {
       template.transmute(this.$.calendar, this.state.calendarRole);
       this.$.calendar.addEventListener('date-changed', event => {
@@ -338,24 +338,24 @@ class DateComboBox extends Base {
     }
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     const calendar = /** @type {any} */ (this.$.calendar);
     if (changed.arrowButtonRole) {
       if ('arrowButtonRole' in calendar) {
-        calendar.arrowButtonRole = state.arrowButtonRole;
+        calendar.arrowButtonRole = this.state.arrowButtonRole;
       }
     }
     if (changed.date) {
-      calendar.date = state.date;
+      calendar.date = this.state.date;
     }
     if (changed.dayRole) {
       if ('dayRole' in calendar) {
-        calendar.dayRole = state.dayRole;
+        calendar.dayRole = this.state.dayRole;
       }
     }
     if (changed.locale) {
-      calendar.locale = state.locale;
+      calendar.locale = this.state.locale;
     }
   }
 

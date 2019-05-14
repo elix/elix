@@ -59,10 +59,10 @@ class CalendarDayNamesHeader extends ReactiveElement {
     this.setState({ locale });
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.format || changed.locale) {
-      const { format, locale } = state;
+      const { format, locale } = this.state;
       const formatter = calendar.dateTimeFormat(locale, {
         weekday: format
       });

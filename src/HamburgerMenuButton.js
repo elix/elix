@@ -106,8 +106,8 @@ class HamburgerMenuButton extends Base {
     this.setState({ menuButtonRole });
   }
 
-  [symbols.populate](state, changed) {
-    super[symbols.populate](state, changed);
+  [symbols.populate](changed) {
+    super[symbols.populate](changed);
     if (changed.menuButtonRole) {
       template.transmute(this.$.menuButton, this.state.menuButtonRole);
       this.$.menuButton.addEventListener('click', () => {
@@ -134,17 +134,17 @@ class HamburgerMenuButton extends Base {
     }
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     const menu = /** @type {any} */ (this.$.menu);
     if (changed.fromEdge) {
       if ('fromEdge' in menu) {
-        menu.fromEdge = state.fromEdge;
+        menu.fromEdge = this.state.fromEdge;
       }
     }
     if (changed.opened) {
       if ('opened' in menu) {
-        menu.opened = state.opened;
+        menu.opened = this.state.opened;
       }
     }
   }

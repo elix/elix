@@ -157,8 +157,8 @@ class PopupSource extends Base {
     });
   }
 
-  [symbols.populate](state, changed) {
-    super[symbols.populate](state, changed);
+  [symbols.populate](changed) {
+    super[symbols.populate](changed);
     if (changed.sourceRole) {
       template.transmute(this.$.source, this.state.sourceRole);
     }    
@@ -221,12 +221,13 @@ class PopupSource extends Base {
     this.setState({ popupRole });
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.originalAttributes || changed.role) {
-      const originalRole = state.originalAttributes && state.originalAttributes.role;
+      const { originalAttributes, role } = this.state;
+      const originalRole = originalAttributes && originalAttributes.role;
       if (!originalRole) {
-        this.setAttribute('role', state.role);
+        this.setAttribute('role', role);
       }
     }
     if (changed.horizontalAlign || changed.languageDirection ||
@@ -236,19 +237,20 @@ class PopupSource extends Base {
         languageDirection,
         popupHeight,
         popupMeasured,
+        popupPosition,
         popupWidth,
         roomAbove,
         roomBelow,
         roomLeft,
         roomRight
-      } = state;
+      } = this.state;
       
       const fitsAbove = popupHeight <= roomAbove;
       const fitsBelow = popupHeight <= roomBelow;
       const canLeftAlign = popupWidth <= roomRight;
       const canRightAlign = popupWidth <= roomLeft;
 
-      const preferPositionBelow = state.popupPosition === 'below';
+      const preferPositionBelow = popupPosition === 'below';
 
       // We respect each position popup preference (above/below/right/right) if
       // there's room in that direction. Otherwise, we use the horizontal/vertical
@@ -321,27 +323,30 @@ class PopupSource extends Base {
       this.$.popupContainer.style.top = positionBelow ? null : '0';
     }
     if (changed.opened) {
-      const { opened } = state;
+      const { opened } = this.state;
       Object.assign(this.$.source.style, {
         backgroundColor: opened ? 'highlight' : null,
         color: opened ? 'highlighttext' : null
       });
       /** @type {any} */ (this.$.popup).opened = opened;
-      this.setAttribute('aria-expanded', opened);
+      this.setAttribute('aria-expanded', opened.toString());
     }
     if (changed.backdropRole) {
       if ('backdropRole' in this.$.popup) {
-        /** @type {any} */ (this.$.popup).backdropRole = state.backdropRole;
+        const { backdropRole } = this.state;
+        /** @type {any} */ (this.$.popup).backdropRole = backdropRole;
       }
     }
     if (changed.frameRole) {
       if ('frameRole' in this.$.popup) {
-        /** @type {any} */ (this.$.popup).frameRole = state.frameRole;
+        const { frameRole } = this.state;
+        /** @type {any} */ (this.$.popup).frameRole = frameRole;
       }
     }
     if (changed.disabled) {
       if ('disabled' in this.$.source) {
-        /** @type {any} */ (this.$.source).disabled = state.disabled;
+        const { disabled } = this.state;
+        /** @type {any} */ (this.$.source).disabled = disabled;
       }
     }
   }

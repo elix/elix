@@ -68,10 +68,10 @@ class RenderState extends Base {
     });
   }
 
-  [symbols.render](state, changed) {
-    if (super[symbols.render]) { super[symbols.render](state, changed); }
+  [symbols.render](changed) {
+    if (super[symbols.render]) { super[symbols.render](changed); }
     if (changed.fixture || changed.fixtureState) {
-      const { fixture, fixtureState } = state;
+      const { fixture, fixtureState } = this.state;
       if (fixture && fixtureState) {
         customElements.whenDefined(fixture.localName)
         .then(() => {

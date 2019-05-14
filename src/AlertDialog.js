@@ -109,10 +109,10 @@ class AlertDialog extends Dialog {
     return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.choiceButtons) {
-      applyChildNodes(this.$.buttonContainer, state.choiceButtons);
+      applyChildNodes(this.$.buttonContainer, this.state.choiceButtons);
     }
   }
 

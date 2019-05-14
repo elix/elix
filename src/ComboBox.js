@@ -163,8 +163,8 @@ class ComboBox extends Base {
     });
   }
 
-  [symbols.populate](state, changed) {
-    super[symbols.populate](state, changed);
+  [symbols.populate](changed) {
+    super[symbols.populate](changed);
     if (changed.inputRole) {
       template.transmute(this.$.input, this.state.inputRole);
 
@@ -264,18 +264,18 @@ class ComboBox extends Base {
     }
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.ariaLabel) {
-      this.$.input.setAttribute('aria-label', state.ariaLabel);
+      this.$.input.setAttribute('aria-label', this.state.ariaLabel);
     }
     if (changed.disabled) {
-      const { disabled } = state;
+      const { disabled } = this.state;
       /** @type {any} */ (this.$.input).disabled = disabled;
       /** @type {any} */ (this.$.toggleButton).disabled = disabled;
     }
     if (changed.languageDirection) {
-      const { languageDirection } = state;
+      const { languageDirection } = this.state;
       const rightToLeft = languageDirection === 'rtl';
       // We want to style the inner input if it's been created with
       // WrappedStandardElement, otherwise style the input directly.
@@ -295,16 +295,18 @@ class ComboBox extends Base {
       });
     }
     if (changed.originalAttributes || changed.role) {
-      const originalRole = state.originalAttributes && state.originalAttributes.role;
+      const { originalAttributes, role } = this.state;
+      const originalRole = originalAttributes && originalAttributes.role;
       if (!originalRole) {
-        this.setAttribute('role', state.role);
+        this.setAttribute('role', role);
       }
     }
     if (changed.placeholder) {
-      /** @type {any} */ (this.$.input).placeholder = state.placeholder;
+      const { placeholder } = this.state;
+      /** @type {any} */ (this.$.input).placeholder = placeholder;
     }
     if (changed.popupPosition) {
-      const { popupPosition } = state;
+      const { popupPosition } = this.state;
       this.$.downIcon.style.display = popupPosition === 'below' ?
         'block' :
         'none';
@@ -313,7 +315,8 @@ class ComboBox extends Base {
         'none';
     }
     if (changed.value) {
-      /** @type {any} */ (this.$.input).value = state.value;
+      const { value } = this.state;
+      /** @type {any} */ (this.$.input).value = value;
     }
   }
 

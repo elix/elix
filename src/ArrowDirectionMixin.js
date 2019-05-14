@@ -75,7 +75,7 @@ function ArrowDirectionMixin(Base) {
       });
     }
 
-    [symbols.populate](state, changed) {
+    [symbols.populate](changed) {
       if (changed.arrowButtonRole) {
         if (this.$.arrowButtonLeft) {
           // Turn off focus handling for old left button.
@@ -86,7 +86,7 @@ function ArrowDirectionMixin(Base) {
           forwardFocus(this.$.arrowButtonRight, null);
         }
       }
-      if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+      if (super[symbols.populate]) { super[symbols.populate](changed); }
       if (changed.arrowButtonRole) {
         const arrowButtons = this.shadowRoot.querySelectorAll('.arrowButton');
         template.transmute(arrowButtons, this.state.arrowButtonRole);
@@ -126,11 +126,12 @@ function ArrowDirectionMixin(Base) {
       }
     }
 
-    [symbols.render](state, changed) {
-      if (super[symbols.render]) { super[symbols.render](state, changed); }
+    [symbols.render](changed) {
+      if (super[symbols.render]) { super[symbols.render](changed); }
       const { arrowButtonLeft, arrowButtonRight } = this.$;
+      const { arrowButtonOverlap, darkMode } = this.state;
       if (changed.arrowButtonOverlap) {
-        const buttonStyle = state.arrowButtonOverlap ?
+        const buttonStyle = arrowButtonOverlap ?
           {
             'bottom': 0,
             'position': 'absolute',
@@ -144,10 +145,10 @@ function ArrowDirectionMixin(Base) {
             'z-index': null
           };
         Object.assign(arrowButtonLeft.style, buttonStyle, {
-          left: state.arrowButtonOverlap ? 0 : ''
+          left: arrowButtonOverlap ? 0 : ''
         });
         Object.assign(arrowButtonRight.style, buttonStyle, {
-          right: state.arrowButtonOverlap ? 0 : ''
+          right: arrowButtonOverlap ? 0 : ''
         });
       }
       if (changed.canGoLeft) {
@@ -155,16 +156,17 @@ function ArrowDirectionMixin(Base) {
         // arrowButtonLeft.disabled = !state.canGoLeft;
         // But a bug in Chrome prevents this from working.
         // TODO: Isolate repro case.
-        arrowButtonLeft.toggleAttribute('disabled', !state.canGoLeft);
+        const { canGoLeft } = this.state;
+        arrowButtonLeft.toggleAttribute('disabled', !canGoLeft);
       }
       if (changed.canGoRight) {
-        // See not for canGoLeft.
-        arrowButtonRight.toggleAttribute('disabled', !state.canGoRight);
+        // See note for canGoLeft.
+        const { canGoRight } = this.state;
+        arrowButtonRight.toggleAttribute('disabled', !canGoRight);
       }
       // Wait for knowledge of dark mode
-      if (changed.darkMode && state.darkMode !== null) {
+      if (changed.darkMode && darkMode !== null) {
         // Apply dark mode to buttons.
-        const { darkMode } = state;
         if ('darkMode' in this.$.arrowButtonLeft) {
           /** @type {any} */ (this.$.arrowButtonLeft).darkMode = darkMode;
         }
@@ -173,13 +175,13 @@ function ArrowDirectionMixin(Base) {
         }
       }
       if (changed.languageDirection) {
-        const rightToLeft = state.languageDirection === 'rtl';
+        const rightToLeft = this.state.languageDirection === 'rtl';
         this.$.arrowDirection.style.flexDirection = rightToLeft ?
           'row-reverse' :
           'row';
       }
       if (changed.showArrowButtons) {
-        const display = state.showArrowButtons ? null : 'none';
+        const display = this.state.showArrowButtons ? null : 'none';
         arrowButtonLeft.style.display = display;
         arrowButtonRight.style.display = display;
       }

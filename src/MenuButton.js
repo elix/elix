@@ -236,8 +236,8 @@ class MenuButton extends PopupButton {
     this.setState({ menuRole });
   }
 
-  [symbols.populate](state, changed) {
-    super[symbols.populate](state, changed);
+  [symbols.populate](changed) {
+    super[symbols.populate](changed);
     if (changed.popupRole) {
       this.$.popup.tabIndex = -1;
     }
@@ -303,12 +303,12 @@ class MenuButton extends PopupButton {
     }
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.menuSelectedIndex) {
       const menu = /** @type {any} */ (this.$.menu);
       if ('selectedIndex' in menu) {
-        menu.selectedIndex = state.menuSelectedIndex;
+        menu.selectedIndex = this.state.menuSelectedIndex;
       }
     }
   }

@@ -38,14 +38,14 @@ class Tabs extends Base {
     });
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
-    const { items, proxies } = state;
+  [symbols.render](changed) {
+    super[symbols.render](changed);
+    const { items, proxies } = this.state;
     if ((changed.items || changed.proxies)
       && items && proxies) {
 
       // Recreate association between items and proxies.
-      const { proxiesAssigned, itemRole } = state;
+      const { proxiesAssigned, itemRole } = this.state;
 
       // Create role for each item.
       items.forEach((item, index) => {
@@ -80,7 +80,8 @@ class Tabs extends Base {
         const item = items[index];
         if (item) {
           if (!proxiesAssigned) {
-            const label = item.getAttribute('aria-label') || item.alt;
+            const label = item.getAttribute('aria-label') ||
+              'alt' in item ? /** @type {any} */ (item).alt : '';
             proxy.textContent = label;
           }
           // Point the proxy at the item.
@@ -96,15 +97,15 @@ class Tabs extends Base {
     }
     if (changed.generic) {
       if ('generic' in this.$.proxyList) {
-        /** @type {any} */ (this.$.proxyList).generic = state.generic;
+        /** @type {any} */ (this.$.proxyList).generic = this.state.generic;
       }
     }
     if ((changed.generic || changed.proxies || changed.proxiesAssigned) &&
         proxies) {
-      if (!state.proxiesAssigned) {
+      if (!this.state.proxiesAssigned) {
         proxies.forEach(proxy => {
           if ('generic' in proxy) {
-            proxy.generic = state.generic;
+            proxy.generic = this.state.generic;
           }
         });
       }
@@ -113,7 +114,7 @@ class Tabs extends Base {
       // Apply alignment to proxy list.
       if ('tabAlign' in this.$.proxyList) {
         const proxyList = /** @type {any} */ (this.$.proxyList);
-        proxyList.tabAlign = state.tabAlign;
+        proxyList.tabAlign = this.state.tabAlign;
       }
     }
   }

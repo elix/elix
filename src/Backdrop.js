@@ -15,17 +15,18 @@ import ReactiveElement from './ReactiveElement.js';
 class Backdrop extends ReactiveElement {
 
   get defaultState() {
-    return Object.assign({}, super.defaultState, {
+    return Object.assign(super.defaultState, {
       role: 'none'
     });
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.originalAttributes || changed.role) {
-      const originalRole = state.originalAttributes && state.originalAttributes.role;
+      const { originalAttributes, role } = this.state;
+      const originalRole = originalAttributes && originalAttributes.role;
       if (!originalRole) {
-        this.setAttribute('role', state.role);
+        this.setAttribute('role', role);
       }
     }
   }

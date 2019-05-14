@@ -25,11 +25,11 @@ class AutoCompleteComboBox extends Base {
     });
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.texts) {
       if ('texts' in this.$.input) {
-        /** @type {any} */ (this.$.input).texts = state.texts;
+        /** @type {any} */ (this.$.input).texts = this.state.texts;
       }
     }
   }

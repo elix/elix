@@ -91,15 +91,15 @@ class CalendarDays extends Base {
     return state;
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.days) {
-      applyChildNodes(this.$.dayContainer, state.days);
+      applyChildNodes(this.$.dayContainer, this.state.days);
     }
     if (changed.date || changed.showSelectedDay) {
       // Ensure only current date has "selected" class.
-      const showSelectedDay = state.showSelectedDay;
-      const { date } = state;
+      const showSelectedDay = this.state.showSelectedDay;
+      const { date } = this.state;
       const selectedDate = date.getDate();
       const selectedMonth = date.getMonth();
       const selectedYear = date.getFullYear();
@@ -117,9 +117,9 @@ class CalendarDays extends Base {
     }
     if (changed.dayCount || changed.startDate) {
       // Mark dates as inside or outside of range.
-      const { dayCount, startDate } = state;
+      const { dayCount, startDate } = this.state;
       const firstDateAfterRange = calendar.offsetDateByDays(startDate, dayCount);
-      const days = state.days || [];
+      const days = this.state.days || [];
       days.forEach(day => {
         if ('outsideRange' in day) {
           const dayDate = day.date;

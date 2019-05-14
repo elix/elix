@@ -307,18 +307,18 @@ class WrappedStandardElement extends Base {
     return value || (this.shadowRoot && this.inner[name]);
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     const inner = this.inner;
     if (changed.tabIndex) {
-      inner.tabIndex = state.tabIndex;
+      inner.tabIndex = this.state.tabIndex;
     }
     if (changed.originalAttributes) {
       // Delegate any ARIA attributes to the inner element, as well as any
       // attributes that don't have corresponding properties. (Attributes
       // that correspond to properties will be handled separately by our
       // generated property delegates.)
-      const { originalAttributes } = state;
+      const { originalAttributes } = this.state;
       for (const key in originalAttributes) {
         if (key.startsWith('aria-') ||
             attributesWithoutProperties.indexOf(key) >= 0) {
@@ -327,7 +327,7 @@ class WrappedStandardElement extends Base {
         }
       }
     }
-    Object.assign(inner, state.innerProperties);
+    Object.assign(inner, this.state.innerProperties);
   }
 
   // Save property assignment in state.
@@ -349,28 +349,6 @@ class WrappedStandardElement extends Base {
       });
       this.setState({ innerProperties });
     }
-  }
-
-  shouldComponentUpdate(nextState) {
-    const base = super.shouldComponentUpdate && super.shouldComponentUpdate(nextState);
-    if (base) {
-      return true; // Trust base result.
-    }
-
-    // Do a shallow prop comparison of inner properties and attributes too.
-    for (const key in nextState.innerAttributes) {
-      if (nextState.innerAttributes[key] !== this.state.innerAttributes[key]) {
-        return true;
-      }
-    }
-
-    for (const key in nextState.innerProperties) {
-      if (nextState.innerProperties[key] !== this.state.innerProperties[key]) {
-        return true;
-      }
-    }
-
-    return false; // No changes.
   }
 
   /**

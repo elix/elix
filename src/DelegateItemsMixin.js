@@ -67,15 +67,15 @@ export default function DelegateItemsMixin(Base) {
       return this.state ? this.state.items : null;
     }
 
-    [symbols.render](state, changed) {
-      if (super[symbols.render]) { super[symbols.render](state, changed); }
+    [symbols.render](changed) {
+      if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.selectedIndex) {
         const itemsDelegate = this[symbols.itemsDelegate];
         if (typeof itemsDelegate === 'undefined') {
           throw `To use DelegateItemsMixin, ${this.constructor.name} must define a getter for [symbols.itemsDelegate].`;
         }
         if ('selectedIndex' in itemsDelegate) {
-          itemsDelegate.selectedIndex = state.selectedIndex;
+          itemsDelegate.selectedIndex = this.state.selectedIndex;
         }
       }
     }

@@ -32,20 +32,20 @@ class CalendarDayButton extends Base {
     });
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     /** @type {any} */ const day = this.$.day;
     if (changed.date) {
-      day.date = state.date;
+      day.date = this.state.date;
     }
     if (changed.locale) {
-      day.locale = state.locale;
+      day.locale = this.state.locale;
     }
     if (changed.outsideRange) {
-      day.outsideRange = state.outsideRange;
+      day.outsideRange = this.state.outsideRange;
     }
     if (changed.selected) {
-      day.selected = state.selected;
+      day.selected = this.state.selected;
     }
   }
 

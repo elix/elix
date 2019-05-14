@@ -53,8 +53,8 @@ export default function PlayControlsMixin(Base) {
       return handled || (super[symbols.keydown] && super[symbols.keydown](event));
     }
 
-    [symbols.populate](state, changed) {
-      if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    [symbols.populate](changed) {
+      if (super[symbols.populate]) { super[symbols.populate](changed); }
       if (changed.controlButtonRole) {
         const controlButtons = this.shadowRoot.querySelectorAll('.controlButton');
         template.transmute(controlButtons, this.state.controlButtonRole);
@@ -77,10 +77,10 @@ export default function PlayControlsMixin(Base) {
       }
     }
 
-    [symbols.render](state, changed) {
-      super[symbols.render](state, changed);
+    [symbols.render](changed) {
+      super[symbols.render](changed);
       if (changed.languageDirection) {
-        const rightToLeft = state.languageDirection === 'rtl';
+        const rightToLeft = this.state.languageDirection === 'rtl';
         const transform = rightToLeft ?
           'rotate(180deg)' :
           '';
@@ -88,7 +88,7 @@ export default function PlayControlsMixin(Base) {
         this.$.previousIcon.style.transform = transform;
       }
       if (changed.playing) {
-        const { playing } = state;
+        const { playing } = this.state;
         this.$.pausedIcon.style.display = playing ? 'none' : '';
         this.$.playingIcon.style.display = playing ? '' : 'none';
       }

@@ -319,10 +319,11 @@ class LocaleSelector extends ReactiveElement {
     });
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.value) {
-      /** @type {HTMLSelectElement} */ (this.$.select).value = state.value;
+      const { value } = this.state.value;
+      /** @type {HTMLSelectElement} */ (this.$.select).value = value;
     }
   }
 

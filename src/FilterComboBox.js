@@ -1,5 +1,5 @@
 import { getTextsFromItems } from './ItemsTextMixin.js';
-import { isSubstantiveElement } from './content.js';
+import { substantiveElements } from './content.js';
 import * as symbols from './symbols.js';
 import AutoCompleteInput from './AutoCompleteInput.js';
 import FilterListBox from './FilterListBox.js';
@@ -35,7 +35,7 @@ class FilterComboBox extends Base {
     state.onChange('content', state => {
       const { content } = state;
       const items = content ?
-        content.filter(element => isSubstantiveElement(element)) :
+        substantiveElements(content) :
         null;
       const texts = items ?
         getTextsFromItems(items) :
@@ -58,8 +58,8 @@ class FilterComboBox extends Base {
     return state;
   }
 
-  [symbols.populate](state, changed) {
-    super[symbols.populate](state, changed);
+  [symbols.populate](changed) {
+    super[symbols.populate](changed);
     if (changed.inputRole) {
       this.$.input.addEventListener('input', event => {
         this[symbols.raiseChangeEvents] = true;
@@ -76,10 +76,10 @@ class FilterComboBox extends Base {
     }
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.filter || changed.selectedIndex) {
-      const { filter, selectedIndex } = state;
+      const { filter, selectedIndex } = this.state;
       if (filter === '' || selectedIndex === -1) {
         const list = /** @type {any} */ (this.$.list);
         if ('filter' in list) {
@@ -90,7 +90,7 @@ class FilterComboBox extends Base {
     if (changed.texts) {
       const input = /** @type {any} */ (this.$.input);
       if ('texts' in input) {
-        input.texts = state.texts;
+        input.texts = this.state.texts;
       }
     }
   }

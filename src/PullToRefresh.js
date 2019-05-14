@@ -113,8 +113,8 @@ class PullToRefresh extends Base {
     return state;
   }
 
-  [symbols.populate](state, changed) {
-    super[symbols.populate](state, changed);
+  [symbols.populate](changed) {
+    super[symbols.populate](changed);
     if (changed.pullIndicatorRole) {
       template.transmute(this.$.pullIndicator, this.pullIndicatorRole);
     }
@@ -159,10 +159,10 @@ class PullToRefresh extends Base {
     this.setState({ refreshingIndicatorRole });
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.refreshing) {
-      const { refreshing } = state;
+      const { refreshing } = this.state;
       const refreshingIndicator = this.$.refreshingIndicator;
       refreshingIndicator.style.visibility = refreshing ?
         'visible' :
@@ -172,12 +172,13 @@ class PullToRefresh extends Base {
       }
     }
     if (changed.enableEffects || changed.refreshing || changed.swipeFraction) {
-      const swipingDown = state.swipeFraction != null && state.swipeFraction > 0;
-      let y = getTranslationForSwipeFraction(state, this[symbols.swipeTarget]);
-      if (state.refreshing) {
+      const { enableEffects, refreshing, swipeFraction } = this.state;
+      const swipingDown = swipeFraction != null && swipeFraction > 0;
+      let y = getTranslationForSwipeFraction(this.state, this[symbols.swipeTarget]);
+      if (refreshing) {
         y = Math.max(y, getSwipeThreshold(this));
       }
-      const showTransition = state.enableEffects && !swipingDown;
+      const showTransition = enableEffects && !swipingDown;
       Object.assign(this.style, {
         transform: `translate3D(0, ${y}px, 0)`,
         transition: showTransition ?
@@ -187,11 +188,17 @@ class PullToRefresh extends Base {
     }
     if (changed.pullTriggeredRefresh || changed.refreshing ||
         changed.scrollPullDistance || changed.swipeFraction) {
-      const swipingDown = state.swipeFraction != null && state.swipeFraction > 0;
-      const scrollingDown = !!state.scrollPullDistance;
+      const {
+        pullTriggeredRefresh,
+        refreshing,
+        scrollPullDistance,
+        swipeFraction
+      } = this.state;
+      const swipingDown = swipeFraction != null && swipeFraction > 0;
+      const scrollingDown = !!scrollPullDistance;
       const pullingDown = swipingDown || scrollingDown;
-      const showPullIndicator = !state.refreshing &&
-        !state.pullTriggeredRefresh &&
+      const showPullIndicator = !refreshing &&
+        !pullTriggeredRefresh &&
         pullingDown;
       this.$.pullIndicator.style.visibility = showPullIndicator ?
         'visible' :

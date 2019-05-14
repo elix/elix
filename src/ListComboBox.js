@@ -157,8 +157,8 @@ class ListComboBox extends Base {
     return this.$.list;
   }
 
-  [symbols.populate](state, changed) {
-    super[symbols.populate](state, changed);
+  [symbols.populate](changed) {
+    super[symbols.populate](changed);
     if (changed.inputRole) {
       this.$.input.setAttribute('aria-autocomplete', 'both');
     }
@@ -199,12 +199,12 @@ class ListComboBox extends Base {
     }
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.selectedIndex) {
       const list = /** @type {any} */ (this.$.list);
       if ('selectedIndex' in list) {
-        list.selectedIndex = state.selectedIndex;
+        list.selectedIndex = this.state.selectedIndex;
       }
     }
   }

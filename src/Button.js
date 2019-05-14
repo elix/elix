@@ -79,17 +79,19 @@ class Button extends Base {
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.focusVisible) {
       // Override host `outline` style supplied by FocusVisibleMixin.
       this.style.outline = 'none';
-      this.$.inner.style.outline = state.focusVisible ? '' : 'none';
+      const { focusVisible } = this.state;
+      this.$.inner.style.outline = focusVisible ? '' : 'none';
     }
     if (changed.originalAttributes || changed.role) {
-      const originalRole = state.originalAttributes && state.originalAttributes.role;
+      const { originalAttributes, role } = this.state;
+      const originalRole = originalAttributes && originalAttributes.role;
       if (!originalRole) {
-        this.setAttribute('role', state.role);
+        this.setAttribute('role', role);
       }
     }
   }

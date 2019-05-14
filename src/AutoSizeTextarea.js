@@ -135,17 +135,17 @@ class AutoSizeTextarea extends Base {
     }
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
+    const { copyStyle, lineHeight, minimumRows, value } = this.state;
     if (changed.copyStyle) {
-      Object.assign(this.$.copyContainer.style, state.copyStyle);
+      Object.assign(this.$.copyContainer.style, copyStyle);
     }
-    if (changed.lineHeight || changed.minimumRows && state.lineHeight != null) {
-      const minHeight = state.minimumRows * state.lineHeight;
+    if (changed.lineHeight || changed.minimumRows && lineHeight != null) {
+      const minHeight = minimumRows * lineHeight;
       this.$.copyContainer.style.minHeight = `${minHeight}px`;
     }
     if (changed.value) {
-      const value = state.value;
       /** @type {HTMLTextAreaElement} */ (this.$.inner).value = value;
       this.$.textCopy.textContent = value;
     }

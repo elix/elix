@@ -50,15 +50,14 @@ class PageDot extends Base {
     `);
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
-    if (changed.darkMode) {
-      // Wait for knowledge of dark mode
-      if (state.darkMode !== null) {
-        this.style.backgroundColor = state.darkMode ?
-          'rgb(255, 255, 255)' :
-          'rgb(0, 0, 0)';
-      }
+  [symbols.render](changed) {
+    super[symbols.render](changed);
+    const { darkMode } = this.state;
+    // Wait for knowledge of dark mode
+    if (changed.darkMode && darkMode !== null) {
+      this.style.backgroundColor = darkMode ?
+        'rgb(255, 255, 255)' :
+        'rgb(0, 0, 0)';
     }
   }
 

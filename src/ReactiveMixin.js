@@ -59,8 +59,8 @@ export default function ReactiveMixin(Base) {
       return new State();
     }
 
-    [symbols.populate](state, changed) {
-      if (super[symbols.populate]) { super[symbols.populate](state, changed); }
+    [symbols.populate](changed) {
+      if (super[symbols.populate]) { super[symbols.populate](changed); }
     }
 
     /*
@@ -69,8 +69,8 @@ export default function ReactiveMixin(Base) {
      * The default implementation does nothing. Augment this in your component
      * (or another mixin) to render the component's state to the DOM.
      */
-    [symbols.render](state, changed) {
-      if (super[symbols.render]) { super[symbols.render](state, changed); }
+    [symbols.render](changed) {
+      if (super[symbols.render]) { super[symbols.render](changed); }
     }
 
     /**
@@ -109,10 +109,10 @@ export default function ReactiveMixin(Base) {
         this[symbols.rendering] = true;
 
         // Invoke any internal prerender implementations.
-        this[symbols.populate](this[stateKey], changed);
+        this[symbols.populate](changed);
 
         // Invoke any internal render implementations.
-        this[symbols.render](this[stateKey], changed);
+        this[symbols.render](changed);
         this[symbols.rendering] = false;
 
         // Since we've now rendered all changes, clear the change log. If other

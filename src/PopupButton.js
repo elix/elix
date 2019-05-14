@@ -67,8 +67,8 @@ class PopupButton extends Base {
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
   }
 
-  [symbols.populate](state, changed) {
-    super[symbols.populate](state, changed);
+  [symbols.populate](changed) {
+    super[symbols.populate](changed);
     if (changed.sourceRole) {
       // Desktop popups generally open on mousedown, not click/mouseup. On mobile,
       // mousedown won't fire until the user releases their finger, so it behaves
@@ -107,10 +107,10 @@ class PopupButton extends Base {
     }
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.disabled) {
-      this.$.source.style.borderStyle = state.disabled ? null : 'solid';
+      this.$.source.style.borderStyle = this.state.disabled ? null : 'solid';
     }
   }
 

@@ -4,7 +4,7 @@ export default function GenericMixin(Base) {
   return class Generic extends Base {
 
     get defaultState() {
-      return Object.assign({}, super.defaultState, {
+      return Object.assign(super.defaultState, {
         generic: true
       });
     }

@@ -14,7 +14,6 @@ declare const ReactiveMixin: Mixin<{
   defaultState: State;
   render(changed: PlainObject): Promise<void>;
   setState(changes: PlainObject): Promise<void>;
-  shouldComponentUpdate(nextState: State): boolean;
   state: State;
 }>;
 

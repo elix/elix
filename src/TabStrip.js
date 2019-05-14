@@ -153,11 +153,11 @@ class TabStrip extends Base {
     });
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
-    const { items } = state;
+  [symbols.render](changed) {
+    super[symbols.render](changed);
+    const { items } = this.state;
     if (changed.items && items) {
-      const { tabButtonRole } = state;
+      const { tabButtonRole } = this.state;
       items.forEach(item => {
         const original = this.originalItemAttributes(item);
         const originalRole = original && original.attributes ?
@@ -173,20 +173,20 @@ class TabStrip extends Base {
     }
     if ((changed.items || changed.selectedIndex) && items) {
       // Apply `selected` style to the selected item only.
-      const { selectedIndex } = state;
+      const { selectedIndex } = this.state;
       items.forEach((item, index) => {
         const selected = index === selectedIndex;
         item.classList.toggle('selected', selected);
         if ('selected' in item) {
-          item.selected = selected;
+          /** @type {any} */ (item).selected = selected;
         }
       });
     }
     if (changed.generic) {
-      this.style.gridGap = state.generic ? '0.25em' : null;
+      this.style.gridGap = this.state.generic ? '0.25em' : null;
     }
     if (changed.orientation) {
-      this.style.gridAutoFlow = state.orientation === 'vertical' ?
+      this.style.gridAutoFlow = this.state.orientation === 'vertical' ?
         'row' :
         'column';
     }
@@ -205,17 +205,18 @@ class TabStrip extends Base {
       this.style.placeContent = placeContent;
     }
     if (changed.originalAttributes || changed.role) {
-      const originalRole = state.originalAttributes && state.originalAttributes.role;
+      const { originalAttributes, role } = this.state;
+      const originalRole = originalAttributes && originalAttributes.role;
       if (!originalRole) {
-        this.setAttribute('role', state.role);
+        this.setAttribute('role', role);
       }
     }
     if (changed.items || changed.position) {
-      const { position } = state;
+      const { position } = this.state;
       if (items) {
         items.forEach(item => {
           if ('position' in item) {
-            item.position = position;
+            /** @type {any} */ (item).position = position;
           }
         });
       }

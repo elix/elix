@@ -53,22 +53,22 @@ class DropdownList extends Base {
     return state;
   }
 
-  [symbols.populate](state, changed) {
-    super[symbols.populate](state, changed);
+  [symbols.populate](changed) {
+    super[symbols.populate](changed);
     if (changed.valueRole) {
       template.transmute(this.$.value, this.state.valueRole);
     }
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.itemRole) {
       if ('itemRole' in this.$.menu) {
-        /** @type {any} */ (this.$.menu).itemRole = state.itemRole;
+        /** @type {any} */ (this.$.menu).itemRole = this.state.itemRole;
       }
     }
     if (changed.popupPosition) {
-      const { popupPosition } = state;
+      const { popupPosition } = this.state;
       this.$.downIcon.style.display = popupPosition === 'below' ?
         'block' :
         'none';
@@ -77,8 +77,8 @@ class DropdownList extends Base {
         'none';
     }
     if (changed.selectedIndex) {
-      const items = state.items || [];
-      const selectedItem = items[state.selectedIndex];
+      const items = this.state.items || [];
+      const selectedItem = items[this.state.selectedIndex];
       const clone = selectedItem ?
         selectedItem.cloneNode(true) :
         null;

@@ -87,9 +87,9 @@ class FilterListBox extends ListBox {
         text.includes(filter);
   }
 
-  [symbols.render](state, changed) {
-    super[symbols.render](state, changed);
-    const { content, filter } = state;
+  [symbols.render](changed) {
+    super[symbols.render](changed);
+    const { content, filter } = this.state;
     // We inspect `content` instead of `items` so that we can render even those
     // elements that don't match the current filter.
     if ((changed.filter || changed.content) && content) {
@@ -97,7 +97,7 @@ class FilterListBox extends ListBox {
         if (content instanceof HTMLElement || content instanceof SVGElement) {
 
           // Hide content elements that don't match the filter.
-          const matches = this[symbols.itemMatchesState](content, state);
+          const matches = this[symbols.itemMatchesState](content, this.state);
           const original = this.originalItemAttributes(content);
           const originalDisplay = original && original.style ?
             original.style.display :
