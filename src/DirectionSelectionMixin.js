@@ -19,34 +19,26 @@ export default function DirectionSelectionMixin(Base) {
   // The class prototype added by the mixin.
   class DirectionSelection extends Base {
 
-    /**
-     * Returns true if it's currently possible to go left.
-     * 
-     * @type {boolean}
-     */
-    get [symbols.canGoLeft]() {
-      const canSelect = this.state && this.state.languageDirection === 'rtl' ?
-        this.canSelectNext :
-        this.canSelectPrevious; 
-      // Assume we can go left unless component tells us otherwise.
-      return typeof canSelect === undefined ?
-        true :
-        canSelect;
-    }
+    get defaultState() {
+      const state = Object.assign(super.defaultState, {
+        canGoLeft: false,
+        canGoRight: false
+      });
 
-    /**
-     * Returns true if it's currently possible to go right.
-     * 
-     * @type {boolean}
-     */
-    get [symbols.canGoRight]() {
-      const canSelect = this.state && this.state.languageDirection === 'rtl' ?
-        this.canSelectPrevious :
-        this.canSelectNext; 
-      // Assume we can go right unless component tells us otherwise.
-      return typeof canSelect === undefined ? 
-        true :
-        canSelect;
+      // Update computed state members canGoLeft/canGoRight.
+      // TODO: Account for state.orientation, add canGoDown/canGoUp.
+      state.onChange(['languageDirection', 'canSelectNext', 'canSelectPrevious'], state => {
+        const { languageDirection, canSelectNext, canSelectPrevious } = state;
+        const rightToLeft = languageDirection === 'rtl';
+        const canGoLeft = rightToLeft ? canSelectNext : canSelectPrevious;
+        const canGoRight = rightToLeft ? canSelectPrevious : canSelectNext;
+        return {
+          canGoLeft,
+          canGoRight
+        };
+      });
+
+      return state;
     }
 
     /**

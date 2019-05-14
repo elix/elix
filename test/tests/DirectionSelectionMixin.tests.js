@@ -34,4 +34,5 @@ describe("DirectionSelectionMixin", () => {
     fixture[symbols.goUp]();
     assert.equal(selectPreviousSpy.callCount, 2);
   });
+  
 });

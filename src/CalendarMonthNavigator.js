@@ -76,17 +76,11 @@ class CalendarMonthNavigator extends Base {
     return true;
   }
 
-  get [symbols.canGoLeft]() {
-    return true;
-  }
-
-  get [symbols.canGoRight]() {
-    return true;
-  }
-
   get defaultState() {
     return Object.assign(super.defaultState, {
       arrowButtonOverlap: false,
+      canGoLeft: true,
+      canGoRight: true,
       date: calendar.today(),
       dayRole: CalendarDayButton,
       orientation: 'both',

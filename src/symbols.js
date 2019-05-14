@@ -40,26 +40,6 @@
  */
 
 /**
- * Symbol for the `canGoLeft` property.
- * 
- * A component can implement this property to indicate that the user is
- * currently able to move to the left.
- * 
- * @var {boolean} canGoLeft
- */
-export const canGoLeft = Symbol('canGoLeft');
-
-/**
- * Symbol for the `canGoRight` property.
- * 
- * A component can implement this property to indicate that the user is
- * currently able to move to the right.
- * 
- * @var {boolean} canGoRight
- */
-export const canGoRight = Symbol('canGoRight');
-
-/**
  * Symbol for the `checkSize` method.
  * 
  * If defined, this method will be invoked by [ResizeMixin](ResizeMixin)

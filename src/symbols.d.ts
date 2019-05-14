@@ -12,8 +12,6 @@
  * Symbol objects to be used at runtime as desired.
  */
 
-export const canGoLeft: '_canGoLeft';
-export const canGoRight: '_canGoRight';
 export const checkSize: '_checkSize';
 export const contentSlot: '_contentSlot';
 export const defaultTabIndex: '_defaultTabIndex';

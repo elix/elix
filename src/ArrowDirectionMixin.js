@@ -150,8 +150,19 @@ function ArrowDirectionMixin(Base) {
           right: state.arrowButtonOverlap ? 0 : ''
         });
       }
-    // Wait for knowledge of dark mode
-    if (changed.darkMode && state.darkMode !== null) {
+      if (changed.canGoLeft) {
+        // We'd like to set the `disabled` *property*, not attribute:
+        // arrowButtonLeft.disabled = !state.canGoLeft;
+        // But a bug in Chrome prevents this from working.
+        // TODO: Isolate repro case.
+        arrowButtonLeft.toggleAttribute('disabled', !state.canGoLeft);
+      }
+      if (changed.canGoRight) {
+        // See not for canGoLeft.
+        arrowButtonRight.toggleAttribute('disabled', !state.canGoRight);
+      }
+      // Wait for knowledge of dark mode
+      if (changed.darkMode && state.darkMode !== null) {
         // Apply dark mode to buttons.
         const { darkMode } = state;
         if ('darkMode' in this.$.arrowButtonLeft) {
@@ -160,18 +171,6 @@ function ArrowDirectionMixin(Base) {
         if ('darkMode' in this.$.arrowButtonRight) {
           /** @type {any} */ (this.$.arrowButtonRight).darkMode = darkMode;
         }
-      }  
-      if (changed.items ||
-          changed.languageDirection ||
-          changed.selectedIndex ||
-          changed.selectionWraps) {
-        // We'd like to set the `disabled` property:
-        // arrowButtonLeft.disabled = !this[symbols.canGoLeft];
-        // arrowButtonRight.disabled = !this[symbols.canGoRight];
-        // But a bug in Chrome prevents this from working.
-        // TODO: Isolate repro case.
-        arrowButtonLeft.toggleAttribute('disabled', !this[symbols.canGoLeft]);
-        arrowButtonRight.toggleAttribute('disabled', !this[symbols.canGoRight]);
       }
       if (changed.languageDirection) {
         const rightToLeft = state.languageDirection === 'rtl';

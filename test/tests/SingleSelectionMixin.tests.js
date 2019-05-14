@@ -128,23 +128,23 @@ describe("SingleSelectionMixin", () => {
 
     // No selection yet
     assert.equal(fixture.state.selectedIndex, -1);
-    assert(fixture.canSelectNext);
-    assert(fixture.canSelectPrevious);
+    assert(fixture.state.canSelectNext);
+    assert(fixture.state.canSelectPrevious);
 
     // Start of list
     fixture.selectFirst();
-    assert(fixture.canSelectNext);
-    assert(!fixture.canSelectPrevious);
+    assert(fixture.state.canSelectNext);
+    assert(!fixture.state.canSelectPrevious);
 
     // Middle of list
     fixture.selectNext();
-    assert(fixture.canSelectNext);
-    assert(fixture.canSelectPrevious);
+    assert(fixture.state.canSelectNext);
+    assert(fixture.state.canSelectPrevious);
 
     // End of list
     fixture.selectLast();
-    assert(!fixture.canSelectNext);
-    assert(fixture.canSelectPrevious);
+    assert(!fixture.state.canSelectNext);
+    assert(fixture.state.canSelectPrevious);
 
     await Promise.resolve();
   });
@@ -155,13 +155,13 @@ describe("SingleSelectionMixin", () => {
 
     // Start of list
     fixture.selectFirst();
-    assert(fixture.canSelectNext);
-    assert(fixture.canSelectPrevious);
+    assert(fixture.state.canSelectNext);
+    assert(fixture.state.canSelectPrevious);
 
     // End of list
     fixture.selectLast();
-    assert(fixture.canSelectNext);
-    assert(fixture.canSelectPrevious);
+    assert(fixture.state.canSelectNext);
+    assert(fixture.state.canSelectPrevious);
 
     await Promise.resolve();
   });

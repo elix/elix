@@ -29,11 +29,7 @@ export default function SingleSelectionMixin(Base) {
      * @type {boolean}
      */
     get canSelectNext() {
-      const count = this.items ? this.items.length : 0;
-      const selectedIndex = this.state.selectedIndex;
-      return count === 0 ?
-        false :
-        this.state.selectionWraps || selectedIndex < 0 || selectedIndex < count - 1;
+      return this.state.canSelectNext;
     }
 
     /**
@@ -43,11 +39,7 @@ export default function SingleSelectionMixin(Base) {
      * @type {boolean}
      */
     get canSelectPrevious() {
-      const count = this.items ? this.items.length : 0;
-      const selectedIndex = this.state.selectedIndex;
-      return count === 0 ?
-        false :
-        this.state.selectionWraps || selectedIndex < 0 || selectedIndex > 0;
+      return this.state.canSelectPrevious;
     }
 
     componentDidUpdate(changed) {
@@ -68,6 +60,8 @@ export default function SingleSelectionMixin(Base) {
 
     get defaultState() {
       const state = Object.assign(super.defaultState, {
+        canSelectNext: false,
+        canSelectPrevious: false,
         selectedIndex: -1,
         selectionRequired: false,
         selectionWraps: false,
@@ -110,7 +104,23 @@ export default function SingleSelectionMixin(Base) {
         }
         return null;
       });
-      
+
+      // Update computed state members canSelectNext/canSelectPrevious.
+      state.onChange(['items', 'selectedIndex', 'selectionWraps'], state =>{
+        const { items, selectedIndex, selectionWraps } = state;
+        const count = items ? items.length : 0;
+        const canSelectNext = count === 0 ?
+          false :
+          selectionWraps || selectedIndex < 0 || selectedIndex < count - 1;
+        const canSelectPrevious = count === 0 ?
+          false :
+          this.selectionWraps || selectedIndex < 0 || selectedIndex > 0;
+        return {
+          canSelectNext,
+          canSelectPrevious
+        };
+      });
+
       return state;
     }
 
