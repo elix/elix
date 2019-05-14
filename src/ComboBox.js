@@ -120,9 +120,11 @@ class ComboBox extends Base {
 
     switch (event.key) {
 
-      // Up/Down arrow keys open the popup.
+      // Up/Down arrow keys and Page Up/Page Down open the popup.
       case 'ArrowDown':
       case 'ArrowUp':
+      case 'PageDown':
+      case 'PageUp':
         if (this.closed) {
           this.open();
           handled = true;

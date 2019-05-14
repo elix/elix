@@ -124,11 +124,15 @@ class ListComboBox extends Base {
         break;
 
       case 'PageDown':
-        handled = list.pageDown && list.pageDown();
+        if (this.opened) {
+          handled = list.pageDown && list.pageDown();
+        }
         break;
         
       case 'PageUp':
-        handled = list.pageUp && list.pageUp();
+        if (this.opened) {
+          handled = list.pageUp && list.pageUp();
+        }
         break;
     }
 
