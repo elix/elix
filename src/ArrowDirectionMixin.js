@@ -129,7 +129,12 @@ function ArrowDirectionMixin(Base) {
     [symbols.render](changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
       const { arrowButtonLeft, arrowButtonRight } = this.$;
-      const { arrowButtonOverlap, darkMode } = this.state;
+      const {
+        arrowButtonOverlap,
+        canGoLeft,
+        canGoRight,
+        darkMode
+      } = this.state;
       if (changed.arrowButtonOverlap) {
         const buttonStyle = arrowButtonOverlap ?
           {
@@ -151,20 +156,20 @@ function ArrowDirectionMixin(Base) {
           right: arrowButtonOverlap ? 0 : ''
         });
       }
-      if (changed.canGoLeft) {
-        const { canGoLeft } = this.state;
-        // We'd like to set the `disabled` *property*, not attribute:
-        // arrowButtonLeft.disabled = !state.canGoLeft;
-        // But a bug in Chrome prevents this from working.
-        // TODO: Isolate repro case.
-        // arrowButtonLeft.disabled = !canGoLeft;
-        arrowButtonLeft.toggleAttribute('disabled', !canGoLeft);
+      // Disable the left and right buttons if we can't go in those directions.
+      // WORKAROUND: We check to makes sure that canGoLeft/canGoRight state is
+      // defined (which happens once the component has items). Without that
+      // check, as of May 2019, a Chrome bug prevents the use of this mixin:
+      // multiple carousel instances on a page will have their right button
+      // initially disabled even when it should be enabled. Safari/Firefox do
+      // not exhibit that issue. Since identifying the root cause proved too
+      // difficult, this check was added.
+      if (changed.canGoLeft && canGoLeft !== null) {
+        arrowButtonLeft.disabled = !canGoLeft;
       }
-      if (changed.canGoRight) {
-        const { canGoRight } = this.state;
-        // See note for canGoLeft.
-        // arrowButtonRight.disabled = !canGoRight;
-        arrowButtonRight.toggleAttribute('disabled', !canGoRight);
+      // See note for canGoLeft above.
+      if (changed.canGoRight && canGoRight !== null) {
+        arrowButtonRight.disabled = !canGoRight;
       }
       // Wait for knowledge of dark mode
       if (changed.darkMode && darkMode !== null) {

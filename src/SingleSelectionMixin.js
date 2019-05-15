@@ -60,8 +60,8 @@ export default function SingleSelectionMixin(Base) {
 
     get defaultState() {
       const state = Object.assign(super.defaultState, {
-        canSelectNext: false,
-        canSelectPrevious: false,
+        canSelectNext: null,
+        canSelectPrevious: null,
         selectedIndex: -1,
         selectionRequired: false,
         selectionWraps: false,
@@ -108,17 +108,20 @@ export default function SingleSelectionMixin(Base) {
       // Update computed state members canSelectNext/canSelectPrevious.
       state.onChange(['items', 'selectedIndex', 'selectionWraps'], state =>{
         const { items, selectedIndex, selectionWraps } = state;
-        const count = items ? items.length : 0;
-        const canSelectNext = count === 0 ?
-          false :
-          selectionWraps || selectedIndex < 0 || selectedIndex < count - 1;
-        const canSelectPrevious = count === 0 ?
-          false :
-          this.selectionWraps || selectedIndex < 0 || selectedIndex > 0;
-        return {
-          canSelectNext,
-          canSelectPrevious
-        };
+        if (items) {
+          const count = items.length;
+          const canSelectNext = count === 0 ?
+            false :
+            selectionWraps || selectedIndex < 0 || selectedIndex < count - 1;
+          const canSelectPrevious = count === 0 ?
+            false :
+            this.selectionWraps || selectedIndex < 0 || selectedIndex > 0;
+          return {
+            canSelectNext,
+            canSelectPrevious
+          };
+        }
+        return null;
       });
 
       return state;

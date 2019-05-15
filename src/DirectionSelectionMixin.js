@@ -21,8 +21,8 @@ export default function DirectionSelectionMixin(Base) {
 
     get defaultState() {
       const state = Object.assign(super.defaultState, {
-        canGoLeft: false,
-        canGoRight: false
+        canGoLeft: null,
+        canGoRight: null
       });
 
       // Update computed state members canGoLeft/canGoRight.
