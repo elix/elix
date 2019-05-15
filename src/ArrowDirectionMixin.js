@@ -126,8 +126,18 @@ function ArrowDirectionMixin(Base) {
       }
     }
 
-    [symbols.render](changed) {
-      if (super[symbols.render]) { super[symbols.render](changed); }
+    get showArrowButtons() {
+      return this.state.showArrowButtons;
+    }
+    set showArrowButtons(showArrowButtons) {
+      const parsed = String(showArrowButtons) === 'true';
+      this.setState({
+        showArrowButtons: parsed
+      });
+    }
+
+    [symbols.update](changed) {
+      if (super[symbols.update]) { super[symbols.update](changed); }
       const { arrowButtonLeft, arrowButtonRight } = this.$;
       const {
         arrowButtonOverlap,
@@ -192,16 +202,6 @@ function ArrowDirectionMixin(Base) {
         arrowButtonLeft.style.display = display;
         arrowButtonRight.style.display = display;
       }
-    }
-
-    get showArrowButtons() {
-      return this.state.showArrowButtons;
-    }
-    set showArrowButtons(showArrowButtons) {
-      const parsed = String(showArrowButtons) === 'true';
-      this.setState({
-        showArrowButtons: parsed
-      });
     }
 
     /**

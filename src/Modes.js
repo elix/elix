@@ -35,18 +35,6 @@ class Modes extends Base {
     });
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    if (changed.items || changed.selectedIndex) {
-      const { selectedIndex, items } = this.state;
-      if (items) {
-        items.forEach((item, index) => {
-          const selected = index === selectedIndex;
-          item.style.display = selected ? null : 'none';
-        });
-      }
-    }
-  }
 
   get [symbols.template]() {
     return template.html`
@@ -67,6 +55,18 @@ class Modes extends Base {
     `;
   }
 
+  [symbols.update](changed) {
+    super[symbols.update](changed);
+    if (changed.items || changed.selectedIndex) {
+      const { selectedIndex, items } = this.state;
+      if (items) {
+        items.forEach((item, index) => {
+          const selected = index === selectedIndex;
+          item.style.display = selected ? null : 'none';
+        });
+      }
+    }
+  }
 }
 
 

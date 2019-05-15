@@ -109,13 +109,6 @@ class AlertDialog extends Dialog {
     return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    if (changed.choiceButtons) {
-      applyChildNodes(this.$.buttonContainer, this.state.choiceButtons);
-    }
-  }
-
   get [symbols.template]() {
     const result = super[symbols.template];
     const alertDialogTemplate = template.html`
@@ -147,6 +140,13 @@ class AlertDialog extends Dialog {
       template.transmute(defaultSlot, alertDialogTemplate);
     }
     return result;
+  }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
+    if (changed.choiceButtons) {
+      applyChildNodes(this.$.buttonContainer, this.state.choiceButtons);
+    }
   }
 
 }

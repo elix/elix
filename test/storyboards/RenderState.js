@@ -68,28 +68,6 @@ class RenderState extends Base {
     });
   }
 
-  [symbols.render](changed) {
-    if (super[symbols.render]) { super[symbols.render](changed); }
-    if (changed.fixture || changed.fixtureState) {
-      const { fixture, fixtureState } = this.state;
-      if (fixture && fixtureState) {
-        customElements.whenDefined(fixture.localName)
-        .then(() => {
-          // Wait for fixture to do its initial render.
-          return fixture.setState({});
-        })
-        .then(() => {
-          // Force an update of the fixture's state.
-          fixture.setState(fixtureState);
-        });
-      }
-      const textContent = Object.keys(fixtureState).length > 0 ?
-        JSON.stringify(fixtureState, null, 2) :
-        '';
-      this.$.fixtureState.textContent = textContent;
-    }
-  }
-
   get [symbols.template]() {
     return template.html`
       <style>
@@ -125,6 +103,28 @@ class RenderState extends Base {
         <pre id="fixtureState"></pre>
       </div>
     `;
+  }
+
+  [symbols.update](changed) {
+    if (super[symbols.update]) { super[symbols.update](changed); }
+    if (changed.fixture || changed.fixtureState) {
+      const { fixture, fixtureState } = this.state;
+      if (fixture && fixtureState) {
+        customElements.whenDefined(fixture.localName)
+        .then(() => {
+          // Wait for fixture to do its initial render.
+          return fixture.setState({});
+        })
+        .then(() => {
+          // Force an update of the fixture's state.
+          fixture.setState(fixtureState);
+        });
+      }
+      const textContent = Object.keys(fixtureState).length > 0 ?
+        JSON.stringify(fixtureState, null, 2) :
+        '';
+      this.$.fixtureState.textContent = textContent;
+    }
   }
 
 }

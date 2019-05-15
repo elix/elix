@@ -78,23 +78,6 @@ class Button extends Base {
     // Prefer mixin result if it's defined, otherwise use base result.
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
   }
-
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    if (changed.focusVisible) {
-      // Override host `outline` style supplied by FocusVisibleMixin.
-      this.style.outline = 'none';
-      const { focusVisible } = this.state;
-      this.$.inner.style.outline = focusVisible ? '' : 'none';
-    }
-    if (changed.originalAttributes || changed.role) {
-      const { originalAttributes, role } = this.state;
-      const originalRole = originalAttributes && originalAttributes.role;
-      if (!originalRole) {
-        this.setAttribute('role', role);
-      }
-    }
-  }
   
   // Respond to a simulated click.
   [symbols.tap]() {
@@ -135,6 +118,24 @@ class Button extends Base {
       </button>
     `;
   }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
+    if (changed.focusVisible) {
+      // Override host `outline` style supplied by FocusVisibleMixin.
+      this.style.outline = 'none';
+      const { focusVisible } = this.state;
+      this.$.inner.style.outline = focusVisible ? '' : 'none';
+    }
+    if (changed.originalAttributes || changed.role) {
+      const { originalAttributes, role } = this.state;
+      const originalRole = originalAttributes && originalAttributes.role;
+      if (!originalRole) {
+        this.setAttribute('role', role);
+      }
+    }
+  }
+
 }
 
 

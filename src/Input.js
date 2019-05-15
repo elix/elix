@@ -43,14 +43,6 @@ class Input extends Base {
     this.setAttribute('aria-hidden', 'true');
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    if (changed.originalAttributes) {
-      // See note in componentDidMount.
-      this.$.inner.removeAttribute('aria-hidden');
-    }
-  }
-
   get [symbols.template]() {
     return template.html`
       <style>
@@ -73,6 +65,14 @@ class Input extends Base {
         <slot></slot>
       </input>
     `;
+  }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
+    if (changed.originalAttributes) {
+      // See note in componentDidMount.
+      this.$.inner.removeAttribute('aria-hidden');
+    }
   }
 
   // Updating the value can also update the selectionStart and selectionEnd

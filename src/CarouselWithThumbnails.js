@@ -18,8 +18,8 @@ class CarouselWithThumbnails extends Carousel {
     });
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
+  [symbols.update](changed) {
+    super[symbols.update](changed);
     const { proxies } = this.state;
     if ((changed.items || changed.proxies) && proxies) {
       // Update thumbnails.

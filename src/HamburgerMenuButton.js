@@ -134,21 +134,6 @@ class HamburgerMenuButton extends Base {
     }
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    const menu = /** @type {any} */ (this.$.menu);
-    if (changed.fromEdge) {
-      if ('fromEdge' in menu) {
-        menu.fromEdge = this.state.fromEdge;
-      }
-    }
-    if (changed.opened) {
-      if ('opened' in menu) {
-        menu.opened = this.state.opened;
-      }
-    }
-  }
-
   get [symbols.template]() {
     return template.html`
       <style>
@@ -183,6 +168,21 @@ class HamburgerMenuButton extends Base {
         <slot></slot>
       </elix-drawer>
     `;
+  }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
+    const menu = /** @type {any} */ (this.$.menu);
+    if (changed.fromEdge) {
+      if ('fromEdge' in menu) {
+        menu.fromEdge = this.state.fromEdge;
+      }
+    }
+    if (changed.opened) {
+      if ('opened' in menu) {
+        menu.opened = this.state.opened;
+      }
+    }
   }
 
 }

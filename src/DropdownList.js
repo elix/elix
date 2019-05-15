@@ -60,33 +60,6 @@ class DropdownList extends Base {
     }
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    if (changed.itemRole) {
-      if ('itemRole' in this.$.menu) {
-        /** @type {any} */ (this.$.menu).itemRole = this.state.itemRole;
-      }
-    }
-    if (changed.popupPosition) {
-      const { popupPosition } = this.state;
-      this.$.downIcon.style.display = popupPosition === 'below' ?
-        'block' :
-        'none';
-      this.$.upIcon.style.display = popupPosition === 'above' ?
-        'block' :
-        'none';
-    }
-    if (changed.selectedIndex) {
-      const items = this.state.items || [];
-      const selectedItem = items[this.state.selectedIndex];
-      const clone = selectedItem ?
-        selectedItem.cloneNode(true) :
-        null;
-      const childNodes = clone ? clone.childNodes : [];
-      applyChildNodes(this.$.value, childNodes);
-    }
-  }
-
   get [symbols.template]() {
     const base = super[symbols.template];
     const sourceSlot = base.content.querySelector('slot[name="source"]');
@@ -121,6 +94,33 @@ class DropdownList extends Base {
         </style>
       `
     );
+  }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
+    if (changed.itemRole) {
+      if ('itemRole' in this.$.menu) {
+        /** @type {any} */ (this.$.menu).itemRole = this.state.itemRole;
+      }
+    }
+    if (changed.popupPosition) {
+      const { popupPosition } = this.state;
+      this.$.downIcon.style.display = popupPosition === 'below' ?
+        'block' :
+        'none';
+      this.$.upIcon.style.display = popupPosition === 'above' ?
+        'block' :
+        'none';
+    }
+    if (changed.selectedIndex) {
+      const items = this.state.items || [];
+      const selectedItem = items[this.state.selectedIndex];
+      const clone = selectedItem ?
+        selectedItem.cloneNode(true) :
+        null;
+      const childNodes = clone ? clone.childNodes : [];
+      applyChildNodes(this.$.value, childNodes);
+    }
   }
 
   /**

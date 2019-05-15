@@ -87,8 +87,8 @@ class FilterListBox extends ListBox {
         text.includes(filter);
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
+  [symbols.update](changed) {
+    super[symbols.update](changed);
     const { content, filter } = this.state;
     // We inspect `content` instead of `items` so that we can render even those
     // elements that don't match the current filter.

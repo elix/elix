@@ -45,3 +45,4 @@ export const swipeTarget: '_swipeTarget';
 export const swipeUp: '_swipeUp';
 export const tap: '_tap';
 export const template: '_template';
+export const update: '_update';

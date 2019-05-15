@@ -159,8 +159,51 @@ class PullToRefresh extends Base {
     this.setState({ refreshingIndicatorRole });
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
+  get [symbols.template]() {
+    return template.html`
+      <style>
+        :host {
+          display: block;
+        }
+
+        #refreshHeader {
+          align-items: center;
+          display: flex;
+          flex-direction: column-reverse;
+          height: 100vh;
+          left: 0;
+          position: absolute;
+          top: 0;
+          transform: translateY(-100%);
+          width: 100%;
+        }
+
+        #refreshIndicators {
+          align-items: center;
+          box-sizing: border-box;
+          display: grid;
+          justify-items: center;
+          padding: 1em;
+        }
+
+        #refreshIndicators > * {
+          grid-column: 1;
+          grid-row: 1;
+        }
+      </style>
+
+      <div id="refreshHeader">
+        <div id="refreshIndicators">
+          <div id="pullIndicator"></div>
+          <elix-progress-spinner id="refreshingIndicator"></elix-progress-spinner>
+        </div>
+      </div>
+      <slot></slot>
+    `;
+  }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
     if (changed.refreshing) {
       const { refreshing } = this.state;
       const refreshingIndicator = this.$.refreshingIndicator;
@@ -204,49 +247,6 @@ class PullToRefresh extends Base {
         'visible' :
         'hidden';
     }
-  }
-
-  get [symbols.template]() {
-    return template.html`
-      <style>
-        :host {
-          display: block;
-        }
-
-        #refreshHeader {
-          align-items: center;
-          display: flex;
-          flex-direction: column-reverse;
-          height: 100vh;
-          left: 0;
-          position: absolute;
-          top: 0;
-          transform: translateY(-100%);
-          width: 100%;
-        }
-
-        #refreshIndicators {
-          align-items: center;
-          box-sizing: border-box;
-          display: grid;
-          justify-items: center;
-          padding: 1em;
-        }
-
-        #refreshIndicators > * {
-          grid-column: 1;
-          grid-row: 1;
-        }
-      </style>
-
-      <div id="refreshHeader">
-        <div id="refreshIndicators">
-          <div id="pullIndicator"></div>
-          <elix-progress-spinner id="refreshingIndicator"></elix-progress-spinner>
-        </div>
-      </div>
-      <slot></slot>
-    `;
   }
 
 }

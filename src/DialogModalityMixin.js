@@ -70,8 +70,8 @@ export default function DialogModalityMixin(Base) {
       return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
     }
 
-    [symbols.render](changed) {
-      if (super[symbols.render]) { super[symbols.render](changed); }
+    [symbols.update](changed) {
+      if (super[symbols.update]) { super[symbols.update](changed); }
       if (changed.originalAttributes || changed.role) {
         const { originalAttributes, role } = this.state;
         const originalRole = originalAttributes && originalAttributes.role;

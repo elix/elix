@@ -29,7 +29,7 @@
       }
 
       [symbols.populate](changed) {
-        if (super[symbols.populate]) { super[symbols.populate](changed); }
+        super[symbols.populate](changed);
         if (changed.buttonRole) {
           template.transmute(this.$.decrement, this.state.buttonRole);
           this.$.decrement.addEventListener('click', () => {
@@ -39,15 +39,6 @@
           this.$.increment.addEventListener('click', () => {
             this.value++;
           });
-        }
-      }
-
-      [symbols.render](changed) {
-        super[symbols.render](changed);
-        if (changed.value) {
-          const { value } = this.state;
-          this.style.color = value < 0 ? 'red' : null;
-          this.$.visibleValue.textContent = value;
         }
       }
 
@@ -67,6 +58,15 @@
           <span id="visibleValue"></span>
           <button id="increment">+</button>
         `;
+      }
+
+      [symbols.update](changed) {
+        super[symbols.update](changed);
+        if (changed.value) {
+          const { value } = this.state;
+          this.style.color = value < 0 ? 'red' : null;
+          this.$.visibleValue.textContent = value;
+        }
       }
 
     }

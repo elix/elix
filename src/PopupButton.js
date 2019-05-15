@@ -107,13 +107,6 @@ class PopupButton extends Base {
     }
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    if (changed.disabled) {
-      this.$.source.style.borderStyle = this.state.disabled ? null : 'solid';
-    }
-  }
-
   get [symbols.template]() {
     return template.concat(super[symbols.template], template.html`
       <style>
@@ -138,6 +131,13 @@ class PopupButton extends Base {
         }
       </style>
     `);
+  }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
+    if (changed.disabled) {
+      this.$.source.style.borderStyle = this.state.disabled ? null : 'solid';
+    }
   }
 
 }

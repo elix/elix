@@ -97,19 +97,6 @@ export default function KeyboardMixin(Base) {
       return false;
     }
 
-    [symbols.render](changed) {
-      if (super[symbols.render]) { super[symbols.render](changed); }
-      if (changed.originalAttributes || changed.tabIndex) {
-        const { originalAttributes, tabIndex } = this.state;
-        const originalTabindex = originalAttributes ?
-          originalAttributes.tabindex :
-          null;
-        if (originalTabindex == null) {
-          this.tabIndex = tabIndex;
-        }
-      }
-    }
-
     // Record our own notion of the state of the tabIndex property so we can
     // rerender if necessary.
     get tabIndex() {
@@ -149,6 +136,19 @@ export default function KeyboardMixin(Base) {
             originalAttributes.tabindex = parsed.toString();
           }
           this.setState({ originalAttributes });
+        }
+      }
+    }
+
+    [symbols.update](changed) {
+      if (super[symbols.update]) { super[symbols.update](changed); }
+      if (changed.originalAttributes || changed.tabIndex) {
+        const { originalAttributes, tabIndex } = this.state;
+        const originalTabindex = originalAttributes ?
+          originalAttributes.tabindex :
+          null;
+        if (originalTabindex == null) {
+          this.tabIndex = tabIndex;
         }
       }
     }

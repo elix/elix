@@ -14,8 +14,24 @@ import CalendarDay from '../../src/CalendarDay.js';
  */
 class CalendarDayMoonPhase extends CalendarDay {
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
+  get [symbols.template]() {
+    return template.concat(super[symbols.template], template.html`
+      <style>
+        #phaseIcon {
+          height: 1.5em;
+          width: 1.5em;
+        }
+        
+        #phaseIcon:not([src]) {
+          visibility: hidden;
+        }
+      </style>
+      <img id="phaseIcon">
+    `);
+  }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
     if (changed.date) {
       // To determine quarter, we compare the moon's angle at midnight on the
       // given date with the angle at midnight on the following date.
@@ -47,22 +63,6 @@ class CalendarDayMoonPhase extends CalendarDay {
         phaseIcon.removeAttribute('src');
       }
     }
-  }
-
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
-      <style>
-        #phaseIcon {
-          height: 1.5em;
-          width: 1.5em;
-        }
-        
-        #phaseIcon:not([src]) {
-          visibility: hidden;
-        }
-      </style>
-      <img id="phaseIcon">
-    `);
   }
 
 }

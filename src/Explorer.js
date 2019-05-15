@@ -208,8 +208,47 @@ class Explorer extends Base {
     this.setState({ proxyRole });
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
+  /**
+   * The class, tag, or template used for the main "stage" element that shows a
+   * single item at a time.
+   * 
+   * @type {function|string|HTMLTemplateElement}
+   * @default Modes
+   */
+  get stageRole() {
+    return this.state.stageRole;
+  }
+  set stageRole(stageRole) {
+    this.setState({ stageRole });
+  }
+
+  get [symbols.template]() {
+    return template.html`
+      <style>
+        :host {
+          display: inline-flex;
+        }
+        
+        #explorerContainer {
+          display: flex;
+          flex: 1;
+          max-width: 100%; /* For Firefox */
+          position: relative;
+        }
+
+        #stage {
+          flex: 1;
+        }
+      </style>
+      <div id="explorerContainer" role="none">
+        <div id="proxyList"><slot id="proxySlot" name="proxy"></slot></div>
+        <div id="stage" role="none"><slot></slot></div>
+      </div>
+    `;
+  }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
     const proxyList = this.$.proxyList;
     const stage = this.$.stage;
     if (changed.proxies || changed.proxiesAssigned) {
@@ -294,45 +333,6 @@ class Explorer extends Base {
         /** @type {any} */ (stage).swipeFraction = swipeFraction;
       }
     }
-  }
-
-  /**
-   * The class, tag, or template used for the main "stage" element that shows a
-   * single item at a time.
-   * 
-   * @type {function|string|HTMLTemplateElement}
-   * @default Modes
-   */
-  get stageRole() {
-    return this.state.stageRole;
-  }
-  set stageRole(stageRole) {
-    this.setState({ stageRole });
-  }
-
-  get [symbols.template]() {
-    return template.html`
-      <style>
-        :host {
-          display: inline-flex;
-        }
-        
-        #explorerContainer {
-          display: flex;
-          flex: 1;
-          max-width: 100%; /* For Firefox */
-          position: relative;
-        }
-
-        #stage {
-          flex: 1;
-        }
-      </style>
-      <div id="explorerContainer" role="none">
-        <div id="proxyList"><slot id="proxySlot" name="proxy"></slot></div>
-        <div id="stage" role="none"><slot></slot></div>
-      </div>
-    `;
   }
 
 }

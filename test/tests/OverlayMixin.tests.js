@@ -1,21 +1,18 @@
 import * as symbols from '../../src/symbols.js';
 import OpenCloseMixin from '../../src/OpenCloseMixin.js';
-import OriginalAttributesMixin from '../../src/OriginalAttributesMixin.js';
 import OverlayMixin from '../../src/OverlayMixin.js';
-import ReactiveMixin from '../../src/ReactiveMixin.js';
+import ReactiveElement from '../../src/ReactiveElement.js';
 
 
 const Base =
-  OriginalAttributesMixin(
   OpenCloseMixin(
   OverlayMixin(
-  ReactiveMixin(
-    HTMLElement
-  ))));
+    ReactiveElement
+  ));
 
 class OverlayTest extends Base {
-  [symbols.render](changed) {
-    super[symbols.render](changed);
+  [symbols.update](changed) {
+    if (super[symbols.update]) { super[symbols.update](changed); }
     this.tabIndex = 0;
   }
 }

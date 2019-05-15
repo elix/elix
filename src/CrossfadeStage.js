@@ -28,8 +28,37 @@ class CrossfadeStage extends Base {
     });
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
+  get swipeFraction() {
+    return this.state.swipeFraction;
+  }
+  set swipeFraction(swipeFraction) {
+    this.setState({ swipeFraction });
+  }
+
+  get transitionDuration() {
+    return this.state.transitionDuration;
+  }
+  set transitionDuration(transitionDuration) {
+    this.setState({ transitionDuration });
+  }
+
+  get [symbols.template]() {
+    return template.concat(super[symbols.template], template.html`
+      <style>
+        #modesContainer {
+          display: grid;
+        }
+
+        ::slotted(*) {
+          grid-column: 1;
+          grid-row: 1;
+        }
+      </style>
+    `);
+  }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
     if (changed.enableEffects || changed.languageDirection || changed.items ||
         changed.selectedIndex || changed.swipeFraction || changed.transitionDuration) {
       // Apply opacity based on selection state.
@@ -60,35 +89,6 @@ class CrossfadeStage extends Base {
         });
       }
     }
-  }
-
-  get swipeFraction() {
-    return this.state.swipeFraction;
-  }
-  set swipeFraction(swipeFraction) {
-    this.setState({ swipeFraction });
-  }
-
-  get transitionDuration() {
-    return this.state.transitionDuration;
-  }
-  set transitionDuration(transitionDuration) {
-    this.setState({ transitionDuration });
-  }
-
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
-      <style>
-        #modesContainer {
-          display: grid;
-        }
-
-        ::slotted(*) {
-          grid-column: 1;
-          grid-row: 1;
-        }
-      </style>
-    `);
   }
 
 }

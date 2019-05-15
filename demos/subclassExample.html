@@ -47,9 +47,13 @@
         });
       }
 
+      get [symbols.template]() {
+        return incrementDecrementTemplate;
+      }
+
       // When state changes, render updates to the DOM.
-      [symbols.render](changed) {
-        super[symbols.render](changed);
+      [symbols.update](changed) {
+        super[symbols.update](changed);
         if (changed.value) {
           const value = state.value;
           this.style.color = value < 0 ? 'red' : null;
@@ -67,28 +71,12 @@
         });
       }
 
-      get [symbols.template]() {
-        return incrementDecrementTemplate;
-      }
-
     }
 
     customElements.define('increment-decrement', IncrementDecrement);
 
 
     class CustomIncrementDecrement extends IncrementDecrement {
-
-      [symbols.render](changed) {
-        super[symbols.render](changed);
-        if (changed.value) {
-          const value = state.value;
-          if (state.value > 0) {
-            this.style.color = 'dodgerblue';
-          }
-          this.$.decrement.disabled = value <= -5;
-          this.$.increment.disabled = value >= 5;
-        }
-      }
 
       get [symbols.template]() {
         return template.concat(super[symbols.template], template.html`
@@ -111,6 +99,18 @@
             }
           </style>
         `);
+      }
+
+      [symbols.update](changed) {
+        super[symbols.update](changed);
+        if (changed.value) {
+          const value = state.value;
+          if (state.value > 0) {
+            this.style.color = 'dodgerblue';
+          }
+          this.$.decrement.disabled = value <= -5;
+          this.$.increment.disabled = value >= 5;
+        }
       }
 
       get value() {

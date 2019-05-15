@@ -58,20 +58,6 @@ class CountryListBox extends Base {
     return this.state.orientation;
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    if (changed.items || changed.selectedIndex) {
-      // Apply `selected` style to the selected item only.
-      const { selectedIndex, items } = this.state;
-      if (items) {
-        items.forEach((item, index) => {
-          const selected = index === selectedIndex;
-          item.classList.toggle('selected', selected);
-        });
-      }
-    }
-  }
-
   get [symbols.scrollTarget]() {
     return this.$.content;
   }
@@ -304,6 +290,20 @@ class CountryListBox extends Base {
         <div>Zimbabwe</div>
       </div>
     `;
+  }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
+    if (changed.items || changed.selectedIndex) {
+      // Apply `selected` style to the selected item only.
+      const { selectedIndex, items } = this.state;
+      if (items) {
+        items.forEach((item, index) => {
+          const selected = index === selectedIndex;
+          item.classList.toggle('selected', selected);
+        });
+      }
+    }
   }
 
 }

@@ -76,8 +76,8 @@ class FilterComboBox extends Base {
     }
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
+  [symbols.update](changed) {
+    super[symbols.update](changed);
     if (changed.filter || changed.selectedIndex) {
       const { filter, selectedIndex } = this.state;
       if (filter === '' || selectedIndex === -1) {

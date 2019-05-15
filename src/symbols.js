@@ -463,3 +463,5 @@ export const click = tap; // Deprecated
  * @var {HTMLTemplateElement} template
  */
 export const template = Symbol('template');
+
+export const update = Symbol('update');

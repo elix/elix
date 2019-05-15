@@ -34,8 +34,15 @@ class CarouselSlideshow extends Base {
     });
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
+  get transitionDuration() {
+    return this.state.transitionDuration;
+  }
+  set transitionDuration(transitionDuration) {
+    this.setState({ transitionDuration });
+  }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
     if (changed.transitionDuration) {
       const { transitionDuration } = this.state;
       if ('transitionDuration' in this.$.proxyList) {
@@ -45,13 +52,6 @@ class CarouselSlideshow extends Base {
         /** @type {any} */ (this.$.stage).transitionDuration = transitionDuration;
       }
     }
-  }
-
-  get transitionDuration() {
-    return this.state.transitionDuration;
-  }
-  set transitionDuration(transitionDuration) {
-    this.setState({ transitionDuration });
   }
 
 }

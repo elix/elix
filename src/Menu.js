@@ -144,8 +144,62 @@ class Menu extends Base {
     return base && !item.disabled;
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
+  get [symbols.scrollTarget]() {
+    return this.$.content;
+  }
+
+  get [symbols.template]() {
+    return template.html`
+      <style>
+        :host {
+          border: 1px solid gray;
+          box-sizing: border-box;
+          cursor: default;
+          display: flex;
+          -webkit-tap-highlight-color: transparent;
+          touch-action: manipulation;
+        }
+
+        #content {
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+          max-height: 100%;
+          overflow-x: hidden;
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch; /* for momentum scrolling */
+        }
+        
+        ::slotted(*) {
+          flex-shrink: 0;
+          padding: 0.25em;
+          touch-action: manipulation;
+        }
+
+        ::slotted(.selected) {
+          background: highlight;
+          color: highlighttext;
+        }
+
+        @media (pointer: coarse) {
+          ::slotted(*) {
+            padding: 1em;
+          }
+        }
+
+        ::slotted(option) {
+          font-weight: inherit;
+          min-height: inherit;
+        }
+      </style>
+      <div id="content" role="none">
+        <slot></slot>
+      </div>
+    `;
+  }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
     const { selectedIndex, items } = this.state;    
     if ((changed.items || changed.selectedIndex) && items) {
         // Reflect the selection state to the item.
@@ -201,60 +255,6 @@ class Menu extends Base {
         item.style.outline = suppressFocus ? 'none' : null;
       });
     }
-  }
-
-  get [symbols.scrollTarget]() {
-    return this.$.content;
-  }
-
-  get [symbols.template]() {
-    return template.html`
-      <style>
-        :host {
-          border: 1px solid gray;
-          box-sizing: border-box;
-          cursor: default;
-          display: flex;
-          -webkit-tap-highlight-color: transparent;
-          touch-action: manipulation;
-        }
-
-        #content {
-          display: flex;
-          flex: 1;
-          flex-direction: column;
-          max-height: 100%;
-          overflow-x: hidden;
-          overflow-y: auto;
-          -webkit-overflow-scrolling: touch; /* for momentum scrolling */
-        }
-        
-        ::slotted(*) {
-          flex-shrink: 0;
-          padding: 0.25em;
-          touch-action: manipulation;
-        }
-
-        ::slotted(.selected) {
-          background: highlight;
-          color: highlighttext;
-        }
-
-        @media (pointer: coarse) {
-          ::slotted(*) {
-            padding: 1em;
-          }
-        }
-
-        ::slotted(option) {
-          font-weight: inherit;
-          min-height: inherit;
-        }
-      </style>
-      <div id="content" role="none">
-        <slot></slot>
-      </div>
-    `;
   }
 
 }

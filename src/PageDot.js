@@ -50,8 +50,8 @@ class PageDot extends Base {
     `);
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
+  [symbols.update](changed) {
+    super[symbols.update](changed);
     const { darkMode } = this.state;
     // Wait for knowledge of dark mode
     if (changed.darkMode && darkMode !== null) {

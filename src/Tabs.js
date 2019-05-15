@@ -38,8 +38,34 @@ class Tabs extends Base {
     });
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
+  /**
+   * The alignment of the tabs within the tab strip.
+   * 
+   * The value of this property will be forwarded to the corresponding
+   * property
+   * 
+   * @type {('start'|'center'|'end'|'stretch')}
+   * @default 'start'
+   */
+  get tabAlign() {
+    return this.state.tabAlign;
+  }
+  set tabAlign(tabAlign) {
+    this.setState({ tabAlign });
+  }
+
+  get [symbols.template]() {
+    return template.concat(super[symbols.template], template.html`
+      <style>
+        #proxyList {
+          z-index: 1;
+        }
+      </style>
+    `);
+  }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
     const { items, proxies } = this.state;
     if ((changed.items || changed.proxies)
       && items && proxies) {
@@ -117,32 +143,6 @@ class Tabs extends Base {
         proxyList.tabAlign = this.state.tabAlign;
       }
     }
-  }
-
-  /**
-   * The alignment of the tabs within the tab strip.
-   * 
-   * The value of this property will be forwarded to the corresponding
-   * property
-   * 
-   * @type {('start'|'center'|'end'|'stretch')}
-   * @default 'start'
-   */
-  get tabAlign() {
-    return this.state.tabAlign;
-  }
-  set tabAlign(tabAlign) {
-    this.setState({ tabAlign });
-  }
-
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
-      <style>
-        #proxyList {
-          z-index: 1;
-        }
-      </style>
-    `);
   }
 
 }

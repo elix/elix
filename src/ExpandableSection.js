@@ -71,30 +71,6 @@ class ExpandableSection extends Base {
     }
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    if (changed.originalAttributes || changed.role) {
-      const { originalAttributes, role } = this.state;
-      const originalRole = originalAttributes && originalAttributes.role;
-      if (!originalRole) {
-        this.setAttribute('role', role);
-      }
-    }
-    if (changed.opened) {
-      const { opened } = this.state;
-      this.$.header.setAttribute('aria-expanded', opened.toString());
-      if (this.$.collapseIcon) {
-        this.$.collapseIcon.style.display = opened ? 'block' : 'none';
-      }
-      if (this.$.expandIcon) {
-        this.$.expandIcon.style.display = opened ? 'none' : 'block';
-      }
-      if ('opened' in this.$.panel) {
-        /** @type {any} */ (this.$.panel).opened = opened;
-      }
-    }
-  }
-
   get [symbols.template]() {
     // Default expand/collapse icons from Google's Material Design collection.
     return template.html`
@@ -145,6 +121,30 @@ class ExpandableSection extends Base {
         <slot></slot>
       </elix-expandable-panel>
     `;
+  }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
+    if (changed.originalAttributes || changed.role) {
+      const { originalAttributes, role } = this.state;
+      const originalRole = originalAttributes && originalAttributes.role;
+      if (!originalRole) {
+        this.setAttribute('role', role);
+      }
+    }
+    if (changed.opened) {
+      const { opened } = this.state;
+      this.$.header.setAttribute('aria-expanded', opened.toString());
+      if (this.$.collapseIcon) {
+        this.$.collapseIcon.style.display = opened ? 'block' : 'none';
+      }
+      if (this.$.expandIcon) {
+        this.$.expandIcon.style.display = opened ? 'none' : 'block';
+      }
+      if ('opened' in this.$.panel) {
+        /** @type {any} */ (this.$.panel).opened = opened;
+      }
+    }
   }
 
 }

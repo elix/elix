@@ -59,28 +59,6 @@ class CalendarDayNamesHeader extends ReactiveElement {
     this.setState({ locale });
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    if (changed.format || changed.locale) {
-      const { format, locale } = this.state;
-      const formatter = calendar.dateTimeFormat(locale, {
-        weekday: format
-      });
-      const firstDayOfWeek = calendar.firstDayOfWeek(locale);
-      const weekendStart = calendar.weekendStart(locale);
-      const weekendEnd = calendar.weekendEnd(locale);
-      const date = new Date(2017, 0, 1); // A Sunday
-      for (let i = 0; i <= 6; i++) {
-        const dayOfWeek = (firstDayOfWeek + i) % 7;
-        date.setDate(dayOfWeek + 1);
-        const weekend = dayOfWeek === weekendStart || dayOfWeek === weekendEnd;
-        const dayElement = this.$[`day${i}`];
-        dayElement.classList.toggle('weekend', weekend);
-        dayElement.textContent = formatter.format(date);
-      }
-    }
-  }
-
   get [symbols.template]() {
     return template.html`
       <style>
@@ -109,6 +87,28 @@ class CalendarDayNamesHeader extends ReactiveElement {
       <div id="day5" class="dayOfWeek"></div>
       <div id="day6" class="dayOfWeek"></div>
     `;
+  }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
+    if (changed.format || changed.locale) {
+      const { format, locale } = this.state;
+      const formatter = calendar.dateTimeFormat(locale, {
+        weekday: format
+      });
+      const firstDayOfWeek = calendar.firstDayOfWeek(locale);
+      const weekendStart = calendar.weekendStart(locale);
+      const weekendEnd = calendar.weekendEnd(locale);
+      const date = new Date(2017, 0, 1); // A Sunday
+      for (let i = 0; i <= 6; i++) {
+        const dayOfWeek = (firstDayOfWeek + i) % 7;
+        date.setDate(dayOfWeek + 1);
+        const weekend = dayOfWeek === weekendStart || dayOfWeek === weekendEnd;
+        const dayElement = this.$[`day${i}`];
+        dayElement.classList.toggle('weekend', weekend);
+        dayElement.textContent = formatter.format(date);
+      }
+    }
   }
 
 }

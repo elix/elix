@@ -17,8 +17,8 @@ function PageNumbersMixin(Base) {
 
   class PageNumbers extends Base {
 
-    [symbols.render](changed) {
-      if (super[symbols.render]) { super[symbols.render](changed); }
+    [symbols.update](changed) {
+      if (super[symbols.update]) { super[symbols.update](changed); }
       if (changed.selectedIndex) {
         const { selectedIndex } = this.state;
         const textContent = selectedIndex >= 0 && this.items ?

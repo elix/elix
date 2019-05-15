@@ -111,8 +111,8 @@ export default function PopupModalityMixin(Base) {
       return handled || (super.keydown && super.keydown(event)) || false;
     }
 
-    [symbols.render](changed) {
-      if (super[symbols.render]) { super[symbols.render](changed); }
+    [symbols.update](changed) {
+      if (super[symbols.update]) { super[symbols.update](changed); }
       if (changed.originalAttributes || changed.role) {
         const { originalAttributes, role } = this.state;
         const originalRole = originalAttributes && originalAttributes.role;

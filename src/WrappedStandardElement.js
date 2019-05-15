@@ -235,14 +235,7 @@ class WrappedStandardElement extends Base {
       });
     }
 
-    // this[renderedKey] = true;
-    // reflectDisabledAttribute(this);
   }
-
-  // componentDidUpdate(changed) {
-  //   super.componentDidUpdate(changed);
-  //   reflectDisabledAttribute(this);
-  // }
 
   get defaultState() {
     return Object.assign(super.defaultState, {
@@ -307,36 +300,6 @@ class WrappedStandardElement extends Base {
     return value || (this.shadowRoot && this.inner[name]);
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    const inner = this.inner;
-    if (changed.tabIndex) {
-      inner.tabIndex = this.state.tabIndex;
-    }
-    if (changed.originalAttributes) {
-      // Delegate any ARIA attributes to the inner element, as well as any
-      // attributes that don't have corresponding properties. (Attributes
-      // that correspond to properties will be handled separately by our
-      // generated property delegates.)
-      const { originalAttributes } = this.state;
-      for (const key in originalAttributes) {
-        if (key.startsWith('aria-') ||
-            attributesWithoutProperties.indexOf(key) >= 0) {
-          const value = originalAttributes[key];
-          applyAttribute(inner, key, value);
-        }
-      }
-    }
-    if (changed.innerProperties) {
-      const { innerProperties } = this.state;
-      Object.assign(inner, innerProperties);
-      const { disabled } = innerProperties;
-      if (disabled !== undefined) {
-        this.toggleAttribute('disabled', disabled);
-      }
-    }
-  }
-
   // Save property assignment in state.
   setInnerProperty(name, value) {
     // We normally don't check an existing state value before calling setState,
@@ -393,6 +356,36 @@ class WrappedStandardElement extends Base {
       'block' :
       'inline-block';
     return template.html`<style>:host { display: ${display}} #inner { box-sizing: border-box; height: 100%; width: 100%; }</style><${this.extends} id="inner"><slot></slot></${this.extends}`;
+  }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
+    const inner = this.inner;
+    if (changed.tabIndex) {
+      inner.tabIndex = this.state.tabIndex;
+    }
+    if (changed.originalAttributes) {
+      // Delegate any ARIA attributes to the inner element, as well as any
+      // attributes that don't have corresponding properties. (Attributes
+      // that correspond to properties will be handled separately by our
+      // generated property delegates.)
+      const { originalAttributes } = this.state;
+      for (const key in originalAttributes) {
+        if (key.startsWith('aria-') ||
+            attributesWithoutProperties.indexOf(key) >= 0) {
+          const value = originalAttributes[key];
+          applyAttribute(inner, key, value);
+        }
+      }
+    }
+    if (changed.innerProperties) {
+      const { innerProperties } = this.state;
+      Object.assign(inner, innerProperties);
+      const { disabled } = innerProperties;
+      if (disabled !== undefined) {
+        this.toggleAttribute('disabled', disabled);
+      }
+    }
   }
 
   /**

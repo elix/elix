@@ -175,23 +175,6 @@ class ListWithSearch extends Base {
     }
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    if (changed.ariaLabel) {
-      const { ariaLabel } = this.state;
-      this.$.input.setAttribute('aria-label', ariaLabel);
-    }
-    if (changed.filter) {
-      const { filter } = this.state;
-      /** @type {HTMLInputElement} */ (this.$.input).value = filter;
-      /** @type {any} */ (this.$.list).filter = filter;
-    }
-    if (changed.placeholder) {
-      const { placeholder } = this.state;
-      /** @type {HTMLInputElement} */ (this.$.input).placeholder = placeholder;
-    }
-  }
-
   get [symbols.template]() {
     return template.html`
       <style>
@@ -212,6 +195,23 @@ class ListWithSearch extends Base {
         <slot></slot>
       </elix-filter-list-box>
     `;
+  }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
+    if (changed.ariaLabel) {
+      const { ariaLabel } = this.state;
+      this.$.input.setAttribute('aria-label', ariaLabel);
+    }
+    if (changed.filter) {
+      const { filter } = this.state;
+      /** @type {HTMLInputElement} */ (this.$.input).value = filter;
+      /** @type {any} */ (this.$.list).filter = filter;
+    }
+    if (changed.placeholder) {
+      const { placeholder } = this.state;
+      /** @type {HTMLInputElement} */ (this.$.input).placeholder = placeholder;
+    }
   }
 
 }

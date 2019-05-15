@@ -3,7 +3,7 @@ import State from './State.js';
 
 
 /** @type {any} */
-const renderedKey = Symbol('mounted');
+const mountedKey = Symbol('mounted');
 /** @type {any} */
 const stateKey = Symbol('state');
 /** @type {any} */
@@ -59,20 +59,6 @@ export default function ReactiveMixin(Base) {
       return new State();
     }
 
-    [symbols.populate](changed) {
-      if (super[symbols.populate]) { super[symbols.populate](changed); }
-    }
-
-    /*
-     * Internal render method.
-     * 
-     * The default implementation does nothing. Augment this in your component
-     * (or another mixin) to render the component's state to the DOM.
-     */
-    [symbols.render](changed) {
-      if (super[symbols.render]) { super[symbols.render](changed); }
-    }
-
     /**
      * Render the component to the DOM.
      * 
@@ -95,7 +81,7 @@ export default function ReactiveMixin(Base) {
       // state is available, and that is what is rendered. When the following
       // render calls happen, they will see that the complete state has already
       // been rendered, and skip doing any work.
-      if (!this[renderedKey] || changed !== null) {
+      if (!this[mountedKey] || changed !== null) {
 
         // If at least one of the setState calls was made in response to user
         // interaction or some other component-internal event, set the
@@ -108,11 +94,10 @@ export default function ReactiveMixin(Base) {
         // may use this to avoid triggering other updates during the render.
         this[symbols.rendering] = true;
 
-        // Invoke any internal prerender implementations.
-        this[symbols.populate](changed);
-
         // Invoke any internal render implementations.
-        this[symbols.render](changed);
+        if (this[symbols.render]) {
+          this[symbols.render](changed);
+        }
         this[symbols.rendering] = false;
 
         // Since we've now rendered all changes, clear the change log. If other
@@ -122,9 +107,9 @@ export default function ReactiveMixin(Base) {
 
         // Let the component know it was rendered.
         // First time is consider mounting; subsequent times are updates.
-        if (!this[renderedKey]) {
+        if (!this[mountedKey]) {
           this.componentDidMount();
-          this[renderedKey] = true;
+          this[mountedKey] = true;
         } else {
           this.componentDidUpdate(changed);
         }

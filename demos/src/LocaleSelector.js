@@ -319,14 +319,6 @@ class LocaleSelector extends ReactiveElement {
     });
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    if (changed.value) {
-      const { value } = this.state.value;
-      /** @type {HTMLSelectElement} */ (this.$.select).value = value;
-    }
-  }
-
   get [symbols.template]() {
     const result = template.html`
       <style>
@@ -349,6 +341,14 @@ class LocaleSelector extends ReactiveElement {
       applyChildNodes(select, localeOptions);
     }
     return result;
+  }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
+    if (changed.value) {
+      const { value } = this.state.value;
+      /** @type {HTMLSelectElement} */ (this.$.select).value = value;
+    }
   }
 
   get value() {

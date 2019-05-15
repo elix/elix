@@ -12,18 +12,6 @@ const Base =
 
 class LabeledColorSwatch extends Base {
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    if (changed.content) {
-      const content = this.state.content;
-      const strings = content ? 
-        content.map(node => node.textContent) :
-        [];
-      const color = strings.join('').toLowerCase();
-      this.$.swatch.style.backgroundColor = color;
-    }
-  }
-
   get [symbols.template]() {
     return template.html`
       <style>
@@ -56,6 +44,18 @@ class LabeledColorSwatch extends Base {
     `;
   }
   
+  [symbols.update](changed) {
+    super[symbols.update](changed);
+    if (changed.content) {
+      const content = this.state.content;
+      const strings = content ? 
+        content.map(node => node.textContent) :
+        [];
+      const color = strings.join('').toLowerCase();
+      this.$.swatch.style.backgroundColor = color;
+    }
+  }
+
 }
 
 

@@ -303,16 +303,6 @@ class MenuButton extends PopupButton {
     }
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    if (changed.menuSelectedIndex) {
-      const menu = /** @type {any} */ (this.$.menu);
-      if ('selectedIndex' in menu) {
-        menu.selectedIndex = this.state.menuSelectedIndex;
-      }
-    }
-  }
-
   get [symbols.template]() {
     const base = super[symbols.template];
 
@@ -364,6 +354,16 @@ class MenuButton extends PopupButton {
         </style>
       `
     );
+  }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
+    if (changed.menuSelectedIndex) {
+      const menu = /** @type {any} */ (this.$.menu);
+      if ('selectedIndex' in menu) {
+        menu.selectedIndex = this.state.menuSelectedIndex;
+      }
+    }
   }
 
 }

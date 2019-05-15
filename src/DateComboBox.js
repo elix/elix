@@ -338,27 +338,6 @@ class DateComboBox extends Base {
     }
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    const calendar = /** @type {any} */ (this.$.calendar);
-    if (changed.arrowButtonRole) {
-      if ('arrowButtonRole' in calendar) {
-        calendar.arrowButtonRole = this.state.arrowButtonRole;
-      }
-    }
-    if (changed.date) {
-      calendar.date = this.state.date;
-    }
-    if (changed.dayRole) {
-      if ('dayRole' in calendar) {
-        calendar.dayRole = this.state.dayRole;
-      }
-    }
-    if (changed.locale) {
-      calendar.locale = this.state.locale;
-    }
-  }
-
   get [symbols.template]() {
     const result = super[symbols.template];
 
@@ -428,6 +407,27 @@ class DateComboBox extends Base {
     this.setState({
       todayButtonRole
     });
+  }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
+    const calendar = /** @type {any} */ (this.$.calendar);
+    if (changed.arrowButtonRole) {
+      if ('arrowButtonRole' in calendar) {
+        calendar.arrowButtonRole = this.state.arrowButtonRole;
+      }
+    }
+    if (changed.date) {
+      calendar.date = this.state.date;
+    }
+    if (changed.dayRole) {
+      if ('dayRole' in calendar) {
+        calendar.dayRole = this.state.dayRole;
+      }
+    }
+    if (changed.locale) {
+      calendar.locale = this.state.locale;
+    }
   }
 
   get value() {

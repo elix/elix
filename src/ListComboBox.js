@@ -199,16 +199,6 @@ class ListComboBox extends Base {
     }
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    if (changed.selectedIndex) {
-      const list = /** @type {any} */ (this.$.list);
-      if ('selectedIndex' in list) {
-        list.selectedIndex = this.state.selectedIndex;
-      }
-    }
-  }
-
   get [symbols.template]() {
     const result = super[symbols.template];
 
@@ -234,6 +224,16 @@ class ListComboBox extends Base {
     }
 
     return result;
+  }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
+    if (changed.selectedIndex) {
+      const list = /** @type {any} */ (this.$.list);
+      if ('selectedIndex' in list) {
+        list.selectedIndex = this.state.selectedIndex;
+      }
+    }
   }
 
 }

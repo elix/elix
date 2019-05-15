@@ -26,8 +26,25 @@ class CenteredStripOpacity extends CenteredStrip {
     });
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
+  get [symbols.template]() {
+    return template.concat(super[symbols.template], template.html`
+      <style>
+        ::slotted(*) {
+          opacity: ${opacityMinimum.toString()}
+        }
+      </style>
+    `);
+  }
+
+  get transitionDuration() {
+    return this.state.transitionDuration;
+  }
+  set transitionDuration(transitionDuration) {
+    this.setState({ transitionDuration });
+  }
+
+  [symbols.update](changed) {
+    super[symbols.update](changed);
     if (changed.enableEffects || changed.languageDirection || changed.items ||
         changed.selectedIndex || changed.swipeFraction || changed.transitionDuration) {
       // Apply opacity based on selection state.
@@ -57,23 +74,6 @@ class CenteredStripOpacity extends CenteredStrip {
         });
       }
     }
-  }
-
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
-      <style>
-        ::slotted(*) {
-          opacity: ${opacityMinimum.toString()}
-        }
-      </style>
-    `);
-  }
-
-  get transitionDuration() {
-    return this.state.transitionDuration;
-  }
-  set transitionDuration(transitionDuration) {
-    this.setState({ transitionDuration });
   }
 
 }

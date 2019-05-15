@@ -77,8 +77,8 @@ export default function PlayControlsMixin(Base) {
       }
     }
 
-    [symbols.render](changed) {
-      super[symbols.render](changed);
+    [symbols.update](changed) {
+      super[symbols.update](changed);
       if (changed.languageDirection) {
         const rightToLeft = this.state.languageDirection === 'rtl';
         const transform = rightToLeft ?
