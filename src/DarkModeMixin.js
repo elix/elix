@@ -6,8 +6,9 @@
 export default function DarkModeMixin(Base) {
   return class DarkMode extends Base {
 
-    componentDidMount() {
-      if (super.componentDidMount) { super.componentDidMount(); }
+    // Once connected, check background color. We set state before calling super
+    // so the new state will be included when ReactiveMixin calls render.
+    connectedCallback() {
       if (this.state.darkMode === null) {
         // Infer dark mode from effective background color.
         const backgroundColor = findBackgroundColor(this);
@@ -21,6 +22,7 @@ export default function DarkModeMixin(Base) {
           });
         }
       }
+      if (super.connectedCallback) { super.connectedCallback(); }
     }
 
     /**

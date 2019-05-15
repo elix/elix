@@ -8,17 +8,17 @@ export default function LanguageDirectionMixin(Base) {
   // The class prototype added by the mixin.
   return class LanguageDirection extends Base {
 
-    // The only way to get text direction is to wait for the component to mount
-    // and then inspect the computed style on its root element. This
-    // unfortunately means that, in a right-to-left language, the component will
-    // end up rendering twice.
-    componentDidMount() {
-      if (super.componentDidMount) { super.componentDidMount(); }
+    // The only way to get text direction is to wait for the component to
+    // connect and then inspect the computed style on its root element. We set
+    // state before calling super so the new state will be included when
+    // ReactiveMixin calls render.
+    connectedCallback() {
       /** @type {any} */ const element = this;
       const languageDirection = getComputedStyle(element).direction;
       this.setState({
         languageDirection
       });
+      if (super.connectedCallback) { super.connectedCallback(); }
     }
 
   }
