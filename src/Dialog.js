@@ -4,7 +4,7 @@ import DialogModalityMixin from './DialogModalityMixin.js';
 import FocusCaptureMixin from './FocusCaptureMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import ModalBackdrop from './ModalBackdrop.js';
-import Overlay from './Overlay.js'
+import Overlay from './Overlay.js';
 
 
 const Base =

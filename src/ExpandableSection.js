@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js'
+import * as symbols from './symbols.js';
 import * as template from './template.js';
 import ExpandablePanel from './ExpandablePanel.js';
 import OpenCloseMixin from './OpenCloseMixin.js';

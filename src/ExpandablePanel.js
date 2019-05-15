@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js'
+import * as symbols from './symbols.js';
 import * as template from './template.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import ReactiveElement from './ReactiveElement.js';

@@ -2,7 +2,7 @@ import * as mockInteractions from '../mockInteractions.js';
 import * as symbols from '../../src/symbols.js';
 import KeyboardMixin from '../../src/KeyboardMixin.js';
 import OriginalAttributesMixin from '../../src/OriginalAttributesMixin.js';
-import ReactiveMixin from '../../src/ReactiveMixin.js'
+import ReactiveMixin from '../../src/ReactiveMixin.js';
 
 
 class KeyboardTest extends KeyboardMixin(

@@ -19,7 +19,7 @@ import './tests/KeyboardPagedSelectionMixin.tests.js';
 import './tests/KeyboardPrefixSelectionMixin.tests.js';
 import './tests/ListBox.tests.js';
 import './tests/OpenCloseMixin.tests.js';
-import './tests/OriginalAttributesMixin.tests';
+import './tests/OriginalAttributesMixin.tests.js';
 import './tests/Overlay.tests.js';
 import './tests/OverlayMixin.tests.js';
 import './tests/ReactiveMixin.tests.js';

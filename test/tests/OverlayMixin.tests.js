@@ -1,6 +1,6 @@
 import * as symbols from '../../src/symbols.js';
 import OpenCloseMixin from '../../src/OpenCloseMixin.js';
-import OriginalAttributesMixin from '../../src/OriginalAttributesMixin.js'
+import OriginalAttributesMixin from '../../src/OriginalAttributesMixin.js';
 import OverlayMixin from '../../src/OverlayMixin.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
 
