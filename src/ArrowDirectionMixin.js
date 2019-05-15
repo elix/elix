@@ -152,16 +152,18 @@ function ArrowDirectionMixin(Base) {
         });
       }
       if (changed.canGoLeft) {
+        const { canGoLeft } = this.state;
         // We'd like to set the `disabled` *property*, not attribute:
         // arrowButtonLeft.disabled = !state.canGoLeft;
         // But a bug in Chrome prevents this from working.
         // TODO: Isolate repro case.
-        const { canGoLeft } = this.state;
+        // arrowButtonLeft.disabled = !canGoLeft;
         arrowButtonLeft.toggleAttribute('disabled', !canGoLeft);
       }
       if (changed.canGoRight) {
-        // See note for canGoLeft.
         const { canGoRight } = this.state;
+        // See note for canGoLeft.
+        // arrowButtonRight.disabled = !canGoRight;
         arrowButtonRight.toggleAttribute('disabled', !canGoRight);
       }
       // Wait for knowledge of dark mode

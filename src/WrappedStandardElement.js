@@ -1,4 +1,4 @@
-import { booleanAttributes } from './AttributeMarshallingMixin';
+import { booleanAttributes } from './AttributeMarshallingMixin.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import DelegateFocusMixin from './DelegateFocusMixin.js';
@@ -6,7 +6,7 @@ import ReactiveElement from './ReactiveElement.js';
 
 
 const extendsKey = Symbol('extends');
-const renderedKey = Symbol('rendered');
+// const renderedKey = Symbol('rendered');
 
 
 /*
@@ -235,14 +235,14 @@ class WrappedStandardElement extends Base {
       });
     }
 
-    this[renderedKey] = true;
-    reflectDisabledAttribute(this);
+    // this[renderedKey] = true;
+    // reflectDisabledAttribute(this);
   }
 
-  componentDidUpdate(changed) {
-    super.componentDidUpdate(changed);
-    reflectDisabledAttribute(this);
-  }
+  // componentDidUpdate(changed) {
+  //   super.componentDidUpdate(changed);
+  //   reflectDisabledAttribute(this);
+  // }
 
   get defaultState() {
     return Object.assign(super.defaultState, {
@@ -327,7 +327,14 @@ class WrappedStandardElement extends Base {
         }
       }
     }
-    Object.assign(inner, this.state.innerProperties);
+    if (changed.innerProperties) {
+      const { innerProperties } = this.state;
+      Object.assign(inner, innerProperties);
+      const { disabled } = innerProperties;
+      if (disabled !== undefined) {
+        this.toggleAttribute('disabled', disabled);
+      }
+    }
   }
 
   // Save property assignment in state.
@@ -507,12 +514,6 @@ function defineDelegates(cls, prototype) {
       Object.defineProperty(cls.prototype, name, delegate);
     }
   });
-}
-
-
-// Reflect value of disabled property to the corresponding attribute.
-function reflectDisabledAttribute(element) {
-  element.toggleAttribute('disabled', element.disabled);
 }
 
 
