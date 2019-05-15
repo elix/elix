@@ -110,12 +110,18 @@ class Explorer extends Base {
     super[symbols.populate](changed);
 
     const handleSelectedIndexChanged = event => {
-      this[symbols.raiseChangeEvents] = true;
-      const selectedIndex = event.detail.selectedIndex;
-      if (this.selectedIndex !== selectedIndex) {
-        this.selectedIndex = selectedIndex;
+      // The proxy list and stage may raise events before they've actually
+      // had a chance to sync up their items to reflect the current state
+      // of the explorer component, so we only handle their events if
+      // their count of items matches ours.
+      if (this.items.length === event.target.items.length) {
+        const selectedIndex = event.detail.selectedIndex;
+        if (this.selectedIndex !== selectedIndex) {
+          this[symbols.raiseChangeEvents] = true;
+          this.selectedIndex = selectedIndex;
+          this[symbols.raiseChangeEvents] = false;
+        }
       }
-      this[symbols.raiseChangeEvents] = false;
     };
 
     if (changed.proxyListRole) {
