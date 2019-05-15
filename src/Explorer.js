@@ -9,8 +9,6 @@ import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 
 
-const proxySlotchangeFiredKey = Symbol('proxySlotchangeFired');
-
 // Does a list position imply a lateral arrangement of list and stage?
 const lateralPositions = {
   end: true,
@@ -54,17 +52,24 @@ class Explorer extends Base {
   componentDidMount() {
     super.componentDidMount();
 
-    // Work around inconsistencies in slotchange timing; see SlotContentMixin.
+    // When proxy slot's assigned nodes change, determine whether we need to
+    // generate default proxies or (if assigned nodes are present) treat the
+    // assigned nodes as the proxies.
     this.$.proxySlot.addEventListener('slotchange', () => {
-      this[proxySlotchangeFiredKey] = true;
-      assignedProxiesChanged(this);
-    });
-    Promise.resolve().then(() => {
-      if (!this[proxySlotchangeFiredKey]) {
-        // The event didn't fire, so we're most likely in Safari.
-        // Update our notion of the component content.
-        this[proxySlotchangeFiredKey] = true;
-        assignedProxiesChanged(this);
+      const proxySlot = /** @type {any} */ (this.$.proxySlot);
+      const proxies = proxySlot.assignedNodes({ flatten: true });
+      const proxiesAssigned = proxies.length > 0;
+      if (proxiesAssigned) {
+        // Nodes assigned to slot become proxies.
+        this.setState({
+          proxiesAssigned,
+          proxies
+        });
+      } else {
+        // No nodes assigned -- we'll need to generate proxies.
+        this.setState({
+          proxiesAssigned
+        });
       }
     });
   }
@@ -324,25 +329,6 @@ class Explorer extends Base {
     `;
   }
 
-}
-
-
-function assignedProxiesChanged(element) {
-  const proxySlot = element.$.proxySlot;
-  const proxies = proxySlot.assignedNodes({ flatten: true });
-  const proxiesAssigned = proxies.length > 0;
-  if (proxiesAssigned) {
-    // Nodes assigned to slot become proxies.
-    element.setState({
-      proxiesAssigned,
-      proxies
-    });
-  } else {
-    // No nodes assigned -- we'll need to generate proxies.
-    element.setState({
-      proxiesAssigned
-    });
-  }
 }
 
 
