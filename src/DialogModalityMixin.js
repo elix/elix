@@ -72,9 +72,9 @@ export default function DialogModalityMixin(Base) {
 
     [symbols.update](changed) {
       if (super[symbols.update]) { super[symbols.update](changed); }
-      if (changed.originalAttributes || changed.role) {
-        const { originalAttributes, role } = this.state;
-        const originalRole = originalAttributes && originalAttributes.role;
+      if (changed.explicitAttributes || changed.role) {
+        const { explicitAttributes, role } = this.state;
+        const originalRole = explicitAttributes && explicitAttributes.role;
         if (!originalRole) {
           this.setAttribute('role', role);
         }

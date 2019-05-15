@@ -222,8 +222,8 @@ class TabStrip extends Base {
         'row' :
         'column';
     }
-    if (changed.originalStyle || changed.tabAlign) {
-      const { originalStyle, tabAlign } = this.state;  
+    if (changed.explicitStyle || changed.tabAlign) {
+      const { explicitStyle, tabAlign } = this.state;  
       const justifyContentForTabAlign = {
         'center': 'center',
         'end': 'end',
@@ -231,14 +231,14 @@ class TabStrip extends Base {
         'stretch': 'stretch' // No style needed for "stretch"
       };
       const placeContent = justifyContentForTabAlign[tabAlign] ||
-        (originalStyle && originalStyle['justify-content']) ||
+        (explicitStyle && explicitStyle['justify-content']) ||
         null;
       // @ts-ignore
       this.style.placeContent = placeContent;
     }
-    if (changed.originalAttributes || changed.role) {
-      const { originalAttributes, role } = this.state;
-      const originalRole = originalAttributes && originalAttributes.role;
+    if (changed.explicitAttributes || changed.role) {
+      const { explicitAttributes, role } = this.state;
+      const originalRole = explicitAttributes && explicitAttributes.role;
       if (!originalRole) {
         this.setAttribute('role', role);
       }

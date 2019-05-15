@@ -3,7 +3,7 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const OriginalAttributesMixin: StateMixin<
+declare const ExplicitAttributesMixin: StateMixin<
 {},
 {},
 {},
@@ -12,4 +12,4 @@ declare const OriginalAttributesMixin: StateMixin<
 }
 >;
 
-export default OriginalAttributesMixin;
+export default ExplicitAttributesMixin;

@@ -364,16 +364,16 @@ class WrappedStandardElement extends Base {
     if (changed.tabIndex) {
       inner.tabIndex = this.state.tabIndex;
     }
-    if (changed.originalAttributes) {
+    if (changed.explicitAttributes) {
       // Delegate any ARIA attributes to the inner element, as well as any
       // attributes that don't have corresponding properties. (Attributes
       // that correspond to properties will be handled separately by our
       // generated property delegates.)
-      const { originalAttributes } = this.state;
-      for (const key in originalAttributes) {
+      const { explicitAttributes } = this.state;
+      for (const key in explicitAttributes) {
         if (key.startsWith('aria-') ||
             attributesWithoutProperties.indexOf(key) >= 0) {
-          const value = originalAttributes[key];
+          const value = explicitAttributes[key];
           applyAttribute(inner, key, value);
         }
       }

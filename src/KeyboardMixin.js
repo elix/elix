@@ -74,9 +74,9 @@ export default function KeyboardMixin(Base) {
         tabIndex
       });
 
-      state.onChange('originalAttributes', state => {
-        if (state.originalAttributes.tabindex) {
-          const parsed = Number(state.originalAttributes.tabindex);
+      state.onChange('explicitAttributes', state => {
+        if (state.explicitAttributes.tabindex) {
+          const parsed = Number(state.explicitAttributes.tabindex);
           if (!isNaN(parsed)) {
             return {
               tabIndex: parsed
@@ -124,28 +124,28 @@ export default function KeyboardMixin(Base) {
         // If tabIndex is set outside of rendering, that's tantamount to setting
         // the tabindex attribute. We update our notion of the "original"
         // attribute value of the tabindex attribute. See
-        // OriginalAttributesMixin.setAttribute().
+        // ExplicitAttributesMixin.setAttribute().
         if (!this[symbols.rendering]) {
-          const hadOriginalAttributes = this.state.originalAttributes !== undefined;
-          let originalAttributes = Object.assign({}, this.state.originalAttributes);
+          const hadOriginalAttributes = this.state.explicitAttributes !== undefined;
+          let explicitAttributes = Object.assign({}, this.state.explicitAttributes);
           if (parsed === null) {
             if (hadOriginalAttributes) {
-              delete originalAttributes.tabindex;
+              delete explicitAttributes.tabindex;
             }
           } else {
-            originalAttributes.tabindex = parsed.toString();
+            explicitAttributes.tabindex = parsed.toString();
           }
-          this.setState({ originalAttributes });
+          this.setState({ explicitAttributes });
         }
       }
     }
 
     [symbols.update](changed) {
       if (super[symbols.update]) { super[symbols.update](changed); }
-      if (changed.originalAttributes || changed.tabIndex) {
-        const { originalAttributes, tabIndex } = this.state;
-        const originalTabindex = originalAttributes ?
-          originalAttributes.tabindex :
+      if (changed.explicitAttributes || changed.tabIndex) {
+        const { explicitAttributes, tabIndex } = this.state;
+        const originalTabindex = explicitAttributes ?
+          explicitAttributes.tabindex :
           null;
         if (originalTabindex == null) {
           this.tabIndex = tabIndex;

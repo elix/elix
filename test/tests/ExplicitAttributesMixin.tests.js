@@ -1,30 +1,30 @@
 import * as symbols from '../../src/symbols.js';
-import OriginalAttributesMixin from '../../src/OriginalAttributesMixin.js';
+import ExplicitAttributesMixin from '../../src/ExplicitAttributesMixin.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
 
 
-class OriginalAttributesTest extends OriginalAttributesMixin(ReactiveMixin(HTMLElement)) {
+class ExplicitAttributesTest extends ExplicitAttributesMixin(ReactiveMixin(HTMLElement)) {
 
   [symbols.render](changed) {
     if (super[symbols.render]) { super[symbols.render](changed); }
-    if (changed.originalClasses || changed.originalStyle || changed.selected) {
-      const { originalClasses, originalStyle } = this.state;
+    if (changed.explicitClasses || changed.explicitStyle || changed.selected) {
+      const { explicitClasses, explicitStyle } = this.state;
       const selected = this.state.selected || 
-        (originalClasses && originalClasses.selected)
+        (explicitClasses && explicitClasses.selected)
         || false;
       this.classList.toggle('selected', selected);
       const color = selected ?
         'red' :
-        (originalStyle && originalStyle.color) || null;
+        (explicitStyle && explicitStyle.color) || null;
       this.style.color = color;
     }
   }
 
 }
-customElements.define('original-attributes-test', OriginalAttributesTest);
+customElements.define('explicit-attributes-test', ExplicitAttributesTest);
 
 
-describe("OriginalAttributesMixin", function () {
+describe("ExplicitAttributesMixin", function () {
 
   let container;
 
@@ -37,29 +37,29 @@ describe("OriginalAttributesMixin", function () {
   });
 
   it("doesn't set any state for an element with no attributes, classes, or styles", () => {
-    const fixture = new OriginalAttributesTest();
+    const fixture = new ExplicitAttributesTest();
     container.appendChild(fixture);
     assert(fixture.state.original === undefined);
   });
 
   it("initializes state to track original attributes, classes, and styles", () => {
-    container.innerHTML = `<original-attributes-test class="foo bar" style="color: red;" aria-selected="false"></original-attributes-test>`;
-    const fixture = container.querySelector('original-attributes-test');
+    container.innerHTML = `<explicit-attributes-test class="foo bar" style="color: red;" aria-selected="false"></explicit-attributes-test>`;
+    const fixture = container.querySelector('explicit-attributes-test');
     container.appendChild(fixture);
-    assert.deepEqual(fixture.state.originalAttributes, {
+    assert.deepEqual(fixture.state.explicitAttributes, {
       'aria-selected': 'false'
     });
-    assert.deepEqual(fixture.state.originalClasses, {
+    assert.deepEqual(fixture.state.explicitClasses, {
       bar: true,
       foo: true
     });
-    assert.deepEqual(fixture.state.originalStyle, {
+    assert.deepEqual(fixture.state.explicitStyle, {
       color: 'red'
     });
   });
 
   it("updates host with props", async () => {
-    const fixture = new OriginalAttributesTest();
+    const fixture = new ExplicitAttributesTest();
     container.appendChild(fixture);
     assert.equal(fixture.style.color, '');
     await fixture.setState({
@@ -74,30 +74,30 @@ describe("OriginalAttributesMixin", function () {
   });
 
   it("tracks original attribute values", () => {
-    const fixture = new OriginalAttributesTest();
+    const fixture = new ExplicitAttributesTest();
     fixture.setAttribute('foo', 'bar');
-    assert.equal(fixture.state.originalAttributes.foo, 'bar');
+    assert.equal(fixture.state.explicitAttributes.foo, 'bar');
     fixture.removeAttribute('foo');
-    assert.equal(fixture.state.originalAttributes.foo, undefined);
+    assert.equal(fixture.state.explicitAttributes.foo, undefined);
   });
 
   it("records state when toggling Boolean attributes", () => {
-    const fixture = new OriginalAttributesTest();
+    const fixture = new ExplicitAttributesTest();
     fixture.toggleAttribute('disabled');
-    assert.equal(fixture.state.originalAttributes.disabled, '');
+    assert.equal(fixture.state.explicitAttributes.disabled, '');
     fixture.toggleAttribute('disabled');
-    assert.equal(fixture.state.originalAttributes.disabled, undefined);
+    assert.equal(fixture.state.explicitAttributes.disabled, undefined);
     fixture.toggleAttribute('disabled', true);
     fixture.toggleAttribute('disabled', true);
-    assert.equal(fixture.state.originalAttributes.disabled, '');
+    assert.equal(fixture.state.explicitAttributes.disabled, '');
     fixture.toggleAttribute('disabled', false);
     fixture.toggleAttribute('disabled', false);
-    assert.equal(fixture.state.originalAttributes.disabled, undefined);
+    assert.equal(fixture.state.explicitAttributes.disabled, undefined);
   });
 
   it("merges styles on top of original styles", async () => {
-    container.innerHTML = `<original-attributes-test style="background-color: yellow; color: green;"></original-attributes-test>`;
-    const fixture = container.querySelector('original-attributes-test');
+    container.innerHTML = `<explicit-attributes-test style="background-color: yellow; color: green;"></explicit-attributes-test>`;
+    const fixture = container.querySelector('explicit-attributes-test');
     await fixture.setState({
       selected: true
     })
@@ -118,8 +118,8 @@ describe("OriginalAttributesMixin", function () {
   });
 
   it("merges classes on top of original classes", async () => {
-    container.innerHTML = `<original-attributes-test class='foo'></original-attributes-test>`;
-    const fixture = container.querySelector('original-attributes-test');
+    container.innerHTML = `<explicit-attributes-test class='foo'></explicit-attributes-test>`;
+    const fixture = container.querySelector('explicit-attributes-test');
     assert(fixture.classList.contains('foo'));
     assert(!fixture.classList.contains('selected'));
 
@@ -137,8 +137,8 @@ describe("OriginalAttributesMixin", function () {
   });
 
   it("respects original classes", async () => {
-    container.innerHTML = `<original-attributes-test class='selected'></original-attributes-test>`;
-    const fixture = container.querySelector('original-attributes-test');
+    container.innerHTML = `<explicit-attributes-test class='selected'></explicit-attributes-test>`;
+    const fixture = container.querySelector('explicit-attributes-test');
     assert(fixture.classList.contains('selected'));
 
     await fixture.setState({

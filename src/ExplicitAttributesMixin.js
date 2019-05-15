@@ -2,11 +2,12 @@ import * as symbols from './symbols.js';
 
 
 /**
- * Track an element's original class list, style, and other attributes.
+ * Track the classes, styles, and other attributes which have been explicitly
+ * set on a component's top-level host element.
  * 
- * @module OriginalAttributesMixin
+ * @module ExplicitAttributesMixin
  */
-export default function OriginalAttributesMixin(Base) {
+export default function ExplicitAttributesMixin(Base) {
   return class OriginalAttributes extends Base {
 
     connectedCallback() {
@@ -19,13 +20,13 @@ export default function OriginalAttributesMixin(Base) {
       if (attributes || classes || style) {
         const changes = {};
         if (attributes) {
-          changes.originalAttributes = attributes;
+          changes.explicitAttributes = attributes;
         }
         if (classes) {
-          changes.originalClasses = classes;
+          changes.explicitClasses = classes;
         }
         if (style) {
-          changes.originalStyle = style;
+          changes.explicitStyle = style;
         }
         this.setState(changes);
       }
@@ -37,8 +38,8 @@ export default function OriginalAttributesMixin(Base) {
     removeAttribute(name) {
       super.removeAttribute(name);
       if (!this[symbols.rendering] &&
-          this.state.originalAttributes &&
-          this.state.originalAttributes[name] != null) {
+          this.state.explicitAttributes &&
+          this.state.explicitAttributes[name] != null) {
         updateOriginalProp(this, name, null);
       }
     }
@@ -81,8 +82,8 @@ export default function OriginalAttributesMixin(Base) {
         if (force !== undefined) {
           // Use supplied value.
           value = force ? '' : null;
-        } else if (this.state.originalAttributes &&
-            this.state.originalAttributes[name] !== undefined) {
+        } else if (this.state.explicitAttributes &&
+            this.state.explicitAttributes[name] !== undefined) {
           // Toggle off
           value = null;
         } else {
@@ -191,31 +192,31 @@ function updateOriginalProp(element, name, value) {
     
     case 'class':
       element.setState({
-        originalClasses: parseClassProps(value)
+        explicitClasses: parseClassProps(value)
       });
       break;
 
     case 'style':
       element.setState({
-        originalStyle: parseStyleProps(value)
+        explicitStyle: parseStyleProps(value)
       });
       break;
     
     default: {
       const previousAttributes = element.state &&
-        element.state.originalAttributes;
+        element.state.explicitAttributes;
       if (!previousAttributes || previousAttributes[name] !== value) {
-        const originalAttributes = Object.assign(
+        const explicitAttributes = Object.assign(
           {},
           previousAttributes
         );
         if (value !== null) {
-          originalAttributes[name] = value;
+          explicitAttributes[name] = value;
         } else {
-          delete originalAttributes[name];
+          delete explicitAttributes[name];
         }
         element.setState({
-          originalAttributes
+          explicitAttributes
         });
       }
       break;

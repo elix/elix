@@ -382,9 +382,9 @@ class ComboBox extends Base {
         right: rightToLeft ? '' : '3px'
       });
     }
-    if (changed.originalAttributes || changed.role) {
-      const { originalAttributes, role } = this.state;
-      const originalRole = originalAttributes && originalAttributes.role;
+    if (changed.explicitAttributes || changed.role) {
+      const { explicitAttributes, role } = this.state;
+      const originalRole = explicitAttributes && explicitAttributes.role;
       if (!originalRole) {
         this.setAttribute('role', role);
       }
