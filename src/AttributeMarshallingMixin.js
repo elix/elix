@@ -1,3 +1,6 @@
+import * as symbols from './symbols.js';
+
+
 export const booleanAttributes = {
   checked: true,
   defer: true,
@@ -70,7 +73,10 @@ export default function AttributeMarshallingMixin(Base) {
         super.attributeChangedCallback(attributeName, oldValue, newValue);
       }
       // Sometimes there's not actually any change.
-      if (newValue !== oldValue) {
+      // We also skip setting properties if we're rendering. A component
+      // may want to reflect property values to attributes during rendering,
+      // but such attribute changes shouldn't trigger property updates.
+      if (newValue !== oldValue && !this[symbols.rendering]) {
         const propertyName = attributeToPropertyName(attributeName);
         // If the attribute name corresponds to a property name, set the property.
         if (propertyName in this) {
