@@ -73,6 +73,30 @@ export default function OriginalAttributesMixin(Base) {
       }
       super.style = style;
     }
+
+    // See setAttribute
+    toggleAttribute(name, force) {
+      if (!this[symbols.rendering]) {
+        let value;
+        if (force !== undefined) {
+          // Use supplied value.
+          value = force ? '' : null;
+        } else if (this.state.originalAttributes &&
+            this.state.originalAttributes[name] !== undefined) {
+          // Toggle off
+          value = null;
+        } else {
+          // Toggle on
+          value = '';
+        }
+        updateOriginalProp(this, name, value);
+      }
+      if (force !== undefined) {
+        super.toggleAttribute(name, force);
+      } else {
+        super.toggleAttribute(name);
+      }
+    }
   }
 }
 
@@ -178,16 +202,22 @@ function updateOriginalProp(element, name, value) {
       break;
     
     default: {
-      const originalAttributes = Object.assign(
-        {},
-        element.state.originalAttributes,
-        {
-          [name]: value
+      const previousAttributes = element.state &&
+        element.state.originalAttributes;
+      if (!previousAttributes || previousAttributes[name] !== value) {
+        const originalAttributes = Object.assign(
+          {},
+          previousAttributes
+        );
+        if (value !== null) {
+          originalAttributes[name] = value;
+        } else {
+          delete originalAttributes[name];
         }
-      );
-      element.setState({
-        originalAttributes
-      });
+        element.setState({
+          originalAttributes
+        });
+      }
       break;
     }
   }

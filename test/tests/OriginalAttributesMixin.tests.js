@@ -78,7 +78,21 @@ describe("OriginalAttributesMixin", function () {
     fixture.setAttribute('foo', 'bar');
     assert.equal(fixture.state.originalAttributes.foo, 'bar');
     fixture.removeAttribute('foo');
-    assert.isNull(fixture.state.originalAttributes.foo);
+    assert.equal(fixture.state.originalAttributes.foo, undefined);
+  });
+
+  it("records state when toggling Boolean attributes", () => {
+    const fixture = new OriginalAttributesTest();
+    fixture.toggleAttribute('disabled');
+    assert.equal(fixture.state.originalAttributes.disabled, '');
+    fixture.toggleAttribute('disabled');
+    assert.equal(fixture.state.originalAttributes.disabled, undefined);
+    fixture.toggleAttribute('disabled', true);
+    fixture.toggleAttribute('disabled', true);
+    assert.equal(fixture.state.originalAttributes.disabled, '');
+    fixture.toggleAttribute('disabled', false);
+    fixture.toggleAttribute('disabled', false);
+    assert.equal(fixture.state.originalAttributes.disabled, undefined);
   });
 
   it("merges styles on top of original styles", async () => {
