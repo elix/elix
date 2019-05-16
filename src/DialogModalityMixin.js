@@ -3,8 +3,6 @@ import * as symbols from './symbols.js';
 
 // Symbols for private data members.
 /** @type {any} */
-const documentScrollingDisabledKey = Symbol('documentScrollingDisabled');
-/** @type {any} */
 const previousBodyOverflowKey = Symbol('previousBodyStyleOverflow');
 /** @type {any} */
 const previousDocumentMarginRightKey = Symbol('previousDocumentMarginRight');
@@ -27,24 +25,6 @@ const previousDocumentMarginRightKey = Symbol('previousDocumentMarginRight');
  */
 export default function DialogModalityMixin(Base) {
   return class DialogModality extends Base {
-
-    componentDidUpdate(changed) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
-      if (changed.opened) {
-        if (this.opened && !this[documentScrollingDisabledKey]) {
-          disableDocumentScrolling(this);
-          this[documentScrollingDisabledKey] = true;
-        } else if (this.closed && this[documentScrollingDisabledKey]) {
-          enableDocumentScrolling(this);
-          this[documentScrollingDisabledKey] = false;
-        }
-      }
-    }
-
-    disconnectedCallback() {
-      if (super.disconnectedCallback) { super.disconnectedCallback(); }
-      enableDocumentScrolling(this);
-    }
 
     get defaultState() {
       return Object.assign(super.defaultState, {
@@ -71,7 +51,9 @@ export default function DialogModalityMixin(Base) {
     }
 
     [symbols.update](changed) {
+
       if (super[symbols.update]) { super[symbols.update](changed); }
+
       if (changed.explicitAttributes || changed.role) {
         const { explicitAttributes, role } = this.state;
         const originalRole = explicitAttributes && explicitAttributes.role;
@@ -79,41 +61,34 @@ export default function DialogModalityMixin(Base) {
           this.setAttribute('role', role);
         }
       }
+
+      if (changed.opened) {
+        if (this.state.opened && document.documentElement) {
+          // Disable body scrolling to absorb space bar keypresses and other
+          // means of scrolling the top-level document.
+          const documentWidth = document.documentElement.clientWidth;
+          const scrollBarWidth = window.innerWidth - documentWidth;
+          this[previousBodyOverflowKey] = document.body.style.overflow;
+          this[previousDocumentMarginRightKey] = scrollBarWidth > 0 ?
+            document.documentElement.style.marginRight :
+            null;
+          document.body.style.overflow = 'hidden';
+          if (scrollBarWidth > 0) {
+            document.documentElement.style.marginRight = `${scrollBarWidth}px`;
+          }
+        } else {
+          // Reenable body scrolling.
+          if (this[previousBodyOverflowKey] != null) {
+            document.body.style.overflow = this[previousBodyOverflowKey];
+            this[previousBodyOverflowKey] = null;
+          }
+          if (this[previousDocumentMarginRightKey] != null) {
+            document.documentElement.style.marginRight = this[previousDocumentMarginRightKey];
+            this[previousDocumentMarginRightKey] = null;
+          }
+        }
+      }
     }
 
-  }
-}
-
-
-// Mark body as non-scrollable, to absorb space bar keypresses and other
-// means of scrolling the top-level document.
-function disableDocumentScrolling(element) {
-  if (!document.documentElement) {
-    return;
-  }
-  const documentWidth = document.documentElement.clientWidth;
-  const scrollBarWidth = window.innerWidth - documentWidth;
-  element[previousBodyOverflowKey] = document.body.style.overflow;
-  element[previousDocumentMarginRightKey] = scrollBarWidth > 0 ?
-    document.documentElement.style.marginRight :
-    null;
-  document.body.style.overflow = 'hidden';
-  if (scrollBarWidth > 0) {
-    document.documentElement.style.marginRight = `${scrollBarWidth}px`;
-  }
-}
-
-
-function enableDocumentScrolling(element) {
-  if (!document.documentElement) {
-    return;
-  }
-  if (element[previousBodyOverflowKey] != null) {
-    document.body.style.overflow = element[previousBodyOverflowKey];
-    element[previousBodyOverflowKey] = null;
-  }
-  if (element[previousDocumentMarginRightKey] != null) {
-    document.documentElement.style.marginRight = element[previousDocumentMarginRightKey];
-    element[previousDocumentMarginRightKey] = null;
   }
 }

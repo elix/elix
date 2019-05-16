@@ -170,7 +170,7 @@ class Overlay extends Base {
           pointer-events: initial;
         }
       </style>
-      <elix-backdrop id="backdrop"></elix-backdrop>
+      <elix-backdrop id="backdrop" tabindex="-1"></elix-backdrop>
       <elix-overlay-frame id="frame" role="none">
         <slot></slot>
       </elix-overlay-frame>
