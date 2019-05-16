@@ -16,19 +16,9 @@
   <script type="module">
     import * as symbols from '../src/symbols.js';
     import * as template from '../src/template.js';
-    import AttributeMarshallingMixin from '../src/AttributeMarshallingMixin.js';
-    import ReactiveMixin from '../src/ReactiveMixin.js';
-    import ShadowTemplateMixin from '../src/ShadowTemplateMixin.js';
+    import ReactiveElement from '../src/ReactiveElement.js';
 
-    // Create a native web component with reactive behavior.
-    const Base =
-      AttributeMarshallingMixin(
-      ReactiveMixin(
-      ShadowTemplateMixin(
-        HTMLElement
-      )));
-
-    class IncrementDecrement extends Base {
+    class IncrementDecrement extends ReactiveElement {
 
       componentDidMount() {
         if (super.componentDidMount) { super.componentDidMount(); }
@@ -55,7 +45,7 @@
       [symbols.update](changed) {
         super[symbols.update](changed);
         if (changed.value) {
-          const value = state.value;
+          const { value } = this.state;
           this.style.color = value < 0 ? 'red' : null;
           this.$.visibleValue.textContent = value;
         }
@@ -104,8 +94,8 @@
       [symbols.update](changed) {
         super[symbols.update](changed);
         if (changed.value) {
-          const value = state.value;
-          if (state.value > 0) {
+          const { value } = this.state;
+          if (value > 0) {
             this.style.color = 'dodgerblue';
           }
           this.$.decrement.disabled = value <= -5;
