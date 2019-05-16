@@ -148,9 +148,8 @@ class Toast extends Base {
       Object.assign(this.style, hostEdgeStyles[this.state.fromEdge]);
     }
     if (changed.effect || changed.effectPhase || changed.fromEdge
-        || changed.languageDirection) {
-      const { effect, effectPhase, fromEdge, languageDirection } = this.state;
-      const rightToLeft = languageDirection === 'rtl';
+        || changed.rightToLeft) {
+      const { effect, effectPhase, fromEdge, rightToLeft } = this.state;
       const oppositeEdge = {
         'bottom-left': 'bottom-right',
         'bottom-right': 'bottom-left',

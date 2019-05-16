@@ -28,8 +28,7 @@ export default function DirectionSelectionMixin(Base) {
       // Update computed state members canGoLeft/canGoRight.
       // TODO: Account for state.orientation, add canGoDown/canGoUp.
       state.onChange(['languageDirection', 'canSelectNext', 'canSelectPrevious'], state => {
-        const { languageDirection, canSelectNext, canSelectPrevious } = state;
-        const rightToLeft = languageDirection === 'rtl';
+        const { canSelectNext, canSelectPrevious, rightToLeft } = state;
         const canGoLeft = rightToLeft ? canSelectNext : canSelectPrevious;
         const canGoRight = rightToLeft ? canSelectPrevious : canSelectNext;
         return {
@@ -82,7 +81,7 @@ export default function DirectionSelectionMixin(Base) {
         console.warn(`DirectionSelectionMixin expects ${this.constructor.name} to define a "selectPrevious" method.`);
         return false;
       } else {
-        return this.state && this.state.languageDirection === 'rtl' ?
+        return this.state && this.state.rightToLeft ?
           this.selectNext() :
           this.selectPrevious();
       }
@@ -101,7 +100,7 @@ export default function DirectionSelectionMixin(Base) {
         console.warn(`DirectionSelectionMixin expects ${this.constructor.name} to define a "selectNext" method.`);
         return false;
       } else {
-        return this.state && this.state.languageDirection === 'rtl' ?
+        return this.state && this.state.rightToLeft ?
           this.selectPrevious() :
           this.selectNext();
       }

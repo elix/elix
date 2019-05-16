@@ -79,18 +79,18 @@ export default function PlayControlsMixin(Base) {
 
     [symbols.update](changed) {
       super[symbols.update](changed);
-      if (changed.languageDirection) {
-        const rightToLeft = this.state.languageDirection === 'rtl';
+      if (changed.playing) {
+        const { playing } = this.state;
+        this.$.pausedIcon.style.display = playing ? 'none' : '';
+        this.$.playingIcon.style.display = playing ? '' : 'none';
+      }
+      if (changed.rightToLeft) {
+        const rightToLeft = this.state.rightToLeft;
         const transform = rightToLeft ?
           'rotate(180deg)' :
           '';
         this.$.nextIcon.style.transform = transform;
         this.$.previousIcon.style.transform = transform;
-      }
-      if (changed.playing) {
-        const { playing } = this.state;
-        this.$.pausedIcon.style.display = playing ? 'none' : '';
-        this.$.playingIcon.style.display = playing ? '' : 'none';
       }
     }
     

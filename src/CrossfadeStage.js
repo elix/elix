@@ -59,19 +59,19 @@ class CrossfadeStage extends Base {
 
   [symbols.update](changed) {
     super[symbols.update](changed);
-    if (changed.enableEffects || changed.languageDirection || changed.items ||
+    if (changed.enableEffects || changed.rightToLeft || changed.items ||
         changed.selectedIndex || changed.swipeFraction || changed.transitionDuration) {
       // Apply opacity based on selection state.
       const {
         enableEffects,
         items,
         languageDirection,
+        rightToLeft,
         selectedIndex,
         swipeFraction,
         transitionDuration
       } = this.state;
       if (items) {
-        const rightToLeft = languageDirection === 'rtl';
         const sign = rightToLeft ? 1 : -1;
         const swiping = swipeFraction != null;
         const selectionFraction = sign * (swipeFraction || 0);

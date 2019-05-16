@@ -259,13 +259,22 @@ class Explorer extends Base {
         [this.$.proxySlot, ...proxies];
       applyChildNodes(this.$.proxyList, childNodes);
     }
-    if (changed.languageDirection || changed.proxyListPosition) {
+    if (changed.proxyListOverlap || changed.proxyListPosition || changed.proxyListRole) {
+      const { proxyListOverlap, proxyListPosition } = this.state;
+      const lateralPosition = lateralPositions[proxyListPosition];
+      Object.assign(proxyList.style, {
+        height: lateralPosition ? '100%' : null,
+        position: proxyListOverlap ? 'absolute' : null,
+        width: lateralPosition ? null : '100%',
+        zIndex: proxyListOverlap ? '1' : null
+      });
+    }
+    if (changed.proxyListPosition || changed.rightToLeft) {
       // Map the relative position of the list vis-a-vis the stage to a position
       // from the perspective of the list.
       const cast = /** @type {any} */ (proxyList);
       if ('position' in cast) {
-        const { languageDirection, proxyListPosition } = this.state;
-        const rightToLeft = languageDirection === 'rtl';
+        const { proxyListPosition, rightToLeft } = this.state;
         let position;
         switch (proxyListPosition) {
           case 'end':
@@ -280,16 +289,6 @@ class Explorer extends Base {
         }
         cast.position = position;
       }
-    }
-    if (changed.proxyListOverlap || changed.proxyListPosition || changed.proxyListRole) {
-      const { proxyListOverlap, proxyListPosition } = this.state;
-      const lateralPosition = lateralPositions[proxyListPosition];
-      Object.assign(proxyList.style, {
-        height: lateralPosition ? '100%' : null,
-        position: proxyListOverlap ? 'absolute' : null,
-        width: lateralPosition ? null : '100%',
-        zIndex: proxyListOverlap ? '1' : null
-      });
     }
     if (changed.proxyListPosition || changed.proxyListRole) {
       setListAndStageOrder(this, this.state);
@@ -364,8 +363,7 @@ function findChildContainingNode(root, node) {
 // determines focus order. That would surprise a user trying to tab through the
 // controls.
 function setListAndStageOrder(element, state) {
-  const { languageDirection, proxyListPosition } = state;
-  const rightToLeft = languageDirection === 'rtl';
+  const { proxyListPosition, rightToLeft } = state;
   const listInInitialPosition =
       proxyListPosition === 'top' ||
       proxyListPosition === 'start' ||

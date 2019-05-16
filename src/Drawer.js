@@ -124,20 +124,19 @@ class Drawer extends Base {
   [symbols.update](changed) {
     super[symbols.update](changed);
     if (changed.effect || changed.effectPhase || changed.enableEffects ||
-        changed.fromEdge || changed.languageDirection || changed.swipeFraction) {
+        changed.fromEdge || changed.rightToLeft || changed.swipeFraction) {
       // Render the drawer.
       const {
         effect,
         effectPhase,
         enableEffects,
         fromEdge,
-        languageDirection,
+        rightToLeft,
         swipeFraction
       } = this.state;
       const opened = (effect === 'open' && effectPhase !== 'before') ||
         (effect === 'close' && effectPhase === 'before');
 
-      const rightToLeft = languageDirection === 'rtl';
       const fromLeftEdge = fromEdge === 'left' ||
         fromEdge === 'start' && !rightToLeft ||
         fromEdge === 'end' && rightToLeft;
@@ -190,10 +189,9 @@ class Drawer extends Base {
         'transition': showTransition ? `transform ${duration}s` : undefined,
       });
     }
-    if (changed.fromEdge || changed.languageDirection) {
+    if (changed.fromEdge || changed.rightToLeft) {
       // Dock drawer to appropriate edge
-      const { fromEdge, languageDirection } = this.state;
-      const rightToLeft = languageDirection === 'rtl';
+      const { fromEdge, rightToLeft } = this.state;
       const mapFromEdgetoJustifyContent = {
         'end': 'flex-end',
         'left': rightToLeft ? 'flex-end' : 'flex-start',
@@ -209,7 +207,7 @@ class Drawer extends Base {
 
 function drawerAppearsFromLeftEdge(element) {
   const fromEdge = element.fromEdge;
-  const rightToLeft = element.state.languageDirection === 'rtl';
+  const rightToLeft = element.state.rightToLeft;
   return fromEdge === 'left' ||
     fromEdge === 'start' && !rightToLeft ||
     fromEdge === 'end' && rightToLeft;

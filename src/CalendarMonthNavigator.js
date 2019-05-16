@@ -59,8 +59,7 @@ class CalendarMonthNavigator extends Base {
   }
 
   arrowButtonLeft() {
-    const rightToLeft = this.state.languageDirection === 'rtl';
-    const months = rightToLeft ? 1 : -1;
+    const months = this.state.rightToLeft ? 1 : -1;
     this.setState({
       date: calendar.offsetDateByMonths(this.state.date, months)
     });
@@ -68,8 +67,7 @@ class CalendarMonthNavigator extends Base {
   }
 
   arrowButtonRight() {
-    const rightToLeft = this.state.languageDirection === 'rtl';
-    const months = rightToLeft ? -1 : 1;
+    const months = this.state.rightToLeft ? -1 : 1;
     this.setState({
       date: calendar.offsetDateByMonths(this.state.date, months)
     });

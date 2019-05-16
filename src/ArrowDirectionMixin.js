@@ -191,8 +191,8 @@ function ArrowDirectionMixin(Base) {
           /** @type {any} */ (this.$.arrowButtonRight).darkMode = darkMode;
         }
       }
-      if (changed.languageDirection) {
-        const rightToLeft = this.state.languageDirection === 'rtl';
+      if (changed.rightToLeft) {
+        const { rightToLeft } = this.state;
         this.$.arrowDirection.style.flexDirection = rightToLeft ?
           'row-reverse' :
           'row';

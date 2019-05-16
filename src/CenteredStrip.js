@@ -89,10 +89,9 @@ class CenteredStrip extends Base {
 
   [symbols.update](changed) {
     super[symbols.update](changed);
-    if (changed.clientWidth || changed.enableEffects || 
-        changed.selectedIndex || changed.swipeFraction ||
-        changed.languageDirection) {
-      const rightToLeft = this.state.languageDirection === 'rtl';
+    if (changed.clientWidth || changed.enableEffects || changed.rightToLeft ||
+        changed.selectedIndex || changed.swipeFraction) {
+      const rightToLeft = this.state.rightToLeft;
       const sign = rightToLeft ? 1 : -1;
       const swiping = this.state.swipeFraction != null;
       const selectedIndex = this.state.selectedIndex;

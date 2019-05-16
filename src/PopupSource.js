@@ -289,15 +289,15 @@ class PopupSource extends Base {
         this.setAttribute('role', role);
       }
     }
-    if (changed.horizontalAlign || changed.languageDirection ||
-        changed.popupMeasured) {
+    if (changed.horizontalAlign || changed.popupMeasured ||
+        changed.rightToLeft) {
       const {
         horizontalAlign,
-        languageDirection,
         popupHeight,
         popupMeasured,
         popupPosition,
         popupWidth,
+        rightToLeft,
         roomAbove,
         roomBelow,
         roomLeft,
@@ -336,7 +336,6 @@ class PopupSource extends Base {
         right = 0;
         maxFrameWidth = null;
       } else {
-        const rightToLeft = languageDirection === 'rtl';
         const preferLeftAlign = horizontalAlign === 'left' ||
           rightToLeft ?
             horizontalAlign === 'end' :

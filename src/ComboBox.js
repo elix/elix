@@ -362,26 +362,6 @@ class ComboBox extends Base {
       /** @type {any} */ (this.$.input).disabled = disabled;
       /** @type {any} */ (this.$.toggleButton).disabled = disabled;
     }
-    if (changed.languageDirection) {
-      const { languageDirection } = this.state;
-      const rightToLeft = languageDirection === 'rtl';
-      // We want to style the inner input if it's been created with
-      // WrappedStandardElement, otherwise style the input directly.
-      const cast = /** @type {any} */ (this.$.input);
-      const input = 'inner' in cast ?
-        cast.inner :
-        cast;
-      Object.assign(input.style, {
-        paddingBottom: '2px',
-        paddingLeft: rightToLeft ? '1.5em' : '2px',
-        paddingRight: rightToLeft ? '2px' : '1.5em',
-        paddingTop: '2px'
-      });
-      Object.assign(this.$.toggleButton.style, {
-        left: rightToLeft ? '3px' : '',
-        right: rightToLeft ? '' : '3px'
-      });
-    }
     if (changed.explicitAttributes || changed.role) {
       const { explicitAttributes, role } = this.state;
       const originalRole = explicitAttributes && explicitAttributes.role;
@@ -401,6 +381,25 @@ class ComboBox extends Base {
       this.$.upIcon.style.display = popupPosition === 'above' ?
         'block' :
         'none';
+    }
+    if (changed.rightToLeft) {
+      const { rightToLeft } = this.state;
+      // We want to style the inner input if it's been created with
+      // WrappedStandardElement, otherwise style the input directly.
+      const cast = /** @type {any} */ (this.$.input);
+      const input = 'inner' in cast ?
+        cast.inner :
+        cast;
+      Object.assign(input.style, {
+        paddingBottom: '2px',
+        paddingLeft: rightToLeft ? '1.5em' : '2px',
+        paddingRight: rightToLeft ? '2px' : '1.5em',
+        paddingTop: '2px'
+      });
+      Object.assign(this.$.toggleButton.style, {
+        left: rightToLeft ? '3px' : '',
+        right: rightToLeft ? '' : '3px'
+      });
     }
     if (changed.value) {
       const { value } = this.state;
