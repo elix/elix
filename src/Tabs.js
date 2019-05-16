@@ -107,7 +107,7 @@ class Tabs extends Base {
         if (item) {
           if (!proxiesAssigned) {
             const label = item.getAttribute('aria-label') ||
-              'alt' in item ? /** @type {any} */ (item).alt : '';
+              ('alt' in item ? /** @type {any} */ (item).alt : '');
             proxy.textContent = label;
           }
           // Point the proxy at the item.
