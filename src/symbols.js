@@ -282,7 +282,15 @@ export const mouseenter = Symbol('mouseenter');
  */
 export const mouseleave = Symbol('mouseleave');
 
-// TODO: Document
+/**
+ * Symbol for the `populate` method.
+ * 
+ * [PopulateUpdateMixin](PopulateUpdateMixin) invokes this method as the first
+ * of two rendering phases. In this phase, the component can manipulate the
+ * Shadow DOM tree to ensure the correct elements are present.
+ * 
+ * @function populate
+ */
 export const populate = Symbol('populate');
 
 /**
@@ -451,9 +459,6 @@ export const swipeTarget = Symbol('swipeTarget');
  */
 export const tap = Symbol('tap');
 
-// TODO: Remove eventually.
-export const click = tap; // Deprecated
-
 /**
  * Symbol for the `template` method.
  *
@@ -464,4 +469,14 @@ export const click = tap; // Deprecated
  */
 export const template = Symbol('template');
 
+/**
+ * Symbol for the `update` method.
+ * 
+ * [PopulateUpdateMixin](PopulateUpdateMixin) invokes this method as the second
+ * of two rendering phases. In this phase, the component can apply updates to
+ * the top-level host element or its shadow elements to reflect the component's
+ * current state.
+ * 
+ * @function update
+ */
 export const update = Symbol('update');
