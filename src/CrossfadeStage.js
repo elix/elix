@@ -65,7 +65,6 @@ class CrossfadeStage extends Base {
       const {
         enableEffects,
         items,
-        languageDirection,
         rightToLeft,
         selectedIndex,
         swipeFraction,
