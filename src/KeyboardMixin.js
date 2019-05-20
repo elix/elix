@@ -142,14 +142,8 @@ export default function KeyboardMixin(Base) {
 
     [symbols.update](changed) {
       if (super[symbols.update]) { super[symbols.update](changed); }
-      if (changed.explicitAttributes || changed.tabIndex) {
-        const { explicitAttributes, tabIndex } = this.state;
-        const originalTabindex = explicitAttributes ?
-          explicitAttributes.tabindex :
-          null;
-        if (originalTabindex == null) {
-          this.tabIndex = tabIndex;
-        }
+      if (changed.tabIndex) {
+        this.tabIndex = this.state.tabIndex;
       }
     }
 
