@@ -34,6 +34,14 @@ export default function ExplicitAttributesMixin(Base) {
       if (super.connectedCallback) { super.connectedCallback(); }
     }
 
+    get defaultState() {
+      return Object.assign(super.defaultState, {
+        explicitAttributes: null,
+        explicitClasses: null,
+        explicitStyle: null
+      });
+    }
+
     // See setAttribute
     removeAttribute(name) {
       super.removeAttribute(name);

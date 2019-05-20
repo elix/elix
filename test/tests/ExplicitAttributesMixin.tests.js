@@ -36,12 +36,6 @@ describe("ExplicitAttributesMixin", function () {
     container.innerHTML = '';
   });
 
-  it("doesn't set any state for an element with no attributes, classes, or styles", () => {
-    const fixture = new ExplicitAttributesTest();
-    container.appendChild(fixture);
-    assert(fixture.state.original === undefined);
-  });
-
   it("initializes state to track original attributes, classes, and styles", () => {
     container.innerHTML = `<explicit-attributes-test class="foo bar" style="color: red;" aria-selected="false"></explicit-attributes-test>`;
     const fixture = container.querySelector('explicit-attributes-test');

@@ -75,7 +75,7 @@ export default function KeyboardMixin(Base) {
       });
 
       state.onChange('explicitAttributes', state => {
-        if (state.explicitAttributes.tabindex) {
+        if (state.explicitAttributes && state.explicitAttributes.tabindex) {
           const parsed = Number(state.explicitAttributes.tabindex);
           if (!isNaN(parsed)) {
             return {
