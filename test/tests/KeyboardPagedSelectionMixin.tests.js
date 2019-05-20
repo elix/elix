@@ -13,14 +13,13 @@ const Base =
 
 class KeyboardPagedSelectionTest extends Base {
 
-  get defaultState() {
-    return Object.assign(super.defaultState, {
-      selectedIndex: -1      
+  connectedCallback() {
+    super.connectedCallback();
+    const items = Array.prototype.slice.call(this.children);
+    this.setState({
+      items,
+      selectedIndex: -1
     });
-  }
-
-  get items() {
-    return Array.prototype.slice.call(this.children);
   }
 
 }

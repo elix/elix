@@ -17,7 +17,7 @@ import * as symbols from './symbols.js';
  * (typically the left button). Right clicks are ignored so that the browser may
  * display a context menu.
  *
- * This mixin expects the component to provide an `items` property. It also
+ * This mixin expects the component to provide an `state.items` member. It also
  * expects the component to define a `state.selectedIndex` member; you can
  * provide that yourself, or use [SingleSelectionMixin](SingleSelectionMixin).
  *
@@ -73,13 +73,17 @@ export default function TapSelectionMixin(Base) {
       // Find which item was clicked on and, if found, select it. For elements
       // which don't require a selection, a background click will determine
       // the item was null, in which we case we'll remove the selection.
-      const targetIndex = indexOfItemContainingTarget(this.items, target);
-      const selectionRequired = this.state && this.state.selectionRequired;
-      if (targetIndex >= 0 || !selectionRequired &&
-          this.selectedIndex !== targetIndex) {
-        this.selectedIndex = targetIndex;
-        event.stopPropagation();
-      }    
+      const { items, selectedIndex, selectionRequired } = this.state;
+      if (items) {
+        const targetIndex = indexOfItemContainingTarget(items, target);
+        if (targetIndex >= 0 || !selectionRequired &&
+            selectedIndex !== targetIndex) {
+          this.setState({
+            selectedIndex: targetIndex
+          });
+          event.stopPropagation();
+        }
+      }
     }
 
   };

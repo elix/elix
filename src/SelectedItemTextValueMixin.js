@@ -23,9 +23,9 @@ export default function SelectedItemTextValueMixin(Base) {
 
     componentDidUpdate(changed) {
       if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
-      const items = this.items;
-      if (this.state.pendingValue && items) {
-        const index = indexOfItemWithText(items, this.state.pendingValue);
+      const { items, pendingValue } = this.state;
+      if (pendingValue && items) {
+        const index = indexOfItemWithText(items, pendingValue);
         this.setState({
           selectedIndex: index,
           pendingValue: null
@@ -48,7 +48,7 @@ export default function SelectedItemTextValueMixin(Base) {
         this.selectedItem.textContent;
     }
     set value(text) {
-      const items = this.items;
+      const items = this.state.items;
       if (items === null) {
         // No items yet, save and try again later.
         this.setState({

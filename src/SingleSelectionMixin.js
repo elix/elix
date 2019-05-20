@@ -143,8 +143,9 @@ export default function SingleSelectionMixin(Base) {
      * @type {number}
      */
     get selectedIndex() {
-      return this.items && this.items.length > 0 ?
-        this.state.selectedIndex :
+      const { items, selectedIndex } = this.state;
+      return items && items.length > 0 ?
+        selectedIndex :
         -1;
     }
     set selectedIndex(selectedIndex) {
@@ -162,13 +163,15 @@ export default function SingleSelectionMixin(Base) {
      * @type {Element}
      */
     get selectedItem() {
-      return this.items && this.items[this.state.selectedIndex];
+      const { items, selectedIndex } = this.state;
+      return items && items[selectedIndex];
     }
     set selectedItem(selectedItem) {
-      if (!this.items) {
+      const { items } = this.state;
+      if (!items) {
         return;
       }
-      const selectedIndex = this.items.indexOf(selectedItem);
+      const selectedIndex = items.indexOf(selectedItem);
       if (selectedIndex >= 0) {
         this.setState({ selectedIndex });
       }
@@ -211,7 +214,7 @@ export default function SingleSelectionMixin(Base) {
      */
     selectLast() {
       if (super.selectLast) { super.selectLast(); }
-      return updateSelectedIndex(this, this.items.length - 1);
+      return updateSelectedIndex(this, this.state.items.length - 1);
     }
 
     /**
@@ -235,20 +238,21 @@ export default function SingleSelectionMixin(Base) {
      */
     selectPrevious() {
       if (super.selectPrevious) { super.selectPrevious(); }
-      let selectedIndex;
-      if ((this.items && this.state.selectedIndex < 0) ||
-          (this.state.selectionWraps && this.state.selectedIndex === 0)) {
+      let newIndex;
+      const { items, selectedIndex, selectionWraps } = this.state;
+      if ((items && selectedIndex < 0) ||
+          (selectionWraps && selectedIndex === 0)) {
         // No selection yet, or we're on the first item, and selection wraps.
         // In either case, select the last item.
-        selectedIndex = this.items.length - 1;
-      } else if (this.state.selectedIndex > 0) {
+        newIndex = items.length - 1;
+      } else if (selectedIndex > 0) {
         // Select the previous item.
-        selectedIndex = this.state.selectedIndex - 1;
+        newIndex = selectedIndex - 1;
       } else {
         // Already on first item, can't go previous.
         return false;
       }
-      return updateSelectedIndex(this, selectedIndex);
+      return updateSelectedIndex(this, newIndex);
     }
 
   }
@@ -283,7 +287,7 @@ function validateIndex(index, count, selectionRequired, selectionWraps) {
 function updateSelectedIndex(element, selectedIndex) {
   const validatedIndex = validateIndex(
     selectedIndex,
-    element.items.length,
+    element.state.items.length,
     element.state.selectionRequired,
     element.state.selectionWraps
   );

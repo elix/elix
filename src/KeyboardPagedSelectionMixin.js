@@ -154,7 +154,7 @@ function getIndexOfItemAtY(items, y, downward) {
 function scrollOnePage(element, downward) {
   
   const scrollTarget = element[symbols.scrollTarget];
-  const items = element.items;
+  const items = element.state.items;
   const selectedIndex = element.state.selectedIndex;
 
   // Determine the item visible just at the edge of direction we're heading.

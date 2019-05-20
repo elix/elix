@@ -110,12 +110,12 @@ class TabStrip extends Base {
       /* eslint-disable no-case-declarations */
       case ' ':
       case 'Enter':
-        // TODO
-        // const index = this.indexOfTarget(event.target);
-        const selectedIndex = this.items && this.items.indexOf(event.target);
-        const previousIndex = this.state.selectedIndex;
-        this.setState({ selectedIndex });
-        handled = this.state.selectedIndex !== previousIndex;
+        const { items, selectedIndex } = this.state;
+        const newIndex = items && items.indexOf(event.target);
+        this.setState({
+          selectedIndex: newIndex
+        });
+        handled = newIndex !== selectedIndex;
         break;
     }
 

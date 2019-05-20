@@ -1,18 +1,18 @@
+import ReactiveMixin from '../../src/ReactiveMixin.js';
 import TapSelectionMixin from '../../src/TapSelectionMixin.js';
 import * as mockInteractions from '../mockInteractions.js';
 
 
-class TapSelectionTest extends TapSelectionMixin(HTMLElement) {
+class TapSelectionTest extends TapSelectionMixin(
+    ReactiveMixin(HTMLElement)) {
 
-  constructor() {
-    super();
-    this.state = {
+  connectedCallback() {
+    super.connectedCallback();
+    const items = Array.prototype.slice.call(this.children);
+    this.setState({
+      items,
       selectedIndex: -1
-    };
-  }
-
-  get items() {
-    return Array.prototype.slice.call(this.children);
+    });
   }
 
   get selectedIndex() {
@@ -42,7 +42,7 @@ describe("TapSelectionMixin", function() {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     assert.equal(fixture.state.selectedIndex, -1);
-    const item = fixture.items[0];
+    const item = fixture.state.items[0];
     fixture.addEventListener('mousedown', () => {
       assert.equal(fixture.state.selectedIndex, 0);
       done();
@@ -54,7 +54,7 @@ describe("TapSelectionMixin", function() {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     assert.equal(fixture.state.selectedIndex, -1);
-    const item = fixture.items[0];
+    const item = fixture.state.items[0];
     fixture.addEventListener('mousedown', () => {
       assert.equal(fixture.state.selectedIndex, -1, "handled mousedown even when right button was pressed");
       done();

@@ -46,12 +46,12 @@ export default function SelectionInViewMixin(Base) {
       if (super.scrollSelectionIntoView) { super.scrollSelectionIntoView(); }
 
       const scrollTarget = this[symbols.scrollTarget];
-      const selectedIndex = this.selectedIndex || this.state.selectedIndex;
-      if (selectedIndex < 0) {
+      const { selectedIndex, items } = this.state;
+      if (selectedIndex < 0 || !items) {
         return;
       }
       
-      const selectedItem = this.items && this.items[selectedIndex];
+      const selectedItem = items[selectedIndex];
       if (!selectedItem) {
         return;
       }

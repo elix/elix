@@ -20,9 +20,9 @@ function PageNumbersMixin(Base) {
     [symbols.update](changed) {
       if (super[symbols.update]) { super[symbols.update](changed); }
       if (changed.selectedIndex) {
-        const { selectedIndex } = this.state;
-        const textContent = selectedIndex >= 0 && this.items ?
-          `${selectedIndex + 1} / ${this.items.length}` :
+        const { items, selectedIndex } = this.state;
+        const textContent = selectedIndex >= 0 && items ?
+          `${selectedIndex + 1} / ${items.length}` :
           '';
         this.$.pageNumber.textContent = textContent;
       }
