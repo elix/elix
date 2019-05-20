@@ -98,13 +98,7 @@ class FilterListBox extends ListBox {
 
           // Hide content elements that don't match the filter.
           const matches = this[symbols.itemMatchesState](content, this.state);
-          const original = this.originalItemAttributes(content);
-          const originalDisplay = original && original.style ?
-            original.style.display :
-            null;
-          content.style.display = matches ?
-            originalDisplay || null :
-            'none';
+          content.style.display = matches ? null : 'none';
 
           // For matching items, highlight the matching text.
           if (matches) {

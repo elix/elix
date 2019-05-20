@@ -76,15 +76,10 @@ class Tabs extends Base {
       // Create role for each item.
       items.forEach((item, index) => {
 
-        const original = this.originalItemAttributes(item);
-        const originalRole = original && original.attributes ?
-          original.attributes.role :
-          null;
-        const role = originalRole || itemRole;
-        if (role === defaultAriaRole[item.localName]) {
+        if (itemRole === defaultAriaRole[item.localName]) {
           item.removeAttribute('role');
         } else {
-          item.setAttribute('role', role);
+          item.setAttribute('role', itemRole);
         }
 
         // Point the item at the proxy.

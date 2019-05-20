@@ -226,24 +226,16 @@ class Menu extends Base {
       // previously-selected item.
       items.forEach((item, index) => {
         const selected = index === selectedIndex;      
-        const original = this.originalItemAttributes(item);
-        const originalTabindex = original && original.attributes ?
-          original.attributes.tabindex :
-          null;
         const isDefaultFocusableItem = selectedIndex < 0 && index === 0;
         if (!this.state.selectionFocused) {
           // Phase 1: Add tabindex to newly-selected item.
           if (selected || isDefaultFocusableItem) {
-            item.tabIndex = originalTabindex || 0;
+            item.tabIndex = 0;
           }
         } else {
           // Phase 2: Remove tabindex from any previously-selected item.
           if (!(selected || isDefaultFocusableItem)) {
-            if (originalTabindex) {
-              item.tabIndex = originalTabindex;
-            } else {
-              item.removeAttribute('tabindex');
-            }
+            item.removeAttribute('tabindex');
           }
         }
     

@@ -191,15 +191,10 @@ class TabStrip extends Base {
     if (changed.items && items) {
       const { tabButtonRole } = this.state;
       items.forEach(item => {
-        const original = this.originalItemAttributes(item);
-        const originalRole = original && original.attributes ?
-          original.attributes.role :
-          null;
-        const role = originalRole || tabButtonRole;
-        if (role === defaultAriaRole[item.localName]) {
+        if (tabButtonRole === defaultAriaRole[item.localName]) {
           item.removeAttribute('role');
         } else {
-          item.setAttribute('role', role);
+          item.setAttribute('role', tabButtonRole);
         }
       });
     }

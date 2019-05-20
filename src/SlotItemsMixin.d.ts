@@ -12,7 +12,6 @@ declare const SlotItemsMixin: StateMixin<
   [symbols.contentSlot]: HTMLSlotElement;
   componentDidMount(): void;
   items: (HTMLElement|SVGElement)[];
-  originalItemAttributes(item: Element): PlainObject;
 },
 {
   content: Node[];

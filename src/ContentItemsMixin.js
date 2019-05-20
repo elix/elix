@@ -2,9 +2,6 @@ import { isSubstantiveElement } from './content.js';
 import * as symbols from './symbols.js';
 
 
-const originalKey = Symbol('original');
-
-
 /**
  * Treats an element's content nodes as list items.
  *
@@ -84,10 +81,6 @@ export default function ContentItemsMixin(Base) {
      */
     get items() {
       return this.state ? this.state.items : null;
-    }
-
-    originalItemAttributes(item) {
-      return item[originalKey];
     }
 
   }

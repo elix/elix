@@ -69,17 +69,10 @@ export default function AriaListMixin(Base) {
       if ((changed.items || changed.itemRole) && items) {
         // Give each item a role.
         items.forEach(item => {
-          const original = this.originalItemAttributes ?
-            this.originalItemAttributes(item) :
-            null;
-          const originalRole = original && original.attributes ?
-            original.attributes.role :
-            null;
-          const role = originalRole || itemRole;
-          if (role === defaultAriaRole[item.localName]) {
+          if (itemRole === defaultAriaRole[item.localName]) {
             item.removeAttribute('role');
           } else {
-            item.setAttribute('role', role);
+            item.setAttribute('role', itemRole);
           }
         });
       }

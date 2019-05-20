@@ -8,7 +8,6 @@ declare const ContentItemsMixin: StateMixin<{
 {},
 {
   items: (HTMLElement|SVGElement)[];
-  originalItemAttributes(item: Element): PlainObject;
 },
 {
   items: (HTMLElement|SVGElement)[];
