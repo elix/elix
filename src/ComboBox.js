@@ -59,7 +59,6 @@ class ComboBox extends Base {
     const state = Object.assign(super.defaultState, {
       ariaLabel: '',
       focused: false,
-      horizontalAlign: 'left',
       inputRole: 'input',
       orientation: 'vertical',
       placeholder: '',

@@ -337,9 +337,9 @@ class PopupSource extends Base {
         maxFrameWidth = null;
       } else {
         const preferLeftAlign = horizontalAlign === 'left' ||
-          rightToLeft ?
+          (rightToLeft ?
             horizontalAlign === 'end' :
-            horizontalAlign === 'start';
+            horizontalAlign === 'start');
         // The above/below preference rules also apply to left/right alignment.
         const alignLeft =
           (preferLeftAlign && (canLeftAlign || roomRight >= roomLeft)) ||
