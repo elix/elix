@@ -74,18 +74,6 @@ export default function KeyboardMixin(Base) {
         tabIndex
       });
 
-      state.onChange('explicitAttributes', state => {
-        if (state.explicitAttributes && state.explicitAttributes.tabindex) {
-          const parsed = Number(state.explicitAttributes.tabindex);
-          if (!isNaN(parsed)) {
-            return {
-              tabIndex: parsed
-            };
-          }
-        }
-        return null;
-      });
-
       return state;
     }
     
@@ -122,28 +110,14 @@ export default function KeyboardMixin(Base) {
         super.tabIndex = parsed;
       }
 
-      if (this.state.tabIndex !== parsed) {
+      // The tabIndex setter can get called during rendering when we render our
+      // own notion of the tabIndex state, in which case we don't need or want
+      // to set state again.
+      if (!this[symbols.rendering]) {
         // Record the new tabIndex in our state.
         this.setState({
           tabIndex: parsed
         });
-
-        // If tabIndex is set outside of rendering, that's tantamount to setting
-        // the tabindex attribute. We update our notion of the "original"
-        // attribute value of the tabindex attribute. See
-        // ExplicitAttributesMixin.setAttribute().
-        if (!this[symbols.rendering]) {
-          const hadOriginalAttributes = this.state.explicitAttributes !== undefined;
-          let explicitAttributes = Object.assign({}, this.state.explicitAttributes);
-          if (parsed === null) {
-            if (hadOriginalAttributes) {
-              delete explicitAttributes.tabindex;
-            }
-          } else {
-            explicitAttributes.tabindex = parsed.toString();
-          }
-          this.setState({ explicitAttributes });
-        }
       }
     }
 
