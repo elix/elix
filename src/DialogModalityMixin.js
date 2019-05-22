@@ -52,13 +52,6 @@ export default function DialogModalityMixin(Base) {
 
     [symbols.render](changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
-      if (changed.explicitAttributes || changed.role) {
-        const { explicitAttributes, role } = this.state;
-        const originalRole = explicitAttributes && explicitAttributes.role;
-        if (!originalRole) {
-          this.setAttribute('role', role);
-        }
-      }
       if (changed.opened) {
         if (this.state.opened && document.documentElement) {
           // Disable body scrolling to absorb space bar keypresses and other
@@ -85,7 +78,27 @@ export default function DialogModalityMixin(Base) {
           }
         }
       }
+      if (changed.role) {
+        // Apply top-level role.
+        const { role } = this.state;
+        this.setAttribute('role', role);
+      }
     }
+
+    // Setting the standard role attribute will invoke this property setter,
+    // which will allow us to update our state.
+    get role() {
+      return super.role;
+    }
+    set role(role) {
+      super.role = role;
+      if (!this[symbols.rendering]) {
+        this.setState({
+          role
+        });
+      }
+    }
+
   }
   
 }

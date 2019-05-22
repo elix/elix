@@ -199,13 +199,6 @@ class TabStrip extends Base {
       // @ts-ignore
       this.style.placeContent = placeContent;
     }
-    if (changed.explicitAttributes || changed.role) {
-      const { explicitAttributes, role } = this.state;
-      const originalRole = explicitAttributes && explicitAttributes.role;
-      if (!originalRole) {
-        this.setAttribute('role', role);
-      }
-    }
     if (changed.items || changed.position) {
       const { position } = this.state;
       if (items) {

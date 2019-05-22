@@ -7,7 +7,7 @@ import * as symbols from './symbols.js';
  *
  * @module AriaMenuMixin
  */
-export default function AriaListMixin(Base) {
+export default function AriaMenuMixin(Base) {
 
   // The class prototype added by the mixin.
   class AriaMenu extends Base {
@@ -47,13 +47,24 @@ export default function AriaListMixin(Base) {
           item.setAttribute('aria-checked', selected);
         });
       }
-      if (changed.explicitAttributes || changed.role) {
+      if (changed.role) {
         // Apply top-level role.
-        const { explicitAttributes, role } = this.state;
-        const originalRole = explicitAttributes && explicitAttributes.role;
-        if (!originalRole) {
-          this.setAttribute('role', role);
-        }
+        const { role } = this.state;
+        this.setAttribute('role', role);
+      }
+    }
+
+    // Setting the standard role attribute will invoke this property setter,
+    // which will allow us to update our state.
+    get role() {
+      return super.role;
+    }
+    set role(role) {
+      super.role = role;
+      if (!this[symbols.rendering]) {
+        this.setState({
+          role
+        });
       }
     }
 

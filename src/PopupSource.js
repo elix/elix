@@ -1,5 +1,6 @@
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import AriaRoleMixin from './AriaRoleMixin.js';
 import Backdrop from './Backdrop.js';
 import DisabledMixin from './DisabledMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
@@ -14,18 +15,20 @@ const resizeListenerKey = Symbol('resizeListener');
 
 
 const Base =
+  AriaRoleMixin(
   DisabledMixin(
   FocusVisibleMixin(
   LanguageDirectionMixin(
   OpenCloseMixin(
     ReactiveElement
-  ))));
+  )))));
 
 
 /**
  * Positions a popup with respect to a source element
  * 
  * @inherits ReactiveElement
+ * @mixes AriaRoleMixin
  * @mixes DisabledMixin
  * @mixes FocusVisibleMixin
  * @mixes KeyboardMixin
@@ -194,13 +197,6 @@ class PopupSource extends Base {
           this[symbols.raiseChangeEvents] = false;
         }
       });
-    }
-    if (changed.explicitAttributes || changed.role) {
-      const { explicitAttributes, role } = this.state;
-      const originalRole = explicitAttributes && explicitAttributes.role;
-      if (!originalRole) {
-        this.setAttribute('role', role);
-      }
     }
     if (changed.horizontalAlign || changed.popupMeasured ||
         changed.rightToLeft) {

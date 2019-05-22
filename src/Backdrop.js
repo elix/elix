@@ -1,6 +1,13 @@
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import AriaRoleMixin from './AriaRoleMixin.js';
 import ReactiveElement from './ReactiveElement.js';
+
+
+const Base =
+  AriaRoleMixin(
+    ReactiveElement
+  );
 
 
 /**
@@ -11,24 +18,14 @@ import ReactiveElement from './ReactiveElement.js';
  * elements. For a modal variant, see [ModalBackdrop](ModalBackdrop).
  * 
  * @inherits ReactiveElement
+ * @mixes AriaRoleMixin
  */
-class Backdrop extends ReactiveElement {
+class Backdrop extends Base {
 
   get defaultState() {
     return Object.assign(super.defaultState, {
       role: 'none'
     });
-  }
-
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    if (changed.explicitAttributes || changed.role) {
-      const { explicitAttributes, role } = this.state;
-      const originalRole = explicitAttributes && explicitAttributes.role;
-      if (!originalRole) {
-        this.setAttribute('role', role);
-      }
-    }
   }
 
   get [symbols.template]() {

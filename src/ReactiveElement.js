@@ -29,10 +29,10 @@ import ShadowTemplateMixin from './ShadowTemplateMixin.js';
  */
 const ReactiveElement =
   AttributeMarshallingMixin(
-  ExplicitAttributesMixin(
+  // ExplicitAttributesMixin(
   ReactiveMixin(
   ShadowTemplateMixin(
     HTMLElement
-  ))));
+  )));
 
 export default ReactiveElement;

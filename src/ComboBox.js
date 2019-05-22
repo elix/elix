@@ -1,6 +1,7 @@
 import { forwardFocus } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import AriaRoleMixin from './AriaRoleMixin.js';
 import DelegateFocusMixin from './DelegateFocusMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import PopupSource from './PopupSource.js';
@@ -8,16 +9,18 @@ import SeamlessButton from './SeamlessButton.js';
 
 
 const Base =
+  AriaRoleMixin(
   DelegateFocusMixin(
   KeyboardMixin(
     PopupSource
-  ));
+  )));
 
 
 /**
  * A text input paired with a popup that can be used as an alternative to typing
  * 
  * @inherits PopupSource
+ * @mixes AriaRoleMixin
  * @mixes DelegateFocusMixin
  * @mixes KeyboardMixin
  * @elementrole {'input'} input
@@ -266,13 +269,6 @@ class ComboBox extends Base {
       const { disabled } = this.state;
       /** @type {any} */ (this.$.input).disabled = disabled;
       /** @type {any} */ (this.$.toggleButton).disabled = disabled;
-    }
-    if (changed.explicitAttributes || changed.role) {
-      const { explicitAttributes, role } = this.state;
-      const originalRole = explicitAttributes && explicitAttributes.role;
-      if (!originalRole) {
-        this.setAttribute('role', role);
-      }
     }
     if (changed.placeholder) {
       const { placeholder } = this.state;

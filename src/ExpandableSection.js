@@ -1,5 +1,6 @@
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import AriaRoleMixin from './AriaRoleMixin.js';
 import ExpandablePanel from './ExpandablePanel.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import ReactiveElement from './ReactiveElement.js';
@@ -7,15 +8,17 @@ import SeamlessButton from './SeamlessButton.js';
 
 
 const Base =
+  AriaRoleMixin(
   OpenCloseMixin(
     ReactiveElement
-  );
+  ));
 
 
 /**
  * A document section with a header that can be expanded or collapsed
  * 
  * @inherits ReactiveElement
+ * @mixes AriaRoleMixin
  * @mixes OpenCloseMixin
  * @elementrole {SeamlessButton} header
  * @elementrole {ExpandablePanel} panel
@@ -68,13 +71,6 @@ class ExpandableSection extends Base {
     }
     if (changed.panelRole) {
       template.transmute(this.$.panel, this.state.panelRole);
-    }
-    if (changed.explicitAttributes || changed.role) {
-      const { explicitAttributes, role } = this.state;
-      const originalRole = explicitAttributes && explicitAttributes.role;
-      if (!originalRole) {
-        this.setAttribute('role', role);
-      }
     }
     if (changed.opened) {
       const { opened } = this.state;

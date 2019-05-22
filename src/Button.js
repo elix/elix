@@ -1,5 +1,6 @@
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import AriaRoleMixin from './AriaRoleMixin.js';
 import ComposedFocusMixin from './ComposedFocusMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
@@ -7,11 +8,12 @@ import WrappedStandardElement from './WrappedStandardElement.js';
 
 
 const Base =
+  AriaRoleMixin(
   ComposedFocusMixin(
   FocusVisibleMixin(
   KeyboardMixin(
     WrappedStandardElement.wrap('button')
-  )));
+  ))));
 
 
 // Do we need to explicitly map Space/Enter keys to a button click?
@@ -38,6 +40,7 @@ const mapKeysToClick = !firefox;
  * and behavior while ensuring standard keyboard and focus behavior.
  * 
  * @inherits WrappedStandardElement
+ * @mixes AriaRoleMixin
  * @mixes ComposedFocusMixin
  * @mixes FocusVisibleMixin
  * @mixes KeyboardMixin
@@ -86,13 +89,6 @@ class Button extends Base {
       this.style.outline = 'none';
       const { focusVisible } = this.state;
       this.$.inner.style.outline = focusVisible ? '' : 'none';
-    }
-    if (changed.explicitAttributes || changed.role) {
-      const { explicitAttributes, role } = this.state;
-      const originalRole = explicitAttributes && explicitAttributes.role;
-      if (!originalRole) {
-        this.setAttribute('role', role);
-      }
     }
   }
 
