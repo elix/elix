@@ -106,8 +106,8 @@ class HamburgerMenuButton extends Base {
     this.setState({ menuButtonRole });
   }
 
-  [symbols.populate](changed) {
-    super[symbols.populate](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.menuButtonRole) {
       template.transmute(this.$.menuButton, this.state.menuButtonRole);
       this.$.menuButton.addEventListener('click', () => {
@@ -131,6 +131,17 @@ class HamburgerMenuButton extends Base {
           opened: true
         });
       });
+    }
+    const menu = /** @type {any} */ (this.$.menu);
+    if (changed.fromEdge) {
+      if ('fromEdge' in menu) {
+        menu.fromEdge = this.state.fromEdge;
+      }
+    }
+    if (changed.opened) {
+      if ('opened' in menu) {
+        menu.opened = this.state.opened;
+      }
     }
   }
 
@@ -168,21 +179,6 @@ class HamburgerMenuButton extends Base {
         <slot></slot>
       </elix-drawer>
     `;
-  }
-
-  [symbols.update](changed) {
-    super[symbols.update](changed);
-    const menu = /** @type {any} */ (this.$.menu);
-    if (changed.fromEdge) {
-      if ('fromEdge' in menu) {
-        menu.fromEdge = this.state.fromEdge;
-      }
-    }
-    if (changed.opened) {
-      if ('opened' in menu) {
-        menu.opened = this.state.opened;
-      }
-    }
   }
 
 }

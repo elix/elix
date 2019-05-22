@@ -106,8 +106,8 @@ class Explorer extends Base {
     return state;
   }
 
-  [symbols.populate](changed) {
-    super[symbols.populate](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
 
     const handleSelectedIndexChanged = event => {
       // The proxy list and stage may raise events before they've actually
@@ -132,6 +132,89 @@ class Explorer extends Base {
     if (changed.stageRole) {
       template.transmute(this.$.stage, this.state.stageRole);
       this.$.stage.addEventListener('selected-index-changed', handleSelectedIndexChanged);
+    }
+    const proxyList = this.$.proxyList;
+    const stage = this.$.stage;
+    if (changed.proxies || changed.proxiesAssigned) {
+      // Render the default proxies.
+      const { proxies, proxiesAssigned } = this.state;
+      const childNodes = proxiesAssigned ?
+        [this.$.proxySlot] :
+        [this.$.proxySlot, ...proxies];
+      applyChildNodes(this.$.proxyList, childNodes);
+    }
+    if (changed.proxyListOverlap || changed.proxyListPosition || changed.proxyListRole) {
+      const { proxyListOverlap, proxyListPosition } = this.state;
+      const lateralPosition = lateralPositions[proxyListPosition];
+      Object.assign(proxyList.style, {
+        height: lateralPosition ? '100%' : null,
+        position: proxyListOverlap ? 'absolute' : null,
+        width: lateralPosition ? null : '100%',
+        zIndex: proxyListOverlap ? '1' : null
+      });
+    }
+    if (changed.proxyListPosition || changed.rightToLeft) {
+      // Map the relative position of the list vis-a-vis the stage to a position
+      // from the perspective of the list.
+      const cast = /** @type {any} */ (proxyList);
+      if ('position' in cast) {
+        const { proxyListPosition, rightToLeft } = this.state;
+        let position;
+        switch (proxyListPosition) {
+          case 'end':
+            position = rightToLeft ? 'left' : 'right';
+            break;
+          case 'start':
+            position = rightToLeft ? 'right' : 'left';
+            break;
+          default:
+            position = proxyListPosition;
+            break;
+        }
+        cast.position = position;
+      }
+    }
+    if (changed.proxyListPosition || changed.proxyListRole) {
+      setListAndStageOrder(this, this.state);
+      const { proxyListPosition } = this.state;
+      const lateralPosition = lateralPositions[proxyListPosition];
+      this.$.explorerContainer.style.flexDirection = lateralPosition ? 'row' : 'column';
+      Object.assign(proxyList.style, {
+        bottom: proxyListPosition === 'bottom' ? '0' : null,
+        left: proxyListPosition === 'left' ? '0' : null,
+        right: proxyListPosition === 'right' ? '0' : null,
+        top: proxyListPosition === 'top' ? '0' : null,
+      });
+    }
+    if (changed.selectedIndex || changed.proxyListRole) {
+      if ('selectedIndex' in proxyList) {
+        const { selectedIndex } = this.state;
+        /** @type {any} */ (proxyList).selectedIndex = selectedIndex;
+      }
+    }
+    if (changed.selectedIndex || changed.stageRole) {
+      if ('selectedIndex' in stage) {
+        const { selectedIndex } = this.state;
+        /** @type {any} */ (stage).selectedIndex = selectedIndex;
+      }
+    }
+    if (changed.selectionRequired || changed.proxyListRole) {
+      if ('selectionRequired' in proxyList) {
+        const { selectionRequired } = this.state;
+        /** @type {any} */ (proxyList).selectionRequired = selectionRequired;
+      }
+    }
+    if (changed.swipeFraction || changed.proxyListRole) {
+      if ('swipeFraction' in proxyList) {
+        const { swipeFraction } = this.state;
+        /** @type {any} */ (proxyList).swipeFraction = swipeFraction;
+      }
+    }
+    if (changed.swipeFraction || changed.stageRole) {
+      if ('swipeFraction' in stage) {
+        const { swipeFraction } = this.state;
+        /** @type {any} */ (stage).swipeFraction = swipeFraction;
+      }
     }
   }
 
@@ -245,93 +328,6 @@ class Explorer extends Base {
         <div id="stage" role="none"><slot></slot></div>
       </div>
     `;
-  }
-
-  [symbols.update](changed) {
-    super[symbols.update](changed);
-    const proxyList = this.$.proxyList;
-    const stage = this.$.stage;
-    if (changed.proxies || changed.proxiesAssigned) {
-      // Render the default proxies.
-      const { proxies, proxiesAssigned } = this.state;
-      const childNodes = proxiesAssigned ?
-        [this.$.proxySlot] :
-        [this.$.proxySlot, ...proxies];
-      applyChildNodes(this.$.proxyList, childNodes);
-    }
-    if (changed.proxyListOverlap || changed.proxyListPosition || changed.proxyListRole) {
-      const { proxyListOverlap, proxyListPosition } = this.state;
-      const lateralPosition = lateralPositions[proxyListPosition];
-      Object.assign(proxyList.style, {
-        height: lateralPosition ? '100%' : null,
-        position: proxyListOverlap ? 'absolute' : null,
-        width: lateralPosition ? null : '100%',
-        zIndex: proxyListOverlap ? '1' : null
-      });
-    }
-    if (changed.proxyListPosition || changed.rightToLeft) {
-      // Map the relative position of the list vis-a-vis the stage to a position
-      // from the perspective of the list.
-      const cast = /** @type {any} */ (proxyList);
-      if ('position' in cast) {
-        const { proxyListPosition, rightToLeft } = this.state;
-        let position;
-        switch (proxyListPosition) {
-          case 'end':
-            position = rightToLeft ? 'left' : 'right';
-            break;
-          case 'start':
-            position = rightToLeft ? 'right' : 'left';
-            break;
-          default:
-            position = proxyListPosition;
-            break;
-        }
-        cast.position = position;
-      }
-    }
-    if (changed.proxyListPosition || changed.proxyListRole) {
-      setListAndStageOrder(this, this.state);
-      const { proxyListPosition } = this.state;
-      const lateralPosition = lateralPositions[proxyListPosition];
-      this.$.explorerContainer.style.flexDirection = lateralPosition ? 'row' : 'column';
-      Object.assign(proxyList.style, {
-        bottom: proxyListPosition === 'bottom' ? '0' : null,
-        left: proxyListPosition === 'left' ? '0' : null,
-        right: proxyListPosition === 'right' ? '0' : null,
-        top: proxyListPosition === 'top' ? '0' : null,
-      });
-    }
-    if (changed.selectedIndex || changed.proxyListRole) {
-      if ('selectedIndex' in proxyList) {
-        const { selectedIndex } = this.state;
-        /** @type {any} */ (proxyList).selectedIndex = selectedIndex;
-      }
-    }
-    if (changed.selectedIndex || changed.stageRole) {
-      if ('selectedIndex' in stage) {
-        const { selectedIndex } = this.state;
-        /** @type {any} */ (stage).selectedIndex = selectedIndex;
-      }
-    }
-    if (changed.selectionRequired || changed.proxyListRole) {
-      if ('selectionRequired' in proxyList) {
-        const { selectionRequired } = this.state;
-        /** @type {any} */ (proxyList).selectionRequired = selectionRequired;
-      }
-    }
-    if (changed.swipeFraction || changed.proxyListRole) {
-      if ('swipeFraction' in proxyList) {
-        const { swipeFraction } = this.state;
-        /** @type {any} */ (proxyList).swipeFraction = swipeFraction;
-      }
-    }
-    if (changed.swipeFraction || changed.stageRole) {
-      if ('swipeFraction' in stage) {
-        const { swipeFraction } = this.state;
-        /** @type {any} */ (stage).swipeFraction = swipeFraction;
-      }
-    }
   }
 
 }

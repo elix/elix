@@ -113,13 +113,56 @@ class PullToRefresh extends Base {
     return state;
   }
 
-  [symbols.populate](changed) {
-    super[symbols.populate](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.pullIndicatorRole) {
       template.transmute(this.$.pullIndicator, this.pullIndicatorRole);
     }
     if (changed.refreshingIndicatorRole) {
       template.transmute(this.$.refreshingIndicator, this.refreshingIndicatorRole);
+    }
+    if (changed.refreshing) {
+      const { refreshing } = this.state;
+      const refreshingIndicator = this.$.refreshingIndicator;
+      refreshingIndicator.style.visibility = refreshing ?
+        'visible' :
+        'hidden';
+      if ('playing' in this.$.refreshingIndicator) {
+        /** @type {any} */ (refreshingIndicator).playing = refreshing;
+      }
+    }
+    if (changed.enableEffects || changed.refreshing || changed.swipeFraction) {
+      const { enableEffects, refreshing, swipeFraction } = this.state;
+      const swipingDown = swipeFraction != null && swipeFraction > 0;
+      let y = getTranslationForSwipeFraction(this.state, this[symbols.swipeTarget]);
+      if (refreshing) {
+        y = Math.max(y, getSwipeThreshold(this));
+      }
+      const showTransition = enableEffects && !swipingDown;
+      Object.assign(this.style, {
+        transform: `translate3D(0, ${y}px, 0)`,
+        transition: showTransition ?
+          'transform 0.25s' :
+          null
+      });
+    }
+    if (changed.pullTriggeredRefresh || changed.refreshing ||
+        changed.scrollPullDistance || changed.swipeFraction) {
+      const {
+        pullTriggeredRefresh,
+        refreshing,
+        scrollPullDistance,
+        swipeFraction
+      } = this.state;
+      const swipingDown = swipeFraction != null && swipeFraction > 0;
+      const scrollingDown = !!scrollPullDistance;
+      const pullingDown = swipingDown || scrollingDown;
+      const showPullIndicator = !refreshing &&
+        !pullTriggeredRefresh &&
+        pullingDown;
+      this.$.pullIndicator.style.visibility = showPullIndicator ?
+        'visible' :
+        'hidden';
     }
   }
 
@@ -200,53 +243,6 @@ class PullToRefresh extends Base {
       </div>
       <slot></slot>
     `;
-  }
-
-  [symbols.update](changed) {
-    super[symbols.update](changed);
-    if (changed.refreshing) {
-      const { refreshing } = this.state;
-      const refreshingIndicator = this.$.refreshingIndicator;
-      refreshingIndicator.style.visibility = refreshing ?
-        'visible' :
-        'hidden';
-      if ('playing' in this.$.refreshingIndicator) {
-        /** @type {any} */ (refreshingIndicator).playing = refreshing;
-      }
-    }
-    if (changed.enableEffects || changed.refreshing || changed.swipeFraction) {
-      const { enableEffects, refreshing, swipeFraction } = this.state;
-      const swipingDown = swipeFraction != null && swipeFraction > 0;
-      let y = getTranslationForSwipeFraction(this.state, this[symbols.swipeTarget]);
-      if (refreshing) {
-        y = Math.max(y, getSwipeThreshold(this));
-      }
-      const showTransition = enableEffects && !swipingDown;
-      Object.assign(this.style, {
-        transform: `translate3D(0, ${y}px, 0)`,
-        transition: showTransition ?
-          'transform 0.25s' :
-          null
-      });
-    }
-    if (changed.pullTriggeredRefresh || changed.refreshing ||
-        changed.scrollPullDistance || changed.swipeFraction) {
-      const {
-        pullTriggeredRefresh,
-        refreshing,
-        scrollPullDistance,
-        swipeFraction
-      } = this.state;
-      const swipingDown = swipeFraction != null && swipeFraction > 0;
-      const scrollingDown = !!scrollPullDistance;
-      const pullingDown = swipingDown || scrollingDown;
-      const showPullIndicator = !refreshing &&
-        !pullTriggeredRefresh &&
-        pullingDown;
-      this.$.pullIndicator.style.visibility = showPullIndicator ?
-        'visible' :
-        'hidden';
-    }
   }
 
 }

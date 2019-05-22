@@ -11,8 +11,8 @@ const Base =
   ));
 
 class OverlayTest extends Base {
-  [symbols.update](changed) {
-    if (super[symbols.update]) { super[symbols.update](changed); }
+  [symbols.render](changed) {
+    if (super[symbols.render]) { super[symbols.render](changed); }
     this.tabIndex = 0;
   }
 }

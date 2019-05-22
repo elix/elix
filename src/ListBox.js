@@ -128,8 +128,8 @@ class ListBox extends Base {
     `;
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.orientation) {
       // Update list orientation styling.
       const style = this.state.orientation === 'vertical' ?

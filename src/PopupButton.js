@@ -67,8 +67,8 @@ class PopupButton extends Base {
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
   }
 
-  [symbols.populate](changed) {
-    super[symbols.populate](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.sourceRole) {
       // Desktop popups generally open on mousedown, not click/mouseup. On mobile,
       // mousedown won't fire until the user releases their finger, so it behaves
@@ -105,6 +105,9 @@ class PopupButton extends Base {
       });
       source.tabIndex = -1;
     }
+    if (changed.disabled) {
+      this.$.source.style.borderStyle = this.state.disabled ? null : 'solid';
+    }
   }
 
   get [symbols.template]() {
@@ -131,13 +134,6 @@ class PopupButton extends Base {
         }
       </style>
     `);
-  }
-
-  [symbols.update](changed) {
-    super[symbols.update](changed);
-    if (changed.disabled) {
-      this.$.source.style.borderStyle = this.state.disabled ? null : 'solid';
-    }
   }
 
 }

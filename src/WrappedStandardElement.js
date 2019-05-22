@@ -358,8 +358,8 @@ class WrappedStandardElement extends Base {
     return template.html`<style>:host { display: ${display}} #inner { box-sizing: border-box; height: 100%; width: 100%; }</style><${this.extends} id="inner"><slot></slot></${this.extends}`;
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     const inner = this.inner;
     if (changed.tabIndex) {
       inner.tabIndex = this.state.tabIndex;

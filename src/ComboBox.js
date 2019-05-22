@@ -162,8 +162,8 @@ class ComboBox extends Base {
     });
   }
 
-  [symbols.populate](changed) {
-    super[symbols.populate](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.inputRole) {
       template.transmute(this.$.input, this.state.inputRole);
 
@@ -261,6 +261,57 @@ class ComboBox extends Base {
         /** @type {any} */ (popup).closeOnWindowResize = false;
       }
     }
+    if (changed.ariaLabel) {
+      this.$.input.setAttribute('aria-label', this.state.ariaLabel);
+    }
+    if (changed.disabled) {
+      const { disabled } = this.state;
+      /** @type {any} */ (this.$.input).disabled = disabled;
+      /** @type {any} */ (this.$.toggleButton).disabled = disabled;
+    }
+    if (changed.explicitAttributes || changed.role) {
+      const { explicitAttributes, role } = this.state;
+      const originalRole = explicitAttributes && explicitAttributes.role;
+      if (!originalRole) {
+        this.setAttribute('role', role);
+      }
+    }
+    if (changed.placeholder) {
+      const { placeholder } = this.state;
+      /** @type {any} */ (this.$.input).placeholder = placeholder;
+    }
+    if (changed.popupPosition) {
+      const { popupPosition } = this.state;
+      this.$.downIcon.style.display = popupPosition === 'below' ?
+        'block' :
+        'none';
+      this.$.upIcon.style.display = popupPosition === 'above' ?
+        'block' :
+        'none';
+    }
+    if (changed.rightToLeft) {
+      const { rightToLeft } = this.state;
+      // We want to style the inner input if it's been created with
+      // WrappedStandardElement, otherwise style the input directly.
+      const cast = /** @type {any} */ (this.$.input);
+      const input = 'inner' in cast ?
+        cast.inner :
+        cast;
+      Object.assign(input.style, {
+        paddingBottom: '2px',
+        paddingLeft: rightToLeft ? '1.5em' : '2px',
+        paddingRight: rightToLeft ? '2px' : '1.5em',
+        paddingTop: '2px'
+      });
+      Object.assign(this.$.toggleButton.style, {
+        left: rightToLeft ? '3px' : '',
+        right: rightToLeft ? '' : '3px'
+      });
+    }
+    if (changed.value) {
+      const { value } = this.state;
+      /** @type {any} */ (this.$.input).value = value;
+    }
   }
 
   get [symbols.template]() {
@@ -349,61 +400,6 @@ class ComboBox extends Base {
   }
   set toggleButtonRole(toggleButtonRole) {
     this.setState({ toggleButtonRole });
-  }
-
-  [symbols.update](changed) {
-    super[symbols.update](changed);
-    if (changed.ariaLabel) {
-      this.$.input.setAttribute('aria-label', this.state.ariaLabel);
-    }
-    if (changed.disabled) {
-      const { disabled } = this.state;
-      /** @type {any} */ (this.$.input).disabled = disabled;
-      /** @type {any} */ (this.$.toggleButton).disabled = disabled;
-    }
-    if (changed.explicitAttributes || changed.role) {
-      const { explicitAttributes, role } = this.state;
-      const originalRole = explicitAttributes && explicitAttributes.role;
-      if (!originalRole) {
-        this.setAttribute('role', role);
-      }
-    }
-    if (changed.placeholder) {
-      const { placeholder } = this.state;
-      /** @type {any} */ (this.$.input).placeholder = placeholder;
-    }
-    if (changed.popupPosition) {
-      const { popupPosition } = this.state;
-      this.$.downIcon.style.display = popupPosition === 'below' ?
-        'block' :
-        'none';
-      this.$.upIcon.style.display = popupPosition === 'above' ?
-        'block' :
-        'none';
-    }
-    if (changed.rightToLeft) {
-      const { rightToLeft } = this.state;
-      // We want to style the inner input if it's been created with
-      // WrappedStandardElement, otherwise style the input directly.
-      const cast = /** @type {any} */ (this.$.input);
-      const input = 'inner' in cast ?
-        cast.inner :
-        cast;
-      Object.assign(input.style, {
-        paddingBottom: '2px',
-        paddingLeft: rightToLeft ? '1.5em' : '2px',
-        paddingRight: rightToLeft ? '2px' : '1.5em',
-        paddingTop: '2px'
-      });
-      Object.assign(this.$.toggleButton.style, {
-        left: rightToLeft ? '3px' : '',
-        right: rightToLeft ? '' : '3px'
-      });
-    }
-    if (changed.value) {
-      const { value } = this.state;
-      /** @type {any} */ (this.$.input).value = value;
-    }
   }
 
   get value() {

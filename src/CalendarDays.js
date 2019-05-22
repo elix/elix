@@ -141,8 +141,8 @@ class CalendarDays extends Base {
     `;
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.days) {
       applyChildNodes(this.$.dayContainer, this.state.days);
     }

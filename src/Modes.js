@@ -55,8 +55,8 @@ class Modes extends Base {
     `;
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.items || changed.selectedIndex) {
       const { selectedIndex, items } = this.state;
       if (items) {

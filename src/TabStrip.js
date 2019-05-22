@@ -185,8 +185,8 @@ class TabStrip extends Base {
     `;
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     const { items } = this.state;
     if (changed.items && items) {
       const { tabButtonRole } = this.state;

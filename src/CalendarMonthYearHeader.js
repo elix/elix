@@ -70,8 +70,8 @@ class CalendarMonthYearHeader extends Base {
     `;
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.date || changed.locale || changed.monthFormat || changed.yearFormat) {
       const { date, locale, monthFormat, yearFormat } = this.state;
       const formatOptions = {};

@@ -208,8 +208,8 @@ class AutoSizeTextarea extends Base {
     `;
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     const { copyStyle, lineHeight, minimumRows, value } = this.state;
     if (changed.copyStyle) {
       Object.assign(this.$.copyContainer.style, copyStyle);

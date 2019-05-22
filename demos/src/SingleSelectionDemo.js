@@ -50,8 +50,8 @@ class SingleSelectionDemo extends Base {
   }
 
   // Map item selection to a `selected` CSS class.
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     const { selectedIndex, items } = this.state;
     if (changed.items || changed.selectedIndex && items) {
       // Apply `selected` style to the selected item only.

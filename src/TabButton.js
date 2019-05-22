@@ -96,8 +96,8 @@ class TabButton extends Base {
     `);
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.generic) {
       this.$.inner.classList.toggle('generic', this.state.generic);
     }

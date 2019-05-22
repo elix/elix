@@ -75,8 +75,8 @@ class SwipeDemo extends Base {
     `;
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     const { swipeAxis, swipeFraction } = this.state;
     const vertical = swipeAxis === 'vertical';
     if (changed.swipeAxis) {

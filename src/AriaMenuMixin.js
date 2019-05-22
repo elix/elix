@@ -27,8 +27,8 @@ export default function AriaListMixin(Base) {
       this.setState({ itemRole });
     }
 
-    [symbols.update](changed) {
-      if (super[symbols.update]) { super[symbols.update](changed); }
+    [symbols.render](changed) {
+      if (super[symbols.render]) { super[symbols.render](changed); }
       const { selectedIndex, itemRole, items } = this.state;
       if ((changed.items || changed.itemRole) && items) {
         // Give each item a role.

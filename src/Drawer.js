@@ -64,8 +64,8 @@ class Drawer extends Base {
     this.setState({ fromEdge });
   }
 
-  [symbols.populate](changed) {
-    super[symbols.populate](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.backdropRole) {
       // Implicitly close on background clicks.
       this.$.backdrop.addEventListener('click', async () => {
@@ -74,55 +74,6 @@ class Drawer extends Base {
         this[symbols.raiseChangeEvents] = false;
       });
     }
-  }
-
-  async [symbols.swipeLeft]() {
-    if (drawerAppearsFromLeftEdge(this)) {
-      this.setState({
-        effect: 'close',
-        effectPhase: 'during'
-      });
-      await this.close();
-    }
-  }
-
-  async [symbols.swipeRight]() {
-    if (!drawerAppearsFromLeftEdge(this)) {
-      this.setState({
-        effect: 'close',
-        effectPhase: 'during'
-      });
-      await this.close();
-    }
-  }
-
-  get [symbols.swipeTarget]() {
-    /** @type {any} */
-    const element = this.$.frame;
-    return element;
-  }
-
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
-      <style>
-        :host {
-          align-items: stretch;
-          flex-direction: row;
-        }
-
-        #backdrop {
-          will-change: opacity;
-        }
-
-        #frame {
-          will-change: opacity;
-        }
-      </style>
-    `);
-  }
-
-  [symbols.update](changed) {
-    super[symbols.update](changed);
     if (changed.effect || changed.effectPhase || changed.enableEffects ||
         changed.fromEdge || changed.rightToLeft || changed.swipeFraction) {
       // Render the drawer.
@@ -200,6 +151,51 @@ class Drawer extends Base {
       };
       this.style.justifyContent = mapFromEdgetoJustifyContent[fromEdge];
     }
+  }
+
+  async [symbols.swipeLeft]() {
+    if (drawerAppearsFromLeftEdge(this)) {
+      this.setState({
+        effect: 'close',
+        effectPhase: 'during'
+      });
+      await this.close();
+    }
+  }
+
+  async [symbols.swipeRight]() {
+    if (!drawerAppearsFromLeftEdge(this)) {
+      this.setState({
+        effect: 'close',
+        effectPhase: 'during'
+      });
+      await this.close();
+    }
+  }
+
+  get [symbols.swipeTarget]() {
+    /** @type {any} */
+    const element = this.$.frame;
+    return element;
+  }
+
+  get [symbols.template]() {
+    return template.concat(super[symbols.template], template.html`
+      <style>
+        :host {
+          align-items: stretch;
+          flex-direction: row;
+        }
+
+        #backdrop {
+          will-change: opacity;
+        }
+
+        #frame {
+          will-change: opacity;
+        }
+      </style>
+    `);
   }
 
 }

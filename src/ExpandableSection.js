@@ -56,8 +56,8 @@ class ExpandableSection extends Base {
     this.setState({ panelRole });
   }
 
-  [symbols.populate](changed) {
-    super[symbols.populate](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.headerRole) {
       template.transmute(this.$.header, this.state.headerRole);
       this.$.header.addEventListener('click', () => {
@@ -68,6 +68,26 @@ class ExpandableSection extends Base {
     }
     if (changed.panelRole) {
       template.transmute(this.$.panel, this.state.panelRole);
+    }
+    if (changed.explicitAttributes || changed.role) {
+      const { explicitAttributes, role } = this.state;
+      const originalRole = explicitAttributes && explicitAttributes.role;
+      if (!originalRole) {
+        this.setAttribute('role', role);
+      }
+    }
+    if (changed.opened) {
+      const { opened } = this.state;
+      this.$.header.setAttribute('aria-expanded', opened.toString());
+      if (this.$.collapseIcon) {
+        this.$.collapseIcon.style.display = opened ? 'block' : 'none';
+      }
+      if (this.$.expandIcon) {
+        this.$.expandIcon.style.display = opened ? 'none' : 'block';
+      }
+      if ('opened' in this.$.panel) {
+        /** @type {any} */ (this.$.panel).opened = opened;
+      }
     }
   }
 
@@ -121,30 +141,6 @@ class ExpandableSection extends Base {
         <slot></slot>
       </elix-expandable-panel>
     `;
-  }
-
-  [symbols.update](changed) {
-    super[symbols.update](changed);
-    if (changed.explicitAttributes || changed.role) {
-      const { explicitAttributes, role } = this.state;
-      const originalRole = explicitAttributes && explicitAttributes.role;
-      if (!originalRole) {
-        this.setAttribute('role', role);
-      }
-    }
-    if (changed.opened) {
-      const { opened } = this.state;
-      this.$.header.setAttribute('aria-expanded', opened.toString());
-      if (this.$.collapseIcon) {
-        this.$.collapseIcon.style.display = opened ? 'block' : 'none';
-      }
-      if (this.$.expandIcon) {
-        this.$.expandIcon.style.display = opened ? 'none' : 'block';
-      }
-      if ('opened' in this.$.panel) {
-        /** @type {any} */ (this.$.panel).opened = opened;
-      }
-    }
   }
 
 }

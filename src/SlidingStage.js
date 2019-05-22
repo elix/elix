@@ -87,8 +87,8 @@ class SlidingStage extends Base {
     `;
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.enableEffects || changed.selectedIndex || changed.swipeFraction) {
       const { rightToLeft, selectedIndex, items } = this.state;
       const sign = rightToLeft ? 1 : -1;

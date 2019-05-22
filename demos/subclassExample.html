@@ -42,8 +42,8 @@
       }
 
       // When state changes, render updates to the DOM.
-      [symbols.update](changed) {
-        super[symbols.update](changed);
+      [symbols.render](changed) {
+        super[symbols.render](changed);
         if (changed.value) {
           const { value } = this.state;
           this.style.color = value < 0 ? 'red' : null;
@@ -91,8 +91,8 @@
         `);
       }
 
-      [symbols.update](changed) {
-        super[symbols.update](changed);
+      [symbols.render](changed) {
+        super[symbols.render](changed);
         if (changed.value) {
           const { value } = this.state;
           if (value > 0) {

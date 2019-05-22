@@ -28,8 +28,8 @@
         });
       }
 
-      [symbols.populate](changed) {
-        super[symbols.populate](changed);
+      [symbols.render](changed) {
+        super[symbols.render](changed);
         if (changed.buttonRole) {
           template.transmute(this.$.decrement, this.state.buttonRole);
           this.$.decrement.addEventListener('click', () => {
@@ -60,8 +60,8 @@
         `;
       }
 
-      [symbols.update](changed) {
-        super[symbols.update](changed);
+      [symbols.render](changed) {
+        super[symbols.render](changed);
         if (changed.value) {
           const { value } = this.state;
           this.style.color = value < 0 ? 'red' : null;

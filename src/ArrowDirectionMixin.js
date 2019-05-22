@@ -75,7 +75,7 @@ function ArrowDirectionMixin(Base) {
       });
     }
 
-    [symbols.populate](changed) {
+    [symbols.render](changed) {
       if (changed.arrowButtonRole) {
         if (this.$.arrowButtonLeft) {
           // Turn off focus handling for old left button.
@@ -86,7 +86,7 @@ function ArrowDirectionMixin(Base) {
           forwardFocus(this.$.arrowButtonRight, null);
         }
       }
-      if (super[symbols.populate]) { super[symbols.populate](changed); }
+      if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.arrowButtonRole) {
         const arrowButtons = this.shadowRoot.querySelectorAll('.arrowButton');
         template.transmute(arrowButtons, this.state.arrowButtonRole);
@@ -124,20 +124,6 @@ function ArrowDirectionMixin(Base) {
           this[symbols.raiseChangeEvents] = false;
         });
       }
-    }
-
-    get showArrowButtons() {
-      return this.state.showArrowButtons;
-    }
-    set showArrowButtons(showArrowButtons) {
-      const parsed = String(showArrowButtons) === 'true';
-      this.setState({
-        showArrowButtons: parsed
-      });
-    }
-
-    [symbols.update](changed) {
-      if (super[symbols.update]) { super[symbols.update](changed); }
       const { arrowButtonLeft, arrowButtonRight } = this.$;
       const {
         arrowButtonOverlap,
@@ -202,6 +188,16 @@ function ArrowDirectionMixin(Base) {
         arrowButtonLeft.style.display = display;
         arrowButtonRight.style.display = display;
       }
+    }
+
+    get showArrowButtons() {
+      return this.state.showArrowButtons;
+    }
+    set showArrowButtons(showArrowButtons) {
+      const parsed = String(showArrowButtons) === 'true';
+      this.setState({
+        showArrowButtons: parsed
+      });
     }
 
     /**

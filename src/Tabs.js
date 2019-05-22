@@ -64,8 +64,8 @@ class Tabs extends Base {
     `);
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     const { items, proxies } = this.state;
     if ((changed.items || changed.proxies)
       && items && proxies) {

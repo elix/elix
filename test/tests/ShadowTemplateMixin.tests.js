@@ -8,7 +8,7 @@ class ElementWithStringTemplate extends ShadowTemplateMixin(HTMLElement) {
 
   constructor() {
     super();
-    this[symbols.populate]();
+    this[symbols.render]();
   }
 
   get [symbols.template]() {
@@ -26,7 +26,7 @@ class ElementWithRealTemplate extends ShadowTemplateMixin(HTMLElement) {
 
   constructor() {
     super();
-    this[symbols.populate]();
+    this[symbols.render]();
   }
 
   get [symbols.template]() {
@@ -43,7 +43,7 @@ class ElementWithCachedTemplate extends ShadowTemplateMixin(HTMLElement) {
 
   constructor() {
     super();
-    this[symbols.populate]();
+    this[symbols.render]();
   }
 
   get [symbols.template]() {
@@ -60,7 +60,7 @@ class ElementWithDynamicTemplate extends ShadowTemplateMixin(HTMLElement) {
 
   constructor() {
     super();
-    this[symbols.populate]();
+    this[symbols.render]();
   }
 
   get [symbols.hasDynamicTemplate]() {

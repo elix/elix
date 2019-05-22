@@ -67,8 +67,8 @@ class Input extends Base {
     `;
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.explicitAttributes) {
       // See note in componentDidMount.
       this.$.inner.removeAttribute('aria-hidden');

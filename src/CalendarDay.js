@@ -92,8 +92,8 @@ class CalendarDay extends Base {
     `;
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     const classList = this.classList;
     const { date } = this.state;
     if (changed.date) {

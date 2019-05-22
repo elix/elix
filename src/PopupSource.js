@@ -157,8 +157,8 @@ class PopupSource extends Base {
     });
   }
 
-  [symbols.populate](changed) {
-    super[symbols.populate](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.sourceRole) {
       template.transmute(this.$.source, this.state.sourceRole);
     }    
@@ -186,102 +186,6 @@ class PopupSource extends Base {
         }
       });
     }
-  }
-
-  /**
-   * The preferred direction for the popup.
-   * 
-   * * `above`: popup should appear above the source
-   * * `below`: popup should appear below the source
-   * 
-   * @type {('above'|'below')}
-   * @default 'below'
-   */
-  get popupPosition() {
-    return this.state.popupPosition;
-  }
-  set popupPosition(popupPosition) {
-    this.setState({
-      popupPosition
-    });
-  }
-
-  /**
-   * The class, tag, or template used to define the popup.
-   * 
-   * The popup element is responsible for handling overlay behavior.
-   * 
-   * @type {function|string|HTMLTemplateElement}
-   * @default Popup
-   */
-  get popupRole() {
-    return this.state.popupRole;
-  }
-  set popupRole(popupRole) {
-    this.setState({ popupRole });
-  }
-
-  /**
-   * The class, tag, or template used for the button (or other element) that
-   * will invoke the popup.
-   * 
-   * @type {function|string|HTMLTemplateElement}
-   * @default 'button'
-   */
-  get sourceRole() {
-    return this.state.sourceRole;
-  }
-  set sourceRole(sourceRole) {
-    this.setState({ sourceRole });
-  }
-
-  get [symbols.template]() {
-    return template.html`
-      <style>
-        :host {
-          display: inline-block;
-          position: relative;
-        }
-
-        #source {
-          height: 100%;
-          -webkit-tap-highlight-color: transparent;
-          touch-action: manipulation;
-          width: 100%;
-        }
-
-        #popupContainer {
-          height: 0;
-          outline: none;
-          position: absolute;
-          width: 100%;
-        }
-
-        #popup {
-          align-items: initial;
-          flex-direction: initial;
-          height: initial;
-          justify-content: initial;
-          left: initial;
-          outline: none;
-          position: absolute;
-          top: initial;
-          width: initial;
-        }
-      </style>
-      <div id="source">
-        <slot name="source"></slot>
-      </div>
-      <div id="popupContainer" role="none">
-        <div id="popup" role="none">
-          <slot></slot>
-        </div>
-      </div>
-    `;
-  }
-
-  [symbols.update](changed) {
-    super[symbols.update](changed);
     if (changed.explicitAttributes || changed.role) {
       const { explicitAttributes, role } = this.state;
       const originalRole = explicitAttributes && explicitAttributes.role;
@@ -407,6 +311,98 @@ class PopupSource extends Base {
         /** @type {any} */ (this.$.source).disabled = disabled;
       }
     }
+  }
+
+  /**
+   * The preferred direction for the popup.
+   * 
+   * * `above`: popup should appear above the source
+   * * `below`: popup should appear below the source
+   * 
+   * @type {('above'|'below')}
+   * @default 'below'
+   */
+  get popupPosition() {
+    return this.state.popupPosition;
+  }
+  set popupPosition(popupPosition) {
+    this.setState({
+      popupPosition
+    });
+  }
+
+  /**
+   * The class, tag, or template used to define the popup.
+   * 
+   * The popup element is responsible for handling overlay behavior.
+   * 
+   * @type {function|string|HTMLTemplateElement}
+   * @default Popup
+   */
+  get popupRole() {
+    return this.state.popupRole;
+  }
+  set popupRole(popupRole) {
+    this.setState({ popupRole });
+  }
+
+  /**
+   * The class, tag, or template used for the button (or other element) that
+   * will invoke the popup.
+   * 
+   * @type {function|string|HTMLTemplateElement}
+   * @default 'button'
+   */
+  get sourceRole() {
+    return this.state.sourceRole;
+  }
+  set sourceRole(sourceRole) {
+    this.setState({ sourceRole });
+  }
+
+  get [symbols.template]() {
+    return template.html`
+      <style>
+        :host {
+          display: inline-block;
+          position: relative;
+        }
+
+        #source {
+          height: 100%;
+          -webkit-tap-highlight-color: transparent;
+          touch-action: manipulation;
+          width: 100%;
+        }
+
+        #popupContainer {
+          height: 0;
+          outline: none;
+          position: absolute;
+          width: 100%;
+        }
+
+        #popup {
+          align-items: initial;
+          flex-direction: initial;
+          height: initial;
+          justify-content: initial;
+          left: initial;
+          outline: none;
+          position: absolute;
+          top: initial;
+          width: initial;
+        }
+      </style>
+      <div id="source">
+        <slot name="source"></slot>
+      </div>
+      <div id="popupContainer" role="none">
+        <div id="popup" role="none">
+          <slot></slot>
+        </div>
+      </div>
+    `;
   }
 
 }

@@ -1,6 +1,5 @@
 import AttributeMarshallingMixin from './AttributeMarshallingMixin.js';
 import ExplicitAttributesMixin from './ExplicitAttributesMixin.js';
-import PopulateUpdateMixin from './PopulateUpdateMixin.js';
 import ReactiveMixin from './ReactiveMixin.js';
 import ShadowTemplateMixin from './ShadowTemplateMixin.js';
 
@@ -14,7 +13,6 @@ import ShadowTemplateMixin from './ShadowTemplateMixin.js';
  *     const ReactiveElement =
  *       AttributeMarshallingMixin(
  *       ExplicitAttributesMixin(
- *       PopulateUpdateMixin(
  *       ReactiveMixin(
  *       ShadowTemplateMixin(
  *         HTMLElement
@@ -26,17 +24,15 @@ import ShadowTemplateMixin from './ShadowTemplateMixin.js';
  * @inherits HTMLElement
  * @mixes AttributeMarshallingMixin
  * @mixes ExplicitAttributesMixin
- * @mixes PopulateUpdateMixin
  * @mixes ReactiveMixin
  * @mixes ShadowTemplateMixin
  */
 const ReactiveElement =
   AttributeMarshallingMixin(
   ExplicitAttributesMixin(
-  PopulateUpdateMixin(
   ReactiveMixin(
   ShadowTemplateMixin(
     HTMLElement
-  )))));
+  ))));
 
 export default ReactiveElement;

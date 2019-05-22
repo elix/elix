@@ -55,8 +55,8 @@ class ArrowDirectionButton extends Base {
     `);
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     // Wait for knowledge of dark mode to be set after initial render.
     const { darkMode } = this.state;
     if (changed.darkMode && darkMode !== null) {

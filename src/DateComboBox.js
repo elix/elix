@@ -308,8 +308,8 @@ class DateComboBox extends Base {
     return calendar.parseWithOptionalYear(text, dateTimeFormat, timeBias);
   }
 
-  [symbols.populate](changed) {
-    super[symbols.populate](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.calendarRole) {
       template.transmute(this.$.calendar, this.state.calendarRole);
       this.$.calendar.addEventListener('date-changed', event => {
@@ -335,6 +335,23 @@ class DateComboBox extends Base {
         event.preventDefault(); // Keep focus on input.
         this[symbols.raiseChangeEvents] = false;
       });
+    }
+    const calendar = /** @type {any} */ (this.$.calendar);
+    if (changed.arrowButtonRole) {
+      if ('arrowButtonRole' in calendar) {
+        calendar.arrowButtonRole = this.state.arrowButtonRole;
+      }
+    }
+    if (changed.date) {
+      calendar.date = this.state.date;
+    }
+    if (changed.dayRole) {
+      if ('dayRole' in calendar) {
+        calendar.dayRole = this.state.dayRole;
+      }
+    }
+    if (changed.locale) {
+      calendar.locale = this.state.locale;
     }
   }
 
@@ -407,27 +424,6 @@ class DateComboBox extends Base {
     this.setState({
       todayButtonRole
     });
-  }
-
-  [symbols.update](changed) {
-    super[symbols.update](changed);
-    const calendar = /** @type {any} */ (this.$.calendar);
-    if (changed.arrowButtonRole) {
-      if ('arrowButtonRole' in calendar) {
-        calendar.arrowButtonRole = this.state.arrowButtonRole;
-      }
-    }
-    if (changed.date) {
-      calendar.date = this.state.date;
-    }
-    if (changed.dayRole) {
-      if ('dayRole' in calendar) {
-        calendar.dayRole = this.state.dayRole;
-      }
-    }
-    if (changed.locale) {
-      calendar.locale = this.state.locale;
-    }
   }
 
   get value() {

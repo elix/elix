@@ -142,8 +142,8 @@ class AlertDialog extends Dialog {
     return result;
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.choiceButtons) {
       applyChildNodes(this.$.buttonContainer, this.state.choiceButtons);
     }

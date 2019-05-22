@@ -198,8 +198,8 @@ class Menu extends Base {
     `;
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     const { selectedIndex, items } = this.state;    
     if ((changed.items || changed.selectedIndex) && items) {
         // Reflect the selection state to the item.

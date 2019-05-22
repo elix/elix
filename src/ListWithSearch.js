@@ -157,8 +157,8 @@ class ListWithSearch extends Base {
     this.setState({ placeholder });
   }
 
-  [symbols.populate](changed) {
-    super[symbols.populate](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.inputRole) {
       template.transmute(this.$.input, this.state.inputRole);
       this.$.input.addEventListener('input', () => {
@@ -172,6 +172,19 @@ class ListWithSearch extends Base {
     }
     if (changed.listRole) {
       template.transmute(this.$.list, this.state.listRole);
+    }
+    if (changed.ariaLabel) {
+      const { ariaLabel } = this.state;
+      this.$.input.setAttribute('aria-label', ariaLabel);
+    }
+    if (changed.filter) {
+      const { filter } = this.state;
+      /** @type {HTMLInputElement} */ (this.$.input).value = filter;
+      /** @type {any} */ (this.$.list).filter = filter;
+    }
+    if (changed.placeholder) {
+      const { placeholder } = this.state;
+      /** @type {HTMLInputElement} */ (this.$.input).placeholder = placeholder;
     }
   }
 
@@ -195,23 +208,6 @@ class ListWithSearch extends Base {
         <slot></slot>
       </elix-filter-list-box>
     `;
-  }
-
-  [symbols.update](changed) {
-    super[symbols.update](changed);
-    if (changed.ariaLabel) {
-      const { ariaLabel } = this.state;
-      this.$.input.setAttribute('aria-label', ariaLabel);
-    }
-    if (changed.filter) {
-      const { filter } = this.state;
-      /** @type {HTMLInputElement} */ (this.$.input).value = filter;
-      /** @type {any} */ (this.$.list).filter = filter;
-    }
-    if (changed.placeholder) {
-      const { placeholder } = this.state;
-      /** @type {HTMLInputElement} */ (this.$.input).placeholder = placeholder;
-    }
   }
 
 }

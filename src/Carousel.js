@@ -76,14 +76,14 @@ class Carousel extends Base {
     });
   }
 
-  [symbols.populate](changed) {
+  [symbols.render](changed) {
     if (changed.proxyListRole && this.$.proxyList) {
       // Turn off focus handling for old proxy list.
       /** @type {any} */
       const cast = this.$.proxyList;
       forwardFocus(cast, null);
     }
-    super[symbols.populate](changed);
+    super[symbols.render](changed);
     if (changed.proxyListRole) {
       // Keep focus off of the proxies and onto the carousel itself.
       /** @type {any} */
@@ -95,6 +95,21 @@ class Carousel extends Base {
       /** @type {any} */
       const cast = this.$.stage;
       cast.removeAttribute('tabindex');      
+    }
+    const { darkMode, proxies } = this.state;
+    // Wait for knowledge of dark mode
+    if ((changed.darkMode || changed.proxies)
+        && darkMode !== null && proxies) {
+      // Apply dark mode to proxies.
+      proxies.forEach(proxy => {
+        if ('darkMode' in proxy) {
+          proxy.darkMode = darkMode;
+        }
+      });
+    }
+    if (changed.proxies && proxies) {
+      // Make proxies not focusable.
+      proxies.forEach(proxy => proxy.tabIndex = -1);
     }
   }
 
@@ -130,25 +145,6 @@ class Carousel extends Base {
       proxyList.setAttribute('tabindex', '');
     }
     return result;
-  }
-
-  [symbols.update](changed) {
-    super[symbols.update](changed);
-    const { darkMode, proxies } = this.state;
-    // Wait for knowledge of dark mode
-    if ((changed.darkMode || changed.proxies)
-        && darkMode !== null && proxies) {
-      // Apply dark mode to proxies.
-      proxies.forEach(proxy => {
-        if ('darkMode' in proxy) {
-          proxy.darkMode = darkMode;
-        }
-      });
-    }
-    if (changed.proxies && proxies) {
-      // Make proxies not focusable.
-      proxies.forEach(proxy => proxy.tabIndex = -1);
-    }
   }
 
 }

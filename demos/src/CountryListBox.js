@@ -292,8 +292,8 @@ class CountryListBox extends Base {
     `;
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.items || changed.selectedIndex) {
       // Apply `selected` style to the selected item only.
       const { selectedIndex, items } = this.state;

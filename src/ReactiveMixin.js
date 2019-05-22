@@ -95,9 +95,8 @@ export default function ReactiveMixin(Base) {
         this[symbols.rendering] = true;
 
         // Invoke any internal render implementations.
-        if (this[symbols.render]) {
-          this[symbols.render](changed);
-        }
+        this[symbols.render](changed);
+
         this[symbols.rendering] = false;
 
         // Since we've now rendered all changes, clear the change log. If other
@@ -118,6 +117,10 @@ export default function ReactiveMixin(Base) {
         this[symbols.raiseChangeEvents] = saveRaiseChangeEvents;
         this[raiseChangeEventsInNextRenderKey] = saveRaiseChangeEvents;
       }
+    }
+
+    [symbols.render](changed) {
+      if (super[symbols.render]) { super[symbols.render](changed); }
     }
 
     /**

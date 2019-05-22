@@ -67,8 +67,8 @@ export default function DelegateItemsMixin(Base) {
       return this.state ? this.state.items : null;
     }
 
-    [symbols.update](changed) {
-      if (super[symbols.update]) { super[symbols.update](changed); }
+    [symbols.render](changed) {
+      if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.selectedIndex) {
         const itemsDelegate = this[symbols.itemsDelegate];
         if (typeof itemsDelegate === 'undefined') {

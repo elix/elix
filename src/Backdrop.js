@@ -36,8 +36,8 @@ class Backdrop extends ReactiveElement {
     `;
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.explicitAttributes || changed.role) {
       const { explicitAttributes, role } = this.state;
       const originalRole = explicitAttributes && explicitAttributes.role;

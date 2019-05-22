@@ -57,8 +57,8 @@ class CrossfadeStage extends Base {
     `);
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.enableEffects || changed.rightToLeft || changed.items ||
         changed.selectedIndex || changed.swipeFraction || changed.transitionDuration) {
       // Apply opacity based on selection state.

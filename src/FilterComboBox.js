@@ -58,8 +58,8 @@ class FilterComboBox extends Base {
     return state;
   }
 
-  [symbols.populate](changed) {
-    super[symbols.populate](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.inputRole) {
       this.$.input.addEventListener('input', event => {
         this[symbols.raiseChangeEvents] = true;
@@ -74,10 +74,6 @@ class FilterComboBox extends Base {
         this[symbols.raiseChangeEvents] = false;
       });
     }
-  }
-
-  [symbols.update](changed) {
-    super[symbols.update](changed);
     if (changed.filter || changed.selectedIndex) {
       const { filter, selectedIndex } = this.state;
       if (filter === '' || selectedIndex === -1) {

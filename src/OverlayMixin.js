@@ -76,8 +76,8 @@ export default function OverlayMixin(Base) {
       });
     }
 
-    [symbols.update](changed) {
-      if (super[symbols.update]) { super[symbols.update](changed); }
+    [symbols.render](changed) {
+      if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.effectPhase || changed.opened) {
         const closed = typeof this.closeFinished === 'undefined' ?
           this.closed :

@@ -87,8 +87,8 @@ class CenteredStrip extends Base {
     `;
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.clientWidth || changed.enableEffects || changed.rightToLeft ||
         changed.selectedIndex || changed.swipeFraction) {
       const rightToLeft = this.state.rightToLeft;

@@ -16,8 +16,8 @@ class DynamicSingle extends ReactiveElement {
     });
   }
 
-  [symbols.populate](changed) {
-    super[symbols.populate](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.dynamicRole) {
       template.transmute(this.$.dynamic, this.state.dynamicRole);
     }
@@ -43,8 +43,8 @@ class DynamicMultiple extends ReactiveElement {
     });
   }
 
-  [symbols.populate](changed) {
-    super[symbols.populate](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.dynamicRole) {
       const dynamics = this.shadowRoot.querySelectorAll('.dynamic');
       template.transmute(dynamics, this.state.dynamicRole);

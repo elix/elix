@@ -89,8 +89,8 @@ class CalendarDayNamesHeader extends ReactiveElement {
     `;
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.format || changed.locale) {
       const { format, locale } = this.state;
       const formatter = calendar.dateTimeFormat(locale, {

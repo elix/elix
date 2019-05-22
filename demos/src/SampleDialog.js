@@ -6,8 +6,8 @@ import Dialog from '../../src/Dialog.js';
 
 class SampleDialog extends Dialog {
 
-  [symbols.populate](changed) {
-    if (super[symbols.populate]) { super[symbols.populate](changed); }
+  [symbols.render](changed) {
+    if (super[symbols.render]) { super[symbols.render](changed); }
     if (changed.frameRole) {
       // Have the dialog close itself when the user clicks anywhere within it. In
       // many cases, you'll want to have a button ("OK", "Close", etc.) that

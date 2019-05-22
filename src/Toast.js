@@ -115,8 +115,8 @@ class Toast extends Base {
     `);
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.fromEdge) {
       // Host
       const hostEdgeStyles = {

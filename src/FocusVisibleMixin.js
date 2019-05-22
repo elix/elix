@@ -86,8 +86,8 @@ export default function FocusVisibleMixin(Base) {
       });
     }
 
-    [symbols.update](changed) {
-      if (super[symbols.update]) { super[symbols.update](changed); }
+    [symbols.render](changed) {
+      if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.focusVisible) {
         // Suppress the component's normal `outline` style unless we know the
         // focus should be visible.

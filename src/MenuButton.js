@@ -236,8 +236,8 @@ class MenuButton extends PopupButton {
     this.setState({ menuRole });
   }
 
-  [symbols.populate](changed) {
-    super[symbols.populate](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.popupRole) {
       this.$.popup.tabIndex = -1;
     }
@@ -301,6 +301,12 @@ class MenuButton extends PopupButton {
         });
       });
     }
+    if (changed.menuSelectedIndex) {
+      const menu = /** @type {any} */ (this.$.menu);
+      if ('selectedIndex' in menu) {
+        menu.selectedIndex = this.state.menuSelectedIndex;
+      }
+    }
   }
 
   get [symbols.template]() {
@@ -354,16 +360,6 @@ class MenuButton extends PopupButton {
         </style>
       `
     );
-  }
-
-  [symbols.update](changed) {
-    super[symbols.update](changed);
-    if (changed.menuSelectedIndex) {
-      const menu = /** @type {any} */ (this.$.menu);
-      if ('selectedIndex' in menu) {
-        menu.selectedIndex = this.state.menuSelectedIndex;
-      }
-    }
   }
 
 }

@@ -133,8 +133,8 @@ class Overlay extends Base {
     if (super.open) { await super.open(); }
   }
 
-  [symbols.populate](changed) {
-    super[symbols.populate](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.backdropRole) {
       template.transmute(this.$.backdrop, this.state.backdropRole);
     }

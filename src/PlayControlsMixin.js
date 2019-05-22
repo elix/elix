@@ -53,8 +53,8 @@ export default function PlayControlsMixin(Base) {
       return handled || (super[symbols.keydown] && super[symbols.keydown](event));
     }
 
-    [symbols.populate](changed) {
-      if (super[symbols.populate]) { super[symbols.populate](changed); }
+    [symbols.render](changed) {
+      if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.controlButtonRole) {
         const controlButtons = this.shadowRoot.querySelectorAll('.controlButton');
         template.transmute(controlButtons, this.state.controlButtonRole);
@@ -75,10 +75,6 @@ export default function PlayControlsMixin(Base) {
           event.stopPropagation();
         });
       }
-    }
-
-    [symbols.update](changed) {
-      super[symbols.update](changed);
       if (changed.playing) {
         const { playing } = this.state;
         this.$.pausedIcon.style.display = playing ? 'none' : '';

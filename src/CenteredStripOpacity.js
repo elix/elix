@@ -43,8 +43,8 @@ class CenteredStripOpacity extends CenteredStrip {
     this.setState({ transitionDuration });
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     if (changed.enableEffects || changed.items || changed.rightToLeft ||
         changed.selectedIndex || changed.swipeFraction || changed.transitionDuration) {
       // Apply opacity based on selection state.

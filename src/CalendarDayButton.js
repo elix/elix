@@ -71,8 +71,8 @@ class CalendarDayButton extends Base {
     return result;
   }
 
-  [symbols.update](changed) {
-    super[symbols.update](changed);
+  [symbols.render](changed) {
+    super[symbols.render](changed);
     /** @type {any} */ const day = this.$.day;
     if (changed.date) {
       day.date = this.state.date;
