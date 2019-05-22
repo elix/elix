@@ -54,7 +54,6 @@ export { default as DropdownList } from './DropdownList.js';
 export { default as EffectMixin } from './EffectMixin.js';
 export { default as ExpandablePanel } from './ExpandablePanel.js';
 export { default as ExpandableSection } from './ExpandableSection.js';
-export { default as ExplicitAttributesMixin } from './ExplicitAttributesMixin.js';
 export { default as Explorer } from './Explorer.js';
 export { default as FilterComboBox } from './FilterComboBox.js';
 export { default as FilterListBox } from './FilterListBox.js';

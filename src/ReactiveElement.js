@@ -11,7 +11,6 @@ import ShadowTemplateMixin from './ShadowTemplateMixin.js';
  *
  *     const ReactiveElement =
  *       AttributeMarshallingMixin(
- *       ExplicitAttributesMixin(
  *       ReactiveMixin(
  *       ShadowTemplateMixin(
  *         HTMLElement

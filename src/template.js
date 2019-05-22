@@ -135,11 +135,7 @@ export function replace(original, replacement) {
   if ((original instanceof HTMLElement || original instanceof SVGElement) &&
       (replacement instanceof HTMLElement || replacement instanceof SVGElement)) {
     // Merge attributes from original to replacement, letting replacement win
-    // conflicts. We do this now, before inserting the replacement into the
-    // tree, so that ExplicitAttributesMixin's record-keeping will consider
-    // these values to be original (i.e., equivalent to having been set via
-    // markup).
-    // Handle classes and styles separately (below).
+    // conflicts. Handle classes and styles separately (below).
     Array.prototype.forEach.call(original.attributes, attribute => {
       if (!replacement.getAttribute(attribute.name) &&
           attribute.name !== 'class' && attribute.name !== 'style') {
@@ -147,8 +143,7 @@ export function replace(original, replacement) {
       }
     });
     // Copy classes/styles from original to replacement, letting replacement win
-    // conflicts. As with attributes (above), we want to do this before
-    // ExplicitAttributesMixin looks at classes and styles.
+    // conflicts.
     Array.prototype.forEach.call(original.classList, className => {
       replacement.classList.add(className);
     });
