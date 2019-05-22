@@ -119,6 +119,21 @@ export default function ReactiveMixin(Base) {
       }
     }
 
+    /**
+     * Renders any recent changes in state to the DOM.
+     * 
+     * The default implementation of this method does nothing. Override this
+     * method in your component to update your component's host element and
+     * any shadow elements to reflect the component's new state. See the
+     * [rendering example](#rendering) above.
+     * 
+     * Be sure to call `super` in your method implementation so that your
+     * component's base classes and mixins have a chance to perform their own
+     * render work.
+     * 
+     * @param {object} changed - dictionary of flags indicating which state
+     * members have changed since the last render
+     */
     [symbols.render](changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
     }

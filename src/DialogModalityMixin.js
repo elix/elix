@@ -51,9 +51,7 @@ export default function DialogModalityMixin(Base) {
     }
 
     [symbols.render](changed) {
-
       if (super[symbols.render]) { super[symbols.render](changed); }
-
       if (changed.explicitAttributes || changed.role) {
         const { explicitAttributes, role } = this.state;
         const originalRole = explicitAttributes && explicitAttributes.role;
@@ -61,7 +59,6 @@ export default function DialogModalityMixin(Base) {
           this.setAttribute('role', role);
         }
       }
-
       if (changed.opened) {
         if (this.state.opened && document.documentElement) {
           // Disable body scrolling to absorb space bar keypresses and other
@@ -89,6 +86,6 @@ export default function DialogModalityMixin(Base) {
         }
       }
     }
-
   }
+  
 }

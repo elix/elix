@@ -79,6 +79,35 @@ class ListBox extends Base {
     this.setState({ orientation });
   }
 
+  [symbols.render](changed) {
+    super[symbols.render](changed);
+    if (changed.orientation) {
+      // Update list orientation styling.
+      const style = this.state.orientation === 'vertical' ?
+        {
+          flexDirection: 'column',
+          overflowX: 'hidden',
+          overflowY: 'auto'
+        } :
+        {
+          flexDirection: 'row',
+          overflowX: 'auto',
+          overflowY: 'hidden'
+        };
+      Object.assign(this.$.content.style, style);
+    }
+    if (changed.items || changed.selectedIndex) {
+      // Apply `selected` style to the selected item only.
+      const { selectedIndex, items } = this.state;
+      if (items) {
+        items.forEach((item, index) => {
+          const selected = index === selectedIndex;
+          item.classList.toggle('selected', selected);
+        });
+      }
+    }
+  }
+
   get [symbols.scrollTarget]() {
     return this.$.content;
   }
@@ -126,35 +155,6 @@ class ListBox extends Base {
         <slot></slot>
       </div>
     `;
-  }
-
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    if (changed.orientation) {
-      // Update list orientation styling.
-      const style = this.state.orientation === 'vertical' ?
-        {
-          flexDirection: 'column',
-          overflowX: 'hidden',
-          overflowY: 'auto'
-        } :
-        {
-          flexDirection: 'row',
-          overflowX: 'auto',
-          overflowY: 'hidden'
-        };
-      Object.assign(this.$.content.style, style);
-    }
-    if (changed.items || changed.selectedIndex) {
-      // Apply `selected` style to the selected item only.
-      const { selectedIndex, items } = this.state;
-      if (items) {
-        items.forEach((item, index) => {
-          const selected = index === selectedIndex;
-          item.classList.toggle('selected', selected);
-        });
-      }
-    }
   }
 
 }

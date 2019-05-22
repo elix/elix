@@ -21,6 +21,15 @@ const Base =
  */
 class ArrowDirectionButton extends Base {
 
+  [symbols.render](changed) {
+    super[symbols.render](changed);
+    // Wait for knowledge of dark mode to be set after initial render.
+    const { darkMode } = this.state;
+    if (changed.darkMode && darkMode !== null) {
+      this.$.inner.classList.toggle('darkMode', darkMode);
+    }
+  }
+
   get [symbols.template]() {
     return template.concat(super[symbols.template], template.html`
       <style>
@@ -53,15 +62,6 @@ class ArrowDirectionButton extends Base {
         }
       </style>
     `);
-  }
-
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    // Wait for knowledge of dark mode to be set after initial render.
-    const { darkMode } = this.state;
-    if (changed.darkMode && darkMode !== null) {
-      this.$.inner.classList.toggle('darkMode', darkMode);
-    }
   }
 
 }

@@ -40,6 +40,33 @@ class SlidingStage extends Base {
     });
   }
 
+  [symbols.render](changed) {
+    super[symbols.render](changed);
+    if (changed.enableEffects || changed.selectedIndex || changed.swipeFraction) {
+      const { rightToLeft, selectedIndex, items } = this.state;
+      const sign = rightToLeft ? 1 : -1;
+      const swiping = this.state.swipeFraction != null;
+      const swipeFraction = this.state.swipeFraction || 0;
+      let translation;
+      if (selectedIndex >= 0) {
+        const selectionFraction = selectedIndex + sign * swipeFraction;
+        const count = items ? items.length : 0;
+        const dampedSelection = fractionalSelection.dampenListSelection(selectionFraction, count);
+        translation = sign * dampedSelection * 100;
+      } else {
+        translation = 0;
+      }
+
+      const slidingStageContent = this.$.slidingStageContent;
+      slidingStageContent.style.transform = `translateX(${translation}%)`;
+
+      const showTransition = this.state.enableEffects && !swiping;
+      slidingStageContent.style.transition = showTransition ?
+        'transform 0.25s' :
+        'none';
+    }
+  }
+
   get swipeFraction() {
     return this.state.swipeFraction;
   }
@@ -85,33 +112,6 @@ class SlidingStage extends Base {
         <slot></slot>
       </div>
     `;
-  }
-
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    if (changed.enableEffects || changed.selectedIndex || changed.swipeFraction) {
-      const { rightToLeft, selectedIndex, items } = this.state;
-      const sign = rightToLeft ? 1 : -1;
-      const swiping = this.state.swipeFraction != null;
-      const swipeFraction = this.state.swipeFraction || 0;
-      let translation;
-      if (selectedIndex >= 0) {
-        const selectionFraction = selectedIndex + sign * swipeFraction;
-        const count = items ? items.length : 0;
-        const dampedSelection = fractionalSelection.dampenListSelection(selectionFraction, count);
-        translation = sign * dampedSelection * 100;
-      } else {
-        translation = 0;
-      }
-
-      const slidingStageContent = this.$.slidingStageContent;
-      slidingStageContent.style.transform = `translateX(${translation}%)`;
-
-      const showTransition = this.state.enableEffects && !swiping;
-      slidingStageContent.style.transition = showTransition ?
-        'transform 0.25s' :
-        'none';
-    }
   }
 
 }

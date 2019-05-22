@@ -153,38 +153,6 @@ class TabStrip extends Base {
     });
   }
 
-  /**
-   * The alignment of the tabs within the tab strip.
-   * 
-   * @type {('start'|'center'|'end'|'stretch')}
-   * @default 'start'
-   */
-  get tabAlign() {
-    return this.state.tabAlign;
-  }
-  set tabAlign(tabAlign) {
-    this.setState({ tabAlign });
-  }
-
-  get [symbols.template]() {
-    return template.html`
-      <style>
-        :host {
-          display: grid;
-          grid-auto-flow: column;
-        }
-
-        ::slotted(*) {
-          cursor: pointer;
-          font-family: inherit;
-          font-size: inherit;
-          -webkit-tap-highlight-color: transparent;
-        }
-      </style>
-      <slot></slot>
-    `;
-  }
-
   [symbols.render](changed) {
     super[symbols.render](changed);
     const { items } = this.state;
@@ -248,6 +216,38 @@ class TabStrip extends Base {
         });
       }
     }
+  }
+
+  /**
+   * The alignment of the tabs within the tab strip.
+   * 
+   * @type {('start'|'center'|'end'|'stretch')}
+   * @default 'start'
+   */
+  get tabAlign() {
+    return this.state.tabAlign;
+  }
+  set tabAlign(tabAlign) {
+    this.setState({ tabAlign });
+  }
+
+  get [symbols.template]() {
+    return template.html`
+      <style>
+        :host {
+          display: grid;
+          grid-auto-flow: column;
+        }
+
+        ::slotted(*) {
+          cursor: pointer;
+          font-family: inherit;
+          font-size: inherit;
+          -webkit-tap-highlight-color: transparent;
+        }
+      </style>
+      <slot></slot>
+    `;
   }
 
 }

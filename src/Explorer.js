@@ -108,7 +108,6 @@ class Explorer extends Base {
 
   [symbols.render](changed) {
     super[symbols.render](changed);
-
     const handleSelectedIndexChanged = event => {
       // The proxy list and stage may raise events before they've actually
       // had a chance to sync up their items to reflect the current state
@@ -123,12 +122,10 @@ class Explorer extends Base {
         }
       }
     };
-
     if (changed.proxyListRole) {
       template.transmute(this.$.proxyList, this.state.proxyListRole);
       this.$.proxyList.addEventListener('selected-index-changed', handleSelectedIndexChanged);
     }
-
     if (changed.stageRole) {
       template.transmute(this.$.stage, this.state.stageRole);
       this.$.stage.addEventListener('selected-index-changed', handleSelectedIndexChanged);

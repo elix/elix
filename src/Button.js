@@ -78,7 +78,24 @@ class Button extends Base {
     // Prefer mixin result if it's defined, otherwise use base result.
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
   }
-  
+
+  [symbols.render](changed) {
+    super[symbols.render](changed);
+    if (changed.focusVisible) {
+      // Override host `outline` style supplied by FocusVisibleMixin.
+      this.style.outline = 'none';
+      const { focusVisible } = this.state;
+      this.$.inner.style.outline = focusVisible ? '' : 'none';
+    }
+    if (changed.explicitAttributes || changed.role) {
+      const { explicitAttributes, role } = this.state;
+      const originalRole = explicitAttributes && explicitAttributes.role;
+      if (!originalRole) {
+        this.setAttribute('role', role);
+      }
+    }
+  }
+
   // Respond to a simulated click.
   [symbols.tap]() {
     const clickEvent = new MouseEvent('click');
@@ -117,23 +134,6 @@ class Button extends Base {
         <slot></slot>
       </button>
     `;
-  }
-
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    if (changed.focusVisible) {
-      // Override host `outline` style supplied by FocusVisibleMixin.
-      this.style.outline = 'none';
-      const { focusVisible } = this.state;
-      this.$.inner.style.outline = focusVisible ? '' : 'none';
-    }
-    if (changed.explicitAttributes || changed.role) {
-      const { explicitAttributes, role } = this.state;
-      const originalRole = explicitAttributes && explicitAttributes.role;
-      if (!originalRole) {
-        this.setAttribute('role', role);
-      }
-    }
   }
 
 }

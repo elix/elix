@@ -134,7 +134,23 @@ class AutoSizeTextarea extends Base {
       });
     }
   }
-  
+
+  [symbols.render](changed) {
+    super[symbols.render](changed);
+    const { copyStyle, lineHeight, minimumRows, value } = this.state;
+    if (changed.copyStyle) {
+      Object.assign(this.$.copyContainer.style, copyStyle);
+    }
+    if (changed.lineHeight || changed.minimumRows && lineHeight != null) {
+      const minHeight = minimumRows * lineHeight;
+      this.$.copyContainer.style.minHeight = `${minHeight}px`;
+    }
+    if (changed.value) {
+      /** @type {HTMLTextAreaElement} */ (this.$.inner).value = value;
+      this.$.textCopy.textContent = value;
+    }
+  }
+
   /*
    * Things to note about this component's DOM structure:
    *
@@ -206,22 +222,6 @@ class AutoSizeTextarea extends Base {
         <slot></slot>
       </div>
     `;
-  }
-
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    const { copyStyle, lineHeight, minimumRows, value } = this.state;
-    if (changed.copyStyle) {
-      Object.assign(this.$.copyContainer.style, copyStyle);
-    }
-    if (changed.lineHeight || changed.minimumRows && lineHeight != null) {
-      const minHeight = minimumRows * lineHeight;
-      this.$.copyContainer.style.minHeight = `${minHeight}px`;
-    }
-    if (changed.value) {
-      /** @type {HTMLTextAreaElement} */ (this.$.inner).value = value;
-      this.$.textCopy.textContent = value;
-    }
   }
 
   /**

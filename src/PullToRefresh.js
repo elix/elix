@@ -118,9 +118,6 @@ class PullToRefresh extends Base {
     if (changed.pullIndicatorRole) {
       template.transmute(this.$.pullIndicator, this.pullIndicatorRole);
     }
-    if (changed.refreshingIndicatorRole) {
-      template.transmute(this.$.refreshingIndicator, this.refreshingIndicatorRole);
-    }
     if (changed.refreshing) {
       const { refreshing } = this.state;
       const refreshingIndicator = this.$.refreshingIndicator;
@@ -130,6 +127,9 @@ class PullToRefresh extends Base {
       if ('playing' in this.$.refreshingIndicator) {
         /** @type {any} */ (refreshingIndicator).playing = refreshing;
       }
+    }
+    if (changed.refreshingIndicatorRole) {
+      template.transmute(this.$.refreshingIndicator, this.refreshingIndicatorRole);
     }
     if (changed.enableEffects || changed.refreshing || changed.swipeFraction) {
       const { enableEffects, refreshing, swipeFraction } = this.state;

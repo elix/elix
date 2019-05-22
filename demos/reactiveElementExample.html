@@ -6,67 +6,76 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>ReactiveElement example</title>
-  
-  <template id="incrementDecrementTemplate">
-    <button id="decrement">-</button>
-    <span id="value"></span>
-    <button id="increment">+</button>
-  </template>
-  
-  <script type="module">
-    import * as symbols from '../src/symbols.js';
-    import ReactiveElement from '../src/ReactiveElement.js';
-
-    // Create a native web component with reactive behavior.
-    class IncrementDecrement extends ReactiveElement {
-
-      componentDidMount() {
-        super.componentDidMount();
-        this.$.decrement.addEventListener('click', () => {
-          this.value--;
-        });
-        this.$.increment.addEventListener('click', () => {
-          this.value++;
-        });
-      }
-
-      // This property becomes the value of this.state at constructor time.
-      get defaultState() {
-        return Object.assign(super.defaultState, {
-          value: 0
-        });
-      }
-
-      get [symbols.template]() {
-        return incrementDecrementTemplate;
-      }
-
-      // Render the current state to the DOM.
-      [symbols.render](changed) {
-        super[symbols.render](changed);
-        if (changed.value) {
-          this.$.value.textContent = this.state.value;
-        }
-      }
-
-      // Provide a public property that gets/sets state.
-      get value() {
-        return this.state.value;
-      }
-      set value(value) {
-        this.setState({ value });
-      }
-
-    }
-
-    customElements.define('increment-decrement', IncrementDecrement);
-  </script>
+  <link rel="stylesheet" href="demos.css">
 
 </head>
 
 <body role="main">
+  <!--
+  Note: This demo page puts its template and script in the document body, which
+  is somewhat unusual, and only necessary to support showing this demo inline in
+  the Elix documentation. In a typical page, the template and script would go in
+  the document head.
+  -->
   <div class="demo padded">
+
+    <template id="incrementDecrementTemplate">
+      <button id="decrement">-</button>
+      <span id="value"></span>
+      <button id="increment">+</button>
+    </template>
+    
+    <script type="module">
+      import * as symbols from '../src/symbols.js';
+      import ReactiveElement from '../src/ReactiveElement.js';
+  
+      // Create a native web component with reactive behavior.
+      class IncrementDecrement extends ReactiveElement {
+  
+        componentDidMount() {
+          super.componentDidMount();
+          this.$.decrement.addEventListener('click', () => {
+            this.value--;
+          });
+          this.$.increment.addEventListener('click', () => {
+            this.value++;
+          });
+        }
+  
+        // This property becomes the value of this.state at constructor time.
+        get defaultState() {
+          return Object.assign(super.defaultState, {
+            value: 0
+          });
+        }
+  
+        get [symbols.template]() {
+          return incrementDecrementTemplate;
+        }
+  
+        // Render the current state to the DOM.
+        [symbols.render](changed) {
+          super[symbols.render](changed);
+          if (changed.value) {
+            this.$.value.textContent = this.state.value;
+          }
+        }
+  
+        // Provide a public property that gets/sets state.
+        get value() {
+          return this.state.value;
+        }
+        set value(value) {
+          this.setState({ value });
+        }
+  
+      }
+  
+      customElements.define('increment-decrement', IncrementDecrement);
+    </script>
+
     <increment-decrement></increment-decrement>
+    
   </div>
 </body>
 

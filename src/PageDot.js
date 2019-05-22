@@ -25,6 +25,17 @@ class PageDot extends Base {
     this.setAttribute('role', 'none');    
   }
 
+  [symbols.render](changed) {
+    super[symbols.render](changed);
+    const { darkMode } = this.state;
+    // Wait for knowledge of dark mode
+    if (changed.darkMode && darkMode !== null) {
+      this.style.backgroundColor = darkMode ?
+        'rgb(255, 255, 255)' :
+        'rgb(0, 0, 0)';
+    }
+  }
+
   get [symbols.template]() {
     return template.concat(super[symbols.template], template.html`
       <style>
@@ -48,17 +59,6 @@ class PageDot extends Base {
         }
       </style>
     `);
-  }
-
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    const { darkMode } = this.state;
-    // Wait for knowledge of dark mode
-    if (changed.darkMode && darkMode !== null) {
-      this.style.backgroundColor = darkMode ?
-        'rgb(255, 255, 255)' :
-        'rgb(0, 0, 0)';
-    }
   }
 
 }

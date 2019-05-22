@@ -58,18 +58,6 @@ class CalendarMonthYearHeader extends Base {
     });
   }
 
-  get [symbols.template]() {
-    return template.html`
-      <style>
-        :host {
-          display: inline-block;
-          text-align: center;
-        }
-      </style>
-      <div id="formatted"></div>
-    `;
-  }
-
   [symbols.render](changed) {
     super[symbols.render](changed);
     if (changed.date || changed.locale || changed.monthFormat || changed.yearFormat) {
@@ -84,6 +72,18 @@ class CalendarMonthYearHeader extends Base {
       const formatter = calendar.dateTimeFormat(locale, formatOptions);
       this.$.formatted.textContent = formatter.format(date);
     }
+  }
+
+  get [symbols.template]() {
+    return template.html`
+      <style>
+        :host {
+          display: inline-block;
+          text-align: center;
+        }
+      </style>
+      <div id="formatted"></div>
+    `;
   }
 
   /**

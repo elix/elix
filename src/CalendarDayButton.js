@@ -32,6 +32,23 @@ class CalendarDayButton extends Base {
     });
   }
 
+  [symbols.render](changed) {
+    super[symbols.render](changed);
+    /** @type {any} */ const day = this.$.day;
+    if (changed.date) {
+      day.date = this.state.date;
+    }
+    if (changed.locale) {
+      day.locale = this.state.locale;
+    }
+    if (changed.outsideRange) {
+      day.outsideRange = this.state.outsideRange;
+    }
+    if (changed.selected) {
+      day.selected = this.state.selected;
+    }
+  }
+
   get selected() {
     return this.state.selected;
   }
@@ -69,23 +86,6 @@ class CalendarDayButton extends Base {
     `;
     result.content.appendChild(styleTemplate.content);
     return result;
-  }
-
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    /** @type {any} */ const day = this.$.day;
-    if (changed.date) {
-      day.date = this.state.date;
-    }
-    if (changed.locale) {
-      day.locale = this.state.locale;
-    }
-    if (changed.outsideRange) {
-      day.outsideRange = this.state.outsideRange;
-    }
-    if (changed.selected) {
-      day.selected = this.state.selected;
-    }
   }
 
 }

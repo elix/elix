@@ -39,6 +39,43 @@ class CalendarDay extends Base {
     });
   }
 
+  [symbols.render](changed) {
+    super[symbols.render](changed);
+    const classList = this.classList;
+    const { date } = this.state;
+    if (changed.date) {
+      const today = calendar.today();
+      const dayOfWeek = date.getDay();
+      const dayOfMonth = date.getDate();
+      const nextDate = calendar.offsetDateByDays(date, 1);
+      const daysFromToday = Math.round(date.getTime() - today.getTime()) / calendar.millisecondsPerDay;
+      classList.toggle('alternateMonth', Math.abs(date.getMonth() - today.getMonth()) % 2 === 1);
+      classList.toggle('firstDayOfMonth', dayOfMonth === 1);
+      classList.toggle('firstWeek', dayOfMonth <= 7);
+      classList.toggle('future', date > today);
+      classList.toggle('lastDayOfMonth', date.getMonth() !== nextDate.getMonth());
+      classList.toggle('past', date < today);
+      classList.toggle('saturday', dayOfWeek === 6);
+      classList.toggle('sunday', dayOfWeek === 0);
+      classList.toggle('today', daysFromToday == 0);
+      this.$.day.textContent = dayOfMonth.toString();
+    }
+    if (changed.date || changed.locale) {
+      const dayOfWeek = date.getDay();
+      const { locale } = this.state;
+      const weekend = dayOfWeek === calendar.weekendStart(locale) ||
+        dayOfWeek === calendar.weekendEnd(locale);
+      classList.toggle('weekday', !weekend);
+      classList.toggle('weekend', weekend);
+    }
+    if (changed.outsideRange) {
+      classList.toggle('outsideRange', this.state.outsideRange);
+    }
+    if (changed.selected) {
+      classList.toggle('selected', this.state.selected);
+    }
+  }
+
   get outsideRange() {
     return this.state.outsideRange;
   }
@@ -90,43 +127,6 @@ class CalendarDay extends Base {
 
       <span id="day"></span>
     `;
-  }
-
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    const classList = this.classList;
-    const { date } = this.state;
-    if (changed.date) {
-      const today = calendar.today();
-      const dayOfWeek = date.getDay();
-      const dayOfMonth = date.getDate();
-      const nextDate = calendar.offsetDateByDays(date, 1);
-      const daysFromToday = Math.round(date.getTime() - today.getTime()) / calendar.millisecondsPerDay;
-      classList.toggle('alternateMonth', Math.abs(date.getMonth() - today.getMonth()) % 2 === 1);
-      classList.toggle('firstDayOfMonth', dayOfMonth === 1);
-      classList.toggle('firstWeek', dayOfMonth <= 7);
-      classList.toggle('future', date > today);
-      classList.toggle('lastDayOfMonth', date.getMonth() !== nextDate.getMonth());
-      classList.toggle('past', date < today);
-      classList.toggle('saturday', dayOfWeek === 6);
-      classList.toggle('sunday', dayOfWeek === 0);
-      classList.toggle('today', daysFromToday == 0);
-      this.$.day.textContent = dayOfMonth.toString();
-    }
-    if (changed.date || changed.locale) {
-      const dayOfWeek = date.getDay();
-      const { locale } = this.state;
-      const weekend = dayOfWeek === calendar.weekendStart(locale) ||
-        dayOfWeek === calendar.weekendEnd(locale);
-      classList.toggle('weekday', !weekend);
-      classList.toggle('weekend', weekend);
-    }
-    if (changed.outsideRange) {
-      classList.toggle('outsideRange', this.state.outsideRange);
-    }
-    if (changed.selected) {
-      classList.toggle('selected', this.state.selected);
-    }
   }
 
 }

@@ -21,47 +21,10 @@
  * Returns a new template whose content is the concatenated content of the
  * supplied templates.
  * 
- * This function is often used in an Elix convention for creating a subclass
- * that extends a base class' template with custom styling:
- * 
- *     import * as template from 'elix/src/template.js';
- * 
- *     class BaseElement {
- *       get [symbols.template]() {
- *         return template.html`
- *           <style>
- *             button { background: white; color: black; }
- *           </style>
- *           <button>Ok</button>
- *         `;
- *       }       
- *     }
- * 
- *     class CustomElement extends BaseElement {
- *       get [symbols.template]() {
- *         return template.concat(super[symbols.template], template.html`
- *           <style>
- *             button { color: red; }
- *           </style>
- *         `);
- *       }
- *     }
- * 
- * In this example, the resulting `CustomElement` subclass will have both the
- * template content defined by `BaseElement` _and_ the custom template content
- * it adds through `concat`. The resulting template for a `CustomElement`
- * instance will look like:
- * 
- *     <style>
- *       button { background: white; color: black; }
- *     </style>
- *     <button>Ok</button>
- *     <style>
- *       button { color: red; }
- *     </style>
- * 
- * As a result, the `button` inside a `CustomElement` will have a white
- * background color and a red foreground color.
+ * This function is used by Elix components to customize their appearance,
+ * For example, a component might
+ * [append an additional stylesheet](customizing#appending-an-additional-stylesheet)
+ * to extend or override the styles provided by a base class template.
  * 
  * @param  {HTMLTemplateElement[]} templates - the templates to concatenate
  * @returns {HTMLTemplateElement} - a new template created by concatenating the

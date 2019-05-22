@@ -55,13 +55,13 @@ class DropdownList extends Base {
 
   [symbols.render](changed) {
     super[symbols.render](changed);
-    if (changed.valueRole) {
-      template.transmute(this.$.value, this.state.valueRole);
-    }
     if (changed.itemRole) {
       if ('itemRole' in this.$.menu) {
         /** @type {any} */ (this.$.menu).itemRole = this.state.itemRole;
       }
+    }
+    if (changed.valueRole) {
+      template.transmute(this.$.value, this.state.valueRole);
     }
     if (changed.popupPosition) {
       const { popupPosition } = this.state;

@@ -88,12 +88,10 @@ function ArrowDirectionMixin(Base) {
       }
       if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.arrowButtonRole) {
-        const arrowButtons = this.shadowRoot.querySelectorAll('.arrowButton');
-        template.transmute(arrowButtons, this.state.arrowButtonRole);
-
         /** @type {any} */
         const cast = this;
 
+        template.transmute(this.$.arrowButtonLeft, this.state.arrowButtonRole);
         forwardFocus(this.$.arrowButtonLeft, cast);
         this.$.arrowButtonLeft.addEventListener('mousedown', async (event) => {
           // Only process events for the main (usually left) button.
@@ -109,6 +107,7 @@ function ArrowDirectionMixin(Base) {
           this[symbols.raiseChangeEvents] = false;
         });
         
+        template.transmute(this.$.arrowButtonRight, this.state.arrowButtonRole);
         forwardFocus(this.$.arrowButtonRight, cast);
         this.$.arrowButtonRight.addEventListener('mousedown', async (event) => {
           // Only process events for the main (usually left) button.
@@ -124,7 +123,6 @@ function ArrowDirectionMixin(Base) {
           this[symbols.raiseChangeEvents] = false;
         });
       }
-      const { arrowButtonLeft, arrowButtonRight } = this.$;
       const {
         arrowButtonOverlap,
         canGoLeft,
@@ -145,10 +143,10 @@ function ArrowDirectionMixin(Base) {
             'top': null,
             'z-index': null
           };
-        Object.assign(arrowButtonLeft.style, buttonStyle, {
+        Object.assign(this.$.arrowButtonLeft.style, buttonStyle, {
           left: arrowButtonOverlap ? 0 : ''
         });
-        Object.assign(arrowButtonRight.style, buttonStyle, {
+        Object.assign(this.$.arrowButtonRight.style, buttonStyle, {
           right: arrowButtonOverlap ? 0 : ''
         });
       }
@@ -161,11 +159,11 @@ function ArrowDirectionMixin(Base) {
       // not exhibit that issue. Since identifying the root cause proved too
       // difficult, this check was added.
       if (changed.canGoLeft && canGoLeft !== null) {
-        arrowButtonLeft.disabled = !canGoLeft;
+        this.$.arrowButtonLeft.disabled = !canGoLeft;
       }
       // See note for canGoLeft above.
       if (changed.canGoRight && canGoRight !== null) {
-        arrowButtonRight.disabled = !canGoRight;
+        this.$.arrowButtonRight.disabled = !canGoRight;
       }
       // Wait for knowledge of dark mode
       if (changed.darkMode && darkMode !== null) {
@@ -185,8 +183,8 @@ function ArrowDirectionMixin(Base) {
       }
       if (changed.showArrowButtons) {
         const display = this.state.showArrowButtons ? null : 'none';
-        arrowButtonLeft.style.display = display;
-        arrowButtonRight.style.display = display;
+        this.$.arrowButtonLeft.style.display = display;
+        this.$.arrowButtonRight.style.display = display;
       }
     }
 

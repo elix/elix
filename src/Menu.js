@@ -144,6 +144,57 @@ class Menu extends Base {
     return base && !item.disabled;
   }
 
+  [symbols.render](changed) {
+    super[symbols.render](changed);
+    const { selectedIndex, items } = this.state;    
+    if ((changed.items || changed.selectedIndex) && items) {
+        // Reflect the selection state to the item.
+      items.forEach((item, index) => {
+        const selected = index === selectedIndex;
+        item.classList.toggle('selected', selected);
+      });
+    }
+    if ((changed.items || changed.selectedIndex ||
+        changed.selectionFocused || changed.focusVisible)
+        && items) {
+      // A menu has a complicated focus arrangement in which the selected item has
+      // focus, which means it needs a tabindex. However, we don't want any other
+      // item in the menu to have a tabindex, so that if the user presses Tab or
+      // Shift+Tab, they move away from the menu entirely (rather than just moving
+      // to the next or previous item).
+      // 
+      // That's already complex, but to make things worse, if we remove the
+      // tabindex from an item that has the focus, the focus gets moved to the
+      // document. In popup menus, the popup will conclude it's lost the focus,
+      // and implicitly close. So we want to move the focus in two phases: 1)
+      // set tabindex on a newly-selected item so we can focus on it, 2) after
+      // the new item has been focused, remove the tabindex from any
+      // previously-selected item.
+      items.forEach((item, index) => {
+        const selected = index === selectedIndex;      
+        const isDefaultFocusableItem = selectedIndex < 0 && index === 0;
+        if (!this.state.selectionFocused) {
+          // Phase 1: Add tabindex to newly-selected item.
+          if (selected || isDefaultFocusableItem) {
+            item.tabIndex = 0;
+          }
+        } else {
+          // Phase 2: Remove tabindex from any previously-selected item.
+          if (!(selected || isDefaultFocusableItem)) {
+            item.removeAttribute('tabindex');
+          }
+        }
+    
+        // Don't show focus on selected item if we're suppressing the focus
+        // (because the mouse was used for selection) or if the item was
+        // selected by default when the menu opened.
+        const suppressFocus = (selected && !this.state.focusVisible) ||
+          isDefaultFocusableItem;
+        item.style.outline = suppressFocus ? 'none' : null;
+      });
+    }
+  }
+
   get [symbols.scrollTarget]() {
     return this.$.content;
   }
@@ -196,57 +247,6 @@ class Menu extends Base {
         <slot></slot>
       </div>
     `;
-  }
-
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    const { selectedIndex, items } = this.state;    
-    if ((changed.items || changed.selectedIndex) && items) {
-        // Reflect the selection state to the item.
-      items.forEach((item, index) => {
-        const selected = index === selectedIndex;
-        item.classList.toggle('selected', selected);
-      });
-    }
-    if ((changed.items || changed.selectedIndex ||
-        changed.selectionFocused || changed.focusVisible)
-        && items) {
-      // A menu has a complicated focus arrangement in which the selected item has
-      // focus, which means it needs a tabindex. However, we don't want any other
-      // item in the menu to have a tabindex, so that if the user presses Tab or
-      // Shift+Tab, they move away from the menu entirely (rather than just moving
-      // to the next or previous item).
-      // 
-      // That's already complex, but to make things worse, if we remove the
-      // tabindex from an item that has the focus, the focus gets moved to the
-      // document. In popup menus, the popup will conclude it's lost the focus,
-      // and implicitly close. So we want to move the focus in two phases: 1)
-      // set tabindex on a newly-selected item so we can focus on it, 2) after
-      // the new item has been focused, remove the tabindex from any
-      // previously-selected item.
-      items.forEach((item, index) => {
-        const selected = index === selectedIndex;      
-        const isDefaultFocusableItem = selectedIndex < 0 && index === 0;
-        if (!this.state.selectionFocused) {
-          // Phase 1: Add tabindex to newly-selected item.
-          if (selected || isDefaultFocusableItem) {
-            item.tabIndex = 0;
-          }
-        } else {
-          // Phase 2: Remove tabindex from any previously-selected item.
-          if (!(selected || isDefaultFocusableItem)) {
-            item.removeAttribute('tabindex');
-          }
-        }
-    
-        // Don't show focus on selected item if we're suppressing the focus
-        // (because the mouse was used for selection) or if the item was
-        // selected by default when the menu opened.
-        const suppressFocus = (selected && !this.state.focusVisible) ||
-          isDefaultFocusableItem;
-        item.style.outline = suppressFocus ? 'none' : null;
-      });
-    }
   }
 
 }

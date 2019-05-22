@@ -300,6 +300,36 @@ class WrappedStandardElement extends Base {
     return value || (this.shadowRoot && this.inner[name]);
   }
 
+  [symbols.render](changed) {
+    super[symbols.render](changed);
+    const inner = this.inner;
+    if (changed.tabIndex) {
+      inner.tabIndex = this.state.tabIndex;
+    }
+    if (changed.explicitAttributes) {
+      // Delegate any ARIA attributes to the inner element, as well as any
+      // attributes that don't have corresponding properties. (Attributes
+      // that correspond to properties will be handled separately by our
+      // generated property delegates.)
+      const { explicitAttributes } = this.state;
+      for (const key in explicitAttributes) {
+        if (key.startsWith('aria-') ||
+            attributesWithoutProperties.indexOf(key) >= 0) {
+          const value = explicitAttributes[key];
+          applyAttribute(inner, key, value);
+        }
+      }
+    }
+    if (changed.innerProperties) {
+      const { innerProperties } = this.state;
+      Object.assign(inner, innerProperties);
+      const { disabled } = innerProperties;
+      if (disabled !== undefined) {
+        this.toggleAttribute('disabled', disabled);
+      }
+    }
+  }
+
   // Save property assignment in state.
   setInnerProperty(name, value) {
     // We normally don't check an existing state value before calling setState,
@@ -356,36 +386,6 @@ class WrappedStandardElement extends Base {
       'block' :
       'inline-block';
     return template.html`<style>:host { display: ${display}} #inner { box-sizing: border-box; height: 100%; width: 100%; }</style><${this.extends} id="inner"><slot></slot></${this.extends}`;
-  }
-
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    const inner = this.inner;
-    if (changed.tabIndex) {
-      inner.tabIndex = this.state.tabIndex;
-    }
-    if (changed.explicitAttributes) {
-      // Delegate any ARIA attributes to the inner element, as well as any
-      // attributes that don't have corresponding properties. (Attributes
-      // that correspond to properties will be handled separately by our
-      // generated property delegates.)
-      const { explicitAttributes } = this.state;
-      for (const key in explicitAttributes) {
-        if (key.startsWith('aria-') ||
-            attributesWithoutProperties.indexOf(key) >= 0) {
-          const value = explicitAttributes[key];
-          applyAttribute(inner, key, value);
-        }
-      }
-    }
-    if (changed.innerProperties) {
-      const { innerProperties } = this.state;
-      Object.assign(inner, innerProperties);
-      const { disabled } = innerProperties;
-      if (disabled !== undefined) {
-        this.toggleAttribute('disabled', disabled);
-      }
-    }
   }
 
   /**

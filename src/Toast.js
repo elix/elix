@@ -82,39 +82,6 @@ class Toast extends Base {
     this.setState({ fromEdge });
   }
 
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
-      <style>
-        :host {
-          align-items: initial;
-          display: flex;
-          flex-direction: column;
-          height: 100%;
-          justify-content: initial;
-          left: 0;
-          outline: none;
-          pointer-events: none;
-          position: fixed;
-          top: 0;
-          -webkit-tap-highlight-color: transparent;
-          width: 100%;
-        }
-
-        #frame {
-          background: white;
-          border: 1px solid rgba(0, 0, 0, 0.2);
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-          margin: 1em;
-          pointer-events: initial;
-          position: relative;
-          transition-duration: 0.25s;
-          transition-property: opacity, transform;
-          will-change: opacity, transform;
-        }
-      </style>
-    `);
-  }
-
   [symbols.render](changed) {
     super[symbols.render](changed);
     if (changed.fromEdge) {
@@ -190,6 +157,39 @@ class Toast extends Base {
         transform
       });
     }
+  }
+
+  get [symbols.template]() {
+    return template.concat(super[symbols.template], template.html`
+      <style>
+        :host {
+          align-items: initial;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          justify-content: initial;
+          left: 0;
+          outline: none;
+          pointer-events: none;
+          position: fixed;
+          top: 0;
+          -webkit-tap-highlight-color: transparent;
+          width: 100%;
+        }
+
+        #frame {
+          background: white;
+          border: 1px solid rgba(0, 0, 0, 0.2);
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+          margin: 1em;
+          pointer-events: initial;
+          position: relative;
+          transition-duration: 0.25s;
+          transition-property: opacity, transform;
+          will-change: opacity, transform;
+        }
+      </style>
+    `);
   }
 
 }

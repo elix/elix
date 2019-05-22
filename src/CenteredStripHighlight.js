@@ -15,6 +15,20 @@ import CenteredStrip from './CenteredStrip.js';
  */
 class CenteredStripHighlight extends CenteredStrip {
 
+  [symbols.render](changed) {
+    super[symbols.render](changed);
+    if (changed.items || changed.selectedIndex) {
+      // Apply `selected` style to the selected item only.
+      const { selectedIndex, items } = this.state;
+      if (items) {
+        items.forEach((item, index) => {
+          const selected = index === selectedIndex;
+          item.classList.toggle('selected', selected);
+        });
+      }
+    }
+  }
+
   get [symbols.template]() {
     return template.concat(super[symbols.template], template.html`
       <style>
@@ -28,20 +42,6 @@ class CenteredStripHighlight extends CenteredStrip {
         }
       </style>
     `);
-  }
-
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    if (changed.items || changed.selectedIndex) {
-      // Apply `selected` style to the selected item only.
-      const { selectedIndex, items } = this.state;
-      if (items) {
-        items.forEach((item, index) => {
-          const selected = index === selectedIndex;
-          item.classList.toggle('selected', selected);
-        });
-      }
-    }
   }
 
 }

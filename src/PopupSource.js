@@ -159,9 +159,18 @@ class PopupSource extends Base {
 
   [symbols.render](changed) {
     super[symbols.render](changed);
-    if (changed.sourceRole) {
-      template.transmute(this.$.source, this.state.sourceRole);
-    }    
+    if (changed.backdropRole) {
+      if ('backdropRole' in this.$.popup) {
+        const { backdropRole } = this.state;
+        /** @type {any} */ (this.$.popup).backdropRole = backdropRole;
+      }
+    }
+    if (changed.frameRole) {
+      if ('frameRole' in this.$.popup) {
+        const { frameRole } = this.state;
+        /** @type {any} */ (this.$.popup).frameRole = frameRole;
+      }
+    }
     if (changed.popupRole) {
       template.transmute(this.$.popup, this.state.popupRole);
 
@@ -284,6 +293,9 @@ class PopupSource extends Base {
       });
       this.$.popupContainer.style.top = positionBelow ? null : '0';
     }
+    if (changed.sourceRole) {
+      template.transmute(this.$.source, this.state.sourceRole);
+    }    
     if (changed.opened) {
       const { opened } = this.state;
       Object.assign(this.$.source.style, {
@@ -292,18 +304,6 @@ class PopupSource extends Base {
       });
       /** @type {any} */ (this.$.popup).opened = opened;
       this.setAttribute('aria-expanded', opened.toString());
-    }
-    if (changed.backdropRole) {
-      if ('backdropRole' in this.$.popup) {
-        const { backdropRole } = this.state;
-        /** @type {any} */ (this.$.popup).backdropRole = backdropRole;
-      }
-    }
-    if (changed.frameRole) {
-      if ('frameRole' in this.$.popup) {
-        const { frameRole } = this.state;
-        /** @type {any} */ (this.$.popup).frameRole = frameRole;
-      }
     }
     if (changed.disabled) {
       if ('disabled' in this.$.source) {

@@ -58,44 +58,6 @@ class TabButton extends Base {
     this.setState({ position });
   }
 
-  get selected() {
-    return this.state.selected;
-  }
-  set selected(selected) {
-    this.setState({
-      selected
-    });
-  }
-
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
-      <style>
-        #inner {
-          background: inherit;
-          color: inherit;
-          margin: 0;
-        }
-
-        #inner.generic {
-          background: white;
-          border-color: #ccc;
-          border-style: solid;
-          border-width: 1px;
-          padding: 0.5em 0.75em;
-          white-space: nowrap;
-        }
-
-        :host(.selected) #inner.generic {
-          z-index: 1;
-        }
-
-        #inner.generic:disabled {
-          color: #888;
-        }
-      </style>
-    `);
-  }
-
   [symbols.render](changed) {
     super[symbols.render](changed);
     if (changed.generic) {
@@ -154,6 +116,44 @@ class TabButton extends Base {
       }
       Object.assign(this.inner.style, buttonStyle);
     }
+  }
+
+  get selected() {
+    return this.state.selected;
+  }
+  set selected(selected) {
+    this.setState({
+      selected
+    });
+  }
+
+  get [symbols.template]() {
+    return template.concat(super[symbols.template], template.html`
+      <style>
+        #inner {
+          background: inherit;
+          color: inherit;
+          margin: 0;
+        }
+
+        #inner.generic {
+          background: white;
+          border-color: #ccc;
+          border-style: solid;
+          border-width: 1px;
+          padding: 0.5em 0.75em;
+          white-space: nowrap;
+        }
+
+        :host(.selected) #inner.generic {
+          z-index: 1;
+        }
+
+        #inner.generic:disabled {
+          color: #888;
+        }
+      </style>
+    `);
   }
 
 }

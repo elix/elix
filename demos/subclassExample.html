@@ -37,10 +37,6 @@
         });
       }
 
-      get [symbols.template]() {
-        return incrementDecrementTemplate;
-      }
-
       // When state changes, render updates to the DOM.
       [symbols.render](changed) {
         super[symbols.render](changed);
@@ -49,6 +45,10 @@
           this.style.color = value < 0 ? 'red' : null;
           this.$.visibleValue.textContent = value;
         }
+      }
+
+      get [symbols.template]() {
+        return incrementDecrementTemplate;
       }
 
       // Provide a public property that gets/sets state.

@@ -46,47 +46,6 @@ class CenteredStrip extends Base {
     return 'horizontal';
   }
 
-  get swipeFraction() {
-    return this.state.swipeFraction;
-  }
-  set swipeFraction(swipeFraction) {
-    this.setState({ swipeFraction });
-  }
-
-  get [symbols.template]() {
-    return template.html`
-      <style>
-        :host {
-          cursor: default;
-          display: flex;
-          -webkit-tap-highlight-color: transparent;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          -webkit-user-select: none;
-          user-select: none;
-        }
-
-        #stripContainer {
-          display: flex;
-          flex: 1;
-          overflow: hidden;
-          position: relative;
-        }
-
-        #strip {
-          display: inline-flex;
-          position: relative;
-          transition: transform 0.25s;
-        }
-      </style>
-      <div id="stripContainer" role="none">
-        <div id="strip" role="none">
-          <slot></slot>
-        </div>
-      </div>
-    `;
-  }
-
   [symbols.render](changed) {
     super[symbols.render](changed);
     if (changed.clientWidth || changed.enableEffects || changed.rightToLeft ||
@@ -164,7 +123,47 @@ class CenteredStrip extends Base {
 
       this.$.stripContainer.style.justifyContent = justifyContent;
     }
+  }
 
+  get swipeFraction() {
+    return this.state.swipeFraction;
+  }
+  set swipeFraction(swipeFraction) {
+    this.setState({ swipeFraction });
+  }
+
+  get [symbols.template]() {
+    return template.html`
+      <style>
+        :host {
+          cursor: default;
+          display: flex;
+          -webkit-tap-highlight-color: transparent;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          -webkit-user-select: none;
+          user-select: none;
+        }
+
+        #stripContainer {
+          display: flex;
+          flex: 1;
+          overflow: hidden;
+          position: relative;
+        }
+
+        #strip {
+          display: inline-flex;
+          position: relative;
+          transition: transform 0.25s;
+        }
+      </style>
+      <div id="stripContainer" role="none">
+        <div id="strip" role="none">
+          <slot></slot>
+        </div>
+      </div>
+    `;
   }
 
 }

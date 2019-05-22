@@ -34,13 +34,6 @@ class CarouselSlideshow extends Base {
     });
   }
 
-  get transitionDuration() {
-    return this.state.transitionDuration;
-  }
-  set transitionDuration(transitionDuration) {
-    this.setState({ transitionDuration });
-  }
-
   [symbols.render](changed) {
     super[symbols.render](changed);
     if (changed.transitionDuration) {
@@ -53,6 +46,13 @@ class CarouselSlideshow extends Base {
       }
     }
   }
+  get transitionDuration() {
+    return this.state.transitionDuration;
+  }
+  set transitionDuration(transitionDuration) {
+    this.setState({ transitionDuration });
+  }
+
 
 }
 

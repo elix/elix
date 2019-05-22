@@ -20,6 +20,34 @@ class SwipeDemo extends Base {
     });
   }
 
+  [symbols.render](changed) {
+    super[symbols.render](changed);
+    const { swipeAxis, swipeFraction } = this.state;
+    const vertical = swipeAxis === 'vertical';
+    if (changed.swipeAxis) {
+      this.style.flexDirection = vertical ? 'row' : 'column';
+      Object.assign(this.$.block.style, {
+        height: vertical ? '100%' : '1em',
+        width: vertical ? '1em' : '100%'
+      });
+      Object.assign(this.$.container.style, {
+        'flex-direction': vertical ? 'row-reverse' : 'column',
+        'justify-content': vertical ? 'flex-end' : 'center'
+      });
+      this.$.empty.style.display = vertical ? 'none' : 'block';
+      this.$.space.style.display = vertical ? 'none' : 'block';
+    }
+    if (changed.swipeFraction) {
+      const axis = vertical ? 'Y' : 'X';
+      this.$.block.style.transform = swipeFraction !== null ?
+        `translate${axis}(${swipeFraction * 100}%)` :
+        null;
+      this.$.swipeFraction.textContent = swipeFraction !== null ?
+        swipeFraction.toFixed(3) :
+        '—';
+    }
+  }
+
   get swipeAxis() {
     return this.state.swipeAxis;
   }
@@ -73,34 +101,6 @@ class SwipeDemo extends Base {
       </div>
       <div id="empty" class="section"></div>
     `;
-  }
-
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    const { swipeAxis, swipeFraction } = this.state;
-    const vertical = swipeAxis === 'vertical';
-    if (changed.swipeAxis) {
-      this.style.flexDirection = vertical ? 'row' : 'column';
-      Object.assign(this.$.block.style, {
-        height: vertical ? '100%' : '1em',
-        width: vertical ? '1em' : '100%'
-      });
-      Object.assign(this.$.container.style, {
-        'flex-direction': vertical ? 'row-reverse' : 'column',
-        'justify-content': vertical ? 'flex-end' : 'center'
-      });
-      this.$.empty.style.display = vertical ? 'none' : 'block';
-      this.$.space.style.display = vertical ? 'none' : 'block';
-    }
-    if (changed.swipeFraction) {
-      const axis = vertical ? 'Y' : 'X';
-      this.$.block.style.transform = swipeFraction !== null ?
-        `translate${axis}(${swipeFraction * 100}%)` :
-        null;
-      this.$.swipeFraction.textContent = swipeFraction !== null ?
-        swipeFraction.toFixed(3) :
-        '—';
-    }
   }
 
 }

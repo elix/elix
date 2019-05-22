@@ -40,6 +40,11 @@
             this.value++;
           });
         }
+        if (changed.value) {
+          const { value } = this.state;
+          this.style.color = value < 0 ? 'red' : null;
+          this.$.visibleValue.textContent = value;
+        }
       }
 
       // Provide a public property that gets/sets state.
@@ -58,15 +63,6 @@
           <span id="visibleValue"></span>
           <button id="increment">+</button>
         `;
-      }
-
-      [symbols.render](changed) {
-        super[symbols.render](changed);
-        if (changed.value) {
-          const { value } = this.state;
-          this.style.color = value < 0 ? 'red' : null;
-          this.$.visibleValue.textContent = value;
-        }
       }
 
     }

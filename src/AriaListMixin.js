@@ -58,6 +58,14 @@ export default function AriaListMixin(Base) {
     [symbols.render](changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
       const { selectedIndex, itemRole, items } = this.state;
+      if (changed.explicitAttributes || changed.role) {
+        // Apply top-level role.
+        const { explicitAttributes, role } = this.state;
+        const originalRole = explicitAttributes && explicitAttributes.role;
+        if (!originalRole) {
+          this.setAttribute('role', role);
+        }
+      }
       if (changed.items && items) {
         // Give each item an ID.
         items.forEach(item => {
@@ -75,18 +83,6 @@ export default function AriaListMixin(Base) {
             item.setAttribute('role', itemRole);
           }
         });
-      }
-      if (changed.orientation) {
-        const { orientation } = this.state;
-        this.setAttribute('aria-orientation', orientation);
-      }
-      if (changed.explicitAttributes || changed.role) {
-        // Apply top-level role.
-        const { explicitAttributes, role } = this.state;
-        const originalRole = explicitAttributes && explicitAttributes.role;
-        if (!originalRole) {
-          this.setAttribute('role', role);
-        }
       }
       if (changed.items || changed.selectedIndex) {
         // Reflect the selection state to each item.
@@ -108,6 +104,10 @@ export default function AriaListMixin(Base) {
         } else {
           this.removeAttribute('aria-activedescendant');
         }
+      }
+      if (changed.orientation) {
+        const { orientation } = this.state;
+        this.setAttribute('aria-orientation', orientation);
       }
     }
   }

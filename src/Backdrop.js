@@ -20,6 +20,17 @@ class Backdrop extends ReactiveElement {
     });
   }
 
+  [symbols.render](changed) {
+    super[symbols.render](changed);
+    if (changed.explicitAttributes || changed.role) {
+      const { explicitAttributes, role } = this.state;
+      const originalRole = explicitAttributes && explicitAttributes.role;
+      if (!originalRole) {
+        this.setAttribute('role', role);
+      }
+    }
+  }
+
   get [symbols.template]() {
     return template.html`
       <style>
@@ -34,17 +45,6 @@ class Backdrop extends ReactiveElement {
       </style>
       <slot></slot>
     `;
-  }
-
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    if (changed.explicitAttributes || changed.role) {
-      const { explicitAttributes, role } = this.state;
-      const originalRole = explicitAttributes && explicitAttributes.role;
-      if (!originalRole) {
-        this.setAttribute('role', role);
-      }
-    }
   }
 
 }

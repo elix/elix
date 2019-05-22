@@ -224,7 +224,6 @@ class ComboBox extends Base {
         this[symbols.raiseChangeEvents] = false;
       });
     }
-
     if (changed.toggleButtonRole) {
       template.transmute(this.$.toggleButton, this.state.toggleButtonRole);
       this.$.toggleButton.addEventListener('mousedown', () => {
@@ -238,7 +237,6 @@ class ComboBox extends Base {
         forwardFocus(this.$.toggleButton, this.$.input);
       }
     }
-
     if (changed.popupRole) {
       const popup = this.$.popup;
       popup.removeAttribute('tabindex');

@@ -38,32 +38,6 @@ class Tabs extends Base {
     });
   }
 
-  /**
-   * The alignment of the tabs within the tab strip.
-   * 
-   * The value of this property will be forwarded to the corresponding
-   * property
-   * 
-   * @type {('start'|'center'|'end'|'stretch')}
-   * @default 'start'
-   */
-  get tabAlign() {
-    return this.state.tabAlign;
-  }
-  set tabAlign(tabAlign) {
-    this.setState({ tabAlign });
-  }
-
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
-      <style>
-        #proxyList {
-          z-index: 1;
-        }
-      </style>
-    `);
-  }
-
   [symbols.render](changed) {
     super[symbols.render](changed);
     const { items, proxies } = this.state;
@@ -138,6 +112,32 @@ class Tabs extends Base {
         proxyList.tabAlign = this.state.tabAlign;
       }
     }
+  }
+
+  /**
+   * The alignment of the tabs within the tab strip.
+   * 
+   * The value of this property will be forwarded to the corresponding
+   * property
+   * 
+   * @type {('start'|'center'|'end'|'stretch')}
+   * @default 'start'
+   */
+  get tabAlign() {
+    return this.state.tabAlign;
+  }
+  set tabAlign(tabAlign) {
+    this.setState({ tabAlign });
+  }
+
+  get [symbols.template]() {
+    return template.concat(super[symbols.template], template.html`
+      <style>
+        #proxyList {
+          z-index: 1;
+        }
+      </style>
+    `);
   }
 
 }

@@ -6,6 +6,13 @@ import Dialog from '../../src/Dialog.js';
 
 class SampleDialog extends Dialog {
 
+  get defaultState() {
+    return Object.assign(super.defaultState, {
+      backdropRole: CustomBackdrop,
+      frameRole: CustomOverlayFrame
+    });
+  }
+
   [symbols.render](changed) {
     if (super[symbols.render]) { super[symbols.render](changed); }
     if (changed.frameRole) {
@@ -16,13 +23,6 @@ class SampleDialog extends Dialog {
         this.close();
       });
     }
-  }
-
-  get defaultState() {
-    return Object.assign(super.defaultState, {
-      backdropRole: CustomBackdrop,
-      frameRole: CustomOverlayFrame
-    });
   }
 
 }

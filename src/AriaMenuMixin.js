@@ -40,21 +40,19 @@ export default function AriaListMixin(Base) {
           }
         });
       }
+      if ((changed.items || changed.selectedIndex) && items) {
+        // Reflect the selection state to each item.
+        items.forEach((item, index) => {
+          const selected = index === selectedIndex;
+          item.setAttribute('aria-checked', selected);
+        });
+      }
       if (changed.explicitAttributes || changed.role) {
         // Apply top-level role.
         const { explicitAttributes, role } = this.state;
         const originalRole = explicitAttributes && explicitAttributes.role;
         if (!originalRole) {
           this.setAttribute('role', role);
-        }
-      }
-      if (changed.items || changed.selectedIndex) {
-        // Reflect the selection state to each item.
-        if (items) {
-          items.forEach((item, index) => {
-            const selected = index === selectedIndex;
-            item.setAttribute('aria-checked', selected);
-          });
         }
       }
     }

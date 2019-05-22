@@ -37,23 +37,7 @@ class ExpandablePanel extends Base {
   get [symbols.elementsWithTransitions]() {
     return [this.$.outerContainer];
   }
-  
-  get [symbols.template]() {
-    return template.html`
-      <style>
-        :host {
-          display: block;
-          overflow: hidden;
-        }
-      </style>
-      <div id="outerContainer" role="none">
-        <div id="innerContainer" role="none">
-          <slot></slot>
-        </div>
-      </div>
-    `;
-  }
-  
+    
   [symbols.render](changed) {
     super[symbols.render](changed);
     if (changed.effect || changed.effectPhase || changed.enableEffects) {
@@ -102,6 +86,22 @@ class ExpandablePanel extends Base {
         this.removeAttribute('aria-expanded');
       }
     }
+  }
+
+  get [symbols.template]() {
+    return template.html`
+      <style>
+        :host {
+          display: block;
+          overflow: hidden;
+        }
+      </style>
+      <div id="outerContainer" role="none">
+        <div id="innerContainer" role="none">
+          <slot></slot>
+        </div>
+      </div>
+    `;
   }
 
 }

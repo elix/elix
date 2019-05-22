@@ -57,6 +57,13 @@ class RefreshAppDemo extends ReactiveElement {
     }, 1000);
   }
 
+  [symbols.render](changed) {
+    super[symbols.render](changed);
+    if (changed.paragraphs) {
+      applyChildNodes(this.$.pullToRefresh, this.state.paragraphs);
+    }
+  }
+
   get [symbols.template]() {
     return template.html`
       <style>
@@ -87,13 +94,6 @@ class RefreshAppDemo extends ReactiveElement {
       <elix-pull-to-refresh id="pullToRefresh"></elix-pull-to-refresh>
       <audio id="refreshSound" src="resources/pop.mp3"></audio>
     `;
-  }
-
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    if (changed.paragraphs) {
-      applyChildNodes(this.$.pullToRefresh, this.state.paragraphs);
-    }
   }
 
 }
