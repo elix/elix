@@ -96,6 +96,22 @@ class DateComboBox extends Base {
     });
   }
 
+  /**
+   * The format used to render the day names in the week days header.
+   * 
+   * The allowable formats are the same as the `weekday` formats in
+   * [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat).
+   * 
+   * @type {('long'|'narrow'|'short')}
+   * @default 'short'
+   */
+  get daysOfWeekFormat() {
+    return this.state.daysOfWeekFormat;
+  }
+  set daysOfWeekFormat(daysOfWeekFormat) {
+    this.setState({ daysOfWeekFormat });
+  }
+
   get defaultState() {
 
     const dateTimeFormatOptions = {
@@ -113,8 +129,11 @@ class DateComboBox extends Base {
       dateTimeFormat: null,
       dateTimeFormatOptions,
       dayRole: CalendarDayButton,
+      daysOfWeekFormat: 'short',
+      monthFormat: 'long',
+      timeBias: null,
       todayButtonRole: SeamlessButton,
-      timeBias: null
+      yearFormat: 'numeric'
     });
 
     // If the date changed while focused, assume user changed date.
@@ -304,6 +323,24 @@ class DateComboBox extends Base {
     this[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
   }
 
+  /**
+   * The format used to render the month name.
+   * 
+   * The allowable formats are the same as the `month` formats in
+   * [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat).
+   * 
+   * @type {('numeric'|'2-digit'|'long'|'short'|'narrow')}
+   * @default 'long'
+   */
+  get monthFormat() {
+    return this.state.monthFormat;
+  }
+  set monthFormat(monthFormat) {
+    this.setState({
+      monthFormat
+    });
+  }
+
   parseDate(text, dateTimeFormat, timeBias) {
     return calendar.parseWithOptionalYear(text, dateTimeFormat, timeBias);
   }
@@ -345,13 +382,20 @@ class DateComboBox extends Base {
     if (changed.date) {
       calendar.date = this.state.date;
     }
-    if (changed.dayRole) {
-      if ('dayRole' in calendar) {
-        calendar.dayRole = this.state.dayRole;
-      }
+    if (changed.dayRole && 'dayRole' in calendar) {
+      calendar.dayRole = this.state.dayRole;
+    }
+    if (changed.daysOfWeekFormat && 'daysOfWeekFormat' in calendar) {
+      calendar.daysOfWeekFormat = this.state.daysOfWeekFormat;
     }
     if (changed.locale) {
       calendar.locale = this.state.locale;
+    }
+    if (changed.monthFormat && 'monthFormat' in calendar) {
+      calendar.monthFormat = this.state.monthFormat;
+    }
+    if (changed.yearFormat && 'yearFormat' in calendar) {
+      calendar.yearFormat = this.state.yearFormat;
     }
   }
 
@@ -439,6 +483,24 @@ class DateComboBox extends Base {
       datePriority: false
     });
     this[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
+  }
+
+  /**
+   * The format used to render the year.
+   * 
+   * The allowable formats are the same as the `year` formats in
+   * [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat).
+   * 
+   * @type {('numeric'|'2-digit')}
+   * @default 'numeric'
+   */
+  get yearFormat() {
+    return this.state.yearFormat;
+  }
+  set yearFormat(yearFormat) {
+    this.setState({
+      yearFormat
+    });
   }
 
 }
