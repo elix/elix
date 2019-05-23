@@ -191,22 +191,21 @@ class WrappedStandardElement extends Base {
   // property. These attributes include those prefixed with "aria-", and some
   // unusual standard attributes like contenteditable. To handle those, this
   // class defines its own attributeChangedCallback.
-  // attributeChangedCallback(name, oldValue, newValue) {
-  //   const forwardAttribute = name.startsWith('aria-') ||
-  //     attributesWithoutProperties.indexOf(name) >= 0;
-  //   if (forwardAttribute) {
-  //     const innerAttributes = Object.assign({}, this.state.innerAttributes, {
-  //       [name]: newValue
-  //     });
-  //     this.setState({
-  //       innerAttributes
-  //     });
-  //   } else {
-  //     // Rely on the base attributeChangedCallback provided by
-  //     // AttributeMarshallingMixin.
-  //     super.attributeChangedCallback(name, oldValue, newValue);
-  //   }
-  // }
+  attributeChangedCallback(name, oldValue, newValue) {
+    const forwardAttribute = attributesWithoutProperties.indexOf(name) >= 0;
+    if (forwardAttribute) {
+      const innerAttributes = Object.assign({}, this.state.innerAttributes, {
+        [name]: newValue
+      });
+      this.setState({
+        innerAttributes
+      });
+    } else {
+      // Rely on the base attributeChangedCallback provided by
+      // AttributeMarshallingMixin.
+      super.attributeChangedCallback(name, oldValue, newValue);
+    }
+  }
 
   // Delegate method defined by HTMLElement.
   blur() {
@@ -323,13 +322,11 @@ class WrappedStandardElement extends Base {
     return value || (this.shadowRoot && this.inner[name]);
   }
 
-  // See setAttribute
-  removeAttribute(name) {
-    super.removeAttribute(name);
-    if (!this[symbols.rendering] && forwardAttribute(name) &&
-        this.state.innerAttributes[name]) {
-      updateInnerAttribute(this, name, null);
-    }
+  static get observedAttributes() {
+    // For our custom attributeChangedCallback to work, we need to observe
+    // the attributes we want to forward.
+    // @ts-ignore
+    return [...super.observedAttributes, ...attributesWithoutProperties];
   }
 
   [symbols.render](changed) {
@@ -353,15 +350,6 @@ class WrappedStandardElement extends Base {
       if (disabled !== undefined) {
         this.toggleAttribute('disabled', disabled);
       }
-    }
-  }
-
-  // Override setAttribute so that, if this is called outside of rendering,
-  // we can update our notion of the component's original updates.
-  setAttribute(name, value) {
-    super.setAttribute(name, value);
-    if (!this[symbols.rendering] && forwardAttribute(name)) {
-      updateInnerAttribute(this, name, value);
     }
   }
 
@@ -421,30 +409,6 @@ class WrappedStandardElement extends Base {
       'block' :
       'inline-block';
     return template.html`<style>:host { display: ${display}} #inner { box-sizing: border-box; height: 100%; width: 100%; }</style><${this.extends} id="inner"><slot></slot></${this.extends}`;
-  }
-
-  // See setAttribute
-  // @ts-ignore
-  toggleAttribute(name, force) {
-    if (force !== undefined) {
-      super.toggleAttribute(name, force);
-    } else {
-      super.toggleAttribute(name);
-    }
-    if (!this[symbols.rendering] && forwardAttribute(name)) {
-      let value;
-      if (force !== undefined) {
-        // Use supplied value.
-        value = force ? '' : null;
-      } else if (this.state.innerAttributes[name] != null) {
-        // Toggle off
-        value = null;
-      } else {
-        // Toggle on
-        value = '';
-      }
-      updateInnerAttribute(this, name, value);
-    }
   }
 
   /**
@@ -565,24 +529,6 @@ function defineDelegates(cls, prototype) {
     if (delegate) {
       Object.defineProperty(cls.prototype, name, delegate);
     }
-  });
-}
-
-
-// Return true if the attribute with the given name should be forwarded
-// to the inner element.
-function forwardAttribute(name) {
-  return name.startsWith('aria-') ||
-    attributesWithoutProperties.indexOf(name) >= 0
-}
-
-
-function updateInnerAttribute(element, name, value) {
-  const innerAttributes = Object.assign({}, element.state.innerAttributes, {
-    [name]: value
-  });
-  element.setState({
-    innerAttributes
   });
 }
 

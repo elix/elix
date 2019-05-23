@@ -111,13 +111,6 @@ describe("WrappedStandardElement", () => {
     assert(!fixture.inner.disabled);
   });
 
-  it("delegates ARIA attributes", () => {
-    const fixture = new WrappedInput();
-    fixture.setAttribute('aria-label', 'Label');
-    fixture.render();
-    assert.equal(fixture.inner.getAttribute('aria-label'), 'Label');
-  });
-
   it("delegates tabindex state to inner element", async () => {
     const fixture = new WrappedInput();
     container.appendChild(fixture);
