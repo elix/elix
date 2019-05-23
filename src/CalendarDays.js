@@ -112,7 +112,7 @@ class CalendarDays extends Base {
             dayDate.getMonth() === selectedMonth &&
             dayDate.getFullYear() === selectedYear;
           day.selected = selected;
-        }  
+        }
       });
     }
     if (changed.dayCount || changed.startDate) {
