@@ -185,19 +185,16 @@ class TabStrip extends Base {
         'row' :
         'column';
     }
-    if (changed.explicitStyle || changed.tabAlign) {
-      const { explicitStyle, tabAlign } = this.state;  
+    if (changed.tabAlign) {
+      const { tabAlign } = this.state;  
       const justifyContentForTabAlign = {
         'center': 'center',
         'end': 'end',
         'start': 'start',
         'stretch': 'stretch' // No style needed for "stretch"
       };
-      const placeContent = justifyContentForTabAlign[tabAlign] ||
-        (explicitStyle && explicitStyle['justify-content']) ||
-        null;
       // @ts-ignore
-      this.style.placeContent = placeContent;
+      this.style.placeContent = justifyContentForTabAlign[tabAlign];
     }
     if (changed.items || changed.position) {
       const { position } = this.state;

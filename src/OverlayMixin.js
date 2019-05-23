@@ -3,7 +3,7 @@ import * as symbols from './symbols.js';
 
 
 /** @type {any} */
-const assignedZIndexKey = Symbol('assignedZIndex');
+const defaultZIndexKey = Symbol('assignedZIndex');
 /** @type {any} */
 const restoreFocusToElementKey = Symbol('restoreFocusToElement');
 
@@ -92,23 +92,25 @@ export default function OverlayMixin(Base) {
         // these problems, we use display: none when the overlay is closed.
         this.style.display = closed ? 'none' : null;
 
-        const { explicitStyle } = this.state;
-        let zIndex = explicitStyle ?
-          explicitStyle['z-index'] :
-          null;
         if (closed) {
-          this[assignedZIndexKey] = null;
-        } else {
-          if (this[assignedZIndexKey]) {
-            zIndex = this[assignedZIndexKey];
+          if (this[defaultZIndexKey]) {
+            // Remove default z-index.
+            this.style.zIndex = null;
+            this[defaultZIndexKey] = null;
           }
-          if (!zIndex) {
-            zIndex = maxZIndexInUse() + 1;
-            // Remember that we assigned a z-index for this component.
-            this[assignedZIndexKey] = zIndex;
+        } else if (this[defaultZIndexKey]) {
+          this.style.zIndex = this[defaultZIndexKey];
+        } else {
+          const cast = /** @type {any} */ (this);
+          const computedZIndex = getComputedStyle(cast).zIndex;
+          if (computedZIndex === 'auto' && this.style.zIndex === '') {
+            // No z-index has been assigned to this element via CSS.
+            // Pick a default z-index, remember it, and apply it.
+            const defaultZIndex = maxZIndexInUse() + 1;
+            this[defaultZIndexKey] = defaultZIndex;
+            this.style.zIndex = defaultZIndex;
           }
         }
-        this.style.zIndex = zIndex;
       }
     }
   }
