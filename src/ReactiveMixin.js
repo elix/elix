@@ -60,13 +60,13 @@ export default function ReactiveMixin(Base) {
     }
 
     /**
-     * Render the component to the DOM.
+     * Render pending component changes to the DOM.
      * 
      * This method does nothing if the state has not changed since the last
      * render call.
      * 
      * This method invokes all internal render methods. It then invoked
-     * componentDidMount (for first render) or componentDidUpdate (for
+     * `componentDidMount` (for first render) or `componentDidUpdate` (for
      * subsequent renders).
      */
     render() {
@@ -120,12 +120,12 @@ export default function ReactiveMixin(Base) {
     }
 
     /**
-     * Renders any recent changes in state to the DOM.
+     * Internal method for rendering any recent changes in state to the DOM.
      * 
      * The default implementation of this method does nothing. Override this
      * method in your component to update your component's host element and
      * any shadow elements to reflect the component's new state. See the
-     * [rendering example](#rendering) above.
+     * [rendering example](ReactiveMixin#rendering).
      * 
      * Be sure to call `super` in your method implementation so that your
      * component's base classes and mixins have a chance to perform their own

@@ -76,10 +76,12 @@ export default function KeyboardPagedSelectionMixin(Base) {
     }
 
     /**
+     * The element that will be scrolled when the user presses Page Up or
+     * Page Down. The default value is calculated by
+     * [defaultScrollTarget](defaultScrollTarget#defaultScrollTarget).
+     * 
      * See [symbols.scrollTarget](symbols#scrollTarget).
      * 
-     * @property symbols.scrollTarget
-     * @memberof KeyboardPagedSelectionMixin
      * @type {HTMLElement}
      */
     get [symbols.scrollTarget]() {
