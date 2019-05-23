@@ -82,14 +82,12 @@ export default function ShadowTemplateMixin(Base) {
       if (template) {
         // Stamp the template into a new shadow root.
         const delegatesFocus = this[symbols.delegatesFocus];
-        if (template) {
-          const root = this.attachShadow({
-            delegatesFocus,
-            mode: 'open'
-          });
-          const clone = document.importNode(template.content, true);
-          root.appendChild(clone);
-        }
+        const root = this.attachShadow({
+          delegatesFocus,
+          mode: 'open'
+        });
+        const clone = document.importNode(template.content, true);
+        root.appendChild(clone);
       }
     }
 
