@@ -62,6 +62,12 @@ export function closestFocusableAncestor(element) {
     // Found an enabled component that wants the focus.
     return element;
   }
+  // If an element defines a focusTarget (e.g., via DelegateFocusMixin),
+  // see if that focusTarget is focusable at this point.
+  const focusTarget = element[symbols.focusTarget];
+  if (focusTarget && focusTarget.tabIndex >= 0 && !focusTarget.disabled) {
+    return focusTarget;
+  }
   // Not focusable; look higher in composed tree.
   const parent = element.assignedSlot ?
     element.assignedSlot :
