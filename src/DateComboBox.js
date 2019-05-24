@@ -373,29 +373,27 @@ class DateComboBox extends Base {
         this[symbols.raiseChangeEvents] = false;
       });
     }
-    const calendar = /** @type {any} */ (this.$.calendar);
-    if (changed.arrowButtonRole) {
-      if ('arrowButtonRole' in calendar) {
-        calendar.arrowButtonRole = this.state.arrowButtonRole;
-      }
+    const cast = /** @type {any} */ (this.$.calendar);
+    if (changed.arrowButtonRole && 'arrowButtonRole' in this.$.calendar) {
+      cast.arrowButtonRole = this.state.arrowButtonRole;
     }
     if (changed.date) {
-      calendar.date = this.state.date;
+      cast.date = this.state.date;
     }
-    if (changed.dayRole && 'dayRole' in calendar) {
-      calendar.dayRole = this.state.dayRole;
+    if (changed.dayRole && 'dayRole' in cast) {
+      cast.dayRole = this.state.dayRole;
     }
-    if (changed.daysOfWeekFormat && 'daysOfWeekFormat' in calendar) {
-      calendar.daysOfWeekFormat = this.state.daysOfWeekFormat;
+    if (changed.daysOfWeekFormat && 'daysOfWeekFormat' in cast) {
+      cast.daysOfWeekFormat = this.state.daysOfWeekFormat;
     }
     if (changed.locale) {
-      calendar.locale = this.state.locale;
+      cast.locale = this.state.locale;
     }
-    if (changed.monthFormat && 'monthFormat' in calendar) {
-      calendar.monthFormat = this.state.monthFormat;
+    if (changed.monthFormat && 'monthFormat' in cast) {
+      cast.monthFormat = this.state.monthFormat;
     }
-    if (changed.yearFormat && 'yearFormat' in calendar) {
-      calendar.yearFormat = this.state.yearFormat;
+    if (changed.yearFormat && 'yearFormat' in cast) {
+      cast.yearFormat = this.state.yearFormat;
     }
   }
 
