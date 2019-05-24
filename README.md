@@ -1,5 +1,3 @@
-# Elix ![Build status](https://travis-ci.org/elix/elix.svg?branch=master)
-
 [![Elix logo](demos/logo.png)](https://component.kitchen/elix)
 
 Elix is a community-driven collection of high-quality web components for common
