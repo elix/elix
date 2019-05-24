@@ -17,6 +17,7 @@ import './tests/KeyboardDirectionMixin.tests.js';
 import './tests/KeyboardMixin.tests.js';
 import './tests/KeyboardPagedSelectionMixin.tests.js';
 import './tests/KeyboardPrefixSelectionMixin.tests.js';
+import './tests/LanguageDirectionMixin.tests.js';
 import './tests/ListBox.tests.js';
 import './tests/OpenCloseMixin.tests.js';
 import './tests/Overlay.tests.js';
