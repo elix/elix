@@ -49,16 +49,16 @@
           });
         }
   
-        get [symbols.template]() {
-          return incrementDecrementTemplate;
-        }
-  
         // Render the current state to the DOM.
         [symbols.render](changed) {
           super[symbols.render](changed);
           if (changed.value) {
             this.$.value.textContent = this.state.value;
           }
+        }
+  
+        get [symbols.template]() {
+          return incrementDecrementTemplate;
         }
   
         // Provide a public property that gets/sets state.
