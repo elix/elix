@@ -3,8 +3,10 @@
 
 /// <reference path="shared.d.ts"/>
 
+import * as symbols from './symbols.js';
+
 declare const DelegateFocusMixin: Mixin<{}, {
-  delegatesFocus: boolean;
+  [symbols.delegatesFocus]: boolean;
 }>;
 
 export default DelegateFocusMixin;

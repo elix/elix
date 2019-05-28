@@ -3,7 +3,7 @@
 
 /// <reference path="shared.d.ts"/>
 
-import State from 'State.js';
+import State from './State.js';
 
 declare const ReactiveMixin: Mixin<{
   connectedCallback?(): void;
