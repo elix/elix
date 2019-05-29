@@ -47,6 +47,9 @@ type PlainObject = {
 };
 
 
+type Role = Constructor<HTMLElement>|string|HTMLTemplateElement;
+
+
 /*
  * Mixins that add to state can indicate exactly what members they add to state.
  * This requires us to indicate what the base state starts as, which for most

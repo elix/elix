@@ -1,0 +1,23 @@
+// Elix is a JavaScript project, but we define TypeScript declarations so we can
+// confirm our code is type safe, and to support TypeScript users.
+
+import * as symbols from './symbols.js';
+import LanguageDirectionMixin from './LanguageDirectionMixin.js';
+import ReactiveElement from './ReactiveElement.js';
+import SingleSelectionMixin from './SingleSelectionMixin.js';
+import SlotItemsMixin from './SlotItemsMixin.js';
+
+export default class Explorer extends
+    LanguageDirectionMixin(
+    SingleSelectionMixin(
+    SlotItemsMixin(
+      ReactiveElement
+    ))) {
+  [symbols.checkSize](): void;
+  readonly proxies: Element[];
+  proxyListOverlap: boolean;
+  proxyListPosition: 'bottom'|'end'|'left'|'right'|'start'|'top';
+  proxyListRole: Role;
+  proxyRole: Role;
+  stageRole: Role;
+}

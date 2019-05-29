@@ -5,6 +5,11 @@
 
 import * as symbols from './symbols.js';
 
-declare const TimerSelectionMixin: Mixin<{}, {}>;
+declare const TimerSelectionMixin: Mixin<{}, {
+  pause(): void;
+  play(): void;
+  playing: booean;
+  selectionTimerDuration: number;
+}>;
 
 export default TimerSelectionMixin;
