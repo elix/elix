@@ -8,8 +8,8 @@
     "url": "git://github.com/elix/elix.git"
   },
   "author": "info@component.kitchen",
-  "main": "src/elix.js",
-  "types": "src/elix.d.ts",
+  "main": "./src/elix.js",
+  "types": "./src/elix.d.ts",
   "keywords": [
     "web components",
     "calendar",
