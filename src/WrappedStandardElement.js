@@ -286,7 +286,7 @@ class WrappedStandardElement extends Base {
   }
   
   /**
-   * Returns a reference to the inner standard HTML element.
+   * Returns a reference to the inner standard HTML element!
    *
    * @type {HTMLElement}
    */
