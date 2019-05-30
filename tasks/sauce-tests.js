@@ -16,7 +16,7 @@ const config = {
   browsers: [
     {
       browserName: 'chrome',
-      platform: 'OS X 10.13'
+      platform: 'OS X 10.14'
     },
     {
       browserName: 'chrome',
@@ -24,7 +24,7 @@ const config = {
     },
     {
       browserName: 'firefox',
-      platform: 'OS X 10.13',
+      platform: 'OS X 10.14',
     },
     {
       browserName: 'firefox',
@@ -37,7 +37,7 @@ const config = {
     // },
     {
       browserName: 'safari',
-      platform: 'OS X 10.13',
+      platform: 'OS X 10.14',
     }
   ],
   onTestSuiteComplete: (status) => {
