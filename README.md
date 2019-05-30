@@ -26,6 +26,9 @@ For full details and demos, see the [Elix documentation](https://component.kitch
 
 # Quick start
 
+
+## Plain JavaScript
+
 For quick experiments, you can import specific Elix components using a `script` element and a service like unpkg. See a [Quick Carousel import example](https://codepen.io/JanMiksovsky/pen/gZNVQz?editors=1000).
 
 For regular use, add the Elix package to your package.json:
@@ -70,6 +73,11 @@ document.body.appendChild(carousel);
 ```
 
 The Elix project itself _requires no build step_. You are free to use your preferred tools to bundle the Elix modules for better network performance.
+
+
+## TypeScript
+
+See the [sample TypeScript project](https://github.com/elix/typescript-example) showing how to use Elix components in a TypeScript application. Elix includes TypeScript declaration files so that you can confirm that interactions with Elix components are type safe.
 
 
 # Core principles
