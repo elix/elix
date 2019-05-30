@@ -46,7 +46,6 @@
     "ci:fast": "npm run lint && npm run test -- --run-in-ci",
     "lint": "eslint .; tsc",
     "sauce-tests": "node tasks/sauce-tests.js",
-    "start": "static-server . --port 3000",
     "test": "node tasks/headless-tests.js",
     "typecheck": "tsc"
   }
