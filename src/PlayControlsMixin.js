@@ -22,7 +22,7 @@ export default function PlayControlsMixin(Base) {
     /**
      * The class, tag, or template used for the play control buttons.
      * 
-     * @type {function|string|HTMLTemplateElement}
+     * @type {Role}
      * @default SeamlessButton
      */
     get controlButtonRole() {

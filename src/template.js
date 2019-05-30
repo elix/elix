@@ -207,7 +207,7 @@ export function transmute(original, descriptor) {
  * 
  * @param {Node} original - the node to wrap
  * @param {(DocumentFragment|Element)} wrapper - the node to wrap with
- * @param {string} destination - a CSS selector indicated a node in the wrapper
+ * @param {string} destination - a CSS selector indicating a node in the wrapper
  * in which the original node should be put
  */
 export function wrap(original, wrapper, destination) {

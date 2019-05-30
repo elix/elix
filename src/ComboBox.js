@@ -107,7 +107,7 @@ class ComboBox extends Base {
   /**
    * The class, tag, or template used to create the input element.
    * 
-   * @type {function|string|HTMLTemplateElement}
+   * @type {Role}
    * @default 'input'
    */
   get inputRole() {
@@ -386,7 +386,7 @@ class ComboBox extends Base {
    * The class, tag, or template used to create the button that toggles the
    * popup.
    * 
-   * @type {function|string|HTMLTemplateElement}
+   * @type {Role}
    * @default SeamlessButton
    */
   get toggleButtonRole() {

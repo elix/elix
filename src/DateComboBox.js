@@ -29,7 +29,7 @@ class DateComboBox extends Base {
    * The class, tag, or template used to create the left and right arrow
    * buttons.
    * 
-   * @type {function|string|HTMLTemplateElement}
+   * @type {Role}
    * @default ArrowDirectionButton
    */
   get arrowButtonRole() {
@@ -50,7 +50,7 @@ class DateComboBox extends Base {
   /**
    * The class, tag, or template used to create the calendar.
    * 
-   * @type {function|string|HTMLTemplateElement}
+   * @type {Role}
    * @default CalendarMonthNavigator
    */
   get calendarRole() {
@@ -84,7 +84,7 @@ class DateComboBox extends Base {
   /**
    * The class, tag, or template used to create the day elements.
    * 
-   * @type {function|string|HTMLTemplateElement}
+   * @type {Role}
    * @default CalendarDay
    */
   get dayRole() {
@@ -456,7 +456,7 @@ class DateComboBox extends Base {
   /**
    * The class, tag, or template used to create the (Go to) "Today" button.
    * 
-   * @type {function|string|HTMLTemplateElement}
+   * @type {Role}
    * @default SeamlessButton
    */
   get todayButtonRole() {

@@ -264,7 +264,7 @@ class Explorer extends Base {
   /**
    * The class, tag, or template used to create the Explorer's list of proxies.
    * 
-   * @type {function|string|HTMLTemplateElement}
+   * @type {Role}
    * @default ListBox
    */
   get proxyListRole() {
@@ -278,7 +278,7 @@ class Explorer extends Base {
    * The class, tag, or template used to create default proxies for the list
    * items.
    * 
-   * @type {function|string|HTMLTemplateElement}
+   * @type {Role}
    * @default 'div'
    */
   get proxyRole() {
@@ -292,7 +292,7 @@ class Explorer extends Base {
    * The class, tag, or template used for the main "stage" element that shows a
    * single item at a time.
    * 
-   * @type {function|string|HTMLTemplateElement}
+   * @type {Role}
    * @default Modes
    */
   get stageRole() {

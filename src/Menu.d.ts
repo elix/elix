@@ -36,5 +36,5 @@ export default class Menu extends
     TapSelectionMixin(
       ReactiveElement
     ))))))))))))))) {
-  async highlightSelectedItem(): void;
+  highlightSelectedItem(): Promise<void>;
 }

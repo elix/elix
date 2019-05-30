@@ -38,7 +38,7 @@ class AlertDialog extends Dialog {
   /**
    * The class, tag, or template used to create the choice buttons.
    * 
-   * @type {function|string|HTMLTemplateElement}
+   * @type {Role}
    * @default 'button'
    */
   get choiceButtonRole() {

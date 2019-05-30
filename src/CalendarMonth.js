@@ -49,7 +49,7 @@ class CalendarMonth extends Base {
   /**
    * The class, tag, or template used to create the day elements.
    * 
-   * @type {function|string|HTMLTemplateElement}
+   * @type {Role}
    * @default CalendarDay
    */
   get dayRole() {

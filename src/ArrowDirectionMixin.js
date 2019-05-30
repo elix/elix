@@ -39,7 +39,7 @@ function ArrowDirectionMixin(Base) {
      * The class, tag, or template used to create the left and right arrow
      * buttons.
      * 
-     * @type {function|string|HTMLTemplateElement}
+     * @type {Role}
      * @default ArrowDirectionButton
      */
     get arrowButtonRole() {

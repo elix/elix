@@ -8,7 +8,7 @@ import * as symbols from './symbols.js';
 declare const TimerSelectionMixin: Mixin<{}, {
   pause(): void;
   play(): void;
-  playing: booean;
+  playing: boolean;
   selectionTimerDuration: number;
 }>;
 

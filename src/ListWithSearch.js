@@ -67,7 +67,7 @@ class ListWithSearch extends Base {
   /**
    * The class, tag, or template used to create the input element.
    * 
-   * @type {function|string|HTMLTemplateElement}
+   * @type {Role}
    * @default 'input'
    */
   get inputRole() {
@@ -140,7 +140,7 @@ class ListWithSearch extends Base {
   /**
    * The class, tag, or template used to create the list element.
    * 
-   * @type {function|string|HTMLTemplateElement}
+   * @type {Role}
    * @default ListBox
    */
   get listRole() {

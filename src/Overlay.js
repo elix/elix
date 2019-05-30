@@ -64,7 +64,7 @@ class Overlay extends Base {
    * elements. For example, [Dialog](Dialog) uses [ModalBackdrop](ModalBackdrop)
    * as an overlay backdrop in such a way.
    * 
-   * @type {function|string|HTMLTemplateElement}
+   * @type {Role}
    * @default Backdrop
    */
   get backdropRole() {
@@ -114,7 +114,7 @@ class Overlay extends Base {
    * content, and to provide visual effects such as a drop-shadow to help
    * distinguish overlay content from background page elements.
    * 
-   * @type {function|string|HTMLTemplateElement}
+   * @type {Role}
    * @default OverlayFrame
    */
   get frameRole() {

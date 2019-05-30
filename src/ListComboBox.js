@@ -143,7 +143,7 @@ class ListComboBox extends Base {
   /**
    * The class, tag, or template used to create the list element.
    * 
-   * @type {function|string|HTMLTemplateElement}
+   * @type {Role}
    * @default ListBox
    */
   get listRole() {
