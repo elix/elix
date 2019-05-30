@@ -29,9 +29,7 @@ For full details and demos, see the [Elix documentation](https://component.kitch
 
 ## Plain JavaScript
 
-For quick experiments, you can import specific Elix components using a `script` element and a service like unpkg. See a [Quick Carousel import example](https://codepen.io/JanMiksovsky/pen/gZNVQz?editors=1000).
-
-For regular use, add the Elix package to your package.json:
+Add the Elix package to your package.json:
 
 ```json
 {
@@ -58,7 +56,7 @@ In markup, you can then reference the components you need:
 </html>
 ```
 
-In JavaScript, you can directly `import` components:
+Alternatively, in JavaScript, you can directly `import` components:
 
 ```js
 import Carousel from 'elix/src/Carousel.js';
@@ -73,6 +71,8 @@ document.body.appendChild(carousel);
 ```
 
 The Elix project itself _requires no build step_. You are free to use your preferred tools to bundle the Elix modules for better network performance.
+
+You can try out the [sample JavaScript project](https://github.com/elix/simple-example) on your own machine.
 
 
 ## React
