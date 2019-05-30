@@ -75,6 +75,11 @@ document.body.appendChild(carousel);
 The Elix project itself _requires no build step_. You are free to use your preferred tools to bundle the Elix modules for better network performance.
 
 
+## React
+
+See the [sample React project](https://github.com/elix/react-example) showing how to use Elix components in a React application.
+
+
 ## TypeScript
 
 See the [sample TypeScript project](https://github.com/elix/typescript-example) showing how to use Elix components in a TypeScript application. Elix includes TypeScript declaration files so that you can confirm that interactions with Elix components are type safe.
@@ -149,57 +154,6 @@ Elix is an ambitious attempt to deconstruct complex user interface elements into
 * In some cases, we may retire a particular component or mixin and replace it with something fundamentally new.
 * These user interface components are extremely complex, and are designed to be customized to work in a wide range of applications and environments. This means that even minor Elix releases may accidentally introduce breaking changes, particularly in customized components. We’ll try to fix those when we can.
 * As recommended above, locking on to a specific Elix version number will let you evaluate new Elix releases — including minor releases — in a more controlled fashion.
-
-
-# Running locally
-
-1. Clone or fork the project.
-2. `npm install`.
-3. `npm start`. Go to [http://localhost:3000](http://localhost:3000) to see the demos and tests (if you like).
-
-
-# Unit tests
-
-You have multiple options to run the tests.
-
-## Local headless browser
-
-Run the tests locally against a headless browser.
-**Fast**, takes about 1-2 seconds.
-**Low coverage**, only headless chrome currently.
-
-```
-npm test
-```
-
-
-## Local browser 
-
-**Fast**. As fast as you can reload the page :).
-But **low coverage**. Only the browser(s) you test it in will be covered.
-
-Run `npm start` which starts a local server, serving the files from the root
-of this repo. You can run the tests by going to [http://localhost:3000/test/](http://localhost:3000/test/) (don't miss the trailing slash).
-
-
-## Multiple browsers via Saucelabs 
-
-This way of testing will have the **best coverage**, since it runs in most browsers.
-But it is also the **slowest**.
-
-Unit tests can be run on Sauce Labs. Do do so, you will need to set the
-following environment variables:
-
-```
-export SAUCE_USERNAME=elix
-export SAUCE_ACCESS_KEY=<ask a core team member for this key>
-```
-
-Invoke the unit tests to be run on Sauce Labs with:
-
-```
-npm run sauce-tests
-```
 
 
 # Contributing
