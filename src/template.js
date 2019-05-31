@@ -48,7 +48,7 @@ export function concat(...templates) {
  * contains a single top-level node, that node is returned directly (instead of
  * the fragment).
  * 
- * @param {(Function|string|HTMLTemplateElement)} descriptor - the descriptor that
+ * @param {Role} descriptor - the descriptor that
  * will be used to create the element
  * @returns {Node} the new element
  */
@@ -173,7 +173,7 @@ export function replace(original, replacement) {
  * class/tag name, the replacement operation is skipped.
  * 
  * @param {(Array|NodeList|Node)} original - the node to replace
- * @param {(Function|string|HTMLTemplateElement)} descriptor - the descriptor used
+ * @param {Role} descriptor - the descriptor used
  * to generate replacement elements
  * @returns {Array|Node} the replacement node(s)
  */
