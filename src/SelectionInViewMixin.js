@@ -1,5 +1,6 @@
 import { defaultScrollTarget } from './scrolling.js';
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 /**
@@ -15,6 +16,7 @@ import * as symbols from './symbols.js';
  * [SingleSelectionMixin](SingleSelectionMixin).
  *
  * @module SelectionInViewMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function SelectionInViewMixin(Base) {
 
@@ -26,7 +28,7 @@ export default function SelectionInViewMixin(Base) {
       this.scrollSelectionIntoView();
     }
 
-    componentDidUpdate(changed) {
+    componentDidUpdate(/** @type {PlainObject} */ changed) {
       if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
       this.scrollSelectionIntoView();
     }

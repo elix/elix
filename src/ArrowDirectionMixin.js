@@ -2,6 +2,7 @@ import { forwardFocus } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import ArrowDirectionButton from './ArrowDirectionButton.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 const wrap = Symbol('wrap');
@@ -12,6 +13,7 @@ const wrap = Symbol('wrap');
  * 
  * @module ArrowDirectionMixin
  * @elementrole {ArrowDirectionButton} arrowButton
+ * @param {Constructor<ReactiveElement>} Base
  */
 function ArrowDirectionMixin(Base) {
 
@@ -75,13 +77,13 @@ function ArrowDirectionMixin(Base) {
       });
     }
 
-    [symbols.render](changed) {
+    [symbols.render](/** @type {PlainObject} */ changed) {
       if (changed.arrowButtonRole) {
-        if (this.$.arrowButtonLeft) {
+        if (this.$.arrowButtonLeft instanceof HTMLElement) {
           // Turn off focus handling for old left button.
           forwardFocus(this.$.arrowButtonLeft, null);
         }
-        if (this.$.arrowButtonRight) {
+        if (this.$.arrowButtonRight instanceof HTMLElement) {
           // Turn off focus handling for old right button.
           forwardFocus(this.$.arrowButtonRight, null);
         }
@@ -92,8 +94,11 @@ function ArrowDirectionMixin(Base) {
         const cast = this;
 
         template.transmute(this.$.arrowButtonLeft, this.state.arrowButtonRole);
-        forwardFocus(this.$.arrowButtonLeft, cast);
-        this.$.arrowButtonLeft.addEventListener('mousedown', async (event) => {
+        if (this.$.arrowButtonLeft instanceof HTMLElement) {
+          forwardFocus(this.$.arrowButtonLeft, cast);
+        }
+        /** @type {any} */
+        const leftButtonHandler = async (/** @type {MouseEvent} */ event) => {
           // Only process events for the main (usually left) button.
           if (event.button !== 0) {
             return;
@@ -105,11 +110,15 @@ function ArrowDirectionMixin(Base) {
           }
           await Promise.resolve();
           this[symbols.raiseChangeEvents] = false;
-        });
+        };
+        this.$.arrowButtonLeft.addEventListener('mousedown', leftButtonHandler);
         
         template.transmute(this.$.arrowButtonRight, this.state.arrowButtonRole);
-        forwardFocus(this.$.arrowButtonRight, cast);
-        this.$.arrowButtonRight.addEventListener('mousedown', async (event) => {
+        if (this.$.arrowButtonRight instanceof HTMLElement) {
+          forwardFocus(this.$.arrowButtonRight, cast);
+        }
+        /** @type {any} */
+        const rightButtonHandler = async (/** @type {MouseEvent} */ event) => {
           // Only process events for the main (usually left) button.
           if (event.button !== 0) {
             return;
@@ -121,7 +130,8 @@ function ArrowDirectionMixin(Base) {
           }
           await Promise.resolve();
           this[symbols.raiseChangeEvents] = false;
-        });
+        };
+        this.$.arrowButtonRight.addEventListener('mousedown', rightButtonHandler);
       }
       const {
         arrowButtonOverlap,

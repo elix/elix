@@ -87,7 +87,7 @@ class CalendarMonthNavigator extends Base {
     });
   }
 
-  [symbols.keydown](event) {
+    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
     let handled = false;
 
     switch (event.key) {

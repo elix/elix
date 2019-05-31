@@ -7,4 +7,4 @@ export function defaultSlot(tree: DocumentFragment): Node|null;
 export function html(strings: TemplateStringsArray, ...substitutions: any[]): HTMLTemplateElement;
 export function replace(original: Node|null, replacement: Node): Node;
 export function transmute(original: Node[]|NodeList|Node, descriptor: Role): Node[]|Node;
-export function wrap(original: Node, wrapper: DocumentFragment|Element, destination: string);
+export function wrap(original: Node, wrapper: DocumentFragment|Element, destination: string): void;

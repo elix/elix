@@ -37,7 +37,7 @@ class ComboBox extends Base {
     this.setState({ ariaLabel });
   }
 
-  componentDidUpdate(changed) {
+    componentDidUpdate(/** @type {PlainObject} */ changed) {
     super.componentDidUpdate(changed);
     if (this.state.selectText) {
       // Select the text in the input after giving the inner input a chance to render the value.
@@ -117,7 +117,7 @@ class ComboBox extends Base {
     this.setState({ inputRole });
   }
 
-  [symbols.keydown](event) {
+    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
     let handled;
 
     switch (event.key) {
@@ -165,7 +165,7 @@ class ComboBox extends Base {
     });
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.inputRole) {
       template.transmute(this.$.input, this.state.inputRole);
@@ -195,7 +195,7 @@ class ComboBox extends Base {
         /** @type {any} */
         const cast = this.$.input;
         const value = cast.value;
-        const changes = {
+        /** @type {PlainObject} */ const changes = {
           value,
           selectText: false
         };

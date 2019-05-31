@@ -18,16 +18,17 @@ class CarouselWithThumbnails extends Carousel {
     });
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
-    const { proxies } = this.state;
+    /** @type {Element[]} */ const proxies = this.state.proxies;
     if ((changed.items || changed.proxies) && proxies) {
       // Update thumbnails.
       const { items } = this.state;
       proxies.forEach((proxy, index) => {
-        /** @type {any} */const item = items[index];
-        if (item) {
-          proxy.src = item.src;
+        /** @type {any} */ const item = items[index];
+        /** @type {any} */ const cast = proxy;
+        if (item && 'src' in cast) {
+          cast.src = item.src;
         }
       });
     }

@@ -88,7 +88,7 @@ class AlertDialog extends Dialog {
   }
 
   // Let the user select a choice by pressing its initial letter.
-  [symbols.keydown](event) {
+    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
     let handled = false;
 
     const key = event.key.length === 1 && event.key.toLowerCase();
@@ -109,7 +109,7 @@ class AlertDialog extends Dialog {
     return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.choiceButtons) {
       applyChildNodes(this.$.buttonContainer, this.state.choiceButtons);

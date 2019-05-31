@@ -22,7 +22,7 @@ class ProgressSpinner extends ReactiveElement {
     tick(this);
   }
 
-  componentDidUpdate(changed) {
+    componentDidUpdate(/** @type {PlainObject} */ changed) {
     super.componentDidUpdate(changed);
     if (changed.count ||
         (changed.playing && this.state.playing)) {
@@ -50,7 +50,7 @@ class ProgressSpinner extends ReactiveElement {
     this.setState({ playing });
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.count) {
       const step = 360 / rotations;
@@ -76,7 +76,7 @@ class ProgressSpinner extends ReactiveElement {
 }
 
 
-function tick(element) {
+function tick(/** @type {ProgressSpinner} */ element) {
   // Complete a full rotation in a second (1000 milliseconds).
   const delay = 1000 / rotations;
   if (element.isConnected && element.state.playing) {

@@ -1,6 +1,8 @@
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
+/** @type {IndexedObject<boolean>} */
 export const booleanAttributes = {
   checked: true,
   defer: true,
@@ -17,9 +19,11 @@ export const booleanAttributes = {
 // Memoized maps of attribute to property names and vice versa.
 // We initialize this with the special case of the tabindex (lowercase "i")
 // attribute, which is mapped to the tabIndex (capital "I") property.
+/** @type {IndexedObject<string>} */
 const attributeToPropertyNames = {
   tabindex: 'tabIndex'
 };
+/** @type {IndexedObject<string>} */
 const propertyNamesToAttributes = {
   tabIndex: 'tabindex'
 };
@@ -61,13 +65,21 @@ const propertyNamesToAttributes = {
  * yourself.
  *
  * @module AttributeMarshallingMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function AttributeMarshallingMixin(Base) {
 
   // The class prototype added by the mixin.
   class AttributeMarshalling extends Base {
 
-    // Handle a change to the attribute with the given name.
+    /**
+     * Handle a change to the attribute with the given name.
+     * 
+     * @private
+     * @param {string} attributeName
+     * @param {string} oldValue
+     * @param {string} newValue
+     */
     attributeChangedCallback(attributeName, oldValue, newValue) {
       if (super.attributeChangedCallback) {
         super.attributeChangedCallback(attributeName, oldValue, newValue);
@@ -97,7 +109,12 @@ export default function AttributeMarshallingMixin(Base) {
 }
 
 
-// Return the custom attributes for the given class.
+/**
+ * Return the custom attributes for the given class.
+ * 
+ * @private
+ * @param {Constructor<ReactiveElement>} classFn
+ */
 function attributesForClass(classFn) {
 
   // We treat the HTMLElement base class as if it has no attributes, since we
@@ -138,7 +155,12 @@ function attributesForClass(classFn) {
 }
 
 
-// Convert hyphenated foo-bar attribute name to camel case fooBar property name.
+/**
+ * Convert hyphenated foo-bar attribute name to camel case fooBar property name.
+ * 
+ * @private
+ * @param {string} attributeName
+ */
 function attributeToPropertyName(attributeName) {
   let propertyName = attributeToPropertyNames[attributeName];
   if (!propertyName) {
@@ -152,8 +174,14 @@ function attributeToPropertyName(attributeName) {
 }
 
 
-// If the given attribute name corresponds to a boolean attribute,
-// map the supplied string value to a boolean. Otherwise return as is.
+/**
+ * If the given attribute name corresponds to a boolean attribute, map the
+ * supplied string value to a boolean. Otherwise return as is.
+ * 
+ * @private
+ * @param {string} attributeName
+ * @param {string} value
+ */
 function castPotentialBooleanAttribute(attributeName, value) {
   if (booleanAttributes[attributeName]) {
     if (typeof value === 'string') {
@@ -166,7 +194,12 @@ function castPotentialBooleanAttribute(attributeName, value) {
 }
 
 
-// Convert a camel case fooBar property name to a hyphenated foo-bar attribute.
+/**
+ * Convert a camel case fooBar property name to a hyphenated foo-bar attribute.
+ * 
+ * @private
+ * @param {string} propertyName
+ */
 function propertyNameToAttribute(propertyName) {
   let attribute = propertyNamesToAttributes[propertyName];
   if (!attribute) {

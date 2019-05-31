@@ -22,10 +22,11 @@ const Base =
  */
 class Popup extends Base {
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.backdropRole) {
-      const mousedownHandler = async event => {
+      /** @type {any} */
+      const mousedownHandler = async (/** @type {MouseEvent} */ event) => {
         this[symbols.raiseChangeEvents] = true;
         await this.close();
         this[symbols.raiseChangeEvents] = false;

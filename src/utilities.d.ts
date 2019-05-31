@@ -2,9 +2,9 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 export function applyChildNodes(element: Node, childNodes: NodeList|Node[]): void;
-export function closestFocusableAncestor(element: Element);
+export function closestFocusableAncestor(element: Element): HTMLElement|null;
 export function deepContains(container: Node, target: Node): boolean;
-export function firstFocusableElement(root: HTMLElement): HTMLElement;
+export function firstFocusableElement(root: Node): HTMLElement|null;
 export function forwardFocus(origin: HTMLElement, target: HTMLElement|null): void;
 export function indexOfItemContainingTarget(items: NodeList|Node[], target: Node): number;
 export function ownEvent(node: Node, event: Event): boolean;

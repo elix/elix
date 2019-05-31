@@ -1,11 +1,13 @@
 import { defaultAriaRole } from './accessibility.js';
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 /**
  * Tells assistive technologies to describe a list's items as a menu of choices.
  *
  * @module AriaMenuMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function AriaMenuMixin(Base) {
 
@@ -27,9 +29,10 @@ export default function AriaMenuMixin(Base) {
       this.setState({ itemRole });
     }
 
-    [symbols.render](changed) {
+    [symbols.render](/** @type {PlainObject} */ changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
-      const { selectedIndex, itemRole, items } = this.state;
+      const { selectedIndex, itemRole } = this.state;
+      /** @type {(HTMLElement|SVGElement)[]} */ const items = this.state.items;
       if ((changed.items || changed.itemRole) && items) {
         // Give each item a role.
         items.forEach(item => {
@@ -44,7 +47,7 @@ export default function AriaMenuMixin(Base) {
         // Reflect the selection state to each item.
         items.forEach((item, index) => {
           const selected = index === selectedIndex;
-          item.setAttribute('aria-checked', selected);
+          item.setAttribute('aria-checked', selected.toString());
         });
       }
       if (changed.role) {

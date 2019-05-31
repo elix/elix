@@ -8,6 +8,6 @@ declare type ChangeHandler = (state: State, changed: PlainObject) => PlainObject
 export default class State {
   constructor(defaults?: PlainObject);
   copyWithChanges(changes: PlainObject): { state: State, changed: boolean };
-  onChange(dependencies: string[]|string, callback: ChangeHandler);
+  onChange(dependencies: string[]|string, callback: ChangeHandler): void;
   [key: string]: any;
 }

@@ -68,7 +68,7 @@ class PopupSource extends Base {
     this.setAttribute('aria-haspopup', 'true');
   }
 
-  componentDidUpdate(changed) {
+    componentDidUpdate(/** @type {PlainObject} */ changed) {
     super.componentDidUpdate(changed);
     if (changed.opened) {
       if (this.opened) {
@@ -160,7 +160,7 @@ class PopupSource extends Base {
     });
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.backdropRole) {
       if ('backdropRole' in this.$.popup) {
@@ -404,7 +404,7 @@ class PopupSource extends Base {
 }
 
 
-function addEventListeners(element) {
+function addEventListeners(/** @type {PopupSource} */ element) {
   element[resizeListenerKey] = () => {
     measurePopup(element);
   }
@@ -412,7 +412,7 @@ function addEventListeners(element) {
 }
 
 
-function removeEventListeners(element) {
+function removeEventListeners(/** @type {PopupSource} */ element) {
   if (element[resizeListenerKey]) {
     window.removeEventListener('resize', element[resizeListenerKey]);
     element[resizeListenerKey] = null;
@@ -420,8 +420,13 @@ function removeEventListeners(element) {
 }
 
 
-// If we haven't already measured the popup since it was opened, measure its
-// dimensions and the relevant distances in which the popup might be opened.
+/**
+ * If we haven't already measured the popup since it was opened, measure its
+ * dimensions and the relevant distances in which the popup might be opened.
+ * 
+ * @private
+ * @param {PopupSource} element
+ */
 function measurePopup(element) {
   const windowHeight = window.innerHeight;
   const windowWidth = window.innerWidth;
@@ -440,24 +445,28 @@ function measurePopup(element) {
   });
 }
 
-//
-// When a popup is first rendered, we let it render invisibly so that it doesn't
-// affect the page layout.
-//
-// We then wait, for two reasons:
-// 
-// 1) We need to give the popup time to render invisibly. That lets us get the
-//    true size of the popup content.
-//
-// 2) Wire up events that can dismiss the popup. If the popup was opened because
-//    the user clicked something, that opening click event may still be bubbling
-//    up, and we only want to start listening after it's been processed.
-//    Along the same lines, if the popup caused the page to scroll, we don't
-//    want to immediately close because the page scrolled (only if the user
-//    scrolls).
-//
-// After waiting, we can take care of both of the above tasks.
-//
+/**
+ *
+ * When a popup is first rendered, we let it render invisibly so that it doesn't
+ * affect the page layout.
+ *
+ * We then wait, for two reasons:
+ * 
+ * 1) We need to give the popup time to render invisibly. That lets us get the
+ *    true size of the popup content.
+ *
+ * 2) Wire up events that can dismiss the popup. If the popup was opened because
+ *    the user clicked something, that opening click event may still be bubbling
+ *    up, and we only want to start listening after it's been processed.
+ *    Along the same lines, if the popup caused the page to scroll, we don't
+ *    want to immediately close because the page scrolled (only if the user
+ *    scrolls).
+ *
+ * After waiting, we can take care of both of the above tasks.
+ * 
+ * @private
+ * @param {PopupSource} element
+ */
 function waitThenRenderOpened(element) {
   // Wait a tick to let the newly-opened component actually render.
   setTimeout(() => {

@@ -1,4 +1,5 @@
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 /** @type {any} */
@@ -11,6 +12,7 @@ const closeResolveKey = Symbol('closeResolve');
  * Tracks the open/close state of a component.
  * 
  * @module OpenCloseMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function OpenCloseMixin(Base) {
 
@@ -69,7 +71,7 @@ export default function OpenCloseMixin(Base) {
       return this.state.closeResult;
     }
 
-    componentDidUpdate(changed) {
+    componentDidUpdate(/** @type {PlainObject} */ changed) {
       if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
 
       if (changed.opened && this[symbols.raiseChangeEvents]) {
@@ -171,7 +173,7 @@ export default function OpenCloseMixin(Base) {
       if (super.toggle) { await super.toggle(opened); }
       const changed = opened !== this.state.opened;
       if (changed) {
-        const changes = { opened };
+        /** @type {PlainObject} */ const changes = { opened };
         if (this.state.openCloseEffects) {
           changes.effect = opened ? 'open' : 'close';
           if (this.state.effectPhase === 'after') {

@@ -42,7 +42,7 @@ class Toast extends Base {
     startTimerIfOpened(this);
   }
 
-  async componentDidUpdate(changed) {
+  async componentDidUpdate(/** @type {PlainObject} */ changed) {
     await super.componentDidUpdate(changed);
     startTimerIfOpened(this);
   }
@@ -82,10 +82,11 @@ class Toast extends Base {
     this.setState({ fromEdge });
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.fromEdge) {
       // Host
+      /** @type {IndexedObject<any>} */
       const hostEdgeStyles = {
         'bottom': {
           alignItems: 'center',
@@ -117,6 +118,7 @@ class Toast extends Base {
     if (changed.effect || changed.effectPhase || changed.fromEdge
         || changed.rightToLeft) {
       const { effect, effectPhase, fromEdge, rightToLeft } = this.state;
+      /** @type {IndexedObject<string>} */
       const oppositeEdge = {
         'bottom-left': 'bottom-right',
         'bottom-right': 'bottom-left',
@@ -127,6 +129,7 @@ class Toast extends Base {
         (oppositeEdge[fromEdge] || fromEdge) :
         fromEdge;
   
+      /** @type {IndexedObject<string>} */
       const edgeTransforms = {
         'bottom': 'translateY(100%)',
         'bottom-left': 'translateX(-100%)',
@@ -135,6 +138,8 @@ class Toast extends Base {
         'top-left': 'translateX(-100%)',
         'top-right': 'translateX(100%)'
       };
+
+      /** @type {IndexedObject<string>} */
       const openEdgeTransforms = {
         'bottom': 'translateY(0)',
         'bottom-left': 'translateX(0)',
@@ -195,14 +200,14 @@ class Toast extends Base {
 }
 
 
-function clearTimer(element) {
+function clearTimer(/** @type {Toast} */ element) {
   if (element[timeoutKey]) {
     clearTimeout(element[timeoutKey]);
     element[timeoutKey] = null;
   }
 }
 
-function startTimer(element) {
+function startTimer(/** @type {Toast} */ element) {
   clearTimer(element);
   const duration = element.state.duration;
   if (duration !== null && duration > 0) {
@@ -212,7 +217,7 @@ function startTimer(element) {
   }
 }
 
-function startTimerIfOpened(element) {
+function startTimerIfOpened(/** @type {Toast} */ element) {
   if (element.opened) {
     startTimer(element);
   }

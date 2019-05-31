@@ -52,12 +52,17 @@ export function applyChildNodes(element, childNodes) {
 }
 
 
-// Return the closest focusable ancestor in the *composed* tree.
-// If no focusable ancestor is found, returns null.
+/**
+ * Return the closest focusable ancestor in the *composed* tree.
+ * If no focusable ancestor is found, returns null.
+ * 
+ * @param {Node} element
+ * @returns {HTMLElement|null}
+ */
 export function closestFocusableAncestor(element) {
   // We want an element that has a tabIndex of 0 or more. We ignore disabled
   // elements, and slot elements (which oddly have a tabIndex of 0).
-  if (element.tabIndex >= 0 && !element.disabled
+  if (element instanceof HTMLElement && element.tabIndex >= 0 && !element.disabled
     && !(element instanceof HTMLSlotElement)) {
     // Found an enabled component that wants the focus.
     return element;
@@ -69,7 +74,7 @@ export function closestFocusableAncestor(element) {
     return focusTarget;
   }
   // Not focusable; look higher in composed tree.
-  const parent = element.assignedSlot ?
+  const parent = element instanceof HTMLElement && element.assignedSlot ?
     element.assignedSlot :
     // @ts-ignore
     element.parentNode instanceof ShadowRoot ?
@@ -115,7 +120,7 @@ export function deepContains(container, target) {
  * root and whether a given element is focusable. It currently does not respect
  * the tab sort order defined by tabindex values greater than zero.
  * 
- * @param {HTMLElement} root - the root of the tree in which to search
+ * @param {Node} root - the root of the tree in which to search
  * @returns {HTMLElement|null} - the first focusable element, or null if none
  * was found
  */
@@ -124,7 +129,7 @@ export function firstFocusableElement(root) {
   // https://stackoverflow.com/a/30753870/76472
   const focusableQuery = 'a[href],area[href],button:not([disabled]),details,iframe,input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[contentEditable="true"],[tabindex]';
   // Walk the tree looking for nodes that match the above selectors.
-  const walker = walkComposedTree(root, node =>
+  const walker = walkComposedTree(root, (/** @type {Node} */ node) =>
     node instanceof HTMLElement && 
     node.matches(focusableQuery) &&
     node.tabIndex >= 0
@@ -161,7 +166,7 @@ export function forwardFocus(origin, target) {
     origin.removeEventListener('mousedown', origin[mousedownListenerKey]);
   }
   if (target) {
-    origin[mousedownListenerKey] = (event) => {
+    origin[mousedownListenerKey] = (/** @type {MouseEvent} */ event) => {
       // Only process events for the main (usually left) button.
       if (event.button !== 0) {
         return;
@@ -170,8 +175,10 @@ export function forwardFocus(origin, target) {
       const desiredTarget = target[symbols.focusTarget] || target;
       // What ancestor can actually take the focus?
       const focusableTarget = closestFocusableAncestor(desiredTarget);
-      focusableTarget.focus();
-      event.preventDefault();  
+      if (focusableTarget) {
+        focusableTarget.focus();
+        event.preventDefault();
+      }
     };
     origin.addEventListener('mousedown', origin[mousedownListenerKey]);
   }
@@ -192,7 +199,7 @@ export function forwardFocus(origin, target) {
  * indicated target node. Returns -1 if not found.
  */
 export function indexOfItemContainingTarget(items, target) {
-  return Array.prototype.findIndex.call(items, item =>
+  return Array.prototype.findIndex.call(items, (/** @type Node */ item) =>
     item === target || deepContains(item, target)
   );
 }
@@ -216,23 +223,28 @@ export function ownEvent(node, event) {
 
 
 // Walk the composed tree at the root for elements that pass the given filter.
+// Note: the jsDoc types required for this function are too complex for the
+// jsDoc parser, so we suppress type-checking on the function signature.
+// @ts-ignore
 function* walkComposedTree(node, filter) {
   if (filter(node)) {
     yield node;
   }
   let children;
-  if (node.shadowRoot) {
-    // Walk the shadow instead of the light DOM.
-    children = node.shadowRoot.children;
-  } else {
-    const assignedNodes = node instanceof HTMLSlotElement ?
-      node.assignedNodes({ flatten: true }) :
-      [];
-    children = assignedNodes.length > 0 ?
-      // Walk light DOM nodes assigned to this slot.
-      assignedNodes :
-      // Walk light DOM children.
-      node.children;
+  if (node instanceof HTMLElement) {
+    if (node.shadowRoot) {
+      // Walk the shadow instead of the light DOM.
+      children = node.shadowRoot.children;
+    } else {
+      const assignedNodes = node instanceof HTMLSlotElement ?
+        node.assignedNodes({ flatten: true }) :
+        [];
+      children = assignedNodes.length > 0 ?
+        // Walk light DOM nodes assigned to this slot.
+        assignedNodes :
+        // Walk light DOM children.
+        node.children;
+    }
   }
   if (children) {
     for (let i = 0; i < children.length; i++) {

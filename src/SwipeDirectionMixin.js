@@ -1,10 +1,12 @@
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js';
 
 
 /**
  * Map swipe gestures to direction semantics.
  * 
  * @module SwipeDirectionMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function SwipeDirectionMixin(Base) {
 

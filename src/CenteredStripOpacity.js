@@ -26,7 +26,7 @@ class CenteredStripOpacity extends CenteredStrip {
     });
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.enableEffects || changed.items || changed.rightToLeft ||
         changed.selectedIndex || changed.swipeFraction || changed.transitionDuration) {
@@ -78,6 +78,12 @@ class CenteredStripOpacity extends CenteredStrip {
 }
 
 
+/**
+ * @private
+ * @param {number} index 
+ * @param {number} selectedIndex 
+ * @param {number} selectionFraction 
+ */
 function opacityForItemWithIndex(index, selectedIndex, selectionFraction) {
   const opacityRange = opacityMaximum - opacityMinimum;
   const fractionalIndex = selectedIndex + selectionFraction;

@@ -1,5 +1,6 @@
 import { deepContains } from './utilities.js';
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 // We consider the keyboard to be active if the window has received a keydown
@@ -20,6 +21,7 @@ const focusVisibleChangedListenerKey = Symbol('focusVisibleChangedListener');
  * [focus-visible](https://github.com/WICG/focus-visible) feature for CSS.
  * 
  * @module FocusVisibleMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function FocusVisibleMixin(Base) {
 
@@ -45,11 +47,10 @@ export default function FocusVisibleMixin(Base) {
       this.addEventListener('focusout', event => {
         Promise.resolve().then(() => {
           // What has the focus now?
-          const newFocusedElement = event.relatedTarget || document.activeElement;
+          /** @type {any} */ const cast = event;
+          const newFocusedElement = cast.relatedTarget || document.activeElement;
           const isFocusedElement = this === newFocusedElement;
-          /** @type {any} */
-          const cast = this;
-          const containsFocus = deepContains(cast, newFocusedElement);
+          const containsFocus = deepContains(this, newFocusedElement);
           const lostFocus = !isFocusedElement && !containsFocus;
           if (lostFocus) {
             this.setState({
@@ -86,7 +87,7 @@ export default function FocusVisibleMixin(Base) {
       });
     }
 
-    [symbols.render](changed) {
+    [symbols.render](/** @type {PlainObject} */ changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.focusVisible) {
         // Suppress the component's normal `outline` style unless we know the
@@ -114,14 +115,14 @@ export default function FocusVisibleMixin(Base) {
 }
 
 
-function refreshFocus(element) {
+function refreshFocus(/** @type {ReactiveElement} */ element) {
   element.setState({
     focusVisible: keyboardActive
   });
 }
 
 
-function updateKeyboardActive(newKeyboardActive) {
+function updateKeyboardActive(/** @type {boolean} */ newKeyboardActive) {
   if (keyboardActive !== newKeyboardActive) {
     keyboardActive = newKeyboardActive;
     const event = new CustomEvent('focus-visible-changed', {

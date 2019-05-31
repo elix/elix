@@ -67,6 +67,6 @@ export function isSubstantiveElement(node) {
  */
 export function substantiveElements(nodes) {
   return [].filter.call(nodes,
-    node => isSubstantiveElement(node)
+    (/** @type {Node} */ node) => isSubstantiveElement(node)
   );
 }

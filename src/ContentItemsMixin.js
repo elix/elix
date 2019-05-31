@@ -1,5 +1,6 @@
 import { isSubstantiveElement } from './content.js';
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 /**
@@ -25,11 +26,12 @@ import * as symbols from './symbols.js';
  * [ListBox](ListBox), [Modes](Modes), and [Tabs](Tabs).
  *
  * @module ContentItemsMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function ContentItemsMixin(Base) {
   return class ContentItems extends Base {
 
-    componentDidUpdate(changed) {
+    componentDidUpdate(/** @type {PlainObject} */ changed) {
       if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
       if (changed.items && this[symbols.raiseChangeEvents]) {
         /**
@@ -50,11 +52,14 @@ export default function ContentItemsMixin(Base) {
       // Regenerate items when content changes, or if items has been nullified
       // by another mixin (as a signal that items should be regenerated).
       state.onChange(['content', 'items'], (state, changed) => {
-        const content = state.content;
+        /** @type {Node[]} */ const content = state.content;
         const needsItems = content && !state.items; // Signal from other mixins
         if (changed.content || needsItems) {
           const items = content ?
-            Array.prototype.filter.call(content, item => this[symbols.itemMatchesState](item, state)) :
+            Array.prototype.filter.call(content, (/** @type {Node} */ item) =>
+              (item instanceof HTMLElement || item instanceof SVGElement) ?
+                this[symbols.itemMatchesState](item, state) :
+                false) :
             null;
           if (items) {
             Object.freeze(items);
@@ -67,6 +72,12 @@ export default function ContentItemsMixin(Base) {
       return state;
     }
 
+    /**
+     * Returns true if the given item should be shown in the indicated state.
+     * 
+     * @param {HTMLElement|SVGElement} item 
+     * @param {PlainObject} state 
+     */
     [symbols.itemMatchesState](item, state) {
       const base = super[symbols.itemMatchesState] ?
         super[symbols.itemMatchesState](item, state) :

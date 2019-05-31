@@ -1,4 +1,5 @@
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js';
 
 
 /**
@@ -35,6 +36,7 @@ import * as symbols from './symbols.js';
  * has the effect of adding the component to the tab order in document order.
  *
  * @module KeyboardMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function KeyboardMixin(Base) {
 
@@ -80,12 +82,12 @@ export default function KeyboardMixin(Base) {
     /**
      * See the [symbols](symbols#keydown) documentation for details.
      */
-    [symbols.keydown](event) {
+    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
       if (super[symbols.keydown]) { return super[symbols.keydown](event); }
       return false;
     }
 
-    [symbols.render](changed) {
+    [symbols.render](/** @type {PlainObject} */changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.tabIndex) {
         this.tabIndex = this.state.tabIndex;

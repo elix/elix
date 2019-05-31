@@ -1,4 +1,5 @@
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 /**
@@ -21,6 +22,7 @@ import * as symbols from './symbols.js';
  * [ListBox](ListBox), [Modes](Modes), and [Tabs](Tabs).
  *
  * @module SlotContentMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function SlotContentMixin(Base) {
 
@@ -59,7 +61,7 @@ export default function SlotContentMixin(Base) {
      * See [symbols.contentSlot](symbols#contentSlot).
      */
     get [symbols.contentSlot]() {
-      const slot = this.shadowRoot && this.shadowRoot.querySelector('slot:not([name])');
+      /** @type {HTMLSlotElement|null} */ const slot = this.shadowRoot && this.shadowRoot.querySelector('slot:not([name])');
       if (!this.shadowRoot || !slot) {
         /* eslint-disable no-console */
         console.warn(`SlotContentMixin expects ${this.constructor.name} to define a shadow tree that includes a default (unnamed) slot.\nSee https://elix.org/documentation/SlotContentMixin.`);

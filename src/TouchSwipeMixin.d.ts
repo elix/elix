@@ -7,7 +7,7 @@ import * as symbols from './symbols.js';
 
 declare const TouchSwipeMixin: StateMixin<{}, {},
   {
-    [symbols.swipeTarget]: Element;
+    [symbols.swipeTarget]: HTMLElement;
   },
   {
     swipeFraction: number

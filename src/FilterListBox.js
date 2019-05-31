@@ -48,8 +48,13 @@ class FilterListBox extends ListBox {
     this[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
   }
 
+  /**
+   * @private
+   * @param {string} textToHighlight 
+   * @param {HTMLElement|SVGElement} item 
+   */
   highlightTextInItem(textToHighlight, item) {
-    const text = item.textContent;
+    const text = item.textContent || '';
     const start = textToHighlight ?
       text.toLowerCase().indexOf(textToHighlight.toLowerCase()) :
       -1;
@@ -70,7 +75,12 @@ class FilterListBox extends ListBox {
     }
   }
 
-  // An item only matches state if it passes the filter.
+  /**
+   * Returns true if the given item should be shown in the indicated state.
+   * 
+   * @param {HTMLElement|SVGElement} item 
+   * @param {PlainObject} state 
+   */
   [symbols.itemMatchesState](item, state) {
     const base = super[symbols.itemMatchesState] ?
       super[symbols.itemMatchesState](item, state) :
@@ -87,7 +97,7 @@ class FilterListBox extends ListBox {
         text.includes(filter);
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     const { content, filter } = this.state;
     // We inspect `content` instead of `items` so that we can render even those

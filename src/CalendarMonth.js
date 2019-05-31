@@ -118,7 +118,7 @@ class CalendarMonth extends Base {
     });
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.locale) {
       const locale = this.state.locale;

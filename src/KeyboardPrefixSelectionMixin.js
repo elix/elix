@@ -1,5 +1,6 @@
-import * as symbols from './symbols.js';
 import { TYPING_TIMEOUT_DURATION } from './constants.js';
+import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 // Symbols for private data members on an element.
@@ -43,6 +44,7 @@ const prefixTimeoutKey = Symbol('prefixTimeout');
  * `textContent` of those items will be used for purposes of prefix matching.
  *
  * @module KeyboardPrefixSelectionMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function KeyboardPrefixSelectionMixin(Base) {
 
@@ -55,7 +57,7 @@ export default function KeyboardPrefixSelectionMixin(Base) {
       resetTypedPrefix(this);
     }
 
-    [symbols.keydown](event) {
+    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
       let handled;
 
       switch (event.key) {
@@ -108,7 +110,12 @@ export default function KeyboardPrefixSelectionMixin(Base) {
   return KeyboardPrefixSelection;
 }
 
-// Handle the Backspace key: remove the last character from the prefix.
+/**
+ * Handle the Backspace key: remove the last character from the prefix.
+ * 
+ * @private
+ * @param {ReactiveElement} element
+ */
 function handleBackspace(element) {
   const length = element[typedPrefixKey] ? element[typedPrefixKey].length : 0;
   if (length > 0) {
@@ -118,7 +125,13 @@ function handleBackspace(element) {
   setPrefixTimeout(element);
 }
 
-// Add a plain character to the prefix.
+/**
+ * Add a plain character to the prefix.
+ * 
+ * @private
+ * @param {ReactiveElement} element
+ * @param {string} char
+ */
 function handlePlainCharacter(element, char) {
   const prefix = element[typedPrefixKey] || '';
   element[typedPrefixKey] = prefix + char;
@@ -126,7 +139,12 @@ function handlePlainCharacter(element, char) {
   setPrefixTimeout(element);
 }
 
-// Stop listening for typing.
+/**
+ * Stop listening for typing.
+ * 
+ * @private
+ * @param {ReactiveElement} element
+ */
 function resetPrefixTimeout(element) {
   if (element[prefixTimeoutKey]) {
     clearTimeout(element[prefixTimeoutKey]);
@@ -134,13 +152,23 @@ function resetPrefixTimeout(element) {
   }
 }
 
-// Clear the prefix under construction.
+/**
+ * Clear the prefix under construction.
+ * 
+ * @private
+ * @param {ReactiveElement} element
+ */
 function resetTypedPrefix(element) {
   element[typedPrefixKey] = '';
   resetPrefixTimeout(element);
 }
 
-// Wait for the user to stop typing.
+/**
+ * Wait for the user to stop typing.
+ * 
+ * @private
+ * @param {ReactiveElement} element
+ */
 function setPrefixTimeout(element) {
   resetPrefixTimeout(element);
   element[prefixTimeoutKey] = setTimeout(() => {

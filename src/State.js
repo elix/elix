@@ -6,7 +6,7 @@ const changeCallbacksKey = Symbol('changeCallbacks');
  */
 class State {
 
-  constructor(defaults) {
+  constructor(/** @type {PlainObject} */ defaults) {
     if (defaults) {
       applyStateChanges(this, defaults);
     }
@@ -90,6 +90,14 @@ class State {
 }
 
 
+/**
+ * Return true if the two values are equal.
+ * 
+ * @private
+ * @param {any} value1 
+ * @param {any} value2 
+ * @returns {boolean}
+ */
 function equal(value1, value2) {
   if (value1 instanceof Date && value2 instanceof Date) {
     return value1.getTime() === value2.getTime();
@@ -98,8 +106,14 @@ function equal(value1, value2) {
 }
 
 
-// Return a dictionary of flags indicating which of the indicated changes to the
-// state are actually changes. Return null if there were no changes.
+/**
+ * Return a dictionary of flags indicating which of the indicated changes to the
+ * state are actually changes. Return null if there were no changes.
+ * 
+ * @private
+ * @param {PlainObject} state
+ * @param {PlainObject} changes
+ */
 function fieldsChanged(state, changes) {
   let changed = null;
   for (const field in changes) {
@@ -114,10 +128,16 @@ function fieldsChanged(state, changes) {
 }
 
 
-// Destructively apply the indicated changes to the given state, running
-// any registered change handlers.
-// Return a dictionary of flags indicating which fields actually changed,
-// or null if there were no changes.
+/**
+ * Destructively apply the indicated changes to the given state, running
+ * any registered change handlers.
+ * Return a dictionary of flags indicating which fields actually changed,
+ * or null if there were no changes.
+ * 
+ * @private
+ * @param {PlainObject} state
+ * @param {PlainObject} changes
+ */
 function applyStateChanges(state, changes) {
   let result = null;
 
@@ -125,7 +145,7 @@ function applyStateChanges(state, changes) {
   // might produce new changes, and so on. Loop until we complete a pass that
   // produces no changes.
   for (
-    let changed;
+    /** @type {PlainObject} */ let changed;
     changed = fieldsChanged(state, changes), changed;
   ) {
 
@@ -142,10 +162,11 @@ function applyStateChanges(state, changes) {
     changes = {};
     if (state[changeCallbacksKey]) {
       // Get callbacks for fields that changed.
+      /** @type {function[]} */
       const callbacks = [];
       for (const field in changed) {
         const callbacksForField = state[changeCallbacksKey][field] || [];
-        callbacksForField.forEach(callback => {
+        callbacksForField.forEach((/** @type {function} */ callback) => {
           // A single callback may be triggered by multiple fields; only add a
           // callback to the list if it's not already there.
           // @ts-ignore
@@ -155,7 +176,7 @@ function applyStateChanges(state, changes) {
         });
       }
       // Run the callbacks and collect their changes.
-      const results = callbacks.map(callback => callback(state, changed));
+      const results = callbacks.map(callback => callback(state, /** @type {PlainObject} */ changed));
       // If the change handlers produced changes, we'll run the loop again.
       Object.assign(changes, ...results);
     }

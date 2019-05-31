@@ -83,7 +83,7 @@ class Menu extends Base {
     this.removeAttribute('tabindex');
   }
 
-  componentDidUpdate(changed) {
+    componentDidUpdate(/** @type {PlainObject} */ changed) {
     super.componentDidUpdate(changed);
     if (changed.selectedIndex && !this.state.selectionFocused) {
       // The selected item needs the focus, but this is complicated. See notes
@@ -136,7 +136,12 @@ class Menu extends Base {
     }
   }
 
-  // Filter the set of items to ignore disabled items.
+  /**
+   * Returns true if the given item should be shown in the indicated state.
+   * 
+   * @param {HTMLElement|SVGElement} item 
+   * @param {PlainObject} state 
+   */
   [symbols.itemMatchesState](item, state) {
     const base = super[symbols.itemMatchesState] ?
       super[symbols.itemMatchesState](item, state) :
@@ -144,7 +149,7 @@ class Menu extends Base {
     return base && !item.disabled;
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     const { selectedIndex, items } = this.state;    
     if ((changed.items || changed.selectedIndex) && items) {

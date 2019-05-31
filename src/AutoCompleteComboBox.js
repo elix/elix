@@ -25,7 +25,7 @@ class AutoCompleteComboBox extends Base {
     });
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.texts) {
       if ('texts' in this.$.input) {

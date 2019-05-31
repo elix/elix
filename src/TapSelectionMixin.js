@@ -1,5 +1,6 @@
 import { indexOfItemContainingTarget } from './utilities.js';
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js';
 
 
 /**
@@ -27,6 +28,7 @@ import * as symbols from './symbols.js';
  * true, a background tap will *not* remove the selection.
  *
  * @module TapSelectionMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function TapSelectionMixin(Base) {
   
@@ -58,7 +60,7 @@ export default function TapSelectionMixin(Base) {
       });
     }
 
-    [symbols.tap](event) {
+    [symbols.tap](/** @type {MouseEvent} */ event) {
       // In some situations, the event target will not be the child which was
       // originally clicked on. E.g., if the item clicked on is a button, the
       // event seems to be raised in phase 2 (AT_TARGET) — but the event target
@@ -74,7 +76,7 @@ export default function TapSelectionMixin(Base) {
       // which don't require a selection, a background click will determine
       // the item was null, in which we case we'll remove the selection.
       const { items, selectedIndex, selectionRequired } = this.state;
-      if (items) {
+      if (items && target instanceof Node) {
         const targetIndex = indexOfItemContainingTarget(items, target);
         if (targetIndex >= 0 || !selectionRequired &&
             selectedIndex !== targetIndex) {

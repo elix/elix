@@ -12,6 +12,10 @@
  */
 type Constructor<T> = new() => T;
 
+type IndexedObject<T> = {
+  [key: string]: T;
+}
+
 /*
  * An Elix mixin is a function that takes an existing class and returns a new
  * class.

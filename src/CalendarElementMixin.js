@@ -1,5 +1,6 @@
 import * as calendar from './calendar.js';
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 /**
@@ -11,13 +12,14 @@ import * as symbols from './symbols.js';
  * possible in the user's web browser.
  *
  * @module CalendarElementMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function CalendarElementMixin(Base) {
 
   // The class prototype added by the mixin.
   class CalendarElement extends Base {
 
-    componentDidUpdate(changed) {
+    componentDidUpdate(/** @type {PlainObject} */ changed) {
       if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
       // TODO: call calendar.datesEqual(date, previousState.date)?
       if (changed.date && this[symbols.raiseChangeEvents]) {

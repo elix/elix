@@ -16,9 +16,10 @@ class ListExplorer extends Explorer {
     });
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
-    const { items, proxies, proxiesAssigned } = this.state;
+    const { items, proxiesAssigned } = this.state;
+    /** @type {Element[]} */ const proxies = this.state.proxies;
     if ((changed.proxies || changed.items) && proxies && !proxiesAssigned) {
       // Update default proxy text from item labels.
       proxies.forEach((proxy, index) => {

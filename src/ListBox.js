@@ -79,7 +79,7 @@ class ListBox extends Base {
     this.setState({ orientation });
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.orientation) {
       // Update list orientation styling.

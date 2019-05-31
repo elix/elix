@@ -1,5 +1,6 @@
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import ReactiveElement from './ReactiveElement.js'
 import SeamlessButton from './SeamlessButton.js';
 
 
@@ -13,6 +14,7 @@ const wrap = Symbol('wrap');
  * 
  * @module PlayControlsMixin
  * @elementrole {SeamlessButton} controlButton
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function PlayControlsMixin(Base) {
 
@@ -39,7 +41,7 @@ export default function PlayControlsMixin(Base) {
     }
 
     // Pressing Space is the same as clicking the button.
-    [symbols.keydown](event) {
+    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
       let handled;
 
       switch (event.key) {
@@ -53,7 +55,7 @@ export default function PlayControlsMixin(Base) {
       return handled || (super[symbols.keydown] && super[symbols.keydown](event));
     }
 
-    [symbols.render](changed) {
+    [symbols.render](/** @type {PlainObject} */ changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.controlButtonRole) {
         const controlButtons = this.shadowRoot.querySelectorAll('.controlButton');

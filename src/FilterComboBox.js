@@ -58,7 +58,7 @@ class FilterComboBox extends Base {
     return state;
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.inputRole) {
       this.$.input.addEventListener('input', event => {

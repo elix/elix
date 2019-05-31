@@ -136,7 +136,7 @@ export function replace(original, replacement) {
       (replacement instanceof HTMLElement || replacement instanceof SVGElement)) {
     // Merge attributes from original to replacement, letting replacement win
     // conflicts. Handle classes and styles separately (below).
-    Array.prototype.forEach.call(original.attributes, attribute => {
+    Array.prototype.forEach.call(original.attributes, (/** @type {Attr} */ attribute) => {
       if (!replacement.getAttribute(attribute.name) &&
           attribute.name !== 'class' && attribute.name !== 'style') {
         replacement.setAttribute(attribute.name, attribute.value);
@@ -144,10 +144,10 @@ export function replace(original, replacement) {
     });
     // Copy classes/styles from original to replacement, letting replacement win
     // conflicts.
-    Array.prototype.forEach.call(original.classList, className => {
+    Array.prototype.forEach.call(original.classList, (/** @type {string} */ className) => {
       replacement.classList.add(className);
     });
-    Array.prototype.forEach.call(original.style, key => {
+    Array.prototype.forEach.call(original.style, (/** @type {number} */ key) => {
       if (!replacement.style[key]) {
         replacement.style[key] = original.style[key];
       }

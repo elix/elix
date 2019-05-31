@@ -1,7 +1,11 @@
+import ReactiveElement from './ReactiveElement.js'
+
+
 /**
  * Tracks the disabled state of a component that can be disabled
  * 
  * @module DisabledMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function DisabledMixin(Base) {
 
@@ -13,7 +17,7 @@ export default function DisabledMixin(Base) {
       reflectDisabledAttribute(this);
     }
 
-    componentDidUpdate(changed) {
+    componentDidUpdate(/** @type {PlainObject} */ changed) {
       if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
       if (changed.disabled) {
         reflectDisabledAttribute(this);
@@ -76,6 +80,6 @@ export default function DisabledMixin(Base) {
 
 
 // Reflect value of disabled property to the corresponding attribute.
-function reflectDisabledAttribute(element) {
+function reflectDisabledAttribute(/** @type {ReactiveElement} */ element) {
   element.toggleAttribute('disabled', element.disabled);
 }

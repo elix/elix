@@ -38,7 +38,7 @@ class ExpandablePanel extends Base {
     return [this.$.outerContainer];
   }
     
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.effect || changed.effectPhase || changed.enableEffects) {
       const { effect, effectPhase, enableEffects } = this.state;
@@ -48,6 +48,7 @@ class ExpandablePanel extends Base {
 
       // The effect phase (before, during, after) determines which height we apply
       // to the outer container.
+      /** @type {IndexedObject<PlainObject>} */
       const phaseHeights = {
         'open': {
           'before': '0px',

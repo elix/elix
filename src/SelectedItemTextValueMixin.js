@@ -1,3 +1,6 @@
+import ReactiveElement from './ReactiveElement.js'
+
+
 /**
  * Defines a component's value as the text content of the selected item.
  *
@@ -15,13 +18,14 @@
  * from [SingleSelectionMixin](SingleSelectionMixin).
  *
  * @module SelectedItemTextValueMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function SelectedItemTextValueMixin(Base) {
 
   // The class prototype added by the mixin.
   class SelectedItemTextValue extends Base {
 
-    componentDidUpdate(changed) {
+    componentDidUpdate(/** @type {PlainObject} */ changed) {
       if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
       const { items, pendingValue } = this.state;
       if (pendingValue && items) {
@@ -66,6 +70,11 @@ export default function SelectedItemTextValueMixin(Base) {
 }
 
 
+/**
+ * @private
+ * @param {Element[]} items 
+ * @param {string} text 
+ */
 function indexOfItemWithText(items, text) {
   return items.findIndex(item => item.textContent === text);
 }

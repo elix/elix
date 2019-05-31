@@ -47,7 +47,7 @@ class PopupButton extends Base {
     });
   }
 
-  [symbols.keydown](event) {
+  [symbols.keydown](/** @type {KeyboardEvent} */ event) {
     let handled;
 
     switch (event.key) {
@@ -67,7 +67,7 @@ class PopupButton extends Base {
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.sourceRole) {
       // Desktop popups generally open on mousedown, not click/mouseup. On mobile,

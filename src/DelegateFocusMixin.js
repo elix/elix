@@ -1,5 +1,6 @@
 import { firstFocusableElement } from './utilities.js';
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 /**
@@ -9,6 +10,7 @@ import * as symbols from './symbols.js';
  * root property. As of April 2019, that property is only supported in Chrome.
  * 
  * @module DelegateFocusMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function DelegateFocusMixin(Base) {
 
@@ -21,7 +23,8 @@ export default function DelegateFocusMixin(Base) {
       // both the host and the focused subelement — which seems confusing and
       // (in our opinion) looks ugly. If the browser supports delegatesFocus we
       // suppress the host focus outline.
-      if (this.shadowRoot.delegatesFocus) {
+      /** @type {any} */ const cast = this.shadowRoot;
+      if (cast.delegatesFocus) {
         this.style.outline = 'none';
       }
     }
@@ -39,10 +42,16 @@ export default function DelegateFocusMixin(Base) {
       return true;
     }
 
-    // If someone tries to put the focus on us, delegate the focus to the first
-    // focusable element in the composed tree below our shadow root.
+    /**
+     * If someone tries to put the focus on us, delegate the focus to the first
+     * focusable element in the composed tree below our shadow root.
+     * 
+     * @private
+     * @param {FocusOptions=} focusOptions
+     */
     focus(focusOptions) {
-      if (this.shadowRoot.delegatesFocus) {
+      /** @type {any} */ const cast = this.shadowRoot;
+      if (cast.delegatesFocus) {
         // Native support for delegatesFocus, so don't need to do anything.
         super.focus(focusOptions);
         return;
@@ -54,7 +63,8 @@ export default function DelegateFocusMixin(Base) {
     }
 
     get [symbols.focusTarget]() {
-      return this.shadowRoot.delegatesFocus ?
+      /** @type {any} */ const cast = this.shadowRoot;
+      return cast.delegatesFocus ?
         this :
         firstFocusableElement(this.shadowRoot);
     }

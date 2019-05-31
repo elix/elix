@@ -103,7 +103,7 @@ class ListComboBox extends Base {
   // on KeyboardDirectionMixin. The latter supports Home and End, and we don't
   // want to handle those -- we want to let the text input handle them.
   // We also need to forward PageDown/PageUp to the list element.
-  [symbols.keydown](event) {
+    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
 
     let handled;
     /** @type {any} */
@@ -157,7 +157,7 @@ class ListComboBox extends Base {
     return this.$.list;
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.inputRole) {
       this.$.input.setAttribute('aria-autocomplete', 'both');

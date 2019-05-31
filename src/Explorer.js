@@ -10,6 +10,7 @@ import SlotItemsMixin from './SlotItemsMixin.js';
 
 
 // Does a list position imply a lateral arrangement of list and stage?
+/** @type {IndexedObject<boolean>} */
 const lateralPositions = {
   end: true,
   left: true,
@@ -106,14 +107,15 @@ class Explorer extends Base {
     return state;
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
-    const handleSelectedIndexChanged = event => {
+    const handleSelectedIndexChanged = (/** @type {CustomEvent} */ event) => {
       // The proxy list and stage may raise events before they've actually
       // had a chance to sync up their items to reflect the current state
       // of the explorer component, so we only handle their events if
       // their count of items matches ours.
-      if (this.items.length === event.target.items.length) {
+      /** @type {any} */ const cast = event.target;
+      if (cast && this.items.length === cast.items.length) {
         const selectedIndex = event.detail.selectedIndex;
         if (this.selectedIndex !== selectedIndex) {
           this[symbols.raiseChangeEvents] = true;
@@ -330,7 +332,13 @@ class Explorer extends Base {
 }
 
 
-// Return the default list generated for the given items.
+/**
+ * Return the default list generated for the given items.
+ * 
+ * @private
+ * @param {(HTMLElement|SVGElement)[]} items
+ * @param {Role} proxyRole
+ */
 function createDefaultProxies(items, proxyRole) {
   const proxies = items ?
     items.map(() => template.createElement(proxyRole)) :
@@ -341,20 +349,35 @@ function createDefaultProxies(items, proxyRole) {
 }
 
 
-// Find the child of root that is or contains the given node.
+/**
+ * Find the child of root that is or contains the given node.
+ * 
+ * @private
+ * @param {Node} root
+ * @param {Node} node
+ * @returns {Node|null}
+ */
 function findChildContainingNode(root, node) {
   const parentNode = node.parentNode;
   return parentNode === root ?
     node :
-    findChildContainingNode(root, parentNode);
+    parentNode ?
+      findChildContainingNode(root, parentNode) :
+      null;
 }
 
 
-// Physically reorder the list and stage to reflect the desired arrangement. We
-// could change the visual appearance by reversing the order of the flex box,
-// but then the visual order wouldn't reflect the document order, which
-// determines focus order. That would surprise a user trying to tab through the
-// controls.
+/**
+ * Physically reorder the list and stage to reflect the desired arrangement. We
+ * could change the visual appearance by reversing the order of the flex box,
+ * but then the visual order wouldn't reflect the document order, which
+ * determines focus order. That would surprise a user trying to tab through the
+ * controls.
+ * 
+ * @private
+ * @param {Explorer} element
+ * @param {PlainObject} state
+ */
 function setListAndStageOrder(element, state) {
   const { proxyListPosition, rightToLeft } = state;
   const listInInitialPosition =
@@ -367,7 +390,8 @@ function setListAndStageOrder(element, state) {
   const list = findChildContainingNode(container, element.$.proxyList);
   const firstElement = listInInitialPosition ? list : stage;
   const lastElement = listInInitialPosition ? stage : list;
-  if (firstElement.nextElementSibling !== lastElement) {
+  if (firstElement && lastElement &&
+      firstElement.nextElementSibling !== lastElement) {
     element.$.explorerContainer.insertBefore(firstElement, lastElement);
   }
 }

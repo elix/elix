@@ -1,10 +1,12 @@
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 /**
  * Exposes the text content of a list's items as an array of strings.
  *
  * @module ItemsTextMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function ItemsTextMixin(Base) {
 
@@ -30,8 +32,15 @@ export default function ItemsTextMixin(Base) {
       return state;
     }
 
-    // Default implementation returns an item's `alt` attribute or its
-    // `textContent`, in that order.
+    /**
+     * Extract the text from the given item.
+     * 
+     * The default implementation returns an item's `alt` attribute or its
+     * `textContent`, in that order.
+     *
+     * @param {(HTMLElement|SVGElement)} item 
+     * @returns {string|null}
+     */
     [symbols.getItemText](item) {
       return getItemText(item);
     }
@@ -41,11 +50,23 @@ export default function ItemsTextMixin(Base) {
 }
 
 
+/**
+ * Extract the text from the given item.
+ * 
+ * @private
+ * @param {HTMLElement|SVGElement} item 
+ */
 export function getItemText(item) {
   return item.getAttribute('alt') || item.textContent;
 }
 
 
+/**
+ * Extract the text from the given items.
+ * 
+ * @private
+ * @param {(HTMLElement|SVGElement)[]} items
+ */
 export function getTextsFromItems(items, getText = getItemText) {
   return items ?
     Array.from(items, item => getText(item)) :

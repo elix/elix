@@ -1,7 +1,11 @@
+import ReactiveElement from './ReactiveElement.js'
+
+
 /**
  * Lets an element determine whether it resides in right-to-left text.
  *
  * @module LanguageDirectionMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function LanguageDirectionMixin(Base) {
 

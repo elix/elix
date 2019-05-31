@@ -152,6 +152,13 @@ class DateInput extends Base {
     return state;
   }
 
+  /**
+   * Format the given date as text.
+   * 
+   * @private
+   * @param {Date} date 
+   * @param {Intl.DateTimeFormat} dateTimeFormat 
+   */
   formatDate(date, dateTimeFormat) {
     return dateTimeFormat.format(date);
   }
@@ -168,6 +175,14 @@ class DateInput extends Base {
     this[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
   }
 
+  /**
+   * Parse the given text as a Date.
+   * 
+   * @private
+   * @param {string} text 
+   * @param {Intl.DateTimeFormat} dateTimeFormat 
+   * @param {'future'|'past'} timeBias 
+   */
   parseDate(text, dateTimeFormat, timeBias) {
     return calendar.parseWithOptionalYear(text, dateTimeFormat, timeBias);
   }

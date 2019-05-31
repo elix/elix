@@ -1,4 +1,5 @@
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 // A cache of processed templates, indexed by element class.
@@ -32,6 +33,7 @@ const shadowReferencesKey = Symbol('shadowReferences');
  * `this.$.foo` that points to that button.
  *
  * @module ShadowTemplateMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function ShadowTemplateMixin(Base) {
 
@@ -57,7 +59,7 @@ export default function ShadowTemplateMixin(Base) {
         this[shadowReferencesKey] = new Proxy({}, {
           /* eslint-disable no-unused-vars */
           get(target, property, receiver) {
-            return element.shadowRoot ?
+            return element.shadowRoot && typeof property === 'string' ?
               element.shadowRoot.getElementById(property) :
               null;
           }
@@ -70,7 +72,7 @@ export default function ShadowTemplateMixin(Base) {
      * If the component defines a template, a shadow root will be created on the
      * component instance, and the template stamped into it.
      */
-    [symbols.render](changed) {
+    [symbols.render](/** @type {PlainObject} */ changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
       if (this.shadowRoot) {
         // Already rendered

@@ -6,8 +6,20 @@ import ReactiveElement from './ReactiveElement.js';
 
 
 const extendsKey = Symbol('extends');
-// const renderedKey = Symbol('rendered');
 
+
+/* True if a standard element is focusable by default. */
+/** @type {IndexedObject<boolean>} */
+const focusableByDefault = {
+  a: true,
+  area: true,
+  button: true,
+  details: true,
+  iframe: true,
+  input: true,
+  select: true,
+  textarea: true
+};
 
 /*
  * A set of events which, if fired by the inner standard element, should be
@@ -29,6 +41,7 @@ const extendsKey = Symbol('extends');
  * work as expected, but it was easier to include them for completeness than
  * to actually verify whether or not the element can be wrapped.
  */
+/** @type {IndexedObject<string[]>} */
 const reraiseEvents = {
   address: ['scroll'],
   blockquote: ['scroll'],
@@ -84,6 +97,7 @@ const mouseEventNames = [
 
 
 // Keep track of which re-raised events should bubble.
+/** @type {IndexedObject<boolean>} */
 const eventBubbles = {
   abort: true,
   change: true,
@@ -186,11 +200,19 @@ const Base =
  */
 class WrappedStandardElement extends Base {
 
-  // Wrapped standard elements need to forward some attributes to the inner
-  // element in cases where the attribute does not have a corresponding
-  // property. These attributes include those prefixed with "aria-", and some
-  // unusual standard attributes like contenteditable. To handle those, this
-  // class defines its own attributeChangedCallback.
+  /**
+   * 
+   * Wrapped standard elements need to forward some attributes to the inner
+   * element in cases where the attribute does not have a corresponding
+   * property. These attributes include those prefixed with "aria-", and some
+   * unusual standard attributes like contenteditable. To handle those, this
+   * class defines its own attributeChangedCallback.
+   * 
+   * @private
+   * @param {string} name
+   * @param {string} oldValue
+   * @param {string} newValue
+   */
   attributeChangedCallback(name, oldValue, newValue) {
     const forwardAttribute = attributesWithoutProperties.indexOf(name) >= 0;
     if (forwardAttribute) {
@@ -266,21 +288,16 @@ class WrappedStandardElement extends Base {
   }
 
   get [symbols.defaultTabIndex]() {
-    const focusableByDefault = {
-      a: true,
-      area: true,
-      button: true,
-      details: true,
-      iframe: true,
-      input: true,
-      select: true,
-      textarea: true
-    };
     return focusableByDefault[this.extends] ?
       0 :
       -1;
   }
 
+  /**
+   * The tag name of the standard HTML element extended by this class.
+   * 
+   * @returns {string}
+   */
   get extends() {
     return this.constructor[extendsKey];
   }
@@ -300,6 +317,12 @@ class WrappedStandardElement extends Base {
     return result;
   }
   
+  /**
+   * Return the value of the named property on the inner standard element.
+   * 
+   * @param {string} name
+   * @returns {any}
+   */
   getInnerProperty(name) {
     // If we haven't rendered yet, use internal state value. Once we've
     // rendered, we get the value from the wrapped element itself. Return our
@@ -329,7 +352,7 @@ class WrappedStandardElement extends Base {
     return [...super.observedAttributes, ...attributesWithoutProperties];
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     const inner = this.inner;
     if (changed.tabIndex) {
@@ -353,7 +376,12 @@ class WrappedStandardElement extends Base {
     }
   }
 
-  // Save property assignment in state.
+  /**
+   * Set the named property on the inner standard element.
+   * 
+   * @param {string} name 
+   * @param {any} value 
+   */
   setInnerProperty(name, value) {
     // We normally don't check an existing state value before calling setState,
     // relying instead on setState to do that check for us. However, we have
@@ -441,12 +469,18 @@ class WrappedStandardElement extends Base {
 }
 
 
-// Update the given attribute on an element.
-// 
-// Passing a non-null `value` acts like a call to `setAttribute(name, value)`.
-// If the supplied `value` is nullish, this acts like a call to
-// `removeAttribute(name)`.
-//
+/**
+ * Update the given attribute on an element.
+ * 
+ * Passing a non-null `value` acts like a call to `setAttribute(name, value)`.
+ * If the supplied `value` is nullish, this acts like a call to
+ * `removeAttribute(name)`.
+ * 
+ * @private
+ * @param {HTMLElement} element
+ * @param {string} name
+ * @param {string} value
+ */
 export function applyAttribute(element, name, value) {
   if (booleanAttributes[name]) {
     // Boolean attribute
@@ -466,6 +500,13 @@ export function applyAttribute(element, name, value) {
 }
 
 
+/**
+ * Create a delegate for the method or property identified by the descriptor.
+ * 
+ * @private
+ * @param {string} name 
+ * @param {PropertyDescriptor} descriptor 
+ */
 function createDelegate(name, descriptor) {
   if (typeof descriptor.value === 'function') {
     if (name !== 'constructor') {
@@ -479,8 +520,15 @@ function createDelegate(name, descriptor) {
 }
 
 
+/**
+ * Create a delegate for the method identified by the descriptor.
+ * 
+ * @private
+ * @param {string} name 
+ * @param {PropertyDescriptor} descriptor 
+ */
 function createMethodDelegate(name, descriptor) {
-  const value = function(...args) {
+  const value = function(/** @type {any[]} */ ...args) {
     // @ts-ignore
     this.inner[name](...args);
   };
@@ -494,7 +542,15 @@ function createMethodDelegate(name, descriptor) {
 }
 
 
+/**
+ * Create a delegate for the property identified by the descriptor.
+ * 
+ * @private
+ * @param {string} name 
+ * @param {PropertyDescriptor} descriptor 
+ */
 function createPropertyDelegate(name, descriptor) {
+  /** @type {PlainObject} */
   const delegate = {
     configurable: descriptor.configurable,
     enumerable: descriptor.enumerable
@@ -505,7 +561,7 @@ function createPropertyDelegate(name, descriptor) {
     };
   }
   if (descriptor.set) {
-    delegate.set = function(value) {
+    delegate.set = function(/** @type {any} */ value) {
       this.setInnerProperty(name, value);
     };
   }
@@ -516,8 +572,14 @@ function createPropertyDelegate(name, descriptor) {
 }
 
 
-// Define delegates for the given class for each property/method on the
-// indicated prototype.
+/**
+ * Define delegates for the given class for each property/method on the
+ * indicated prototype.
+ * 
+ * @private
+ * @param {Constructor<Object>} cls
+ * @param {Object} prototype
+ */
 function defineDelegates(cls, prototype) {
   const names = Object.getOwnPropertyNames(prototype);
   names.forEach(name => {

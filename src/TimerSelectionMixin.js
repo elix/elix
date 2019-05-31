@@ -1,3 +1,6 @@
+import ReactiveElement from './ReactiveElement.js';
+
+
 /**
  * Automatically updates selection on a timer.
  * 
@@ -8,6 +11,7 @@
  * before the timer advances the selection.
  * 
  * @module TimerSelectionMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function TimerSelectionMixin(Base) {
 
@@ -19,7 +23,7 @@ export default function TimerSelectionMixin(Base) {
       updateTimer(this);
     }
     
-    componentDidUpdate(changed) {
+    componentDidUpdate(/** @type {PlainObject} */ changed) {
       if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
       updateTimer(this);
     }
@@ -99,7 +103,7 @@ export default function TimerSelectionMixin(Base) {
 }
 
 
-function clearTimer(element) {
+function clearTimer(/** @type {ReactiveElement} */ element) {
   if (element.state.timerTimeout) {
     clearTimeout(element.state.timerTimeout);
     element.setState({
@@ -108,7 +112,7 @@ function clearTimer(element) {
   }
 }
 
-function restartTimer(element) {
+function restartTimer(/** @type {ReactiveElement} */ element) {
   if (element.state.timerTimeout) {
     clearTimeout(element.state.timerTimeout);
   }
@@ -131,7 +135,7 @@ function restartTimer(element) {
 }
 
 // Update the timer to match the element's `playing` state.
-function updateTimer(element) {
+function updateTimer(/** @type {ReactiveElement} */ element) {
   // If the element is playing and we haven't started a timer yet, do so now.
   // Also, if the element's selectedIndex changed for any reason, restart the
   // timer. This ensures that the timer restarts no matter why the selection

@@ -40,8 +40,11 @@ class CalendarDays extends Base {
    * @param {Date} date - the date to search for
    */
   dayElementForDate(date) {
-    const days = this.days || [];
-    return days.find(day => calendar.datesEqual(day.date, date));
+    /** @type {Element[]} */ const days = this.days || [];
+    return days.find(day => {
+      /** @type {any} */ const cast = day;
+      return calendar.datesEqual(cast.date, date);
+    });
   }
 
   get dayCount() {
@@ -66,6 +69,11 @@ class CalendarDays extends Base {
     this.setState({ dayRole });
   }
 
+  /**
+   * The elements for the days being displayed.
+   * 
+   * @type {Element[]|null}
+   */
   get days() {
     return this.state.days;
   }
@@ -91,7 +99,7 @@ class CalendarDays extends Base {
     return state;
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.days) {
       applyChildNodes(this.$.dayContainer, this.state.days);
@@ -103,15 +111,16 @@ class CalendarDays extends Base {
       const selectedDate = date.getDate();
       const selectedMonth = date.getMonth();
       const selectedYear = date.getFullYear();
-      const days = this.days || [];
+      /** @type {Element[]} */ const days = this.days || [];
       days.forEach(day => {
         if ('selected' in day) {
-          const dayDate = day.date;
+          /** @type {any} */ const cast = day;
+          const dayDate = cast.date;
           const selected = showSelectedDay &&
             dayDate.getDate() === selectedDate &&
             dayDate.getMonth() === selectedMonth &&
             dayDate.getFullYear() === selectedYear;
-          day.selected = selected;
+          cast.selected = selected;
         }
       });
     }
@@ -185,8 +194,14 @@ class CalendarDays extends Base {
 }
 
 
-// Create days as necessary for the given state.
-// Reuse existing day elements to the degree possible.
+/**
+ * Create days as necessary for the given state.
+ * Reuse existing day elements to the degree possible.
+ * 
+ * @private
+ * @param {PlainObject} state
+ * @param {boolean} forceCreation
+ */
 function updateDays(state, forceCreation) {
   const { dayCount, dayRole, locale, showCompleteWeeks, startDate } = state;
   const workingStartDate = showCompleteWeeks ?

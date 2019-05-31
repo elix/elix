@@ -1,3 +1,6 @@
+import ReactiveElement from './ReactiveElement.js'
+
+
 /**
  * Simple foundation for component with visual effects
  * 
@@ -5,6 +8,7 @@
  * does not show visual effects when it is initially rendered.
  * 
  * @module EffectMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function EffectMixin(Base) {
 

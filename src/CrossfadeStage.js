@@ -28,7 +28,7 @@ class CrossfadeStage extends Base {
     });
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.enableEffects || changed.rightToLeft || changed.items ||
         changed.selectedIndex || changed.swipeFraction || changed.transitionDuration) {

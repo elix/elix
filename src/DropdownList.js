@@ -53,7 +53,7 @@ class DropdownList extends Base {
     return state;
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.itemRole) {
       if ('itemRole' in this.$.menu) {

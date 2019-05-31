@@ -56,7 +56,7 @@ class AutoCompleteInput extends Input {
     });
   }
 
-  componentDidUpdate(changed) {
+    componentDidUpdate(/** @type {PlainObject} */ changed) {
     super.componentDidUpdate(changed);
 
     const { autoCompleteSelect, originalText } = this.state;
@@ -92,6 +92,11 @@ class AutoCompleteInput extends Input {
     });
   }
 
+  /** 
+   * The set of texts the input will match against.
+   * 
+   * @type {string[]}
+   */
   get texts() {
     return this.state.texts;
   }
@@ -119,7 +124,7 @@ class AutoCompleteInput extends Input {
 }
 
 
-export function autoComplete(element) {
+export function autoComplete(/** @type {AutoCompleteInput} */ element) {
   const value = element.value.toLowerCase();
   const texts = element.texts;
   if (value.length === 0 || !texts) {

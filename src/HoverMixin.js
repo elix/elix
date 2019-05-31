@@ -1,4 +1,5 @@
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 /**
@@ -9,6 +10,7 @@ import * as symbols from './symbols.js';
  * beyond what's possible with the CSS `:hover` pseudo-class.
  * 
  * @module HoverMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function HoverMixin(Base) {
 
@@ -41,7 +43,7 @@ export default function HoverMixin(Base) {
     /**
      * See [symbols.mouseenter](symbols#mouseenter).
      */
-    [symbols.mouseenter](event) {
+    [symbols.mouseenter](/** @type {MouseEvent} */ event) {
       if (super[symbols.mouseenter]) { super[symbols.mouseenter](event); }
       this.setState({
         hover: true
@@ -51,7 +53,7 @@ export default function HoverMixin(Base) {
     /**
      * See [symbols.mouseenter](symbols#mouseenter).
      */
-    [symbols.mouseleave](event) {
+    [symbols.mouseleave](/** @type {MouseEvent} */ event) {
       if (super[symbols.mouseleave]) { super[symbols.mouseleave](event); }
       this.setState({
         hover: false

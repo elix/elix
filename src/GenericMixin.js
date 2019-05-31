@@ -1,4 +1,7 @@
-export default function GenericMixin(Base) {
+import ReactiveElement from './ReactiveElement.js';
+
+
+export default function GenericMixin(/** @type {Constructor<ReactiveElement>} */Base) {
 
   // The class prototype added by the mixin.
   return class Generic extends Base {

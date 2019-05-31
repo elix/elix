@@ -39,7 +39,7 @@ class PullToRefresh extends Base {
   componentDidMount() {
     super.componentDidMount();
     // Listen to scroll events in case the user scrolls up past the page's top.
-    let scrollTarget = getScrollableElement(this) || window;
+    let scrollTarget = getScrollableElement(this) || document.body;
     scrollTarget.addEventListener('scroll', async () => {
       this[symbols.raiseChangeEvents] = true;
       await handleScrollPull(this, scrollTarget);
@@ -47,7 +47,7 @@ class PullToRefresh extends Base {
     });
   }
 
-  componentDidUpdate(changed) {
+    componentDidUpdate(/** @type {PlainObject} */ changed) {
     super.componentDidUpdate(changed);
     if (this.state.swipeFraction > 0 &&
       !this.state.refreshing && !this.state.pullTriggeredRefresh) {
@@ -113,7 +113,7 @@ class PullToRefresh extends Base {
     return state;
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.pullIndicatorRole) {
       template.transmute(this.$.pullIndicator, this.pullIndicatorRole);
@@ -248,7 +248,12 @@ class PullToRefresh extends Base {
 }
 
 
-// Calculate how far the user must drag before we trigger a refresh.
+/**
+ * Calculate how far the user must drag before we trigger a refresh.
+ * 
+ * @private
+ * @param {PullToRefresh} element
+ */
 function getSwipeThreshold(element) {
   return element.$.refreshIndicators instanceof HTMLElement ?
     element.$.refreshIndicators.offsetHeight :
@@ -256,9 +261,15 @@ function getSwipeThreshold(element) {
 }
 
 
-// For a given swipe fraction (percentage of the element's swipe target's
-// height), return the distance of the vertical translation we should apply to
-// the swipe target.
+/**
+ * For a given swipe fraction (percentage of the element's swipe target's
+ * height), return the distance of the vertical translation we should apply to
+ * the swipe target.
+ * 
+ * @private
+ * @param {PlainObject} state
+ * @param {HTMLElement} swipeTarget
+ */
 function getTranslationForSwipeFraction(state, swipeTarget) {
 
   const {
@@ -282,19 +293,22 @@ function getTranslationForSwipeFraction(state, swipeTarget) {
 }
 
 
-// If a user flicks down to quickly scroll up, and scrolls past the top of the
-// page, the area above the page may be shown briefly. We use that opportunity
-// to show the user the refresh header so they'll realize they can pull to
-// refresh. We call this operation a "scroll pull". It works a little like a
-// real touch drag, but cannot trigger a refresh.
-//
-// We can only handle a scroll pull in a browser like Mobile Safari that gives
-// us scroll events past the top of the page.
-//
+/**
+ * If a user flicks down to quickly scroll up, and scrolls past the top of the
+ * page, the area above the page may be shown briefly. We use that opportunity
+ * to show the user the refresh header so they'll realize they can pull to
+ * refresh. We call this operation a "scroll pull". It works a little like a
+ * real touch drag, but cannot trigger a refresh.
+ *
+ * We can only handle a scroll pull in a browser like Mobile Safari that gives
+ * us scroll events past the top of the page.
+ * 
+ * @private
+ * @param {ReactiveElement} element
+ * @param {HTMLElement} scrollTarget
+ */
 async function handleScrollPull(element, scrollTarget) {
-  const scrollTop = scrollTarget === window ?
-    document.body.scrollTop :
-    scrollTarget.scrollTop;
+  const scrollTop = scrollTarget.scrollTop;
   if (scrollTop < 0) {
     // Negative scroll top means we're probably in WebKit.
     // Start a scroll pull operation.

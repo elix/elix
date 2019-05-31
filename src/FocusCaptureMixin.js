@@ -1,6 +1,7 @@
 import { firstFocusableElement } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 // Symbols for private data members on an element.
@@ -24,10 +25,11 @@ const wrappingFocusKey = Symbol('wrappingFocus');
  * See that discussion for details on how to use such a mixin.
  * 
  * @module FocusCaptureMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
-function FocusCaptureMixin(base) {
+function FocusCaptureMixin(Base) {
 
-  class FocusCapture extends base {
+  class FocusCapture extends Base {
 
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
@@ -42,7 +44,7 @@ function FocusCaptureMixin(base) {
       });
     }
 
-    [symbols.keydown](event) {
+    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
       const firstElement = firstFocusableElement(this.shadowRoot);
       const onFirstElement = document.activeElement === firstElement ||
         this.shadowRoot.activeElement === firstElement;

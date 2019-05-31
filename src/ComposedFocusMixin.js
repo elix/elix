@@ -1,4 +1,5 @@
 import { closestFocusableAncestor } from './utilities.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 // Quick detection of whether we'll need to handle focus.
@@ -28,6 +29,7 @@ const nativeDelegatesFocus = shadowRoot.delegatesFocus;
  * focus and put the focus on it.
  * 
  * @module ComposedFocusMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function ComposedFocusMixin(Base) {
 
@@ -44,10 +46,12 @@ export default function ComposedFocusMixin(Base) {
         if (event.button !== 0) {
           return;
         }
-        const target = closestFocusableAncestor(event.target);
-        if (target) {
-          target.focus();
-          event.preventDefault();
+        if (event.target instanceof Element) {
+          const target = closestFocusableAncestor(event.target);
+          if (target) {
+            target.focus();
+            event.preventDefault();
+          }
         }
       });
     }

@@ -15,7 +15,7 @@ import CenteredStrip from './CenteredStrip.js';
  */
 class CenteredStripHighlight extends CenteredStrip {
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.items || changed.selectedIndex) {
       // Apply `selected` style to the selected item only.

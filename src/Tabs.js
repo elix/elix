@@ -38,9 +38,10 @@ class Tabs extends Base {
     });
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
-    const { items, proxies } = this.state;
+    const { items } = this.state;
+    /** @type {Element[]} */ const proxies = this.state.proxies;
     if ((changed.items || changed.proxies)
       && items && proxies) {
 
@@ -99,8 +100,9 @@ class Tabs extends Base {
         proxies) {
       if (!this.state.proxiesAssigned) {
         proxies.forEach(proxy => {
-          if ('generic' in proxy) {
-            proxy.generic = this.state.generic;
+          /** @type {any} */ const cast = proxy;
+          if ('generic' in cast) {
+            cast.generic = this.state.generic;
           }
         });
       }

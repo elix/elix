@@ -3,7 +3,9 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const PlayControlsMixin: Mixin<{}, {}> & {
+declare const PlayControlsMixin: Mixin<{}, {
+  controlButtonRole: Role;
+}> & {
   wrap: symbol;
 };
 

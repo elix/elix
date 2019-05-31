@@ -30,6 +30,12 @@ const defaultRegion = '001';
 export const millisecondsPerDay = 24 * 60 * 60 * 1000;
 
 
+/**
+ * Create a `DateTimeFormat` object for the given location and options.
+ * 
+ * @param {string} locale
+ * @param {Intl.DateTimeFormatOptions} options
+ */
 export function dateTimeFormat(locale, options) {
   const caExtension = locale.includes('-ca-') ? '' : '-ca-gregory';
   const nuExtension = locale.includes('-nu-') ? '' : '-nu-latn';
@@ -58,6 +64,12 @@ export function datesEqual(date1, date2) {
 }
 
 
+/**
+ * Return the number of days between the two dates.
+ * 
+ * @param {Date} date1 
+ * @param {Date} date2 
+ */
 export function daysBetweenDates(date1, date2) {
   const days = Math.round((date2.getTime() - date1.getTime()) / millisecondsPerDay);
   return days;
@@ -129,6 +141,15 @@ export function firstDateOfMonth(date) {
 }
 
 
+/**
+ * Format the given date using the `DateTimeFormatOptions`.
+ * 
+ * The `options` object includes a string `locale` and a `dateTimeFormatOptions`
+ * of type `DateTimeFormatOptions`.
+ * 
+ * @param {Date} date 
+ * @param {PlainObject} options 
+ */
 export function formatDate(date, options) {
   const { locale, dateTimeFormatOptions } = options;
   const format = dateTimeFormat(locale, dateTimeFormatOptions);
@@ -217,7 +238,7 @@ export function noonOnDate(date) {
 export function parse(text, dateTimeFormat) {
   const today = new Date();
   // @ts-ignore
-  const parts = dateTimeFormat.formatToParts(today);
+  /** @type {any[]} */ const parts = dateTimeFormat.formatToParts(today);
   // Convert parts to a regex.
   // For reference, literals/separators we need to support are: `/‏/.年月. -:`
   // (Those two slashes are different Unicode characters.) That said, since
@@ -237,7 +258,7 @@ export function parse(text, dateTimeFormat) {
     return null;
   }
   // Convert match values to (effectively) named capture groups.
-  const groups = {};
+  /** @type {PlainObject} */ const groups = {};
   parts.forEach((part, index) => {
     groups[part.type] = match[index + 1];
   });
@@ -399,7 +420,13 @@ export function weekendStart(locale) {
 }
 
 
-// Update the time on date2 to match date1.
+/**
+ * Update the time on date2 to match date1.
+ * 
+ * @private
+ * @param {Date} date1
+ * @param {Date} date2
+ */
 function copyTimeFromDateToDate(date1, date2) {
   date2.setHours(date1.getHours());
   date2.setMinutes(date1.getMinutes());
@@ -407,7 +434,7 @@ function copyTimeFromDateToDate(date1, date2) {
   date2.setMilliseconds(date1.getMilliseconds());
 }
 
-function getLocaleRegion(locale) {
+function getLocaleRegion(/** @type {string} */ locale) {
   const localeParts = locale ? locale.split('-') : null;
   return localeParts ? localeParts[1] : defaultRegion;
 }

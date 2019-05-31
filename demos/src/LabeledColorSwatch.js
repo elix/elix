@@ -12,7 +12,7 @@ const Base =
 
 class LabeledColorSwatch extends Base {
   
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.content) {
       const content = this.state.content;

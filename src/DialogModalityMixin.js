@@ -1,4 +1,5 @@
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 // Symbols for private data members.
@@ -22,6 +23,7 @@ const previousDocumentMarginRightKey = Symbol('previousDocumentMarginRight');
  * For modeless overlays, see `PopupModalityMixin` instead.
  * 
  * @module DialogModalityMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function DialogModalityMixin(Base) {
   return class DialogModality extends Base {
@@ -32,7 +34,7 @@ export default function DialogModalityMixin(Base) {
       });
     }
 
-    [symbols.keydown](event) {
+    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
       let handled = false;
 
       switch (event.key) {
@@ -50,7 +52,7 @@ export default function DialogModalityMixin(Base) {
       return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
     }
 
-    [symbols.render](changed) {
+    [symbols.render](/** @type {PlainObject} */ changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.opened) {
         if (this.state.opened && document.documentElement) {

@@ -1,5 +1,6 @@
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 const wrap = Symbol('wrap');
@@ -12,12 +13,13 @@ const wrap = Symbol('wrap');
  * their content as pages.
  * 
  * @module PageNumbersMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 function PageNumbersMixin(Base) {
 
   class PageNumbers extends Base {
 
-    [symbols.render](changed) {
+    [symbols.render](/** @type {PlainObject} */ changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.selectedIndex) {
         const { items, selectedIndex } = this.state;

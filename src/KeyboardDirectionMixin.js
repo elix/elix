@@ -1,4 +1,5 @@
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 /**
@@ -21,6 +22,7 @@ import * as symbols from './symbols.js';
  * property will constrain navigation to the horizontal or vertical axis.
  *
  * @module KeyboardDirectionMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function KeyboardDirectionMixin(Base) {
 
@@ -75,7 +77,7 @@ export default function KeyboardDirectionMixin(Base) {
       if (super[symbols.goUp]) { return super[symbols.goUp](); }
     }
 
-    [symbols.keydown](event) {
+    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
       let handled = false;
 
       const orientation = this.orientation;

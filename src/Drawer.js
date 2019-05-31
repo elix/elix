@@ -64,7 +64,7 @@ class Drawer extends Base {
     this.setState({ fromEdge });
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.backdropRole) {
       // Implicitly close on background clicks.
@@ -201,7 +201,7 @@ class Drawer extends Base {
 }
 
 
-function drawerAppearsFromLeftEdge(element) {
+function drawerAppearsFromLeftEdge(/** @type {Drawer} */ element) {
   const fromEdge = element.fromEdge;
   const rightToLeft = element.state.rightToLeft;
   return fromEdge === 'left' ||

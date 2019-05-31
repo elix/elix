@@ -1,5 +1,6 @@
 import { deepContains, ownEvent } from './utilities.js';
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 /** @type {any} */
@@ -24,6 +25,7 @@ const implicitCloseListenerKey = Symbol('implicitCloseListener');
  * of that mixin for a comparison of modality behaviors.
  * 
  * @module PopupModalityMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function PopupModalityMixin(Base) {
 
@@ -40,7 +42,8 @@ export default function PopupModalityMixin(Base) {
         const newFocusedElement = event.relatedTarget || document.activeElement;
         /** @type {any} */
         const cast = this;
-        if (!deepContains(cast, newFocusedElement)) {
+        if (newFocusedElement instanceof Element &&
+            !deepContains(cast, newFocusedElement)) {
           this[symbols.raiseChangeEvents] = true;
           await this.close();
           this[symbols.raiseChangeEvents] = false;
@@ -48,7 +51,7 @@ export default function PopupModalityMixin(Base) {
       });
     }
 
-    componentDidUpdate(changed) {
+    componentDidUpdate(/** @type {PlainObject} */ changed) {
       if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
       if (changed.opened) {
         if (this.opened) {
@@ -95,7 +98,7 @@ export default function PopupModalityMixin(Base) {
     }
 
     // Close on Esc key.
-    [symbols.keydown](event) {
+    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
       let handled = false;
 
       switch (event.key) {
@@ -111,7 +114,7 @@ export default function PopupModalityMixin(Base) {
       return handled || (super.keydown && super.keydown(event)) || false;
     }
 
-    [symbols.render](changed) {
+    [symbols.render](/** @type {PlainObject} */ changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.role) {
         // Apply top-level role.
@@ -140,10 +143,10 @@ export default function PopupModalityMixin(Base) {
 }
 
 
-function addEventListeners(element) {
+function addEventListeners(/** @type {ReactiveElement} */ element) {
 
   // Close handlers for window events.
-  element[implicitCloseListenerKey] = async (event) => {
+  element[implicitCloseListenerKey] = async (/** @type {Event} */ event) => {
     const handleEvent = event.type !== 'resize' || element.state.closeOnWindowResize;
     if (!ownEvent(element, event) && handleEvent) {
       element[symbols.raiseChangeEvents] = true;
@@ -159,7 +162,7 @@ function addEventListeners(element) {
 }
 
 
-function removeEventListeners(element) {
+function removeEventListeners(/** @type {ReactiveElement} */ element) {
   if (element[implicitCloseListenerKey]) {
     window.removeEventListener('blur', element[implicitCloseListenerKey]);
     window.removeEventListener('resize', element[implicitCloseListenerKey]);

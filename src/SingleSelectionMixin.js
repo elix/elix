@@ -1,4 +1,5 @@
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 /**
@@ -16,6 +17,7 @@ import * as symbols from './symbols.js';
  * selection.
  *
  * @module SingleSelectionMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function SingleSelectionMixin(Base) {
 
@@ -42,7 +44,7 @@ export default function SingleSelectionMixin(Base) {
       return this.state.canSelectPrevious;
     }
 
-    componentDidUpdate(changed) {
+    componentDidUpdate(/** @type {PlainObject} */ changed) {
       if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
       if (changed.selectedIndex && this[symbols.raiseChangeEvents]) {
         const selectedIndex = this.state.selectedIndex;
@@ -261,6 +263,15 @@ export default function SingleSelectionMixin(Base) {
 }
 
 
+/**
+ * Force the indicated index to be between -1 and count - 1.
+ * 
+ * @private
+ * @param {number} index 
+ * @param {number} count 
+ * @param {boolean} selectionRequired 
+ * @param {boolean} selectionWraps 
+ */
 function validateIndex(index, count, selectionRequired, selectionWraps) {
   let validatedIndex;
   if (index === -1 && selectionRequired && count > 0) {
@@ -284,6 +295,14 @@ function validateIndex(index, count, selectionRequired, selectionWraps) {
 }
 
 
+/**
+ * Validate the given selected index and, if that's not the element's current
+ * selected index, update it.
+ * 
+ * @private
+ * @param {ReactiveElement} element 
+ * @param {number} selectedIndex 
+ */
 function updateSelectedIndex(element, selectedIndex) {
   const validatedIndex = validateIndex(
     selectedIndex,

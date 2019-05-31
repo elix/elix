@@ -5,18 +5,14 @@
 
 import * as symbols from './symbols.js';
 
-declare const SlotContentMixin: StateMixin<
-{
-  componentDidMount?(): void;
-},
-{},
-{
-  componentDidMount(): void;
-  contentSlot: HTMLSlotElement;
-  [symbols.contentSlot]: HTMLSlotElement;
-},
-{
-  content: Node[];
-}>;
+declare const SlotContentMixin: StateMixin<{}, {},
+  {
+    componentDidMount(): void;
+    [symbols.contentSlot]: HTMLSlotElement;
+  },
+  {
+    content: Node[];
+  }
+>;
 
 export default SlotContentMixin;

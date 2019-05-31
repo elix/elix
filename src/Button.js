@@ -58,7 +58,7 @@ class Button extends Base {
   // Pressing Enter or Space raises a click event, as if the user had clicked
   // the inner button.
   // TODO: Space should raise the click on *keyup*.
-  [symbols.keydown](event) {
+    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
     let handled;
     if (mapKeysToClick) {
       switch (event.key) {
@@ -82,7 +82,7 @@ class Button extends Base {
     return handled || (super[symbols.keydown] && super[symbols.keydown](event));
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.focusVisible) {
       // Override host `outline` style supplied by FocusVisibleMixin.

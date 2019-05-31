@@ -20,7 +20,7 @@ class SwipeDemo extends Base {
     });
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     const { swipeAxis, swipeFraction } = this.state;
     const vertical = swipeAxis === 'vertical';

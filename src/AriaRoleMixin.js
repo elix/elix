@@ -1,4 +1,5 @@
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 /**
@@ -14,13 +15,14 @@ import * as symbols from './symbols.js';
  * mixins, you do *not* need to use this mixin.
  *
  * @module AriaRoleMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function AriaRoleMixin(Base) {
 
   // The class prototype added by the mixin.
   class AriaRole extends Base {
 
-    [symbols.render](changed) {
+    [symbols.render](/** @type {PlainObject} */ changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.role) {
         // Apply top-level role.

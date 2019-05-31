@@ -56,10 +56,11 @@ class SlideshowWithPlayControls extends Base {
 
   componentDidMount() {
     super.componentDidMount();
-
+    
     // Clicking the slideshow toggles the playing state.
     this.addEventListener('click', () => {
       this[symbols.raiseChangeEvents] = true;
+      // @ts-ignore
       this.playing = !this.playing;
       this[symbols.raiseChangeEvents] = false;
     });

@@ -60,7 +60,7 @@ class HamburgerMenuButton extends Base {
 
   // When the menu is closed, pressing Enter or Space is the same as clicking
   // the menu button.
-  [symbols.keydown](event) {
+    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
     /** @type {any} */
     const menuButton = this.$.menuButton;
     
@@ -106,7 +106,7 @@ class HamburgerMenuButton extends Base {
     this.setState({ menuButtonRole });
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.menuButtonRole) {
       template.transmute(this.$.menuButton, this.state.menuButtonRole);

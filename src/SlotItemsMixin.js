@@ -1,4 +1,5 @@
 import ContentItemsMixin from './ContentItemsMixin.js';
+import ReactiveElement from './ReactiveElement.js'
 import SlotContentMixin from './SlotContentMixin.js';
 
 
@@ -12,6 +13,7 @@ import SlotContentMixin from './SlotContentMixin.js';
  * @module SlotItemsMixin
  * @mixes ContentItemsMixin
  * @mixes SlotContentMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function SlotItemsMixin(Base) {
   return ContentItemsMixin(SlotContentMixin(Base));

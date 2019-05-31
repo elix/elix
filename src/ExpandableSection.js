@@ -59,7 +59,7 @@ class ExpandableSection extends Base {
     this.setState({ panelRole });
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.headerRole) {
       template.transmute(this.$.header, this.state.headerRole);

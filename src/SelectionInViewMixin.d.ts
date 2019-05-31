@@ -6,7 +6,7 @@
 import * as symbols from './symbols.js';
 
 declare const SelectionInViewMixin: Mixin<{}, {
-  scrollItemIntoView(item: Element);
+  scrollItemIntoView(item: Element): void;
   [symbols.scrollTarget]: Element
 }>;
 

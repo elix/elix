@@ -1,4 +1,5 @@
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 import State from './State.js';
 
 
@@ -22,6 +23,7 @@ const changedSinceLastRender = new WeakMap();
  * FRP behavior comparable to React's.
  * 
  * @module ReactiveMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function ReactiveMixin(Base) {
   return class Reactive extends Base {
@@ -38,7 +40,7 @@ export default function ReactiveMixin(Base) {
       if (super.componentDidMount) { super.componentDidMount(); }
     }
 
-    componentDidUpdate(changed) {
+    componentDidUpdate(/** @type {PlainObject} */ changed) {
       if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
     }
 
@@ -134,7 +136,7 @@ export default function ReactiveMixin(Base) {
      * @param {object} changed - dictionary of flags indicating which state
      * members have changed since the last render
      */
-    [symbols.render](changed) {
+    [symbols.render](/** @type {PlainObject} */ changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
     }
 

@@ -1,10 +1,12 @@
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js';
 
 
 /**
  * Update state before, during, and after CSS transitions
  * 
  * @module TransitionEffectMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function TransitionEffectMixin(Base) {
 
@@ -24,7 +26,7 @@ export default function TransitionEffectMixin(Base) {
       });
     }
 
-    componentDidUpdate(changed) {
+    componentDidUpdate(/** @type {PlainObject} */ changed) {
       if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
       if (changed.effect || changed.effectPhase) {
         const { effect, effectPhase } = this.state;
@@ -91,6 +93,8 @@ export default function TransitionEffectMixin(Base) {
     
     /**
      * See [symbols.startEffect](symbols#startEffect).
+     * 
+     * @param {string} effect
      */
     async [symbols.startEffect](effect) {
       await this.setState({

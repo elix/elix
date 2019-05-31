@@ -13,7 +13,7 @@ class SampleDialog extends Dialog {
     });
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     if (super[symbols.render]) { super[symbols.render](changed); }
     if (changed.frameRole) {
       // Have the dialog close itself when the user clicks anywhere within it. In

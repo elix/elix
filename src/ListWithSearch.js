@@ -81,7 +81,7 @@ class ListWithSearch extends Base {
     return this.$.list;
   }
 
-  [symbols.keydown](event) {
+    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
 
     let handled;
     /** @type {any} */
@@ -157,7 +157,7 @@ class ListWithSearch extends Base {
     this.setState({ placeholder });
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.inputRole) {
       template.transmute(this.$.input, this.state.inputRole);

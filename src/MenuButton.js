@@ -76,7 +76,7 @@ class MenuButton extends PopupButton {
     }
   }
 
-  componentDidUpdate(changed) {
+    componentDidUpdate(/** @type {PlainObject} */ changed) {
     super.componentDidUpdate(changed);
     if (changed.opened) {
       if (this.state.opened) {
@@ -168,6 +168,11 @@ class MenuButton extends PopupButton {
     return menu ? menu.items : null;
   }
 
+  /**
+   * Invoked when a new item is selected.
+   * 
+   * @param {HTMLElement|SVGElement} item
+   */
   itemSelected(item) {
     /**
      * Raised when the user selects a menu item.
@@ -182,7 +187,7 @@ class MenuButton extends PopupButton {
     this.dispatchEvent(event);
   }
 
-  [symbols.keydown](event) {
+    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
 
     switch (event.key) {
       // When open, Enter closes popup.
@@ -236,7 +241,7 @@ class MenuButton extends PopupButton {
     this.setState({ menuRole });
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.popupRole) {
       this.$.popup.tabIndex = -1;
@@ -365,12 +370,12 @@ class MenuButton extends PopupButton {
 }
 
 
-function addDocumentListeners(element) {
+function addDocumentListeners(/** @type {MenuButton */ element) {
   document.addEventListener('mouseup', element[documentMouseupListenerKey]);
 }
 
 
-function removeDocumentListeners(element) {
+function removeDocumentListeners(/** @type {MenuButton */ element) {
   document.removeEventListener('mouseup', element[documentMouseupListenerKey]);
 }
 

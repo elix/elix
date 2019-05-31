@@ -90,7 +90,8 @@ class AutoSizeTextarea extends Base {
     state.onChange(['content', 'valueTracksContent'], (state, changed) => {
       if ((changed.content || changed.valueTracksContent)
           && state.valueTracksContent) {
-        const value = getTextFromContent(state.content);
+        /** @type {Node[]} */ const content = state.content;
+        const value = getTextFromContent(content);
         return {
           value
         };
@@ -135,7 +136,7 @@ class AutoSizeTextarea extends Base {
     }
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     const { copyStyle, lineHeight, minimumRows, value } = this.state;
     if (changed.copyStyle) {
@@ -247,7 +248,7 @@ class AutoSizeTextarea extends Base {
 
 
 // Return the text represented by the given content nodes.
-function getTextFromContent(contentNodes) {
+function getTextFromContent(/** @type {Node[]} */ contentNodes) {
   if (contentNodes === null) {
     return '';
   }
@@ -257,7 +258,7 @@ function getTextFromContent(contentNodes) {
 }
 
 
-function unescapeHtml(html) {
+function unescapeHtml(/** @type {string} */ html) {
   return html
     .replace(/&amp;/g, '&')
     .replace(/&lt;/g, '<')

@@ -34,7 +34,7 @@ export default function KeyboardPagedSelectionMixin(Base) {
   // The class prototype added by the mixin.
   class KeyboardPagedSelection extends Base {
 
-    [symbols.keydown](event) {
+    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
       let handled = false;
       const orientation = this.orientation;
       if (orientation !== 'horizontal') {

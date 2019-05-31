@@ -1,5 +1,6 @@
 import { deepContains, firstFocusableElement } from './utilities.js';
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 /** @type {any} */
@@ -16,6 +17,7 @@ const restoreFocusToElementKey = Symbol('restoreFocusToElement');
  * which in turn forms the basis of Elix's overlay components.
  * 
  * @module OverlayMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function OverlayMixin(Base) {
 
@@ -30,21 +32,23 @@ export default function OverlayMixin(Base) {
         const newFocusedElement = event.relatedTarget || document.activeElement;
         /** @type {any} */
         const node = this;
-        const focusInside = deepContains(node, newFocusedElement);
-        if (!focusInside) {
-          if (this.opened) {
-            // The user has most likely clicked on something in the background
-            // of a modeless overlay. Remember that element, and restore focus
-            // to it when the overlay finishes closing.
-            this[restoreFocusToElementKey] = newFocusedElement;
-          } else {
-            // A blur event fired, but the overlay closed itself before the blur
-            // event could be processed. In closing, we may have already
-            // restored the focus to the element that originally invoked the
-            // overlay. Since the user has clicked somewhere else to close the
-            // overlay, put the focus where they wanted it.
-            newFocusedElement.focus();
-            this[restoreFocusToElementKey] = null;
+        if (newFocusedElement instanceof HTMLElement) {
+          const focusInside = deepContains(node, newFocusedElement);
+          if (!focusInside) {
+            if (this.opened) {
+              // The user has most likely clicked on something in the background
+              // of a modeless overlay. Remember that element, and restore focus
+              // to it when the overlay finishes closing.
+              this[restoreFocusToElementKey] = newFocusedElement;
+            } else {
+              // A blur event fired, but the overlay closed itself before the blur
+              // event could be processed. In closing, we may have already
+              // restored the focus to the element that originally invoked the
+              // overlay. Since the user has clicked somewhere else to close the
+              // overlay, put the focus where they wanted it.
+              newFocusedElement.focus();
+              this[restoreFocusToElementKey] = null;
+            }
           }
         }
       });
@@ -63,7 +67,7 @@ export default function OverlayMixin(Base) {
       openedChanged(this);
     }
 
-    componentDidUpdate(changed) {
+    componentDidUpdate(/** @type {PlainObject} */ changed) {
       if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
       if (changed.opened) {
         openedChanged(this);
@@ -76,7 +80,7 @@ export default function OverlayMixin(Base) {
       });
     }
 
-    [symbols.render](changed) {
+    [symbols.render](/** @type {PlainObject} */ changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.effectPhase || changed.opened) {
         const closed = typeof this.closeFinished === 'undefined' ?
@@ -108,7 +112,7 @@ export default function OverlayMixin(Base) {
             // Pick a default z-index, remember it, and apply it.
             const defaultZIndex = maxZIndexInUse() + 1;
             this[defaultZIndexKey] = defaultZIndex;
-            this.style.zIndex = defaultZIndex;
+            this.style.zIndex = defaultZIndex.toString();
           }
         }
       }
@@ -144,7 +148,7 @@ function maxZIndexInUse() {
 
 
 // Update the overlay following a change in opened state.
-function openedChanged(element) {
+function openedChanged(/** @type {ReactiveElement} */ element) {
   if (element.state.autoFocus) {
     if (element.state.opened) {
       // Opened

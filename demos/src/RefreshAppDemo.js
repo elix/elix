@@ -45,7 +45,8 @@ class RefreshAppDemo extends ReactiveElement {
     }
     setTimeout(async () => {
       /** @type {any} */ (this.$.pullToRefresh).refreshing = false;
-      await playSound(this.$.refreshSound);
+      /** @type {any} */ const refreshSound = this.$.refreshSound;
+      await playSound(refreshSound);
       // Rotate last paragraph to first place.
       const paragraphs = [...this.state.paragraphs];
       const last = paragraphs.pop();
@@ -57,7 +58,7 @@ class RefreshAppDemo extends ReactiveElement {
     }, 1000);
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.paragraphs) {
       applyChildNodes(this.$.pullToRefresh, this.state.paragraphs);
@@ -99,7 +100,7 @@ class RefreshAppDemo extends ReactiveElement {
 }
 
 
-function createParagraphs(texts) {
+function createParagraphs(/** @type {string[]} */ texts) {
   const paragraphs = texts.map(text => {
     const paragraph = document.createElement('p');
     paragraph.textContent = text;
@@ -110,7 +111,7 @@ function createParagraphs(texts) {
 }
 
 
-async function playSound(sound) {
+async function playSound(/** @type {HTMLAudioElement} */ sound) {
   if (sound && sound.play) {
     try {
       await sound.play();

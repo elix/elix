@@ -30,7 +30,7 @@ class CalendarDayMoonPhase extends CalendarDay {
     `);
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.date) {
       // To determine quarter, we compare the moon's angle at midnight on the

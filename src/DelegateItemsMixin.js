@@ -1,4 +1,5 @@
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 const itemsChangedListenerKey = Symbol('itemsChangedListener');
@@ -10,6 +11,7 @@ const selectedIndexChangedListenerKey = Symbol('selectedIndexChangedListener');
  * Treats the items inside a shadow element as the component's own items.
  * 
  * @module DelegateItemsMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function DelegateItemsMixin(Base) {
 
@@ -47,7 +49,7 @@ export default function DelegateItemsMixin(Base) {
       listenToDelegateEvents(this);
     }
 
-    componentDidUpdate(changed) {
+    componentDidUpdate(/** @type {PlainObject} */ changed) {
       if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
       listenToDelegateEvents(this);
     }
@@ -67,7 +69,7 @@ export default function DelegateItemsMixin(Base) {
       return this.state ? this.state.items : null;
     }
 
-    [symbols.render](changed) {
+    [symbols.render](/** @type {PlainObject} */ changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.selectedIndex) {
         const itemsDelegate = this[symbols.itemsDelegate];
@@ -86,7 +88,7 @@ export default function DelegateItemsMixin(Base) {
 }
 
 
-function listenToDelegateEvents(element) {
+function listenToDelegateEvents(/** @type {ReactiveElement} */ element) {
   const itemsDelegate = element[symbols.itemsDelegate];
   const previousItemsDelegate = element[previousItemsDelegateKey];
   if (itemsDelegate !== previousItemsDelegate) {

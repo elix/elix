@@ -25,7 +25,7 @@ class PageDot extends Base {
     this.setAttribute('role', 'none');    
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     const { darkMode } = this.state;
     // Wait for knowledge of dark mode

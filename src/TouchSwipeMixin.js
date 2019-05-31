@@ -1,4 +1,5 @@
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js';
 
 
 /** @type {any} */
@@ -15,6 +16,7 @@ const startYKey = Symbol('startY');
  * Map touch events to swipe gestures.
  * 
  * @module TouchSwipeMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function TouchSwipeMixin(Base) {
 
@@ -168,14 +170,24 @@ export default function TouchSwipeMixin(Base) {
 }
 
 
-// Return true if the pointer event is for the pen, or the primary touch point.
+/**
+ * Return true if the pointer event is for the pen, or the primary touch point.
+ * 
+ * @private
+ * @param {PointerEvent} event
+ */
 function isEventForPenOrPrimaryTouch(event) {
   return event.pointerType === 'pen' ||
     (event.pointerType === 'touch' && event.isPrimary);
 }
 
-/*
+/**
  * Invoked when the user has moved during a touch operation.
+ * 
+ * @private
+ * @param {ReactiveElement} element 
+ * @param {number} clientX 
+ * @param {number} clientY 
  */
 function gestureContinue(element, clientX, clientY) {
 
@@ -229,8 +241,13 @@ function gestureContinue(element, clientX, clientY) {
   return true;
 }
 
-/*
+/**
  * Invoked when the user has finished a touch operation.
+ * 
+ * @private
+ * @param {ReactiveElement} element
+ * @param {number} clientX
+ * @param {number} clientY
  */
 /* eslint-disable no-unused-vars */
 function gestureEnd(element, clientX, clientY) {
@@ -270,8 +287,13 @@ function gestureEnd(element, clientX, clientY) {
   element.setState({ swipeFraction: null });
 }
 
-/*
+/**
  * Invoked when the user has begun a touch operation.
+ * 
+ * @private
+ * @param {ReactiveElement} element
+ * @param {number} clientX
+ * @param {number} clientY
  */
 function gestureStart(element, clientX, clientY) {
   element[startXKey] = clientX;
@@ -283,6 +305,14 @@ function gestureStart(element, clientX, clientY) {
   element.setState({ swipeFraction: 0 });
 }
 
+/**
+ * Return the fraction represented by the swipe to the given x/y.
+ * 
+ * @private
+ * @param {ReactiveElement} element 
+ * @param {number} x 
+ * @param {number} y 
+ */
 function getSwipeFraction(element, x, y) {
   const vertical = element.state.swipeAxis === 'vertical';
   const dragDistance = vertical ?
@@ -298,6 +328,13 @@ function getSwipeFraction(element, x, y) {
   return fraction;
 }
 
+/**
+ * Return true if any ancestor of the given element has been scrolled down.
+ * 
+ * @private
+ * @param {ReactiveElement} element 
+ * @returns {boolean}
+ */
 function isAnyAncestorScrolled(element) {
   if (element.scrollTop > 0) {
     return true;

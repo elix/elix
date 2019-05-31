@@ -3,10 +3,14 @@
 
 /// <reference path="shared.d.ts"/>
 
+import * as symbols from './symbols.js';
+
 declare const KeyboardMixin: StateMixin<
 {},
 {},
-{},
+{
+  [symbols.keydown](event: KeyboardEvent): boolean;
+},
 {
   tabIndex: number
 }>;

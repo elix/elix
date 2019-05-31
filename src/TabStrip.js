@@ -64,7 +64,7 @@ const Base =
  */
 class TabStrip extends Base {
 
-  componentDidUpdate(changed) {
+  componentDidUpdate(/** @type {PlainObject} */ changed) {
     super.componentDidUpdate(changed);
 
     // Does this component, or any of its assigned nodes, have focus?
@@ -101,7 +101,7 @@ class TabStrip extends Base {
     });
   }
 
-  [symbols.keydown](event) {
+  [symbols.keydown](/** @type {KeyboardEvent} */ event) {
 
     let handled;
 
@@ -111,11 +111,13 @@ class TabStrip extends Base {
       case ' ':
       case 'Enter':
         const { items, selectedIndex } = this.state;
-        const newIndex = items && items.indexOf(event.target);
-        this.setState({
-          selectedIndex: newIndex
-        });
-        handled = newIndex !== selectedIndex;
+        if (event.target instanceof HTMLElement) {
+          const newIndex = items && items.indexOf(event.target);
+          this.setState({
+            selectedIndex: newIndex
+          });
+          handled = newIndex !== selectedIndex;
+        }
         break;
     }
 
@@ -153,7 +155,7 @@ class TabStrip extends Base {
     });
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     const { items } = this.state;
     if (changed.items && items) {

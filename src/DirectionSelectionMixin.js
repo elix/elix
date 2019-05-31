@@ -1,4 +1,5 @@
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 /**
@@ -13,6 +14,7 @@ import * as symbols from './symbols.js';
  * [SingleSelectionMixin](SingleSelectionMixin).
  *
  * @module DirectionSelectionMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function DirectionSelectionMixin(Base) {
 

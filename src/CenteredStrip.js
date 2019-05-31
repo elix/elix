@@ -46,7 +46,7 @@ class CenteredStrip extends Base {
     return 'horizontal';
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.clientWidth || changed.enableEffects || changed.rightToLeft ||
         changed.selectedIndex || changed.swipeFraction) {

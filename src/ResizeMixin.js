@@ -1,8 +1,9 @@
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
-let resizeObserver;
-const windowResizeEntries = [];
+/** @type {any} */ let resizeObserver;
+/** @type {Element[]} */const windowResizeEntries = [];
 
 
 /**
@@ -22,6 +23,7 @@ const windowResizeEntries = [];
  * changed that forced a change in the component's size).
  * 
  * @module ResizeMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function ResizeMixin(Base) {
   return class Resize extends Base {
@@ -56,7 +58,7 @@ export default function ResizeMixin(Base) {
       this[symbols.checkSize]();
     }
     
-    componentDidUpdate(changed) {
+    componentDidUpdate(/** @type {PlainObject} */ changed) {
       if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
       this[symbols.checkSize]();
     }
@@ -83,7 +85,7 @@ export default function ResizeMixin(Base) {
 const Observer = window['ResizeObserver'];
 if (typeof Observer !== 'undefined') {
   // Use ResizeObserver.
-  resizeObserver = new Observer(entries => {
+  resizeObserver = new Observer((/** @type {any[]} */ entries) => {
     entries.forEach(entry => {
       // In theory, the "content size" reported by ResizeObserver appears to be
       // the same as the clientHeight/clientWidth. Neither should include

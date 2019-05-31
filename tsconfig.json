@@ -3,7 +3,7 @@
     "allowJs": true,
     "checkJs": true,
     "noEmit": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "strict": true,

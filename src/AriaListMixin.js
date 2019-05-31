@@ -1,6 +1,7 @@
 import { defaultAriaRole } from './accessibility.js';
 import { ensureId } from './idGeneration.js';
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'
 
 
 /**
@@ -34,6 +35,7 @@ import * as symbols from './symbols.js';
  * [SingleSelectionMixin](SingleSelectionMixin).
  *
  * @module AriaListMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function AriaListMixin(Base) {
 
@@ -55,9 +57,10 @@ export default function AriaListMixin(Base) {
       this.setState({ itemRole });
     }
 
-    [symbols.render](changed) {
+    [symbols.render](/** @type {PlainObject} */ changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
-      const { selectedIndex, itemRole, items } = this.state;
+      const { selectedIndex, itemRole } = this.state;
+      /** @type {(HTMLElement|SVGElement)[]} */ const items = this.state.items;
       if (changed.items && items) {
         // Give each item an ID.
         items.forEach(item => {
@@ -81,7 +84,7 @@ export default function AriaListMixin(Base) {
         if (items) {
           items.forEach((item, index) => {
             const selected = index === selectedIndex;
-            item.setAttribute('aria-selected', selected);
+            item.setAttribute('aria-selected', selected.toString());
           });
         }
         // Point the top element at the selected item.

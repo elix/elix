@@ -4,13 +4,15 @@
 /// <reference path="shared.d.ts"/>
 
 import State from './State.js';
+import * as symbols from './symbols.js';
 
 declare const ReactiveMixin: Mixin<{}, {
   componentDidMount(): void;
   componentDidUpdate(changed: PlainObject): void;
   connectedCallback(): void;
   defaultState: State;
-  render(changed: PlainObject): Promise<void>;
+  render(): void;
+  [symbols.render](changed: PlainObject): void;
   setState(changes: PlainObject): Promise<void>;
   state: State;
 }>;

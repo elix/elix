@@ -58,7 +58,7 @@ class TabButton extends Base {
     this.setState({ position });
   }
 
-  [symbols.render](changed) {
+  [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.generic) {
       this.$.inner.classList.toggle('generic', this.state.generic);
@@ -82,6 +82,7 @@ class TabButton extends Base {
       Object.assign(this.style, margins);
 
       // Adjust which corners are rounded.
+      /** @type {IndexedObject<string>} */
       const borderRadiusForPosition = {
         bottom: '0 0 0.25em 0.25em',
         left: '0.25em 0 0 0.25em',
@@ -95,6 +96,7 @@ class TabButton extends Base {
     if (changed.generic || changed.position || changed.selected) {
       // Adjust selected appearance.
       const { generic, position, selected } = this.state;
+      /** @type {IndexedObject<string|null>} */
       const buttonStyle = {
         borderBottomColor: null,
         borderLeftColor: null,
@@ -105,7 +107,8 @@ class TabButton extends Base {
       if (generic && selected) {
         // We style the border opposite the button's position: if the button is
         // on the left, we style the right border, and so on.
-        const borderColorSideForPosition = {
+      /** @type {IndexedObject<string>} */
+      const borderColorSideForPosition = {
           'bottom': 'borderTopColor',
           'left': 'borderRightColor',
           'right': 'borderLeftColor',
