@@ -27,7 +27,7 @@ For full details and demos, see the [Elix documentation](https://component.kitch
 # Quick start
 
 
-## Plain JavaScript
+## Plain HTML and JavaScript
 
 Add the Elix package to your package.json:
 
@@ -72,7 +72,7 @@ document.body.appendChild(carousel);
 
 The Elix project itself _requires no build step_. You are free to use your preferred tools to bundle the Elix modules for better network performance.
 
-You can try out the [sample JavaScript project](https://github.com/elix/simple-example) on your own machine.
+You can try out the [plain HTML and JavaScript project](https://github.com/elix/plain-example) on your own machine.
 
 
 ## React
