@@ -3,14 +3,13 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const DarkModeMixin: StateMixin<{
-},
-{},
-{
-  darkMode: boolean|null;
-},
-{
-  darkMode: boolean|null;
-}>;
+declare const DarkModeMixin: StateMixin<{}, {},
+  {
+    darkMode: boolean|null;
+  },
+  {
+    darkMode: boolean|null;
+  }
+>;
 
 export default DarkModeMixin;

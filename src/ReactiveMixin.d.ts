@@ -5,9 +5,7 @@
 
 import State from './State.js';
 
-declare const ReactiveMixin: Mixin<{
-  connectedCallback?(): void;
-}, {
+declare const ReactiveMixin: Mixin<{}, {
   componentDidMount(): void;
   componentDidUpdate(changed: PlainObject): void;
   connectedCallback(): void;

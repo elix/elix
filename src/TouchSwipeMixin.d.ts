@@ -5,13 +5,13 @@
 
 import * as symbols from './symbols.js';
 
-declare const TouchSwipeMixin: StateMixin<{},
-{},
-{
-  [symbols.swipeTarget]: Element;
-},
-{
-  swipeFraction: number
-}>;
+declare const TouchSwipeMixin: StateMixin<{}, {},
+  {
+    [symbols.swipeTarget]: Element;
+  },
+  {
+    swipeFraction: number
+  }
+>;
 
 export default TouchSwipeMixin;

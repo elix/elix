@@ -3,14 +3,16 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const ItemsTextMixin: StateMixin<{
-  items?: Element[];
-},
-{},
-{},
-{
-  texts: string[];
-}>;
+declare const ItemsTextMixin: StateMixin<
+  {
+    items?: Element[];
+  },
+  {},
+  {},
+  {
+    texts: string[];
+  }
+>;
 
 declare type GetTextCallback = (item: Node) => string;
 

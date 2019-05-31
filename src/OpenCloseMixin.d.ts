@@ -3,9 +3,7 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const OpenCloseMixin: StateMixin<{
-},
-{},
+declare const OpenCloseMixin: StateMixin<{}, {},
 {
   close(result?: any): Promise<void>;
   closed: boolean;

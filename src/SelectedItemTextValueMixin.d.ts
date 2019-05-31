@@ -3,10 +3,7 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const SelectedItemTextValueMixin: Mixin<{
-  items?: Element[];
-  selectedItem?: Element|null;
-}, {
+declare const SelectedItemTextValueMixin: Mixin<{}, {
   value: string;
 }>;
 

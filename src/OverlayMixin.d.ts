@@ -3,7 +3,6 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const OverlayMixin: Mixin<{}, {}
->;
+declare const OverlayMixin: Mixin<{}, {}>;
 
 export default OverlayMixin;

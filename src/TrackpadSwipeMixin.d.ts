@@ -5,13 +5,13 @@
 
 import * as symbols from './symbols.js';
 
-declare const TrackpadSwipeMixin: StateMixin<{},
-  {},
+declare const TrackpadSwipeMixin: StateMixin<{}, {},
   {
     [symbols.swipeTarget]: HTMLElement;
   },
   {
     swipeFraction: number;
-  }>;
+  }
+>;
 
 export default TrackpadSwipeMixin;

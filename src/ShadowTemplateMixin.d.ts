@@ -3,9 +3,7 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const ShadowTemplateMixin: Mixin<{
-  connectedCallback?(): void;
-}, {
+declare const ShadowTemplateMixin: Mixin<{}, {
   $: {
     [id: string]: HTMLElement|SVGElement;
   },

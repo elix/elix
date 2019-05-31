@@ -3,10 +3,13 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const GenericMixin: StateMixin<{}, {}, {
-  generic: boolean;
-}, {
-  generic: boolean;
-}>;
+declare const GenericMixin: StateMixin<{}, {},
+  {
+    generic: boolean;
+  },
+  {
+    generic: boolean;
+  }
+>;
 
 export default GenericMixin;

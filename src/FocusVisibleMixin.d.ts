@@ -3,10 +3,13 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const FocusVisibleMixin: StateMixin<{}, {}, {
-  suppressFocusVisibility(): void;  
-}, {
-  focusVisible: string;
-}>;
+declare const FocusVisibleMixin: StateMixin<{}, {},
+  {
+    suppressFocusVisibility(): void;  
+  },
+  {
+    focusVisible: string;
+  }
+>;
 
 export default FocusVisibleMixin;

@@ -5,12 +5,7 @@
 
 import * as symbols from './symbols.js';
 
-declare const KeyboardPagedSelectionMixin: Mixin<{
-  items?: Element[];
-  pageDown?(): boolean;
-  pageUp?(): boolean;
-  selectedIndex?: number;
-}, {
+declare const KeyboardPagedSelectionMixin: Mixin<{}, {
   pageDown(): boolean;
   pageUp(): boolean;
   [symbols.scrollTarget]: Element;

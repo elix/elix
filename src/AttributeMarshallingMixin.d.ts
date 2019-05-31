@@ -3,10 +3,7 @@
 
 /// <reference path="shared.d.ts"/>
 
-
-declare const AttributeMarshallingMixin: Mixin<{
-  attributeChangedCallback?(attributeName: string, oldValue: string, newValue: string);
-}, {
+declare const AttributeMarshallingMixin: Mixin<{}, {
   attributeChangedCallback(attributeName: string, oldValue: string, newValue: string);
 }>;
 

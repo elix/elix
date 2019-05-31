@@ -3,14 +3,13 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const ContentItemsMixin: StateMixin<{
-},
-{},
-{
-  items: (HTMLElement|SVGElement)[];
-},
-{
-  items: (HTMLElement|SVGElement)[];
-}>;
+declare const ContentItemsMixin: StateMixin<{}, {},
+  {
+    items: (HTMLElement|SVGElement)[];
+  },
+  {
+    items: (HTMLElement|SVGElement)[];
+  }
+>;
 
 export default ContentItemsMixin;
