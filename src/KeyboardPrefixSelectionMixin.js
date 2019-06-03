@@ -118,11 +118,12 @@ export default function KeyboardPrefixSelectionMixin(Base) {
  * @param {ReactiveElement} element
  */
 function handleBackspace(element) {
-  const length = element[typedPrefixKey] ? element[typedPrefixKey].length : 0;
+  /** @type {any} */ const cast = element;
+  const length = cast[typedPrefixKey] ? cast[typedPrefixKey].length : 0;
   if (length > 0) {
-    element[typedPrefixKey] = element[typedPrefixKey].substr(0, length - 1);
+    cast[typedPrefixKey] = cast[typedPrefixKey].substr(0, length - 1);
   }
-  element.selectItemWithTextPrefix(element[typedPrefixKey]);
+  element.selectItemWithTextPrefix(cast[typedPrefixKey]);
   setPrefixTimeout(element);
 }
 
@@ -134,9 +135,10 @@ function handleBackspace(element) {
  * @param {string} char
  */
 function handlePlainCharacter(element, char) {
-  const prefix = element[typedPrefixKey] || '';
-  element[typedPrefixKey] = prefix + char;
-  element.selectItemWithTextPrefix(element[typedPrefixKey]);
+  /** @type {any} */ const cast = element;
+  const prefix = cast[typedPrefixKey] || '';
+  cast[typedPrefixKey] = prefix + char;
+  element.selectItemWithTextPrefix(cast[typedPrefixKey]);
   setPrefixTimeout(element);
 }
 
@@ -147,9 +149,10 @@ function handlePlainCharacter(element, char) {
  * @param {ReactiveElement} element
  */
 function resetPrefixTimeout(element) {
-  if (element[prefixTimeoutKey]) {
-    clearTimeout(element[prefixTimeoutKey]);
-    element[prefixTimeoutKey] = false;
+  /** @type {any} */ const cast = element;
+  if (cast[prefixTimeoutKey]) {
+    clearTimeout(cast[prefixTimeoutKey]);
+    cast[prefixTimeoutKey] = false;
   }
 }
 
@@ -160,7 +163,7 @@ function resetPrefixTimeout(element) {
  * @param {ReactiveElement} element
  */
 function resetTypedPrefix(element) {
-  element[typedPrefixKey] = '';
+  /** @type {any} */ (element)[typedPrefixKey] = '';
   resetPrefixTimeout(element);
 }
 
@@ -172,7 +175,7 @@ function resetTypedPrefix(element) {
  */
 function setPrefixTimeout(element) {
   resetPrefixTimeout(element);
-  element[prefixTimeoutKey] = setTimeout(() => {
+  /** @type {any} */ (element)[prefixTimeoutKey] = setTimeout(() => {
     resetTypedPrefix(element);
   }, TYPING_TIMEOUT_DURATION);
 }

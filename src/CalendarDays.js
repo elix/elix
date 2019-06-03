@@ -128,6 +128,7 @@ class CalendarDays extends Base {
       // Mark dates as inside or outside of range.
       const { dayCount, startDate } = this.state;
       const firstDateAfterRange = calendar.offsetDateByDays(startDate, dayCount);
+      /** @type {any[]} */
       const days = this.state.days || [];
       days.forEach(day => {
         if ('outsideRange' in day) {

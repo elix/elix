@@ -89,16 +89,17 @@ export default function DelegateItemsMixin(Base) {
 
 
 function listenToDelegateEvents(/** @type {ReactiveElement} */ element) {
-  const itemsDelegate = element[symbols.itemsDelegate];
-  const previousItemsDelegate = element[previousItemsDelegateKey];
+  /** @type {any} */ const cast = element;
+  const itemsDelegate = cast[symbols.itemsDelegate];
+  const previousItemsDelegate = cast[previousItemsDelegateKey];
   if (itemsDelegate !== previousItemsDelegate) {
     if (previousItemsDelegate) {
       // Stop listening to events on previous delegate.
-      previousItemsDelegate.removeEventListener(element[itemsChangedListenerKey]);
-      previousItemsDelegate.removeEventListener(element[selectedIndexChangedListenerKey]);
+      previousItemsDelegate.removeEventListener(cast[itemsChangedListenerKey]);
+      previousItemsDelegate.removeEventListener(cast[selectedIndexChangedListenerKey]);
     }
     // Start listening to events on new delegate.
-    itemsDelegate.addEventListener('items-changed', element[itemsChangedListenerKey]);
-    itemsDelegate.addEventListener('selected-index-changed', element[selectedIndexChangedListenerKey]);
+    itemsDelegate.addEventListener('items-changed', cast[itemsChangedListenerKey]);
+    itemsDelegate.addEventListener('selected-index-changed', cast[selectedIndexChangedListenerKey]);
   }
 }

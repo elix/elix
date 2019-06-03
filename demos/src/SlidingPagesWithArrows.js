@@ -26,7 +26,8 @@ class SlidingPagesWithArrows extends Base {
 
   get [symbols.template]() {
     const base = super[symbols.template];
-    this[ArrowDirectionMixin.wrap](base.content);
+    /** @type {any} */ const cast = this;
+    cast[ArrowDirectionMixin.wrap](base.content);
     return template.concat(base, template.html`
       <style>
         .arrowButton {

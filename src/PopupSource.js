@@ -405,17 +405,19 @@ class PopupSource extends Base {
 
 
 function addEventListeners(/** @type {PopupSource} */ element) {
-  element[resizeListenerKey] = () => {
+  /** @type {any} */ const cast = element;
+  cast[resizeListenerKey] = () => {
     measurePopup(element);
   }
-  window.addEventListener('resize', element[resizeListenerKey]);
+  window.addEventListener('resize', cast[resizeListenerKey]);
 }
 
 
 function removeEventListeners(/** @type {PopupSource} */ element) {
-  if (element[resizeListenerKey]) {
-    window.removeEventListener('resize', element[resizeListenerKey]);
-    element[resizeListenerKey] = null;
+  /** @type {any} */ const cast = element;
+  if (cast[resizeListenerKey]) {
+    window.removeEventListener('resize', cast[resizeListenerKey]);
+    cast[resizeListenerKey] = null;
   }
 }
 

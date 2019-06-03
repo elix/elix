@@ -129,7 +129,8 @@ class Carousel extends Base {
   get [symbols.template]() {
     const base = super[symbols.template];
     const stage = base.content.querySelector('#stage');
-    this[ArrowDirectionMixin.wrap](stage);
+    /** @type {any} */ const cast = this;
+    cast[ArrowDirectionMixin.wrap](stage);
     const result = template.concat(base, template.html`
       <style>
         .arrowButton {

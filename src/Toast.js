@@ -201,9 +201,10 @@ class Toast extends Base {
 
 
 function clearTimer(/** @type {Toast} */ element) {
-  if (element[timeoutKey]) {
-    clearTimeout(element[timeoutKey]);
-    element[timeoutKey] = null;
+    /** @type {any} */ const cast = element;
+  if (cast[timeoutKey]) {
+    clearTimeout(cast[timeoutKey]);
+    cast[timeoutKey] = null;
   }
 }
 
@@ -211,7 +212,7 @@ function startTimer(/** @type {Toast} */ element) {
   clearTimer(element);
   const duration = element.state.duration;
   if (duration !== null && duration > 0) {
-    element[timeoutKey] = setTimeout(() => {
+    /** @type {any} */ (element)[timeoutKey] = setTimeout(() => {
       element.close();
     }, duration);
   }

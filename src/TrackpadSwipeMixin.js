@@ -86,6 +86,8 @@ const WHEEL_TIME = 100;
  */
 function handleWheel(element, event) {
 
+  /** @type {any} */ const cast = element;
+
   if (element.state.swipeAxis === 'vertical') {
     // This mixin currently only supports horizontal swiping.
     return;
@@ -93,22 +95,22 @@ function handleWheel(element, event) {
 
   // Since we have a new wheel event, reset our timer waiting for the last
   // wheel event to pass.
-  if (element[lastWheelTimeoutSymbol]) {
-    clearTimeout(element[lastWheelTimeoutSymbol]);
+  if (cast[lastWheelTimeoutSymbol]) {
+    clearTimeout(cast[lastWheelTimeoutSymbol]);
   }
-  element[lastWheelTimeoutSymbol] = setTimeout(async () => {
+  cast[lastWheelTimeoutSymbol] = setTimeout(async () => {
     element[symbols.raiseChangeEvents] = true;
     wheelTimedOut(element);
     await Promise.resolve();
-    element[symbols.raiseChangeEvents] = false;
+    cast[symbols.raiseChangeEvents] = false;
   }, WHEEL_TIME);
 
   const deltaX = event.deltaX;
   const deltaY = event.deltaY;
 
   // See if component event represents acceleration or deceleration.
-  const acceleration = Math.sign(deltaX) * (deltaX - element[lastDeltaXSymbol]);
-  element[lastDeltaXSymbol] = deltaX;
+  const acceleration = Math.sign(deltaX) * (deltaX - cast[lastDeltaXSymbol]);
+  cast[lastDeltaXSymbol] = deltaX;
 
   if (Math.abs(deltaX) < Math.abs(deltaY)) {
     // Move was mostly vertical. The user may be trying scroll with the
@@ -116,7 +118,7 @@ function handleWheel(element, event) {
     return false;
   }
 
-  if (element[postNavigateDelayCompleteSymbol]) {
+  if (cast[postNavigateDelayCompleteSymbol]) {
     // It's too soon after a navigation; ignore the event.
     return true;
   }
@@ -124,18 +126,18 @@ function handleWheel(element, event) {
   if (acceleration > 0) {
     // The events are not (or are no longer) decelerating, so we can start
     // paying attention to them again.
-    element[absorbDecelerationSymbol] = false;
-  } else if (element[absorbDecelerationSymbol]) {
+    cast[absorbDecelerationSymbol] = false;
+  } else if (cast[absorbDecelerationSymbol]) {
     // The wheel event was likely faked to simulate deceleration; ignore it.
     return true;
   }
 
-  element[wheelDistanceSymbol] -= deltaX;
+  cast[wheelDistanceSymbol] -= deltaX;
 
   // Update the travel fraction of the component being navigated.
-  const width = element[symbols.swipeTarget].offsetWidth;
+  const width = cast[symbols.swipeTarget].offsetWidth;
   let swipeFraction = width > 0 ?
-    element[wheelDistanceSymbol] / width :
+    cast[wheelDistanceSymbol] / width :
     0;
   swipeFraction = Math.sign(swipeFraction) * Math.min(Math.abs(swipeFraction), 1);
 
@@ -166,11 +168,12 @@ function handleWheel(element, event) {
  * @param {ReactiveElement} element
  */
 function postNavigate(element) {
-  element[wheelDistanceSymbol] = 0;
-  element[postNavigateDelayCompleteSymbol] = true;
-  element[absorbDecelerationSymbol] = true;
+  /** @type {any} */ const cast = element;
+  cast[wheelDistanceSymbol] = 0;
+  cast[postNavigateDelayCompleteSymbol] = true;
+  cast[absorbDecelerationSymbol] = true;
   setTimeout(() => {
-    element[postNavigateDelayCompleteSymbol] = false;
+    cast[postNavigateDelayCompleteSymbol] = false;
   }, POST_NAVIGATE_TIME);
   element.setState({ swipeFraction: null });
 }
@@ -182,13 +185,14 @@ function postNavigate(element) {
  * @param {ReactiveElement} element
  */
 function resetWheelTracking(element) {
-  element[wheelDistanceSymbol] = 0;
-  element[lastDeltaXSymbol] = 0;
-  element[absorbDecelerationSymbol] = false;
-  element[postNavigateDelayCompleteSymbol] = false;
-  if (element[lastWheelTimeoutSymbol]) {
-    clearTimeout(element[lastWheelTimeoutSymbol]);
-    element[lastWheelTimeoutSymbol] = null;
+  /** @type {any} */ const cast = element;
+  cast[wheelDistanceSymbol] = 0;
+  cast[lastDeltaXSymbol] = 0;
+  cast[absorbDecelerationSymbol] = false;
+  cast[postNavigateDelayCompleteSymbol] = false;
+  if (cast[lastWheelTimeoutSymbol]) {
+    clearTimeout(cast[lastWheelTimeoutSymbol]);
+    cast[lastWheelTimeoutSymbol] = null;
   }
 }
 

@@ -78,6 +78,7 @@ function ArrowDirectionMixin(Base) {
     }
 
     [symbols.render](/** @type {PlainObject} */ changed) {
+
       if (changed.arrowButtonRole) {
         if (this.$.arrowButtonLeft instanceof HTMLElement) {
           // Turn off focus handling for old left button.
@@ -88,7 +89,9 @@ function ArrowDirectionMixin(Base) {
           forwardFocus(this.$.arrowButtonRight, null);
         }
       }
+
       if (super[symbols.render]) { super[symbols.render](changed); }
+
       if (changed.arrowButtonRole) {
         /** @type {any} */
         const cast = this;
@@ -133,12 +136,16 @@ function ArrowDirectionMixin(Base) {
         };
         this.$.arrowButtonRight.addEventListener('mousedown', rightButtonHandler);
       }
+
       const {
         arrowButtonOverlap,
         canGoLeft,
         canGoRight,
         darkMode
       } = this.state;
+      /** @type {any} */ const arrowButtonLeft = this.$.arrowButtonLeft;
+      /** @type {any} */ const arrowButtonRight = this.$.arrowButtonRight;
+
       if (changed.arrowButtonOverlap) {
         const buttonStyle = arrowButtonOverlap ?
           {
@@ -153,13 +160,14 @@ function ArrowDirectionMixin(Base) {
             'top': null,
             'z-index': null
           };
-        Object.assign(this.$.arrowButtonLeft.style, buttonStyle, {
+        Object.assign(arrowButtonLeft.style, buttonStyle, {
           left: arrowButtonOverlap ? 0 : ''
         });
-        Object.assign(this.$.arrowButtonRight.style, buttonStyle, {
+        Object.assign(arrowButtonRight.style, buttonStyle, {
           right: arrowButtonOverlap ? 0 : ''
         });
       }
+
       // Disable the left and right buttons if we can't go in those directions.
       // WORKAROUND: We check to makes sure that canGoLeft/canGoRight state is
       // defined (which happens once the component has items). Without that
@@ -167,34 +175,36 @@ function ArrowDirectionMixin(Base) {
       // multiple carousel instances on a page will have their right button
       // initially disabled even when it should be enabled. Safari/Firefox do
       // not exhibit that issue. Since identifying the root cause proved too
-      // difficult, this check was added.
+      // difficult, this check was added.      
       if (changed.canGoLeft && canGoLeft !== null) {
-        this.$.arrowButtonLeft.disabled = !canGoLeft;
+        arrowButtonLeft.disabled = !canGoLeft;
       }
       // See note for canGoLeft above.
       if (changed.canGoRight && canGoRight !== null) {
-        this.$.arrowButtonRight.disabled = !canGoRight;
+        arrowButtonRight.disabled = !canGoRight;
       }
       // Wait for knowledge of dark mode
       if (changed.darkMode && darkMode !== null) {
         // Apply dark mode to buttons.
-        if ('darkMode' in this.$.arrowButtonLeft) {
-          /** @type {any} */ (this.$.arrowButtonLeft).darkMode = darkMode;
+        if ('darkMode' in arrowButtonLeft) {
+          /** @type {any} */ (arrowButtonLeft).darkMode = darkMode;
         }
-        if ('darkMode' in this.$.arrowButtonRight) {
-          /** @type {any} */ (this.$.arrowButtonRight).darkMode = darkMode;
+        if ('darkMode' in arrowButtonRight) {
+          /** @type {any} */ (arrowButtonRight).darkMode = darkMode;
         }
       }
+
       if (changed.rightToLeft) {
         const { rightToLeft } = this.state;
         this.$.arrowDirection.style.flexDirection = rightToLeft ?
           'row-reverse' :
           'row';
       }
+      
       if (changed.showArrowButtons) {
         const display = this.state.showArrowButtons ? null : 'none';
-        this.$.arrowButtonLeft.style.display = display;
-        this.$.arrowButtonRight.style.display = display;
+        arrowButtonLeft.style.display = display;
+        arrowButtonRight.style.display = display;
       }
     }
 

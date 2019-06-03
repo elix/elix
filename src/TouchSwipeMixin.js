@@ -191,19 +191,21 @@ function isEventForPenOrPrimaryTouch(event) {
  */
 function gestureContinue(element, clientX, clientY) {
 
+  /** @type {any} */ const cast = element;
+
   // Calculate and save the velocity since the last event. If this is the last
   // movement of the gesture, this velocity will be used to determine whether
   // the user is trying to flick.
-  const deltaX = clientX - element[previousXKey];
-  const deltaY = clientY - element[previousYKey];
+  const deltaX = clientX - cast[previousXKey];
+  const deltaY = clientY - cast[previousYKey];
   const now = Date.now();
-  const deltaTime = now - element[previousTimeKey];
+  const deltaTime = now - cast[previousTimeKey];
   const velocity = deltaX / deltaTime * 1000;
 
-  element[previousXKey] = clientX;
-  element[previousYKey] = clientY;
-  element[previousTimeKey] = now;
-  element[previousVelocityKey] = velocity;
+  cast[previousXKey] = clientX;
+  cast[previousYKey] = clientY;
+  cast[previousTimeKey] = now;
+  cast[previousVelocityKey] = velocity;
 
   const verticalSwipe = Math.abs(deltaY) > Math.abs(deltaX);
   const vertical = element.state.swipeAxis === 'vertical';
@@ -253,7 +255,7 @@ function gestureContinue(element, clientX, clientY) {
 function gestureEnd(element, clientX, clientY) {
 
   // Examine velocity of last movement to see if user is flicking.
-  const velocity = element[previousVelocityKey];
+  const velocity = /** @type {any} */ (element)[previousVelocityKey];
   const flickThresholdVelocity = 800; // speed in pixels/second
 
   let flickPositive;
@@ -296,12 +298,13 @@ function gestureEnd(element, clientX, clientY) {
  * @param {number} clientY
  */
 function gestureStart(element, clientX, clientY) {
-  element[startXKey] = clientX;
-  element[startYKey] = clientY;
-  element[previousXKey] = clientX;
-  element[previousYKey] = clientY;
-  element[previousTimeKey] = Date.now();
-  element[previousVelocityKey] = 0;
+  /** @type {any} */ const cast = element;
+  cast[startXKey] = clientX;
+  cast[startYKey] = clientY;
+  cast[previousXKey] = clientX;
+  cast[previousYKey] = clientY;
+  cast[previousTimeKey] = Date.now();
+  cast[previousVelocityKey] = 0;
   element.setState({ swipeFraction: 0 });
 }
 
@@ -315,9 +318,10 @@ function gestureStart(element, clientX, clientY) {
  */
 function getSwipeFraction(element, x, y) {
   const vertical = element.state.swipeAxis === 'vertical';
+  /** @type {any} */ const cast = element;
   const dragDistance = vertical ?
-    y - element[startYKey] :
-    x - element[startXKey];
+    y - cast[startYKey] :
+    x - cast[startXKey];
   const swipeTarget = element[symbols.swipeTarget];
   const swipeTargetSize = vertical ?
     swipeTarget.offsetHeight :

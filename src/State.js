@@ -157,27 +157,27 @@ function applyStateChanges(state, changes) {
     Object.assign(result, changed);
 
     // Run the change handlers, gathering up the changes those produce.
-    changes = {};
-    if (state[changeCallbacksKey]) {
+    /** @type {IndexedObject<ChangeHandler[]>} */
+    const changeCallbacks = /** @type {any} */ (state)[changeCallbacksKey];
+    if (changeCallbacks) {
       // Get callbacks for fields that changed.
       /** @type {ChangeHandler[]} */
-      const callbacks = [];
+      const callbacksToRun = [];
       for (const field in changed) {
-        /** @type {ChangeHandler[]} */
-        const callbacksForField = state[changeCallbacksKey][field] || [];
+        const callbacksForField = changeCallbacks[field] || [];
         callbacksForField.forEach(callback => {
           // A single callback may be triggered by multiple fields; only add a
           // callback to the list if it's not already there.
           // @ts-ignore
-          if (!callbacks.includes(callback)) {
-            callbacks.push(callback);
+          if (!callbacksToRun.includes(callback)) {
+            callbacksToRun.push(callback);
           }
         });
       }
       // Run the callbacks and collect their changes.
-      const results = callbacks.map(callback => callback(state, changed));
+      const results = callbacksToRun.map(callback => callback(state, changed));
       // If the change handlers produced changes, we'll run the loop again.
-      Object.assign(changes, ...results);
+      changes = Object.assign({}, ...results);
     }
   }
 

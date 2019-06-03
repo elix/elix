@@ -3,7 +3,10 @@
     "allowJs": true,
     "checkJs": true,
     "noEmit": true,
-    "noImplicitAny": true,
+    // We'd like to use noImplicitAny: true, but we often need to access
+    // arbitrary data on elements, and have not yet worked out an easy way to
+    // declare that properly.
+    "noImplicitAny": false,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "strict": true,

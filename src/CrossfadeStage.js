@@ -93,6 +93,12 @@ class CrossfadeStage extends Base {
 }
 
 
+/**
+ * @private
+ * @param {number} index 
+ * @param {number} selectedIndex 
+ * @param {number} selectionFraction 
+ */
 function opacityForItemWithIndex(index, selectedIndex, selectionFraction) {
   const opacityMinimum = 0;
   const opacityMaximum = 1;

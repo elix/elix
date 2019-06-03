@@ -39,7 +39,8 @@ class Dialog extends Base {
   get [symbols.template]() {
     const result = super[symbols.template];
     const frame = result.content.querySelector('#frame');
-    this[FocusCaptureMixin.wrap](frame);
+    /** @type {any} */ const cast = this;
+    cast[FocusCaptureMixin.wrap](frame);
     return template.concat(result, template.html`
       <style>
         :host {

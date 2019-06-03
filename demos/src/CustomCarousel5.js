@@ -42,7 +42,8 @@ class CustomCarousel extends Base {
       rightSlot.textContent = "↬";
     }
     // Add page numbers.
-    this[PageNumbersMixin.wrap](result.content);
+    /** @type {any} */ const cast = this;
+    cast[PageNumbersMixin.wrap](result.content);
     return result;
   }
 

@@ -150,7 +150,8 @@ class CalendarMonthNavigator extends Base {
   get [symbols.template]() {
     const result = super[symbols.template];
     const monthYearHeader = result.content.querySelector('#monthYearHeader');
-    this[ArrowDirectionMixin.wrap](monthYearHeader);
+    /** @type {any} */ const cast = this;
+    cast[ArrowDirectionMixin.wrap](monthYearHeader);
 
     const styleTemplate = template.html`
       <style>

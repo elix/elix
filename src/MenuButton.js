@@ -47,7 +47,8 @@ class MenuButton extends PopupButton {
     // that point on the source won't receive a mouseup event. Again, we can
     // listen to mouseup on the document and do our own hit-testing to see if
     // the user released the mouse over the source.
-    this[documentMouseupListenerKey] = async (/** @type {MouseEvent} */ event) => {
+    /** @type {any} */ const cast = this;
+    cast[documentMouseupListenerKey] = async (/** @type {MouseEvent} */ event) => {
       const hitTargets = this.shadowRoot.elementsFromPoint(event.clientX, event.clientY);
       const overSource = hitTargets.indexOf(this.$.source) >= 0;
       if (this.opened) {
@@ -137,10 +138,10 @@ class MenuButton extends PopupButton {
   }
 
   disconnectedCallback() {
-    //@ts-ignore
     if (super.disconnectedCallback) { super.disconnectedCallback(); }
-    document.removeEventListener('mouseup', this[documentMouseupListenerKey]);
-    this[documentMouseupListenerKey] = null;
+    /** @type {any} */ const cast = this;
+    document.removeEventListener('mouseup', cast[documentMouseupListenerKey]);
+    cast[documentMouseupListenerKey] = null;
   }
 
   /**
@@ -371,12 +372,14 @@ class MenuButton extends PopupButton {
 
 
 function addDocumentListeners(/** @type {MenuButton} */ element) {
-  document.addEventListener('mouseup', element[documentMouseupListenerKey]);
+  /** @type {any} */ const cast = element;
+  document.addEventListener('mouseup', cast[documentMouseupListenerKey]);
 }
 
 
 function removeDocumentListeners(/** @type {MenuButton} */ element) {
-  document.removeEventListener('mouseup', element[documentMouseupListenerKey]);
+  /** @type {any} */ const cast = element;
+  document.removeEventListener('mouseup', cast[documentMouseupListenerKey]);
 }
 
 
