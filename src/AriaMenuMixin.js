@@ -32,7 +32,7 @@ export default function AriaMenuMixin(Base) {
     [symbols.render](/** @type {PlainObject} */ changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
       const { selectedIndex, itemRole } = this.state;
-      /** @type {(HTMLElement|SVGElement)[]} */ const items = this.state.items;
+      /** @type {ListItemElement[]} */ const items = this.state.items;
       if ((changed.items || changed.itemRole) && items) {
         // Give each item a role.
         items.forEach(item => {

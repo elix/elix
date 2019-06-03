@@ -139,7 +139,7 @@ class Menu extends Base {
   /**
    * Returns true if the given item should be shown in the indicated state.
    * 
-   * @param {HTMLElement|SVGElement} item 
+   * @param {ListItemElement} item 
    * @param {PlainObject} state 
    */
   [symbols.itemMatchesState](item, state) {

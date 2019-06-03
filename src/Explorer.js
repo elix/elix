@@ -337,7 +337,7 @@ class Explorer extends Base {
  * Return the default list generated for the given items.
  * 
  * @private
- * @param {(HTMLElement|SVGElement)[]} items
+ * @param {ListItemElement[]} items
  * @param {Role} proxyRole
  */
 function createDefaultProxies(items, proxyRole) {

@@ -11,11 +11,11 @@ declare const SlotItemsMixin: StateMixin<
 {
   [symbols.contentSlot]: HTMLSlotElement;
   componentDidMount(): void;
-  items: (HTMLElement|SVGElement)[];
+  items: ListItemElement[];
 },
 {
   content: Node[];
-  items: (HTMLElement|SVGElement)[];
+  items: ListItemElement[];
 }>;
 
 export default SlotItemsMixin;

@@ -75,8 +75,9 @@ export default function ContentItemsMixin(Base) {
     /**
      * Returns true if the given item should be shown in the indicated state.
      * 
-     * @param {HTMLElement|SVGElement} item 
+     * @param {ListItemElement} item 
      * @param {PlainObject} state 
+     * @returns {boolean}
      */
     [symbols.itemMatchesState](item, state) {
       const base = super[symbols.itemMatchesState] ?
@@ -88,7 +89,7 @@ export default function ContentItemsMixin(Base) {
     /**
      * The current set of items drawn from the element's current state.
      * 
-     * @returns {Element[]|null} the element's current items
+     * @type {ListItemElement[]|null} the element's current items
      */
     get items() {
       return this.state ? this.state.items : null;

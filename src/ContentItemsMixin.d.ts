@@ -3,12 +3,15 @@
 
 /// <reference path="shared.d.ts"/>
 
+import * as symbols from './symbols.js';
+
 declare const ContentItemsMixin: StateMixin<{}, {},
   {
-    items: (HTMLElement|SVGElement)[];
+    items: ListItemElement[];
+    [symbols.itemMatchesState](item: ListItemElement, state: PlainObject): boolean;
   },
   {
-    items: (HTMLElement|SVGElement)[];
+    items: ListItemElement[];
   }
 >;
 

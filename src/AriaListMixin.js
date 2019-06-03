@@ -60,7 +60,7 @@ export default function AriaListMixin(Base) {
     [symbols.render](/** @type {PlainObject} */ changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
       const { selectedIndex, itemRole } = this.state;
-      /** @type {(HTMLElement|SVGElement)[]} */ const items = this.state.items;
+      /** @type {ListItemElement[]} */ const items = this.state.items;
       if (changed.items && items) {
         // Give each item an ID.
         items.forEach(item => {

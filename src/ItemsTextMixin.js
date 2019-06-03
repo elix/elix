@@ -38,7 +38,7 @@ export default function ItemsTextMixin(Base) {
      * The default implementation returns an item's `alt` attribute or its
      * `textContent`, in that order.
      *
-     * @param {(HTMLElement|SVGElement)} item 
+     * @param {ListItemElement} item 
      * @returns {string}
      */
     [symbols.getItemText](item) {
@@ -54,7 +54,7 @@ export default function ItemsTextMixin(Base) {
  * Extract the text from the given item.
  * 
  * @private
- * @param {HTMLElement|SVGElement} item 
+ * @param {ListItemElement} item 
  */
 export function getItemText(item) {
   return item.getAttribute('alt') || item.textContent || '';
@@ -65,7 +65,7 @@ export function getItemText(item) {
  * Extract the text from the given items.
  * 
  * @private
- * @param {(HTMLElement|SVGElement)[]} items
+ * @param {ListItemElement[]} items
  */
 export function getTextsFromItems(items, getText = getItemText) {
   return items ?

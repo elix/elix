@@ -13,7 +13,7 @@
 type Constructor<T> = new() => T;
 
 
-/**
+/*
  * A dictionary that maps strings to objects of type T.
  */
 type IndexedObject<T> = {
@@ -21,10 +21,16 @@ type IndexedObject<T> = {
 }
 
 
-/**
+/*
  * A onChange handler for a State object.
  */
 type ChangeHandler = (state: PlainObject, changed?: PlainObject|null) => PlainObject|null;
+
+
+/*
+ * An item in a list component
+ */
+type ListItemElement = HTMLElement|SVGElement;
 
 
 /*

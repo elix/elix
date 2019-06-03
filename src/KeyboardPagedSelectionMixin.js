@@ -107,7 +107,7 @@ export default function KeyboardPagedSelectionMixin(Base) {
  * items to find the last item at that position.
  * 
  * @private
- * @param {(HTMLElement|SVGElement)[]} items
+ * @param {ListItemElement[]} items
  * @param {number} y
  * @param {boolean} downward
  */

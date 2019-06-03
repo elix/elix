@@ -172,7 +172,7 @@ class MenuButton extends PopupButton {
   /**
    * Invoked when a new item is selected.
    * 
-   * @param {HTMLElement|SVGElement} item
+   * @param {ListItemElement} item
    */
   itemSelected(item) {
     /**
