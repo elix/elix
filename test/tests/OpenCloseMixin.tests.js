@@ -15,7 +15,7 @@ customElements.define('open-close-test', OpenCloseTest);
 describe("OpenCloseMixin", function() {
 
   it('opens and closes with opened property', () => {
-    const fixture = document.createElement('open-close-test');
+    const fixture = new OpenCloseTest();
     assert(!fixture.opened);
     fixture.opened = true;
     assert(fixture.opened);
@@ -23,7 +23,7 @@ describe("OpenCloseMixin", function() {
   });
 
   it('opens and closes with open and close methods', async () => {
-    const fixture = document.createElement('open-close-test');
+    const fixture = new OpenCloseTest();
     assert(fixture.closed);
     assert(!fixture.opened);
     await fixture.open();

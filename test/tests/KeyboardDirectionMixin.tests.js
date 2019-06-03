@@ -14,7 +14,7 @@ customElements.define('keyboard-direction-test', KeyboardDirectionMixinTest);
 describe("KeyboardDirectionMixin", () => {
 
   it("maps a Right arrow key to a goRight action", () => {
-    const fixture = document.createElement('keyboard-direction-test');
+    const fixture = new KeyboardDirectionMixinTest();
     const spy = sinon.spy(fixture, symbols.goRight);
     const result = fixture[symbols.keydown]({
       key: 'ArrowRight'
@@ -24,7 +24,7 @@ describe("KeyboardDirectionMixin", () => {
   });
 
   it("ignores a Right arrow key when orientation is vertical", () => {
-    const fixture = document.createElement('keyboard-direction-test');
+    const fixture = new KeyboardDirectionMixinTest();
     fixture.state = {
       orientation: 'vertical'
     };
@@ -37,7 +37,7 @@ describe("KeyboardDirectionMixin", () => {
   });
 
   it("ignores a Right arrow key if the meta (command) key was pressed", () => {
-    const fixture = document.createElement('keyboard-direction-test');
+    const fixture = new KeyboardDirectionMixinTest();
     const spy = sinon.spy(fixture, symbols.goRight);
     const result = fixture[symbols.keydown]({
       altKey: true,

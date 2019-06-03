@@ -88,34 +88,34 @@ describe("ShadowTemplateMixin", () => {
   });
 
   it("stamps string template into root", () => {
-    const fixture = document.createElement('element-with-string-template');
+    const fixture = new ElementWithStringTemplate();
     assert(fixture.shadowRoot);
     assert.equal(fixture.shadowRoot.textContent.trim(), "Hello");
   });
 
   it("stamps real template into root", () => {
-    const fixture = document.createElement('element-with-real-template');
+    const fixture = new ElementWithRealTemplate();
     assert(fixture.shadowRoot);
     assert.equal(fixture.shadowRoot.textContent.trim(), "Hello");
   });
 
   it("generates this.$ references for shadow elements with 'id' attributes", () => {
-    const fixture = document.createElement('element-with-string-template');
+    const fixture = new ElementWithStringTemplate();
     const root = fixture.shadowRoot;
     assert.equal(fixture.$.message, root.querySelector('#message'));
   });
 
   it("caches the template for a component", () => {
-    const fixture1 = document.createElement('element-with-cached-template');
+    const fixture1 = new ElementWithCachedTemplate();
     assert.equal(fixture1.shadowRoot.textContent.trim(), '0');
-    const fixture2 = document.createElement('element-with-cached-template');
+    const fixture2 = new ElementWithCachedTemplate();
     assert.equal(fixture2.shadowRoot.textContent.trim(), '0');
   });
 
   it("retrieves a dynamic template each time", () => {
-    const fixture1 = document.createElement('element-with-dynamic-template');
+    const fixture1 = new ElementWithDynamicTemplate();
     assert.equal(fixture1.shadowRoot.textContent.trim(), '0');
-    const fixture2 = document.createElement('element-with-dynamic-template');
+    const fixture2 = new ElementWithDynamicTemplate();
     assert.equal(fixture2.shadowRoot.textContent.trim(), '1');
   });
 

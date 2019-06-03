@@ -1,4 +1,4 @@
-import '../../src/AutoSizeTextarea.js';
+import AutoSizeTextarea from '../../src/AutoSizeTextarea.js';
 
 
 describe("AutoSizeTextarea", () => {
@@ -22,14 +22,14 @@ describe("AutoSizeTextarea", () => {
   });
 
   it("applies its value to the inner textarea", () => {
-    const fixture = document.createElement('elix-auto-size-textarea');
+    const fixture = new AutoSizeTextarea();
     fixture.value = 'beaver';
     fixture.render();
     assert(fixture.inner.value, 'beaver');
   });
 
   it("updates value when innerHTML changes", async () => {
-    const fixture = document.createElement('elix-auto-size-textarea');
+    const fixture = new AutoSizeTextarea();
     container.appendChild(fixture);
     fixture.innerHTML = 'chihuahua';
     // Give content time to change.
@@ -38,7 +38,7 @@ describe("AutoSizeTextarea", () => {
   });
 
   it("value property tracks content until value is directly set", async () => {
-    const fixture = document.createElement('elix-auto-size-textarea');
+    const fixture = new AutoSizeTextarea();
     fixture.textContent = 'dingo';
     container.appendChild(fixture);
     // Give content time to change.
@@ -57,7 +57,7 @@ describe("AutoSizeTextarea", () => {
   });
 
   it("sets minimumRows to 1 by default", () => {
-    const fixture = document.createElement('elix-auto-size-textarea');
+    const fixture = new AutoSizeTextarea();
     assert.equal(fixture.minimumRows, 1);
   });
 
@@ -68,7 +68,7 @@ describe("AutoSizeTextarea", () => {
   });
 
   it("autosizes to fit its contents", async () => {
-    const fixture = document.createElement('elix-auto-size-textarea');
+    const fixture = new AutoSizeTextarea();
     container.appendChild(fixture);
     const originalHeight = fixture.clientHeight;
     fixture.value = 'One\nTwo\nThree';
@@ -78,7 +78,7 @@ describe("AutoSizeTextarea", () => {
   });
 
   it("applies minimumRows when text isn't tall enough", async () => {
-    const fixture = document.createElement('elix-auto-size-textarea');
+    const fixture = new AutoSizeTextarea();
     container.appendChild(fixture);
     // Original height should be sufficient to hold single line of text.
     const originalHeight = fixture.clientHeight;
@@ -89,7 +89,7 @@ describe("AutoSizeTextarea", () => {
   });
 
   it("autosizes works when its text content is HTML", async () => {
-    const fixture = document.createElement('elix-auto-size-textarea');
+    const fixture = new AutoSizeTextarea();
     container.appendChild(fixture);
     const originalHeight = fixture.clientHeight;
     fixture.value = `<html>\n<body>\n<p>\nThis is a test\n</p>\n<div>\nSome more tests\n</div>\n</body>\n</html>`;
@@ -98,7 +98,7 @@ describe("AutoSizeTextarea", () => {
   });
 
   it("autosizes works with text wrapping", async () => {
-    const fixture = document.createElement('elix-auto-size-textarea');
+    const fixture = new AutoSizeTextarea();
     fixture.style.width = '400px';
     container.appendChild(fixture);
     const originalHeight = fixture.clientHeight;
@@ -108,7 +108,7 @@ describe("AutoSizeTextarea", () => {
   });
 
   it("autosizes works with long string with no whitespace", async () => {
-    const fixture = document.createElement('elix-auto-size-textarea');
+    const fixture = new AutoSizeTextarea();
     fixture.style.width = '400px';
     container.appendChild(fixture);
     const originalHeight = fixture.clientHeight;
@@ -118,7 +118,7 @@ describe("AutoSizeTextarea", () => {
   });
 
   it("applies its placeholder property to the inner textarea", async () => {
-    const fixture = document.createElement('elix-auto-size-textarea');
+    const fixture = new AutoSizeTextarea();
     container.appendChild(fixture);
     fixture.placeholder = 'Placeholder';
     await Promise.resolve();

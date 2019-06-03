@@ -42,7 +42,7 @@ class WrappedContentTest extends HTMLElement {
     this.shadowRoot.innerHTML = `<slot-content-test><slot></slot></default-slotcontent-test>`;
   }
 }
-customElements.define('wrapped-slot-content-test', WrappedContentTest);
+customElements.define('wrapped-content-test', WrappedContentTest);
 
 
 describe("SlotContentMixin", () => {
@@ -58,7 +58,7 @@ describe("SlotContentMixin", () => {
   });
 
   it("uses the component's default slot as the default slot for content", async () => {
-    const fixture = document.createElement('slot-content-test');
+    const fixture = new SlotContentTest();
     // Wait for initial content.
     await Promise.resolve();
     const slot = fixture.shadowRoot.children[1];
@@ -66,7 +66,7 @@ describe("SlotContentMixin", () => {
   });
 
   it("returns direct assigned nodes as content", async () => {
-    const fixture = document.createElement('slot-content-test');
+    const fixture = new SlotContentTest();
     fixture.innerHTML = `<div>One</div><div>Two</div><div>Three</div>`;
     // Wait for initial content.
     await Promise.resolve();
@@ -74,7 +74,7 @@ describe("SlotContentMixin", () => {
   });
 
   it("returns distributed nodes as content", async () => {
-    const wrapper = document.createElement('wrapped-slot-content-test');
+    const wrapper = new WrappedContentTest();
     wrapper.innerHTML = `<div>One</div><div>Two</div><div>Three</div>`;
     const fixture = wrapper.shadowRoot.querySelector('slot-content-test');
     // Wait for initial content.
@@ -91,7 +91,7 @@ describe("SlotContentMixin", () => {
   });
 
   it("updates content when textContent changes", async () => {
-    const fixture = document.createElement('slot-content-test');
+    const fixture = new SlotContentTest();
     container.appendChild(fixture);
     // Wait for initial content.
     fixture.textContent = 'chihuahua';
@@ -101,7 +101,7 @@ describe("SlotContentMixin", () => {
   });
 
   it("updates content when children change", async () => {
-    const fixture = document.createElement('slot-content-test');
+    const fixture = new SlotContentTest();
     container.appendChild(fixture);
     // Wait for initial content.
     const div = document.createElement('div');
@@ -113,7 +113,7 @@ describe("SlotContentMixin", () => {
   });
 
   it("updates content when redistributed content changes", async () => {
-    const wrapper = document.createElement('wrapped-slot-content-test');
+    const wrapper = new WrappedContentTest();
     const fixture = wrapper.shadowRoot.querySelector('slot-content-test');
     container.appendChild(wrapper);
     // Wait for initial content.
@@ -124,7 +124,7 @@ describe("SlotContentMixin", () => {
   });
 
   it("updates content if node is removed from light DOM", async () => {
-    const fixture = document.createElement('slot-content-test');
+    const fixture = new SlotContentTest();
     const div = document.createElement('div');
     div.textContent = 'hippopotamus';
     fixture.appendChild(div);

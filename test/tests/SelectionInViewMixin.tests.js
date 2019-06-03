@@ -68,7 +68,7 @@ describe("SelectionInViewMixin", function() {
 
 function createSampleElement() {
 
-  const fixture = document.createElement('selection-in-view-test');
+  const fixture = new SelectionInViewTest();
 
   // Force scroll: make element only tall enough to show 1.5 items at a time.
   const itemsToShow = 1.5;

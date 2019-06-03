@@ -32,7 +32,7 @@ describe("OverlayMixin", function() {
   });
 
   it('sets a default z-index', async () => {
-    const fixture = document.createElement('overlay-test');
+    const fixture = new OverlayTest();
     container.appendChild(fixture);
     await fixture.open();
     // Mocha test runner has element with z-index of 1, so we expect the
@@ -41,7 +41,7 @@ describe("OverlayMixin", function() {
   });
 
   it('leaves the z-index alone if one is specified', async () => {
-    const fixture = document.createElement('overlay-test');
+    const fixture = new OverlayTest();
     fixture.style.zIndex = 10;
     container.appendChild(fixture);
     await fixture.open();
@@ -49,7 +49,7 @@ describe("OverlayMixin", function() {
   });
 
   it('gives overlay focus when opened, restores focus to previous element when closed', async () => {
-    const fixture = document.createElement('overlay-test');
+    const fixture = new OverlayTest();
     container.appendChild(fixture);
     const input = document.createElement('input');
     container.appendChild(input);

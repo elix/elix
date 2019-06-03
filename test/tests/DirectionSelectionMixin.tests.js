@@ -14,7 +14,7 @@ customElements.define('direction-selection-test', DirectionSelectionTest);
 describe("DirectionSelectionMixin", () => {
 
   it("maps direction method calls to selection method calls", () => {
-    const fixture = document.createElement('direction-selection-test');
+    const fixture = new DirectionSelectionTest();
 
     const selectFirstSpy = sinon.spy(fixture, 'selectFirst');
     fixture[symbols.goStart]();

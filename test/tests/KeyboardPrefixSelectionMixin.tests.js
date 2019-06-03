@@ -117,7 +117,7 @@ describe("KeyboardPrefixSelectionMixin", () => {
 
 
 function createSampleElement() {
-  const fixture = document.createElement('keyboard-prefix-selection-test');
+  const fixture = new KeyboardPrefixSelectionTest();
   const texts = [
     'Acai',
     'Acerola',

@@ -80,7 +80,7 @@ describe("WrappedStandardElement", () => {
   it("chooses an appropriate :host display style based on the wrapped element", () => {
     const fixtureA = new WrappedA();
     container.appendChild(fixtureA);
-    const fixtureDiv = document.createElement('wrapped-div');
+    const fixtureDiv = new WrappedDiv();
     container.appendChild(fixtureDiv);
     assert.equal(getComputedStyle(fixtureA).display, 'inline-block');
     assert.equal(getComputedStyle(fixtureDiv).display, 'block');

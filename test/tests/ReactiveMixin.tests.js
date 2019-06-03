@@ -38,7 +38,7 @@ describe("ReactiveMixin", function () {
   });
 
   it("starts with an empty state object", () => {
-    const fixture = document.createElement('reactive-test');
+    const fixture = new ReactiveTest();
     assert.deepEqual(fixture.state, {});
   });
 
@@ -46,13 +46,13 @@ describe("ReactiveMixin", function () {
     ReactiveTest.defaults = {
       message: 'aardvark'
     };
-    const fixture = document.createElement('reactive-test');
+    const fixture = new ReactiveTest();
     assert.deepEqual(fixture.state, { message: 'aardvark' });
     ReactiveTest.defaults = undefined;
   });
 
   it("setState updates state", () => {
-    const fixture = document.createElement('reactive-test');
+    const fixture = new ReactiveTest();
     fixture.setState({
       message: 'badger'
     });
@@ -60,13 +60,13 @@ describe("ReactiveMixin", function () {
   });
 
   it("state is immutable", () => {
-    const fixture = document.createElement('reactive-test');
+    const fixture = new ReactiveTest();
     assert.throws(() => fixture.state = {});
     assert.throws(() => fixture.state.message = 'chihuahua');
   });
 
   it("setState skips render if component is not in document", async () => {
-    const fixture = document.createElement('reactive-test');
+    const fixture = new ReactiveTest();
     const renderSpy = sinon.spy(fixture, symbols.render);
     await fixture.setState({
       message: 'dingo'
@@ -75,7 +75,7 @@ describe("ReactiveMixin", function () {
   });
 
   it("setState invokes render if component is in document", async () => {
-    const fixture = document.createElement('reactive-test');
+    const fixture = new ReactiveTest();
     container.appendChild(fixture);
     const renderSpy = sinon.spy(fixture, symbols.render);
     await fixture.setState({
@@ -86,7 +86,7 @@ describe("ReactiveMixin", function () {
   });
 
   it("consecutive setState calls batched into single render call", async () => {
-    const fixture = document.createElement('reactive-test');
+    const fixture = new ReactiveTest();
     container.appendChild(fixture);
     const renderSpy = sinon.spy(fixture, symbols.render);
     /* Do *not* await first call - invoke it synchronously. */
@@ -101,7 +101,7 @@ describe("ReactiveMixin", function () {
   });
 
   it("render invokes componentDidMount/componentDidUpdate if defined", async () => {
-    const fixture = document.createElement('reactive-test');
+    const fixture = new ReactiveTest();
     const componentDidMountSpy = sinon.spy(fixture, 'componentDidMount');
     const componentDidUpdateSpy = sinon.spy(fixture, 'componentDidUpdate');
     container.appendChild(fixture);
@@ -117,7 +117,7 @@ describe("ReactiveMixin", function () {
   })
 
   it("only calls componentDidMount once, even if component is reattached", async () => {
-    const fixture = document.createElement('reactive-test');
+    const fixture = new ReactiveTest();
     const componentDidMountSpy = sinon.spy(fixture, 'componentDidMount');
     container.appendChild(fixture);
     // connectedCallback should trigger first render with promise timing.
@@ -131,7 +131,7 @@ describe("ReactiveMixin", function () {
   });
 
   it("leaves state object alone if there are no changes", async () => {
-    const fixture = document.createElement('reactive-test');
+    const fixture = new ReactiveTest();
     await fixture.setState({
       message: 'hamster'
     });

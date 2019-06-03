@@ -95,7 +95,7 @@ describe("KeyboardPagedSelectionMixin", function() {
 
 function createSampleElement() {
 
-  const fixture = document.createElement('keyboard-paged-selection-test');
+  const fixture = new KeyboardPagedSelectionTest();
 
   // Force scroll: make element only tall enough to show 2 items at a time.
   const itemsToShow = 2;
