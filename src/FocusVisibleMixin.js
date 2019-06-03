@@ -1,6 +1,6 @@
 import { deepContains } from './utilities.js';
 import * as symbols from './symbols.js';
-import ReactiveElement from './ReactiveElement.js'
+import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
 // We consider the keyboard to be active if the window has received a keydown

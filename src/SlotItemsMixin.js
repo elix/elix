@@ -1,5 +1,5 @@
 import ContentItemsMixin from './ContentItemsMixin.js';
-import ReactiveElement from './ReactiveElement.js'
+import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 import SlotContentMixin from './SlotContentMixin.js';
 
 

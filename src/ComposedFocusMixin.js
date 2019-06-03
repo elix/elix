@@ -1,5 +1,5 @@
 import { closestFocusableAncestor } from './utilities.js';
-import ReactiveElement from './ReactiveElement.js'
+import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
 // Quick detection of whether we'll need to handle focus.

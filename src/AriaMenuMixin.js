@@ -1,6 +1,6 @@
 import { defaultAriaRole } from './accessibility.js';
 import * as symbols from './symbols.js';
-import ReactiveElement from './ReactiveElement.js'
+import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
 /**

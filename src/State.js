@@ -145,6 +145,7 @@ function applyStateChanges(state, changes) {
   // might produce new changes, and so on. Loop until we complete a pass that
   // produces no changes.
   /** @type {PlainObject|null} */ let changed;
+  /* eslint-disable no-cond-assign */
   for (; changed = fieldsChanged(state, changes);) {
 
     // Apply the changes to the state.

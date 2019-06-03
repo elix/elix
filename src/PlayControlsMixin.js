@@ -1,6 +1,6 @@
 import * as symbols from './symbols.js';
 import * as template from './template.js';
-import ReactiveElement from './ReactiveElement.js'
+import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 import SeamlessButton from './SeamlessButton.js';
 
 
