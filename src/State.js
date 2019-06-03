@@ -144,10 +144,8 @@ function applyStateChanges(state, changes) {
   // Applying the changes may produce a new round of changes, and that round
   // might produce new changes, and so on. Loop until we complete a pass that
   // produces no changes.
-  for (
-    /** @type {PlainObject} */ let changed;
-    changed = fieldsChanged(state, changes), changed;
-  ) {
+  /** @type {PlainObject|null} */ let changed;
+  for (; changed = fieldsChanged(state, changes);) {
 
     // Apply the changes to the state.
     Object.assign(state, changes);
@@ -162,11 +160,12 @@ function applyStateChanges(state, changes) {
     changes = {};
     if (state[changeCallbacksKey]) {
       // Get callbacks for fields that changed.
-      /** @type {function[]} */
+      /** @type {ChangeHandler[]} */
       const callbacks = [];
       for (const field in changed) {
+        /** @type {ChangeHandler[]} */
         const callbacksForField = state[changeCallbacksKey][field] || [];
-        callbacksForField.forEach((/** @type {function} */ callback) => {
+        callbacksForField.forEach(callback => {
           // A single callback may be triggered by multiple fields; only add a
           // callback to the list if it's not already there.
           // @ts-ignore
@@ -176,7 +175,7 @@ function applyStateChanges(state, changes) {
         });
       }
       // Run the callbacks and collect their changes.
-      const results = callbacks.map(callback => callback(state, /** @type {PlainObject} */ changed));
+      const results = callbacks.map(callback => callback(state, changed));
       // If the change handlers produced changes, we'll run the loop again.
       Object.assign(changes, ...results);
     }

@@ -143,6 +143,7 @@ class Drawer extends Base {
     if (changed.fromEdge || changed.rightToLeft) {
       // Dock drawer to appropriate edge
       const { fromEdge, rightToLeft } = this.state;
+      /** @type {IndexedObject<string>} */
       const mapFromEdgetoJustifyContent = {
         'end': 'flex-end',
         'left': rightToLeft ? 'flex-end' : 'flex-start',

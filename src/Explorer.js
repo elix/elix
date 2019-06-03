@@ -109,6 +109,7 @@ class Explorer extends Base {
 
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
+    /** @type {any} */
     const handleSelectedIndexChanged = (/** @type {CustomEvent} */ event) => {
       // The proxy list and stage may raise events before they've actually
       // had a chance to sync up their items to reflect the current state
@@ -390,9 +391,11 @@ function setListAndStageOrder(element, state) {
   const list = findChildContainingNode(container, element.$.proxyList);
   const firstElement = listInInitialPosition ? list : stage;
   const lastElement = listInInitialPosition ? stage : list;
-  if (firstElement && lastElement &&
-      firstElement.nextElementSibling !== lastElement) {
-    element.$.explorerContainer.insertBefore(firstElement, lastElement);
+  if (firstElement && lastElement) {
+    const nextElementSibling = /** @type {any} */ (firstElement).nextElementSibling;
+    if (nextElementSibling !== lastElement) {
+      element.$.explorerContainer.insertBefore(firstElement, lastElement);
+    }
   }
 }
 

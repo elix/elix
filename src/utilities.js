@@ -56,30 +56,32 @@ export function applyChildNodes(element, childNodes) {
  * Return the closest focusable ancestor in the *composed* tree.
  * If no focusable ancestor is found, returns null.
  * 
- * @param {Node} element
+ * @param {Node} node
  * @returns {HTMLElement|null}
  */
-export function closestFocusableAncestor(element) {
+export function closestFocusableAncestor(node) {
   // We want an element that has a tabIndex of 0 or more. We ignore disabled
   // elements, and slot elements (which oddly have a tabIndex of 0).
-  if (element instanceof HTMLElement && element.tabIndex >= 0 && !element.disabled
-    && !(element instanceof HTMLSlotElement)) {
+  /** @type {any} */ const cast = node;
+  if (node instanceof HTMLElement && node.tabIndex >= 0 &&
+    !cast.disabled &&
+    !(node instanceof HTMLSlotElement)) {
     // Found an enabled component that wants the focus.
-    return element;
+    return node;
   }
   // If an element defines a focusTarget (e.g., via DelegateFocusMixin),
   // see if that focusTarget is focusable at this point.
-  const focusTarget = element[symbols.focusTarget];
+  const focusTarget = node[symbols.focusTarget];
   if (focusTarget && focusTarget.tabIndex >= 0 && !focusTarget.disabled) {
     return focusTarget;
   }
   // Not focusable; look higher in composed tree.
-  const parent = element instanceof HTMLElement && element.assignedSlot ?
-    element.assignedSlot :
+  const parent = node instanceof HTMLElement && node.assignedSlot ?
+    node.assignedSlot :
     // @ts-ignore
-    element.parentNode instanceof ShadowRoot ?
-      element.parentNode.host :
-      element.parentNode;
+    node.parentNode instanceof ShadowRoot ?
+      node.parentNode.host :
+      node.parentNode;
   return parent ?
     closestFocusableAncestor(parent) :
     null;
@@ -222,29 +224,34 @@ export function ownEvent(node, event) {
 }
 
 
-// Walk the composed tree at the root for elements that pass the given filter.
-// Note: the jsDoc types required for this function are too complex for the
-// jsDoc parser, so we suppress type-checking on the function signature.
-// @ts-ignore
+/**
+ * Walk the composed tree at the root for elements that pass the given filter.
+ * 
+ * Note: the jsDoc types required for the filter function are too complex for
+ * the current jsDoc parser to support strong type-checking.
+ *
+ * @private
+ * @param {Node} node
+ * @param {function} filter
+ * @returns {IterableIterator<Node>}
+ */
 function* walkComposedTree(node, filter) {
   if (filter(node)) {
     yield node;
   }
   let children;
-  if (node instanceof HTMLElement) {
-    if (node.shadowRoot) {
-      // Walk the shadow instead of the light DOM.
-      children = node.shadowRoot.children;
-    } else {
-      const assignedNodes = node instanceof HTMLSlotElement ?
-        node.assignedNodes({ flatten: true }) :
-        [];
-      children = assignedNodes.length > 0 ?
-        // Walk light DOM nodes assigned to this slot.
-        assignedNodes :
-        // Walk light DOM children.
-        node.children;
-    }
+  if (node instanceof HTMLElement && node.shadowRoot) {
+    // Walk the shadow instead of the light DOM.
+    children = node.shadowRoot.children;
+  } else {
+    const assignedNodes = node instanceof HTMLSlotElement ?
+      node.assignedNodes({ flatten: true }) :
+      [];
+    children = assignedNodes.length > 0 ?
+      // Walk light DOM nodes assigned to this slot.
+      assignedNodes :
+      // Walk light DOM children.
+      node.childNodes;
   }
   if (children) {
     for (let i = 0; i < children.length; i++) {

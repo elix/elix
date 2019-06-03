@@ -14,7 +14,7 @@ export function lastDateOfMonth(date: Date): Date;
 export function lastDateOfWeek(date: Date, locale: string): Date;
 export function midnightOnDate(date: Date): Date;
 export function noonOnDate(date: Date): Date;
-export function parse(text, dateTimeFormat: Intl.DateTimeFormat): Date;
+export function parse(text: string, dateTimeFormat: Intl.DateTimeFormat): Date;
 export function parseWithOptionalYear(text: string, dateTimeFormat: Intl.DateTimeFormat, timeBias: 'future'|'past'): Date;
 export function sameMonthAndYear(date1: Date, date2: Date): boolean;
 export function offsetDateByDays(date: Date, days: number): Date;

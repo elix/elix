@@ -73,7 +73,7 @@ class CalendarDayMoonPhase extends CalendarDay {
 // http://www2.arnes.si/~gljsentvid10/jspodatkinanebu.html. That work in turn
 // is based on Meeus chapter 45 and the illuminated percentage from Meeus
 // equations 46.4 and 46.1.
-function moonAngle(date) {
+function moonAngle(/** @type {Date} */ date) {
   const jd = jd0(date.getFullYear(), date.getMonth() + 1, date.getDate());
   const T = (jd-2451545.0)/36525;
   const T2 = T*T;
@@ -92,7 +92,14 @@ function moonAngle(date) {
 }
 
 
-// The Julian date at 0 hours UT at Greenwich
+/**
+ * The Julian date at 0 hours UT at Greenwich
+ * 
+ * @private
+ * @param {number} year
+ * @param {number} month
+ * @param {number} day
+ */
 function jd0(year, month, day) {
   let y  = year;
   let m = month;
@@ -108,10 +115,10 @@ function jd0(year, month, day) {
 
 
 // Extensions to the Math routines - Trig routines in degrees
-function rev(angle) {
+function rev(/** @type {number} */ angle) {
   return angle-Math.floor(angle/360.0)*360.0;
 }
-function sind(angle) {
+function sind(/** @type {number} */ angle) {
   return Math.sin((angle*Math.PI)/180.0);
 }
 

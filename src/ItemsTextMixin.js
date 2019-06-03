@@ -39,7 +39,7 @@ export default function ItemsTextMixin(Base) {
      * `textContent`, in that order.
      *
      * @param {(HTMLElement|SVGElement)} item 
-     * @returns {string|null}
+     * @returns {string}
      */
     [symbols.getItemText](item) {
       return getItemText(item);
@@ -57,7 +57,7 @@ export default function ItemsTextMixin(Base) {
  * @param {HTMLElement|SVGElement} item 
  */
 export function getItemText(item) {
-  return item.getAttribute('alt') || item.textContent;
+  return item.getAttribute('alt') || item.textContent || '';
 }
 
 

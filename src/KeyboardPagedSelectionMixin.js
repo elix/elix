@@ -1,5 +1,6 @@
-import * as symbols from './symbols.js';
 import { defaultScrollTarget } from './scrolling.js';
+import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js';
 
 
 /**
@@ -28,6 +29,7 @@ import { defaultScrollTarget } from './scrolling.js';
  * * A `selectedIndex` state member updatable via `setState`.
  *
  * @module KeyboardPagedSelectionMixin
+ * @param {Constructor<ReactiveElement>} Base
  */
 export default function KeyboardPagedSelectionMixin(Base) {
 
@@ -103,6 +105,11 @@ export default function KeyboardPagedSelectionMixin(Base) {
  * found at the given y position; if downward is false, move up the list of
  * 
  * items to find the last item at that position.
+ * 
+ * @private
+ * @param {(HTMLElement|SVGElement)[]} items
+ * @param {number} y
+ * @param {boolean} downward
  */
 function getIndexOfItemAtY(items, y, downward) {
 
@@ -112,20 +119,18 @@ function getIndexOfItemAtY(items, y, downward) {
 
   // Find the item spanning the indicated y coordinate.
   let index;
-  let item;
+  /** @type {HTMLElement|SVGElement|null} */ let item = null;
   let itemRect;
-  let found = false;
   for (index = start; index !== end; index += step) {
-    item = items[index];
-    itemRect = item.getBoundingClientRect();
+    itemRect = items[index].getBoundingClientRect();
     if (itemRect.top <= y && y <= itemRect.bottom) {
       // Item spans the indicated y coordinate.
-      found = true;
+      item = items[index];
       break;
     }
   }
 
-  if (!found) {
+  if (!item || !itemRect) {
     return null;
   }
 
@@ -152,6 +157,10 @@ function getIndexOfItemAtY(items, y, downward) {
 /**
  * Move by one page downward (if downward is true), or upward (if false).
  * Return true if we ended up changing the selection, false if not.
+ * 
+ * @private
+ * @param {ReactiveElement} element
+ * @param {boolean} downward
  */
 function scrollOnePage(element, downward) {
   

@@ -73,7 +73,8 @@ class AlertDialog extends Dialog {
 
     // When choices or choice button role changes, regenerate buttons.
     state.onChange(['choiceButtonRole', 'choices'], state => {
-      const choiceButtons = state.choices.map(choice => {
+      /** @type {string[]} */ const choices = state.choices;
+      const choiceButtons = choices.map(choice => {
         const button = template.createElement(state.choiceButtonRole);
         button.textContent = choice;
         return button;

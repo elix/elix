@@ -454,10 +454,11 @@ class WrappedStandardElement extends Base {
   static wrap(extendsTag) {
 
     // Create the new class.
+    /** @type {Constructor<WrappedStandardElement>} */
     class Wrapped extends WrappedStandardElement {}
     
     // Indicate which tag it wraps.
-    Wrapped[extendsKey] = extendsTag;
+    /** @type {any} */ (Wrapped)[extendsKey] = extendsTag;
 
     // Create getter/setters that delegate to the wrapped element.
     const element = document.createElement(extendsTag);

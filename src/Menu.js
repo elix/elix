@@ -146,7 +146,8 @@ class Menu extends Base {
     const base = super[symbols.itemMatchesState] ?
       super[symbols.itemMatchesState](item, state) :
       true;
-    return base && !item.disabled;
+    /** @type {any} */ const cast = item;
+    return base && !cast.disabled;
   }
 
   [symbols.render](/** @type {PlainObject} */ changed) {

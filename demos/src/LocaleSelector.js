@@ -6,6 +6,7 @@ import ReactiveElement from '../../src/ReactiveElement.js';
 
 // Locale list from https://stackoverflow.com/questions/3191664/list-of-all-locales-and-their-short-codes/28357857#28357857
 // This includes only locales with regions; it omits languages without regions.
+/** @type {IndexedObject<string>} */
 const locales = {
   'af-NA': 'Afrikaans (Namibia)',
   'af-ZA': 'Afrikaans (South Africa)',
@@ -301,9 +302,8 @@ class LocaleSelector extends ReactiveElement {
     });
   }
 
-  componentDidUpdate(previousState) {
-    const valueChanged = this.state.value !== previousState.value;
-    if (valueChanged && this[symbols.raiseChangeEvents]) {
+  componentDidUpdate(/** @type {PlainObject} */ changed) {
+    if (changed.value && this[symbols.raiseChangeEvents]) {
       const event = new CustomEvent('change', {
         detail: {
           value: this.state.value
@@ -361,7 +361,12 @@ class LocaleSelector extends ReactiveElement {
 }
 
 
-// Heuristic that returns true if the given locale is supported.
+/**
+ * Heuristic that returns true if the given locale is supported.
+ * 
+ * @private
+ * @param {string} locale
+ */
 function localeSupported(locale) {
   const language = locale.split('-')[0];
   if (language === 'en') {

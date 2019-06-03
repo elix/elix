@@ -99,6 +99,12 @@ export default function ShadowTemplateMixin(Base) {
 }
 
 
+/**
+ * Return and cache the template for the given element.
+ * 
+ * @private
+ * @param {HTMLElement} element 
+ */
 function getTemplate(element) {
   const hasDynamicTemplate = element[symbols.hasDynamicTemplate];
   let template = hasDynamicTemplate ?

@@ -47,7 +47,7 @@ class MenuButton extends PopupButton {
     // that point on the source won't receive a mouseup event. Again, we can
     // listen to mouseup on the document and do our own hit-testing to see if
     // the user released the mouse over the source.
-    this[documentMouseupListenerKey] = async (event) => {
+    this[documentMouseupListenerKey] = async (/** @type {MouseEvent} */ event) => {
       const hitTargets = this.shadowRoot.elementsFromPoint(event.clientX, event.clientY);
       const overSource = hitTargets.indexOf(this.$.source) >= 0;
       if (this.opened) {
@@ -370,12 +370,12 @@ class MenuButton extends PopupButton {
 }
 
 
-function addDocumentListeners(/** @type {MenuButton */ element) {
+function addDocumentListeners(/** @type {MenuButton} */ element) {
   document.addEventListener('mouseup', element[documentMouseupListenerKey]);
 }
 
 
-function removeDocumentListeners(/** @type {MenuButton */ element) {
+function removeDocumentListeners(/** @type {MenuButton} */ element) {
   document.removeEventListener('mouseup', element[documentMouseupListenerKey]);
 }
 

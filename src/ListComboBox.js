@@ -43,10 +43,8 @@ class ListComboBox extends Base {
     // If value was changed directly or items have updated, select the
     // corresponding item in list.
     state.onChange(['items', 'value'], state => {
-      const {
-        items,
-        value
-      } = state;
+      const { value } = state;
+      /** @type {(HTMLElement|SVGElement)[]} */ const items = state.items;
       if (items && value != null) {
         const searchText = value.toLowerCase();
         const selectedIndex = items.findIndex(item => {

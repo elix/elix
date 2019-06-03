@@ -12,9 +12,20 @@
  */
 type Constructor<T> = new() => T;
 
+
+/**
+ * A dictionary that maps strings to objects of type T.
+ */
 type IndexedObject<T> = {
   [key: string]: T;
 }
+
+
+/**
+ * A onChange handler for a State object.
+ */
+type ChangeHandler = (state: PlainObject, changed?: PlainObject|null) => PlainObject|null;
+
 
 /*
  * An Elix mixin is a function that takes an existing class and returns a new
