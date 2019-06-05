@@ -37,18 +37,7 @@ export default function PopupModalityMixin(Base) {
       super();
 
       // If we lose focus, and the new focus isn't inside us, then close.
-      this.addEventListener('blur', async (event) => {
-        // What has the focus now?
-        const newFocusedElement = event.relatedTarget || document.activeElement;
-        /** @type {any} */
-        const cast = this;
-        if (newFocusedElement instanceof Element &&
-            !deepContains(cast, newFocusedElement)) {
-          this[symbols.raiseChangeEvents] = true;
-          await this.close();
-          this[symbols.raiseChangeEvents] = false;
-        }
-      });
+      this.addEventListener('blur', blurHandler.bind(this));
     }
 
     componentDidUpdate(/** @type {PlainObject} */ changed) {
@@ -146,14 +135,7 @@ export default function PopupModalityMixin(Base) {
 function addEventListeners(/** @type {ReactiveElement} */ element) {
 
   // Close handlers for window events.
-  element[implicitCloseListenerKey] = async (/** @type {Event} */ event) => {
-    const handleEvent = event.type !== 'resize' || element.state.closeOnWindowResize;
-    if (!ownEvent(element, event) && handleEvent) {
-      element[symbols.raiseChangeEvents] = true;
-      await element.close();
-      element[symbols.raiseChangeEvents] = false;
-    }
-  };
+  element[implicitCloseListenerKey] = closeHandler.bind(element);
 
   // Window blur event tracks loss of focus of *window*, not just element.
   window.addEventListener('blur', element[implicitCloseListenerKey]);
@@ -168,5 +150,32 @@ function removeEventListeners(/** @type {ReactiveElement} */ element) {
     window.removeEventListener('resize', element[implicitCloseListenerKey]);
     window.removeEventListener('scroll', element[implicitCloseListenerKey]);
     element[implicitCloseListenerKey] = null;
+  }
+}
+
+
+async function blurHandler(/** @type {Event} */ event) {
+  // @ts-ignore
+  /** @type {any} */const element = this;
+  // What has the focus now?
+  const newFocusedElement = event.relatedTarget || document.activeElement;
+  /** @type {any} */
+  if (newFocusedElement instanceof Element &&
+      !deepContains(element, newFocusedElement)) {
+    element[symbols.raiseChangeEvents] = true;
+    await element.close();
+    element[symbols.raiseChangeEvents] = false;
+  }
+}
+
+
+async function closeHandler(/** @type {Event} */ event) {
+  // @ts-ignore
+  /** @type {any} */const element = this; 
+  const handleEvent = event.type !== 'resize' || element.state.closeOnWindowResize;
+  if (!ownEvent(element, event) && handleEvent) {
+    element[symbols.raiseChangeEvents] = true;
+    await element.close();
+    element[symbols.raiseChangeEvents] = false;
   }
 }
