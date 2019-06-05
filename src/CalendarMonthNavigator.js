@@ -124,6 +124,7 @@ class CalendarMonthNavigator extends Base {
     this.setState({
       date: calendar.offsetDateByDays(this.state.date, 7)
     });
+    return true;
   }
 
   [symbols.goLeft]() {
@@ -131,6 +132,7 @@ class CalendarMonthNavigator extends Base {
     this.setState({
       date: calendar.offsetDateByDays(this.state.date, -1)
     });
+    return true;
   }
 
   [symbols.goRight]() {
@@ -138,6 +140,7 @@ class CalendarMonthNavigator extends Base {
     this.setState({
       date: calendar.offsetDateByDays(this.state.date, 1)
     });
+    return true;
   }
 
   [symbols.goUp]() {
@@ -145,6 +148,7 @@ class CalendarMonthNavigator extends Base {
     this.setState({
       date: calendar.offsetDateByDays(this.state.date, -7)
     });
+    return true;
   }
 
   get [symbols.template]() {
