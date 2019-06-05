@@ -100,40 +100,14 @@ function ArrowDirectionMixin(Base) {
         if (this.$.arrowButtonLeft instanceof HTMLElement) {
           forwardFocus(this.$.arrowButtonLeft, cast);
         }
-        /** @type {any} */
-        const leftButtonHandler = async (/** @type {MouseEvent} */ event) => {
-          // Only process events for the main (usually left) button.
-          if (event.button !== 0) {
-            return;
-          }
-          this[symbols.raiseChangeEvents] = true;
-          const handled = this.arrowButtonLeft();
-          if (handled) {
-            event.stopPropagation();
-          }
-          await Promise.resolve();
-          this[symbols.raiseChangeEvents] = false;
-        };
+        const leftButtonHandler = createButtonHandler(() => this.arrowButtonLeft());
         this.$.arrowButtonLeft.addEventListener('mousedown', leftButtonHandler);
         
         template.transmute(this.$.arrowButtonRight, this.state.arrowButtonRole);
         if (this.$.arrowButtonRight instanceof HTMLElement) {
           forwardFocus(this.$.arrowButtonRight, cast);
         }
-        /** @type {any} */
-        const rightButtonHandler = async (/** @type {MouseEvent} */ event) => {
-          // Only process events for the main (usually left) button.
-          if (event.button !== 0) {
-            return;
-          }
-          this[symbols.raiseChangeEvents] = true;
-          const handled = this.arrowButtonRight();
-          if (handled) {
-            event.stopPropagation();
-          }
-          await Promise.resolve();
-          this[symbols.raiseChangeEvents] = false;
-        };
+        const rightButtonHandler = createButtonHandler(() => this.arrowButtonRight());
         this.$.arrowButtonRight.addEventListener('mousedown', rightButtonHandler);
       }
 
@@ -262,6 +236,31 @@ function ArrowDirectionMixin(Base) {
   }
 
   return ArrowDirection;
+}
+
+
+/**
+ * @private
+ * @param {function} callback 
+ * @returns {EventListener}
+ */
+function createButtonHandler(callback) {
+  return async function mousedown(/** @type {Event} */ event) {
+    // @ts-ignore
+    /** @type {ReactiveElement} */ const element = this;
+    // Only process events for the main (usually left) button.
+    /** @type {any} */const cast = event;
+    if (cast.button !== 0) {
+      return;
+    }
+    element[symbols.raiseChangeEvents] = true;
+    const handled = callback();
+    if (handled) {
+      event.stopPropagation();
+    }
+    await Promise.resolve();
+    element[symbols.raiseChangeEvents] = false;
+  }
 }
 
 
