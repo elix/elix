@@ -48,29 +48,7 @@ class MenuButton extends PopupButton {
     // listen to mouseup on the document and do our own hit-testing to see if
     // the user released the mouse over the source.
     /** @type {any} */ const cast = this;
-    cast[documentMouseupListenerKey] = async (/** @type {MouseEvent} */ event) => {
-      const hitTargets = this.shadowRoot.elementsFromPoint(event.clientX, event.clientY);
-      const overSource = hitTargets.indexOf(this.$.source) >= 0;
-      if (this.opened) {
-        if (overSource) {
-          // User released the mouse over the source button (behind the
-          // backdrop), so we're no longer doing a drag-select.
-          if (this.state.dragSelect) {
-            this[symbols.raiseChangeEvents] = true;
-            this.setState({
-              dragSelect: false
-            });
-            this[symbols.raiseChangeEvents] = false;
-          }
-        } else {
-          // If we get to this point, the user released over the backdrop with
-          // the popup open, so close.
-          this[symbols.raiseChangeEvents] = true;
-          await this.close();
-          this[symbols.raiseChangeEvents] = false;
-        }
-      }
-    };
+    cast[documentMouseupListenerKey] = handleMouseup.bind(this);
 
     if (this.state.opened) {
       addDocumentListeners(this);
@@ -374,6 +352,33 @@ class MenuButton extends PopupButton {
 function addDocumentListeners(/** @type {MenuButton} */ element) {
   /** @type {any} */ const cast = element;
   document.addEventListener('mouseup', cast[documentMouseupListenerKey]);
+}
+
+
+async function handleMouseup (/** @type {MouseEvent} */ event) {
+  // @ts-ignore
+  const element = this;
+  const hitTargets = element.shadowRoot.elementsFromPoint(event.clientX, event.clientY);
+  const overSource = hitTargets.indexOf(element.$.source) >= 0;
+  if (element.opened) {
+    if (overSource) {
+      // User released the mouse over the source button (behind the
+      // backdrop), so we're no longer doing a drag-select.
+      if (element.state.dragSelect) {
+        element[symbols.raiseChangeEvents] = true;
+        element.setState({
+          dragSelect: false
+        });
+        element[symbols.raiseChangeEvents] = false;
+      }
+    } else {
+      // If we get to this point, the user released over the backdrop with
+      // the popup open, so close.
+      element[symbols.raiseChangeEvents] = true;
+      await element.close();
+      element[symbols.raiseChangeEvents] = false;
+    }
+  }
 }
 
 
