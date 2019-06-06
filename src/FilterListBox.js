@@ -64,11 +64,13 @@ class FilterListBox extends ListBox {
       const part2 = text.substring(start, end);
       const part3 = text.substr(end);
       const fragment = document.createDocumentFragment();
-      fragment.appendChild(new Text(part1));
       const strong = document.createElement('strong');
       strong.textContent = part2;
-      fragment.appendChild(strong);
-      fragment.appendChild(new Text(part3));
+      fragment.append(
+        new Text(part1),
+        strong,
+        new Text(part3)
+      );
       return fragment.childNodes;
     } else {
       return [new Text(text)];
