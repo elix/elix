@@ -32,10 +32,10 @@
  */
 export function concat(...templates) {
   const result = document.createElement('template');
-  templates.forEach(template => {
-    const clone = document.importNode(template.content, true);
-    result.content.appendChild(clone);
-  });
+  const clones = templates.map(template =>
+    document.importNode(template.content, true)
+  );
+  result.content.append(...clones);
   return result;
 }
 
@@ -154,9 +154,8 @@ export function replace(original, replacement) {
     });
   }
   // Copy over children.
-  while(original.childNodes.length > 0) {
-    replacement.appendChild(original.childNodes[0]);
-  }
+  // @ts-ignore
+  replacement.append(...original.childNodes);
 
   parent.replaceChild(replacement, original);
   return replacement;
@@ -219,9 +218,7 @@ export function wrap(original, wrapper, destination) {
     original.parentNode.replaceChild(wrapper, original);
     destinationNode.appendChild(original);
   } else if (original instanceof DocumentFragment) {
-    while (original.childNodes.length > 0) {
-      destinationNode.appendChild(original.childNodes[0]);
-    }
+    destinationNode.append(...original.childNodes);
     original.appendChild(wrapper);
   }
 }
