@@ -156,9 +156,10 @@ function removeEventListeners(/** @type {ReactiveElement} */ element) {
 
 async function blurHandler(/** @type {Event} */ event) {
   // @ts-ignore
-  /** @type {any} */const element = this;
+  /** @type {any} */ const element = this;
   // What has the focus now?
-  const newFocusedElement = event.relatedTarget || document.activeElement;
+  const newFocusedElement = /** @type {any} */ (event).relatedTarget ||
+    document.activeElement;
   /** @type {any} */
   if (newFocusedElement instanceof Element &&
       !deepContains(element, newFocusedElement)) {
