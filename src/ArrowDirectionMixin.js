@@ -100,14 +100,14 @@ function ArrowDirectionMixin(Base) {
         if (this.$.arrowButtonLeft instanceof HTMLElement) {
           forwardFocus(this.$.arrowButtonLeft, cast);
         }
-        const leftButtonHandler = createButtonHandler(() => this.arrowButtonLeft());
+        const leftButtonHandler = createButtonHandler(this, () => this.arrowButtonLeft());
         this.$.arrowButtonLeft.addEventListener('mousedown', leftButtonHandler);
         
         template.transmute(this.$.arrowButtonRight, this.state.arrowButtonRole);
         if (this.$.arrowButtonRight instanceof HTMLElement) {
           forwardFocus(this.$.arrowButtonRight, cast);
         }
-        const rightButtonHandler = createButtonHandler(() => this.arrowButtonRight());
+        const rightButtonHandler = createButtonHandler(this, () => this.arrowButtonRight());
         this.$.arrowButtonRight.addEventListener('mousedown', rightButtonHandler);
       }
 
@@ -241,13 +241,12 @@ function ArrowDirectionMixin(Base) {
 
 /**
  * @private
+ * @param {ReactiveElement} element
  * @param {function} callback 
  * @returns {EventListener}
  */
-function createButtonHandler(callback) {
+function createButtonHandler(element, callback) {
   return async function mousedown(/** @type {Event} */ event) {
-    // @ts-ignore
-    /** @type {ReactiveElement} */ const element = this;
     // Only process events for the main (usually left) button.
     /** @type {any} */const cast = event;
     if (cast.button !== 0) {
