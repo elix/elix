@@ -106,6 +106,12 @@ export { default as TouchSwipeMixin } from './TouchSwipeMixin.js';
 export { default as TrackpadSwipeMixin } from './TrackpadSwipeMixin.js';
 export { default as TransitionEffectMixin } from './TransitionEffectMixin.js';
 export { default as WrappedStandardElement } from './WrappedStandardElement.js';
+
+// These files don't actually have a default export, but TypeScript appears to
+// do what we want anyway -- i.e., export all of a module's individual exports
+// behind a single exported constant. Disappointingly, these re-exported objects
+// don't appear to get strong typing, but this way TypeScript at least knows the
+// objects are actually there.
 export { default as accessibility } from './accessibility.js';
 export { default as calendar } from './calendar.js';
 export { default as constants } from './constants.js';
@@ -114,5 +120,5 @@ export { default as fractionalSelection } from './fractionalSelection.js';
 export { default as idGeneration } from './idGeneration.js';
 export { default as scrolling } from './scrolling.js';
 export { default as symbols } from './symbols.js';
-export { default as templates } from './template.js';
+export { default as template } from './template.js';
 export { default as utilities } from './utilities.js';
