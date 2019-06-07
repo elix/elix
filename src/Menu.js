@@ -196,7 +196,7 @@ class Menu extends Base {
         // selected by default when the menu opened.
         const suppressFocus = (selected && !this.state.focusVisible) ||
           isDefaultFocusableItem;
-        item.style.outline = suppressFocus ? 'none' : null;
+        item.style.outline = suppressFocus ? 'none' : '';
       });
     }
   }
