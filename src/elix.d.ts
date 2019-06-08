@@ -109,9 +109,7 @@ export { default as WrappedStandardElement } from './WrappedStandardElement.js';
 
 // These files don't actually have a default export, but TypeScript appears to
 // do what we want anyway -- i.e., export all of a module's individual exports
-// behind a single exported constant. Disappointingly, these re-exported objects
-// don't appear to get strong typing, but this way TypeScript at least knows the
-// objects are actually there.
+// behind a single exported constant.
 export { default as accessibility } from './accessibility.js';
 export { default as calendar } from './calendar.js';
 export { default as constants } from './constants.js';
