@@ -9,6 +9,7 @@
   },
   "author": "info@component.kitchen",
   "main": "./src/elix.js",
+  "module": "./src/elix.js",
   "types": "./src/elix.d.ts",
   "keywords": [
     "web components",
