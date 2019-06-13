@@ -40,6 +40,15 @@ class SwipeableListBox extends Base {
     }
   }
 
+  componentDidUpdate(changed) {
+    super.componentDidUpdate(changed);
+    if (changed.swipeWillCommitLeft || changed.swipeWillCommitRight) {
+      if ('vibrate' in navigator) {
+        navigator.vibrate(5);
+      }
+    }
+  }
+
   get defaultState() {
     const result = Object.assign(super.defaultState, {
       swipeWillCommitLeft: false,
@@ -119,18 +128,6 @@ class SwipeableListBox extends Base {
         });
       }
     }
-    if (changed.swipeWillCommitLeft) {
-      toggleWillCommit(
-        this.$.leftCommandSlot,
-        this.state.swipeWillCommitLeft
-      );
-    }
-    if (changed.swipeWillCommitRight) {
-      toggleWillCommit(
-        this.$.rightCommandSlot,
-        this.state.swipeWillCommitRight
-      );
-    }
   }
 
   [symbols.swipeLeft]() {
@@ -158,7 +155,6 @@ class SwipeableListBox extends Base {
         }
 
         ::slotted(*) {
-          line-height: 1.2em; /* Stabilizes height when line turns bold */
           will-change: transform;
         }
 
@@ -174,7 +170,8 @@ class SwipeableListBox extends Base {
           will-change: width;
         }
 
-        .commandContainer ::slotted(*) {
+        .commandContainer ::slotted(*),
+        .commandContainer slot > * {
           flex: 1;
         }
 
@@ -228,16 +225,6 @@ function swipeItemAtY(element, y) {
       swipeItemIndex
     });
   }
-}
-
-
-function toggleWillCommit(slot, toggle) {
-  slot.assignedElements({ flatten: true }).forEach(element => {
-    element.classList.toggle('willCommit', toggle);
-    if ('toggleAlignment' in element) {
-      element.toggleAlignment();
-    }
-  });
 }
 
 

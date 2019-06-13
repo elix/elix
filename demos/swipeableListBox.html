@@ -7,8 +7,7 @@
   <title>Elix SwipeableListBox</title>
 
   <link rel="stylesheet" href="demos.css">
-  <script type="module" src="./src/AnimateAlignment.js"></script>
-  <script type="module" src="../src/SwipeableListBox.js"></script>
+  <script type="module" src="./src/MessageListBox.js"></script>
 
   <style>
     html {
@@ -26,36 +25,12 @@
 <body role="main">
   <div class="demo fullScreen">
     <style>
-      #sampleSwipeableListBox {
+      #messageListBox {
         max-height: 100%;
         max-width: 100%;
       }
-
-      #unreadCommand {
-        background: blue;
-        color: white;
-        text-align: left;
-      }
-      #unreadCommand.willCommit {
-        text-align: right;
-      }
-
-      #deleteCommand {
-        background: red;
-        color: white;
-        text-align: right;
-      }
-      #deleteCommand.willCommit {
-        text-align: left;
-      }
     </style>
-    <elix-swipeable-list-box id="sampleSwipeableListBox" aria-label="Fruits">
-      <animate-alignment id="unreadCommand" align="right" slot="leftCommand" class="command">
-        Read
-      </animate-alignment>
-      <animate-alignment id="deleteCommand" align="left" slot="rightCommand" class="command">
-        Delete
-      </animate-alignment>
+    <message-list-box id="messageListBox" aria-label="Messages">
       <div>Acai</div>
       <div>Akee</div>
       <div>Apple</div>
@@ -153,7 +128,7 @@
       <div>White currant</div>
       <div>White sapote</div>
       <div>Yuzu</div>
-    </elix-swipeable-list-box>
+    </message-list-box>
   </div>
 </body>
 

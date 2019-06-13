@@ -4,6 +4,7 @@ import AriaListMixin from './AriaListMixin.js';
 import ComposedFocusMixin from './ComposedFocusMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
+import GenericMixin from './GenericMixin.js';
 import ItemsTextMixin from './ItemsTextMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
@@ -23,6 +24,7 @@ const Base =
   ComposedFocusMixin(
   DirectionSelectionMixin(
   FocusVisibleMixin(
+  GenericMixin(
   ItemsTextMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
@@ -35,7 +37,7 @@ const Base =
   SlotItemsMixin(
   TapSelectionMixin(
     ReactiveElement
-  )))))))))))))));
+  ))))))))))))))));
 
 
 /**
@@ -81,6 +83,23 @@ class ListBox extends Base {
 
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
+    if (changed.generic) {
+      const { generic } = this.state;
+      this.style.border = generic ?
+        '1px solid gray' :
+        '';
+      this.$.content.classList.toggle('generic', generic);
+    }
+    if (changed.items || changed.selectedIndex) {
+      // Apply `selected` style to the selected item only.
+      const { selectedIndex, items } = this.state;
+      if (items) {
+        items.forEach((item, index) => {
+          const selected = index === selectedIndex;
+          item.classList.toggle('selected', selected);
+        });
+      }
+    }
     if (changed.orientation) {
       // Update list orientation styling.
       const style = this.state.orientation === 'vertical' ?
@@ -96,16 +115,6 @@ class ListBox extends Base {
         };
       Object.assign(this.$.content.style, style);
     }
-    if (changed.items || changed.selectedIndex) {
-      // Apply `selected` style to the selected item only.
-      const { selectedIndex, items } = this.state;
-      if (items) {
-        items.forEach((item, index) => {
-          const selected = index === selectedIndex;
-          item.classList.toggle('selected', selected);
-        });
-      }
-    }
   }
 
   get [symbols.scrollTarget]() {
@@ -116,7 +125,6 @@ class ListBox extends Base {
     return template.html`
       <style>
         :host {
-          border: 1px solid gray;
           box-sizing: border-box;
           cursor: default;
           display: flex;
@@ -131,17 +139,17 @@ class ListBox extends Base {
           -webkit-overflow-scrolling: touch; /* for momentum scrolling */
         }
 
-        ::slotted(*) {
+        #content.generic ::slotted(*) {
           padding: 0.25em;
         }
 
-        ::slotted(.selected) {
+        #content.generic ::slotted(.selected) {
           background: highlight;
           color: highlighttext;
         }
 
         @media (pointer: coarse) {
-          ::slotted(*) {
+          #content.generic ::slotted(*) {
             padding: 1em;
           }
         }
@@ -151,7 +159,7 @@ class ListBox extends Base {
           min-height: inherit;
         }
       </style>
-      <div id="content" role="none">
+      <div id="content" class="generic" role="none">
         <slot></slot>
       </div>
     `;

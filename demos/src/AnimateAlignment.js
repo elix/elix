@@ -18,9 +18,16 @@ export default class AnimateAlignment extends Base {
     return this.state.align;
   }
   set align(align) {
-    this.setState({
-      align
-    });
+    if (this.state.enableEffects && this.state.align !== align) {
+      const effect = align === 'left' ?
+        'slideLeft' :
+        'slideRight';
+      this[symbols.startEffect](effect);
+    } else {
+      this.setState({
+        align
+      });
+    }
   }
 
   get defaultState() {
@@ -94,10 +101,11 @@ export default class AnimateAlignment extends Base {
     return template.html`
       <style>
         :host {
-          display: inline-block;
+          display: inline-flex;
         }
 
         #stationary {
+          flex: 1;
           position: relative;
         }
 
