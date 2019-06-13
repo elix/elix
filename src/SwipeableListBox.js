@@ -157,6 +157,11 @@ class SwipeableListBox extends Base {
           position: relative;
         }
 
+        ::slotted(*) {
+          line-height: 1.2em; /* Stabilizes height when line turns bold */
+          will-change: transform;
+        }
+
         ::slotted(.unread) {
           font-weight: bold;
         }
@@ -165,6 +170,7 @@ class SwipeableListBox extends Base {
           overflow: hidden;
           position: absolute;
           width: 0;
+          will-change: width;
         }
 
         #leftContainer {
