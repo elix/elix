@@ -105,6 +105,8 @@ export default class AnimateAlignment extends Base {
         }
 
         #stationary {
+          align-items: center;
+          display: flex;
           flex: 1;
           position: relative;
         }

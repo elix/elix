@@ -15,6 +15,14 @@ export default class MessageListBox extends SwipeableListBox {
 
   [symbols.render](changed) {
     super[symbols.render](changed);
+    if (changed.swipeItemIndex || changed.swipeFraction) {
+      const swipeItem = this.getSwipeItemInState(this.state);
+      if (swipeItem && 'read' in swipeItem) {
+        const read = swipeItem.read;
+        this.$.readIconWithLabel.style.display = read ? 'none' : '';
+        this.$.unreadIconWithLabel.style.display = read ? '' : 'none';
+      }
+    }
     if (changed.swipeWillCommitLeft) {
       this.$.unreadCommand.align = this.state.swipeWillCommitLeft ?
         'right' :
@@ -36,8 +44,19 @@ export default class MessageListBox extends SwipeableListBox {
         }
 
         .command {
-          display: inline-flex;
+          display: flex;
           padding: 1em;
+        }
+
+        .iconWithLabel {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .icon {
+          height: 32px;
+          width: 32px;
         }
 
         #unreadCommand {
@@ -60,7 +79,7 @@ export default class MessageListBox extends SwipeableListBox {
 
         @media (pointer: coarse) {
           #content ::slotted(*) {
-            padding: 1em;
+            padding: 0.5em 1em;
           }
         }
       </style>
@@ -71,7 +90,14 @@ export default class MessageListBox extends SwipeableListBox {
     if (leftCommandSlot) {
       const leftCommandTemplate = template.html`
         <animate-alignment id="unreadCommand" slot="leftCommand" class="command">
-          Read
+          <div id="readIconWithLabel" class="iconWithLabel">
+            <img class="icon" src="resources/outline-drafts-24px.svg">
+            <div>Read</div>
+          </div>
+          <div id="unreadIconWithLabel" class="iconWithLabel">
+            <img class="icon" src="resources/outline-markunread-24px.svg">
+            <div>Unread</div>
+          </div>
         </animate-alignment>
       `;
       applyChildNodes(leftCommandSlot, leftCommandTemplate.content.childNodes);
@@ -82,7 +108,10 @@ export default class MessageListBox extends SwipeableListBox {
     if (rightCommandSlot) {
       const rightCommandTemplate = template.html`
         <animate-alignment id="deleteCommand" align="right" slot="rightCommand" class="command">
-          Delete
+          <div class="iconWithLabel">
+            <img class="icon" src="resources/outline-delete-24px.svg">
+            <div>Delete</div>
+          </div>
         </animate-alignment>
       `;
       applyChildNodes(rightCommandSlot, rightCommandTemplate.content.childNodes);

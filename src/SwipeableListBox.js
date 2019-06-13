@@ -68,10 +68,16 @@ class SwipeableListBox extends Base {
     return result;
   }
 
+  getSwipeItemInState(state) {
+    return state.items ?
+      state.items[state.swipeItemIndex] :
+      null;
+  }
+  
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.enableEffects || changed.swipeItemIndex || changed.swipeFraction) {
-      const swipeItem = getSwipeItemInState(this.state);
+      const swipeItem = this.getSwipeItemInState(this.state);
       if (swipeItem) {
         const { leftContainer, rightContainer } = this.$;
 
@@ -131,7 +137,7 @@ class SwipeableListBox extends Base {
   }
 
   [symbols.swipeLeft]() {
-    const swipeItem = getSwipeItemInState(this.state);
+    const swipeItem = this.getSwipeItemInState(this.state);
     if (swipeItem) {
       swipeItem.remove();
       this.setState({
@@ -141,9 +147,9 @@ class SwipeableListBox extends Base {
   }
 
   [symbols.swipeRight]() {
-    const swipeItem = getSwipeItemInState(this.state);
-    if (swipeItem) {
-      swipeItem.classList.toggle('unread');
+    const swipeItem = this.getSwipeItemInState(this.state);
+    if (swipeItem && 'read' in swipeItem) {
+      swipeItem.read = !swipeItem.read;
     }
   }
 
@@ -211,16 +217,9 @@ function getIndexOfItemAtY(items, y) {
 }
 
 
-function getSwipeItemInState(state) {
-  return state.items ?
-    state.items[state.swipeItemIndex] :
-    null;
-}
-
-
 function swipeItemAtY(element, y) {
   const swipeItemIndex = getIndexOfItemAtY(element.state.items, y);
-  if (swipeItemIndex) {
+  if (swipeItemIndex >= 0) {
     element.setState({
       swipeItemIndex
     });
