@@ -167,10 +167,15 @@ class SwipeableListBox extends Base {
         }
 
         .commandContainer {
+          display: flex;
           overflow: hidden;
           position: absolute;
           width: 0;
           will-change: width;
+        }
+
+        .commandContainer ::slotted(*) {
+          flex: 1;
         }
 
         #leftContainer {
@@ -229,6 +234,9 @@ function swipeItemAtY(element, y) {
 function toggleWillCommit(slot, toggle) {
   slot.assignedElements({ flatten: true }).forEach(element => {
     element.classList.toggle('willCommit', toggle);
+    if ('toggleAlignment' in element) {
+      element.toggleAlignment();
+    }
   });
 }
 

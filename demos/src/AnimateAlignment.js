@@ -14,6 +14,15 @@ const Base =
 
 export default class AnimateAlignment extends Base {
 
+  get align() {
+    return this.state.align;
+  }
+  set align(align) {
+    this.setState({
+      align
+    });
+  }
+
   get defaultState() {
     const base = Object.assign(super.defaultState, {
       align: 'left'
@@ -43,15 +52,15 @@ export default class AnimateAlignment extends Base {
 
   [symbols.render](changed) {
     super[symbols.render](changed);
-    const { effect, effectPhase, enableEffects } = this.state;
+    const { align, effect, effectPhase, enableEffects } = this.state;
+    const container = this.$.container;
     if ((changed.effect || changed.effectPhase || changed.enableEffects) &&
         enableEffects &&
         effect === 'slideLeft' || effect === 'slideRight') {
-      const container = this.$.container;
       if (effectPhase === 'before') {
         // The inner container lets us measure how wide the content wants to be.
         const containerWidth = this.$.container.clientWidth;
-        const distance = this.clientWidth - containerWidth;
+        const distance = this.$.stationary.clientWidth - containerWidth;
         const transform = effect === 'slideLeft' ?
           `translateX(${distance}px)` :
           `translateX(-${distance}px)`;
@@ -60,16 +69,9 @@ export default class AnimateAlignment extends Base {
           distance > 0 && {
             transform,
             transition: ''
-          },
-          effect === 'slideLeft' && {
-            left: 0,
-            right: ''
-          },
-          effect === 'slideRight' && {
-            left: '',
-            right: 0
           }
         );
+        container.classList.toggle('right', effect === 'slideRight');
       } else if (effectPhase === 'during') {
         Object.assign(container.style, {
           transform: 'translateX(0)',
@@ -81,7 +83,11 @@ export default class AnimateAlignment extends Base {
           transition: ''
         });
       }
-    }    
+    }
+    if (changed.align && !enableEffects) {
+      // Align without animation
+      container.classList.toggle('right', align === 'right');
+    }
   }
 
   get [symbols.template]() {
@@ -89,17 +95,28 @@ export default class AnimateAlignment extends Base {
       <style>
         :host {
           display: inline-block;
+        }
+
+        #stationary {
           position: relative;
         }
 
         #container {
           display: inline-block;
+          left: 0;
           position: absolute;
           will-change: transform;
         }
+
+        #container.right {
+          left: initial;
+          right: 0;
+        }
       </style>
-      <div id="container">
-        <slot></slot>
+      <div id="stationary">
+        <div id="container">
+          <slot></slot>
+        </div>
       </div>
     `;
   }

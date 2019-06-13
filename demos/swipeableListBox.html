@@ -7,6 +7,7 @@
   <title>Elix SwipeableListBox</title>
 
   <link rel="stylesheet" href="demos.css">
+  <script type="module" src="./src/AnimateAlignment.js"></script>
   <script type="module" src="../src/SwipeableListBox.js"></script>
 
   <style>
@@ -49,12 +50,12 @@
       }
     </style>
     <elix-swipeable-list-box id="sampleSwipeableListBox" aria-label="Fruits">
-      <div id="unreadCommand" slot="leftCommand" class="command">
+      <animate-alignment id="unreadCommand" align="right" slot="leftCommand" class="command">
         Read
-      </div>
-      <div id="deleteCommand" slot="rightCommand" class="command">
+      </animate-alignment>
+      <animate-alignment id="deleteCommand" align="left" slot="rightCommand" class="command">
         Delete
-      </div>
+      </animate-alignment>
       <div>Acai</div>
       <div>Akee</div>
       <div>Apple</div>
