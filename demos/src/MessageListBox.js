@@ -30,12 +30,13 @@ export default class MessageListBox extends SwipeableListBox {
 
   [symbols.render](changed) {
     super[symbols.render](changed);
-    if (changed.swipeItem) {
-      const { swipeItem } = this.state;
+    if (changed.swipeItem || changed.swipeWillCommitLeft) {
+      const { swipeItem, swipeWillCommitLeft } = this.state;
       if (swipeItem && 'read' in swipeItem) {
         const read = swipeItem.read;
-        this.$.readIconWithLabel.style.display = read ? 'none' : '';
-        this.$.unreadIconWithLabel.style.display = read ? '' : 'none';
+        const newRead = swipeWillCommitLeft ? !read : read;
+        this.$.readIconWithLabel.style.display = newRead ? '' : 'none';
+        this.$.unreadIconWithLabel.style.display = newRead ? 'none' : '';
       }
     }
     if (changed.swipeWillCommitLeft) {
