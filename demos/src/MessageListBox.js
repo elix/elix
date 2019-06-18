@@ -40,7 +40,7 @@ export default class MessageListBox extends SwipeableListBox {
       <style>
         ::slotted(*) {
           line-height: 1.2em; /* Stabilizes height when line turns bold */
-          padding: 0.25em;
+          padding: 0.5em 1em;
         }
 
         .command {
@@ -75,12 +75,6 @@ export default class MessageListBox extends SwipeableListBox {
         }
         #deleteCommand.willCommit {
           text-align: left;
-        }
-
-        @media (pointer: coarse) {
-          #content ::slotted(*) {
-            padding: 0.5em 1em;
-          }
         }
       </style>
     `);
