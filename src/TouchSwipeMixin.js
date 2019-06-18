@@ -8,8 +8,6 @@ const previousTimeKey = Symbol('previousTime');
 const previousVelocityKey = Symbol('previousVelocity');
 const previousXKey = Symbol('previousX');
 const previousYKey = Symbol('previousY');
-const startXKey = Symbol('startX');
-const startYKey = Symbol('startY');
 
 
 /**
@@ -151,7 +149,9 @@ export default function TouchSwipeMixin(Base) {
         enableNegativeSwipe: true,
         enablePositiveSwipe: true,
         swipeAxis: 'horizontal',
-        swipeFraction: null
+        swipeFraction: null,
+        swipeStartX: null,
+        swipeStartY: null
       });
     }
     
@@ -286,7 +286,11 @@ function gestureEnd(element, clientX, clientY) {
     }
   }
 
-  element.setState({ swipeFraction: null });
+  element.setState({
+    swipeFraction: null,
+    swipeStartX: null,
+    swipeStartY: null
+  });
 }
 
 /**
@@ -299,13 +303,15 @@ function gestureEnd(element, clientX, clientY) {
  */
 function gestureStart(element, clientX, clientY) {
   /** @type {any} */ const cast = element;
-  cast[startXKey] = clientX;
-  cast[startYKey] = clientY;
   cast[previousXKey] = clientX;
   cast[previousYKey] = clientY;
   cast[previousTimeKey] = Date.now();
   cast[previousVelocityKey] = 0;
-  element.setState({ swipeFraction: 0 });
+  element.setState({
+    swipeFraction: 0,
+    swipeStartX: clientX,
+    swipeStartY: clientY
+  });
 }
 
 /**
@@ -317,11 +323,15 @@ function gestureStart(element, clientX, clientY) {
  * @param {number} y 
  */
 function getSwipeFraction(element, x, y) {
-  const vertical = element.state.swipeAxis === 'vertical';
-  /** @type {any} */ const cast = element;
+  const {
+    swipeAxis,
+    swipeStartX,
+    swipeStartY
+  } = element.state;
+  const vertical = swipeAxis === 'vertical';
   const dragDistance = vertical ?
-    y - cast[startYKey] :
-    x - cast[startXKey];
+    y - swipeStartY :
+    x - swipeStartX;
   const swipeTarget = element[symbols.swipeTarget];
   const swipeTargetSize = vertical ?
     swipeTarget.offsetHeight :

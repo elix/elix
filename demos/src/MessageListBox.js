@@ -7,6 +7,21 @@ import SwipeableListBox from '../../src/SwipeableListBox.js';
 
 export default class MessageListBox extends SwipeableListBox {
 
+  completeSwipeCommand() {
+    const { swipeCommand, swipeItem } = this.state;
+    if (swipeCommand && swipeItem) {
+      switch (swipeCommand) {
+        case 'swipeLeft':
+          swipeItem.remove();
+          break;
+
+        case 'swipeRight': 
+          swipeItem.read = !swipeItem.read;
+          break;
+      }
+    }
+  }
+
   get defaultState() {
     return Object.assign(super.defaultState, {
       generic: false
@@ -15,8 +30,8 @@ export default class MessageListBox extends SwipeableListBox {
 
   [symbols.render](changed) {
     super[symbols.render](changed);
-    if (changed.swipeItemIndex || changed.swipeFraction) {
-      const swipeItem = this.getSwipeItemInState(this.state);
+    if (changed.swipeItem) {
+      const { swipeItem } = this.state;
       if (swipeItem && 'read' in swipeItem) {
         const read = swipeItem.read;
         this.$.readIconWithLabel.style.display = read ? 'none' : '';

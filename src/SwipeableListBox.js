@@ -19,25 +19,15 @@ const Base =
  */
 class SwipeableListBox extends Base {
 
-  constructor() {
-    super();
-    this.addEventListener('wheel', async (event) => {
-      if (event.target instanceof Node) {
-        swipeItemAtY(this, event.y);
-      }
+  componentDidMount() {
+    super.componentDidMount();
+    this.addEventListener('transitionend', event => {
+      this.completeSwipeCommand();
+      this.setState({
+        swipeCommand: null,
+        swipeItem: null
+      });
     });
-    // See TouchSwipeMixin for reasoning about touch/pointer events.
-    if ('TouchEvent' in window) {
-      // Use touch events.
-      this.addEventListener('touchstart', async (event) => {
-        swipeItemAtY(this, event.changedTouches[0].clientY);
-      });
-    } else {
-      // Use pointer events.
-      this.addEventListener('pointerdown', async (event) => {
-        swipeItemAtY(this, event.clientY);
-      });
-    }
   }
 
   componentDidUpdate(changed) {
@@ -51,6 +41,7 @@ class SwipeableListBox extends Base {
 
   get defaultState() {
     const result = Object.assign(super.defaultState, {
+      swipeCommand: null,
       swipeWillCommitLeft: false,
       swipeWillCommitRight: false
     });
@@ -59,25 +50,40 @@ class SwipeableListBox extends Base {
     // of whether we'll commit an operation if the swipe were to finish at
     // that point.
     result.onChange('swipeFraction', state => {
-      return {
-        swipeWillCommitLeft: state.swipeFraction >= 0.5,
-        swipeWillCommitRight: state.swipeFraction <= -0.5
-      };
+      const { swipeFraction } = state;
+      if (swipeFraction === null) {
+        return {
+          swipeWillCommitLeft: false,
+          swipeWillCommitRight: false
+        }
+      } else {
+        return {
+          swipeWillCommitLeft: swipeFraction >= 0.5,
+          swipeWillCommitRight: swipeFraction <= -0.5
+        };
+      }
+    });
+
+    // When a swipe starts, determine which item is being swiped. The item will
+    // be cleared when the swipe effect's transitionend event is raised
+    // (regardless of whether a command was triggered or not).
+    result.onChange('swipeStartY', state => {
+      const { swipeStartY } = state;
+      if (swipeStartY !== null) {
+        return {
+          swipeItem: getItemAtY(state.items, state.swipeStartY)
+        };
+      }
+      return null;
     });
 
     return result;
   }
-
-  getSwipeItemInState(state) {
-    return state.items ?
-      state.items[state.swipeItemIndex] :
-      null;
-  }
   
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
-    if (changed.enableEffects || changed.swipeItemIndex || changed.swipeFraction) {
-      const swipeItem = this.getSwipeItemInState(this.state);
+    if (changed.enableEffects || changed.swipeItem || changed.swipeFraction) {
+      const { swipeItem } = this.state;
       if (swipeItem) {
         const { leftContainer, rightContainer } = this.$;
 
@@ -137,20 +143,15 @@ class SwipeableListBox extends Base {
   }
 
   [symbols.swipeLeft]() {
-    const swipeItem = this.getSwipeItemInState(this.state);
-    if (swipeItem) {
-      swipeItem.remove();
-      this.setState({
-        swipeItem: null
-      });
-    }
+    this.setState({
+      swipeCommand: 'swipeLeft'
+    });
   }
 
   [symbols.swipeRight]() {
-    const swipeItem = this.getSwipeItemInState(this.state);
-    if (swipeItem && 'read' in swipeItem) {
-      swipeItem.read = !swipeItem.read;
-    }
+    this.setState({
+      swipeCommand: 'swipeRight'
+    });
   }
 
   get [symbols.template]() {
@@ -209,21 +210,11 @@ class SwipeableListBox extends Base {
  * @param {ListItemElement[]} items
  * @param {number} y
  */
-function getIndexOfItemAtY(items, y) {
-  return items.findIndex(item => {
+function getItemAtY(items, y) {
+  return items.find(item => {
     const itemRect = item.getBoundingClientRect();
     return itemRect.top <= y && y <= itemRect.bottom;
   });
-}
-
-
-function swipeItemAtY(element, y) {
-  const swipeItemIndex = getIndexOfItemAtY(element.state.items, y);
-  if (swipeItemIndex >= 0) {
-    element.setState({
-      swipeItemIndex
-    });
-  }
 }
 
 
