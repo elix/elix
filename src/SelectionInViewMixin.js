@@ -66,20 +66,26 @@ export default function SelectionInViewMixin(Base) {
 
       // Determine how far the item is outside the viewport.
       const bottomDelta = itemRect.bottom - scrollTargetRect.bottom;
-      const topDelta = itemRect.top - scrollTargetRect.top;
       const leftDelta = itemRect.left - scrollTargetRect.left;
       const rightDelta = itemRect.right - scrollTargetRect.right;
-
+      const topDelta = itemRect.top - scrollTargetRect.top;
+      
       // Scroll the target as necessary to bring the item into view.
-      if (bottomDelta > 0) {
-        scrollTarget.scrollTop += bottomDelta;            // Scroll down
-      } else if (topDelta < 0) {
-        scrollTarget.scrollTop += Math.ceil(topDelta);    // Scroll up
+      // Only scroll along the axis indicated by `orientation` state.
+      const { orientation } = this.state;
+      if (orientation === 'horizontal' || orientation === 'both') {
+        if (rightDelta > 0) {
+          scrollTarget.scrollLeft += rightDelta;            // Scroll right
+        } else if (leftDelta < 0) {
+          scrollTarget.scrollLeft += Math.ceil(leftDelta);  // Scroll left
+        }
       }
-      if (rightDelta > 0) {
-        scrollTarget.scrollLeft += rightDelta;            // Scroll right
-      } else if (leftDelta < 0) {
-        scrollTarget.scrollLeft += Math.ceil(leftDelta);  // Scroll left
+      if (orientation === 'vertical' || orientation === 'both') {
+        if (bottomDelta > 0) {
+          scrollTarget.scrollTop += bottomDelta;            // Scroll down
+        } else if (topDelta < 0) {
+          scrollTarget.scrollTop += Math.ceil(topDelta);    // Scroll up
+        }
       }
     }
 
