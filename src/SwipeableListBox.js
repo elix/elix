@@ -22,9 +22,11 @@ class SwipeableListBox extends Base {
   componentDidMount() {
     super.componentDidMount();
     this.addEventListener('transitionend', event => {
-      this.completeSwipeCommand();
+      if (this.state.pendingCommand) {
+        this.completePendingCommand();
+      }
       this.setState({
-        swipeCommand: null,
+        pendingCommand: null,
         swipeItem: null
       });
     });
@@ -41,7 +43,7 @@ class SwipeableListBox extends Base {
 
   get defaultState() {
     const result = Object.assign(super.defaultState, {
-      swipeCommand: null,
+      pendingCommand: null,
       swipeWillCommitLeft: false,
       swipeWillCommitRight: false
     });
@@ -144,13 +146,7 @@ class SwipeableListBox extends Base {
 
   [symbols.swipeLeft]() {
     this.setState({
-      swipeCommand: 'swipeLeft'
-    });
-  }
-
-  [symbols.swipeRight]() {
-    this.setState({
-      swipeCommand: 'swipeRight'
+      pendingCommand: 'delete'
     });
   }
 

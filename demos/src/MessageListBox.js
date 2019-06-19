@@ -7,18 +7,10 @@ import SwipeableListBox from '../../src/SwipeableListBox.js';
 
 export default class MessageListBox extends SwipeableListBox {
 
-  completeSwipeCommand() {
-    const { swipeCommand, swipeItem } = this.state;
-    if (swipeCommand && swipeItem) {
-      switch (swipeCommand) {
-        case 'swipeLeft':
-          swipeItem.remove();
-          break;
-
-        case 'swipeRight': 
-          swipeItem.read = !swipeItem.read;
-          break;
-      }
+  completePendingCommand() {
+    const { pendingCommand, swipeItem } = this.state;
+    if (pendingCommand === 'delete' && swipeItem) {
+      swipeItem.remove();
     }
   }
 
@@ -48,6 +40,15 @@ export default class MessageListBox extends SwipeableListBox {
       this.$.deleteCommand.align = this.state.swipeWillCommitRight ?
         'left' :
         'right';
+    }
+  }
+
+  [symbols.swipeRight]() {
+    const { swipeItem } = this.state;
+    if (swipeItem) {
+      if ('read' in swipeItem) {
+        swipeItem.read = !swipeItem.read;
+      }
     }
   }
 
