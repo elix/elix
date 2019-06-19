@@ -53,8 +53,9 @@ class Toast extends Base {
       fromEdge: 'bottom',
     });
   }
+
   /**
-   * The duration in which the toast will appear on screen
+   * The duration, in milliseconds, for which the toast will appear on screen.
    * 
    * The `duration` value refers to the duration of time in which the toast
    * will appear on the screen. In other words, this is the time between 
