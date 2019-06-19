@@ -34,10 +34,12 @@ class SwipeableListBox extends Base {
 
   componentDidUpdate(changed) {
     super.componentDidUpdate(changed);
-    if (changed.swipeWillCommitLeft || changed.swipeWillCommitRight) {
-      if ('vibrate' in navigator) {
-        navigator.vibrate(5);
-      }
+    // Vibrate if the user is currently swiping and has just triggered a change
+    // in the commit-ability of a command.
+    if ((changed.swipeWillCommitLeft || changed.swipeWillCommitRight) &&
+        'vibrate' in navigator &&
+        this.state.swipeFraction !== null) {
+      navigator.vibrate(5);
     }
   }
 
@@ -89,7 +91,7 @@ class SwipeableListBox extends Base {
       if (swipeItem) {
         const { leftContainer, rightContainer } = this.$;
 
-        const swiping = this.state.swipeFraction != null;
+        const swiping = this.state.swipeFraction !== null;
         const swipeFraction = this.state.swipeFraction || 0;
         const showTransition = this.state.enableEffects && !swiping;
 
