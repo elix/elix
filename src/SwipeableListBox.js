@@ -21,7 +21,7 @@ class SwipeableListBox extends Base {
 
   componentDidMount() {
     super.componentDidMount();
-    this.addEventListener('transitionend', event => {
+    this.addEventListener('transitionend', () => {
       if (this.state.pendingCommand) {
         this.completePendingCommand();
       }
@@ -93,9 +93,7 @@ class SwipeableListBox extends Base {
         const swipeFraction = this.state.swipeFraction || 0;
         const showTransition = this.state.enableEffects && !swiping;
 
-        const translation = swipeItem ?
-          swipeFraction * 100 :
-          0;
+        const translation = swipeFraction * 100;
         const {
           offsetHeight,
           offsetTop,
