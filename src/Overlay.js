@@ -104,7 +104,7 @@ class Overlay extends Base {
   }
 
   get frame() {
-    return this.$ && this.$.frame;
+    return this.$.frame;
   }
 
   /**

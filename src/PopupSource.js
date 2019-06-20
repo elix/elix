@@ -68,7 +68,7 @@ class PopupSource extends Base {
     this.setAttribute('aria-haspopup', 'true');
   }
 
-    componentDidUpdate(/** @type {PlainObject} */ changed) {
+  componentDidUpdate(/** @type {PlainObject} */ changed) {
     super.componentDidUpdate(changed);
     if (changed.opened) {
       if (this.opened) {
@@ -118,6 +118,10 @@ class PopupSource extends Base {
     });
 
     return result;
+  }
+
+  get frame() {
+    return this.$.popup.frame;
   }
 
   /**
