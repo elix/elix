@@ -55,7 +55,7 @@ class MenuButton extends PopupButton {
     }
   }
 
-    componentDidUpdate(/** @type {PlainObject} */ changed) {
+  componentDidUpdate(/** @type {PlainObject} */ changed) {
     super.componentDidUpdate(changed);
     if (changed.opened) {
       if (this.state.opened) {
@@ -64,8 +64,9 @@ class MenuButton extends PopupButton {
         removeDocumentListeners(this);
       }
       // REVIEW: Shouldn't this only happen when the menu closes?
-      if (this[symbols.raiseChangeEvents] && this.state.selectedItem) {
-        this.itemSelected(this.state.selectedItem);
+      if (this[symbols.raiseChangeEvents] && this.state.menuSelectedIndex >= 0) {
+        const selectedItem = this.items[this.state.menuSelectedIndex];
+        this.itemSelected(selectedItem);
       }
     }
   }

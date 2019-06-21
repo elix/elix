@@ -4,6 +4,7 @@ import AriaMenuMixin from './AriaMenuMixin.js';
 import DelegateFocusMixin from './DelegateFocusMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
+import GenericMixin from './GenericMixin.js';
 import ItemsTextMixin from './ItemsTextMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
@@ -23,6 +24,7 @@ const Base =
   DelegateFocusMixin(
   DirectionSelectionMixin(
   FocusVisibleMixin(
+  GenericMixin(
   ItemsTextMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
@@ -35,7 +37,7 @@ const Base =
   SlotItemsMixin(
   TapSelectionMixin(
     ReactiveElement
-  )))))))))))))));
+  ))))))))))))))));
 
 
 /**
@@ -49,6 +51,7 @@ const Base =
  * @mixes DelegateFocusMixin
  * @mixes DirectionSelectionMixin
  * @mixes FocusVisibleMixin
+ * @mixes GenericMixin
  * @mixes ItemsTextMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
@@ -152,12 +155,15 @@ class Menu extends Base {
 
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
-    const { selectedIndex, items } = this.state;    
+    const { selectedIndex, items } = this.state;
     if ((changed.items || changed.selectedIndex) && items) {
         // Reflect the selection state to the item.
       items.forEach((item, index) => {
         const selected = index === selectedIndex;
         item.classList.toggle('selected', selected);
+        if ('selected' in item) {
+          item.selected = selected;
+        }
       });
     }
     if ((changed.items || changed.selectedIndex ||
@@ -199,6 +205,9 @@ class Menu extends Base {
         item.style.outline = suppressFocus ? 'none' : '';
       });
     }
+    if (changed.generic) {
+      this.$.content.classList.toggle('generic', this.state.generic);
+    }
   }
 
   get [symbols.scrollTarget]() {
@@ -209,7 +218,6 @@ class Menu extends Base {
     return template.html`
       <style>
         :host {
-          border: 1px solid gray;
           box-sizing: border-box;
           cursor: default;
           display: flex;
@@ -229,11 +237,16 @@ class Menu extends Base {
         
         ::slotted(*) {
           flex-shrink: 0;
-          padding: 0.25em;
           touch-action: manipulation;
         }
 
-        ::slotted(.selected) {
+        #content.generic {
+          border: 1px solid gray;
+        }
+        #content.generic ::slotted(*) {
+          padding: 0.25em;
+        }
+        #content.generic ::slotted(.selected) {
           background: highlight;
           color: highlighttext;
         }
