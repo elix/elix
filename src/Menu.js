@@ -240,9 +240,6 @@ class Menu extends Base {
           touch-action: manipulation;
         }
 
-        #content.generic {
-          border: 1px solid gray;
-        }
         #content.generic ::slotted(*) {
           padding: 0.25em;
         }
