@@ -41,10 +41,11 @@ class DropdownList extends Base {
 
     // When the menu closes, update our selection from the menu selection.
     state.onChange('opened', state => {
-      const { closeResult, opened } = state;
-      if (!opened && closeResult !== undefined) {
+      const { closeResult, items, opened } = state;
+      if (!opened && items && closeResult !== undefined) {
+        const selectedIndex = items.indexOf(closeResult);
         return {
-          selectedIndex: closeResult
+          selectedIndex
         };
       }
       return null;

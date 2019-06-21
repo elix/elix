@@ -57,16 +57,17 @@ class MenuButton extends PopupButton {
 
   componentDidUpdate(/** @type {PlainObject} */ changed) {
     super.componentDidUpdate(changed);
+    if (changed.menuSelectedIndex) {
+      const selectedItem = this.state.menuSelectedIndex >= 0 ?
+        this.items[this.state.menuSelectedIndex] :
+        null;
+      this.itemSelected(selectedItem);
+    }
     if (changed.opened) {
       if (this.state.opened) {
         addDocumentListeners(this);
       } else {
         removeDocumentListeners(this);
-      }
-      // REVIEW: Shouldn't this only happen when the menu closes?
-      if (this[symbols.raiseChangeEvents] && this.state.menuSelectedIndex >= 0) {
-        const selectedItem = this.items[this.state.menuSelectedIndex];
-        this.itemSelected(selectedItem);
       }
     }
   }
@@ -130,7 +131,7 @@ class MenuButton extends PopupButton {
     const raiseChangeEvents = this[symbols.raiseChangeEvents];
     const selectionDefined = this.state.menuSelectedIndex >= 0;
     const closeResult = selectionDefined ?
-      this.state.menuSelectedIndex :
+      this.items[this.state.menuSelectedIndex] :
       undefined;
     /** @type {any} */ const menu = this.$.menu;
     if (selectionDefined && 'highlightSelectedItem' in menu) {
@@ -154,17 +155,22 @@ class MenuButton extends PopupButton {
    * @param {ListItemElement} item
    */
   itemSelected(item) {
-    /**
-     * Raised when the user selects a menu item.
-     * 
-     * @event menu-item-selected
-     */
-    const event = new CustomEvent('menu-item-selected', {
-      detail: {
-        selectedItem: item
-      }
-    });
-    this.dispatchEvent(event);
+    if (this[symbols.raiseChangeEvents]) {
+      /**
+       * Raised when the user has moved the selection to a new menu item. This
+       * event is raised while the menu is still open. To check which item the
+       * user selected from a menu, listen to the `closed` event and inspect the
+       * event `details` object for its `closeResult` member.
+       * 
+       * @event menu-item-selected
+       */
+      const event = new CustomEvent('menu-item-selected', {
+        detail: {
+          selectedItem: item
+        }
+      });
+      this.dispatchEvent(event);
+    }
   }
 
     [symbols.keydown](/** @type {KeyboardEvent} */ event) {
@@ -279,11 +285,13 @@ class MenuButton extends PopupButton {
 
       // Track changes in the menu's selection state.
       this.$.menu.addEventListener('selected-index-changed', event => {
+        this[symbols.raiseChangeEvents] = true;
         /** @type {any} */
         const cast = event;
         this.setState({
           menuSelectedIndex: cast.detail.selectedIndex
         });
+        this[symbols.raiseChangeEvents] = false;
       });
     }
     if (changed.menuSelectedIndex) {

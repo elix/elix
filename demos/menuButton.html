@@ -29,10 +29,9 @@
     <p id="result"></p>
     <script>
       sampleMenuButton.addEventListener('closed', event => {
-        const closeResult = event.detail.closeResult;
-        const item = closeResult >= 0 && sampleMenuButton.items[closeResult].textContent;
-        result.textContent = item ?
-        `You picked: ${item}` :
+        const selectedItem = event.detail.closeResult;
+        result.textContent = selectedItem ?
+          `You picked: ${selectedItem.textContent}` :
           `You didn't pick a menu item.`;
       });
     </script>
