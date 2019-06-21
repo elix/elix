@@ -214,7 +214,7 @@ class MenuButton extends PopupButton {
    * @default Menu
    */
   get menuRole() {
-    return this.state.menu;
+    return this.state.menuRole;
   }
   set menuRole(menuRole) {
     this.setState({ menuRole });
