@@ -121,7 +121,7 @@ class PopupSource extends Base {
   }
 
   get frame() {
-    return this.$.popup.frame;
+    return /** @type {any} */ (this.$.popup).frame;
   }
 
   /**

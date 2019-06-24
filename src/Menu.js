@@ -162,7 +162,7 @@ class Menu extends Base {
         const selected = index === selectedIndex;
         item.classList.toggle('selected', selected);
         if ('selected' in item) {
-          item.selected = selected;
+          /** @type {any} */ (item).selected = selected;
         }
       });
     }
