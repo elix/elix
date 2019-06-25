@@ -16,31 +16,49 @@ export default class MessageListBox extends SwipeableListBox {
 
   get defaultState() {
     return Object.assign(super.defaultState, {
-      generic: false
+      generic: false,
+      swipeLeftFollowsThrough: true,
+      swipeLeftRemovesItem: true
     });
   }
 
   [symbols.render](changed) {
     super[symbols.render](changed);
-    if (changed.swipeItem || changed.swipeWillCommitLeft) {
-      const { swipeItem, swipeWillCommitLeft } = this.state;
+    if (changed.swipeItem || changed.swipeRightWillCommit) {
+      const { swipeItem, swipeRightWillCommit } = this.state;
       if (swipeItem && 'read' in swipeItem) {
         const read = swipeItem.read;
-        const newRead = swipeWillCommitLeft ? !read : read;
+        const newRead = swipeRightWillCommit ? !read : read;
         this.$.readIconWithLabel.style.display = newRead ? '' : 'none';
         this.$.unreadIconWithLabel.style.display = newRead ? 'none' : '';
       }
     }
-    if (changed.swipeWillCommitLeft) {
-      this.$.unreadCommand.align = this.state.swipeWillCommitLeft ?
+    if (changed.swipeRightWillCommit) {
+      this.$.unreadCommand.align = this.state.swipeRightWillCommit ?
         'right' :
         'left';
     }
-    if (changed.swipeWillCommitRight) {
-      this.$.deleteCommand.align = this.state.swipeWillCommitRight ?
+    if (changed.swipeLeftWillCommit) {
+      this.$.deleteCommand.align = this.state.swipeLeftWillCommit ?
         'left' :
         'right';
     }
+  }
+
+  [symbols.swipeLeft]() {
+    const { swipeItem } = this.state;
+    if (swipeItem) {
+      this.$.rightContainer.addEventListener('transitionend', () => {
+        swipeItem.remove();
+        this.setState({
+          swipeItem: null,
+          swipeRightWillCommit: false
+        });
+      }, { once: true });
+    }
+    this.setState({
+      swipeLeftWillCommit: true
+    });
   }
 
   [symbols.swipeRight]() {
@@ -50,6 +68,10 @@ export default class MessageListBox extends SwipeableListBox {
         swipeItem.read = !swipeItem.read;
       }
     }
+    this.setState({
+      swipeItem: null,
+      swipeRightWillCommit: false
+    });
   }
 
   get [symbols.template]() {

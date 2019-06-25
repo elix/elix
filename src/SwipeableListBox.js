@@ -19,24 +19,11 @@ const Base =
  */
 class SwipeableListBox extends Base {
 
-  componentDidMount() {
-    super.componentDidMount();
-    this.addEventListener('transitionend', () => {
-      if (this.state.pendingCommand) {
-        this.completePendingCommand();
-      }
-      this.setState({
-        pendingCommand: null,
-        swipeItem: null
-      });
-    });
-  }
-
   componentDidUpdate(changed) {
     super.componentDidUpdate(changed);
     // Vibrate if the user is currently swiping and has just triggered a change
     // in the commit-ability of a command.
-    if ((changed.swipeWillCommitLeft || changed.swipeWillCommitRight) &&
+    if ((changed.swipeLeftWillCommit || changed.swipeRightWillCommit) &&
         'vibrate' in navigator &&
         this.state.swipeFraction !== null) {
       navigator.vibrate(5);
@@ -45,9 +32,12 @@ class SwipeableListBox extends Base {
 
   get defaultState() {
     const result = Object.assign(super.defaultState, {
-      pendingCommand: null,
-      swipeWillCommitLeft: false,
-      swipeWillCommitRight: false
+      swipeLeftFollowsThrough: false,
+      swipeLeftRemovesItem: false,
+      swipeLeftWillCommit: false,
+      swipeRightFollowsThrough: false,
+      swipeRightRemovesItem: false,
+      swipeRightWillCommit: false
     });
 
     // If the swipeFraction crosses the -0.5 or 0.5 mark, update our notion
@@ -55,17 +45,13 @@ class SwipeableListBox extends Base {
     // that point.
     result.onChange('swipeFraction', state => {
       const { swipeFraction } = state;
-      if (swipeFraction === null) {
+      if (swipeFraction !== null) {
         return {
-          swipeWillCommitLeft: false,
-          swipeWillCommitRight: false
-        }
-      } else {
-        return {
-          swipeWillCommitLeft: swipeFraction >= 0.5,
-          swipeWillCommitRight: swipeFraction <= -0.5
+          swipeLeftWillCommit: swipeFraction <= -0.5,
+          swipeRightWillCommit: swipeFraction >= 0.5
         };
       }
+      return null;
     });
 
     // When a swipe starts, determine which item is being swiped. The item will
@@ -87,67 +73,112 @@ class SwipeableListBox extends Base {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.enableEffects || changed.swipeItem || changed.swipeFraction) {
-      const { swipeItem } = this.state;
+      const { swipeItem, swipeFraction } = this.state;
+      const { leftContainer, rightContainer } = this.$;
       if (swipeItem) {
-        const { leftContainer, rightContainer } = this.$;
+        const swiping = swipeFraction !== null;
+        if (swiping) {
+          // Currently swiping left/right on an item.
+          const translation = swipeFraction * 100;
+          const {
+            offsetHeight,
+            offsetTop,
+            offsetWidth
+          } = swipeItem;
 
-        const swiping = this.state.swipeFraction !== null;
-        const swipeFraction = this.state.swipeFraction || 0;
-        const showTransition = this.state.enableEffects && !swiping;
+          let itemTop = offsetTop;
+          const scrollTarget = this[symbols.scrollTarget];
+          if (scrollTarget) {
+            itemTop -= scrollTarget.scrollTop;
+          }
 
-        const translation = swipeFraction * 100;
-        const {
-          offsetHeight,
-          offsetTop,
-          offsetWidth
-        } = swipeItem;
+          const commandWidth = Math.min(Math.abs(swipeFraction), 1) * offsetWidth;
 
-        let itemTop = offsetTop;
-        const scrollTarget = this[symbols.scrollTarget];
-        if (scrollTarget) {
-          itemTop -= scrollTarget.scrollTop;
-        }
+          rightContainer.style.transition = '';
+          if (swipeFraction < 0) {
+            // Swiping left: show right command container.
+            Object.assign(rightContainer.style, {
+              height: `${offsetHeight}px`,
+              top: `${itemTop}px`,
+              width: `${commandWidth}px`
+            });
+          } else {
+            rightContainer.style.width = '0';
+          }
 
-        const commandWidth = Math.min(Math.abs(swipeFraction), 1) * offsetWidth;
+          leftContainer.style.transition = '';
+          if (swipeFraction > 0) {
+            // Swiping right: show left command container.
+            Object.assign(leftContainer.style, {
+              height: `${offsetHeight}px`,
+              top: `${itemTop}px`,
+              width: `${commandWidth}px`
+            });
+          } else {
+            leftContainer.style.width = '0';
+          }
 
-        rightContainer.style.transition = showTransition ? 'width 0.25s' : '';
-        if (swipeFraction < 0) {
-          // Swiping left
-          Object.assign(rightContainer.style, {
-            height: `${offsetHeight}px`,
-            top: `${itemTop}px`,
-            width: `${commandWidth}px`
+          Object.assign(swipeItem.style, {
+            transform: `translateX(${translation}%)`,
+            transition: ''
           });
         } else {
-          rightContainer.style.width = '0';
-        }
-
-        leftContainer.style.transition = showTransition ? 'width 0.25s' : '';
-        if (swipeFraction > 0) {
-          // Swiping right
+          // Finished swiping, swiped item is still active. Either let item and
+          // command containers reset to normal state, or (if requested,
+          // typically for a delete command) let them follow through.
+          const {
+            swipeLeftFollowsThrough,
+            swipeLeftRemovesItem,
+            swipeLeftWillCommit,
+            swipeRightFollowsThrough,
+            swipeRightRemovesItem,
+            swipeRightWillCommit
+          } = this.state;
+          const followThroughLeft = swipeLeftWillCommit && swipeLeftFollowsThrough;
+          const followThroughRight = swipeRightWillCommit && swipeRightFollowsThrough;
+          const containerTransition = 'height 0.25s, width 0.25s';
           Object.assign(leftContainer.style, {
-            height: `${offsetHeight}px`,
-            top: `${itemTop}px`,
-            width: `${commandWidth}px`
+            transition: containerTransition,
+            width: followThroughRight ? '100%' : '0'
           });
-        } else {
-          leftContainer.style.width = '0';
+          Object.assign(rightContainer.style, {
+            transition: containerTransition,
+            width: followThroughLeft ? '100%' : '0'
+          });
+          const translation = followThroughLeft ?
+            '-100%' :
+            followThroughRight ?
+              '100%' :
+              '0';
+          Object.assign(swipeItem.style, {
+            transform: `translateX(${translation})`,
+            transition: 'height 0.25, transform 0.25s'
+          });
+          if (swipeLeftWillCommit && swipeLeftRemovesItem) {
+            rightContainer.style.height = '0';
+          }
+          if (swipeRightWillCommit && swipeRightRemovesItem) {
+            leftContainer.style.height = '0';
+          }
+          if ((swipeLeftWillCommit && swipeLeftRemovesItem) ||
+            (swipeRightWillCommit && swipeRightRemovesItem)) {
+            swipeItem.style.height = '0';
+          }
         }
-
-        const transform = `translateX(${translation}%)`;
-        const transition = showTransition ? 'transform 0.25s' : '';
-        Object.assign(swipeItem.style, {
-          transform,
-          transition 
+      } else {
+        // No item is being swiped. Reset command containers.
+        Object.assign(leftContainer.style, {
+          height: '',
+          // transition: '',
+          width: '0'
+        });
+        Object.assign(rightContainer.style, {
+          height: '',
+          // transition: '',
+          width: '0'
         });
       }
     }
-  }
-
-  [symbols.swipeLeft]() {
-    this.setState({
-      pendingCommand: 'delete'
-    });
   }
 
   get [symbols.template]() {
