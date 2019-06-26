@@ -2,10 +2,23 @@ import './AnimateAlignment.js';
 import { applyChildNodes } from '../../src/utilities.js';
 import * as symbols from '../../src/symbols.js';
 import * as template from '../../src/template.js';
-import SwipeableListBox from '../../src/SwipeableListBox.js';
+import EffectMixin from '../../src/EffectMixin.js';
+import ListBox from '../../src/ListBox.js';
+import SwipeCommandsMixin from '../../src/SwipeCommandsMixin.js';
+import TouchSwipeMixin from '../../src/TouchSwipeMixin.js';
+import TrackpadSwipeMixin from '../../src/TrackpadSwipeMixin.js';
 
 
-export default class MessageListBox extends SwipeableListBox {
+const Base =
+  EffectMixin(
+  SwipeCommandsMixin(
+  TouchSwipeMixin(
+  TrackpadSwipeMixin(
+    ListBox
+  ))));
+
+
+export default class MessageListBox extends Base {
 
   get defaultState() {
     return Object.assign(super.defaultState, {

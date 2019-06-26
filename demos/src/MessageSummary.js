@@ -72,7 +72,6 @@ export default class MessageSummary extends ReactiveElement {
       <style>
         :host {
           display: flex;
-          line-height: 1.2em; /* Stabilizes height when line turns bold */
         }
 
         #container {
