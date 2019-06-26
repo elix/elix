@@ -408,17 +408,36 @@ export const swipeDown = Symbol('swipeDown');
  * @function swipeLeft
  */
 export const swipeLeft = Symbol('swipeLeft');
+/**
+ * Symbol for the `swipeLeftComplete` method.
+ * 
+ * [SwipeCommandsMixin](SwipeCommandsMixin) invokes this method after any
+ * animated transition associated with a swipe left has completed.
+ * 
+ * @function swipeLeftComplete
+ */
+export const swipeLeftComplete = Symbol('swipeLeftComplete');
 
 /**
- * Symbol for the `swipeLeft` method.
+ * Symbol for the `swipeRight` method.
  * 
  * The swipe mixins [TouchSwipeMixin](TouchSwipeMixin) and
  * [TrackpadSwipeMixin](TrackpadSwipeMixin) invoke this method when the user
- * finishes a gesture to swipe left.
+ * finishes a gesture to swipe right.
  * 
  * @function swipeRight
  */
 export const swipeRight = Symbol('swipeRight');
+
+/**
+ * Symbol for the `swipeRightComplete` method.
+ * 
+ * [SwipeCommandsMixin](SwipeCommandsMixin) invokes this method after any
+ * animated transition associated with a swipe right has completed.
+ * 
+ * @function swipeRightComplete
+ */
+export const swipeRightComplete = Symbol('swipeRightComplete');
 
 /**
  * Symbol for the `swipeUp` method.

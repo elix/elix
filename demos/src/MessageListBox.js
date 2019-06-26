@@ -52,33 +52,21 @@ export default class MessageListBox extends Base {
   }
 
   [symbols.swipeLeft]() {
-    const { swipeItem } = this.state;
-    if (swipeItem) {
-      this.$.rightContainer.addEventListener('transitionend', () => {
-        swipeItem.remove();
-        this.setState({
-          swipeItem: null,
-          swipeRightWillCommit: false
-        });
-      }, { once: true });
-    }
     this.setState({
       swipeLeftWillCommit: true
     });
   }
 
+  // Wait until a left swipe has completed before excuting the Delete command.
+  [symbols.swipeLeftComplete]() {
+    if (super[symbols.swipeLeftComplete]) { super[symbols.swipeLeftComplete](); }
+    this.state.swipeItem.remove();
+  }
+
   [symbols.swipeRight]() {
     const { swipeItem } = this.state;
-    if (swipeItem) {
-      if ('read' in swipeItem) {
-        swipeItem.read = !swipeItem.read;
-      }
-      this.$.leftContainer.addEventListener('transitionend', () => {
-        this.setState({
-          swipeItem: null,
-          swipeRightWillCommit: false
-        });
-      }, { once: true });
+    if ('read' in swipeItem) {
+      swipeItem.read = !swipeItem.read;
     }
     this.setState({
       swipeRightWillCommit: true
