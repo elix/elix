@@ -104,11 +104,13 @@ class ListBox extends Base {
       // Update list orientation styling.
       const style = this.state.orientation === 'vertical' ?
         {
-          flexDirection: 'column',
+          display: 'block',
+          flexDirection: '',
           overflowX: 'hidden',
           overflowY: 'auto'
         } :
         {
+          display: 'flex',
           flexDirection: 'row',
           overflowX: 'auto',
           overflowY: 'hidden'
@@ -132,7 +134,6 @@ class ListBox extends Base {
         }
 
         #content {
-          display: flex;
           flex: 1;
           max-height: 100%;
           max-width: 100%;
