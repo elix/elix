@@ -51,12 +51,6 @@ export default class MessageListBox extends Base {
     }
   }
 
-  [symbols.swipeLeft]() {
-    this.setState({
-      swipeLeftWillCommit: true
-    });
-  }
-
   // Wait until a left swipe has completed before excuting the Delete command.
   [symbols.swipeLeftComplete]() {
     if (super[symbols.swipeLeftComplete]) { super[symbols.swipeLeftComplete](); }
@@ -68,9 +62,6 @@ export default class MessageListBox extends Base {
     if ('read' in swipeItem) {
       swipeItem.read = !swipeItem.read;
     }
-    this.setState({
-      swipeRightWillCommit: true
-    });
   }
 
   get [symbols.template]() {

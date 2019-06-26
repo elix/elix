@@ -399,6 +399,16 @@ export const startEffect = Symbol('startEffect');
 export const swipeDown = Symbol('swipeDown');
 
 /**
+ * Symbol for the `swipeDownComplete` method.
+ * 
+ * [SwipeCommandsMixin](SwipeCommandsMixin) invokes this method after any
+ * animated transition associated with a swipe down has completed.
+ * 
+ * @function swipeDownComplete
+ */
+export const swipeDownComplete = Symbol('swipeDownComplete');
+
+/**
  * Symbol for the `swipeLeft` method.
  * 
  * The swipe mixins [TouchSwipeMixin](TouchSwipeMixin) and
@@ -408,6 +418,7 @@ export const swipeDown = Symbol('swipeDown');
  * @function swipeLeft
  */
 export const swipeLeft = Symbol('swipeLeft');
+
 /**
  * Symbol for the `swipeLeftComplete` method.
  * 
@@ -448,6 +459,16 @@ export const swipeRightComplete = Symbol('swipeRightComplete');
  * @function swipeUp
  */
 export const swipeUp = Symbol('swipeUp');
+
+/**
+ * Symbol for the `swipeUpComplete` method.
+ * 
+ * [SwipeCommandsMixin](SwipeCommandsMixin) invokes this method after any
+ * animated transition associated with a swipe up has completed.
+ * 
+ * @function swipeUpComplete
+ */
+export const swipeUpComplete = Symbol('swipeUpComplete');
 
 /**
  * Symbol for the `swipeTarget` property.

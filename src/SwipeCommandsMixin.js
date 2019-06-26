@@ -58,24 +58,8 @@ export default function SwipeCommandsMixin(Base) {
       const result = Object.assign(super.defaultState, {
         swipeLeftFollowsThrough: false,
         swipeLeftRemovesItem: false,
-        swipeLeftWillCommit: false,
         swipeRightFollowsThrough: false,
-        swipeRightRemovesItem: false,
-        swipeRightWillCommit: false
-      });
-
-      // If the swipeFraction crosses the -0.5 or 0.5 mark, update our notion
-      // of whether we'll commit an operation if the swipe were to finish at
-      // that point.
-      result.onChange('swipeFraction', state => {
-        const { swipeFraction } = state;
-        if (swipeFraction !== null) {
-          return {
-            swipeLeftWillCommit: swipeFraction <= -0.5,
-            swipeRightWillCommit: swipeFraction >= 0.5
-          };
-        }
-        return null;
+        swipeRightRemovesItem: false
       });
 
       // When a swipe starts, determine which item is being swiped. The item will

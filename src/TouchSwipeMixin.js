@@ -145,14 +145,42 @@ export default function TouchSwipeMixin(Base) {
     }
 
     get defaultState() {
-      return Object.assign(super.defaultState, {
+      const result = Object.assign(super.defaultState, {
         enableNegativeSwipe: true,
         enablePositiveSwipe: true,
         swipeAxis: 'horizontal',
         swipeFraction: null,
+        swipeDownWillCommit: false,
+        swipeLeftWillCommit: false,
+        swipeRightWillCommit: false,
+        swipeUpWillCommit: false,
         swipeStartX: null,
         swipeStartY: null
       });
+
+      // If the swipeFraction crosses the -0.5 or 0.5 mark, update our notion of
+      // whether we'll commit an operation if the swipe were to finish at that
+      // point. This definition is compatible with one defined by
+      // TrackpadSwipeMixin.
+      result.onChange('swipeFraction', state => {
+        const { swipeAxis, swipeFraction } = state;
+        if (swipeFraction !== null) {
+          if (swipeAxis === 'horizontal') {
+            return {
+              swipeLeftWillCommit: swipeFraction <= -0.5,
+              swipeRightWillCommit: swipeFraction >= 0.5
+            };
+          } else {
+            return {
+              swipeUpWillCommit: swipeFraction <= -0.5,
+              swipeDownWillCommit: swipeFraction >= 0.5
+            }
+          }
+        }
+        return null;
+      });
+
+      return result;
     }
     
     /**
@@ -258,25 +286,44 @@ function gestureEnd(element, clientX, clientY) {
   const velocity = /** @type {any} */ (element)[previousVelocityKey];
   const flickThresholdVelocity = 800; // speed in pixels/second
 
+  const vertical = element.state.swipeAxis === 'vertical';
+
   let flickPositive;
   if (velocity >= flickThresholdVelocity) {
     // Flicked right/down at high speed.
     flickPositive = true;
+    if (vertical) {
+      element.setState({
+        swipeDownWillCommit: true
+      });
+    } else {
+      element.setState({
+        swipeRightWillCommit: true
+      });
+    }
   } else if (velocity <= -flickThresholdVelocity) {
     // Flicked left/up at high speed.
     flickPositive = false;
+    if (vertical) {
+      element.setState({
+        swipeUpWillCommit: true
+      });
+    } else {
+      element.setState({
+        swipeLeftWillCommit: true
+      });
+    }
   } else {
     // Finished at low speed.
-    const swipeFraction = getSwipeFraction(element, clientX, clientY);
-    if (swipeFraction <= -0.5) {
+    // If the user swiped far enough to commit a gesture, handle it now.
+    if (element.state.swipeLeftWillCommit || element.state.swipeUpWillCommit) {
       flickPositive = false;
-    } else if (swipeFraction >= 0.5) {
+    } else if (element.state.swipeRightWillCommit || element.state.swipeDownWillCommit) {
       flickPositive = true;
     }
   }
 
   if (typeof flickPositive !== 'undefined') {
-    const vertical = element.state.swipeAxis === 'vertical';
     const gesture = vertical ?
       (flickPositive ? symbols.swipeDown : symbols.swipeUp) :
       (flickPositive ? symbols.swipeRight : symbols.swipeLeft);

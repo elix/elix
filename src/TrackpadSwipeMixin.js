@@ -36,12 +36,31 @@ export default function TrackpadSwipeMixin(Base) {
     }
 
     get defaultState() {
-      return Object.assign(super.defaultState, {
+      const result = Object.assign(super.defaultState, {
         swipeAxis: 'horizontal',
         swipeFraction: null,
+        swipeLeftWillCommit: false,
+        swipeRightWillCommit: false,
         swipeStartX: null,
         swipeStartY: null
       });
+
+      // If the swipeFraction crosses the -0.5 or 0.5 mark, update our notion of
+      // whether we'll commit an operation if the swipe were to finish at that
+      // point. This definition is compatible with one defined by
+      // TouchSwipeMixin.
+      result.onChange('swipeFraction', state => {
+        const { swipeFraction } = state;
+        if (swipeFraction !== null) {
+          return {
+            swipeLeftWillCommit: swipeFraction <= -0.5,
+            swipeRightWillCommit: swipeFraction >= 0.5
+          };
+        }
+        return null;
+      });
+
+      return result;
     }
 
     /**
@@ -219,12 +238,11 @@ function resetWheelTracking(element) {
  */
 async function wheelTimedOut(element) {
 
-  // Snap to the closest item.
-  const swipeFraction = element.state.swipeFraction;
+  // If the user swiped far enough to commit a gesture, handle it now.
   let gesture;
-  if (swipeFraction <= -0.5) {
+  if (element.state.swipeLeftWillCommit) {
     gesture = symbols.swipeLeft;
-  } else if (swipeFraction >= 0.5) {
+  } else if (element.state.swipeRightWillCommit) {
     gesture = symbols.swipeRight;
   }
 
