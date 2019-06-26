@@ -119,6 +119,7 @@ class SwipeableListBox extends Base {
           }
 
           Object.assign(swipeItem.style, {
+            height: `${offsetHeight}px`,
             transform: `translateX(${translation}%)`,
             transition: ''
           });
@@ -150,31 +151,32 @@ class SwipeableListBox extends Base {
             followThroughRight ?
               '100%' :
               '0';
-          Object.assign(swipeItem.style, {
-            transform: `translateX(${translation})`,
-            transition: 'height 0.25, transform 0.25s'
-          });
           if (swipeLeftWillCommit && swipeLeftRemovesItem) {
             rightContainer.style.height = '0';
           }
           if (swipeRightWillCommit && swipeRightRemovesItem) {
             leftContainer.style.height = '0';
           }
-          if ((swipeLeftWillCommit && swipeLeftRemovesItem) ||
-            (swipeRightWillCommit && swipeRightRemovesItem)) {
-            swipeItem.style.height = '0';
-          }
+          const height = (swipeLeftWillCommit && swipeLeftRemovesItem) ||
+            (swipeRightWillCommit && swipeRightRemovesItem) ?
+            '0' :
+            '';
+          Object.assign(swipeItem.style, {
+            height,
+            transform: `translateX(${translation})`,
+            transition: 'height 0.25s, transform 0.25s'
+          });
         }
       } else {
         // No item is being swiped. Reset command containers.
         Object.assign(leftContainer.style, {
           height: '',
-          // transition: '',
+          transition: '',
           width: '0'
         });
         Object.assign(rightContainer.style, {
           height: '',
-          // transition: '',
+          transition: '',
           width: '0'
         });
       }
@@ -185,10 +187,12 @@ class SwipeableListBox extends Base {
     return template.concat(super[symbols.template], template.html`
       <style>
         :host {
+          /* display: block; */
           position: relative;
         }
 
         ::slotted(*) {
+          box-sizing: border-box;
           will-change: transform;
         }
 

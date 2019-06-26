@@ -7,13 +7,6 @@ import SwipeableListBox from '../../src/SwipeableListBox.js';
 
 export default class MessageListBox extends SwipeableListBox {
 
-  completePendingCommand() {
-    const { pendingCommand, swipeItem } = this.state;
-    if (pendingCommand === 'delete' && swipeItem) {
-      swipeItem.remove();
-    }
-  }
-
   get defaultState() {
     return Object.assign(super.defaultState, {
       generic: false,
@@ -67,21 +60,21 @@ export default class MessageListBox extends SwipeableListBox {
       if ('read' in swipeItem) {
         swipeItem.read = !swipeItem.read;
       }
+      this.$.leftContainer.addEventListener('transitionend', () => {
+        this.setState({
+          swipeItem: null,
+          swipeRightWillCommit: false
+        });
+      }, { once: true });
     }
     this.setState({
-      swipeItem: null,
-      swipeRightWillCommit: false
+      swipeRightWillCommit: true
     });
   }
 
   get [symbols.template]() {
     const result = template.concat(super[symbols.template], template.html`
       <style>
-        ::slotted(*) {
-          line-height: 1.2em; /* Stabilizes height when line turns bold */
-          padding: 0.5em 1em;
-        }
-
         .command {
           display: flex;
           padding: 1em;

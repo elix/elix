@@ -71,9 +71,18 @@ export default class MessageSummary extends ReactiveElement {
     return template.html`
       <style>
         :host {
+          display: flex;
+          line-height: 1.2em; /* Stabilizes height when line turns bold */
+        }
+
+        #container {
+          box-sizing: border-box;
           display: grid;
+          flex: 1;
           grid-gap: 3px;
           grid-template-columns: 1fr auto;
+          margin: 0.5em 1em;
+          overflow: hidden;
         }
 
         #summary,
@@ -95,11 +104,13 @@ export default class MessageSummary extends ReactiveElement {
           overflow: hidden;
         }
       </style>
-      <div id="sender"></div>
-      <div id="date"></div>
-      <div id="summary"></div>
-      <div id="body">
-        <slot></slot>
+      <div id="container">
+        <div id="sender"></div>
+        <div id="date"></div>
+        <div id="summary"></div>
+        <div id="body">
+          <slot></slot>
+        </div>
       </div>
     `;
   }
