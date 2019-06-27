@@ -30,7 +30,9 @@ export default function SelectionInViewMixin(Base) {
 
     componentDidUpdate(/** @type {PlainObject} */ changed) {
       if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
-      this.scrollSelectionIntoView();
+      if (changed.selectedIndex) {
+        this.scrollSelectionIntoView();
+      }
     }
 
     /**
