@@ -7,6 +7,7 @@ const multiTouchKey = Symbol('multiTouch');
 const previousTimeKey = Symbol('previousTime');
 const previousVelocityKey = Symbol('previousVelocity');
 const previousXKey = Symbol('previousX');
+const touchSequenceAxisKey = Symbol('touchSequenceAxis');
 const previousYKey = Symbol('previousY');
 
 
@@ -27,8 +28,6 @@ export default function TouchSwipeMixin(Base) {
 
       // In all touch events, only handle single touches. We don't want to
       // inadvertently do work when the user's trying to pinch-zoom for example.
-      // TODO: Even better approach than below would be to ignore touches after
-      // the first if the user has already begun a swipe.
       // TODO: Touch events should probably be factored out into its own mixin.
 
       // Prefer using the older touch events if supported.
@@ -235,18 +234,32 @@ function gestureContinue(element, clientX, clientY) {
   cast[previousTimeKey] = now;
   cast[previousVelocityKey] = velocity;
 
-  const verticalSwipe = Math.abs(deltaY) > Math.abs(deltaX);
-  const vertical = element.state.swipeAxis === 'vertical';
-  const swipeAlongAxis = vertical === verticalSwipe;
+  // Was this specific event more vertical or more horizontal?
+  const eventAxis = Math.abs(deltaY) > Math.abs(deltaX) ?
+    'vertical' :
+    'horizontal';
 
-  if (!swipeAlongAxis) {
-    // Move was mostly along the other axis.
+  // Is this the first touch move event in a swipe sequence?
+  const eventBeginsSequence = cast[touchSequenceAxisKey] === null;
+  if (eventBeginsSequence) {
+    // This first event's axis will determine which axis we'll respect for the
+    // rest of the sequence.
+    cast[touchSequenceAxisKey] = eventAxis;
+  } else if (eventAxis !== cast[touchSequenceAxisKey]) {
+    // This event continues a sequence. If the event's axis is perpendicular to
+    // the sequence's axis, we'll absorb this event. E.g., if the user started a
+    // vertical swipe (to scroll, say), then we absorb all subsequent horizontal
+    // touch events in the sequence.
+    return true;
+  }
+  
+  if (eventAxis !== element.state.swipeAxis) {
+    // Move wasn't along the axis we care about, ignore it.
     return false;
   }
 
-  // Move was mostly along desired axis.
-
-  if (vertical && isAnyAncestorScrolled(element[symbols.swipeTarget])) {
+  if (eventAxis === 'vertical' &&
+      isAnyAncestorScrolled(element[symbols.swipeTarget])) {
     // Don't interfere with scrolling.
     return false;
   }
@@ -338,6 +351,8 @@ function gestureEnd(element, clientX, clientY) {
     }
   }
 
+  element[touchSequenceAxisKey] = null;
+
   element.setState({
     swipeFraction: null,
     swipeStartX: null,
@@ -359,6 +374,7 @@ function gestureStart(element, clientX, clientY) {
   cast[previousYKey] = clientY;
   cast[previousTimeKey] = Date.now();
   cast[previousVelocityKey] = 0;
+  cast[touchSequenceAxisKey] = null;
   element.setState({
     swipeFraction: 0,
     swipeStartX: clientX,

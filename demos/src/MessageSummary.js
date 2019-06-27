@@ -78,7 +78,7 @@ export default class MessageSummary extends ReactiveElement {
           box-sizing: border-box;
           display: grid;
           flex: 1;
-          grid-gap: 3px;
+          gap: 1px;
           grid-template-columns: 1fr auto;
           margin: 0.5em 1em;
           overflow: hidden;
@@ -99,7 +99,7 @@ export default class MessageSummary extends ReactiveElement {
         }
 
         #body {
-          height: 2.4em;
+          height: 2.5em;
           overflow: hidden;
         }
       </style>

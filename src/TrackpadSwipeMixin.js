@@ -2,11 +2,12 @@ import * as symbols from './symbols.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
-const absorbDecelerationSymbol = Symbol('absorbDeceleration');
-const lastDeltaXSymbol = Symbol('lastDeltaX');
-const lastWheelTimeoutSymbol = Symbol('lastWheelTimeout');
-const postNavigateDelayCompleteSymbol = Symbol('postNavigateDelayComplete');
-const wheelDistanceSymbol = Symbol('wheelDistance');
+const absorbDecelerationKey = Symbol('absorbDeceleration');
+const lastDeltaXKey = Symbol('lastDeltaX');
+const lastWheelTimeoutKey = Symbol('lastWheelTimeout');
+const postNavigateDelayCompleteKey = Symbol('postNavigateDelayComplete');
+const wheelDistanceKey = Symbol('wheelDistance');
+const wheelSequenceAxisKey = Symbol('wheelSequenceAxis');
 
 
 /**
@@ -107,19 +108,19 @@ const WHEEL_TIME = 100;
  */
 function handleWheel(element, event) {
 
-  /** @type {any} */ const cast = element;
-
   if (element.state.swipeAxis === 'vertical') {
     // This mixin currently only supports horizontal swiping.
-    return;
+    return false;
   }
+
+  /** @type {any} */ const cast = element;
 
   // Since we have a new wheel event, reset our timer waiting for the last
   // wheel event to pass.
-  if (cast[lastWheelTimeoutSymbol]) {
-    clearTimeout(cast[lastWheelTimeoutSymbol]);
+  if (cast[lastWheelTimeoutKey]) {
+    clearTimeout(cast[lastWheelTimeoutKey]);
   }
-  cast[lastWheelTimeoutSymbol] = setTimeout(async () => {
+  cast[lastWheelTimeoutKey] = setTimeout(async () => {
     element[symbols.raiseChangeEvents] = true;
     wheelTimedOut(element);
     await Promise.resolve();
@@ -130,43 +131,61 @@ function handleWheel(element, event) {
   const deltaY = event.deltaY;
 
   // See if component event represents acceleration or deceleration.
-  const acceleration = Math.sign(deltaX) * (deltaX - cast[lastDeltaXSymbol]);
-  cast[lastDeltaXSymbol] = deltaX;
+  const acceleration = Math.sign(deltaX) * (deltaX - cast[lastDeltaXKey]);
+  cast[lastDeltaXKey] = deltaX;
 
-  if (Math.abs(deltaX) < Math.abs(deltaY)) {
-    // Move was mostly vertical. The user may be trying scroll with the
-    // trackpad/wheel. To be on the safe, we ignore such events.
+  // Is this the first wheel event in a swipe sequence?
+  const eventBeginsSwipe = cast[wheelSequenceAxisKey] === null;
+
+  // Was this specific event more vertical or more horizontal?
+  const eventAxis = Math.abs(deltaY) > Math.abs(deltaX) ?
+    'vertical' :
+    'horziontal';
+  if (eventBeginsSwipe) {
+    // This first event's axis will determine which axis we'll respect for the
+    // rest of the sequence.
+    cast[wheelSequenceAxisKey] = eventAxis;
+  } else if (eventAxis !== cast[wheelSequenceAxisKey]) {
+    // This event continues a sequence. If the event's axis is perpendicular to
+    // the sequence's axis, we'll absorb this event. E.g., if the user started a
+    // vertical swipe (to scroll, say), then we absorb all subsequent horizontal
+    // wheel events in the sequence.
+    return true;
+  }
+
+  if (eventAxis === 'vertical') {
+    // We leave vertical events unhandled so the browser can process them.
     return false;
   }
 
-  if (cast[postNavigateDelayCompleteSymbol]) {
-    // It's too soon after a navigation; ignore the event.
+  if (cast[postNavigateDelayCompleteKey]) {
+    // It's too soon after a navigation; absorb the event.
     return true;
   }
 
   if (acceleration > 0) {
     // The events are not (or are no longer) decelerating, so we can start
     // paying attention to them again.
-    cast[absorbDecelerationSymbol] = false;
-  } else if (cast[absorbDecelerationSymbol]) {
-    // The wheel event was likely faked to simulate deceleration; ignore it.
+    cast[absorbDecelerationKey] = false;
+  } else if (cast[absorbDecelerationKey]) {
+    // The wheel event was likely faked to simulate deceleration; absorb it.
     return true;
   }
 
-  cast[wheelDistanceSymbol] -= deltaX;
-
-  if (element.state.swipeStartX === null || element.state.swipeStartY === null) {
-    // Start of a swipe; record start position.
+  // Record the start position of the swipe.
+  if (eventBeginsSwipe) {
     element.setState({
       swipeStartX: event.clientX,
       swipeStartY: event.clientY
     });
   }
 
+  cast[wheelDistanceKey] -= deltaX;
+
   // Update the travel fraction of the component being navigated.
   const width = cast[symbols.swipeTarget].offsetWidth;
   let swipeFraction = width > 0 ?
-    cast[wheelDistanceSymbol] / width :
+    cast[wheelDistanceKey] / width :
     0;
   swipeFraction = Math.sign(swipeFraction) * Math.min(Math.abs(swipeFraction), 1);
 
@@ -198,11 +217,11 @@ function handleWheel(element, event) {
  */
 function postNavigate(element) {
   /** @type {any} */ const cast = element;
-  cast[wheelDistanceSymbol] = 0;
-  cast[postNavigateDelayCompleteSymbol] = true;
-  cast[absorbDecelerationSymbol] = true;
+  cast[absorbDecelerationKey] = true;
+  cast[postNavigateDelayCompleteKey] = true;
+  cast[wheelDistanceKey] = 0;
   setTimeout(() => {
-    cast[postNavigateDelayCompleteSymbol] = false;
+    cast[postNavigateDelayCompleteKey] = false;
   }, POST_NAVIGATE_TIME);
   element.setState({
     swipeFraction: null,
@@ -219,13 +238,14 @@ function postNavigate(element) {
  */
 function resetWheelTracking(element) {
   /** @type {any} */ const cast = element;
-  cast[wheelDistanceSymbol] = 0;
-  cast[lastDeltaXSymbol] = 0;
-  cast[absorbDecelerationSymbol] = false;
-  cast[postNavigateDelayCompleteSymbol] = false;
-  if (cast[lastWheelTimeoutSymbol]) {
-    clearTimeout(cast[lastWheelTimeoutSymbol]);
-    cast[lastWheelTimeoutSymbol] = null;
+  cast[absorbDecelerationKey] = false;
+  cast[wheelSequenceAxisKey] = null;
+  cast[lastDeltaXKey] = 0;
+  cast[postNavigateDelayCompleteKey] = false;
+  cast[wheelDistanceKey] = 0;
+  if (cast[lastWheelTimeoutKey]) {
+    clearTimeout(cast[lastWheelTimeoutKey]);
+    cast[lastWheelTimeoutKey] = null;
   }
 }
 
