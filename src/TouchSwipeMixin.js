@@ -286,10 +286,15 @@ function gestureEnd(element, clientX, clientY) {
   const velocity = /** @type {any} */ (element)[previousVelocityKey];
   const flickThresholdVelocity = 800; // speed in pixels/second
 
-  const vertical = element.state.swipeAxis === 'vertical';
+  const { swipeAxis, swipeFraction } = element.state;
+  const vertical = swipeAxis === 'vertical';
 
+  // We only count a flick if the swipe wasn't already going in the opposite
+  // direction. E.g., if the user begins a swipe to the left, then flicks right,
+  // that doesn't count, because the user may have simply been trying to
+  // undo/cancel the swipe to the left.
   let flickPositive;
-  if (velocity >= flickThresholdVelocity) {
+  if (velocity >= flickThresholdVelocity && swipeFraction >= 0) {
     // Flicked right/down at high speed.
     flickPositive = true;
     if (vertical) {
@@ -301,7 +306,7 @@ function gestureEnd(element, clientX, clientY) {
         swipeRightWillCommit: true
       });
     }
-  } else if (velocity <= -flickThresholdVelocity) {
+  } else if (velocity <= -flickThresholdVelocity && swipeFraction <= 0) {
     // Flicked left/up at high speed.
     flickPositive = false;
     if (vertical) {
