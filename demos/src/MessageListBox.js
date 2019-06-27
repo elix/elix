@@ -22,10 +22,34 @@ export default class MessageListBox extends Base {
 
   get defaultState() {
     return Object.assign(super.defaultState, {
-      generic: false,
       swipeLeftFollowsThrough: true,
       swipeLeftRemovesItem: true
     });
+  }
+
+  [symbols.keydown](/** @type {KeyboardEvent} */ event) {
+    let handled = false;
+    const selectedItem = this.selectedItem;
+
+    switch (event.key) {
+
+      case 'Delete':
+        if (selectedItem) {
+          selectedItem.remove();
+        }
+        handled = true;
+        break;
+      
+      case ' ':
+        if (selectedItem && 'read' in selectedItem) {
+          selectedItem.read = !selectedItem.read;
+        }
+        handled = true;
+        break;
+    }
+
+    // Prefer our result if it's defined, otherwise use base result.
+    return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
   }
 
   [symbols.render](changed) {
@@ -67,6 +91,10 @@ export default class MessageListBox extends Base {
   get [symbols.template]() {
     const result = template.concat(super[symbols.template], template.html`
       <style>
+        #content.generic ::slotted(*) {
+          padding: 0;
+        }
+
         .command {
           display: flex;
           padding: 1em;

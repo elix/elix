@@ -85,10 +85,7 @@ class ListBox extends Base {
     super[symbols.render](changed);
     if (changed.generic) {
       const { generic } = this.state;
-      this.style.border = generic ?
-        '1px solid gray' :
-        '';
-      this.$.content.classList.toggle('generic', generic);
+      this.classList.toggle('generic', generic);
     }
     if (changed.items || changed.selectedIndex) {
       // Apply `selected` style to the selected item only.
@@ -140,17 +137,21 @@ class ListBox extends Base {
           -webkit-overflow-scrolling: touch; /* for momentum scrolling */
         }
 
-        #content.generic ::slotted(*) {
+        :host(.generic) {
+          border: 1px solid gray;
+        }
+
+        :host(.generic) ::slotted(*) {
           padding: 0.25em;
         }
 
-        #content.generic ::slotted(.selected) {
+        :host(.generic) ::slotted(.selected) {
           background: highlight;
           color: highlighttext;
         }
 
         @media (pointer: coarse) {
-          #content.generic ::slotted(*) {
+          :host(.generic) ::slotted(*) {
             padding: 1em;
           }
         }
