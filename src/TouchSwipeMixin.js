@@ -7,8 +7,10 @@ const multiTouchKey = Symbol('multiTouch');
 const previousTimeKey = Symbol('previousTime');
 const previousVelocityKey = Symbol('previousVelocity');
 const previousXKey = Symbol('previousX');
-const touchSequenceAxisKey = Symbol('touchSequenceAxis');
 const previousYKey = Symbol('previousY');
+const startXKey = Symbol('startX');
+const startYKey = Symbol('startY');
+const touchSequenceAxisKey = Symbol('touchSequenceAxis');
 
 
 /**
@@ -38,8 +40,7 @@ export default function TouchSwipeMixin(Base) {
           if (this[multiTouchKey]) {
             return;
           } else if (event.touches.length === 1) {
-            const clientX = event.changedTouches[0].clientX;
-            const clientY = event.changedTouches[0].clientY;
+            const { clientX, clientY } = event.changedTouches[0];
             gestureStart(this, clientX, clientY);
           } else {
             this[multiTouchKey] = true;
@@ -50,8 +51,7 @@ export default function TouchSwipeMixin(Base) {
         this.addEventListener('touchmove', async (event) => {
           this[symbols.raiseChangeEvents] = true;
           if (!this[multiTouchKey] && event.touches.length === 1) {
-            const clientX = event.changedTouches[0].clientX;
-            const clientY = event.changedTouches[0].clientY;
+            const { clientX, clientY } = event.changedTouches[0];
             const handled = gestureContinue(this, clientX, clientY);
             if (handled) {
               event.preventDefault();
@@ -66,8 +66,7 @@ export default function TouchSwipeMixin(Base) {
             // All touches removed; gesture is complete.
             if (!this[multiTouchKey]) {
               // Single-touch swipe has finished.
-              const clientX = event.changedTouches[0].clientX;
-              const clientY = event.changedTouches[0].clientY;
+              const { clientX, clientY } = event.changedTouches[0];
               gestureEnd(this, clientX, clientY);
             }
             this[multiTouchKey] = false;
@@ -80,7 +79,8 @@ export default function TouchSwipeMixin(Base) {
         this.addEventListener('pointerdown', async (event) => {
           this[symbols.raiseChangeEvents] = true;
           if (isEventForPenOrPrimaryTouch(event)) {
-            gestureStart(this, event.clientX, event.clientY);
+            const { clientX, clientY } = event;
+            gestureStart(this, clientX, clientY);
           }
           await Promise.resolve();
           this[symbols.raiseChangeEvents] = false;
@@ -88,7 +88,8 @@ export default function TouchSwipeMixin(Base) {
         this.addEventListener('pointermove', async (event) => {
           this[symbols.raiseChangeEvents] = true;
           if (isEventForPenOrPrimaryTouch(event)) {
-            const handled = gestureContinue(this, event.clientX, event.clientY);
+            const { clientX, clientY } = event;
+            const handled = gestureContinue(this, clientX, clientY);
             if (handled) {
               event.preventDefault();
             }
@@ -99,7 +100,8 @@ export default function TouchSwipeMixin(Base) {
         this.addEventListener('pointerup', async (event) => {
           this[symbols.raiseChangeEvents] = true;
           if (isEventForPenOrPrimaryTouch(event)) {
-            gestureEnd(this, event.clientX, event.clientY);
+            const { clientX, clientY } = event;
+            gestureEnd(this, clientX, clientY);
           }
           await Promise.resolve();
           this[symbols.raiseChangeEvents] = false;
@@ -351,12 +353,10 @@ function gestureEnd(element, clientX, clientY) {
     }
   }
 
-  element[touchSequenceAxisKey] = null;
+  /** @type {any} */ (element)[touchSequenceAxisKey] = null;
 
   element.setState({
-    swipeFraction: null,
-    swipeStartX: null,
-    swipeStartY: null
+    swipeFraction: null
   });
 }
 
@@ -370,16 +370,22 @@ function gestureEnd(element, clientX, clientY) {
  */
 function gestureStart(element, clientX, clientY) {
   /** @type {any} */ const cast = element;
-  cast[previousXKey] = clientX;
-  cast[previousYKey] = clientY;
   cast[previousTimeKey] = Date.now();
   cast[previousVelocityKey] = 0;
+  cast[previousXKey] = clientX;
+  cast[previousYKey] = clientY;
+  cast[startXKey] = clientX;
+  cast[startYKey] = clientY;
   cast[touchSequenceAxisKey] = null;
+
   element.setState({
-    swipeFraction: 0,
-    swipeStartX: clientX,
-    swipeStartY: clientY
+    swipeFraction: 0
   });
+
+  // Let component know a swipe is starting.
+  if (element[symbols.swipeStart]) {
+    element[symbols.swipeStart](clientX, clientY);
+  }
 }
 
 /**
@@ -392,14 +398,13 @@ function gestureStart(element, clientX, clientY) {
  */
 function getSwipeFraction(element, x, y) {
   const {
-    swipeAxis,
-    swipeStartX,
-    swipeStartY
+    swipeAxis
   } = element.state;
+  /** @type {any} */ const cast = element;
   const vertical = swipeAxis === 'vertical';
   const dragDistance = vertical ?
-    y - swipeStartY :
-    x - swipeStartX;
+    y - cast[startYKey] :
+    x - cast[startXKey];
   const swipeTarget = element[symbols.swipeTarget];
   const swipeTargetSize = vertical ?
     swipeTarget.offsetHeight :

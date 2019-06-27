@@ -41,9 +41,7 @@ export default function TrackpadSwipeMixin(Base) {
         swipeAxis: 'horizontal',
         swipeFraction: null,
         swipeLeftWillCommit: false,
-        swipeRightWillCommit: false,
-        swipeStartX: null,
-        swipeStartY: null
+        swipeRightWillCommit: false
       });
 
       // If the swipeFraction crosses the -0.5 or 0.5 mark, update our notion of
@@ -172,12 +170,9 @@ function handleWheel(element, event) {
     return true;
   }
 
-  // Record the start position of the swipe.
-  if (eventBeginsSwipe) {
-    element.setState({
-      swipeStartX: event.clientX,
-      swipeStartY: event.clientY
-    });
+  if (eventBeginsSwipe && element[symbols.swipeStart]) {
+    // Let component know a swipe is starting.
+    element[symbols.swipeStart](event.clientX, event.clientY);
   }
 
   cast[wheelDistanceKey] -= deltaX;
@@ -224,9 +219,7 @@ function postNavigate(element) {
     cast[postNavigateDelayCompleteKey] = false;
   }, POST_NAVIGATE_TIME);
   element.setState({
-    swipeFraction: null,
-    swipeStartX: null,
-    swipeStartY: null
+    swipeFraction: null
   });
 }
 
@@ -270,9 +263,7 @@ async function wheelTimedOut(element) {
   // dragging to false (or the previous value).
   resetWheelTracking(element);
   element.setState({
-    swipeFraction: null,
-    swipeStartX: null,
-    swipeStartY: null
+    swipeFraction: null
   });
 
   if (gesture && element[gesture]) {

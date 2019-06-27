@@ -471,6 +471,19 @@ export const swipeUp = Symbol('swipeUp');
 export const swipeUpComplete = Symbol('swipeUpComplete');
 
 /**
+ * Symbol for the `swipeStart` method.
+ * 
+ * [TouchSwipeMixin](TouchSwipeMixin) and
+ * [TrackpadSwipeMixin](TrackpadSwipeMixin) invoke this method when a swipe
+ * is starting, passing in the starting (x, y) client coordinate.
+ * 
+ * @function swipeStart
+ * @param {number} clientX
+ * @param {number} clientY
+ */
+export const swipeStart = Symbol('swipeStart');
+
+/**
  * Symbol for the `swipeTarget` property.
  * 
  * By default, the swipe mixins [TouchSwipeMixin](TouchSwipeMixin) and

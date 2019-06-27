@@ -54,6 +54,7 @@ export const swipeLeft: '_swipeLeft';
 export const swipeLeftComplete: '_swipeLeftComplete';
 export const swipeRight: '_swipeRight';
 export const swipeRightComplete: '_swipeRightComplete';
+export const swipeStart: '_swipeStart';
 export const swipeTarget: '_swipeTarget';
 export const swipeUp: '_swipeUp';
 export const swipeUpComplete: '_swipeUpComplete';

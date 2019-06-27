@@ -55,27 +55,12 @@ export default function SwipeCommandsMixin(Base) {
     }
 
     get defaultState() {
-      const result = Object.assign(super.defaultState, {
+      return Object.assign(super.defaultState, {
         swipeLeftFollowsThrough: false,
         swipeLeftRemovesItem: false,
         swipeRightFollowsThrough: false,
         swipeRightRemovesItem: false
       });
-
-      // When a swipe starts, determine which item is being swiped. The item will
-      // be cleared when the swipe effect's transitionend event is raised
-      // (regardless of whether a command was triggered or not).
-      result.onChange('swipeStartY', state => {
-        const { swipeStartY } = state;
-        if (swipeStartY !== null) {
-          return {
-            swipeItem: getItemAtY(state.items, state.swipeStartY)
-          };
-        }
-        return null;
-      });
-
-      return result;
     }
     
     [symbols.render](/** @type {PlainObject} */ changed) {
@@ -180,6 +165,17 @@ export default function SwipeCommandsMixin(Base) {
             width: '0'
           });
         }
+      }
+    }
+
+    [symbols.swipeStart](clientX, clientY) {
+      if (super[symbols.swipeStart]) { super[symbols.swipeStart](clientX, clientY); }
+      // Determine which item is being swiped given the starting Y coordinate.
+      const swipeItem = getItemAtY(this.state.items, clientY);
+      if (swipeItem) {
+        this.setState({
+          swipeItem
+        });
       }
     }
 
