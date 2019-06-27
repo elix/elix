@@ -92,13 +92,6 @@ export default function SwipeCommandsMixin(Base) {
             // Get client rect of item using getBoundingClientRect so that we
             // get more precise fractional dimensions.
             const itemRect = swipeItem.getBoundingClientRect();
-
-            let itemTop = itemRect.top;
-            const scrollTarget = this[symbols.scrollTarget];
-            if (scrollTarget) {
-              itemTop -= scrollTarget.scrollTop;
-            }
-
             const commandWidth = Math.min(Math.abs(swipeFraction), 1) * itemRect.width;
 
             rightContainer.style.transition = '';
@@ -106,7 +99,7 @@ export default function SwipeCommandsMixin(Base) {
               // Swiping left: show right command container.
               Object.assign(rightContainer.style, {
                 height: `${itemRect.height}px`,
-                top: `${itemTop}px`,
+                top: `${itemRect.top}px`,
                 width: `${commandWidth}px`
               });
             } else {
@@ -118,7 +111,7 @@ export default function SwipeCommandsMixin(Base) {
               // Swiping right: show left command container.
               Object.assign(leftContainer.style, {
                 height: `${itemRect.height}px`,
-                top: `${itemTop}px`,
+                top: `${itemRect.top}px`,
                 width: `${commandWidth}px`
               });
             } else {
