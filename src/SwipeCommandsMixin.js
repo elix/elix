@@ -4,8 +4,7 @@ import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-un
 
 
 /**
- * Adds template elements for a list box that exposes commands that act on
- * list items when the user swipes to the left or right.
+ * Reveals commands behind list items when the user swipes left or right
  * 
  * @module SwipeCommandsMixin
  * @param {Constructor<ReactiveElement>} Base
@@ -21,7 +20,7 @@ export default function SwipeCommandsMixin(Base) {
       // component know so that it can perform any operation that should follow
       // the end of the transition. E.g., a Delete swipe command would want to
       // wait until the transition has finished before removing the item.
-      this.$.leftContainer.addEventListener('transitionend', () => {
+      this.$.leftCommandContainer.addEventListener('transitionend', () => {
         if (this.state.swipeRightWillCommit && this[symbols.swipeRightComplete]) {
           this[symbols.swipeRightComplete]();
         }
@@ -31,7 +30,7 @@ export default function SwipeCommandsMixin(Base) {
           swipeRightWillCommit: false
         });
       });
-      this.$.rightContainer.addEventListener('transitionend', () => {
+      this.$.rightCommandContainer.addEventListener('transitionend', () => {
         if (this.state.swipeLeftWillCommit && this[symbols.swipeLeftComplete]) {
           this[symbols.swipeLeftComplete]();
         }
@@ -67,7 +66,7 @@ export default function SwipeCommandsMixin(Base) {
       super[symbols.render](changed);
       if (changed.enableEffects || changed.swipeItem || changed.swipeFraction) {
         const { swipeItem, swipeFraction } = this.state;
-        const { leftContainer, rightContainer } = this.$;
+        const { leftCommandContainer, rightCommandContainer } = this.$;
         if (swipeItem) {
           const swiping = swipeFraction !== null;
           if (swiping) {
@@ -77,30 +76,36 @@ export default function SwipeCommandsMixin(Base) {
             // Get client rect of item using getBoundingClientRect so that we
             // get more precise fractional dimensions.
             const itemRect = swipeItem.getBoundingClientRect();
+
+            // Subtract off the top of our offsetParent to effectively calculate
+            // more accurate offsetTop.
+            const offsetParent = swipeItem.offsetParent;
+            const itemTop = itemRect.top - offsetParent.getBoundingClientRect().top;
+
             const commandWidth = Math.min(Math.abs(swipeFraction), 1) * itemRect.width;
 
-            rightContainer.style.transition = '';
+            rightCommandContainer.style.transition = '';
             if (swipeFraction < 0) {
               // Swiping left: show right command container.
-              Object.assign(rightContainer.style, {
+              Object.assign(rightCommandContainer.style, {
                 height: `${itemRect.height}px`,
-                top: `${itemRect.top}px`,
+                top: `${itemTop}px`,
                 width: `${commandWidth}px`
               });
             } else {
-              rightContainer.style.width = '0';
+              rightCommandContainer.style.width = '0';
             }
 
-            leftContainer.style.transition = '';
+            leftCommandContainer.style.transition = '';
             if (swipeFraction > 0) {
               // Swiping right: show left command container.
-              Object.assign(leftContainer.style, {
+              Object.assign(leftCommandContainer.style, {
                 height: `${itemRect.height}px`,
-                top: `${itemRect.top}px`,
+                top: `${itemTop}px`,
                 width: `${commandWidth}px`
               });
             } else {
-              leftContainer.style.width = '0';
+              leftCommandContainer.style.width = '0';
             }
 
             Object.assign(swipeItem.style, {
@@ -123,11 +128,11 @@ export default function SwipeCommandsMixin(Base) {
             const followThroughLeft = swipeLeftWillCommit && swipeLeftFollowsThrough;
             const followThroughRight = swipeRightWillCommit && swipeRightFollowsThrough;
             const containerTransition = 'height 0.25s, width 0.25s';
-            Object.assign(leftContainer.style, {
+            Object.assign(leftCommandContainer.style, {
               transition: containerTransition,
               width: followThroughRight ? '100%' : '0'
             });
-            Object.assign(rightContainer.style, {
+            Object.assign(rightCommandContainer.style, {
               transition: containerTransition,
               width: followThroughLeft ? '100%' : '0'
             });
@@ -137,10 +142,10 @@ export default function SwipeCommandsMixin(Base) {
                 '100%' :
                 '0';
             if (swipeLeftWillCommit && swipeLeftRemovesItem) {
-              rightContainer.style.height = '0';
+              rightCommandContainer.style.height = '0';
             }
             if (swipeRightWillCommit && swipeRightRemovesItem) {
-              leftContainer.style.height = '0';
+              leftCommandContainer.style.height = '0';
             }
             const height = (swipeLeftWillCommit && swipeLeftRemovesItem) ||
               (swipeRightWillCommit && swipeRightRemovesItem) ?
@@ -154,12 +159,12 @@ export default function SwipeCommandsMixin(Base) {
           }
         } else {
           // No item is being swiped. Reset command containers.
-          Object.assign(leftContainer.style, {
+          Object.assign(leftCommandContainer.style, {
             height: '',
             transition: '',
             width: '0'
           });
-          Object.assign(rightContainer.style, {
+          Object.assign(rightCommandContainer.style, {
             height: '',
             transition: '',
             width: '0'
@@ -204,18 +209,18 @@ export default function SwipeCommandsMixin(Base) {
             flex: 1;
           }
 
-          #leftContainer {
+          #leftCommandContainer {
             left: 0;
           }
 
-          #rightContainer {
+          #rightCommandContainer {
             right: 0;
           }
         </style>
-        <div id="leftContainer" class="commandContainer">
+        <div id="leftCommandContainer" class="commandContainer">
           <slot id="leftCommandSlot" name="leftCommand"></slot>
         </div>
-        <div id="rightContainer" class="commandContainer">
+        <div id="rightCommandContainer" class="commandContainer">
           <slot id="rightCommandSlot" name="rightCommand"></slot>
         </div>
       `);
