@@ -18,15 +18,25 @@ const Base =
   ))));
 
 
+/*
+ * This demo shows how to create a list box with swipe commands behind the list
+ * items for Mark Read/Unread (swipe right) and Delete (swipe left).
+ */
 export default class MessageListBox extends Base {
 
   get defaultState() {
     return Object.assign(super.defaultState, {
+      // The Delete command removes an item, and we also want a swipe to Delete to
+      // follow through: the leftward animation will continue all the way to the
+      // left after the user completes the gesture.
       swipeLeftFollowsThrough: true,
       swipeLeftRemovesItem: true
     });
   }
 
+  // To show how keyboard support can coexist with swipe commands, we define
+  // the Space key as a shortcut for Mark Read/Unread and the Delete key as a
+  // shortcut for the Delete command.
   [symbols.keydown](/** @type {KeyboardEvent} */ event) {
     let handled = false;
     const selectedItem = this.selectedItem;
@@ -42,7 +52,8 @@ export default class MessageListBox extends Base {
       
       case ' ':
         if (selectedItem && 'read' in selectedItem) {
-          selectedItem.read = !selectedItem.read;
+          /** @type {any} */ const cast = selectedItem;
+          cast.read = !cast.read;
         }
         handled = true;
         break;
@@ -54,6 +65,10 @@ export default class MessageListBox extends Base {
 
   [symbols.render](changed) {
     super[symbols.render](changed);
+
+    // Our Mark Read/Unread command can show one of two different icons and
+    // labels to indicate the read/unread state that will result if the user
+    // ends the swipe at that point.
     if (changed.swipeItem || changed.swipeRightWillCommit) {
       const { swipeItem, swipeRightWillCommit } = this.state;
       if (swipeItem && 'read' in swipeItem) {
@@ -63,24 +78,35 @@ export default class MessageListBox extends Base {
         this.$.unreadIconWithLabel.style.display = newRead ? 'none' : '';
       }
     }
+
+    // Our swipe commands sit inside a little container that can animate the
+    // transition between left and right alignment. We use this alignment to
+    // signal the point at which releasing the swipe would commit the command.
     if (changed.swipeRightWillCommit) {
-      this.$.unreadCommand.align = this.state.swipeRightWillCommit ?
-        'right' :
-        'left';
+      /** @type {any} */ (this.$.unreadCommand).align =
+        this.state.swipeRightWillCommit ?
+          'right' :
+          'left';
     }
     if (changed.swipeLeftWillCommit) {
-      this.$.deleteCommand.align = this.state.swipeLeftWillCommit ?
-        'left' :
-        'right';
+      /** @type {any} */ (this.$.deleteCommand).align =
+        this.state.swipeLeftWillCommit ?
+          'left' :
+          'right';
     }
   }
 
-  // Wait until a left swipe has completed before excuting the Delete command.
+  // A swipe left indicates we should perform the Delete command. We want to
+  // wait until the left swipe animation has completed before excuting the
+  // deletion.
   [symbols.swipeLeftComplete]() {
     if (super[symbols.swipeLeftComplete]) { super[symbols.swipeLeftComplete](); }
     this.state.swipeItem.remove();
   }
 
+  // A swipe right indicates we should toggle an item's read/unread state. We
+  // toggle the state as soon as the swipe happens (before the reset animation)
+  // occurs.
   [symbols.swipeRight]() {
     const { swipeItem } = this.state;
     if ('read' in swipeItem) {
@@ -131,7 +157,7 @@ export default class MessageListBox extends Base {
       </style>
     `);
 
-    // Patch unread command into left slot.
+    // Patch the Mark Read/Unread command into the left command slot.
     const leftCommandSlot = result.content.getElementById('leftCommandSlot');
     if (leftCommandSlot) {
       const leftCommandTemplate = template.html`
@@ -149,7 +175,7 @@ export default class MessageListBox extends Base {
       applyChildNodes(leftCommandSlot, leftCommandTemplate.content.childNodes);
     }
 
-    // Patch delete command into right slot.
+    // Patch the Delete command into the right commands slot.
     const rightCommandSlot = result.content.getElementById('rightCommandSlot');
     if (rightCommandSlot) {
       const rightCommandTemplate = template.html`
