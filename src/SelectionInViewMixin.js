@@ -73,8 +73,9 @@ export default function SelectionInViewMixin(Base) {
       const topDelta = itemRect.top - scrollTargetRect.top;
       
       // Scroll the target as necessary to bring the item into view.
-      // Only scroll along the axis indicated by `orientation` state.
-      const { orientation } = this.state;
+      // If an `orientation` state member is defined, only scroll along that
+      // axis. Otherwise, assume the orientation is "both".
+      const orientation = this.state.orientation || 'both';
       if (orientation === 'horizontal' || orientation === 'both') {
         if (rightDelta > 0) {
           scrollTarget.scrollLeft += rightDelta;            // Scroll right
