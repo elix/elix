@@ -420,14 +420,14 @@ export const swipeDownComplete = Symbol('swipeDownComplete');
 export const swipeLeft = Symbol('swipeLeft');
 
 /**
- * Symbol for the `swipeLeftComplete` method.
+ * Symbol for the `swipeLeftTransitionEnd` method.
  * 
  * [SwipeCommandsMixin](SwipeCommandsMixin) invokes this method after any
  * animated transition associated with a swipe left has completed.
  * 
- * @function swipeLeftComplete
+ * @function swipeLeftTransitionEnd
  */
-export const swipeLeftComplete = Symbol('swipeLeftComplete');
+export const swipeLeftTransitionEnd = Symbol('swipeLeftTransitionEnd');
 
 /**
  * Symbol for the `swipeRight` method.
@@ -441,14 +441,14 @@ export const swipeLeftComplete = Symbol('swipeLeftComplete');
 export const swipeRight = Symbol('swipeRight');
 
 /**
- * Symbol for the `swipeRightComplete` method.
+ * Symbol for the `swipeRightTransitionEnd` method.
  * 
  * [SwipeCommandsMixin](SwipeCommandsMixin) invokes this method after any
  * animated transition associated with a swipe right has completed.
  * 
- * @function swipeRightComplete
+ * @function swipeRightTransitionEnd
  */
-export const swipeRightComplete = Symbol('swipeRightComplete');
+export const swipeRightTransitionEnd = Symbol('swipeRightTransitionEnd');
 
 /**
  * Symbol for the `swipeUp` method.

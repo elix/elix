@@ -58,13 +58,11 @@ export default function TrackpadSwipeMixin(Base) {
       // TouchSwipeMixin.
       result.onChange('swipeFraction', state => {
         const { swipeFraction } = state;
-        if (swipeFraction !== null) {
-          return {
-            swipeLeftWillCommit: swipeFraction <= -0.5,
-            swipeRightWillCommit: swipeFraction >= 0.5
-          };
-        }
-        return null;
+        // If swipeFraction is null, both flags are set to false as desired.
+        return {
+          swipeLeftWillCommit: swipeFraction <= -0.5,
+          swipeRightWillCommit: swipeFraction >= 0.5
+        };
       });
 
       return result;
@@ -138,22 +136,19 @@ function handleWheel(element, event) {
   // Was this specific event more vertical or more horizontal?
   const eventAxis = Math.abs(deltaY) > Math.abs(deltaX) ?
     'vertical' :
-    'horziontal';
-  if (eventBeginsSwipe) {
-    // This first event's axis will determine which axis we'll respect for the
-    // rest of the sequence.
-    cast[wheelSequenceAxisKey] = eventAxis;
-  } else if (eventAxis !== cast[wheelSequenceAxisKey]) {
+    'horizontal';
+
+  if (eventAxis === 'vertical') {
+    // We leave vertical events unhandled so the browser can process them.
+    return false;
+  }
+  
+  if (!eventBeginsSwipe && eventAxis !== cast[wheelSequenceAxisKey]) {
     // This event continues a sequence. If the event's axis is perpendicular to
     // the sequence's axis, we'll absorb this event. E.g., if the user started a
     // vertical swipe (to scroll, say), then we absorb all subsequent horizontal
     // wheel events in the sequence.
     return true;
-  }
-
-  if (eventAxis === 'vertical') {
-    // We leave vertical events unhandled so the browser can process them.
-    return false;
   }
 
   if (!cast[postGestureDelayCompleteKey]) {
@@ -170,9 +165,16 @@ function handleWheel(element, event) {
     return true;
   }
 
-  if (eventBeginsSwipe && element[symbols.swipeStart]) {
-    // Let component know a swipe is starting.
-    element[symbols.swipeStart](event.clientX, event.clientY);
+  // If we get this far, we have a wheel event we want to handle.
+
+  if (eventBeginsSwipe) {
+    // This first event's axis will determine which axis we'll respect for the
+    // rest of the sequence.
+    cast[wheelSequenceAxisKey] = eventAxis;
+    if (element[symbols.swipeStart]) {
+      // Let component know a swipe is starting.
+      element[symbols.swipeStart](event.clientX, event.clientY);
+    }
   }
 
   cast[wheelDistanceKey] -= deltaX;
@@ -214,18 +216,19 @@ function performImmediateGesture(element, gesture) {
   if (element[gesture]) {
     element[gesture]();
   }
-  // Reset our tracking following the gesture.
+  // Reset our tracking following the gesture. Because the user may still be
+  // swiping on the trackpad, we reset things slightly differently than when the
+  // wheel times out.
   /** @type {any} */ const cast = element;
   cast[absorbDecelerationKey] = true;
   cast[postGestureDelayCompleteKey] = false;
   cast[wheelDistanceKey] = 0;
+  cast[wheelSequenceAxisKey] = null;
   setTimeout(() => {
     cast[postGestureDelayCompleteKey] = true;
   }, POST_GESTURE_TIME);
   element.setState({
-    swipeFraction: null,
-    swipeLeftWillCommit: false,
-    swipeRightWillCommit: false
+    swipeFraction: null
   });
 }
 
@@ -239,10 +242,10 @@ function performImmediateGesture(element, gesture) {
 function resetWheelTracking(element) {
   /** @type {any} */ const cast = element;
   cast[absorbDecelerationKey] = false;
-  cast[wheelSequenceAxisKey] = null;
   cast[lastDeltaXKey] = 0;
   cast[postGestureDelayCompleteKey] = true;
   cast[wheelDistanceKey] = 0;
+  cast[wheelSequenceAxisKey] = null;
   if (cast[lastWheelTimeoutKey]) {
     clearTimeout(cast[lastWheelTimeoutKey]);
     cast[lastWheelTimeoutKey] = null;
@@ -267,8 +270,6 @@ async function wheelTimedOut(element) {
     gesture = symbols.swipeRight;
   }
 
-  // TODO: Listen for the transition to complete, and then restore
-  // dragging to false (or the previous value).
   resetWheelTracking(element);
   element.setState({
     swipeFraction: null

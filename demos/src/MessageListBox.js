@@ -70,10 +70,12 @@ export default class MessageListBox extends Base {
     // labels to indicate the read/unread state that will result if the user
     // ends the swipe at that point.
     if (changed.swipeItem || changed.swipeRightWillCommit) {
-      const { swipeItem, swipeRightWillCommit } = this.state;
+      const { swipeItem, swipeRightCommitted, swipeRightWillCommit } = this.state;
       if (swipeItem && 'read' in swipeItem) {
         const read = swipeItem.read;
-        const newRead = swipeRightWillCommit ? !read : read;
+        const newRead = swipeRightCommitted || swipeRightWillCommit ?
+          !read :
+          read;
         this.$.readIconWithLabel.style.display = newRead ? '' : 'none';
         this.$.unreadIconWithLabel.style.display = newRead ? 'none' : '';
       }
@@ -82,15 +84,15 @@ export default class MessageListBox extends Base {
     // Our swipe commands sit inside a little container that can animate the
     // transition between left and right alignment. We use this alignment to
     // signal the point at which releasing the swipe would commit the command.
-    if (changed.swipeRightWillCommit) {
+    if (changed.swipeRightCommitted || changed.swipeRightWillCommit) {
       /** @type {any} */ (this.$.unreadCommand).align =
-        this.state.swipeRightWillCommit ?
+        this.state.swipeRightCommitted || this.state.swipeRightWillCommit ?
           'right' :
           'left';
     }
-    if (changed.swipeLeftWillCommit) {
+    if (changed.swipeLeftCommitted || changed.swipeLeftWillCommit) {
       /** @type {any} */ (this.$.deleteCommand).align =
-        this.state.swipeLeftWillCommit ?
+        this.state.swipeLeftCommitted || this.state.swipeLeftWillCommit ?
           'left' :
           'right';
     }
@@ -99,14 +101,14 @@ export default class MessageListBox extends Base {
   // A swipe left indicates we should perform the Delete command. We want to
   // wait until the left swipe animation has completed before excuting the
   // deletion.
-  [symbols.swipeLeftComplete]() {
-    if (super[symbols.swipeLeftComplete]) { super[symbols.swipeLeftComplete](); }
+  [symbols.swipeLeftTransitionEnd]() {
+    if (super[symbols.swipeLeftTransitionEnd]) { super[symbols.swipeLeftTransitionEnd](); }
     this.state.swipeItem.remove();
   }
 
   // A swipe right indicates we should toggle an item's read/unread state. We
-  // toggle the state as soon as the swipe happens (before the reset animation)
-  // occurs.
+  // toggle the state as soon as the swipe happens (before the item animates
+  // back to its normal state).
   [symbols.swipeRight]() {
     const { swipeItem } = this.state;
     if ('read' in swipeItem) {
