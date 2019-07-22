@@ -115,10 +115,16 @@ class Drawer extends Base {
       const translatePercentage = sign * translateFraction * 100;
 
       let duration = 0;
+      // We don't show transitions during swiping, as it would give the swipe a
+      // sluggish feel. We do show transitions during the open or close effect.
+      // In the case where a user begins to close a drawer, but doesn't close it
+      // more than halfway, we want to animate the transition back to the fully
+      // opened state. For that, we show transitions during the "after" effect
+      // phase.
       const showTransition = enableEffects && !swiping &&
-        effect && effectPhase === 'during';
+        effect && (effectPhase === 'during' || effectPhase === 'after');
       if (showTransition) {
-        // The time require to show transitions depends on how far apart the
+        // The time required to show transitions depends on how far apart the
         // elements currently are from their desired state. As a reference point,
         // we compare the expected opacity of the backdrop to its current opacity.
         // (We can't use the swipeFraction, because no swipe is in progress.)
