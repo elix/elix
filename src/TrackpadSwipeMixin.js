@@ -4,6 +4,7 @@ import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-un
 
 const absorbDecelerationKey = Symbol('absorbDeceleration');
 const lastDeltaXKey = Symbol('lastDeltaX');
+const lastDeltaYKey = Symbol('lastDeltaY');
 const lastWheelTimeoutKey = Symbol('lastWheelTimeout');
 const postGestureDelayCompleteKey = Symbol('postGestureDelayComplete');
 const wheelDistanceKey = Symbol('wheelDistance');
@@ -47,9 +48,11 @@ export default function TrackpadSwipeMixin(Base) {
     get defaultState() {
       const result = Object.assign(super.defaultState, {
         swipeAxis: 'horizontal',
+        swipeDownWillCommit: false,
         swipeFraction: null,
         swipeLeftWillCommit: false,
-        swipeRightWillCommit: false
+        swipeRightWillCommit: false,
+        swipeUpWillCommit: false
       });
 
       // If the swipeFraction crosses the -0.5 or 0.5 mark, update our notion of
@@ -57,12 +60,21 @@ export default function TrackpadSwipeMixin(Base) {
       // point. This definition is compatible with one defined by
       // TouchSwipeMixin.
       result.onChange('swipeFraction', state => {
-        const { swipeFraction } = state;
-        // If swipeFraction is null, both flags are set to false as desired.
-        return {
-          swipeLeftWillCommit: swipeFraction <= -0.5,
-          swipeRightWillCommit: swipeFraction >= 0.5
-        };
+        const { swipeAxis, swipeFraction } = state;
+        if (swipeFraction !== null) {
+          if (swipeAxis === 'horizontal') {
+            return {
+              swipeLeftWillCommit: swipeFraction <= -0.5,
+              swipeRightWillCommit: swipeFraction >= 0.5
+            };
+          } else {
+            return {
+              swipeUpWillCommit: swipeFraction <= -0.5,
+              swipeDownWillCommit: swipeFraction >= 0.5
+            }
+          }
+        }
+        return null;
       });
 
       return result;
@@ -104,11 +116,6 @@ export default function TrackpadSwipeMixin(Base) {
  */
 function handleWheel(element, event) {
 
-  if (element.state.swipeAxis === 'vertical') {
-    // This mixin currently only supports horizontal swiping.
-    return false;
-  }
-
   /** @type {any} */ const cast = element;
 
   // Since we have a new wheel event, reset our timer waiting for the last
@@ -127,8 +134,12 @@ function handleWheel(element, event) {
   const deltaY = event.deltaY;
 
   // See if component event represents acceleration or deceleration.
-  const acceleration = Math.sign(deltaX) * (deltaX - cast[lastDeltaXKey]);
+  const vertical = element.state.swipeAxis === 'vertical';
+  const acceleration = vertical ?
+    Math.sign(deltaY) * (deltaY - cast[lastDeltaYKey]) :
+    Math.sign(deltaX) * (deltaX - cast[lastDeltaXKey]);
   cast[lastDeltaXKey] = deltaX;
+  cast[lastDeltaYKey] = deltaY;
 
   // Is this the first wheel event in a swipe sequence?
   const eventBeginsSwipe = cast[wheelSequenceAxisKey] === null;
@@ -138,11 +149,6 @@ function handleWheel(element, event) {
     'vertical' :
     'horizontal';
 
-  if (eventAxis === 'vertical') {
-    // We leave vertical events unhandled so the browser can process them.
-    return false;
-  }
-  
   if (!eventBeginsSwipe && eventAxis !== cast[wheelSequenceAxisKey]) {
     // This event continues a sequence. If the event's axis is perpendicular to
     // the sequence's axis, we'll absorb this event. E.g., if the user started a
@@ -177,12 +183,15 @@ function handleWheel(element, event) {
     }
   }
 
-  cast[wheelDistanceKey] -= deltaX;
+  cast[wheelDistanceKey] -= vertical ? deltaY : deltaX;
 
   // Update the travel fraction of the component being navigated.
-  const width = cast[symbols.swipeTarget].offsetWidth;
-  let swipeFraction = width > 0 ?
-    cast[wheelDistanceKey] / width :
+  const swipeTarget = cast[symbols.swipeTarget];
+  const targetDimension = vertical ?
+    swipeTarget.offsetHeight :
+    swipeTarget.offsetWidth;
+  let swipeFraction = targetDimension > 0 ?
+    cast[wheelDistanceKey] / targetDimension :
     0;
   swipeFraction = Math.sign(swipeFraction) * Math.min(Math.abs(swipeFraction), 1);
 
@@ -191,9 +200,9 @@ function handleWheel(element, event) {
   // time out.)
   let gesture;
   if (swipeFraction === -1) {
-    gesture = symbols.swipeLeft;
+    gesture = vertical ? symbols.swipeUp : symbols.swipeLeft;
   } else if (swipeFraction === 1) {
-    gesture = symbols.swipeRight;
+    gesture = vertical ? symbols.swipeDown : symbols.swipeRight;
   }
   if (gesture) {
     performImmediateGesture(element, gesture);
@@ -243,6 +252,7 @@ function resetWheelTracking(element) {
   /** @type {any} */ const cast = element;
   cast[absorbDecelerationKey] = false;
   cast[lastDeltaXKey] = 0;
+  cast[lastDeltaYKey] = 0;
   cast[postGestureDelayCompleteKey] = true;
   cast[wheelDistanceKey] = 0;
   cast[wheelSequenceAxisKey] = null;
@@ -264,10 +274,14 @@ async function wheelTimedOut(element) {
 
   // If the user swiped far enough to commit a gesture, handle it now.
   let gesture;
-  if (element.state.swipeLeftWillCommit) {
+  if (element.state.swipeDownWillCommit) {
+    gesture = symbols.swipeDown;
+  } else if (element.state.swipeLeftWillCommit) {
     gesture = symbols.swipeLeft;
   } else if (element.state.swipeRightWillCommit) {
     gesture = symbols.swipeRight;
+  } else if (element.state.swipeUpWillCommit) {
+    gesture = symbols.swipeUp;
   }
 
   resetWheelTracking(element);
