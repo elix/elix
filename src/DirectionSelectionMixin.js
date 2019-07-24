@@ -23,21 +23,46 @@ export default function DirectionSelectionMixin(Base) {
 
     get defaultState() {
       const state = Object.assign(super.defaultState, {
+        canGoDown: null,
         canGoLeft: null,
-        canGoRight: null
+        canGoRight: null,
+        canGoUp: null
       });
 
-      // Update computed state members canGoLeft/canGoRight.
-      // TODO: Account for state.orientation, add canGoDown/canGoUp.
-      state.onChange(['languageDirection', 'canSelectNext', 'canSelectPrevious'], state => {
-        const { canSelectNext, canSelectPrevious, rightToLeft } = state;
-        const canGoLeft = rightToLeft ? canSelectNext : canSelectPrevious;
-        const canGoRight = rightToLeft ? canSelectPrevious : canSelectNext;
-        return {
-          canGoLeft,
-          canGoRight
-        };
-      });
+      // Update computed state members to track whether we can go
+      // down/left/right/up.
+      state.onChange(
+        [
+          'canSelectNext',
+          'canSelectPrevious',
+          'languageDirection',
+          'orientation',
+          'rightToLeft'
+        ], state => {
+          const {
+            canSelectNext,
+            canSelectPrevious,
+            orientation,
+            rightToLeft
+          } = state;
+          const horizontal = orientation === 'horizontal' || orientation === 'both';
+          const vertical = orientation === 'vertical' || orientation === 'both';
+          const canGoDown = vertical && canSelectNext;
+          const canGoLeft = !horizontal ?
+            false :
+            rightToLeft ? canSelectNext : canSelectPrevious;
+          const canGoRight = !horizontal ?
+            false :
+            rightToLeft ? canSelectPrevious : canSelectNext;
+          const canGoUp = vertical && canSelectPrevious;
+          return {
+            canGoDown,
+            canGoLeft,
+            canGoRight,
+            canGoUp
+          };
+        }
+      );
 
       return state;
     }
