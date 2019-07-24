@@ -40,13 +40,17 @@ const Base =
  */
 class SlidingPages extends Base {
 
-  get swipeAxis() {
-    return this.state.swipeAxis;
-  }
-  set swipeAxis(swipeAxis) {
-    this.setState({
-      swipeAxis
-    });
+  get defaultState() {
+    const result = super.defaultState;
+
+    // Have swipeAxis follow orientation.
+    result.onChange('orientation', state =>
+      ({
+        swipeAxis: state.orientation
+      })
+    );
+
+    return result;
   }
 
 }
