@@ -3,10 +3,17 @@ import KeyboardDirectionMixin from '../../src/KeyboardDirectionMixin.js';
 
 
 class KeyboardDirectionMixinTest extends KeyboardDirectionMixin(HTMLElement) {
+
+  constructor() {
+    super();
+    this.state = {};
+  }
+
   [symbols.goRight]() {
     if (super[symbols.goRight]) { super[symbols.goRight](); }
     return true;
   }
+
 }
 customElements.define('keyboard-direction-test', KeyboardDirectionMixinTest);
 
@@ -25,9 +32,9 @@ describe("KeyboardDirectionMixin", () => {
 
   it("ignores a Right arrow key when orientation is vertical", () => {
     const fixture = new KeyboardDirectionMixinTest();
-    fixture.state = {
+    Object.assign(fixture.state, {
       orientation: 'vertical'
-    };
+    });
     const spy = sinon.spy(fixture, symbols.goRight);
     const result = fixture[symbols.keydown]({
       key: 'ArrowRight'
