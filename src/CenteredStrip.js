@@ -38,90 +38,103 @@ class CenteredStrip extends Base {
 
   get defaultState() {
     return Object.assign(super.defaultState, {
+      orientation: 'horizontal',
       selectionRequired: true
     });
   }
 
   get orientation() {
-    return 'horizontal';
+    return this.state.orientation;
+  }
+  set orientation(orientation) {
+    this.setState({ orientation });
   }
 
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.clientWidth || changed.enableEffects || changed.rightToLeft ||
         changed.selectedIndex || changed.swipeFraction) {
-      const rightToLeft = this.state.rightToLeft;
+      const { orientation, rightToLeft, selectedIndex } = this.state;
       const sign = rightToLeft ? 1 : -1;
       const swiping = this.state.swipeFraction != null;
-      const selectedIndex = this.state.selectedIndex;
       const swipeFraction = this.state.swipeFraction || 0;
       const selectionFraction = selectedIndex + sign * swipeFraction;
   
-      // @ts-ignore
-      const stripContainerWidth = this.$.stripContainer.offsetWidth;
-      // @ts-ignore
-      const stripWidth = this.$.strip.offsetWidth;
-  
-      // HACK: It seems Firefox can invoke this method before it's actually
-      // rendered the component and given the strip any width. If we detect that
-      // case, we bail out to avoid rendering incorrectly.
-      if (stripWidth === 0) {
-        return;
-      }
-  
-      let translation = 0; // The amount by which we'll shift content horizontally
-      let justifyContent = '';
-      if (stripWidth <= stripContainerWidth) {
-        // Container can show all items. Center all items.
-        justifyContent = 'center';
-      } else {
-        // Items are wider than container can show.
-        // Center the selected item.
-        // During swipes, center a pro-rated point between the midpoints
-        // of the items on either side of the fractional selection.
-  
-        const leftIndex = Math.floor(selectionFraction);
-        const leftItem = this.items && this.items[leftIndex];
-        const leftCenter = leftItem instanceof HTMLElement ?
-          leftItem.offsetLeft + leftItem.offsetWidth / 2 :
-          0;
-        const rightIndex = leftIndex + 1;
-        const rightItem = this.items && this.items[rightIndex];
-        const rightCenter = rightItem instanceof HTMLElement ?
-          rightItem.offsetLeft + rightItem.offsetWidth / 2 :
-          0;
-  
-        let center = 0;
-        if (leftItem && !rightItem) {
-          center = leftCenter;
-        } else if (!leftItem && rightItem) {
-          center = rightCenter;
-        } else if (leftItem && rightItem) {
-          const offsetFraction = selectionFraction - leftIndex;
-          // TODO: sign
-          center = leftCenter + offsetFraction * (rightCenter - leftCenter);
-        }
-        if (rightToLeft) {
-          center = stripWidth - center;
-        }
-        
-        // Try to center the selected item.
-        translation = center - (stripContainerWidth / 2);
-  
-        // Constrain x to avoid showing space on either end.
-        translation = Math.max(translation, 0);
-        translation = Math.min(translation, stripWidth - stripContainerWidth);
-  
-        translation *= sign;
-      }
-  
-      const showTransition = this.state.enableEffects && !swiping;
-      Object.assign(this.$.strip.style, {
-        transform: `translateX(${translation}px)`,
-        transition: showTransition ? 'transform 0.25s' : 'none'
-      });
+      const vertical = orientation === 'vertical';
+      const leadingEdge = vertical ? 'offsetTop' : 'offsetLeft';
+      const dimension = vertical ? 'offsetHeight' : 'offsetWidth';
 
-      this.$.stripContainer.style.justifyContent = justifyContent;
+      // @ts-ignore
+      const stripContainerDimension = this.$.stripContainer[dimension];
+      // @ts-ignore
+      const stripDimension = this.$.strip[dimension];
+  
+      // It seems this method can be invoked before the strip any height/width.
+      // We only render if the height/width is positive.
+        if (stripDimension > 0) {
+        let translation = 0; // The amount by which we'll shift content horizontally
+        let justifyContent = '';
+        if (stripDimension <= stripContainerDimension) {
+          // Container can show all items. Center all items.
+          justifyContent = 'center';
+        } else {
+          // Items are wider than container can show.
+          // Center the selected item.
+          // During swipes, center a pro-rated point between the midpoints
+          // of the items on either side of the fractional selection.
+    
+          const itemBeforeIndex = Math.floor(selectionFraction);
+          const itemBefore = this.items && this.items[itemBeforeIndex];
+          const itemBeforeCenter = itemBefore instanceof HTMLElement ?
+            itemBefore[leadingEdge] + itemBefore[dimension] / 2 :
+            0;
+          const itemAfterIndex = itemBeforeIndex + 1;
+          const itemAfter = this.items && this.items[itemAfterIndex];
+          const itemAfterCenter = itemAfter instanceof HTMLElement ?
+            itemAfter[leadingEdge] + itemAfter[dimension] / 2 :
+            0;
+    
+          let center = 0;
+          if (itemBefore && !itemAfter) {
+            center = itemBeforeCenter;
+          } else if (!itemBefore && itemAfter) {
+            center = itemAfterCenter;
+          } else if (itemBefore && itemAfter) {
+            const offsetFraction = selectionFraction - itemBeforeIndex;
+            // TODO: sign
+            center = itemBeforeCenter + offsetFraction * (itemAfterCenter - itemBeforeCenter);
+          }
+          if (!vertical && rightToLeft) {
+            center = stripDimension - center;
+          }
+          
+          // Try to center the selected item.
+          translation = center - (stripContainerDimension / 2);
+    
+          // Constrain x to avoid showing space on either end.
+          translation = Math.max(translation, 0);
+          translation = Math.min(translation, stripDimension - stripContainerDimension);
+    
+          translation *= sign;
+        }
+    
+        const axis = vertical ? 'Y' : 'X';
+        const transform = `translate${axis}(${translation}px)`;
+        const showTransition = this.state.enableEffects && !swiping;
+        Object.assign(this.$.strip.style, {
+          transform,
+          transition: showTransition ? 'transform 0.25s' : 'none'
+        });
+
+        this.$.stripContainer.style.justifyContent = justifyContent;
+      }
+    }
+    if (changed.orientation) {
+      const flexDirection = this.state.orientation === 'horizontal' ?
+        '' :
+        'column';
+      this.$.stripContainer.style.flexDirection = flexDirection;
+      this.$.strip.style.flexDirection = flexDirection;
     }
   }
 

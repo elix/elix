@@ -65,7 +65,7 @@ class Carousel extends Base {
     const showArrowButtons = mediaQueryList.media === pointerQuery ?
       mediaQueryList.matches :
       true;
-    return Object.assign(super.defaultState, {
+    const result = Object.assign(super.defaultState, {
       orientation: 'horizontal',
       proxyListOverlap: true,
       proxyListPosition: 'bottom',
@@ -74,6 +74,27 @@ class Carousel extends Base {
       showArrowButtons,
       stageRole: SlidingStage
     });
+
+    // When orientation changes, have swipe axis follow suit, and also
+    // set the default proxy list position.
+    result.onChange('orientation', state => {
+      const proxyListPosition = state.orientation === 'horizontal' ?
+        'bottom' :
+        'right';
+      return {
+        proxyListPosition,
+        swipeAxis: state.orientation
+      };
+    });
+
+    return result;
+  }
+
+  get orientation() {
+    return this.state.orientation;
+  }
+  set orientation(orientation) {
+    this.setState({ orientation });
   }
 
   [symbols.render](/** @type {PlainObject} */ changed) {
@@ -84,6 +105,12 @@ class Carousel extends Base {
       forwardFocus(cast, null);
     }
     super[symbols.render](changed);
+    if (changed.stageRole || changed.orientation) {
+      this.$.stage.orientation = this.state.orientation;
+    }
+    if (changed.orientation || changed.proxyListRole) {
+      this.$.proxyList.orientation = this.state.orientation;
+    }
     if (changed.proxyListRole) {
       // Keep focus off of the proxies and onto the carousel itself.
       /** @type {any} */
