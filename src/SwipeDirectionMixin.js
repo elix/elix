@@ -14,10 +14,10 @@ export default function SwipeDirectionMixin(Base) {
   return class SwipeDirection extends Base {
 
     /**
-     * Invokes the [symbols.goDown](symbols#goDown) method.
+     * Invokes the [symbols.goUp](symbols#goUp) method.
      */
     [symbols.swipeDown]() {
-      this[symbols.goDown]();
+      this[symbols.goUp]();
     }
 
     /**
@@ -35,10 +35,10 @@ export default function SwipeDirectionMixin(Base) {
     }
 
     /**
-     * Invokes the [symbols.goUp](symbols#goUp) method.
+     * Invokes the [symbols.goDown](symbols#goDown) method.
      */
     [symbols.swipeUp]() {
-      this[symbols.goUp]();
+      this[symbols.goDown]();
     }
 
   }

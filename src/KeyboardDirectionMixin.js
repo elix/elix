@@ -80,7 +80,8 @@ export default function KeyboardDirectionMixin(Base) {
     [symbols.keydown](/** @type {KeyboardEvent} */ event) {
       let handled = false;
 
-      const orientation = this.orientation;
+      // Respect orientation state if defined, otherwise assume "both".
+      const orientation = this.state.orientation || 'both';
       const horizontal = (orientation === 'horizontal' || orientation === 'both');
       const vertical = (orientation === 'vertical' || orientation === 'both');
 
@@ -123,12 +124,6 @@ export default function KeyboardDirectionMixin(Base) {
 
       // Prefer mixin result if it's defined, otherwise use base result.
       return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
-    }
-
-    // Default orientation implementation defers to super,
-    // but if not found, looks in state.
-    get orientation() {
-      return super.orientation || this.state && this.state.orientation || 'both';
     }
 
   }

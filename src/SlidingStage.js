@@ -40,11 +40,22 @@ class SlidingStage extends Base {
     });
   }
 
+  get orientation() {
+    return this.state.orientation;
+  }
+  set orientation(orientation) {
+    this.setState({ orientation });
+  }
+
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
-    if (changed.enableEffects || changed.selectedIndex || changed.swipeFraction) {
-      const { rightToLeft, selectedIndex, items } = this.state;
-      const sign = rightToLeft ? 1 : -1;
+    if (changed.enableEffects || changed.orientation ||
+        changed.selectedIndex || changed.swipeFraction) {
+      const { orientation, rightToLeft, selectedIndex, items } = this.state;
+      const vertical = orientation === 'vertical';
+      const sign = vertical ?
+        -1 :
+        rightToLeft ? 1 : -1;
       const swiping = this.state.swipeFraction != null;
       const swipeFraction = this.state.swipeFraction || 0;
       let translation;
@@ -58,12 +69,20 @@ class SlidingStage extends Base {
       }
 
       const slidingStageContent = this.$.slidingStageContent;
-      slidingStageContent.style.transform = `translateX(${translation}%)`;
+      const axis = vertical ? 'Y' : 'X';
+      slidingStageContent.style.transform = `translate${axis}(${translation}%)`;
 
       const showTransition = this.state.enableEffects && !swiping;
       slidingStageContent.style.transition = showTransition ?
         'transform 0.25s' :
         'none';
+    }
+    if (changed.orientation) {
+      const { orientation } = this.state;
+      const vertical = orientation === 'vertical';
+      this.$.slidingStageContent.style.flexDirection = vertical ?
+        'column' :
+        '';
     }
   }
 

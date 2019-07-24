@@ -229,7 +229,10 @@ function gestureContinue(element, clientX, clientY) {
   const deltaY = clientY - cast[previousYKey];
   const now = Date.now();
   const deltaTime = now - cast[previousTimeKey];
-  const velocity = deltaX / deltaTime * 1000;
+  const deltaAlongAxis = element.state.swipeAxis === 'vertical' ?
+    deltaY :
+    deltaX;
+  const velocity = deltaAlongAxis / deltaTime * 1000;
 
   cast[previousXKey] = clientX;
   cast[previousYKey] = clientY;

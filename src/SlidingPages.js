@@ -38,7 +38,18 @@ const Base =
  * @mixes TouchSwipeMixin
  * @mixes TrackpadSwipeMixin
  */
-class SlidingPages extends Base {}
+class SlidingPages extends Base {
+
+  get swipeAxis() {
+    return this.state.swipeAxis;
+  }
+  set swipeAxis(swipeAxis) {
+    this.setState({
+      swipeAxis
+    });
+  }
+
+}
 
 
 customElements.define('elix-sliding-pages', SlidingPages);

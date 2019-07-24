@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Elix SlidingPages (vertical)</title>
+
+  <link rel="stylesheet" href="demos.css">
+  <script type="module" src="../src/SlidingPages.js"></script>
+
+  <style>
+    html {
+      height: 100%;
+    }
+
+    body {
+      background: black;
+      height: 100%;
+      padding: 0;
+    }
+  </style>
+  
+</head>
+
+<body role="main">
+  <div class="demo fullScreen">
+    <style>
+      #sampleSlidingPages {
+        background: black;
+        flex: 1;
+        max-height: 100%;
+      }
+
+      #sampleSlidingPages img {
+        display: inline-block;
+        height: 100%;
+        object-fit: cover;
+        vertical-align: middle;
+        width: 100%;
+      }
+    </style>
+    <elix-sliding-pages id="sampleSlidingPages" aria-label="Nature scenes" orientation="vertical" swipe-axis="vertical">
+      <img src="images/image01.jpg" alt="Mountain lake">
+      <img src="images/image02.jpg" alt="Terraced farm">
+      <img src="images/image03.jpg" alt="Winter trees">
+      <img src="images/image04.jpg" alt="Forest river">
+      <img src="images/image05.jpg" alt="Red panda">
+    </elix-sliding-pages>
+  </div>
+</body>
+
+</html>
