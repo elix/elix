@@ -72,8 +72,22 @@ function FocusCaptureMixin(Base) {
      */
     [wrap](original) {
       const focusCaptureTemplate = template.html`
-        <div style="display: flex;">
-          <div id="focusCaptureContainer" style="display: flex;"></div>
+        <style>
+          #focusCapture {
+            display: flex;
+          }
+
+          #focusCaptureContainer {
+            display: flex;
+            flex: 1;
+          }
+
+          #focusCaptureContainer > * {
+            flex: 1;
+          }
+        </style>
+        <div id="focusCapture">
+          <div id="focusCaptureContainer"></div>
           <div id="focusCatcher" tabindex="0"></div>
         </div>
       `;

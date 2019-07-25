@@ -36,10 +36,24 @@ const Base =
 class Drawer extends Base {
 
   get defaultState() {
-    return Object.assign(super.defaultState, {
+    const result = Object.assign(super.defaultState, {
       fromEdge: 'start',
+      gripSize: 0,
       selectedIndex: 0
     });
+
+    // Have swipeAxis follow fromEdge.
+    result.onChange('fromEdge', state => {
+      const { fromEdge } = state;
+      const swipeAxis = fromEdge === 'top' || fromEdge === 'bottom' ?
+        'vertical' :
+        'horizontal';
+      return {
+        swipeAxis
+      };
+    });
+
+    return result;
   }
 
   get [symbols.elementsWithTransitions]() {
@@ -62,6 +76,15 @@ class Drawer extends Base {
   }
   set fromEdge(fromEdge) {
     this.setState({ fromEdge });
+  }
+
+  get gripSize() {
+    return this.state.gripSize;
+  }
+  set gripSize(gripSize) {
+    this.setState({
+      gripSize
+    });
   }
 
   [symbols.render](/** @type {PlainObject} */ changed) {
@@ -88,11 +111,12 @@ class Drawer extends Base {
       const opened = (effect === 'open' && effectPhase !== 'before') ||
         (effect === 'close' && effectPhase === 'before');
 
-      const fromLeftEdge = fromEdge === 'left' ||
+      const fromLeadingEdge = fromEdge === 'left' ||
+        fromEdge === 'top' ||
         fromEdge === 'start' && !rightToLeft ||
         fromEdge === 'end' && rightToLeft;
 
-      const sign = fromLeftEdge ? -1 : 1;
+      const sign = fromLeadingEdge ? -1 : 1;
       const swiping = swipeFraction !== null;
       // Constrain the distance swiped to between 0 and a bit less than 1. A swipe
       // distance of 1 itself would cause a tricky problem. The drawer would
@@ -110,7 +134,7 @@ class Drawer extends Base {
         0;
 
       const translateFraction = opened ?
-      constrainedSwipeFraction :
+        constrainedSwipeFraction :
         1;
       const translatePercentage = sign * translateFraction * 100;
 
@@ -135,7 +159,10 @@ class Drawer extends Base {
         const fullDuration = 0.25; // Quarter second
         duration = opacityRemaining / maxOpacity * fullDuration;
       }
-      const transform = `translateX(${translatePercentage}%)`;
+
+      const vertical = fromEdge === 'top' || fromEdge === 'bottom';
+      const axis = vertical ? 'Y' : 'X';
+      const transform = `translate${axis}(${translatePercentage}%)`;
 
       Object.assign(this.$.backdrop.style, {
         opacity,
@@ -151,32 +178,49 @@ class Drawer extends Base {
       const { fromEdge, rightToLeft } = this.state;
       /** @type {IndexedObject<string>} */
       const mapFromEdgetoJustifyContent = {
-        'end': 'flex-end',
-        'left': rightToLeft ? 'flex-end' : 'flex-start',
-        'right': rightToLeft ? 'flex-start' : 'flex-end',
-        'start': 'flex-start'
+        bottom: 'flex-end',
+        end: 'flex-end',
+        left: rightToLeft ? 'flex-end' : 'flex-start',
+        right: rightToLeft ? 'flex-start' : 'flex-end',
+        start: 'flex-start',
+        top: 'flex-start'
       };
+      this.style.flexDirection = fromEdge === 'top' || fromEdge === 'bottom' ?
+        'column' :
+        'row';
       this.style.justifyContent = mapFromEdgetoJustifyContent[fromEdge];
     }
   }
 
+  async [symbols.swipeDown]() {
+    if (this.state.fromEdge === 'bottom') {
+      close(this);
+    }
+  }
+
   async [symbols.swipeLeft]() {
-    if (drawerAppearsFromLeftEdge(this)) {
-      this.setState({
-        effect: 'close',
-        effectPhase: 'during'
-      });
-      await this.close();
+    const { fromEdge, rightToLeft } = this.state;
+    const fromLeftEdge = fromEdge === 'left' ||
+      fromEdge === 'start' && !rightToLeft ||
+      fromEdge === 'end' && rightToLeft;
+    if (fromLeftEdge) {
+      close(this);
     }
   }
 
   async [symbols.swipeRight]() {
-    if (!drawerAppearsFromLeftEdge(this)) {
-      this.setState({
-        effect: 'close',
-        effectPhase: 'during'
-      });
-      await this.close();
+    const { fromEdge, rightToLeft } = this.state;
+    const fromRightEdge = fromEdge === 'right' ||
+      fromEdge === 'start' && rightToLeft ||
+      fromEdge === 'end' && !rightToLeft;
+    if (fromRightEdge) {
+      close(this);
+    }
+  }
+
+  async [symbols.swipeUp]() {
+    if (this.state.fromEdge === 'top') {
+      close(this);
     }
   }
 
@@ -191,7 +235,6 @@ class Drawer extends Base {
       <style>
         :host {
           align-items: stretch;
-          flex-direction: row;
         }
 
         #backdrop {
@@ -208,12 +251,12 @@ class Drawer extends Base {
 }
 
 
-function drawerAppearsFromLeftEdge(/** @type {Drawer} */ element) {
-  const fromEdge = element.fromEdge;
-  const rightToLeft = element.state.rightToLeft;
-  return fromEdge === 'left' ||
-    fromEdge === 'start' && !rightToLeft ||
-    fromEdge === 'end' && rightToLeft;
+async function close(/** @type {Drawer} */ element) {
+  element.setState({
+    effect: 'close',
+    effectPhase: 'during'
+  });
+  await element.close();  
 }
 
 
