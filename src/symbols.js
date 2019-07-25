@@ -153,6 +153,24 @@ export const goEnd = Symbol('goEnd');
 export const goLeft = Symbol('goLeft');
 
 /**
+ * Symbol for the `goNext` method.
+ *
+ * This method is invoked when the user wants to go/navigate to the next item.
+ *
+ * @function goNext
+ */
+export const goNext = Symbol('goNext');
+
+/**
+ * Symbol for the `goPrevious` method.
+ *
+ * This method is invoked when the user wants to go/navigate to the previous item.
+ *
+ * @function goPrevious
+ */
+export const goPrevious = Symbol('goPrevious');
+
+/**
  * Symbol for the `goRight` method.
  *
  * This method is invoked when the user wants to go/navigate right. Mixins

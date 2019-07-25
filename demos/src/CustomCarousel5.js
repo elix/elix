@@ -33,13 +33,13 @@ class CustomCarousel extends Base {
       </style>
     `);
     // Replace icons with glyphs.
-    const leftSlot = result.content.querySelector('slot[name="arrowButtonLeft"]');
-    if (leftSlot) {
-      leftSlot.textContent = "↫";
+    const previousSlot = result.content.querySelector('slot[name="arrowButtonPrevious"]');
+    if (previousSlot) {
+      previousSlot.textContent = "↫";
     }
-    const rightSlot = result.content.querySelector('slot[name="arrowButtonRight"]');
-    if (rightSlot) {
-      rightSlot.textContent = "↬";
+    const nextSlot = result.content.querySelector('slot[name="arrowButtonNext"]');
+    if (nextSlot) {
+      nextSlot.textContent = "↬";
     }
     // Add page numbers.
     /** @type {any} */ const cast = this;

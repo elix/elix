@@ -9,7 +9,7 @@ const wrap = Symbol('wrap');
 
 
 /**
- * Adds left and right arrow buttons to a carousel-like component.
+ * Adds previous/next arrow buttons to a carousel-like component.
  * 
  * @module ArrowDirectionMixin
  * @elementrole {ArrowDirectionButton} arrowButton
@@ -38,7 +38,7 @@ function ArrowDirectionMixin(Base) {
     }
   
     /**
-     * The class, tag, or template used to create the left and right arrow
+     * The class, tag, or template used to create the previous/next arrow
      * buttons.
      * 
      * @type {Role}
@@ -52,19 +52,19 @@ function ArrowDirectionMixin(Base) {
     }
 
     // TODO: Symbols
-    arrowButtonLeft() {
-      if (super.arrowButtonLeft) {
-        return super.arrowButtonLeft();
+    arrowButtonPrevious() {
+      if (super.arrowButtonPrevious) {
+        return super.arrowButtonPrevious();
       } else {
-        return this[symbols.goLeft]();
+        return this[symbols.goPrevious]();
       }
     }
 
-    arrowButtonRight() {
-      if (super.arrowButtonRight) {
-        return super.arrowButtonRight();
+    arrowButtonNext() {
+      if (super.arrowButtonNext) {
+        return super.arrowButtonNext();
       } else {
-        return this[symbols.goRight]();
+        return this[symbols.goNext]();
       }
     }
   
@@ -80,13 +80,13 @@ function ArrowDirectionMixin(Base) {
     [symbols.render](/** @type {PlainObject} */ changed) {
 
       if (changed.arrowButtonRole) {
-        if (this.$.arrowButtonLeft instanceof HTMLElement) {
-          // Turn off focus handling for old left button.
-          forwardFocus(this.$.arrowButtonLeft, null);
+        if (this.$.arrowButtonPrevious instanceof HTMLElement) {
+          // Turn off focus handling for old previous button.
+          forwardFocus(this.$.arrowButtonPrevious, null);
         }
-        if (this.$.arrowButtonRight instanceof HTMLElement) {
-          // Turn off focus handling for old right button.
-          forwardFocus(this.$.arrowButtonRight, null);
+        if (this.$.arrowButtonNext instanceof HTMLElement) {
+          // Turn off focus handling for old next button.
+          forwardFocus(this.$.arrowButtonNext, null);
         }
       }
 
@@ -96,89 +96,142 @@ function ArrowDirectionMixin(Base) {
         /** @type {any} */
         const cast = this;
 
-        template.transmute(this.$.arrowButtonLeft, this.state.arrowButtonRole);
-        if (this.$.arrowButtonLeft instanceof HTMLElement) {
-          forwardFocus(this.$.arrowButtonLeft, cast);
+        template.transmute(this.$.arrowButtonPrevious, this.state.arrowButtonRole);
+        if (this.$.arrowButtonPrevious instanceof HTMLElement) {
+          forwardFocus(this.$.arrowButtonPrevious, cast);
         }
-        const leftButtonHandler = createButtonHandler(this, () => this.arrowButtonLeft());
-        this.$.arrowButtonLeft.addEventListener('mousedown', leftButtonHandler);
+        const previousButtonHandler = createButtonHandler(this, () => this.arrowButtonPrevious());
+        this.$.arrowButtonPrevious.addEventListener('mousedown', previousButtonHandler);
         
-        template.transmute(this.$.arrowButtonRight, this.state.arrowButtonRole);
-        if (this.$.arrowButtonRight instanceof HTMLElement) {
-          forwardFocus(this.$.arrowButtonRight, cast);
+        template.transmute(this.$.arrowButtonNext, this.state.arrowButtonRole);
+        if (this.$.arrowButtonNext instanceof HTMLElement) {
+          forwardFocus(this.$.arrowButtonNext, cast);
         }
-        const rightButtonHandler = createButtonHandler(this, () => this.arrowButtonRight());
-        this.$.arrowButtonRight.addEventListener('mousedown', rightButtonHandler);
+        const nextButtonHandler = createButtonHandler(this, () => this.arrowButtonNext());
+        this.$.arrowButtonNext.addEventListener('mousedown', nextButtonHandler);
       }
 
       const {
         arrowButtonOverlap,
-        canGoLeft,
-        canGoRight,
-        darkMode
+        canGoNext,
+        canGoPrevious,
+        darkMode,
+        orientation,
+        rightToLeft
       } = this.state;
-      /** @type {any} */ const arrowButtonLeft = this.$.arrowButtonLeft;
-      /** @type {any} */ const arrowButtonRight = this.$.arrowButtonRight;
+      const vertical = orientation === 'vertical';
+      /** @type {any} */ const arrowButtonPrevious = this.$.arrowButtonPrevious;
+      /** @type {any} */ const arrowButtonNext = this.$.arrowButtonNext;
 
-      if (changed.arrowButtonOverlap) {
-        const buttonStyle = arrowButtonOverlap ?
-          {
-            'bottom': 0,
-            'position': 'absolute',
-            'top': 0,
+      // Position the buttons.
+      if (changed.arrowButtonOverlap || changed.orientation || changed.rightToLeft) {
+
+        this.$.arrowDirection.style.flexDirection = vertical ?
+          'column' :
+          'row';
+
+        const buttonStyle = {
+          bottom: null,
+          left: null,
+          right: null,
+          top: null
+        };
+        if (arrowButtonOverlap) {
+          Object.assign(buttonStyle, {
+            position: 'absolute',
             'z-index': 1
-          } :
-          {
-            'bottom': null,
-            'position': null,
-            'top': null,
+          });
+        } else {
+          Object.assign(buttonStyle, {
+            position: null,
             'z-index': null
-          };
-        Object.assign(arrowButtonLeft.style, buttonStyle, {
-          left: arrowButtonOverlap ? 0 : ''
-        });
-        Object.assign(arrowButtonRight.style, buttonStyle, {
-          right: arrowButtonOverlap ? 0 : ''
-        });
+          });
+        }
+        let previousButtonStyle;
+        let nextButtonStyle;
+        if (arrowButtonOverlap) {
+          if (vertical) {
+            // Vertical
+            Object.assign(buttonStyle, {
+              left: 0,
+              right: 0
+            });
+            previousButtonStyle = {
+              top: 0
+            };
+            nextButtonStyle = {
+              bottom: 0
+            };
+          } else {
+            // Horizontal
+            Object.assign(buttonStyle, {
+              bottom: 0,
+              top: 0
+            });
+            if (rightToLeft) {
+              previousButtonStyle = {
+                right: 0
+              };
+              nextButtonStyle = {
+                left: 0
+              };
+            } else {
+              // Typical condition: horizontal, left-to-right
+              previousButtonStyle = {
+                left: 0
+              };
+              nextButtonStyle = {
+                right: 0
+              };
+            }
+          }
+        }
+        Object.assign(arrowButtonPrevious.style, buttonStyle, previousButtonStyle);
+        Object.assign(arrowButtonNext.style, buttonStyle, nextButtonStyle);
       }
 
-      // Disable the left and right buttons if we can't go in those directions.
-      // WORKAROUND: We check to makes sure that canGoLeft/canGoRight state is
+      // Rotate the default icons for vertical orientation, flip the default
+      // icons for right-to-left.
+      if (changed.orientation || changed.rightToLeft) {
+        const transform = vertical ?
+          'rotate(90deg)' :
+          rightToLeft ?
+            'rotateZ(180deg)' :
+            null;
+        this.$.arrowIconPrevious.style.transform = transform;
+        this.$.arrowIconNext.style.transform = transform;
+      }
+
+      // Disable the previous/next buttons if we can't go in those directions.
+      // WORKAROUND: We check to makes sure that can go previous/next state is
       // defined (which happens once the component has items). Without that
       // check, as of May 2019, a Chrome bug prevents the use of this mixin:
-      // multiple carousel instances on a page will have their right button
+      // multiple carousel instances on a page will have their next button
       // initially disabled even when it should be enabled. Safari/Firefox do
       // not exhibit that issue. Since identifying the root cause proved too
-      // difficult, this check was added.      
-      if (changed.canGoLeft && canGoLeft !== null) {
-        arrowButtonLeft.disabled = !canGoLeft;
+      // difficult, this check was added.
+      if (changed.canGoNext && canGoNext !== null) {
+        arrowButtonNext.disabled = !canGoNext;
       }
-      // See note for canGoLeft above.
-      if (changed.canGoRight && canGoRight !== null) {
-        arrowButtonRight.disabled = !canGoRight;
+      // See note for canGoNext above.
+      if (changed.canGoPrevious && canGoPrevious !== null) {
+        arrowButtonPrevious.disabled = !canGoPrevious;
       }
       // Wait for knowledge of dark mode
       if (changed.darkMode && darkMode !== null) {
         // Apply dark mode to buttons.
-        if ('darkMode' in arrowButtonLeft) {
-          /** @type {any} */ (arrowButtonLeft).darkMode = darkMode;
+        if ('darkMode' in arrowButtonPrevious) {
+          /** @type {any} */ (arrowButtonPrevious).darkMode = darkMode;
         }
-        if ('darkMode' in arrowButtonRight) {
-          /** @type {any} */ (arrowButtonRight).darkMode = darkMode;
+        if ('darkMode' in arrowButtonNext) {
+          /** @type {any} */ (arrowButtonNext).darkMode = darkMode;
         }
       }
 
-      if (changed.rightToLeft) {
-        const { rightToLeft } = this.state;
-        this.$.arrowDirection.style.flexDirection = rightToLeft ?
-          'row-reverse' :
-          'row';
-      }
-      
       if (changed.showArrowButtons) {
         const display = this.state.showArrowButtons ? null : 'none';
-        arrowButtonLeft.style.display = display;
-        arrowButtonRight.style.display = display;
+        arrowButtonPrevious.style.display = display;
+        arrowButtonNext.style.display = display;
       }
     }
 
@@ -201,13 +254,13 @@ function ArrowDirectionMixin(Base) {
       const arrowDirectionTemplate = template.html`
         <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;">
           <div
-            id="arrowButtonLeft"
+            id="arrowButtonPrevious"
             class="arrowButton"
             aria-hidden="true"
             tabindex="-1"
             >
-            <slot name="arrowButtonLeft">
-              <svg id="arrowIconLeft" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" style="height: 1em; width: 1em;">
+            <slot name="arrowButtonPrevious">
+              <svg id="arrowIconPrevious" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" style="height: 1em; width: 1em;">
                 <g>
                   <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
                 </g>
@@ -216,13 +269,13 @@ function ArrowDirectionMixin(Base) {
           </div>
           <div id="arrowDirectionContainer" role="none" style="flex: 1; overflow: hidden; position: relative;"></div>
           <div
-            id="arrowButtonRight"
+            id="arrowButtonNext"
             class="arrowButton"
             aria-hidden="true"
             tabindex="-1"
             >
-            <slot name="arrowButtonRight">
-              <svg id="arrowIconRight" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" style="height: 1em; width: 1em;">
+            <slot name="arrowButtonNext">
+              <svg id="arrowIconNext" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" style="height: 1em; width: 1em;">
                 <g>
                   <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
                 </g>

@@ -45,6 +45,8 @@ export default function DirectionSelectionMixin(Base) {
             orientation,
             rightToLeft
           } = state;
+          const canGoNext = canSelectNext;
+          const canGoPrevious = canSelectPrevious;
           const horizontal = orientation === 'horizontal' || orientation === 'both';
           const vertical = orientation === 'vertical' || orientation === 'both';
           const canGoDown = vertical && canSelectNext;
@@ -58,6 +60,8 @@ export default function DirectionSelectionMixin(Base) {
           return {
             canGoDown,
             canGoLeft,
+            canGoNext,
+            canGoPrevious,
             canGoRight,
             canGoUp
           };
@@ -112,6 +116,22 @@ export default function DirectionSelectionMixin(Base) {
           this.selectNext() :
           this.selectPrevious();
       }
+    }
+
+    /**
+     * Invokes `selectNext` to select the next item.
+     */
+    [symbols.goNext]() {
+      if (super[symbols.goNext]) { super[symbols.goNext](); }
+      return this.selectNext();
+    }
+
+    /**
+     * Invokes `selectPrevious` to select the previous item.
+     */
+    [symbols.goPrevious]() {
+      if (super[symbols.goPrevious]) { super[symbols.goPrevious](); }
+      return this.selectPrevious();
     }
 
     /**

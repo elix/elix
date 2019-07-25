@@ -58,18 +58,16 @@ class CalendarMonthNavigator extends Base {
     forwardFocus(this, this);
   }
 
-  arrowButtonLeft() {
-    const months = this.state.rightToLeft ? 1 : -1;
+  arrowButtonNext() {
     this.setState({
-      date: calendar.offsetDateByMonths(this.state.date, months)
+      date: calendar.offsetDateByMonths(this.state.date, 1)
     });
     return true;
   }
 
-  arrowButtonRight() {
-    const months = this.state.rightToLeft ? -1 : 1;
+  arrowButtonPrevious() {
     this.setState({
-      date: calendar.offsetDateByMonths(this.state.date, months)
+      date: calendar.offsetDateByMonths(this.state.date, -1)
     });
     return true;
   }
@@ -77,8 +75,8 @@ class CalendarMonthNavigator extends Base {
   get defaultState() {
     return Object.assign(super.defaultState, {
       arrowButtonOverlap: false,
-      canGoLeft: true,
-      canGoRight: true,
+      canGoNext: true,
+      canGoPrevious: true,
       date: calendar.today(),
       dayRole: CalendarDayButton,
       orientation: 'both',
@@ -159,8 +157,8 @@ class CalendarMonthNavigator extends Base {
 
     const styleTemplate = template.html`
       <style>
-        #arrowIconLeft,
-        #arrowIconRight {
+        #arrowIconNext,
+        #arrowIconPrevious {
           font-size: 24px;
         }
       </style>

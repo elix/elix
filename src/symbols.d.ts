@@ -33,6 +33,8 @@ export const getItemText: '_getItemText';
 export const goDown: '_goDown';
 export const goEnd: '_goEnd';
 export const goLeft: '_goLeft';
+export const goNext: '_goNext';
+export const goPrevious: '_goPrevious';
 export const goRight: '_goRight';
 export const goStart: '_goStart';
 export const goUp: '_goUp';
