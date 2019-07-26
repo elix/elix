@@ -116,6 +116,7 @@ class Drawer extends Base {
         effectPhase,
         enableEffects,
         fromEdge,
+        gripSize,
         rightToLeft,
         swipeFraction
       } = this.state;
@@ -156,7 +157,6 @@ class Drawer extends Base {
       const opacity = maxOpacity * openedFraction;
 
       const translateFraction = sign * (1 - openedFraction);
-      const translatePercentage = translateFraction * 100;
 
       let duration = 0;
       // We don't show transitions during swiping, as it would give the swipe a
@@ -182,7 +182,12 @@ class Drawer extends Base {
 
       const vertical = fromEdge === 'top' || fromEdge === 'bottom';
       const axis = vertical ? 'Y' : 'X';
-      const transform = `translate${axis}(${translatePercentage}%)`;
+      const translatePercentage = `${translateFraction * 100}%`;
+      const gripValue = gripSize * -sign * (1 - openedFraction);
+      const translateValue = gripValue === 0 ?
+        translatePercentage :
+        `calc(${translatePercentage} + ${gripValue}px)`;
+      const transform = `translate${axis}(${translateValue})`;
 
       Object.assign(this.$.backdrop.style, {
         opacity,
@@ -237,11 +242,13 @@ class Drawer extends Base {
       this.style.justifyContent = mapFromEdgetoJustifyContent[fromEdge];
     }
 
-    if (changed.opened) {
-      // Only show backdrop when opened.
-      const { opened } = this.state;
-      this.$.backdrop.style.display = opened ? '' : 'none';
-      this.style.pointerEvents = opened ? 'initial' : 'none';
+    if (changed.opened || changed.swipeFraction) {
+      // Only show backdrop when opened or swiping.
+      const { opened, swipeFraction } = this.state;
+      const swiping = swipeFraction !== null;
+      const showBackdrop = opened || swiping;
+      this.$.backdrop.style.display = showBackdrop ? '' : 'none';
+      this.style.pointerEvents = showBackdrop ? 'initial' : 'none';
     }
   }
 

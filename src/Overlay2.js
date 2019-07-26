@@ -124,14 +124,14 @@ class Overlay extends Base {
     this.setState({ frameRole });
   }
 
-  async open() {
-    if (!this.isConnected) {
-      // Overlay isn't in document yet.
-      this[appendedToDocumentKey] = true;
-      document.body.appendChild(this);
-    }
-    if (super.open) { await super.open(); }
-  }
+  // async open() {
+  //   if (!this.isConnected) {
+  //     // Overlay isn't in document yet.
+  //     this[appendedToDocumentKey] = true;
+  //     document.body.appendChild(this);
+  //   }
+  //   if (super.open) { await super.open(); }
+  // }
 
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
