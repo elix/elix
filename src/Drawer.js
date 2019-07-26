@@ -120,13 +120,21 @@ class Drawer extends Base {
       });
     }
 
-    if (changed.opened || changed.swipeFraction) {
+    if (changed.gripSize || changed.opened || changed.swipeFraction) {
       // Only show backdrop when opened or swiping.
-      const { opened, swipeFraction } = this.state;
+      const { gripSize, opened, swipeFraction } = this.state;
       const swiping = swipeFraction !== null;
-      const showBackdrop = opened || swiping;
-      this.$.backdrop.style.display = showBackdrop ? '' : 'none';
-      this.style.pointerEvents = showBackdrop ? 'initial' : 'none';
+      const openedOrSwiping = opened || swiping;
+      this.$.backdrop.style.display = openedOrSwiping ? '' : 'none';
+
+      // Only listen to pointer events if opened or swiping.
+      this.style.pointerEvents = openedOrSwiping ? 'initial' : 'none';
+
+      // Clip frame to its bounding box when drawer is completely closed. This
+      // prevents any box-shadow on the frame from being visible.
+      const hasGrip = gripSize !== null;
+      const clip = !hasGrip && !openedOrSwiping;
+      this.$.frame.style.clipPath = clip ? 'inset(0px)' : null;
     }
 
     if (changed.effect || changed.effectPhase || changed.enableEffects ||
