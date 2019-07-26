@@ -3,7 +3,7 @@ import * as template from './template.js';
 import Backdrop from './Backdrop.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import OverlayFrame from './OverlayFrame.js';
-import OverlayMixin from './OverlayMixin.js';
+import OverlayMixin from './OverlayMixin2.js';
 import ReactiveElement from './ReactiveElement.js';
 import SlotContentMixin from './SlotContentMixin.js';
 
@@ -84,16 +84,16 @@ class Overlay extends Base {
         }
       });
     }
-    // If we're finished closing an overlay that was automatically added to the
-    // document, remove it now. Note: we only do this when the component
-    // updates, not when it mounts, because we don't want an automatically-added
-    // element to be immediately removed during its connectedCallback.
-    if (this.closeFinished && this[appendedToDocumentKey]) {
-      this[appendedToDocumentKey] = false;
-      if (this.parentNode) {
-        this.parentNode.removeChild(this);
-      }
-    }
+    // // If we're finished closing an overlay that was automatically added to the
+    // // document, remove it now. Note: we only do this when the component
+    // // updates, not when it mounts, because we don't want an automatically-added
+    // // element to be immediately removed during its connectedCallback.
+    // if (this.closeFinished && this[appendedToDocumentKey]) {
+    //   this[appendedToDocumentKey] = false;
+    //   if (this.parentNode) {
+    //     this.parentNode.removeChild(this);
+    //   }
+    // }
   }
 
   get defaultState() {
@@ -151,15 +151,15 @@ class Overlay extends Base {
           display: flex;
           flex-direction: column;
           justify-content: center;
-          left: 0;
-          height: 100%;
-          max-height: 100vh;
-          max-width: 100vw;
+          /* left: 0; */
+          /* height: 100%; */
+          /* max-height: 100vh; */
+          /* max-width: 100vw; */
           outline: none;
           position: fixed;
           -webkit-tap-highlight-color: transparent;
-          top: 0;
-          width: 100%;
+          /* top: 0; */
+          /* width: 100%; */
         }
 
         #frame {

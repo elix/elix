@@ -1,21 +1,28 @@
 import * as symbols from './symbols.js';
 import * as template from './template.js';
-import Dialog from './Dialog.js';
+import DialogModalityMixin from './DialogModalityMixin.js';
+import FocusCaptureMixin from './FocusCaptureMixin.js';
+import KeyboardMixin from './KeyboardMixin.js';
+import ModalBackdrop from './ModalBackdrop.js';
 import EffectMixin from './EffectMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 import TransitionEffectMixin from './TransitionEffectMixin.js';
+import Overlay from './Overlay2.js';
 
 
 const Base =
+  DialogModalityMixin(
+  EffectMixin(
+  // FocusCaptureMixin(
+  KeyboardMixin(
   LanguageDirectionMixin(
   TouchSwipeMixin(
   TrackpadSwipeMixin(
-  EffectMixin(
   TransitionEffectMixin(
-    Dialog
-  )))));
+    Overlay
+  )))))));
 
 
 /**
@@ -37,9 +44,11 @@ class Drawer extends Base {
 
   get defaultState() {
     const result = Object.assign(super.defaultState, {
+      backdropRole: ModalBackdrop,
       fromEdge: 'start',
       gripSize: 0,
-      selectedIndex: 0
+      selectedIndex: 0,
+      tabIndex: -1
     });
 
     // Have swipeAxis follow fromEdge.
@@ -89,6 +98,7 @@ class Drawer extends Base {
 
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
+
     if (changed.backdropRole) {
       // Implicitly close on background clicks.
       this.$.backdrop.addEventListener('click', async () => {
@@ -97,6 +107,7 @@ class Drawer extends Base {
         this[symbols.raiseChangeEvents] = false;
       });
     }
+
     if (changed.effect || changed.effectPhase || changed.enableEffects ||
         changed.fromEdge || changed.rightToLeft || changed.swipeFraction) {
       // Render the drawer.
@@ -116,8 +127,6 @@ class Drawer extends Base {
         fromEdge === 'start' && !rightToLeft ||
         fromEdge === 'end' && rightToLeft;
 
-      const sign = fromLeadingEdge ? -1 : 1;
-      const swiping = swipeFraction !== null;
       // Constrain the distance swiped to between 0 and a bit less than 1. A swipe
       // distance of 1 itself would cause a tricky problem. The drawer would
       // render itself completely off screen. This means the expected CSS
@@ -125,18 +134,29 @@ class Drawer extends Base {
       // leaving us waiting indefinitely for an event that will never come. By
       // ensuring we always transition at least a tiny bit, we guarantee that a
       // transition and its accompanying event will occur.
-      const constrainedSwipeFraction = swiping ?
-        Math.max(Math.min(sign * swipeFraction, 0.999), 0) :
-        0;
-      const maxOpacity = 0.2;
-      const opacity = opened ?
-        maxOpacity * (1 - constrainedSwipeFraction) :
-        0;
 
-      const translateFraction = opened ?
-        constrainedSwipeFraction :
-        1;
-      const translatePercentage = sign * translateFraction * 100;
+
+      // Swipe bounds depend on whether drawer is current open or closed.
+      const expectPositiveSwipe = (fromLeadingEdge && !opened) ||
+        (!fromLeadingEdge && opened);
+      const almost1 = 0.999;
+      const lowerBound = expectPositiveSwipe ? 0 : -almost1;
+      const upperBound = expectPositiveSwipe ? almost1 : 0;
+
+      const swiping = swipeFraction !== null;
+      const sign = fromLeadingEdge ? -1 : 1;
+      let openedFraction = opened ? 1 : 0;
+      if (swiping) {
+        const boundedSwipeFraction =
+          Math.max(Math.min(swipeFraction, upperBound), lowerBound);
+        openedFraction -= sign * boundedSwipeFraction;
+      }
+
+      const maxOpacity = 0.2;
+      const opacity = maxOpacity * openedFraction;
+
+      const translateFraction = sign * (1 - openedFraction);
+      const translatePercentage = translateFraction * 100;
 
       let duration = 0;
       // We don't show transitions during swiping, as it would give the swipe a
@@ -173,9 +193,34 @@ class Drawer extends Base {
         'transition': showTransition ? `transform ${duration}s` : undefined,
       });
     }
+
     if (changed.fromEdge || changed.rightToLeft) {
       // Dock drawer to appropriate edge
       const { fromEdge, rightToLeft } = this.state;
+
+      // Stick drawer to all edges except the one opposite the fromEdge.
+      const edgeCoordinates = {
+        bottom: 0,
+        left: 0,
+        right: 0,
+        top: 0
+      };
+      const mapFromEdgeToOppositeEdge = {
+        bottom: 'top',
+        left: 'right',
+        right: 'left',
+        top: 'bottom'
+      };
+      mapFromEdgeToOppositeEdge.start = mapFromEdgeToOppositeEdge[
+        rightToLeft ? 'right' : 'left'
+      ];
+      mapFromEdgeToOppositeEdge.end = mapFromEdgeToOppositeEdge[
+        rightToLeft ? 'left' : 'right'
+      ];
+      Object.assign(this.style, edgeCoordinates, {
+        [mapFromEdgeToOppositeEdge[fromEdge]]: null
+      });
+
       /** @type {IndexedObject<string>} */
       const mapFromEdgetoJustifyContent = {
         bottom: 'flex-end',
@@ -185,15 +230,26 @@ class Drawer extends Base {
         start: 'flex-start',
         top: 'flex-start'
       };
+
       this.style.flexDirection = fromEdge === 'top' || fromEdge === 'bottom' ?
         'column' :
         'row';
       this.style.justifyContent = mapFromEdgetoJustifyContent[fromEdge];
     }
+
+    if (changed.opened) {
+      // Only show backdrop when opened.
+      const { opened } = this.state;
+      this.$.backdrop.style.display = opened ? '' : 'none';
+      this.style.pointerEvents = opened ? 'initial' : 'none';
+    }
   }
 
   async [symbols.swipeDown]() {
-    if (this.state.fromEdge === 'bottom') {
+    const { fromEdge } = this.state;
+    if (fromEdge === 'top') {
+      open(this);
+    } else if (fromEdge === 'bottom') {
       close(this);
     }
   }
@@ -203,23 +259,36 @@ class Drawer extends Base {
     const fromLeftEdge = fromEdge === 'left' ||
       fromEdge === 'start' && !rightToLeft ||
       fromEdge === 'end' && rightToLeft;
-    if (fromLeftEdge) {
+    const fromRightEdge = fromEdge === 'right' ||
+      fromEdge === 'start' && rightToLeft ||
+      fromEdge === 'end' && !rightToLeft;
+    if (fromRightEdge) {
+      open(this);
+    } else if (fromLeftEdge) {
       close(this);
     }
   }
 
   async [symbols.swipeRight]() {
     const { fromEdge, rightToLeft } = this.state;
+    const fromLeftEdge = fromEdge === 'left' ||
+      fromEdge === 'start' && !rightToLeft ||
+      fromEdge === 'end' && rightToLeft;
     const fromRightEdge = fromEdge === 'right' ||
       fromEdge === 'start' && rightToLeft ||
       fromEdge === 'end' && !rightToLeft;
-    if (fromRightEdge) {
+    if (fromLeftEdge) {
+      open(this);
+    } else if (fromRightEdge) {
       close(this);
     }
   }
 
   async [symbols.swipeUp]() {
-    if (this.state.fromEdge === 'top') {
+    const { fromEdge } = this.state;
+    if (fromEdge === 'bottom') {
+      open(this);
+    } else if (fromEdge === 'top') {
       close(this);
     }
   }
@@ -231,7 +300,11 @@ class Drawer extends Base {
   }
 
   get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
+    const result = super[symbols.template];
+    // const frame = result.content.querySelector('#frame');
+    // /** @type {any} */ const cast = this;
+    // cast[FocusCaptureMixin.wrap](frame);
+    return template.concat(result, template.html`
       <style>
         :host {
           align-items: stretch;
@@ -257,6 +330,15 @@ async function close(/** @type {Drawer} */ element) {
     effectPhase: 'during'
   });
   await element.close();  
+}
+
+
+async function open(/** @type {Drawer} */ element) {
+  element.setState({
+    effect: 'open',
+    effectPhase: 'during'
+  });
+  await element.open();
 }
 
 

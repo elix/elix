@@ -6,7 +6,7 @@
 import * as symbols from './symbols.js';
 
 declare const LanguageDirectionMixin: StateMixin<{}, {}, {}, {
-  rightToLeft: string;
+  rightToLeft: boolean;
 }>;
 
 export default LanguageDirectionMixin;
