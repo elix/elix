@@ -61,6 +61,7 @@ export { default as FocusCaptureMixin } from './FocusCaptureMixin.js';
 export { default as FocusVisibleMixin } from './FocusVisibleMixin.js';
 export { default as GenericMixin } from './GenericMixin.js';
 export { default as HamburgerMenuButton } from './HamburgerMenuButton.js';
+export { default as Hidden } from './Hidden.js';
 export { default as HoverMixin } from './HoverMixin.js';
 export { default as Input } from './Input.js';
 export { default as ItemsTextMixin } from './ItemsTextMixin.js';
