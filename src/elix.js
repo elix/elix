@@ -50,6 +50,7 @@ export { default as Dialog } from './Dialog.js';
 export { default as DialogModalityMixin } from './DialogModalityMixin.js';
 export { default as DirectionSelectionMixin } from './DirectionSelectionMixin.js';
 export { default as Drawer } from './Drawer.js';
+export { default as DrawerWithGrip } from './DrawerWithGrip.js';
 export { default as DropdownList } from './DropdownList.js';
 export { default as EffectMixin } from './EffectMixin.js';
 export { default as ExpandablePanel } from './ExpandablePanel.js';

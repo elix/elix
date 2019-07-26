@@ -337,7 +337,7 @@ class Drawer extends Base {
         }
 
         #frame {
-          will-change: opacity;
+          will-change: transform;
         }
       </style>
     `);
