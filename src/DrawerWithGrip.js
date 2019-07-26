@@ -20,6 +20,16 @@ class DrawerWithGrip extends Drawer {
   componentDidMount() {
     super.componentDidMount();
 
+    this.$.grip.addEventListener('click', event => {
+      // If user taps/clicks grip when opened, close drawer.
+      this[symbols.raiseChangeEvents] = true;
+      if (this.opened) {
+        this.close();
+        event.stopPropagation();
+      }
+      this[symbols.raiseChangeEvents] = false;
+    });
+
     if (this.state.gripSize === null) {
       // Use the rendered size of the grip to set the gripSize. This will ensure
       // the grip is visible, peeking out from the edge of the drawer's container.
@@ -51,6 +61,7 @@ class DrawerWithGrip extends Drawer {
       }
       this.$.frame.style.flexDirection = flexDirection;
       this.$.gripContainer.style.flexDirection = flexDirection;
+      this.$.grip.style.flexDirection = flexDirection;
     }
 
     if (changed.swipeAxis) {
@@ -78,7 +89,9 @@ class DrawerWithGrip extends Drawer {
         }
 
         #grip {
-          align-self: center;
+          align-items: center;
+          display: flex;
+          justify-self: center;
         }
       </style>
       <div id="gripContainer">

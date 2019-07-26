@@ -47,10 +47,13 @@ class Drawer extends Base {
 
     // If user clicks on frame while drawer is closed (implying that gripSize is
     // greater than zero), then open the drawer.
-    this.$.frame.addEventListener('click', () => {
+    this.$.frame.addEventListener('click', event => {
+      this[symbols.raiseChangeEvents] = true;
       if (this.closed) {
         this.open();
+        event.stopPropagation();
       }
+      this[symbols.raiseChangeEvents] = false;
     });
   }
 
