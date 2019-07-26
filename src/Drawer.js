@@ -15,14 +15,14 @@ import Overlay from './Overlay2.js';
 const Base =
   DialogModalityMixin(
   EffectMixin(
-  // FocusCaptureMixin(
+  FocusCaptureMixin(
   KeyboardMixin(
   LanguageDirectionMixin(
   TouchSwipeMixin(
   TrackpadSwipeMixin(
   TransitionEffectMixin(
     Overlay
-  )))))));
+  ))))))));
 
 
 /**
@@ -42,11 +42,23 @@ const Base =
  */
 class Drawer extends Base {
 
+  componentDidMount() {
+    super.componentDidMount();
+
+    // If user clicks on frame while drawer is closed (implying that gripSize is
+    // greater than zero), then open the drawer.
+    this.$.frame.addEventListener('click', () => {
+      if (this.closed) {
+        this.open();
+      }
+    });
+  }
+
   get defaultState() {
     const result = Object.assign(super.defaultState, {
       backdropRole: ModalBackdrop,
       fromEdge: 'start',
-      gripSize: 0,
+      gripSize: null,
       selectedIndex: 0,
       tabIndex: -1
     });
@@ -108,8 +120,18 @@ class Drawer extends Base {
       });
     }
 
+    if (changed.opened || changed.swipeFraction) {
+      // Only show backdrop when opened or swiping.
+      const { opened, swipeFraction } = this.state;
+      const swiping = swipeFraction !== null;
+      const showBackdrop = opened || swiping;
+      this.$.backdrop.style.display = showBackdrop ? '' : 'none';
+      this.style.pointerEvents = showBackdrop ? 'initial' : 'none';
+    }
+
     if (changed.effect || changed.effectPhase || changed.enableEffects ||
-        changed.fromEdge || changed.rightToLeft || changed.swipeFraction) {
+        changed.fromEdge || changed.gripSize || changed.rightToLeft ||
+        changed.swipeFraction) {
       // Render the drawer.
       const {
         effect,
@@ -183,7 +205,9 @@ class Drawer extends Base {
       const vertical = fromEdge === 'top' || fromEdge === 'bottom';
       const axis = vertical ? 'Y' : 'X';
       const translatePercentage = `${translateFraction * 100}%`;
-      const gripValue = gripSize * -sign * (1 - openedFraction);
+      const gripValue = gripSize ?
+        gripSize * -sign * (1 - openedFraction) :
+        0;
       const translateValue = gripValue === 0 ?
         translatePercentage :
         `calc(${translatePercentage} + ${gripValue}px)`;
@@ -240,15 +264,6 @@ class Drawer extends Base {
         'column' :
         'row';
       this.style.justifyContent = mapFromEdgetoJustifyContent[fromEdge];
-    }
-
-    if (changed.opened || changed.swipeFraction) {
-      // Only show backdrop when opened or swiping.
-      const { opened, swipeFraction } = this.state;
-      const swiping = swipeFraction !== null;
-      const showBackdrop = opened || swiping;
-      this.$.backdrop.style.display = showBackdrop ? '' : 'none';
-      this.style.pointerEvents = showBackdrop ? 'initial' : 'none';
     }
   }
 
@@ -308,9 +323,9 @@ class Drawer extends Base {
 
   get [symbols.template]() {
     const result = super[symbols.template];
-    // const frame = result.content.querySelector('#frame');
-    // /** @type {any} */ const cast = this;
-    // cast[FocusCaptureMixin.wrap](frame);
+    const frame = result.content.querySelector('#frame');
+    /** @type {any} */ const cast = this;
+    cast[FocusCaptureMixin.wrap](frame);
     return template.concat(result, template.html`
       <style>
         :host {
