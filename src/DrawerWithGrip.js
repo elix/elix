@@ -33,7 +33,10 @@ class DrawerWithGrip extends Drawer {
     if (this.state.gripSize === null) {
       // Use the rendered size of the grip to set the gripSize. This will ensure
       // the grip is visible, peeking out from the edge of the drawer's container.
-      const gripSize = this.$.grip.offsetWidth;
+      const { fromEdge } = this.state;
+      const vertical = fromEdge === 'top' || fromEdge === 'bottom';
+      const dimension = vertical ? 'offsetHeight' : 'offsetWidth';
+      const gripSize = this.$.grip[dimension];
       this.setState({ gripSize });
     }
   }
