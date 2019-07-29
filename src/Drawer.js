@@ -128,7 +128,12 @@ class Drawer extends Base {
       const { gripSize, opened, swipeFraction } = this.state;
       const swiping = swipeFraction !== null;
       const openedOrSwiping = opened || swiping;
-      this.$.backdrop.style.display = openedOrSwiping ? '' : 'none';
+      // We use `visibility` instead of `display`. Using `display` has the
+      // disadvantage that, if we show the backdrop and then, in the same render
+      // operation, try to animate its opacity (below), then the animation won't
+      // be shown. If we always render the backdrop, but keep it invisible until
+      // we want to show it, then the animation works as expected.
+      this.$.backdrop.style.visibility = openedOrSwiping ? 'visible' : 'hidden';
 
       // Only listen to pointer events if opened or swiping.
       this.style.pointerEvents = openedOrSwiping ? 'initial' : 'none';

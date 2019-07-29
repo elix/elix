@@ -1,5 +1,3 @@
-import * as symbols from "./symbols.js";
-import * as template from "./template.js";
 import ReactiveElement from "./ReactiveElement.js";
 
 
@@ -16,14 +14,9 @@ import ReactiveElement from "./ReactiveElement.js";
  */
 class Hidden extends ReactiveElement {
 
-  get [symbols.template]() {
-    return template.html`
-      <style>
-        :host {
-          visibility: hidden;
-        }
-      </style>
-    `;
+  componentDidMount() {
+    super.componentDidMount();
+    this.setAttribute('hidden', '');
   }
 
 }
