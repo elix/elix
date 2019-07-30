@@ -58,7 +58,7 @@ class Button extends Base {
   // Pressing Enter or Space raises a click event, as if the user had clicked
   // the inner button.
   // TODO: Space should raise the click on *keyup*.
-    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
+  [symbols.keydown](/** @type {KeyboardEvent} */ event) {
     let handled;
     if (mapKeysToClick) {
       switch (event.key) {

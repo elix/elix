@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!--
+  Shows an extensively styled Drawer.
+
+  Drawer visuals modeled after the Anthem theme by ThemeHelite:
+  https://creativemarket.com/Madeon08/629705-ANTHEM-Innovative-Coming-Soon.
+  -->
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Custom drawer</title>
+
+  <link rel="stylesheet" href="../demos.css">
+
+</head>
+
+<body role="main">
+  <div class="demo fullScreen">
+
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap" rel="stylesheet">
+
+    <style>
+      .demo {
+        font-family: "Varela Round", sans-serif;
+        font-size: 16px;
+      }
+    </style>
+  
+    <script type="module">
+      import * as symbols from '../../src/symbols.js';
+      import * as template from '../../src/template.js';
+      import DrawerWithGrip from '../../src/DrawerWithGrip.js';
+      import SeamlessButton from '../../src/SeamlessButton.js';
+      
+      class CustomDrawer extends DrawerWithGrip {
+
+        componentDidMount() {
+          super.componentDidMount();
+          this.$.drawerToggle.addEventListener('click', event => {
+            // If user taps/clicks grip when opened, close drawer.
+            this[symbols.raiseChangeEvents] = true;
+            this.toggle();
+            event.stopPropagation();
+            this[symbols.raiseChangeEvents] = false;
+          });
+        }
+
+        [symbols.render](changed) {
+          super[symbols.render](changed);
+          if (changed.gripSize || changed.opened || changed.swipeFraction) {
+            // Rotate the toggle button as the drawer is opened.
+            const { opened, swipeFraction } = this.state;
+            const swiping = swipeFraction !== null;
+            const rotationFraction = (opened ? 1 : 0) + swipeFraction;
+            const boundedRotationFraction =
+              Math.max(Math.min(rotationFraction, 1), 0)
+            const rotation = boundedRotationFraction * 45;
+            const transform = `rotate(${rotation}deg)`;
+            this.$.plusIcon.style.transform = transform;
+          }    
+        }
+  
+        get [symbols.template]() {
+          const result = super[symbols.template];
+          const gripTemplate = template.html`
+            <elix-seamless-button id="drawerToggle">
+              <div id="plusIcon">+</div>
+            </elix-seamless-button>
+          `;
+          const grip = result.content.getElementById('grip');
+          grip.append(gripTemplate.content);
+          return template.concat(result, template.html`
+            <style>
+              #frame {
+                background: rgba(26,36,46,0.9);
+                color: white;
+                width: 100vw;
+              }
+  
+              #gripIcon {
+                display: none;
+              }
+  
+              #drawerToggle {
+                color: #00c8aa;
+                font-family: "Varela Round", sans-serif;
+                font-size: 80px;
+                font-weight: bold;
+                padding: 8px;
+                -webkit-text-stroke: 4px currentColor;
+                transition: color 0.25s;
+              }
+  
+              #grip:hover #drawerToggle {
+                color: #16FFDC;
+              }
+            </style>
+          `);
+        }
+  
+      }
+  
+      customElements.define('custom-drawer', CustomDrawer);
+    </script>
+
+    <p style="margin-left: 5em;">
+      This page has a drawer with custom styling. Among other things,
+      the rotation applied to the "+" button tracks the current position
+      of the drawer during a swipe.
+    </p>
+    
+    <custom-drawer>
+      <div style="padding: 1em;">
+        Drawer elements go here...
+      </div>
+    </custom-drawer>
+
+  </div>
+  
+</body>
+
+</html>
