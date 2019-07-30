@@ -48,16 +48,22 @@
           });
         }
 
+        get defaultState() {
+          return Object.assign(super.defaultState, {
+            fromEdge: 'right'
+          });
+        }
+
         [symbols.render](changed) {
           super[symbols.render](changed);
           if (changed.gripSize || changed.opened || changed.swipeFraction) {
             // Rotate the toggle button as the drawer is opened.
             const { opened, swipeFraction } = this.state;
             const swiping = swipeFraction !== null;
-            const rotationFraction = (opened ? 1 : 0) + swipeFraction;
+            const rotationFraction = (opened ? 1 : 0) - swipeFraction;
             const boundedRotationFraction =
               Math.max(Math.min(rotationFraction, 1), 0)
-            const rotation = boundedRotationFraction * 45;
+            const rotation = -boundedRotationFraction * 45;
             const transform = `rotate(${rotation}deg)`;
             this.$.plusIcon.style.transform = transform;
           }    
@@ -106,7 +112,7 @@
       customElements.define('custom-drawer', CustomDrawer);
     </script>
 
-    <p style="margin-left: 5em;">
+    <p style="margin-right: 5em;">
       This page has a drawer with custom styling. Among other things,
       the rotation applied to the "+" button tracks the current position
       of the drawer during a swipe.
