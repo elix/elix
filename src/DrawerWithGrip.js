@@ -89,6 +89,11 @@ class DrawerWithGrip extends Drawer {
 
         #gripContainer {
           display: flex;
+          flex: 1;
+        }
+
+        #gripContent {
+          flex: 1;
         }
 
         #grip {
@@ -98,7 +103,9 @@ class DrawerWithGrip extends Drawer {
         }
       </style>
       <div id="gripContainer">
-        <slot></slot>
+        <div id="gripContent">
+          <slot></slot>
+        </div>
         <div id="grip">
           <slot name="grip">
             <svg id="gripIcon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
