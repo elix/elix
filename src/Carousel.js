@@ -106,10 +106,16 @@ class Carousel extends Base {
     }
     super[symbols.render](changed);
     if (changed.stageRole || changed.orientation) {
-      this.$.stage.orientation = this.state.orientation;
+      /** @type {any} */ const cast = this.$.stage;
+      if ('orientation' in cast) {
+        cast.orientation = this.state.orientation;
+      }
     }
     if (changed.orientation || changed.proxyListRole) {
-      this.$.proxyList.orientation = this.state.orientation;
+      /** @type {any} */ const cast = this.$.proxyList;
+      if ('orientation' in cast) {
+        cast.orientation = this.state.orientation;
+      }
     }
     if (changed.proxyListRole) {
       // Keep focus off of the proxies and onto the carousel itself.
