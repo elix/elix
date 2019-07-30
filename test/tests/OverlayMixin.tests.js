@@ -61,4 +61,24 @@ describe("OverlayMixin", function() {
     assert.equal(document.activeElement, input);
   });
 
+  it('appends overlay to body if it not already present, removes it when done', async () => {
+    const fixture = new OverlayTest();
+    assert.equal(fixture.parentNode, null);
+    await fixture.open();
+    assert.equal(fixture.parentNode, document.body);
+    await fixture.close();
+    assert.equal(fixture.parentNode, null);
+  });
+
+  it('leaves overlay where it is, if it is already in the DOM', async () => {
+    const div = document.createElement('div');
+    const fixture = new OverlayTest();
+    div.appendChild(fixture);
+    container.appendChild(div);
+    await fixture.open();
+    assert.equal(fixture.parentNode, div);
+    await fixture.close();
+    assert.equal(fixture.parentNode, div);
+  });
+
 });

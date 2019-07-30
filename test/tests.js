@@ -20,7 +20,6 @@ import './tests/KeyboardPrefixSelectionMixin.tests.js';
 import './tests/LanguageDirectionMixin.tests.js';
 import './tests/ListBox.tests.js';
 import './tests/OpenCloseMixin.tests.js';
-import './tests/Overlay.tests.js';
 import './tests/OverlayMixin.tests.js';
 import './tests/ReactiveMixin.tests.js';
 import './tests/SelectionInViewMixin.tests.js';

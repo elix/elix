@@ -4,6 +4,8 @@ import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-un
 
 
 /** @type {any} */
+const appendedToDocumentKey = Symbol('appendedToDocument');
+/** @type {any} */
 const defaultZIndexKey = Symbol('assignedZIndex');
 /** @type {any} */
 const restoreFocusToElementKey = Symbol('restoreFocusToElement');
@@ -65,6 +67,11 @@ export default function OverlayMixin(Base) {
     componentDidMount() {
       if (super.componentDidMount) { super.componentDidMount(); }
       openedChanged(this);
+
+      // Perform one-time check to see if component needs a default z-index.
+      if (this.state.persistent && !getZIndex(this)) {
+        bringToFront(this);
+      }
     }
 
     componentDidUpdate(/** @type {PlainObject} */ changed) {
@@ -72,54 +79,89 @@ export default function OverlayMixin(Base) {
       if (changed.opened) {
         openedChanged(this);
       }
-    }
 
+      // If we're finished closing an overlay that was automatically added to the
+      // document, remove it now. Note: we only do this when the component
+      // updates, not when it mounts, because we don't want an automatically-added
+      // element to be immediately removed during its connectedCallback.
+      if (!this.state.persistent && this.closeFinished && this[appendedToDocumentKey]) {
+        this[appendedToDocumentKey] = false;
+        if (this.parentNode) {
+          this.parentNode.removeChild(this);
+        }
+      }
+    }
+  
     get defaultState() {
       return Object.assign(super.defaultState, {
-        autoFocus: true
+        autoFocus: true,
+        persistent: false
       });
+    }
+
+    async open() {
+      if (!this.state.persistent && !this.isConnected) {
+        // Overlay isn't in document yet.
+        this[appendedToDocumentKey] = true;
+        document.body.appendChild(this);
+      }
+      if (super.open) { await super.open(); }
     }
 
     [symbols.render](/** @type {PlainObject} */ changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
-      if (changed.effectPhase || changed.opened) {
-        const closed = typeof this.closeFinished === 'undefined' ?
-          this.closed :
-          this.closeFinished;
+      if (changed.effectPhase || changed.opened || changed.persistent) {
+        if (!this.state.persistent) {
+          // Temporary overlay
+          const closed = typeof this.closeFinished === 'undefined' ?
+            this.closed :
+            this.closeFinished;
 
-        // We'd like to just use the `hidden` attribute, but Edge has trouble
-        // with that: if the hidden attribute is removed from an overlay to
-        // display it, Edge may not paint it correctly. And a side-effect
-        // of styling with the hidden attribute is that naive styling of the
-        // component from the outside (to change to display: flex, say) will
-        // override the display: none implied by hidden. To work around both
-        // these problems, we use display: none when the overlay is closed.
-        this.style.display = closed ? 'none' : null;
+          // We'd like to just use the `hidden` attribute, but Edge has trouble
+          // with that: if the hidden attribute is removed from an overlay to
+          // display it, Edge may not paint it correctly. And a side-effect
+          // of styling with the hidden attribute is that naive styling of the
+          // component from the outside (to change to display: flex, say) will
+          // override the display: none implied by hidden. To work around both
+          // these problems, we use display: none when the overlay is closed.
+          this.style.display = closed ? 'none' : null;
 
-        if (closed) {
-          if (this[defaultZIndexKey]) {
-            // Remove default z-index.
-            this.style.zIndex = null;
-            this[defaultZIndexKey] = null;
-          }
-        } else if (this[defaultZIndexKey]) {
-          this.style.zIndex = this[defaultZIndexKey];
-        } else {
-          const cast = /** @type {any} */ (this);
-          const computedZIndex = getComputedStyle(cast).zIndex;
-          if (computedZIndex === 'auto' && this.style.zIndex === '') {
-            // No z-index has been assigned to this element via CSS.
-            // Pick a default z-index, remember it, and apply it.
-            const defaultZIndex = maxZIndexInUse() + 1;
-            this[defaultZIndexKey] = defaultZIndex;
-            this.style.zIndex = defaultZIndex.toString();
+          if (closed) {
+            if (this[defaultZIndexKey]) {
+              // Remove default z-index.
+              this.style.zIndex = null;
+              this[defaultZIndexKey] = null;
+            }
+          } else if (this[defaultZIndexKey]) {
+            this.style.zIndex = this[defaultZIndexKey];
+          } else {
+            if (!getZIndex(this)) {
+              bringToFront(this);
+            }
           }
         }
       }
     }
+  
   }
 
   return Overlay;
+}
+
+
+// Pick a default z-index, remember it, and apply it.
+function bringToFront(element) {
+  const defaultZIndex = maxZIndexInUse() + 1;
+  element[defaultZIndexKey] = defaultZIndex;
+  element.style.zIndex = defaultZIndex.toString();
+}
+
+
+function getZIndex(element) {
+  const computedZIndex = getComputedStyle(element).zIndex;
+  return computedZIndex !== 'auto' ?
+    computedZIndex :
+    element.style.zIndex;
 }
 
 

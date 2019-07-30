@@ -1,15 +1,15 @@
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import DialogModalityMixin from './DialogModalityMixin.js';
+import EffectMixin from './EffectMixin.js';
 import FocusCaptureMixin from './FocusCaptureMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
-import ModalBackdrop from './ModalBackdrop.js';
-import EffectMixin from './EffectMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
+import ModalBackdrop from './ModalBackdrop.js';
+import Overlay from './Overlay.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 import TransitionEffectMixin from './TransitionEffectMixin.js';
-import Overlay from './Overlay2.js';
 
 
 const Base =
@@ -33,11 +33,14 @@ const Base =
  * UI is not critical to completing the user’s primary goal (and, hence, not
  * critical to the application’s business goal).
  * 
- * @inherits Dialog
+ * @inherits Overlay
+ * @mixes DialogModalityMixin
+ * @mixes EffectMixin
+ * @mixes FocusCaptureMixin
+ * @mixes KeyboardMixin
  * @mixes LanguageDirectionMixin
  * @mixes TouchSwipeMixin
  * @mixes TrackpadSwipeMixin
- * @mixes EffectMixin
  * @mixes TransitionEffectMixin
  */
 class Drawer extends Base {
@@ -62,6 +65,7 @@ class Drawer extends Base {
       backdropRole: ModalBackdrop,
       fromEdge: 'start',
       gripSize: null,
+      persistent: true,
       selectedIndex: 0,
       tabIndex: -1
     });
