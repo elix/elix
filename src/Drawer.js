@@ -59,6 +59,9 @@ class Drawer extends Base {
       this[symbols.raiseChangeEvents] = false;
     });
 
+    // Drawer starts out scrolled to top/left. Not sure why we need to do this,
+    // but if we leave this out, a scrollable drawer seems to start out scrolled
+    // somewhere to the middle
     this.$.frame.scrollLeft = 0;
     this.$.frame.scrollTop = 0;
   }

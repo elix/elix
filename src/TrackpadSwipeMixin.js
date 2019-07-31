@@ -175,12 +175,10 @@ function handleWheel(element, event) {
   }
 
   // Scrolling initially takes precedence over swiping.
-  if (cast[deferToScrollingKey]) {
+  if (element.state.opened && cast[deferToScrollingKey]) {
     // Predict whether the browser's default behavior for this event would cause
     // the swipe target or any of its ancestors to scroll.
-    const deltaAlongAxis = vertical ?
-      deltaY :
-      deltaX;
+    const deltaAlongAxis = vertical ? deltaY : deltaX;
     const downOrRight = deltaAlongAxis > 0;
     const willScroll = canScrollInDirection(
       element[symbols.swipeTarget],
@@ -255,6 +253,7 @@ function performImmediateGesture(element, gesture) {
   // wheel times out.
   /** @type {any} */ const cast = element;
   cast[absorbDecelerationKey] = true;
+  cast[deferToScrollingKey] = true;
   cast[postGestureDelayCompleteKey] = false;
   cast[wheelDistanceKey] = 0;
   cast[wheelSequenceAxisKey] = null;
