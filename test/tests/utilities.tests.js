@@ -1,4 +1,8 @@
-import { applyChildNodes, firstFocusableElement } from '../../src/utilities.js';
+import {
+  applyChildNodes,
+  composedAncestors,
+  firstFocusableElement
+} from '../../src/utilities.js';
 import * as template from '../../src/template.js';
 
 
@@ -54,6 +58,45 @@ describe("utilities", () => {
     assert.equal(fixture.childNodes[0], nodes[0]);
     assert.equal(fixture.childNodes[1], nodes[1]);
     assert.isNull(existingChild.parentNode);
+  });
+
+  it("can return the set of ancestors in a composed tree", () => {
+    // Tree:
+    //
+    // outer
+    //   host
+    //     #shadow-root
+    //       p
+    //         slot
+    //     button (will be assigned to slot)
+    //       strong
+    //         "Hello" 
+    //
+    const outer = document.createElement('div');
+    const host = document.createElement('div');
+    const root = host.attachShadow({ mode: 'open' });
+    const p = document.createElement('p');
+    const slot = document.createElement('slot');
+    const button = document.createElement('button');
+    const strong = document.createElement('strong');
+    const text = new Text('Hello');
+    strong.append(text);
+    button.append(strong);
+    host.append(button);
+    outer.append(host);
+    p.append(slot);
+    root.append(p);
+
+    const ancestors = [...composedAncestors(text)];
+    assert.deepEqual(ancestors, [
+      strong,
+      button,
+      slot,
+      p,
+      root,
+      host,
+      outer
+    ]);
   });
 
 });

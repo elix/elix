@@ -60,35 +60,54 @@ export function applyChildNodes(element, childNodes) {
  * @returns {HTMLElement|null}
  */
 export function closestFocusableAncestor(node) {
-  // We want an element that has a tabIndex of 0 or more. We ignore disabled
-  // elements, and slot elements (which oddly have a tabIndex of 0).
-  /** @type {any} */ const cast = node;
-  if (node instanceof HTMLElement && node.tabIndex >= 0 &&
-    !cast.disabled &&
-    !(node instanceof HTMLSlotElement)) {
-    // Found an enabled component that wants the focus.
-    return node;
+  for (const ancestor of composedAncestors(node)) {
+    // We want an element that has a tabIndex of 0 or more. We ignore disabled
+    // elements, and slot elements (which oddly have a tabIndex of 0).
+    if (ancestor instanceof HTMLElement && ancestor.tabIndex >= 0 &&
+      !/** @type {any} */ (ancestor).disabled &&
+      !(ancestor instanceof HTMLSlotElement)) {
+      // Found an enabled component that wants the focus.
+      return ancestor;
+    }
+    // If an element defines a focusTarget (e.g., via DelegateFocusMixin),
+    // see if that focusTarget is focusable at this point.
+    const focusTarget = ancestor[symbols.focusTarget];
+    if (focusTarget && focusTarget.tabIndex >= 0 && !focusTarget.disabled) {
+      return focusTarget;
+    }
   }
-  // If an element defines a focusTarget (e.g., via DelegateFocusMixin),
-  // see if that focusTarget is focusable at this point.
-  const focusTarget = node[symbols.focusTarget];
-  if (focusTarget && focusTarget.tabIndex >= 0 && !focusTarget.disabled) {
-    return focusTarget;
-  }
-  // Not focusable; look higher in composed tree.
-  const parent = node instanceof HTMLElement && node.assignedSlot ?
-    node.assignedSlot :
-    // @ts-ignore
-    node.parentNode instanceof ShadowRoot ?
-      node.parentNode.host :
-      node.parentNode;
-  return parent ?
-    closestFocusableAncestor(parent) :
-    null;
+  return null;
 }
 
 
- /**
+/**
+ * Return the ancestors of the given node in the composed tree.
+ * 
+ * In the composed tree, the ancestor of a node assigned to a slot is that slot,
+ * not the node's DOM ancestor. The ancestor of a shadow root is its host.
+ * 
+ * @param {Node} node
+ * @returns {Iterable<Node>}
+ */
+export function* composedAncestors(node) {
+  /** @type {Node|null} */
+  let current = node;
+  while (true) {
+    current = current instanceof HTMLElement && current.assignedSlot ?
+      current.assignedSlot :
+      current instanceof ShadowRoot ?
+        current.host :
+        current.parentNode;
+    if (current) {
+      yield current;
+    } else {
+      break;
+    }
+  }
+}
+
+
+/**
  * Returns true if the first node contains the second, even if the second node
  * is in a shadow tree.
  *

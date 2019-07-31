@@ -3,6 +3,7 @@
 
 export function applyChildNodes(element: Node, childNodes: NodeList|Node[]): void;
 export function closestFocusableAncestor(element: Element): HTMLElement|null;
+export function composedAncestors(node: Node): Iterable<Node>;
 export function deepContains(container: Node, target: Node): boolean;
 export function firstFocusableElement(root: Node): HTMLElement|null;
 export function forwardFocus(origin: HTMLElement, target: HTMLElement|null): void;
