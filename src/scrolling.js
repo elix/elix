@@ -1,4 +1,4 @@
-import { composedAncestors } from "./utilities.js";
+import { selfAndComposedAncestors } from "./utilities.js";
 
 
 /**
@@ -6,6 +6,37 @@ import { composedAncestors } from "./utilities.js";
  * 
  * @module defaultScrollTarget
  */
+
+
+export function canScrollInDirection(target, orientation, downOrRight) {
+  for (const ancestor of selfAndComposedAncestors(target)) {
+    if (ancestor instanceof HTMLElement) {
+      const style = getComputedStyle(ancestor);
+      const vertical = orientation === 'vertical';
+      const scrollAxisMatch =
+        (vertical &&
+          (style.overflowY === 'scroll' || style.overflowY === 'auto')) ||
+        (!vertical &&
+          (style.overflowX === 'scroll' || style.overflowX === 'auto'));
+      if (scrollAxisMatch) {
+        // Found an ancestor that can potentially scroll in this orientation.
+        const scrollEdge = vertical ? 'scrollTop' : 'scrollLeft';
+        if (!downOrRight && ancestor[scrollEdge] > 0) {
+          // Target has room to scroll up or left.
+          return true;
+        }
+        const scrollLength = vertical ? 'scrollHeight' : 'scrollWidth';
+        const clientLength = vertical ? 'clientHeight' : 'clientWidth';
+        const scrollMax = ancestor[scrollLength] + ancestor[clientLength];
+        if (downOrRight && ancestor[scrollEdge] < scrollMax) {
+          // Target has room to scroll down or right.
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
 
 
 /**
@@ -54,49 +85,10 @@ function isElementScrollable(element) {
  * @returns {Element|null}
  */
 export function getScrollableElement(node) {
-  if (node instanceof HTMLElement && isElementScrollable(node)) {
-    return node;
-  }
-  for (const ancestor of composedAncestors(node)) {
+  for (const ancestor of selfAndComposedAncestors(node)) {
     if (ancestor instanceof HTMLElement && isElementScrollable(ancestor)) {
       return ancestor;
     }
   }
   return null;
-}
-
-
-export function willGestureScroll(target, orientation, delta) {
-  if (target instanceof ShadowRoot) {
-    // Didn't find a scrollable ancestor.
-    return false;
-  }
-  const style = getComputedStyle(target);
-  const vertical = orientation === 'vertical';
-  const scrollAxisMatch =
-    (vertical &&
-      (style.overflowY === 'scroll' || style.overflowY === 'auto')) ||
-    (!vertical &&
-      (style.overflowX === 'scroll' || style.overflowX === 'auto'));
-  if (scrollAxisMatch) {
-    // Found an target that can potentially scroll in this orientation.
-    const scrollEdge = vertical ? 'scrollTop' : 'scrollLeft';
-    if (delta < 0 && target[scrollEdge] > 0) {
-      // Target has room to scroll up or left.
-      return true;
-    }
-    const scrollLength = vertical ? 'scrollHeight' : 'scrollWidth';
-    const clientLength = vertical ? 'clientHeight' : 'clientWidth';
-    const scrollMax = target[scrollLength] + target[clientLength];
-    if (delta > 0 && target[scrollEdge] < scrollMax) {
-      // Target has room to scroll down or right.
-      return true;
-    }
-  }
-  // Keep looking higher in the hierarchy for a scrollable ancestor.
-
-  // TODO: Walk up shadow host
-  return target.parentNode instanceof Element ?
-    willGestureScroll(target.parentNode, orientation, delta) :
-    false;
 }

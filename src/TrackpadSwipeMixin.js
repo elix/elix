@@ -1,8 +1,10 @@
+import { canScrollInDirection } from './scrolling.js';
 import * as symbols from './symbols.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
 const absorbDecelerationKey = Symbol('absorbDeceleration');
+const deferToScrollingKey = Symbol('deferToScrolling');
 const lastDeltaXKey = Symbol('lastDeltaX');
 const lastDeltaYKey = Symbol('lastDeltaY');
 const lastWheelTimeoutKey = Symbol('lastWheelTimeout');
@@ -134,7 +136,8 @@ function handleWheel(element, event) {
   const deltaY = event.deltaY;
 
   // See if component event represents acceleration or deceleration.
-  const vertical = element.state.swipeAxis === 'vertical';
+  const { swipeAxis } = element.state;
+  const vertical = swipeAxis === 'vertical';
   const acceleration = vertical ?
     Math.sign(deltaY) * (deltaY - cast[lastDeltaYKey]) :
     Math.sign(deltaX) * (deltaX - cast[lastDeltaXKey]);
@@ -171,7 +174,29 @@ function handleWheel(element, event) {
     return true;
   }
 
+  // Scrolling initially takes precedence over swiping.
+  if (cast[deferToScrollingKey]) {
+    // Predict whether the browser's default behavior for this event would cause
+    // the swipe target or any of its ancestors to scroll.
+    const deltaAlongAxis = vertical ?
+      deltaY :
+      deltaX;
+    const downOrRight = deltaAlongAxis > 0;
+    const willScroll = canScrollInDirection(
+      element[symbols.swipeTarget],
+      swipeAxis,
+      downOrRight
+    );
+    if (willScroll) {
+      // Don't interfere with scrolling.
+      return false;
+    }
+  }
+
   // If we get this far, we have a wheel event we want to handle.
+
+  // From this point on, swiping will take precedence over scrolling.
+  cast[deferToScrollingKey] = false;
 
   if (eventBeginsSwipe) {
     // This first event's axis will determine which axis we'll respect for the
@@ -251,6 +276,7 @@ function performImmediateGesture(element, gesture) {
 function resetWheelTracking(element) {
   /** @type {any} */ const cast = element;
   cast[absorbDecelerationKey] = false;
+  cast[deferToScrollingKey] = true;
   cast[lastDeltaXKey] = 0;
   cast[lastDeltaYKey] = 0;
   cast[postGestureDelayCompleteKey] = true;

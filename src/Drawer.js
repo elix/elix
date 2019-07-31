@@ -58,6 +58,9 @@ class Drawer extends Base {
       }
       this[symbols.raiseChangeEvents] = false;
     });
+
+    this.$.frame.scrollLeft = 0;
+    this.$.frame.scrollTop = 0;
   }
 
   get defaultState() {
@@ -357,6 +360,9 @@ class Drawer extends Base {
         }
 
         #frame {
+          max-height: 100vh;
+          max-width: 100vw;
+          overflow: auto;
           will-change: transform;
         }
       </style>

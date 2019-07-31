@@ -1,8 +1,10 @@
 import * as symbols from './symbols.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import { canScrollInDirection } from './scrolling.js';
 
 
 /** @type {any} */
+const deferToScrollingKey = Symbol('deferToScrolling');
 const multiTouchKey = Symbol('multiTouch');
 const previousTimeKey = Symbol('previousTime');
 const previousVelocityKey = Symbol('previousVelocity');
@@ -225,11 +227,12 @@ function gestureContinue(element, clientX, clientY) {
   // Calculate and save the velocity since the last event. If this is the last
   // movement of the gesture, this velocity will be used to determine whether
   // the user is trying to flick.
+  const { swipeAxis } = element.state;
   const deltaX = clientX - cast[previousXKey];
   const deltaY = clientY - cast[previousYKey];
   const now = Date.now();
   const deltaTime = now - cast[previousTimeKey];
-  const deltaAlongAxis = element.state.swipeAxis === 'vertical' ?
+  const deltaAlongAxis = swipeAxis === 'vertical' ?
     deltaY :
     deltaX;
   const velocity = deltaAlongAxis / deltaTime * 1000;
@@ -258,15 +261,25 @@ function gestureContinue(element, clientX, clientY) {
     return true;
   }
   
-  if (eventAxis !== element.state.swipeAxis) {
+  if (eventAxis !== swipeAxis) {
     // Move wasn't along the axis we care about, ignore it.
     return false;
   }
 
-  if (eventAxis === 'vertical' &&
-      isAnyAncestorScrolled(element[symbols.swipeTarget])) {
-    // Don't interfere with scrolling.
-    return false;
+  // Scrolling initially takes precedence over swiping.
+  if (cast[deferToScrollingKey]) {
+    // Predict whether the browser's default behavior for this event would cause
+    // the swipe target or any of its ancestors to scroll.
+    const downOrRight = deltaAlongAxis < 0;
+    const willScroll = canScrollInDirection(
+      element[symbols.swipeTarget],
+      swipeAxis,
+      downOrRight
+    );
+    if (willScroll) {
+      // Don't interfere with scrolling.
+      return false;
+    }
   }
 
   const swipeFraction = getSwipeFraction(element, clientX, clientY);
@@ -277,7 +290,21 @@ function gestureContinue(element, clientX, clientY) {
     return false;
   }
 
-  element.setState({ swipeFraction });
+  const constrained = Math.max(Math.min(swipeFraction, 1), -1);
+  if (element.state.swipeFraction === constrained) {
+    // Already at min or max; don't handle.
+    return false;
+  }
+
+  // If we get this far, we have a touch event we want to handle.
+
+  // From this point on, swiping will take precedence over scrolling.
+  cast[deferToScrollingKey] = false;
+
+  // element.setState({ swipeFraction });
+  element.setState({
+    swipeFraction: constrained
+  });
   
   // Indicate that the event was handled. It'd be nicer if we didn't have
   // to do this so that, e.g., a user could be swiping left and right
@@ -373,6 +400,7 @@ function gestureEnd(element, clientX, clientY) {
  */
 function gestureStart(element, clientX, clientY) {
   /** @type {any} */ const cast = element;
+  cast[deferToScrollingKey] = true;
   cast[previousTimeKey] = Date.now();
   cast[previousVelocityKey] = 0;
   cast[previousXKey] = clientX;

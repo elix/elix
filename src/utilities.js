@@ -244,6 +244,22 @@ export function ownEvent(node, event) {
 
 
 /**
+ * Returns the set that includes the given node and all of its ancestors in the
+ * composed tree. See [composedAncestors](#composedAncestors) for details on the
+ * latter.
+ * 
+ * @param {Node} node 
+ * @returns {Iterable<Node>}
+ */
+export function* selfAndComposedAncestors(node) {
+  if (node) {
+    yield node;
+    yield *composedAncestors(node);
+  }
+}
+
+
+/**
  * Walk the composed tree at the root for elements that pass the given filter.
  * 
  * Note: the jsDoc types required for the filter function are too complex for
