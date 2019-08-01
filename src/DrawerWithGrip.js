@@ -47,24 +47,38 @@ class DrawerWithGrip extends Drawer {
     if (changed.fromEdge || changed.rightToLeft) {
       // Position the grip so it's at the outer edge of the drawer.
       const { fromEdge, rightToLeft } = this.state;
-      let flexDirection;
-      if (fromEdge === 'bottom') {
-        flexDirection = 'column-reverse';
-      } else if (fromEdge === 'end') {
-        flexDirection = 'row-reverse';
-      } else if (fromEdge === 'left') {
-        flexDirection = rightToLeft ? 'row-reverse' : 'row';
-      } else if (fromEdge === 'top') {
-        flexDirection = 'column'
-      } else if (fromEdge === 'right') {
-        flexDirection = rightToLeft ? 'row' : 'row-reverse';
-      } else {
-        // 'start'
-        flexDirection = 'row';
+
+      // Determine what grid we'll use to relatively position the content and
+      // the grip.
+      const mapFromEdgeToGrid = {
+        bottom: 'auto 1fr / auto',
+        left: 'auto / 1fr auto',
+        right: 'auto / auto 1fr',
+        top: '1fr auto / auto'
+      };
+      mapFromEdgeToGrid.start = rightToLeft ?
+        mapFromEdgeToGrid.right :
+        mapFromEdgeToGrid.left;
+      mapFromEdgeToGrid.end = rightToLeft ?
+        mapFromEdgeToGrid.left :
+        mapFromEdgeToGrid.right;
+
+      // Determine what cell the grip will go in.
+      const mapFromEdgeToGripCell = {
+        bottom: '1 / 1',
+        left: '1 / 2',
+        right: '1 / 1',
+        top: '2 / 1'
       }
-      this.$.frame.style.flexDirection = flexDirection;
-      this.$.gripContainer.style.flexDirection = flexDirection;
-      this.$.grip.style.flexDirection = flexDirection;
+      mapFromEdgeToGripCell.start = rightToLeft ?
+        mapFromEdgeToGripCell.right :
+        mapFromEdgeToGripCell.left;
+      mapFromEdgeToGripCell.end = rightToLeft ?
+        mapFromEdgeToGripCell.left :
+        mapFromEdgeToGripCell.right;
+
+      this.$.gripContainer.style.grid = mapFromEdgeToGrid[fromEdge];
+      this.$.gripWorkaround.style.gridArea = mapFromEdgeToGripCell[fromEdge];
     }
 
     if (changed.swipeAxis) {
@@ -81,43 +95,59 @@ class DrawerWithGrip extends Drawer {
 
     // Replace the default slot with one that includes a grip element.
     // Default grip icon from Material Design icons "drag handle".
+    //
+    // The gripWorkaround element exists for Safari, which doesn't correctly
+    // measure the grip dimensions in componentDidMount without it. Having
+    // a div that's display: block instead of flex appears to be the reason
+    // this helps.
     const gripTemplate = template.html`
       <style>
         #frame {
           display: flex;
+          overflow: hidden;
         }
 
         #gripContainer {
-          display: flex;
+          /* display: flex; */
+          display: grid;
           flex: 1;
         }
 
         #gripContent {
-          flex: 1;
+          /* flex: 1; */
+          overflow: auto;
+        }
+
+        #gripWorkaround {
+          display: grid;
         }
 
         #grip {
           align-items: center;
-          display: flex;
-          justify-self: center;
+          /* display: flex; */
+          display: grid;
+          /* justify-self: center; */
+          justify-items: center;
         }
       </style>
       <div id="gripContainer">
         <div id="gripContent">
           <slot></slot>
         </div>
-        <div id="grip">
-          <slot name="grip">
-            <svg id="gripIcon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
-              <defs>
-                <path id="a" d="M0 0h24v24H0V0z"/>
-              </defs>
-              <clipPath id="b">
-                <use xlink:href="#a" overflow="visible"/>
-              </clipPath>
-              <path clip-path="url(#b)" d="M20 9H4v2h16V9zM4 15h16v-2H4v2z"/>
-            </svg>
-          </slot>
+        <div id="gripWorkaround">
+          <div id="grip">
+            <slot name="grip">
+              <svg id="gripIcon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+                <defs>
+                  <path id="a" d="M0 0h24v24H0V0z"/>
+                </defs>
+                <clipPath id="b">
+                  <use xlink:href="#a" overflow="visible"/>
+                </clipPath>
+                <path clip-path="url(#b)" d="M20 9H4v2h16V9zM4 15h16v-2H4v2z"/>
+              </svg>
+            </slot>
+          </div>
         </div>
       </div>
     `;
