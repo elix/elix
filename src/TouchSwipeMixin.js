@@ -149,16 +149,16 @@ export default function TouchSwipeMixin(Base) {
 
     get defaultState() {
       const result = Object.assign(super.defaultState, {
-        enableNegativeSwipe: true,
-        enablePositiveSwipe: true,
         swipeAxis: 'horizontal',
-        swipeFraction: null,
         swipeDownWillCommit: false,
+        swipeFraction: null,
+        swipeFractionMax: 1,
+        swipeFractionMin: -1,
         swipeLeftWillCommit: false,
         swipeRightWillCommit: false,
-        swipeUpWillCommit: false,
         swipeStartX: null,
-        swipeStartY: null
+        swipeStartY: null,
+        swipeUpWillCommit: false
       });
 
       // If the swipeFraction crosses the -0.5 or 0.5 mark, update our notion of
@@ -228,7 +228,11 @@ function gestureContinue(element, clientX, clientY, eventTarget) {
   // Calculate and save the velocity since the last event. If this is the last
   // movement of the gesture, this velocity will be used to determine whether
   // the user is trying to flick.
-  const { swipeAxis } = element.state;
+  const {
+    swipeAxis,
+    swipeFractionMax,
+    swipeFractionMin
+  } = element.state;
   const deltaX = clientX - cast[previousXKey];
   const deltaY = clientY - cast[previousYKey];
   const now = Date.now();
@@ -292,16 +296,12 @@ function gestureContinue(element, clientX, clientY, eventTarget) {
     cast[startYKey] = clientY;
   }
 
-  const swipeFraction = getSwipeFraction(element, clientX, clientY);
-
-  if (swipeFraction < 0 && !element.state.enableNegativeSwipe ||
-      swipeFraction > 0 && !element.state.enablePositiveSwipe) {
-    // Swipe was in a direction that's not explicitly enabled.
-    return false;
-  }
-
-  const constrained = Math.max(Math.min(swipeFraction, 1), -1);
-  if (element.state.swipeFraction === constrained) {
+  const fraction = getSwipeFraction(element, clientX, clientY);
+  const swipeFraction = Math.max(
+    Math.min(fraction, swipeFractionMax),
+    swipeFractionMin
+  );
+  if (element.state.swipeFraction === swipeFraction) {
     // Already at min or max; no need for us to do anything.
     return false;
   }
@@ -311,10 +311,7 @@ function gestureContinue(element, clientX, clientY, eventTarget) {
   // From this point on, swiping will take precedence over scrolling.
   cast[deferToScrollingKey] = false;
 
-  // element.setState({ swipeFraction });
-  element.setState({
-    swipeFraction: constrained
-  });
+  element.setState({ swipeFraction });
   
   // Indicate that the event was handled. It'd be nicer if we didn't have
   // to do this so that, e.g., a user could be swiping left and right

@@ -52,6 +52,8 @@ export default function TrackpadSwipeMixin(Base) {
         swipeAxis: 'horizontal',
         swipeDownWillCommit: false,
         swipeFraction: null,
+        swipeFractionMax: 1,
+        swipeFractionMin: -1,
         swipeLeftWillCommit: false,
         swipeRightWillCommit: false,
         swipeUpWillCommit: false
@@ -136,7 +138,11 @@ function handleWheel(element, event) {
   const deltaY = event.deltaY;
 
   // See if component event represents acceleration or deceleration.
-  const { swipeAxis } = element.state;
+  const {
+    swipeAxis,
+    swipeFractionMax,
+    swipeFractionMin
+  } = element.state;
   const vertical = swipeAxis === 'vertical';
   const acceleration = vertical ?
     Math.sign(deltaY) * (deltaY - cast[lastDeltaYKey]) :
@@ -214,10 +220,14 @@ function handleWheel(element, event) {
   const targetDimension = vertical ?
     swipeTarget.offsetHeight :
     swipeTarget.offsetWidth;
-  let swipeFraction = targetDimension > 0 ?
+  let fraction = targetDimension > 0 ?
     cast[wheelDistanceKey] / targetDimension :
     0;
-  swipeFraction = Math.sign(swipeFraction) * Math.min(Math.abs(swipeFraction), 1);
+  fraction = Math.sign(fraction) * Math.min(Math.abs(fraction), 1);
+  const swipeFraction = Math.max(
+    Math.min(fraction, swipeFractionMax),
+    swipeFractionMin
+  );
 
   // If the user has dragged enough to reach the previous/next item, then
   // perform the gesture immediately. (We don't need to wait for the wheel to
