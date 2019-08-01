@@ -176,7 +176,7 @@ function handleWheel(element, event) {
 
   // Scrolling initially takes precedence over swiping.
   const scrollTarget = element[symbols.scrollTarget] || element;
-  if (element.state.opened && cast[deferToScrollingKey]) {
+  if (cast[deferToScrollingKey]) {
     // Predict whether the browser's default behavior for this event would cause
     // the swipe target or any of its ancestors to scroll.
     const deltaAlongAxis = vertical ? deltaY : deltaX;

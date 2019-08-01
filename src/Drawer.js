@@ -59,11 +59,16 @@ class Drawer extends Base {
       this[symbols.raiseChangeEvents] = false;
     });
 
-    // Drawer starts out scrolled to top/left. Not sure why we need to do this,
-    // but if we leave this out, a scrollable drawer seems to start out scrolled
-    // somewhere to the middle
-    this.$.frame.scrollLeft = 0;
-    this.$.frame.scrollTop = 0;
+    // Reflect opened attribute.
+    this.setAttribute('opened', this.state.opened.toString());
+  }
+
+  componentDidUpdate(changed) {
+    if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    if (changed.opened) {
+      // Reflect opened attribute.
+      this.setAttribute('opened', this.state.opened.toString());
+    }
   }
 
   get defaultState() {
@@ -291,6 +296,10 @@ class Drawer extends Base {
         'row';
       this.style.justifyContent = mapFromEdgetoJustifyContent[fromEdge];
     }
+
+    if (changed.opened) {
+      // Don't allow scrolling on drawer when closed.
+    }
   }
 
   async [symbols.swipeDown]() {
@@ -371,6 +380,9 @@ class Drawer extends Base {
           max-width: 100%;
           overflow: auto;
           will-change: transform;
+        }
+        :host([opened="false"]) #frame {
+          overflow: hidden;
         }
       </style>
     `);

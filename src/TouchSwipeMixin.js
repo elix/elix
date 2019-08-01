@@ -268,7 +268,7 @@ function gestureContinue(element, clientX, clientY, eventTarget) {
   }
 
   // Scrolling initially takes precedence over swiping.
-  if (element.state.opened && cast[deferToScrollingKey]) {
+  if (cast[deferToScrollingKey]) {
     // Predict whether the browser's default behavior for this event would cause
     // the swipe target or any of its ancestors to scroll.
     const downOrRight = deltaAlongAxis < 0;
@@ -303,10 +303,7 @@ function gestureContinue(element, clientX, clientY, eventTarget) {
   const constrained = Math.max(Math.min(swipeFraction, 1), -1);
   if (element.state.swipeFraction === constrained) {
     // Already at min or max; no need for us to do anything.
-    // If drawer is closed, we'll mark the event as handled so the event doesn't
-    // cause scrolling while closed. Otherwise, we'll leave the event unhandled
-    // and let the browser handle it.
-    return !element.state.opened;
+    return false;
   }
 
   // If we get this far, we have a touch event we want to handle.
@@ -350,7 +347,7 @@ function gestureEnd(element, clientX, clientY, eventTarget) {
 
   // Scrolling takes precedence over flick gestures.
   let willScroll = false;
-  if (element.state.opened && element[deferToScrollingKey]) {
+  if (element[deferToScrollingKey]) {
     // Predict whether the browser's default behavior for this event would cause
     // the swipe target or any of its ancestors to scroll.
     const downOrRight = velocity < 0;
