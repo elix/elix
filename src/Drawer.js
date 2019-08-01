@@ -341,10 +341,14 @@ class Drawer extends Base {
     }
   }
 
+  // Tell TrackpadSwipeMixin that the frame is the scrollable element the user
+  // is going to try to scroll with the trackpad.
+  get [symbols.scrollTarget]() {
+    return this.$.frame;
+  }
+
   get [symbols.swipeTarget]() {
-    /** @type {any} */
-    const element = this.$.frame;
-    return element;
+    return /** @type {any} */ (this.$.frame);
   }
 
   get [symbols.template]() {

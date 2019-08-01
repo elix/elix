@@ -90,6 +90,12 @@ class DrawerWithGrip extends Drawer {
     }
   }
 
+  // Tell TrackpadSwipeMixin that the gripped content is the scrollable element
+  // the user is going to try to scroll with the trackpad.
+  get [symbols.scrollTarget]() {
+    return this.$.grippedContent;
+  }
+
   get [symbols.template]() {
     const result = super[symbols.template];
 
@@ -112,7 +118,7 @@ class DrawerWithGrip extends Drawer {
           flex: 1;
         }
 
-        #gripContent {
+        #grippedContent {
           overflow: auto;
           -webkit-overflow-scrolling: touch; /* for momentum scrolling */
         }
@@ -128,7 +134,7 @@ class DrawerWithGrip extends Drawer {
         }
       </style>
       <div id="gripContainer">
-        <div id="gripContent">
+        <div id="grippedContent">
           <slot></slot>
         </div>
         <div id="gripWorkaround">

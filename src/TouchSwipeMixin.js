@@ -348,68 +348,67 @@ function gestureEnd(element, clientX, clientY, eventTarget) {
   const { swipeAxis, swipeFraction } = element.state;
   const vertical = swipeAxis === 'vertical';
 
-  // Scrolling initially takes precedence over flick gestures.
+  // Scrolling takes precedence over flick gestures.
+  let willScroll = false;
   if (element.state.opened && element[deferToScrollingKey]) {
     // Predict whether the browser's default behavior for this event would cause
     // the swipe target or any of its ancestors to scroll.
     const downOrRight = velocity < 0;
-    const willScroll = canScrollInDirection(
+    willScroll = canScrollInDirection(
       eventTarget,
       swipeAxis,
       downOrRight
     );
-    if (willScroll) {
-      // Don't interfere with scrolling.
-      return;
-    }
   }
 
   // We only count a flick if the swipe wasn't already going in the opposite
   // direction. E.g., if the user begins a swipe to the left, then flicks right,
   // that doesn't count, because the user may have simply been trying to
   // undo/cancel the swipe to the left.
-  let flickPositive;
-  if (velocity >= flickThresholdVelocity && swipeFraction >= 0) {
-    // Flicked right/down at high speed.
-    flickPositive = true;
-    if (vertical) {
-      element.setState({
-        swipeDownWillCommit: true
-      });
-    } else {
-      element.setState({
-        swipeRightWillCommit: true
-      });
-    }
-  } else if (velocity <= -flickThresholdVelocity && swipeFraction <= 0) {
-    // Flicked left/up at high speed.
-    flickPositive = false;
-    if (vertical) {
-      element.setState({
-        swipeUpWillCommit: true
-      });
-    } else {
-      element.setState({
-        swipeLeftWillCommit: true
-      });
-    }
-  } else {
-    // Finished at low speed.
-    // If the user swiped far enough to commit a gesture, handle it now.
-    if (element.state.swipeLeftWillCommit || element.state.swipeUpWillCommit) {
-      flickPositive = false;
-    } else if (element.state.swipeRightWillCommit || element.state.swipeDownWillCommit) {
+  if (!willScroll) {
+    let flickPositive;
+    if (velocity >= flickThresholdVelocity && swipeFraction >= 0) {
+      // Flicked right/down at high speed.
       flickPositive = true;
+      if (vertical) {
+        element.setState({
+          swipeDownWillCommit: true
+        });
+      } else {
+        element.setState({
+          swipeRightWillCommit: true
+        });
+      }
+    } else if (velocity <= -flickThresholdVelocity && swipeFraction <= 0) {
+      // Flicked left/up at high speed.
+      flickPositive = false;
+      if (vertical) {
+        element.setState({
+          swipeUpWillCommit: true
+        });
+      } else {
+        element.setState({
+          swipeLeftWillCommit: true
+        });
+      }
+    } else {
+      // Finished at low speed.
+      // If the user swiped far enough to commit a gesture, handle it now.
+      if (element.state.swipeLeftWillCommit || element.state.swipeUpWillCommit) {
+        flickPositive = false;
+      } else if (element.state.swipeRightWillCommit || element.state.swipeDownWillCommit) {
+        flickPositive = true;
+      }
     }
-  }
 
-  if (typeof flickPositive !== 'undefined') {
-    const gesture = vertical ?
-      (flickPositive ? symbols.swipeDown : symbols.swipeUp) :
-      (flickPositive ? symbols.swipeRight : symbols.swipeLeft);
-    // If component has method for indicated gesture, invoke it.
-    if (gesture && element[gesture]) {
-      element[gesture]();
+    if (typeof flickPositive !== 'undefined') {
+      const gesture = vertical ?
+        (flickPositive ? symbols.swipeDown : symbols.swipeUp) :
+        (flickPositive ? symbols.swipeRight : symbols.swipeLeft);
+      // If component has method for indicated gesture, invoke it.
+      if (gesture && element[gesture]) {
+        element[gesture]();
+      }
     }
   }
 
