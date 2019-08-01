@@ -8,7 +8,21 @@ import { selfAndComposedAncestors } from "./utilities.js";
  */
 
 
+/**
+ * Returns true if the given target or any of its ancestors can be scrolled
+ * in the indicated direction.
+ * 
+ * This is used, e.g., by gesture event handlers to predict if the default
+ * behavior for a given event is likely to result in scrolling.
+ * 
+ * @param {EventTarget} target 
+ * @param {'horizontal'|'vertical'} orientation 
+ * @param {boolean} downOrRight 
+ */
 export function canScrollInDirection(target, orientation, downOrRight) {
+  if (!(target instanceof Node)) {
+    return false;
+  }
   for (const ancestor of selfAndComposedAncestors(target)) {
     if (ancestor instanceof HTMLElement) {
       const style = getComputedStyle(ancestor);

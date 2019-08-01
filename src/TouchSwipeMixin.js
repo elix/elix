@@ -54,7 +54,7 @@ export default function TouchSwipeMixin(Base) {
           this[symbols.raiseChangeEvents] = true;
           if (!this[multiTouchKey] && event.touches.length === 1) {
             const { clientX, clientY } = event.changedTouches[0];
-            const handled = gestureContinue(this, clientX, clientY);
+            const handled = gestureContinue(this, clientX, clientY, event.target);
             if (handled) {
               event.preventDefault();
             }
@@ -69,7 +69,7 @@ export default function TouchSwipeMixin(Base) {
             if (!this[multiTouchKey]) {
               // Single-touch swipe has finished.
               const { clientX, clientY } = event.changedTouches[0];
-              gestureEnd(this, clientX, clientY);
+              gestureEnd(this, clientX, clientY, event.target);
             }
             this[multiTouchKey] = false;
           }
@@ -91,7 +91,7 @@ export default function TouchSwipeMixin(Base) {
           this[symbols.raiseChangeEvents] = true;
           if (isEventForPenOrPrimaryTouch(event)) {
             const { clientX, clientY } = event;
-            const handled = gestureContinue(this, clientX, clientY);
+            const handled = gestureContinue(this, clientX, clientY, event.target);
             if (handled) {
               event.preventDefault();
             }
@@ -103,7 +103,7 @@ export default function TouchSwipeMixin(Base) {
           this[symbols.raiseChangeEvents] = true;
           if (isEventForPenOrPrimaryTouch(event)) {
             const { clientX, clientY } = event;
-            gestureEnd(this, clientX, clientY);
+            gestureEnd(this, clientX, clientY, event.target);
           }
           await Promise.resolve();
           this[symbols.raiseChangeEvents] = false;
@@ -219,8 +219,9 @@ function isEventForPenOrPrimaryTouch(event) {
  * @param {ReactiveElement} element 
  * @param {number} clientX 
  * @param {number} clientY 
+ * @param {EventTarget} eventTarget
  */
-function gestureContinue(element, clientX, clientY) {
+function gestureContinue(element, clientX, clientY, eventTarget) {
 
   /** @type {any} */ const cast = element;
 
@@ -272,7 +273,7 @@ function gestureContinue(element, clientX, clientY) {
     // the swipe target or any of its ancestors to scroll.
     const downOrRight = deltaAlongAxis < 0;
     const willScroll = canScrollInDirection(
-      element[symbols.swipeTarget],
+      eventTarget,
       swipeAxis,
       downOrRight
     );
@@ -335,9 +336,10 @@ function gestureContinue(element, clientX, clientY) {
  * @param {ReactiveElement} element
  * @param {number} clientX
  * @param {number} clientY
+ * @param {EventTarget} eventTarget
  */
 /* eslint-disable no-unused-vars */
-function gestureEnd(element, clientX, clientY) {
+function gestureEnd(element, clientX, clientY, eventTarget) {
 
   // Examine velocity of last movement to see if user is flicking.
   const velocity = /** @type {any} */ (element)[previousVelocityKey];
@@ -345,6 +347,22 @@ function gestureEnd(element, clientX, clientY) {
 
   const { swipeAxis, swipeFraction } = element.state;
   const vertical = swipeAxis === 'vertical';
+
+  // Scrolling initially takes precedence over flick gestures.
+  if (element.state.opened && element[deferToScrollingKey]) {
+    // Predict whether the browser's default behavior for this event would cause
+    // the swipe target or any of its ancestors to scroll.
+    const downOrRight = velocity < 0;
+    const willScroll = canScrollInDirection(
+      eventTarget,
+      swipeAxis,
+      downOrRight
+    );
+    if (willScroll) {
+      // Don't interfere with scrolling.
+      return;
+    }
+  }
 
   // We only count a flick if the swipe wasn't already going in the opposite
   // direction. E.g., if the user begins a swipe to the left, then flicks right,
@@ -456,22 +474,4 @@ function getSwipeFraction(element, x, y) {
     dragDistance / swipeTargetSize :
     0;
   return fraction;
-}
-
-/**
- * Return true if any ancestor of the given element has been scrolled down.
- * 
- * @private
- * @param {ReactiveElement} element 
- * @returns {boolean}
- */
-function isAnyAncestorScrolled(element) {
-  if (element.scrollTop > 0) {
-    return true;
-  } else {
-    const parent = element.parentNode || element.host;
-    return parent ? 
-      isAnyAncestorScrolled(parent) :
-      false;
-  }
 }

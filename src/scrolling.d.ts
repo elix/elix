@@ -2,7 +2,7 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 export function canScrollInDirection(
-  element: HTMLElement,
+  target: EventTarget,
   orientation: 'horizontal'|'vertical',
   downOrRight: boolean
 ): boolean;

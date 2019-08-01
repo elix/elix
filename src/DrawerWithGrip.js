@@ -108,14 +108,13 @@ class DrawerWithGrip extends Drawer {
         }
 
         #gripContainer {
-          /* display: flex; */
           display: grid;
           flex: 1;
         }
 
         #gripContent {
-          /* flex: 1; */
           overflow: auto;
+          -webkit-overflow-scrolling: touch; /* for momentum scrolling */
         }
 
         #gripWorkaround {
@@ -124,9 +123,7 @@ class DrawerWithGrip extends Drawer {
 
         #grip {
           align-items: center;
-          /* display: flex; */
           display: grid;
-          /* justify-self: center; */
           justify-items: center;
         }
       </style>
