@@ -75,8 +75,8 @@ function FocusCaptureMixin(Base) {
         <style>
           #focusCapture {
             display: flex;
-            height: 100%;
-            width: 100%;
+            max-height: 100%;
+            max-width: 100%;
           }
 
           #focusCaptureContainer {
