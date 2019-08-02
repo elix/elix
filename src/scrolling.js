@@ -41,7 +41,7 @@ export function canScrollInDirection(target, orientation, downOrRight) {
         }
         const scrollLength = vertical ? 'scrollHeight' : 'scrollWidth';
         const clientLength = vertical ? 'clientHeight' : 'clientWidth';
-        const scrollMax = ancestor[scrollLength] + ancestor[clientLength];
+        const scrollMax = ancestor[scrollLength] - ancestor[clientLength];
         if (downOrRight && ancestor[scrollEdge] < scrollMax) {
           // Target has room to scroll down or right.
           return true;
