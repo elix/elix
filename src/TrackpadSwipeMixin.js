@@ -272,8 +272,13 @@ function performImmediateGesture(element, gesture) {
   setTimeout(() => {
     cast[postGestureDelayCompleteKey] = true;
   }, POST_GESTURE_TIME);
+  // We've handled a gesture, so reset notion of what gestures are in progress.
   element.setState({
-    swipeFraction: null
+    swipeDownWillCommit: false,
+    swipeFraction: null,
+    swipeLeftWillCommit: false,
+    swipeRightWillCommit: false,
+    swipeUpWillCommit: false
   });
 }
 
@@ -323,7 +328,11 @@ async function wheelTimedOut(element) {
 
   resetWheelTracking(element);
   element.setState({
-    swipeFraction: null
+    swipeDownWillCommit: false,
+    swipeFraction: null,
+    swipeLeftWillCommit: false,
+    swipeRightWillCommit: false,
+    swipeUpWillCommit: false
   });
 
   if (gesture && element[gesture]) {
