@@ -16,5 +16,5 @@ export default class Drawer extends
     TransitionEffectMixin(
       Dialog
     ))))) {
-  fromEdge: 'end'|'left'|'right'|'start';
+  fromEdge: 'bottom'|'end'|'left'|'right'|'start'|'top';
 }
