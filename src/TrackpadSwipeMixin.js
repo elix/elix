@@ -40,6 +40,7 @@ export default function TrackpadSwipeMixin(Base) {
         const handled = handleWheel(this, event);
         if (handled) {
           event.preventDefault();
+          event.stopPropagation();
         }
         await Promise.resolve();
         this[symbols.raiseChangeEvents] = false;

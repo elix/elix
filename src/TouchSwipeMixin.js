@@ -57,6 +57,7 @@ export default function TouchSwipeMixin(Base) {
             const handled = gestureContinue(this, clientX, clientY, event.target);
             if (handled) {
               event.preventDefault();
+              event.stopPropagation();
             }
           }
           await Promise.resolve();
@@ -94,6 +95,7 @@ export default function TouchSwipeMixin(Base) {
             const handled = gestureContinue(this, clientX, clientY, event.target);
             if (handled) {
               event.preventDefault();
+              event.stopPropagation();
             }
           }
           await Promise.resolve();
