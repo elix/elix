@@ -5,6 +5,7 @@ import { canScrollInDirection } from './scrolling.js';
 
 /** @type {any} */
 const deferToScrollingKey = Symbol('deferToScrolling');
+/** @type {any} */
 const multiTouchKey = Symbol('multiTouch');
 const previousTimeKey = Symbol('previousTime');
 const previousVelocityKey = Symbol('previousVelocity');
@@ -52,7 +53,7 @@ export default function TouchSwipeMixin(Base) {
         });
         this.addEventListener('touchmove', async (event) => {
           this[symbols.raiseChangeEvents] = true;
-          if (!this[multiTouchKey] && event.touches.length === 1) {
+          if (!this[multiTouchKey] && event.touches.length === 1 && event.target) {
             const { clientX, clientY } = event.changedTouches[0];
             const handled = gestureContinue(this, clientX, clientY, event.target);
             if (handled) {
@@ -65,7 +66,7 @@ export default function TouchSwipeMixin(Base) {
         });
         this.addEventListener('touchend', async (event) => {
           this[symbols.raiseChangeEvents] = true;
-          if (event.touches.length === 0) {
+          if (event.touches.length === 0 && event.target) {
             // All touches removed; gesture is complete.
             if (!this[multiTouchKey]) {
               // Single-touch swipe has finished.
@@ -90,7 +91,7 @@ export default function TouchSwipeMixin(Base) {
         });
         this.addEventListener('pointermove', async (event) => {
           this[symbols.raiseChangeEvents] = true;
-          if (isEventForPenOrPrimaryTouch(event)) {
+          if (isEventForPenOrPrimaryTouch(event) && event.target) {
             const { clientX, clientY } = event;
             const handled = gestureContinue(this, clientX, clientY, event.target);
             if (handled) {
@@ -103,7 +104,7 @@ export default function TouchSwipeMixin(Base) {
         });
         this.addEventListener('pointerup', async (event) => {
           this[symbols.raiseChangeEvents] = true;
-          if (isEventForPenOrPrimaryTouch(event)) {
+          if (isEventForPenOrPrimaryTouch(event) && event.target) {
             const { clientX, clientY } = event;
             gestureEnd(this, clientX, clientY, event.target);
           }
