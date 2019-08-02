@@ -39,10 +39,19 @@ class PullToRefresh extends Base {
   componentDidMount() {
     super.componentDidMount();
     // Listen to scroll events in case the user scrolls up past the page's top.
-    let scrollTarget = getScrollableElement(this) || document.body;
+    let scrollTarget = getScrollableElement(this) || window;
     scrollTarget.addEventListener('scroll', async () => {
+      // We might normally call requestAnimationFrame in a scroll handler, but
+      // in this case that could cause our scroll handling to run after the user
+      // has scrolled away from the top.
       this[symbols.raiseChangeEvents] = true;
-      await handleScrollPull(this, scrollTarget);
+      // Desktop and Mobile Safari don't agree on how to expose document
+      // scrollTop, so we use window.pageYOffset.
+      // See https://stackoverflow.com/questions/2506958/how-to-find-in-javascript-the-current-scroll-offset-in-mobile-safari-iphon
+      const scrollTop = scrollTarget instanceof Window ?
+        window.pageYOffset :
+        scrollTarget.scrollTop;
+      await handleScrollPull(this, scrollTop);
       this[symbols.raiseChangeEvents] = false;
     });
   }
@@ -305,10 +314,9 @@ function getTranslationForSwipeFraction(state, swipeTarget) {
  * 
  * @private
  * @param {ReactiveElement} element
- * @param {HTMLElement} scrollTarget
+ * @param {number} scrollTop
  */
-async function handleScrollPull(element, scrollTarget) {
-  const scrollTop = scrollTarget.scrollTop;
+async function handleScrollPull(element, scrollTop) {
   if (scrollTop < 0) {
     // Negative scroll top means we're probably in WebKit.
     // Start a scroll pull operation.
