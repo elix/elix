@@ -33,20 +33,8 @@
       import * as symbols from '../../src/symbols.js';
       import * as template from '../../src/template.js';
       import DrawerWithGrip from '../../src/DrawerWithGrip.js';
-      import SeamlessButton from '../../src/SeamlessButton.js';
       
       class CustomDrawer extends DrawerWithGrip {
-
-        componentDidMount() {
-          super.componentDidMount();
-          this.$.drawerToggle.addEventListener('click', event => {
-            // If user taps/clicks grip when opened, close drawer.
-            this[symbols.raiseChangeEvents] = true;
-            this.toggle();
-            event.stopPropagation();
-            this[symbols.raiseChangeEvents] = false;
-          });
-        }
 
         get defaultState() {
           return Object.assign(super.defaultState, {
@@ -56,7 +44,8 @@
 
         [symbols.render](changed) {
           super[symbols.render](changed);
-          if (changed.gripSize || changed.opened || changed.swipeFraction) {
+          if ((changed.gripSize || changed.opened || changed.swipeFraction) &&
+            this.$.plusIcon) {
             // Rotate the toggle button as the drawer is opened.
             const { opened, swipeFraction } = this.state;
             const swiping = swipeFraction !== null;
@@ -72,12 +61,11 @@
         get [symbols.template]() {
           const result = super[symbols.template];
           const gripTemplate = template.html`
-            <elix-seamless-button id="drawerToggle">
-              <div id="plusIcon">+</div>
-            </elix-seamless-button>
+            <div id="plusIcon">+</div>
           `;
-          const grip = result.content.getElementById('grip');
-          grip.append(gripTemplate.content);
+          const gripSlot = result.content.querySelector('slot[name="grip"]');
+          gripSlot.innerHTML = '';
+          gripSlot.append(gripTemplate.content);
           return template.concat(result, template.html`
             <style>
               #frame {
@@ -86,11 +74,7 @@
                 width: 100vw;
               }
   
-              #gripIcon {
-                display: none;
-              }
-  
-              #drawerToggle {
+              #plusIcon {
                 color: #00c8aa;
                 font-family: "Varela Round", sans-serif;
                 font-size: 80px;
@@ -100,7 +84,7 @@
                 transition: color 0.25s;
               }
   
-              #grip:hover #drawerToggle {
+              #grip:hover #plusIcon {
                 color: #16FFDC;
               }
             </style>
@@ -119,7 +103,7 @@
     </p>
     
     <custom-drawer>
-      <div style="padding: 1em;">
+      <div style="padding: 1em;" aria-label="Sample drawer">
         Drawer elements go here...
       </div>
     </custom-drawer>

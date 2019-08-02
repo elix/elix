@@ -1,6 +1,7 @@
 import * as symbols from "./symbols.js";
 import * as template from "./template.js";
 import Drawer from "./Drawer.js";
+import SeamlessButton from "./SeamlessButton.js";
 
 
 /**
@@ -14,21 +15,12 @@ import Drawer from "./Drawer.js";
  * image or other element into the `grip` slot.
  * 
  * @inherits ReactiveElement
+ * @elementrole {SeamlessButton} grip
  */
 class DrawerWithGrip extends Drawer {
 
   componentDidMount() {
     super.componentDidMount();
-
-    this.$.grip.addEventListener('click', event => {
-      // If user taps/clicks grip when opened, close drawer.
-      this[symbols.raiseChangeEvents] = true;
-      if (this.opened) {
-        this.close();
-        event.stopPropagation();
-      }
-      this[symbols.raiseChangeEvents] = false;
-    });
 
     if (this.state.gripSize === null) {
       // Use the rendered size of the grip to set the gripSize. This will ensure
@@ -41,8 +33,38 @@ class DrawerWithGrip extends Drawer {
     }
   }
 
+  get defaultState() {
+    return Object.assign(super.defaultState, {
+      gripRole: SeamlessButton
+    });
+  }
+
+  /**
+   * The class, tag, or template used to create the grip handle.
+   * 
+   * @type {Role}
+   * @default SeamlessButton
+   */
+  get gripRole() {
+    return this.state.gripRole;
+  }
+  set gripRole(gripRole) {
+    this.setState({ gripRole });
+  }
+
   [symbols.render](changed) {
     if (super[symbols.render]) { super[symbols.render](changed); }
+
+    if (changed.gripRole) {
+      template.transmute(this.$.grip, this.state.gripRole);
+      this.$.grip.addEventListener('click', event => {
+        // Clicking grip toggles drawer.
+        this[symbols.raiseChangeEvents] = true;
+        this.toggle();
+        event.stopPropagation();
+        this[symbols.raiseChangeEvents] = false;
+      });  
+    }
 
     if (changed.fromEdge || changed.rightToLeft) {
       // Position the grip so it's at the outer edge of the drawer.
@@ -81,7 +103,7 @@ class DrawerWithGrip extends Drawer {
       this.$.gripWorkaround.style.gridArea = mapFromEdgeToGripCell[fromEdge];
     }
 
-    if (changed.swipeAxis) {
+    if (changed.swipeAxis && this.$.gripIcon) {
       // Rotate the default grip icon to reflect the swipe axis.
       const transform = this.state.swipeAxis === 'horizontal' ?
         'rotate(90deg)' :
@@ -141,7 +163,7 @@ class DrawerWithGrip extends Drawer {
           <slot></slot>
         </div>
         <div id="gripWorkaround">
-          <div id="grip">
+          <div id="grip" aria-label="Toggle drawer">
             <slot name="grip">
               <svg id="gripIcon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
                 <defs>

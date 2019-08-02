@@ -77,6 +77,7 @@ class Drawer extends Base {
       fromEdge: 'start',
       gripSize: null,
       persistent: true,
+      role: 'landmark',
       selectedIndex: 0,
       tabIndex: -1
     });
@@ -298,7 +299,8 @@ class Drawer extends Base {
     }
 
     if (changed.opened) {
-      // Don't allow scrolling on drawer when closed.
+      // Reflect opened state to ARIA attribute.
+      this.setAttribute('aria-expanded', this.state.opened.toString());
     }
   }
 
