@@ -166,6 +166,11 @@ function handleWheel(element, event) {
     // wheel events in the sequence.
     return true;
   }
+  
+  if (eventAxis !== swipeAxis) {
+    // Move wasn't along the axis we care about, ignore it.
+    return false;
+  }
 
   if (!cast[postGestureDelayCompleteKey]) {
     // It's too soon after a gesture; absorb the event.
