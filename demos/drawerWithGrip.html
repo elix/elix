@@ -9,26 +9,46 @@
   <link rel="stylesheet" href="demos.css">
   <script type="module" src="../src/DrawerWithGrip.js"></script>
 
+  <style>
+    html {
+      height: 100%;
+    }
+
+    body {
+      height: 100%;
+      padding: 0;
+    }
+  </style>
+  
 </head>
 
 <body role="main">
-  <div class="demo padded">
+  <div class="demo fullScreen" style="overflow: hidden;">
 
     <style>
-      #sampleDrawer > * {
+      /* This styling only necessary for in situ demos in Elix docs. */
+      #drawerWithGrip {
+        position: absolute;
+        max-height: 100%;
+        max-width: 100%;
+      }
+
+      #drawerWithGrip > * {
         margin: 1em;
       }
-      #sampleDrawer > :first-child {
+      #drawerWithGrip > :first-child {
         margin-top: 0;
       }
-      #sampleDrawer > :last-child {
+      #drawerWithGrip > :last-child {
         margin-bottom: 0;
       }
     </style>
 
-    <button onclick="sampleDrawer.open()">Open drawer</button>
+    <p style="margin: 2em;">
+      <button onclick="drawerWithGrip.open()">Open drawer</button>
+    </p>
 
-    <elix-drawer-with-grip id="sampleDrawer" from-edge="bottom" aria-label="Drawer with sample content">
+    <elix-drawer-with-grip id="drawerWithGrip" from-edge="bottom" aria-label="Drawer with sample content">
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed molestie
         molestie enim porta dapibus. Phasellus dolor quam, egestas eu viverra

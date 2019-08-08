@@ -128,15 +128,11 @@ class Overlay extends Base {
           display: flex;
           flex-direction: column;
           justify-content: center;
-          left: 0;
-          height: 100%;
           max-height: 100vh;
           max-width: 100vw;
           outline: none;
           position: fixed;
           -webkit-tap-highlight-color: transparent;
-          top: 0;
-          width: 100%;
         }
 
         #frame {
@@ -145,11 +141,19 @@ class Overlay extends Base {
           max-width: 100%;
           overscroll-behavior: contain;
           pointer-events: initial;
+          position: relative;
+        }
+
+        #frameContent {
+          height: 100%;
+          width: 100%;
         }
       </style>
       <elix-backdrop id="backdrop" tabindex="-1"></elix-backdrop>
       <elix-overlay-frame id="frame" role="none">
-        <slot></slot>
+        <div id="frameContent">
+          <slot></slot>
+        </div>
       </elix-overlay-frame>
     `;
   }

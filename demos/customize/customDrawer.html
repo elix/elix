@@ -18,14 +18,25 @@
   <script type="module" src="../src/CustomBackdrop.js"></script>
   <script type="module" src="../src/CustomOverlayFrame.js"></script>
 
+  <style>
+    html {
+      height: 100%;
+    }
+
+    body {
+      height: 100%;
+      padding: 0;
+    }
+  </style>
+  
 </head>
 
 <body role="main">
-  <div class="demo padded">
+  <div class="demo fullScreen" style="overflow: hidden;">
 
     <custom-button onclick="sampleDrawer.open()">Open drawer</custom-button>
 
-    <elix-drawer id="sampleDrawer" backdrop-role="custom-backdrop" frame-role="custom-overlay-frame">
+    <elix-drawer id="sampleDrawer" backdrop-role="custom-backdrop" frame-role="custom-overlay-frame" style="position: absolute;">
       Drawer elements go here...
     </elix-drawer>
 

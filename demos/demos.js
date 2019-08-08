@@ -3,6 +3,7 @@ import './src/CalendarDayMoonPhase.js';
 import './src/CarouselComboBox.js';
 import './src/CountryListBox.js';
 import './src/CustomCarousel2.js';
+import './src/CustomDrawer.js';
 import './src/FocusVisibleTest.js';
 import './src/LabeledColorSwatch.js';
 import './src/LocaleSelector.js';

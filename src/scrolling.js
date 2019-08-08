@@ -1,4 +1,4 @@
-import { selfAndComposedAncestors } from "./utilities.js";
+import { selfAndComposedAncestors } from './utilities.js';
 
 
 /**

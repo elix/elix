@@ -9,14 +9,27 @@
   <link rel="stylesheet" href="demos.css">
   <script type="module" src="../src/Drawer.js"></script>
 
+  <style>
+    html {
+      height: 100%;
+    }
+
+    body {
+      height: 100%;
+      padding: 0;
+    }
+  </style>
+  
 </head>
 
 <body role="main">
-  <div class="demo padded">
+  <div class="demo fullScreen">
 
-    <button onclick="sampleDrawer.open()">Open drawer</button>
+    <p style="margin: 2em;">
+      <button onclick="verticalDrawer.open()">Open drawer</button>
+    </p>  
 
-    <elix-drawer id="sampleDrawer" from-edge="bottom" aria-label="Sample drawer">
+    <elix-drawer id="verticalDrawer" from-edge="bottom" aria-label="Sample drawer">
       <div style="padding: 2em;">
         Drawer elements go here...
       </div>

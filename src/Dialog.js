@@ -44,7 +44,11 @@ class Dialog extends Base {
     return template.concat(result, template.html`
       <style>
         :host {
+          height: 100%;
+          left: 0;
           pointer-events: initial;
+          top: 0;
+          width: 100%;
         }
       </style>
     `);

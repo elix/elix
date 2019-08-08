@@ -75,18 +75,18 @@ function FocusCaptureMixin(Base) {
         <style>
           #focusCapture {
             display: flex;
-            max-height: 100%;
-            max-width: 100%;
+            height: 100%;
+            overflow: hidden;
+            width: 100%;
           }
 
           #focusCaptureContainer {
+            align-items: center;
             display: flex;
             flex: 1;
+            flex-direction: column;
+            justify-content: center;
             position: relative;
-          }
-
-          #focusCaptureContainer > * {
-            flex: 1;
           }
         </style>
         <div id="focusCapture">

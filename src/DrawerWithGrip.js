@@ -1,7 +1,7 @@
-import * as symbols from "./symbols.js";
-import * as template from "./template.js";
-import Drawer from "./Drawer.js";
-import SeamlessButton from "./SeamlessButton.js";
+import * as symbols from './symbols.js';
+import * as template from './template.js';
+import Drawer from './Drawer.js';
+import SeamlessButton from './SeamlessButton.js';
 
 
 /**
@@ -63,7 +63,7 @@ class DrawerWithGrip extends Drawer {
         this.toggle();
         event.stopPropagation();
         this[symbols.raiseChangeEvents] = false;
-      });  
+      });
     }
 
     if (changed.fromEdge || changed.rightToLeft) {
@@ -137,7 +137,8 @@ class DrawerWithGrip extends Drawer {
 
         #gripContainer {
           display: grid;
-          flex: 1;
+          height: 100%;
+          width: 100%;
         }
 
         #grippedContent {

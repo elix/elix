@@ -26,12 +26,12 @@ const Base =
 
 
 /**
- * Modal panel that slides in from the side of the page
+ * A panel that slides in from the side of the page
  * 
- * A drawer is a modal container generally used to provide navigation in
- * situations where: a) screen real estate is constrained and b) the navigation
- * UI is not critical to completing the user’s primary goal (and, hence, not
- * critical to the application’s business goal).
+ * A drawer is often used to provide navigation in situations where: a) screen
+ * real estate is constrained and b) the navigation UI is not critical to
+ * completing the user’s primary goal (and, hence, not critical to the
+ * application’s business goal).
  * 
  * @inherits Overlay
  * @mixes DialogModalityMixin
@@ -364,9 +364,9 @@ class Drawer extends Base {
 
   get [symbols.template]() {
     const result = super[symbols.template];
-    const frame = result.content.querySelector('#frame');
+    const frameContent = result.content.querySelector('#frameContent');
     /** @type {any} */ const cast = this;
-    cast[FocusCaptureMixin.wrap](frame);
+    cast[FocusCaptureMixin.wrap](frameContent);
     return template.concat(result, template.html`
       <style>
         :host {
@@ -378,8 +378,6 @@ class Drawer extends Base {
         }
 
         #frame {
-          max-height: 100%;
-          max-width: 100%;
           overflow: auto;
           will-change: transform;
         }
