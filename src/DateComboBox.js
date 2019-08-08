@@ -422,6 +422,11 @@ class DateComboBox extends Base {
           width: 8em;
         }
 
+        #calendarContainer {
+          display: flex;
+          flex-direction: column;
+        }
+
         #calendar {
           margin: 0.5em;
         }
@@ -435,8 +440,10 @@ class DateComboBox extends Base {
           border-color: gray;
         }
       </style>
-      <div id="calendar" tabindex="-1"></div>
-      <button id="todayButton">Today</button>
+      <div id="calendarContainer">
+        <div id="calendar" tabindex="-1"></div>
+        <button id="todayButton">Today</button>
+      </div>
     `;
     const defaultSlot = template.defaultSlot(result.content);
     if (defaultSlot) {
