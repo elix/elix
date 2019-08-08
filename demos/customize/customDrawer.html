@@ -34,9 +34,11 @@
 <body role="main">
   <div class="demo fullScreen" style="overflow: hidden;">
 
-    <custom-button onclick="sampleDrawer.open()">Open drawer</custom-button>
+    <p style="margin: 2em;">
+      <custom-button onclick="customDrawer.open()">Open drawer</custom-button>
+    </p>    
 
-    <elix-drawer id="sampleDrawer" backdrop-role="custom-backdrop" frame-role="custom-overlay-frame" style="position: absolute;">
+    <elix-drawer id="customDrawer" backdrop-role="custom-backdrop" frame-role="custom-overlay-frame" style="position: absolute;">
       Drawer elements go here...
     </elix-drawer>
 

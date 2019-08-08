@@ -9,14 +9,27 @@
   <link rel="stylesheet" href="../demos.css">
   <script type="module" src="../../src/Drawer.js"></script>
 
+  <style>
+    html {
+      height: 100%;
+    }
+
+    body {
+      height: 100%;
+      padding: 0;
+    }
+  </style>
+  
 </head>
 
 <body role="main">
-  <div class="demo padded" dir="rtl">
+  <div class="demo fullScreen" dir="rtl" style="overflow: hidden;">
 
-    <button onclick="drawer.open()">Open drawer</button>
-
-    <elix-drawer id="drawer">
+    <p style="margin: 2em;">
+      <button onclick="rightToLeftDrawer.open()">Open drawer</button>
+    </p>
+    
+    <elix-drawer id="rightToLeftDrawer" style="position: absolute;">
       <div style="padding: 1em;">
         Drawer elements go here...
       </div>

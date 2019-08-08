@@ -13,7 +13,7 @@ class CustomBackdrop extends ReactiveElement {
           height: 100%;
           left: 0;
           opacity: 0.5;
-          position: absolute;
+          position: fixed;
           top: 0;
           width: 100%;
         }
