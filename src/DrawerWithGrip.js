@@ -143,7 +143,6 @@ class DrawerWithGrip extends Drawer {
 
         #grippedContent {
           overflow: auto;
-          -webkit-overflow-scrolling: touch; /* for momentum scrolling */
         }
         :host([opened="false"]) #grippedContent {
           overflow: hidden;

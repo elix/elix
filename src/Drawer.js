@@ -371,6 +371,7 @@ class Drawer extends Base {
       <style>
         :host {
           align-items: stretch;
+          -webkit-overflow-scrolling: touch; /* for momentum scrolling */
         }
 
         #backdrop {
