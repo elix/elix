@@ -70,6 +70,11 @@ class DrawerWithGrip extends Drawer {
       // Position the grip so it's at the outer edge of the drawer.
       const { fromEdge, rightToLeft } = this.state;
 
+      const vertical = fromEdge === 'top' || fromEdge === 'bottom';
+      this.$.frame.style.flexDirection = vertical ?
+        'column' :
+        'row';
+
       // Determine what grid we'll use to relatively position the content and
       // the grip.
       const mapFromEdgeToGrid = {
@@ -129,35 +134,6 @@ class DrawerWithGrip extends Drawer {
     // a div that's display: block instead of flex appears to be the reason
     // this helps.
     const gripTemplate = template.html`
-      <style>
-        #frame {
-          display: flex;
-          overflow: hidden;
-        }
-
-        #gripContainer {
-          display: grid;
-          height: 100%;
-          width: 100%;
-        }
-
-        #grippedContent {
-          overflow: auto;
-        }
-        :host([opened="false"]) #grippedContent {
-          overflow: hidden;
-        }
-
-        #gripWorkaround {
-          display: grid;
-        }
-
-        #grip {
-          align-items: center;
-          display: grid;
-          justify-items: center;
-        }
-      </style>
       <div id="gripContainer">
         <div id="grippedContent">
           <slot></slot>
@@ -184,7 +160,38 @@ class DrawerWithGrip extends Drawer {
       template.transmute(defaultSlot, gripTemplate);
     }
 
-    return result;
+    return template.concat(result, template.html`
+      <style>
+        #frame {
+          display: flex;
+          overflow: hidden;
+        }
+
+        #gripContainer {
+          display: grid;
+          height: 100%;
+          width: 100%;
+        }
+
+        #grippedContent {
+          overflow: auto;
+          -webkit-overflow-scrolling: touch; /* for momentum scrolling */
+        }
+        :host([opened="false"]) #grippedContent {
+          overflow: hidden;
+        }
+
+        #gripWorkaround {
+          display: grid;
+        }
+
+        #grip {
+          align-items: center;
+          display: grid;
+          justify-items: center;
+        }
+      </style>
+    `);
   }
 
 }
