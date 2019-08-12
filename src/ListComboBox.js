@@ -189,9 +189,11 @@ class ListComboBox extends Base {
         const cast = event;
         const listSelectedIndex = cast.detail.selectedIndex;
         if (this.state.selectedIndex !== listSelectedIndex) {
+          this[symbols.raiseChangeEvents] = true;
           this.setState({
             selectedIndex: listSelectedIndex
           });
+          this[symbols.raiseChangeEvents] = false;
         }
       });
     }
