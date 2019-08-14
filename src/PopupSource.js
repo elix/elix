@@ -384,7 +384,6 @@ class PopupSource extends Base {
 
         #popup {
           align-items: initial;
-          flex-direction: initial;
           height: initial;
           justify-content: initial;
           left: initial;

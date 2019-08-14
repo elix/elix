@@ -128,8 +128,8 @@ class Overlay extends Base {
           display: flex;
           flex-direction: column;
           justify-content: center;
-          max-height: 100%;
-          max-width: 100%;
+          max-height: 100vh;
+          max-width: 100vw;
           outline: none;
           position: fixed;
           -webkit-tap-highlight-color: transparent;
