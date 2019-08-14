@@ -14,7 +14,7 @@ import SeamlessButton from './SeamlessButton.js';
  * The default icon used to represent the handle can be replaced by slotting an
  * image or other element into the `grip` slot.
  * 
- * @inherits ReactiveElement
+ * @inherits Drawer
  * @elementrole {SeamlessButton} grip
  */
 class DrawerWithGrip extends Drawer {
