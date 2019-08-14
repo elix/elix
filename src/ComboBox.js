@@ -3,6 +3,7 @@ import * as symbols from './symbols.js';
 import * as template from './template.js';
 import AriaRoleMixin from './AriaRoleMixin.js';
 import DelegateFocusMixin from './DelegateFocusMixin.js';
+import Hidden from './Hidden.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import PopupSource from './PopupSource.js';
 import SeamlessButton from './SeamlessButton.js';
@@ -23,6 +24,7 @@ const Base =
  * @mixes AriaRoleMixin
  * @mixes DelegateFocusMixin
  * @mixes KeyboardMixin
+ * @elementrole {Hidden} backdrop
  * @elementrole {'input'} input
  * @elementrole {'div'} source
  * @elementrole {SeamlessButton} toggleButton
@@ -61,6 +63,7 @@ class ComboBox extends Base {
 
     const state = Object.assign(super.defaultState, {
       ariaLabel: '',
+      backdropRole: Hidden,
       focused: false,
       inputRole: 'input',
       orientation: 'vertical',
@@ -245,11 +248,6 @@ class ComboBox extends Base {
       popup.removeAttribute('tabindex');
       if ('autoFocus' in popup) {
         /** @type {any} */ (popup).autoFocus = false;
-      }
-      // TODO: Would be better if we could set backdropRole to null
-      const backdrop = /** @type {any} */ (popup).backdrop;
-      if (backdrop) {
-        backdrop.style.display = 'none';
       }
       const frame = /** @type {any} */ (popup).frame;
       if (frame) {

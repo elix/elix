@@ -166,12 +166,6 @@ class PopupSource extends Base {
 
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
-    if (changed.backdropRole) {
-      if ('backdropRole' in this.$.popup) {
-        const { backdropRole } = this.state;
-        /** @type {any} */ (this.$.popup).backdropRole = backdropRole;
-      }
-    }
     if (changed.frameRole) {
       if ('frameRole' in this.$.popup) {
         const { frameRole } = this.state;
@@ -201,6 +195,14 @@ class PopupSource extends Base {
           this[symbols.raiseChangeEvents] = false;
         }
       });
+    }
+    if (changed.backdropRole) {
+      // Since this check depends on popup, do it after we do any necessary
+      // transmuting of popup.
+      if ('backdropRole' in this.$.popup) {
+        const { backdropRole } = this.state;
+        /** @type {any} */ (this.$.popup).backdropRole = backdropRole;
+      }
     }
     if (changed.horizontalAlign || changed.popupMeasured ||
         changed.rightToLeft) {
