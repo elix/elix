@@ -137,6 +137,8 @@ class Overlay extends Base {
 
         #frame {
           box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
           max-height: 100%;
           max-width: 100%;
           overscroll-behavior: contain;
@@ -145,7 +147,11 @@ class Overlay extends Base {
         }
 
         #frameContent {
+          display: flex;
+          flex: 1;
+          flex-direction: column;
           height: 100%;
+          overflow: hidden;
           width: 100%;
         }
       </style>
