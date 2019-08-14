@@ -376,6 +376,8 @@ class ComboBox extends Base {
 
         #popup {
           flex-direction: column;
+          max-height: 100vh;
+          max-width: 100vh;
           overflow: hidden;
         }
       </style>
