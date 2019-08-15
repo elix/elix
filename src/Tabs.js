@@ -1,5 +1,5 @@
 import { defaultAriaRole } from './accessibility.js';
-import { ensureId } from './idGeneration.js';
+import { ensureId } from './utilities.js';
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import Explorer from './Explorer.js';

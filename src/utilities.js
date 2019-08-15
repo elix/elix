@@ -7,7 +7,10 @@ import * as symbols from './symbols.js';
  * @module utilities
  */
 
+const generatedIdKey = Symbol('generatedId');
 const mousedownListenerKey = Symbol('mousedownListener');
+
+let generatedIdCount = 0;
 
 
 /**
@@ -130,6 +133,24 @@ export function deepContains(container, target) {
     current = parent;
   }
   return false;
+}
+
+
+/**
+ * If the given element already has an ID, return it. If not, generate a
+ * previously unused ID and return that.
+ * 
+ * @param {Element} element 
+ * @returns {string}
+ */
+export function ensureId(element) {
+  let id = element.id || element[generatedIdKey];
+  if (!id) {
+    id = `_id${generatedIdCount++}`;
+    // Remember that we generated an ID for this element.
+    element[generatedIdKey] = id;
+  }
+  return id;
 }
 
 

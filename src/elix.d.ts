@@ -118,7 +118,6 @@ export { default as calendar } from './calendar.js';
 export { default as constants } from './constants.js';
 export { default as content } from './content.js';
 export { default as fractionalSelection } from './fractionalSelection.js';
-export { default as idGeneration } from './idGeneration.js';
 export { default as scrolling } from './scrolling.js';
 export { default as symbols } from './symbols.js';
 export { default as template } from './template.js';

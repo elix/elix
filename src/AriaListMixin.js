@@ -1,5 +1,5 @@
 import { defaultAriaRole } from './accessibility.js';
-import { ensureId } from './idGeneration.js';
+import { ensureId } from './utilities.js';
 import * as symbols from './symbols.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
