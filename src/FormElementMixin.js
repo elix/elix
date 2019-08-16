@@ -17,7 +17,7 @@ export default function FormElementMixin(Base) {
     }
   
     checkValidity() {
-      return this.internals_.checkValidity();
+      return this[symbols.internals].checkValidity();
     }
 
     componentDidMount() {
@@ -34,9 +34,16 @@ export default function FormElementMixin(Base) {
 
     get defaultState() {
       return Object.assign(super.defaultState, {
+        validationMessage: '',
+        valid: true,
         value: null
       });
     }
+
+    // Uncomment for debugging only
+    // get internals() {
+    //   return this[symbols.internals];
+    // }
 
     static get formAssociated() {
       return true;
@@ -65,6 +72,21 @@ export default function FormElementMixin(Base) {
       if (changed.name) {
         this.setAttribute('name', this.state.name);
       }
+
+      // Reflect validity state to internals.
+      if (changed.valid || changed.validationMessage) {
+        const { valid, validationMessage } = this.state;
+        if (valid) {
+          this[symbols.internals].setValidity({});
+        } else {
+          this[symbols.internals].setValidity(
+            {
+              customError: true
+            },
+            validationMessage
+          );
+        }
+      }
     }
 
     reportValidity() {
@@ -76,7 +98,7 @@ export default function FormElementMixin(Base) {
     }
 
     get validationMessage() {
-      return this[symbols.internals].validationMessage;
+      return this.state.validationMessage;
     }
 
     get validity() {

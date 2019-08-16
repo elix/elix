@@ -5,7 +5,24 @@ import ReactiveElement from '../../src/ReactiveElement.js';
 const formElementsSupported = 'ElementInternals' in window;
 
 
-class FormElementTest extends FormElementMixin(ReactiveElement) {}
+class FormElementTest extends FormElementMixin(ReactiveElement) {
+
+  get defaultState() {
+    const result = super.defaultState;
+
+    result.onChange('value', state => {
+      const valid = state.value !== null && state.value !== '';
+      const validationMessage = valid ? '' : `Can't be empty`;
+      return {
+        valid,
+        validationMessage
+      };
+    });
+
+    return result;
+  }
+
+}
 customElements.define('form-element-test', FormElementTest);
 
 
@@ -49,5 +66,14 @@ customElements.define('form-element-test', FormElementTest);
     });
     form.submit();
   });
+
+  it('participates in validation', () => {
+    const fixture = new FormElementTest();
+    fixture.render();
+    assert(!fixture.checkValidity());
+    fixture.value = 'bandicoot';
+    fixture.render();
+    assert(fixture.checkValidity());
+  })
 
 });
