@@ -39,6 +39,7 @@ export const goRight: '_goRight';
 export const goStart: '_goStart';
 export const goUp: '_goUp';
 export const hasDynamicTemplate: '_hasDynamicTemplate';
+export const internals: '_internals';
 export const itemMatchesState: '_itemMatchesState';
 export const itemsDelegate: '_itemsDelegate';
 export const keydown: '_keydown';

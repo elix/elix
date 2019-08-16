@@ -13,10 +13,17 @@
 
 <body role="main">
   <div class="demo" style="min-width: 300px;">
-    <form>
+    <form target="result" action="about:blank">
       <elix-auto-size-textarea aria-label="Sample auto-sizing textarea" name="body" value="Hello"></elix-auto-size-textarea>
       <button type="submit">Submit</button>
     </form>
+    <iframe name="result"></iframe>
+    <script>
+      const form = document.querySelector('form');
+      form.addEventListener('formdata', event => {
+        debugger;
+      });
+    </script>
   </div>
 </body>
 

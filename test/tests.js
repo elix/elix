@@ -13,6 +13,7 @@ import './tests/DateComboBox.tests.js';
 import './tests/DelegateFocusMixin.tests.js';
 import './tests/DirectionSelectionMixin.tests.js';
 import './tests/Explorer.tests.js';
+import './tests/FormElementMixin.tests.js';
 import './tests/KeyboardDirectionMixin.tests.js';
 import './tests/KeyboardMixin.tests.js';
 import './tests/KeyboardPagedSelectionMixin.tests.js';

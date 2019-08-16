@@ -211,6 +211,13 @@ export const goUp = Symbol('goUp');
 export const hasDynamicTemplate = Symbol('hasDynamicTemplate');
 
 /**
+ * Symbol for access to form internals.
+ * 
+ * @type {ElementInternals}
+ */
+export const internals = Symbol('internals');
+
+/**
  * Symbol for the `itemMatchesState` method.
  * 
  * `ContentItemsMixin` uses this callback to determine whether a content node
