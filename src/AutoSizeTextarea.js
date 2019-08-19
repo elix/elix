@@ -27,6 +27,7 @@ const Base =
  * to those specifically listed in the `AutoSizeTextarea` API.
  *
  * @inherits WrappedStandardElement
+ * @mixes FormElementMixin
  * @mixes SlotContentMixin
  */
 class AutoSizeTextarea extends Base {

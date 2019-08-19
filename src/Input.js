@@ -17,6 +17,7 @@ const Base =
  * and behavior while ensuring standard keyboard and focus behavior.
  * 
  * @inherits WrappedStandardElement
+ * @mixes FormElementMixin
  */
 class Input extends Base {
 

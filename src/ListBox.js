@@ -4,6 +4,7 @@ import AriaListMixin from './AriaListMixin.js';
 import ComposedFocusMixin from './ComposedFocusMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
+import FormElementMixin from './FormElementMixin.js';
 import GenericMixin from './GenericMixin.js';
 import ItemsTextMixin from './ItemsTextMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
@@ -24,6 +25,7 @@ const Base =
   ComposedFocusMixin(
   DirectionSelectionMixin(
   FocusVisibleMixin(
+  FormElementMixin(
   GenericMixin(
   ItemsTextMixin(
   KeyboardDirectionMixin(
@@ -37,7 +39,7 @@ const Base =
   SlotItemsMixin(
   TapSelectionMixin(
     ReactiveElement
-  ))))))))))))))));
+  )))))))))))))))));
 
 
 /**
@@ -54,6 +56,7 @@ const Base =
  * @mixes ComposedFocusMixin
  * @mixes DirectionSelectionMixin
  * @mixes FocusVisibleMixin
+ * @mixes FormElementMixin
  * @mixes ItemsTextMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin

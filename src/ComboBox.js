@@ -7,14 +7,16 @@ import Hidden from './Hidden.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import PopupSource from './PopupSource.js';
 import SeamlessButton from './SeamlessButton.js';
+import FormElementMixin from './FormElementMixin.js';
 
 
 const Base =
   AriaRoleMixin(
   DelegateFocusMixin(
+  FormElementMixin(
   KeyboardMixin(
     PopupSource
-  )));
+  ))));
 
 
 /**
@@ -23,6 +25,7 @@ const Base =
  * @inherits PopupSource
  * @mixes AriaRoleMixin
  * @mixes DelegateFocusMixin
+ * @mixes FormElementMixin
  * @mixes KeyboardMixin
  * @elementrole {Hidden} backdrop
  * @elementrole {'input'} input
