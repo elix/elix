@@ -1,8 +1,8 @@
 import * as symbols from './symbols.js';
 import * as template from './template.js';
+import FormElementMixin from './FormElementMixin.js';
 import SlotContentMixin from './SlotContentMixin.js';
 import WrappedStandardElement from './WrappedStandardElement.js';
-import FormElementMixin from './FormElementMixin.js';
 
 
 const Base = 
@@ -85,6 +85,7 @@ class AutoSizeTextarea extends Base {
   get defaultState() {
     const state = Object.assign(super.defaultState, {
       minimumRows: 1,
+      value: null,
       valueTracksContent: true
     });
 
@@ -236,11 +237,11 @@ class AutoSizeTextarea extends Base {
    * @type {string}
    */
   get value() {
-    return super.value;
+    return this.state.value;
   }
   set value(value) {
-    super.value = value;
     this.setState({
+      value,
       valueTracksContent: false
     });
   }

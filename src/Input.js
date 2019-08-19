@@ -1,9 +1,13 @@
 import * as symbols from './symbols.js';
 import * as template from './template.js';
 import WrappedStandardElement from './WrappedStandardElement.js';
+import FormElementMixin from './FormElementMixin.js';
 
 
-const Base = WrappedStandardElement.wrap('input');
+const Base = 
+  FormElementMixin(
+    WrappedStandardElement.wrap('input')
+  );
 
 
 /**

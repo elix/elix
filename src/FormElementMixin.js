@@ -1,9 +1,16 @@
 import * as symbols from './symbols.js';
+import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
 const formElementsSupported = 'ElementInternals' in window;
 
 
+/**
+ * 
+ * The mixin expects the component to define a `value` property.
+ * 
+ * @param {Constructor<ReactiveElement>} Base
+ */
 export default function FormElementMixin(Base) {
 
   // The class prototype added by the mixin.
@@ -41,9 +48,9 @@ export default function FormElementMixin(Base) {
     }
 
     // Uncomment for debugging only
-    // get internals() {
-    //   return this[symbols.internals];
-    // }
+    get internals() {
+      return this[symbols.internals];
+    }
 
     static get formAssociated() {
       return true;
@@ -103,23 +110,6 @@ export default function FormElementMixin(Base) {
 
     get validity() {
       return this[symbols.internals].validity;
-    }
-
-    /**
-     * The element's current value.
-     *
-     * If the element is associated with an HTML form, this `value` is what the
-     * element will contribute to the data submitted with the form.
-     *
-     * @type {string}
-     */
-    get value() {
-      return this.state.value;
-    }
-    set value(value) {
-      this.setState({
-        value
-      });
     }
 
     get willValidate() {
