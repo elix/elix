@@ -47,6 +47,7 @@ export { default as FilterComboBox } from './FilterComboBox.js';
 export { default as FilterListBox } from './FilterListBox.js';
 export { default as FocusCaptureMixin } from './FocusCaptureMixin.js';
 export { default as FocusVisibleMixin } from './FocusVisibleMixin.js';
+export { default as FormElementMixin } from './FormElementMixin.js';
 export { default as GenericMixin } from './GenericMixin.js';
 export { default as HamburgerMenuButton } from './HamburgerMenuButton.js';
 export { default as Hidden } from './Hidden.js';
