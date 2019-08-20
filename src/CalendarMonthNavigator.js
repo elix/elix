@@ -77,7 +77,7 @@ class CalendarMonthNavigator extends Base {
   }
 
   get defaultState() {
-    return Object.assign(super.defaultState, {
+    const result = Object.assign(super.defaultState, {
       arrowButtonOverlap: false,
       canGoNext: true,
       canGoPrevious: true,
@@ -85,8 +85,19 @@ class CalendarMonthNavigator extends Base {
       dayRole: CalendarDayButton,
       orientation: 'both',
       showCompleteWeeks: true,
-      showSelectedDay: true
+      showSelectedDay: true,
+      value: null
     });
+
+    // Reflect any change in date to value as well so that FormElementMixin can
+    // update form internals.
+    result.onChange('date', state => ({
+      value: state.date ?
+        state.date.toString() :
+        ''
+    }));
+
+    return result;
   }
 
     [symbols.keydown](/** @type {KeyboardEvent} */ event) {

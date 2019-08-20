@@ -8,22 +8,71 @@
 
   <link rel="stylesheet" href="demos.css">
   <script type="module" src="../src/AutoSizeTextarea.js"></script>
+  <script type="module" src="../src/AutoCompleteComboBox.js"></script>
+  <script type="module" src="../src/CalendarMonthNavigator.js"></script>
 
 </head>
 
 <body role="main">
   <div class="demo" style="min-width: 300px;">
-    <form target="result" action="about:blank">
-      <elix-auto-size-textarea aria-label="Sample auto-sizing textarea" name="body" value="Hello"></elix-auto-size-textarea>
-      <button type="submit">Submit</button>
+    <style>
+      #sampleForm > div + div {
+        margin-top: 1em;
+      }
+
+      #resultFrame {
+        border: 1px solid gray;
+      }
+    </style>
+    <form id="sampleForm" target="result" action="displayQueryParameters.html">
+      <div>
+        <elix-auto-size-textarea aria-label="Sample auto-sizing textarea" name="body" value="Hello"></elix-auto-size-textarea>
+      </div>
+      <div>
+        <label>
+          Pet:
+          <elix-auto-complete-combo-box name="pet">
+            <div>Canary</div>
+            <div>Cat</div>
+            <div>Chicken</div>
+            <div>Chinchilla</div>
+            <div>Cockatiel</div>
+            <div>Cricket</div>
+            <div>Dog</div>
+            <div>Ferret</div>
+            <div>Finch</div>
+            <div>Fish</div>
+            <div>Frog</div>
+            <div>Gerbil</div>
+            <div>Guinea Pig</div>
+            <div>Hamster</div>
+            <div>Hermit Crab</div>
+            <div>Lizard</div>
+            <div>Mouse</div>
+            <div>Parakeet</div>
+            <div>Parrot</div>
+            <div>Pig</div>
+            <div>Rabbit</div>
+            <div>Rat</div>
+            <div>Snail</div>
+            <div>Snake</div>
+            <div>Spider</div>
+            <div>Turtle</div>
+          </elix-auto-complete-combo-box>
+        </label>
+      </div>
+      <div>
+        <elix-calendar-month-navigator label="Birthday" name="birthday"></elix-calendar-month-navigator>
+      </div>
+      <div>
+        <button type="submit">Submit</button>
+      </div>
     </form>
-    <iframe name="result"></iframe>
-    <script>
-      const form = document.querySelector('form');
-      form.addEventListener('formdata', event => {
-        debugger;
-      });
-    </script>
+    <hr/>
+    <p>
+      Form submission results:
+    </p>
+    <iframe id="resultFrame" name="result"></iframe>
   </div>
 </body>
 
