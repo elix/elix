@@ -8,6 +8,7 @@ import CalendarElementMixin from './CalendarElementMixin.js';
 import CalendarMonth from './CalendarMonth.js';
 import DarkModeMixin from './DarkModeMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
+import FormElementMixin from './FormElementMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
@@ -18,11 +19,12 @@ const Base =
   CalendarElementMixin(
   DarkModeMixin(
   FocusVisibleMixin(
+  FormElementMixin(
   KeyboardDirectionMixin(
   KeyboardMixin(
   LanguageDirectionMixin(
     CalendarMonth
-  )))))));
+  ))))))));
 
 
 /**
@@ -33,8 +35,10 @@ const Base =
  * @mixes CalendarElementMixin
  * @mixes DarkModeMixin
  * @mixes FocusVisibleMixin
+ * @mixes FormElementMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
+ * @mixes LanguageDirectionMixin
  */
 class CalendarMonthNavigator extends Base {
 
@@ -166,6 +170,14 @@ class CalendarMonthNavigator extends Base {
     result.content.appendChild(styleTemplate.content);
 
     return result;
+  }
+
+  // Expose `value` as a synonym for `date` for use in forms.
+  get value() {
+    return this.date;
+  }
+  set value(value) {
+    this.date = value;
   }
 
 }
