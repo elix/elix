@@ -8,7 +8,9 @@ const formElementsSupported = 'ElementInternals' in window;
 class FormElementTest extends FormElementMixin(ReactiveElement) {
 
   get defaultState() {
-    const result = super.defaultState;
+    const result = Object.assign(super.defaultState, {
+      value: null
+    });
 
     result.onChange('value', state => {
       const valid = state.value !== null && state.value !== '';
@@ -20,6 +22,15 @@ class FormElementTest extends FormElementMixin(ReactiveElement) {
     });
 
     return result;
+  }
+
+  get value() {
+    return this.state.value;
+  }
+  set value(value) {
+    this.setState({
+      value
+    });
   }
 
 }
@@ -74,6 +85,6 @@ customElements.define('form-element-test', FormElementTest);
     fixture.value = 'bandicoot';
     fixture.render();
     assert(fixture.checkValidity());
-  })
+  });
 
 });
