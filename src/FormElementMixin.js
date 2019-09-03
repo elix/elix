@@ -47,9 +47,9 @@ export default function FormElementMixin(Base) {
     }
 
     // Uncomment for debugging only
-    get internals() {
-      return this[symbols.internals];
-    }
+    // get internals() {
+    //   return this[symbols.internals];
+    // }
 
     static get formAssociated() {
       return true;
