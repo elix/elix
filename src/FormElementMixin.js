@@ -79,18 +79,20 @@ export default function FormElementMixin(Base) {
         this.setAttribute('name', this.state.name);
       }
 
-      // Reflect validity state to internals.
-      if (changed.valid || changed.validationMessage) {
-        const { valid, validationMessage } = this.state;
-        if (valid) {
-          this[symbols.internals].setValidity({});
-        } else {
-          this[symbols.internals].setValidity(
-            {
-              customError: true
-            },
-            validationMessage
-          );
+      if (formElementsSupported) {
+          // Reflect validity state to internals.
+        if (changed.valid || changed.validationMessage) {
+          const { valid, validationMessage } = this.state;
+          if (valid) {
+            this[symbols.internals].setValidity({});
+          } else {
+            this[symbols.internals].setValidity(
+              {
+                customError: true
+              },
+              validationMessage
+            );
+          }
         }
       }
     }
