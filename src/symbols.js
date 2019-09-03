@@ -213,6 +213,7 @@ export const hasDynamicTemplate = Symbol('hasDynamicTemplate');
 /**
  * Symbol for access to form internals.
  * 
+ // @ts-ignore
  * @type {ElementInternals}
  */
 export const internals = Symbol('internals');
