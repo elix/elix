@@ -5,6 +5,7 @@ import AriaListMixin from './AriaListMixin.js';
 import ComposedFocusMixin from './ComposedFocusMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
+import FormElementMixin from './FormElementMixin.js';
 import ItemsTextMixin from './ItemsTextMixin.js';
 import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
@@ -23,6 +24,7 @@ export default class ListBox extends
     ComposedFocusMixin(
     DirectionSelectionMixin(
     FocusVisibleMixin(
+    FormElementMixin(
     ItemsTextMixin(
     KeyboardDirectionMixin(
     KeyboardMixin(
@@ -35,6 +37,6 @@ export default class ListBox extends
     SlotItemsMixin(
     TapSelectionMixin(
       ReactiveElement
-    ))))))))))))))) {
+    )))))))))))))))) {
   orientation: 'horizontal'|'vertical';
 }
