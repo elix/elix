@@ -41,7 +41,7 @@ class SwipeDemo extends Base {
       const axis = vertical ? 'Y' : 'X';
       this.$.block.style.transform = swipeFraction !== null ?
         `translate${axis}(${swipeFraction * 100}%)` :
-        null;
+        '';
       this.$.swipeFraction.textContent = swipeFraction !== null ?
         swipeFraction.toFixed(3) :
         '—';

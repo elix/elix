@@ -158,7 +158,7 @@ class Drawer extends Base {
       // prevents any box-shadow on the frame from being visible.
       const hasGrip = gripSize !== null;
       const clip = !hasGrip && !openedOrSwiping;
-      this.$.frame.style.clipPath = clip ? 'inset(0px)' : null;
+      this.$.frame.style.clipPath = clip ? 'inset(0px)' : '';
     }
 
     if (changed.effect || changed.effectPhase || changed.enableEffects ||

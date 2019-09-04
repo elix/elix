@@ -180,7 +180,7 @@ class TabStrip extends Base {
       });
     }
     if (changed.generic) {
-      this.style.gridGap = this.state.generic ? '0.25em' : null;
+      this.style.gridGap = this.state.generic ? '0.25em' : '';
     }
     if (changed.orientation) {
       this.style.gridAutoFlow = this.state.orientation === 'vertical' ?

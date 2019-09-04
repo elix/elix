@@ -112,7 +112,7 @@ class DrawerWithGrip extends Drawer {
       // Rotate the default grip icon to reflect the swipe axis.
       const transform = this.state.swipeAxis === 'horizontal' ?
         'rotate(90deg)' :
-        null;
+        '';
       this.$.gripIcon.style.transform = transform;
     }
   }

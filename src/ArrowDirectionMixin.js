@@ -197,7 +197,7 @@ function ArrowDirectionMixin(Base) {
           'rotate(90deg)' :
           rightToLeft ?
             'rotateZ(180deg)' :
-            null;
+            '';
         this.$.arrowIconPrevious.style.transform = transform;
         this.$.arrowIconNext.style.transform = transform;
       }
