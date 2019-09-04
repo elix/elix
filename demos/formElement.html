@@ -14,7 +14,7 @@
 </head>
 
 <body role="main">
-  <div class="demo" style="min-width: 300px;">
+  <div class="demo padded" style="min-width: 300px;">
     <style>
       #sampleForm > div + div {
         margin-top: 1em;
@@ -24,13 +24,16 @@
         border: 1px solid gray;
         width: 100%;
       }
+
+      #formsNotSupported {
+        display: none;
+      }
     </style>
     <p>
       The form below contains custom elements whose values will be submitted
-      with the form. (As of September 2019, form features are only available in
-      Chrome and Edge development builds.)
+      with the form.
     </p>
-    <form id="sampleForm" target="result" action="displayQueryParameters.html">
+    <form id="sampleForm" target="formTarget" action="../demos/displayQueryParameters.html">
       <div>
         <elix-auto-size-textarea aria-label="Sample auto-sizing textarea" name="body" value="Hello"></elix-auto-size-textarea>
       </div>
@@ -71,14 +74,25 @@
         <elix-calendar-month-navigator label="Birthday" name="birthday"></elix-calendar-month-navigator>
       </div>
       <div>
-        <button type="submit">Submit</button>
+        <button type="submit" id="formSubmit">Submit</button>
+        <span id="formsNotSupported">
+          Your browser does not support form-associated custom elements. As of
+          September 2019, form features are only available in Chrome and Edge
+          development builds.
+        </span>
       </div>
     </form>
     <hr/>
     <p>
       Form submission results:
     </p>
-    <iframe id="resultFrame" name="result"></iframe>
+    <iframe id="resultFrame" name="formTarget"></iframe>
+    <script>
+      if (!('ElementInternals' in window)) {
+        formSubmit.disabled = true;
+        formsNotSupported.style.display = 'inline';
+      }
+    </script>
   </div>
 </body>
 

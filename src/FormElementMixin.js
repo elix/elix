@@ -6,9 +6,11 @@ const formElementsSupported = 'ElementInternals' in window;
 
 
 /**
+ * Allows a component to participate in HTML form submission.
  * 
  * The mixin expects the component to define a `value` property.
  * 
+ * @module FormElementMixin
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function FormElementMixin(Base) {
@@ -47,18 +49,35 @@ export default function FormElementMixin(Base) {
     }
 
     // Uncomment for debugging only
-    // get internals() {
-    //   return this[symbols.internals];
-    // }
+    get internals() {
+      return this[symbols.internals];
+    }
 
     static get formAssociated() {
       return true;
     }
     
+    /**
+     * The ID of the `form` element with which this element is associated,
+     * or `null` if the element is not associated with any form. This is provided
+     * for consistency with the native HTML
+     * [form](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#form)
+     * property.
+     * 
+     * @type {string}
+     */
     get form() {
       return this[symbols.internals].form;
     }
 
+    /**
+     * The name of the form field that will be filled with this element's
+     * `value`. This is an analogue of the standard HTML
+     * [name](https://developer.mozilla.org/en-US/docs/Web/API/Element/name)
+     * property.
+     * 
+     * @type {string}
+     */
     get name() {
       return this.state.name;
     }
@@ -101,6 +120,15 @@ export default function FormElementMixin(Base) {
       return this[symbols.internals].reportValidity();
     }
 
+    /**
+     * The "type" of the form field, provided for consistency with the
+     * native HTML
+     * [type](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#type)
+     * property. The value of this property will be the same as the HTML tag
+     * name registered for the custom element.
+     * 
+     * @type {string}
+     */
     get type() {
       return this.localName;
     }
