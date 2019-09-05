@@ -28,7 +28,7 @@ export default function SelectedItemTextValueMixin(Base) {
 
     [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
       if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
-      const { items, pendingValue } = this.state;
+      const { items, pendingValue } = this[symbols.state];
       if (pendingValue && items) {
         const index = indexOfItemWithText(items, pendingValue);
         this[symbols.setState]({
@@ -53,7 +53,7 @@ export default function SelectedItemTextValueMixin(Base) {
         this.selectedItem.textContent;
     }
     set value(text) {
-      const items = this.state.items;
+      const items = this[symbols.state].items;
       if (items === null) {
         // No items yet, save and try again later.
         this[symbols.setState]({

@@ -65,7 +65,7 @@ export default function FocusVisibleMixin(Base) {
       });
       this.addEventListener('focusin', () => {
         Promise.resolve().then(() => {
-          if (this.state.focusVisible !== keyboardActive) {
+          if (this[symbols.state].focusVisible !== keyboardActive) {
             // Show the element as focused if the keyboard has been used.
             this[symbols.setState]({
               focusVisible: keyboardActive
@@ -92,7 +92,7 @@ export default function FocusVisibleMixin(Base) {
       if (changed.focusVisible) {
         // Suppress the component's normal `outline` style unless we know the
         // focus should be visible.
-        this.style.outline = this.state.focusVisible ? '' : 'none';
+        this.style.outline = this[symbols.state].focusVisible ? '' : 'none';
       }
     }
 

@@ -15,7 +15,7 @@ class SlotContentTest extends SlotContentMixin(HTMLElement) {
       <slot></slot>
     `;
     // Simulate key bits of ReactiveMixin.
-    this.state = this[symbols.defaultState];
+    this[symbols.state] = this[symbols.defaultState];
     this[symbols.componentDidMount]();
   }
 
@@ -24,7 +24,7 @@ class SlotContentTest extends SlotContentMixin(HTMLElement) {
   }
 
  [symbols.setState](state) {
-    Object.assign(this.state, state);
+    Object.assign(this[symbols.state], state);
   }
 
 }
@@ -70,7 +70,7 @@ describe("SlotContentMixin", () => {
     fixture.innerHTML = `<div>One</div><div>Two</div><div>Three</div>`;
     // Wait for initial content.
     await Promise.resolve();
-    assert.equal(fixture.state.content.length, 3);
+    assert.equal(fixture[symbols.state].content.length, 3);
   });
 
   it("returns distributed nodes as content", async () => {
@@ -79,7 +79,7 @@ describe("SlotContentMixin", () => {
     const fixture = wrapper.shadowRoot.querySelector('slot-content-test');
     // Wait for initial content.
     await Promise.resolve();
-    assert.equal(fixture.state.content.length, 3);
+    assert.equal(fixture[symbols.state].content.length, 3);
   });
 
   it("sets content when defined component is parsed", async () => {
@@ -87,7 +87,7 @@ describe("SlotContentMixin", () => {
     const fixture = container.querySelector('slot-content-test');
     // Wait for initial content.
     await Promise.resolve();
-    assert.equal(fixture.state.content[0].textContent, 'beaver');
+    assert.equal(fixture[symbols.state].content[0].textContent, 'beaver');
   });
 
   it("updates content when textContent changes", async () => {
@@ -97,7 +97,7 @@ describe("SlotContentMixin", () => {
     fixture.textContent = 'chihuahua';
     // Wait for slotchange event to be processed.
     await Promise.resolve();
-    assert.equal(fixture.state.content[0].textContent, 'chihuahua');
+    assert.equal(fixture[symbols.state].content[0].textContent, 'chihuahua');
   });
 
   it("updates content when children change", async () => {
@@ -109,7 +109,7 @@ describe("SlotContentMixin", () => {
     fixture.appendChild(div);
     // Wait for slotchange event to be processed.
     await Promise.resolve();
-    assert.equal(fixture.state.content[0].textContent, 'dingo');
+    assert.equal(fixture[symbols.state].content[0].textContent, 'dingo');
   });
 
   it("updates content when redistributed content changes", async () => {
@@ -120,7 +120,7 @@ describe("SlotContentMixin", () => {
     wrapper.textContent = 'echidna';
     // Wait for slotchange event to be processed.
     await Promise.resolve();
-    assert.equal(fixture.state.content[0].textContent, 'echidna');
+    assert.equal(fixture[symbols.state].content[0].textContent, 'echidna');
   });
 
   it("updates content if node is removed from light DOM", async () => {
@@ -137,7 +137,7 @@ describe("SlotContentMixin", () => {
 
     // Wait for second slotchange event to be processed.
     await Promise.resolve();
-    assert.equal(fixture.state.content.length, 0);
+    assert.equal(fixture[symbols.state].content.length, 0);
   });
 
   it("gets initial content from initial innerHTML", async () => {
@@ -145,7 +145,7 @@ describe("SlotContentMixin", () => {
     const fixture = container.querySelector('slot-content-test');
     // Wait for initial content.
     await Promise.resolve();
-    assert.equal(fixture.state.content[0].textContent, 'iguana');
+    assert.equal(fixture[symbols.state].content[0].textContent, 'iguana');
   });
 
 });

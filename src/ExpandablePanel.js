@@ -41,7 +41,7 @@ class ExpandablePanel extends Base {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.effect || changed.effectPhase || changed.enableEffects) {
-      const { effect, effectPhase, enableEffects } = this.state;
+      const { effect, effectPhase, enableEffects } = this[symbols.state];
       
       // The inner container lets us measure how tall the content wants to be.
       const naturalHeight = this.$.innerContainer.getBoundingClientRect().height;
@@ -80,9 +80,9 @@ class ExpandablePanel extends Base {
     if (changed.opened || changed.tabIndex) {
       // We only set aria-expanded if this component can get the keyboard focus
       // (which it usually won't).
-      const canReceiveFocus = this.state.tabIndex >= 0;
+      const canReceiveFocus = this[symbols.state].tabIndex >= 0;
       if (canReceiveFocus) {
-        this.setAttribute('aria-expanded', this.state.opened.toString());
+        this.setAttribute('aria-expanded', this[symbols.state].opened.toString());
       } else {
         this.removeAttribute('aria-expanded');
       }

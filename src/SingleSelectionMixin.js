@@ -31,7 +31,7 @@ export default function SingleSelectionMixin(Base) {
      * @type {boolean}
      */
     get canSelectNext() {
-      return this.state.canSelectNext;
+      return this[symbols.state].canSelectNext;
     }
 
     /**
@@ -41,13 +41,13 @@ export default function SingleSelectionMixin(Base) {
      * @type {boolean}
      */
     get canSelectPrevious() {
-      return this.state.canSelectPrevious;
+      return this[symbols.state].canSelectPrevious;
     }
 
     [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
       if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
       if (changed.selectedIndex && this[symbols.raiseChangeEvents]) {
-        const selectedIndex = this.state.selectedIndex;
+        const selectedIndex = this[symbols.state].selectedIndex;
         /**
          * Raised when the `selectedIndex` property changes.
          * 
@@ -145,7 +145,7 @@ export default function SingleSelectionMixin(Base) {
      * @type {number}
      */
     get selectedIndex() {
-      const { items, selectedIndex } = this.state;
+      const { items, selectedIndex } = this[symbols.state];
       return items && items.length > 0 ?
         selectedIndex :
         -1;
@@ -165,11 +165,11 @@ export default function SingleSelectionMixin(Base) {
      * @type {Element}
      */
     get selectedItem() {
-      const { items, selectedIndex } = this.state;
+      const { items, selectedIndex } = this[symbols.state];
       return items && items[selectedIndex];
     }
     set selectedItem(selectedItem) {
-      const { items } = this.state;
+      const { items } = this[symbols.state];
       if (!items) {
         return;
       }
@@ -186,7 +186,7 @@ export default function SingleSelectionMixin(Base) {
      * @default false
      */
     get selectionRequired() {
-      return this.state.selectionRequired;
+      return this[symbols.state].selectionRequired;
     }
     set selectionRequired(selectionRequired) {
       this[symbols.setState]({
@@ -201,7 +201,7 @@ export default function SingleSelectionMixin(Base) {
      * @default false
      */
     get selectionWraps() {
-      return this.state.selectionWraps;
+      return this[symbols.state].selectionWraps;
     }
     set selectionWraps(selectionWraps) {
       this[symbols.setState]({
@@ -216,7 +216,7 @@ export default function SingleSelectionMixin(Base) {
      */
     selectLast() {
       if (super.selectLast) { super.selectLast(); }
-      return updateSelectedIndex(this, this.state.items.length - 1);
+      return updateSelectedIndex(this, this[symbols.state].items.length - 1);
     }
 
     /**
@@ -228,7 +228,7 @@ export default function SingleSelectionMixin(Base) {
      */
     selectNext() {
       if (super.selectNext) { super.selectNext(); }
-      return updateSelectedIndex(this, this.state.selectedIndex + 1);
+      return updateSelectedIndex(this, this[symbols.state].selectedIndex + 1);
     }
 
     /**
@@ -241,7 +241,7 @@ export default function SingleSelectionMixin(Base) {
     selectPrevious() {
       if (super.selectPrevious) { super.selectPrevious(); }
       let newIndex;
-      const { items, selectedIndex, selectionWraps } = this.state;
+      const { items, selectedIndex, selectionWraps } = this[symbols.state];
       if ((items && selectedIndex < 0) ||
           (selectionWraps && selectedIndex === 0)) {
         // No selection yet, or we're on the first item, and selection wraps.
@@ -306,11 +306,11 @@ function validateIndex(index, count, selectionRequired, selectionWraps) {
 function updateSelectedIndex(element, selectedIndex) {
   const validatedIndex = validateIndex(
     selectedIndex,
-    element.state.items.length,
-    element.state.selectionRequired,
-    element.state.selectionWraps
+    element[symbols.state].items.length,
+    element[symbols.state].selectionRequired,
+    element[symbols.state].selectionWraps
   );
-  const changed = element.state.selectedIndex !== validatedIndex;
+  const changed = element[symbols.state].selectedIndex !== validatedIndex;
   if (changed) {
     element[symbols.setState]({
       selectedIndex: validatedIndex

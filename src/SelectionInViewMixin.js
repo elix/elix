@@ -50,7 +50,7 @@ export default function SelectionInViewMixin(Base) {
       if (super.scrollSelectionIntoView) { super.scrollSelectionIntoView(); }
 
       const scrollTarget = this[symbols.scrollTarget];
-      const { selectedIndex, items } = this.state;
+      const { selectedIndex, items } = this[symbols.state];
       if (selectedIndex < 0 || !items) {
         return;
       }
@@ -75,7 +75,7 @@ export default function SelectionInViewMixin(Base) {
       // Scroll the target as necessary to bring the item into view.
       // If an `orientation` state member is defined, only scroll along that
       // axis. Otherwise, assume the orientation is "both".
-      const orientation = this.state.orientation || 'both';
+      const orientation = this[symbols.state].orientation || 'both';
       if (orientation === 'horizontal' || orientation === 'both') {
         if (rightDelta > 0) {
           scrollTarget.scrollLeft += rightDelta;            // Scroll right

@@ -53,11 +53,11 @@ class RenderState extends Base {
   }
 
   get fixture() {
-    return this.state.fixture;
+    return this[symbols.state].fixture;
   }
 
   get fixtureState() {
-    return this.state.fixtureState;
+    return this[symbols.state].fixtureState;
   }
   set fixtureState(fixtureState) {
     const parsed = typeof fixtureState === 'string' ?
@@ -71,7 +71,7 @@ class RenderState extends Base {
   [symbols.render](changed) {
     if (super[symbols.render]) { super[symbols.render](changed); }
     if (changed.fixture || changed.fixtureState) {
-      const { fixture, fixtureState } = this.state;
+      const { fixture, fixtureState } = this[symbols.state];
       if (fixture && fixtureState) {
         customElements.whenDefined(fixture.localName)
         .then(() => {

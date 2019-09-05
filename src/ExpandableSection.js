@@ -40,7 +40,7 @@ class ExpandableSection extends Base {
    * @default SeamlessButton
    */
   get headerRole() {
-    return this.state.headerRole;
+    return this[symbols.state].headerRole;
   }
   set headerRole(headerRole) {
     this[symbols.setState]({ headerRole });
@@ -53,7 +53,7 @@ class ExpandableSection extends Base {
    * @default ExpandablePanel
    */
   get panelRole() {
-    return this.state.panelRole;
+    return this[symbols.state].panelRole;
   }
   set panelRole(panelRole) {
     this[symbols.setState]({ panelRole });
@@ -62,7 +62,7 @@ class ExpandableSection extends Base {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.headerRole) {
-      template.transmute(this.$.header, this.state.headerRole);
+      template.transmute(this.$.header, this[symbols.state].headerRole);
       this.$.header.addEventListener('click', () => {
         this[symbols.raiseChangeEvents] = true;
         this.toggle();
@@ -70,10 +70,10 @@ class ExpandableSection extends Base {
       });
     }
     if (changed.panelRole) {
-      template.transmute(this.$.panel, this.state.panelRole);
+      template.transmute(this.$.panel, this[symbols.state].panelRole);
     }
     if (changed.opened) {
-      const { opened } = this.state;
+      const { opened } = this[symbols.state];
       this.$.header.setAttribute('aria-expanded', opened.toString());
       if (this.$.collapseIcon) {
         this.$.collapseIcon.style.display = opened ? 'block' : 'none';

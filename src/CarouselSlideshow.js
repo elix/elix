@@ -37,7 +37,7 @@ class CarouselSlideshow extends Base {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.transitionDuration) {
-      const { transitionDuration } = this.state;
+      const { transitionDuration } = this[symbols.state];
       if ('transitionDuration' in this.$.proxyList) {
         /** @type {any} */ (this.$.proxyList).transitionDuration = transitionDuration;
       }
@@ -47,7 +47,7 @@ class CarouselSlideshow extends Base {
     }
   }
   get transitionDuration() {
-    return this.state.transitionDuration;
+    return this[symbols.state].transitionDuration;
   }
   set transitionDuration(transitionDuration) {
     this[symbols.setState]({ transitionDuration });

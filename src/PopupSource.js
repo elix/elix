@@ -53,7 +53,7 @@ class PopupSource extends Base {
    * @default Backdrop
    */
   get backdropRole() {
-    return this.state.backdropRole;
+    return this[symbols.state].backdropRole;
   }
   set backdropRole(backdropRole) {
     this[symbols.setState]({ backdropRole });
@@ -61,7 +61,7 @@ class PopupSource extends Base {
 
   [symbols.componentDidMount]() {
     super[symbols.componentDidMount]();
-    if (this.state.opened) {
+    if (this[symbols.state].opened) {
       // Popup is opened initially, which is somewhat unusual.
       waitThenRenderOpened(this);
     }
@@ -76,7 +76,7 @@ class PopupSource extends Base {
       } else {
         removeEventListeners(this);
       }
-    } else if (this.opened && !this.state.popupMeasured) {
+    } else if (this.opened && !this[symbols.state].popupMeasured) {
       // Need to recalculate popup measurements.
       measurePopup(this);
     }
@@ -135,7 +135,7 @@ class PopupSource extends Base {
    * @default OverlayFrame
    */
   get frameRole() {
-    return this.state.frameRole;
+    return this[symbols.state].frameRole;
   }
   set frameRole(frameRole) {
     this[symbols.setState]({ frameRole });
@@ -156,7 +156,7 @@ class PopupSource extends Base {
    * @default 'start'
    */
   get horizontalAlign() {
-    return this.state.horizontalAlign;
+    return this[symbols.state].horizontalAlign;
   }
   set horizontalAlign(horizontalAlign) {
     this[symbols.setState]({
@@ -168,12 +168,12 @@ class PopupSource extends Base {
     super[symbols.render](changed);
     if (changed.frameRole) {
       if ('frameRole' in this.$.popup) {
-        const { frameRole } = this.state;
+        const { frameRole } = this[symbols.state];
         /** @type {any} */ (this.$.popup).frameRole = frameRole;
       }
     }
     if (changed.popupRole) {
-      template.transmute(this.$.popup, this.state.popupRole);
+      template.transmute(this.$.popup, this[symbols.state].popupRole);
 
       // Popup's opened state becomes our own opened state.
       this.$.popup.addEventListener('opened', () => {
@@ -200,7 +200,7 @@ class PopupSource extends Base {
       // Since this check depends on popup, do it after we do any necessary
       // transmuting of popup.
       if ('backdropRole' in this.$.popup) {
-        const { backdropRole } = this.state;
+        const { backdropRole } = this[symbols.state];
         /** @type {any} */ (this.$.popup).backdropRole = backdropRole;
       }
     }
@@ -217,7 +217,7 @@ class PopupSource extends Base {
         roomBelow,
         roomLeft,
         roomRight
-      } = this.state;
+      } = this[symbols.state];
       
       const fitsAbove = popupHeight <= roomAbove;
       const fitsBelow = popupHeight <= roomBelow;
@@ -296,10 +296,10 @@ class PopupSource extends Base {
       this.$.popupContainer.style.top = positionBelow ? null : '0';
     }
     if (changed.sourceRole) {
-      template.transmute(this.$.source, this.state.sourceRole);
+      template.transmute(this.$.source, this[symbols.state].sourceRole);
     }    
     if (changed.opened) {
-      const { opened } = this.state;
+      const { opened } = this[symbols.state];
       Object.assign(this.$.source.style, {
         backgroundColor: opened ? 'highlight' : null,
         color: opened ? 'highlighttext' : null
@@ -309,7 +309,7 @@ class PopupSource extends Base {
     }
     if (changed.disabled) {
       if ('disabled' in this.$.source) {
-        const { disabled } = this.state;
+        const { disabled } = this[symbols.state];
         /** @type {any} */ (this.$.source).disabled = disabled;
       }
     }
@@ -325,7 +325,7 @@ class PopupSource extends Base {
    * @default 'below'
    */
   get popupPosition() {
-    return this.state.popupPosition;
+    return this[symbols.state].popupPosition;
   }
   set popupPosition(popupPosition) {
     this[symbols.setState]({
@@ -342,7 +342,7 @@ class PopupSource extends Base {
    * @default Popup
    */
   get popupRole() {
-    return this.state.popupRole;
+    return this[symbols.state].popupRole;
   }
   set popupRole(popupRole) {
     this[symbols.setState]({ popupRole });
@@ -356,7 +356,7 @@ class PopupSource extends Base {
    * @default 'button'
    */
   get sourceRole() {
-    return this.state.sourceRole;
+    return this[symbols.state].sourceRole;
   }
   set sourceRole(sourceRole) {
     this[symbols.setState]({ sourceRole });

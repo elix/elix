@@ -67,7 +67,7 @@ class FilterComboBox extends Base {
         const cast = event;
         const filter = cast.detail ?
           cast.detail.originalText :
-          this.state.value;
+          this[symbols.state].value;
         this[symbols.setState]({
           filter
         });
@@ -75,7 +75,7 @@ class FilterComboBox extends Base {
       });
     }
     if (changed.filter || changed.selectedIndex) {
-      const { filter, selectedIndex } = this.state;
+      const { filter, selectedIndex } = this[symbols.state];
       if (filter === '' || selectedIndex === -1) {
         const list = /** @type {any} */ (this.$.list);
         if ('filter' in list) {
@@ -86,7 +86,7 @@ class FilterComboBox extends Base {
     if (changed.texts) {
       const input = /** @type {any} */ (this.$.input);
       if ('texts' in input) {
-        input.texts = this.state.texts;
+        input.texts = this[symbols.state].texts;
       }
     }
   }

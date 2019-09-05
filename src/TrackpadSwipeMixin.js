@@ -143,7 +143,7 @@ function handleWheel(element, event) {
     swipeAxis,
     swipeFractionMax,
     swipeFractionMin
-  } = element.state;
+  } = element[symbols.state];
   const vertical = swipeAxis === 'vertical';
   const acceleration = vertical ?
     Math.sign(deltaY) * (deltaY - cast[lastDeltaYKey]) :
@@ -321,13 +321,13 @@ async function wheelTimedOut(element) {
 
   // If the user swiped far enough to commit a gesture, handle it now.
   let gesture;
-  if (element.state.swipeDownWillCommit) {
+  if (element[symbols.state].swipeDownWillCommit) {
     gesture = symbols.swipeDown;
-  } else if (element.state.swipeLeftWillCommit) {
+  } else if (element[symbols.state].swipeLeftWillCommit) {
     gesture = symbols.swipeLeft;
-  } else if (element.state.swipeRightWillCommit) {
+  } else if (element[symbols.state].swipeRightWillCommit) {
     gesture = symbols.swipeRight;
-  } else if (element.state.swipeUpWillCommit) {
+  } else if (element[symbols.state].swipeUpWillCommit) {
     gesture = symbols.swipeUp;
   }
 

@@ -48,7 +48,7 @@ class DateInput extends Base {
   }
 
   get dateTimeFormatOptions() {
-    return this.state.dateTimeFormatOptions;
+    return this[symbols.state].dateTimeFormatOptions;
   }
   set dateTimeFormatOptions(dateTimeFormatOptions) {
     this[symbols.setState]({
@@ -210,7 +210,7 @@ class DateInput extends Base {
    * @type {'future'|'past'|null}
    */
   get timeBias() {
-    return this.state.timeBias;
+    return this[symbols.state].timeBias;
   }
   set timeBias(timeBias) {
     this[symbols.setState]({

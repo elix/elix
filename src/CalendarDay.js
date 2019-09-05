@@ -42,7 +42,7 @@ class CalendarDay extends Base {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     const classList = this.classList;
-    const { date } = this.state;
+    const { date } = this[symbols.state];
     if (changed.date) {
       const today = calendar.today();
       const dayOfWeek = date.getDay();
@@ -62,22 +62,22 @@ class CalendarDay extends Base {
     }
     if (changed.date || changed.locale) {
       const dayOfWeek = date.getDay();
-      const { locale } = this.state;
+      const { locale } = this[symbols.state];
       const weekend = dayOfWeek === calendar.weekendStart(locale) ||
         dayOfWeek === calendar.weekendEnd(locale);
       classList.toggle('weekday', !weekend);
       classList.toggle('weekend', weekend);
     }
     if (changed.outsideRange) {
-      classList.toggle('outsideRange', this.state.outsideRange);
+      classList.toggle('outsideRange', this[symbols.state].outsideRange);
     }
     if (changed.selected) {
-      classList.toggle('selected', this.state.selected);
+      classList.toggle('selected', this[symbols.state].selected);
     }
   }
 
   get outsideRange() {
-    return this.state.outsideRange;
+    return this[symbols.state].outsideRange;
   }
   set outsideRange(outsideRange) {
     this[symbols.setState]({
@@ -86,7 +86,7 @@ class CalendarDay extends Base {
   }
 
   get selected() {
-    return this.state.selected;
+    return this[symbols.state].selected;
   }
   set selected(selected) {
     this[symbols.setState]({

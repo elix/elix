@@ -23,8 +23,8 @@ class TransitionEffectTest extends Base {
 
   [symbols.render](changed) {
     super[symbols.render](changed);
-    const effect = this.state.effect;
-    const phase = this.state.effectPhase;
+    const effect = this[symbols.state].effect;
+    const phase = this[symbols.state].effectPhase;
     const display = effect === 'close' && phase === 'after' ?
       'none' :
       'block';

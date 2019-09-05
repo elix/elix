@@ -22,7 +22,7 @@ function PageNumbersMixin(Base) {
     [symbols.render](/** @type {PlainObject} */ changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.selectedIndex) {
-        const { items, selectedIndex } = this.state;
+        const { items, selectedIndex } = this[symbols.state];
         const textContent = selectedIndex >= 0 && items ?
           `${selectedIndex + 1} / ${items.length}` :
           '';

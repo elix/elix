@@ -1,3 +1,4 @@
+import * as symbols from '../../src/symbols.js';
 import AutoSizeTextarea from '../../src/AutoSizeTextarea.js';
 
 
@@ -43,16 +44,16 @@ describe("AutoSizeTextarea", () => {
     container.appendChild(fixture);
     // Give content time to change.
     await Promise.resolve();
-    assert(fixture.state.valueTracksContent);
+    assert(fixture[symbols.state].valueTracksContent);
     assert.equal(fixture.value, 'dingo');
     fixture.value = 'echidna';
     // Give content time to change. Value should track content.
-    assert(!fixture.state.valueTracksContent);
+    assert(!fixture[symbols.state].valueTracksContent);
     assert.equal(fixture.value, 'echidna');
     fixture.textContent = 'fox';
     // Give content time to change. Value should remain unchanged.
     await Promise.resolve();
-    assert(!fixture.state.valueTracksContent);    
+    assert(!fixture[symbols.state].valueTracksContent);    
     assert.equal(fixture.value, 'echidna');
   });
 

@@ -16,7 +16,7 @@ export default class CustomDrawer extends DrawerWithGrip {
     if ((changed.gripSize || changed.opened || changed.swipeFraction) &&
       this.$.plusIcon) {
       // Rotate the toggle button as the drawer is opened.
-      const { opened, swipeFraction } = this.state;
+      const { opened, swipeFraction } = this[symbols.state];
       const rotationFraction = (opened ? 1 : 0) - swipeFraction;
       const boundedRotationFraction =
         Math.max(Math.min(rotationFraction, 1), 0)

@@ -6,7 +6,7 @@ import ReactiveElement from '../../src/ReactiveElement.js';
 export default class MessageSummary extends ReactiveElement {
 
   get date() {
-    return this.state.date;
+    return this[symbols.state].date;
   }
   set date(date) {
     this[symbols.setState]({
@@ -24,7 +24,7 @@ export default class MessageSummary extends ReactiveElement {
   }
 
   get read() {
-    return this.state.read;
+    return this[symbols.state].read;
   }
   set read(read) {
     const parsed = String(read) === 'true';
@@ -36,21 +36,21 @@ export default class MessageSummary extends ReactiveElement {
   [symbols.render](changed) {
     super[symbols.render](changed);
     if (changed.date) {
-      this.$.date.textContent = this.state.date;
+      this.$.date.textContent = this[symbols.state].date;
     }
     if (changed.read) {
-      this.classList.toggle('read', this.state.read);
+      this.classList.toggle('read', this[symbols.state].read);
     }
     if (changed.sender) {
-      this.$.sender.textContent = this.state.sender;
+      this.$.sender.textContent = this[symbols.state].sender;
     }
     if (changed.summary) {
-      this.$.summary.textContent = this.state.summary;
+      this.$.summary.textContent = this[symbols.state].summary;
     }
   }
 
   get sender() {
-    return this.state.sender;
+    return this[symbols.state].sender;
   }
   set sender(sender) {
     this[symbols.setState]({
@@ -59,7 +59,7 @@ export default class MessageSummary extends ReactiveElement {
   }
 
   get summary() {
-    return this.state.summary;
+    return this[symbols.state].summary;
   }
   set summary(summary) {
     this[symbols.setState]({

@@ -60,14 +60,14 @@ class Drawer extends Base {
     });
 
     // Reflect opened attribute.
-    this.setAttribute('opened', this.state.opened.toString());
+    this.setAttribute('opened', this[symbols.state].opened.toString());
   }
 
   [symbols.componentDidUpdate](/** @typeof {PlainObject} */ changed) {
     if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
     if (changed.opened) {
       // Reflect opened attribute.
-      this.setAttribute('opened', this.state.opened.toString());
+      this.setAttribute('opened', this[symbols.state].opened.toString());
     }
   }
 
@@ -112,14 +112,14 @@ class Drawer extends Base {
    * @default 'start'
    */
   get fromEdge() {
-    return this.state.fromEdge;
+    return this[symbols.state].fromEdge;
   }
   set fromEdge(fromEdge) {
     this[symbols.setState]({ fromEdge });
   }
 
   get gripSize() {
-    return this.state.gripSize;
+    return this[symbols.state].gripSize;
   }
   set gripSize(gripSize) {
     this[symbols.setState]({
@@ -141,7 +141,7 @@ class Drawer extends Base {
 
     if (changed.gripSize || changed.opened || changed.swipeFraction) {
       // Only show backdrop when opened or swiping.
-      const { gripSize, opened, swipeFraction } = this.state;
+      const { gripSize, opened, swipeFraction } = this[symbols.state];
       const swiping = swipeFraction !== null;
       const openedOrSwiping = opened || swiping;
       // We use `visibility` instead of `display`. Using `display` has the
@@ -173,7 +173,7 @@ class Drawer extends Base {
         gripSize,
         rightToLeft,
         swipeFraction
-      } = this.state;
+      } = this[symbols.state];
       const opened = (effect === 'open' && effectPhase !== 'before') ||
         (effect === 'close' && effectPhase === 'before');
 
@@ -257,7 +257,7 @@ class Drawer extends Base {
 
     if (changed.fromEdge || changed.rightToLeft) {
       // Dock drawer to appropriate edge
-      const { fromEdge, rightToLeft } = this.state;
+      const { fromEdge, rightToLeft } = this[symbols.state];
 
       // Stick drawer to all edges except the one opposite the fromEdge.
       const edgeCoordinates = {
@@ -300,12 +300,12 @@ class Drawer extends Base {
 
     if (changed.opened) {
       // Reflect opened state to ARIA attribute.
-      this.setAttribute('aria-expanded', this.state.opened.toString());
+      this.setAttribute('aria-expanded', this[symbols.state].opened.toString());
     }
   }
 
   async [symbols.swipeDown]() {
-    const { fromEdge } = this.state;
+    const { fromEdge } = this[symbols.state];
     if (fromEdge === 'top') {
       open(this);
     } else if (fromEdge === 'bottom') {
@@ -314,7 +314,7 @@ class Drawer extends Base {
   }
 
   async [symbols.swipeLeft]() {
-    const { fromEdge, rightToLeft } = this.state;
+    const { fromEdge, rightToLeft } = this[symbols.state];
     const fromLeftEdge = fromEdge === 'left' ||
       fromEdge === 'start' && !rightToLeft ||
       fromEdge === 'end' && rightToLeft;
@@ -329,7 +329,7 @@ class Drawer extends Base {
   }
 
   async [symbols.swipeRight]() {
-    const { fromEdge, rightToLeft } = this.state;
+    const { fromEdge, rightToLeft } = this[symbols.state];
     const fromLeftEdge = fromEdge === 'left' ||
       fromEdge === 'start' && !rightToLeft ||
       fromEdge === 'end' && rightToLeft;
@@ -344,7 +344,7 @@ class Drawer extends Base {
   }
 
   async [symbols.swipeUp]() {
-    const { fromEdge } = this.state;
+    const { fromEdge } = this[symbols.state];
     if (fromEdge === 'bottom') {
       open(this);
     } else if (fromEdge === 'top') {

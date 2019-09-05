@@ -45,6 +45,7 @@ export const rendering: '_rendering';
 export const scrollTarget: '_scrollTarget';
 export const setState: '_setState';
 export const startEffect: '_startEffect';
+export const state: '_state';
 export const swipeDown: '_swipeDown';
 export const swipeDownComplete: '_swipeDownComplete';
 export const swipeLeft: '_swipeLeft';

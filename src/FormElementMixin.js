@@ -79,7 +79,7 @@ export default function FormElementMixin(Base) {
      * @type {string}
      */
     get name() {
-      return this.state.name;
+      return this[symbols.state].name;
     }
     set name(name) {
       if ('name' in Base.prototype) {
@@ -95,13 +95,13 @@ export default function FormElementMixin(Base) {
 
       // Reflect name property to attribute so form will pick it up.
       if (changed.name) {
-        this.setAttribute('name', this.state.name);
+        this.setAttribute('name', this[symbols.state].name);
       }
 
       if (formElementsSupported) {
           // Reflect validity state to internals.
         if (changed.valid || changed.validationMessage) {
-          const { valid, validationMessage } = this.state;
+          const { valid, validationMessage } = this[symbols.state];
           if (valid) {
             this[symbols.internals].setValidity({});
           } else {
@@ -134,7 +134,7 @@ export default function FormElementMixin(Base) {
     }
 
     get validationMessage() {
-      return this.state.validationMessage;
+      return this[symbols.state].validationMessage;
     }
 
     get validity() {
@@ -153,6 +153,6 @@ export default function FormElementMixin(Base) {
 
 function updateValue(element) {
   if (formElementsSupported) {
-    element[symbols.internals].setFormValue(element.state.value, element.state);
+    element[symbols.internals].setFormValue(element[symbols.state].value, element[symbols.state]);
   }
 }

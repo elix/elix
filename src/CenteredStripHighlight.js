@@ -19,7 +19,7 @@ class CenteredStripHighlight extends CenteredStrip {
     super[symbols.render](changed);
     if (changed.items || changed.selectedIndex) {
       // Apply `selected` style to the selected item only.
-      const { selectedIndex, items } = this.state;
+      const { selectedIndex, items } = this[symbols.state];
       if (items) {
         items.forEach((item, index) => {
           const selected = index === selectedIndex;

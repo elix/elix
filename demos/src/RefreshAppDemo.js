@@ -48,7 +48,7 @@ class RefreshAppDemo extends ReactiveElement {
       /** @type {any} */ const refreshSound = this.$.refreshSound;
       await playSound(refreshSound);
       // Rotate last paragraph to first place.
-      const paragraphs = [...this.state.paragraphs];
+      const paragraphs = [...this[symbols.state].paragraphs];
       const last = paragraphs.pop();
       paragraphs.unshift(last);
       Object.freeze(paragraphs);
@@ -61,7 +61,7 @@ class RefreshAppDemo extends ReactiveElement {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.paragraphs) {
-      applyChildNodes(this.$.pullToRefresh, this.state.paragraphs);
+      applyChildNodes(this.$.pullToRefresh, this[symbols.state].paragraphs);
     }
   }
 

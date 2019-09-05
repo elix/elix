@@ -15,7 +15,7 @@
     class IncrementDecrement extends ReactiveElement {
 
       get buttonRole() {
-        return this.state.button;
+        return this[symbols.state].button;
       }
       set buttonRole(buttonRole) {
         this[symbols.setState]({ buttonRole });
@@ -31,17 +31,17 @@
       [symbols.render](changed) {
         super[symbols.render](changed);
         if (changed.buttonRole) {
-          template.transmute(this.$.decrement, this.state.buttonRole);
+          template.transmute(this.$.decrement, this[symbols.state].buttonRole);
           this.$.decrement.addEventListener('click', () => {
             this.value--;
           });
-          template.transmute(this.$.increment, this.state.buttonRole);
+          template.transmute(this.$.increment, this[symbols.state].buttonRole);
           this.$.increment.addEventListener('click', () => {
             this.value++;
           });
         }
         if (changed.value) {
-          const { value } = this.state;
+          const { value } = this[symbols.state];
           this.style.color = value < 0 ? 'red' : null;
           this.$.visibleValue.textContent = value;
         }
@@ -49,7 +49,7 @@
 
       // Provide a public property that gets/sets state.
       get value() {
-        return this.state.value;
+        return this[symbols.state].value;
       }
       set value(value) {
         this[symbols.setState]({

@@ -50,7 +50,7 @@ class CalendarMonthYearHeader extends Base {
    * @default 'long'
    */
   get monthFormat() {
-    return this.state.monthFormat;
+    return this[symbols.state].monthFormat;
   }
   set monthFormat(monthFormat) {
     this[symbols.setState]({
@@ -61,7 +61,7 @@ class CalendarMonthYearHeader extends Base {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.date || changed.locale || changed.monthFormat || changed.yearFormat) {
-      const { date, locale, monthFormat, yearFormat } = this.state;
+      const { date, locale, monthFormat, yearFormat } = this[symbols.state];
       /** @type {PlainObject} */ const formatOptions = {};
       if (monthFormat) {
         formatOptions.month = monthFormat;
@@ -96,7 +96,7 @@ class CalendarMonthYearHeader extends Base {
    * @default 'numeric'
    */
   get yearFormat() {
-    return this.state.yearFormat;
+    return this[symbols.state].yearFormat;
   }
   set yearFormat(yearFormat) {
     this[symbols.setState]({

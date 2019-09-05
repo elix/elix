@@ -40,13 +40,13 @@ class Tabs extends Base {
 
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
-    const { items } = this.state;
-    /** @type {Element[]} */ const proxies = this.state.proxies;
+    const { items } = this[symbols.state];
+    /** @type {Element[]} */ const proxies = this[symbols.state].proxies;
     if ((changed.items || changed.proxies)
       && items && proxies) {
 
       // Recreate association between items and proxies.
-      const { proxiesAssigned, itemRole } = this.state;
+      const { proxiesAssigned, itemRole } = this[symbols.state];
 
       // Create role for each item.
       items.forEach((item, index) => {
@@ -93,16 +93,16 @@ class Tabs extends Base {
     }
     if (changed.generic) {
       if ('generic' in this.$.proxyList) {
-        /** @type {any} */ (this.$.proxyList).generic = this.state.generic;
+        /** @type {any} */ (this.$.proxyList).generic = this[symbols.state].generic;
       }
     }
     if ((changed.generic || changed.proxies || changed.proxiesAssigned) &&
         proxies) {
-      if (!this.state.proxiesAssigned) {
+      if (!this[symbols.state].proxiesAssigned) {
         proxies.forEach(proxy => {
           /** @type {any} */ const cast = proxy;
           if ('generic' in cast) {
-            cast.generic = this.state.generic;
+            cast.generic = this[symbols.state].generic;
           }
         });
       }
@@ -111,7 +111,7 @@ class Tabs extends Base {
       // Apply alignment to proxy list.
       if ('tabAlign' in this.$.proxyList) {
         const proxyList = /** @type {any} */ (this.$.proxyList);
-        proxyList.tabAlign = this.state.tabAlign;
+        proxyList.tabAlign = this[symbols.state].tabAlign;
       }
     }
   }
@@ -126,7 +126,7 @@ class Tabs extends Base {
    * @default 'start'
    */
   get tabAlign() {
-    return this.state.tabAlign;
+    return this[symbols.state].tabAlign;
   }
   set tabAlign(tabAlign) {
     this[symbols.setState]({ tabAlign });

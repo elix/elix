@@ -18,7 +18,7 @@ class ReactiveTest extends ReactiveMixin(HTMLElement) {
 
   [symbols.render](changed) {
     if (super[symbols.render]) { super[symbols.render](changed); }
-    this.renderedResult = this.state.message;
+    this.renderedResult = this[symbols.state].message;
   }
 
 }
@@ -39,7 +39,7 @@ describe("ReactiveMixin", function () {
 
   it("starts with an empty state object", () => {
     const fixture = new ReactiveTest();
-    assert.deepEqual(fixture.state, {});
+    assert.deepEqual(fixture[symbols.state], {});
   });
 
   it("starts with defaultState if defined", () => {
@@ -47,7 +47,7 @@ describe("ReactiveMixin", function () {
       message: 'aardvark'
     };
     const fixture = new ReactiveTest();
-    assert.deepEqual(fixture.state, { message: 'aardvark' });
+    assert.deepEqual(fixture[symbols.state], { message: 'aardvark' });
     ReactiveTest.defaults = undefined;
   });
 
@@ -56,13 +56,13 @@ describe("ReactiveMixin", function () {
     fixture[symbols.setState]({
       message: 'badger'
     });
-    assert.deepEqual(fixture.state, { message: 'badger' });
+    assert.deepEqual(fixture[symbols.state], { message: 'badger' });
   });
 
   it("state is immutable", () => {
     const fixture = new ReactiveTest();
-    assert.throws(() => fixture.state = {});
-    assert.throws(() => fixture.state.message = 'chihuahua');
+    assert.throws(() => fixture[symbols.state] = {});
+    assert.throws(() => fixture[symbols.state].message = 'chihuahua');
   });
 
   it("setState skips render if component is not in document", async () => {
@@ -97,7 +97,7 @@ describe("ReactiveMixin", function () {
       message: 'gorilla'
     });
     assert.equal(renderSpy.callCount, 1);
-    assert.equal(fixture.state.message, 'gorilla');
+    assert.equal(fixture[symbols.state].message, 'gorilla');
   });
 
   it("render invokes componentDidMount/componentDidUpdate if defined", async () => {
@@ -135,11 +135,11 @@ describe("ReactiveMixin", function () {
     await fixture[symbols.setState]({
       message: 'hamster'
     });
-    const previousState = fixture.state;
+    const previousState = fixture[symbols.state];
     await fixture[symbols.setState]({
       message: 'hamster'
     });
-    assert.equal(fixture.state, previousState);
+    assert.equal(fixture[symbols.state], previousState);
   });
 
   it("runs state change handlers when state changes", () => {
@@ -153,11 +153,11 @@ describe("ReactiveMixin", function () {
     }
     const fixture = new Fixture();
     fixture[symbols.setState]({ a: 1 });
-    assert(fixture.state.b === 1);
+    assert(fixture[symbols.state].b === 1);
     fixture[symbols.setState]({ b: 2 }); // Shouldn't have any effect on `a`
-    assert(fixture.state.a === 1);
+    assert(fixture[symbols.state].a === 1);
     fixture[symbols.setState]({ a: 3 });
-    assert(fixture.state.b === 3);
+    assert(fixture[symbols.state].b === 3);
   });
   
   it("runs state change handlers on initial state", () => {
@@ -170,10 +170,10 @@ describe("ReactiveMixin", function () {
       }
     }
     const fixture = new Fixture();
-    assert(fixture.state.a === 1);
-    assert(fixture.state.b === 1);
+    assert(fixture[symbols.state].a === 1);
+    assert(fixture[symbols.state].b === 1);
     fixture[symbols.setState]({ a: 2 });
-    assert(fixture.state.b === 2);
+    assert(fixture[symbols.state].b === 2);
   })
   
 });

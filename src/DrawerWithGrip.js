@@ -22,10 +22,10 @@ class DrawerWithGrip extends Drawer {
   [symbols.componentDidMount]() {
     super[symbols.componentDidMount]();
 
-    if (this.state.gripSize === null) {
+    if (this[symbols.state].gripSize === null) {
       // Use the rendered size of the grip to set the gripSize. This will ensure
       // the grip is visible, peeking out from the edge of the drawer's container.
-      const { fromEdge } = this.state;
+      const { fromEdge } = this[symbols.state];
       const vertical = fromEdge === 'top' || fromEdge === 'bottom';
       const dimension = vertical ? 'offsetHeight' : 'offsetWidth';
       const gripSize = this.$.grip[dimension];
@@ -46,7 +46,7 @@ class DrawerWithGrip extends Drawer {
    * @default SeamlessButton
    */
   get gripRole() {
-    return this.state.gripRole;
+    return this[symbols.state].gripRole;
   }
   set gripRole(gripRole) {
     this[symbols.setState]({ gripRole });
@@ -56,7 +56,7 @@ class DrawerWithGrip extends Drawer {
     if (super[symbols.render]) { super[symbols.render](changed); }
 
     if (changed.gripRole) {
-      template.transmute(this.$.grip, this.state.gripRole);
+      template.transmute(this.$.grip, this[symbols.state].gripRole);
       this.$.grip.addEventListener('click', event => {
         // Clicking grip toggles drawer.
         this[symbols.raiseChangeEvents] = true;
@@ -68,7 +68,7 @@ class DrawerWithGrip extends Drawer {
 
     if (changed.fromEdge || changed.rightToLeft) {
       // Position the grip so it's at the outer edge of the drawer.
-      const { fromEdge, rightToLeft } = this.state;
+      const { fromEdge, rightToLeft } = this[symbols.state];
 
       const vertical = fromEdge === 'top' || fromEdge === 'bottom';
       this.$.frame.style.flexDirection = vertical ?
@@ -110,7 +110,7 @@ class DrawerWithGrip extends Drawer {
 
     if (changed.swipeAxis && this.$.gripIcon) {
       // Rotate the default grip icon to reflect the swipe axis.
-      const transform = this.state.swipeAxis === 'horizontal' ?
+      const transform = this[symbols.state].swipeAxis === 'horizontal' ?
         'rotate(90deg)' :
         '';
       this.$.gripIcon.style.transform = transform;

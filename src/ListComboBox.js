@@ -145,7 +145,7 @@ class ListComboBox extends Base {
    * @default ListBox
    */
   get listRole() {
-    return this.state.listRole;
+    return this[symbols.state].listRole;
   }
   set listRole(listRole) {
     this[symbols.setState]({ listRole });
@@ -161,7 +161,7 @@ class ListComboBox extends Base {
       this.$.input.setAttribute('aria-autocomplete', 'both');
     }
     if (changed.listRole) {
-      template.transmute(this.$.list, this.state.listRole);
+      template.transmute(this.$.list, this[symbols.state].listRole);
   
       this.$.list.addEventListener('mousedown', event => {
         // Mousing down inside a list item closes the popup.
@@ -188,7 +188,7 @@ class ListComboBox extends Base {
         /** @type {any} */
         const cast = event;
         const listSelectedIndex = cast.detail.selectedIndex;
-        if (this.state.selectedIndex !== listSelectedIndex) {
+        if (this[symbols.state].selectedIndex !== listSelectedIndex) {
           this[symbols.raiseChangeEvents] = true;
           this[symbols.setState]({
             selectedIndex: listSelectedIndex
@@ -200,7 +200,7 @@ class ListComboBox extends Base {
     if (changed.selectedIndex) {
       const list = /** @type {any} */ (this.$.list);
       if ('selectedIndex' in list) {
-        list.selectedIndex = this.state.selectedIndex;
+        list.selectedIndex = this[symbols.state].selectedIndex;
       }
     }
   }

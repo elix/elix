@@ -6,7 +6,7 @@ class KeyboardDirectionMixinTest extends KeyboardDirectionMixin(HTMLElement) {
 
   constructor() {
     super();
-    this.state = {};
+    this[symbols.state] = {};
   }
 
   [symbols.goRight]() {
@@ -32,7 +32,7 @@ describe("KeyboardDirectionMixin", () => {
 
   it("ignores a Right arrow key when orientation is vertical", () => {
     const fixture = new KeyboardDirectionMixinTest();
-    Object.assign(fixture.state, {
+    Object.assign(fixture[symbols.state], {
       orientation: 'vertical'
     });
     const spy = sinon.spy(fixture, symbols.goRight);

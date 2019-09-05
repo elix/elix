@@ -52,7 +52,7 @@ class HamburgerMenuButton extends Base {
    * @default 'start'
    */
   get fromEdge() {
-    return this.state.fromEdge;
+    return this[symbols.state].fromEdge;
   }
   set fromEdge(fromEdge) {
     this[symbols.setState]({ fromEdge });
@@ -87,7 +87,7 @@ class HamburgerMenuButton extends Base {
    * @default Drawer
    */
   get menuRole() {
-    return this.state.menuRole;
+    return this[symbols.state].menuRole;
   }
   set menuRole(menuRole) {
     this[symbols.setState]({ menuRole });
@@ -100,7 +100,7 @@ class HamburgerMenuButton extends Base {
    * @default SeamlessButton
    */
   get menuButtonRole() {
-    return this.state.menuButtonRole;
+    return this[symbols.state].menuButtonRole;
   }
   set menuButtonRole(menuButtonRole) {
     this[symbols.setState]({ menuButtonRole });
@@ -109,7 +109,7 @@ class HamburgerMenuButton extends Base {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.menuButtonRole) {
-      template.transmute(this.$.menuButton, this.state.menuButtonRole);
+      template.transmute(this.$.menuButton, this[symbols.state].menuButtonRole);
       this.$.menuButton.addEventListener('click', () => {
         this[symbols.raiseChangeEvents] = true;
         this.open();
@@ -117,7 +117,7 @@ class HamburgerMenuButton extends Base {
       });
     }
     if (changed.menuRole) {
-      template.transmute(this.$.menu, this.state.menuRole);
+      template.transmute(this.$.menu, this[symbols.state].menuRole);
       this.$.menu.addEventListener('closed', event => {
         /** @type {any} */
         const cast = event;
@@ -135,12 +135,12 @@ class HamburgerMenuButton extends Base {
     const menu = /** @type {any} */ (this.$.menu);
     if (changed.fromEdge) {
       if ('fromEdge' in menu) {
-        menu.fromEdge = this.state.fromEdge;
+        menu.fromEdge = this[symbols.state].fromEdge;
       }
     }
     if (changed.opened) {
       if ('opened' in menu) {
-        menu.opened = this.state.opened;
+        menu.opened = this[symbols.state].opened;
       }
     }
   }

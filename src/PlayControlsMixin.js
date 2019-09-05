@@ -28,7 +28,7 @@ export default function PlayControlsMixin(Base) {
      * @default SeamlessButton
      */
     get controlButtonRole() {
-      return this.state.controlButtonRole;
+      return this[symbols.state].controlButtonRole;
     }
     set controlButtonRole(controlButtonRole) {
       this[symbols.setState]({ controlButtonRole });
@@ -59,7 +59,7 @@ export default function PlayControlsMixin(Base) {
       if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.controlButtonRole) {
         const controlButtons = this.shadowRoot.querySelectorAll('.controlButton');
-        template.transmute(controlButtons, this.state.controlButtonRole);
+        template.transmute(controlButtons, this[symbols.state].controlButtonRole);
         this.$.previousButton.addEventListener('click', event => {
           this.selectPrevious();
           event.stopPropagation();
@@ -78,12 +78,12 @@ export default function PlayControlsMixin(Base) {
         });
       }
       if (changed.playing) {
-        const { playing } = this.state;
+        const { playing } = this[symbols.state];
         this.$.pausedIcon.style.display = playing ? 'none' : '';
         this.$.playingIcon.style.display = playing ? '' : 'none';
       }
       if (changed.rightToLeft) {
-        const rightToLeft = this.state.rightToLeft;
+        const rightToLeft = this[symbols.state].rightToLeft;
         const transform = rightToLeft ?
           'rotate(180deg)' :
           '';

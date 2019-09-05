@@ -41,7 +41,7 @@ class ListWithSearch extends Base {
 
   // Forward any ARIA label to the input element.
   get ariaLabel() {
-    return this.state.ariaLabel;
+    return this[symbols.state].ariaLabel;
   }
   set ariaLabel(ariaLabel) {
     this[symbols.setState]({ ariaLabel });
@@ -58,7 +58,7 @@ class ListWithSearch extends Base {
   }
   
   get filter() {
-    return this.state.filter;
+    return this[symbols.state].filter;
   }
   set filter(filter) {
     this[symbols.setState]({ filter });
@@ -71,7 +71,7 @@ class ListWithSearch extends Base {
    * @default 'input'
    */
   get inputRole() {
-    return this.state.inputRole;
+    return this[symbols.state].inputRole;
   }
   set inputRole(inputRole) {
     this[symbols.setState]({ inputRole });
@@ -144,14 +144,14 @@ class ListWithSearch extends Base {
    * @default ListBox
    */
   get listRole() {
-    return this.state.listRole;
+    return this[symbols.state].listRole;
   }
   set listRole(listRole) {
     this[symbols.setState]({ listRole });
   }
 
   get placeholder() {
-    return this.state.placeholder;
+    return this[symbols.state].placeholder;
   }
   set placeholder(placeholder) {
     this[symbols.setState]({ placeholder });
@@ -160,7 +160,7 @@ class ListWithSearch extends Base {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.inputRole) {
-      template.transmute(this.$.input, this.state.inputRole);
+      template.transmute(this.$.input, this[symbols.state].inputRole);
       this.$.input.addEventListener('input', () => {
         this[symbols.raiseChangeEvents] = true;
         const filter = /** @type {any} */ (this.$.input).value;
@@ -171,19 +171,19 @@ class ListWithSearch extends Base {
       });
     }
     if (changed.listRole) {
-      template.transmute(this.$.list, this.state.listRole);
+      template.transmute(this.$.list, this[symbols.state].listRole);
     }
     if (changed.ariaLabel) {
-      const { ariaLabel } = this.state;
+      const { ariaLabel } = this[symbols.state];
       this.$.input.setAttribute('aria-label', ariaLabel);
     }
     if (changed.filter) {
-      const { filter } = this.state;
+      const { filter } = this[symbols.state];
       /** @type {HTMLInputElement} */ (this.$.input).value = filter;
       /** @type {any} */ (this.$.list).filter = filter;
     }
     if (changed.placeholder) {
-      const { placeholder } = this.state;
+      const { placeholder } = this[symbols.state];
       /** @type {HTMLInputElement} */ (this.$.input).placeholder = placeholder;
     }
   }

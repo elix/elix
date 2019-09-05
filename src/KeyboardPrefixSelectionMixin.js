@@ -94,7 +94,7 @@ export default function KeyboardPrefixSelectionMixin(Base) {
       }
       // Find item that begins with the prefix. Ignore case.
       const searchText = prefix.toLowerCase();
-      /** @type {string[]} */ const texts = this.state.texts;
+      /** @type {string[]} */ const texts = this[symbols.state].texts;
       const selectedIndex = texts.findIndex(text => 
         text.substr(0, prefix.length).toLowerCase() === searchText
       );

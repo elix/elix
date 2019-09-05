@@ -24,7 +24,7 @@ class MenuButton extends PopupButton {
       const target = event.target;
       if (target && target instanceof Node) {
         const hoverIndex = indexOfItemContainingTarget(this.items, target);
-        if (hoverIndex !== this.state.menuSelectedIndex) {
+        if (hoverIndex !== this[symbols.state].menuSelectedIndex) {
           this[symbols.raiseChangeEvents] = true;
           this[symbols.setState]({
             menuSelectedIndex: hoverIndex
@@ -50,7 +50,7 @@ class MenuButton extends PopupButton {
     /** @type {any} */ const cast = this;
     cast[documentMouseupListenerKey] = handleMouseup.bind(this);
 
-    if (this.state.opened) {
+    if (this[symbols.state].opened) {
       addDocumentListeners(this);
     }
   }
@@ -58,13 +58,13 @@ class MenuButton extends PopupButton {
   [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
     super[symbols.componentDidUpdate](changed);
     if (changed.menuSelectedIndex) {
-      const selectedItem = this.state.menuSelectedIndex >= 0 ?
-        this.items[this.state.menuSelectedIndex] :
+      const selectedItem = this[symbols.state].menuSelectedIndex >= 0 ?
+        this.items[this[symbols.state].menuSelectedIndex] :
         null;
       this.itemSelected(selectedItem);
     }
     if (changed.opened) {
-      if (this.state.opened) {
+      if (this[symbols.state].opened) {
         addDocumentListeners(this);
       } else {
         removeDocumentListeners(this);
@@ -129,9 +129,9 @@ class MenuButton extends PopupButton {
    */
   async highlightSelectedItemAndClose() {
     const raiseChangeEvents = this[symbols.raiseChangeEvents];
-    const selectionDefined = this.state.menuSelectedIndex >= 0;
+    const selectionDefined = this[symbols.state].menuSelectedIndex >= 0;
     const closeResult = selectionDefined ?
-      this.items[this.state.menuSelectedIndex] :
+      this.items[this[symbols.state].menuSelectedIndex] :
       undefined;
     /** @type {any} */ const menu = this.$.menu;
     if (selectionDefined && 'highlightSelectedItem' in menu) {
@@ -221,7 +221,7 @@ class MenuButton extends PopupButton {
    * @default Menu
    */
   get menuRole() {
-    return this.state.menuRole;
+    return this[symbols.state].menuRole;
   }
   set menuRole(menuRole) {
     this[symbols.setState]({ menuRole });
@@ -233,7 +233,7 @@ class MenuButton extends PopupButton {
       this.$.popup.tabIndex = -1;
     }
     if (changed.menuRole) {
-      template.transmute(this.$.menu, this.state.menuRole);
+      template.transmute(this.$.menu, this[symbols.state].menuRole);
 
       // Close the popup if menu loses focus.
       this.$.menu.addEventListener('blur', async (event) => {
@@ -268,8 +268,8 @@ class MenuButton extends PopupButton {
         // there's a selection, they clicked on an item, so also close.
         // Otherwise, the user clicked the menu open, then clicked on a menu
         // separator or menu padding; stay open.
-        const menuSelectedIndex = this.state.menuSelectedIndex;
-        if (this.state.dragSelect || menuSelectedIndex >= 0) {
+        const menuSelectedIndex = this[symbols.state].menuSelectedIndex;
+        if (this[symbols.state].dragSelect || menuSelectedIndex >= 0) {
           // We don't want the document mouseup handler to close
           // before we've asked the menu to highlight the selection.
           // We need to stop event propagation here, before we enter
@@ -297,7 +297,7 @@ class MenuButton extends PopupButton {
     if (changed.menuSelectedIndex) {
       const menu = /** @type {any} */ (this.$.menu);
       if ('selectedIndex' in menu) {
-        menu.selectedIndex = this.state.menuSelectedIndex;
+        menu.selectedIndex = this[symbols.state].menuSelectedIndex;
       }
     }
   }
@@ -373,7 +373,7 @@ async function handleMouseup (/** @type {MouseEvent} */ event) {
     if (overSource) {
       // User released the mouse over the source button (behind the
       // backdrop), so we're no longer doing a drag-select.
-      if (element.state.dragSelect) {
+      if (element[symbols.state].dragSelect) {
         element[symbols.raiseChangeEvents] = true;
         element[symbols.setState]({
           dragSelect: false

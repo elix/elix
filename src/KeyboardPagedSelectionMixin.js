@@ -58,7 +58,7 @@ export default function KeyboardPagedSelectionMixin(Base) {
     // Default orientation implementation defers to super,
     // but if not found, looks in state.
     get orientation() {
-      return super.orientation || this.state && this.state.orientation || 'both';
+      return super.orientation || this[symbols.state] && this[symbols.state].orientation || 'both';
     }
 
     /**
@@ -165,8 +165,8 @@ function getIndexOfItemAtY(items, y, downward) {
 function scrollOnePage(element, downward) {
   
   const scrollTarget = element[symbols.scrollTarget];
-  const items = element.state.items;
-  const selectedIndex = element.state.selectedIndex;
+  const items = element[symbols.state].items;
+  const selectedIndex = element[symbols.state].selectedIndex;
 
   // Determine the item visible just at the edge of direction we're heading.
   // We'll select that item if it's not already selected.
@@ -211,6 +211,6 @@ function scrollOnePage(element, downward) {
 
   element[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
 
-  const changed = element.state.selectedIndex !== selectedIndex;
+  const changed = element[symbols.state].selectedIndex !== selectedIndex;
   return changed;
 }

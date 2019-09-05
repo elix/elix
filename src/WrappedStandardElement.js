@@ -216,7 +216,7 @@ class WrappedStandardElement extends Base {
   attributeChangedCallback(name, oldValue, newValue) {
     const forwardAttribute = attributesWithoutProperties.indexOf(name) >= 0;
     if (forwardAttribute) {
-      const innerAttributes = Object.assign({}, this.state.innerAttributes, {
+      const innerAttributes = Object.assign({}, this[symbols.state].innerAttributes, {
         [name]: newValue
       });
       this[symbols.setState]({
@@ -341,7 +341,7 @@ class WrappedStandardElement extends Base {
     // in response to user interaction (e.g., an input element's value changes
     // as the user types), the component must listen to suitable events on the
     // inner element and update its state accordingly.
-    const value = this.state.innerProperties[name];
+    const value = this[symbols.state].innerProperties[name];
     return value || (this.shadowRoot && this.inner[name]);
   }
 
@@ -356,18 +356,18 @@ class WrappedStandardElement extends Base {
     super[symbols.render](changed);
     const inner = this.inner;
     if (changed.tabIndex) {
-      inner.tabIndex = this.state.tabIndex;
+      inner.tabIndex = this[symbols.state].tabIndex;
     }
     if (changed.innerAttributes) {
       // Forward attributes to the inner element.
       // See notes at attributeChangedCallback.
-      const { innerAttributes } = this.state;
+      const { innerAttributes } = this[symbols.state];
       for (const name in innerAttributes) {
         applyAttribute(inner, name, innerAttributes[name]);
       }
     }
     if (changed.innerProperties) {
-      const { innerProperties } = this.state;
+      const { innerProperties } = this[symbols.state];
       Object.assign(inner, innerProperties);
       const { disabled } = innerProperties;
       if (disabled !== undefined) {
@@ -393,9 +393,9 @@ class WrappedStandardElement extends Base {
     // tabIndex property to the tabindex attribute, causing a loop.
     //
     // To avoid this, we check the existing value before updating our state.
-    const current = this.state.innerProperties[name];
+    const current = this[symbols.state].innerProperties[name];
     if (current !== value) {
-      const innerProperties = Object.assign({}, this.state.innerProperties, {
+      const innerProperties = Object.assign({}, this[symbols.state].innerProperties, {
         [name]: value
       });
       this[symbols.setState]({ innerProperties });

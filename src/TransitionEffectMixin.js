@@ -29,7 +29,7 @@ export default function TransitionEffectMixin(Base) {
     [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
       if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
       if (changed.effect || changed.effectPhase) {
-        const { effect, effectPhase } = this.state;
+        const { effect, effectPhase } = this[symbols.state];
         /**
          * Raised when [state.effect](TransitionEffectMixin#effect-phases) or
          * [state.effectPhase](TransitionEffectMixin#effect-phases) changes.

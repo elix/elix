@@ -37,7 +37,7 @@
           }
         }
   
-        // This property becomes the value of this.state at constructor time.
+        // This property becomes the value of this[symbols.state] at constructor time.
         get [symbols.defaultState]() {
           return Object.assign(super[symbols.defaultState], {
             value: 0
@@ -70,13 +70,13 @@
           if (changed.value) {
             // Render the state into the shadow.
             // @ts-ignore
-            this.shadowRoot.querySelector('#value').textContent = this.state.value;
+            this.shadowRoot.querySelector('#value').textContent = this[symbols.state].value;
           }
         }
   
         // Provide a public property that gets/sets state.
         get value() {
-          return this.state.value;
+          return this[symbols.state].value;
         }
         set value(value) {
           this[symbols.setState]({ value });

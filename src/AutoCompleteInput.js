@@ -41,7 +41,7 @@ class AutoCompleteInput extends Input {
         // single character to the value seen on the previous input event. Among
         // other things, we want to ensure the user can delete text from the end
         // without having AutoComplete kick in.
-        const originalText = this.state.originalText;
+        const originalText = this[symbols.state].originalText;
         const userAddedText = text.startsWith(originalText) &&
           text.length === originalText.length + 1;
         if (typingAtEnd && userAddedText) {
@@ -59,7 +59,7 @@ class AutoCompleteInput extends Input {
   [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
     super[symbols.componentDidUpdate](changed);
 
-    const { autoCompleteSelect, originalText } = this.state;
+    const { autoCompleteSelect, originalText } = this[symbols.state];
     if (changed.originalText && autoCompleteSelect) {
       // We've finished rendering new auto-completed text.
       // Leave the auto-completed portion (after the part the user originally
@@ -98,7 +98,7 @@ class AutoCompleteInput extends Input {
    * @type {string[]}
    */
   get texts() {
-    return this.state.texts;
+    return this[symbols.state].texts;
   }
   set texts(texts) {
     this[symbols.setState]({ texts });

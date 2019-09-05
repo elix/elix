@@ -20,10 +20,10 @@ class CarouselWithThumbnails extends Carousel {
 
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
-    /** @type {Element[]} */ const proxies = this.state.proxies;
+    /** @type {Element[]} */ const proxies = this[symbols.state].proxies;
     if ((changed.items || changed.proxies) && proxies) {
       // Update thumbnails.
-      const { items } = this.state;
+      const { items } = this[symbols.state];
       proxies.forEach((proxy, index) => {
         /** @type {any} */ const item = items[index];
         /** @type {any} */ const cast = proxy;

@@ -46,7 +46,7 @@ describe("KeyboardPagedSelectionMixin", function() {
       key: 'PageDown'
     });
     assert(handled);
-    assert.equal(fixture.state.selectedIndex, 1);
+    assert.equal(fixture[symbols.state].selectedIndex, 1);
   });
 
   it("If bottom item selected, Page Down advances selection by one page", () => {
@@ -57,7 +57,7 @@ describe("KeyboardPagedSelectionMixin", function() {
       key: 'PageDown'
     });
     assert(handled);
-    assert.equal(fixture.state.selectedIndex, 3);
+    assert.equal(fixture[symbols.state].selectedIndex, 3);
   });
 
   it("If less than one page remaining, Page Down selects last item", done => {
@@ -69,7 +69,7 @@ describe("KeyboardPagedSelectionMixin", function() {
         key: 'PageDown'
       });
       assert(handled);
-      assert.equal(fixture.state.selectedIndex, 4);
+      assert.equal(fixture[symbols.state].selectedIndex, 4);
       done();
     });
     fixture.scrollTop = 2 * itemHeight; // So index 2 is at top of viewport.
@@ -84,7 +84,7 @@ describe("KeyboardPagedSelectionMixin", function() {
         key: 'PageDown'
       });
       assert(!handled);
-      assert.equal(fixture.state.selectedIndex, 4);
+      assert.equal(fixture[symbols.state].selectedIndex, 4);
       done();
     });
     fixture.scrollTop = 3 * itemHeight; // So index 3 is at top of viewport.

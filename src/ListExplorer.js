@@ -18,8 +18,8 @@ class ListExplorer extends Explorer {
 
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
-    const { items, proxiesAssigned } = this.state;
-    /** @type {Element[]} */ const proxies = this.state.proxies;
+    const { items, proxiesAssigned } = this[symbols.state];
+    /** @type {Element[]} */ const proxies = this[symbols.state].proxies;
     if ((changed.proxies || changed.items) && proxies && !proxiesAssigned) {
       // Update default proxy text from item labels.
       proxies.forEach((proxy, index) => {

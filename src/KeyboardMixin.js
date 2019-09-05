@@ -49,7 +49,7 @@ export default function KeyboardMixin(Base) {
       this.addEventListener('keydown', async (event) => {
         this[symbols.raiseChangeEvents] = true;
         // For use with FocusVisibleMixin.
-        if (!this.state.focusVisible) {
+        if (!this[symbols.state].focusVisible) {
           // The user may have begun interacting with this element using the
           // mouse/touch, but has now begun using the keyboard, so show focus.
           this[symbols.setState]({
@@ -90,7 +90,7 @@ export default function KeyboardMixin(Base) {
     [symbols.render](/** @type {PlainObject} */changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.tabIndex) {
-        this.tabIndex = this.state.tabIndex;
+        this.tabIndex = this[symbols.state].tabIndex;
       }
     }
 

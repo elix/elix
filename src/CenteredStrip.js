@@ -44,7 +44,7 @@ class CenteredStrip extends Base {
   }
 
   get orientation() {
-    return this.state.orientation;
+    return this[symbols.state].orientation;
   }
   set orientation(orientation) {
     this[symbols.setState]({ orientation });
@@ -54,10 +54,10 @@ class CenteredStrip extends Base {
     super[symbols.render](changed);
     if (changed.clientWidth || changed.enableEffects || changed.rightToLeft ||
         changed.selectedIndex || changed.swipeFraction) {
-      const { orientation, rightToLeft, selectedIndex } = this.state;
+      const { orientation, rightToLeft, selectedIndex } = this[symbols.state];
       const sign = rightToLeft ? 1 : -1;
-      const swiping = this.state.swipeFraction != null;
-      const swipeFraction = this.state.swipeFraction || 0;
+      const swiping = this[symbols.state].swipeFraction != null;
+      const swipeFraction = this[symbols.state].swipeFraction || 0;
       const selectionFraction = selectedIndex + sign * swipeFraction;
   
       const vertical = orientation === 'vertical';
@@ -120,7 +120,7 @@ class CenteredStrip extends Base {
     
         const axis = vertical ? 'Y' : 'X';
         const transform = `translate${axis}(${translation}px)`;
-        const showTransition = this.state.enableEffects && !swiping;
+        const showTransition = this[symbols.state].enableEffects && !swiping;
         Object.assign(this.$.strip.style, {
           transform,
           transition: showTransition ? 'transform 0.25s' : 'none'
@@ -130,7 +130,7 @@ class CenteredStrip extends Base {
       }
     }
     if (changed.orientation) {
-      const flexDirection = this.state.orientation === 'horizontal' ?
+      const flexDirection = this[symbols.state].orientation === 'horizontal' ?
         '' :
         'column';
       this.$.stripContainer.style.flexDirection = flexDirection;
@@ -139,7 +139,7 @@ class CenteredStrip extends Base {
   }
 
   get swipeFraction() {
-    return this.state.swipeFraction;
+    return this[symbols.state].swipeFraction;
   }
   set swipeFraction(swipeFraction) {
     this[symbols.setState]({ swipeFraction });

@@ -51,7 +51,7 @@ export default function AriaListMixin(Base) {
     }
 
     get itemRole() {
-      return this.state.itemRole;
+      return this[symbols.state].itemRole;
     }
     set itemRole(itemRole) {
       this[symbols.setState]({ itemRole });
@@ -59,8 +59,8 @@ export default function AriaListMixin(Base) {
 
     [symbols.render](/** @type {PlainObject} */ changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
-      const { selectedIndex, itemRole } = this.state;
-      /** @type {ListItemElement[]} */ const items = this.state.items;
+      const { selectedIndex, itemRole } = this[symbols.state];
+      /** @type {ListItemElement[]} */ const items = this[symbols.state].items;
       if (changed.items && items) {
         // Give each item an ID.
         items.forEach(item => {
@@ -101,12 +101,12 @@ export default function AriaListMixin(Base) {
         }
       }
       if (changed.orientation) {
-        const { orientation } = this.state;
+        const { orientation } = this[symbols.state];
         this.setAttribute('aria-orientation', orientation);
       }
       if (changed.role) {
         // Apply top-level role.
-        const { role } = this.state;
+        const { role } = this[symbols.state];
         this.setAttribute('role', role);
       }
     }

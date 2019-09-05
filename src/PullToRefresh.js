@@ -58,9 +58,9 @@ class PullToRefresh extends Base {
 
   [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
     super[symbols.componentDidUpdate](changed);
-    if (this.state.swipeFraction > 0 &&
-      !this.state.refreshing && !this.state.pullTriggeredRefresh) {
-      const y = getTranslationForSwipeFraction(this.state, this[symbols.swipeTarget]);
+    if (this[symbols.state].swipeFraction > 0 &&
+      !this[symbols.state].refreshing && !this[symbols.state].pullTriggeredRefresh) {
+      const y = getTranslationForSwipeFraction(this[symbols.state], this[symbols.swipeTarget]);
       if (y >= getSwipeThreshold(this)) {
         // User has dragged element down far enough to trigger a refresh.
         this.refreshing = true;
@@ -74,7 +74,7 @@ class PullToRefresh extends Base {
          */
         const event = new CustomEvent('refreshing-changed', {
           detail: {
-            refreshing: this.state.refreshing
+            refreshing: this[symbols.state].refreshing
           }
         });
         this.dispatchEvent(event);
@@ -128,7 +128,7 @@ class PullToRefresh extends Base {
       template.transmute(this.$.pullIndicator, this.pullIndicatorRole);
     }
     if (changed.refreshing) {
-      const { refreshing } = this.state;
+      const { refreshing } = this[symbols.state];
       const refreshingIndicator = this.$.refreshingIndicator;
       refreshingIndicator.style.visibility = refreshing ?
         'visible' :
@@ -141,9 +141,9 @@ class PullToRefresh extends Base {
       template.transmute(this.$.refreshingIndicator, this.refreshingIndicatorRole);
     }
     if (changed.enableEffects || changed.refreshing || changed.swipeFraction) {
-      const { enableEffects, refreshing, swipeFraction } = this.state;
+      const { enableEffects, refreshing, swipeFraction } = this[symbols.state];
       const swipingDown = swipeFraction != null && swipeFraction > 0;
-      let y = getTranslationForSwipeFraction(this.state, this[symbols.swipeTarget]);
+      let y = getTranslationForSwipeFraction(this[symbols.state], this[symbols.swipeTarget]);
       if (refreshing) {
         y = Math.max(y, getSwipeThreshold(this));
       }
@@ -162,7 +162,7 @@ class PullToRefresh extends Base {
         refreshing,
         scrollPullDistance,
         swipeFraction
-      } = this.state;
+      } = this[symbols.state];
       const swipingDown = swipeFraction != null && swipeFraction > 0;
       const scrollingDown = !!scrollPullDistance;
       const pullingDown = swipingDown || scrollingDown;
@@ -184,14 +184,14 @@ class PullToRefresh extends Base {
    * @type {Role}
    */
   get pullIndicatorRole() {
-    return this.state.pullIndicatorRole;
+    return this[symbols.state].pullIndicatorRole;
   }
   set pullIndicatorRole(pullIndicatorRole) {
     this[symbols.setState]({ pullIndicatorRole });
   }
 
   get refreshing() {
-    return this.state.refreshing;
+    return this[symbols.state].refreshing;
   }
   set refreshing(refreshing) {
     this[symbols.setState]({ refreshing });
@@ -205,7 +205,7 @@ class PullToRefresh extends Base {
    * @default ProgressSpinner
    */
   get refreshingIndicatorRole() {
-    return this.state.refreshingIndicatorRole;
+    return this[symbols.state].refreshingIndicatorRole;
   }
   set refreshingIndicatorRole(refreshingIndicatorRole) {
     this[symbols.setState]({ refreshingIndicatorRole });
@@ -321,9 +321,9 @@ async function handleScrollPull(element, scrollTop) {
     // Negative scroll top means we're probably in WebKit.
     // Start a scroll pull operation.
     let scrollPullDistance = -scrollTop;
-    if (element.state.scrollPullDistance &&
-      !element.state.scrollPullMaxReached &&
-      scrollPullDistance < element.state.scrollPullDistance) {
+    if (element[symbols.state].scrollPullDistance &&
+      !element[symbols.state].scrollPullMaxReached &&
+      scrollPullDistance < element[symbols.state].scrollPullDistance) {
       // The negative scroll events have started to head back to zero (most
       // likely because the user let go and stopped scrolling), so we've reached
       // the maximum extent of the scroll pull. From this point on, we want to
@@ -333,7 +333,7 @@ async function handleScrollPull(element, scrollTop) {
       element[symbols.setState]({ scrollPullMaxReached: true });
     }
     await element[symbols.setState]({ scrollPullDistance });
-  } else if (element.state.scrollPullDistance !== null) {
+  } else if (element[symbols.state].scrollPullDistance !== null) {
     // We've scrolled back into zero/positive territory, i.e., at or below the
     // top of the page, so the scroll pull has finished.
     await element[symbols.setState]({

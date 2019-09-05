@@ -39,7 +39,7 @@ class CalendarDayNamesHeader extends ReactiveElement {
    * @default 'short'
    */
   get format() {
-    return this.state.format;
+    return this[symbols.state].format;
   }
   set format(format) {
     this[symbols.setState]({ format });
@@ -53,7 +53,7 @@ class CalendarDayNamesHeader extends ReactiveElement {
    * @type {string}
    */
   get locale() {
-    return this.state.locale;
+    return this[symbols.state].locale;
   }
   set locale(locale) {
     this[symbols.setState]({ locale });
@@ -62,7 +62,7 @@ class CalendarDayNamesHeader extends ReactiveElement {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.format || changed.locale) {
-      const { format, locale } = this.state;
+      const { format, locale } = this[symbols.state];
       const formatter = calendar.dateTimeFormat(locale, {
         weekday: format
       });

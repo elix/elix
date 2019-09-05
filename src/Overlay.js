@@ -64,7 +64,7 @@ class Overlay extends Base {
    * @default Backdrop
    */
   get backdropRole() {
-    return this.state.backdropRole;
+    return this[symbols.state].backdropRole;
   }
   set backdropRole(backdropRole) {
     this[symbols.setState]({ backdropRole });
@@ -72,9 +72,9 @@ class Overlay extends Base {
 
   [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
     super[symbols.componentDidUpdate](changed);
-    if (changed.opened && this.state.content) {
+    if (changed.opened && this[symbols.state].content) {
       // If contents know how to size themselves, ask them to check their size.
-      this.state.content.forEach(element => {
+      this[symbols.state].content.forEach(element => {
         if (element[symbols.checkSize]) {
           element[symbols.checkSize]();
         }
@@ -104,7 +104,7 @@ class Overlay extends Base {
    * @default OverlayFrame
    */
   get frameRole() {
-    return this.state.frameRole;
+    return this[symbols.state].frameRole;
   }
   set frameRole(frameRole) {
     this[symbols.setState]({ frameRole });
@@ -113,10 +113,10 @@ class Overlay extends Base {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.backdropRole) {
-      template.transmute(this.$.backdrop, this.state.backdropRole);
+      template.transmute(this.$.backdrop, this[symbols.state].backdropRole);
     }
     if (changed.frameRole) {
-      template.transmute(this.$.frame, this.state.frameRole);
+      template.transmute(this.$.frame, this[symbols.state].frameRole);
     }
   }
 

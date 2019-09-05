@@ -306,7 +306,7 @@ class LocaleSelector extends ReactiveElement {
     if (changed.value && this[symbols.raiseChangeEvents]) {
       const event = new CustomEvent('change', {
         detail: {
-          value: this.state.value
+          value: this[symbols.state].value
         }
       });
       this.dispatchEvent(event);
@@ -322,7 +322,7 @@ class LocaleSelector extends ReactiveElement {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.value) {
-      const value = this.state.value;
+      const value = this[symbols.state].value;
       /** @type {HTMLSelectElement} */ (this.$.select).value = value;
     }
   }
@@ -352,7 +352,7 @@ class LocaleSelector extends ReactiveElement {
   }
 
   get value() {
-    return this.state.value;
+    return this[symbols.state].value;
   }
   set value(value) {
     this[symbols.setState]({ value });

@@ -52,7 +52,7 @@ class TabButton extends Base {
    * @default 'top'
    */
   get position() {
-    return this.state.position;
+    return this[symbols.state].position;
   }
   set position(position) {
     this[symbols.setState]({ position });
@@ -61,11 +61,11 @@ class TabButton extends Base {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.generic) {
-      this.$.inner.classList.toggle('generic', this.state.generic);
+      this.$.inner.classList.toggle('generic', this[symbols.state].generic);
     }
     if (changed.generic || changed.position) {
       // Adjust margins.
-      const { generic, position } = this.state;
+      const { generic, position } = this[symbols.state];
       const margins = generic ?
         {
           marginBottom: position === 'top' ? '-1px' : null,
@@ -95,7 +95,7 @@ class TabButton extends Base {
     }
     if (changed.generic || changed.position || changed.selected) {
       // Adjust selected appearance.
-      const { generic, position, selected } = this.state;
+      const { generic, position, selected } = this[symbols.state];
       /** @type {IndexedObject<string|null>} */
       const buttonStyle = {
         borderBottomColor: null,
@@ -122,7 +122,7 @@ class TabButton extends Base {
   }
 
   get selected() {
-    return this.state.selected;
+    return this[symbols.state].selected;
   }
   set selected(selected) {
     this[symbols.setState]({

@@ -126,25 +126,25 @@ class Explorer extends Base {
       }
     };
     if (changed.proxyListRole) {
-      template.transmute(this.$.proxyList, this.state.proxyListRole);
+      template.transmute(this.$.proxyList, this[symbols.state].proxyListRole);
       this.$.proxyList.addEventListener('selected-index-changed', handleSelectedIndexChanged);
     }
     if (changed.stageRole) {
-      template.transmute(this.$.stage, this.state.stageRole);
+      template.transmute(this.$.stage, this[symbols.state].stageRole);
       this.$.stage.addEventListener('selected-index-changed', handleSelectedIndexChanged);
     }
     const proxyList = this.$.proxyList;
     const stage = this.$.stage;
     if (changed.proxies || changed.proxiesAssigned) {
       // Render the default proxies.
-      const { proxies, proxiesAssigned } = this.state;
+      const { proxies, proxiesAssigned } = this[symbols.state];
       const childNodes = proxiesAssigned ?
         [this.$.proxySlot] :
         [this.$.proxySlot, ...proxies];
       applyChildNodes(this.$.proxyList, childNodes);
     }
     if (changed.proxyListOverlap || changed.proxyListPosition || changed.proxyListRole) {
-      const { proxyListOverlap, proxyListPosition } = this.state;
+      const { proxyListOverlap, proxyListPosition } = this[symbols.state];
       const lateralPosition = lateralPositions[proxyListPosition];
       Object.assign(proxyList.style, {
         height: lateralPosition ? '100%' : null,
@@ -158,7 +158,7 @@ class Explorer extends Base {
       // from the perspective of the list.
       const cast = /** @type {any} */ (proxyList);
       if ('position' in cast) {
-        const { proxyListPosition, rightToLeft } = this.state;
+        const { proxyListPosition, rightToLeft } = this[symbols.state];
         let position;
         switch (proxyListPosition) {
           case 'end':
@@ -175,8 +175,8 @@ class Explorer extends Base {
       }
     }
     if (changed.proxyListPosition || changed.proxyListRole) {
-      setListAndStageOrder(this, this.state);
-      const { proxyListPosition } = this.state;
+      setListAndStageOrder(this, this[symbols.state]);
+      const { proxyListPosition } = this[symbols.state];
       const lateralPosition = lateralPositions[proxyListPosition];
       this.$.explorerContainer.style.flexDirection = lateralPosition ? 'row' : 'column';
       Object.assign(proxyList.style, {
@@ -188,31 +188,31 @@ class Explorer extends Base {
     }
     if (changed.selectedIndex || changed.proxyListRole) {
       if ('selectedIndex' in proxyList) {
-        const { selectedIndex } = this.state;
+        const { selectedIndex } = this[symbols.state];
         /** @type {any} */ (proxyList).selectedIndex = selectedIndex;
       }
     }
     if (changed.selectedIndex || changed.stageRole) {
       if ('selectedIndex' in stage) {
-        const { selectedIndex } = this.state;
+        const { selectedIndex } = this[symbols.state];
         /** @type {any} */ (stage).selectedIndex = selectedIndex;
       }
     }
     if (changed.selectionRequired || changed.proxyListRole) {
       if ('selectionRequired' in proxyList) {
-        const { selectionRequired } = this.state;
+        const { selectionRequired } = this[symbols.state];
         /** @type {any} */ (proxyList).selectionRequired = selectionRequired;
       }
     }
     if (changed.swipeFraction || changed.proxyListRole) {
       if ('swipeFraction' in proxyList) {
-        const { swipeFraction } = this.state;
+        const { swipeFraction } = this[symbols.state];
         /** @type {any} */ (proxyList).swipeFraction = swipeFraction;
       }
     }
     if (changed.swipeFraction || changed.stageRole) {
       if ('swipeFraction' in stage) {
-        const { swipeFraction } = this.state;
+        const { swipeFraction } = this[symbols.state];
         /** @type {any} */ (stage).swipeFraction = swipeFraction;
       }
     }
@@ -228,7 +228,7 @@ class Explorer extends Base {
    * @type {Element[]}
    */
   get proxies() {
-    return this.state.proxies;
+    return this[symbols.state].proxies;
   }
 
   /**
@@ -238,7 +238,7 @@ class Explorer extends Base {
    * @default false
    */
   get proxyListOverlap() {
-    return this.state.proxyListOverlap;
+    return this[symbols.state].proxyListOverlap;
   }
   set proxyListOverlap(proxyListOverlap) {
     const parsed = String(proxyListOverlap) === 'true';
@@ -258,7 +258,7 @@ class Explorer extends Base {
    * @default 'start'
    */
   get proxyListPosition() {
-    return this.state.proxyListPosition;
+    return this[symbols.state].proxyListPosition;
   }
   set proxyListPosition(proxyListPosition) {
     this[symbols.setState]({ proxyListPosition });
@@ -271,7 +271,7 @@ class Explorer extends Base {
    * @default ListBox
    */
   get proxyListRole() {
-    return this.state.proxyListRole;
+    return this[symbols.state].proxyListRole;
   }
   set proxyListRole(proxyListRole) {
     this[symbols.setState]({ proxyListRole });
@@ -285,7 +285,7 @@ class Explorer extends Base {
    * @default 'div'
    */
   get proxyRole() {
-    return this.state.proxyRole;
+    return this[symbols.state].proxyRole;
   }
   set proxyRole(proxyRole) {
     this[symbols.setState]({ proxyRole });
@@ -299,7 +299,7 @@ class Explorer extends Base {
    * @default Modes
    */
   get stageRole() {
-    return this.state.stageRole;
+    return this[symbols.state].stageRole;
   }
   set stageRole(stageRole) {
     this[symbols.setState]({ stageRole });

@@ -65,7 +65,7 @@ class Toast extends Base {
    * @default null
    */
   get duration() {
-    return this.state.duration;
+    return this[symbols.state].duration;
   }
   set duration(duration) {
     this[symbols.setState]({ duration });
@@ -86,7 +86,7 @@ class Toast extends Base {
    * @default 'bottom'
    */
   get fromEdge() {
-    return this.state.fromEdge;
+    return this[symbols.state].fromEdge;
   }
   set fromEdge(fromEdge) {
     this[symbols.setState]({ fromEdge });
@@ -123,11 +123,11 @@ class Toast extends Base {
           justifyContent: null
         }
       };
-      Object.assign(this.style, hostEdgeStyles[this.state.fromEdge]);
+      Object.assign(this.style, hostEdgeStyles[this[symbols.state].fromEdge]);
     }
     if (changed.effect || changed.effectPhase || changed.fromEdge
         || changed.rightToLeft) {
-      const { effect, effectPhase, fromEdge, rightToLeft } = this.state;
+      const { effect, effectPhase, fromEdge, rightToLeft } = this[symbols.state];
       /** @type {IndexedObject<string>} */
       const oppositeEdge = {
         'bottom-left': 'bottom-right',
@@ -220,7 +220,7 @@ function clearTimer(/** @type {Toast} */ element) {
 
 function startTimer(/** @type {Toast} */ element) {
   clearTimer(element);
-  const duration = element.state.duration;
+  const duration = element[symbols.state].duration;
   if (duration !== null && duration > 0) {
     /** @type {any} */ (element)[timeoutKey] = setTimeout(() => {
       element.close();

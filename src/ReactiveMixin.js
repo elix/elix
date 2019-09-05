@@ -192,10 +192,10 @@ export default function ReactiveMixin(Base) {
         this[raiseChangeEventsInNextRenderKey] = true;
       }
       
-      // Yield with promise timing. This lets any *synchronous*[symbols.setState]
-      // calls that happen after the current[symbols.setState] call complete first.
-      // Their effects on the state will be batched up before the render
-      // call below actually happens.
+      // Yield with promise timing. This lets any *synchronous* setState calls
+      // that happen after the current setState call complete first. Their
+      // effects on the state will be batched up before the render call below
+      // actually happens.
       await Promise.resolve();
       
       // Render the component.
@@ -204,11 +204,13 @@ export default function ReactiveMixin(Base) {
 
     /**
      * The component's current state.
-     * The returned state object is immutable. To update it, invoke [symbols.setState]`.
+     * 
+     * The returned state object is immutable. To update it, invoke
+     * `symbols.setState`.
      * 
      * @type {State}
      */
-    get state() {
+    get [symbols.state]() {
       return this[stateKey];
     }
   }

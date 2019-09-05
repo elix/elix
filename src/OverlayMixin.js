@@ -58,7 +58,7 @@ export default function OverlayMixin(Base) {
 
     // TODO: Document
     get autoFocus() {
-      return this.state.autoFocus;
+      return this[symbols.state].autoFocus;
     }
     set autoFocus(autoFocus) {
       this[symbols.setState]({ autoFocus });
@@ -69,7 +69,7 @@ export default function OverlayMixin(Base) {
       openedChanged(this);
 
       // Perform one-time check to see if component needs a default z-index.
-      if (this.state.persistent && !getZIndex(this)) {
+      if (this[symbols.state].persistent && !getZIndex(this)) {
         bringToFront(this);
       }
     }
@@ -84,7 +84,7 @@ export default function OverlayMixin(Base) {
       // document, remove it now. Note: we only do this when the component
       // updates, not when it mounts, because we don't want an automatically-added
       // element to be immediately removed during its connectedCallback.
-      if (!this.state.persistent && this.closeFinished && this[appendedToDocumentKey]) {
+      if (!this[symbols.state].persistent && this.closeFinished && this[appendedToDocumentKey]) {
         this[appendedToDocumentKey] = false;
         if (this.parentNode) {
           this.parentNode.removeChild(this);
@@ -100,7 +100,7 @@ export default function OverlayMixin(Base) {
     }
 
     async open() {
-      if (!this.state.persistent && !this.isConnected) {
+      if (!this[symbols.state].persistent && !this.isConnected) {
         // Overlay isn't in document yet.
         this[appendedToDocumentKey] = true;
         document.body.appendChild(this);
@@ -111,7 +111,7 @@ export default function OverlayMixin(Base) {
     [symbols.render](/** @type {PlainObject} */ changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.effectPhase || changed.opened || changed.persistent) {
-        if (!this.state.persistent) {
+        if (!this[symbols.state].persistent) {
           // Temporary overlay
           const closed = typeof this.closeFinished === 'undefined' ?
             this.closed :
@@ -191,8 +191,8 @@ function maxZIndexInUse() {
 
 // Update the overlay following a change in opened state.
 function openedChanged(/** @type {ReactiveElement} */ element) {
-  if (element.state.autoFocus) {
-    if (element.state.opened) {
+  if (element[symbols.state].autoFocus) {
+    if (element[symbols.state].opened) {
       // Opened
       if (!element[restoreFocusToElementKey] && document.activeElement !== document.body) {
         // Remember which element had the focus before we were opened.

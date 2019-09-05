@@ -32,7 +32,7 @@ class DropdownList extends Base {
   // By default, opening the menu re-selects the component item that's currently
   // selected.
   get defaultMenuSelectedIndex() {
-    return this.state.selectedIndex;
+    return this[symbols.state].selectedIndex;
   }
 
   get [symbols.defaultState]() {
@@ -61,14 +61,14 @@ class DropdownList extends Base {
     super[symbols.render](changed);
     if (changed.itemRole) {
       if ('itemRole' in this.$.menu) {
-        /** @type {any} */ (this.$.menu).itemRole = this.state.itemRole;
+        /** @type {any} */ (this.$.menu).itemRole = this[symbols.state].itemRole;
       }
     }
     if (changed.valueRole) {
-      template.transmute(this.$.value, this.state.valueRole);
+      template.transmute(this.$.value, this[symbols.state].valueRole);
     }
     if (changed.popupPosition) {
-      const { popupPosition } = this.state;
+      const { popupPosition } = this[symbols.state];
       this.$.downIcon.style.display = popupPosition === 'below' ?
         'block' :
         'none';
@@ -77,8 +77,8 @@ class DropdownList extends Base {
         'none';
     }
     if (changed.selectedIndex) {
-      const items = this.state.items || [];
-      const selectedItem = items[this.state.selectedIndex];
+      const items = this[symbols.state].items || [];
+      const selectedItem = items[this[symbols.state].selectedIndex];
       const clone = selectedItem ?
         selectedItem.cloneNode(true) :
         null;
@@ -131,7 +131,7 @@ class DropdownList extends Base {
    * @default 'div'
    */
   get valueRole() {
-    return this.state.valueRole;
+    return this[symbols.state].valueRole;
   }
   set valueRole(valueRole) {
     this[symbols.setState]({ valueRole });

@@ -38,7 +38,7 @@ class Modes extends Base {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.items || changed.selectedIndex) {
-      const { selectedIndex, items } = this.state;
+      const { selectedIndex, items } = this[symbols.state];
       if (items) {
         items.forEach((item, index) => {
           const selected = index === selectedIndex;

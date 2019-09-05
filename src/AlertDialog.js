@@ -32,7 +32,7 @@ class AlertDialog extends Dialog {
    * @type {HTMLElement[]}
    */
   get choiceButtons() {
-    return this.state.choiceButtons;
+    return this[symbols.state].choiceButtons;
   }
 
   /**
@@ -42,7 +42,7 @@ class AlertDialog extends Dialog {
    * @default 'button'
    */
   get choiceButtonRole() {
-    return this.state.choiceButtonRole;
+    return this[symbols.state].choiceButtonRole;
   }
   set choiceButtonRole(choiceButtonRole) {
     this[symbols.setState]({ choiceButtonRole });
@@ -58,7 +58,7 @@ class AlertDialog extends Dialog {
    * @type {string[]}
    */
   get choices() {
-    return this.state.choices;
+    return this[symbols.state].choices;
   }
   set choices(choices) {
     this[symbols.setState]({ choices });
@@ -113,7 +113,7 @@ class AlertDialog extends Dialog {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.choiceButtons) {
-      applyChildNodes(this.$.buttonContainer, this.state.choiceButtons);
+      applyChildNodes(this.$.buttonContainer, this[symbols.state].choiceButtons);
     }
   }
 

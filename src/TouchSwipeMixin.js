@@ -235,7 +235,7 @@ function gestureContinue(element, clientX, clientY, eventTarget) {
     swipeAxis,
     swipeFractionMax,
     swipeFractionMin
-  } = element.state;
+  } = element[symbols.state];
   const deltaX = clientX - cast[previousXKey];
   const deltaY = clientY - cast[previousYKey];
   const now = Date.now();
@@ -304,7 +304,7 @@ function gestureContinue(element, clientX, clientY, eventTarget) {
     Math.min(fraction, swipeFractionMax),
     swipeFractionMin
   );
-  if (element.state.swipeFraction === swipeFraction) {
+  if (element[symbols.state].swipeFraction === swipeFraction) {
     // Already at min or max; no need for us to do anything.
     return false;
   }
@@ -342,7 +342,7 @@ function gestureEnd(element, clientX, clientY, eventTarget) {
   const velocity = /** @type {any} */ (element)[previousVelocityKey];
   const flickThresholdVelocity = 800; // speed in pixels/second
 
-  const { swipeAxis, swipeFraction } = element.state;
+  const { swipeAxis, swipeFraction } = element[symbols.state];
   const vertical = swipeAxis === 'vertical';
 
   // Scrolling takes precedence over flick gestures.
@@ -391,9 +391,9 @@ function gestureEnd(element, clientX, clientY, eventTarget) {
     } else {
       // Finished at low speed.
       // If the user swiped far enough to commit a gesture, handle it now.
-      if (element.state.swipeLeftWillCommit || element.state.swipeUpWillCommit) {
+      if (element[symbols.state].swipeLeftWillCommit || element[symbols.state].swipeUpWillCommit) {
         flickPositive = false;
-      } else if (element.state.swipeRightWillCommit || element.state.swipeDownWillCommit) {
+      } else if (element[symbols.state].swipeRightWillCommit || element[symbols.state].swipeDownWillCommit) {
         flickPositive = true;
       }
     }
@@ -456,7 +456,7 @@ function gestureStart(element, clientX, clientY) {
 function getSwipeFraction(element, x, y) {
   const {
     swipeAxis
-  } = element.state;
+  } = element[symbols.state];
   /** @type {any} */ const cast = element;
   const vertical = swipeAxis === 'vertical';
   const dragDistance = vertical ?

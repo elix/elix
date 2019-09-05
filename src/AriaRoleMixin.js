@@ -26,7 +26,7 @@ export default function AriaRoleMixin(Base) {
       if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.role) {
         // Apply top-level role.
-        const { role } = this.state;
+        const { role } = this[symbols.state];
         this.setAttribute('role', role);
       }
     }

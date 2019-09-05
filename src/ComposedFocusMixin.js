@@ -40,7 +40,7 @@ export default function ComposedFocusMixin(Base) {
     [symbols.componentDidMount]() {
       if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
       this.addEventListener('mousedown', event => {
-        if (!this.state.composeFocus) {
+        if (!this[symbols.state].composeFocus) {
           return;
         }
         // Only process events for the main (usually left) button.

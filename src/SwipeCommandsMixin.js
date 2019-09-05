@@ -21,7 +21,7 @@ export default function SwipeCommandsMixin(Base) {
       // the end of the transition. E.g., a Delete swipe command would want to
       // wait until the transition has finished before removing the item.
       this.$.leftCommandContainer.addEventListener('transitionend', () => {
-        if (this.state.swipeRightCommitted && this[symbols.swipeRightTransitionEnd]) {
+        if (this[symbols.state].swipeRightCommitted && this[symbols.swipeRightTransitionEnd]) {
           this[symbols.swipeRightTransitionEnd]();
         }
         // Now that the swipe has finished, reset remaining swipe-related state.
@@ -31,7 +31,7 @@ export default function SwipeCommandsMixin(Base) {
         });
       });
       this.$.rightCommandContainer.addEventListener('transitionend', () => {
-        if (this.state.swipeLeftCommitted && this[symbols.swipeLeftTransitionEnd]) {
+        if (this[symbols.state].swipeLeftCommitted && this[symbols.swipeLeftTransitionEnd]) {
           this[symbols.swipeLeftTransitionEnd]();
         }
         // Now that the swipe has finished, reset remaining swipe-related state.
@@ -48,7 +48,7 @@ export default function SwipeCommandsMixin(Base) {
       // in the commit-ability of a command.
       if ((changed.swipeLeftWillCommit || changed.swipeRightWillCommit) &&
           'vibrate' in navigator &&
-          this.state.swipeFraction !== null) {
+          this[symbols.state].swipeFraction !== null) {
         navigator.vibrate(5);
       }
     }
@@ -67,7 +67,7 @@ export default function SwipeCommandsMixin(Base) {
     [symbols.render](/** @type {PlainObject} */ changed) {
       super[symbols.render](changed);
       if (changed.enableEffects || changed.swipeItem || changed.swipeFraction) {
-        const { swipeItem, swipeFraction } = this.state;
+        const { swipeItem, swipeFraction } = this[symbols.state];
         const { leftCommandContainer, rightCommandContainer } = this.$;
         const swiping = swipeFraction !== null;
         if (swipeItem && swiping) {
@@ -125,7 +125,7 @@ export default function SwipeCommandsMixin(Base) {
             swipeRightCommitted,
             swipeRightFollowsThrough,
             swipeRightRemovesItem
-          } = this.state;
+          } = this[symbols.state];
           const followThroughLeft = swipeLeftCommitted && swipeLeftFollowsThrough;
           const followThroughRight = swipeRightCommitted && swipeRightFollowsThrough;
           const containerTransition = 'height 0.25s, width 0.25s';
@@ -194,7 +194,7 @@ export default function SwipeCommandsMixin(Base) {
     [symbols.swipeStart](clientX, clientY) {
       if (super[symbols.swipeStart]) { super[symbols.swipeStart](clientX, clientY); }
       // Determine which item is being swiped given the starting Y coordinate.
-      const swipeItem = getItemAtY(this.state.items, clientY);
+      const swipeItem = getItemAtY(this[symbols.state].items, clientY);
       if (swipeItem) {
         this[symbols.setState]({
           swipeItem

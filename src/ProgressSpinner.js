@@ -25,7 +25,7 @@ class ProgressSpinner extends ReactiveElement {
   [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
     super[symbols.componentDidUpdate](changed);
     if (changed.count ||
-        (changed.playing && this.state.playing)) {
+        (changed.playing && this[symbols.state].playing)) {
       tick(this);
     }
   }
@@ -44,7 +44,7 @@ class ProgressSpinner extends ReactiveElement {
    * @default true
    */
   get playing() {
-    return this.state.playing;
+    return this[symbols.state].playing;
   }
   set playing(playing) {
     this[symbols.setState]({ playing });
@@ -54,7 +54,7 @@ class ProgressSpinner extends ReactiveElement {
     super[symbols.render](changed);
     if (changed.count) {
       const step = 360 / rotations;
-      const angle = (this.state.count * step) % 360;
+      const angle = (this[symbols.state].count * step) % 360;
       this.$.spinner.style.transform = `rotate(${angle}deg)`;
     }
   }
@@ -79,11 +79,11 @@ class ProgressSpinner extends ReactiveElement {
 function tick(/** @type {ProgressSpinner} */ element) {
   // Complete a full rotation in a second (1000 milliseconds).
   const delay = 1000 / rotations;
-  if (element.isConnected && element.state.playing) {
+  if (element.isConnected && element[symbols.state].playing) {
     setTimeout(() => {
       requestAnimationFrame(() => {
         element[symbols.setState]({
-          count: element.state.count + 1
+          count: element[symbols.state].count + 1
         });
       });
     }, delay);  

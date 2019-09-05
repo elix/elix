@@ -15,7 +15,7 @@ class LabeledColorSwatch extends Base {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.content) {
-      const content = this.state.content;
+      const content = this[symbols.state].content;
       const strings = content ? 
         content.map(node => node.textContent) :
         [];

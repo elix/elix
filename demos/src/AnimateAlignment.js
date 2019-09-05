@@ -15,10 +15,10 @@ const Base =
 export default class AnimateAlignment extends Base {
 
   get align() {
-    return this.state.align;
+    return this[symbols.state].align;
   }
   set align(align) {
-    if (this.state.enableEffects && this.state.align !== align) {
+    if (this[symbols.state].enableEffects && this[symbols.state].align !== align) {
       const effect = align === 'left' ?
         'slideLeft' :
         'slideRight';
@@ -59,7 +59,7 @@ export default class AnimateAlignment extends Base {
 
   [symbols.render](changed) {
     super[symbols.render](changed);
-    const { align, effect, effectPhase, enableEffects } = this.state;
+    const { align, effect, effectPhase, enableEffects } = this[symbols.state];
     const container = this.$.container;
     if ((changed.effect || changed.effectPhase || changed.enableEffects) &&
         enableEffects &&
@@ -132,7 +132,7 @@ export default class AnimateAlignment extends Base {
   }
 
   toggleAlignment() {
-    const effect = this.state.align === 'left' ?
+    const effect = this[symbols.state].align === 'left' ?
       'slideRight' :
       'slideLeft';
     this[symbols.startEffect](effect);

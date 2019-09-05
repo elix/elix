@@ -64,14 +64,14 @@ class CalendarMonthNavigator extends Base {
 
   arrowButtonNext() {
     this[symbols.setState]({
-      date: calendar.offsetDateByMonths(this.state.date, 1)
+      date: calendar.offsetDateByMonths(this[symbols.state].date, 1)
     });
     return true;
   }
 
   arrowButtonPrevious() {
     this[symbols.setState]({
-      date: calendar.offsetDateByMonths(this.state.date, -1)
+      date: calendar.offsetDateByMonths(this[symbols.state].date, -1)
     });
     return true;
   }
@@ -114,14 +114,14 @@ class CalendarMonthNavigator extends Base {
 
       case 'PageDown':
         this[symbols.setState]({
-          date: calendar.offsetDateByMonths(this.state.date, 1)
+          date: calendar.offsetDateByMonths(this[symbols.state].date, 1)
         });
         handled = true;
         break;
         
       case 'PageUp':
         this[symbols.setState]({
-          date: calendar.offsetDateByMonths(this.state.date, -1)
+          date: calendar.offsetDateByMonths(this[symbols.state].date, -1)
         });
         handled = true;
         break;
@@ -135,7 +135,7 @@ class CalendarMonthNavigator extends Base {
   [symbols.goDown]() {
     if (super[symbols.goDown]) { super[symbols.goDown](); }
     this[symbols.setState]({
-      date: calendar.offsetDateByDays(this.state.date, 7)
+      date: calendar.offsetDateByDays(this[symbols.state].date, 7)
     });
     return true;
   }
@@ -143,7 +143,7 @@ class CalendarMonthNavigator extends Base {
   [symbols.goLeft]() {
     if (super[symbols.goLeft]) { super[symbols.goLeft](); }
     this[symbols.setState]({
-      date: calendar.offsetDateByDays(this.state.date, -1)
+      date: calendar.offsetDateByDays(this[symbols.state].date, -1)
     });
     return true;
   }
@@ -151,7 +151,7 @@ class CalendarMonthNavigator extends Base {
   [symbols.goRight]() {
     if (super[symbols.goRight]) { super[symbols.goRight](); }
     this[symbols.setState]({
-      date: calendar.offsetDateByDays(this.state.date, 1)
+      date: calendar.offsetDateByDays(this[symbols.state].date, 1)
     });
     return true;
   }
@@ -159,7 +159,7 @@ class CalendarMonthNavigator extends Base {
   [symbols.goUp]() {
     if (super[symbols.goUp]) { super[symbols.goUp](); }
     this[symbols.setState]({
-      date: calendar.offsetDateByDays(this.state.date, -7)
+      date: calendar.offsetDateByDays(this[symbols.state].date, -7)
     });
     return true;
   }

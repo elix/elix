@@ -42,7 +42,7 @@
           });
         }
   
-        // This property becomes the value of this.state at constructor time.
+        // This property becomes the value of this[symbols.state] at constructor time.
         get [symbols.defaultState]() {
           return Object.assign(super[symbols.defaultState], {
             value: 0
@@ -53,7 +53,7 @@
         [symbols.render](changed) {
           super[symbols.render](changed);
           if (changed.value) {
-            this.$.value.textContent = this.state.value;
+            this.$.value.textContent = this[symbols.state].value;
           }
         }
   
@@ -63,7 +63,7 @@
   
         // Provide a public property that gets/sets state.
         get value() {
-          return this.state.value;
+          return this[symbols.state].value;
         }
         set value(value) {
           this[symbols.setState]({ value });

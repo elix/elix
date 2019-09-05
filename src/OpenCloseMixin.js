@@ -41,7 +41,7 @@ export default function OpenCloseMixin(Base) {
      * @type {boolean}
      */
     get closed() {
-      return this.state && !this.state.opened;
+      return this[symbols.state] && !this[symbols.state].opened;
     }
     set closed(closed) {
       const parsed = String(closed) === 'true';
@@ -62,13 +62,13 @@ export default function OpenCloseMixin(Base) {
      */
     get closeFinished() {
       // TODO: Define closeFinished as computed state
-      return this.state.openCloseEffects ?
-        this.state.effect === 'close' && this.state.effectPhase === 'after' :
+      return this[symbols.state].openCloseEffects ?
+        this[symbols.state].effect === 'close' && this[symbols.state].effectPhase === 'after' :
         this.closed;
     }
 
     get closeResult() {
-      return this.state.closeResult;
+      return this[symbols.state].closeResult;
     }
 
     [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
@@ -82,13 +82,13 @@ export default function OpenCloseMixin(Base) {
          */
         const openedChangedEvent = new CustomEvent('opened-changed', {
           detail: {
-            closeResult: this.state.closeResult,
-            opened: this.state.opened
+            closeResult: this[symbols.state].closeResult,
+            opened: this[symbols.state].opened
           }
         });
         this.dispatchEvent(openedChangedEvent);
 
-        if (this.state.opened) {
+        if (this[symbols.state].opened) {
           /**
            * Raised when the component opens.
            * 
@@ -104,7 +104,7 @@ export default function OpenCloseMixin(Base) {
            */
           const closedEvent = new CustomEvent('closed', {
             detail: {
-              closeResult: this.state.closeResult
+              closeResult: this[symbols.state].closeResult
             }
           });
           this.dispatchEvent(closedEvent);
@@ -117,7 +117,7 @@ export default function OpenCloseMixin(Base) {
       if (this.closeFinished && closeResolve) {
         this[closeResolveKey] = null;
         this[closePromiseKey] = null;
-        closeResolve(this.state.closeResult);
+        closeResolve(this[symbols.state].closeResult);
       }
     }
 
@@ -155,7 +155,7 @@ export default function OpenCloseMixin(Base) {
      * @type {boolean}
      */
     get opened() {
-      return this.state && this.state.opened;
+      return this[symbols.state] && this[symbols.state].opened;
     }
     set opened(opened) {
       const parsed = String(opened) === 'true';
@@ -171,12 +171,12 @@ export default function OpenCloseMixin(Base) {
      */
     async toggle(opened = !this.opened) {
       if (super.toggle) { await super.toggle(opened); }
-      const changed = opened !== this.state.opened;
+      const changed = opened !== this[symbols.state].opened;
       if (changed) {
         /** @type {PlainObject} */ const changes = { opened };
-        if (this.state.openCloseEffects) {
+        if (this[symbols.state].openCloseEffects) {
           changes.effect = opened ? 'open' : 'close';
-          if (this.state.effectPhase === 'after') {
+          if (this[symbols.state].effectPhase === 'after') {
             changes.effectPhase = 'before';
           }
         }

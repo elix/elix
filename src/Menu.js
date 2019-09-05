@@ -88,7 +88,7 @@ class Menu extends Base {
 
   [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
     super[symbols.componentDidUpdate](changed);
-    if (changed.selectedIndex && !this.state.selectionFocused) {
+    if (changed.selectedIndex && !this[symbols.state].selectionFocused) {
       // The selected item needs the focus, but this is complicated. See notes
       // in render.
       const focusElement = this.selectedItem instanceof HTMLElement ?
@@ -128,7 +128,7 @@ class Menu extends Base {
    * nothing.
    */
   async highlightSelectedItem() {
-    const keyboardActive = this.state.focusVisible;
+    const keyboardActive = this[symbols.state].focusVisible;
     const probablyDesktop = matchMedia('(pointer: fine)').matches;
     if (keyboardActive || probablyDesktop) {
       const flashDuration = 75; // milliseconds
@@ -155,7 +155,7 @@ class Menu extends Base {
 
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
-    const { selectedIndex, items } = this.state;
+    const { selectedIndex, items } = this[symbols.state];
     if ((changed.items || changed.selectedIndex) && items) {
         // Reflect the selection state to the item.
       items.forEach((item, index) => {
@@ -185,7 +185,7 @@ class Menu extends Base {
       items.forEach((item, index) => {
         const selected = index === selectedIndex;      
         const isDefaultFocusableItem = selectedIndex < 0 && index === 0;
-        if (!this.state.selectionFocused) {
+        if (!this[symbols.state].selectionFocused) {
           // Phase 1: Add tabindex to newly-selected item.
           if (selected || isDefaultFocusableItem) {
             item.tabIndex = 0;
@@ -200,13 +200,13 @@ class Menu extends Base {
         // Don't show focus on selected item if we're suppressing the focus
         // (because the mouse was used for selection) or if the item was
         // selected by default when the menu opened.
-        const suppressFocus = (selected && !this.state.focusVisible) ||
+        const suppressFocus = (selected && !this[symbols.state].focusVisible) ||
           isDefaultFocusableItem;
         item.style.outline = suppressFocus ? 'none' : '';
       });
     }
     if (changed.generic) {
-      this.$.content.classList.toggle('generic', this.state.generic);
+      this.$.content.classList.toggle('generic', this[symbols.state].generic);
     }
   }
 

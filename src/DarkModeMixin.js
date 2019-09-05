@@ -14,7 +14,7 @@ export default function DarkModeMixin(Base) {
     // Once connected, check background color. We set state before calling super
     // so the new state will be included when ReactiveMixin calls render.
     connectedCallback() {
-      if (this.state.darkMode === null) {
+      if (this[symbols.state].darkMode === null) {
         // Infer dark mode from effective background color.
         const backgroundColor = findBackgroundColor(this);
         const rgb = parseRgb(backgroundColor);
@@ -45,7 +45,7 @@ export default function DarkModeMixin(Base) {
      * @type {boolean}
      */
     get darkMode() {
-      return this.state.darkMode;
+      return this[symbols.state].darkMode;
     }
     set darkMode(darkMode) {
       const parsed = String(darkMode) === 'true';

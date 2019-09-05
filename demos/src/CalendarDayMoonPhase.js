@@ -35,7 +35,7 @@ class CalendarDayMoonPhase extends CalendarDay {
     if (changed.date) {
       // To determine quarter, we compare the moon's angle at midnight on the
       // given date with the angle at midnight on the following date.
-      const date = this.state.date;
+      const date = this[symbols.state].date;
       const angle = moonAngle(date);
       const dateNext = new Date(date.getTime());
       dateNext.setDate(dateNext.getDate() + 1); // Increment date.

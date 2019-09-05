@@ -36,7 +36,7 @@ class FilterListBox extends ListBox {
    * @type {string}
    */
   get filter() {
-    return this.state.filter;
+    return this[symbols.state].filter;
   }
   set filter(filter) {
     // If external code sets the filter, it's impossible for that code to
@@ -101,7 +101,7 @@ class FilterListBox extends ListBox {
 
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
-    const { content, filter } = this.state;
+    const { content, filter } = this[symbols.state];
     // We inspect `content` instead of `items` so that we can render even those
     // elements that don't match the current filter.
     if ((changed.filter || changed.content) && content) {
@@ -109,7 +109,7 @@ class FilterListBox extends ListBox {
         if (content instanceof HTMLElement || content instanceof SVGElement) {
 
           // Hide content elements that don't match the filter.
-          const matches = this[symbols.itemMatchesState](content, this.state);
+          const matches = this[symbols.itemMatchesState](content, this[symbols.state]);
           content.style.display = matches ? null : 'none';
 
           // For matching items, highlight the matching text.

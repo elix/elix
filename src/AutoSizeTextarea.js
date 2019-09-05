@@ -128,7 +128,7 @@ class AutoSizeTextarea extends Base {
    * @default 1
    */
   get minimumRows() {
-    return this.state.minimumRows;
+    return this[symbols.state].minimumRows;
   }
   set minimumRows(minimumRows) {
     const parsed = Number(minimumRows);
@@ -141,7 +141,7 @@ class AutoSizeTextarea extends Base {
 
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
-    const { copyStyle, lineHeight, minimumRows, value } = this.state;
+    const { copyStyle, lineHeight, minimumRows, value } = this[symbols.state];
     if (changed.copyStyle) {
       Object.assign(this.$.copyContainer.style, copyStyle);
     }
@@ -238,7 +238,7 @@ class AutoSizeTextarea extends Base {
    * @type {string}
    */
   get value() {
-    return this.state.value;
+    return this[symbols.state].value;
   }
   set value(value) {
     this[symbols.setState]({

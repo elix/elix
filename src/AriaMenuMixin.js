@@ -23,7 +23,7 @@ export default function AriaMenuMixin(Base) {
     }
 
     get itemRole() {
-      return this.state.itemRole;
+      return this[symbols.state].itemRole;
     }
     set itemRole(itemRole) {
       this[symbols.setState]({ itemRole });
@@ -31,8 +31,8 @@ export default function AriaMenuMixin(Base) {
 
     [symbols.render](/** @type {PlainObject} */ changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
-      const { selectedIndex, itemRole } = this.state;
-      /** @type {ListItemElement[]} */ const items = this.state.items;
+      const { selectedIndex, itemRole } = this[symbols.state];
+      /** @type {ListItemElement[]} */ const items = this[symbols.state].items;
       if ((changed.items || changed.itemRole) && items) {
         // Give each item a role.
         items.forEach(item => {
@@ -52,7 +52,7 @@ export default function AriaMenuMixin(Base) {
       }
       if (changed.role) {
         // Apply top-level role.
-        const { role } = this.state;
+        const { role } = this[symbols.state];
         this.setAttribute('role', role);
       }
     }

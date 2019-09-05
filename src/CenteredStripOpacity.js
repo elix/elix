@@ -38,7 +38,7 @@ class CenteredStripOpacity extends CenteredStrip {
         selectedIndex,
         swipeFraction,
         transitionDuration
-      } = this.state;
+      } = this[symbols.state];
       if (items) {
         const sign = rightToLeft ? 1 : -1;
         const swiping = swipeFraction != null;
@@ -69,7 +69,7 @@ class CenteredStripOpacity extends CenteredStrip {
   }
 
   get transitionDuration() {
-    return this.state.transitionDuration;
+    return this[symbols.state].transitionDuration;
   }
   set transitionDuration(transitionDuration) {
     this[symbols.setState]({ transitionDuration });

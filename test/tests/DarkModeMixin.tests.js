@@ -1,3 +1,4 @@
+import * as symbols from '../../src/symbols.js';
 import DarkModeMixin from '../../src/DarkModeMixin.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
 
@@ -25,7 +26,7 @@ describe("DarkModeMixin", () => {
     parent.appendChild(fixture);
     container.appendChild(parent);
     await Promise.resolve();
-    assert(fixture.state.darkMode);
+    assert(fixture[symbols.state].darkMode);
   });
 
   it("infers no dark mode when the element or ancestor has a light background color", async () => {
@@ -35,7 +36,7 @@ describe("DarkModeMixin", () => {
     parent.appendChild(fixture);
     container.appendChild(parent);
     await Promise.resolve();
-    assert(!fixture.state.darkMode);
+    assert(!fixture[symbols.state].darkMode);
   });
 
 });

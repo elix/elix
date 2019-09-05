@@ -25,7 +25,7 @@ export default function DelegateItemsMixin(Base) {
         /** @type {any} */
         const cast = event.target;
         const delegateItems = cast.items;
-        if (this.state.items !== delegateItems) {
+        if (this[symbols.state].items !== delegateItems) {
           this[symbols.setState]({
             items: delegateItems
           });
@@ -36,7 +36,7 @@ export default function DelegateItemsMixin(Base) {
         /** @type {any} */
         const cast = event;
         const delegateSelectedIndex = cast.detail.selectedIndex;
-        if (this.state.selectedIndex !== delegateSelectedIndex) {
+        if (this[symbols.state].selectedIndex !== delegateSelectedIndex) {
           this[symbols.setState]({
             selectedIndex: delegateSelectedIndex
           });
@@ -66,7 +66,7 @@ export default function DelegateItemsMixin(Base) {
      * @returns {Element[]|null} the element's current items
      */
     get items() {
-      return this.state ? this.state.items : null;
+      return this[symbols.state] ? this[symbols.state].items : null;
     }
 
     [symbols.render](/** @type {PlainObject} */ changed) {
@@ -77,7 +77,7 @@ export default function DelegateItemsMixin(Base) {
           throw `To use DelegateItemsMixin, ${this.constructor.name} must define a getter for [symbols.itemsDelegate].`;
         }
         if ('selectedIndex' in itemsDelegate) {
-          itemsDelegate.selectedIndex = this.state.selectedIndex;
+          itemsDelegate.selectedIndex = this[symbols.state].selectedIndex;
         }
       }
     }

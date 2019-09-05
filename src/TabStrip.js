@@ -110,7 +110,7 @@ class TabStrip extends Base {
       /* eslint-disable no-case-declarations */
       case ' ':
       case 'Enter':
-        const { items, selectedIndex } = this.state;
+        const { items, selectedIndex } = this[symbols.state];
         if (event.target instanceof HTMLElement) {
           const newIndex = items && items.indexOf(event.target);
           this[symbols.setState]({
@@ -127,7 +127,7 @@ class TabStrip extends Base {
 
   // TabStrip orientation depends on position property.
   get orientation() {
-    return this.state.orientation;
+    return this[symbols.state].orientation;
   }
 
   /**
@@ -143,7 +143,7 @@ class TabStrip extends Base {
    * @default 'top'
    */
   get position() {
-    return this.state.position;
+    return this[symbols.state].position;
   }
   set position(position) {
     const orientation = position === 'top' || position === 'bottom' ?
@@ -157,9 +157,9 @@ class TabStrip extends Base {
 
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
-    const { items } = this.state;
+    const { items } = this[symbols.state];
     if (changed.items && items) {
-      const { tabButtonRole } = this.state;
+      const { tabButtonRole } = this[symbols.state];
       items.forEach(item => {
         if (tabButtonRole === defaultAriaRole[item.localName]) {
           item.removeAttribute('role');
@@ -170,7 +170,7 @@ class TabStrip extends Base {
     }
     if ((changed.items || changed.selectedIndex) && items) {
       // Apply `selected` style to the selected item only.
-      const { selectedIndex } = this.state;
+      const { selectedIndex } = this[symbols.state];
       items.forEach((item, index) => {
         const selected = index === selectedIndex;
         item.classList.toggle('selected', selected);
@@ -180,15 +180,15 @@ class TabStrip extends Base {
       });
     }
     if (changed.generic) {
-      this.style.gridGap = this.state.generic ? '0.25em' : '';
+      this.style.gridGap = this[symbols.state].generic ? '0.25em' : '';
     }
     if (changed.orientation) {
-      this.style.gridAutoFlow = this.state.orientation === 'vertical' ?
+      this.style.gridAutoFlow = this[symbols.state].orientation === 'vertical' ?
         'row' :
         'column';
     }
     if (changed.tabAlign) {
-      const { tabAlign } = this.state;  
+      const { tabAlign } = this[symbols.state];  
       const justifyContentForTabAlign = {
         'center': 'center',
         'end': 'end',
@@ -199,7 +199,7 @@ class TabStrip extends Base {
       this.style.placeContent = justifyContentForTabAlign[tabAlign];
     }
     if (changed.items || changed.position) {
-      const { position } = this.state;
+      const { position } = this[symbols.state];
       if (items) {
         items.forEach(item => {
           if ('position' in item) {
@@ -217,7 +217,7 @@ class TabStrip extends Base {
    * @default 'start'
    */
   get tabAlign() {
-    return this.state.tabAlign;
+    return this[symbols.state].tabAlign;
   }
   set tabAlign(tabAlign) {
     this[symbols.setState]({ tabAlign });

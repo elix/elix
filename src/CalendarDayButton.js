@@ -24,7 +24,7 @@ class CalendarDayButton extends Base {
   }
 
   get outsideRange() {
-    return this.state.outsideRange;
+    return this[symbols.state].outsideRange;
   }
   set outsideRange(outsideRange) {
     this[symbols.setState]({
@@ -36,21 +36,21 @@ class CalendarDayButton extends Base {
     super[symbols.render](changed);
     /** @type {any} */ const day = this.$.day;
     if (changed.date) {
-      day.date = this.state.date;
+      day.date = this[symbols.state].date;
     }
     if (changed.locale) {
-      day.locale = this.state.locale;
+      day.locale = this[symbols.state].locale;
     }
     if (changed.outsideRange) {
-      day.outsideRange = this.state.outsideRange;
+      day.outsideRange = this[symbols.state].outsideRange;
     }
     if (changed.selected) {
-      day.selected = this.state.selected;
+      day.selected = this[symbols.state].selected;
     }
   }
 
   get selected() {
-    return this.state.selected;
+    return this[symbols.state].selected;
   }
   set selected(selected) {
     this[symbols.setState]({

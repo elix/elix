@@ -92,7 +92,7 @@ export default function ContentItemsMixin(Base) {
      * @type {ListItemElement[]|null} the element's current items
      */
     get items() {
-      return this.state ? this.state.items : null;
+      return this[symbols.state] ? this[symbols.state].items : null;
     }
 
   }

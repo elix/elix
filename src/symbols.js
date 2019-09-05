@@ -99,7 +99,7 @@ export const defaultTabIndex = Symbol('defaultTabIndex');
 /**
  * The default state for this element.
  * 
- * @var {PlainObject}
+ * @var {State}
  */
 export const defaultState = Symbol('defaultState');
 
@@ -451,6 +451,15 @@ export const setState = Symbol('setState');
  * @function startEffect
  */
 export const startEffect = Symbol('startEffect');
+
+/**
+ * The element's current state.
+ * 
+ * This is managed by [ReactiveMixin](ReactiveMixin).
+ * 
+ * @var {State}
+ */
+export const state = Symbol('state');
 
 /**
  * Symbol for the `swipeDown` method.

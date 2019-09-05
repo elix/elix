@@ -63,14 +63,14 @@ class Button extends Base {
     if (mapKeysToClick) {
       switch (event.key) {
         case ' ':
-          if (this.state.treatSpaceAsClick) {
+          if (this[symbols.state].treatSpaceAsClick) {
             this[symbols.tap]();
             handled = true;
           }
           break;
 
         case 'Enter':
-          if (this.state.treatEnterAsClick) {
+          if (this[symbols.state].treatEnterAsClick) {
             this[symbols.tap]();
             handled = true;
           }
@@ -87,7 +87,7 @@ class Button extends Base {
     if (changed.focusVisible) {
       // Override host `outline` style supplied by FocusVisibleMixin.
       this.style.outline = 'none';
-      const { focusVisible } = this.state;
+      const { focusVisible } = this[symbols.state];
       this.$.inner.style.outline = focusVisible ? '' : 'none';
     }
   }

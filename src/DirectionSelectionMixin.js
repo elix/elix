@@ -112,7 +112,7 @@ export default function DirectionSelectionMixin(Base) {
         console.warn(`DirectionSelectionMixin expects ${this.constructor.name} to define a "selectPrevious" method.`);
         return false;
       } else {
-        return this.state && this.state.rightToLeft ?
+        return this[symbols.state] && this[symbols.state].rightToLeft ?
           this.selectNext() :
           this.selectPrevious();
       }
@@ -147,7 +147,7 @@ export default function DirectionSelectionMixin(Base) {
         console.warn(`DirectionSelectionMixin expects ${this.constructor.name} to define a "selectNext" method.`);
         return false;
       } else {
-        return this.state && this.state.rightToLeft ?
+        return this[symbols.state] && this[symbols.state].rightToLeft ?
           this.selectPrevious() :
           this.selectNext();
       }

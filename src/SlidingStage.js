@@ -41,7 +41,7 @@ class SlidingStage extends Base {
   }
 
   get orientation() {
-    return this.state.orientation;
+    return this[symbols.state].orientation;
   }
   set orientation(orientation) {
     this[symbols.setState]({ orientation });
@@ -51,13 +51,13 @@ class SlidingStage extends Base {
     super[symbols.render](changed);
     if (changed.enableEffects || changed.orientation ||
         changed.selectedIndex || changed.swipeFraction) {
-      const { orientation, rightToLeft, selectedIndex, items } = this.state;
+      const { orientation, rightToLeft, selectedIndex, items } = this[symbols.state];
       const vertical = orientation === 'vertical';
       const sign = vertical ?
         -1 :
         rightToLeft ? 1 : -1;
-      const swiping = this.state.swipeFraction != null;
-      const swipeFraction = this.state.swipeFraction || 0;
+      const swiping = this[symbols.state].swipeFraction != null;
+      const swipeFraction = this[symbols.state].swipeFraction || 0;
       let translation;
       if (selectedIndex >= 0) {
         const selectionFraction = selectedIndex + sign * swipeFraction;
@@ -72,13 +72,13 @@ class SlidingStage extends Base {
       const axis = vertical ? 'Y' : 'X';
       slidingStageContent.style.transform = `translate${axis}(${translation}%)`;
 
-      const showTransition = this.state.enableEffects && !swiping;
+      const showTransition = this[symbols.state].enableEffects && !swiping;
       slidingStageContent.style.transition = showTransition ?
         'transform 0.25s' :
         'none';
     }
     if (changed.orientation) {
-      const { orientation } = this.state;
+      const { orientation } = this[symbols.state];
       const vertical = orientation === 'vertical';
       this.$.slidingStageContent.style.flexDirection = vertical ?
         'column' :
@@ -87,7 +87,7 @@ class SlidingStage extends Base {
   }
 
   get swipeFraction() {
-    return this.state.swipeFraction;
+    return this[symbols.state].swipeFraction;
   }
   set swipeFraction(swipeFraction) {
     const parsed = swipeFraction && parseFloat(swipeFraction);

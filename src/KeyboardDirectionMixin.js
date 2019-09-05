@@ -81,7 +81,7 @@ export default function KeyboardDirectionMixin(Base) {
       let handled = false;
 
       // Respect orientation state if defined, otherwise assume "both".
-      const orientation = this.state.orientation || 'both';
+      const orientation = this[symbols.state].orientation || 'both';
       const horizontal = (orientation === 'horizontal' || orientation === 'both');
       const vertical = (orientation === 'vertical' || orientation === 'both');
 

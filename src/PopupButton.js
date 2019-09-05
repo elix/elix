@@ -31,7 +31,7 @@ class PopupButton extends Base {
       // source button before the popup is even rendered. We don't want to close
       // in that case, so we check to see if we've already measured the popup
       // dimensions (which will be true if the popup fully completed rendering).
-      const measured = this.state.popupHeight !== null;
+      const measured = this[symbols.state].popupHeight !== null;
       if (hostFocused && this.opened && measured) {
         this[symbols.raiseChangeEvents] = true;
         await this.close();
@@ -106,7 +106,7 @@ class PopupButton extends Base {
       source.tabIndex = -1;
     }
     if (changed.disabled) {
-      this.$.source.style.borderStyle = this.state.disabled ? null : 'solid';
+      this.$.source.style.borderStyle = this[symbols.state].disabled ? null : 'solid';
     }
   }
 

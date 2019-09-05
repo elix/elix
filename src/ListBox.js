@@ -78,7 +78,7 @@ class ListBox extends Base {
   }
 
   get orientation() {
-    return this.state.orientation;
+    return this[symbols.state].orientation;
   }
   set orientation(orientation) {
     this[symbols.setState]({ orientation });
@@ -87,12 +87,12 @@ class ListBox extends Base {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.generic) {
-      const { generic } = this.state;
+      const { generic } = this[symbols.state];
       this.classList.toggle('generic', generic);
     }
     if (changed.items || changed.selectedIndex) {
       // Apply `selected` style to the selected item only.
-      const { selectedIndex, items } = this.state;
+      const { selectedIndex, items } = this[symbols.state];
       if (items) {
         items.forEach((item, index) => {
           const selected = index === selectedIndex;
@@ -102,7 +102,7 @@ class ListBox extends Base {
     }
     if (changed.orientation) {
       // Update list orientation styling.
-      const style = this.state.orientation === 'vertical' ?
+      const style = this[symbols.state].orientation === 'vertical' ?
         {
           display: 'block',
           flexDirection: '',

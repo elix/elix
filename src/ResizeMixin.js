@@ -33,8 +33,8 @@ export default function ResizeMixin(Base) {
     [symbols.checkSize]() {
       if (super[symbols.checkSize]) { super[symbols.checkSize](); }
       const { clientHeight, clientWidth } = this;
-      const sizeChanged = clientHeight !== this.state.clientHeight ||
-          clientWidth !== this.state.clientWidth;
+      const sizeChanged = clientHeight !== this[symbols.state].clientHeight ||
+          clientWidth !== this[symbols.state].clientWidth;
       if (sizeChanged) {
         this[symbols.setState]({
           clientHeight,

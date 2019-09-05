@@ -73,7 +73,7 @@ export default function PopupModalityMixin(Base) {
      * @default true
      */
     get closeOnWindowResize() {
-      return this.state.closeOnWindowResize;
+      return this[symbols.state].closeOnWindowResize;
     }
     set closeOnWindowResize(closeOnWindowResize) {
       this[symbols.setState]({ closeOnWindowResize });
@@ -107,7 +107,7 @@ export default function PopupModalityMixin(Base) {
       if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.role) {
         // Apply top-level role.
-        const { role } = this.state;
+        const { role } = this[symbols.state];
         this.setAttribute('role', role);
       }
     }
@@ -173,7 +173,7 @@ async function blurHandler(/** @type {Event} */ event) {
 async function closeHandler(/** @type {Event} */ event) {
   // @ts-ignore
   /** @type {any} */const element = this; 
-  const handleEvent = event.type !== 'resize' || element.state.closeOnWindowResize;
+  const handleEvent = event.type !== 'resize' || element[symbols.state].closeOnWindowResize;
   if (!ownEvent(element, event) && handleEvent) {
     element[symbols.raiseChangeEvents] = true;
     await element.close();

@@ -48,7 +48,7 @@ class CalendarDays extends Base {
   }
 
   get dayCount() {
-    return this.state.dayCount;
+    return this[symbols.state].dayCount;
   }
   set dayCount(dayCount) {
     this[symbols.setState]({
@@ -63,7 +63,7 @@ class CalendarDays extends Base {
    * @default CalendarDay
    */
   get dayRole() {
-    return this.state.dayRole;
+    return this[symbols.state].dayRole;
   }
   set dayRole(dayRole) {
     this[symbols.setState]({ dayRole });
@@ -75,7 +75,7 @@ class CalendarDays extends Base {
    * @type {Element[]|null}
    */
   get days() {
-    return this.state.days;
+    return this[symbols.state].days;
   }
 
   get [symbols.defaultState]() {
@@ -102,12 +102,12 @@ class CalendarDays extends Base {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.days) {
-      applyChildNodes(this.$.dayContainer, this.state.days);
+      applyChildNodes(this.$.dayContainer, this[symbols.state].days);
     }
     if (changed.date || changed.showSelectedDay) {
       // Ensure only current date has "selected" class.
-      const showSelectedDay = this.state.showSelectedDay;
-      const { date } = this.state;
+      const showSelectedDay = this[symbols.state].showSelectedDay;
+      const { date } = this[symbols.state];
       const selectedDate = date.getDate();
       const selectedMonth = date.getMonth();
       const selectedYear = date.getFullYear();
@@ -126,10 +126,10 @@ class CalendarDays extends Base {
     }
     if (changed.dayCount || changed.startDate) {
       // Mark dates as inside or outside of range.
-      const { dayCount, startDate } = this.state;
+      const { dayCount, startDate } = this[symbols.state];
       const firstDateAfterRange = calendar.offsetDateByDays(startDate, dayCount);
       /** @type {any[]} */
-      const days = this.state.days || [];
+      const days = this[symbols.state].days || [];
       days.forEach(day => {
         if ('outsideRange' in day) {
           const dayDate = day.date;
@@ -143,7 +143,7 @@ class CalendarDays extends Base {
   }
 
   get showCompleteWeeks() {
-    return this.state.showCompleteWeeks;
+    return this[symbols.state].showCompleteWeeks;
   }
   set showCompleteWeeks(showCompleteWeeks) {
     this[symbols.setState]({
@@ -152,7 +152,7 @@ class CalendarDays extends Base {
   }
 
   get showSelectedDay() {
-    return this.state.showSelectedDay;
+    return this[symbols.state].showSelectedDay;
   }
   set showSelectedDay(showSelectedDay) {
     this[symbols.setState]({
@@ -161,13 +161,13 @@ class CalendarDays extends Base {
   }
 
   get startDate() {
-    return this.state.startDate;
+    return this[symbols.state].startDate;
   }
   set startDate(startDate) {
     const parsed = typeof startDate === 'string' ?
       new Date(startDate) :
       startDate;
-    if (!calendar.datesEqual(this.state.startDate, parsed)) {
+    if (!calendar.datesEqual(this[symbols.state].startDate, parsed)) {
       this[symbols.setState]({
         startDate: parsed
       });

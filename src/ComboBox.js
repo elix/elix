@@ -36,7 +36,7 @@ class ComboBox extends Base {
   
   // Forward any ARIA label to the input element.
   get ariaLabel() {
-    return this.state.ariaLabel;
+    return this[symbols.state].ariaLabel;
   }
   set ariaLabel(ariaLabel) {
     this[symbols.setState]({ ariaLabel });
@@ -44,12 +44,12 @@ class ComboBox extends Base {
 
   [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
     super[symbols.componentDidUpdate](changed);
-    if (this.state.selectText) {
+    if (this[symbols.state].selectText) {
       // Select the text in the input after giving the inner input a chance to render the value.
       setTimeout(() => {
         // Text selection might have been turned off in the interim;
         // double-check that we still want to select text.
-        if (this.state.selectText) {
+        if (this[symbols.state].selectText) {
           /** @type {any} */
           const cast = this.$.input;
           const value = cast.value;
@@ -117,7 +117,7 @@ class ComboBox extends Base {
    * @default 'input'
    */
   get inputRole() {
-    return this.state.inputRole;
+    return this[symbols.state].inputRole;
   }
   set inputRole(inputRole) {
     this[symbols.setState]({ inputRole });
@@ -163,7 +163,7 @@ class ComboBox extends Base {
    * @type {string}
    */
   get placeholder() {
-    return this.state.placeholder;
+    return this[symbols.state].placeholder;
   }
   set placeholder(placeholder) {
     this[symbols.setState]({
@@ -174,7 +174,7 @@ class ComboBox extends Base {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.inputRole) {
-      template.transmute(this.$.input, this.state.inputRole);
+      template.transmute(this.$.input, this[symbols.state].inputRole);
 
       this.$.input.addEventListener('blur', () => {
         // If we're open and lose focus, then close.
@@ -234,7 +234,7 @@ class ComboBox extends Base {
       });
     }
     if (changed.toggleButtonRole) {
-      template.transmute(this.$.toggleButton, this.state.toggleButtonRole);
+      template.transmute(this.$.toggleButton, this[symbols.state].toggleButtonRole);
       this.$.toggleButton.addEventListener('mousedown', () => {
         this[symbols.raiseChangeEvents] = true;
         this.toggle();
@@ -264,19 +264,19 @@ class ComboBox extends Base {
       }
     }
     if (changed.ariaLabel) {
-      this.$.input.setAttribute('aria-label', this.state.ariaLabel);
+      this.$.input.setAttribute('aria-label', this[symbols.state].ariaLabel);
     }
     if (changed.disabled) {
-      const { disabled } = this.state;
+      const { disabled } = this[symbols.state];
       /** @type {any} */ (this.$.input).disabled = disabled;
       /** @type {any} */ (this.$.toggleButton).disabled = disabled;
     }
     if (changed.placeholder) {
-      const { placeholder } = this.state;
+      const { placeholder } = this[symbols.state];
       /** @type {any} */ (this.$.input).placeholder = placeholder;
     }
     if (changed.popupPosition) {
-      const { popupPosition } = this.state;
+      const { popupPosition } = this[symbols.state];
       this.$.downIcon.style.display = popupPosition === 'below' ?
         'block' :
         'none';
@@ -285,7 +285,7 @@ class ComboBox extends Base {
         'none';
     }
     if (changed.rightToLeft) {
-      const { rightToLeft } = this.state;
+      const { rightToLeft } = this[symbols.state];
       // We want to style the inner input if it's been created with
       // WrappedStandardElement, otherwise style the input directly.
       const cast = /** @type {any} */ (this.$.input);
@@ -304,7 +304,7 @@ class ComboBox extends Base {
       });
     }
     if (changed.value) {
-      const { value } = this.state;
+      const { value } = this[symbols.state];
       /** @type {any} */ (this.$.input).value = value;
     }
   }
@@ -392,14 +392,14 @@ class ComboBox extends Base {
    * @default SeamlessButton
    */
   get toggleButtonRole() {
-    return this.state.toggleButtonRole;
+    return this[symbols.state].toggleButtonRole;
   }
   set toggleButtonRole(toggleButtonRole) {
     this[symbols.setState]({ toggleButtonRole });
   }
 
   get value() {
-    return this.state.value;
+    return this[symbols.state].value;
   }
   set value(value) {
     this[symbols.setState]({ value });

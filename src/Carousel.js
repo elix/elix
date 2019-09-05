@@ -91,7 +91,7 @@ class Carousel extends Base {
   }
 
   get orientation() {
-    return this.state.orientation;
+    return this[symbols.state].orientation;
   }
   set orientation(orientation) {
     this[symbols.setState]({ orientation });
@@ -108,13 +108,13 @@ class Carousel extends Base {
     if (changed.stageRole || changed.orientation) {
       /** @type {any} */ const cast = this.$.stage;
       if ('orientation' in cast) {
-        cast.orientation = this.state.orientation;
+        cast.orientation = this[symbols.state].orientation;
       }
     }
     if (changed.orientation || changed.proxyListRole) {
       /** @type {any} */ const cast = this.$.proxyList;
       if ('orientation' in cast) {
-        cast.orientation = this.state.orientation;
+        cast.orientation = this[symbols.state].orientation;
       }
     }
     if (changed.proxyListRole) {
@@ -129,8 +129,8 @@ class Carousel extends Base {
       const cast = this.$.stage;
       cast.removeAttribute('tabindex');      
     }
-    const { darkMode } = this.state;
-    /** @type {Element[]} */ const proxies = this.state.proxies;
+    const { darkMode } = this[symbols.state];
+    /** @type {Element[]} */ const proxies = this[symbols.state].proxies;
     // Wait for knowledge of dark mode
     if ((changed.darkMode || changed.proxies)
         && darkMode !== null && proxies) {

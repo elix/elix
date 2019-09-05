@@ -27,7 +27,7 @@ class PageDot extends Base {
 
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
-    const { darkMode } = this.state;
+    const { darkMode } = this[symbols.state];
     // Wait for knowledge of dark mode
     if (changed.darkMode && darkMode !== null) {
       this.style.backgroundColor = darkMode ?

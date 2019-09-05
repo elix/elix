@@ -70,7 +70,7 @@ export default class MessageListBox extends Base {
     // labels to indicate the read/unread state that will result if the user
     // ends the swipe at that point.
     if (changed.swipeItem || changed.swipeRightWillCommit) {
-      const { swipeItem, swipeRightCommitted, swipeRightWillCommit } = this.state;
+      const { swipeItem, swipeRightCommitted, swipeRightWillCommit } = this[symbols.state];
       if (swipeItem && 'read' in swipeItem) {
         const read = swipeItem.read;
         const newRead = swipeRightCommitted || swipeRightWillCommit ?
@@ -86,13 +86,13 @@ export default class MessageListBox extends Base {
     // signal the point at which releasing the swipe would commit the command.
     if (changed.swipeRightCommitted || changed.swipeRightWillCommit) {
       /** @type {any} */ (this.$.unreadCommand).align =
-        this.state.swipeRightCommitted || this.state.swipeRightWillCommit ?
+        this[symbols.state].swipeRightCommitted || this[symbols.state].swipeRightWillCommit ?
           'right' :
           'left';
     }
     if (changed.swipeLeftCommitted || changed.swipeLeftWillCommit) {
       /** @type {any} */ (this.$.deleteCommand).align =
-        this.state.swipeLeftCommitted || this.state.swipeLeftWillCommit ?
+        this[symbols.state].swipeLeftCommitted || this[symbols.state].swipeLeftWillCommit ?
           'left' :
           'right';
     }
@@ -103,14 +103,14 @@ export default class MessageListBox extends Base {
   // deletion.
   [symbols.swipeLeftTransitionEnd]() {
     if (super[symbols.swipeLeftTransitionEnd]) { super[symbols.swipeLeftTransitionEnd](); }
-    this.state.swipeItem.remove();
+    this[symbols.state].swipeItem.remove();
   }
 
   // A swipe right indicates we should toggle an item's read/unread state. We
   // toggle the state as soon as the swipe happens (before the item animates
   // back to its normal state).
   [symbols.swipeRight]() {
-    const { swipeItem } = this.state;
+    const { swipeItem } = this[symbols.state];
     if ('read' in swipeItem) {
       swipeItem.read = !swipeItem.read;
     }

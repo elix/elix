@@ -23,7 +23,7 @@ export default function CalendarElementMixin(Base) {
       if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
       // TODO: call calendar.datesEqual(date, previousState.date)?
       if (changed.date && this[symbols.raiseChangeEvents]) {
-        const date = this.state.date;
+        const date = this[symbols.state].date;
         /**
          * Raised when the `date` property changes.
          * 
@@ -49,14 +49,14 @@ export default function CalendarElementMixin(Base) {
      * @type {Date|string}
      */
     get date() {
-      return this.state.date;
+      return this[symbols.state].date;
     }
     set date(date) {
       const parsed = typeof date === 'string' ?
         new Date(date) :
         date;
       // Only update state if actual date value differs from current state.
-      if (!calendar.datesEqual(parsed, this.state.date)) {
+      if (!calendar.datesEqual(parsed, this[symbols.state].date)) {
         this[symbols.setState]({
           date: parsed
         });
@@ -87,7 +87,7 @@ export default function CalendarElementMixin(Base) {
      * @type {string}
      */
     get locale() {
-      return this.state.locale;
+      return this[symbols.state].locale;
     }
     set locale(locale) {
       this[symbols.setState]({ locale });

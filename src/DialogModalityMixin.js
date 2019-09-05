@@ -55,7 +55,7 @@ export default function DialogModalityMixin(Base) {
     [symbols.render](/** @type {PlainObject} */ changed) {
       if (super[symbols.render]) { super[symbols.render](changed); }
       if (changed.opened) {
-        if (this.state.opened && document.documentElement) {
+        if (this[symbols.state].opened && document.documentElement) {
           // Disable body scrolling to absorb space bar keypresses and other
           // means of scrolling the top-level document.
           const documentWidth = document.documentElement.clientWidth;
@@ -82,7 +82,7 @@ export default function DialogModalityMixin(Base) {
       }
       if (changed.role) {
         // Apply top-level role.
-        const { role } = this.state;
+        const { role } = this[symbols.state];
         this.setAttribute('role', role);
       }
     }

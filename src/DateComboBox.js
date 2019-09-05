@@ -33,7 +33,7 @@ class DateComboBox extends Base {
    * @default ArrowDirectionButton
    */
   get arrowButtonRole() {
-    return this.state.arrowButtonRole;
+    return this[symbols.state].arrowButtonRole;
   }
   set arrowButtonRole(arrowButtonRole) {
     this[symbols.setState]({
@@ -54,7 +54,7 @@ class DateComboBox extends Base {
    * @default CalendarMonthNavigator
    */
   get calendarRole() {
-    return this.state.calendarRole;
+    return this[symbols.state].calendarRole;
   }
   set calendarRole(calendarRole) {
     this[symbols.setState]({
@@ -63,7 +63,7 @@ class DateComboBox extends Base {
   }
 
   get dateTimeFormatOptions() {
-    return this.state.dateTimeFormatOptions;
+    return this[symbols.state].dateTimeFormatOptions;
   }
   set dateTimeFormatOptions(dateTimeFormatOptions) {
     this[symbols.setState]({
@@ -88,7 +88,7 @@ class DateComboBox extends Base {
    * @default CalendarDay
    */
   get dayRole() {
-    return this.state.dayRole;
+    return this[symbols.state].dayRole;
   }
   set dayRole(dayRole) {
     this[symbols.setState]({
@@ -106,7 +106,7 @@ class DateComboBox extends Base {
    * @default 'short'
    */
   get daysOfWeekFormat() {
-    return this.state.daysOfWeekFormat;
+    return this[symbols.state].daysOfWeekFormat;
   }
   set daysOfWeekFormat(daysOfWeekFormat) {
     this[symbols.setState]({ daysOfWeekFormat });
@@ -228,7 +228,7 @@ class DateComboBox extends Base {
 
   [symbols.goDown]() {
     if (super[symbols.goDown]) { super[symbols.goDown](); }
-    const date = this.state.date || new Date();
+    const date = this[symbols.state].date || new Date();
     this[symbols.setState]({
       date: calendar.offsetDateByDays(date, 7)
     });
@@ -237,7 +237,7 @@ class DateComboBox extends Base {
 
   [symbols.goLeft]() {
     if (super[symbols.goLeft]) { super[symbols.goLeft](); }
-    const date = this.state.date || new Date();
+    const date = this[symbols.state].date || new Date();
     this[symbols.setState]({
       date: calendar.offsetDateByDays(date, -1)
     });
@@ -246,7 +246,7 @@ class DateComboBox extends Base {
 
   [symbols.goRight]() {
     if (super[symbols.goRight]) { super[symbols.goRight](); }
-    const date = this.state.date || new Date();
+    const date = this[symbols.state].date || new Date();
     this[symbols.setState]({
       date: calendar.offsetDateByDays(date, 1)
     });
@@ -255,7 +255,7 @@ class DateComboBox extends Base {
 
   [symbols.goUp]() {
     if (super[symbols.goUp]) { super[symbols.goUp](); }
-    const date = this.state.date || new Date();
+    const date = this[symbols.state].date || new Date();
     this[symbols.setState]({
       date: calendar.offsetDateByDays(date, -7)
     });
@@ -266,7 +266,7 @@ class DateComboBox extends Base {
     let handled = false;
 
     const opened = this.opened;
-    const date = this.state.date || calendar.today();
+    const date = this[symbols.state].date || calendar.today();
 
     switch (event.key) {
 
@@ -340,7 +340,7 @@ class DateComboBox extends Base {
    * @default 'long'
    */
   get monthFormat() {
-    return this.state.monthFormat;
+    return this[symbols.state].monthFormat;
   }
   set monthFormat(monthFormat) {
     this[symbols.setState]({
@@ -363,7 +363,7 @@ class DateComboBox extends Base {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.calendarRole) {
-      template.transmute(this.$.calendar, this.state.calendarRole);
+      template.transmute(this.$.calendar, this[symbols.state].calendarRole);
       this.$.calendar.addEventListener('date-changed', event => {
         this[symbols.raiseChangeEvents] = true;
         /** @type {any} */
@@ -379,7 +379,7 @@ class DateComboBox extends Base {
       });
     }
     if (changed.todayButtonRole) {
-      template.transmute(this.$.todayButton, this.state.todayButtonRole);
+      template.transmute(this.$.todayButton, this[symbols.state].todayButtonRole);
       this.$.todayButton.addEventListener('mousedown', event => {
         this[symbols.raiseChangeEvents] = true;
         this.date = calendar.today();
@@ -390,25 +390,25 @@ class DateComboBox extends Base {
     }
     const cast = /** @type {any} */ (this.$.calendar);
     if (changed.arrowButtonRole && 'arrowButtonRole' in this.$.calendar) {
-      cast.arrowButtonRole = this.state.arrowButtonRole;
+      cast.arrowButtonRole = this[symbols.state].arrowButtonRole;
     }
     if (changed.date) {
-      cast.date = this.state.date;
+      cast.date = this[symbols.state].date;
     }
     if (changed.dayRole && 'dayRole' in cast) {
-      cast.dayRole = this.state.dayRole;
+      cast.dayRole = this[symbols.state].dayRole;
     }
     if (changed.daysOfWeekFormat && 'daysOfWeekFormat' in cast) {
-      cast.daysOfWeekFormat = this.state.daysOfWeekFormat;
+      cast.daysOfWeekFormat = this[symbols.state].daysOfWeekFormat;
     }
     if (changed.locale) {
-      cast.locale = this.state.locale;
+      cast.locale = this[symbols.state].locale;
     }
     if (changed.monthFormat && 'monthFormat' in cast) {
-      cast.monthFormat = this.state.monthFormat;
+      cast.monthFormat = this[symbols.state].monthFormat;
     }
     if (changed.yearFormat && 'yearFormat' in cast) {
-      cast.yearFormat = this.state.yearFormat;
+      cast.yearFormat = this[symbols.state].yearFormat;
     }
   }
 
@@ -467,7 +467,7 @@ class DateComboBox extends Base {
    * @default null
    */
   get timeBias() {
-    return this.state.timeBias;
+    return this[symbols.state].timeBias;
   }
   set timeBias(timeBias) {
     this[symbols.setState]({
@@ -482,7 +482,7 @@ class DateComboBox extends Base {
    * @default SeamlessButton
    */
   get todayButtonRole() {
-    return this.state.todayButtonRole;
+    return this[symbols.state].todayButtonRole;
   }
   set todayButtonRole(todayButtonRole) {
     this[symbols.setState]({
@@ -515,7 +515,7 @@ class DateComboBox extends Base {
    * @default 'numeric'
    */
   get yearFormat() {
-    return this.state.yearFormat;
+    return this[symbols.state].yearFormat;
   }
   set yearFormat(yearFormat) {
     this[symbols.setState]({

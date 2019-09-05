@@ -55,7 +55,7 @@ export default function DisabledMixin(Base) {
      * @default false
      */
     get disabled() {
-      return this.state.disabled;
+      return this[symbols.state].disabled;
     }
     set disabled(disabled) {
       // If the supplied value is a boolean, we accept it directly. If the

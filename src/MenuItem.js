@@ -33,7 +33,7 @@ class MenuItem extends Base {
        */
       const event = new CustomEvent('selected-changed', {
         detail: {
-          selected: this.state.selected
+          selected: this[symbols.state].selected
         }
       });
       this.dispatchEvent(event);
@@ -49,12 +49,12 @@ class MenuItem extends Base {
   [symbols.render](changed) {
     super[symbols.render](changed);
     if (changed.generic) {
-      this.$.container.classList.toggle('generic', this.state.generic);
+      this.$.container.classList.toggle('generic', this[symbols.state].generic);
     }
   }
 
   get selected() {
-    return this.state.selected;
+    return this[symbols.state].selected;
   }
   set selected(selected) {
     this[symbols.setState]({

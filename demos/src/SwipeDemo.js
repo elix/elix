@@ -22,7 +22,7 @@ class SwipeDemo extends Base {
 
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
-    const { swipeAxis, swipeFraction } = this.state;
+    const { swipeAxis, swipeFraction } = this[symbols.state];
     const vertical = swipeAxis === 'vertical';
     if (changed.swipeAxis) {
       this.style.flexDirection = vertical ? 'row' : 'column';
@@ -49,7 +49,7 @@ class SwipeDemo extends Base {
   }
 
   get swipeAxis() {
-    return this.state.swipeAxis;
+    return this[symbols.state].swipeAxis;
   }
   set swipeAxis(swipeAxis) {
     this[symbols.setState]({ swipeAxis });

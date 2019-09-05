@@ -28,7 +28,7 @@ function ArrowDirectionMixin(Base) {
      * @default true
      */
     get arrowButtonOverlap() {
-      return this.state.arrowButtonOverlap;
+      return this[symbols.state].arrowButtonOverlap;
     }
     set arrowButtonOverlap(arrowButtonOverlap) {
       const parsed = String(arrowButtonOverlap) === 'true';
@@ -45,7 +45,7 @@ function ArrowDirectionMixin(Base) {
      * @default ArrowDirectionButton
      */
     get arrowButtonRole() {
-      return this.state.arrowButtonRole;
+      return this[symbols.state].arrowButtonRole;
     }
     set arrowButtonRole(arrowButtonRole) {
       this[symbols.setState]({ arrowButtonRole });
@@ -96,14 +96,14 @@ function ArrowDirectionMixin(Base) {
         /** @type {any} */
         const cast = this;
 
-        template.transmute(this.$.arrowButtonPrevious, this.state.arrowButtonRole);
+        template.transmute(this.$.arrowButtonPrevious, this[symbols.state].arrowButtonRole);
         if (this.$.arrowButtonPrevious instanceof HTMLElement) {
           forwardFocus(this.$.arrowButtonPrevious, cast);
         }
         const previousButtonHandler = createButtonHandler(this, () => this.arrowButtonPrevious());
         this.$.arrowButtonPrevious.addEventListener('mousedown', previousButtonHandler);
         
-        template.transmute(this.$.arrowButtonNext, this.state.arrowButtonRole);
+        template.transmute(this.$.arrowButtonNext, this[symbols.state].arrowButtonRole);
         if (this.$.arrowButtonNext instanceof HTMLElement) {
           forwardFocus(this.$.arrowButtonNext, cast);
         }
@@ -118,7 +118,7 @@ function ArrowDirectionMixin(Base) {
         darkMode,
         orientation,
         rightToLeft
-      } = this.state;
+      } = this[symbols.state];
       const vertical = orientation === 'vertical';
       /** @type {any} */ const arrowButtonPrevious = this.$.arrowButtonPrevious;
       /** @type {any} */ const arrowButtonNext = this.$.arrowButtonNext;
@@ -229,14 +229,14 @@ function ArrowDirectionMixin(Base) {
       }
 
       if (changed.showArrowButtons) {
-        const display = this.state.showArrowButtons ? null : 'none';
+        const display = this[symbols.state].showArrowButtons ? null : 'none';
         arrowButtonPrevious.style.display = display;
         arrowButtonNext.style.display = display;
       }
     }
 
     get showArrowButtons() {
-      return this.state.showArrowButtons;
+      return this[symbols.state].showArrowButtons;
     }
     set showArrowButtons(showArrowButtons) {
       const parsed = String(showArrowButtons) === 'true';
