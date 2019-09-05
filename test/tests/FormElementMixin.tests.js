@@ -1,3 +1,4 @@
+import * as symbols from '../../src/symbols.js';
 import FormElementMixin from '../../src/FormElementMixin.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
@@ -7,8 +8,8 @@ const formElementsSupported = 'ElementInternals' in window;
 
 class FormElementTest extends FormElementMixin(ReactiveElement) {
 
-  get defaultState() {
-    const result = Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    const result = Object.assign(super[symbols.defaultState], {
       value: null
     });
 

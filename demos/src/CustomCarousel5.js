@@ -15,8 +15,8 @@ const Base =
 // Customize everything.
 class CustomCarousel extends Base {
 
-  get defaultState() {
-    return Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    return Object.assign(super[symbols.defaultState], {
       arrowButtonRole: CustomArrowButton,
       proxyRole: CustomPageDot
     });

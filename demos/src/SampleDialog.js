@@ -6,8 +6,8 @@ import Dialog from '../../src/Dialog.js';
 
 class SampleDialog extends Dialog {
 
-  get defaultState() {
-    return Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    return Object.assign(super[symbols.defaultState], {
       backdropRole: CustomBackdrop,
       frameRole: CustomOverlayFrame
     });

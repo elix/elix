@@ -10,8 +10,8 @@ customElements.define('template-test', TemplateTest);
 // A component with a template with a role applied to a single element.
 class DynamicSingle extends ReactiveElement {
 
-  get defaultState() {
-    return Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    return Object.assign(super[symbols.defaultState], {
       dynamicRole: 'button'
     });
   }
@@ -37,8 +37,8 @@ customElements.define('dynamic-role', DynamicSingle);
 // A component with a template where a role is applied to multiple elements.
 class DynamicMultiple extends ReactiveElement {
 
-  get defaultState() {
-    return Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    return Object.assign(super[symbols.defaultState], {
       dynamicRole: 'button'
     });
   }

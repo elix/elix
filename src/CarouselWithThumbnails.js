@@ -11,8 +11,8 @@ import Thumbnail from './Thumbnail.js';
  */
 class CarouselWithThumbnails extends Carousel {
 
-  get defaultState() {
-    return Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    return Object.assign(super[symbols.defaultState], {
       proxyListOverlap: false,
       proxyRole: Thumbnail
     });

@@ -7,8 +7,8 @@ import Tabs from '../../../src/Tabs.js';
 
 class SereneTabs extends Tabs {
 
-  get defaultState() {
-    return Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    return Object.assign(super[symbols.defaultState], {
       generic: false,
       itemRole: 'tabpanel',
       proxyRole: SereneTabButton,

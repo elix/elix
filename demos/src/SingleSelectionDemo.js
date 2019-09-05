@@ -43,8 +43,8 @@ class SingleSelectionDemo extends Base {
     observer.observe(this, { childList: true });
   }
 
-  get defaultState() {
-    return Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    return Object.assign(super[symbols.defaultState], {
       content: [...this.children]
     });
   }

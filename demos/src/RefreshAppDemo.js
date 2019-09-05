@@ -32,9 +32,9 @@ class RefreshAppDemo extends ReactiveElement {
     });
   }
 
-  get defaultState() {
+  get [symbols.defaultState]() {
     const paragraphs = createParagraphs(texts);
-    return Object.assign(super.defaultState, {
+    return Object.assign(super[symbols.defaultState], {
       paragraphs
     });
   }

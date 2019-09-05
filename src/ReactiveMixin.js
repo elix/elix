@@ -33,7 +33,7 @@ export default function ReactiveMixin(Base) {
       super();
       // Set the initial state from the default state defined by the component
       // and its mixins.
-      this.setState(this.defaultState);
+      this.setState(this[symbols.defaultState]);
     }
 
     componentDidMount() {
@@ -57,7 +57,7 @@ export default function ReactiveMixin(Base) {
      * 
      * @type {State}
      */
-    get defaultState() {
+    get [symbols.defaultState]() {
       return new State();
     }
 

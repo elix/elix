@@ -60,8 +60,8 @@ export default function SingleSelectionMixin(Base) {
       }
     }
 
-    get defaultState() {
-      const state = Object.assign(super.defaultState, {
+    get [symbols.defaultState]() {
+      const state = Object.assign(super[symbols.defaultState], {
         canSelectNext: null,
         canSelectPrevious: null,
         selectedIndex: -1,

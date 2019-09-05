@@ -104,8 +104,8 @@ class Menu extends Base {
     }
   }
 
-  get defaultState() {
-    const state = Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    const state = Object.assign(super[symbols.defaultState], {
       highlightSelection: true,
       orientation: 'vertical',
       selectionFocused: false

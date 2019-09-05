@@ -14,8 +14,8 @@ export default function AriaMenuMixin(Base) {
   // The class prototype added by the mixin.
   class AriaMenu extends Base {
 
-    get defaultState() {
-      const base = super.defaultState;
+    get [symbols.defaultState]() {
+      const base = super[symbols.defaultState];
       return Object.assign(base, {
         itemRole: base.itemRole || 'menuitem',
         role: base.role || 'menu'

@@ -13,8 +13,8 @@ export default function ItemsTextMixin(Base) {
   // The class prototype added by the mixin.
   class ItemsText extends Base {
 
-    get defaultState() {
-      const state = Object.assign(super.defaultState, {
+    get [symbols.defaultState]() {
+      const state = Object.assign(super[symbols.defaultState], {
         texts: null
       });
 

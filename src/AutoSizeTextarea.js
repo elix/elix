@@ -83,8 +83,8 @@ class AutoSizeTextarea extends Base {
     });
   }
 
-  get defaultState() {
-    const state = Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    const state = Object.assign(super[symbols.defaultState], {
       minimumRows: 1,
       value: null,
       valueTracksContent: true

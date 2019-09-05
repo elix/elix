@@ -13,8 +13,8 @@ const Base =
 
 class RenderState extends Base {
 
-  get defaultState() {
-    const result = Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    const result = Object.assign(super[symbols.defaultState], {
       fixture: null,
       fixtureState: {}
     });

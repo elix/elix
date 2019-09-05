@@ -30,8 +30,8 @@ export default class AnimateAlignment extends Base {
     }
   }
 
-  get defaultState() {
-    const base = Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    const base = Object.assign(super[symbols.defaultState], {
       align: 'left'
     });
 

@@ -82,9 +82,9 @@ class PullToRefresh extends Base {
     }
   }
   
-  get defaultState() {
+  get [symbols.defaultState]() {
     // Suppress transition effects on page load.
-    const state = Object.assign(super.defaultState, {
+    const state = Object.assign(super[symbols.defaultState], {
       swipeFractionMin: 0, // Can't swipe up, only down
       pullIndicatorRole: downArrowTemplate,
       pullTriggeredRefresh: false,

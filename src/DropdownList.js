@@ -35,8 +35,8 @@ class DropdownList extends Base {
     return this.state.selectedIndex;
   }
 
-  get defaultState() {
-    const state = Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    const state = Object.assign(super[symbols.defaultState], {
       itemRole: 'menuitemradio',
       selectionRequired: true,
       valueRole: 'div'

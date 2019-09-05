@@ -15,17 +15,8 @@
 export const checkSize: '_checkSize';
 export const contentSlot: '_contentSlot';
 export const defaultTabIndex: '_defaultTabIndex';
-
-/**
- * Symbol for the `delegatesFocus` property.
- * 
- * [DelegatesFocusMixin](DelegatesFocusMixin) defines this property, returning
- * true to indicate that the focus is being delegated, even in browsers that
- * don't support that natively. Mixins like [KeyboardMixin](KeyboardMixin) use
- * this to accommodate focus delegation.
- */
+export const defaultState: '_defaultState';
 export const delegatesFocus: '_delegatesFocus';
-
 export const elementsWithTransitions: '_elementsWithTransitions';
 export const event: '_event';
 export const focusTarget: '_focusTarget';

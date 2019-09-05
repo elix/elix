@@ -89,8 +89,8 @@ class TabStrip extends Base {
     }
   }
 
-  get defaultState() {
-    return Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    return Object.assign(super[symbols.defaultState], {
       orientation: 'horizontal',
       role: 'tablist',
       selectionRequired: true,

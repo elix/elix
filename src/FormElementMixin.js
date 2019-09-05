@@ -41,8 +41,8 @@ export default function FormElementMixin(Base) {
       }
     }
 
-    get defaultState() {
-      return Object.assign(super.defaultState, {
+    get [symbols.defaultState]() {
+      return Object.assign(super[symbols.defaultState], {
         validationMessage: '',
         valid: true
       });

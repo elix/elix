@@ -112,7 +112,7 @@ class DateComboBox extends Base {
     this.setState({ daysOfWeekFormat });
   }
 
-  get defaultState() {
+  get [symbols.defaultState]() {
 
     const dateTimeFormatOptions = {
       day: 'numeric',
@@ -120,7 +120,7 @@ class DateComboBox extends Base {
       year: 'numeric'
     };
 
-    const state = Object.assign(super.defaultState, {
+    const state = Object.assign(super[symbols.defaultState], {
       arrowButtonRole: ArrowDirectionButton,
       calendarRole: CalendarMonthNavigator,
       date: calendar.today(),

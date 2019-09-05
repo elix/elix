@@ -75,8 +75,8 @@ class Explorer extends Base {
     });
   }
 
-  get defaultState() {
-    const state = Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    const state = Object.assign(super[symbols.defaultState], {
       proxies: [],
       proxiesAssigned: false,
       proxyRole: 'div',

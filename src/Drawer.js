@@ -71,8 +71,8 @@ class Drawer extends Base {
     }
   }
 
-  get defaultState() {
-    const result = Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    const result = Object.assign(super[symbols.defaultState], {
       backdropRole: ModalBackdrop,
       fromEdge: 'start',
       gripSize: null,

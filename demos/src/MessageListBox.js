@@ -24,8 +24,8 @@ const Base =
  */
 export default class MessageListBox extends Base {
 
-  get defaultState() {
-    return Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    return Object.assign(super[symbols.defaultState], {
       // The Delete command removes an item, and we also want a swipe to Delete to
       // follow through: the leftward animation will continue all the way to the
       // left after the user completes the gesture.

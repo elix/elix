@@ -10,8 +10,8 @@ import ListBox from './ListBox.js';
  */
 class FilterListBox extends ListBox {
 
-  get defaultState() {
-    const state = Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    const state = Object.assign(super[symbols.defaultState], {
       filter: null
     });
 

@@ -82,8 +82,8 @@ class Overlay extends Base {
     }
   }
 
-  get defaultState() {
-    return Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    return Object.assign(super[symbols.defaultState], {
       backdropRole: Backdrop,
       frameRole: OverlayFrame
     });

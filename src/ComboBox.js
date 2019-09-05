@@ -62,9 +62,9 @@ class ComboBox extends Base {
     }
   }
 
-  get defaultState() {
+  get [symbols.defaultState]() {
 
-    const state = Object.assign(super.defaultState, {
+    const state = Object.assign(super[symbols.defaultState], {
       ariaLabel: '',
       backdropRole: Hidden,
       focused: false,

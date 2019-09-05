@@ -21,8 +21,8 @@
         this.setState({ buttonRole });
       }
 
-      get defaultState() {
-        return Object.assign(super.defaultState, {
+      get [symbols.defaultState]() {
+        return Object.assign(super[symbols.defaultState], {
           buttonRole: 'button',
           value: 0
         });
@@ -89,8 +89,8 @@
 
     class CustomIncrementDecrement extends IncrementDecrement {
 
-      get defaultState() {
-        return Object.assign(super.defaultState, {
+      get [symbols.defaultState]() {
+        return Object.assign(super[symbols.defaultState], {
           buttonRole: CustomButton
         });
       }

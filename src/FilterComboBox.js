@@ -23,8 +23,8 @@ const Base =
  */
 class FilterComboBox extends Base {
   
-  get defaultState() {
-    const state = Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    const state = Object.assign(super[symbols.defaultState], {
       filter: '',
       inputRole: AutoCompleteInput,
       listRole: FilterListBox,

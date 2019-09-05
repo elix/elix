@@ -76,8 +76,8 @@ class CalendarMonthNavigator extends Base {
     return true;
   }
 
-  get defaultState() {
-    const result = Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    const result = Object.assign(super[symbols.defaultState], {
       arrowButtonOverlap: false,
       canGoNext: true,
       canGoPrevious: true,

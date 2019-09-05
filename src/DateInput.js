@@ -56,13 +56,13 @@ class DateInput extends Base {
     });
   }
 
-  get defaultState() {
+  get [symbols.defaultState]() {
     const dateTimeFormatOptions = {
       day: 'numeric',
       month: 'numeric',
       year: 'numeric'
     };
-    const state = Object.assign(super.defaultState, {
+    const state = Object.assign(super[symbols.defaultState], {
       dateSelected: false,
       dateTimeFormat: null,
       dateTimeFormatOptions,

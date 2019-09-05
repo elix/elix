@@ -12,8 +12,8 @@ class ReactiveTest extends ReactiveMixin(HTMLElement) {
     if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
   }
 
-  get defaultState() {
-    return Object.assign(super.defaultState, this.constructor.defaults);
+  get [symbols.defaultState]() {
+    return Object.assign(super[symbols.defaultState], this.constructor.defaults);
   }
 
   [symbols.render](changed) {
@@ -145,8 +145,8 @@ describe("ReactiveMixin", function () {
   it("runs state change handlers when state changes", () => {
     // Simple class, copies state member `a` to `b`.
     class Fixture extends ReactiveMixin(Object) {
-      get defaultState() {
-        const state = super.defaultState;
+      get [symbols.defaultState]() {
+        const state = super[symbols.defaultState];
         state.onChange('a', state => ({ b: state.a }));
         return state;
       }
@@ -162,8 +162,8 @@ describe("ReactiveMixin", function () {
   
   it("runs state change handlers on initial state", () => {
     class Fixture extends ReactiveMixin(Object) {
-      get defaultState() {
-        const state = super.defaultState;
+      get [symbols.defaultState]() {
+        const state = super[symbols.defaultState];
         state.a = 1;
         state.onChange('a', state => ({ b: state.a }));
         return state;

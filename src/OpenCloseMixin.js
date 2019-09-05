@@ -121,7 +121,7 @@ export default function OpenCloseMixin(Base) {
       }
     }
 
-    get defaultState() {
+    get [symbols.defaultState]() {
       const defaults = {
         closeResult: null,
         opened: false
@@ -137,7 +137,7 @@ export default function OpenCloseMixin(Base) {
           openCloseEffects: true
         });
       }
-      return Object.assign(super.defaultState, defaults);
+      return Object.assign(super[symbols.defaultState], defaults);
     }
 
     /**

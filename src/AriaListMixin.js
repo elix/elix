@@ -42,8 +42,8 @@ export default function AriaListMixin(Base) {
   // The class prototype added by the mixin.
   class AriaList extends Base {
 
-    get defaultState() {
-      const base = super.defaultState;
+    get [symbols.defaultState]() {
+      const base = super[symbols.defaultState];
       return Object.assign(base, {
         itemRole: base.itemRole || 'option',
         role: base.role || 'listbox'

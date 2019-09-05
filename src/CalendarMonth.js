@@ -88,8 +88,8 @@ class CalendarMonth extends Base {
     this.setState({ daysOfWeekFormat });
   }
 
-  get defaultState() {
-    return Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    return Object.assign(super[symbols.defaultState], {
       date: calendar.today(),
       dayRole: CalendarDay,
       daysOfWeekFormat: 'short',

@@ -33,8 +33,8 @@ class ListComboBox extends Base {
     this.setAttribute('aria-haspopup', 'listbox');
   }
 
-  get defaultState() {
-    const state = Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    const state = Object.assign(super[symbols.defaultState], {
       horizontalAlign: 'stretch',
       listRole: ListBox,
       selectedIndex: -1

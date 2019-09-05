@@ -84,8 +84,8 @@ class AutoCompleteInput extends Input {
     }
   }
 
-  get defaultState() {
-    return Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    return Object.assign(super[symbols.defaultState], {
       autoCompleteSelect: false,
       originalText: '',
       texts: []

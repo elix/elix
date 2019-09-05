@@ -79,8 +79,8 @@ export default function PopupModalityMixin(Base) {
       this.setState({ closeOnWindowResize });
     }
 
-    get defaultState() {
-      return Object.assign(super.defaultState, {
+    get [symbols.defaultState]() {
+      return Object.assign(super[symbols.defaultState], {
         closeOnWindowResize: true,
         role: 'alert'
       });

@@ -63,8 +63,8 @@ export default function ResizeMixin(Base) {
       this[symbols.checkSize]();
     }
 
-    get defaultState() {
-      return Object.assign(super.defaultState, {
+    get [symbols.defaultState]() {
+      return Object.assign(super[symbols.defaultState], {
         clientHeight: this.clientHeight,
         clientWidth: this.clientWidth
       });

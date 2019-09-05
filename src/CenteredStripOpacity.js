@@ -20,8 +20,8 @@ const opacityMaximum = 1.0;
  */
 class CenteredStripOpacity extends CenteredStrip {
 
-  get defaultState() {
-    return Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    return Object.assign(super[symbols.defaultState], {
       transitionDuration: 250
     });
   }

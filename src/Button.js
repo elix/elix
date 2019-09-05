@@ -47,8 +47,8 @@ const mapKeysToClick = !firefox;
  */
 class Button extends Base {
 
-  get defaultState() {
-    return Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    return Object.assign(super[symbols.defaultState], {
       role: 'button',
       treatEnterAsClick: true,
       treatSpaceAsClick: true

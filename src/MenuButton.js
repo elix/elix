@@ -77,8 +77,8 @@ class MenuButton extends PopupButton {
     return -1;
   }
 
-  get defaultState() {
-    const state = Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    const state = Object.assign(super[symbols.defaultState], {
       dragSelect: true,
       menuRole: Menu,
       menuSelectedIndex: -1,

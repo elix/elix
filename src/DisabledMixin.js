@@ -1,3 +1,4 @@
+import * as symbols from './symbols.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -24,8 +25,8 @@ export default function DisabledMixin(Base) {
       }
     }
 
-    get defaultState() {
-      return Object.assign(super.defaultState, {
+    get [symbols.defaultState]() {
+      return Object.assign(super[symbols.defaultState], {
         disabled: false
       });
     }

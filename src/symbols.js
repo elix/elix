@@ -76,6 +76,13 @@ export const contentSlot = Symbol('contentSlot');
 export const defaultTabIndex = Symbol('defaultTabIndex');
 
 /**
+ * The default state for this element.
+ * 
+ * @var {PlainObject}
+ */
+export const defaultState = Symbol('defaultState');
+
+/**
  * Symbol for the `delegatesFocus` property.
  * 
  * [DelegatesFocusMixin](DelegatesFocusMixin) defines this property, returning

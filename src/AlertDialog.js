@@ -64,8 +64,8 @@ class AlertDialog extends Dialog {
     this.setState({ choices });
   }
 
-  get defaultState() {
-    const state = Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    const state = Object.assign(super[symbols.defaultState], {
       choiceButtonRole: 'button',
       choiceButtons: [],
       choices: ['OK']

@@ -34,8 +34,8 @@ export default function PlayControlsMixin(Base) {
       this.setState({ controlButtonRole });
     }
 
-    get defaultState() {
-      return Object.assign(super.defaultState, {
+    get [symbols.defaultState]() {
+      return Object.assign(super[symbols.defaultState], {
         controlButtonRole: SeamlessButton
       });
     }

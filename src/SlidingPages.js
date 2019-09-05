@@ -1,3 +1,4 @@
+import * as symbols from './symbols.js';
 import AriaListMixin from './AriaListMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
@@ -40,8 +41,8 @@ const Base =
  */
 class SlidingPages extends Base {
 
-  get defaultState() {
-    const result = super.defaultState;
+  get [symbols.defaultState]() {
+    const result = super[symbols.defaultState];
 
     // Have swipeAxis follow orientation.
     result.onChange('orientation', state =>

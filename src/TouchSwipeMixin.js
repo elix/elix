@@ -150,8 +150,8 @@ export default function TouchSwipeMixin(Base) {
         'none';
     }
 
-    get defaultState() {
-      const result = Object.assign(super.defaultState, {
+    get [symbols.defaultState]() {
+      const result = Object.assign(super[symbols.defaultState], {
         swipeAxis: 'horizontal',
         swipeDownWillCommit: false,
         swipeFraction: null,

@@ -38,8 +38,8 @@
         }
   
         // This property becomes the value of this.state at constructor time.
-        get defaultState() {
-          return Object.assign(super.defaultState, {
+        get [symbols.defaultState]() {
+          return Object.assign(super[symbols.defaultState], {
             value: 0
           });
         }

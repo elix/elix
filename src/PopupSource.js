@@ -82,9 +82,9 @@ class PopupSource extends Base {
     }
   }
 
-  get defaultState() {
+  get [symbols.defaultState]() {
 
-    const result = Object.assign(super.defaultState, {
+    const result = Object.assign(super[symbols.defaultState], {
       backdropRole: Backdrop,
       frameRole: OverlayFrame,
       horizontalAlign: 'start',

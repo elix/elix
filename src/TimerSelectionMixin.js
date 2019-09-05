@@ -1,3 +1,4 @@
+import * as symbols from './symbols.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -28,8 +29,8 @@ export default function TimerSelectionMixin(Base) {
       updateTimer(this);
     }
 
-    get defaultState() {
-      return Object.assign(super.defaultState, {
+    get [symbols.defaultState]() {
+      return Object.assign(super[symbols.defaultState], {
         playing: true,
         selectedIndexForTimer: null,
         selectionTimerDuration: 1000,

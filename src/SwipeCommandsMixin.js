@@ -53,8 +53,8 @@ export default function SwipeCommandsMixin(Base) {
       }
     }
 
-    get defaultState() {
-      return Object.assign(super.defaultState, {
+    get [symbols.defaultState]() {
+      return Object.assign(super[symbols.defaultState], {
         swipeLeftCommitted: false,
         swipeLeftFollowsThrough: false,
         swipeLeftRemovesItem: false,

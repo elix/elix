@@ -22,7 +22,7 @@ class ProgressSpinner extends ReactiveElement {
     tick(this);
   }
 
-    componentDidUpdate(/** @type {PlainObject} */ changed) {
+  componentDidUpdate(/** @type {PlainObject} */ changed) {
     super.componentDidUpdate(changed);
     if (changed.count ||
         (changed.playing && this.state.playing)) {
@@ -30,8 +30,8 @@ class ProgressSpinner extends ReactiveElement {
     }
   }
 
-  get defaultState() {
-    return Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    return Object.assign(super[symbols.defaultState], {
       count: -1,
       playing: true
     });

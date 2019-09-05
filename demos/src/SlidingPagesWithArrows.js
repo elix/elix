@@ -12,14 +12,14 @@ const Base =
 
 class SlidingPagesWithArrows extends Base {
 
-  get defaultState() {
+  get [symbols.defaultState]() {
     // Show arrow buttons if device has a fine-grained pointer (e.g., mouse).
     // Firefox doesn't support the pointer:fine media query, so we look for the
     // absence of pointer:coarse. Firefox doesn't support that either, but as of
     // Aug 2018, Firefox mobile usage is not significant. On desktop, at least,
     // Firefox will show the arrows.
     const finePointer = !window.matchMedia('(pointer:coarse)').matches;
-    return Object.assign(super.defaultState, {
+    return Object.assign(super[symbols.defaultState], {
       showArrowButtons: finePointer
     });
   }

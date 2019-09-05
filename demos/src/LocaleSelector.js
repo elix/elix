@@ -313,8 +313,8 @@ class LocaleSelector extends ReactiveElement {
     }
   }
 
-  get defaultState() {
-    return Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    return Object.assign(super[symbols.defaultState], {
       value: navigator.language
     });
   }

@@ -24,8 +24,8 @@ const Base =
  */
 class CarouselSlideshow extends Base {
 
-  get defaultState() {
-    return Object.assign(super.defaultState, {
+  get [symbols.defaultState]() {
+    return Object.assign(super[symbols.defaultState], {
       playing: true,
       selectionTimerDuration: 3000,
       selectionWraps: true,
