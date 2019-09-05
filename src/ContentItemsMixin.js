@@ -31,8 +31,8 @@ import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-un
 export default function ContentItemsMixin(Base) {
   return class ContentItems extends Base {
 
-    componentDidUpdate(/** @type {PlainObject} */ changed) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
+      if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
       if (changed.items && this[symbols.raiseChangeEvents]) {
         /**
          * Raised when the `items` property changes.

@@ -68,8 +68,8 @@ class PopupSource extends Base {
     this.setAttribute('aria-haspopup', 'true');
   }
 
-  componentDidUpdate(/** @type {PlainObject} */ changed) {
-    super.componentDidUpdate(changed);
+  [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
+    super[symbols.componentDidUpdate](changed);
     if (changed.opened) {
       if (this.opened) {
         waitThenRenderOpened(this);

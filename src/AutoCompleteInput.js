@@ -56,8 +56,8 @@ class AutoCompleteInput extends Input {
     });
   }
 
-    componentDidUpdate(/** @type {PlainObject} */ changed) {
-    super.componentDidUpdate(changed);
+  [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
+    super[symbols.componentDidUpdate](changed);
 
     const { autoCompleteSelect, originalText } = this.state;
     if (changed.originalText && autoCompleteSelect) {

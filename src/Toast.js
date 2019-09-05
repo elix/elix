@@ -42,8 +42,8 @@ class Toast extends Base {
     startTimerIfOpened(this);
   }
 
-  async componentDidUpdate(/** @type {PlainObject} */ changed) {
-    await super.componentDidUpdate(changed);
+  async [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
+    await super[symbols.componentDidUpdate](changed);
     startTimerIfOpened(this);
   }
 

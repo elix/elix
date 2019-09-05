@@ -40,8 +40,8 @@ export default function ReactiveMixin(Base) {
       if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
     }
 
-    componentDidUpdate(/** @type {PlainObject} */ changed) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
+      if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
     }
 
     connectedCallback() {
@@ -112,7 +112,7 @@ export default function ReactiveMixin(Base) {
           this[symbols.componentDidMount]();
           this[mountedKey] = true;
         } else {
-          this.componentDidUpdate(changed);
+          this[symbols.componentDidUpdate](changed);
         }
 
         // Restore state of event flags.

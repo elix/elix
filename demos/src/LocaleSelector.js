@@ -302,7 +302,7 @@ class LocaleSelector extends ReactiveElement {
     });
   }
 
-  componentDidUpdate(/** @type {PlainObject} */ changed) {
+  [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
     if (changed.value && this[symbols.raiseChangeEvents]) {
       const event = new CustomEvent('change', {
         detail: {

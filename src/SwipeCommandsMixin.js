@@ -42,8 +42,8 @@ export default function SwipeCommandsMixin(Base) {
       });
     }
 
-    componentDidUpdate(changed) {
-      super.componentDidUpdate(changed);
+    [symbols.componentDidUpdate](/** @typeof {PlainObject} */ changed) {
+      super[symbols.componentDidUpdate](changed);
       // Vibrate if the user is currently swiping and has just triggered a change
       // in the commit-ability of a command.
       if ((changed.swipeLeftWillCommit || changed.swipeRightWillCommit) &&

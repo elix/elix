@@ -26,8 +26,8 @@ export default function TransitionEffectMixin(Base) {
       });
     }
 
-    componentDidUpdate(/** @type {PlainObject} */ changed) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
+      if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
       if (changed.effect || changed.effectPhase) {
         const { effect, effectPhase } = this.state;
         /**

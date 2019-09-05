@@ -59,11 +59,22 @@ export const checkSize = Symbol('checkSize');
  * Symbol for the `componentDidMount` method.
  * 
  * A component using [ReactiveMixin](ReactiveMixin) will have this method
- * invoked when the component is first added to the DOM.
+ * invoked the first time the component is rendered in the DOM.
  * 
  * @function componentDidMount
  */
 export const componentDidMount = Symbol('componentDidMount');
+
+/**
+ * Symbol for the `componentDidUpdate` method.
+ * 
+ * A component using [ReactiveMixin](ReactiveMixin) will have this method
+ * invoked a component already in the DOM has finished a subsequent render
+ * operation.
+ * 
+ * @function componentDidUpdate
+ */
+export const componentDidUpdate = Symbol('componentDidUpdate');
 
 /**
  * Symbol for the `contentSlot` property.

@@ -70,8 +70,8 @@ class Overlay extends Base {
     this[symbols.setState]({ backdropRole });
   }
 
-  componentDidUpdate(/** @type {PlainObject} */ changed) {
-    super.componentDidUpdate(changed);
+  [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
+    super[symbols.componentDidUpdate](changed);
     if (changed.opened && this.state.content) {
       // If contents know how to size themselves, ask them to check their size.
       this.state.content.forEach(element => {

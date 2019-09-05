@@ -34,8 +34,8 @@ export default function FormElementMixin(Base) {
       updateValue(this);
     }
 
-    componentDidUpdate(changed) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    [symbols.componentDidUpdate](/** @typeof {PlainObject} */ changed) {
+      if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
       if (changed.value) {
         updateValue(this);
       }

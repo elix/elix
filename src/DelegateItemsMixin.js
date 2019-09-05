@@ -49,8 +49,8 @@ export default function DelegateItemsMixin(Base) {
       listenToDelegateEvents(this);
     }
 
-    componentDidUpdate(/** @type {PlainObject} */ changed) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
+      if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
       listenToDelegateEvents(this);
     }
 

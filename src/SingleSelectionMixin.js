@@ -44,8 +44,8 @@ export default function SingleSelectionMixin(Base) {
       return this.state.canSelectPrevious;
     }
 
-    componentDidUpdate(/** @type {PlainObject} */ changed) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
+      if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
       if (changed.selectedIndex && this[symbols.raiseChangeEvents]) {
         const selectedIndex = this.state.selectedIndex;
         /**

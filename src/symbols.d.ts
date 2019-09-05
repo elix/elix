@@ -14,6 +14,7 @@
 
 export const checkSize: '_checkSize';
 export const componentDidMount: '_componentDidMount';
+export const componentDidUpdate: '_componentDidUpdate';
 export const contentSlot: '_contentSlot';
 export const defaultTabIndex: '_defaultTabIndex';
 export const defaultState: '_defaultState';

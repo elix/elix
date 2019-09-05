@@ -8,8 +8,8 @@ class ReactiveTest extends ReactiveMixin(HTMLElement) {
     if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
   }
 
-  componentDidUpdate(changed) {
-    if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+  [symbols.componentDidUpdate](/** @typeof {PlainObject} */ changed) {
+    if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
   }
 
   get [symbols.defaultState]() {
@@ -103,7 +103,7 @@ describe("ReactiveMixin", function () {
   it("render invokes componentDidMount/componentDidUpdate if defined", async () => {
     const fixture = new ReactiveTest();
     const componentDidMountSpy = sinon.spy(fixture, symbols.componentDidMount);
-    const componentDidUpdateSpy = sinon.spy(fixture, 'componentDidUpdate');
+    const componentDidUpdateSpy = sinon.spy(fixture, symbols.componentDidUpdate);
     container.appendChild(fixture);
     // connectedCallback should trigger first render with promise timing.
     await Promise.resolve();

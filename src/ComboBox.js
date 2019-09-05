@@ -42,8 +42,8 @@ class ComboBox extends Base {
     this[symbols.setState]({ ariaLabel });
   }
 
-    componentDidUpdate(/** @type {PlainObject} */ changed) {
-    super.componentDidUpdate(changed);
+  [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
+    super[symbols.componentDidUpdate](changed);
     if (this.state.selectText) {
       // Select the text in the input after giving the inner input a chance to render the value.
       setTimeout(() => {

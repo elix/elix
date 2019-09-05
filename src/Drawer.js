@@ -63,8 +63,8 @@ class Drawer extends Base {
     this.setAttribute('opened', this.state.opened.toString());
   }
 
-  componentDidUpdate(changed) {
-    if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+  [symbols.componentDidUpdate](/** @typeof {PlainObject} */ changed) {
+    if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
     if (changed.opened) {
       // Reflect opened attribute.
       this.setAttribute('opened', this.state.opened.toString());

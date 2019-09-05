@@ -55,8 +55,8 @@ class MenuButton extends PopupButton {
     }
   }
 
-  componentDidUpdate(/** @type {PlainObject} */ changed) {
-    super.componentDidUpdate(changed);
+  [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
+    super[symbols.componentDidUpdate](changed);
     if (changed.menuSelectedIndex) {
       const selectedItem = this.state.menuSelectedIndex >= 0 ?
         this.items[this.state.menuSelectedIndex] :

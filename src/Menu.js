@@ -86,8 +86,8 @@ class Menu extends Base {
     this.removeAttribute('tabindex');
   }
 
-    componentDidUpdate(/** @type {PlainObject} */ changed) {
-    super.componentDidUpdate(changed);
+  [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
+    super[symbols.componentDidUpdate](changed);
     if (changed.selectedIndex && !this.state.selectionFocused) {
       // The selected item needs the focus, but this is complicated. See notes
       // in render.

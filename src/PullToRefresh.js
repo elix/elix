@@ -56,8 +56,8 @@ class PullToRefresh extends Base {
     });
   }
 
-    componentDidUpdate(/** @type {PlainObject} */ changed) {
-    super.componentDidUpdate(changed);
+  [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
+    super[symbols.componentDidUpdate](changed);
     if (this.state.swipeFraction > 0 &&
       !this.state.refreshing && !this.state.pullTriggeredRefresh) {
       const y = getTranslationForSwipeFraction(this.state, this[symbols.swipeTarget]);

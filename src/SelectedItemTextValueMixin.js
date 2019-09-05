@@ -26,8 +26,8 @@ export default function SelectedItemTextValueMixin(Base) {
   // The class prototype added by the mixin.
   class SelectedItemTextValue extends Base {
 
-    componentDidUpdate(/** @type {PlainObject} */ changed) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
+      if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
       const { items, pendingValue } = this.state;
       if (pendingValue && items) {
         const index = indexOfItemWithText(items, pendingValue);

@@ -23,7 +23,7 @@ const Base =
  */
 class MenuItem extends Base {
 
-  componentDidUpdate(changed) {
+  [symbols.componentDidUpdate](/** @typeof {PlainObject} */ changed) {
     // TODO: How do we know whether to raise this if selection is set by Menu? */
     if (changed.selected /* && this[symbols.raiseChangeEvents] */) {
       /**

@@ -8,7 +8,7 @@ import * as symbols from './symbols.js';
 
 declare const ReactiveMixin: Mixin<{}, {
   componentDidMount(): void;
-  componentDidUpdate(changed: PlainObject): void;
+  [symbols.componentDidUpdate](/** @typeof {PlainObject} */ changed: PlainObject): void;
   connectedCallback(): void;
   defaultState: State;
   render(): void;

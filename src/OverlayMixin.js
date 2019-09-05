@@ -74,8 +74,8 @@ export default function OverlayMixin(Base) {
       }
     }
 
-    componentDidUpdate(/** @type {PlainObject} */ changed) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
+      if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
       if (changed.opened) {
         openedChanged(this);
       }

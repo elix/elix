@@ -58,8 +58,8 @@ export default function ResizeMixin(Base) {
       this[symbols.checkSize]();
     }
     
-    componentDidUpdate(/** @type {PlainObject} */ changed) {
-      if (super.componentDidUpdate) { super.componentDidUpdate(changed); }
+    [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
+      if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
       this[symbols.checkSize]();
     }
 

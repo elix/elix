@@ -22,8 +22,8 @@ class ProgressSpinner extends ReactiveElement {
     tick(this);
   }
 
-  componentDidUpdate(/** @type {PlainObject} */ changed) {
-    super.componentDidUpdate(changed);
+  [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
+    super[symbols.componentDidUpdate](changed);
     if (changed.count ||
         (changed.playing && this.state.playing)) {
       tick(this);
