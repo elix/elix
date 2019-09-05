@@ -66,8 +66,8 @@ const Base =
  */
 class Menu extends Base {
 
-  componentDidMount() {
-    super.componentDidMount();
+  [symbols.componentDidMount]() {
+    super[symbols.componentDidMount]();
     
     this.addEventListener('mousemove', () => {
       this.suppressFocusVisibility();

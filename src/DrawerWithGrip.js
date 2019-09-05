@@ -19,8 +19,8 @@ import SeamlessButton from './SeamlessButton.js';
  */
 class DrawerWithGrip extends Drawer {
 
-  componentDidMount() {
-    super.componentDidMount();
+  [symbols.componentDidMount]() {
+    super[symbols.componentDidMount]();
 
     if (this.state.gripSize === null) {
       // Use the rendered size of the grip to set the gripSize. This will ensure

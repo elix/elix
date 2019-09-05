@@ -114,8 +114,8 @@ export default function TouchSwipeMixin(Base) {
       }
     }
 
-    componentDidMount() {
-      if (super.componentDidMount) { super.componentDidMount(); }
+    [symbols.componentDidMount]() {
+      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
       //
       // Choosing a touch-action value is unfortunately fraught with issues.
       //

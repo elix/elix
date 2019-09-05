@@ -9,8 +9,8 @@ import Input from './Input.js';
  */
 class AutoCompleteInput extends Input {
 
-  componentDidMount() {
-    super.componentDidMount();
+  [symbols.componentDidMount]() {
+    super[symbols.componentDidMount]();
 
     // In many ways it would be cleaner to do AutoComplete work in a keydown
     // listener. Unfortunately, Chrome for Android sets the keyCode on *all*

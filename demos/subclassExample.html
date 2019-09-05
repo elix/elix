@@ -20,8 +20,8 @@
 
     class IncrementDecrement extends ReactiveElement {
 
-      componentDidMount() {
-        if (super.componentDidMount) { super.componentDidMount(); }
+      [symbols.componentDidMount]() {
+        if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
         this.$.decrement.addEventListener('click', () => {
           this.value--;
         });

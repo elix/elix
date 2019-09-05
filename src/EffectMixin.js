@@ -16,8 +16,8 @@ export default function EffectMixin(Base) {
  // The class prototype added by the mixin.
  class Transition extends Base {
   
-  componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
+  [symbols.componentDidMount]() {
+    if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
 
     // Once everything's finished rendering, enable transition effects.
     setTimeout(() => {

@@ -37,8 +37,8 @@ export default function ComposedFocusMixin(Base) {
   // The class prototype added by the mixin.
   class ComposedFocus extends Base {
 
-    componentDidMount() {
-      if (super.componentDidMount) { super.componentDidMount(); }
+    [symbols.componentDidMount]() {
+      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
       this.addEventListener('mousedown', event => {
         if (!this.state.composeFocus) {
           return;

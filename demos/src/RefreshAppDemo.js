@@ -21,8 +21,8 @@ const texts = [
 
 class RefreshAppDemo extends ReactiveElement {
 
-  componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
+  [symbols.componentDidMount]() {
+    if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
     this.$.pullToRefresh.addEventListener('refreshing-changed', event => {
       /** @type {any} */
       const cast = event;

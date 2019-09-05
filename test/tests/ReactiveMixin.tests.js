@@ -4,8 +4,8 @@ import ReactiveMixin from '../../src/ReactiveMixin.js';
 
 class ReactiveTest extends ReactiveMixin(HTMLElement) {
 
-  componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
+  [symbols.componentDidMount]() {
+    if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
   }
 
   componentDidUpdate(changed) {
@@ -102,7 +102,7 @@ describe("ReactiveMixin", function () {
 
   it("render invokes componentDidMount/componentDidUpdate if defined", async () => {
     const fixture = new ReactiveTest();
-    const componentDidMountSpy = sinon.spy(fixture, 'componentDidMount');
+    const componentDidMountSpy = sinon.spy(fixture, symbols.componentDidMount);
     const componentDidUpdateSpy = sinon.spy(fixture, 'componentDidUpdate');
     container.appendChild(fixture);
     // connectedCallback should trigger first render with promise timing.
@@ -118,7 +118,7 @@ describe("ReactiveMixin", function () {
 
   it("only calls componentDidMount once, even if component is reattached", async () => {
     const fixture = new ReactiveTest();
-    const componentDidMountSpy = sinon.spy(fixture, 'componentDidMount');
+    const componentDidMountSpy = sinon.spy(fixture, symbols.componentDidMount);
     container.appendChild(fixture);
     // connectedCallback should trigger first render with promise timing.
     await Promise.resolve();

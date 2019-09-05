@@ -56,6 +56,16 @@
 export const checkSize = Symbol('checkSize');
 
 /**
+ * Symbol for the `componentDidMount` method.
+ * 
+ * A component using [ReactiveMixin](ReactiveMixin) will have this method
+ * invoked when the component is first added to the DOM.
+ * 
+ * @function componentDidMount
+ */
+export const componentDidMount = Symbol('componentDidMount');
+
+/**
  * Symbol for the `contentSlot` property.
  * 
  * [SlotContentMixin](SlotContentMixin) uses this to identify which slot
@@ -412,6 +422,8 @@ export const scrollTarget = Symbol('scrollTarget');
  * 
  * A component using [ReactiveMixin](ReactiveMixin) can invoke this method to
  * apply changes to the element's current state.
+ * 
+ * @function setState
  */
 export const setState = Symbol('setState');
 

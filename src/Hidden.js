@@ -1,3 +1,4 @@
+import * as symbols from './symbols.js';
 import ReactiveElement from './ReactiveElement.js';
 
 
@@ -14,8 +15,8 @@ import ReactiveElement from './ReactiveElement.js';
  */
 class Hidden extends ReactiveElement {
 
-  componentDidMount() {
-    super.componentDidMount();
+  [symbols.componentDidMount]() {
+    super[symbols.componentDidMount]();
     this.setAttribute('hidden', '');
   }
 

@@ -20,8 +20,8 @@ const Base =
  */
 class PageDot extends Base {
 
-  componentDidMount() {
-    super.componentDidMount();
+  [symbols.componentDidMount]() {
+    super[symbols.componentDidMount]();
     this.setAttribute('role', 'none');    
   }
 

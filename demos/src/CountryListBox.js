@@ -42,8 +42,8 @@ const Base =
 
 class CountryListBox extends Base {
 
-  componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
+  [symbols.componentDidMount]() {
+    if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
     const content = this.$.content.children;
     this[symbols.setState]({ content });
   }

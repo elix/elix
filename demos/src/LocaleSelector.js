@@ -293,8 +293,8 @@ const locales = {
 
 class LocaleSelector extends ReactiveElement {
 
-  componentDidMount() {
-    if (super.componentDidMount) { super.componentDidMount(); }
+  [symbols.componentDidMount]() {
+    if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
     this.$.select.addEventListener('change', () => {
       this[symbols.raiseChangeEvents] = true;
       this.value = /** @type {any} */ (this.$.select).value;

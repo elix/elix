@@ -21,8 +21,8 @@ const Base =
  */
 class Input extends Base {
 
-  componentDidMount() {
-    super.componentDidMount();
+  [symbols.componentDidMount]() {
+    super[symbols.componentDidMount]();
 
     // The following jsDoc comment doesn't directly apply to the statement which
     // follows, but is placed there because the comment has to go somewhere to

@@ -244,8 +244,8 @@ class WrappedStandardElement extends Base {
   //
   // click() {}
 
-  componentDidMount() {
-    super.componentDidMount();
+  [symbols.componentDidMount]() {
+    super[symbols.componentDidMount]();
 
     // Listen for any events raised by the inner element which will not
     // automatically be retargetted across the Shadow DOM boundary, and re-raise

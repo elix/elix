@@ -29,8 +29,8 @@ export default function FormElementMixin(Base) {
       return this[symbols.internals].checkValidity();
     }
 
-    componentDidMount() {
-      if (super.componentDidMount) { super.componentDidMount(); }
+    [symbols.componentDidMount]() {
+      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
       updateValue(this);
     }
 

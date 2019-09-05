@@ -37,8 +37,8 @@ class Toast extends Base {
     });
   }
 
-  async componentDidMount() {
-    await super.componentDidMount();
+  async [symbols.componentDidMount]() {
+    await super[symbols.componentDidMount]();
     startTimerIfOpened(this);
   }
 

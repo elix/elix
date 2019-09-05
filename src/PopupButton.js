@@ -19,8 +19,8 @@ const Base =
  */
 class PopupButton extends Base {
 
-  componentDidMount() {
-    super.componentDidMount();
+  [symbols.componentDidMount]() {
+    super[symbols.componentDidMount]();
 
     // If the top-level element gets the focus while the popup is open, the most
     // likely expanation is that the user hit Shift+Tab to back up out of the

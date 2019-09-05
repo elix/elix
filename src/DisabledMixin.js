@@ -13,8 +13,8 @@ export default function DisabledMixin(Base) {
   // The class prototype added by the mixin.
   class Disabled extends Base {
 
-    componentDidMount() {
-      if (super.componentDidMount) { super.componentDidMount(); }
+    [symbols.componentDidMount]() {
+      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
       reflectDisabledAttribute(this);
     }
 

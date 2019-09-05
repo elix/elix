@@ -64,8 +64,8 @@ export default function OverlayMixin(Base) {
       this[symbols.setState]({ autoFocus });
     }
 
-    componentDidMount() {
-      if (super.componentDidMount) { super.componentDidMount(); }
+    [symbols.componentDidMount]() {
+      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
       openedChanged(this);
 
       // Perform one-time check to see if component needs a default z-index.

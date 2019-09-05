@@ -17,8 +17,8 @@ export default function DelegateFocusMixin(Base) {
   // The class prototype added by the mixin.
   class DelegateFocus extends Base {
 
-    componentDidMount() {
-      if (super.componentDidMount) { super.componentDidMount(); }
+    [symbols.componentDidMount]() {
+      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
       // The delegatesFocus spec says that the focus outline should be shown on
       // both the host and the focused subelement — which seems confusing and
       // (in our opinion) looks ugly. If the browser supports delegatesFocus we

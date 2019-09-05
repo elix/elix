@@ -29,8 +29,8 @@ export default function SlotContentMixin(Base) {
   // The class prototype added by the mixin.
   class SlotContent extends Base {
 
-    componentDidMount() {
-      if (super.componentDidMount) { super.componentDidMount(); }
+    [symbols.componentDidMount]() {
+      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
 
       // Listen to changes on the default slot.
       const slot = this[symbols.contentSlot];

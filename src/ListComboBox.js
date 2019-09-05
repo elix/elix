@@ -28,8 +28,8 @@ const Base =
  */
 class ListComboBox extends Base {
 
-  componentDidMount() {
-    super.componentDidMount();
+  [symbols.componentDidMount]() {
+    super[symbols.componentDidMount]();
     this.setAttribute('aria-haspopup', 'listbox');
   }
 

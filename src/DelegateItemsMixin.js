@@ -44,8 +44,8 @@ export default function DelegateItemsMixin(Base) {
       };
     }
 
-    componentDidMount() {
-      if (super.componentDidMount) { super.componentDidMount(); }
+    [symbols.componentDidMount]() {
+      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
       listenToDelegateEvents(this);
     }
 

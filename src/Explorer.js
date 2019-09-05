@@ -50,8 +50,8 @@ class Explorer extends Base {
     }
   }
 
-  componentDidMount() {
-    super.componentDidMount();
+  [symbols.componentDidMount]() {
+    super[symbols.componentDidMount]();
 
     // When proxy slot's assigned nodes change, determine whether we need to
     // generate default proxies or (if assigned nodes are present) treat the

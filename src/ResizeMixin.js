@@ -53,8 +53,8 @@ export default function ResizeMixin(Base) {
       }
     }
 
-    componentDidMount() {
-      if (super.componentDidMount) { super.componentDidMount(); }
+    [symbols.componentDidMount]() {
+      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
       this[symbols.checkSize]();
     }
     

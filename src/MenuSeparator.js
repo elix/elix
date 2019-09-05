@@ -12,8 +12,8 @@ import ReactiveElement from './ReactiveElement.js';
  */
 class MenuSeparator extends ReactiveElement {
 
-  componentDidMount() {
-    super.componentDidMount();
+  [symbols.componentDidMount]() {
+    super[symbols.componentDidMount]();
     this.setAttribute('aria-hidden', 'true');
   }
 

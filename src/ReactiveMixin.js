@@ -36,8 +36,8 @@ export default function ReactiveMixin(Base) {
       this[symbols.setState](this[symbols.defaultState]);
     }
 
-    componentDidMount() {
-      if (super.componentDidMount) { super.componentDidMount(); }
+    [symbols.componentDidMount]() {
+      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
     }
 
     componentDidUpdate(/** @type {PlainObject} */ changed) {
@@ -109,7 +109,7 @@ export default function ReactiveMixin(Base) {
         // Let the component know it was rendered.
         // First time is consider mounting; subsequent times are updates.
         if (!this[mountedKey]) {
-          this.componentDidMount();
+          this[symbols.componentDidMount]();
           this[mountedKey] = true;
         } else {
           this.componentDidUpdate(changed);

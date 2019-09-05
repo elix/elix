@@ -32,8 +32,8 @@
       // Create a native web component with reactive behavior.
       class IncrementDecrement extends ReactiveElement {
   
-        componentDidMount() {
-          super.componentDidMount();
+        [symbols.componentDidMount]() {
+          super[symbols.componentDidMount]();
           this.$.decrement.addEventListener('click', () => {
             this.value--;
           });

@@ -31,8 +31,8 @@ function FocusCaptureMixin(Base) {
 
   class FocusCapture extends Base {
 
-    componentDidMount() {
-      if (super.componentDidMount) { super.componentDidMount(); }
+    [symbols.componentDidMount]() {
+      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
       this.$.focusCatcher.addEventListener('focus', () => {
         if (!this[wrappingFocusKey]) {
           // Wrap focus back to the first focusable element.

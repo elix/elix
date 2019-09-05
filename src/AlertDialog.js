@@ -11,8 +11,8 @@ import Dialog from './Dialog.js';
  */
 class AlertDialog extends Dialog {
 
-  componentDidMount() {
-    super.componentDidMount();
+  [symbols.componentDidMount]() {
+    super[symbols.componentDidMount]();
     this.$.buttonContainer.addEventListener('click', async (event) => {
       // TODO: Ignore clicks on buttonContainer background.
       const button = event.target;

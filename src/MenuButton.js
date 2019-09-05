@@ -16,8 +16,8 @@ const documentMouseupListenerKey = Symbol('documentMouseupListener');
  */
 class MenuButton extends PopupButton {
 
-  componentDidMount() {
-    super.componentDidMount();
+  [symbols.componentDidMount]() {
+    super[symbols.componentDidMount]();
 
     // If the user hovers over an item, select it.
     this.addEventListener('mousemove', event => {

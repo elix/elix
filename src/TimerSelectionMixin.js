@@ -19,8 +19,8 @@ export default function TimerSelectionMixin(Base) {
   // The class prototype added by the mixin.
   class TimerSelection extends Base {
 
-    componentDidMount() {
-      if (super.componentDidMount) { super.componentDidMount(); }
+    [symbols.componentDidMount]() {
+      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
       updateTimer(this);
     }
     

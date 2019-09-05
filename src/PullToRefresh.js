@@ -36,8 +36,8 @@ const Base =
  */
 class PullToRefresh extends Base {
 
-  componentDidMount() {
-    super.componentDidMount();
+  [symbols.componentDidMount]() {
+    super[symbols.componentDidMount]();
     // Listen to scroll events in case the user scrolls up past the page's top.
     let scrollTarget = getScrollableElement(this) || window;
     scrollTarget.addEventListener('scroll', async () => {

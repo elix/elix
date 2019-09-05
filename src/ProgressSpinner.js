@@ -17,8 +17,8 @@ const rotations = 12;
  */
 class ProgressSpinner extends ReactiveElement {
 
-  componentDidMount() {
-    super.componentDidMount();
+  [symbols.componentDidMount]() {
+    super[symbols.componentDidMount]();
     tick(this);
   }
 

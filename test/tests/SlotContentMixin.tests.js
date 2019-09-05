@@ -16,7 +16,7 @@ class SlotContentTest extends SlotContentMixin(HTMLElement) {
     `;
     // Simulate key bits of ReactiveMixin.
     this.state = this[symbols.defaultState];
-    this.componentDidMount();
+    this[symbols.componentDidMount]();
   }
 
   get [symbols.defaultState]() {

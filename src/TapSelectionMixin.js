@@ -49,8 +49,8 @@ export default function TapSelectionMixin(Base) {
       });
     }
 
-    componentDidMount() {
-      if (super.componentDidMount) { super.componentDidMount(); }
+    [symbols.componentDidMount]() {
+      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
       Object.assign(this.style, {
         touchAction: 'manipulation', // for iOS Safari
         mozUserSelect: 'none',

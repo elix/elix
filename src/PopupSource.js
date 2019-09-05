@@ -59,8 +59,8 @@ class PopupSource extends Base {
     this[symbols.setState]({ backdropRole });
   }
 
-  componentDidMount() {
-    super.componentDidMount();
+  [symbols.componentDidMount]() {
+    super[symbols.componentDidMount]();
     if (this.state.opened) {
       // Popup is opened initially, which is somewhat unusual.
       waitThenRenderOpened(this);

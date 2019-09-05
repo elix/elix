@@ -13,8 +13,8 @@ export default function TransitionEffectMixin(Base) {
   // The class prototype added by the mixin.
   class TransitionEffect extends Base {
 
-    componentDidMount() {
-      if (super.componentDidMount) { super.componentDidMount(); }
+    [symbols.componentDidMount]() {
+      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
       const elementsWithTransitions = this[symbols.elementsWithTransitions];
       // We assume all transitions complete at the same time. We only listen to
       // transitioneend on the first element.

@@ -45,8 +45,8 @@ const Base =
  */
 class Drawer extends Base {
 
-  componentDidMount() {
-    super.componentDidMount();
+  [symbols.componentDidMount]() {
+    super[symbols.componentDidMount]();
 
     // If user clicks on frame while drawer is closed (implying that gripSize is
     // greater than zero), then open the drawer.

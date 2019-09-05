@@ -14,8 +14,8 @@ export default function SwipeCommandsMixin(Base) {
   // The class prototype added by the mixin.
   return class SwipeCommands extends Base {
 
-    componentDidMount() {
-      if (super.componentDidMount) { super.componentDidMount(); }
+    [symbols.componentDidMount]() {
+      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
       // When a transition on the left/right command container ends, let the
       // component know so that it can perform any operation that should follow
       // the end of the transition. E.g., a Delete swipe command would want to
