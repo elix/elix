@@ -58,7 +58,7 @@ class CalendarDay extends Base {
       classList.toggle('saturday', dayOfWeek === 6);
       classList.toggle('sunday', dayOfWeek === 0);
       classList.toggle('today', daysFromToday == 0);
-      this.$.day.textContent = dayOfMonth.toString();
+      this[symbols.$].day.textContent = dayOfMonth.toString();
     }
     if (changed.date || changed.locale) {
       const dayOfWeek = date.getDay();

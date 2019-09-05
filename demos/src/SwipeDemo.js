@@ -26,23 +26,23 @@ class SwipeDemo extends Base {
     const vertical = swipeAxis === 'vertical';
     if (changed.swipeAxis) {
       this.style.flexDirection = vertical ? 'row' : 'column';
-      Object.assign(this.$.block.style, {
+      Object.assign(this[symbols.$].block.style, {
         height: vertical ? '100%' : '1em',
         width: vertical ? '1em' : '100%'
       });
-      Object.assign(this.$.container.style, {
+      Object.assign(this[symbols.$].container.style, {
         'flex-direction': vertical ? 'row-reverse' : 'column',
         'justify-content': vertical ? 'flex-end' : 'center'
       });
-      this.$.empty.style.display = vertical ? 'none' : 'block';
-      this.$.space.style.display = vertical ? 'none' : 'block';
+      this[symbols.$].empty.style.display = vertical ? 'none' : 'block';
+      this[symbols.$].space.style.display = vertical ? 'none' : 'block';
     }
     if (changed.swipeFraction) {
       const axis = vertical ? 'Y' : 'X';
-      this.$.block.style.transform = swipeFraction !== null ?
+      this[symbols.$].block.style.transform = swipeFraction !== null ?
         `translate${axis}(${swipeFraction * 100}%)` :
         '';
-      this.$.swipeFraction.textContent = swipeFraction !== null ?
+      this[symbols.$].swipeFraction.textContent = swipeFraction !== null ?
         swipeFraction.toFixed(3) :
         '—';
     }

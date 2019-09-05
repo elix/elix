@@ -47,11 +47,11 @@ class AutoSizeTextarea extends Base {
      * 
      * @event input
      */
-    this.$.inner.addEventListener('input', () => {
+    this[symbols.$].inner.addEventListener('input', () => {
       this[symbols.raiseChangeEvents] = true;
       this[symbols.setState]({ valueTracksContent: false });
       /** @type {any} */
-      const inner = this.$.inner;
+      const inner = this[symbols.$].inner;
       this[symbols.setState]({
         value: inner.value
       });
@@ -62,8 +62,8 @@ class AutoSizeTextarea extends Base {
     // padding, and other relevant characteristics as the original text area.
     // Since those aspects are affected by CSS, we have to wait until the
     // element is in the document before we can update the text copy.
-    const textareaStyle = getComputedStyle(this.$.inner);
-    const lineHeight = this.$.extraSpace.clientHeight;
+    const textareaStyle = getComputedStyle(this[symbols.$].inner);
+    const lineHeight = this[symbols.$].extraSpace.clientHeight;
     this[symbols.setState]({
       copyStyle: {
         'border-bottom-style': textareaStyle.borderBottomStyle,
@@ -143,15 +143,15 @@ class AutoSizeTextarea extends Base {
     super[symbols.render](changed);
     const { copyStyle, lineHeight, minimumRows, value } = this[symbols.state];
     if (changed.copyStyle) {
-      Object.assign(this.$.copyContainer.style, copyStyle);
+      Object.assign(this[symbols.$].copyContainer.style, copyStyle);
     }
     if (changed.lineHeight || changed.minimumRows && lineHeight != null) {
       const minHeight = minimumRows * lineHeight;
-      this.$.copyContainer.style.minHeight = `${minHeight}px`;
+      this[symbols.$].copyContainer.style.minHeight = `${minHeight}px`;
     }
     if (changed.value) {
-      /** @type {HTMLTextAreaElement} */ (this.$.inner).value = value;
-      this.$.textCopy.textContent = value;
+      /** @type {HTMLTextAreaElement} */ (this[symbols.$].inner).value = value;
+      this[symbols.$].textCopy.textContent = value;
     }
   }
 

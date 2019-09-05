@@ -60,19 +60,19 @@ class DropdownList extends Base {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.itemRole) {
-      if ('itemRole' in this.$.menu) {
-        /** @type {any} */ (this.$.menu).itemRole = this[symbols.state].itemRole;
+      if ('itemRole' in this[symbols.$].menu) {
+        /** @type {any} */ (this[symbols.$].menu).itemRole = this[symbols.state].itemRole;
       }
     }
     if (changed.valueRole) {
-      template.transmute(this.$.value, this[symbols.state].valueRole);
+      template.transmute(this[symbols.$].value, this[symbols.state].valueRole);
     }
     if (changed.popupPosition) {
       const { popupPosition } = this[symbols.state];
-      this.$.downIcon.style.display = popupPosition === 'below' ?
+      this[symbols.$].downIcon.style.display = popupPosition === 'below' ?
         'block' :
         'none';
-      this.$.upIcon.style.display = popupPosition === 'above' ?
+      this[symbols.$].upIcon.style.display = popupPosition === 'above' ?
         'block' :
         'none';
     }
@@ -83,7 +83,7 @@ class DropdownList extends Base {
         selectedItem.cloneNode(true) :
         null;
       const childNodes = clone ? clone.childNodes : [];
-      applyChildNodes(this.$.value, childNodes);
+      applyChildNodes(this[symbols.$].value, childNodes);
     }
   }
 

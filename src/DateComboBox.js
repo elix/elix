@@ -43,7 +43,7 @@ class DateComboBox extends Base {
   
   get calendar() {
     return this.shadowRoot ?
-      this.$.calendar :
+      this[symbols.$].calendar :
       null;
   }
 
@@ -363,15 +363,15 @@ class DateComboBox extends Base {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.calendarRole) {
-      template.transmute(this.$.calendar, this[symbols.state].calendarRole);
-      this.$.calendar.addEventListener('date-changed', event => {
+      template.transmute(this[symbols.$].calendar, this[symbols.state].calendarRole);
+      this[symbols.$].calendar.addEventListener('date-changed', event => {
         this[symbols.raiseChangeEvents] = true;
         /** @type {any} */
         const cast = event;
         this.date = cast.detail.date;
         this[symbols.raiseChangeEvents] = false;
       });
-      this.$.calendar.addEventListener('mousedown', event => {
+      this[symbols.$].calendar.addEventListener('mousedown', event => {
         this[symbols.raiseChangeEvents] = true;
         this.close();
         event.preventDefault(); // Keep focus on input.
@@ -379,8 +379,8 @@ class DateComboBox extends Base {
       });
     }
     if (changed.todayButtonRole) {
-      template.transmute(this.$.todayButton, this[symbols.state].todayButtonRole);
-      this.$.todayButton.addEventListener('mousedown', event => {
+      template.transmute(this[symbols.$].todayButton, this[symbols.state].todayButtonRole);
+      this[symbols.$].todayButton.addEventListener('mousedown', event => {
         this[symbols.raiseChangeEvents] = true;
         this.date = calendar.today();
         this.close();
@@ -388,8 +388,8 @@ class DateComboBox extends Base {
         this[symbols.raiseChangeEvents] = false;
       });
     }
-    const cast = /** @type {any} */ (this.$.calendar);
-    if (changed.arrowButtonRole && 'arrowButtonRole' in this.$.calendar) {
+    const cast = /** @type {any} */ (this[symbols.$].calendar);
+    if (changed.arrowButtonRole && 'arrowButtonRole' in this[symbols.$].calendar) {
       cast.arrowButtonRole = this[symbols.state].arrowButtonRole;
     }
     if (changed.date) {

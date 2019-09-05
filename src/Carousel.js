@@ -98,21 +98,21 @@ class Carousel extends Base {
   }
 
   [symbols.render](/** @type {PlainObject} */ changed) {
-    if (changed.proxyListRole && this.$.proxyList) {
+    if (changed.proxyListRole && this[symbols.$].proxyList) {
       // Turn off focus handling for old proxy list.
       /** @type {any} */
-      const cast = this.$.proxyList;
+      const cast = this[symbols.$].proxyList;
       forwardFocus(cast, null);
     }
     super[symbols.render](changed);
     if (changed.stageRole || changed.orientation) {
-      /** @type {any} */ const cast = this.$.stage;
+      /** @type {any} */ const cast = this[symbols.$].stage;
       if ('orientation' in cast) {
         cast.orientation = this[symbols.state].orientation;
       }
     }
     if (changed.orientation || changed.proxyListRole) {
-      /** @type {any} */ const cast = this.$.proxyList;
+      /** @type {any} */ const cast = this[symbols.$].proxyList;
       if ('orientation' in cast) {
         cast.orientation = this[symbols.state].orientation;
       }
@@ -120,13 +120,13 @@ class Carousel extends Base {
     if (changed.proxyListRole) {
       // Keep focus off of the proxies and onto the carousel itself.
       /** @type {any} */
-      const cast = this.$.proxyList;
+      const cast = this[symbols.$].proxyList;
       forwardFocus(cast, this);
       cast.removeAttribute('tabindex');
     }
     if (changed.stageRole) {
       /** @type {any} */
-      const cast = this.$.stage;
+      const cast = this[symbols.$].stage;
       cast.removeAttribute('tabindex');      
     }
     const { darkMode } = this[symbols.state];
@@ -154,8 +154,8 @@ class Carousel extends Base {
 
   get [symbols.swipeTarget]() {
     const base = super[symbols.swipeTarget];
-    return this.$.stage instanceof HTMLElement ?
-      this.$.stage :
+    return this[symbols.$].stage instanceof HTMLElement ?
+      this[symbols.$].stage :
       base;
   }
 

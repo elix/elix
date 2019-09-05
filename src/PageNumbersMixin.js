@@ -26,7 +26,7 @@ function PageNumbersMixin(Base) {
         const textContent = selectedIndex >= 0 && items ?
           `${selectedIndex + 1} / ${items.length}` :
           '';
-        this.$.pageNumber.textContent = textContent;
+        this[symbols.$].pageNumber.textContent = textContent;
       }
     }
 

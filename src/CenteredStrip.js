@@ -65,9 +65,9 @@ class CenteredStrip extends Base {
       const dimension = vertical ? 'offsetHeight' : 'offsetWidth';
 
       // @ts-ignore
-      const stripContainerDimension = this.$.stripContainer[dimension];
+      const stripContainerDimension = this[symbols.$].stripContainer[dimension];
       // @ts-ignore
-      const stripDimension = this.$.strip[dimension];
+      const stripDimension = this[symbols.$].strip[dimension];
   
       // It seems this method can be invoked before the strip any height/width.
       // We only render if the height/width is positive.
@@ -121,20 +121,20 @@ class CenteredStrip extends Base {
         const axis = vertical ? 'Y' : 'X';
         const transform = `translate${axis}(${translation}px)`;
         const showTransition = this[symbols.state].enableEffects && !swiping;
-        Object.assign(this.$.strip.style, {
+        Object.assign(this[symbols.$].strip.style, {
           transform,
           transition: showTransition ? 'transform 0.25s' : 'none'
         });
 
-        this.$.stripContainer.style.justifyContent = justifyContent;
+        this[symbols.$].stripContainer.style.justifyContent = justifyContent;
       }
     }
     if (changed.orientation) {
       const flexDirection = this[symbols.state].orientation === 'horizontal' ?
         '' :
         'column';
-      this.$.stripContainer.style.flexDirection = flexDirection;
-      this.$.strip.style.flexDirection = flexDirection;
+      this[symbols.$].stripContainer.style.flexDirection = flexDirection;
+      this[symbols.$].strip.style.flexDirection = flexDirection;
     }
   }
 

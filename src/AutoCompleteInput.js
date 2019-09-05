@@ -20,7 +20,7 @@ class AutoCompleteInput extends Input {
     //
     // Instead, we listen to input events. That comes with its own
     // set of headaches, noted below.
-    this.$.inner.addEventListener('input', () => {
+    this[symbols.$].inner.addEventListener('input', () => {
       // Gboard will generate multiple input events for a single keypress. In
       // particular, if we do AutoComplete and leave the text selected, then
       // when the user types the next key, we'll get *three* input events: one

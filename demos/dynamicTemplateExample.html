@@ -31,19 +31,19 @@
       [symbols.render](changed) {
         super[symbols.render](changed);
         if (changed.buttonRole) {
-          template.transmute(this.$.decrement, this[symbols.state].buttonRole);
-          this.$.decrement.addEventListener('click', () => {
+          template.transmute(this[symbols.$].decrement, this[symbols.state].buttonRole);
+          this[symbols.$].decrement.addEventListener('click', () => {
             this.value--;
           });
-          template.transmute(this.$.increment, this[symbols.state].buttonRole);
-          this.$.increment.addEventListener('click', () => {
+          template.transmute(this[symbols.$].increment, this[symbols.state].buttonRole);
+          this[symbols.$].increment.addEventListener('click', () => {
             this.value++;
           });
         }
         if (changed.value) {
           const { value } = this[symbols.state];
           this.style.color = value < 0 ? 'red' : null;
-          this.$.visibleValue.textContent = value;
+          this[symbols.$].visibleValue.textContent = value;
         }
       }
 

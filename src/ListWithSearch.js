@@ -78,14 +78,14 @@ class ListWithSearch extends Base {
   }
 
   get [symbols.itemsDelegate]() {
-    return this.$.list;
+    return this[symbols.$].list;
   }
 
     [symbols.keydown](/** @type {KeyboardEvent} */ event) {
 
     let handled;
     /** @type {any} */
-    const list = this.$.list;
+    const list = this[symbols.$].list;
 
     switch (event.key) {
 
@@ -160,10 +160,10 @@ class ListWithSearch extends Base {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.inputRole) {
-      template.transmute(this.$.input, this[symbols.state].inputRole);
-      this.$.input.addEventListener('input', () => {
+      template.transmute(this[symbols.$].input, this[symbols.state].inputRole);
+      this[symbols.$].input.addEventListener('input', () => {
         this[symbols.raiseChangeEvents] = true;
-        const filter = /** @type {any} */ (this.$.input).value;
+        const filter = /** @type {any} */ (this[symbols.$].input).value;
         this[symbols.setState]({
           filter
         });
@@ -171,20 +171,20 @@ class ListWithSearch extends Base {
       });
     }
     if (changed.listRole) {
-      template.transmute(this.$.list, this[symbols.state].listRole);
+      template.transmute(this[symbols.$].list, this[symbols.state].listRole);
     }
     if (changed.ariaLabel) {
       const { ariaLabel } = this[symbols.state];
-      this.$.input.setAttribute('aria-label', ariaLabel);
+      this[symbols.$].input.setAttribute('aria-label', ariaLabel);
     }
     if (changed.filter) {
       const { filter } = this[symbols.state];
-      /** @type {HTMLInputElement} */ (this.$.input).value = filter;
-      /** @type {any} */ (this.$.list).filter = filter;
+      /** @type {HTMLInputElement} */ (this[symbols.$].input).value = filter;
+      /** @type {any} */ (this[symbols.$].list).filter = filter;
     }
     if (changed.placeholder) {
       const { placeholder } = this[symbols.state];
-      /** @type {HTMLInputElement} */ (this.$.input).placeholder = placeholder;
+      /** @type {HTMLInputElement} */ (this[symbols.$].input).placeholder = placeholder;
     }
   }
 

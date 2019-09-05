@@ -80,13 +80,13 @@ function ArrowDirectionMixin(Base) {
     [symbols.render](/** @type {PlainObject} */ changed) {
 
       if (changed.arrowButtonRole) {
-        if (this.$.arrowButtonPrevious instanceof HTMLElement) {
+        if (this[symbols.$].arrowButtonPrevious instanceof HTMLElement) {
           // Turn off focus handling for old previous button.
-          forwardFocus(this.$.arrowButtonPrevious, null);
+          forwardFocus(this[symbols.$].arrowButtonPrevious, null);
         }
-        if (this.$.arrowButtonNext instanceof HTMLElement) {
+        if (this[symbols.$].arrowButtonNext instanceof HTMLElement) {
           // Turn off focus handling for old next button.
-          forwardFocus(this.$.arrowButtonNext, null);
+          forwardFocus(this[symbols.$].arrowButtonNext, null);
         }
       }
 
@@ -96,19 +96,19 @@ function ArrowDirectionMixin(Base) {
         /** @type {any} */
         const cast = this;
 
-        template.transmute(this.$.arrowButtonPrevious, this[symbols.state].arrowButtonRole);
-        if (this.$.arrowButtonPrevious instanceof HTMLElement) {
-          forwardFocus(this.$.arrowButtonPrevious, cast);
+        template.transmute(this[symbols.$].arrowButtonPrevious, this[symbols.state].arrowButtonRole);
+        if (this[symbols.$].arrowButtonPrevious instanceof HTMLElement) {
+          forwardFocus(this[symbols.$].arrowButtonPrevious, cast);
         }
         const previousButtonHandler = createButtonHandler(this, () => this.arrowButtonPrevious());
-        this.$.arrowButtonPrevious.addEventListener('mousedown', previousButtonHandler);
+        this[symbols.$].arrowButtonPrevious.addEventListener('mousedown', previousButtonHandler);
         
-        template.transmute(this.$.arrowButtonNext, this[symbols.state].arrowButtonRole);
-        if (this.$.arrowButtonNext instanceof HTMLElement) {
-          forwardFocus(this.$.arrowButtonNext, cast);
+        template.transmute(this[symbols.$].arrowButtonNext, this[symbols.state].arrowButtonRole);
+        if (this[symbols.$].arrowButtonNext instanceof HTMLElement) {
+          forwardFocus(this[symbols.$].arrowButtonNext, cast);
         }
         const nextButtonHandler = createButtonHandler(this, () => this.arrowButtonNext());
-        this.$.arrowButtonNext.addEventListener('mousedown', nextButtonHandler);
+        this[symbols.$].arrowButtonNext.addEventListener('mousedown', nextButtonHandler);
       }
 
       const {
@@ -120,13 +120,13 @@ function ArrowDirectionMixin(Base) {
         rightToLeft
       } = this[symbols.state];
       const vertical = orientation === 'vertical';
-      /** @type {any} */ const arrowButtonPrevious = this.$.arrowButtonPrevious;
-      /** @type {any} */ const arrowButtonNext = this.$.arrowButtonNext;
+      /** @type {any} */ const arrowButtonPrevious = this[symbols.$].arrowButtonPrevious;
+      /** @type {any} */ const arrowButtonNext = this[symbols.$].arrowButtonNext;
 
       // Position the buttons.
       if (changed.arrowButtonOverlap || changed.orientation || changed.rightToLeft) {
 
-        this.$.arrowDirection.style.flexDirection = vertical ?
+        this[symbols.$].arrowDirection.style.flexDirection = vertical ?
           'column' :
           'row';
 
@@ -198,8 +198,8 @@ function ArrowDirectionMixin(Base) {
           rightToLeft ?
             'rotateZ(180deg)' :
             '';
-        this.$.arrowIconPrevious.style.transform = transform;
-        this.$.arrowIconNext.style.transform = transform;
+        this[symbols.$].arrowIconPrevious.style.transform = transform;
+        this[symbols.$].arrowIconNext.style.transform = transform;
       }
 
       // Disable the previous/next buttons if we can't go in those directions.

@@ -50,7 +50,7 @@ class Drawer extends Base {
 
     // If user clicks on frame while drawer is closed (implying that gripSize is
     // greater than zero), then open the drawer.
-    this.$.frame.addEventListener('click', event => {
+    this[symbols.$].frame.addEventListener('click', event => {
       this[symbols.raiseChangeEvents] = true;
       if (this.closed) {
         this.open();
@@ -97,7 +97,7 @@ class Drawer extends Base {
   }
 
   get [symbols.elementsWithTransitions]() {
-    return [this.$.backdrop, this.$.frame];
+    return [this[symbols.$].backdrop, this[symbols.$].frame];
   }
 
   /**
@@ -132,7 +132,7 @@ class Drawer extends Base {
 
     if (changed.backdropRole) {
       // Implicitly close on background clicks.
-      this.$.backdrop.addEventListener('click', async () => {
+      this[symbols.$].backdrop.addEventListener('click', async () => {
         this[symbols.raiseChangeEvents] = true;
         await this.close();
         this[symbols.raiseChangeEvents] = false;
@@ -149,7 +149,7 @@ class Drawer extends Base {
       // operation, try to animate its opacity (below), then the animation won't
       // be shown. If we always render the backdrop, but keep it invisible until
       // we want to show it, then the animation works as expected.
-      this.$.backdrop.style.visibility = openedOrSwiping ? 'visible' : 'hidden';
+      this[symbols.$].backdrop.style.visibility = openedOrSwiping ? 'visible' : 'hidden';
 
       // Only listen to pointer events if opened or swiping.
       this.style.pointerEvents = openedOrSwiping ? 'initial' : 'none';
@@ -158,7 +158,7 @@ class Drawer extends Base {
       // prevents any box-shadow on the frame from being visible.
       const hasGrip = gripSize !== null;
       const clip = !hasGrip && !openedOrSwiping;
-      this.$.frame.style.clipPath = clip ? 'inset(0px)' : '';
+      this[symbols.$].frame.style.clipPath = clip ? 'inset(0px)' : '';
     }
 
     if (changed.effect || changed.effectPhase || changed.enableEffects ||
@@ -227,7 +227,7 @@ class Drawer extends Base {
         // we compare the expected opacity of the backdrop to its current opacity.
         // (We can't use the swipeFraction, because no swipe is in progress.)
         /** @type {any} */
-        const backdrop = this.$.backdrop;
+        const backdrop = this[symbols.$].backdrop;
         const opacityCurrent = parseFloat(backdrop.style.opacity) || 0;
         const opacityRemaining = Math.abs(opacityCurrent - opacity);
         const fullDuration = 0.25; // Quarter second
@@ -245,11 +245,11 @@ class Drawer extends Base {
         `calc(${translatePercentage} + ${gripValue}px)`;
       const transform = `translate${axis}(${translateValue})`;
 
-      Object.assign(this.$.backdrop.style, {
+      Object.assign(this[symbols.$].backdrop.style, {
         opacity,
         'transition': showTransition ? `opacity ${duration}s linear` : undefined,
       });
-      Object.assign(this.$.frame.style, {
+      Object.assign(this[symbols.$].frame.style, {
         transform,
         'transition': showTransition ? `transform ${duration}s` : undefined,
       });
@@ -355,11 +355,11 @@ class Drawer extends Base {
   // Tell TrackpadSwipeMixin that the frame is the scrollable element the user
   // is going to try to scroll with the trackpad.
   get [symbols.scrollTarget]() {
-    return this.$.frame;
+    return this[symbols.$].frame;
   }
 
   get [symbols.swipeTarget]() {
-    return /** @type {any} */ (this.$.frame);
+    return /** @type {any} */ (this[symbols.$].frame);
   }
 
   get [symbols.template]() {

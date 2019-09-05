@@ -28,7 +28,7 @@ class DrawerWithGrip extends Drawer {
       const { fromEdge } = this[symbols.state];
       const vertical = fromEdge === 'top' || fromEdge === 'bottom';
       const dimension = vertical ? 'offsetHeight' : 'offsetWidth';
-      const gripSize = this.$.grip[dimension];
+      const gripSize = this[symbols.$].grip[dimension];
       this[symbols.setState]({ gripSize });
     }
   }
@@ -56,8 +56,8 @@ class DrawerWithGrip extends Drawer {
     if (super[symbols.render]) { super[symbols.render](changed); }
 
     if (changed.gripRole) {
-      template.transmute(this.$.grip, this[symbols.state].gripRole);
-      this.$.grip.addEventListener('click', event => {
+      template.transmute(this[symbols.$].grip, this[symbols.state].gripRole);
+      this[symbols.$].grip.addEventListener('click', event => {
         // Clicking grip toggles drawer.
         this[symbols.raiseChangeEvents] = true;
         this.toggle();
@@ -71,7 +71,7 @@ class DrawerWithGrip extends Drawer {
       const { fromEdge, rightToLeft } = this[symbols.state];
 
       const vertical = fromEdge === 'top' || fromEdge === 'bottom';
-      this.$.frame.style.flexDirection = vertical ?
+      this[symbols.$].frame.style.flexDirection = vertical ?
         'column' :
         'row';
 
@@ -104,23 +104,23 @@ class DrawerWithGrip extends Drawer {
         mapFromEdgeToGripCell.left :
         mapFromEdgeToGripCell.right;
 
-      this.$.gripContainer.style.grid = mapFromEdgeToGrid[fromEdge];
-      this.$.gripWorkaround.style.gridArea = mapFromEdgeToGripCell[fromEdge];
+      this[symbols.$].gripContainer.style.grid = mapFromEdgeToGrid[fromEdge];
+      this[symbols.$].gripWorkaround.style.gridArea = mapFromEdgeToGripCell[fromEdge];
     }
 
-    if (changed.swipeAxis && this.$.gripIcon) {
+    if (changed.swipeAxis && this[symbols.$].gripIcon) {
       // Rotate the default grip icon to reflect the swipe axis.
       const transform = this[symbols.state].swipeAxis === 'horizontal' ?
         'rotate(90deg)' :
         '';
-      this.$.gripIcon.style.transform = transform;
+      this[symbols.$].gripIcon.style.transform = transform;
     }
   }
 
   // Tell TrackpadSwipeMixin that the gripped content is the scrollable element
   // the user is going to try to scroll with the trackpad.
   get [symbols.scrollTarget]() {
-    return this.$.grippedContent;
+    return this[symbols.$].grippedContent;
   }
 
   get [symbols.template]() {

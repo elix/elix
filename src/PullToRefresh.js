@@ -125,20 +125,20 @@ class PullToRefresh extends Base {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.pullIndicatorRole) {
-      template.transmute(this.$.pullIndicator, this.pullIndicatorRole);
+      template.transmute(this[symbols.$].pullIndicator, this.pullIndicatorRole);
     }
     if (changed.refreshing) {
       const { refreshing } = this[symbols.state];
-      const refreshingIndicator = this.$.refreshingIndicator;
+      const refreshingIndicator = this[symbols.$].refreshingIndicator;
       refreshingIndicator.style.visibility = refreshing ?
         'visible' :
         'hidden';
-      if ('playing' in this.$.refreshingIndicator) {
+      if ('playing' in this[symbols.$].refreshingIndicator) {
         /** @type {any} */ (refreshingIndicator).playing = refreshing;
       }
     }
     if (changed.refreshingIndicatorRole) {
-      template.transmute(this.$.refreshingIndicator, this.refreshingIndicatorRole);
+      template.transmute(this[symbols.$].refreshingIndicator, this.refreshingIndicatorRole);
     }
     if (changed.enableEffects || changed.refreshing || changed.swipeFraction) {
       const { enableEffects, refreshing, swipeFraction } = this[symbols.state];
@@ -169,7 +169,7 @@ class PullToRefresh extends Base {
       const showPullIndicator = !refreshing &&
         !pullTriggeredRefresh &&
         pullingDown;
-      this.$.pullIndicator.style.visibility = showPullIndicator ?
+      this[symbols.$].pullIndicator.style.visibility = showPullIndicator ?
         'visible' :
         'hidden';
     }
@@ -264,8 +264,8 @@ class PullToRefresh extends Base {
  * @param {PullToRefresh} element
  */
 function getSwipeThreshold(element) {
-  return element.$.refreshIndicators instanceof HTMLElement ?
-    element.$.refreshIndicators.offsetHeight :
+  return element[symbols.$].refreshIndicators instanceof HTMLElement ?
+    element[symbols.$].refreshIndicators.offsetHeight :
     0;
 }
 

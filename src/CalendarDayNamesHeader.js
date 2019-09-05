@@ -74,7 +74,7 @@ class CalendarDayNamesHeader extends ReactiveElement {
         const dayOfWeek = (firstDayOfWeek + i) % 7;
         date.setDate(dayOfWeek + 1);
         const weekend = dayOfWeek === weekendStart || dayOfWeek === weekendEnd;
-        const dayElement = this.$[`day${i}`];
+        const dayElement = this[symbols.$][`day${i}`];
         dayElement.classList.toggle('weekend', weekend);
         dayElement.textContent = formatter.format(date);
       }

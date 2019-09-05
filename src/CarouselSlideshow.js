@@ -38,11 +38,11 @@ class CarouselSlideshow extends Base {
     super[symbols.render](changed);
     if (changed.transitionDuration) {
       const { transitionDuration } = this[symbols.state];
-      if ('transitionDuration' in this.$.proxyList) {
-        /** @type {any} */ (this.$.proxyList).transitionDuration = transitionDuration;
+      if ('transitionDuration' in this[symbols.$].proxyList) {
+        /** @type {any} */ (this[symbols.$].proxyList).transitionDuration = transitionDuration;
       }
-      if ('transitionDuration' in this.$.stage) {
-        /** @type {any} */ (this.$.stage).transitionDuration = transitionDuration;
+      if ('transitionDuration' in this[symbols.$].stage) {
+        /** @type {any} */ (this[symbols.$].stage).transitionDuration = transitionDuration;
       }
     }
   }

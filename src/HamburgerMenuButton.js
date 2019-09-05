@@ -62,7 +62,7 @@ class HamburgerMenuButton extends Base {
   // the menu button.
     [symbols.keydown](/** @type {KeyboardEvent} */ event) {
     /** @type {any} */
-    const menuButton = this.$.menuButton;
+    const menuButton = this[symbols.$].menuButton;
     
     let handled;
 
@@ -109,16 +109,16 @@ class HamburgerMenuButton extends Base {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.menuButtonRole) {
-      template.transmute(this.$.menuButton, this[symbols.state].menuButtonRole);
-      this.$.menuButton.addEventListener('click', () => {
+      template.transmute(this[symbols.$].menuButton, this[symbols.state].menuButtonRole);
+      this[symbols.$].menuButton.addEventListener('click', () => {
         this[symbols.raiseChangeEvents] = true;
         this.open();
         this[symbols.raiseChangeEvents] = false;
       });
     }
     if (changed.menuRole) {
-      template.transmute(this.$.menu, this[symbols.state].menuRole);
-      this.$.menu.addEventListener('closed', event => {
+      template.transmute(this[symbols.$].menu, this[symbols.state].menuRole);
+      this[symbols.$].menu.addEventListener('closed', event => {
         /** @type {any} */
         const cast = event;
         this[symbols.setState]({
@@ -126,13 +126,13 @@ class HamburgerMenuButton extends Base {
           opened: false
         });
       });
-      this.$.menu.addEventListener('opened', () => {
+      this[symbols.$].menu.addEventListener('opened', () => {
         this[symbols.setState]({
           opened: true
         });
       });
     }
-    const menu = /** @type {any} */ (this.$.menu);
+    const menu = /** @type {any} */ (this[symbols.$].menu);
     if (changed.fromEdge) {
       if ('fromEdge' in menu) {
         menu.fromEdge = this[symbols.state].fromEdge;

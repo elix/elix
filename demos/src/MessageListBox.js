@@ -76,8 +76,8 @@ export default class MessageListBox extends Base {
         const newRead = swipeRightCommitted || swipeRightWillCommit ?
           !read :
           read;
-        this.$.readIconWithLabel.style.display = newRead ? '' : 'none';
-        this.$.unreadIconWithLabel.style.display = newRead ? 'none' : '';
+        this[symbols.$].readIconWithLabel.style.display = newRead ? '' : 'none';
+        this[symbols.$].unreadIconWithLabel.style.display = newRead ? 'none' : '';
       }
     }
 
@@ -85,13 +85,13 @@ export default class MessageListBox extends Base {
     // transition between left and right alignment. We use this alignment to
     // signal the point at which releasing the swipe would commit the command.
     if (changed.swipeRightCommitted || changed.swipeRightWillCommit) {
-      /** @type {any} */ (this.$.unreadCommand).align =
+      /** @type {any} */ (this[symbols.$].unreadCommand).align =
         this[symbols.state].swipeRightCommitted || this[symbols.state].swipeRightWillCommit ?
           'right' :
           'left';
     }
     if (changed.swipeLeftCommitted || changed.swipeLeftWillCommit) {
-      /** @type {any} */ (this.$.deleteCommand).align =
+      /** @type {any} */ (this[symbols.$].deleteCommand).align =
         this[symbols.state].swipeLeftCommitted || this[symbols.state].swipeLeftWillCommit ?
           'left' :
           'right';

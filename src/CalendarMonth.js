@@ -41,7 +41,7 @@ class CalendarMonth extends Base {
    */
   dayElementForDate(date) {
     /** @type {any} */
-    const monthDays = this.$.monthDays;
+    const monthDays = this[symbols.$].monthDays;
     return monthDays && 'dayElementForDate' in monthDays &&
       monthDays.dayElementForDate(date);
   }
@@ -68,7 +68,7 @@ class CalendarMonth extends Base {
    */
   get days() {
     return this.shadowRoot ?
-      /** @type {any} */ (this.$.monthDays).days :
+      /** @type {any} */ (this[symbols.$].monthDays).days :
       [];
   }
 
@@ -122,12 +122,12 @@ class CalendarMonth extends Base {
     super[symbols.render](changed);
     if (changed.locale) {
       const locale = this[symbols.state].locale;
-      /** @type {any} */ (this.$.monthDays).locale = locale;
-      /** @type {any} */ (this.$.monthYearHeader).locale = locale;
-      /** @type {any} */ (this.$.weekDaysHeader).locale = locale;
+      /** @type {any} */ (this[symbols.$].monthDays).locale = locale;
+      /** @type {any} */ (this[symbols.$].monthYearHeader).locale = locale;
+      /** @type {any} */ (this[symbols.$].weekDaysHeader).locale = locale;
     }
     if (changed.dayRole) {
-      /** @type {any} */ (this.$.monthDays).dayRole = this[symbols.state].dayRole;
+      /** @type {any} */ (this[symbols.$].monthDays).dayRole = this[symbols.state].dayRole;
     }
     if (changed.date) {
       const { date } = this[symbols.state];
@@ -135,33 +135,33 @@ class CalendarMonth extends Base {
         const startDate = calendar.firstDateOfMonth(date);
         const endDate = calendar.lastDateOfMonth(date);
         const dayCount = endDate.getDate();
-        Object.assign(this.$.monthDays, {
+        Object.assign(this[symbols.$].monthDays, {
           date,
           dayCount,
           startDate
         });
-        /** @type {any} */ (this.$.monthYearHeader).date = calendar.firstDateOfMonth(date);
+        /** @type {any} */ (this[symbols.$].monthYearHeader).date = calendar.firstDateOfMonth(date);
       }
     }
     if (changed.daysOfWeekFormat) {
       const { daysOfWeekFormat } = this[symbols.state];
-      /** @type {any} */ (this.$.weekDaysHeader).format = daysOfWeekFormat;
+      /** @type {any} */ (this[symbols.$].weekDaysHeader).format = daysOfWeekFormat;
     }
     if (changed.showCompleteWeeks) {
       const { showCompleteWeeks } = this[symbols.state];
-      /** @type {any} */ (this.$.monthDays).showCompleteWeeks = showCompleteWeeks;
+      /** @type {any} */ (this[symbols.$].monthDays).showCompleteWeeks = showCompleteWeeks;
     }
     if (changed.showSelectedDay) {
       const { showSelectedDay } = this[symbols.state];
-      /** @type {any} */ (this.$.monthDays).showSelectedDay = showSelectedDay;
+      /** @type {any} */ (this[symbols.$].monthDays).showSelectedDay = showSelectedDay;
     }
     if (changed.monthFormat) {
       const { monthFormat } = this[symbols.state];
-      /** @type {any} */ (this.$.monthYearHeader).monthFormat = monthFormat;
+      /** @type {any} */ (this[symbols.$].monthYearHeader).monthFormat = monthFormat;
     }
     if (changed.yearFormat) {
       const { yearFormat } = this[symbols.state];
-      /** @type {any} */ (this.$.monthYearHeader).yearFormat = yearFormat;
+      /** @type {any} */ (this[symbols.$].monthYearHeader).yearFormat = yearFormat;
     }
   }
 

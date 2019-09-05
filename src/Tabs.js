@@ -92,8 +92,8 @@ class Tabs extends Base {
       });
     }
     if (changed.generic) {
-      if ('generic' in this.$.proxyList) {
-        /** @type {any} */ (this.$.proxyList).generic = this[symbols.state].generic;
+      if ('generic' in this[symbols.$].proxyList) {
+        /** @type {any} */ (this[symbols.$].proxyList).generic = this[symbols.state].generic;
       }
     }
     if ((changed.generic || changed.proxies || changed.proxiesAssigned) &&
@@ -109,8 +109,8 @@ class Tabs extends Base {
     }
     if (changed.tabAlign) {
       // Apply alignment to proxy list.
-      if ('tabAlign' in this.$.proxyList) {
-        const proxyList = /** @type {any} */ (this.$.proxyList);
+      if ('tabAlign' in this[symbols.$].proxyList) {
+        const proxyList = /** @type {any} */ (this[symbols.$].proxyList);
         proxyList.tabAlign = this[symbols.state].tabAlign;
       }
     }

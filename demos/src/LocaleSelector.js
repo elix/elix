@@ -295,9 +295,9 @@ class LocaleSelector extends ReactiveElement {
 
   [symbols.componentDidMount]() {
     if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
-    this.$.select.addEventListener('change', () => {
+    this[symbols.$].select.addEventListener('change', () => {
       this[symbols.raiseChangeEvents] = true;
-      this.value = /** @type {any} */ (this.$.select).value;
+      this.value = /** @type {any} */ (this[symbols.$].select).value;
       this[symbols.raiseChangeEvents] = false;
     });
   }
@@ -323,7 +323,7 @@ class LocaleSelector extends ReactiveElement {
     super[symbols.render](changed);
     if (changed.value) {
       const value = this[symbols.state].value;
-      /** @type {HTMLSelectElement} */ (this.$.select).value = value;
+      /** @type {HTMLSelectElement} */ (this[symbols.$].select).value = value;
     }
   }
 

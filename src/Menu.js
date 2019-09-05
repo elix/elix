@@ -206,12 +206,12 @@ class Menu extends Base {
       });
     }
     if (changed.generic) {
-      this.$.content.classList.toggle('generic', this[symbols.state].generic);
+      this[symbols.$].content.classList.toggle('generic', this[symbols.state].generic);
     }
   }
 
   get [symbols.scrollTarget]() {
-    return this.$.content;
+    return this[symbols.$].content;
   }
 
   get [symbols.template]() {

@@ -49,7 +49,7 @@ class RenderState extends Base {
   }
 
   get [symbols.contentSlot]() {
-    return this.$.fixtureSlot;
+    return this[symbols.$].fixtureSlot;
   }
 
   get fixture() {
@@ -86,7 +86,7 @@ class RenderState extends Base {
       const textContent = Object.keys(fixtureState).length > 0 ?
         JSON.stringify(fixtureState, null, 2) :
         '';
-      this.$.fixtureState.textContent = textContent;
+      this[symbols.$].fixtureState.textContent = textContent;
     }
   }
 

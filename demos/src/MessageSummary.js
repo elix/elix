@@ -36,16 +36,16 @@ export default class MessageSummary extends ReactiveElement {
   [symbols.render](changed) {
     super[symbols.render](changed);
     if (changed.date) {
-      this.$.date.textContent = this[symbols.state].date;
+      this[symbols.$].date.textContent = this[symbols.state].date;
     }
     if (changed.read) {
       this.classList.toggle('read', this[symbols.state].read);
     }
     if (changed.sender) {
-      this.$.sender.textContent = this[symbols.state].sender;
+      this[symbols.$].sender.textContent = this[symbols.state].sender;
     }
     if (changed.summary) {
-      this.$.summary.textContent = this[symbols.state].summary;
+      this[symbols.$].summary.textContent = this[symbols.state].summary;
     }
   }
 

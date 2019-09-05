@@ -12,6 +12,7 @@
  * Symbol objects to be used at runtime as desired.
  */
 
+export const $: '_$';
 export const checkSize: '_checkSize';
 export const componentDidMount: '_componentDidMount';
 export const componentDidUpdate: '_componentDidUpdate';

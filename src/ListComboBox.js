@@ -105,7 +105,7 @@ class ListComboBox extends Base {
 
     let handled;
     /** @type {any} */
-    const list = this.$.list;
+    const list = this[symbols.$].list;
 
     switch (event.key) {
 
@@ -152,18 +152,18 @@ class ListComboBox extends Base {
   }
 
   get [symbols.itemsDelegate]() {
-    return this.$.list;
+    return this[symbols.$].list;
   }
 
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.inputRole) {
-      this.$.input.setAttribute('aria-autocomplete', 'both');
+      this[symbols.$].input.setAttribute('aria-autocomplete', 'both');
     }
     if (changed.listRole) {
-      template.transmute(this.$.list, this[symbols.state].listRole);
+      template.transmute(this[symbols.$].list, this[symbols.state].listRole);
   
-      this.$.list.addEventListener('mousedown', event => {
+      this[symbols.$].list.addEventListener('mousedown', event => {
         // Mousing down inside a list item closes the popup.
         /** @type {any} */
         const target = event.target;
@@ -184,7 +184,7 @@ class ListComboBox extends Base {
       // presses Backspace to delete that selected text, Gboard/Chrome seems to
       // ignore the first press of the Backspace key. The user must press
       // Backspace a second time to actually delete the selected text.
-      this.$.list.addEventListener('selected-index-changed', event => {
+      this[symbols.$].list.addEventListener('selected-index-changed', event => {
         /** @type {any} */
         const cast = event;
         const listSelectedIndex = cast.detail.selectedIndex;
@@ -198,7 +198,7 @@ class ListComboBox extends Base {
       });
     }
     if (changed.selectedIndex) {
-      const list = /** @type {any} */ (this.$.list);
+      const list = /** @type {any} */ (this[symbols.$].list);
       if ('selectedIndex' in list) {
         list.selectedIndex = this[symbols.state].selectedIndex;
       }

@@ -21,14 +21,14 @@ class DateInput extends Base {
 
   [symbols.componentDidMount]() {
     super[symbols.componentDidMount]();
-    this.$.inner.addEventListener('blur', () => {
+    this[symbols.$].inner.addEventListener('blur', () => {
       this[symbols.raiseChangeEvents] = true;
       this[symbols.setState]({
         focused: false
       });
       this[symbols.raiseChangeEvents] = false;
     });
-    this.$.inner.addEventListener('focus', () => {
+    this[symbols.$].inner.addEventListener('focus', () => {
       this[symbols.raiseChangeEvents] = true;
       this[symbols.setState]({
         focused: true

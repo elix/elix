@@ -70,7 +70,7 @@ class CalendarMonthYearHeader extends Base {
         formatOptions.year = yearFormat;
       }
       const formatter = calendar.dateTimeFormat(locale, formatOptions);
-      this.$.formatted.textContent = formatter.format(date);
+      this[symbols.$].formatted.textContent = formatter.format(date);
     }
   }
 

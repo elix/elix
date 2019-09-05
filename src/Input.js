@@ -36,7 +36,7 @@ class Input extends Base {
      * 
      * @event input
      */
-    this.$.inner.addEventListener('input', () => {
+    this[symbols.$].inner.addEventListener('input', () => {
       this[symbols.raiseChangeEvents] = true;
       // Invoke the value setter to fix up selectionStart/selectionEnd too.
       this.value = /** @type {any} */ (this.inner).value;

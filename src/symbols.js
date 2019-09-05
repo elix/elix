@@ -40,6 +40,23 @@
  */
 
 /**
+ * Symbol for the `$` property.
+ *
+ * [ShadowTemplateMixin](ShadowTemplateMixin) defines a shorthand function
+ * `symbols.$` that can be used to obtain a reference to a shadow element with
+ * a given ID.
+ * 
+ * Example: if component's template contains a shadow element
+ * `<button id="foo">`, you can use the reference `this[symbols.$].foo` to obtain
+ * the corresponding button in the component instance's shadow tree.
+ * The `$` function is simply a shorthand for `getElementById`, so
+ * `this[symbols.$].foo` is the same as `this.shadowRoot.getElementById('foo')`.
+ *
+ * @type {object} - a dictionary mapping shadow element IDs to elements
+ */
+export const $ = Symbol('$');
+
+/**
  * Symbol for the `checkSize` method.
  * 
  * If defined, this method will be invoked by [ResizeMixin](ResizeMixin)

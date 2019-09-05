@@ -72,7 +72,7 @@ class Toast extends Base {
   }
 
   get [symbols.elementsWithTransitions]() {
-    return [this.$.frame];
+    return [this[symbols.$].frame];
   }
 
   /**
@@ -167,7 +167,7 @@ class Toast extends Base {
         openEdgeTransforms[languageAdjustedEdge] :
         edgeTransforms[languageAdjustedEdge];
   
-      Object.assign(this.$.frame.style, {
+      Object.assign(this[symbols.$].frame.style, {
         opacity,
         transform
       });

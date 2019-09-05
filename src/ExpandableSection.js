@@ -62,27 +62,27 @@ class ExpandableSection extends Base {
   [symbols.render](/** @type {PlainObject} */ changed) {
     super[symbols.render](changed);
     if (changed.headerRole) {
-      template.transmute(this.$.header, this[symbols.state].headerRole);
-      this.$.header.addEventListener('click', () => {
+      template.transmute(this[symbols.$].header, this[symbols.state].headerRole);
+      this[symbols.$].header.addEventListener('click', () => {
         this[symbols.raiseChangeEvents] = true;
         this.toggle();
         this[symbols.raiseChangeEvents] = false;
       });
     }
     if (changed.panelRole) {
-      template.transmute(this.$.panel, this[symbols.state].panelRole);
+      template.transmute(this[symbols.$].panel, this[symbols.state].panelRole);
     }
     if (changed.opened) {
       const { opened } = this[symbols.state];
-      this.$.header.setAttribute('aria-expanded', opened.toString());
-      if (this.$.collapseIcon) {
-        this.$.collapseIcon.style.display = opened ? 'block' : 'none';
+      this[symbols.$].header.setAttribute('aria-expanded', opened.toString());
+      if (this[symbols.$].collapseIcon) {
+        this[symbols.$].collapseIcon.style.display = opened ? 'block' : 'none';
       }
-      if (this.$.expandIcon) {
-        this.$.expandIcon.style.display = opened ? 'none' : 'block';
+      if (this[symbols.$].expandIcon) {
+        this[symbols.$].expandIcon.style.display = opened ? 'none' : 'block';
       }
-      if ('opened' in this.$.panel) {
-        /** @type {any} */ (this.$.panel).opened = opened;
+      if ('opened' in this[symbols.$].panel) {
+        /** @type {any} */ (this[symbols.$].panel).opened = opened;
       }
     }
   }
