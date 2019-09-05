@@ -48,7 +48,7 @@ export default function ReactiveMixin(Base) {
       if (super.connectedCallback) { super.connectedCallback(); }
       // Render the component. If the component was forced to render before this
       // point, and the state hasn't changed, this call will be a no-op.
-      this.render();
+      this[symbols.renderChanges]();
     }
 
     /**
@@ -62,16 +62,38 @@ export default function ReactiveMixin(Base) {
     }
 
     /**
-     * Render pending component changes to the DOM.
+     * Render the indicated changes in state to the DOM.
+     * 
+     * The default implementation of this method does nothing. Override this
+     * method in your component to update your component's host element and
+     * any shadow elements to reflect the component's new state. See the
+     * [rendering example](ReactiveMixin#rendering).
+     * 
+     * Be sure to call `super` in your method implementation so that your
+     * component's base classes and mixins have a chance to perform their own
+     * render work.
+     * 
+     * @param {object} changed - dictionary of flags indicating which state
+     * members have changed since the last render
+     */
+    [symbols.render](/** @type {PlainObject} */ changed) {
+      if (super[symbols.render]) { super[symbols.render](changed); }
+    }
+
+    /**
+     * Render any pending component changes to the DOM.
      * 
      * This method does nothing if the state has not changed since the last
      * render call.
      * 
-     * This method invokes all internal render methods. It then invoked
+     * ReactiveMixin will invoke this method following a `setState` call;
+     * you should not need to invoke this method yourself.
+     * 
+     * This method invokes all internal render methods, then invokes
      * `componentDidMount` (for first render) or `componentDidUpdate` (for
      * subsequent renders).
      */
-    render() {
+    [symbols.renderChanges]() {
 
       // Determine what's changed since the last render.
       const changed = changedSinceLastRender.get(this);
@@ -119,25 +141,6 @@ export default function ReactiveMixin(Base) {
         this[symbols.raiseChangeEvents] = saveRaiseChangeEvents;
         this[raiseChangeEventsInNextRenderKey] = saveRaiseChangeEvents;
       }
-    }
-
-    /**
-     * Internal method for rendering any recent changes in state to the DOM.
-     * 
-     * The default implementation of this method does nothing. Override this
-     * method in your component to update your component's host element and
-     * any shadow elements to reflect the component's new state. See the
-     * [rendering example](ReactiveMixin#rendering).
-     * 
-     * Be sure to call `super` in your method implementation so that your
-     * component's base classes and mixins have a chance to perform their own
-     * render work.
-     * 
-     * @param {object} changed - dictionary of flags indicating which state
-     * members have changed since the last render
-     */
-    [symbols.render](/** @type {PlainObject} */ changed) {
-      if (super[symbols.render]) { super[symbols.render](changed); }
     }
 
     /**
@@ -199,7 +202,7 @@ export default function ReactiveMixin(Base) {
       await Promise.resolve();
       
       // Render the component.
-      this.render();
+      this[symbols.renderChanges]();
     }
 
     /**

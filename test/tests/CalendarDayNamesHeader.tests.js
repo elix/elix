@@ -8,7 +8,7 @@ describe("CalendarDayNamesHeader", () => {
   it("renders short English US week days", async () => {
     const fixture = new CalendarDayNamesHeader();
     fixture.locale = 'en-US';
-    await fixture.render();
+    await fixture[symbols.renderChanges]();
     assert.equal(trimMarks(fixture[symbols.$].day0.textContent), 'Sun');
     assert.equal(trimMarks(fixture[symbols.$].day1.textContent), 'Mon');
     assert.equal(trimMarks(fixture[symbols.$].day2.textContent), 'Tue');
@@ -22,7 +22,7 @@ describe("CalendarDayNamesHeader", () => {
     const fixture = new CalendarDayNamesHeader();
     fixture.locale = 'en-US';
     fixture.format = 'narrow';
-    await fixture.render();
+    await fixture[symbols.renderChanges]();
     // Edge shows "Su", everyone else shows "S".
     const trimmed = trimMarks(fixture[symbols.$].day0.textContent);
     assert(trimmed === 'S' || trimmed === 'Su');
@@ -31,7 +31,7 @@ describe("CalendarDayNamesHeader", () => {
   it("renders short French week days", async () => {
     const fixture = new CalendarDayNamesHeader();
     fixture.locale = 'fr-FR';
-    await fixture.render();
+    await fixture[symbols.renderChanges]();
     assert.equal(trimMarks(fixture[symbols.$].day0.textContent), 'lun.'); // A Monday
     assert.equal(trimMarks(fixture[symbols.$].day1.textContent), 'mar.');
     assert.equal(trimMarks(fixture[symbols.$].day2.textContent), 'mer.');

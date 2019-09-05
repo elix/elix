@@ -32,7 +32,7 @@ describe("WrappedStandardElement", () => {
 
   it("creates an instance of the wrapped element", () => {
     const fixture = new WrappedA();
-    fixture.render();
+    fixture[symbols.renderChanges]();
     assert(fixture.inner instanceof HTMLAnchorElement);
   });
 
@@ -50,7 +50,7 @@ describe("WrappedStandardElement", () => {
     const fixture = new WrappedA();
     container.appendChild(fixture);
     fixture.setAttribute('href', 'http://example.com/');
-    fixture.render();
+    fixture[symbols.renderChanges]();
     assert.equal(fixture.inner.href, 'http://example.com/');
   });
 
@@ -73,7 +73,7 @@ describe("WrappedStandardElement", () => {
     });
     fixture.click();
     fixture.disabled = true;
-    fixture.render();
+    fixture[symbols.renderChanges]();
     fixture.click();
     assert.equal(count, 1);
   });
@@ -93,22 +93,22 @@ describe("WrappedStandardElement", () => {
     
     // Disable via property.
     fixture.disabled = true;
-    fixture.render();
+    fixture[symbols.renderChanges]();
     assert(fixture.inner.disabled);
 
     // // Re-enable via property.
     fixture.disabled = false;
-    fixture.render();
+    fixture[symbols.renderChanges]();
     assert(!fixture.inner.disabled);
 
     // Disable via attribute.
     fixture.setAttribute('disabled', '');
-    fixture.render();
+    fixture[symbols.renderChanges]();
     assert(fixture.inner.disabled);
     
     // Re-enable via attribute.
     fixture.removeAttribute('disabled');
-    fixture.render();
+    fixture[symbols.renderChanges]();
     assert(!fixture.inner.disabled);
   });
 
@@ -135,7 +135,7 @@ describe("WrappedStandardElement", () => {
   it("delegates attributes that don't correspond to properties", async () => {
     const fixture = new WrappedInput();
     fixture.setAttribute('readonly', '');
-    fixture.render();
+    fixture[symbols.renderChanges]();
     assert.equal(fixture.inner.getAttribute('readonly'), '');
   });
 

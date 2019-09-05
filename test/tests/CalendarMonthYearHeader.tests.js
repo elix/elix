@@ -9,7 +9,7 @@ describe("CalendarMonthYearHeader", () => {
     const fixture = new CalendarMonthYearHeader();
     fixture.locale = 'en-US';
     fixture.date = new Date('10 March 2015');
-    await fixture.render();
+    await fixture[symbols.renderChanges]();
     assert.equal(trimMarks(fixture[symbols.$].formatted.textContent), 'March 2015');
   });
 
@@ -17,7 +17,7 @@ describe("CalendarMonthYearHeader", () => {
     const fixture = new CalendarMonthYearHeader();
     fixture.locale = 'ja-JP';
     fixture.date = new Date('10 March 2015');
-    await fixture.render();
+    await fixture[symbols.renderChanges]();
     assert.equal(trimMarks(fixture[symbols.$].formatted.textContent), '2015年3月');
   });
 

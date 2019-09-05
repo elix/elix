@@ -66,7 +66,7 @@ describe("AriaListMixin", () => {
 
   it("assigns a default role of 'listbox'", () => {
     const fixture = new AriaListTest();
-    fixture.render();
+    fixture[symbols.renderChanges]();
     assert.equal(fixture.getAttribute('role'), 'listbox');
   });
 

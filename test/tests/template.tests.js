@@ -140,7 +140,7 @@ describe("templates", () => {
 
   it("supports an element with a role during initial rendering", async () => {
     const fixture = new DynamicSingle();
-    fixture.render();
+    fixture[symbols.renderChanges]();
     assert(fixture[symbols.$].static instanceof HTMLDivElement);
     assert(fixture[symbols.$].dynamic instanceof HTMLButtonElement);
     assert.equal(fixture[symbols.$].dynamic.getAttribute('id'), 'dynamic');
@@ -150,13 +150,13 @@ describe("templates", () => {
 
   it("lets an element change a role after initial rendering", async () => {
     const fixture = new DynamicSingle();
-    fixture.render();
+    fixture[symbols.renderChanges]();
     assert(fixture[symbols.$].static instanceof HTMLDivElement);
     assert(fixture[symbols.$].dynamic instanceof HTMLButtonElement);
     fixture[symbols.setState]({
       dynamicRole: 'a'
     });
-    fixture.render();
+    fixture[symbols.renderChanges]();
     assert(fixture[symbols.$].dynamic instanceof HTMLAnchorElement);
     assert.equal(fixture[symbols.$].dynamic.getAttribute('id'), 'dynamic');
     assert.equal(fixture[symbols.$].dynamic.textContent, 'This element changes');
@@ -165,7 +165,7 @@ describe("templates", () => {
 
   it("supports an element with a role applied to multiple elements", async () => {
     const fixture = new DynamicMultiple();
-    fixture.render();
+    fixture[symbols.renderChanges]();
     assert(fixture[symbols.$].static instanceof HTMLDivElement);
     fixture.shadowRoot.querySelectorAll('.dynamic').forEach(element => {
       assert(element instanceof HTMLButtonElement);

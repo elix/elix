@@ -412,16 +412,24 @@ export const populate = Symbol('populate');
 export const raiseChangeEvents = Symbol('raiseChangeEvents');
 
 /**
- * Symbol for an internal `render` method.
+ * Symbol for the `render` method.
  * 
- * [ReactiveMixin](ReactiveMixin) has a public [render](ReactiveMixin#render)
- * method that can be invoked to force the component to render. That public
- * method internally invokes an `symbols.render` method, which a component can
- * implement to actually render itself.
+ * [ReactiveMixin](ReactiveMixin) invokes this `symbols.render` method to give
+ * the component a chance to render recent changes in component state.
  * 
  * @function render
  */
 export const render = Symbol('render');
+
+/**
+ * Symbol for the `renderChanges` method.
+ * 
+ * [ReactiveMixin](ReactiveMixin) invokes this method in response to a
+ * `setState` call; you should generally not invoke this method yourself.
+ * 
+ * @function renderChanges
+ */
+export const renderChanges = Symbol('renderChanges');
 
 /**
  * Symbol for the `rendering` property.

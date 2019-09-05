@@ -42,6 +42,7 @@ export const mouseleave: '_mouseleave';
 export const populate: '_populate';
 export const raiseChangeEvents: '_raiseChangeEvents';
 export const render: '_render';
+export const renderChanges: '_renderChanges';
 export const rendering: '_rendering';
 export const scrollTarget: '_scrollTarget';
 export const setState: '_setState';

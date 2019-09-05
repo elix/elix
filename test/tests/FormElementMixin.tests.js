@@ -71,7 +71,7 @@ customElements.define('form-element-test', FormElementTest);
     form.append(fixture);
     container.append(form, resultFrame);
     fixture.value = 'aardvark';
-    fixture.render();
+    fixture[symbols.renderChanges]();
     form.addEventListener('formdata', event => {
       assert(event.formData.get('animal'), 'aardvark');
       done();
@@ -81,10 +81,10 @@ customElements.define('form-element-test', FormElementTest);
 
   it('participates in validation', () => {
     const fixture = new FormElementTest();
-    fixture.render();
+    fixture[symbols.renderChanges]();
     assert(!fixture.checkValidity());
     fixture.value = 'bandicoot';
-    fixture.render();
+    fixture[symbols.renderChanges]();
     assert(fixture.checkValidity());
   });
 

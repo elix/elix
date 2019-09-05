@@ -1,3 +1,4 @@
+import * as symbols from '../../src/symbols.js';
 import { default as AutoCompleteInput, autoComplete } from '../../src/AutoCompleteInput.js';
 
 
@@ -13,7 +14,7 @@ describe("AutoCompleteInput", () => {
     ];
     fixture.value = 'C';
     autoComplete(fixture);
-    fixture.render();
+    fixture[symbols.renderChanges]();
     assert.equal(fixture.value, 'Canary');
   });
 

@@ -25,7 +25,7 @@ describe("AutoSizeTextarea", () => {
   it("applies its value to the inner textarea", () => {
     const fixture = new AutoSizeTextarea();
     fixture.value = 'beaver';
-    fixture.render();
+    fixture[symbols.renderChanges]();
     assert(fixture.inner.value, 'beaver');
   });
 

@@ -22,7 +22,7 @@ describe("KeyboardMixin", () => {
 
   it("assigns a tabindex of 0 by default", () => {
     const fixture = new KeyboardTest();
-    fixture.render();
+    fixture[symbols.renderChanges]();
     assert.equal(fixture.getAttribute('tabindex'), '0');
   });
 
@@ -35,10 +35,10 @@ describe("KeyboardMixin", () => {
 
   it("reflects tabindex attribute and tabIndex property assignments in state", async () => {
     const fixture = new KeyboardTest();
-    fixture.render();
+    fixture[symbols.renderChanges]();
     assert.equal(fixture[symbols.state].tabIndex, 0);
     fixture.setAttribute('tabindex', '1');
-    fixture.render();
+    fixture[symbols.renderChanges]();
     assert.equal(fixture[symbols.state].tabIndex, 1);
     assert.equal(fixture.tabIndex, 1);
     fixture.tabIndex = 2;

@@ -1,4 +1,5 @@
 import * as calendar from '../../src/calendar.js';
+import * as symbols from '../../src/symbols.js';
 import CalendarDays from '../../src/CalendarDays.js';
 
 
@@ -8,7 +9,7 @@ describe("CalendarDays", () => {
     const fixture = new CalendarDays();
     fixture.startDate = new Date('1 January 2019');
     fixture.dayCount = 31;
-    await fixture.render();
+    await fixture[symbols.renderChanges]();
     assert.equal(31, fixture.days.length);
     const lastDay = fixture.days[30];
     assert(calendar.datesEqual(lastDay.date, new Date('31 Jan 2019')));
@@ -23,10 +24,10 @@ describe("CalendarDays", () => {
     const fixture = new CalendarDays();
     fixture.locale = 'en-US'; // Weeks start on Sunday
     fixture.startDate = new Date('10 March 2015'); // A Tuesday
-    await fixture.render();
+    await fixture[symbols.renderChanges]();
     assert.equal(fixture.days[0].style.gridColumnStart, '3');
     fixture.locale = 'en-GB'; // Weeks start on Monday
-    await fixture.render();
+    await fixture[symbols.renderChanges]();
     assert.equal(fixture.days[0].style.gridColumnStart, '2');
   });
 
