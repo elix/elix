@@ -1,3 +1,4 @@
+import * as symbols from './symbols.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -30,7 +31,7 @@ export default function SelectedItemTextValueMixin(Base) {
       const { items, pendingValue } = this.state;
       if (pendingValue && items) {
         const index = indexOfItemWithText(items, pendingValue);
-        this.setState({
+        this[symbols.setState]({
           selectedIndex: index,
           pendingValue: null
         });
@@ -55,13 +56,13 @@ export default function SelectedItemTextValueMixin(Base) {
       const items = this.state.items;
       if (items === null) {
         // No items yet, save and try again later.
-        this.setState({
+        this[symbols.setState]({
           pendingValue: text
         });
       } else {
         // Select the index of the indicate text, if found.
         const selectedIndex = indexOfItemWithText(items, text);
-        this.setState({ selectedIndex });
+        this[symbols.setState]({ selectedIndex });
       }
     }
   }

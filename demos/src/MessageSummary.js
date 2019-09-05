@@ -9,7 +9,7 @@ export default class MessageSummary extends ReactiveElement {
     return this.state.date;
   }
   set date(date) {
-    this.setState({
+    this[symbols.setState]({
       date
     });
   }
@@ -28,7 +28,7 @@ export default class MessageSummary extends ReactiveElement {
   }
   set read(read) {
     const parsed = String(read) === 'true';
-    this.setState({
+    this[symbols.setState]({
       read: parsed
     });
   }
@@ -53,7 +53,7 @@ export default class MessageSummary extends ReactiveElement {
     return this.state.sender;
   }
   set sender(sender) {
-    this.setState({
+    this[symbols.setState]({
       sender
     });
   }
@@ -62,7 +62,7 @@ export default class MessageSummary extends ReactiveElement {
     return this.state.summary;
   }
   set summary(summary) {
-    this.setState({
+    this[symbols.setState]({
       summary
     });
   }

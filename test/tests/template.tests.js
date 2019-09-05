@@ -153,7 +153,7 @@ describe("templates", () => {
     fixture.render();
     assert(fixture.$.static instanceof HTMLDivElement);
     assert(fixture.$.dynamic instanceof HTMLButtonElement);
-    fixture.setState({
+    fixture[symbols.setState]({
       dynamicRole: 'a'
     });
     fixture.render();

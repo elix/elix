@@ -52,7 +52,7 @@ export default function KeyboardMixin(Base) {
         if (!this.state.focusVisible) {
           // The user may have begun interacting with this element using the
           // mouse/touch, but has now begun using the keyboard, so show focus.
-          this.setState({
+          this[symbols.setState]({
             focusVisible: true
           });
         }
@@ -117,7 +117,7 @@ export default function KeyboardMixin(Base) {
       // to set state again.
       if (!this[symbols.rendering]) {
         // Record the new tabIndex in our state.
-        this.setState({
+        this[symbols.setState]({
           tabIndex: parsed
         });
       }

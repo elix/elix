@@ -48,7 +48,7 @@ class AutoCompleteInput extends Input {
           autoComplete(this);
         }
         // Remember what the user typed for next time.
-        this.setState({
+        this[symbols.setState]({
           originalText: text
         });
         this[symbols.raiseChangeEvents] = false;
@@ -64,7 +64,7 @@ class AutoCompleteInput extends Input {
       // We've finished rendering new auto-completed text.
       // Leave the auto-completed portion (after the part the user originally
       // typed) selected.
-      this.setState({
+      this[symbols.setState]({
         autoCompleteSelect: false
       });
       this.setInnerProperty('selectionStart', originalText.length);
@@ -101,7 +101,7 @@ class AutoCompleteInput extends Input {
     return this.state.texts;
   }
   set texts(texts) {
-    this.setState({ texts });
+    this[symbols.setState]({ texts });
   }
 
   // Setting the value from the outside is treated as if the user had typed the
@@ -115,7 +115,7 @@ class AutoCompleteInput extends Input {
     // If the input has focus, we assume the user is typing, and rely on
     // the `input` event to update the originalText state.
     if (this.shadowRoot && !this.inner.matches(':focus')) {
-      this.setState({
+      this[symbols.setState]({
         originalText: value
       });
     }
@@ -140,7 +140,7 @@ export function autoComplete(/** @type {AutoCompleteInput} */ element) {
   element.setInnerProperty('value', match);
 
   // Leave the auto-completed portion selected.
-  element.setState({
+  element[symbols.setState]({
     autoCompleteSelect: true
   });
 

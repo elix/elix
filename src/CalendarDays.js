@@ -51,7 +51,7 @@ class CalendarDays extends Base {
     return this.state.dayCount;
   }
   set dayCount(dayCount) {
-    this.setState({
+    this[symbols.setState]({
       dayCount
     });
   }
@@ -66,7 +66,7 @@ class CalendarDays extends Base {
     return this.state.dayRole;
   }
   set dayRole(dayRole) {
-    this.setState({ dayRole });
+    this[symbols.setState]({ dayRole });
   }
 
   /**
@@ -146,7 +146,7 @@ class CalendarDays extends Base {
     return this.state.showCompleteWeeks;
   }
   set showCompleteWeeks(showCompleteWeeks) {
-    this.setState({
+    this[symbols.setState]({
       showCompleteWeeks
     });
   }
@@ -155,7 +155,7 @@ class CalendarDays extends Base {
     return this.state.showSelectedDay;
   }
   set showSelectedDay(showSelectedDay) {
-    this.setState({
+    this[symbols.setState]({
       showSelectedDay
     });
   }
@@ -168,7 +168,7 @@ class CalendarDays extends Base {
       new Date(startDate) :
       startDate;
     if (!calendar.datesEqual(this.state.startDate, parsed)) {
-      this.setState({
+      this[symbols.setState]({
         startDate: parsed
       });
     }

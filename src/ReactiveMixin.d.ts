@@ -13,7 +13,7 @@ declare const ReactiveMixin: Mixin<{}, {
   defaultState: State;
   render(): void;
   [symbols.render](changed: PlainObject): void;
-  setState(changes: PlainObject): Promise<void>;
+ [symbols.setState](changes: PlainObject): Promise<void>;
   state: State;
 }>;
 

@@ -31,7 +31,7 @@ export default function PlayControlsMixin(Base) {
       return this.state.controlButtonRole;
     }
     set controlButtonRole(controlButtonRole) {
-      this.setState({ controlButtonRole });
+      this[symbols.setState]({ controlButtonRole });
     }
 
     get [symbols.defaultState]() {

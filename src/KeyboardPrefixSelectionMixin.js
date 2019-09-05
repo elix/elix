@@ -100,7 +100,7 @@ export default function KeyboardPrefixSelectionMixin(Base) {
       );
       if (selectedIndex >= 0) {
         const previousIndex = this.selectedIndex;
-        this.setState({ selectedIndex });
+        this[symbols.setState]({ selectedIndex });
         return this.selectedIndex !== previousIndex;
       } else {
         return false;

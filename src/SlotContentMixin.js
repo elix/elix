@@ -48,7 +48,7 @@ export default function SlotContentMixin(Base) {
           // Update the component's state to reflect the new content.
           const content = slot.assignedNodes({ flatten: true });
           Object.freeze(content);
-          this.setState({ content });
+          this[symbols.setState]({ content });
 
           await Promise.resolve();
           this[symbols.raiseChangeEvents] = false;

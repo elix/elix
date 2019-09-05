@@ -43,7 +43,7 @@ class ExpandableSection extends Base {
     return this.state.headerRole;
   }
   set headerRole(headerRole) {
-    this.setState({ headerRole });
+    this[symbols.setState]({ headerRole });
   }
 
   /**
@@ -56,7 +56,7 @@ class ExpandableSection extends Base {
     return this.state.panelRole;
   }
   set panelRole(panelRole) {
-    this.setState({ panelRole });
+    this[symbols.setState]({ panelRole });
   }
 
   [symbols.render](/** @type {PlainObject} */ changed) {

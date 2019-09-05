@@ -29,7 +29,7 @@ class FormElementTest extends FormElementMixin(ReactiveElement) {
     return this.state.value;
   }
   set value(value) {
-    this.setState({
+    this[symbols.setState]({
       value
     });
   }

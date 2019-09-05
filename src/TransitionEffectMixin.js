@@ -20,7 +20,7 @@ export default function TransitionEffectMixin(Base) {
       // transitioneend on the first element.
       elementsWithTransitions[0].addEventListener('transitionend', () => {
         // Advance to the next phase.
-        this.setState({
+        this[symbols.setState]({
           effectPhase: 'after'
         });
       });
@@ -65,7 +65,7 @@ export default function TransitionEffectMixin(Base) {
 
           if (effectPhase === 'before') {
             // Advance to the next phase.
-            this.setState({
+            this[symbols.setState]({
               effectPhase: 'during'
             });
           }
@@ -97,7 +97,7 @@ export default function TransitionEffectMixin(Base) {
      * @param {string} effect
      */
     async [symbols.startEffect](effect) {
-      await this.setState({
+      await this[symbols.setState]({
         effect,
         effectPhase: 'before'
       });

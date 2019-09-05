@@ -36,7 +36,7 @@ class DateComboBox extends Base {
     return this.state.arrowButtonRole;
   }
   set arrowButtonRole(arrowButtonRole) {
-    this.setState({
+    this[symbols.setState]({
       arrowButtonRole
     });
   }
@@ -57,7 +57,7 @@ class DateComboBox extends Base {
     return this.state.calendarRole;
   }
   set calendarRole(calendarRole) {
-    this.setState({
+    this[symbols.setState]({
       calendarRole
     });
   }
@@ -66,7 +66,7 @@ class DateComboBox extends Base {
     return this.state.dateTimeFormatOptions;
   }
   set dateTimeFormatOptions(dateTimeFormatOptions) {
-    this.setState({
+    this[symbols.setState]({
       dateTimeFormatOptions
     });
   }
@@ -76,7 +76,7 @@ class DateComboBox extends Base {
   }
   set date(date) {
     super.date = date;
-    this.setState({
+    this[symbols.setState]({
       datePriority: true
     });
   }
@@ -91,7 +91,7 @@ class DateComboBox extends Base {
     return this.state.dayRole;
   }
   set dayRole(dayRole) {
-    this.setState({
+    this[symbols.setState]({
       dayRole
     });
   }
@@ -109,7 +109,7 @@ class DateComboBox extends Base {
     return this.state.daysOfWeekFormat;
   }
   set daysOfWeekFormat(daysOfWeekFormat) {
-    this.setState({ daysOfWeekFormat });
+    this[symbols.setState]({ daysOfWeekFormat });
   }
 
   get [symbols.defaultState]() {
@@ -229,7 +229,7 @@ class DateComboBox extends Base {
   [symbols.goDown]() {
     if (super[symbols.goDown]) { super[symbols.goDown](); }
     const date = this.state.date || new Date();
-    this.setState({
+    this[symbols.setState]({
       date: calendar.offsetDateByDays(date, 7)
     });
     return true;
@@ -238,7 +238,7 @@ class DateComboBox extends Base {
   [symbols.goLeft]() {
     if (super[symbols.goLeft]) { super[symbols.goLeft](); }
     const date = this.state.date || new Date();
-    this.setState({
+    this[symbols.setState]({
       date: calendar.offsetDateByDays(date, -1)
     });
     return true;
@@ -247,7 +247,7 @@ class DateComboBox extends Base {
   [symbols.goRight]() {
     if (super[symbols.goRight]) { super[symbols.goRight](); }
     const date = this.state.date || new Date();
-    this.setState({
+    this[symbols.setState]({
       date: calendar.offsetDateByDays(date, 1)
     });
     return true;
@@ -256,7 +256,7 @@ class DateComboBox extends Base {
   [symbols.goUp]() {
     if (super[symbols.goUp]) { super[symbols.goUp](); }
     const date = this.state.date || new Date();
-    this.setState({
+    this[symbols.setState]({
       date: calendar.offsetDateByDays(date, -7)
     });
     return true;
@@ -296,7 +296,7 @@ class DateComboBox extends Base {
 
       case 'PageDown':
         if (opened) {
-          this.setState({
+          this[symbols.setState]({
             date: calendar.offsetDateByMonths(date, 1)
           });
           handled = true;
@@ -305,7 +305,7 @@ class DateComboBox extends Base {
         
       case 'PageUp':
         if (opened) {
-          this.setState({
+          this[symbols.setState]({
             date: calendar.offsetDateByMonths(date, -1)
           });
           handled = true;
@@ -343,7 +343,7 @@ class DateComboBox extends Base {
     return this.state.monthFormat;
   }
   set monthFormat(monthFormat) {
-    this.setState({
+    this[symbols.setState]({
       monthFormat
     });
   }
@@ -470,7 +470,7 @@ class DateComboBox extends Base {
     return this.state.timeBias;
   }
   set timeBias(timeBias) {
-    this.setState({
+    this[symbols.setState]({
       timeBias
     });
   }
@@ -485,7 +485,7 @@ class DateComboBox extends Base {
     return this.state.todayButtonRole;
   }
   set todayButtonRole(todayButtonRole) {
-    this.setState({
+    this[symbols.setState]({
       todayButtonRole
     });
   }
@@ -499,7 +499,7 @@ class DateComboBox extends Base {
     const saveRaiseChangesEvents = this[symbols.raiseChangeEvents];
     this[symbols.raiseChangeEvents] = true;
     super.value = value;
-    this.setState({
+    this[symbols.setState]({
       datePriority: false
     });
     this[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
@@ -518,7 +518,7 @@ class DateComboBox extends Base {
     return this.state.yearFormat;
   }
   set yearFormat(yearFormat) {
-    this.setState({
+    this[symbols.setState]({
       yearFormat
     });
   }

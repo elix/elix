@@ -26,7 +26,7 @@ class MenuButton extends PopupButton {
         const hoverIndex = indexOfItemContainingTarget(this.items, target);
         if (hoverIndex !== this.state.menuSelectedIndex) {
           this[symbols.raiseChangeEvents] = true;
-          this.setState({
+          this[symbols.setState]({
             menuSelectedIndex: hoverIndex
           });
           this[symbols.raiseChangeEvents] = false;
@@ -224,7 +224,7 @@ class MenuButton extends PopupButton {
     return this.state.menuRole;
   }
   set menuRole(menuRole) {
-    this.setState({ menuRole });
+    this[symbols.setState]({ menuRole });
   }
 
   [symbols.render](/** @type {PlainObject} */ changed) {
@@ -288,7 +288,7 @@ class MenuButton extends PopupButton {
         this[symbols.raiseChangeEvents] = true;
         /** @type {any} */
         const cast = event;
-        this.setState({
+        this[symbols.setState]({
           menuSelectedIndex: cast.detail.selectedIndex
         });
         this[symbols.raiseChangeEvents] = false;
@@ -375,7 +375,7 @@ async function handleMouseup (/** @type {MouseEvent} */ event) {
       // backdrop), so we're no longer doing a drag-select.
       if (element.state.dragSelect) {
         element[symbols.raiseChangeEvents] = true;
-        element.setState({
+        element[symbols.setState]({
           dragSelect: false
         });
         element[symbols.raiseChangeEvents] = false;

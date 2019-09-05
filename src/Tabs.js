@@ -129,7 +129,7 @@ class Tabs extends Base {
     return this.state.tabAlign;
   }
   set tabAlign(tabAlign) {
-    this.setState({ tabAlign });
+    this[symbols.setState]({ tabAlign });
   }
 
   get [symbols.template]() {

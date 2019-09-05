@@ -47,7 +47,7 @@ class CenteredStrip extends Base {
     return this.state.orientation;
   }
   set orientation(orientation) {
-    this.setState({ orientation });
+    this[symbols.setState]({ orientation });
   }
 
   [symbols.render](/** @type {PlainObject} */ changed) {
@@ -142,7 +142,7 @@ class CenteredStrip extends Base {
     return this.state.swipeFraction;
   }
   set swipeFraction(swipeFraction) {
-    this.setState({ swipeFraction });
+    this[symbols.setState]({ swipeFraction });
   }
 
   get [symbols.template]() {

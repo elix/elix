@@ -45,7 +45,7 @@ class AlertDialog extends Dialog {
     return this.state.choiceButtonRole;
   }
   set choiceButtonRole(choiceButtonRole) {
-    this.setState({ choiceButtonRole });
+    this[symbols.setState]({ choiceButtonRole });
   }
 
   /**
@@ -61,7 +61,7 @@ class AlertDialog extends Dialog {
     return this.state.choices;
   }
   set choices(choices) {
-    this.setState({ choices });
+    this[symbols.setState]({ choices });
   }
 
   get [symbols.defaultState]() {

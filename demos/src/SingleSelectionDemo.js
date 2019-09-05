@@ -36,7 +36,7 @@ class SingleSelectionDemo extends Base {
     // Simplistic tracking of element children as items.
     // For real applications, use SlotItemsMixin.
     const observer = new MutationObserver(() => {
-      this.setState({
+      this[symbols.setState]({
         content: [...this.children]
       });
     });

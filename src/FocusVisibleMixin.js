@@ -53,7 +53,7 @@ export default function FocusVisibleMixin(Base) {
           const containsFocus = deepContains(this, newFocusedElement);
           const lostFocus = !isFocusedElement && !containsFocus;
           if (lostFocus) {
-            this.setState({
+            this[symbols.setState]({
               focusVisible: false
             });
             // No longer need to listen for changes in focus visibility.
@@ -67,7 +67,7 @@ export default function FocusVisibleMixin(Base) {
         Promise.resolve().then(() => {
           if (this.state.focusVisible !== keyboardActive) {
             // Show the element as focused if the keyboard has been used.
-            this.setState({
+            this[symbols.setState]({
               focusVisible: keyboardActive
             });
           }
@@ -116,7 +116,7 @@ export default function FocusVisibleMixin(Base) {
 
 
 function refreshFocus(/** @type {ReactiveElement} */ element) {
-  element.setState({
+  element[symbols.setState]({
     focusVisible: keyboardActive
   });
 }

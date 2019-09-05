@@ -66,7 +66,7 @@ describe("SingleSelectionMixin", () => {
   it("can wrap the selection from the last to the first item", async () => {
     const fixture = createSampleElement();
     fixture.selectionWraps = true;
-    fixture.setState({ selectedIndex: 2 });
+    fixture[symbols.setState]({ selectedIndex: 2 });
     fixture.selectNext();
     assert.equal(fixture.state.selectedIndex, 0);
     await Promise.resolve();
@@ -75,7 +75,7 @@ describe("SingleSelectionMixin", () => {
   it("can wrap the selection from the first to the last item", async () => {
     const fixture = createSampleElement();
     fixture.selectionWraps = true;
-    fixture.setState({ selectedIndex: 0 });
+    fixture[symbols.setState]({ selectedIndex: 0 });
     fixture.selectPrevious();
     assert.equal(fixture.state.selectedIndex, 2);
     await Promise.resolve();
@@ -84,7 +84,7 @@ describe("SingleSelectionMixin", () => {
   it("selects first item when selection is required and no item is currently selected", async () => {
     const fixture = createSampleElement();
     assert.equal(fixture.state.selectedIndex, -1);
-    await fixture.setState({
+    await fixture[symbols.setState]({
       selectionRequired: true
     });
     assert.equal(fixture.state.selectedIndex, 0);
@@ -92,11 +92,11 @@ describe("SingleSelectionMixin", () => {
 
   it("preserves selected item when items change and old selection exists in new set", async () => {
     const fixture = createSampleElement();
-    fixture.setState({
+    fixture[symbols.setState]({
       selectedIndex: 1
     });
     assert.equal(fixture.state.selectedIndex, 1);
-    fixture.setState({
+    fixture[symbols.setState]({
       items: fixture.state.items.slice(1) // Removes item 0
     });
     assert.equal(fixture.state.selectedIndex, 0);
@@ -106,7 +106,7 @@ describe("SingleSelectionMixin", () => {
     const fixture = createSampleElement();
     const items = fixture.items.slice();
     items.splice(2, 1);
-    await fixture.setState({
+    await fixture[symbols.setState]({
       items,
       selectedIndex: 2
     });
@@ -115,7 +115,7 @@ describe("SingleSelectionMixin", () => {
 
   it("drops selection when the last item is removed", async () => {
     const fixture = createSampleElement();
-    await fixture.setState({
+    await fixture[symbols.setState]({
       items: [],
       selectedIndex: 0
     });
@@ -205,7 +205,7 @@ function createSampleElement() {
   const fixture = new SingleSelectionTest();
   // To keep this unit test collection focus on selection, and not on tracking
   // children as items, we just use a plain array of item objects instead.
-  fixture.setState({
+  fixture[symbols.setState]({
     items: ['Zero', 'One', 'Two']
   });
   return fixture;

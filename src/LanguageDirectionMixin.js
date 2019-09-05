@@ -1,3 +1,4 @@
+import * as symbols from './symbols.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -20,7 +21,7 @@ export default function LanguageDirectionMixin(Base) {
       /** @type {any} */ const element = this;
       const languageDirection = getComputedStyle(element).direction;
       const rightToLeft = languageDirection === 'rtl';
-      this.setState({
+      this[symbols.setState]({
         rightToLeft
       });
       if (super.connectedCallback) { super.connectedCallback(); }

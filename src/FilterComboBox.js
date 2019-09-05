@@ -68,7 +68,7 @@ class FilterComboBox extends Base {
         const filter = cast.detail ?
           cast.detail.originalText :
           this.state.value;
-        this.setState({
+        this[symbols.setState]({
           filter
         });
         this[symbols.raiseChangeEvents] = false;

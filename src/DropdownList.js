@@ -134,7 +134,7 @@ class DropdownList extends Base {
     return this.state.valueRole;
   }
   set valueRole(valueRole) {
-    this.setState({ valueRole });
+    this[symbols.setState]({ valueRole });
   }
 
 }

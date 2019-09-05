@@ -55,7 +55,7 @@ class TabButton extends Base {
     return this.state.position;
   }
   set position(position) {
-    this.setState({ position });
+    this[symbols.setState]({ position });
   }
 
   [symbols.render](/** @type {PlainObject} */ changed) {
@@ -125,7 +125,7 @@ class TabButton extends Base {
     return this.state.selected;
   }
   set selected(selected) {
-    this.setState({
+    this[symbols.setState]({
       selected
     });
   }

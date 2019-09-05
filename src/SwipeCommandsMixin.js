@@ -25,7 +25,7 @@ export default function SwipeCommandsMixin(Base) {
           this[symbols.swipeRightTransitionEnd]();
         }
         // Now that the swipe has finished, reset remaining swipe-related state.
-        this.setState({
+        this[symbols.setState]({
           swipeItem: null,
           swipeRightCommitted: false
         });
@@ -35,7 +35,7 @@ export default function SwipeCommandsMixin(Base) {
           this[symbols.swipeLeftTransitionEnd]();
         }
         // Now that the swipe has finished, reset remaining swipe-related state.
-        this.setState({
+        this[symbols.setState]({
           swipeItem: null,
           swipeLeftCommitted: false
         });
@@ -178,7 +178,7 @@ export default function SwipeCommandsMixin(Base) {
     // do work, and by that point the original swipe state will have been reset.
     [symbols.swipeLeft]() {
       if (super[symbols.swipeLeft]) { super[symbols.swipeLeft](); }
-      this.setState({
+      this[symbols.setState]({
         swipeLeftCommitted: true
       });
     }
@@ -186,7 +186,7 @@ export default function SwipeCommandsMixin(Base) {
     // See note for swipeLeft.
     [symbols.swipeRight]() {
       if (super[symbols.swipeRight]) { super[symbols.swipeRight](); }
-      this.setState({
+      this[symbols.setState]({
         swipeRightCommitted: true
       });
     }
@@ -196,7 +196,7 @@ export default function SwipeCommandsMixin(Base) {
       // Determine which item is being swiped given the starting Y coordinate.
       const swipeItem = getItemAtY(this.state.items, clientY);
       if (swipeItem) {
-        this.setState({
+        this[symbols.setState]({
           swipeItem
         });
       }

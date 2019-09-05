@@ -63,14 +63,14 @@ class CalendarMonthNavigator extends Base {
   }
 
   arrowButtonNext() {
-    this.setState({
+    this[symbols.setState]({
       date: calendar.offsetDateByMonths(this.state.date, 1)
     });
     return true;
   }
 
   arrowButtonPrevious() {
-    this.setState({
+    this[symbols.setState]({
       date: calendar.offsetDateByMonths(this.state.date, -1)
     });
     return true;
@@ -106,21 +106,21 @@ class CalendarMonthNavigator extends Base {
     switch (event.key) {
 
       case 'Home':
-        this.setState({
+        this[symbols.setState]({
           date: calendar.today()
         });
         handled = true;
         break;
 
       case 'PageDown':
-        this.setState({
+        this[symbols.setState]({
           date: calendar.offsetDateByMonths(this.state.date, 1)
         });
         handled = true;
         break;
         
       case 'PageUp':
-        this.setState({
+        this[symbols.setState]({
           date: calendar.offsetDateByMonths(this.state.date, -1)
         });
         handled = true;
@@ -134,7 +134,7 @@ class CalendarMonthNavigator extends Base {
 
   [symbols.goDown]() {
     if (super[symbols.goDown]) { super[symbols.goDown](); }
-    this.setState({
+    this[symbols.setState]({
       date: calendar.offsetDateByDays(this.state.date, 7)
     });
     return true;
@@ -142,7 +142,7 @@ class CalendarMonthNavigator extends Base {
 
   [symbols.goLeft]() {
     if (super[symbols.goLeft]) { super[symbols.goLeft](); }
-    this.setState({
+    this[symbols.setState]({
       date: calendar.offsetDateByDays(this.state.date, -1)
     });
     return true;
@@ -150,7 +150,7 @@ class CalendarMonthNavigator extends Base {
 
   [symbols.goRight]() {
     if (super[symbols.goRight]) { super[symbols.goRight](); }
-    this.setState({
+    this[symbols.setState]({
       date: calendar.offsetDateByDays(this.state.date, 1)
     });
     return true;
@@ -158,7 +158,7 @@ class CalendarMonthNavigator extends Base {
 
   [symbols.goUp]() {
     if (super[symbols.goUp]) { super[symbols.goUp](); }
-    this.setState({
+    this[symbols.setState]({
       date: calendar.offsetDateByDays(this.state.date, -7)
     });
     return true;

@@ -23,7 +23,7 @@ class KeyboardPrefixSelectionTest extends Base {
     return this.state.items;
   }
   set items(items) {
-    this.setState({ items });
+    this[symbols.setState]({ items });
   }
 
 }

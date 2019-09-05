@@ -1,3 +1,4 @@
+import * as symbols from '../../src/symbols.js';
 import AriaListMixin from '../../src/AriaListMixin.js';
 import ContentItemsMixin from '../../src/ContentItemsMixin.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
@@ -9,7 +10,7 @@ class AriaListTest extends
   connectedCallback() {
     if (super.connectedCallback) { super.connectedCallback(); }
     const content = [...this.children];
-    this.setState({ content });
+    this[symbols.setState]({ content });
   }
 
 }
@@ -53,11 +54,11 @@ describe("AriaListMixin", () => {
     const item2 = document.createElement('div');
     fixture.appendChild(item2);
     container.appendChild(fixture);
-    await fixture.setState({ selectedIndex: 0 });
+    await fixture[symbols.setState]({ selectedIndex: 0 });
     assert.equal(fixture.getAttribute('aria-activedescendant'), item1.id);
     assert.equal(item1.getAttribute('aria-selected'), 'true');
     assert.equal(item2.getAttribute('aria-selected'), 'false');
-    await fixture.setState({ selectedIndex: 1 });
+    await fixture[symbols.setState]({ selectedIndex: 1 });
     assert.equal(fixture.getAttribute('aria-activedescendant'), item2.id);
     assert.equal(item1.getAttribute('aria-selected'), 'false');
     assert.equal(item2.getAttribute('aria-selected'), 'true');

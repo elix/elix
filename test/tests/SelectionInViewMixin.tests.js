@@ -1,3 +1,4 @@
+import * as symbols from '../../src/symbols.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
 import SelectionInViewMixin from '../../src/SelectionInViewMixin.js';
 
@@ -8,7 +9,7 @@ class SelectionInViewTest extends SelectionInViewMixin(ReactiveMixin(HTMLElement
   connectedCallback() {
     super.connectedCallback();
     const items = Array.prototype.slice.call(this.children);
-    this.setState({
+    this[symbols.setState]({
       items,
       selectedIndex: -1
     });
@@ -39,7 +40,7 @@ describe("SelectionInViewMixin", function() {
       assert.equal(fixture.scrollTop, 50);
       done();
     });
-    fixture.setState({ selectedIndex: 1 });
+    fixture[symbols.setState]({ selectedIndex: 1 });
   });
 
   it("Scrolls down to bring item below bottom edge fully into view", done => {
@@ -49,7 +50,7 @@ describe("SelectionInViewMixin", function() {
       assert.equal(fixture.scrollTop, 150);
       done();
     });
-    fixture.setState({ selectedIndex: 2 });
+    fixture[symbols.setState]({ selectedIndex: 2 });
   });
 
   it("Scrolls up to bring item above top edge fully into view", done => {
@@ -60,7 +61,7 @@ describe("SelectionInViewMixin", function() {
       assert.equal(fixture.scrollTop, 0);
       done();
     });
-    fixture.setState({ selectedIndex: 0 });
+    fixture[symbols.setState]({ selectedIndex: 0 });
   });
 
 });

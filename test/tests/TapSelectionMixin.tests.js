@@ -1,3 +1,4 @@
+import * as symbols from '../../src/symbols.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
 import TapSelectionMixin from '../../src/TapSelectionMixin.js';
 import * as mockInteractions from '../mockInteractions.js';
@@ -9,7 +10,7 @@ class TapSelectionTest extends TapSelectionMixin(
   connectedCallback() {
     super.connectedCallback();
     const items = Array.prototype.slice.call(this.children);
-    this.setState({
+    this[symbols.setState]({
       items,
       selectedIndex: -1
     });

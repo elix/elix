@@ -98,7 +98,7 @@ class Menu extends Base {
 
       // Now that the selection has been focused, we can remove/reset the
       // tabindex on any item that had previously been selected.
-      this.setState({
+      this[symbols.setState]({
         selectionFocused: true
       });
     }
@@ -132,9 +132,9 @@ class Menu extends Base {
     const probablyDesktop = matchMedia('(pointer: fine)').matches;
     if (keyboardActive || probablyDesktop) {
       const flashDuration = 75; // milliseconds
-      this.setState({ highlightSelection: false });
+      this[symbols.setState]({ highlightSelection: false });
       await new Promise(resolve => setTimeout(resolve, flashDuration));
-      this.setState({ highlightSelection: true });
+      this[symbols.setState]({ highlightSelection: true });
       await new Promise(resolve => setTimeout(resolve, flashDuration));
     }
   }

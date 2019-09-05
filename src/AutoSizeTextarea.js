@@ -49,10 +49,10 @@ class AutoSizeTextarea extends Base {
      */
     this.$.inner.addEventListener('input', () => {
       this[symbols.raiseChangeEvents] = true;
-      this.setState({ valueTracksContent: false });
+      this[symbols.setState]({ valueTracksContent: false });
       /** @type {any} */
       const inner = this.$.inner;
-      this.setState({
+      this[symbols.setState]({
         value: inner.value
       });
       this[symbols.raiseChangeEvents] = false;
@@ -64,7 +64,7 @@ class AutoSizeTextarea extends Base {
     // element is in the document before we can update the text copy.
     const textareaStyle = getComputedStyle(this.$.inner);
     const lineHeight = this.$.extraSpace.clientHeight;
-    this.setState({
+    this[symbols.setState]({
       copyStyle: {
         'border-bottom-style': textareaStyle.borderBottomStyle,
         'border-bottom-width': textareaStyle.borderBottomWidth,
@@ -133,7 +133,7 @@ class AutoSizeTextarea extends Base {
   set minimumRows(minimumRows) {
     const parsed = Number(minimumRows);
     if (!isNaN(parsed)) {
-      this.setState({
+      this[symbols.setState]({
         minimumRows: parsed
       });
     }
@@ -241,7 +241,7 @@ class AutoSizeTextarea extends Base {
     return this.state.value;
   }
   set value(value) {
-    this.setState({
+    this[symbols.setState]({
       value,
       valueTracksContent: false
     });

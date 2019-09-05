@@ -18,7 +18,7 @@
         return this.state.button;
       }
       set buttonRole(buttonRole) {
-        this.setState({ buttonRole });
+        this[symbols.setState]({ buttonRole });
       }
 
       get [symbols.defaultState]() {
@@ -52,7 +52,7 @@
         return this.state.value;
       }
       set value(value) {
-        this.setState({
+        this[symbols.setState]({
           value: parseInt(value)
         });
       }

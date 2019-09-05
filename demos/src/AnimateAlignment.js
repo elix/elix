@@ -24,7 +24,7 @@ export default class AnimateAlignment extends Base {
         'slideRight';
       this[symbols.startEffect](effect);
     } else {
-      this.setState({
+      this[symbols.setState]({
         align
       });
     }

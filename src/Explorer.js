@@ -62,13 +62,13 @@ class Explorer extends Base {
       const proxiesAssigned = proxies.length > 0;
       if (proxiesAssigned) {
         // Nodes assigned to slot become proxies.
-        this.setState({
+        this[symbols.setState]({
           proxiesAssigned,
           proxies
         });
       } else {
         // No nodes assigned -- we'll need to generate proxies.
-        this.setState({
+        this[symbols.setState]({
           proxiesAssigned
         });
       }
@@ -242,7 +242,7 @@ class Explorer extends Base {
   }
   set proxyListOverlap(proxyListOverlap) {
     const parsed = String(proxyListOverlap) === 'true';
-    this.setState({
+    this[symbols.setState]({
       proxyListOverlap: parsed
     });
   }
@@ -261,7 +261,7 @@ class Explorer extends Base {
     return this.state.proxyListPosition;
   }
   set proxyListPosition(proxyListPosition) {
-    this.setState({ proxyListPosition });
+    this[symbols.setState]({ proxyListPosition });
   }
 
   /**
@@ -274,7 +274,7 @@ class Explorer extends Base {
     return this.state.proxyListRole;
   }
   set proxyListRole(proxyListRole) {
-    this.setState({ proxyListRole });
+    this[symbols.setState]({ proxyListRole });
   }
 
   /**
@@ -288,7 +288,7 @@ class Explorer extends Base {
     return this.state.proxyRole;
   }
   set proxyRole(proxyRole) {
-    this.setState({ proxyRole });
+    this[symbols.setState]({ proxyRole });
   }
 
   /**
@@ -302,7 +302,7 @@ class Explorer extends Base {
     return this.state.stageRole;
   }
   set stageRole(stageRole) {
-    this.setState({ stageRole });
+    this[symbols.setState]({ stageRole });
   }
 
   get [symbols.template]() {

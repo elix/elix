@@ -44,7 +44,7 @@ export default function TimerSelectionMixin(Base) {
     play() {
       if (!this.playing) {
         this.selectNext();
-        this.setState({
+        this[symbols.setState]({
           playing: true
         });
       }
@@ -54,7 +54,7 @@ export default function TimerSelectionMixin(Base) {
      * Pause automatic progression of the selection.
      */
     pause() {
-      this.setState({
+      this[symbols.setState]({
         playing: false
       });
     }
@@ -92,7 +92,7 @@ export default function TimerSelectionMixin(Base) {
     set selectionTimerDuration(selectionTimerDuration) {
       const parsed = Number(selectionTimerDuration);
       if (!isNaN(parsed)) {
-        this.setState({
+        this[symbols.setState]({
           selectionTimerDuration: parsed
         });
       }
@@ -107,7 +107,7 @@ export default function TimerSelectionMixin(Base) {
 function clearTimer(/** @type {ReactiveElement} */ element) {
   if (element.state.timerTimeout) {
     clearTimeout(element.state.timerTimeout);
-    element.setState({
+    element[symbols.setState]({
       timerTimeout: null
     });
   }
@@ -128,7 +128,7 @@ function restartTimer(/** @type {ReactiveElement} */ element) {
     }, element.selectionTimerDuration);
 
     // Set the timer as state, also noting which slide we're currently on.
-    element.setState({
+    element[symbols.setState]({
       selectedIndexForTimer: element.state.selectedIndex,
       timerTimeout
     });

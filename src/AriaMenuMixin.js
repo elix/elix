@@ -26,7 +26,7 @@ export default function AriaMenuMixin(Base) {
       return this.state.itemRole;
     }
     set itemRole(itemRole) {
-      this.setState({ itemRole });
+      this[symbols.setState]({ itemRole });
     }
 
     [symbols.render](/** @type {PlainObject} */ changed) {
@@ -65,7 +65,7 @@ export default function AriaMenuMixin(Base) {
     set role(role) {
       super.role = role;
       if (!this[symbols.rendering]) {
-        this.setState({
+        this[symbols.setState]({
           role
         });
       }

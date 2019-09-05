@@ -68,7 +68,7 @@ class Toast extends Base {
     return this.state.duration;
   }
   set duration(duration) {
-    this.setState({ duration });
+    this[symbols.setState]({ duration });
   }
 
   get [symbols.elementsWithTransitions]() {
@@ -89,7 +89,7 @@ class Toast extends Base {
     return this.state.fromEdge;
   }
   set fromEdge(fromEdge) {
-    this.setState({ fromEdge });
+    this[symbols.setState]({ fromEdge });
   }
 
   [symbols.render](/** @type {PlainObject} */ changed) {

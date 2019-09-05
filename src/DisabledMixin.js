@@ -67,9 +67,9 @@ export default function DisabledMixin(Base) {
       // Setting the disabled state will eventually cause the property value to
       // be reflected to the disabled attribute, which will invoke this setter
       // again -- this time, with a string value. That string value should get
-      // parsed the same way, so the second setState call shouldn't have any
+      // parsed the same way, so the second[symbols.setState] call shouldn't have any
       // effect.
-      this.setState({
+      this[symbols.setState]({
         disabled: parsed
       });
     }

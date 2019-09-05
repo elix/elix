@@ -56,7 +56,7 @@ class CalendarMonth extends Base {
     return this.state.dayRole;
   }
   set dayRole(dayRole) {
-    this.setState({ dayRole });
+    this[symbols.setState]({ dayRole });
   }
 
   /**
@@ -85,7 +85,7 @@ class CalendarMonth extends Base {
     return this.state.daysOfWeekFormat;
   }
   set daysOfWeekFormat(daysOfWeekFormat) {
-    this.setState({ daysOfWeekFormat });
+    this[symbols.setState]({ daysOfWeekFormat });
   }
 
   get [symbols.defaultState]() {
@@ -113,7 +113,7 @@ class CalendarMonth extends Base {
     return this.state.monthFormat;
   }
   set monthFormat(monthFormat) {
-    this.setState({
+    this[symbols.setState]({
       monthFormat
     });
   }
@@ -169,7 +169,7 @@ class CalendarMonth extends Base {
     return this.state.showCompleteWeeks;
   }
   set showCompleteWeeks(showCompleteWeeks) {
-    this.setState({
+    this[symbols.setState]({
       showCompleteWeeks
     });
   }
@@ -178,7 +178,7 @@ class CalendarMonth extends Base {
     return this.state.showSelectedDay;
   }
   set showSelectedDay(showSelectedDay) {
-    this.setState({
+    this[symbols.setState]({
       showSelectedDay
     });
   }
@@ -226,7 +226,7 @@ class CalendarMonth extends Base {
     return this.state.yearFormat;
   }
   set yearFormat(yearFormat) {
-    this.setState({
+    this[symbols.setState]({
       yearFormat
     });
   }

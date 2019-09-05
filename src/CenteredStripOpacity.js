@@ -72,7 +72,7 @@ class CenteredStripOpacity extends CenteredStrip {
     return this.state.transitionDuration;
   }
   set transitionDuration(transitionDuration) {
-    this.setState({ transitionDuration });
+    this[symbols.setState]({ transitionDuration });
   }
 
 }

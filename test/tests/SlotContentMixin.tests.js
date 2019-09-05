@@ -23,7 +23,7 @@ class SlotContentTest extends SlotContentMixin(HTMLElement) {
     return {};
   }
 
-  setState(state) {
+ [symbols.setState](state) {
     Object.assign(this.state, state);
   }
 

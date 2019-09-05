@@ -187,14 +187,14 @@ class PullToRefresh extends Base {
     return this.state.pullIndicatorRole;
   }
   set pullIndicatorRole(pullIndicatorRole) {
-    this.setState({ pullIndicatorRole });
+    this[symbols.setState]({ pullIndicatorRole });
   }
 
   get refreshing() {
     return this.state.refreshing;
   }
   set refreshing(refreshing) {
-    this.setState({ refreshing });
+    this[symbols.setState]({ refreshing });
   }
 
   /**
@@ -208,7 +208,7 @@ class PullToRefresh extends Base {
     return this.state.refreshingIndicatorRole;
   }
   set refreshingIndicatorRole(refreshingIndicatorRole) {
-    this.setState({ refreshingIndicatorRole });
+    this[symbols.setState]({ refreshingIndicatorRole });
   }
 
   get [symbols.template]() {
@@ -330,13 +330,13 @@ async function handleScrollPull(element, scrollTop) {
       // stop our own translation effect and let the browser smoothly snap the
       // page back to the top (zero) scroll position. If we don't do that, we'll
       // be fighting with the browser effect, and the result will not be smooth.
-      element.setState({ scrollPullMaxReached: true });
+      element[symbols.setState]({ scrollPullMaxReached: true });
     }
-    await element.setState({ scrollPullDistance });
+    await element[symbols.setState]({ scrollPullDistance });
   } else if (element.state.scrollPullDistance !== null) {
     // We've scrolled back into zero/positive territory, i.e., at or below the
     // top of the page, so the scroll pull has finished.
-    await element.setState({
+    await element[symbols.setState]({
       scrollPullDistance: null,
       scrollPullMaxReached: false,
     });

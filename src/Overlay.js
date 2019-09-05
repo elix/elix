@@ -67,7 +67,7 @@ class Overlay extends Base {
     return this.state.backdropRole;
   }
   set backdropRole(backdropRole) {
-    this.setState({ backdropRole });
+    this[symbols.setState]({ backdropRole });
   }
 
   componentDidUpdate(/** @type {PlainObject} */ changed) {
@@ -107,7 +107,7 @@ class Overlay extends Base {
     return this.state.frameRole;
   }
   set frameRole(frameRole) {
-    this.setState({ frameRole });
+    this[symbols.setState]({ frameRole });
   }
 
   [symbols.render](/** @type {PlainObject} */ changed) {

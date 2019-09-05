@@ -21,7 +21,7 @@ export default function EffectMixin(Base) {
 
     // Once everything's finished rendering, enable transition effects.
     setTimeout(() => {
-      this.setState({
+      this[symbols.setState]({
         enableEffects: true
       });
     });

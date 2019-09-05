@@ -39,7 +39,7 @@ class ComboBox extends Base {
     return this.state.ariaLabel;
   }
   set ariaLabel(ariaLabel) {
-    this.setState({ ariaLabel });
+    this[symbols.setState]({ ariaLabel });
   }
 
     componentDidUpdate(/** @type {PlainObject} */ changed) {
@@ -120,7 +120,7 @@ class ComboBox extends Base {
     return this.state.inputRole;
   }
   set inputRole(inputRole) {
-    this.setState({ inputRole });
+    this[symbols.setState]({ inputRole });
   }
 
     [symbols.keydown](/** @type {KeyboardEvent} */ event) {
@@ -166,7 +166,7 @@ class ComboBox extends Base {
     return this.state.placeholder;
   }
   set placeholder(placeholder) {
-    this.setState({
+    this[symbols.setState]({
       placeholder
     });
   }
@@ -180,7 +180,7 @@ class ComboBox extends Base {
         // If we're open and lose focus, then close.
         if (this.opened) {
           this[symbols.raiseChangeEvents] = true;
-          this.setState({
+          this[symbols.setState]({
             focused: false
           });
           this.close();
@@ -190,7 +190,7 @@ class ComboBox extends Base {
   
       this.$.input.addEventListener('focus', () => {
         this[symbols.raiseChangeEvents] = true;
-        this.setState({
+        this[symbols.setState]({
           focused: true
         });
         this[symbols.raiseChangeEvents] = false;
@@ -209,13 +209,13 @@ class ComboBox extends Base {
           // If user types while popup is closed, implicitly open it.
           changes.opened = true
         }
-        this.setState(changes);
+        this[symbols.setState](changes);
         this[symbols.raiseChangeEvents] = false;
       })
 
       this.$.input.addEventListener('keydown', () => {
         this[symbols.raiseChangeEvents] = true;
-        this.setState({
+        this[symbols.setState]({
           selectText: false
         });
         this[symbols.raiseChangeEvents] = false;
@@ -224,7 +224,7 @@ class ComboBox extends Base {
       // If the user clicks on the input and the popup is closed, open it.
       this.$.input.addEventListener('mousedown', () => {
         this[symbols.raiseChangeEvents] = true;
-        this.setState({
+        this[symbols.setState]({
           selectText: false
         });
         if (this.closed && !this.disabled) {
@@ -395,14 +395,14 @@ class ComboBox extends Base {
     return this.state.toggleButtonRole;
   }
   set toggleButtonRole(toggleButtonRole) {
-    this.setState({ toggleButtonRole });
+    this[symbols.setState]({ toggleButtonRole });
   }
 
   get value() {
     return this.state.value;
   }
   set value(value) {
-    this.setState({ value });
+    this[symbols.setState]({ value });
   }
 
 }

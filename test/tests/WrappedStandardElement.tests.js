@@ -1,3 +1,4 @@
+import * as symbols from '../../src/symbols.js';
 import WrappedStandardElement from '../../src/WrappedStandardElement.js';
 
 
@@ -116,7 +117,7 @@ describe("WrappedStandardElement", () => {
     container.appendChild(fixture);
     // NB: tabIndex is not part of WrappedInput's regular state; we're just
     // defining it. WrappedStandardElement should respect that.
-    await fixture.setState({ tabIndex: 1 });
+    await fixture[symbols.setState]({ tabIndex: 1 });
     assert.equal(fixture.inner.tabIndex, 1);
   });
 

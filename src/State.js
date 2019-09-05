@@ -19,7 +19,7 @@ class State {
    * 
    * There is no need to invoke this method yourself.
    * [ReactiveMixin](ReactiveMixin) will take care of doing that when you invoke
-   * [setState](ReactiveMixin#setState).
+   * [symbols.setState]](ReactiveMixin[symbols.setState]).
    * 
    * @param {object} changes - the changes to apply to the state
    * @returns {object} - the new `state`, and a `changed` flag indicating

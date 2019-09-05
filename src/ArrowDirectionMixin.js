@@ -32,7 +32,7 @@ function ArrowDirectionMixin(Base) {
     }
     set arrowButtonOverlap(arrowButtonOverlap) {
       const parsed = String(arrowButtonOverlap) === 'true';
-      this.setState({
+      this[symbols.setState]({
         arrowButtonOverlap: parsed
       });
     }
@@ -48,7 +48,7 @@ function ArrowDirectionMixin(Base) {
       return this.state.arrowButtonRole;
     }
     set arrowButtonRole(arrowButtonRole) {
-      this.setState({ arrowButtonRole });
+      this[symbols.setState]({ arrowButtonRole });
     }
 
     // TODO: Symbols
@@ -240,7 +240,7 @@ function ArrowDirectionMixin(Base) {
     }
     set showArrowButtons(showArrowButtons) {
       const parsed = String(showArrowButtons) === 'true';
-      this.setState({
+      this[symbols.setState]({
         showArrowButtons: parsed
       });
     }

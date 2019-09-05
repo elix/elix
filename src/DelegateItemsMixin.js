@@ -26,7 +26,7 @@ export default function DelegateItemsMixin(Base) {
         const cast = event.target;
         const delegateItems = cast.items;
         if (this.state.items !== delegateItems) {
-          this.setState({
+          this[symbols.setState]({
             items: delegateItems
           });
         }
@@ -37,7 +37,7 @@ export default function DelegateItemsMixin(Base) {
         const cast = event;
         const delegateSelectedIndex = cast.detail.selectedIndex;
         if (this.state.selectedIndex !== delegateSelectedIndex) {
-          this.setState({
+          this[symbols.setState]({
             selectedIndex: delegateSelectedIndex
           });
         }

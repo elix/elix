@@ -29,7 +29,7 @@ class DrawerWithGrip extends Drawer {
       const vertical = fromEdge === 'top' || fromEdge === 'bottom';
       const dimension = vertical ? 'offsetHeight' : 'offsetWidth';
       const gripSize = this.$.grip[dimension];
-      this.setState({ gripSize });
+      this[symbols.setState]({ gripSize });
     }
   }
 
@@ -49,7 +49,7 @@ class DrawerWithGrip extends Drawer {
     return this.state.gripRole;
   }
   set gripRole(gripRole) {
-    this.setState({ gripRole });
+    this[symbols.setState]({ gripRole });
   }
 
   [symbols.render](changed) {

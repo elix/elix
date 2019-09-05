@@ -36,7 +36,7 @@ export default function ResizeMixin(Base) {
       const sizeChanged = clientHeight !== this.state.clientHeight ||
           clientWidth !== this.state.clientWidth;
       if (sizeChanged) {
-        this.setState({
+        this[symbols.setState]({
           clientHeight,
           clientWidth
         });
@@ -94,7 +94,7 @@ if (typeof Observer !== 'undefined') {
       // client size.
       const { target } = entry;
       const { clientHeight, clientWidth } = target;
-      target.setState({
+      target[symbols.setState]({
         clientHeight,
         clientWidth
       });

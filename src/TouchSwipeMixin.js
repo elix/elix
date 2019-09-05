@@ -314,7 +314,7 @@ function gestureContinue(element, clientX, clientY, eventTarget) {
   // From this point on, swiping will take precedence over scrolling.
   cast[deferToScrollingKey] = false;
 
-  element.setState({ swipeFraction });
+  element[symbols.setState]({ swipeFraction });
   
   // Indicate that the event was handled. It'd be nicer if we didn't have
   // to do this so that, e.g., a user could be swiping left and right
@@ -368,11 +368,11 @@ function gestureEnd(element, clientX, clientY, eventTarget) {
       // Flicked right/down at high speed.
       flickPositive = true;
       if (vertical) {
-        element.setState({
+        element[symbols.setState]({
           swipeDownWillCommit: true
         });
       } else {
-        element.setState({
+        element[symbols.setState]({
           swipeRightWillCommit: true
         });
       }
@@ -380,11 +380,11 @@ function gestureEnd(element, clientX, clientY, eventTarget) {
       // Flicked left/up at high speed.
       flickPositive = false;
       if (vertical) {
-        element.setState({
+        element[symbols.setState]({
           swipeUpWillCommit: true
         });
       } else {
-        element.setState({
+        element[symbols.setState]({
           swipeLeftWillCommit: true
         });
       }
@@ -411,7 +411,7 @@ function gestureEnd(element, clientX, clientY, eventTarget) {
 
   /** @type {any} */ (element)[touchSequenceAxisKey] = null;
 
-  element.setState({
+  element[symbols.setState]({
     swipeFraction: null
   });
 }
@@ -435,7 +435,7 @@ function gestureStart(element, clientX, clientY) {
   cast[startYKey] = null;
   cast[touchSequenceAxisKey] = null;
 
-  element.setState({
+  element[symbols.setState]({
     swipeFraction: 0
   });
 

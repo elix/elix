@@ -80,7 +80,7 @@ export default function TapSelectionMixin(Base) {
         const targetIndex = indexOfItemContainingTarget(items, target);
         if (targetIndex >= 0 || !selectionRequired &&
             selectedIndex !== targetIndex) {
-          this.setState({
+          this[symbols.setState]({
             selectedIndex: targetIndex
           });
           event.stopPropagation();

@@ -44,7 +44,7 @@ class SlidingStage extends Base {
     return this.state.orientation;
   }
   set orientation(orientation) {
-    this.setState({ orientation });
+    this[symbols.setState]({ orientation });
   }
 
   [symbols.render](/** @type {PlainObject} */ changed) {
@@ -91,7 +91,7 @@ class SlidingStage extends Base {
   }
   set swipeFraction(swipeFraction) {
     const parsed = swipeFraction && parseFloat(swipeFraction);
-    this.setState({
+    this[symbols.setState]({
       swipeFraction: parsed
     });
   }

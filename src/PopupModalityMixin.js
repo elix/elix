@@ -76,7 +76,7 @@ export default function PopupModalityMixin(Base) {
       return this.state.closeOnWindowResize;
     }
     set closeOnWindowResize(closeOnWindowResize) {
-      this.setState({ closeOnWindowResize });
+      this[symbols.setState]({ closeOnWindowResize });
     }
 
     get [symbols.defaultState]() {
@@ -120,7 +120,7 @@ export default function PopupModalityMixin(Base) {
     set role(role) {
       super.role = role;
       if (!this[symbols.rendering]) {
-        this.setState({
+        this[symbols.setState]({
           role
         });
       }

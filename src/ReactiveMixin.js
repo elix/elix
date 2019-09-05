@@ -33,7 +33,7 @@ export default function ReactiveMixin(Base) {
       super();
       // Set the initial state from the default state defined by the component
       // and its mixins.
-      this.setState(this[symbols.defaultState]);
+      this[symbols.setState](this[symbols.defaultState]);
     }
 
     componentDidMount() {
@@ -78,14 +78,14 @@ export default function ReactiveMixin(Base) {
 
       // We only render if the component's never been rendered before, or is
       // something's actually changed since the last render. Consecutive
-      // synchronous setState calls will queue up corresponding async render
+      // synchronous[symbols.setState] calls will queue up corresponding async render
       // calls. By the time the first render call actually happens, the complete
       // state is available, and that is what is rendered. When the following
       // render calls happen, they will see that the complete state has already
       // been rendered, and skip doing any work.
       if (!this[mountedKey] || changed !== null) {
 
-        // If at least one of the setState calls was made in response to user
+        // If at least one of the[symbols.setState] calls was made in response to user
         // interaction or some other component-internal event, set the
         // raiseChangeEvents flag so that componentDidMount/componentDidUpdate
         // know whether to raise property change events.
@@ -149,11 +149,11 @@ export default function ReactiveMixin(Base) {
      * @param {object} changes - the changes to apply to the element's state
      * @returns {Promise} - resolves when the new state has been rendered
      */
-    async setState(changes) {
+    async[symbols.setState](changes) {
       // There's no good reason to have a render method update state.
       if (this[symbols.rendering]) {
         /* eslint-disable no-console */
-        console.warn(`${this.constructor.name} called setState during rendering, which you should avoid.\nSee https://elix.org/documentation/ReactiveMixin.`);
+        console.warn(`${this.constructor.name} called[symbols.setState] during rendering, which you should avoid.\nSee https://elix.org/documentation/ReactiveMixin.`);
       }
 
       const firstSetState = this[stateKey] === undefined;
@@ -171,7 +171,7 @@ export default function ReactiveMixin(Base) {
       }
 
       // Freeze the new state so it's immutable. This prevents accidental
-      // attempts to set state without going through setState.
+      // attempts to set state without going through[symbols.setState].
       Object.freeze(state);
 
       // Set the new state.
@@ -192,8 +192,8 @@ export default function ReactiveMixin(Base) {
         this[raiseChangeEventsInNextRenderKey] = true;
       }
       
-      // Yield with promise timing. This lets any *synchronous* setState
-      // calls that happen after the current setState call complete first.
+      // Yield with promise timing. This lets any *synchronous*[symbols.setState]
+      // calls that happen after the current[symbols.setState] call complete first.
       // Their effects on the state will be batched up before the render
       // call below actually happens.
       await Promise.resolve();
@@ -204,7 +204,7 @@ export default function ReactiveMixin(Base) {
 
     /**
      * The component's current state.
-     * The returned state object is immutable. To update it, invoke `setState`.
+     * The returned state object is immutable. To update it, invoke [symbols.setState]`.
      * 
      * @type {State}
      */

@@ -45,7 +45,7 @@ export default function HoverMixin(Base) {
      */
     [symbols.mouseenter](/** @type {MouseEvent} */ event) {
       if (super[symbols.mouseenter]) { super[symbols.mouseenter](event); }
-      this.setState({
+      this[symbols.setState]({
         hover: true
       });
     }
@@ -55,7 +55,7 @@ export default function HoverMixin(Base) {
      */
     [symbols.mouseleave](/** @type {MouseEvent} */ event) {
       if (super[symbols.mouseleave]) { super[symbols.mouseleave](event); }
-      this.setState({
+      this[symbols.setState]({
         hover: false
       });
     }

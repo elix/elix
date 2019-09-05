@@ -31,9 +31,9 @@
  * While this project generally uses `Symbol` objects to hide component
  * internals, Elix does make some exceptions for methods or properties that are
  * very helpful to have handy during debugging. E.g.,
- * [ReactiveMixin](ReactiveMixin) exposes its [setState](ReactiveMixin#setState)
+ * [ReactiveMixin](ReactiveMixin) exposes its [symbols.setState]](ReactiveMixin[symbols.setState])
  * method publicly, even though invoking that method from outside a component is
- * generally bad practice. The mixin exposes `setState` because it's very useful
+ * generally bad practice. The mixin exposes [symbols.setState]` because it's very useful
  * to have access to that in a debug console.
  *
  * @module symbols
@@ -406,6 +406,14 @@ export const rendering = Symbol('rendering');
  * @var {Element} scrollTarget
  */
 export const scrollTarget = Symbol('scrollTarget');
+
+/**
+ * Symbol for the `setState` method.
+ * 
+ * A component using [ReactiveMixin](ReactiveMixin) can invoke this method to
+ * apply changes to the element's current state.
+ */
+export const setState = Symbol('setState');
 
 /**
  * Symbol for the `startEffect` method.

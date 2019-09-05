@@ -153,7 +153,7 @@ export default function SingleSelectionMixin(Base) {
     set selectedIndex(selectedIndex) {
       const parsed = Number(selectedIndex);
       if (!isNaN(parsed)) {
-        this.setState({
+        this[symbols.setState]({
           selectedIndex: parsed
         });
       }
@@ -175,7 +175,7 @@ export default function SingleSelectionMixin(Base) {
       }
       const selectedIndex = items.indexOf(selectedItem);
       if (selectedIndex >= 0) {
-        this.setState({ selectedIndex });
+        this[symbols.setState]({ selectedIndex });
       }
     }
 
@@ -189,7 +189,7 @@ export default function SingleSelectionMixin(Base) {
       return this.state.selectionRequired;
     }
     set selectionRequired(selectionRequired) {
-      this.setState({
+      this[symbols.setState]({
         selectionRequired: String(selectionRequired) === 'true'
       });
     }
@@ -204,7 +204,7 @@ export default function SingleSelectionMixin(Base) {
       return this.state.selectionWraps;
     }
     set selectionWraps(selectionWraps) {
-      this.setState({
+      this[symbols.setState]({
         selectionWraps: String(selectionWraps) === 'true'
       });
     }
@@ -312,7 +312,7 @@ function updateSelectedIndex(element, selectedIndex) {
   );
   const changed = element.state.selectedIndex !== validatedIndex;
   if (changed) {
-    element.setState({
+    element[symbols.setState]({
       selectedIndex: validatedIndex
     });
   }

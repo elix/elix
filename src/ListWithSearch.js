@@ -44,7 +44,7 @@ class ListWithSearch extends Base {
     return this.state.ariaLabel;
   }
   set ariaLabel(ariaLabel) {
-    this.setState({ ariaLabel });
+    this[symbols.setState]({ ariaLabel });
   }
 
   get [symbols.defaultState]() {
@@ -61,7 +61,7 @@ class ListWithSearch extends Base {
     return this.state.filter;
   }
   set filter(filter) {
-    this.setState({ filter });
+    this[symbols.setState]({ filter });
   }
 
   /**
@@ -74,7 +74,7 @@ class ListWithSearch extends Base {
     return this.state.inputRole;
   }
   set inputRole(inputRole) {
-    this.setState({ inputRole });
+    this[symbols.setState]({ inputRole });
   }
 
   get [symbols.itemsDelegate]() {
@@ -147,14 +147,14 @@ class ListWithSearch extends Base {
     return this.state.listRole;
   }
   set listRole(listRole) {
-    this.setState({ listRole });
+    this[symbols.setState]({ listRole });
   }
 
   get placeholder() {
     return this.state.placeholder;
   }
   set placeholder(placeholder) {
-    this.setState({ placeholder });
+    this[symbols.setState]({ placeholder });
   }
 
   [symbols.render](/** @type {PlainObject} */ changed) {
@@ -164,7 +164,7 @@ class ListWithSearch extends Base {
       this.$.input.addEventListener('input', () => {
         this[symbols.raiseChangeEvents] = true;
         const filter = /** @type {any} */ (this.$.input).value;
-        this.setState({
+        this[symbols.setState]({
           filter
         });
         this[symbols.raiseChangeEvents] = false;

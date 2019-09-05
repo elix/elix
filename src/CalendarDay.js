@@ -80,7 +80,7 @@ class CalendarDay extends Base {
     return this.state.outsideRange;
   }
   set outsideRange(outsideRange) {
-    this.setState({
+    this[symbols.setState]({
       outsideRange
     });
   }
@@ -89,7 +89,7 @@ class CalendarDay extends Base {
     return this.state.selected;
   }
   set selected(selected) {
-    this.setState({
+    this[symbols.setState]({
       selected
     });
   }

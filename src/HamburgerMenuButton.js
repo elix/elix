@@ -55,7 +55,7 @@ class HamburgerMenuButton extends Base {
     return this.state.fromEdge;
   }
   set fromEdge(fromEdge) {
-    this.setState({ fromEdge });
+    this[symbols.setState]({ fromEdge });
   }
 
   // When the menu is closed, pressing Enter or Space is the same as clicking
@@ -90,7 +90,7 @@ class HamburgerMenuButton extends Base {
     return this.state.menuRole;
   }
   set menuRole(menuRole) {
-    this.setState({ menuRole });
+    this[symbols.setState]({ menuRole });
   }
 
   /**
@@ -103,7 +103,7 @@ class HamburgerMenuButton extends Base {
     return this.state.menuButtonRole;
   }
   set menuButtonRole(menuButtonRole) {
-    this.setState({ menuButtonRole });
+    this[symbols.setState]({ menuButtonRole });
   }
 
   [symbols.render](/** @type {PlainObject} */ changed) {
@@ -121,13 +121,13 @@ class HamburgerMenuButton extends Base {
       this.$.menu.addEventListener('closed', event => {
         /** @type {any} */
         const cast = event;
-        this.setState({
+        this[symbols.setState]({
           closeResult: cast.detail.closeResult,
           opened: false
         });
       });
       this.$.menu.addEventListener('opened', () => {
-        this.setState({
+        this[symbols.setState]({
           opened: true
         });
       });

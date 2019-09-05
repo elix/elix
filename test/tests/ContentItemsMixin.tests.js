@@ -14,7 +14,7 @@ class ContentItemsTest extends ContentItemsMixin(ReactiveMixin(HTMLElement)) {
   updateContent() {
     // Copy content.
     const content = [...this.children];
-    this.setState({ content });
+    this[symbols.setState]({ content });
   }
 
 }

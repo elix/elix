@@ -148,7 +148,7 @@ class ListComboBox extends Base {
     return this.state.listRole;
   }
   set listRole(listRole) {
-    this.setState({ listRole });
+    this[symbols.setState]({ listRole });
   }
 
   get [symbols.itemsDelegate]() {
@@ -190,7 +190,7 @@ class ListComboBox extends Base {
         const listSelectedIndex = cast.detail.selectedIndex;
         if (this.state.selectedIndex !== listSelectedIndex) {
           this[symbols.raiseChangeEvents] = true;
-          this.setState({
+          this[symbols.setState]({
             selectedIndex: listSelectedIndex
           });
           this[symbols.raiseChangeEvents] = false;

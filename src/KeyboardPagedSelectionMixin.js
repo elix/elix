@@ -26,7 +26,7 @@ import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-un
  * * A `[symbols.keydown]` method invoked when a key is pressed. You can use
  *   [KeyboardMixin](KeyboardMixin) for that purpose, or wire up your own
  *   keyboard handling and call `[symbols.keydown]` yourself.
- * * A `selectedIndex` state member updatable via `setState`.
+ * * A `selectedIndex` state member updatable via [symbols.setState]`.
  *
  * @module KeyboardPagedSelectionMixin
  * @param {Constructor<ReactiveElement>} Base
@@ -205,7 +205,7 @@ function scrollOnePage(element, downward) {
   const saveRaiseChangesEvents = element[symbols.raiseChangeEvents];
   element[symbols.raiseChangeEvents] = true;
 
-  element.setState({
+  element[symbols.setState]({
     selectedIndex: newIndex
   });
 

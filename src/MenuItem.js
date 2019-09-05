@@ -57,7 +57,7 @@ class MenuItem extends Base {
     return this.state.selected;
   }
   set selected(selected) {
-    this.setState({
+    this[symbols.setState]({
       selected
     });
   }

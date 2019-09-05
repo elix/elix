@@ -47,7 +47,7 @@ class ProgressSpinner extends ReactiveElement {
     return this.state.playing;
   }
   set playing(playing) {
-    this.setState({ playing });
+    this[symbols.setState]({ playing });
   }
 
   [symbols.render](/** @type {PlainObject} */ changed) {
@@ -82,7 +82,7 @@ function tick(/** @type {ProgressSpinner} */ element) {
   if (element.isConnected && element.state.playing) {
     setTimeout(() => {
       requestAnimationFrame(() => {
-        element.setState({
+        element[symbols.setState]({
           count: element.state.count + 1
         });
       });

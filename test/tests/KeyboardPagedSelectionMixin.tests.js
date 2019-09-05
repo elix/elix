@@ -1,6 +1,6 @@
+import * as symbols from '../../src/symbols.js';
 import KeyboardPagedSelectionMixin from '../../src/KeyboardPagedSelectionMixin.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
-import * as symbols from '../../src/symbols.js';
 
 
 const itemHeight = '100';
@@ -16,7 +16,7 @@ class KeyboardPagedSelectionTest extends Base {
   connectedCallback() {
     super.connectedCallback();
     const items = Array.prototype.slice.call(this.children);
-    this.setState({
+    this[symbols.setState]({
       items,
       selectedIndex: -1
     });
@@ -41,7 +41,7 @@ describe("KeyboardPagedSelectionMixin", function() {
   it("If bottom item not selected, Page Down selects bottom item", () => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
-    fixture.setState({ selectedIndex: 0 });
+    fixture[symbols.setState]({ selectedIndex: 0 });
     const handled = fixture[symbols.keydown]({
       key: 'PageDown'
     });
@@ -52,7 +52,7 @@ describe("KeyboardPagedSelectionMixin", function() {
   it("If bottom item selected, Page Down advances selection by one page", () => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
-    fixture.setState({ selectedIndex: 1 });
+    fixture[symbols.setState]({ selectedIndex: 1 });
     const handled = fixture[symbols.keydown]({
       key: 'PageDown'
     });
@@ -63,7 +63,7 @@ describe("KeyboardPagedSelectionMixin", function() {
   it("If less than one page remaining, Page Down selects last item", done => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
-    fixture.setState({ selectedIndex: 3 });
+    fixture[symbols.setState]({ selectedIndex: 3 });
     fixture.addEventListener('scroll', () => {
       const handled = fixture[symbols.keydown]({
         key: 'PageDown'
@@ -78,7 +78,7 @@ describe("KeyboardPagedSelectionMixin", function() {
   it("If last item already selected, Page Down has no effect", done => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
-    fixture.setState({ selectedIndex: 4 });
+    fixture[symbols.setState]({ selectedIndex: 4 });
     fixture.addEventListener('scroll', () => {
       const handled = fixture[symbols.keydown]({
         key: 'PageDown'

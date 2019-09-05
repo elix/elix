@@ -42,7 +42,7 @@ class CalendarDayNamesHeader extends ReactiveElement {
     return this.state.format;
   }
   set format(format) {
-    this.setState({ format });
+    this[symbols.setState]({ format });
   }
 
   /**
@@ -56,7 +56,7 @@ class CalendarDayNamesHeader extends ReactiveElement {
     return this.state.locale;
   }
   set locale(locale) {
-    this.setState({ locale });
+    this[symbols.setState]({ locale });
   }
 
   [symbols.render](/** @type {PlainObject} */ changed) {

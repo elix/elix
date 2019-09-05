@@ -53,7 +53,7 @@ describe("ReactiveMixin", function () {
 
   it("setState updates state", () => {
     const fixture = new ReactiveTest();
-    fixture.setState({
+    fixture[symbols.setState]({
       message: 'badger'
     });
     assert.deepEqual(fixture.state, { message: 'badger' });
@@ -68,7 +68,7 @@ describe("ReactiveMixin", function () {
   it("setState skips render if component is not in document", async () => {
     const fixture = new ReactiveTest();
     const renderSpy = sinon.spy(fixture, symbols.render);
-    await fixture.setState({
+    await fixture[symbols.setState]({
       message: 'dingo'
     });
     assert.equal(renderSpy.callCount, 0);
@@ -78,22 +78,22 @@ describe("ReactiveMixin", function () {
     const fixture = new ReactiveTest();
     container.appendChild(fixture);
     const renderSpy = sinon.spy(fixture, symbols.render);
-    await fixture.setState({
+    await fixture[symbols.setState]({
       message: 'echidna'
     });
     assert.equal(renderSpy.callCount, 1);
     assert.equal(fixture.renderedResult, 'echidna');
   });
 
-  it("consecutive setState calls batched into single render call", async () => {
+  it("consecutive[symbols.setState] calls batched into single render call", async () => {
     const fixture = new ReactiveTest();
     container.appendChild(fixture);
     const renderSpy = sinon.spy(fixture, symbols.render);
     /* Do *not* await first call - invoke it synchronously. */
-    fixture.setState({
+    fixture[symbols.setState]({
       message: 'fox'
     });
-    await fixture.setState({
+    await fixture[symbols.setState]({
       message: 'gorilla'
     });
     assert.equal(renderSpy.callCount, 1);
@@ -109,7 +109,7 @@ describe("ReactiveMixin", function () {
     await Promise.resolve();
     assert.equal(componentDidMountSpy.callCount, 1);
     assert.equal(componentDidUpdateSpy.callCount, 0);
-    await fixture.setState({
+    await fixture[symbols.setState]({
       message: 'iguana'
     });
     assert.equal(componentDidMountSpy.callCount, 1);
@@ -132,11 +132,11 @@ describe("ReactiveMixin", function () {
 
   it("leaves state object alone if there are no changes", async () => {
     const fixture = new ReactiveTest();
-    await fixture.setState({
+    await fixture[symbols.setState]({
       message: 'hamster'
     });
     const previousState = fixture.state;
-    await fixture.setState({
+    await fixture[symbols.setState]({
       message: 'hamster'
     });
     assert.equal(fixture.state, previousState);
@@ -152,11 +152,11 @@ describe("ReactiveMixin", function () {
       }
     }
     const fixture = new Fixture();
-    fixture.setState({ a: 1 });
+    fixture[symbols.setState]({ a: 1 });
     assert(fixture.state.b === 1);
-    fixture.setState({ b: 2 }); // Shouldn't have any effect on `a`
+    fixture[symbols.setState]({ b: 2 }); // Shouldn't have any effect on `a`
     assert(fixture.state.a === 1);
-    fixture.setState({ a: 3 });
+    fixture[symbols.setState]({ a: 3 });
     assert(fixture.state.b === 3);
   });
   
@@ -172,7 +172,7 @@ describe("ReactiveMixin", function () {
     const fixture = new Fixture();
     assert(fixture.state.a === 1);
     assert(fixture.state.b === 1);
-    fixture.setState({ a: 2 });
+    fixture[symbols.setState]({ a: 2 });
     assert(fixture.state.b === 2);
   })
   

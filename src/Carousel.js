@@ -94,7 +94,7 @@ class Carousel extends Base {
     return this.state.orientation;
   }
   set orientation(orientation) {
-    this.setState({ orientation });
+    this[symbols.setState]({ orientation });
   }
 
   [symbols.render](/** @type {PlainObject} */ changed) {

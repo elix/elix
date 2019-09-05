@@ -61,7 +61,7 @@ export default function OverlayMixin(Base) {
       return this.state.autoFocus;
     }
     set autoFocus(autoFocus) {
-      this.setState({ autoFocus });
+      this[symbols.setState]({ autoFocus });
     }
 
     componentDidMount() {

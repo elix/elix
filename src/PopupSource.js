@@ -56,7 +56,7 @@ class PopupSource extends Base {
     return this.state.backdropRole;
   }
   set backdropRole(backdropRole) {
-    this.setState({ backdropRole });
+    this[symbols.setState]({ backdropRole });
   }
 
   componentDidMount() {
@@ -138,7 +138,7 @@ class PopupSource extends Base {
     return this.state.frameRole;
   }
   set frameRole(frameRole) {
-    this.setState({ frameRole });
+    this[symbols.setState]({ frameRole });
   }
 
   /**
@@ -159,7 +159,7 @@ class PopupSource extends Base {
     return this.state.horizontalAlign;
   }
   set horizontalAlign(horizontalAlign) {
-    this.setState({
+    this[symbols.setState]({
       horizontalAlign
     });
   }
@@ -328,7 +328,7 @@ class PopupSource extends Base {
     return this.state.popupPosition;
   }
   set popupPosition(popupPosition) {
-    this.setState({
+    this[symbols.setState]({
       popupPosition
     });
   }
@@ -345,7 +345,7 @@ class PopupSource extends Base {
     return this.state.popupRole;
   }
   set popupRole(popupRole) {
-    this.setState({ popupRole });
+    this[symbols.setState]({ popupRole });
   }
 
   /**
@@ -359,7 +359,7 @@ class PopupSource extends Base {
     return this.state.sourceRole;
   }
   set sourceRole(sourceRole) {
-    this.setState({ sourceRole });
+    this[symbols.setState]({ sourceRole });
   }
 
   get [symbols.template]() {
@@ -439,7 +439,7 @@ function measurePopup(element) {
   const windowWidth = window.innerWidth;
   const popupRect = element.$.popup.getBoundingClientRect();
   const sourceRect = element.getBoundingClientRect();
-  element.setState({
+  element[symbols.setState]({
     popupHeight: popupRect.height,
     popupMeasured: true,
     popupWidth: popupRect.width,

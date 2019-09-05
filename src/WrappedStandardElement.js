@@ -219,7 +219,7 @@ class WrappedStandardElement extends Base {
       const innerAttributes = Object.assign({}, this.state.innerAttributes, {
         [name]: newValue
       });
-      this.setState({
+      this[symbols.setState]({
         innerAttributes
       });
     } else {
@@ -383,8 +383,8 @@ class WrappedStandardElement extends Base {
    * @param {any} value 
    */
   setInnerProperty(name, value) {
-    // We normally don't check an existing state value before calling setState,
-    // relying instead on setState to do that check for us. However, we have
+    // We normally don't check an existing state value before calling[symbols.setState],
+    // relying instead on[symbols.setState] to do that check for us. However, we have
     // dangers in this particular component of creating infinite loops.
     //
     // E.g., setting the tabindex attibute will call attributeChangedCallback,
@@ -398,7 +398,7 @@ class WrappedStandardElement extends Base {
       const innerProperties = Object.assign({}, this.state.innerProperties, {
         [name]: value
       });
-      this.setState({ innerProperties });
+      this[symbols.setState]({ innerProperties });
     }
   }
 

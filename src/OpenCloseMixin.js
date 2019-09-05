@@ -31,7 +31,7 @@ export default function OpenCloseMixin(Base) {
      */
     async close(closeResult) {
       if (super.close) { await super.close(); }
-      this.setState({ closeResult });
+      this[symbols.setState]({ closeResult });
       await this.toggle(false);
     }
 
@@ -145,7 +145,7 @@ export default function OpenCloseMixin(Base) {
      */
     async open() {
       if (super.open) { await super.open(); }
-      this.setState({ closeResult: undefined });
+      this[symbols.setState]({ closeResult: undefined });
       await this.toggle(true);
     }
     
@@ -159,7 +159,7 @@ export default function OpenCloseMixin(Base) {
     }
     set opened(opened) {
       const parsed = String(opened) === 'true';
-      this.setState({ closeResult: undefined });
+      this[symbols.setState]({ closeResult: undefined });
       this.toggle(parsed);
     }
 
@@ -180,7 +180,7 @@ export default function OpenCloseMixin(Base) {
             changes.effectPhase = 'before';
           }
         }
-        await this.setState(changes);
+        await this[symbols.setState](changes);
       }
     }
 

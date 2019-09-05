@@ -23,14 +23,14 @@ class DateInput extends Base {
     super.componentDidMount();
     this.$.inner.addEventListener('blur', () => {
       this[symbols.raiseChangeEvents] = true;
-      this.setState({
+      this[symbols.setState]({
         focused: false
       });
       this[symbols.raiseChangeEvents] = false;
     });
     this.$.inner.addEventListener('focus', () => {
       this[symbols.raiseChangeEvents] = true;
-      this.setState({
+      this[symbols.setState]({
         focused: true
       });
       this[symbols.raiseChangeEvents] = false;
@@ -42,7 +42,7 @@ class DateInput extends Base {
   }
   set date(date) {
     super.date = date;
-    this.setState({
+    this[symbols.setState]({
       datePriority: true
     });
   }
@@ -51,7 +51,7 @@ class DateInput extends Base {
     return this.state.dateTimeFormatOptions;
   }
   set dateTimeFormatOptions(dateTimeFormatOptions) {
-    this.setState({
+    this[symbols.setState]({
       dateTimeFormatOptions
     });
   }
@@ -213,7 +213,7 @@ class DateInput extends Base {
     return this.state.timeBias;
   }
   set timeBias(timeBias) {
-    this.setState({
+    this[symbols.setState]({
       timeBias
     });
   }
@@ -227,7 +227,7 @@ class DateInput extends Base {
     const saveRaiseChangesEvents = this[symbols.raiseChangeEvents];
     this[symbols.raiseChangeEvents] = true;
     super.value = value;
-    this.setState({
+    this[symbols.setState]({
       datePriority: false
     });
     this[symbols.raiseChangeEvents] = saveRaiseChangesEvents;

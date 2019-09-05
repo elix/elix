@@ -52,7 +52,7 @@ class SwipeDemo extends Base {
     return this.state.swipeAxis;
   }
   set swipeAxis(swipeAxis) {
-    this.setState({ swipeAxis });
+    this[symbols.setState]({ swipeAxis });
   }
 
   get [symbols.template]() {

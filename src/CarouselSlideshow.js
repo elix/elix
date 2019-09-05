@@ -50,7 +50,7 @@ class CarouselSlideshow extends Base {
     return this.state.transitionDuration;
   }
   set transitionDuration(transitionDuration) {
-    this.setState({ transitionDuration });
+    this[symbols.setState]({ transitionDuration });
   }
 
 

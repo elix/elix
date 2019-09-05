@@ -355,7 +355,7 @@ class LocaleSelector extends ReactiveElement {
     return this.state.value;
   }
   set value(value) {
-    this.setState({ value });
+    this[symbols.setState]({ value });
   }
 
 }

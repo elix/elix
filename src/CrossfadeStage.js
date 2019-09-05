@@ -65,14 +65,14 @@ class CrossfadeStage extends Base {
     return this.state.swipeFraction;
   }
   set swipeFraction(swipeFraction) {
-    this.setState({ swipeFraction });
+    this[symbols.setState]({ swipeFraction });
   }
 
   get transitionDuration() {
     return this.state.transitionDuration;
   }
   set transitionDuration(transitionDuration) {
-    this.setState({ transitionDuration });
+    this[symbols.setState]({ transitionDuration });
   }
 
   get [symbols.template]() {

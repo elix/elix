@@ -57,7 +57,7 @@ export default function CalendarElementMixin(Base) {
         date;
       // Only update state if actual date value differs from current state.
       if (!calendar.datesEqual(parsed, this.state.date)) {
-        this.setState({
+        this[symbols.setState]({
           date: parsed
         });
       }
@@ -90,7 +90,7 @@ export default function CalendarElementMixin(Base) {
       return this.state.locale;
     }
     set locale(locale) {
-      this.setState({ locale });
+      this[symbols.setState]({ locale });
     }
 
   }

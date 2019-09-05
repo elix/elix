@@ -63,7 +63,7 @@ class RenderState extends Base {
     const parsed = typeof fixtureState === 'string' ?
       JSON.parse(fixtureState) :
       fixtureState;
-    this.setState({
+    this[symbols.setState]({
       fixtureState: parsed
     });
   }
@@ -76,11 +76,11 @@ class RenderState extends Base {
         customElements.whenDefined(fixture.localName)
         .then(() => {
           // Wait for fixture to do its initial render.
-          return fixture.setState({});
+          return fixture[symbols.setState]({});
         })
         .then(() => {
           // Force an update of the fixture's state.
-          fixture.setState(fixtureState);
+          fixture[symbols.setState](fixtureState);
         });
       }
       const textContent = Object.keys(fixtureState).length > 0 ?

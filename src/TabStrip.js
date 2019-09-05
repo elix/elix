@@ -113,7 +113,7 @@ class TabStrip extends Base {
         const { items, selectedIndex } = this.state;
         if (event.target instanceof HTMLElement) {
           const newIndex = items && items.indexOf(event.target);
-          this.setState({
+          this[symbols.setState]({
             selectedIndex: newIndex
           });
           handled = newIndex !== selectedIndex;
@@ -149,7 +149,7 @@ class TabStrip extends Base {
     const orientation = position === 'top' || position === 'bottom' ?
       'horizontal' :
       'vertical';
-    this.setState({
+    this[symbols.setState]({
       orientation,
       position
     });
@@ -220,7 +220,7 @@ class TabStrip extends Base {
     return this.state.tabAlign;
   }
   set tabAlign(tabAlign) {
-    this.setState({ tabAlign });
+    this[symbols.setState]({ tabAlign });
   }
 
   get [symbols.template]() {

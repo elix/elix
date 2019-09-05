@@ -115,14 +115,14 @@ class Drawer extends Base {
     return this.state.fromEdge;
   }
   set fromEdge(fromEdge) {
-    this.setState({ fromEdge });
+    this[symbols.setState]({ fromEdge });
   }
 
   get gripSize() {
     return this.state.gripSize;
   }
   set gripSize(gripSize) {
-    this.setState({
+    this[symbols.setState]({
       gripSize
     });
   }
@@ -393,7 +393,7 @@ class Drawer extends Base {
 
 
 async function close(/** @type {Drawer} */ element) {
-  element.setState({
+  element[symbols.setState]({
     effect: 'close',
     effectPhase: 'during'
   });
@@ -402,7 +402,7 @@ async function close(/** @type {Drawer} */ element) {
 
 
 async function open(/** @type {Drawer} */ element) {
-  element.setState({
+  element[symbols.setState]({
     effect: 'open',
     effectPhase: 'during'
   });

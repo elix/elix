@@ -18,7 +18,7 @@ export default function GenericMixin(/** @type {Constructor<ReactiveElement>} */
     }
     set generic(generic) {
       const parsed = String(generic) === 'true';
-      this.setState({
+      this[symbols.setState]({
         generic: parsed
       });
     }
