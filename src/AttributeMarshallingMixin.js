@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -88,7 +88,7 @@ export default function AttributeMarshallingMixin(Base) {
       // We also skip setting properties if we're rendering. A component
       // may want to reflect property values to attributes during rendering,
       // but such attribute changes shouldn't trigger property updates.
-      if (newValue !== oldValue && !this[symbols.rendering]) {
+      if (newValue !== oldValue && !this[internal.rendering]) {
         const propertyName = attributeToPropertyName(attributeName);
         // If the attribute name corresponds to a property name, set the property.
         if (propertyName in this) {

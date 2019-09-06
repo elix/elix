@@ -3,14 +3,14 @@
 
 /// <reference path="shared.d.ts"/>
 
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 
 declare const TransitionEffectMixin: StateMixin<
 {},
 {},
 {
   startEffect(effect: string): Promise<void>;
-  [symbols.elementsWithTransitions]: Element[];
+  [internal.elementsWithTransitions]: Element[];
 },
 {
   effect: string;

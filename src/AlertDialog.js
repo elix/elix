@@ -1,5 +1,5 @@
 import { applyChildNodes } from './utilities.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import Dialog from './Dialog.js';
 
@@ -11,16 +11,16 @@ import Dialog from './Dialog.js';
  */
 class AlertDialog extends Dialog {
 
-  [symbols.componentDidMount]() {
-    super[symbols.componentDidMount]();
-    this[symbols.$].buttonContainer.addEventListener('click', async (event) => {
+  [internal.componentDidMount]() {
+    super[internal.componentDidMount]();
+    this[internal.$].buttonContainer.addEventListener('click', async (event) => {
       // TODO: Ignore clicks on buttonContainer background.
       const button = event.target;
       if (button instanceof HTMLElement) {
         const choice = button.textContent;
-        this[symbols.raiseChangeEvents] = true; 
+        this[internal.raiseChangeEvents] = true; 
         await this.close({ choice });
-        this[symbols.raiseChangeEvents] = false;
+        this[internal.raiseChangeEvents] = false;
       }
     });
   }
@@ -32,7 +32,7 @@ class AlertDialog extends Dialog {
    * @type {HTMLElement[]}
    */
   get choiceButtons() {
-    return this[symbols.state].choiceButtons;
+    return this[internal.state].choiceButtons;
   }
 
   /**
@@ -42,10 +42,10 @@ class AlertDialog extends Dialog {
    * @default 'button'
    */
   get choiceButtonRole() {
-    return this[symbols.state].choiceButtonRole;
+    return this[internal.state].choiceButtonRole;
   }
   set choiceButtonRole(choiceButtonRole) {
-    this[symbols.setState]({ choiceButtonRole });
+    this[internal.setState]({ choiceButtonRole });
   }
 
   /**
@@ -58,14 +58,14 @@ class AlertDialog extends Dialog {
    * @type {string[]}
    */
   get choices() {
-    return this[symbols.state].choices;
+    return this[internal.state].choices;
   }
   set choices(choices) {
-    this[symbols.setState]({ choices });
+    this[internal.setState]({ choices });
   }
 
-  get [symbols.defaultState]() {
-    const state = Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    const state = Object.assign(super[internal.defaultState], {
       choiceButtonRole: 'button',
       choiceButtons: [],
       choices: ['OK']
@@ -89,7 +89,7 @@ class AlertDialog extends Dialog {
   }
 
   // Let the user select a choice by pressing its initial letter.
-    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
+    [internal.keydown](/** @type {KeyboardEvent} */ event) {
     let handled = false;
 
     const key = event.key.length === 1 && event.key.toLowerCase();
@@ -107,18 +107,18 @@ class AlertDialog extends Dialog {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
+    return handled || (super[internal.keydown] && super[internal.keydown](event)) || false;
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.choiceButtons) {
-      applyChildNodes(this[symbols.$].buttonContainer, this[symbols.state].choiceButtons);
+      applyChildNodes(this[internal.$].buttonContainer, this[internal.state].choiceButtons);
     }
   }
 
-  get [symbols.template]() {
-    const result = super[symbols.template];
+  get [internal.template]() {
+    const result = super[internal.template];
     const alertDialogTemplate = template.html`
       <style>
         #frame {

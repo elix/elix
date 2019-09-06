@@ -1,6 +1,6 @@
 import { deepContains } from './utilities.js';
 import { defaultAriaRole } from './accessibility.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import AriaListMixin from './AriaListMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
@@ -64,8 +64,8 @@ const Base =
  */
 class TabStrip extends Base {
 
-  [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
-    super[symbols.componentDidUpdate](changed);
+  [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
+    super[internal.componentDidUpdate](changed);
 
     // Does this component, or any of its assigned nodes, have focus?
     // This is a surprisingly hard question to answer.
@@ -89,8 +89,8 @@ class TabStrip extends Base {
     }
   }
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       orientation: 'horizontal',
       role: 'tablist',
       selectionRequired: true,
@@ -101,7 +101,7 @@ class TabStrip extends Base {
     });
   }
 
-  [symbols.keydown](/** @type {KeyboardEvent} */ event) {
+  [internal.keydown](/** @type {KeyboardEvent} */ event) {
 
     let handled;
 
@@ -110,10 +110,10 @@ class TabStrip extends Base {
       /* eslint-disable no-case-declarations */
       case ' ':
       case 'Enter':
-        const { items, selectedIndex } = this[symbols.state];
+        const { items, selectedIndex } = this[internal.state];
         if (event.target instanceof HTMLElement) {
           const newIndex = items && items.indexOf(event.target);
-          this[symbols.setState]({
+          this[internal.setState]({
             selectedIndex: newIndex
           });
           handled = newIndex !== selectedIndex;
@@ -122,12 +122,12 @@ class TabStrip extends Base {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
+    return handled || (super[internal.keydown] && super[internal.keydown](event)) || false;
   }
 
   // TabStrip orientation depends on position property.
   get orientation() {
-    return this[symbols.state].orientation;
+    return this[internal.state].orientation;
   }
 
   /**
@@ -143,23 +143,23 @@ class TabStrip extends Base {
    * @default 'top'
    */
   get position() {
-    return this[symbols.state].position;
+    return this[internal.state].position;
   }
   set position(position) {
     const orientation = position === 'top' || position === 'bottom' ?
       'horizontal' :
       'vertical';
-    this[symbols.setState]({
+    this[internal.setState]({
       orientation,
       position
     });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
-    const { items } = this[symbols.state];
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
+    const { items } = this[internal.state];
     if (changed.items && items) {
-      const { tabButtonRole } = this[symbols.state];
+      const { tabButtonRole } = this[internal.state];
       items.forEach(item => {
         if (tabButtonRole === defaultAriaRole[item.localName]) {
           item.removeAttribute('role');
@@ -170,7 +170,7 @@ class TabStrip extends Base {
     }
     if ((changed.items || changed.selectedIndex) && items) {
       // Apply `selected` style to the selected item only.
-      const { selectedIndex } = this[symbols.state];
+      const { selectedIndex } = this[internal.state];
       items.forEach((item, index) => {
         const selected = index === selectedIndex;
         item.classList.toggle('selected', selected);
@@ -180,15 +180,15 @@ class TabStrip extends Base {
       });
     }
     if (changed.generic) {
-      this.style.gridGap = this[symbols.state].generic ? '0.25em' : '';
+      this.style.gridGap = this[internal.state].generic ? '0.25em' : '';
     }
     if (changed.orientation) {
-      this.style.gridAutoFlow = this[symbols.state].orientation === 'vertical' ?
+      this.style.gridAutoFlow = this[internal.state].orientation === 'vertical' ?
         'row' :
         'column';
     }
     if (changed.tabAlign) {
-      const { tabAlign } = this[symbols.state];  
+      const { tabAlign } = this[internal.state];  
       const justifyContentForTabAlign = {
         'center': 'center',
         'end': 'end',
@@ -199,7 +199,7 @@ class TabStrip extends Base {
       this.style.placeContent = justifyContentForTabAlign[tabAlign];
     }
     if (changed.items || changed.position) {
-      const { position } = this[symbols.state];
+      const { position } = this[internal.state];
       if (items) {
         items.forEach(item => {
           if ('position' in item) {
@@ -217,13 +217,13 @@ class TabStrip extends Base {
    * @default 'start'
    */
   get tabAlign() {
-    return this[symbols.state].tabAlign;
+    return this[internal.state].tabAlign;
   }
   set tabAlign(tabAlign) {
-    this[symbols.setState]({ tabAlign });
+    this[internal.setState]({ tabAlign });
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

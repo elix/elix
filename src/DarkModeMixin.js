@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -14,7 +14,7 @@ export default function DarkModeMixin(Base) {
     // Once connected, check background color. We set state before calling super
     // so the new state will be included when ReactiveMixin calls render.
     connectedCallback() {
-      if (this[symbols.state].darkMode === null) {
+      if (this[internal.state].darkMode === null) {
         // Infer dark mode from effective background color.
         const backgroundColor = findBackgroundColor(this);
         const rgb = parseRgb(backgroundColor);
@@ -22,7 +22,7 @@ export default function DarkModeMixin(Base) {
           const hsl = rgbToHsl(rgb);
           // We consider any lightness below 50% to be dark.
           const darkMode = hsl.l < 0.5;
-          this[symbols.setState]({
+          this[internal.setState]({
             darkMode
           });
         }
@@ -45,17 +45,17 @@ export default function DarkModeMixin(Base) {
      * @type {boolean}
      */
     get darkMode() {
-      return this[symbols.state].darkMode;
+      return this[internal.state].darkMode;
     }
     set darkMode(darkMode) {
       const parsed = String(darkMode) === 'true';
-      this[symbols.setState]({
+      this[internal.setState]({
         darkMode: parsed
       });
     }
 
-    get [symbols.defaultState]() {
-      return Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      return Object.assign(super[internal.defaultState], {
         darkMode: null
       });
     }

@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import FocusVisibleMixin from '../../src/FocusVisibleMixin.js';
 import KeyboardMixin from '../../src/KeyboardMixin.js';
@@ -13,7 +13,7 @@ const Base =
 
 class FocusVisibleTest extends Base {
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

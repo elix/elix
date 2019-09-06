@@ -1,5 +1,5 @@
 import * as calendar from './calendar.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import ReactiveElement from './ReactiveElement.js';
@@ -31,18 +31,18 @@ const Base =
  */
 class CalendarDay extends Base {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       date: calendar.today(),
       outsideRange: false,
       selected: false
     });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     const classList = this.classList;
-    const { date } = this[symbols.state];
+    const { date } = this[internal.state];
     if (changed.date) {
       const today = calendar.today();
       const dayOfWeek = date.getDay();
@@ -58,43 +58,43 @@ class CalendarDay extends Base {
       classList.toggle('saturday', dayOfWeek === 6);
       classList.toggle('sunday', dayOfWeek === 0);
       classList.toggle('today', daysFromToday == 0);
-      this[symbols.$].day.textContent = dayOfMonth.toString();
+      this[internal.$].day.textContent = dayOfMonth.toString();
     }
     if (changed.date || changed.locale) {
       const dayOfWeek = date.getDay();
-      const { locale } = this[symbols.state];
+      const { locale } = this[internal.state];
       const weekend = dayOfWeek === calendar.weekendStart(locale) ||
         dayOfWeek === calendar.weekendEnd(locale);
       classList.toggle('weekday', !weekend);
       classList.toggle('weekend', weekend);
     }
     if (changed.outsideRange) {
-      classList.toggle('outsideRange', this[symbols.state].outsideRange);
+      classList.toggle('outsideRange', this[internal.state].outsideRange);
     }
     if (changed.selected) {
-      classList.toggle('selected', this[symbols.state].selected);
+      classList.toggle('selected', this[internal.state].selected);
     }
   }
 
   get outsideRange() {
-    return this[symbols.state].outsideRange;
+    return this[internal.state].outsideRange;
   }
   set outsideRange(outsideRange) {
-    this[symbols.setState]({
+    this[internal.setState]({
       outsideRange
     });
   }
 
   get selected() {
-    return this[symbols.state].selected;
+    return this[internal.state].selected;
   }
   set selected(selected) {
-    this[symbols.setState]({
+    this[internal.setState]({
       selected
     });
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import KeyboardPagedSelectionMixin from '../../src/KeyboardPagedSelectionMixin.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
 
@@ -16,7 +16,7 @@ class KeyboardPagedSelectionTest extends Base {
   connectedCallback() {
     super.connectedCallback();
     const items = Array.prototype.slice.call(this.children);
-    this[symbols.setState]({
+    this[internal.setState]({
       items,
       selectedIndex: -1
     });
@@ -41,35 +41,35 @@ describe("KeyboardPagedSelectionMixin", function() {
   it("If bottom item not selected, Page Down selects bottom item", () => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
-    fixture[symbols.setState]({ selectedIndex: 0 });
-    const handled = fixture[symbols.keydown]({
+    fixture[internal.setState]({ selectedIndex: 0 });
+    const handled = fixture[internal.keydown]({
       key: 'PageDown'
     });
     assert(handled);
-    assert.equal(fixture[symbols.state].selectedIndex, 1);
+    assert.equal(fixture[internal.state].selectedIndex, 1);
   });
 
   it("If bottom item selected, Page Down advances selection by one page", () => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
-    fixture[symbols.setState]({ selectedIndex: 1 });
-    const handled = fixture[symbols.keydown]({
+    fixture[internal.setState]({ selectedIndex: 1 });
+    const handled = fixture[internal.keydown]({
       key: 'PageDown'
     });
     assert(handled);
-    assert.equal(fixture[symbols.state].selectedIndex, 3);
+    assert.equal(fixture[internal.state].selectedIndex, 3);
   });
 
   it("If less than one page remaining, Page Down selects last item", done => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
-    fixture[symbols.setState]({ selectedIndex: 3 });
+    fixture[internal.setState]({ selectedIndex: 3 });
     fixture.addEventListener('scroll', () => {
-      const handled = fixture[symbols.keydown]({
+      const handled = fixture[internal.keydown]({
         key: 'PageDown'
       });
       assert(handled);
-      assert.equal(fixture[symbols.state].selectedIndex, 4);
+      assert.equal(fixture[internal.state].selectedIndex, 4);
       done();
     });
     fixture.scrollTop = 2 * itemHeight; // So index 2 is at top of viewport.
@@ -78,13 +78,13 @@ describe("KeyboardPagedSelectionMixin", function() {
   it("If last item already selected, Page Down has no effect", done => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
-    fixture[symbols.setState]({ selectedIndex: 4 });
+    fixture[internal.setState]({ selectedIndex: 4 });
     fixture.addEventListener('scroll', () => {
-      const handled = fixture[symbols.keydown]({
+      const handled = fixture[internal.keydown]({
         key: 'PageDown'
       });
       assert(!handled);
-      assert.equal(fixture[symbols.state].selectedIndex, 4);
+      assert.equal(fixture[internal.state].selectedIndex, 4);
       done();
     });
     fixture.scrollTop = 3 * itemHeight; // So index 3 is at top of viewport.

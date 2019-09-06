@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import ReactiveElement from './ReactiveElement.js';
@@ -34,17 +34,17 @@ const Base =
  */
 class ExpandablePanel extends Base {
 
-  get [symbols.elementsWithTransitions]() {
-    return [this[symbols.$].outerContainer];
+  get [internal.elementsWithTransitions]() {
+    return [this[internal.$].outerContainer];
   }
     
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.effect || changed.effectPhase || changed.enableEffects) {
-      const { effect, effectPhase, enableEffects } = this[symbols.state];
+      const { effect, effectPhase, enableEffects } = this[internal.state];
       
       // The inner container lets us measure how tall the content wants to be.
-      const naturalHeight = this[symbols.$].innerContainer.getBoundingClientRect().height;
+      const naturalHeight = this[internal.$].innerContainer.getBoundingClientRect().height;
 
       // The effect phase (before, during, after) determines which height we apply
       // to the outer container.
@@ -72,7 +72,7 @@ class ExpandablePanel extends Base {
         'height 0.25s' :
         null;
 
-      Object.assign(this[symbols.$].outerContainer.style, {
+      Object.assign(this[internal.$].outerContainer.style, {
         height,
         transition
       });
@@ -80,16 +80,16 @@ class ExpandablePanel extends Base {
     if (changed.opened || changed.tabIndex) {
       // We only set aria-expanded if this component can get the keyboard focus
       // (which it usually won't).
-      const canReceiveFocus = this[symbols.state].tabIndex >= 0;
+      const canReceiveFocus = this[internal.state].tabIndex >= 0;
       if (canReceiveFocus) {
-        this.setAttribute('aria-expanded', this[symbols.state].opened.toString());
+        this.setAttribute('aria-expanded', this[internal.state].opened.toString());
       } else {
         this.removeAttribute('aria-expanded');
       }
     }
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

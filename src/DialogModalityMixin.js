@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -28,13 +28,13 @@ const previousDocumentMarginRightKey = Symbol('previousDocumentMarginRight');
 export default function DialogModalityMixin(Base) {
   return class DialogModality extends Base {
 
-    get [symbols.defaultState]() {
-      return Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      return Object.assign(super[internal.defaultState], {
         role: 'dialog'
       });
     }
 
-    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
+    [internal.keydown](/** @type {KeyboardEvent} */ event) {
       let handled = false;
 
       switch (event.key) {
@@ -49,13 +49,13 @@ export default function DialogModalityMixin(Base) {
       }
 
       // Prefer mixin result if it's defined, otherwise use base result.
-      return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
+      return handled || (super[internal.keydown] && super[internal.keydown](event)) || false;
     }
 
-    [symbols.render](/** @type {PlainObject} */ changed) {
-      if (super[symbols.render]) { super[symbols.render](changed); }
+    [internal.render](/** @type {PlainObject} */ changed) {
+      if (super[internal.render]) { super[internal.render](changed); }
       if (changed.opened) {
-        if (this[symbols.state].opened && document.documentElement) {
+        if (this[internal.state].opened && document.documentElement) {
           // Disable body scrolling to absorb space bar keypresses and other
           // means of scrolling the top-level document.
           const documentWidth = document.documentElement.clientWidth;
@@ -82,7 +82,7 @@ export default function DialogModalityMixin(Base) {
       }
       if (changed.role) {
         // Apply top-level role.
-        const { role } = this[symbols.state];
+        const { role } = this[internal.state];
         this.setAttribute('role', role);
       }
     }
@@ -94,8 +94,8 @@ export default function DialogModalityMixin(Base) {
     }
     set role(role) {
       super.role = role;
-      if (!this[symbols.rendering]) {
-        this[symbols.setState]({
+      if (!this[internal.rendering]) {
+        this[internal.setState]({
           role
         });
       }

@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import AutoCompleteInput from './AutoCompleteInput.js';
 import ListComboBox from './ListComboBox.js';
 import ItemsTextMixin from './ItemsTextMixin.js';
@@ -19,17 +19,17 @@ const Base =
  */
 class AutoCompleteComboBox extends Base {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       inputRole: AutoCompleteInput
     });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.texts) {
-      if ('texts' in this[symbols.$].input) {
-        /** @type {any} */ (this[symbols.$].input).texts = this[symbols.state].texts;
+      if ('texts' in this[internal.$].input) {
+        /** @type {any} */ (this[internal.$].input).texts = this[internal.state].texts;
       }
     }
   }

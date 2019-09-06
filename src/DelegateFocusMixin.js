@@ -1,5 +1,5 @@
 import { firstFocusableElement } from './utilities.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -17,8 +17,8 @@ export default function DelegateFocusMixin(Base) {
   // The class prototype added by the mixin.
   class DelegateFocus extends Base {
 
-    [symbols.componentDidMount]() {
-      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
+    [internal.componentDidMount]() {
+      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
       // The delegatesFocus spec says that the focus outline should be shown on
       // both the host and the focused subelement — which seems confusing and
       // (in our opinion) looks ugly. If the browser supports delegatesFocus we
@@ -38,7 +38,7 @@ export default function DelegateFocusMixin(Base) {
      * @type {boolean}
      * @default true
      */
-    get [symbols.delegatesFocus]() {
+    get [internal.delegatesFocus]() {
       return true;
     }
 
@@ -56,13 +56,13 @@ export default function DelegateFocusMixin(Base) {
         super.focus(focusOptions);
         return;
       }
-      const focusElement = this[symbols.focusTarget];
+      const focusElement = this[internal.focusTarget];
       if (focusElement) {
         focusElement.focus(focusOptions);
       }
     }
 
-    get [symbols.focusTarget]() {
+    get [internal.focusTarget]() {
       /** @type {any} */ const cast = this.shadowRoot;
       return cast.delegatesFocus ?
         this :

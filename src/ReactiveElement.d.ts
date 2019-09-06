@@ -7,7 +7,7 @@ import ShadowTemplateMixin from './ShadowTemplateMixin.js';
 
 interface HasSymbolsProperties {
   // Define an index signature so we can reference element properties
-  // indexed by the Symbols in symbols.js -- which we tell TypeScript
+  // indexed by the Symbols in internal.js -- which we tell TypeScript
   // are strings so that it will support the completely valid use of
   // unique symbols as keys.
   [key:string]: any;

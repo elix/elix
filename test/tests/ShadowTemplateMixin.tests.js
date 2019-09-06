@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import ShadowTemplateMixin from '../../src/ShadowTemplateMixin.js';
 
@@ -8,10 +8,10 @@ class ElementWithStringTemplate extends ShadowTemplateMixin(HTMLElement) {
 
   constructor() {
     super();
-    this[symbols.render]();
+    this[internal.render]();
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`<div id="message">Hello</div>`;
   }
 
@@ -26,10 +26,10 @@ class ElementWithRealTemplate extends ShadowTemplateMixin(HTMLElement) {
 
   constructor() {
     super();
-    this[symbols.render]();
+    this[internal.render]();
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return elementTemplate;
   }
 
@@ -43,10 +43,10 @@ class ElementWithCachedTemplate extends ShadowTemplateMixin(HTMLElement) {
 
   constructor() {
     super();
-    this[symbols.render]();
+    this[internal.render]();
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`${staticTemplateCount++}`;
   }
 
@@ -60,14 +60,14 @@ class ElementWithDynamicTemplate extends ShadowTemplateMixin(HTMLElement) {
 
   constructor() {
     super();
-    this[symbols.render]();
+    this[internal.render]();
   }
 
-  get [symbols.hasDynamicTemplate]() {
+  get [internal.hasDynamicTemplate]() {
     return true;
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`${dynamicTemplateCount++}`;
   }
 
@@ -99,10 +99,10 @@ describe("ShadowTemplateMixin", () => {
     assert.equal(fixture.shadowRoot.textContent.trim(), "Hello");
   });
 
-  it("generates this[symbols.$] references for shadow elements with 'id' attributes", () => {
+  it("generates this[internal.$] references for shadow elements with 'id' attributes", () => {
     const fixture = new ElementWithStringTemplate();
     const root = fixture.shadowRoot;
-    assert.equal(fixture[symbols.$].message, root.querySelector('#message'));
+    assert.equal(fixture[internal.$].message, root.querySelector('#message'));
   });
 
   it("caches the template for a component", () => {

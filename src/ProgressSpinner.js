@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import ReactiveElement from './ReactiveElement.js';
 
@@ -17,21 +17,21 @@ const rotations = 12;
  */
 class ProgressSpinner extends ReactiveElement {
 
-  [symbols.componentDidMount]() {
-    super[symbols.componentDidMount]();
+  [internal.componentDidMount]() {
+    super[internal.componentDidMount]();
     tick(this);
   }
 
-  [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
-    super[symbols.componentDidUpdate](changed);
+  [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
+    super[internal.componentDidUpdate](changed);
     if (changed.count ||
-        (changed.playing && this[symbols.state].playing)) {
+        (changed.playing && this[internal.state].playing)) {
       tick(this);
     }
   }
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       count: -1,
       playing: true
     });
@@ -44,22 +44,22 @@ class ProgressSpinner extends ReactiveElement {
    * @default true
    */
   get playing() {
-    return this[symbols.state].playing;
+    return this[internal.state].playing;
   }
   set playing(playing) {
-    this[symbols.setState]({ playing });
+    this[internal.setState]({ playing });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.count) {
       const step = 360 / rotations;
-      const angle = (this[symbols.state].count * step) % 360;
-      this[symbols.$].spinner.style.transform = `rotate(${angle}deg)`;
+      const angle = (this[internal.state].count * step) % 360;
+      this[internal.$].spinner.style.transform = `rotate(${angle}deg)`;
     }
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     // Spinner SVG created from https://dribbble.com/shots/958711-Free-vector-iOS-spinners.
     return template.html`
       <style>
@@ -79,11 +79,11 @@ class ProgressSpinner extends ReactiveElement {
 function tick(/** @type {ProgressSpinner} */ element) {
   // Complete a full rotation in a second (1000 milliseconds).
   const delay = 1000 / rotations;
-  if (element.isConnected && element[symbols.state].playing) {
+  if (element.isConnected && element[internal.state].playing) {
     setTimeout(() => {
       requestAnimationFrame(() => {
-        element[symbols.setState]({
-          count: element[symbols.state].count + 1
+        element[internal.setState]({
+          count: element[internal.state].count + 1
         });
       });
     }, delay);  

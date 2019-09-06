@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import DarkModeMixin from './DarkModeMixin.js';
 import SeamlessButton from './SeamlessButton.js';
@@ -21,17 +21,17 @@ const Base =
  */
 class ArrowDirectionButton extends Base {
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     // Wait for knowledge of dark mode to be set after initial render.
-    const { darkMode } = this[symbols.state];
+    const { darkMode } = this[internal.state];
     if (changed.darkMode && darkMode !== null) {
-      this[symbols.$].inner.classList.toggle('darkMode', darkMode);
+      this[internal.$].inner.classList.toggle('darkMode', darkMode);
     }
   }
 
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
+  get [internal.template]() {
+    return template.concat(super[internal.template], template.html`
       <style>
         #inner {
           color: rgba(0, 0, 0, 0.7);

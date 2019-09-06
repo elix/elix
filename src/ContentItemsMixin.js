@@ -1,5 +1,5 @@
 import { isSubstantiveElement } from './content.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -31,9 +31,9 @@ import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-un
 export default function ContentItemsMixin(Base) {
   return class ContentItems extends Base {
 
-    [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
-      if (changed.items && this[symbols.raiseChangeEvents]) {
+    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
+      if (super[internal.componentDidUpdate]) { super[internal.componentDidUpdate](changed); }
+      if (changed.items && this[internal.raiseChangeEvents]) {
         /**
          * Raised when the `items` property changes.
          * 
@@ -44,8 +44,8 @@ export default function ContentItemsMixin(Base) {
       }
     }
 
-    get [symbols.defaultState]() {
-      const state = Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      const state = Object.assign(super[internal.defaultState], {
         items: null
       });
 
@@ -58,7 +58,7 @@ export default function ContentItemsMixin(Base) {
           const items = content ?
             Array.prototype.filter.call(content, (/** @type {Node} */ item) =>
               (item instanceof HTMLElement || item instanceof SVGElement) ?
-                this[symbols.itemMatchesState](item, state) :
+                this[internal.itemMatchesState](item, state) :
                 false) :
             null;
           if (items) {
@@ -79,9 +79,9 @@ export default function ContentItemsMixin(Base) {
      * @param {PlainObject} state 
      * @returns {boolean}
      */
-    [symbols.itemMatchesState](item, state) {
-      const base = super[symbols.itemMatchesState] ?
-        super[symbols.itemMatchesState](item, state) :
+    [internal.itemMatchesState](item, state) {
+      const base = super[internal.itemMatchesState] ?
+        super[internal.itemMatchesState](item, state) :
         true;
       return base && isSubstantiveElement(item);
     }
@@ -92,7 +92,7 @@ export default function ContentItemsMixin(Base) {
      * @type {ListItemElement[]|null} the element's current items
      */
     get items() {
-      return this[symbols.state] ? this[symbols.state].items : null;
+      return this[internal.state] ? this[internal.state].items : null;
     }
 
   }

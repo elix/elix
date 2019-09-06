@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import FormElementMixin from '../../src/FormElementMixin.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
@@ -8,8 +8,8 @@ const formElementsSupported = 'ElementInternals' in window;
 
 class FormElementTest extends FormElementMixin(ReactiveElement) {
 
-  get [symbols.defaultState]() {
-    const result = Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    const result = Object.assign(super[internal.defaultState], {
       value: null
     });
 
@@ -26,10 +26,10 @@ class FormElementTest extends FormElementMixin(ReactiveElement) {
   }
 
   get value() {
-    return this[symbols.state].value;
+    return this[internal.state].value;
   }
   set value(value) {
-    this[symbols.setState]({
+    this[internal.setState]({
       value
     });
   }
@@ -71,7 +71,7 @@ customElements.define('form-element-test', FormElementTest);
     form.append(fixture);
     container.append(form, resultFrame);
     fixture.value = 'aardvark';
-    fixture[symbols.renderChanges]();
+    fixture[internal.renderChanges]();
     form.addEventListener('formdata', event => {
       assert(event.formData.get('animal'), 'aardvark');
       done();
@@ -81,10 +81,10 @@ customElements.define('form-element-test', FormElementTest);
 
   it('participates in validation', () => {
     const fixture = new FormElementTest();
-    fixture[symbols.renderChanges]();
+    fixture[internal.renderChanges]();
     assert(!fixture.checkValidity());
     fixture.value = 'bandicoot';
-    fixture[symbols.renderChanges]();
+    fixture[internal.renderChanges]();
     assert(fixture.checkValidity());
   });
 

@@ -8,56 +8,56 @@
   <title>Reactive web component example with subclassing</title>
 
   <script type="module">
-    import * as symbols from '../src/symbols.js';
+    import * as internal from '../src/internal.js';
     import * as template from '../src/template.js';
     import ReactiveElement from '../src/ReactiveElement.js';
 
     class IncrementDecrement extends ReactiveElement {
 
       get buttonRole() {
-        return this[symbols.state].button;
+        return this[internal.state].button;
       }
       set buttonRole(buttonRole) {
-        this[symbols.setState]({ buttonRole });
+        this[internal.setState]({ buttonRole });
       }
 
-      get [symbols.defaultState]() {
-        return Object.assign(super[symbols.defaultState], {
+      get [internal.defaultState]() {
+        return Object.assign(super[internal.defaultState], {
           buttonRole: 'button',
           value: 0
         });
       }
 
-      [symbols.render](changed) {
-        super[symbols.render](changed);
+      [internal.render](changed) {
+        super[internal.render](changed);
         if (changed.buttonRole) {
-          template.transmute(this[symbols.$].decrement, this[symbols.state].buttonRole);
-          this[symbols.$].decrement.addEventListener('click', () => {
+          template.transmute(this[internal.$].decrement, this[internal.state].buttonRole);
+          this[internal.$].decrement.addEventListener('click', () => {
             this.value--;
           });
-          template.transmute(this[symbols.$].increment, this[symbols.state].buttonRole);
-          this[symbols.$].increment.addEventListener('click', () => {
+          template.transmute(this[internal.$].increment, this[internal.state].buttonRole);
+          this[internal.$].increment.addEventListener('click', () => {
             this.value++;
           });
         }
         if (changed.value) {
-          const { value } = this[symbols.state];
+          const { value } = this[internal.state];
           this.style.color = value < 0 ? 'red' : null;
-          this[symbols.$].visibleValue.textContent = value;
+          this[internal.$].visibleValue.textContent = value;
         }
       }
 
       // Provide a public property that gets/sets state.
       get value() {
-        return this[symbols.state].value;
+        return this[internal.state].value;
       }
       set value(value) {
-        this[symbols.setState]({
+        this[internal.setState]({
           value: parseInt(value)
         });
       }
 
-      get [symbols.template]() {
+      get [internal.template]() {
         return template.html`
           <button id="decrement">-</button>
           <span id="visibleValue"></span>
@@ -71,7 +71,7 @@
 
 
     class CustomButton extends ReactiveElement {
-      get [symbols.template]() {
+      get [internal.template]() {
         return template.html`
           <style>
             button {
@@ -89,8 +89,8 @@
 
     class CustomIncrementDecrement extends IncrementDecrement {
 
-      get [symbols.defaultState]() {
-        return Object.assign(super[symbols.defaultState], {
+      get [internal.defaultState]() {
+        return Object.assign(super[internal.defaultState], {
           buttonRole: CustomButton
         });
       }

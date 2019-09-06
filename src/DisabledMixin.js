@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -13,20 +13,20 @@ export default function DisabledMixin(Base) {
   // The class prototype added by the mixin.
   class Disabled extends Base {
 
-    [symbols.componentDidMount]() {
-      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
+    [internal.componentDidMount]() {
+      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
       reflectDisabledAttribute(this);
     }
 
-    [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
+    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
+      if (super[internal.componentDidUpdate]) { super[internal.componentDidUpdate](changed); }
       if (changed.disabled) {
         reflectDisabledAttribute(this);
       }
     }
 
-    get [symbols.defaultState]() {
-      return Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      return Object.assign(super[internal.defaultState], {
         disabled: false
       });
     }
@@ -55,7 +55,7 @@ export default function DisabledMixin(Base) {
      * @default false
      */
     get disabled() {
-      return this[symbols.state].disabled;
+      return this[internal.state].disabled;
     }
     set disabled(disabled) {
       // If the supplied value is a boolean, we accept it directly. If the
@@ -67,9 +67,9 @@ export default function DisabledMixin(Base) {
       // Setting the disabled state will eventually cause the property value to
       // be reflected to the disabled attribute, which will invoke this setter
       // again -- this time, with a string value. That string value should get
-      // parsed the same way, so the second[symbols.setState] call shouldn't have any
+      // parsed the same way, so the second[internal.setState] call shouldn't have any
       // effect.
-      this[symbols.setState]({
+      this[internal.setState]({
         disabled: parsed
       });
     }

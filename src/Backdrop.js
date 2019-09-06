@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import AriaRoleMixin from './AriaRoleMixin.js';
 import ReactiveElement from './ReactiveElement.js';
@@ -22,13 +22,13 @@ const Base =
  */
 class Backdrop extends Base {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       role: 'none'
     });
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

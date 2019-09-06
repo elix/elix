@@ -1,11 +1,11 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import SeamlessButton from '../../src/SeamlessButton.js';
 
 
 class CustomArrowButton extends SeamlessButton {
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

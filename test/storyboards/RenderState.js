@@ -1,5 +1,5 @@
 import { substantiveElements } from '../../src/content.js';
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 import SlotContentMixin from '../../src/SlotContentMixin.js';
@@ -13,8 +13,8 @@ const Base =
 
 class RenderState extends Base {
 
-  get [symbols.defaultState]() {
-    const result = Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    const result = Object.assign(super[internal.defaultState], {
       fixture: null,
       fixtureState: {}
     });
@@ -48,49 +48,49 @@ class RenderState extends Base {
     return result;
   }
 
-  get [symbols.contentSlot]() {
-    return this[symbols.$].fixtureSlot;
+  get [internal.contentSlot]() {
+    return this[internal.$].fixtureSlot;
   }
 
   get fixture() {
-    return this[symbols.state].fixture;
+    return this[internal.state].fixture;
   }
 
   get fixtureState() {
-    return this[symbols.state].fixtureState;
+    return this[internal.state].fixtureState;
   }
   set fixtureState(fixtureState) {
     const parsed = typeof fixtureState === 'string' ?
       JSON.parse(fixtureState) :
       fixtureState;
-    this[symbols.setState]({
+    this[internal.setState]({
       fixtureState: parsed
     });
   }
 
-  [symbols.render](changed) {
-    if (super[symbols.render]) { super[symbols.render](changed); }
+  [internal.render](changed) {
+    if (super[internal.render]) { super[internal.render](changed); }
     if (changed.fixture || changed.fixtureState) {
-      const { fixture, fixtureState } = this[symbols.state];
+      const { fixture, fixtureState } = this[internal.state];
       if (fixture && fixtureState) {
         customElements.whenDefined(fixture.localName)
         .then(() => {
           // Wait for fixture to do its initial render.
-          return fixture[symbols.setState]({});
+          return fixture[internal.setState]({});
         })
         .then(() => {
           // Force an update of the fixture's state.
-          fixture[symbols.setState](fixtureState);
+          fixture[internal.setState](fixtureState);
         });
       }
       const textContent = Object.keys(fixtureState).length > 0 ?
         JSON.stringify(fixtureState, null, 2) :
         '';
-      this[symbols.$].fixtureState.textContent = textContent;
+      this[internal.$].fixtureState.textContent = textContent;
     }
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

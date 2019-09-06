@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import EffectMixin from './EffectMixin.js';
 import Modes from './Modes.js';
@@ -22,14 +22,14 @@ const Base =
  */
 class CrossfadeStage extends Base {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       transitionDuration: 750 // 3/4 of a second
     });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.enableEffects || changed.rightToLeft || changed.items ||
         changed.selectedIndex || changed.swipeFraction || changed.transitionDuration) {
       // Apply opacity based on selection state.
@@ -40,7 +40,7 @@ class CrossfadeStage extends Base {
         selectedIndex,
         swipeFraction,
         transitionDuration
-      } = this[symbols.state];
+      } = this[internal.state];
       if (items) {
         const sign = rightToLeft ? 1 : -1;
         const swiping = swipeFraction != null;
@@ -62,21 +62,21 @@ class CrossfadeStage extends Base {
   }
 
   get swipeFraction() {
-    return this[symbols.state].swipeFraction;
+    return this[internal.state].swipeFraction;
   }
   set swipeFraction(swipeFraction) {
-    this[symbols.setState]({ swipeFraction });
+    this[internal.setState]({ swipeFraction });
   }
 
   get transitionDuration() {
-    return this[symbols.state].transitionDuration;
+    return this[internal.state].transitionDuration;
   }
   set transitionDuration(transitionDuration) {
-    this[symbols.setState]({ transitionDuration });
+    this[internal.setState]({ transitionDuration });
   }
 
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
+  get [internal.template]() {
+    return template.concat(super[internal.template], template.html`
       <style>
         #modesContainer {
           display: grid;

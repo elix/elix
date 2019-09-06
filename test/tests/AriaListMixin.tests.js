@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import AriaListMixin from '../../src/AriaListMixin.js';
 import ContentItemsMixin from '../../src/ContentItemsMixin.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
@@ -10,7 +10,7 @@ class AriaListTest extends
   connectedCallback() {
     if (super.connectedCallback) { super.connectedCallback(); }
     const content = [...this.children];
-    this[symbols.setState]({ content });
+    this[internal.setState]({ content });
   }
 
 }
@@ -54,11 +54,11 @@ describe("AriaListMixin", () => {
     const item2 = document.createElement('div');
     fixture.appendChild(item2);
     container.appendChild(fixture);
-    await fixture[symbols.setState]({ selectedIndex: 0 });
+    await fixture[internal.setState]({ selectedIndex: 0 });
     assert.equal(fixture.getAttribute('aria-activedescendant'), item1.id);
     assert.equal(item1.getAttribute('aria-selected'), 'true');
     assert.equal(item2.getAttribute('aria-selected'), 'false');
-    await fixture[symbols.setState]({ selectedIndex: 1 });
+    await fixture[internal.setState]({ selectedIndex: 1 });
     assert.equal(fixture.getAttribute('aria-activedescendant'), item2.id);
     assert.equal(item1.getAttribute('aria-selected'), 'false');
     assert.equal(item2.getAttribute('aria-selected'), 'true');
@@ -66,7 +66,7 @@ describe("AriaListMixin", () => {
 
   it("assigns a default role of 'listbox'", () => {
     const fixture = new AriaListTest();
-    fixture[symbols.renderChanges]();
+    fixture[internal.renderChanges]();
     assert.equal(fixture.getAttribute('role'), 'listbox');
   });
 

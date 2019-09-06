@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import CalendarDay from '../../src/CalendarDay.js';
 
@@ -14,8 +14,8 @@ import CalendarDay from '../../src/CalendarDay.js';
  */
 class CalendarDayMoonPhase extends CalendarDay {
 
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
+  get [internal.template]() {
+    return template.concat(super[internal.template], template.html`
       <style>
         #phaseIcon {
           height: 1.5em;
@@ -30,12 +30,12 @@ class CalendarDayMoonPhase extends CalendarDay {
     `);
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.date) {
       // To determine quarter, we compare the moon's angle at midnight on the
       // given date with the angle at midnight on the following date.
-      const date = this[symbols.state].date;
+      const date = this[internal.state].date;
       const angle = moonAngle(date);
       const dateNext = new Date(date.getTime());
       dateNext.setDate(dateNext.getDate() + 1); // Increment date.
@@ -56,7 +56,7 @@ class CalendarDayMoonPhase extends CalendarDay {
       }
 
       // Show or hide an icon as appropriate.
-      const phaseIcon = /** @type {HTMLImageElement} */ (this[symbols.$].phaseIcon);
+      const phaseIcon = /** @type {HTMLImageElement} */ (this[internal.$].phaseIcon);
       if (quarter) {
         phaseIcon.src = `images/moon/${quarter}.svg`
       } else {

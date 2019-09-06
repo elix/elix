@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
@@ -14,47 +14,47 @@ export default function SwipeCommandsMixin(Base) {
   // The class prototype added by the mixin.
   return class SwipeCommands extends Base {
 
-    [symbols.componentDidMount]() {
-      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
+    [internal.componentDidMount]() {
+      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
       // When a transition on the left/right command container ends, let the
       // component know so that it can perform any operation that should follow
       // the end of the transition. E.g., a Delete swipe command would want to
       // wait until the transition has finished before removing the item.
-      this[symbols.$].leftCommandContainer.addEventListener('transitionend', () => {
-        if (this[symbols.state].swipeRightCommitted && this[symbols.swipeRightTransitionEnd]) {
-          this[symbols.swipeRightTransitionEnd]();
+      this[internal.$].leftCommandContainer.addEventListener('transitionend', () => {
+        if (this[internal.state].swipeRightCommitted && this[internal.swipeRightTransitionEnd]) {
+          this[internal.swipeRightTransitionEnd]();
         }
         // Now that the swipe has finished, reset remaining swipe-related state.
-        this[symbols.setState]({
+        this[internal.setState]({
           swipeItem: null,
           swipeRightCommitted: false
         });
       });
-      this[symbols.$].rightCommandContainer.addEventListener('transitionend', () => {
-        if (this[symbols.state].swipeLeftCommitted && this[symbols.swipeLeftTransitionEnd]) {
-          this[symbols.swipeLeftTransitionEnd]();
+      this[internal.$].rightCommandContainer.addEventListener('transitionend', () => {
+        if (this[internal.state].swipeLeftCommitted && this[internal.swipeLeftTransitionEnd]) {
+          this[internal.swipeLeftTransitionEnd]();
         }
         // Now that the swipe has finished, reset remaining swipe-related state.
-        this[symbols.setState]({
+        this[internal.setState]({
           swipeItem: null,
           swipeLeftCommitted: false
         });
       });
     }
 
-    [symbols.componentDidUpdate](/** @typeof {PlainObject} */ changed) {
-      super[symbols.componentDidUpdate](changed);
+    [internal.componentDidUpdate](/** @typeof {PlainObject} */ changed) {
+      super[internal.componentDidUpdate](changed);
       // Vibrate if the user is currently swiping and has just triggered a change
       // in the commit-ability of a command.
       if ((changed.swipeLeftWillCommit || changed.swipeRightWillCommit) &&
           'vibrate' in navigator &&
-          this[symbols.state].swipeFraction !== null) {
+          this[internal.state].swipeFraction !== null) {
         navigator.vibrate(5);
       }
     }
 
-    get [symbols.defaultState]() {
-      return Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      return Object.assign(super[internal.defaultState], {
         swipeLeftCommitted: false,
         swipeLeftFollowsThrough: false,
         swipeLeftRemovesItem: false,
@@ -64,11 +64,11 @@ export default function SwipeCommandsMixin(Base) {
       });
     }
     
-    [symbols.render](/** @type {PlainObject} */ changed) {
-      super[symbols.render](changed);
+    [internal.render](/** @type {PlainObject} */ changed) {
+      super[internal.render](changed);
       if (changed.enableEffects || changed.swipeItem || changed.swipeFraction) {
-        const { swipeItem, swipeFraction } = this[symbols.state];
-        const { leftCommandContainer, rightCommandContainer } = this[symbols.$];
+        const { swipeItem, swipeFraction } = this[internal.state];
+        const { leftCommandContainer, rightCommandContainer } = this[internal.$];
         const swiping = swipeFraction !== null;
         if (swipeItem && swiping) {
           // Currently swiping left/right on an item.
@@ -125,7 +125,7 @@ export default function SwipeCommandsMixin(Base) {
             swipeRightCommitted,
             swipeRightFollowsThrough,
             swipeRightRemovesItem
-          } = this[symbols.state];
+          } = this[internal.state];
           const followThroughLeft = swipeLeftCommitted && swipeLeftFollowsThrough;
           const followThroughRight = swipeRightCommitted && swipeRightFollowsThrough;
           const containerTransition = 'height 0.25s, width 0.25s';
@@ -176,34 +176,34 @@ export default function SwipeCommandsMixin(Base) {
     // If the user swipes left, we need to keep track of that fact -- we may
     // want to wait until after the animated swipe transition has completed to
     // do work, and by that point the original swipe state will have been reset.
-    [symbols.swipeLeft]() {
-      if (super[symbols.swipeLeft]) { super[symbols.swipeLeft](); }
-      this[symbols.setState]({
+    [internal.swipeLeft]() {
+      if (super[internal.swipeLeft]) { super[internal.swipeLeft](); }
+      this[internal.setState]({
         swipeLeftCommitted: true
       });
     }
 
     // See note for swipeLeft.
-    [symbols.swipeRight]() {
-      if (super[symbols.swipeRight]) { super[symbols.swipeRight](); }
-      this[symbols.setState]({
+    [internal.swipeRight]() {
+      if (super[internal.swipeRight]) { super[internal.swipeRight](); }
+      this[internal.setState]({
         swipeRightCommitted: true
       });
     }
 
-    [symbols.swipeStart](clientX, clientY) {
-      if (super[symbols.swipeStart]) { super[symbols.swipeStart](clientX, clientY); }
+    [internal.swipeStart](clientX, clientY) {
+      if (super[internal.swipeStart]) { super[internal.swipeStart](clientX, clientY); }
       // Determine which item is being swiped given the starting Y coordinate.
-      const swipeItem = getItemAtY(this[symbols.state].items, clientY);
+      const swipeItem = getItemAtY(this[internal.state].items, clientY);
       if (swipeItem) {
-        this[symbols.setState]({
+        this[internal.setState]({
           swipeItem
         });
       }
     }
 
-    get [symbols.template]() {
-      return template.concat(super[symbols.template], template.html`
+    get [internal.template]() {
+      return template.concat(super[internal.template], template.html`
         <style>
           ::slotted(*) {
             box-sizing: border-box;

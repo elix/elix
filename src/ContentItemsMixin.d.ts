@@ -3,12 +3,12 @@
 
 /// <reference path="shared.d.ts"/>
 
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 
 declare const ContentItemsMixin: StateMixin<{}, {},
   {
     items: ListItemElement[];
-    [symbols.itemMatchesState](item: ListItemElement, state: PlainObject): boolean;
+    [internal.itemMatchesState](item: ListItemElement, state: PlainObject): boolean;
   },
   {
     items: ListItemElement[];

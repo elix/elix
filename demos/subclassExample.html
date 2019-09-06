@@ -14,49 +14,49 @@
   </template>
 
   <script type="module">
-    import * as symbols from '../src/symbols.js';
+    import * as internal from '../src/internal.js';
     import * as template from '../src/template.js';
     import ReactiveElement from '../src/ReactiveElement.js';
 
     class IncrementDecrement extends ReactiveElement {
 
-      [symbols.componentDidMount]() {
-        if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
-        this[symbols.$].decrement.addEventListener('click', () => {
+      [internal.componentDidMount]() {
+        if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
+        this[internal.$].decrement.addEventListener('click', () => {
           this.value--;
         });
-        this[symbols.$].increment.addEventListener('click', () => {
+        this[internal.$].increment.addEventListener('click', () => {
           this.value++;
         });
       }
 
-      // This property becomes the value of this[symbols.state] at constructor time.
-      get [symbols.defaultState]() {
-        return Object.assign(super[symbols.defaultState], {
+      // This property becomes the value of this[internal.state] at constructor time.
+      get [internal.defaultState]() {
+        return Object.assign(super[internal.defaultState], {
           value: 0
         });
       }
 
       // When state changes, render updates to the DOM.
-      [symbols.render](changed) {
-        super[symbols.render](changed);
+      [internal.render](changed) {
+        super[internal.render](changed);
         if (changed.value) {
-          const { value } = this[symbols.state];
+          const { value } = this[internal.state];
           this.style.color = value < 0 ? 'red' : null;
-          this[symbols.$].visibleValue.textContent = value;
+          this[internal.$].visibleValue.textContent = value;
         }
       }
 
-      get [symbols.template]() {
+      get [internal.template]() {
         return incrementDecrementTemplate;
       }
 
       // Provide a public property that gets/sets state.
       get value() {
-        return this[symbols.state].value;
+        return this[internal.state].value;
       }
       set value(value) {
-        this[symbols.setState]({
+        this[internal.setState]({
           value: parseInt(value)
         });
       }
@@ -68,8 +68,8 @@
 
     class CustomIncrementDecrement extends IncrementDecrement {
 
-      get [symbols.template]() {
-        return template.concat(super[symbols.template], template.html`
+      get [internal.template]() {
+        return template.concat(super[internal.template], template.html`
           <style>
             :host {
               background: lightgray;
@@ -91,15 +91,15 @@
         `);
       }
 
-      [symbols.render](changed) {
-        super[symbols.render](changed);
+      [internal.render](changed) {
+        super[internal.render](changed);
         if (changed.value) {
-          const { value } = this[symbols.state];
+          const { value } = this[internal.state];
           if (value > 0) {
             this.style.color = 'dodgerblue';
           }
-          this[symbols.$].decrement.disabled = value <= -5;
-          this[symbols.$].increment.disabled = value >= 5;
+          this[internal.$].decrement.disabled = value <= -5;
+          this[internal.$].increment.disabled = value >= 5;
         }
       }
 

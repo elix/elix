@@ -1,5 +1,5 @@
 import { deepContains, indexOfItemContainingTarget } from './utilities.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import Menu from './Menu.js';
 import PopupButton from './PopupButton.js';
@@ -16,20 +16,20 @@ const documentMouseupListenerKey = Symbol('documentMouseupListener');
  */
 class MenuButton extends PopupButton {
 
-  [symbols.componentDidMount]() {
-    super[symbols.componentDidMount]();
+  [internal.componentDidMount]() {
+    super[internal.componentDidMount]();
 
     // If the user hovers over an item, select it.
     this.addEventListener('mousemove', event => {
       const target = event.target;
       if (target && target instanceof Node) {
         const hoverIndex = indexOfItemContainingTarget(this.items, target);
-        if (hoverIndex !== this[symbols.state].menuSelectedIndex) {
-          this[symbols.raiseChangeEvents] = true;
-          this[symbols.setState]({
+        if (hoverIndex !== this[internal.state].menuSelectedIndex) {
+          this[internal.raiseChangeEvents] = true;
+          this[internal.setState]({
             menuSelectedIndex: hoverIndex
           });
-          this[symbols.raiseChangeEvents] = false;
+          this[internal.raiseChangeEvents] = false;
         }
       }
     });
@@ -50,21 +50,21 @@ class MenuButton extends PopupButton {
     /** @type {any} */ const cast = this;
     cast[documentMouseupListenerKey] = handleMouseup.bind(this);
 
-    if (this[symbols.state].opened) {
+    if (this[internal.state].opened) {
       addDocumentListeners(this);
     }
   }
 
-  [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
-    super[symbols.componentDidUpdate](changed);
+  [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
+    super[internal.componentDidUpdate](changed);
     if (changed.menuSelectedIndex) {
-      const selectedItem = this[symbols.state].menuSelectedIndex >= 0 ?
-        this.items[this[symbols.state].menuSelectedIndex] :
+      const selectedItem = this[internal.state].menuSelectedIndex >= 0 ?
+        this.items[this[internal.state].menuSelectedIndex] :
         null;
       this.itemSelected(selectedItem);
     }
     if (changed.opened) {
-      if (this[symbols.state].opened) {
+      if (this[internal.state].opened) {
         addDocumentListeners(this);
       } else {
         removeDocumentListeners(this);
@@ -77,8 +77,8 @@ class MenuButton extends PopupButton {
     return -1;
   }
 
-  get [symbols.defaultState]() {
-    const state = Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    const state = Object.assign(super[internal.defaultState], {
       dragSelect: true,
       menuRole: Menu,
       menuSelectedIndex: -1,
@@ -128,24 +128,24 @@ class MenuButton extends PopupButton {
    * Highlight the selected item (if one exists), then close the menu.
    */
   async highlightSelectedItemAndClose() {
-    const raiseChangeEvents = this[symbols.raiseChangeEvents];
-    const selectionDefined = this[symbols.state].menuSelectedIndex >= 0;
+    const raiseChangeEvents = this[internal.raiseChangeEvents];
+    const selectionDefined = this[internal.state].menuSelectedIndex >= 0;
     const closeResult = selectionDefined ?
-      this.items[this[symbols.state].menuSelectedIndex] :
+      this.items[this[internal.state].menuSelectedIndex] :
       undefined;
-    /** @type {any} */ const menu = this[symbols.$].menu;
+    /** @type {any} */ const menu = this[internal.$].menu;
     if (selectionDefined && 'highlightSelectedItem' in menu) {
       await menu.highlightSelectedItem();
     }
-    const saveRaiseChangeEvents = this[symbols.raiseChangeEvents];
-    this[symbols.raiseChangeEvents] = raiseChangeEvents;
+    const saveRaiseChangeEvents = this[internal.raiseChangeEvents];
+    this[internal.raiseChangeEvents] = raiseChangeEvents;
     await this.close(closeResult);
-    this[symbols.raiseChangeEvents] = saveRaiseChangeEvents;
+    this[internal.raiseChangeEvents] = saveRaiseChangeEvents;
   }
 
   get items() {
     /** @type {any} */
-    const menu = this[symbols.$] && this[symbols.$].menu;
+    const menu = this[internal.$] && this[internal.$].menu;
     return menu ? menu.items : null;
   }
 
@@ -155,7 +155,7 @@ class MenuButton extends PopupButton {
    * @param {ListItemElement} item
    */
   itemSelected(item) {
-    if (this[symbols.raiseChangeEvents]) {
+    if (this[internal.raiseChangeEvents]) {
       /**
        * Raised when the user has moved the selection to a new menu item. This
        * event is raised while the menu is still open. To check which item the
@@ -173,7 +173,7 @@ class MenuButton extends PopupButton {
     }
   }
 
-    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
+    [internal.keydown](/** @type {KeyboardEvent} */ event) {
 
     switch (event.key) {
       // When open, Enter closes popup.
@@ -185,7 +185,7 @@ class MenuButton extends PopupButton {
     }
 
     // Give superclass a chance to handle.
-    const base = super[symbols.keydown] && super[symbols.keydown](event);
+    const base = super[internal.keydown] && super[internal.keydown](event);
     if (base) {
       return true;
     }
@@ -221,29 +221,29 @@ class MenuButton extends PopupButton {
    * @default Menu
    */
   get menuRole() {
-    return this[symbols.state].menuRole;
+    return this[internal.state].menuRole;
   }
   set menuRole(menuRole) {
-    this[symbols.setState]({ menuRole });
+    this[internal.setState]({ menuRole });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.popupRole) {
-      this[symbols.$].popup.tabIndex = -1;
+      this[internal.$].popup.tabIndex = -1;
     }
     if (changed.menuRole) {
-      template.transmute(this[symbols.$].menu, this[symbols.state].menuRole);
+      template.transmute(this[internal.$].menu, this[internal.state].menuRole);
 
       // Close the popup if menu loses focus.
-      this[symbols.$].menu.addEventListener('blur', async (event) => {
+      this[internal.$].menu.addEventListener('blur', async (event) => {
         /** @type {any} */
         const cast = event;
         const newFocusedElement = cast.relatedTarget || document.activeElement;
-        if (this.opened && !deepContains(this[symbols.$].menu, newFocusedElement)) {
-          this[symbols.raiseChangeEvents] = true;
+        if (this.opened && !deepContains(this[internal.$].menu, newFocusedElement)) {
+          this[internal.raiseChangeEvents] = true;
           await this.close();
-          this[symbols.raiseChangeEvents] = false;
+          this[internal.raiseChangeEvents] = false;
         }
       });
 
@@ -252,7 +252,7 @@ class MenuButton extends PopupButton {
       // both to permit keyboard use, and to avoid closing the menu on blur (see
       // separate blur handler). To keep the focus on the menu, we prevent the
       // default event behavior.
-      this[symbols.$].menu.addEventListener('mousedown', event => {
+      this[internal.$].menu.addEventListener('mousedown', event => {
         if (this.opened) {
           event.stopPropagation();
           event.preventDefault();
@@ -261,49 +261,49 @@ class MenuButton extends PopupButton {
 
       // If the user mouses up on a menu item, close the menu with that item as
       // the close result.
-      this[symbols.$].menu.addEventListener('mouseup', async (event) => {
+      this[internal.$].menu.addEventListener('mouseup', async (event) => {
         // If we're doing a drag-select (user moused down on button, dragged
         // mouse into menu, and released), we close. If we're not doing a
         // drag-select (the user opened the menu with a complete click), and
         // there's a selection, they clicked on an item, so also close.
         // Otherwise, the user clicked the menu open, then clicked on a menu
         // separator or menu padding; stay open.
-        const menuSelectedIndex = this[symbols.state].menuSelectedIndex;
-        if (this[symbols.state].dragSelect || menuSelectedIndex >= 0) {
+        const menuSelectedIndex = this[internal.state].menuSelectedIndex;
+        if (this[internal.state].dragSelect || menuSelectedIndex >= 0) {
           // We don't want the document mouseup handler to close
           // before we've asked the menu to highlight the selection.
           // We need to stop event propagation here, before we enter
           // any async code, to actually stop propagation.
           event.stopPropagation();
-          this[symbols.raiseChangeEvents] = true;
+          this[internal.raiseChangeEvents] = true;
           await this.highlightSelectedItemAndClose();
-          this[symbols.raiseChangeEvents] = false;
+          this[internal.raiseChangeEvents] = false;
         } else {
           event.stopPropagation();
         }
       });
 
       // Track changes in the menu's selection state.
-      this[symbols.$].menu.addEventListener('selected-index-changed', event => {
-        this[symbols.raiseChangeEvents] = true;
+      this[internal.$].menu.addEventListener('selected-index-changed', event => {
+        this[internal.raiseChangeEvents] = true;
         /** @type {any} */
         const cast = event;
-        this[symbols.setState]({
+        this[internal.setState]({
           menuSelectedIndex: cast.detail.selectedIndex
         });
-        this[symbols.raiseChangeEvents] = false;
+        this[internal.raiseChangeEvents] = false;
       });
     }
     if (changed.menuSelectedIndex) {
-      const menu = /** @type {any} */ (this[symbols.$].menu);
+      const menu = /** @type {any} */ (this[internal.$].menu);
       if ('selectedIndex' in menu) {
-        menu.selectedIndex = this[symbols.state].menuSelectedIndex;
+        menu.selectedIndex = this[internal.state].menuSelectedIndex;
       }
     }
   }
 
-  get [symbols.template]() {
-    const base = super[symbols.template];
+  get [internal.template]() {
+    const base = super[internal.template];
 
     // Wrap default slot with a menu.
     const menuTemplate = template.html`
@@ -368,24 +368,24 @@ async function handleMouseup (/** @type {MouseEvent} */ event) {
   // @ts-ignore
   const element = this;
   const hitTargets = element.shadowRoot.elementsFromPoint(event.clientX, event.clientY);
-  const overSource = hitTargets.indexOf(element[symbols.$].source) >= 0;
+  const overSource = hitTargets.indexOf(element[internal.$].source) >= 0;
   if (element.opened) {
     if (overSource) {
       // User released the mouse over the source button (behind the
       // backdrop), so we're no longer doing a drag-select.
-      if (element[symbols.state].dragSelect) {
-        element[symbols.raiseChangeEvents] = true;
-        element[symbols.setState]({
+      if (element[internal.state].dragSelect) {
+        element[internal.raiseChangeEvents] = true;
+        element[internal.setState]({
           dragSelect: false
         });
-        element[symbols.raiseChangeEvents] = false;
+        element[internal.raiseChangeEvents] = false;
       }
     } else {
       // If we get to this point, the user released over the backdrop with
       // the popup open, so close.
-      element[symbols.raiseChangeEvents] = true;
+      element[internal.raiseChangeEvents] = true;
       await element.close();
-      element[symbols.raiseChangeEvents] = false;
+      element[internal.raiseChangeEvents] = false;
     }
   }
 }

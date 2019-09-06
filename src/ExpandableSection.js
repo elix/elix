@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import AriaRoleMixin from './AriaRoleMixin.js';
 import ExpandablePanel from './ExpandablePanel.js';
@@ -25,8 +25,8 @@ const Base =
  */
 class ExpandableSection extends Base {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       headerRole: SeamlessButton,
       panelRole: ExpandablePanel,
       role: 'region'
@@ -40,10 +40,10 @@ class ExpandableSection extends Base {
    * @default SeamlessButton
    */
   get headerRole() {
-    return this[symbols.state].headerRole;
+    return this[internal.state].headerRole;
   }
   set headerRole(headerRole) {
-    this[symbols.setState]({ headerRole });
+    this[internal.setState]({ headerRole });
   }
 
   /**
@@ -53,41 +53,41 @@ class ExpandableSection extends Base {
    * @default ExpandablePanel
    */
   get panelRole() {
-    return this[symbols.state].panelRole;
+    return this[internal.state].panelRole;
   }
   set panelRole(panelRole) {
-    this[symbols.setState]({ panelRole });
+    this[internal.setState]({ panelRole });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.headerRole) {
-      template.transmute(this[symbols.$].header, this[symbols.state].headerRole);
-      this[symbols.$].header.addEventListener('click', () => {
-        this[symbols.raiseChangeEvents] = true;
+      template.transmute(this[internal.$].header, this[internal.state].headerRole);
+      this[internal.$].header.addEventListener('click', () => {
+        this[internal.raiseChangeEvents] = true;
         this.toggle();
-        this[symbols.raiseChangeEvents] = false;
+        this[internal.raiseChangeEvents] = false;
       });
     }
     if (changed.panelRole) {
-      template.transmute(this[symbols.$].panel, this[symbols.state].panelRole);
+      template.transmute(this[internal.$].panel, this[internal.state].panelRole);
     }
     if (changed.opened) {
-      const { opened } = this[symbols.state];
-      this[symbols.$].header.setAttribute('aria-expanded', opened.toString());
-      if (this[symbols.$].collapseIcon) {
-        this[symbols.$].collapseIcon.style.display = opened ? 'block' : 'none';
+      const { opened } = this[internal.state];
+      this[internal.$].header.setAttribute('aria-expanded', opened.toString());
+      if (this[internal.$].collapseIcon) {
+        this[internal.$].collapseIcon.style.display = opened ? 'block' : 'none';
       }
-      if (this[symbols.$].expandIcon) {
-        this[symbols.$].expandIcon.style.display = opened ? 'none' : 'block';
+      if (this[internal.$].expandIcon) {
+        this[internal.$].expandIcon.style.display = opened ? 'none' : 'block';
       }
-      if ('opened' in this[symbols.$].panel) {
-        /** @type {any} */ (this[symbols.$].panel).opened = opened;
+      if ('opened' in this[internal.$].panel) {
+        /** @type {any} */ (this[internal.$].panel).opened = opened;
       }
     }
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     // Default expand/collapse icons from Google's Material Design collection.
     return template.html`
       <style>

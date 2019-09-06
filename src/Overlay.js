@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import Backdrop from './Backdrop.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
@@ -48,7 +48,7 @@ const Base =
 class Overlay extends Base {
 
   get backdrop() {
-    return this[symbols.$] && this[symbols.$].backdrop;
+    return this[internal.$] && this[internal.$].backdrop;
   }
 
   /**
@@ -64,33 +64,33 @@ class Overlay extends Base {
    * @default Backdrop
    */
   get backdropRole() {
-    return this[symbols.state].backdropRole;
+    return this[internal.state].backdropRole;
   }
   set backdropRole(backdropRole) {
-    this[symbols.setState]({ backdropRole });
+    this[internal.setState]({ backdropRole });
   }
 
-  [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
-    super[symbols.componentDidUpdate](changed);
-    if (changed.opened && this[symbols.state].content) {
+  [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
+    super[internal.componentDidUpdate](changed);
+    if (changed.opened && this[internal.state].content) {
       // If contents know how to size themselves, ask them to check their size.
-      this[symbols.state].content.forEach(element => {
-        if (element[symbols.checkSize]) {
-          element[symbols.checkSize]();
+      this[internal.state].content.forEach(element => {
+        if (element[internal.checkSize]) {
+          element[internal.checkSize]();
         }
       });
     }
   }
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       backdropRole: Backdrop,
       frameRole: OverlayFrame
     });
   }
 
   get frame() {
-    return this[symbols.$].frame;
+    return this[internal.$].frame;
   }
 
   /**
@@ -104,23 +104,23 @@ class Overlay extends Base {
    * @default OverlayFrame
    */
   get frameRole() {
-    return this[symbols.state].frameRole;
+    return this[internal.state].frameRole;
   }
   set frameRole(frameRole) {
-    this[symbols.setState]({ frameRole });
+    this[internal.setState]({ frameRole });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.backdropRole) {
-      template.transmute(this[symbols.$].backdrop, this[symbols.state].backdropRole);
+      template.transmute(this[internal.$].backdrop, this[internal.state].backdropRole);
     }
     if (changed.frameRole) {
-      template.transmute(this[symbols.$].frame, this[symbols.state].frameRole);
+      template.transmute(this[internal.$].frame, this[internal.state].frameRole);
     }
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

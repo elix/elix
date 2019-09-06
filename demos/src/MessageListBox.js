@@ -1,6 +1,6 @@
 import './AnimateAlignment.js';
 import { applyChildNodes } from '../../src/utilities.js';
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import EffectMixin from '../../src/EffectMixin.js';
 import ListBox from '../../src/ListBox.js';
@@ -24,8 +24,8 @@ const Base =
  */
 export default class MessageListBox extends Base {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       // The Delete command removes an item, and we also want a swipe to Delete to
       // follow through: the leftward animation will continue all the way to the
       // left after the user completes the gesture.
@@ -37,7 +37,7 @@ export default class MessageListBox extends Base {
   // To show how keyboard support can coexist with swipe commands, we define
   // the Space key as a shortcut for Mark Read/Unread and the Delete key as a
   // shortcut for the Delete command.
-  [symbols.keydown](/** @type {KeyboardEvent} */ event) {
+  [internal.keydown](/** @type {KeyboardEvent} */ event) {
     let handled = false;
     const selectedItem = this.selectedItem;
 
@@ -60,24 +60,24 @@ export default class MessageListBox extends Base {
     }
 
     // Prefer our result if it's defined, otherwise use base result.
-    return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
+    return handled || (super[internal.keydown] && super[internal.keydown](event)) || false;
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
+  [internal.render](changed) {
+    super[internal.render](changed);
 
     // Our Mark Read/Unread command can show one of two different icons and
     // labels to indicate the read/unread state that will result if the user
     // ends the swipe at that point.
     if (changed.swipeItem || changed.swipeRightWillCommit) {
-      const { swipeItem, swipeRightCommitted, swipeRightWillCommit } = this[symbols.state];
+      const { swipeItem, swipeRightCommitted, swipeRightWillCommit } = this[internal.state];
       if (swipeItem && 'read' in swipeItem) {
         const read = swipeItem.read;
         const newRead = swipeRightCommitted || swipeRightWillCommit ?
           !read :
           read;
-        this[symbols.$].readIconWithLabel.style.display = newRead ? '' : 'none';
-        this[symbols.$].unreadIconWithLabel.style.display = newRead ? 'none' : '';
+        this[internal.$].readIconWithLabel.style.display = newRead ? '' : 'none';
+        this[internal.$].unreadIconWithLabel.style.display = newRead ? 'none' : '';
       }
     }
 
@@ -85,14 +85,14 @@ export default class MessageListBox extends Base {
     // transition between left and right alignment. We use this alignment to
     // signal the point at which releasing the swipe would commit the command.
     if (changed.swipeRightCommitted || changed.swipeRightWillCommit) {
-      /** @type {any} */ (this[symbols.$].unreadCommand).align =
-        this[symbols.state].swipeRightCommitted || this[symbols.state].swipeRightWillCommit ?
+      /** @type {any} */ (this[internal.$].unreadCommand).align =
+        this[internal.state].swipeRightCommitted || this[internal.state].swipeRightWillCommit ?
           'right' :
           'left';
     }
     if (changed.swipeLeftCommitted || changed.swipeLeftWillCommit) {
-      /** @type {any} */ (this[symbols.$].deleteCommand).align =
-        this[symbols.state].swipeLeftCommitted || this[symbols.state].swipeLeftWillCommit ?
+      /** @type {any} */ (this[internal.$].deleteCommand).align =
+        this[internal.state].swipeLeftCommitted || this[internal.state].swipeLeftWillCommit ?
           'left' :
           'right';
     }
@@ -101,23 +101,23 @@ export default class MessageListBox extends Base {
   // A swipe left indicates we should perform the Delete command. We want to
   // wait until the left swipe animation has completed before excuting the
   // deletion.
-  [symbols.swipeLeftTransitionEnd]() {
-    if (super[symbols.swipeLeftTransitionEnd]) { super[symbols.swipeLeftTransitionEnd](); }
-    this[symbols.state].swipeItem.remove();
+  [internal.swipeLeftTransitionEnd]() {
+    if (super[internal.swipeLeftTransitionEnd]) { super[internal.swipeLeftTransitionEnd](); }
+    this[internal.state].swipeItem.remove();
   }
 
   // A swipe right indicates we should toggle an item's read/unread state. We
   // toggle the state as soon as the swipe happens (before the item animates
   // back to its normal state).
-  [symbols.swipeRight]() {
-    const { swipeItem } = this[symbols.state];
+  [internal.swipeRight]() {
+    const { swipeItem } = this[internal.state];
     if ('read' in swipeItem) {
       swipeItem.read = !swipeItem.read;
     }
   }
 
-  get [symbols.template]() {
-    const result = template.concat(super[symbols.template], template.html`
+  get [internal.template]() {
+    const result = template.concat(super[internal.template], template.html`
       <style>
         #content.generic ::slotted(*) {
           padding: 0;

@@ -1,5 +1,5 @@
 import * as content from '../../src/content.js';
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import ShadowTemplateMixin from '../../src/ShadowTemplateMixin.js';
 
@@ -8,7 +8,7 @@ import ShadowTemplateMixin from '../../src/ShadowTemplateMixin.js';
  * Simple element with a slot.
  */
 class ChildrenTest extends ShadowTemplateMixin(HTMLElement) {
-  [symbols.template]() {
+  [internal.template]() {
     return template.html`
       <div id="static">This is static content</div>
       <slot></slot>
@@ -22,7 +22,7 @@ customElements.define('children-test', ChildrenTest);
  * Element containing an instance of the above, so we can test redistribution.
  */
 class RedistributionTest extends ShadowTemplateMixin(HTMLElement) {
-  [symbols.template]() {
+  [internal.template]() {
     return template.html`<children-test><slot></slot></children-test>`;
   }
 }

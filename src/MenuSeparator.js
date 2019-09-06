@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import ReactiveElement from './ReactiveElement.js';
 
@@ -12,8 +12,8 @@ import ReactiveElement from './ReactiveElement.js';
  */
 class MenuSeparator extends ReactiveElement {
 
-  [symbols.componentDidMount]() {
-    super[symbols.componentDidMount]();
+  [internal.componentDidMount]() {
+    super[internal.componentDidMount]();
     this.setAttribute('aria-hidden', 'true');
   }
 
@@ -21,7 +21,7 @@ class MenuSeparator extends ReactiveElement {
     return true;
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

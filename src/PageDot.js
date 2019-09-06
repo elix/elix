@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import DarkModeMixin from './DarkModeMixin.js';
 import SeamlessButton from './SeamlessButton.js';
@@ -20,14 +20,14 @@ const Base =
  */
 class PageDot extends Base {
 
-  [symbols.componentDidMount]() {
-    super[symbols.componentDidMount]();
+  [internal.componentDidMount]() {
+    super[internal.componentDidMount]();
     this.setAttribute('role', 'none');    
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
-    const { darkMode } = this[symbols.state];
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
+    const { darkMode } = this[internal.state];
     // Wait for knowledge of dark mode
     if (changed.darkMode && darkMode !== null) {
       this.style.backgroundColor = darkMode ?
@@ -36,8 +36,8 @@ class PageDot extends Base {
     }
   }
 
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
+  get [internal.template]() {
+    return template.concat(super[internal.template], template.html`
       <style>
         :host {
           border-radius: 7px;

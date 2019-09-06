@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 import SlotContentMixin from '../../src/SlotContentMixin.js';
@@ -12,19 +12,19 @@ const Base =
 
 class LabeledColorSwatch extends Base {
   
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.content) {
-      const content = this[symbols.state].content;
+      const content = this[internal.state].content;
       const strings = content ? 
         content.map(node => node.textContent) :
         [];
       const color = strings.join('').toLowerCase();
-      this[symbols.$].swatch.style.backgroundColor = color;
+      this[internal.$].swatch.style.backgroundColor = color;
     }
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

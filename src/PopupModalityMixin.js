@@ -1,5 +1,5 @@
 import { deepContains, ownEvent } from './utilities.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -40,8 +40,8 @@ export default function PopupModalityMixin(Base) {
       this.addEventListener('blur', blurHandler.bind(this));
     }
 
-    [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
+    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
+      if (super[internal.componentDidUpdate]) { super[internal.componentDidUpdate](changed); }
       if (changed.opened) {
         if (this.opened) {
           // Wait before wiring up events – if the popup was opened because the
@@ -73,21 +73,21 @@ export default function PopupModalityMixin(Base) {
      * @default true
      */
     get closeOnWindowResize() {
-      return this[symbols.state].closeOnWindowResize;
+      return this[internal.state].closeOnWindowResize;
     }
     set closeOnWindowResize(closeOnWindowResize) {
-      this[symbols.setState]({ closeOnWindowResize });
+      this[internal.setState]({ closeOnWindowResize });
     }
 
-    get [symbols.defaultState]() {
-      return Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      return Object.assign(super[internal.defaultState], {
         closeOnWindowResize: true,
         role: 'alert'
       });
     }
 
     // Close on Esc key.
-    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
+    [internal.keydown](/** @type {KeyboardEvent} */ event) {
       let handled = false;
 
       switch (event.key) {
@@ -103,11 +103,11 @@ export default function PopupModalityMixin(Base) {
       return handled || (super.keydown && super.keydown(event)) || false;
     }
 
-    [symbols.render](/** @type {PlainObject} */ changed) {
-      if (super[symbols.render]) { super[symbols.render](changed); }
+    [internal.render](/** @type {PlainObject} */ changed) {
+      if (super[internal.render]) { super[internal.render](changed); }
       if (changed.role) {
         // Apply top-level role.
-        const { role } = this[symbols.state];
+        const { role } = this[internal.state];
         this.setAttribute('role', role);
       }
     }
@@ -119,8 +119,8 @@ export default function PopupModalityMixin(Base) {
     }
     set role(role) {
       super.role = role;
-      if (!this[symbols.rendering]) {
-        this[symbols.setState]({
+      if (!this[internal.rendering]) {
+        this[internal.setState]({
           role
         });
       }
@@ -163,9 +163,9 @@ async function blurHandler(/** @type {Event} */ event) {
   /** @type {any} */
   if (newFocusedElement instanceof Element &&
       !deepContains(element, newFocusedElement)) {
-    element[symbols.raiseChangeEvents] = true;
+    element[internal.raiseChangeEvents] = true;
     await element.close();
-    element[symbols.raiseChangeEvents] = false;
+    element[internal.raiseChangeEvents] = false;
   }
 }
 
@@ -173,10 +173,10 @@ async function blurHandler(/** @type {Event} */ event) {
 async function closeHandler(/** @type {Event} */ event) {
   // @ts-ignore
   /** @type {any} */const element = this; 
-  const handleEvent = event.type !== 'resize' || element[symbols.state].closeOnWindowResize;
+  const handleEvent = event.type !== 'resize' || element[internal.state].closeOnWindowResize;
   if (!ownEvent(element, event) && handleEvent) {
-    element[symbols.raiseChangeEvents] = true;
+    element[internal.raiseChangeEvents] = true;
     await element.close();
-    element[symbols.raiseChangeEvents] = false;
+    element[internal.raiseChangeEvents] = false;
   }
 }

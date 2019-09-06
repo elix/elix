@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import CenteredStrip from './CenteredStrip.js';
 
@@ -20,14 +20,14 @@ const opacityMaximum = 1.0;
  */
 class CenteredStripOpacity extends CenteredStrip {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       transitionDuration: 250
     });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.enableEffects || changed.items || changed.rightToLeft ||
         changed.selectedIndex || changed.swipeFraction || changed.transitionDuration) {
       // Apply opacity based on selection state.
@@ -38,7 +38,7 @@ class CenteredStripOpacity extends CenteredStrip {
         selectedIndex,
         swipeFraction,
         transitionDuration
-      } = this[symbols.state];
+      } = this[internal.state];
       if (items) {
         const sign = rightToLeft ? 1 : -1;
         const swiping = swipeFraction != null;
@@ -58,8 +58,8 @@ class CenteredStripOpacity extends CenteredStrip {
     }
   }
 
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
+  get [internal.template]() {
+    return template.concat(super[internal.template], template.html`
       <style>
         ::slotted(*) {
           opacity: ${opacityMinimum.toString()}
@@ -69,10 +69,10 @@ class CenteredStripOpacity extends CenteredStrip {
   }
 
   get transitionDuration() {
-    return this[symbols.state].transitionDuration;
+    return this[internal.state].transitionDuration;
   }
   set transitionDuration(transitionDuration) {
-    this[symbols.setState]({ transitionDuration });
+    this[internal.setState]({ transitionDuration });
   }
 
 }

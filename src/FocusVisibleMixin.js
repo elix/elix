@@ -1,5 +1,5 @@
 import { deepContains } from './utilities.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -53,7 +53,7 @@ export default function FocusVisibleMixin(Base) {
           const containsFocus = deepContains(this, newFocusedElement);
           const lostFocus = !isFocusedElement && !containsFocus;
           if (lostFocus) {
-            this[symbols.setState]({
+            this[internal.setState]({
               focusVisible: false
             });
             // No longer need to listen for changes in focus visibility.
@@ -65,9 +65,9 @@ export default function FocusVisibleMixin(Base) {
       });
       this.addEventListener('focusin', () => {
         Promise.resolve().then(() => {
-          if (this[symbols.state].focusVisible !== keyboardActive) {
+          if (this[internal.state].focusVisible !== keyboardActive) {
             // Show the element as focused if the keyboard has been used.
-            this[symbols.setState]({
+            this[internal.setState]({
               focusVisible: keyboardActive
             });
           }
@@ -81,18 +81,18 @@ export default function FocusVisibleMixin(Base) {
       });
     }
 
-    get [symbols.defaultState]() {
-      return Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      return Object.assign(super[internal.defaultState], {
         focusVisible: false
       });
     }
 
-    [symbols.render](/** @type {PlainObject} */ changed) {
-      if (super[symbols.render]) { super[symbols.render](changed); }
+    [internal.render](/** @type {PlainObject} */ changed) {
+      if (super[internal.render]) { super[internal.render](changed); }
       if (changed.focusVisible) {
         // Suppress the component's normal `outline` style unless we know the
         // focus should be visible.
-        this.style.outline = this[symbols.state].focusVisible ? '' : 'none';
+        this.style.outline = this[internal.state].focusVisible ? '' : 'none';
       }
     }
 
@@ -116,7 +116,7 @@ export default function FocusVisibleMixin(Base) {
 
 
 function refreshFocus(/** @type {ReactiveElement} */ element) {
-  element[symbols.setState]({
+  element[internal.setState]({
     focusVisible: keyboardActive
   });
 }

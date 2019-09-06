@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -33,55 +33,55 @@ export default function KeyboardDirectionMixin(Base) {
      * Invoked when the user wants to go/navigate down.
      * The default implementation of this method does nothing.
      */
-    [symbols.goDown]() {
-      if (super[symbols.goDown]) { return super[symbols.goDown](); }
+    [internal.goDown]() {
+      if (super[internal.goDown]) { return super[internal.goDown](); }
     }
 
     /**
      * Invoked when the user wants to go/navigate to the end (e.g., of a list).
      * The default implementation of this method does nothing.
      */
-    [symbols.goEnd]() {
-      if (super[symbols.goEnd]) { return super[symbols.goEnd](); }
+    [internal.goEnd]() {
+      if (super[internal.goEnd]) { return super[internal.goEnd](); }
     }
 
     /**
      * Invoked when the user wants to go/navigate left.
      * The default implementation of this method does nothing.
      */
-    [symbols.goLeft]() {
-      if (super[symbols.goLeft]) { return super[symbols.goLeft](); }
+    [internal.goLeft]() {
+      if (super[internal.goLeft]) { return super[internal.goLeft](); }
     }
 
     /**
      * Invoked when the user wants to go/navigate right.
      * The default implementation of this method does nothing.
      */
-    [symbols.goRight]() {
-      if (super[symbols.goRight]) { return super[symbols.goRight](); }
+    [internal.goRight]() {
+      if (super[internal.goRight]) { return super[internal.goRight](); }
     }
 
     /**
      * Invoked when the user wants to go/navigate to the start (e.g., of a
      * list). The default implementation of this method does nothing.
      */
-    [symbols.goStart]() {
-      if (super[symbols.goStart]) { return super[symbols.goStart](); }
+    [internal.goStart]() {
+      if (super[internal.goStart]) { return super[internal.goStart](); }
     }
 
     /**
      * Invoked when the user wants to go/navigate up.
      * The default implementation of this method does nothing.
      */
-    [symbols.goUp]() {
-      if (super[symbols.goUp]) { return super[symbols.goUp](); }
+    [internal.goUp]() {
+      if (super[internal.goUp]) { return super[internal.goUp](); }
     }
 
-    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
+    [internal.keydown](/** @type {KeyboardEvent} */ event) {
       let handled = false;
 
       // Respect orientation state if defined, otherwise assume "both".
-      const orientation = this[symbols.state].orientation || 'both';
+      const orientation = this[internal.state].orientation || 'both';
       const horizontal = (orientation === 'horizontal' || orientation === 'both');
       const vertical = (orientation === 'vertical' || orientation === 'both');
 
@@ -91,39 +91,39 @@ export default function KeyboardDirectionMixin(Base) {
 
         case 'ArrowDown':
           if (vertical) {
-            handled = event.altKey ? this[symbols.goEnd]() : this[symbols.goDown]();
+            handled = event.altKey ? this[internal.goEnd]() : this[internal.goDown]();
           }
           break;
 
         case 'ArrowLeft':
           if (horizontal && !event.metaKey && !event.altKey) {
-            handled = this[symbols.goLeft]();
+            handled = this[internal.goLeft]();
           }
           break;
 
         case 'ArrowRight':
           if (horizontal && !event.metaKey && !event.altKey) {
-            handled = this[symbols.goRight]();
+            handled = this[internal.goRight]();
           }
           break;
 
         case 'ArrowUp':
           if (vertical) {
-            handled = event.altKey ? this[symbols.goStart]() : this[symbols.goUp]();
+            handled = event.altKey ? this[internal.goStart]() : this[internal.goUp]();
           }
           break;
 
         case 'End':
-          handled = this[symbols.goEnd]();
+          handled = this[internal.goEnd]();
           break;
 
         case 'Home':
-          handled = this[symbols.goStart]();
+          handled = this[internal.goStart]();
           break;
       }
 
       // Prefer mixin result if it's defined, otherwise use base result.
-      return handled || (super[symbols.keydown] && super[symbols.keydown](event)) || false;
+      return handled || (super[internal.keydown] && super[internal.keydown](event)) || false;
     }
 
   }

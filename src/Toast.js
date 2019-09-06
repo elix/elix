@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import Popup from './Popup.js';
@@ -37,18 +37,18 @@ class Toast extends Base {
     });
   }
 
-  async [symbols.componentDidMount]() {
-    await super[symbols.componentDidMount]();
+  async [internal.componentDidMount]() {
+    await super[internal.componentDidMount]();
     startTimerIfOpened(this);
   }
 
-  async [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
-    await super[symbols.componentDidUpdate](changed);
+  async [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
+    await super[internal.componentDidUpdate](changed);
     startTimerIfOpened(this);
   }
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       duration: null,
       fromEdge: 'bottom',
     });
@@ -65,14 +65,14 @@ class Toast extends Base {
    * @default null
    */
   get duration() {
-    return this[symbols.state].duration;
+    return this[internal.state].duration;
   }
   set duration(duration) {
-    this[symbols.setState]({ duration });
+    this[internal.setState]({ duration });
   }
 
-  get [symbols.elementsWithTransitions]() {
-    return [this[symbols.$].frame];
+  get [internal.elementsWithTransitions]() {
+    return [this[internal.$].frame];
   }
 
   /**
@@ -86,14 +86,14 @@ class Toast extends Base {
    * @default 'bottom'
    */
   get fromEdge() {
-    return this[symbols.state].fromEdge;
+    return this[internal.state].fromEdge;
   }
   set fromEdge(fromEdge) {
-    this[symbols.setState]({ fromEdge });
+    this[internal.setState]({ fromEdge });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.fromEdge) {
       // Host
       /** @type {IndexedObject<any>} */
@@ -123,11 +123,11 @@ class Toast extends Base {
           justifyContent: null
         }
       };
-      Object.assign(this.style, hostEdgeStyles[this[symbols.state].fromEdge]);
+      Object.assign(this.style, hostEdgeStyles[this[internal.state].fromEdge]);
     }
     if (changed.effect || changed.effectPhase || changed.fromEdge
         || changed.rightToLeft) {
-      const { effect, effectPhase, fromEdge, rightToLeft } = this[symbols.state];
+      const { effect, effectPhase, fromEdge, rightToLeft } = this[internal.state];
       /** @type {IndexedObject<string>} */
       const oppositeEdge = {
         'bottom-left': 'bottom-right',
@@ -167,15 +167,15 @@ class Toast extends Base {
         openEdgeTransforms[languageAdjustedEdge] :
         edgeTransforms[languageAdjustedEdge];
   
-      Object.assign(this[symbols.$].frame.style, {
+      Object.assign(this[internal.$].frame.style, {
         opacity,
         transform
       });
     }
   }
 
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
+  get [internal.template]() {
+    return template.concat(super[internal.template], template.html`
       <style>
         :host {
           align-items: initial;
@@ -220,7 +220,7 @@ function clearTimer(/** @type {Toast} */ element) {
 
 function startTimer(/** @type {Toast} */ element) {
   clearTimer(element);
-  const duration = element[symbols.state].duration;
+  const duration = element[internal.state].duration;
   if (duration !== null && duration > 0) {
     /** @type {any} */ (element)[timeoutKey] = setTimeout(() => {
       element.close();

@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import AriaRoleMixin from './AriaRoleMixin.js';
 import Backdrop from './Backdrop.js';
@@ -53,38 +53,38 @@ class PopupSource extends Base {
    * @default Backdrop
    */
   get backdropRole() {
-    return this[symbols.state].backdropRole;
+    return this[internal.state].backdropRole;
   }
   set backdropRole(backdropRole) {
-    this[symbols.setState]({ backdropRole });
+    this[internal.setState]({ backdropRole });
   }
 
-  [symbols.componentDidMount]() {
-    super[symbols.componentDidMount]();
-    if (this[symbols.state].opened) {
+  [internal.componentDidMount]() {
+    super[internal.componentDidMount]();
+    if (this[internal.state].opened) {
       // Popup is opened initially, which is somewhat unusual.
       waitThenRenderOpened(this);
     }
     this.setAttribute('aria-haspopup', 'true');
   }
 
-  [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
-    super[symbols.componentDidUpdate](changed);
+  [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
+    super[internal.componentDidUpdate](changed);
     if (changed.opened) {
       if (this.opened) {
         waitThenRenderOpened(this);
       } else {
         removeEventListeners(this);
       }
-    } else if (this.opened && !this[symbols.state].popupMeasured) {
+    } else if (this.opened && !this[internal.state].popupMeasured) {
       // Need to recalculate popup measurements.
       measurePopup(this);
     }
   }
 
-  get [symbols.defaultState]() {
+  get [internal.defaultState]() {
 
-    const result = Object.assign(super[symbols.defaultState], {
+    const result = Object.assign(super[internal.defaultState], {
       backdropRole: Backdrop,
       frameRole: OverlayFrame,
       horizontalAlign: 'start',
@@ -121,7 +121,7 @@ class PopupSource extends Base {
   }
 
   get frame() {
-    return /** @type {any} */ (this[symbols.$].popup).frame;
+    return /** @type {any} */ (this[internal.$].popup).frame;
   }
 
   /**
@@ -135,10 +135,10 @@ class PopupSource extends Base {
    * @default OverlayFrame
    */
   get frameRole() {
-    return this[symbols.state].frameRole;
+    return this[internal.state].frameRole;
   }
   set frameRole(frameRole) {
-    this[symbols.setState]({ frameRole });
+    this[internal.setState]({ frameRole });
   }
 
   /**
@@ -156,52 +156,52 @@ class PopupSource extends Base {
    * @default 'start'
    */
   get horizontalAlign() {
-    return this[symbols.state].horizontalAlign;
+    return this[internal.state].horizontalAlign;
   }
   set horizontalAlign(horizontalAlign) {
-    this[symbols.setState]({
+    this[internal.setState]({
       horizontalAlign
     });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.frameRole) {
-      if ('frameRole' in this[symbols.$].popup) {
-        const { frameRole } = this[symbols.state];
-        /** @type {any} */ (this[symbols.$].popup).frameRole = frameRole;
+      if ('frameRole' in this[internal.$].popup) {
+        const { frameRole } = this[internal.state];
+        /** @type {any} */ (this[internal.$].popup).frameRole = frameRole;
       }
     }
     if (changed.popupRole) {
-      template.transmute(this[symbols.$].popup, this[symbols.state].popupRole);
+      template.transmute(this[internal.$].popup, this[internal.state].popupRole);
 
       // Popup's opened state becomes our own opened state.
-      this[symbols.$].popup.addEventListener('opened', () => {
+      this[internal.$].popup.addEventListener('opened', () => {
         if (!this.opened) {
-          this[symbols.raiseChangeEvents] = true;
+          this[internal.raiseChangeEvents] = true;
           this.open();
-          this[symbols.raiseChangeEvents] = false;
+          this[internal.raiseChangeEvents] = false;
         }
       });
 
       // Popup's closed state becomes our own closed state.
-      this[symbols.$].popup.addEventListener('closed', event => {
+      this[internal.$].popup.addEventListener('closed', event => {
         if (!this.closed) {
-          this[symbols.raiseChangeEvents] = true;
+          this[internal.raiseChangeEvents] = true;
           /** @type {any} */ 
           const cast = event;
           const closeResult = cast.detail.closeResult;
           this.close(closeResult);
-          this[symbols.raiseChangeEvents] = false;
+          this[internal.raiseChangeEvents] = false;
         }
       });
     }
     if (changed.backdropRole) {
       // Since this check depends on popup, do it after we do any necessary
       // transmuting of popup.
-      if ('backdropRole' in this[symbols.$].popup) {
-        const { backdropRole } = this[symbols.state];
-        /** @type {any} */ (this[symbols.$].popup).backdropRole = backdropRole;
+      if ('backdropRole' in this[internal.$].popup) {
+        const { backdropRole } = this[internal.state];
+        /** @type {any} */ (this[internal.$].popup).backdropRole = backdropRole;
       }
     }
     if (changed.horizontalAlign || changed.popupMeasured ||
@@ -217,7 +217,7 @@ class PopupSource extends Base {
         roomBelow,
         roomLeft,
         roomRight
-      } = this[symbols.state];
+      } = this[internal.state];
       
       const fitsAbove = popupHeight <= roomAbove;
       const fitsBelow = popupHeight <= roomBelow;
@@ -280,7 +280,7 @@ class PopupSource extends Base {
       const opacity = popupMeasured ? null : 0;
       const position = popupMeasured ? 'absolute' : 'fixed';
 
-      const popup = this[symbols.$].popup;
+      const popup = this[internal.$].popup;
       Object.assign(popup.style, {
         bottom,
         left,
@@ -293,24 +293,24 @@ class PopupSource extends Base {
         maxHeight: maxFrameHeight ? `${maxFrameHeight}px` : null,
         maxWidth: maxFrameWidth ? `${maxFrameWidth}px` : null
       });
-      this[symbols.$].popupContainer.style.top = positionBelow ? null : '0';
+      this[internal.$].popupContainer.style.top = positionBelow ? null : '0';
     }
     if (changed.sourceRole) {
-      template.transmute(this[symbols.$].source, this[symbols.state].sourceRole);
+      template.transmute(this[internal.$].source, this[internal.state].sourceRole);
     }    
     if (changed.opened) {
-      const { opened } = this[symbols.state];
-      Object.assign(this[symbols.$].source.style, {
+      const { opened } = this[internal.state];
+      Object.assign(this[internal.$].source.style, {
         backgroundColor: opened ? 'highlight' : null,
         color: opened ? 'highlighttext' : null
       });
-      /** @type {any} */ (this[symbols.$].popup).opened = opened;
+      /** @type {any} */ (this[internal.$].popup).opened = opened;
       this.setAttribute('aria-expanded', opened.toString());
     }
     if (changed.disabled) {
-      if ('disabled' in this[symbols.$].source) {
-        const { disabled } = this[symbols.state];
-        /** @type {any} */ (this[symbols.$].source).disabled = disabled;
+      if ('disabled' in this[internal.$].source) {
+        const { disabled } = this[internal.state];
+        /** @type {any} */ (this[internal.$].source).disabled = disabled;
       }
     }
   }
@@ -325,10 +325,10 @@ class PopupSource extends Base {
    * @default 'below'
    */
   get popupPosition() {
-    return this[symbols.state].popupPosition;
+    return this[internal.state].popupPosition;
   }
   set popupPosition(popupPosition) {
-    this[symbols.setState]({
+    this[internal.setState]({
       popupPosition
     });
   }
@@ -342,10 +342,10 @@ class PopupSource extends Base {
    * @default Popup
    */
   get popupRole() {
-    return this[symbols.state].popupRole;
+    return this[internal.state].popupRole;
   }
   set popupRole(popupRole) {
-    this[symbols.setState]({ popupRole });
+    this[internal.setState]({ popupRole });
   }
 
   /**
@@ -356,13 +356,13 @@ class PopupSource extends Base {
    * @default 'button'
    */
   get sourceRole() {
-    return this[symbols.state].sourceRole;
+    return this[internal.state].sourceRole;
   }
   set sourceRole(sourceRole) {
-    this[symbols.setState]({ sourceRole });
+    this[internal.setState]({ sourceRole });
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {
@@ -437,9 +437,9 @@ function removeEventListeners(/** @type {PopupSource} */ element) {
 function measurePopup(element) {
   const windowHeight = window.innerHeight;
   const windowWidth = window.innerWidth;
-  const popupRect = element[symbols.$].popup.getBoundingClientRect();
+  const popupRect = element[internal.$].popup.getBoundingClientRect();
   const sourceRect = element.getBoundingClientRect();
-  element[symbols.setState]({
+  element[internal.setState]({
     popupHeight: popupRect.height,
     popupMeasured: true,
     popupWidth: popupRect.width,

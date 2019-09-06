@@ -1,5 +1,5 @@
 import { defaultScrollTarget } from './scrolling.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -23,10 +23,10 @@ import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-un
  *
  * This mixin expects the component to provide:
  *
- * * A `[symbols.keydown]` method invoked when a key is pressed. You can use
+ * * A `[internal.keydown]` method invoked when a key is pressed. You can use
  *   [KeyboardMixin](KeyboardMixin) for that purpose, or wire up your own
- *   keyboard handling and call `[symbols.keydown]` yourself.
- * * A `selectedIndex` state member updatable via [symbols.setState]`.
+ *   keyboard handling and call `[internal.keydown]` yourself.
+ * * A `selectedIndex` state member updatable via [internal.setState]`.
  *
  * @module KeyboardPagedSelectionMixin
  * @param {Constructor<ReactiveElement>} Base
@@ -36,7 +36,7 @@ export default function KeyboardPagedSelectionMixin(Base) {
   // The class prototype added by the mixin.
   class KeyboardPagedSelection extends Base {
 
-    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
+    [internal.keydown](/** @type {KeyboardEvent} */ event) {
       let handled = false;
       const orientation = this.orientation;
       if (orientation !== 'horizontal') {
@@ -52,13 +52,13 @@ export default function KeyboardPagedSelectionMixin(Base) {
       }
 
       // Prefer mixin result if it's defined, otherwise use base result.
-      return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+      return handled || (super[internal.keydown] && super[internal.keydown](event));
     }
 
     // Default orientation implementation defers to super,
     // but if not found, looks in state.
     get orientation() {
-      return super.orientation || this[symbols.state] && this[symbols.state].orientation || 'both';
+      return super.orientation || this[internal.state] && this[internal.state].orientation || 'both';
     }
 
     /**
@@ -82,14 +82,14 @@ export default function KeyboardPagedSelectionMixin(Base) {
      * Page Down. The default value is calculated by
      * [defaultScrollTarget](defaultScrollTarget#defaultScrollTarget).
      * 
-     * See [symbols.scrollTarget](symbols#scrollTarget).
+     * See [internal.scrollTarget](symbols#scrollTarget).
      * 
      * @type {HTMLElement}
      */
-    get [symbols.scrollTarget]() {
+    get [internal.scrollTarget]() {
       /** @type {any} */
       const element = this;
-      return super[symbols.scrollTarget] || defaultScrollTarget(element);
+      return super[internal.scrollTarget] || defaultScrollTarget(element);
     }
   }
 
@@ -164,9 +164,9 @@ function getIndexOfItemAtY(items, y, downward) {
  */
 function scrollOnePage(element, downward) {
   
-  const scrollTarget = element[symbols.scrollTarget];
-  const items = element[symbols.state].items;
-  const selectedIndex = element[symbols.state].selectedIndex;
+  const scrollTarget = element[internal.scrollTarget];
+  const items = element[internal.state].items;
+  const selectedIndex = element[internal.state].selectedIndex;
 
   // Determine the item visible just at the edge of direction we're heading.
   // We'll select that item if it's not already selected.
@@ -202,15 +202,15 @@ function scrollOnePage(element, downward) {
   // If external code causes an operation that scrolls the page, it's impossible
   // for it to predict where the selectedIndex is going to end up. Accordingly,
   // we raise change events.
-  const saveRaiseChangesEvents = element[symbols.raiseChangeEvents];
-  element[symbols.raiseChangeEvents] = true;
+  const saveRaiseChangesEvents = element[internal.raiseChangeEvents];
+  element[internal.raiseChangeEvents] = true;
 
-  element[symbols.setState]({
+  element[internal.setState]({
     selectedIndex: newIndex
   });
 
-  element[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
+  element[internal.raiseChangeEvents] = saveRaiseChangesEvents;
 
-  const changed = element[symbols.state].selectedIndex !== selectedIndex;
+  const changed = element[internal.state].selectedIndex !== selectedIndex;
   return changed;
 }

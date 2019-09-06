@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import Input from './Input.js';
 
 
@@ -9,8 +9,8 @@ import Input from './Input.js';
  */
 class AutoCompleteInput extends Input {
 
-  [symbols.componentDidMount]() {
-    super[symbols.componentDidMount]();
+  [internal.componentDidMount]() {
+    super[internal.componentDidMount]();
 
     // In many ways it would be cleaner to do AutoComplete work in a keydown
     // listener. Unfortunately, Chrome for Android sets the keyCode on *all*
@@ -20,7 +20,7 @@ class AutoCompleteInput extends Input {
     //
     // Instead, we listen to input events. That comes with its own
     // set of headaches, noted below.
-    this[symbols.$].inner.addEventListener('input', () => {
+    this[internal.$].inner.addEventListener('input', () => {
       // Gboard will generate multiple input events for a single keypress. In
       // particular, if we do AutoComplete and leave the text selected, then
       // when the user types the next key, we'll get *three* input events: one
@@ -28,7 +28,7 @@ class AutoCompleteInput extends Input {
       // Gboard's own AutoComplete behavior). We give the input value a chance
       // to stabilize by waiting a tick.
       setTimeout(() => {
-        this[symbols.raiseChangeEvents] = true;
+        this[internal.raiseChangeEvents] = true;
           /** @type {any} */
         const inner = this.inner;
         const text = this.value.toLowerCase();
@@ -41,30 +41,30 @@ class AutoCompleteInput extends Input {
         // single character to the value seen on the previous input event. Among
         // other things, we want to ensure the user can delete text from the end
         // without having AutoComplete kick in.
-        const originalText = this[symbols.state].originalText;
+        const originalText = this[internal.state].originalText;
         const userAddedText = text.startsWith(originalText) &&
           text.length === originalText.length + 1;
         if (typingAtEnd && userAddedText) {
           autoComplete(this);
         }
         // Remember what the user typed for next time.
-        this[symbols.setState]({
+        this[internal.setState]({
           originalText: text
         });
-        this[symbols.raiseChangeEvents] = false;
+        this[internal.raiseChangeEvents] = false;
       });
     });
   }
 
-  [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
-    super[symbols.componentDidUpdate](changed);
+  [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
+    super[internal.componentDidUpdate](changed);
 
-    const { autoCompleteSelect, originalText } = this[symbols.state];
+    const { autoCompleteSelect, originalText } = this[internal.state];
     if (changed.originalText && autoCompleteSelect) {
       // We've finished rendering new auto-completed text.
       // Leave the auto-completed portion (after the part the user originally
       // typed) selected.
-      this[symbols.setState]({
+      this[internal.setState]({
         autoCompleteSelect: false
       });
       this.setInnerProperty('selectionStart', originalText.length);
@@ -84,8 +84,8 @@ class AutoCompleteInput extends Input {
     }
   }
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       autoCompleteSelect: false,
       originalText: '',
       texts: []
@@ -98,10 +98,10 @@ class AutoCompleteInput extends Input {
    * @type {string[]}
    */
   get texts() {
-    return this[symbols.state].texts;
+    return this[internal.state].texts;
   }
   set texts(texts) {
-    this[symbols.setState]({ texts });
+    this[internal.setState]({ texts });
   }
 
   // Setting the value from the outside is treated as if the user had typed the
@@ -115,7 +115,7 @@ class AutoCompleteInput extends Input {
     // If the input has focus, we assume the user is typing, and rely on
     // the `input` event to update the originalText state.
     if (this.shadowRoot && !this.inner.matches(':focus')) {
-      this[symbols.setState]({
+      this[internal.setState]({
         originalText: value
       });
     }
@@ -140,7 +140,7 @@ export function autoComplete(/** @type {AutoCompleteInput} */ element) {
   element.setInnerProperty('value', match);
 
   // Leave the auto-completed portion selected.
-  element[symbols.setState]({
+  element[internal.setState]({
     autoCompleteSelect: true
   });
 

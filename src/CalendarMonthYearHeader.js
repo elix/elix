@@ -1,5 +1,5 @@
 import * as calendar from './calendar.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import ReactiveElement from './ReactiveElement.js';
@@ -32,8 +32,8 @@ const Base =
  */
 class CalendarMonthYearHeader extends Base {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       date: calendar.today(),
       monthFormat: 'long',
       yearFormat: 'numeric'
@@ -50,18 +50,18 @@ class CalendarMonthYearHeader extends Base {
    * @default 'long'
    */
   get monthFormat() {
-    return this[symbols.state].monthFormat;
+    return this[internal.state].monthFormat;
   }
   set monthFormat(monthFormat) {
-    this[symbols.setState]({
+    this[internal.setState]({
       monthFormat
     });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.date || changed.locale || changed.monthFormat || changed.yearFormat) {
-      const { date, locale, monthFormat, yearFormat } = this[symbols.state];
+      const { date, locale, monthFormat, yearFormat } = this[internal.state];
       /** @type {PlainObject} */ const formatOptions = {};
       if (monthFormat) {
         formatOptions.month = monthFormat;
@@ -70,11 +70,11 @@ class CalendarMonthYearHeader extends Base {
         formatOptions.year = yearFormat;
       }
       const formatter = calendar.dateTimeFormat(locale, formatOptions);
-      this[symbols.$].formatted.textContent = formatter.format(date);
+      this[internal.$].formatted.textContent = formatter.format(date);
     }
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {
@@ -96,10 +96,10 @@ class CalendarMonthYearHeader extends Base {
    * @default 'numeric'
    */
   get yearFormat() {
-    return this[symbols.state].yearFormat;
+    return this[internal.state].yearFormat;
   }
   set yearFormat(yearFormat) {
-    this[symbols.setState]({
+    this[internal.setState]({
       yearFormat
     });
   }

@@ -1,5 +1,5 @@
 import { deepContains, firstFocusableElement } from './utilities.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -58,24 +58,24 @@ export default function OverlayMixin(Base) {
 
     // TODO: Document
     get autoFocus() {
-      return this[symbols.state].autoFocus;
+      return this[internal.state].autoFocus;
     }
     set autoFocus(autoFocus) {
-      this[symbols.setState]({ autoFocus });
+      this[internal.setState]({ autoFocus });
     }
 
-    [symbols.componentDidMount]() {
-      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
+    [internal.componentDidMount]() {
+      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
       openedChanged(this);
 
       // Perform one-time check to see if component needs a default z-index.
-      if (this[symbols.state].persistent && !getZIndex(this)) {
+      if (this[internal.state].persistent && !getZIndex(this)) {
         bringToFront(this);
       }
     }
 
-    [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
+    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
+      if (super[internal.componentDidUpdate]) { super[internal.componentDidUpdate](changed); }
       if (changed.opened) {
         openedChanged(this);
       }
@@ -84,7 +84,7 @@ export default function OverlayMixin(Base) {
       // document, remove it now. Note: we only do this when the component
       // updates, not when it mounts, because we don't want an automatically-added
       // element to be immediately removed during its connectedCallback.
-      if (!this[symbols.state].persistent && this.closeFinished && this[appendedToDocumentKey]) {
+      if (!this[internal.state].persistent && this.closeFinished && this[appendedToDocumentKey]) {
         this[appendedToDocumentKey] = false;
         if (this.parentNode) {
           this.parentNode.removeChild(this);
@@ -92,15 +92,15 @@ export default function OverlayMixin(Base) {
       }
     }
   
-    get [symbols.defaultState]() {
-      return Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      return Object.assign(super[internal.defaultState], {
         autoFocus: true,
         persistent: false
       });
     }
 
     async open() {
-      if (!this[symbols.state].persistent && !this.isConnected) {
+      if (!this[internal.state].persistent && !this.isConnected) {
         // Overlay isn't in document yet.
         this[appendedToDocumentKey] = true;
         document.body.appendChild(this);
@@ -108,10 +108,10 @@ export default function OverlayMixin(Base) {
       if (super.open) { await super.open(); }
     }
 
-    [symbols.render](/** @type {PlainObject} */ changed) {
-      if (super[symbols.render]) { super[symbols.render](changed); }
+    [internal.render](/** @type {PlainObject} */ changed) {
+      if (super[internal.render]) { super[internal.render](changed); }
       if (changed.effectPhase || changed.opened || changed.persistent) {
-        if (!this[symbols.state].persistent) {
+        if (!this[internal.state].persistent) {
           // Temporary overlay
           const closed = typeof this.closeFinished === 'undefined' ?
             this.closed :
@@ -191,8 +191,8 @@ function maxZIndexInUse() {
 
 // Update the overlay following a change in opened state.
 function openedChanged(/** @type {ReactiveElement} */ element) {
-  if (element[symbols.state].autoFocus) {
-    if (element[symbols.state].opened) {
+  if (element[internal.state].autoFocus) {
+    if (element[internal.state].opened) {
       // Opened
       if (!element[restoreFocusToElementKey] && document.activeElement !== document.body) {
         // Remember which element had the focus before we were opened.

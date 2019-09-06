@@ -1,6 +1,6 @@
 import { forwardFocus, indexOfItemContainingTarget } from './utilities.js';
 import * as calendar from './calendar.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import ArrowDirectionMixin from './ArrowDirectionMixin.js';
 import CalendarDayButton from './CalendarDayButton.js';
@@ -45,7 +45,7 @@ class CalendarMonthNavigator extends Base {
   constructor() {
     super();
     this.addEventListener('mousedown', event => {
-      this[symbols.raiseChangeEvents] = true;
+      this[internal.raiseChangeEvents] = true;
       const target = event.composedPath()[0];
       if (target instanceof Node) {
         const days = this.days;
@@ -56,28 +56,28 @@ class CalendarMonthNavigator extends Base {
           this.date = day.date;
         }
       }
-      this[symbols.raiseChangeEvents] = false;
+      this[internal.raiseChangeEvents] = false;
     });
     // Any click within this element puts focus on the top-level element.
     forwardFocus(this, this);
   }
 
   arrowButtonNext() {
-    this[symbols.setState]({
-      date: calendar.offsetDateByMonths(this[symbols.state].date, 1)
+    this[internal.setState]({
+      date: calendar.offsetDateByMonths(this[internal.state].date, 1)
     });
     return true;
   }
 
   arrowButtonPrevious() {
-    this[symbols.setState]({
-      date: calendar.offsetDateByMonths(this[symbols.state].date, -1)
+    this[internal.setState]({
+      date: calendar.offsetDateByMonths(this[internal.state].date, -1)
     });
     return true;
   }
 
-  get [symbols.defaultState]() {
-    const result = Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    const result = Object.assign(super[internal.defaultState], {
       arrowButtonOverlap: false,
       canGoNext: true,
       canGoPrevious: true,
@@ -100,28 +100,28 @@ class CalendarMonthNavigator extends Base {
     return result;
   }
 
-    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
+    [internal.keydown](/** @type {KeyboardEvent} */ event) {
     let handled = false;
 
     switch (event.key) {
 
       case 'Home':
-        this[symbols.setState]({
+        this[internal.setState]({
           date: calendar.today()
         });
         handled = true;
         break;
 
       case 'PageDown':
-        this[symbols.setState]({
-          date: calendar.offsetDateByMonths(this[symbols.state].date, 1)
+        this[internal.setState]({
+          date: calendar.offsetDateByMonths(this[internal.state].date, 1)
         });
         handled = true;
         break;
         
       case 'PageUp':
-        this[symbols.setState]({
-          date: calendar.offsetDateByMonths(this[symbols.state].date, -1)
+        this[internal.setState]({
+          date: calendar.offsetDateByMonths(this[internal.state].date, -1)
         });
         handled = true;
         break;
@@ -129,43 +129,43 @@ class CalendarMonthNavigator extends Base {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+    return handled || (super[internal.keydown] && super[internal.keydown](event));
   }
 
-  [symbols.goDown]() {
-    if (super[symbols.goDown]) { super[symbols.goDown](); }
-    this[symbols.setState]({
-      date: calendar.offsetDateByDays(this[symbols.state].date, 7)
+  [internal.goDown]() {
+    if (super[internal.goDown]) { super[internal.goDown](); }
+    this[internal.setState]({
+      date: calendar.offsetDateByDays(this[internal.state].date, 7)
     });
     return true;
   }
 
-  [symbols.goLeft]() {
-    if (super[symbols.goLeft]) { super[symbols.goLeft](); }
-    this[symbols.setState]({
-      date: calendar.offsetDateByDays(this[symbols.state].date, -1)
+  [internal.goLeft]() {
+    if (super[internal.goLeft]) { super[internal.goLeft](); }
+    this[internal.setState]({
+      date: calendar.offsetDateByDays(this[internal.state].date, -1)
     });
     return true;
   }
 
-  [symbols.goRight]() {
-    if (super[symbols.goRight]) { super[symbols.goRight](); }
-    this[symbols.setState]({
-      date: calendar.offsetDateByDays(this[symbols.state].date, 1)
+  [internal.goRight]() {
+    if (super[internal.goRight]) { super[internal.goRight](); }
+    this[internal.setState]({
+      date: calendar.offsetDateByDays(this[internal.state].date, 1)
     });
     return true;
   }
 
-  [symbols.goUp]() {
-    if (super[symbols.goUp]) { super[symbols.goUp](); }
-    this[symbols.setState]({
-      date: calendar.offsetDateByDays(this[symbols.state].date, -7)
+  [internal.goUp]() {
+    if (super[internal.goUp]) { super[internal.goUp](); }
+    this[internal.setState]({
+      date: calendar.offsetDateByDays(this[internal.state].date, -7)
     });
     return true;
   }
 
-  get [symbols.template]() {
-    const result = super[symbols.template];
+  get [internal.template]() {
+    const result = super[internal.template];
     const monthYearHeader = result.content.querySelector('#monthYearHeader');
     /** @type {any} */ const cast = this;
     cast[ArrowDirectionMixin.wrap](monthYearHeader);

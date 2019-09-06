@@ -1,5 +1,5 @@
 import { firstFocusableElement } from './utilities.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
@@ -31,9 +31,9 @@ function FocusCaptureMixin(Base) {
 
   class FocusCapture extends Base {
 
-    [symbols.componentDidMount]() {
-      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
-      this[symbols.$].focusCatcher.addEventListener('focus', () => {
+    [internal.componentDidMount]() {
+      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
+      this[internal.$].focusCatcher.addEventListener('focus', () => {
         if (!this[wrappingFocusKey]) {
           // Wrap focus back to the first focusable element.
           const focusElement = firstFocusableElement(this.shadowRoot);
@@ -44,7 +44,7 @@ function FocusCaptureMixin(Base) {
       });
     }
 
-    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
+    [internal.keydown](/** @type {KeyboardEvent} */ event) {
       const firstElement = firstFocusableElement(this.shadowRoot);
       const onFirstElement = document.activeElement === firstElement ||
         this.shadowRoot.activeElement === firstElement;
@@ -53,19 +53,19 @@ function FocusCaptureMixin(Base) {
         // The Shift+Tab keydown event should continue bubbling, and the default
         // behavior should cause it to end up on the last focusable element.
         this[wrappingFocusKey] = true;
-        this[symbols.$].focusCatcher.focus();
+        this[internal.$].focusCatcher.focus();
         this[wrappingFocusKey] = false;
         // Don't mark the event as handled, since we want it to keep bubbling up.
       }
 
       // Prefer mixin result if it's defined, otherwise use base result.
-      return (super[symbols.keydown] && super[symbols.keydown](event)) || false;
+      return (super[internal.keydown] && super[internal.keydown](event)) || false;
     }
 
     /**
      * Destructively wrap a node with elements necessary to capture focus.
      * 
-     * Call this method in a components `symbols.template` property.
+     * Call this method in a components `internal.template` property.
      * Invoke this method as `this[FocusCaptureMixin.wrap](element)`.
      * 
      * @param {Node} original - the element within which focus should wrap

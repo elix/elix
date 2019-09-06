@@ -1,5 +1,5 @@
 import { forwardFocus } from './utilities.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import AriaRoleMixin from './AriaRoleMixin.js';
 import DelegateFocusMixin from './DelegateFocusMixin.js';
@@ -36,22 +36,22 @@ class ComboBox extends Base {
   
   // Forward any ARIA label to the input element.
   get ariaLabel() {
-    return this[symbols.state].ariaLabel;
+    return this[internal.state].ariaLabel;
   }
   set ariaLabel(ariaLabel) {
-    this[symbols.setState]({ ariaLabel });
+    this[internal.setState]({ ariaLabel });
   }
 
-  [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
-    super[symbols.componentDidUpdate](changed);
-    if (this[symbols.state].selectText) {
+  [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
+    super[internal.componentDidUpdate](changed);
+    if (this[internal.state].selectText) {
       // Select the text in the input after giving the inner input a chance to render the value.
       setTimeout(() => {
         // Text selection might have been turned off in the interim;
         // double-check that we still want to select text.
-        if (this[symbols.state].selectText) {
+        if (this[internal.state].selectText) {
           /** @type {any} */
-          const cast = this[symbols.$].input;
+          const cast = this[internal.$].input;
           const value = cast.value;
           if (value > '') {
             cast.selectionStart = 0;
@@ -62,9 +62,9 @@ class ComboBox extends Base {
     }
   }
 
-  get [symbols.defaultState]() {
+  get [internal.defaultState]() {
 
-    const state = Object.assign(super[symbols.defaultState], {
+    const state = Object.assign(super[internal.defaultState], {
       ariaLabel: '',
       backdropRole: Hidden,
       focused: false,
@@ -106,7 +106,7 @@ class ComboBox extends Base {
    */
   get input() {
     return this.shadowRoot ?
-      this[symbols.$].input :
+      this[internal.$].input :
       null;
   }
 
@@ -117,13 +117,13 @@ class ComboBox extends Base {
    * @default 'input'
    */
   get inputRole() {
-    return this[symbols.state].inputRole;
+    return this[internal.state].inputRole;
   }
   set inputRole(inputRole) {
-    this[symbols.setState]({ inputRole });
+    this[internal.setState]({ inputRole });
   }
 
-    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
+    [internal.keydown](/** @type {KeyboardEvent} */ event) {
     let handled;
 
     switch (event.key) {
@@ -154,7 +154,7 @@ class ComboBox extends Base {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+    return handled || (super[internal.keydown] && super[internal.keydown](event));
   }
 
   /**
@@ -163,43 +163,43 @@ class ComboBox extends Base {
    * @type {string}
    */
   get placeholder() {
-    return this[symbols.state].placeholder;
+    return this[internal.state].placeholder;
   }
   set placeholder(placeholder) {
-    this[symbols.setState]({
+    this[internal.setState]({
       placeholder
     });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.inputRole) {
-      template.transmute(this[symbols.$].input, this[symbols.state].inputRole);
+      template.transmute(this[internal.$].input, this[internal.state].inputRole);
 
-      this[symbols.$].input.addEventListener('blur', () => {
+      this[internal.$].input.addEventListener('blur', () => {
         // If we're open and lose focus, then close.
         if (this.opened) {
-          this[symbols.raiseChangeEvents] = true;
-          this[symbols.setState]({
+          this[internal.raiseChangeEvents] = true;
+          this[internal.setState]({
             focused: false
           });
           this.close();
-          this[symbols.raiseChangeEvents] = false;
+          this[internal.raiseChangeEvents] = false;
         }
       });
   
-      this[symbols.$].input.addEventListener('focus', () => {
-        this[symbols.raiseChangeEvents] = true;
-        this[symbols.setState]({
+      this[internal.$].input.addEventListener('focus', () => {
+        this[internal.raiseChangeEvents] = true;
+        this[internal.setState]({
           focused: true
         });
-        this[symbols.raiseChangeEvents] = false;
+        this[internal.raiseChangeEvents] = false;
       });
 
-      this[symbols.$].input.addEventListener('input', () => {
-        this[symbols.raiseChangeEvents] = true;
+      this[internal.$].input.addEventListener('input', () => {
+        this[internal.raiseChangeEvents] = true;
         /** @type {any} */
-        const cast = this[symbols.$].input;
+        const cast = this[internal.$].input;
         const value = cast.value;
         /** @type {PlainObject} */ const changes = {
           value,
@@ -209,45 +209,45 @@ class ComboBox extends Base {
           // If user types while popup is closed, implicitly open it.
           changes.opened = true
         }
-        this[symbols.setState](changes);
-        this[symbols.raiseChangeEvents] = false;
+        this[internal.setState](changes);
+        this[internal.raiseChangeEvents] = false;
       })
 
-      this[symbols.$].input.addEventListener('keydown', () => {
-        this[symbols.raiseChangeEvents] = true;
-        this[symbols.setState]({
+      this[internal.$].input.addEventListener('keydown', () => {
+        this[internal.raiseChangeEvents] = true;
+        this[internal.setState]({
           selectText: false
         });
-        this[symbols.raiseChangeEvents] = false;
+        this[internal.raiseChangeEvents] = false;
       })
   
       // If the user clicks on the input and the popup is closed, open it.
-      this[symbols.$].input.addEventListener('mousedown', () => {
-        this[symbols.raiseChangeEvents] = true;
-        this[symbols.setState]({
+      this[internal.$].input.addEventListener('mousedown', () => {
+        this[internal.raiseChangeEvents] = true;
+        this[internal.setState]({
           selectText: false
         });
         if (this.closed && !this.disabled) {
           this.open();
         }
-        this[symbols.raiseChangeEvents] = false;
+        this[internal.raiseChangeEvents] = false;
       });
     }
     if (changed.toggleButtonRole) {
-      template.transmute(this[symbols.$].toggleButton, this[symbols.state].toggleButtonRole);
-      this[symbols.$].toggleButton.addEventListener('mousedown', () => {
-        this[symbols.raiseChangeEvents] = true;
+      template.transmute(this[internal.$].toggleButton, this[internal.state].toggleButtonRole);
+      this[internal.$].toggleButton.addEventListener('mousedown', () => {
+        this[internal.raiseChangeEvents] = true;
         this.toggle();
-        this[symbols.raiseChangeEvents] = false;
+        this[internal.raiseChangeEvents] = false;
       });
-      if (this[symbols.$].toggleButton instanceof HTMLElement &&
-          this[symbols.$].input instanceof HTMLElement) {
+      if (this[internal.$].toggleButton instanceof HTMLElement &&
+          this[internal.$].input instanceof HTMLElement) {
         // Forward focus for new toggle button.
-        forwardFocus(this[symbols.$].toggleButton, this[symbols.$].input);
+        forwardFocus(this[internal.$].toggleButton, this[internal.$].input);
       }
     }
     if (changed.popupRole) {
-      const popup = this[symbols.$].popup;
+      const popup = this[internal.$].popup;
       popup.removeAttribute('tabindex');
       if ('autoFocus' in popup) {
         /** @type {any} */ (popup).autoFocus = false;
@@ -264,31 +264,31 @@ class ComboBox extends Base {
       }
     }
     if (changed.ariaLabel) {
-      this[symbols.$].input.setAttribute('aria-label', this[symbols.state].ariaLabel);
+      this[internal.$].input.setAttribute('aria-label', this[internal.state].ariaLabel);
     }
     if (changed.disabled) {
-      const { disabled } = this[symbols.state];
-      /** @type {any} */ (this[symbols.$].input).disabled = disabled;
-      /** @type {any} */ (this[symbols.$].toggleButton).disabled = disabled;
+      const { disabled } = this[internal.state];
+      /** @type {any} */ (this[internal.$].input).disabled = disabled;
+      /** @type {any} */ (this[internal.$].toggleButton).disabled = disabled;
     }
     if (changed.placeholder) {
-      const { placeholder } = this[symbols.state];
-      /** @type {any} */ (this[symbols.$].input).placeholder = placeholder;
+      const { placeholder } = this[internal.state];
+      /** @type {any} */ (this[internal.$].input).placeholder = placeholder;
     }
     if (changed.popupPosition) {
-      const { popupPosition } = this[symbols.state];
-      this[symbols.$].downIcon.style.display = popupPosition === 'below' ?
+      const { popupPosition } = this[internal.state];
+      this[internal.$].downIcon.style.display = popupPosition === 'below' ?
         'block' :
         'none';
-      this[symbols.$].upIcon.style.display = popupPosition === 'above' ?
+      this[internal.$].upIcon.style.display = popupPosition === 'above' ?
         'block' :
         'none';
     }
     if (changed.rightToLeft) {
-      const { rightToLeft } = this[symbols.state];
+      const { rightToLeft } = this[internal.state];
       // We want to style the inner input if it's been created with
       // WrappedStandardElement, otherwise style the input directly.
-      const cast = /** @type {any} */ (this[symbols.$].input);
+      const cast = /** @type {any} */ (this[internal.$].input);
       const input = 'inner' in cast ?
         cast.inner :
         cast;
@@ -298,19 +298,19 @@ class ComboBox extends Base {
         paddingRight: rightToLeft ? '2px' : '1.5em',
         paddingTop: '2px'
       });
-      Object.assign(this[symbols.$].toggleButton.style, {
+      Object.assign(this[internal.$].toggleButton.style, {
         left: rightToLeft ? '3px' : '',
         right: rightToLeft ? '' : '3px'
       });
     }
     if (changed.value) {
-      const { value } = this[symbols.state];
-      /** @type {any} */ (this[symbols.$].input).value = value;
+      const { value } = this[internal.state];
+      /** @type {any} */ (this[internal.$].input).value = value;
     }
   }
 
-  get [symbols.template]() {
-    const base = super[symbols.template];
+  get [internal.template]() {
+    const base = super[internal.template];
 
     // Use an input element in the source.
     const sourceSlot = base.content.querySelector('slot[name="source"]');
@@ -392,17 +392,17 @@ class ComboBox extends Base {
    * @default SeamlessButton
    */
   get toggleButtonRole() {
-    return this[symbols.state].toggleButtonRole;
+    return this[internal.state].toggleButtonRole;
   }
   set toggleButtonRole(toggleButtonRole) {
-    this[symbols.setState]({ toggleButtonRole });
+    this[internal.setState]({ toggleButtonRole });
   }
 
   get value() {
-    return this[symbols.state].value;
+    return this[internal.state].value;
   }
   set value(value) {
-    this[symbols.setState]({ value });
+    this[internal.setState]({ value });
   }
 
 }

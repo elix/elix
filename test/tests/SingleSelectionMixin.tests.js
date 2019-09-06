@@ -1,18 +1,18 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
 import SingleSelectionMixin from '../../src/SingleSelectionMixin.js';
 
 
 class SingleSelectionTest extends SingleSelectionMixin(ReactiveMixin(HTMLElement)) {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       items: []
     });
   }
 
   get items() {
-    return this[symbols.state].items;
+    return this[internal.state].items;
   }
 
 }
@@ -33,22 +33,22 @@ describe("SingleSelectionMixin", () => {
 
   it("has selectedIndex initially -1", () => {
     const fixture = new SingleSelectionTest();
-    assert.equal(fixture[symbols.state].selectedIndex, -1);
+    assert.equal(fixture[internal.state].selectedIndex, -1);
   });
 
   it("can advance the selection to the next item", async () => {
     const fixture = createSampleElement();
-    assert.equal(fixture[symbols.state].selectedIndex, -1);
+    assert.equal(fixture[internal.state].selectedIndex, -1);
     const selectionChanged0 = fixture.selectNext();
-    assert.equal(fixture[symbols.state].selectedIndex, 0);
+    assert.equal(fixture[internal.state].selectedIndex, 0);
     assert(selectionChanged0);
     fixture.selectNext();
     const selectionChanged1 = fixture.selectNext();
-    assert.equal(fixture[symbols.state].selectedIndex, 2);
+    assert.equal(fixture[internal.state].selectedIndex, 2);
     assert(selectionChanged1);
     // Moving past last item should have no effect.
     const selectionChanged2 = fixture.selectNext();
-    assert.equal(fixture[symbols.state].selectedIndex, 2);
+    assert.equal(fixture[internal.state].selectedIndex, 2);
     assert(!selectionChanged2);
     await Promise.resolve();
   });
@@ -57,65 +57,65 @@ describe("SingleSelectionMixin", () => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     fixture.selectPrevious();
-    assert.equal(fixture[symbols.state].selectedIndex, 2); // last item
+    assert.equal(fixture[internal.state].selectedIndex, 2); // last item
     fixture.selectPrevious();
-    assert.equal(fixture[symbols.state].selectedIndex, 1);
+    assert.equal(fixture[internal.state].selectedIndex, 1);
     await Promise.resolve();
   });
 
   it("can wrap the selection from the last to the first item", async () => {
     const fixture = createSampleElement();
     fixture.selectionWraps = true;
-    fixture[symbols.setState]({ selectedIndex: 2 });
+    fixture[internal.setState]({ selectedIndex: 2 });
     fixture.selectNext();
-    assert.equal(fixture[symbols.state].selectedIndex, 0);
+    assert.equal(fixture[internal.state].selectedIndex, 0);
     await Promise.resolve();
   });
 
   it("can wrap the selection from the first to the last item", async () => {
     const fixture = createSampleElement();
     fixture.selectionWraps = true;
-    fixture[symbols.setState]({ selectedIndex: 0 });
+    fixture[internal.setState]({ selectedIndex: 0 });
     fixture.selectPrevious();
-    assert.equal(fixture[symbols.state].selectedIndex, 2);
+    assert.equal(fixture[internal.state].selectedIndex, 2);
     await Promise.resolve();
   });
 
   it("selects first item when selection is required and no item is currently selected", async () => {
     const fixture = createSampleElement();
-    assert.equal(fixture[symbols.state].selectedIndex, -1);
-    await fixture[symbols.setState]({
+    assert.equal(fixture[internal.state].selectedIndex, -1);
+    await fixture[internal.setState]({
       selectionRequired: true
     });
-    assert.equal(fixture[symbols.state].selectedIndex, 0);
+    assert.equal(fixture[internal.state].selectedIndex, 0);
   });
 
   it("preserves selected item when items change and old selection exists in new set", async () => {
     const fixture = createSampleElement();
-    fixture[symbols.setState]({
+    fixture[internal.setState]({
       selectedIndex: 1
     });
-    assert.equal(fixture[symbols.state].selectedIndex, 1);
-    fixture[symbols.setState]({
-      items: fixture[symbols.state].items.slice(1) // Removes item 0
+    assert.equal(fixture[internal.state].selectedIndex, 1);
+    fixture[internal.setState]({
+      items: fixture[internal.state].items.slice(1) // Removes item 0
     });
-    assert.equal(fixture[symbols.state].selectedIndex, 0);
+    assert.equal(fixture[internal.state].selectedIndex, 0);
   });
 
   it("selects nearest item when item in last place is removed", async () => {
     const fixture = createSampleElement();
     const items = fixture.items.slice();
     items.splice(2, 1);
-    await fixture[symbols.setState]({
+    await fixture[internal.setState]({
       items,
       selectedIndex: 2
     });
-    assert.equal(fixture[symbols.state].selectedIndex, 1);
+    assert.equal(fixture[internal.state].selectedIndex, 1);
   });
 
   it("drops selection when the last item is removed", async () => {
     const fixture = createSampleElement();
-    await fixture[symbols.setState]({
+    await fixture[internal.setState]({
       items: [],
       selectedIndex: 0
     });
@@ -127,24 +127,24 @@ describe("SingleSelectionMixin", () => {
     assert(!fixture.selectionWraps);
 
     // No selection yet
-    assert.equal(fixture[symbols.state].selectedIndex, -1);
-    assert(fixture[symbols.state].canSelectNext);
-    assert(fixture[symbols.state].canSelectPrevious);
+    assert.equal(fixture[internal.state].selectedIndex, -1);
+    assert(fixture[internal.state].canSelectNext);
+    assert(fixture[internal.state].canSelectPrevious);
 
     // Start of list
     fixture.selectFirst();
-    assert(fixture[symbols.state].canSelectNext);
-    assert(!fixture[symbols.state].canSelectPrevious);
+    assert(fixture[internal.state].canSelectNext);
+    assert(!fixture[internal.state].canSelectPrevious);
 
     // Middle of list
     fixture.selectNext();
-    assert(fixture[symbols.state].canSelectNext);
-    assert(fixture[symbols.state].canSelectPrevious);
+    assert(fixture[internal.state].canSelectNext);
+    assert(fixture[internal.state].canSelectPrevious);
 
     // End of list
     fixture.selectLast();
-    assert(!fixture[symbols.state].canSelectNext);
-    assert(fixture[symbols.state].canSelectPrevious);
+    assert(!fixture[internal.state].canSelectNext);
+    assert(fixture[internal.state].canSelectPrevious);
 
     await Promise.resolve();
   });
@@ -155,13 +155,13 @@ describe("SingleSelectionMixin", () => {
 
     // Start of list
     fixture.selectFirst();
-    assert(fixture[symbols.state].canSelectNext);
-    assert(fixture[symbols.state].canSelectPrevious);
+    assert(fixture[internal.state].canSelectNext);
+    assert(fixture[internal.state].canSelectPrevious);
 
     // End of list
     fixture.selectLast();
-    assert(fixture[symbols.state].canSelectNext);
-    assert(fixture[symbols.state].canSelectPrevious);
+    assert(fixture[internal.state].canSelectNext);
+    assert(fixture[internal.state].canSelectPrevious);
 
     await Promise.resolve();
   });
@@ -173,9 +173,9 @@ describe("SingleSelectionMixin", () => {
     });
     container.appendChild(fixture);
 
-    fixture[symbols.raiseChangeEvents] = true; // Simulate user interaction
+    fixture[internal.raiseChangeEvents] = true; // Simulate user interaction
     fixture.selectedIndex = 1;
-    fixture[symbols.raiseChangeEvents] = false;
+    fixture[internal.raiseChangeEvents] = false;
   });
 
   it("changing selection programmatically does not raise the selected-index-changed event", done => {
@@ -205,7 +205,7 @@ function createSampleElement() {
   const fixture = new SingleSelectionTest();
   // To keep this unit test collection focus on selection, and not on tracking
   // children as items, we just use a plain array of item objects instead.
-  fixture[symbols.setState]({
+  fixture[internal.setState]({
     items: ['Zero', 'One', 'Two']
   });
   return fixture;

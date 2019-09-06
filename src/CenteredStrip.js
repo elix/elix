@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import EffectMixin from './EffectMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
@@ -36,28 +36,28 @@ const Base =
  */
 class CenteredStrip extends Base {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       orientation: 'horizontal',
       selectionRequired: true
     });
   }
 
   get orientation() {
-    return this[symbols.state].orientation;
+    return this[internal.state].orientation;
   }
   set orientation(orientation) {
-    this[symbols.setState]({ orientation });
+    this[internal.setState]({ orientation });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.clientWidth || changed.enableEffects || changed.rightToLeft ||
         changed.selectedIndex || changed.swipeFraction) {
-      const { orientation, rightToLeft, selectedIndex } = this[symbols.state];
+      const { orientation, rightToLeft, selectedIndex } = this[internal.state];
       const sign = rightToLeft ? 1 : -1;
-      const swiping = this[symbols.state].swipeFraction != null;
-      const swipeFraction = this[symbols.state].swipeFraction || 0;
+      const swiping = this[internal.state].swipeFraction != null;
+      const swipeFraction = this[internal.state].swipeFraction || 0;
       const selectionFraction = selectedIndex + sign * swipeFraction;
   
       const vertical = orientation === 'vertical';
@@ -65,9 +65,9 @@ class CenteredStrip extends Base {
       const dimension = vertical ? 'offsetHeight' : 'offsetWidth';
 
       // @ts-ignore
-      const stripContainerDimension = this[symbols.$].stripContainer[dimension];
+      const stripContainerDimension = this[internal.$].stripContainer[dimension];
       // @ts-ignore
-      const stripDimension = this[symbols.$].strip[dimension];
+      const stripDimension = this[internal.$].strip[dimension];
   
       // It seems this method can be invoked before the strip any height/width.
       // We only render if the height/width is positive.
@@ -120,32 +120,32 @@ class CenteredStrip extends Base {
     
         const axis = vertical ? 'Y' : 'X';
         const transform = `translate${axis}(${translation}px)`;
-        const showTransition = this[symbols.state].enableEffects && !swiping;
-        Object.assign(this[symbols.$].strip.style, {
+        const showTransition = this[internal.state].enableEffects && !swiping;
+        Object.assign(this[internal.$].strip.style, {
           transform,
           transition: showTransition ? 'transform 0.25s' : 'none'
         });
 
-        this[symbols.$].stripContainer.style.justifyContent = justifyContent;
+        this[internal.$].stripContainer.style.justifyContent = justifyContent;
       }
     }
     if (changed.orientation) {
-      const flexDirection = this[symbols.state].orientation === 'horizontal' ?
+      const flexDirection = this[internal.state].orientation === 'horizontal' ?
         '' :
         'column';
-      this[symbols.$].stripContainer.style.flexDirection = flexDirection;
-      this[symbols.$].strip.style.flexDirection = flexDirection;
+      this[internal.$].stripContainer.style.flexDirection = flexDirection;
+      this[internal.$].strip.style.flexDirection = flexDirection;
     }
   }
 
   get swipeFraction() {
-    return this[symbols.state].swipeFraction;
+    return this[internal.state].swipeFraction;
   }
   set swipeFraction(swipeFraction) {
-    this[symbols.setState]({ swipeFraction });
+    this[internal.setState]({ swipeFraction });
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

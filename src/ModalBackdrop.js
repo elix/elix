@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import Backdrop from './Backdrop.js';
 
@@ -34,8 +34,8 @@ class ModalBackdrop extends Backdrop {
     }
   }
 
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
+  get [internal.template]() {
+    return template.concat(super[internal.template], template.html`
       <style>
         :host {
           background: black;

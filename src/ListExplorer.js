@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import Explorer from './Explorer.js';
 
 
@@ -9,17 +9,17 @@ import Explorer from './Explorer.js';
  */
 class ListExplorer extends Explorer {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       proxyListPosition: 'start',
       orientation: 'vertical'
     });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
-    const { items, proxiesAssigned } = this[symbols.state];
-    /** @type {Element[]} */ const proxies = this[symbols.state].proxies;
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
+    const { items, proxiesAssigned } = this[internal.state];
+    /** @type {Element[]} */ const proxies = this[internal.state].proxies;
     if ((changed.proxies || changed.items) && proxies && !proxiesAssigned) {
       // Update default proxy text from item labels.
       proxies.forEach((proxy, index) => {

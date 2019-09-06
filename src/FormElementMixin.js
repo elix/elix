@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -21,28 +21,28 @@ export default function FormElementMixin(Base) {
     constructor() {
       super();
       if (formElementsSupported) {
-        this[symbols.internals] = this.attachInternals();
+        this[internal.internals] = this.attachInternals();
       }
     }
   
     checkValidity() {
-      return this[symbols.internals].checkValidity();
+      return this[internal.internals].checkValidity();
     }
 
-    [symbols.componentDidMount]() {
-      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
+    [internal.componentDidMount]() {
+      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
       updateValue(this);
     }
 
-    [symbols.componentDidUpdate](/** @typeof {PlainObject} */ changed) {
-      if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
+    [internal.componentDidUpdate](/** @typeof {PlainObject} */ changed) {
+      if (super[internal.componentDidUpdate]) { super[internal.componentDidUpdate](changed); }
       if (changed.value) {
         updateValue(this);
       }
     }
 
-    get [symbols.defaultState]() {
-      return Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      return Object.assign(super[internal.defaultState], {
         validationMessage: '',
         valid: true
       });
@@ -50,7 +50,7 @@ export default function FormElementMixin(Base) {
 
     // Uncomment for debugging only
     get internals() {
-      return this[symbols.internals];
+      return this[internal.internals];
     }
 
     static get formAssociated() {
@@ -67,7 +67,7 @@ export default function FormElementMixin(Base) {
      * @type {string}
      */
     get form() {
-      return this[symbols.internals].form;
+      return this[internal.internals].form;
     }
 
     /**
@@ -79,33 +79,33 @@ export default function FormElementMixin(Base) {
      * @type {string}
      */
     get name() {
-      return this[symbols.state].name;
+      return this[internal.state].name;
     }
     set name(name) {
       if ('name' in Base.prototype) {
         super.name = name;
       }
-      this[symbols.setState]({
+      this[internal.setState]({
         name
       });
     }
 
-    [symbols.render](changed) {
-      if (super[symbols.render]) { super[symbols.render](changed); }
+    [internal.render](changed) {
+      if (super[internal.render]) { super[internal.render](changed); }
 
       // Reflect name property to attribute so form will pick it up.
       if (changed.name) {
-        this.setAttribute('name', this[symbols.state].name);
+        this.setAttribute('name', this[internal.state].name);
       }
 
       if (formElementsSupported) {
           // Reflect validity state to internals.
         if (changed.valid || changed.validationMessage) {
-          const { valid, validationMessage } = this[symbols.state];
+          const { valid, validationMessage } = this[internal.state];
           if (valid) {
-            this[symbols.internals].setValidity({});
+            this[internal.internals].setValidity({});
           } else {
-            this[symbols.internals].setValidity(
+            this[internal.internals].setValidity(
               {
                 customError: true
               },
@@ -117,7 +117,7 @@ export default function FormElementMixin(Base) {
     }
 
     reportValidity() {
-      return this[symbols.internals].reportValidity();
+      return this[internal.internals].reportValidity();
     }
 
     /**
@@ -134,15 +134,15 @@ export default function FormElementMixin(Base) {
     }
 
     get validationMessage() {
-      return this[symbols.state].validationMessage;
+      return this[internal.state].validationMessage;
     }
 
     get validity() {
-      return this[symbols.internals].validity;
+      return this[internal.internals].validity;
     }
 
     get willValidate() {
-      return this[symbols.internals].willValidate;
+      return this[internal.internals].willValidate;
     }
   
   }
@@ -153,6 +153,6 @@ export default function FormElementMixin(Base) {
 
 function updateValue(element) {
   if (formElementsSupported) {
-    element[symbols.internals].setFormValue(element[symbols.state].value, element[symbols.state]);
+    element[internal.internals].setFormValue(element[internal.state].value, element[internal.state]);
   }
 }

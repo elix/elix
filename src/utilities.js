@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 
 
 /**
@@ -74,7 +74,7 @@ export function closestFocusableAncestor(node) {
     }
     // If an element defines a focusTarget (e.g., via DelegateFocusMixin),
     // see if that focusTarget is focusable at this point.
-    const focusTarget = ancestor[symbols.focusTarget];
+    const focusTarget = ancestor[internal.focusTarget];
     if (focusTarget && focusTarget.tabIndex >= 0 && !focusTarget.disabled) {
       return focusTarget;
     }
@@ -214,7 +214,7 @@ export function forwardFocus(origin, target) {
         return;
       }
       // What element wants the focus?
-      const desiredTarget = target[symbols.focusTarget] || target;
+      const desiredTarget = target[internal.focusTarget] || target;
       // What ancestor can actually take the focus?
       const focusableTarget = closestFocusableAncestor(desiredTarget);
       if (focusableTarget) {

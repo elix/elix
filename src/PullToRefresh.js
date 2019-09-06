@@ -1,6 +1,6 @@
 import { dampen } from './fractionalSelection.js';
 import { getScrollableElement } from './scrolling.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import EffectMixin from './EffectMixin.js';
 import ProgressSpinner from './ProgressSpinner.js';
@@ -36,15 +36,15 @@ const Base =
  */
 class PullToRefresh extends Base {
 
-  [symbols.componentDidMount]() {
-    super[symbols.componentDidMount]();
+  [internal.componentDidMount]() {
+    super[internal.componentDidMount]();
     // Listen to scroll events in case the user scrolls up past the page's top.
     let scrollTarget = getScrollableElement(this) || window;
     scrollTarget.addEventListener('scroll', async () => {
       // We might normally call requestAnimationFrame in a scroll handler, but
       // in this case that could cause our scroll handling to run after the user
       // has scrolled away from the top.
-      this[symbols.raiseChangeEvents] = true;
+      this[internal.raiseChangeEvents] = true;
       // Desktop and Mobile Safari don't agree on how to expose document
       // scrollTop, so we use window.pageYOffset.
       // See https://stackoverflow.com/questions/2506958/how-to-find-in-javascript-the-current-scroll-offset-in-mobile-safari-iphon
@@ -52,21 +52,21 @@ class PullToRefresh extends Base {
         window.pageYOffset :
         scrollTarget.scrollTop;
       await handleScrollPull(this, scrollTop);
-      this[symbols.raiseChangeEvents] = false;
+      this[internal.raiseChangeEvents] = false;
     });
   }
 
-  [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
-    super[symbols.componentDidUpdate](changed);
-    if (this[symbols.state].swipeFraction > 0 &&
-      !this[symbols.state].refreshing && !this[symbols.state].pullTriggeredRefresh) {
-      const y = getTranslationForSwipeFraction(this[symbols.state], this[symbols.swipeTarget]);
+  [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
+    super[internal.componentDidUpdate](changed);
+    if (this[internal.state].swipeFraction > 0 &&
+      !this[internal.state].refreshing && !this[internal.state].pullTriggeredRefresh) {
+      const y = getTranslationForSwipeFraction(this[internal.state], this[internal.swipeTarget]);
       if (y >= getSwipeThreshold(this)) {
         // User has dragged element down far enough to trigger a refresh.
         this.refreshing = true;
       }
     } else if (changed.refreshing) {
-      if (this[symbols.raiseChangeEvents]) {
+      if (this[internal.raiseChangeEvents]) {
         /**
          * Raised when the `refreshing` state changes.
          * 
@@ -74,7 +74,7 @@ class PullToRefresh extends Base {
          */
         const event = new CustomEvent('refreshing-changed', {
           detail: {
-            refreshing: this[symbols.state].refreshing
+            refreshing: this[internal.state].refreshing
           }
         });
         this.dispatchEvent(event);
@@ -82,9 +82,9 @@ class PullToRefresh extends Base {
     }
   }
   
-  get [symbols.defaultState]() {
+  get [internal.defaultState]() {
     // Suppress transition effects on page load.
-    const state = Object.assign(super[symbols.defaultState], {
+    const state = Object.assign(super[internal.defaultState], {
       swipeFractionMin: 0, // Can't swipe up, only down
       pullIndicatorRole: downArrowTemplate,
       pullTriggeredRefresh: false,
@@ -122,28 +122,28 @@ class PullToRefresh extends Base {
     return state;
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.pullIndicatorRole) {
-      template.transmute(this[symbols.$].pullIndicator, this.pullIndicatorRole);
+      template.transmute(this[internal.$].pullIndicator, this.pullIndicatorRole);
     }
     if (changed.refreshing) {
-      const { refreshing } = this[symbols.state];
-      const refreshingIndicator = this[symbols.$].refreshingIndicator;
+      const { refreshing } = this[internal.state];
+      const refreshingIndicator = this[internal.$].refreshingIndicator;
       refreshingIndicator.style.visibility = refreshing ?
         'visible' :
         'hidden';
-      if ('playing' in this[symbols.$].refreshingIndicator) {
+      if ('playing' in this[internal.$].refreshingIndicator) {
         /** @type {any} */ (refreshingIndicator).playing = refreshing;
       }
     }
     if (changed.refreshingIndicatorRole) {
-      template.transmute(this[symbols.$].refreshingIndicator, this.refreshingIndicatorRole);
+      template.transmute(this[internal.$].refreshingIndicator, this.refreshingIndicatorRole);
     }
     if (changed.enableEffects || changed.refreshing || changed.swipeFraction) {
-      const { enableEffects, refreshing, swipeFraction } = this[symbols.state];
+      const { enableEffects, refreshing, swipeFraction } = this[internal.state];
       const swipingDown = swipeFraction != null && swipeFraction > 0;
-      let y = getTranslationForSwipeFraction(this[symbols.state], this[symbols.swipeTarget]);
+      let y = getTranslationForSwipeFraction(this[internal.state], this[internal.swipeTarget]);
       if (refreshing) {
         y = Math.max(y, getSwipeThreshold(this));
       }
@@ -162,14 +162,14 @@ class PullToRefresh extends Base {
         refreshing,
         scrollPullDistance,
         swipeFraction
-      } = this[symbols.state];
+      } = this[internal.state];
       const swipingDown = swipeFraction != null && swipeFraction > 0;
       const scrollingDown = !!scrollPullDistance;
       const pullingDown = swipingDown || scrollingDown;
       const showPullIndicator = !refreshing &&
         !pullTriggeredRefresh &&
         pullingDown;
-      this[symbols.$].pullIndicator.style.visibility = showPullIndicator ?
+      this[internal.$].pullIndicator.style.visibility = showPullIndicator ?
         'visible' :
         'hidden';
     }
@@ -184,17 +184,17 @@ class PullToRefresh extends Base {
    * @type {Role}
    */
   get pullIndicatorRole() {
-    return this[symbols.state].pullIndicatorRole;
+    return this[internal.state].pullIndicatorRole;
   }
   set pullIndicatorRole(pullIndicatorRole) {
-    this[symbols.setState]({ pullIndicatorRole });
+    this[internal.setState]({ pullIndicatorRole });
   }
 
   get refreshing() {
-    return this[symbols.state].refreshing;
+    return this[internal.state].refreshing;
   }
   set refreshing(refreshing) {
-    this[symbols.setState]({ refreshing });
+    this[internal.setState]({ refreshing });
   }
 
   /**
@@ -205,13 +205,13 @@ class PullToRefresh extends Base {
    * @default ProgressSpinner
    */
   get refreshingIndicatorRole() {
-    return this[symbols.state].refreshingIndicatorRole;
+    return this[internal.state].refreshingIndicatorRole;
   }
   set refreshingIndicatorRole(refreshingIndicatorRole) {
-    this[symbols.setState]({ refreshingIndicatorRole });
+    this[internal.setState]({ refreshingIndicatorRole });
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {
@@ -264,8 +264,8 @@ class PullToRefresh extends Base {
  * @param {PullToRefresh} element
  */
 function getSwipeThreshold(element) {
-  return element[symbols.$].refreshIndicators instanceof HTMLElement ?
-    element[symbols.$].refreshIndicators.offsetHeight :
+  return element[internal.$].refreshIndicators instanceof HTMLElement ?
+    element[internal.$].refreshIndicators.offsetHeight :
     0;
 }
 
@@ -321,22 +321,22 @@ async function handleScrollPull(element, scrollTop) {
     // Negative scroll top means we're probably in WebKit.
     // Start a scroll pull operation.
     let scrollPullDistance = -scrollTop;
-    if (element[symbols.state].scrollPullDistance &&
-      !element[symbols.state].scrollPullMaxReached &&
-      scrollPullDistance < element[symbols.state].scrollPullDistance) {
+    if (element[internal.state].scrollPullDistance &&
+      !element[internal.state].scrollPullMaxReached &&
+      scrollPullDistance < element[internal.state].scrollPullDistance) {
       // The negative scroll events have started to head back to zero (most
       // likely because the user let go and stopped scrolling), so we've reached
       // the maximum extent of the scroll pull. From this point on, we want to
       // stop our own translation effect and let the browser smoothly snap the
       // page back to the top (zero) scroll position. If we don't do that, we'll
       // be fighting with the browser effect, and the result will not be smooth.
-      element[symbols.setState]({ scrollPullMaxReached: true });
+      element[internal.setState]({ scrollPullMaxReached: true });
     }
-    await element[symbols.setState]({ scrollPullDistance });
-  } else if (element[symbols.state].scrollPullDistance !== null) {
+    await element[internal.setState]({ scrollPullDistance });
+  } else if (element[internal.state].scrollPullDistance !== null) {
     // We've scrolled back into zero/positive territory, i.e., at or below the
     // top of the page, so the scroll pull has finished.
-    await element[symbols.setState]({
+    await element[internal.setState]({
       scrollPullDistance: null,
       scrollPullMaxReached: false,
     });

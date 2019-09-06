@@ -135,7 +135,7 @@ import * as constantsImport from './constants.js';
 import * as contentImport from './content.js';
 import * as fractionalSelectionImport from './fractionalSelection.js';
 import * as scrollingImport from './scrolling.js';
-import * as symbolsImport from './symbols.js';
+import * as internalImport from './internal.js';
 import * as templateImport from './template.js';
 import * as utilitiesImport from './utilities.js';
 

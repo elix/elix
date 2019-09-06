@@ -2,7 +2,7 @@ import './CalendarDayNamesHeader.js';
 import './CalendarDays.js';
 import './CalendarMonthYearHeader.js';
 import * as calendar from './calendar.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import CalendarDay from './CalendarDay.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
@@ -41,7 +41,7 @@ class CalendarMonth extends Base {
    */
   dayElementForDate(date) {
     /** @type {any} */
-    const monthDays = this[symbols.$].monthDays;
+    const monthDays = this[internal.$].monthDays;
     return monthDays && 'dayElementForDate' in monthDays &&
       monthDays.dayElementForDate(date);
   }
@@ -53,10 +53,10 @@ class CalendarMonth extends Base {
    * @default CalendarDay
    */
   get dayRole() {
-    return this[symbols.state].dayRole;
+    return this[internal.state].dayRole;
   }
   set dayRole(dayRole) {
-    this[symbols.setState]({ dayRole });
+    this[internal.setState]({ dayRole });
   }
 
   /**
@@ -68,7 +68,7 @@ class CalendarMonth extends Base {
    */
   get days() {
     return this.shadowRoot ?
-      /** @type {any} */ (this[symbols.$].monthDays).days :
+      /** @type {any} */ (this[internal.$].monthDays).days :
       [];
   }
 
@@ -82,14 +82,14 @@ class CalendarMonth extends Base {
    * @default 'short'
    */
   get daysOfWeekFormat() {
-    return this[symbols.state].daysOfWeekFormat;
+    return this[internal.state].daysOfWeekFormat;
   }
   set daysOfWeekFormat(daysOfWeekFormat) {
-    this[symbols.setState]({ daysOfWeekFormat });
+    this[internal.setState]({ daysOfWeekFormat });
   }
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       date: calendar.today(),
       dayRole: CalendarDay,
       daysOfWeekFormat: 'short',
@@ -110,80 +110,80 @@ class CalendarMonth extends Base {
    * @default 'long'
    */
   get monthFormat() {
-    return this[symbols.state].monthFormat;
+    return this[internal.state].monthFormat;
   }
   set monthFormat(monthFormat) {
-    this[symbols.setState]({
+    this[internal.setState]({
       monthFormat
     });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.locale) {
-      const locale = this[symbols.state].locale;
-      /** @type {any} */ (this[symbols.$].monthDays).locale = locale;
-      /** @type {any} */ (this[symbols.$].monthYearHeader).locale = locale;
-      /** @type {any} */ (this[symbols.$].weekDaysHeader).locale = locale;
+      const locale = this[internal.state].locale;
+      /** @type {any} */ (this[internal.$].monthDays).locale = locale;
+      /** @type {any} */ (this[internal.$].monthYearHeader).locale = locale;
+      /** @type {any} */ (this[internal.$].weekDaysHeader).locale = locale;
     }
     if (changed.dayRole) {
-      /** @type {any} */ (this[symbols.$].monthDays).dayRole = this[symbols.state].dayRole;
+      /** @type {any} */ (this[internal.$].monthDays).dayRole = this[internal.state].dayRole;
     }
     if (changed.date) {
-      const { date } = this[symbols.state];
+      const { date } = this[internal.state];
       if (date) {
         const startDate = calendar.firstDateOfMonth(date);
         const endDate = calendar.lastDateOfMonth(date);
         const dayCount = endDate.getDate();
-        Object.assign(this[symbols.$].monthDays, {
+        Object.assign(this[internal.$].monthDays, {
           date,
           dayCount,
           startDate
         });
-        /** @type {any} */ (this[symbols.$].monthYearHeader).date = calendar.firstDateOfMonth(date);
+        /** @type {any} */ (this[internal.$].monthYearHeader).date = calendar.firstDateOfMonth(date);
       }
     }
     if (changed.daysOfWeekFormat) {
-      const { daysOfWeekFormat } = this[symbols.state];
-      /** @type {any} */ (this[symbols.$].weekDaysHeader).format = daysOfWeekFormat;
+      const { daysOfWeekFormat } = this[internal.state];
+      /** @type {any} */ (this[internal.$].weekDaysHeader).format = daysOfWeekFormat;
     }
     if (changed.showCompleteWeeks) {
-      const { showCompleteWeeks } = this[symbols.state];
-      /** @type {any} */ (this[symbols.$].monthDays).showCompleteWeeks = showCompleteWeeks;
+      const { showCompleteWeeks } = this[internal.state];
+      /** @type {any} */ (this[internal.$].monthDays).showCompleteWeeks = showCompleteWeeks;
     }
     if (changed.showSelectedDay) {
-      const { showSelectedDay } = this[symbols.state];
-      /** @type {any} */ (this[symbols.$].monthDays).showSelectedDay = showSelectedDay;
+      const { showSelectedDay } = this[internal.state];
+      /** @type {any} */ (this[internal.$].monthDays).showSelectedDay = showSelectedDay;
     }
     if (changed.monthFormat) {
-      const { monthFormat } = this[symbols.state];
-      /** @type {any} */ (this[symbols.$].monthYearHeader).monthFormat = monthFormat;
+      const { monthFormat } = this[internal.state];
+      /** @type {any} */ (this[internal.$].monthYearHeader).monthFormat = monthFormat;
     }
     if (changed.yearFormat) {
-      const { yearFormat } = this[symbols.state];
-      /** @type {any} */ (this[symbols.$].monthYearHeader).yearFormat = yearFormat;
+      const { yearFormat } = this[internal.state];
+      /** @type {any} */ (this[internal.$].monthYearHeader).yearFormat = yearFormat;
     }
   }
 
   get showCompleteWeeks() {
-    return this[symbols.state].showCompleteWeeks;
+    return this[internal.state].showCompleteWeeks;
   }
   set showCompleteWeeks(showCompleteWeeks) {
-    this[symbols.setState]({
+    this[internal.setState]({
       showCompleteWeeks
     });
   }
 
   get showSelectedDay() {
-    return this[symbols.state].showSelectedDay;
+    return this[internal.state].showSelectedDay;
   }
   set showSelectedDay(showSelectedDay) {
-    this[symbols.setState]({
+    this[internal.setState]({
       showSelectedDay
     });
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {
@@ -223,10 +223,10 @@ class CalendarMonth extends Base {
    * @default 'numeric'
    */
   get yearFormat() {
-    return this[symbols.state].yearFormat;
+    return this[internal.state].yearFormat;
   }
   set yearFormat(yearFormat) {
-    this[symbols.setState]({
+    this[internal.setState]({
       yearFormat
     });
   }

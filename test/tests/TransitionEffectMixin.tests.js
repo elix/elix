@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 import TransitionEffectMixin from '../../src/TransitionEffectMixin.js';
@@ -14,17 +14,17 @@ const Base =
 // when showing or hiding an element during an effect.
 class TransitionEffectTest extends Base {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       effect: 'close',
       effectPhase: 'after'
     });
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    const effect = this[symbols.state].effect;
-    const phase = this[symbols.state].effectPhase;
+  [internal.render](changed) {
+    super[internal.render](changed);
+    const effect = this[internal.state].effect;
+    const phase = this[internal.state].effectPhase;
     const display = effect === 'close' && phase === 'after' ?
       'none' :
       'block';
@@ -38,7 +38,7 @@ class TransitionEffectTest extends Base {
     });
   }
   
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {
@@ -75,7 +75,7 @@ describe("TransitionEffectMixin", function () {
         done();
       }
     });
-    fixture[symbols.startEffect]('open');
+    fixture[internal.startEffect]('open');
   });
   
   it('goes through effect phases when closed', done => {
@@ -90,7 +90,7 @@ describe("TransitionEffectMixin", function () {
         done();
       }
     });
-    fixture[symbols.startEffect]('close');
+    fixture[internal.startEffect]('close');
   });
 
 });

@@ -1,5 +1,5 @@
 import { booleanAttributes } from './AttributeMarshallingMixin.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import DelegateFocusMixin from './DelegateFocusMixin.js';
 import ReactiveElement from './ReactiveElement.js';
@@ -216,10 +216,10 @@ class WrappedStandardElement extends Base {
   attributeChangedCallback(name, oldValue, newValue) {
     const forwardAttribute = attributesWithoutProperties.indexOf(name) >= 0;
     if (forwardAttribute) {
-      const innerAttributes = Object.assign({}, this[symbols.state].innerAttributes, {
+      const innerAttributes = Object.assign({}, this[internal.state].innerAttributes, {
         [name]: newValue
       });
-      this[symbols.setState]({
+      this[internal.setState]({
         innerAttributes
       });
     } else {
@@ -244,8 +244,8 @@ class WrappedStandardElement extends Base {
   //
   // click() {}
 
-  [symbols.componentDidMount]() {
-    super[symbols.componentDidMount]();
+  [internal.componentDidMount]() {
+    super[internal.componentDidMount]();
 
     // Listen for any events raised by the inner element which will not
     // automatically be retargetted across the Shadow DOM boundary, and re-raise
@@ -266,11 +266,11 @@ class WrappedStandardElement extends Base {
     // would be treated as a click on the outer element. Someone listening to
     // clicks on the outer element would get a click event, even though the
     // overall element is supposed to be disabled.
-    if ('disabled' in this[symbols.$].inner) {
+    if ('disabled' in this[internal.$].inner) {
       mouseEventNames.forEach(eventName => {
         this.addEventListener(eventName, event => {
           /** @type {any} */
-          const element = this[symbols.$].inner;
+          const element = this[internal.$].inner;
           if (element.disabled) {
             event.stopImmediatePropagation();
           }
@@ -280,14 +280,14 @@ class WrappedStandardElement extends Base {
 
   }
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       innerAttributes: {},
       innerProperties: {}
     });
   }
 
-  get [symbols.defaultTabIndex]() {
+  get [internal.defaultTabIndex]() {
     return focusableByDefault[this.extends] ?
       0 :
       -1;
@@ -309,7 +309,7 @@ class WrappedStandardElement extends Base {
    */
   get inner() {
     /** @type {any} */
-    const result = this[symbols.$] && this[symbols.$].inner;
+    const result = this[internal.$] && this[internal.$].inner;
     if (!result) {
       /* eslint-disable no-console */
       console.warn('Attempted to get an inner standard element before it was instantiated.');
@@ -341,7 +341,7 @@ class WrappedStandardElement extends Base {
     // in response to user interaction (e.g., an input element's value changes
     // as the user types), the component must listen to suitable events on the
     // inner element and update its state accordingly.
-    const value = this[symbols.state].innerProperties[name];
+    const value = this[internal.state].innerProperties[name];
     return value || (this.shadowRoot && this.inner[name]);
   }
 
@@ -352,22 +352,22 @@ class WrappedStandardElement extends Base {
     return [...super.observedAttributes, ...attributesWithoutProperties];
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     const inner = this.inner;
     if (changed.tabIndex) {
-      inner.tabIndex = this[symbols.state].tabIndex;
+      inner.tabIndex = this[internal.state].tabIndex;
     }
     if (changed.innerAttributes) {
       // Forward attributes to the inner element.
       // See notes at attributeChangedCallback.
-      const { innerAttributes } = this[symbols.state];
+      const { innerAttributes } = this[internal.state];
       for (const name in innerAttributes) {
         applyAttribute(inner, name, innerAttributes[name]);
       }
     }
     if (changed.innerProperties) {
-      const { innerProperties } = this[symbols.state];
+      const { innerProperties } = this[internal.state];
       Object.assign(inner, innerProperties);
       const { disabled } = innerProperties;
       if (disabled !== undefined) {
@@ -383,8 +383,8 @@ class WrappedStandardElement extends Base {
    * @param {any} value 
    */
   setInnerProperty(name, value) {
-    // We normally don't check an existing state value before calling[symbols.setState],
-    // relying instead on[symbols.setState] to do that check for us. However, we have
+    // We normally don't check an existing state value before calling[internal.setState],
+    // relying instead on[internal.setState] to do that check for us. However, we have
     // dangers in this particular component of creating infinite loops.
     //
     // E.g., setting the tabindex attibute will call attributeChangedCallback,
@@ -393,12 +393,12 @@ class WrappedStandardElement extends Base {
     // tabIndex property to the tabindex attribute, causing a loop.
     //
     // To avoid this, we check the existing value before updating our state.
-    const current = this[symbols.state].innerProperties[name];
+    const current = this[internal.state].innerProperties[name];
     if (current !== value) {
-      const innerProperties = Object.assign({}, this[symbols.state].innerProperties, {
+      const innerProperties = Object.assign({}, this[internal.state].innerProperties, {
         [name]: value
       });
-      this[symbols.setState]({ innerProperties });
+      this[internal.setState]({ innerProperties });
     }
   }
 
@@ -432,7 +432,7 @@ class WrappedStandardElement extends Base {
    *
    * @type {(string|HTMLTemplateElement)}
    */
-  get [symbols.template]() {
+  get [internal.template]() {
     const display = blockElements.indexOf(this.extends) >= 0 ?
       'block' :
       'inline-block';

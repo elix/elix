@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
@@ -29,16 +29,16 @@ const Base =
  */
 class Modes extends Base {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       selectionRequired: true
     });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.items || changed.selectedIndex) {
-      const { selectedIndex, items } = this[symbols.state];
+      const { selectedIndex, items } = this[internal.state];
       if (items) {
         items.forEach((item, index) => {
           const selected = index === selectedIndex;
@@ -48,7 +48,7 @@ class Modes extends Base {
     }
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

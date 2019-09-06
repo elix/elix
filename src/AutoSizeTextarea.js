@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import FormElementMixin from './FormElementMixin.js';
 import SlotContentMixin from './SlotContentMixin.js';
@@ -32,8 +32,8 @@ const Base =
  */
 class AutoSizeTextarea extends Base {
 
-  [symbols.componentDidMount]() {
-    super[symbols.componentDidMount]();
+  [internal.componentDidMount]() {
+    super[internal.componentDidMount]();
 
     // The following jsDoc comment doesn't directly apply to the statement which
     // follows, but is placed there because the comment has to go somewhere to
@@ -47,24 +47,24 @@ class AutoSizeTextarea extends Base {
      * 
      * @event input
      */
-    this[symbols.$].inner.addEventListener('input', () => {
-      this[symbols.raiseChangeEvents] = true;
-      this[symbols.setState]({ valueTracksContent: false });
+    this[internal.$].inner.addEventListener('input', () => {
+      this[internal.raiseChangeEvents] = true;
+      this[internal.setState]({ valueTracksContent: false });
       /** @type {any} */
-      const inner = this[symbols.$].inner;
-      this[symbols.setState]({
+      const inner = this[internal.$].inner;
+      this[internal.setState]({
         value: inner.value
       });
-      this[symbols.raiseChangeEvents] = false;
+      this[internal.raiseChangeEvents] = false;
     });
 
     // For auto-sizing to work, we need the text copy to have the same border,
     // padding, and other relevant characteristics as the original text area.
     // Since those aspects are affected by CSS, we have to wait until the
     // element is in the document before we can update the text copy.
-    const textareaStyle = getComputedStyle(this[symbols.$].inner);
-    const lineHeight = this[symbols.$].extraSpace.clientHeight;
-    this[symbols.setState]({
+    const textareaStyle = getComputedStyle(this[internal.$].inner);
+    const lineHeight = this[internal.$].extraSpace.clientHeight;
+    this[internal.setState]({
       copyStyle: {
         'border-bottom-style': textareaStyle.borderBottomStyle,
         'border-bottom-width': textareaStyle.borderBottomWidth,
@@ -83,8 +83,8 @@ class AutoSizeTextarea extends Base {
     });
   }
 
-  get [symbols.defaultState]() {
-    const state = Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    const state = Object.assign(super[internal.defaultState], {
       minimumRows: 1,
       value: null,
       valueTracksContent: true
@@ -128,30 +128,30 @@ class AutoSizeTextarea extends Base {
    * @default 1
    */
   get minimumRows() {
-    return this[symbols.state].minimumRows;
+    return this[internal.state].minimumRows;
   }
   set minimumRows(minimumRows) {
     const parsed = Number(minimumRows);
     if (!isNaN(parsed)) {
-      this[symbols.setState]({
+      this[internal.setState]({
         minimumRows: parsed
       });
     }
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
-    const { copyStyle, lineHeight, minimumRows, value } = this[symbols.state];
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
+    const { copyStyle, lineHeight, minimumRows, value } = this[internal.state];
     if (changed.copyStyle) {
-      Object.assign(this[symbols.$].copyContainer.style, copyStyle);
+      Object.assign(this[internal.$].copyContainer.style, copyStyle);
     }
     if (changed.lineHeight || changed.minimumRows && lineHeight != null) {
       const minHeight = minimumRows * lineHeight;
-      this[symbols.$].copyContainer.style.minHeight = `${minHeight}px`;
+      this[internal.$].copyContainer.style.minHeight = `${minHeight}px`;
     }
     if (changed.value) {
-      /** @type {HTMLTextAreaElement} */ (this[symbols.$].inner).value = value;
-      this[symbols.$].textCopy.textContent = value;
+      /** @type {HTMLTextAreaElement} */ (this[internal.$].inner).value = value;
+      this[internal.$].textCopy.textContent = value;
     }
   }
 
@@ -175,7 +175,7 @@ class AutoSizeTextarea extends Base {
    *   access to assigned content so we can copy into the textarea, while
    *   ensuring the original content doesn't show up directly.
    */
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {
@@ -238,10 +238,10 @@ class AutoSizeTextarea extends Base {
    * @type {string}
    */
   get value() {
-    return this[symbols.state].value;
+    return this[internal.state].value;
   }
   set value(value) {
-    this[symbols.setState]({
+    this[internal.setState]({
       value,
       valueTracksContent: false
     });

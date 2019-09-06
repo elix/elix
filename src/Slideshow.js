@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import CrossfadeStage from './CrossfadeStage.js';
 import TimerSelectionMixin from './TimerSelectionMixin.js';
 
@@ -28,8 +28,8 @@ const Base =
  */
 class Slideshow extends Base {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       playing: true,
       selectionTimerDuration: 3000,
       selectionWraps: true,

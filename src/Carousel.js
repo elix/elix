@@ -1,5 +1,5 @@
 import { forwardFocus } from './utilities.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import AriaListMixin from './AriaListMixin.js';
 import ArrowDirectionMixin from './ArrowDirectionMixin.js';
@@ -56,7 +56,7 @@ const Base =
  */
 class Carousel extends Base {
   
-  get [symbols.defaultState]() {
+  get [internal.defaultState]() {
     // Show arrow buttons if device has a fine-grained pointer (e.g., mouse).
     // As of Mar 14 2018, Firefox does not yet support pointer queries, in which
     // case we assume use of a mouse.
@@ -65,7 +65,7 @@ class Carousel extends Base {
     const showArrowButtons = mediaQueryList.media === pointerQuery ?
       mediaQueryList.matches :
       true;
-    const result = Object.assign(super[symbols.defaultState], {
+    const result = Object.assign(super[internal.defaultState], {
       orientation: 'horizontal',
       proxyListOverlap: true,
       proxyListPosition: 'bottom',
@@ -91,46 +91,46 @@ class Carousel extends Base {
   }
 
   get orientation() {
-    return this[symbols.state].orientation;
+    return this[internal.state].orientation;
   }
   set orientation(orientation) {
-    this[symbols.setState]({ orientation });
+    this[internal.setState]({ orientation });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    if (changed.proxyListRole && this[symbols.$].proxyList) {
+  [internal.render](/** @type {PlainObject} */ changed) {
+    if (changed.proxyListRole && this[internal.$].proxyList) {
       // Turn off focus handling for old proxy list.
       /** @type {any} */
-      const cast = this[symbols.$].proxyList;
+      const cast = this[internal.$].proxyList;
       forwardFocus(cast, null);
     }
-    super[symbols.render](changed);
+    super[internal.render](changed);
     if (changed.stageRole || changed.orientation) {
-      /** @type {any} */ const cast = this[symbols.$].stage;
+      /** @type {any} */ const cast = this[internal.$].stage;
       if ('orientation' in cast) {
-        cast.orientation = this[symbols.state].orientation;
+        cast.orientation = this[internal.state].orientation;
       }
     }
     if (changed.orientation || changed.proxyListRole) {
-      /** @type {any} */ const cast = this[symbols.$].proxyList;
+      /** @type {any} */ const cast = this[internal.$].proxyList;
       if ('orientation' in cast) {
-        cast.orientation = this[symbols.state].orientation;
+        cast.orientation = this[internal.state].orientation;
       }
     }
     if (changed.proxyListRole) {
       // Keep focus off of the proxies and onto the carousel itself.
       /** @type {any} */
-      const cast = this[symbols.$].proxyList;
+      const cast = this[internal.$].proxyList;
       forwardFocus(cast, this);
       cast.removeAttribute('tabindex');
     }
     if (changed.stageRole) {
       /** @type {any} */
-      const cast = this[symbols.$].stage;
+      const cast = this[internal.$].stage;
       cast.removeAttribute('tabindex');      
     }
-    const { darkMode } = this[symbols.state];
-    /** @type {Element[]} */ const proxies = this[symbols.state].proxies;
+    const { darkMode } = this[internal.state];
+    /** @type {Element[]} */ const proxies = this[internal.state].proxies;
     // Wait for knowledge of dark mode
     if ((changed.darkMode || changed.proxies)
         && darkMode !== null && proxies) {
@@ -152,15 +152,15 @@ class Carousel extends Base {
     }
   }
 
-  get [symbols.swipeTarget]() {
-    const base = super[symbols.swipeTarget];
-    return this[symbols.$].stage instanceof HTMLElement ?
-      this[symbols.$].stage :
+  get [internal.swipeTarget]() {
+    const base = super[internal.swipeTarget];
+    return this[internal.$].stage instanceof HTMLElement ?
+      this[internal.$].stage :
       base;
   }
 
-  get [symbols.template]() {
-    const base = super[symbols.template];
+  get [internal.template]() {
+    const base = super[internal.template];
     const stage = base.content.querySelector('#stage');
     /** @type {any} */ const cast = this;
     cast[ArrowDirectionMixin.wrap](stage);

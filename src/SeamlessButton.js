@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import Button from './Button.js';
 
@@ -13,8 +13,8 @@ import Button from './Button.js';
  */
 class SeamlessButton extends Button {
 
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
+  get [internal.template]() {
+    return template.concat(super[internal.template], template.html`
       <style>
         #inner {
           background: none;

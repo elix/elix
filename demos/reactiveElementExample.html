@@ -26,47 +26,47 @@
     </template>
     
     <script type="module">
-      import * as symbols from '../src/symbols.js';
+      import * as internal from '../src/internal.js';
       import ReactiveElement from '../src/ReactiveElement.js';
   
       // Create a native web component with reactive behavior.
       class IncrementDecrement extends ReactiveElement {
   
-        [symbols.componentDidMount]() {
-          super[symbols.componentDidMount]();
-          this[symbols.$].decrement.addEventListener('click', () => {
+        [internal.componentDidMount]() {
+          super[internal.componentDidMount]();
+          this[internal.$].decrement.addEventListener('click', () => {
             this.value--;
           });
-          this[symbols.$].increment.addEventListener('click', () => {
+          this[internal.$].increment.addEventListener('click', () => {
             this.value++;
           });
         }
   
-        // This property becomes the value of this[symbols.state] at constructor time.
-        get [symbols.defaultState]() {
-          return Object.assign(super[symbols.defaultState], {
+        // This property becomes the value of this[internal.state] at constructor time.
+        get [internal.defaultState]() {
+          return Object.assign(super[internal.defaultState], {
             value: 0
           });
         }
   
         // Render the current state to the DOM.
-        [symbols.render](changed) {
-          super[symbols.render](changed);
+        [internal.render](changed) {
+          super[internal.render](changed);
           if (changed.value) {
-            this[symbols.$].value.textContent = this[symbols.state].value;
+            this[internal.$].value.textContent = this[internal.state].value;
           }
         }
   
-        get [symbols.template]() {
+        get [internal.template]() {
           return incrementDecrementTemplate;
         }
   
         // Provide a public property that gets/sets state.
         get value() {
-          return this[symbols.state].value;
+          return this[internal.state].value;
         }
         set value(value) {
-          this[symbols.setState]({ value });
+          this[internal.setState]({ value });
         }
   
       }

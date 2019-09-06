@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -22,11 +22,11 @@ export default function AriaRoleMixin(Base) {
   // The class prototype added by the mixin.
   class AriaRole extends Base {
 
-    [symbols.render](/** @type {PlainObject} */ changed) {
-      if (super[symbols.render]) { super[symbols.render](changed); }
+    [internal.render](/** @type {PlainObject} */ changed) {
+      if (super[internal.render]) { super[internal.render](changed); }
       if (changed.role) {
         // Apply top-level role.
-        const { role } = this[symbols.state];
+        const { role } = this[internal.state];
         this.setAttribute('role', role);
       }
     }
@@ -38,8 +38,8 @@ export default function AriaRoleMixin(Base) {
     }
     set role(role) {
       super.role = role;
-      if (!this[symbols.rendering]) {
-        this[symbols.setState]({
+      if (!this[internal.rendering]) {
+        this[internal.setState]({
           role
         });
       }

@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -16,7 +16,7 @@ import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-un
  *
  * By default, the mixin looks in the component's shadow subtree for a default
  * (unnamed) `slot` element. You can specify that a different slot should be
- * used by overriding the `symbols.contentSlot` property.
+ * used by overriding the `internal.contentSlot` property.
  *
  * Most Elix [elements](elements) use `SlotContentMixin`, including
  * [ListBox](ListBox), [Modes](Modes), and [Tabs](Tabs).
@@ -29,11 +29,11 @@ export default function SlotContentMixin(Base) {
   // The class prototype added by the mixin.
   class SlotContent extends Base {
 
-    [symbols.componentDidMount]() {
-      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
+    [internal.componentDidMount]() {
+      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
 
       // Listen to changes on the default slot.
-      const slot = this[symbols.contentSlot];
+      const slot = this[internal.contentSlot];
       if (slot) {
         slot.addEventListener('slotchange', async () => {
 
@@ -42,25 +42,25 @@ export default function SlotContentMixin(Base) {
           // to result in effects that the host of this element can predict.
           // To be on the safe side, we raise any change events that come up
           // during the processing of this event.
-          this[symbols.raiseChangeEvents] = true;
+          this[internal.raiseChangeEvents] = true;
           
           // The nodes assigned to the given component have changed.
           // Update the component's state to reflect the new content.
           const content = slot.assignedNodes({ flatten: true });
           Object.freeze(content);
-          this[symbols.setState]({ content });
+          this[internal.setState]({ content });
 
           await Promise.resolve();
-          this[symbols.raiseChangeEvents] = false;
+          this[internal.raiseChangeEvents] = false;
         });
 
       }
     }
 
     /**
-     * See [symbols.contentSlot](symbols#contentSlot).
+     * See [internal.contentSlot](symbols#contentSlot).
      */
-    get [symbols.contentSlot]() {
+    get [internal.contentSlot]() {
       /** @type {HTMLSlotElement|null} */ const slot = this.shadowRoot && this.shadowRoot.querySelector('slot:not([name])');
       if (!this.shadowRoot || !slot) {
         /* eslint-disable no-console */
@@ -69,8 +69,8 @@ export default function SlotContentMixin(Base) {
       return slot;
     }
 
-    get [symbols.defaultState]() {
-      return Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      return Object.assign(super[internal.defaultState], {
         content: null
       });
     }

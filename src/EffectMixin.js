@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -16,19 +16,19 @@ export default function EffectMixin(Base) {
  // The class prototype added by the mixin.
  class Transition extends Base {
   
-  [symbols.componentDidMount]() {
-    if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
+  [internal.componentDidMount]() {
+    if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
 
     // Once everything's finished rendering, enable transition effects.
     setTimeout(() => {
-      this[symbols.setState]({
+      this[internal.setState]({
         enableEffects: true
       });
     });
   }
 
-    get [symbols.defaultState]() {
-      return Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      return Object.assign(super[internal.defaultState], {
         enableEffects: false
       });
     }

@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as calendar from './calendar.js';
 import * as template from './template.js';
 import ReactiveElement from './ReactiveElement.js';
@@ -25,8 +25,8 @@ import ReactiveElement from './ReactiveElement.js';
  */
 class CalendarDayNamesHeader extends ReactiveElement {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       format: 'short',
       locale: navigator.language
     });
@@ -39,10 +39,10 @@ class CalendarDayNamesHeader extends ReactiveElement {
    * @default 'short'
    */
   get format() {
-    return this[symbols.state].format;
+    return this[internal.state].format;
   }
   set format(format) {
-    this[symbols.setState]({ format });
+    this[internal.setState]({ format });
   }
 
   /**
@@ -53,16 +53,16 @@ class CalendarDayNamesHeader extends ReactiveElement {
    * @type {string}
    */
   get locale() {
-    return this[symbols.state].locale;
+    return this[internal.state].locale;
   }
   set locale(locale) {
-    this[symbols.setState]({ locale });
+    this[internal.setState]({ locale });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.format || changed.locale) {
-      const { format, locale } = this[symbols.state];
+      const { format, locale } = this[internal.state];
       const formatter = calendar.dateTimeFormat(locale, {
         weekday: format
       });
@@ -74,14 +74,14 @@ class CalendarDayNamesHeader extends ReactiveElement {
         const dayOfWeek = (firstDayOfWeek + i) % 7;
         date.setDate(dayOfWeek + 1);
         const weekend = dayOfWeek === weekendStart || dayOfWeek === weekendEnd;
-        const dayElement = this[symbols.$][`day${i}`];
+        const dayElement = this[internal.$][`day${i}`];
         dayElement.classList.toggle('weekend', weekend);
         dayElement.textContent = formatter.format(date);
       }
     }
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

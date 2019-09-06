@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import AriaMenuMixin from './AriaMenuMixin.js';
 import DelegateFocusMixin from './DelegateFocusMixin.js';
@@ -66,8 +66,8 @@ const Base =
  */
 class Menu extends Base {
 
-  [symbols.componentDidMount]() {
-    super[symbols.componentDidMount]();
+  [internal.componentDidMount]() {
+    super[internal.componentDidMount]();
     
     this.addEventListener('mousemove', () => {
       this.suppressFocusVisibility();
@@ -77,18 +77,18 @@ class Menu extends Base {
     if ('PointerEvent' in window) {
       // Prefer listening to standard pointer events.
       this.addEventListener('pointerdown', event =>
-        this[symbols.tap](event));
+        this[internal.tap](event));
     } else {
       this.addEventListener('touchstart', event =>
-        this[symbols.tap](event));
+        this[internal.tap](event));
     }
 
     this.removeAttribute('tabindex');
   }
 
-  [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
-    super[symbols.componentDidUpdate](changed);
-    if (changed.selectedIndex && !this[symbols.state].selectionFocused) {
+  [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
+    super[internal.componentDidUpdate](changed);
+    if (changed.selectedIndex && !this[internal.state].selectionFocused) {
       // The selected item needs the focus, but this is complicated. See notes
       // in render.
       const focusElement = this.selectedItem instanceof HTMLElement ?
@@ -98,14 +98,14 @@ class Menu extends Base {
 
       // Now that the selection has been focused, we can remove/reset the
       // tabindex on any item that had previously been selected.
-      this[symbols.setState]({
+      this[internal.setState]({
         selectionFocused: true
       });
     }
   }
 
-  get [symbols.defaultState]() {
-    const state = Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    const state = Object.assign(super[internal.defaultState], {
       highlightSelection: true,
       orientation: 'vertical',
       selectionFocused: false
@@ -128,13 +128,13 @@ class Menu extends Base {
    * nothing.
    */
   async highlightSelectedItem() {
-    const keyboardActive = this[symbols.state].focusVisible;
+    const keyboardActive = this[internal.state].focusVisible;
     const probablyDesktop = matchMedia('(pointer: fine)').matches;
     if (keyboardActive || probablyDesktop) {
       const flashDuration = 75; // milliseconds
-      this[symbols.setState]({ highlightSelection: false });
+      this[internal.setState]({ highlightSelection: false });
       await new Promise(resolve => setTimeout(resolve, flashDuration));
-      this[symbols.setState]({ highlightSelection: true });
+      this[internal.setState]({ highlightSelection: true });
       await new Promise(resolve => setTimeout(resolve, flashDuration));
     }
   }
@@ -145,17 +145,17 @@ class Menu extends Base {
    * @param {ListItemElement} item 
    * @param {PlainObject} state 
    */
-  [symbols.itemMatchesState](item, state) {
-    const base = super[symbols.itemMatchesState] ?
-      super[symbols.itemMatchesState](item, state) :
+  [internal.itemMatchesState](item, state) {
+    const base = super[internal.itemMatchesState] ?
+      super[internal.itemMatchesState](item, state) :
       true;
     /** @type {any} */ const cast = item;
     return base && !cast.disabled;
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
-    const { selectedIndex, items } = this[symbols.state];
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
+    const { selectedIndex, items } = this[internal.state];
     if ((changed.items || changed.selectedIndex) && items) {
         // Reflect the selection state to the item.
       items.forEach((item, index) => {
@@ -185,7 +185,7 @@ class Menu extends Base {
       items.forEach((item, index) => {
         const selected = index === selectedIndex;      
         const isDefaultFocusableItem = selectedIndex < 0 && index === 0;
-        if (!this[symbols.state].selectionFocused) {
+        if (!this[internal.state].selectionFocused) {
           // Phase 1: Add tabindex to newly-selected item.
           if (selected || isDefaultFocusableItem) {
             item.tabIndex = 0;
@@ -200,21 +200,21 @@ class Menu extends Base {
         // Don't show focus on selected item if we're suppressing the focus
         // (because the mouse was used for selection) or if the item was
         // selected by default when the menu opened.
-        const suppressFocus = (selected && !this[symbols.state].focusVisible) ||
+        const suppressFocus = (selected && !this[internal.state].focusVisible) ||
           isDefaultFocusableItem;
         item.style.outline = suppressFocus ? 'none' : '';
       });
     }
     if (changed.generic) {
-      this[symbols.$].content.classList.toggle('generic', this[symbols.state].generic);
+      this[internal.$].content.classList.toggle('generic', this[internal.state].generic);
     }
   }
 
-  get [symbols.scrollTarget]() {
-    return this[symbols.$].content;
+  get [internal.scrollTarget]() {
+    return this[internal.$].content;
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

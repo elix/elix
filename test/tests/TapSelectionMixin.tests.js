@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
 import TapSelectionMixin from '../../src/TapSelectionMixin.js';
 import * as mockInteractions from '../mockInteractions.js';
@@ -10,17 +10,17 @@ class TapSelectionTest extends TapSelectionMixin(
   connectedCallback() {
     super.connectedCallback();
     const items = Array.prototype.slice.call(this.children);
-    this[symbols.setState]({
+    this[internal.setState]({
       items,
       selectedIndex: -1
     });
   }
 
   get selectedIndex() {
-    return this[symbols.state].selectedIndex;
+    return this[internal.state].selectedIndex;
   }
   set selectedIndex(selectedIndex) {
-    this[symbols.state].selectedIndex = selectedIndex;
+    this[internal.state].selectedIndex = selectedIndex;
   }
 
 }
@@ -42,10 +42,10 @@ describe("TapSelectionMixin", function() {
   it("sets the tapped item as the selected item", done => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
-    assert.equal(fixture[symbols.state].selectedIndex, -1);
-    const item = fixture[symbols.state].items[0];
+    assert.equal(fixture[internal.state].selectedIndex, -1);
+    const item = fixture[internal.state].items[0];
     fixture.addEventListener('mousedown', () => {
-      assert.equal(fixture[symbols.state].selectedIndex, 0);
+      assert.equal(fixture[internal.state].selectedIndex, 0);
       done();
     });
     mockInteractions.dispatchSyntheticMouseEvent(item, 'mousedown');
@@ -54,10 +54,10 @@ describe("TapSelectionMixin", function() {
   it("ignores right clicks", done => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
-    assert.equal(fixture[symbols.state].selectedIndex, -1);
-    const item = fixture[symbols.state].items[0];
+    assert.equal(fixture[internal.state].selectedIndex, -1);
+    const item = fixture[internal.state].items[0];
     fixture.addEventListener('mousedown', () => {
-      assert.equal(fixture[symbols.state].selectedIndex, -1, "handled mousedown even when right button was pressed");
+      assert.equal(fixture[internal.state].selectedIndex, -1, "handled mousedown even when right button was pressed");
       done();
     });
     mockInteractions.dispatchSyntheticMouseEvent(item, 'mousedown', {

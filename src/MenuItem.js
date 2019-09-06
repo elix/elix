@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import GenericMixin from './GenericMixin.js';
 import ReactiveElement from './ReactiveElement.js';
@@ -23,9 +23,9 @@ const Base =
  */
 class MenuItem extends Base {
 
-  [symbols.componentDidUpdate](/** @typeof {PlainObject} */ changed) {
+  [internal.componentDidUpdate](/** @typeof {PlainObject} */ changed) {
     // TODO: How do we know whether to raise this if selection is set by Menu? */
-    if (changed.selected /* && this[symbols.raiseChangeEvents] */) {
+    if (changed.selected /* && this[internal.raiseChangeEvents] */) {
       /**
        * Raised when the `selected` property changes.
        * 
@@ -33,36 +33,36 @@ class MenuItem extends Base {
        */
       const event = new CustomEvent('selected-changed', {
         detail: {
-          selected: this[symbols.state].selected
+          selected: this[internal.state].selected
         }
       });
       this.dispatchEvent(event);
     }
   }
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       selected: false
     });
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
+  [internal.render](changed) {
+    super[internal.render](changed);
     if (changed.generic) {
-      this[symbols.$].container.classList.toggle('generic', this[symbols.state].generic);
+      this[internal.$].container.classList.toggle('generic', this[internal.state].generic);
     }
   }
 
   get selected() {
-    return this[symbols.state].selected;
+    return this[internal.state].selected;
   }
   set selected(selected) {
-    this[symbols.setState]({
+    this[internal.setState]({
       selected
     });
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     /* Variety of system fonts */
     return template.html`
       <style>

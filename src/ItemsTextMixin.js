@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -13,15 +13,15 @@ export default function ItemsTextMixin(Base) {
   // The class prototype added by the mixin.
   class ItemsText extends Base {
 
-    get [symbols.defaultState]() {
-      const state = Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      const state = Object.assign(super[internal.defaultState], {
         texts: null
       });
 
       // Regenerate texts when items change.
       state.onChange('items', state => {
         const { items } = state;
-        const texts = getTextsFromItems(items, this[symbols.getItemText]);
+        const texts = getTextsFromItems(items, this[internal.getItemText]);
         if (texts) {
           Object.freeze(texts);
           return { texts };
@@ -41,7 +41,7 @@ export default function ItemsTextMixin(Base) {
      * @param {ListItemElement} item 
      * @returns {string}
      */
-    [symbols.getItemText](item) {
+    [internal.getItemText](item) {
       return getItemText(item);
     }
   }

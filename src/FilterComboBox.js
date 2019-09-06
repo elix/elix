@@ -1,6 +1,6 @@
 import { getTextsFromItems } from './ItemsTextMixin.js';
 import { substantiveElements } from './content.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import AutoCompleteInput from './AutoCompleteInput.js';
 import FilterListBox from './FilterListBox.js';
 import ListComboBox from './ListComboBox.js';
@@ -23,8 +23,8 @@ const Base =
  */
 class FilterComboBox extends Base {
   
-  get [symbols.defaultState]() {
-    const state = Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    const state = Object.assign(super[internal.defaultState], {
       filter: '',
       inputRole: AutoCompleteInput,
       listRole: FilterListBox,
@@ -58,35 +58,35 @@ class FilterComboBox extends Base {
     return state;
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.inputRole) {
-      this[symbols.$].input.addEventListener('input', event => {
-        this[symbols.raiseChangeEvents] = true;
+      this[internal.$].input.addEventListener('input', event => {
+        this[internal.raiseChangeEvents] = true;
         /** @type {any} */
         const cast = event;
         const filter = cast.detail ?
           cast.detail.originalText :
-          this[symbols.state].value;
-        this[symbols.setState]({
+          this[internal.state].value;
+        this[internal.setState]({
           filter
         });
-        this[symbols.raiseChangeEvents] = false;
+        this[internal.raiseChangeEvents] = false;
       });
     }
     if (changed.filter || changed.selectedIndex) {
-      const { filter, selectedIndex } = this[symbols.state];
+      const { filter, selectedIndex } = this[internal.state];
       if (filter === '' || selectedIndex === -1) {
-        const list = /** @type {any} */ (this[symbols.$].list);
+        const list = /** @type {any} */ (this[internal.$].list);
         if ('filter' in list) {
           list.filter = filter;
         }
       }
     }
     if (changed.texts) {
-      const input = /** @type {any} */ (this[symbols.$].input);
+      const input = /** @type {any} */ (this[internal.$].input);
       if ('texts' in input) {
-        input.texts = this[symbols.state].texts;
+        input.texts = this[internal.state].texts;
       }
     }
   }

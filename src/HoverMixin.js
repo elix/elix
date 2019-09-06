@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -21,41 +21,41 @@ export default function HoverMixin(Base) {
       // @ts-ignore
       super();
       this.addEventListener('mouseenter', async (event) => {
-        this[symbols.raiseChangeEvents] = true;
-        this[symbols.mouseenter](event);
+        this[internal.raiseChangeEvents] = true;
+        this[internal.mouseenter](event);
         await Promise.resolve();
-        this[symbols.raiseChangeEvents] = false;
+        this[internal.raiseChangeEvents] = false;
       });
       this.addEventListener('mouseleave', async (event) => {
-        this[symbols.raiseChangeEvents] = true;
-        this[symbols.mouseleave](event);
+        this[internal.raiseChangeEvents] = true;
+        this[internal.mouseleave](event);
         await Promise.resolve();
-        this[symbols.raiseChangeEvents] = false;
+        this[internal.raiseChangeEvents] = false;
       });
     }
 
-    get [symbols.defaultState]() {
-      return Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      return Object.assign(super[internal.defaultState], {
         hover: false
       })
     }
 
     /**
-     * See [symbols.mouseenter](symbols#mouseenter).
+     * See [internal.mouseenter](symbols#mouseenter).
      */
-    [symbols.mouseenter](/** @type {MouseEvent} */ event) {
-      if (super[symbols.mouseenter]) { super[symbols.mouseenter](event); }
-      this[symbols.setState]({
+    [internal.mouseenter](/** @type {MouseEvent} */ event) {
+      if (super[internal.mouseenter]) { super[internal.mouseenter](event); }
+      this[internal.setState]({
         hover: true
       });
     }
 
     /**
-     * See [symbols.mouseenter](symbols#mouseenter).
+     * See [internal.mouseenter](symbols#mouseenter).
      */
-    [symbols.mouseleave](/** @type {MouseEvent} */ event) {
-      if (super[symbols.mouseleave]) { super[symbols.mouseleave](event); }
-      this[symbols.setState]({
+    [internal.mouseleave](/** @type {MouseEvent} */ event) {
+      if (super[internal.mouseleave]) { super[internal.mouseleave](event); }
+      this[internal.setState]({
         hover: false
       });
     }

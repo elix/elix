@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -13,36 +13,36 @@ export default function TransitionEffectMixin(Base) {
   // The class prototype added by the mixin.
   class TransitionEffect extends Base {
 
-    [symbols.componentDidMount]() {
-      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
-      const elementsWithTransitions = this[symbols.elementsWithTransitions];
+    [internal.componentDidMount]() {
+      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
+      const elementsWithTransitions = this[internal.elementsWithTransitions];
       // We assume all transitions complete at the same time. We only listen to
       // transitioneend on the first element.
       elementsWithTransitions[0].addEventListener('transitionend', () => {
         // Advance to the next phase.
-        this[symbols.setState]({
+        this[internal.setState]({
           effectPhase: 'after'
         });
       });
     }
 
-    [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
+    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
+      if (super[internal.componentDidUpdate]) { super[internal.componentDidUpdate](changed); }
       if (changed.effect || changed.effectPhase) {
-        const { effect, effectPhase } = this[symbols.state];
+        const { effect, effectPhase } = this[internal.state];
         /**
          * Raised when [state.effect](TransitionEffectMixin#effect-phases) or
          * [state.effectPhase](TransitionEffectMixin#effect-phases) changes.
          * 
          * Note: In general, Elix components do not raise events in response to
          * outside manipulation. (See
-         * [symbols.raiseChangeEvents](symbols#raiseChangeEvents).) However, for
+         * [internal.raiseChangeEvents](symbols#raiseChangeEvents).) However, for
          * a component using `TransitionEffectMixin`, a single invocation of the
          * `startEffect` method will cause the element to pass through multiple
          * visual states. This makes it hard for external hosts of this
          * component to know what visual state the component is in. Accordingly,
          * the mixin raises the `effect-phase-changed` event whenever the effect
-         * or phase changes, even if `symbols.raiseChangeEvents` is false.
+         * or phase changes, even if `internal.raiseChangeEvents` is false.
          * 
          * @event effect-phase-changed
          */
@@ -65,7 +65,7 @@ export default function TransitionEffectMixin(Base) {
 
           if (effectPhase === 'before') {
             // Advance to the next phase.
-            this[symbols.setState]({
+            this[internal.setState]({
               effectPhase: 'during'
             });
           }
@@ -81,23 +81,23 @@ export default function TransitionEffectMixin(Base) {
      * If you will be applying CSS transitions to other elements, override this
      * property and return an array containing the implicated elements.
      * 
-     * See [symbols.elementsWithTransitions](symbols#elementsWithTransitions)
+     * See [internal.elementsWithTransitions](symbols#elementsWithTransitions)
      * for details.
      * 
      * @type {HTMLElement[]}
      */
-    get [symbols.elementsWithTransitions]() {
-      const base = super[symbols.elementsWithTransitions];
+    get [internal.elementsWithTransitions]() {
+      const base = super[internal.elementsWithTransitions];
       return base || [this];
     }
     
     /**
-     * See [symbols.startEffect](symbols#startEffect).
+     * See [internal.startEffect](symbols#startEffect).
      * 
      * @param {string} effect
      */
-    async [symbols.startEffect](effect) {
-      await this[symbols.setState]({
+    async [internal.startEffect](effect) {
+      await this[internal.setState]({
         effect,
         effectPhase: 'before'
       });

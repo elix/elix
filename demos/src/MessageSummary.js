@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
@@ -6,16 +6,16 @@ import ReactiveElement from '../../src/ReactiveElement.js';
 export default class MessageSummary extends ReactiveElement {
 
   get date() {
-    return this[symbols.state].date;
+    return this[internal.state].date;
   }
   set date(date) {
-    this[symbols.setState]({
+    this[internal.setState]({
       date
     });
   }
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       date: null,
       read: false,
       sender: null,
@@ -24,50 +24,50 @@ export default class MessageSummary extends ReactiveElement {
   }
 
   get read() {
-    return this[symbols.state].read;
+    return this[internal.state].read;
   }
   set read(read) {
     const parsed = String(read) === 'true';
-    this[symbols.setState]({
+    this[internal.setState]({
       read: parsed
     });
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
+  [internal.render](changed) {
+    super[internal.render](changed);
     if (changed.date) {
-      this[symbols.$].date.textContent = this[symbols.state].date;
+      this[internal.$].date.textContent = this[internal.state].date;
     }
     if (changed.read) {
-      this.classList.toggle('read', this[symbols.state].read);
+      this.classList.toggle('read', this[internal.state].read);
     }
     if (changed.sender) {
-      this[symbols.$].sender.textContent = this[symbols.state].sender;
+      this[internal.$].sender.textContent = this[internal.state].sender;
     }
     if (changed.summary) {
-      this[symbols.$].summary.textContent = this[symbols.state].summary;
+      this[internal.$].summary.textContent = this[internal.state].summary;
     }
   }
 
   get sender() {
-    return this[symbols.state].sender;
+    return this[internal.state].sender;
   }
   set sender(sender) {
-    this[symbols.setState]({
+    this[internal.setState]({
       sender
     });
   }
 
   get summary() {
-    return this[symbols.state].summary;
+    return this[internal.state].summary;
   }
   set summary(summary) {
-    this[symbols.setState]({
+    this[internal.setState]({
       summary
     });
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

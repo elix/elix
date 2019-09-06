@@ -1,5 +1,5 @@
 import { applyChildNodes } from '../../src/utilities.js';
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
@@ -293,41 +293,41 @@ const locales = {
 
 class LocaleSelector extends ReactiveElement {
 
-  [symbols.componentDidMount]() {
-    if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
-    this[symbols.$].select.addEventListener('change', () => {
-      this[symbols.raiseChangeEvents] = true;
-      this.value = /** @type {any} */ (this[symbols.$].select).value;
-      this[symbols.raiseChangeEvents] = false;
+  [internal.componentDidMount]() {
+    if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
+    this[internal.$].select.addEventListener('change', () => {
+      this[internal.raiseChangeEvents] = true;
+      this.value = /** @type {any} */ (this[internal.$].select).value;
+      this[internal.raiseChangeEvents] = false;
     });
   }
 
-  [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
-    if (changed.value && this[symbols.raiseChangeEvents]) {
+  [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
+    if (changed.value && this[internal.raiseChangeEvents]) {
       const event = new CustomEvent('change', {
         detail: {
-          value: this[symbols.state].value
+          value: this[internal.state].value
         }
       });
       this.dispatchEvent(event);
     }
   }
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       value: navigator.language
     });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.value) {
-      const value = this[symbols.state].value;
-      /** @type {HTMLSelectElement} */ (this[symbols.$].select).value = value;
+      const value = this[internal.state].value;
+      /** @type {HTMLSelectElement} */ (this[internal.$].select).value = value;
     }
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     const result = template.html`
       <style>
         :host {
@@ -352,10 +352,10 @@ class LocaleSelector extends ReactiveElement {
   }
 
   get value() {
-    return this[symbols.state].value;
+    return this[internal.state].value;
   }
   set value(value) {
-    this[symbols.setState]({ value });
+    this[internal.setState]({ value });
   }
 
 }

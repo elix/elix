@@ -1,5 +1,5 @@
 import * as calendar from './calendar.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import Input from './Input.js';
@@ -19,21 +19,21 @@ const Base =
  */
 class DateInput extends Base {
 
-  [symbols.componentDidMount]() {
-    super[symbols.componentDidMount]();
-    this[symbols.$].inner.addEventListener('blur', () => {
-      this[symbols.raiseChangeEvents] = true;
-      this[symbols.setState]({
+  [internal.componentDidMount]() {
+    super[internal.componentDidMount]();
+    this[internal.$].inner.addEventListener('blur', () => {
+      this[internal.raiseChangeEvents] = true;
+      this[internal.setState]({
         focused: false
       });
-      this[symbols.raiseChangeEvents] = false;
+      this[internal.raiseChangeEvents] = false;
     });
-    this[symbols.$].inner.addEventListener('focus', () => {
-      this[symbols.raiseChangeEvents] = true;
-      this[symbols.setState]({
+    this[internal.$].inner.addEventListener('focus', () => {
+      this[internal.raiseChangeEvents] = true;
+      this[internal.setState]({
         focused: true
       });
-      this[symbols.raiseChangeEvents] = false;
+      this[internal.raiseChangeEvents] = false;
     });
   }
 
@@ -42,27 +42,27 @@ class DateInput extends Base {
   }
   set date(date) {
     super.date = date;
-    this[symbols.setState]({
+    this[internal.setState]({
       datePriority: true
     });
   }
 
   get dateTimeFormatOptions() {
-    return this[symbols.state].dateTimeFormatOptions;
+    return this[internal.state].dateTimeFormatOptions;
   }
   set dateTimeFormatOptions(dateTimeFormatOptions) {
-    this[symbols.setState]({
+    this[internal.setState]({
       dateTimeFormatOptions
     });
   }
 
-  get [symbols.defaultState]() {
+  get [internal.defaultState]() {
     const dateTimeFormatOptions = {
       day: 'numeric',
       month: 'numeric',
       year: 'numeric'
     };
-    const state = Object.assign(super[symbols.defaultState], {
+    const state = Object.assign(super[internal.defaultState], {
       dateSelected: false,
       dateTimeFormat: null,
       dateTimeFormatOptions,
@@ -169,10 +169,10 @@ class DateInput extends Base {
   set locale(locale) {
     // If external code sets the locale, it's impossible for that code to predict
     // the effects on the value, so we'll need to raise change events.
-    const saveRaiseChangesEvents = this[symbols.raiseChangeEvents];
-    this[symbols.raiseChangeEvents] = true;
+    const saveRaiseChangesEvents = this[internal.raiseChangeEvents];
+    this[internal.raiseChangeEvents] = true;
     super.locale = locale;
-    this[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
+    this[internal.raiseChangeEvents] = saveRaiseChangesEvents;
   }
 
   /**
@@ -187,8 +187,8 @@ class DateInput extends Base {
     return calendar.parseWithOptionalYear(text, dateTimeFormat, timeBias);
   }
   
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
+  get [internal.template]() {
+    return template.concat(super[internal.template], template.html`
       <style>
         :host {
           width: 6em;
@@ -210,10 +210,10 @@ class DateInput extends Base {
    * @type {'future'|'past'|null}
    */
   get timeBias() {
-    return this[symbols.state].timeBias;
+    return this[internal.state].timeBias;
   }
   set timeBias(timeBias) {
-    this[symbols.setState]({
+    this[internal.setState]({
       timeBias
     });
   }
@@ -224,13 +224,13 @@ class DateInput extends Base {
   set value(value) {
     // If external code sets the value, it's impossible for that code to predict
     // the effects on the date, so we'll need to raise change events.
-    const saveRaiseChangesEvents = this[symbols.raiseChangeEvents];
-    this[symbols.raiseChangeEvents] = true;
+    const saveRaiseChangesEvents = this[internal.raiseChangeEvents];
+    this[internal.raiseChangeEvents] = true;
     super.value = value;
-    this[symbols.setState]({
+    this[internal.setState]({
       datePriority: false
     });
-    this[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
+    this[internal.raiseChangeEvents] = saveRaiseChangesEvents;
   }
 
 }

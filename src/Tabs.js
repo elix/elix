@@ -1,6 +1,6 @@
 import { defaultAriaRole } from './accessibility.js';
 import { ensureId } from './utilities.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import Explorer from './Explorer.js';
 import GenericMixin from './GenericMixin.js';
@@ -29,8 +29,8 @@ const Base =
  */
 class Tabs extends Base {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       itemRole: 'tabpanel',
       proxyRole: TabButton,
       proxyListRole: TabStrip,
@@ -38,15 +38,15 @@ class Tabs extends Base {
     });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
-    const { items } = this[symbols.state];
-    /** @type {Element[]} */ const proxies = this[symbols.state].proxies;
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
+    const { items } = this[internal.state];
+    /** @type {Element[]} */ const proxies = this[internal.state].proxies;
     if ((changed.items || changed.proxies)
       && items && proxies) {
 
       // Recreate association between items and proxies.
-      const { proxiesAssigned, itemRole } = this[symbols.state];
+      const { proxiesAssigned, itemRole } = this[internal.state];
 
       // Create role for each item.
       items.forEach((item, index) => {
@@ -92,26 +92,26 @@ class Tabs extends Base {
       });
     }
     if (changed.generic) {
-      if ('generic' in this[symbols.$].proxyList) {
-        /** @type {any} */ (this[symbols.$].proxyList).generic = this[symbols.state].generic;
+      if ('generic' in this[internal.$].proxyList) {
+        /** @type {any} */ (this[internal.$].proxyList).generic = this[internal.state].generic;
       }
     }
     if ((changed.generic || changed.proxies || changed.proxiesAssigned) &&
         proxies) {
-      if (!this[symbols.state].proxiesAssigned) {
+      if (!this[internal.state].proxiesAssigned) {
         proxies.forEach(proxy => {
           /** @type {any} */ const cast = proxy;
           if ('generic' in cast) {
-            cast.generic = this[symbols.state].generic;
+            cast.generic = this[internal.state].generic;
           }
         });
       }
     }
     if (changed.tabAlign) {
       // Apply alignment to proxy list.
-      if ('tabAlign' in this[symbols.$].proxyList) {
-        const proxyList = /** @type {any} */ (this[symbols.$].proxyList);
-        proxyList.tabAlign = this[symbols.state].tabAlign;
+      if ('tabAlign' in this[internal.$].proxyList) {
+        const proxyList = /** @type {any} */ (this[internal.$].proxyList);
+        proxyList.tabAlign = this[internal.state].tabAlign;
       }
     }
   }
@@ -126,14 +126,14 @@ class Tabs extends Base {
    * @default 'start'
    */
   get tabAlign() {
-    return this[symbols.state].tabAlign;
+    return this[internal.state].tabAlign;
   }
   set tabAlign(tabAlign) {
-    this[symbols.setState]({ tabAlign });
+    this[internal.setState]({ tabAlign });
   }
 
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
+  get [internal.template]() {
+    return template.concat(super[internal.template], template.html`
       <style>
         #proxyList {
           z-index: 1;

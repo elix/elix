@@ -3,12 +3,12 @@
 
 /// <reference path="shared.d.ts"/>
 
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 
 declare const SlotContentMixin: StateMixin<{}, {},
   {
     componentDidMount(): void;
-    [symbols.contentSlot]: HTMLSlotElement;
+    [internal.contentSlot]: HTMLSlotElement;
   },
   {
     content: Node[];

@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -21,8 +21,8 @@ export default function DirectionSelectionMixin(Base) {
   // The class prototype added by the mixin.
   class DirectionSelection extends Base {
 
-    get [symbols.defaultState]() {
-      const state = Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      const state = Object.assign(super[internal.defaultState], {
         canGoDown: null,
         canGoLeft: null,
         canGoRight: null,
@@ -74,8 +74,8 @@ export default function DirectionSelectionMixin(Base) {
     /**
      * Invokes `selectNext` to select the next item.
      */
-    [symbols.goDown]() {
-      if (super[symbols.goDown]) { super[symbols.goDown](); }
+    [internal.goDown]() {
+      if (super[internal.goDown]) { super[internal.goDown](); }
       if (!this.selectNext) {
         /* eslint-disable no-console */
         console.warn(`DirectionSelectionMixin expects ${this.constructor.name} to define a "selectNext" method.`);
@@ -88,8 +88,8 @@ export default function DirectionSelectionMixin(Base) {
     /**
      * Invokes `selectLast` to select the next item.
      */
-    [symbols.goEnd]() {
-      if (super[symbols.goEnd]) { super[symbols.goEnd](); }
+    [internal.goEnd]() {
+      if (super[internal.goEnd]) { super[internal.goEnd](); }
       if (!this.selectLast) {
         /* eslint-disable no-console */
         console.warn(`DirectionSelectionMixin expects ${this.constructor.name} to define a "selectLast" method.`);
@@ -105,14 +105,14 @@ export default function DirectionSelectionMixin(Base) {
      * If the element has a `rightToLeft` property and it is true, then this
      * selects the _next_ item.
      */
-    [symbols.goLeft]() {
-      if (super[symbols.goLeft]) { super[symbols.goLeft](); }
+    [internal.goLeft]() {
+      if (super[internal.goLeft]) { super[internal.goLeft](); }
       if (!this.selectPrevious) {
         /* eslint-disable no-console */
         console.warn(`DirectionSelectionMixin expects ${this.constructor.name} to define a "selectPrevious" method.`);
         return false;
       } else {
-        return this[symbols.state] && this[symbols.state].rightToLeft ?
+        return this[internal.state] && this[internal.state].rightToLeft ?
           this.selectNext() :
           this.selectPrevious();
       }
@@ -121,16 +121,16 @@ export default function DirectionSelectionMixin(Base) {
     /**
      * Invokes `selectNext` to select the next item.
      */
-    [symbols.goNext]() {
-      if (super[symbols.goNext]) { super[symbols.goNext](); }
+    [internal.goNext]() {
+      if (super[internal.goNext]) { super[internal.goNext](); }
       return this.selectNext();
     }
 
     /**
      * Invokes `selectPrevious` to select the previous item.
      */
-    [symbols.goPrevious]() {
-      if (super[symbols.goPrevious]) { super[symbols.goPrevious](); }
+    [internal.goPrevious]() {
+      if (super[internal.goPrevious]) { super[internal.goPrevious](); }
       return this.selectPrevious();
     }
 
@@ -140,14 +140,14 @@ export default function DirectionSelectionMixin(Base) {
      * If the element has a `rightToLeft` property and it is true, then this
      * selects the _previous_ item.
      */
-    [symbols.goRight]() {
-      if (super[symbols.goRight]) { super[symbols.goRight](); }
+    [internal.goRight]() {
+      if (super[internal.goRight]) { super[internal.goRight](); }
       if (!this.selectNext) {
         /* eslint-disable no-console */
         console.warn(`DirectionSelectionMixin expects ${this.constructor.name} to define a "selectNext" method.`);
         return false;
       } else {
-        return this[symbols.state] && this[symbols.state].rightToLeft ?
+        return this[internal.state] && this[internal.state].rightToLeft ?
           this.selectPrevious() :
           this.selectNext();
       }
@@ -156,8 +156,8 @@ export default function DirectionSelectionMixin(Base) {
     /**
      * Invokes `selectFirst` to select the first item.
      */
-    [symbols.goStart]() {
-      if (super[symbols.goStart]) { super[symbols.goStart](); }
+    [internal.goStart]() {
+      if (super[internal.goStart]) { super[internal.goStart](); }
       if (!this.selectFirst) {
         /* eslint-disable no-console */
         console.warn(`DirectionSelectionMixin expects ${this.constructor.name} to define a "selectFirst" method.`);
@@ -170,8 +170,8 @@ export default function DirectionSelectionMixin(Base) {
     /**
      * Invokes `selectPrevious` to select the previous item.
      */
-    [symbols.goUp]() {
-      if (super[symbols.goUp]) { super[symbols.goUp](); }
+    [internal.goUp]() {
+      if (super[internal.goUp]) { super[internal.goUp](); }
       if (!this.selectPrevious) {
         /* eslint-disable no-console */
         console.warn(`DirectionSelectionMixin expects ${this.constructor.name} to define a "selectPrevious" method.`);

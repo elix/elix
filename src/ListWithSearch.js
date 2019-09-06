@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import ComposedFocusMixin from './ComposedFocusMixin.js';
 import DelegateFocusMixin from './DelegateFocusMixin.js';
@@ -41,14 +41,14 @@ class ListWithSearch extends Base {
 
   // Forward any ARIA label to the input element.
   get ariaLabel() {
-    return this[symbols.state].ariaLabel;
+    return this[internal.state].ariaLabel;
   }
   set ariaLabel(ariaLabel) {
-    this[symbols.setState]({ ariaLabel });
+    this[internal.setState]({ ariaLabel });
   }
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       ariaLabel: '',
       filter: '',
       inputRole: 'input',
@@ -58,10 +58,10 @@ class ListWithSearch extends Base {
   }
   
   get filter() {
-    return this[symbols.state].filter;
+    return this[internal.state].filter;
   }
   set filter(filter) {
-    this[symbols.setState]({ filter });
+    this[internal.setState]({ filter });
   }
 
   /**
@@ -71,21 +71,21 @@ class ListWithSearch extends Base {
    * @default 'input'
    */
   get inputRole() {
-    return this[symbols.state].inputRole;
+    return this[internal.state].inputRole;
   }
   set inputRole(inputRole) {
-    this[symbols.setState]({ inputRole });
+    this[internal.setState]({ inputRole });
   }
 
-  get [symbols.itemsDelegate]() {
-    return this[symbols.$].list;
+  get [internal.itemsDelegate]() {
+    return this[internal.$].list;
   }
 
-    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
+    [internal.keydown](/** @type {KeyboardEvent} */ event) {
 
     let handled;
     /** @type {any} */
-    const list = this[symbols.$].list;
+    const list = this[internal.$].list;
 
     switch (event.key) {
 
@@ -95,10 +95,10 @@ class ListWithSearch extends Base {
       // handle them. We also need to forward PageDown/PageUp to the list
       // element.
       case 'ArrowDown':
-        handled = event.altKey ? this[symbols.goEnd]() : this[symbols.goDown]();
+        handled = event.altKey ? this[internal.goEnd]() : this[internal.goDown]();
         break;
       case 'ArrowUp':
-        handled = event.altKey ? this[symbols.goStart]() : this[symbols.goUp]();
+        handled = event.altKey ? this[internal.goStart]() : this[internal.goUp]();
         break;
 
       // Forward Page Down/Page Up to the list element.
@@ -134,7 +134,7 @@ class ListWithSearch extends Base {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+    return handled || (super[internal.keydown] && super[internal.keydown](event));
   }
 
   /**
@@ -144,51 +144,51 @@ class ListWithSearch extends Base {
    * @default ListBox
    */
   get listRole() {
-    return this[symbols.state].listRole;
+    return this[internal.state].listRole;
   }
   set listRole(listRole) {
-    this[symbols.setState]({ listRole });
+    this[internal.setState]({ listRole });
   }
 
   get placeholder() {
-    return this[symbols.state].placeholder;
+    return this[internal.state].placeholder;
   }
   set placeholder(placeholder) {
-    this[symbols.setState]({ placeholder });
+    this[internal.setState]({ placeholder });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.inputRole) {
-      template.transmute(this[symbols.$].input, this[symbols.state].inputRole);
-      this[symbols.$].input.addEventListener('input', () => {
-        this[symbols.raiseChangeEvents] = true;
-        const filter = /** @type {any} */ (this[symbols.$].input).value;
-        this[symbols.setState]({
+      template.transmute(this[internal.$].input, this[internal.state].inputRole);
+      this[internal.$].input.addEventListener('input', () => {
+        this[internal.raiseChangeEvents] = true;
+        const filter = /** @type {any} */ (this[internal.$].input).value;
+        this[internal.setState]({
           filter
         });
-        this[symbols.raiseChangeEvents] = false;
+        this[internal.raiseChangeEvents] = false;
       });
     }
     if (changed.listRole) {
-      template.transmute(this[symbols.$].list, this[symbols.state].listRole);
+      template.transmute(this[internal.$].list, this[internal.state].listRole);
     }
     if (changed.ariaLabel) {
-      const { ariaLabel } = this[symbols.state];
-      this[symbols.$].input.setAttribute('aria-label', ariaLabel);
+      const { ariaLabel } = this[internal.state];
+      this[internal.$].input.setAttribute('aria-label', ariaLabel);
     }
     if (changed.filter) {
-      const { filter } = this[symbols.state];
-      /** @type {HTMLInputElement} */ (this[symbols.$].input).value = filter;
-      /** @type {any} */ (this[symbols.$].list).filter = filter;
+      const { filter } = this[internal.state];
+      /** @type {HTMLInputElement} */ (this[internal.$].input).value = filter;
+      /** @type {any} */ (this[internal.$].list).filter = filter;
     }
     if (changed.placeholder) {
-      const { placeholder } = this[symbols.state];
-      /** @type {HTMLInputElement} */ (this[symbols.$].input).placeholder = placeholder;
+      const { placeholder } = this[internal.state];
+      /** @type {HTMLInputElement} */ (this[internal.$].input).placeholder = placeholder;
     }
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

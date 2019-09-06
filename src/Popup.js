@@ -1,7 +1,7 @@
 import Overlay from './Overlay.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import PopupModalityMixin from './PopupModalityMixin.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 
 
 const Base =
@@ -22,16 +22,16 @@ const Base =
  */
 class Popup extends Base {
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.backdropRole) {
-      this[symbols.$].backdrop.addEventListener('mousedown', mousedownHandler.bind(this));
+      this[internal.$].backdrop.addEventListener('mousedown', mousedownHandler.bind(this));
 
       // Mobile Safari doesn't seem to generate a mousedown handler on the
       // backdrop in some cases that Mobile Chrome handles. For completeness, we
       // also listen to touchend.
       if (!('PointerEvent' in window)) {
-        this[symbols.$].backdrop.addEventListener('touchend', mousedownHandler);
+        this[internal.$].backdrop.addEventListener('touchend', mousedownHandler);
       }
     }
   }
@@ -46,9 +46,9 @@ class Popup extends Base {
 async function mousedownHandler(event) {
   // @ts-ignore
   const element = this;
-  element[symbols.raiseChangeEvents] = true;
+  element[internal.raiseChangeEvents] = true;
   await element.close();
-  element[symbols.raiseChangeEvents] = false;
+  element[internal.raiseChangeEvents] = false;
   event.preventDefault();
   event.stopPropagation();
 }

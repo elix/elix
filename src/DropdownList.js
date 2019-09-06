@@ -1,5 +1,5 @@
 import { applyChildNodes } from './utilities.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import FormElementMixin from './FormElementMixin.js';
 import MenuButton from './MenuButton.js';
@@ -32,11 +32,11 @@ class DropdownList extends Base {
   // By default, opening the menu re-selects the component item that's currently
   // selected.
   get defaultMenuSelectedIndex() {
-    return this[symbols.state].selectedIndex;
+    return this[internal.state].selectedIndex;
   }
 
-  get [symbols.defaultState]() {
-    const state = Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    const state = Object.assign(super[internal.defaultState], {
       itemRole: 'menuitemradio',
       selectionRequired: true,
       valueRole: 'div'
@@ -57,38 +57,38 @@ class DropdownList extends Base {
     return state;
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.itemRole) {
-      if ('itemRole' in this[symbols.$].menu) {
-        /** @type {any} */ (this[symbols.$].menu).itemRole = this[symbols.state].itemRole;
+      if ('itemRole' in this[internal.$].menu) {
+        /** @type {any} */ (this[internal.$].menu).itemRole = this[internal.state].itemRole;
       }
     }
     if (changed.valueRole) {
-      template.transmute(this[symbols.$].value, this[symbols.state].valueRole);
+      template.transmute(this[internal.$].value, this[internal.state].valueRole);
     }
     if (changed.popupPosition) {
-      const { popupPosition } = this[symbols.state];
-      this[symbols.$].downIcon.style.display = popupPosition === 'below' ?
+      const { popupPosition } = this[internal.state];
+      this[internal.$].downIcon.style.display = popupPosition === 'below' ?
         'block' :
         'none';
-      this[symbols.$].upIcon.style.display = popupPosition === 'above' ?
+      this[internal.$].upIcon.style.display = popupPosition === 'above' ?
         'block' :
         'none';
     }
     if (changed.selectedIndex) {
-      const items = this[symbols.state].items || [];
-      const selectedItem = items[this[symbols.state].selectedIndex];
+      const items = this[internal.state].items || [];
+      const selectedItem = items[this[internal.state].selectedIndex];
       const clone = selectedItem ?
         selectedItem.cloneNode(true) :
         null;
       const childNodes = clone ? clone.childNodes : [];
-      applyChildNodes(this[symbols.$].value, childNodes);
+      applyChildNodes(this[internal.$].value, childNodes);
     }
   }
 
-  get [symbols.template]() {
-    const base = super[symbols.template];
+  get [internal.template]() {
+    const base = super[internal.template];
     const sourceSlot = base.content.querySelector('slot[name="source"]');
     if (!sourceSlot) {
       throw `Couldn't find slot with name "source".`;
@@ -131,10 +131,10 @@ class DropdownList extends Base {
    * @default 'div'
    */
   get valueRole() {
-    return this[symbols.state].valueRole;
+    return this[internal.state].valueRole;
   }
   set valueRole(valueRole) {
-    this[symbols.setState]({ valueRole });
+    this[internal.setState]({ valueRole });
   }
 
 }

@@ -13,13 +13,13 @@
   <link rel="stylesheet" href="../demos.css">
 
   <script type="module">
-    import * as symbols from '../../src/symbols.js';
+    import * as internal from '../../src/internal.js';
     import * as template from '../../src/template.js';
     import AutoSizeTextarea from '../../src/AutoSizeTextarea.js';
 
     class CustomAutoSizeTextarea extends AutoSizeTextarea {
-      get [symbols.template]() {
-        return template.concat(super[symbols.template], template.html`
+      get [internal.template]() {
+        return template.concat(super[internal.template], template.html`
           <style>
             #inner {
               border: none;

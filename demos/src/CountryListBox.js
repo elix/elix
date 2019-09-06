@@ -3,7 +3,7 @@
  */
 
 
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import AriaListMixin from '../../src/AriaListMixin.js';
 import ContentItemsMixin from '../../src/ContentItemsMixin.js';
@@ -42,27 +42,27 @@ const Base =
 
 class CountryListBox extends Base {
 
-  [symbols.componentDidMount]() {
-    if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
-    const content = this[symbols.$].content.children;
-    this[symbols.setState]({ content });
+  [internal.componentDidMount]() {
+    if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
+    const content = this[internal.$].content.children;
+    this[internal.setState]({ content });
   }
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       orientation: 'vertical'
     });
   }
 
   get orientation() {
-    return this[symbols.state].orientation;
+    return this[internal.state].orientation;
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.items || changed.selectedIndex) {
       // Apply `selected` style to the selected item only.
-      const { selectedIndex, items } = this[symbols.state];
+      const { selectedIndex, items } = this[internal.state];
       if (items) {
         items.forEach((item, index) => {
           const selected = index === selectedIndex;
@@ -72,11 +72,11 @@ class CountryListBox extends Base {
     }
   }
 
-  get [symbols.scrollTarget]() {
-    return this[symbols.$].content;
+  get [internal.scrollTarget]() {
+    return this[internal.$].content;
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

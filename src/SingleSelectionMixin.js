@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -31,7 +31,7 @@ export default function SingleSelectionMixin(Base) {
      * @type {boolean}
      */
     get canSelectNext() {
-      return this[symbols.state].canSelectNext;
+      return this[internal.state].canSelectNext;
     }
 
     /**
@@ -41,13 +41,13 @@ export default function SingleSelectionMixin(Base) {
      * @type {boolean}
      */
     get canSelectPrevious() {
-      return this[symbols.state].canSelectPrevious;
+      return this[internal.state].canSelectPrevious;
     }
 
-    [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
-      if (changed.selectedIndex && this[symbols.raiseChangeEvents]) {
-        const selectedIndex = this[symbols.state].selectedIndex;
+    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
+      if (super[internal.componentDidUpdate]) { super[internal.componentDidUpdate](changed); }
+      if (changed.selectedIndex && this[internal.raiseChangeEvents]) {
+        const selectedIndex = this[internal.state].selectedIndex;
         /**
          * Raised when the `selectedIndex` property changes.
          * 
@@ -60,8 +60,8 @@ export default function SingleSelectionMixin(Base) {
       }
     }
 
-    get [symbols.defaultState]() {
-      const state = Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      const state = Object.assign(super[internal.defaultState], {
         canSelectNext: null,
         canSelectPrevious: null,
         selectedIndex: -1,
@@ -145,7 +145,7 @@ export default function SingleSelectionMixin(Base) {
      * @type {number}
      */
     get selectedIndex() {
-      const { items, selectedIndex } = this[symbols.state];
+      const { items, selectedIndex } = this[internal.state];
       return items && items.length > 0 ?
         selectedIndex :
         -1;
@@ -153,7 +153,7 @@ export default function SingleSelectionMixin(Base) {
     set selectedIndex(selectedIndex) {
       const parsed = Number(selectedIndex);
       if (!isNaN(parsed)) {
-        this[symbols.setState]({
+        this[internal.setState]({
           selectedIndex: parsed
         });
       }
@@ -165,17 +165,17 @@ export default function SingleSelectionMixin(Base) {
      * @type {Element}
      */
     get selectedItem() {
-      const { items, selectedIndex } = this[symbols.state];
+      const { items, selectedIndex } = this[internal.state];
       return items && items[selectedIndex];
     }
     set selectedItem(selectedItem) {
-      const { items } = this[symbols.state];
+      const { items } = this[internal.state];
       if (!items) {
         return;
       }
       const selectedIndex = items.indexOf(selectedItem);
       if (selectedIndex >= 0) {
-        this[symbols.setState]({ selectedIndex });
+        this[internal.setState]({ selectedIndex });
       }
     }
 
@@ -186,10 +186,10 @@ export default function SingleSelectionMixin(Base) {
      * @default false
      */
     get selectionRequired() {
-      return this[symbols.state].selectionRequired;
+      return this[internal.state].selectionRequired;
     }
     set selectionRequired(selectionRequired) {
-      this[symbols.setState]({
+      this[internal.setState]({
         selectionRequired: String(selectionRequired) === 'true'
       });
     }
@@ -201,10 +201,10 @@ export default function SingleSelectionMixin(Base) {
      * @default false
      */
     get selectionWraps() {
-      return this[symbols.state].selectionWraps;
+      return this[internal.state].selectionWraps;
     }
     set selectionWraps(selectionWraps) {
-      this[symbols.setState]({
+      this[internal.setState]({
         selectionWraps: String(selectionWraps) === 'true'
       });
     }
@@ -216,7 +216,7 @@ export default function SingleSelectionMixin(Base) {
      */
     selectLast() {
       if (super.selectLast) { super.selectLast(); }
-      return updateSelectedIndex(this, this[symbols.state].items.length - 1);
+      return updateSelectedIndex(this, this[internal.state].items.length - 1);
     }
 
     /**
@@ -228,7 +228,7 @@ export default function SingleSelectionMixin(Base) {
      */
     selectNext() {
       if (super.selectNext) { super.selectNext(); }
-      return updateSelectedIndex(this, this[symbols.state].selectedIndex + 1);
+      return updateSelectedIndex(this, this[internal.state].selectedIndex + 1);
     }
 
     /**
@@ -241,7 +241,7 @@ export default function SingleSelectionMixin(Base) {
     selectPrevious() {
       if (super.selectPrevious) { super.selectPrevious(); }
       let newIndex;
-      const { items, selectedIndex, selectionWraps } = this[symbols.state];
+      const { items, selectedIndex, selectionWraps } = this[internal.state];
       if ((items && selectedIndex < 0) ||
           (selectionWraps && selectedIndex === 0)) {
         // No selection yet, or we're on the first item, and selection wraps.
@@ -306,13 +306,13 @@ function validateIndex(index, count, selectionRequired, selectionWraps) {
 function updateSelectedIndex(element, selectedIndex) {
   const validatedIndex = validateIndex(
     selectedIndex,
-    element[symbols.state].items.length,
-    element[symbols.state].selectionRequired,
-    element[symbols.state].selectionWraps
+    element[internal.state].items.length,
+    element[internal.state].selectionRequired,
+    element[internal.state].selectionWraps
   );
-  const changed = element[symbols.state].selectedIndex !== validatedIndex;
+  const changed = element[internal.state].selectedIndex !== validatedIndex;
   if (changed) {
-    element[symbols.setState]({
+    element[internal.setState]({
       selectedIndex: validatedIndex
     });
   }

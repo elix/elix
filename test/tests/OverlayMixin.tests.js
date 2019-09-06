@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import OpenCloseMixin from '../../src/OpenCloseMixin.js';
 import OverlayMixin from '../../src/OverlayMixin.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
@@ -11,8 +11,8 @@ const Base =
   ));
 
 class OverlayTest extends Base {
-  [symbols.render](changed) {
-    if (super[symbols.render]) { super[symbols.render](changed); }
+  [internal.render](changed) {
+    if (super[internal.render]) { super[internal.render](changed); }
     this.tabIndex = 0;
   }
 }

@@ -1,4 +1,4 @@
-import * as symbols from '../../../src/symbols.js';
+import * as internal from '../../../src/internal.js';
 import * as template from '../../../src/template.js';
 import CrossfadeStage from '../../../src/CrossfadeStage.js';
 import SereneTabButton from './SereneTabButton.js';
@@ -7,8 +7,8 @@ import Tabs from '../../../src/Tabs.js';
 
 class SereneTabs extends Tabs {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       generic: false,
       itemRole: 'tabpanel',
       proxyRole: SereneTabButton,
@@ -16,8 +16,8 @@ class SereneTabs extends Tabs {
     });
   }
 
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
+  get [internal.template]() {
+    return template.concat(super[internal.template], template.html`
       <style>
         :host {
           display: flex;

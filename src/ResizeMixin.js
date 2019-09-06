@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -30,13 +30,13 @@ export default function ResizeMixin(Base) {
 
     // Check this element's current height and width and, if either has changed,
     // update the corresponding state members.
-    [symbols.checkSize]() {
-      if (super[symbols.checkSize]) { super[symbols.checkSize](); }
+    [internal.checkSize]() {
+      if (super[internal.checkSize]) { super[internal.checkSize](); }
       const { clientHeight, clientWidth } = this;
-      const sizeChanged = clientHeight !== this[symbols.state].clientHeight ||
-          clientWidth !== this[symbols.state].clientWidth;
+      const sizeChanged = clientHeight !== this[internal.state].clientHeight ||
+          clientWidth !== this[internal.state].clientWidth;
       if (sizeChanged) {
-        this[symbols.setState]({
+        this[internal.setState]({
           clientHeight,
           clientWidth
         });
@@ -53,18 +53,18 @@ export default function ResizeMixin(Base) {
       }
     }
 
-    [symbols.componentDidMount]() {
-      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
-      this[symbols.checkSize]();
+    [internal.componentDidMount]() {
+      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
+      this[internal.checkSize]();
     }
     
-    [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
-      this[symbols.checkSize]();
+    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
+      if (super[internal.componentDidUpdate]) { super[internal.componentDidUpdate](changed); }
+      this[internal.checkSize]();
     }
 
-    get [symbols.defaultState]() {
-      return Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      return Object.assign(super[internal.defaultState], {
         clientHeight: this.clientHeight,
         clientWidth: this.clientWidth
       });
@@ -94,7 +94,7 @@ if (typeof Observer !== 'undefined') {
       // client size.
       const { target } = entry;
       const { clientHeight, clientWidth } = target;
-      target[symbols.setState]({
+      target[internal.setState]({
         clientHeight,
         clientWidth
       });
@@ -104,7 +104,7 @@ if (typeof Observer !== 'undefined') {
   // Fall back to only tracking window resize.
   window.addEventListener('resize', () => {
     windowResizeEntries.forEach(entry => {
-      entry[symbols.checkSize]();
+      entry[internal.checkSize]();
     });
   });
 }

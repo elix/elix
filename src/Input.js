@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import WrappedStandardElement from './WrappedStandardElement.js';
 import FormElementMixin from './FormElementMixin.js';
@@ -21,8 +21,8 @@ const Base =
  */
 class Input extends Base {
 
-  [symbols.componentDidMount]() {
-    super[symbols.componentDidMount]();
+  [internal.componentDidMount]() {
+    super[internal.componentDidMount]();
 
     // The following jsDoc comment doesn't directly apply to the statement which
     // follows, but is placed there because the comment has to go somewhere to
@@ -36,17 +36,17 @@ class Input extends Base {
      * 
      * @event input
      */
-    this[symbols.$].inner.addEventListener('input', () => {
-      this[symbols.raiseChangeEvents] = true;
+    this[internal.$].inner.addEventListener('input', () => {
+      this[internal.raiseChangeEvents] = true;
       // Invoke the value setter to fix up selectionStart/selectionEnd too.
       this.value = /** @type {any} */ (this.inner).value;
-      this[symbols.raiseChangeEvents] = false;
+      this[internal.raiseChangeEvents] = false;
     });
 
     this.setAttribute('role', 'none');
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

@@ -1,33 +1,33 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import DrawerWithGrip from '../../src/DrawerWithGrip.js';
 
 
 export default class CustomDrawer extends DrawerWithGrip {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       fromEdge: 'right'
     });
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
+  [internal.render](changed) {
+    super[internal.render](changed);
     if ((changed.gripSize || changed.opened || changed.swipeFraction) &&
-      this[symbols.$].plusIcon) {
+      this[internal.$].plusIcon) {
       // Rotate the toggle button as the drawer is opened.
-      const { opened, swipeFraction } = this[symbols.state];
+      const { opened, swipeFraction } = this[internal.state];
       const rotationFraction = (opened ? 1 : 0) - swipeFraction;
       const boundedRotationFraction =
         Math.max(Math.min(rotationFraction, 1), 0)
       const rotation = -boundedRotationFraction * 45;
       const transform = `rotate(${rotation}deg)`;
-      this[symbols.$].plusIcon.style.transform = transform;
+      this[internal.$].plusIcon.style.transform = transform;
     }    
   }
 
-  get [symbols.template]() {
-    const result = super[symbols.template];
+  get [internal.template]() {
+    const result = super[internal.template];
     const gripTemplate = template.html`
       <div id="plusIcon">+</div>
     `;

@@ -3,11 +3,11 @@
 
 /// <reference path="shared.d.ts"/>
 
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 
 declare const SelectionInViewMixin: Mixin<{}, {
   scrollItemIntoView(item: Element): void;
-  [symbols.scrollTarget]: Element
+  [internal.scrollTarget]: Element
 }>;
 
 export default SelectionInViewMixin;

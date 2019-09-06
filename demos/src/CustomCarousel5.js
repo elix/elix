@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import Carousel from '../../src/Carousel.js';
 import CustomArrowButton from './CustomArrowButton.js';
@@ -15,15 +15,15 @@ const Base =
 // Customize everything.
 class CustomCarousel extends Base {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       arrowButtonRole: CustomArrowButton,
       proxyRole: CustomPageDot
     });
   }
 
-  get [symbols.template]() {
-    const result = template.concat(super[symbols.template], template.html`
+  get [internal.template]() {
+    const result = template.concat(super[internal.template], template.html`
       <style>
         .arrowButton {
           font-size: 28px;

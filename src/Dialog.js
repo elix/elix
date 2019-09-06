@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import DialogModalityMixin from './DialogModalityMixin.js';
 import FocusCaptureMixin from './FocusCaptureMixin.js';
@@ -29,15 +29,15 @@ const Base =
  */
 class Dialog extends Base {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       backdropRole: ModalBackdrop,
       tabIndex: -1
     });
   }
 
-  get [symbols.template]() {
-    const result = super[symbols.template];
+  get [internal.template]() {
+    const result = super[internal.template];
     const frame = result.content.querySelector('#frame');
     /** @type {any} */ const cast = this;
     cast[FocusCaptureMixin.wrap](frame);

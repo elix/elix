@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
@@ -10,20 +10,20 @@ customElements.define('template-test', TemplateTest);
 // A component with a template with a role applied to a single element.
 class DynamicSingle extends ReactiveElement {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       dynamicRole: 'button'
     });
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
+  [internal.render](changed) {
+    super[internal.render](changed);
     if (changed.dynamicRole) {
-      template.transmute(this[symbols.$].dynamic, this[symbols.state].dynamicRole);
+      template.transmute(this[internal.$].dynamic, this[internal.state].dynamicRole);
     }
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <div id="static">This doesn't change</div>
       <div id="dynamic" class="foo">This element changes</div>
@@ -37,21 +37,21 @@ customElements.define('dynamic-role', DynamicSingle);
 // A component with a template where a role is applied to multiple elements.
 class DynamicMultiple extends ReactiveElement {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       dynamicRole: 'button'
     });
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
+  [internal.render](changed) {
+    super[internal.render](changed);
     if (changed.dynamicRole) {
       const dynamics = this.shadowRoot.querySelectorAll('.dynamic');
-      template.transmute(dynamics, this[symbols.state].dynamicRole);
+      template.transmute(dynamics, this[internal.state].dynamicRole);
     }
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <div id="static">This doesn't change</div>
       <div class="dynamic foo">This element changes</div>
@@ -140,33 +140,33 @@ describe("templates", () => {
 
   it("supports an element with a role during initial rendering", async () => {
     const fixture = new DynamicSingle();
-    fixture[symbols.renderChanges]();
-    assert(fixture[symbols.$].static instanceof HTMLDivElement);
-    assert(fixture[symbols.$].dynamic instanceof HTMLButtonElement);
-    assert.equal(fixture[symbols.$].dynamic.getAttribute('id'), 'dynamic');
-    assert.equal(fixture[symbols.$].dynamic.textContent, 'This element changes');
-    assert(fixture[symbols.$].dynamic.classList.contains('foo'));
+    fixture[internal.renderChanges]();
+    assert(fixture[internal.$].static instanceof HTMLDivElement);
+    assert(fixture[internal.$].dynamic instanceof HTMLButtonElement);
+    assert.equal(fixture[internal.$].dynamic.getAttribute('id'), 'dynamic');
+    assert.equal(fixture[internal.$].dynamic.textContent, 'This element changes');
+    assert(fixture[internal.$].dynamic.classList.contains('foo'));
   });
 
   it("lets an element change a role after initial rendering", async () => {
     const fixture = new DynamicSingle();
-    fixture[symbols.renderChanges]();
-    assert(fixture[symbols.$].static instanceof HTMLDivElement);
-    assert(fixture[symbols.$].dynamic instanceof HTMLButtonElement);
-    fixture[symbols.setState]({
+    fixture[internal.renderChanges]();
+    assert(fixture[internal.$].static instanceof HTMLDivElement);
+    assert(fixture[internal.$].dynamic instanceof HTMLButtonElement);
+    fixture[internal.setState]({
       dynamicRole: 'a'
     });
-    fixture[symbols.renderChanges]();
-    assert(fixture[symbols.$].dynamic instanceof HTMLAnchorElement);
-    assert.equal(fixture[symbols.$].dynamic.getAttribute('id'), 'dynamic');
-    assert.equal(fixture[symbols.$].dynamic.textContent, 'This element changes');
-    assert(fixture[symbols.$].dynamic.classList.contains('foo'));
+    fixture[internal.renderChanges]();
+    assert(fixture[internal.$].dynamic instanceof HTMLAnchorElement);
+    assert.equal(fixture[internal.$].dynamic.getAttribute('id'), 'dynamic');
+    assert.equal(fixture[internal.$].dynamic.textContent, 'This element changes');
+    assert(fixture[internal.$].dynamic.classList.contains('foo'));
   });
 
   it("supports an element with a role applied to multiple elements", async () => {
     const fixture = new DynamicMultiple();
-    fixture[symbols.renderChanges]();
-    assert(fixture[symbols.$].static instanceof HTMLDivElement);
+    fixture[internal.renderChanges]();
+    assert(fixture[internal.$].static instanceof HTMLDivElement);
     fixture.shadowRoot.querySelectorAll('.dynamic').forEach(element => {
       assert(element instanceof HTMLButtonElement);
       assert(element.classList.contains('foo'));

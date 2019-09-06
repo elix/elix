@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import AriaListMixin from './AriaListMixin.js';
 import ComposedFocusMixin from './ComposedFocusMixin.js';
@@ -71,28 +71,28 @@ const Base =
  */
 class ListBox extends Base {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       orientation: 'vertical'
     });
   }
 
   get orientation() {
-    return this[symbols.state].orientation;
+    return this[internal.state].orientation;
   }
   set orientation(orientation) {
-    this[symbols.setState]({ orientation });
+    this[internal.setState]({ orientation });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.generic) {
-      const { generic } = this[symbols.state];
+      const { generic } = this[internal.state];
       this.classList.toggle('generic', generic);
     }
     if (changed.items || changed.selectedIndex) {
       // Apply `selected` style to the selected item only.
-      const { selectedIndex, items } = this[symbols.state];
+      const { selectedIndex, items } = this[internal.state];
       if (items) {
         items.forEach((item, index) => {
           const selected = index === selectedIndex;
@@ -102,7 +102,7 @@ class ListBox extends Base {
     }
     if (changed.orientation) {
       // Update list orientation styling.
-      const style = this[symbols.state].orientation === 'vertical' ?
+      const style = this[internal.state].orientation === 'vertical' ?
         {
           display: 'block',
           flexDirection: '',
@@ -115,15 +115,15 @@ class ListBox extends Base {
           overflowX: 'auto',
           overflowY: 'hidden'
         };
-      Object.assign(this[symbols.$].content.style, style);
+      Object.assign(this[internal.$].content.style, style);
     }
   }
 
-  get [symbols.scrollTarget]() {
-    return this[symbols.$].content;
+  get [internal.scrollTarget]() {
+    return this[internal.$].content;
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

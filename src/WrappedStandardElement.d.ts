@@ -3,14 +3,14 @@
 
 /// <reference path="shared.d.ts"/>
 
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import DelegateFocusMixin from './DelegateFocusMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
 export default class WrappedStandardElement extends DelegateFocusMixin(
   ReactiveElement
 ) {
-  [symbols.defaultTabIndex]: number;
+  [internal.defaultTabIndex]: number;
   readonly inner: HTMLElement;
   setInnerProperty(name: string, value: any): void;
   static wrap(extendsTag: string): Constructor<WrappedStandardElement>;

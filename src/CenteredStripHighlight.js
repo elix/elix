@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import CenteredStrip from './CenteredStrip.js';
 
@@ -15,11 +15,11 @@ import CenteredStrip from './CenteredStrip.js';
  */
 class CenteredStripHighlight extends CenteredStrip {
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.items || changed.selectedIndex) {
       // Apply `selected` style to the selected item only.
-      const { selectedIndex, items } = this[symbols.state];
+      const { selectedIndex, items } = this[internal.state];
       if (items) {
         items.forEach((item, index) => {
           const selected = index === selectedIndex;
@@ -29,8 +29,8 @@ class CenteredStripHighlight extends CenteredStrip {
     }
   }
 
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
+  get [internal.template]() {
+    return template.concat(super[internal.template], template.html`
       <style>
         ::slotted(*) {
           padding: 0.25em;

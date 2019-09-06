@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import EffectMixin from '../../src/EffectMixin.js';
 import TransitionEffectMixin from '../../src/TransitionEffectMixin.js';
@@ -15,23 +15,23 @@ const Base =
 export default class AnimateAlignment extends Base {
 
   get align() {
-    return this[symbols.state].align;
+    return this[internal.state].align;
   }
   set align(align) {
-    if (this[symbols.state].enableEffects && this[symbols.state].align !== align) {
+    if (this[internal.state].enableEffects && this[internal.state].align !== align) {
       const effect = align === 'left' ?
         'slideLeft' :
         'slideRight';
-      this[symbols.startEffect](effect);
+      this[internal.startEffect](effect);
     } else {
-      this[symbols.setState]({
+      this[internal.setState]({
         align
       });
     }
   }
 
-  get [symbols.defaultState]() {
-    const base = Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    const base = Object.assign(super[internal.defaultState], {
       align: 'left'
     });
 
@@ -53,21 +53,21 @@ export default class AnimateAlignment extends Base {
     return base;
   }
 
-  get [symbols.elementsWithTransitions]() {
-    return [this[symbols.$].container];
+  get [internal.elementsWithTransitions]() {
+    return [this[internal.$].container];
   }
 
-  [symbols.render](changed) {
-    super[symbols.render](changed);
-    const { align, effect, effectPhase, enableEffects } = this[symbols.state];
-    const container = this[symbols.$].container;
+  [internal.render](changed) {
+    super[internal.render](changed);
+    const { align, effect, effectPhase, enableEffects } = this[internal.state];
+    const container = this[internal.$].container;
     if ((changed.effect || changed.effectPhase || changed.enableEffects) &&
         enableEffects &&
         effect === 'slideLeft' || effect === 'slideRight') {
       if (effectPhase === 'before') {
         // The inner container lets us measure how wide the content wants to be.
-        const containerWidth = this[symbols.$].container.clientWidth;
-        const distance = this[symbols.$].stationary.clientWidth - containerWidth;
+        const containerWidth = this[internal.$].container.clientWidth;
+        const distance = this[internal.$].stationary.clientWidth - containerWidth;
         const transform = effect === 'slideLeft' ?
           `translateX(${distance}px)` :
           `translateX(-${distance}px)`;
@@ -97,7 +97,7 @@ export default class AnimateAlignment extends Base {
     }
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {
@@ -132,10 +132,10 @@ export default class AnimateAlignment extends Base {
   }
 
   toggleAlignment() {
-    const effect = this[symbols.state].align === 'left' ?
+    const effect = this[internal.state].align === 'left' ?
       'slideRight' :
       'slideLeft';
-    this[symbols.startEffect](effect);
+    this[internal.startEffect](effect);
   }
 
 }

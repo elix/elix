@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import Carousel from './Carousel.js';
 import CrossfadeStage from './CrossfadeStage.js';
 import TimerSelectionMixin from './TimerSelectionMixin.js';
@@ -24,8 +24,8 @@ const Base =
  */
 class CarouselSlideshow extends Base {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       playing: true,
       selectionTimerDuration: 3000,
       selectionWraps: true,
@@ -34,23 +34,23 @@ class CarouselSlideshow extends Base {
     });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.transitionDuration) {
-      const { transitionDuration } = this[symbols.state];
-      if ('transitionDuration' in this[symbols.$].proxyList) {
-        /** @type {any} */ (this[symbols.$].proxyList).transitionDuration = transitionDuration;
+      const { transitionDuration } = this[internal.state];
+      if ('transitionDuration' in this[internal.$].proxyList) {
+        /** @type {any} */ (this[internal.$].proxyList).transitionDuration = transitionDuration;
       }
-      if ('transitionDuration' in this[symbols.$].stage) {
-        /** @type {any} */ (this[symbols.$].stage).transitionDuration = transitionDuration;
+      if ('transitionDuration' in this[internal.$].stage) {
+        /** @type {any} */ (this[internal.$].stage).transitionDuration = transitionDuration;
       }
     }
   }
   get transitionDuration() {
-    return this[symbols.state].transitionDuration;
+    return this[internal.state].transitionDuration;
   }
   set transitionDuration(transitionDuration) {
-    this[symbols.setState]({ transitionDuration });
+    this[internal.setState]({ transitionDuration });
   }
 
 

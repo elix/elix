@@ -1,5 +1,5 @@
 import { closestFocusableAncestor } from './utilities.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -37,10 +37,10 @@ export default function ComposedFocusMixin(Base) {
   // The class prototype added by the mixin.
   class ComposedFocus extends Base {
 
-    [symbols.componentDidMount]() {
-      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
+    [internal.componentDidMount]() {
+      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
       this.addEventListener('mousedown', event => {
-        if (!this[symbols.state].composeFocus) {
+        if (!this[internal.state].composeFocus) {
           return;
         }
         // Only process events for the main (usually left) button.
@@ -57,8 +57,8 @@ export default function ComposedFocusMixin(Base) {
       });
     }
 
-    get [symbols.defaultState]() {
-      return Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      return Object.assign(super[internal.defaultState], {
         composeFocus: !nativeDelegatesFocus
       });
     }

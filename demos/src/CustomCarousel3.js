@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import Carousel from '../../src/Carousel.js';
 
@@ -6,8 +6,8 @@ import Carousel from '../../src/Carousel.js';
 // Shows how to change the glyphs used in the arrow buttons.
 class CustomCarousel extends Carousel {
 
-  get [symbols.template]() {
-    const result = template.concat(super[symbols.template], template.html`
+  get [internal.template]() {
+    const result = template.concat(super[internal.template], template.html`
       <style>
         .arrowButton {
           font-size: 28px;

@@ -1,5 +1,5 @@
 import { ownEvent } from './utilities.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import PopupSource from './PopupSource.js';
@@ -19,35 +19,35 @@ const Base =
  */
 class PopupButton extends Base {
 
-  [symbols.componentDidMount]() {
-    super[symbols.componentDidMount]();
+  [internal.componentDidMount]() {
+    super[internal.componentDidMount]();
 
     // If the top-level element gets the focus while the popup is open, the most
     // likely expanation is that the user hit Shift+Tab to back up out of the
     // popup. In that case, we should close.
     this.addEventListener('focus', async (event) => {
-      const hostFocused = !ownEvent(this[symbols.$].popup, event);
+      const hostFocused = !ownEvent(this[internal.$].popup, event);
       // It's possible to get a focus event in the initial mousedown on the
       // source button before the popup is even rendered. We don't want to close
       // in that case, so we check to see if we've already measured the popup
       // dimensions (which will be true if the popup fully completed rendering).
-      const measured = this[symbols.state].popupHeight !== null;
+      const measured = this[internal.state].popupHeight !== null;
       if (hostFocused && this.opened && measured) {
-        this[symbols.raiseChangeEvents] = true;
+        this[internal.raiseChangeEvents] = true;
         await this.close();
-        this[symbols.raiseChangeEvents] = false;
+        this[internal.raiseChangeEvents] = false;
       }
     });
   }
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       role: 'button',
       sourceRole: 'button'      
     });
   }
 
-  [symbols.keydown](/** @type {KeyboardEvent} */ event) {
+  [internal.keydown](/** @type {KeyboardEvent} */ event) {
     let handled;
 
     switch (event.key) {
@@ -64,16 +64,16 @@ class PopupButton extends Base {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+    return handled || (super[internal.keydown] && super[internal.keydown](event));
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.sourceRole) {
       // Desktop popups generally open on mousedown, not click/mouseup. On mobile,
       // mousedown won't fire until the user releases their finger, so it behaves
       // like a click.
-      const source = this[symbols.$].source;
+      const source = this[internal.$].source;
       source.addEventListener('mousedown', event => {
         // mousedown events fire even if button is disabled, so we need
         // to explicitly ignore those.
@@ -91,9 +91,9 @@ class PopupButton extends Base {
         // popup. See note below.
         setTimeout(() => {
           if (!this.opened) {
-            this[symbols.raiseChangeEvents] = true;
+            this[internal.raiseChangeEvents] = true;
             this.open();
-            this[symbols.raiseChangeEvents] = false;
+            this[internal.raiseChangeEvents] = false;
           }
         });
         event.stopPropagation();
@@ -106,12 +106,12 @@ class PopupButton extends Base {
       source.tabIndex = -1;
     }
     if (changed.disabled) {
-      this[symbols.$].source.style.borderStyle = this[symbols.state].disabled ? null : 'solid';
+      this[internal.$].source.style.borderStyle = this[internal.state].disabled ? null : 'solid';
     }
   }
 
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
+  get [internal.template]() {
+    return template.concat(super[internal.template], template.html`
       <style>
         #source {
           background: buttonface;

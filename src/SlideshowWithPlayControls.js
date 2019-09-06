@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import AriaListMixin from './AriaListMixin.js';
 import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
@@ -54,20 +54,20 @@ const Base =
  */
 class SlideshowWithPlayControls extends Base {
 
-  [symbols.componentDidMount]() {
-    super[symbols.componentDidMount]();
+  [internal.componentDidMount]() {
+    super[internal.componentDidMount]();
     
     // Clicking the slideshow toggles the playing state.
     this.addEventListener('click', () => {
-      this[symbols.raiseChangeEvents] = true;
+      this[internal.raiseChangeEvents] = true;
       // @ts-ignore
       this.playing = !this.playing;
-      this[symbols.raiseChangeEvents] = false;
+      this[internal.raiseChangeEvents] = false;
     });
   }
 
-  get [symbols.template]() {
-    const result = super[symbols.template];
+  get [internal.template]() {
+    const result = super[internal.template];
     const modesContainer = result.content.querySelector('#modesContainer');
     /** @type {any} */ const cast = this;
     cast[PlayControlsMixin.wrap](modesContainer);

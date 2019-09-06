@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
@@ -19,14 +19,14 @@ function PageNumbersMixin(Base) {
 
   class PageNumbers extends Base {
 
-    [symbols.render](/** @type {PlainObject} */ changed) {
-      if (super[symbols.render]) { super[symbols.render](changed); }
+    [internal.render](/** @type {PlainObject} */ changed) {
+      if (super[internal.render]) { super[internal.render](changed); }
       if (changed.selectedIndex) {
-        const { items, selectedIndex } = this[symbols.state];
+        const { items, selectedIndex } = this[internal.state];
         const textContent = selectedIndex >= 0 && items ?
           `${selectedIndex + 1} / ${items.length}` :
           '';
-        this[symbols.$].pageNumber.textContent = textContent;
+        this[internal.$].pageNumber.textContent = textContent;
       }
     }
 

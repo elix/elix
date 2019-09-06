@@ -1,18 +1,18 @@
-import * as symbols from '../../../src/symbols.js';
+import * as internal from '../../../src/internal.js';
 import * as template from '../../../src/template.js';
 import TabButton from '../../../src/TabButton.js';
 
 
 class SereneTabButton extends TabButton {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       generic: false
     });
   }
 
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
+  get [internal.template]() {
+    return template.concat(super[internal.template], template.html`
       <style>
         :host {
           margin-left: 0;

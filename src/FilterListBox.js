@@ -1,5 +1,5 @@
 import { applyChildNodes } from './utilities.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ListBox from './ListBox.js';
 
 
@@ -10,8 +10,8 @@ import ListBox from './ListBox.js';
  */
 class FilterListBox extends ListBox {
 
-  get [symbols.defaultState]() {
-    const state = Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    const state = Object.assign(super[internal.defaultState], {
       filter: null
     });
 
@@ -36,16 +36,16 @@ class FilterListBox extends ListBox {
    * @type {string}
    */
   get filter() {
-    return this[symbols.state].filter;
+    return this[internal.state].filter;
   }
   set filter(filter) {
     // If external code sets the filter, it's impossible for that code to
     // predict the effects on the items and selection, so we'll need to raise
     // change events.
-    const saveRaiseChangesEvents = this[symbols.raiseChangeEvents];
-    this[symbols.raiseChangeEvents] = true;
-    this[symbols.setState]({ filter });
-    this[symbols.raiseChangeEvents] = saveRaiseChangesEvents;
+    const saveRaiseChangesEvents = this[internal.raiseChangeEvents];
+    this[internal.raiseChangeEvents] = true;
+    this[internal.setState]({ filter });
+    this[internal.raiseChangeEvents] = saveRaiseChangesEvents;
   }
 
   /**
@@ -83,14 +83,14 @@ class FilterListBox extends ListBox {
    * @param {ListItemElement} item 
    * @param {PlainObject} state 
    */
-  [symbols.itemMatchesState](item, state) {
-    const base = super[symbols.itemMatchesState] ?
-      super[symbols.itemMatchesState](item, state) :
+  [internal.itemMatchesState](item, state) {
+    const base = super[internal.itemMatchesState] ?
+      super[internal.itemMatchesState](item, state) :
       true;
     if (!base) {
       return false;
     }
-    const text = this[symbols.getItemText](item).toLowerCase();
+    const text = this[internal.getItemText](item).toLowerCase();
     const filter = state.filter && state.filter.toLowerCase();
     return !filter ?
       true :
@@ -99,9 +99,9 @@ class FilterListBox extends ListBox {
         text.includes(filter);
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
-    const { content, filter } = this[symbols.state];
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
+    const { content, filter } = this[internal.state];
     // We inspect `content` instead of `items` so that we can render even those
     // elements that don't match the current filter.
     if ((changed.filter || changed.content) && content) {
@@ -109,7 +109,7 @@ class FilterListBox extends ListBox {
         if (content instanceof HTMLElement || content instanceof SVGElement) {
 
           // Hide content elements that don't match the filter.
-          const matches = this[symbols.itemMatchesState](content, this[symbols.state]);
+          const matches = this[internal.itemMatchesState](content, this[internal.state]);
           content.style.display = matches ? null : 'none';
 
           // For matching items, highlight the matching text.

@@ -1,5 +1,5 @@
 import { indexOfItemContainingTarget } from './utilities.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -43,14 +43,14 @@ export default function TapSelectionMixin(Base) {
         if (event.button !== 0) {
           return;
         }
-        this[symbols.raiseChangeEvents] = true;
-        this[symbols.tap](event);
-        this[symbols.raiseChangeEvents] = false;
+        this[internal.raiseChangeEvents] = true;
+        this[internal.tap](event);
+        this[internal.raiseChangeEvents] = false;
       });
     }
 
-    [symbols.componentDidMount]() {
-      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
+    [internal.componentDidMount]() {
+      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
       Object.assign(this.style, {
         touchAction: 'manipulation', // for iOS Safari
         mozUserSelect: 'none',
@@ -60,7 +60,7 @@ export default function TapSelectionMixin(Base) {
       });
     }
 
-    [symbols.tap](/** @type {MouseEvent} */ event) {
+    [internal.tap](/** @type {MouseEvent} */ event) {
       // In some situations, the event target will not be the child which was
       // originally clicked on. E.g., if the item clicked on is a button, the
       // event seems to be raised in phase 2 (AT_TARGET) — but the event target
@@ -75,12 +75,12 @@ export default function TapSelectionMixin(Base) {
       // Find which item was clicked on and, if found, select it. For elements
       // which don't require a selection, a background click will determine
       // the item was null, in which we case we'll remove the selection.
-      const { items, selectedIndex, selectionRequired } = this[symbols.state];
+      const { items, selectedIndex, selectionRequired } = this[internal.state];
       if (items && target instanceof Node) {
         const targetIndex = indexOfItemContainingTarget(items, target);
         if (targetIndex >= 0 || !selectionRequired &&
             selectedIndex !== targetIndex) {
-          this[symbols.setState]({
+          this[internal.setState]({
             selectedIndex: targetIndex
           });
           event.stopPropagation();

@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import Drawer from './Drawer.js';
 import SeamlessButton from './SeamlessButton.js';
@@ -19,22 +19,22 @@ import SeamlessButton from './SeamlessButton.js';
  */
 class DrawerWithGrip extends Drawer {
 
-  [symbols.componentDidMount]() {
-    super[symbols.componentDidMount]();
+  [internal.componentDidMount]() {
+    super[internal.componentDidMount]();
 
-    if (this[symbols.state].gripSize === null) {
+    if (this[internal.state].gripSize === null) {
       // Use the rendered size of the grip to set the gripSize. This will ensure
       // the grip is visible, peeking out from the edge of the drawer's container.
-      const { fromEdge } = this[symbols.state];
+      const { fromEdge } = this[internal.state];
       const vertical = fromEdge === 'top' || fromEdge === 'bottom';
       const dimension = vertical ? 'offsetHeight' : 'offsetWidth';
-      const gripSize = this[symbols.$].grip[dimension];
-      this[symbols.setState]({ gripSize });
+      const gripSize = this[internal.$].grip[dimension];
+      this[internal.setState]({ gripSize });
     }
   }
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       gripRole: SeamlessButton
     });
   }
@@ -46,32 +46,32 @@ class DrawerWithGrip extends Drawer {
    * @default SeamlessButton
    */
   get gripRole() {
-    return this[symbols.state].gripRole;
+    return this[internal.state].gripRole;
   }
   set gripRole(gripRole) {
-    this[symbols.setState]({ gripRole });
+    this[internal.setState]({ gripRole });
   }
 
-  [symbols.render](changed) {
-    if (super[symbols.render]) { super[symbols.render](changed); }
+  [internal.render](changed) {
+    if (super[internal.render]) { super[internal.render](changed); }
 
     if (changed.gripRole) {
-      template.transmute(this[symbols.$].grip, this[symbols.state].gripRole);
-      this[symbols.$].grip.addEventListener('click', event => {
+      template.transmute(this[internal.$].grip, this[internal.state].gripRole);
+      this[internal.$].grip.addEventListener('click', event => {
         // Clicking grip toggles drawer.
-        this[symbols.raiseChangeEvents] = true;
+        this[internal.raiseChangeEvents] = true;
         this.toggle();
         event.stopPropagation();
-        this[symbols.raiseChangeEvents] = false;
+        this[internal.raiseChangeEvents] = false;
       });
     }
 
     if (changed.fromEdge || changed.rightToLeft) {
       // Position the grip so it's at the outer edge of the drawer.
-      const { fromEdge, rightToLeft } = this[symbols.state];
+      const { fromEdge, rightToLeft } = this[internal.state];
 
       const vertical = fromEdge === 'top' || fromEdge === 'bottom';
-      this[symbols.$].frame.style.flexDirection = vertical ?
+      this[internal.$].frame.style.flexDirection = vertical ?
         'column' :
         'row';
 
@@ -104,27 +104,27 @@ class DrawerWithGrip extends Drawer {
         mapFromEdgeToGripCell.left :
         mapFromEdgeToGripCell.right;
 
-      this[symbols.$].gripContainer.style.grid = mapFromEdgeToGrid[fromEdge];
-      this[symbols.$].gripWorkaround.style.gridArea = mapFromEdgeToGripCell[fromEdge];
+      this[internal.$].gripContainer.style.grid = mapFromEdgeToGrid[fromEdge];
+      this[internal.$].gripWorkaround.style.gridArea = mapFromEdgeToGripCell[fromEdge];
     }
 
-    if (changed.swipeAxis && this[symbols.$].gripIcon) {
+    if (changed.swipeAxis && this[internal.$].gripIcon) {
       // Rotate the default grip icon to reflect the swipe axis.
-      const transform = this[symbols.state].swipeAxis === 'horizontal' ?
+      const transform = this[internal.state].swipeAxis === 'horizontal' ?
         'rotate(90deg)' :
         '';
-      this[symbols.$].gripIcon.style.transform = transform;
+      this[internal.$].gripIcon.style.transform = transform;
     }
   }
 
   // Tell TrackpadSwipeMixin that the gripped content is the scrollable element
   // the user is going to try to scroll with the trackpad.
-  get [symbols.scrollTarget]() {
-    return this[symbols.$].grippedContent;
+  get [internal.scrollTarget]() {
+    return this[internal.$].grippedContent;
   }
 
-  get [symbols.template]() {
-    const result = super[symbols.template];
+  get [internal.template]() {
+    const result = super[internal.template];
 
     // Replace the default slot with one that includes a grip element.
     // Default grip icon from Material Design icons "drag handle".

@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import Drawer from './Drawer.js';
 import FocusVisibleMixin from './FocusVisibleMixin.js';
@@ -33,8 +33,8 @@ const Base =
  */
 class HamburgerMenuButton extends Base {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       fromEdge: 'start',
       menuButtonRole: SeamlessButton,
       menuRole: Drawer
@@ -52,17 +52,17 @@ class HamburgerMenuButton extends Base {
    * @default 'start'
    */
   get fromEdge() {
-    return this[symbols.state].fromEdge;
+    return this[internal.state].fromEdge;
   }
   set fromEdge(fromEdge) {
-    this[symbols.setState]({ fromEdge });
+    this[internal.setState]({ fromEdge });
   }
 
   // When the menu is closed, pressing Enter or Space is the same as clicking
   // the menu button.
-    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
+    [internal.keydown](/** @type {KeyboardEvent} */ event) {
     /** @type {any} */
-    const menuButton = this[symbols.$].menuButton;
+    const menuButton = this[internal.$].menuButton;
     
     let handled;
 
@@ -77,7 +77,7 @@ class HamburgerMenuButton extends Base {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+    return handled || (super[internal.keydown] && super[internal.keydown](event));
   }
 
   /**
@@ -87,10 +87,10 @@ class HamburgerMenuButton extends Base {
    * @default Drawer
    */
   get menuRole() {
-    return this[symbols.state].menuRole;
+    return this[internal.state].menuRole;
   }
   set menuRole(menuRole) {
-    this[symbols.setState]({ menuRole });
+    this[internal.setState]({ menuRole });
   }
 
   /**
@@ -100,52 +100,52 @@ class HamburgerMenuButton extends Base {
    * @default SeamlessButton
    */
   get menuButtonRole() {
-    return this[symbols.state].menuButtonRole;
+    return this[internal.state].menuButtonRole;
   }
   set menuButtonRole(menuButtonRole) {
-    this[symbols.setState]({ menuButtonRole });
+    this[internal.setState]({ menuButtonRole });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.menuButtonRole) {
-      template.transmute(this[symbols.$].menuButton, this[symbols.state].menuButtonRole);
-      this[symbols.$].menuButton.addEventListener('click', () => {
-        this[symbols.raiseChangeEvents] = true;
+      template.transmute(this[internal.$].menuButton, this[internal.state].menuButtonRole);
+      this[internal.$].menuButton.addEventListener('click', () => {
+        this[internal.raiseChangeEvents] = true;
         this.open();
-        this[symbols.raiseChangeEvents] = false;
+        this[internal.raiseChangeEvents] = false;
       });
     }
     if (changed.menuRole) {
-      template.transmute(this[symbols.$].menu, this[symbols.state].menuRole);
-      this[symbols.$].menu.addEventListener('closed', event => {
+      template.transmute(this[internal.$].menu, this[internal.state].menuRole);
+      this[internal.$].menu.addEventListener('closed', event => {
         /** @type {any} */
         const cast = event;
-        this[symbols.setState]({
+        this[internal.setState]({
           closeResult: cast.detail.closeResult,
           opened: false
         });
       });
-      this[symbols.$].menu.addEventListener('opened', () => {
-        this[symbols.setState]({
+      this[internal.$].menu.addEventListener('opened', () => {
+        this[internal.setState]({
           opened: true
         });
       });
     }
-    const menu = /** @type {any} */ (this[symbols.$].menu);
+    const menu = /** @type {any} */ (this[internal.$].menu);
     if (changed.fromEdge) {
       if ('fromEdge' in menu) {
-        menu.fromEdge = this[symbols.state].fromEdge;
+        menu.fromEdge = this[internal.state].fromEdge;
       }
     }
     if (changed.opened) {
       if ('opened' in menu) {
-        menu.opened = this[symbols.state].opened;
+        menu.opened = this[internal.state].opened;
       }
     }
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

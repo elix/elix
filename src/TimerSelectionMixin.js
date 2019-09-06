@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -19,18 +19,18 @@ export default function TimerSelectionMixin(Base) {
   // The class prototype added by the mixin.
   class TimerSelection extends Base {
 
-    [symbols.componentDidMount]() {
-      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
+    [internal.componentDidMount]() {
+      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
       updateTimer(this);
     }
     
-    [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
+    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
+      if (super[internal.componentDidUpdate]) { super[internal.componentDidUpdate](changed); }
       updateTimer(this);
     }
 
-    get [symbols.defaultState]() {
-      return Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      return Object.assign(super[internal.defaultState], {
         playing: true,
         selectedIndexForTimer: null,
         selectionTimerDuration: 1000,
@@ -44,7 +44,7 @@ export default function TimerSelectionMixin(Base) {
     play() {
       if (!this.playing) {
         this.selectNext();
-        this[symbols.setState]({
+        this[internal.setState]({
           playing: true
         });
       }
@@ -54,7 +54,7 @@ export default function TimerSelectionMixin(Base) {
      * Pause automatic progression of the selection.
      */
     pause() {
-      this[symbols.setState]({
+      this[internal.setState]({
         playing: false
       });
     }
@@ -66,11 +66,11 @@ export default function TimerSelectionMixin(Base) {
      * @default false
      */
     get playing() {
-      return this[symbols.state].playing;
+      return this[internal.state].playing;
     }
     set playing(playing) {
       const parsed = String(playing) === 'true';
-      if (parsed !== this[symbols.state].playing) {
+      if (parsed !== this[internal.state].playing) {
         if (parsed) {
           this.play();
         } else {
@@ -87,12 +87,12 @@ export default function TimerSelectionMixin(Base) {
      * @default 1000 (1 second)
      */
     get selectionTimerDuration() {
-      return this[symbols.state].selectionTimerDuration;
+      return this[internal.state].selectionTimerDuration;
     }
     set selectionTimerDuration(selectionTimerDuration) {
       const parsed = Number(selectionTimerDuration);
       if (!isNaN(parsed)) {
-        this[symbols.setState]({
+        this[internal.setState]({
           selectionTimerDuration: parsed
         });
       }
@@ -105,17 +105,17 @@ export default function TimerSelectionMixin(Base) {
 
 
 function clearTimer(/** @type {ReactiveElement} */ element) {
-  if (element[symbols.state].timerTimeout) {
-    clearTimeout(element[symbols.state].timerTimeout);
-    element[symbols.setState]({
+  if (element[internal.state].timerTimeout) {
+    clearTimeout(element[internal.state].timerTimeout);
+    element[internal.setState]({
       timerTimeout: null
     });
   }
 }
 
 function restartTimer(/** @type {ReactiveElement} */ element) {
-  if (element[symbols.state].timerTimeout) {
-    clearTimeout(element[symbols.state].timerTimeout);
+  if (element[internal.state].timerTimeout) {
+    clearTimeout(element[internal.state].timerTimeout);
   }
   if (element.items && element.items.length > 0) {
 
@@ -128,8 +128,8 @@ function restartTimer(/** @type {ReactiveElement} */ element) {
     }, element.selectionTimerDuration);
 
     // Set the timer as state, also noting which slide we're currently on.
-    element[symbols.setState]({
-      selectedIndexForTimer: element[symbols.state].selectedIndex,
+    element[internal.setState]({
+      selectedIndexForTimer: element[internal.state].selectedIndex,
       timerTimeout
     });
   }
@@ -142,10 +142,10 @@ function updateTimer(/** @type {ReactiveElement} */ element) {
   // timer. This ensures that the timer restarts no matter why the selection
   // changes: it could have been us moving to the next slide because the timer
   // elapsed, or the user might have directly manipulated the selection, etc.
-  if (element[symbols.state].playing &&
-      (!element[symbols.state].timerTimeout || element[symbols.state].selectedIndex !== element[symbols.state].selectedIndexForTimer)) {
+  if (element[internal.state].playing &&
+      (!element[internal.state].timerTimeout || element[internal.state].selectedIndex !== element[internal.state].selectedIndexForTimer)) {
     restartTimer(element);
-  } else if (!element[symbols.state].playing && element[symbols.state].timerTimeout) {
+  } else if (!element[internal.state].playing && element[internal.state].timerTimeout) {
     clearTimer(element);
   }
 }

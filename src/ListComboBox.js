@@ -1,6 +1,6 @@
 import { getItemText } from './ItemsTextMixin.js';
 import { indexOfItemContainingTarget } from './utilities.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import ComboBox from './ComboBox.js';
 import DelegateItemsMixin from './DelegateItemsMixin.js';
@@ -28,13 +28,13 @@ const Base =
  */
 class ListComboBox extends Base {
 
-  [symbols.componentDidMount]() {
-    super[symbols.componentDidMount]();
+  [internal.componentDidMount]() {
+    super[internal.componentDidMount]();
     this.setAttribute('aria-haspopup', 'listbox');
   }
 
-  get [symbols.defaultState]() {
-    const state = Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    const state = Object.assign(super[internal.defaultState], {
       horizontalAlign: 'stretch',
       listRole: ListBox,
       selectedIndex: -1
@@ -101,23 +101,23 @@ class ListComboBox extends Base {
   // on KeyboardDirectionMixin. The latter supports Home and End, and we don't
   // want to handle those -- we want to let the text input handle them.
   // We also need to forward PageDown/PageUp to the list element.
-    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
+    [internal.keydown](/** @type {KeyboardEvent} */ event) {
 
     let handled;
     /** @type {any} */
-    const list = this[symbols.$].list;
+    const list = this[internal.$].list;
 
     switch (event.key) {
 
       case 'ArrowDown':
         if (this.opened) {
-          handled = event.altKey ? this[symbols.goEnd]() : this[symbols.goDown]();
+          handled = event.altKey ? this[internal.goEnd]() : this[internal.goDown]();
         }
         break;
 
       case 'ArrowUp':
         if (this.opened) {
-          handled = event.altKey ? this[symbols.goStart]() : this[symbols.goUp]();
+          handled = event.altKey ? this[internal.goStart]() : this[internal.goUp]();
         }
         break;
 
@@ -135,7 +135,7 @@ class ListComboBox extends Base {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+    return handled || (super[internal.keydown] && super[internal.keydown](event));
   }
 
   /**
@@ -145,34 +145,34 @@ class ListComboBox extends Base {
    * @default ListBox
    */
   get listRole() {
-    return this[symbols.state].listRole;
+    return this[internal.state].listRole;
   }
   set listRole(listRole) {
-    this[symbols.setState]({ listRole });
+    this[internal.setState]({ listRole });
   }
 
-  get [symbols.itemsDelegate]() {
-    return this[symbols.$].list;
+  get [internal.itemsDelegate]() {
+    return this[internal.$].list;
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.inputRole) {
-      this[symbols.$].input.setAttribute('aria-autocomplete', 'both');
+      this[internal.$].input.setAttribute('aria-autocomplete', 'both');
     }
     if (changed.listRole) {
-      template.transmute(this[symbols.$].list, this[symbols.state].listRole);
+      template.transmute(this[internal.$].list, this[internal.state].listRole);
   
-      this[symbols.$].list.addEventListener('mousedown', event => {
+      this[internal.$].list.addEventListener('mousedown', event => {
         // Mousing down inside a list item closes the popup.
         /** @type {any} */
         const target = event.target;
         if (target) {
           const targetIndex = indexOfItemContainingTarget(this.items, target);
           if (this.opened && targetIndex >= 0) {
-            this[symbols.raiseChangeEvents] = true;
+            this[internal.raiseChangeEvents] = true;
             this.close();
-            this[symbols.raiseChangeEvents] = false;
+            this[internal.raiseChangeEvents] = false;
           }  
         }
       });
@@ -184,29 +184,29 @@ class ListComboBox extends Base {
       // presses Backspace to delete that selected text, Gboard/Chrome seems to
       // ignore the first press of the Backspace key. The user must press
       // Backspace a second time to actually delete the selected text.
-      this[symbols.$].list.addEventListener('selected-index-changed', event => {
+      this[internal.$].list.addEventListener('selected-index-changed', event => {
         /** @type {any} */
         const cast = event;
         const listSelectedIndex = cast.detail.selectedIndex;
-        if (this[symbols.state].selectedIndex !== listSelectedIndex) {
-          this[symbols.raiseChangeEvents] = true;
-          this[symbols.setState]({
+        if (this[internal.state].selectedIndex !== listSelectedIndex) {
+          this[internal.raiseChangeEvents] = true;
+          this[internal.setState]({
             selectedIndex: listSelectedIndex
           });
-          this[symbols.raiseChangeEvents] = false;
+          this[internal.raiseChangeEvents] = false;
         }
       });
     }
     if (changed.selectedIndex) {
-      const list = /** @type {any} */ (this[symbols.$].list);
+      const list = /** @type {any} */ (this[internal.$].list);
       if ('selectedIndex' in list) {
-        list.selectedIndex = this[symbols.state].selectedIndex;
+        list.selectedIndex = this[internal.state].selectedIndex;
       }
     }
   }
 
-  get [symbols.template]() {
-    const result = super[symbols.template];
+  get [internal.template]() {
+    const result = super[internal.template];
 
     // Wrap default slot with a list.
     const listTemplate = template.html`

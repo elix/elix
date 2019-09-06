@@ -1,5 +1,5 @@
 import { trimMarks } from '../normalize.js';
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import CalendarMonthYearHeader from '../../src/CalendarMonthYearHeader.js';
 
 
@@ -9,16 +9,16 @@ describe("CalendarMonthYearHeader", () => {
     const fixture = new CalendarMonthYearHeader();
     fixture.locale = 'en-US';
     fixture.date = new Date('10 March 2015');
-    await fixture[symbols.renderChanges]();
-    assert.equal(trimMarks(fixture[symbols.$].formatted.textContent), 'March 2015');
+    await fixture[internal.renderChanges]();
+    assert.equal(trimMarks(fixture[internal.$].formatted.textContent), 'March 2015');
   });
 
   it("renders Japanese month header", async () => {
     const fixture = new CalendarMonthYearHeader();
     fixture.locale = 'ja-JP';
     fixture.date = new Date('10 March 2015');
-    await fixture[symbols.renderChanges]();
-    assert.equal(trimMarks(fixture[symbols.$].formatted.textContent), '2015年3月');
+    await fixture[internal.renderChanges]();
+    assert.equal(trimMarks(fixture[internal.$].formatted.textContent), '2015年3月');
   });
 
 });

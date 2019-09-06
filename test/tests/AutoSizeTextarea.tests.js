@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import AutoSizeTextarea from '../../src/AutoSizeTextarea.js';
 
 
@@ -25,7 +25,7 @@ describe("AutoSizeTextarea", () => {
   it("applies its value to the inner textarea", () => {
     const fixture = new AutoSizeTextarea();
     fixture.value = 'beaver';
-    fixture[symbols.renderChanges]();
+    fixture[internal.renderChanges]();
     assert(fixture.inner.value, 'beaver');
   });
 
@@ -44,16 +44,16 @@ describe("AutoSizeTextarea", () => {
     container.appendChild(fixture);
     // Give content time to change.
     await Promise.resolve();
-    assert(fixture[symbols.state].valueTracksContent);
+    assert(fixture[internal.state].valueTracksContent);
     assert.equal(fixture.value, 'dingo');
     fixture.value = 'echidna';
     // Give content time to change. Value should track content.
-    assert(!fixture[symbols.state].valueTracksContent);
+    assert(!fixture[internal.state].valueTracksContent);
     assert.equal(fixture.value, 'echidna');
     fixture.textContent = 'fox';
     // Give content time to change. Value should remain unchanged.
     await Promise.resolve();
-    assert(!fixture[symbols.state].valueTracksContent);    
+    assert(!fixture[internal.state].valueTracksContent);    
     assert.equal(fixture.value, 'echidna');
   });
 

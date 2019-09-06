@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import ContentItemsMixin from '../../src/ContentItemsMixin.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
 
@@ -14,7 +14,7 @@ class ContentItemsTest extends ContentItemsMixin(ReactiveMixin(HTMLElement)) {
   updateContent() {
     // Copy content.
     const content = [...this.children];
-    this[symbols.setState]({ content });
+    this[internal.setState]({ content });
   }
 
 }
@@ -53,7 +53,7 @@ describe("ContentItemsMixin", () => {
       done();
     });
     // Arrange for raising of change events.
-    fixture[symbols.raiseChangeEvents] = true;
+    fixture[internal.raiseChangeEvents] = true;
     container.appendChild(fixture);
     // Wait for first render.
     setTimeout(() => {

@@ -1,6 +1,6 @@
 import '../../src/PullToRefresh.js';
 import { applyChildNodes } from '../../src/utilities.js';
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
@@ -21,9 +21,9 @@ const texts = [
 
 class RefreshAppDemo extends ReactiveElement {
 
-  [symbols.componentDidMount]() {
-    if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
-    this[symbols.$].pullToRefresh.addEventListener('refreshing-changed', event => {
+  [internal.componentDidMount]() {
+    if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
+    this[internal.$].pullToRefresh.addEventListener('refreshing-changed', event => {
       /** @type {any} */
       const cast = event;
       if (cast.detail.refreshing) {
@@ -32,9 +32,9 @@ class RefreshAppDemo extends ReactiveElement {
     });
   }
 
-  get [symbols.defaultState]() {
+  get [internal.defaultState]() {
     const paragraphs = createParagraphs(texts);
-    return Object.assign(super[symbols.defaultState], {
+    return Object.assign(super[internal.defaultState], {
       paragraphs
     });
   }
@@ -44,28 +44,28 @@ class RefreshAppDemo extends ReactiveElement {
       navigator.vibrate(5);
     }
     setTimeout(async () => {
-      /** @type {any} */ (this[symbols.$].pullToRefresh).refreshing = false;
-      /** @type {any} */ const refreshSound = this[symbols.$].refreshSound;
+      /** @type {any} */ (this[internal.$].pullToRefresh).refreshing = false;
+      /** @type {any} */ const refreshSound = this[internal.$].refreshSound;
       await playSound(refreshSound);
       // Rotate last paragraph to first place.
-      const paragraphs = [...this[symbols.state].paragraphs];
+      const paragraphs = [...this[internal.state].paragraphs];
       const last = paragraphs.pop();
       paragraphs.unshift(last);
       Object.freeze(paragraphs);
-      this[symbols.setState]({
+      this[internal.setState]({
         paragraphs
       });
     }, 1000);
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.paragraphs) {
-      applyChildNodes(this[symbols.$].pullToRefresh, this[symbols.state].paragraphs);
+      applyChildNodes(this[internal.$].pullToRefresh, this[internal.state].paragraphs);
     }
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

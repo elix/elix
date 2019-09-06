@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 import TouchSwipeMixin from '../../src/TouchSwipeMixin.js';
@@ -14,48 +14,48 @@ const Base =
 
 class SwipeDemo extends Base {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       swipeAxis: 'horizontal'
     });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
-    const { swipeAxis, swipeFraction } = this[symbols.state];
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
+    const { swipeAxis, swipeFraction } = this[internal.state];
     const vertical = swipeAxis === 'vertical';
     if (changed.swipeAxis) {
       this.style.flexDirection = vertical ? 'row' : 'column';
-      Object.assign(this[symbols.$].block.style, {
+      Object.assign(this[internal.$].block.style, {
         height: vertical ? '100%' : '1em',
         width: vertical ? '1em' : '100%'
       });
-      Object.assign(this[symbols.$].container.style, {
+      Object.assign(this[internal.$].container.style, {
         'flex-direction': vertical ? 'row-reverse' : 'column',
         'justify-content': vertical ? 'flex-end' : 'center'
       });
-      this[symbols.$].empty.style.display = vertical ? 'none' : 'block';
-      this[symbols.$].space.style.display = vertical ? 'none' : 'block';
+      this[internal.$].empty.style.display = vertical ? 'none' : 'block';
+      this[internal.$].space.style.display = vertical ? 'none' : 'block';
     }
     if (changed.swipeFraction) {
       const axis = vertical ? 'Y' : 'X';
-      this[symbols.$].block.style.transform = swipeFraction !== null ?
+      this[internal.$].block.style.transform = swipeFraction !== null ?
         `translate${axis}(${swipeFraction * 100}%)` :
         '';
-      this[symbols.$].swipeFraction.textContent = swipeFraction !== null ?
+      this[internal.$].swipeFraction.textContent = swipeFraction !== null ?
         swipeFraction.toFixed(3) :
         '—';
     }
   }
 
   get swipeAxis() {
-    return this[symbols.state].swipeAxis;
+    return this[internal.state].swipeAxis;
   }
   set swipeAxis(swipeAxis) {
-    this[symbols.setState]({ swipeAxis });
+    this[internal.setState]({ swipeAxis });
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

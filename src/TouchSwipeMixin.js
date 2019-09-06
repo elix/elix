@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 import { canScrollInDirection } from './scrolling.js';
 
@@ -39,7 +39,7 @@ export default function TouchSwipeMixin(Base) {
       // See the rationale for this in the comments for componentDidMount.
       if ('TouchEvent' in window) {
         this.addEventListener('touchstart', async (event) => {
-          this[symbols.raiseChangeEvents] = true;
+          this[internal.raiseChangeEvents] = true;
           if (this[multiTouchKey]) {
             return;
           } else if (event.touches.length === 1) {
@@ -49,10 +49,10 @@ export default function TouchSwipeMixin(Base) {
             this[multiTouchKey] = true;
           }
           await Promise.resolve();
-          this[symbols.raiseChangeEvents] = false;
+          this[internal.raiseChangeEvents] = false;
         });
         this.addEventListener('touchmove', async (event) => {
-          this[symbols.raiseChangeEvents] = true;
+          this[internal.raiseChangeEvents] = true;
           if (!this[multiTouchKey] && event.touches.length === 1 && event.target) {
             const { clientX, clientY } = event.changedTouches[0];
             const handled = gestureContinue(this, clientX, clientY, event.target);
@@ -62,10 +62,10 @@ export default function TouchSwipeMixin(Base) {
             }
           }
           await Promise.resolve();
-          this[symbols.raiseChangeEvents] = false;
+          this[internal.raiseChangeEvents] = false;
         });
         this.addEventListener('touchend', async (event) => {
-          this[symbols.raiseChangeEvents] = true;
+          this[internal.raiseChangeEvents] = true;
           if (event.touches.length === 0 && event.target) {
             // All touches removed; gesture is complete.
             if (!this[multiTouchKey]) {
@@ -76,21 +76,21 @@ export default function TouchSwipeMixin(Base) {
             this[multiTouchKey] = false;
           }
           await Promise.resolve();
-          this[symbols.raiseChangeEvents] = false;
+          this[internal.raiseChangeEvents] = false;
         });
       } else if ('PointerEvent' in window) {
         // Use pointer events.
         this.addEventListener('pointerdown', async (event) => {
-          this[symbols.raiseChangeEvents] = true;
+          this[internal.raiseChangeEvents] = true;
           if (isEventForPenOrPrimaryTouch(event)) {
             const { clientX, clientY } = event;
             gestureStart(this, clientX, clientY);
           }
           await Promise.resolve();
-          this[symbols.raiseChangeEvents] = false;
+          this[internal.raiseChangeEvents] = false;
         });
         this.addEventListener('pointermove', async (event) => {
-          this[symbols.raiseChangeEvents] = true;
+          this[internal.raiseChangeEvents] = true;
           if (isEventForPenOrPrimaryTouch(event) && event.target) {
             const { clientX, clientY } = event;
             const handled = gestureContinue(this, clientX, clientY, event.target);
@@ -100,22 +100,22 @@ export default function TouchSwipeMixin(Base) {
             }
           }
           await Promise.resolve();
-          this[symbols.raiseChangeEvents] = false;
+          this[internal.raiseChangeEvents] = false;
         });
         this.addEventListener('pointerup', async (event) => {
-          this[symbols.raiseChangeEvents] = true;
+          this[internal.raiseChangeEvents] = true;
           if (isEventForPenOrPrimaryTouch(event) && event.target) {
             const { clientX, clientY } = event;
             gestureEnd(this, clientX, clientY, event.target);
           }
           await Promise.resolve();
-          this[symbols.raiseChangeEvents] = false;
+          this[internal.raiseChangeEvents] = false;
         });
       }
     }
 
-    [symbols.componentDidMount]() {
-      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
+    [internal.componentDidMount]() {
+      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
       //
       // Choosing a touch-action value is unfortunately fraught with issues.
       //
@@ -150,8 +150,8 @@ export default function TouchSwipeMixin(Base) {
         'none';
     }
 
-    get [symbols.defaultState]() {
-      const result = Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      const result = Object.assign(super[internal.defaultState], {
         swipeAxis: 'horizontal',
         swipeDownWillCommit: false,
         swipeFraction: null,
@@ -190,14 +190,14 @@ export default function TouchSwipeMixin(Base) {
     }
     
     /**
-     * See [symbols.swipeTarget](symbols#swipeTarget).
+     * See [internal.swipeTarget](symbols#swipeTarget).
      * 
-     * @property symbols.swipeTarget
+     * @property internal.swipeTarget
      * @memberof TouchSwipeMixin
      * @type {HTMLElement}
      */
-    get [symbols.swipeTarget]() {
-      const base = super[symbols.swipeTarget];
+    get [internal.swipeTarget]() {
+      const base = super[internal.swipeTarget];
       return base || this;
     }
   }
@@ -235,7 +235,7 @@ function gestureContinue(element, clientX, clientY, eventTarget) {
     swipeAxis,
     swipeFractionMax,
     swipeFractionMin
-  } = element[symbols.state];
+  } = element[internal.state];
   const deltaX = clientX - cast[previousXKey];
   const deltaY = clientY - cast[previousYKey];
   const now = Date.now();
@@ -304,7 +304,7 @@ function gestureContinue(element, clientX, clientY, eventTarget) {
     Math.min(fraction, swipeFractionMax),
     swipeFractionMin
   );
-  if (element[symbols.state].swipeFraction === swipeFraction) {
+  if (element[internal.state].swipeFraction === swipeFraction) {
     // Already at min or max; no need for us to do anything.
     return false;
   }
@@ -314,7 +314,7 @@ function gestureContinue(element, clientX, clientY, eventTarget) {
   // From this point on, swiping will take precedence over scrolling.
   cast[deferToScrollingKey] = false;
 
-  element[symbols.setState]({ swipeFraction });
+  element[internal.setState]({ swipeFraction });
   
   // Indicate that the event was handled. It'd be nicer if we didn't have
   // to do this so that, e.g., a user could be swiping left and right
@@ -342,7 +342,7 @@ function gestureEnd(element, clientX, clientY, eventTarget) {
   const velocity = /** @type {any} */ (element)[previousVelocityKey];
   const flickThresholdVelocity = 800; // speed in pixels/second
 
-  const { swipeAxis, swipeFraction } = element[symbols.state];
+  const { swipeAxis, swipeFraction } = element[internal.state];
   const vertical = swipeAxis === 'vertical';
 
   // Scrolling takes precedence over flick gestures.
@@ -368,11 +368,11 @@ function gestureEnd(element, clientX, clientY, eventTarget) {
       // Flicked right/down at high speed.
       flickPositive = true;
       if (vertical) {
-        element[symbols.setState]({
+        element[internal.setState]({
           swipeDownWillCommit: true
         });
       } else {
-        element[symbols.setState]({
+        element[internal.setState]({
           swipeRightWillCommit: true
         });
       }
@@ -380,28 +380,28 @@ function gestureEnd(element, clientX, clientY, eventTarget) {
       // Flicked left/up at high speed.
       flickPositive = false;
       if (vertical) {
-        element[symbols.setState]({
+        element[internal.setState]({
           swipeUpWillCommit: true
         });
       } else {
-        element[symbols.setState]({
+        element[internal.setState]({
           swipeLeftWillCommit: true
         });
       }
     } else {
       // Finished at low speed.
       // If the user swiped far enough to commit a gesture, handle it now.
-      if (element[symbols.state].swipeLeftWillCommit || element[symbols.state].swipeUpWillCommit) {
+      if (element[internal.state].swipeLeftWillCommit || element[internal.state].swipeUpWillCommit) {
         flickPositive = false;
-      } else if (element[symbols.state].swipeRightWillCommit || element[symbols.state].swipeDownWillCommit) {
+      } else if (element[internal.state].swipeRightWillCommit || element[internal.state].swipeDownWillCommit) {
         flickPositive = true;
       }
     }
 
     if (typeof flickPositive !== 'undefined') {
       const gesture = vertical ?
-        (flickPositive ? symbols.swipeDown : symbols.swipeUp) :
-        (flickPositive ? symbols.swipeRight : symbols.swipeLeft);
+        (flickPositive ? internal.swipeDown : internal.swipeUp) :
+        (flickPositive ? internal.swipeRight : internal.swipeLeft);
       // If component has method for indicated gesture, invoke it.
       if (gesture && element[gesture]) {
         element[gesture]();
@@ -411,7 +411,7 @@ function gestureEnd(element, clientX, clientY, eventTarget) {
 
   /** @type {any} */ (element)[touchSequenceAxisKey] = null;
 
-  element[symbols.setState]({
+  element[internal.setState]({
     swipeFraction: null
   });
 }
@@ -435,13 +435,13 @@ function gestureStart(element, clientX, clientY) {
   cast[startYKey] = null;
   cast[touchSequenceAxisKey] = null;
 
-  element[symbols.setState]({
+  element[internal.setState]({
     swipeFraction: 0
   });
 
   // Let component know a swipe is starting.
-  if (element[symbols.swipeStart]) {
-    element[symbols.swipeStart](clientX, clientY);
+  if (element[internal.swipeStart]) {
+    element[internal.swipeStart](clientX, clientY);
   }
 }
 
@@ -456,13 +456,13 @@ function gestureStart(element, clientX, clientY) {
 function getSwipeFraction(element, x, y) {
   const {
     swipeAxis
-  } = element[symbols.state];
+  } = element[internal.state];
   /** @type {any} */ const cast = element;
   const vertical = swipeAxis === 'vertical';
   const dragDistance = vertical ?
     y - cast[startYKey] :
     x - cast[startXKey];
-  const swipeTarget = element[symbols.swipeTarget];
+  const swipeTarget = element[internal.swipeTarget];
   const swipeTargetSize = vertical ?
     swipeTarget.offsetHeight :
     swipeTarget.offsetWidth;

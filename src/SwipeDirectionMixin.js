@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -14,31 +14,31 @@ export default function SwipeDirectionMixin(Base) {
   return class SwipeDirection extends Base {
 
     /**
-     * Invokes the [symbols.goUp](symbols#goUp) method.
+     * Invokes the [internal.goUp](symbols#goUp) method.
      */
-    [symbols.swipeDown]() {
-      this[symbols.goUp]();
+    [internal.swipeDown]() {
+      this[internal.goUp]();
     }
 
     /**
-     * Invokes the [symbols.goRight](symbols#goRight) method.
+     * Invokes the [internal.goRight](symbols#goRight) method.
      */
-    [symbols.swipeLeft]() {
-      this[symbols.goRight]();
+    [internal.swipeLeft]() {
+      this[internal.goRight]();
     }
 
     /**
-     * Invokes the [symbols.goLeft](symbols#goLeft) method.
+     * Invokes the [internal.goLeft](symbols#goLeft) method.
      */
-    [symbols.swipeRight]() {
-      this[symbols.goLeft]();
+    [internal.swipeRight]() {
+      this[internal.goLeft]();
     }
 
     /**
-     * Invokes the [symbols.goDown](symbols#goDown) method.
+     * Invokes the [internal.goDown](symbols#goDown) method.
      */
-    [symbols.swipeUp]() {
-      this[symbols.goDown]();
+    [internal.swipeUp]() {
+      this[internal.goDown]();
     }
 
   }

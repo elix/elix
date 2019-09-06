@@ -3,11 +3,11 @@
 
 /// <reference path="shared.d.ts"/>
 
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 
 declare const TouchSwipeMixin: StateMixin<{}, {},
   {
-    [symbols.swipeTarget]: HTMLElement;
+    [internal.swipeTarget]: HTMLElement;
   },
   {
     swipeFraction: number

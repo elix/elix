@@ -1,5 +1,5 @@
 import { canScrollInDirection } from './scrolling.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -36,20 +36,20 @@ export default function TrackpadSwipeMixin(Base) {
       // @ts-ignore
       super();
       this.addEventListener('wheel', async (event) => {
-        this[symbols.raiseChangeEvents] = true;
+        this[internal.raiseChangeEvents] = true;
         const handled = handleWheel(this, event);
         if (handled) {
           event.preventDefault();
           event.stopPropagation();
         }
         await Promise.resolve();
-        this[symbols.raiseChangeEvents] = false;
+        this[internal.raiseChangeEvents] = false;
       });
       resetWheelTracking(this);
     }
 
-    get [symbols.defaultState]() {
-      const result = Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      const result = Object.assign(super[internal.defaultState], {
         swipeAxis: 'horizontal',
         swipeDownWillCommit: false,
         swipeFraction: null,
@@ -86,14 +86,14 @@ export default function TrackpadSwipeMixin(Base) {
     }
 
     /**
-     * See [symbols.swipeTarget](symbols#swipeTarget).
+     * See [internal.swipeTarget](symbols#swipeTarget).
      * 
-     * @property symbols.swipeTarget
+     * @property internal.swipeTarget
      * @memberof TrackpadSwipeMixin
      * @type {HTMLElement}
      */
-    get [symbols.swipeTarget]() {
-      const base = super[symbols.swipeTarget];
+    get [internal.swipeTarget]() {
+      const base = super[internal.swipeTarget];
       return base || this;
     }
   }
@@ -129,10 +129,10 @@ function handleWheel(element, event) {
     clearTimeout(cast[lastWheelTimeoutKey]);
   }
   cast[lastWheelTimeoutKey] = setTimeout(async () => {
-    element[symbols.raiseChangeEvents] = true;
+    element[internal.raiseChangeEvents] = true;
     wheelTimedOut(element);
     await Promise.resolve();
-    cast[symbols.raiseChangeEvents] = false;
+    cast[internal.raiseChangeEvents] = false;
   }, WHEEL_TIME);
 
   const deltaX = event.deltaX;
@@ -143,7 +143,7 @@ function handleWheel(element, event) {
     swipeAxis,
     swipeFractionMax,
     swipeFractionMin
-  } = element[symbols.state];
+  } = element[internal.state];
   const vertical = swipeAxis === 'vertical';
   const acceleration = vertical ?
     Math.sign(deltaY) * (deltaY - cast[lastDeltaYKey]) :
@@ -187,7 +187,7 @@ function handleWheel(element, event) {
   }
 
   // Scrolling initially takes precedence over swiping.
-  const scrollTarget = element[symbols.scrollTarget] || element;
+  const scrollTarget = element[internal.scrollTarget] || element;
   if (cast[deferToScrollingKey]) {
     // Predict whether the browser's default behavior for this event would cause
     // the swipe target or any of its ancestors to scroll.
@@ -213,16 +213,16 @@ function handleWheel(element, event) {
     // This first event's axis will determine which axis we'll respect for the
     // rest of the sequence.
     cast[wheelSequenceAxisKey] = eventAxis;
-    if (element[symbols.swipeStart]) {
+    if (element[internal.swipeStart]) {
       // Let component know a swipe is starting.
-      element[symbols.swipeStart](event.clientX, event.clientY);
+      element[internal.swipeStart](event.clientX, event.clientY);
     }
   }
 
   cast[wheelDistanceKey] -= vertical ? deltaY : deltaX;
 
   // Update the travel fraction of the component being navigated.
-  const swipeTarget = cast[symbols.swipeTarget];
+  const swipeTarget = cast[internal.swipeTarget];
   const targetDimension = vertical ?
     swipeTarget.offsetHeight :
     swipeTarget.offsetWidth;
@@ -240,14 +240,14 @@ function handleWheel(element, event) {
   // time out.)
   let gesture;
   if (swipeFraction === -1) {
-    gesture = vertical ? symbols.swipeUp : symbols.swipeLeft;
+    gesture = vertical ? internal.swipeUp : internal.swipeLeft;
   } else if (swipeFraction === 1) {
-    gesture = vertical ? symbols.swipeDown : symbols.swipeRight;
+    gesture = vertical ? internal.swipeDown : internal.swipeRight;
   }
   if (gesture) {
     performImmediateGesture(element, gesture);
   } else {
-    element[symbols.setState]({ swipeFraction });
+    element[internal.setState]({ swipeFraction });
   }
 
   return true;
@@ -278,7 +278,7 @@ function performImmediateGesture(element, gesture) {
     cast[postGestureDelayCompleteKey] = true;
   }, POST_GESTURE_TIME);
   // We've handled a gesture, so reset notion of what gestures are in progress.
-  element[symbols.setState]({
+  element[internal.setState]({
     swipeDownWillCommit: false,
     swipeFraction: null,
     swipeLeftWillCommit: false,
@@ -321,18 +321,18 @@ async function wheelTimedOut(element) {
 
   // If the user swiped far enough to commit a gesture, handle it now.
   let gesture;
-  if (element[symbols.state].swipeDownWillCommit) {
-    gesture = symbols.swipeDown;
-  } else if (element[symbols.state].swipeLeftWillCommit) {
-    gesture = symbols.swipeLeft;
-  } else if (element[symbols.state].swipeRightWillCommit) {
-    gesture = symbols.swipeRight;
-  } else if (element[symbols.state].swipeUpWillCommit) {
-    gesture = symbols.swipeUp;
+  if (element[internal.state].swipeDownWillCommit) {
+    gesture = internal.swipeDown;
+  } else if (element[internal.state].swipeLeftWillCommit) {
+    gesture = internal.swipeLeft;
+  } else if (element[internal.state].swipeRightWillCommit) {
+    gesture = internal.swipeRight;
+  } else if (element[internal.state].swipeUpWillCommit) {
+    gesture = internal.swipeUp;
   }
 
   resetWheelTracking(element);
-  element[symbols.setState]({
+  element[internal.setState]({
     swipeDownWillCommit: false,
     swipeFraction: null,
     swipeLeftWillCommit: false,

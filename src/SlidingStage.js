@@ -1,5 +1,5 @@
 import * as fractionalSelection from './fractionalSelection.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import EffectMixin from './EffectMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
@@ -33,31 +33,31 @@ const Base =
  */
 class SlidingStage extends Base {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       orientation: 'horizontal',
       selectionRequired: true
     });
   }
 
   get orientation() {
-    return this[symbols.state].orientation;
+    return this[internal.state].orientation;
   }
   set orientation(orientation) {
-    this[symbols.setState]({ orientation });
+    this[internal.setState]({ orientation });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.enableEffects || changed.orientation ||
         changed.selectedIndex || changed.swipeFraction) {
-      const { orientation, rightToLeft, selectedIndex, items } = this[symbols.state];
+      const { orientation, rightToLeft, selectedIndex, items } = this[internal.state];
       const vertical = orientation === 'vertical';
       const sign = vertical ?
         -1 :
         rightToLeft ? 1 : -1;
-      const swiping = this[symbols.state].swipeFraction != null;
-      const swipeFraction = this[symbols.state].swipeFraction || 0;
+      const swiping = this[internal.state].swipeFraction != null;
+      const swipeFraction = this[internal.state].swipeFraction || 0;
       let translation;
       if (selectedIndex >= 0) {
         const selectionFraction = selectedIndex + sign * swipeFraction;
@@ -68,35 +68,35 @@ class SlidingStage extends Base {
         translation = 0;
       }
 
-      const slidingStageContent = this[symbols.$].slidingStageContent;
+      const slidingStageContent = this[internal.$].slidingStageContent;
       const axis = vertical ? 'Y' : 'X';
       slidingStageContent.style.transform = `translate${axis}(${translation}%)`;
 
-      const showTransition = this[symbols.state].enableEffects && !swiping;
+      const showTransition = this[internal.state].enableEffects && !swiping;
       slidingStageContent.style.transition = showTransition ?
         'transform 0.25s' :
         'none';
     }
     if (changed.orientation) {
-      const { orientation } = this[symbols.state];
+      const { orientation } = this[internal.state];
       const vertical = orientation === 'vertical';
-      this[symbols.$].slidingStageContent.style.flexDirection = vertical ?
+      this[internal.$].slidingStageContent.style.flexDirection = vertical ?
         'column' :
         '';
     }
   }
 
   get swipeFraction() {
-    return this[symbols.state].swipeFraction;
+    return this[internal.state].swipeFraction;
   }
   set swipeFraction(swipeFraction) {
     const parsed = swipeFraction && parseFloat(swipeFraction);
-    this[symbols.setState]({
+    this[internal.setState]({
       swipeFraction: parsed
     });
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     // The trick here is to give the slotted elements a flex-basis of 100%. This
     // makes them each as big as the component, spreading them out equally. The
     // slidingStageContent container will only big as big as the host too, but

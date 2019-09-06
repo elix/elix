@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import LanguageDirectionMixin from '../../src/LanguageDirectionMixin.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
@@ -22,7 +22,7 @@ describe("LanguageDirectionMixin", () => {
   it("sets state.rightToLeft to false in left-to-right context", () => {
     const fixture = new LanguageDirectionTest();
     container.appendChild(fixture);
-    assert(fixture[symbols.state].rightToLeft === false);
+    assert(fixture[internal.state].rightToLeft === false);
   });
 
   it("sets state.rightToLeft to true in right-to-left context", () => {
@@ -31,7 +31,7 @@ describe("LanguageDirectionMixin", () => {
     div.setAttribute('dir', 'rtl');
     div.appendChild(fixture);
     container.appendChild(div);
-    assert(fixture[symbols.state].rightToLeft);
+    assert(fixture[internal.state].rightToLeft);
   });
 
 });

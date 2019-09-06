@@ -24,7 +24,7 @@
       <button id="increment">+</button>
     </template>
     <script type="module">
-      import * as symbols from '../src/symbols.js';
+      import * as internal from '../src/internal.js';
       import ReactiveMixin from '../src/ReactiveMixin.js';
   
       // Create a native web component with reactive behavior.
@@ -37,9 +37,9 @@
           }
         }
   
-        // This property becomes the value of this[symbols.state] at constructor time.
-        get [symbols.defaultState]() {
-          return Object.assign(super[symbols.defaultState], {
+        // This property becomes the value of this[internal.state] at constructor time.
+        get [internal.defaultState]() {
+          return Object.assign(super[internal.defaultState], {
             value: 0
           });
         }
@@ -51,7 +51,7 @@
   
         // Render the current state to the DOM.
         // ReactiveMixin invokes this method when the state changes.
-        [symbols.render](changed) {
+        [internal.render](changed) {
           if (!this.shadowRoot) {
             // First time we render, create the shadow subtree.
             const root = this.attachShadow({ mode: 'open' });
@@ -70,16 +70,16 @@
           if (changed.value) {
             // Render the state into the shadow.
             // @ts-ignore
-            this.shadowRoot.querySelector('#value').textContent = this[symbols.state].value;
+            this.shadowRoot.querySelector('#value').textContent = this[internal.state].value;
           }
         }
   
         // Provide a public property that gets/sets state.
         get value() {
-          return this[symbols.state].value;
+          return this[internal.state].value;
         }
         set value(value) {
-          this[symbols.setState]({ value });
+          this[internal.setState]({ value });
         }
   
       }

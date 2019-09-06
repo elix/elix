@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -7,18 +7,18 @@ export default function GenericMixin(/** @type {Constructor<ReactiveElement>} */
   // The class prototype added by the mixin.
   return class Generic extends Base {
 
-    get [symbols.defaultState]() {
-      return Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      return Object.assign(super[internal.defaultState], {
         generic: true
       });
     }
 
     get generic() {
-      return this[symbols.state].generic;
+      return this[internal.state].generic;
     }
     set generic(generic) {
       const parsed = String(generic) === 'true';
-      this[symbols.setState]({
+      this[internal.setState]({
         generic: parsed
       });
     }

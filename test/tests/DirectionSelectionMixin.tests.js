@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import DirectionSelectionMixin from '../../src/DirectionSelectionMixin.js';
 
 
@@ -17,21 +17,21 @@ describe("DirectionSelectionMixin", () => {
     const fixture = new DirectionSelectionTest();
 
     const selectFirstSpy = sinon.spy(fixture, 'selectFirst');
-    fixture[symbols.goStart]();
+    fixture[internal.goStart]();
     assert(selectFirstSpy.calledOnce);
 
     const selectLastSpy = sinon.spy(fixture, 'selectLast');
-    fixture[symbols.goEnd]();
+    fixture[internal.goEnd]();
     assert(selectLastSpy.calledOnce);
 
     const selectNextSpy = sinon.spy(fixture, 'selectNext');
-    fixture[symbols.goRight]();
-    fixture[symbols.goDown]();
+    fixture[internal.goRight]();
+    fixture[internal.goDown]();
     assert.equal(selectNextSpy.callCount, 2);
 
     const selectPreviousSpy = sinon.spy(fixture, 'selectPrevious');
-    fixture[symbols.goLeft]();
-    fixture[symbols.goUp]();
+    fixture[internal.goLeft]();
+    fixture[internal.goUp]();
     assert.equal(selectPreviousSpy.callCount, 2);
   });
   

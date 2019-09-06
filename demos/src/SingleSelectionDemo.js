@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import ContentItemsMixin from '../../src/ContentItemsMixin.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
 import SingleSelectionMixin from '../../src/SingleSelectionMixin.js';
@@ -26,33 +26,33 @@ class SingleSelectionDemo extends Base {
     /* Clicking an item selects it. */
     this.addEventListener('mousedown', event => {
       if (event.target instanceof Element) {
-        this[symbols.raiseChangeEvents] = true;
+        this[internal.raiseChangeEvents] = true;
         this.selectedItem = event.target;
         event.stopPropagation();
-        this[symbols.raiseChangeEvents] = false;
+        this[internal.raiseChangeEvents] = false;
       }
     });
 
     // Simplistic tracking of element children as items.
     // For real applications, use SlotItemsMixin.
     const observer = new MutationObserver(() => {
-      this[symbols.setState]({
+      this[internal.setState]({
         content: [...this.children]
       });
     });
     observer.observe(this, { childList: true });
   }
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       content: [...this.children]
     });
   }
 
   // Map item selection to a `selected` CSS class.
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
-    const { selectedIndex, items } = this[symbols.state];
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
+    const { selectedIndex, items } = this[internal.state];
     if (changed.items || changed.selectedIndex && items) {
       // Apply `selected` style to the selected item only.
       items.forEach((item, index) => {

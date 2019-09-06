@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import AriaRoleMixin from './AriaRoleMixin.js';
 import ComposedFocusMixin from './ComposedFocusMixin.js';
@@ -47,8 +47,8 @@ const mapKeysToClick = !firefox;
  */
 class Button extends Base {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       role: 'button',
       treatEnterAsClick: true,
       treatSpaceAsClick: true
@@ -58,20 +58,20 @@ class Button extends Base {
   // Pressing Enter or Space raises a click event, as if the user had clicked
   // the inner button.
   // TODO: Space should raise the click on *keyup*.
-  [symbols.keydown](/** @type {KeyboardEvent} */ event) {
+  [internal.keydown](/** @type {KeyboardEvent} */ event) {
     let handled;
     if (mapKeysToClick) {
       switch (event.key) {
         case ' ':
-          if (this[symbols.state].treatSpaceAsClick) {
-            this[symbols.tap]();
+          if (this[internal.state].treatSpaceAsClick) {
+            this[internal.tap]();
             handled = true;
           }
           break;
 
         case 'Enter':
-          if (this[symbols.state].treatEnterAsClick) {
-            this[symbols.tap]();
+          if (this[internal.state].treatEnterAsClick) {
+            this[internal.tap]();
             handled = true;
           }
           break;
@@ -79,26 +79,26 @@ class Button extends Base {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+    return handled || (super[internal.keydown] && super[internal.keydown](event));
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.focusVisible) {
       // Override host `outline` style supplied by FocusVisibleMixin.
       this.style.outline = 'none';
-      const { focusVisible } = this[symbols.state];
-      this[symbols.$].inner.style.outline = focusVisible ? '' : 'none';
+      const { focusVisible } = this[internal.state];
+      this[internal.$].inner.style.outline = focusVisible ? '' : 'none';
     }
   }
 
   // Respond to a simulated click.
-  [symbols.tap]() {
+  [internal.tap]() {
     const clickEvent = new MouseEvent('click');
     this.dispatchEvent(clickEvent);
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

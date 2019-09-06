@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import AutoCompleteComboBox from '../../src/AutoCompleteComboBox.js';
 import Carousel from '../../src/Carousel.js';
@@ -6,14 +6,14 @@ import Carousel from '../../src/Carousel.js';
 
 class CarouselComboBox extends AutoCompleteComboBox {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       listRole: Carousel
     });
   }
 
-  get [symbols.template]() {
-    return template.concat(super[symbols.template], template.html`
+  get [internal.template]() {
+    return template.concat(super[internal.template], template.html`
       <style>
         #list {
           background: black;

@@ -1,5 +1,5 @@
 import { TYPING_TIMEOUT_DURATION } from './constants.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -57,7 +57,7 @@ export default function KeyboardPrefixSelectionMixin(Base) {
       resetTypedPrefix(this);
     }
 
-    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
+    [internal.keydown](/** @type {KeyboardEvent} */ event) {
       let handled;
 
       switch (event.key) {
@@ -78,7 +78,7 @@ export default function KeyboardPrefixSelectionMixin(Base) {
       }
 
       // Prefer mixin result if it's defined, otherwise use base result.
-      return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+      return handled || (super[internal.keydown] && super[internal.keydown](event));
     }
 
     /**
@@ -94,13 +94,13 @@ export default function KeyboardPrefixSelectionMixin(Base) {
       }
       // Find item that begins with the prefix. Ignore case.
       const searchText = prefix.toLowerCase();
-      /** @type {string[]} */ const texts = this[symbols.state].texts;
+      /** @type {string[]} */ const texts = this[internal.state].texts;
       const selectedIndex = texts.findIndex(text => 
         text.substr(0, prefix.length).toLowerCase() === searchText
       );
       if (selectedIndex >= 0) {
         const previousIndex = this.selectedIndex;
-        this[symbols.setState]({ selectedIndex });
+        this[internal.setState]({ selectedIndex });
         return this.selectedIndex !== previousIndex;
       } else {
         return false;

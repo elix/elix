@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -26,12 +26,12 @@ export default function SelectedItemTextValueMixin(Base) {
   // The class prototype added by the mixin.
   class SelectedItemTextValue extends Base {
 
-    [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
-      const { items, pendingValue } = this[symbols.state];
+    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
+      if (super[internal.componentDidUpdate]) { super[internal.componentDidUpdate](changed); }
+      const { items, pendingValue } = this[internal.state];
       if (pendingValue && items) {
         const index = indexOfItemWithText(items, pendingValue);
-        this[symbols.setState]({
+        this[internal.setState]({
           selectedIndex: index,
           pendingValue: null
         });
@@ -53,16 +53,16 @@ export default function SelectedItemTextValueMixin(Base) {
         this.selectedItem.textContent;
     }
     set value(text) {
-      const items = this[symbols.state].items;
+      const items = this[internal.state].items;
       if (items === null) {
         // No items yet, save and try again later.
-        this[symbols.setState]({
+        this[internal.setState]({
           pendingValue: text
         });
       } else {
         // Select the index of the indicate text, if found.
         const selectedIndex = indexOfItemWithText(items, text);
-        this[symbols.setState]({ selectedIndex });
+        this[internal.setState]({ selectedIndex });
       }
     }
   }

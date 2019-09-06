@@ -1,4 +1,4 @@
-import * as symbols from '../../src/symbols.js';
+import * as internal from '../../src/internal.js';
 import SlotContentMixin from '../../src/SlotContentMixin.js';
 
 
@@ -15,16 +15,16 @@ class SlotContentTest extends SlotContentMixin(HTMLElement) {
       <slot></slot>
     `;
     // Simulate key bits of ReactiveMixin.
-    this[symbols.state] = this[symbols.defaultState];
-    this[symbols.componentDidMount]();
+    this[internal.state] = this[internal.defaultState];
+    this[internal.componentDidMount]();
   }
 
-  get [symbols.defaultState]() {
+  get [internal.defaultState]() {
     return {};
   }
 
- [symbols.setState](state) {
-    Object.assign(this[symbols.state], state);
+ [internal.setState](state) {
+    Object.assign(this[internal.state], state);
   }
 
 }
@@ -62,7 +62,7 @@ describe("SlotContentMixin", () => {
     // Wait for initial content.
     await Promise.resolve();
     const slot = fixture.shadowRoot.children[1];
-    assert.equal(fixture[symbols.contentSlot], slot);
+    assert.equal(fixture[internal.contentSlot], slot);
   });
 
   it("returns direct assigned nodes as content", async () => {
@@ -70,7 +70,7 @@ describe("SlotContentMixin", () => {
     fixture.innerHTML = `<div>One</div><div>Two</div><div>Three</div>`;
     // Wait for initial content.
     await Promise.resolve();
-    assert.equal(fixture[symbols.state].content.length, 3);
+    assert.equal(fixture[internal.state].content.length, 3);
   });
 
   it("returns distributed nodes as content", async () => {
@@ -79,7 +79,7 @@ describe("SlotContentMixin", () => {
     const fixture = wrapper.shadowRoot.querySelector('slot-content-test');
     // Wait for initial content.
     await Promise.resolve();
-    assert.equal(fixture[symbols.state].content.length, 3);
+    assert.equal(fixture[internal.state].content.length, 3);
   });
 
   it("sets content when defined component is parsed", async () => {
@@ -87,7 +87,7 @@ describe("SlotContentMixin", () => {
     const fixture = container.querySelector('slot-content-test');
     // Wait for initial content.
     await Promise.resolve();
-    assert.equal(fixture[symbols.state].content[0].textContent, 'beaver');
+    assert.equal(fixture[internal.state].content[0].textContent, 'beaver');
   });
 
   it("updates content when textContent changes", async () => {
@@ -97,7 +97,7 @@ describe("SlotContentMixin", () => {
     fixture.textContent = 'chihuahua';
     // Wait for slotchange event to be processed.
     await Promise.resolve();
-    assert.equal(fixture[symbols.state].content[0].textContent, 'chihuahua');
+    assert.equal(fixture[internal.state].content[0].textContent, 'chihuahua');
   });
 
   it("updates content when children change", async () => {
@@ -109,7 +109,7 @@ describe("SlotContentMixin", () => {
     fixture.appendChild(div);
     // Wait for slotchange event to be processed.
     await Promise.resolve();
-    assert.equal(fixture[symbols.state].content[0].textContent, 'dingo');
+    assert.equal(fixture[internal.state].content[0].textContent, 'dingo');
   });
 
   it("updates content when redistributed content changes", async () => {
@@ -120,7 +120,7 @@ describe("SlotContentMixin", () => {
     wrapper.textContent = 'echidna';
     // Wait for slotchange event to be processed.
     await Promise.resolve();
-    assert.equal(fixture[symbols.state].content[0].textContent, 'echidna');
+    assert.equal(fixture[internal.state].content[0].textContent, 'echidna');
   });
 
   it("updates content if node is removed from light DOM", async () => {
@@ -137,7 +137,7 @@ describe("SlotContentMixin", () => {
 
     // Wait for second slotchange event to be processed.
     await Promise.resolve();
-    assert.equal(fixture[symbols.state].content.length, 0);
+    assert.equal(fixture[internal.state].content.length, 0);
   });
 
   it("gets initial content from initial innerHTML", async () => {
@@ -145,7 +145,7 @@ describe("SlotContentMixin", () => {
     const fixture = container.querySelector('slot-content-test');
     // Wait for initial content.
     await Promise.resolve();
-    assert.equal(fixture[symbols.state].content[0].textContent, 'iguana');
+    assert.equal(fixture[internal.state].content[0].textContent, 'iguana');
   });
 
 });

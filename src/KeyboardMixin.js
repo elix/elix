@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -22,13 +22,13 @@ import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-un
  *
  * Example:
  *
- *     [symbols.keydown](event) {
+ *     [internal.keydown](event) {
  *       let handled;
  *       switch (event.key) {
  *         // Handle the keys you want, setting handled = true if appropriate.
  *       }
  *       // Prefer mixin result if it's defined, otherwise use base result.
- *       return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+ *       return handled || (super[internal.keydown] && super[internal.keydown](event));
  *     }
  *
  * A second feature provided by this mixin is that it implicitly makes the
@@ -47,32 +47,32 @@ export default function KeyboardMixin(Base) {
       // @ts-ignore
       super();
       this.addEventListener('keydown', async (event) => {
-        this[symbols.raiseChangeEvents] = true;
+        this[internal.raiseChangeEvents] = true;
         // For use with FocusVisibleMixin.
-        if (!this[symbols.state].focusVisible) {
+        if (!this[internal.state].focusVisible) {
           // The user may have begun interacting with this element using the
           // mouse/touch, but has now begun using the keyboard, so show focus.
-          this[symbols.setState]({
+          this[internal.setState]({
             focusVisible: true
           });
         }
-        const handled = this[symbols.keydown](event);
+        const handled = this[internal.keydown](event);
         if (handled) {
           event.preventDefault();
           event.stopImmediatePropagation();
         }
         await Promise.resolve();
-        this[symbols.raiseChangeEvents] = false;
+        this[internal.raiseChangeEvents] = false;
       });
     }
 
-    get [symbols.defaultState]() {
+    get [internal.defaultState]() {
       // If we're using DelegateFocusMixin, we don't need or want to set a
       // tabindex on the host; we'll rely on the inner shadow elements to take
       // the focus and raise keyboard events. Otherwise, we do set a tabindex on
       // the host, so that we can get keyboard events.
-      const tabIndex = this[symbols.delegatesFocus] ? null : 0;
-      const state = Object.assign(super[symbols.defaultState], {
+      const tabIndex = this[internal.delegatesFocus] ? null : 0;
+      const state = Object.assign(super[internal.defaultState], {
         tabIndex
       });
 
@@ -82,15 +82,15 @@ export default function KeyboardMixin(Base) {
     /**
      * See the [symbols](symbols#keydown) documentation for details.
      */
-    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
-      if (super[symbols.keydown]) { return super[symbols.keydown](event); }
+    [internal.keydown](/** @type {KeyboardEvent} */ event) {
+      if (super[internal.keydown]) { return super[internal.keydown](event); }
       return false;
     }
 
-    [symbols.render](/** @type {PlainObject} */changed) {
-      if (super[symbols.render]) { super[symbols.render](changed); }
+    [internal.render](/** @type {PlainObject} */changed) {
+      if (super[internal.render]) { super[internal.render](changed); }
       if (changed.tabIndex) {
-        this.tabIndex = this[symbols.state].tabIndex;
+        this.tabIndex = this[internal.state].tabIndex;
       }
     }
 
@@ -103,7 +103,7 @@ export default function KeyboardMixin(Base) {
       // Parse the passed value, which could be a string or null.
       let parsed = tabIndex !== null ? Number(tabIndex) : null;
       if (parsed !== null && isNaN(parsed)) {
-        const defaultTabIndex = this[symbols.defaultTabIndex];
+        const defaultTabIndex = this[internal.defaultTabIndex];
         parsed = defaultTabIndex ? defaultTabIndex : 0;
       }
 
@@ -115,9 +115,9 @@ export default function KeyboardMixin(Base) {
       // The tabIndex setter can get called during rendering when we render our
       // own notion of the tabIndex state, in which case we don't need or want
       // to set state again.
-      if (!this[symbols.rendering]) {
+      if (!this[internal.rendering]) {
         // Record the new tabIndex in our state.
-        this[symbols.setState]({
+        this[internal.setState]({
           tabIndex: parsed
         });
       }

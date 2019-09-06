@@ -1,6 +1,6 @@
 import './CalendarDay.js';
 import * as calendar from './calendar.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import SeamlessButton from './SeamlessButton.js';
@@ -14,8 +14,8 @@ const Base =
 
 class CalendarDayButton extends Base {
 
-  get [symbols.defaultState]() {
-    return Object.assign(super[symbols.defaultState], {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
       date: calendar.today(),
       outsideRange: false,
       selected: false,
@@ -24,42 +24,42 @@ class CalendarDayButton extends Base {
   }
 
   get outsideRange() {
-    return this[symbols.state].outsideRange;
+    return this[internal.state].outsideRange;
   }
   set outsideRange(outsideRange) {
-    this[symbols.setState]({
+    this[internal.setState]({
       outsideRange
     });
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
-    /** @type {any} */ const day = this[symbols.$].day;
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
+    /** @type {any} */ const day = this[internal.$].day;
     if (changed.date) {
-      day.date = this[symbols.state].date;
+      day.date = this[internal.state].date;
     }
     if (changed.locale) {
-      day.locale = this[symbols.state].locale;
+      day.locale = this[internal.state].locale;
     }
     if (changed.outsideRange) {
-      day.outsideRange = this[symbols.state].outsideRange;
+      day.outsideRange = this[internal.state].outsideRange;
     }
     if (changed.selected) {
-      day.selected = this[symbols.state].selected;
+      day.selected = this[internal.state].selected;
     }
   }
 
   get selected() {
-    return this[symbols.state].selected;
+    return this[internal.state].selected;
   }
   set selected(selected) {
-    this[symbols.setState]({
+    this[internal.setState]({
       selected
     });
   }
 
-  get [symbols.template]() {
-    const result = super[symbols.template];
+  get [internal.template]() {
+    const result = super[internal.template];
     // Replace default slot with calendar day.
     const defaultSlot = template.defaultSlot(result.content);
     if (defaultSlot) {

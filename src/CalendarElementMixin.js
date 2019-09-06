@@ -1,5 +1,5 @@
 import * as calendar from './calendar.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -19,11 +19,11 @@ export default function CalendarElementMixin(Base) {
   // The class prototype added by the mixin.
   class CalendarElement extends Base {
 
-    [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
+    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
+      if (super[internal.componentDidUpdate]) { super[internal.componentDidUpdate](changed); }
       // TODO: call calendar.datesEqual(date, previousState.date)?
-      if (changed.date && this[symbols.raiseChangeEvents]) {
-        const date = this[symbols.state].date;
+      if (changed.date && this[internal.raiseChangeEvents]) {
+        const date = this[internal.state].date;
         /**
          * Raised when the `date` property changes.
          * 
@@ -49,22 +49,22 @@ export default function CalendarElementMixin(Base) {
      * @type {Date|string}
      */
     get date() {
-      return this[symbols.state].date;
+      return this[internal.state].date;
     }
     set date(date) {
       const parsed = typeof date === 'string' ?
         new Date(date) :
         date;
       // Only update state if actual date value differs from current state.
-      if (!calendar.datesEqual(parsed, this[symbols.state].date)) {
-        this[symbols.setState]({
+      if (!calendar.datesEqual(parsed, this[internal.state].date)) {
+        this[internal.setState]({
           date: parsed
         });
       }
     }
 
-    get [symbols.defaultState]() {
-      return Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      return Object.assign(super[internal.defaultState], {
         date: null,
         locale: navigator.language
       });
@@ -87,10 +87,10 @@ export default function CalendarElementMixin(Base) {
      * @type {string}
      */
     get locale() {
-      return this[symbols.state].locale;
+      return this[internal.state].locale;
     }
     set locale(locale) {
-      this[symbols.setState]({ locale });
+      this[internal.setState]({ locale });
     }
 
   }

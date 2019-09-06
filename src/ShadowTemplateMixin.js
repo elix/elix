@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -17,7 +17,7 @@ const shadowReferencesKey = Symbol('shadowReferences');
  *     import * as template from 'elix/src/template.js';
  * 
  *     class MyElement extends ShadowTemplateMixin(HTMLElement) {
- *       get [symbols.template]() {
+ *       get [internal.template]() {
  *         return template.html`Hello, <em>world</em>.`;
  *       }
  *     }
@@ -27,10 +27,10 @@ const shadowReferencesKey = Symbol('shadowReferences');
  * shadow root. If your component does not define a `template` method, this
  * mixin has no effect.
  * 
- * This adds a member on the component called `this[symbols.$]` that can be used to
+ * This adds a member on the component called `this[internal.$]` that can be used to
  * reference shadow elements with IDs. E.g., if component's shadow contains an
  * element `<button id="foo">`, then this mixin will create a member
- * `this[symbols.$].foo` that points to that button.
+ * `this[internal.$].foo` that points to that button.
  *
  * @module ShadowTemplateMixin
  * @param {Constructor<ReactiveElement>} Base
@@ -45,14 +45,14 @@ export default function ShadowTemplateMixin(Base) {
      * Shadow DOM subtree.
      *
      * Example: if component's template contains a shadow element
-     * `<button id="foo">`, you can use the reference `this[symbols.$].foo` to obtain
+     * `<button id="foo">`, you can use the reference `this[internal.$].foo` to obtain
      * the corresponding button in the component instance's shadow tree.
      * The `$` function is simply a shorthand for `getElementById`, so
-     * `this[symbols.$].foo` is the same as `this.shadowRoot.getElementById('foo')`.
+     * `this[internal.$].foo` is the same as `this.shadowRoot.getElementById('foo')`.
      *
      * @type {object} - a dictionary mapping shadow element IDs to elements
      */
-    get [symbols.$]() {
+    get [internal.$]() {
       if (!this[shadowReferencesKey]) {
         // Construct a proxy that maps $ -> getElementById.
         const element = this;
@@ -72,8 +72,8 @@ export default function ShadowTemplateMixin(Base) {
      * If the component defines a template, a shadow root will be created on the
      * component instance, and the template stamped into it.
      */
-    [symbols.render](/** @type {PlainObject} */ changed) {
-      if (super[symbols.render]) { super[symbols.render](changed); }
+    [internal.render](/** @type {PlainObject} */ changed) {
+      if (super[internal.render]) { super[internal.render](changed); }
       if (this.shadowRoot) {
         // Already rendered
         return;
@@ -83,7 +83,7 @@ export default function ShadowTemplateMixin(Base) {
       const template = getTemplate(this);
       if (template) {
         // Stamp the template into a new shadow root.
-        const delegatesFocus = this[symbols.delegatesFocus];
+        const delegatesFocus = this[internal.delegatesFocus];
         const root = this.attachShadow({
           delegatesFocus,
           mode: 'open'
@@ -106,15 +106,15 @@ export default function ShadowTemplateMixin(Base) {
  * @param {HTMLElement} element 
  */
 function getTemplate(element) {
-  const hasDynamicTemplate = element[symbols.hasDynamicTemplate];
+  const hasDynamicTemplate = element[internal.hasDynamicTemplate];
   let template = hasDynamicTemplate ?
     undefined : // Always retrieve template
     classTemplateMap.get(element.constructor); // See if we've cached it
   if (template === undefined) {
     // Ask the component for its template.
-    template = element[symbols.template] || null;
+    template = element[internal.template] || null;
     if (template && !(template instanceof HTMLTemplateElement)) {
-      throw `Warning: the [symbols.template] property for ${element.constructor.name} must return an HTMLTemplateElement.`;
+      throw `Warning: the [internal.template] property for ${element.constructor.name} must return an HTMLTemplateElement.`;
     }
     if (!hasDynamicTemplate) {
       // Store prepared template for next creation of same type of element.

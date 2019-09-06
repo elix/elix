@@ -1,5 +1,5 @@
 import { defaultScrollTarget } from './scrolling.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
 
@@ -23,13 +23,13 @@ export default function SelectionInViewMixin(Base) {
   // The class prototype added by the mixin.
   class SelectionInView extends Base {
 
-    [symbols.componentDidMount]() {
-      if (super[symbols.componentDidMount]) { super[symbols.componentDidMount](); }
+    [internal.componentDidMount]() {
+      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
       this.scrollSelectionIntoView();
     }
 
-    [symbols.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[symbols.componentDidUpdate]) { super[symbols.componentDidUpdate](changed); }
+    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
+      if (super[internal.componentDidUpdate]) { super[internal.componentDidUpdate](changed); }
       if (changed.selectedIndex) {
         this.scrollSelectionIntoView();
       }
@@ -49,8 +49,8 @@ export default function SelectionInViewMixin(Base) {
     scrollSelectionIntoView() {
       if (super.scrollSelectionIntoView) { super.scrollSelectionIntoView(); }
 
-      const scrollTarget = this[symbols.scrollTarget];
-      const { selectedIndex, items } = this[symbols.state];
+      const scrollTarget = this[internal.scrollTarget];
+      const { selectedIndex, items } = this[internal.state];
       if (selectedIndex < 0 || !items) {
         return;
       }
@@ -75,7 +75,7 @@ export default function SelectionInViewMixin(Base) {
       // Scroll the target as necessary to bring the item into view.
       // If an `orientation` state member is defined, only scroll along that
       // axis. Otherwise, assume the orientation is "both".
-      const orientation = this[symbols.state].orientation || 'both';
+      const orientation = this[internal.state].orientation || 'both';
       if (orientation === 'horizontal' || orientation === 'both') {
         if (rightDelta > 0) {
           scrollTarget.scrollLeft += rightDelta;            // Scroll right
@@ -100,10 +100,10 @@ export default function SelectionInViewMixin(Base) {
      * helper to find the most likely candidate for scrolling. You can override
      * this property to directly identify which element should be scrolled.
      * 
-     * See also [symbols.scrollTarget](symbols#scrollTarget).
+     * See also [internal.scrollTarget](symbols#scrollTarget).
      */
-    get [symbols.scrollTarget]() {
-      const base = super[symbols.scrollTarget];
+    get [internal.scrollTarget]() {
+      const base = super[internal.scrollTarget];
       /** @type {any} */
       const element = this;
       return base || defaultScrollTarget(element);

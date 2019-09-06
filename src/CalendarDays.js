@@ -1,6 +1,6 @@
 import { applyChildNodes } from './utilities.js';
 import * as calendar from './calendar.js';
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import CalendarDay from './CalendarDay.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
@@ -48,10 +48,10 @@ class CalendarDays extends Base {
   }
 
   get dayCount() {
-    return this[symbols.state].dayCount;
+    return this[internal.state].dayCount;
   }
   set dayCount(dayCount) {
-    this[symbols.setState]({
+    this[internal.setState]({
       dayCount
     });
   }
@@ -63,10 +63,10 @@ class CalendarDays extends Base {
    * @default CalendarDay
    */
   get dayRole() {
-    return this[symbols.state].dayRole;
+    return this[internal.state].dayRole;
   }
   set dayRole(dayRole) {
-    this[symbols.setState]({ dayRole });
+    this[internal.setState]({ dayRole });
   }
 
   /**
@@ -75,12 +75,12 @@ class CalendarDays extends Base {
    * @type {Element[]|null}
    */
   get days() {
-    return this[symbols.state].days;
+    return this[internal.state].days;
   }
 
-  get [symbols.defaultState]() {
+  get [internal.defaultState]() {
     const today = calendar.today();
-    const state = Object.assign(super[symbols.defaultState], {
+    const state = Object.assign(super[internal.defaultState], {
       date: calendar.today(),
       dayCount: 1,
       dayRole: CalendarDay,
@@ -99,15 +99,15 @@ class CalendarDays extends Base {
     return state;
   }
 
-  [symbols.render](/** @type {PlainObject} */ changed) {
-    super[symbols.render](changed);
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
     if (changed.days) {
-      applyChildNodes(this[symbols.$].dayContainer, this[symbols.state].days);
+      applyChildNodes(this[internal.$].dayContainer, this[internal.state].days);
     }
     if (changed.date || changed.showSelectedDay) {
       // Ensure only current date has "selected" class.
-      const showSelectedDay = this[symbols.state].showSelectedDay;
-      const { date } = this[symbols.state];
+      const showSelectedDay = this[internal.state].showSelectedDay;
+      const { date } = this[internal.state];
       const selectedDate = date.getDate();
       const selectedMonth = date.getMonth();
       const selectedYear = date.getFullYear();
@@ -126,10 +126,10 @@ class CalendarDays extends Base {
     }
     if (changed.dayCount || changed.startDate) {
       // Mark dates as inside or outside of range.
-      const { dayCount, startDate } = this[symbols.state];
+      const { dayCount, startDate } = this[internal.state];
       const firstDateAfterRange = calendar.offsetDateByDays(startDate, dayCount);
       /** @type {any[]} */
-      const days = this[symbols.state].days || [];
+      const days = this[internal.state].days || [];
       days.forEach(day => {
         if ('outsideRange' in day) {
           const dayDate = day.date;
@@ -143,38 +143,38 @@ class CalendarDays extends Base {
   }
 
   get showCompleteWeeks() {
-    return this[symbols.state].showCompleteWeeks;
+    return this[internal.state].showCompleteWeeks;
   }
   set showCompleteWeeks(showCompleteWeeks) {
-    this[symbols.setState]({
+    this[internal.setState]({
       showCompleteWeeks
     });
   }
 
   get showSelectedDay() {
-    return this[symbols.state].showSelectedDay;
+    return this[internal.state].showSelectedDay;
   }
   set showSelectedDay(showSelectedDay) {
-    this[symbols.setState]({
+    this[internal.setState]({
       showSelectedDay
     });
   }
 
   get startDate() {
-    return this[symbols.state].startDate;
+    return this[internal.state].startDate;
   }
   set startDate(startDate) {
     const parsed = typeof startDate === 'string' ?
       new Date(startDate) :
       startDate;
-    if (!calendar.datesEqual(this[symbols.state].startDate, parsed)) {
-      this[symbols.setState]({
+    if (!calendar.datesEqual(this[internal.state].startDate, parsed)) {
+      this[internal.setState]({
         startDate: parsed
       });
     }
   }
 
-  get [symbols.template]() {
+  get [internal.template]() {
     return template.html`
       <style>
         :host {

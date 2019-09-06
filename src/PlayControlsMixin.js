@@ -1,4 +1,4 @@
-import * as symbols from './symbols.js';
+import * as internal from './internal.js';
 import * as template from './template.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 import SeamlessButton from './SeamlessButton.js';
@@ -28,20 +28,20 @@ export default function PlayControlsMixin(Base) {
      * @default SeamlessButton
      */
     get controlButtonRole() {
-      return this[symbols.state].controlButtonRole;
+      return this[internal.state].controlButtonRole;
     }
     set controlButtonRole(controlButtonRole) {
-      this[symbols.setState]({ controlButtonRole });
+      this[internal.setState]({ controlButtonRole });
     }
 
-    get [symbols.defaultState]() {
-      return Object.assign(super[symbols.defaultState], {
+    get [internal.defaultState]() {
+      return Object.assign(super[internal.defaultState], {
         controlButtonRole: SeamlessButton
       });
     }
 
     // Pressing Space is the same as clicking the button.
-    [symbols.keydown](/** @type {KeyboardEvent} */ event) {
+    [internal.keydown](/** @type {KeyboardEvent} */ event) {
       let handled;
 
       switch (event.key) {
@@ -52,19 +52,19 @@ export default function PlayControlsMixin(Base) {
       }
 
       // Prefer mixin result if it's defined, otherwise use base result.
-      return handled || (super[symbols.keydown] && super[symbols.keydown](event));
+      return handled || (super[internal.keydown] && super[internal.keydown](event));
     }
 
-    [symbols.render](/** @type {PlainObject} */ changed) {
-      if (super[symbols.render]) { super[symbols.render](changed); }
+    [internal.render](/** @type {PlainObject} */ changed) {
+      if (super[internal.render]) { super[internal.render](changed); }
       if (changed.controlButtonRole) {
         const controlButtons = this.shadowRoot.querySelectorAll('.controlButton');
-        template.transmute(controlButtons, this[symbols.state].controlButtonRole);
-        this[symbols.$].previousButton.addEventListener('click', event => {
+        template.transmute(controlButtons, this[internal.state].controlButtonRole);
+        this[internal.$].previousButton.addEventListener('click', event => {
           this.selectPrevious();
           event.stopPropagation();
         });
-        this[symbols.$].playButton.addEventListener('click', event => {
+        this[internal.$].playButton.addEventListener('click', event => {
           if (!this.playing) {
             this.play();
           } else {
@@ -72,23 +72,23 @@ export default function PlayControlsMixin(Base) {
           }
           event.stopPropagation();
         });
-        this[symbols.$].nextButton.addEventListener('click', event => {
+        this[internal.$].nextButton.addEventListener('click', event => {
           this.selectNext();
           event.stopPropagation();
         });
       }
       if (changed.playing) {
-        const { playing } = this[symbols.state];
-        this[symbols.$].pausedIcon.style.display = playing ? 'none' : '';
-        this[symbols.$].playingIcon.style.display = playing ? '' : 'none';
+        const { playing } = this[internal.state];
+        this[internal.$].pausedIcon.style.display = playing ? 'none' : '';
+        this[internal.$].playingIcon.style.display = playing ? '' : 'none';
       }
       if (changed.rightToLeft) {
-        const rightToLeft = this[symbols.state].rightToLeft;
+        const rightToLeft = this[internal.state].rightToLeft;
         const transform = rightToLeft ?
           'rotate(180deg)' :
           '';
-        this[symbols.$].nextIcon.style.transform = transform;
-        this[symbols.$].previousIcon.style.transform = transform;
+        this[internal.$].nextIcon.style.transform = transform;
+        this[internal.$].previousIcon.style.transform = transform;
       }
     }
     
