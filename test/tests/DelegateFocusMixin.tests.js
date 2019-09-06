@@ -1,7 +1,7 @@
-import DelegateFocusMixin from '../../src/DelegateFocusMixin.js';
-import ReactiveElement from '../../src/ReactiveElement.js';
 import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
+import DelegateFocusMixin from '../../src/DelegateFocusMixin.js';
+import ReactiveElement from '../../src/ReactiveElement.js';
 
 
 class DelegateFocusTest extends DelegateFocusMixin(ReactiveElement) {

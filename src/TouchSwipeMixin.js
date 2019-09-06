@@ -1,6 +1,6 @@
+import { canScrollInDirection } from './scrolling.js';
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
-import { canScrollInDirection } from './scrolling.js';
 
 
 /** @type {any} */

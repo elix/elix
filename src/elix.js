@@ -134,8 +134,8 @@ import * as calendarImport from './calendar.js';
 import * as constantsImport from './constants.js';
 import * as contentImport from './content.js';
 import * as fractionalSelectionImport from './fractionalSelection.js';
-import * as scrollingImport from './scrolling.js';
 import * as internalImport from './internal.js';
+import * as scrollingImport from './scrolling.js';
 import * as templateImport from './template.js';
 import * as utilitiesImport from './utilities.js';
 
@@ -144,7 +144,7 @@ export const calendar = calendarImport;
 export const constants = constantsImport;
 export const content = contentImport;
 export const fractionalSelection = fractionalSelectionImport;
+export const internal = internalImport;
 export const scrolling = scrollingImport;
-export const symbols = symbolsImport;
 export const template = templateImport;
 export const utilities = utilitiesImport;

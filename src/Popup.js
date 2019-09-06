@@ -1,7 +1,7 @@
-import Overlay from './Overlay.js';
-import KeyboardMixin from './KeyboardMixin.js';
-import PopupModalityMixin from './PopupModalityMixin.js';
 import * as internal from './internal.js';
+import KeyboardMixin from './KeyboardMixin.js';
+import Overlay from './Overlay.js';
+import PopupModalityMixin from './PopupModalityMixin.js';
 
 
 const Base =

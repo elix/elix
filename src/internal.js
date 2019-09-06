@@ -12,8 +12,8 @@
  * [ShadowTemplateMixin](ShadowTemplateMixin) expects a component to define
  * a property called [internal.template](#template):
  *
- *     import * as template from 'elix/src/template.js'
  *     import * as internal from 'elix/src/internal.js';
+ *     import * as template from 'elix/src/template.js'
  *     import ShadowTemplateMixin from 'elix/src/ShadowTemplateMixin.js';
  * 
  *     class MyElement extends ShadowTemplateMixin(HTMLElement) {

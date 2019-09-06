@@ -1,7 +1,7 @@
 import * as internal from '../../src/internal.js';
+import * as mockInteractions from '../mockInteractions.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
 import TapSelectionMixin from '../../src/TapSelectionMixin.js';
-import * as mockInteractions from '../mockInteractions.js';
 
 
 class TapSelectionTest extends TapSelectionMixin(

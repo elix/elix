@@ -1,5 +1,5 @@
-import * as internal from '../../src/internal.js';
 import { default as AutoCompleteInput, autoComplete } from '../../src/AutoCompleteInput.js';
+import * as internal from '../../src/internal.js';
 
 
 describe("AutoCompleteInput", () => {

@@ -1,5 +1,5 @@
-import * as mockInteractions from '../mockInteractions.js';
 import * as internal from '../../src/internal.js';
+import * as mockInteractions from '../mockInteractions.js';
 import KeyboardMixin from '../../src/KeyboardMixin.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
