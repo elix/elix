@@ -48,7 +48,7 @@ const Base =
 class Overlay extends Base {
 
   get backdrop() {
-    return this[internal.$] && this[internal.$].backdrop;
+    return this[internal.ids] && this[internal.ids].backdrop;
   }
 
   /**
@@ -90,7 +90,7 @@ class Overlay extends Base {
   }
 
   get frame() {
-    return this[internal.$].frame;
+    return this[internal.ids].frame;
   }
 
   /**
@@ -113,10 +113,10 @@ class Overlay extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.backdropRole) {
-      template.transmute(this[internal.$].backdrop, this[internal.state].backdropRole);
+      template.transmute(this[internal.ids].backdrop, this[internal.state].backdropRole);
     }
     if (changed.frameRole) {
-      template.transmute(this[internal.$].frame, this[internal.state].frameRole);
+      template.transmute(this[internal.ids].frame, this[internal.state].frameRole);
     }
   }
 

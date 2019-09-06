@@ -44,7 +44,7 @@ class CountryListBox extends Base {
 
   [internal.componentDidMount]() {
     if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
-    const content = this[internal.$].content.children;
+    const content = this[internal.ids].content.children;
     this[internal.setState]({ content });
   }
 
@@ -73,7 +73,7 @@ class CountryListBox extends Base {
   }
 
   get [internal.scrollTarget]() {
-    return this[internal.$].content;
+    return this[internal.ids].content;
   }
 
   get [internal.template]() {

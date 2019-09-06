@@ -5,56 +5,31 @@
  * internally communicate without exposing these properties and methods in the
  * component's public API. They also help avoid unintentional name collisions,
  * as a component developer must specifically import the `symbols` module and
- * reference one of its symbols.
+ * reference one of its internal.
  *
  * To use these `Symbol` objects in your own component, include this module and
  * then create a property or method whose key is the desired Symbol. E.g.,
  * [ShadowTemplateMixin](ShadowTemplateMixin) expects a component to define
- * a property called [symbols.template](#template):
+ * a property called [internal.template](#template):
  *
  *     import * as template from 'elix/src/template.js'
- *     import * as symbols from 'elix/src/symbols.js';
+ *     import * as internal from 'elix/src/internal.js';
  *     import ShadowTemplateMixin from 'elix/src/ShadowTemplateMixin.js';
  * 
  *     class MyElement extends ShadowTemplateMixin(HTMLElement) {
- *       [symbols.template]() {
+ *       [internal.template]() {
  *         return template.html`Hello, <em>world</em>.`;
  *       }
  *     }
  * 
- * The above use of `symbols.template` lets the mixin find the component's
+ * The above use of `internal.template` lets the mixin find the component's
  * template in a way that will not pollute the component's public API or
  * interfere with other component logic. For example, if for some reason the
  * component wants to define a separate property with the plain string name,
  * "template", it can do so without affecting the above property setter.
- * 
- * While this project generally uses `Symbol` objects to hide component
- * internals, Elix does make some exceptions for methods or properties that are
- * very helpful to have handy during debugging. E.g.,
- * [ReactiveMixin](ReactiveMixin) exposes its [symbols.setState]](ReactiveMixin[symbols.setState])
- * method publicly, even though invoking that method from outside a component is
- * generally bad practice. The mixin exposes [symbols.setState]` because it's very useful
- * to have access to that in a debug console.
  *
- * @module symbols
+ * @module internal
  */
-
-/**
- * Symbol for the `$` property.
- *
- * [ShadowTemplateMixin](ShadowTemplateMixin) defines a shorthand function
- * `symbols.$` that can be used to obtain a reference to a shadow element with
- * a given ID.
- * 
- * Example: if component's template contains a shadow element
- * `<button id="foo">`, you can use the reference `this[symbols.$].foo` to obtain
- * the corresponding button in the component instance's shadow tree.
- * The `$` function is simply a shorthand for `getElementById`, so
- * `this[symbols.$].foo` is the same as `this.shadowRoot.getElementById('foo')`.
- *
- * @type {object} - a dictionary mapping shadow element IDs to elements
- */
-export const $ = Symbol('$');
 
 /**
  * Symbol for the `checkSize` method.
@@ -256,6 +231,23 @@ export const goUp = Symbol('goUp');
 export const hasDynamicTemplate = Symbol('hasDynamicTemplate');
 
 /**
+ * Symbol for the `ids` property.
+ *
+ * [ShadowTemplateMixin](ShadowTemplateMixin) defines a shorthand function
+ * `internal.ids` that can be used to obtain a reference to a shadow element with
+ * a given ID.
+ * 
+ * Example: if component's template contains a shadow element
+ * `<button id="foo">`, you can use the reference `this[internal.ids].foo` to obtain
+ * the corresponding button in the component instance's shadow tree.
+ * The `ids` function is simply a shorthand for `getElementById`, so
+ * `this[internal.ids].foo` is the same as `this.shadowRoot.getElementById('foo')`.
+ *
+ * @type {object} - a dictionary mapping shadow element IDs to elements
+ */
+export const ids = Symbol('ids');
+
+/**
  * Symbol for access to form internals.
  * 
  // @ts-ignore
@@ -277,9 +269,9 @@ export const internals = Symbol('internals');
  * menu items, using code similar to this:
  * 
  *     // Filter the set of items to ignore disabled items.
- *     [symbols.itemMatchesState](item, state) {
- *       const base = super[symbols.itemMatchesState] ?
- *         super[symbols.itemMatchesState](item, state) :
+ *     [internal.itemMatchesState](item, state) {
+ *       const base = super[internal.itemMatchesState] ?
+ *         super[internal.itemMatchesState](item, state) :
  *         true;
  *       return base && !item.disabled;
  *     }
@@ -307,13 +299,13 @@ export const itemsDelegate = Symbol('itemsDelegate');
  *
  * This method is invoked when an element receives a `keydown` event.
  *
- * An implementation of `symbols.keydown` should return `true` if it handled
+ * An implementation of `internal.keydown` should return `true` if it handled
  * the event, and `false` otherwise. If `true` is returned (the event was
  * handled), `KeyboardMixin` invokes the event's `preventDefault` and
  * `stopPropagation` methods to let the browser know the event was handled.
  * 
- * The convention for handling `symbols.keydown` is that the last mixin
- * applied wins. That is, if an implementation of `symbols.keydown` *did*
+ * The convention for handling `internal.keydown` is that the last mixin
+ * applied wins. That is, if an implementation of `internal.keydown` *did*
  * handle the event, it can return immediately. If it did not, it should
  * invoke `super` to let implementations further up the prototype chain have
  * their chance.
@@ -386,10 +378,10 @@ export const populate = Symbol('populate');
  * `true` at the start of the event handler, then `false` at the end:
  *
  *     this.addEventListener('click', event => {
- *       this[symbols.raiseChangeEvents] = true;
+ *       this[internal.raiseChangeEvents] = true;
  *       // Do work here, possibly setting properties, like:
  *       this.foo = 'Hello';
- *       this[symbols.raiseChangeEvents] = false;
+ *       this[internal.raiseChangeEvents] = false;
  *     });
  *
  * Elsewhere, property setters that raise change events should only do so it
@@ -397,7 +389,7 @@ export const populate = Symbol('populate');
  *
  *     set foo(value) {
  *       // Save foo value here, do any other work.
- *       if (this[symbols.raiseChangeEvents]) {
+ *       if (this[internal.raiseChangeEvents]) {
  *         export const event = new CustomEvent('foo-changed');
  *         this.dispatchEvent(event);
  *       }
@@ -414,7 +406,7 @@ export const raiseChangeEvents = Symbol('raiseChangeEvents');
 /**
  * Symbol for the `render` method.
  * 
- * [ReactiveMixin](ReactiveMixin) invokes this `symbols.render` method to give
+ * [ReactiveMixin](ReactiveMixin) invokes this `internal.render` method to give
  * the component a chance to render recent changes in component state.
  * 
  * @function render

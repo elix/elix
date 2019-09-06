@@ -23,7 +23,7 @@ class RefreshAppDemo extends ReactiveElement {
 
   [internal.componentDidMount]() {
     if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
-    this[internal.$].pullToRefresh.addEventListener('refreshing-changed', event => {
+    this[internal.ids].pullToRefresh.addEventListener('refreshing-changed', event => {
       /** @type {any} */
       const cast = event;
       if (cast.detail.refreshing) {
@@ -44,8 +44,8 @@ class RefreshAppDemo extends ReactiveElement {
       navigator.vibrate(5);
     }
     setTimeout(async () => {
-      /** @type {any} */ (this[internal.$].pullToRefresh).refreshing = false;
-      /** @type {any} */ const refreshSound = this[internal.$].refreshSound;
+      /** @type {any} */ (this[internal.ids].pullToRefresh).refreshing = false;
+      /** @type {any} */ const refreshSound = this[internal.ids].refreshSound;
       await playSound(refreshSound);
       // Rotate last paragraph to first place.
       const paragraphs = [...this[internal.state].paragraphs];
@@ -61,7 +61,7 @@ class RefreshAppDemo extends ReactiveElement {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.paragraphs) {
-      applyChildNodes(this[internal.$].pullToRefresh, this[internal.state].paragraphs);
+      applyChildNodes(this[internal.ids].pullToRefresh, this[internal.state].paragraphs);
     }
   }
 

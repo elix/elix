@@ -56,7 +56,7 @@ class CalendarDayMoonPhase extends CalendarDay {
       }
 
       // Show or hide an icon as appropriate.
-      const phaseIcon = /** @type {HTMLImageElement} */ (this[internal.$].phaseIcon);
+      const phaseIcon = /** @type {HTMLImageElement} */ (this[internal.ids].phaseIcon);
       if (quarter) {
         phaseIcon.src = `images/moon/${quarter}.svg`
       } else {

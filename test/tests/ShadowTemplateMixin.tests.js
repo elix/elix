@@ -99,10 +99,10 @@ describe("ShadowTemplateMixin", () => {
     assert.equal(fixture.shadowRoot.textContent.trim(), "Hello");
   });
 
-  it("generates this[internal.$] references for shadow elements with 'id' attributes", () => {
+  it("generates this[internal.ids] references for shadow elements with 'id' attributes", () => {
     const fixture = new ElementWithStringTemplate();
     const root = fixture.shadowRoot;
-    assert.equal(fixture[internal.$].message, root.querySelector('#message'));
+    assert.equal(fixture[internal.ids].message, root.querySelector('#message'));
   });
 
   it("caches the template for a component", () => {

@@ -33,7 +33,7 @@ function FocusCaptureMixin(Base) {
 
     [internal.componentDidMount]() {
       if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
-      this[internal.$].focusCatcher.addEventListener('focus', () => {
+      this[internal.ids].focusCatcher.addEventListener('focus', () => {
         if (!this[wrappingFocusKey]) {
           // Wrap focus back to the first focusable element.
           const focusElement = firstFocusableElement(this.shadowRoot);
@@ -53,7 +53,7 @@ function FocusCaptureMixin(Base) {
         // The Shift+Tab keydown event should continue bubbling, and the default
         // behavior should cause it to end up on the last focusable element.
         this[wrappingFocusKey] = true;
-        this[internal.$].focusCatcher.focus();
+        this[internal.ids].focusCatcher.focus();
         this[wrappingFocusKey] = false;
         // Don't mark the event as handled, since we want it to keep bubbling up.
       }

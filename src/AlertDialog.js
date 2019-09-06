@@ -13,7 +13,7 @@ class AlertDialog extends Dialog {
 
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
-    this[internal.$].buttonContainer.addEventListener('click', async (event) => {
+    this[internal.ids].buttonContainer.addEventListener('click', async (event) => {
       // TODO: Ignore clicks on buttonContainer background.
       const button = event.target;
       if (button instanceof HTMLElement) {
@@ -113,7 +113,7 @@ class AlertDialog extends Dialog {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.choiceButtons) {
-      applyChildNodes(this[internal.$].buttonContainer, this[internal.state].choiceButtons);
+      applyChildNodes(this[internal.ids].buttonContainer, this[internal.state].choiceButtons);
     }
   }
 

@@ -26,7 +26,7 @@ class ArrowDirectionButton extends Base {
     // Wait for knowledge of dark mode to be set after initial render.
     const { darkMode } = this[internal.state];
     if (changed.darkMode && darkMode !== null) {
-      this[internal.$].inner.classList.toggle('darkMode', darkMode);
+      this[internal.ids].inner.classList.toggle('darkMode', darkMode);
     }
   }
 

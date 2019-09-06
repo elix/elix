@@ -20,7 +20,7 @@ export default function SwipeCommandsMixin(Base) {
       // component know so that it can perform any operation that should follow
       // the end of the transition. E.g., a Delete swipe command would want to
       // wait until the transition has finished before removing the item.
-      this[internal.$].leftCommandContainer.addEventListener('transitionend', () => {
+      this[internal.ids].leftCommandContainer.addEventListener('transitionend', () => {
         if (this[internal.state].swipeRightCommitted && this[internal.swipeRightTransitionEnd]) {
           this[internal.swipeRightTransitionEnd]();
         }
@@ -30,7 +30,7 @@ export default function SwipeCommandsMixin(Base) {
           swipeRightCommitted: false
         });
       });
-      this[internal.$].rightCommandContainer.addEventListener('transitionend', () => {
+      this[internal.ids].rightCommandContainer.addEventListener('transitionend', () => {
         if (this[internal.state].swipeLeftCommitted && this[internal.swipeLeftTransitionEnd]) {
           this[internal.swipeLeftTransitionEnd]();
         }
@@ -68,7 +68,7 @@ export default function SwipeCommandsMixin(Base) {
       super[internal.render](changed);
       if (changed.enableEffects || changed.swipeItem || changed.swipeFraction) {
         const { swipeItem, swipeFraction } = this[internal.state];
-        const { leftCommandContainer, rightCommandContainer } = this[internal.$];
+        const { leftCommandContainer, rightCommandContainer } = this[internal.ids];
         const swiping = swipeFraction !== null;
         if (swipeItem && swiping) {
           // Currently swiping left/right on an item.

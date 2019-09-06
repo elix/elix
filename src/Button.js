@@ -88,7 +88,7 @@ class Button extends Base {
       // Override host `outline` style supplied by FocusVisibleMixin.
       this.style.outline = 'none';
       const { focusVisible } = this[internal.state];
-      this[internal.$].inner.style.outline = focusVisible ? '' : 'none';
+      this[internal.ids].inner.style.outline = focusVisible ? '' : 'none';
     }
   }
 

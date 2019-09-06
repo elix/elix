@@ -98,21 +98,21 @@ class Carousel extends Base {
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
-    if (changed.proxyListRole && this[internal.$].proxyList) {
+    if (changed.proxyListRole && this[internal.ids].proxyList) {
       // Turn off focus handling for old proxy list.
       /** @type {any} */
-      const cast = this[internal.$].proxyList;
+      const cast = this[internal.ids].proxyList;
       forwardFocus(cast, null);
     }
     super[internal.render](changed);
     if (changed.stageRole || changed.orientation) {
-      /** @type {any} */ const cast = this[internal.$].stage;
+      /** @type {any} */ const cast = this[internal.ids].stage;
       if ('orientation' in cast) {
         cast.orientation = this[internal.state].orientation;
       }
     }
     if (changed.orientation || changed.proxyListRole) {
-      /** @type {any} */ const cast = this[internal.$].proxyList;
+      /** @type {any} */ const cast = this[internal.ids].proxyList;
       if ('orientation' in cast) {
         cast.orientation = this[internal.state].orientation;
       }
@@ -120,13 +120,13 @@ class Carousel extends Base {
     if (changed.proxyListRole) {
       // Keep focus off of the proxies and onto the carousel itself.
       /** @type {any} */
-      const cast = this[internal.$].proxyList;
+      const cast = this[internal.ids].proxyList;
       forwardFocus(cast, this);
       cast.removeAttribute('tabindex');
     }
     if (changed.stageRole) {
       /** @type {any} */
-      const cast = this[internal.$].stage;
+      const cast = this[internal.ids].stage;
       cast.removeAttribute('tabindex');      
     }
     const { darkMode } = this[internal.state];
@@ -154,8 +154,8 @@ class Carousel extends Base {
 
   get [internal.swipeTarget]() {
     const base = super[internal.swipeTarget];
-    return this[internal.$].stage instanceof HTMLElement ?
-      this[internal.$].stage :
+    return this[internal.ids].stage instanceof HTMLElement ?
+      this[internal.ids].stage :
       base;
   }
 

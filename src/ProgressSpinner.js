@@ -55,7 +55,7 @@ class ProgressSpinner extends ReactiveElement {
     if (changed.count) {
       const step = 360 / rotations;
       const angle = (this[internal.state].count * step) % 360;
-      this[internal.$].spinner.style.transform = `rotate(${angle}deg)`;
+      this[internal.ids].spinner.style.transform = `rotate(${angle}deg)`;
     }
   }
 

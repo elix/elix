@@ -60,11 +60,11 @@ export default function PlayControlsMixin(Base) {
       if (changed.controlButtonRole) {
         const controlButtons = this.shadowRoot.querySelectorAll('.controlButton');
         template.transmute(controlButtons, this[internal.state].controlButtonRole);
-        this[internal.$].previousButton.addEventListener('click', event => {
+        this[internal.ids].previousButton.addEventListener('click', event => {
           this.selectPrevious();
           event.stopPropagation();
         });
-        this[internal.$].playButton.addEventListener('click', event => {
+        this[internal.ids].playButton.addEventListener('click', event => {
           if (!this.playing) {
             this.play();
           } else {
@@ -72,23 +72,23 @@ export default function PlayControlsMixin(Base) {
           }
           event.stopPropagation();
         });
-        this[internal.$].nextButton.addEventListener('click', event => {
+        this[internal.ids].nextButton.addEventListener('click', event => {
           this.selectNext();
           event.stopPropagation();
         });
       }
       if (changed.playing) {
         const { playing } = this[internal.state];
-        this[internal.$].pausedIcon.style.display = playing ? 'none' : '';
-        this[internal.$].playingIcon.style.display = playing ? '' : 'none';
+        this[internal.ids].pausedIcon.style.display = playing ? 'none' : '';
+        this[internal.ids].playingIcon.style.display = playing ? '' : 'none';
       }
       if (changed.rightToLeft) {
         const rightToLeft = this[internal.state].rightToLeft;
         const transform = rightToLeft ?
           'rotate(180deg)' :
           '';
-        this[internal.$].nextIcon.style.transform = transform;
-        this[internal.$].previousIcon.style.transform = transform;
+        this[internal.ids].nextIcon.style.transform = transform;
+        this[internal.ids].previousIcon.style.transform = transform;
       }
     }
     

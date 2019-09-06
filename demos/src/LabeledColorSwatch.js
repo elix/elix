@@ -20,7 +20,7 @@ class LabeledColorSwatch extends Base {
         content.map(node => node.textContent) :
         [];
       const color = strings.join('').toLowerCase();
-      this[internal.$].swatch.style.backgroundColor = color;
+      this[internal.ids].swatch.style.backgroundColor = color;
     }
   }
 

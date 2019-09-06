@@ -61,7 +61,7 @@ class TabButton extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.generic) {
-      this[internal.$].inner.classList.toggle('generic', this[internal.state].generic);
+      this[internal.ids].inner.classList.toggle('generic', this[internal.state].generic);
     }
     if (changed.generic || changed.position) {
       // Adjust margins.
@@ -89,7 +89,7 @@ class TabButton extends Base {
         right: '0 0.25em 0.25em 0',
         top: '0.25em 0.25em 0 0'
       };
-      this[internal.$].inner.style.borderRadius = generic ?
+      this[internal.ids].inner.style.borderRadius = generic ?
         borderRadiusForPosition[position] :
         null;
     }

@@ -12,7 +12,6 @@
  * Symbol objects to be used at runtime as desired.
  */
 
-export const $: '_$';
 export const checkSize: '_checkSize';
 export const componentDidMount: '_componentDidMount';
 export const componentDidUpdate: '_componentDidUpdate';
@@ -33,6 +32,7 @@ export const goRight: '_goRight';
 export const goStart: '_goStart';
 export const goUp: '_goUp';
 export const hasDynamicTemplate: '_hasDynamicTemplate';
+export const ids: '_ids';
 export const internals: '_internals';
 export const itemMatchesState: '_itemMatchesState';
 export const itemsDelegate: '_itemsDelegate';

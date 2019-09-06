@@ -19,7 +19,7 @@ class SampleDialog extends Dialog {
       // Have the dialog close itself when the user clicks anywhere within it. In
       // many cases, you'll want to have a button ("OK", "Close", etc.) that
       // performs this action.
-      this[internal.$].frame.addEventListener('click', () => {
+      this[internal.ids].frame.addEventListener('click', () => {
         this.close();
       });
     }

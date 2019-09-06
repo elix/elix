@@ -43,7 +43,7 @@ class DateComboBox extends Base {
   
   get calendar() {
     return this.shadowRoot ?
-      this[internal.$].calendar :
+      this[internal.ids].calendar :
       null;
   }
 
@@ -363,15 +363,15 @@ class DateComboBox extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.calendarRole) {
-      template.transmute(this[internal.$].calendar, this[internal.state].calendarRole);
-      this[internal.$].calendar.addEventListener('date-changed', event => {
+      template.transmute(this[internal.ids].calendar, this[internal.state].calendarRole);
+      this[internal.ids].calendar.addEventListener('date-changed', event => {
         this[internal.raiseChangeEvents] = true;
         /** @type {any} */
         const cast = event;
         this.date = cast.detail.date;
         this[internal.raiseChangeEvents] = false;
       });
-      this[internal.$].calendar.addEventListener('mousedown', event => {
+      this[internal.ids].calendar.addEventListener('mousedown', event => {
         this[internal.raiseChangeEvents] = true;
         this.close();
         event.preventDefault(); // Keep focus on input.
@@ -379,8 +379,8 @@ class DateComboBox extends Base {
       });
     }
     if (changed.todayButtonRole) {
-      template.transmute(this[internal.$].todayButton, this[internal.state].todayButtonRole);
-      this[internal.$].todayButton.addEventListener('mousedown', event => {
+      template.transmute(this[internal.ids].todayButton, this[internal.state].todayButtonRole);
+      this[internal.ids].todayButton.addEventListener('mousedown', event => {
         this[internal.raiseChangeEvents] = true;
         this.date = calendar.today();
         this.close();
@@ -388,8 +388,8 @@ class DateComboBox extends Base {
         this[internal.raiseChangeEvents] = false;
       });
     }
-    const cast = /** @type {any} */ (this[internal.$].calendar);
-    if (changed.arrowButtonRole && 'arrowButtonRole' in this[internal.$].calendar) {
+    const cast = /** @type {any} */ (this[internal.ids].calendar);
+    if (changed.arrowButtonRole && 'arrowButtonRole' in this[internal.ids].calendar) {
       cast.arrowButtonRole = this[internal.state].arrowButtonRole;
     }
     if (changed.date) {

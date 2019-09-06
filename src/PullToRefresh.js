@@ -125,20 +125,20 @@ class PullToRefresh extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.pullIndicatorRole) {
-      template.transmute(this[internal.$].pullIndicator, this.pullIndicatorRole);
+      template.transmute(this[internal.ids].pullIndicator, this.pullIndicatorRole);
     }
     if (changed.refreshing) {
       const { refreshing } = this[internal.state];
-      const refreshingIndicator = this[internal.$].refreshingIndicator;
+      const refreshingIndicator = this[internal.ids].refreshingIndicator;
       refreshingIndicator.style.visibility = refreshing ?
         'visible' :
         'hidden';
-      if ('playing' in this[internal.$].refreshingIndicator) {
+      if ('playing' in this[internal.ids].refreshingIndicator) {
         /** @type {any} */ (refreshingIndicator).playing = refreshing;
       }
     }
     if (changed.refreshingIndicatorRole) {
-      template.transmute(this[internal.$].refreshingIndicator, this.refreshingIndicatorRole);
+      template.transmute(this[internal.ids].refreshingIndicator, this.refreshingIndicatorRole);
     }
     if (changed.enableEffects || changed.refreshing || changed.swipeFraction) {
       const { enableEffects, refreshing, swipeFraction } = this[internal.state];
@@ -169,7 +169,7 @@ class PullToRefresh extends Base {
       const showPullIndicator = !refreshing &&
         !pullTriggeredRefresh &&
         pullingDown;
-      this[internal.$].pullIndicator.style.visibility = showPullIndicator ?
+      this[internal.ids].pullIndicator.style.visibility = showPullIndicator ?
         'visible' :
         'hidden';
     }
@@ -264,8 +264,8 @@ class PullToRefresh extends Base {
  * @param {PullToRefresh} element
  */
 function getSwipeThreshold(element) {
-  return element[internal.$].refreshIndicators instanceof HTMLElement ?
-    element[internal.$].refreshIndicators.offsetHeight :
+  return element[internal.ids].refreshIndicators instanceof HTMLElement ?
+    element[internal.ids].refreshIndicators.offsetHeight :
     0;
 }
 

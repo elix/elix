@@ -27,10 +27,10 @@ const shadowReferencesKey = Symbol('shadowReferences');
  * shadow root. If your component does not define a `template` method, this
  * mixin has no effect.
  * 
- * This adds a member on the component called `this[internal.$]` that can be used to
+ * This adds a member on the component called `this[internal.ids]` that can be used to
  * reference shadow elements with IDs. E.g., if component's shadow contains an
  * element `<button id="foo">`, then this mixin will create a member
- * `this[internal.$].foo` that points to that button.
+ * `this[internal.ids].foo` that points to that button.
  *
  * @module ShadowTemplateMixin
  * @param {Constructor<ReactiveElement>} Base
@@ -45,14 +45,14 @@ export default function ShadowTemplateMixin(Base) {
      * Shadow DOM subtree.
      *
      * Example: if component's template contains a shadow element
-     * `<button id="foo">`, you can use the reference `this[internal.$].foo` to obtain
+     * `<button id="foo">`, you can use the reference `this[internal.ids].foo` to obtain
      * the corresponding button in the component instance's shadow tree.
      * The `$` function is simply a shorthand for `getElementById`, so
-     * `this[internal.$].foo` is the same as `this.shadowRoot.getElementById('foo')`.
+     * `this[internal.ids].foo` is the same as `this.shadowRoot.getElementById('foo')`.
      *
      * @type {object} - a dictionary mapping shadow element IDs to elements
      */
-    get [internal.$]() {
+    get [internal.ids]() {
       if (!this[shadowReferencesKey]) {
         // Construct a proxy that maps $ -> getElementById.
         const element = this;

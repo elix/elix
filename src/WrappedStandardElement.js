@@ -266,11 +266,11 @@ class WrappedStandardElement extends Base {
     // would be treated as a click on the outer element. Someone listening to
     // clicks on the outer element would get a click event, even though the
     // overall element is supposed to be disabled.
-    if ('disabled' in this[internal.$].inner) {
+    if ('disabled' in this[internal.ids].inner) {
       mouseEventNames.forEach(eventName => {
         this.addEventListener(eventName, event => {
           /** @type {any} */
-          const element = this[internal.$].inner;
+          const element = this[internal.ids].inner;
           if (element.disabled) {
             event.stopImmediatePropagation();
           }
@@ -309,7 +309,7 @@ class WrappedStandardElement extends Base {
    */
   get inner() {
     /** @type {any} */
-    const result = this[internal.$] && this[internal.$].inner;
+    const result = this[internal.ids] && this[internal.ids].inner;
     if (!result) {
       /* eslint-disable no-console */
       console.warn('Attempted to get an inner standard element before it was instantiated.');

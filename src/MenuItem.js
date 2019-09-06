@@ -49,7 +49,7 @@ class MenuItem extends Base {
   [internal.render](changed) {
     super[internal.render](changed);
     if (changed.generic) {
-      this[internal.$].container.classList.toggle('generic', this[internal.state].generic);
+      this[internal.ids].container.classList.toggle('generic', this[internal.state].generic);
     }
   }
 

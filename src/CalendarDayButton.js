@@ -34,7 +34,7 @@ class CalendarDayButton extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    /** @type {any} */ const day = this[internal.$].day;
+    /** @type {any} */ const day = this[internal.ids].day;
     if (changed.date) {
       day.date = this[internal.state].date;
     }

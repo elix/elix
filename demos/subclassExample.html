@@ -22,10 +22,10 @@
 
       [internal.componentDidMount]() {
         if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
-        this[internal.$].decrement.addEventListener('click', () => {
+        this[internal.ids].decrement.addEventListener('click', () => {
           this.value--;
         });
-        this[internal.$].increment.addEventListener('click', () => {
+        this[internal.ids].increment.addEventListener('click', () => {
           this.value++;
         });
       }
@@ -43,7 +43,7 @@
         if (changed.value) {
           const { value } = this[internal.state];
           this.style.color = value < 0 ? 'red' : null;
-          this[internal.$].visibleValue.textContent = value;
+          this[internal.ids].visibleValue.textContent = value;
         }
       }
 
@@ -98,8 +98,8 @@
           if (value > 0) {
             this.style.color = 'dodgerblue';
           }
-          this[internal.$].decrement.disabled = value <= -5;
-          this[internal.$].increment.disabled = value >= 5;
+          this[internal.ids].decrement.disabled = value <= -5;
+          this[internal.ids].increment.disabled = value >= 5;
         }
       }
 

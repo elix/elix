@@ -35,7 +35,7 @@ const Base =
 class ExpandablePanel extends Base {
 
   get [internal.elementsWithTransitions]() {
-    return [this[internal.$].outerContainer];
+    return [this[internal.ids].outerContainer];
   }
     
   [internal.render](/** @type {PlainObject} */ changed) {
@@ -44,7 +44,7 @@ class ExpandablePanel extends Base {
       const { effect, effectPhase, enableEffects } = this[internal.state];
       
       // The inner container lets us measure how tall the content wants to be.
-      const naturalHeight = this[internal.$].innerContainer.getBoundingClientRect().height;
+      const naturalHeight = this[internal.ids].innerContainer.getBoundingClientRect().height;
 
       // The effect phase (before, during, after) determines which height we apply
       // to the outer container.
@@ -72,7 +72,7 @@ class ExpandablePanel extends Base {
         'height 0.25s' :
         null;
 
-      Object.assign(this[internal.$].outerContainer.style, {
+      Object.assign(this[internal.ids].outerContainer.style, {
         height,
         transition
       });

@@ -26,7 +26,7 @@ class PopupButton extends Base {
     // likely expanation is that the user hit Shift+Tab to back up out of the
     // popup. In that case, we should close.
     this.addEventListener('focus', async (event) => {
-      const hostFocused = !ownEvent(this[internal.$].popup, event);
+      const hostFocused = !ownEvent(this[internal.ids].popup, event);
       // It's possible to get a focus event in the initial mousedown on the
       // source button before the popup is even rendered. We don't want to close
       // in that case, so we check to see if we've already measured the popup
@@ -73,7 +73,7 @@ class PopupButton extends Base {
       // Desktop popups generally open on mousedown, not click/mouseup. On mobile,
       // mousedown won't fire until the user releases their finger, so it behaves
       // like a click.
-      const source = this[internal.$].source;
+      const source = this[internal.ids].source;
       source.addEventListener('mousedown', event => {
         // mousedown events fire even if button is disabled, so we need
         // to explicitly ignore those.
@@ -106,7 +106,7 @@ class PopupButton extends Base {
       source.tabIndex = -1;
     }
     if (changed.disabled) {
-      this[internal.$].source.style.borderStyle = this[internal.state].disabled ? null : 'solid';
+      this[internal.ids].source.style.borderStyle = this[internal.state].disabled ? null : 'solid';
     }
   }
 

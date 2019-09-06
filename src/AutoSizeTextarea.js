@@ -47,11 +47,11 @@ class AutoSizeTextarea extends Base {
      * 
      * @event input
      */
-    this[internal.$].inner.addEventListener('input', () => {
+    this[internal.ids].inner.addEventListener('input', () => {
       this[internal.raiseChangeEvents] = true;
       this[internal.setState]({ valueTracksContent: false });
       /** @type {any} */
-      const inner = this[internal.$].inner;
+      const inner = this[internal.ids].inner;
       this[internal.setState]({
         value: inner.value
       });
@@ -62,8 +62,8 @@ class AutoSizeTextarea extends Base {
     // padding, and other relevant characteristics as the original text area.
     // Since those aspects are affected by CSS, we have to wait until the
     // element is in the document before we can update the text copy.
-    const textareaStyle = getComputedStyle(this[internal.$].inner);
-    const lineHeight = this[internal.$].extraSpace.clientHeight;
+    const textareaStyle = getComputedStyle(this[internal.ids].inner);
+    const lineHeight = this[internal.ids].extraSpace.clientHeight;
     this[internal.setState]({
       copyStyle: {
         'border-bottom-style': textareaStyle.borderBottomStyle,
@@ -143,15 +143,15 @@ class AutoSizeTextarea extends Base {
     super[internal.render](changed);
     const { copyStyle, lineHeight, minimumRows, value } = this[internal.state];
     if (changed.copyStyle) {
-      Object.assign(this[internal.$].copyContainer.style, copyStyle);
+      Object.assign(this[internal.ids].copyContainer.style, copyStyle);
     }
     if (changed.lineHeight || changed.minimumRows && lineHeight != null) {
       const minHeight = minimumRows * lineHeight;
-      this[internal.$].copyContainer.style.minHeight = `${minHeight}px`;
+      this[internal.ids].copyContainer.style.minHeight = `${minHeight}px`;
     }
     if (changed.value) {
-      /** @type {HTMLTextAreaElement} */ (this[internal.$].inner).value = value;
-      this[internal.$].textCopy.textContent = value;
+      /** @type {HTMLTextAreaElement} */ (this[internal.ids].inner).value = value;
+      this[internal.ids].textCopy.textContent = value;
     }
   }
 

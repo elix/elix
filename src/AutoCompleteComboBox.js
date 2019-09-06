@@ -28,8 +28,8 @@ class AutoCompleteComboBox extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.texts) {
-      if ('texts' in this[internal.$].input) {
-        /** @type {any} */ (this[internal.$].input).texts = this[internal.state].texts;
+      if ('texts' in this[internal.ids].input) {
+        /** @type {any} */ (this[internal.ids].input).texts = this[internal.state].texts;
       }
     }
   }

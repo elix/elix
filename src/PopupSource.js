@@ -121,7 +121,7 @@ class PopupSource extends Base {
   }
 
   get frame() {
-    return /** @type {any} */ (this[internal.$].popup).frame;
+    return /** @type {any} */ (this[internal.ids].popup).frame;
   }
 
   /**
@@ -167,16 +167,16 @@ class PopupSource extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.frameRole) {
-      if ('frameRole' in this[internal.$].popup) {
+      if ('frameRole' in this[internal.ids].popup) {
         const { frameRole } = this[internal.state];
-        /** @type {any} */ (this[internal.$].popup).frameRole = frameRole;
+        /** @type {any} */ (this[internal.ids].popup).frameRole = frameRole;
       }
     }
     if (changed.popupRole) {
-      template.transmute(this[internal.$].popup, this[internal.state].popupRole);
+      template.transmute(this[internal.ids].popup, this[internal.state].popupRole);
 
       // Popup's opened state becomes our own opened state.
-      this[internal.$].popup.addEventListener('opened', () => {
+      this[internal.ids].popup.addEventListener('opened', () => {
         if (!this.opened) {
           this[internal.raiseChangeEvents] = true;
           this.open();
@@ -185,7 +185,7 @@ class PopupSource extends Base {
       });
 
       // Popup's closed state becomes our own closed state.
-      this[internal.$].popup.addEventListener('closed', event => {
+      this[internal.ids].popup.addEventListener('closed', event => {
         if (!this.closed) {
           this[internal.raiseChangeEvents] = true;
           /** @type {any} */ 
@@ -199,9 +199,9 @@ class PopupSource extends Base {
     if (changed.backdropRole) {
       // Since this check depends on popup, do it after we do any necessary
       // transmuting of popup.
-      if ('backdropRole' in this[internal.$].popup) {
+      if ('backdropRole' in this[internal.ids].popup) {
         const { backdropRole } = this[internal.state];
-        /** @type {any} */ (this[internal.$].popup).backdropRole = backdropRole;
+        /** @type {any} */ (this[internal.ids].popup).backdropRole = backdropRole;
       }
     }
     if (changed.horizontalAlign || changed.popupMeasured ||
@@ -280,7 +280,7 @@ class PopupSource extends Base {
       const opacity = popupMeasured ? null : 0;
       const position = popupMeasured ? 'absolute' : 'fixed';
 
-      const popup = this[internal.$].popup;
+      const popup = this[internal.ids].popup;
       Object.assign(popup.style, {
         bottom,
         left,
@@ -293,24 +293,24 @@ class PopupSource extends Base {
         maxHeight: maxFrameHeight ? `${maxFrameHeight}px` : null,
         maxWidth: maxFrameWidth ? `${maxFrameWidth}px` : null
       });
-      this[internal.$].popupContainer.style.top = positionBelow ? null : '0';
+      this[internal.ids].popupContainer.style.top = positionBelow ? null : '0';
     }
     if (changed.sourceRole) {
-      template.transmute(this[internal.$].source, this[internal.state].sourceRole);
+      template.transmute(this[internal.ids].source, this[internal.state].sourceRole);
     }    
     if (changed.opened) {
       const { opened } = this[internal.state];
-      Object.assign(this[internal.$].source.style, {
+      Object.assign(this[internal.ids].source.style, {
         backgroundColor: opened ? 'highlight' : null,
         color: opened ? 'highlighttext' : null
       });
-      /** @type {any} */ (this[internal.$].popup).opened = opened;
+      /** @type {any} */ (this[internal.ids].popup).opened = opened;
       this.setAttribute('aria-expanded', opened.toString());
     }
     if (changed.disabled) {
-      if ('disabled' in this[internal.$].source) {
+      if ('disabled' in this[internal.ids].source) {
         const { disabled } = this[internal.state];
-        /** @type {any} */ (this[internal.$].source).disabled = disabled;
+        /** @type {any} */ (this[internal.ids].source).disabled = disabled;
       }
     }
   }
@@ -437,7 +437,7 @@ function removeEventListeners(/** @type {PopupSource} */ element) {
 function measurePopup(element) {
   const windowHeight = window.innerHeight;
   const windowWidth = window.innerWidth;
-  const popupRect = element[internal.$].popup.getBoundingClientRect();
+  const popupRect = element[internal.ids].popup.getBoundingClientRect();
   const sourceRect = element.getBoundingClientRect();
   element[internal.setState]({
     popupHeight: popupRect.height,

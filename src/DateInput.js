@@ -21,14 +21,14 @@ class DateInput extends Base {
 
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
-    this[internal.$].inner.addEventListener('blur', () => {
+    this[internal.ids].inner.addEventListener('blur', () => {
       this[internal.raiseChangeEvents] = true;
       this[internal.setState]({
         focused: false
       });
       this[internal.raiseChangeEvents] = false;
     });
-    this[internal.$].inner.addEventListener('focus', () => {
+    this[internal.ids].inner.addEventListener('focus', () => {
       this[internal.raiseChangeEvents] = true;
       this[internal.setState]({
         focused: true

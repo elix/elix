@@ -105,7 +105,7 @@ class ListComboBox extends Base {
 
     let handled;
     /** @type {any} */
-    const list = this[internal.$].list;
+    const list = this[internal.ids].list;
 
     switch (event.key) {
 
@@ -152,18 +152,18 @@ class ListComboBox extends Base {
   }
 
   get [internal.itemsDelegate]() {
-    return this[internal.$].list;
+    return this[internal.ids].list;
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.inputRole) {
-      this[internal.$].input.setAttribute('aria-autocomplete', 'both');
+      this[internal.ids].input.setAttribute('aria-autocomplete', 'both');
     }
     if (changed.listRole) {
-      template.transmute(this[internal.$].list, this[internal.state].listRole);
+      template.transmute(this[internal.ids].list, this[internal.state].listRole);
   
-      this[internal.$].list.addEventListener('mousedown', event => {
+      this[internal.ids].list.addEventListener('mousedown', event => {
         // Mousing down inside a list item closes the popup.
         /** @type {any} */
         const target = event.target;
@@ -184,7 +184,7 @@ class ListComboBox extends Base {
       // presses Backspace to delete that selected text, Gboard/Chrome seems to
       // ignore the first press of the Backspace key. The user must press
       // Backspace a second time to actually delete the selected text.
-      this[internal.$].list.addEventListener('selected-index-changed', event => {
+      this[internal.ids].list.addEventListener('selected-index-changed', event => {
         /** @type {any} */
         const cast = event;
         const listSelectedIndex = cast.detail.selectedIndex;
@@ -198,7 +198,7 @@ class ListComboBox extends Base {
       });
     }
     if (changed.selectedIndex) {
-      const list = /** @type {any} */ (this[internal.$].list);
+      const list = /** @type {any} */ (this[internal.ids].list);
       if ('selectedIndex' in list) {
         list.selectedIndex = this[internal.state].selectedIndex;
       }

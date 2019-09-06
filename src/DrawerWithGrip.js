@@ -28,7 +28,7 @@ class DrawerWithGrip extends Drawer {
       const { fromEdge } = this[internal.state];
       const vertical = fromEdge === 'top' || fromEdge === 'bottom';
       const dimension = vertical ? 'offsetHeight' : 'offsetWidth';
-      const gripSize = this[internal.$].grip[dimension];
+      const gripSize = this[internal.ids].grip[dimension];
       this[internal.setState]({ gripSize });
     }
   }
@@ -56,8 +56,8 @@ class DrawerWithGrip extends Drawer {
     if (super[internal.render]) { super[internal.render](changed); }
 
     if (changed.gripRole) {
-      template.transmute(this[internal.$].grip, this[internal.state].gripRole);
-      this[internal.$].grip.addEventListener('click', event => {
+      template.transmute(this[internal.ids].grip, this[internal.state].gripRole);
+      this[internal.ids].grip.addEventListener('click', event => {
         // Clicking grip toggles drawer.
         this[internal.raiseChangeEvents] = true;
         this.toggle();
@@ -71,7 +71,7 @@ class DrawerWithGrip extends Drawer {
       const { fromEdge, rightToLeft } = this[internal.state];
 
       const vertical = fromEdge === 'top' || fromEdge === 'bottom';
-      this[internal.$].frame.style.flexDirection = vertical ?
+      this[internal.ids].frame.style.flexDirection = vertical ?
         'column' :
         'row';
 
@@ -104,23 +104,23 @@ class DrawerWithGrip extends Drawer {
         mapFromEdgeToGripCell.left :
         mapFromEdgeToGripCell.right;
 
-      this[internal.$].gripContainer.style.grid = mapFromEdgeToGrid[fromEdge];
-      this[internal.$].gripWorkaround.style.gridArea = mapFromEdgeToGripCell[fromEdge];
+      this[internal.ids].gripContainer.style.grid = mapFromEdgeToGrid[fromEdge];
+      this[internal.ids].gripWorkaround.style.gridArea = mapFromEdgeToGripCell[fromEdge];
     }
 
-    if (changed.swipeAxis && this[internal.$].gripIcon) {
+    if (changed.swipeAxis && this[internal.ids].gripIcon) {
       // Rotate the default grip icon to reflect the swipe axis.
       const transform = this[internal.state].swipeAxis === 'horizontal' ?
         'rotate(90deg)' :
         '';
-      this[internal.$].gripIcon.style.transform = transform;
+      this[internal.ids].gripIcon.style.transform = transform;
     }
   }
 
   // Tell TrackpadSwipeMixin that the gripped content is the scrollable element
   // the user is going to try to scroll with the trackpad.
   get [internal.scrollTarget]() {
-    return this[internal.$].grippedContent;
+    return this[internal.ids].grippedContent;
   }
 
   get [internal.template]() {

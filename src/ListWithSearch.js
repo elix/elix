@@ -78,14 +78,14 @@ class ListWithSearch extends Base {
   }
 
   get [internal.itemsDelegate]() {
-    return this[internal.$].list;
+    return this[internal.ids].list;
   }
 
     [internal.keydown](/** @type {KeyboardEvent} */ event) {
 
     let handled;
     /** @type {any} */
-    const list = this[internal.$].list;
+    const list = this[internal.ids].list;
 
     switch (event.key) {
 
@@ -160,10 +160,10 @@ class ListWithSearch extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.inputRole) {
-      template.transmute(this[internal.$].input, this[internal.state].inputRole);
-      this[internal.$].input.addEventListener('input', () => {
+      template.transmute(this[internal.ids].input, this[internal.state].inputRole);
+      this[internal.ids].input.addEventListener('input', () => {
         this[internal.raiseChangeEvents] = true;
-        const filter = /** @type {any} */ (this[internal.$].input).value;
+        const filter = /** @type {any} */ (this[internal.ids].input).value;
         this[internal.setState]({
           filter
         });
@@ -171,20 +171,20 @@ class ListWithSearch extends Base {
       });
     }
     if (changed.listRole) {
-      template.transmute(this[internal.$].list, this[internal.state].listRole);
+      template.transmute(this[internal.ids].list, this[internal.state].listRole);
     }
     if (changed.ariaLabel) {
       const { ariaLabel } = this[internal.state];
-      this[internal.$].input.setAttribute('aria-label', ariaLabel);
+      this[internal.ids].input.setAttribute('aria-label', ariaLabel);
     }
     if (changed.filter) {
       const { filter } = this[internal.state];
-      /** @type {HTMLInputElement} */ (this[internal.$].input).value = filter;
-      /** @type {any} */ (this[internal.$].list).filter = filter;
+      /** @type {HTMLInputElement} */ (this[internal.ids].input).value = filter;
+      /** @type {any} */ (this[internal.ids].list).filter = filter;
     }
     if (changed.placeholder) {
       const { placeholder } = this[internal.state];
-      /** @type {HTMLInputElement} */ (this[internal.$].input).placeholder = placeholder;
+      /** @type {HTMLInputElement} */ (this[internal.ids].input).placeholder = placeholder;
     }
   }
 

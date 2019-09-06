@@ -54,20 +54,20 @@ export default class AnimateAlignment extends Base {
   }
 
   get [internal.elementsWithTransitions]() {
-    return [this[internal.$].container];
+    return [this[internal.ids].container];
   }
 
   [internal.render](changed) {
     super[internal.render](changed);
     const { align, effect, effectPhase, enableEffects } = this[internal.state];
-    const container = this[internal.$].container;
+    const container = this[internal.ids].container;
     if ((changed.effect || changed.effectPhase || changed.enableEffects) &&
         enableEffects &&
         effect === 'slideLeft' || effect === 'slideRight') {
       if (effectPhase === 'before') {
         // The inner container lets us measure how wide the content wants to be.
-        const containerWidth = this[internal.$].container.clientWidth;
-        const distance = this[internal.$].stationary.clientWidth - containerWidth;
+        const containerWidth = this[internal.ids].container.clientWidth;
+        const distance = this[internal.ids].stationary.clientWidth - containerWidth;
         const transform = effect === 'slideLeft' ?
           `translateX(${distance}px)` :
           `translateX(-${distance}px)`;

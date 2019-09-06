@@ -25,13 +25,13 @@ class Popup extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.backdropRole) {
-      this[internal.$].backdrop.addEventListener('mousedown', mousedownHandler.bind(this));
+      this[internal.ids].backdrop.addEventListener('mousedown', mousedownHandler.bind(this));
 
       // Mobile Safari doesn't seem to generate a mousedown handler on the
       // backdrop in some cases that Mobile Chrome handles. For completeness, we
       // also listen to touchend.
       if (!('PointerEvent' in window)) {
-        this[internal.$].backdrop.addEventListener('touchend', mousedownHandler);
+        this[internal.ids].backdrop.addEventListener('touchend', mousedownHandler);
       }
     }
   }

@@ -60,19 +60,19 @@ class DropdownList extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.itemRole) {
-      if ('itemRole' in this[internal.$].menu) {
-        /** @type {any} */ (this[internal.$].menu).itemRole = this[internal.state].itemRole;
+      if ('itemRole' in this[internal.ids].menu) {
+        /** @type {any} */ (this[internal.ids].menu).itemRole = this[internal.state].itemRole;
       }
     }
     if (changed.valueRole) {
-      template.transmute(this[internal.$].value, this[internal.state].valueRole);
+      template.transmute(this[internal.ids].value, this[internal.state].valueRole);
     }
     if (changed.popupPosition) {
       const { popupPosition } = this[internal.state];
-      this[internal.$].downIcon.style.display = popupPosition === 'below' ?
+      this[internal.ids].downIcon.style.display = popupPosition === 'below' ?
         'block' :
         'none';
-      this[internal.$].upIcon.style.display = popupPosition === 'above' ?
+      this[internal.ids].upIcon.style.display = popupPosition === 'above' ?
         'block' :
         'none';
     }
@@ -83,7 +83,7 @@ class DropdownList extends Base {
         selectedItem.cloneNode(true) :
         null;
       const childNodes = clone ? clone.childNodes : [];
-      applyChildNodes(this[internal.$].value, childNodes);
+      applyChildNodes(this[internal.ids].value, childNodes);
     }
   }
 

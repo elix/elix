@@ -62,7 +62,7 @@ class HamburgerMenuButton extends Base {
   // the menu button.
     [internal.keydown](/** @type {KeyboardEvent} */ event) {
     /** @type {any} */
-    const menuButton = this[internal.$].menuButton;
+    const menuButton = this[internal.ids].menuButton;
     
     let handled;
 
@@ -109,16 +109,16 @@ class HamburgerMenuButton extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.menuButtonRole) {
-      template.transmute(this[internal.$].menuButton, this[internal.state].menuButtonRole);
-      this[internal.$].menuButton.addEventListener('click', () => {
+      template.transmute(this[internal.ids].menuButton, this[internal.state].menuButtonRole);
+      this[internal.ids].menuButton.addEventListener('click', () => {
         this[internal.raiseChangeEvents] = true;
         this.open();
         this[internal.raiseChangeEvents] = false;
       });
     }
     if (changed.menuRole) {
-      template.transmute(this[internal.$].menu, this[internal.state].menuRole);
-      this[internal.$].menu.addEventListener('closed', event => {
+      template.transmute(this[internal.ids].menu, this[internal.state].menuRole);
+      this[internal.ids].menu.addEventListener('closed', event => {
         /** @type {any} */
         const cast = event;
         this[internal.setState]({
@@ -126,13 +126,13 @@ class HamburgerMenuButton extends Base {
           opened: false
         });
       });
-      this[internal.$].menu.addEventListener('opened', () => {
+      this[internal.ids].menu.addEventListener('opened', () => {
         this[internal.setState]({
           opened: true
         });
       });
     }
-    const menu = /** @type {any} */ (this[internal.$].menu);
+    const menu = /** @type {any} */ (this[internal.ids].menu);
     if (changed.fromEdge) {
       if ('fromEdge' in menu) {
         menu.fromEdge = this[internal.state].fromEdge;

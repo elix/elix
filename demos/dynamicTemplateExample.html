@@ -31,19 +31,19 @@
       [internal.render](changed) {
         super[internal.render](changed);
         if (changed.buttonRole) {
-          template.transmute(this[internal.$].decrement, this[internal.state].buttonRole);
-          this[internal.$].decrement.addEventListener('click', () => {
+          template.transmute(this[internal.ids].decrement, this[internal.state].buttonRole);
+          this[internal.ids].decrement.addEventListener('click', () => {
             this.value--;
           });
-          template.transmute(this[internal.$].increment, this[internal.state].buttonRole);
-          this[internal.$].increment.addEventListener('click', () => {
+          template.transmute(this[internal.ids].increment, this[internal.state].buttonRole);
+          this[internal.ids].increment.addEventListener('click', () => {
             this.value++;
           });
         }
         if (changed.value) {
           const { value } = this[internal.state];
           this.style.color = value < 0 ? 'red' : null;
-          this[internal.$].visibleValue.textContent = value;
+          this[internal.ids].visibleValue.textContent = value;
         }
       }
 

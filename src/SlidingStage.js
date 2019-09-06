@@ -68,7 +68,7 @@ class SlidingStage extends Base {
         translation = 0;
       }
 
-      const slidingStageContent = this[internal.$].slidingStageContent;
+      const slidingStageContent = this[internal.ids].slidingStageContent;
       const axis = vertical ? 'Y' : 'X';
       slidingStageContent.style.transform = `translate${axis}(${translation}%)`;
 
@@ -80,7 +80,7 @@ class SlidingStage extends Base {
     if (changed.orientation) {
       const { orientation } = this[internal.state];
       const vertical = orientation === 'vertical';
-      this[internal.$].slidingStageContent.style.flexDirection = vertical ?
+      this[internal.ids].slidingStageContent.style.flexDirection = vertical ?
         'column' :
         '';
     }

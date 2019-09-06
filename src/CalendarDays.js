@@ -102,7 +102,7 @@ class CalendarDays extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.days) {
-      applyChildNodes(this[internal.$].dayContainer, this[internal.state].days);
+      applyChildNodes(this[internal.ids].dayContainer, this[internal.state].days);
     }
     if (changed.date || changed.showSelectedDay) {
       // Ensure only current date has "selected" class.

@@ -34,10 +34,10 @@
   
         [internal.componentDidMount]() {
           super[internal.componentDidMount]();
-          this[internal.$].decrement.addEventListener('click', () => {
+          this[internal.ids].decrement.addEventListener('click', () => {
             this.value--;
           });
-          this[internal.$].increment.addEventListener('click', () => {
+          this[internal.ids].increment.addEventListener('click', () => {
             this.value++;
           });
         }
@@ -53,7 +53,7 @@
         [internal.render](changed) {
           super[internal.render](changed);
           if (changed.value) {
-            this[internal.$].value.textContent = this[internal.state].value;
+            this[internal.ids].value.textContent = this[internal.state].value;
           }
         }
   

@@ -115,12 +115,12 @@ class ListBox extends Base {
           overflowX: 'auto',
           overflowY: 'hidden'
         };
-      Object.assign(this[internal.$].content.style, style);
+      Object.assign(this[internal.ids].content.style, style);
     }
   }
 
   get [internal.scrollTarget]() {
-    return this[internal.$].content;
+    return this[internal.ids].content;
   }
 
   get [internal.template]() {

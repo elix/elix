@@ -133,7 +133,7 @@ class MenuButton extends PopupButton {
     const closeResult = selectionDefined ?
       this.items[this[internal.state].menuSelectedIndex] :
       undefined;
-    /** @type {any} */ const menu = this[internal.$].menu;
+    /** @type {any} */ const menu = this[internal.ids].menu;
     if (selectionDefined && 'highlightSelectedItem' in menu) {
       await menu.highlightSelectedItem();
     }
@@ -145,7 +145,7 @@ class MenuButton extends PopupButton {
 
   get items() {
     /** @type {any} */
-    const menu = this[internal.$] && this[internal.$].menu;
+    const menu = this[internal.ids] && this[internal.ids].menu;
     return menu ? menu.items : null;
   }
 
@@ -230,17 +230,17 @@ class MenuButton extends PopupButton {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.popupRole) {
-      this[internal.$].popup.tabIndex = -1;
+      this[internal.ids].popup.tabIndex = -1;
     }
     if (changed.menuRole) {
-      template.transmute(this[internal.$].menu, this[internal.state].menuRole);
+      template.transmute(this[internal.ids].menu, this[internal.state].menuRole);
 
       // Close the popup if menu loses focus.
-      this[internal.$].menu.addEventListener('blur', async (event) => {
+      this[internal.ids].menu.addEventListener('blur', async (event) => {
         /** @type {any} */
         const cast = event;
         const newFocusedElement = cast.relatedTarget || document.activeElement;
-        if (this.opened && !deepContains(this[internal.$].menu, newFocusedElement)) {
+        if (this.opened && !deepContains(this[internal.ids].menu, newFocusedElement)) {
           this[internal.raiseChangeEvents] = true;
           await this.close();
           this[internal.raiseChangeEvents] = false;
@@ -252,7 +252,7 @@ class MenuButton extends PopupButton {
       // both to permit keyboard use, and to avoid closing the menu on blur (see
       // separate blur handler). To keep the focus on the menu, we prevent the
       // default event behavior.
-      this[internal.$].menu.addEventListener('mousedown', event => {
+      this[internal.ids].menu.addEventListener('mousedown', event => {
         if (this.opened) {
           event.stopPropagation();
           event.preventDefault();
@@ -261,7 +261,7 @@ class MenuButton extends PopupButton {
 
       // If the user mouses up on a menu item, close the menu with that item as
       // the close result.
-      this[internal.$].menu.addEventListener('mouseup', async (event) => {
+      this[internal.ids].menu.addEventListener('mouseup', async (event) => {
         // If we're doing a drag-select (user moused down on button, dragged
         // mouse into menu, and released), we close. If we're not doing a
         // drag-select (the user opened the menu with a complete click), and
@@ -284,7 +284,7 @@ class MenuButton extends PopupButton {
       });
 
       // Track changes in the menu's selection state.
-      this[internal.$].menu.addEventListener('selected-index-changed', event => {
+      this[internal.ids].menu.addEventListener('selected-index-changed', event => {
         this[internal.raiseChangeEvents] = true;
         /** @type {any} */
         const cast = event;
@@ -295,7 +295,7 @@ class MenuButton extends PopupButton {
       });
     }
     if (changed.menuSelectedIndex) {
-      const menu = /** @type {any} */ (this[internal.$].menu);
+      const menu = /** @type {any} */ (this[internal.ids].menu);
       if ('selectedIndex' in menu) {
         menu.selectedIndex = this[internal.state].menuSelectedIndex;
       }
@@ -368,7 +368,7 @@ async function handleMouseup (/** @type {MouseEvent} */ event) {
   // @ts-ignore
   const element = this;
   const hitTargets = element.shadowRoot.elementsFromPoint(event.clientX, event.clientY);
-  const overSource = hitTargets.indexOf(element[internal.$].source) >= 0;
+  const overSource = hitTargets.indexOf(element[internal.ids].source) >= 0;
   if (element.opened) {
     if (overSource) {
       // User released the mouse over the source button (behind the
