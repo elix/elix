@@ -248,14 +248,6 @@ export const hasDynamicTemplate = Symbol('hasDynamicTemplate');
 export const ids = Symbol('ids');
 
 /**
- * Symbol for access to form internals.
- * 
- // @ts-ignore
- * @type {ElementInternals}
- */
-export const internals = Symbol('internals');
-
-/**
  * Symbol for the `itemMatchesState` method.
  * 
  * `ContentItemsMixin` uses this callback to determine whether a content node
@@ -344,6 +336,14 @@ export const mouseenter = Symbol('mouseenter');
  * @function mouseleave
  */
 export const mouseleave = Symbol('mouseleave');
+
+/**
+ * Symbol for access to native HTML element internals.
+ * 
+ // @ts-ignore
+ * @type {ElementInternals}
+ */
+export const nativeInternals = Symbol('nativeInternals');
 
 /**
  * Symbol for the `populate` method.

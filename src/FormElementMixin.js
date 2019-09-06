@@ -21,12 +21,12 @@ export default function FormElementMixin(Base) {
     constructor() {
       super();
       if (formElementsSupported) {
-        this[internal.internals] = this.attachInternals();
+        this[internal.nativeInternals] = this.attachInternals();
       }
     }
   
     checkValidity() {
-      return this[internal.internals].checkValidity();
+      return this[internal.nativeInternals].checkValidity();
     }
 
     [internal.componentDidMount]() {
@@ -50,7 +50,7 @@ export default function FormElementMixin(Base) {
 
     // Uncomment for debugging only
     get internals() {
-      return this[internal.internals];
+      return this[internal.nativeInternals];
     }
 
     static get formAssociated() {
@@ -67,7 +67,7 @@ export default function FormElementMixin(Base) {
      * @type {string}
      */
     get form() {
-      return this[internal.internals].form;
+      return this[internal.nativeInternals].form;
     }
 
     /**
@@ -103,9 +103,9 @@ export default function FormElementMixin(Base) {
         if (changed.valid || changed.validationMessage) {
           const { valid, validationMessage } = this[internal.state];
           if (valid) {
-            this[internal.internals].setValidity({});
+            this[internal.nativeInternals].setValidity({});
           } else {
-            this[internal.internals].setValidity(
+            this[internal.nativeInternals].setValidity(
               {
                 customError: true
               },
@@ -117,7 +117,7 @@ export default function FormElementMixin(Base) {
     }
 
     reportValidity() {
-      return this[internal.internals].reportValidity();
+      return this[internal.nativeInternals].reportValidity();
     }
 
     /**
@@ -138,11 +138,11 @@ export default function FormElementMixin(Base) {
     }
 
     get validity() {
-      return this[internal.internals].validity;
+      return this[internal.nativeInternals].validity;
     }
 
     get willValidate() {
-      return this[internal.internals].willValidate;
+      return this[internal.nativeInternals].willValidate;
     }
   
   }
@@ -153,6 +153,6 @@ export default function FormElementMixin(Base) {
 
 function updateValue(element) {
   if (formElementsSupported) {
-    element[internal.internals].setFormValue(element[internal.state].value, element[internal.state]);
+    element[internal.nativeInternals].setFormValue(element[internal.state].value, element[internal.state]);
   }
 }
