@@ -26,7 +26,8 @@ const changedSinceLastRender = new WeakMap();
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function ReactiveMixin(Base) {
-  return class Reactive extends Base {
+
+  class Reactive extends Base {
 
     constructor() {
       // @ts-ignore
@@ -211,10 +212,28 @@ export default function ReactiveMixin(Base) {
      * The returned state object is immutable. To update it, invoke
      * `symbols.setState`.
      * 
+     * It's extremely useful to be able to inspect component state while
+     * debugging. If you append `?elixdebug=true` to a page's URL, then
+     * ReactiveMixin will conditionally expose a public `state` property
+     * that returns the component's state. You can then access the state
+     * in your browser's debug console.
+     * 
      * @type {State}
      */
     get [symbols.state]() {
       return this[stateKey];
     }
   }
+
+  // Expose state when debugging; see note for `[symbols.state]` getter.
+  const elixdebug = (new URLSearchParams(location.search)).get('elixdebug');
+  if (elixdebug === 'true') {
+    Object.defineProperty(Reactive.prototype, 'state', {
+      get() {
+        return this[symbols.state];
+      }
+    });
+  }
+
+  return Reactive;
 }
