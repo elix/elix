@@ -7,7 +7,6 @@ import * as internal from './internal.js';
 
 declare const SlotContentMixin: StateMixin<{}, {},
   {
-    componentDidMount(): void;
     [internal.contentSlot]: HTMLSlotElement;
   },
   {

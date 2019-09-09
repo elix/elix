@@ -7,14 +7,13 @@ import * as internal from './internal.js';
 import State from './State.js';
 
 declare const ReactiveMixin: Mixin<{}, {
-  componentDidMount(): void;
+  [internal.componentDidMount](): void;
   [internal.componentDidUpdate](/** @typeof {PlainObject} */ changed: PlainObject): void;
-  connectedCallback(): void;
-  defaultState: State;
-  render(): void;
+  [internal.defaultState]: State;
   [internal.render](changed: PlainObject): void;
- [internal.setState](changes: PlainObject): Promise<void>;
-  state: State;
+  [internal.renderChanges](): void;
+  [internal.setState](changes: PlainObject): Promise<void>;
+  [internal.state]: State;
 }>;
 
 export default ReactiveMixin;
