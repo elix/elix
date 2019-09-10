@@ -4,7 +4,7 @@
 /// <reference path="shared.d.ts"/>
 
 declare const ShadowTemplateMixin: Mixin<{}, {
-  $: {
+  ids: {
     [id: string]: HTMLElement|SVGElement;
   },
   connectedCallback(): void;
