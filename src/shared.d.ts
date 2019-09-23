@@ -6,6 +6,16 @@
  */
 
 
+// We need to import the internal `state` symbol, but the desired import seems
+// to cause TypeScript to fail at processing this file. Since we're currently
+// faking the use of Symbol keys as strings (see internal.js), we can
+// temporarily work around this problem by redeclaring `state` as the same
+// string in internal.d.ts. When we're someday able to use real Symbol keys,
+// we'll need to find a real fix for this problem.
+// import { state } from './internal.js';
+declare const state = '_state';
+
+
 /*
  * A class constructor is an object with a `new` method that returns an
  * instance of the indicated type.
@@ -78,4 +88,11 @@ type Role = Constructor<HTMLElement>|string|HTMLTemplateElement;
  * expectations about what state is provided by the base class.
  */
 type StateMixin<BaseMembers, BaseState, MixinMembers, MixinState> =
-  Mixin<BaseMembers & {state?: BaseState}, MixinMembers & {state: BaseState & MixinState}>;
+  Mixin<
+    BaseMembers & {
+      [state]?: BaseState
+    },
+    MixinMembers & {
+      [state]: BaseState & MixinState
+    }
+  >;
