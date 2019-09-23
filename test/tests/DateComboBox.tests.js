@@ -1,5 +1,5 @@
 import * as calendar from '../../src/calendar.js';
-import DateComboBox from '../../src/DateComboBox.js';
+import DateComboBox from '../../define/DateComboBox.js';
 
 
 describe("DateComboBox", () => {

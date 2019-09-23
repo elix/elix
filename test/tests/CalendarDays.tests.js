@@ -1,6 +1,6 @@
 import * as calendar from '../../src/calendar.js';
 import * as internal from '../../src/internal.js';
-import CalendarDays from '../../src/CalendarDays.js';
+import CalendarDays from '../../define/CalendarDays.js';
 
 
 describe("CalendarDays", () => {

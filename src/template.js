@@ -61,9 +61,10 @@ export function createElement(descriptor) {
     try {
       element = new cast();
     } catch (e) {
-      if (e.message === 'Illegal constructor') {
-        // The indicated component class hasn't been registered.
-        // Register it now with a random name and try again.
+      if (e.name === 'TypeError') {
+        // Most likely this error results from the fact that the indicated
+        // component class hasn't been registered. Register it now with a random
+        // name and try again.
         registerComponentClass(cast);
         element = new cast();
       } else {

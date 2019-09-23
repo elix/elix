@@ -2,6 +2,9 @@ import { default as AutoCompleteInput, autoComplete } from '../../src/AutoComple
 import * as internal from '../../src/internal.js';
 
 
+customElements.define('auto-complete-input', AutoCompleteInput);
+
+
 describe("AutoCompleteInput", () => {
 
   it("can match against texts", async () => {

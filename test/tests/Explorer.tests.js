@@ -1,4 +1,4 @@
-import Explorer from '../../src/Explorer.js';
+import Explorer from '../../define/Explorer.js';
 
 
 describe("Explorer", () => {

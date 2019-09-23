@@ -1,6 +1,6 @@
 import { trimMarks } from '../normalize.js';
 import * as internal from '../../src/internal.js';
-import CalendarMonthYearHeader from '../../src/CalendarMonthYearHeader.js';
+import CalendarMonthYearHeader from '../../define/CalendarMonthYearHeader.js';
 
 
 describe("CalendarMonthYearHeader", () => {

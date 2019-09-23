@@ -1,6 +1,6 @@
 import { trimMarks } from '../normalize.js';
 import * as internal from '../../src/internal.js';
-import CalendarDayNamesHeader from '../../src/CalendarDayNamesHeader.js';
+import CalendarDayNamesHeader from '../../define/CalendarDayNamesHeader.js';
 
 
 describe("CalendarDayNamesHeader", () => {

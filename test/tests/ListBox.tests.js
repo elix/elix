@@ -1,6 +1,6 @@
 import * as internal from '../../src/internal.js';
 import * as mockInteractions from '../mockInteractions.js';
-import ListBox from '../../src/ListBox.js';
+import ListBox from '../../define/ListBox.js';
 
 
 describe("ListBox", () => {
