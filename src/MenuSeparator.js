@@ -43,4 +43,3 @@ class MenuSeparator extends ReactiveElement {
 
 
 export default MenuSeparator;
-customElements.define('elix-menu-separator', MenuSeparator);

@@ -77,5 +77,4 @@ class SlideshowWithPlayControls extends Base {
 }
 
 
-customElements.define('elix-slideshow-with-play-controls', SlideshowWithPlayControls);
 export default SlideshowWithPlayControls;

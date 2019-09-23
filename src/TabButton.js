@@ -162,5 +162,4 @@ class TabButton extends Base {
 }
 
 
-customElements.define('elix-tab-button', TabButton);
 export default TabButton;

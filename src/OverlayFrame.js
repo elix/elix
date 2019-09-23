@@ -30,5 +30,4 @@ class OverlayFrame extends ReactiveElement {
 }
 
 
-customElements.define('elix-overlay-frame', OverlayFrame);
 export default OverlayFrame;

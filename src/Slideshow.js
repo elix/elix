@@ -40,5 +40,4 @@ class Slideshow extends Base {
 }
 
 
-customElements.define('elix-slideshow', Slideshow);
 export default Slideshow;

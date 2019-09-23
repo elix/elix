@@ -108,5 +108,4 @@ class ExpandablePanel extends Base {
 }
 
 
-customElements.define('elix-expandable-panel', ExpandablePanel);
 export default ExpandablePanel;

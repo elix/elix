@@ -140,4 +140,3 @@ class PopupButton extends Base {
 
 
 export default PopupButton;
-customElements.define('elix-popup-button', PopupButton);

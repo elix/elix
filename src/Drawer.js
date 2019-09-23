@@ -410,5 +410,4 @@ async function open(/** @type {Drawer} */ element) {
 }
 
 
-customElements.define('elix-drawer', Drawer);
 export default Drawer;

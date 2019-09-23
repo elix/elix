@@ -125,5 +125,4 @@ function opacityForItemWithIndex(index, selectedIndex, selectionFraction) {
 }
 
 
-customElements.define('elix-crossfade-stage', CrossfadeStage);
 export default CrossfadeStage;

@@ -398,4 +398,3 @@ function removeDocumentListeners(/** @type {MenuButton} */ element) {
 
 
 export default MenuButton;
-customElements.define('elix-menu-button', MenuButton);

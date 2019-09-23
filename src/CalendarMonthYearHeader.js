@@ -107,4 +107,3 @@ class CalendarMonthYearHeader extends Base {
 }
 
 export default CalendarMonthYearHeader;
-customElements.define('elix-calendar-month-year-header', CalendarMonthYearHeader);

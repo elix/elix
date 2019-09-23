@@ -23,5 +23,4 @@ class Hidden extends ReactiveElement {
 }
 
 
-customElements.define('elix-hidden', Hidden);
 export default Hidden;

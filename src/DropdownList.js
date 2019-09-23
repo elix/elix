@@ -141,4 +141,3 @@ class DropdownList extends Base {
 
 
 export default DropdownList;
-customElements.define('elix-dropdown-list', DropdownList);

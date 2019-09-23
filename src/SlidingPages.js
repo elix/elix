@@ -57,5 +57,4 @@ class SlidingPages extends Base {
 }
 
 
-customElements.define('elix-sliding-pages', SlidingPages);
 export default SlidingPages;

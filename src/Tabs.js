@@ -145,5 +145,4 @@ class Tabs extends Base {
 }
 
 
-customElements.define('elix-tabs', Tabs);
 export default Tabs;

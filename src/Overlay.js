@@ -167,5 +167,4 @@ class Overlay extends Base {
 }
 
 
-customElements.define('elix-overlay', Overlay);
 export default Overlay;

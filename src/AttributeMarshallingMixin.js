@@ -51,8 +51,7 @@ const propertyNamesToAttributes = {
  *       get fooBar() { return this._fooBar; }
  *       set fooBar(value) { this._fooBar = value; }
  *     }
- *     customElements.define('my-element', MyElement);
- *
+ *      *
  * If someone then instantiates your component in HTML:
  *
  *     <my-element foo-bar="Hello"></my-element>

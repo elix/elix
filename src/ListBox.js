@@ -174,5 +174,4 @@ class ListBox extends Base {
 }
 
 
-customElements.define('elix-list-box', ListBox);
 export default ListBox;

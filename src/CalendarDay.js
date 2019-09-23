@@ -133,4 +133,3 @@ class CalendarDay extends Base {
 
 
 export default CalendarDay;
-customElements.define('elix-calendar-day', CalendarDay);

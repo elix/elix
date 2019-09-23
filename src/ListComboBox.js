@@ -236,4 +236,3 @@ class ListComboBox extends Base {
 
 
 export default ListComboBox;
-customElements.define('elix-list-combo-box', ListComboBox);

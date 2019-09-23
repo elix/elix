@@ -153,5 +153,4 @@ class AlertDialog extends Dialog {
 }
 
 
-customElements.define('elix-alert-dialog', AlertDialog);
 export default AlertDialog;

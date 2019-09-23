@@ -47,5 +47,4 @@ class CenteredStripHighlight extends CenteredStrip {
 }
 
 
-customElements.define('elix-centered-strip-highlight', CenteredStripHighlight);
 export default CenteredStripHighlight;

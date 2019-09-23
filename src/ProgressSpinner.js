@@ -91,5 +91,4 @@ function tick(/** @type {ProgressSpinner} */ element) {
 }
 
 
-customElements.define('elix-progress-spinner', ProgressSpinner);
 export default ProgressSpinner;

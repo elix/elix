@@ -235,4 +235,3 @@ class CalendarMonth extends Base {
 
 
 export default CalendarMonth;
-customElements.define('elix-calendar-month', CalendarMonth);

@@ -125,5 +125,4 @@ class FilterListBox extends ListBox {
 }
 
 
-customElements.define('elix-filter-list-box', FilterListBox);
 export default FilterListBox;

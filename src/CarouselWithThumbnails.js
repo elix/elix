@@ -37,5 +37,4 @@ class CarouselWithThumbnails extends Carousel {
 }
 
 
-customElements.define('elix-carousel-with-thumbnails', CarouselWithThumbnails);
 export default CarouselWithThumbnails;

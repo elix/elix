@@ -344,5 +344,4 @@ async function handleScrollPull(element, scrollTop) {
 }
 
 
-customElements.define('elix-pull-to-refresh', PullToRefresh);
 export default PullToRefresh;

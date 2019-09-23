@@ -184,5 +184,4 @@ class HamburgerMenuButton extends Base {
 }
 
 
-customElements.define('elix-hamburger-menu-button', HamburgerMenuButton);
 export default HamburgerMenuButton;

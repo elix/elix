@@ -136,5 +136,4 @@ class SlidingStage extends Base {
 }
 
 
-customElements.define('elix-sliding-stage', SlidingStage);
 export default SlidingStage;

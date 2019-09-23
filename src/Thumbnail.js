@@ -34,5 +34,4 @@ class Thumbnail extends WrappedStandardElement.wrap('img') {
 }
 
 
-customElements.define('elix-thumbnail', Thumbnail);
 export default Thumbnail;

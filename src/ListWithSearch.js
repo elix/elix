@@ -213,5 +213,4 @@ class ListWithSearch extends Base {
 }
 
 
-customElements.define('elix-list-with-search', ListWithSearch);
 export default ListWithSearch;

@@ -36,5 +36,4 @@ class ListExplorer extends Explorer {
 }
 
 
-customElements.define('elix-list-explorer', ListExplorer);
 export default ListExplorer;

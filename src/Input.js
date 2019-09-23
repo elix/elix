@@ -90,4 +90,3 @@ class Input extends Base {
 
 
 export default Input;
-customElements.define('elix-input', Input);

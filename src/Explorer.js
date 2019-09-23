@@ -400,5 +400,4 @@ function setListAndStageOrder(element, state) {
 }
 
 
-customElements.define('elix-explorer', Explorer);
 export default Explorer;

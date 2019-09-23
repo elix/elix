@@ -92,4 +92,3 @@ class CalendarDayButton extends Base {
 
 
 export default CalendarDayButton;
-customElements.define('elix-calendar-day-button', CalendarDayButton);

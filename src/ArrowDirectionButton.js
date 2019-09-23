@@ -67,5 +67,4 @@ class ArrowDirectionButton extends Base {
 }
 
 
-customElements.define('elix-arrow-direction-button', ArrowDirectionButton);
 export default ArrowDirectionButton;

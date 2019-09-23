@@ -28,5 +28,4 @@ class SeamlessButton extends Button {
 }
 
 
-customElements.define('elix-seamless-button', SeamlessButton);
 export default SeamlessButton;

@@ -272,5 +272,4 @@ function unescapeHtml(/** @type {string} */ html) {
 
 
 
-customElements.define('elix-auto-size-textarea', AutoSizeTextarea);
 export default AutoSizeTextarea;

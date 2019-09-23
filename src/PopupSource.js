@@ -488,4 +488,3 @@ function waitThenRenderOpened(element) {
 
 
 export default PopupSource;
-customElements.define('elix-popup-source', PopupSource);

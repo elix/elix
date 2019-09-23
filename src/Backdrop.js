@@ -47,5 +47,4 @@ class Backdrop extends Base {
 }
 
 
-customElements.define('elix-backdrop', Backdrop);
 export default Backdrop;

@@ -115,4 +115,3 @@ class CalendarDayNamesHeader extends ReactiveElement {
 
 
 export default CalendarDayNamesHeader;
-customElements.define('elix-calendar-day-names-header', CalendarDayNamesHeader);

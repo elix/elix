@@ -95,4 +95,3 @@ class FilterComboBox extends Base {
 
 
 export default FilterComboBox;
-customElements.define('elix-filter-combo-box', FilterComboBox);

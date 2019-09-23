@@ -57,5 +57,4 @@ class CarouselSlideshow extends Base {
 }
 
 
-customElements.define('elix-carousel-slideshow', CarouselSlideshow);
 export default CarouselSlideshow;

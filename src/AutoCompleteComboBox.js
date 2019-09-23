@@ -38,4 +38,3 @@ class AutoCompleteComboBox extends Base {
 
 
 export default AutoCompleteComboBox;
-customElements.define('elix-auto-complete-combo-box', AutoCompleteComboBox);

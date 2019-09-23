@@ -142,5 +142,4 @@ class ExpandableSection extends Base {
 }
 
 
-customElements.define('elix-expandable-section', ExpandableSection);
 export default ExpandableSection;

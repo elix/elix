@@ -237,4 +237,3 @@ class DateInput extends Base {
 
 
 export default DateInput;
-customElements.define('elix-date-input', DateInput);

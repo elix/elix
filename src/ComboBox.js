@@ -409,4 +409,3 @@ class ComboBox extends Base {
 
 
 export default ComboBox;
-customElements.define('elix-combo-box', ComboBox);

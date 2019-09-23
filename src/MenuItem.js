@@ -83,4 +83,3 @@ class MenuItem extends Base {
 
 
 export default MenuItem;
-customElements.define('elix-menu-item', MenuItem);

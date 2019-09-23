@@ -269,4 +269,3 @@ class Menu extends Base {
 
 
 export default Menu;
-customElements.define('elix-menu', Menu);

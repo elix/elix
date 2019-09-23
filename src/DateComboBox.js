@@ -527,4 +527,3 @@ class DateComboBox extends Base {
 
 
 export default DateComboBox;
-customElements.define('elix-date-combo-box', DateComboBox);

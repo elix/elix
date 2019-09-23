@@ -57,5 +57,4 @@ class Dialog extends Base {
 }
 
 
-customElements.define('elix-dialog', Dialog);
 export default Dialog;

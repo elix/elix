@@ -253,4 +253,3 @@ function updateDays(state, forceCreation) {
 
 
 export default CalendarDays;
-customElements.define('elix-calendar-days', CalendarDays);

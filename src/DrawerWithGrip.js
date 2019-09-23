@@ -197,5 +197,4 @@ class DrawerWithGrip extends Drawer {
 }
 
 
-customElements.define('elix-drawer-with-grip', DrawerWithGrip);
 export default DrawerWithGrip;

@@ -48,5 +48,4 @@ class ModalBackdrop extends Backdrop {
 }
 
 
-customElements.define('elix-modal-backdrop', ModalBackdrop);
 export default ModalBackdrop;

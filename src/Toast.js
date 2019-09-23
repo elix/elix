@@ -235,5 +235,4 @@ function startTimerIfOpened(/** @type {Toast} */ element) {
 }
 
 
-customElements.define('elix-toast', Toast);
 export default Toast;

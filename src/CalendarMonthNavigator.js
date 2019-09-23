@@ -195,4 +195,3 @@ class CalendarMonthNavigator extends Base {
 
 
 export default CalendarMonthNavigator;
-customElements.define('elix-calendar-month-navigator', CalendarMonthNavigator);

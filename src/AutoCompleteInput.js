@@ -149,4 +149,3 @@ export function autoComplete(/** @type {AutoCompleteInput} */ element) {
 
 
 export default AutoCompleteInput;
-customElements.define('elix-auto-complete-input', AutoCompleteInput);

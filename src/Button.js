@@ -135,5 +135,4 @@ class Button extends Base {
 }
 
 
-customElements.define('elix-button', Button);
 export default Button;

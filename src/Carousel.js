@@ -190,5 +190,4 @@ class Carousel extends Base {
 }
 
 
-customElements.define('elix-carousel', Carousel);
 export default Carousel;

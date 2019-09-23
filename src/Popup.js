@@ -54,5 +54,4 @@ async function mousedownHandler(event) {
 }
 
 
-customElements.define('elix-popup', Popup);
 export default Popup;
