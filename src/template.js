@@ -53,11 +53,25 @@ export function concat(...templates) {
  * @returns {Node} the new element
  */
 export function createElement(descriptor) {
-  if (typeof descriptor === 'function') {
-    // Component class constructor
+  if (typeof descriptor === 'function' && descriptor.prototype instanceof HTMLElement) {
+    // Instantiable component class constructor
     /** @type {any} */
     const cast = descriptor;
-    return new cast();
+    let element;
+    try {
+      element = new cast();
+    } catch (e) {
+      if (e.message === 'Illegal constructor') {
+        // The indicated component class hasn't been registered.
+        // Register it now with a random name and try again.
+        registerComponentClass(cast);
+        element = new cast();
+      } else {
+        // The exception was for some other reason.
+        throw e;
+      }
+    }
+    return element;
   } else if (descriptor instanceof HTMLTemplateElement) {
     // Template
     const fragment = document.importNode(descriptor.content, true);
@@ -112,6 +126,29 @@ export function html(strings, ...substitutions) {
   const template = document.createElement('template');
   template.innerHTML = complete;
   return template;
+}
+
+
+function registerComponentClass(classFn) {
+  const className = classFn.name;
+  // Given the class name `FooBar`, calculate the base tag name `foo-bar`.
+  const uppercaseRegEx = /([A-Z])/g;
+  const hyphenated = className.replace(uppercaseRegEx, (match, letter, offset) =>
+    offset > 0 ? `-${letter}` : letter
+  );
+  const baseTag = hyphenated.toLowerCase();
+  // Add a unique-ifying number to the end of the tag until we find a tag
+  // that hasn't been registered yet.
+  let tag;
+  for (let count = 0; ; count++) {
+    tag = `${baseTag}-${count}`;
+    if (customElements.get(tag) === undefined) {
+      // Not in use.
+      break;
+    }
+  }
+  // Register with the generated tag.
+  customElements.define(tag, classFn);
 }
 
 
