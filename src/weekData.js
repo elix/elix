@@ -1,4 +1,4 @@
-// Generated at Mon Sep 24 2018 15:31:31 GMT-0700 (PDT)
+// Generated at Tue Sep 24 2019 16:54:46 GMT-0700 (Pacific Daylight Time)
 // from https://github.com/unicode-cldr/cldr-core/blob/master/supplemental/weekData.json
 const weekData = {
   "firstDay": {
@@ -67,7 +67,7 @@ const weekData = {
     "HR": 1,
     "HU": 1,
     "ID": 0,
-    "IE": 0,
+    "IE": 1,
     "IL": 0,
     "IN": 0,
     "IQ": 6,
@@ -91,7 +91,6 @@ const weekData = {
     "LU": 1,
     "LV": 1,
     "LY": 6,
-    "MA": 6,
     "MC": 1,
     "MD": 1,
     "ME": 1,
@@ -118,7 +117,7 @@ const weekData = {
     "PK": 0,
     "PL": 1,
     "PR": 0,
-    "PT": 1,
+    "PT": 0,
     "PY": 0,
     "QA": 6,
     "RE": 1,
@@ -137,7 +136,6 @@ const weekData = {
     "TH": 0,
     "TJ": 1,
     "TM": 1,
-    "TN": 0,
     "TR": 1,
     "TT": 0,
     "TW": 0,
@@ -169,13 +167,11 @@ const weekData = {
     "JO": 6,
     "KW": 6,
     "LY": 6,
-    "MA": 6,
     "OM": 6,
     "QA": 6,
     "SA": 6,
     "SD": 6,
     "SY": 6,
-    "TN": 6,
     "YE": 6
   },
   "weekendStart": {
@@ -192,13 +188,11 @@ const weekData = {
     "JO": 5,
     "KW": 5,
     "LY": 5,
-    "MA": 5,
     "OM": 5,
     "QA": 5,
     "SA": 5,
     "SD": 5,
     "SY": 5,
-    "TN": 5,
     "YE": 5
   }
 };

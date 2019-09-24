@@ -42,7 +42,6 @@
     "typescript": "3.6.2"
   },
   "scripts": {
-    "buildWeekData": "node tasks/buildWeekData.js",
     "ci": "npm run lint && npm run sauce-tests",
     "ci:fast": "npm run lint && npm run test -- --run-in-ci",
     "lint": "eslint .; tsc",

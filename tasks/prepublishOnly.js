@@ -3,14 +3,15 @@ const path = require('path');
 
 const createDefineModules = require('./createDefineModules.js');
 const createLibraryFiles = require('./createLibraryFiles.js');
+const createWeekData = require('./createWeekData.js');
 
 
 async function getSourceFiles() {
   const sourceFolder = path.join(__dirname, '../src');
   /** @type {string[]} */ const files = await fs.readdir(sourceFolder);
   const generatedFiles = [
-    'elix.d.ts',
-    'elix.js'
+    'elix.js',
+    'weekData.js'
   ];
   // Source files have a .js extension. Also, ignore generated files.
   const jsFiles = files.filter(file =>
@@ -44,7 +45,8 @@ async function getSourceFiles() {
     const sourceFiles = await getSourceFiles();
     await Promise.all([
       createDefineModules(sourceFiles.components),
-      createLibraryFiles(sourceFiles)
+      createLibraryFiles(sourceFiles),
+      createWeekData()
     ]);
   } catch (e) {
     // We have to deal with top-level exceptions.

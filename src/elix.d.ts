@@ -154,7 +154,3 @@ export const template = templateImport;
 import * as utilitiesImport from './utilities.js';
 // @ts-ignore
 export const utilities = utilitiesImport;
-
-import * as weekDataImport from './weekData.js';
-// @ts-ignore
-export const weekData = weekDataImport;

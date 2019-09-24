@@ -1,8 +1,6 @@
 const fetch = require('node-fetch');
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
-const promisify = require('util').promisify;
-const writeFileAsync = promisify(fs.writeFile);
 
 
 // The cldr-json week data uses English days of week, but we'd rather have
@@ -21,11 +19,11 @@ const daysOfWeek = {
 const weekDataUrl = 'https://raw.githubusercontent.com/unicode-cldr/cldr-core/master/supplemental/weekData.json';
 
 
-async function buildWeekData(options) {
+async function createWeekData() {
   const weekData = await getWeekData();
-  const moduleText = formatWeekDataAsModule(weekData);
-  const { outputPath } = options;
-  await writeFileAsync(outputPath, moduleText);
+  const weekSource = formatWeekDataAsModule(weekData);
+  const weekFile = path.join(__dirname, '../src/weekData.js');
+  await fs.writeFile(weekFile, weekSource);
 }
 
 
@@ -68,13 +66,4 @@ async function getWeekData() {
 
 
 // @ts-ignore
-module.exports = buildWeekData;
-
-
-// Invoked from command line (instead of loaded via require)?
-if (require.main === module) {
-  // Build docs with default paths.
-  buildWeekData({
-    outputPath: 'src/weekData.js'
-  });
-}
+module.exports = createWeekData;
