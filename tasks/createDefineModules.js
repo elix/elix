@@ -10,22 +10,7 @@ const fs = require('fs').promises;
 const path = require('path');
 
 
-async function getComponentFiles() {
-  const srcFolder = path.join(__dirname, '../src');
-  const srcFiles = await fs.readdir(srcFolder);
-  // Component files have a .js extension, start with an uppercase letter,
-  // and have a name that doesn't end with "Mixin".
-  const componentFiles = srcFiles.filter(file => {
-    return path.extname(file) === '.js' &&
-      file.toUpperCase()[0] === file[0] &&
-      !path.basename(file, '.js').endsWith('Mixin');
-  });
-  return componentFiles;
-}
-
-
-async function createDefineModules() {
-  const componentFiles = await getComponentFiles();
+async function createDefineModules(componentFiles) {
   const defineFolder = path.join(__dirname, '../define');
   await fs.mkdir(defineFolder, { recursive: true });
   const modulePromises = componentFiles.map(componentFile => {
