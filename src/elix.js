@@ -131,22 +131,41 @@ export { default as WrappedStandardElement } from './WrappedStandardElement.js';
 // objects and then export them as a named object, so we have to do the import
 // and export in separate steps.
 import * as accessibilityImport from './accessibility.js';
+// @ts-ignore
 export const accessibility = accessibilityImport;
+
 import * as calendarImport from './calendar.js';
+// @ts-ignore
 export const calendar = calendarImport;
+
 import * as constantsImport from './constants.js';
+// @ts-ignore
 export const constants = constantsImport;
+
 import * as contentImport from './content.js';
+// @ts-ignore
 export const content = contentImport;
+
 import * as fractionalSelectionImport from './fractionalSelection.js';
+// @ts-ignore
 export const fractionalSelection = fractionalSelectionImport;
+
 import * as internalImport from './internal.js';
+// @ts-ignore
 export const internal = internalImport;
+
 import * as scrollingImport from './scrolling.js';
+// @ts-ignore
 export const scrolling = scrollingImport;
+
 import * as templateImport from './template.js';
+// @ts-ignore
 export const template = templateImport;
+
 import * as utilitiesImport from './utilities.js';
+// @ts-ignore
 export const utilities = utilitiesImport;
+
 import * as weekDataImport from './weekData.js';
+// @ts-ignore
 export const weekData = weekDataImport;

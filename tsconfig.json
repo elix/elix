@@ -13,10 +13,8 @@
     "target": "ES6"
   },
   "include": [
-    "elix.js",
     "src/**/*.js",
-    "demos/src/**/*.js",
-    "tasks/extendDocs.js",
+    "demos/**/*.js",
     "tests/**/*.js"
   ]
 }

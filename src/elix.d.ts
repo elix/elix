@@ -119,23 +119,42 @@ export { default as WrappedStandardElement } from './WrappedStandardElement.js';
 // As of Sept 2019, there's no way to simultaneously import a collection of
 // objects and then export them as a named object, so we have to do the import
 // and export in separate steps.
-import * as accessibility from './accessibility.js';
-export accessibility;
-import * as calendar from './calendar.js';
-export calendar;
-import * as constants from './constants.js';
-export constants;
-import * as content from './content.js';
-export content;
-import * as fractionalSelection from './fractionalSelection.js';
-export fractionalSelection;
-import * as internal from './internal.js';
-export internal;
-import * as scrolling from './scrolling.js';
-export scrolling;
-import * as template from './template.js';
-export template;
-import * as utilities from './utilities.js';
-export utilities;
-import * as weekData from './weekData.js';
-export weekData;
+import * as accessibilityImport from './accessibility.js';
+// @ts-ignore
+export const accessibility = accessibilityImport;
+
+import * as calendarImport from './calendar.js';
+// @ts-ignore
+export const calendar = calendarImport;
+
+import * as constantsImport from './constants.js';
+// @ts-ignore
+export const constants = constantsImport;
+
+import * as contentImport from './content.js';
+// @ts-ignore
+export const content = contentImport;
+
+import * as fractionalSelectionImport from './fractionalSelection.js';
+// @ts-ignore
+export const fractionalSelection = fractionalSelectionImport;
+
+import * as internalImport from './internal.js';
+// @ts-ignore
+export const internal = internalImport;
+
+import * as scrollingImport from './scrolling.js';
+// @ts-ignore
+export const scrolling = scrollingImport;
+
+import * as templateImport from './template.js';
+// @ts-ignore
+export const template = templateImport;
+
+import * as utilitiesImport from './utilities.js';
+// @ts-ignore
+export const utilities = utilitiesImport;
+
+import * as weekDataImport from './weekData.js';
+// @ts-ignore
+export const weekData = weekDataImport;

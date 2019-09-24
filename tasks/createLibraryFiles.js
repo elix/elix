@@ -14,15 +14,12 @@ async function createLibraryFiles(sourceFiles) {
   }).join('\n');
 
   const helperFiles = sourceFiles.helpers;
-  const helperJsExports = helperFiles.map(file => {
+  const helperExports = helperFiles.map(file => {
     const name = path.basename(file, '.js');
     return `import * as ${name}Import from './${file}';
-export const ${name} = ${name}Import;`;
-  }).join('\n');
-  const helperTsExports = helperFiles.map(file => {
-    const name = path.basename(file, '.js');
-    return `import * as ${name} from './${file}';
-export ${name};`;
+// @ts-ignore
+export const ${name} = ${name}Import;
+`;
   }).join('\n');
 
   const srcJsSource =
@@ -46,8 +43,7 @@ ${simpleExports}
 // As of Sept 2019, there's no way to simultaneously import a collection of
 // objects and then export them as a named object, so we have to do the import
 // and export in separate steps.
-${helperJsExports}
-`;
+${helperExports}`;
 
   const defineJsSource =
 `/*
@@ -68,7 +64,7 @@ ${simpleExports}
 // As of Sept 2019, there's no way to simultaneously import a collection of
 // objects and then export them as a named object, so we have to do the import
 // and export in separate steps.
-${helperJsExports}
+${helperExports}
 `;
 
   const tsSource =
@@ -81,8 +77,7 @@ ${simpleExports}
 // As of Sept 2019, there's no way to simultaneously import a collection of
 // objects and then export them as a named object, so we have to do the import
 // and export in separate steps.
-${helperTsExports}
-`;
+${helperExports}`;
 
   // Write library files to /src folder,
   // and auto-define variations to /define folder.
