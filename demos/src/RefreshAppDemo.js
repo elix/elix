@@ -1,4 +1,4 @@
-import '../../src/PullToRefresh.js';
+import '../../define/PullToRefresh.js';
 import { applyChildNodes } from '../../src/utilities.js';
 import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';

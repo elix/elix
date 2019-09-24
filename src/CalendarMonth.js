@@ -1,11 +1,11 @@
-import './CalendarDayNamesHeader.js';
-import './CalendarDays.js';
-import './CalendarMonthYearHeader.js';
 import * as calendar from './calendar.js';
 import * as internal from './internal.js';
 import * as template from './template.js';
 import CalendarDay from './CalendarDay.js';
+import CalendarDayNamesHeader from './CalendarDayNamesHeader.js';
+import CalendarDays from './CalendarDays.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
+import CalendarMonthYearHeader from './CalendarMonthYearHeader.js';
 import ReactiveElement from './ReactiveElement.js';
 
 
@@ -124,7 +124,7 @@ class CalendarMonth extends Base {
       const locale = this[internal.state].locale;
       /** @type {any} */ (this[internal.ids].monthDays).locale = locale;
       /** @type {any} */ (this[internal.ids].monthYearHeader).locale = locale;
-      /** @type {any} */ (this[internal.ids].weekDaysHeader).locale = locale;
+      /** @type {any} */ (this[internal.ids].dayNamesHeader).locale = locale;
     }
     if (changed.dayRole) {
       /** @type {any} */ (this[internal.ids].monthDays).dayRole = this[internal.state].dayRole;
@@ -145,7 +145,7 @@ class CalendarMonth extends Base {
     }
     if (changed.daysOfWeekFormat) {
       const { daysOfWeekFormat } = this[internal.state];
-      /** @type {any} */ (this[internal.ids].weekDaysHeader).format = daysOfWeekFormat;
+      /** @type {any} */ (this[internal.ids].dayNamesHeader).format = daysOfWeekFormat;
     }
     if (changed.showCompleteWeeks) {
       const { showCompleteWeeks } = this[internal.state];
@@ -184,7 +184,7 @@ class CalendarMonth extends Base {
   }
 
   get [internal.template]() {
-    return template.html`
+    const result = template.html`
       <style>
         :host {
           display: inline-block;
@@ -197,7 +197,7 @@ class CalendarMonth extends Base {
           padding: 0.3em;
         }
 
-        #weekDaysHeader {
+        #dayNamesHeader {
           font-size: smaller;
           width: 100%;
         }
@@ -207,10 +207,23 @@ class CalendarMonth extends Base {
         }
       </style>
 
-      <elix-calendar-month-year-header id="monthYearHeader"></elix-calendar-month-year-header>
-      <elix-calendar-day-names-header id="weekDaysHeader" format="short"></elix-calendar-day-names-header>
-      <elix-calendar-days id="monthDays"></elix-calendar-days>
+      <div id="monthYearHeader"></div>
+      <div id="dayNamesHeader" format="short"></div>
+      <div id="monthDays"></div>
     `;
+    const monthYearHeader = result.content.getElementById('monthYearHeader');
+    if (monthYearHeader) {
+      template.transmute(monthYearHeader, CalendarMonthYearHeader);
+    }
+    const dayNamesHeader = result.content.getElementById('dayNamesHeader');
+    if (dayNamesHeader) {
+      template.transmute(dayNamesHeader, CalendarDayNamesHeader);
+    }
+    const monthDays = result.content.getElementById('monthDays');
+    if (monthDays) {
+      template.transmute(monthDays, CalendarDays);
+    }
+    return result;
   }
 
   /**
