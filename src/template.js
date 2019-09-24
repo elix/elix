@@ -53,20 +53,18 @@ export function concat(...templates) {
  * @returns {Node} the new element
  */
 export function createElement(descriptor) {
-  if (typeof descriptor === 'function' && descriptor.prototype instanceof HTMLElement) {
+  if (typeof descriptor === 'function') {
     // Instantiable component class constructor
-    /** @type {any} */
-    const cast = descriptor;
     let element;
     try {
-      element = new cast();
+      element = new descriptor();
     } catch (e) {
       if (e.name === 'TypeError') {
         // Most likely this error results from the fact that the indicated
         // component class hasn't been registered. Register it now with a random
         // name and try again.
-        registerComponentClass(cast);
-        element = new cast();
+        registerComponentClass(descriptor);
+        element = new descriptor();
       } else {
         // The exception was for some other reason.
         throw e;
