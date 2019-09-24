@@ -15,22 +15,37 @@ async function createDefineModules(componentFiles) {
   await fs.mkdir(defineFolder, { recursive: true });
   const modulePromises = componentFiles.map(componentFile => {
     const className = path.basename(componentFile, '.js');
-    const defineContent = defineSourceFor(className);
-    const definePath = path.join(__dirname, '../define', `${className}.js`);
-    return fs.writeFile(definePath, defineContent);
+    const tag = tagFromClassName(className);
+
+    // Create JavaScript file.
+    const tag = tagForClassName(className);
+    const jsContent =
+`import ${className} from '../src/${className}.js';
+customElements.define('${tag}', ${className});
+export default ${className};
+`;
+    const jsPath = path.join(__dirname, '../define', `${className}.js`);
+    const jsPromise = fs.writeFile(jsPath, jsContent);
+
+    // Create TypeScript file.
+    const tsContent =
+`import ${className} from '../src/${componentFile}';
+export default ${className};
+`;
+    const tsPath = path.join(__dirname, '../define', `${className}.d.ts`);
+    const tsPromise = fs.writeFile(tsPath, tsContent);
+
+    return Promise.all([jsPromise, tsPromise]);
   });
   await Promise.all(modulePromises);
 }
 
 
-function defineSourceFor(className) {
-  // Given the class name `FooBar`, calculate the tag name `elix-foo-bar`.
+// Given the class name `FooBar`, calculate the tag name `elix-foo-bar`.
+function tagForClassName(className) {
   const uppercaseRegEx = /([A-Z])/g;
   const tag = 'elix' + className.replace(uppercaseRegEx, '-$1').toLowerCase();
-  return `import ${className} from '../src/${className}.js';
-customElements.define('${tag}', ${className});
-export default ${className};
-`;
+  return tag;
 }
 
 
