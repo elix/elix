@@ -18,7 +18,6 @@ async function createDefineModules(componentFiles) {
     const tag = tagFromClassName(className);
 
     // Create JavaScript file.
-    const tag = tagForClassName(className);
     const jsContent =
 `import ${className} from '../src/${className}.js';
 customElements.define('${tag}', ${className});
@@ -42,7 +41,7 @@ export default ${className};
 
 
 // Given the class name `FooBar`, calculate the tag name `elix-foo-bar`.
-function tagForClassName(className) {
+function tagFromClassName(className) {
   const uppercaseRegEx = /([A-Z])/g;
   const tag = 'elix' + className.replace(uppercaseRegEx, '-$1').toLowerCase();
   return tag;

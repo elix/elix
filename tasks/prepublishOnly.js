@@ -7,7 +7,7 @@ const createLibraryFiles = require('./createLibraryFiles.js');
 
 async function getSourceFiles() {
   const sourceFolder = path.join(__dirname, '../src');
-  const files = await fs.readdir(sourceFolder);
+  /** @type {string[]} */ const files = await fs.readdir(sourceFolder);
   const generatedFiles = [
     'elix.d.ts',
     'elix.js'
@@ -42,10 +42,10 @@ async function getSourceFiles() {
 (async () => {
   try {
     const sourceFiles = await getSourceFiles();
-    await Promise.all(
+    await Promise.all([
       createDefineModules(sourceFiles.components),
       createLibraryFiles(sourceFiles)
-    );
+    ]);
   } catch (e) {
     // We have to deal with top-level exceptions.
     console.error(e);
