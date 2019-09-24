@@ -12,7 +12,7 @@ const path = require('path');
 
 async function createDefineModules(componentFiles) {
   const defineFolder = path.join(__dirname, '../define');
-  await fs.mkdir(defineFolder, { recursive: true });
+  await createEmptyDefineFolder(defineFolder);
   const modulePromises = componentFiles.map(componentFile => {
     const className = path.basename(componentFile, '.js');
     const tag = tagFromClassName(className);
@@ -37,6 +37,27 @@ export default ${className};
     return Promise.all([jsPromise, tsPromise]);
   });
   await Promise.all(modulePromises);
+}
+
+
+async function createEmptyDefineFolder(defineFolder) {
+  try {
+    const files = await fs.readdir(defineFolder);
+    // If we get this far, the folder already exists.
+    // Remove all existing files.
+    const removePromises = files.map(file => {
+      const filePath = path.join(defineFolder, file);
+      fs.unlink(filePath);
+    });
+    await Promise.all(removePromises);
+  } catch (e) {
+    if (e.code === 'ENOENT') {
+      // Folder doesn't exist; create it.
+      await fs.mkdir(defineFolder);
+    } else {
+      throw e;
+    }
+  }
 }
 
 
