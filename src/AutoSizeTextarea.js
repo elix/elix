@@ -271,5 +271,4 @@ function unescapeHtml(/** @type {string} */ html) {
 }
 
 
-
 export default AutoSizeTextarea;
