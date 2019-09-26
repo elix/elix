@@ -204,9 +204,9 @@ class ListWithSearch extends Base {
         }
       </style>
       <input id="input">
-      <elix-filter-list-box id="list" tabindex="-1">
+      <div id="list" tabindex="-1">
         <slot></slot>
-      </elix-filter-list-box>
+      </div>
     `;
   }
 

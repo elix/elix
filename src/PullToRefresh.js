@@ -247,7 +247,7 @@ class PullToRefresh extends Base {
       <div id="refreshHeader">
         <div id="refreshIndicators">
           <div id="pullIndicator"></div>
-          <elix-progress-spinner id="refreshingIndicator"></elix-progress-spinner>
+          <div id="refreshingIndicator"></div>
         </div>
       </div>
       <slot></slot>

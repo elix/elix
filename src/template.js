@@ -129,7 +129,7 @@ export function html(strings, ...substitutions) {
 
 
 function registerComponentClass(classFn) {
-  const className = classFn.name;
+  const className = classFn.name || 'custom-element';
   // Given the class name `FooBar`, calculate the base tag name `foo-bar`.
   const uppercaseRegEx = /([A-Z])/g;
   const hyphenated = className.replace(uppercaseRegEx, (match, letter, offset) =>

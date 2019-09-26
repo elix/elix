@@ -19,7 +19,8 @@ async function createDefineModules(componentFiles) {
 
     // Create JavaScript file.
     const jsContent =
-`import ${className} from '../src/${className}.js';
+`import { default as Base } from '../src/${className}.js';
+class ${className} extends Base {}
 customElements.define('${tag}', ${className});
 export default ${className};
 `;

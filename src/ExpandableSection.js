@@ -118,7 +118,7 @@ class ExpandableSection extends Base {
           margin: 0.5em;
         }
       </style>
-      <elix-seamless-button id="header">
+      <div id="header">
         <div id="headerContainer" class="headerElement">
           <slot name="header"></slot>
         </div>
@@ -132,10 +132,10 @@ class ExpandableSection extends Base {
             </svg>
           </slot>
         </div>
-      </elix-seamless-button>
-      <elix-expandable-panel id="panel" role="none">
+      </div>
+      <div id="panel" role="none">
         <slot></slot>
-      </elix-expandable-panel>
+      </div>
     `;
   }
 

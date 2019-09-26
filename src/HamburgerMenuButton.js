@@ -168,16 +168,16 @@ class HamburgerMenuButton extends Base {
           width: 24px;
         }
       </style>
-      <elix-seamless-button id="menuButton" aria-label="Open menu" tabindex="-1">
+      <div id="menuButton" aria-label="Open menu" tabindex="-1">
         <slot name="hamburgerIcon">
           <svg id="hamburgerIcon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 3 h18 v2 h-18 z m0 5 h18 v2 h-18 z m0 5 h18 v2 h-18 z"></path>
           </svg>
         </slot>
-      </elix-seamless-button>
-      <elix-drawer id="menu">
+      </div>
+      <div id="menu">
         <slot></slot>
-      </elix-drawer>
+      </div>
     `;
   }
 

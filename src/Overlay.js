@@ -1,8 +1,8 @@
 import * as internal from './internal.js';
 import * as template from './template.js';
-import Backdrop from './Backdrop.js';
+import Backdrop from '../src/Backdrop.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
-import OverlayFrame from './OverlayFrame.js';
+import OverlayFrame from '../src/OverlayFrame.js';
 import OverlayMixin from './OverlayMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 import SlotContentMixin from './SlotContentMixin.js';
@@ -155,12 +155,12 @@ class Overlay extends Base {
           width: 100%;
         }
       </style>
-      <elix-backdrop id="backdrop" tabindex="-1"></elix-backdrop>
-      <elix-overlay-frame id="frame" role="none">
+      <div id="backdrop" tabindex="-1"></div>
+      <div id="frame" role="none">
         <div id="frameContent">
           <slot></slot>
         </div>
-      </elix-overlay-frame>
+      </div>
     `;
   }
 

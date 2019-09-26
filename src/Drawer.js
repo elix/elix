@@ -5,7 +5,7 @@ import EffectMixin from './EffectMixin.js';
 import FocusCaptureMixin from './FocusCaptureMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
-import ModalBackdrop from './ModalBackdrop.js';
+import ModalBackdrop from '../src/ModalBackdrop.js';
 import Overlay from './Overlay.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
