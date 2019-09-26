@@ -7,16 +7,33 @@ const path = require('path');
 
 async function createLibraryFiles(sourceFiles) {
 
-  const simpleExportFiles = [...sourceFiles.components, ...sourceFiles.mixins].sort();
-  const simpleExports = simpleExportFiles.map(file => {
+  const classExportFiles = [...sourceFiles.components, ...sourceFiles.mixins].sort();
+  const srcClassExports = classExportFiles.map(file => {
     const name = path.basename(file, '.js');
     return `export { default as ${name} } from './${file}';`
   }).join('\n');
 
+  const defineClassExports = classExportFiles.map(file => {
+    const name = path.basename(file, '.js');
+    const isMixin = name.endsWith('Mixin');
+    const filePath = isMixin ?
+      `../src/${file}` :
+      `./${file}`;
+    return `export { default as ${name} } from '${filePath}';`
+  }).join('\n');
+
   const helperFiles = sourceFiles.helpers;
-  const helperExports = helperFiles.map(file => {
+  const srcHelperExports = helperFiles.map(file => {
     const name = path.basename(file, '.js');
     return `import * as ${name}Import from './${file}';
+// @ts-ignore
+export const ${name} = ${name}Import;
+`;
+  }).join('\n');
+
+  const defineHelperExports = helperFiles.map(file => {
+    const name = path.basename(file, '.js');
+    return `import * as ${name}Import from '../src/${file}';
 // @ts-ignore
 export const ${name} = ${name}Import;
 `;
@@ -37,13 +54,13 @@ export const ${name} = ${name}Import;
  */
 
 // Files that export a single object.
-${simpleExports}
+${srcClassExports}
 
 // Files that export multiple objects.
 // As of Sept 2019, there's no way to simultaneously import a collection of
 // objects and then export them as a named object, so we have to do the import
 // and export in separate steps.
-${helperExports}`;
+${srcHelperExports}`;
 
   const defineJsSource =
 `/*
@@ -58,26 +75,26 @@ ${helperExports}`;
 */
 
 // Files that export a single object.
-${simpleExports}
+${defineClassExports}
 
 // Files that export multiple objects.
 // As of Sept 2019, there's no way to simultaneously import a collection of
 // objects and then export them as a named object, so we have to do the import
 // and export in separate steps.
-${helperExports}
+${defineHelperExports}
 `;
 
   const tsSource =
 `// TypeScript declarations for the complete Elix library.
 
 // Files that export a single object.
-${simpleExports}
+${srcClassExports}
 
 // Files that export multiple objects.
 // As of Sept 2019, there's no way to simultaneously import a collection of
 // objects and then export them as a named object, so we have to do the import
 // and export in separate steps.
-${helperExports}`;
+${srcHelperExports}`;
 
   // Write library files to /src folder,
   // and auto-define variations to /define folder.

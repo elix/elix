@@ -19,4 +19,4 @@ import './src/SwipeDemo.js';
 import './src/ToolbarTab.js';
 
 // We assume we'll want to provide demos of all of Elix itself.
-import '../src/elix.js';
+import '../define/elix.js';
