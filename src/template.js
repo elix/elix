@@ -17,8 +17,8 @@
  */
 
 
-// Counter used by registerCustomElement.
-let registeredClassCounter = 0;
+// Used by registerCustomElement.
+const mapBaseTagToCount = new Map();
 
 
 /**
@@ -142,9 +142,7 @@ export function html(strings, ...substitutions) {
  * generated/minified code), the tag base will be "custom-element".
  * 
  * In either case, this function adds a uniquifying number to the end of the
- * base to produce a complete tag. If that tag has already been registered as a
- * custom element, this function increments the uniquifying number until it
- * finds a tag that has not yet been registered.
+ * base to produce a complete tag.
  * 
  * @private
  * @param {function} classFn
@@ -162,18 +160,22 @@ function registerCustomElement(classFn) {
   } else {
     baseTag = 'custom-element';
   }
-  // Add a unique-ifying number to the end of the tag until we find a tag
+  // Add a uniquifying number to the end of the tag until we find a tag
   // that hasn't been registered yet.
+  let count = mapBaseTagToCount.get(baseTag) || 0;
   let tag;
-  for (;;) {
-    tag = `${baseTag}-${registeredClassCounter++}`;
-    if (customElements.get(tag) === undefined) {
+  for (;; count++) {
+    tag = `${baseTag}-${count}`;
+    if (!customElements.get(tag)) {
       // Not in use.
       break;
     }
   }
   // Register with the generated tag.
   customElements.define(tag, classFn);
+  // Bump number and remember it. If we see the same base tag again later, we'll
+  // start counting at that number in our search for a uniquifying number.
+  mapBaseTagToCount.set(baseTag, count + 1);
 }
 
 
