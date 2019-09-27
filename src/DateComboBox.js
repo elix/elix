@@ -124,7 +124,7 @@ class DateComboBox extends Base {
       arrowButtonRole: ArrowDirectionButton,
       calendarRole: CalendarMonthNavigator,
       date: calendar.today(),
-      datePriority: false,
+      datePriority: true, // since we're setting a default date
       dateSelected: false,
       dateTimeFormat: null,
       dateTimeFormatOptions,
