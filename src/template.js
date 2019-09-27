@@ -17,6 +17,10 @@
  */
 
 
+// Counter used by registerCustomElement.
+let registeredClassCounter = 0;
+
+
 /**
  * Returns a new template whose content is the concatenated content of the
  * supplied templates.
@@ -63,7 +67,7 @@ export function createElement(descriptor) {
         // Most likely this error results from the fact that the indicated
         // component class hasn't been registered. Register it now with a random
         // name and try again.
-        registerComponentClass(descriptor);
+        registerCustomElement(descriptor);
         element = new descriptor();
       } else {
         // The exception was for some other reason.
@@ -128,19 +132,41 @@ export function html(strings, ...substitutions) {
 }
 
 
-function registerComponentClass(classFn) {
-  const className = classFn.name || 'custom-element';
-  // Given the class name `FooBar`, calculate the base tag name `foo-bar`.
-  const uppercaseRegEx = /([A-Z])/g;
-  const hyphenated = className.replace(uppercaseRegEx, (match, letter, offset) =>
-    offset > 0 ? `-${letter}` : letter
-  );
-  const baseTag = hyphenated.toLowerCase();
+/**
+ * Register the indicated constructor as a custom element class.
+ * 
+ * This function generates a suitable string tag for the class. If the
+ * constructor is a named function (which is typical for hand-authored code),
+ * the function's `name` will be used as the base for the tag. If the
+ * constructor is an anonymous function (which often happens in
+ * generated/minified code), the tag base will be "custom-element".
+ * 
+ * In either case, this function adds a uniquifying number to the end of the
+ * base to produce a complete tag. If that tag has already been registered as a
+ * custom element, this function increments the uniquifying number until it
+ * finds a tag that has not yet been registered.
+ * 
+ * @private
+ * @param {function} classFn
+ */
+function registerCustomElement(classFn) {
+  let baseTag;
+  const className = classFn.name;
+  if (className) {
+    // Given the class name `FooBar`, calculate the base tag name `foo-bar`.
+    const uppercaseRegEx = /([A-Z])/g;
+    const hyphenated = className.replace(uppercaseRegEx, (match, letter, offset) =>
+      offset > 0 ? `-${letter}` : letter
+    );
+    baseTag = hyphenated.toLowerCase();
+  } else {
+    baseTag = 'custom-element';
+  }
   // Add a unique-ifying number to the end of the tag until we find a tag
   // that hasn't been registered yet.
   let tag;
-  for (let count = 0; ; count++) {
-    tag = `${baseTag}-${count}`;
+  for (;;) {
+    tag = `${baseTag}-${registeredClassCounter++}`;
     if (customElements.get(tag) === undefined) {
       // Not in use.
       break;
