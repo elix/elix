@@ -10,9 +10,7 @@ const fs = require('fs').promises;
 const path = require('path');
 
 
-async function createDefineModules(componentFiles) {
-  const defineFolder = path.join(__dirname, '../define');
-  await createEmptyDefineFolder(defineFolder);
+async function createDefineModules(defineFolder, componentFiles) {
   const modulePromises = componentFiles.map(componentFile => {
     const className = path.basename(componentFile, '.js');
     const tag = tagFromClassName(className);
@@ -24,7 +22,7 @@ class ${className} extends Base {}
 customElements.define('${tag}', ${className});
 export default ${className};
 `;
-    const jsPath = path.join(__dirname, '../define', `${className}.js`);
+    const jsPath = path.join(defineFolder, `${className}.js`);
     const jsPromise = fs.writeFile(jsPath, jsContent);
 
     // Create TypeScript file.
@@ -32,33 +30,12 @@ export default ${className};
 `import ${className} from '../src/${componentFile}';
 export default ${className};
 `;
-    const tsPath = path.join(__dirname, '../define', `${className}.d.ts`);
+    const tsPath = path.join(defineFolder, `${className}.d.ts`);
     const tsPromise = fs.writeFile(tsPath, tsContent);
 
     return Promise.all([jsPromise, tsPromise]);
   });
   await Promise.all(modulePromises);
-}
-
-
-async function createEmptyDefineFolder(defineFolder) {
-  try {
-    const files = await fs.readdir(defineFolder);
-    // If we get this far, the folder already exists.
-    // Remove all existing files.
-    const removePromises = files.map(file => {
-      const filePath = path.join(defineFolder, file);
-      fs.unlink(filePath);
-    });
-    await Promise.all(removePromises);
-  } catch (e) {
-    if (e.code === 'ENOENT') {
-      // Folder doesn't exist; create it.
-      await fs.mkdir(defineFolder);
-    } else {
-      throw e;
-    }
-  }
 }
 
 

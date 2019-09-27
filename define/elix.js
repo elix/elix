@@ -163,4 +163,3 @@ export const template = templateImport;
 import * as utilitiesImport from '../src/utilities.js';
 // @ts-ignore
 export const utilities = utilitiesImport;
-
