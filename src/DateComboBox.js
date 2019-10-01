@@ -123,8 +123,8 @@ class DateComboBox extends Base {
     const state = Object.assign(super[internal.defaultState], {
       arrowButtonRole: ArrowDirectionButton,
       calendarRole: CalendarMonthNavigator,
-      date: calendar.today(),
-      datePriority: true, // since we're setting a default date
+      date: null,
+      datePriority: false,
       dateSelected: false,
       dateTimeFormat: null,
       dateTimeFormatOptions,
