@@ -104,7 +104,7 @@ class CalendarDays extends Base {
     if (changed.days) {
       applyChildNodes(this[internal.ids].dayContainer, this[internal.state].days);
     }
-    if (changed.date || changed.showSelectedDay) {
+    if (changed.date || changed.locale || changed.showSelectedDay) {
       // Ensure only current date has "selected" class.
       const showSelectedDay = this[internal.state].showSelectedDay;
       const { date } = this[internal.state];
