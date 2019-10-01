@@ -177,16 +177,16 @@ class ComboBox extends Base {
       template.transmute(this[internal.ids].input, this[internal.state].inputRole);
 
       this[internal.ids].input.addEventListener('blur', () => {
+        this[internal.setState]({
+          focused: false
+        });
         // If we're open and lose focus, then close.
         if (this.opened) {
           this[internal.raiseChangeEvents] = true;
-          this[internal.setState]({
-            focused: false
-          });
           this.close();
           this[internal.raiseChangeEvents] = false;
         }
-      });
+    });
   
       this[internal.ids].input.addEventListener('focus', () => {
         this[internal.raiseChangeEvents] = true;
