@@ -2,10 +2,9 @@ import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import CalendarDay from '../../src/CalendarDay.js';
 
-
 /*
  * Shows an icon for the moon phase for a given date.
- * 
+ *
  * The phases are calculated for UTC (Universal Coordinated Time). Local moon
  * phases will vary.
  *
@@ -13,9 +12,10 @@ import CalendarDay from '../../src/CalendarDay.js';
  * CC-BY.
  */
 class CalendarDayMoonPhase extends CalendarDay {
-
   get [internal.template]() {
-    return template.concat(super[internal.template], template.html`
+    return template.concat(
+      super[internal.template],
+      template.html`
       <style>
         #phaseIcon {
           height: 1.5em;
@@ -27,7 +27,8 @@ class CalendarDayMoonPhase extends CalendarDay {
         }
       </style>
       <img id="phaseIcon">
-    `);
+    `
+    );
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
@@ -44,29 +45,28 @@ class CalendarDayMoonPhase extends CalendarDay {
       // See if the moon's angle crosses a threshold during the given date.
       let quarter;
       if (angle >= 0 && angleNext > angle) {
-        quarter = "full"; // Full moon
+        quarter = 'full'; // Full moon
       } else if (angle >= 90 && angleNext < 90) {
-        quarter = "firstQuarter"; // First quarter
+        quarter = 'firstQuarter'; // First quarter
       } else if (angle >= 180 && angleNext < 180) {
-        quarter = "new"; // New moon
+        quarter = 'new'; // New moon
       } else if (angle >= 270 && angleNext < 270) {
-        quarter = "lastQuarter"; // Last quarter
+        quarter = 'lastQuarter'; // Last quarter
       } else {
         quarter = null; // Nothing special
       }
 
       // Show or hide an icon as appropriate.
-      const phaseIcon = /** @type {HTMLImageElement} */ (this[internal.ids].phaseIcon);
+      const phaseIcon = /** @type {HTMLImageElement} */ (this[internal.ids]
+        .phaseIcon);
       if (quarter) {
-        phaseIcon.src = `images/moon/${quarter}.svg`
+        phaseIcon.src = `images/moon/${quarter}.svg`;
       } else {
         phaseIcon.removeAttribute('src');
       }
     }
   }
-
 }
-
 
 // Return the phase angle of the moon.
 // This is lifted from the JavaScript Ephemeris page by Peter Hayes at
@@ -75,53 +75,72 @@ class CalendarDayMoonPhase extends CalendarDay {
 // equations 46.4 and 46.1.
 function moonAngle(/** @type {Date} */ date) {
   const jd = jd0(date.getFullYear(), date.getMonth() + 1, date.getDate());
-  const T = (jd-2451545.0)/36525;
-  const T2 = T*T;
-  const T3 = T2*T;
-  const T4 = T3*T;
+  const T = (jd - 2451545.0) / 36525;
+  const T2 = T * T;
+  const T3 = T2 * T;
+  const T4 = T3 * T;
   // Moons mean elongation
-  const D = 297.8501921+445267.1114034*T-0.0018819*T2+T3/545868.0-T4/113065000.0;
+  const D =
+    297.8501921 +
+    445267.1114034 * T -
+    0.0018819 * T2 +
+    T3 / 545868.0 -
+    T4 / 113065000.0;
   // Suns mean anomaly
-  const M = 357.5291092+35999.0502909*T-0.0001536*T2+T3/24490000.0;
+  const M = 357.5291092 + 35999.0502909 * T - 0.0001536 * T2 + T3 / 24490000.0;
   // Moons mean anomaly M'
-  const MP = 134.9633964+477198.8675055*T+0.0087414*T2+T3/69699.0-T4/14712000.0;
+  const MP =
+    134.9633964 +
+    477198.8675055 * T +
+    0.0087414 * T2 +
+    T3 / 69699.0 -
+    T4 / 14712000.0;
   // phase angle
-  const pa = 180.0-D-6.289*sind(MP)+2.1*sind(M)-1.274*sind(2*D-MP)
-          -0.658*sind(2*D)-0.214*sind(2*MP)-0.11*sind(D);
+  const pa =
+    180.0 -
+    D -
+    6.289 * sind(MP) +
+    2.1 * sind(M) -
+    1.274 * sind(2 * D - MP) -
+    0.658 * sind(2 * D) -
+    0.214 * sind(2 * MP) -
+    0.11 * sind(D);
   return rev(pa);
 }
 
-
 /**
  * The Julian date at 0 hours UT at Greenwich
- * 
+ *
  * @private
  * @param {number} year
  * @param {number} month
  * @param {number} day
  */
 function jd0(year, month, day) {
-  let y  = year;
+  let y = year;
   let m = month;
   if (m < 3) {
     m += 12;
-    y -= 1
-  };
-  const a = Math.floor(y/100);
-  const b = 2-a+Math.floor(a/4);
-  const j = Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+day+b-1524.5;
+    y -= 1;
+  }
+  const a = Math.floor(y / 100);
+  const b = 2 - a + Math.floor(a / 4);
+  const j =
+    Math.floor(365.25 * (y + 4716)) +
+    Math.floor(30.6001 * (m + 1)) +
+    day +
+    b -
+    1524.5;
   return j;
 }
 
-
 // Extensions to the Math routines - Trig routines in degrees
 function rev(/** @type {number} */ angle) {
-  return angle-Math.floor(angle/360.0)*360.0;
+  return angle - Math.floor(angle / 360.0) * 360.0;
 }
 function sind(/** @type {number} */ angle) {
-  return Math.sin((angle*Math.PI)/180.0);
+  return Math.sin((angle * Math.PI) / 180.0);
 }
-
 
 customElements.define('calendar-day-moon-phase', CalendarDayMoonPhase);
 export default CalendarDayMoonPhase;

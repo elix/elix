@@ -1,11 +1,10 @@
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 /**
  * Defines a component's content as the flattened set of nodes assigned to a
  * slot.
- * 
+ *
  * This mixin defines a component's `content` state member as the flattened
  * set of nodes assigned to a slot, typically the default slot.
  *
@@ -25,25 +24,24 @@ import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-un
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function SlotContentMixin(Base) {
-
   // The class prototype added by the mixin.
   class SlotContent extends Base {
-
     [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
+      if (super[internal.componentDidMount]) {
+        super[internal.componentDidMount]();
+      }
 
       // Listen to changes on the default slot.
       const slot = this[internal.contentSlot];
       if (slot) {
         slot.addEventListener('slotchange', async () => {
-
           // Although slotchange isn't generally a user-driven event, it's
           // impossible for us to know whether a change in slot content is going
           // to result in effects that the host of this element can predict.
           // To be on the safe side, we raise any change events that come up
           // during the processing of this event.
           this[internal.raiseChangeEvents] = true;
-          
+
           // The nodes assigned to the given component have changed.
           // Update the component's state to reflect the new content.
           const content = slot.assignedNodes({ flatten: true });
@@ -53,7 +51,6 @@ export default function SlotContentMixin(Base) {
           await Promise.resolve();
           this[internal.raiseChangeEvents] = false;
         });
-
       }
     }
 
@@ -61,10 +58,13 @@ export default function SlotContentMixin(Base) {
      * See [internal.contentSlot](symbols#contentSlot).
      */
     get [internal.contentSlot]() {
-      /** @type {HTMLSlotElement|null} */ const slot = this.shadowRoot && this.shadowRoot.querySelector('slot:not([name])');
+      /** @type {HTMLSlotElement|null} */ const slot =
+        this.shadowRoot && this.shadowRoot.querySelector('slot:not([name])');
       if (!this.shadowRoot || !slot) {
         /* eslint-disable no-console */
-        console.warn(`SlotContentMixin expects ${this.constructor.name} to define a shadow tree that includes a default (unnamed) slot.\nSee https://elix.org/documentation/SlotContentMixin.`);
+        console.warn(
+          `SlotContentMixin expects ${this.constructor.name} to define a shadow tree that includes a default (unnamed) slot.\nSee https://elix.org/documentation/SlotContentMixin.`
+        );
       }
       return slot;
     }
@@ -74,7 +74,6 @@ export default function SlotContentMixin(Base) {
         content: null
       });
     }
-
   }
 
   return SlotContent;

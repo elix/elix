@@ -1,17 +1,16 @@
 /**
  * Helpers related to universal accessibility
- * 
+ *
  * Universal accessibility is a core goal of the Elix project. These helpers are
  * used by mixins like [AriaListMixin](AriaListMixin) and
  * [AriaMenuMixin](AriaMenuMixin) to support accessibility via ARIA.
- * 
+ *
  * @module accessibility
  */
 
-
 /**
  * A dictionary mapping built-in HTML elements to their default ARIA role.
- * 
+ *
  * Example: `defaultAriaRole.ol` returns "list", since the default ARIA role
  * for an `ol` (ordered list) element is "list".
  */

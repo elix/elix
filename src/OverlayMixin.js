@@ -2,7 +2,6 @@ import { deepContains, firstFocusableElement } from './utilities.js';
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 /** @type {any} */
 const appendedToDocumentKey = Symbol('appendedToDocument');
 /** @type {any} */
@@ -10,22 +9,19 @@ const defaultZIndexKey = Symbol('assignedZIndex');
 /** @type {any} */
 const restoreFocusToElementKey = Symbol('restoreFocusToElement');
 
-
 /**
  * Displays an opened element on top of other page elements.
- * 
+ *
  * This mixin handles showing and hiding an overlay element. It, together with
  * [OpenCloseMixin](OpenCloseMixin), form the core behavior for [Overlay](Overlay),
  * which in turn forms the basis of Elix's overlay components.
- * 
+ *
  * @module OverlayMixin
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function OverlayMixin(Base) {
-
   // The class prototype added by the mixin.
   class Overlay extends Base {
-
     constructor() {
       // @ts-ignore
       super();
@@ -65,7 +61,9 @@ export default function OverlayMixin(Base) {
     }
 
     [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
+      if (super[internal.componentDidMount]) {
+        super[internal.componentDidMount]();
+      }
       openedChanged(this);
 
       // Perform one-time check to see if component needs a default z-index.
@@ -75,7 +73,9 @@ export default function OverlayMixin(Base) {
     }
 
     [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) { super[internal.componentDidUpdate](changed); }
+      if (super[internal.componentDidUpdate]) {
+        super[internal.componentDidUpdate](changed);
+      }
       if (changed.opened) {
         openedChanged(this);
       }
@@ -84,14 +84,18 @@ export default function OverlayMixin(Base) {
       // document, remove it now. Note: we only do this when the component
       // updates, not when it mounts, because we don't want an automatically-added
       // element to be immediately removed during its connectedCallback.
-      if (!this[internal.state].persistent && this.closeFinished && this[appendedToDocumentKey]) {
+      if (
+        !this[internal.state].persistent &&
+        this.closeFinished &&
+        this[appendedToDocumentKey]
+      ) {
         this[appendedToDocumentKey] = false;
         if (this.parentNode) {
           this.parentNode.removeChild(this);
         }
       }
     }
-  
+
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState], {
         autoFocus: true,
@@ -105,17 +109,22 @@ export default function OverlayMixin(Base) {
         this[appendedToDocumentKey] = true;
         document.body.appendChild(this);
       }
-      if (super.open) { await super.open(); }
+      if (super.open) {
+        await super.open();
+      }
     }
 
     [internal.render](/** @type {PlainObject} */ changed) {
-      if (super[internal.render]) { super[internal.render](changed); }
+      if (super[internal.render]) {
+        super[internal.render](changed);
+      }
       if (changed.effectPhase || changed.opened || changed.persistent) {
         if (!this[internal.state].persistent) {
           // Temporary overlay
-          const closed = typeof this.closeFinished === 'undefined' ?
-            this.closed :
-            this.closeFinished;
+          const closed =
+            typeof this.closeFinished === 'undefined'
+              ? this.closed
+              : this.closeFinished;
 
           // We'd like to just use the `hidden` attribute, but Edge has trouble
           // with that: if the hidden attribute is removed from an overlay to
@@ -142,12 +151,10 @@ export default function OverlayMixin(Base) {
         }
       }
     }
-  
   }
 
   return Overlay;
 }
-
 
 // Pick a default z-index, remember it, and apply it.
 function bringToFront(element) {
@@ -156,18 +163,14 @@ function bringToFront(element) {
   element.style.zIndex = defaultZIndex.toString();
 }
 
-
 function getZIndex(element) {
   const computedZIndex = getComputedStyle(element).zIndex;
-  return computedZIndex !== 'auto' ?
-    computedZIndex :
-    element.style.zIndex;
+  return computedZIndex !== 'auto' ? computedZIndex : element.style.zIndex;
 }
-
 
 /*
  * Return the highest z-index currently in use in the document's light DOM.
- * 
+ *
  * This calculation looks at all light DOM elements, so is theoretically
  * expensive. That said, it only runs when an overlay is opening, and is only used
  * if an overlay doesn't have a z-index already. In cases where performance is
@@ -188,13 +191,15 @@ function maxZIndexInUse() {
   return Math.max(...zIndices);
 }
 
-
 // Update the overlay following a change in opened state.
 function openedChanged(/** @type {ReactiveElement} */ element) {
   if (element[internal.state].autoFocus) {
     if (element[internal.state].opened) {
       // Opened
-      if (!element[restoreFocusToElementKey] && document.activeElement !== document.body) {
+      if (
+        !element[restoreFocusToElementKey] &&
+        document.activeElement !== document.body
+      ) {
         // Remember which element had the focus before we were opened.
         element[restoreFocusToElementKey] = document.activeElement;
       }

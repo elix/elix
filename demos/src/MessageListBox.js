@@ -8,22 +8,15 @@ import SwipeCommandsMixin from '../../src/SwipeCommandsMixin.js';
 import TouchSwipeMixin from '../../src/TouchSwipeMixin.js';
 import TrackpadSwipeMixin from '../../src/TrackpadSwipeMixin.js';
 
-
-const Base =
-  EffectMixin(
-  SwipeCommandsMixin(
-  TouchSwipeMixin(
-  TrackpadSwipeMixin(
-    ListBox
-  ))));
-
+const Base = EffectMixin(
+  SwipeCommandsMixin(TouchSwipeMixin(TrackpadSwipeMixin(ListBox)))
+);
 
 /*
  * This demo shows how to create a list box with swipe commands behind the list
  * items for Mark Read/Unread (swipe right) and Delete (swipe left).
  */
 export default class MessageListBox extends Base {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       // The Delete command removes an item, and we also want a swipe to Delete to
@@ -42,14 +35,13 @@ export default class MessageListBox extends Base {
     const selectedItem = this.selectedItem;
 
     switch (event.key) {
-
       case 'Delete':
         if (selectedItem) {
           selectedItem.remove();
         }
         handled = true;
         break;
-      
+
       case ' ':
         if (selectedItem && 'read' in selectedItem) {
           /** @type {any} */ const cast = selectedItem;
@@ -60,7 +52,11 @@ export default class MessageListBox extends Base {
     }
 
     // Prefer our result if it's defined, otherwise use base result.
-    return handled || (super[internal.keydown] && super[internal.keydown](event)) || false;
+    return (
+      handled ||
+      (super[internal.keydown] && super[internal.keydown](event)) ||
+      false
+    );
   }
 
   [internal.render](changed) {
@@ -70,14 +66,19 @@ export default class MessageListBox extends Base {
     // labels to indicate the read/unread state that will result if the user
     // ends the swipe at that point.
     if (changed.swipeItem || changed.swipeRightWillCommit) {
-      const { swipeItem, swipeRightCommitted, swipeRightWillCommit } = this[internal.state];
+      const { swipeItem, swipeRightCommitted, swipeRightWillCommit } = this[
+        internal.state
+      ];
       if (swipeItem && 'read' in swipeItem) {
         const read = swipeItem.read;
-        const newRead = swipeRightCommitted || swipeRightWillCommit ?
-          !read :
-          read;
-        this[internal.ids].readIconWithLabel.style.display = newRead ? '' : 'none';
-        this[internal.ids].unreadIconWithLabel.style.display = newRead ? 'none' : '';
+        const newRead =
+          swipeRightCommitted || swipeRightWillCommit ? !read : read;
+        this[internal.ids].readIconWithLabel.style.display = newRead
+          ? ''
+          : 'none';
+        this[internal.ids].unreadIconWithLabel.style.display = newRead
+          ? 'none'
+          : '';
       }
     }
 
@@ -86,15 +87,17 @@ export default class MessageListBox extends Base {
     // signal the point at which releasing the swipe would commit the command.
     if (changed.swipeRightCommitted || changed.swipeRightWillCommit) {
       /** @type {any} */ (this[internal.ids].unreadCommand).align =
-        this[internal.state].swipeRightCommitted || this[internal.state].swipeRightWillCommit ?
-          'right' :
-          'left';
+        this[internal.state].swipeRightCommitted ||
+        this[internal.state].swipeRightWillCommit
+          ? 'right'
+          : 'left';
     }
     if (changed.swipeLeftCommitted || changed.swipeLeftWillCommit) {
       /** @type {any} */ (this[internal.ids].deleteCommand).align =
-        this[internal.state].swipeLeftCommitted || this[internal.state].swipeLeftWillCommit ?
-          'left' :
-          'right';
+        this[internal.state].swipeLeftCommitted ||
+        this[internal.state].swipeLeftWillCommit
+          ? 'left'
+          : 'right';
     }
   }
 
@@ -102,7 +105,9 @@ export default class MessageListBox extends Base {
   // wait until the left swipe animation has completed before excuting the
   // deletion.
   [internal.swipeLeftTransitionEnd]() {
-    if (super[internal.swipeLeftTransitionEnd]) { super[internal.swipeLeftTransitionEnd](); }
+    if (super[internal.swipeLeftTransitionEnd]) {
+      super[internal.swipeLeftTransitionEnd]();
+    }
     this[internal.state].swipeItem.remove();
   }
 
@@ -117,7 +122,9 @@ export default class MessageListBox extends Base {
   }
 
   get [internal.template]() {
-    const result = template.concat(super[internal.template], template.html`
+    const result = template.concat(
+      super[internal.template],
+      template.html`
       <style>
         #content.generic ::slotted(*) {
           padding: 0;
@@ -157,7 +164,8 @@ export default class MessageListBox extends Base {
           text-align: left;
         }
       </style>
-    `);
+    `
+    );
 
     // Patch the Mark Read/Unread command into the left command slot.
     const leftCommandSlot = result.content.getElementById('leftCommandSlot');
@@ -188,13 +196,14 @@ export default class MessageListBox extends Base {
           </div>
         </animate-alignment>
       `;
-      applyChildNodes(rightCommandSlot, rightCommandTemplate.content.childNodes);
+      applyChildNodes(
+        rightCommandSlot,
+        rightCommandTemplate.content.childNodes
+      );
     }
 
     return result;
   }
-
 }
-
 
 customElements.define('message-list-box', MessageListBox);

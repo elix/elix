@@ -3,24 +3,18 @@ import * as template from './template.js';
 import DarkModeMixin from './DarkModeMixin.js';
 import SeamlessButton from './SeamlessButton.js';
 
-
-const Base = 
-  DarkModeMixin(
-    SeamlessButton
-  );
-
+const Base = DarkModeMixin(SeamlessButton);
 
 /**
  * Button that can be used as a left or right arrow button.
- * 
+ *
  * This component is used by [ArrowDirectionMixin](ArrowDirectionMixin) for its
  * default left/right arrow buttons.
- * 
+ *
  * @inherits SeamlessButton
  * @mixes DarkModeMixin
  */
 class ArrowDirectionButton extends Base {
-
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     // Wait for knowledge of dark mode to be set after initial render.
@@ -31,7 +25,9 @@ class ArrowDirectionButton extends Base {
   }
 
   get [internal.template]() {
-    return template.concat(super[internal.template], template.html`
+    return template.concat(
+      super[internal.template],
+      template.html`
       <style>
         #inner {
           color: rgba(0, 0, 0, 0.7);
@@ -61,10 +57,9 @@ class ArrowDirectionButton extends Base {
           color: rgba(255, 255, 255, 0.3);
         }
       </style>
-    `);
+    `
+    );
   }
-
 }
-
 
 export default ArrowDirectionButton;

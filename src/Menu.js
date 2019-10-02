@@ -18,34 +18,42 @@ import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 import TapSelectionMixin from './TapSelectionMixin.js';
 
-
-const Base =
-  AriaMenuMixin(
+const Base = AriaMenuMixin(
   DelegateFocusMixin(
-  DirectionSelectionMixin(
-  FocusVisibleMixin(
-  GenericMixin(
-  ItemsTextMixin(
-  KeyboardDirectionMixin(
-  KeyboardMixin(
-  KeyboardPagedSelectionMixin(
-  KeyboardPrefixSelectionMixin(
-  LanguageDirectionMixin(
-  SelectedItemTextValueMixin(
-  SelectionInViewMixin(
-  SingleSelectionMixin(
-  SlotItemsMixin(
-  TapSelectionMixin(
-    ReactiveElement
-  ))))))))))))))));
-
+    DirectionSelectionMixin(
+      FocusVisibleMixin(
+        GenericMixin(
+          ItemsTextMixin(
+            KeyboardDirectionMixin(
+              KeyboardMixin(
+                KeyboardPagedSelectionMixin(
+                  KeyboardPrefixSelectionMixin(
+                    LanguageDirectionMixin(
+                      SelectedItemTextValueMixin(
+                        SelectionInViewMixin(
+                          SingleSelectionMixin(
+                            SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+);
 
 /**
  * A menu of choices or commands
- * 
+ *
  * This holds the contents of the menu, not the top-level UI element that invokes
  * a menu. For that, see [MenuButton](MenuButton) or [PopupSource](PopupSource).
- * 
+ *
  * @inherits ReactiveElement
  * @mixes AriaMenuMixin
  * @mixes DelegateFocusMixin
@@ -65,10 +73,9 @@ const Base =
  * @mixes TapSelectionMixin
  */
 class Menu extends Base {
-
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
-    
+
     this.addEventListener('mousemove', () => {
       this.suppressFocusVisibility();
     });
@@ -76,11 +83,9 @@ class Menu extends Base {
     // Treat a pointerdown event as a tap.
     if ('PointerEvent' in window) {
       // Prefer listening to standard pointer events.
-      this.addEventListener('pointerdown', event =>
-        this[internal.tap](event));
+      this.addEventListener('pointerdown', event => this[internal.tap](event));
     } else {
-      this.addEventListener('touchstart', event =>
-        this[internal.tap](event));
+      this.addEventListener('touchstart', event => this[internal.tap](event));
     }
 
     this.removeAttribute('tabindex');
@@ -91,9 +96,8 @@ class Menu extends Base {
     if (changed.selectedIndex && !this[internal.state].selectionFocused) {
       // The selected item needs the focus, but this is complicated. See notes
       // in render.
-      const focusElement = this.selectedItem instanceof HTMLElement ?
-        this.selectedItem :
-        this;
+      const focusElement =
+        this.selectedItem instanceof HTMLElement ? this.selectedItem : this;
       focusElement.focus();
 
       // Now that the selection has been focused, we can remove/reset the
@@ -121,7 +125,7 @@ class Menu extends Base {
 
   /**
    * Highlight the selected item.
-   * 
+   *
    * By default, this uses a heuristic to guess whether the menu was closed by a
    * keyboard or mouse. If so, the menu flashes the selected item off then back
    * on, emulating the menu item selection effect in macOS. Otherwise, it does
@@ -141,14 +145,14 @@ class Menu extends Base {
 
   /**
    * Returns true if the given item should be shown in the indicated state.
-   * 
-   * @param {ListItemElement} item 
-   * @param {PlainObject} state 
+   *
+   * @param {ListItemElement} item
+   * @param {PlainObject} state
    */
   [internal.itemMatchesState](item, state) {
-    const base = super[internal.itemMatchesState] ?
-      super[internal.itemMatchesState](item, state) :
-      true;
+    const base = super[internal.itemMatchesState]
+      ? super[internal.itemMatchesState](item, state)
+      : true;
     /** @type {any} */ const cast = item;
     return base && !cast.disabled;
   }
@@ -157,7 +161,7 @@ class Menu extends Base {
     super[internal.render](changed);
     const { selectedIndex, items } = this[internal.state];
     if ((changed.items || changed.selectedIndex) && items) {
-        // Reflect the selection state to the item.
+      // Reflect the selection state to the item.
       items.forEach((item, index) => {
         const selected = index === selectedIndex;
         item.classList.toggle('selected', selected);
@@ -166,15 +170,19 @@ class Menu extends Base {
         }
       });
     }
-    if ((changed.items || changed.selectedIndex ||
-        changed.selectionFocused || changed.focusVisible)
-        && items) {
+    if (
+      (changed.items ||
+        changed.selectedIndex ||
+        changed.selectionFocused ||
+        changed.focusVisible) &&
+      items
+    ) {
       // A menu has a complicated focus arrangement in which the selected item has
       // focus, which means it needs a tabindex. However, we don't want any other
       // item in the menu to have a tabindex, so that if the user presses Tab or
       // Shift+Tab, they move away from the menu entirely (rather than just moving
       // to the next or previous item).
-      // 
+      //
       // That's already complex, but to make things worse, if we remove the
       // tabindex from an item that has the focus, the focus gets moved to the
       // document. In popup menus, the popup will conclude it's lost the focus,
@@ -183,7 +191,7 @@ class Menu extends Base {
       // the new item has been focused, remove the tabindex from any
       // previously-selected item.
       items.forEach((item, index) => {
-        const selected = index === selectedIndex;      
+        const selected = index === selectedIndex;
         const isDefaultFocusableItem = selectedIndex < 0 && index === 0;
         if (!this[internal.state].selectionFocused) {
           // Phase 1: Add tabindex to newly-selected item.
@@ -196,17 +204,21 @@ class Menu extends Base {
             item.removeAttribute('tabindex');
           }
         }
-    
+
         // Don't show focus on selected item if we're suppressing the focus
         // (because the mouse was used for selection) or if the item was
         // selected by default when the menu opened.
-        const suppressFocus = (selected && !this[internal.state].focusVisible) ||
+        const suppressFocus =
+          (selected && !this[internal.state].focusVisible) ||
           isDefaultFocusableItem;
         item.style.outline = suppressFocus ? 'none' : '';
       });
     }
     if (changed.generic) {
-      this[internal.ids].content.classList.toggle('generic', this[internal.state].generic);
+      this[internal.ids].content.classList.toggle(
+        'generic',
+        this[internal.state].generic
+      );
     }
   }
 
@@ -264,8 +276,6 @@ class Menu extends Base {
       </div>
     `;
   }
-
 }
-
 
 export default Menu;

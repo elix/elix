@@ -5,10 +5,8 @@ import {
 } from '../../src/utilities.js';
 import * as template from '../../src/template.js';
 
-
-describe("utilities", () => {
-
-  it("firstFocusableElement finds first focusable element in light DOM", () => {
+describe('utilities', () => {
+  it('firstFocusableElement finds first focusable element in light DOM', () => {
     const fixture = template.html`
       <div></div>
       <input tabindex="-1">
@@ -23,7 +21,7 @@ describe("utilities", () => {
     assert.equal(element, button);
   });
 
-  it("firstFocusableElement finds first focusable element in composed tree", () => {
+  it('firstFocusableElement finds first focusable element in composed tree', () => {
     const fixture = document.createElement('div');
     const fixtureTemplate = template.html`
       <div></div>
@@ -45,7 +43,7 @@ describe("utilities", () => {
     assert.equal(element, input);
   });
 
-  it("applyChildNodes updates child nodes", () => {
+  it('applyChildNodes updates child nodes', () => {
     const fixture = document.createElement('div');
     const existingChild = document.createTextNode('existing');
     fixture.appendChild(existingChild);
@@ -60,7 +58,7 @@ describe("utilities", () => {
     assert.isNull(existingChild.parentNode);
   });
 
-  it("can return the set of ancestors in a composed tree", () => {
+  it('can return the set of ancestors in a composed tree', () => {
     // Tree:
     //
     // outer
@@ -70,7 +68,7 @@ describe("utilities", () => {
     //         slot
     //     button (will be assigned to slot)
     //       strong
-    //         "Hello" 
+    //         "Hello"
     //
     const outer = document.createElement('div');
     const host = document.createElement('div');
@@ -88,15 +86,6 @@ describe("utilities", () => {
     root.append(p);
 
     const ancestors = [...composedAncestors(text)];
-    assert.deepEqual(ancestors, [
-      strong,
-      button,
-      slot,
-      p,
-      root,
-      host,
-      outer
-    ]);
+    assert.deepEqual(ancestors, [strong, button, slot, p, root, host, outer]);
   });
-
 });

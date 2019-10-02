@@ -1,7 +1,6 @@
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 /**
  * Lets an element determine whether it resides in right-to-left text.
  *
@@ -9,10 +8,8 @@ import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-un
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function LanguageDirectionMixin(Base) {
-
   // The class prototype added by the mixin.
   return class LanguageDirection extends Base {
-
     // The only way to get text direction is to wait for the component to
     // connect and then inspect the computed style on its root element. We set
     // state before calling super so the new state will be included when
@@ -24,8 +21,9 @@ export default function LanguageDirectionMixin(Base) {
       this[internal.setState]({
         rightToLeft
       });
-      if (super.connectedCallback) { super.connectedCallback(); }
+      if (super.connectedCallback) {
+        super.connectedCallback();
+      }
     }
-
-  }
+  };
 }

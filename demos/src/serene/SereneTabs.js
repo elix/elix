@@ -4,9 +4,7 @@ import CrossfadeStage from '../../../src/CrossfadeStage.js';
 import SereneTabButton from './SereneTabButton.js';
 import Tabs from '../../../src/Tabs.js';
 
-
 class SereneTabs extends Tabs {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       generic: false,
@@ -17,7 +15,9 @@ class SereneTabs extends Tabs {
   }
 
   get [internal.template]() {
-    return template.concat(super[internal.template], template.html`
+    return template.concat(
+      super[internal.template],
+      template.html`
       <style>
         :host {
           display: flex;
@@ -35,11 +35,10 @@ class SereneTabs extends Tabs {
           padding: 0 33px;
         }
       </style>
-    `);
+    `
+    );
   }
-
 }
-
 
 customElements.define('serene-tabs', SereneTabs);
 export default SereneTabs;

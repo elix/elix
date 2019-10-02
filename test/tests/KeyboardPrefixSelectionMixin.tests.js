@@ -3,16 +3,11 @@ import ItemsTextMixin from '../../src/ItemsTextMixin.js';
 import KeyboardPrefixSelectionMixin from '../../src/KeyboardPrefixSelectionMixin.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
 
-
-const Base =
-  ItemsTextMixin(
-  KeyboardPrefixSelectionMixin(
-  ReactiveMixin(
-    HTMLElement
-  )));
+const Base = ItemsTextMixin(
+  KeyboardPrefixSelectionMixin(ReactiveMixin(HTMLElement))
+);
 
 class KeyboardPrefixSelectionTest extends Base {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       selectedIndex: -1
@@ -25,13 +20,13 @@ class KeyboardPrefixSelectionTest extends Base {
   set items(items) {
     this[internal.setState]({ items });
   }
-
 }
-customElements.define('keyboard-prefix-selection-test', KeyboardPrefixSelectionTest);
+customElements.define(
+  'keyboard-prefix-selection-test',
+  KeyboardPrefixSelectionTest
+);
 
-
-describe("KeyboardPrefixSelectionMixin", () => {
-
+describe('KeyboardPrefixSelectionMixin', () => {
   let container;
 
   before(() => {
@@ -42,7 +37,7 @@ describe("KeyboardPrefixSelectionMixin", () => {
     container.innerHTML = '';
   });
 
-  it("selects the first item that begins with the typed prefix", () => {
+  it('selects the first item that begins with the typed prefix', () => {
     const fixture = createSampleElement();
     const prefix = 'blu'; // The keys we'll simulate.
 
@@ -59,7 +54,7 @@ describe("KeyboardPrefixSelectionMixin", () => {
     assert.equal(fixture[internal.state].selectedIndex, 6);
   });
 
-  it("backspace removes the last character added to the prefix", () => {
+  it('backspace removes the last character added to the prefix', () => {
     const fixture = createSampleElement();
     const prefix = 'bl'; // The keys we'll simulate.
 
@@ -83,7 +78,7 @@ describe("KeyboardPrefixSelectionMixin", () => {
     assert.equal(fixture[internal.state].selectedIndex, -1);
   });
 
-  it("treats spaces in the typed prefix like regular characters", () => {
+  it('treats spaces in the typed prefix like regular characters', () => {
     const fixture = createSampleElement();
     const prefix = 'dried '; // The keys we'll simulate.
 
@@ -104,7 +99,7 @@ describe("KeyboardPrefixSelectionMixin", () => {
     assert.equal(fixture[internal.state].selectedIndex, 11);
   });
 
-  it("is case-insensitive in matching prefixes", () => {
+  it('is case-insensitive in matching prefixes', () => {
     const fixture = createSampleElement();
     simulateKeydown(fixture, 'c');
     assert.equal(fixture[internal.state].selectedIndex, 7); // Cherry
@@ -112,9 +107,7 @@ describe("KeyboardPrefixSelectionMixin", () => {
     simulateKeydown(fixture, 'B');
     assert.equal(fixture[internal.state].selectedIndex, 4); // Banana
   });
-
 });
-
 
 function createSampleElement() {
   const fixture = new KeyboardPrefixSelectionTest();
@@ -130,7 +123,7 @@ function createSampleElement() {
     'Cherry',
     'Cranberry',
     'Dried Apricot',
-    'Dried Cherry',
+    'Dried Cherry'
   ];
   const items = texts.map(text => {
     const div = document.createElement('div');
@@ -141,11 +134,8 @@ function createSampleElement() {
   return fixture;
 }
 
-
 function simulateKeydown(fixture, key) {
-  const keyCode = key.length === 1 ?
-    key.charCodeAt(0) :
-    null;
+  const keyCode = key.length === 1 ? key.charCodeAt(0) : null;
   fixture[internal.keydown]({
     key,
     keyCode

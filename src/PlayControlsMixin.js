@@ -3,27 +3,23 @@ import * as template from './template.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 import SeamlessButton from './SeamlessButton.js';
 
-
 const wrap = Symbol('wrap');
 
-
 /**
- * Adds buttons for managing playback of a slideshow, audio, etc. 
- * 
+ * Adds buttons for managing playback of a slideshow, audio, etc.
+ *
  * [Play controls let the user go back, pause/resume, or forward](/demos/slideshowWithPlayControls.html)
- * 
+ *
  * @module PlayControlsMixin
  * @elementrole {SeamlessButton} controlButton
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function PlayControlsMixin(Base) {
-
   // The class prototype added by the mixin.
   class PlayControls extends Base {
-
     /**
      * The class, tag, or template used for the play control buttons.
-     * 
+     *
      * @type {Role}
      * @default SeamlessButton
      */
@@ -52,14 +48,23 @@ export default function PlayControlsMixin(Base) {
       }
 
       // Prefer mixin result if it's defined, otherwise use base result.
-      return handled || (super[internal.keydown] && super[internal.keydown](event));
+      return (
+        handled || (super[internal.keydown] && super[internal.keydown](event))
+      );
     }
 
     [internal.render](/** @type {PlainObject} */ changed) {
-      if (super[internal.render]) { super[internal.render](changed); }
+      if (super[internal.render]) {
+        super[internal.render](changed);
+      }
       if (changed.controlButtonRole) {
-        const controlButtons = this.shadowRoot.querySelectorAll('.controlButton');
-        template.transmute(controlButtons, this[internal.state].controlButtonRole);
+        const controlButtons = this.shadowRoot.querySelectorAll(
+          '.controlButton'
+        );
+        template.transmute(
+          controlButtons,
+          this[internal.state].controlButtonRole
+        );
         this[internal.ids].previousButton.addEventListener('click', event => {
           this.selectPrevious();
           event.stopPropagation();
@@ -84,17 +89,15 @@ export default function PlayControlsMixin(Base) {
       }
       if (changed.rightToLeft) {
         const rightToLeft = this[internal.state].rightToLeft;
-        const transform = rightToLeft ?
-          'rotate(180deg)' :
-          '';
+        const transform = rightToLeft ? 'rotate(180deg)' : '';
         this[internal.ids].nextIcon.style.transform = transform;
         this[internal.ids].previousIcon.style.transform = transform;
       }
     }
-    
+
     /**
      * Destructively wrap a node with elements for play controls.
-     * 
+     *
      * @param {Node} original - the element that should be wrapped by play controls
      */
     [wrap](original) {
@@ -181,12 +184,15 @@ export default function PlayControlsMixin(Base) {
 
         <div id="playControlsContainer" role="none"></div>
       `;
-      template.wrap(original, playControlsTemplate.content, '#playControlsContainer');
+      template.wrap(
+        original,
+        playControlsTemplate.content,
+        '#playControlsContainer'
+      );
     }
   }
 
   return PlayControls;
 }
-
 
 PlayControlsMixin.wrap = wrap;

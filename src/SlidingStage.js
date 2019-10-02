@@ -7,24 +7,18 @@ import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 
-
-const Base =
-  EffectMixin(
-  LanguageDirectionMixin(
-  SingleSelectionMixin(
-  SlotItemsMixin(
-    ReactiveElement
-  ))));
-
+const Base = EffectMixin(
+  LanguageDirectionMixin(SingleSelectionMixin(SlotItemsMixin(ReactiveElement)))
+);
 
 /**
  * Slides between selected items on a horizontal axis
- * 
+ *
  * This displays a single item completely visible at a time. When changing which
  * item is selected, it displays a simple sliding transition.
- * 
+ *
  * This component is used as the main stage for a [Carousel](Carousel).
- * 
+ *
  * @inherits ReactiveElement
  * @mixes EffectMixin
  * @mixes LanguageDirectionMixin
@@ -32,7 +26,6 @@ const Base =
  * @mixes SlotItemsMixin
  */
 class SlidingStage extends Base {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       orientation: 'horizontal',
@@ -49,20 +42,27 @@ class SlidingStage extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.enableEffects || changed.orientation ||
-        changed.selectedIndex || changed.swipeFraction) {
-      const { orientation, rightToLeft, selectedIndex, items } = this[internal.state];
+    if (
+      changed.enableEffects ||
+      changed.orientation ||
+      changed.selectedIndex ||
+      changed.swipeFraction
+    ) {
+      const { orientation, rightToLeft, selectedIndex, items } = this[
+        internal.state
+      ];
       const vertical = orientation === 'vertical';
-      const sign = vertical ?
-        -1 :
-        rightToLeft ? 1 : -1;
+      const sign = vertical ? -1 : rightToLeft ? 1 : -1;
       const swiping = this[internal.state].swipeFraction != null;
       const swipeFraction = this[internal.state].swipeFraction || 0;
       let translation;
       if (selectedIndex >= 0) {
         const selectionFraction = selectedIndex + sign * swipeFraction;
         const count = items ? items.length : 0;
-        const dampedSelection = fractionalSelection.dampenListSelection(selectionFraction, count);
+        const dampedSelection = fractionalSelection.dampenListSelection(
+          selectionFraction,
+          count
+        );
         translation = sign * dampedSelection * 100;
       } else {
         translation = 0;
@@ -73,16 +73,16 @@ class SlidingStage extends Base {
       slidingStageContent.style.transform = `translate${axis}(${translation}%)`;
 
       const showTransition = this[internal.state].enableEffects && !swiping;
-      slidingStageContent.style.transition = showTransition ?
-        'transform 0.25s' :
-        'none';
+      slidingStageContent.style.transition = showTransition
+        ? 'transform 0.25s'
+        : 'none';
     }
     if (changed.orientation) {
       const { orientation } = this[internal.state];
       const vertical = orientation === 'vertical';
-      this[internal.ids].slidingStageContent.style.flexDirection = vertical ?
-        'column' :
-        '';
+      this[internal.ids].slidingStageContent.style.flexDirection = vertical
+        ? 'column'
+        : '';
     }
   }
 
@@ -132,8 +132,6 @@ class SlidingStage extends Base {
       </div>
     `;
   }
-
 }
-
 
 export default SlidingStage;

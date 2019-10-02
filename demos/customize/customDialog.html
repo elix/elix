@@ -1,53 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <!--
 
-  <!--
+    Shows a Dialog subclass that sets role properties for the backdrop and frame.
 
-  Shows a Dialog subclass that sets role properties for the backdrop and frame.
+    -->
 
-  -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dialog with custom backdrop and overlay</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Dialog with custom backdrop and overlay</title>
+    <link rel="stylesheet" href="../demos.css" />
+    <script type="module" src="../src/CustomButton.js"></script>
+    <script type="module" src="../src/SampleDialog.js"></script>
+  </head>
 
-  <link rel="stylesheet" href="../demos.css">
-  <script type="module" src="../src/CustomButton.js"></script>
-  <script type="module" src="../src/SampleDialog.js"></script>
+  <body role="main">
+    <div class="demo padded">
+      <style>
+        #floating {
+          background: white;
+          position: relative;
+          z-index: 1;
+        }
+      </style>
 
-</head>
+      <p>
+        <custom-button id="openButton" onclick="sampleDialog.open()"
+          >Open dialog</custom-button
+        >
+      </p>
+      <sample-dialog id="sampleDialog" aria-label="Sample dialog">
+        Tap/click here or press Esc to cancel.
+      </sample-dialog>
 
-<body role="main">
-  <div class="demo padded">
-
-    <style>
-      #floating {
-        background: white;
-        position: relative;
-        z-index: 1;
-      }
-    </style>
-
-    <p>
-      <custom-button id="openButton" onclick="sampleDialog.open()">Open dialog</custom-button>
-    </p>
-    <sample-dialog id="sampleDialog" aria-label="Sample dialog">
-      Tap/click here or press Esc to cancel.
-    </sample-dialog>
-
-    <p id="floating">
-      This paragraph has a z-index, but should appear behind the dialog.
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sed
-      lorem scelerisque, blandit libero vitae, dapibus nisl. Sed turpis diam,
-      placerat a feugiat sed, maximus at velit. Ut sit amet semper sapien. Donec
-      vitae leo ex. Duis eget quam sed metus tempor lobortis eget feugiat elit.
-      Cras varius, arcu ac commodo tincidunt, lectus dui convallis nunc, quis
-      maximus nisl erat ac mi. Phasellus et velit diam.
-    </p>
-
-  </div>
-
-</body>
-
+      <p id="floating">
+        This paragraph has a z-index, but should appear behind the dialog. Lorem
+        ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sed lorem
+        scelerisque, blandit libero vitae, dapibus nisl. Sed turpis diam,
+        placerat a feugiat sed, maximus at velit. Ut sit amet semper sapien.
+        Donec vitae leo ex. Duis eget quam sed metus tempor lobortis eget
+        feugiat elit. Cras varius, arcu ac commodo tincidunt, lectus dui
+        convallis nunc, quis maximus nisl erat ac mi. Phasellus et velit diam.
+      </p>
+    </div>
+  </body>
 </html>

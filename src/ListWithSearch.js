@@ -10,22 +10,21 @@ import ReactiveElement from './ReactiveElement.js';
 import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 
-
-const Base =
-  ComposedFocusMixin(
+const Base = ComposedFocusMixin(
   DelegateFocusMixin(
-  DelegateItemsMixin(
-  DirectionSelectionMixin(
-  KeyboardMixin(
-  SelectedItemTextValueMixin(
-  SingleSelectionMixin(
-    ReactiveElement
-  )))))));
-
+    DelegateItemsMixin(
+      DirectionSelectionMixin(
+        KeyboardMixin(
+          SelectedItemTextValueMixin(SingleSelectionMixin(ReactiveElement))
+        )
+      )
+    )
+  )
+);
 
 /**
  * A list accompanied by a search box
- * 
+ *
  * @inherits ReactiveElement
  * @mixes ComposedFocusMixin
  * @mixes DelegateFocusMixin
@@ -38,7 +37,6 @@ const Base =
  * @elementRole {FilterListBox} list
  */
 class ListWithSearch extends Base {
-
   // Forward any ARIA label to the input element.
   get ariaLabel() {
     return this[internal.state].ariaLabel;
@@ -56,7 +54,7 @@ class ListWithSearch extends Base {
       placeholder: 'Search'
     });
   }
-  
+
   get filter() {
     return this[internal.state].filter;
   }
@@ -66,7 +64,7 @@ class ListWithSearch extends Base {
 
   /**
    * The class, tag, or template used to create the input element.
-   * 
+   *
    * @type {Role}
    * @default 'input'
    */
@@ -81,24 +79,26 @@ class ListWithSearch extends Base {
     return this[internal.ids].list;
   }
 
-    [internal.keydown](/** @type {KeyboardEvent} */ event) {
-
+  [internal.keydown](/** @type {KeyboardEvent} */ event) {
     let handled;
     /** @type {any} */
     const list = this[internal.ids].list;
 
     switch (event.key) {
-
       // We do our own handling of the Up and Down arrow keys, rather than
       // relying on KeyboardDirectionMixin. The latter supports Home and End,
       // and we don't want to handle those -- we want to let the text input
       // handle them. We also need to forward PageDown/PageUp to the list
       // element.
       case 'ArrowDown':
-        handled = event.altKey ? this[internal.goEnd]() : this[internal.goDown]();
+        handled = event.altKey
+          ? this[internal.goEnd]()
+          : this[internal.goDown]();
         break;
       case 'ArrowUp':
-        handled = event.altKey ? this[internal.goStart]() : this[internal.goUp]();
+        handled = event.altKey
+          ? this[internal.goStart]()
+          : this[internal.goUp]();
         break;
 
       // Forward Page Down/Page Up to the list element.
@@ -115,7 +115,7 @@ class ListWithSearch extends Base {
       //
       // This forces us to speculate about whether pageUp/pageDown will update
       // the selection so that we can synchronously return an indication of
-      // whether the key event was handled. 
+      // whether the key event was handled.
       case 'PageDown':
         if (list.pageDown) {
           setTimeout(() => list.pageDown());
@@ -134,12 +134,14 @@ class ListWithSearch extends Base {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[internal.keydown] && super[internal.keydown](event));
+    return (
+      handled || (super[internal.keydown] && super[internal.keydown](event))
+    );
   }
 
   /**
    * The class, tag, or template used to create the list element.
-   * 
+   *
    * @type {Role}
    * @default ListBox
    */
@@ -160,7 +162,10 @@ class ListWithSearch extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.inputRole) {
-      template.transmute(this[internal.ids].input, this[internal.state].inputRole);
+      template.transmute(
+        this[internal.ids].input,
+        this[internal.state].inputRole
+      );
       this[internal.ids].input.addEventListener('input', () => {
         this[internal.raiseChangeEvents] = true;
         const filter = /** @type {any} */ (this[internal.ids].input).value;
@@ -171,7 +176,10 @@ class ListWithSearch extends Base {
       });
     }
     if (changed.listRole) {
-      template.transmute(this[internal.ids].list, this[internal.state].listRole);
+      template.transmute(
+        this[internal.ids].list,
+        this[internal.state].listRole
+      );
     }
     if (changed.ariaLabel) {
       const { ariaLabel } = this[internal.state];
@@ -184,7 +192,9 @@ class ListWithSearch extends Base {
     }
     if (changed.placeholder) {
       const { placeholder } = this[internal.state];
-      /** @type {HTMLInputElement} */ (this[internal.ids].input).placeholder = placeholder;
+      /** @type {HTMLInputElement} */ (this[
+        internal.ids
+      ].input).placeholder = placeholder;
     }
   }
 
@@ -209,8 +219,6 @@ class ListWithSearch extends Base {
       </div>
     `;
   }
-
 }
-
 
 export default ListWithSearch;

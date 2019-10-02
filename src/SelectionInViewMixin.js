@@ -2,7 +2,6 @@ import { defaultScrollTarget } from './scrolling.js';
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 /**
  * Scrolls to ensure the selected item is visible
  *
@@ -19,17 +18,19 @@ import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-un
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function SelectionInViewMixin(Base) {
-
   // The class prototype added by the mixin.
   class SelectionInView extends Base {
-
     [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
+      if (super[internal.componentDidMount]) {
+        super[internal.componentDidMount]();
+      }
       this.scrollSelectionIntoView();
     }
 
     [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) { super[internal.componentDidUpdate](changed); }
+      if (super[internal.componentDidUpdate]) {
+        super[internal.componentDidUpdate](changed);
+      }
       if (changed.selectedIndex) {
         this.scrollSelectionIntoView();
       }
@@ -47,14 +48,16 @@ export default function SelectionInViewMixin(Base) {
      * property. By default, it will scroll the element itself.
      */
     scrollSelectionIntoView() {
-      if (super.scrollSelectionIntoView) { super.scrollSelectionIntoView(); }
+      if (super.scrollSelectionIntoView) {
+        super.scrollSelectionIntoView();
+      }
 
       const scrollTarget = this[internal.scrollTarget];
       const { selectedIndex, items } = this[internal.state];
       if (selectedIndex < 0 || !items) {
         return;
       }
-      
+
       const selectedItem = items[selectedIndex];
       if (!selectedItem) {
         return;
@@ -71,35 +74,34 @@ export default function SelectionInViewMixin(Base) {
       const leftDelta = itemRect.left - scrollTargetRect.left;
       const rightDelta = itemRect.right - scrollTargetRect.right;
       const topDelta = itemRect.top - scrollTargetRect.top;
-      
+
       // Scroll the target as necessary to bring the item into view.
       // If an `orientation` state member is defined, only scroll along that
       // axis. Otherwise, assume the orientation is "both".
       const orientation = this[internal.state].orientation || 'both';
       if (orientation === 'horizontal' || orientation === 'both') {
         if (rightDelta > 0) {
-          scrollTarget.scrollLeft += rightDelta;            // Scroll right
+          scrollTarget.scrollLeft += rightDelta; // Scroll right
         } else if (leftDelta < 0) {
-          scrollTarget.scrollLeft += Math.ceil(leftDelta);  // Scroll left
+          scrollTarget.scrollLeft += Math.ceil(leftDelta); // Scroll left
         }
       }
       if (orientation === 'vertical' || orientation === 'both') {
         if (bottomDelta > 0) {
-          scrollTarget.scrollTop += bottomDelta;            // Scroll down
+          scrollTarget.scrollTop += bottomDelta; // Scroll down
         } else if (topDelta < 0) {
-          scrollTarget.scrollTop += Math.ceil(topDelta);    // Scroll up
+          scrollTarget.scrollTop += Math.ceil(topDelta); // Scroll up
         }
       }
     }
 
-    
     /**
      * The element that should be scrolled to get the selected item into view.
-     * 
+     *
      * By default, this uses the [defaultScrollTarget](defaultScrollTarget)
      * helper to find the most likely candidate for scrolling. You can override
      * this property to directly identify which element should be scrolled.
-     * 
+     *
      * See also [internal.scrollTarget](symbols#scrollTarget).
      */
     get [internal.scrollTarget]() {

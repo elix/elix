@@ -5,15 +5,9 @@ import CalendarDay from './CalendarDay.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import SeamlessButton from './SeamlessButton.js';
 
-
-const Base =
-  CalendarElementMixin(
-    SeamlessButton
-  );
-
+const Base = CalendarElementMixin(SeamlessButton);
 
 class CalendarDayButton extends Base {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       date: calendar.today(),
@@ -65,7 +59,7 @@ class CalendarDayButton extends Base {
     if (defaultSlot) {
       const dayTemplate = document.createElement('template');
       const day = new CalendarDay();
-      day.id = "day";
+      day.id = 'day';
       dayTemplate.content.append(day);
       template.transmute(defaultSlot, dayTemplate);
     }
@@ -88,8 +82,6 @@ class CalendarDayButton extends Base {
     result.content.appendChild(styleTemplate.content);
     return result;
   }
-
 }
-
 
 export default CalendarDayButton;

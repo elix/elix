@@ -2,11 +2,11 @@ import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import Button from '../../src/Button.js';
 
-
 class CustomButton extends Button {
-
   get [internal.template]() {
-    return template.concat(super[internal.template], template.html`
+    return template.concat(
+      super[internal.template],
+      template.html`
       <style>
         #inner {
           background: white;
@@ -15,11 +15,10 @@ class CustomButton extends Button {
           padding: 0.5em 1em;
         }
       </style>
-    `);
+    `
+    );
   }
-
 }
-
 
 customElements.define('custom-button', CustomButton);
 export default CustomButton;

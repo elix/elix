@@ -3,24 +3,18 @@ import ContentItemsMixin from '../../src/ContentItemsMixin.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
 import SingleSelectionMixin from '../../src/SingleSelectionMixin.js';
 
-
-const Base =
-  ContentItemsMixin(
-  ReactiveMixin(
-  SingleSelectionMixin(
-    HTMLElement
-  )));
-
+const Base = ContentItemsMixin(
+  ReactiveMixin(SingleSelectionMixin(HTMLElement))
+);
 
 /*
  * A very simple component to show the application of SingleSelectionMixin
  * and ContentItemsMixin.
  *
  * For a more complete demo using SingleSelectionMixin, see the ListBox demo.
- * 
+ *
  */
 class SingleSelectionDemo extends Base {
-
   constructor() {
     super();
     /* Clicking an item selects it. */
@@ -53,7 +47,7 @@ class SingleSelectionDemo extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     const { selectedIndex, items } = this[internal.state];
-    if (changed.items || changed.selectedIndex && items) {
+    if (changed.items || (changed.selectedIndex && items)) {
       // Apply `selected` style to the selected item only.
       items.forEach((item, index) => {
         const selected = index === selectedIndex;
@@ -61,9 +55,7 @@ class SingleSelectionDemo extends Base {
       });
     }
   }
-
 }
-
 
 customElements.define('single-selection-demo', SingleSelectionDemo);
 export default SingleSelectionDemo;

@@ -1,7 +1,6 @@
 import * as internal from '../../src/internal.js';
 import WrappedStandardElement from '../../src/WrappedStandardElement.js';
 
-
 const WrappedA = WrappedStandardElement.wrap('a');
 customElements.define('wrapped-a', WrappedA);
 
@@ -17,9 +16,7 @@ customElements.define('wrapped-img', WrappedImg);
 const WrappedInput = WrappedStandardElement.wrap('input');
 customElements.define('wrapped-input', WrappedInput);
 
-
-describe("WrappedStandardElement", () => {
-
+describe('WrappedStandardElement', () => {
   let container;
 
   before(() => {
@@ -30,13 +27,13 @@ describe("WrappedStandardElement", () => {
     container.innerHTML = '';
   });
 
-  it("creates an instance of the wrapped element", () => {
+  it('creates an instance of the wrapped element', () => {
     const fixture = new WrappedA();
     fixture[internal.renderChanges]();
     assert(fixture.inner instanceof HTMLAnchorElement);
   });
 
-  it("exposes getter/setters that proxy to the wrapped element", () => {
+  it('exposes getter/setters that proxy to the wrapped element', () => {
     const fixture = new WrappedA();
     fixture.href = 'http://localhost/foo/bar.html';
     container.appendChild(fixture);
@@ -46,7 +43,7 @@ describe("WrappedStandardElement", () => {
     assert.equal(fixture.pathname, '/foo/bar.html');
   });
 
-  it("marshals attributes to properties on the inner element", () => {
+  it('marshals attributes to properties on the inner element', () => {
     const fixture = new WrappedA();
     container.appendChild(fixture);
     fixture.setAttribute('href', 'http://example.com/');
@@ -54,17 +51,18 @@ describe("WrappedStandardElement", () => {
     assert.equal(fixture.inner.href, 'http://example.com/');
   });
 
-  it("re-raises events not automatically retargetted by Shadow DOM", done => {
+  it('re-raises events not automatically retargetted by Shadow DOM', done => {
     const fixture = new WrappedImg();
     container.appendChild(fixture);
     fixture.addEventListener('load', () => {
       done();
     });
     // Load a 1x1 pixel image to trigger the load event.
-    fixture.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
+    fixture.src =
+      'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
   });
 
-  it("does not raise events if inner element is disabled", () => {
+  it('does not raise events if inner element is disabled', () => {
     const fixture = new WrappedButton();
     container.appendChild(fixture);
     let count = 0;
@@ -78,7 +76,7 @@ describe("WrappedStandardElement", () => {
     assert.equal(count, 1);
   });
 
-  it("chooses an appropriate :host display style based on the wrapped element", () => {
+  it('chooses an appropriate :host display style based on the wrapped element', () => {
     const fixtureA = new WrappedA();
     container.appendChild(fixtureA);
     const fixtureDiv = new WrappedDiv();
@@ -87,10 +85,10 @@ describe("WrappedStandardElement", () => {
     assert.equal(getComputedStyle(fixtureDiv).display, 'block');
   });
 
-  it("delegates boolean attributes", async () => {
+  it('delegates boolean attributes', async () => {
     const fixture = new WrappedButton();
     container.appendChild(fixture);
-    
+
     // Disable via property.
     fixture.disabled = true;
     fixture[internal.renderChanges]();
@@ -105,14 +103,14 @@ describe("WrappedStandardElement", () => {
     fixture.setAttribute('disabled', '');
     fixture[internal.renderChanges]();
     assert(fixture.inner.disabled);
-    
+
     // Re-enable via attribute.
     fixture.removeAttribute('disabled');
     fixture[internal.renderChanges]();
     assert(!fixture.inner.disabled);
   });
 
-  it("delegates tabindex state to inner element", async () => {
+  it('delegates tabindex state to inner element', async () => {
     const fixture = new WrappedInput();
     container.appendChild(fixture);
     // NB: tabIndex is not part of WrappedInput's regular state; we're just
@@ -121,9 +119,9 @@ describe("WrappedStandardElement", () => {
     assert.equal(fixture.inner.tabIndex, 1);
   });
 
-  it("delegates methods", async () => {
+  it('delegates methods', async () => {
     const fixture = new WrappedInput();
-    fixture.value = "Hello";
+    fixture.value = 'Hello';
     container.appendChild(fixture);
     fixture.setSelectionRange(1, 4);
     assert.equal(fixture.selectionStart, 1);
@@ -138,5 +136,4 @@ describe("WrappedStandardElement", () => {
     fixture[internal.renderChanges]();
     assert.equal(fixture.inner.getAttribute('readonly'), '');
   });
-
 });

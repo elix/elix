@@ -1,7 +1,6 @@
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 // A cache of processed templates, indexed by element class.
 const classTemplateMap = new Map();
 
@@ -15,7 +14,7 @@ const shadowReferencesKey = Symbol('shadowReferences');
  * `<template>` element:
  *
  *     import * as template from 'elix/src/template.js';
- * 
+ *
  *     class MyElement extends ShadowTemplateMixin(HTMLElement) {
  *       get [internal.template]() {
  *         return template.html`Hello, <em>world</em>.`;
@@ -26,7 +25,7 @@ const shadowReferencesKey = Symbol('shadowReferences');
  * the instance, and the contents of the template will be cloned into the
  * shadow root. If your component does not define a `template` method, this
  * mixin has no effect.
- * 
+ *
  * This adds a member on the component called `this[internal.ids]` that can be used to
  * reference shadow elements with IDs. E.g., if component's shadow contains an
  * element `<button id="foo">`, then this mixin will create a member
@@ -36,10 +35,8 @@ const shadowReferencesKey = Symbol('shadowReferences');
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function ShadowTemplateMixin(Base) {
-
   // The class prototype added by the mixin.
   class ShadowTemplate extends Base {
-
     /**
      * A convenient shortcut for looking up an element by ID in the component's
      * Shadow DOM subtree.
@@ -57,14 +54,17 @@ export default function ShadowTemplateMixin(Base) {
       if (!this[shadowReferencesKey]) {
         // Construct a proxy that maps $ -> getElementById.
         const element = this;
-        this[shadowReferencesKey] = new Proxy({}, {
-          /* eslint-disable no-unused-vars */
-          get(target, property, receiver) {
-            return element.shadowRoot && typeof property === 'string' ?
-              element.shadowRoot.getElementById(property) :
-              null;
+        this[shadowReferencesKey] = new Proxy(
+          {},
+          {
+            /* eslint-disable no-unused-vars */
+            get(target, property, receiver) {
+              return element.shadowRoot && typeof property === 'string'
+                ? element.shadowRoot.getElementById(property)
+                : null;
+            }
           }
-        });
+        );
       }
       return this[shadowReferencesKey];
     }
@@ -74,12 +74,14 @@ export default function ShadowTemplateMixin(Base) {
      * component instance, and the template stamped into it.
      */
     [internal.render](/** @type {PlainObject} */ changed) {
-      if (super[internal.render]) { super[internal.render](changed); }
+      if (super[internal.render]) {
+        super[internal.render](changed);
+      }
       if (this.shadowRoot) {
         // Already rendered
         return;
       }
-      
+
       // If this type of element defines a template, prepare it for use.
       const template = getTemplate(this);
       if (template) {
@@ -93,24 +95,22 @@ export default function ShadowTemplateMixin(Base) {
         root.appendChild(clone);
       }
     }
-
   }
 
   return ShadowTemplate;
 }
 
-
 /**
  * Return and cache the template for the given element.
- * 
+ *
  * @private
- * @param {HTMLElement} element 
+ * @param {HTMLElement} element
  */
 function getTemplate(element) {
   const hasDynamicTemplate = element[internal.hasDynamicTemplate];
-  let template = hasDynamicTemplate ?
-    undefined : // Always retrieve template
-    classTemplateMap.get(element.constructor); // See if we've cached it
+  let template = hasDynamicTemplate
+    ? undefined // Always retrieve template
+    : classTemplateMap.get(element.constructor); // See if we've cached it
   if (template === undefined) {
     // Ask the component for its template.
     template = element[internal.template] || null;

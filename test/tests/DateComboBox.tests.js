@@ -1,9 +1,7 @@
 import * as calendar from '../../src/calendar.js';
 import DateComboBox from '../../define/DateComboBox.js';
 
-
-describe("DateComboBox", () => {
-
+describe('DateComboBox', () => {
   let container;
 
   before(() => {
@@ -14,7 +12,7 @@ describe("DateComboBox", () => {
     container.innerHTML = '';
   });
 
-  it("parses value according to locale", () => {
+  it('parses value according to locale', () => {
     const fixture = new DateComboBox();
     fixture.locale = 'en-US';
     fixture.value = '1/2/2019'; // 2 Jan 2019
@@ -28,7 +26,7 @@ describe("DateComboBox", () => {
     assert.equal(fixture.value, '01/02/2019'); // en-GB prefers leading zero
   });
 
-  it("parses date according to locale", () => {
+  it('parses date according to locale', () => {
     const fixture = new DateComboBox();
     fixture.locale = 'en-US';
     fixture.date = new Date(2019, 0, 2); // 2 Jan 2019
@@ -37,5 +35,4 @@ describe("DateComboBox", () => {
     fixture.locale = 'en-GB';
     assert.equal(fixture.value, '02/01/2019'); // en-GB prefers leading zero
   });
-
 });

@@ -1,19 +1,12 @@
 import OpenCloseMixin from '../../src/OpenCloseMixin.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
 
-
-const Base =
-  OpenCloseMixin(
-  ReactiveMixin(
-    HTMLElement
-  ));
+const Base = OpenCloseMixin(ReactiveMixin(HTMLElement));
 
 class OpenCloseTest extends Base {}
 customElements.define('open-close-test', OpenCloseTest);
 
-
-describe("OpenCloseMixin", function() {
-
+describe('OpenCloseMixin', function() {
   it('opens and closes with opened property', () => {
     const fixture = new OpenCloseTest();
     assert(!fixture.opened);
@@ -33,5 +26,4 @@ describe("OpenCloseMixin", function() {
     assert(fixture.closed);
     assert(!fixture.opened);
   });
-
 });

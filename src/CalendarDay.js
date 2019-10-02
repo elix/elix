@@ -4,33 +4,27 @@ import * as template from './template.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
-
-const Base =
-  CalendarElementMixin(
-    ReactiveElement
-  );
-
+const Base = CalendarElementMixin(ReactiveElement);
 
 /**
  * Calendar representation of a single day.
- * 
+ *
  * [A default representation of the current day in browser's default locale](/demos/calendarDay.html)
- * 
+ *
  * Given a reference `date` property, this component will show a calendar
  * representation of that date.
- * 
+ *
  * [CalendarDays](CalendarDays), and [CalendarMonth](CalendarMonth) instantiate
  * `CalendarDay` as the default component for rendering days.
-  * 
+ *
  * All of the Elix calendar components attempt to provide full
  * [international calendar support](CalendarMonth#international-support)
  * to the extent currently possible in the user's web browser.
-* 
+ *
  * @inherits ReactiveElement
  * @mixes CalendarElementMixin
  */
 class CalendarDay extends Base {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       date: calendar.today(),
@@ -48,12 +42,20 @@ class CalendarDay extends Base {
       const dayOfWeek = date.getDay();
       const dayOfMonth = date.getDate();
       const nextDate = calendar.offsetDateByDays(date, 1);
-      const daysFromToday = Math.round(date.getTime() - today.getTime()) / calendar.millisecondsPerDay;
-      classList.toggle('alternateMonth', Math.abs(date.getMonth() - today.getMonth()) % 2 === 1);
+      const daysFromToday =
+        Math.round(date.getTime() - today.getTime()) /
+        calendar.millisecondsPerDay;
+      classList.toggle(
+        'alternateMonth',
+        Math.abs(date.getMonth() - today.getMonth()) % 2 === 1
+      );
       classList.toggle('firstDayOfMonth', dayOfMonth === 1);
       classList.toggle('firstWeek', dayOfMonth <= 7);
       classList.toggle('future', date > today);
-      classList.toggle('lastDayOfMonth', date.getMonth() !== nextDate.getMonth());
+      classList.toggle(
+        'lastDayOfMonth',
+        date.getMonth() !== nextDate.getMonth()
+      );
       classList.toggle('past', date < today);
       classList.toggle('saturday', dayOfWeek === 6);
       classList.toggle('sunday', dayOfWeek === 0);
@@ -63,7 +65,8 @@ class CalendarDay extends Base {
     if (changed.date || changed.locale) {
       const dayOfWeek = date.getDay();
       const { locale } = this[internal.state];
-      const weekend = dayOfWeek === calendar.weekendStart(locale) ||
+      const weekend =
+        dayOfWeek === calendar.weekendStart(locale) ||
         dayOfWeek === calendar.weekendEnd(locale);
       classList.toggle('weekday', !weekend);
       classList.toggle('weekend', weekend);
@@ -128,8 +131,6 @@ class CalendarDay extends Base {
       <span id="day"></span>
     `;
   }
-
 }
-
 
 export default CalendarDay;

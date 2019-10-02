@@ -2,17 +2,15 @@ import * as internal from './internal.js';
 import * as template from './template.js';
 import ReactiveElement from './ReactiveElement.js';
 
-
 /**
  * A simple frame for overlay content.
- * 
+ *
  * The default appearance of `OverlayFrame` uses a simple drop-shadow to let the
  * user see the framed content as being on top of the background page content.
- * 
+ *
  * @inherits ReactiveElement
  */
 class OverlayFrame extends ReactiveElement {
-
   get [internal.template]() {
     return template.html`
       <style>
@@ -26,8 +24,6 @@ class OverlayFrame extends ReactiveElement {
       <slot></slot>
     `;
   }
-
 }
-
 
 export default OverlayFrame;

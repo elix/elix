@@ -7,12 +7,7 @@ import GenericMixin from './GenericMixin.js';
 import TabButton from './TabButton.js';
 import TabStrip from './TabStrip.js';
 
-
-const Base =
-  GenericMixin(
-    Explorer
-  );
-
+const Base = GenericMixin(Explorer);
 
 /**
  * Basic tabs structure for navigation and configuration
@@ -28,7 +23,6 @@ const Base =
  * @elementrole {TabStrip} proxyList
  */
 class Tabs extends Base {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       itemRole: 'tabpanel',
@@ -42,15 +36,12 @@ class Tabs extends Base {
     super[internal.render](changed);
     const { items } = this[internal.state];
     /** @type {Element[]} */ const proxies = this[internal.state].proxies;
-    if ((changed.items || changed.proxies)
-      && items && proxies) {
-
+    if ((changed.items || changed.proxies) && items && proxies) {
       // Recreate association between items and proxies.
       const { proxiesAssigned, itemRole } = this[internal.state];
 
       // Create role for each item.
       items.forEach((item, index) => {
-
         if (itemRole === defaultAriaRole[item.localName]) {
           item.removeAttribute('role');
         } else {
@@ -76,7 +67,8 @@ class Tabs extends Base {
         const item = items[index];
         if (item) {
           if (!proxiesAssigned) {
-            const label = item.getAttribute('aria-label') ||
+            const label =
+              item.getAttribute('aria-label') ||
               ('alt' in item ? /** @type {any} */ (item).alt : '');
             proxy.textContent = label;
           }
@@ -93,11 +85,15 @@ class Tabs extends Base {
     }
     if (changed.generic) {
       if ('generic' in this[internal.ids].proxyList) {
-        /** @type {any} */ (this[internal.ids].proxyList).generic = this[internal.state].generic;
+        /** @type {any} */ (this[internal.ids].proxyList).generic = this[
+          internal.state
+        ].generic;
       }
     }
-    if ((changed.generic || changed.proxies || changed.proxiesAssigned) &&
-        proxies) {
+    if (
+      (changed.generic || changed.proxies || changed.proxiesAssigned) &&
+      proxies
+    ) {
       if (!this[internal.state].proxiesAssigned) {
         proxies.forEach(proxy => {
           /** @type {any} */ const cast = proxy;
@@ -118,10 +114,10 @@ class Tabs extends Base {
 
   /**
    * The alignment of the tabs within the tab strip.
-   * 
+   *
    * The value of this property will be forwarded to the corresponding
    * property
-   * 
+   *
    * @type {('start'|'center'|'end'|'stretch')}
    * @default 'start'
    */
@@ -133,16 +129,17 @@ class Tabs extends Base {
   }
 
   get [internal.template]() {
-    return template.concat(super[internal.template], template.html`
+    return template.concat(
+      super[internal.template],
+      template.html`
       <style>
         #proxyList {
           z-index: 1;
         }
       </style>
-    `);
+    `
+    );
   }
-
 }
-
 
 export default Tabs;

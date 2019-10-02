@@ -2,7 +2,6 @@ import { closestFocusableAncestor } from './utilities.js';
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 // Quick detection of whether we'll need to handle focus.
 // As of February 2019, we don't need to handle this in Chrome, perhaps because
 // they already support delegatesFocus (which handles related focus issues).
@@ -12,10 +11,9 @@ focusTest.attachShadow({ mode: 'open', delegatesFocus: true });
 const shadowRoot = focusTest.shadowRoot;
 const nativeDelegatesFocus = shadowRoot.delegatesFocus;
 
-
 /**
  * Normalizes focus treatment for custom elements with Shadow DOM
- * 
+ *
  * This mixin exists because the default behavior for mousedown should set the
  * focus to the closest ancestor of the clicked element that can take the focus.
  * As of Nov 2018, Chrome and Safari don't handle this as expected when the
@@ -28,17 +26,17 @@ const nativeDelegatesFocus = shadowRoot.delegatesFocus;
  * mouses down inside anywhere inside the component's light DOM or Shadow DOM,
  * we walk up the composed tree to find the first element that can take the
  * focus and put the focus on it.
- * 
+ *
  * @module ComposedFocusMixin
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function ComposedFocusMixin(Base) {
-
   // The class prototype added by the mixin.
   class ComposedFocus extends Base {
-
     [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
+      if (super[internal.componentDidMount]) {
+        super[internal.componentDidMount]();
+      }
       this.addEventListener('mousedown', event => {
         if (!this[internal.state].composeFocus) {
           return;
@@ -62,7 +60,6 @@ export default function ComposedFocusMixin(Base) {
         composeFocus: !nativeDelegatesFocus
       });
     }
-
   }
 
   return ComposedFocus;

@@ -2,7 +2,6 @@ import { deepContains } from './utilities.js';
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 // We consider the keyboard to be active if the window has received a keydown
 // event since the last mousedown event.
 let keyboardActive = false;
@@ -10,24 +9,21 @@ let keyboardActive = false;
 /** @type {any} */
 const focusVisibleChangedListenerKey = Symbol('focusVisibleChangedListener');
 
-
 /**
  * Shows a focus indication if and only if the keyboard is active.
- * 
+ *
  * The keyboard is considered to be active if a keyboard event has occurred
  * since the last mousedown event.
- * 
+ *
  * This is loosely modeled after the proposed
  * [focus-visible](https://github.com/WICG/focus-visible) feature for CSS.
- * 
+ *
  * @module FocusVisibleMixin
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function FocusVisibleMixin(Base) {
-
   // The class prototype added by the mixin.
   return class FocusVisible extends Base {
-
     constructor() {
       // @ts-ignore
       super();
@@ -48,7 +44,8 @@ export default function FocusVisibleMixin(Base) {
         Promise.resolve().then(() => {
           // What has the focus now?
           /** @type {any} */ const cast = event;
-          const newFocusedElement = cast.relatedTarget || document.activeElement;
+          const newFocusedElement =
+            cast.relatedTarget || document.activeElement;
           const isFocusedElement = this === newFocusedElement;
           const containsFocus = deepContains(this, newFocusedElement);
           const lostFocus = !isFocusedElement && !containsFocus;
@@ -57,8 +54,10 @@ export default function FocusVisibleMixin(Base) {
               focusVisible: false
             });
             // No longer need to listen for changes in focus visibility.
-            document.removeEventListener('focus-visible-changed',
-              this[focusVisibleChangedListenerKey]);
+            document.removeEventListener(
+              'focus-visible-changed',
+              this[focusVisibleChangedListenerKey]
+            );
             this[focusVisibleChangedListenerKey] = null;
           }
         });
@@ -74,8 +73,10 @@ export default function FocusVisibleMixin(Base) {
           if (!this[focusVisibleChangedListenerKey]) {
             // Listen to subsequent changes in focus visibility.
             this[focusVisibleChangedListenerKey] = () => refreshFocus(this);
-            document.addEventListener('focus-visible-changed',
-              this[focusVisibleChangedListenerKey]);
+            document.addEventListener(
+              'focus-visible-changed',
+              this[focusVisibleChangedListenerKey]
+            );
           }
         });
       });
@@ -88,7 +89,9 @@ export default function FocusVisibleMixin(Base) {
     }
 
     [internal.render](/** @type {PlainObject} */ changed) {
-      if (super[internal.render]) { super[internal.render](changed); }
+      if (super[internal.render]) {
+        super[internal.render](changed);
+      }
       if (changed.focusVisible) {
         // Suppress the component's normal `outline` style unless we know the
         // focus should be visible.
@@ -99,7 +102,7 @@ export default function FocusVisibleMixin(Base) {
     /**
      * Temporarily suppress visibility of the keyboard focus until the next
      * keydown event.
-     * 
+     *
      * This can be useful in components like [Menu](Menu) that actively manage
      * where the focus is in response to mouse hover activity. If the user uses
      * the keyboard to invoke a menu, then changes to using the mouse, it can be
@@ -111,16 +114,14 @@ export default function FocusVisibleMixin(Base) {
       keyboardActive = false;
       refreshFocus(this);
     }
-  }
+  };
 }
-
 
 function refreshFocus(/** @type {ReactiveElement} */ element) {
   element[internal.setState]({
     focusVisible: keyboardActive
   });
 }
-
 
 function updateKeyboardActive(/** @type {boolean} */ newKeyboardActive) {
   if (keyboardActive !== newKeyboardActive) {
@@ -134,13 +135,20 @@ function updateKeyboardActive(/** @type {boolean} */ newKeyboardActive) {
   }
 }
 
-
 // Listen for top-level keydown and mousedown events.
 // Use capture phase so we detect events even if they're handled.
-window.addEventListener('keydown', () => {
-  updateKeyboardActive(true);
-}, { capture: true });
+window.addEventListener(
+  'keydown',
+  () => {
+    updateKeyboardActive(true);
+  },
+  { capture: true }
+);
 
-window.addEventListener('mousedown', () => {
-  updateKeyboardActive(false);
-}, { capture: true });
+window.addEventListener(
+  'mousedown',
+  () => {
+    updateKeyboardActive(false);
+  },
+  { capture: true }
+);

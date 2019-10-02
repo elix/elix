@@ -4,23 +4,19 @@ import FormElementMixin from './FormElementMixin.js';
 import SlotContentMixin from './SlotContentMixin.js';
 import WrappedStandardElement from './WrappedStandardElement.js';
 
-
-const Base = 
-  FormElementMixin(
-  SlotContentMixin(
-    WrappedStandardElement.wrap('textarea')
-  ));
-
+const Base = FormElementMixin(
+  SlotContentMixin(WrappedStandardElement.wrap('textarea'))
+);
 
 /**
  * Text area that grows to accommodate its content
- * 
+ *
  * [This text area grows as you add text](/demos/autoSizeTextarea.html)
  *
  * This text input component is useful in situations where you want to ask the
  * user to enter as much text as they want, but don't want to take up a lot of
  * room on the page.
- * 
+ *
  * *Note:* This component uses [WrappedStandardElement](WrappedStandardElement)
  * to wrap a standard `<textarea>` element. This allows it to provide all
  * standard `HTMLTextAreaElement` properties, methods, and events, in addition
@@ -31,7 +27,6 @@ const Base =
  * @mixes SlotContentMixin
  */
 class AutoSizeTextarea extends Base {
-
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
 
@@ -40,11 +35,11 @@ class AutoSizeTextarea extends Base {
     // be visible to jsDoc, and the statement is at tangentially related.
     /**
      * Raised when the user changes the element's text content.
-     * 
+     *
      * This is the standard `input` event; the component does not do any work to
      * raise it. It is documented here to let people know it is available to
      * detect when the user edits the content.
-     * 
+     *
      * @event input
      */
     this[internal.ids].inner.addEventListener('input', () => {
@@ -91,8 +86,10 @@ class AutoSizeTextarea extends Base {
     });
 
     state.onChange(['content', 'valueTracksContent'], (state, changed) => {
-      if ((changed.content || changed.valueTracksContent)
-          && state.valueTracksContent) {
+      if (
+        (changed.content || changed.valueTracksContent) &&
+        state.valueTracksContent
+      ) {
         /** @type {Node[]} */ const content = state.content;
         const value = getTextFromContent(content);
         return {
@@ -145,12 +142,14 @@ class AutoSizeTextarea extends Base {
     if (changed.copyStyle) {
       Object.assign(this[internal.ids].copyContainer.style, copyStyle);
     }
-    if (changed.lineHeight || changed.minimumRows && lineHeight != null) {
+    if (changed.lineHeight || (changed.minimumRows && lineHeight != null)) {
       const minHeight = minimumRows * lineHeight;
       this[internal.ids].copyContainer.style.minHeight = `${minHeight}px`;
     }
     if (changed.value) {
-      /** @type {HTMLTextAreaElement} */ (this[internal.ids].inner).value = value;
+      /** @type {HTMLTextAreaElement} */ (this[
+        internal.ids
+      ].inner).value = value;
       this[internal.ids].textCopy.textContent = value;
     }
   }
@@ -246,9 +245,7 @@ class AutoSizeTextarea extends Base {
       valueTracksContent: false
     });
   }
-
 }
-
 
 // Return the text represented by the given content nodes.
 function getTextFromContent(/** @type {Node[]} */ contentNodes) {
@@ -260,15 +257,13 @@ function getTextFromContent(/** @type {Node[]} */ contentNodes) {
   return unescapeHtml(text);
 }
 
-
 function unescapeHtml(/** @type {string} */ html) {
   return html
     .replace(/&amp;/g, '&')
     .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, ">")
+    .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
-    .replace(/&#039;/g, '\'');
+    .replace(/&#039;/g, "'");
 }
-
 
 export default AutoSizeTextarea;

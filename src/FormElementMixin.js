@@ -1,41 +1,41 @@
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 const formElementsSupported = 'ElementInternals' in window;
-
 
 /**
  * Allows a component to participate in HTML form submission.
- * 
+ *
  * The mixin expects the component to define a `value` property.
- * 
+ *
  * @module FormElementMixin
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function FormElementMixin(Base) {
-
   // The class prototype added by the mixin.
   class FormElement extends Base {
-
     constructor() {
       super();
       if (formElementsSupported) {
         this[internal.nativeInternals] = this.attachInternals();
       }
     }
-  
+
     checkValidity() {
       return this[internal.nativeInternals].checkValidity();
     }
 
     [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
+      if (super[internal.componentDidMount]) {
+        super[internal.componentDidMount]();
+      }
       updateValue(this);
     }
 
     [internal.componentDidUpdate](/** @typeof {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) { super[internal.componentDidUpdate](changed); }
+      if (super[internal.componentDidUpdate]) {
+        super[internal.componentDidUpdate](changed);
+      }
       if (changed.value) {
         updateValue(this);
       }
@@ -56,14 +56,14 @@ export default function FormElementMixin(Base) {
     static get formAssociated() {
       return true;
     }
-    
+
     /**
      * The ID of the `form` element with which this element is associated,
      * or `null` if the element is not associated with any form. This is provided
      * for consistency with the native HTML
      * [form](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#form)
      * property.
-     * 
+     *
      * @type {string}
      */
     get form() {
@@ -75,7 +75,7 @@ export default function FormElementMixin(Base) {
      * `value`. This is an analogue of the standard HTML
      * [name](https://developer.mozilla.org/en-US/docs/Web/API/Element/name)
      * property.
-     * 
+     *
      * @type {string}
      */
     get name() {
@@ -91,7 +91,9 @@ export default function FormElementMixin(Base) {
     }
 
     [internal.render](changed) {
-      if (super[internal.render]) { super[internal.render](changed); }
+      if (super[internal.render]) {
+        super[internal.render](changed);
+      }
 
       // Reflect name property to attribute so form will pick it up.
       if (changed.name) {
@@ -99,7 +101,7 @@ export default function FormElementMixin(Base) {
       }
 
       if (formElementsSupported) {
-          // Reflect validity state to internals.
+        // Reflect validity state to internals.
         if (changed.valid || changed.validationMessage) {
           const { valid, validationMessage } = this[internal.state];
           if (valid) {
@@ -126,7 +128,7 @@ export default function FormElementMixin(Base) {
      * [type](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#type)
      * property. The value of this property will be the same as the HTML tag
      * name registered for the custom element.
-     * 
+     *
      * @type {string}
      */
     get type() {
@@ -144,15 +146,16 @@ export default function FormElementMixin(Base) {
     get willValidate() {
       return this[internal.nativeInternals].willValidate;
     }
-  
   }
 
   return FormElement;
 }
 
-
 function updateValue(element) {
   if (formElementsSupported) {
-    element[internal.nativeInternals].setFormValue(element[internal.state].value, element[internal.state]);
+    element[internal.nativeInternals].setFormValue(
+      element[internal.state].value,
+      element[internal.state]
+    );
   }
 }

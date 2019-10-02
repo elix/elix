@@ -2,16 +2,11 @@ import * as internal from './internal.js';
 import CrossfadeStage from './CrossfadeStage.js';
 import TimerSelectionMixin from './TimerSelectionMixin.js';
 
-
-const Base =
-  TimerSelectionMixin(
-    CrossfadeStage
-  );
-
+const Base = TimerSelectionMixin(CrossfadeStage);
 
 /**
  * Slideshow with a simple crossfade transition
- * 
+ *
  * [A basic slideshow](/demos/slideshow.html)
  *
  * By default the slideshow will immediately begin playing when it is connected
@@ -22,12 +17,11 @@ const Base =
  * [CarouselSlideshow](CarouselSlideshow). To incorporate slideshow behavior
  * into a component of your own, apply
  * [TimerSelectionMixin](TimerSelectionMixin).
- * 
+ *
  * @inherits CrossfadeStage
  * @mixes TimerSelectionMixin
  */
 class Slideshow extends Base {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       playing: true,
@@ -36,8 +30,6 @@ class Slideshow extends Base {
       transitionDuration: 1000
     });
   }
-
 }
-
 
 export default Slideshow;

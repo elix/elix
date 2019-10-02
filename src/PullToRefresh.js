@@ -7,7 +7,6 @@ import ProgressSpinner from './ProgressSpinner.js';
 import ReactiveElement from './ReactiveElement.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 
-
 // Template for the default down arrow shown while pulling.
 const downArrowTemplate = template.html`
   <svg viewBox="0 0 24 24" style="fill: #404040; height: 24px; width: 24px;">
@@ -15,19 +14,14 @@ const downArrowTemplate = template.html`
   </svg>
 `;
 
-const Base =
-  EffectMixin(
-  TouchSwipeMixin(
-    ReactiveElement
-  ));
-
+const Base = EffectMixin(TouchSwipeMixin(ReactiveElement));
 
 /**
  * Lets the user refresh content with a swipe down gesture
- * 
+ *
  * The user can trigger the refresh of data by swiping down until a particular
  * threshold has been reached.
- * 
+ *
  * @inherits ReactiveElement
  * @mixes EffectMixin
  * @mixes TouchSwipeMixin
@@ -35,7 +29,6 @@ const Base =
  * @elementrole {ProgressSpinner} refreshingIndicator
  */
 class PullToRefresh extends Base {
-
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
     // Listen to scroll events in case the user scrolls up past the page's top.
@@ -48,9 +41,10 @@ class PullToRefresh extends Base {
       // Desktop and Mobile Safari don't agree on how to expose document
       // scrollTop, so we use window.pageYOffset.
       // See https://stackoverflow.com/questions/2506958/how-to-find-in-javascript-the-current-scroll-offset-in-mobile-safari-iphon
-      const scrollTop = scrollTarget instanceof Window ?
-        window.pageYOffset :
-        scrollTarget.scrollTop;
+      const scrollTop =
+        scrollTarget instanceof Window
+          ? window.pageYOffset
+          : scrollTarget.scrollTop;
       await handleScrollPull(this, scrollTop);
       this[internal.raiseChangeEvents] = false;
     });
@@ -58,9 +52,15 @@ class PullToRefresh extends Base {
 
   [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
     super[internal.componentDidUpdate](changed);
-    if (this[internal.state].swipeFraction > 0 &&
-      !this[internal.state].refreshing && !this[internal.state].pullTriggeredRefresh) {
-      const y = getTranslationForSwipeFraction(this[internal.state], this[internal.swipeTarget]);
+    if (
+      this[internal.state].swipeFraction > 0 &&
+      !this[internal.state].refreshing &&
+      !this[internal.state].pullTriggeredRefresh
+    ) {
+      const y = getTranslationForSwipeFraction(
+        this[internal.state],
+        this[internal.swipeTarget]
+      );
       if (y >= getSwipeThreshold(this)) {
         // User has dragged element down far enough to trigger a refresh.
         this.refreshing = true;
@@ -69,7 +69,7 @@ class PullToRefresh extends Base {
       if (this[internal.raiseChangeEvents]) {
         /**
          * Raised when the `refreshing` state changes.
-         * 
+         *
          * @event refreshing-changed
          */
         const event = new CustomEvent('refreshing-changed', {
@@ -81,7 +81,7 @@ class PullToRefresh extends Base {
       }
     }
   }
-  
+
   get [internal.defaultState]() {
     // Suppress transition effects on page load.
     const state = Object.assign(super[internal.defaultState], {
@@ -101,10 +101,7 @@ class PullToRefresh extends Base {
     // still pulling down, we don't want further pulling to trigger a second
     // refresh.
     state.onChange(['refreshing', 'swipeFraction'], (state, changed) => {
-      const {
-        refreshing,
-        swipeFraction
-      } = state;
+      const { refreshing, swipeFraction } = state;
       if (changed.refreshing && refreshing) {
         // We've started a refresh; set flag.
         return {
@@ -114,7 +111,7 @@ class PullToRefresh extends Base {
         // We're neither pulling nor refreshing, so reset flag.
         return {
           pullTriggeredRefresh: false
-        }
+        };
       }
       return null;
     });
@@ -125,38 +122,47 @@ class PullToRefresh extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.pullIndicatorRole) {
-      template.transmute(this[internal.ids].pullIndicator, this.pullIndicatorRole);
+      template.transmute(
+        this[internal.ids].pullIndicator,
+        this.pullIndicatorRole
+      );
     }
     if (changed.refreshing) {
       const { refreshing } = this[internal.state];
       const refreshingIndicator = this[internal.ids].refreshingIndicator;
-      refreshingIndicator.style.visibility = refreshing ?
-        'visible' :
-        'hidden';
+      refreshingIndicator.style.visibility = refreshing ? 'visible' : 'hidden';
       if ('playing' in this[internal.ids].refreshingIndicator) {
         /** @type {any} */ (refreshingIndicator).playing = refreshing;
       }
     }
     if (changed.refreshingIndicatorRole) {
-      template.transmute(this[internal.ids].refreshingIndicator, this.refreshingIndicatorRole);
+      template.transmute(
+        this[internal.ids].refreshingIndicator,
+        this.refreshingIndicatorRole
+      );
     }
     if (changed.enableEffects || changed.refreshing || changed.swipeFraction) {
       const { enableEffects, refreshing, swipeFraction } = this[internal.state];
       const swipingDown = swipeFraction != null && swipeFraction > 0;
-      let y = getTranslationForSwipeFraction(this[internal.state], this[internal.swipeTarget]);
+      let y = getTranslationForSwipeFraction(
+        this[internal.state],
+        this[internal.swipeTarget]
+      );
       if (refreshing) {
         y = Math.max(y, getSwipeThreshold(this));
       }
       const showTransition = enableEffects && !swipingDown;
       Object.assign(this.style, {
         transform: `translate3D(0, ${y}px, 0)`,
-        transition: showTransition ?
-          'transform 0.25s' :
-          null
+        transition: showTransition ? 'transform 0.25s' : null
       });
     }
-    if (changed.pullTriggeredRefresh || changed.refreshing ||
-        changed.scrollPullDistance || changed.swipeFraction) {
+    if (
+      changed.pullTriggeredRefresh ||
+      changed.refreshing ||
+      changed.scrollPullDistance ||
+      changed.swipeFraction
+    ) {
       const {
         pullTriggeredRefresh,
         refreshing,
@@ -166,21 +172,20 @@ class PullToRefresh extends Base {
       const swipingDown = swipeFraction != null && swipeFraction > 0;
       const scrollingDown = !!scrollPullDistance;
       const pullingDown = swipingDown || scrollingDown;
-      const showPullIndicator = !refreshing &&
-        !pullTriggeredRefresh &&
-        pullingDown;
-      this[internal.ids].pullIndicator.style.visibility = showPullIndicator ?
-        'visible' :
-        'hidden';
+      const showPullIndicator =
+        !refreshing && !pullTriggeredRefresh && pullingDown;
+      this[internal.ids].pullIndicator.style.visibility = showPullIndicator
+        ? 'visible'
+        : 'hidden';
     }
   }
 
   /**
    * The class, tag, or template used for the element shown to let the user
    * know they can pull to refresh.
-   * 
+   *
    * By default, this is a down arrow icon.
-   * 
+   *
    * @type {Role}
    */
   get pullIndicatorRole() {
@@ -200,7 +205,7 @@ class PullToRefresh extends Base {
   /**
    * The class, tag, or template used for the element shown to indicate the
    * element is currently refreshing.
-   * 
+   *
    * @type {Role}
    * @default ProgressSpinner
    */
@@ -253,46 +258,38 @@ class PullToRefresh extends Base {
       <slot></slot>
     `;
   }
-
 }
-
 
 /**
  * Calculate how far the user must drag before we trigger a refresh.
- * 
+ *
  * @private
  * @param {PullToRefresh} element
  */
 function getSwipeThreshold(element) {
-  return element[internal.ids].refreshIndicators instanceof HTMLElement ?
-    element[internal.ids].refreshIndicators.offsetHeight :
-    0;
+  return element[internal.ids].refreshIndicators instanceof HTMLElement
+    ? element[internal.ids].refreshIndicators.offsetHeight
+    : 0;
 }
-
 
 /**
  * For a given swipe fraction (percentage of the element's swipe target's
  * height), return the distance of the vertical translation we should apply to
  * the swipe target.
- * 
+ *
  * @private
  * @param {PlainObject} state
  * @param {HTMLElement} swipeTarget
  */
 function getTranslationForSwipeFraction(state, swipeTarget) {
-
-  const {
-    swipeFraction,
-    scrollPullDistance,
-    scrollPullMaxReached
-  } = state;
+  const { swipeFraction, scrollPullDistance, scrollPullMaxReached } = state;
 
   // When damping, we halve the swipe fraction so the user has to drag twice as
   // far to get the usual damping. This produces the feel of a tighter, less
   // elastic surface.
-  let result = swipeFraction ?
-    swipeTarget.offsetHeight * dampen(swipeFraction / 2) :
-    0;
+  let result = swipeFraction
+    ? swipeTarget.offsetHeight * dampen(swipeFraction / 2)
+    : 0;
 
   if (!scrollPullMaxReached && scrollPullDistance) {
     result += scrollPullDistance;
@@ -300,7 +297,6 @@ function getTranslationForSwipeFraction(state, swipeTarget) {
 
   return result;
 }
-
 
 /**
  * If a user flicks down to quickly scroll up, and scrolls past the top of the
@@ -311,7 +307,7 @@ function getTranslationForSwipeFraction(state, swipeTarget) {
  *
  * We can only handle a scroll pull in a browser like Mobile Safari that gives
  * us scroll events past the top of the page.
- * 
+ *
  * @private
  * @param {ReactiveElement} element
  * @param {number} scrollTop
@@ -321,9 +317,11 @@ async function handleScrollPull(element, scrollTop) {
     // Negative scroll top means we're probably in WebKit.
     // Start a scroll pull operation.
     let scrollPullDistance = -scrollTop;
-    if (element[internal.state].scrollPullDistance &&
+    if (
+      element[internal.state].scrollPullDistance &&
       !element[internal.state].scrollPullMaxReached &&
-      scrollPullDistance < element[internal.state].scrollPullDistance) {
+      scrollPullDistance < element[internal.state].scrollPullDistance
+    ) {
       // The negative scroll events have started to head back to zero (most
       // likely because the user let go and stopped scrolling), so we've reached
       // the maximum extent of the scroll pull. From this point on, we want to
@@ -338,10 +336,9 @@ async function handleScrollPull(element, scrollTop) {
     // top of the page, so the scroll pull has finished.
     await element[internal.setState]({
       scrollPullDistance: null,
-      scrollPullMaxReached: false,
+      scrollPullMaxReached: false
     });
   }
 }
-
 
 export default PullToRefresh;

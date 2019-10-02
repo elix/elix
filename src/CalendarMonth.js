@@ -8,30 +8,24 @@ import CalendarElementMixin from './CalendarElementMixin.js';
 import CalendarMonthYearHeader from './CalendarMonthYearHeader.js';
 import ReactiveElement from './ReactiveElement.js';
 
-
-const Base =
-  CalendarElementMixin(
-    ReactiveElement
-  );
-
+const Base = CalendarElementMixin(ReactiveElement);
 
 /**
  * A single calendar month, optimized for a given locale
- * 
+ *
  * [A default representation for the current month in browser's default locale](/demos/calendarMonth.html)
- * 
+ *
  * Given a reference `date` property, this component will show a calendar
  * representation of that month. To the extent possible, this representation is
  * sensitive to a specified locale: the names of the months and days of the week
  * will be in the appropriate language, and the day(s) associated with the
  * weekend in that locale will also be indicated.
- * 
+ *
  * @inherits ReactiveElement
  * @mixes CalendarElementMixin
  * @elementrole {CalendarDay} day
  */
 class CalendarMonth extends Base {
-
   /**
    * Returns the day element corresponding to the given date, or null if the
    * date falls outside the range currently covered by this calendar.
@@ -42,13 +36,16 @@ class CalendarMonth extends Base {
   dayElementForDate(date) {
     /** @type {any} */
     const monthDays = this[internal.ids].monthDays;
-    return monthDays && 'dayElementForDate' in monthDays &&
-      monthDays.dayElementForDate(date);
+    return (
+      monthDays &&
+      'dayElementForDate' in monthDays &&
+      monthDays.dayElementForDate(date)
+    );
   }
 
   /**
    * The class, tag, or template used to create the day elements.
-   * 
+   *
    * @type {Role}
    * @default CalendarDay
    */
@@ -63,21 +60,21 @@ class CalendarMonth extends Base {
    * Returns the day elements contained by this calendar. Note that this may
    * include days from the previous/next month that fall in the same week as
    * the first/last day of the present month.
-   * 
+   *
    * @type {Element[]}
    */
   get days() {
-    return this.shadowRoot ?
-      /** @type {any} */ (this[internal.ids].monthDays).days :
-      [];
+    return this.shadowRoot
+      ? /** @type {any} */ (this[internal.ids].monthDays).days
+      : [];
   }
 
   /**
    * The format used to render the day names in the week days header.
-   * 
+   *
    * The allowable formats are the same as the `weekday` formats in
    * [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat).
-   * 
+   *
    * @type {('long'|'narrow'|'short')}
    * @default 'short'
    */
@@ -102,10 +99,10 @@ class CalendarMonth extends Base {
 
   /**
    * The format used to render the month name.
-   * 
+   *
    * The allowable formats are the same as the `month` formats in
    * [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat).
-   * 
+   *
    * @type {('numeric'|'2-digit'|'long'|'short'|'narrow')}
    * @default 'long'
    */
@@ -127,7 +124,9 @@ class CalendarMonth extends Base {
       /** @type {any} */ (this[internal.ids].dayNamesHeader).locale = locale;
     }
     if (changed.dayRole) {
-      /** @type {any} */ (this[internal.ids].monthDays).dayRole = this[internal.state].dayRole;
+      /** @type {any} */ (this[internal.ids].monthDays).dayRole = this[
+        internal.state
+      ].dayRole;
     }
     if (changed.date) {
       const { date } = this[internal.state];
@@ -140,28 +139,40 @@ class CalendarMonth extends Base {
           dayCount,
           startDate
         });
-        /** @type {any} */ (this[internal.ids].monthYearHeader).date = calendar.firstDateOfMonth(date);
+        /** @type {any} */ (this[
+          internal.ids
+        ].monthYearHeader).date = calendar.firstDateOfMonth(date);
       }
     }
     if (changed.daysOfWeekFormat) {
       const { daysOfWeekFormat } = this[internal.state];
-      /** @type {any} */ (this[internal.ids].dayNamesHeader).format = daysOfWeekFormat;
+      /** @type {any} */ (this[
+        internal.ids
+      ].dayNamesHeader).format = daysOfWeekFormat;
     }
     if (changed.showCompleteWeeks) {
       const { showCompleteWeeks } = this[internal.state];
-      /** @type {any} */ (this[internal.ids].monthDays).showCompleteWeeks = showCompleteWeeks;
+      /** @type {any} */ (this[
+        internal.ids
+      ].monthDays).showCompleteWeeks = showCompleteWeeks;
     }
     if (changed.showSelectedDay) {
       const { showSelectedDay } = this[internal.state];
-      /** @type {any} */ (this[internal.ids].monthDays).showSelectedDay = showSelectedDay;
+      /** @type {any} */ (this[
+        internal.ids
+      ].monthDays).showSelectedDay = showSelectedDay;
     }
     if (changed.monthFormat) {
       const { monthFormat } = this[internal.state];
-      /** @type {any} */ (this[internal.ids].monthYearHeader).monthFormat = monthFormat;
+      /** @type {any} */ (this[
+        internal.ids
+      ].monthYearHeader).monthFormat = monthFormat;
     }
     if (changed.yearFormat) {
       const { yearFormat } = this[internal.state];
-      /** @type {any} */ (this[internal.ids].monthYearHeader).yearFormat = yearFormat;
+      /** @type {any} */ (this[
+        internal.ids
+      ].monthYearHeader).yearFormat = yearFormat;
     }
   }
 
@@ -228,10 +239,10 @@ class CalendarMonth extends Base {
 
   /**
    * The format used to render the year.
-   * 
+   *
    * The allowable formats are the same as the `year` formats in
    * [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat).
-   * 
+   *
    * @type {('numeric'|'2-digit')}
    * @default 'numeric'
    */
@@ -243,8 +254,6 @@ class CalendarMonth extends Base {
       yearFormat
     });
   }
-
 }
-
 
 export default CalendarMonth;

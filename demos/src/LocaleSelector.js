@@ -3,7 +3,6 @@ import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
-
 // Locale list from https://stackoverflow.com/questions/3191664/list-of-all-locales-and-their-short-codes/28357857#28357857
 // This includes only locales with regions; it omits languages without regions.
 /** @type {IndexedObject<string>} */
@@ -287,14 +286,14 @@ const locales = {
   'vun-TZ': 'Vunjo (Tanzania)',
   'cy-GB': 'Welsh (United Kingdom)',
   'yo-NG': 'Yoruba (Nigeria)',
-  'zu-ZA': 'Zulu (South Africa)',
+  'zu-ZA': 'Zulu (South Africa)'
 };
 
-
 class LocaleSelector extends ReactiveElement {
-
   [internal.componentDidMount]() {
-    if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
+    if (super[internal.componentDidMount]) {
+      super[internal.componentDidMount]();
+    }
     this[internal.ids].select.addEventListener('change', () => {
       this[internal.raiseChangeEvents] = true;
       this.value = /** @type {any} */ (this[internal.ids].select).value;
@@ -323,7 +322,9 @@ class LocaleSelector extends ReactiveElement {
     super[internal.render](changed);
     if (changed.value) {
       const value = this[internal.state].value;
-      /** @type {HTMLSelectElement} */ (this[internal.ids].select).value = value;
+      /** @type {HTMLSelectElement} */ (this[
+        internal.ids
+      ].select).value = value;
     }
   }
 
@@ -336,7 +337,7 @@ class LocaleSelector extends ReactiveElement {
       </style>
       <select id="select"></select>
     `;
-     // Create options for all locales.
+    // Create options for all locales.
     const localeOptions = Object.keys(locales).map(locale => {
       const option = document.createElement('option');
       option.value = locale;
@@ -357,13 +358,11 @@ class LocaleSelector extends ReactiveElement {
   set value(value) {
     this[internal.setState]({ value });
   }
-
 }
-
 
 /**
  * Heuristic that returns true if the given locale is supported.
- * 
+ *
  * @private
  * @param {string} locale
  */
@@ -377,11 +376,10 @@ function localeSupported(locale) {
   // the browser probably doesn't support the locale, and used the default
   // locale instead.
   const date = new Date('10 March 2015'); // A Tuesday
-  const formatter = new Intl.DateTimeFormat(locale, { weekday: 'short' })
+  const formatter = new Intl.DateTimeFormat(locale, { weekday: 'short' });
   const result = formatter.format(date);
   return result !== 'Tue';
 }
-
 
 export default LocaleSelector;
 customElements.define('locale-selector', LocaleSelector);

@@ -1,6 +1,5 @@
 /* Helpers for mocking user interactions in unit tests. */
 
-
 /**
  * Raise a synthetic keyboard event on the indicated element.
  * The last `init` argument can be left off, in which case an `Enter` key
@@ -20,12 +19,10 @@ export function dispatchSyntheticKeyboardEvent(element, eventType, init) {
   element.dispatchEvent(event);
 }
 
-
 /**
  * Raise a synthetic mousedown event on the indicated element.
  */
 export function dispatchSyntheticMouseEvent(element, eventType, init) {
-
   const properties = Object.assign(
     /* Defaults */
     {

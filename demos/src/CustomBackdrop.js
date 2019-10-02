@@ -2,9 +2,7 @@ import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
-
 class CustomBackdrop extends ReactiveElement {
-
   get [internal.template]() {
     return template.html`
       <style>
@@ -21,9 +19,7 @@ class CustomBackdrop extends ReactiveElement {
       <slot></slot>
     `;
   }
-
 }
-
 
 customElements.define('custom-backdrop', CustomBackdrop);
 export default CustomBackdrop;

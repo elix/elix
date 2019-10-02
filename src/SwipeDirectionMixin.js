@@ -1,18 +1,15 @@
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 /**
  * Map swipe gestures to direction semantics.
- * 
+ *
  * @module SwipeDirectionMixin
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function SwipeDirectionMixin(Base) {
-
   // The class prototype added by the mixin.
   return class SwipeDirection extends Base {
-
     /**
      * Invokes the [internal.goUp](symbols#goUp) method.
      */
@@ -40,6 +37,5 @@ export default function SwipeDirectionMixin(Base) {
     [internal.swipeUp]() {
       this[internal.goDown]();
     }
-
-  }
+  };
 }

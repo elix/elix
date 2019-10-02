@@ -2,15 +2,13 @@ import { TYPING_TIMEOUT_DURATION } from './constants.js';
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 // Symbols for private data members on an element.
 const typedPrefixKey = Symbol('typedPrefix');
 const prefixTimeoutKey = Symbol('prefixTimeout');
 
-
 /**
  * Lets a user select a list item by typing the first few characters
- * 
+ *
  * Example: suppose a component using this mixin has the following items:
  *
  *     <sample-list-component>
@@ -47,10 +45,8 @@ const prefixTimeoutKey = Symbol('prefixTimeout');
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function KeyboardPrefixSelectionMixin(Base) {
-
   // The class prototype added by the mixin.
   class KeyboardPrefixSelection extends Base {
-
     constructor() {
       // @ts-ignore
       super();
@@ -72,13 +68,20 @@ export default function KeyboardPrefixSelectionMixin(Base) {
           break;
 
         default:
-          if (!event.ctrlKey && !event.metaKey && !event.altKey && event.key.length === 1) {
+          if (
+            !event.ctrlKey &&
+            !event.metaKey &&
+            !event.altKey &&
+            event.key.length === 1
+          ) {
             handlePlainCharacter(this, event.key);
           }
       }
 
       // Prefer mixin result if it's defined, otherwise use base result.
-      return handled || (super[internal.keydown] && super[internal.keydown](event));
+      return (
+        handled || (super[internal.keydown] && super[internal.keydown](event))
+      );
     }
 
     /**
@@ -88,15 +91,17 @@ export default function KeyboardPrefixSelectionMixin(Base) {
      * @returns {boolean}
      */
     selectItemWithTextPrefix(prefix) {
-      if (super.selectItemWithTextPrefix) { super.selectItemWithTextPrefix(prefix); }
+      if (super.selectItemWithTextPrefix) {
+        super.selectItemWithTextPrefix(prefix);
+      }
       if (prefix == null || prefix.length === 0) {
         return false;
       }
       // Find item that begins with the prefix. Ignore case.
       const searchText = prefix.toLowerCase();
       /** @type {string[]} */ const texts = this[internal.state].texts;
-      const selectedIndex = texts.findIndex(text => 
-        text.substr(0, prefix.length).toLowerCase() === searchText
+      const selectedIndex = texts.findIndex(
+        text => text.substr(0, prefix.length).toLowerCase() === searchText
       );
       if (selectedIndex >= 0) {
         const previousIndex = this.selectedIndex;
@@ -113,7 +118,7 @@ export default function KeyboardPrefixSelectionMixin(Base) {
 
 /**
  * Handle the Backspace key: remove the last character from the prefix.
- * 
+ *
  * @private
  * @param {ReactiveElement} element
  */
@@ -129,7 +134,7 @@ function handleBackspace(element) {
 
 /**
  * Add a plain character to the prefix.
- * 
+ *
  * @private
  * @param {ReactiveElement} element
  * @param {string} char
@@ -144,7 +149,7 @@ function handlePlainCharacter(element, char) {
 
 /**
  * Stop listening for typing.
- * 
+ *
  * @private
  * @param {ReactiveElement} element
  */
@@ -158,7 +163,7 @@ function resetPrefixTimeout(element) {
 
 /**
  * Clear the prefix under construction.
- * 
+ *
  * @private
  * @param {ReactiveElement} element
  */
@@ -169,7 +174,7 @@ function resetTypedPrefix(element) {
 
 /**
  * Wait for the user to stop typing.
- * 
+ *
  * @private
  * @param {ReactiveElement} element
  */

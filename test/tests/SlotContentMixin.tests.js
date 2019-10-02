@@ -1,12 +1,10 @@
 import * as internal from '../../src/internal.js';
 import SlotContentMixin from '../../src/SlotContentMixin.js';
 
-
 /*
  * Simple element using the SlotContentMixin mixin.
  */
 class SlotContentTest extends SlotContentMixin(HTMLElement) {
-
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
@@ -23,13 +21,11 @@ class SlotContentTest extends SlotContentMixin(HTMLElement) {
     return {};
   }
 
- [internal.setState](state) {
+  [internal.setState](state) {
     Object.assign(this[internal.state], state);
   }
-
 }
 customElements.define('slot-content-test', SlotContentTest);
-
 
 /*
  * Element wrapping an instance of the above, so we can test detection of
@@ -44,9 +40,7 @@ class WrappedContentTest extends HTMLElement {
 }
 customElements.define('wrapped-content-test', WrappedContentTest);
 
-
-describe("SlotContentMixin", () => {
-
+describe('SlotContentMixin', () => {
   let container;
 
   before(() => {
@@ -65,7 +59,7 @@ describe("SlotContentMixin", () => {
     assert.equal(fixture[internal.contentSlot], slot);
   });
 
-  it("returns direct assigned nodes as content", async () => {
+  it('returns direct assigned nodes as content', async () => {
     const fixture = new SlotContentTest();
     fixture.innerHTML = `<div>One</div><div>Two</div><div>Three</div>`;
     // Wait for initial content.
@@ -73,7 +67,7 @@ describe("SlotContentMixin", () => {
     assert.equal(fixture[internal.state].content.length, 3);
   });
 
-  it("returns distributed nodes as content", async () => {
+  it('returns distributed nodes as content', async () => {
     const wrapper = new WrappedContentTest();
     wrapper.innerHTML = `<div>One</div><div>Two</div><div>Three</div>`;
     const fixture = wrapper.shadowRoot.querySelector('slot-content-test');
@@ -82,7 +76,7 @@ describe("SlotContentMixin", () => {
     assert.equal(fixture[internal.state].content.length, 3);
   });
 
-  it("sets content when defined component is parsed", async () => {
+  it('sets content when defined component is parsed', async () => {
     container.innerHTML = `<slot-content-test>beaver</slot-content-test>`;
     const fixture = container.querySelector('slot-content-test');
     // Wait for initial content.
@@ -90,7 +84,7 @@ describe("SlotContentMixin", () => {
     assert.equal(fixture[internal.state].content[0].textContent, 'beaver');
   });
 
-  it("updates content when textContent changes", async () => {
+  it('updates content when textContent changes', async () => {
     const fixture = new SlotContentTest();
     container.appendChild(fixture);
     // Wait for initial content.
@@ -100,7 +94,7 @@ describe("SlotContentMixin", () => {
     assert.equal(fixture[internal.state].content[0].textContent, 'chihuahua');
   });
 
-  it("updates content when children change", async () => {
+  it('updates content when children change', async () => {
     const fixture = new SlotContentTest();
     container.appendChild(fixture);
     // Wait for initial content.
@@ -112,7 +106,7 @@ describe("SlotContentMixin", () => {
     assert.equal(fixture[internal.state].content[0].textContent, 'dingo');
   });
 
-  it("updates content when redistributed content changes", async () => {
+  it('updates content when redistributed content changes', async () => {
     const wrapper = new WrappedContentTest();
     const fixture = wrapper.shadowRoot.querySelector('slot-content-test');
     container.appendChild(wrapper);
@@ -123,7 +117,7 @@ describe("SlotContentMixin", () => {
     assert.equal(fixture[internal.state].content[0].textContent, 'echidna');
   });
 
-  it("updates content if node is removed from light DOM", async () => {
+  it('updates content if node is removed from light DOM', async () => {
     const fixture = new SlotContentTest();
     const div = document.createElement('div');
     div.textContent = 'hippopotamus';
@@ -140,12 +134,11 @@ describe("SlotContentMixin", () => {
     assert.equal(fixture[internal.state].content.length, 0);
   });
 
-  it("gets initial content from initial innerHTML", async () => {
+  it('gets initial content from initial innerHTML', async () => {
     container.innerHTML = '<slot-content-test>iguana</slot-content-test>';
     const fixture = container.querySelector('slot-content-test');
     // Wait for initial content.
     await Promise.resolve();
     assert.equal(fixture[internal.state].content[0].textContent, 'iguana');
   });
-
 });

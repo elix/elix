@@ -8,24 +8,20 @@ import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 import TapSelectionMixin from './TapSelectionMixin.js';
 
-
-const Base =
-  EffectMixin(
+const Base = EffectMixin(
   LanguageDirectionMixin(
-  ResizeMixin(
-  SingleSelectionMixin(
-  SlotItemsMixin(
-  TapSelectionMixin(
-    ReactiveElement
-  ))))));
-
+    ResizeMixin(
+      SingleSelectionMixin(SlotItemsMixin(TapSelectionMixin(ReactiveElement)))
+    )
+  )
+);
 
 /**
  * Horizontal strip of items with the selected item centered
- * 
+ *
  * This keeps the selected item centered unless that item is at either end of
  * the list.
- * 
+ *
  * @inherits ReactiveElement
  * @mixes EffectMixin
  * @mixes LanguageDirectionMixin
@@ -35,7 +31,6 @@ const Base =
  * @mixes TapSelectionMixin
  */
 class CenteredStrip extends Base {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       orientation: 'horizontal',
@@ -52,26 +47,33 @@ class CenteredStrip extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.clientWidth || changed.enableEffects || changed.rightToLeft ||
-        changed.selectedIndex || changed.swipeFraction) {
+    if (
+      changed.clientWidth ||
+      changed.enableEffects ||
+      changed.rightToLeft ||
+      changed.selectedIndex ||
+      changed.swipeFraction
+    ) {
       const { orientation, rightToLeft, selectedIndex } = this[internal.state];
       const sign = rightToLeft ? 1 : -1;
       const swiping = this[internal.state].swipeFraction != null;
       const swipeFraction = this[internal.state].swipeFraction || 0;
       const selectionFraction = selectedIndex + sign * swipeFraction;
-  
+
       const vertical = orientation === 'vertical';
       const leadingEdge = vertical ? 'offsetTop' : 'offsetLeft';
       const dimension = vertical ? 'offsetHeight' : 'offsetWidth';
 
       // @ts-ignore
-      const stripContainerDimension = this[internal.ids].stripContainer[dimension];
+      const stripContainerDimension = this[internal.ids].stripContainer[
+        dimension
+      ];
       // @ts-ignore
       const stripDimension = this[internal.ids].strip[dimension];
-  
+
       // It seems this method can be invoked before the strip any height/width.
       // We only render if the height/width is positive.
-        if (stripDimension > 0) {
+      if (stripDimension > 0) {
         let translation = 0; // The amount by which we'll shift content horizontally
         let justifyContent = '';
         if (stripDimension <= stripContainerDimension) {
@@ -82,18 +84,20 @@ class CenteredStrip extends Base {
           // Center the selected item.
           // During swipes, center a pro-rated point between the midpoints
           // of the items on either side of the fractional selection.
-    
+
           const itemBeforeIndex = Math.floor(selectionFraction);
           const itemBefore = this.items && this.items[itemBeforeIndex];
-          const itemBeforeCenter = itemBefore instanceof HTMLElement ?
-            itemBefore[leadingEdge] + itemBefore[dimension] / 2 :
-            0;
+          const itemBeforeCenter =
+            itemBefore instanceof HTMLElement
+              ? itemBefore[leadingEdge] + itemBefore[dimension] / 2
+              : 0;
           const itemAfterIndex = itemBeforeIndex + 1;
           const itemAfter = this.items && this.items[itemAfterIndex];
-          const itemAfterCenter = itemAfter instanceof HTMLElement ?
-            itemAfter[leadingEdge] + itemAfter[dimension] / 2 :
-            0;
-    
+          const itemAfterCenter =
+            itemAfter instanceof HTMLElement
+              ? itemAfter[leadingEdge] + itemAfter[dimension] / 2
+              : 0;
+
           let center = 0;
           if (itemBefore && !itemAfter) {
             center = itemBeforeCenter;
@@ -102,22 +106,27 @@ class CenteredStrip extends Base {
           } else if (itemBefore && itemAfter) {
             const offsetFraction = selectionFraction - itemBeforeIndex;
             // TODO: sign
-            center = itemBeforeCenter + offsetFraction * (itemAfterCenter - itemBeforeCenter);
+            center =
+              itemBeforeCenter +
+              offsetFraction * (itemAfterCenter - itemBeforeCenter);
           }
           if (!vertical && rightToLeft) {
             center = stripDimension - center;
           }
-          
+
           // Try to center the selected item.
-          translation = center - (stripContainerDimension / 2);
-    
+          translation = center - stripContainerDimension / 2;
+
           // Constrain x to avoid showing space on either end.
           translation = Math.max(translation, 0);
-          translation = Math.min(translation, stripDimension - stripContainerDimension);
-    
+          translation = Math.min(
+            translation,
+            stripDimension - stripContainerDimension
+          );
+
           translation *= sign;
         }
-    
+
         const axis = vertical ? 'Y' : 'X';
         const transform = `translate${axis}(${translation}px)`;
         const showTransition = this[internal.state].enableEffects && !swiping;
@@ -130,9 +139,8 @@ class CenteredStrip extends Base {
       }
     }
     if (changed.orientation) {
-      const flexDirection = this[internal.state].orientation === 'horizontal' ?
-        '' :
-        'column';
+      const flexDirection =
+        this[internal.state].orientation === 'horizontal' ? '' : 'column';
       this[internal.ids].stripContainer.style.flexDirection = flexDirection;
       this[internal.ids].strip.style.flexDirection = flexDirection;
     }
@@ -178,8 +186,6 @@ class CenteredStrip extends Base {
       </div>
     `;
   }
-
 }
-
 
 export default CenteredStrip;

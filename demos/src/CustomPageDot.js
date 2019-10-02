@@ -2,9 +2,7 @@ import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
-
 class CustomPageDot extends ReactiveElement {
-
   get [internal.template]() {
     return template.html`
       <style>
@@ -28,9 +26,7 @@ class CustomPageDot extends ReactiveElement {
       </style>
     `;
   }
-
 }
-
 
 customElements.define('custom-page-dot', CustomPageDot);
 export default CustomPageDot;

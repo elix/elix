@@ -3,7 +3,6 @@ import { ensureId } from './utilities.js';
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 /**
  * Exposes a list's currently-selected item to assistive technologies.
  *
@@ -38,10 +37,8 @@ import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-un
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function AriaListMixin(Base) {
-
   // The class prototype added by the mixin.
   class AriaList extends Base {
-
     get [internal.defaultState]() {
       const base = super[internal.defaultState];
       return Object.assign(base, {
@@ -58,7 +55,9 @@ export default function AriaListMixin(Base) {
     }
 
     [internal.render](/** @type {PlainObject} */ changed) {
-      if (super[internal.render]) { super[internal.render](changed); }
+      if (super[internal.render]) {
+        super[internal.render](changed);
+      }
       const { selectedIndex, itemRole } = this[internal.state];
       /** @type {ListItemElement[]} */ const items = this[internal.state].items;
       if (changed.items && items) {
@@ -88,9 +87,8 @@ export default function AriaListMixin(Base) {
           });
         }
         // Point the top element at the selected item.
-        const selectedItem = selectedIndex >= 0 && items ?
-          items[selectedIndex] :
-          null;
+        const selectedItem =
+          selectedIndex >= 0 && items ? items[selectedIndex] : null;
         if (selectedItem) {
           if (!selectedItem.id) {
             selectedItem.id = ensureId(selectedItem);
@@ -124,7 +122,6 @@ export default function AriaListMixin(Base) {
         });
       }
     }
-
   }
 
   return AriaList;

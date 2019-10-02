@@ -1,23 +1,21 @@
 import { selfAndComposedAncestors } from './utilities.js';
 
-
 /**
  * Utilities for working with scrolling.
- * 
+ *
  * @module defaultScrollTarget
  */
-
 
 /**
  * Returns true if the given target or any of its ancestors can be scrolled
  * in the indicated direction.
- * 
+ *
  * This is used, e.g., by gesture event handlers to predict if the default
  * behavior for a given event is likely to result in scrolling.
- * 
- * @param {EventTarget} target 
- * @param {'horizontal'|'vertical'} orientation 
- * @param {boolean} downOrRight 
+ *
+ * @param {EventTarget} target
+ * @param {'horizontal'|'vertical'} orientation
+ * @param {boolean} downOrRight
  */
 export function canScrollInDirection(target, orientation, downOrRight) {
   if (!(target instanceof Node)) {
@@ -52,7 +50,6 @@ export function canScrollInDirection(target, orientation, downOrRight) {
   return false;
 }
 
-
 /**
  * This helper returns a guess as to what portion of the given element can be
  * scrolled. This is used by [SelectionInViewMixin](SelectionInViewMixin) to
@@ -70,31 +67,35 @@ export function canScrollInDirection(target, orientation, downOrRight) {
 export function defaultScrollTarget(element) {
   const root = element.shadowRoot;
   const slot = root && root.querySelector('slot:not([name])');
-  const scrollingParent = slot && slot.parentNode instanceof Element &&
+  const scrollingParent =
+    slot &&
+    slot.parentNode instanceof Element &&
     getScrollableElement(slot.parentNode);
   return scrollingParent || element;
 }
 
-
 /**
  * Return true if the given element can be scrolled.
- * 
+ *
  * @private
- * @param {HTMLElement} element 
+ * @param {HTMLElement} element
  */
 function isElementScrollable(element) {
   const style = getComputedStyle(element);
   const overflowX = style.overflowX;
   const overflowY = style.overflowY;
-  return (overflowX === 'scroll' || overflowX === 'auto' ||
-      overflowY === 'scroll' || overflowY === 'auto');
+  return (
+    overflowX === 'scroll' ||
+    overflowX === 'auto' ||
+    overflowY === 'scroll' ||
+    overflowY === 'auto'
+  );
 }
-
 
 /**
  * If the given element can be scrolled, return that. If not, return the closest
  * ancestor that can be scrolled. If no such ancestor is found, return null.
- * 
+ *
  * @param {Element} node
  * @returns {Element|null}
  */

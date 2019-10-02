@@ -11,28 +11,26 @@ import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 import TransitionEffectMixin from './TransitionEffectMixin.js';
 
-
-const Base =
-  DialogModalityMixin(
+const Base = DialogModalityMixin(
   EffectMixin(
-  FocusCaptureMixin(
-  KeyboardMixin(
-  LanguageDirectionMixin(
-  TouchSwipeMixin(
-  TrackpadSwipeMixin(
-  TransitionEffectMixin(
-    Overlay
-  ))))))));
-
+    FocusCaptureMixin(
+      KeyboardMixin(
+        LanguageDirectionMixin(
+          TouchSwipeMixin(TrackpadSwipeMixin(TransitionEffectMixin(Overlay)))
+        )
+      )
+    )
+  )
+);
 
 /**
  * A panel that slides in from the side of the page
- * 
+ *
  * A drawer is often used to provide navigation in situations where: a) screen
  * real estate is constrained and b) the navigation UI is not critical to
  * completing the user’s primary goal (and, hence, not critical to the
  * application’s business goal).
- * 
+ *
  * @inherits Overlay
  * @mixes DialogModalityMixin
  * @mixes EffectMixin
@@ -44,7 +42,6 @@ const Base =
  * @mixes TransitionEffectMixin
  */
 class Drawer extends Base {
-
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
 
@@ -64,7 +61,9 @@ class Drawer extends Base {
   }
 
   [internal.componentDidUpdate](/** @typeof {PlainObject} */ changed) {
-    if (super[internal.componentDidUpdate]) { super[internal.componentDidUpdate](changed); }
+    if (super[internal.componentDidUpdate]) {
+      super[internal.componentDidUpdate](changed);
+    }
     if (changed.opened) {
       // Reflect opened attribute.
       this.setAttribute('opened', this[internal.state].opened.toString());
@@ -85,9 +84,8 @@ class Drawer extends Base {
     // Have swipeAxis follow fromEdge.
     result.onChange('fromEdge', state => {
       const { fromEdge } = state;
-      const swipeAxis = fromEdge === 'top' || fromEdge === 'bottom' ?
-        'vertical' :
-        'horizontal';
+      const swipeAxis =
+        fromEdge === 'top' || fromEdge === 'bottom' ? 'vertical' : 'horizontal';
       return {
         swipeAxis
       };
@@ -103,11 +101,11 @@ class Drawer extends Base {
   /**
    * The edge from which the drawer will appear, in terms of the drawer's
    * container.
-   * 
+   *
    * The `start` and `end` values refer to text direction: in left-to-right
    * languages such as English, these are equivalent to `left` and `right`,
    * respectively.
-   * 
+   *
    * @type {('end'|'left'|'right'|'start')}
    * @default 'start'
    */
@@ -149,7 +147,9 @@ class Drawer extends Base {
       // operation, try to animate its opacity (below), then the animation won't
       // be shown. If we always render the backdrop, but keep it invisible until
       // we want to show it, then the animation works as expected.
-      this[internal.ids].backdrop.style.visibility = openedOrSwiping ? 'visible' : 'hidden';
+      this[internal.ids].backdrop.style.visibility = openedOrSwiping
+        ? 'visible'
+        : 'hidden';
 
       // Only listen to pointer events if opened or swiping.
       this.style.pointerEvents = openedOrSwiping ? 'initial' : 'none';
@@ -161,9 +161,15 @@ class Drawer extends Base {
       this[internal.ids].frame.style.clipPath = clip ? 'inset(0px)' : '';
     }
 
-    if (changed.effect || changed.effectPhase || changed.enableEffects ||
-        changed.fromEdge || changed.gripSize || changed.rightToLeft ||
-        changed.swipeFraction) {
+    if (
+      changed.effect ||
+      changed.effectPhase ||
+      changed.enableEffects ||
+      changed.fromEdge ||
+      changed.gripSize ||
+      changed.rightToLeft ||
+      changed.swipeFraction
+    ) {
       // Render the drawer.
       const {
         effect,
@@ -174,13 +180,15 @@ class Drawer extends Base {
         rightToLeft,
         swipeFraction
       } = this[internal.state];
-      const opened = (effect === 'open' && effectPhase !== 'before') ||
+      const opened =
+        (effect === 'open' && effectPhase !== 'before') ||
         (effect === 'close' && effectPhase === 'before');
 
-      const fromLeadingEdge = fromEdge === 'left' ||
+      const fromLeadingEdge =
+        fromEdge === 'left' ||
         fromEdge === 'top' ||
-        fromEdge === 'start' && !rightToLeft ||
-        fromEdge === 'end' && rightToLeft;
+        (fromEdge === 'start' && !rightToLeft) ||
+        (fromEdge === 'end' && rightToLeft);
 
       // Constrain the distance swiped to between 0 and a bit less than 1. A swipe
       // distance of 1 itself would cause a tricky problem. The drawer would
@@ -190,10 +198,9 @@ class Drawer extends Base {
       // ensuring we always transition at least a tiny bit, we guarantee that a
       // transition and its accompanying event will occur.
 
-
       // Swipe bounds depend on whether drawer is current open or closed.
-      const expectPositiveSwipe = (fromLeadingEdge && !opened) ||
-        (!fromLeadingEdge && opened);
+      const expectPositiveSwipe =
+        (fromLeadingEdge && !opened) || (!fromLeadingEdge && opened);
       const almost1 = 0.999;
       const lowerBound = expectPositiveSwipe ? 0 : -almost1;
       const upperBound = expectPositiveSwipe ? almost1 : 0;
@@ -202,8 +209,10 @@ class Drawer extends Base {
       const sign = fromLeadingEdge ? -1 : 1;
       let openedFraction = opened ? 1 : 0;
       if (swiping) {
-        const boundedSwipeFraction =
-          Math.max(Math.min(swipeFraction, upperBound), lowerBound);
+        const boundedSwipeFraction = Math.max(
+          Math.min(swipeFraction, upperBound),
+          lowerBound
+        );
         openedFraction -= sign * boundedSwipeFraction;
       }
 
@@ -219,8 +228,11 @@ class Drawer extends Base {
       // more than halfway, we want to animate the transition back to the fully
       // opened state. For that, we show transitions during the "after" effect
       // phase.
-      const showTransition = enableEffects && !swiping &&
-        effect && (effectPhase === 'during' || effectPhase === 'after');
+      const showTransition =
+        enableEffects &&
+        !swiping &&
+        effect &&
+        (effectPhase === 'during' || effectPhase === 'after');
       if (showTransition) {
         // The time required to show transitions depends on how far apart the
         // elements currently are from their desired state. As a reference point,
@@ -231,27 +243,26 @@ class Drawer extends Base {
         const opacityCurrent = parseFloat(backdrop.style.opacity) || 0;
         const opacityRemaining = Math.abs(opacityCurrent - opacity);
         const fullDuration = 0.25; // Quarter second
-        duration = opacityRemaining / maxOpacity * fullDuration;
+        duration = (opacityRemaining / maxOpacity) * fullDuration;
       }
 
       const vertical = fromEdge === 'top' || fromEdge === 'bottom';
       const axis = vertical ? 'Y' : 'X';
       const translatePercentage = `${translateFraction * 100}%`;
-      const gripValue = gripSize ?
-        gripSize * -sign * (1 - openedFraction) :
-        0;
-      const translateValue = gripValue === 0 ?
-        translatePercentage :
-        `calc(${translatePercentage} + ${gripValue}px)`;
+      const gripValue = gripSize ? gripSize * -sign * (1 - openedFraction) : 0;
+      const translateValue =
+        gripValue === 0
+          ? translatePercentage
+          : `calc(${translatePercentage} + ${gripValue}px)`;
       const transform = `translate${axis}(${translateValue})`;
 
       Object.assign(this[internal.ids].backdrop.style, {
         opacity,
-        'transition': showTransition ? `opacity ${duration}s linear` : undefined,
+        transition: showTransition ? `opacity ${duration}s linear` : undefined
       });
       Object.assign(this[internal.ids].frame.style, {
         transform,
-        'transition': showTransition ? `transform ${duration}s` : undefined,
+        transition: showTransition ? `transform ${duration}s` : undefined
       });
     }
 
@@ -272,12 +283,10 @@ class Drawer extends Base {
         right: 'left',
         top: 'bottom'
       };
-      mapFromEdgeToOppositeEdge.start = mapFromEdgeToOppositeEdge[
-        rightToLeft ? 'right' : 'left'
-      ];
-      mapFromEdgeToOppositeEdge.end = mapFromEdgeToOppositeEdge[
-        rightToLeft ? 'left' : 'right'
-      ];
+      mapFromEdgeToOppositeEdge.start =
+        mapFromEdgeToOppositeEdge[rightToLeft ? 'right' : 'left'];
+      mapFromEdgeToOppositeEdge.end =
+        mapFromEdgeToOppositeEdge[rightToLeft ? 'left' : 'right'];
       Object.assign(this.style, edgeCoordinates, {
         [mapFromEdgeToOppositeEdge[fromEdge]]: null
       });
@@ -292,15 +301,17 @@ class Drawer extends Base {
         top: 'flex-start'
       };
 
-      this.style.flexDirection = fromEdge === 'top' || fromEdge === 'bottom' ?
-        'column' :
-        'row';
+      this.style.flexDirection =
+        fromEdge === 'top' || fromEdge === 'bottom' ? 'column' : 'row';
       this.style.justifyContent = mapFromEdgetoJustifyContent[fromEdge];
     }
 
     if (changed.opened) {
       // Reflect opened state to ARIA attribute.
-      this.setAttribute('aria-expanded', this[internal.state].opened.toString());
+      this.setAttribute(
+        'aria-expanded',
+        this[internal.state].opened.toString()
+      );
     }
   }
 
@@ -315,12 +326,14 @@ class Drawer extends Base {
 
   async [internal.swipeLeft]() {
     const { fromEdge, rightToLeft } = this[internal.state];
-    const fromLeftEdge = fromEdge === 'left' ||
-      fromEdge === 'start' && !rightToLeft ||
-      fromEdge === 'end' && rightToLeft;
-    const fromRightEdge = fromEdge === 'right' ||
-      fromEdge === 'start' && rightToLeft ||
-      fromEdge === 'end' && !rightToLeft;
+    const fromLeftEdge =
+      fromEdge === 'left' ||
+      (fromEdge === 'start' && !rightToLeft) ||
+      (fromEdge === 'end' && rightToLeft);
+    const fromRightEdge =
+      fromEdge === 'right' ||
+      (fromEdge === 'start' && rightToLeft) ||
+      (fromEdge === 'end' && !rightToLeft);
     if (fromRightEdge) {
       open(this);
     } else if (fromLeftEdge) {
@@ -330,12 +343,14 @@ class Drawer extends Base {
 
   async [internal.swipeRight]() {
     const { fromEdge, rightToLeft } = this[internal.state];
-    const fromLeftEdge = fromEdge === 'left' ||
-      fromEdge === 'start' && !rightToLeft ||
-      fromEdge === 'end' && rightToLeft;
-    const fromRightEdge = fromEdge === 'right' ||
-      fromEdge === 'start' && rightToLeft ||
-      fromEdge === 'end' && !rightToLeft;
+    const fromLeftEdge =
+      fromEdge === 'left' ||
+      (fromEdge === 'start' && !rightToLeft) ||
+      (fromEdge === 'end' && rightToLeft);
+    const fromRightEdge =
+      fromEdge === 'right' ||
+      (fromEdge === 'start' && rightToLeft) ||
+      (fromEdge === 'end' && !rightToLeft);
     if (fromLeftEdge) {
       open(this);
     } else if (fromRightEdge) {
@@ -367,7 +382,9 @@ class Drawer extends Base {
     const frameContent = result.content.querySelector('#frameContent');
     /** @type {any} */ const cast = this;
     cast[FocusCaptureMixin.wrap](frameContent);
-    return template.concat(result, template.html`
+    return template.concat(
+      result,
+      template.html`
       <style>
         :host {
           align-items: stretch;
@@ -386,20 +403,18 @@ class Drawer extends Base {
           overflow: hidden;
         }
       </style>
-    `);
+    `
+    );
   }
-
 }
-
 
 async function close(/** @type {Drawer} */ element) {
   element[internal.setState]({
     effect: 'close',
     effectPhase: 'during'
   });
-  await element.close();  
+  await element.close();
 }
-
 
 async function open(/** @type {Drawer} */ element) {
   element[internal.setState]({
@@ -408,6 +423,5 @@ async function open(/** @type {Drawer} */ element) {
   });
   await element.open();
 }
-
 
 export default Drawer;

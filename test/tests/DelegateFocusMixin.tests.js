@@ -3,22 +3,17 @@ import * as template from '../../src/template.js';
 import DelegateFocusMixin from '../../src/DelegateFocusMixin.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
-
 class DelegateFocusTest extends DelegateFocusMixin(ReactiveElement) {
-
   get [internal.template]() {
     return template.html`
       <input>
     `;
   }
-
 }
 
 customElements.define('delegate-focus-test', DelegateFocusTest);
 
-
-describe("DelegateFocusMixin", () => {
-
+describe('DelegateFocusMixin', () => {
   let container;
 
   before(() => {
@@ -29,7 +24,7 @@ describe("DelegateFocusMixin", () => {
     container.innerHTML = '';
   });
 
-  it("delegates focus to an inner element", () => {
+  it('delegates focus to an inner element', () => {
     const fixture = new DelegateFocusTest();
     container.appendChild(fixture);
     fixture.focus();
@@ -37,5 +32,4 @@ describe("DelegateFocusMixin", () => {
     const input = fixture.shadowRoot.querySelector('input');
     assert.equal(activeElement, input);
   });
-
 });

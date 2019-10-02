@@ -8,7 +8,6 @@ import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 
-
 // Does a list position imply a lateral arrangement of list and stage?
 /** @type {IndexedObject<boolean>} */
 const lateralPositions = {
@@ -18,14 +17,9 @@ const lateralPositions = {
   start: true
 };
 
-
-const Base =
-  LanguageDirectionMixin(
-  SingleSelectionMixin(
-  SlotItemsMixin(
-    ReactiveElement
-  )));
-
+const Base = LanguageDirectionMixin(
+  SingleSelectionMixin(SlotItemsMixin(ReactiveElement))
+);
 
 /**
  * Combines a list with an area focusing on a single selected item.
@@ -39,9 +33,10 @@ const Base =
  * @elementrole {Modes} stage
  */
 class Explorer extends Base {
-
   [internal.checkSize]() {
-    if (super[internal.checkSize]) { super[internal.checkSize](); }
+    if (super[internal.checkSize]) {
+      super[internal.checkSize]();
+    }
     if (this[internal.ids].stage[internal.checkSize]) {
       this[internal.ids].stage[internal.checkSize]();
     }
@@ -89,20 +84,19 @@ class Explorer extends Base {
 
     // If items for default proxies have changed, recreate the proxies.
     // If nodes have been assigned to the proxy slot, use those instead.
-    state.onChange(['items', 'proxiesAssigned', 'proxyRole'], (state, changed) => {
-      const {
-        items,
-        proxiesAssigned,
-        proxyRole
-      } = state;
-      if ((changed.items || changed.proxyRole) && !proxiesAssigned) {
-        // Generate sufficient default proxies.
-        return {
-          proxies: createDefaultProxies(items, proxyRole)
-        };
+    state.onChange(
+      ['items', 'proxiesAssigned', 'proxyRole'],
+      (state, changed) => {
+        const { items, proxiesAssigned, proxyRole } = state;
+        if ((changed.items || changed.proxyRole) && !proxiesAssigned) {
+          // Generate sufficient default proxies.
+          return {
+            proxies: createDefaultProxies(items, proxyRole)
+          };
+        }
+        return null;
       }
-      return null;
-    });
+    );
 
     return state;
   }
@@ -126,24 +120,40 @@ class Explorer extends Base {
       }
     };
     if (changed.proxyListRole) {
-      template.transmute(this[internal.ids].proxyList, this[internal.state].proxyListRole);
-      this[internal.ids].proxyList.addEventListener('selected-index-changed', handleSelectedIndexChanged);
+      template.transmute(
+        this[internal.ids].proxyList,
+        this[internal.state].proxyListRole
+      );
+      this[internal.ids].proxyList.addEventListener(
+        'selected-index-changed',
+        handleSelectedIndexChanged
+      );
     }
     if (changed.stageRole) {
-      template.transmute(this[internal.ids].stage, this[internal.state].stageRole);
-      this[internal.ids].stage.addEventListener('selected-index-changed', handleSelectedIndexChanged);
+      template.transmute(
+        this[internal.ids].stage,
+        this[internal.state].stageRole
+      );
+      this[internal.ids].stage.addEventListener(
+        'selected-index-changed',
+        handleSelectedIndexChanged
+      );
     }
     const proxyList = this[internal.ids].proxyList;
     const stage = this[internal.ids].stage;
     if (changed.proxies || changed.proxiesAssigned) {
       // Render the default proxies.
       const { proxies, proxiesAssigned } = this[internal.state];
-      const childNodes = proxiesAssigned ?
-        [this[internal.ids].proxySlot] :
-        [this[internal.ids].proxySlot, ...proxies];
+      const childNodes = proxiesAssigned
+        ? [this[internal.ids].proxySlot]
+        : [this[internal.ids].proxySlot, ...proxies];
       applyChildNodes(this[internal.ids].proxyList, childNodes);
     }
-    if (changed.proxyListOverlap || changed.proxyListPosition || changed.proxyListRole) {
+    if (
+      changed.proxyListOverlap ||
+      changed.proxyListPosition ||
+      changed.proxyListRole
+    ) {
       const { proxyListOverlap, proxyListPosition } = this[internal.state];
       const lateralPosition = lateralPositions[proxyListPosition];
       Object.assign(proxyList.style, {
@@ -178,12 +188,14 @@ class Explorer extends Base {
       setListAndStageOrder(this, this[internal.state]);
       const { proxyListPosition } = this[internal.state];
       const lateralPosition = lateralPositions[proxyListPosition];
-      this[internal.ids].explorerContainer.style.flexDirection = lateralPosition ? 'row' : 'column';
+      this[internal.ids].explorerContainer.style.flexDirection = lateralPosition
+        ? 'row'
+        : 'column';
       Object.assign(proxyList.style, {
         bottom: proxyListPosition === 'bottom' ? '0' : null,
         left: proxyListPosition === 'left' ? '0' : null,
         right: proxyListPosition === 'right' ? '0' : null,
-        top: proxyListPosition === 'top' ? '0' : null,
+        top: proxyListPosition === 'top' ? '0' : null
       });
     }
     if (changed.selectedIndex || changed.proxyListRole) {
@@ -224,7 +236,7 @@ class Explorer extends Base {
    * returns the collection of those elements. Otherwise, this will return
    * a collection of default proxies generated by the component, one for
    * each item.
-   * 
+   *
    * @type {Element[]}
    */
   get proxies() {
@@ -233,7 +245,7 @@ class Explorer extends Base {
 
   /**
    * True if the list of proxies should overlap the stage, false if not.
-   * 
+   *
    * @type {boolean}
    * @default false
    */
@@ -249,11 +261,11 @@ class Explorer extends Base {
 
   /**
    * The position of the proxy list relative to the stage.
-   * 
+   *
    * The `start` and `end` values refer to text direction: in left-to-right
    * languages such as English, these are equivalent to `left` and `right`,
    * respectively.
-   * 
+   *
    * @type {('bottom'|'end'|'left'|'right'|'start'|'top')}
    * @default 'start'
    */
@@ -266,7 +278,7 @@ class Explorer extends Base {
 
   /**
    * The class, tag, or template used to create the Explorer's list of proxies.
-   * 
+   *
    * @type {Role}
    * @default ListBox
    */
@@ -280,7 +292,7 @@ class Explorer extends Base {
   /**
    * The class, tag, or template used to create default proxies for the list
    * items.
-   * 
+   *
    * @type {Role}
    * @default 'div'
    */
@@ -294,7 +306,7 @@ class Explorer extends Base {
   /**
    * The class, tag, or template used for the main "stage" element that shows a
    * single item at a time.
-   * 
+   *
    * @type {Role}
    * @default Modes
    */
@@ -329,30 +341,27 @@ class Explorer extends Base {
       </div>
     `;
   }
-
 }
-
 
 /**
  * Return the default list generated for the given items.
- * 
+ *
  * @private
  * @param {ListItemElement[]} items
  * @param {Role} proxyRole
  */
 function createDefaultProxies(items, proxyRole) {
-  const proxies = items ?
-    items.map(() => template.createElement(proxyRole)) :
-    [];
+  const proxies = items
+    ? items.map(() => template.createElement(proxyRole))
+    : [];
   // Make the array immutable to help update performance.
   Object.freeze(proxies);
   return proxies;
 }
 
-
 /**
  * Find the child of root that is or contains the given node.
- * 
+ *
  * @private
  * @param {Node} root
  * @param {Node} node
@@ -360,13 +369,12 @@ function createDefaultProxies(items, proxyRole) {
  */
 function findChildContainingNode(root, node) {
   const parentNode = node.parentNode;
-  return parentNode === root ?
-    node :
-    parentNode ?
-      findChildContainingNode(root, parentNode) :
-      null;
+  return parentNode === root
+    ? node
+    : parentNode
+    ? findChildContainingNode(root, parentNode)
+    : null;
 }
-
 
 /**
  * Physically reorder the list and stage to reflect the desired arrangement. We
@@ -374,7 +382,7 @@ function findChildContainingNode(root, node) {
  * but then the visual order wouldn't reflect the document order, which
  * determines focus order. That would surprise a user trying to tab through the
  * controls.
- * 
+ *
  * @private
  * @param {Explorer} element
  * @param {PlainObject} state
@@ -382,22 +390,28 @@ function findChildContainingNode(root, node) {
 function setListAndStageOrder(element, state) {
   const { proxyListPosition, rightToLeft } = state;
   const listInInitialPosition =
-      proxyListPosition === 'top' ||
-      proxyListPosition === 'start' ||
-      proxyListPosition === 'left' && !rightToLeft ||
-      proxyListPosition === 'right' && rightToLeft;
+    proxyListPosition === 'top' ||
+    proxyListPosition === 'start' ||
+    (proxyListPosition === 'left' && !rightToLeft) ||
+    (proxyListPosition === 'right' && rightToLeft);
   const container = element[internal.ids].explorerContainer;
   const stage = findChildContainingNode(container, element[internal.ids].stage);
-  const list = findChildContainingNode(container, element[internal.ids].proxyList);
+  const list = findChildContainingNode(
+    container,
+    element[internal.ids].proxyList
+  );
   const firstElement = listInInitialPosition ? list : stage;
   const lastElement = listInInitialPosition ? stage : list;
   if (firstElement && lastElement) {
-    const nextElementSibling = /** @type {any} */ (firstElement).nextElementSibling;
+    const nextElementSibling =
+      /** @type {any} */ (firstElement).nextElementSibling;
     if (nextElementSibling !== lastElement) {
-      element[internal.ids].explorerContainer.insertBefore(firstElement, lastElement);
+      element[internal.ids].explorerContainer.insertBefore(
+        firstElement,
+        lastElement
+      );
     }
   }
 }
-
 
 export default Explorer;

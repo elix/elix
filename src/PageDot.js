@@ -3,26 +3,20 @@ import * as template from './template.js';
 import DarkModeMixin from './DarkModeMixin.js';
 import SeamlessButton from './SeamlessButton.js';
 
-
-const Base =
-  DarkModeMixin(
-    SeamlessButton
-  );
-
+const Base = DarkModeMixin(SeamlessButton);
 
 /**
  * A small dot used to represent the items in a carousel-like element.
- * 
+ *
  * This is used as the default proxy element in [Carousel](Carousel).
- * 
+ *
  * @inherits SeamlessButton
  * @mixes DarkModeMixin
  */
 class PageDot extends Base {
-
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
-    this.setAttribute('role', 'none');    
+    this.setAttribute('role', 'none');
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
@@ -30,14 +24,16 @@ class PageDot extends Base {
     const { darkMode } = this[internal.state];
     // Wait for knowledge of dark mode
     if (changed.darkMode && darkMode !== null) {
-      this.style.backgroundColor = darkMode ?
-        'rgb(255, 255, 255)' :
-        'rgb(0, 0, 0)';
+      this.style.backgroundColor = darkMode
+        ? 'rgb(255, 255, 255)'
+        : 'rgb(0, 0, 0)';
     }
   }
 
   get [internal.template]() {
-    return template.concat(super[internal.template], template.html`
+    return template.concat(
+      super[internal.template],
+      template.html`
       <style>
         :host {
           border-radius: 7px;
@@ -58,9 +54,9 @@ class PageDot extends Base {
           }
         }
       </style>
-    `);
+    `
+    );
   }
-
 }
 
 export default PageDot;

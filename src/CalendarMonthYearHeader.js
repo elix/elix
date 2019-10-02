@@ -4,34 +4,28 @@ import * as template from './template.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
-
-const Base =
-  CalendarElementMixin(
-    ReactiveElement
-  );
-
+const Base = CalendarElementMixin(ReactiveElement);
 
 /**
  * Header showing a localized month name and the year
- * 
+ *
  * [A default representation of the month and year in browser's default locale](/demos/calendarMonthYearHeader.html)
- * 
+ *
  * Given a reference `date` property, this component will show a calendar
  * representation of that month and year.
- * 
+ *
  * All of the Elix calendar components attempt to provide full
  * [international calendar support](CalendarMonth#international-support)
  * to the extent currently possible in the user's web browser.
- * 
+ *
  * [CalendarMonth](CalendarMonth) instantiates `CalendarMonthYearHeader` to show
  * the name of the current month and the year as a header for the calendar
  * month.
- * 
+ *
  * @inherits ReactiveElement
  * @mixes CalendarElementMixin
  */
 class CalendarMonthYearHeader extends Base {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       date: calendar.today(),
@@ -42,10 +36,10 @@ class CalendarMonthYearHeader extends Base {
 
   /**
    * The format used to render the month name.
-   * 
+   *
    * The allowable formats are the same as the `month` formats in
    * [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat).
-   * 
+   *
    * @type {('numeric'|'2-digit'|'long'|'short'|'narrow')}
    * @default 'long'
    */
@@ -60,7 +54,12 @@ class CalendarMonthYearHeader extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.date || changed.locale || changed.monthFormat || changed.yearFormat) {
+    if (
+      changed.date ||
+      changed.locale ||
+      changed.monthFormat ||
+      changed.yearFormat
+    ) {
       const { date, locale, monthFormat, yearFormat } = this[internal.state];
       /** @type {PlainObject} */ const formatOptions = {};
       if (monthFormat) {
@@ -88,10 +87,10 @@ class CalendarMonthYearHeader extends Base {
 
   /**
    * The format used to render the year.
-   * 
+   *
    * The allowable formats are the same as the `year` formats in
    * [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat).
-   * 
+   *
    * @type {('numeric'|'2-digit')}
    * @default 'numeric'
    */
@@ -103,7 +102,6 @@ class CalendarMonthYearHeader extends Base {
       yearFormat
     });
   }
-
 }
 
 export default CalendarMonthYearHeader;

@@ -5,7 +5,6 @@ const createDefineModules = require('./createDefineModules.js');
 const createLibraryFiles = require('./createLibraryFiles.js');
 const createWeekData = require('./createWeekData.js');
 
-
 async function createEmptyDefineFolder(defineFolder) {
   try {
     const files = await fs.readdir(defineFolder);
@@ -26,17 +25,12 @@ async function createEmptyDefineFolder(defineFolder) {
   }
 }
 
-
 async function getSourceFiles(sourceFolder) {
   /** @type {string[]} */ const files = await fs.readdir(sourceFolder);
-  const generatedFiles = [
-    'elix.js',
-    'weekData.js'
-  ];
+  const generatedFiles = ['elix.js', 'weekData.js'];
   // Source files have a .js extension. Also, ignore generated files.
-  const jsFiles = files.filter(file =>
-    path.extname(file) === '.js' &&
-    !generatedFiles.includes(file)
+  const jsFiles = files.filter(
+    file => path.extname(file) === '.js' && !generatedFiles.includes(file)
   );
   // Sort source files into categories.
   const sourceFiles = {
@@ -59,7 +53,6 @@ async function getSourceFiles(sourceFolder) {
   return sourceFiles;
 }
 
-
 (async () => {
   try {
     const sourceFolder = path.join(__dirname, '../src');
@@ -79,5 +72,5 @@ async function getSourceFiles(sourceFolder) {
   } catch (e) {
     // We have to deal with top-level exceptions.
     console.error(e);
-  }  
+  }
 })();

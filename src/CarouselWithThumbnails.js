@@ -2,15 +2,13 @@ import * as internal from './internal.js';
 import Carousel from './Carousel.js';
 import Thumbnail from './Thumbnail.js';
 
-
 /**
  * Carousel showing a thumbnail for each image
- * 
+ *
  * @inherits Carousel
  * @elementrole {Thumbnail} proxy
  */
 class CarouselWithThumbnails extends Carousel {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       proxyListOverlap: false,
@@ -33,8 +31,6 @@ class CarouselWithThumbnails extends Carousel {
       });
     }
   }
-
 }
-
 
 export default CarouselWithThumbnails;

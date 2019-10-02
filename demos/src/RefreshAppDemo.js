@@ -4,7 +4,6 @@ import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
-
 const texts = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed molestie molestie enim porta dapibus. Phasellus dolor quam, egestas eu viverra at, porttitor in diam. Donec risus tellus, accumsan eget ipsum sed, vestibulum blandit ante. Nullam rhoncus leo nec lobortis convallis. Donec posuere tellus a nibh dignissim, rhoncus viverra neque rutrum. Suspendisse rutrum at massa vitae venenatis. Suspendisse ut risus pellentesque lacus dictum aliquet. Cras a arcu id odio molestie imperdiet.`,
   `Pellentesque vitae eros ac nulla aliquam eleifend. Nunc ornare sollicitudin arcu id suscipit. Donec sed nisl libero. Nulla facilisi. Proin ornare feugiat molestie. Mauris velit mi, volutpat sit amet posuere quis, tristique et urna. Donec sit amet tellus magna. Aenean feugiat suscipit neque, ut porttitor diam auctor in. Sed faucibus finibus ipsum et pharetra. In hac habitasse platea dictumst. Cras facilisis justo eu lectus luctus, et interdum velit aliquet.`,
@@ -15,21 +14,24 @@ const texts = [
   `Nam imperdiet id purus quis rutrum. Phasellus laoreet efficitur lorem, eu commodo tortor pretium sit amet. Etiam volutpat ex ac ex luctus maximus. Praesent in pharetra nunc, sed rhoncus eros. Nulla facilisi. Aenean commodo volutpat feugiat. Pellentesque egestas nulla ut facilisis efficitur. Praesent maximus diam ut suscipit mattis. Aenean eros turpis, vestibulum id sem vitae, suscipit molestie justo.`,
   `Nulla iaculis varius arcu, et rhoncus est lobortis et. Etiam convallis, velit ut tincidunt molestie, enim erat malesuada nunc, et ornare tortor velit et mi. Quisque nec felis nulla. Mauris sit amet nisi quis sapien pharetra tempor. Aenean fringilla nulla urna, sed tristique ipsum vulputate a. Ut lacus diam, volutpat id tincidunt a, condimentum eu odio. Nam justo orci, consectetur vitae nulla a, sagittis vestibulum erat. Mauris fringilla urna est, sit amet rutrum nulla facilisis a.`,
   `Sed in nulla eu nisl consectetur semper. Aliquam tristique ligula eu maximus porttitor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam tempor sed ex sit amet egestas. Curabitur sapien est, rhoncus dignissim pharetra sit amet, viverra id lectus. Vestibulum semper leo porta mi viverra consectetur. Quisque imperdiet lectus eget volutpat bibendum. Vivamus in nunc enim. Morbi fringilla est velit.`,
-  `Proin malesuada pharetra sapien, vitae blandit ante ultricies vitae. Curabitur tempus urna malesuada mauris pharetra feugiat. Duis augue nunc, porta et lorem dictum, interdum pellentesque risus. Donec leo dolor, sollicitudin a nunc non, consectetur interdum risus. Pellentesque feugiat magna libero, quis sollicitudin leo elementum in. Etiam urna risus, congue id placerat eu, fringilla lobortis diam. Sed id auctor nisi. Nunc sed ex eu neque sodales pharetra sit amet non libero.`,
+  `Proin malesuada pharetra sapien, vitae blandit ante ultricies vitae. Curabitur tempus urna malesuada mauris pharetra feugiat. Duis augue nunc, porta et lorem dictum, interdum pellentesque risus. Donec leo dolor, sollicitudin a nunc non, consectetur interdum risus. Pellentesque feugiat magna libero, quis sollicitudin leo elementum in. Etiam urna risus, congue id placerat eu, fringilla lobortis diam. Sed id auctor nisi. Nunc sed ex eu neque sodales pharetra sit amet non libero.`
 ];
 
-
 class RefreshAppDemo extends ReactiveElement {
-
   [internal.componentDidMount]() {
-    if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
-    this[internal.ids].pullToRefresh.addEventListener('refreshing-changed', event => {
-      /** @type {any} */
-      const cast = event;
-      if (cast.detail.refreshing) {
-        this.refresh();
+    if (super[internal.componentDidMount]) {
+      super[internal.componentDidMount]();
+    }
+    this[internal.ids].pullToRefresh.addEventListener(
+      'refreshing-changed',
+      event => {
+        /** @type {any} */
+        const cast = event;
+        if (cast.detail.refreshing) {
+          this.refresh();
+        }
       }
-    });
+    );
   }
 
   get [internal.defaultState]() {
@@ -61,7 +63,10 @@ class RefreshAppDemo extends ReactiveElement {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.paragraphs) {
-      applyChildNodes(this[internal.ids].pullToRefresh, this[internal.state].paragraphs);
+      applyChildNodes(
+        this[internal.ids].pullToRefresh,
+        this[internal.state].paragraphs
+      );
     }
   }
 
@@ -96,9 +101,7 @@ class RefreshAppDemo extends ReactiveElement {
       <audio id="refreshSound" src="resources/pop.mp3"></audio>
     `;
   }
-
 }
-
 
 function createParagraphs(/** @type {string[]} */ texts) {
   const paragraphs = texts.map(text => {
@@ -109,7 +112,6 @@ function createParagraphs(/** @type {string[]} */ texts) {
   Object.freeze(paragraphs);
   return paragraphs;
 }
-
 
 async function playSound(/** @type {HTMLAudioElement} */ sound) {
   if (sound && sound.play) {
@@ -124,7 +126,6 @@ async function playSound(/** @type {HTMLAudioElement} */ sound) {
     }
   }
 }
-
 
 customElements.define('refresh-app-demo', RefreshAppDemo);
 export default RefreshAppDemo;

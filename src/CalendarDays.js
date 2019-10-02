@@ -6,33 +6,28 @@ import CalendarDay from './CalendarDay.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
-
-const Base =
-  CalendarElementMixin(
-    ReactiveElement
-  );
+const Base = CalendarElementMixin(ReactiveElement);
 
 /**
  * A 7-column grid of days for use in a month calendar or multi-week calendar.
- * 
+ *
  * [A default representation of days in the current month in browser's default locale](/demos/calendarMonth.html)
- * 
+ *
  * Given a `startDate` and `dayCount`, this component will show a calendar
  * representation of that many days starting from the indicated date.
  * [CalendarMonth](CalendarMonth) uses `CalendarDays` to render the days portion
  * of the month, to which it adds headers for the month/year and the days of the
  * week.
- * 
+ *
  * All of the Elix calendar components attempt to provide full
  * [international calendar support](CalendarMonth#international-support)
  * to the extent currently possible in the user's web browser.
- * 
+ *
  * @inherits ReactiveElement
  * @mixes CalendarElementMixin
  * @elementrole {CalendarDay} day
  */
 class CalendarDays extends Base {
-
   /**
    * Returns the day element corresponding to the given date, or null if the
    * date falls outside this calendar week.
@@ -58,7 +53,7 @@ class CalendarDays extends Base {
 
   /**
    * The class, tag, or template used for the seven days of the week.
-   * 
+   *
    * @type {Role}
    * @default CalendarDay
    */
@@ -71,7 +66,7 @@ class CalendarDays extends Base {
 
   /**
    * The elements for the days being displayed.
-   * 
+   *
    * @type {Element[]|null}
    */
   get days() {
@@ -91,10 +86,13 @@ class CalendarDays extends Base {
     });
 
     // If any date-related state changes, regenerate the set of days.
-    state.onChange(['dayCount', 'dayRole', 'locale', 'showCompleteWeeks', 'startDate'], (state, changed) => {
-      const days = updateDays(state, changed.dayRole);
-      return { days };
-    });
+    state.onChange(
+      ['dayCount', 'dayRole', 'locale', 'showCompleteWeeks', 'startDate'],
+      (state, changed) => {
+        const days = updateDays(state, changed.dayRole);
+        return { days };
+      }
+    );
 
     return state;
   }
@@ -102,7 +100,10 @@ class CalendarDays extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.days) {
-      applyChildNodes(this[internal.ids].dayContainer, this[internal.state].days);
+      applyChildNodes(
+        this[internal.ids].dayContainer,
+        this[internal.state].days
+      );
     }
     if (changed.date || changed.locale || changed.showSelectedDay) {
       // Ensure only current date has "selected" class.
@@ -116,7 +117,8 @@ class CalendarDays extends Base {
         if ('selected' in day) {
           /** @type {any} */ const cast = day;
           const dayDate = cast.date;
-          const selected = showSelectedDay &&
+          const selected =
+            showSelectedDay &&
             dayDate.getDate() === selectedDate &&
             dayDate.getMonth() === selectedMonth &&
             dayDate.getFullYear() === selectedYear;
@@ -127,14 +129,18 @@ class CalendarDays extends Base {
     if (changed.dayCount || changed.startDate) {
       // Mark dates as inside or outside of range.
       const { dayCount, startDate } = this[internal.state];
-      const firstDateAfterRange = calendar.offsetDateByDays(startDate, dayCount);
+      const firstDateAfterRange = calendar.offsetDateByDays(
+        startDate,
+        dayCount
+      );
       /** @type {any[]} */
       const days = this[internal.state].days || [];
       days.forEach(day => {
         if ('outsideRange' in day) {
           const dayDate = day.date;
           const dayTime = dayDate.getTime();
-          const outsideRange = dayTime < startDate.getTime() ||
+          const outsideRange =
+            dayTime < startDate.getTime() ||
             dayTime >= firstDateAfterRange.getTime();
           day.outsideRange = outsideRange;
         }
@@ -164,9 +170,8 @@ class CalendarDays extends Base {
     return this[internal.state].startDate;
   }
   set startDate(startDate) {
-    const parsed = typeof startDate === 'string' ?
-      new Date(startDate) :
-      startDate;
+    const parsed =
+      typeof startDate === 'string' ? new Date(startDate) : startDate;
     if (!calendar.datesEqual(this[internal.state].startDate, parsed)) {
       this[internal.setState]({
         startDate: parsed
@@ -191,28 +196,27 @@ class CalendarDays extends Base {
       <div id="dayContainer"></div>
     `;
   }
-
 }
-
 
 /**
  * Create days as necessary for the given state.
  * Reuse existing day elements to the degree possible.
- * 
+ *
  * @private
  * @param {PlainObject} state
  * @param {boolean} forceCreation
  */
 function updateDays(state, forceCreation) {
   const { dayCount, dayRole, locale, showCompleteWeeks, startDate } = state;
-  const workingStartDate = showCompleteWeeks ?
-    calendar.firstDateOfWeek(startDate, locale) :
-    calendar.midnightOnDate(startDate);
+  const workingStartDate = showCompleteWeeks
+    ? calendar.firstDateOfWeek(startDate, locale)
+    : calendar.midnightOnDate(startDate);
   let workingDayCount;
   if (showCompleteWeeks) {
     const endDate = calendar.offsetDateByDays(startDate, dayCount - 1);
     const workingEndDate = calendar.lastDateOfWeek(endDate, locale);
-    workingDayCount = calendar.daysBetweenDates(workingStartDate, workingEndDate) + 1;
+    workingDayCount =
+      calendar.daysBetweenDates(workingStartDate, workingEndDate) + 1;
   } else {
     workingDayCount = dayCount;
   }
@@ -222,9 +226,7 @@ function updateDays(state, forceCreation) {
   let date = workingStartDate;
   for (let i = 0; i < workingDayCount; i++) {
     const createNewElement = forceCreation || i >= days.length;
-    const day = createNewElement ?
-      template.createElement(dayRole) :
-      days[i];
+    const day = createNewElement ? template.createElement(dayRole) : days[i];
     day.date = new Date(date.getTime());
     day.locale = locale;
     day.style.gridColumnStart = '';
@@ -243,13 +245,15 @@ function updateDays(state, forceCreation) {
   if (firstDay && !showCompleteWeeks) {
     // Set the grid-column on the first day. This will cause all the subsequent
     // days to line up in the calendar grid.
-    const dayOfWeek = calendar.daysSinceFirstDayOfWeek(firstDay.date, state.locale);
+    const dayOfWeek = calendar.daysSinceFirstDayOfWeek(
+      firstDay.date,
+      state.locale
+    );
     firstDay.style.gridColumnStart = dayOfWeek + 1;
   }
 
   Object.freeze(days);
   return days;
 }
-
 
 export default CalendarDays;

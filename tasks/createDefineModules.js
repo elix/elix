@@ -5,10 +5,8 @@
 // corresponding Foo.js file in the /define folder that exports the same
 // Foo component, and also defines it as `elix-foo`.
 
-
 const fs = require('fs').promises;
 const path = require('path');
-
 
 async function createDefineModules(defineFolder, componentFiles) {
   const modulePromises = componentFiles.map(componentFile => {
@@ -16,8 +14,7 @@ async function createDefineModules(defineFolder, componentFiles) {
     const tag = tagFromClassName(className);
 
     // Create JavaScript file.
-    const jsContent =
-`import ${className} from '../src/${className}.js';
+    const jsContent = `import ${className} from '../src/${className}.js';
 export default class Elix${className} extends ${className} {}
 customElements.define('${tag}', Elix${className});
 `;
@@ -25,8 +22,7 @@ customElements.define('${tag}', Elix${className});
     const jsPromise = fs.writeFile(jsPath, jsContent);
 
     // Create TypeScript file.
-    const tsContent =
-`import ${className} from '../src/${componentFile}';
+    const tsContent = `import ${className} from '../src/${componentFile}';
 export default ${className};
 `;
     const tsPath = path.join(defineFolder, `${className}.d.ts`);
@@ -37,13 +33,11 @@ export default ${className};
   await Promise.all(modulePromises);
 }
 
-
 // Given the class name `FooBar`, calculate the tag name `elix-foo-bar`.
 function tagFromClassName(className) {
   const uppercaseRegEx = /([A-Z])/g;
   const tag = 'elix' + className.replace(uppercaseRegEx, '-$1').toLowerCase();
   return tag;
 }
-
 
 module.exports = createDefineModules;

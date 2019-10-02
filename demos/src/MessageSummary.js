@@ -2,9 +2,7 @@ import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
-
 export default class MessageSummary extends ReactiveElement {
-
   get date() {
     return this[internal.state].date;
   }
@@ -113,8 +111,6 @@ export default class MessageSummary extends ReactiveElement {
       </div>
     `;
   }
-
 }
-
 
 customElements.define('message-summary', MessageSummary);

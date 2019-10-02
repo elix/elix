@@ -4,9 +4,7 @@ import * as template from './template.js';
 import DelegateFocusMixin from './DelegateFocusMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
-
 const extendsKey = Symbol('extends');
-
 
 /* True if a standard element is focusable by default. */
 /** @type {IndexedObject<boolean>} */
@@ -78,7 +76,6 @@ const reraiseEvents = {
   textarea: ['change', 'select', 'scroll']
 };
 
-
 /*
  * Mouse events that should be disabled if the inner component is disabled.
  */
@@ -95,7 +92,6 @@ const mouseEventNames = [
   'wheel'
 ];
 
-
 // Keep track of which re-raised events should bubble.
 /** @type {IndexedObject<boolean>} */
 const eventBubbles = {
@@ -103,7 +99,6 @@ const eventBubbles = {
   change: true,
   reset: true
 };
-
 
 // Elements which are display: block by default.
 // Source: https://developer.mozilla.org/en-US/docs/Web/HTML/Block-level_elements
@@ -145,7 +140,6 @@ const blockElements = [
   'video'
 ];
 
-
 // Standard attributes that don't have corresponding properties.
 // These need to be delegated from the wrapper to the inner element.
 const attributesWithoutProperties = [
@@ -183,31 +177,25 @@ const attributesWithoutProperties = [
   'usemap'
 ];
 
-
-const Base =
-  DelegateFocusMixin(
-    ReactiveElement
-  );
-
+const Base = DelegateFocusMixin(ReactiveElement);
 
 /**
  * Wraps a standard HTML element so it can be extended
- * 
+ *
  * The typical way to use this class is via its static `wrap` method.
- * 
+ *
  * @inherits ReactiveElement
  * @mixes DelegateFocusMixin
  */
 class WrappedStandardElement extends Base {
-
   /**
-   * 
+   *
    * Wrapped standard elements need to forward some attributes to the inner
    * element in cases where the attribute does not have a corresponding
    * property. These attributes include those prefixed with "aria-", and some
    * unusual standard attributes like contenteditable. To handle those, this
    * class defines its own attributeChangedCallback.
-   * 
+   *
    * @private
    * @param {string} name
    * @param {string} oldValue
@@ -216,9 +204,13 @@ class WrappedStandardElement extends Base {
   attributeChangedCallback(name, oldValue, newValue) {
     const forwardAttribute = attributesWithoutProperties.indexOf(name) >= 0;
     if (forwardAttribute) {
-      const innerAttributes = Object.assign({}, this[internal.state].innerAttributes, {
-        [name]: newValue
-      });
+      const innerAttributes = Object.assign(
+        {},
+        this[internal.state].innerAttributes,
+        {
+          [name]: newValue
+        }
+      );
       this[internal.setState]({
         innerAttributes
       });
@@ -277,7 +269,6 @@ class WrappedStandardElement extends Base {
         });
       });
     }
-
   }
 
   get [internal.defaultState]() {
@@ -288,20 +279,18 @@ class WrappedStandardElement extends Base {
   }
 
   get [internal.defaultTabIndex]() {
-    return focusableByDefault[this.extends] ?
-      0 :
-      -1;
+    return focusableByDefault[this.extends] ? 0 : -1;
   }
 
   /**
    * The tag name of the standard HTML element extended by this class.
-   * 
+   *
    * @returns {string}
    */
   get extends() {
     return this.constructor[extendsKey];
   }
-  
+
   /**
    * Returns a reference to the inner standard HTML element!
    *
@@ -312,14 +301,16 @@ class WrappedStandardElement extends Base {
     const result = this[internal.ids] && this[internal.ids].inner;
     if (!result) {
       /* eslint-disable no-console */
-      console.warn('Attempted to get an inner standard element before it was instantiated.');
+      console.warn(
+        'Attempted to get an inner standard element before it was instantiated.'
+      );
     }
     return result;
   }
-  
+
   /**
    * Return the value of the named property on the inner standard element.
-   * 
+   *
    * @param {string} name
    * @returns {any}
    */
@@ -378,9 +369,9 @@ class WrappedStandardElement extends Base {
 
   /**
    * Set the named property on the inner standard element.
-   * 
-   * @param {string} name 
-   * @param {any} value 
+   *
+   * @param {string} name
+   * @param {any} value
    */
   setInnerProperty(name, value) {
     // We normally don't check an existing state value before calling[internal.setState],
@@ -395,9 +386,13 @@ class WrappedStandardElement extends Base {
     // To avoid this, we check the existing value before updating our state.
     const current = this[internal.state].innerProperties[name];
     if (current !== value) {
-      const innerProperties = Object.assign({}, this[internal.state].innerProperties, {
-        [name]: value
-      });
+      const innerProperties = Object.assign(
+        {},
+        this[internal.state].innerProperties,
+        {
+          [name]: value
+        }
+      );
       this[internal.setState]({ innerProperties });
     }
   }
@@ -433,9 +428,8 @@ class WrappedStandardElement extends Base {
    * @type {(string|HTMLTemplateElement)}
    */
   get [internal.template]() {
-    const display = blockElements.indexOf(this.extends) >= 0 ?
-      'block' :
-      'inline-block';
+    const display =
+      blockElements.indexOf(this.extends) >= 0 ? 'block' : 'inline-block';
     return template.html`<style>:host { display: ${display}} #inner { box-sizing: border-box; height: 100%; width: 100%; }</style><${this.extends} id="inner"><slot></slot></${this.extends}`;
   }
 
@@ -452,11 +446,10 @@ class WrappedStandardElement extends Base {
    * @param {string} extendsTag - the standard HTML element tag to extend
    */
   static wrap(extendsTag) {
-
     // Create the new class.
     /** @type {Constructor<WrappedStandardElement>} */
     class Wrapped extends WrappedStandardElement {}
-    
+
     // Indicate which tag it wraps.
     /** @type {any} */ (Wrapped)[extendsKey] = extendsTag;
 
@@ -466,17 +459,15 @@ class WrappedStandardElement extends Base {
 
     return Wrapped;
   }
-
 }
-
 
 /**
  * Update the given attribute on an element.
- * 
+ *
  * Passing a non-null `value` acts like a call to `setAttribute(name, value)`.
  * If the supplied `value` is nullish, this acts like a call to
  * `removeAttribute(name)`.
- * 
+ *
  * @private
  * @param {HTMLElement} element
  * @param {string} name
@@ -500,33 +491,33 @@ export function applyAttribute(element, name, value) {
   }
 }
 
-
 /**
  * Create a delegate for the method or property identified by the descriptor.
- * 
+ *
  * @private
- * @param {string} name 
- * @param {PropertyDescriptor} descriptor 
+ * @param {string} name
+ * @param {PropertyDescriptor} descriptor
  */
 function createDelegate(name, descriptor) {
   if (typeof descriptor.value === 'function') {
     if (name !== 'constructor') {
       return createMethodDelegate(name, descriptor);
     }
-  } else if (typeof descriptor.get === 'function' ||
-    typeof descriptor.set === 'function') {
+  } else if (
+    typeof descriptor.get === 'function' ||
+    typeof descriptor.set === 'function'
+  ) {
     return createPropertyDelegate(name, descriptor);
   }
   return null;
 }
 
-
 /**
  * Create a delegate for the method identified by the descriptor.
- * 
+ *
  * @private
- * @param {string} name 
- * @param {PropertyDescriptor} descriptor 
+ * @param {string} name
+ * @param {PropertyDescriptor} descriptor
  */
 function createMethodDelegate(name, descriptor) {
   const value = function(/** @type {any[]} */ ...args) {
@@ -542,13 +533,12 @@ function createMethodDelegate(name, descriptor) {
   return delegate;
 }
 
-
 /**
  * Create a delegate for the property identified by the descriptor.
- * 
+ *
  * @private
- * @param {string} name 
- * @param {PropertyDescriptor} descriptor 
+ * @param {string} name
+ * @param {PropertyDescriptor} descriptor
  */
 function createPropertyDelegate(name, descriptor) {
   /** @type {PlainObject} */
@@ -572,11 +562,10 @@ function createPropertyDelegate(name, descriptor) {
   return delegate;
 }
 
-
 /**
  * Define delegates for the given class for each property/method on the
  * indicated prototype.
- * 
+ *
  * @private
  * @param {Constructor<Object>} cls
  * @param {Object} prototype
@@ -594,6 +583,5 @@ function defineDelegates(cls, prototype) {
     }
   });
 }
-
 
 export default WrappedStandardElement;

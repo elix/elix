@@ -2,10 +2,8 @@ import { trimMarks } from '../normalize.js';
 import * as internal from '../../src/internal.js';
 import CalendarDayNamesHeader from '../../define/CalendarDayNamesHeader.js';
 
-
-describe("CalendarDayNamesHeader", () => {
-
-  it("renders short English US week days", async () => {
+describe('CalendarDayNamesHeader', () => {
+  it('renders short English US week days', async () => {
     const fixture = new CalendarDayNamesHeader();
     fixture.locale = 'en-US';
     await fixture[internal.renderChanges]();
@@ -18,7 +16,7 @@ describe("CalendarDayNamesHeader", () => {
     assert.equal(trimMarks(fixture[internal.ids].day6.textContent), 'Sat');
   });
 
-  it("renders narrow English US week days", async () => {
+  it('renders narrow English US week days', async () => {
     const fixture = new CalendarDayNamesHeader();
     fixture.locale = 'en-US';
     fixture.format = 'narrow';
@@ -28,7 +26,7 @@ describe("CalendarDayNamesHeader", () => {
     assert(trimmed === 'S' || trimmed === 'Su');
   });
 
-  it("renders short French week days", async () => {
+  it('renders short French week days', async () => {
     const fixture = new CalendarDayNamesHeader();
     fixture.locale = 'fr-FR';
     await fixture[internal.renderChanges]();
@@ -40,5 +38,4 @@ describe("CalendarDayNamesHeader", () => {
     assert.equal(trimMarks(fixture[internal.ids].day5.textContent), 'sam.');
     assert.equal(trimMarks(fixture[internal.ids].day6.textContent), 'dim.');
   });
-
 });

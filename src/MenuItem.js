@@ -3,32 +3,26 @@ import * as template from './template.js';
 import GenericMixin from './GenericMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
-
-const Base =
-  GenericMixin(
-    ReactiveElement
-  );
-
+const Base = GenericMixin(ReactiveElement);
 
 /**
  * A choice in a menu
- * 
+ *
  * This class is a convenient way to popuplate a [Menu](Menu) with items that
  * exhibit an appearance roughly consistent with operating system menu items.
  * Use of this class is not required, however -- a `Menu` can contain any type
  * of item you want.
- * 
+ *
  * @inherits ReactiveElement
  * @mixes GenericMixin
  */
 class MenuItem extends Base {
-
   [internal.componentDidUpdate](/** @typeof {PlainObject} */ changed) {
     // TODO: How do we know whether to raise this if selection is set by Menu? */
     if (changed.selected /* && this[internal.raiseChangeEvents] */) {
       /**
        * Raised when the `selected` property changes.
-       * 
+       *
        * @event selected-changed
        */
       const event = new CustomEvent('selected-changed', {
@@ -49,7 +43,10 @@ class MenuItem extends Base {
   [internal.render](changed) {
     super[internal.render](changed);
     if (changed.generic) {
-      this[internal.ids].container.classList.toggle('generic', this[internal.state].generic);
+      this[internal.ids].container.classList.toggle(
+        'generic',
+        this[internal.state].generic
+      );
     }
   }
 
@@ -80,6 +77,5 @@ class MenuItem extends Base {
     `;
   }
 }
-
 
 export default MenuItem;

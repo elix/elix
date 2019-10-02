@@ -3,13 +3,10 @@ import * as mockInteractions from '../mockInteractions.js';
 import KeyboardMixin from '../../src/KeyboardMixin.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
-
 class KeyboardTest extends KeyboardMixin(ReactiveElement) {}
 customElements.define('keyboard-test', KeyboardTest);
 
-
-describe("KeyboardMixin", () => {
-
+describe('KeyboardMixin', () => {
   let container;
 
   before(() => {
@@ -20,7 +17,7 @@ describe("KeyboardMixin", () => {
     container.innerHTML = '';
   });
 
-  it("assigns a tabindex of 0 by default", () => {
+  it('assigns a tabindex of 0 by default', () => {
     const fixture = new KeyboardTest();
     fixture[internal.renderChanges]();
     assert.equal(fixture.getAttribute('tabindex'), '0');
@@ -33,7 +30,7 @@ describe("KeyboardMixin", () => {
     assert.equal(fixture.getAttribute('tabindex'), '1');
   });
 
-  it("reflects tabindex attribute and tabIndex property assignments in state", async () => {
+  it('reflects tabindex attribute and tabIndex property assignments in state', async () => {
     const fixture = new KeyboardTest();
     fixture[internal.renderChanges]();
     assert.equal(fixture[internal.state].tabIndex, 0);
@@ -46,7 +43,7 @@ describe("KeyboardMixin", () => {
     assert.equal(fixture.getAttribute('tabindex'), 2);
   });
 
-  it("listens to keydown and fires the keydown() method", done => {
+  it('listens to keydown and fires the keydown() method', done => {
     const fixture = new KeyboardTest();
     fixture[internal.keydown] = () => {
       done();
@@ -54,5 +51,4 @@ describe("KeyboardMixin", () => {
     container.appendChild(fixture);
     mockInteractions.dispatchSyntheticKeyboardEvent(fixture, 'keydown');
   });
-
 });

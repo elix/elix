@@ -6,23 +6,17 @@ import FilterListBox from './FilterListBox.js';
 import ListComboBox from './ListComboBox.js';
 import SlotContentMixin from './SlotContentMixin.js';
 
-
-const Base =
-  SlotContentMixin(
-    ListComboBox
-  );
-
+const Base = SlotContentMixin(ListComboBox);
 
 /**
  * A combo box which applies its text input as a filter on its list items
- * 
+ *
  * @inherits ListComboBox
  * @mixes SlotContentMixin
  * @elementrole {AutoCompleteInput} input
  * @elementrole {FilterListBox} list
  */
 class FilterComboBox extends Base {
-  
   get [internal.defaultState]() {
     const state = Object.assign(super[internal.defaultState], {
       filter: '',
@@ -34,12 +28,8 @@ class FilterComboBox extends Base {
     // If content changes, regenerate texts.
     state.onChange('content', state => {
       const { content } = state;
-      const items = content ?
-        substantiveElements(content) :
-        null;
-      const texts = items ?
-        getTextsFromItems(items) :
-        [];
+      const items = content ? substantiveElements(content) : null;
+      const texts = items ? getTextsFromItems(items) : [];
       return {
         texts
       };
@@ -65,9 +55,9 @@ class FilterComboBox extends Base {
         this[internal.raiseChangeEvents] = true;
         /** @type {any} */
         const cast = event;
-        const filter = cast.detail ?
-          cast.detail.originalText :
-          this[internal.state].value;
+        const filter = cast.detail
+          ? cast.detail.originalText
+          : this[internal.state].value;
         this[internal.setState]({
           filter
         });
@@ -90,8 +80,6 @@ class FilterComboBox extends Base {
       }
     }
   }
-
 }
-
 
 export default FilterComboBox;

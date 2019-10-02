@@ -4,29 +4,21 @@ import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import Popup from './Popup.js';
 import TransitionEffectMixin from './TransitionEffectMixin.js';
 
-
 const timeoutKey = Symbol('timeout');
 
-
-const Base =
-  LanguageDirectionMixin(
-  TransitionEffectMixin(
-    Popup
-  ));
-
+const Base = LanguageDirectionMixin(TransitionEffectMixin(Popup));
 
 /**
  * Lightweight popup intended to display a short, non-critical message
- * 
+ *
  * The message remains until  the user dismisses it or a specified `duration`
  * elapses.
- * 
+ *
  * @inherits Popup
  * @mixes LanguageDirectionMixin
  * @mixes TransitionEffectMixin
  */
 class Toast extends Base {
-
   constructor() {
     super();
     this.addEventListener('mouseout', () => {
@@ -50,17 +42,17 @@ class Toast extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       duration: null,
-      fromEdge: 'bottom',
+      fromEdge: 'bottom'
     });
   }
 
   /**
    * The duration, in milliseconds, for which the toast will appear on screen.
-   * 
+   *
    * The `duration` value refers to the duration of time in which the toast
-   * will appear on the screen. In other words, this is the time between 
+   * will appear on the screen. In other words, this is the time between
    * the `opened` and `closed` event for the toast.
-   * 
+   *
    * @type {number}
    * @default null
    */
@@ -77,11 +69,11 @@ class Toast extends Base {
 
   /**
    * The edge of the viewport from which the toast will appear.
-   * 
+   *
    * The `start` and `end` values refer to text direction: in left-to-right
    * languages such as English, these are equivalent to `left` and `right`,
    * respectively.
-   * 
+   *
    * @type {('bottom'|'end'|'left'|'right'|'start'|'top')}
    * @default 'bottom'
    */
@@ -98,19 +90,19 @@ class Toast extends Base {
       // Host
       /** @type {IndexedObject<any>} */
       const hostEdgeStyles = {
-        'bottom': {
+        bottom: {
           alignItems: 'center',
-          justifyContent: 'flex-end',
+          justifyContent: 'flex-end'
         },
         'bottom-left': {
           alignItems: 'flex-start',
-          justifyContent: 'flex-end',
+          justifyContent: 'flex-end'
         },
         'bottom-right': {
           alignItems: 'flex-end',
-          justifyContent: 'flex-end',
+          justifyContent: 'flex-end'
         },
-        'top': {
+        top: {
           alignItems: 'center',
           justifyContent: null
         },
@@ -125,9 +117,15 @@ class Toast extends Base {
       };
       Object.assign(this.style, hostEdgeStyles[this[internal.state].fromEdge]);
     }
-    if (changed.effect || changed.effectPhase || changed.fromEdge
-        || changed.rightToLeft) {
-      const { effect, effectPhase, fromEdge, rightToLeft } = this[internal.state];
+    if (
+      changed.effect ||
+      changed.effectPhase ||
+      changed.fromEdge ||
+      changed.rightToLeft
+    ) {
+      const { effect, effectPhase, fromEdge, rightToLeft } = this[
+        internal.state
+      ];
       /** @type {IndexedObject<string>} */
       const oppositeEdge = {
         'bottom-left': 'bottom-right',
@@ -135,38 +133,39 @@ class Toast extends Base {
         'top-left': 'top-right',
         'top-right': 'top-left'
       };
-      const languageAdjustedEdge = rightToLeft ?
-        (oppositeEdge[fromEdge] || fromEdge) :
-        fromEdge;
-  
+      const languageAdjustedEdge = rightToLeft
+        ? oppositeEdge[fromEdge] || fromEdge
+        : fromEdge;
+
       /** @type {IndexedObject<string>} */
       const edgeTransforms = {
-        'bottom': 'translateY(100%)',
+        bottom: 'translateY(100%)',
         'bottom-left': 'translateX(-100%)',
         'bottom-right': 'translateX(100%)',
-        'top': 'translateY(-100%)',
+        top: 'translateY(-100%)',
         'top-left': 'translateX(-100%)',
         'top-right': 'translateX(100%)'
       };
 
       /** @type {IndexedObject<string>} */
       const openEdgeTransforms = {
-        'bottom': 'translateY(0)',
+        bottom: 'translateY(0)',
         'bottom-left': 'translateX(0)',
         'bottom-right': 'translateX(0)',
-        'top': 'translateY(0)',
+        top: 'translateY(0)',
         'top-left': 'translateX(0)',
         'top-right': 'translateX(0)'
       };
-  
-      const opened = (effect === 'open' && effectPhase !== 'before') ||
+
+      const opened =
+        (effect === 'open' && effectPhase !== 'before') ||
         (effect === 'close' && effectPhase === 'before');
-  
+
       const opacity = opened ? 1 : 0;
-      const transform = opened ?
-        openEdgeTransforms[languageAdjustedEdge] :
-        edgeTransforms[languageAdjustedEdge];
-  
+      const transform = opened
+        ? openEdgeTransforms[languageAdjustedEdge]
+        : edgeTransforms[languageAdjustedEdge];
+
       Object.assign(this[internal.ids].frame.style, {
         opacity,
         transform
@@ -175,7 +174,9 @@ class Toast extends Base {
   }
 
   get [internal.template]() {
-    return template.concat(super[internal.template], template.html`
+    return template.concat(
+      super[internal.template],
+      template.html`
       <style>
         :host {
           align-items: initial;
@@ -204,14 +205,13 @@ class Toast extends Base {
           will-change: opacity, transform;
         }
       </style>
-    `);
+    `
+    );
   }
-
 }
 
-
 function clearTimer(/** @type {Toast} */ element) {
-    /** @type {any} */ const cast = element;
+  /** @type {any} */ const cast = element;
   if (cast[timeoutKey]) {
     clearTimeout(cast[timeoutKey]);
     cast[timeoutKey] = null;
@@ -233,6 +233,5 @@ function startTimerIfOpened(/** @type {Toast} */ element) {
     startTimer(element);
   }
 }
-
 
 export default Toast;

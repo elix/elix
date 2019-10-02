@@ -4,15 +4,11 @@ import FocusVisibleMixin from '../../src/FocusVisibleMixin.js';
 import KeyboardMixin from '../../src/KeyboardMixin.js';
 import WrappedStandardElement from '../../src/WrappedStandardElement.js';
 
-
-const Base =
-  FocusVisibleMixin(
-  KeyboardMixin(
-    WrappedStandardElement.wrap('button')
-  ));
+const Base = FocusVisibleMixin(
+  KeyboardMixin(WrappedStandardElement.wrap('button'))
+);
 
 class FocusVisibleTest extends Base {
-
   get [internal.template]() {
     return template.html`
       <style>
@@ -42,9 +38,7 @@ class FocusVisibleTest extends Base {
     super.connectedCallback();
     this.setAttribute('tabindex', '0');
   }
-
 }
-
 
 customElements.define('focus-visible-test', FocusVisibleTest);
 export default FocusVisibleTest;

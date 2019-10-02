@@ -8,27 +8,21 @@ import CalendarMonthNavigator from './CalendarMonthNavigator.js';
 import ComboBox from './ComboBox.js';
 import SeamlessButton from './SeamlessButton.js';
 
-
-const Base =
-  CalendarElementMixin(
-    ComboBox
-  );
-
+const Base = CalendarElementMixin(ComboBox);
 
 /**
  * Combo box that lets the user type a date or pick one from a popup calendar
- * 
+ *
  * @inherits ComboBox
  * @mixes CalendarElementMixin
  * @elementrole {CalendarMonthNavigator} calendar
  * @elementrole {SeamlessButton} todayButton
  */
 class DateComboBox extends Base {
-
   /**
    * The class, tag, or template used to create the left and right arrow
    * buttons.
-   * 
+   *
    * @type {Role}
    * @default ArrowDirectionButton
    */
@@ -40,16 +34,14 @@ class DateComboBox extends Base {
       arrowButtonRole
     });
   }
-  
+
   get calendar() {
-    return this.shadowRoot ?
-      this[internal.ids].calendar :
-      null;
+    return this.shadowRoot ? this[internal.ids].calendar : null;
   }
 
   /**
    * The class, tag, or template used to create the calendar.
-   * 
+   *
    * @type {Role}
    * @default CalendarMonthNavigator
    */
@@ -83,7 +75,7 @@ class DateComboBox extends Base {
 
   /**
    * The class, tag, or template used to create the day elements.
-   * 
+   *
    * @type {Role}
    * @default CalendarDay
    */
@@ -98,10 +90,10 @@ class DateComboBox extends Base {
 
   /**
    * The format used to render the day names in the week days header.
-   * 
+   *
    * The allowable formats are the same as the `weekday` formats in
    * [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat).
-   * 
+   *
    * @type {('long'|'narrow'|'short')}
    * @default 'short'
    */
@@ -113,7 +105,6 @@ class DateComboBox extends Base {
   }
 
   get [internal.defaultState]() {
-
     const dateTimeFormatOptions = {
       day: 'numeric',
       month: 'numeric',
@@ -144,69 +135,76 @@ class DateComboBox extends Base {
         };
       }
       return null;
-    })
+    });
 
     // Update value from date if:
     // the date was changed from the outside,
     // we're closing or losing focus and the user's changed the date,
     // or the format changed and the date was the last substantive property set.
-    state.onChange(['date', 'dateTimeFormat', 'focused', 'opened'], (state, changed) => {
-      const {
-        closeResult,
-        date,
-        datePriority,
-        dateTimeFormat,
-        focused,
-        opened,
-        userChangedDate
-      } = state;
-      const closing = changed.opened && !opened;
-      const canceled = closeResult && closeResult.canceled;
-      const blur = changed.focused && !focused;
-      if ((changed.date && !focused) ||
+    state.onChange(
+      ['date', 'dateTimeFormat', 'focused', 'opened'],
+      (state, changed) => {
+        const {
+          closeResult,
+          date,
+          datePriority,
+          dateTimeFormat,
+          focused,
+          opened,
+          userChangedDate
+        } = state;
+        const closing = changed.opened && !opened;
+        const canceled = closeResult && closeResult.canceled;
+        const blur = changed.focused && !focused;
+        if (
+          (changed.date && !focused) ||
           (blur && userChangedDate) ||
           (closing && userChangedDate && !canceled) ||
-          (changed.dateTimeFormat && datePriority)) {
-        const formattedDate = date && dateTimeFormat ?
-          this.formatDate(date, dateTimeFormat) :
-          '';
-        // See notes on mobile at ComboBox.defaultState.
-        const probablyMobile = matchMedia('(pointer: coarse)').matches;
-        const selectText = formattedDate.length > 0 && !probablyMobile;
-        return {
-          selectText,
-          value: formattedDate
-        };
+          (changed.dateTimeFormat && datePriority)
+        ) {
+          const formattedDate =
+            date && dateTimeFormat ? this.formatDate(date, dateTimeFormat) : '';
+          // See notes on mobile at ComboBox.defaultState.
+          const probablyMobile = matchMedia('(pointer: coarse)').matches;
+          const selectText = formattedDate.length > 0 && !probablyMobile;
+          return {
+            selectText,
+            value: formattedDate
+          };
+        }
+        return null;
       }
-      return null;
-    });
+    );
 
     // Update date from value if the value was changed, or the date format or
     // time bias changed and the value was the last substantive property set.
-    state.onChange(['dateTimeFormat', 'timeBias', 'value'], (state, changed) => {
-      const {
-        datePriority,
-        dateTimeFormat,
-        timeBias,
-        value
-      } = state;
-      if (dateTimeFormat &&
+    state.onChange(
+      ['dateTimeFormat', 'timeBias', 'value'],
+      (state, changed) => {
+        const { datePriority, dateTimeFormat, timeBias, value } = state;
+        if (
+          dateTimeFormat &&
           (changed.value ||
-          (!datePriority && (changed.dateTimeFormat || changed.timeBias)))) {
-        const parsedDate = this.parseDate(value, dateTimeFormat, timeBias);
-        if (parsedDate) {
-          return {
-            date: parsedDate
-          };
+            (!datePriority && (changed.dateTimeFormat || changed.timeBias)))
+        ) {
+          const parsedDate = this.parseDate(value, dateTimeFormat, timeBias);
+          if (parsedDate) {
+            return {
+              date: parsedDate
+            };
+          }
         }
+        return null;
       }
-      return null;
-    });
+    );
 
     // Update our date format if the locale or format options change.
     state.onChange(['dateTimeFormatOptions', 'locale'], state => {
       const { dateTimeFormatOptions, locale } = state;
-      const dateTimeFormat = calendar.dateTimeFormat(locale, dateTimeFormatOptions);
+      const dateTimeFormat = calendar.dateTimeFormat(
+        locale,
+        dateTimeFormatOptions
+      );
       return {
         dateTimeFormat
       };
@@ -217,17 +215,19 @@ class DateComboBox extends Base {
 
   /**
    * Format the given date as text.
-   * 
+   *
    * @private
-   * @param {Date} date 
-   * @param {Intl.DateTimeFormat} dateTimeFormat 
+   * @param {Date} date
+   * @param {Intl.DateTimeFormat} dateTimeFormat
    */
   formatDate(date, dateTimeFormat) {
     return dateTimeFormat.format(date);
   }
 
   [internal.goDown]() {
-    if (super[internal.goDown]) { super[internal.goDown](); }
+    if (super[internal.goDown]) {
+      super[internal.goDown]();
+    }
     const date = this[internal.state].date || new Date();
     this[internal.setState]({
       date: calendar.offsetDateByDays(date, 7)
@@ -236,7 +236,9 @@ class DateComboBox extends Base {
   }
 
   [internal.goLeft]() {
-    if (super[internal.goLeft]) { super[internal.goLeft](); }
+    if (super[internal.goLeft]) {
+      super[internal.goLeft]();
+    }
     const date = this[internal.state].date || new Date();
     this[internal.setState]({
       date: calendar.offsetDateByDays(date, -1)
@@ -245,7 +247,9 @@ class DateComboBox extends Base {
   }
 
   [internal.goRight]() {
-    if (super[internal.goRight]) { super[internal.goRight](); }
+    if (super[internal.goRight]) {
+      super[internal.goRight]();
+    }
     const date = this[internal.state].date || new Date();
     this[internal.setState]({
       date: calendar.offsetDateByDays(date, 1)
@@ -254,7 +258,9 @@ class DateComboBox extends Base {
   }
 
   [internal.goUp]() {
-    if (super[internal.goUp]) { super[internal.goUp](); }
+    if (super[internal.goUp]) {
+      super[internal.goUp]();
+    }
     const date = this[internal.state].date || new Date();
     this[internal.setState]({
       date: calendar.offsetDateByDays(date, -7)
@@ -262,14 +268,13 @@ class DateComboBox extends Base {
     return true;
   }
 
-    [internal.keydown](/** @type {KeyboardEvent} */ event) {
+  [internal.keydown](/** @type {KeyboardEvent} */ event) {
     let handled = false;
 
     const opened = this.opened;
     const date = this[internal.state].date || calendar.today();
 
     switch (event.key) {
-
       case 'ArrowDown':
         if (opened && event.ctrlKey && event.shiftKey) {
           handled = this[internal.goDown]();
@@ -302,7 +307,7 @@ class DateComboBox extends Base {
           handled = true;
         }
         break;
-        
+
       case 'PageUp':
         if (opened) {
           this[internal.setState]({
@@ -311,11 +316,12 @@ class DateComboBox extends Base {
           handled = true;
         }
         break;
-
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[internal.keydown] && super[internal.keydown](event));
+    return (
+      handled || (super[internal.keydown] && super[internal.keydown](event))
+    );
   }
 
   get locale() {
@@ -332,10 +338,10 @@ class DateComboBox extends Base {
 
   /**
    * The format used to render the month name.
-   * 
+   *
    * The allowable formats are the same as the `month` formats in
    * [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat).
-   * 
+   *
    * @type {('numeric'|'2-digit'|'long'|'short'|'narrow')}
    * @default 'long'
    */
@@ -350,11 +356,11 @@ class DateComboBox extends Base {
 
   /**
    * Parse the given text as a Date.
-   * 
+   *
    * @private
-   * @param {string} text 
-   * @param {Intl.DateTimeFormat} dateTimeFormat 
-   * @param {'future'|'past'} timeBias 
+   * @param {string} text
+   * @param {Intl.DateTimeFormat} dateTimeFormat
+   * @param {'future'|'past'} timeBias
    */
   parseDate(text, dateTimeFormat, timeBias) {
     return calendar.parseWithOptionalYear(text, dateTimeFormat, timeBias);
@@ -363,7 +369,10 @@ class DateComboBox extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.calendarRole) {
-      template.transmute(this[internal.ids].calendar, this[internal.state].calendarRole);
+      template.transmute(
+        this[internal.ids].calendar,
+        this[internal.state].calendarRole
+      );
       this[internal.ids].calendar.addEventListener('date-changed', event => {
         this[internal.raiseChangeEvents] = true;
         /** @type {any} */
@@ -379,7 +388,10 @@ class DateComboBox extends Base {
       });
     }
     if (changed.todayButtonRole) {
-      template.transmute(this[internal.ids].todayButton, this[internal.state].todayButtonRole);
+      template.transmute(
+        this[internal.ids].todayButton,
+        this[internal.state].todayButtonRole
+      );
       this[internal.ids].todayButton.addEventListener('mousedown', event => {
         this[internal.raiseChangeEvents] = true;
         this.date = calendar.today();
@@ -389,7 +401,10 @@ class DateComboBox extends Base {
       });
     }
     const cast = /** @type {any} */ (this[internal.ids].calendar);
-    if (changed.arrowButtonRole && 'arrowButtonRole' in this[internal.ids].calendar) {
+    if (
+      changed.arrowButtonRole &&
+      'arrowButtonRole' in this[internal.ids].calendar
+    ) {
       cast.arrowButtonRole = this[internal.state].arrowButtonRole;
     }
     if (changed.date) {
@@ -456,13 +471,13 @@ class DateComboBox extends Base {
   /**
    * If set, this indicates whether a date containing only a month and day
    * should infer a year such that the time is in the future or in the past.
-   * 
+   *
    * Example: the current date is July 1, the locale is "en-US", and the
    * supplied value is "9/1" (September 1 in the U.S.), then if `timeBias` is
    * not set, the inferred year is the present year. If `timeBias` is set to
    * "past", the date is taken to be a past date, so the inferred year will be
    * the _previous_ year.
-   * 
+   *
    * @type {'future'|'past'|null}
    * @default null
    */
@@ -477,7 +492,7 @@ class DateComboBox extends Base {
 
   /**
    * The class, tag, or template used to create the (Go to) "Today" button.
-   * 
+   *
    * @type {Role}
    * @default SeamlessButton
    */
@@ -507,10 +522,10 @@ class DateComboBox extends Base {
 
   /**
    * The format used to render the year.
-   * 
+   *
    * The allowable formats are the same as the `year` formats in
    * [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat).
-   * 
+   *
    * @type {('numeric'|'2-digit')}
    * @default 'numeric'
    */
@@ -522,8 +537,6 @@ class DateComboBox extends Base {
       yearFormat
     });
   }
-
 }
-
 
 export default DateComboBox;

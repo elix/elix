@@ -9,19 +9,13 @@ import PopupSource from './PopupSource.js';
 import SeamlessButton from './SeamlessButton.js';
 import FormElementMixin from './FormElementMixin.js';
 
-
-const Base =
-  AriaRoleMixin(
-  DelegateFocusMixin(
-  FormElementMixin(
-  KeyboardMixin(
-    PopupSource
-  ))));
-
+const Base = AriaRoleMixin(
+  DelegateFocusMixin(FormElementMixin(KeyboardMixin(PopupSource)))
+);
 
 /**
  * A text input paired with a popup that can be used as an alternative to typing
- * 
+ *
  * @inherits PopupSource
  * @mixes AriaRoleMixin
  * @mixes DelegateFocusMixin
@@ -33,7 +27,6 @@ const Base =
  * @elementrole {SeamlessButton} toggleButton
  */
 class ComboBox extends Base {
-  
   // Forward any ARIA label to the input element.
   get ariaLabel() {
     return this[internal.state].ariaLabel;
@@ -63,7 +56,6 @@ class ComboBox extends Base {
   }
 
   get [internal.defaultState]() {
-
     const state = Object.assign(super[internal.defaultState], {
       ariaLabel: '',
       backdropRole: Hidden,
@@ -75,7 +67,7 @@ class ComboBox extends Base {
       selectText: false,
       sourceRole: 'div',
       toggleButtonRole: SeamlessButton,
-      value: '',
+      value: ''
     });
 
     // Select text on closing.
@@ -85,7 +77,7 @@ class ComboBox extends Base {
     // We therefore avoid leaving text selected if an on-screen keyboard is in
     // use. Since we can't actually detect that, we use the absence of a
     // fine-grained pointer (mouse) as a proxy for mobile.
-    state.onChange(['opened'], (state) => {
+    state.onChange(['opened'], state => {
       if (!state.opened) {
         const probablyMobile = matchMedia('(pointer: coarse)').matches;
         const selectText = !probablyMobile;
@@ -101,18 +93,16 @@ class ComboBox extends Base {
 
   /**
    * The combo box's input element.
-   * 
+   *
    * @type {Element|null}
    */
   get input() {
-    return this.shadowRoot ?
-      this[internal.ids].input :
-      null;
+    return this.shadowRoot ? this[internal.ids].input : null;
   }
 
   /**
    * The class, tag, or template used to create the input element.
-   * 
+   *
    * @type {Role}
    * @default 'input'
    */
@@ -123,11 +113,10 @@ class ComboBox extends Base {
     this[internal.setState]({ inputRole });
   }
 
-    [internal.keydown](/** @type {KeyboardEvent} */ event) {
+  [internal.keydown](/** @type {KeyboardEvent} */ event) {
     let handled;
 
     switch (event.key) {
-
       // Up/Down arrow keys and Page Up/Page Down open the popup.
       case 'ArrowDown':
       case 'ArrowUp':
@@ -138,7 +127,7 @@ class ComboBox extends Base {
           handled = true;
         }
         break;
-    
+
       case 'Enter':
         this.close();
         handled = true;
@@ -154,12 +143,14 @@ class ComboBox extends Base {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[internal.keydown] && super[internal.keydown](event));
+    return (
+      handled || (super[internal.keydown] && super[internal.keydown](event))
+    );
   }
 
   /**
    * The prompt text shown in the input if it is empty.
-   * 
+   *
    * @type {string}
    */
   get placeholder() {
@@ -174,7 +165,10 @@ class ComboBox extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.inputRole) {
-      template.transmute(this[internal.ids].input, this[internal.state].inputRole);
+      template.transmute(
+        this[internal.ids].input,
+        this[internal.state].inputRole
+      );
 
       this[internal.ids].input.addEventListener('blur', () => {
         this[internal.setState]({
@@ -186,8 +180,8 @@ class ComboBox extends Base {
           this.close();
           this[internal.raiseChangeEvents] = false;
         }
-    });
-  
+      });
+
       this[internal.ids].input.addEventListener('focus', () => {
         this[internal.raiseChangeEvents] = true;
         this[internal.setState]({
@@ -207,11 +201,11 @@ class ComboBox extends Base {
         };
         if (this.closed && value > '') {
           // If user types while popup is closed, implicitly open it.
-          changes.opened = true
+          changes.opened = true;
         }
         this[internal.setState](changes);
         this[internal.raiseChangeEvents] = false;
-      })
+      });
 
       this[internal.ids].input.addEventListener('keydown', () => {
         this[internal.raiseChangeEvents] = true;
@@ -219,8 +213,8 @@ class ComboBox extends Base {
           selectText: false
         });
         this[internal.raiseChangeEvents] = false;
-      })
-  
+      });
+
       // If the user clicks on the input and the popup is closed, open it.
       this[internal.ids].input.addEventListener('mousedown', () => {
         this[internal.raiseChangeEvents] = true;
@@ -234,14 +228,19 @@ class ComboBox extends Base {
       });
     }
     if (changed.toggleButtonRole) {
-      template.transmute(this[internal.ids].toggleButton, this[internal.state].toggleButtonRole);
+      template.transmute(
+        this[internal.ids].toggleButton,
+        this[internal.state].toggleButtonRole
+      );
       this[internal.ids].toggleButton.addEventListener('mousedown', () => {
         this[internal.raiseChangeEvents] = true;
         this.toggle();
         this[internal.raiseChangeEvents] = false;
       });
-      if (this[internal.ids].toggleButton instanceof HTMLElement &&
-          this[internal.ids].input instanceof HTMLElement) {
+      if (
+        this[internal.ids].toggleButton instanceof HTMLElement &&
+        this[internal.ids].input instanceof HTMLElement
+      ) {
         // Forward focus for new toggle button.
         forwardFocus(this[internal.ids].toggleButton, this[internal.ids].input);
       }
@@ -264,7 +263,10 @@ class ComboBox extends Base {
       }
     }
     if (changed.ariaLabel) {
-      this[internal.ids].input.setAttribute('aria-label', this[internal.state].ariaLabel);
+      this[internal.ids].input.setAttribute(
+        'aria-label',
+        this[internal.state].ariaLabel
+      );
     }
     if (changed.disabled) {
       const { disabled } = this[internal.state];
@@ -277,21 +279,17 @@ class ComboBox extends Base {
     }
     if (changed.popupPosition) {
       const { popupPosition } = this[internal.state];
-      this[internal.ids].downIcon.style.display = popupPosition === 'below' ?
-        'block' :
-        'none';
-      this[internal.ids].upIcon.style.display = popupPosition === 'above' ?
-        'block' :
-        'none';
+      this[internal.ids].downIcon.style.display =
+        popupPosition === 'below' ? 'block' : 'none';
+      this[internal.ids].upIcon.style.display =
+        popupPosition === 'above' ? 'block' : 'none';
     }
     if (changed.rightToLeft) {
       const { rightToLeft } = this[internal.state];
       // We want to style the inner input if it's been created with
       // WrappedStandardElement, otherwise style the input directly.
       const cast = /** @type {any} */ (this[internal.ids].input);
-      const input = 'inner' in cast ?
-        cast.inner :
-        cast;
+      const input = 'inner' in cast ? cast.inner : cast;
       Object.assign(input.style, {
         paddingBottom: '2px',
         paddingLeft: rightToLeft ? '1.5em' : '2px',
@@ -330,7 +328,9 @@ class ComboBox extends Base {
     `;
     template.replace(sourceSlot, sourceTemplate.content);
 
-    return template.concat(base, template.html`
+    return template.concat(
+      base,
+      template.html`
       <style>
         :host {
           outline: none;
@@ -381,13 +381,14 @@ class ComboBox extends Base {
           max-width: 100vh;
         }
       </style>
-    `);
+    `
+    );
   }
 
   /**
    * The class, tag, or template used to create the button that toggles the
    * popup.
-   * 
+   *
    * @type {Role}
    * @default SeamlessButton
    */
@@ -404,8 +405,6 @@ class ComboBox extends Base {
   set value(value) {
     this[internal.setState]({ value });
   }
-
 }
-
 
 export default ComboBox;

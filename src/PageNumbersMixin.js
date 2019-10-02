@@ -2,37 +2,36 @@ import * as internal from './internal.js';
 import * as template from './template.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 const wrap = Symbol('wrap');
-
 
 /**
  * Adds a page number and total page count to a carousel-like element.
- * 
+ *
  * This can be applied to components like [Carousel](Carousel) that renders
  * their content as pages.
- * 
+ *
  * @module PageNumbersMixin
  * @param {Constructor<ReactiveElement>} Base
  */
 function PageNumbersMixin(Base) {
-
   class PageNumbers extends Base {
-
     [internal.render](/** @type {PlainObject} */ changed) {
-      if (super[internal.render]) { super[internal.render](changed); }
+      if (super[internal.render]) {
+        super[internal.render](changed);
+      }
       if (changed.selectedIndex) {
         const { items, selectedIndex } = this[internal.state];
-        const textContent = selectedIndex >= 0 && items ?
-          `${selectedIndex + 1} / ${items.length}` :
-          '';
+        const textContent =
+          selectedIndex >= 0 && items
+            ? `${selectedIndex + 1} / ${items.length}`
+            : '';
         this[internal.ids].pageNumber.textContent = textContent;
       }
     }
 
     /**
      * Destructively wrap a node with elements to show page numbers.
-     * 
+     *
      * @param {Node} original - the element that should be wrapped by page numbers
      */
     [wrap](original) {
@@ -51,16 +50,17 @@ function PageNumbersMixin(Base) {
           <div id="pageNumber"></div>
         </div>
       `;
-      template.wrap(original, pageNumbersTemplate.content, '#pageNumbersContainer');
+      template.wrap(
+        original,
+        pageNumbersTemplate.content,
+        '#pageNumbersContainer'
+      );
     }
-
   }
 
   return PageNumbers;
 }
 
-
 PageNumbersMixin.wrap = wrap;
-
 
 export default PageNumbersMixin;

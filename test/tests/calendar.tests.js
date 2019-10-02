@@ -1,9 +1,7 @@
 import * as calendar from '../../src/calendar.js';
 
-
-describe("calendar helpers", () => {
-
-  it("can determine facts about a date", async () => {
+describe('calendar helpers', () => {
+  it('can determine facts about a date', async () => {
     const date = new Date('10 March 2015');
     assert.deepEqual(calendar.firstDateOfMonth(date), new Date('1 March 2015'));
     assert.deepEqual(calendar.lastDateOfMonth(date), new Date('31 March 2015'));
@@ -11,7 +9,7 @@ describe("calendar helpers", () => {
     assert(!calendar.sameMonthAndYear(date, new Date('1 April 2015')));
   });
 
-  it("can parse numeric en-US dates", () => {
+  it('can parse numeric en-US dates', () => {
     const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
       day: 'numeric',
       month: 'numeric',
@@ -23,7 +21,7 @@ describe("calendar helpers", () => {
     assert.equal(actual.getTime(), expected.getTime());
   });
 
-  it("can parse short numeric en-US dates", () => {
+  it('can parse short numeric en-US dates', () => {
     const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
       day: 'numeric',
       month: 'numeric'
@@ -40,7 +38,7 @@ describe("calendar helpers", () => {
     assert.equal(actual.getTime(), expected.getTime());
   });
 
-  it("can parse numeric en-GB dates", () => {
+  it('can parse numeric en-GB dates', () => {
     const dateTimeFormat = new Intl.DateTimeFormat('en-GB', {
       day: 'numeric',
       month: 'numeric',
@@ -52,7 +50,7 @@ describe("calendar helpers", () => {
     assert.equal(actual.getTime(), expected.getTime());
   });
 
-  it("can parse short numeric en-GB dates", () => {
+  it('can parse short numeric en-GB dates', () => {
     const dateTimeFormat = new Intl.DateTimeFormat('en-GB', {
       day: 'numeric',
       month: 'numeric'
@@ -69,7 +67,7 @@ describe("calendar helpers", () => {
     assert.equal(actual.getTime(), expected.getTime());
   });
 
-  it("can parse short dates with future or past bias", () => {
+  it('can parse short dates with future or past bias', () => {
     const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
       day: 'numeric',
       month: 'numeric',
@@ -79,24 +77,31 @@ describe("calendar helpers", () => {
     const day = today.getDate();
     const month = today.getMonth();
     const year = today.getFullYear();
-    
+
     // NOTE: This test will pass on December 31, but will not exercise the past
     // bias, because the function considers today to be a date in the past.
     const todayIsDec31 = month === 11 && day === 31;
-    const expectedPast = todayIsDec31 ?
-      new Date(year, 11, 31) :
-      new Date(year - 1, 11, 31);
-    const actualPast = calendar.parseWithOptionalYear('12/31', dateTimeFormat, 'past');
+    const expectedPast = todayIsDec31
+      ? new Date(year, 11, 31)
+      : new Date(year - 1, 11, 31);
+    const actualPast = calendar.parseWithOptionalYear(
+      '12/31',
+      dateTimeFormat,
+      'past'
+    );
     assert.equal(actualPast.getTime(), expectedPast.getTime());
-    
+
     // NOTE: This test will pass on January 1, but will not exercise the future
     // bias, because the function considers today to be a date in the future.
     const todayIsJan1 = month === 0 && day === 1;
-    const expectedFuture = todayIsJan1 ?
-      new Date(year, 0, 1) :
-      new Date(year + 1, 0, 1);
-    const actualFuture = calendar.parseWithOptionalYear('1/1', dateTimeFormat, 'future');
+    const expectedFuture = todayIsJan1
+      ? new Date(year, 0, 1)
+      : new Date(year + 1, 0, 1);
+    const actualFuture = calendar.parseWithOptionalYear(
+      '1/1',
+      dateTimeFormat,
+      'future'
+    );
     assert.equal(actualFuture.getTime(), expectedFuture.getTime());
   });
-
 });

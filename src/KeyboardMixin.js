@@ -1,7 +1,6 @@
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 /**
  * Manages keyboard handling for a component.
  *
@@ -39,14 +38,12 @@ import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-un
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function KeyboardMixin(Base) {
-
   // The class prototype added by the mixin.
   class Keyboard extends Base {
-
     constructor() {
       // @ts-ignore
       super();
-      this.addEventListener('keydown', async (event) => {
+      this.addEventListener('keydown', async event => {
         this[internal.raiseChangeEvents] = true;
         // For use with FocusVisibleMixin.
         if (!this[internal.state].focusVisible) {
@@ -78,17 +75,21 @@ export default function KeyboardMixin(Base) {
 
       return state;
     }
-    
+
     /**
      * See the [symbols](symbols#keydown) documentation for details.
      */
     [internal.keydown](/** @type {KeyboardEvent} */ event) {
-      if (super[internal.keydown]) { return super[internal.keydown](event); }
+      if (super[internal.keydown]) {
+        return super[internal.keydown](event);
+      }
       return false;
     }
 
-    [internal.render](/** @type {PlainObject} */changed) {
-      if (super[internal.render]) { super[internal.render](changed); }
+    [internal.render](/** @type {PlainObject} */ changed) {
+      if (super[internal.render]) {
+        super[internal.render](changed);
+      }
       if (changed.tabIndex) {
         this.tabIndex = this[internal.state].tabIndex;
       }
@@ -122,7 +123,6 @@ export default function KeyboardMixin(Base) {
         });
       }
     }
-
   }
 
   return Keyboard;

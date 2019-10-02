@@ -1,23 +1,19 @@
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 const itemsChangedListenerKey = Symbol('itemsChangedListener');
 const previousItemsDelegateKey = Symbol('previousItemsDelegate');
 const selectedIndexChangedListenerKey = Symbol('selectedIndexChangedListener');
 
-
 /**
  * Treats the items inside a shadow element as the component's own items.
- * 
+ *
  * @module DelegateItemsMixin
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function DelegateItemsMixin(Base) {
-
   // The class prototype added by the mixin.
   class DelegateItems extends Base {
-
     constructor() {
       super();
       // @ts-ignore
@@ -45,12 +41,16 @@ export default function DelegateItemsMixin(Base) {
     }
 
     [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
+      if (super[internal.componentDidMount]) {
+        super[internal.componentDidMount]();
+      }
       listenToDelegateEvents(this);
     }
 
     [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) { super[internal.componentDidUpdate](changed); }
+      if (super[internal.componentDidUpdate]) {
+        super[internal.componentDidUpdate](changed);
+      }
       listenToDelegateEvents(this);
     }
 
@@ -62,7 +62,7 @@ export default function DelegateItemsMixin(Base) {
 
     /**
      * The current set of items drawn from the element's current state.
-     * 
+     *
      * @returns {Element[]|null} the element's current items
      */
     get items() {
@@ -70,7 +70,9 @@ export default function DelegateItemsMixin(Base) {
     }
 
     [internal.render](/** @type {PlainObject} */ changed) {
-      if (super[internal.render]) { super[internal.render](changed); }
+      if (super[internal.render]) {
+        super[internal.render](changed);
+      }
       if (changed.selectedIndex) {
         const itemsDelegate = this[internal.itemsDelegate];
         if (typeof itemsDelegate === 'undefined') {
@@ -81,12 +83,10 @@ export default function DelegateItemsMixin(Base) {
         }
       }
     }
-
   }
 
   return DelegateItems;
 }
-
 
 function listenToDelegateEvents(/** @type {ReactiveElement} */ element) {
   /** @type {any} */ const cast = element;
@@ -96,10 +96,18 @@ function listenToDelegateEvents(/** @type {ReactiveElement} */ element) {
     if (previousItemsDelegate) {
       // Stop listening to events on previous delegate.
       previousItemsDelegate.removeEventListener(cast[itemsChangedListenerKey]);
-      previousItemsDelegate.removeEventListener(cast[selectedIndexChangedListenerKey]);
+      previousItemsDelegate.removeEventListener(
+        cast[selectedIndexChangedListenerKey]
+      );
     }
     // Start listening to events on new delegate.
-    itemsDelegate.addEventListener('items-changed', cast[itemsChangedListenerKey]);
-    itemsDelegate.addEventListener('selected-index-changed', cast[selectedIndexChangedListenerKey]);
+    itemsDelegate.addEventListener(
+      'items-changed',
+      cast[itemsChangedListenerKey]
+    );
+    itemsDelegate.addEventListener(
+      'selected-index-changed',
+      cast[selectedIndexChangedListenerKey]
+    );
   }
 }

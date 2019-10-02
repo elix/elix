@@ -1,8 +1,6 @@
 import Explorer from '../../define/Explorer.js';
 
-
-describe("Explorer", () => {
-
+describe('Explorer', () => {
   let container;
 
   before(() => {
@@ -13,7 +11,7 @@ describe("Explorer", () => {
     container.innerHTML = '';
   });
 
-  it("associates slotted proxies with each item", async () => {
+  it('associates slotted proxies with each item', async () => {
     const fixture = new Explorer();
     fixture.innerHTML = `
       <button slot="proxy">Proxy one</button>
@@ -32,7 +30,7 @@ describe("Explorer", () => {
     assert.equal(proxies[0], fixture.children[0]);
   });
 
-  it("creates default proxies for each item", async () => {
+  it('creates default proxies for each item', async () => {
     const fixture = new Explorer();
     fixture.proxyRole = 'button';
     fixture.innerHTML = `
@@ -48,5 +46,4 @@ describe("Explorer", () => {
     assert.equal(proxies.length, 3);
     assert(proxies[0] instanceof HTMLButtonElement);
   });
-
 });

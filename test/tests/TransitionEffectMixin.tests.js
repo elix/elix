@@ -3,17 +3,12 @@ import * as template from '../../src/template.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 import TransitionEffectMixin from '../../src/TransitionEffectMixin.js';
 
-
-const Base =
-  TransitionEffectMixin(
-    ReactiveElement
-  );
+const Base = TransitionEffectMixin(ReactiveElement);
 
 // An element with open and close effects. When completely closed, the element
 // is hidden. We test both effects because we can encounter different conditions
 // when showing or hiding an element during an effect.
 class TransitionEffectTest extends Base {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       effect: 'close',
@@ -25,19 +20,18 @@ class TransitionEffectTest extends Base {
     super[internal.render](changed);
     const effect = this[internal.state].effect;
     const phase = this[internal.state].effectPhase;
-    const display = effect === 'close' && phase === 'after' ?
-      'none' :
-      'block';
-    const opacity = (effect === 'open' && phase !== 'before') ||
-        (effect === 'close' && phase === 'before') ?
-      1 :
-      0;
+    const display = effect === 'close' && phase === 'after' ? 'none' : 'block';
+    const opacity =
+      (effect === 'open' && phase !== 'before') ||
+      (effect === 'close' && phase === 'before')
+        ? 1
+        : 0;
     Object.assign(this.style, {
       display,
       opacity
     });
   }
-  
+
   get [internal.template]() {
     return template.html`
       <style>
@@ -47,13 +41,10 @@ class TransitionEffectTest extends Base {
       </style>
     `;
   }
-
 }
 customElements.define('transition-effect-test', TransitionEffectTest);
 
-
-describe("TransitionEffectMixin", function () {
-
+describe('TransitionEffectMixin', function() {
   let container;
 
   before(() => {
@@ -77,7 +68,7 @@ describe("TransitionEffectMixin", function () {
     });
     fixture[internal.startEffect]('open');
   });
-  
+
   it('goes through effect phases when closed', done => {
     const fixture = new TransitionEffectTest();
     fixture.opened = true;
@@ -92,5 +83,4 @@ describe("TransitionEffectMixin", function () {
     });
     fixture[internal.startEffect]('close');
   });
-
 });

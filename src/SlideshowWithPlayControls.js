@@ -11,35 +11,37 @@ import SwipeDirectionMixin from './SwipeDirectionMixin.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 
-
-const Base =
-  AriaListMixin(
+const Base = AriaListMixin(
   DirectionSelectionMixin(
-  FocusVisibleMixin(
-  KeyboardDirectionMixin(
-  KeyboardMixin(
-  LanguageDirectionMixin(
-  PlayControlsMixin(
-  SwipeDirectionMixin(
-  TouchSwipeMixin(
-  TrackpadSwipeMixin(
-    Slideshow
-  ))))))))));
-
+    FocusVisibleMixin(
+      KeyboardDirectionMixin(
+        KeyboardMixin(
+          LanguageDirectionMixin(
+            PlayControlsMixin(
+              SwipeDirectionMixin(
+                TouchSwipeMixin(TrackpadSwipeMixin(Slideshow))
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+);
 
 /**
  * Slideshow with buttons for controlling playback
- * 
+ *
  * [Play controls let the user go back, pause/resume, or forward](/demos/slideshowWithPlayControls.html)
- * 
+ *
  * This component is simply a [Slideshow](./Slideshow) that uses
  * [PlayControlsMixin](PlayControlsMixin) to add buttons for controlling
  * slideshow playback.
- * 
+ *
  * For a variation that uses standard carousel controls (arrows and page dots),
  * see [CarouselSlideshow](CarouselSlideshow). For a more basic variation with
  * no controls, see [Slideshow](Slideshow).
- * 
+ *
  * @inherits Slideshow
  * @mixes AriaListMixin
  * @mixes DirectionSelectionMixin
@@ -53,10 +55,9 @@ const Base =
  * @mixes TrackpadSwipeMixin
  */
 class SlideshowWithPlayControls extends Base {
-
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
-    
+
     // Clicking the slideshow toggles the playing state.
     this.addEventListener('click', () => {
       this[internal.raiseChangeEvents] = true;
@@ -73,8 +74,6 @@ class SlideshowWithPlayControls extends Base {
     cast[PlayControlsMixin.wrap](modesContainer);
     return result;
   }
-
 }
-
 
 export default SlideshowWithPlayControls;

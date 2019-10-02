@@ -2,9 +2,7 @@ import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import SeamlessButton from '../../src/SeamlessButton.js';
 
-
 class CustomArrowButton extends SeamlessButton {
-
   get [internal.template]() {
     return template.html`
       <style>
@@ -56,9 +54,7 @@ class CustomArrowButton extends SeamlessButton {
       </button>
     `;
   }
-
 }
-
 
 customElements.define('custom-arrow-button', CustomArrowButton);
 export default CustomArrowButton;

@@ -1,12 +1,9 @@
 import AttributeMarshallingMixin from '../../src/AttributeMarshallingMixin.js';
 
-
 let defaultPropertyValue;
-
 
 /* Element with camelCase property name */
 class ElementWithCustomProperty extends AttributeMarshallingMixin(HTMLElement) {
-
   constructor() {
     super();
     if (typeof defaultPropertyValue !== 'undefined') {
@@ -27,13 +24,13 @@ class ElementWithCustomProperty extends AttributeMarshallingMixin(HTMLElement) {
   set disabled(disabled) {
     this._disabled = disabled;
   }
-
 }
-customElements.define('element-with-custom-property', ElementWithCustomProperty);
+customElements.define(
+  'element-with-custom-property',
+  ElementWithCustomProperty
+);
 
-
-describe("AttributeMarshallingMixin", () => {
-
+describe('AttributeMarshallingMixin', () => {
   let container;
 
   before(() => {
@@ -45,24 +42,23 @@ describe("AttributeMarshallingMixin", () => {
     container.innerHTML = '';
   });
 
-  it("defines observedAttributes for all custom property setters", () => {
+  it('defines observedAttributes for all custom property setters', () => {
     const observedAttributes = ElementWithCustomProperty.observedAttributes;
     assert.deepEqual(observedAttributes, ['custom-property', 'disabled']);
   });
 
-  it("marshals hyphenated attribute to corresponding camelCase property", () => {
+  it('marshals hyphenated attribute to corresponding camelCase property', () => {
     const fixture = new ElementWithCustomProperty();
     assert.isUndefined(fixture.customProperty);
     fixture.setAttribute('custom-property', 'Hello');
     assert.equal(fixture.customProperty, 'Hello');
   });
 
-  it("translates boolean attribute string|null to boolean value", () => {
+  it('translates boolean attribute string|null to boolean value', () => {
     const fixture = new ElementWithCustomProperty();
     fixture.setAttribute('disabled', '');
     assert(fixture.disabled);
     fixture.removeAttribute('disabled');
     assert(!fixture.disabled);
-  })
-
+  });
 });

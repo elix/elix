@@ -3,9 +3,7 @@ import CustomBackdrop from './CustomBackdrop.js';
 import CustomOverlayFrame from './CustomOverlayFrame.js';
 import Dialog from '../../src/Dialog.js';
 
-
 class SampleDialog extends Dialog {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       backdropRole: CustomBackdrop,
@@ -14,7 +12,9 @@ class SampleDialog extends Dialog {
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
-    if (super[internal.render]) { super[internal.render](changed); }
+    if (super[internal.render]) {
+      super[internal.render](changed);
+    }
     if (changed.frameRole) {
       // Have the dialog close itself when the user clicks anywhere within it. In
       // many cases, you'll want to have a button ("OK", "Close", etc.) that
@@ -24,9 +24,7 @@ class SampleDialog extends Dialog {
       });
     }
   }
-
 }
-
 
 customElements.define('sample-dialog', SampleDialog);
 export default SampleDialog;

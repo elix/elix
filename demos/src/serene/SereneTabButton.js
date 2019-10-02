@@ -2,9 +2,7 @@ import * as internal from '../../../src/internal.js';
 import * as template from '../../../src/template.js';
 import TabButton from '../../../src/TabButton.js';
 
-
 class SereneTabButton extends TabButton {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       generic: false
@@ -12,7 +10,9 @@ class SereneTabButton extends TabButton {
   }
 
   get [internal.template]() {
-    return template.concat(super[internal.template], template.html`
+    return template.concat(
+      super[internal.template],
+      template.html`
       <style>
         :host {
           margin-left: 0;
@@ -40,11 +40,10 @@ class SereneTabButton extends TabButton {
           background: #666;
         }
       </style>
-    `);
+    `
+    );
   }
-
 }
-
 
 customElements.define('serene-tab-button', SereneTabButton);
 export default SereneTabButton;

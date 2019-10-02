@@ -2,14 +2,11 @@ import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
-
 class TemplateTest extends HTMLElement {}
 customElements.define('template-test', TemplateTest);
 
-
 // A component with a template with a role applied to a single element.
 class DynamicSingle extends ReactiveElement {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       dynamicRole: 'button'
@@ -19,7 +16,10 @@ class DynamicSingle extends ReactiveElement {
   [internal.render](changed) {
     super[internal.render](changed);
     if (changed.dynamicRole) {
-      template.transmute(this[internal.ids].dynamic, this[internal.state].dynamicRole);
+      template.transmute(
+        this[internal.ids].dynamic,
+        this[internal.state].dynamicRole
+      );
     }
   }
 
@@ -29,14 +29,11 @@ class DynamicSingle extends ReactiveElement {
       <div id="dynamic" class="foo">This element changes</div>
     `;
   }
-
 }
 customElements.define('dynamic-role', DynamicSingle);
 
-
 // A component with a template where a role is applied to multiple elements.
 class DynamicMultiple extends ReactiveElement {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       dynamicRole: 'button'
@@ -58,30 +55,27 @@ class DynamicMultiple extends ReactiveElement {
       <div class="dynamic foo">This changes too</div>
     `;
   }
-
 }
 customElements.define('dynamic-multiple', DynamicMultiple);
 
-
-describe("templates", () => {
-
-  it("html template function returns an HTMLTemplateElement", () => {
+describe('templates', () => {
+  it('html template function returns an HTMLTemplateElement', () => {
     const fixture = template.html`<div>Hello</div>`;
     assert(fixture instanceof HTMLTemplateElement);
     assert.equal(fixture.innerHTML, `<div>Hello</div>`);
   });
 
-  it("can create an element from a string descriptor", () => {
+  it('can create an element from a string descriptor', () => {
     const fixture = template.createElement('div');
     assert(fixture instanceof HTMLDivElement);
   });
 
-  it("can create an element from a class constructor", () => {
+  it('can create an element from a class constructor', () => {
     const fixture = template.createElement(TemplateTest);
     assert(fixture instanceof TemplateTest);
   });
 
-  it("can create an element by cloning a template", () => {
+  it('can create an element by cloning a template', () => {
     const fixtureTemplate = document.createElement('template');
     fixtureTemplate.innerHTML = `<div>Hello</div>`;
     const fixture = template.createElement(fixtureTemplate);
@@ -89,7 +83,7 @@ describe("templates", () => {
     assert.equal(fixture.textContent, 'Hello');
   });
 
-  it("can substitute one element for another", () => {
+  it('can substitute one element for another', () => {
     const original = document.createElement('button');
     original.setAttribute('id', 'original');
     original.style.color = 'red';
@@ -110,7 +104,7 @@ describe("templates", () => {
     assert.equal(replacement.textContent, 'Hello');
   });
 
-  it("can wrap an element in an tree", () => {
+  it('can wrap an element in an tree', () => {
     const fixture = document.createElement('section');
     const span = document.createElement('span');
     const text = new Text('Hello');
@@ -125,7 +119,7 @@ describe("templates", () => {
     assert.equal(span.parentNode, paragraph);
   });
 
-  it("can wrap the contents of a document fragment", () => {
+  it('can wrap the contents of a document fragment', () => {
     const fixture = document.createDocumentFragment();
     const text = new Text('Hello');
     fixture.appendChild(text);
@@ -138,17 +132,20 @@ describe("templates", () => {
     assert.equal(text.parentNode, paragraph);
   });
 
-  it("supports an element with a role during initial rendering", async () => {
+  it('supports an element with a role during initial rendering', async () => {
     const fixture = new DynamicSingle();
     fixture[internal.renderChanges]();
     assert(fixture[internal.ids].static instanceof HTMLDivElement);
     assert(fixture[internal.ids].dynamic instanceof HTMLButtonElement);
     assert.equal(fixture[internal.ids].dynamic.getAttribute('id'), 'dynamic');
-    assert.equal(fixture[internal.ids].dynamic.textContent, 'This element changes');
+    assert.equal(
+      fixture[internal.ids].dynamic.textContent,
+      'This element changes'
+    );
     assert(fixture[internal.ids].dynamic.classList.contains('foo'));
   });
 
-  it("lets an element change a role after initial rendering", async () => {
+  it('lets an element change a role after initial rendering', async () => {
     const fixture = new DynamicSingle();
     fixture[internal.renderChanges]();
     assert(fixture[internal.ids].static instanceof HTMLDivElement);
@@ -159,11 +156,14 @@ describe("templates", () => {
     fixture[internal.renderChanges]();
     assert(fixture[internal.ids].dynamic instanceof HTMLAnchorElement);
     assert.equal(fixture[internal.ids].dynamic.getAttribute('id'), 'dynamic');
-    assert.equal(fixture[internal.ids].dynamic.textContent, 'This element changes');
+    assert.equal(
+      fixture[internal.ids].dynamic.textContent,
+      'This element changes'
+    );
     assert(fixture[internal.ids].dynamic.classList.contains('foo'));
   });
 
-  it("supports an element with a role applied to multiple elements", async () => {
+  it('supports an element with a role applied to multiple elements', async () => {
     const fixture = new DynamicMultiple();
     fixture[internal.renderChanges]();
     assert(fixture[internal.ids].static instanceof HTMLDivElement);
@@ -173,11 +173,10 @@ describe("templates", () => {
     });
   });
 
-  it("can concatenate templates", () => {
+  it('can concatenate templates', () => {
     const a = template.html`<div>A</div>`;
     const b = template.html`<div>B</div>`;
     const fixture = template.concat(a, b);
     assert.equal(fixture.innerHTML, `<div>A</div><div>B</div>`);
   });
-
 });

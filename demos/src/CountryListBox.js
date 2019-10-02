@@ -2,7 +2,6 @@
  * Demo of a list box with hard-coded contents.
  */
 
-
 import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import AriaListMixin from '../../src/AriaListMixin.js';
@@ -20,30 +19,35 @@ import SelectionInViewMixin from '../../src/SelectionInViewMixin.js';
 import SingleSelectionMixin from '../../src/SingleSelectionMixin.js';
 import TapSelectionMixin from '../../src/TapSelectionMixin.js';
 
-
-const Base =
-  AriaListMixin(
+const Base = AriaListMixin(
   ContentItemsMixin(
-  DirectionSelectionMixin(
-  ItemsTextMixin(
-  KeyboardDirectionMixin(
-  KeyboardMixin(
-  KeyboardPagedSelectionMixin(
-  KeyboardPrefixSelectionMixin(
-  LanguageDirectionMixin(
-  SelectedItemTextValueMixin(
-  SelectionInViewMixin(
-  SingleSelectionMixin(
-  TapSelectionMixin(
-    ReactiveElement
-  )))))))))))));
-
-
+    DirectionSelectionMixin(
+      ItemsTextMixin(
+        KeyboardDirectionMixin(
+          KeyboardMixin(
+            KeyboardPagedSelectionMixin(
+              KeyboardPrefixSelectionMixin(
+                LanguageDirectionMixin(
+                  SelectedItemTextValueMixin(
+                    SelectionInViewMixin(
+                      SingleSelectionMixin(TapSelectionMixin(ReactiveElement))
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+);
 
 class CountryListBox extends Base {
-
   [internal.componentDidMount]() {
-    if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
+    if (super[internal.componentDidMount]) {
+      super[internal.componentDidMount]();
+    }
     const content = this[internal.ids].content.children;
     this[internal.setState]({ content });
   }
@@ -305,9 +309,7 @@ class CountryListBox extends Base {
       </div>
     `;
   }
-
 }
-
 
 customElements.define('country-list-box', CountryListBox);
 export default CountryListBox;

@@ -1,31 +1,32 @@
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 /**
  * Automatically updates selection on a timer.
- * 
+ *
  * [SlideshowWithPlayControls uses TimerSelectionMixin for its timer](/demos/slideshowWithPlayControls.html)
- * 
+ *
  * If the user changes the selection, or the selection changes for any other reason,
  * the timer resets. This ensures the user has a chance to look at the item they want
  * before the timer advances the selection.
- * 
+ *
  * @module TimerSelectionMixin
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function TimerSelectionMixin(Base) {
-
   // The class prototype added by the mixin.
   class TimerSelection extends Base {
-
     [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
+      if (super[internal.componentDidMount]) {
+        super[internal.componentDidMount]();
+      }
       updateTimer(this);
     }
-    
+
     [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) { super[internal.componentDidUpdate](changed); }
+      if (super[internal.componentDidUpdate]) {
+        super[internal.componentDidUpdate](changed);
+      }
       updateTimer(this);
     }
 
@@ -97,12 +98,10 @@ export default function TimerSelectionMixin(Base) {
         });
       }
     }
-
   }
 
   return TimerSelection;
 }
-
 
 function clearTimer(/** @type {ReactiveElement} */ element) {
   if (element[internal.state].timerTimeout) {
@@ -118,7 +117,6 @@ function restartTimer(/** @type {ReactiveElement} */ element) {
     clearTimeout(element[internal.state].timerTimeout);
   }
   if (element.items && element.items.length > 0) {
-
     // When the timer times out, all we need to do is move to the next slide.
     // When the component updates, the updateTimer function will notice the
     // change in selection, and invoke restartTimer again to start a new timer
@@ -142,10 +140,17 @@ function updateTimer(/** @type {ReactiveElement} */ element) {
   // timer. This ensures that the timer restarts no matter why the selection
   // changes: it could have been us moving to the next slide because the timer
   // elapsed, or the user might have directly manipulated the selection, etc.
-  if (element[internal.state].playing &&
-      (!element[internal.state].timerTimeout || element[internal.state].selectedIndex !== element[internal.state].selectedIndexForTimer)) {
+  if (
+    element[internal.state].playing &&
+    (!element[internal.state].timerTimeout ||
+      element[internal.state].selectedIndex !==
+        element[internal.state].selectedIndexForTimer)
+  ) {
     restartTimer(element);
-  } else if (!element[internal.state].playing && element[internal.state].timerTimeout) {
+  } else if (
+    !element[internal.state].playing &&
+    element[internal.state].timerTimeout
+  ) {
     clearTimer(element);
   }
 }

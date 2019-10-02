@@ -1,14 +1,12 @@
 import * as internal from './internal.js';
 import Input from './Input.js';
 
-
 /**
  * A text input box that completes text as the user types
- * 
+ *
  * @inherits Input
  */
 class AutoCompleteInput extends Input {
-
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
 
@@ -29,20 +27,22 @@ class AutoCompleteInput extends Input {
       // to stabilize by waiting a tick.
       setTimeout(() => {
         this[internal.raiseChangeEvents] = true;
-          /** @type {any} */
+        /** @type {any} */
         const inner = this.inner;
         const text = this.value.toLowerCase();
         // We only AutoComplete if the user's typing at the end of the input.
         // Read the selection start and end directly off the inner element to
         // ensure they're up to date.
-        const typingAtEnd = inner.selectionStart === text.length &&
+        const typingAtEnd =
+          inner.selectionStart === text.length &&
           inner.selectionEnd === text.length;
         // Moreover, we only AutoComplete if we're sure the user's added a
         // single character to the value seen on the previous input event. Among
         // other things, we want to ensure the user can delete text from the end
         // without having AutoComplete kick in.
         const originalText = this[internal.state].originalText;
-        const userAddedText = text.startsWith(originalText) &&
+        const userAddedText =
+          text.startsWith(originalText) &&
           text.length === originalText.length + 1;
         if (typingAtEnd && userAddedText) {
           autoComplete(this);
@@ -92,9 +92,9 @@ class AutoCompleteInput extends Input {
     });
   }
 
-  /** 
+  /**
    * The set of texts the input will match against.
-   * 
+   *
    * @type {string[]}
    */
   get texts() {
@@ -120,9 +120,7 @@ class AutoCompleteInput extends Input {
       });
     }
   }
-
 }
-
 
 export function autoComplete(/** @type {AutoCompleteInput} */ element) {
   const value = element.value.toLowerCase();
@@ -134,7 +132,7 @@ export function autoComplete(/** @type {AutoCompleteInput} */ element) {
   if (!match) {
     return null;
   }
-  
+
   // Update the input value to the match. This is just a convenient way to
   // set state.innerProperties.value if the value actually changed.
   element.setInnerProperty('value', match);
@@ -146,6 +144,5 @@ export function autoComplete(/** @type {AutoCompleteInput} */ element) {
 
   return match;
 }
-
 
 export default AutoCompleteInput;

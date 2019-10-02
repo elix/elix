@@ -6,17 +6,11 @@ import OpenCloseMixin from './OpenCloseMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 import SeamlessButton from './SeamlessButton.js';
 
-
-const Base =
-  AriaRoleMixin(
-  OpenCloseMixin(
-    ReactiveElement
-  ));
-
+const Base = AriaRoleMixin(OpenCloseMixin(ReactiveElement));
 
 /**
  * A document section with a header that can be expanded or collapsed
- * 
+ *
  * @inherits ReactiveElement
  * @mixes AriaRoleMixin
  * @mixes OpenCloseMixin
@@ -24,7 +18,6 @@ const Base =
  * @elementrole {ExpandablePanel} panel
  */
 class ExpandableSection extends Base {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       headerRole: SeamlessButton,
@@ -35,7 +28,7 @@ class ExpandableSection extends Base {
 
   /**
    * The class, tag, or template used to create the clickable header.
-   * 
+   *
    * @type {Role}
    * @default SeamlessButton
    */
@@ -48,7 +41,7 @@ class ExpandableSection extends Base {
 
   /**
    * The class, tag, or template used to create the expandable panel.
-   * 
+   *
    * @type {Role}
    * @default ExpandablePanel
    */
@@ -62,7 +55,10 @@ class ExpandableSection extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.headerRole) {
-      template.transmute(this[internal.ids].header, this[internal.state].headerRole);
+      template.transmute(
+        this[internal.ids].header,
+        this[internal.state].headerRole
+      );
       this[internal.ids].header.addEventListener('click', () => {
         this[internal.raiseChangeEvents] = true;
         this.toggle();
@@ -70,13 +66,21 @@ class ExpandableSection extends Base {
       });
     }
     if (changed.panelRole) {
-      template.transmute(this[internal.ids].panel, this[internal.state].panelRole);
+      template.transmute(
+        this[internal.ids].panel,
+        this[internal.state].panelRole
+      );
     }
     if (changed.opened) {
       const { opened } = this[internal.state];
-      this[internal.ids].header.setAttribute('aria-expanded', opened.toString());
+      this[internal.ids].header.setAttribute(
+        'aria-expanded',
+        opened.toString()
+      );
       if (this[internal.ids].collapseIcon) {
-        this[internal.ids].collapseIcon.style.display = opened ? 'block' : 'none';
+        this[internal.ids].collapseIcon.style.display = opened
+          ? 'block'
+          : 'none';
       }
       if (this[internal.ids].expandIcon) {
         this[internal.ids].expandIcon.style.display = opened ? 'none' : 'block';
@@ -138,8 +142,6 @@ class ExpandableSection extends Base {
       </div>
     `;
   }
-
 }
-
 
 export default ExpandableSection;

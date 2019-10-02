@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 
-
 /*
  * Simplistic static server using Express.
  */
@@ -14,7 +13,6 @@ async function start(port) {
     server = app.listen(port, resolve);
   });
   return server;
-};
-
+}
 
 module.exports = start;

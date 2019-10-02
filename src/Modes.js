@@ -4,17 +4,11 @@ import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 
-
-const Base =
-  SingleSelectionMixin(
-  SlotItemsMixin(
-    ReactiveElement
-  ));
-
+const Base = SingleSelectionMixin(SlotItemsMixin(ReactiveElement));
 
 /**
  * Shows a single panel at a time
- * 
+ *
  * This can be useful when a given UI element has multiple modes that present
  * substantially different elements, or for displaying a single item from a set
  * at a time.
@@ -28,7 +22,6 @@ const Base =
  * @mixes SlotItemsMixin
  */
 class Modes extends Base {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       selectionRequired: true
@@ -66,8 +59,6 @@ class Modes extends Base {
       </div>
     `;
   }
-
 }
-
 
 export default Modes;

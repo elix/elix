@@ -1,16 +1,14 @@
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 /**
  * Lets a component automatically or explicitly configure itself for dark backgrounds
- * 
+ *
  * @module DarkModeMixin
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function DarkModeMixin(Base) {
   return class DarkMode extends Base {
-
     // Once connected, check background color. We set state before calling super
     // so the new state will be included when ReactiveMixin calls render.
     connectedCallback() {
@@ -27,13 +25,15 @@ export default function DarkModeMixin(Base) {
           });
         }
       }
-      if (super.connectedCallback) { super.connectedCallback(); }
+      if (super.connectedCallback) {
+        super.connectedCallback();
+      }
     }
 
     /**
      * True if the component should configure itself for display on a dark background;
      * false if the component should assume a light background.
-     * 
+     *
      * The default value of this property is inferred when the component is
      * initially added to the page. The component will look up its hierarchy for
      * an ancestor that has an explicit background color. If the color's
@@ -41,7 +41,7 @@ export default function DarkModeMixin(Base) {
      * the background is assumed to be dark and `darkMode` will default to true.
      * If the color is lighter than that, or no explicit background color can be
      * found, the default value of `darkMode` will be false.
-     * 
+     *
      * @type {boolean}
      */
     get darkMode() {
@@ -59,17 +59,15 @@ export default function DarkModeMixin(Base) {
         darkMode: null
       });
     }
-
-  }
+  };
 }
-
 
 /**
  * Return the background color of the given element. If the color is
  * "transparent" (the default in Mozilla) or "rgba(0, 0, 0, 0)" (the default
  * transparent value in Blink and Webkit), walk up the parent chain until a
  * non-transparent color is found.
- * 
+ *
  * @private
  * @param {Element} element
  * @returns {string}
@@ -81,8 +79,8 @@ function findBackgroundColor(element) {
     return defaultBackgroundColor;
   }
   const backgroundColor = getComputedStyle(element).backgroundColor;
-  const hasColor = backgroundColor !== 'transparent' &&
-      backgroundColor !== 'rgba(0, 0, 0, 0)';
+  const hasColor =
+    backgroundColor !== 'transparent' && backgroundColor !== 'rgba(0, 0, 0, 0)';
   if (backgroundColor && hasColor) {
     return backgroundColor;
   }
@@ -99,7 +97,6 @@ function findBackgroundColor(element) {
   }
 }
 
-
 // Return the individual RGB values from a CSS RGB/RGBA color string.
 function parseRgb(/** @type {string} */ rgbString) {
   const rgbRegex = /rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*[\d.]+\s*)?\)/;
@@ -114,11 +111,9 @@ function parseRgb(/** @type {string} */ rgbString) {
   }
 }
 
-
 // Convert an RGB color to an HSL color.
 // From https://stackoverflow.com/a/3732187/76472.
 function rgbToHsl(/** @type {PlainObject} */ rgb) {
-
   const r = rgb.r / 255;
   const g = rgb.g / 255;
   const b = rgb.b / 255;

@@ -6,15 +6,11 @@ import FocusVisibleMixin from './FocusVisibleMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import WrappedStandardElement from './WrappedStandardElement.js';
 
-
-const Base =
-  AriaRoleMixin(
+const Base = AriaRoleMixin(
   ComposedFocusMixin(
-  FocusVisibleMixin(
-  KeyboardMixin(
-    WrappedStandardElement.wrap('button')
-  ))));
-
+    FocusVisibleMixin(KeyboardMixin(WrappedStandardElement.wrap('button')))
+  )
+);
 
 // Do we need to explicitly map Space/Enter keys to a button click?
 //
@@ -32,13 +28,12 @@ const Base =
 const firefox = 'InstallTrigger' in window;
 const mapKeysToClick = !firefox;
 
-
 /**
  * Base class for custom buttons.
- * 
+ *
  * `Button` wraps a standard HTML `button` element, allowing for custom styling
  * and behavior while ensuring standard keyboard and focus behavior.
- * 
+ *
  * @inherits WrappedStandardElement
  * @mixes AriaRoleMixin
  * @mixes ComposedFocusMixin
@@ -46,7 +41,6 @@ const mapKeysToClick = !firefox;
  * @mixes KeyboardMixin
  */
 class Button extends Base {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       role: 'button',
@@ -79,7 +73,9 @@ class Button extends Base {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[internal.keydown] && super[internal.keydown](event));
+    return (
+      handled || (super[internal.keydown] && super[internal.keydown](event))
+    );
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
@@ -131,8 +127,6 @@ class Button extends Base {
       </button>
     `;
   }
-
 }
-
 
 export default Button;

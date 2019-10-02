@@ -2,9 +2,7 @@ import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
-
 class CustomOverlayFrame extends ReactiveElement {
-
   get [internal.template]() {
     return template.html`
       <style>
@@ -19,9 +17,7 @@ class CustomOverlayFrame extends ReactiveElement {
       <slot></slot>
     `;
   }
-
 }
-
 
 customElements.define('custom-overlay-frame', CustomOverlayFrame);
 export default CustomOverlayFrame;

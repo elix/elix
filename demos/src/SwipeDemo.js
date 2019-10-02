@@ -4,16 +4,9 @@ import ReactiveElement from '../../src/ReactiveElement.js';
 import TouchSwipeMixin from '../../src/TouchSwipeMixin.js';
 import TrackpadSwipeMixin from '../../src/TrackpadSwipeMixin.js';
 
-
-const Base =
-  TouchSwipeMixin(
-  TrackpadSwipeMixin(
-    ReactiveElement
-  ));
-
+const Base = TouchSwipeMixin(TrackpadSwipeMixin(ReactiveElement));
 
 class SwipeDemo extends Base {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       swipeAxis: 'horizontal'
@@ -39,12 +32,12 @@ class SwipeDemo extends Base {
     }
     if (changed.swipeFraction) {
       const axis = vertical ? 'Y' : 'X';
-      this[internal.ids].block.style.transform = swipeFraction !== null ?
-        `translate${axis}(${swipeFraction * 100}%)` :
-        '';
-      this[internal.ids].swipeFraction.textContent = swipeFraction !== null ?
-        swipeFraction.toFixed(3) :
-        '—';
+      this[internal.ids].block.style.transform =
+        swipeFraction !== null
+          ? `translate${axis}(${swipeFraction * 100}%)`
+          : '';
+      this[internal.ids].swipeFraction.textContent =
+        swipeFraction !== null ? swipeFraction.toFixed(3) : '—';
     }
   }
 
@@ -102,9 +95,7 @@ class SwipeDemo extends Base {
       <div id="empty" class="section"></div>
     `;
   }
-
 }
-
 
 customElements.define('swipe-demo', SwipeDemo);
 export default SwipeDemo;

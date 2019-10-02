@@ -7,37 +7,30 @@ import OverlayMixin from './OverlayMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 import SlotContentMixin from './SlotContentMixin.js';
 
-
 // TODO: We'd like to use DelegateFocusMixin in this component, but see the note
 // at OverlayMixin's openedChanged function.
-const Base =
-  OpenCloseMixin(
-  OverlayMixin(
-  SlotContentMixin(
-    ReactiveElement
-  )));
-
+const Base = OpenCloseMixin(OverlayMixin(SlotContentMixin(ReactiveElement)));
 
 /**
  * An element that appears over other page elements
- * 
+ *
  * The main overlay content is presented within a frame on top of an optional
  * backdrop.
- * 
+ *
  * The overlay logic is provided by [OverlayMixin](OverlayMixin). `Overlay` adds
  * the definition of customizable element tags: [frameTag](#frameTag) for the
  * frame around the overlay content, and [backdropTag](#backdropTag) (if
  * defined) for the optional element covering the page elements behind the
  * overlay.
- * 
+ *
  * As a convenience, the `open` method of `Overlay` will automatically add the
  * overlay to the end of the document body if the overlay isn't already in the
  * document. If the overlay is automatically attached in this way, then when it
  * closes, it will automatically be removed.
- * 
+ *
  * See [Dialog](Dialog) and [Popup](Popup) for modal and modeless subclasses,
  * respectively.
- * 
+ *
  * @inherits ReactiveElement
  * @mixes OpenCloseMixin
  * @mixes OverlayMixin
@@ -46,7 +39,6 @@ const Base =
  * @elementrole {OverlayFrame} frame
  */
 class Overlay extends Base {
-
   get backdrop() {
     return this[internal.ids] && this[internal.ids].backdrop;
   }
@@ -54,12 +46,12 @@ class Overlay extends Base {
   /**
    * The class, tag, or template used for the optional backdrop element behind
    * the overlay.
-   * 
+   *
    * This can help focus the user's attention on the overlay content.
    * Additionally, a backdrop can be used to absorb clicks on background page
    * elements. For example, [Dialog](Dialog) uses [ModalBackdrop](ModalBackdrop)
    * as an overlay backdrop in such a way.
-   * 
+   *
    * @type {Role}
    * @default Backdrop
    */
@@ -95,11 +87,11 @@ class Overlay extends Base {
 
   /**
    * The class, tag, or template used to contain the primary overlay content.
-   * 
+   *
    * The frame element can be used to provide a border around the overlay
    * content, and to provide visual effects such as a drop-shadow to help
    * distinguish overlay content from background page elements.
-   * 
+   *
    * @type {Role}
    * @default OverlayFrame
    */
@@ -113,10 +105,16 @@ class Overlay extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.backdropRole) {
-      template.transmute(this[internal.ids].backdrop, this[internal.state].backdropRole);
+      template.transmute(
+        this[internal.ids].backdrop,
+        this[internal.state].backdropRole
+      );
     }
     if (changed.frameRole) {
-      template.transmute(this[internal.ids].frame, this[internal.state].frameRole);
+      template.transmute(
+        this[internal.ids].frame,
+        this[internal.state].frameRole
+      );
     }
   }
 
@@ -163,8 +161,6 @@ class Overlay extends Base {
       </div>
     `;
   }
-
 }
-
 
 export default Overlay;

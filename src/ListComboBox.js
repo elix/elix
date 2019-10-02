@@ -8,18 +8,13 @@ import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import ListBox from './ListBox.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 
-
-const Base =
-  DelegateItemsMixin(
-  DirectionSelectionMixin(
-  SingleSelectionMixin(
-    ComboBox
-  )));
-
+const Base = DelegateItemsMixin(
+  DirectionSelectionMixin(SingleSelectionMixin(ComboBox))
+);
 
 /**
  * A combo box whose popup presents a list of choices
- * 
+ *
  * @inherits ComboBox
  * @mixes DelegateItemsMixin
  * @mixes DirectionSelectionMixin
@@ -27,7 +22,6 @@ const Base =
  * @elementRole {ListBox} list
  */
 class ListComboBox extends Base {
-
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
     this.setAttribute('aria-haspopup', 'listbox');
@@ -49,7 +43,7 @@ class ListComboBox extends Base {
         const searchText = value.toLowerCase();
         const selectedIndex = items.findIndex(item => {
           const itemText = getItemText(item);
-          return itemText.toLowerCase() === searchText
+          return itemText.toLowerCase() === searchText;
         });
         return {
           selectedIndex
@@ -61,17 +55,13 @@ class ListComboBox extends Base {
     // If user selects a new item, or combo is closing, make selected item the
     // value.
     state.onChange(['opened', 'selectedIndex'], (state, changed) => {
-      const {
-        closeResult,
-        items,
-        opened,
-        selectedIndex,
-        value
-      } = state;
+      const { closeResult, items, opened, selectedIndex, value } = state;
       const closing = changed.opened && !opened;
       const canceled = closeResult && closeResult.canceled;
-      if (selectedIndex >= 0 &&
-          (changed.selectedIndex || (closing && !canceled))) {
+      if (
+        selectedIndex >= 0 &&
+        (changed.selectedIndex || (closing && !canceled))
+      ) {
         const selectedItem = items[selectedIndex];
         if (selectedItem) {
           const selectedItemText = getItemText(selectedItem);
@@ -101,23 +91,25 @@ class ListComboBox extends Base {
   // on KeyboardDirectionMixin. The latter supports Home and End, and we don't
   // want to handle those -- we want to let the text input handle them.
   // We also need to forward PageDown/PageUp to the list element.
-    [internal.keydown](/** @type {KeyboardEvent} */ event) {
-
+  [internal.keydown](/** @type {KeyboardEvent} */ event) {
     let handled;
     /** @type {any} */
     const list = this[internal.ids].list;
 
     switch (event.key) {
-
       case 'ArrowDown':
         if (this.opened) {
-          handled = event.altKey ? this[internal.goEnd]() : this[internal.goDown]();
+          handled = event.altKey
+            ? this[internal.goEnd]()
+            : this[internal.goDown]();
         }
         break;
 
       case 'ArrowUp':
         if (this.opened) {
-          handled = event.altKey ? this[internal.goStart]() : this[internal.goUp]();
+          handled = event.altKey
+            ? this[internal.goStart]()
+            : this[internal.goUp]();
         }
         break;
 
@@ -126,7 +118,7 @@ class ListComboBox extends Base {
           handled = list.pageDown && list.pageDown();
         }
         break;
-        
+
       case 'PageUp':
         if (this.opened) {
           handled = list.pageUp && list.pageUp();
@@ -135,12 +127,14 @@ class ListComboBox extends Base {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[internal.keydown] && super[internal.keydown](event));
+    return (
+      handled || (super[internal.keydown] && super[internal.keydown](event))
+    );
   }
 
   /**
    * The class, tag, or template used to create the list element.
-   * 
+   *
    * @type {Role}
    * @default ListBox
    */
@@ -161,8 +155,11 @@ class ListComboBox extends Base {
       this[internal.ids].input.setAttribute('aria-autocomplete', 'both');
     }
     if (changed.listRole) {
-      template.transmute(this[internal.ids].list, this[internal.state].listRole);
-  
+      template.transmute(
+        this[internal.ids].list,
+        this[internal.state].listRole
+      );
+
       this[internal.ids].list.addEventListener('mousedown', event => {
         // Mousing down inside a list item closes the popup.
         /** @type {any} */
@@ -173,7 +170,7 @@ class ListComboBox extends Base {
             this[internal.raiseChangeEvents] = true;
             this.close();
             this[internal.raiseChangeEvents] = false;
-          }  
+          }
         }
       });
 
@@ -184,18 +181,21 @@ class ListComboBox extends Base {
       // presses Backspace to delete that selected text, Gboard/Chrome seems to
       // ignore the first press of the Backspace key. The user must press
       // Backspace a second time to actually delete the selected text.
-      this[internal.ids].list.addEventListener('selected-index-changed', event => {
-        /** @type {any} */
-        const cast = event;
-        const listSelectedIndex = cast.detail.selectedIndex;
-        if (this[internal.state].selectedIndex !== listSelectedIndex) {
-          this[internal.raiseChangeEvents] = true;
-          this[internal.setState]({
-            selectedIndex: listSelectedIndex
-          });
-          this[internal.raiseChangeEvents] = false;
+      this[internal.ids].list.addEventListener(
+        'selected-index-changed',
+        event => {
+          /** @type {any} */
+          const cast = event;
+          const listSelectedIndex = cast.detail.selectedIndex;
+          if (this[internal.state].selectedIndex !== listSelectedIndex) {
+            this[internal.raiseChangeEvents] = true;
+            this[internal.setState]({
+              selectedIndex: listSelectedIndex
+            });
+            this[internal.raiseChangeEvents] = false;
+          }
         }
-      });
+      );
     }
     if (changed.selectedIndex) {
       const list = /** @type {any} */ (this[internal.ids].list);
@@ -231,8 +231,6 @@ class ListComboBox extends Base {
 
     return result;
   }
-
 }
-
 
 export default ListComboBox;

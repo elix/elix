@@ -1,7 +1,6 @@
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 /**
  * Defines a component's value as the text content of the selected item.
  *
@@ -22,12 +21,12 @@ import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-un
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function SelectedItemTextValueMixin(Base) {
-
   // The class prototype added by the mixin.
   class SelectedItemTextValue extends Base {
-
     [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) { super[internal.componentDidUpdate](changed); }
+      if (super[internal.componentDidUpdate]) {
+        super[internal.componentDidUpdate](changed);
+      }
       const { items, pendingValue } = this[internal.state];
       if (pendingValue && items) {
         const index = indexOfItemWithText(items, pendingValue);
@@ -48,9 +47,9 @@ export default function SelectedItemTextValueMixin(Base) {
      * @type {string}
      */
     get value() {
-      return this.selectedItem == null || this.selectedItem.textContent == null ?
-        '' :
-        this.selectedItem.textContent;
+      return this.selectedItem == null || this.selectedItem.textContent == null
+        ? ''
+        : this.selectedItem.textContent;
     }
     set value(text) {
       const items = this[internal.state].items;
@@ -70,11 +69,10 @@ export default function SelectedItemTextValueMixin(Base) {
   return SelectedItemTextValue;
 }
 
-
 /**
  * @private
- * @param {Element[]} items 
- * @param {string} text 
+ * @param {Element[]} items
+ * @param {string} text
  */
 function indexOfItemWithText(items, text) {
   return items.findIndex(item => item.textContent === text);

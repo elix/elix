@@ -3,16 +3,15 @@ import * as calendar from './calendar.js';
 import * as template from './template.js';
 import ReactiveElement from './ReactiveElement.js';
 
-
 /**
  * Header showing the localized days of the week
- * 
+ *
  * [A default representation of day names in browser's default locale](/demos/calendarDayNamesHeader.html)
- * 
+ *
  * All of the Elix calendar components attempt to provide full
  * [international calendar support](CalendarMonth#international-support)
  * to the extent currently possible in the user's web browser.
- * 
+ *
  * In the case of this component, it will show the appropriate names of the days
  * of the week for a specific locale (or, by default, the user's current
  * locale). The day(s) associated with the weekend in that locale will also be
@@ -20,11 +19,10 @@ import ReactiveElement from './ReactiveElement.js';
  * for that locale. Example: U.S. calendars typically start with Sunday as the
  * first day of a week, while British calendars typically start with Monday as
  * the first day.
- * 
+ *
  * @inherits ReactiveElement
  */
 class CalendarDayNamesHeader extends ReactiveElement {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       format: 'short',
@@ -34,7 +32,7 @@ class CalendarDayNamesHeader extends ReactiveElement {
 
   /**
    * The format used to render the day names.
-   * 
+   *
    * @type {('long'|'narrow'|'short')}
    * @default 'short'
    */
@@ -49,7 +47,7 @@ class CalendarDayNamesHeader extends ReactiveElement {
    * A string that identifies a language and a region using a BCP 47 language
    * tag. This works the same as the `CalendarElementMixin`
    * [locale](CalendarElementMixin#locale) property.
-   * 
+   *
    * @type {string}
    */
   get locale() {
@@ -110,8 +108,6 @@ class CalendarDayNamesHeader extends ReactiveElement {
       <div id="day6" class="dayOfWeek"></div>
     `;
   }
-
 }
-
 
 export default CalendarDayNamesHeader;

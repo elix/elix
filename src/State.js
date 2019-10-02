@@ -1,11 +1,9 @@
 const changeCallbacksKey = Symbol('changeCallbacks');
 
-
 /**
  * A state object that can reconcile changes from multiple sources.
  */
 class State {
-
   constructor(/** @type {PlainObject} */ defaults) {
     if (defaults) {
       applyStateChanges(this, defaults);
@@ -16,11 +14,11 @@ class State {
    * Return a new copy of this state that includes the indicated changes,
    * invoking any registered `onChange` handlers that depend on the changed
    * state members.
-   * 
+   *
    * There is no need to invoke this method yourself.
    * [ReactiveMixin](ReactiveMixin) will take care of doing that when you invoke
    * [internal.setState]](ReactiveMixin[internal.setState]).
-   * 
+   *
    * @param {object} changes - the changes to apply to the state
    * @returns {object} - the new `state`, and a `changed` flag indicating
    * whether there were any substantive changes
@@ -43,7 +41,7 @@ class State {
     const changed = applyStateChanges(state, changes);
     return { state, changed };
   }
-  
+
   /**
    * Ask the `State` object to invoke the specified `callback` when any of the
    * state members listed in the `dependencies` array change.
@@ -75,27 +73,23 @@ class State {
     if (!this[changeCallbacksKey]) {
       this[changeCallbacksKey] = {};
     }
-    const array = dependencies instanceof Array ?
-      dependencies :
-      [dependencies];
+    const array = dependencies instanceof Array ? dependencies : [dependencies];
     // Register the callback for each dependent state field.
     array.forEach(dependency => {
       if (!this[changeCallbacksKey][dependency]) {
-        this[changeCallbacksKey][dependency] = []
+        this[changeCallbacksKey][dependency] = [];
       }
       this[changeCallbacksKey][dependency].push(callback);
     });
   }
-
 }
-
 
 /**
  * Return true if the two values are equal.
- * 
+ *
  * @private
- * @param {any} value1 
- * @param {any} value2 
+ * @param {any} value1
+ * @param {any} value2
  * @returns {boolean}
  */
 function equal(value1, value2) {
@@ -105,11 +99,10 @@ function equal(value1, value2) {
   return value1 === value2;
 }
 
-
 /**
  * Return a dictionary of flags indicating which of the indicated changes to the
  * state are actually changes. Return null if there were no changes.
- * 
+ *
  * @private
  * @param {PlainObject} state
  * @param {PlainObject} changes
@@ -127,13 +120,12 @@ function fieldsChanged(state, changes) {
   return changed;
 }
 
-
 /**
  * Destructively apply the indicated changes to the given state, running
  * any registered change handlers.
  * Return a dictionary of flags indicating which fields actually changed,
  * or null if there were no changes.
- * 
+ *
  * @private
  * @param {PlainObject} state
  * @param {PlainObject} changes
@@ -146,8 +138,7 @@ function applyStateChanges(state, changes) {
   // produces no changes.
   /** @type {PlainObject|null} */ let changed;
   /* eslint-disable no-cond-assign */
-  for (; changed = fieldsChanged(state, changes);) {
-
+  for (; (changed = fieldsChanged(state, changes)); ) {
     // Apply the changes to the state.
     Object.assign(state, changes);
 
@@ -184,6 +175,5 @@ function applyStateChanges(state, changes) {
 
   return result;
 }
-
 
 export default State;

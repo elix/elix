@@ -19,28 +19,37 @@ import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 import TapSelectionMixin from './TapSelectionMixin.js';
 
-
-const Base =
-  AriaListMixin(
+const Base = AriaListMixin(
   ComposedFocusMixin(
-  DirectionSelectionMixin(
-  FocusVisibleMixin(
-  FormElementMixin(
-  GenericMixin(
-  ItemsTextMixin(
-  KeyboardDirectionMixin(
-  KeyboardMixin(
-  KeyboardPagedSelectionMixin(
-  KeyboardPrefixSelectionMixin(
-  LanguageDirectionMixin(
-  SelectedItemTextValueMixin(
-  SelectionInViewMixin(
-  SingleSelectionMixin(
-  SlotItemsMixin(
-  TapSelectionMixin(
-    ReactiveElement
-  )))))))))))))))));
-
+    DirectionSelectionMixin(
+      FocusVisibleMixin(
+        FormElementMixin(
+          GenericMixin(
+            ItemsTextMixin(
+              KeyboardDirectionMixin(
+                KeyboardMixin(
+                  KeyboardPagedSelectionMixin(
+                    KeyboardPrefixSelectionMixin(
+                      LanguageDirectionMixin(
+                        SelectedItemTextValueMixin(
+                          SelectionInViewMixin(
+                            SingleSelectionMixin(
+                              SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+                            )
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+);
 
 /**
  * Single-selection list box
@@ -70,7 +79,6 @@ const Base =
  * @mixes TapSelectionMixin
  */
 class ListBox extends Base {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       orientation: 'vertical'
@@ -102,19 +110,20 @@ class ListBox extends Base {
     }
     if (changed.orientation) {
       // Update list orientation styling.
-      const style = this[internal.state].orientation === 'vertical' ?
-        {
-          display: 'block',
-          flexDirection: '',
-          overflowX: 'hidden',
-          overflowY: 'auto'
-        } :
-        {
-          display: 'flex',
-          flexDirection: 'row',
-          overflowX: 'auto',
-          overflowY: 'hidden'
-        };
+      const style =
+        this[internal.state].orientation === 'vertical'
+          ? {
+              display: 'block',
+              flexDirection: '',
+              overflowX: 'hidden',
+              overflowY: 'auto'
+            }
+          : {
+              display: 'flex',
+              flexDirection: 'row',
+              overflowX: 'auto',
+              overflowY: 'hidden'
+            };
       Object.assign(this[internal.ids].content.style, style);
     }
   }
@@ -170,8 +179,6 @@ class ListBox extends Base {
       </div>
     `;
   }
-
 }
-
 
 export default ListBox;

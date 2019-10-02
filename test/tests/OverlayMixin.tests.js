@@ -3,24 +3,19 @@ import OpenCloseMixin from '../../src/OpenCloseMixin.js';
 import OverlayMixin from '../../src/OverlayMixin.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
-
-const Base =
-  OpenCloseMixin(
-  OverlayMixin(
-    ReactiveElement
-  ));
+const Base = OpenCloseMixin(OverlayMixin(ReactiveElement));
 
 class OverlayTest extends Base {
   [internal.render](changed) {
-    if (super[internal.render]) { super[internal.render](changed); }
+    if (super[internal.render]) {
+      super[internal.render](changed);
+    }
     this.tabIndex = 0;
   }
 }
 customElements.define('overlay-test', OverlayTest);
 
-
-describe("OverlayMixin", function() {
-
+describe('OverlayMixin', function() {
   let container;
 
   before(() => {
@@ -80,5 +75,4 @@ describe("OverlayMixin", function() {
     await fixture.close();
     assert.equal(fixture.parentNode, div);
   });
-
 });

@@ -3,15 +3,9 @@ import * as template from '../../src/template.js';
 import ArrowDirectionMixin from '../../src/ArrowDirectionMixin.js';
 import SlidingPages from '../../src/SlidingPages.js';
 
-
-const Base =
-  ArrowDirectionMixin(
-    SlidingPages
-  );
-
+const Base = ArrowDirectionMixin(SlidingPages);
 
 class SlidingPagesWithArrows extends Base {
-
   get [internal.defaultState]() {
     // Show arrow buttons if device has a fine-grained pointer (e.g., mouse).
     // Firefox doesn't support the pointer:fine media query, so we look for the
@@ -28,17 +22,18 @@ class SlidingPagesWithArrows extends Base {
     const base = super[internal.template];
     /** @type {any} */ const cast = this;
     cast[ArrowDirectionMixin.wrap](base.content);
-    return template.concat(base, template.html`
+    return template.concat(
+      base,
+      template.html`
       <style>
         .arrowButton {
           font-size: 48px;
         }
       </style>
-    `);
+    `
+    );
   }
-
 }
-
 
 customElements.define('sliding-pages-with-arrows', SlidingPagesWithArrows);
 export default SlidingPagesWithArrows;

@@ -2,7 +2,6 @@ import { isSubstantiveElement } from './content.js';
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 /**
  * Treats an element's content nodes as list items.
  *
@@ -30,13 +29,14 @@ import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-un
  */
 export default function ContentItemsMixin(Base) {
   return class ContentItems extends Base {
-
     [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) { super[internal.componentDidUpdate](changed); }
+      if (super[internal.componentDidUpdate]) {
+        super[internal.componentDidUpdate](changed);
+      }
       if (changed.items && this[internal.raiseChangeEvents]) {
         /**
          * Raised when the `items` property changes.
-         * 
+         *
          * @event items-changed
          */
         const event = new CustomEvent('items-changed');
@@ -55,12 +55,13 @@ export default function ContentItemsMixin(Base) {
         /** @type {Node[]} */ const content = state.content;
         const needsItems = content && !state.items; // Signal from other mixins
         if (changed.content || needsItems) {
-          const items = content ?
-            Array.prototype.filter.call(content, (/** @type {Node} */ item) =>
-              (item instanceof HTMLElement || item instanceof SVGElement) ?
-                this[internal.itemMatchesState](item, state) :
-                false) :
-            null;
+          const items = content
+            ? Array.prototype.filter.call(content, (/** @type {Node} */ item) =>
+                item instanceof HTMLElement || item instanceof SVGElement
+                  ? this[internal.itemMatchesState](item, state)
+                  : false
+              )
+            : null;
           if (items) {
             Object.freeze(items);
           }
@@ -74,26 +75,25 @@ export default function ContentItemsMixin(Base) {
 
     /**
      * Returns true if the given item should be shown in the indicated state.
-     * 
-     * @param {ListItemElement} item 
-     * @param {PlainObject} state 
+     *
+     * @param {ListItemElement} item
+     * @param {PlainObject} state
      * @returns {boolean}
      */
     [internal.itemMatchesState](item, state) {
-      const base = super[internal.itemMatchesState] ?
-        super[internal.itemMatchesState](item, state) :
-        true;
+      const base = super[internal.itemMatchesState]
+        ? super[internal.itemMatchesState](item, state)
+        : true;
       return base && isSubstantiveElement(item);
     }
 
     /**
      * The current set of items drawn from the element's current state.
-     * 
+     *
      * @type {ListItemElement[]|null} the element's current items
      */
     get items() {
       return this[internal.state] ? this[internal.state].items : null;
     }
-
-  }
+  };
 }

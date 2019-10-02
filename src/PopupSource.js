@@ -10,23 +10,17 @@ import OverlayFrame from './OverlayFrame.js';
 import Popup from './Popup.js';
 import ReactiveElement from './ReactiveElement.js';
 
-
 const resizeListenerKey = Symbol('resizeListener');
 
-
-const Base =
-  AriaRoleMixin(
+const Base = AriaRoleMixin(
   DisabledMixin(
-  FocusVisibleMixin(
-  LanguageDirectionMixin(
-  OpenCloseMixin(
-    ReactiveElement
-  )))));
-
+    FocusVisibleMixin(LanguageDirectionMixin(OpenCloseMixin(ReactiveElement)))
+  )
+);
 
 /**
  * Positions a popup with respect to a source element
- * 
+ *
  * @inherits ReactiveElement
  * @mixes AriaRoleMixin
  * @mixes DisabledMixin
@@ -39,16 +33,15 @@ const Base =
  * @elementrole {'button'} source
  */
 class PopupSource extends Base {
-
   /**
    * The class, tag, or template used for the optional backdrop element behind
    * the overlay.
-   * 
+   *
    * This can help focus the user's attention on the overlay content.
    * Additionally, a backdrop can be used to absorb clicks on background page
    * elements. For example, [Dialog](Dialog) uses [ModalBackdrop](ModalBackdrop)
    * as an overlay backdrop in such a way.
-   * 
+   *
    * @type {Role}
    * @default Backdrop
    */
@@ -83,7 +76,6 @@ class PopupSource extends Base {
   }
 
   get [internal.defaultState]() {
-
     const result = Object.assign(super[internal.defaultState], {
       backdropRole: Backdrop,
       frameRole: OverlayFrame,
@@ -98,7 +90,7 @@ class PopupSource extends Base {
       roomBelow: null,
       roomLeft: null,
       roomRight: null,
-      sourceRole: 'div'      
+      sourceRole: 'div'
     });
 
     // Closing popup resets our calculations of popup size and room.
@@ -112,7 +104,7 @@ class PopupSource extends Base {
           roomBelow: null,
           roomLeft: null,
           roomRight: null
-        }
+        };
       }
       return null;
     });
@@ -126,11 +118,11 @@ class PopupSource extends Base {
 
   /**
    * The class, tag, or template used to contain the popup content.
-   * 
+   *
    * The frame element can be used to provide a border around the popup content,
    * and to provide visual effects such as a drop-shadow to help distinguish
    * popup content from background page elements.
-   * 
+   *
    * @type {Role}
    * @default OverlayFrame
    */
@@ -143,7 +135,7 @@ class PopupSource extends Base {
 
   /**
    * The alignment of the popup with respect to the source button.
-   * 
+   *
    * * `start`: popup and source are aligned on the leading edge according to
    *   the text direction
    * * `end`: popup and source are aligned on the trailing edge according to the
@@ -151,7 +143,7 @@ class PopupSource extends Base {
    * * `left`: popup and source are left-aligned
    * * `right`: popup and source are right-aligned
    * * `stretch: both left and right edges are aligned
-   * 
+   *
    * @type {('start'|'end'|'left'|'right'|'stretch')}
    * @default 'start'
    */
@@ -173,7 +165,10 @@ class PopupSource extends Base {
       }
     }
     if (changed.popupRole) {
-      template.transmute(this[internal.ids].popup, this[internal.state].popupRole);
+      template.transmute(
+        this[internal.ids].popup,
+        this[internal.state].popupRole
+      );
 
       // Popup's opened state becomes our own opened state.
       this[internal.ids].popup.addEventListener('opened', () => {
@@ -188,7 +183,8 @@ class PopupSource extends Base {
       this[internal.ids].popup.addEventListener('closed', event => {
         if (!this.closed) {
           this[internal.raiseChangeEvents] = true;
-          /** @type {any} */ 
+          /** @type {any} */
+
           const cast = event;
           const closeResult = cast.detail.closeResult;
           this.close(closeResult);
@@ -201,11 +197,16 @@ class PopupSource extends Base {
       // transmuting of popup.
       if ('backdropRole' in this[internal.ids].popup) {
         const { backdropRole } = this[internal.state];
-        /** @type {any} */ (this[internal.ids].popup).backdropRole = backdropRole;
+        /** @type {any} */ (this[
+          internal.ids
+        ].popup).backdropRole = backdropRole;
       }
     }
-    if (changed.horizontalAlign || changed.popupMeasured ||
-        changed.rightToLeft) {
+    if (
+      changed.horizontalAlign ||
+      changed.popupMeasured ||
+      changed.rightToLeft
+    ) {
       const {
         horizontalAlign,
         popupHeight,
@@ -218,7 +219,7 @@ class PopupSource extends Base {
         roomLeft,
         roomRight
       } = this[internal.state];
-      
+
       const fitsAbove = popupHeight <= roomAbove;
       const fitsBelow = popupHeight <= roomBelow;
       const canLeftAlign = popupWidth <= roomRight;
@@ -232,13 +233,13 @@ class PopupSource extends Base {
       const positionBelow =
         (preferPositionBelow && (fitsBelow || roomBelow >= roomAbove)) ||
         (!preferPositionBelow && !fitsAbove && roomBelow >= roomAbove);
-      const fitsVertically = positionBelow && fitsBelow ||
-        !positionBelow && fitsAbove;
-      const maxFrameHeight = fitsVertically ?
-        null :
-        positionBelow ?
-          roomBelow :
-          roomAbove;
+      const fitsVertically =
+        (positionBelow && fitsBelow) || (!positionBelow && fitsAbove);
+      const maxFrameHeight = fitsVertically
+        ? null
+        : positionBelow
+        ? roomBelow
+        : roomAbove;
 
       // Position popup.
       const bottom = positionBelow ? null : 0;
@@ -251,24 +252,25 @@ class PopupSource extends Base {
         right = 0;
         maxFrameWidth = null;
       } else {
-        const preferLeftAlign = horizontalAlign === 'left' ||
-          (rightToLeft ?
-            horizontalAlign === 'end' :
-            horizontalAlign === 'start');
+        const preferLeftAlign =
+          horizontalAlign === 'left' ||
+          (rightToLeft
+            ? horizontalAlign === 'end'
+            : horizontalAlign === 'start');
         // The above/below preference rules also apply to left/right alignment.
         const alignLeft =
           (preferLeftAlign && (canLeftAlign || roomRight >= roomLeft)) ||
           (!preferLeftAlign && !canRightAlign && roomRight >= roomLeft);
         left = alignLeft ? 0 : null;
         right = !alignLeft ? 0 : null;
-    
-        const fitsHorizontally = alignLeft && roomRight ||
-          !alignLeft && roomLeft;
-        maxFrameWidth = fitsHorizontally ?
-          null :
-          alignLeft ?
-            roomRight :
-            roomLeft;
+
+        const fitsHorizontally =
+          (alignLeft && roomRight) || (!alignLeft && roomLeft);
+        maxFrameWidth = fitsHorizontally
+          ? null
+          : alignLeft
+          ? roomRight
+          : roomLeft;
       }
 
       // Until we've measured the rendered position of the popup, render it in
@@ -296,8 +298,11 @@ class PopupSource extends Base {
       this[internal.ids].popupContainer.style.top = positionBelow ? null : '0';
     }
     if (changed.sourceRole) {
-      template.transmute(this[internal.ids].source, this[internal.state].sourceRole);
-    }    
+      template.transmute(
+        this[internal.ids].source,
+        this[internal.state].sourceRole
+      );
+    }
     if (changed.opened) {
       const { opened } = this[internal.state];
       Object.assign(this[internal.ids].source.style, {
@@ -317,10 +322,10 @@ class PopupSource extends Base {
 
   /**
    * The preferred direction for the popup.
-   * 
+   *
    * * `above`: popup should appear above the source
    * * `below`: popup should appear below the source
-   * 
+   *
    * @type {('above'|'below')}
    * @default 'below'
    */
@@ -335,9 +340,9 @@ class PopupSource extends Base {
 
   /**
    * The class, tag, or template used to define the popup.
-   * 
+   *
    * The popup element is responsible for handling overlay behavior.
-   * 
+   *
    * @type {Role}
    * @default Popup
    */
@@ -351,7 +356,7 @@ class PopupSource extends Base {
   /**
    * The class, tag, or template used for the button (or other element) that
    * will invoke the popup.
-   * 
+   *
    * @type {Role}
    * @default 'button'
    */
@@ -405,18 +410,15 @@ class PopupSource extends Base {
       </div>
     `;
   }
-
 }
-
 
 function addEventListeners(/** @type {PopupSource} */ element) {
   /** @type {any} */ const cast = element;
   cast[resizeListenerKey] = () => {
     measurePopup(element);
-  }
+  };
   window.addEventListener('resize', cast[resizeListenerKey]);
 }
-
 
 function removeEventListeners(/** @type {PopupSource} */ element) {
   /** @type {any} */ const cast = element;
@@ -426,11 +428,10 @@ function removeEventListeners(/** @type {PopupSource} */ element) {
   }
 }
 
-
 /**
  * If we haven't already measured the popup since it was opened, measure its
  * dimensions and the relevant distances in which the popup might be opened.
- * 
+ *
  * @private
  * @param {PopupSource} element
  */
@@ -458,7 +459,7 @@ function measurePopup(element) {
  * affect the page layout.
  *
  * We then wait, for two reasons:
- * 
+ *
  * 1) We need to give the popup time to render invisibly. That lets us get the
  *    true size of the popup content.
  *
@@ -470,7 +471,7 @@ function measurePopup(element) {
  *    scrolls).
  *
  * After waiting, we can take care of both of the above tasks.
- * 
+ *
  * @private
  * @param {PopupSource} element
  */
@@ -485,6 +486,5 @@ function waitThenRenderOpened(element) {
     }
   });
 }
-
 
 export default PopupSource;

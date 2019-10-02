@@ -13,23 +13,23 @@ import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 
-
-const Base =
-  ArrowDirectionMixin(
+const Base = ArrowDirectionMixin(
   CalendarElementMixin(
-  DarkModeMixin(
-  FocusVisibleMixin(
-  FormElementMixin(
-  KeyboardDirectionMixin(
-  KeyboardMixin(
-  LanguageDirectionMixin(
-    CalendarMonth
-  ))))))));
-
+    DarkModeMixin(
+      FocusVisibleMixin(
+        FormElementMixin(
+          KeyboardDirectionMixin(
+            KeyboardMixin(LanguageDirectionMixin(CalendarMonth))
+          )
+        )
+      )
+    )
+  )
+);
 
 /**
  * Interactive month calendar that lets the user select a date
- * 
+ *
  * @inherits CalendarMonth
  * @mixes ArrowDirectionMixin
  * @mixes CalendarElementMixin
@@ -41,7 +41,6 @@ const Base =
  * @mixes LanguageDirectionMixin
  */
 class CalendarMonthNavigator extends Base {
-
   constructor() {
     super();
     this.addEventListener('mousedown', event => {
@@ -92,19 +91,16 @@ class CalendarMonthNavigator extends Base {
     // Reflect any change in date to value as well so that FormElementMixin can
     // update form internals.
     result.onChange('date', state => ({
-      value: state.date ?
-        state.date.toString() :
-        ''
+      value: state.date ? state.date.toString() : ''
     }));
 
     return result;
   }
 
-    [internal.keydown](/** @type {KeyboardEvent} */ event) {
+  [internal.keydown](/** @type {KeyboardEvent} */ event) {
     let handled = false;
 
     switch (event.key) {
-
       case 'Home':
         this[internal.setState]({
           date: calendar.today()
@@ -118,22 +114,25 @@ class CalendarMonthNavigator extends Base {
         });
         handled = true;
         break;
-        
+
       case 'PageUp':
         this[internal.setState]({
           date: calendar.offsetDateByMonths(this[internal.state].date, -1)
         });
         handled = true;
         break;
-
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[internal.keydown] && super[internal.keydown](event));
+    return (
+      handled || (super[internal.keydown] && super[internal.keydown](event))
+    );
   }
 
   [internal.goDown]() {
-    if (super[internal.goDown]) { super[internal.goDown](); }
+    if (super[internal.goDown]) {
+      super[internal.goDown]();
+    }
     this[internal.setState]({
       date: calendar.offsetDateByDays(this[internal.state].date, 7)
     });
@@ -141,7 +140,9 @@ class CalendarMonthNavigator extends Base {
   }
 
   [internal.goLeft]() {
-    if (super[internal.goLeft]) { super[internal.goLeft](); }
+    if (super[internal.goLeft]) {
+      super[internal.goLeft]();
+    }
     this[internal.setState]({
       date: calendar.offsetDateByDays(this[internal.state].date, -1)
     });
@@ -149,7 +150,9 @@ class CalendarMonthNavigator extends Base {
   }
 
   [internal.goRight]() {
-    if (super[internal.goRight]) { super[internal.goRight](); }
+    if (super[internal.goRight]) {
+      super[internal.goRight]();
+    }
     this[internal.setState]({
       date: calendar.offsetDateByDays(this[internal.state].date, 1)
     });
@@ -157,7 +160,9 @@ class CalendarMonthNavigator extends Base {
   }
 
   [internal.goUp]() {
-    if (super[internal.goUp]) { super[internal.goUp](); }
+    if (super[internal.goUp]) {
+      super[internal.goUp]();
+    }
     this[internal.setState]({
       date: calendar.offsetDateByDays(this[internal.state].date, -7)
     });
@@ -190,8 +195,6 @@ class CalendarMonthNavigator extends Base {
   set value(value) {
     this.date = value;
   }
-
 }
-
 
 export default CalendarMonthNavigator;

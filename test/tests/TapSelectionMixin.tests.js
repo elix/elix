@@ -3,10 +3,7 @@ import * as mockInteractions from '../mockInteractions.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
 import TapSelectionMixin from '../../src/TapSelectionMixin.js';
 
-
-class TapSelectionTest extends TapSelectionMixin(
-    ReactiveMixin(HTMLElement)) {
-
+class TapSelectionTest extends TapSelectionMixin(ReactiveMixin(HTMLElement)) {
   connectedCallback() {
     super.connectedCallback();
     const items = Array.prototype.slice.call(this.children);
@@ -22,13 +19,10 @@ class TapSelectionTest extends TapSelectionMixin(
   set selectedIndex(selectedIndex) {
     this[internal.state].selectedIndex = selectedIndex;
   }
-
 }
 customElements.define('tap-selection-test', TapSelectionTest);
 
-
-describe("TapSelectionMixin", function() {
-
+describe('TapSelectionMixin', function() {
   let container;
 
   before(() => {
@@ -39,7 +33,7 @@ describe("TapSelectionMixin", function() {
     container.innerHTML = '';
   });
 
-  it("sets the tapped item as the selected item", done => {
+  it('sets the tapped item as the selected item', done => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     assert.equal(fixture[internal.state].selectedIndex, -1);
@@ -51,13 +45,17 @@ describe("TapSelectionMixin", function() {
     mockInteractions.dispatchSyntheticMouseEvent(item, 'mousedown');
   });
 
-  it("ignores right clicks", done => {
+  it('ignores right clicks', done => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     assert.equal(fixture[internal.state].selectedIndex, -1);
     const item = fixture[internal.state].items[0];
     fixture.addEventListener('mousedown', () => {
-      assert.equal(fixture[internal.state].selectedIndex, -1, "handled mousedown even when right button was pressed");
+      assert.equal(
+        fixture[internal.state].selectedIndex,
+        -1,
+        'handled mousedown even when right button was pressed'
+      );
       done();
     });
     mockInteractions.dispatchSyntheticMouseEvent(item, 'mousedown', {
@@ -65,7 +63,6 @@ describe("TapSelectionMixin", function() {
     });
   });
 });
-
 
 function createSampleElement() {
   const fixture = new TapSelectionTest();

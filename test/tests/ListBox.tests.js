@@ -2,9 +2,7 @@ import * as internal from '../../src/internal.js';
 import * as mockInteractions from '../mockInteractions.js';
 import ListBox from '../../define/ListBox.js';
 
-
-describe("ListBox", () => {
-
+describe('ListBox', () => {
   let container;
 
   before(() => {
@@ -15,7 +13,7 @@ describe("ListBox", () => {
     container.innerHTML = '';
   });
 
-  it("raises a selected-index-changed event when an item is clicked", async () => {
+  it('raises a selected-index-changed event when an item is clicked', async () => {
     const fixture = createSampleListBox();
     container.appendChild(fixture);
     // Wait for initial content.
@@ -32,7 +30,7 @@ describe("ListBox", () => {
     await eventPromise;
   });
 
-  it("accepts the selected-index attribute in markup", async () => {
+  it('accepts the selected-index attribute in markup', async () => {
     container.innerHTML = `
       <elix-list-box selected-index="2">
         <div>Zero</div>
@@ -46,9 +44,7 @@ describe("ListBox", () => {
     assert.equal(fixture.selectedIndex, 2);
     assert.equal(fixture.selectedItem, fixture.children[2]);
   });
-
 });
-
 
 function createSampleListBox() {
   const fixture = new ListBox();

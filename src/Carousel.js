@@ -16,29 +16,29 @@ import SwipeDirectionMixin from './SwipeDirectionMixin.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 
-
-const Base =
-  AriaListMixin(
+const Base = AriaListMixin(
   ArrowDirectionMixin(
-  DarkModeMixin(
-  DirectionSelectionMixin(
-  FocusVisibleMixin(
-  KeyboardDirectionMixin(
-  KeyboardMixin(
-  SwipeDirectionMixin(
-  TouchSwipeMixin(
-  TrackpadSwipeMixin(
-    Explorer
-  ))))))))));
-
+    DarkModeMixin(
+      DirectionSelectionMixin(
+        FocusVisibleMixin(
+          KeyboardDirectionMixin(
+            KeyboardMixin(
+              SwipeDirectionMixin(TouchSwipeMixin(TrackpadSwipeMixin(Explorer)))
+            )
+          )
+        )
+      )
+    )
+  )
+);
 
 /**
  * Carousel with a sliding effect and navigation controls
- * 
+ *
  * Allows a user to navigate a horizontal set of items with touch, mouse,
  * keyboard, or trackpad. This component shows a small dot for each of its
  * items, and displays a sliding effect when moving between items.
- * 
+ *
  * @inherits Explorer
  * @mixes AriaListMixin
  * @mixes ArrowDirectionMixin
@@ -55,16 +55,14 @@ const Base =
  * @elementrole {SlidingStage} stage
  */
 class Carousel extends Base {
-  
   get [internal.defaultState]() {
     // Show arrow buttons if device has a fine-grained pointer (e.g., mouse).
     // As of Mar 14 2018, Firefox does not yet support pointer queries, in which
     // case we assume use of a mouse.
     const pointerQuery = '(pointer: fine)';
     const mediaQueryList = window.matchMedia(pointerQuery);
-    const showArrowButtons = mediaQueryList.media === pointerQuery ?
-      mediaQueryList.matches :
-      true;
+    const showArrowButtons =
+      mediaQueryList.media === pointerQuery ? mediaQueryList.matches : true;
     const result = Object.assign(super[internal.defaultState], {
       orientation: 'horizontal',
       proxyListOverlap: true,
@@ -78,9 +76,8 @@ class Carousel extends Base {
     // When orientation changes, have swipe axis follow suit, and also
     // set the default proxy list position.
     result.onChange('orientation', state => {
-      const proxyListPosition = state.orientation === 'horizontal' ?
-        'bottom' :
-        'right';
+      const proxyListPosition =
+        state.orientation === 'horizontal' ? 'bottom' : 'right';
       return {
         proxyListPosition,
         swipeAxis: state.orientation
@@ -127,13 +124,12 @@ class Carousel extends Base {
     if (changed.stageRole) {
       /** @type {any} */
       const cast = this[internal.ids].stage;
-      cast.removeAttribute('tabindex');      
+      cast.removeAttribute('tabindex');
     }
     const { darkMode } = this[internal.state];
     /** @type {Element[]} */ const proxies = this[internal.state].proxies;
     // Wait for knowledge of dark mode
-    if ((changed.darkMode || changed.proxies)
-        && darkMode !== null && proxies) {
+    if ((changed.darkMode || changed.proxies) && darkMode !== null && proxies) {
       // Apply dark mode to proxies.
       proxies.forEach(proxy => {
         /** @type {any} */ const cast = proxy;
@@ -154,9 +150,9 @@ class Carousel extends Base {
 
   get [internal.swipeTarget]() {
     const base = super[internal.swipeTarget];
-    return this[internal.ids].stage instanceof HTMLElement ?
-      this[internal.ids].stage :
-      base;
+    return this[internal.ids].stage instanceof HTMLElement
+      ? this[internal.ids].stage
+      : base;
   }
 
   get [internal.template]() {
@@ -164,7 +160,9 @@ class Carousel extends Base {
     const stage = base.content.querySelector('#stage');
     /** @type {any} */ const cast = this;
     cast[ArrowDirectionMixin.wrap](stage);
-    const result = template.concat(base, template.html`
+    const result = template.concat(
+      base,
+      template.html`
       <style>
         .arrowButton {
           font-size: 48px;
@@ -179,15 +177,14 @@ class Carousel extends Base {
           width: 100%;
         }
       </style>
-    `);
+    `
+    );
     const proxyList = result.content.getElementById('proxyList');
     if (proxyList) {
       proxyList.setAttribute('tabindex', '');
     }
     return result;
   }
-
 }
-
 
 export default Carousel;

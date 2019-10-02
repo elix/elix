@@ -4,18 +4,15 @@ import * as template from './template.js';
 import Menu from './Menu.js';
 import PopupButton from './PopupButton.js';
 
-
 const documentMouseupListenerKey = Symbol('documentMouseupListener');
-
 
 /**
  * A button that invokes a menu.
- * 
+ *
  * @inherits PopupButton
  * @elementrole {Menu} menu
  */
 class MenuButton extends PopupButton {
-
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
 
@@ -58,9 +55,10 @@ class MenuButton extends PopupButton {
   [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
     super[internal.componentDidUpdate](changed);
     if (changed.menuSelectedIndex) {
-      const selectedItem = this[internal.state].menuSelectedIndex >= 0 ?
-        this.items[this[internal.state].menuSelectedIndex] :
-        null;
+      const selectedItem =
+        this[internal.state].menuSelectedIndex >= 0
+          ? this.items[this[internal.state].menuSelectedIndex]
+          : null;
       this.itemSelected(selectedItem);
     }
     if (changed.opened) {
@@ -118,7 +116,9 @@ class MenuButton extends PopupButton {
   }
 
   disconnectedCallback() {
-    if (super.disconnectedCallback) { super.disconnectedCallback(); }
+    if (super.disconnectedCallback) {
+      super.disconnectedCallback();
+    }
     /** @type {any} */ const cast = this;
     document.removeEventListener('mouseup', cast[documentMouseupListenerKey]);
     cast[documentMouseupListenerKey] = null;
@@ -130,9 +130,9 @@ class MenuButton extends PopupButton {
   async highlightSelectedItemAndClose() {
     const raiseChangeEvents = this[internal.raiseChangeEvents];
     const selectionDefined = this[internal.state].menuSelectedIndex >= 0;
-    const closeResult = selectionDefined ?
-      this.items[this[internal.state].menuSelectedIndex] :
-      undefined;
+    const closeResult = selectionDefined
+      ? this.items[this[internal.state].menuSelectedIndex]
+      : undefined;
     /** @type {any} */ const menu = this[internal.ids].menu;
     if (selectionDefined && 'highlightSelectedItem' in menu) {
       await menu.highlightSelectedItem();
@@ -151,7 +151,7 @@ class MenuButton extends PopupButton {
 
   /**
    * Invoked when a new item is selected.
-   * 
+   *
    * @param {ListItemElement} item
    */
   itemSelected(item) {
@@ -161,7 +161,7 @@ class MenuButton extends PopupButton {
        * event is raised while the menu is still open. To check which item the
        * user selected from a menu, listen to the `closed` event and inspect the
        * event `details` object for its `closeResult` member.
-       * 
+       *
        * @event menu-item-selected
        */
       const event = new CustomEvent('menu-item-selected', {
@@ -173,8 +173,7 @@ class MenuButton extends PopupButton {
     }
   }
 
-    [internal.keydown](/** @type {KeyboardEvent} */ event) {
-
+  [internal.keydown](/** @type {KeyboardEvent} */ event) {
     switch (event.key) {
       // When open, Enter closes popup.
       case 'Enter':
@@ -213,10 +212,10 @@ class MenuButton extends PopupButton {
 
   /**
    * The class, tag, or template used to define the menu.
-   * 
+   *
    * The menu element is responsible for presenting the menu items and handling
    * navigation between them.
-   * 
+   *
    * @type {Role}
    * @default Menu
    */
@@ -233,14 +232,20 @@ class MenuButton extends PopupButton {
       this[internal.ids].popup.tabIndex = -1;
     }
     if (changed.menuRole) {
-      template.transmute(this[internal.ids].menu, this[internal.state].menuRole);
+      template.transmute(
+        this[internal.ids].menu,
+        this[internal.state].menuRole
+      );
 
       // Close the popup if menu loses focus.
-      this[internal.ids].menu.addEventListener('blur', async (event) => {
+      this[internal.ids].menu.addEventListener('blur', async event => {
         /** @type {any} */
         const cast = event;
         const newFocusedElement = cast.relatedTarget || document.activeElement;
-        if (this.opened && !deepContains(this[internal.ids].menu, newFocusedElement)) {
+        if (
+          this.opened &&
+          !deepContains(this[internal.ids].menu, newFocusedElement)
+        ) {
           this[internal.raiseChangeEvents] = true;
           await this.close();
           this[internal.raiseChangeEvents] = false;
@@ -261,7 +266,7 @@ class MenuButton extends PopupButton {
 
       // If the user mouses up on a menu item, close the menu with that item as
       // the close result.
-      this[internal.ids].menu.addEventListener('mouseup', async (event) => {
+      this[internal.ids].menu.addEventListener('mouseup', async event => {
         // If we're doing a drag-select (user moused down on button, dragged
         // mouse into menu, and released), we close. If we're not doing a
         // drag-select (the user opened the menu with a complete click), and
@@ -284,15 +289,18 @@ class MenuButton extends PopupButton {
       });
 
       // Track changes in the menu's selection state.
-      this[internal.ids].menu.addEventListener('selected-index-changed', event => {
-        this[internal.raiseChangeEvents] = true;
-        /** @type {any} */
-        const cast = event;
-        this[internal.setState]({
-          menuSelectedIndex: cast.detail.selectedIndex
-        });
-        this[internal.raiseChangeEvents] = false;
-      });
+      this[internal.ids].menu.addEventListener(
+        'selected-index-changed',
+        event => {
+          this[internal.raiseChangeEvents] = true;
+          /** @type {any} */
+          const cast = event;
+          this[internal.setState]({
+            menuSelectedIndex: cast.detail.selectedIndex
+          });
+          this[internal.raiseChangeEvents] = false;
+        }
+      );
     }
     if (changed.menuSelectedIndex) {
       const menu = /** @type {any} */ (this[internal.ids].menu);
@@ -354,20 +362,20 @@ class MenuButton extends PopupButton {
       `
     );
   }
-
 }
-
 
 function addDocumentListeners(/** @type {MenuButton} */ element) {
   /** @type {any} */ const cast = element;
   document.addEventListener('mouseup', cast[documentMouseupListenerKey]);
 }
 
-
-async function handleMouseup (/** @type {MouseEvent} */ event) {
+async function handleMouseup(/** @type {MouseEvent} */ event) {
   // @ts-ignore
   const element = this;
-  const hitTargets = element.shadowRoot.elementsFromPoint(event.clientX, event.clientY);
+  const hitTargets = element.shadowRoot.elementsFromPoint(
+    event.clientX,
+    event.clientY
+  );
   const overSource = hitTargets.indexOf(element[internal.ids].source) >= 0;
   if (element.opened) {
     if (overSource) {
@@ -390,11 +398,9 @@ async function handleMouseup (/** @type {MouseEvent} */ event) {
   }
 }
 
-
 function removeDocumentListeners(/** @type {MenuButton} */ element) {
   /** @type {any} */ const cast = element;
   document.removeEventListener('mouseup', cast[documentMouseupListenerKey]);
 }
-
 
 export default MenuButton;

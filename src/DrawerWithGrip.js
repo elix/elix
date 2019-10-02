@@ -3,22 +3,20 @@ import * as template from './template.js';
 import Drawer from './Drawer.js';
 import SeamlessButton from './SeamlessButton.js';
 
-
 /**
  * A drawer that includes an always-visible grip element
- * 
+ *
  * This variant of [Drawer](Drawer) includes a grip handle that remains visible
  * in the collapsed state. This both lets the user know the drawer is there, and
  * gives them a way to use a tap/click or swipe to open the drawer.
- * 
+ *
  * The default icon used to represent the handle can be replaced by slotting an
  * image or other element into the `grip` slot.
- * 
+ *
  * @inherits Drawer
  * @elementrole {SeamlessButton} grip
  */
 class DrawerWithGrip extends Drawer {
-
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
 
@@ -41,7 +39,7 @@ class DrawerWithGrip extends Drawer {
 
   /**
    * The class, tag, or template used to create the grip handle.
-   * 
+   *
    * @type {Role}
    * @default SeamlessButton
    */
@@ -53,10 +51,15 @@ class DrawerWithGrip extends Drawer {
   }
 
   [internal.render](changed) {
-    if (super[internal.render]) { super[internal.render](changed); }
+    if (super[internal.render]) {
+      super[internal.render](changed);
+    }
 
     if (changed.gripRole) {
-      template.transmute(this[internal.ids].grip, this[internal.state].gripRole);
+      template.transmute(
+        this[internal.ids].grip,
+        this[internal.state].gripRole
+      );
       this[internal.ids].grip.addEventListener('click', event => {
         // Clicking grip toggles drawer.
         this[internal.raiseChangeEvents] = true;
@@ -71,9 +74,9 @@ class DrawerWithGrip extends Drawer {
       const { fromEdge, rightToLeft } = this[internal.state];
 
       const vertical = fromEdge === 'top' || fromEdge === 'bottom';
-      this[internal.ids].frame.style.flexDirection = vertical ?
-        'column' :
-        'row';
+      this[internal.ids].frame.style.flexDirection = vertical
+        ? 'column'
+        : 'row';
 
       // Determine what grid we'll use to relatively position the content and
       // the grip.
@@ -83,12 +86,12 @@ class DrawerWithGrip extends Drawer {
         right: 'auto / auto 1fr',
         top: '1fr auto / auto'
       };
-      mapFromEdgeToGrid.start = rightToLeft ?
-        mapFromEdgeToGrid.right :
-        mapFromEdgeToGrid.left;
-      mapFromEdgeToGrid.end = rightToLeft ?
-        mapFromEdgeToGrid.left :
-        mapFromEdgeToGrid.right;
+      mapFromEdgeToGrid.start = rightToLeft
+        ? mapFromEdgeToGrid.right
+        : mapFromEdgeToGrid.left;
+      mapFromEdgeToGrid.end = rightToLeft
+        ? mapFromEdgeToGrid.left
+        : mapFromEdgeToGrid.right;
 
       // Determine what cell the grip will go in.
       const mapFromEdgeToGripCell = {
@@ -96,23 +99,23 @@ class DrawerWithGrip extends Drawer {
         left: '1 / 2',
         right: '1 / 1',
         top: '2 / 1'
-      }
-      mapFromEdgeToGripCell.start = rightToLeft ?
-        mapFromEdgeToGripCell.right :
-        mapFromEdgeToGripCell.left;
-      mapFromEdgeToGripCell.end = rightToLeft ?
-        mapFromEdgeToGripCell.left :
-        mapFromEdgeToGripCell.right;
+      };
+      mapFromEdgeToGripCell.start = rightToLeft
+        ? mapFromEdgeToGripCell.right
+        : mapFromEdgeToGripCell.left;
+      mapFromEdgeToGripCell.end = rightToLeft
+        ? mapFromEdgeToGripCell.left
+        : mapFromEdgeToGripCell.right;
 
       this[internal.ids].gripContainer.style.grid = mapFromEdgeToGrid[fromEdge];
-      this[internal.ids].gripWorkaround.style.gridArea = mapFromEdgeToGripCell[fromEdge];
+      this[internal.ids].gripWorkaround.style.gridArea =
+        mapFromEdgeToGripCell[fromEdge];
     }
 
     if (changed.swipeAxis && this[internal.ids].gripIcon) {
       // Rotate the default grip icon to reflect the swipe axis.
-      const transform = this[internal.state].swipeAxis === 'horizontal' ?
-        'rotate(90deg)' :
-        '';
+      const transform =
+        this[internal.state].swipeAxis === 'horizontal' ? 'rotate(90deg)' : '';
       this[internal.ids].gripIcon.style.transform = transform;
     }
   }
@@ -160,7 +163,9 @@ class DrawerWithGrip extends Drawer {
       template.transmute(defaultSlot, gripTemplate);
     }
 
-    return template.concat(result, template.html`
+    return template.concat(
+      result,
+      template.html`
       <style>
         #frame {
           display: flex;
@@ -191,10 +196,9 @@ class DrawerWithGrip extends Drawer {
           justify-items: center;
         }
       </style>
-    `);
+    `
+    );
   }
-
 }
-
 
 export default DrawerWithGrip;

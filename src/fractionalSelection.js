@@ -1,13 +1,13 @@
 /**
  * Helpers for rendering transitions between selection states
- * 
+ *
  * These functions help a component work with "fractional selection". This
  * notion can be very helpful in modeling components such as carousels (e.g.,
  * [Carousel](Carousel), in which the selection state during user
  * interaction may be partway between one item and the next. With fractional
  * selection, we add a real number between 0 and 1 to a selected index to obtain
  * a fractional selection value.
- * 
+ *
  * Consider a carousel displaying a set of images. Suppose the image at index 3
  * is selected. The carousel's `selectedIndex` state at this point is 3. The
  * user begins dragging the carousel with their finger. Image 3 moves out of
@@ -15,9 +15,9 @@
  * operation, we might say that the fractional selection value is 3.5.
  * Eventually, the user releases their finger, and the carousel shows the image
  * 4 selected; the `selectedIndex` is 4.
- * 
+ *
  * These functions help components work consistently with fractional selection.
- * 
+ *
  * @module fractionalSelection
  */
 
@@ -69,11 +69,11 @@ export function dampenListSelection(selection, itemCount) {
  * x=y at (0, 0). This ensures smooth continuity with the normal drag behavior,
  * in which the visible sliding is linear with the distance the touchpoint has
  * been dragged.
- * 
+ *
  * @param {number} x - The number of dampen
  * @returns {number}
  */
 export function dampen(x) {
-  const y = (-1 / (x + 1)) + 1;
+  const y = -1 / (x + 1) + 1;
   return y;
 }

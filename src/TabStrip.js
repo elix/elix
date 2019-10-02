@@ -13,20 +13,21 @@ import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 import TapSelectionMixin from './TapSelectionMixin.js';
 
-
-const Base =
-  AriaListMixin(
+const Base = AriaListMixin(
   TapSelectionMixin(
-  DirectionSelectionMixin(
-  GenericMixin(
-  KeyboardDirectionMixin(
-  KeyboardMixin(
-  LanguageDirectionMixin(
-  SingleSelectionMixin(
-  SlotItemsMixin(
-    ReactiveElement
-  )))))))));
-
+    DirectionSelectionMixin(
+      GenericMixin(
+        KeyboardDirectionMixin(
+          KeyboardMixin(
+            LanguageDirectionMixin(
+              SingleSelectionMixin(SlotItemsMixin(ReactiveElement))
+            )
+          )
+        )
+      )
+    )
+  )
+);
 
 /**
  * Strip of tab buttons
@@ -63,7 +64,6 @@ const Base =
  * @mixes TapSelectionMixin
  */
 class TabStrip extends Base {
-
   [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
     super[internal.componentDidUpdate](changed);
 
@@ -73,7 +73,10 @@ class TabStrip extends Base {
     let focused = false;
     let activeElement = document.activeElement;
     if (activeElement) {
-      while (activeElement.shadowRoot && activeElement.shadowRoot.activeElement) {
+      while (
+        activeElement.shadowRoot &&
+        activeElement.shadowRoot.activeElement
+      ) {
         activeElement = activeElement.shadowRoot.activeElement;
       }
       focused = deepContains(this, activeElement);
@@ -81,10 +84,12 @@ class TabStrip extends Base {
 
     // Ensure the selected tab button has the focus.
     const selectedItem = this.selectedItem;
-    if (focused &&
+    if (
+      focused &&
       selectedItem &&
       selectedItem instanceof HTMLElement &&
-      selectedItem !== document.activeElement) {
+      selectedItem !== document.activeElement
+    ) {
       selectedItem.focus();
     }
   }
@@ -102,7 +107,6 @@ class TabStrip extends Base {
   }
 
   [internal.keydown](/** @type {KeyboardEvent} */ event) {
-
     let handled;
 
     // Let user select a tab button with Enter or Space.
@@ -122,7 +126,11 @@ class TabStrip extends Base {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[internal.keydown] && super[internal.keydown](event)) || false;
+    return (
+      handled ||
+      (super[internal.keydown] && super[internal.keydown](event)) ||
+      false
+    );
   }
 
   // TabStrip orientation depends on position property.
@@ -132,13 +140,13 @@ class TabStrip extends Base {
 
   /**
    * The position of the tab strip with respect to the associated tab panels.
-   * 
+   *
    * Setting this property does not actually change the tab strip's position in
    * the document, but works as a signal to the contained tab buttons as to how
    * they should present themselves. The standard [TabButton](TabButton) uses
    * this information, for example, to remove the visible border between the tab
    * button and its associated panel.
-   * 
+   *
    * @type {('bottom'|'left'|'right'|'top')}
    * @default 'top'
    */
@@ -146,9 +154,8 @@ class TabStrip extends Base {
     return this[internal.state].position;
   }
   set position(position) {
-    const orientation = position === 'top' || position === 'bottom' ?
-      'horizontal' :
-      'vertical';
+    const orientation =
+      position === 'top' || position === 'bottom' ? 'horizontal' : 'vertical';
     this[internal.setState]({
       orientation,
       position
@@ -183,17 +190,16 @@ class TabStrip extends Base {
       this.style.gridGap = this[internal.state].generic ? '0.25em' : '';
     }
     if (changed.orientation) {
-      this.style.gridAutoFlow = this[internal.state].orientation === 'vertical' ?
-        'row' :
-        'column';
+      this.style.gridAutoFlow =
+        this[internal.state].orientation === 'vertical' ? 'row' : 'column';
     }
     if (changed.tabAlign) {
-      const { tabAlign } = this[internal.state];  
+      const { tabAlign } = this[internal.state];
       const justifyContentForTabAlign = {
-        'center': 'center',
-        'end': 'end',
-        'start': 'start',
-        'stretch': 'stretch' // No style needed for "stretch"
+        center: 'center',
+        end: 'end',
+        start: 'start',
+        stretch: 'stretch' // No style needed for "stretch"
       };
       // @ts-ignore
       this.style.placeContent = justifyContentForTabAlign[tabAlign];
@@ -212,7 +218,7 @@ class TabStrip extends Base {
 
   /**
    * The alignment of the tabs within the tab strip.
-   * 
+   *
    * @type {('start'|'center'|'end'|'stretch')}
    * @default 'start'
    */
@@ -241,8 +247,6 @@ class TabStrip extends Base {
       <slot></slot>
     `;
   }
-
 }
-
 
 export default TabStrip;

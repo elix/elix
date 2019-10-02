@@ -1,7 +1,6 @@
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 /** @type {IndexedObject<boolean>} */
 export const booleanAttributes = {
   checked: true,
@@ -15,7 +14,6 @@ export const booleanAttributes = {
   selected: true
 };
 
-
 // Memoized maps of attribute to property names and vice versa.
 // We initialize this with the special case of the tabindex (lowercase "i")
 // attribute, which is mapped to the tabIndex (capital "I") property.
@@ -27,7 +25,6 @@ const attributeToPropertyNames = {
 const propertyNamesToAttributes = {
   tabIndex: 'tabindex'
 };
-
 
 /**
  * Sets properties when corresponding attributes change.
@@ -67,13 +64,11 @@ const propertyNamesToAttributes = {
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function AttributeMarshallingMixin(Base) {
-
   // The class prototype added by the mixin.
   class AttributeMarshalling extends Base {
-
     /**
      * Handle a change to the attribute with the given name.
-     * 
+     *
      * @private
      * @param {string} attributeName
      * @param {string} oldValue
@@ -91,7 +86,10 @@ export default function AttributeMarshallingMixin(Base) {
         const propertyName = attributeToPropertyName(attributeName);
         // If the attribute name corresponds to a property name, set the property.
         if (propertyName in this) {
-          this[propertyName] = castPotentialBooleanAttribute(attributeName, newValue);
+          this[propertyName] = castPotentialBooleanAttribute(
+            attributeName,
+            newValue
+          );
         }
       }
     }
@@ -101,21 +99,18 @@ export default function AttributeMarshallingMixin(Base) {
       const elementClass = this;
       return attributesForClass(elementClass);
     }
-
   }
 
   return AttributeMarshalling;
 }
 
-
 /**
  * Return the custom attributes for the given class.
- * 
+ *
  * @private
  * @param {Constructor<ReactiveElement>} classFn
  */
 function attributesForClass(classFn) {
-
   // We treat the HTMLElement base class as if it has no attributes, since we
   // don't want to receive attributeChangedCallback for it.
   if (classFn === HTMLElement) {
@@ -134,15 +129,20 @@ function attributesForClass(classFn) {
   // Get attributes for this class.
   const propertyNames = Object.getOwnPropertyNames(classFn.prototype);
   const setterNames = propertyNames.filter(propertyName => {
-    const descriptor = Object.getOwnPropertyDescriptor(classFn.prototype, propertyName);
+    const descriptor = Object.getOwnPropertyDescriptor(
+      classFn.prototype,
+      propertyName
+    );
     return descriptor && typeof descriptor.set === 'function';
   });
   const attributes = setterNames.map(setterName =>
-      propertyNameToAttribute(setterName));
+    propertyNameToAttribute(setterName)
+  );
 
   // Merge.
-  const diff = attributes.filter(attribute =>
-      baseAttributes.indexOf(attribute) < 0);
+  const diff = attributes.filter(
+    attribute => baseAttributes.indexOf(attribute) < 0
+  );
   const result = baseAttributes.concat(diff);
 
   // Remove standard `style` property.
@@ -153,10 +153,9 @@ function attributesForClass(classFn) {
   return result;
 }
 
-
 /**
  * Convert hyphenated foo-bar attribute name to camel case fooBar property name.
- * 
+ *
  * @private
  * @param {string} attributeName
  */
@@ -165,18 +164,18 @@ function attributeToPropertyName(attributeName) {
   if (!propertyName) {
     // Convert and memoize.
     const hyphenRegEx = /-([a-z])/g;
-    propertyName = attributeName.replace(hyphenRegEx,
-        match => match[1].toUpperCase());
+    propertyName = attributeName.replace(hyphenRegEx, match =>
+      match[1].toUpperCase()
+    );
     attributeToPropertyNames[attributeName] = propertyName;
   }
   return propertyName;
 }
 
-
 /**
  * If the given attribute name corresponds to a boolean attribute, map the
  * supplied string value to a boolean. Otherwise return as is.
- * 
+ *
  * @private
  * @param {string} attributeName
  * @param {string} value
@@ -192,10 +191,9 @@ function castPotentialBooleanAttribute(attributeName, value) {
   return value;
 }
 
-
 /**
  * Convert a camel case fooBar property name to a hyphenated foo-bar attribute.
- * 
+ *
  * @private
  * @param {string} propertyName
  */

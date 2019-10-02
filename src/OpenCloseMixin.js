@@ -1,43 +1,41 @@
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 /** @type {any} */
 const closePromiseKey = Symbol('closePromise');
 /** @type {any} */
 const closeResolveKey = Symbol('closeResolve');
 
-
 /**
  * Tracks the open/close state of a component.
- * 
+ *
  * @module OpenCloseMixin
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function OpenCloseMixin(Base) {
-
   // The class prototype added by the mixin.
   class OpenClose extends Base {
-
     /**
      * Close the component (if not already closed).
-     * 
+     *
      * Some components like [AlertDialog](AlertDialog) want to indicate why or
      * how they were closed. To support such scenarios, you can supply a value
      * to the optional `closeResult` parameter. This closeResult will be made
      * available in the `whenClosed` promise and the `state.closeResult` member.
-     * 
+     *
      * @param {object} [closeResult] - an indication of how or why the element closed
      */
     async close(closeResult) {
-      if (super.close) { await super.close(); }
+      if (super.close) {
+        await super.close();
+      }
       this[internal.setState]({ closeResult });
       await this.toggle(false);
     }
 
     /**
      * True if the element is currently closed.
-     * 
+     *
      * @type {boolean}
      */
     get closed() {
@@ -50,21 +48,22 @@ export default function OpenCloseMixin(Base) {
 
     /**
      * True if the element has completely closed.
-     * 
+     *
      * For components not using asynchronous open/close effects, this property
      * returns the same value as the `closed` property. For elements that have a
      * true value of `state.openCloseEffects` (e.g., elements using
      * [TransitionEffectMixin](TransitionEffectMixin)), this property returns
      * true only if `state.effect` is "close" and `state.effectPhase` is
      * "after".
-     * 
+     *
      * @type {boolean}
      */
     get closeFinished() {
       // TODO: Define closeFinished as computed state
-      return this[internal.state].openCloseEffects ?
-        this[internal.state].effect === 'close' && this[internal.state].effectPhase === 'after' :
-        this.closed;
+      return this[internal.state].openCloseEffects
+        ? this[internal.state].effect === 'close' &&
+            this[internal.state].effectPhase === 'after'
+        : this.closed;
     }
 
     get closeResult() {
@@ -72,12 +71,14 @@ export default function OpenCloseMixin(Base) {
     }
 
     [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) { super[internal.componentDidUpdate](changed); }
+      if (super[internal.componentDidUpdate]) {
+        super[internal.componentDidUpdate](changed);
+      }
 
       if (changed.opened && this[internal.raiseChangeEvents]) {
         /**
          * Raised when the opened/closed state of the component changes.
-         * 
+         *
          * @event opened-changed
          */
         const openedChangedEvent = new CustomEvent('opened-changed', {
@@ -91,7 +92,7 @@ export default function OpenCloseMixin(Base) {
         if (this[internal.state].opened) {
           /**
            * Raised when the component opens.
-           * 
+           *
            * @event opened
            */
           const openedEvent = new CustomEvent('opened');
@@ -99,7 +100,7 @@ export default function OpenCloseMixin(Base) {
         } else {
           /**
            * Raised when the component closes.
-           * 
+           *
            * @event closed
            */
           const closedEvent = new CustomEvent('closed', {
@@ -144,14 +145,16 @@ export default function OpenCloseMixin(Base) {
      * Open the element (if not already opened).
      */
     async open() {
-      if (super.open) { await super.open(); }
+      if (super.open) {
+        await super.open();
+      }
       this[internal.setState]({ closeResult: undefined });
       await this.toggle(true);
     }
-    
+
     /**
      * True if the element is currently opened.
-     * 
+     *
      * @type {boolean}
      */
     get opened() {
@@ -165,12 +168,14 @@ export default function OpenCloseMixin(Base) {
 
     /**
      * Toggle the open/close state of the element.
-     * 
+     *
      * @param {boolean} [opened] - true if the element should be opened, false
      * if closed.
      */
     async toggle(opened = !this.opened) {
-      if (super.toggle) { await super.toggle(opened); }
+      if (super.toggle) {
+        await super.toggle(opened);
+      }
       const changed = opened !== this[internal.state].opened;
       if (changed) {
         /** @type {PlainObject} */ const changes = { opened };
@@ -188,7 +193,7 @@ export default function OpenCloseMixin(Base) {
      * This method can be used as an alternative to listening to the
      * "opened-changed" event, particularly in situations where you want to only
      * handle the next time the component is closed.
-     * 
+     *
      * @returns {Promise} A promise that resolves when the element has
      * completely closed, including the completion of any asynchronous opening
      * effect.

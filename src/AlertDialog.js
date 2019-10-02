@@ -3,32 +3,33 @@ import * as internal from './internal.js';
 import * as template from './template.js';
 import Dialog from './Dialog.js';
 
-
 /**
  * Asks a single question the user can answer with choice buttons
- * 
+ *
  * @inherits Dialog
  */
 class AlertDialog extends Dialog {
-
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
-    this[internal.ids].buttonContainer.addEventListener('click', async (event) => {
-      // TODO: Ignore clicks on buttonContainer background.
-      const button = event.target;
-      if (button instanceof HTMLElement) {
-        const choice = button.textContent;
-        this[internal.raiseChangeEvents] = true; 
-        await this.close({ choice });
-        this[internal.raiseChangeEvents] = false;
+    this[internal.ids].buttonContainer.addEventListener(
+      'click',
+      async event => {
+        // TODO: Ignore clicks on buttonContainer background.
+        const button = event.target;
+        if (button instanceof HTMLElement) {
+          const choice = button.textContent;
+          this[internal.raiseChangeEvents] = true;
+          await this.close({ choice });
+          this[internal.raiseChangeEvents] = false;
+        }
       }
-    });
+    );
   }
 
   /**
    * The buttons created by the component to represent the choices in the
    * [choices](#choices) property.
-   * 
+   *
    * @type {HTMLElement[]}
    */
   get choiceButtons() {
@@ -37,7 +38,7 @@ class AlertDialog extends Dialog {
 
   /**
    * The class, tag, or template used to create the choice buttons.
-   * 
+   *
    * @type {Role}
    * @default 'button'
    */
@@ -52,9 +53,9 @@ class AlertDialog extends Dialog {
    * An array of strings indicating the choices the `AlertDialog` will present
    * to the user as responses to the alert. For each string in the array, the
    * `AlertDialog` displays a button labeled with that string.
-   * 
+   *
    * By default, this is an array with a single choice, "OK".
-   * 
+   *
    * @type {string[]}
    */
   get choices() {
@@ -84,19 +85,19 @@ class AlertDialog extends Dialog {
         choiceButtons
       };
     });
-  
+
     return state;
   }
 
   // Let the user select a choice by pressing its initial letter.
-    [internal.keydown](/** @type {KeyboardEvent} */ event) {
+  [internal.keydown](/** @type {KeyboardEvent} */ event) {
     let handled = false;
 
     const key = event.key.length === 1 && event.key.toLowerCase();
     if (key) {
       // See if one of the choices starts with the key.
-      const choice = this.choices.find(choice =>
-        choice[0].toLowerCase() === key
+      const choice = this.choices.find(
+        choice => choice[0].toLowerCase() === key
       );
       if (choice) {
         this.close({
@@ -107,13 +108,20 @@ class AlertDialog extends Dialog {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[internal.keydown] && super[internal.keydown](event)) || false;
+    return (
+      handled ||
+      (super[internal.keydown] && super[internal.keydown](event)) ||
+      false
+    );
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.choiceButtons) {
-      applyChildNodes(this[internal.ids].buttonContainer, this[internal.state].choiceButtons);
+      applyChildNodes(
+        this[internal.ids].buttonContainer,
+        this[internal.state].choiceButtons
+      );
     }
   }
 
@@ -149,8 +157,6 @@ class AlertDialog extends Dialog {
     }
     return result;
   }
-
 }
-
 
 export default AlertDialog;

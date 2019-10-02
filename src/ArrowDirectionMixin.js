@@ -4,26 +4,22 @@ import * as template from './template.js';
 import ArrowDirectionButton from './ArrowDirectionButton.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 const wrap = Symbol('wrap');
-
 
 /**
  * Adds previous/next arrow buttons to a carousel-like component.
- * 
+ *
  * @module ArrowDirectionMixin
  * @elementrole {ArrowDirectionButton} arrowButton
  * @param {Constructor<ReactiveElement>} Base
  */
 function ArrowDirectionMixin(Base) {
-
   // The class prototype added by the mixin.
   class ArrowDirection extends Base {
-
     /**
      * True if the arrow buttons should overlap the component contents;
      * false if they should appear to the side of the contents.
-     * 
+     *
      * @type {boolean}
      * @default true
      */
@@ -36,11 +32,11 @@ function ArrowDirectionMixin(Base) {
         arrowButtonOverlap: parsed
       });
     }
-  
+
     /**
      * The class, tag, or template used to create the previous/next arrow
      * buttons.
-     * 
+     *
      * @type {Role}
      * @default ArrowDirectionButton
      */
@@ -67,7 +63,7 @@ function ArrowDirectionMixin(Base) {
         return this[internal.goNext]();
       }
     }
-  
+
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState], {
         arrowButtonOverlap: true,
@@ -78,7 +74,6 @@ function ArrowDirectionMixin(Base) {
     }
 
     [internal.render](/** @type {PlainObject} */ changed) {
-
       if (changed.arrowButtonRole) {
         if (this[internal.ids].arrowButtonPrevious instanceof HTMLElement) {
           // Turn off focus handling for old previous button.
@@ -90,25 +85,43 @@ function ArrowDirectionMixin(Base) {
         }
       }
 
-      if (super[internal.render]) { super[internal.render](changed); }
+      if (super[internal.render]) {
+        super[internal.render](changed);
+      }
 
       if (changed.arrowButtonRole) {
         /** @type {any} */
         const cast = this;
 
-        template.transmute(this[internal.ids].arrowButtonPrevious, this[internal.state].arrowButtonRole);
+        template.transmute(
+          this[internal.ids].arrowButtonPrevious,
+          this[internal.state].arrowButtonRole
+        );
         if (this[internal.ids].arrowButtonPrevious instanceof HTMLElement) {
           forwardFocus(this[internal.ids].arrowButtonPrevious, cast);
         }
-        const previousButtonHandler = createButtonHandler(this, () => this.arrowButtonPrevious());
-        this[internal.ids].arrowButtonPrevious.addEventListener('mousedown', previousButtonHandler);
-        
-        template.transmute(this[internal.ids].arrowButtonNext, this[internal.state].arrowButtonRole);
+        const previousButtonHandler = createButtonHandler(this, () =>
+          this.arrowButtonPrevious()
+        );
+        this[internal.ids].arrowButtonPrevious.addEventListener(
+          'mousedown',
+          previousButtonHandler
+        );
+
+        template.transmute(
+          this[internal.ids].arrowButtonNext,
+          this[internal.state].arrowButtonRole
+        );
         if (this[internal.ids].arrowButtonNext instanceof HTMLElement) {
           forwardFocus(this[internal.ids].arrowButtonNext, cast);
         }
-        const nextButtonHandler = createButtonHandler(this, () => this.arrowButtonNext());
-        this[internal.ids].arrowButtonNext.addEventListener('mousedown', nextButtonHandler);
+        const nextButtonHandler = createButtonHandler(this, () =>
+          this.arrowButtonNext()
+        );
+        this[internal.ids].arrowButtonNext.addEventListener(
+          'mousedown',
+          nextButtonHandler
+        );
       }
 
       const {
@@ -120,15 +133,20 @@ function ArrowDirectionMixin(Base) {
         rightToLeft
       } = this[internal.state];
       const vertical = orientation === 'vertical';
-      /** @type {any} */ const arrowButtonPrevious = this[internal.ids].arrowButtonPrevious;
-      /** @type {any} */ const arrowButtonNext = this[internal.ids].arrowButtonNext;
+      /** @type {any} */ const arrowButtonPrevious = this[internal.ids]
+        .arrowButtonPrevious;
+      /** @type {any} */ const arrowButtonNext = this[internal.ids]
+        .arrowButtonNext;
 
       // Position the buttons.
-      if (changed.arrowButtonOverlap || changed.orientation || changed.rightToLeft) {
-
-        this[internal.ids].arrowDirection.style.flexDirection = vertical ?
-          'column' :
-          'row';
+      if (
+        changed.arrowButtonOverlap ||
+        changed.orientation ||
+        changed.rightToLeft
+      ) {
+        this[internal.ids].arrowDirection.style.flexDirection = vertical
+          ? 'column'
+          : 'row';
 
         const buttonStyle = {
           bottom: null,
@@ -186,18 +204,22 @@ function ArrowDirectionMixin(Base) {
             }
           }
         }
-        Object.assign(arrowButtonPrevious.style, buttonStyle, previousButtonStyle);
+        Object.assign(
+          arrowButtonPrevious.style,
+          buttonStyle,
+          previousButtonStyle
+        );
         Object.assign(arrowButtonNext.style, buttonStyle, nextButtonStyle);
       }
 
       // Rotate the default icons for vertical orientation, flip the default
       // icons for right-to-left.
       if (changed.orientation || changed.rightToLeft) {
-        const transform = vertical ?
-          'rotate(90deg)' :
-          rightToLeft ?
-            'rotateZ(180deg)' :
-            '';
+        const transform = vertical
+          ? 'rotate(90deg)'
+          : rightToLeft
+          ? 'rotateZ(180deg)'
+          : '';
         if (this[internal.ids].arrowIconPrevious) {
           this[internal.ids].arrowIconPrevious.style.transform = transform;
         }
@@ -251,7 +273,7 @@ function ArrowDirectionMixin(Base) {
 
     /**
      * Destructively wrap a node with elements to show arrow buttons.
-     * 
+     *
      * @param {Node} original - the node that should be wrapped by buttons
      */
     [wrap](original) {
@@ -288,24 +310,27 @@ function ArrowDirectionMixin(Base) {
           </div>
         </div>
       `;
-      template.wrap(original, arrowDirectionTemplate.content, '#arrowDirectionContainer');
+      template.wrap(
+        original,
+        arrowDirectionTemplate.content,
+        '#arrowDirectionContainer'
+      );
     }
   }
 
   return ArrowDirection;
 }
 
-
 /**
  * @private
  * @param {ReactiveElement} element
- * @param {function} callback 
+ * @param {function} callback
  * @returns {EventListener}
  */
 function createButtonHandler(element, callback) {
   return async function mousedown(/** @type {Event} */ event) {
     // Only process events for the main (usually left) button.
-    /** @type {any} */const cast = event;
+    /** @type {any} */ const cast = event;
     if (cast.button !== 0) {
       return;
     }
@@ -316,11 +341,9 @@ function createButtonHandler(element, callback) {
     }
     await Promise.resolve();
     element[internal.raiseChangeEvents] = false;
-  }
+  };
 }
 
-
 ArrowDirectionMixin.wrap = wrap;
-
 
 export default ArrowDirectionMixin;

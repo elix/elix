@@ -2,12 +2,9 @@ import * as internal from '../../src/internal.js';
 import FormElementMixin from '../../src/FormElementMixin.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
-
 const formElementsSupported = 'ElementInternals' in window;
 
-
 class FormElementTest extends FormElementMixin(ReactiveElement) {
-
   get [internal.defaultState]() {
     const result = Object.assign(super[internal.defaultState], {
       value: null
@@ -33,13 +30,10 @@ class FormElementTest extends FormElementMixin(ReactiveElement) {
       value
     });
   }
-
 }
 customElements.define('form-element-test', FormElementTest);
 
-
-(formElementsSupported ? describe : describe.skip)("FormElementMixin", () => {
-
+(formElementsSupported ? describe : describe.skip)('FormElementMixin', () => {
   let container;
 
   before(() => {
@@ -87,5 +81,4 @@ customElements.define('form-element-test', FormElementTest);
     fixture[internal.renderChanges]();
     assert(fixture.checkValidity());
   });
-
 });

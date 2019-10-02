@@ -2,25 +2,21 @@ import { applyChildNodes } from './utilities.js';
 import * as internal from './internal.js';
 import ListBox from './ListBox.js';
 
-
 /**
  * List that only shows items containing a given text string
- * 
+ *
  * @inherits ListBox
  */
 class FilterListBox extends ListBox {
-
   get [internal.defaultState]() {
     const state = Object.assign(super[internal.defaultState], {
       filter: null
     });
 
     // When filter changes, let other mixins know items should be recalculated.
-    state.onChange('filter', () =>
-      ({
-        items: null
-      })
-    );
+    state.onChange('filter', () => ({
+      items: null
+    }));
 
     return state;
   }
@@ -29,10 +25,10 @@ class FilterListBox extends ListBox {
    * A text filter applied to the list's items. Only content elements whose
    * text contains the indicated filter text will be included in the list's
    * `items` property. The text search is case insensitive.
-   * 
+   *
    * By default, the filter is empty, so all substantive content elements
    * are included in `items`.
-   * 
+   *
    * @type {string}
    */
   get filter() {
@@ -50,14 +46,14 @@ class FilterListBox extends ListBox {
 
   /**
    * @private
-   * @param {string} textToHighlight 
-   * @param {ListItemElement} item 
+   * @param {string} textToHighlight
+   * @param {ListItemElement} item
    */
   highlightTextInItem(textToHighlight, item) {
     const text = item.textContent || '';
-    const start = textToHighlight ?
-      text.toLowerCase().indexOf(textToHighlight.toLowerCase()) :
-      -1;
+    const start = textToHighlight
+      ? text.toLowerCase().indexOf(textToHighlight.toLowerCase())
+      : -1;
     if (start >= 0) {
       const end = start + textToHighlight.length;
       const part1 = text.substr(0, start);
@@ -66,11 +62,7 @@ class FilterListBox extends ListBox {
       const fragment = document.createDocumentFragment();
       const strong = document.createElement('strong');
       strong.textContent = part2;
-      fragment.append(
-        new Text(part1),
-        strong,
-        new Text(part3)
-      );
+      fragment.append(new Text(part1), strong, new Text(part3));
       return fragment.childNodes;
     } else {
       return [new Text(text)];
@@ -79,24 +71,20 @@ class FilterListBox extends ListBox {
 
   /**
    * Returns true if the given item should be shown in the indicated state.
-   * 
-   * @param {ListItemElement} item 
-   * @param {PlainObject} state 
+   *
+   * @param {ListItemElement} item
+   * @param {PlainObject} state
    */
   [internal.itemMatchesState](item, state) {
-    const base = super[internal.itemMatchesState] ?
-      super[internal.itemMatchesState](item, state) :
-      true;
+    const base = super[internal.itemMatchesState]
+      ? super[internal.itemMatchesState](item, state)
+      : true;
     if (!base) {
       return false;
     }
     const text = this[internal.getItemText](item).toLowerCase();
     const filter = state.filter && state.filter.toLowerCase();
-    return !filter ?
-      true :
-      !text ?
-        false :
-        text.includes(filter);
+    return !filter ? true : !text ? false : text.includes(filter);
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
@@ -107,9 +95,11 @@ class FilterListBox extends ListBox {
     if ((changed.filter || changed.content) && content) {
       content.forEach(content => {
         if (content instanceof HTMLElement || content instanceof SVGElement) {
-
           // Hide content elements that don't match the filter.
-          const matches = this[internal.itemMatchesState](content, this[internal.state]);
+          const matches = this[internal.itemMatchesState](
+            content,
+            this[internal.state]
+          );
           content.style.display = matches ? null : 'none';
 
           // For matching items, highlight the matching text.
@@ -121,8 +111,6 @@ class FilterListBox extends ListBox {
       });
     }
   }
-
 }
-
 
 export default FilterListBox;

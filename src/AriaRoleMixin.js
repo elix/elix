@@ -1,13 +1,12 @@
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 /**
  * Lets a component define its ARIA role through a `role` state member
- * 
+ *
  * Among other things, this allows a class or mixin to define a default
  * role through the component's `defaultState`.
- * 
+ *
  * Some mixins come with identicial support for managing an ARIA role. Those
  * mixins include [AriaListMixin](AriaListMixin),
  * [AriaMenuMixin](AriaMenuMixin), [DialogModalityMixin](DialogModalityMixin),
@@ -18,12 +17,12 @@ import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-un
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function AriaRoleMixin(Base) {
-
   // The class prototype added by the mixin.
   class AriaRole extends Base {
-
     [internal.render](/** @type {PlainObject} */ changed) {
-      if (super[internal.render]) { super[internal.render](changed); }
+      if (super[internal.render]) {
+        super[internal.render](changed);
+      }
       if (changed.role) {
         // Apply top-level role.
         const { role } = this[internal.state];
@@ -44,7 +43,6 @@ export default function AriaRoleMixin(Base) {
         });
       }
     }
-
   }
 
   return AriaRole;

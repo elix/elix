@@ -1,10 +1,9 @@
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 /**
  * Maps direction keys to direction semantics.
- * 
+ *
  * This mixin is useful for components that want to map direction keys (Left,
  * Right, etc.) to movement in the indicated direction (go left, go right,
  * etc.).
@@ -25,16 +24,16 @@ import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-un
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function KeyboardDirectionMixin(Base) {
-
   // The class prototype added by the mixin.
   class KeyboardDirection extends Base {
-
     /**
      * Invoked when the user wants to go/navigate down.
      * The default implementation of this method does nothing.
      */
     [internal.goDown]() {
-      if (super[internal.goDown]) { return super[internal.goDown](); }
+      if (super[internal.goDown]) {
+        return super[internal.goDown]();
+      }
     }
 
     /**
@@ -42,7 +41,9 @@ export default function KeyboardDirectionMixin(Base) {
      * The default implementation of this method does nothing.
      */
     [internal.goEnd]() {
-      if (super[internal.goEnd]) { return super[internal.goEnd](); }
+      if (super[internal.goEnd]) {
+        return super[internal.goEnd]();
+      }
     }
 
     /**
@@ -50,7 +51,9 @@ export default function KeyboardDirectionMixin(Base) {
      * The default implementation of this method does nothing.
      */
     [internal.goLeft]() {
-      if (super[internal.goLeft]) { return super[internal.goLeft](); }
+      if (super[internal.goLeft]) {
+        return super[internal.goLeft]();
+      }
     }
 
     /**
@@ -58,7 +61,9 @@ export default function KeyboardDirectionMixin(Base) {
      * The default implementation of this method does nothing.
      */
     [internal.goRight]() {
-      if (super[internal.goRight]) { return super[internal.goRight](); }
+      if (super[internal.goRight]) {
+        return super[internal.goRight]();
+      }
     }
 
     /**
@@ -66,7 +71,9 @@ export default function KeyboardDirectionMixin(Base) {
      * list). The default implementation of this method does nothing.
      */
     [internal.goStart]() {
-      if (super[internal.goStart]) { return super[internal.goStart](); }
+      if (super[internal.goStart]) {
+        return super[internal.goStart]();
+      }
     }
 
     /**
@@ -74,7 +81,9 @@ export default function KeyboardDirectionMixin(Base) {
      * The default implementation of this method does nothing.
      */
     [internal.goUp]() {
-      if (super[internal.goUp]) { return super[internal.goUp](); }
+      if (super[internal.goUp]) {
+        return super[internal.goUp]();
+      }
     }
 
     [internal.keydown](/** @type {KeyboardEvent} */ event) {
@@ -82,16 +91,17 @@ export default function KeyboardDirectionMixin(Base) {
 
       // Respect orientation state if defined, otherwise assume "both".
       const orientation = this[internal.state].orientation || 'both';
-      const horizontal = (orientation === 'horizontal' || orientation === 'both');
-      const vertical = (orientation === 'vertical' || orientation === 'both');
+      const horizontal = orientation === 'horizontal' || orientation === 'both';
+      const vertical = orientation === 'vertical' || orientation === 'both';
 
       // Ignore Left/Right keys when metaKey or altKey modifier is also pressed,
       // as the user may be trying to navigate back or forward in the browser.
       switch (event.key) {
-
         case 'ArrowDown':
           if (vertical) {
-            handled = event.altKey ? this[internal.goEnd]() : this[internal.goDown]();
+            handled = event.altKey
+              ? this[internal.goEnd]()
+              : this[internal.goDown]();
           }
           break;
 
@@ -109,7 +119,9 @@ export default function KeyboardDirectionMixin(Base) {
 
         case 'ArrowUp':
           if (vertical) {
-            handled = event.altKey ? this[internal.goStart]() : this[internal.goUp]();
+            handled = event.altKey
+              ? this[internal.goStart]()
+              : this[internal.goUp]();
           }
           break;
 
@@ -123,9 +135,12 @@ export default function KeyboardDirectionMixin(Base) {
       }
 
       // Prefer mixin result if it's defined, otherwise use base result.
-      return handled || (super[internal.keydown] && super[internal.keydown](event)) || false;
+      return (
+        handled ||
+        (super[internal.keydown] && super[internal.keydown](event)) ||
+        false
+      );
     }
-
   }
 
   return KeyboardDirection;

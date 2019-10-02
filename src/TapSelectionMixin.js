@@ -2,7 +2,6 @@ import { indexOfItemContainingTarget } from './utilities.js';
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 /**
  * Maps a tap/mousedown on a list item to selection of that item
  *
@@ -31,10 +30,8 @@ import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-un
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function TapSelectionMixin(Base) {
-  
   // The class prototype added by the mixin.
   return class TapSelection extends Base {
-
     constructor() {
       // @ts-ignore
       super();
@@ -50,7 +47,9 @@ export default function TapSelectionMixin(Base) {
     }
 
     [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
+      if (super[internal.componentDidMount]) {
+        super[internal.componentDidMount]();
+      }
       Object.assign(this.style, {
         touchAction: 'manipulation', // for iOS Safari
         mozUserSelect: 'none',
@@ -68,18 +67,20 @@ export default function TapSelectionMixin(Base) {
       // using the event target, we get the first node in the event's composed
       // path.
       // @ts-ignore
-      const target = event.composedPath ?
-        event.composedPath()[0] :
-        event.target;
-    
+      const target = event.composedPath
+        ? event.composedPath()[0]
+        : event.target;
+
       // Find which item was clicked on and, if found, select it. For elements
       // which don't require a selection, a background click will determine
       // the item was null, in which we case we'll remove the selection.
       const { items, selectedIndex, selectionRequired } = this[internal.state];
       if (items && target instanceof Node) {
         const targetIndex = indexOfItemContainingTarget(items, target);
-        if (targetIndex >= 0 || !selectionRequired &&
-            selectedIndex !== targetIndex) {
+        if (
+          targetIndex >= 0 ||
+          (!selectionRequired && selectedIndex !== targetIndex)
+        ) {
           this[internal.setState]({
             selectedIndex: targetIndex
           });
@@ -87,6 +88,5 @@ export default function TapSelectionMixin(Base) {
         }
       }
     }
-
   };
 }

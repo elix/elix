@@ -2,13 +2,11 @@ import * as internal from '../../src/internal.js';
 import ContentItemsMixin from '../../src/ContentItemsMixin.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
 
-
 class ContentItemsTest extends ContentItemsMixin(ReactiveMixin(HTMLElement)) {
-
   connectedCallback() {
     this.updateContent();
   }
-  
+
   // Force an update of state.
   // Normally this would be handled automatically, e.g., via SlotContentMixin.
   updateContent() {
@@ -16,13 +14,10 @@ class ContentItemsTest extends ContentItemsMixin(ReactiveMixin(HTMLElement)) {
     const content = [...this.children];
     this[internal.setState]({ content });
   }
-
 }
 customElements.define('content-items-test', ContentItemsTest);
 
-
-describe("ContentItemsMixin", () => {
-
+describe('ContentItemsMixin', () => {
   let container;
 
   before(() => {
@@ -33,7 +28,7 @@ describe("ContentItemsMixin", () => {
     container.innerHTML = '';
   });
 
-  it("returns substantive content elements as items", () => {
+  it('returns substantive content elements as items', () => {
     const fixture = new ContentItemsTest();
     fixture.innerHTML = `
       <style></style>
@@ -47,7 +42,7 @@ describe("ContentItemsMixin", () => {
     assert.equal(items[1].textContent, '2');
   });
 
-  it("raises items-changed event", done => {
+  it('raises items-changed event', done => {
     const fixture = new ContentItemsTest();
     fixture.addEventListener('items-changed', () => {
       done();
@@ -65,5 +60,4 @@ describe("ContentItemsMixin", () => {
       fixture.updateContent();
     });
   });
-
 });

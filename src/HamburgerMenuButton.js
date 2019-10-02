@@ -7,23 +7,16 @@ import OpenCloseMixin from './OpenCloseMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 import SeamlessButton from './SeamlessButton.js';
 
-
-const Base =
-  FocusVisibleMixin(
-  KeyboardMixin(
-  OpenCloseMixin(
-    ReactiveElement
-  )));
-
+const Base = FocusVisibleMixin(KeyboardMixin(OpenCloseMixin(ReactiveElement)));
 
 /**
  * Button that invokes a command menu, usually in a mobile context
- * 
+ *
  * The button invokes a menu (by default, a Drawer), usually to provide
  * navigation and other UI on a mobile device.
- * 
+ *
  * [A hamburger menu used to present navigation commands](/demos/hamburgerMenuButton.html)
- * 
+ *
  * @inherits ReactiveElement
  * @mixes FocusVisibleMixin
  * @mixes KeyboardMixin
@@ -32,7 +25,6 @@ const Base =
  * @elementrole {SeamlessButton} menuButton
  */
 class HamburgerMenuButton extends Base {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       fromEdge: 'start',
@@ -43,11 +35,11 @@ class HamburgerMenuButton extends Base {
 
   /**
    * The edge from which the menu will appear, in terms of the menu's container.
-   * 
+   *
    * The `start` and `end` values refer to text direction: in left-to-right
    * languages such as English, these are equivalent to `left` and `right`,
    * respectively.
-   * 
+   *
    * @type {('end'|'left'|'right'|'start')}
    * @default 'start'
    */
@@ -60,10 +52,10 @@ class HamburgerMenuButton extends Base {
 
   // When the menu is closed, pressing Enter or Space is the same as clicking
   // the menu button.
-    [internal.keydown](/** @type {KeyboardEvent} */ event) {
+  [internal.keydown](/** @type {KeyboardEvent} */ event) {
     /** @type {any} */
     const menuButton = this[internal.ids].menuButton;
-    
+
     let handled;
 
     if (this.closed) {
@@ -77,12 +69,14 @@ class HamburgerMenuButton extends Base {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[internal.keydown] && super[internal.keydown](event));
+    return (
+      handled || (super[internal.keydown] && super[internal.keydown](event))
+    );
   }
 
   /**
    * The class, tag, or template used to create the menu (drawer).
-   * 
+   *
    * @type {Role}
    * @default Drawer
    */
@@ -95,7 +89,7 @@ class HamburgerMenuButton extends Base {
 
   /**
    * The class, tag, or template used to create the menu button element.
-   * 
+   *
    * @type {Role}
    * @default SeamlessButton
    */
@@ -109,7 +103,10 @@ class HamburgerMenuButton extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.menuButtonRole) {
-      template.transmute(this[internal.ids].menuButton, this[internal.state].menuButtonRole);
+      template.transmute(
+        this[internal.ids].menuButton,
+        this[internal.state].menuButtonRole
+      );
       this[internal.ids].menuButton.addEventListener('click', () => {
         this[internal.raiseChangeEvents] = true;
         this.open();
@@ -117,7 +114,10 @@ class HamburgerMenuButton extends Base {
       });
     }
     if (changed.menuRole) {
-      template.transmute(this[internal.ids].menu, this[internal.state].menuRole);
+      template.transmute(
+        this[internal.ids].menu,
+        this[internal.state].menuRole
+      );
       this[internal.ids].menu.addEventListener('closed', event => {
         /** @type {any} */
         const cast = event;
@@ -180,8 +180,6 @@ class HamburgerMenuButton extends Base {
       </div>
     `;
   }
-
 }
-
 
 export default HamburgerMenuButton;

@@ -2,24 +2,21 @@ import * as internal from './internal.js';
 import * as template from './template.js';
 import CenteredStrip from './CenteredStrip.js';
 
-
 const opacityMinimum = 0.4;
 const opacityMaximum = 1.0;
 
-
 /**
  * Centered strip showing unselected items with partial opacity
- * 
+ *
  * [`CenteredStripOpacity` is used by `Carousel` for dots or
  * thumbnails](/demos/centeredStripOpacity.html)
- * 
+ *
  * For a variation that uses a highlight color instead of opacity, see
  * [CenteredStripHighlight](CenteredStripHighlight).
- * 
+ *
  * @inherits CenteredStrip
  */
 class CenteredStripOpacity extends CenteredStrip {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       transitionDuration: 250
@@ -28,8 +25,14 @@ class CenteredStripOpacity extends CenteredStrip {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.enableEffects || changed.items || changed.rightToLeft ||
-        changed.selectedIndex || changed.swipeFraction || changed.transitionDuration) {
+    if (
+      changed.enableEffects ||
+      changed.items ||
+      changed.rightToLeft ||
+      changed.selectedIndex ||
+      changed.swipeFraction ||
+      changed.transitionDuration
+    ) {
       // Apply opacity based on selection state.
       const {
         enableEffects,
@@ -44,11 +47,15 @@ class CenteredStripOpacity extends CenteredStrip {
         const swiping = swipeFraction != null;
         const selectionFraction = sign * (swipeFraction || 0);
         const showTransition = enableEffects && !swiping;
-        const transition = showTransition ?
-          `opacity ${transitionDuration / 1000}s linear` :
-          null;
+        const transition = showTransition
+          ? `opacity ${transitionDuration / 1000}s linear`
+          : null;
         items.forEach((item, index) => {
-          const opacity = opacityForItemWithIndex(index, selectedIndex, selectionFraction);
+          const opacity = opacityForItemWithIndex(
+            index,
+            selectedIndex,
+            selectionFraction
+          );
           Object.assign(item.style, {
             opacity,
             transition
@@ -59,13 +66,16 @@ class CenteredStripOpacity extends CenteredStrip {
   }
 
   get [internal.template]() {
-    return template.concat(super[internal.template], template.html`
+    return template.concat(
+      super[internal.template],
+      template.html`
       <style>
         ::slotted(*) {
           opacity: ${opacityMinimum.toString()}
         }
       </style>
-    `);
+    `
+    );
   }
 
   get transitionDuration() {
@@ -74,15 +84,13 @@ class CenteredStripOpacity extends CenteredStrip {
   set transitionDuration(transitionDuration) {
     this[internal.setState]({ transitionDuration });
   }
-
 }
-
 
 /**
  * @private
- * @param {number} index 
- * @param {number} selectedIndex 
- * @param {number} selectionFraction 
+ * @param {number} index
+ * @param {number} selectedIndex
+ * @param {number} selectionFraction
  */
 function opacityForItemWithIndex(index, selectedIndex, selectionFraction) {
   const opacityRange = opacityMaximum - opacityMinimum;
@@ -91,7 +99,10 @@ function opacityForItemWithIndex(index, selectedIndex, selectionFraction) {
   const rightIndex = Math.ceil(fractionalIndex);
   let awayIndex = selectionFraction >= 0 ? leftIndex : rightIndex;
   let towardIndex = selectionFraction >= 0 ? rightIndex : leftIndex;
-  const truncatedSwipeFraction = selectionFraction < 0 ? Math.ceil(selectionFraction) : Math.floor(selectionFraction);
+  const truncatedSwipeFraction =
+    selectionFraction < 0
+      ? Math.ceil(selectionFraction)
+      : Math.floor(selectionFraction);
   const progress = selectionFraction - truncatedSwipeFraction;
   const opacityProgressThroughRange = Math.abs(progress) * opacityRange;
 
@@ -106,6 +117,5 @@ function opacityForItemWithIndex(index, selectedIndex, selectionFraction) {
 
   return opacity;
 }
-
 
 export default CenteredStripOpacity;

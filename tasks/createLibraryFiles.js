@@ -1,12 +1,9 @@
 // Create the top-level elix.js and elix.d.ts files.
 
-
 const fs = require('fs').promises;
 const path = require('path');
 
-
-const srcJsHeader = 
-`/*
+const srcJsHeader = `/*
  * The complete set of Elix elements and mixins.
  * 
  * This file is the primary entry point to the Elix package, so its exports are
@@ -19,8 +16,7 @@ const srcJsHeader =
  * publishing, or you can regenerate it with \`npm run prepublishOnly\`.
  */`;
 
-const defineJsHeader =
-`/*
+const defineJsHeader = `/*
 * The complete set of Elix elements and mixins.
 * 
 * You can load this file as a convenience to auto-define all Elix components
@@ -31,41 +27,51 @@ const defineJsHeader =
 * publishing, or you can regenerate it with \`npm run prepublishOnly\`.
 */`;
 
-const tsHeader =
-`// TypeScript declarations for the complete Elix library.`;
+const tsHeader = `// TypeScript declarations for the complete Elix library.`;
 
-
-async function createLibraryFile(destination, header, sourceFolder, sourceFiles) {
-
+async function createLibraryFile(
+  destination,
+  header,
+  sourceFolder,
+  sourceFiles
+) {
   const destinationFolder = path.dirname(destination);
   const relativeFolder = path.relative(destinationFolder, sourceFolder);
-  const classExportFiles = [...sourceFiles.components, ...sourceFiles.mixins].sort();
+  const classExportFiles = [
+    ...sourceFiles.components,
+    ...sourceFiles.mixins
+  ].sort();
 
-  const classExports = classExportFiles.map(file => {
-    const name = path.basename(file, '.js');
-    // Components point to the local folder, mixins point to /src.
-    const isMixin = name.endsWith('Mixin');
-    const filePath = isMixin && destinationFolder !== sourceFolder ?
-      path.join(relativeFolder, file) :
-      `./${file}`;
-    return `export { default as ${name} } from '${filePath}';`
-  }).join('\n');
+  const classExports = classExportFiles
+    .map(file => {
+      const name = path.basename(file, '.js');
+      // Components point to the local folder, mixins point to /src.
+      const isMixin = name.endsWith('Mixin');
+      const filePath =
+        isMixin && destinationFolder !== sourceFolder
+          ? path.join(relativeFolder, file)
+          : `./${file}`;
+      return `export { default as ${name} } from '${filePath}';`;
+    })
+    .join('\n');
 
   const helperFiles = sourceFiles.helpers;
-  const helperExports = helperFiles.map(file => {
-    const name = path.basename(file, '.js');
-    // Helpers always point to the /src folder.
-    const filePath = destinationFolder !== sourceFolder ?
-      path.join(relativeFolder, file) :
-      `./${file}`;
-    return `import * as ${name}Import from '${filePath}';
+  const helperExports = helperFiles
+    .map(file => {
+      const name = path.basename(file, '.js');
+      // Helpers always point to the /src folder.
+      const filePath =
+        destinationFolder !== sourceFolder
+          ? path.join(relativeFolder, file)
+          : `./${file}`;
+      return `import * as ${name}Import from '${filePath}';
 // @ts-ignore
 export const ${name} = ${name}Import;
 `;
-  }).join('\n');
+    })
+    .join('\n');
 
-  const content =
-`${header}
+  const content = `${header}
 
 // Files that export a single object.
 ${classExports}
@@ -78,7 +84,6 @@ ${helperExports}`;
 
   await fs.writeFile(destination, content);
 }
-
 
 async function createLibraryFiles(sourceFolder, defineFolder, sourceFiles) {
   // Write library files to /src folder,
@@ -94,6 +99,5 @@ async function createLibraryFiles(sourceFolder, defineFolder, sourceFiles) {
     createLibraryFile(defineTsPath, tsHeader, sourceFolder, sourceFiles)
   ]);
 }
-
 
 module.exports = createLibraryFiles;

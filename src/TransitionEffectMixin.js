@@ -1,20 +1,19 @@
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 /**
  * Update state before, during, and after CSS transitions
- * 
+ *
  * @module TransitionEffectMixin
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function TransitionEffectMixin(Base) {
-
   // The class prototype added by the mixin.
   class TransitionEffect extends Base {
-
     [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) { super[internal.componentDidMount](); }
+      if (super[internal.componentDidMount]) {
+        super[internal.componentDidMount]();
+      }
       const elementsWithTransitions = this[internal.elementsWithTransitions];
       // We assume all transitions complete at the same time. We only listen to
       // transitioneend on the first element.
@@ -27,13 +26,15 @@ export default function TransitionEffectMixin(Base) {
     }
 
     [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) { super[internal.componentDidUpdate](changed); }
+      if (super[internal.componentDidUpdate]) {
+        super[internal.componentDidUpdate](changed);
+      }
       if (changed.effect || changed.effectPhase) {
         const { effect, effectPhase } = this[internal.state];
         /**
          * Raised when [state.effect](TransitionEffectMixin#effect-phases) or
          * [state.effectPhase](TransitionEffectMixin#effect-phases) changes.
-         * 
+         *
          * Note: In general, Elix components do not raise events in response to
          * outside manipulation. (See
          * [internal.raiseChangeEvents](symbols#raiseChangeEvents).) However, for
@@ -43,7 +44,7 @@ export default function TransitionEffectMixin(Base) {
          * component to know what visual state the component is in. Accordingly,
          * the mixin raises the `effect-phase-changed` event whenever the effect
          * or phase changes, even if `internal.raiseChangeEvents` is false.
-         * 
+         *
          * @event effect-phase-changed
          */
         const event = new CustomEvent('effect-phase-changed', {
@@ -75,25 +76,25 @@ export default function TransitionEffectMixin(Base) {
 
     /**
      * Return the elements that use CSS transitions to provide visual effects.
-     * 
+     *
      * By default, this assumes the host element itself will have a CSS
      * transition applied to it, and so returns an array containing the element.
      * If you will be applying CSS transitions to other elements, override this
      * property and return an array containing the implicated elements.
-     * 
+     *
      * See [internal.elementsWithTransitions](symbols#elementsWithTransitions)
      * for details.
-     * 
+     *
      * @type {HTMLElement[]}
      */
     get [internal.elementsWithTransitions]() {
       const base = super[internal.elementsWithTransitions];
       return base || [this];
     }
-    
+
     /**
      * See [internal.startEffect](symbols#startEffect).
-     * 
+     *
      * @param {string} effect
      */
     async [internal.startEffect](effect) {

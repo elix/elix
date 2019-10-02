@@ -1,9 +1,7 @@
 import State from '../../src/State.js';
 
-
-describe("State", () => {
-
-  it("runs an change handler when a state member changes", () => {
+describe('State', () => {
+  it('runs an change handler when a state member changes', () => {
     // Simple machine just copies one value to another.
     const state1 = new State();
     state1.onChange('text', state => {
@@ -30,20 +28,16 @@ describe("State", () => {
     assert(state4.callCount === 1);
   });
 
-  it("allows mutually-updating change handlers", () => {
+  it('allows mutually-updating change handlers', () => {
     const state1 = new State();
     // Convert text to number.
-    state1.onChange('text', state =>
-      ({
-        value: parseInt(state.text)
-      })
-    );
+    state1.onChange('text', state => ({
+      value: parseInt(state.text)
+    }));
     // Convert number to text.
-    state1.onChange('value', state =>
-      ({
-        text: state.value.toString()
-      })
-    );
+    state1.onChange('value', state => ({
+      text: state.value.toString()
+    }));
 
     const { state: state2 } = state1.copyWithChanges({ text: '1' });
     assert(state2.text === '1');
@@ -54,15 +48,13 @@ describe("State", () => {
     assert(state3.value === 2);
   });
 
-  it("runs a change handler if any of its dependencies change", () => {
+  it('runs a change handler if any of its dependencies change', () => {
     // Machine that updates when either `a` or `b` changes.
     const state1 = new State();
-    state1.onChange(['a', 'b'], state =>
-      ({
-        aAndB: state.a && state.b,
-        aOrB: state.a || state.b
-      })
-    );
+    state1.onChange(['a', 'b'], state => ({
+      aAndB: state.a && state.b,
+      aOrB: state.a || state.b
+    }));
 
     const { state: state2 } = state1.copyWithChanges({ a: true });
     assert(!state2.aAndB);
@@ -73,7 +65,7 @@ describe("State", () => {
     assert(state3.aOrB);
   });
 
-  it("lets a change handler loop as long as necessary", () => {
+  it('lets a change handler loop as long as necessary', () => {
     // Machine that updates a counter up to 10.
     const state1 = new State();
     state1.onChange('value', state =>
@@ -96,5 +88,4 @@ describe("State", () => {
     state1.copyWithChanges({ a: 1 });
     assert(!ranRule);
   });
-
 });

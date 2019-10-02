@@ -4,28 +4,22 @@ import * as template from './template.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import PopupSource from './PopupSource.js';
 
-
-const Base = 
-  KeyboardMixin(
-    PopupSource
-  );
-
+const Base = KeyboardMixin(PopupSource);
 
 /**
  * A button that invokes an attached popup
- * 
+ *
  * @inherits PopupSource
  * @mixes KeyboardMixin
  */
 class PopupButton extends Base {
-
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
 
     // If the top-level element gets the focus while the popup is open, the most
     // likely expanation is that the user hit Shift+Tab to back up out of the
     // popup. In that case, we should close.
-    this.addEventListener('focus', async (event) => {
+    this.addEventListener('focus', async event => {
       const hostFocused = !ownEvent(this[internal.ids].popup, event);
       // It's possible to get a focus event in the initial mousedown on the
       // source button before the popup is even rendered. We don't want to close
@@ -43,7 +37,7 @@ class PopupButton extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       role: 'button',
-      sourceRole: 'button'      
+      sourceRole: 'button'
     });
   }
 
@@ -51,7 +45,6 @@ class PopupButton extends Base {
     let handled;
 
     switch (event.key) {
-
       // Space or Up/Down arrow keys open the popup.
       case ' ':
       case 'ArrowDown':
@@ -64,7 +57,9 @@ class PopupButton extends Base {
     }
 
     // Prefer mixin result if it's defined, otherwise use base result.
-    return handled || (super[internal.keydown] && super[internal.keydown](event));
+    return (
+      handled || (super[internal.keydown] && super[internal.keydown](event))
+    );
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
@@ -106,12 +101,17 @@ class PopupButton extends Base {
       source.tabIndex = -1;
     }
     if (changed.disabled) {
-      this[internal.ids].source.style.borderStyle = this[internal.state].disabled ? null : 'solid';
+      this[internal.ids].source.style.borderStyle = this[internal.state]
+        .disabled
+        ? null
+        : 'solid';
     }
   }
 
   get [internal.template]() {
-    return template.concat(super[internal.template], template.html`
+    return template.concat(
+      super[internal.template],
+      template.html`
       <style>
         #source {
           background: buttonface;
@@ -133,10 +133,9 @@ class PopupButton extends Base {
           white-space: nowrap;
         }
       </style>
-    `);
+    `
+    );
   }
-
 }
-
 
 export default PopupButton;

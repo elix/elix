@@ -2,17 +2,11 @@ import * as internal from '../../src/internal.js';
 import KeyboardPagedSelectionMixin from '../../src/KeyboardPagedSelectionMixin.js';
 import ReactiveMixin from '../../src/ReactiveMixin.js';
 
-
 const itemHeight = '100';
 
-const Base =
-  KeyboardPagedSelectionMixin(
-  ReactiveMixin(
-    HTMLElement
-  ));
+const Base = KeyboardPagedSelectionMixin(ReactiveMixin(HTMLElement));
 
 class KeyboardPagedSelectionTest extends Base {
-
   connectedCallback() {
     super.connectedCallback();
     const items = Array.prototype.slice.call(this.children);
@@ -21,13 +15,13 @@ class KeyboardPagedSelectionTest extends Base {
       selectedIndex: -1
     });
   }
-
 }
-customElements.define('keyboard-paged-selection-test', KeyboardPagedSelectionTest);
+customElements.define(
+  'keyboard-paged-selection-test',
+  KeyboardPagedSelectionTest
+);
 
-
-describe("KeyboardPagedSelectionMixin", function() {
-
+describe('KeyboardPagedSelectionMixin', function() {
   let container;
 
   before(() => {
@@ -38,7 +32,7 @@ describe("KeyboardPagedSelectionMixin", function() {
     container.innerHTML = '';
   });
 
-  it("If bottom item not selected, Page Down selects bottom item", () => {
+  it('If bottom item not selected, Page Down selects bottom item', () => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     fixture[internal.setState]({ selectedIndex: 0 });
@@ -49,7 +43,7 @@ describe("KeyboardPagedSelectionMixin", function() {
     assert.equal(fixture[internal.state].selectedIndex, 1);
   });
 
-  it("If bottom item selected, Page Down advances selection by one page", () => {
+  it('If bottom item selected, Page Down advances selection by one page', () => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     fixture[internal.setState]({ selectedIndex: 1 });
@@ -60,7 +54,7 @@ describe("KeyboardPagedSelectionMixin", function() {
     assert.equal(fixture[internal.state].selectedIndex, 3);
   });
 
-  it("If less than one page remaining, Page Down selects last item", done => {
+  it('If less than one page remaining, Page Down selects last item', done => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     fixture[internal.setState]({ selectedIndex: 3 });
@@ -75,7 +69,7 @@ describe("KeyboardPagedSelectionMixin", function() {
     fixture.scrollTop = 2 * itemHeight; // So index 2 is at top of viewport.
   });
 
-  it("If last item already selected, Page Down has no effect", done => {
+  it('If last item already selected, Page Down has no effect', done => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     fixture[internal.setState]({ selectedIndex: 4 });
@@ -89,12 +83,9 @@ describe("KeyboardPagedSelectionMixin", function() {
     });
     fixture.scrollTop = 3 * itemHeight; // So index 3 is at top of viewport.
   });
-
 });
 
-
 function createSampleElement() {
-
   const fixture = new KeyboardPagedSelectionTest();
 
   // Force scroll: make element only tall enough to show 2 items at a time.

@@ -1,7 +1,6 @@
 import * as internal from '../../src/internal.js';
 import DirectionSelectionMixin from '../../src/DirectionSelectionMixin.js';
 
-
 class DirectionSelectionTest extends DirectionSelectionMixin(HTMLElement) {
   selectFirst() {}
   selectLast() {}
@@ -10,10 +9,8 @@ class DirectionSelectionTest extends DirectionSelectionMixin(HTMLElement) {
 }
 customElements.define('direction-selection-test', DirectionSelectionTest);
 
-
-describe("DirectionSelectionMixin", () => {
-
-  it("maps direction method calls to selection method calls", () => {
+describe('DirectionSelectionMixin', () => {
+  it('maps direction method calls to selection method calls', () => {
     const fixture = new DirectionSelectionTest();
 
     const selectFirstSpy = sinon.spy(fixture, 'selectFirst');
@@ -34,5 +31,4 @@ describe("DirectionSelectionMixin", () => {
     fixture[internal.goUp]();
     assert.equal(selectPreviousSpy.callCount, 2);
   });
-  
 });

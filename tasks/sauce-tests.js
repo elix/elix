@@ -24,7 +24,7 @@ const config = {
     },
     {
       browserName: 'firefox',
-      platform: 'OS X 10.14',
+      platform: 'OS X 10.14'
     },
     {
       browserName: 'firefox',
@@ -37,22 +37,21 @@ const config = {
     // },
     {
       browserName: 'safari',
-      platform: 'OS X 10.14',
+      platform: 'OS X 10.14'
     }
   ],
-  onTestSuiteComplete: (status) => {
+  onTestSuiteComplete: status => {
     if (status) {
       console.log('All tests passed!');
       reportStatus = 0;
-    }
-    else {
+    } else {
       console.log('One or more tests failed');
     }
   }
 };
 
 async function runTests() {
-  try {  
+  try {
     const server = await testServer(port);
     await saucelabs(config);
     server.close();

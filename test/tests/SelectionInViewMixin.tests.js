@@ -4,8 +4,9 @@ import SelectionInViewMixin from '../../src/SelectionInViewMixin.js';
 
 const itemHeight = '100';
 
-class SelectionInViewTest extends SelectionInViewMixin(ReactiveMixin(HTMLElement)) {
-
+class SelectionInViewTest extends SelectionInViewMixin(
+  ReactiveMixin(HTMLElement)
+) {
   connectedCallback() {
     super.connectedCallback();
     const items = Array.prototype.slice.call(this.children);
@@ -14,13 +15,10 @@ class SelectionInViewTest extends SelectionInViewMixin(ReactiveMixin(HTMLElement
       selectedIndex: -1
     });
   }
-
 }
 customElements.define('selection-in-view-test', SelectionInViewTest);
 
-
-describe("SelectionInViewMixin", function() {
-
+describe('SelectionInViewMixin', function() {
   let container;
 
   before(() => {
@@ -31,7 +29,7 @@ describe("SelectionInViewMixin", function() {
     container.innerHTML = '';
   });
 
-  it("Scrolls down to bring item clipped by bottom edge fully into view", done => {
+  it('Scrolls down to bring item clipped by bottom edge fully into view', done => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     fixture.addEventListener('scroll', () => {
@@ -43,7 +41,7 @@ describe("SelectionInViewMixin", function() {
     fixture[internal.setState]({ selectedIndex: 1 });
   });
 
-  it("Scrolls down to bring item below bottom edge fully into view", done => {
+  it('Scrolls down to bring item below bottom edge fully into view', done => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     fixture.addEventListener('scroll', () => {
@@ -53,7 +51,7 @@ describe("SelectionInViewMixin", function() {
     fixture[internal.setState]({ selectedIndex: 2 });
   });
 
-  it("Scrolls up to bring item above top edge fully into view", done => {
+  it('Scrolls up to bring item above top edge fully into view', done => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     fixture.scrollTop = 150; // Scrolled all the way to bottom.
@@ -63,12 +61,9 @@ describe("SelectionInViewMixin", function() {
     });
     fixture[internal.setState]({ selectedIndex: 0 });
   });
-
 });
 
-
 function createSampleElement() {
-
   const fixture = new SelectionInViewTest();
 
   // Force scroll: make element only tall enough to show 1.5 items at a time.

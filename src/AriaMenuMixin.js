@@ -2,7 +2,6 @@ import { defaultAriaRole } from './accessibility.js';
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 /**
  * Tells assistive technologies to describe a list's items as a menu of choices.
  *
@@ -10,10 +9,8 @@ import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-un
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function AriaMenuMixin(Base) {
-
   // The class prototype added by the mixin.
   class AriaMenu extends Base {
-
     get [internal.defaultState]() {
       const base = super[internal.defaultState];
       return Object.assign(base, {
@@ -30,7 +27,9 @@ export default function AriaMenuMixin(Base) {
     }
 
     [internal.render](/** @type {PlainObject} */ changed) {
-      if (super[internal.render]) { super[internal.render](changed); }
+      if (super[internal.render]) {
+        super[internal.render](changed);
+      }
       const { selectedIndex, itemRole } = this[internal.state];
       /** @type {ListItemElement[]} */ const items = this[internal.state].items;
       if ((changed.items || changed.itemRole) && items) {
@@ -70,7 +69,6 @@ export default function AriaMenuMixin(Base) {
         });
       }
     }
-
   }
 
   return AriaMenu;

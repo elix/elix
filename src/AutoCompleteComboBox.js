@@ -3,22 +3,16 @@ import AutoCompleteInput from './AutoCompleteInput.js';
 import ListComboBox from './ListComboBox.js';
 import ItemsTextMixin from './ItemsTextMixin.js';
 
-
-const Base = 
-  ItemsTextMixin(
-    ListComboBox
-  );
-
+const Base = ItemsTextMixin(ListComboBox);
 
 /**
  * A combo box that auto-completes the user's input against the list items
- * 
+ *
  * @inherits ListComboBox
  * @mixes ItemsTextMixin
  * @elementrole {AutoCompleteInput} input
  */
 class AutoCompleteComboBox extends Base {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       inputRole: AutoCompleteInput
@@ -29,12 +23,12 @@ class AutoCompleteComboBox extends Base {
     super[internal.render](changed);
     if (changed.texts) {
       if ('texts' in this[internal.ids].input) {
-        /** @type {any} */ (this[internal.ids].input).texts = this[internal.state].texts;
+        /** @type {any} */ (this[internal.ids].input).texts = this[
+          internal.state
+        ].texts;
       }
     }
   }
-
 }
-
 
 export default AutoCompleteComboBox;

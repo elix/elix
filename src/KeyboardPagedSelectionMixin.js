@@ -2,7 +2,6 @@ import { defaultScrollTarget } from './scrolling.js';
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-
 /**
  * Maps the Page Up and Page Down keys to selection operations.
  *
@@ -32,10 +31,8 @@ import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-un
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function KeyboardPagedSelectionMixin(Base) {
-
   // The class prototype added by the mixin.
   class KeyboardPagedSelection extends Base {
-
     [internal.keydown](/** @type {KeyboardEvent} */ event) {
       let handled = false;
       const orientation = this.orientation;
@@ -52,20 +49,28 @@ export default function KeyboardPagedSelectionMixin(Base) {
       }
 
       // Prefer mixin result if it's defined, otherwise use base result.
-      return handled || (super[internal.keydown] && super[internal.keydown](event));
+      return (
+        handled || (super[internal.keydown] && super[internal.keydown](event))
+      );
     }
 
     // Default orientation implementation defers to super,
     // but if not found, looks in state.
     get orientation() {
-      return super.orientation || this[internal.state] && this[internal.state].orientation || 'both';
+      return (
+        super.orientation ||
+        (this[internal.state] && this[internal.state].orientation) ||
+        'both'
+      );
     }
 
     /**
      * Scroll down one page.
      */
     pageDown() {
-      if (super.pageDown) { super.pageDown(); }
+      if (super.pageDown) {
+        super.pageDown();
+      }
       return scrollOnePage(this, true);
     }
 
@@ -73,7 +78,9 @@ export default function KeyboardPagedSelectionMixin(Base) {
      * Scroll up one page.
      */
     pageUp() {
-      if (super.pageUp) { super.pageUp(); }
+      if (super.pageUp) {
+        super.pageUp();
+      }
       return scrollOnePage(this, false);
     }
 
@@ -81,9 +88,9 @@ export default function KeyboardPagedSelectionMixin(Base) {
      * The element that will be scrolled when the user presses Page Up or
      * Page Down. The default value is calculated by
      * [defaultScrollTarget](defaultScrollTarget#defaultScrollTarget).
-     * 
+     *
      * See [internal.scrollTarget](symbols#scrollTarget).
-     * 
+     *
      * @type {HTMLElement}
      */
     get [internal.scrollTarget]() {
@@ -96,23 +103,21 @@ export default function KeyboardPagedSelectionMixin(Base) {
   return KeyboardPagedSelection;
 }
 
-
 /**
  * Return the item whose content spans the given y position (relative to the
  * top of the list's scrolling client area), or null if not found.
- * 
+ *
  * If downward is true, move down the list of items to find the first item
  * found at the given y position; if downward is false, move up the list of
- * 
+ *
  * items to find the last item at that position.
- * 
+ *
  * @private
  * @param {ListItemElement[]} items
  * @param {number} y
  * @param {boolean} downward
  */
 function getIndexOfItemAtY(items, y, downward) {
-
   const start = downward ? 0 : items.length - 1;
   const end = downward ? items.length : 0;
   const step = downward ? 1 : -1;
@@ -139,15 +144,19 @@ function getIndexOfItemAtY(items, y, downward) {
   // TODO: If the item has a border, then padding should be included in
   // considering a hit.
   const itemStyle = getComputedStyle(item);
-  const itemPaddingTop = itemStyle.paddingTop ? parseFloat(itemStyle.paddingTop) : 0;
-  const itemPaddingBottom = itemStyle.paddingBottom ? parseFloat(itemStyle.paddingBottom) : 0;
+  const itemPaddingTop = itemStyle.paddingTop
+    ? parseFloat(itemStyle.paddingTop)
+    : 0;
+  const itemPaddingBottom = itemStyle.paddingBottom
+    ? parseFloat(itemStyle.paddingBottom)
+    : 0;
   const contentTop = itemRect.top + itemPaddingTop;
-  const contentBottom = contentTop + item.clientHeight - itemPaddingTop - itemPaddingBottom;
-  if (downward && contentTop <= y || !downward && contentBottom >= y) {
+  const contentBottom =
+    contentTop + item.clientHeight - itemPaddingTop - itemPaddingBottom;
+  if ((downward && contentTop <= y) || (!downward && contentBottom >= y)) {
     // The indicated coordinate hits the actual item content.
     return index;
-  }
-  else {
+  } else {
     // The indicated coordinate falls within the item's padding. Back up to
     // the item below/above the item we found and return that.
     return index - step;
@@ -157,13 +166,12 @@ function getIndexOfItemAtY(items, y, downward) {
 /**
  * Move by one page downward (if downward is true), or upward (if false).
  * Return true if we ended up changing the selection, false if not.
- * 
+ *
  * @private
  * @param {ReactiveElement} element
  * @param {boolean} downward
  */
 function scrollOnePage(element, downward) {
-  
   const scrollTarget = element[internal.scrollTarget];
   const items = element[internal.state].items;
   const selectedIndex = element[internal.state].selectedIndex;
@@ -182,9 +190,9 @@ function scrollOnePage(element, downward) {
     const selectedItem = items[selectedIndex];
     const selectedRect = selectedItem.getBoundingClientRect();
     const pageHeight = scrollTarget.clientHeight;
-    const y = downward ?
-      selectedRect.bottom + pageHeight :
-      selectedRect.top - pageHeight;
+    const y = downward
+      ? selectedRect.bottom + pageHeight
+      : selectedRect.top - pageHeight;
     newIndex = getIndexOfItemAtY(items, y, downward);
   } else {
     // The item at the edge wasn't selected yet. Instead of scrolling, we'll
@@ -196,7 +204,7 @@ function scrollOnePage(element, downward) {
   if (!newIndex) {
     // We can't find an item in the direction we want to travel. Select the
     // last item (if moving downward) or first item (if moving upward).
-    newIndex = (downward ? items.length - 1 : 0);
+    newIndex = downward ? items.length - 1 : 0;
   }
 
   // If external code causes an operation that scrolls the page, it's impossible

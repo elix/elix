@@ -2,18 +2,16 @@ import * as internal from './internal.js';
 import * as template from './template.js';
 import Backdrop from './Backdrop.js';
 
-
 /**
  * Semi-transparent backdrop for a modal overlay
- * 
+ *
  * This type of backdrop is used by [Dialog](Dialog) and [Drawer](Drawer). The
  * backdrop slightly obscures the background elements, focusing the user's
  * attention on the overlay.
- * 
+ *
  * @inherits Backdrop
  */
 class ModalBackdrop extends Backdrop {
-
   constructor() {
     super();
 
@@ -35,17 +33,18 @@ class ModalBackdrop extends Backdrop {
   }
 
   get [internal.template]() {
-    return template.concat(super[internal.template], template.html`
+    return template.concat(
+      super[internal.template],
+      template.html`
       <style>
         :host {
           background: black;
           opacity: 0.2;
         }
       </style>
-    `);
+    `
+    );
   }
-
 }
-
 
 export default ModalBackdrop;

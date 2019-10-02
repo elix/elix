@@ -7,19 +7,13 @@ import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 
-
-const Base =
-  FormElementMixin(
-  SelectedItemTextValueMixin(
-  SingleSelectionMixin(
-  SlotItemsMixin(
-    MenuButton
-  ))));
-
+const Base = FormElementMixin(
+  SelectedItemTextValueMixin(SingleSelectionMixin(SlotItemsMixin(MenuButton)))
+);
 
 /**
  * Shows a single choice made from a pop-up list of choices
- * 
+ *
  * @inherits MenuButton
  * @mixes FormElementMixin
  * @mixes SelectedItemTextValueMixin
@@ -28,7 +22,6 @@ const Base =
  * @elementrole {'div'} value
  */
 class DropdownList extends Base {
-
   // By default, opening the menu re-selects the component item that's currently
   // selected.
   get defaultMenuSelectedIndex() {
@@ -61,27 +54,28 @@ class DropdownList extends Base {
     super[internal.render](changed);
     if (changed.itemRole) {
       if ('itemRole' in this[internal.ids].menu) {
-        /** @type {any} */ (this[internal.ids].menu).itemRole = this[internal.state].itemRole;
+        /** @type {any} */ (this[internal.ids].menu).itemRole = this[
+          internal.state
+        ].itemRole;
       }
     }
     if (changed.valueRole) {
-      template.transmute(this[internal.ids].value, this[internal.state].valueRole);
+      template.transmute(
+        this[internal.ids].value,
+        this[internal.state].valueRole
+      );
     }
     if (changed.popupPosition) {
       const { popupPosition } = this[internal.state];
-      this[internal.ids].downIcon.style.display = popupPosition === 'below' ?
-        'block' :
-        'none';
-      this[internal.ids].upIcon.style.display = popupPosition === 'above' ?
-        'block' :
-        'none';
+      this[internal.ids].downIcon.style.display =
+        popupPosition === 'below' ? 'block' : 'none';
+      this[internal.ids].upIcon.style.display =
+        popupPosition === 'above' ? 'block' : 'none';
     }
     if (changed.selectedIndex) {
       const items = this[internal.state].items || [];
       const selectedItem = items[this[internal.state].selectedIndex];
-      const clone = selectedItem ?
-        selectedItem.cloneNode(true) :
-        null;
+      const clone = selectedItem ? selectedItem.cloneNode(true) : null;
       const childNodes = clone ? clone.childNodes : [];
       applyChildNodes(this[internal.ids].value, childNodes);
     }
@@ -126,7 +120,7 @@ class DropdownList extends Base {
   /**
    * The class, tag, or template used to contain the dropdown list's current
    * value.
-   * 
+   *
    * @type {Role}
    * @default 'div'
    */
@@ -136,8 +130,6 @@ class DropdownList extends Base {
   set valueRole(valueRole) {
     this[internal.setState]({ valueRole });
   }
-
 }
-
 
 export default DropdownList;

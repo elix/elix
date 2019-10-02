@@ -3,22 +3,18 @@ import AriaListMixin from '../../src/AriaListMixin.js';
 import ContentItemsMixin from '../../src/ContentItemsMixin.js';
 import ReactiveElement from '../../src/ReactiveElement.js';
 
-
-class AriaListTest extends
-    AriaListMixin(ContentItemsMixin(ReactiveElement)) {
-
+class AriaListTest extends AriaListMixin(ContentItemsMixin(ReactiveElement)) {
   connectedCallback() {
-    if (super.connectedCallback) { super.connectedCallback(); }
+    if (super.connectedCallback) {
+      super.connectedCallback();
+    }
     const content = [...this.children];
     this[internal.setState]({ content });
   }
-
 }
 customElements.define('aria-list-test', AriaListTest);
 
-
-describe("AriaListMixin", () => {
-
+describe('AriaListMixin', () => {
   let container;
 
   before(() => {
@@ -29,7 +25,7 @@ describe("AriaListMixin", () => {
     container.innerHTML = '';
   });
 
-  it("assigns default roles to list and items, and default IDs to items without IDs", async () => {
+  it('assigns default roles to list and items, and default IDs to items without IDs', async () => {
     const fixture = new AriaListTest();
     fixture.id = 'test'; // Will be used as basis for assigned item IDs.
     const item1 = document.createElement('div');
@@ -47,7 +43,7 @@ describe("AriaListMixin", () => {
     assert.equal(item2.getAttribute('role'), 'option'); // default role
   });
 
-  it("indicates the selection state on both the list and the item", async () => {
+  it('indicates the selection state on both the list and the item', async () => {
     const fixture = new AriaListTest();
     const item1 = document.createElement('div');
     fixture.appendChild(item1);
@@ -89,5 +85,4 @@ describe("AriaListMixin", () => {
     assert.isNull(item1.getAttribute('role'));
     assert.isNull(item2.getAttribute('role'));
   });
-
 });

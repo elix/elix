@@ -3,25 +3,19 @@ import * as template from './template.js';
 import EffectMixin from './EffectMixin.js';
 import Modes from './Modes.js';
 
-
-const Base =
-  EffectMixin(
-    Modes
-  );
-
+const Base = EffectMixin(Modes);
 
 /**
  * Shows a crossfade effect when transitioning between a single selected item.
- * 
+ *
  * The base [Modes](Modes) component shows a single item at a time,
  * transitioning instantly between them. `CrossfadeStage` adds a simple
  * crossfade effect when transitioning between items.
- * 
+ *
  * @inherits Modes
  * @mixes EffectMixin
  */
 class CrossfadeStage extends Base {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       transitionDuration: 750 // 3/4 of a second
@@ -30,8 +24,14 @@ class CrossfadeStage extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.enableEffects || changed.rightToLeft || changed.items ||
-        changed.selectedIndex || changed.swipeFraction || changed.transitionDuration) {
+    if (
+      changed.enableEffects ||
+      changed.rightToLeft ||
+      changed.items ||
+      changed.selectedIndex ||
+      changed.swipeFraction ||
+      changed.transitionDuration
+    ) {
       // Apply opacity based on selection state.
       const {
         enableEffects,
@@ -46,11 +46,15 @@ class CrossfadeStage extends Base {
         const swiping = swipeFraction != null;
         const selectionFraction = sign * (swipeFraction || 0);
         const showTransition = enableEffects && !swiping;
-        const transition = showTransition ?
-          `opacity ${transitionDuration / 1000}s linear` :
-          null;
+        const transition = showTransition
+          ? `opacity ${transitionDuration / 1000}s linear`
+          : null;
         items.forEach((item, index) => {
-          const opacity = opacityForItemWithIndex(index, selectedIndex, selectionFraction);
+          const opacity = opacityForItemWithIndex(
+            index,
+            selectedIndex,
+            selectionFraction
+          );
           Object.assign(item.style, {
             display: null, // Override Modes
             opacity,
@@ -76,7 +80,9 @@ class CrossfadeStage extends Base {
   }
 
   get [internal.template]() {
-    return template.concat(super[internal.template], template.html`
+    return template.concat(
+      super[internal.template],
+      template.html`
       <style>
         #modesContainer {
           display: grid;
@@ -87,17 +93,16 @@ class CrossfadeStage extends Base {
           grid-row: 1;
         }
       </style>
-    `);
+    `
+    );
   }
-
 }
-
 
 /**
  * @private
- * @param {number} index 
- * @param {number} selectedIndex 
- * @param {number} selectionFraction 
+ * @param {number} index
+ * @param {number} selectedIndex
+ * @param {number} selectionFraction
  */
 function opacityForItemWithIndex(index, selectedIndex, selectionFraction) {
   const opacityMinimum = 0;
@@ -108,7 +113,10 @@ function opacityForItemWithIndex(index, selectedIndex, selectionFraction) {
   const rightIndex = Math.ceil(fractionalIndex);
   let awayIndex = selectionFraction >= 0 ? leftIndex : rightIndex;
   let towardIndex = selectionFraction >= 0 ? rightIndex : leftIndex;
-  const truncatedSwipeFraction = selectionFraction < 0 ? Math.ceil(selectionFraction) : Math.floor(selectionFraction);
+  const truncatedSwipeFraction =
+    selectionFraction < 0
+      ? Math.ceil(selectionFraction)
+      : Math.floor(selectionFraction);
   const progress = selectionFraction - truncatedSwipeFraction;
   const opacityProgressThroughRange = Math.abs(progress) * opacityRange;
 
@@ -123,6 +131,5 @@ function opacityForItemWithIndex(index, selectedIndex, selectionFraction) {
 
   return opacity;
 }
-
 
 export default CrossfadeStage;

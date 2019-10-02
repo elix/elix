@@ -2,9 +2,7 @@ import * as calendar from '../../src/calendar.js';
 import * as internal from '../../src/internal.js';
 import CalendarDays from '../../define/CalendarDays.js';
 
-
-describe("CalendarDays", () => {
-
+describe('CalendarDays', () => {
   it("returns day elements inside the calendar's range", async () => {
     const fixture = new CalendarDays();
     fixture.startDate = new Date('1 January 2019');
@@ -30,5 +28,4 @@ describe("CalendarDays", () => {
     await fixture[internal.renderChanges]();
     assert.equal(fixture.days[0].style.gridColumnStart, '2');
   });
-
 });

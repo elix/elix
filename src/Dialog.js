@@ -6,29 +6,21 @@ import KeyboardMixin from './KeyboardMixin.js';
 import ModalBackdrop from './ModalBackdrop.js';
 import Overlay from './Overlay.js';
 
-
-const Base =
-  DialogModalityMixin(
-  FocusCaptureMixin(
-  KeyboardMixin(
-    Overlay
-  )));
-
+const Base = DialogModalityMixin(FocusCaptureMixin(KeyboardMixin(Overlay)));
 
 /**
  * Basic modal overlay that the user typically dismisses with an explicit action.
- * 
+ *
  * This component presents its children as a basic modal dialog which appears on
  * top of the main page content and which the user must interact with before
  * they can return to the page.
- * 
+ *
  * @inherits Overlay
  * @mixes DialogModalityMixin
  * @mixes KeyboardMixin
  * @elementrole {ModalBackdrop} backdrop
  */
 class Dialog extends Base {
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       backdropRole: ModalBackdrop,
@@ -41,7 +33,9 @@ class Dialog extends Base {
     const frame = result.content.querySelector('#frame');
     /** @type {any} */ const cast = this;
     cast[FocusCaptureMixin.wrap](frame);
-    return template.concat(result, template.html`
+    return template.concat(
+      result,
+      template.html`
       <style>
         :host {
           height: 100%;
@@ -51,10 +45,9 @@ class Dialog extends Base {
           width: 100%;
         }
       </style>
-    `);
+    `
+    );
   }
-
 }
-
 
 export default Dialog;
