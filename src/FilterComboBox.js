@@ -58,9 +58,7 @@ class FilterComboBox extends Base {
         const filter = cast.detail
           ? cast.detail.originalText
           : this[internal.state].value;
-        this[internal.setState]({
-          filter
-        });
+        this[internal.setState]({ filter });
         this[internal.raiseChangeEvents] = false;
       });
     }

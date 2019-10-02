@@ -85,9 +85,7 @@ export default function FormElementMixin(Base) {
       if ('name' in Base.prototype) {
         super.name = name;
       }
-      this[internal.setState]({
-        name
-      });
+      this[internal.setState]({ name });
     }
 
     [internal.render](changed) {

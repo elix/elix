@@ -45,9 +45,7 @@ class DateInput extends Base {
     return this[internal.state].dateTimeFormatOptions;
   }
   set dateTimeFormatOptions(dateTimeFormatOptions) {
-    this[internal.setState]({
-      dateTimeFormatOptions
-    });
+    this[internal.setState]({ dateTimeFormatOptions });
   }
 
   get [internal.defaultState]() {
@@ -219,9 +217,7 @@ class DateInput extends Base {
     return this[internal.state].timeBias;
   }
   set timeBias(timeBias) {
-    this[internal.setState]({
-      timeBias
-    });
+    this[internal.setState]({ timeBias });
   }
 
   get value() {

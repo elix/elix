@@ -169,9 +169,7 @@ class ListWithSearch extends Base {
       this[internal.ids].input.addEventListener('input', () => {
         this[internal.raiseChangeEvents] = true;
         const filter = /** @type {any} */ (this[internal.ids].input).value;
-        this[internal.setState]({
-          filter
-        });
+        this[internal.setState]({ filter });
         this[internal.raiseChangeEvents] = false;
       });
     }

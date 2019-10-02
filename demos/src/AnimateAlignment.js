@@ -18,9 +18,7 @@ export default class AnimateAlignment extends Base {
       const effect = align === 'left' ? 'slideLeft' : 'slideRight';
       this[internal.startEffect](effect);
     } else {
-      this[internal.setState]({
-        align
-      });
+      this[internal.setState]({ align });
     }
   }
 

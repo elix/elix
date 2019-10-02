@@ -54,9 +54,7 @@ class RefreshAppDemo extends ReactiveElement {
       const last = paragraphs.pop();
       paragraphs.unshift(last);
       Object.freeze(paragraphs);
-      this[internal.setState]({
-        paragraphs
-      });
+      this[internal.setState]({ paragraphs });
     }, 1000);
   }
 

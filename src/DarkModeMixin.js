@@ -20,9 +20,7 @@ export default function DarkModeMixin(Base) {
           const hsl = rgbToHsl(rgb);
           // We consider any lightness below 50% to be dark.
           const darkMode = hsl.l < 0.5;
-          this[internal.setState]({
-            darkMode
-          });
+          this[internal.setState]({ darkMode });
         }
       }
       if (super.connectedCallback) {

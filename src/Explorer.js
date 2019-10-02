@@ -63,9 +63,7 @@ class Explorer extends Base {
         });
       } else {
         // No nodes assigned -- we'll need to generate proxies.
-        this[internal.setState]({
-          proxiesAssigned
-        });
+        this[internal.setState]({ proxiesAssigned });
       }
     });
   }

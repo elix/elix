@@ -211,9 +211,7 @@ class WrappedStandardElement extends Base {
           [name]: newValue
         }
       );
-      this[internal.setState]({
-        innerAttributes
-      });
+      this[internal.setState]({ innerAttributes });
     } else {
       // Rely on the base attributeChangedCallback provided by
       // AttributeMarshallingMixin.

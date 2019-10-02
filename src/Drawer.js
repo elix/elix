@@ -120,9 +120,7 @@ class Drawer extends Base {
     return this[internal.state].gripSize;
   }
   set gripSize(gripSize) {
-    this[internal.setState]({
-      gripSize
-    });
+    this[internal.setState]({ gripSize });
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {

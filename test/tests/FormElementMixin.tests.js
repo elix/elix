@@ -26,9 +26,7 @@ class FormElementTest extends FormElementMixin(ReactiveElement) {
     return this[internal.state].value;
   }
   set value(value) {
-    this[internal.setState]({
-      value
-    });
+    this[internal.setState]({ value });
   }
 }
 customElements.define('form-element-test', FormElementTest);

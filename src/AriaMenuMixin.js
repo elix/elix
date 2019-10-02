@@ -64,9 +64,7 @@ export default function AriaMenuMixin(Base) {
     set role(role) {
       super.role = role;
       if (!this[internal.rendering]) {
-        this[internal.setState]({
-          role
-        });
+        this[internal.setState]({ role });
       }
     }
   }

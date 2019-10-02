@@ -46,9 +46,7 @@ class CalendarDays extends Base {
     return this[internal.state].dayCount;
   }
   set dayCount(dayCount) {
-    this[internal.setState]({
-      dayCount
-    });
+    this[internal.setState]({ dayCount });
   }
 
   /**
@@ -152,18 +150,14 @@ class CalendarDays extends Base {
     return this[internal.state].showCompleteWeeks;
   }
   set showCompleteWeeks(showCompleteWeeks) {
-    this[internal.setState]({
-      showCompleteWeeks
-    });
+    this[internal.setState]({ showCompleteWeeks });
   }
 
   get showSelectedDay() {
     return this[internal.state].showSelectedDay;
   }
   set showSelectedDay(showSelectedDay) {
-    this[internal.setState]({
-      showSelectedDay
-    });
+    this[internal.setState]({ showSelectedDay });
   }
 
   get startDate() {

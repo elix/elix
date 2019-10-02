@@ -222,9 +222,7 @@ export default function SwipeCommandsMixin(Base) {
       // Determine which item is being swiped given the starting Y coordinate.
       const swipeItem = getItemAtY(this[internal.state].items, clientY);
       if (swipeItem) {
-        this[internal.setState]({
-          swipeItem
-        });
+        this[internal.setState]({ swipeItem });
       }
     }
 

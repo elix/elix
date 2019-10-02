@@ -151,9 +151,7 @@ class PopupSource extends Base {
     return this[internal.state].horizontalAlign;
   }
   set horizontalAlign(horizontalAlign) {
-    this[internal.setState]({
-      horizontalAlign
-    });
+    this[internal.setState]({ horizontalAlign });
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
@@ -333,9 +331,7 @@ class PopupSource extends Base {
     return this[internal.state].popupPosition;
   }
   set popupPosition(popupPosition) {
-    this[internal.setState]({
-      popupPosition
-    });
+    this[internal.setState]({ popupPosition });
   }
 
   /**

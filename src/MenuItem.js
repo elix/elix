@@ -54,9 +54,7 @@ class MenuItem extends Base {
     return this[internal.state].selected;
   }
   set selected(selected) {
-    this[internal.setState]({
-      selected
-    });
+    this[internal.setState]({ selected });
   }
 
   get [internal.template]() {

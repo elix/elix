@@ -47,9 +47,7 @@ class CalendarMonthYearHeader extends Base {
     return this[internal.state].monthFormat;
   }
   set monthFormat(monthFormat) {
-    this[internal.setState]({
-      monthFormat
-    });
+    this[internal.setState]({ monthFormat });
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
@@ -98,9 +96,7 @@ class CalendarMonthYearHeader extends Base {
     return this[internal.state].yearFormat;
   }
   set yearFormat(yearFormat) {
-    this[internal.setState]({
-      yearFormat
-    });
+    this[internal.setState]({ yearFormat });
   }
 }
 

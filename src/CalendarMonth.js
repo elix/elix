@@ -110,9 +110,7 @@ class CalendarMonth extends Base {
     return this[internal.state].monthFormat;
   }
   set monthFormat(monthFormat) {
-    this[internal.setState]({
-      monthFormat
-    });
+    this[internal.setState]({ monthFormat });
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
@@ -180,18 +178,14 @@ class CalendarMonth extends Base {
     return this[internal.state].showCompleteWeeks;
   }
   set showCompleteWeeks(showCompleteWeeks) {
-    this[internal.setState]({
-      showCompleteWeeks
-    });
+    this[internal.setState]({ showCompleteWeeks });
   }
 
   get showSelectedDay() {
     return this[internal.state].showSelectedDay;
   }
   set showSelectedDay(showSelectedDay) {
-    this[internal.setState]({
-      showSelectedDay
-    });
+    this[internal.setState]({ showSelectedDay });
   }
 
   get [internal.template]() {
@@ -250,9 +244,7 @@ class CalendarMonth extends Base {
     return this[internal.state].yearFormat;
   }
   set yearFormat(yearFormat) {
-    this[internal.setState]({
-      yearFormat
-    });
+    this[internal.setState]({ yearFormat });
   }
 }
 

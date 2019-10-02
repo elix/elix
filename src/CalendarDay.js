@@ -83,18 +83,14 @@ class CalendarDay extends Base {
     return this[internal.state].outsideRange;
   }
   set outsideRange(outsideRange) {
-    this[internal.setState]({
-      outsideRange
-    });
+    this[internal.setState]({ outsideRange });
   }
 
   get selected() {
     return this[internal.state].selected;
   }
   set selected(selected) {
-    this[internal.setState]({
-      selected
-    });
+    this[internal.setState]({ selected });
   }
 
   get [internal.template]() {

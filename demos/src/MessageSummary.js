@@ -7,9 +7,7 @@ export default class MessageSummary extends ReactiveElement {
     return this[internal.state].date;
   }
   set date(date) {
-    this[internal.setState]({
-      date
-    });
+    this[internal.setState]({ date });
   }
 
   get [internal.defaultState]() {
@@ -51,18 +49,14 @@ export default class MessageSummary extends ReactiveElement {
     return this[internal.state].sender;
   }
   set sender(sender) {
-    this[internal.setState]({
-      sender
-    });
+    this[internal.setState]({ sender });
   }
 
   get summary() {
     return this[internal.state].summary;
   }
   set summary(summary) {
-    this[internal.setState]({
-      summary
-    });
+    this[internal.setState]({ summary });
   }
 
   get [internal.template]() {

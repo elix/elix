@@ -30,9 +30,7 @@ class DateComboBox extends Base {
     return this[internal.state].arrowButtonRole;
   }
   set arrowButtonRole(arrowButtonRole) {
-    this[internal.setState]({
-      arrowButtonRole
-    });
+    this[internal.setState]({ arrowButtonRole });
   }
 
   get calendar() {
@@ -49,18 +47,14 @@ class DateComboBox extends Base {
     return this[internal.state].calendarRole;
   }
   set calendarRole(calendarRole) {
-    this[internal.setState]({
-      calendarRole
-    });
+    this[internal.setState]({ calendarRole });
   }
 
   get dateTimeFormatOptions() {
     return this[internal.state].dateTimeFormatOptions;
   }
   set dateTimeFormatOptions(dateTimeFormatOptions) {
-    this[internal.setState]({
-      dateTimeFormatOptions
-    });
+    this[internal.setState]({ dateTimeFormatOptions });
   }
 
   get date() {
@@ -83,9 +77,7 @@ class DateComboBox extends Base {
     return this[internal.state].dayRole;
   }
   set dayRole(dayRole) {
-    this[internal.setState]({
-      dayRole
-    });
+    this[internal.setState]({ dayRole });
   }
 
   /**
@@ -349,9 +341,7 @@ class DateComboBox extends Base {
     return this[internal.state].monthFormat;
   }
   set monthFormat(monthFormat) {
-    this[internal.setState]({
-      monthFormat
-    });
+    this[internal.setState]({ monthFormat });
   }
 
   /**
@@ -485,9 +475,7 @@ class DateComboBox extends Base {
     return this[internal.state].timeBias;
   }
   set timeBias(timeBias) {
-    this[internal.setState]({
-      timeBias
-    });
+    this[internal.setState]({ timeBias });
   }
 
   /**
@@ -500,9 +488,7 @@ class DateComboBox extends Base {
     return this[internal.state].todayButtonRole;
   }
   set todayButtonRole(todayButtonRole) {
-    this[internal.setState]({
-      todayButtonRole
-    });
+    this[internal.setState]({ todayButtonRole });
   }
 
   get value() {
@@ -533,9 +519,7 @@ class DateComboBox extends Base {
     return this[internal.state].yearFormat;
   }
   set yearFormat(yearFormat) {
-    this[internal.setState]({
-      yearFormat
-    });
+    this[internal.setState]({ yearFormat });
   }
 }
 
