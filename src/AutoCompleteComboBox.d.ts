@@ -5,7 +5,6 @@ import AutoCompleteInput from './AutoCompleteInput.js';
 import ListComboBox from './ListComboBox.js';
 import ItemsTextMixin from './ItemsTextMixin.js';
 
-export default class AutoCompleteComboBox extends
-    ItemsTextMixin(
-      ListComboBox
-    ) {}
+export default class AutoCompleteComboBox extends ItemsTextMixin(
+  ListComboBox
+) {}

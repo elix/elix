@@ -3,8 +3,13 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const HoverMixin: StateMixin<{}, {}, {}, {
-  hover: boolean;
-}>;
+declare const HoverMixin: StateMixin<
+  {},
+  {},
+  {},
+  {
+    hover: boolean;
+  }
+>;
 
 export default HoverMixin;

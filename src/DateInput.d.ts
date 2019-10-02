@@ -4,11 +4,8 @@
 import CalendarElementMixin from './CalendarElementMixin.js';
 import Input from './Input.js';
 
-export default class DateInput extends
-    CalendarElementMixin(
-      Input
-    ) {
+export default class DateInput extends CalendarElementMixin(Input) {
   dateTimeFormatOptions: Intl.DateTimeFormatOptions;
-  timeBias: 'future'|'past'|null;
+  timeBias: 'future' | 'past' | null;
   value: string;
 }

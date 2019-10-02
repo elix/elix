@@ -5,13 +5,16 @@
 
 import * as internal from './internal.js';
 
-declare const DirectionSelectionMixin: Mixin<{}, {
-  [internal.goDown](): boolean;
-  [internal.goEnd](): boolean;
-  [internal.goLeft](): boolean;
-  [internal.goRight](): boolean;
-  [internal.goStart](): boolean;
-  [internal.goUp](): boolean;
-}>;
+declare const DirectionSelectionMixin: Mixin<
+  {},
+  {
+    [internal.goDown](): boolean;
+    [internal.goEnd](): boolean;
+    [internal.goLeft](): boolean;
+    [internal.goRight](): boolean;
+    [internal.goStart](): boolean;
+    [internal.goUp](): boolean;
+  }
+>;
 
 export default DirectionSelectionMixin;

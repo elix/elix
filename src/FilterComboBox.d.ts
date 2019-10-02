@@ -4,7 +4,4 @@
 import ListComboBox from './ListComboBox.js';
 import SlotContentMixin from './SlotContentMixin.js';
 
-export default class FilterComboBox extends
-    SlotContentMixin(
-      ListComboBox
-    ) {}
+export default class FilterComboBox extends SlotContentMixin(ListComboBox) {}

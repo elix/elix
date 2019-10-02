@@ -4,10 +4,9 @@
 import CalendarElementMixin from './CalendarElementMixin.js';
 import SeamlessButton from './SeamlessButton.js';
 
-export default class CalendarDayButton extends
-    CalendarElementMixin(
-      SeamlessButton
-    ) {
+export default class CalendarDayButton extends CalendarElementMixin(
+  SeamlessButton
+) {
   outsideRange: boolean;
   selected: boolean;
 }

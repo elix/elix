@@ -8,17 +8,14 @@ import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import OpenCloseMixin from './OpenCloseMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
-export default class PopupSource extends
-    AriaRoleMixin(
-    DisabledMixin(
-    FocusVisibleMixin(
-    LanguageDirectionMixin(
-    OpenCloseMixin(
-      ReactiveElement
-    ))))) {
+export default class PopupSource extends AriaRoleMixin(
+  DisabledMixin(
+    FocusVisibleMixin(LanguageDirectionMixin(OpenCloseMixin(ReactiveElement)))
+  )
+) {
   frameRole: Role;
-  horizontalAlign: 'start'|'end'|'left'|'right'|'stretch';
-  popupPosition: 'above'|'below';
+  horizontalAlign: 'start' | 'end' | 'left' | 'right' | 'stretch';
+  popupPosition: 'above' | 'below';
   popupRole: Role;
   sourceRole: Role;
 }

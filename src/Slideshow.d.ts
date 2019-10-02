@@ -4,7 +4,4 @@
 import CrossfadeStage from './CrossfadeStage.js';
 import TimerSelectionMixin from './TimerSelectionMixin.js';
 
-export default class Slideshow extends
-    TimerSelectionMixin(
-      CrossfadeStage
-    ) {}
+export default class Slideshow extends TimerSelectionMixin(CrossfadeStage) {}

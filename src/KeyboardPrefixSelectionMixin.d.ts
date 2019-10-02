@@ -3,9 +3,12 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const KeyboardPrefixSelectionMixin: Mixin<{}, {
-  selectedIndex: number;
-  selectItemWithTextPrefix(prefix: string): boolean;
-}>;
+declare const KeyboardPrefixSelectionMixin: Mixin<
+  {},
+  {
+    selectedIndex: number;
+    selectItemWithTextPrefix(prefix: string): boolean;
+  }
+>;
 
 export default KeyboardPrefixSelectionMixin;

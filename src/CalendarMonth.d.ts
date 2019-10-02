@@ -4,16 +4,15 @@
 import CalendarElementMixin from './CalendarElementMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
-export default class CalendarMonth extends
-    CalendarElementMixin(
-      ReactiveElement
-    ) {
-  dayElementForDate(date: Date): Element|null;
+export default class CalendarMonth extends CalendarElementMixin(
+  ReactiveElement
+) {
+  dayElementForDate(date: Date): Element | null;
   dayRole: Role;
   days: Element[];
-  daysOfWeekFormat: 'long'|'narrow'|'short';
-  monthFormat: 'numeric'|'2-digit'|'long'|'short'|'narrow';
+  daysOfWeekFormat: 'long' | 'narrow' | 'short';
+  monthFormat: 'numeric' | '2-digit' | 'long' | 'short' | 'narrow';
   showCompleteWeeks: boolean;
   showSelectedDay: boolean;
-  yearFormat: 'numeric'|'2-digit';
+  yearFormat: 'numeric' | '2-digit';
 }

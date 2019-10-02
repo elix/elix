@@ -3,7 +3,10 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const SwipeCommandsMixin: StateMixin<{}, {}, {},
+declare const SwipeCommandsMixin: StateMixin<
+  {},
+  {},
+  {},
   {
     swipeLeftFollowsThrough: boolean;
     swipeLeftRemovesItem: boolean;

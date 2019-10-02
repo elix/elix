@@ -3,12 +3,14 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const SingleSelectionMixin: StateMixin<{}, {},
+declare const SingleSelectionMixin: StateMixin<
+  {},
+  {},
   {
     canSelectNext: boolean;
     canSelectPrevious: boolean;
     selectedIndex: number;
-    selectedItem: Element|null;
+    selectedItem: Element | null;
     selectFirst(): boolean;
     selectLast(): boolean;
     selectionRequired: boolean;

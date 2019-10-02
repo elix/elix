@@ -11,16 +11,17 @@ import ReactiveElement from './ReactiveElement.js';
 import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 
-export default class ListWithSearch extends
-    ComposedFocusMixin(
-    DelegateFocusMixin(
+export default class ListWithSearch extends ComposedFocusMixin(
+  DelegateFocusMixin(
     DelegateItemsMixin(
-    DirectionSelectionMixin(
-    KeyboardMixin(
-    SelectedItemTextValueMixin(
-    SingleSelectionMixin(
-      ReactiveElement
-    ))))))) {
+      DirectionSelectionMixin(
+        KeyboardMixin(
+          SelectedItemTextValueMixin(SingleSelectionMixin(ReactiveElement))
+        )
+      )
+    )
+  )
+) {
   filter: string;
   inputRole: Role;
   listRole: Role;

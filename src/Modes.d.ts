@@ -5,8 +5,6 @@ import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 
-export default class Modes extends
-    SingleSelectionMixin(
-    SlotItemsMixin(
-      ReactiveElement
-    )) {}
+export default class Modes extends SingleSelectionMixin(
+  SlotItemsMixin(ReactiveElement)
+) {}

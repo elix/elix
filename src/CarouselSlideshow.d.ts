@@ -5,9 +5,6 @@ import Carousel from './Carousel.js';
 import CrossfadeStage from './CrossfadeStage.js';
 import TimerSelectionMixin from './TimerSelectionMixin.js';
 
-export default class CarouselSlideshow extends
-    TimerSelectionMixin(
-      Carousel
-    ) {
+export default class CarouselSlideshow extends TimerSelectionMixin(Carousel) {
   transitionDuration: number;
 }

@@ -5,10 +5,13 @@
 
 import * as internal from './internal.js';
 
-declare const KeyboardPagedSelectionMixin: Mixin<{}, {
-  pageDown(): boolean;
-  pageUp(): boolean;
-  [internal.scrollTarget]: Element;
-}>;
+declare const KeyboardPagedSelectionMixin: Mixin<
+  {},
+  {
+    pageDown(): boolean;
+    pageUp(): boolean;
+    [internal.scrollTarget]: Element;
+  }
+>;
 
 export default KeyboardPagedSelectionMixin;

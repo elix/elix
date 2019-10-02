@@ -4,13 +4,13 @@
 /// <reference path="shared.d.ts"/>
 
 declare const ResizeMixin: StateMixin<
-{},
-{},
-{},
-{
-  contentHeight: number;
-  contentWidth: number;
-}
+  {},
+  {},
+  {},
+  {
+    contentHeight: number;
+    contentWidth: number;
+  }
 >;
 
 export default ResizeMixin;

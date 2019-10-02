@@ -4,7 +4,4 @@
 import KeyboardMixin from './KeyboardMixin.js';
 import PopupSource from './PopupSource.js';
 
-export default class PopupButton extends
-  KeyboardMixin(
-    PopupSource
-  ) {}
+export default class PopupButton extends KeyboardMixin(PopupSource) {}

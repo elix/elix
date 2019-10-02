@@ -6,13 +6,14 @@
 import * as internal from './internal.js';
 
 declare const KeyboardMixin: StateMixin<
-{},
-{},
-{
-  [internal.keydown](event: KeyboardEvent): boolean;
-},
-{
-  tabIndex: number
-}>;
+  {},
+  {},
+  {
+    [internal.keydown](event: KeyboardEvent): boolean;
+  },
+  {
+    tabIndex: number;
+  }
+>;
 
 export default KeyboardMixin;

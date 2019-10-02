@@ -3,8 +3,13 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const DialogModalityMixin: StateMixin<{}, {}, {}, {
-  role: string
-}>;
+declare const DialogModalityMixin: StateMixin<
+  {},
+  {},
+  {},
+  {
+    role: string;
+  }
+>;
 
 export default DialogModalityMixin;

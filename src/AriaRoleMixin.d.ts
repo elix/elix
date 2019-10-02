@@ -3,8 +3,11 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const AriaMenuMixin: Mixin<{}, {
-  role: String;
-}>;
+declare const AriaMenuMixin: Mixin<
+  {},
+  {
+    role: String;
+  }
+>;
 
 export default AriaMenuMixin;

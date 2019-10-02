@@ -7,11 +7,8 @@ import DirectionSelectionMixin from './DirectionSelectionMixin.js';
 import ListBox from './ListBox.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 
-export default class ListComboBox extends
-    DelegateItemsMixin(
-    DirectionSelectionMixin(
-    SingleSelectionMixin(
-      ComboBox
-    ))) {
+export default class ListComboBox extends DelegateItemsMixin(
+  DirectionSelectionMixin(SingleSelectionMixin(ComboBox))
+) {
   listRole: Role;
 }

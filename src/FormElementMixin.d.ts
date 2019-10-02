@@ -3,7 +3,9 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const FormElementMixin: StateMixin<{}, {},
+declare const FormElementMixin: StateMixin<
+  {},
+  {},
   {
     checkValidity(): void;
     form: HTMLFormElement;
@@ -11,7 +13,7 @@ declare const FormElementMixin: StateMixin<{}, {},
     type: string;
     validationMessage: string;
     validity: boolean;
-    willValidate: boolean;  
+    willValidate: boolean;
   },
   {
     value: string;

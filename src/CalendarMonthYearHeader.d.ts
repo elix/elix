@@ -4,10 +4,9 @@
 import CalendarElementMixin from './CalendarElementMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
-export default class CalendarMonthYearHeader extends
-    CalendarElementMixin(
-      ReactiveElement
-    ) {
-  monthFormat: 'numeric'|'2-digit'|'long'|'short'|'narrow';
-  yearFormat: 'numeric'|'2-digit';
+export default class CalendarMonthYearHeader extends CalendarElementMixin(
+  ReactiveElement
+) {
+  monthFormat: 'numeric' | '2-digit' | 'long' | 'short' | 'narrow';
+  yearFormat: 'numeric' | '2-digit';
 }

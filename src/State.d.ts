@@ -3,11 +3,14 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare type ChangeHandler = (state: State, changed: PlainObject) => PlainObject|null;
+declare type ChangeHandler = (
+  state: State,
+  changed: PlainObject
+) => PlainObject | null;
 
 export default class State {
   constructor(defaults?: PlainObject);
-  copyWithChanges(changes: PlainObject): { state: State, changed: boolean };
-  onChange(dependencies: string[]|string, callback: ChangeHandler): void;
+  copyWithChanges(changes: PlainObject): { state: State; changed: boolean };
+  onChange(dependencies: string[] | string, callback: ChangeHandler): void;
   [key: string]: any;
 }

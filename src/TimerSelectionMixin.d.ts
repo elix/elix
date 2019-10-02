@@ -5,11 +5,14 @@
 
 import * as internal from './internal.js';
 
-declare const TimerSelectionMixin: Mixin<{}, {
-  pause(): void;
-  play(): void;
-  playing: boolean;
-  selectionTimerDuration: number;
-}>;
+declare const TimerSelectionMixin: Mixin<
+  {},
+  {
+    pause(): void;
+    play(): void;
+    playing: boolean;
+    selectionTimerDuration: number;
+  }
+>;
 
 export default TimerSelectionMixin;

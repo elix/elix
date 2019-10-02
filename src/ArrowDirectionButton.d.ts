@@ -4,7 +4,6 @@
 import DarkModeMixin from './DarkModeMixin.js';
 import SeamlessButton from './SeamlessButton.js';
 
-export default class ArrowDirectionButton extends
-    DarkModeMixin(
-      SeamlessButton
-    ) {}
+export default class ArrowDirectionButton extends DarkModeMixin(
+  SeamlessButton
+) {}

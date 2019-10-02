@@ -3,8 +3,8 @@
 
 export function canScrollInDirection(
   target: EventTarget,
-  orientation: 'horizontal'|'vertical',
+  orientation: 'horizontal' | 'vertical',
   downOrRight: boolean
 ): boolean;
 export function defaultScrollTarget(element: HTMLElement): HTMLElement;
-export function getScrollableElement(element: HTMLElement): HTMLElement|null;
+export function getScrollableElement(element: HTMLElement): HTMLElement | null;

@@ -8,13 +8,10 @@ import OpenCloseMixin from './OpenCloseMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 import SeamlessButton from './SeamlessButton.js';
 
-export default class HamburgerMenuButton extends
-    FocusVisibleMixin(
-    KeyboardMixin(
-    OpenCloseMixin(
-      ReactiveElement
-    ))) {
-  fromEdge: 'end'|'left'|'right'|'start';
+export default class HamburgerMenuButton extends FocusVisibleMixin(
+  KeyboardMixin(OpenCloseMixin(ReactiveElement))
+) {
+  fromEdge: 'end' | 'left' | 'right' | 'start';
   menuRole: Role;
   menuButtonRole: Role;
 }

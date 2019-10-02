@@ -18,23 +18,32 @@ import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 import TapSelectionMixin from './TapSelectionMixin.js';
 
-export default class Menu extends
-    AriaMenuMixin(
-    DelegateFocusMixin(
+export default class Menu extends AriaMenuMixin(
+  DelegateFocusMixin(
     DirectionSelectionMixin(
-    FocusVisibleMixin(
-    ItemsTextMixin(
-    KeyboardDirectionMixin(
-    KeyboardMixin(
-    KeyboardPagedSelectionMixin(
-    KeyboardPrefixSelectionMixin(
-    LanguageDirectionMixin(
-    SelectedItemTextValueMixin(
-    SelectionInViewMixin(
-    SingleSelectionMixin(
-    SlotItemsMixin(
-    TapSelectionMixin(
-      ReactiveElement
-    ))))))))))))))) {
+      FocusVisibleMixin(
+        ItemsTextMixin(
+          KeyboardDirectionMixin(
+            KeyboardMixin(
+              KeyboardPagedSelectionMixin(
+                KeyboardPrefixSelectionMixin(
+                  LanguageDirectionMixin(
+                    SelectedItemTextValueMixin(
+                      SelectionInViewMixin(
+                        SingleSelectionMixin(
+                          SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+) {
   highlightSelectedItem(): Promise<void>;
 }

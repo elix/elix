@@ -7,8 +7,8 @@ declare const CalendarElementMixin: StateMixin<
   {},
   {},
   {
-    date: Date,
-    locale: string
+    date: Date;
+    locale: string;
   },
   {
     date: Date;

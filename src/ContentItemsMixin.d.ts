@@ -5,10 +5,15 @@
 
 import * as internal from './internal.js';
 
-declare const ContentItemsMixin: StateMixin<{}, {},
+declare const ContentItemsMixin: StateMixin<
+  {},
+  {},
   {
     items: ListItemElement[];
-    [internal.itemMatchesState](item: ListItemElement, state: PlainObject): boolean;
+    [internal.itemMatchesState](
+      item: ListItemElement,
+      state: PlainObject
+    ): boolean;
   },
   {
     items: ListItemElement[];

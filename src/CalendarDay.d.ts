@@ -4,10 +4,7 @@
 import CalendarElementMixin from './CalendarElementMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
-export default class CalendarDay extends
-    CalendarElementMixin(
-      ReactiveElement
-    ) {
+export default class CalendarDay extends CalendarElementMixin(ReactiveElement) {
   outsideRange: boolean;
-  selected: boolean;    
+  selected: boolean;
 }

@@ -4,4 +4,3 @@
 import CenteredStrip from './CenteredStrip.js';
 
 export default class CenteredStripHighlight extends CenteredStrip {}
-

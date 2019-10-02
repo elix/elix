@@ -6,9 +6,6 @@ import FocusCaptureMixin from './FocusCaptureMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import Overlay from './Overlay.js';
 
-export default class Dialog extends
-    DialogModalityMixin(
-    FocusCaptureMixin(
-    KeyboardMixin(
-      Overlay
-    ))) {}
+export default class Dialog extends DialogModalityMixin(
+  FocusCaptureMixin(KeyboardMixin(Overlay))
+) {}

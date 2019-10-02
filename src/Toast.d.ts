@@ -5,12 +5,9 @@ import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 import Popup from './Popup.js';
 import TransitionEffectMixin from './TransitionEffectMixin.js';
 
-export default class Toast extends
-    LanguageDirectionMixin(
-    TransitionEffectMixin(
-      Popup
-    )) {
+export default class Toast extends LanguageDirectionMixin(
+  TransitionEffectMixin(Popup)
+) {
   duration: number;
-  fromEdge: 'bottom'|'end'|'left'|'right'|'start'|'top';
-  
+  fromEdge: 'bottom' | 'end' | 'left' | 'right' | 'start' | 'top';
 }

@@ -4,9 +4,6 @@
 import Explorer from './Explorer.js';
 import GenericMixin from './GenericMixin.js';
 
-export default class Tabs extends
-    GenericMixin(
-      Explorer
-    ) {
-  tabAlign: 'start'|'center'|'end'|'stretch';
+export default class Tabs extends GenericMixin(Explorer) {
+  tabAlign: 'start' | 'center' | 'end' | 'stretch';
 }

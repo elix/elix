@@ -10,14 +10,13 @@ interface HasSymbolsProperties {
   // indexed by the Symbols in internal.js -- which we tell TypeScript
   // are strings so that it will support the completely valid use of
   // unique symbols as keys.
-  [key:string]: any;
+  [key: string]: any;
 }
 
-export default class ReactiveElement extends
-    AttributeMarshallingMixin(
-    ReactiveMixin(
-    ShadowTemplateMixin(
-      HTMLElement
-    ))) implements HasSymbolsProperties {
-  [key:string]: any;
+export default class ReactiveElement
+  extends AttributeMarshallingMixin(
+    ReactiveMixin(ShadowTemplateMixin(HTMLElement))
+  )
+  implements HasSymbolsProperties {
+  [key: string]: any;
 }

@@ -5,10 +5,13 @@
 
 import * as internal from './internal.js';
 
-declare const SwipeDirectionMixin: Mixin<{}, {
-  // Uncomment these once TypeScript can deal with them.
-  // [internal.swipeLeft](): void;
-  // [internal.swipeRight](): void;
-}>;
+declare const SwipeDirectionMixin: Mixin<
+  {},
+  {
+    // Uncomment these once TypeScript can deal with them.
+    // [internal.swipeLeft](): void;
+    // [internal.swipeRight](): void;
+  }
+>;
 
 export default SwipeDirectionMixin;

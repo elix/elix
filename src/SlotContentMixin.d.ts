@@ -5,7 +5,9 @@
 
 import * as internal from './internal.js';
 
-declare const SlotContentMixin: StateMixin<{}, {},
+declare const SlotContentMixin: StateMixin<
+  {},
+  {},
   {
     [internal.contentSlot]: HTMLSlotElement;
   },

@@ -8,13 +8,10 @@ import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 import TransitionEffectMixin from './TransitionEffectMixin.js';
 
-export default class Drawer extends
-    LanguageDirectionMixin(
-    TouchSwipeMixin(
-    TrackpadSwipeMixin(
-    EffectMixin(
-    TransitionEffectMixin(
-      Dialog
-    ))))) {
-  fromEdge: 'bottom'|'end'|'left'|'right'|'start'|'top';
+export default class Drawer extends LanguageDirectionMixin(
+  TouchSwipeMixin(
+    TrackpadSwipeMixin(EffectMixin(TransitionEffectMixin(Dialog)))
+  )
+) {
+  fromEdge: 'bottom' | 'end' | 'left' | 'right' | 'start' | 'top';
 }

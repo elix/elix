@@ -5,8 +5,11 @@
 
 import * as internal from './internal.js';
 
-declare const DelegateFocusMixin: Mixin<{}, {
-  [internal.delegatesFocus]: boolean;
-}>;
+declare const DelegateFocusMixin: Mixin<
+  {},
+  {
+    [internal.delegatesFocus]: boolean;
+  }
+>;
 
 export default DelegateFocusMixin;

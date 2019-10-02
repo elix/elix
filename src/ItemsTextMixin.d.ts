@@ -18,4 +18,7 @@ declare type GetTextCallback = (item: Node) => string;
 
 export default ItemsTextMixin;
 export function getItemText(item: Node): string;
-export function getTextsFromItems(items: Node[], getText?: GetTextCallback): string[] | null;
+export function getTextsFromItems(
+  items: Node[],
+  getText?: GetTextCallback
+): string[] | null;

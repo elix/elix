@@ -12,14 +12,16 @@ import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import LanguageDirectionMixin from './LanguageDirectionMixin.js';
 
-export default class CalendarMonthNavigator extends
-    ArrowDirectionMixin(
-    CalendarElementMixin(
+export default class CalendarMonthNavigator extends ArrowDirectionMixin(
+  CalendarElementMixin(
     DarkModeMixin(
-    FocusVisibleMixin(
-    FormElementMixin(
-    KeyboardDirectionMixin(
-    KeyboardMixin(
-    LanguageDirectionMixin(
-      CalendarMonth
-    )))))))) {}
+      FocusVisibleMixin(
+        FormElementMixin(
+          KeyboardDirectionMixin(
+            KeyboardMixin(LanguageDirectionMixin(CalendarMonth))
+          )
+        )
+      )
+    )
+  )
+) {}

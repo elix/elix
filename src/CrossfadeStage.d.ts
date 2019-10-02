@@ -4,9 +4,6 @@
 import EffectMixin from './EffectMixin.js';
 import Modes from './Modes.js';
 
-export default class CrossfadeStage extends
-    EffectMixin(
-      Modes
-    ) {
+export default class CrossfadeStage extends EffectMixin(Modes) {
   transitionDuration: number;
 }

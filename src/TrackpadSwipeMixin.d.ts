@@ -5,7 +5,9 @@
 
 import * as internal from './internal.js';
 
-declare const TrackpadSwipeMixin: StateMixin<{}, {},
+declare const TrackpadSwipeMixin: StateMixin<
+  {},
+  {},
   {
     [internal.swipeTarget]: HTMLElement;
   },

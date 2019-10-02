@@ -5,12 +5,14 @@
 
 import * as internal from './internal.js';
 
-declare const TouchSwipeMixin: StateMixin<{}, {},
+declare const TouchSwipeMixin: StateMixin<
+  {},
+  {},
   {
     [internal.swipeTarget]: HTMLElement;
   },
   {
-    swipeFraction: number
+    swipeFraction: number;
   }
 >;
 

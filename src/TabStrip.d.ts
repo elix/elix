@@ -12,19 +12,22 @@ import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 import TapSelectionMixin from './TapSelectionMixin.js';
 
-export default class TabStrip extends
-    AriaListMixin(
-    TapSelectionMixin(
+export default class TabStrip extends AriaListMixin(
+  TapSelectionMixin(
     DirectionSelectionMixin(
-    GenericMixin(
-    KeyboardDirectionMixin(
-    KeyboardMixin(
-    LanguageDirectionMixin(
-    SingleSelectionMixin(
-    SlotItemsMixin(
-      ReactiveElement
-    ))))))))) {
-  orientation: 'horizontal'|'vertical';
-  position: 'bottom'|'left'|'right'|'top';
-  tabAlign: 'start'|'center'|'end'|'stretch';
+      GenericMixin(
+        KeyboardDirectionMixin(
+          KeyboardMixin(
+            LanguageDirectionMixin(
+              SingleSelectionMixin(SlotItemsMixin(ReactiveElement))
+            )
+          )
+        )
+      )
+    )
+  )
+) {
+  orientation: 'horizontal' | 'vertical';
+  position: 'bottom' | 'left' | 'right' | 'top';
+  tabAlign: 'start' | 'center' | 'end' | 'stretch';
 }

@@ -6,12 +6,9 @@ import OverlayMixin from './OverlayMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 import SlotContentMixin from './SlotContentMixin.js';
 
-export default class Overlay extends
-    OpenCloseMixin(
-    OverlayMixin(
-    SlotContentMixin(
-      ReactiveElement
-    ))) {
+export default class Overlay extends OpenCloseMixin(
+  OverlayMixin(SlotContentMixin(ReactiveElement))
+) {
   backdrop: Element;
   backdropRole: Role;
   frame: Element;

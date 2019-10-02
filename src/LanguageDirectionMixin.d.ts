@@ -5,8 +5,13 @@
 
 import * as internal from './internal.js';
 
-declare const LanguageDirectionMixin: StateMixin<{}, {}, {}, {
-  rightToLeft: boolean;
-}>;
+declare const LanguageDirectionMixin: StateMixin<
+  {},
+  {},
+  {},
+  {
+    rightToLeft: boolean;
+  }
+>;
 
 export default LanguageDirectionMixin;

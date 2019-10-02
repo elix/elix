@@ -4,6 +4,6 @@
 import ReactiveElement from './ReactiveElement.js';
 
 export default class CalendarDayNamesHeader extends ReactiveElement {
-  format: 'long'|'narrow'|'short';
+  format: 'long' | 'narrow' | 'short';
   locale: string;
 }

@@ -4,11 +4,10 @@
 import CalendarElementMixin from './CalendarElementMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
-export default class CalendarDays extends
-    CalendarElementMixin(
-      ReactiveElement
-    ) {
-  dayElementForDate(date: Date): Element|null;
+export default class CalendarDays extends CalendarElementMixin(
+  ReactiveElement
+) {
+  dayElementForDate(date: Date): Element | null;
   dayCount: number;
   dayRole: Role;
   days: Element[];

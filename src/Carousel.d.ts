@@ -16,16 +16,18 @@ import SwipeDirectionMixin from './SwipeDirectionMixin.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 
-export default class Carousel extends
-    AriaListMixin(
-    ArrowDirectionMixin(
+export default class Carousel extends AriaListMixin(
+  ArrowDirectionMixin(
     DarkModeMixin(
-    DirectionSelectionMixin(
-    FocusVisibleMixin(
-    KeyboardDirectionMixin(
-    KeyboardMixin(
-    SwipeDirectionMixin(
-    TouchSwipeMixin(
-    TrackpadSwipeMixin(
-      Explorer
-    )))))))))) {}
+      DirectionSelectionMixin(
+        FocusVisibleMixin(
+          KeyboardDirectionMixin(
+            KeyboardMixin(
+              SwipeDirectionMixin(TouchSwipeMixin(TrackpadSwipeMixin(Explorer)))
+            )
+          )
+        )
+      )
+    )
+  )
+) {}

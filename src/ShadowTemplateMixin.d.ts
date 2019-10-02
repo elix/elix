@@ -3,12 +3,15 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const ShadowTemplateMixin: Mixin<{}, {
-  ids: {
-    [id: string]: HTMLElement|SVGElement;
-  },
-  connectedCallback(): void;
-  shadowRoot: ShadowRoot;
-}>;
+declare const ShadowTemplateMixin: Mixin<
+  {},
+  {
+    ids: {
+      [id: string]: HTMLElement | SVGElement;
+    };
+    connectedCallback(): void;
+    shadowRoot: ShadowRoot;
+  }
+>;
 
 export default ShadowTemplateMixin;

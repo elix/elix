@@ -7,13 +7,9 @@ import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 
-export default class DropdownList extends
-    FormElementMixin(
-    SelectedItemTextValueMixin(
-    SingleSelectionMixin(
-    SlotItemsMixin(
-      MenuButton
-    )))) {
+export default class DropdownList extends FormElementMixin(
+  SelectedItemTextValueMixin(SingleSelectionMixin(SlotItemsMixin(MenuButton)))
+) {
   defaultMenuSelectedIndex: number;
   valueRole: Role;
 }

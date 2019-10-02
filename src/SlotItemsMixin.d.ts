@@ -6,15 +6,16 @@
 import * as internal from './internal.js';
 
 declare const SlotItemsMixin: StateMixin<
-{},
-{},
-{
-  [internal.contentSlot]: HTMLSlotElement;
-  items: ListItemElement[];
-},
-{
-  content: Node[];
-  items: ListItemElement[];
-}>;
+  {},
+  {},
+  {
+    [internal.contentSlot]: HTMLSlotElement;
+    items: ListItemElement[];
+  },
+  {
+    content: Node[];
+    items: ListItemElement[];
+  }
+>;
 
 export default SlotItemsMixin;

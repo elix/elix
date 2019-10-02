@@ -5,9 +5,12 @@
 
 import * as internal from './internal.js';
 
-declare const SelectionInViewMixin: Mixin<{}, {
-  scrollItemIntoView(item: Element): void;
-  [internal.scrollTarget]: Element
-}>;
+declare const SelectionInViewMixin: Mixin<
+  {},
+  {
+    scrollItemIntoView(item: Element): void;
+    [internal.scrollTarget]: Element;
+  }
+>;
 
 export default SelectionInViewMixin;

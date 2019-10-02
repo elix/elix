@@ -4,7 +4,4 @@
 import AriaRoleMixin from './AriaRoleMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
-export default class Backdrop extends
-    AriaRoleMixin(
-      ReactiveElement
-    ) {}
+export default class Backdrop extends AriaRoleMixin(ReactiveElement) {}

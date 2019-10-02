@@ -6,15 +6,16 @@
 import * as internal from './internal.js';
 
 declare const TransitionEffectMixin: StateMixin<
-{},
-{},
-{
-  startEffect(effect: string): Promise<void>;
-  [internal.elementsWithTransitions]: Element[];
-},
-{
-  effect: string;
-  effectPhase: string;
-}>;
+  {},
+  {},
+  {
+    startEffect(effect: string): Promise<void>;
+    [internal.elementsWithTransitions]: Element[];
+  },
+  {
+    effect: string;
+    effectPhase: string;
+  }
+>;
 
 export default TransitionEffectMixin;

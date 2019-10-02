@@ -3,8 +3,13 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const EffectMixin: StateMixin<{}, {}, {}, {
-  enableEffects: boolean
-}>;
+declare const EffectMixin: StateMixin<
+  {},
+  {},
+  {},
+  {
+    enableEffects: boolean;
+  }
+>;
 
 export default EffectMixin;

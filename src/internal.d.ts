@@ -1,11 +1,11 @@
 /*
  * The Elix project makes pervasive use of shared Symbol objects as indexers
  * to avoid accidental name conflicts.
- * 
+ *
  * Unforunately, as of Aug 2018, TypeScript no longer considers this to be
  * valid, and will log a type error. See
  * https://github.com/Microsoft/TypeScript/issues/1863.
- * 
+ *
  * The best workaround we have found is to declare shared Symbol objects (below,
  * and also inline in various components and mixins) to be string literals
  * instead. This suppresses the type errors, while still allowing the real

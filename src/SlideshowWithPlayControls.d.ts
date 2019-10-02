@@ -13,16 +13,20 @@ import SwipeDirectionMixin from './SwipeDirectionMixin.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 
-export default class SlideshowWithPlayControls extends
-  AriaListMixin(
+export default class SlideshowWithPlayControls extends AriaListMixin(
   DirectionSelectionMixin(
-  FocusVisibleMixin(
-  KeyboardDirectionMixin(
-  KeyboardMixin(
-  LanguageDirectionMixin(
-  PlayControlsMixin(
-  SwipeDirectionMixin(
-  TouchSwipeMixin(
-  TrackpadSwipeMixin(
-    Slideshow
-  )))))))))) {}
+    FocusVisibleMixin(
+      KeyboardDirectionMixin(
+        KeyboardMixin(
+          LanguageDirectionMixin(
+            PlayControlsMixin(
+              SwipeDirectionMixin(
+                TouchSwipeMixin(TrackpadSwipeMixin(Slideshow))
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+) {}

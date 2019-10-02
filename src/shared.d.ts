@@ -1,10 +1,9 @@
 /*
  * General type declarations for Elix.
- * 
+ *
  * Elix is a JavaScript project, but we use TypeScript as an internal tool to
  * confirm our code is type safe.
  */
-
 
 // We need to import the internal `state` symbol, but the desired import seems
 // to cause TypeScript to fail at processing this file. Since we're currently
@@ -15,38 +14,36 @@
 // import { state } from './internal.js';
 declare const state = '_state';
 
-
 /*
  * A class constructor is an object with a `new` method that returns an
  * instance of the indicated type.
  */
-type Constructor<T> = new() => T;
-
+type Constructor<T> = new () => T;
 
 /*
  * A dictionary that maps strings to objects of type T.
  */
 type IndexedObject<T> = {
   [key: string]: T;
-}
-
+};
 
 /*
  * A onChange handler for a State object.
  */
-type ChangeHandler = (state: PlainObject, changed?: PlainObject|null) => PlainObject|null;
-
+type ChangeHandler = (
+  state: PlainObject,
+  changed?: PlainObject | null
+) => PlainObject | null;
 
 /*
  * An item in a list component
  */
-type ListItemElement = HTMLElement|SVGElement;
-
+type ListItemElement = HTMLElement | SVGElement;
 
 /*
  * An Elix mixin is a function that takes an existing class and returns a new
  * class.
- * 
+ *
  * The use of a generic type `T` here is a way of indicating that the members
  * of the supplied base class automatically pass through to the result. This
  * is important because a mixin may be applied not just to HTMLElement, but to
@@ -65,10 +62,9 @@ type ListItemElement = HTMLElement|SVGElement;
  * mixin might the say, "The base class I'm given _may_ have a foo property. The
  * class I return will _definitely_ have a foo property."
  */
-type Mixin<BaseMembers, MixinMembers> =
-  <T extends HTMLElement & BaseMembers>(Base: Constructor<T>) => 
-    Constructor<T & MixinMembers>;
-
+type Mixin<BaseMembers, MixinMembers> = <T extends HTMLElement & BaseMembers>(
+  Base: Constructor<T>
+) => Constructor<T & MixinMembers>;
 
 /*
  * State is generally represented with plain JavaScript object dictionaries.
@@ -77,9 +73,7 @@ type PlainObject = {
   [key: string]: any;
 };
 
-
-type Role = Constructor<HTMLElement>|string|HTMLTemplateElement;
-
+type Role = Constructor<HTMLElement> | string | HTMLTemplateElement;
 
 /*
  * Mixins that add to state can indicate exactly what members they add to state.
@@ -87,12 +81,11 @@ type Role = Constructor<HTMLElement>|string|HTMLTemplateElement;
  * component type definitions will be an empty object — i.e., the mixin makes no
  * expectations about what state is provided by the base class.
  */
-type StateMixin<BaseMembers, BaseState, MixinMembers, MixinState> =
-  Mixin<
-    BaseMembers & {
-      [state]?: BaseState
-    },
-    MixinMembers & {
-      [state]: BaseState & MixinState
-    }
-  >;
+type StateMixin<BaseMembers, BaseState, MixinMembers, MixinState> = Mixin<
+  BaseMembers & {
+    [state]?: BaseState;
+  },
+  MixinMembers & {
+    [state]: BaseState & MixinState;
+  }
+>;

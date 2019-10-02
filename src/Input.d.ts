@@ -4,9 +4,6 @@
 import FormElementMixin from './FormElementMixin.js';
 import WrappedStandardElement from './WrappedStandardElement.js';
 
-export default class Input extends
-    FormElementMixin(
-      WrappedStandardElement
-    ) {
+export default class Input extends FormElementMixin(WrappedStandardElement) {
   value: string;
 }

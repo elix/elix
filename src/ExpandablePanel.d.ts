@@ -6,9 +6,6 @@ import ReactiveElement from './ReactiveElement.js';
 import TransitionEffectMixin from './TransitionEffectMixin.js';
 import EffectMixin from './EffectMixin.js';
 
-export default class ExpandablePanel extends
-    OpenCloseMixin(
-    EffectMixin(
-    TransitionEffectMixin(
-      ReactiveElement
-    ))) {}
+export default class ExpandablePanel extends OpenCloseMixin(
+  EffectMixin(TransitionEffectMixin(ReactiveElement))
+) {}

@@ -4,7 +4,4 @@
 import DarkModeMixin from './DarkModeMixin.js';
 import SeamlessButton from './SeamlessButton.js';
 
-export default class PageDot extends
-    DarkModeMixin(
-      SeamlessButton
-    ) {}
+export default class PageDot extends DarkModeMixin(SeamlessButton) {}

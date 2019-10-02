@@ -19,24 +19,34 @@ import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
 import TapSelectionMixin from './TapSelectionMixin.js';
 
-export default class ListBox extends
-    AriaListMixin(
-    ComposedFocusMixin(
+export default class ListBox extends AriaListMixin(
+  ComposedFocusMixin(
     DirectionSelectionMixin(
-    FocusVisibleMixin(
-    FormElementMixin(
-    ItemsTextMixin(
-    KeyboardDirectionMixin(
-    KeyboardMixin(
-    KeyboardPagedSelectionMixin(
-    KeyboardPrefixSelectionMixin(
-    LanguageDirectionMixin(
-    SelectedItemTextValueMixin(
-    SelectionInViewMixin(
-    SingleSelectionMixin(
-    SlotItemsMixin(
-    TapSelectionMixin(
-      ReactiveElement
-    )))))))))))))))) {
-  orientation: 'horizontal'|'vertical';
+      FocusVisibleMixin(
+        FormElementMixin(
+          ItemsTextMixin(
+            KeyboardDirectionMixin(
+              KeyboardMixin(
+                KeyboardPagedSelectionMixin(
+                  KeyboardPrefixSelectionMixin(
+                    LanguageDirectionMixin(
+                      SelectedItemTextValueMixin(
+                        SelectionInViewMixin(
+                          SingleSelectionMixin(
+                            SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+) {
+  orientation: 'horizontal' | 'vertical';
 }

@@ -11,14 +11,14 @@ import SwipeDirectionMixin from './SwipeDirectionMixin.js';
 import TouchSwipeMixin from './TouchSwipeMixin.js';
 import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
 
-export default class SlidingPages extends
-  AriaListMixin(
+export default class SlidingPages extends AriaListMixin(
   DirectionSelectionMixin(
-  FocusVisibleMixin(
-  KeyboardDirectionMixin(
-  KeyboardMixin(
-  SwipeDirectionMixin(
-  TouchSwipeMixin(
-  TrackpadSwipeMixin(
-    SlidingStage
-  )))))))) {}
+    FocusVisibleMixin(
+      KeyboardDirectionMixin(
+        KeyboardMixin(
+          SwipeDirectionMixin(TouchSwipeMixin(TrackpadSwipeMixin(SlidingStage)))
+        )
+      )
+    )
+  )
+) {}
