@@ -1,52 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix DarkModeMixin</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix DarkModeMixin</title>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="../define/Carousel.js"></script>
+  </head>
 
-  <link rel="stylesheet" href="demos.css">
-  <script type="module" src="../define/Carousel.js"></script>
- 
-</head>
+  <body role="main">
+    <div class="demo padded">
+      <style>
+        .darkModeCarousel {
+          display: block;
+          width: 300px;
+        }
 
-<body role="main">
-  <div class="demo padded">
-    <style>
-      .darkModeCarousel {
-        display: block;
-        width: 300px;
-      }
+        .darkModeCarousel .carouselItem {
+          display: inline-block;
+          height: 100%;
+          object-fit: contain;
+          vertical-align: middle;
+          width: 100%;
+        }
 
-      .darkModeCarousel .carouselItem {
-        display: inline-block;
-        height: 100%;
-        object-fit: contain;
-        vertical-align: middle;
-        width: 100%;
-      }
-
-      #darkCarousel {
-        background: black;
-        margin-top: 1em;
-      }
-    </style>
-    <elix-carousel class="darkModeCarousel" id="lightCarousel" aria-label="Nature scenes" arrow-button-overlap="false" proxy-list-overlap="false">
-        <img class="carouselItem" src="images/image01.jpg" alt="Mountain lake">
-        <img class="carouselItem" src="images/image02.jpg" alt="Terraced farm">
-        <img class="carouselItem" src="images/image03.jpg" alt="Winter trees">
-        <img class="carouselItem" src="images/image04.jpg" alt="Forest river">
-        <img class="carouselItem" src="images/image05.jpg" alt="Red panda">
-    </elix-carousel>
-    <elix-carousel class="darkModeCarousel" id="darkCarousel" aria-label="Nature scenes" arrow-button-overlap="false" proxy-list-overlap="false">
-      <img class="carouselItem" src="images/image01.jpg" alt="Mountain lake">
-      <img class="carouselItem" src="images/image02.jpg" alt="Terraced farm">
-      <img class="carouselItem" src="images/image03.jpg" alt="Winter trees">
-      <img class="carouselItem" src="images/image04.jpg" alt="Forest river">
-      <img class="carouselItem" src="images/image05.jpg" alt="Red panda">
-    </elix-carousel>
-  </div>
-</body>
-
+        #darkCarousel {
+          background: black;
+          margin-top: 1em;
+        }
+      </style>
+      <elix-carousel
+        class="darkModeCarousel"
+        id="lightCarousel"
+        aria-label="Nature scenes"
+        arrow-button-overlap="false"
+        proxy-list-overlap="false"
+      >
+        <img
+          class="carouselItem"
+          src="images/image01.jpg"
+          alt="Mountain lake"
+        />
+        <img
+          class="carouselItem"
+          src="images/image02.jpg"
+          alt="Terraced farm"
+        />
+        <img class="carouselItem" src="images/image03.jpg" alt="Winter trees" />
+        <img class="carouselItem" src="images/image04.jpg" alt="Forest river" />
+        <img class="carouselItem" src="images/image05.jpg" alt="Red panda" />
+      </elix-carousel>
+      <elix-carousel
+        class="darkModeCarousel"
+        id="darkCarousel"
+        aria-label="Nature scenes"
+        arrow-button-overlap="false"
+        proxy-list-overlap="false"
+      >
+        <img
+          class="carouselItem"
+          src="images/image01.jpg"
+          alt="Mountain lake"
+        />
+        <img
+          class="carouselItem"
+          src="images/image02.jpg"
+          alt="Terraced farm"
+        />
+        <img class="carouselItem" src="images/image03.jpg" alt="Winter trees" />
+        <img class="carouselItem" src="images/image04.jpg" alt="Forest river" />
+        <img class="carouselItem" src="images/image05.jpg" alt="Red panda" />
+      </elix-carousel>
+    </div>
+  </body>
 </html>

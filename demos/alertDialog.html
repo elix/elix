@@ -1,58 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix AlertDialog</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix AlertDialog</title>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="../define/AlertDialog.js"></script>
+  </head>
 
-  <link rel="stylesheet" href="demos.css">
-  <script type="module" src="../define/AlertDialog.js"></script>
+  <body role="main">
+    <div class="demo padded">
+      <style>
+        #response {
+          margin-bottom: 0;
+        }
+        #response:empty {
+          display: none;
+        }
+      </style>
 
-</head>
+      <button id="okCancelButton" onclick="okCancelClick()">
+        Open OK/Cancel alert
+      </button>
+      <button id="yesNoCancelButton" onclick="yesNoCancelClick()">
+        Open Yes/No/Cancel alert
+      </button>
 
-<body role="main">
-  <div class="demo padded">
+      <p id="response"></p>
 
-    <style>
-      #response {
-        margin-bottom: 0;
-      }
-      #response:empty {
-        display: none;
-      }
-    </style>
+      <script>
+        function okCancelClick(event) {
+          showAlertWithChoices(['OK', 'Cancel']);
+        }
 
-    <button id="okCancelButton" onclick="okCancelClick()">Open OK/Cancel alert</button>
-    <button id="yesNoCancelButton" onclick="yesNoCancelClick()">Open Yes/No/Cancel alert</button>
+        function yesNoCancelClick(event) {
+          showAlertWithChoices(['Yes', 'No', 'Cancel']);
+        }
 
-    <p id="response"></p>
-
-    <script>
-      function okCancelClick(event) {
-        showAlertWithChoices(['OK', 'Cancel']);
-      }
-  
-      function yesNoCancelClick(event) {
-        showAlertWithChoices(['Yes', 'No', 'Cancel']);
-      }
-  
-      async function showAlertWithChoices(choices) {
-        const dialog = document.createElement('elix-alert-dialog');
-        dialog.textContent = 'Hello, world';
-        dialog.choices = choices;
-        dialog.addEventListener('closed', event => {
-          const closeResult = event.detail.closeResult;
-          const choice = closeResult && closeResult.choice;
-          response.textContent = choice ?
-            "You picked " + choice + "." :
-            "You didn't make a choice.";
-        })
-        await dialog.open();
-      }
-    </script>
-
-  </div>
-</body>
-
+        async function showAlertWithChoices(choices) {
+          const dialog = document.createElement('elix-alert-dialog');
+          dialog.textContent = 'Hello, world';
+          dialog.choices = choices;
+          dialog.addEventListener('closed', event => {
+            const closeResult = event.detail.closeResult;
+            const choice = closeResult && closeResult.choice;
+            response.textContent = choice
+              ? 'You picked ' + choice + '.'
+              : "You didn't make a choice.";
+          });
+          await dialog.open();
+        }
+      </script>
+    </div>
+  </body>
 </html>

@@ -1,33 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix DropdownList with custom value representation</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix DropdownList with custom value representation</title>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="../define/DropdownList.js"></script>
+    <script type="module" src="./src/LabeledColorSwatch.js"></script>
+  </head>
 
-  <link rel="stylesheet" href="demos.css">
-  <script type="module" src="../define/DropdownList.js"></script>
-  <script type="module" src="./src/LabeledColorSwatch.js"></script>
-  
-</head>
-
-<body role="main">
-  <div class="demo padded">
-    <label>
-      Pick a color:
-      <elix-dropdown-list value-role='labeled-color-swatch'>
-        <labeled-color-swatch>Black</labeled-color-swatch>
-        <labeled-color-swatch>Blue</labeled-color-swatch>
-        <labeled-color-swatch>Green</labeled-color-swatch>
-        <labeled-color-swatch>Orange</labeled-color-swatch>
-        <labeled-color-swatch>Purple</labeled-color-swatch>
-        <labeled-color-swatch>Red</labeled-color-swatch>
-        <labeled-color-swatch>White</labeled-color-swatch>
-        <labeled-color-swatch>Yellow</labeled-color-swatch>
-      </elix-dropdown-list>
-    </label>
-  </div>
-</body>
-
+  <body role="main">
+    <div class="demo padded">
+      <label>
+        Pick a color:
+        <elix-dropdown-list value-role="labeled-color-swatch">
+          <labeled-color-swatch>Black</labeled-color-swatch>
+          <labeled-color-swatch>Blue</labeled-color-swatch>
+          <labeled-color-swatch>Green</labeled-color-swatch>
+          <labeled-color-swatch>Orange</labeled-color-swatch>
+          <labeled-color-swatch>Purple</labeled-color-swatch>
+          <labeled-color-swatch>Red</labeled-color-swatch>
+          <labeled-color-swatch>White</labeled-color-swatch>
+          <labeled-color-swatch>Yellow</labeled-color-swatch>
+        </elix-dropdown-list>
+      </label>
+    </div>
+  </body>
 </html>

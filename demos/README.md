@@ -6,6 +6,6 @@ https://component.kitchen/demos/listBox.html.
 
 Because these demos are used in two different contexts (standalone, and in situ on documentation pages), the HTML for demo pages should:
 
-* Include a div defined by `<div class="demo">`.
+- Include a div defined by `<div class="demo">`.
 
-* Avoid empty lines in the HTML source inside the demo. Blank lines can confuse the syntax highlighting used on documentation pages.
+- Avoid empty lines in the HTML source inside the demo. Blank lines can confuse the syntax highlighting used on documentation pages.

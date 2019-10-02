@@ -1,42 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix Tabs</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix Tabs</title>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="../define/Tabs.js"></script>
+  </head>
 
-  <link rel="stylesheet" href="demos.css">
-  <script type="module" src="../define/Tabs.js"></script>
-  
-</head>
+  <body role="main">
+    <div class="demo medium padded">
+      <style>
+        #sampleTabs {
+          height: 100%;
+          width: 100%;
+        }
 
-<body role="main">
-  <div class="demo medium padded">
-    <style>
-      #sampleTabs {
-        height: 100%;
-        width: 100%;
-      }
+        #sampleTabs .panel {
+          align-items: center;
+          background: white;
+          border: 1px solid #ccc;
+          box-sizing: border-box;
+          display: flex;
+          flex: 1;
+          justify-content: center;
+        }
+      </style>
 
-      #sampleTabs .panel {
-        align-items: center;
-        background: white;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-        display: flex;
-        flex: 1;
-        justify-content: center;
-      }
-    </style>
-
-    <elix-tabs id="sampleTabs">
-      <div class="panel" aria-label="One">Page one</div>
-      <div class="panel" aria-label="Two">Page two</div>
-      <div class="panel" aria-label="Three">Page three</div>
-    </elix-tabs>
-
-  </div>
-</body>
-
+      <elix-tabs id="sampleTabs">
+        <div class="panel" aria-label="One">Page one</div>
+        <div class="panel" aria-label="Two">Page two</div>
+        <div class="panel" aria-label="Three">Page three</div>
+      </elix-tabs>
+    </div>
+  </body>
 </html>

@@ -1,83 +1,75 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ReactiveElement example</title>
+    <link rel="stylesheet" href="demos.css" />
+  </head>
 
-<head>
-
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>ReactiveElement example</title>
-  <link rel="stylesheet" href="demos.css">
-
-</head>
-
-<body role="main">
-  <!--
+  <body role="main">
+    <!--
   Note: This demo page puts its template and script in the document body, which
   is somewhat unusual, and only necessary to support showing this demo inline in
   the Elix documentation. In a typical page, the template and script would go in
   the document head.
   -->
-  <div class="demo padded">
+    <div class="demo padded">
+      <template id="incrementDecrementTemplate">
+        <button id="decrement">-</button>
+        <span id="value"></span>
+        <button id="increment">+</button>
+      </template>
 
-    <template id="incrementDecrementTemplate">
-      <button id="decrement">-</button>
-      <span id="value"></span>
-      <button id="increment">+</button>
-    </template>
-    
-    <script type="module">
-      import * as internal from '../src/internal.js';
-      import ReactiveElement from '../src/ReactiveElement.js';
-  
-      // Create a native web component with reactive behavior.
-      class IncrementDecrement extends ReactiveElement {
-  
-        [internal.componentDidMount]() {
-          super[internal.componentDidMount]();
-          this[internal.ids].decrement.addEventListener('click', () => {
-            this.value--;
-          });
-          this[internal.ids].increment.addEventListener('click', () => {
-            this.value++;
-          });
-        }
-  
-        // This sets the component's initial state at constructor time.
-        get [internal.defaultState]() {
-          return Object.assign(super[internal.defaultState], {
-            value: 0
-          });
-        }
-  
-        // Render the current state to the DOM.
-        [internal.render](changed) {
-          super[internal.render](changed);
-          if (changed.value) {
-            this[internal.ids].value.textContent = this[internal.state].value;
+      <script type="module">
+        import * as internal from '../src/internal.js';
+        import ReactiveElement from '../src/ReactiveElement.js';
+
+        // Create a native web component with reactive behavior.
+        class IncrementDecrement extends ReactiveElement {
+          [internal.componentDidMount]() {
+            super[internal.componentDidMount]();
+            this[internal.ids].decrement.addEventListener('click', () => {
+              this.value--;
+            });
+            this[internal.ids].increment.addEventListener('click', () => {
+              this.value++;
+            });
+          }
+
+          // This sets the component's initial state at constructor time.
+          get [internal.defaultState]() {
+            return Object.assign(super[internal.defaultState], {
+              value: 0
+            });
+          }
+
+          // Render the current state to the DOM.
+          [internal.render](changed) {
+            super[internal.render](changed);
+            if (changed.value) {
+              this[internal.ids].value.textContent = this[internal.state].value;
+            }
+          }
+
+          // This template is cloned to create the shadow tree for a new element.
+          get [internal.template]() {
+            return incrementDecrementTemplate;
+          }
+
+          // Provide a public property that gets/sets state.
+          get value() {
+            return this[internal.state].value;
+          }
+          set value(value) {
+            this[internal.setState]({ value });
           }
         }
-  
-        // This template is cloned to create the shadow tree for a new element.
-        get [internal.template]() {
-          return incrementDecrementTemplate;
-        }
-  
-        // Provide a public property that gets/sets state.
-        get value() {
-          return this[internal.state].value;
-        }
-        set value(value) {
-          this[internal.setState]({ value });
-        }
-  
-      }
-  
-      customElements.define('increment-decrement', IncrementDecrement);
-    </script>
 
-    <increment-decrement></increment-decrement>
-    
-  </div>
-</body>
+        customElements.define('increment-decrement', IncrementDecrement);
+      </script>
 
+      <increment-decrement></increment-decrement>
+    </div>
+  </body>
 </html>

@@ -1,57 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix ListBox synchronized with a Carousel</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix ListBox synchronized with a Carousel</title>
+    <link rel="stylesheet" href="demos.css" />
+    <script
+      type="module"
+      src="/demos/build/listAndCarouselDemo.min.js"
+    ></script>
 
-  <link rel="stylesheet" href="demos.css">
-  <script type="module" src="/demos/build/listAndCarouselDemo.min.js"></script>
+    <style>
+      elix-list-box,
+      elix-carousel {
+        height: 250px;
+        max-width: 300px;
+      }
+    </style>
 
-  <style>
-    elix-list-box,
-    elix-carousel {
-      height: 250px;
-      max-width: 300px;
-    }
-  </style>
+    <script type="module">
+      window.addEventListener('load', () => {
+        listBox.addEventListener('selected-index-changed', event =>
+          selectedIndexChanged(event)
+        );
+        carousel.addEventListener('selected-index-changed', event =>
+          selectedIndexChanged(event)
+        );
+        listBox.selectedIndex = 0;
+      });
 
-  <script type="module">
-    window.addEventListener('load', () => {
-      listBox.addEventListener('selected-index-changed', event =>
-        selectedIndexChanged(event));
-      carousel.addEventListener('selected-index-changed', event =>
-        selectedIndexChanged(event));
-      listBox.selectedIndex = 0;
-    });
+      function selectedIndexChanged(event) {
+        const { selectedIndex } = event.detail;
+        listBox.selectedIndex = selectedIndex;
+        carousel.selectedIndex = selectedIndex;
+      }
+    </script>
+  </head>
 
-    function selectedIndexChanged(event) {
-      const { selectedIndex } = event.detail;
-      listBox.selectedIndex = selectedIndex;
-      carousel.selectedIndex = selectedIndex;
-    }
-  </script>
-
-</head>
-
-<body role="main">
-  <div class="demo padded">
-    <elix-list-box id="listBox" aria-label="Nature scenes">
-      <div>Mountain lake</div>
-      <div>Terraced farm</div>
-      <div>Winter trees</div>
-      <div>Forest river</div>
-      <div>Red panda</div>
-    </elix-list-box>
-    <elix-carousel id="carousel" aria-label="Nature scenes" arrow-button-overlap="false">
-      <img src="images/image01.jpg" alt="Mountain lake"/>
-      <img src="images/image02.jpg" alt="Terraced farm"/>
-      <img src="images/image03.jpg" alt="Winter trees"/>
-      <img src="images/image04.jpg" alt="Forest river"/>
-      <img src="images/image05.jpg" alt="Red panda"/>
-    </elix-carousel>
-  </div>
-</body>
-
+  <body role="main">
+    <div class="demo padded">
+      <elix-list-box id="listBox" aria-label="Nature scenes">
+        <div>Mountain lake</div>
+        <div>Terraced farm</div>
+        <div>Winter trees</div>
+        <div>Forest river</div>
+        <div>Red panda</div>
+      </elix-list-box>
+      <elix-carousel
+        id="carousel"
+        aria-label="Nature scenes"
+        arrow-button-overlap="false"
+      >
+        <img src="images/image01.jpg" alt="Mountain lake" />
+        <img src="images/image02.jpg" alt="Terraced farm" />
+        <img src="images/image03.jpg" alt="Winter trees" />
+        <img src="images/image04.jpg" alt="Forest river" />
+        <img src="images/image05.jpg" alt="Red panda" />
+      </elix-carousel>
+    </div>
+  </body>
 </html>

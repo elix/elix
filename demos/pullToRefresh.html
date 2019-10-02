@@ -1,26 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Pull to refresh</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Pull to refresh</title>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="./src/RefreshAppDemo.js"></script>
 
-  <link rel="stylesheet" href="demos.css">
-  <script type="module" src="./src/RefreshAppDemo.js"></script>  
+    <style>
+      body {
+        overscroll-behavior: contain;
+        padding: 0;
+      }
+    </style>
+  </head>
 
-  <style>
-    body {
-      overscroll-behavior: contain;
-      padding: 0;
-    }
-  </style>
-</head>
-
-<body role="main">
-  <div class="demo fullScreen portrait">
-    <refresh-app-demo></refresh-app-demo>
-  </div>
-</body>
-
+  <body role="main">
+    <div class="demo fullScreen portrait">
+      <refresh-app-demo></refresh-app-demo>
+    </div>
+  </body>
 </html>

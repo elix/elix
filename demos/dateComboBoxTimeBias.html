@@ -1,31 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix DateComboBox time bias</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix DateComboBox time bias</title>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="../define/DateComboBox.js"></script>
+  </head>
 
-  <link rel="stylesheet" href="demos.css">
-  <script type="module" src="../define/DateComboBox.js"></script>
-
-</head>
-
-<body role="main">
-  <div class="demo padded">
-    <p>
-      <code>timeBias = null</code>, inferred year is current year<br>
-      <elix-date-combo-box></elix-date-combo-box>
-    </p>
-    <p>
-      <code>timeBias = "future"</code>, inferred year is in the future<br>
-      <elix-date-combo-box time-bias="future"></elix-date-combo-box>
-    </p>
-    <p>
-      <code>timeBias = "past"</code>, inferred year is in the past<br>
-      <elix-date-combo-box time-bias="past"></elix-date-combo-box>
-    </p>
-  </div>
-</body>
-
+  <body role="main">
+    <div class="demo padded">
+      <p>
+        <code>timeBias = null</code>, inferred year is current year<br />
+        <elix-date-combo-box></elix-date-combo-box>
+      </p>
+      <p>
+        <code>timeBias = "future"</code>, inferred year is in the future<br />
+        <elix-date-combo-box time-bias="future"></elix-date-combo-box>
+      </p>
+      <p>
+        <code>timeBias = "past"</code>, inferred year is in the past<br />
+        <elix-date-combo-box time-bias="past"></elix-date-combo-box>
+      </p>
+    </div>
+  </body>
 </html>

@@ -1,46 +1,42 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix SlidingStage</title>
 
-<head>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="../define/SlidingStage.js"></script>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix SlidingStage</title>
-
-  <link rel="stylesheet" href="demos.css">
-  <script type="module" src="../define/SlidingStage.js"></script>
-
-  <style>
-    html {
-      height: 100%;
-    }
-
-    body {
-      height: 100%;
-      padding: 0;
-    }
-  </style>
-
-</head>
-
-<body role="main">
-  <div class="demo fullScreen">
     <style>
-      .slidingStage img {
-        display: inline-block;
+      html {
         height: 100%;
-        vertical-align: middle;
-        width: 100%;
+      }
+
+      body {
+        height: 100%;
+        padding: 0;
       }
     </style>
-    <elix-sliding-stage class="slidingStage" style="height: 100%;">
-      <img src="images/image01.jpg" alt="Mountain lake">
-      <img src="images/image02.jpg" alt="Terraced farm">
-      <img src="images/image03.jpg" alt="Winter trees">
-      <img src="images/image04.jpg" alt="Forest river">
-      <img src="images/image05.jpg" alt="Red panda">
-    </elix-sliding-stage>
-  </div>
-</body>
+  </head>
 
+  <body role="main">
+    <div class="demo fullScreen">
+      <style>
+        .slidingStage img {
+          display: inline-block;
+          height: 100%;
+          vertical-align: middle;
+          width: 100%;
+        }
+      </style>
+      <elix-sliding-stage class="slidingStage" style="height: 100%;">
+        <img src="images/image01.jpg" alt="Mountain lake" />
+        <img src="images/image02.jpg" alt="Terraced farm" />
+        <img src="images/image03.jpg" alt="Winter trees" />
+        <img src="images/image04.jpg" alt="Forest river" />
+        <img src="images/image05.jpg" alt="Red panda" />
+      </elix-sliding-stage>
+    </div>
+  </body>
 </html>

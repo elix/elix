@@ -1,42 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix Drawer (vertical)</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix Drawer (vertical)</title>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="../define/Drawer.js"></script>
 
-  <link rel="stylesheet" href="demos.css">
-  <script type="module" src="../define/Drawer.js"></script>
+    <style>
+      html {
+        height: 100%;
+      }
 
-  <style>
-    html {
-      height: 100%;
-    }
+      body {
+        height: 100%;
+        padding: 0;
+      }
+    </style>
+  </head>
 
-    body {
-      height: 100%;
-      padding: 0;
-    }
-  </style>
-  
-</head>
+  <body role="main">
+    <div class="demo fullScreen">
+      <p style="margin: 2em;">
+        <button onclick="verticalDrawer.open()">Open drawer</button>
+      </p>
 
-<body role="main">
-  <div class="demo fullScreen">
-
-    <p style="margin: 2em;">
-      <button onclick="verticalDrawer.open()">Open drawer</button>
-    </p>  
-
-    <elix-drawer id="verticalDrawer" from-edge="bottom" aria-label="Sample drawer">
-      <div style="padding: 2em;">
-        Drawer elements go here...
-      </div>
-    </elix-drawer>
-
-  </div>
-  
-</body>
-
+      <elix-drawer
+        id="verticalDrawer"
+        from-edge="bottom"
+        aria-label="Sample drawer"
+      >
+        <div style="padding: 2em;">
+          Drawer elements go here...
+        </div>
+      </elix-drawer>
+    </div>
+  </body>
 </html>

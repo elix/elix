@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix CalendarMonth showing custom data (moon phase)</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix CalendarMonth showing custom data (moon phase)</title>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="./src/CalendarDayMoonPhase.js"></script>
+    <script type="module" src="../define/CalendarMonth.js"></script>
+  </head>
 
-  <link rel="stylesheet" href="demos.css">
-  <script type="module" src="./src/CalendarDayMoonPhase.js"></script>
-  <script type="module" src="../define/CalendarMonth.js"></script>
-
-</head>
-
-<body role="main">
-  <div class="demo padded">
-    <elix-calendar-month day-role="calendar-day-moon-phase"></elix-calendar-month>
-  </div>
-</body>
-
+  <body role="main">
+    <div class="demo padded">
+      <elix-calendar-month
+        day-role="calendar-day-moon-phase"
+      ></elix-calendar-month>
+    </div>
+  </body>
 </html>

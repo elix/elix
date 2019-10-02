@@ -1,78 +1,79 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Reactive web component example with subclassing</title>
 
-<head>
+    <script type="module">
+      import * as internal from '../src/internal.js';
+      import * as template from '../src/template.js';
+      import ReactiveElement from '../src/ReactiveElement.js';
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Reactive web component example with subclassing</title>
+      class IncrementDecrement extends ReactiveElement {
+        get buttonRole() {
+          return this[internal.state].button;
+        }
+        set buttonRole(buttonRole) {
+          this[internal.setState]({ buttonRole });
+        }
 
-  <script type="module">
-    import * as internal from '../src/internal.js';
-    import * as template from '../src/template.js';
-    import ReactiveElement from '../src/ReactiveElement.js';
-
-    class IncrementDecrement extends ReactiveElement {
-
-      get buttonRole() {
-        return this[internal.state].button;
-      }
-      set buttonRole(buttonRole) {
-        this[internal.setState]({ buttonRole });
-      }
-
-      get [internal.defaultState]() {
-        return Object.assign(super[internal.defaultState], {
-          buttonRole: 'button',
-          value: 0
-        });
-      }
-
-      [internal.render](changed) {
-        super[internal.render](changed);
-        if (changed.buttonRole) {
-          template.transmute(this[internal.ids].decrement, this[internal.state].buttonRole);
-          this[internal.ids].decrement.addEventListener('click', () => {
-            this.value--;
-          });
-          template.transmute(this[internal.ids].increment, this[internal.state].buttonRole);
-          this[internal.ids].increment.addEventListener('click', () => {
-            this.value++;
+        get [internal.defaultState]() {
+          return Object.assign(super[internal.defaultState], {
+            buttonRole: 'button',
+            value: 0
           });
         }
-        if (changed.value) {
-          const { value } = this[internal.state];
-          this.style.color = value < 0 ? 'red' : null;
-          this[internal.ids].visibleValue.textContent = value;
+
+        [internal.render](changed) {
+          super[internal.render](changed);
+          if (changed.buttonRole) {
+            template.transmute(
+              this[internal.ids].decrement,
+              this[internal.state].buttonRole
+            );
+            this[internal.ids].decrement.addEventListener('click', () => {
+              this.value--;
+            });
+            template.transmute(
+              this[internal.ids].increment,
+              this[internal.state].buttonRole
+            );
+            this[internal.ids].increment.addEventListener('click', () => {
+              this.value++;
+            });
+          }
+          if (changed.value) {
+            const { value } = this[internal.state];
+            this.style.color = value < 0 ? 'red' : null;
+            this[internal.ids].visibleValue.textContent = value;
+          }
         }
-      }
 
-      // Provide a public property that gets/sets state.
-      get value() {
-        return this[internal.state].value;
-      }
-      set value(value) {
-        this[internal.setState]({
-          value: parseInt(value)
-        });
-      }
+        // Provide a public property that gets/sets state.
+        get value() {
+          return this[internal.state].value;
+        }
+        set value(value) {
+          this[internal.setState]({
+            value: parseInt(value)
+          });
+        }
 
-      get [internal.template]() {
-        return template.html`
+        get [internal.template]() {
+          return template.html`
           <button id="decrement">-</button>
           <span id="visibleValue"></span>
           <button id="increment">+</button>
         `;
+        }
       }
 
-    }
+      customElements.define('increment-decrement', IncrementDecrement);
 
-    customElements.define('increment-decrement', IncrementDecrement);
-
-
-    class CustomButton extends ReactiveElement {
-      get [internal.template]() {
-        return template.html`
+      class CustomButton extends ReactiveElement {
+        get [internal.template]() {
+          return template.html`
           <style>
             button {
               border: 1px solid gray;
@@ -82,34 +83,32 @@
           </style>
           <button><slot></slot></button>
         `;
+        }
       }
-    }
-    customElements.define('custom-button', CustomButton);
+      customElements.define('custom-button', CustomButton);
 
-
-    class CustomIncrementDecrement extends IncrementDecrement {
-
-      get [internal.defaultState]() {
-        return Object.assign(super[internal.defaultState], {
-          buttonRole: CustomButton
-        });
+      class CustomIncrementDecrement extends IncrementDecrement {
+        get [internal.defaultState]() {
+          return Object.assign(super[internal.defaultState], {
+            buttonRole: CustomButton
+          });
+        }
       }
 
-    }
+      customElements.define(
+        'custom-increment-decrement',
+        CustomIncrementDecrement
+      );
+    </script>
+  </head>
 
-    customElements.define('custom-increment-decrement', CustomIncrementDecrement);
-  </script>
-
-</head>
-
-<body>
-  <p>
-    This shows a plain increment/decrement component and a subclass with styling
-    and custom behavior.
-  </p>
-  <increment-decrement></increment-decrement>
-  <increment-decrement button-role="custom-button"></increment-decrement>
-  <custom-increment-decrement></custom-increment-decrement>
-</body>
-
+  <body>
+    <p>
+      This shows a plain increment/decrement component and a subclass with
+      styling and custom behavior.
+    </p>
+    <increment-decrement></increment-decrement>
+    <increment-decrement button-role="custom-button"></increment-decrement>
+    <custom-increment-decrement></custom-increment-decrement>
+  </body>
 </html>

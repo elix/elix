@@ -1,36 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Vertical touch swipe demo</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Vertical touch swipe demo</title>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="./src/SwipeDemo.js"></script>
 
-  <link rel="stylesheet" href="demos.css">
-  <script type="module" src="./src/SwipeDemo.js"></script>
+    <style>
+      html {
+        height: 100%;
+      }
 
-  <style>
-    html {
-      height: 100%;
-    }
+      body {
+        height: 100%;
+        padding: 0;
+      }
+    </style>
+  </head>
 
-    body {
-      height: 100%;
-      padding: 0;
-    }
-  </style>
-
-</head>
-
-<body role="main">
-  <div class="demo fullScreen">
-    <swipe-demo style="flex: 1;" swipe-axis="vertical">
-      This demo shows how a component can use TouchSwipeMixin to listen to
-      vertical touch swipes. Swiping will show the current swipe distance as a
-      fraction of the demo height. It will also translate the gray block by that
-      fraction so the user feels like they are directly moving the block.
-  </swipe-demo>
-  </div>
-</body>
-
+  <body role="main">
+    <div class="demo fullScreen">
+      <swipe-demo style="flex: 1;" swipe-axis="vertical">
+        This demo shows how a component can use TouchSwipeMixin to listen to
+        vertical touch swipes. Swiping will show the current swipe distance as a
+        fraction of the demo height. It will also translate the gray block by
+        that fraction so the user feels like they are directly moving the block.
+      </swipe-demo>
+    </div>
+  </body>
 </html>

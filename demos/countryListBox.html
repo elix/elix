@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix ListBox with hard-coded list items</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix ListBox with hard-coded list items</title>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="./src/CountryListBox.js"></script>
+  </head>
 
-  <link rel="stylesheet" href="demos.css">
-  <script type="module" src="./src/CountryListBox.js"></script>
-
-</head>
-
-<body role="main">
-  <p>
-    The standard Elix ListBox component draws its set of list items from its DOM contents,
-    but the custom list box below provides its own hard-coded list of items.
-  </p>
-  <div class="demo medium">
-    <country-list-box aria-label="Countries" style="height: 100%;"></country-list-box>
-  </div>
-</body>
-
+  <body role="main">
+    <p>
+      The standard Elix ListBox component draws its set of list items from its
+      DOM contents, but the custom list box below provides its own hard-coded
+      list of items.
+    </p>
+    <div class="demo medium">
+      <country-list-box
+        aria-label="Countries"
+        style="height: 100%;"
+      ></country-list-box>
+    </div>
+  </body>
 </html>

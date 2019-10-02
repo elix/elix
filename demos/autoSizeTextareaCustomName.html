@@ -1,24 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix AutoSizeTextarea</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix AutoSizeTextarea</title>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module">
+      import AutoSizeTextarea from '../src/AutoSizeTextarea.js';
+      class TextareaWithCustomName extends AutoSizeTextarea {}
+      customElements.define(
+        'textarea-with-custom-name',
+        TextareaWithCustomName
+      );
+    </script>
+  </head>
 
-  <link rel="stylesheet" href="demos.css">
-  <script type="module">
-    import AutoSizeTextarea from '../src/AutoSizeTextarea.js';
-    class TextareaWithCustomName extends AutoSizeTextarea {}
-    customElements.define('textarea-with-custom-name', TextareaWithCustomName);
-  </script>
-
-</head>
-
-<body role="main">
-  <div class="demo" style="min-width: 300px;">
-    <textarea-with-custom-name aria-label="Sample auto-sizing textarea" minimum-rows="2" placeholder="Type all you want here!"></textarea-with-custom-name>
-  </div>
-</body>
-
+  <body role="main">
+    <div class="demo" style="min-width: 300px;">
+      <textarea-with-custom-name
+        aria-label="Sample auto-sizing textarea"
+        minimum-rows="2"
+        placeholder="Type all you want here!"
+      ></textarea-with-custom-name>
+    </div>
+  </body>
 </html>

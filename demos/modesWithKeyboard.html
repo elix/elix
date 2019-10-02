@@ -1,47 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Elix Modes with keyboard</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Elix Modes with keyboard</title>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="./src/ModesWithKeyboard.js"></script>
+  </head>
 
-  <link rel="stylesheet" href="demos.css">
-  <script type="module" src="./src/ModesWithKeyboard.js"></script>
+  <body role="main">
+    <p>
+      The elix-modes component below shows a single selected page out of a set
+      of pages. It provides no user interface of its own. Below, it's been
+      combined with mixins that provide lateral navigation with the keyboard.
+    </p>
+    <div class="demo small">
+      <style>
+        modes-with-keyboard {
+          border: 1px solid gray;
+          height: 100%;
+          width: 100%;
+        }
 
-</head>
+        .panel {
+          display: flex;
+          height: 100%;
+          width: 100%;
+          align-items: center;
+          justify-content: center;
+        }
+      </style>
 
-<body role="main">
-  <p>
-    The elix-modes component below shows a single selected page out of a set of
-    pages. It provides no user interface of its own. Below, it's been combined
-    with mixins that provide lateral navigation with the keyboard.
-  </p>
-  <div class="demo small">
-
-    <style>
-      modes-with-keyboard {
-        border: 1px solid gray;
-        height: 100%;
-        width: 100%;
-      }
-
-      .panel {
-        display: flex;
-        height: 100%;
-        width: 100%;
-        align-items: center;
-        justify-content: center;
-      }
-    </style>
-
-    <modes-with-keyboard aria-label="Panels">
-      <div class="panel">One</div>
-      <div class="panel">Two</div>
-      <div class="panel">Three</div>
-    </modes-with-keyboard>
-
-  </div>
-</body>
-
+      <modes-with-keyboard aria-label="Panels">
+        <div class="panel">One</div>
+        <div class="panel">Two</div>
+        <div class="panel">Three</div>
+      </modes-with-keyboard>
+    </div>
+  </body>
 </html>

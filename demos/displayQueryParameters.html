@@ -6,33 +6,32 @@ submission.
 -->
 
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="stylesheet" href="demos.css">
-  <style>
-    body {
-      padding: 0.25em;
-    }
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="demos.css" />
+    <style>
+      body {
+        padding: 0.25em;
+      }
 
-    pre {
-      font-family: inherit;
-      font-size: inherit;
-      margin: 0;
-    }
-  </style>
-  <script type="module">
-    const url = new URL(window.location);
-    const params = new URLSearchParams(url.search);
-    const lines = [...params.entries()].map(entry =>
-      `${entry[0]}: ${entry[1]}`
-    );
-    results.textContent = lines.join('\n');
-  </script>
-</head>
+      pre {
+        font-family: inherit;
+        font-size: inherit;
+        margin: 0;
+      }
+    </style>
+    <script type="module">
+      const url = new URL(window.location);
+      const params = new URLSearchParams(url.search);
+      const lines = [...params.entries()].map(
+        entry => `${entry[0]}: ${entry[1]}`
+      );
+      results.textContent = lines.join('\n');
+    </script>
+  </head>
 
-<body>
-  <pre id="results"></pre>
-</body>
-
+  <body>
+    <pre id="results"></pre>
+  </body>
 </html>

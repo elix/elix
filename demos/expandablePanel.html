@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix ExpandablePanel</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix ExpandablePanel</title>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="../define/ExpandablePanel.js"></script>
+  </head>
 
-  <link rel="stylesheet" href="demos.css">
-  <script type="module" src="../define/ExpandablePanel.js"></script>
-
-</head>
-
-<body role="main">
-  <div class="demo medium padded">
-    <button onclick="sampleExpandablePanel.toggle()">Expand/collapse</button>
-    <elix-expandable-panel id="sampleExpandablePanel" style="margin-top: 1em;">
-      <div>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat.
-      </div>
-    </elix-expandable-panel>
-  </div>
-</body>
-
+  <body role="main">
+    <div class="demo medium padded">
+      <button onclick="sampleExpandablePanel.toggle()">Expand/collapse</button>
+      <elix-expandable-panel
+        id="sampleExpandablePanel"
+        style="margin-top: 1em;"
+      >
+        <div>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat.
+        </div>
+      </elix-expandable-panel>
+    </div>
+  </body>
 </html>

@@ -1,34 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix CalendarMonth</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix CalendarMonth</title>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="../define/CalendarMonth.js"></script>
+    <script type="module" src="./src/LocaleSelector.js"></script>
+  </head>
 
-  <link rel="stylesheet" href="demos.css">
-  <script type="module" src="../define/CalendarMonth.js"></script>
-  <script type="module" src="./src/LocaleSelector.js"></script>
-
-</head>
-
-<body role="main">
-  <div class="demo padded">
-    <style>
-      #localeSelector {
-        display: block;
-        margin-bottom: 1em;
-      }
-    </style>
-    <locale-selector id="localeSelector"></locale-selector>
-    <elix-calendar-month id="calendarMonth"></elix-calendar-month>
-    <script>
-      localeSelector.addEventListener('change', event => {
-        const locale = event.detail.value;
-        calendarMonth.locale = `${locale}-u-ca-gregory-nu-latn`;
-      });
-    </script>
-  </div>
-</body>
-
+  <body role="main">
+    <div class="demo padded">
+      <style>
+        #localeSelector {
+          display: block;
+          margin-bottom: 1em;
+        }
+      </style>
+      <locale-selector id="localeSelector"></locale-selector>
+      <elix-calendar-month id="calendarMonth"></elix-calendar-month>
+      <script>
+        localeSelector.addEventListener('change', event => {
+          const locale = event.detail.value;
+          calendarMonth.locale = `${locale}-u-ca-gregory-nu-latn`;
+        });
+      </script>
+    </div>
+  </body>
 </html>

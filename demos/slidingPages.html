@@ -1,31 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix SlidingPages</title>
 
-<head>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="../define/SlidingPages.js"></script>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix SlidingPages</title>
+    <style>
+      html {
+        height: 100%;
+      }
 
-  <link rel="stylesheet" href="demos.css">
-  <script type="module" src="../define/SlidingPages.js"></script>
+      body {
+        background: black;
+        height: 100%;
+        padding: 0;
+      }
+    </style>
+  </head>
 
-  <style>
-    html {
-      height: 100%;
-    }
-
-    body {
-      background: black;
-      height: 100%;
-      padding: 0;
-    }
-  </style>
-
-</head>
-
-<body role="main">
-  <div class="demo fullScreen">
+  <body role="main">
+    <div class="demo fullScreen">
       <style>
         .slidingPages {
           background: black;
@@ -39,13 +36,12 @@
         }
       </style>
       <elix-sliding-pages class="slidingPages" aria-label="Nature scenes">
-        <img src="images/image01.jpg" alt="Mountain lake">
-        <img src="images/image02.jpg" alt="Terraced farm">
-        <img src="images/image03.jpg" alt="Winter trees">
-        <img src="images/image04.jpg" alt="Forest river">
-        <img src="images/image05.jpg" alt="Red panda">
+        <img src="images/image01.jpg" alt="Mountain lake" />
+        <img src="images/image02.jpg" alt="Terraced farm" />
+        <img src="images/image03.jpg" alt="Winter trees" />
+        <img src="images/image04.jpg" alt="Forest river" />
+        <img src="images/image05.jpg" alt="Red panda" />
       </elix-sliding-pages>
     </div>
-</body>
-
+  </body>
 </html>

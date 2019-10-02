@@ -1,53 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix CarouselSlideshow</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix CarouselSlideshow</title>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="../define/CarouselSlideshow.js"></script>
 
-  <link rel="stylesheet" href="demos.css">
-  <script type="module" src="../define/CarouselSlideshow.js"></script>
-
-  <style>
-    html {
-      height: 100%;
-    }
-
-    body {
-      background: black;
-      height: 100%;
-      padding: 0;
-    }
-  </style>
-  
-</head>
-
-<body role="main">
-  <div class="demo fullScreen">
     <style>
-      #sampleCarouselSlideshow {
-        background: black;
-        flex: 1;
-        max-height: 100%; /* For Firefox/Edge */
+      html {
+        height: 100%;
       }
 
-      #sampleCarouselSlideshow .carouselSlideshowItem {
-        display: inline-block;
+      body {
+        background: black;
         height: 100%;
-        object-fit: contain;
-        vertical-align: middle;
-        width: 100%;
+        padding: 0;
       }
     </style>
-    <elix-carousel-slideshow id="sampleCarouselSlideshow" aria-label="Nature scenes">
-      <img class="carouselSlideshowItem" src="images/image01.jpg" alt="Mountain lake">
-      <img class="carouselSlideshowItem" src="images/image02.jpg" alt="Terraced farm">
-      <img class="carouselSlideshowItem" src="images/image03.jpg" alt="Winter trees">
-      <img class="carouselSlideshowItem" src="images/image04.jpg" alt="Forest river">
-      <img class="carouselSlideshowItem" src="images/image05.jpg" alt="Red panda">
-    </elix-carousel-slideshow>
-  </div>
-</body>
+  </head>
 
+  <body role="main">
+    <div class="demo fullScreen">
+      <style>
+        #sampleCarouselSlideshow {
+          background: black;
+          flex: 1;
+          max-height: 100%; /* For Firefox/Edge */
+        }
+
+        #sampleCarouselSlideshow .carouselSlideshowItem {
+          display: inline-block;
+          height: 100%;
+          object-fit: contain;
+          vertical-align: middle;
+          width: 100%;
+        }
+      </style>
+      <elix-carousel-slideshow
+        id="sampleCarouselSlideshow"
+        aria-label="Nature scenes"
+      >
+        <img
+          class="carouselSlideshowItem"
+          src="images/image01.jpg"
+          alt="Mountain lake"
+        />
+        <img
+          class="carouselSlideshowItem"
+          src="images/image02.jpg"
+          alt="Terraced farm"
+        />
+        <img
+          class="carouselSlideshowItem"
+          src="images/image03.jpg"
+          alt="Winter trees"
+        />
+        <img
+          class="carouselSlideshowItem"
+          src="images/image04.jpg"
+          alt="Forest river"
+        />
+        <img
+          class="carouselSlideshowItem"
+          src="images/image05.jpg"
+          alt="Red panda"
+        />
+      </elix-carousel-slideshow>
+    </div>
+  </body>
 </html>

@@ -1,37 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix FocusVisibleMixin</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix FocusVisibleMixin</title>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="./src/FocusVisibleTest.js"></script>
+  </head>
 
-  <link rel="stylesheet" href="demos.css">
-  <script type="module" src="./src/FocusVisibleTest.js"></script>
-
-</head>
-
-<body role="main">
-  <p>
-    The buttons below use <code>FocusVisibleMixin</code>. They should only show a
-    focus ring when you move the focus onto them via the keyboard, and not with
-    the mouse or touch. This is especially useful for mobile devices, where
-    users do not expect to see a keyboard focus unless they're actually using a
-    keyboard.
-  </p>
-  <div class="demo">
-
-    <focus-visible-test>
-      <div>One</div>
-    </focus-visible-test>
-    <focus-visible-test>
-      <div>Two</div>
-    </focus-visible-test>
-    <focus-visible-test>
-      <div>Three</div>
-    </focus-visible-test>
-
-  </div>
-</body>
-
+  <body role="main">
+    <p>
+      The buttons below use <code>FocusVisibleMixin</code>. They should only
+      show a focus ring when you move the focus onto them via the keyboard, and
+      not with the mouse or touch. This is especially useful for mobile devices,
+      where users do not expect to see a keyboard focus unless they're actually
+      using a keyboard.
+    </p>
+    <div class="demo">
+      <focus-visible-test>
+        <div>One</div>
+      </focus-visible-test>
+      <focus-visible-test>
+        <div>Two</div>
+      </focus-visible-test>
+      <focus-visible-test>
+        <div>Three</div>
+      </focus-visible-test>
+    </div>
+  </body>
 </html>

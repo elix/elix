@@ -1,55 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix Tabs with TabButtons</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix Tabs with TabButtons</title>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="../define/TabButton.js"></script>
+    <script type="module" src="../define/Tabs.js"></script>
+    <script type="module" src="../define/TabStrip.js"></script>
+  </head>
 
-  <link rel="stylesheet" href="demos.css">
-  <script type="module" src="../define/TabButton.js"></script>
-  <script type="module" src="../define/Tabs.js"></script>
-  <script type="module" src="../define/TabStrip.js"></script>
+  <body role="main">
+    <p>
+      The elix-tabs component generates tab buttons for each tab panel, but you
+      can also supply a set of tab buttons. You could this if you want to use a
+      custom element for the tab buttons, or if you wanted to have the buttons
+      and panels to have different labels.
+    </p>
+    <div class="demo padded">
+      <style>
+        .tabsWithTabButtons {
+          height: 250px;
+          max-width: 100%;
+          width: 300px;
+        }
 
-</head>
+        .tabsWithTabButtons .panel {
+          align-items: center;
+          background: white;
+          border: 1px solid #ccc;
+          box-sizing: border-box;
+          display: flex;
+          flex: 1;
+          justify-content: center;
+        }
+      </style>
 
-<body role="main">
-  <p>
-    The elix-tabs component generates tab buttons for each tab panel, but you
-    can also supply a set of tab buttons. You could this if you want to use a
-    custom element for the tab buttons, or if you wanted to have the buttons and
-    panels to have different labels.
-  </p>
-  <div class="demo padded">
-
-    <style>
-      .tabsWithTabButtons {
-        height: 250px;
-        max-width: 100%;
-        width: 300px;
-      }
-
-      .tabsWithTabButtons .panel {
-        align-items: center;
-        background: white;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-        display: flex;
-        flex: 1;
-        justify-content: center;
-      }
-    </style>
-
-    <elix-tabs class="tabsWithTabButtons">
-      <elix-tab-button slot="proxy">Un</elix-tab-button>
-      <elix-tab-button slot="proxy">Deux</elix-tab-button>
-      <elix-tab-button slot="proxy">Trois</elix-tab-button>
-      <div class="panel" aria-label="One">Page one</div>
-      <div class="panel" aria-label="Two">Page two</div>
-      <div class="panel" aria-label="Three">Page three</div>
-    </elix-tabs>
-
-  </div>
-</body>
-
+      <elix-tabs class="tabsWithTabButtons">
+        <elix-tab-button slot="proxy">Un</elix-tab-button>
+        <elix-tab-button slot="proxy">Deux</elix-tab-button>
+        <elix-tab-button slot="proxy">Trois</elix-tab-button>
+        <div class="panel" aria-label="One">Page one</div>
+        <div class="panel" aria-label="Two">Page two</div>
+        <div class="panel" aria-label="Three">Page three</div>
+      </elix-tabs>
+    </div>
+  </body>
 </html>

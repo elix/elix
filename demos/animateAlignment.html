@@ -1,38 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>AnimateAlignment</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>AnimateAlignment</title>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="./src/AnimateAlignment.js"></script>
+  </head>
 
-  <link rel="stylesheet" href="demos.css">
-  <script type="module" src="./src/AnimateAlignment.js"></script>
-
-</head>
-
-<body role="main">
-  <div class="demo padded">
-    <script>
-      function toggleAlignment() {
-        const sampleAnimateAlignment = document.getElementById('sampleAnimateAlignment');
-        sampleAnimateAlignment.toggleAlignment();
-      }
-    </script>
-    <style>
-      animate-alignment {
-        display: block;
-        height: 50px;
-        white-space: nowrap;
-      }
-    </style>
-    <p>
-      <button onclick="toggleAlignment()">Toggle alignment</button>
-    </p>
-    <animate-alignment id="sampleAnimateAlignment">
-      Hello, world.
-    </animate-alignment>
-  </div>
-</body>
-
+  <body role="main">
+    <div class="demo padded">
+      <script>
+        function toggleAlignment() {
+          const sampleAnimateAlignment = document.getElementById(
+            'sampleAnimateAlignment'
+          );
+          sampleAnimateAlignment.toggleAlignment();
+        }
+      </script>
+      <style>
+        animate-alignment {
+          display: block;
+          height: 50px;
+          white-space: nowrap;
+        }
+      </style>
+      <p>
+        <button onclick="toggleAlignment()">Toggle alignment</button>
+      </p>
+      <animate-alignment id="sampleAnimateAlignment">
+        Hello, world.
+      </animate-alignment>
+    </div>
+  </body>
 </html>

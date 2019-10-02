@@ -1,71 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Elix Tabs as navigation toolbar</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Elix Tabs as navigation toolbar</title>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="./src/ToolbarTab.js"></script>
+    <script type="module" src="../define/SlidingPages.js"></script>
+    <script type="module" src="../define/Tabs.js"></script>
 
-  <link rel="stylesheet" href="demos.css">
-  <script type="module" src="./src/ToolbarTab.js"></script>
-  <script type="module" src="../define/SlidingPages.js"></script>
-  <script type="module" src="../define/Tabs.js"></script>
-
-  <style>
-    html {
-      height: 100%;
-    }
-
-    body {
-      height: 100%;
-      padding: 0;
-    }
-  </style>
-
-</head>
-
-<body role="main">
-  <div class="demo fullScreen portrait">
-
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
-      .toolbarTabs {
-        background: #eee;
-        color: gray;
-        display: flex;
-        flex: 1;
+      html {
+        height: 100%;
       }
 
-      .page {
-        align-items: center;
-        background: white;
-        border: 1px solid rgb(204, 204, 204);
-        box-sizing: border-box;
-        color: initial;
-        display: flex;
-        justify-content: center;
+      body {
+        height: 100%;
+        padding: 0;
       }
     </style>
+  </head>
 
-    <elix-tabs class="toolbarTabs" generic="false" proxy-list-position="bottom" tab-align="stretch" stage-role="elix-sliding-pages">
-      <toolbar-tab slot="proxy" aria-label="Home">
-        <div class="material-icons">home</div>
-        Home
-      </toolbar-tab>
-      <toolbar-tab slot="proxy" aria-label="Search">
-        <div class="material-icons">search</div>
-        Search
-      </toolbar-tab>
-      <toolbar-tab slot="proxy" aria-label="Settings">
-        <div class="material-icons">settings</div>
-        Settings
-      </toolbar-tab>
-      <div class="page">Home page</div>
-      <div class="page">Search page</div>
-      <div class="page">Settings page</div>
-    </elix-tabs>
+  <body role="main">
+    <div class="demo fullScreen portrait">
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      />
+      <style>
+        .toolbarTabs {
+          background: #eee;
+          color: gray;
+          display: flex;
+          flex: 1;
+        }
 
-  </div>
-</body>
+        .page {
+          align-items: center;
+          background: white;
+          border: 1px solid rgb(204, 204, 204);
+          box-sizing: border-box;
+          color: initial;
+          display: flex;
+          justify-content: center;
+        }
+      </style>
 
+      <elix-tabs
+        class="toolbarTabs"
+        generic="false"
+        proxy-list-position="bottom"
+        tab-align="stretch"
+        stage-role="elix-sliding-pages"
+      >
+        <toolbar-tab slot="proxy" aria-label="Home">
+          <div class="material-icons">home</div>
+          Home
+        </toolbar-tab>
+        <toolbar-tab slot="proxy" aria-label="Search">
+          <div class="material-icons">search</div>
+          Search
+        </toolbar-tab>
+        <toolbar-tab slot="proxy" aria-label="Settings">
+          <div class="material-icons">settings</div>
+          Settings
+        </toolbar-tab>
+        <div class="page">Home page</div>
+        <div class="page">Search page</div>
+        <div class="page">Settings page</div>
+      </elix-tabs>
+    </div>
+  </body>
 </html>
