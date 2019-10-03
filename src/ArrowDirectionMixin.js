@@ -198,8 +198,12 @@ function ArrowDirectionMixin(Base) {
           rightToLeft ?
             'rotateZ(180deg)' :
             '';
-        this[internal.ids].arrowIconPrevious.style.transform = transform;
-        this[internal.ids].arrowIconNext.style.transform = transform;
+        if (this[internal.ids].arrowIconPrevious) {
+          this[internal.ids].arrowIconPrevious.style.transform = transform;
+        }
+        if (this[internal.ids].arrowIconNext) {
+          this[internal.ids].arrowIconNext.style.transform = transform;
+        }
       }
 
       // Disable the previous/next buttons if we can't go in those directions.
