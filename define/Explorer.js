@@ -1,3 +1,3 @@
-import { default as Base } from '../src/Explorer.js';
-export default class Explorer extends Base {}
-customElements.define('elix-explorer', Explorer);
+import Explorer from '../src/Explorer.js';
+export default class ElixExplorer extends Explorer {}
+customElements.define('elix-explorer', ElixExplorer);

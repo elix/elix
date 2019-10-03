@@ -1,3 +1,3 @@
-import { default as Base } from '../src/AutoCompleteComboBox.js';
-export default class AutoCompleteComboBox extends Base {}
-customElements.define('elix-auto-complete-combo-box', AutoCompleteComboBox);
+import AutoCompleteComboBox from '../src/AutoCompleteComboBox.js';
+export default class ElixAutoCompleteComboBox extends AutoCompleteComboBox {}
+customElements.define('elix-auto-complete-combo-box', ElixAutoCompleteComboBox);

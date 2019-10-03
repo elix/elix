@@ -1,3 +1,3 @@
-import { default as Base } from '../src/FilterComboBox.js';
-export default class FilterComboBox extends Base {}
-customElements.define('elix-filter-combo-box', FilterComboBox);
+import FilterComboBox from '../src/FilterComboBox.js';
+export default class ElixFilterComboBox extends FilterComboBox {}
+customElements.define('elix-filter-combo-box', ElixFilterComboBox);

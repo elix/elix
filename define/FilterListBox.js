@@ -1,3 +1,3 @@
-import { default as Base } from '../src/FilterListBox.js';
-export default class FilterListBox extends Base {}
-customElements.define('elix-filter-list-box', FilterListBox);
+import FilterListBox from '../src/FilterListBox.js';
+export default class ElixFilterListBox extends FilterListBox {}
+customElements.define('elix-filter-list-box', ElixFilterListBox);

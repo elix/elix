@@ -1,3 +1,3 @@
-import { default as Base } from '../src/Thumbnail.js';
-export default class Thumbnail extends Base {}
-customElements.define('elix-thumbnail', Thumbnail);
+import Thumbnail from '../src/Thumbnail.js';
+export default class ElixThumbnail extends Thumbnail {}
+customElements.define('elix-thumbnail', ElixThumbnail);

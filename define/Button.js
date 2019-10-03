@@ -1,3 +1,3 @@
-import { default as Base } from '../src/Button.js';
-export default class Button extends Base {}
-customElements.define('elix-button', Button);
+import Button from '../src/Button.js';
+export default class ElixButton extends Button {}
+customElements.define('elix-button', ElixButton);

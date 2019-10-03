@@ -1,3 +1,3 @@
-import { default as Base } from '../src/CrossfadeStage.js';
-export default class CrossfadeStage extends Base {}
-customElements.define('elix-crossfade-stage', CrossfadeStage);
+import CrossfadeStage from '../src/CrossfadeStage.js';
+export default class ElixCrossfadeStage extends CrossfadeStage {}
+customElements.define('elix-crossfade-stage', ElixCrossfadeStage);

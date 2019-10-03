@@ -1,3 +1,3 @@
-import { default as Base } from '../src/HamburgerMenuButton.js';
-export default class HamburgerMenuButton extends Base {}
-customElements.define('elix-hamburger-menu-button', HamburgerMenuButton);
+import HamburgerMenuButton from '../src/HamburgerMenuButton.js';
+export default class ElixHamburgerMenuButton extends HamburgerMenuButton {}
+customElements.define('elix-hamburger-menu-button', ElixHamburgerMenuButton);

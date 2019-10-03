@@ -1,3 +1,3 @@
-import { default as Base } from '../src/Drawer.js';
-export default class Drawer extends Base {}
-customElements.define('elix-drawer', Drawer);
+import Drawer from '../src/Drawer.js';
+export default class ElixDrawer extends Drawer {}
+customElements.define('elix-drawer', ElixDrawer);

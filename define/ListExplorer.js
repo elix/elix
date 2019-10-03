@@ -1,3 +1,3 @@
-import { default as Base } from '../src/ListExplorer.js';
-export default class ListExplorer extends Base {}
-customElements.define('elix-list-explorer', ListExplorer);
+import ListExplorer from '../src/ListExplorer.js';
+export default class ElixListExplorer extends ListExplorer {}
+customElements.define('elix-list-explorer', ElixListExplorer);

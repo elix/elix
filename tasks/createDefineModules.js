@@ -17,9 +17,9 @@ async function createDefineModules(defineFolder, componentFiles) {
 
     // Create JavaScript file.
     const jsContent =
-`import { default as Base } from '../src/${className}.js';
-export default class ${className} extends Base {}
-customElements.define('${tag}', ${className});
+`import ${className} from '../src/${className}.js';
+export default class Elix${className} extends ${className} {}
+customElements.define('${tag}', Elix${className});
 `;
     const jsPath = path.join(defineFolder, `${className}.js`);
     const jsPromise = fs.writeFile(jsPath, jsContent);

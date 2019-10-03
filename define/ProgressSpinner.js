@@ -1,3 +1,3 @@
-import { default as Base } from '../src/ProgressSpinner.js';
-export default class ProgressSpinner extends Base {}
-customElements.define('elix-progress-spinner', ProgressSpinner);
+import ProgressSpinner from '../src/ProgressSpinner.js';
+export default class ElixProgressSpinner extends ProgressSpinner {}
+customElements.define('elix-progress-spinner', ElixProgressSpinner);

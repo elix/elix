@@ -1,3 +1,3 @@
-import { default as Base } from '../src/ModalBackdrop.js';
-export default class ModalBackdrop extends Base {}
-customElements.define('elix-modal-backdrop', ModalBackdrop);
+import ModalBackdrop from '../src/ModalBackdrop.js';
+export default class ElixModalBackdrop extends ModalBackdrop {}
+customElements.define('elix-modal-backdrop', ElixModalBackdrop);

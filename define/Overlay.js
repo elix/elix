@@ -1,3 +1,3 @@
-import { default as Base } from '../src/Overlay.js';
-export default class Overlay extends Base {}
-customElements.define('elix-overlay', Overlay);
+import Overlay from '../src/Overlay.js';
+export default class ElixOverlay extends Overlay {}
+customElements.define('elix-overlay', ElixOverlay);

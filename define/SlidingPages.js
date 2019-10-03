@@ -1,3 +1,3 @@
-import { default as Base } from '../src/SlidingPages.js';
-export default class SlidingPages extends Base {}
-customElements.define('elix-sliding-pages', SlidingPages);
+import SlidingPages from '../src/SlidingPages.js';
+export default class ElixSlidingPages extends SlidingPages {}
+customElements.define('elix-sliding-pages', ElixSlidingPages);

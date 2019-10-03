@@ -1,3 +1,3 @@
-import { default as Base } from '../src/MenuItem.js';
-export default class MenuItem extends Base {}
-customElements.define('elix-menu-item', MenuItem);
+import MenuItem from '../src/MenuItem.js';
+export default class ElixMenuItem extends MenuItem {}
+customElements.define('elix-menu-item', ElixMenuItem);

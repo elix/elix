@@ -1,3 +1,3 @@
-import { default as Base } from '../src/AlertDialog.js';
-export default class AlertDialog extends Base {}
-customElements.define('elix-alert-dialog', AlertDialog);
+import AlertDialog from '../src/AlertDialog.js';
+export default class ElixAlertDialog extends AlertDialog {}
+customElements.define('elix-alert-dialog', ElixAlertDialog);

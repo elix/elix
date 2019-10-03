@@ -1,3 +1,3 @@
-import { default as Base } from '../src/PopupButton.js';
-export default class PopupButton extends Base {}
-customElements.define('elix-popup-button', PopupButton);
+import PopupButton from '../src/PopupButton.js';
+export default class ElixPopupButton extends PopupButton {}
+customElements.define('elix-popup-button', ElixPopupButton);

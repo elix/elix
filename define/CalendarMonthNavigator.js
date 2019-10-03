@@ -1,3 +1,3 @@
-import { default as Base } from '../src/CalendarMonthNavigator.js';
-export default class CalendarMonthNavigator extends Base {}
-customElements.define('elix-calendar-month-navigator', CalendarMonthNavigator);
+import CalendarMonthNavigator from '../src/CalendarMonthNavigator.js';
+export default class ElixCalendarMonthNavigator extends CalendarMonthNavigator {}
+customElements.define('elix-calendar-month-navigator', ElixCalendarMonthNavigator);

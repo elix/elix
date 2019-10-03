@@ -1,3 +1,3 @@
-import { default as Base } from '../src/CenteredStripHighlight.js';
-export default class CenteredStripHighlight extends Base {}
-customElements.define('elix-centered-strip-highlight', CenteredStripHighlight);
+import CenteredStripHighlight from '../src/CenteredStripHighlight.js';
+export default class ElixCenteredStripHighlight extends CenteredStripHighlight {}
+customElements.define('elix-centered-strip-highlight', ElixCenteredStripHighlight);

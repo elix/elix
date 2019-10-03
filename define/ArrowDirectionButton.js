@@ -1,3 +1,3 @@
-import { default as Base } from '../src/ArrowDirectionButton.js';
-export default class ArrowDirectionButton extends Base {}
-customElements.define('elix-arrow-direction-button', ArrowDirectionButton);
+import ArrowDirectionButton from '../src/ArrowDirectionButton.js';
+export default class ElixArrowDirectionButton extends ArrowDirectionButton {}
+customElements.define('elix-arrow-direction-button', ElixArrowDirectionButton);

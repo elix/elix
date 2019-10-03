@@ -1,3 +1,3 @@
-import { default as Base } from '../src/ExpandableSection.js';
-export default class ExpandableSection extends Base {}
-customElements.define('elix-expandable-section', ExpandableSection);
+import ExpandableSection from '../src/ExpandableSection.js';
+export default class ElixExpandableSection extends ExpandableSection {}
+customElements.define('elix-expandable-section', ElixExpandableSection);

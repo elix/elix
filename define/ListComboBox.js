@@ -1,3 +1,3 @@
-import { default as Base } from '../src/ListComboBox.js';
-export default class ListComboBox extends Base {}
-customElements.define('elix-list-combo-box', ListComboBox);
+import ListComboBox from '../src/ListComboBox.js';
+export default class ElixListComboBox extends ListComboBox {}
+customElements.define('elix-list-combo-box', ElixListComboBox);

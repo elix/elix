@@ -1,3 +1,3 @@
-import { default as Base } from '../src/CalendarDay.js';
-export default class CalendarDay extends Base {}
-customElements.define('elix-calendar-day', CalendarDay);
+import CalendarDay from '../src/CalendarDay.js';
+export default class ElixCalendarDay extends CalendarDay {}
+customElements.define('elix-calendar-day', ElixCalendarDay);

@@ -1,3 +1,3 @@
-import { default as Base } from '../src/ExpandablePanel.js';
-export default class ExpandablePanel extends Base {}
-customElements.define('elix-expandable-panel', ExpandablePanel);
+import ExpandablePanel from '../src/ExpandablePanel.js';
+export default class ElixExpandablePanel extends ExpandablePanel {}
+customElements.define('elix-expandable-panel', ElixExpandablePanel);

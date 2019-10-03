@@ -1,3 +1,3 @@
-import { default as Base } from '../src/DateComboBox.js';
-export default class DateComboBox extends Base {}
-customElements.define('elix-date-combo-box', DateComboBox);
+import DateComboBox from '../src/DateComboBox.js';
+export default class ElixDateComboBox extends DateComboBox {}
+customElements.define('elix-date-combo-box', ElixDateComboBox);

@@ -1,3 +1,3 @@
-import { default as Base } from '../src/CarouselSlideshow.js';
-export default class CarouselSlideshow extends Base {}
-customElements.define('elix-carousel-slideshow', CarouselSlideshow);
+import CarouselSlideshow from '../src/CarouselSlideshow.js';
+export default class ElixCarouselSlideshow extends CarouselSlideshow {}
+customElements.define('elix-carousel-slideshow', ElixCarouselSlideshow);

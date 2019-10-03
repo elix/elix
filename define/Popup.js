@@ -1,3 +1,3 @@
-import { default as Base } from '../src/Popup.js';
-export default class Popup extends Base {}
-customElements.define('elix-popup', Popup);
+import Popup from '../src/Popup.js';
+export default class ElixPopup extends Popup {}
+customElements.define('elix-popup', ElixPopup);

@@ -1,3 +1,3 @@
-import { default as Base } from '../src/ListWithSearch.js';
-export default class ListWithSearch extends Base {}
-customElements.define('elix-list-with-search', ListWithSearch);
+import ListWithSearch from '../src/ListWithSearch.js';
+export default class ElixListWithSearch extends ListWithSearch {}
+customElements.define('elix-list-with-search', ElixListWithSearch);

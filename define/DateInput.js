@@ -1,3 +1,3 @@
-import { default as Base } from '../src/DateInput.js';
-export default class DateInput extends Base {}
-customElements.define('elix-date-input', DateInput);
+import DateInput from '../src/DateInput.js';
+export default class ElixDateInput extends DateInput {}
+customElements.define('elix-date-input', ElixDateInput);

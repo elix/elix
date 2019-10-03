@@ -1,3 +1,3 @@
-import { default as Base } from '../src/OverlayFrame.js';
-export default class OverlayFrame extends Base {}
-customElements.define('elix-overlay-frame', OverlayFrame);
+import OverlayFrame from '../src/OverlayFrame.js';
+export default class ElixOverlayFrame extends OverlayFrame {}
+customElements.define('elix-overlay-frame', ElixOverlayFrame);

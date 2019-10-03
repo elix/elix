@@ -1,3 +1,3 @@
-import { default as Base } from '../src/Modes.js';
-export default class Modes extends Base {}
-customElements.define('elix-modes', Modes);
+import Modes from '../src/Modes.js';
+export default class ElixModes extends Modes {}
+customElements.define('elix-modes', ElixModes);

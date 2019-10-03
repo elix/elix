@@ -1,3 +1,3 @@
-import { default as Base } from '../src/Dialog.js';
-export default class Dialog extends Base {}
-customElements.define('elix-dialog', Dialog);
+import Dialog from '../src/Dialog.js';
+export default class ElixDialog extends Dialog {}
+customElements.define('elix-dialog', ElixDialog);

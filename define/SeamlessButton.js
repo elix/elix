@@ -1,3 +1,3 @@
-import { default as Base } from '../src/SeamlessButton.js';
-export default class SeamlessButton extends Base {}
-customElements.define('elix-seamless-button', SeamlessButton);
+import SeamlessButton from '../src/SeamlessButton.js';
+export default class ElixSeamlessButton extends SeamlessButton {}
+customElements.define('elix-seamless-button', ElixSeamlessButton);

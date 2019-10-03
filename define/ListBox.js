@@ -1,3 +1,3 @@
-import { default as Base } from '../src/ListBox.js';
-export default class ListBox extends Base {}
-customElements.define('elix-list-box', ListBox);
+import ListBox from '../src/ListBox.js';
+export default class ElixListBox extends ListBox {}
+customElements.define('elix-list-box', ElixListBox);
