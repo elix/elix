@@ -1,4 +1,4 @@
-// Generated at Thu Oct 03 2019 10:20:43 GMT-0700 (Pacific Daylight Time)
+// Generated at Thu Oct 03 2019 15:51:59 GMT-0700 (Pacific Daylight Time)
 // from https://github.com/unicode-cldr/cldr-core/blob/master/supplemental/weekData.json
 const weekData = {
   "firstDay": {
