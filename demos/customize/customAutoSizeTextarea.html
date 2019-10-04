@@ -1,43 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <!--
+    Shows how to customize AutoSizeTextarea styling.
+    -->
 
-  <!--
-  Shows how to customize AutoSizeTextarea styling.
-  -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Custom AutoSizeTextarea</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Custom AutoSizeTextarea</title>
+    <link rel="stylesheet" href="../demos.css" />
 
-  <link rel="stylesheet" href="../demos.css">
+    <script type="module">
+      import * as internal from '../../src/internal.js';
+      import * as template from '../../src/template.js';
+      import AutoSizeTextarea from '../../src/AutoSizeTextarea.js';
 
-  <script type="module">
-    import * as internal from '../../src/internal.js';
-    import * as template from '../../src/template.js';
-    import AutoSizeTextarea from '../../src/AutoSizeTextarea.js';
-
-    class CustomAutoSizeTextarea extends AutoSizeTextarea {
-      get [internal.template]() {
-        return template.concat(super[internal.template], template.html`
+      class CustomAutoSizeTextarea extends AutoSizeTextarea {
+        get [internal.template]() {
+          return template.concat(
+            super[internal.template],
+            template.html`
           <style>
             #inner {
               border: none;
               border-bottom: 1px solid #757575;
             }
           </style>
-        `);
+        `
+          );
+        }
       }
-    }
 
-    customElements.define('custom-autosize-textarea', CustomAutoSizeTextarea);
-  </script>
+      customElements.define('custom-autosize-textarea', CustomAutoSizeTextarea);
+    </script>
+  </head>
 
-</head>
-
-<body>
-  <custom-autosize-textarea aria-label="Sample auto-sizing textarea" minimum-rows="2" placeholder="Type all you want here!">
-  </custom-autosize-textarea>
-</body>
-
+  <body>
+    <custom-autosize-textarea
+      aria-label="Sample auto-sizing textarea"
+      minimum-rows="2"
+      placeholder="Type all you want here!"
+    >
+    </custom-autosize-textarea>
+  </body>
 </html>

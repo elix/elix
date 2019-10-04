@@ -1,49 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <!--
 
-  <!--
+    Shows a Drawer with tags for a custom backdrop and frame.
 
-  Shows a Drawer with tags for a custom backdrop and frame.
+    -->
 
-  -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Custom drawer</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Custom drawer</title>
+    <link rel="stylesheet" href="../demos.css" />
+    <script type="module" src="../../define/Drawer.js"></script>
+    <script type="module" src="../src/CustomButton.js"></script>
+    <script type="module" src="../src/CustomBackdrop.js"></script>
+    <script type="module" src="../src/CustomOverlayFrame.js"></script>
 
-  <link rel="stylesheet" href="../demos.css">
-  <script type="module" src="../../define/Drawer.js"></script>
-  <script type="module" src="../src/CustomButton.js"></script>
-  <script type="module" src="../src/CustomBackdrop.js"></script>
-  <script type="module" src="../src/CustomOverlayFrame.js"></script>
+    <style>
+      html {
+        height: 100%;
+      }
 
-  <style>
-    html {
-      height: 100%;
-    }
+      body {
+        height: 100%;
+        padding: 0;
+      }
+    </style>
+  </head>
 
-    body {
-      height: 100%;
-      padding: 0;
-    }
-  </style>
-  
-</head>
+  <body role="main">
+    <div class="demo fullScreen" style="overflow: hidden;">
+      <p style="margin: 2em;">
+        <custom-button onclick="customDrawer.open()">Open drawer</custom-button>
+      </p>
 
-<body role="main">
-  <div class="demo fullScreen" style="overflow: hidden;">
-
-    <p style="margin: 2em;">
-      <custom-button onclick="customDrawer.open()">Open drawer</custom-button>
-    </p>    
-
-    <elix-drawer id="customDrawer" backdrop-role="custom-backdrop" frame-role="custom-overlay-frame" style="position: absolute;">
-      Drawer elements go here...
-    </elix-drawer>
-
-  </div>
-  
-</body>
-
+      <elix-drawer
+        id="customDrawer"
+        backdrop-role="custom-backdrop"
+        frame-role="custom-overlay-frame"
+        style="position: absolute;"
+      >
+        Drawer elements go here...
+      </elix-drawer>
+    </div>
+  </body>
 </html>

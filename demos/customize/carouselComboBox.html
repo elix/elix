@@ -1,41 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <!--
+    Put a carousel in a combo box's dropdown -- not because that's a good idea,
+    but just to confirm the components are resilient enough to work together.
+    -->
 
-<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix combo box with carousel</title>
 
-  <!--
-  Put a carousel in a combo box's dropdown -- not because that's a good idea,
-  but just to confirm the components are resilient enough to work together.
-  -->
+    <link rel="stylesheet" href="../demos.css" />
+    <script type="module" src="../src/CarouselComboBox.js"></script>
+  </head>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix combo box with carousel</title>
-
-  <link rel="stylesheet" href="../demos.css">
-  <script type="module" src="../src/CarouselComboBox.js"></script>
-
-</head>
-
-<body role="main">
-  <div class="demo padded">
-    <style>
-      #carouselComboBox img {
-        display: inline-block;
-        height: 100%;
-        object-fit: contain;
-        vertical-align: middle;
-        width: 100%;
-      }
-    </style>
-    <carousel-combo-box id="carouselComboBox" aria-label="Nature scenes">
-      <img src="../images/image01.jpg" alt="Mountain lake">
-      <img src="../images/image02.jpg" alt="Terraced farm">
-      <img src="../images/image03.jpg" alt="Winter trees">
-      <img src="../images/image04.jpg" alt="Forest river">
-      <img src="../images/image05.jpg" alt="Red panda">
-    </carousel-combo-box>
-  </div>
-</body>
-
+  <body role="main">
+    <div class="demo padded">
+      <style>
+        #carouselComboBox img {
+          display: inline-block;
+          height: 100%;
+          object-fit: contain;
+          vertical-align: middle;
+          width: 100%;
+        }
+      </style>
+      <carousel-combo-box id="carouselComboBox" aria-label="Nature scenes">
+        <img src="../images/image01.jpg" alt="Mountain lake" />
+        <img src="../images/image02.jpg" alt="Terraced farm" />
+        <img src="../images/image03.jpg" alt="Winter trees" />
+        <img src="../images/image04.jpg" alt="Forest river" />
+        <img src="../images/image05.jpg" alt="Red panda" />
+      </carousel-combo-box>
+    </div>
+  </body>
 </html>

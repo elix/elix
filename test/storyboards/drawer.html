@@ -1,109 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Drawer storyboard</title>
 
-<head>
+    <link rel="stylesheet" href="../../demos/demos.css" />
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Drawer storyboard</title>
+    <script>
+      // Disable all event listeners.
+      HTMLElement.prototype.addEventListener = function() {};
+    </script>
+    <script type="module" src="./RenderState.js"></script>
+    <script type="module" src="../../src/Drawer.js"></script>
 
-  <link rel="stylesheet" href="../../demos/demos.css">
+    <style>
+      body {
+        padding: 3em 5em;
+      }
 
-  <script>
-    // Disable all event listeners.
-    HTMLElement.prototype.addEventListener = function() {};
-  </script>
-  <script type="module" src="./RenderState.js"></script>
-  <script type="module" src="../../src/Drawer.js"></script>
+      .page {
+        background: #ddd;
+        height: 300px;
+        position: relative;
+        width: 400px;
+      }
+      .page > :first-child {
+        margin-top: 0;
+      }
 
-  <style>
-    body {
-      padding: 3em 5em;
-    }
+      elix-drawer {
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
 
-    .page {
-      background: #ddd;
-      height: 300px;
-      position: relative;
-      width: 400px;
-    }
-    .page > :first-child {
-      margin-top: 0;
-    }
-    
-    elix-drawer {
-      bottom: 0;
-      left: 0;
-      position: absolute;
-      right: 0;
-      top: 0;
-    }
+      .contents {
+        padding: 1em;
+      }
+    </style>
+  </head>
 
-    .contents {
-      padding: 1em;
-    }
-  </style>
+  <body>
+    <h1>Drawer storyboard</h1>
 
-</head>
-
-<body>
-
-  <h1>Drawer storyboard</h1>
-
-  <render-state>
-    <div class="page" slot="fixture">
+    <render-state>
+      <div class="page" slot="fixture">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur.
+        </p>
+        <elix-drawer class="fixture">
+          <div class="contents">Drawer contents</div>
+        </elix-drawer>
+      </div>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-        velit esse cillum dolore eu fugiat nulla pariatur.
+        Drawer is not visible in default state
       </p>
-      <elix-drawer class="fixture">
-        <div class="contents">Drawer contents</div>
-      </elix-drawer>
-    </div>
-    <p>
-      Drawer is not visible in default state
-    </p>
-  </render-state>
-  
-  <render-state fixture-state='{ "effect": "open", "effectPhase": "after" }'>
-    <div class="page" slot="fixture">
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-        velit esse cillum dolore eu fugiat nulla pariatur.
-      </p>
-      <elix-drawer class="fixture">
-        <div class="contents">Drawer contents</div>
-      </elix-drawer>
-    </div>
-    <p>
-      After opening. A modal backdrop appears over the background page.
-    </p>
-  </render-state>
-  
-  <render-state fixture-state='{ "effect": "open", "effectPhase": "after", "swipeFraction": -0.5 }'>
-    <div class="page" slot="fixture">
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-        velit esse cillum dolore eu fugiat nulla pariatur.
-      </p>
-      <elix-drawer class="fixture">
-        <div class="contents">Drawer contents</div>
-      </elix-drawer>
-    </div>
-    <p>
-      Halfway through a swipe to the left.
-    </p>
-  </render-state>
-  
-</body>
+    </render-state>
 
+    <render-state fixture-state='{ "effect": "open", "effectPhase": "after" }'>
+      <div class="page" slot="fixture">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur.
+        </p>
+        <elix-drawer class="fixture">
+          <div class="contents">Drawer contents</div>
+        </elix-drawer>
+      </div>
+      <p>
+        After opening. A modal backdrop appears over the background page.
+      </p>
+    </render-state>
+
+    <render-state
+      fixture-state='{ "effect": "open", "effectPhase": "after", "swipeFraction": -0.5 }'
+    >
+      <div class="page" slot="fixture">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur.
+        </p>
+        <elix-drawer class="fixture">
+          <div class="contents">Drawer contents</div>
+        </elix-drawer>
+      </div>
+      <p>
+        Halfway through a swipe to the left.
+      </p>
+    </render-state>
+  </body>
 </html>

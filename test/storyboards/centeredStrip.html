@@ -1,234 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SlidingPages storyboard</title>
 
-<head>
+    <link rel="stylesheet" href="../../demos/demos.css" />
+    <script type="module" src="./RenderState.js"></script>
+    <script type="module" src="../../src/CenteredStripOpacity.js"></script>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>SlidingPages storyboard</title>
+    <style>
+      body {
+        padding: 3em 5em;
+      }
 
-  <link rel="stylesheet" href="../../demos/demos.css">
-  <script type="module" src="./RenderState.js"></script>
-  <script type="module" src="../../src/CenteredStripOpacity.js"></script>
+      elix-centered-strip-opacity {
+        background: #555;
+        height: 100px;
+        width: 500px;
+      }
 
-  <style>
-    body {
-      padding: 3em 5em;
-    }
+      elix-centered-strip-opacity .item {
+        align-items: center;
+        background: #ccc;
+        border: 1px solid #888;
+        box-sizing: border-box;
+        color: white;
+        display: flex;
+        font-size: 72px;
+        font-weight: bold;
+        height: 100px;
+        justify-content: center;
+        -webkit-text-stroke: 2px #444;
+        width: 100px;
+      }
+    </style>
+  </head>
 
-    elix-centered-strip-opacity {
-      background: #555;
-      height: 100px;
-      width: 500px;
-    }
+  <body>
+    <h1>CenteredStrip storyboard</h1>
 
-    elix-centered-strip-opacity .item {
-      align-items: center;
-      background: #ccc;
-      border: 1px solid #888;
-      box-sizing: border-box;
-      color: white;
-      display: flex;
-      font-size: 72px;
-      font-weight: bold;
-      height: 100px;
-      justify-content: center;
-      -webkit-text-stroke: 2px #444;
-      width: 100px;
-    }
-  </style>
-
-</head>
-
-<body>
-
-  <h1>CenteredStrip storyboard</h1>
-
-  <p>
-    All scenes show a CenteredStrip with 10 items labeled "0" through "9".
-  </p>
-
-  <render-state>
-    <elix-centered-strip-opacity slot="fixture">
-      <div class="item">0</div>
-      <div class="item">1</div>
-      <div class="item">2</div>
-      <div class="item">3</div>
-      <div class="item">4</div>
-      <div class="item">5</div>
-      <div class="item">6</div>
-      <div class="item">7</div>
-      <div class="item">8</div>
-      <div class="item">9</div>
-    </elix-centered-strip-opacity>
     <p>
-      Default state
+      All scenes show a CenteredStrip with 10 items labeled "0" through "9".
     </p>
-  </render-state>
 
-  <render-state fixture-state='{"selectedIndex": 0, "swipeFraction": -0.33}'>
-    <elix-centered-strip-opacity slot="fixture">
-      <div class="item">0</div>
-      <div class="item">1</div>
-      <div class="item">2</div>
-      <div class="item">3</div>
-      <div class="item">4</div>
-      <div class="item">5</div>
-      <div class="item">6</div>
-      <div class="item">7</div>
-      <div class="item">8</div>
-      <div class="item">9</div>
-    </elix-centered-strip-opacity>
-    <p>
-      Beginning swipe to left. Item 0 begins to fade out, item 1 begins to fade in.
-    </p>
-  </render-state>
+    <render-state>
+      <elix-centered-strip-opacity slot="fixture">
+        <div class="item">0</div>
+        <div class="item">1</div>
+        <div class="item">2</div>
+        <div class="item">3</div>
+        <div class="item">4</div>
+        <div class="item">5</div>
+        <div class="item">6</div>
+        <div class="item">7</div>
+        <div class="item">8</div>
+        <div class="item">9</div>
+      </elix-centered-strip-opacity>
+      <p>
+        Default state
+      </p>
+    </render-state>
 
-  <render-state fixture-state='{"selectedIndex": 1, "swipeFraction": 0}'>
-    <elix-centered-strip-opacity slot="fixture">
-      <div class="item">0</div>
-      <div class="item">1</div>
-      <div class="item">2</div>
-      <div class="item">3</div>
-      <div class="item">4</div>
-      <div class="item">5</div>
-      <div class="item">6</div>
-      <div class="item">7</div>
-      <div class="item">8</div>
-      <div class="item">9</div>
-    </elix-centered-strip-opacity>
-    <p>
-      Select first item. Since that item can't be centered without creating a
-      gap on the left, the strip remains left-aligned.
-    </p>
-  </render-state>
+    <render-state fixture-state='{"selectedIndex": 0, "swipeFraction": -0.33}'>
+      <elix-centered-strip-opacity slot="fixture">
+        <div class="item">0</div>
+        <div class="item">1</div>
+        <div class="item">2</div>
+        <div class="item">3</div>
+        <div class="item">4</div>
+        <div class="item">5</div>
+        <div class="item">6</div>
+        <div class="item">7</div>
+        <div class="item">8</div>
+        <div class="item">9</div>
+      </elix-centered-strip-opacity>
+      <p>
+        Beginning swipe to left. Item 0 begins to fade out, item 1 begins to
+        fade in.
+      </p>
+    </render-state>
 
-  <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": 0}'>
-    <elix-centered-strip-opacity slot="fixture">
-      <div class="item">0</div>
-      <div class="item">1</div>
-      <div class="item">2</div>
-      <div class="item">3</div>
-      <div class="item">4</div>
-      <div class="item">5</div>
-      <div class="item">6</div>
-      <div class="item">7</div>
-      <div class="item">8</div>
-      <div class="item">9</div>
-    </elix-centered-strip-opacity>
-    <p>
-      Select 3rd item. Item can now be centered.
-    </p>
-  </render-state>
-  
-  <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": -0.5}'>
-    <elix-centered-strip-opacity slot="fixture">
-      <div class="item">0</div>
-      <div class="item">1</div>
-      <div class="item">2</div>
-      <div class="item">3</div>
-      <div class="item">4</div>
-      <div class="item">5</div>
-      <div class="item">6</div>
-      <div class="item">7</div>
-      <div class="item">8</div>
-      <div class="item">9</div>
-    </elix-centered-strip-opacity>
-    <p>
-      Halfway to selecting 4th item.
-    </p>
-  </render-state>
-  
-  <render-state fixture-state='{"selectedIndex": 4, "swipeFraction": 0}'>
-    <elix-centered-strip-opacity slot="fixture">
-      <div class="item">0</div>
-      <div class="item">1</div>
-      <div class="item">2</div>
-      <div class="item">3</div>
-      <div class="item">4</div>
-      <div class="item">5</div>
-      <div class="item">6</div>
-      <div class="item">7</div>
-      <div class="item">8</div>
-      <div class="item">9</div>
-    </elix-centered-strip-opacity>
-    <p>
-      4th item selected and centered.
-    </p>
-  </render-state>
-  
-  <render-state fixture-state='{"selectedIndex": 9, "swipeFraction": 0}'>
-    <elix-centered-strip-opacity slot="fixture">
-      <div class="item">0</div>
-      <div class="item">1</div>
-      <div class="item">2</div>
-      <div class="item">3</div>
-      <div class="item">4</div>
-      <div class="item">5</div>
-      <div class="item">6</div>
-      <div class="item">7</div>
-      <div class="item">8</div>
-      <div class="item">9</div>
-    </elix-centered-strip-opacity>
-    <p>
-      Select last item. Strip is right-aligned.
-    </p>
-  </render-state>
+    <render-state fixture-state='{"selectedIndex": 1, "swipeFraction": 0}'>
+      <elix-centered-strip-opacity slot="fixture">
+        <div class="item">0</div>
+        <div class="item">1</div>
+        <div class="item">2</div>
+        <div class="item">3</div>
+        <div class="item">4</div>
+        <div class="item">5</div>
+        <div class="item">6</div>
+        <div class="item">7</div>
+        <div class="item">8</div>
+        <div class="item">9</div>
+      </elix-centered-strip-opacity>
+      <p>
+        Select first item. Since that item can't be centered without creating a
+        gap on the left, the strip remains left-aligned.
+      </p>
+    </render-state>
 
-  <render-state fixture-state='{"swipeFraction": 0}'>
-    <elix-centered-strip-opacity slot="fixture" dir="rtl">
-      <div class="item">0</div>
-      <div class="item">1</div>
-      <div class="item">2</div>
-      <div class="item">3</div>
-      <div class="item">4</div>
-      <div class="item">5</div>
-      <div class="item">6</div>
-      <div class="item">7</div>
-      <div class="item">8</div>
-      <div class="item">9</div>
-    </elix-centered-strip-opacity>
-    <p>
-      Right to left languages reverses order of items
-    </p>
-  </render-state>
+    <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": 0}'>
+      <elix-centered-strip-opacity slot="fixture">
+        <div class="item">0</div>
+        <div class="item">1</div>
+        <div class="item">2</div>
+        <div class="item">3</div>
+        <div class="item">4</div>
+        <div class="item">5</div>
+        <div class="item">6</div>
+        <div class="item">7</div>
+        <div class="item">8</div>
+        <div class="item">9</div>
+      </elix-centered-strip-opacity>
+      <p>
+        Select 3rd item. Item can now be centered.
+      </p>
+    </render-state>
 
-  <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": 0}'>
-    <elix-centered-strip-opacity slot="fixture" dir="rtl">
-      <div class="item">0</div>
-      <div class="item">1</div>
-      <div class="item">2</div>
-      <div class="item">3</div>
-      <div class="item">4</div>
-      <div class="item">5</div>
-      <div class="item">6</div>
-      <div class="item">7</div>
-      <div class="item">8</div>
-      <div class="item">9</div>
-    </elix-centered-strip-opacity>
-    <p>
-      Right to left
-    </p>
-  </render-state>
+    <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": -0.5}'>
+      <elix-centered-strip-opacity slot="fixture">
+        <div class="item">0</div>
+        <div class="item">1</div>
+        <div class="item">2</div>
+        <div class="item">3</div>
+        <div class="item">4</div>
+        <div class="item">5</div>
+        <div class="item">6</div>
+        <div class="item">7</div>
+        <div class="item">8</div>
+        <div class="item">9</div>
+      </elix-centered-strip-opacity>
+      <p>
+        Halfway to selecting 4th item.
+      </p>
+    </render-state>
 
-  <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": 0.5}'>
-    <elix-centered-strip-opacity slot="fixture" dir="rtl">
-      <div class="item">0</div>
-      <div class="item">1</div>
-      <div class="item">2</div>
-      <div class="item">3</div>
-      <div class="item">4</div>
-      <div class="item">5</div>
-      <div class="item">6</div>
-      <div class="item">7</div>
-      <div class="item">8</div>
-      <div class="item">9</div>
-    </elix-centered-strip-opacity>
-    <p>
-      Right to left during swipe to right
-    </p>
-  </render-state>
-  
-</body>
+    <render-state fixture-state='{"selectedIndex": 4, "swipeFraction": 0}'>
+      <elix-centered-strip-opacity slot="fixture">
+        <div class="item">0</div>
+        <div class="item">1</div>
+        <div class="item">2</div>
+        <div class="item">3</div>
+        <div class="item">4</div>
+        <div class="item">5</div>
+        <div class="item">6</div>
+        <div class="item">7</div>
+        <div class="item">8</div>
+        <div class="item">9</div>
+      </elix-centered-strip-opacity>
+      <p>
+        4th item selected and centered.
+      </p>
+    </render-state>
 
+    <render-state fixture-state='{"selectedIndex": 9, "swipeFraction": 0}'>
+      <elix-centered-strip-opacity slot="fixture">
+        <div class="item">0</div>
+        <div class="item">1</div>
+        <div class="item">2</div>
+        <div class="item">3</div>
+        <div class="item">4</div>
+        <div class="item">5</div>
+        <div class="item">6</div>
+        <div class="item">7</div>
+        <div class="item">8</div>
+        <div class="item">9</div>
+      </elix-centered-strip-opacity>
+      <p>
+        Select last item. Strip is right-aligned.
+      </p>
+    </render-state>
+
+    <render-state fixture-state='{"swipeFraction": 0}'>
+      <elix-centered-strip-opacity slot="fixture" dir="rtl">
+        <div class="item">0</div>
+        <div class="item">1</div>
+        <div class="item">2</div>
+        <div class="item">3</div>
+        <div class="item">4</div>
+        <div class="item">5</div>
+        <div class="item">6</div>
+        <div class="item">7</div>
+        <div class="item">8</div>
+        <div class="item">9</div>
+      </elix-centered-strip-opacity>
+      <p>
+        Right to left languages reverses order of items
+      </p>
+    </render-state>
+
+    <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": 0}'>
+      <elix-centered-strip-opacity slot="fixture" dir="rtl">
+        <div class="item">0</div>
+        <div class="item">1</div>
+        <div class="item">2</div>
+        <div class="item">3</div>
+        <div class="item">4</div>
+        <div class="item">5</div>
+        <div class="item">6</div>
+        <div class="item">7</div>
+        <div class="item">8</div>
+        <div class="item">9</div>
+      </elix-centered-strip-opacity>
+      <p>
+        Right to left
+      </p>
+    </render-state>
+
+    <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": 0.5}'>
+      <elix-centered-strip-opacity slot="fixture" dir="rtl">
+        <div class="item">0</div>
+        <div class="item">1</div>
+        <div class="item">2</div>
+        <div class="item">3</div>
+        <div class="item">4</div>
+        <div class="item">5</div>
+        <div class="item">6</div>
+        <div class="item">7</div>
+        <div class="item">8</div>
+        <div class="item">9</div>
+      </elix-centered-strip-opacity>
+      <p>
+        Right to left during swipe to right
+      </p>
+    </render-state>
+  </body>
 </html>

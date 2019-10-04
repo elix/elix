@@ -1,30 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix Popup</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Elix Popup</title>
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="../define/Popup.js"></script>
+  </head>
 
-  <link rel="stylesheet" href="demos.css">
-  <script type="module" src="../define/Popup.js"></script>
+  <body role="main">
+    <div class="demo padded">
+      <button id="showPopup" onclick="samplePopup.open()">Open popup</button>
+      <input type="text" />
 
-</head>
-
-<body role="main">
-  <div class="demo padded">
-
-    <button id="showPopup" onclick="samplePopup.open()">Open popup</button>
-    <input type="text"></input>
-
-    <elix-popup id="samplePopup">
-      <div style="padding: 1em;">
-        Here's a popup.
-      </div>
-    </elix-popup>
-
-  </div>
-  
-</body>
-
+      <elix-popup id="samplePopup">
+        <div style="padding: 1em;">
+          Here's a popup.
+        </div>
+      </elix-popup>
+    </div>
+  </body>
 </html>

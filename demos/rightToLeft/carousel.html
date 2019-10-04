@@ -1,31 +1,28 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>elix-carousel (Right to Left support)</title>
 
-<head>
+    <link rel="stylesheet" href="../demos.css" />
+    <script type="module" src="../../define/Carousel.js"></script>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>elix-carousel (Right to Left support)</title>
+    <style>
+      html {
+        height: 100%;
+      }
 
-  <link rel="stylesheet" href="../demos.css">
-  <script type="module" src="../../define/Carousel.js"></script>
+      body {
+        background: black;
+        height: 100%;
+        padding: 0;
+      }
+    </style>
+  </head>
 
-  <style>
-    html {
-      height: 100%;
-    }
-
-    body {
-      background: black;
-      height: 100%;
-      padding: 0;
-    }
-  </style>
-
-</head>
-
-<body role="main">
-  <div class="demo fullScreen" dir="rtl">
+  <body role="main">
+    <div class="demo fullScreen" dir="rtl">
       <style>
         .carouselRightToLeft {
           background: black;
@@ -40,14 +37,17 @@
           width: 100%;
         }
       </style>
-      <elix-carousel class="carouselRightToLeft" style="flex: 1;" aria-label="Nature scenes">
-        <img src="../images/image01.jpg" alt="Mountain lake">
-        <img src="../images/image02.jpg" alt="Terraced farm">
-        <img src="../images/image03.jpg" alt="Winter trees">
-        <img src="../images/image04.jpg" alt="Forest river">
-        <img src="../images/image05.jpg" alt="Red panda">
+      <elix-carousel
+        class="carouselRightToLeft"
+        style="flex: 1;"
+        aria-label="Nature scenes"
+      >
+        <img src="../images/image01.jpg" alt="Mountain lake" />
+        <img src="../images/image02.jpg" alt="Terraced farm" />
+        <img src="../images/image03.jpg" alt="Winter trees" />
+        <img src="../images/image04.jpg" alt="Forest river" />
+        <img src="../images/image05.jpg" alt="Red panda" />
       </elix-carousel>
-  </div>
-</body>
-
+    </div>
+  </body>
 </html>

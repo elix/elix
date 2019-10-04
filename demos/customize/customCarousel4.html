@@ -1,45 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <!--
 
-<head>
+    Shows the use of a custom mixin in a Carousel.
 
-  <!--
+    -->
 
-  Shows the use of a custom mixin in a Carousel.
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Carousel with a custom mixin for page numbers</title>
 
-  -->
+    <link rel="stylesheet" href="../demos.css" />
+    <script type="module" src="../src/CustomCarousel4.js"></script>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Carousel with a custom mixin for page numbers</title>
+    <style>
+      html {
+        height: 100%;
+      }
 
-  <link rel="stylesheet" href="../demos.css">
-  <script type="module" src="../src/CustomCarousel4.js"></script>
+      body {
+        background: black;
+        height: 100%;
+        padding: 0;
+      }
 
-  <style>
-    html {
-      height: 100%;
-    }
+      img {
+        display: inline-block;
+        height: 100%;
+        object-fit: contain;
+        vertical-align: middle;
+        width: 100%;
+      }
+    </style>
+  </head>
 
-    body {
-      background: black;
-      height: 100%;
-      padding: 0;
-    }
-
-    img {
-      display: inline-block;
-      height: 100%;
-      object-fit: contain;
-      vertical-align: middle;
-      width: 100%;
-    }
-  </style>
-
-</head>
-
-<body role="main">
-  <div class="demo fullScreen">
+  <body role="main">
+    <div class="demo fullScreen">
       <style>
         custom-carousel {
           background: black;
@@ -55,13 +52,12 @@
         }
       </style>
       <custom-carousel aria-label="Nature scenes">
-        <img src="../images/image01.jpg" alt="Mountain lake">
-        <img src="../images/image02.jpg" alt="Terraced farm">
-        <img src="../images/image03.jpg" alt="Winter trees">
-        <img src="../images/image04.jpg" alt="Forest river">
-        <img src="../images/image05.jpg" alt="Red panda">
+        <img src="../images/image01.jpg" alt="Mountain lake" />
+        <img src="../images/image02.jpg" alt="Terraced farm" />
+        <img src="../images/image03.jpg" alt="Winter trees" />
+        <img src="../images/image04.jpg" alt="Forest river" />
+        <img src="../images/image05.jpg" alt="Red panda" />
       </custom-carousel>
-  </div>
-</body>
-
+    </div>
+  </body>
 </html>

@@ -1,36 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <!--
 
-  <!--
+    Shows a Popup with a custom frame.
 
-  Shows a Popup with a custom frame.
+    -->
 
-  -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Custom popup</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Custom popup</title>
+    <link rel="stylesheet" href="../demos.css" />
+    <script type="module" src="../../define/Popup.js"></script>
+    <script type="module" src="../src/CustomButton.js"></script>
+    <script type="module" src="../src/CustomOverlayFrame.js"></script>
+  </head>
 
-  <link rel="stylesheet" href="../demos.css">
-  <script type="module" src="../../define/Popup.js"></script>
-  <script type="module" src="../src/CustomButton.js"></script>
-  <script type="module" src="../src/CustomOverlayFrame.js"></script>
-
-</head>
-
-<body role="main">
-  <div class="demo padded">
-
-    <p>
-      <custom-button id="showPopup" onclick="samplePopup.open()">Open popup</custom-button>
-    </p>
-    <elix-popup id="samplePopup" frame-role="custom-overlay-frame">
-      Here's a popup.
-    </elix-popup>
-
-  </div>
-  
-</body>
-
+  <body role="main">
+    <div class="demo padded">
+      <p>
+        <custom-button id="showPopup" onclick="samplePopup.open()"
+          >Open popup</custom-button
+        >
+      </p>
+      <elix-popup id="samplePopup" frame-role="custom-overlay-frame">
+        Here's a popup.
+      </elix-popup>
+    </div>
+  </body>
 </html>

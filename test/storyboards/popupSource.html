@@ -1,64 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>PopupSource storyboard</title>
 
-<head>
+    <link rel="stylesheet" href="../../demos/demos.css" />
+    <script type="module" src="./RenderState.js"></script>
+    <script type="module" src="../../src/PopupSource.js"></script>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>PopupSource storyboard</title>
+    <style>
+      body {
+        padding: 3em 5em;
+      }
+    </style>
+  </head>
 
-  <link rel="stylesheet" href="../../demos/demos.css">
-  <script type="module" src="./RenderState.js"></script>
-  <script type="module" src="../../src/PopupSource.js"></script>
+  <body>
+    <h1>PopupSource storyboard</h1>
 
-  <style>
-    body {
-      padding: 3em 5em;
-    }
-  </style>
+    <render-state>
+      <elix-popup-source slot="fixture">
+        Click me
+        <div slot="popup">
+          Popup
+        </div>
+      </elix-popup-source>
+      <p>
+        Default closed state
+      </p>
+    </render-state>
 
-</head>
+    <render-state fixture-state='{"opened": true}'>
+      <elix-popup-source slot="fixture">
+        Click me
+        <div slot="popup">
+          Popup
+        </div>
+      </elix-popup-source>
+      <p>
+        Default opened state is below, left aligned
+      </p>
+    </render-state>
 
-<body>
-
-  <h1>PopupSource storyboard</h1>
-
-  <render-state>
-    <elix-popup-source slot="fixture">
-      Click me
-      <div slot="popup">
-        Popup
-      </div>
-    </elix-popup-source>
-    <p>
-      Default closed state
-    </p>
-  </render-state>
-
-  <render-state fixture-state='{"opened": true}'>
-    <elix-popup-source slot="fixture">
-      Click me
-      <div slot="popup">
-        Popup
-      </div>
-    </elix-popup-source>
-    <p>
-      Default opened state is below, left aligned
-    </p>
-  </render-state>
-
-  <render-state fixture-state='{"opened": true, "preferredPosition": "above"}'>
-    <elix-popup-source slot="fixture">
-      Click me
-      <div slot="popup">
-        Popup
-      </div>
-    </elix-popup-source>
-    <p>
-      Positioned above
-    </p>
-  </render-state>
-  
-</body>
-
+    <render-state
+      fixture-state='{"opened": true, "preferredPosition": "above"}'
+    >
+      <elix-popup-source slot="fixture">
+        Click me
+        <div slot="popup">
+          Popup
+        </div>
+      </elix-popup-source>
+      <p>
+        Positioned above
+      </p>
+    </render-state>
+  </body>
 </html>

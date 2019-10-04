@@ -1,70 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <!--
 
-  <!--
+    Shows how to customize an AlertDialog's backdrop, frame, and buttons.
 
-  Shows how to customize an AlertDialog's backdrop, frame, and buttons.
+    -->
 
-  -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Custom alert dialog</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Custom alert dialog</title>
+    <link rel="stylesheet" href="../demos.css" />
+    <script type="module" src="../../define/AlertDialog.js"></script>
+    <script type="module" src="../src/CustomBackdrop.js"></script>
+    <script type="module" src="../src/CustomOverlayFrame.js"></script>
+    <script type="module" src="../src/CustomButton.js"></script>
+  </head>
 
-  <link rel="stylesheet" href="../demos.css">
-  <script type="module" src="../../define/AlertDialog.js"></script>
-  <script type="module" src="../src/CustomBackdrop.js"></script>
-  <script type="module" src="../src/CustomOverlayFrame.js"></script>
-  <script type="module" src="../src/CustomButton.js"></script>
+  <body role="main">
+    <div class="demo padded">
+      <style>
+        #response {
+          margin-bottom: 0;
+        }
+        #response:empty {
+          display: none;
+        }
+      </style>
 
-</head>
+      <custom-button id="okCancelButton" onclick="okCancelClick()"
+        >Open OK/Cancel alert</custom-button
+      >
+      <custom-button id="yesNoCancelButton" onclick="yesNoCancelClick()"
+        >Open Yes/No/Cancel alert</custom-button
+      >
 
-<body role="main">
-  <div class="demo padded">
+      <p id="response"></p>
 
-    <style>
-      #response {
-        margin-bottom: 0;
-      }
-      #response:empty {
-        display: none;
-      }
-    </style>
-    
-    <custom-button id="okCancelButton" onclick="okCancelClick()">Open OK/Cancel alert</custom-button>
-    <custom-button id="yesNoCancelButton" onclick="yesNoCancelClick()">Open Yes/No/Cancel alert</custom-button>
+      <script>
+        function okCancelClick(event) {
+          showAlertWithChoices(['OK', 'Cancel']);
+        }
 
-    <p id="response"></p>
+        function yesNoCancelClick(event) {
+          showAlertWithChoices(['Yes', 'No', 'Cancel']);
+        }
 
-    <script>
-      function okCancelClick(event) {
-        showAlertWithChoices(['OK', 'Cancel']);
-      }
-  
-      function yesNoCancelClick(event) {
-        showAlertWithChoices(['Yes', 'No', 'Cancel']);
-      }
-  
-      async function showAlertWithChoices(choices) {
-        const dialog = document.createElement('elix-alert-dialog');
-        dialog.backdropRole = "custom-backdrop";
-        dialog.choiceButtonRole = "custom-button";
-        dialog.frameRole = "custom-overlay-frame";
-        dialog.choices = choices;
-        dialog.textContent = 'Hello, world';
-        dialog.addEventListener('closed', event => {
-          const closeResult = event.detail.closeResult;
-          const choice = closeResult && closeResult.choice;
-          response.textContent = choice ?
-            "You picked " + choice + "." :
-            "You didn't make a choice.";
-        })
-        await dialog.open();
-      }
-    </script>
-
-  </div>
-</body>
-
+        async function showAlertWithChoices(choices) {
+          const dialog = document.createElement('elix-alert-dialog');
+          dialog.backdropRole = 'custom-backdrop';
+          dialog.choiceButtonRole = 'custom-button';
+          dialog.frameRole = 'custom-overlay-frame';
+          dialog.choices = choices;
+          dialog.textContent = 'Hello, world';
+          dialog.addEventListener('closed', event => {
+            const closeResult = event.detail.closeResult;
+            const choice = closeResult && closeResult.choice;
+            response.textContent = choice
+              ? 'You picked ' + choice + '.'
+              : "You didn't make a choice.";
+          });
+          await dialog.open();
+        }
+      </script>
+    </div>
+  </body>
 </html>

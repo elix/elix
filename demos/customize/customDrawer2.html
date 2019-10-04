@@ -1,71 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <!--
+    Shows an extensively styled Drawer.
 
-  <!--
-  Shows an extensively styled Drawer.
+    Drawer visuals modeled after the Anthem theme by ThemeHelite:
+    https://creativemarket.com/Madeon08/629705-ANTHEM-Innovative-Coming-Soon.
+    -->
 
-  Drawer visuals modeled after the Anthem theme by ThemeHelite:
-  https://creativemarket.com/Madeon08/629705-ANTHEM-Innovative-Coming-Soon.
-  -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Custom drawer</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Custom drawer</title>
-
-  <link rel="stylesheet" href="../demos.css">
-  <script type="module" src="../src/CustomDrawer.js"></script>
-
-  <style>
-    html {
-      height: 100%;
-    }
-
-    body {
-      height: 100%;
-      padding: 0;
-    }
-  </style>
-  
-</head>
-
-<body role="main">
-  <div class="demo fullScreen" style="overflow: hidden;">
-
-    <link href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../demos.css" />
+    <script type="module" src="../src/CustomDrawer.js"></script>
 
     <style>
-      #customDrawerDemo {
-        font-family: "Varela Round", sans-serif;
-        font-size: 16px;
+      html {
+        height: 100%;
       }
 
-      #customDrawer {
-        position: absolute;
-        width: 100%;
+      body {
+        height: 100%;
+        padding: 0;
       }
     </style>
-  
-    <script type="module">
+  </head>
 
-    </script>
+  <body role="main">
+    <div class="demo fullScreen" style="overflow: hidden;">
+      <link
+        href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap"
+        rel="stylesheet"
+      />
 
-    <div id="customDrawerDemo">
-      <p style="margin: 2em 5em 2em 2em;">
-        This page has a drawer with custom styling. Among other things,
-        the rotation applied to the "+" button tracks the current position
-        of the drawer during a touch or trackpad swipe.
-      </p>
-      
-      <custom-drawer id="customDrawer">
-        <div style="padding: 1em;" aria-label="Sample drawer">
-          Drawer elements go here...
-        </div>
-      </custom-drawer>      
+      <style>
+        #customDrawerDemo {
+          font-family: 'Varela Round', sans-serif;
+          font-size: 16px;
+        }
+
+        #customDrawer {
+          position: absolute;
+          width: 100%;
+        }
+      </style>
+
+      <script type="module"></script>
+
+      <div id="customDrawerDemo">
+        <p style="margin: 2em 5em 2em 2em;">
+          This page has a drawer with custom styling. Among other things, the
+          rotation applied to the "+" button tracks the current position of the
+          drawer during a touch or trackpad swipe.
+        </p>
+
+        <custom-drawer id="customDrawer">
+          <div style="padding: 1em;" aria-label="Sample drawer">
+            Drawer elements go here...
+          </div>
+        </custom-drawer>
+      </div>
     </div>
-
-  </div>
-  
-</body>
-
+  </body>
 </html>

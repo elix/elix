@@ -1,48 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>horizontal list (right-to-left)</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>horizontal list (right-to-left)</title>
+    <link rel="stylesheet" href="../demos.css" />
+    <script type="module" src="../../define/ListBox.js"></script>
+  </head>
 
-  <link rel="stylesheet" href="../demos.css">
-  <script type="module" src="../../define/ListBox.js"></script>
+  <body role="main">
+    <p>
+      This horizontally-scrolling list is set for right-to-left text layout, as
+      in languages like Arabic and Hebrew. Accordingly, the list starts on the
+      right and goes to the left. The Left and Right arrow keys are sensitive to
+      the text direction, so still work as expected. The Home and End keys
+      select the rightmost and leftmost items, respectively (the opposite of
+      what they would do in left-to-right text).
+    </p>
+    <div class="demo" style="width: 252px;">
+      <style>
+        .emoji {
+          align-items: center;
+          display: flex;
+          flex-shrink: 0;
+          font-size: 36px;
+          height: 50px;
+          justify-content: center;
+          padding: 0 !important;
+          width: 50px;
+        }
+      </style>
 
-</head>
-
-<body role="main">
-  <p>
-    This horizontally-scrolling list is set for right-to-left text layout, as in
-    languages like Arabic and Hebrew. Accordingly, the list starts on the right
-    and goes to the left. The Left and Right arrow keys are sensitive to the
-    text direction, so still work as expected. The Home and End keys select the
-    rightmost and leftmost items, respectively (the opposite of what they would
-    do in left-to-right text).
-  </p>
-  <div class="demo" style="width: 252px;">
-
-    <style>
-      .emoji {
-        align-items: center;
-        display: flex;
-        flex-shrink: 0;
-        font-size: 36px;
-        height: 50px;
-        justify-content: center;
-        padding: 0 !important;
-        width: 50px;
-      }
-    </style>
-
-    <elix-list-box orientation="horizontal" aria-label="Face emoji" dir="rtl">
-      <div class="emoji" alt="Grinning Face">😀</div>
-      <div class="emoji" alt="Grinning Face With Smiling Eyes">😁</div>
-      <div class="emoji" alt="Face With Tears of Joy">😂</div>
-      <div class="emoji" alt="Smiling Face With Heart-eyes">😍</div>
-    </elix-list-box>
-
-  </div>
-</body>
-
+      <elix-list-box orientation="horizontal" aria-label="Face emoji" dir="rtl">
+        <div class="emoji" alt="Grinning Face">😀</div>
+        <div class="emoji" alt="Grinning Face With Smiling Eyes">😁</div>
+        <div class="emoji" alt="Face With Tears of Joy">😂</div>
+        <div class="emoji" alt="Smiling Face With Heart-eyes">😍</div>
+      </elix-list-box>
+    </div>
+  </body>
 </html>

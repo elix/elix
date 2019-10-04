@@ -1,64 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>CalendarMonth storyboard</title>
 
-<head>
+    <link rel="stylesheet" href="../../demos/demos.css" />
+    <script type="module" src="./RenderState.js"></script>
+    <script type="module" src="../../src/CalendarMonth.js"></script>
+  </head>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>CalendarMonth storyboard</title>
+  <body>
+    <h1>CalendarMonth storyboard</h1>
 
-  <link rel="stylesheet" href="../../demos/demos.css">
-  <script type="module" src="./RenderState.js"></script>
-  <script type="module" src="../../src/CalendarMonth.js"></script>
+    <render-state>
+      <elix-calendar-month slot="fixture" locale="en-US"></elix-calendar-month>
+      <p>
+        English/U.S. (weeks start on Sunday)
+      </p>
+    </render-state>
 
-</head>
+    <render-state>
+      <elix-calendar-month slot="fixture" locale="en-GB"></elix-calendar-month>
+      <p>
+        English/Great Britain (weeks start on Monday)
+      </p>
+    </render-state>
 
-<body>
+    <render-state>
+      <elix-calendar-month slot="fixture" locale="fr-FR"></elix-calendar-month>
+      <p>
+        French/France
+      </p>
+    </render-state>
 
-  <h1>CalendarMonth storyboard</h1>
+    <render-state>
+      <elix-calendar-month slot="fixture" locale="ja-JP"></elix-calendar-month>
+      <p>
+        Japanese/Japan
+      </p>
+    </render-state>
 
-  <render-state>
-    <elix-calendar-month slot="fixture" locale="en-US"></elix-calendar-month>
-    <p>
-      English/U.S. (weeks start on Sunday)
-    </p>
-  </render-state>
+    <render-state>
+      <elix-calendar-month slot="fixture" locale="ar-KW"></elix-calendar-month>
+      <p>
+        Arabic/Kuwait (weeks start on Saturday, weekend is Friday–Saturday)
+      </p>
+    </render-state>
 
-  <render-state>
-    <elix-calendar-month slot="fixture" locale="en-GB"></elix-calendar-month>
-    <p>
-      English/Great Britain (weeks start on Monday)
-    </p>
-  </render-state>
-
-  <render-state>
-    <elix-calendar-month slot="fixture" locale="fr-FR"></elix-calendar-month>
-    <p>
-      French/France
-    </p>
-  </render-state>
-
-  <render-state>
-    <elix-calendar-month slot="fixture" locale="ja-JP"></elix-calendar-month>
-    <p>
-      Japanese/Japan
-    </p>
-  </render-state>
-
-  <render-state>
-    <elix-calendar-month slot="fixture" locale="ar-KW"></elix-calendar-month>
-    <p>
-      Arabic/Kuwait (weeks start on Saturday, weekend is Friday–Saturday)
-    </p>
-  </render-state>
-  
-  <render-state>
-    <elix-calendar-month slot="fixture" locale="hi-IN"></elix-calendar-month>
-    <p>
-      Hindi/India (weekend is just Sunday)
-    </p>
-  </render-state>
-  
-</body>
-
+    <render-state>
+      <elix-calendar-month slot="fixture" locale="hi-IN"></elix-calendar-month>
+      <p>
+        Hindi/India (weekend is just Sunday)
+      </p>
+    </render-state>
+  </body>
 </html>

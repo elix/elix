@@ -1,129 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SlidingPages storyboard</title>
 
-<head>
+    <link rel="stylesheet" href="../../demos/demos.css" />
+    <script type="module" src="./RenderState.js"></script>
+    <script type="module" src="../../src/SlidingPages.js"></script>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>SlidingPages storyboard</title>
+    <style>
+      body {
+        padding: 3em 5em;
+      }
 
-  <link rel="stylesheet" href="../../demos/demos.css">
-  <script type="module" src="./RenderState.js"></script>
-  <script type="module" src="../../src/SlidingPages.js"></script>
+      elix-sliding-pages {
+        background: #555;
+        height: 170px;
+        width: 220px;
+      }
 
-  <style>
-    body {
-      padding: 3em 5em;
-    }
+      elix-sliding-pages .page {
+        align-items: center;
+        background: #ccc;
+        border: 1px solid #888;
+        box-sizing: border-box;
+        color: white;
+        display: flex;
+        font-size: 128px;
+        font-weight: bold;
+        justify-content: center;
+        -webkit-text-stroke: 2px #444;
+      }
+    </style>
+  </head>
 
-    elix-sliding-pages {
-      background: #555;
-      height: 170px;
-      width: 220px;
-    }
+  <body>
+    <h1>SlidingPages storyboard</h1>
 
-    elix-sliding-pages .page {
-      align-items: center;
-      background: #ccc;
-      border: 1px solid #888;
-      box-sizing: border-box;
-      color: white;
-      display: flex;
-      font-size: 128px;
-      font-weight: bold;
-      justify-content: center;
-      -webkit-text-stroke: 2px #444;
-    }
-  </style>
-
-</head>
-
-<body>
-
-  <h1>SlidingPages storyboard</h1>
-
-  <p>
-    All scenes show a SlidingPages with 4 items labeled "0", "1", "2", and "3".
-  </p>
-
-  <render-state>
-    <elix-sliding-pages slot="fixture">
-      <div class="page">0</div>
-      <div class="page">1</div>
-      <div class="page">2</div>
-      <div class="page">3</div>
-    </elix-sliding-pages>
     <p>
-      Default state
+      All scenes show a SlidingPages with 4 items labeled "0", "1", "2", and
+      "3".
     </p>
-  </render-state>
 
-  <render-state fixture-state='{"swipeFraction": -0.5}'>
-    <elix-sliding-pages slot="fixture">
-      <div class="page">0</div>
-      <div class="page">1</div>
-      <div class="page">2</div>
-      <div class="page">3</div>
-    </elix-sliding-pages>
-    <p>
-      Halfway through a swipe to the left
-    </p>
-  </render-state>
+    <render-state>
+      <elix-sliding-pages slot="fixture">
+        <div class="page">0</div>
+        <div class="page">1</div>
+        <div class="page">2</div>
+        <div class="page">3</div>
+      </elix-sliding-pages>
+      <p>
+        Default state
+      </p>
+    </render-state>
 
-  <render-state fixture-state='{"selectedIndex": 1, "swipeFraction": 0}'>
-    <elix-sliding-pages slot="fixture">
-      <div class="page">0</div>
-      <div class="page">1</div>
-      <div class="page">2</div>
-      <div class="page">3</div>
-    </elix-sliding-pages>
-    <p>
-      Completion of full swipe to the left
-    </p>
-  </render-state>
-      
-  <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": 0}'>
-    <elix-sliding-pages slot="fixture">
-      <div class="page">0</div>
-      <div class="page">1</div>
-      <div class="page">2</div>
-      <div class="page">3</div>
-    </elix-sliding-pages>
-    <p>
-      At end of items
-    </p>
-  </render-state>
-      
-  <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": -0.5}'>
-    <elix-sliding-pages slot="fixture">
-      <div class="page">0</div>
-      <div class="page">1</div>
-      <div class="page">2</div>
-      <div class="page">3</div>
-    </elix-sliding-pages>
-    <p>
-      Dragging past the last item produces increasing tension
-    </p>
-  </render-state>
-        
-  <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": -1}'>
-    <elix-sliding-pages slot="fixture">
-      <div class="page">0</div>
-      <div class="page">1</div>
-      <div class="page">2</div>
-      <div class="page">3</div>
-    </elix-sliding-pages>
-  </render-state>
-      
-  <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": -2}'>
-    <elix-sliding-pages slot="fixture">
-      <div class="page">0</div>
-      <div class="page">1</div>
-      <div class="page">2</div>
-      <div class="page">3</div>
-    </elix-sliding-pages>
-  </render-state>
-  
-</body>
+    <render-state fixture-state='{"swipeFraction": -0.5}'>
+      <elix-sliding-pages slot="fixture">
+        <div class="page">0</div>
+        <div class="page">1</div>
+        <div class="page">2</div>
+        <div class="page">3</div>
+      </elix-sliding-pages>
+      <p>
+        Halfway through a swipe to the left
+      </p>
+    </render-state>
 
+    <render-state fixture-state='{"selectedIndex": 1, "swipeFraction": 0}'>
+      <elix-sliding-pages slot="fixture">
+        <div class="page">0</div>
+        <div class="page">1</div>
+        <div class="page">2</div>
+        <div class="page">3</div>
+      </elix-sliding-pages>
+      <p>
+        Completion of full swipe to the left
+      </p>
+    </render-state>
+
+    <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": 0}'>
+      <elix-sliding-pages slot="fixture">
+        <div class="page">0</div>
+        <div class="page">1</div>
+        <div class="page">2</div>
+        <div class="page">3</div>
+      </elix-sliding-pages>
+      <p>
+        At end of items
+      </p>
+    </render-state>
+
+    <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": -0.5}'>
+      <elix-sliding-pages slot="fixture">
+        <div class="page">0</div>
+        <div class="page">1</div>
+        <div class="page">2</div>
+        <div class="page">3</div>
+      </elix-sliding-pages>
+      <p>
+        Dragging past the last item produces increasing tension
+      </p>
+    </render-state>
+
+    <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": -1}'>
+      <elix-sliding-pages slot="fixture">
+        <div class="page">0</div>
+        <div class="page">1</div>
+        <div class="page">2</div>
+        <div class="page">3</div>
+      </elix-sliding-pages>
+    </render-state>
+
+    <render-state fixture-state='{"selectedIndex": 3, "swipeFraction": -2}'>
+      <elix-sliding-pages slot="fixture">
+        <div class="page">0</div>
+        <div class="page">1</div>
+        <div class="page">2</div>
+        <div class="page">3</div>
+      </elix-sliding-pages>
+    </render-state>
+  </body>
 </html>
