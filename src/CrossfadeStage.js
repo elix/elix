@@ -1,16 +1,17 @@
 import * as internal from './internal.js';
 import * as template from './template.js';
 import EffectMixin from './EffectMixin.js';
-import Modes from './Modes.js';
+import ReactiveElement from './ReactiveElement.js';
+import SingleSelectionMixin from './SingleSelectionMixin.js';
+import SlotItemsMixin from './SlotItemsMixin.js';
 
-const Base = EffectMixin(Modes);
+const Base = EffectMixin(SingleSelectionMixin(SlotItemsMixin(ReactiveElement)));
 
 /**
  * Shows a crossfade effect when transitioning between a single selected item.
  *
- * The base [Modes](Modes) component shows a single item at a time,
- * transitioning instantly between them. `CrossfadeStage` adds a simple
- * crossfade effect when transitioning between items.
+ * Like [Modes](Modes), this component shows a single item at a time, but it
+ * adds a crossfade effect when transitioning between items.
  *
  * @inherits Modes
  * @mixes EffectMixin
@@ -18,6 +19,7 @@ const Base = EffectMixin(Modes);
 class CrossfadeStage extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
+      selectionRequired: true,
       transitionDuration: 750 // 3/4 of a second
     });
   }
@@ -34,6 +36,8 @@ class CrossfadeStage extends Base {
     ) {
       // Apply opacity based on selection state.
       const {
+        // effect,
+        // effectPhase,
         enableEffects,
         items,
         rightToLeft,
@@ -56,7 +60,6 @@ class CrossfadeStage extends Base {
             selectionFraction
           );
           Object.assign(item.style, {
-            display: null, // Override Modes
             opacity,
             transition
           });
@@ -80,12 +83,11 @@ class CrossfadeStage extends Base {
   }
 
   get [internal.template]() {
-    return template.concat(
-      super[internal.template],
-      template.html`
+    return template.html`
       <style>
-        #modesContainer {
-          display: grid;
+        :host {
+          display: inline-grid;
+          position: relative;
         }
 
         ::slotted(*) {
@@ -93,8 +95,8 @@ class CrossfadeStage extends Base {
           grid-row: 1;
         }
       </style>
-    `
-    );
+      <slot></slot>
+    `;
   }
 }
 
