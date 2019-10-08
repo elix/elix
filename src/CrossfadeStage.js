@@ -20,6 +20,18 @@ const Base = EffectMixin(
  * @mixes EffectMixin
  */
 class CrossfadeStage extends Base {
+  [internal.componentDidMount]() {
+    if (super[internal.componentDidMount]) {
+      super[internal.componentDidMount]();
+    }
+    this.addEventListener('effect-phase-changed', event => {
+      if (event.detail.effectPhase === 'after') {
+        const finishedEvent = new CustomEvent('selection-effect-finished');
+        this.dispatchEvent(finishedEvent);
+      }
+    });
+  }
+
   get [internal.defaultState]() {
     const result = Object.assign(super[internal.defaultState], {
       // renderedSelectedIndex: null,
@@ -37,7 +49,11 @@ class CrossfadeStage extends Base {
         state.effectPhase !== 'before'
           ? 'before'
           : 'after';
-      return { effectPhase };
+      const effectEndTarget =
+        state.items && state.items[state.selectedIndex]
+          ? state.items[state.selectedIndex]
+          : null;
+      return { effectEndTarget, effectPhase };
     });
 
     return result;
@@ -79,7 +95,8 @@ class CrossfadeStage extends Base {
           (enableEffects && effectPhase === 'during') ||
           swipeFraction != null
         ) {
-          // Start the animation.
+          // Start the animation or, if we're swiping, show the effective frame
+          // of that animation represented by the current swipe position.
           const sign = rightToLeft ? 1 : -1;
           const selectionFraction = sign * (swipeFraction || 0);
           items.forEach((item, index) => {

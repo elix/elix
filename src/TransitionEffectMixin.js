@@ -17,11 +17,16 @@ export default function TransitionEffectMixin(Base) {
       const elementsWithTransitions = this[internal.elementsWithTransitions];
       // We assume all transitions complete at the same time. We only listen to
       // transitioneend on the first element.
-      elementsWithTransitions[0].addEventListener('transitionend', () => {
-        // Advance to the next phase.
-        this[internal.setState]({
-          effectPhase: 'after'
-        });
+      elementsWithTransitions[0].addEventListener('transitionend', event => {
+        // If an effectEndTarget has been defined, wait for the transitioneend
+        // event to be raised with that target.
+        const { effectEndTarget } = this[internal.state];
+        if (!effectEndTarget || effectEndTarget === event.target) {
+          // Advance to the next phase.
+          this[internal.setState]({
+            effectPhase: 'after'
+          });
+        }
       });
     }
 

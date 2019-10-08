@@ -136,6 +136,29 @@ class Explorer extends Base {
         'selected-index-changed',
         handleSelectedIndexChanged
       );
+      this[internal.ids].stage.addEventListener(
+        'selection-effect-finished',
+        () => {
+          const { selectedIndex } = this[internal.state];
+          /**
+           * This event is raised if the current `stage` applies a transition
+           * effect when changing the selection, and the selection effect has
+           * completed. [CrossfadeStage](CrossfadeStage) applies such an effect,
+           * for example.
+           *
+           * The order of events when the `selectedIndex` property changes is
+           * therefore: `selected-index-changed` (occurs immediately when the
+           * index changes), followed by `selection-effect-finished` (occurs
+           * some time later).
+           *
+           * @event selection-effect-finished
+           */
+          const event = new CustomEvent('selection-effect-finished', {
+            detail: { selectedIndex }
+          });
+          this.dispatchEvent(event);
+        }
+      );
     }
     const proxyList = this[internal.ids].proxyList;
     const stage = this[internal.ids].stage;
