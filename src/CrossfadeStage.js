@@ -4,8 +4,11 @@ import EffectMixin from './EffectMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 import SingleSelectionMixin from './SingleSelectionMixin.js';
 import SlotItemsMixin from './SlotItemsMixin.js';
+import TransitionEffectMixin from './TransitionEffectMixin.js';
 
-const Base = EffectMixin(SingleSelectionMixin(SlotItemsMixin(ReactiveElement)));
+const Base = EffectMixin(
+  SingleSelectionMixin(SlotItemsMixin(TransitionEffectMixin(ReactiveElement)))
+);
 
 /**
  * Shows a crossfade effect when transitioning between a single selected item.
@@ -18,15 +21,33 @@ const Base = EffectMixin(SingleSelectionMixin(SlotItemsMixin(ReactiveElement)));
  */
 class CrossfadeStage extends Base {
   get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
+    const result = Object.assign(super[internal.defaultState], {
+      // renderedSelectedIndex: null,
+      effect: 'select',
+      effectPhase: 'after',
       selectionRequired: true,
       transitionDuration: 750 // 3/4 of a second
     });
+
+    // When selection changes, (re)start the selection effect.
+    result.onChange('selectedIndex', state => {
+      const effectPhase =
+        state.enableEffects &&
+        state.selectedIndex >= 0 &&
+        state.effectPhase !== 'before'
+          ? 'before'
+          : 'after';
+      return { effectPhase };
+    });
+
+    return result;
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (
+      changed.effect ||
+      changed.effectPhase ||
       changed.enableEffects ||
       changed.rightToLeft ||
       changed.items ||
@@ -36,33 +57,64 @@ class CrossfadeStage extends Base {
     ) {
       // Apply opacity based on selection state.
       const {
-        // effect,
-        // effectPhase,
+        effect,
+        effectPhase,
         enableEffects,
         items,
         rightToLeft,
         selectedIndex,
-        swipeFraction,
-        transitionDuration
+        swipeFraction
       } = this[internal.state];
-      if (items) {
-        const sign = rightToLeft ? 1 : -1;
-        const swiping = swipeFraction != null;
-        const selectionFraction = sign * (swipeFraction || 0);
-        const showTransition = enableEffects && !swiping;
-        const transition = showTransition
-          ? `opacity ${transitionDuration / 1000}s linear`
-          : null;
-        items.forEach((item, index) => {
-          const opacity = opacityForItemWithIndex(
-            index,
-            selectedIndex,
-            selectionFraction
-          );
-          Object.assign(item.style, {
-            opacity,
-            transition
+      if (items && effect === 'select') {
+        if (enableEffects && effectPhase === 'before') {
+          // Prepare to animate.
+          // Make all items visible, and the newly-selected one transparent.
+          items.forEach((item, index) => {
+            if (index === selectedIndex && item.style.opacity === '') {
+              item.style.opacity = '0';
+            }
+            item.style.visibility = 'visible';
           });
+        } else if (
+          (enableEffects && effectPhase === 'during') ||
+          swipeFraction != null
+        ) {
+          // Start the animation.
+          const sign = rightToLeft ? 1 : -1;
+          const selectionFraction = sign * (swipeFraction || 0);
+          items.forEach((item, index) => {
+            const opacity = opacityForItemWithIndex(
+              index,
+              selectedIndex,
+              selectionFraction
+            );
+            item.style.opacity = opacity.toString();
+            if (opacity > 0) {
+              item.style.visibility = 'visible';
+            }
+          });
+        } else if (effectPhase === 'after' || swipeFraction == null) {
+          // Finished animating (or finish a swipe).
+          // Hide all items but the selected one.
+          items.forEach((item, index) => {
+            const selected = index === selectedIndex;
+            item.style.opacity = selected ? '1' : '';
+            item.style.visibility = selected ? 'visible' : '';
+          });
+        }
+      }
+    }
+
+    if (changed.items || changed.swipeFraction || changed.transitionDuration) {
+      // Apply opacity transition.
+      const { items, swipeFraction, transitionDuration } = this[internal.state];
+      const transition =
+        swipeFraction != null
+          ? ''
+          : `opacity ${transitionDuration / 1000}s linear`;
+      if (items) {
+        items.forEach(item => {
+          item.style.transition = transition;
         });
       }
     }
@@ -93,6 +145,8 @@ class CrossfadeStage extends Base {
         ::slotted(*) {
           grid-column: 1;
           grid-row: 1;
+          opacity: 0;
+          visibility: hidden;
         }
       </style>
       <slot></slot>
