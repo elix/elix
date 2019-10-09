@@ -90,6 +90,13 @@
           </p>
         </div>
       </serene-tabs>
+      <script>
+        document
+          .querySelector('serene-tabs')
+          .addEventListener('selection-effect-finished', event => {
+            console.log(event);
+          });
+      </script>
     </div>
   </body>
 </html>
