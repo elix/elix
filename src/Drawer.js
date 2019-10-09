@@ -139,18 +139,9 @@ class Drawer extends Base {
     }
 
     if (changed.gripSize || changed.opened || changed.swipeFraction) {
-      // Only show backdrop when opened or swiping.
       const { gripSize, opened, swipeFraction } = this[internal.state];
       const swiping = swipeFraction !== null;
       const openedOrSwiping = opened || swiping;
-      // We use `visibility` instead of `display`. Using `display` has the
-      // disadvantage that, if we show the backdrop and then, in the same render
-      // operation, try to animate its opacity (below), then the animation won't
-      // be shown. If we always render the backdrop, but keep it invisible until
-      // we want to show it, then the animation works as expected.
-      this[internal.ids].backdrop.style.visibility = openedOrSwiping
-        ? 'visible'
-        : 'hidden';
 
       // Only listen to pointer events if opened or swiping.
       this.style.pointerEvents = openedOrSwiping ? 'initial' : 'none';
@@ -222,7 +213,16 @@ class Drawer extends Base {
 
       const translateFraction = sign * (1 - openedFraction);
 
+      if (swiping || (effect === 'open' && effectPhase === 'before')) {
+        // Beginning open effect or swiping; show backdrop.
+        this[internal.ids].backdrop.style.visibility = 'visible';
+      } else if (effect === 'close' && effectPhase === 'after') {
+        // Finished close effect; hide backdrop.
+        this[internal.ids].backdrop.style.visibility = 'hidden';
+      }
+
       let duration = 0;
+
       // We don't show transitions during swiping, as it would give the swipe a
       // sluggish feel. We do show transitions during the open or close effect.
       // In the case where a user begins to close a drawer, but doesn't close it
