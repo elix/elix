@@ -138,8 +138,8 @@ class Explorer extends Base {
       );
       this[internal.ids].stage.addEventListener(
         'selection-effect-finished',
-        () => {
-          const { selectedIndex } = this[internal.state];
+        event => {
+          const { selectedIndex } = event.detail;
           /**
            * This event is raised if the current `stage` applies a transition
            * effect when changing the selection, and the selection effect has
@@ -153,10 +153,10 @@ class Explorer extends Base {
            *
            * @event selection-effect-finished
            */
-          const event = new CustomEvent('selection-effect-finished', {
+          const finishedEvent = new CustomEvent('selection-effect-finished', {
             detail: { selectedIndex }
           });
-          this.dispatchEvent(event);
+          this.dispatchEvent(finishedEvent);
         }
       );
     }
