@@ -106,15 +106,15 @@ export const defaultState = Symbol('defaultState');
 export const delegatesFocus = Symbol('delegatesFocus');
 
 /**
- * Symbol for the `elementsWithTransitions` property.
+ * Symbol for the `effectEndTarget` property.
  *
- * [TransitionEffectMixin](TransitionEffectMixin) inspects this property
- * to determine which element(s) have CSS
- * transitions applied to them for visual effects.
+ * [TransitionEffectMixin](TransitionEffectMixin) inspects this property to
+ * determine which element's `transitionend` event will signal the end of a
+ * transition effect.
  *
- * @returns {Element[]} The elements with CSS transitions
+ * @returns {Element} The element with a CSS transition that ends the effect
  */
-export const elementsWithTransitions = Symbol('elementsWithTransitions');
+export const effectEndTarget = Symbol('effectEndTarget');
 
 /**
  * Symbol for the `focusTarget` property.

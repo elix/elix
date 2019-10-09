@@ -94,8 +94,11 @@ class Drawer extends Base {
     return result;
   }
 
-  get [internal.elementsWithTransitions]() {
-    return [this[internal.ids].backdrop, this[internal.ids].frame];
+  get [internal.effectEndTarget]() {
+    // As long as both the frame and the overlay complete their transition
+    // at the same time, we can use either one to signal the completion of
+    // the effect.
+    return this[internal.ids].frame;
   }
 
   /**

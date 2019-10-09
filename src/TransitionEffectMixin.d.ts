@@ -9,8 +9,8 @@ declare const TransitionEffectMixin: StateMixin<
   {},
   {},
   {
+    [internal.effectEndTarget]: Element;
     startEffect(effect: string): Promise<void>;
-    [internal.elementsWithTransitions]: Element[];
   },
   {
     effect: string;

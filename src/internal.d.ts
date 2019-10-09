@@ -19,7 +19,7 @@ export const contentSlot: '_contentSlot';
 export const defaultState: '_defaultState';
 export const defaultTabIndex: '_defaultTabIndex';
 export const delegatesFocus: '_delegatesFocus';
-export const elementsWithTransitions: '_elementsWithTransitions';
+export const effectEndTarget: '_effectEndTarget';
 export const event: '_event';
 export const focusTarget: '_focusTarget';
 export const getItemText: '_getItemText';

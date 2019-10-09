@@ -63,8 +63,8 @@ class Toast extends Base {
     this[internal.setState]({ duration });
   }
 
-  get [internal.elementsWithTransitions]() {
-    return [this[internal.ids].frame];
+  get [internal.effectEndTarget]() {
+    return this[internal.ids].frame;
   }
 
   /**

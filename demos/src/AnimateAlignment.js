@@ -45,8 +45,8 @@ export default class AnimateAlignment extends Base {
     return base;
   }
 
-  get [internal.elementsWithTransitions]() {
-    return [this[internal.ids].container];
+  get [internal.effectEndTarget]() {
+    return this[internal.ids].container;
   }
 
   [internal.render](changed) {

@@ -14,14 +14,23 @@ export default function TransitionEffectMixin(Base) {
       if (super[internal.componentDidMount]) {
         super[internal.componentDidMount]();
       }
-      const elementsWithTransitions = this[internal.elementsWithTransitions];
-      // We assume all transitions complete at the same time. We only listen to
-      // transitioneend on the first element.
-      elementsWithTransitions[0].addEventListener('transitionend', event => {
-        // If an effectEndTarget has been defined, wait for the transitioneend
-        // event to be raised with that target.
-        const { effectEndTarget } = this[internal.state];
-        if (!effectEndTarget || effectEndTarget === event.target) {
+
+      // Listen for `transitionend` events so we can check to see whether an
+      // effect has completed. If the component defines an `effectEndTarget`
+      // that's the host, listen to events on that. Otherwise, we assume the
+      // target is either in the shadow or an element that will be slotted into
+      // a slot in the shadow, so we'll listen to events that reach the shadow
+      // root.
+      const target =
+        this[internal.effectEndTarget] === this ? this : this.shadowRoot;
+      target.addEventListener('transitionend', event => {
+        // See if the event target is our expected `effectEndTarget`. If the
+        // component defines a `effectEndTarget` state, we use that; otherwise,
+        // we use the element identified with `internal.effectEndTarget`.
+        const effectEndTarget =
+          this[internal.state].effectEndTarget ||
+          this[internal.effectEndTarget];
+        if (event.target === effectEndTarget) {
           // Advance to the next phase.
           this[internal.setState]({
             effectPhase: 'after'
@@ -68,7 +77,6 @@ export default function TransitionEffectMixin(Base) {
             // state.
             this.offsetHeight;
           }
-
           if (effectPhase === 'before') {
             // Advance to the next phase.
             this[internal.setState]({
@@ -87,14 +95,13 @@ export default function TransitionEffectMixin(Base) {
      * If you will be applying CSS transitions to other elements, override this
      * property and return an array containing the implicated elements.
      *
-     * See [internal.elementsWithTransitions](symbols#elementsWithTransitions)
+     * See [internal.effectEndTarget](symbols#effectEndTarget)
      * for details.
      *
-     * @type {HTMLElement[]}
+     * @type {HTMLElement}
      */
-    get [internal.elementsWithTransitions]() {
-      const base = super[internal.elementsWithTransitions];
-      return base || [this];
+    get [internal.effectEndTarget]() {
+      return super[internal.effectEndTarget] || this;
     }
 
     /**

@@ -25,7 +25,8 @@ class CrossfadeStage extends Base {
       super[internal.componentDidMount]();
     }
     this.addEventListener('effect-phase-changed', event => {
-      if (event.detail.effectPhase === 'after') {
+      /** @type {any} */ const cast = event;
+      if (cast.detail.effectPhase === 'after') {
         const finishedEvent = new CustomEvent('selection-effect-finished');
         this.dispatchEvent(finishedEvent);
       }
@@ -34,8 +35,8 @@ class CrossfadeStage extends Base {
 
   get [internal.defaultState]() {
     const result = Object.assign(super[internal.defaultState], {
-      // renderedSelectedIndex: null,
       effect: 'select',
+      effectEndTarget: null,
       effectPhase: 'after',
       selectionRequired: true,
       transitionDuration: 750 // 3/4 of a second
@@ -49,6 +50,8 @@ class CrossfadeStage extends Base {
         state.effectPhase !== 'before'
           ? 'before'
           : 'after';
+      // We'll watch the selected item to see when its `transitionend` event
+      // fires; that will signal the end of the effect.
       const effectEndTarget =
         state.items && state.items[state.selectedIndex]
           ? state.items[state.selectedIndex]

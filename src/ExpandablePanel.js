@@ -28,8 +28,8 @@ const Base = OpenCloseMixin(
  * @mixes TransitionEffectMixin
  */
 class ExpandablePanel extends Base {
-  get [internal.elementsWithTransitions]() {
-    return [this[internal.ids].outerContainer];
+  get [internal.effectEndTarget]() {
+    return this[internal.ids].outerContainer;
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
