@@ -29,10 +29,8 @@ class CrossfadeStage extends Base {
       if (cast.detail.effectPhase === 'after') {
         const { selectedIndex } = this[internal.state];
         /**
-         * This event is raised if the current `stage` applies a transition
-         * effect when changing the selection, and the selection effect has
-         * completed. [CrossfadeStage](CrossfadeStage) applies such an effect,
-         * for example.
+         * This event is raised when changing the selection and the selection
+         * effect has completed.
          *
          * The order of events when the `selectedIndex` property changes is
          * therefore: `selected-index-changed` (occurs immediately when the
