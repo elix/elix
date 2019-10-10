@@ -77,7 +77,9 @@ class CalendarDay extends Base {
       //     daysFromToday === 0
       //   );
       // }
-      this.part.toggle('today', daysFromToday === 0);
+      if ('part' in this) {
+        this.part.toggle('today', daysFromToday === 0);
+      }
 
       this[internal.ids].day.textContent = dayOfMonth.toString();
     }
