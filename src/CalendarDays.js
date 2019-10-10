@@ -223,6 +223,7 @@ function updateDays(state, forceCreation) {
     const day = createNewElement ? template.createElement(dayRole) : days[i];
     day.date = new Date(date.getTime());
     day.locale = locale;
+    day.part = 'calendar-day';
     day.style.gridColumnStart = '';
     if (createNewElement) {
       days[i] = day;

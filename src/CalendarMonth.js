@@ -214,7 +214,7 @@ class CalendarMonth extends Base {
 
       <div id="monthYearHeader" part="month-year-header"></div>
       <div id="dayNamesHeader" part="day-names-header" format="short"></div>
-      <div id="monthDays" part="month-days"></div>
+      <div id="monthDays" part="month-days" exportparts="calendar-day, today"></div>
     `;
     const monthYearHeader = result.content.getElementById('monthYearHeader');
     if (monthYearHeader) {

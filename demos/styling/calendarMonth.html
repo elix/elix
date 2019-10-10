@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Elix CalendarMonthNavigator with custom styling</title>
+    <title>Elix CalendarMonth with custom styling</title>
 
     <link rel="stylesheet" href="../demos.css" />
-    <script type="module" src="../../define/CalendarMonthNavigator.js"></script>
+    <script type="module" src="../../define/CalendarMonth.js"></script>
   </head>
 
   <body role="main">
@@ -16,13 +16,17 @@
           font-family: 'Myriad Pro', Calibri, 'Helvetica Neue', Helvetica, Arial,
             sans-serif;
           font-size: 21px;
-          font-weight: bold;
         }
 
         #customCalendar::part(month-year-header) {
           color: #990000;
+          font-size: inherit;
           padding: 0.15em;
           text-align: left;
+        }
+
+        #customCalendar::part(day-names-header) {
+          font-size: 14px;
         }
 
         /* BUG: This should work */
@@ -30,10 +34,24 @@
         #customCalendar::part(arrow-icon) {
           color: gray;
         }
+
+        #customCalendar::part(month-days) {
+          font-weight: bold;
+        }
+
+        #customCalendar::part(calendar-day) {
+          padding: 0.15em;
+        }
+
+        #customCalendar::part(today) {
+          color: inherit;
+          font-weight: inherit;
+        }
       </style>
-      <elix-calendar-month-navigator
+      <elix-calendar-month
         id="customCalendar"
-      ></elix-calendar-month-navigator>
+        year-format=""
+      ></elix-calendar-month>
     </div>
   </body>
 </html>

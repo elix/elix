@@ -59,7 +59,11 @@ class CalendarDay extends Base {
       classList.toggle('past', date < today);
       classList.toggle('saturday', dayOfWeek === 6);
       classList.toggle('sunday', dayOfWeek === 0);
-      classList.toggle('today', daysFromToday == 0);
+      classList.toggle('today', daysFromToday === 0);
+
+      // TODO: Use :state() instead when available.
+      this.part.toggle('today', daysFromToday === 0);
+
       this[internal.ids].day.textContent = dayOfMonth.toString();
     }
     if (changed.date || changed.locale) {
