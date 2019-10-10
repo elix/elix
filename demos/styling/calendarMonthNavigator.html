@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix CalendarMonthNavigator with custom styling</title>
+
+    <link rel="stylesheet" href="../demos.css" />
+    <script type="module" src="../../define/CalendarMonthNavigator.js"></script>
+  </head>
+
+  <body role="main">
+    <div class="demo padded">
+      <style>
+        #customCalendar {
+          font-family: 'Myriad Pro', Calibri, 'Helvetica Neue', Helvetica, Arial,
+            sans-serif;
+          font-size: 21px;
+          font-weight: bold;
+        }
+
+        #customCalendar::part(month-year-header) {
+          color: #990000;
+          padding: 0.15em;
+          text-align: left;
+        }
+
+        /* BUG: This should work */
+        /* #customCalendar::part(arrow-button) { */
+        #customCalendar::part(arrow-icon) {
+          color: gray;
+        }
+      </style>
+      <elix-calendar-month-navigator
+        id="customCalendar"
+      ></elix-calendar-month-navigator>
+    </div>
+  </body>
+</html>

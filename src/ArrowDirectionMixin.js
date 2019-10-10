@@ -281,12 +281,13 @@ function ArrowDirectionMixin(Base) {
         <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;">
           <div
             id="arrowButtonPrevious"
+            part="arrow-button arrow-button-previous"
             class="arrowButton"
             aria-hidden="true"
             tabindex="-1"
             >
             <slot name="arrowButtonPrevious">
-              <svg id="arrowIconPrevious" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" style="height: 1em; width: 1em;">
+              <svg id="arrowIconPrevious" part="arrow-icon arrow-icon-previous" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" style="fill: currentColor; height: 1em; width: 1em;">
                 <g>
                   <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
                 </g>
@@ -296,12 +297,13 @@ function ArrowDirectionMixin(Base) {
           <div id="arrowDirectionContainer" role="none" style="flex: 1; overflow: hidden; position: relative;"></div>
           <div
             id="arrowButtonNext"
+            part="arrow-button arrow-button-next"
             class="arrowButton"
             aria-hidden="true"
             tabindex="-1"
             >
             <slot name="arrowButtonNext">
-              <svg id="arrowIconNext" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" style="height: 1em; width: 1em;">
+              <svg id="arrowIconNext" part="arrow-icon arrow-icon-next" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" style="fill: currentColor; height: 1em; width: 1em;">
                 <g>
                   <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
                 </g>
