@@ -379,6 +379,9 @@ function createDefaultProxies(items, proxyRole) {
   const proxies = items
     ? items.map(() => template.createElement(proxyRole))
     : [];
+  proxies.forEach(proxy => {
+    proxy.part = 'proxy';
+  });
   // Make the array immutable to help update performance.
   Object.freeze(proxies);
   return proxies;

@@ -4,6 +4,8 @@ import * as template from './template.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
+// const elementInternalsSupported = 'ElementInternals' in window;
+
 const Base = CalendarElementMixin(ReactiveElement);
 
 /**
@@ -25,6 +27,13 @@ const Base = CalendarElementMixin(ReactiveElement);
  * @mixes CalendarElementMixin
  */
 class CalendarDay extends Base {
+  // constructor() {
+  //   super();
+  //   if (elementInternalsSupported && !this[internal.nativeInternals]) {
+  //     this[internal.nativeInternals] = this.attachInternals();
+  //   }
+  // }
+
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       date: calendar.today(),
@@ -62,6 +71,12 @@ class CalendarDay extends Base {
       classList.toggle('today', daysFromToday === 0);
 
       // TODO: Use :state() instead when available.
+      // if (this[internal.nativeInternals]) {
+      //   this[internal.nativeInternals].states.toggle(
+      //     'today',
+      //     daysFromToday === 0
+      //   );
+      // }
       this.part.toggle('today', daysFromToday === 0);
 
       this[internal.ids].day.textContent = dayOfMonth.toString();
