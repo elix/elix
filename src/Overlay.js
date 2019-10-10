@@ -153,8 +153,8 @@ class Overlay extends Base {
           width: 100%;
         }
       </style>
-      <div id="backdrop" tabindex="-1"></div>
-      <div id="frame" role="none">
+      <div id="backdrop" part="backdrop" tabindex="-1"></div>
+      <div id="frame" part="frame" role="none">
         <div id="frameContent">
           <slot></slot>
         </div>
