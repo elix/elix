@@ -124,12 +124,12 @@ class ListBox extends Base {
               overflowX: 'auto',
               overflowY: 'hidden'
             };
-      Object.assign(this[internal.ids].content.style, style);
+      Object.assign(this[internal.ids].container.style, style);
     }
   }
 
   get [internal.scrollTarget]() {
-    return this[internal.ids].content;
+    return this[internal.ids].container;
   }
 
   get [internal.template]() {
@@ -139,19 +139,17 @@ class ListBox extends Base {
           box-sizing: border-box;
           cursor: default;
           display: flex;
-          overflow: hidden;
           -webkit-tap-highlight-color: transparent;
-        }
-
-        #content {
-          flex: 1;
-          max-height: 100%;
-          max-width: 100%;
-          -webkit-overflow-scrolling: touch; /* for momentum scrolling */
         }
 
         :host(.generic) {
           border: 1px solid gray;
+        }
+
+        #container {
+          display: flex;
+          flex: 1;
+          -webkit-overflow-scrolling: touch; /* for momentum scrolling */
         }
 
         :host(.generic) ::slotted(*) {
@@ -174,7 +172,7 @@ class ListBox extends Base {
           min-height: inherit;
         }
       </style>
-      <div id="content" class="generic" role="none">
+      <div id="container" part="container" role="none">
         <slot></slot>
       </div>
     `;
