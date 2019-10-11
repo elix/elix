@@ -21,9 +21,13 @@ const Base = CalendarElementMixin(ReactiveElement);
  * will be in the appropriate language, and the day(s) associated with the
  * weekend in that locale will also be indicated.
  *
+ * @elementrole {CalendarDay} day
  * @inherits ReactiveElement
  * @mixes CalendarElementMixin
- * @elementrole {CalendarDay} day
+ * @part calendar-day - the set of day elements in the month grid
+ * @part day-names-header - the column header showing the names of the days
+ * @part month-days - the grid of days for the month
+ * @part month-hear-header - the calendar header showing the month and/or year
  */
 class CalendarMonth extends Base {
   /**
@@ -214,7 +218,7 @@ class CalendarMonth extends Base {
 
       <div id="monthYearHeader" part="month-year-header"></div>
       <div id="dayNamesHeader" part="day-names-header" format="short"></div>
-      <div id="monthDays" part="month-days" exportparts="calendar-day, today"></div>
+      <div id="monthDays" part="month-days" exportparts="calendar-day"></div>
     `;
     const monthYearHeader = result.content.getElementById('monthYearHeader');
     if (monthYearHeader) {

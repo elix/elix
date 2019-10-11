@@ -77,6 +77,7 @@ const Base = AriaListMixin(
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin
  * @mixes TapSelectionMixin
+ * @part container - the element immediately containing the list items
  */
 class ListBox extends Base {
   get [internal.defaultState]() {

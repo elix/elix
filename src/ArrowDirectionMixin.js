@@ -9,9 +9,15 @@ const wrap = Symbol('wrap');
 /**
  * Adds previous/next arrow buttons to a carousel-like component.
  *
- * @module ArrowDirectionMixin
  * @elementrole {ArrowDirectionButton} arrowButton
+ * @module ArrowDirectionMixin
  * @param {Constructor<ReactiveElement>} Base
+ * @part arrow-button - both of the arrow buttons
+ * @part arrow-button-next - the arrow button that navigates to the next item
+ * @part arrow-button-previous - the arrow button that navigates to the previous item
+ * @part arrow-icon - both the arrow icons used by default in the arrow buttons
+ * @part arrow-icon-next - the arrow icon that points to the next item
+ * @part arrow-icon-previous - the arrow icon that points to the previous item
  */
 function ArrowDirectionMixin(Base) {
   // The class prototype added by the mixin.

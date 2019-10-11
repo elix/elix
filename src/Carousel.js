@@ -39,6 +39,9 @@ const Base = AriaListMixin(
  * keyboard, or trackpad. This component shows a small dot for each of its
  * items, and displays a sliding effect when moving between items.
  *
+ * @elementrole {CenteredStripOpacity} proxyList
+ * @elementrole {PageDot} proxy
+ * @elementrole {SlidingStage} stage
  * @inherits Explorer
  * @mixes AriaListMixin
  * @mixes ArrowDirectionMixin
@@ -50,9 +53,8 @@ const Base = AriaListMixin(
  * @mixes SwipeDirectionMixin
  * @mixes TouchSwipeMixin
  * @mixes TrackpadSwipeMixin
- * @elementrole {PageDot} proxy
- * @elementrole {CenteredStripOpacity} proxyList
- * @elementrole {SlidingStage} stage
+ * @part proxy
+ * @part stage
  */
 class Carousel extends Base {
   get [internal.defaultState]() {

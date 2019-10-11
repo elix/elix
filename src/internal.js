@@ -623,3 +623,61 @@ export const template = Symbol('template');
  * @function update
  */
 export const update = Symbol('update');
+
+// Expose internals as a global when debugging.
+const elixdebug = new URLSearchParams(location.search).get('elixdebug');
+if (elixdebug === 'true') {
+  window.elix = {
+    internal: {
+      checkSize,
+      componentDidMount,
+      componentDidUpdate,
+      contentSlot,
+      defaultState,
+      defaultTabIndex,
+      delegatesFocus,
+      effectEndTarget,
+      event,
+      focusTarget,
+      getItemText,
+      goDown,
+      goEnd,
+      goLeft,
+      goNext,
+      goPrevious,
+      goRight,
+      goStart,
+      goUp,
+      hasDynamicTemplate,
+      ids,
+      itemMatchesState,
+      itemsDelegate,
+      keydown,
+      mouseenter,
+      mouseleave,
+      nativeInternals,
+      populate,
+      raiseChangeEvents,
+      render,
+      renderChanges,
+      rendering,
+      scrollTarget,
+      setState,
+      startEffect,
+      state,
+      swipeDown,
+      swipeDownComplete,
+      swipeLeft,
+      swipeLeftTransitionEnd,
+      swipeRight,
+      swipeRightTransitionEnd,
+      swipeStart,
+      swipeTarget,
+      swipeUp,
+      swipeUpComplete,
+      tap,
+      template,
+      update
+    }
+  };
+}

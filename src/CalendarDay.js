@@ -4,7 +4,7 @@ import * as template from './template.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
-// const elementInternalsSupported = 'ElementInternals' in window;
+const elementInternalsSupported = 'ElementInternals' in window;
 
 const Base = CalendarElementMixin(ReactiveElement);
 
@@ -27,12 +27,12 @@ const Base = CalendarElementMixin(ReactiveElement);
  * @mixes CalendarElementMixin
  */
 class CalendarDay extends Base {
-  // constructor() {
-  //   super();
-  //   if (elementInternalsSupported && !this[internal.nativeInternals]) {
-  //     this[internal.nativeInternals] = this.attachInternals();
-  //   }
-  // }
+  constructor() {
+    super();
+    if (elementInternalsSupported && !this[internal.nativeInternals]) {
+      this[internal.nativeInternals] = this.attachInternals();
+    }
+  }
 
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
@@ -68,18 +68,17 @@ class CalendarDay extends Base {
       classList.toggle('past', date < today);
       classList.toggle('saturday', dayOfWeek === 6);
       classList.toggle('sunday', dayOfWeek === 0);
-      classList.toggle('today', daysFromToday === 0);
 
-      // TODO: Use :state() instead when available.
-      // if (this[internal.nativeInternals]) {
-      //   this[internal.nativeInternals].states.toggle(
-      //     'today',
-      //     daysFromToday === 0
-      //   );
+      const isToday = daysFromToday === 0;
+      // if ('part' in this) {
+      //   this.part.toggle('today', isToday);
       // }
-      if ('part' in this) {
-        this.part.toggle('today', daysFromToday === 0);
+      if (this[internal.nativeInternals]) {
+        this[internal.nativeInternals].states.toggle('today', isToday);
       }
+      // When all browsers support `:state()` selector, we'll want to deprecate
+      // use of classes.
+      classList.toggle('today', isToday);
 
       this[internal.ids].day.textContent = dayOfMonth.toString();
     }
