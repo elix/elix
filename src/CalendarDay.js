@@ -4,8 +4,6 @@ import * as template from './template.js';
 import CalendarElementMixin from './CalendarElementMixin.js';
 import ReactiveElement from './ReactiveElement.js';
 
-const elementInternalsSupported = 'ElementInternals' in window;
-
 const Base = CalendarElementMixin(ReactiveElement);
 
 /**
@@ -29,7 +27,7 @@ const Base = CalendarElementMixin(ReactiveElement);
 class CalendarDay extends Base {
   constructor() {
     super();
-    if (elementInternalsSupported && !this[internal.nativeInternals]) {
+    if (!this[internal.nativeInternals] && this.attachInternals) {
       this[internal.nativeInternals] = this.attachInternals();
     }
   }

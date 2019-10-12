@@ -1,16 +1,16 @@
 import * as internal from './internal.js';
 import * as template from './template.js';
 import DarkModeMixin from './DarkModeMixin.js';
-import SeamlessButton from './SeamlessButton.js';
+import SelectableButton from './SelectableButton.js';
 
-const Base = DarkModeMixin(SeamlessButton);
+const Base = DarkModeMixin(SelectableButton);
 
 /**
  * A small dot used to represent the items in a carousel-like element.
  *
  * This is used as the default proxy element in [Carousel](Carousel).
  *
- * @inherits SeamlessButton
+ * @inherits SelectableButton
  * @mixes DarkModeMixin
  */
 class PageDot extends Base {

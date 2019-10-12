@@ -288,6 +288,7 @@ function ArrowDirectionMixin(Base) {
           <div
             id="arrowButtonPrevious"
             part="arrow-button arrow-button-previous"
+            exportparts="inner:arrow-button-inner"
             class="arrowButton"
             aria-hidden="true"
             tabindex="-1"
@@ -304,6 +305,7 @@ function ArrowDirectionMixin(Base) {
           <div
             id="arrowButtonNext"
             part="arrow-button arrow-button-next"
+            exportparts="inner:arrow-button-inner"
             class="arrowButton"
             aria-hidden="true"
             tabindex="-1"

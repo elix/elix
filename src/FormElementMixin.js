@@ -1,8 +1,6 @@
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
-const elementInternalsSupported = 'ElementInternals' in window;
-
 /**
  * Allows a component to participate in HTML form submission.
  *
@@ -16,7 +14,7 @@ export default function FormElementMixin(Base) {
   class FormElement extends Base {
     constructor() {
       super();
-      if (elementInternalsSupported && !this[internal.nativeInternals]) {
+      if (!this[internal.nativeInternals] && this.attachInternals) {
         this[internal.nativeInternals] = this.attachInternals();
       }
     }
@@ -150,7 +148,7 @@ export default function FormElementMixin(Base) {
 }
 
 function updateValue(element) {
-  if (elementInternalsSupported) {
+  if (element[internal.nativeInternals]) {
     element[internal.nativeInternals].setFormValue(
       element[internal.state].value,
       element[internal.state]

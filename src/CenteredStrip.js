@@ -138,6 +138,17 @@ class CenteredStrip extends Base {
         this[internal.ids].stripContainer.style.justifyContent = justifyContent;
       }
     }
+    if (changed.items || changed.selectedIndex) {
+      // Apply `selected` style to the selected item only.
+      const { selectedIndex, items } = this[internal.state];
+      if (items) {
+        items.forEach((item, index) => {
+          if ('selected' in item) {
+            item.selected = index === selectedIndex;
+          }
+        });
+      }
+    }
     if (changed.orientation) {
       const flexDirection =
         this[internal.state].orientation === 'horizontal' ? '' : 'column';

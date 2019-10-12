@@ -90,6 +90,7 @@ export { default as ReactiveElement } from './ReactiveElement.js';
 export { default as ReactiveMixin } from '../src/ReactiveMixin.js';
 export { default as ResizeMixin } from '../src/ResizeMixin.js';
 export { default as SeamlessButton } from './SeamlessButton.js';
+export { default as SelectableButton } from './SelectableButton.js';
 export { default as SelectedItemTextValueMixin } from '../src/SelectedItemTextValueMixin.js';
 export { default as SelectionInViewMixin } from '../src/SelectionInViewMixin.js';
 export { default as ShadowTemplateMixin } from '../src/ShadowTemplateMixin.js';

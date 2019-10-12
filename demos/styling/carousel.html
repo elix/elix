@@ -6,6 +6,8 @@
     <title>Elix Carousel with custom styles</title>
 
     <link rel="stylesheet" href="../demos.css" />
+    <script type="module" src="../../define/CenteredStrip.js"></script>
+    <script type="module" src="../../define/SelectableButton.js"></script>
     <script type="module" src="../../define/Carousel.js"></script>
   </head>
 
@@ -27,22 +29,60 @@
         }
 
         #customCarousel::part(arrow-button) {
+          color: #83af9b;
           font-style: italic;
         }
+        #customCarousel::part(arrow-button-inner) {
+          /* Margin accounts for fact that italic shifts glyph to right. */
+          margin: 4px;
+        }
+        #customCarousel::part(arrow-button):state(disabled) {
+          color: #c8c8a9;
+        }
 
-        #customCarousel::part(proxy) {
-          height: 6px;
-          width: 6px;
+        elix-selectable-button {
+          color: #fc9d9a;
+          font-size: 24px;
+          margin: 0 0.2em;
+          transition: color 0.25s, transform 0.25s;
+        }
+        elix-selectable-button:state(selected) {
+          color: #fe4365;
+          transform: scale(1.4);
+        }
+
+        .flower::after {
+          content: '●';
+        }
+        elix-selectable-button:state(selected) .flower::after {
+          content: '✿';
         }
       </style>
       <elix-carousel
         id="customCarousel"
         aria-label="Nature scenes"
         arrow-button-overlap="false"
+        proxy-list-role="elix-centered-strip"
         proxy-list-overlap="false"
+        show-arrow-buttons="true"
       >
         <div slot="arrowButtonPrevious">↫</div>
         <div slot="arrowButtonNext">↬</div>
+        <elix-selectable-button slot="proxy">
+          <span class="flower"></span>
+        </elix-selectable-button>
+        <elix-selectable-button slot="proxy">
+          <span class="flower"></span>
+        </elix-selectable-button>
+        <elix-selectable-button slot="proxy">
+          <span class="flower"></span>
+        </elix-selectable-button>
+        <elix-selectable-button slot="proxy">
+          <span class="flower"></span>
+        </elix-selectable-button>
+        <elix-selectable-button slot="proxy">
+          <span class="flower"></span>
+        </elix-selectable-button>
         <img src="../images/image01.jpg" alt="Mountain lake" />
         <img src="../images/image02.jpg" alt="Terraced farm" />
         <img src="../images/image03.jpg" alt="Winter trees" />

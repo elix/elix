@@ -189,6 +189,13 @@ const Base = DelegateFocusMixin(ReactiveElement);
  * @part inner - the inner standard HTML element
  */
 class WrappedStandardElement extends Base {
+  constructor() {
+    super();
+    if (!this[internal.nativeInternals] && this.attachInternals) {
+      this[internal.nativeInternals] = this.attachInternals();
+    }
+  }
+
   /**
    *
    * Wrapped standard elements need to forward some attributes to the inner
@@ -362,6 +369,9 @@ class WrappedStandardElement extends Base {
       const { disabled } = innerProperties;
       if (disabled !== undefined) {
         this.toggleAttribute('disabled', disabled);
+        if (this[internal.nativeInternals]) {
+          this[internal.nativeInternals].states.toggle('disabled', disabled);
+        }
       }
     }
   }

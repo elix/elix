@@ -122,7 +122,7 @@ class Button extends Base {
         }
       </style>
 
-      <button id="inner" role="none">
+      <button id="inner" part="inner" role="none">
         <slot></slot>
       </button>
     `;

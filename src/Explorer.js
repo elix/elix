@@ -361,7 +361,7 @@ class Explorer extends Base {
         }
       </style>
       <div id="explorerContainer" role="none">
-        <div id="proxyList"><slot id="proxySlot" name="proxy"></slot></div>
+        <div id="proxyList" part="proxy-list"><slot id="proxySlot" name="proxy"></slot></div>
         <div id="stage" role="none"><slot></slot></div>
       </div>
     `;

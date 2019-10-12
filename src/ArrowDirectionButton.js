@@ -29,19 +29,28 @@ class ArrowDirectionButton extends Base {
       super[internal.template],
       template.html`
       <style>
-        #inner {
+        :host {
           color: rgba(0, 0, 0, 0.7);
-          fill: currentcolor;
         }
 
-        #inner:hover:not(:disabled) {
+        :host(:hover:not([disabled]))  {
           background: rgba(0, 0, 0, 0.2);
           color: rgba(0, 0, 0, 0.8);
           cursor: pointer;
         }
 
-        #inner:disabled {
+        :host([disabled]) {
           color: rgba(0, 0, 0, 0.3);
+        }
+
+        #inner {
+          fill: currentcolor;
+        }
+
+        #inner:hover:not(:disabled) {
+        }
+
+        #inner:disabled {
         }
 
         #inner.darkMode {
