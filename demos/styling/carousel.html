@@ -11,7 +11,7 @@
     <script type="module" src="../../define/Carousel.js"></script>
   </head>
 
-  <body role="main">
+  <body role="main" style="background: #fef4d2;">
     <div class="demo">
       <style>
         #customCarousel {
@@ -38,7 +38,15 @@
           margin: 4px;
         }
         #customCarousel::part(arrow-button):state(disabled) {
-          color: #c8c8a9;
+          color: transparent;
+          -webkit-text-stroke: 2px #c8c8a9;
+        }
+        #customCarousel::part(arrow-button):hover:not(:state(disabled)) {
+          background: linear-gradient(
+            rgba(0, 0, 0, 0.1),
+            transparent,
+            rgba(0, 0, 0, 0.1)
+          );
         }
 
         elix-selectable-button {
@@ -46,6 +54,9 @@
           font-size: 24px;
           margin: 0 0.2em;
           transition: color 0.25s, transform 0.25s;
+        }
+        elix-selectable-button:hover {
+          color: #fe4365;
         }
         elix-selectable-button:state(selected) {
           color: #fe4365;
@@ -84,11 +95,24 @@
         <elix-selectable-button slot="proxy">
           <span class="flower"></span>
         </elix-selectable-button>
-        <img src="../images/image01.jpg" alt="Mountain lake" />
-        <img src="../images/image02.jpg" alt="Terraced farm" />
-        <img src="../images/image03.jpg" alt="Winter trees" />
-        <img src="../images/image04.jpg" alt="Forest river" />
-        <img src="../images/image05.jpg" alt="Red panda" />
+        <!--
+          Bunny images in public domain from Flickr or from Unsplash with
+          Unsplash license (https://unsplash.com/license)
+        -->
+        <img src="../images/bunnies/bunny4.jpg" alt="White bunny" />
+        <img
+          src="../images/bunnies/bunny3.jpg"
+          alt="Close-up of face of brown bunny"
+        />
+        <img
+          src="../images/bunnies/bunny5.jpg"
+          alt="Fluffy bunny in lawn enclosure"
+        />
+        <img src="../images/bunnies/bunny1.jpg" alt="Brown bunny" />
+        <img
+          src="../images/bunnies/bunny2.jpg"
+          alt="Bunny on grass eating a flower"
+        />
       </elix-carousel>
     </div>
   </body>
