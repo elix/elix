@@ -69,9 +69,11 @@ class SlideshowWithPlayControls extends Base {
 
   get [internal.template]() {
     const result = super[internal.template];
-    const modesContainer = result.content.querySelector('#modesContainer');
+    const crossfadeContainer = result.content.querySelector(
+      '#crossfadeContainer'
+    );
     /** @type {any} */ const cast = this;
-    cast[PlayControlsMixin.wrap](modesContainer);
+    cast[PlayControlsMixin.wrap](crossfadeContainer);
     return result;
   }
 }

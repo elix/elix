@@ -179,7 +179,12 @@ class CrossfadeStage extends Base {
     return template.html`
       <style>
         :host {
+          display: inline-flex;
+        }
+
+        #crossfadeContainer {
           display: inline-grid;
+          flex: 1;
           position: relative;
         }
 
@@ -190,7 +195,9 @@ class CrossfadeStage extends Base {
           visibility: hidden;
         }
       </style>
-      <slot></slot>
+      <div id="crossfadeContainer">
+        <slot></slot>
+      </div>
     `;
   }
 }
