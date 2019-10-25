@@ -26,7 +26,6 @@ async function createWeekData() {
 
 // Extract the week data we care about and format it as an ES6 module.
 function formatWeekDataAsModule(weekData) {
-  const date = new Date();
   const { firstDay, weekendEnd, weekendStart } = weekData;
   const transformed = {
     firstDay: transformWeekDays(firstDay),
@@ -34,8 +33,8 @@ function formatWeekDataAsModule(weekData) {
     weekendStart: transformWeekDays(weekendStart)
   };
   const formatted = JSON.stringify(transformed, null, 2);
-  const js = `// Generated at ${date}
-// from https://github.com/unicode-cldr/cldr-core/blob/master/supplemental/weekData.json
+  const js = `// Generated from
+// https://github.com/unicode-cldr/cldr-core/blob/master/supplemental/weekData.json
 const weekData = ${formatted};
 export default weekData;
 `;
