@@ -352,6 +352,10 @@ class Explorer extends Base {
           position: relative;
         }
 
+        #proxyList {
+          box-sizing: border-box;
+        }
+
         #stage {
           flex: 1;
         }
