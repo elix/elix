@@ -139,13 +139,20 @@ class CrossfadeStage extends Base {
       }
     }
 
-    if (changed.items || changed.swipeFraction || changed.transitionDuration) {
+    if (
+      changed.enableEffects ||
+      changed.items ||
+      changed.swipeFraction ||
+      changed.transitionDuration
+    ) {
       // Apply opacity transition.
-      const { items, swipeFraction, transitionDuration } = this[internal.state];
+      const { enableEffects, items, swipeFraction, transitionDuration } = this[
+        internal.state
+      ];
       const transition =
-        swipeFraction != null
-          ? ''
-          : `opacity ${transitionDuration / 1000}s linear`;
+        enableEffects && swipeFraction == null
+          ? `opacity ${transitionDuration / 1000}s linear`
+          : '';
       if (items) {
         items.forEach(item => {
           item.style.transition = transition;
