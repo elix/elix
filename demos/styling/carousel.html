@@ -9,28 +9,40 @@
     <script type="module" src="../../define/CenteredStrip.js"></script>
     <script type="module" src="../../define/SelectableButton.js"></script>
     <script type="module" src="../../define/Carousel.js"></script>
+    <style>
+      html {
+        height: 100%;
+      }
+
+      body {
+        background: black;
+        height: 100%;
+        padding: 20px;
+      }
+    </style>
   </head>
 
   <body role="main" style="background: #fef4d2;">
-    <div class="demo">
+    <div class="demo fullScreen portrait">
       <style>
         #customCarousel {
-          height: 400px;
-          width: 600px;
+          max-height: 400px;
+          max-width: 600px;
         }
 
         #customCarousel img {
           border: 10px solid white;
           box-shadow: 1px 7px 10px 5px rgba(0, 0, 0, 0.2);
           box-sizing: border-box;
+          height: 100%;
           object-fit: cover;
           display: inline-block;
           transform: scale(0.9);
+          width: 100%;
         }
 
         #customCarousel::part(arrow-button) {
           color: #83af9b;
-          font-style: italic;
           transition: color 0.25s;
         }
         #customCarousel::part(arrow-button-inner) {
