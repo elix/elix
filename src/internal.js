@@ -627,7 +627,7 @@ export const update = Symbol('update');
 // Expose internals as a global when debugging.
 const elixdebug = new URLSearchParams(location.search).get('elixdebug');
 if (elixdebug === 'true') {
-  window.elix = {
+  /** @type {any} */ (window).elix = {
     internal: {
       checkSize,
       componentDidMount,

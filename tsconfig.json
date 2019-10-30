@@ -10,11 +10,7 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "strict": true,
-    "target": "ES6"
+    "target": "ES2019"
   },
-  "include": [
-    "src/**/*.js",
-    "demos/**/*.js",
-    "tests/**/*.js"
-  ]
+  "include": ["src/**/*.js", "demos/**/*.js", "tests/**/*.js"]
 }

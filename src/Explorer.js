@@ -381,7 +381,7 @@ function createDefaultProxies(items, proxyRole) {
     : [];
   proxies.forEach(proxy => {
     if ('part' in proxy) {
-      proxy.part = 'proxy';
+      /** @type {any} */ (proxy).part = 'proxy';
     }
   });
   // Make the array immutable to help update performance.

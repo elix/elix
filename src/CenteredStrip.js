@@ -144,7 +144,7 @@ class CenteredStrip extends Base {
       if (items) {
         items.forEach((item, index) => {
           if ('selected' in item) {
-            item.selected = index === selectedIndex;
+            /** @type {any} */ (item).selected = index === selectedIndex;
           }
         });
       }
