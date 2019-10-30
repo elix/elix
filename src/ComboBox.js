@@ -25,6 +25,12 @@ const Base = AriaRoleMixin(
  * @elementrole {'input'} input
  * @elementrole {'div'} source
  * @elementrole {SeamlessButton} toggleButton
+ * @part down-icon - the icon shown in the toggle button if the popup will open
+ * or close in the down direction
+ * @part input - the text input element
+ * @part toggle-button - the button that toggles the popup
+ * @part up-icon - the icon shown in the toggle button if the popup will open or
+ * close in the up direction
  */
 class ComboBox extends Base {
   // Forward any ARIA label to the input element.
@@ -275,12 +281,13 @@ class ComboBox extends Base {
       const { placeholder } = this[internal.state];
       /** @type {any} */ (this[internal.ids].input).placeholder = placeholder;
     }
-    if (changed.popupPosition) {
-      const { popupPosition } = this[internal.state];
-      this[internal.ids].downIcon.style.display =
-        popupPosition === 'below' ? 'block' : 'none';
-      this[internal.ids].upIcon.style.display =
-        popupPosition === 'above' ? 'block' : 'none';
+    if (changed.opened || changed.popupPosition) {
+      const { opened, popupPosition } = this[internal.state];
+      const showDown =
+        (popupPosition === 'below' && !opened) ||
+        (popupPosition === 'above' && opened);
+      this[internal.ids].downIcon.style.display = showDown ? 'block' : 'none';
+      this[internal.ids].upIcon.style.display = showDown ? 'none' : 'block';
     }
     if (changed.rightToLeft) {
       const { rightToLeft } = this[internal.state];
@@ -314,12 +321,12 @@ class ComboBox extends Base {
       throw `Couldn't find slot with name "source".`;
     }
     const sourceTemplate = template.html`
-      <input id="input"></input>
-      <button id="toggleButton" tabindex="-1">
-        <svg id="downIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
+      <input id="input" part="input"></input>
+      <button id="toggleButton" part="toggle-button" tabindex="-1">
+        <svg id="downIcon" part="open-icon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
           <path d="M 0 0 l5 5 5 -5 z"/>
         </svg>
-        <svg id="upIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
+        <svg id="upIcon" part="close-icon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
           <path d="M 0 5 l5 -5 5 5 z"/>
         </svg>
       </button>

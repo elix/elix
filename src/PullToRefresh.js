@@ -27,6 +27,12 @@ const Base = EffectMixin(TouchSwipeMixin(ReactiveElement));
  * @mixes TouchSwipeMixin
  * @elementrole pullIndicator
  * @elementrole {ProgressSpinner} refreshingIndicator
+ * @part indicator - either of the pull or refreshing indicators
+ * @part refresh-header - the header area shown when the user pulls down
+ * @part pull-indicator - the element shown to let the user know they can pull
+ * down
+ * @part refreshing-indicator - the element shown during a refresh of the
+ * content
  */
 class PullToRefresh extends Base {
   [internal.componentDidMount]() {
@@ -249,10 +255,10 @@ class PullToRefresh extends Base {
         }
       </style>
 
-      <div id="refreshHeader">
+      <div id="refreshHeader" part="refresh-header">
         <div id="refreshIndicators">
-          <div id="pullIndicator"></div>
-          <div id="refreshingIndicator"></div>
+          <div id="pullIndicator" part="indicator pull-indicator"></div>
+          <div id="refreshingIndicator" part="indicator refreshing-indicator"></div>
         </div>
       </div>
       <slot></slot>

@@ -7,6 +7,7 @@ import Dialog from './Dialog.js';
  * Asks a single question the user can answer with choice buttons
  *
  * @inherits Dialog
+ * @part choice-button - a button representing a choice
  */
 class AlertDialog extends Dialog {
   [internal.componentDidMount]() {
@@ -77,6 +78,9 @@ class AlertDialog extends Dialog {
       /** @type {string[]} */ const choices = state.choices;
       const choiceButtons = choices.map(choice => {
         const button = template.createElement(state.choiceButtonRole);
+        if ('part' in button) {
+          /** @type {any} */ (button).part = 'choice-button';
+        }
         button.textContent = choice;
         return button;
       });

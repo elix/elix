@@ -23,6 +23,9 @@ const Base = FocusVisibleMixin(KeyboardMixin(OpenCloseMixin(ReactiveElement)));
  * @mixes OpenCloseMixin
  * @elementrole {Drawer} menu
  * @elementrole {SeamlessButton} menuButton
+ * @part menu - contains the navigation or other menu items
+ * @part menu-button - toggles display of the menu
+ * @part menu-icon - the icon inside the menu button
  */
 class HamburgerMenuButton extends Base {
   get [internal.defaultState]() {
@@ -162,20 +165,20 @@ class HamburgerMenuButton extends Base {
           flex: 1;
         }
 
-        #hamburgerIcon {
+        #menuIcon {
           display: block;
           height: 24px;
           width: 24px;
         }
       </style>
-      <div id="menuButton" aria-label="Open menu" tabindex="-1">
-        <slot name="hamburgerIcon">
-          <svg id="hamburgerIcon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+      <div id="menuButton" part="menu-button" aria-label="Open menu" tabindex="-1">
+        <slot name="menuIcon">
+          <svg id="menuIcon" part="menu-icon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 3 h18 v2 h-18 z m0 5 h18 v2 h-18 z m0 5 h18 v2 h-18 z"></path>
           </svg>
         </slot>
       </div>
-      <div id="menu">
+      <div id="menu" part="menu" exportparts="backdrop, frame">
         <slot></slot>
       </div>
     `;

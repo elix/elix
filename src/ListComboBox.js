@@ -20,6 +20,7 @@ const Base = DelegateItemsMixin(
  * @mixes DirectionSelectionMixin
  * @mixes SingleSelectionMixin
  * @elementRole {ListBox} list
+ * @part list - the list of choices
  */
 class ListComboBox extends Base {
   [internal.componentDidMount]() {
@@ -220,7 +221,7 @@ class ListComboBox extends Base {
           width: 100%;
         }
       </style>
-      <div id="list" tabindex="-1">
+      <div id="list" part="list" tabindex="-1">
         <slot></slot>
       </div>
     `;

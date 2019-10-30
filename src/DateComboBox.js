@@ -17,6 +17,13 @@ const Base = CalendarElementMixin(ComboBox);
  * @mixes CalendarElementMixin
  * @elementrole {CalendarMonthNavigator} calendar
  * @elementrole {SeamlessButton} todayButton
+ * @part calendar - the calendar showing dates to choose from
+ * @part day - any of the day elements in the calendar
+ * @part day - any of the day elements in the month grid
+ * @part day-names-header - the column header showing the names of the days
+ * @part month-days - the grid of days for the month
+ * @part month-hear-header - the calendar header showing the month and/or year
+ * @part today-button - the button that will navigate to today in the calendar
  */
 class DateComboBox extends Base {
   /**
@@ -446,8 +453,8 @@ class DateComboBox extends Base {
         }
       </style>
       <div id="calendarContainer">
-        <div id="calendar" tabindex="-1"></div>
-        <button id="todayButton">Today</button>
+        <div id="calendar" part="calendar" exportparts="day, day-names-header, month-days, month-hear-header" tabindex="-1"></div>
+        <button id="todayButton" part="today-button">Today</button>
       </div>
     `;
     const defaultSlot = template.defaultSlot(result.content);

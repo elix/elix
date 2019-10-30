@@ -31,6 +31,11 @@ const Base = AriaRoleMixin(
  * @elementrole {OverlayFrame} frame
  * @elementrole {Popup} popup
  * @elementrole {'button'} source
+ * @part backdrop - the backdrop behind the overlay
+ * @part frame - the frame around the overlay
+ * @part popup - the popup element
+ * @part source - the element used as the reference point for positioning the
+ * popup, generally the element that invokes the popup
  */
 class PopupSource extends Base {
   /**
@@ -396,11 +401,11 @@ class PopupSource extends Base {
           width: initial;
         }
       </style>
-      <div id="source">
+      <div id="source" part="source">
         <slot name="source"></slot>
       </div>
       <div id="popupContainer" role="none">
-        <div id="popup" role="none">
+        <div id="popup" part="popup" exportparts="backdrop, frame" role="none">
           <slot></slot>
         </div>
       </div>

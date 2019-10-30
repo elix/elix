@@ -13,6 +13,14 @@ const wrap = Symbol('wrap');
  * @module PlayControlsMixin
  * @elementrole {SeamlessButton} controlButton
  * @param {Constructor<ReactiveElement>} Base
+ * @part control-button - any of the buttons that control playback
+ * @part control-icon - any of the icons shown in the control buttons
+ * @part next-button - the button that navigates to the next item
+ * @part next-icon - icon for the next button
+ * @part paused-icon - icon shown when the element is paused
+ * @part playing-icon - icon shown when the element is playing
+ * @part previous-button - the button that navigates to the previous item
+ * @part previous-icon - icon for the previous button
  */
 export default function PlayControlsMixin(Base) {
   // The class prototype added by the mixin.
@@ -148,32 +156,32 @@ export default function PlayControlsMixin(Base) {
         </style>
 
         <div id="buttons">
-          <div class="controlButton" id="previousButton" aria-hidden="true" tabindex="-1">
+          <div class="controlButton" part="control-button previous-button" id="previousButton" aria-hidden="true" tabindex="-1">
             <slot name="previousButton">
-              <svg id="previousIcon" class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+              <svg id="previousIcon" part="control-icon previous-icon" class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
                 <g id="skip-previous">
                   <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
                 </g>
               </svg>
             </slot>
           </div>
-          <div class="controlButton" id="playButton" aria-hidden="true" tabindex="-1">
+          <div class="controlButton" part="control-button play-button" id="playButton" aria-hidden="true" tabindex="-1">
             <slot name="playButton">
-              <svg id="playingIcon" class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+              <svg id="playingIcon" part="control-icon playing-icon" class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
                 <g id="pause-circle-outline">
                   <path d="M9 16h2V8H9v8zm3-14C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-4h2V8h-2v8z"></path>
                 </g>
               </svg>
-              <svg id="pausedIcon" class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+              <svg id="pausedIcon" part="control-icon paused-icon" class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
                 <g id="play-circle-outline">
                   <path d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
                 </g>
               </svg>
             </slot>
           </div>
-          <div class="controlButton" id="nextButton" aria-hidden="true" tabindex="-1">
+          <div class="controlButton" part="control-button next-button" id="nextButton" aria-hidden="true" tabindex="-1">
             <slot name="nextButton">
-              <svg id="nextIcon" class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+              <svg id="nextIcon" part="control-icon next-icon" class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
                 <g id="skip-next">
                   <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
                 </g>

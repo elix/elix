@@ -11,6 +11,8 @@ const documentMouseupListenerKey = Symbol('documentMouseupListener');
  *
  * @inherits PopupButton
  * @elementrole {Menu} menu
+ * @part menu - the menu shown in the popup
+ * @part toggle-icon - icon shown in the button that invokes the menu
  */
 class MenuButton extends PopupButton {
   [internal.componentDidMount]() {
@@ -315,7 +317,7 @@ class MenuButton extends PopupButton {
 
     // Wrap default slot with a menu.
     const menuTemplate = template.html`
-      <div id="menu">
+      <div id="menu" part="menu">
         <slot></slot>
       </div>
     `;
@@ -328,7 +330,7 @@ class MenuButton extends PopupButton {
     // Default "..." icon is from Google Material Design icons.
     const sourceTemplate = template.html`
       <slot>
-        <svg id="ellipsisIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <svg id="toggleIcon" part="toggle-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
         </svg>
       </slot>
@@ -354,7 +356,7 @@ class MenuButton extends PopupButton {
             display: flex;
           }
 
-          #ellipsisIcon {
+          #toggleIcon {
             display: block;
             fill: currentColor;
           }

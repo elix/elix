@@ -35,6 +35,8 @@ const Base = ComposedFocusMixin(
  * @mixes SingleSelectionMixin
  * @elementrole {AutoCompleteInput} input
  * @elementRole {FilterListBox} list
+ * @part input - the input element for search terms
+ * @part list - the searchable list of items
  */
 class ListWithSearch extends Base {
   // Forward any ARIA label to the input element.
@@ -211,8 +213,8 @@ class ListWithSearch extends Base {
           font-weight: inherit;
         }
       </style>
-      <input id="input">
-      <div id="list" tabindex="-1">
+      <input id="input" part="input">
+      <div id="list" part="list" tabindex="-1">
         <slot></slot>
       </div>
     `;

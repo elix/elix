@@ -20,6 +20,10 @@ const Base = FormElementMixin(
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin
  * @elementrole {'div'} value
+ * @part down-icon - the icon shown in the toggle button if the popup will open
+ * or close in the down direction
+ * @part up-icon - the icon shown in the toggle button if the popup will open or
+ * close in the up direction
  */
 class DropdownList extends Base {
   // By default, opening the menu re-selects the component item that's currently
@@ -65,12 +69,13 @@ class DropdownList extends Base {
         this[internal.state].valueRole
       );
     }
-    if (changed.popupPosition) {
-      const { popupPosition } = this[internal.state];
-      this[internal.ids].downIcon.style.display =
-        popupPosition === 'below' ? 'block' : 'none';
-      this[internal.ids].upIcon.style.display =
-        popupPosition === 'above' ? 'block' : 'none';
+    if (changed.opened || changed.popupPosition) {
+      const { opened, popupPosition } = this[internal.state];
+      const showDown =
+        (popupPosition === 'below' && !opened) ||
+        (popupPosition === 'above' && opened);
+      this[internal.ids].downIcon.style.display = showDown ? 'block' : 'none';
+      this[internal.ids].upIcon.style.display = showDown ? 'none' : 'block';
     }
     if (changed.selectedIndex) {
       const items = this[internal.state].items || [];
@@ -90,10 +95,10 @@ class DropdownList extends Base {
     const sourceSlotContent = template.html`
       <div id="value"></div>
       <div>
-        <svg id="downIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
+        <svg id="downIcon" part="down-icon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
           <path d="M 0 0 l5 5 5 -5 z"/>
         </svg>
-        <svg id="upIcon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
+        <svg id="upIcon" part="up-icon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
           <path d="M 0 5 l5 -5 5 5 z"/>
         </svg>
       </div>

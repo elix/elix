@@ -8,13 +8,15 @@ import SeamlessButton from './SeamlessButton.js';
  *
  * This variant of [Drawer](Drawer) includes a grip handle that remains visible
  * in the collapsed state. This both lets the user know the drawer is there, and
- * gives them a way to use a tap/click or swipe to open the drawer.
+ * gives them a way to use a tap, click, or swipe to open or close the drawer.
  *
  * The default icon used to represent the handle can be replaced by slotting an
  * image or other element into the `grip` slot.
  *
  * @inherits Drawer
  * @elementrole {SeamlessButton} grip
+ * @part grip - the handle the user can tap, click, or swipe to open or close
+ * the drawer
  */
 class DrawerWithGrip extends Drawer {
   [internal.componentDidMount]() {
@@ -143,7 +145,7 @@ class DrawerWithGrip extends Drawer {
         </div>
         <div id="gripWorkaround">
           <div id="grip" aria-label="Toggle drawer">
-            <slot name="grip">
+            <slot name="grip" part="grip">
               <svg id="gripIcon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
                 <defs>
                   <path id="a" d="M0 0h24v24H0V0z"/>

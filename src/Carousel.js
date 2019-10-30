@@ -53,8 +53,6 @@ const Base = AriaListMixin(
  * @mixes SwipeDirectionMixin
  * @mixes TouchSwipeMixin
  * @mixes TrackpadSwipeMixin
- * @part proxy
- * @part stage
  */
 class Carousel extends Base {
   get [internal.defaultState]() {

@@ -112,28 +112,28 @@ class PopupButton extends Base {
     return template.concat(
       super[internal.template],
       template.html`
-      <style>
-        #source {
-          background: buttonface;
-          color: inherit;
-          cursor: default;
-          display: block;
-          font-size: inherit;
-          font-family: inherit;
-          font-style: inherit;
-          margin: 0;
-          outline: none;
-          padding: 0.25em 0.5em;
-          -webkit-tap-highlight-color: transparent;
-          touch-action: manipulation;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          -webkit-user-select: none;
-          user-select: none;
-          white-space: nowrap;
-        }
-      </style>
-    `
+        <style>
+          #source {
+            background: buttonface;
+            color: inherit;
+            cursor: default;
+            display: block;
+            font-size: inherit;
+            font-family: inherit;
+            font-style: inherit;
+            margin: 0;
+            outline: none;
+            padding: 0.25em 0.5em;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+            white-space: nowrap;
+          }
+        </style>
+      `
     );
   }
 }

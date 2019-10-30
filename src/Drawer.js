@@ -386,25 +386,25 @@ class Drawer extends Base {
     return template.concat(
       result,
       template.html`
-      <style>
-        :host {
-          align-items: stretch;
-          -webkit-overflow-scrolling: touch; /* for momentum scrolling */
-        }
+        <style>
+          :host {
+            align-items: stretch;
+            -webkit-overflow-scrolling: touch; /* for momentum scrolling */
+          }
 
-        #backdrop {
-          will-change: opacity;
-        }
+          #backdrop {
+            will-change: opacity;
+          }
 
-        #frame {
-          overflow: auto;
-          will-change: transform;
-        }
-        :host([opened="false"]) #frame {
-          overflow: hidden;
-        }
-      </style>
-    `
+          #frame {
+            overflow: auto;
+            will-change: transform;
+          }
+          :host([opened="false"]) #frame {
+            overflow: hidden;
+          }
+        </style>
+      `
     );
   }
 }

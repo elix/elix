@@ -26,7 +26,7 @@ const Base = CalendarElementMixin(ReactiveElement);
  * @elementrole {CalendarDay} day
  * @inherits ReactiveElement
  * @mixes CalendarElementMixin
- * @part day - the set of day elements in the grid
+ * @part day - any of the day elements in the grid
  */
 class CalendarDays extends Base {
   /**
@@ -225,7 +225,7 @@ function updateDays(state, forceCreation) {
     day.date = new Date(date.getTime());
     day.locale = locale;
     if ('part' in day) {
-      day.part = 'calendar-day';
+      day.part = 'day';
     }
     day.style.gridColumnStart = '';
     if (createNewElement) {

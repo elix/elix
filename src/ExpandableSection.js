@@ -16,6 +16,11 @@ const Base = AriaRoleMixin(OpenCloseMixin(ReactiveElement));
  * @mixes OpenCloseMixin
  * @elementrole {SeamlessButton} header
  * @elementrole {ExpandablePanel} panel
+ * @part collapse-icon - the icon shown when the panel is expanded
+ * @part expand-icon - the icon shown when the panel is collapsed
+ * @part header - the header that can be clicked/tapped to expand or collapse
+ * the panel
+ * @part panel - contains the component's expandable/collapsible content
  */
 class ExpandableSection extends Base {
   get [internal.defaultState]() {
@@ -122,22 +127,22 @@ class ExpandableSection extends Base {
           margin: 0.5em;
         }
       </style>
-      <div id="header">
+      <div id="header" part="header">
         <div id="headerContainer" class="headerElement">
           <slot name="header"></slot>
         </div>
         <div id="toggleContainer" class="headerElement">
           <slot name="toggleSlot">
-            <svg id="collapseIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <svg id="collapseIcon" part="collapse-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
               <path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"/>
             </svg>
-            <svg id="expandIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <svg id="expandIcon" part="expand-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
               <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/>
             </svg>
           </slot>
         </div>
       </div>
-      <div id="panel" role="none">
+      <div id="panel" part="panel" role="none">
         <slot></slot>
       </div>
     `;
