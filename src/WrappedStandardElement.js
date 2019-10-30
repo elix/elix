@@ -437,9 +437,25 @@ class WrappedStandardElement extends Base {
    * @type {(string|HTMLTemplateElement)}
    */
   get [internal.template]() {
-    const display =
-      blockElements.indexOf(this.extends) >= 0 ? 'block' : 'inline-block';
-    return template.html`<style>:host { display: ${display}} #inner { box-sizing: border-box; height: 100%; width: 100%; }</style><${this.extends} id="inner" part="inner"><slot></slot></${this.extends}`;
+    const display = blockElements.includes(this.extends)
+      ? 'block'
+      : 'inline-block';
+    return template.html`
+      <style>
+        :host {
+          display: ${display}
+        }
+        
+        #inner {
+          box-sizing: border-box;
+          height: 100%;
+          width: 100%;
+        }
+      </style>
+      <${this.extends} id="inner" part="inner">
+        <slot></slot>
+      </${this.extends}>
+    `;
   }
 
   /**

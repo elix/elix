@@ -95,37 +95,36 @@ class Button extends Base {
   }
 
   get [internal.template]() {
-    return template.html`
-      <style>
-        :host {
-          display: inline-flex;
-          outline: none;
-          -webkit-tap-highlight-color: transparent;
-          touch-action: manipulation;
-        }
-        
-        #inner {
-          align-items: center; /* Edge */
-          color: inherit;
-          display: inline-flex;
-          flex: 1;
-          font-family: inherit;
-          font-size: inherit;
-          font-style: inherit;
-          font-weight: inherit;
-          height: 100%;
-          justify-content: center;
-          padding: 0;
-          position: relative;
-          text-align: initial; /* Edge */
-          width: 100%;
-        }
-      </style>
-
-      <button id="inner" part="inner" role="none">
-        <slot></slot>
-      </button>
-    `;
+    return template.concat(
+      super[internal.template],
+      template.html`
+        <style>
+          :host {
+            display: inline-flex;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+          }
+          
+          #inner {
+            align-items: center; /* Edge */
+            color: inherit;
+            display: inline-flex;
+            flex: 1;
+            font-family: inherit;
+            font-size: inherit;
+            font-style: inherit;
+            font-weight: inherit;
+            height: 100%;
+            justify-content: center;
+            padding: 0;
+            position: relative;
+            text-align: initial; /* Edge */
+            width: 100%;
+          }
+        </style>
+      `
+    );
   }
 }
 
