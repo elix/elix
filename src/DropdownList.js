@@ -22,6 +22,7 @@ const Base = FormElementMixin(
  * @elementrole {'div'} value
  * @part down-icon - the icon shown in the toggle button if the popup will open or close in the down direction
  * @part up-icon - the icon shown in the toggle button if the popup will open or close in the up direction
+ * @part value - region inside the toggle button showing the value of the current selection
  */
 class DropdownList extends Base {
   // By default, opening the menu re-selects the component item that's currently
@@ -89,7 +90,7 @@ class DropdownList extends Base {
       throw `Couldn't find slot with name "source".`;
     }
     const sourceSlotContent = template.html`
-      <div id="value"></div>
+      <div id="value" part="value"></div>
       <div>
         <svg id="downIcon" part="down-icon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
           <path d="M 0 0 l5 5 5 -5 z"/>

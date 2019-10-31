@@ -7,6 +7,7 @@ import Dialog from './Dialog.js';
  * Asks a single question the user can answer with choice buttons
  *
  * @inherits Dialog
+ * @elementrole {button} choiceButton
  * @part choice-button - a button representing a choice
  */
 class AlertDialog extends Dialog {
