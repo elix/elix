@@ -19,8 +19,7 @@ const Base = DelegateItemsMixin(
  * @mixes DelegateItemsMixin
  * @mixes DirectionSelectionMixin
  * @mixes SingleSelectionMixin
- * @elementRole {ListBox} list
- * @part list - the list of choices
+ * @part {ListBox} list - the list of choices
  */
 class ListComboBox extends Base {
   [internal.componentDidMount]() {

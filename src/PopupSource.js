@@ -27,14 +27,10 @@ const Base = AriaRoleMixin(
  * @mixes FocusVisibleMixin
  * @mixes KeyboardMixin
  * @mixes OpenCloseMixin
- * @elementrole {Backdrop} backdrop
- * @elementrole {OverlayFrame} frame
- * @elementrole {Popup} popup
- * @elementrole {'button'} source
- * @part backdrop - the backdrop behind the overlay
- * @part frame - the frame around the overlay
- * @part popup - the popup element
- * @part source - the element used as the reference point for positioning the popup, generally the element that invokes the popup
+ * @part {Backdrop} backdrop - the backdrop behind the overlay
+ * @part {OverlayFrame} frame - the frame around the overlay
+ * @part {Popup} popup - the popup element
+ * @part {button} source - the element used as the reference point for positioning the popup, generally the element that invokes the popup
  */
 class PopupSource extends Base {
   /**

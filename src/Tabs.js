@@ -19,8 +19,8 @@ const Base = GenericMixin(Explorer);
  *
  * @inherits Explorer
  * @mixes GenericMixin
- * @elementrole {TabButton} proxy
- * @elementrole {TabStrip} proxyList
+ * @part {TabButton} proxy
+ * @part {TabStrip} proxy-list
  */
 class Tabs extends Base {
   get [internal.defaultState]() {

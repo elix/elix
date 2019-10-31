@@ -31,14 +31,12 @@ const Base = OpenCloseMixin(OverlayMixin(SlotContentMixin(ReactiveElement)));
  * See [Dialog](Dialog) and [Popup](Popup) for modal and modeless subclasses,
  * respectively.
  *
- * @elementrole {Backdrop} backdrop
- * @elementrole {OverlayFrame} frame
  * @inherits ReactiveElement
  * @mixes OpenCloseMixin
  * @mixes OverlayMixin
  * @mixes SlotContentMixin
- * @part backdrop - the backdrop behind the overlay
- * @part frame - the frame around the overlay
+ * @part {Backdrop} backdrop - the backdrop behind the overlay
+ * @part {OverlayFrame} frame - the frame around the overlay
  */
 class Overlay extends Base {
   get backdrop() {

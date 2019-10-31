@@ -15,15 +15,13 @@ const Base = CalendarElementMixin(ComboBox);
  *
  * @inherits ComboBox
  * @mixes CalendarElementMixin
- * @elementrole {CalendarMonthNavigator} calendar
- * @elementrole {SeamlessButton} todayButton
- * @part calendar - the calendar showing dates to choose from
- * @part day - any of the day elements in the calendar
+ * @part {CalendarMonthNavigator} calendar - the calendar showing dates to choose from
+ * @part {CalendarDay} day - any of the day elements in the calendar
  * @part day - any of the day elements in the month grid
  * @part day-names-header - the column header showing the names of the days
  * @part month-days - the grid of days for the month
  * @part month-hear-header - the calendar header showing the month and/or year
- * @part today-button - the button that will navigate to today in the calendar
+ * @part {SeamlessButton} today-button - the button that will navigate to today in the calendar
  */
 class DateComboBox extends Base {
   /**

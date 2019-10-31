@@ -10,7 +10,7 @@ const Base = ItemsTextMixin(ListComboBox);
  *
  * @inherits ListComboBox
  * @mixes ItemsTextMixin
- * @elementrole {AutoCompleteInput} input
+ * @part {AutoCompleteInput} input
  */
 class AutoCompleteComboBox extends Base {
   get [internal.defaultState]() {

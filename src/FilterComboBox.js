@@ -13,8 +13,8 @@ const Base = SlotContentMixin(ListComboBox);
  *
  * @inherits ListComboBox
  * @mixes SlotContentMixin
- * @elementrole {AutoCompleteInput} input
- * @elementrole {FilterListBox} list
+ * @part {AutoCompleteInput} input
+ * @part {FilterListBox} list
  */
 class FilterComboBox extends Base {
   get [internal.defaultState]() {

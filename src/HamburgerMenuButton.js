@@ -21,10 +21,8 @@ const Base = FocusVisibleMixin(KeyboardMixin(OpenCloseMixin(ReactiveElement)));
  * @mixes FocusVisibleMixin
  * @mixes KeyboardMixin
  * @mixes OpenCloseMixin
- * @elementrole {Drawer} menu
- * @elementrole {SeamlessButton} menuButton
- * @part menu - contains the navigation or other menu items
- * @part menu-button - toggles display of the menu
+ * @part {Drawer} menu - contains the navigation or other menu items
+ * @part {SeamlessButton} menu-button - toggles display of the menu
  * @part menu-icon - the icon inside the menu button
  */
 class HamburgerMenuButton extends Base {

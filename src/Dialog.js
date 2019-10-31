@@ -18,7 +18,7 @@ const Base = DialogModalityMixin(FocusCaptureMixin(KeyboardMixin(Overlay)));
  * @inherits Overlay
  * @mixes DialogModalityMixin
  * @mixes KeyboardMixin
- * @elementrole {ModalBackdrop} backdrop
+ * @part {ModalBackdrop} backdrop
  */
 class Dialog extends Base {
   get [internal.defaultState]() {

@@ -33,10 +33,8 @@ const Base = ComposedFocusMixin(
  * @mixes KeyboardMixin
  * @mixes SelectedItemTextValueMixin
  * @mixes SingleSelectionMixin
- * @elementrole {AutoCompleteInput} input
- * @elementRole {FilterListBox} list
- * @part input - the input element for search terms
- * @part list - the searchable list of items
+ * @part {AutoCompleteInput} input - the input element for search terms
+ * @part {FilterListBox} list - the searchable list of items
  */
 class ListWithSearch extends Base {
   // Forward any ARIA label to the input element.

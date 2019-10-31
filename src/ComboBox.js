@@ -21,13 +21,11 @@ const Base = AriaRoleMixin(
  * @mixes DelegateFocusMixin
  * @mixes FormElementMixin
  * @mixes KeyboardMixin
- * @elementrole {Hidden} backdrop
- * @elementrole {'input'} input
- * @elementrole {'div'} source
- * @elementrole {SeamlessButton} toggleButton
+ * @part {Hidden} backdrop
  * @part down-icon - the icon shown in the toggle button if the popup will open or close in the down direction
- * @part input - the text input element
- * @part toggle-button - the button that toggles the popup
+ * @part {input} input - the text input element
+ * @part {div} source
+ * @part {SeamlessButton} toggle-button - the button that toggles the popup
  * @part up-icon - the icon shown in the toggle button if the popup will open or close in the up direction
  */
 class ComboBox extends Base {

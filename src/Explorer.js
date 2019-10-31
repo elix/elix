@@ -28,12 +28,9 @@ const Base = LanguageDirectionMixin(
  * @mixes LanguageDirectionMixin
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin
- * @elementrole {'div'} proxy
- * @elementrole {ListBox} proxyList
- * @elementrole {Modes} stage
- * @part proxy - an element representing an item in the list
- * @part proxy-list - the container for the list of proxies
- * @part stage - the main element showing a single item from the list
+ * @part {div} proxy - an element representing an item in the list
+ * @part {ListBox} proxy-list - the container for the list of proxies
+ * @part {Modes} stage - the main element showing a single item from the list
  */
 class Explorer extends Base {
   [internal.checkSize]() {

@@ -14,12 +14,10 @@ const Base = AriaRoleMixin(OpenCloseMixin(ReactiveElement));
  * @inherits ReactiveElement
  * @mixes AriaRoleMixin
  * @mixes OpenCloseMixin
- * @elementrole {SeamlessButton} header
- * @elementrole {ExpandablePanel} panel
  * @part collapse-icon - the icon shown when the panel is expanded
  * @part expand-icon - the icon shown when the panel is collapsed
- * @part header - the header that can be clicked/tapped to expand or collapse the panel
- * @part panel - contains the component's expandable/collapsible content
+ * @part {SeamlessButton} header - the header that can be clicked/tapped to expand or collapse the panel
+ * @part {ExpandablePanel} panel - contains the component's expandable/collapsible content
  */
 class ExpandableSection extends Base {
   get [internal.defaultState]() {

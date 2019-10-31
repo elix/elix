@@ -11,9 +11,8 @@ const wrap = Symbol('wrap');
  * [Play controls let the user go back, pause/resume, or forward](/demos/slideshowWithPlayControls.html)
  *
  * @module PlayControlsMixin
- * @elementrole {SeamlessButton} controlButton
  * @param {Constructor<ReactiveElement>} Base
- * @part control-button - any of the buttons that control playback
+ * @part {SeamlessButton} control-button - any of the buttons that control playback
  * @part control-icon - any of the icons shown in the control buttons
  * @part next-button - the button that navigates to the next item
  * @part next-icon - icon for the next button

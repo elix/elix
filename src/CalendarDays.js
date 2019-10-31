@@ -23,10 +23,9 @@ const Base = CalendarElementMixin(ReactiveElement);
  * [international calendar support](CalendarMonth#international-support)
  * to the extent currently possible in the user's web browser.
  *
- * @elementrole {CalendarDay} day
  * @inherits ReactiveElement
  * @mixes CalendarElementMixin
- * @part day - any of the day elements in the grid
+ * @part {CalendarDay} day - any of the day elements in the grid
  */
 class CalendarDays extends Base {
   /**

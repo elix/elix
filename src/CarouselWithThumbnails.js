@@ -6,7 +6,7 @@ import Thumbnail from './Thumbnail.js';
  * Carousel showing a thumbnail for each image
  *
  * @inherits Carousel
- * @elementrole {Thumbnail} proxy
+ * @part {Thumbnail} proxy
  */
 class CarouselWithThumbnails extends Carousel {
   get [internal.defaultState]() {
