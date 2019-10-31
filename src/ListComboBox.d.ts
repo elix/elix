@@ -10,5 +10,5 @@ import SingleSelectionMixin from './SingleSelectionMixin.js';
 export default class ListComboBox extends DelegateItemsMixin(
   DirectionSelectionMixin(SingleSelectionMixin(ComboBox))
 ) {
-  listRole: Role;
+  listRole: PartDescriptor;
 }

@@ -4,7 +4,7 @@
 export function concat(
   ...templates: HTMLTemplateElement[]
 ): HTMLTemplateElement;
-export function createElement(descriptor: Role): Node;
+export function createElement(descriptor: PartDescriptor): Node;
 export function defaultSlot(tree: DocumentFragment): Node | null;
 export function html(
   strings: TemplateStringsArray,
@@ -13,7 +13,7 @@ export function html(
 export function replace(original: Node | null, replacement: Node): Node;
 export function transmute(
   original: Node[] | NodeList | Node,
-  descriptor: Role
+  descriptor: PartDescriptor
 ): Node[] | Node;
 export function wrap(
   original: Node,

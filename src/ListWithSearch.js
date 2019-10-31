@@ -65,7 +65,7 @@ class ListWithSearch extends Base {
   /**
    * The class, tag, or template used to create the input element.
    *
-   * @type {Role}
+   * @type {PartDescriptor}
    * @default 'input'
    */
   get inputRole() {
@@ -142,7 +142,7 @@ class ListWithSearch extends Base {
   /**
    * The class, tag, or template used to create the list element.
    *
-   * @type {Role}
+   * @type {PartDescriptor}
    * @default ListBox
    */
   get listRole() {

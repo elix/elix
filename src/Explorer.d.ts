@@ -14,7 +14,7 @@ export default class Explorer extends LanguageDirectionMixin(
   readonly proxies: Element[];
   proxyListOverlap: boolean;
   proxyListPosition: 'bottom' | 'end' | 'left' | 'right' | 'start' | 'top';
-  proxyListRole: Role;
-  proxyRole: Role;
-  stageRole: Role;
+  proxyListRole: PartDescriptor;
+  proxyRole: PartDescriptor;
+  stageRole: PartDescriptor;
 }

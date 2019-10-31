@@ -11,5 +11,5 @@ export default class DropdownList extends FormElementMixin(
   SelectedItemTextValueMixin(SingleSelectionMixin(SlotItemsMixin(MenuButton)))
 ) {
   defaultMenuSelectedIndex: number;
-  valueRole: Role;
+  valueRole: PartDescriptor;
 }

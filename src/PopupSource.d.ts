@@ -13,9 +13,9 @@ export default class PopupSource extends AriaRoleMixin(
     FocusVisibleMixin(LanguageDirectionMixin(OpenCloseMixin(ReactiveElement)))
   )
 ) {
-  frameRole: Role;
+  frameRole: PartDescriptor;
   horizontalAlign: 'start' | 'end' | 'left' | 'right' | 'stretch';
   popupPosition: 'above' | 'below';
-  popupRole: Role;
-  sourceRole: Role;
+  popupRole: PartDescriptor;
+  sourceRole: PartDescriptor;
 }

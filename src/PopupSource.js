@@ -42,7 +42,7 @@ class PopupSource extends Base {
    * elements. For example, [Dialog](Dialog) uses [ModalBackdrop](ModalBackdrop)
    * as an overlay backdrop in such a way.
    *
-   * @type {Role}
+   * @type {PartDescriptor}
    * @default Backdrop
    */
   get backdropRole() {
@@ -123,7 +123,7 @@ class PopupSource extends Base {
    * and to provide visual effects such as a drop-shadow to help distinguish
    * popup content from background page elements.
    *
-   * @type {Role}
+   * @type {PartDescriptor}
    * @default OverlayFrame
    */
   get frameRole() {
@@ -339,7 +339,7 @@ class PopupSource extends Base {
    *
    * The popup element is responsible for handling overlay behavior.
    *
-   * @type {Role}
+   * @type {PartDescriptor}
    * @default Popup
    */
   get popupRole() {
@@ -353,7 +353,7 @@ class PopupSource extends Base {
    * The class, tag, or template used for the button (or other element) that
    * will invoke the popup.
    *
-   * @type {Role}
+   * @type {PartDescriptor}
    * @default 'button'
    */
   get sourceRole() {

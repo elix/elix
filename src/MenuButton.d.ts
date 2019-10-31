@@ -7,5 +7,5 @@ export default class MenuButton extends PopupButton {
   defaultMenuSelectedIndex: number;
   highlightSelectedItemAndClose(): Promise<void>;
   items: ListItemElement[];
-  menuRole: Role;
+  menuRole: PartDescriptor;
 }

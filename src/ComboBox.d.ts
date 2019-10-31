@@ -11,8 +11,8 @@ export default class ComboBox extends AriaRoleMixin(
   DelegateFocusMixin(FormElementMixin(KeyboardMixin(PopupSource)))
 ) {
   input: Element | null;
-  inputRole: Role;
+  inputRole: PartDescriptor;
   placeholder: string;
-  toggleButtonRole: Role;
+  toggleButtonRole: PartDescriptor;
   value: any;
 }

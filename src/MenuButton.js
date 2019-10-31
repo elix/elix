@@ -217,7 +217,7 @@ class MenuButton extends PopupButton {
    * The menu element is responsible for presenting the menu items and handling
    * navigation between them.
    *
-   * @type {Role}
+   * @type {PartDescriptor}
    * @default Menu
    */
   get menuRole() {

@@ -40,7 +40,7 @@ class DrawerWithGrip extends Drawer {
   /**
    * The class, tag, or template used to create the grip handle.
    *
-   * @type {Role}
+   * @type {PartDescriptor}
    * @default SeamlessButton
    */
   get gripRole() {

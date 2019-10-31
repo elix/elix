@@ -10,7 +10,7 @@ export default class Overlay extends OpenCloseMixin(
   OverlayMixin(SlotContentMixin(ReactiveElement))
 ) {
   backdrop: Element;
-  backdropRole: Role;
+  backdropRole: PartDescriptor;
   frame: Element;
-  frameRole: Role;
+  frameRole: PartDescriptor;
 }

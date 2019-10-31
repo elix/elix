@@ -5,6 +5,6 @@ import Dialog from './Dialog.js';
 
 export default class AlertDialog extends Dialog {
   readonly choiceButtons: HTMLElement[];
-  choiceButtonRole: Role;
+  choiceButtonRole: PartDescriptor;
   choices: string[];
 }

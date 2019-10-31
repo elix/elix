@@ -8,6 +8,6 @@ import ReactiveElement from './ReactiveElement.js';
 export default class ExpandableSection extends AriaRoleMixin(
   OpenCloseMixin(ReactiveElement)
 ) {
-  headerRole: Role;
-  panelRole: Role;
+  headerRole: PartDescriptor;
+  panelRole: PartDescriptor;
 }

@@ -300,7 +300,7 @@ class Explorer extends Base {
   /**
    * The class, tag, or template used to create the Explorer's list of proxies.
    *
-   * @type {Role}
+   * @type {PartDescriptor}
    * @default ListBox
    */
   get proxyListRole() {
@@ -314,7 +314,7 @@ class Explorer extends Base {
    * The class, tag, or template used to create default proxies for the list
    * items.
    *
-   * @type {Role}
+   * @type {PartDescriptor}
    * @default 'div'
    */
   get proxyRole() {
@@ -328,7 +328,7 @@ class Explorer extends Base {
    * The class, tag, or template used for the main "stage" element that shows a
    * single item at a time.
    *
-   * @type {Role}
+   * @type {PartDescriptor}
    * @default Modes
    */
   get stageRole() {
@@ -373,7 +373,7 @@ class Explorer extends Base {
  *
  * @private
  * @param {ListItemElement[]} items
- * @param {Role} proxyRole
+ * @param {PartDescriptor} proxyRole
  */
 function createDefaultProxies(items, proxyRole) {
   const proxies = items

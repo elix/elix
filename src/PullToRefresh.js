@@ -188,7 +188,7 @@ class PullToRefresh extends Base {
    *
    * By default, this is a down arrow icon.
    *
-   * @type {Role}
+   * @type {PartDescriptor}
    */
   get pullIndicatorRole() {
     return this[internal.state].pullIndicatorRole;
@@ -208,7 +208,7 @@ class PullToRefresh extends Base {
    * The class, tag, or template used for the element shown to indicate the
    * element is currently refreshing.
    *
-   * @type {Role}
+   * @type {PartDescriptor}
    * @default ProgressSpinner
    */
   get refreshingIndicatorRole() {

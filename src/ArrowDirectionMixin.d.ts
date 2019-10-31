@@ -3,7 +3,12 @@
 
 /// <reference path="shared.d.ts"/>
 
-declare const ArrowDirectionMixin: Mixin<{}, {}> & {
+declare const ArrowDirectionMixin: Mixin<
+  {},
+  {
+    arrowButtonRole: PartDescriptor;
+  }
+> & {
   wrap: symbol;
 };
 

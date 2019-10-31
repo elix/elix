@@ -52,7 +52,7 @@ class CalendarDays extends Base {
   /**
    * The class, tag, or template used for the seven days of the week.
    *
-   * @type {Role}
+   * @type {PartDescriptor}
    * @default CalendarDay
    */
   get dayRole() {

@@ -31,7 +31,7 @@ class ExpandableSection extends Base {
   /**
    * The class, tag, or template used to create the clickable header.
    *
-   * @type {Role}
+   * @type {PartDescriptor}
    * @default SeamlessButton
    */
   get headerRole() {
@@ -44,7 +44,7 @@ class ExpandableSection extends Base {
   /**
    * The class, tag, or template used to create the expandable panel.
    *
-   * @type {Role}
+   * @type {PartDescriptor}
    * @default ExpandablePanel
    */
   get panelRole() {

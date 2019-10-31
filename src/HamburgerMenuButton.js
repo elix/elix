@@ -78,7 +78,7 @@ class HamburgerMenuButton extends Base {
   /**
    * The class, tag, or template used to create the menu (drawer).
    *
-   * @type {Role}
+   * @type {PartDescriptor}
    * @default Drawer
    */
   get menuRole() {
@@ -91,7 +91,7 @@ class HamburgerMenuButton extends Base {
   /**
    * The class, tag, or template used to create the menu button element.
    *
-   * @type {Role}
+   * @type {PartDescriptor}
    * @default SeamlessButton
    */
   get menuButtonRole() {

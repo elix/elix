@@ -42,7 +42,7 @@ function ArrowDirectionMixin(Base) {
      * The class, tag, or template used to create the previous/next arrow
      * buttons.
      *
-     * @type {Role}
+     * @type {PartDescriptor}
      * @default ArrowDirectionButton
      */
     get arrowButtonRole() {
