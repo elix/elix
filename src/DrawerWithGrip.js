@@ -15,8 +15,7 @@ import SeamlessButton from './SeamlessButton.js';
  *
  * @inherits Drawer
  * @elementrole {SeamlessButton} grip
- * @part grip - the handle the user can tap, click, or swipe to open or close
- * the drawer
+ * @part grip - the handle the user can tap, click, or swipe to open or close the drawer
  */
 class DrawerWithGrip extends Drawer {
   [internal.componentDidMount]() {

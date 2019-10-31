@@ -20,10 +20,8 @@ const Base = FormElementMixin(
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin
  * @elementrole {'div'} value
- * @part down-icon - the icon shown in the toggle button if the popup will open
- * or close in the down direction
- * @part up-icon - the icon shown in the toggle button if the popup will open or
- * close in the up direction
+ * @part down-icon - the icon shown in the toggle button if the popup will open or close in the down direction
+ * @part up-icon - the icon shown in the toggle button if the popup will open or close in the up direction
  */
 class DropdownList extends Base {
   // By default, opening the menu re-selects the component item that's currently

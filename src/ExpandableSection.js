@@ -18,8 +18,7 @@ const Base = AriaRoleMixin(OpenCloseMixin(ReactiveElement));
  * @elementrole {ExpandablePanel} panel
  * @part collapse-icon - the icon shown when the panel is expanded
  * @part expand-icon - the icon shown when the panel is collapsed
- * @part header - the header that can be clicked/tapped to expand or collapse
- * the panel
+ * @part header - the header that can be clicked/tapped to expand or collapse the panel
  * @part panel - contains the component's expandable/collapsible content
  */
 class ExpandableSection extends Base {
