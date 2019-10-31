@@ -281,11 +281,9 @@ class ComboBox extends Base {
       const { placeholder } = this[internal.state];
       /** @type {any} */ (this[internal.ids].input).placeholder = placeholder;
     }
-    if (changed.opened || changed.popupPosition) {
-      const { opened, popupPosition } = this[internal.state];
-      const showDown =
-        (popupPosition === 'below' && !opened) ||
-        (popupPosition === 'above' && opened);
+    if (changed.popupPosition) {
+      const { popupPosition } = this[internal.state];
+      const showDown = popupPosition === 'below';
       this[internal.ids].downIcon.style.display = showDown ? 'block' : 'none';
       this[internal.ids].upIcon.style.display = showDown ? 'none' : 'block';
     }

@@ -70,10 +70,8 @@ class DropdownList extends Base {
       );
     }
     if (changed.opened || changed.popupPosition) {
-      const { opened, popupPosition } = this[internal.state];
-      const showDown =
-        (popupPosition === 'below' && !opened) ||
-        (popupPosition === 'above' && opened);
+      const { popupPosition } = this[internal.state];
+      const showDown = popupPosition === 'below';
       this[internal.ids].downIcon.style.display = showDown ? 'block' : 'none';
       this[internal.ids].upIcon.style.display = showDown ? 'none' : 'block';
     }
