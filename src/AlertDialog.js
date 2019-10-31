@@ -43,11 +43,11 @@ class AlertDialog extends Dialog {
    * @type {PartDescriptor}
    * @default 'button'
    */
-  get choiceButtonRole() {
-    return this[internal.state].choiceButtonRole;
+  get choiceButtonPartType() {
+    return this[internal.state].choiceButtonPartType;
   }
-  set choiceButtonRole(choiceButtonRole) {
-    this[internal.setState]({ choiceButtonRole });
+  set choiceButtonPartType(choiceButtonPartType) {
+    this[internal.setState]({ choiceButtonPartType });
   }
 
   /**
@@ -68,16 +68,16 @@ class AlertDialog extends Dialog {
 
   get [internal.defaultState]() {
     const state = Object.assign(super[internal.defaultState], {
-      choiceButtonRole: 'button',
+      choiceButtonPartType: 'button',
       choiceButtons: [],
       choices: ['OK']
     });
 
-    // When choices or choice button role changes, regenerate buttons.
-    state.onChange(['choiceButtonRole', 'choices'], state => {
+    // When choices or choice button part type changes, regenerate buttons.
+    state.onChange(['choiceButtonPartType', 'choices'], state => {
       /** @type {string[]} */ const choices = state.choices;
       const choiceButtons = choices.map(choice => {
-        const button = template.createElement(state.choiceButtonRole);
+        const button = template.createElement(state.choiceButtonPartType);
         if ('part' in button) {
           /** @type {any} */ (button).part = 'choice-button';
         }

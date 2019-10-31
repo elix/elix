@@ -88,10 +88,10 @@ class PullToRefresh extends Base {
     // Suppress transition effects on page load.
     const state = Object.assign(super[internal.defaultState], {
       swipeFractionMin: 0, // Can't swipe up, only down
-      pullIndicatorRole: downArrowTemplate,
+      pullIndicatorPartType: downArrowTemplate,
       pullTriggeredRefresh: false,
       refreshing: false,
-      refreshingIndicatorRole: ProgressSpinner,
+      refreshingIndicatorPartType: ProgressSpinner,
       scrollPullDistance: null,
       scrollPullMaxReached: false,
       swipeAxis: 'vertical'
@@ -123,10 +123,10 @@ class PullToRefresh extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.pullIndicatorRole) {
+    if (changed.pullIndicatorPartType) {
       template.transmute(
         this[internal.ids].pullIndicator,
-        this.pullIndicatorRole
+        this.pullIndicatorPartType
       );
     }
     if (changed.refreshing) {
@@ -137,10 +137,10 @@ class PullToRefresh extends Base {
         /** @type {any} */ (refreshingIndicator).playing = refreshing;
       }
     }
-    if (changed.refreshingIndicatorRole) {
+    if (changed.refreshingIndicatorPartType) {
       template.transmute(
         this[internal.ids].refreshingIndicator,
-        this.refreshingIndicatorRole
+        this.refreshingIndicatorPartType
       );
     }
     if (changed.enableEffects || changed.refreshing || changed.swipeFraction) {
@@ -190,11 +190,11 @@ class PullToRefresh extends Base {
    *
    * @type {PartDescriptor}
    */
-  get pullIndicatorRole() {
-    return this[internal.state].pullIndicatorRole;
+  get pullIndicatorPartType() {
+    return this[internal.state].pullIndicatorPartType;
   }
-  set pullIndicatorRole(pullIndicatorRole) {
-    this[internal.setState]({ pullIndicatorRole });
+  set pullIndicatorPartType(pullIndicatorPartType) {
+    this[internal.setState]({ pullIndicatorPartType });
   }
 
   get refreshing() {
@@ -211,11 +211,11 @@ class PullToRefresh extends Base {
    * @type {PartDescriptor}
    * @default ProgressSpinner
    */
-  get refreshingIndicatorRole() {
-    return this[internal.state].refreshingIndicatorRole;
+  get refreshingIndicatorPartType() {
+    return this[internal.state].refreshingIndicatorPartType;
   }
-  set refreshingIndicatorRole(refreshingIndicatorRole) {
-    this[internal.setState]({ refreshingIndicatorRole });
+  set refreshingIndicatorPartType(refreshingIndicatorPartType) {
+    this[internal.setState]({ refreshingIndicatorPartType });
   }
 
   get [internal.template]() {

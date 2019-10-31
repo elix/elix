@@ -11,33 +11,33 @@
       import ReactiveElement from '../src/ReactiveElement.js';
 
       class IncrementDecrement extends ReactiveElement {
-        get buttonRole() {
+        get buttonPartType() {
           return this[internal.state].button;
         }
-        set buttonRole(buttonRole) {
-          this[internal.setState]({ buttonRole });
+        set buttonPartType(buttonPartType) {
+          this[internal.setState]({ buttonPartType });
         }
 
         get [internal.defaultState]() {
           return Object.assign(super[internal.defaultState], {
-            buttonRole: 'button',
+            buttonPartType: 'button',
             value: 0
           });
         }
 
         [internal.render](changed) {
           super[internal.render](changed);
-          if (changed.buttonRole) {
+          if (changed.buttonPartType) {
             template.transmute(
               this[internal.ids].decrement,
-              this[internal.state].buttonRole
+              this[internal.state].buttonPartType
             );
             this[internal.ids].decrement.addEventListener('click', () => {
               this.value--;
             });
             template.transmute(
               this[internal.ids].increment,
-              this[internal.state].buttonRole
+              this[internal.state].buttonPartType
             );
             this[internal.ids].increment.addEventListener('click', () => {
               this.value++;
@@ -62,10 +62,10 @@
 
         get [internal.template]() {
           return template.html`
-          <button id="decrement">-</button>
-          <span id="visibleValue"></span>
-          <button id="increment">+</button>
-        `;
+            <button id="decrement">-</button>
+            <span id="visibleValue"></span>
+            <button id="increment">+</button>
+          `;
         }
       }
 
@@ -90,7 +90,7 @@
       class CustomIncrementDecrement extends IncrementDecrement {
         get [internal.defaultState]() {
           return Object.assign(super[internal.defaultState], {
-            buttonRole: CustomButton
+            buttonPartType: CustomButton
           });
         }
       }
@@ -108,7 +108,7 @@
       styling and custom behavior.
     </p>
     <increment-decrement></increment-decrement>
-    <increment-decrement button-role="custom-button"></increment-decrement>
+    <increment-decrement button-part-type="custom-button"></increment-decrement>
     <custom-increment-decrement></custom-increment-decrement>
   </body>
 </html>

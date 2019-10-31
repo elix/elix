@@ -79,7 +79,7 @@ class MenuButton extends PopupButton {
   get [internal.defaultState]() {
     const state = Object.assign(super[internal.defaultState], {
       dragSelect: true,
-      menuRole: Menu,
+      menuPartType: Menu,
       menuSelectedIndex: -1,
       selectedItem: null,
       touchstartX: null,
@@ -220,22 +220,22 @@ class MenuButton extends PopupButton {
    * @type {PartDescriptor}
    * @default Menu
    */
-  get menuRole() {
-    return this[internal.state].menuRole;
+  get menuPartType() {
+    return this[internal.state].menuPartType;
   }
-  set menuRole(menuRole) {
-    this[internal.setState]({ menuRole });
+  set menuPartType(menuPartType) {
+    this[internal.setState]({ menuPartType });
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.popupRole) {
+    if (changed.popupPartType) {
       this[internal.ids].popup.tabIndex = -1;
     }
-    if (changed.menuRole) {
+    if (changed.menuPartType) {
       template.transmute(
         this[internal.ids].menu,
-        this[internal.state].menuRole
+        this[internal.state].menuPartType
       );
 
       // Close the popup if menu loses focus.

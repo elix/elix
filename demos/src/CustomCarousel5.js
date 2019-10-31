@@ -11,8 +11,8 @@ const Base = PageNumbersMixin(Carousel);
 class CustomCarousel extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      arrowButtonRole: CustomArrowButton,
-      proxyRole: CustomPageDot
+      arrowButtonPartType: CustomArrowButton,
+      proxyPartType: CustomPageDot
     });
   }
 

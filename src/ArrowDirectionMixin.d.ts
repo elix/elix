@@ -6,7 +6,7 @@
 declare const ArrowDirectionMixin: Mixin<
   {},
   {
-    arrowButtonRole: PartDescriptor;
+    arrowButtonPartType: PartDescriptor;
   }
 > & {
   wrap: symbol;

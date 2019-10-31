@@ -60,15 +60,15 @@ class ComboBox extends Base {
   get [internal.defaultState]() {
     const state = Object.assign(super[internal.defaultState], {
       ariaLabel: '',
-      backdropRole: Hidden,
+      backdropPartType: Hidden,
       focused: false,
-      inputRole: 'input',
+      inputPartType: 'input',
       orientation: 'vertical',
       placeholder: '',
       role: 'combobox',
       selectText: false,
-      sourceRole: 'div',
-      toggleButtonRole: SeamlessButton,
+      sourcePartType: 'div',
+      toggleButtonPartType: SeamlessButton,
       value: ''
     });
 
@@ -108,11 +108,11 @@ class ComboBox extends Base {
    * @type {PartDescriptor}
    * @default 'input'
    */
-  get inputRole() {
-    return this[internal.state].inputRole;
+  get inputPartType() {
+    return this[internal.state].inputPartType;
   }
-  set inputRole(inputRole) {
-    this[internal.setState]({ inputRole });
+  set inputPartType(inputPartType) {
+    this[internal.setState]({ inputPartType });
   }
 
   [internal.keydown](/** @type {KeyboardEvent} */ event) {
@@ -164,10 +164,10 @@ class ComboBox extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.inputRole) {
+    if (changed.inputPartType) {
       template.transmute(
         this[internal.ids].input,
-        this[internal.state].inputRole
+        this[internal.state].inputPartType
       );
 
       this[internal.ids].input.addEventListener('blur', () => {
@@ -227,10 +227,10 @@ class ComboBox extends Base {
         this[internal.raiseChangeEvents] = false;
       });
     }
-    if (changed.toggleButtonRole) {
+    if (changed.toggleButtonPartType) {
       template.transmute(
         this[internal.ids].toggleButton,
-        this[internal.state].toggleButtonRole
+        this[internal.state].toggleButtonPartType
       );
       this[internal.ids].toggleButton.addEventListener('mousedown', () => {
         this[internal.raiseChangeEvents] = true;
@@ -245,7 +245,7 @@ class ComboBox extends Base {
         forwardFocus(this[internal.ids].toggleButton, this[internal.ids].input);
       }
     }
-    if (changed.popupRole) {
+    if (changed.popupPartType) {
       const popup = this[internal.ids].popup;
       popup.removeAttribute('tabindex');
       if ('autoFocus' in popup) {
@@ -391,11 +391,11 @@ class ComboBox extends Base {
    * @type {PartDescriptor}
    * @default SeamlessButton
    */
-  get toggleButtonRole() {
-    return this[internal.state].toggleButtonRole;
+  get toggleButtonPartType() {
+    return this[internal.state].toggleButtonPartType;
   }
-  set toggleButtonRole(toggleButtonRole) {
-    this[internal.setState]({ toggleButtonRole });
+  set toggleButtonPartType(toggleButtonPartType) {
+    this[internal.setState]({ toggleButtonPartType });
   }
 
   get value() {

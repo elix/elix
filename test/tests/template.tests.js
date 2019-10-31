@@ -9,16 +9,16 @@ customElements.define('template-test', TemplateTest);
 class DynamicSingle extends ReactiveElement {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      dynamicRole: 'button'
+      dynamicPartType: 'button'
     });
   }
 
   [internal.render](changed) {
     super[internal.render](changed);
-    if (changed.dynamicRole) {
+    if (changed.dynamicPartType) {
       template.transmute(
         this[internal.ids].dynamic,
-        this[internal.state].dynamicRole
+        this[internal.state].dynamicPartType
       );
     }
   }
@@ -30,21 +30,21 @@ class DynamicSingle extends ReactiveElement {
     `;
   }
 }
-customElements.define('dynamic-role', DynamicSingle);
+customElements.define('dynamic-part-type', DynamicSingle);
 
 // A component with a template where a role is applied to multiple elements.
 class DynamicMultiple extends ReactiveElement {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      dynamicRole: 'button'
+      dynamicPartType: 'button'
     });
   }
 
   [internal.render](changed) {
     super[internal.render](changed);
-    if (changed.dynamicRole) {
+    if (changed.dynamicPartType) {
       const dynamics = this.shadowRoot.querySelectorAll('.dynamic');
-      template.transmute(dynamics, this[internal.state].dynamicRole);
+      template.transmute(dynamics, this[internal.state].dynamicPartType);
     }
   }
 
@@ -151,7 +151,7 @@ describe('templates', () => {
     assert(fixture[internal.ids].static instanceof HTMLDivElement);
     assert(fixture[internal.ids].dynamic instanceof HTMLButtonElement);
     fixture[internal.setState]({
-      dynamicRole: 'a'
+      dynamicPartType: 'a'
     });
     fixture[internal.renderChanges]();
     assert(fixture[internal.ids].dynamic instanceof HTMLAnchorElement);

@@ -23,7 +23,7 @@ export default class ListWithSearch extends ComposedFocusMixin(
   )
 ) {
   filter: string;
-  inputRole: PartDescriptor;
-  listRole: PartDescriptor;
+  inputPartType: PartDescriptor;
+  listPartType: PartDescriptor;
   placeholder: string;
 }

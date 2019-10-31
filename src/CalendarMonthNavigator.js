@@ -81,7 +81,7 @@ class CalendarMonthNavigator extends Base {
       canGoNext: true,
       canGoPrevious: true,
       date: calendar.today(),
-      dayRole: CalendarDayButton,
+      dayPartType: CalendarDayButton,
       orientation: 'both',
       showCompleteWeeks: true,
       showSelectedDay: true,

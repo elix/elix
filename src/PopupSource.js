@@ -45,11 +45,11 @@ class PopupSource extends Base {
    * @type {PartDescriptor}
    * @default Backdrop
    */
-  get backdropRole() {
-    return this[internal.state].backdropRole;
+  get backdropPartType() {
+    return this[internal.state].backdropPartType;
   }
-  set backdropRole(backdropRole) {
-    this[internal.setState]({ backdropRole });
+  set backdropPartType(backdropPartType) {
+    this[internal.setState]({ backdropPartType });
   }
 
   [internal.componentDidMount]() {
@@ -77,20 +77,20 @@ class PopupSource extends Base {
 
   get [internal.defaultState]() {
     const result = Object.assign(super[internal.defaultState], {
-      backdropRole: Backdrop,
-      frameRole: OverlayFrame,
+      backdropPartType: Backdrop,
+      framePartType: OverlayFrame,
       horizontalAlign: 'start',
       popupHeight: null,
       popupMeasured: false,
       popupPosition: 'below',
-      popupRole: Popup,
+      popupPartType: Popup,
       popupWidth: null,
       role: 'none',
       roomAbove: null,
       roomBelow: null,
       roomLeft: null,
       roomRight: null,
-      sourceRole: 'div'
+      sourcePartType: 'div'
     });
 
     // Closing popup resets our calculations of popup size and room.
@@ -126,11 +126,11 @@ class PopupSource extends Base {
    * @type {PartDescriptor}
    * @default OverlayFrame
    */
-  get frameRole() {
-    return this[internal.state].frameRole;
+  get framePartType() {
+    return this[internal.state].framePartType;
   }
-  set frameRole(frameRole) {
-    this[internal.setState]({ frameRole });
+  set framePartType(framePartType) {
+    this[internal.setState]({ framePartType });
   }
 
   /**
@@ -156,16 +156,18 @@ class PopupSource extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.frameRole) {
-      if ('frameRole' in this[internal.ids].popup) {
-        const { frameRole } = this[internal.state];
-        /** @type {any} */ (this[internal.ids].popup).frameRole = frameRole;
+    if (changed.framePartType) {
+      if ('framePartType' in this[internal.ids].popup) {
+        const { framePartType } = this[internal.state];
+        /** @type {any} */ (this[
+          internal.ids
+        ].popup).framePartType = framePartType;
       }
     }
-    if (changed.popupRole) {
+    if (changed.popupPartType) {
       template.transmute(
         this[internal.ids].popup,
-        this[internal.state].popupRole
+        this[internal.state].popupPartType
       );
 
       // Popup's opened state becomes our own opened state.
@@ -190,14 +192,14 @@ class PopupSource extends Base {
         }
       });
     }
-    if (changed.backdropRole) {
+    if (changed.backdropPartType) {
       // Since this check depends on popup, do it after we do any necessary
       // transmuting of popup.
-      if ('backdropRole' in this[internal.ids].popup) {
-        const { backdropRole } = this[internal.state];
+      if ('backdropPartType' in this[internal.ids].popup) {
+        const { backdropPartType } = this[internal.state];
         /** @type {any} */ (this[
           internal.ids
-        ].popup).backdropRole = backdropRole;
+        ].popup).backdropPartType = backdropPartType;
       }
     }
     if (
@@ -295,10 +297,10 @@ class PopupSource extends Base {
       });
       this[internal.ids].popupContainer.style.top = positionBelow ? null : '0';
     }
-    if (changed.sourceRole) {
+    if (changed.sourcePartType) {
       template.transmute(
         this[internal.ids].source,
-        this[internal.state].sourceRole
+        this[internal.state].sourcePartType
       );
     }
     if (changed.opened) {
@@ -342,11 +344,11 @@ class PopupSource extends Base {
    * @type {PartDescriptor}
    * @default Popup
    */
-  get popupRole() {
-    return this[internal.state].popupRole;
+  get popupPartType() {
+    return this[internal.state].popupPartType;
   }
-  set popupRole(popupRole) {
-    this[internal.setState]({ popupRole });
+  set popupPartType(popupPartType) {
+    this[internal.setState]({ popupPartType });
   }
 
   /**
@@ -356,11 +358,11 @@ class PopupSource extends Base {
    * @type {PartDescriptor}
    * @default 'button'
    */
-  get sourceRole() {
-    return this[internal.state].sourceRole;
+  get sourcePartType() {
+    return this[internal.state].sourcePartType;
   }
-  set sourceRole(sourceRole) {
-    this[internal.setState]({ sourceRole });
+  set sourcePartType(sourcePartType) {
+    this[internal.setState]({ sourcePartType });
   }
 
   get [internal.template]() {

@@ -30,16 +30,16 @@ export default function PlayControlsMixin(Base) {
      * @type {PartDescriptor}
      * @default SeamlessButton
      */
-    get controlButtonRole() {
-      return this[internal.state].controlButtonRole;
+    get controlButtonPartType() {
+      return this[internal.state].controlButtonPartType;
     }
-    set controlButtonRole(controlButtonRole) {
-      this[internal.setState]({ controlButtonRole });
+    set controlButtonPartType(controlButtonPartType) {
+      this[internal.setState]({ controlButtonPartType });
     }
 
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState], {
-        controlButtonRole: SeamlessButton
+        controlButtonPartType: SeamlessButton
       });
     }
 
@@ -64,13 +64,13 @@ export default function PlayControlsMixin(Base) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }
-      if (changed.controlButtonRole) {
+      if (changed.controlButtonPartType) {
         const controlButtons = this.shadowRoot.querySelectorAll(
           '.controlButton'
         );
         template.transmute(
           controlButtons,
-          this[internal.state].controlButtonRole
+          this[internal.state].controlButtonPartType
         );
         this[internal.ids].previousButton.addEventListener('click', event => {
           this.selectPrevious();

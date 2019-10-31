@@ -55,11 +55,11 @@ class Overlay extends Base {
    * @type {PartDescriptor}
    * @default Backdrop
    */
-  get backdropRole() {
-    return this[internal.state].backdropRole;
+  get backdropPartType() {
+    return this[internal.state].backdropPartType;
   }
-  set backdropRole(backdropRole) {
-    this[internal.setState]({ backdropRole });
+  set backdropPartType(backdropPartType) {
+    this[internal.setState]({ backdropPartType });
   }
 
   [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
@@ -76,8 +76,8 @@ class Overlay extends Base {
 
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      backdropRole: Backdrop,
-      frameRole: OverlayFrame
+      backdropPartType: Backdrop,
+      framePartType: OverlayFrame
     });
   }
 
@@ -95,25 +95,25 @@ class Overlay extends Base {
    * @type {PartDescriptor}
    * @default OverlayFrame
    */
-  get frameRole() {
-    return this[internal.state].frameRole;
+  get framePartType() {
+    return this[internal.state].framePartType;
   }
-  set frameRole(frameRole) {
-    this[internal.setState]({ frameRole });
+  set framePartType(framePartType) {
+    this[internal.setState]({ framePartType });
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.backdropRole) {
+    if (changed.backdropPartType) {
       template.transmute(
         this[internal.ids].backdrop,
-        this[internal.state].backdropRole
+        this[internal.state].backdropPartType
       );
     }
-    if (changed.frameRole) {
+    if (changed.framePartType) {
       template.transmute(
         this[internal.ids].frame,
-        this[internal.state].frameRole
+        this[internal.state].framePartType
       );
     }
   }

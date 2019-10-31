@@ -9,8 +9,8 @@ class SereneTabs extends Tabs {
     return Object.assign(super[internal.defaultState], {
       generic: false,
       itemRole: 'tabpanel',
-      proxyRole: SereneTabButton,
-      stageRole: CrossfadeStage
+      proxyPartType: SereneTabButton,
+      stagePartType: CrossfadeStage
     });
   }
 

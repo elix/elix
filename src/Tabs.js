@@ -26,8 +26,8 @@ class Tabs extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       itemRole: 'tabpanel',
-      proxyRole: TabButton,
-      proxyListRole: TabStrip,
+      proxyPartType: TabButton,
+      proxyListPartType: TabStrip,
       tabAlign: 'start'
     });
   }

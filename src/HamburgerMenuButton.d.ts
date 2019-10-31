@@ -12,6 +12,6 @@ export default class HamburgerMenuButton extends FocusVisibleMixin(
   KeyboardMixin(OpenCloseMixin(ReactiveElement))
 ) {
   fromEdge: 'end' | 'left' | 'right' | 'start';
-  menuRole: PartDescriptor;
-  menuButtonRole: PartDescriptor;
+  menuPartType: PartDescriptor;
+  menuButtonPartType: PartDescriptor;
 }

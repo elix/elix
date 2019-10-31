@@ -15,7 +15,7 @@ const Base = ItemsTextMixin(ListComboBox);
 class AutoCompleteComboBox extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      inputRole: AutoCompleteInput
+      inputPartType: AutoCompleteInput
     });
   }
 

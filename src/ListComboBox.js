@@ -30,7 +30,7 @@ class ListComboBox extends Base {
   get [internal.defaultState]() {
     const state = Object.assign(super[internal.defaultState], {
       horizontalAlign: 'stretch',
-      listRole: ListBox,
+      listPartType: ListBox,
       selectedIndex: -1
     });
 
@@ -138,11 +138,11 @@ class ListComboBox extends Base {
    * @type {PartDescriptor}
    * @default ListBox
    */
-  get listRole() {
-    return this[internal.state].listRole;
+  get listPartType() {
+    return this[internal.state].listPartType;
   }
-  set listRole(listRole) {
-    this[internal.setState]({ listRole });
+  set listPartType(listPartType) {
+    this[internal.setState]({ listPartType });
   }
 
   get [internal.itemsDelegate]() {
@@ -151,13 +151,13 @@ class ListComboBox extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.inputRole) {
+    if (changed.inputPartType) {
       this[internal.ids].input.setAttribute('aria-autocomplete', 'both');
     }
-    if (changed.listRole) {
+    if (changed.listPartType) {
       template.transmute(
         this[internal.ids].list,
-        this[internal.state].listRole
+        this[internal.state].listPartType
       );
 
       this[internal.ids].list.addEventListener('mousedown', event => {

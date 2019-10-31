@@ -67,10 +67,10 @@ class Carousel extends Base {
       orientation: 'horizontal',
       proxyListOverlap: true,
       proxyListPosition: 'bottom',
-      proxyListRole: CenteredStripOpacity,
-      proxyRole: PageDot,
+      proxyListPartType: CenteredStripOpacity,
+      proxyPartType: PageDot,
       showArrowButtons,
-      stageRole: SlidingStage
+      stagePartType: SlidingStage
     });
 
     // When orientation changes, have swipe axis follow suit, and also
@@ -95,33 +95,33 @@ class Carousel extends Base {
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
-    if (changed.proxyListRole && this[internal.ids].proxyList) {
+    if (changed.proxyListPartType && this[internal.ids].proxyList) {
       // Turn off focus handling for old proxy list.
       /** @type {any} */
       const cast = this[internal.ids].proxyList;
       forwardFocus(cast, null);
     }
     super[internal.render](changed);
-    if (changed.stageRole || changed.orientation) {
+    if (changed.stagePartType || changed.orientation) {
       /** @type {any} */ const cast = this[internal.ids].stage;
       if ('orientation' in cast) {
         cast.orientation = this[internal.state].orientation;
       }
     }
-    if (changed.orientation || changed.proxyListRole) {
+    if (changed.orientation || changed.proxyListPartType) {
       /** @type {any} */ const cast = this[internal.ids].proxyList;
       if ('orientation' in cast) {
         cast.orientation = this[internal.state].orientation;
       }
     }
-    if (changed.proxyListRole) {
+    if (changed.proxyListPartType) {
       // Keep focus off of the proxies and onto the carousel itself.
       /** @type {any} */
       const cast = this[internal.ids].proxyList;
       forwardFocus(cast, this);
       cast.removeAttribute('tabindex');
     }
-    if (changed.stageRole) {
+    if (changed.stagePartType) {
       /** @type {any} */
       const cast = this[internal.ids].stage;
       cast.removeAttribute('tabindex');

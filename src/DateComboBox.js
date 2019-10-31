@@ -31,11 +31,11 @@ class DateComboBox extends Base {
    * @type {PartDescriptor}
    * @default ArrowDirectionButton
    */
-  get arrowButtonRole() {
-    return this[internal.state].arrowButtonRole;
+  get arrowButtonPartType() {
+    return this[internal.state].arrowButtonPartType;
   }
-  set arrowButtonRole(arrowButtonRole) {
-    this[internal.setState]({ arrowButtonRole });
+  set arrowButtonPartType(arrowButtonPartType) {
+    this[internal.setState]({ arrowButtonPartType });
   }
 
   get calendar() {
@@ -48,11 +48,11 @@ class DateComboBox extends Base {
    * @type {PartDescriptor}
    * @default CalendarMonthNavigator
    */
-  get calendarRole() {
-    return this[internal.state].calendarRole;
+  get calendarPartType() {
+    return this[internal.state].calendarPartType;
   }
-  set calendarRole(calendarRole) {
-    this[internal.setState]({ calendarRole });
+  set calendarPartType(calendarPartType) {
+    this[internal.setState]({ calendarPartType });
   }
 
   get dateTimeFormatOptions() {
@@ -78,11 +78,11 @@ class DateComboBox extends Base {
    * @type {PartDescriptor}
    * @default CalendarDay
    */
-  get dayRole() {
-    return this[internal.state].dayRole;
+  get dayPartType() {
+    return this[internal.state].dayPartType;
   }
-  set dayRole(dayRole) {
-    this[internal.setState]({ dayRole });
+  set dayPartType(dayPartType) {
+    this[internal.setState]({ dayPartType });
   }
 
   /**
@@ -109,18 +109,18 @@ class DateComboBox extends Base {
     };
 
     const state = Object.assign(super[internal.defaultState], {
-      arrowButtonRole: ArrowDirectionButton,
-      calendarRole: CalendarMonthNavigator,
+      arrowButtonPartType: ArrowDirectionButton,
+      calendarPartType: CalendarMonthNavigator,
       date: null,
       datePriority: false,
       dateSelected: false,
       dateTimeFormat: null,
       dateTimeFormatOptions,
-      dayRole: CalendarDayButton,
+      dayPartType: CalendarDayButton,
       daysOfWeekFormat: 'short',
       monthFormat: 'long',
       timeBias: null,
-      todayButtonRole: SeamlessButton,
+      todayButtonPartType: SeamlessButton,
       yearFormat: 'numeric'
     });
 
@@ -363,10 +363,10 @@ class DateComboBox extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.calendarRole) {
+    if (changed.calendarPartType) {
       template.transmute(
         this[internal.ids].calendar,
-        this[internal.state].calendarRole
+        this[internal.state].calendarPartType
       );
       this[internal.ids].calendar.addEventListener('date-changed', event => {
         this[internal.raiseChangeEvents] = true;
@@ -382,10 +382,10 @@ class DateComboBox extends Base {
         this[internal.raiseChangeEvents] = false;
       });
     }
-    if (changed.todayButtonRole) {
+    if (changed.todayButtonPartType) {
       template.transmute(
         this[internal.ids].todayButton,
-        this[internal.state].todayButtonRole
+        this[internal.state].todayButtonPartType
       );
       this[internal.ids].todayButton.addEventListener('mousedown', event => {
         this[internal.raiseChangeEvents] = true;
@@ -397,16 +397,16 @@ class DateComboBox extends Base {
     }
     const cast = /** @type {any} */ (this[internal.ids].calendar);
     if (
-      changed.arrowButtonRole &&
-      'arrowButtonRole' in this[internal.ids].calendar
+      changed.arrowButtonPartType &&
+      'arrowButtonPartType' in this[internal.ids].calendar
     ) {
-      cast.arrowButtonRole = this[internal.state].arrowButtonRole;
+      cast.arrowButtonPartType = this[internal.state].arrowButtonPartType;
     }
     if (changed.date) {
       cast.date = this[internal.state].date;
     }
-    if (changed.dayRole && 'dayRole' in cast) {
-      cast.dayRole = this[internal.state].dayRole;
+    if (changed.dayPartType && 'dayPartType' in cast) {
+      cast.dayPartType = this[internal.state].dayPartType;
     }
     if (changed.daysOfWeekFormat && 'daysOfWeekFormat' in cast) {
       cast.daysOfWeekFormat = this[internal.state].daysOfWeekFormat;
@@ -489,11 +489,11 @@ class DateComboBox extends Base {
    * @type {PartDescriptor}
    * @default SeamlessButton
    */
-  get todayButtonRole() {
-    return this[internal.state].todayButtonRole;
+  get todayButtonPartType() {
+    return this[internal.state].todayButtonPartType;
   }
-  set todayButtonRole(todayButtonRole) {
-    this[internal.setState]({ todayButtonRole });
+  set todayButtonPartType(todayButtonPartType) {
+    this[internal.setState]({ todayButtonPartType });
   }
 
   get value() {

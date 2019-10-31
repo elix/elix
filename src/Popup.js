@@ -17,7 +17,7 @@ const Base = KeyboardMixin(PopupModalityMixin(Overlay));
 class Popup extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.backdropRole) {
+    if (changed.backdropPartType) {
       this[internal.ids].backdrop.addEventListener(
         'mousedown',
         mousedownHandler.bind(this)

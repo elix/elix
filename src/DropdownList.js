@@ -34,7 +34,7 @@ class DropdownList extends Base {
     const state = Object.assign(super[internal.defaultState], {
       itemRole: 'menuitemradio',
       selectionRequired: true,
-      valueRole: 'div'
+      valuePartType: 'div'
     });
 
     // When the menu closes, update our selection from the menu selection.
@@ -61,10 +61,10 @@ class DropdownList extends Base {
         ].itemRole;
       }
     }
-    if (changed.valueRole) {
+    if (changed.valuePartType) {
       template.transmute(
         this[internal.ids].value,
-        this[internal.state].valueRole
+        this[internal.state].valuePartType
       );
     }
     if (changed.opened || changed.popupPosition) {
@@ -125,11 +125,11 @@ class DropdownList extends Base {
    * @type {PartDescriptor}
    * @default 'div'
    */
-  get valueRole() {
-    return this[internal.state].valueRole;
+  get valuePartType() {
+    return this[internal.state].valuePartType;
   }
-  set valueRole(valueRole) {
-    this[internal.setState]({ valueRole });
+  set valuePartType(valuePartType) {
+    this[internal.setState]({ valuePartType });
   }
 }
 

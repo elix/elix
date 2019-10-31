@@ -33,7 +33,7 @@ class DrawerWithGrip extends Drawer {
 
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      gripRole: SeamlessButton
+      gripPartType: SeamlessButton
     });
   }
 
@@ -43,11 +43,11 @@ class DrawerWithGrip extends Drawer {
    * @type {PartDescriptor}
    * @default SeamlessButton
    */
-  get gripRole() {
-    return this[internal.state].gripRole;
+  get gripPartType() {
+    return this[internal.state].gripPartType;
   }
-  set gripRole(gripRole) {
-    this[internal.setState]({ gripRole });
+  set gripPartType(gripPartType) {
+    this[internal.setState]({ gripPartType });
   }
 
   [internal.render](changed) {
@@ -55,10 +55,10 @@ class DrawerWithGrip extends Drawer {
       super[internal.render](changed);
     }
 
-    if (changed.gripRole) {
+    if (changed.gripPartType) {
       template.transmute(
         this[internal.ids].grip,
-        this[internal.state].gripRole
+        this[internal.state].gripPartType
       );
       this[internal.ids].grip.addEventListener('click', event => {
         // Clicking grip toggles drawer.

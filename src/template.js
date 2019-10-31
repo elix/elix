@@ -11,7 +11,7 @@
  *
  * Some of these functions take _descriptors_ that can either be a class, a tag
  * name, or an HTML template. These are generally used to fill specific roles in
- * an element's template; see [element roles](customizing#element-roles).
+ * an element's template; see [element roles](customizing#element-part-types).
  *
  * @module template
  */

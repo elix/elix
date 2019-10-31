@@ -8,7 +8,7 @@ import TouchSwipeMixin from './TouchSwipeMixin.js';
 export default class PullToRefresh extends EffectMixin(
   TouchSwipeMixin(ReactiveElement)
 ) {
-  pullIndicatorRole: PartDescriptor;
+  pullIndicatorPartType: PartDescriptor;
   refreshing: boolean;
-  refreshingIndicatorRole: PartDescriptor;
+  refreshingIndicatorPartType: PartDescriptor;
 }

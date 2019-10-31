@@ -6,7 +6,7 @@ import Carousel from '../../src/Carousel.js';
 class CarouselComboBox extends AutoCompleteComboBox {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      listRole: Carousel
+      listPartType: Carousel
     });
   }
 

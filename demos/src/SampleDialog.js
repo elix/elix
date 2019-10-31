@@ -6,8 +6,8 @@ import Dialog from '../../src/Dialog.js';
 class SampleDialog extends Dialog {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      backdropRole: CustomBackdrop,
-      frameRole: CustomOverlayFrame
+      backdropPartType: CustomBackdrop,
+      framePartType: CustomOverlayFrame
     });
   }
 
@@ -15,7 +15,7 @@ class SampleDialog extends Dialog {
     if (super[internal.render]) {
       super[internal.render](changed);
     }
-    if (changed.frameRole) {
+    if (changed.framePartType) {
       // Have the dialog close itself when the user clicks anywhere within it. In
       // many cases, you'll want to have a button ("OK", "Close", etc.) that
       // performs this action.

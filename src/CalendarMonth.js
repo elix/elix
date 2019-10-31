@@ -52,11 +52,11 @@ class CalendarMonth extends Base {
    * @type {PartDescriptor}
    * @default CalendarDay
    */
-  get dayRole() {
-    return this[internal.state].dayRole;
+  get dayPartType() {
+    return this[internal.state].dayPartType;
   }
-  set dayRole(dayRole) {
-    this[internal.setState]({ dayRole });
+  set dayPartType(dayPartType) {
+    this[internal.setState]({ dayPartType });
   }
 
   /**
@@ -91,7 +91,7 @@ class CalendarMonth extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       date: calendar.today(),
-      dayRole: CalendarDay,
+      dayPartType: CalendarDay,
       daysOfWeekFormat: 'short',
       monthFormat: 'long',
       showCompleteWeeks: false,
@@ -124,10 +124,10 @@ class CalendarMonth extends Base {
       /** @type {any} */ (this[internal.ids].monthYearHeader).locale = locale;
       /** @type {any} */ (this[internal.ids].dayNamesHeader).locale = locale;
     }
-    if (changed.dayRole) {
-      /** @type {any} */ (this[internal.ids].monthDays).dayRole = this[
+    if (changed.dayPartType) {
+      /** @type {any} */ (this[internal.ids].monthDays).dayPartType = this[
         internal.state
-      ].dayRole;
+      ].dayPartType;
     }
     if (changed.date) {
       const { date } = this[internal.state];

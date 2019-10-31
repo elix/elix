@@ -16,6 +16,7 @@ const Base = TimerSelectionMixin(Carousel);
  *
  * @inherits Carousel
  * @mixes TimerSelectionMixin
+ * @part {CrossfadeStage} stage
  */
 class CarouselSlideshow extends Base {
   get [internal.defaultState]() {
@@ -23,7 +24,7 @@ class CarouselSlideshow extends Base {
       playing: true,
       selectionTimerDuration: 3000,
       selectionWraps: true,
-      stageRole: CrossfadeStage,
+      stagePartType: CrossfadeStage,
       transitionDuration: 1000
     });
   }

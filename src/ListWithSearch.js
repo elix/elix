@@ -49,8 +49,8 @@ class ListWithSearch extends Base {
     return Object.assign(super[internal.defaultState], {
       ariaLabel: '',
       filter: '',
-      inputRole: 'input',
-      listRole: FilterListBox,
+      inputPartType: 'input',
+      listPartType: FilterListBox,
       placeholder: 'Search'
     });
   }
@@ -68,11 +68,11 @@ class ListWithSearch extends Base {
    * @type {PartDescriptor}
    * @default 'input'
    */
-  get inputRole() {
-    return this[internal.state].inputRole;
+  get inputPartType() {
+    return this[internal.state].inputPartType;
   }
-  set inputRole(inputRole) {
-    this[internal.setState]({ inputRole });
+  set inputPartType(inputPartType) {
+    this[internal.setState]({ inputPartType });
   }
 
   get [internal.itemsDelegate]() {
@@ -145,11 +145,11 @@ class ListWithSearch extends Base {
    * @type {PartDescriptor}
    * @default ListBox
    */
-  get listRole() {
-    return this[internal.state].listRole;
+  get listPartType() {
+    return this[internal.state].listPartType;
   }
-  set listRole(listRole) {
-    this[internal.setState]({ listRole });
+  set listPartType(listPartType) {
+    this[internal.setState]({ listPartType });
   }
 
   get placeholder() {
@@ -161,10 +161,10 @@ class ListWithSearch extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.inputRole) {
+    if (changed.inputPartType) {
       template.transmute(
         this[internal.ids].input,
-        this[internal.state].inputRole
+        this[internal.state].inputPartType
       );
       this[internal.ids].input.addEventListener('input', () => {
         this[internal.raiseChangeEvents] = true;
@@ -173,10 +173,10 @@ class ListWithSearch extends Base {
         this[internal.raiseChangeEvents] = false;
       });
     }
-    if (changed.listRole) {
+    if (changed.listPartType) {
       template.transmute(
         this[internal.ids].list,
-        this[internal.state].listRole
+        this[internal.state].listPartType
       );
     }
     if (changed.ariaLabel) {

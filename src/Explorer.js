@@ -72,24 +72,24 @@ class Explorer extends Base {
     const state = Object.assign(super[internal.defaultState], {
       proxies: [],
       proxiesAssigned: false,
-      proxyRole: 'div',
+      proxyPartType: 'div',
       proxyListOverlap: false,
       proxyListPosition: 'top',
-      proxyListRole: ListBox,
+      proxyListPartType: ListBox,
       selectionRequired: true,
-      stageRole: Modes
+      stagePartType: Modes
     });
 
     // If items for default proxies have changed, recreate the proxies.
     // If nodes have been assigned to the proxy slot, use those instead.
     state.onChange(
-      ['items', 'proxiesAssigned', 'proxyRole'],
+      ['items', 'proxiesAssigned', 'proxyPartType'],
       (state, changed) => {
-        const { items, proxiesAssigned, proxyRole } = state;
-        if ((changed.items || changed.proxyRole) && !proxiesAssigned) {
+        const { items, proxiesAssigned, proxyPartType } = state;
+        if ((changed.items || changed.proxyPartType) && !proxiesAssigned) {
           // Generate sufficient default proxies.
           return {
-            proxies: createDefaultProxies(items, proxyRole)
+            proxies: createDefaultProxies(items, proxyPartType)
           };
         }
         return null;
@@ -117,20 +117,20 @@ class Explorer extends Base {
         }
       }
     };
-    if (changed.proxyListRole) {
+    if (changed.proxyListPartType) {
       template.transmute(
         this[internal.ids].proxyList,
-        this[internal.state].proxyListRole
+        this[internal.state].proxyListPartType
       );
       this[internal.ids].proxyList.addEventListener(
         'selected-index-changed',
         handleSelectedIndexChanged
       );
     }
-    if (changed.stageRole) {
+    if (changed.stagePartType) {
       template.transmute(
         this[internal.ids].stage,
-        this[internal.state].stageRole
+        this[internal.state].stagePartType
       );
       this[internal.ids].stage.addEventListener(
         'selected-index-changed',
@@ -173,7 +173,7 @@ class Explorer extends Base {
     if (
       changed.proxyListOverlap ||
       changed.proxyListPosition ||
-      changed.proxyListRole
+      changed.proxyListPartType
     ) {
       const { proxyListOverlap, proxyListPosition } = this[internal.state];
       const lateralPosition = lateralPositions[proxyListPosition];
@@ -205,7 +205,7 @@ class Explorer extends Base {
         cast.position = position;
       }
     }
-    if (changed.proxyListPosition || changed.proxyListRole) {
+    if (changed.proxyListPosition || changed.proxyListPartType) {
       setListAndStageOrder(this, this[internal.state]);
       const { proxyListPosition } = this[internal.state];
       const lateralPosition = lateralPositions[proxyListPosition];
@@ -219,31 +219,31 @@ class Explorer extends Base {
         top: proxyListPosition === 'top' ? '0' : null
       });
     }
-    if (changed.selectedIndex || changed.proxyListRole) {
+    if (changed.selectedIndex || changed.proxyListPartType) {
       if ('selectedIndex' in proxyList) {
         const { selectedIndex } = this[internal.state];
         /** @type {any} */ (proxyList).selectedIndex = selectedIndex;
       }
     }
-    if (changed.selectedIndex || changed.stageRole) {
+    if (changed.selectedIndex || changed.stagePartType) {
       if ('selectedIndex' in stage) {
         const { selectedIndex } = this[internal.state];
         /** @type {any} */ (stage).selectedIndex = selectedIndex;
       }
     }
-    if (changed.selectionRequired || changed.proxyListRole) {
+    if (changed.selectionRequired || changed.proxyListPartType) {
       if ('selectionRequired' in proxyList) {
         const { selectionRequired } = this[internal.state];
         /** @type {any} */ (proxyList).selectionRequired = selectionRequired;
       }
     }
-    if (changed.swipeFraction || changed.proxyListRole) {
+    if (changed.swipeFraction || changed.proxyListPartType) {
       if ('swipeFraction' in proxyList) {
         const { swipeFraction } = this[internal.state];
         /** @type {any} */ (proxyList).swipeFraction = swipeFraction;
       }
     }
-    if (changed.swipeFraction || changed.stageRole) {
+    if (changed.swipeFraction || changed.stagePartType) {
       if ('swipeFraction' in stage) {
         const { swipeFraction } = this[internal.state];
         /** @type {any} */ (stage).swipeFraction = swipeFraction;
@@ -303,11 +303,11 @@ class Explorer extends Base {
    * @type {PartDescriptor}
    * @default ListBox
    */
-  get proxyListRole() {
-    return this[internal.state].proxyListRole;
+  get proxyListPartType() {
+    return this[internal.state].proxyListPartType;
   }
-  set proxyListRole(proxyListRole) {
-    this[internal.setState]({ proxyListRole });
+  set proxyListPartType(proxyListPartType) {
+    this[internal.setState]({ proxyListPartType });
   }
 
   /**
@@ -317,11 +317,11 @@ class Explorer extends Base {
    * @type {PartDescriptor}
    * @default 'div'
    */
-  get proxyRole() {
-    return this[internal.state].proxyRole;
+  get proxyPartType() {
+    return this[internal.state].proxyPartType;
   }
-  set proxyRole(proxyRole) {
-    this[internal.setState]({ proxyRole });
+  set proxyPartType(proxyPartType) {
+    this[internal.setState]({ proxyPartType });
   }
 
   /**
@@ -331,11 +331,11 @@ class Explorer extends Base {
    * @type {PartDescriptor}
    * @default Modes
    */
-  get stageRole() {
-    return this[internal.state].stageRole;
+  get stagePartType() {
+    return this[internal.state].stagePartType;
   }
-  set stageRole(stageRole) {
-    this[internal.setState]({ stageRole });
+  set stagePartType(stagePartType) {
+    this[internal.setState]({ stagePartType });
   }
 
   get [internal.template]() {
@@ -373,11 +373,11 @@ class Explorer extends Base {
  *
  * @private
  * @param {ListItemElement[]} items
- * @param {PartDescriptor} proxyRole
+ * @param {PartDescriptor} proxyPartType
  */
-function createDefaultProxies(items, proxyRole) {
+function createDefaultProxies(items, proxyPartType) {
   const proxies = items
-    ? items.map(() => template.createElement(proxyRole))
+    ? items.map(() => template.createElement(proxyPartType))
     : [];
   proxies.forEach(proxy => {
     if ('part' in proxy) {

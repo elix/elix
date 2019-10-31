@@ -72,7 +72,7 @@ class Drawer extends Base {
 
   get [internal.defaultState]() {
     const result = Object.assign(super[internal.defaultState], {
-      backdropRole: ModalBackdrop,
+      backdropPartType: ModalBackdrop,
       fromEdge: 'start',
       gripSize: null,
       persistent: true,
@@ -129,7 +129,7 @@ class Drawer extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
 
-    if (changed.backdropRole) {
+    if (changed.backdropPartType) {
       // Implicitly close on background clicks.
       this[internal.ids].backdrop.addEventListener('click', async () => {
         this[internal.raiseChangeEvents] = true;

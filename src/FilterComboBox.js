@@ -20,8 +20,8 @@ class FilterComboBox extends Base {
   get [internal.defaultState]() {
     const state = Object.assign(super[internal.defaultState], {
       filter: '',
-      inputRole: AutoCompleteInput,
-      listRole: FilterListBox,
+      inputPartType: AutoCompleteInput,
+      listPartType: FilterListBox,
       texts: null
     });
 
@@ -50,7 +50,7 @@ class FilterComboBox extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.inputRole) {
+    if (changed.inputPartType) {
       this[internal.ids].input.addEventListener('input', event => {
         this[internal.raiseChangeEvents] = true;
         /** @type {any} */

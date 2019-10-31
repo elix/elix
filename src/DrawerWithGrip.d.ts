@@ -5,5 +5,5 @@ import Drawer from './Drawer.js';
 
 export default class DrawerWithGrip extends Drawer {
   fromEdge: 'bottom' | 'end' | 'left' | 'right' | 'start' | 'top';
-  gripRole: PartDescriptor;
+  gripPartType: PartDescriptor;
 }

@@ -22,8 +22,8 @@ const Base = AriaRoleMixin(OpenCloseMixin(ReactiveElement));
 class ExpandableSection extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      headerRole: SeamlessButton,
-      panelRole: ExpandablePanel,
+      headerPartType: SeamlessButton,
+      panelPartType: ExpandablePanel,
       role: 'region'
     });
   }
@@ -34,11 +34,11 @@ class ExpandableSection extends Base {
    * @type {PartDescriptor}
    * @default SeamlessButton
    */
-  get headerRole() {
-    return this[internal.state].headerRole;
+  get headerPartType() {
+    return this[internal.state].headerPartType;
   }
-  set headerRole(headerRole) {
-    this[internal.setState]({ headerRole });
+  set headerPartType(headerPartType) {
+    this[internal.setState]({ headerPartType });
   }
 
   /**
@@ -47,19 +47,19 @@ class ExpandableSection extends Base {
    * @type {PartDescriptor}
    * @default ExpandablePanel
    */
-  get panelRole() {
-    return this[internal.state].panelRole;
+  get panelPartType() {
+    return this[internal.state].panelPartType;
   }
-  set panelRole(panelRole) {
-    this[internal.setState]({ panelRole });
+  set panelPartType(panelPartType) {
+    this[internal.setState]({ panelPartType });
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.headerRole) {
+    if (changed.headerPartType) {
       template.transmute(
         this[internal.ids].header,
-        this[internal.state].headerRole
+        this[internal.state].headerPartType
       );
       this[internal.ids].header.addEventListener('click', () => {
         this[internal.raiseChangeEvents] = true;
@@ -67,10 +67,10 @@ class ExpandableSection extends Base {
         this[internal.raiseChangeEvents] = false;
       });
     }
-    if (changed.panelRole) {
+    if (changed.panelPartType) {
       template.transmute(
         this[internal.ids].panel,
-        this[internal.state].panelRole
+        this[internal.state].panelPartType
       );
     }
     if (changed.opened) {

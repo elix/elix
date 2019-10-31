@@ -8,7 +8,7 @@ export default class CalendarMonth extends CalendarElementMixin(
   ReactiveElement
 ) {
   dayElementForDate(date: Date): Element | null;
-  dayRole: PartDescriptor;
+  dayPartType: PartDescriptor;
   days: Element[];
   daysOfWeekFormat: 'long' | 'narrow' | 'short';
   monthFormat: 'numeric' | '2-digit' | 'long' | 'short' | 'narrow';

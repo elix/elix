@@ -32,7 +32,7 @@ describe('Explorer', () => {
 
   it('creates default proxies for each item', async () => {
     const fixture = new Explorer();
-    fixture.proxyRole = 'button';
+    fixture.proxyPartType = 'button';
     fixture.innerHTML = `
       <div aria-label="Label one">Item one</div>
       <div aria-label="Label two">Item two</div>

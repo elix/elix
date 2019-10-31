@@ -55,11 +55,11 @@ class CalendarDays extends Base {
    * @type {PartDescriptor}
    * @default CalendarDay
    */
-  get dayRole() {
-    return this[internal.state].dayRole;
+  get dayPartType() {
+    return this[internal.state].dayPartType;
   }
-  set dayRole(dayRole) {
-    this[internal.setState]({ dayRole });
+  set dayPartType(dayPartType) {
+    this[internal.setState]({ dayPartType });
   }
 
   /**
@@ -76,7 +76,7 @@ class CalendarDays extends Base {
     const state = Object.assign(super[internal.defaultState], {
       date: calendar.today(),
       dayCount: 1,
-      dayRole: CalendarDay,
+      dayPartType: CalendarDay,
       days: null,
       showCompleteWeeks: false,
       showSelectedDay: false,
@@ -85,9 +85,9 @@ class CalendarDays extends Base {
 
     // If any date-related state changes, regenerate the set of days.
     state.onChange(
-      ['dayCount', 'dayRole', 'locale', 'showCompleteWeeks', 'startDate'],
+      ['dayCount', 'dayPartType', 'locale', 'showCompleteWeeks', 'startDate'],
       (state, changed) => {
-        const days = updateDays(state, changed.dayRole);
+        const days = updateDays(state, changed.dayPartType);
         return { days };
       }
     );
@@ -201,7 +201,7 @@ class CalendarDays extends Base {
  * @param {boolean} forceCreation
  */
 function updateDays(state, forceCreation) {
-  const { dayCount, dayRole, locale, showCompleteWeeks, startDate } = state;
+  const { dayCount, dayPartType, locale, showCompleteWeeks, startDate } = state;
   const workingStartDate = showCompleteWeeks
     ? calendar.firstDateOfWeek(startDate, locale)
     : calendar.midnightOnDate(startDate);
@@ -220,7 +220,9 @@ function updateDays(state, forceCreation) {
   let date = workingStartDate;
   for (let i = 0; i < workingDayCount; i++) {
     const createNewElement = forceCreation || i >= days.length;
-    const day = createNewElement ? template.createElement(dayRole) : days[i];
+    const day = createNewElement
+      ? template.createElement(dayPartType)
+      : days[i];
     day.date = new Date(date.getTime());
     day.locale = locale;
     if ('part' in day) {

@@ -45,11 +45,11 @@ function ArrowDirectionMixin(Base) {
      * @type {PartDescriptor}
      * @default ArrowDirectionButton
      */
-    get arrowButtonRole() {
-      return this[internal.state].arrowButtonRole;
+    get arrowButtonPartType() {
+      return this[internal.state].arrowButtonPartType;
     }
-    set arrowButtonRole(arrowButtonRole) {
-      this[internal.setState]({ arrowButtonRole });
+    set arrowButtonPartType(arrowButtonPartType) {
+      this[internal.setState]({ arrowButtonPartType });
     }
 
     // TODO: Symbols
@@ -72,14 +72,14 @@ function ArrowDirectionMixin(Base) {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState], {
         arrowButtonOverlap: true,
-        arrowButtonRole: ArrowDirectionButton,
+        arrowButtonPartType: ArrowDirectionButton,
         orientation: 'horizontal',
         showArrowButtons: true
       });
     }
 
     [internal.render](/** @type {PlainObject} */ changed) {
-      if (changed.arrowButtonRole) {
+      if (changed.arrowButtonPartType) {
         if (this[internal.ids].arrowButtonPrevious instanceof HTMLElement) {
           // Turn off focus handling for old previous button.
           forwardFocus(this[internal.ids].arrowButtonPrevious, null);
@@ -94,13 +94,13 @@ function ArrowDirectionMixin(Base) {
         super[internal.render](changed);
       }
 
-      if (changed.arrowButtonRole) {
+      if (changed.arrowButtonPartType) {
         /** @type {any} */
         const cast = this;
 
         template.transmute(
           this[internal.ids].arrowButtonPrevious,
-          this[internal.state].arrowButtonRole
+          this[internal.state].arrowButtonPartType
         );
         if (this[internal.ids].arrowButtonPrevious instanceof HTMLElement) {
           forwardFocus(this[internal.ids].arrowButtonPrevious, cast);
@@ -115,7 +115,7 @@ function ArrowDirectionMixin(Base) {
 
         template.transmute(
           this[internal.ids].arrowButtonNext,
-          this[internal.state].arrowButtonRole
+          this[internal.state].arrowButtonPartType
         );
         if (this[internal.ids].arrowButtonNext instanceof HTMLElement) {
           forwardFocus(this[internal.ids].arrowButtonNext, cast);

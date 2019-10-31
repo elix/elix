@@ -29,8 +29,8 @@ class HamburgerMenuButton extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       fromEdge: 'start',
-      menuButtonRole: SeamlessButton,
-      menuRole: Drawer
+      menuButtonPartType: SeamlessButton,
+      menuPartType: Drawer
     });
   }
 
@@ -81,11 +81,11 @@ class HamburgerMenuButton extends Base {
    * @type {PartDescriptor}
    * @default Drawer
    */
-  get menuRole() {
-    return this[internal.state].menuRole;
+  get menuPartType() {
+    return this[internal.state].menuPartType;
   }
-  set menuRole(menuRole) {
-    this[internal.setState]({ menuRole });
+  set menuPartType(menuPartType) {
+    this[internal.setState]({ menuPartType });
   }
 
   /**
@@ -94,19 +94,19 @@ class HamburgerMenuButton extends Base {
    * @type {PartDescriptor}
    * @default SeamlessButton
    */
-  get menuButtonRole() {
-    return this[internal.state].menuButtonRole;
+  get menuButtonPartType() {
+    return this[internal.state].menuButtonPartType;
   }
-  set menuButtonRole(menuButtonRole) {
-    this[internal.setState]({ menuButtonRole });
+  set menuButtonPartType(menuButtonPartType) {
+    this[internal.setState]({ menuButtonPartType });
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.menuButtonRole) {
+    if (changed.menuButtonPartType) {
       template.transmute(
         this[internal.ids].menuButton,
-        this[internal.state].menuButtonRole
+        this[internal.state].menuButtonPartType
       );
       this[internal.ids].menuButton.addEventListener('click', () => {
         this[internal.raiseChangeEvents] = true;
@@ -114,10 +114,10 @@ class HamburgerMenuButton extends Base {
         this[internal.raiseChangeEvents] = false;
       });
     }
-    if (changed.menuRole) {
+    if (changed.menuPartType) {
       template.transmute(
         this[internal.ids].menu,
-        this[internal.state].menuRole
+        this[internal.state].menuPartType
       );
       this[internal.ids].menu.addEventListener('closed', event => {
         /** @type {any} */

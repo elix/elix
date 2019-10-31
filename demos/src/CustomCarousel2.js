@@ -3,12 +3,13 @@ import Carousel from '../../src/Carousel.js';
 import CustomArrowButton from './CustomArrowButton.js';
 import CustomPageDot from './CustomPageDot.js';
 
-// Shows how a carousel subclass can define custom roles for the arrows and dots.
+// Shows how a carousel subclass can define custom part types for the arrows and
+// dots.
 class CustomCarousel extends Carousel {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      arrowButtonRole: CustomArrowButton,
-      proxyRole: CustomPageDot
+      arrowButtonPartType: CustomArrowButton,
+      proxyPartType: CustomPageDot
     });
   }
 }

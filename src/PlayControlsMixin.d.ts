@@ -6,7 +6,7 @@
 declare const PlayControlsMixin: Mixin<
   {},
   {
-    controlButtonRole: PartDescriptor;
+    controlButtonPartType: PartDescriptor;
   }
 > & {
   wrap: symbol;

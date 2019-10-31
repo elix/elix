@@ -37,7 +37,7 @@ class PopupButton extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       role: 'button',
-      sourceRole: 'button'
+      sourcePartType: 'button'
     });
   }
 
@@ -64,7 +64,7 @@ class PopupButton extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.sourceRole) {
+    if (changed.sourcePartType) {
       // Desktop popups generally open on mousedown, not click/mouseup. On mobile,
       // mousedown won't fire until the user releases their finger, so it behaves
       // like a click.
