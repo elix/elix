@@ -41,27 +41,19 @@ class Input extends Base {
   }
 
   get [internal.template]() {
-    return template.html`
-      <style>
-        :host {
-          display: inline-block;
-        }
-        
-        #inner {
-          box-sizing: border-box;
-          font-family: inherit;
-          font-size: inherit;
-          font-style: inherit;
-          font-weight: inherit;
-          height: 100%;
-          width: 100%;
-        }
-      </style>
-
-      <input id="inner">
-        <slot></slot>
-      </input>
-    `;
+    return template.concat(
+      super[internal.template],
+      template.html`
+        <style>
+          #inner {
+            font-family: inherit;
+            font-size: inherit;
+            font-style: inherit;
+            font-weight: inherit;
+          }
+        </style>
+      `
+    );
   }
 
   // Updating the value can also update the selectionStart and selectionEnd

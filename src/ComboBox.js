@@ -317,10 +317,10 @@ class ComboBox extends Base {
     const sourceTemplate = template.html`
       <input id="input" part="input"></input>
       <button id="toggleButton" part="toggle-button" tabindex="-1">
-        <svg id="downIcon" part="open-icon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
+        <svg id="downIcon" part="down-icon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
           <path d="M 0 0 l5 5 5 -5 z"/>
         </svg>
-        <svg id="upIcon" part="close-icon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
+        <svg id="upIcon" part="up-icon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
           <path d="M 0 5 l5 -5 5 5 z"/>
         </svg>
       </button>

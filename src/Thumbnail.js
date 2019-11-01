@@ -12,21 +12,22 @@ import WrappedStandardElement from './WrappedStandardElement.js';
  */
 class Thumbnail extends WrappedStandardElement.wrap('img') {
   get [internal.template]() {
-    return template.html`
-      <style>
-        :host {
-          display: inline-block;
-          position: relative;
-        }
+    return template.concat(
+      super[internal.template],
+      template.html`
+        <style>
+          :host {
+            position: relative;
+          }
 
-        #inner {
-          height: var(--elix-thumbnail-height, 100%);
-          width: var(--elix-thumbnail-width, 100%);
-          object-fit: contain;
-        }
-      </style>
-      <img id="inner">
-    `;
+          #inner {
+            height: var(--elix-thumbnail-height, 100%);
+            width: var(--elix-thumbnail-width, 100%);
+            object-fit: contain;
+          }
+        </style>
+      `
+    );
   }
 }
 

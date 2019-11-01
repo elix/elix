@@ -1,37 +1,27 @@
 import * as internal from '../../src/internal.js';
 import * as template from '../../src/template.js';
-import FocusVisibleMixin from '../../src/FocusVisibleMixin.js';
-import KeyboardMixin from '../../src/KeyboardMixin.js';
-import WrappedStandardElement from '../../src/WrappedStandardElement.js';
+import Button from '../../src/Button.js';
 
-const Base = FocusVisibleMixin(
-  KeyboardMixin(WrappedStandardElement.wrap('button'))
-);
-
-class FocusVisibleTest extends Base {
+class FocusVisibleTest extends Button {
   get [internal.template]() {
-    return template.html`
-      <style>
-        :host {
-          display: inline-block;
-        }
-
-        #inner {
-          background: #888;
-          border-radius: 3px;
-          color: #eee;
-          font-family: inherit;
-          font-size: inherit;
-          font-style: inherit;
-          font-weight: inherit;
-          outline: none;
-          padding: 6px 12px;
-        }
-      </style>
-      <button id="inner" tabindex="-1">
-        <slot></slot>
-      </button>
-    `;
+    return template.concat(
+      super[internal.template],
+      template.html`
+        <style>
+          #inner {
+            background: #888;
+            border-radius: 3px;
+            color: #eee;
+            font-family: inherit;
+            font-size: inherit;
+            font-style: inherit;
+            font-weight: inherit;
+            outline: none;
+            padding: 6px 12px;
+          }
+        </style>
+      `
+    );
   }
 
   connectedCallback() {
