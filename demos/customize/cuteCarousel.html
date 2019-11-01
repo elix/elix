@@ -6,7 +6,6 @@
     <title>Elix Carousel with custom styles</title>
 
     <link rel="stylesheet" href="../demos.css" />
-    <script type="module" src="../../define/CenteredStrip.js"></script>
     <script type="module" src="../../define/SelectableButton.js"></script>
     <script type="module" src="../../define/Carousel.js"></script>
     <style>
@@ -15,15 +14,15 @@
       }
 
       body {
-        background: black;
+        background: #fef4d2;
         height: 100%;
         padding: 20px;
       }
     </style>
   </head>
 
-  <body role="main" style="background: #fef4d2;">
-    <div class="demo fullScreen portrait">
+  <body role="main">
+    <div class="demo fullScreen portrait" style="background: #fef4d2;">
       <style>
         #customCarousel {
           max-height: 400px;
@@ -45,10 +44,6 @@
           color: #83af9b;
           transition: color 0.25s;
         }
-        #customCarousel::part(arrow-button-inner) {
-          /* Margin accounts for fact that italic shifts glyph to right. */
-          margin: 4px;
-        }
         #customCarousel::part(arrow-button):state(disabled) {
           color: transparent;
           -webkit-text-stroke: 2px #c8c8a9;
@@ -69,6 +64,7 @@
         }
         elix-selectable-button:hover {
           color: #fe4365;
+          opacity: 1;
         }
         elix-selectable-button:state(selected) {
           color: #fe4365;
@@ -86,7 +82,6 @@
         id="customCarousel"
         aria-label="Bunnies"
         arrow-button-overlap="false"
-        proxy-list-part-type="elix-centered-strip"
         proxy-list-overlap="false"
         show-arrow-buttons="true"
       >
