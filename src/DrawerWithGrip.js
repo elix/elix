@@ -142,8 +142,8 @@ class DrawerWithGrip extends Drawer {
           <slot></slot>
         </div>
         <div id="gripWorkaround">
-          <div id="grip" aria-label="Toggle drawer">
-            <slot name="grip" part="grip">
+          <div id="grip" part="grip" aria-label="Toggle drawer">
+            <slot name="grip">
               <svg id="gripIcon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
                 <defs>
                   <path id="a" d="M0 0h24v24H0V0z"/>

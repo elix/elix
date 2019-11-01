@@ -91,10 +91,10 @@ class DropdownList extends Base {
     const sourceSlotContent = template.html`
       <div id="value" part="value"></div>
       <div>
-        <svg id="downIcon" part="down-icon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
+        <svg id="downIcon" part="toggle-icon down-icon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
           <path d="M 0 0 l5 5 5 -5 z"/>
         </svg>
-        <svg id="upIcon" part="up-icon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
+        <svg id="upIcon" part="toggle-icon up-icon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
           <path d="M 0 5 l5 -5 5 5 z"/>
         </svg>
       </div>

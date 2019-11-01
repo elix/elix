@@ -26,7 +26,7 @@ const Base = CalendarElementMixin(ReactiveElement);
  * @part {CalendarDay} day - any of the day elements in the month grid
  * @part day-names-header - the column header showing the names of the days
  * @part month-days - the grid of days for the month
- * @part month-hear-header - the calendar header showing the month and/or year
+ * @part month-year-header - the calendar header showing the month and/or year
  */
 class CalendarMonth extends Base {
   /**

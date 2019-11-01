@@ -95,7 +95,8 @@ class RefreshAppDemo extends ReactiveElement {
           margin-bottom: 0;
         }
       </style>
-      <elix-pull-to-refresh id="pullToRefresh"></elix-pull-to-refresh>
+      <elix-pull-to-refresh id="pullToRefresh" exportparts="indicator, pull-indicator, refresh-header
+      , refreshing-indicator"></elix-pull-to-refresh>
       <audio id="refreshSound" src="resources/pop.mp3"></audio>
     `;
   }
