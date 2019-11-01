@@ -77,7 +77,6 @@ const Base = AriaListMixin(
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin
  * @mixes TapSelectionMixin
- * @part container - the element immediately containing the list items
  */
 class ListBox extends Base {
   get [internal.defaultState]() {
@@ -173,7 +172,7 @@ class ListBox extends Base {
           min-height: inherit;
         }
       </style>
-      <div id="container" part="container" role="none">
+      <div id="container" role="none">
         <slot></slot>
       </div>
     `;
