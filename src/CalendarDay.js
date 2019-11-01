@@ -23,6 +23,24 @@ const Base = CalendarElementMixin(ReactiveElement);
  *
  * @inherits ReactiveElement
  * @mixes CalendarElementMixin
+ * @state alternate-month
+ * @state first-day-of-month
+ * @state first-week
+ * @state friday
+ * @state future
+ * @state last-day-of-month
+ * @state monday
+ * @state outside-range
+ * @state past
+ * @state saturday
+ * @state selected
+ * @state sunday
+ * @state thursday
+ * @state today
+ * @state tuesday
+ * @state wednesday
+ * @state weekday
+ * @state weekend
  */
 class CalendarDay extends Base {
   constructor() {
@@ -42,7 +60,6 @@ class CalendarDay extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    const classList = this.classList;
     const { date } = this[internal.state];
     if (changed.date) {
       const today = calendar.today();
@@ -52,35 +69,29 @@ class CalendarDay extends Base {
       const daysFromToday =
         Math.round(date.getTime() - today.getTime()) /
         calendar.millisecondsPerDay;
-      classList.toggle(
-        'alternateMonth',
+      setInternalState(
+        this,
+        'alternate-month',
         Math.abs(date.getMonth() - today.getMonth()) % 2 === 1
       );
-      classList.toggle('firstDayOfMonth', dayOfMonth === 1);
-      classList.toggle('firstWeek', dayOfMonth <= 7);
-      classList.toggle('future', date > today);
-      classList.toggle(
-        'lastDayOfMonth',
+      setInternalState(this, 'first-day-of-month', dayOfMonth === 1);
+      setInternalState(this, 'first-week', dayOfMonth <= 7);
+      setInternalState(this, 'future', date > today);
+      setInternalState(
+        this,
+        'last-day-of-month',
         date.getMonth() !== nextDate.getMonth()
       );
-      classList.toggle('past', date < today);
-      classList.toggle('saturday', dayOfWeek === 6);
-      classList.toggle('sunday', dayOfWeek === 0);
+      setInternalState(this, 'past', date < today);
+      setInternalState(this, 'sunday', dayOfWeek === 0);
+      setInternalState(this, 'monday', dayOfWeek === 1);
+      setInternalState(this, 'tuesday', dayOfWeek === 2);
+      setInternalState(this, 'wednesday', dayOfWeek === 3);
+      setInternalState(this, 'thursday', dayOfWeek === 4);
+      setInternalState(this, 'friday', dayOfWeek === 5);
+      setInternalState(this, 'saturday', dayOfWeek === 6);
 
-      const isToday = daysFromToday === 0;
-      // if ('part' in this) {
-      //   this.part.toggle('today', isToday);
-      // }
-      if (
-        this[internal.nativeInternals] &&
-        this[internal.nativeInternals].states
-      ) {
-        this[internal.nativeInternals].states.toggle('today', isToday);
-      }
-      // When all browsers support `:state()` selector, we'll want to deprecate
-      // use of classes.
-      classList.toggle('today', isToday);
-
+      setInternalState(this, 'today', daysFromToday === 0);
       this[internal.ids].day.textContent = dayOfMonth.toString();
     }
     if (changed.date || changed.locale) {
@@ -89,14 +100,18 @@ class CalendarDay extends Base {
       const weekend =
         dayOfWeek === calendar.weekendStart(locale) ||
         dayOfWeek === calendar.weekendEnd(locale);
-      classList.toggle('weekday', !weekend);
-      classList.toggle('weekend', weekend);
+      setInternalState(this, 'weekday', !weekend);
+      setInternalState(this, 'weekend', weekend);
     }
     if (changed.outsideRange) {
-      classList.toggle('outsideRange', this[internal.state].outsideRange);
+      setInternalState(
+        this,
+        'outside-range',
+        this[internal.state].outsideRange
+      );
     }
     if (changed.selected) {
-      classList.toggle('selected', this[internal.state].selected);
+      setInternalState(this, 'selected', this[internal.state].selected);
     }
   }
 
@@ -126,7 +141,7 @@ class CalendarDay extends Base {
           color: gray;
         }
 
-        :host(.outsideRange) {
+        :host(.outside-range) {
           color: lightgray;
         }
 
@@ -147,6 +162,19 @@ class CalendarDay extends Base {
 
       <span id="day"></span>
     `;
+  }
+}
+
+// Set both a visible class for template-patching purposes, and an internal
+// state for browsers that support the `:state` selector. When all browsers
+// support that, we'll want to deprecate use of classes.
+function setInternalState(element, name, value) {
+  element.classList.toggle(name, value);
+  if (
+    element[internal.nativeInternals] &&
+    element[internal.nativeInternals].states
+  ) {
+    element[internal.nativeInternals].states.toggle(name, value);
   }
 }
 
