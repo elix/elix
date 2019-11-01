@@ -369,7 +369,10 @@ class WrappedStandardElement extends Base {
       const { disabled } = innerProperties;
       if (disabled !== undefined) {
         this.toggleAttribute('disabled', disabled);
-        if (this[internal.nativeInternals]) {
+        if (
+          this[internal.nativeInternals] &&
+          this[internal.nativeInternals].states
+        ) {
           this[internal.nativeInternals].states.toggle('disabled', disabled);
         }
       }

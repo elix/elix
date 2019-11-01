@@ -71,7 +71,10 @@ class CalendarDay extends Base {
       // if ('part' in this) {
       //   this.part.toggle('today', isToday);
       // }
-      if (this[internal.nativeInternals]) {
+      if (
+        this[internal.nativeInternals] &&
+        this[internal.nativeInternals].states
+      ) {
         this[internal.nativeInternals].states.toggle('today', isToday);
       }
       // When all browsers support `:state()` selector, we'll want to deprecate

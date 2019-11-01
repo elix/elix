@@ -21,7 +21,11 @@ class SelectableButton extends SeamlessButton {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.selected && this[internal.nativeInternals]) {
+    if (
+      changed.selected &&
+      this[internal.nativeInternals] &&
+      this[internal.nativeInternals].states
+    ) {
       // Reflect selected property to element `:state`.
       const { selected } = this[internal.state];
       this[internal.nativeInternals].states.toggle('selected', selected);
