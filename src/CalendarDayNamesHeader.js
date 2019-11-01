@@ -21,6 +21,7 @@ import ReactiveElement from './ReactiveElement.js';
  * the first day.
  *
  * @inherits ReactiveElement
+ * @part day-name - any of the names for the days of the week
  */
 class CalendarDayNamesHeader extends ReactiveElement {
   get [internal.defaultState]() {
@@ -73,6 +74,7 @@ class CalendarDayNamesHeader extends ReactiveElement {
         date.setDate(dayOfWeek + 1);
         const weekend = dayOfWeek === weekendStart || dayOfWeek === weekendEnd;
         const dayElement = this[internal.ids][`day${i}`];
+        dayElement.classList.toggle('weekday', !weekend);
         dayElement.classList.toggle('weekend', weekend);
         dayElement.textContent = formatter.format(date);
       }
@@ -88,24 +90,24 @@ class CalendarDayNamesHeader extends ReactiveElement {
           grid-template-columns: repeat(7, 1fr);
         }
 
-        .dayOfWeek {
+        .dayName {
           padding: 0.3em;
           text-align: center;
           white-space: nowrap;
         }
 
-        .dayOfWeek.weekend {
+        .dayName.weekend {
           color: gray;
         }
       </style>
 
-      <div id="day0" class="dayOfWeek"></div>
-      <div id="day1" class="dayOfWeek"></div>
-      <div id="day2" class="dayOfWeek"></div>
-      <div id="day3" class="dayOfWeek"></div>
-      <div id="day4" class="dayOfWeek"></div>
-      <div id="day5" class="dayOfWeek"></div>
-      <div id="day6" class="dayOfWeek"></div>
+      <div id="day0" part="day-name" class="dayName"></div>
+      <div id="day1" part="day-name" class="dayName"></div>
+      <div id="day2" part="day-name" class="dayName"></div>
+      <div id="day3" part="day-name" class="dayName"></div>
+      <div id="day4" part="day-name" class="dayName"></div>
+      <div id="day5" part="day-name" class="dayName"></div>
+      <div id="day6" part="day-name" class="dayName"></div>
     `;
   }
 }

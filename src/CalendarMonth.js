@@ -24,6 +24,7 @@ const Base = CalendarElementMixin(ReactiveElement);
  * @inherits ReactiveElement
  * @mixes CalendarElementMixin
  * @part {CalendarDay} day - any of the day elements in the month grid
+ * @part day-name - any of the names for the days of the week
  * @part day-names-header - the column header showing the names of the days
  * @part month-days - the grid of days for the month
  * @part month-year-header - the calendar header showing the month and/or year
@@ -216,7 +217,7 @@ class CalendarMonth extends Base {
       </style>
 
       <div id="monthYearHeader" part="month-year-header"></div>
-      <div id="dayNamesHeader" part="day-names-header" format="short"></div>
+      <div id="dayNamesHeader" part="day-names-header" exportparts="day-name" format="short"></div>
       <div id="monthDays" part="month-days" exportparts="day"></div>
     `;
     const monthYearHeader = result.content.getElementById('monthYearHeader');
