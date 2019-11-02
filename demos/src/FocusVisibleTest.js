@@ -12,21 +12,11 @@ class FocusVisibleTest extends Button {
             background: #888;
             border-radius: 3px;
             color: #eee;
-            font-family: inherit;
-            font-size: inherit;
-            font-style: inherit;
-            font-weight: inherit;
-            outline: none;
             padding: 6px 12px;
           }
         </style>
       `
     );
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.setAttribute('tabindex', '0');
   }
 }
 
