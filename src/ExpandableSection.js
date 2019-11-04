@@ -16,6 +16,7 @@ const Base = AriaRoleMixin(OpenCloseMixin(ReactiveElement));
  * @mixes OpenCloseMixin
  * @part collapse-icon - the icon shown when the panel is expanded
  * @part expand-icon - the icon shown when the panel is collapsed
+ * @part toggle-icon - both of the icons used to expand/collapse the panel
  * @part {SeamlessButton} header - the header that can be clicked/tapped to expand or collapse the panel
  * @part {ExpandablePanel} panel - contains the component's expandable/collapsible content
  */
@@ -130,10 +131,10 @@ class ExpandableSection extends Base {
         </div>
         <div id="toggleContainer" class="headerElement">
           <slot name="toggleSlot">
-            <svg id="collapseIcon" part="collapse-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <svg id="collapseIcon" part="toggle-icon collapse-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
               <path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"/>
             </svg>
-            <svg id="expandIcon" part="expand-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <svg id="expandIcon" part="toggle-icon expand-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
               <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/>
             </svg>
           </slot>
