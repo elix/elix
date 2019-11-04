@@ -142,9 +142,16 @@ export function html(strings, ...substitutions) {
  */
 function registerCustomElement(classFn) {
   let baseTag;
-  const className = classFn.name;
-  if (className) {
+  // HTML places more restrictions on the first character in a tag than
+  // JavaScript places on the first character of a class name. We apply this
+  // more restrictive condition to the class names we'll convert to tags. Class
+  // names that fail this check -- often generated class names -- will result in
+  // a base tag name of "custom-element".
+  const classNameRegex = /^[A-Za-z][A-Za-z0-9_$]*$/;
+  const classNameMatch = classFn.name && classFn.name.match(classNameRegex);
+  if (classNameMatch) {
     // Given the class name `FooBar`, calculate the base tag name `foo-bar`.
+    const className = classNameMatch[0];
     const uppercaseRegEx = /([A-Z])/g;
     const hyphenated = className.replace(
       uppercaseRegEx,
