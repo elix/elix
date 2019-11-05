@@ -38,7 +38,8 @@ class DrawerWithGrip extends Drawer {
   }
 
   /**
-   * The class, tag, or template used to create the grip handle.
+   * The class, tag, or template used to create the `grip` part – the grip
+   * handle the user can tap/click/swipe to open or close the drawer.
    *
    * @type {PartDescriptor}
    * @default SeamlessButton

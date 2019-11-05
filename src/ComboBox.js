@@ -103,7 +103,8 @@ class ComboBox extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the input element.
+   * The class, tag, or template used to create the `input` part into which the
+   * user can enter text.
    *
    * @type {PartDescriptor}
    * @default 'input'
@@ -385,8 +386,8 @@ class ComboBox extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the button that toggles the
-   * popup.
+   * The class, tag, or template used to create the `toggle-button` part – the
+   * button that toggles the popup.
    *
    * @type {PartDescriptor}
    * @default SeamlessButton

@@ -38,7 +38,8 @@ class AlertDialog extends Dialog {
   }
 
   /**
-   * The class, tag, or template used to create the choice buttons.
+   * The class, tag, or template used to create the `choice-button` parts —
+   * the set of choices shown to the user.
    *
    * @type {PartDescriptor}
    * @default 'button'

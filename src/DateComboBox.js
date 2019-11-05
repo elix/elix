@@ -25,8 +25,8 @@ const Base = CalendarElementMixin(ComboBox);
  */
 class DateComboBox extends Base {
   /**
-   * The class, tag, or template used to create the left and right arrow
-   * buttons.
+   * The class, tag, or template used to create the `arrow-button` parts – the
+   * left and right arrow buttons that navigate the calendar.
    *
    * @type {PartDescriptor}
    * @default ArrowDirectionButton
@@ -43,7 +43,8 @@ class DateComboBox extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the calendar.
+   * The class, tag, or template used to create the `calendar` part – the
+   * element showing a calendar with selectable days.
    *
    * @type {PartDescriptor}
    * @default CalendarMonthNavigator
@@ -73,7 +74,8 @@ class DateComboBox extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the day elements.
+   * The class, tag, or template used to create the `day` parts – the set of
+   * days shown in the calendar grid.
    *
    * @type {PartDescriptor}
    * @default CalendarDay
@@ -484,7 +486,8 @@ class DateComboBox extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the (Go to) "Today" button.
+   * The class, tag, or template used to create the `today-button` part – the
+   * button that takes the user back to the current date.
    *
    * @type {PartDescriptor}
    * @default SeamlessButton

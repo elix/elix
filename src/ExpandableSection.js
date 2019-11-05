@@ -30,7 +30,8 @@ class ExpandableSection extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the clickable header.
+   * The class, tag, or template used to create the `header` part – the header
+   * region the user can tap/click to expand or collapse the section.
    *
    * @type {PartDescriptor}
    * @default SeamlessButton
@@ -43,7 +44,8 @@ class ExpandableSection extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the expandable panel.
+   * The class, tag, or template used to create the `panel` part – the container
+   * for the expandable/collapsible content.
    *
    * @type {PartDescriptor}
    * @default ExpandablePanel

@@ -25,7 +25,8 @@ export default function PlayControlsMixin(Base) {
   // The class prototype added by the mixin.
   class PlayControls extends Base {
     /**
-     * The class, tag, or template used for the play control buttons.
+     * The class, tag, or template used to create the `control-button` parts –
+     * the play control buttons.
      *
      * @type {PartDescriptor}
      * @default SeamlessButton

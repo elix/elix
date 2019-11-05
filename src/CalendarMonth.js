@@ -48,7 +48,8 @@ class CalendarMonth extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the day elements.
+   * The class, tag, or template used to create the `day` parts – the set of
+   * days shown in the calendar grid.
    *
    * @type {PartDescriptor}
    * @default CalendarDay

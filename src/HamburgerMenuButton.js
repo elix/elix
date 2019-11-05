@@ -76,7 +76,8 @@ class HamburgerMenuButton extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the menu (drawer).
+   * The class, tag, or template used to create the `menu` part – the container
+   * for the navigation and other commands available through the button.
    *
    * @type {PartDescriptor}
    * @default Drawer
@@ -89,7 +90,8 @@ class HamburgerMenuButton extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the menu button element.
+   * The class, tag, or template used to create the `menu-button` part – the
+   * button the user can tap/click to invoke the menu.
    *
    * @type {PartDescriptor}
    * @default SeamlessButton

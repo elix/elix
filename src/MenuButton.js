@@ -212,10 +212,8 @@ class MenuButton extends PopupButton {
   }
 
   /**
-   * The class, tag, or template used to define the menu.
-   *
-   * The menu element is responsible for presenting the menu items and handling
-   * navigation between them.
+   * The class, tag, or template used to define the `menu` part – the element
+   * presenting the menu items and handling navigation between them.
    *
    * @type {PartDescriptor}
    * @default Menu

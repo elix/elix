@@ -183,8 +183,8 @@ class PullToRefresh extends Base {
   }
 
   /**
-   * The class, tag, or template used for the element shown to let the user
-   * know they can pull to refresh.
+   * The class, tag, or template used to create the `pull-indicator` part – the
+   * element that lets the user know they can pull to refresh.
    *
    * By default, this is a down arrow icon.
    *
@@ -205,8 +205,9 @@ class PullToRefresh extends Base {
   }
 
   /**
-   * The class, tag, or template used for the element shown to indicate the
-   * element is currently refreshing.
+   * The class, tag, or template used to create the `refreshing-indicator` part
+   * – the element shown to let the user know the element is currently
+   * refreshing.
    *
    * @type {PartDescriptor}
    * @default ProgressSpinner

@@ -63,7 +63,8 @@ class ListWithSearch extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the input element.
+   * The class, tag, or template used to create the `input` part – the input
+   * element in which the user can enter search text.
    *
    * @type {PartDescriptor}
    * @default 'input'
@@ -140,7 +141,8 @@ class ListWithSearch extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the list element.
+   * The class, tag, or template used to create the `list` part – the region
+   * that presents the available set of items matching the search criteria.
    *
    * @type {PartDescriptor}
    * @default ListBox
