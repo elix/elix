@@ -100,7 +100,7 @@ class FilterListBox extends ListBox {
             content,
             this[internal.state]
           );
-          content.style.display = matches ? null : 'none';
+          content.style.display = matches ? '' : 'none';
 
           // For matching items, highlight the matching text.
           if (matches) {

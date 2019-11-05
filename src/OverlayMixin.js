@@ -133,12 +133,12 @@ export default function OverlayMixin(Base) {
           // component from the outside (to change to display: flex, say) will
           // override the display: none implied by hidden. To work around both
           // these problems, we use display: none when the overlay is closed.
-          this.style.display = closed ? 'none' : null;
+          this.style.display = closed ? 'none' : 'ß';
 
           if (closed) {
             if (this[defaultZIndexKey]) {
               // Remove default z-index.
-              this.style.zIndex = null;
+              this.style.zIndex = '';
               this[defaultZIndexKey] = null;
             }
           } else if (this[defaultZIndexKey]) {

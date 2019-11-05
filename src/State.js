@@ -76,10 +76,12 @@ class State {
     const array = dependencies instanceof Array ? dependencies : [dependencies];
     // Register the callback for each dependent state field.
     array.forEach(dependency => {
-      if (!this[changeCallbacksKey][dependency]) {
-        this[changeCallbacksKey][dependency] = [];
+      /** @type {any} */
+      const changeCallbacks = this[changeCallbacksKey];
+      if (!changeCallbacks[dependency]) {
+        changeCallbacks[dependency] = [];
       }
-      this[changeCallbacksKey][dependency].push(callback);
+      changeCallbacks[dependency].push(callback);
     });
   }
 }

@@ -35,7 +35,7 @@ class Modes extends Base {
       if (items) {
         items.forEach((item, index) => {
           const selected = index === selectedIndex;
-          item.style.display = selected ? null : 'none';
+          item.style.display = selected ? '' : 'none';
         });
       }
     }
