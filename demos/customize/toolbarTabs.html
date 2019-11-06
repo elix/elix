@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Elix Tabs as navigation toolbar</title>
+
+    <link rel="stylesheet" href="../demos.css" />
+    <script type="module" src="../../define/SeamlessButton.js"></script>
+    <script type="module" src="../../define/SlidingPages.js"></script>
+    <script type="module" src="../../define/Tabs.js"></script>
+
+    <style>
+      html {
+        height: 100%;
+      }
+
+      body {
+        height: 100%;
+        padding: 0;
+      }
+    </style>
+  </head>
+
+  <body role="main">
+    <div class="demo fullScreen portrait">
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      />
+      <style>
+        .toolbarTabs {
+          background: #eee;
+          color: gray;
+          display: flex;
+          flex: 1;
+        }
+
+        .page {
+          align-items: center;
+          background: white;
+          border: 1px solid rgb(204, 204, 204);
+          box-sizing: border-box;
+          color: initial;
+          display: flex;
+          justify-content: center;
+        }
+
+        elix-seamless-button[selected] {
+          color: dodgerblue;
+        }
+
+        elix-seamless-button::part(inner) {
+          display: flex;
+          flex-direction: column;
+          padding: 6px;
+        }
+      </style>
+
+      <elix-tabs
+        class="toolbarTabs"
+        generic="false"
+        proxy-list-position="bottom"
+        tab-align="stretch"
+        stage-part-type="elix-sliding-pages"
+      >
+        <elix-seamless-button slot="proxy" aria-label="Home">
+          <div class="material-icons">home</div>
+          Home
+        </elix-seamless-button>
+        <elix-seamless-button slot="proxy" aria-label="Search">
+          <div class="material-icons">search</div>
+          Search
+        </elix-seamless-button>
+        <elix-seamless-button slot="proxy" aria-label="Settings">
+          <div class="material-icons">settings</div>
+          Settings
+        </elix-seamless-button>
+        <div class="page">Home page</div>
+        <div class="page">Search page</div>
+        <div class="page">Settings page</div>
+      </elix-tabs>
+    </div>
+  </body>
+</html>
