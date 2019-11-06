@@ -210,12 +210,6 @@ class Menu extends Base {
         item.style.outline = suppressFocus ? 'none' : '';
       });
     }
-    if (changed.generic) {
-      this[internal.ids].content.classList.toggle(
-        'generic',
-        this[internal.state].generic
-      );
-    }
   }
 
   get [internal.scrollTarget]() {
@@ -248,10 +242,10 @@ class Menu extends Base {
           touch-action: manipulation;
         }
 
-        #content.generic ::slotted(*) {
+        :host([generic]) ::slotted(*) {
           padding: 0.25em;
         }
-        #content.generic ::slotted([selected]) {
+        :host([generic]) ::slotted([selected]) {
           background: highlight;
           color: highlighttext;
         }

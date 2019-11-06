@@ -126,7 +126,7 @@ export default class MessageListBox extends Base {
       super[internal.template],
       template.html`
       <style>
-        #content.generic ::slotted(*) {
+        :host([generic]) ::slotted(*) {
           padding: 0;
         }
 

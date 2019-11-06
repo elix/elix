@@ -16,10 +16,20 @@ export default function GenericMixin(
       return this[internal.state].generic;
     }
     set generic(generic) {
-      const parsed = String(generic) === 'true';
+      // Parse this as a boolean attribute.
+      const parsed = typeof generic === 'string' ? true : Boolean(generic);
       this[internal.setState]({
         generic: parsed
       });
+    }
+
+    [internal.render](/** @type {PlainObject} */ changed) {
+      super[internal.render](changed);
+      if (changed.generic) {
+        // Reflect generic state to generic attribute.
+        const { generic } = this[internal.state];
+        this.toggleAttribute('generic', generic);
+      }
     }
   };
 }

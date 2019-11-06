@@ -67,6 +67,7 @@ const Base = AriaListMixin(
  * @mixes FocusVisibleMixin
  * @mixes FormElementMixin
  * @mixes ItemsTextMixin
+ * @mixes GenericMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
  * @mixes KeyboardPagedSelectionMixin
@@ -94,10 +95,6 @@ class ListBox extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.generic) {
-      const { generic } = this[internal.state];
-      this.classList.toggle('generic', generic);
-    }
     if (changed.items || changed.selectedIndex) {
       // Apply `selected` style to the selected item only.
       const { selectedIndex, items } = this[internal.state];
@@ -141,7 +138,7 @@ class ListBox extends Base {
           -webkit-tap-highlight-color: transparent;
         }
 
-        :host(.generic) {
+        :host([generic]) {
           border: 1px solid gray;
         }
 
@@ -151,17 +148,17 @@ class ListBox extends Base {
           -webkit-overflow-scrolling: touch; /* for momentum scrolling */
         }
 
-        :host(.generic) ::slotted(*) {
+        :host([generic]) ::slotted(*) {
           padding: 0.25em;
         }
 
-        :host(.generic) ::slotted([selected]) {
+        :host([generic]) ::slotted([selected]) {
           background: highlight;
           color: highlighttext;
         }
 
         @media (pointer: coarse) {
-          :host(.generic) ::slotted(*) {
+          :host([generic]) ::slotted(*) {
             padding: 1em;
           }
         }

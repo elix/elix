@@ -53,12 +53,6 @@ class TabButton extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.generic) {
-      this[internal.ids].inner.classList.toggle(
-        'generic',
-        this[internal.state].generic
-      );
-    }
     if (changed.generic || changed.position) {
       // Adjust margins.
       const { generic, position } = this[internal.state];
@@ -135,7 +129,7 @@ class TabButton extends Base {
           margin: 0;
         }
 
-        #inner.generic {
+        :host([generic]) #inner {
           background: white;
           border-color: #ccc;
           border-style: solid;
@@ -144,11 +138,11 @@ class TabButton extends Base {
           white-space: nowrap;
         }
 
-        :host(.selected) #inner.generic {
+        :host([generic][selected]) #inner {
           z-index: 1;
         }
 
-        #inner.generic:disabled {
+        :host([generic]) #inner:disabled {
           color: #888;
         }
       </style>

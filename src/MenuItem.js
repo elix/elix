@@ -40,16 +40,6 @@ class MenuItem extends Base {
     });
   }
 
-  [internal.render](changed) {
-    super[internal.render](changed);
-    if (changed.generic) {
-      this[internal.ids].container.classList.toggle(
-        'generic',
-        this[internal.state].generic
-      );
-    }
-  }
-
   get selected() {
     return this[internal.state].selected;
   }
@@ -64,7 +54,7 @@ class MenuItem extends Base {
     /* Variety of system fonts */
     return template.html`
       <style>
-        #container.generic {
+        :host([generic]) {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
           font-size: 10pt;
           padding-left: 2em !important;
