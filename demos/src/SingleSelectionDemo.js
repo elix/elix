@@ -48,10 +48,9 @@ class SingleSelectionDemo extends Base {
     super[internal.render](changed);
     const { selectedIndex, items } = this[internal.state];
     if (changed.items || (changed.selectedIndex && items)) {
-      // Apply `selected` style to the selected item only.
+      // Apply a `selected` attribute to the selected item only.
       items.forEach((item, index) => {
-        const selected = index === selectedIndex;
-        item.classList.toggle('selected', selected);
+        item.toggleAttribute('selected', index === selectedIndex);
       });
     }
   }

@@ -143,9 +143,7 @@ class CenteredStrip extends Base {
       const { selectedIndex, items } = this[internal.state];
       if (items) {
         items.forEach((item, index) => {
-          if ('selected' in item) {
-            /** @type {any} */ (item).selected = index === selectedIndex;
-          }
+          item.toggleAttribute('selected', index === selectedIndex);
         });
       }
     }

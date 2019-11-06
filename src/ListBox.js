@@ -103,8 +103,7 @@ class ListBox extends Base {
       const { selectedIndex, items } = this[internal.state];
       if (items) {
         items.forEach((item, index) => {
-          const selected = index === selectedIndex;
-          item.classList.toggle('selected', selected);
+          item.toggleAttribute('selected', index === selectedIndex);
         });
       }
     }
@@ -156,7 +155,7 @@ class ListBox extends Base {
           padding: 0.25em;
         }
 
-        :host(.generic) ::slotted(.selected) {
+        :host(.generic) ::slotted([selected]) {
           background: highlight;
           color: highlighttext;
         }

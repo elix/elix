@@ -179,11 +179,7 @@ class TabStrip extends Base {
       // Apply `selected` style to the selected item only.
       const { selectedIndex } = this[internal.state];
       items.forEach((item, index) => {
-        const selected = index === selectedIndex;
-        item.classList.toggle('selected', selected);
-        if ('selected' in item) {
-          /** @type {any} */ (item).selected = selected;
-        }
+        item.toggleAttribute('selected', index === selectedIndex);
       });
     }
     if (changed.generic) {

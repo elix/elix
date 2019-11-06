@@ -163,11 +163,7 @@ class Menu extends Base {
     if ((changed.items || changed.selectedIndex) && items) {
       // Reflect the selection state to the item.
       items.forEach((item, index) => {
-        const selected = index === selectedIndex;
-        item.classList.toggle('selected', selected);
-        if ('selected' in item) {
-          /** @type {any} */ (item).selected = selected;
-        }
+        item.toggleAttribute('selected', index === selectedIndex);
       });
     }
     if (
@@ -255,7 +251,7 @@ class Menu extends Base {
         #content.generic ::slotted(*) {
           padding: 0.25em;
         }
-        #content.generic ::slotted(.selected) {
+        #content.generic ::slotted([selected]) {
           background: highlight;
           color: highlighttext;
         }

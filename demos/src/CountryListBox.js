@@ -70,7 +70,7 @@ class CountryListBox extends Base {
       if (items) {
         items.forEach((item, index) => {
           const selected = index === selectedIndex;
-          item.classList.toggle('selected', selected);
+          item.toggleAttribute('selected', selected);
         });
       }
     }
@@ -104,7 +104,7 @@ class CountryListBox extends Base {
           padding: 0.25em;
         }
 
-        #content > .selected {
+        #content > [selected] {
           background: highlight;
           color: highlighttext;
         }

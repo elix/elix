@@ -27,7 +27,7 @@ class ToolbarTab extends TabButton {
           -webkit-tap-highlight-color: transparent;
         }
 
-        :host(.selected) {
+        :host([selected]) {
           color: dodgerblue;
           z-index: 1;
         }
