@@ -47,10 +47,16 @@ class CenteredStripOpacity extends CenteredStrip {
         const swiping = swipeFraction != null;
         const selectionFraction = sign * (swipeFraction || 0);
         const showTransition = enableEffects && !swiping;
-        const transition = showTransition
-          ? `opacity ${transitionDuration / 1000}s linear`
+        const opacityTransitionValue = showTransition
+          ? `${transitionDuration / 1000}s linear`
           : null;
         items.forEach((item, index) => {
+          const existingTransition = getComputedStyle(item).transition;
+          const transition = mergeSinglePropertyTransition(
+            existingTransition,
+            'opacity',
+            opacityTransitionValue
+          );
           const opacity = opacityForItemWithIndex(
             index,
             selectedIndex,
@@ -116,6 +122,48 @@ function opacityForItemWithIndex(index, selectedIndex, selectionFraction) {
   }
 
   return opacity;
+}
+
+/**
+ * Given an existing CSS `transition` value, merge a transition for the property
+ * with the indicated name and value on top of it. If the value is null, remove
+ * the transition for the indicated property. Return a new string that can be
+ * set as the value of an element's `transition` style property.
+ *
+ * This helper exists because the DOM represents the entire set of property
+ * transitions on an object as a single string, with no easy way to selectively
+ * update just a single property value.
+ *
+ * @private
+ * @param {string} transition
+ * @param {string} name
+ * @param {string|null} value
+ */
+function mergeSinglePropertyTransition(transition, name, value) {
+  // Properties are a name, whitespace, value.
+  const propertyRegex = /([\w-]+)\s+([^,]+)/g;
+  let match = propertyRegex.exec(transition);
+  while (match && match.groups) {
+    if (match.groups.name === name) {
+      break;
+    }
+    match = propertyRegex.exec(transition);
+  }
+  const definition = value ? `${name} ${value}` : '';
+  if (match) {
+    // Transition contains the indicated property.
+    // Splice in a new value at that point.
+    const start = match.index;
+    const length = match[0].length;
+    return (
+      transition.substr(0, start) +
+      definition +
+      transition.substr(start + length)
+    );
+  } else {
+    // Transition doesn't yet contain the indicated property; append it.
+    return [transition, definition].join(', ');
+  }
 }
 
 export default CenteredStripOpacity;

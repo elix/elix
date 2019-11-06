@@ -42,7 +42,7 @@
 
         #customCarousel::part(arrow-button) {
           color: #83af9b;
-          transition: color 0.25s;
+          transition: color 0.5s;
         }
         #customCarousel::part(arrow-button):state(disabled) {
           color: transparent;
@@ -60,7 +60,8 @@
           color: #fc9d9a;
           font-size: 24px;
           margin: 0 0.2em;
-          transition: color 0.25s, transform 0.25s;
+          transition: color 0.5s, transform 0.5s;
+          will-change: color, opacity, transform;
         }
         elix-selectable-button:hover {
           color: #fe4365;
