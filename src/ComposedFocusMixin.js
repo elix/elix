@@ -1,4 +1,4 @@
-import { closestFocusableAncestor } from './utilities.js';
+import { closestFocusableNode } from './utilities.js';
 import * as internal from './internal.js';
 import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
 
@@ -46,7 +46,7 @@ export default function ComposedFocusMixin(Base) {
           return;
         }
         if (event.target instanceof Element) {
-          const target = closestFocusableAncestor(event.target);
+          const target = closestFocusableNode(event.target);
           if (target) {
             target.focus();
             event.preventDefault();

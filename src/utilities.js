@@ -53,29 +53,27 @@ export function applyChildNodes(element, childNodes) {
 }
 
 /**
- * Return the closest focusable ancestor in the *composed* tree.
- * If no focusable ancestor is found, returns null.
+ * Return the closest focusable node that's either the node itself (if it's
+ * focusable), or the closest focusable ancestor in the *composed* tree.
+ *
+ * If no focusable node is found, this returns null.
  *
  * @param {Node} node
  * @returns {HTMLElement|null}
  */
-export function closestFocusableAncestor(node) {
-  for (const ancestor of composedAncestors(node)) {
+export function closestFocusableNode(node) {
+  for (const current of selfAndComposedAncestors(node)) {
+    // If the current element defines a focusTarget (e.g., via
+    // DelegateFocusMixin), use that, otherwise use the element itself.
+    const focusTarget = current[internal.focusTarget] || current;
     // We want an element that has a tabIndex of 0 or more. We ignore disabled
     // elements, and slot elements (which oddly have a tabIndex of 0).
-    if (
-      ancestor instanceof HTMLElement &&
-      ancestor.tabIndex >= 0 &&
-      !/** @type {any} */ (ancestor).disabled &&
-      !(ancestor instanceof HTMLSlotElement)
-    ) {
-      // Found an enabled component that wants the focus.
-      return ancestor;
-    }
-    // If an element defines a focusTarget (e.g., via DelegateFocusMixin),
-    // see if that focusTarget is focusable at this point.
-    const focusTarget = ancestor[internal.focusTarget];
-    if (focusTarget && focusTarget.tabIndex >= 0 && !focusTarget.disabled) {
+    const focusable =
+      focusTarget instanceof HTMLElement &&
+      focusTarget.tabIndex >= 0 &&
+      !/** @type {any} */ (focusTarget).disabled &&
+      !(focusTarget instanceof HTMLSlotElement);
+    if (focusable) {
       return focusTarget;
     }
   }
@@ -213,7 +211,7 @@ export function forwardFocus(origin, target) {
       // What element wants the focus?
       const desiredTarget = target[internal.focusTarget] || target;
       // What ancestor can actually take the focus?
-      const focusableTarget = closestFocusableAncestor(desiredTarget);
+      const focusableTarget = closestFocusableNode(desiredTarget);
       if (focusableTarget) {
         focusableTarget.focus();
         event.preventDefault();

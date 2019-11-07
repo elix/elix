@@ -5,7 +5,7 @@ export function applyChildNodes(
   element: Node,
   childNodes: NodeList | Node[]
 ): void;
-export function closestFocusableAncestor(element: Element): HTMLElement | null;
+export function closestFocusableNode(element: Element): HTMLElement | null;
 export function composedAncestors(node: Node): Iterable<Node>;
 export function deepContains(container: Node, target: Node): boolean;
 export function ensureId(element: Element): string;
