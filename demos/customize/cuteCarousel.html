@@ -16,17 +16,17 @@
       body {
         background: #fef4d2;
         height: 100%;
-        padding: 20px;
+        padding: 0;
       }
     </style>
   </head>
 
   <body role="main">
-    <div class="demo fullScreen portrait" style="background: #fef4d2;">
+    <div class="demo fullScreen" style="background: #fef4d2; padding: 20px;">
       <style>
         #customCarousel {
-          max-height: 400px;
-          max-width: 600px;
+          flex: 1;
+          max-height: 100%;
         }
 
         #customCarousel img {
@@ -42,11 +42,12 @@
 
         #customCarousel::part(arrow-button) {
           color: #83af9b;
-          transition: color 0.5s;
+          transition: color 0.5s, -webkit-text-stroke-color 0.5s;
+          -webkit-text-stroke: 2px transparent;
         }
         #customCarousel::part(arrow-button):state(disabled) {
           color: transparent;
-          -webkit-text-stroke: 2px #c8c8a9;
+          -webkit-text-stroke-color: #c8c8a9;
         }
         #customCarousel::part(arrow-button):hover:not(:state(disabled)) {
           background: linear-gradient(
