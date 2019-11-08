@@ -298,7 +298,7 @@ class Explorer extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `proxy-list` part – the list
+   * The class, tag, or template used to create the `proxy-list` part - the list
    * of selectable proxies representing the items in the list.
    *
    * @type {PartDescriptor}
@@ -312,7 +312,7 @@ class Explorer extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `proxy` parts – the default
+   * The class, tag, or template used to create the `proxy` parts - the default
    * representations for the list's items.
    *
    * @type {PartDescriptor}

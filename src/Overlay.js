@@ -44,7 +44,7 @@ class Overlay extends Base {
   }
 
   /**
-   * The class, tag, or template used for the `backdrop` part – the optional
+   * The class, tag, or template used for the `backdrop` part - the optional
    * element shown behind the overlay.
    *
    * This can help focus the user's attention on the overlay content.

@@ -25,7 +25,7 @@ const Base = CalendarElementMixin(ComboBox);
  */
 class DateComboBox extends Base {
   /**
-   * The class, tag, or template used to create the `arrow-button` parts – the
+   * The class, tag, or template used to create the `arrow-button` parts - the
    * left and right arrow buttons that navigate the calendar.
    *
    * @type {PartDescriptor}
@@ -43,7 +43,7 @@ class DateComboBox extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `calendar` part – the
+   * The class, tag, or template used to create the `calendar` part - the
    * element showing a calendar with selectable days.
    *
    * @type {PartDescriptor}

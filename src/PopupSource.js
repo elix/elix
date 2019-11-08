@@ -34,7 +34,7 @@ const Base = AriaRoleMixin(
  */
 class PopupSource extends Base {
   /**
-   * The class, tag, or template used for the `backdrop` part – the optional
+   * The class, tag, or template used for the `backdrop` part - the optional
    * element shown behind the popup.
    *
    * This can help focus the user's attention on the overlay content.
@@ -352,7 +352,7 @@ class PopupSource extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `source` part – the button
+   * The class, tag, or template used to create the `source` part - the button
    * (or other element) the user can tap/click to invoke the popup.
    *
    * @type {PartDescriptor}

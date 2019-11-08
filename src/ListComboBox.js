@@ -133,7 +133,7 @@ class ListComboBox extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `list` part – the list of
+   * The class, tag, or template used to create the `list` part - the list of
    * available choices shown in the popup.
    *
    * @type {PartDescriptor}
