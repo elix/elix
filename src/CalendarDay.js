@@ -150,7 +150,7 @@ class CalendarDay extends Base {
           font-weight: bold;
         }
 
-        :host(.selected) {
+        :host([selected]) {
           background: #ddd;
         }
 
@@ -169,7 +169,12 @@ class CalendarDay extends Base {
 // state for browsers that support the `:state` selector. When all browsers
 // support that, we'll want to deprecate use of classes.
 function setInternalState(element, name, value) {
-  element.classList.toggle(name, value);
+  // TODO: Move all aspects from classes to attributes.
+  if (name === 'selected') {
+    element.toggleAttribute(name, value);
+  } else {
+    element.classList.toggle(name, value);
+  }
   if (
     element[internal.nativeInternals] &&
     element[internal.nativeInternals].states

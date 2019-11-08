@@ -28,6 +28,7 @@ class SelectableButton extends SeamlessButton {
     ) {
       // Reflect selected property to element `:state`.
       const { selected } = this[internal.state];
+      this.toggleAttribute('selected', selected);
       this[internal.nativeInternals].states.toggle('selected', selected);
     }
   }
@@ -35,6 +36,9 @@ class SelectableButton extends SeamlessButton {
   get selected() {
     return this[internal.state].selected;
   }
+  // Note: AttributeMarshallingMixin will recognize `selected` as the name of
+  // attribute that should be parsed as a boolean attribute, and so will
+  // handling parsing it for us.
   set selected(selected) {
     this[internal.setState]({ selected });
   }

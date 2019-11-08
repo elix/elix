@@ -36,7 +36,7 @@ class SereneTabButton extends TabButton {
           background: #444;
         }
 
-        :host(.selected) #inner {
+        :host([selected]) #inner {
           background: #666;
         }
       </style>

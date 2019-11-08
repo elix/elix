@@ -37,7 +37,11 @@ class CalendarDayButton extends Base {
       day.outsideRange = this[internal.state].outsideRange;
     }
     if (changed.selected) {
-      day.selected = this[internal.state].selected;
+      const { selected } = this[internal.state];
+      // Reflect selected state to this host.
+      setInternalState(this, 'selected', selected);
+      // Reflect selected state to inner CalendarDay.
+      day.selected = selected;
     }
   }
 
@@ -77,6 +81,19 @@ class CalendarDayButton extends Base {
     `;
     result.content.appendChild(styleTemplate.content);
     return result;
+  }
+}
+
+// Set both a visible class for template-patching purposes, and an internal
+// state for browsers that support the `:state` selector. When all browsers
+// support that, we'll want to deprecate use of classes.
+function setInternalState(element, name, value) {
+  element.toggleAttribute(name, value);
+  if (
+    element[internal.nativeInternals] &&
+    element[internal.nativeInternals].states
+  ) {
+    element[internal.nativeInternals].states.toggle(name, value);
   }
 }
 

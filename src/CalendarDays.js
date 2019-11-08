@@ -113,16 +113,13 @@ class CalendarDays extends Base {
       const selectedYear = date.getFullYear();
       /** @type {Element[]} */ const days = this.days || [];
       days.forEach(day => {
-        if ('selected' in day) {
-          /** @type {any} */ const cast = day;
-          const dayDate = cast.date;
-          const selected =
-            showSelectedDay &&
-            dayDate.getDate() === selectedDate &&
-            dayDate.getMonth() === selectedMonth &&
-            dayDate.getFullYear() === selectedYear;
-          cast.selected = selected;
-        }
+        const dayDate = /** @type {any} */ (day).date;
+        const selected =
+          showSelectedDay &&
+          dayDate.getDate() === selectedDate &&
+          dayDate.getMonth() === selectedMonth &&
+          dayDate.getFullYear() === selectedYear;
+        day.toggleAttribute('selected', selected);
       });
     }
     if (changed.dayCount || changed.startDate) {
