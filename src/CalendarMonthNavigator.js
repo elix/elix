@@ -62,15 +62,20 @@ class CalendarMonthNavigator extends Base {
   }
 
   arrowButtonNext() {
+    // If we're asked to navigate to the next month, but don't have a date yet,
+    // assume the current date.
+    const date = this[internal.state].date || calendar.today();
     this[internal.setState]({
-      date: calendar.offsetDateByMonths(this[internal.state].date, 1)
+      date: calendar.offsetDateByMonths(date, 1)
     });
     return true;
   }
 
   arrowButtonPrevious() {
+    // See note in arrowButtonNext.
+    const date = this[internal.state].date || calendar.today();
     this[internal.setState]({
-      date: calendar.offsetDateByMonths(this[internal.state].date, -1)
+      date: calendar.offsetDateByMonths(date, -1)
     });
     return true;
   }
