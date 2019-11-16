@@ -207,10 +207,7 @@ class ListWithSearch extends Base {
         }
 
         #input {
-          font-family: inherit;
-          font-size: inherit;
-          font-style: inherit;
-          font-weight: inherit;
+          font: inherit;
         }
       </style>
       <input id="input" part="input">

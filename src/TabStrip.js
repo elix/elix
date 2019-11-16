@@ -235,8 +235,7 @@ class TabStrip extends Base {
 
         ::slotted(*) {
           cursor: pointer;
-          font-family: inherit;
-          font-size: inherit;
+          font: inherit;
           -webkit-tap-highlight-color: transparent;
         }
       </style>

@@ -26,9 +26,7 @@ class CustomArrowButton extends SeamlessButton {
             color: rgba(255, 255, 255, 0.7);
             fill: currentColor;
             flex: 1;
-            font-family: inherit;
-            font-size: inherit;
-            font-weight: inherit;
+            font: inherit;
             height: 48px;
             margin: 0;
             outline: none;

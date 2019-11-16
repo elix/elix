@@ -46,10 +46,7 @@ class Input extends Base {
       template.html`
         <style>
           #inner {
-            font-family: inherit;
-            font-size: inherit;
-            font-style: inherit;
-            font-weight: inherit;
+            font: inherit;
           }
         </style>
       `

@@ -143,8 +143,7 @@ class AlertDialog extends Dialog {
         }
 
         button {
-          font-family: inherit;
-          font-size: inherit;
+          font: inherit;
         }
 
         #buttonContainer > :not(:first-child) {

@@ -187,11 +187,7 @@ class AutoSizeTextarea extends Base {
 
         #inner,
         #copyContainer {
-          font-family: inherit;
-          font-size: inherit;
-          font-style: inherit;
-          font-weight: inherit;
-          line-height: inherit;
+          font: inherit;
           margin: 0;
         }
 

@@ -257,7 +257,7 @@ class Menu extends Base {
         }
 
         ::slotted(option) {
-          font-weight: inherit;
+          font: inherit;
           min-height: inherit;
         }
       </style>

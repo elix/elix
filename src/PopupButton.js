@@ -118,9 +118,7 @@ class PopupButton extends Base {
             color: inherit;
             cursor: default;
             display: block;
-            font-size: inherit;
-            font-family: inherit;
-            font-style: inherit;
+            font: inherit;
             margin: 0;
             outline: none;
             padding: 0.25em 0.5em;

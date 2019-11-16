@@ -21,8 +21,7 @@ class ToolbarTab extends TabButton {
           display: flex;
           flex: 1;
           flex-direction: column;
-          font-family: inherit;
-          font-size: inherit;
+          font: inherit;
           padding: 6px;
           -webkit-tap-highlight-color: transparent;
         }

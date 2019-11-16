@@ -343,10 +343,7 @@ class ComboBox extends Base {
 
         #input {
           box-sizing: border-box;
-          font-family: inherit;
-          font-size: inherit;
-          font-style: inherit;
-          font-weight: inherit;
+          font: inherit;
           height: 100%;
           width: 100%;
         }
