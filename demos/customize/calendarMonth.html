@@ -7,20 +7,40 @@
 
     <link rel="stylesheet" href="../demos.css" />
     <script type="module" src="../../define/CalendarMonth.js"></script>
+    <style>
+      html {
+        height: 100%;
+      }
+
+      body {
+        height: 100%;
+        padding: 0;
+      }
+    </style>
   </head>
 
   <body role="main">
-    <div class="demo padded">
+    <div class="demo" style="max-width: 500px;">
+      <link
+        href="https://fonts.googleapis.com/css?family=Dancing+Script:400,700&display=swap"
+        rel="stylesheet"
+      />
       <style>
+        #calendarContainer {
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+        }
+
         #customCalendar {
-          font-family: 'Myriad Pro', Calibri, 'Helvetica Neue', Helvetica, Arial,
-            sans-serif;
-          font-size: 21px;
+          font-family: 'Dancing Script', cursive;
+          font-size: 28px;
         }
 
         #customCalendar::part(month-year-header) {
-          color: #990000;
+          color: #d4376a;
           font: inherit;
+          font-size: 48px;
           font-weight: bold;
           padding: 0.15em;
           text-align: left;
@@ -28,25 +48,42 @@
 
         #customCalendar::part(day-names-header) {
           font-size: 14px;
+          font-weight: bold;
         }
 
         #customCalendar::part(month-days) {
           font-weight: bold;
         }
 
-        #customCalendar::part(calendar-day) {
-          padding: 0.15em;
+        #customCalendar::part(day):state(today) {
+          color: #d4376a;
         }
 
-        #customCalendar::part(calendar-day):state(today) {
-          color: inherit;
-          font: inherit;
+        #customCalendar::part(day):state(weekend) {
+          color: #949494;
+        }
+
+        .floralBorder {
+          display: block;
+          width: 100%;
         }
       </style>
-      <elix-calendar-month
-        id="customCalendar"
-        year-format=""
-      ></elix-calendar-month>
+      <img
+        id="floralBorderTop"
+        class="floralBorder"
+        src="../images/floral border top.jpg"
+      />
+      <div id="calendarContainer">
+        <elix-calendar-month
+          id="customCalendar"
+          year-format=""
+        ></elix-calendar-month>
+      </div>
+      <img
+        id="floralBorderBottom"
+        class="floralBorder"
+        src="../images/floral border bottom.jpg"
+      />
     </div>
   </body>
 </html>
