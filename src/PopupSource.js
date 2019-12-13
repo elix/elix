@@ -306,10 +306,6 @@ class PopupSource extends Base {
     }
     if (changed.opened) {
       const { opened } = this[internal.state];
-      Object.assign(this[internal.ids].source.style, {
-        backgroundColor: opened ? 'highlight' : null,
-        color: opened ? 'highlighttext' : null
-      });
       /** @type {any} */ (this[internal.ids].popup).opened = opened;
       this.setAttribute('aria-expanded', opened.toString());
     }

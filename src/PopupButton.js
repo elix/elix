@@ -100,12 +100,6 @@ class PopupButton extends Base {
       });
       source.tabIndex = -1;
     }
-    if (changed.disabled) {
-      this[internal.ids].source.style.borderStyle = this[internal.state]
-        .disabled
-        ? null
-        : 'solid';
-    }
   }
 
   get [internal.template]() {
@@ -114,14 +108,9 @@ class PopupButton extends Base {
       template.html`
         <style>
           #source {
-            background: buttonface;
-            color: inherit;
             cursor: default;
             display: block;
-            font: inherit;
-            margin: 0;
             outline: none;
-            padding: 0.25em 0.5em;
             -webkit-tap-highlight-color: transparent;
             touch-action: manipulation;
             -moz-user-select: none;
@@ -129,6 +118,10 @@ class PopupButton extends Base {
             -webkit-user-select: none;
             user-select: none;
             white-space: nowrap;
+          }
+
+          button#source {
+            font: inherit;
           }
         </style>
       `
