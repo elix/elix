@@ -67,7 +67,7 @@ export default function OverlayMixin(Base) {
       openedChanged(this);
 
       // Perform one-time check to see if component needs a default z-index.
-      if (this[internal.state].persistent && !getZIndex(this)) {
+      if (this[internal.state].persistent && !hasZIndex(this)) {
         bringToFront(this);
       }
     }
@@ -144,7 +144,7 @@ export default function OverlayMixin(Base) {
           } else if (this[defaultZIndexKey]) {
             this.style.zIndex = this[defaultZIndexKey];
           } else {
-            if (!getZIndex(this)) {
+            if (!hasZIndex(this)) {
               bringToFront(this);
             }
           }
@@ -163,9 +163,41 @@ function bringToFront(element) {
   element.style.zIndex = defaultZIndex.toString();
 }
 
-function getZIndex(element) {
+/**
+ * If the element has or inherits an explicit numeric z-index, return true.
+ * Otherwise, return false.
+ *
+ * @param {HTMLElement} element
+ * @returns {boolean}
+ */
+function hasZIndex(element) {
   const computedZIndex = getComputedStyle(element).zIndex;
-  return computedZIndex !== 'auto' ? computedZIndex : element.style.zIndex;
+  const explicitZIndex = element.style.zIndex;
+  const isExplicitZIndexNumeric = !isNaN(parseInt(explicitZIndex));
+  if (computedZIndex === 'auto') {
+    return isExplicitZIndexNumeric;
+  }
+  if (computedZIndex === '0' && !isExplicitZIndexNumeric) {
+    // Might be on Safari, which reports a computed z-index of zero even in
+    // cases where no z-index has been inherited but the element creates a
+    // stacking context. Inspect the composed tree parent to infer whether the
+    // element is really inheriting a z-index.
+    const parent =
+      element.assignedSlot ||
+      (element instanceof ShadowRoot ? element.host : element.parentNode);
+    if (!(parent instanceof HTMLElement)) {
+      // Theoretical edge case, assume zero z-index is real.
+      return true;
+    }
+    if (!hasZIndex(parent)) {
+      // The parent doesn't have a numeric z-index, and the element itself
+      // doesn't have a numeric z-index, so the "0" value for the computed
+      // z-index is simulated, not a real assigned numeric z-index.
+      return false;
+    }
+  }
+  // Element has a non-zero numeric z-index.
+  return true;
 }
 
 /*

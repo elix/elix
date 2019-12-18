@@ -35,6 +35,18 @@ describe('OverlayMixin', function() {
     assert.equal(fixture.style.zIndex, '2');
   });
 
+  it('sets a default z-index even if component creates a stacking context', async () => {
+    // This test is for Safari, where getComputedStyle(element).zIndex returns "0"
+    // if the element creates a stacking context.
+    const fixture = new OverlayTest();
+    fixture.style.position = 'fixed'; // Force a stacking context.
+    container.appendChild(fixture);
+    await fixture.open();
+    // Mocha test runner has element with z-index of 1, so we expect the
+    // overlay to get a default z-index of 2.
+    assert.equal(fixture.style.zIndex, '2');
+  });
+
   it('leaves the z-index alone if one is specified', async () => {
     const fixture = new OverlayTest();
     fixture.style.zIndex = 10;
