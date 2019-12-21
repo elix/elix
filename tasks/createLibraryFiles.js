@@ -7,7 +7,7 @@ const srcJsHeader = `/*
  * The complete set of Elix elements and mixins.
  * 
  * This file is the primary entry point to the Elix package, so its exports are
- * what is obtained if you write \`import * from 'elix'\`. However, in
+ * what is obtained if you write \`import * from "elix"\`. However, in
  * production use it will be much more efficient to directly load just the
  * components you need from the /src folder. This file is also used during
  * testing, as it causes all Elix's elements to be loaded.
@@ -51,7 +51,7 @@ async function createLibraryFile(
         isMixin && destinationFolder !== sourceFolder
           ? path.join(relativeFolder, file)
           : `./${file}`;
-      return `export { default as ${name} } from '${filePath}';`;
+      return `export { default as ${name} } from "${filePath}";`;
     })
     .join("\n");
 
@@ -64,7 +64,7 @@ async function createLibraryFile(
         destinationFolder !== sourceFolder
           ? path.join(relativeFolder, file)
           : `./${file}`;
-      return `import * as ${name}Import from '${filePath}';
+      return `import * as ${name}Import from "${filePath}";
 // @ts-ignore
 export const ${name} = ${name}Import;
 `;

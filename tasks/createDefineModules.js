@@ -14,15 +14,15 @@ async function createDefineModules(defineFolder, componentFiles) {
     const tag = tagFromClassName(className);
 
     // Create JavaScript file.
-    const jsContent = `import ${className} from '../src/${className}.js';
+    const jsContent = `import ${className} from "../src/${className}.js";
 export default class Elix${className} extends ${className} {}
-customElements.define('${tag}', Elix${className});
+customElements.define("${tag}", Elix${className});
 `;
     const jsPath = path.join(defineFolder, `${className}.js`);
     const jsPromise = fs.writeFile(jsPath, jsContent);
 
     // Create TypeScript file.
-    const tsContent = `import ${className} from '../src/${componentFile}';
+    const tsContent = `import ${className} from "../src/${componentFile}";
 export default ${className};
 `;
     const tsPath = path.join(defineFolder, `${className}.d.ts`);
