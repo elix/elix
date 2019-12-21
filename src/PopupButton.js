@@ -1,10 +1,11 @@
 import { ownEvent } from './utilities.js';
 import * as internal from './internal.js';
 import * as template from './template.js';
+import GenericMixin from './GenericMixin.js';
 import KeyboardMixin from './KeyboardMixin.js';
 import PopupSource from './PopupSource.js';
 
-const Base = KeyboardMixin(PopupSource);
+const Base = GenericMixin(KeyboardMixin(PopupSource));
 
 /**
  * A button that invokes an attached popup
@@ -122,6 +123,14 @@ class PopupButton extends Base {
 
           button#source {
             font: inherit;
+          }
+
+          :host([generic]) #source {
+            background: buttonface;
+            color: inherit;
+            font: inherit;
+            margin: 0;
+            padding: 0.25em 0.5em;
           }
         </style>
       `
