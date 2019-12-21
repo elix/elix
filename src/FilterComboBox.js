@@ -1,10 +1,10 @@
-import { getTextsFromItems } from './ItemsTextMixin.js';
-import { substantiveElements } from './content.js';
-import * as internal from './internal.js';
-import AutoCompleteInput from './AutoCompleteInput.js';
-import FilterListBox from './FilterListBox.js';
-import ListComboBox from './ListComboBox.js';
-import SlotContentMixin from './SlotContentMixin.js';
+import { getTextsFromItems } from "./ItemsTextMixin.js";
+import { substantiveElements } from "./content.js";
+import * as internal from "./internal.js";
+import AutoCompleteInput from "./AutoCompleteInput.js";
+import FilterListBox from "./FilterListBox.js";
+import ListComboBox from "./ListComboBox.js";
+import SlotContentMixin from "./SlotContentMixin.js";
 
 const Base = SlotContentMixin(ListComboBox);
 
@@ -19,14 +19,14 @@ const Base = SlotContentMixin(ListComboBox);
 class FilterComboBox extends Base {
   get [internal.defaultState]() {
     const state = Object.assign(super[internal.defaultState], {
-      filter: '',
+      filter: "",
       inputPartType: AutoCompleteInput,
       listPartType: FilterListBox,
       texts: null
     });
 
     // If content changes, regenerate texts.
-    state.onChange('content', state => {
+    state.onChange("content", state => {
       const { content } = state;
       const items = content ? substantiveElements(content) : null;
       const texts = items ? getTextsFromItems(items) : [];
@@ -36,10 +36,10 @@ class FilterComboBox extends Base {
     });
 
     // Closing resets the filter.
-    state.onChange('opened', state => {
+    state.onChange("opened", state => {
       if (!state.opened) {
         return {
-          filter: ''
+          filter: ""
         };
       }
       return null;
@@ -51,7 +51,7 @@ class FilterComboBox extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.inputPartType) {
-      this[internal.ids].input.addEventListener('input', event => {
+      this[internal.ids].input.addEventListener("input", event => {
         this[internal.raiseChangeEvents] = true;
         /** @type {any} */
         const cast = event;
@@ -64,16 +64,16 @@ class FilterComboBox extends Base {
     }
     if (changed.filter || changed.selectedIndex) {
       const { filter, selectedIndex } = this[internal.state];
-      if (filter === '' || selectedIndex === -1) {
+      if (filter === "" || selectedIndex === -1) {
         const list = /** @type {any} */ (this[internal.ids].list);
-        if ('filter' in list) {
+        if ("filter" in list) {
           list.filter = filter;
         }
       }
     }
     if (changed.texts) {
       const input = /** @type {any} */ (this[internal.ids].input);
-      if ('texts' in input) {
+      if ("texts" in input) {
         input.texts = this[internal.state].texts;
       }
     }

@@ -1,5 +1,5 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Automatically updates selection on a timer.
@@ -70,7 +70,7 @@ export default function TimerSelectionMixin(Base) {
       return this[internal.state].playing;
     }
     set playing(playing) {
-      const parsed = String(playing) === 'true';
+      const parsed = String(playing) === "true";
       if (parsed !== this[internal.state].playing) {
         if (parsed) {
           this.play();

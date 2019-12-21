@@ -1,5 +1,5 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Allows a component to participate in HTML form submission.
@@ -41,7 +41,7 @@ export default function FormElementMixin(Base) {
 
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState], {
-        validationMessage: '',
+        validationMessage: "",
         valid: true
       });
     }
@@ -80,7 +80,7 @@ export default function FormElementMixin(Base) {
       return this[internal.state].name;
     }
     set name(name) {
-      if ('name' in Base.prototype) {
+      if ("name" in Base.prototype) {
         super.name = name;
       }
       this[internal.setState]({ name });
@@ -93,7 +93,7 @@ export default function FormElementMixin(Base) {
 
       // Reflect name property to attribute so form will pick it up.
       if (changed.name) {
-        this.setAttribute('name', this[internal.state].name);
+        this.setAttribute("name", this[internal.state].name);
       }
 
       if (this[internal.nativeInternals]) {

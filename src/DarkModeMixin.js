@@ -1,5 +1,5 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Lets a component automatically or explicitly configure itself for dark backgrounds
@@ -46,7 +46,7 @@ export default function DarkModeMixin(Base) {
       return this[internal.state].darkMode;
     }
     set darkMode(darkMode) {
-      const parsed = String(darkMode) === 'true';
+      const parsed = String(darkMode) === "true";
       this[internal.setState]({
         darkMode: parsed
       });
@@ -71,14 +71,14 @@ export default function DarkModeMixin(Base) {
  * @returns {string}
  */
 function findBackgroundColor(element) {
-  const defaultBackgroundColor = 'rgb(255,255,255)';
+  const defaultBackgroundColor = "rgb(255,255,255)";
   if (element instanceof Document) {
     // This element has no background, assume white.
     return defaultBackgroundColor;
   }
   const backgroundColor = getComputedStyle(element).backgroundColor;
   const hasColor =
-    backgroundColor !== 'transparent' && backgroundColor !== 'rgba(0, 0, 0, 0)';
+    backgroundColor !== "transparent" && backgroundColor !== "rgba(0, 0, 0, 0)";
   if (backgroundColor && hasColor) {
     return backgroundColor;
   }

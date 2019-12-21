@@ -5,12 +5,12 @@
 // corresponding Foo.js file in the /define folder that exports the same
 // Foo component, and also defines it as `elix-foo`.
 
-const fs = require('fs').promises;
-const path = require('path');
+const fs = require("fs").promises;
+const path = require("path");
 
 async function createDefineModules(defineFolder, componentFiles) {
   const modulePromises = componentFiles.map(componentFile => {
-    const className = path.basename(componentFile, '.js');
+    const className = path.basename(componentFile, ".js");
     const tag = tagFromClassName(className);
 
     // Create JavaScript file.
@@ -36,7 +36,7 @@ export default ${className};
 // Given the class name `FooBar`, calculate the tag name `elix-foo-bar`.
 function tagFromClassName(className) {
   const uppercaseRegEx = /([A-Z])/g;
-  const tag = 'elix' + className.replace(uppercaseRegEx, '-$1').toLowerCase();
+  const tag = "elix" + className.replace(uppercaseRegEx, "-$1").toLowerCase();
   return tag;
 }
 

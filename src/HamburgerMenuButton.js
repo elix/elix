@@ -1,11 +1,11 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import Drawer from './Drawer.js';
-import FocusVisibleMixin from './FocusVisibleMixin.js';
-import KeyboardMixin from './KeyboardMixin.js';
-import OpenCloseMixin from './OpenCloseMixin.js';
-import ReactiveElement from './ReactiveElement.js';
-import SeamlessButton from './SeamlessButton.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import Drawer from "./Drawer.js";
+import FocusVisibleMixin from "./FocusVisibleMixin.js";
+import KeyboardMixin from "./KeyboardMixin.js";
+import OpenCloseMixin from "./OpenCloseMixin.js";
+import ReactiveElement from "./ReactiveElement.js";
+import SeamlessButton from "./SeamlessButton.js";
 
 const Base = FocusVisibleMixin(KeyboardMixin(OpenCloseMixin(ReactiveElement)));
 
@@ -28,7 +28,7 @@ const Base = FocusVisibleMixin(KeyboardMixin(OpenCloseMixin(ReactiveElement)));
 class HamburgerMenuButton extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      fromEdge: 'start',
+      fromEdge: "start",
       menuButtonPartType: SeamlessButton,
       menuPartType: Drawer
     });
@@ -61,8 +61,8 @@ class HamburgerMenuButton extends Base {
 
     if (this.closed) {
       switch (event.key) {
-        case ' ':
-        case 'Enter':
+        case " ":
+        case "Enter":
           menuButton.click();
           handled = true;
           break;
@@ -110,7 +110,7 @@ class HamburgerMenuButton extends Base {
         this[internal.ids].menuButton,
         this[internal.state].menuButtonPartType
       );
-      this[internal.ids].menuButton.addEventListener('click', () => {
+      this[internal.ids].menuButton.addEventListener("click", () => {
         this[internal.raiseChangeEvents] = true;
         this.open();
         this[internal.raiseChangeEvents] = false;
@@ -121,7 +121,7 @@ class HamburgerMenuButton extends Base {
         this[internal.ids].menu,
         this[internal.state].menuPartType
       );
-      this[internal.ids].menu.addEventListener('closed', event => {
+      this[internal.ids].menu.addEventListener("closed", event => {
         /** @type {any} */
         const cast = event;
         this[internal.setState]({
@@ -129,7 +129,7 @@ class HamburgerMenuButton extends Base {
           opened: false
         });
       });
-      this[internal.ids].menu.addEventListener('opened', () => {
+      this[internal.ids].menu.addEventListener("opened", () => {
         this[internal.setState]({
           opened: true
         });
@@ -137,12 +137,12 @@ class HamburgerMenuButton extends Base {
     }
     const menu = /** @type {any} */ (this[internal.ids].menu);
     if (changed.fromEdge) {
-      if ('fromEdge' in menu) {
+      if ("fromEdge" in menu) {
         menu.fromEdge = this[internal.state].fromEdge;
       }
     }
     if (changed.opened) {
-      if ('opened' in menu) {
+      if ("opened" in menu) {
         menu.opened = this[internal.state].opened;
       }
     }

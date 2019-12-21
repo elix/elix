@@ -1,11 +1,11 @@
-import { applyChildNodes } from './utilities.js';
-import * as internal from './internal.js';
-import * as template from './template.js';
-import FormElementMixin from './FormElementMixin.js';
-import MenuButton from './MenuButton.js';
-import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
-import SingleSelectionMixin from './SingleSelectionMixin.js';
-import SlotItemsMixin from './SlotItemsMixin.js';
+import { applyChildNodes } from "./utilities.js";
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import FormElementMixin from "./FormElementMixin.js";
+import MenuButton from "./MenuButton.js";
+import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
+import SingleSelectionMixin from "./SingleSelectionMixin.js";
+import SlotItemsMixin from "./SlotItemsMixin.js";
 
 const Base = FormElementMixin(
   SelectedItemTextValueMixin(SingleSelectionMixin(SlotItemsMixin(MenuButton)))
@@ -32,13 +32,13 @@ class DropdownList extends Base {
 
   get [internal.defaultState]() {
     const state = Object.assign(super[internal.defaultState], {
-      itemRole: 'menuitemradio',
+      itemRole: "menuitemradio",
       selectionRequired: true,
-      valuePartType: 'div'
+      valuePartType: "div"
     });
 
     // When the menu closes, update our selection from the menu selection.
-    state.onChange('opened', state => {
+    state.onChange("opened", state => {
       const { closeResult, items, opened } = state;
       if (!opened && items && closeResult !== undefined) {
         const selectedIndex = items.indexOf(closeResult);
@@ -55,7 +55,7 @@ class DropdownList extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.itemRole) {
-      if ('itemRole' in this[internal.ids].menu) {
+      if ("itemRole" in this[internal.ids].menu) {
         /** @type {any} */ (this[internal.ids].menu).itemRole = this[
           internal.state
         ].itemRole;
@@ -69,9 +69,9 @@ class DropdownList extends Base {
     }
     if (changed.opened || changed.popupPosition) {
       const { popupPosition } = this[internal.state];
-      const showDown = popupPosition === 'below';
-      this[internal.ids].downIcon.style.display = showDown ? 'block' : 'none';
-      this[internal.ids].upIcon.style.display = showDown ? 'none' : 'block';
+      const showDown = popupPosition === "below";
+      this[internal.ids].downIcon.style.display = showDown ? "block" : "none";
+      this[internal.ids].upIcon.style.display = showDown ? "none" : "block";
     }
     if (changed.selectedIndex) {
       const items = this[internal.state].items || [];

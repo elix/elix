@@ -1,10 +1,10 @@
-import { forwardFocus } from './utilities.js';
-import * as internal from './internal.js';
-import * as template from './template.js';
-import ArrowDirectionButton from './ArrowDirectionButton.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import { forwardFocus } from "./utilities.js";
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import ArrowDirectionButton from "./ArrowDirectionButton.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
-const wrap = Symbol('wrap');
+const wrap = Symbol("wrap");
 
 /**
  * Adds previous/next arrow buttons to a carousel-like component.
@@ -32,7 +32,7 @@ function ArrowDirectionMixin(Base) {
       return this[internal.state].arrowButtonOverlap;
     }
     set arrowButtonOverlap(arrowButtonOverlap) {
-      const parsed = String(arrowButtonOverlap) === 'true';
+      const parsed = String(arrowButtonOverlap) === "true";
       this[internal.setState]({
         arrowButtonOverlap: parsed
       });
@@ -73,7 +73,7 @@ function ArrowDirectionMixin(Base) {
       return Object.assign(super[internal.defaultState], {
         arrowButtonOverlap: true,
         arrowButtonPartType: ArrowDirectionButton,
-        orientation: 'horizontal',
+        orientation: "horizontal",
         showArrowButtons: true
       });
     }
@@ -109,7 +109,7 @@ function ArrowDirectionMixin(Base) {
           this.arrowButtonPrevious()
         );
         this[internal.ids].arrowButtonPrevious.addEventListener(
-          'mousedown',
+          "mousedown",
           previousButtonHandler
         );
 
@@ -124,7 +124,7 @@ function ArrowDirectionMixin(Base) {
           this.arrowButtonNext()
         );
         this[internal.ids].arrowButtonNext.addEventListener(
-          'mousedown',
+          "mousedown",
           nextButtonHandler
         );
       }
@@ -137,7 +137,7 @@ function ArrowDirectionMixin(Base) {
         orientation,
         rightToLeft
       } = this[internal.state];
-      const vertical = orientation === 'vertical';
+      const vertical = orientation === "vertical";
       /** @type {any} */ const arrowButtonPrevious = this[internal.ids]
         .arrowButtonPrevious;
       /** @type {any} */ const arrowButtonNext = this[internal.ids]
@@ -150,8 +150,8 @@ function ArrowDirectionMixin(Base) {
         changed.rightToLeft
       ) {
         this[internal.ids].arrowDirection.style.flexDirection = vertical
-          ? 'column'
-          : 'row';
+          ? "column"
+          : "row";
 
         const buttonStyle = {
           bottom: null,
@@ -161,13 +161,13 @@ function ArrowDirectionMixin(Base) {
         };
         if (arrowButtonOverlap) {
           Object.assign(buttonStyle, {
-            position: 'absolute',
-            'z-index': 1
+            position: "absolute",
+            "z-index": 1
           });
         } else {
           Object.assign(buttonStyle, {
             position: null,
-            'z-index': null
+            "z-index": null
           });
         }
         let previousButtonStyle;
@@ -221,10 +221,10 @@ function ArrowDirectionMixin(Base) {
       // icons for right-to-left.
       if (changed.orientation || changed.rightToLeft) {
         const transform = vertical
-          ? 'rotate(90deg)'
+          ? "rotate(90deg)"
           : rightToLeft
-          ? 'rotateZ(180deg)'
-          : '';
+          ? "rotateZ(180deg)"
+          : "";
         if (this[internal.ids].arrowIconPrevious) {
           this[internal.ids].arrowIconPrevious.style.transform = transform;
         }
@@ -251,16 +251,16 @@ function ArrowDirectionMixin(Base) {
       // Wait for knowledge of dark mode
       if (changed.darkMode && darkMode !== null) {
         // Apply dark mode to buttons.
-        if ('darkMode' in arrowButtonPrevious) {
+        if ("darkMode" in arrowButtonPrevious) {
           /** @type {any} */ (arrowButtonPrevious).darkMode = darkMode;
         }
-        if ('darkMode' in arrowButtonNext) {
+        if ("darkMode" in arrowButtonNext) {
           /** @type {any} */ (arrowButtonNext).darkMode = darkMode;
         }
       }
 
       if (changed.showArrowButtons) {
-        const display = this[internal.state].showArrowButtons ? null : 'none';
+        const display = this[internal.state].showArrowButtons ? null : "none";
         arrowButtonPrevious.style.display = display;
         arrowButtonNext.style.display = display;
       }
@@ -270,7 +270,7 @@ function ArrowDirectionMixin(Base) {
       return this[internal.state].showArrowButtons;
     }
     set showArrowButtons(showArrowButtons) {
-      const parsed = String(showArrowButtons) === 'true';
+      const parsed = String(showArrowButtons) === "true";
       this[internal.setState]({
         showArrowButtons: parsed
       });
@@ -322,7 +322,7 @@ function ArrowDirectionMixin(Base) {
       template.wrap(
         original,
         arrowDirectionTemplate.content,
-        '#arrowDirectionContainer'
+        "#arrowDirectionContainer"
       );
     }
   }

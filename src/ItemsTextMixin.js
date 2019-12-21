@@ -1,5 +1,5 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Exposes the text content of a list's items as an array of strings.
@@ -16,7 +16,7 @@ export default function ItemsTextMixin(Base) {
       });
 
       // Regenerate texts when items change.
-      state.onChange('items', state => {
+      state.onChange("items", state => {
         const { items } = state;
         const texts = getTextsFromItems(items, this[internal.getItemText]);
         if (texts) {
@@ -53,7 +53,7 @@ export default function ItemsTextMixin(Base) {
  * @param {ListItemElement} item
  */
 export function getItemText(item) {
-  return item.getAttribute('alt') || item.textContent || '';
+  return item.getAttribute("alt") || item.textContent || "";
 }
 
 /**

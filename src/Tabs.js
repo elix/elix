@@ -1,11 +1,11 @@
-import { defaultAriaRole } from './accessibility.js';
-import { ensureId } from './utilities.js';
-import * as internal from './internal.js';
-import * as template from './template.js';
-import Explorer from './Explorer.js';
-import GenericMixin from './GenericMixin.js';
-import TabButton from './TabButton.js';
-import TabStrip from './TabStrip.js';
+import { defaultAriaRole } from "./accessibility.js";
+import { ensureId } from "./utilities.js";
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import Explorer from "./Explorer.js";
+import GenericMixin from "./GenericMixin.js";
+import TabButton from "./TabButton.js";
+import TabStrip from "./TabStrip.js";
 
 const Base = GenericMixin(Explorer);
 
@@ -25,10 +25,10 @@ const Base = GenericMixin(Explorer);
 class Tabs extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      itemRole: 'tabpanel',
+      itemRole: "tabpanel",
       proxyPartType: TabButton,
       proxyListPartType: TabStrip,
-      tabAlign: 'start'
+      tabAlign: "start"
     });
   }
 
@@ -43,9 +43,9 @@ class Tabs extends Base {
       // Create role for each item.
       items.forEach((item, index) => {
         if (itemRole === defaultAriaRole[item.localName]) {
-          item.removeAttribute('role');
+          item.removeAttribute("role");
         } else {
-          item.setAttribute('role', itemRole);
+          item.setAttribute("role", itemRole);
         }
 
         // Point the item at the proxy.
@@ -55,9 +55,9 @@ class Tabs extends Base {
           if (!proxy.id) {
             proxy.id = proxyId;
           }
-          item.setAttribute('aria-labelledby', proxyId);
+          item.setAttribute("aria-labelledby", proxyId);
         } else {
-          item.removeAttribute('aria-labelledby');
+          item.removeAttribute("aria-labelledby");
         }
       });
 
@@ -68,8 +68,8 @@ class Tabs extends Base {
         if (item) {
           if (!proxiesAssigned) {
             const label =
-              item.getAttribute('aria-label') ||
-              ('alt' in item ? /** @type {any} */ (item).alt : '');
+              item.getAttribute("aria-label") ||
+              ("alt" in item ? /** @type {any} */ (item).alt : "");
             proxy.textContent = label;
           }
           // Point the proxy at the item.
@@ -77,14 +77,14 @@ class Tabs extends Base {
           if (!item.id) {
             item.id = itemId;
           }
-          proxy.setAttribute('aria-controls', itemId);
+          proxy.setAttribute("aria-controls", itemId);
         } else {
-          proxy.removeAttribute('aria-controls');
+          proxy.removeAttribute("aria-controls");
         }
       });
     }
     if (changed.generic) {
-      if ('generic' in this[internal.ids].proxyList) {
+      if ("generic" in this[internal.ids].proxyList) {
         /** @type {any} */ (this[internal.ids].proxyList).generic = this[
           internal.state
         ].generic;
@@ -97,7 +97,7 @@ class Tabs extends Base {
       if (!this[internal.state].proxiesAssigned) {
         proxies.forEach(proxy => {
           /** @type {any} */ const cast = proxy;
-          if ('generic' in cast) {
+          if ("generic" in cast) {
             cast.generic = this[internal.state].generic;
           }
         });
@@ -105,7 +105,7 @@ class Tabs extends Base {
     }
     if (changed.tabAlign) {
       // Apply alignment to proxy list.
-      if ('tabAlign' in this[internal.ids].proxyList) {
+      if ("tabAlign" in this[internal.ids].proxyList) {
         const proxyList = /** @type {any} */ (this[internal.ids].proxyList);
         proxyList.tabAlign = this[internal.state].tabAlign;
       }

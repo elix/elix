@@ -1,15 +1,15 @@
-import { canScrollInDirection } from './scrolling.js';
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import { canScrollInDirection } from "./scrolling.js";
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
-const absorbDecelerationKey = Symbol('absorbDeceleration');
-const deferToScrollingKey = Symbol('deferToScrolling');
-const lastDeltaXKey = Symbol('lastDeltaX');
-const lastDeltaYKey = Symbol('lastDeltaY');
-const lastWheelTimeoutKey = Symbol('lastWheelTimeout');
-const postGestureDelayCompleteKey = Symbol('postGestureDelayComplete');
-const wheelDistanceKey = Symbol('wheelDistance');
-const wheelSequenceAxisKey = Symbol('wheelSequenceAxis');
+const absorbDecelerationKey = Symbol("absorbDeceleration");
+const deferToScrollingKey = Symbol("deferToScrolling");
+const lastDeltaXKey = Symbol("lastDeltaX");
+const lastDeltaYKey = Symbol("lastDeltaY");
+const lastWheelTimeoutKey = Symbol("lastWheelTimeout");
+const postGestureDelayCompleteKey = Symbol("postGestureDelayComplete");
+const wheelDistanceKey = Symbol("wheelDistance");
+const wheelSequenceAxisKey = Symbol("wheelSequenceAxis");
 
 // Time we wait following a gesture before paying attention to wheel events
 // again.
@@ -30,7 +30,7 @@ export default function TrackpadSwipeMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this.addEventListener('wheel', async event => {
+      this.addEventListener("wheel", async event => {
         this[internal.raiseChangeEvents] = true;
         const handled = handleWheel(this, event);
         if (handled) {
@@ -45,7 +45,7 @@ export default function TrackpadSwipeMixin(Base) {
 
     get [internal.defaultState]() {
       const result = Object.assign(super[internal.defaultState], {
-        swipeAxis: 'horizontal',
+        swipeAxis: "horizontal",
         swipeDownWillCommit: false,
         swipeFraction: null,
         swipeFractionMax: 1,
@@ -59,10 +59,10 @@ export default function TrackpadSwipeMixin(Base) {
       // whether we'll commit an operation if the swipe were to finish at that
       // point. This definition is compatible with one defined by
       // TouchSwipeMixin.
-      result.onChange('swipeFraction', state => {
+      result.onChange("swipeFraction", state => {
         const { swipeAxis, swipeFraction } = state;
         if (swipeFraction !== null) {
-          if (swipeAxis === 'horizontal') {
+          if (swipeAxis === "horizontal") {
             return {
               swipeLeftWillCommit: swipeFraction <= -0.5,
               swipeRightWillCommit: swipeFraction >= 0.5
@@ -135,7 +135,7 @@ function handleWheel(element, event) {
   const { swipeAxis, swipeFractionMax, swipeFractionMin } = element[
     internal.state
   ];
-  const vertical = swipeAxis === 'vertical';
+  const vertical = swipeAxis === "vertical";
   const acceleration = vertical
     ? Math.sign(deltaY) * (deltaY - cast[lastDeltaYKey])
     : Math.sign(deltaX) * (deltaX - cast[lastDeltaXKey]);
@@ -147,7 +147,7 @@ function handleWheel(element, event) {
 
   // Was this specific event more vertical or more horizontal?
   const eventAxis =
-    Math.abs(deltaY) > Math.abs(deltaX) ? 'vertical' : 'horizontal';
+    Math.abs(deltaY) > Math.abs(deltaX) ? "vertical" : "horizontal";
 
   if (!eventBeginsSwipe && eventAxis !== cast[wheelSequenceAxisKey]) {
     // This event continues a sequence. If the event's axis is perpendicular to

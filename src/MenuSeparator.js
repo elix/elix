@@ -1,6 +1,6 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import ReactiveElement from './ReactiveElement.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import ReactiveElement from "./ReactiveElement.js";
 
 /**
  * Inactive item that helps group related menu items
@@ -12,7 +12,7 @@ import ReactiveElement from './ReactiveElement.js';
 class MenuSeparator extends ReactiveElement {
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
-    this.setAttribute('aria-hidden', 'true');
+    this.setAttribute("aria-hidden", "true");
   }
 
   get disabled() {

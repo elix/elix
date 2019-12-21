@@ -1,13 +1,13 @@
-import { deepContains } from './utilities.js';
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import { deepContains } from "./utilities.js";
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 // We consider the keyboard to be active if the window has received a keydown
 // event since the last mousedown event.
 let keyboardActive = false;
 
 /** @type {any} */
-const focusVisibleChangedListenerKey = Symbol('focusVisibleChangedListener');
+const focusVisibleChangedListenerKey = Symbol("focusVisibleChangedListener");
 
 /**
  * Shows a focus indication if and only if the keyboard is active.
@@ -40,7 +40,7 @@ export default function FocusVisibleMixin(Base) {
       // state, this could lead to setting state during rendering, which is bad.
       // To avoid this problem, we use promise timing to defer the setting of
       // state.
-      this.addEventListener('focusout', event => {
+      this.addEventListener("focusout", event => {
         Promise.resolve().then(() => {
           // What has the focus now?
           /** @type {any} */ const cast = event;
@@ -55,14 +55,14 @@ export default function FocusVisibleMixin(Base) {
             });
             // No longer need to listen for changes in focus visibility.
             document.removeEventListener(
-              'focus-visible-changed',
+              "focus-visible-changed",
               this[focusVisibleChangedListenerKey]
             );
             this[focusVisibleChangedListenerKey] = null;
           }
         });
       });
-      this.addEventListener('focusin', () => {
+      this.addEventListener("focusin", () => {
         Promise.resolve().then(() => {
           if (this[internal.state].focusVisible !== keyboardActive) {
             // Show the element as focused if the keyboard has been used.
@@ -74,7 +74,7 @@ export default function FocusVisibleMixin(Base) {
             // Listen to subsequent changes in focus visibility.
             this[focusVisibleChangedListenerKey] = () => refreshFocus(this);
             document.addEventListener(
-              'focus-visible-changed',
+              "focus-visible-changed",
               this[focusVisibleChangedListenerKey]
             );
           }
@@ -95,7 +95,7 @@ export default function FocusVisibleMixin(Base) {
       if (changed.focusVisible) {
         // Suppress the component's normal `outline` style unless we know the
         // focus should be visible.
-        this.style.outline = this[internal.state].focusVisible ? '' : 'none';
+        this.style.outline = this[internal.state].focusVisible ? "" : "none";
       }
     }
 
@@ -126,7 +126,7 @@ function refreshFocus(/** @type {ReactiveElement} */ element) {
 function updateKeyboardActive(/** @type {boolean} */ newKeyboardActive) {
   if (keyboardActive !== newKeyboardActive) {
     keyboardActive = newKeyboardActive;
-    const event = new CustomEvent('focus-visible-changed', {
+    const event = new CustomEvent("focus-visible-changed", {
       detail: {
         focusVisible: keyboardActive
       }
@@ -138,7 +138,7 @@ function updateKeyboardActive(/** @type {boolean} */ newKeyboardActive) {
 // Listen for top-level keydown and mousedown events.
 // Use capture phase so we detect events even if they're handled.
 window.addEventListener(
-  'keydown',
+  "keydown",
   () => {
     updateKeyboardActive(true);
   },
@@ -146,7 +146,7 @@ window.addEventListener(
 );
 
 window.addEventListener(
-  'mousedown',
+  "mousedown",
   () => {
     updateKeyboardActive(false);
   },

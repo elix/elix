@@ -21,14 +21,14 @@
         <button id="increment">+</button>
       </template>
       <script type="module">
-        import * as internal from '../src/internal.js';
-        import ReactiveMixin from '../src/ReactiveMixin.js';
+        import * as internal from "../src/internal.js";
+        import ReactiveMixin from "../src/ReactiveMixin.js";
 
         // Create a native web component with reactive behavior.
         class IncrementDecrement extends ReactiveMixin(HTMLElement) {
           // Allow the value property to be set via an attribute.
           attributeChangedCallback(attributeName, oldValue, newValue) {
-            if (attributeName === 'value') {
+            if (attributeName === "value") {
               this.value = parseInt(newValue);
             }
           }
@@ -42,7 +42,7 @@
 
           // Expose "value" as an attribute.
           static get observedAttributes() {
-            return ['value'];
+            return ["value"];
           }
 
           // Render the current state to the DOM.
@@ -50,7 +50,7 @@
           [internal.render](changed) {
             if (!this.shadowRoot) {
               // First time we render, create the shadow subtree.
-              const root = this.attachShadow({ mode: 'open' });
+              const root = this.attachShadow({ mode: "open" });
               const clone = document.importNode(
                 incrementDecrementTemplate.content,
                 true
@@ -58,18 +58,18 @@
               root.appendChild(clone);
               // Wire up event handlers.
               // @ts-ignore
-              root.querySelector('#decrement').addEventListener('click', () => {
+              root.querySelector("#decrement").addEventListener("click", () => {
                 this.value--;
               });
               // @ts-ignore
-              root.querySelector('#increment').addEventListener('click', () => {
+              root.querySelector("#increment").addEventListener("click", () => {
                 this.value++;
               });
             }
             if (changed.value) {
               // Render the state into the shadow.
               // @ts-ignore
-              this.shadowRoot.querySelector('#value').textContent = this[
+              this.shadowRoot.querySelector("#value").textContent = this[
                 internal.state
               ].value;
             }
@@ -84,7 +84,7 @@
           }
         }
 
-        customElements.define('increment-decrement', IncrementDecrement);
+        customElements.define("increment-decrement", IncrementDecrement);
       </script>
 
       <increment-decrement></increment-decrement>

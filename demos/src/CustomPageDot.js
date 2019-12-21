@@ -1,6 +1,6 @@
-import * as internal from '../../src/internal.js';
-import * as template from '../../src/template.js';
-import ReactiveElement from '../../src/ReactiveElement.js';
+import * as internal from "../../src/internal.js";
+import * as template from "../../src/template.js";
+import ReactiveElement from "../../src/ReactiveElement.js";
 
 class CustomPageDot extends ReactiveElement {
   get [internal.template]() {
@@ -28,5 +28,5 @@ class CustomPageDot extends ReactiveElement {
   }
 }
 
-customElements.define('custom-page-dot', CustomPageDot);
+customElements.define("custom-page-dot", CustomPageDot);
 export default CustomPageDot;

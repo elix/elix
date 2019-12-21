@@ -1,17 +1,17 @@
-import { forwardFocus, indexOfItemContainingTarget } from './utilities.js';
-import * as calendar from './calendar.js';
-import * as internal from './internal.js';
-import * as template from './template.js';
-import ArrowDirectionMixin from './ArrowDirectionMixin.js';
-import CalendarDayButton from './CalendarDayButton.js';
-import CalendarElementMixin from './CalendarElementMixin.js';
-import CalendarMonth from './CalendarMonth.js';
-import DarkModeMixin from './DarkModeMixin.js';
-import FocusVisibleMixin from './FocusVisibleMixin.js';
-import FormElementMixin from './FormElementMixin.js';
-import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
-import KeyboardMixin from './KeyboardMixin.js';
-import LanguageDirectionMixin from './LanguageDirectionMixin.js';
+import { forwardFocus, indexOfItemContainingTarget } from "./utilities.js";
+import * as calendar from "./calendar.js";
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import ArrowDirectionMixin from "./ArrowDirectionMixin.js";
+import CalendarDayButton from "./CalendarDayButton.js";
+import CalendarElementMixin from "./CalendarElementMixin.js";
+import CalendarMonth from "./CalendarMonth.js";
+import DarkModeMixin from "./DarkModeMixin.js";
+import FocusVisibleMixin from "./FocusVisibleMixin.js";
+import FormElementMixin from "./FormElementMixin.js";
+import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
+import KeyboardMixin from "./KeyboardMixin.js";
+import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 
 const Base = ArrowDirectionMixin(
   CalendarElementMixin(
@@ -43,7 +43,7 @@ const Base = ArrowDirectionMixin(
 class CalendarMonthNavigator extends Base {
   constructor() {
     super();
-    this.addEventListener('mousedown', event => {
+    this.addEventListener("mousedown", event => {
       this[internal.raiseChangeEvents] = true;
       const target = event.composedPath()[0];
       if (target instanceof Node) {
@@ -87,7 +87,7 @@ class CalendarMonthNavigator extends Base {
       canGoPrevious: true,
       date: calendar.today(),
       dayPartType: CalendarDayButton,
-      orientation: 'both',
+      orientation: "both",
       showCompleteWeeks: true,
       showSelectedDay: true,
       value: null
@@ -95,8 +95,8 @@ class CalendarMonthNavigator extends Base {
 
     // Reflect any change in date to value as well so that FormElementMixin can
     // update form internals.
-    result.onChange('date', state => ({
-      value: state.date ? state.date.toString() : ''
+    result.onChange("date", state => ({
+      value: state.date ? state.date.toString() : ""
     }));
 
     return result;
@@ -106,21 +106,21 @@ class CalendarMonthNavigator extends Base {
     let handled = false;
 
     switch (event.key) {
-      case 'Home':
+      case "Home":
         this[internal.setState]({
           date: calendar.today()
         });
         handled = true;
         break;
 
-      case 'PageDown':
+      case "PageDown":
         this[internal.setState]({
           date: calendar.offsetDateByMonths(this[internal.state].date, 1)
         });
         handled = true;
         break;
 
-      case 'PageUp':
+      case "PageUp":
         this[internal.setState]({
           date: calendar.offsetDateByMonths(this[internal.state].date, -1)
         });
@@ -176,7 +176,7 @@ class CalendarMonthNavigator extends Base {
 
   get [internal.template]() {
     const result = super[internal.template];
-    const monthYearHeader = result.content.querySelector('#monthYearHeader');
+    const monthYearHeader = result.content.querySelector("#monthYearHeader");
     /** @type {any} */ const cast = this;
     cast[ArrowDirectionMixin.wrap](monthYearHeader);
 

@@ -1,14 +1,14 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import ComposedFocusMixin from './ComposedFocusMixin.js';
-import DelegateFocusMixin from './DelegateFocusMixin.js';
-import DelegateItemsMixin from './DelegateItemsMixin.js';
-import DirectionSelectionMixin from './DirectionSelectionMixin.js';
-import FilterListBox from './FilterListBox.js';
-import KeyboardMixin from './KeyboardMixin.js';
-import ReactiveElement from './ReactiveElement.js';
-import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
-import SingleSelectionMixin from './SingleSelectionMixin.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import ComposedFocusMixin from "./ComposedFocusMixin.js";
+import DelegateFocusMixin from "./DelegateFocusMixin.js";
+import DelegateItemsMixin from "./DelegateItemsMixin.js";
+import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
+import FilterListBox from "./FilterListBox.js";
+import KeyboardMixin from "./KeyboardMixin.js";
+import ReactiveElement from "./ReactiveElement.js";
+import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
+import SingleSelectionMixin from "./SingleSelectionMixin.js";
 
 const Base = ComposedFocusMixin(
   DelegateFocusMixin(
@@ -47,11 +47,11 @@ class ListWithSearch extends Base {
 
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      ariaLabel: '',
-      filter: '',
-      inputPartType: 'input',
+      ariaLabel: "",
+      filter: "",
+      inputPartType: "input",
       listPartType: FilterListBox,
-      placeholder: 'Search'
+      placeholder: "Search"
     });
   }
 
@@ -91,12 +91,12 @@ class ListWithSearch extends Base {
       // and we don't want to handle those -- we want to let the text input
       // handle them. We also need to forward PageDown/PageUp to the list
       // element.
-      case 'ArrowDown':
+      case "ArrowDown":
         handled = event.altKey
           ? this[internal.goEnd]()
           : this[internal.goDown]();
         break;
-      case 'ArrowUp':
+      case "ArrowUp":
         handled = event.altKey
           ? this[internal.goStart]()
           : this[internal.goUp]();
@@ -117,7 +117,7 @@ class ListWithSearch extends Base {
       // This forces us to speculate about whether pageUp/pageDown will update
       // the selection so that we can synchronously return an indication of
       // whether the key event was handled.
-      case 'PageDown':
+      case "PageDown":
         if (list.pageDown) {
           setTimeout(() => list.pageDown());
           const items = this.items;
@@ -126,7 +126,7 @@ class ListWithSearch extends Base {
           }
         }
         break;
-      case 'PageUp':
+      case "PageUp":
         if (list.pageUp) {
           setTimeout(() => list.pageUp());
           handled = this.selectedIndex > 0;
@@ -168,7 +168,7 @@ class ListWithSearch extends Base {
         this[internal.ids].input,
         this[internal.state].inputPartType
       );
-      this[internal.ids].input.addEventListener('input', () => {
+      this[internal.ids].input.addEventListener("input", () => {
         this[internal.raiseChangeEvents] = true;
         const filter = /** @type {any} */ (this[internal.ids].input).value;
         this[internal.setState]({ filter });
@@ -183,7 +183,7 @@ class ListWithSearch extends Base {
     }
     if (changed.ariaLabel) {
       const { ariaLabel } = this[internal.state];
-      this[internal.ids].input.setAttribute('aria-label', ariaLabel);
+      this[internal.ids].input.setAttribute("aria-label", ariaLabel);
     }
     if (changed.filter) {
       const { filter } = this[internal.state];

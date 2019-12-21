@@ -1,6 +1,6 @@
-import * as internal from './internal.js';
-import CrossfadeStage from './CrossfadeStage.js';
-import TimerSelectionMixin from './TimerSelectionMixin.js';
+import * as internal from "./internal.js";
+import CrossfadeStage from "./CrossfadeStage.js";
+import TimerSelectionMixin from "./TimerSelectionMixin.js";
 
 const Base = TimerSelectionMixin(CrossfadeStage);
 

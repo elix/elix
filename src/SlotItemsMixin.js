@@ -1,6 +1,6 @@
-import ContentItemsMixin from './ContentItemsMixin.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
-import SlotContentMixin from './SlotContentMixin.js';
+import ContentItemsMixin from "./ContentItemsMixin.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
+import SlotContentMixin from "./SlotContentMixin.js";
 
 /**
  * Treats the elements assigned to the default slot as list items

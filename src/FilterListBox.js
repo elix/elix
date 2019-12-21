@@ -1,6 +1,6 @@
-import { applyChildNodes } from './utilities.js';
-import * as internal from './internal.js';
-import ListBox from './ListBox.js';
+import { applyChildNodes } from "./utilities.js";
+import * as internal from "./internal.js";
+import ListBox from "./ListBox.js";
 
 /**
  * List that only shows items containing a given text string
@@ -14,7 +14,7 @@ class FilterListBox extends ListBox {
     });
 
     // When filter changes, let other mixins know items should be recalculated.
-    state.onChange('filter', () => ({
+    state.onChange("filter", () => ({
       items: null
     }));
 
@@ -50,7 +50,7 @@ class FilterListBox extends ListBox {
    * @param {ListItemElement} item
    */
   highlightTextInItem(textToHighlight, item) {
-    const text = item.textContent || '';
+    const text = item.textContent || "";
     const start = textToHighlight
       ? text.toLowerCase().indexOf(textToHighlight.toLowerCase())
       : -1;
@@ -60,7 +60,7 @@ class FilterListBox extends ListBox {
       const part2 = text.substring(start, end);
       const part3 = text.substr(end);
       const fragment = document.createDocumentFragment();
-      const strong = document.createElement('strong');
+      const strong = document.createElement("strong");
       strong.textContent = part2;
       fragment.append(new Text(part1), strong, new Text(part3));
       return fragment.childNodes;
@@ -100,7 +100,7 @@ class FilterListBox extends ListBox {
             content,
             this[internal.state]
           );
-          content.style.display = matches ? '' : 'none';
+          content.style.display = matches ? "" : "none";
 
           // For matching items, highlight the matching text.
           if (matches) {

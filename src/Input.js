@@ -1,9 +1,9 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import WrappedStandardElement from './WrappedStandardElement.js';
-import FormElementMixin from './FormElementMixin.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import WrappedStandardElement from "./WrappedStandardElement.js";
+import FormElementMixin from "./FormElementMixin.js";
 
-const Base = FormElementMixin(WrappedStandardElement.wrap('input'));
+const Base = FormElementMixin(WrappedStandardElement.wrap("input"));
 
 /**
  * Base class for custom input elements
@@ -30,14 +30,14 @@ class Input extends Base {
      *
      * @event input
      */
-    this[internal.ids].inner.addEventListener('input', () => {
+    this[internal.ids].inner.addEventListener("input", () => {
       this[internal.raiseChangeEvents] = true;
       // Invoke the value setter to fix up selectionStart/selectionEnd too.
       this.value = /** @type {any} */ (this.inner).value;
       this[internal.raiseChangeEvents] = false;
     });
 
-    this.setAttribute('role', 'none');
+    this.setAttribute("role", "none");
   }
 
   get [internal.template]() {
@@ -64,8 +64,8 @@ class Input extends Base {
     super.value = value;
     if (this.shadowRoot) {
       /** @type {any} */ const inner = this.inner;
-      this.setInnerProperty('selectionStart', inner.selectionStart);
-      this.setInnerProperty('selectionEnd', inner.selectionEnd);
+      this.setInnerProperty("selectionStart", inner.selectionStart);
+      this.setInnerProperty("selectionEnd", inner.selectionEnd);
     }
   }
 }

@@ -1,9 +1,9 @@
-import * as calendar from './calendar.js';
-import * as internal from './internal.js';
-import * as template from './template.js';
-import CalendarDay from './CalendarDay.js';
-import CalendarElementMixin from './CalendarElementMixin.js';
-import SeamlessButton from './SeamlessButton.js';
+import * as calendar from "./calendar.js";
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import CalendarDay from "./CalendarDay.js";
+import CalendarElementMixin from "./CalendarElementMixin.js";
+import SeamlessButton from "./SeamlessButton.js";
 
 const Base = CalendarElementMixin(SeamlessButton);
 
@@ -39,7 +39,7 @@ class CalendarDayButton extends Base {
     if (changed.selected) {
       const { selected } = this[internal.state];
       // Reflect selected state to this host.
-      setInternalState(this, 'selected', selected);
+      setInternalState(this, "selected", selected);
       // Reflect selected state to inner CalendarDay.
       day.selected = selected;
     }
@@ -57,9 +57,9 @@ class CalendarDayButton extends Base {
     // Replace default slot with calendar day.
     const defaultSlot = template.defaultSlot(result.content);
     if (defaultSlot) {
-      const dayTemplate = document.createElement('template');
+      const dayTemplate = document.createElement("template");
       const day = new CalendarDay();
-      day.id = 'day';
+      day.id = "day";
       dayTemplate.content.append(day);
       template.transmute(defaultSlot, dayTemplate);
     }

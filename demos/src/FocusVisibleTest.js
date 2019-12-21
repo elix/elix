@@ -1,6 +1,6 @@
-import * as internal from '../../src/internal.js';
-import * as template from '../../src/template.js';
-import Button from '../../src/Button.js';
+import * as internal from "../../src/internal.js";
+import * as template from "../../src/template.js";
+import Button from "../../src/Button.js";
 
 class FocusVisibleTest extends Button {
   get [internal.template]() {
@@ -20,5 +20,5 @@ class FocusVisibleTest extends Button {
   }
 }
 
-customElements.define('focus-visible-test', FocusVisibleTest);
+customElements.define("focus-visible-test", FocusVisibleTest);
 export default FocusVisibleTest;

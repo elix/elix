@@ -1,6 +1,6 @@
-import { defaultAriaRole } from './accessibility.js';
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import { defaultAriaRole } from "./accessibility.js";
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Tells assistive technologies to describe a list's items as a menu of choices.
@@ -14,8 +14,8 @@ export default function AriaMenuMixin(Base) {
     get [internal.defaultState]() {
       const base = super[internal.defaultState];
       return Object.assign(base, {
-        itemRole: base.itemRole || 'menuitem',
-        role: base.role || 'menu'
+        itemRole: base.itemRole || "menuitem",
+        role: base.role || "menu"
       });
     }
 
@@ -36,9 +36,9 @@ export default function AriaMenuMixin(Base) {
         // Give each item a role.
         items.forEach(item => {
           if (itemRole === defaultAriaRole[item.localName]) {
-            item.removeAttribute('role');
+            item.removeAttribute("role");
           } else {
-            item.setAttribute('role', itemRole);
+            item.setAttribute("role", itemRole);
           }
         });
       }
@@ -46,13 +46,13 @@ export default function AriaMenuMixin(Base) {
         // Reflect the selection state to each item.
         items.forEach((item, index) => {
           const selected = index === selectedIndex;
-          item.setAttribute('aria-checked', selected.toString());
+          item.setAttribute("aria-checked", selected.toString());
         });
       }
       if (changed.role) {
         // Apply top-level role.
         const { role } = this[internal.state];
-        this.setAttribute('role', role);
+        this.setAttribute("role", role);
       }
     }
 

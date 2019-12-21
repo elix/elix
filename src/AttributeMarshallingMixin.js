@@ -1,5 +1,5 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /** @type {IndexedObject<boolean>} */
 export const booleanAttributes = {
@@ -19,11 +19,11 @@ export const booleanAttributes = {
 // attribute, which is mapped to the tabIndex (capital "I") property.
 /** @type {IndexedObject<string>} */
 const attributeToPropertyNames = {
-  tabindex: 'tabIndex'
+  tabindex: "tabIndex"
 };
 /** @type {IndexedObject<string>} */
 const propertyNamesToAttributes = {
-  tabIndex: 'tabindex'
+  tabIndex: "tabindex"
 };
 
 /**
@@ -133,7 +133,7 @@ function attributesForClass(classFn) {
       classFn.prototype,
       propertyName
     );
-    return descriptor && typeof descriptor.set === 'function';
+    return descriptor && typeof descriptor.set === "function";
   });
   const attributes = setterNames.map(setterName =>
     propertyNameToAttribute(setterName)
@@ -146,7 +146,7 @@ function attributesForClass(classFn) {
   const result = baseAttributes.concat(diff);
 
   // Remove standard `style` property.
-  const styleIndex = result.indexOf('style');
+  const styleIndex = result.indexOf("style");
   if (styleIndex >= 0) {
     result.splice(styleIndex, 1);
   }
@@ -182,7 +182,7 @@ function attributeToPropertyName(attributeName) {
  */
 function castPotentialBooleanAttribute(attributeName, value) {
   if (booleanAttributes[attributeName]) {
-    if (typeof value === 'string') {
+    if (typeof value === "string") {
       return true;
     } else if (value === null) {
       return false;
@@ -202,7 +202,7 @@ function propertyNameToAttribute(propertyName) {
   if (!attribute) {
     // Convert and memoize.
     const uppercaseRegEx = /([A-Z])/g;
-    attribute = propertyName.replace(uppercaseRegEx, '-$1').toLowerCase();
+    attribute = propertyName.replace(uppercaseRegEx, "-$1").toLowerCase();
   }
   return attribute;
 }

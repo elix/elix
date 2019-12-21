@@ -1,10 +1,10 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import AriaRoleMixin from './AriaRoleMixin.js';
-import ExpandablePanel from './ExpandablePanel.js';
-import OpenCloseMixin from './OpenCloseMixin.js';
-import ReactiveElement from './ReactiveElement.js';
-import SeamlessButton from './SeamlessButton.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import AriaRoleMixin from "./AriaRoleMixin.js";
+import ExpandablePanel from "./ExpandablePanel.js";
+import OpenCloseMixin from "./OpenCloseMixin.js";
+import ReactiveElement from "./ReactiveElement.js";
+import SeamlessButton from "./SeamlessButton.js";
 
 const Base = AriaRoleMixin(OpenCloseMixin(ReactiveElement));
 
@@ -27,7 +27,7 @@ class ExpandableSection extends Base {
     return Object.assign(super[internal.defaultState], {
       headerPartType: SeamlessButton,
       panelPartType: ExpandablePanel,
-      role: 'region'
+      role: "region"
     });
   }
 
@@ -66,7 +66,7 @@ class ExpandableSection extends Base {
         this[internal.ids].header,
         this[internal.state].headerPartType
       );
-      this[internal.ids].header.addEventListener('click', () => {
+      this[internal.ids].header.addEventListener("click", () => {
         this[internal.raiseChangeEvents] = true;
         this.toggle();
         this[internal.raiseChangeEvents] = false;
@@ -81,18 +81,18 @@ class ExpandableSection extends Base {
     if (changed.opened) {
       const { opened } = this[internal.state];
       this[internal.ids].header.setAttribute(
-        'aria-expanded',
+        "aria-expanded",
         opened.toString()
       );
       if (this[internal.ids].collapseIcon) {
         this[internal.ids].collapseIcon.style.display = opened
-          ? 'block'
-          : 'none';
+          ? "block"
+          : "none";
       }
       if (this[internal.ids].expandIcon) {
-        this[internal.ids].expandIcon.style.display = opened ? 'none' : 'block';
+        this[internal.ids].expandIcon.style.display = opened ? "none" : "block";
       }
-      if ('opened' in this[internal.ids].panel) {
+      if ("opened" in this[internal.ids].panel) {
         /** @type {any} */ (this[internal.ids].panel).opened = opened;
       }
     }

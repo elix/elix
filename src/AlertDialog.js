@@ -1,7 +1,7 @@
-import { applyChildNodes } from './utilities.js';
-import * as internal from './internal.js';
-import * as template from './template.js';
-import Dialog from './Dialog.js';
+import { applyChildNodes } from "./utilities.js";
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import Dialog from "./Dialog.js";
 
 /**
  * Asks a single question the user can answer with choice buttons
@@ -13,7 +13,7 @@ class AlertDialog extends Dialog {
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
     this[internal.ids].buttonContainer.addEventListener(
-      'click',
+      "click",
       async event => {
         // TODO: Ignore clicks on buttonContainer background.
         const button = event.target;
@@ -69,18 +69,18 @@ class AlertDialog extends Dialog {
 
   get [internal.defaultState]() {
     const state = Object.assign(super[internal.defaultState], {
-      choiceButtonPartType: 'button',
+      choiceButtonPartType: "button",
       choiceButtons: [],
-      choices: ['OK']
+      choices: ["OK"]
     });
 
     // When choices or choice button part type changes, regenerate buttons.
-    state.onChange(['choiceButtonPartType', 'choices'], state => {
+    state.onChange(["choiceButtonPartType", "choices"], state => {
       /** @type {string[]} */ const choices = state.choices;
       const choiceButtons = choices.map(choice => {
         const button = template.createElement(state.choiceButtonPartType);
-        if ('part' in button) {
-          /** @type {any} */ (button).part = 'choice-button';
+        if ("part" in button) {
+          /** @type {any} */ (button).part = "choice-button";
         }
         button.textContent = choice;
         return button;

@@ -6,9 +6,9 @@
     <title>Reactive web component example with subclassing</title>
 
     <script type="module">
-      import * as internal from '../src/internal.js';
-      import * as template from '../src/template.js';
-      import ReactiveElement from '../src/ReactiveElement.js';
+      import * as internal from "../src/internal.js";
+      import * as template from "../src/template.js";
+      import ReactiveElement from "../src/ReactiveElement.js";
 
       class IncrementDecrement extends ReactiveElement {
         get buttonPartType() {
@@ -20,7 +20,7 @@
 
         get [internal.defaultState]() {
           return Object.assign(super[internal.defaultState], {
-            buttonPartType: 'button',
+            buttonPartType: "button",
             value: 0
           });
         }
@@ -32,20 +32,20 @@
               this[internal.ids].decrement,
               this[internal.state].buttonPartType
             );
-            this[internal.ids].decrement.addEventListener('click', () => {
+            this[internal.ids].decrement.addEventListener("click", () => {
               this.value--;
             });
             template.transmute(
               this[internal.ids].increment,
               this[internal.state].buttonPartType
             );
-            this[internal.ids].increment.addEventListener('click', () => {
+            this[internal.ids].increment.addEventListener("click", () => {
               this.value++;
             });
           }
           if (changed.value) {
             const { value } = this[internal.state];
-            this.style.color = value < 0 ? 'red' : null;
+            this.style.color = value < 0 ? "red" : null;
             this[internal.ids].visibleValue.textContent = value;
           }
         }
@@ -69,7 +69,7 @@
         }
       }
 
-      customElements.define('increment-decrement', IncrementDecrement);
+      customElements.define("increment-decrement", IncrementDecrement);
 
       class CustomButton extends ReactiveElement {
         get [internal.template]() {
@@ -85,7 +85,7 @@
         `;
         }
       }
-      customElements.define('custom-button', CustomButton);
+      customElements.define("custom-button", CustomButton);
 
       class CustomIncrementDecrement extends IncrementDecrement {
         get [internal.defaultState]() {
@@ -96,7 +96,7 @@
       }
 
       customElements.define(
-        'custom-increment-decrement',
+        "custom-increment-decrement",
         CustomIncrementDecrement
       );
     </script>

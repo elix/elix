@@ -1,7 +1,7 @@
-import * as internal from '../../src/internal.js';
-import * as template from '../../src/template.js';
-import ReactiveElement from '../../src/ReactiveElement.js';
-import SlotContentMixin from '../../src/SlotContentMixin.js';
+import * as internal from "../../src/internal.js";
+import * as template from "../../src/template.js";
+import ReactiveElement from "../../src/ReactiveElement.js";
+import SlotContentMixin from "../../src/SlotContentMixin.js";
 
 const Base = SlotContentMixin(ReactiveElement);
 
@@ -11,7 +11,7 @@ class LabeledColorSwatch extends Base {
     if (changed.content) {
       const content = this[internal.state].content;
       const strings = content ? content.map(node => node.textContent) : [];
-      const color = strings.join('').toLowerCase();
+      const color = strings.join("").toLowerCase();
       this[internal.ids].swatch.style.backgroundColor = color;
     }
   }
@@ -50,4 +50,4 @@ class LabeledColorSwatch extends Base {
 }
 
 export default LabeledColorSwatch;
-customElements.define('labeled-color-swatch', LabeledColorSwatch);
+customElements.define("labeled-color-swatch", LabeledColorSwatch);

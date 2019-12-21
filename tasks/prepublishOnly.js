@@ -1,9 +1,9 @@
-const fs = require('fs').promises;
-const path = require('path');
+const fs = require("fs").promises;
+const path = require("path");
 
-const createDefineModules = require('./createDefineModules.js');
-const createLibraryFiles = require('./createLibraryFiles.js');
-const createWeekData = require('./createWeekData.js');
+const createDefineModules = require("./createDefineModules.js");
+const createLibraryFiles = require("./createLibraryFiles.js");
+const createWeekData = require("./createWeekData.js");
 
 async function createEmptyDefineFolder(defineFolder) {
   try {
@@ -16,7 +16,7 @@ async function createEmptyDefineFolder(defineFolder) {
     });
     await Promise.all(removePromises);
   } catch (e) {
-    if (e.code === 'ENOENT') {
+    if (e.code === "ENOENT") {
       // Folder doesn't exist; create it.
       await fs.mkdir(defineFolder);
     } else {
@@ -27,10 +27,10 @@ async function createEmptyDefineFolder(defineFolder) {
 
 async function getSourceFiles(sourceFolder) {
   /** @type {string[]} */ const files = await fs.readdir(sourceFolder);
-  const generatedFiles = ['elix.js', 'weekData.js'];
+  const generatedFiles = ["elix.js", "weekData.js"];
   // Source files have a .js extension. Also, ignore generated files.
   const jsFiles = files.filter(
-    file => path.extname(file) === '.js' && !generatedFiles.includes(file)
+    file => path.extname(file) === ".js" && !generatedFiles.includes(file)
   );
   // Sort source files into categories.
   const sourceFiles = {
@@ -42,7 +42,7 @@ async function getSourceFiles(sourceFolder) {
     if (file.toLowerCase()[0] === file[0]) {
       // Helpers start with lowercase letter.
       sourceFiles.helpers.push(file);
-    } else if (path.basename(file, '.js').endsWith('Mixin')) {
+    } else if (path.basename(file, ".js").endsWith("Mixin")) {
       // Mixin names end with "Mixin".
       sourceFiles.mixins.push(file);
     } else {
@@ -55,8 +55,8 @@ async function getSourceFiles(sourceFolder) {
 
 (async () => {
   try {
-    const sourceFolder = path.join(__dirname, '../src');
-    const defineFolder = path.join(__dirname, '../define');
+    const sourceFolder = path.join(__dirname, "../src");
+    const defineFolder = path.join(__dirname, "../define");
     // Preparation
     const sourceFilesPromise = await getSourceFiles(sourceFolder);
     await Promise.all([

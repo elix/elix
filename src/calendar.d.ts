@@ -24,7 +24,7 @@ export function parse(text: string, dateTimeFormat: Intl.DateTimeFormat): Date;
 export function parseWithOptionalYear(
   text: string,
   dateTimeFormat: Intl.DateTimeFormat,
-  timeBias: 'future' | 'past'
+  timeBias: "future" | "past"
 ): Date;
 export function sameMonthAndYear(date1: Date, date2: Date): boolean;
 export function offsetDateByDays(date: Date, days: number): Date;

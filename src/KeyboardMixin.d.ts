@@ -3,7 +3,7 @@
 
 /// <reference path="shared.d.ts"/>
 
-import * as internal from './internal.js';
+import * as internal from "./internal.js";
 
 declare const KeyboardMixin: StateMixin<
   {},

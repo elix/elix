@@ -1,10 +1,10 @@
-import { deepContains, indexOfItemContainingTarget } from './utilities.js';
-import * as internal from './internal.js';
-import * as template from './template.js';
-import Menu from './Menu.js';
-import PopupButton from './PopupButton.js';
+import { deepContains, indexOfItemContainingTarget } from "./utilities.js";
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import Menu from "./Menu.js";
+import PopupButton from "./PopupButton.js";
 
-const documentMouseupListenerKey = Symbol('documentMouseupListener');
+const documentMouseupListenerKey = Symbol("documentMouseupListener");
 
 /**
  * A button that invokes a menu.
@@ -18,7 +18,7 @@ class MenuButton extends PopupButton {
     super[internal.componentDidMount]();
 
     // If the user hovers over an item, select it.
-    this.addEventListener('mousemove', event => {
+    this.addEventListener("mousemove", event => {
       const target = event.target;
       if (target && target instanceof Node) {
         const hoverIndex = indexOfItemContainingTarget(this.items, target);
@@ -87,7 +87,7 @@ class MenuButton extends PopupButton {
     });
 
     // Set things when opening, or reset things when closing.
-    state.onChange('opened', state => {
+    state.onChange("opened", state => {
       if (state.opened) {
         // Opening
         return {
@@ -121,7 +121,7 @@ class MenuButton extends PopupButton {
       super.disconnectedCallback();
     }
     /** @type {any} */ const cast = this;
-    document.removeEventListener('mouseup', cast[documentMouseupListenerKey]);
+    document.removeEventListener("mouseup", cast[documentMouseupListenerKey]);
     cast[documentMouseupListenerKey] = null;
   }
 
@@ -135,7 +135,7 @@ class MenuButton extends PopupButton {
       ? this.items[this[internal.state].menuSelectedIndex]
       : undefined;
     /** @type {any} */ const menu = this[internal.ids].menu;
-    if (selectionDefined && 'highlightSelectedItem' in menu) {
+    if (selectionDefined && "highlightSelectedItem" in menu) {
       await menu.highlightSelectedItem();
     }
     const saveRaiseChangeEvents = this[internal.raiseChangeEvents];
@@ -165,7 +165,7 @@ class MenuButton extends PopupButton {
        *
        * @event menu-item-selected
        */
-      const event = new CustomEvent('menu-item-selected', {
+      const event = new CustomEvent("menu-item-selected", {
         detail: {
           selectedItem: item
         }
@@ -177,7 +177,7 @@ class MenuButton extends PopupButton {
   [internal.keydown](/** @type {KeyboardEvent} */ event) {
     switch (event.key) {
       // When open, Enter closes popup.
-      case 'Enter':
+      case "Enter":
         if (this.opened) {
           this.highlightSelectedItemAndClose();
           return true;
@@ -195,15 +195,15 @@ class MenuButton extends PopupButton {
       // page to scroll in the background, which would in turn cause the popup to
       // inadvertently close.
       switch (event.key) {
-        case 'ArrowDown':
-        case 'ArrowLeft':
-        case 'ArrowRight':
-        case 'ArrowUp':
-        case 'End':
-        case 'Home':
-        case 'PageDown':
-        case 'PageUp':
-        case ' ':
+        case "ArrowDown":
+        case "ArrowLeft":
+        case "ArrowRight":
+        case "ArrowUp":
+        case "End":
+        case "Home":
+        case "PageDown":
+        case "PageUp":
+        case " ":
           return true;
       }
     }
@@ -237,7 +237,7 @@ class MenuButton extends PopupButton {
       );
 
       // Close the popup if menu loses focus.
-      this[internal.ids].menu.addEventListener('blur', async event => {
+      this[internal.ids].menu.addEventListener("blur", async event => {
         /** @type {any} */
         const cast = event;
         const newFocusedElement = cast.relatedTarget || document.activeElement;
@@ -256,7 +256,7 @@ class MenuButton extends PopupButton {
       // both to permit keyboard use, and to avoid closing the menu on blur (see
       // separate blur handler). To keep the focus on the menu, we prevent the
       // default event behavior.
-      this[internal.ids].menu.addEventListener('mousedown', event => {
+      this[internal.ids].menu.addEventListener("mousedown", event => {
         if (this.opened) {
           event.stopPropagation();
           event.preventDefault();
@@ -265,7 +265,7 @@ class MenuButton extends PopupButton {
 
       // If the user mouses up on a menu item, close the menu with that item as
       // the close result.
-      this[internal.ids].menu.addEventListener('mouseup', async event => {
+      this[internal.ids].menu.addEventListener("mouseup", async event => {
         // If we're doing a drag-select (user moused down on button, dragged
         // mouse into menu, and released), we close. If we're not doing a
         // drag-select (the user opened the menu with a complete click), and
@@ -289,7 +289,7 @@ class MenuButton extends PopupButton {
 
       // Track changes in the menu's selection state.
       this[internal.ids].menu.addEventListener(
-        'selected-index-changed',
+        "selected-index-changed",
         event => {
           this[internal.raiseChangeEvents] = true;
           /** @type {any} */
@@ -303,7 +303,7 @@ class MenuButton extends PopupButton {
     }
     if (changed.menuSelectedIndex) {
       const menu = /** @type {any} */ (this[internal.ids].menu);
-      if ('selectedIndex' in menu) {
+      if ("selectedIndex" in menu) {
         menu.selectedIndex = this[internal.state].menuSelectedIndex;
       }
     }
@@ -318,7 +318,7 @@ class MenuButton extends PopupButton {
         <slot></slot>
       </div>
     `;
-    const defaultSlot = base.content.querySelector('slot:not([name])');
+    const defaultSlot = base.content.querySelector("slot:not([name])");
     if (defaultSlot) {
       template.transmute(defaultSlot, menuTemplate);
     }
@@ -365,7 +365,7 @@ class MenuButton extends PopupButton {
 
 function addDocumentListeners(/** @type {MenuButton} */ element) {
   /** @type {any} */ const cast = element;
-  document.addEventListener('mouseup', cast[documentMouseupListenerKey]);
+  document.addEventListener("mouseup", cast[documentMouseupListenerKey]);
 }
 
 async function handleMouseup(/** @type {MouseEvent} */ event) {
@@ -399,7 +399,7 @@ async function handleMouseup(/** @type {MouseEvent} */ event) {
 
 function removeDocumentListeners(/** @type {MenuButton} */ element) {
   /** @type {any} */ const cast = element;
-  document.removeEventListener('mouseup', cast[documentMouseupListenerKey]);
+  document.removeEventListener("mouseup", cast[documentMouseupListenerKey]);
 }
 
 export default MenuButton;

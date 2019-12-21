@@ -1,3 +1,3 @@
-import MenuSeparator from '../src/MenuSeparator.js';
+import MenuSeparator from "../src/MenuSeparator.js";
 export default class ElixMenuSeparator extends MenuSeparator {}
-customElements.define('elix-menu-separator', ElixMenuSeparator);
+customElements.define("elix-menu-separator", ElixMenuSeparator);

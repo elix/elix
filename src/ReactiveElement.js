@@ -1,6 +1,6 @@
-import AttributeMarshallingMixin from './AttributeMarshallingMixin.js';
-import ReactiveMixin from './ReactiveMixin.js';
-import ShadowTemplateMixin from './ShadowTemplateMixin.js';
+import AttributeMarshallingMixin from "./AttributeMarshallingMixin.js";
+import ReactiveMixin from "./ReactiveMixin.js";
+import ShadowTemplateMixin from "./ShadowTemplateMixin.js";
 
 /**
  * General-purpose base for writing components in functional-reactive style

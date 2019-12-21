@@ -1,4 +1,4 @@
-const changeCallbacksKey = Symbol('changeCallbacks');
+const changeCallbacksKey = Symbol("changeCallbacks");
 
 /**
  * A state object that can reconcile changes from multiple sources.

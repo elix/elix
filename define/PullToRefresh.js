@@ -1,3 +1,3 @@
-import PullToRefresh from '../src/PullToRefresh.js';
+import PullToRefresh from "../src/PullToRefresh.js";
 export default class ElixPullToRefresh extends PullToRefresh {}
-customElements.define('elix-pull-to-refresh', ElixPullToRefresh);
+customElements.define("elix-pull-to-refresh", ElixPullToRefresh);

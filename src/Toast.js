@@ -1,10 +1,10 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import LanguageDirectionMixin from './LanguageDirectionMixin.js';
-import Popup from './Popup.js';
-import TransitionEffectMixin from './TransitionEffectMixin.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
+import Popup from "./Popup.js";
+import TransitionEffectMixin from "./TransitionEffectMixin.js";
 
-const timeoutKey = Symbol('timeout');
+const timeoutKey = Symbol("timeout");
 
 const Base = LanguageDirectionMixin(TransitionEffectMixin(Popup));
 
@@ -21,10 +21,10 @@ const Base = LanguageDirectionMixin(TransitionEffectMixin(Popup));
 class Toast extends Base {
   constructor() {
     super();
-    this.addEventListener('mouseout', () => {
+    this.addEventListener("mouseout", () => {
       startTimerIfOpened(this);
     });
-    this.addEventListener('mouseover', () => {
+    this.addEventListener("mouseover", () => {
       clearTimer(this);
     });
   }
@@ -42,7 +42,7 @@ class Toast extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       duration: null,
-      fromEdge: 'bottom'
+      fromEdge: "bottom"
     });
   }
 
@@ -91,27 +91,27 @@ class Toast extends Base {
       /** @type {IndexedObject<any>} */
       const hostEdgeStyles = {
         bottom: {
-          alignItems: 'center',
-          justifyContent: 'flex-end'
+          alignItems: "center",
+          justifyContent: "flex-end"
         },
-        'bottom-left': {
-          alignItems: 'flex-start',
-          justifyContent: 'flex-end'
+        "bottom-left": {
+          alignItems: "flex-start",
+          justifyContent: "flex-end"
         },
-        'bottom-right': {
-          alignItems: 'flex-end',
-          justifyContent: 'flex-end'
+        "bottom-right": {
+          alignItems: "flex-end",
+          justifyContent: "flex-end"
         },
         top: {
-          alignItems: 'center',
+          alignItems: "center",
           justifyContent: null
         },
-        'top-left': {
-          alignItems: 'flex-start',
+        "top-left": {
+          alignItems: "flex-start",
           justifyContent: null
         },
-        'top-right': {
-          alignItems: 'flex-end',
+        "top-right": {
+          alignItems: "flex-end",
           justifyContent: null
         }
       };
@@ -128,10 +128,10 @@ class Toast extends Base {
       ];
       /** @type {IndexedObject<string>} */
       const oppositeEdge = {
-        'bottom-left': 'bottom-right',
-        'bottom-right': 'bottom-left',
-        'top-left': 'top-right',
-        'top-right': 'top-left'
+        "bottom-left": "bottom-right",
+        "bottom-right": "bottom-left",
+        "top-left": "top-right",
+        "top-right": "top-left"
       };
       const languageAdjustedEdge = rightToLeft
         ? oppositeEdge[fromEdge] || fromEdge
@@ -139,27 +139,27 @@ class Toast extends Base {
 
       /** @type {IndexedObject<string>} */
       const edgeTransforms = {
-        bottom: 'translateY(100%)',
-        'bottom-left': 'translateX(-100%)',
-        'bottom-right': 'translateX(100%)',
-        top: 'translateY(-100%)',
-        'top-left': 'translateX(-100%)',
-        'top-right': 'translateX(100%)'
+        bottom: "translateY(100%)",
+        "bottom-left": "translateX(-100%)",
+        "bottom-right": "translateX(100%)",
+        top: "translateY(-100%)",
+        "top-left": "translateX(-100%)",
+        "top-right": "translateX(100%)"
       };
 
       /** @type {IndexedObject<string>} */
       const openEdgeTransforms = {
-        bottom: 'translateY(0)',
-        'bottom-left': 'translateX(0)',
-        'bottom-right': 'translateX(0)',
-        top: 'translateY(0)',
-        'top-left': 'translateX(0)',
-        'top-right': 'translateX(0)'
+        bottom: "translateY(0)",
+        "bottom-left": "translateX(0)",
+        "bottom-right": "translateX(0)",
+        top: "translateY(0)",
+        "top-left": "translateX(0)",
+        "top-right": "translateX(0)"
       };
 
       const opened =
-        (effect === 'open' && effectPhase !== 'before') ||
-        (effect === 'close' && effectPhase === 'before');
+        (effect === "open" && effectPhase !== "before") ||
+        (effect === "close" && effectPhase === "before");
 
       const opacity = opened ? 1 : 0;
       const transform = opened

@@ -1,7 +1,7 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import DarkModeMixin from './DarkModeMixin.js';
-import SelectableButton from './SelectableButton.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import DarkModeMixin from "./DarkModeMixin.js";
+import SelectableButton from "./SelectableButton.js";
 
 const Base = DarkModeMixin(SelectableButton);
 
@@ -16,7 +16,7 @@ const Base = DarkModeMixin(SelectableButton);
 class PageDot extends Base {
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
-    this.setAttribute('role', 'none');
+    this.setAttribute("role", "none");
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
@@ -25,8 +25,8 @@ class PageDot extends Base {
     // Wait for knowledge of dark mode
     if (changed.darkMode && darkMode !== null) {
       this.style.backgroundColor = darkMode
-        ? 'rgb(255, 255, 255)'
-        : 'rgb(0, 0, 0)';
+        ? "rgb(255, 255, 255)"
+        : "rgb(0, 0, 0)";
     }
   }
 

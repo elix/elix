@@ -12,7 +12,7 @@
 // string in internal.d.ts. When we're someday able to use real Symbol keys,
 // we'll need to find a real fix for this problem.
 // import { state } from './internal.js';
-declare const state = '_state';
+declare const state = "_state";
 
 /*
  * A class constructor is an object with a `new` method that returns an

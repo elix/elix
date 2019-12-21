@@ -1,7 +1,7 @@
-import * as internal from '../../src/internal.js';
-import ContentItemsMixin from '../../src/ContentItemsMixin.js';
-import ReactiveMixin from '../../src/ReactiveMixin.js';
-import SingleSelectionMixin from '../../src/SingleSelectionMixin.js';
+import * as internal from "../../src/internal.js";
+import ContentItemsMixin from "../../src/ContentItemsMixin.js";
+import ReactiveMixin from "../../src/ReactiveMixin.js";
+import SingleSelectionMixin from "../../src/SingleSelectionMixin.js";
 
 const Base = ContentItemsMixin(
   ReactiveMixin(SingleSelectionMixin(HTMLElement))
@@ -18,7 +18,7 @@ class SingleSelectionDemo extends Base {
   constructor() {
     super();
     /* Clicking an item selects it. */
-    this.addEventListener('mousedown', event => {
+    this.addEventListener("mousedown", event => {
       if (event.target instanceof Element) {
         this[internal.raiseChangeEvents] = true;
         this.selectedItem = event.target;
@@ -50,11 +50,11 @@ class SingleSelectionDemo extends Base {
     if (changed.items || (changed.selectedIndex && items)) {
       // Apply a `selected` attribute to the selected item only.
       items.forEach((item, index) => {
-        item.toggleAttribute('selected', index === selectedIndex);
+        item.toggleAttribute("selected", index === selectedIndex);
       });
     }
   }
 }
 
-customElements.define('single-selection-demo', SingleSelectionDemo);
+customElements.define("single-selection-demo", SingleSelectionDemo);
 export default SingleSelectionDemo;

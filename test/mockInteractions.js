@@ -9,7 +9,7 @@ export function dispatchSyntheticKeyboardEvent(element, eventType, init) {
   const properties = Object.assign(
     {
       bubbles: true,
-      key: 'Enter',
+      key: "Enter",
       keyCode: 13
     },
     init

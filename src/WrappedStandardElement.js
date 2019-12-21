@@ -1,10 +1,10 @@
-import { booleanAttributes } from './AttributeMarshallingMixin.js';
-import * as internal from './internal.js';
-import * as template from './template.js';
-import DelegateFocusMixin from './DelegateFocusMixin.js';
-import ReactiveElement from './ReactiveElement.js';
+import { booleanAttributes } from "./AttributeMarshallingMixin.js";
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import DelegateFocusMixin from "./DelegateFocusMixin.js";
+import ReactiveElement from "./ReactiveElement.js";
 
-const extendsKey = Symbol('extends');
+const extendsKey = Symbol("extends");
 
 /* True if a standard element is focusable by default. */
 /** @type {IndexedObject<boolean>} */
@@ -41,55 +41,55 @@ const focusableByDefault = {
  */
 /** @type {IndexedObject<string[]>} */
 const reraiseEvents = {
-  address: ['scroll'],
-  blockquote: ['scroll'],
-  caption: ['scroll'],
-  center: ['scroll'],
-  dd: ['scroll'],
-  dir: ['scroll'],
-  div: ['scroll'],
-  dl: ['scroll'],
-  dt: ['scroll'],
-  fieldset: ['scroll'],
-  form: ['reset', 'scroll'],
-  frame: ['load'],
-  h1: ['scroll'],
-  h2: ['scroll'],
-  h3: ['scroll'],
-  h4: ['scroll'],
-  h5: ['scroll'],
-  h6: ['scroll'],
-  iframe: ['load'],
-  img: ['abort', 'error', 'load'],
-  input: ['abort', 'change', 'error', 'select', 'load'],
-  li: ['scroll'],
-  link: ['load'],
-  menu: ['scroll'],
-  object: ['error', 'scroll'],
-  ol: ['scroll'],
-  p: ['scroll'],
-  script: ['error', 'load'],
-  select: ['change', 'scroll'],
-  tbody: ['scroll'],
-  tfoot: ['scroll'],
-  thead: ['scroll'],
-  textarea: ['change', 'select', 'scroll']
+  address: ["scroll"],
+  blockquote: ["scroll"],
+  caption: ["scroll"],
+  center: ["scroll"],
+  dd: ["scroll"],
+  dir: ["scroll"],
+  div: ["scroll"],
+  dl: ["scroll"],
+  dt: ["scroll"],
+  fieldset: ["scroll"],
+  form: ["reset", "scroll"],
+  frame: ["load"],
+  h1: ["scroll"],
+  h2: ["scroll"],
+  h3: ["scroll"],
+  h4: ["scroll"],
+  h5: ["scroll"],
+  h6: ["scroll"],
+  iframe: ["load"],
+  img: ["abort", "error", "load"],
+  input: ["abort", "change", "error", "select", "load"],
+  li: ["scroll"],
+  link: ["load"],
+  menu: ["scroll"],
+  object: ["error", "scroll"],
+  ol: ["scroll"],
+  p: ["scroll"],
+  script: ["error", "load"],
+  select: ["change", "scroll"],
+  tbody: ["scroll"],
+  tfoot: ["scroll"],
+  thead: ["scroll"],
+  textarea: ["change", "select", "scroll"]
 };
 
 /*
  * Mouse events that should be disabled if the inner component is disabled.
  */
 const mouseEventNames = [
-  'click',
-  'dblclick',
-  'mousedown',
-  'mouseenter',
-  'mouseleave',
-  'mousemove',
-  'mouseout',
-  'mouseover',
-  'mouseup',
-  'wheel'
+  "click",
+  "dblclick",
+  "mousedown",
+  "mouseenter",
+  "mouseleave",
+  "mousemove",
+  "mouseout",
+  "mouseover",
+  "mouseup",
+  "wheel"
 ];
 
 // Keep track of which re-raised events should bubble.
@@ -103,78 +103,78 @@ const eventBubbles = {
 // Elements which are display: block by default.
 // Source: https://developer.mozilla.org/en-US/docs/Web/HTML/Block-level_elements
 const blockElements = [
-  'address',
-  'article',
-  'aside',
-  'blockquote',
-  'canvas',
-  'dd',
-  'div',
-  'dl',
-  'fieldset',
-  'figcaption',
-  'figure',
-  'footer',
-  'form',
-  'h1',
-  'h2',
-  'h3',
-  'h4',
-  'h5',
-  'h6',
-  'header',
-  'hgroup',
-  'hr',
-  'li',
-  'main',
-  'nav',
-  'noscript',
-  'ol',
-  'output',
-  'p',
-  'pre',
-  'section',
-  'table',
-  'tfoot',
-  'ul',
-  'video'
+  "address",
+  "article",
+  "aside",
+  "blockquote",
+  "canvas",
+  "dd",
+  "div",
+  "dl",
+  "fieldset",
+  "figcaption",
+  "figure",
+  "footer",
+  "form",
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
+  "header",
+  "hgroup",
+  "hr",
+  "li",
+  "main",
+  "nav",
+  "noscript",
+  "ol",
+  "output",
+  "p",
+  "pre",
+  "section",
+  "table",
+  "tfoot",
+  "ul",
+  "video"
 ];
 
 // Standard attributes that don't have corresponding properties.
 // These need to be delegated from the wrapper to the inner element.
 const attributesWithoutProperties = [
-  'accept-charset',
-  'autoplay',
-  'buffered',
-  'challenge',
-  'codebase',
-  'colspan',
-  'contenteditable',
-  'controls',
-  'crossorigin',
-  'datetime',
-  'dirname',
-  'for',
-  'formaction',
-  'http-equiv',
-  'icon',
-  'ismap',
-  'itemprop',
-  'keytype',
-  'language',
-  'loop',
-  'manifest',
-  'maxlength',
-  'minlength',
-  'muted',
-  'novalidate',
-  'preload',
-  'radiogroup',
-  'readonly',
-  'referrerpolicy',
-  'rowspan',
-  'scoped',
-  'usemap'
+  "accept-charset",
+  "autoplay",
+  "buffered",
+  "challenge",
+  "codebase",
+  "colspan",
+  "contenteditable",
+  "controls",
+  "crossorigin",
+  "datetime",
+  "dirname",
+  "for",
+  "formaction",
+  "http-equiv",
+  "icon",
+  "ismap",
+  "itemprop",
+  "keytype",
+  "language",
+  "loop",
+  "manifest",
+  "maxlength",
+  "minlength",
+  "muted",
+  "novalidate",
+  "preload",
+  "radiogroup",
+  "readonly",
+  "referrerpolicy",
+  "rowspan",
+  "scoped",
+  "usemap"
 ];
 
 const Base = DelegateFocusMixin(ReactiveElement);
@@ -264,7 +264,7 @@ class WrappedStandardElement extends Base {
     // would be treated as a click on the outer element. Someone listening to
     // clicks on the outer element would get a click event, even though the
     // overall element is supposed to be disabled.
-    if ('disabled' in this[internal.ids].inner) {
+    if ("disabled" in this[internal.ids].inner) {
       mouseEventNames.forEach(eventName => {
         this.addEventListener(eventName, event => {
           /** @type {any} */
@@ -308,7 +308,7 @@ class WrappedStandardElement extends Base {
     if (!result) {
       /* eslint-disable no-console */
       console.warn(
-        'Attempted to get an inner standard element before it was instantiated.'
+        "Attempted to get an inner standard element before it was instantiated."
       );
     }
     return result;
@@ -368,12 +368,12 @@ class WrappedStandardElement extends Base {
       Object.assign(inner, innerProperties);
       const { disabled } = innerProperties;
       if (disabled !== undefined) {
-        this.toggleAttribute('disabled', disabled);
+        this.toggleAttribute("disabled", disabled);
         if (
           this[internal.nativeInternals] &&
           this[internal.nativeInternals].states
         ) {
-          this[internal.nativeInternals].states.toggle('disabled', disabled);
+          this[internal.nativeInternals].states.toggle("disabled", disabled);
         }
       }
     }
@@ -441,8 +441,8 @@ class WrappedStandardElement extends Base {
    */
   get [internal.template]() {
     const display = blockElements.includes(this.extends)
-      ? 'block'
-      : 'inline-block';
+      ? "block"
+      : "inline-block";
     return template.html`
       <style>
         :host {
@@ -504,8 +504,8 @@ class WrappedStandardElement extends Base {
 export function applyAttribute(element, name, value) {
   if (booleanAttributes[name]) {
     // Boolean attribute
-    if (typeof value === 'string') {
-      element.setAttribute(name, '');
+    if (typeof value === "string") {
+      element.setAttribute(name, "");
     } else if (value === null) {
       element.removeAttribute(name);
     }
@@ -527,13 +527,13 @@ export function applyAttribute(element, name, value) {
  * @param {PropertyDescriptor} descriptor
  */
 function createDelegate(name, descriptor) {
-  if (typeof descriptor.value === 'function') {
-    if (name !== 'constructor') {
+  if (typeof descriptor.value === "function") {
+    if (name !== "constructor") {
       return createMethodDelegate(name, descriptor);
     }
   } else if (
-    typeof descriptor.get === 'function' ||
-    typeof descriptor.set === 'function'
+    typeof descriptor.get === "function" ||
+    typeof descriptor.set === "function"
   ) {
     return createPropertyDelegate(name, descriptor);
   }

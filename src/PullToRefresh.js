@@ -1,11 +1,11 @@
-import { dampen } from './fractionalSelection.js';
-import { getScrollableElement } from './scrolling.js';
-import * as internal from './internal.js';
-import * as template from './template.js';
-import EffectMixin from './EffectMixin.js';
-import ProgressSpinner from './ProgressSpinner.js';
-import ReactiveElement from './ReactiveElement.js';
-import TouchSwipeMixin from './TouchSwipeMixin.js';
+import { dampen } from "./fractionalSelection.js";
+import { getScrollableElement } from "./scrolling.js";
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import EffectMixin from "./EffectMixin.js";
+import ProgressSpinner from "./ProgressSpinner.js";
+import ReactiveElement from "./ReactiveElement.js";
+import TouchSwipeMixin from "./TouchSwipeMixin.js";
 
 // Template for the default down arrow shown while pulling.
 const downArrowTemplate = template.html`
@@ -35,7 +35,7 @@ class PullToRefresh extends Base {
     super[internal.componentDidMount]();
     // Listen to scroll events in case the user scrolls up past the page's top.
     let scrollTarget = getScrollableElement(this) || window;
-    scrollTarget.addEventListener('scroll', async () => {
+    scrollTarget.addEventListener("scroll", async () => {
       // We might normally call requestAnimationFrame in a scroll handler, but
       // in this case that could cause our scroll handling to run after the user
       // has scrolled away from the top.
@@ -74,7 +74,7 @@ class PullToRefresh extends Base {
          *
          * @event refreshing-changed
          */
-        const event = new CustomEvent('refreshing-changed', {
+        const event = new CustomEvent("refreshing-changed", {
           detail: {
             refreshing: this[internal.state].refreshing
           }
@@ -94,7 +94,7 @@ class PullToRefresh extends Base {
       refreshingIndicatorPartType: ProgressSpinner,
       scrollPullDistance: null,
       scrollPullMaxReached: false,
-      swipeAxis: 'vertical'
+      swipeAxis: "vertical"
     });
 
     // We use a pullTriggeredRefresh flag to track whether the current pull
@@ -102,7 +102,7 @@ class PullToRefresh extends Base {
     // enough to trigger a refresh, and the refresh completes while the user is
     // still pulling down, we don't want further pulling to trigger a second
     // refresh.
-    state.onChange(['refreshing', 'swipeFraction'], (state, changed) => {
+    state.onChange(["refreshing", "swipeFraction"], (state, changed) => {
       const { refreshing, swipeFraction } = state;
       if (changed.refreshing && refreshing) {
         // We've started a refresh; set flag.
@@ -132,8 +132,8 @@ class PullToRefresh extends Base {
     if (changed.refreshing) {
       const { refreshing } = this[internal.state];
       const refreshingIndicator = this[internal.ids].refreshingIndicator;
-      refreshingIndicator.style.visibility = refreshing ? 'visible' : 'hidden';
-      if ('playing' in this[internal.ids].refreshingIndicator) {
+      refreshingIndicator.style.visibility = refreshing ? "visible" : "hidden";
+      if ("playing" in this[internal.ids].refreshingIndicator) {
         /** @type {any} */ (refreshingIndicator).playing = refreshing;
       }
     }
@@ -156,7 +156,7 @@ class PullToRefresh extends Base {
       const showTransition = enableEffects && !swipingDown;
       Object.assign(this.style, {
         transform: `translate3D(0, ${y}px, 0)`,
-        transition: showTransition ? 'transform 0.25s' : null
+        transition: showTransition ? "transform 0.25s" : null
       });
     }
     if (
@@ -177,8 +177,8 @@ class PullToRefresh extends Base {
       const showPullIndicator =
         !refreshing && !pullTriggeredRefresh && pullingDown;
       this[internal.ids].pullIndicator.style.visibility = showPullIndicator
-        ? 'visible'
-        : 'hidden';
+        ? "visible"
+        : "hidden";
     }
   }
 

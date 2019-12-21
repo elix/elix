@@ -1,6 +1,6 @@
-import { indexOfItemContainingTarget } from './utilities.js';
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import { indexOfItemContainingTarget } from "./utilities.js";
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Maps a tap/mousedown on a list item to selection of that item
@@ -35,7 +35,7 @@ export default function TapSelectionMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this.addEventListener('mousedown', event => {
+      this.addEventListener("mousedown", event => {
         // Only process events for the main (usually left) button.
         if (event.button !== 0) {
           return;
@@ -51,11 +51,11 @@ export default function TapSelectionMixin(Base) {
         super[internal.componentDidMount]();
       }
       Object.assign(this.style, {
-        touchAction: 'manipulation', // for iOS Safari
-        mozUserSelect: 'none',
-        msUserSelect: 'none',
-        webkitUserSelect: 'none',
-        userSelect: 'none'
+        touchAction: "manipulation", // for iOS Safari
+        mozUserSelect: "none",
+        msUserSelect: "none",
+        webkitUserSelect: "none",
+        userSelect: "none"
       });
     }
 

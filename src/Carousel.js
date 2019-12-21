@@ -1,20 +1,20 @@
-import { forwardFocus } from './utilities.js';
-import * as internal from './internal.js';
-import * as template from './template.js';
-import AriaListMixin from './AriaListMixin.js';
-import ArrowDirectionMixin from './ArrowDirectionMixin.js';
-import CenteredStripOpacity from './CenteredStripOpacity.js';
-import DarkModeMixin from './DarkModeMixin.js';
-import DirectionSelectionMixin from './DirectionSelectionMixin.js';
-import Explorer from './Explorer.js';
-import FocusVisibleMixin from './FocusVisibleMixin.js';
-import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
-import KeyboardMixin from './KeyboardMixin.js';
-import PageDot from './PageDot.js';
-import SlidingStage from './SlidingStage.js';
-import SwipeDirectionMixin from './SwipeDirectionMixin.js';
-import TouchSwipeMixin from './TouchSwipeMixin.js';
-import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
+import { forwardFocus } from "./utilities.js";
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import AriaListMixin from "./AriaListMixin.js";
+import ArrowDirectionMixin from "./ArrowDirectionMixin.js";
+import CenteredStripOpacity from "./CenteredStripOpacity.js";
+import DarkModeMixin from "./DarkModeMixin.js";
+import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
+import Explorer from "./Explorer.js";
+import FocusVisibleMixin from "./FocusVisibleMixin.js";
+import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
+import KeyboardMixin from "./KeyboardMixin.js";
+import PageDot from "./PageDot.js";
+import SlidingStage from "./SlidingStage.js";
+import SwipeDirectionMixin from "./SwipeDirectionMixin.js";
+import TouchSwipeMixin from "./TouchSwipeMixin.js";
+import TrackpadSwipeMixin from "./TrackpadSwipeMixin.js";
 
 const Base = AriaListMixin(
   ArrowDirectionMixin(
@@ -59,14 +59,14 @@ class Carousel extends Base {
     // Show arrow buttons if device has a fine-grained pointer (e.g., mouse).
     // As of Mar 14 2018, Firefox does not yet support pointer queries, in which
     // case we assume use of a mouse.
-    const pointerQuery = '(pointer: fine)';
+    const pointerQuery = "(pointer: fine)";
     const mediaQueryList = window.matchMedia(pointerQuery);
     const showArrowButtons =
       mediaQueryList.media === pointerQuery ? mediaQueryList.matches : true;
     const result = Object.assign(super[internal.defaultState], {
-      orientation: 'horizontal',
+      orientation: "horizontal",
       proxyListOverlap: true,
-      proxyListPosition: 'bottom',
+      proxyListPosition: "bottom",
       proxyListPartType: CenteredStripOpacity,
       proxyPartType: PageDot,
       showArrowButtons,
@@ -75,9 +75,9 @@ class Carousel extends Base {
 
     // When orientation changes, have swipe axis follow suit, and also
     // set the default proxy list position.
-    result.onChange('orientation', state => {
+    result.onChange("orientation", state => {
       const proxyListPosition =
-        state.orientation === 'horizontal' ? 'bottom' : 'right';
+        state.orientation === "horizontal" ? "bottom" : "right";
       return {
         proxyListPosition,
         swipeAxis: state.orientation
@@ -104,13 +104,13 @@ class Carousel extends Base {
     super[internal.render](changed);
     if (changed.stagePartType || changed.orientation) {
       /** @type {any} */ const cast = this[internal.ids].stage;
-      if ('orientation' in cast) {
+      if ("orientation" in cast) {
         cast.orientation = this[internal.state].orientation;
       }
     }
     if (changed.orientation || changed.proxyListPartType) {
       /** @type {any} */ const cast = this[internal.ids].proxyList;
-      if ('orientation' in cast) {
+      if ("orientation" in cast) {
         cast.orientation = this[internal.state].orientation;
       }
     }
@@ -119,12 +119,12 @@ class Carousel extends Base {
       /** @type {any} */
       const cast = this[internal.ids].proxyList;
       forwardFocus(cast, this);
-      cast.removeAttribute('tabindex');
+      cast.removeAttribute("tabindex");
     }
     if (changed.stagePartType) {
       /** @type {any} */
       const cast = this[internal.ids].stage;
-      cast.removeAttribute('tabindex');
+      cast.removeAttribute("tabindex");
     }
     const { darkMode } = this[internal.state];
     /** @type {Element[]} */ const proxies = this[internal.state].proxies;
@@ -133,7 +133,7 @@ class Carousel extends Base {
       // Apply dark mode to proxies.
       proxies.forEach(proxy => {
         /** @type {any} */ const cast = proxy;
-        if ('darkMode' in cast) {
+        if ("darkMode" in cast) {
           cast.darkMode = darkMode;
         }
       });
@@ -157,7 +157,7 @@ class Carousel extends Base {
 
   get [internal.template]() {
     const base = super[internal.template];
-    const stage = base.content.querySelector('#stage');
+    const stage = base.content.querySelector("#stage");
     /** @type {any} */ const cast = this;
     cast[ArrowDirectionMixin.wrap](stage);
     const result = template.concat(
@@ -179,9 +179,9 @@ class Carousel extends Base {
       </style>
     `
     );
-    const proxyList = result.content.getElementById('proxyList');
+    const proxyList = result.content.getElementById("proxyList");
     if (proxyList) {
-      proxyList.setAttribute('tabindex', '');
+      proxyList.setAttribute("tabindex", "");
     }
     return result;
   }

@@ -1,7 +1,7 @@
-import * as internal from '../../src/internal.js';
-import * as template from '../../src/template.js';
-import ArrowDirectionMixin from '../../src/ArrowDirectionMixin.js';
-import SlidingPages from '../../src/SlidingPages.js';
+import * as internal from "../../src/internal.js";
+import * as template from "../../src/template.js";
+import ArrowDirectionMixin from "../../src/ArrowDirectionMixin.js";
+import SlidingPages from "../../src/SlidingPages.js";
 
 const Base = ArrowDirectionMixin(SlidingPages);
 
@@ -12,7 +12,7 @@ class SlidingPagesWithArrows extends Base {
     // absence of pointer:coarse. Firefox doesn't support that either, but as of
     // Aug 2018, Firefox mobile usage is not significant. On desktop, at least,
     // Firefox will show the arrows.
-    const finePointer = !window.matchMedia('(pointer:coarse)').matches;
+    const finePointer = !window.matchMedia("(pointer:coarse)").matches;
     return Object.assign(super[internal.defaultState], {
       showArrowButtons: finePointer
     });
@@ -35,5 +35,5 @@ class SlidingPagesWithArrows extends Base {
   }
 }
 
-customElements.define('sliding-pages-with-arrows', SlidingPagesWithArrows);
+customElements.define("sliding-pages-with-arrows", SlidingPagesWithArrows);
 export default SlidingPagesWithArrows;

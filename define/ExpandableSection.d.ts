@@ -1,2 +1,2 @@
-import ExpandableSection from '../src/ExpandableSection.js';
+import ExpandableSection from "../src/ExpandableSection.js";
 export default ExpandableSection;

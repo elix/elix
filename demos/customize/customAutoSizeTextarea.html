@@ -12,9 +12,9 @@
     <link rel="stylesheet" href="../demos.css" />
 
     <script type="module">
-      import * as internal from '../../src/internal.js';
-      import * as template from '../../src/template.js';
-      import AutoSizeTextarea from '../../src/AutoSizeTextarea.js';
+      import * as internal from "../../src/internal.js";
+      import * as template from "../../src/template.js";
+      import AutoSizeTextarea from "../../src/AutoSizeTextarea.js";
 
       class CustomAutoSizeTextarea extends AutoSizeTextarea {
         get [internal.template]() {
@@ -32,7 +32,7 @@
         }
       }
 
-      customElements.define('custom-autosize-textarea', CustomAutoSizeTextarea);
+      customElements.define("custom-autosize-textarea", CustomAutoSizeTextarea);
     </script>
   </head>
 

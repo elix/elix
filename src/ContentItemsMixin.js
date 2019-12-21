@@ -1,6 +1,6 @@
-import { isSubstantiveElement } from './content.js';
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import { isSubstantiveElement } from "./content.js";
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Treats an element's content nodes as list items.
@@ -39,7 +39,7 @@ export default function ContentItemsMixin(Base) {
          *
          * @event items-changed
          */
-        const event = new CustomEvent('items-changed');
+        const event = new CustomEvent("items-changed");
         this.dispatchEvent(event);
       }
     }
@@ -51,7 +51,7 @@ export default function ContentItemsMixin(Base) {
 
       // Regenerate items when content changes, or if items has been nullified
       // by another mixin (as a signal that items should be regenerated).
-      state.onChange(['content', 'items'], (state, changed) => {
+      state.onChange(["content", "items"], (state, changed) => {
         /** @type {Node[]} */ const content = state.content;
         const needsItems = content && !state.items; // Signal from other mixins
         if (changed.content || needsItems) {

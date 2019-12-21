@@ -1,2 +1,2 @@
-import CrossfadeStage from '../src/CrossfadeStage.js';
+import CrossfadeStage from "../src/CrossfadeStage.js";
 export default CrossfadeStage;

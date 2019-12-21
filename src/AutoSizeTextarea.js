@@ -1,11 +1,11 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import FormElementMixin from './FormElementMixin.js';
-import SlotContentMixin from './SlotContentMixin.js';
-import WrappedStandardElement from './WrappedStandardElement.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import FormElementMixin from "./FormElementMixin.js";
+import SlotContentMixin from "./SlotContentMixin.js";
+import WrappedStandardElement from "./WrappedStandardElement.js";
 
 const Base = FormElementMixin(
-  SlotContentMixin(WrappedStandardElement.wrap('textarea'))
+  SlotContentMixin(WrappedStandardElement.wrap("textarea"))
 );
 
 /**
@@ -42,7 +42,7 @@ class AutoSizeTextarea extends Base {
      *
      * @event input
      */
-    this[internal.ids].inner.addEventListener('input', () => {
+    this[internal.ids].inner.addEventListener("input", () => {
       this[internal.raiseChangeEvents] = true;
       this[internal.setState]({ valueTracksContent: false });
       /** @type {any} */
@@ -61,18 +61,18 @@ class AutoSizeTextarea extends Base {
     const lineHeight = this[internal.ids].extraSpace.clientHeight;
     this[internal.setState]({
       copyStyle: {
-        'border-bottom-style': textareaStyle.borderBottomStyle,
-        'border-bottom-width': textareaStyle.borderBottomWidth,
-        'border-left-style': textareaStyle.borderLeftStyle,
-        'border-left-width': textareaStyle.borderLeftWidth,
-        'border-right-style': textareaStyle.borderRightStyle,
-        'border-right-width': textareaStyle.borderRightWidth,
-        'border-top-style': textareaStyle.borderTopStyle,
-        'border-top-width': textareaStyle.borderTopWidth,
-        'padding-bottom': textareaStyle.paddingBottom,
-        'padding-left': textareaStyle.paddingLeft,
-        'padding-right': textareaStyle.paddingRight,
-        'padding-top': textareaStyle.paddingTop
+        "border-bottom-style": textareaStyle.borderBottomStyle,
+        "border-bottom-width": textareaStyle.borderBottomWidth,
+        "border-left-style": textareaStyle.borderLeftStyle,
+        "border-left-width": textareaStyle.borderLeftWidth,
+        "border-right-style": textareaStyle.borderRightStyle,
+        "border-right-width": textareaStyle.borderRightWidth,
+        "border-top-style": textareaStyle.borderTopStyle,
+        "border-top-width": textareaStyle.borderTopWidth,
+        "padding-bottom": textareaStyle.paddingBottom,
+        "padding-left": textareaStyle.paddingLeft,
+        "padding-right": textareaStyle.paddingRight,
+        "padding-top": textareaStyle.paddingTop
       },
       lineHeight
     });
@@ -85,7 +85,7 @@ class AutoSizeTextarea extends Base {
       valueTracksContent: true
     });
 
-    state.onChange(['content', 'valueTracksContent'], (state, changed) => {
+    state.onChange(["content", "valueTracksContent"], (state, changed) => {
       if (
         (changed.content || changed.valueTracksContent) &&
         state.valueTracksContent
@@ -246,18 +246,18 @@ class AutoSizeTextarea extends Base {
 // Return the text represented by the given content nodes.
 function getTextFromContent(/** @type {Node[]} */ contentNodes) {
   if (contentNodes === null) {
-    return '';
+    return "";
   }
   const texts = [...contentNodes].map(node => node.textContent);
-  const text = texts.join('').trim();
+  const text = texts.join("").trim();
   return unescapeHtml(text);
 }
 
 function unescapeHtml(/** @type {string} */ html) {
   return html
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
     .replace(/&quot;/g, '"')
     .replace(/&#039;/g, "'");
 }

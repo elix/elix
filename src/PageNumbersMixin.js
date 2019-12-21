@@ -1,8 +1,8 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
-const wrap = Symbol('wrap');
+const wrap = Symbol("wrap");
 
 /**
  * Adds a page number and total page count to a carousel-like element.
@@ -24,7 +24,7 @@ function PageNumbersMixin(Base) {
         const textContent =
           selectedIndex >= 0 && items
             ? `${selectedIndex + 1} / ${items.length}`
-            : '';
+            : "";
         this[internal.ids].pageNumber.textContent = textContent;
       }
     }
@@ -53,7 +53,7 @@ function PageNumbersMixin(Base) {
       template.wrap(
         original,
         pageNumbersTemplate.content,
-        '#pageNumbersContainer'
+        "#pageNumbersContainer"
       );
     }
   }

@@ -1,2 +1,2 @@
-import AlertDialog from '../src/AlertDialog.js';
+import AlertDialog from "../src/AlertDialog.js";
 export default AlertDialog;

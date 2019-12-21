@@ -1,6 +1,6 @@
-import * as internal from '../../src/internal.js';
-import * as template from '../../src/template.js';
-import ReactiveElement from '../../src/ReactiveElement.js';
+import * as internal from "../../src/internal.js";
+import * as template from "../../src/template.js";
+import ReactiveElement from "../../src/ReactiveElement.js";
 
 class CustomBackdrop extends ReactiveElement {
   get [internal.template]() {
@@ -21,5 +21,5 @@ class CustomBackdrop extends ReactiveElement {
   }
 }
 
-customElements.define('custom-backdrop', CustomBackdrop);
+customElements.define("custom-backdrop", CustomBackdrop);
 export default CustomBackdrop;

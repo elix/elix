@@ -1,12 +1,12 @@
-import './AnimateAlignment.js';
-import { applyChildNodes } from '../../src/utilities.js';
-import * as internal from '../../src/internal.js';
-import * as template from '../../src/template.js';
-import EffectMixin from '../../src/EffectMixin.js';
-import ListBox from '../../src/ListBox.js';
-import SwipeCommandsMixin from '../../src/SwipeCommandsMixin.js';
-import TouchSwipeMixin from '../../src/TouchSwipeMixin.js';
-import TrackpadSwipeMixin from '../../src/TrackpadSwipeMixin.js';
+import "./AnimateAlignment.js";
+import { applyChildNodes } from "../../src/utilities.js";
+import * as internal from "../../src/internal.js";
+import * as template from "../../src/template.js";
+import EffectMixin from "../../src/EffectMixin.js";
+import ListBox from "../../src/ListBox.js";
+import SwipeCommandsMixin from "../../src/SwipeCommandsMixin.js";
+import TouchSwipeMixin from "../../src/TouchSwipeMixin.js";
+import TrackpadSwipeMixin from "../../src/TrackpadSwipeMixin.js";
 
 const Base = EffectMixin(
   SwipeCommandsMixin(TouchSwipeMixin(TrackpadSwipeMixin(ListBox)))
@@ -35,15 +35,15 @@ export default class MessageListBox extends Base {
     const selectedItem = this.selectedItem;
 
     switch (event.key) {
-      case 'Delete':
+      case "Delete":
         if (selectedItem) {
           selectedItem.remove();
         }
         handled = true;
         break;
 
-      case ' ':
-        if (selectedItem && 'read' in selectedItem) {
+      case " ":
+        if (selectedItem && "read" in selectedItem) {
           /** @type {any} */ const cast = selectedItem;
           cast.read = !cast.read;
         }
@@ -69,16 +69,16 @@ export default class MessageListBox extends Base {
       const { swipeItem, swipeRightCommitted, swipeRightWillCommit } = this[
         internal.state
       ];
-      if (swipeItem && 'read' in swipeItem) {
+      if (swipeItem && "read" in swipeItem) {
         const read = swipeItem.read;
         const newRead =
           swipeRightCommitted || swipeRightWillCommit ? !read : read;
         this[internal.ids].readIconWithLabel.style.display = newRead
-          ? ''
-          : 'none';
+          ? ""
+          : "none";
         this[internal.ids].unreadIconWithLabel.style.display = newRead
-          ? 'none'
-          : '';
+          ? "none"
+          : "";
       }
     }
 
@@ -89,15 +89,15 @@ export default class MessageListBox extends Base {
       /** @type {any} */ (this[internal.ids].unreadCommand).align =
         this[internal.state].swipeRightCommitted ||
         this[internal.state].swipeRightWillCommit
-          ? 'right'
-          : 'left';
+          ? "right"
+          : "left";
     }
     if (changed.swipeLeftCommitted || changed.swipeLeftWillCommit) {
       /** @type {any} */ (this[internal.ids].deleteCommand).align =
         this[internal.state].swipeLeftCommitted ||
         this[internal.state].swipeLeftWillCommit
-          ? 'left'
-          : 'right';
+          ? "left"
+          : "right";
     }
   }
 
@@ -116,7 +116,7 @@ export default class MessageListBox extends Base {
   // back to its normal state).
   [internal.swipeRight]() {
     const { swipeItem } = this[internal.state];
-    if ('read' in swipeItem) {
+    if ("read" in swipeItem) {
       swipeItem.read = !swipeItem.read;
     }
   }
@@ -168,7 +168,7 @@ export default class MessageListBox extends Base {
     );
 
     // Patch the Mark Read/Unread command into the left command slot.
-    const leftCommandSlot = result.content.getElementById('leftCommandSlot');
+    const leftCommandSlot = result.content.getElementById("leftCommandSlot");
     if (leftCommandSlot) {
       const leftCommandTemplate = template.html`
         <animate-alignment id="unreadCommand" slot="leftCommand" class="command">
@@ -186,7 +186,7 @@ export default class MessageListBox extends Base {
     }
 
     // Patch the Delete command into the right commands slot.
-    const rightCommandSlot = result.content.getElementById('rightCommandSlot');
+    const rightCommandSlot = result.content.getElementById("rightCommandSlot");
     if (rightCommandSlot) {
       const rightCommandTemplate = template.html`
         <animate-alignment id="deleteCommand" align="right" slot="rightCommand" class="command">
@@ -206,4 +206,4 @@ export default class MessageListBox extends Base {
   }
 }
 
-customElements.define('message-list-box', MessageListBox);
+customElements.define("message-list-box", MessageListBox);

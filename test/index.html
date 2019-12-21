@@ -20,20 +20,20 @@
     ></script>
 
     <script>
-      mocha.setup('bdd');
+      mocha.setup("bdd");
       window.assert = chai.assert;
     </script>
 
     <script type="module">
-      import * as tests from './tests.js';
+      import * as tests from "./tests.js";
       const errors = [];
       mocha
         .run()
-        .on('fail', function(_, err) {
+        .on("fail", function(_, err) {
           errors.push(err.stack);
         })
-        .on('end', function() {
-          console.log(`${this.failures ? JSON.stringify(errors) : 'OK'}`);
+        .on("end", function() {
+          console.log(`${this.failures ? JSON.stringify(errors) : "OK"}`);
         });
     </script>
   </head>

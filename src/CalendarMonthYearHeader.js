@@ -1,8 +1,8 @@
-import * as calendar from './calendar.js';
-import * as internal from './internal.js';
-import * as template from './template.js';
-import CalendarElementMixin from './CalendarElementMixin.js';
-import ReactiveElement from './ReactiveElement.js';
+import * as calendar from "./calendar.js";
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import CalendarElementMixin from "./CalendarElementMixin.js";
+import ReactiveElement from "./ReactiveElement.js";
 
 const Base = CalendarElementMixin(ReactiveElement);
 
@@ -29,8 +29,8 @@ class CalendarMonthYearHeader extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       date: calendar.today(),
-      monthFormat: 'long',
-      yearFormat: 'numeric'
+      monthFormat: "long",
+      yearFormat: "numeric"
     });
   }
 

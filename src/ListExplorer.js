@@ -1,5 +1,5 @@
-import * as internal from './internal.js';
-import Explorer from './Explorer.js';
+import * as internal from "./internal.js";
+import Explorer from "./Explorer.js";
 
 /**
  * Master/detail user interface pattern navigated with a list box.
@@ -9,8 +9,8 @@ import Explorer from './Explorer.js';
 class ListExplorer extends Explorer {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      proxyListPosition: 'start',
-      orientation: 'vertical'
+      proxyListPosition: "start",
+      orientation: "vertical"
     });
   }
 
@@ -24,9 +24,9 @@ class ListExplorer extends Explorer {
         const item = items[index];
         if (item) {
           const label =
-            item.getAttribute('aria-label') || 'alt' in item
+            item.getAttribute("aria-label") || "alt" in item
               ? /** @type {any} */ (item).alt
-              : '';
+              : "";
           proxy.textContent = label;
         }
       });

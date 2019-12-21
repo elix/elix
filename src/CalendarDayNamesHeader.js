@@ -1,7 +1,7 @@
-import * as internal from './internal.js';
-import * as calendar from './calendar.js';
-import * as template from './template.js';
-import ReactiveElement from './ReactiveElement.js';
+import * as internal from "./internal.js";
+import * as calendar from "./calendar.js";
+import * as template from "./template.js";
+import ReactiveElement from "./ReactiveElement.js";
 
 /**
  * Header showing the localized days of the week
@@ -26,7 +26,7 @@ import ReactiveElement from './ReactiveElement.js';
 class CalendarDayNamesHeader extends ReactiveElement {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      format: 'short',
+      format: "short",
       locale: navigator.language
     });
   }
@@ -74,8 +74,8 @@ class CalendarDayNamesHeader extends ReactiveElement {
         date.setDate(dayOfWeek + 1);
         const weekend = dayOfWeek === weekendStart || dayOfWeek === weekendEnd;
         const dayElement = this[internal.ids][`day${i}`];
-        dayElement.classList.toggle('weekday', !weekend);
-        dayElement.classList.toggle('weekend', weekend);
+        dayElement.classList.toggle("weekday", !weekend);
+        dayElement.classList.toggle("weekend", weekend);
         dayElement.textContent = formatter.format(date);
       }
     }

@@ -1,4 +1,4 @@
-import * as internal from './internal.js';
+import * as internal from "./internal.js";
 
 /**
  * Miscellaneous utility functions for web components
@@ -6,8 +6,8 @@ import * as internal from './internal.js';
  * @module utilities
  */
 
-const generatedIdKey = Symbol('generatedId');
-const mousedownListenerKey = Symbol('mousedownListener');
+const generatedIdKey = Symbol("generatedId");
+const mousedownListenerKey = Symbol("mousedownListener");
 
 let generatedIdCount = 0;
 
@@ -71,7 +71,7 @@ export function closestFocusableNode(node) {
     const focusable =
       focusTarget instanceof HTMLElement &&
       focusTarget.tabIndex >= 0 &&
-      !/** @type {any} */ (focusTarget).disabled &&
+      !(/** @type {any} */ (focusTarget).disabled) &&
       !(focusTarget instanceof HTMLSlotElement);
     if (focusable) {
       return focusTarget;
@@ -200,7 +200,7 @@ export function forwardFocus(origin, target) {
   if (origin[mousedownListenerKey]) {
     // Origin was previously forwarding focus, probably to a different target.
     // Remove the previous event listener.
-    origin.removeEventListener('mousedown', origin[mousedownListenerKey]);
+    origin.removeEventListener("mousedown", origin[mousedownListenerKey]);
   }
   if (target) {
     origin[mousedownListenerKey] = (/** @type {MouseEvent} */ event) => {
@@ -217,7 +217,7 @@ export function forwardFocus(origin, target) {
         event.preventDefault();
       }
     };
-    origin.addEventListener('mousedown', origin[mousedownListenerKey]);
+    origin.addEventListener("mousedown", origin[mousedownListenerKey]);
   }
 }
 

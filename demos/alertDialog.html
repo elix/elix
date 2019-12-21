@@ -31,22 +31,22 @@
 
       <script>
         function okCancelClick(event) {
-          showAlertWithChoices(['OK', 'Cancel']);
+          showAlertWithChoices(["OK", "Cancel"]);
         }
 
         function yesNoCancelClick(event) {
-          showAlertWithChoices(['Yes', 'No', 'Cancel']);
+          showAlertWithChoices(["Yes", "No", "Cancel"]);
         }
 
         async function showAlertWithChoices(choices) {
-          const dialog = document.createElement('elix-alert-dialog');
-          dialog.textContent = 'Hello, world';
+          const dialog = document.createElement("elix-alert-dialog");
+          dialog.textContent = "Hello, world";
           dialog.choices = choices;
-          dialog.addEventListener('closed', event => {
+          dialog.addEventListener("closed", event => {
             const closeResult = event.detail.closeResult;
             const choice = closeResult && closeResult.choice;
             response.textContent = choice
-              ? 'You picked ' + choice + '.'
+              ? "You picked " + choice + "."
               : "You didn't make a choice.";
           });
           await dialog.open();

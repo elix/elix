@@ -1,2 +1,2 @@
-import TabStrip from '../src/TabStrip.js';
+import TabStrip from "../src/TabStrip.js";
 export default TabStrip;

@@ -19,10 +19,10 @@
  * @module calendar
  */
 
-import weekData from './weekData.js';
+import weekData from "./weekData.js";
 
 // Default region is "World", see https://www.ctrl.blog/entry/en-001
-const defaultRegion = '001';
+const defaultRegion = "001";
 
 export const millisecondsPerDay = 24 * 60 * 60 * 1000;
 
@@ -33,9 +33,9 @@ export const millisecondsPerDay = 24 * 60 * 60 * 1000;
  * @param {Intl.DateTimeFormatOptions} options
  */
 export function dateTimeFormat(locale, options) {
-  const caExtension = locale.includes('-ca-') ? '' : '-ca-gregory';
-  const nuExtension = locale.includes('-nu-') ? '' : '-nu-latn';
-  const extension = caExtension || nuExtension ? '-u' : '';
+  const caExtension = locale.includes("-ca-") ? "" : "-ca-gregory";
+  const nuExtension = locale.includes("-nu-") ? "" : "-nu-latn";
+  const extension = caExtension || nuExtension ? "-u" : "";
   const extendedLocale = `${locale}${extension}${caExtension}${nuExtension}`;
   return new Intl.DateTimeFormat(extendedLocale, options);
 }
@@ -230,13 +230,13 @@ export function parse(text, dateTimeFormat) {
   // that's not a digit as a separator.
   const regExText = parts
     .map(part =>
-      part.type === 'literal'
-        ? '(\\D+)'
+      part.type === "literal"
+        ? "(\\D+)"
         : // TODO: use named capture group `(<${part.type}>\\d+)`
           // when that's widely supported.
           `(\\d+)`
     )
-    .join('');
+    .join("");
   const regEx = new RegExp(regExText);
   // Match against the text.
   const match = regEx.exec(text);
@@ -293,14 +293,14 @@ export function parseWithOptionalYear(text, dateTimeFormat, timeBias) {
     const abbreviatedDay = abbreviatedDate.getDate();
     const abbreviatedMonth = abbreviatedDate.getMonth();
     const abbreviatedYear = abbreviatedDate.getFullYear();
-    if (timeBias === 'future') {
+    if (timeBias === "future") {
       if (
         abbreviatedMonth < todayMonth ||
         (abbreviatedMonth === todayMonth && abbreviatedDay < todayDay)
       ) {
         abbreviatedDate.setFullYear(abbreviatedYear + 1);
       }
-    } else if (timeBias === 'past') {
+    } else if (timeBias === "past") {
       if (
         abbreviatedMonth > todayMonth ||
         (abbreviatedMonth === todayMonth && abbreviatedDay > todayDay)
@@ -409,6 +409,6 @@ function copyTimeFromDateToDate(date1, date2) {
 }
 
 function getLocaleRegion(/** @type {string} */ locale) {
-  const localeParts = locale ? locale.split('-') : null;
+  const localeParts = locale ? locale.split("-") : null;
   return localeParts ? localeParts[1] : defaultRegion;
 }

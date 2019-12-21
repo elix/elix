@@ -1,14 +1,14 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import AriaRoleMixin from './AriaRoleMixin.js';
-import ComposedFocusMixin from './ComposedFocusMixin.js';
-import FocusVisibleMixin from './FocusVisibleMixin.js';
-import KeyboardMixin from './KeyboardMixin.js';
-import WrappedStandardElement from './WrappedStandardElement.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import AriaRoleMixin from "./AriaRoleMixin.js";
+import ComposedFocusMixin from "./ComposedFocusMixin.js";
+import FocusVisibleMixin from "./FocusVisibleMixin.js";
+import KeyboardMixin from "./KeyboardMixin.js";
+import WrappedStandardElement from "./WrappedStandardElement.js";
 
 const Base = AriaRoleMixin(
   ComposedFocusMixin(
-    FocusVisibleMixin(KeyboardMixin(WrappedStandardElement.wrap('button')))
+    FocusVisibleMixin(KeyboardMixin(WrappedStandardElement.wrap("button")))
   )
 );
 
@@ -25,7 +25,7 @@ const Base = AriaRoleMixin(
 //
 // Firefox detection adapted from https://stackoverflow.com/a/9851769/76472
 // and adjusted to pass type checks.
-const firefox = 'InstallTrigger' in window;
+const firefox = "InstallTrigger" in window;
 const mapKeysToClick = !firefox;
 
 /**
@@ -43,7 +43,7 @@ const mapKeysToClick = !firefox;
 class Button extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      role: 'button',
+      role: "button",
       treatEnterAsClick: true,
       treatSpaceAsClick: true
     });
@@ -56,14 +56,14 @@ class Button extends Base {
     let handled;
     if (mapKeysToClick) {
       switch (event.key) {
-        case ' ':
+        case " ":
           if (this[internal.state].treatSpaceAsClick) {
             this[internal.tap]();
             handled = true;
           }
           break;
 
-        case 'Enter':
+        case "Enter":
           if (this[internal.state].treatEnterAsClick) {
             this[internal.tap]();
             handled = true;
@@ -82,15 +82,15 @@ class Button extends Base {
     super[internal.render](changed);
     if (changed.focusVisible) {
       // Override host `outline` style supplied by FocusVisibleMixin.
-      this.style.outline = 'none';
+      this.style.outline = "none";
       const { focusVisible } = this[internal.state];
-      this[internal.ids].inner.style.outline = focusVisible ? '' : 'none';
+      this[internal.ids].inner.style.outline = focusVisible ? "" : "none";
     }
   }
 
   // Respond to a simulated click.
   [internal.tap]() {
-    const clickEvent = new MouseEvent('click');
+    const clickEvent = new MouseEvent("click");
     this.dispatchEvent(clickEvent);
   }
 

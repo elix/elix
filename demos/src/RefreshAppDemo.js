@@ -1,8 +1,8 @@
-import '../../define/PullToRefresh.js';
-import { applyChildNodes } from '../../src/utilities.js';
-import * as internal from '../../src/internal.js';
-import * as template from '../../src/template.js';
-import ReactiveElement from '../../src/ReactiveElement.js';
+import "../../define/PullToRefresh.js";
+import { applyChildNodes } from "../../src/utilities.js";
+import * as internal from "../../src/internal.js";
+import * as template from "../../src/template.js";
+import ReactiveElement from "../../src/ReactiveElement.js";
 
 const texts = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed molestie molestie enim porta dapibus. Phasellus dolor quam, egestas eu viverra at, porttitor in diam. Donec risus tellus, accumsan eget ipsum sed, vestibulum blandit ante. Nullam rhoncus leo nec lobortis convallis. Donec posuere tellus a nibh dignissim, rhoncus viverra neque rutrum. Suspendisse rutrum at massa vitae venenatis. Suspendisse ut risus pellentesque lacus dictum aliquet. Cras a arcu id odio molestie imperdiet.`,
@@ -23,7 +23,7 @@ class RefreshAppDemo extends ReactiveElement {
       super[internal.componentDidMount]();
     }
     this[internal.ids].pullToRefresh.addEventListener(
-      'refreshing-changed',
+      "refreshing-changed",
       event => {
         /** @type {any} */
         const cast = event;
@@ -42,7 +42,7 @@ class RefreshAppDemo extends ReactiveElement {
   }
 
   refresh() {
-    if ('vibrate' in navigator) {
+    if ("vibrate" in navigator) {
       navigator.vibrate(5);
     }
     setTimeout(async () => {
@@ -104,7 +104,7 @@ class RefreshAppDemo extends ReactiveElement {
 
 function createParagraphs(/** @type {string[]} */ texts) {
   const paragraphs = texts.map(text => {
-    const paragraph = document.createElement('p');
+    const paragraph = document.createElement("p");
     paragraph.textContent = text;
     return paragraph;
   });
@@ -117,7 +117,7 @@ async function playSound(/** @type {HTMLAudioElement} */ sound) {
     try {
       await sound.play();
     } catch (e) {
-      if (e.name === 'NotAllowedError') {
+      if (e.name === "NotAllowedError") {
         // Webkit doesn't want to play sounds
       } else {
         throw e;
@@ -126,5 +126,5 @@ async function playSound(/** @type {HTMLAudioElement} */ sound) {
   }
 }
 
-customElements.define('refresh-app-demo', RefreshAppDemo);
+customElements.define("refresh-app-demo", RefreshAppDemo);
 export default RefreshAppDemo;

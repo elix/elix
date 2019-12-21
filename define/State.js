@@ -1,3 +1,3 @@
-import State from '../src/State.js';
+import State from "../src/State.js";
 export default class ElixState extends State {}
-customElements.define('elix-state', ElixState);
+customElements.define("elix-state", ElixState);

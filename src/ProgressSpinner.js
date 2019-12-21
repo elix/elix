@@ -1,6 +1,6 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import ReactiveElement from './ReactiveElement.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import ReactiveElement from "./ReactiveElement.js";
 
 // The spinner has 12 discrete steps in its rotation.
 const rotations = 12;

@@ -1,7 +1,7 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import GenericMixin from './GenericMixin.js';
-import ReactiveElement from './ReactiveElement.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import GenericMixin from "./GenericMixin.js";
+import ReactiveElement from "./ReactiveElement.js";
 
 const Base = GenericMixin(ReactiveElement);
 
@@ -25,7 +25,7 @@ class MenuItem extends Base {
        *
        * @event selected-changed
        */
-      const event = new CustomEvent('selected-changed', {
+      const event = new CustomEvent("selected-changed", {
         detail: {
           selected: this[internal.state].selected
         }

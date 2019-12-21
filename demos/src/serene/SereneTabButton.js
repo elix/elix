@@ -1,6 +1,6 @@
-import * as internal from '../../../src/internal.js';
-import * as template from '../../../src/template.js';
-import TabButton from '../../../src/TabButton.js';
+import * as internal from "../../../src/internal.js";
+import * as template from "../../../src/template.js";
+import TabButton from "../../../src/TabButton.js";
 
 class SereneTabButton extends TabButton {
   get [internal.defaultState]() {
@@ -45,5 +45,5 @@ class SereneTabButton extends TabButton {
   }
 }
 
-customElements.define('serene-tab-button', SereneTabButton);
+customElements.define("serene-tab-button", SereneTabButton);
 export default SereneTabButton;

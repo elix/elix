@@ -1,6 +1,6 @@
-import * as internal from './internal.js';
-import Carousel from './Carousel.js';
-import Thumbnail from './Thumbnail.js';
+import * as internal from "./internal.js";
+import Carousel from "./Carousel.js";
+import Thumbnail from "./Thumbnail.js";
 
 /**
  * Carousel showing a thumbnail for each image
@@ -25,7 +25,7 @@ class CarouselWithThumbnails extends Carousel {
       proxies.forEach((proxy, index) => {
         /** @type {any} */ const item = items[index];
         /** @type {any} */ const cast = proxy;
-        if (item && 'src' in cast) {
+        if (item && "src" in cast) {
           cast.src = item.src;
         }
       });

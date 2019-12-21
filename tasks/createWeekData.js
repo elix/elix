@@ -1,6 +1,6 @@
-const fetch = require('node-fetch');
-const fs = require('fs').promises;
-const path = require('path');
+const fetch = require("node-fetch");
+const fs = require("fs").promises;
+const path = require("path");
 
 // The cldr-json week data uses English days of week, but we'd rather have
 // a numeric representation.
@@ -15,12 +15,12 @@ const daysOfWeek = {
 };
 
 const weekDataUrl =
-  'https://raw.githubusercontent.com/unicode-cldr/cldr-core/master/supplemental/weekData.json';
+  "https://raw.githubusercontent.com/unicode-cldr/cldr-core/master/supplemental/weekData.json";
 
 async function createWeekData() {
   const weekData = await getWeekData();
   const weekSource = formatWeekDataAsModule(weekData);
-  const weekFile = path.join(__dirname, '../src/weekData.js');
+  const weekFile = path.join(__dirname, "../src/weekData.js");
   await fs.writeFile(weekFile, weekSource);
 }
 

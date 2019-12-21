@@ -1,8 +1,8 @@
-import * as internal from '../../src/internal.js';
-import * as template from '../../src/template.js';
-import EffectMixin from '../../src/EffectMixin.js';
-import TransitionEffectMixin from '../../src/TransitionEffectMixin.js';
-import ReactiveElement from '../../src/ReactiveElement.js';
+import * as internal from "../../src/internal.js";
+import * as template from "../../src/template.js";
+import EffectMixin from "../../src/EffectMixin.js";
+import TransitionEffectMixin from "../../src/TransitionEffectMixin.js";
+import ReactiveElement from "../../src/ReactiveElement.js";
 
 const Base = EffectMixin(TransitionEffectMixin(ReactiveElement));
 
@@ -15,7 +15,7 @@ export default class AnimateAlignment extends Base {
       this[internal.state].enableEffects &&
       this[internal.state].align !== align
     ) {
-      const effect = align === 'left' ? 'slideLeft' : 'slideRight';
+      const effect = align === "left" ? "slideLeft" : "slideRight";
       this[internal.startEffect](effect);
     } else {
       this[internal.setState]({ align });
@@ -24,18 +24,18 @@ export default class AnimateAlignment extends Base {
 
   get [internal.defaultState]() {
     const base = Object.assign(super[internal.defaultState], {
-      align: 'left'
+      align: "left"
     });
 
-    base.onChange('effectPhase', state => {
-      if (state.effectPhase === 'after') {
-        if (state.effect === 'slideLeft') {
+    base.onChange("effectPhase", state => {
+      if (state.effectPhase === "after") {
+        if (state.effect === "slideLeft") {
           return {
-            align: 'left'
+            align: "left"
           };
-        } else if (state.effect === 'slideRight') {
+        } else if (state.effect === "slideRight") {
           return {
-            align: 'right'
+            align: "right"
           };
         }
       }
@@ -56,41 +56,41 @@ export default class AnimateAlignment extends Base {
     if (
       ((changed.effect || changed.effectPhase || changed.enableEffects) &&
         enableEffects &&
-        effect === 'slideLeft') ||
-      effect === 'slideRight'
+        effect === "slideLeft") ||
+      effect === "slideRight"
     ) {
-      if (effectPhase === 'before') {
+      if (effectPhase === "before") {
         // The inner container lets us measure how wide the content wants to be.
         const containerWidth = this[internal.ids].container.clientWidth;
         const distance =
           this[internal.ids].stationary.clientWidth - containerWidth;
         const transform =
-          effect === 'slideLeft'
+          effect === "slideLeft"
             ? `translateX(${distance}px)`
             : `translateX(-${distance}px)`;
         Object.assign(
           container.style,
           distance > 0 && {
             transform,
-            transition: ''
+            transition: ""
           }
         );
-        container.classList.toggle('right', effect === 'slideRight');
-      } else if (effectPhase === 'during') {
+        container.classList.toggle("right", effect === "slideRight");
+      } else if (effectPhase === "during") {
         Object.assign(container.style, {
-          transform: 'translateX(0)',
-          transition: 'transform 0.25s'
+          transform: "translateX(0)",
+          transition: "transform 0.25s"
         });
-      } else if (effectPhase === 'after') {
+      } else if (effectPhase === "after") {
         Object.assign(container.style, {
-          transform: '',
-          transition: ''
+          transform: "",
+          transition: ""
         });
       }
     }
     if (changed.align && !enableEffects) {
       // Align without animation
-      container.classList.toggle('right', align === 'right');
+      container.classList.toggle("right", align === "right");
     }
   }
 
@@ -130,9 +130,9 @@ export default class AnimateAlignment extends Base {
 
   toggleAlignment() {
     const effect =
-      this[internal.state].align === 'left' ? 'slideRight' : 'slideLeft';
+      this[internal.state].align === "left" ? "slideRight" : "slideLeft";
     this[internal.startEffect](effect);
   }
 }
 
-customElements.define('animate-alignment', AnimateAlignment);
+customElements.define("animate-alignment", AnimateAlignment);

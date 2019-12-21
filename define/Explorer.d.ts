@@ -1,2 +1,2 @@
-import Explorer from '../src/Explorer.js';
+import Explorer from "../src/Explorer.js";
 export default Explorer;

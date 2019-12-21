@@ -1,4 +1,4 @@
-import { selfAndComposedAncestors } from './utilities.js';
+import { selfAndComposedAncestors } from "./utilities.js";
 
 /**
  * Utilities for working with scrolling.
@@ -24,21 +24,21 @@ export function canScrollInDirection(target, orientation, downOrRight) {
   for (const ancestor of selfAndComposedAncestors(target)) {
     if (ancestor instanceof HTMLElement) {
       const style = getComputedStyle(ancestor);
-      const vertical = orientation === 'vertical';
+      const vertical = orientation === "vertical";
       const scrollAxisMatch =
         (vertical &&
-          (style.overflowY === 'scroll' || style.overflowY === 'auto')) ||
+          (style.overflowY === "scroll" || style.overflowY === "auto")) ||
         (!vertical &&
-          (style.overflowX === 'scroll' || style.overflowX === 'auto'));
+          (style.overflowX === "scroll" || style.overflowX === "auto"));
       if (scrollAxisMatch) {
         // Found an ancestor that can potentially scroll in this orientation.
-        const scrollEdge = vertical ? 'scrollTop' : 'scrollLeft';
+        const scrollEdge = vertical ? "scrollTop" : "scrollLeft";
         if (!downOrRight && ancestor[scrollEdge] > 0) {
           // Target has room to scroll up or left.
           return true;
         }
-        const scrollLength = vertical ? 'scrollHeight' : 'scrollWidth';
-        const clientLength = vertical ? 'clientHeight' : 'clientWidth';
+        const scrollLength = vertical ? "scrollHeight" : "scrollWidth";
+        const clientLength = vertical ? "clientHeight" : "clientWidth";
         const scrollMax = ancestor[scrollLength] - ancestor[clientLength];
         if (downOrRight && ancestor[scrollEdge] < scrollMax) {
           // Target has room to scroll down or right.
@@ -66,7 +66,7 @@ export function canScrollInDirection(target, orientation, downOrRight) {
  */
 export function defaultScrollTarget(element) {
   const root = element.shadowRoot;
-  const slot = root && root.querySelector('slot:not([name])');
+  const slot = root && root.querySelector("slot:not([name])");
   const scrollingParent =
     slot &&
     slot.parentNode instanceof Element &&
@@ -85,10 +85,10 @@ function isElementScrollable(element) {
   const overflowX = style.overflowX;
   const overflowY = style.overflowY;
   return (
-    overflowX === 'scroll' ||
-    overflowX === 'auto' ||
-    overflowY === 'scroll' ||
-    overflowY === 'auto'
+    overflowX === "scroll" ||
+    overflowX === "auto" ||
+    overflowY === "scroll" ||
+    overflowY === "auto"
   );
 }
 

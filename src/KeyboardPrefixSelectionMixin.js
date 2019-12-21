@@ -1,10 +1,10 @@
-import { TYPING_TIMEOUT_DURATION } from './constants.js';
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import { TYPING_TIMEOUT_DURATION } from "./constants.js";
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 // Symbols for private data members on an element.
-const typedPrefixKey = Symbol('typedPrefix');
-const prefixTimeoutKey = Symbol('prefixTimeout');
+const typedPrefixKey = Symbol("typedPrefix");
+const prefixTimeoutKey = Symbol("prefixTimeout");
 
 /**
  * Lets a user select a list item by typing the first few characters
@@ -57,12 +57,12 @@ export default function KeyboardPrefixSelectionMixin(Base) {
       let handled;
 
       switch (event.key) {
-        case 'Backspace':
+        case "Backspace":
           handleBackspace(this);
           handled = true;
           break;
 
-        case 'Escape':
+        case "Escape":
           // Pressing Escape lets user quickly start typing a new prefix.
           resetTypedPrefix(this);
           break;
@@ -141,7 +141,7 @@ function handleBackspace(element) {
  */
 function handlePlainCharacter(element, char) {
   /** @type {any} */ const cast = element;
-  const prefix = cast[typedPrefixKey] || '';
+  const prefix = cast[typedPrefixKey] || "";
   cast[typedPrefixKey] = prefix + char;
   element.selectItemWithTextPrefix(cast[typedPrefixKey]);
   setPrefixTimeout(element);
@@ -168,7 +168,7 @@ function resetPrefixTimeout(element) {
  * @param {ReactiveElement} element
  */
 function resetTypedPrefix(element) {
-  /** @type {any} */ (element)[typedPrefixKey] = '';
+  /** @type {any} */ (element)[typedPrefixKey] = "";
   resetPrefixTimeout(element);
 }
 

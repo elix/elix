@@ -12,19 +12,19 @@
     </template>
 
     <script type="module">
-      import * as internal from '../src/internal.js';
-      import * as template from '../src/template.js';
-      import ReactiveElement from '../src/ReactiveElement.js';
+      import * as internal from "../src/internal.js";
+      import * as template from "../src/template.js";
+      import ReactiveElement from "../src/ReactiveElement.js";
 
       class IncrementDecrement extends ReactiveElement {
         [internal.componentDidMount]() {
           if (super[internal.componentDidMount]) {
             super[internal.componentDidMount]();
           }
-          this[internal.ids].decrement.addEventListener('click', () => {
+          this[internal.ids].decrement.addEventListener("click", () => {
             this.value--;
           });
-          this[internal.ids].increment.addEventListener('click', () => {
+          this[internal.ids].increment.addEventListener("click", () => {
             this.value++;
           });
         }
@@ -41,7 +41,7 @@
           super[internal.render](changed);
           if (changed.value) {
             const { value } = this[internal.state];
-            this.style.color = value < 0 ? 'red' : null;
+            this.style.color = value < 0 ? "red" : null;
             this[internal.ids].visibleValue.textContent = value;
           }
         }
@@ -61,7 +61,7 @@
         }
       }
 
-      customElements.define('increment-decrement', IncrementDecrement);
+      customElements.define("increment-decrement", IncrementDecrement);
 
       class CustomIncrementDecrement extends IncrementDecrement {
         get [internal.template]() {
@@ -95,7 +95,7 @@
           if (changed.value) {
             const { value } = this[internal.state];
             if (value > 0) {
-              this.style.color = 'dodgerblue';
+              this.style.color = "dodgerblue";
             }
             this[internal.ids].decrement.disabled = value <= -5;
             this[internal.ids].increment.disabled = value >= 5;
@@ -114,7 +114,7 @@
       }
 
       customElements.define(
-        'custom-increment-decrement',
+        "custom-increment-decrement",
         CustomIncrementDecrement
       );
     </script>

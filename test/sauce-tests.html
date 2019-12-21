@@ -20,7 +20,7 @@
     ></script>
 
     <script>
-      mocha.setup('bdd');
+      mocha.setup("bdd");
       window.assert = chai.assert;
     </script>
 
@@ -45,12 +45,12 @@
         var runner = mocha.run();
 
         var failedTests = [];
-        runner.on('end', function() {
+        runner.on("end", function() {
           window.mochaResults = runner.stats;
           window.mochaResults.reports = failedTests;
         });
 
-        runner.on('fail', logFailure);
+        runner.on("fail", logFailure);
 
         function logFailure(test, err) {
           var flattenTitles = function(test) {

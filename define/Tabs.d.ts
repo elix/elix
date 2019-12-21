@@ -1,2 +1,2 @@
-import Tabs from '../src/Tabs.js';
+import Tabs from "../src/Tabs.js";
 export default Tabs;

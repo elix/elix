@@ -1,5 +1,5 @@
-import * as internal from './internal.js';
-import Input from './Input.js';
+import * as internal from "./internal.js";
+import Input from "./Input.js";
 
 /**
  * A text input box that completes text as the user types
@@ -18,7 +18,7 @@ class AutoCompleteInput extends Input {
     //
     // Instead, we listen to input events. That comes with its own
     // set of headaches, noted below.
-    this[internal.ids].inner.addEventListener('input', () => {
+    this[internal.ids].inner.addEventListener("input", () => {
       // Gboard will generate multiple input events for a single keypress. In
       // particular, if we do AutoComplete and leave the text selected, then
       // when the user types the next key, we'll get *three* input events: one
@@ -67,14 +67,14 @@ class AutoCompleteInput extends Input {
       this[internal.setState]({
         autoCompleteSelect: false
       });
-      this.setInnerProperty('selectionStart', originalText.length);
-      this.setInnerProperty('selectionEnd', this.value.length);
+      this.setInnerProperty("selectionStart", originalText.length);
+      this.setInnerProperty("selectionEnd", this.value.length);
 
       // Dispatch an input event so that listeners can process the
       // auto-completed text.
       // @ts-ignore
       const InputEvent = window.InputEvent || Event;
-      const event = new InputEvent('input', {
+      const event = new InputEvent("input", {
         // @ts-ignore
         detail: {
           originalText
@@ -87,7 +87,7 @@ class AutoCompleteInput extends Input {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       autoCompleteSelect: false,
-      originalText: '',
+      originalText: "",
       texts: []
     });
   }
@@ -114,7 +114,7 @@ class AutoCompleteInput extends Input {
     super.value = value;
     // If the input has focus, we assume the user is typing, and rely on
     // the `input` event to update the originalText state.
-    if (this.shadowRoot && !this.inner.matches(':focus')) {
+    if (this.shadowRoot && !this.inner.matches(":focus")) {
       this[internal.setState]({
         originalText: value
       });
@@ -135,7 +135,7 @@ export function autoComplete(/** @type {AutoCompleteInput} */ element) {
 
   // Update the input value to the match. This is just a convenient way to
   // set state.innerProperties.value if the value actually changed.
-  element.setInnerProperty('value', match);
+  element.setInnerProperty("value", match);
 
   // Leave the auto-completed portion selected.
   element[internal.setState]({

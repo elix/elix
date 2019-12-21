@@ -2,11 +2,11 @@ import {
   applyChildNodes,
   composedAncestors,
   firstFocusableElement
-} from '../../src/utilities.js';
-import * as template from '../../src/template.js';
+} from "../../src/utilities.js";
+import * as template from "../../src/template.js";
 
-describe('utilities', () => {
-  it('firstFocusableElement finds first focusable element in light DOM', () => {
+describe("utilities", () => {
+  it("firstFocusableElement finds first focusable element in light DOM", () => {
     const fixture = template.html`
       <div></div>
       <input tabindex="-1">
@@ -17,18 +17,18 @@ describe('utilities', () => {
       <a href="about:blank"></a>
     `;
     const element = firstFocusableElement(fixture.content);
-    const button = fixture.content.querySelector('#enabled');
+    const button = fixture.content.querySelector("#enabled");
     assert.equal(element, button);
   });
 
-  it('firstFocusableElement finds first focusable element in composed tree', () => {
-    const fixture = document.createElement('div');
+  it("firstFocusableElement finds first focusable element in composed tree", () => {
+    const fixture = document.createElement("div");
     const fixtureTemplate = template.html`
       <div></div>
       <slot></slot>
       <button id="enabled"></button>
     `;
-    fixture.attachShadow({ mode: 'open' });
+    fixture.attachShadow({ mode: "open" });
     const shadowContent = document.importNode(fixtureTemplate.content, true);
     fixture.shadowRoot.appendChild(shadowContent);
     const childrenTemplate = template.html`
@@ -39,17 +39,17 @@ describe('utilities', () => {
     const childrenContent = document.importNode(childrenTemplate.content, true);
     fixture.appendChild(childrenContent);
     const element = firstFocusableElement(fixture.shadowRoot);
-    const input = fixture.querySelector('input');
+    const input = fixture.querySelector("input");
     assert.equal(element, input);
   });
 
-  it('applyChildNodes updates child nodes', () => {
-    const fixture = document.createElement('div');
-    const existingChild = document.createTextNode('existing');
+  it("applyChildNodes updates child nodes", () => {
+    const fixture = document.createElement("div");
+    const existingChild = document.createTextNode("existing");
     fixture.appendChild(existingChild);
     const nodes = [
-      document.createTextNode('one'),
-      document.createTextNode('two')
+      document.createTextNode("one"),
+      document.createTextNode("two")
     ];
     applyChildNodes(fixture, nodes);
     assert.equal(fixture.childNodes.length, 2);
@@ -58,7 +58,7 @@ describe('utilities', () => {
     assert.isNull(existingChild.parentNode);
   });
 
-  it('can return the set of ancestors in a composed tree', () => {
+  it("can return the set of ancestors in a composed tree", () => {
     // Tree:
     //
     // outer
@@ -70,14 +70,14 @@ describe('utilities', () => {
     //       strong
     //         "Hello"
     //
-    const outer = document.createElement('div');
-    const host = document.createElement('div');
-    const root = host.attachShadow({ mode: 'open' });
-    const p = document.createElement('p');
-    const slot = document.createElement('slot');
-    const button = document.createElement('button');
-    const strong = document.createElement('strong');
-    const text = new Text('Hello');
+    const outer = document.createElement("div");
+    const host = document.createElement("div");
+    const root = host.attachShadow({ mode: "open" });
+    const p = document.createElement("p");
+    const slot = document.createElement("slot");
+    const button = document.createElement("button");
+    const strong = document.createElement("strong");
+    const text = new Text("Hello");
     strong.append(text);
     button.append(strong);
     host.append(button);

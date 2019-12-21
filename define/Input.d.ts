@@ -1,2 +1,2 @@
-import Input from '../src/Input.js';
+import Input from "../src/Input.js";
 export default Input;

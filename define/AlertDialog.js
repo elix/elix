@@ -1,3 +1,3 @@
-import AlertDialog from '../src/AlertDialog.js';
+import AlertDialog from "../src/AlertDialog.js";
 export default class ElixAlertDialog extends AlertDialog {}
-customElements.define('elix-alert-dialog', ElixAlertDialog);
+customElements.define("elix-alert-dialog", ElixAlertDialog);

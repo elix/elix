@@ -1,16 +1,16 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import AriaRoleMixin from './AriaRoleMixin.js';
-import Backdrop from './Backdrop.js';
-import DisabledMixin from './DisabledMixin.js';
-import FocusVisibleMixin from './FocusVisibleMixin.js';
-import LanguageDirectionMixin from './LanguageDirectionMixin.js';
-import OpenCloseMixin from './OpenCloseMixin.js';
-import OverlayFrame from './OverlayFrame.js';
-import Popup from './Popup.js';
-import ReactiveElement from './ReactiveElement.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import AriaRoleMixin from "./AriaRoleMixin.js";
+import Backdrop from "./Backdrop.js";
+import DisabledMixin from "./DisabledMixin.js";
+import FocusVisibleMixin from "./FocusVisibleMixin.js";
+import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
+import OpenCloseMixin from "./OpenCloseMixin.js";
+import OverlayFrame from "./OverlayFrame.js";
+import Popup from "./Popup.js";
+import ReactiveElement from "./ReactiveElement.js";
 
-const resizeListenerKey = Symbol('resizeListener');
+const resizeListenerKey = Symbol("resizeListener");
 
 const Base = AriaRoleMixin(
   DisabledMixin(
@@ -58,7 +58,7 @@ class PopupSource extends Base {
       // Popup is opened initially, which is somewhat unusual.
       waitThenRenderOpened(this);
     }
-    this.setAttribute('aria-haspopup', 'true');
+    this.setAttribute("aria-haspopup", "true");
   }
 
   [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
@@ -79,22 +79,22 @@ class PopupSource extends Base {
     const result = Object.assign(super[internal.defaultState], {
       backdropPartType: Backdrop,
       framePartType: OverlayFrame,
-      horizontalAlign: 'start',
+      horizontalAlign: "start",
       popupHeight: null,
       popupMeasured: false,
-      popupPosition: 'below',
+      popupPosition: "below",
       popupPartType: Popup,
       popupWidth: null,
-      role: 'none',
+      role: "none",
       roomAbove: null,
       roomBelow: null,
       roomLeft: null,
       roomRight: null,
-      sourcePartType: 'div'
+      sourcePartType: "div"
     });
 
     // Closing popup resets our calculations of popup size and room.
-    result.onChange(['opened'], state => {
+    result.onChange(["opened"], state => {
       if (!state.opened) {
         return {
           popupHeight: null,
@@ -158,7 +158,7 @@ class PopupSource extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.framePartType) {
-      if ('framePartType' in this[internal.ids].popup) {
+      if ("framePartType" in this[internal.ids].popup) {
         const { framePartType } = this[internal.state];
         /** @type {any} */ (this[
           internal.ids
@@ -172,7 +172,7 @@ class PopupSource extends Base {
       );
 
       // Popup's opened state becomes our own opened state.
-      this[internal.ids].popup.addEventListener('opened', () => {
+      this[internal.ids].popup.addEventListener("opened", () => {
         if (!this.opened) {
           this[internal.raiseChangeEvents] = true;
           this.open();
@@ -181,7 +181,7 @@ class PopupSource extends Base {
       });
 
       // Popup's closed state becomes our own closed state.
-      this[internal.ids].popup.addEventListener('closed', event => {
+      this[internal.ids].popup.addEventListener("closed", event => {
         if (!this.closed) {
           this[internal.raiseChangeEvents] = true;
           /** @type {any} */
@@ -196,7 +196,7 @@ class PopupSource extends Base {
     if (changed.backdropPartType) {
       // Since this check depends on popup, do it after we do any necessary
       // transmuting of popup.
-      if ('backdropPartType' in this[internal.ids].popup) {
+      if ("backdropPartType" in this[internal.ids].popup) {
         const { backdropPartType } = this[internal.state];
         /** @type {any} */ (this[
           internal.ids
@@ -226,7 +226,7 @@ class PopupSource extends Base {
       const canLeftAlign = popupWidth <= roomRight;
       const canRightAlign = popupWidth <= roomLeft;
 
-      const preferPositionBelow = popupPosition === 'below';
+      const preferPositionBelow = popupPosition === "below";
 
       // We respect each position popup preference (above/below/right/right) if
       // there's room in that direction. Otherwise, we use the horizontal/vertical
@@ -248,16 +248,16 @@ class PopupSource extends Base {
       let left;
       let right;
       let maxFrameWidth;
-      if (horizontalAlign === 'stretch') {
+      if (horizontalAlign === "stretch") {
         left = 0;
         right = 0;
         maxFrameWidth = null;
       } else {
         const preferLeftAlign =
-          horizontalAlign === 'left' ||
+          horizontalAlign === "left" ||
           (rightToLeft
-            ? horizontalAlign === 'end'
-            : horizontalAlign === 'start');
+            ? horizontalAlign === "end"
+            : horizontalAlign === "start");
         // The above/below preference rules also apply to left/right alignment.
         const alignLeft =
           (preferLeftAlign && (canLeftAlign || roomRight >= roomLeft)) ||
@@ -281,7 +281,7 @@ class PopupSource extends Base {
       // a way to make the popup temporarily invisible until we have checked where
       // it fits.
       const opacity = popupMeasured ? null : 0;
-      const position = popupMeasured ? 'absolute' : 'fixed';
+      const position = popupMeasured ? "absolute" : "fixed";
 
       const popup = this[internal.ids].popup;
       Object.assign(popup.style, {
@@ -296,7 +296,7 @@ class PopupSource extends Base {
         maxHeight: maxFrameHeight ? `${maxFrameHeight}px` : null,
         maxWidth: maxFrameWidth ? `${maxFrameWidth}px` : null
       });
-      this[internal.ids].popupContainer.style.top = positionBelow ? null : '0';
+      this[internal.ids].popupContainer.style.top = positionBelow ? null : "0";
     }
     if (changed.sourcePartType) {
       template.transmute(
@@ -307,10 +307,10 @@ class PopupSource extends Base {
     if (changed.opened) {
       const { opened } = this[internal.state];
       /** @type {any} */ (this[internal.ids].popup).opened = opened;
-      this.setAttribute('aria-expanded', opened.toString());
+      this.setAttribute("aria-expanded", opened.toString());
     }
     if (changed.disabled) {
-      if ('disabled' in this[internal.ids].source) {
+      if ("disabled" in this[internal.ids].source) {
         const { disabled } = this[internal.state];
         /** @type {any} */ (this[internal.ids].source).disabled = disabled;
       }
@@ -411,13 +411,13 @@ function addEventListeners(/** @type {PopupSource} */ element) {
   cast[resizeListenerKey] = () => {
     measurePopup(element);
   };
-  window.addEventListener('resize', cast[resizeListenerKey]);
+  window.addEventListener("resize", cast[resizeListenerKey]);
 }
 
 function removeEventListeners(/** @type {PopupSource} */ element) {
   /** @type {any} */ const cast = element;
   if (cast[resizeListenerKey]) {
-    window.removeEventListener('resize', cast[resizeListenerKey]);
+    window.removeEventListener("resize", cast[resizeListenerKey]);
     cast[resizeListenerKey] = null;
   }
 }

@@ -1,3 +1,3 @@
-import Input from '../src/Input.js';
+import Input from "../src/Input.js";
 export default class ElixInput extends Input {}
-customElements.define('elix-input', ElixInput);
+customElements.define("elix-input", ElixInput);

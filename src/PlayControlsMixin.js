@@ -1,9 +1,9 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
-import SeamlessButton from './SeamlessButton.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
+import SeamlessButton from "./SeamlessButton.js";
 
-const wrap = Symbol('wrap');
+const wrap = Symbol("wrap");
 
 /**
  * Adds buttons for managing playback of a slideshow, audio, etc.
@@ -49,7 +49,7 @@ export default function PlayControlsMixin(Base) {
       let handled;
 
       switch (event.key) {
-        case ' ':
+        case " ":
           this.click();
           handled = true;
           break;
@@ -67,17 +67,17 @@ export default function PlayControlsMixin(Base) {
       }
       if (changed.controlButtonPartType) {
         const controlButtons = this.shadowRoot.querySelectorAll(
-          '.controlButton'
+          ".controlButton"
         );
         template.transmute(
           controlButtons,
           this[internal.state].controlButtonPartType
         );
-        this[internal.ids].previousButton.addEventListener('click', event => {
+        this[internal.ids].previousButton.addEventListener("click", event => {
           this.selectPrevious();
           event.stopPropagation();
         });
-        this[internal.ids].playButton.addEventListener('click', event => {
+        this[internal.ids].playButton.addEventListener("click", event => {
           if (!this.playing) {
             this.play();
           } else {
@@ -85,19 +85,19 @@ export default function PlayControlsMixin(Base) {
           }
           event.stopPropagation();
         });
-        this[internal.ids].nextButton.addEventListener('click', event => {
+        this[internal.ids].nextButton.addEventListener("click", event => {
           this.selectNext();
           event.stopPropagation();
         });
       }
       if (changed.playing) {
         const { playing } = this[internal.state];
-        this[internal.ids].pausedIcon.style.display = playing ? 'none' : '';
-        this[internal.ids].playingIcon.style.display = playing ? '' : 'none';
+        this[internal.ids].pausedIcon.style.display = playing ? "none" : "";
+        this[internal.ids].playingIcon.style.display = playing ? "" : "none";
       }
       if (changed.rightToLeft) {
         const rightToLeft = this[internal.state].rightToLeft;
-        const transform = rightToLeft ? 'rotate(180deg)' : '';
+        const transform = rightToLeft ? "rotate(180deg)" : "";
         this[internal.ids].nextIcon.style.transform = transform;
         this[internal.ids].previousIcon.style.transform = transform;
       }
@@ -195,7 +195,7 @@ export default function PlayControlsMixin(Base) {
       template.wrap(
         original,
         playControlsTemplate.content,
-        '#playControlsContainer'
+        "#playControlsContainer"
       );
     }
   }

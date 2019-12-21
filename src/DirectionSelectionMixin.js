@@ -1,5 +1,5 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Maps direction semantics to selection semantics.
@@ -30,11 +30,11 @@ export default function DirectionSelectionMixin(Base) {
       // down/left/right/up.
       state.onChange(
         [
-          'canSelectNext',
-          'canSelectPrevious',
-          'languageDirection',
-          'orientation',
-          'rightToLeft'
+          "canSelectNext",
+          "canSelectPrevious",
+          "languageDirection",
+          "orientation",
+          "rightToLeft"
         ],
         state => {
           const {
@@ -46,8 +46,8 @@ export default function DirectionSelectionMixin(Base) {
           const canGoNext = canSelectNext;
           const canGoPrevious = canSelectPrevious;
           const horizontal =
-            orientation === 'horizontal' || orientation === 'both';
-          const vertical = orientation === 'vertical' || orientation === 'both';
+            orientation === "horizontal" || orientation === "both";
+          const vertical = orientation === "vertical" || orientation === "both";
           const canGoDown = vertical && canSelectNext;
           const canGoLeft = !horizontal
             ? false

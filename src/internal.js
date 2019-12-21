@@ -45,7 +45,7 @@
  * mixin opens, it invokes this method on any content elements that define it.
  * This gives the contents a chance to resize in response to being displayed.
  */
-export const checkSize = Symbol('checkSize');
+export const checkSize = Symbol("checkSize");
 
 /**
  * Symbol for the `componentDidMount` method.
@@ -55,7 +55,7 @@ export const checkSize = Symbol('checkSize');
  *
  * @function componentDidMount
  */
-export const componentDidMount = Symbol('componentDidMount');
+export const componentDidMount = Symbol("componentDidMount");
 
 /**
  * Symbol for the `componentDidUpdate` method.
@@ -66,7 +66,7 @@ export const componentDidMount = Symbol('componentDidMount');
  *
  * @function componentDidUpdate
  */
-export const componentDidUpdate = Symbol('componentDidUpdate');
+export const componentDidUpdate = Symbol("componentDidUpdate");
 
 /**
  * Symbol for the `contentSlot` property.
@@ -78,7 +78,7 @@ export const componentDidUpdate = Symbol('componentDidUpdate');
  *
  * @var {HTMLSlotElement} contentSlot
  */
-export const contentSlot = Symbol('contentSlot');
+export const contentSlot = Symbol("contentSlot");
 
 /**
  * Symbol for the `defaultTabIndex` property.
@@ -86,14 +86,14 @@ export const contentSlot = Symbol('contentSlot');
  * [KeyboardMixin](KeyboardMixin) uses this if it is unable to successfully
  * parse a string tabindex attribute.
  */
-export const defaultTabIndex = Symbol('defaultTabIndex');
+export const defaultTabIndex = Symbol("defaultTabIndex");
 
 /**
  * The default state for this element.
  *
  * @var {State}
  */
-export const defaultState = Symbol('defaultState');
+export const defaultState = Symbol("defaultState");
 
 /**
  * Symbol for the `delegatesFocus` property.
@@ -103,7 +103,7 @@ export const defaultState = Symbol('defaultState');
  * don't support that natively. Mixins like [KeyboardMixin](KeyboardMixin) use
  * this to accommodate focus delegation.
  */
-export const delegatesFocus = Symbol('delegatesFocus');
+export const delegatesFocus = Symbol("delegatesFocus");
 
 /**
  * Symbol for the `effectEndTarget` property.
@@ -114,7 +114,7 @@ export const delegatesFocus = Symbol('delegatesFocus');
  *
  * @returns {Element} The element with a CSS transition that ends the effect
  */
-export const effectEndTarget = Symbol('effectEndTarget');
+export const effectEndTarget = Symbol("effectEndTarget");
 
 /**
  * Symbol for the `focusTarget` property.
@@ -123,7 +123,7 @@ export const effectEndTarget = Symbol('effectEndTarget');
  * 1) the element itself, in browsers that support native focus delegation or,
  * 2) the shadow root's first focusable element.
  */
-export const focusTarget = Symbol('focusTarget');
+export const focusTarget = Symbol("focusTarget");
 
 /**
  * Symbol for the `getItemText` method.
@@ -139,7 +139,7 @@ export const focusTarget = Symbol('focusTarget');
  * @function getItemText
  * @returns {string} the text of the item
  */
-export const getItemText = Symbol('getItemText');
+export const getItemText = Symbol("getItemText");
 
 /**
  * Symbol for the `goDown` method.
@@ -148,7 +148,7 @@ export const getItemText = Symbol('getItemText');
  *
  * @function goDown
  */
-export const goDown = Symbol('goDown');
+export const goDown = Symbol("goDown");
 
 /**
  * Symbol for the `goEnd` method.
@@ -158,7 +158,7 @@ export const goDown = Symbol('goDown');
  *
  * @function goEnd
  */
-export const goEnd = Symbol('goEnd');
+export const goEnd = Symbol("goEnd");
 
 /**
  * Symbol for the `goLeft` method.
@@ -170,7 +170,7 @@ export const goEnd = Symbol('goEnd');
  *
  * @function goLeft
  */
-export const goLeft = Symbol('goLeft');
+export const goLeft = Symbol("goLeft");
 
 /**
  * Symbol for the `goNext` method.
@@ -179,7 +179,7 @@ export const goLeft = Symbol('goLeft');
  *
  * @function goNext
  */
-export const goNext = Symbol('goNext');
+export const goNext = Symbol("goNext");
 
 /**
  * Symbol for the `goPrevious` method.
@@ -188,7 +188,7 @@ export const goNext = Symbol('goNext');
  *
  * @function goPrevious
  */
-export const goPrevious = Symbol('goPrevious');
+export const goPrevious = Symbol("goPrevious");
 
 /**
  * Symbol for the `goRight` method.
@@ -200,7 +200,7 @@ export const goPrevious = Symbol('goPrevious');
  *
  * @function goRight
  */
-export const goRight = Symbol('goRight');
+export const goRight = Symbol("goRight");
 
 /**
  * Symbol for the `goStart` method.
@@ -210,7 +210,7 @@ export const goRight = Symbol('goRight');
  *
  * @function goStart
  */
-export const goStart = Symbol('goStart');
+export const goStart = Symbol("goStart");
 
 /**
  * Symbol for the `goUp` method.
@@ -219,7 +219,7 @@ export const goStart = Symbol('goStart');
  *
  * @function goUp
  */
-export const goUp = Symbol('goUp');
+export const goUp = Symbol("goUp");
 
 /**
  * Symbol for the `hasDynamicTemplate` property.
@@ -228,7 +228,7 @@ export const goUp = Symbol('goUp');
  * static class property getter with this symbol and have it return `true`.
  * This will disable template caching for your component.
  */
-export const hasDynamicTemplate = Symbol('hasDynamicTemplate');
+export const hasDynamicTemplate = Symbol("hasDynamicTemplate");
 
 /**
  * Symbol for the `ids` property.
@@ -245,7 +245,7 @@ export const hasDynamicTemplate = Symbol('hasDynamicTemplate');
  *
  * @type {object} - a dictionary mapping shadow element IDs to elements
  */
-export const ids = Symbol('ids');
+export const ids = Symbol("ids");
 
 /**
  * Symbol for the `itemMatchesState` method.
@@ -273,7 +273,7 @@ export const ids = Symbol('ids');
  * @param {object} state - the state in question
  * @returns {boolean}
  */
-export const itemMatchesState = Symbol('itemMatchesState');
+export const itemMatchesState = Symbol("itemMatchesState");
 
 /**
  * Symbol for the `itemsDelegate` property.
@@ -284,7 +284,7 @@ export const itemMatchesState = Symbol('itemMatchesState');
  *
  * @var {Element} itemsDelegate
  */
-export const itemsDelegate = Symbol('itemsDelegate');
+export const itemsDelegate = Symbol("itemsDelegate");
 
 /**
  * Symbol for the `keydown` method.
@@ -307,7 +307,7 @@ export const itemsDelegate = Symbol('itemsDelegate');
  *
  * @function keydown
  */
-export const keydown = Symbol('keydown');
+export const keydown = Symbol("keydown");
 
 /**
  * Symbol for the `mouseenter` method.
@@ -321,7 +321,7 @@ export const keydown = Symbol('keydown');
  *
  * @function mouseenter
  */
-export const mouseenter = Symbol('mouseenter');
+export const mouseenter = Symbol("mouseenter");
 
 /**
  * Symbol for the `mouseleave` method.
@@ -335,7 +335,7 @@ export const mouseenter = Symbol('mouseenter');
  *
  * @function mouseleave
  */
-export const mouseleave = Symbol('mouseleave');
+export const mouseleave = Symbol("mouseleave");
 
 /**
  * Symbol for access to native HTML element internals.
@@ -343,7 +343,7 @@ export const mouseleave = Symbol('mouseleave');
  // @ts-ignore
  * @type {ElementInternals}
  */
-export const nativeInternals = Symbol('nativeInternals');
+export const nativeInternals = Symbol("nativeInternals");
 
 /**
  * Symbol for the `populate` method.
@@ -354,7 +354,7 @@ export const nativeInternals = Symbol('nativeInternals');
  *
  * @function populate
  */
-export const populate = Symbol('populate');
+export const populate = Symbol("populate");
 
 /**
  * Symbol for the `raiseChangeEvents` property.
@@ -401,7 +401,7 @@ export const populate = Symbol('populate');
  *
  * @var {boolean} raiseChangeEvents
  */
-export const raiseChangeEvents = Symbol('raiseChangeEvents');
+export const raiseChangeEvents = Symbol("raiseChangeEvents");
 
 /**
  * Symbol for the `render` method.
@@ -411,7 +411,7 @@ export const raiseChangeEvents = Symbol('raiseChangeEvents');
  *
  * @function render
  */
-export const render = Symbol('render');
+export const render = Symbol("render");
 
 /**
  * Symbol for the `renderChanges` method.
@@ -421,7 +421,7 @@ export const render = Symbol('render');
  *
  * @function renderChanges
  */
-export const renderChanges = Symbol('renderChanges');
+export const renderChanges = Symbol("renderChanges");
 
 /**
  * Symbol for the `rendering` property.
@@ -431,7 +431,7 @@ export const renderChanges = Symbol('renderChanges');
  *
  * @var {boolean} rendering
  */
-export const rendering = Symbol('rendering');
+export const rendering = Symbol("rendering");
 
 /**
  * Symbol for the `scrollTarget` property.
@@ -443,7 +443,7 @@ export const rendering = Symbol('rendering');
  *
  * @var {Element} scrollTarget
  */
-export const scrollTarget = Symbol('scrollTarget');
+export const scrollTarget = Symbol("scrollTarget");
 
 /**
  * Symbol for the `setState` method.
@@ -453,7 +453,7 @@ export const scrollTarget = Symbol('scrollTarget');
  *
  * @function setState
  */
-export const setState = Symbol('setState');
+export const setState = Symbol("setState");
 
 /**
  * Symbol for the `startEffect` method.
@@ -467,7 +467,7 @@ export const setState = Symbol('setState');
  *
  * @function startEffect
  */
-export const startEffect = Symbol('startEffect');
+export const startEffect = Symbol("startEffect");
 
 /**
  * The element's current state.
@@ -476,7 +476,7 @@ export const startEffect = Symbol('startEffect');
  *
  * @var {State}
  */
-export const state = Symbol('state');
+export const state = Symbol("state");
 
 /**
  * Symbol for the `swipeDown` method.
@@ -486,7 +486,7 @@ export const state = Symbol('state');
  *
  * @function swipeDown
  */
-export const swipeDown = Symbol('swipeDown');
+export const swipeDown = Symbol("swipeDown");
 
 /**
  * Symbol for the `swipeDownComplete` method.
@@ -496,7 +496,7 @@ export const swipeDown = Symbol('swipeDown');
  *
  * @function swipeDownComplete
  */
-export const swipeDownComplete = Symbol('swipeDownComplete');
+export const swipeDownComplete = Symbol("swipeDownComplete");
 
 /**
  * Symbol for the `swipeLeft` method.
@@ -507,7 +507,7 @@ export const swipeDownComplete = Symbol('swipeDownComplete');
  *
  * @function swipeLeft
  */
-export const swipeLeft = Symbol('swipeLeft');
+export const swipeLeft = Symbol("swipeLeft");
 
 /**
  * Symbol for the `swipeLeftTransitionEnd` method.
@@ -517,7 +517,7 @@ export const swipeLeft = Symbol('swipeLeft');
  *
  * @function swipeLeftTransitionEnd
  */
-export const swipeLeftTransitionEnd = Symbol('swipeLeftTransitionEnd');
+export const swipeLeftTransitionEnd = Symbol("swipeLeftTransitionEnd");
 
 /**
  * Symbol for the `swipeRight` method.
@@ -528,7 +528,7 @@ export const swipeLeftTransitionEnd = Symbol('swipeLeftTransitionEnd');
  *
  * @function swipeRight
  */
-export const swipeRight = Symbol('swipeRight');
+export const swipeRight = Symbol("swipeRight");
 
 /**
  * Symbol for the `swipeRightTransitionEnd` method.
@@ -538,7 +538,7 @@ export const swipeRight = Symbol('swipeRight');
  *
  * @function swipeRightTransitionEnd
  */
-export const swipeRightTransitionEnd = Symbol('swipeRightTransitionEnd');
+export const swipeRightTransitionEnd = Symbol("swipeRightTransitionEnd");
 
 /**
  * Symbol for the `swipeUp` method.
@@ -548,7 +548,7 @@ export const swipeRightTransitionEnd = Symbol('swipeRightTransitionEnd');
  *
  * @function swipeUp
  */
-export const swipeUp = Symbol('swipeUp');
+export const swipeUp = Symbol("swipeUp");
 
 /**
  * Symbol for the `swipeUpComplete` method.
@@ -558,7 +558,7 @@ export const swipeUp = Symbol('swipeUp');
  *
  * @function swipeUpComplete
  */
-export const swipeUpComplete = Symbol('swipeUpComplete');
+export const swipeUpComplete = Symbol("swipeUpComplete");
 
 /**
  * Symbol for the `swipeStart` method.
@@ -571,7 +571,7 @@ export const swipeUpComplete = Symbol('swipeUpComplete');
  * @param {number} clientX
  * @param {number} clientY
  */
-export const swipeStart = Symbol('swipeStart');
+export const swipeStart = Symbol("swipeStart");
 
 /**
  * Symbol for the `swipeTarget` property.
@@ -589,7 +589,7 @@ export const swipeStart = Symbol('swipeStart');
  *
  * @var {HTMLElement} swipeTarget
  */
-export const swipeTarget = Symbol('swipeTarget');
+export const swipeTarget = Symbol("swipeTarget");
 
 /**
  * Symbol for the `tap` method.
@@ -600,7 +600,7 @@ export const swipeTarget = Symbol('swipeTarget');
  *
  * @function tap
  */
-export const tap = Symbol('tap');
+export const tap = Symbol("tap");
 
 /**
  * Symbol for the `template` method.
@@ -610,7 +610,7 @@ export const tap = Symbol('tap');
  *
  * @var {HTMLTemplateElement} template
  */
-export const template = Symbol('template');
+export const template = Symbol("template");
 
 /**
  * Symbol for the `update` method.
@@ -622,11 +622,11 @@ export const template = Symbol('template');
  *
  * @function update
  */
-export const update = Symbol('update');
+export const update = Symbol("update");
 
 // Expose internals as a global when debugging.
-const elixdebug = new URLSearchParams(location.search).get('elixdebug');
-if (elixdebug === 'true') {
+const elixdebug = new URLSearchParams(location.search).get("elixdebug");
+if (elixdebug === "true") {
   /** @type {any} */ (window).elix = {
     internal: {
       checkSize,

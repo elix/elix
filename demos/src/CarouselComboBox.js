@@ -1,7 +1,7 @@
-import * as internal from '../../src/internal.js';
-import * as template from '../../src/template.js';
-import AutoCompleteComboBox from '../../src/AutoCompleteComboBox.js';
-import Carousel from '../../src/Carousel.js';
+import * as internal from "../../src/internal.js";
+import * as template from "../../src/template.js";
+import AutoCompleteComboBox from "../../src/AutoCompleteComboBox.js";
+import Carousel from "../../src/Carousel.js";
 
 class CarouselComboBox extends AutoCompleteComboBox {
   get [internal.defaultState]() {
@@ -25,4 +25,4 @@ class CarouselComboBox extends AutoCompleteComboBox {
 }
 
 export default CarouselComboBox;
-customElements.define('carousel-combo-box', CarouselComboBox);
+customElements.define("carousel-combo-box", CarouselComboBox);

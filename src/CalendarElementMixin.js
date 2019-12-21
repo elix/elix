@@ -1,6 +1,6 @@
-import * as calendar from './calendar.js';
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as calendar from "./calendar.js";
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Adds locale-sensitive date support.
@@ -28,7 +28,7 @@ export default function CalendarElementMixin(Base) {
          *
          * @event date-changed
          */
-        const event = new CustomEvent('date-changed', {
+        const event = new CustomEvent("date-changed", {
           detail: { date }
         });
         this.dispatchEvent(event);
@@ -51,7 +51,7 @@ export default function CalendarElementMixin(Base) {
       return this[internal.state].date;
     }
     set date(date) {
-      const parsed = typeof date === 'string' ? new Date(date) : date;
+      const parsed = typeof date === "string" ? new Date(date) : date;
       // Only update state if actual date value differs from current state.
       if (!calendar.datesEqual(parsed, this[internal.state].date)) {
         this[internal.setState]({

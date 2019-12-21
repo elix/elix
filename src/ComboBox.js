@@ -1,13 +1,13 @@
-import { forwardFocus } from './utilities.js';
-import * as internal from './internal.js';
-import * as template from './template.js';
-import AriaRoleMixin from './AriaRoleMixin.js';
-import DelegateFocusMixin from './DelegateFocusMixin.js';
-import Hidden from './Hidden.js';
-import KeyboardMixin from './KeyboardMixin.js';
-import PopupSource from './PopupSource.js';
-import SeamlessButton from './SeamlessButton.js';
-import FormElementMixin from './FormElementMixin.js';
+import { forwardFocus } from "./utilities.js";
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import AriaRoleMixin from "./AriaRoleMixin.js";
+import DelegateFocusMixin from "./DelegateFocusMixin.js";
+import Hidden from "./Hidden.js";
+import KeyboardMixin from "./KeyboardMixin.js";
+import PopupSource from "./PopupSource.js";
+import SeamlessButton from "./SeamlessButton.js";
+import FormElementMixin from "./FormElementMixin.js";
 
 const Base = AriaRoleMixin(
   DelegateFocusMixin(FormElementMixin(KeyboardMixin(PopupSource)))
@@ -48,7 +48,7 @@ class ComboBox extends Base {
           /** @type {any} */
           const cast = this[internal.ids].input;
           const value = cast.value;
-          if (value > '') {
+          if (value > "") {
             cast.selectionStart = 0;
             cast.selectionEnd = cast.value.length;
           }
@@ -59,17 +59,17 @@ class ComboBox extends Base {
 
   get [internal.defaultState]() {
     const state = Object.assign(super[internal.defaultState], {
-      ariaLabel: '',
+      ariaLabel: "",
       backdropPartType: Hidden,
       focused: false,
-      inputPartType: 'input',
-      orientation: 'vertical',
-      placeholder: '',
-      role: 'combobox',
+      inputPartType: "input",
+      orientation: "vertical",
+      placeholder: "",
+      role: "combobox",
       selectText: false,
-      sourcePartType: 'div',
+      sourcePartType: "div",
       toggleButtonPartType: SeamlessButton,
-      value: ''
+      value: ""
     });
 
     // Select text on closing.
@@ -79,9 +79,9 @@ class ComboBox extends Base {
     // We therefore avoid leaving text selected if an on-screen keyboard is in
     // use. Since we can't actually detect that, we use the absence of a
     // fine-grained pointer (mouse) as a proxy for mobile.
-    state.onChange(['opened'], state => {
+    state.onChange(["opened"], state => {
       if (!state.opened) {
-        const probablyMobile = matchMedia('(pointer: coarse)').matches;
+        const probablyMobile = matchMedia("(pointer: coarse)").matches;
         const selectText = !probablyMobile;
         return {
           selectText
@@ -121,25 +121,25 @@ class ComboBox extends Base {
 
     switch (event.key) {
       // Up/Down arrow keys and Page Up/Page Down open the popup.
-      case 'ArrowDown':
-      case 'ArrowUp':
-      case 'PageDown':
-      case 'PageUp':
+      case "ArrowDown":
+      case "ArrowUp":
+      case "PageDown":
+      case "PageUp":
         if (this.closed) {
           this.open();
           handled = true;
         }
         break;
 
-      case 'Enter':
+      case "Enter":
         this.close();
         handled = true;
         break;
 
       // Escape closes popup and indicates why.
-      case 'Escape':
+      case "Escape":
         this.close({
-          canceled: 'Escape'
+          canceled: "Escape"
         });
         handled = true;
         break;
@@ -171,7 +171,7 @@ class ComboBox extends Base {
         this[internal.state].inputPartType
       );
 
-      this[internal.ids].input.addEventListener('blur', () => {
+      this[internal.ids].input.addEventListener("blur", () => {
         this[internal.setState]({
           focused: false
         });
@@ -183,7 +183,7 @@ class ComboBox extends Base {
         }
       });
 
-      this[internal.ids].input.addEventListener('focus', () => {
+      this[internal.ids].input.addEventListener("focus", () => {
         this[internal.raiseChangeEvents] = true;
         this[internal.setState]({
           focused: true
@@ -191,7 +191,7 @@ class ComboBox extends Base {
         this[internal.raiseChangeEvents] = false;
       });
 
-      this[internal.ids].input.addEventListener('input', () => {
+      this[internal.ids].input.addEventListener("input", () => {
         this[internal.raiseChangeEvents] = true;
         /** @type {any} */
         const cast = this[internal.ids].input;
@@ -200,7 +200,7 @@ class ComboBox extends Base {
           value,
           selectText: false
         };
-        if (this.closed && value > '') {
+        if (this.closed && value > "") {
           // If user types while popup is closed, implicitly open it.
           changes.opened = true;
         }
@@ -208,7 +208,7 @@ class ComboBox extends Base {
         this[internal.raiseChangeEvents] = false;
       });
 
-      this[internal.ids].input.addEventListener('keydown', () => {
+      this[internal.ids].input.addEventListener("keydown", () => {
         this[internal.raiseChangeEvents] = true;
         this[internal.setState]({
           selectText: false
@@ -217,7 +217,7 @@ class ComboBox extends Base {
       });
 
       // If the user clicks on the input and the popup is closed, open it.
-      this[internal.ids].input.addEventListener('mousedown', () => {
+      this[internal.ids].input.addEventListener("mousedown", () => {
         this[internal.raiseChangeEvents] = true;
         this[internal.setState]({
           selectText: false
@@ -233,7 +233,7 @@ class ComboBox extends Base {
         this[internal.ids].toggleButton,
         this[internal.state].toggleButtonPartType
       );
-      this[internal.ids].toggleButton.addEventListener('mousedown', () => {
+      this[internal.ids].toggleButton.addEventListener("mousedown", () => {
         this[internal.raiseChangeEvents] = true;
         this.toggle();
         this[internal.raiseChangeEvents] = false;
@@ -248,24 +248,24 @@ class ComboBox extends Base {
     }
     if (changed.popupPartType) {
       const popup = this[internal.ids].popup;
-      popup.removeAttribute('tabindex');
-      if ('autoFocus' in popup) {
+      popup.removeAttribute("tabindex");
+      if ("autoFocus" in popup) {
         /** @type {any} */ (popup).autoFocus = false;
       }
       const frame = /** @type {any} */ (popup).frame;
       if (frame) {
         Object.assign(frame.style, {
-          display: 'flex',
-          flexDirection: 'column'
+          display: "flex",
+          flexDirection: "column"
         });
       }
-      if ('closeOnWindowResize' in popup) {
+      if ("closeOnWindowResize" in popup) {
         /** @type {any} */ (popup).closeOnWindowResize = false;
       }
     }
     if (changed.ariaLabel) {
       this[internal.ids].input.setAttribute(
-        'aria-label',
+        "aria-label",
         this[internal.state].ariaLabel
       );
     }
@@ -280,25 +280,25 @@ class ComboBox extends Base {
     }
     if (changed.popupPosition) {
       const { popupPosition } = this[internal.state];
-      const showDown = popupPosition === 'below';
-      this[internal.ids].downIcon.style.display = showDown ? 'block' : 'none';
-      this[internal.ids].upIcon.style.display = showDown ? 'none' : 'block';
+      const showDown = popupPosition === "below";
+      this[internal.ids].downIcon.style.display = showDown ? "block" : "none";
+      this[internal.ids].upIcon.style.display = showDown ? "none" : "block";
     }
     if (changed.rightToLeft) {
       const { rightToLeft } = this[internal.state];
       // We want to style the inner input if it's been created with
       // WrappedStandardElement, otherwise style the input directly.
       const cast = /** @type {any} */ (this[internal.ids].input);
-      const input = 'inner' in cast ? cast.inner : cast;
+      const input = "inner" in cast ? cast.inner : cast;
       Object.assign(input.style, {
-        paddingBottom: '2px',
-        paddingLeft: rightToLeft ? '1.5em' : '2px',
-        paddingRight: rightToLeft ? '2px' : '1.5em',
-        paddingTop: '2px'
+        paddingBottom: "2px",
+        paddingLeft: rightToLeft ? "1.5em" : "2px",
+        paddingRight: rightToLeft ? "2px" : "1.5em",
+        paddingTop: "2px"
       });
       Object.assign(this[internal.ids].toggleButton.style, {
-        left: rightToLeft ? '3px' : '',
-        right: rightToLeft ? '' : '3px'
+        left: rightToLeft ? "3px" : "",
+        right: rightToLeft ? "" : "3px"
       });
     }
     if (changed.value) {

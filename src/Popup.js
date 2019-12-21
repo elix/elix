@@ -1,7 +1,7 @@
-import * as internal from './internal.js';
-import KeyboardMixin from './KeyboardMixin.js';
-import Overlay from './Overlay.js';
-import PopupModalityMixin from './PopupModalityMixin.js';
+import * as internal from "./internal.js";
+import KeyboardMixin from "./KeyboardMixin.js";
+import Overlay from "./Overlay.js";
+import PopupModalityMixin from "./PopupModalityMixin.js";
 
 const Base = KeyboardMixin(PopupModalityMixin(Overlay));
 
@@ -19,16 +19,16 @@ class Popup extends Base {
     super[internal.render](changed);
     if (changed.backdropPartType) {
       this[internal.ids].backdrop.addEventListener(
-        'mousedown',
+        "mousedown",
         mousedownHandler.bind(this)
       );
 
       // Mobile Safari doesn't seem to generate a mousedown handler on the
       // backdrop in some cases that Mobile Chrome handles. For completeness, we
       // also listen to touchend.
-      if (!('PointerEvent' in window)) {
+      if (!("PointerEvent" in window)) {
         this[internal.ids].backdrop.addEventListener(
-          'touchend',
+          "touchend",
           mousedownHandler
         );
       }

@@ -1,6 +1,6 @@
-import * as internal from '../../src/internal.js';
-import * as template from '../../src/template.js';
-import SeamlessButton from '../../src/SeamlessButton.js';
+import * as internal from "../../src/internal.js";
+import * as template from "../../src/template.js";
+import SeamlessButton from "../../src/SeamlessButton.js";
 
 class CustomArrowButton extends SeamlessButton {
   get [internal.template]() {
@@ -54,5 +54,5 @@ class CustomArrowButton extends SeamlessButton {
   }
 }
 
-customElements.define('custom-arrow-button', CustomArrowButton);
+customElements.define("custom-arrow-button", CustomArrowButton);
 export default CustomArrowButton;

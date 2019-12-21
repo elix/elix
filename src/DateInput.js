@@ -1,8 +1,8 @@
-import * as calendar from './calendar.js';
-import * as internal from './internal.js';
-import * as template from './template.js';
-import CalendarElementMixin from './CalendarElementMixin.js';
-import Input from './Input.js';
+import * as calendar from "./calendar.js";
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import CalendarElementMixin from "./CalendarElementMixin.js";
+import Input from "./Input.js";
 
 const Base = CalendarElementMixin(Input);
 
@@ -15,14 +15,14 @@ const Base = CalendarElementMixin(Input);
 class DateInput extends Base {
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
-    this[internal.ids].inner.addEventListener('blur', () => {
+    this[internal.ids].inner.addEventListener("blur", () => {
       this[internal.raiseChangeEvents] = true;
       this[internal.setState]({
         focused: false
       });
       this[internal.raiseChangeEvents] = false;
     });
-    this[internal.ids].inner.addEventListener('focus', () => {
+    this[internal.ids].inner.addEventListener("focus", () => {
       this[internal.raiseChangeEvents] = true;
       this[internal.setState]({
         focused: true
@@ -50,9 +50,9 @@ class DateInput extends Base {
 
   get [internal.defaultState]() {
     const dateTimeFormatOptions = {
-      day: 'numeric',
-      month: 'numeric',
-      year: 'numeric'
+      day: "numeric",
+      month: "numeric",
+      year: "numeric"
     };
     const state = Object.assign(super[internal.defaultState], {
       dateSelected: false,
@@ -64,7 +64,7 @@ class DateInput extends Base {
     });
 
     // If the date changed while focused, assume user changed date.
-    state.onChange('date', state => {
+    state.onChange("date", state => {
       if (state.focused) {
         return {
           userChangedDate: true
@@ -77,7 +77,7 @@ class DateInput extends Base {
     // the date was changed from the outside,
     // we're closing or losing focus and the user's changed the date,
     // or the format changed and the date was the last substantive property set.
-    state.onChange(['date', 'dateTimeFormat', 'focused'], (state, changed) => {
+    state.onChange(["date", "dateTimeFormat", "focused"], (state, changed) => {
       const {
         date,
         datePriority,
@@ -91,7 +91,7 @@ class DateInput extends Base {
         (blur && userChangedDate) ||
         (changed.dateTimeFormat && datePriority)
       ) {
-        const formattedDate = date ? this.formatDate(date, dateTimeFormat) : '';
+        const formattedDate = date ? this.formatDate(date, dateTimeFormat) : "";
         const innerProperties = Object.assign({}, state.innerProperties, {
           value: formattedDate
         });
@@ -106,7 +106,7 @@ class DateInput extends Base {
     // Update date from value if the value was changed, or the date format or
     // time bias changed and the value was the last substantive property set.
     state.onChange(
-      ['dateTimeFormat', 'innerProperties', 'timeBias'],
+      ["dateTimeFormat", "innerProperties", "timeBias"],
       (state, changed) => {
         const {
           date,
@@ -139,7 +139,7 @@ class DateInput extends Base {
     );
 
     // Update our time format if the locale or format options change.
-    state.onChange(['dateTimeFormatOptions', 'locale'], state => {
+    state.onChange(["dateTimeFormatOptions", "locale"], state => {
       const { dateTimeFormatOptions, locale } = state;
       const dateTimeFormat = calendar.dateTimeFormat(
         locale,

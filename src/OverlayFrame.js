@@ -1,6 +1,6 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import ReactiveElement from './ReactiveElement.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import ReactiveElement from "./ReactiveElement.js";
 
 /**
  * A simple frame for overlay content.

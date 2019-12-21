@@ -1,6 +1,6 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import WrappedStandardElement from './WrappedStandardElement.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import WrappedStandardElement from "./WrappedStandardElement.js";
 
 /**
  * A thumbnail image used to represent a larger image.
@@ -10,7 +10,7 @@ import WrappedStandardElement from './WrappedStandardElement.js';
  *
  * @inherits WrappedStandardElement
  */
-class Thumbnail extends WrappedStandardElement.wrap('img') {
+class Thumbnail extends WrappedStandardElement.wrap("img") {
   get [internal.template]() {
     return template.concat(
       super[internal.template],

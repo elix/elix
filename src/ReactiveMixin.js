@@ -1,14 +1,14 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
-import State from './State.js';
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
+import State from "./State.js";
 
 /** @type {any} */
-const mountedKey = Symbol('mounted');
+const mountedKey = Symbol("mounted");
 /** @type {any} */
-const stateKey = Symbol('state');
+const stateKey = Symbol("state");
 /** @type {any} */
 const raiseChangeEventsInNextRenderKey = Symbol(
-  'raiseChangeEventsInNextRender'
+  "raiseChangeEventsInNextRender"
 );
 
 // Tracks total set of changes made to elements since their last render.
@@ -233,9 +233,9 @@ export default function ReactiveMixin(Base) {
   }
 
   // Expose state when debugging; see note for `[internal.state]` getter.
-  const elixdebug = new URLSearchParams(location.search).get('elixdebug');
-  if (elixdebug === 'true') {
-    Object.defineProperty(Reactive.prototype, 'state', {
+  const elixdebug = new URLSearchParams(location.search).get("elixdebug");
+  if (elixdebug === "true") {
+    Object.defineProperty(Reactive.prototype, "state", {
       get() {
         return this[internal.state];
       }

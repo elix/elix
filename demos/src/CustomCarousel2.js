@@ -1,7 +1,7 @@
-import * as internal from '../../src/internal.js';
-import Carousel from '../../src/Carousel.js';
-import CustomArrowButton from './CustomArrowButton.js';
-import CustomPageDot from './CustomPageDot.js';
+import * as internal from "../../src/internal.js";
+import Carousel from "../../src/Carousel.js";
+import CustomArrowButton from "./CustomArrowButton.js";
+import CustomPageDot from "./CustomPageDot.js";
 
 // Shows how a carousel subclass can define custom part types for the arrows and
 // dots.
@@ -14,5 +14,5 @@ class CustomCarousel extends Carousel {
   }
 }
 
-customElements.define('custom-carousel', CustomCarousel);
+customElements.define("custom-carousel", CustomCarousel);
 export default CustomCarousel;

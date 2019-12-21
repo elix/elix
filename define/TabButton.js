@@ -1,3 +1,3 @@
-import TabButton from '../src/TabButton.js';
+import TabButton from "../src/TabButton.js";
 export default class ElixTabButton extends TabButton {}
-customElements.define('elix-tab-button', ElixTabButton);
+customElements.define("elix-tab-button", ElixTabButton);

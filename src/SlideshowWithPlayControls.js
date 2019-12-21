@@ -1,15 +1,15 @@
-import * as internal from './internal.js';
-import AriaListMixin from './AriaListMixin.js';
-import DirectionSelectionMixin from './DirectionSelectionMixin.js';
-import FocusVisibleMixin from './FocusVisibleMixin.js';
-import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
-import KeyboardMixin from './KeyboardMixin.js';
-import LanguageDirectionMixin from './LanguageDirectionMixin.js';
-import PlayControlsMixin from './PlayControlsMixin.js';
-import Slideshow from './Slideshow.js';
-import SwipeDirectionMixin from './SwipeDirectionMixin.js';
-import TouchSwipeMixin from './TouchSwipeMixin.js';
-import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
+import * as internal from "./internal.js";
+import AriaListMixin from "./AriaListMixin.js";
+import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
+import FocusVisibleMixin from "./FocusVisibleMixin.js";
+import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
+import KeyboardMixin from "./KeyboardMixin.js";
+import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
+import PlayControlsMixin from "./PlayControlsMixin.js";
+import Slideshow from "./Slideshow.js";
+import SwipeDirectionMixin from "./SwipeDirectionMixin.js";
+import TouchSwipeMixin from "./TouchSwipeMixin.js";
+import TrackpadSwipeMixin from "./TrackpadSwipeMixin.js";
 
 const Base = AriaListMixin(
   DirectionSelectionMixin(
@@ -59,7 +59,7 @@ class SlideshowWithPlayControls extends Base {
     super[internal.componentDidMount]();
 
     // Clicking the slideshow toggles the playing state.
-    this.addEventListener('click', () => {
+    this.addEventListener("click", () => {
       this[internal.raiseChangeEvents] = true;
       // @ts-ignore
       this.playing = !this.playing;
@@ -70,7 +70,7 @@ class SlideshowWithPlayControls extends Base {
   get [internal.template]() {
     const result = super[internal.template];
     const crossfadeContainer = result.content.querySelector(
-      '#crossfadeContainer'
+      "#crossfadeContainer"
     );
     /** @type {any} */ const cast = this;
     cast[PlayControlsMixin.wrap](crossfadeContainer);

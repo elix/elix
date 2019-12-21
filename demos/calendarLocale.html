@@ -21,7 +21,7 @@
       <locale-selector id="localeSelector"></locale-selector>
       <elix-calendar-month id="calendarMonth"></elix-calendar-month>
       <script>
-        localeSelector.addEventListener('change', event => {
+        localeSelector.addEventListener("change", event => {
           const locale = event.detail.value;
           calendarMonth.locale = `${locale}-u-ca-gregory-nu-latn`;
         });

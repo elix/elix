@@ -1,5 +1,5 @@
-import * as internal from './internal.js';
-import SeamlessButton from './SeamlessButton.js';
+import * as internal from "./internal.js";
+import SeamlessButton from "./SeamlessButton.js";
 
 /**
  *
@@ -28,8 +28,8 @@ class SelectableButton extends SeamlessButton {
     ) {
       // Reflect selected property to element `:state`.
       const { selected } = this[internal.state];
-      this.toggleAttribute('selected', selected);
-      this[internal.nativeInternals].states.toggle('selected', selected);
+      this.toggleAttribute("selected", selected);
+      this[internal.nativeInternals].states.toggle("selected", selected);
     }
   }
 

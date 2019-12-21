@@ -1,8 +1,8 @@
-import * as calendar from './calendar.js';
-import * as internal from './internal.js';
-import * as template from './template.js';
-import CalendarElementMixin from './CalendarElementMixin.js';
-import ReactiveElement from './ReactiveElement.js';
+import * as calendar from "./calendar.js";
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import CalendarElementMixin from "./CalendarElementMixin.js";
+import ReactiveElement from "./ReactiveElement.js";
 
 const Base = CalendarElementMixin(ReactiveElement);
 
@@ -71,27 +71,27 @@ class CalendarDay extends Base {
         calendar.millisecondsPerDay;
       setInternalState(
         this,
-        'alternate-month',
+        "alternate-month",
         Math.abs(date.getMonth() - today.getMonth()) % 2 === 1
       );
-      setInternalState(this, 'first-day-of-month', dayOfMonth === 1);
-      setInternalState(this, 'first-week', dayOfMonth <= 7);
-      setInternalState(this, 'future', date > today);
+      setInternalState(this, "first-day-of-month", dayOfMonth === 1);
+      setInternalState(this, "first-week", dayOfMonth <= 7);
+      setInternalState(this, "future", date > today);
       setInternalState(
         this,
-        'last-day-of-month',
+        "last-day-of-month",
         date.getMonth() !== nextDate.getMonth()
       );
-      setInternalState(this, 'past', date < today);
-      setInternalState(this, 'sunday', dayOfWeek === 0);
-      setInternalState(this, 'monday', dayOfWeek === 1);
-      setInternalState(this, 'tuesday', dayOfWeek === 2);
-      setInternalState(this, 'wednesday', dayOfWeek === 3);
-      setInternalState(this, 'thursday', dayOfWeek === 4);
-      setInternalState(this, 'friday', dayOfWeek === 5);
-      setInternalState(this, 'saturday', dayOfWeek === 6);
+      setInternalState(this, "past", date < today);
+      setInternalState(this, "sunday", dayOfWeek === 0);
+      setInternalState(this, "monday", dayOfWeek === 1);
+      setInternalState(this, "tuesday", dayOfWeek === 2);
+      setInternalState(this, "wednesday", dayOfWeek === 3);
+      setInternalState(this, "thursday", dayOfWeek === 4);
+      setInternalState(this, "friday", dayOfWeek === 5);
+      setInternalState(this, "saturday", dayOfWeek === 6);
 
-      setInternalState(this, 'today', daysFromToday === 0);
+      setInternalState(this, "today", daysFromToday === 0);
       this[internal.ids].day.textContent = dayOfMonth.toString();
     }
     if (changed.date || changed.locale) {
@@ -100,18 +100,18 @@ class CalendarDay extends Base {
       const weekend =
         dayOfWeek === calendar.weekendStart(locale) ||
         dayOfWeek === calendar.weekendEnd(locale);
-      setInternalState(this, 'weekday', !weekend);
-      setInternalState(this, 'weekend', weekend);
+      setInternalState(this, "weekday", !weekend);
+      setInternalState(this, "weekend", weekend);
     }
     if (changed.outsideRange) {
       setInternalState(
         this,
-        'outside-range',
+        "outside-range",
         this[internal.state].outsideRange
       );
     }
     if (changed.selected) {
-      setInternalState(this, 'selected', this[internal.state].selected);
+      setInternalState(this, "selected", this[internal.state].selected);
     }
   }
 
@@ -170,7 +170,7 @@ class CalendarDay extends Base {
 // support that, we'll want to deprecate use of classes.
 function setInternalState(element, name, value) {
   // TODO: Move all aspects from classes to attributes.
-  if (name === 'selected') {
+  if (name === "selected") {
     element.toggleAttribute(name, value);
   } else {
     element.classList.toggle(name, value);

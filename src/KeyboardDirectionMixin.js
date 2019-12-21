@@ -1,5 +1,5 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Maps direction keys to direction semantics.
@@ -90,14 +90,14 @@ export default function KeyboardDirectionMixin(Base) {
       let handled = false;
 
       // Respect orientation state if defined, otherwise assume "both".
-      const orientation = this[internal.state].orientation || 'both';
-      const horizontal = orientation === 'horizontal' || orientation === 'both';
-      const vertical = orientation === 'vertical' || orientation === 'both';
+      const orientation = this[internal.state].orientation || "both";
+      const horizontal = orientation === "horizontal" || orientation === "both";
+      const vertical = orientation === "vertical" || orientation === "both";
 
       // Ignore Left/Right keys when metaKey or altKey modifier is also pressed,
       // as the user may be trying to navigate back or forward in the browser.
       switch (event.key) {
-        case 'ArrowDown':
+        case "ArrowDown":
           if (vertical) {
             handled = event.altKey
               ? this[internal.goEnd]()
@@ -105,19 +105,19 @@ export default function KeyboardDirectionMixin(Base) {
           }
           break;
 
-        case 'ArrowLeft':
+        case "ArrowLeft":
           if (horizontal && !event.metaKey && !event.altKey) {
             handled = this[internal.goLeft]();
           }
           break;
 
-        case 'ArrowRight':
+        case "ArrowRight":
           if (horizontal && !event.metaKey && !event.altKey) {
             handled = this[internal.goRight]();
           }
           break;
 
-        case 'ArrowUp':
+        case "ArrowUp":
           if (vertical) {
             handled = event.altKey
               ? this[internal.goStart]()
@@ -125,11 +125,11 @@ export default function KeyboardDirectionMixin(Base) {
           }
           break;
 
-        case 'End':
+        case "End":
           handled = this[internal.goEnd]();
           break;
 
-        case 'Home':
+        case "Home":
           handled = this[internal.goStart]();
           break;
       }

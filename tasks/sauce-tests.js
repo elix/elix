@@ -1,5 +1,5 @@
-const saucelabs = require('sauce-test-runner');
-const testServer = require('./testServer.js');
+const saucelabs = require("sauce-test-runner");
+const testServer = require("./testServer.js");
 
 const port = 9999;
 
@@ -7,28 +7,28 @@ let reportStatus = 1;
 
 const config = {
   urls: [`localhost:${port}/test/sauce-tests.html`],
-  testname: 'Elix tests',
-  framework: 'mocha',
+  testname: "Elix tests",
+  framework: "mocha",
   // throttled: 3,
   sauceConfig: {
-    'video-upload-on-pass': false
+    "video-upload-on-pass": false
   },
   browsers: [
     {
-      browserName: 'chrome',
-      platform: 'OS X 10.14'
+      browserName: "chrome",
+      platform: "OS X 10.14"
     },
     {
-      browserName: 'chrome',
-      platform: 'Windows 10'
+      browserName: "chrome",
+      platform: "Windows 10"
     },
     {
-      browserName: 'firefox',
-      platform: 'OS X 10.14'
+      browserName: "firefox",
+      platform: "OS X 10.14"
     },
     {
-      browserName: 'firefox',
-      platform: 'Windows 10'
+      browserName: "firefox",
+      platform: "Windows 10"
     },
     // TODO: Test with Chromium-based Edge when available
     // {
@@ -36,16 +36,16 @@ const config = {
     //   platform: 'Windows 10'
     // },
     {
-      browserName: 'safari',
-      platform: 'OS X 10.14'
+      browserName: "safari",
+      platform: "OS X 10.14"
     }
   ],
   onTestSuiteComplete: status => {
     if (status) {
-      console.log('All tests passed!');
+      console.log("All tests passed!");
       reportStatus = 0;
     } else {
-      console.log('One or more tests failed');
+      console.log("One or more tests failed");
     }
   }
 };

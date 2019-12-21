@@ -8,24 +8,24 @@
 // seem to have any user-visible manifestation.
 // See https://developer.mozilla.org/en-US/docs/Web/HTML/Element
 const auxiliarycustomTags = [
-  'applet', // deprecated
-  'basefont', // deprecated
-  'embed',
-  'font', // deprecated
-  'frame', // deprecated
-  'frameset', // deprecated
-  'isindex', // deprecated
-  'keygen', // deprecated
-  'link',
-  'multicol', // deprecated
-  'nextid', // deprecated
-  'noscript',
-  'object',
-  'param',
-  'script',
-  'style',
-  'template',
-  'noembed' // deprecated
+  "applet", // deprecated
+  "basefont", // deprecated
+  "embed",
+  "font", // deprecated
+  "frame", // deprecated
+  "frameset", // deprecated
+  "isindex", // deprecated
+  "keygen", // deprecated
+  "link",
+  "multicol", // deprecated
+  "nextid", // deprecated
+  "noscript",
+  "object",
+  "param",
+  "script",
+  "style",
+  "template",
+  "noembed" // deprecated
 ];
 
 /**

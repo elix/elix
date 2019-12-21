@@ -1,6 +1,6 @@
-import { defaultScrollTarget } from './scrolling.js';
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import { defaultScrollTarget } from "./scrolling.js";
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Maps the Page Up and Page Down keys to selection operations.
@@ -36,13 +36,13 @@ export default function KeyboardPagedSelectionMixin(Base) {
     [internal.keydown](/** @type {KeyboardEvent} */ event) {
       let handled = false;
       const orientation = this.orientation;
-      if (orientation !== 'horizontal') {
+      if (orientation !== "horizontal") {
         switch (event.key) {
-          case 'PageDown':
+          case "PageDown":
             handled = this.pageDown();
             break;
 
-          case 'PageUp':
+          case "PageUp":
             handled = this.pageUp();
             break;
         }
@@ -60,7 +60,7 @@ export default function KeyboardPagedSelectionMixin(Base) {
       return (
         super.orientation ||
         (this[internal.state] && this[internal.state].orientation) ||
-        'both'
+        "both"
       );
     }
 

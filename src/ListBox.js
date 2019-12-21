@@ -1,23 +1,23 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import AriaListMixin from './AriaListMixin.js';
-import ComposedFocusMixin from './ComposedFocusMixin.js';
-import DirectionSelectionMixin from './DirectionSelectionMixin.js';
-import FocusVisibleMixin from './FocusVisibleMixin.js';
-import FormElementMixin from './FormElementMixin.js';
-import GenericMixin from './GenericMixin.js';
-import ItemsTextMixin from './ItemsTextMixin.js';
-import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
-import KeyboardMixin from './KeyboardMixin.js';
-import KeyboardPagedSelectionMixin from './KeyboardPagedSelectionMixin.js';
-import KeyboardPrefixSelectionMixin from './KeyboardPrefixSelectionMixin.js';
-import LanguageDirectionMixin from './LanguageDirectionMixin.js';
-import ReactiveElement from './ReactiveElement.js';
-import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
-import SelectionInViewMixin from './SelectionInViewMixin.js';
-import SingleSelectionMixin from './SingleSelectionMixin.js';
-import SlotItemsMixin from './SlotItemsMixin.js';
-import TapSelectionMixin from './TapSelectionMixin.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import AriaListMixin from "./AriaListMixin.js";
+import ComposedFocusMixin from "./ComposedFocusMixin.js";
+import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
+import FocusVisibleMixin from "./FocusVisibleMixin.js";
+import FormElementMixin from "./FormElementMixin.js";
+import GenericMixin from "./GenericMixin.js";
+import ItemsTextMixin from "./ItemsTextMixin.js";
+import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
+import KeyboardMixin from "./KeyboardMixin.js";
+import KeyboardPagedSelectionMixin from "./KeyboardPagedSelectionMixin.js";
+import KeyboardPrefixSelectionMixin from "./KeyboardPrefixSelectionMixin.js";
+import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
+import ReactiveElement from "./ReactiveElement.js";
+import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
+import SelectionInViewMixin from "./SelectionInViewMixin.js";
+import SingleSelectionMixin from "./SingleSelectionMixin.js";
+import SlotItemsMixin from "./SlotItemsMixin.js";
+import TapSelectionMixin from "./TapSelectionMixin.js";
 
 const Base = AriaListMixin(
   ComposedFocusMixin(
@@ -82,7 +82,7 @@ const Base = AriaListMixin(
 class ListBox extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      orientation: 'vertical'
+      orientation: "vertical"
     });
   }
 
@@ -100,25 +100,25 @@ class ListBox extends Base {
       const { selectedIndex, items } = this[internal.state];
       if (items) {
         items.forEach((item, index) => {
-          item.toggleAttribute('selected', index === selectedIndex);
+          item.toggleAttribute("selected", index === selectedIndex);
         });
       }
     }
     if (changed.orientation) {
       // Update list orientation styling.
       const style =
-        this[internal.state].orientation === 'vertical'
+        this[internal.state].orientation === "vertical"
           ? {
-              display: 'block',
-              flexDirection: '',
-              overflowX: 'hidden',
-              overflowY: 'auto'
+              display: "block",
+              flexDirection: "",
+              overflowX: "hidden",
+              overflowY: "auto"
             }
           : {
-              display: 'flex',
-              flexDirection: 'row',
-              overflowX: 'auto',
-              overflowY: 'hidden'
+              display: "flex",
+              flexDirection: "row",
+              overflowX: "auto",
+              overflowY: "hidden"
             };
       Object.assign(this[internal.ids].container.style, style);
     }

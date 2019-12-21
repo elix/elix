@@ -1,9 +1,9 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import OpenCloseMixin from './OpenCloseMixin.js';
-import ReactiveElement from './ReactiveElement.js';
-import TransitionEffectMixin from './TransitionEffectMixin.js';
-import EffectMixin from './EffectMixin.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import OpenCloseMixin from "./OpenCloseMixin.js";
+import ReactiveElement from "./ReactiveElement.js";
+import TransitionEffectMixin from "./TransitionEffectMixin.js";
+import EffectMixin from "./EffectMixin.js";
 
 const Base = OpenCloseMixin(
   EffectMixin(TransitionEffectMixin(ReactiveElement))
@@ -47,14 +47,14 @@ class ExpandablePanel extends Base {
       /** @type {IndexedObject<PlainObject>} */
       const phaseHeights = {
         open: {
-          before: '0px',
+          before: "0px",
           during: `${naturalHeight}px`,
-          after: ''
+          after: ""
         },
         close: {
           before: `${naturalHeight}px`,
-          during: '0px',
-          after: '0px'
+          during: "0px",
+          after: "0px"
         }
       };
       const height = phaseHeights[effect][effectPhase];
@@ -65,7 +65,7 @@ class ExpandablePanel extends Base {
       // Animating height does have the advantage of letting you set the height of
       // the panel's collapsed state by setting the panel's `min-height`.
       const transition =
-        enableEffects && effectPhase === 'during' ? 'height 0.25s' : null;
+        enableEffects && effectPhase === "during" ? "height 0.25s" : null;
 
       Object.assign(this[internal.ids].outerContainer.style, {
         height,
@@ -78,11 +78,11 @@ class ExpandablePanel extends Base {
       const canReceiveFocus = this[internal.state].tabIndex >= 0;
       if (canReceiveFocus) {
         this.setAttribute(
-          'aria-expanded',
+          "aria-expanded",
           this[internal.state].opened.toString()
         );
       } else {
-        this.removeAttribute('aria-expanded');
+        this.removeAttribute("aria-expanded");
       }
     }
   }

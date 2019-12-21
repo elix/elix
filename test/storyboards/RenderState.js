@@ -1,8 +1,8 @@
-import { substantiveElements } from '../../src/content.js';
-import * as internal from '../../src/internal.js';
-import * as template from '../../src/template.js';
-import ReactiveElement from '../../src/ReactiveElement.js';
-import SlotContentMixin from '../../src/SlotContentMixin.js';
+import { substantiveElements } from "../../src/content.js";
+import * as internal from "../../src/internal.js";
+import * as template from "../../src/template.js";
+import ReactiveElement from "../../src/ReactiveElement.js";
+import SlotContentMixin from "../../src/SlotContentMixin.js";
 
 const Base = SlotContentMixin(ReactiveElement);
 
@@ -12,7 +12,7 @@ class RenderState extends Base {
       fixture: null,
       fixtureState: {}
     });
-    result.onChange('content', state => {
+    result.onChange("content", state => {
       if (!state.content) {
         return {
           fixture: null
@@ -29,9 +29,9 @@ class RenderState extends Base {
       // Look for an element (or subelement) with class "fixture".
       const fixtures = elements
         .map(element =>
-          element.classList.contains('fixture')
+          element.classList.contains("fixture")
             ? element
-            : element.querySelector('.fixture')
+            : element.querySelector(".fixture")
         )
         .filter(item => item !== null);
 
@@ -57,7 +57,7 @@ class RenderState extends Base {
   }
   set fixtureState(fixtureState) {
     const parsed =
-      typeof fixtureState === 'string'
+      typeof fixtureState === "string"
         ? JSON.parse(fixtureState)
         : fixtureState;
     this[internal.setState]({
@@ -86,7 +86,7 @@ class RenderState extends Base {
       const textContent =
         Object.keys(fixtureState).length > 0
           ? JSON.stringify(fixtureState, null, 2)
-          : '';
+          : "";
       this[internal.ids].fixtureState.textContent = textContent;
     }
   }
@@ -129,4 +129,4 @@ class RenderState extends Base {
   }
 }
 
-customElements.define('render-state', RenderState);
+customElements.define("render-state", RenderState);

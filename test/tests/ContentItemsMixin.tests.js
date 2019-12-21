@@ -1,6 +1,6 @@
-import * as internal from '../../src/internal.js';
-import ContentItemsMixin from '../../src/ContentItemsMixin.js';
-import ReactiveMixin from '../../src/ReactiveMixin.js';
+import * as internal from "../../src/internal.js";
+import ContentItemsMixin from "../../src/ContentItemsMixin.js";
+import ReactiveMixin from "../../src/ReactiveMixin.js";
 
 class ContentItemsTest extends ContentItemsMixin(ReactiveMixin(HTMLElement)) {
   connectedCallback() {
@@ -15,20 +15,20 @@ class ContentItemsTest extends ContentItemsMixin(ReactiveMixin(HTMLElement)) {
     this[internal.setState]({ content });
   }
 }
-customElements.define('content-items-test', ContentItemsTest);
+customElements.define("content-items-test", ContentItemsTest);
 
-describe('ContentItemsMixin', () => {
+describe("ContentItemsMixin", () => {
   let container;
 
   before(() => {
-    container = document.getElementById('container');
+    container = document.getElementById("container");
   });
 
   afterEach(() => {
-    container.innerHTML = '';
+    container.innerHTML = "";
   });
 
-  it('returns substantive content elements as items', () => {
+  it("returns substantive content elements as items", () => {
     const fixture = new ContentItemsTest();
     fixture.innerHTML = `
       <style></style>
@@ -38,13 +38,13 @@ describe('ContentItemsMixin', () => {
     fixture.updateContent();
     const items = fixture.items;
     assert.equal(items.length, 2);
-    assert.equal(items[0].textContent, '1');
-    assert.equal(items[1].textContent, '2');
+    assert.equal(items[0].textContent, "1");
+    assert.equal(items[1].textContent, "2");
   });
 
-  it('raises items-changed event', done => {
+  it("raises items-changed event", done => {
     const fixture = new ContentItemsTest();
-    fixture.addEventListener('items-changed', () => {
+    fixture.addEventListener("items-changed", () => {
       done();
     });
     // Arrange for raising of change events.

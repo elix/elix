@@ -1,13 +1,13 @@
-import { deepContains, firstFocusableElement } from './utilities.js';
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import { deepContains, firstFocusableElement } from "./utilities.js";
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /** @type {any} */
-const appendedToDocumentKey = Symbol('appendedToDocument');
+const appendedToDocumentKey = Symbol("appendedToDocument");
 /** @type {any} */
-const defaultZIndexKey = Symbol('assignedZIndex');
+const defaultZIndexKey = Symbol("assignedZIndex");
 /** @type {any} */
-const restoreFocusToElementKey = Symbol('restoreFocusToElement');
+const restoreFocusToElementKey = Symbol("restoreFocusToElement");
 
 /**
  * Displays an opened element on top of other page elements.
@@ -25,7 +25,7 @@ export default function OverlayMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this.addEventListener('blur', event => {
+      this.addEventListener("blur", event => {
         // What has the focus now?
         const newFocusedElement = event.relatedTarget || document.activeElement;
         /** @type {any} */
@@ -122,7 +122,7 @@ export default function OverlayMixin(Base) {
         if (!this[internal.state].persistent) {
           // Temporary overlay
           const closed =
-            typeof this.closeFinished === 'undefined'
+            typeof this.closeFinished === "undefined"
               ? this.closed
               : this.closeFinished;
 
@@ -133,12 +133,12 @@ export default function OverlayMixin(Base) {
           // component from the outside (to change to display: flex, say) will
           // override the display: none implied by hidden. To work around both
           // these problems, we use display: none when the overlay is closed.
-          this.style.display = closed ? 'none' : '';
+          this.style.display = closed ? "none" : "";
 
           if (closed) {
             if (this[defaultZIndexKey]) {
               // Remove default z-index.
-              this.style.zIndex = '';
+              this.style.zIndex = "";
               this[defaultZIndexKey] = null;
             }
           } else if (this[defaultZIndexKey]) {
@@ -174,10 +174,10 @@ function hasZIndex(element) {
   const computedZIndex = getComputedStyle(element).zIndex;
   const explicitZIndex = element.style.zIndex;
   const isExplicitZIndexNumeric = !isNaN(parseInt(explicitZIndex));
-  if (computedZIndex === 'auto') {
+  if (computedZIndex === "auto") {
     return isExplicitZIndexNumeric;
   }
-  if (computedZIndex === '0' && !isExplicitZIndexNumeric) {
+  if (computedZIndex === "0" && !isExplicitZIndexNumeric) {
     // Might be on Safari, which reports a computed z-index of zero even in
     // cases where no z-index has been inherited but the element creates a
     // stacking context. Inspect the composed tree parent to infer whether the
@@ -210,11 +210,11 @@ function hasZIndex(element) {
  * applying a z-index to an overlay.
  */
 function maxZIndexInUse() {
-  const elements = document.body.querySelectorAll('*');
+  const elements = document.body.querySelectorAll("*");
   const zIndices = Array.from(elements, element => {
     const style = getComputedStyle(element);
     let zIndex = 0;
-    if (style.position !== 'static' && style.zIndex !== 'auto') {
+    if (style.position !== "static" && style.zIndex !== "auto") {
       const parsed = style.zIndex ? parseInt(style.zIndex) : 0;
       zIndex = !isNaN(parsed) ? parsed : 0;
     }

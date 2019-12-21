@@ -1,12 +1,12 @@
-import * as calendar from './calendar.js';
-import * as internal from './internal.js';
-import * as template from './template.js';
-import CalendarDay from './CalendarDay.js';
-import CalendarDayNamesHeader from './CalendarDayNamesHeader.js';
-import CalendarDays from './CalendarDays.js';
-import CalendarElementMixin from './CalendarElementMixin.js';
-import CalendarMonthYearHeader from './CalendarMonthYearHeader.js';
-import ReactiveElement from './ReactiveElement.js';
+import * as calendar from "./calendar.js";
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import CalendarDay from "./CalendarDay.js";
+import CalendarDayNamesHeader from "./CalendarDayNamesHeader.js";
+import CalendarDays from "./CalendarDays.js";
+import CalendarElementMixin from "./CalendarElementMixin.js";
+import CalendarMonthYearHeader from "./CalendarMonthYearHeader.js";
+import ReactiveElement from "./ReactiveElement.js";
 
 const Base = CalendarElementMixin(ReactiveElement);
 
@@ -42,7 +42,7 @@ class CalendarMonth extends Base {
     const monthDays = this[internal.ids].monthDays;
     return (
       monthDays &&
-      'dayElementForDate' in monthDays &&
+      "dayElementForDate" in monthDays &&
       monthDays.dayElementForDate(date)
     );
   }
@@ -94,11 +94,11 @@ class CalendarMonth extends Base {
     return Object.assign(super[internal.defaultState], {
       date: calendar.today(),
       dayPartType: CalendarDay,
-      daysOfWeekFormat: 'short',
-      monthFormat: 'long',
+      daysOfWeekFormat: "short",
+      monthFormat: "long",
       showCompleteWeeks: false,
       showSelectedDay: false,
-      yearFormat: 'numeric'
+      yearFormat: "numeric"
     });
   }
 
@@ -221,15 +221,15 @@ class CalendarMonth extends Base {
       <div id="dayNamesHeader" part="day-names-header" exportparts="day-name" format="short"></div>
       <div id="monthDays" part="month-days" exportparts="day"></div>
     `;
-    const monthYearHeader = result.content.getElementById('monthYearHeader');
+    const monthYearHeader = result.content.getElementById("monthYearHeader");
     if (monthYearHeader) {
       template.transmute(monthYearHeader, CalendarMonthYearHeader);
     }
-    const dayNamesHeader = result.content.getElementById('dayNamesHeader');
+    const dayNamesHeader = result.content.getElementById("dayNamesHeader");
     if (dayNamesHeader) {
       template.transmute(dayNamesHeader, CalendarDayNamesHeader);
     }
-    const monthDays = result.content.getElementById('monthDays');
+    const monthDays = result.content.getElementById("monthDays");
     if (monthDays) {
       template.transmute(monthDays, CalendarDays);
     }

@@ -1,6 +1,6 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import CenteredStrip from './CenteredStrip.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import CenteredStrip from "./CenteredStrip.js";
 
 const opacityMinimum = 0.4;
 const opacityMaximum = 1.0;
@@ -54,7 +54,7 @@ class CenteredStripOpacity extends CenteredStrip {
           const existingTransition = getComputedStyle(item).transition;
           const transition = mergeSinglePropertyTransition(
             existingTransition,
-            'opacity',
+            "opacity",
             opacityTransitionValue
           );
           const opacity = opacityForItemWithIndex(
@@ -149,7 +149,7 @@ function mergeSinglePropertyTransition(transition, name, value) {
     }
     match = propertyRegex.exec(transition);
   }
-  const definition = value ? `${name} ${value}` : '';
+  const definition = value ? `${name} ${value}` : "";
   if (match) {
     // Transition contains the indicated property.
     // Splice in a new value at that point.
@@ -162,7 +162,7 @@ function mergeSinglePropertyTransition(transition, name, value) {
     );
   } else {
     // Transition doesn't yet contain the indicated property; append it.
-    return [transition, definition].join(', ');
+    return [transition, definition].join(", ");
   }
 }
 

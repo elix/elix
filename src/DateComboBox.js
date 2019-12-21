@@ -1,12 +1,12 @@
-import * as calendar from './calendar.js';
-import * as internal from './internal.js';
-import * as template from './template.js';
-import ArrowDirectionButton from './ArrowDirectionButton.js';
-import CalendarDayButton from './CalendarDayButton.js';
-import CalendarElementMixin from './CalendarElementMixin.js';
-import CalendarMonthNavigator from './CalendarMonthNavigator.js';
-import ComboBox from './ComboBox.js';
-import SeamlessButton from './SeamlessButton.js';
+import * as calendar from "./calendar.js";
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import ArrowDirectionButton from "./ArrowDirectionButton.js";
+import CalendarDayButton from "./CalendarDayButton.js";
+import CalendarElementMixin from "./CalendarElementMixin.js";
+import CalendarMonthNavigator from "./CalendarMonthNavigator.js";
+import ComboBox from "./ComboBox.js";
+import SeamlessButton from "./SeamlessButton.js";
 
 const Base = CalendarElementMixin(ComboBox);
 
@@ -105,9 +105,9 @@ class DateComboBox extends Base {
 
   get [internal.defaultState]() {
     const dateTimeFormatOptions = {
-      day: 'numeric',
-      month: 'numeric',
-      year: 'numeric'
+      day: "numeric",
+      month: "numeric",
+      year: "numeric"
     };
 
     const state = Object.assign(super[internal.defaultState], {
@@ -119,15 +119,15 @@ class DateComboBox extends Base {
       dateTimeFormat: null,
       dateTimeFormatOptions,
       dayPartType: CalendarDayButton,
-      daysOfWeekFormat: 'short',
-      monthFormat: 'long',
+      daysOfWeekFormat: "short",
+      monthFormat: "long",
       timeBias: null,
       todayButtonPartType: SeamlessButton,
-      yearFormat: 'numeric'
+      yearFormat: "numeric"
     });
 
     // If the date changed while focused, assume user changed date.
-    state.onChange(['date', 'value'], state => {
+    state.onChange(["date", "value"], state => {
       if (state.focused) {
         return {
           userChangedDate: true
@@ -141,7 +141,7 @@ class DateComboBox extends Base {
     // we're closing or losing focus and the user's changed the date,
     // or the format changed and the date was the last substantive property set.
     state.onChange(
-      ['date', 'dateTimeFormat', 'focused', 'opened'],
+      ["date", "dateTimeFormat", "focused", "opened"],
       (state, changed) => {
         const {
           closeResult,
@@ -162,9 +162,9 @@ class DateComboBox extends Base {
           (changed.dateTimeFormat && datePriority)
         ) {
           const formattedDate =
-            date && dateTimeFormat ? this.formatDate(date, dateTimeFormat) : '';
+            date && dateTimeFormat ? this.formatDate(date, dateTimeFormat) : "";
           // See notes on mobile at ComboBox.defaultState.
-          const probablyMobile = matchMedia('(pointer: coarse)').matches;
+          const probablyMobile = matchMedia("(pointer: coarse)").matches;
           const selectText = formattedDate.length > 0 && !probablyMobile;
           return {
             selectText,
@@ -178,7 +178,7 @@ class DateComboBox extends Base {
     // Update date from value if the value was changed, or the date format or
     // time bias changed and the value was the last substantive property set.
     state.onChange(
-      ['dateTimeFormat', 'timeBias', 'value'],
+      ["dateTimeFormat", "timeBias", "value"],
       (state, changed) => {
         const { datePriority, dateTimeFormat, timeBias, value } = state;
         if (
@@ -198,7 +198,7 @@ class DateComboBox extends Base {
     );
 
     // Update our date format if the locale or format options change.
-    state.onChange(['dateTimeFormatOptions', 'locale'], state => {
+    state.onChange(["dateTimeFormatOptions", "locale"], state => {
       const { dateTimeFormatOptions, locale } = state;
       const dateTimeFormat = calendar.dateTimeFormat(
         locale,
@@ -274,31 +274,31 @@ class DateComboBox extends Base {
     const date = this[internal.state].date || calendar.today();
 
     switch (event.key) {
-      case 'ArrowDown':
+      case "ArrowDown":
         if (opened && event.ctrlKey && event.shiftKey) {
           handled = this[internal.goDown]();
         }
         break;
 
-      case 'ArrowLeft':
+      case "ArrowLeft":
         if (opened && event.ctrlKey && event.shiftKey) {
           handled = this[internal.goLeft]();
         }
         break;
 
-      case 'ArrowRight':
+      case "ArrowRight":
         if (opened && event.ctrlKey && event.shiftKey) {
           handled = this[internal.goRight]();
         }
         break;
 
-      case 'ArrowUp':
+      case "ArrowUp":
         if (opened && event.ctrlKey && event.shiftKey) {
           handled = this[internal.goUp]();
         }
         break;
 
-      case 'PageDown':
+      case "PageDown":
         if (opened) {
           this[internal.setState]({
             date: calendar.offsetDateByMonths(date, 1)
@@ -307,7 +307,7 @@ class DateComboBox extends Base {
         }
         break;
 
-      case 'PageUp':
+      case "PageUp":
         if (opened) {
           this[internal.setState]({
             date: calendar.offsetDateByMonths(date, -1)
@@ -370,14 +370,14 @@ class DateComboBox extends Base {
         this[internal.ids].calendar,
         this[internal.state].calendarPartType
       );
-      this[internal.ids].calendar.addEventListener('date-changed', event => {
+      this[internal.ids].calendar.addEventListener("date-changed", event => {
         this[internal.raiseChangeEvents] = true;
         /** @type {any} */
         const cast = event;
         this.date = cast.detail.date;
         this[internal.raiseChangeEvents] = false;
       });
-      this[internal.ids].calendar.addEventListener('mousedown', event => {
+      this[internal.ids].calendar.addEventListener("mousedown", event => {
         this[internal.raiseChangeEvents] = true;
         this.close();
         event.preventDefault(); // Keep focus on input.
@@ -389,7 +389,7 @@ class DateComboBox extends Base {
         this[internal.ids].todayButton,
         this[internal.state].todayButtonPartType
       );
-      this[internal.ids].todayButton.addEventListener('mousedown', event => {
+      this[internal.ids].todayButton.addEventListener("mousedown", event => {
         this[internal.raiseChangeEvents] = true;
         this.date = calendar.today();
         this.close();
@@ -400,26 +400,26 @@ class DateComboBox extends Base {
     const cast = /** @type {any} */ (this[internal.ids].calendar);
     if (
       changed.arrowButtonPartType &&
-      'arrowButtonPartType' in this[internal.ids].calendar
+      "arrowButtonPartType" in this[internal.ids].calendar
     ) {
       cast.arrowButtonPartType = this[internal.state].arrowButtonPartType;
     }
     if (changed.date) {
       cast.date = this[internal.state].date;
     }
-    if (changed.dayPartType && 'dayPartType' in cast) {
+    if (changed.dayPartType && "dayPartType" in cast) {
       cast.dayPartType = this[internal.state].dayPartType;
     }
-    if (changed.daysOfWeekFormat && 'daysOfWeekFormat' in cast) {
+    if (changed.daysOfWeekFormat && "daysOfWeekFormat" in cast) {
       cast.daysOfWeekFormat = this[internal.state].daysOfWeekFormat;
     }
     if (changed.locale) {
       cast.locale = this[internal.state].locale;
     }
-    if (changed.monthFormat && 'monthFormat' in cast) {
+    if (changed.monthFormat && "monthFormat" in cast) {
       cast.monthFormat = this[internal.state].monthFormat;
     }
-    if (changed.yearFormat && 'yearFormat' in cast) {
+    if (changed.yearFormat && "yearFormat" in cast) {
       cast.yearFormat = this[internal.state].yearFormat;
     }
   }

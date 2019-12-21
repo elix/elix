@@ -1,6 +1,6 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Reveals commands behind list items when the user swipes left or right
@@ -20,7 +20,7 @@ export default function SwipeCommandsMixin(Base) {
       // the end of the transition. E.g., a Delete swipe command would want to
       // wait until the transition has finished before removing the item.
       this[internal.ids].leftCommandContainer.addEventListener(
-        'transitionend',
+        "transitionend",
         () => {
           if (
             this[internal.state].swipeRightCommitted &&
@@ -36,7 +36,7 @@ export default function SwipeCommandsMixin(Base) {
         }
       );
       this[internal.ids].rightCommandContainer.addEventListener(
-        'transitionend',
+        "transitionend",
         () => {
           if (
             this[internal.state].swipeLeftCommitted &&
@@ -59,7 +59,7 @@ export default function SwipeCommandsMixin(Base) {
       // in the commit-ability of a command.
       if (
         (changed.swipeLeftWillCommit || changed.swipeRightWillCommit) &&
-        'vibrate' in navigator &&
+        "vibrate" in navigator &&
         this[internal.state].swipeFraction !== null
       ) {
         navigator.vibrate(5);
@@ -102,7 +102,7 @@ export default function SwipeCommandsMixin(Base) {
           const commandWidth =
             Math.min(Math.abs(swipeFraction), 1) * itemRect.width;
 
-          rightCommandContainer.style.transition = '';
+          rightCommandContainer.style.transition = "";
           if (swipeFraction < 0) {
             // Swiping left: show right command container.
             Object.assign(rightCommandContainer.style, {
@@ -111,10 +111,10 @@ export default function SwipeCommandsMixin(Base) {
               width: `${commandWidth}px`
             });
           } else {
-            rightCommandContainer.style.width = '0';
+            rightCommandContainer.style.width = "0";
           }
 
-          leftCommandContainer.style.transition = '';
+          leftCommandContainer.style.transition = "";
           if (swipeFraction > 0) {
             // Swiping right: show left command container.
             Object.assign(leftCommandContainer.style, {
@@ -123,13 +123,13 @@ export default function SwipeCommandsMixin(Base) {
               width: `${commandWidth}px`
             });
           } else {
-            leftCommandContainer.style.width = '0';
+            leftCommandContainer.style.width = "0";
           }
 
           Object.assign(swipeItem.style, {
             height: `${itemRect.height}px`,
             transform: `translateX(${translation}%)`,
-            transition: ''
+            transition: ""
           });
         } else if (swipeItem) {
           // User has finished active swiping, swipe item is still active. Let
@@ -147,47 +147,47 @@ export default function SwipeCommandsMixin(Base) {
             swipeLeftCommitted && swipeLeftFollowsThrough;
           const followThroughRight =
             swipeRightCommitted && swipeRightFollowsThrough;
-          const containerTransition = 'height 0.25s, width 0.25s';
+          const containerTransition = "height 0.25s, width 0.25s";
           Object.assign(leftCommandContainer.style, {
             transition: containerTransition,
-            width: followThroughRight ? '100%' : '0'
+            width: followThroughRight ? "100%" : "0"
           });
           Object.assign(rightCommandContainer.style, {
             transition: containerTransition,
-            width: followThroughLeft ? '100%' : '0'
+            width: followThroughLeft ? "100%" : "0"
           });
           const translation = followThroughLeft
-            ? '-100%'
+            ? "-100%"
             : followThroughRight
-            ? '100%'
-            : '0';
+            ? "100%"
+            : "0";
           if (swipeLeftCommitted && swipeLeftRemovesItem) {
-            rightCommandContainer.style.height = '0';
+            rightCommandContainer.style.height = "0";
           }
           if (swipeRightCommitted && swipeRightRemovesItem) {
-            leftCommandContainer.style.height = '0';
+            leftCommandContainer.style.height = "0";
           }
           const height =
             (swipeLeftCommitted && swipeLeftRemovesItem) ||
             (swipeRightCommitted && swipeRightRemovesItem)
-              ? '0'
-              : '';
+              ? "0"
+              : "";
           Object.assign(swipeItem.style, {
             height,
             transform: `translateX(${translation})`,
-            transition: 'height 0.25s, transform 0.25s'
+            transition: "height 0.25s, transform 0.25s"
           });
         } else {
           // No item is being swiped. Reset command containers.
           Object.assign(leftCommandContainer.style, {
-            height: '',
-            transition: '',
-            width: '0'
+            height: "",
+            transition: "",
+            width: "0"
           });
           Object.assign(rightCommandContainer.style, {
-            height: '',
-            transition: '',
-            width: '0'
+            height: "",
+            transition: "",
+            width: "0"
           });
         }
       }

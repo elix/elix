@@ -1,15 +1,15 @@
-import * as internal from '../../src/internal.js';
-import * as template from '../../src/template.js';
-import ReactiveElement from '../../src/ReactiveElement.js';
+import * as internal from "../../src/internal.js";
+import * as template from "../../src/template.js";
+import ReactiveElement from "../../src/ReactiveElement.js";
 
 class TemplateTest extends HTMLElement {}
-customElements.define('template-test', TemplateTest);
+customElements.define("template-test", TemplateTest);
 
 // A component with a template with a role applied to a single element.
 class DynamicSingle extends ReactiveElement {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      dynamicPartType: 'button'
+      dynamicPartType: "button"
     });
   }
 
@@ -30,20 +30,20 @@ class DynamicSingle extends ReactiveElement {
     `;
   }
 }
-customElements.define('dynamic-part-type', DynamicSingle);
+customElements.define("dynamic-part-type", DynamicSingle);
 
 // A component with a template where a role is applied to multiple elements.
 class DynamicMultiple extends ReactiveElement {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      dynamicPartType: 'button'
+      dynamicPartType: "button"
     });
   }
 
   [internal.render](changed) {
     super[internal.render](changed);
     if (changed.dynamicPartType) {
-      const dynamics = this.shadowRoot.querySelectorAll('.dynamic');
+      const dynamics = this.shadowRoot.querySelectorAll(".dynamic");
       template.transmute(dynamics, this[internal.state].dynamicPartType);
     }
   }
@@ -56,124 +56,124 @@ class DynamicMultiple extends ReactiveElement {
     `;
   }
 }
-customElements.define('dynamic-multiple', DynamicMultiple);
+customElements.define("dynamic-multiple", DynamicMultiple);
 
-describe('templates', () => {
-  it('html template function returns an HTMLTemplateElement', () => {
+describe("templates", () => {
+  it("html template function returns an HTMLTemplateElement", () => {
     const fixture = template.html`<div>Hello</div>`;
     assert(fixture instanceof HTMLTemplateElement);
     assert.equal(fixture.innerHTML, `<div>Hello</div>`);
   });
 
-  it('can create an element from a string descriptor', () => {
-    const fixture = template.createElement('div');
+  it("can create an element from a string descriptor", () => {
+    const fixture = template.createElement("div");
     assert(fixture instanceof HTMLDivElement);
   });
 
-  it('can create an element from a class constructor', () => {
+  it("can create an element from a class constructor", () => {
     const fixture = template.createElement(TemplateTest);
     assert(fixture instanceof TemplateTest);
   });
 
-  it('can create an element by cloning a template', () => {
-    const fixtureTemplate = document.createElement('template');
+  it("can create an element by cloning a template", () => {
+    const fixtureTemplate = document.createElement("template");
     fixtureTemplate.innerHTML = `<div>Hello</div>`;
     const fixture = template.createElement(fixtureTemplate);
     assert(fixture instanceof HTMLDivElement);
-    assert.equal(fixture.textContent, 'Hello');
+    assert.equal(fixture.textContent, "Hello");
   });
 
-  it('can substitute one element for another', () => {
-    const original = document.createElement('button');
-    original.setAttribute('id', 'original');
-    original.style.color = 'red';
-    original.textContent = 'Hello';
-    const fixture = document.createElement('div');
+  it("can substitute one element for another", () => {
+    const original = document.createElement("button");
+    original.setAttribute("id", "original");
+    original.style.color = "red";
+    original.textContent = "Hello";
+    const fixture = document.createElement("div");
     fixture.appendChild(original);
-    const replacement = document.createElement('a');
-    replacement.setAttribute('id', 'replacement');
+    const replacement = document.createElement("a");
+    replacement.setAttribute("id", "replacement");
     template.replace(original, replacement);
     // Replacement should have taken place of original element.
     assert.equal(replacement.parentNode, fixture);
     assert.equal(original.parentNode, null);
     // Replacement should have picked up attributes from original
     // that weren't already specified on replacement.
-    assert.equal(replacement.getAttribute('id'), 'replacement');
-    assert.equal(replacement.style.color, 'red');
+    assert.equal(replacement.getAttribute("id"), "replacement");
+    assert.equal(replacement.style.color, "red");
     // Replacement should have picked up a copy of original's children.
-    assert.equal(replacement.textContent, 'Hello');
+    assert.equal(replacement.textContent, "Hello");
   });
 
-  it('can wrap an element in an tree', () => {
-    const fixture = document.createElement('section');
-    const span = document.createElement('span');
-    const text = new Text('Hello');
+  it("can wrap an element in an tree", () => {
+    const fixture = document.createElement("section");
+    const span = document.createElement("span");
+    const text = new Text("Hello");
     span.appendChild(text);
     fixture.appendChild(span);
-    const wrapper = document.createElement('div');
-    const paragraph = document.createElement('p');
+    const wrapper = document.createElement("div");
+    const paragraph = document.createElement("p");
     wrapper.appendChild(paragraph);
-    template.wrap(span, wrapper, 'p');
+    template.wrap(span, wrapper, "p");
     assert.equal(fixture.childNodes.length, 1);
     assert.equal(fixture.childNodes[0], wrapper);
     assert.equal(span.parentNode, paragraph);
   });
 
-  it('can wrap the contents of a document fragment', () => {
+  it("can wrap the contents of a document fragment", () => {
     const fixture = document.createDocumentFragment();
-    const text = new Text('Hello');
+    const text = new Text("Hello");
     fixture.appendChild(text);
-    const wrapper = document.createElement('div');
-    const paragraph = document.createElement('p');
+    const wrapper = document.createElement("div");
+    const paragraph = document.createElement("p");
     wrapper.appendChild(paragraph);
-    template.wrap(fixture, wrapper, 'p');
+    template.wrap(fixture, wrapper, "p");
     assert.equal(fixture.childNodes.length, 1);
     assert.equal(fixture.childNodes[0], wrapper);
     assert.equal(text.parentNode, paragraph);
   });
 
-  it('supports an element with a role during initial rendering', async () => {
+  it("supports an element with a role during initial rendering", async () => {
     const fixture = new DynamicSingle();
     fixture[internal.renderChanges]();
     assert(fixture[internal.ids].static instanceof HTMLDivElement);
     assert(fixture[internal.ids].dynamic instanceof HTMLButtonElement);
-    assert.equal(fixture[internal.ids].dynamic.getAttribute('id'), 'dynamic');
+    assert.equal(fixture[internal.ids].dynamic.getAttribute("id"), "dynamic");
     assert.equal(
       fixture[internal.ids].dynamic.textContent,
-      'This element changes'
+      "This element changes"
     );
-    assert(fixture[internal.ids].dynamic.classList.contains('foo'));
+    assert(fixture[internal.ids].dynamic.classList.contains("foo"));
   });
 
-  it('lets an element change a role after initial rendering', async () => {
+  it("lets an element change a role after initial rendering", async () => {
     const fixture = new DynamicSingle();
     fixture[internal.renderChanges]();
     assert(fixture[internal.ids].static instanceof HTMLDivElement);
     assert(fixture[internal.ids].dynamic instanceof HTMLButtonElement);
     fixture[internal.setState]({
-      dynamicPartType: 'a'
+      dynamicPartType: "a"
     });
     fixture[internal.renderChanges]();
     assert(fixture[internal.ids].dynamic instanceof HTMLAnchorElement);
-    assert.equal(fixture[internal.ids].dynamic.getAttribute('id'), 'dynamic');
+    assert.equal(fixture[internal.ids].dynamic.getAttribute("id"), "dynamic");
     assert.equal(
       fixture[internal.ids].dynamic.textContent,
-      'This element changes'
+      "This element changes"
     );
-    assert(fixture[internal.ids].dynamic.classList.contains('foo'));
+    assert(fixture[internal.ids].dynamic.classList.contains("foo"));
   });
 
-  it('supports an element with a role applied to multiple elements', async () => {
+  it("supports an element with a role applied to multiple elements", async () => {
     const fixture = new DynamicMultiple();
     fixture[internal.renderChanges]();
     assert(fixture[internal.ids].static instanceof HTMLDivElement);
-    fixture.shadowRoot.querySelectorAll('.dynamic').forEach(element => {
+    fixture.shadowRoot.querySelectorAll(".dynamic").forEach(element => {
       assert(element instanceof HTMLButtonElement);
-      assert(element.classList.contains('foo'));
+      assert(element.classList.contains("foo"));
     });
   });
 
-  it('can concatenate templates', () => {
+  it("can concatenate templates", () => {
     const a = template.html`<div>A</div>`;
     const b = template.html`<div>B</div>`;
     const fixture = template.concat(a, b);

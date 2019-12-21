@@ -1,14 +1,14 @@
-import * as internal from '../../../src/internal.js';
-import * as template from '../../../src/template.js';
-import CrossfadeStage from '../../../src/CrossfadeStage.js';
-import SereneTabButton from './SereneTabButton.js';
-import Tabs from '../../../src/Tabs.js';
+import * as internal from "../../../src/internal.js";
+import * as template from "../../../src/template.js";
+import CrossfadeStage from "../../../src/CrossfadeStage.js";
+import SereneTabButton from "./SereneTabButton.js";
+import Tabs from "../../../src/Tabs.js";
 
 class SereneTabs extends Tabs {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       generic: false,
-      itemRole: 'tabpanel',
+      itemRole: "tabpanel",
       proxyPartType: SereneTabButton,
       stagePartType: CrossfadeStage
     });
@@ -40,5 +40,5 @@ class SereneTabs extends Tabs {
   }
 }
 
-customElements.define('serene-tabs', SereneTabs);
+customElements.define("serene-tabs", SereneTabs);
 export default SereneTabs;

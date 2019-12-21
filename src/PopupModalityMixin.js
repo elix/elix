@@ -1,9 +1,9 @@
-import { deepContains, ownEvent } from './utilities.js';
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import { deepContains, ownEvent } from "./utilities.js";
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /** @type {any} */
-const implicitCloseListenerKey = Symbol('implicitCloseListener');
+const implicitCloseListenerKey = Symbol("implicitCloseListener");
 
 /**
  * Gives an overlay lightweight popup-style behavior.
@@ -33,7 +33,7 @@ export default function PopupModalityMixin(Base) {
       super();
 
       // If we lose focus, and the new focus isn't inside us, then close.
-      this.addEventListener('blur', blurHandler.bind(this));
+      this.addEventListener("blur", blurHandler.bind(this));
     }
 
     [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
@@ -49,8 +49,8 @@ export default function PopupModalityMixin(Base) {
           // don't want to immediately close because the page scrolled (only if
           // the user scrolls).
           const callback =
-            'requestIdleCallback' in window
-              ? window['requestIdleCallback']
+            "requestIdleCallback" in window
+              ? window["requestIdleCallback"]
               : setTimeout;
           callback(() => {
             // It's conceivable the popup was closed before the timeout completed,
@@ -81,7 +81,7 @@ export default function PopupModalityMixin(Base) {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState], {
         closeOnWindowResize: true,
-        role: 'alert'
+        role: "alert"
       });
     }
 
@@ -90,9 +90,9 @@ export default function PopupModalityMixin(Base) {
       let handled = false;
 
       switch (event.key) {
-        case 'Escape':
+        case "Escape":
           this.close({
-            canceled: 'Escape'
+            canceled: "Escape"
           });
           handled = true;
           break;
@@ -109,7 +109,7 @@ export default function PopupModalityMixin(Base) {
       if (changed.role) {
         // Apply top-level role.
         const { role } = this[internal.state];
-        this.setAttribute('role', role);
+        this.setAttribute("role", role);
       }
     }
 
@@ -134,16 +134,16 @@ function addEventListeners(/** @type {ReactiveElement} */ element) {
   element[implicitCloseListenerKey] = closeHandler.bind(element);
 
   // Window blur event tracks loss of focus of *window*, not just element.
-  window.addEventListener('blur', element[implicitCloseListenerKey]);
-  window.addEventListener('resize', element[implicitCloseListenerKey]);
-  window.addEventListener('scroll', element[implicitCloseListenerKey]);
+  window.addEventListener("blur", element[implicitCloseListenerKey]);
+  window.addEventListener("resize", element[implicitCloseListenerKey]);
+  window.addEventListener("scroll", element[implicitCloseListenerKey]);
 }
 
 function removeEventListeners(/** @type {ReactiveElement} */ element) {
   if (element[implicitCloseListenerKey]) {
-    window.removeEventListener('blur', element[implicitCloseListenerKey]);
-    window.removeEventListener('resize', element[implicitCloseListenerKey]);
-    window.removeEventListener('scroll', element[implicitCloseListenerKey]);
+    window.removeEventListener("blur", element[implicitCloseListenerKey]);
+    window.removeEventListener("resize", element[implicitCloseListenerKey]);
+    window.removeEventListener("scroll", element[implicitCloseListenerKey]);
     element[implicitCloseListenerKey] = null;
   }
 }
@@ -169,7 +169,7 @@ async function closeHandler(/** @type {Event} */ event) {
   // @ts-ignore
   /** @type {any} */ const element = this;
   const handleEvent =
-    event.type !== 'resize' || element[internal.state].closeOnWindowResize;
+    event.type !== "resize" || element[internal.state].closeOnWindowResize;
   if (!ownEvent(element, event) && handleEvent) {
     element[internal.raiseChangeEvents] = true;
     await element.close();

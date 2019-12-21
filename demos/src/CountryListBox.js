@@ -2,22 +2,22 @@
  * Demo of a list box with hard-coded contents.
  */
 
-import * as internal from '../../src/internal.js';
-import * as template from '../../src/template.js';
-import AriaListMixin from '../../src/AriaListMixin.js';
-import ContentItemsMixin from '../../src/ContentItemsMixin.js';
-import DirectionSelectionMixin from '../../src/DirectionSelectionMixin.js';
-import ItemsTextMixin from '../../src/ItemsTextMixin.js';
-import KeyboardDirectionMixin from '../../src/KeyboardDirectionMixin.js';
-import KeyboardMixin from '../../src/KeyboardMixin.js';
-import KeyboardPagedSelectionMixin from '../../src/KeyboardPagedSelectionMixin.js';
-import KeyboardPrefixSelectionMixin from '../../src/KeyboardPrefixSelectionMixin.js';
-import LanguageDirectionMixin from '../../src/LanguageDirectionMixin.js';
-import ReactiveElement from '../../src/ReactiveElement.js';
-import SelectedItemTextValueMixin from '../../src/SelectedItemTextValueMixin.js';
-import SelectionInViewMixin from '../../src/SelectionInViewMixin.js';
-import SingleSelectionMixin from '../../src/SingleSelectionMixin.js';
-import TapSelectionMixin from '../../src/TapSelectionMixin.js';
+import * as internal from "../../src/internal.js";
+import * as template from "../../src/template.js";
+import AriaListMixin from "../../src/AriaListMixin.js";
+import ContentItemsMixin from "../../src/ContentItemsMixin.js";
+import DirectionSelectionMixin from "../../src/DirectionSelectionMixin.js";
+import ItemsTextMixin from "../../src/ItemsTextMixin.js";
+import KeyboardDirectionMixin from "../../src/KeyboardDirectionMixin.js";
+import KeyboardMixin from "../../src/KeyboardMixin.js";
+import KeyboardPagedSelectionMixin from "../../src/KeyboardPagedSelectionMixin.js";
+import KeyboardPrefixSelectionMixin from "../../src/KeyboardPrefixSelectionMixin.js";
+import LanguageDirectionMixin from "../../src/LanguageDirectionMixin.js";
+import ReactiveElement from "../../src/ReactiveElement.js";
+import SelectedItemTextValueMixin from "../../src/SelectedItemTextValueMixin.js";
+import SelectionInViewMixin from "../../src/SelectionInViewMixin.js";
+import SingleSelectionMixin from "../../src/SingleSelectionMixin.js";
+import TapSelectionMixin from "../../src/TapSelectionMixin.js";
 
 const Base = AriaListMixin(
   ContentItemsMixin(
@@ -54,7 +54,7 @@ class CountryListBox extends Base {
 
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      orientation: 'vertical'
+      orientation: "vertical"
     });
   }
 
@@ -70,7 +70,7 @@ class CountryListBox extends Base {
       if (items) {
         items.forEach((item, index) => {
           const selected = index === selectedIndex;
-          item.toggleAttribute('selected', selected);
+          item.toggleAttribute("selected", selected);
         });
       }
     }
@@ -311,5 +311,5 @@ class CountryListBox extends Base {
   }
 }
 
-customElements.define('country-list-box', CountryListBox);
+customElements.define("country-list-box", CountryListBox);
 export default CountryListBox;

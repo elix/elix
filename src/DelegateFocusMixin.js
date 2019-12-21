@@ -1,6 +1,6 @@
-import { firstFocusableElement } from './utilities.js';
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import { firstFocusableElement } from "./utilities.js";
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Delegates a component's focus to its first focusable shadow element.
@@ -24,7 +24,7 @@ export default function DelegateFocusMixin(Base) {
       // suppress the host focus outline.
       /** @type {any} */ const cast = this.shadowRoot;
       if (cast.delegatesFocus) {
-        this.style.outline = 'none';
+        this.style.outline = "none";
       }
     }
 

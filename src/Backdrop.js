@@ -1,7 +1,7 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import AriaRoleMixin from './AriaRoleMixin.js';
-import ReactiveElement from './ReactiveElement.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import AriaRoleMixin from "./AriaRoleMixin.js";
+import ReactiveElement from "./ReactiveElement.js";
 
 const Base = AriaRoleMixin(ReactiveElement);
 
@@ -18,7 +18,7 @@ const Base = AriaRoleMixin(ReactiveElement);
 class Backdrop extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      role: 'none'
+      role: "none"
     });
   }
 

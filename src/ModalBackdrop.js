@@ -1,6 +1,6 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import Backdrop from './Backdrop.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import Backdrop from "./Backdrop.js";
 
 /**
  * Semi-transparent backdrop for a modal overlay
@@ -23,8 +23,8 @@ class ModalBackdrop extends Backdrop {
     // Android Chrome already correctly prevents drags from reaching the page,
     // so we only engage this workaround if we don't see support for pointer
     // events -- in which case we assume we're in Safari.
-    if (!('PointerEvent' in window)) {
-      this.addEventListener('touchmove', event => {
+    if (!("PointerEvent" in window)) {
+      this.addEventListener("touchmove", event => {
         if (event.touches.length === 1) {
           event.preventDefault();
         }

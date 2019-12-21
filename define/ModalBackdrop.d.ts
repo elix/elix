@@ -1,2 +1,2 @@
-import ModalBackdrop from '../src/ModalBackdrop.js';
+import ModalBackdrop from "../src/ModalBackdrop.js";
 export default ModalBackdrop;

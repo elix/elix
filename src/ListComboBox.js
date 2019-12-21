@@ -1,12 +1,12 @@
-import { getItemText } from './ItemsTextMixin.js';
-import { indexOfItemContainingTarget } from './utilities.js';
-import * as internal from './internal.js';
-import * as template from './template.js';
-import ComboBox from './ComboBox.js';
-import DelegateItemsMixin from './DelegateItemsMixin.js';
-import DirectionSelectionMixin from './DirectionSelectionMixin.js';
-import ListBox from './ListBox.js';
-import SingleSelectionMixin from './SingleSelectionMixin.js';
+import { getItemText } from "./ItemsTextMixin.js";
+import { indexOfItemContainingTarget } from "./utilities.js";
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import ComboBox from "./ComboBox.js";
+import DelegateItemsMixin from "./DelegateItemsMixin.js";
+import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
+import ListBox from "./ListBox.js";
+import SingleSelectionMixin from "./SingleSelectionMixin.js";
 
 const Base = DelegateItemsMixin(
   DirectionSelectionMixin(SingleSelectionMixin(ComboBox))
@@ -24,19 +24,19 @@ const Base = DelegateItemsMixin(
 class ListComboBox extends Base {
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
-    this.setAttribute('aria-haspopup', 'listbox');
+    this.setAttribute("aria-haspopup", "listbox");
   }
 
   get [internal.defaultState]() {
     const state = Object.assign(super[internal.defaultState], {
-      horizontalAlign: 'stretch',
+      horizontalAlign: "stretch",
       listPartType: ListBox,
       selectedIndex: -1
     });
 
     // If value was changed directly or items have updated, select the
     // corresponding item in list.
-    state.onChange(['items', 'value'], state => {
+    state.onChange(["items", "value"], state => {
       const { value } = state;
       /** @type {ListItemElement[]} */ const items = state.items;
       if (items && value != null) {
@@ -54,7 +54,7 @@ class ListComboBox extends Base {
 
     // If user selects a new item, or combo is closing, make selected item the
     // value.
-    state.onChange(['opened', 'selectedIndex'], (state, changed) => {
+    state.onChange(["opened", "selectedIndex"], (state, changed) => {
       const { closeResult, items, opened, selectedIndex, value } = state;
       const closing = changed.opened && !opened;
       const canceled = closeResult && closeResult.canceled;
@@ -66,7 +66,7 @@ class ListComboBox extends Base {
         if (selectedItem) {
           const selectedItemText = getItemText(selectedItem);
           // See notes on mobile at ComboBox.defaultState.
-          const probablyMobile = matchMedia('(pointer: coarse)').matches;
+          const probablyMobile = matchMedia("(pointer: coarse)").matches;
           const selectText = !probablyMobile;
           if (value !== selectedItemText) {
             return {
@@ -80,7 +80,7 @@ class ListComboBox extends Base {
     });
 
     // When items change, we need to recalculate popup size.
-    state.onChange('items', () => ({
+    state.onChange("items", () => ({
       popupMeasured: false
     }));
 
@@ -97,7 +97,7 @@ class ListComboBox extends Base {
     const list = this[internal.ids].list;
 
     switch (event.key) {
-      case 'ArrowDown':
+      case "ArrowDown":
         if (this.opened) {
           handled = event.altKey
             ? this[internal.goEnd]()
@@ -105,7 +105,7 @@ class ListComboBox extends Base {
         }
         break;
 
-      case 'ArrowUp':
+      case "ArrowUp":
         if (this.opened) {
           handled = event.altKey
             ? this[internal.goStart]()
@@ -113,13 +113,13 @@ class ListComboBox extends Base {
         }
         break;
 
-      case 'PageDown':
+      case "PageDown":
         if (this.opened) {
           handled = list.pageDown && list.pageDown();
         }
         break;
 
-      case 'PageUp':
+      case "PageUp":
         if (this.opened) {
           handled = list.pageUp && list.pageUp();
         }
@@ -153,7 +153,7 @@ class ListComboBox extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.inputPartType) {
-      this[internal.ids].input.setAttribute('aria-autocomplete', 'both');
+      this[internal.ids].input.setAttribute("aria-autocomplete", "both");
     }
     if (changed.listPartType) {
       template.transmute(
@@ -161,7 +161,7 @@ class ListComboBox extends Base {
         this[internal.state].listPartType
       );
 
-      this[internal.ids].list.addEventListener('mousedown', event => {
+      this[internal.ids].list.addEventListener("mousedown", event => {
         // Mousing down inside a list item closes the popup.
         /** @type {any} */
         const target = event.target;
@@ -183,7 +183,7 @@ class ListComboBox extends Base {
       // ignore the first press of the Backspace key. The user must press
       // Backspace a second time to actually delete the selected text.
       this[internal.ids].list.addEventListener(
-        'selected-index-changed',
+        "selected-index-changed",
         event => {
           /** @type {any} */
           const cast = event;
@@ -200,7 +200,7 @@ class ListComboBox extends Base {
     }
     if (changed.selectedIndex) {
       const list = /** @type {any} */ (this[internal.ids].list);
-      if ('selectedIndex' in list) {
+      if ("selectedIndex" in list) {
         list.selectedIndex = this[internal.state].selectedIndex;
       }
     }

@@ -1,11 +1,11 @@
-import * as fractionalSelection from './fractionalSelection.js';
-import * as internal from './internal.js';
-import * as template from './template.js';
-import EffectMixin from './EffectMixin.js';
-import LanguageDirectionMixin from './LanguageDirectionMixin.js';
-import ReactiveElement from './ReactiveElement.js';
-import SingleSelectionMixin from './SingleSelectionMixin.js';
-import SlotItemsMixin from './SlotItemsMixin.js';
+import * as fractionalSelection from "./fractionalSelection.js";
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import EffectMixin from "./EffectMixin.js";
+import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
+import ReactiveElement from "./ReactiveElement.js";
+import SingleSelectionMixin from "./SingleSelectionMixin.js";
+import SlotItemsMixin from "./SlotItemsMixin.js";
 
 const Base = EffectMixin(
   LanguageDirectionMixin(SingleSelectionMixin(SlotItemsMixin(ReactiveElement)))
@@ -28,7 +28,7 @@ const Base = EffectMixin(
 class SlidingStage extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      orientation: 'horizontal',
+      orientation: "horizontal",
       selectionRequired: true
     });
   }
@@ -51,7 +51,7 @@ class SlidingStage extends Base {
       const { orientation, rightToLeft, selectedIndex, items } = this[
         internal.state
       ];
-      const vertical = orientation === 'vertical';
+      const vertical = orientation === "vertical";
       const sign = vertical ? -1 : rightToLeft ? 1 : -1;
       const swiping = this[internal.state].swipeFraction != null;
       const swipeFraction = this[internal.state].swipeFraction || 0;
@@ -69,20 +69,20 @@ class SlidingStage extends Base {
       }
 
       const slidingStageContent = this[internal.ids].slidingStageContent;
-      const axis = vertical ? 'Y' : 'X';
+      const axis = vertical ? "Y" : "X";
       slidingStageContent.style.transform = `translate${axis}(${translation}%)`;
 
       const showTransition = this[internal.state].enableEffects && !swiping;
       slidingStageContent.style.transition = showTransition
-        ? 'transform 0.25s'
-        : 'none';
+        ? "transform 0.25s"
+        : "none";
     }
     if (changed.orientation) {
       const { orientation } = this[internal.state];
-      const vertical = orientation === 'vertical';
+      const vertical = orientation === "vertical";
       this[internal.ids].slidingStageContent.style.flexDirection = vertical
-        ? 'column'
-        : '';
+        ? "column"
+        : "";
     }
   }
 

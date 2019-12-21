@@ -1,7 +1,7 @@
 // Create the top-level elix.js and elix.d.ts files.
 
-const fs = require('fs').promises;
-const path = require('path');
+const fs = require("fs").promises;
+const path = require("path");
 
 const srcJsHeader = `/*
  * The complete set of Elix elements and mixins.
@@ -44,21 +44,21 @@ async function createLibraryFile(
 
   const classExports = classExportFiles
     .map(file => {
-      const name = path.basename(file, '.js');
+      const name = path.basename(file, ".js");
       // Components point to the local folder, mixins point to /src.
-      const isMixin = name.endsWith('Mixin');
+      const isMixin = name.endsWith("Mixin");
       const filePath =
         isMixin && destinationFolder !== sourceFolder
           ? path.join(relativeFolder, file)
           : `./${file}`;
       return `export { default as ${name} } from '${filePath}';`;
     })
-    .join('\n');
+    .join("\n");
 
   const helperFiles = sourceFiles.helpers;
   const helperExports = helperFiles
     .map(file => {
-      const name = path.basename(file, '.js');
+      const name = path.basename(file, ".js");
       // Helpers always point to the /src folder.
       const filePath =
         destinationFolder !== sourceFolder
@@ -69,7 +69,7 @@ async function createLibraryFile(
 export const ${name} = ${name}Import;
 `;
     })
-    .join('\n');
+    .join("\n");
 
   const content = `${header}
 
@@ -88,10 +88,10 @@ ${helperExports}`;
 async function createLibraryFiles(sourceFolder, defineFolder, sourceFiles) {
   // Write library files to /src folder,
   // and auto-define variations to /define folder.
-  const srcJsPath = path.join(sourceFolder, 'elix.js');
-  const srcTsPath = path.join(sourceFolder, 'elix.d.ts');
-  const defineJsPath = path.join(defineFolder, 'elix.js');
-  const defineTsPath = path.join(defineFolder, 'elix.d.ts');
+  const srcJsPath = path.join(sourceFolder, "elix.js");
+  const srcTsPath = path.join(sourceFolder, "elix.d.ts");
+  const defineJsPath = path.join(defineFolder, "elix.js");
+  const defineTsPath = path.join(defineFolder, "elix.d.ts");
   await Promise.all([
     createLibraryFile(srcJsPath, srcJsHeader, sourceFolder, sourceFiles),
     createLibraryFile(srcTsPath, tsHeader, sourceFolder, sourceFiles),

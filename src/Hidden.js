@@ -1,5 +1,5 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js';
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js";
 
 /**
  * An element with no visible appearance
@@ -15,7 +15,7 @@ import ReactiveElement from './ReactiveElement.js';
 class Hidden extends ReactiveElement {
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
-    this.setAttribute('hidden', '');
+    this.setAttribute("hidden", "");
   }
 }
 

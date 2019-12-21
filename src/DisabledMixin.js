@@ -1,5 +1,5 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Tracks the disabled state of a component that can be disabled
@@ -63,7 +63,7 @@ export default function DisabledMixin(Base) {
       // supplied value is a string, it was presumably set via an attribute. In
       // that case, any non-null value counts as true.
       const parsed =
-        typeof disabled === 'boolean' ? disabled : disabled !== null;
+        typeof disabled === "boolean" ? disabled : disabled !== null;
       // Setting the disabled state will eventually cause the property value to
       // be reflected to the disabled attribute, which will invoke this setter
       // again -- this time, with a string value. That string value should get
@@ -80,5 +80,5 @@ export default function DisabledMixin(Base) {
 
 // Reflect value of disabled property to the corresponding attribute.
 function reflectDisabledAttribute(/** @type {ReactiveElement} */ element) {
-  element.toggleAttribute('disabled', element.disabled);
+  element.toggleAttribute("disabled", element.disabled);
 }

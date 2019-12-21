@@ -1,11 +1,11 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 // A cache of processed templates, indexed by element class.
 const classTemplateMap = new Map();
 
 /** @type {any} */
-const shadowReferencesKey = Symbol('shadowReferences');
+const shadowReferencesKey = Symbol("shadowReferences");
 
 /**
  * Stamps a template into a component's Shadow DOM when instantiated
@@ -59,7 +59,7 @@ export default function ShadowTemplateMixin(Base) {
           {
             /* eslint-disable no-unused-vars */
             get(target, property, receiver) {
-              return element.shadowRoot && typeof property === 'string'
+              return element.shadowRoot && typeof property === "string"
                 ? element.shadowRoot.getElementById(property)
                 : null;
             }
@@ -89,7 +89,7 @@ export default function ShadowTemplateMixin(Base) {
         const delegatesFocus = this[internal.delegatesFocus];
         const root = this.attachShadow({
           delegatesFocus,
-          mode: 'open'
+          mode: "open"
         });
         const clone = document.importNode(template.content, true);
         root.appendChild(clone);

@@ -1,5 +1,5 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /** @type {any} */ let resizeObserver;
 /** @type {Element[]} */ const windowResizeEntries = [];
@@ -88,8 +88,8 @@ export default function ResizeMixin(Base) {
 }
 
 // Is ResizeObserve supported?
-const Observer = window['ResizeObserver'];
-if (typeof Observer !== 'undefined') {
+const Observer = window["ResizeObserver"];
+if (typeof Observer !== "undefined") {
   // Use ResizeObserver.
   resizeObserver = new Observer((/** @type {any[]} */ entries) => {
     entries.forEach(entry => {
@@ -108,7 +108,7 @@ if (typeof Observer !== 'undefined') {
   });
 } else {
   // Fall back to only tracking window resize.
-  window.addEventListener('resize', () => {
+  window.addEventListener("resize", () => {
     windowResizeEntries.forEach(entry => {
       entry[internal.checkSize]();
     });

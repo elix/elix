@@ -1,11 +1,11 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 // Symbols for private data members.
 /** @type {any} */
-const previousBodyOverflowKey = Symbol('previousBodyStyleOverflow');
+const previousBodyOverflowKey = Symbol("previousBodyStyleOverflow");
 /** @type {any} */
-const previousDocumentMarginRightKey = Symbol('previousDocumentMarginRight');
+const previousDocumentMarginRightKey = Symbol("previousDocumentMarginRight");
 
 /**
  * Gives an overlay modal behavior.
@@ -27,7 +27,7 @@ export default function DialogModalityMixin(Base) {
   return class DialogModality extends Base {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState], {
-        role: 'dialog'
+        role: "dialog"
       });
     }
 
@@ -35,10 +35,10 @@ export default function DialogModalityMixin(Base) {
       let handled = false;
 
       switch (event.key) {
-        case 'Escape':
+        case "Escape":
           // Close on Esc key.
           this.close({
-            canceled: 'Escape'
+            canceled: "Escape"
           });
           handled = true;
           break;
@@ -67,7 +67,7 @@ export default function DialogModalityMixin(Base) {
             scrollBarWidth > 0
               ? document.documentElement.style.marginRight
               : null;
-          document.body.style.overflow = 'hidden';
+          document.body.style.overflow = "hidden";
           if (scrollBarWidth > 0) {
             document.documentElement.style.marginRight = `${scrollBarWidth}px`;
           }
@@ -88,7 +88,7 @@ export default function DialogModalityMixin(Base) {
       if (changed.role) {
         // Apply top-level role.
         const { role } = this[internal.state];
-        this.setAttribute('role', role);
+        this.setAttribute("role", role);
       }
     }
 

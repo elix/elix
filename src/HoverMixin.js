@@ -1,5 +1,5 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Tracks whether the mouse is over the component as component state.
@@ -17,13 +17,13 @@ export default function HoverMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this.addEventListener('mouseenter', async event => {
+      this.addEventListener("mouseenter", async event => {
         this[internal.raiseChangeEvents] = true;
         this[internal.mouseenter](event);
         await Promise.resolve();
         this[internal.raiseChangeEvents] = false;
       });
-      this.addEventListener('mouseleave', async event => {
+      this.addEventListener("mouseleave", async event => {
         this[internal.raiseChangeEvents] = true;
         this[internal.mouseleave](event);
         await Promise.resolve();

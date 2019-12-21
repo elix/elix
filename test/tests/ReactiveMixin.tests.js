@@ -1,5 +1,5 @@
-import * as internal from '../../src/internal.js';
-import ReactiveMixin from '../../src/ReactiveMixin.js';
+import * as internal from "../../src/internal.js";
+import ReactiveMixin from "../../src/ReactiveMixin.js";
 
 class ReactiveTest extends ReactiveMixin(HTMLElement) {
   [internal.componentDidMount]() {
@@ -28,83 +28,83 @@ class ReactiveTest extends ReactiveMixin(HTMLElement) {
     this.renderedResult = this[internal.state].message;
   }
 }
-customElements.define('reactive-test', ReactiveTest);
+customElements.define("reactive-test", ReactiveTest);
 
-describe('ReactiveMixin', function() {
+describe("ReactiveMixin", function() {
   let container;
 
   before(() => {
-    container = document.getElementById('container');
+    container = document.getElementById("container");
   });
 
   afterEach(() => {
-    container.innerHTML = '';
+    container.innerHTML = "";
   });
 
-  it('starts with an empty state object', () => {
+  it("starts with an empty state object", () => {
     const fixture = new ReactiveTest();
     assert.deepEqual(fixture[internal.state], {});
   });
 
-  it('starts with defaultState if defined', () => {
+  it("starts with defaultState if defined", () => {
     ReactiveTest.defaults = {
-      message: 'aardvark'
+      message: "aardvark"
     };
     const fixture = new ReactiveTest();
-    assert.deepEqual(fixture[internal.state], { message: 'aardvark' });
+    assert.deepEqual(fixture[internal.state], { message: "aardvark" });
     ReactiveTest.defaults = undefined;
   });
 
-  it('setState updates state', () => {
+  it("setState updates state", () => {
     const fixture = new ReactiveTest();
     fixture[internal.setState]({
-      message: 'badger'
+      message: "badger"
     });
-    assert.deepEqual(fixture[internal.state], { message: 'badger' });
+    assert.deepEqual(fixture[internal.state], { message: "badger" });
   });
 
-  it('state is immutable', () => {
+  it("state is immutable", () => {
     const fixture = new ReactiveTest();
     assert.throws(() => (fixture[internal.state] = {}));
-    assert.throws(() => (fixture[internal.state].message = 'chihuahua'));
+    assert.throws(() => (fixture[internal.state].message = "chihuahua"));
   });
 
-  it('setState skips render if component is not in document', async () => {
+  it("setState skips render if component is not in document", async () => {
     const fixture = new ReactiveTest();
     const renderSpy = sinon.spy(fixture, internal.render);
     await fixture[internal.setState]({
-      message: 'dingo'
+      message: "dingo"
     });
     assert.equal(renderSpy.callCount, 0);
   });
 
-  it('setState invokes render if component is in document', async () => {
+  it("setState invokes render if component is in document", async () => {
     const fixture = new ReactiveTest();
     container.appendChild(fixture);
     const renderSpy = sinon.spy(fixture, internal.render);
     await fixture[internal.setState]({
-      message: 'echidna'
+      message: "echidna"
     });
     assert.equal(renderSpy.callCount, 1);
-    assert.equal(fixture.renderedResult, 'echidna');
+    assert.equal(fixture.renderedResult, "echidna");
   });
 
-  it('consecutive[internal.setState] calls batched into single render call', async () => {
+  it("consecutive[internal.setState] calls batched into single render call", async () => {
     const fixture = new ReactiveTest();
     container.appendChild(fixture);
     const renderSpy = sinon.spy(fixture, internal.render);
     /* Do *not* await first call - invoke it synchronously. */
     fixture[internal.setState]({
-      message: 'fox'
+      message: "fox"
     });
     await fixture[internal.setState]({
-      message: 'gorilla'
+      message: "gorilla"
     });
     assert.equal(renderSpy.callCount, 1);
-    assert.equal(fixture[internal.state].message, 'gorilla');
+    assert.equal(fixture[internal.state].message, "gorilla");
   });
 
-  it('render invokes componentDidMount/componentDidUpdate if defined', async () => {
+  it("render invokes componentDidMount/componentDidUpdate if defined", async () => {
     const fixture = new ReactiveTest();
     const componentDidMountSpy = sinon.spy(fixture, internal.componentDidMount);
     const componentDidUpdateSpy = sinon.spy(
@@ -117,13 +117,13 @@ describe('ReactiveMixin', function() {
     assert.equal(componentDidMountSpy.callCount, 1);
     assert.equal(componentDidUpdateSpy.callCount, 0);
     await fixture[internal.setState]({
-      message: 'iguana'
+      message: "iguana"
     });
     assert.equal(componentDidMountSpy.callCount, 1);
     assert.equal(componentDidUpdateSpy.callCount, 1);
   });
 
-  it('only calls componentDidMount once, even if component is reattached', async () => {
+  it("only calls componentDidMount once, even if component is reattached", async () => {
     const fixture = new ReactiveTest();
     const componentDidMountSpy = sinon.spy(fixture, internal.componentDidMount);
     container.appendChild(fixture);
@@ -137,24 +137,24 @@ describe('ReactiveMixin', function() {
     assert.equal(componentDidMountSpy.callCount, 1);
   });
 
-  it('leaves state object alone if there are no changes', async () => {
+  it("leaves state object alone if there are no changes", async () => {
     const fixture = new ReactiveTest();
     await fixture[internal.setState]({
-      message: 'hamster'
+      message: "hamster"
     });
     const previousState = fixture[internal.state];
     await fixture[internal.setState]({
-      message: 'hamster'
+      message: "hamster"
     });
     assert.equal(fixture[internal.state], previousState);
   });
 
-  it('runs state change handlers when state changes', () => {
+  it("runs state change handlers when state changes", () => {
     // Simple class, copies state member `a` to `b`.
     class Fixture extends ReactiveMixin(Object) {
       get [internal.defaultState]() {
         const state = super[internal.defaultState];
-        state.onChange('a', state => ({ b: state.a }));
+        state.onChange("a", state => ({ b: state.a }));
         return state;
       }
     }
@@ -167,12 +167,12 @@ describe('ReactiveMixin', function() {
     assert(fixture[internal.state].b === 3);
   });
 
-  it('runs state change handlers on initial state', () => {
+  it("runs state change handlers on initial state", () => {
     class Fixture extends ReactiveMixin(Object) {
       get [internal.defaultState]() {
         const state = super[internal.defaultState];
         state.a = 1;
-        state.onChange('a', state => ({ b: state.a }));
+        state.onChange("a", state => ({ b: state.a }));
         return state;
       }
     }

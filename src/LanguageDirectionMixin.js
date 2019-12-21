@@ -1,5 +1,5 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Lets an element determine whether it resides in right-to-left text.
@@ -17,7 +17,7 @@ export default function LanguageDirectionMixin(Base) {
     connectedCallback() {
       /** @type {any} */ const element = this;
       const languageDirection = getComputedStyle(element).direction;
-      const rightToLeft = languageDirection === 'rtl';
+      const rightToLeft = languageDirection === "rtl";
       this[internal.setState]({ rightToLeft });
       if (super.connectedCallback) {
         super.connectedCallback();

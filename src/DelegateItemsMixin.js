@@ -1,9 +1,9 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
-const itemsChangedListenerKey = Symbol('itemsChangedListener');
-const previousItemsDelegateKey = Symbol('previousItemsDelegate');
-const selectedIndexChangedListenerKey = Symbol('selectedIndexChangedListener');
+const itemsChangedListenerKey = Symbol("itemsChangedListener");
+const previousItemsDelegateKey = Symbol("previousItemsDelegate");
+const selectedIndexChangedListenerKey = Symbol("selectedIndexChangedListener");
 
 /**
  * Treats the items inside a shadow element as the component's own items.
@@ -75,10 +75,10 @@ export default function DelegateItemsMixin(Base) {
       }
       if (changed.selectedIndex) {
         const itemsDelegate = this[internal.itemsDelegate];
-        if (typeof itemsDelegate === 'undefined') {
+        if (typeof itemsDelegate === "undefined") {
           throw `To use DelegateItemsMixin, ${this.constructor.name} must define a getter for [internal.itemsDelegate].`;
         }
-        if ('selectedIndex' in itemsDelegate) {
+        if ("selectedIndex" in itemsDelegate) {
           itemsDelegate.selectedIndex = this[internal.state].selectedIndex;
         }
       }
@@ -102,11 +102,11 @@ function listenToDelegateEvents(/** @type {ReactiveElement} */ element) {
     }
     // Start listening to events on new delegate.
     itemsDelegate.addEventListener(
-      'items-changed',
+      "items-changed",
       cast[itemsChangedListenerKey]
     );
     itemsDelegate.addEventListener(
-      'selected-index-changed',
+      "selected-index-changed",
       cast[selectedIndexChangedListenerKey]
     );
   }

@@ -1,4 +1,4 @@
-import AttributeMarshallingMixin from '../../src/AttributeMarshallingMixin.js';
+import AttributeMarshallingMixin from "../../src/AttributeMarshallingMixin.js";
 
 let defaultPropertyValue;
 
@@ -6,7 +6,7 @@ let defaultPropertyValue;
 class ElementWithCustomProperty extends AttributeMarshallingMixin(HTMLElement) {
   constructor() {
     super();
-    if (typeof defaultPropertyValue !== 'undefined') {
+    if (typeof defaultPropertyValue !== "undefined") {
       this.customProperty = defaultPropertyValue;
     }
   }
@@ -26,39 +26,39 @@ class ElementWithCustomProperty extends AttributeMarshallingMixin(HTMLElement) {
   }
 }
 customElements.define(
-  'element-with-custom-property',
+  "element-with-custom-property",
   ElementWithCustomProperty
 );
 
-describe('AttributeMarshallingMixin', () => {
+describe("AttributeMarshallingMixin", () => {
   let container;
 
   before(() => {
-    container = document.getElementById('container');
+    container = document.getElementById("container");
     defaultPropertyValue = undefined;
   });
 
   afterEach(() => {
-    container.innerHTML = '';
+    container.innerHTML = "";
   });
 
-  it('defines observedAttributes for all custom property setters', () => {
+  it("defines observedAttributes for all custom property setters", () => {
     const observedAttributes = ElementWithCustomProperty.observedAttributes;
-    assert.deepEqual(observedAttributes, ['custom-property', 'disabled']);
+    assert.deepEqual(observedAttributes, ["custom-property", "disabled"]);
   });
 
-  it('marshals hyphenated attribute to corresponding camelCase property', () => {
+  it("marshals hyphenated attribute to corresponding camelCase property", () => {
     const fixture = new ElementWithCustomProperty();
     assert.isUndefined(fixture.customProperty);
-    fixture.setAttribute('custom-property', 'Hello');
-    assert.equal(fixture.customProperty, 'Hello');
+    fixture.setAttribute("custom-property", "Hello");
+    assert.equal(fixture.customProperty, "Hello");
   });
 
-  it('translates boolean attribute string|null to boolean value', () => {
+  it("translates boolean attribute string|null to boolean value", () => {
     const fixture = new ElementWithCustomProperty();
-    fixture.setAttribute('disabled', '');
+    fixture.setAttribute("disabled", "");
     assert(fixture.disabled);
-    fixture.removeAttribute('disabled');
+    fixture.removeAttribute("disabled");
     assert(!fixture.disabled);
   });
 });

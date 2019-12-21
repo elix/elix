@@ -1,10 +1,10 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import EffectMixin from './EffectMixin.js';
-import ReactiveElement from './ReactiveElement.js';
-import SingleSelectionMixin from './SingleSelectionMixin.js';
-import SlotItemsMixin from './SlotItemsMixin.js';
-import TransitionEffectMixin from './TransitionEffectMixin.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import EffectMixin from "./EffectMixin.js";
+import ReactiveElement from "./ReactiveElement.js";
+import SingleSelectionMixin from "./SingleSelectionMixin.js";
+import SlotItemsMixin from "./SlotItemsMixin.js";
+import TransitionEffectMixin from "./TransitionEffectMixin.js";
 
 const Base = EffectMixin(
   SingleSelectionMixin(SlotItemsMixin(TransitionEffectMixin(ReactiveElement)))
@@ -24,9 +24,9 @@ class CrossfadeStage extends Base {
     if (super[internal.componentDidMount]) {
       super[internal.componentDidMount]();
     }
-    this.addEventListener('effect-phase-changed', event => {
+    this.addEventListener("effect-phase-changed", event => {
       /** @type {any} */ const cast = event;
-      if (cast.detail.effectPhase === 'after') {
+      if (cast.detail.effectPhase === "after") {
         const { selectedIndex } = this[internal.state];
         /**
          * This event is raised when changing the selection and the selection
@@ -39,7 +39,7 @@ class CrossfadeStage extends Base {
          *
          * @event selection-effect-finished
          */
-        const finishedEvent = new CustomEvent('selection-effect-finished', {
+        const finishedEvent = new CustomEvent("selection-effect-finished", {
           detail: { selectedIndex }
         });
         this.dispatchEvent(finishedEvent);
@@ -49,21 +49,21 @@ class CrossfadeStage extends Base {
 
   get [internal.defaultState]() {
     const result = Object.assign(super[internal.defaultState], {
-      effect: 'select',
+      effect: "select",
       effectEndTarget: null,
-      effectPhase: 'after',
+      effectPhase: "after",
       selectionRequired: true,
       transitionDuration: 750 // 3/4 of a second
     });
 
     // When selection changes, (re)start the selection effect.
-    result.onChange('selectedIndex', state => {
+    result.onChange("selectedIndex", state => {
       const effectPhase =
         state.enableEffects &&
         state.selectedIndex >= 0 &&
-        state.effectPhase !== 'before'
-          ? 'before'
-          : 'after';
+        state.effectPhase !== "before"
+          ? "before"
+          : "after";
       // We'll watch the selected item to see when its `transitionend` event
       // fires; that will signal the end of the effect.
       const effectEndTarget =
@@ -98,18 +98,18 @@ class CrossfadeStage extends Base {
         selectedIndex,
         swipeFraction
       } = this[internal.state];
-      if (items && effect === 'select') {
-        if (enableEffects && effectPhase === 'before') {
+      if (items && effect === "select") {
+        if (enableEffects && effectPhase === "before") {
           // Prepare to animate.
           // Make all items visible, and the newly-selected one transparent.
           items.forEach((item, index) => {
-            if (index === selectedIndex && item.style.opacity === '') {
-              item.style.opacity = '0';
+            if (index === selectedIndex && item.style.opacity === "") {
+              item.style.opacity = "0";
             }
-            item.style.visibility = 'visible';
+            item.style.visibility = "visible";
           });
         } else if (
-          (enableEffects && effectPhase === 'during') ||
+          (enableEffects && effectPhase === "during") ||
           swipeFraction != null
         ) {
           // Start the animation or, if we're swiping, show the effective frame
@@ -124,16 +124,16 @@ class CrossfadeStage extends Base {
             );
             item.style.opacity = opacity.toString();
             if (opacity > 0) {
-              item.style.visibility = 'visible';
+              item.style.visibility = "visible";
             }
           });
-        } else if (effectPhase === 'after' || swipeFraction == null) {
+        } else if (effectPhase === "after" || swipeFraction == null) {
           // Finished animating (or finish a swipe).
           // Hide all items but the selected one.
           items.forEach((item, index) => {
             const selected = index === selectedIndex;
-            item.style.opacity = selected ? '1' : '';
-            item.style.visibility = selected ? 'visible' : '';
+            item.style.opacity = selected ? "1" : "";
+            item.style.visibility = selected ? "visible" : "";
           });
         }
       }
@@ -152,7 +152,7 @@ class CrossfadeStage extends Base {
       const transition =
         enableEffects && swipeFraction == null
           ? `opacity ${transitionDuration / 1000}s linear`
-          : '';
+          : "";
       if (items) {
         items.forEach(item => {
           item.style.transition = transition;

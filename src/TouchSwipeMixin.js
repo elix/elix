@@ -1,18 +1,18 @@
-import { canScrollInDirection } from './scrolling.js';
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import { canScrollInDirection } from "./scrolling.js";
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /** @type {any} */
-const deferToScrollingKey = Symbol('deferToScrolling');
+const deferToScrollingKey = Symbol("deferToScrolling");
 /** @type {any} */
-const multiTouchKey = Symbol('multiTouch');
-const previousTimeKey = Symbol('previousTime');
-const previousVelocityKey = Symbol('previousVelocity');
-const previousXKey = Symbol('previousX');
-const previousYKey = Symbol('previousY');
-const startXKey = Symbol('startX');
-const startYKey = Symbol('startY');
-const touchSequenceAxisKey = Symbol('touchSequenceAxis');
+const multiTouchKey = Symbol("multiTouch");
+const previousTimeKey = Symbol("previousTime");
+const previousVelocityKey = Symbol("previousVelocity");
+const previousXKey = Symbol("previousX");
+const previousYKey = Symbol("previousY");
+const startXKey = Symbol("startX");
+const startYKey = Symbol("startY");
+const touchSequenceAxisKey = Symbol("touchSequenceAxis");
 
 /**
  * Map touch events to swipe gestures.
@@ -33,8 +33,8 @@ export default function TouchSwipeMixin(Base) {
 
       // Prefer using the older touch events if supported.
       // See the rationale for this in the comments for componentDidMount.
-      if ('TouchEvent' in window) {
-        this.addEventListener('touchstart', async event => {
+      if ("TouchEvent" in window) {
+        this.addEventListener("touchstart", async event => {
           this[internal.raiseChangeEvents] = true;
           if (this[multiTouchKey]) {
             return;
@@ -47,7 +47,7 @@ export default function TouchSwipeMixin(Base) {
           await Promise.resolve();
           this[internal.raiseChangeEvents] = false;
         });
-        this.addEventListener('touchmove', async event => {
+        this.addEventListener("touchmove", async event => {
           this[internal.raiseChangeEvents] = true;
           if (
             !this[multiTouchKey] &&
@@ -69,7 +69,7 @@ export default function TouchSwipeMixin(Base) {
           await Promise.resolve();
           this[internal.raiseChangeEvents] = false;
         });
-        this.addEventListener('touchend', async event => {
+        this.addEventListener("touchend", async event => {
           this[internal.raiseChangeEvents] = true;
           if (event.touches.length === 0 && event.target) {
             // All touches removed; gesture is complete.
@@ -83,9 +83,9 @@ export default function TouchSwipeMixin(Base) {
           await Promise.resolve();
           this[internal.raiseChangeEvents] = false;
         });
-      } else if ('PointerEvent' in window) {
+      } else if ("PointerEvent" in window) {
         // Use pointer events.
-        this.addEventListener('pointerdown', async event => {
+        this.addEventListener("pointerdown", async event => {
           this[internal.raiseChangeEvents] = true;
           if (isEventForPenOrPrimaryTouch(event)) {
             const { clientX, clientY } = event;
@@ -94,7 +94,7 @@ export default function TouchSwipeMixin(Base) {
           await Promise.resolve();
           this[internal.raiseChangeEvents] = false;
         });
-        this.addEventListener('pointermove', async event => {
+        this.addEventListener("pointermove", async event => {
           this[internal.raiseChangeEvents] = true;
           if (isEventForPenOrPrimaryTouch(event) && event.target) {
             const { clientX, clientY } = event;
@@ -112,7 +112,7 @@ export default function TouchSwipeMixin(Base) {
           await Promise.resolve();
           this[internal.raiseChangeEvents] = false;
         });
-        this.addEventListener('pointerup', async event => {
+        this.addEventListener("pointerup", async event => {
           this[internal.raiseChangeEvents] = true;
           if (isEventForPenOrPrimaryTouch(event) && event.target) {
             const { clientX, clientY } = event;
@@ -157,12 +157,12 @@ export default function TouchSwipeMixin(Base) {
       // scrolling surface in Edge won't be able to retain support for built-in
       // touch features like scrolling.
       //
-      this.style.touchAction = 'TouchEvent' in window ? 'manipulation' : 'none';
+      this.style.touchAction = "TouchEvent" in window ? "manipulation" : "none";
     }
 
     get [internal.defaultState]() {
       const result = Object.assign(super[internal.defaultState], {
-        swipeAxis: 'horizontal',
+        swipeAxis: "horizontal",
         swipeDownWillCommit: false,
         swipeFraction: null,
         swipeFractionMax: 1,
@@ -178,10 +178,10 @@ export default function TouchSwipeMixin(Base) {
       // whether we'll commit an operation if the swipe were to finish at that
       // point. This definition is compatible with one defined by
       // TrackpadSwipeMixin.
-      result.onChange('swipeFraction', state => {
+      result.onChange("swipeFraction", state => {
         const { swipeAxis, swipeFraction } = state;
         if (swipeFraction !== null) {
-          if (swipeAxis === 'horizontal') {
+          if (swipeAxis === "horizontal") {
             return {
               swipeLeftWillCommit: swipeFraction <= -0.5,
               swipeRightWillCommit: swipeFraction >= 0.5
@@ -221,8 +221,8 @@ export default function TouchSwipeMixin(Base) {
  */
 function isEventForPenOrPrimaryTouch(event) {
   return (
-    event.pointerType === 'pen' ||
-    (event.pointerType === 'touch' && event.isPrimary)
+    event.pointerType === "pen" ||
+    (event.pointerType === "touch" && event.isPrimary)
   );
 }
 
@@ -248,7 +248,7 @@ function gestureContinue(element, clientX, clientY, eventTarget) {
   const deltaY = clientY - cast[previousYKey];
   const now = Date.now();
   const deltaTime = now - cast[previousTimeKey];
-  const deltaAlongAxis = swipeAxis === 'vertical' ? deltaY : deltaX;
+  const deltaAlongAxis = swipeAxis === "vertical" ? deltaY : deltaX;
   const velocity = (deltaAlongAxis / deltaTime) * 1000;
 
   cast[previousXKey] = clientX;
@@ -258,7 +258,7 @@ function gestureContinue(element, clientX, clientY, eventTarget) {
 
   // Was this specific event more vertical or more horizontal?
   const eventAxis =
-    Math.abs(deltaY) > Math.abs(deltaX) ? 'vertical' : 'horizontal';
+    Math.abs(deltaY) > Math.abs(deltaX) ? "vertical" : "horizontal";
 
   // Is this the first touch move event in a swipe sequence?
   const eventBeginsSequence = cast[touchSequenceAxisKey] === null;
@@ -347,7 +347,7 @@ function gestureEnd(element, clientX, clientY, eventTarget) {
   const flickThresholdVelocity = 800; // speed in pixels/second
 
   const { swipeAxis, swipeFraction } = element[internal.state];
-  const vertical = swipeAxis === 'vertical';
+  const vertical = swipeAxis === "vertical";
 
   // Scrolling takes precedence over flick gestures.
   let willScroll = false;
@@ -404,7 +404,7 @@ function gestureEnd(element, clientX, clientY, eventTarget) {
       }
     }
 
-    if (typeof flickPositive !== 'undefined') {
+    if (typeof flickPositive !== "undefined") {
       const gesture = vertical
         ? flickPositive
           ? internal.swipeDown
@@ -466,7 +466,7 @@ function gestureStart(element, clientX, clientY) {
 function getSwipeFraction(element, x, y) {
   const { swipeAxis } = element[internal.state];
   /** @type {any} */ const cast = element;
-  const vertical = swipeAxis === 'vertical';
+  const vertical = swipeAxis === "vertical";
   const dragDistance = vertical ? y - cast[startYKey] : x - cast[startXKey];
   const swipeTarget = element[internal.swipeTarget];
   const swipeTargetSize = vertical

@@ -1,5 +1,5 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Manages keyboard handling for a component.
@@ -43,7 +43,7 @@ export default function KeyboardMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this.addEventListener('keydown', async event => {
+      this.addEventListener("keydown", async event => {
         this[internal.raiseChangeEvents] = true;
         // For use with FocusVisibleMixin.
         if (!this[internal.state].focusVisible) {

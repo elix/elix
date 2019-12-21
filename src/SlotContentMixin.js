@@ -1,5 +1,5 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Defines a component's content as the flattened set of nodes assigned to a
@@ -34,7 +34,7 @@ export default function SlotContentMixin(Base) {
       // Listen to changes on the default slot.
       const slot = this[internal.contentSlot];
       if (slot) {
-        slot.addEventListener('slotchange', async () => {
+        slot.addEventListener("slotchange", async () => {
           // Although slotchange isn't generally a user-driven event, it's
           // impossible for us to know whether a change in slot content is going
           // to result in effects that the host of this element can predict.
@@ -59,7 +59,7 @@ export default function SlotContentMixin(Base) {
      */
     get [internal.contentSlot]() {
       /** @type {HTMLSlotElement|null} */ const slot =
-        this.shadowRoot && this.shadowRoot.querySelector('slot:not([name])');
+        this.shadowRoot && this.shadowRoot.querySelector("slot:not([name])");
       if (!this.shadowRoot || !slot) {
         /* eslint-disable no-console */
         console.warn(

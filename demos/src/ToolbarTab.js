@@ -1,6 +1,6 @@
-import * as internal from '../../src/internal.js';
-import * as template from '../../src/template.js';
-import TabButton from '../../src/TabButton.js';
+import * as internal from "../../src/internal.js";
+import * as template from "../../src/template.js";
+import TabButton from "../../src/TabButton.js";
 
 class ToolbarTab extends TabButton {
   get [internal.defaultState]() {
@@ -36,5 +36,5 @@ class ToolbarTab extends TabButton {
   }
 }
 
-customElements.define('toolbar-tab', ToolbarTab);
+customElements.define("toolbar-tab", ToolbarTab);
 export default ToolbarTab;

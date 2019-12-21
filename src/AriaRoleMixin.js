@@ -1,5 +1,5 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Lets a component define its ARIA role through a `role` state member
@@ -26,7 +26,7 @@ export default function AriaRoleMixin(Base) {
       if (changed.role) {
         // Apply top-level role.
         const { role } = this[internal.state];
-        this.setAttribute('role', role);
+        this.setAttribute("role", role);
       }
     }
 

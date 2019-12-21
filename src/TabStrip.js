@@ -1,17 +1,17 @@
-import { deepContains } from './utilities.js';
-import { defaultAriaRole } from './accessibility.js';
-import * as internal from './internal.js';
-import * as template from './template.js';
-import AriaListMixin from './AriaListMixin.js';
-import DirectionSelectionMixin from './DirectionSelectionMixin.js';
-import GenericMixin from './GenericMixin.js';
-import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
-import KeyboardMixin from './KeyboardMixin.js';
-import LanguageDirectionMixin from './LanguageDirectionMixin.js';
-import ReactiveElement from './ReactiveElement.js';
-import SingleSelectionMixin from './SingleSelectionMixin.js';
-import SlotItemsMixin from './SlotItemsMixin.js';
-import TapSelectionMixin from './TapSelectionMixin.js';
+import { deepContains } from "./utilities.js";
+import { defaultAriaRole } from "./accessibility.js";
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import AriaListMixin from "./AriaListMixin.js";
+import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
+import GenericMixin from "./GenericMixin.js";
+import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
+import KeyboardMixin from "./KeyboardMixin.js";
+import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
+import ReactiveElement from "./ReactiveElement.js";
+import SingleSelectionMixin from "./SingleSelectionMixin.js";
+import SlotItemsMixin from "./SlotItemsMixin.js";
+import TapSelectionMixin from "./TapSelectionMixin.js";
 
 const Base = AriaListMixin(
   TapSelectionMixin(
@@ -96,13 +96,13 @@ class TabStrip extends Base {
 
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      orientation: 'horizontal',
-      role: 'tablist',
+      orientation: "horizontal",
+      role: "tablist",
       selectionRequired: true,
-      tabAlign: 'start',
-      tabButtonRole: 'tab',
+      tabAlign: "start",
+      tabButtonRole: "tab",
       tabIndex: -1,
-      position: 'top'
+      position: "top"
     });
   }
 
@@ -112,8 +112,8 @@ class TabStrip extends Base {
     // Let user select a tab button with Enter or Space.
     switch (event.key) {
       /* eslint-disable no-case-declarations */
-      case ' ':
-      case 'Enter':
+      case " ":
+      case "Enter":
         const { items, selectedIndex } = this[internal.state];
         if (event.target instanceof HTMLElement) {
           const newIndex = items && items.indexOf(event.target);
@@ -155,7 +155,7 @@ class TabStrip extends Base {
   }
   set position(position) {
     const orientation =
-      position === 'top' || position === 'bottom' ? 'horizontal' : 'vertical';
+      position === "top" || position === "bottom" ? "horizontal" : "vertical";
     this[internal.setState]({
       orientation,
       position
@@ -169,9 +169,9 @@ class TabStrip extends Base {
       const { tabButtonRole } = this[internal.state];
       items.forEach(item => {
         if (tabButtonRole === defaultAriaRole[item.localName]) {
-          item.removeAttribute('role');
+          item.removeAttribute("role");
         } else {
-          item.setAttribute('role', tabButtonRole);
+          item.setAttribute("role", tabButtonRole);
         }
       });
     }
@@ -179,23 +179,23 @@ class TabStrip extends Base {
       // Apply `selected` style to the selected item only.
       const { selectedIndex } = this[internal.state];
       items.forEach((item, index) => {
-        item.toggleAttribute('selected', index === selectedIndex);
+        item.toggleAttribute("selected", index === selectedIndex);
       });
     }
     if (changed.generic) {
-      this.style.gridGap = this[internal.state].generic ? '0.25em' : '';
+      this.style.gridGap = this[internal.state].generic ? "0.25em" : "";
     }
     if (changed.orientation) {
       this.style.gridAutoFlow =
-        this[internal.state].orientation === 'vertical' ? 'row' : 'column';
+        this[internal.state].orientation === "vertical" ? "row" : "column";
     }
     if (changed.tabAlign) {
       const { tabAlign } = this[internal.state];
       const justifyContentForTabAlign = {
-        center: 'center',
-        end: 'end',
-        start: 'start',
-        stretch: 'stretch' // No style needed for "stretch"
+        center: "center",
+        end: "end",
+        start: "start",
+        stretch: "stretch" // No style needed for "stretch"
       };
       // @ts-ignore
       this.style.placeContent = justifyContentForTabAlign[tabAlign];
@@ -204,7 +204,7 @@ class TabStrip extends Base {
       const { position } = this[internal.state];
       if (items) {
         items.forEach(item => {
-          if ('position' in item) {
+          if ("position" in item) {
             /** @type {any} */ (item).position = position;
           }
         });

@@ -1,7 +1,7 @@
-import * as internal from '../../src/internal.js';
-import * as template from '../../src/template.js';
-import DelegateFocusMixin from '../../src/DelegateFocusMixin.js';
-import ReactiveElement from '../../src/ReactiveElement.js';
+import * as internal from "../../src/internal.js";
+import * as template from "../../src/template.js";
+import DelegateFocusMixin from "../../src/DelegateFocusMixin.js";
+import ReactiveElement from "../../src/ReactiveElement.js";
 
 class DelegateFocusTest extends DelegateFocusMixin(ReactiveElement) {
   get [internal.template]() {
@@ -11,25 +11,25 @@ class DelegateFocusTest extends DelegateFocusMixin(ReactiveElement) {
   }
 }
 
-customElements.define('delegate-focus-test', DelegateFocusTest);
+customElements.define("delegate-focus-test", DelegateFocusTest);
 
-describe('DelegateFocusMixin', () => {
+describe("DelegateFocusMixin", () => {
   let container;
 
   before(() => {
-    container = document.getElementById('container');
+    container = document.getElementById("container");
   });
 
   afterEach(() => {
-    container.innerHTML = '';
+    container.innerHTML = "";
   });
 
-  it('delegates focus to an inner element', () => {
+  it("delegates focus to an inner element", () => {
     const fixture = new DelegateFocusTest();
     container.appendChild(fixture);
     fixture.focus();
     const activeElement = fixture.shadowRoot.activeElement;
-    const input = fixture.shadowRoot.querySelector('input');
+    const input = fixture.shadowRoot.querySelector("input");
     assert.equal(activeElement, input);
   });
 });

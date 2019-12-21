@@ -6,5 +6,5 @@
 // by Edge.
 export function trimMarks(s) {
   const directionMarksRegex = /[\u200e\u200f]/g;
-  return s.replace(directionMarksRegex, '');
+  return s.replace(directionMarksRegex, "");
 }

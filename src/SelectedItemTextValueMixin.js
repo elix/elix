@@ -1,5 +1,5 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Defines a component's value as the text content of the selected item.
@@ -48,7 +48,7 @@ export default function SelectedItemTextValueMixin(Base) {
      */
     get value() {
       return this.selectedItem == null || this.selectedItem.textContent == null
-        ? ''
+        ? ""
         : this.selectedItem.textContent;
     }
     set value(text) {

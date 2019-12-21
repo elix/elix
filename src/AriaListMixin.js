@@ -1,7 +1,7 @@
-import { defaultAriaRole } from './accessibility.js';
-import { ensureId } from './utilities.js';
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import { defaultAriaRole } from "./accessibility.js";
+import { ensureId } from "./utilities.js";
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Exposes a list's currently-selected item to assistive technologies.
@@ -42,8 +42,8 @@ export default function AriaListMixin(Base) {
     get [internal.defaultState]() {
       const base = super[internal.defaultState];
       return Object.assign(base, {
-        itemRole: base.itemRole || 'option',
-        role: base.role || 'listbox'
+        itemRole: base.itemRole || "option",
+        role: base.role || "listbox"
       });
     }
 
@@ -72,9 +72,9 @@ export default function AriaListMixin(Base) {
         // Give each item a role.
         items.forEach(item => {
           if (itemRole === defaultAriaRole[item.localName]) {
-            item.removeAttribute('role');
+            item.removeAttribute("role");
           } else {
-            item.setAttribute('role', itemRole);
+            item.setAttribute("role", itemRole);
           }
         });
       }
@@ -83,7 +83,7 @@ export default function AriaListMixin(Base) {
         if (items) {
           items.forEach((item, index) => {
             const selected = index === selectedIndex;
-            item.setAttribute('aria-selected', selected.toString());
+            item.setAttribute("aria-selected", selected.toString());
           });
         }
         // Point the top element at the selected item.
@@ -93,19 +93,19 @@ export default function AriaListMixin(Base) {
           if (!selectedItem.id) {
             selectedItem.id = ensureId(selectedItem);
           }
-          this.setAttribute('aria-activedescendant', selectedItem.id);
+          this.setAttribute("aria-activedescendant", selectedItem.id);
         } else {
-          this.removeAttribute('aria-activedescendant');
+          this.removeAttribute("aria-activedescendant");
         }
       }
       if (changed.orientation) {
         const { orientation } = this[internal.state];
-        this.setAttribute('aria-orientation', orientation);
+        this.setAttribute("aria-orientation", orientation);
       }
       if (changed.role) {
         // Apply top-level role.
         const { role } = this[internal.state];
-        this.setAttribute('role', role);
+        this.setAttribute("role", role);
       }
     }
 

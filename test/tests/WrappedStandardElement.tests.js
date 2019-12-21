@@ -1,72 +1,72 @@
-import * as internal from '../../src/internal.js';
-import WrappedStandardElement from '../../src/WrappedStandardElement.js';
+import * as internal from "../../src/internal.js";
+import WrappedStandardElement from "../../src/WrappedStandardElement.js";
 
-const WrappedA = WrappedStandardElement.wrap('a');
-customElements.define('wrapped-a', WrappedA);
+const WrappedA = WrappedStandardElement.wrap("a");
+customElements.define("wrapped-a", WrappedA);
 
-const WrappedButton = WrappedStandardElement.wrap('button');
-customElements.define('wrapped-button', WrappedButton);
+const WrappedButton = WrappedStandardElement.wrap("button");
+customElements.define("wrapped-button", WrappedButton);
 
-const WrappedDiv = WrappedStandardElement.wrap('div');
-customElements.define('wrapped-div', WrappedDiv);
+const WrappedDiv = WrappedStandardElement.wrap("div");
+customElements.define("wrapped-div", WrappedDiv);
 
-const WrappedImg = WrappedStandardElement.wrap('img');
-customElements.define('wrapped-img', WrappedImg);
+const WrappedImg = WrappedStandardElement.wrap("img");
+customElements.define("wrapped-img", WrappedImg);
 
-const WrappedInput = WrappedStandardElement.wrap('input');
-customElements.define('wrapped-input', WrappedInput);
+const WrappedInput = WrappedStandardElement.wrap("input");
+customElements.define("wrapped-input", WrappedInput);
 
-describe('WrappedStandardElement', () => {
+describe("WrappedStandardElement", () => {
   let container;
 
   before(() => {
-    container = document.getElementById('container');
+    container = document.getElementById("container");
   });
 
   afterEach(() => {
-    container.innerHTML = '';
+    container.innerHTML = "";
   });
 
-  it('creates an instance of the wrapped element', () => {
+  it("creates an instance of the wrapped element", () => {
     const fixture = new WrappedA();
     fixture[internal.renderChanges]();
     assert(fixture.inner instanceof HTMLAnchorElement);
   });
 
-  it('exposes getter/setters that proxy to the wrapped element', () => {
+  it("exposes getter/setters that proxy to the wrapped element", () => {
     const fixture = new WrappedA();
-    fixture.href = 'http://localhost/foo/bar.html';
+    fixture.href = "http://localhost/foo/bar.html";
     container.appendChild(fixture);
-    assert.equal(fixture.inner.href, 'http://localhost/foo/bar.html');
-    assert.equal(fixture.protocol, 'http:');
-    assert.equal(fixture.hostname, 'localhost');
-    assert.equal(fixture.pathname, '/foo/bar.html');
+    assert.equal(fixture.inner.href, "http://localhost/foo/bar.html");
+    assert.equal(fixture.protocol, "http:");
+    assert.equal(fixture.hostname, "localhost");
+    assert.equal(fixture.pathname, "/foo/bar.html");
   });
 
-  it('marshals attributes to properties on the inner element', () => {
+  it("marshals attributes to properties on the inner element", () => {
     const fixture = new WrappedA();
     container.appendChild(fixture);
-    fixture.setAttribute('href', 'http://example.com/');
+    fixture.setAttribute("href", "http://example.com/");
     fixture[internal.renderChanges]();
-    assert.equal(fixture.inner.href, 'http://example.com/');
+    assert.equal(fixture.inner.href, "http://example.com/");
   });
 
-  it('re-raises events not automatically retargetted by Shadow DOM', done => {
+  it("re-raises events not automatically retargetted by Shadow DOM", done => {
     const fixture = new WrappedImg();
     container.appendChild(fixture);
-    fixture.addEventListener('load', () => {
+    fixture.addEventListener("load", () => {
       done();
     });
     // Load a 1x1 pixel image to trigger the load event.
     fixture.src =
-      'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
+      "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
   });
 
-  it('does not raise events if inner element is disabled', () => {
+  it("does not raise events if inner element is disabled", () => {
     const fixture = new WrappedButton();
     container.appendChild(fixture);
     let count = 0;
-    fixture.addEventListener('click', () => {
+    fixture.addEventListener("click", () => {
       count++;
     });
     fixture.click();
@@ -76,16 +76,16 @@ describe('WrappedStandardElement', () => {
     assert.equal(count, 1);
   });
 
-  it('chooses an appropriate :host display style based on the wrapped element', () => {
+  it("chooses an appropriate :host display style based on the wrapped element", () => {
     const fixtureA = new WrappedA();
     container.appendChild(fixtureA);
     const fixtureDiv = new WrappedDiv();
     container.appendChild(fixtureDiv);
-    assert.equal(getComputedStyle(fixtureA).display, 'inline-block');
-    assert.equal(getComputedStyle(fixtureDiv).display, 'block');
+    assert.equal(getComputedStyle(fixtureA).display, "inline-block");
+    assert.equal(getComputedStyle(fixtureDiv).display, "block");
   });
 
-  it('delegates boolean attributes', async () => {
+  it("delegates boolean attributes", async () => {
     const fixture = new WrappedButton();
     container.appendChild(fixture);
 
@@ -100,17 +100,17 @@ describe('WrappedStandardElement', () => {
     assert(!fixture.inner.disabled);
 
     // Disable via attribute.
-    fixture.setAttribute('disabled', '');
+    fixture.setAttribute("disabled", "");
     fixture[internal.renderChanges]();
     assert(fixture.inner.disabled);
 
     // Re-enable via attribute.
-    fixture.removeAttribute('disabled');
+    fixture.removeAttribute("disabled");
     fixture[internal.renderChanges]();
     assert(!fixture.inner.disabled);
   });
 
-  it('delegates tabindex state to inner element', async () => {
+  it("delegates tabindex state to inner element", async () => {
     const fixture = new WrappedInput();
     container.appendChild(fixture);
     // NB: tabIndex is not part of WrappedInput's regular state; we're just
@@ -119,9 +119,9 @@ describe('WrappedStandardElement', () => {
     assert.equal(fixture.inner.tabIndex, 1);
   });
 
-  it('delegates methods', async () => {
+  it("delegates methods", async () => {
     const fixture = new WrappedInput();
-    fixture.value = 'Hello';
+    fixture.value = "Hello";
     container.appendChild(fixture);
     fixture.setSelectionRange(1, 4);
     assert.equal(fixture.selectionStart, 1);
@@ -132,8 +132,8 @@ describe('WrappedStandardElement', () => {
 
   it("delegates attributes that don't correspond to properties", async () => {
     const fixture = new WrappedInput();
-    fixture.setAttribute('readonly', '');
+    fixture.setAttribute("readonly", "");
     fixture[internal.renderChanges]();
-    assert.equal(fixture.inner.getAttribute('readonly'), '');
+    assert.equal(fixture.inner.getAttribute("readonly"), "");
   });
 });

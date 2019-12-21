@@ -1,2 +1,2 @@
-import PageDot from '../src/PageDot.js';
+import PageDot from "../src/PageDot.js";
 export default PageDot;

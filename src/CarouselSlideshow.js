@@ -1,7 +1,7 @@
-import * as internal from './internal.js';
-import Carousel from './Carousel.js';
-import CrossfadeStage from './CrossfadeStage.js';
-import TimerSelectionMixin from './TimerSelectionMixin.js';
+import * as internal from "./internal.js";
+import Carousel from "./Carousel.js";
+import CrossfadeStage from "./CrossfadeStage.js";
+import TimerSelectionMixin from "./TimerSelectionMixin.js";
 
 const Base = TimerSelectionMixin(Carousel);
 
@@ -33,12 +33,12 @@ class CarouselSlideshow extends Base {
     super[internal.render](changed);
     if (changed.transitionDuration) {
       const { transitionDuration } = this[internal.state];
-      if ('transitionDuration' in this[internal.ids].proxyList) {
+      if ("transitionDuration" in this[internal.ids].proxyList) {
         /** @type {any} */ (this[
           internal.ids
         ].proxyList).transitionDuration = transitionDuration;
       }
-      if ('transitionDuration' in this[internal.ids].stage) {
+      if ("transitionDuration" in this[internal.ids].stage) {
         /** @type {any} */ (this[
           internal.ids
         ].stage).transitionDuration = transitionDuration;

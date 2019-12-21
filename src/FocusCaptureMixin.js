@@ -1,12 +1,12 @@
-import { firstFocusableElement } from './utilities.js';
-import * as internal from './internal.js';
-import * as template from './template.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import { firstFocusableElement } from "./utilities.js";
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 // Symbols for private data members on an element.
-const wrap = Symbol('wrap');
+const wrap = Symbol("wrap");
 /** @type {any} */
-const wrappingFocusKey = Symbol('wrappingFocus');
+const wrappingFocusKey = Symbol("wrappingFocus");
 
 /**
  * Allows Tab and Shift+Tab operations to cycle the focus within the component.
@@ -31,7 +31,7 @@ function FocusCaptureMixin(Base) {
       if (super[internal.componentDidMount]) {
         super[internal.componentDidMount]();
       }
-      this[internal.ids].focusCatcher.addEventListener('focus', () => {
+      this[internal.ids].focusCatcher.addEventListener("focus", () => {
         if (!this[wrappingFocusKey]) {
           // Wrap focus back to the first focusable element.
           const focusElement = firstFocusableElement(this.shadowRoot);
@@ -47,7 +47,7 @@ function FocusCaptureMixin(Base) {
       const onFirstElement =
         document.activeElement === firstElement ||
         this.shadowRoot.activeElement === firstElement;
-      if (onFirstElement && event.key === 'Tab' && event.shiftKey) {
+      if (onFirstElement && event.key === "Tab" && event.shiftKey) {
         // Set focus to focus catcher.
         // The Shift+Tab keydown event should continue bubbling, and the default
         // behavior should cause it to end up on the last focusable element.
@@ -98,7 +98,7 @@ function FocusCaptureMixin(Base) {
       template.wrap(
         original,
         focusCaptureTemplate.content,
-        '#focusCaptureContainer'
+        "#focusCaptureContainer"
       );
     }
   }

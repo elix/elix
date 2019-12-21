@@ -1,5 +1,5 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Update state before, during, and after CSS transitions
@@ -23,7 +23,7 @@ export default function TransitionEffectMixin(Base) {
       // root.
       const target =
         this[internal.effectEndTarget] === this ? this : this.shadowRoot;
-      target.addEventListener('transitionend', event => {
+      target.addEventListener("transitionend", event => {
         // See if the event target is our expected `effectEndTarget`. If the
         // component defines a `effectEndTarget` state, we use that; otherwise,
         // we use the element identified with `internal.effectEndTarget`.
@@ -33,7 +33,7 @@ export default function TransitionEffectMixin(Base) {
         if (event.target === effectEndTarget) {
           // Advance to the next phase.
           this[internal.setState]({
-            effectPhase: 'after'
+            effectPhase: "after"
           });
         }
       });
@@ -61,7 +61,7 @@ export default function TransitionEffectMixin(Base) {
          *
          * @event effect-phase-changed
          */
-        const event = new CustomEvent('effect-phase-changed', {
+        const event = new CustomEvent("effect-phase-changed", {
           detail: {
             effect,
             effectPhase
@@ -70,17 +70,17 @@ export default function TransitionEffectMixin(Base) {
         this.dispatchEvent(event);
 
         if (effect) {
-          if (effectPhase !== 'after') {
+          if (effectPhase !== "after") {
             // We read a layout property to force the browser to render the component
             // with its current styles before we move to the next state. This ensures
             // animated values will actually be applied before we move to the next
             // state.
             this.offsetHeight;
           }
-          if (effectPhase === 'before') {
+          if (effectPhase === "before") {
             // Advance to the next phase.
             this[internal.setState]({
-              effectPhase: 'during'
+              effectPhase: "during"
             });
           }
         }
@@ -112,7 +112,7 @@ export default function TransitionEffectMixin(Base) {
     async [internal.startEffect](effect) {
       await this[internal.setState]({
         effect,
-        effectPhase: 'before'
+        effectPhase: "before"
       });
     }
   }

@@ -1,2 +1,2 @@
-import FilterListBox from '../src/FilterListBox.js';
+import FilterListBox from "../src/FilterListBox.js";
 export default FilterListBox;

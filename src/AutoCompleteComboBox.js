@@ -1,7 +1,7 @@
-import * as internal from './internal.js';
-import AutoCompleteInput from './AutoCompleteInput.js';
-import ListComboBox from './ListComboBox.js';
-import ItemsTextMixin from './ItemsTextMixin.js';
+import * as internal from "./internal.js";
+import AutoCompleteInput from "./AutoCompleteInput.js";
+import ListComboBox from "./ListComboBox.js";
+import ItemsTextMixin from "./ItemsTextMixin.js";
 
 const Base = ItemsTextMixin(ListComboBox);
 
@@ -22,7 +22,7 @@ class AutoCompleteComboBox extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.texts) {
-      if ('texts' in this[internal.ids].input) {
+      if ("texts" in this[internal.ids].input) {
         /** @type {any} */ (this[internal.ids].input).texts = this[
           internal.state
         ].texts;

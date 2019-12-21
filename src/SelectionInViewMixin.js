@@ -1,6 +1,6 @@
-import { defaultScrollTarget } from './scrolling.js';
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import { defaultScrollTarget } from "./scrolling.js";
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Scrolls to ensure the selected item is visible
@@ -78,15 +78,15 @@ export default function SelectionInViewMixin(Base) {
       // Scroll the target as necessary to bring the item into view.
       // If an `orientation` state member is defined, only scroll along that
       // axis. Otherwise, assume the orientation is "both".
-      const orientation = this[internal.state].orientation || 'both';
-      if (orientation === 'horizontal' || orientation === 'both') {
+      const orientation = this[internal.state].orientation || "both";
+      if (orientation === "horizontal" || orientation === "both") {
         if (rightDelta > 0) {
           scrollTarget.scrollLeft += rightDelta; // Scroll right
         } else if (leftDelta < 0) {
           scrollTarget.scrollLeft += Math.ceil(leftDelta); // Scroll left
         }
       }
-      if (orientation === 'vertical' || orientation === 'both') {
+      if (orientation === "vertical" || orientation === "both") {
         if (bottomDelta > 0) {
           scrollTarget.scrollTop += bottomDelta; // Scroll down
         } else if (topDelta < 0) {

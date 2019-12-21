@@ -1,10 +1,10 @@
-import { applyChildNodes } from './utilities.js';
-import * as calendar from './calendar.js';
-import * as internal from './internal.js';
-import * as template from './template.js';
-import CalendarDay from './CalendarDay.js';
-import CalendarElementMixin from './CalendarElementMixin.js';
-import ReactiveElement from './ReactiveElement.js';
+import { applyChildNodes } from "./utilities.js";
+import * as calendar from "./calendar.js";
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import CalendarDay from "./CalendarDay.js";
+import CalendarElementMixin from "./CalendarElementMixin.js";
+import ReactiveElement from "./ReactiveElement.js";
 
 const Base = CalendarElementMixin(ReactiveElement);
 
@@ -86,7 +86,7 @@ class CalendarDays extends Base {
 
     // If any date-related state changes, regenerate the set of days.
     state.onChange(
-      ['dayCount', 'dayPartType', 'locale', 'showCompleteWeeks', 'startDate'],
+      ["dayCount", "dayPartType", "locale", "showCompleteWeeks", "startDate"],
       (state, changed) => {
         const days = updateDays(state, changed.dayPartType);
         return { days };
@@ -119,7 +119,7 @@ class CalendarDays extends Base {
           dayDate.getDate() === selectedDate &&
           dayDate.getMonth() === selectedMonth &&
           dayDate.getFullYear() === selectedYear;
-        day.toggleAttribute('selected', selected);
+        day.toggleAttribute("selected", selected);
       });
     }
     if (changed.dayCount || changed.startDate) {
@@ -132,7 +132,7 @@ class CalendarDays extends Base {
       /** @type {any[]} */
       const days = this[internal.state].days || [];
       days.forEach(day => {
-        if ('outsideRange' in day) {
+        if ("outsideRange" in day) {
           const dayDate = day.date;
           const dayTime = dayDate.getTime();
           const outsideRange =
@@ -163,7 +163,7 @@ class CalendarDays extends Base {
   }
   set startDate(startDate) {
     const parsed =
-      typeof startDate === 'string' ? new Date(startDate) : startDate;
+      typeof startDate === "string" ? new Date(startDate) : startDate;
     if (!calendar.datesEqual(this[internal.state].startDate, parsed)) {
       this[internal.setState]({
         startDate: parsed
@@ -223,10 +223,10 @@ function updateDays(state, forceCreation) {
       : days[i];
     day.date = new Date(date.getTime());
     day.locale = locale;
-    if ('part' in day) {
-      day.part = 'day';
+    if ("part" in day) {
+      day.part = "day";
     }
-    day.style.gridColumnStart = '';
+    day.style.gridColumnStart = "";
     if (createNewElement) {
       days[i] = day;
     }

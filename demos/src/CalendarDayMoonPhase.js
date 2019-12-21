@@ -1,6 +1,6 @@
-import * as internal from '../../src/internal.js';
-import * as template from '../../src/template.js';
-import CalendarDay from '../../src/CalendarDay.js';
+import * as internal from "../../src/internal.js";
+import * as template from "../../src/template.js";
+import CalendarDay from "../../src/CalendarDay.js";
 
 /*
  * Shows an icon for the moon phase for a given date.
@@ -45,13 +45,13 @@ class CalendarDayMoonPhase extends CalendarDay {
       // See if the moon's angle crosses a threshold during the given date.
       let quarter;
       if (angle >= 0 && angleNext > angle) {
-        quarter = 'full'; // Full moon
+        quarter = "full"; // Full moon
       } else if (angle >= 90 && angleNext < 90) {
-        quarter = 'firstQuarter'; // First quarter
+        quarter = "firstQuarter"; // First quarter
       } else if (angle >= 180 && angleNext < 180) {
-        quarter = 'new'; // New moon
+        quarter = "new"; // New moon
       } else if (angle >= 270 && angleNext < 270) {
-        quarter = 'lastQuarter'; // Last quarter
+        quarter = "lastQuarter"; // Last quarter
       } else {
         quarter = null; // Nothing special
       }
@@ -62,7 +62,7 @@ class CalendarDayMoonPhase extends CalendarDay {
       if (quarter) {
         phaseIcon.src = `images/moon/${quarter}.svg`;
       } else {
-        phaseIcon.removeAttribute('src');
+        phaseIcon.removeAttribute("src");
       }
     }
   }
@@ -142,5 +142,5 @@ function sind(/** @type {number} */ angle) {
   return Math.sin((angle * Math.PI) / 180.0);
 }
 
-customElements.define('calendar-day-moon-phase', CalendarDayMoonPhase);
+customElements.define("calendar-day-moon-phase", CalendarDayMoonPhase);
 export default CalendarDayMoonPhase;

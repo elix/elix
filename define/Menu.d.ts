@@ -1,2 +1,2 @@
-import Menu from '../src/Menu.js';
+import Menu from "../src/Menu.js";
 export default Menu;

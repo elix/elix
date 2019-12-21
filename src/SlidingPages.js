@@ -1,13 +1,13 @@
-import * as internal from './internal.js';
-import AriaListMixin from './AriaListMixin.js';
-import DirectionSelectionMixin from './DirectionSelectionMixin.js';
-import FocusVisibleMixin from './FocusVisibleMixin.js';
-import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
-import KeyboardMixin from './KeyboardMixin.js';
-import SlidingStage from './SlidingStage.js';
-import SwipeDirectionMixin from './SwipeDirectionMixin.js';
-import TouchSwipeMixin from './TouchSwipeMixin.js';
-import TrackpadSwipeMixin from './TrackpadSwipeMixin.js';
+import * as internal from "./internal.js";
+import AriaListMixin from "./AriaListMixin.js";
+import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
+import FocusVisibleMixin from "./FocusVisibleMixin.js";
+import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
+import KeyboardMixin from "./KeyboardMixin.js";
+import SlidingStage from "./SlidingStage.js";
+import SwipeDirectionMixin from "./SwipeDirectionMixin.js";
+import TouchSwipeMixin from "./TouchSwipeMixin.js";
+import TrackpadSwipeMixin from "./TrackpadSwipeMixin.js";
 
 const Base = AriaListMixin(
   DirectionSelectionMixin(
@@ -42,7 +42,7 @@ class SlidingPages extends Base {
     const result = super[internal.defaultState];
 
     // Have swipeAxis follow orientation.
-    result.onChange('orientation', state => ({
+    result.onChange("orientation", state => ({
       swipeAxis: state.orientation
     }));
 

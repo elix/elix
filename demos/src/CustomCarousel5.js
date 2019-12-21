@@ -1,9 +1,9 @@
-import * as internal from '../../src/internal.js';
-import * as template from '../../src/template.js';
-import Carousel from '../../src/Carousel.js';
-import CustomArrowButton from './CustomArrowButton.js';
-import CustomPageDot from './CustomPageDot.js';
-import PageNumbersMixin from '../../src/PageNumbersMixin.js';
+import * as internal from "../../src/internal.js";
+import * as template from "../../src/template.js";
+import Carousel from "../../src/Carousel.js";
+import CustomArrowButton from "./CustomArrowButton.js";
+import CustomPageDot from "./CustomPageDot.js";
+import PageNumbersMixin from "../../src/PageNumbersMixin.js";
 
 const Base = PageNumbersMixin(Carousel);
 
@@ -34,13 +34,13 @@ class CustomCarousel extends Base {
       'slot[name="arrowButtonPrevious"]'
     );
     if (previousSlot) {
-      previousSlot.textContent = '↫';
+      previousSlot.textContent = "↫";
     }
     const nextSlot = result.content.querySelector(
       'slot[name="arrowButtonNext"]'
     );
     if (nextSlot) {
-      nextSlot.textContent = '↬';
+      nextSlot.textContent = "↬";
     }
     // Add page numbers.
     /** @type {any} */ const cast = this;
@@ -49,5 +49,5 @@ class CustomCarousel extends Base {
   }
 }
 
-customElements.define('custom-carousel', CustomCarousel);
+customElements.define("custom-carousel", CustomCarousel);
 export default CustomCarousel;

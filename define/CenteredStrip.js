@@ -1,3 +1,3 @@
-import CenteredStrip from '../src/CenteredStrip.js';
+import CenteredStrip from "../src/CenteredStrip.js";
 export default class ElixCenteredStrip extends CenteredStrip {}
-customElements.define('elix-centered-strip', ElixCenteredStrip);
+customElements.define("elix-centered-strip", ElixCenteredStrip);

@@ -1,7 +1,7 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import Drawer from './Drawer.js';
-import SeamlessButton from './SeamlessButton.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import Drawer from "./Drawer.js";
+import SeamlessButton from "./SeamlessButton.js";
 
 /**
  * A drawer that includes an always-visible grip element
@@ -24,8 +24,8 @@ class DrawerWithGrip extends Drawer {
       // Use the rendered size of the grip to set the gripSize. This will ensure
       // the grip is visible, peeking out from the edge of the drawer's container.
       const { fromEdge } = this[internal.state];
-      const vertical = fromEdge === 'top' || fromEdge === 'bottom';
-      const dimension = vertical ? 'offsetHeight' : 'offsetWidth';
+      const vertical = fromEdge === "top" || fromEdge === "bottom";
+      const dimension = vertical ? "offsetHeight" : "offsetWidth";
       const gripSize = this[internal.ids].grip[dimension];
       this[internal.setState]({ gripSize });
     }
@@ -61,7 +61,7 @@ class DrawerWithGrip extends Drawer {
         this[internal.ids].grip,
         this[internal.state].gripPartType
       );
-      this[internal.ids].grip.addEventListener('click', event => {
+      this[internal.ids].grip.addEventListener("click", event => {
         // Clicking grip toggles drawer.
         this[internal.raiseChangeEvents] = true;
         this.toggle();
@@ -74,18 +74,18 @@ class DrawerWithGrip extends Drawer {
       // Position the grip so it's at the outer edge of the drawer.
       const { fromEdge, rightToLeft } = this[internal.state];
 
-      const vertical = fromEdge === 'top' || fromEdge === 'bottom';
+      const vertical = fromEdge === "top" || fromEdge === "bottom";
       this[internal.ids].frame.style.flexDirection = vertical
-        ? 'column'
-        : 'row';
+        ? "column"
+        : "row";
 
       // Determine what grid we'll use to relatively position the content and
       // the grip.
       const mapFromEdgeToGrid = {
-        bottom: 'auto 1fr / auto',
-        left: 'auto / 1fr auto',
-        right: 'auto / auto 1fr',
-        top: '1fr auto / auto'
+        bottom: "auto 1fr / auto",
+        left: "auto / 1fr auto",
+        right: "auto / auto 1fr",
+        top: "1fr auto / auto"
       };
       mapFromEdgeToGrid.start = rightToLeft
         ? mapFromEdgeToGrid.right
@@ -96,10 +96,10 @@ class DrawerWithGrip extends Drawer {
 
       // Determine what cell the grip will go in.
       const mapFromEdgeToGripCell = {
-        bottom: '1 / 1',
-        left: '1 / 2',
-        right: '1 / 1',
-        top: '2 / 1'
+        bottom: "1 / 1",
+        left: "1 / 2",
+        right: "1 / 1",
+        top: "2 / 1"
       };
       mapFromEdgeToGripCell.start = rightToLeft
         ? mapFromEdgeToGripCell.right
@@ -116,7 +116,7 @@ class DrawerWithGrip extends Drawer {
     if (changed.swipeAxis && this[internal.ids].gripIcon) {
       // Rotate the default grip icon to reflect the swipe axis.
       const transform =
-        this[internal.state].swipeAxis === 'horizontal' ? 'rotate(90deg)' : '';
+        this[internal.state].swipeAxis === "horizontal" ? "rotate(90deg)" : "";
       this[internal.ids].gripIcon.style.transform = transform;
     }
   }

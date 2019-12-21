@@ -1,2 +1,2 @@
-import ReactiveElement from '../src/ReactiveElement.js';
+import ReactiveElement from "../src/ReactiveElement.js";
 export default ReactiveElement;

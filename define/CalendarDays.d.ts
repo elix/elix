@@ -1,2 +1,2 @@
-import CalendarDays from '../src/CalendarDays.js';
+import CalendarDays from "../src/CalendarDays.js";
 export default CalendarDays;

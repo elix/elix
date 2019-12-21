@@ -33,7 +33,7 @@ const mapBaseTagToCount = new Map();
  * input templates
  */
 export function concat(...templates) {
-  const result = document.createElement('template');
+  const result = document.createElement("template");
   const clones = templates.map(template =>
     document.importNode(template.content, true)
   );
@@ -54,13 +54,13 @@ export function concat(...templates) {
  * @returns {Node} the new element
  */
 export function createElement(descriptor) {
-  if (typeof descriptor === 'function') {
+  if (typeof descriptor === "function") {
     // Instantiable component class constructor
     let element;
     try {
       element = new descriptor();
     } catch (e) {
-      if (e.name === 'TypeError') {
+      if (e.name === "TypeError") {
         // Most likely this error results from the fact that the indicated
         // component class hasn't been registered. Register it now with a random
         // name and try again.
@@ -90,7 +90,7 @@ export function createElement(descriptor) {
  * @returns {Node|null}
  */
 export function defaultSlot(tree) {
-  return tree.querySelector('slot:not([name])');
+  return tree.querySelector("slot:not([name])");
 }
 
 /**
@@ -116,11 +116,11 @@ export function html(strings, ...substitutions) {
   const complete = strings
     .map((string, index) => {
       const substitution =
-        index < substitutions.length ? substitutions[index] : '';
+        index < substitutions.length ? substitutions[index] : "";
       return `${string}${substitution}`;
     })
-    .join('');
-  const template = document.createElement('template');
+    .join("");
+  const template = document.createElement("template");
   template.innerHTML = complete;
   return template;
 }
@@ -159,7 +159,7 @@ function registerCustomElement(classFn) {
     );
     baseTag = hyphenated.toLowerCase();
   } else {
-    baseTag = 'custom-element';
+    baseTag = "custom-element";
   }
   // Add a uniquifying number to the end of the tag until we find a tag
   // that hasn't been registered yet.
@@ -190,11 +190,11 @@ function registerCustomElement(classFn) {
  */
 export function replace(original, replacement) {
   if (!original) {
-    throw 'The original element could not be found.';
+    throw "The original element could not be found.";
   }
   const parent = original.parentNode;
   if (!parent) {
-    throw 'An element must have a parent before it can be substituted.';
+    throw "An element must have a parent before it can be substituted.";
   }
   if (
     (original instanceof HTMLElement || original instanceof SVGElement) &&
@@ -207,8 +207,8 @@ export function replace(original, replacement) {
     ) => {
       if (
         !replacement.getAttribute(attribute.name) &&
-        attribute.name !== 'class' &&
-        attribute.name !== 'style'
+        attribute.name !== "class" &&
+        attribute.name !== "style"
       ) {
         replacement.setAttribute(attribute.name, attribute.value);
       }
@@ -260,8 +260,8 @@ export function transmute(original, descriptor) {
     const replacements = [...original].map(node => transmute(node, descriptor));
     return replacements;
   } else if (
-    (typeof descriptor === 'function' && original.constructor === descriptor) ||
-    (typeof descriptor === 'string' &&
+    (typeof descriptor === "function" && original.constructor === descriptor) ||
+    (typeof descriptor === "string" &&
       original instanceof Element &&
       original.localName === descriptor)
   ) {

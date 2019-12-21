@@ -1,10 +1,10 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import DialogModalityMixin from './DialogModalityMixin.js';
-import FocusCaptureMixin from './FocusCaptureMixin.js';
-import KeyboardMixin from './KeyboardMixin.js';
-import ModalBackdrop from './ModalBackdrop.js';
-import Overlay from './Overlay.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import DialogModalityMixin from "./DialogModalityMixin.js";
+import FocusCaptureMixin from "./FocusCaptureMixin.js";
+import KeyboardMixin from "./KeyboardMixin.js";
+import ModalBackdrop from "./ModalBackdrop.js";
+import Overlay from "./Overlay.js";
 
 const Base = DialogModalityMixin(FocusCaptureMixin(KeyboardMixin(Overlay)));
 
@@ -30,7 +30,7 @@ class Dialog extends Base {
 
   get [internal.template]() {
     const result = super[internal.template];
-    const frame = result.content.querySelector('#frame');
+    const frame = result.content.querySelector("#frame");
     /** @type {any} */ const cast = this;
     cast[FocusCaptureMixin.wrap](frame);
     return template.concat(

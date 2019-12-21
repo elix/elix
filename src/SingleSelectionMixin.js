@@ -1,5 +1,5 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Adds single-selection semantics to a list-like element.
@@ -52,7 +52,7 @@ export default function SingleSelectionMixin(Base) {
          *
          * @event selected-index-changed
          */
-        const event = new CustomEvent('selected-index-changed', {
+        const event = new CustomEvent("selected-index-changed", {
           detail: { selectedIndex }
         });
         this.dispatchEvent(event);
@@ -71,7 +71,7 @@ export default function SingleSelectionMixin(Base) {
 
       // Ensure selectedIndex is valid.
       state.onChange(
-        ['items', 'selectedIndex', 'selectionRequired'],
+        ["items", "selectedIndex", "selectionRequired"],
         (state, changed) => {
           const {
             items,
@@ -119,7 +119,7 @@ export default function SingleSelectionMixin(Base) {
       );
 
       // Update computed state members canSelectNext/canSelectPrevious.
-      state.onChange(['items', 'selectedIndex', 'selectionWraps'], state => {
+      state.onChange(["items", "selectedIndex", "selectionWraps"], state => {
         const { items, selectedIndex, selectionWraps } = state;
         if (items) {
           const count = items.length;
@@ -205,7 +205,7 @@ export default function SingleSelectionMixin(Base) {
     }
     set selectionRequired(selectionRequired) {
       this[internal.setState]({
-        selectionRequired: String(selectionRequired) === 'true'
+        selectionRequired: String(selectionRequired) === "true"
       });
     }
 
@@ -220,7 +220,7 @@ export default function SingleSelectionMixin(Base) {
     }
     set selectionWraps(selectionWraps) {
       this[internal.setState]({
-        selectionWraps: String(selectionWraps) === 'true'
+        selectionWraps: String(selectionWraps) === "true"
       });
     }
 

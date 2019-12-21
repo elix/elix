@@ -1,17 +1,17 @@
-import Explorer from '../../define/Explorer.js';
+import Explorer from "../../define/Explorer.js";
 
-describe('Explorer', () => {
+describe("Explorer", () => {
   let container;
 
   before(() => {
-    container = document.getElementById('container');
+    container = document.getElementById("container");
   });
 
   afterEach(() => {
-    container.innerHTML = '';
+    container.innerHTML = "";
   });
 
-  it('associates slotted proxies with each item', async () => {
+  it("associates slotted proxies with each item", async () => {
     const fixture = new Explorer();
     fixture.innerHTML = `
       <button slot="proxy">Proxy one</button>
@@ -30,9 +30,9 @@ describe('Explorer', () => {
     assert.equal(proxies[0], fixture.children[0]);
   });
 
-  it('creates default proxies for each item', async () => {
+  it("creates default proxies for each item", async () => {
     const fixture = new Explorer();
-    fixture.proxyPartType = 'button';
+    fixture.proxyPartType = "button";
     fixture.innerHTML = `
       <div aria-label="Label one">Item one</div>
       <div aria-label="Label two">Item two</div>

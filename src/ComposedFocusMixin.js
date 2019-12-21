@@ -1,12 +1,12 @@
-import { closestFocusableNode } from './utilities.js';
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import { closestFocusableNode } from "./utilities.js";
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 // Quick detection of whether we'll need to handle focus.
 // As of February 2019, we don't need to handle this in Chrome, perhaps because
 // they already support delegatesFocus (which handles related focus issues).
-const focusTest = document.createElement('div');
-focusTest.attachShadow({ mode: 'open', delegatesFocus: true });
+const focusTest = document.createElement("div");
+focusTest.attachShadow({ mode: "open", delegatesFocus: true });
 /** @type {any} */
 const shadowRoot = focusTest.shadowRoot;
 const nativeDelegatesFocus = shadowRoot.delegatesFocus;
@@ -37,7 +37,7 @@ export default function ComposedFocusMixin(Base) {
       if (super[internal.componentDidMount]) {
         super[internal.componentDidMount]();
       }
-      this.addEventListener('mousedown', event => {
+      this.addEventListener("mousedown", event => {
         if (!this[internal.state].composeFocus) {
           return;
         }

@@ -1,6 +1,6 @@
-import * as internal from '../../src/internal.js';
-import Carousel from '../../src/Carousel.js';
-import PageNumbersMixin from '../../src/PageNumbersMixin.js';
+import * as internal from "../../src/internal.js";
+import Carousel from "../../src/Carousel.js";
+import PageNumbersMixin from "../../src/PageNumbersMixin.js";
 
 const Base = PageNumbersMixin(Carousel);
 
@@ -14,5 +14,5 @@ class CustomCarousel extends Base {
   }
 }
 
-customElements.define('custom-carousel', CustomCarousel);
+customElements.define("custom-carousel", CustomCarousel);
 export default CustomCarousel;

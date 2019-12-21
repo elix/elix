@@ -1,6 +1,6 @@
-import * as internal from '../../src/internal.js';
-import * as template from '../../src/template.js';
-import ReactiveElement from '../../src/ReactiveElement.js';
+import * as internal from "../../src/internal.js";
+import * as template from "../../src/template.js";
+import ReactiveElement from "../../src/ReactiveElement.js";
 
 export default class MessageSummary extends ReactiveElement {
   get date() {
@@ -23,7 +23,7 @@ export default class MessageSummary extends ReactiveElement {
     return this[internal.state].read;
   }
   set read(read) {
-    const parsed = String(read) === 'true';
+    const parsed = String(read) === "true";
     this[internal.setState]({
       read: parsed
     });
@@ -35,7 +35,7 @@ export default class MessageSummary extends ReactiveElement {
       this[internal.ids].date.textContent = this[internal.state].date;
     }
     if (changed.read) {
-      this.classList.toggle('read', this[internal.state].read);
+      this.classList.toggle("read", this[internal.state].read);
     }
     if (changed.sender) {
       this[internal.ids].sender.textContent = this[internal.state].sender;
@@ -107,4 +107,4 @@ export default class MessageSummary extends ReactiveElement {
   }
 }
 
-customElements.define('message-summary', MessageSummary);
+customElements.define("message-summary", MessageSummary);

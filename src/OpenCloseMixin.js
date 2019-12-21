@@ -1,10 +1,10 @@
-import * as internal from './internal.js';
-import ReactiveElement from './ReactiveElement.js'; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /** @type {any} */
-const closePromiseKey = Symbol('closePromise');
+const closePromiseKey = Symbol("closePromise");
 /** @type {any} */
-const closeResolveKey = Symbol('closeResolve');
+const closeResolveKey = Symbol("closeResolve");
 
 /**
  * Tracks the open/close state of a component.
@@ -42,7 +42,7 @@ export default function OpenCloseMixin(Base) {
       return this[internal.state] && !this[internal.state].opened;
     }
     set closed(closed) {
-      const parsed = String(closed) === 'true';
+      const parsed = String(closed) === "true";
       this.toggle(!parsed);
     }
 
@@ -61,8 +61,8 @@ export default function OpenCloseMixin(Base) {
     get closeFinished() {
       // TODO: Define closeFinished as computed state
       return this[internal.state].openCloseEffects
-        ? this[internal.state].effect === 'close' &&
-            this[internal.state].effectPhase === 'after'
+        ? this[internal.state].effect === "close" &&
+            this[internal.state].effectPhase === "after"
         : this.closed;
     }
 
@@ -81,7 +81,7 @@ export default function OpenCloseMixin(Base) {
          *
          * @event opened-changed
          */
-        const openedChangedEvent = new CustomEvent('opened-changed', {
+        const openedChangedEvent = new CustomEvent("opened-changed", {
           detail: {
             closeResult: this[internal.state].closeResult,
             opened: this[internal.state].opened
@@ -95,7 +95,7 @@ export default function OpenCloseMixin(Base) {
            *
            * @event opened
            */
-          const openedEvent = new CustomEvent('opened');
+          const openedEvent = new CustomEvent("opened");
           this.dispatchEvent(openedEvent);
         } else {
           /**
@@ -103,7 +103,7 @@ export default function OpenCloseMixin(Base) {
            *
            * @event closed
            */
-          const closedEvent = new CustomEvent('closed', {
+          const closedEvent = new CustomEvent("closed", {
             detail: {
               closeResult: this[internal.state].closeResult
             }
@@ -133,8 +133,8 @@ export default function OpenCloseMixin(Base) {
       // after the close effect has completed.
       if (this[internal.startEffect]) {
         Object.assign(defaults, {
-          effect: 'close',
-          effectPhase: 'after',
+          effect: "close",
+          effectPhase: "after",
           openCloseEffects: true
         });
       }
@@ -161,7 +161,7 @@ export default function OpenCloseMixin(Base) {
       return this[internal.state] && this[internal.state].opened;
     }
     set opened(opened) {
-      const parsed = String(opened) === 'true';
+      const parsed = String(opened) === "true";
       this[internal.setState]({ closeResult: undefined });
       this.toggle(parsed);
     }
@@ -180,9 +180,9 @@ export default function OpenCloseMixin(Base) {
       if (changed) {
         /** @type {PlainObject} */ const changes = { opened };
         if (this[internal.state].openCloseEffects) {
-          changes.effect = opened ? 'open' : 'close';
-          if (this[internal.state].effectPhase === 'after') {
-            changes.effectPhase = 'before';
+          changes.effect = opened ? "open" : "close";
+          if (this[internal.state].effectPhase === "after") {
+            changes.effectPhase = "before";
           }
         }
         await this[internal.setState](changes);

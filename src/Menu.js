@@ -1,22 +1,22 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import AriaMenuMixin from './AriaMenuMixin.js';
-import DelegateFocusMixin from './DelegateFocusMixin.js';
-import DirectionSelectionMixin from './DirectionSelectionMixin.js';
-import FocusVisibleMixin from './FocusVisibleMixin.js';
-import GenericMixin from './GenericMixin.js';
-import ItemsTextMixin from './ItemsTextMixin.js';
-import KeyboardDirectionMixin from './KeyboardDirectionMixin.js';
-import KeyboardMixin from './KeyboardMixin.js';
-import KeyboardPagedSelectionMixin from './KeyboardPagedSelectionMixin.js';
-import KeyboardPrefixSelectionMixin from './KeyboardPrefixSelectionMixin.js';
-import LanguageDirectionMixin from './LanguageDirectionMixin.js';
-import ReactiveElement from './ReactiveElement.js';
-import SelectedItemTextValueMixin from './SelectedItemTextValueMixin.js';
-import SelectionInViewMixin from './SelectionInViewMixin.js';
-import SingleSelectionMixin from './SingleSelectionMixin.js';
-import SlotItemsMixin from './SlotItemsMixin.js';
-import TapSelectionMixin from './TapSelectionMixin.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import AriaMenuMixin from "./AriaMenuMixin.js";
+import DelegateFocusMixin from "./DelegateFocusMixin.js";
+import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
+import FocusVisibleMixin from "./FocusVisibleMixin.js";
+import GenericMixin from "./GenericMixin.js";
+import ItemsTextMixin from "./ItemsTextMixin.js";
+import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
+import KeyboardMixin from "./KeyboardMixin.js";
+import KeyboardPagedSelectionMixin from "./KeyboardPagedSelectionMixin.js";
+import KeyboardPrefixSelectionMixin from "./KeyboardPrefixSelectionMixin.js";
+import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
+import ReactiveElement from "./ReactiveElement.js";
+import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
+import SelectionInViewMixin from "./SelectionInViewMixin.js";
+import SingleSelectionMixin from "./SingleSelectionMixin.js";
+import SlotItemsMixin from "./SlotItemsMixin.js";
+import TapSelectionMixin from "./TapSelectionMixin.js";
 
 const Base = AriaMenuMixin(
   DelegateFocusMixin(
@@ -76,19 +76,19 @@ class Menu extends Base {
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
 
-    this.addEventListener('mousemove', () => {
+    this.addEventListener("mousemove", () => {
       this.suppressFocusVisibility();
     });
 
     // Treat a pointerdown event as a tap.
-    if ('PointerEvent' in window) {
+    if ("PointerEvent" in window) {
       // Prefer listening to standard pointer events.
-      this.addEventListener('pointerdown', event => this[internal.tap](event));
+      this.addEventListener("pointerdown", event => this[internal.tap](event));
     } else {
-      this.addEventListener('touchstart', event => this[internal.tap](event));
+      this.addEventListener("touchstart", event => this[internal.tap](event));
     }
 
-    this.removeAttribute('tabindex');
+    this.removeAttribute("tabindex");
   }
 
   [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
@@ -111,12 +111,12 @@ class Menu extends Base {
   get [internal.defaultState]() {
     const state = Object.assign(super[internal.defaultState], {
       highlightSelection: true,
-      orientation: 'vertical',
+      orientation: "vertical",
       selectionFocused: false
     });
 
     // When selection changes, we'll need to focus on it in componentDidUpdate.
-    state.onChange('selectedIndex', () => ({
+    state.onChange("selectedIndex", () => ({
       selectionFocused: false
     }));
 
@@ -133,7 +133,7 @@ class Menu extends Base {
    */
   async highlightSelectedItem() {
     const keyboardActive = this[internal.state].focusVisible;
-    const probablyDesktop = matchMedia('(pointer: fine)').matches;
+    const probablyDesktop = matchMedia("(pointer: fine)").matches;
     if (keyboardActive || probablyDesktop) {
       const flashDuration = 75; // milliseconds
       this[internal.setState]({ highlightSelection: false });
@@ -163,7 +163,7 @@ class Menu extends Base {
     if ((changed.items || changed.selectedIndex) && items) {
       // Reflect the selection state to the item.
       items.forEach((item, index) => {
-        item.toggleAttribute('selected', index === selectedIndex);
+        item.toggleAttribute("selected", index === selectedIndex);
       });
     }
     if (
@@ -197,7 +197,7 @@ class Menu extends Base {
         } else {
           // Phase 2: Remove tabindex from any previously-selected item.
           if (!(selected || isDefaultFocusableItem)) {
-            item.removeAttribute('tabindex');
+            item.removeAttribute("tabindex");
           }
         }
 
@@ -207,7 +207,7 @@ class Menu extends Base {
         const suppressFocus =
           (selected && !this[internal.state].focusVisible) ||
           isDefaultFocusableItem;
-        item.style.outline = suppressFocus ? 'none' : '';
+        item.style.outline = suppressFocus ? "none" : "";
       });
     }
   }

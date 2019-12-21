@@ -1,6 +1,6 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import Button from './Button.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import Button from "./Button.js";
 
 /**
  * A button with no border or background in its normal state.

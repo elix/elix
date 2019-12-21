@@ -22,17 +22,17 @@
       </template>
 
       <script type="module">
-        import * as internal from '../src/internal.js';
-        import ReactiveElement from '../src/ReactiveElement.js';
+        import * as internal from "../src/internal.js";
+        import ReactiveElement from "../src/ReactiveElement.js";
 
         // Create a native web component with reactive behavior.
         class IncrementDecrement extends ReactiveElement {
           [internal.componentDidMount]() {
             super[internal.componentDidMount]();
-            this[internal.ids].decrement.addEventListener('click', () => {
+            this[internal.ids].decrement.addEventListener("click", () => {
               this.value--;
             });
-            this[internal.ids].increment.addEventListener('click', () => {
+            this[internal.ids].increment.addEventListener("click", () => {
               this.value++;
             });
           }
@@ -66,7 +66,7 @@
           }
         }
 
-        customElements.define('increment-decrement', IncrementDecrement);
+        customElements.define("increment-decrement", IncrementDecrement);
       </script>
 
       <increment-decrement></increment-decrement>

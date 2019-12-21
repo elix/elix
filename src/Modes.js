@@ -1,8 +1,8 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import ReactiveElement from './ReactiveElement.js';
-import SingleSelectionMixin from './SingleSelectionMixin.js';
-import SlotItemsMixin from './SlotItemsMixin.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import ReactiveElement from "./ReactiveElement.js";
+import SingleSelectionMixin from "./SingleSelectionMixin.js";
+import SlotItemsMixin from "./SlotItemsMixin.js";
 
 const Base = SingleSelectionMixin(SlotItemsMixin(ReactiveElement));
 
@@ -35,7 +35,7 @@ class Modes extends Base {
       if (items) {
         items.forEach((item, index) => {
           const selected = index === selectedIndex;
-          item.style.display = selected ? '' : 'none';
+          item.style.display = selected ? "" : "none";
         });
       }
     }

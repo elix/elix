@@ -1,11 +1,11 @@
-import * as internal from '../../src/internal.js';
-import * as template from '../../src/template.js';
-import DrawerWithGrip from '../../src/DrawerWithGrip.js';
+import * as internal from "../../src/internal.js";
+import * as template from "../../src/template.js";
+import DrawerWithGrip from "../../src/DrawerWithGrip.js";
 
 export default class CustomDrawer extends DrawerWithGrip {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      fromEdge: 'right'
+      fromEdge: "right"
     });
   }
 
@@ -34,7 +34,7 @@ export default class CustomDrawer extends DrawerWithGrip {
       <div id="plusIcon">+</div>
     `;
     const gripSlot = result.content.querySelector('slot[name="grip"]');
-    gripSlot.innerHTML = '';
+    gripSlot.innerHTML = "";
     gripSlot.append(gripTemplate.content);
     return template.concat(
       result,
@@ -65,4 +65,4 @@ export default class CustomDrawer extends DrawerWithGrip {
   }
 }
 
-customElements.define('custom-drawer', CustomDrawer);
+customElements.define("custom-drawer", CustomDrawer);

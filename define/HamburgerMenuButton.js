@@ -1,3 +1,3 @@
-import HamburgerMenuButton from '../src/HamburgerMenuButton.js';
+import HamburgerMenuButton from "../src/HamburgerMenuButton.js";
 export default class ElixHamburgerMenuButton extends HamburgerMenuButton {}
-customElements.define('elix-hamburger-menu-button', ElixHamburgerMenuButton);
+customElements.define("elix-hamburger-menu-button", ElixHamburgerMenuButton);

@@ -1,12 +1,12 @@
-import * as internal from './internal.js';
-import * as template from './template.js';
-import EffectMixin from './EffectMixin.js';
-import LanguageDirectionMixin from './LanguageDirectionMixin.js';
-import ReactiveElement from './ReactiveElement.js';
-import ResizeMixin from './ResizeMixin.js';
-import SingleSelectionMixin from './SingleSelectionMixin.js';
-import SlotItemsMixin from './SlotItemsMixin.js';
-import TapSelectionMixin from './TapSelectionMixin.js';
+import * as internal from "./internal.js";
+import * as template from "./template.js";
+import EffectMixin from "./EffectMixin.js";
+import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
+import ReactiveElement from "./ReactiveElement.js";
+import ResizeMixin from "./ResizeMixin.js";
+import SingleSelectionMixin from "./SingleSelectionMixin.js";
+import SlotItemsMixin from "./SlotItemsMixin.js";
+import TapSelectionMixin from "./TapSelectionMixin.js";
 
 const Base = EffectMixin(
   LanguageDirectionMixin(
@@ -33,7 +33,7 @@ const Base = EffectMixin(
 class CenteredStrip extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      orientation: 'horizontal',
+      orientation: "horizontal",
       selectionRequired: true
     });
   }
@@ -60,9 +60,9 @@ class CenteredStrip extends Base {
       const swipeFraction = this[internal.state].swipeFraction || 0;
       const selectionFraction = selectedIndex + sign * swipeFraction;
 
-      const vertical = orientation === 'vertical';
-      const leadingEdge = vertical ? 'offsetTop' : 'offsetLeft';
-      const dimension = vertical ? 'offsetHeight' : 'offsetWidth';
+      const vertical = orientation === "vertical";
+      const leadingEdge = vertical ? "offsetTop" : "offsetLeft";
+      const dimension = vertical ? "offsetHeight" : "offsetWidth";
 
       // @ts-ignore
       const stripContainerDimension = this[internal.ids].stripContainer[
@@ -75,10 +75,10 @@ class CenteredStrip extends Base {
       // We only render if the height/width is positive.
       if (stripDimension > 0) {
         let translation = 0; // The amount by which we'll shift content horizontally
-        let justifyContent = '';
+        let justifyContent = "";
         if (stripDimension <= stripContainerDimension) {
           // Container can show all items. Center all items.
-          justifyContent = 'center';
+          justifyContent = "center";
         } else {
           // Items are wider than container can show.
           // Center the selected item.
@@ -127,12 +127,12 @@ class CenteredStrip extends Base {
           translation *= sign;
         }
 
-        const axis = vertical ? 'Y' : 'X';
+        const axis = vertical ? "Y" : "X";
         const transform = `translate${axis}(${translation}px)`;
         const showTransition = this[internal.state].enableEffects && !swiping;
         Object.assign(this[internal.ids].strip.style, {
           transform,
-          transition: showTransition ? 'transform 0.25s' : 'none'
+          transition: showTransition ? "transform 0.25s" : "none"
         });
 
         this[internal.ids].stripContainer.style.justifyContent = justifyContent;
@@ -143,13 +143,13 @@ class CenteredStrip extends Base {
       const { selectedIndex, items } = this[internal.state];
       if (items) {
         items.forEach((item, index) => {
-          item.toggleAttribute('selected', index === selectedIndex);
+          item.toggleAttribute("selected", index === selectedIndex);
         });
       }
     }
     if (changed.orientation) {
       const flexDirection =
-        this[internal.state].orientation === 'horizontal' ? '' : 'column';
+        this[internal.state].orientation === "horizontal" ? "" : "column";
       this[internal.ids].stripContainer.style.flexDirection = flexDirection;
       this[internal.ids].strip.style.flexDirection = flexDirection;
     }
