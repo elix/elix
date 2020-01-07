@@ -203,6 +203,7 @@ function propertyNameToAttribute(propertyName) {
     // Convert and memoize.
     const uppercaseRegEx = /([A-Z])/g;
     attribute = propertyName.replace(uppercaseRegEx, "-$1").toLowerCase();
+    propertyNamesToAttributes[propertyName] = attribute;
   }
   return attribute;
 }
