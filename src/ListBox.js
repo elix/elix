@@ -135,6 +135,7 @@ class ListBox extends Base {
           box-sizing: border-box;
           cursor: default;
           display: flex;
+          overflow: hidden; /* Container element is responsible for scrolling */
           -webkit-tap-highlight-color: transparent;
         }
 
