@@ -1,5 +1,5 @@
 import { getItemText } from "./ItemsTextMixin.js";
-import { indexOfItemContainingTarget } from "./utilities.js";
+import { indexOfItemContainingTarget, forwardFocus } from "./utilities.js";
 import * as internal from "./internal.js";
 import * as template from "./template.js";
 import ComboBox from "./ComboBox.js";
@@ -151,6 +151,12 @@ class ListComboBox extends Base {
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
+    if (changed.listPartType && this[internal.ids].list) {
+      // Turn off focus handling for old list.
+      /** @type {any} */
+      const cast = this[internal.ids].list;
+      forwardFocus(cast, null);
+    }
     super[internal.render](changed);
     if (changed.inputPartType) {
       this[internal.ids].input.setAttribute("aria-autocomplete", "both");
@@ -174,6 +180,12 @@ class ListComboBox extends Base {
           }
         }
       });
+
+      // Keep focus off of the list and on the top level combo box (which should
+      // delegate focus to the input).
+      /** @type {any} */
+      const cast = this[internal.ids].list;
+      forwardFocus(cast, this);
 
       // Track changes in the list's selection state.
       // Known bug: this behavior seems to confuse Gboard on Chrome for Android.
