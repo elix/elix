@@ -1,3 +1,4 @@
+import { assert } from '../chai.js';
 import * as internal from "../../src/internal.js";
 import * as template from "../../src/template.js";
 import ShadowTemplateMixin from "../../src/ShadowTemplateMixin.js";

@@ -1,3 +1,4 @@
+import { assert } from '../chai.js';
 import * as internal from "../../src/internal.js";
 import FormElementMixin from "../../src/FormElementMixin.js";
 import ReactiveElement from "../../src/ReactiveElement.js";

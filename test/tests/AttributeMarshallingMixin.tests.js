@@ -1,3 +1,4 @@
+import { assert } from '../chai.js';
 import AttributeMarshallingMixin from "../../src/AttributeMarshallingMixin.js";
 
 let defaultPropertyValue;

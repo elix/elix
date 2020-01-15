@@ -1,3 +1,4 @@
+import { assert } from '../chai.js';
 import {
   applyChildNodes,
   composedAncestors,

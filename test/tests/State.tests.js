@@ -1,3 +1,4 @@
+import { assert } from '../chai.js';
 import State from "../../src/State.js";
 
 describe("State", () => {

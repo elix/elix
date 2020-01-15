@@ -1,3 +1,4 @@
+import { assert } from '../chai.js';
 import OpenCloseMixin from "../../src/OpenCloseMixin.js";
 import ReactiveMixin from "../../src/ReactiveMixin.js";
 

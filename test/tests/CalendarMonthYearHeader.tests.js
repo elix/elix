@@ -1,3 +1,4 @@
+import { assert } from '../chai.js';
 import { trimMarks } from "../normalize.js";
 import * as internal from "../../src/internal.js";
 import CalendarMonthYearHeader from "../../define/CalendarMonthYearHeader.js";

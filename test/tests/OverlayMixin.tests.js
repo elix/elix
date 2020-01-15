@@ -1,3 +1,4 @@
+import { assert } from '../chai.js';
 import * as internal from "../../src/internal.js";
 import OpenCloseMixin from "../../src/OpenCloseMixin.js";
 import OverlayMixin from "../../src/OverlayMixin.js";
