@@ -4,3 +4,4 @@
 import Input from "./Input.js";
 
 export default class AutoCompleteInput extends Input {}
+export function autoComplete(AutoCompleteInput);
