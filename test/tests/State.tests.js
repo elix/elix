@@ -84,6 +84,7 @@ describe("State", () => {
     const state1 = new State();
     state1.onChange("b", () => {
       ranRule = true;
+      return null;
     });
 
     state1.copyWithChanges({ a: 1 });
