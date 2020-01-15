@@ -5,5 +5,5 @@ import WrappedStandardElement from "./WrappedStandardElement.js";
 
 export default class AutoSizeTextarea extends WrappedStandardElement {
   minimumRows: number;
-  value: number;
+  value: string;
 }
