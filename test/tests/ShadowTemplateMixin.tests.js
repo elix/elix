@@ -86,12 +86,14 @@ describe("ShadowTemplateMixin", () => {
   it("stamps string template into root", () => {
     const fixture = new ElementWithStringTemplate();
     assert(fixture.shadowRoot);
+    // @ts-ignore prevent tsc error "`*.shadowRoot` might be null"
     assert.equal(fixture.shadowRoot.textContent.trim(), "Hello");
   });
 
   it("stamps real template into root", () => {
     const fixture = new ElementWithRealTemplate();
     assert(fixture.shadowRoot);
+    // @ts-ignore prevent tsc error "`*.shadowRoot` might be null"
     assert.equal(fixture.shadowRoot.textContent.trim(), "Hello");
   });
 
@@ -103,15 +105,19 @@ describe("ShadowTemplateMixin", () => {
 
   it("caches the template for a component", () => {
     const fixture1 = new ElementWithCachedTemplate();
+    // @ts-ignore prevent tsc error "`*.shadowRoot` might be null"
     assert.equal(fixture1.shadowRoot.textContent.trim(), "0");
     const fixture2 = new ElementWithCachedTemplate();
+    // @ts-ignore prevent tsc error "`*.shadowRoot` might be null"
     assert.equal(fixture2.shadowRoot.textContent.trim(), "0");
   });
 
   it("retrieves a dynamic template each time", () => {
     const fixture1 = new ElementWithDynamicTemplate();
+    // @ts-ignore prevent tsc error "`*.shadowRoot` might be null"
     assert.equal(fixture1.shadowRoot.textContent.trim(), "0");
     const fixture2 = new ElementWithDynamicTemplate();
+    // @ts-ignore prevent tsc error "`*.shadowRoot` might be null"
     assert.equal(fixture2.shadowRoot.textContent.trim(), "1");
   });
 });

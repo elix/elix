@@ -9,6 +9,7 @@ class SlotContentTest extends SlotContentMixin(HTMLElement) {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
+    // @ts-ignore prevent tsc error "`this.shadowRoot` might be null"
     this.shadowRoot.innerHTML = `
       <div id="static">This is static content</div>
       <slot></slot>
@@ -36,6 +37,7 @@ class WrappedContentTest extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
+    // @ts-ignore prevent tsc error "`this.shadowRoot` might be null"
     this.shadowRoot.innerHTML = `<slot-content-test><slot></slot></default-slotcontent-test>`;
   }
 }
@@ -56,6 +58,7 @@ describe("SlotContentMixin", () => {
     const fixture = new SlotContentTest();
     // Wait for initial content.
     await Promise.resolve();
+    // @ts-ignore prevent tsc error "`fixture.shadowRoot` might be null"
     const slot = fixture.shadowRoot.children[1];
     assert.equal(fixture[internal.contentSlot], slot);
   });
@@ -71,9 +74,11 @@ describe("SlotContentMixin", () => {
   it("returns distributed nodes as content", async () => {
     const wrapper = new WrappedContentTest();
     wrapper.innerHTML = `<div>One</div><div>Two</div><div>Three</div>`;
+    // @ts-ignore prevent tsc error "`wrapper.shadowRoot` might be null"
     const fixture = wrapper.shadowRoot.querySelector("slot-content-test");
     // Wait for initial content.
     await Promise.resolve();
+    // @ts-ignore prevent tsc error "`fixture` might be null"
     assert.equal(fixture[internal.state].content.length, 3);
   });
 
@@ -109,12 +114,14 @@ describe("SlotContentMixin", () => {
 
   it("updates content when redistributed content changes", async () => {
     const wrapper = new WrappedContentTest();
+    // @ts-ignore prevent tsc error "`wrapper.shadowRoot` might be null"
     const fixture = wrapper.shadowRoot.querySelector("slot-content-test");
     container.appendChild(wrapper);
     // Wait for initial content.
     wrapper.textContent = "echidna";
     // Wait for slotchange event to be processed.
     await Promise.resolve();
+    // @ts-ignore prevent tsc error "`fixture` might be null"
     assert.equal(fixture[internal.state].content[0].textContent, "echidna");
   });
 
