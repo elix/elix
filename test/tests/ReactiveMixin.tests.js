@@ -1,6 +1,8 @@
 import { assert } from '../chai.js';
+import sinon from "sinon";
 import * as internal from "../../src/internal.js";
 import ReactiveMixin from "../../src/ReactiveMixin.js";
+import State from '../../src/State.js';
 
 class ReactiveTest extends ReactiveMixin(HTMLElement) {
   [internal.componentDidMount]() {
@@ -152,7 +154,7 @@ describe("ReactiveMixin", function() {
 
   it("runs state change handlers when state changes", () => {
     // Simple class, copies state member `a` to `b`.
-    class Fixture extends ReactiveMixin(Object) {
+    class Fixture extends ReactiveMixin(HTMLElement) {
       get [internal.defaultState]() {
         const state = super[internal.defaultState];
         state.onChange("a", state => ({ b: state.a }));
@@ -169,7 +171,7 @@ describe("ReactiveMixin", function() {
   });
 
   it("runs state change handlers on initial state", () => {
-    class Fixture extends ReactiveMixin(Object) {
+    class Fixture extends ReactiveMixin(HTMLElement) {
       get [internal.defaultState]() {
         const state = super[internal.defaultState];
         state.a = 1;

@@ -2,11 +2,12 @@ import { assert } from '../chai.js';
 import * as internal from "../../src/internal.js";
 import ReactiveMixin from "../../src/ReactiveMixin.js";
 import SelectionInViewMixin from "../../src/SelectionInViewMixin.js";
+import ShadowTemplateMixin from '../../src/ShadowTemplateMixin.js';
 
-const itemHeight = "100";
+const itemHeight = 100;
 
 class SelectionInViewTest extends SelectionInViewMixin(
-  ReactiveMixin(HTMLElement)
+  ReactiveMixin(ShadowTemplateMixin(HTMLElement))
 ) {
   connectedCallback() {
     super.connectedCallback();
