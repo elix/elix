@@ -29,9 +29,9 @@ describe("utilities", () => {
       <slot></slot>
       <button id="enabled"></button>
     `;
-    fixture.attachShadow({ mode: "open" });
+    const shadowRoot = fixture.attachShadow({ mode: "open" });
     const shadowContent = document.importNode(fixtureTemplate.content, true);
-    fixture.shadowRoot.appendChild(shadowContent);
+    shadowRoot.appendChild(shadowContent);
     const childrenTemplate = template.html`
       <div>
         <input>
@@ -39,7 +39,7 @@ describe("utilities", () => {
     `;
     const childrenContent = document.importNode(childrenTemplate.content, true);
     fixture.appendChild(childrenContent);
-    const element = firstFocusableElement(fixture.shadowRoot);
+    const element = firstFocusableElement(shadowRoot);
     const input = fixture.querySelector("input");
     assert.equal(element, input);
   });
