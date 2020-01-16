@@ -1,5 +1,4 @@
-import { assert } from '../chai.js';
-import sinon from "sinon";
+import { assert, sinon } from '../test-helpers.js';
 import * as internal from "../../src/internal.js";
 import ReactiveMixin from "../../src/ReactiveMixin.js";
 import State from '../../src/State.js';

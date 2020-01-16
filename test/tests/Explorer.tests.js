@@ -1,4 +1,4 @@
-import { assert } from '../chai.js';
+import { assert } from '../test-helpers.js';
 import Explorer from "../../define/Explorer.js";
 
 describe("Explorer", () => {

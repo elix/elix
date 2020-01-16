@@ -1,4 +1,4 @@
-import { assert } from '../chai.js';
+import { assert } from '../test-helpers.js';
 import * as internal from "../../src/internal.js";
 import AriaListMixin from "../../src/AriaListMixin.js";
 import ContentItemsMixin from "../../src/ContentItemsMixin.js";
