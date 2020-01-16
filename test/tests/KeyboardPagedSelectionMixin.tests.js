@@ -2,10 +2,11 @@ import { assert } from '../chai.js';
 import * as internal from "../../src/internal.js";
 import KeyboardPagedSelectionMixin from "../../src/KeyboardPagedSelectionMixin.js";
 import ReactiveMixin from "../../src/ReactiveMixin.js";
+import ShadowTemplateMixin from "../../src/ShadowTemplateMixin.js";
 
 const itemHeight = 100;
 
-const Base = KeyboardPagedSelectionMixin(ReactiveMixin(HTMLElement));
+const Base = KeyboardPagedSelectionMixin(ReactiveMixin(ShadowTemplateMixin(HTMLElement)));
 
 class KeyboardPagedSelectionTest extends Base {
   connectedCallback() {
