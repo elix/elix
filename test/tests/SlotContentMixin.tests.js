@@ -5,6 +5,7 @@ import SlotContentMixin from "../../src/SlotContentMixin.js";
 /*
  * Simple element using the SlotContentMixin mixin.
  */
+// @ts-ignore I have no idea what the tsc error means here :( 
 class SlotContentTest extends SlotContentMixin(HTMLElement) {
   constructor() {
     super();

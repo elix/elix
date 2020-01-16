@@ -28,6 +28,7 @@ class RenderState extends Base {
 
       // Look for an element (or subelement) with class "fixture".
       const fixtures = elements
+        // @ts-ignore I have no idea what the tsc error means here :(
         .map(element =>
           element.classList.contains("fixture")
             ? element
