@@ -10,7 +10,8 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "strict": true,
-    "target": "ES2019"
+    "target": "ES2019",
+    "allowSyntheticDefaultImports": true // just needed for sinon
   },
   "include": ["src/**/*.js", "demos/**/*.js", "test/**/*.js"]
 }
