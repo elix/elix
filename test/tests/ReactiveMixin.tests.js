@@ -5,7 +5,6 @@ import ReactiveMixin from "../../src/ReactiveMixin.js";
 import State from '../../src/State.js';
 
 class ReactiveTest extends ReactiveMixin(HTMLElement) {
-  static defaults = undefined;
   [internal.componentDidMount]() {
     if (super[internal.componentDidMount]) {
       super[internal.componentDidMount]();
@@ -32,6 +31,7 @@ class ReactiveTest extends ReactiveMixin(HTMLElement) {
     this.renderedResult = this[internal.state].message;
   }
 }
+ReactiveTest.defaults = undefined;
 customElements.define("reactive-test", ReactiveTest);
 
 describe("ReactiveMixin", function() {
