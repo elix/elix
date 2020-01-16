@@ -46,7 +46,7 @@ describe("KeyboardMixin", () => {
 
   it("listens to keydown and fires the keydown() method", done => {
     const fixture = new KeyboardTest();
-    fixture[internal.keydown] = (evt) => {
+    fixture[internal.keydown] = () => {
       done();
       return true;
     };
