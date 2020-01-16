@@ -25,7 +25,7 @@ describe("Explorer", () => {
     container.appendChild(fixture);
     // Wait for component to render.
     // Wait for content, which requires event/timeout timing.
-    await new Promise(setTimeout);
+    await new Promise((resolve) => { setTimeout(resolve); });
     const proxies = fixture.proxies;
     assert.equal(proxies.length, 3);
     assert.equal(proxies[0], fixture.children[0]);
@@ -42,7 +42,7 @@ describe("Explorer", () => {
     container.appendChild(fixture);
     // Wait for component to render.
     // Wait for content, which requires event/timeout timing.
-    await new Promise(setTimeout);
+    await new Promise((resolve) => { setTimeout(resolve); });
     const proxies = fixture.proxies;
     assert.equal(proxies.length, 3);
     assert(proxies[0] instanceof HTMLButtonElement);
