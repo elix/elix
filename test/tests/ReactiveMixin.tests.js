@@ -5,6 +5,7 @@ import ReactiveMixin from "../../src/ReactiveMixin.js";
 import State from '../../src/State.js';
 
 class ReactiveTest extends ReactiveMixin(HTMLElement) {
+  static defaults = undefined;
   [internal.componentDidMount]() {
     if (super[internal.componentDidMount]) {
       super[internal.componentDidMount]();
@@ -20,7 +21,7 @@ class ReactiveTest extends ReactiveMixin(HTMLElement) {
   get [internal.defaultState]() {
     return Object.assign(
       super[internal.defaultState],
-      this.constructor.defaults
+      ReactiveTest.defaults
     );
   }
 
@@ -46,7 +47,7 @@ describe("ReactiveMixin", function() {
 
   it("starts with an empty state object", () => {
     const fixture = new ReactiveTest();
-    assert.deepEqual(fixture[internal.state], {});
+    assert.deepEqual(fixture[internal.state], new State({}));
   });
 
   it("starts with defaultState if defined", () => {
@@ -54,7 +55,7 @@ describe("ReactiveMixin", function() {
       message: "aardvark"
     };
     const fixture = new ReactiveTest();
-    assert.deepEqual(fixture[internal.state], { message: "aardvark" });
+    assert.deepEqual(fixture[internal.state], new State({ message: "aardvark" }));
     ReactiveTest.defaults = undefined;
   });
 
@@ -63,12 +64,12 @@ describe("ReactiveMixin", function() {
     fixture[internal.setState]({
       message: "badger"
     });
-    assert.deepEqual(fixture[internal.state], { message: "badger" });
+    assert.deepEqual(fixture[internal.state], new State({ message: "badger" }));
   });
 
   it("state is immutable", () => {
     const fixture = new ReactiveTest();
-    assert.throws(() => (fixture[internal.state] = {}));
+    assert.throws(() => (fixture[internal.state] = new State()));
     assert.throws(() => (fixture[internal.state].message = "chihuahua"));
   });
 
