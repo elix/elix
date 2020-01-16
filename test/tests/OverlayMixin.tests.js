@@ -50,7 +50,7 @@ describe("OverlayMixin", function() {
 
   it("leaves the z-index alone if one is specified", async () => {
     const fixture = new OverlayTest();
-    fixture.style.zIndex = 10;
+    fixture.style.zIndex = "10";
     container.appendChild(fixture);
     await fixture.open();
     assert.equal(fixture.style.zIndex, "10");
