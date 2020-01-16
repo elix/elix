@@ -3,7 +3,7 @@ import * as internal from "../../src/internal.js";
 import KeyboardPagedSelectionMixin from "../../src/KeyboardPagedSelectionMixin.js";
 import ReactiveMixin from "../../src/ReactiveMixin.js";
 
-const itemHeight = "100";
+const itemHeight = 100;
 
 const Base = KeyboardPagedSelectionMixin(ReactiveMixin(HTMLElement));
 
