@@ -103,12 +103,12 @@ describe("WrappedStandardElement", () => {
     // Disable via attribute.
     fixture.setAttribute("disabled", "");
     fixture[internal.renderChanges]();
-    assert.propertyVal(fixture.inner, "disabled", "");
+    assert.propertyVal(fixture.inner, "disabled", true);
 
     // Re-enable via attribute.
     fixture.removeAttribute("disabled");
     fixture[internal.renderChanges]();
-    assert.notProperty(fixture.inner, "disabled");
+    assert.propertyVal(fixture.inner, "disabled", false);
   });
 
   it("delegates tabindex state to inner element", async () => {
