@@ -1,3 +1,4 @@
+import { assert } from '../test-helpers.js';
 import {
   default as AutoCompleteInput,
   autoComplete

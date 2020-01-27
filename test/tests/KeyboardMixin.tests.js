@@ -1,3 +1,4 @@
+import { assert } from '../test-helpers.js';
 import * as internal from "../../src/internal.js";
 import * as mockInteractions from "../mockInteractions.js";
 import KeyboardMixin from "../../src/KeyboardMixin.js";
@@ -40,13 +41,14 @@ describe("KeyboardMixin", () => {
     assert.equal(fixture.tabIndex, 1);
     fixture.tabIndex = 2;
     assert.equal(fixture[internal.state].tabIndex, 2);
-    assert.equal(fixture.getAttribute("tabindex"), 2);
+    assert.equal(fixture.getAttribute("tabindex"), "2");
   });
 
   it("listens to keydown and fires the keydown() method", done => {
     const fixture = new KeyboardTest();
     fixture[internal.keydown] = () => {
       done();
+      return true;
     };
     container.appendChild(fixture);
     mockInteractions.dispatchSyntheticKeyboardEvent(fixture, "keydown");

@@ -1,3 +1,4 @@
+import { assert } from '../test-helpers.js';
 import * as internal from "../../src/internal.js";
 import AutoSizeTextarea from "../../define/AutoSizeTextarea.js";
 
@@ -25,7 +26,7 @@ describe("AutoSizeTextarea", () => {
     const fixture = new AutoSizeTextarea();
     fixture.value = "beaver";
     fixture[internal.renderChanges]();
-    assert(fixture.inner.value, "beaver");
+    assert.propertyVal(fixture.inner ,"value", "beaver");
   });
 
   it("updates value when innerHTML changes", async () => {
@@ -125,7 +126,7 @@ describe("AutoSizeTextarea", () => {
     container.appendChild(fixture);
     fixture.placeholder = "Placeholder";
     await Promise.resolve();
-    assert.equal(fixture.inner.placeholder, "Placeholder");
+    assert.propertyVal(fixture.inner , "placeholder", "Placeholder");
     assert.notEqual(fixture.value, "Placeholder");
   });
 });

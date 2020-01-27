@@ -1,3 +1,4 @@
+import { assert } from '../test-helpers.js';
 import * as internal from "../../src/internal.js";
 import * as template from "../../src/template.js";
 import DelegateFocusMixin from "../../src/DelegateFocusMixin.js";

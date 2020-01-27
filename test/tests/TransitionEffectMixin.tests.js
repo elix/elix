@@ -1,3 +1,4 @@
+import { assert } from '../test-helpers.js';
 import * as internal from "../../src/internal.js";
 import * as template from "../../src/template.js";
 import ReactiveElement from "../../src/ReactiveElement.js";
@@ -60,8 +61,8 @@ describe("TransitionEffectMixin", function() {
     container.appendChild(fixture);
     const states = [];
     fixture.addEventListener("effect-phase-changed", event => {
-      states.push(event.detail.effectPhase);
-      if (event.detail.effectPhase === "after") {
+      states.push(event["detail"].effectPhase);
+      if (event["detail"].effectPhase === "after") {
         assert.deepEqual(states, ["before", "during", "after"]);
         done();
       }
@@ -75,8 +76,8 @@ describe("TransitionEffectMixin", function() {
     container.appendChild(fixture);
     const states = [];
     fixture.addEventListener("effect-phase-changed", event => {
-      states.push(event.detail.effectPhase);
-      if (event.detail.effectPhase === "after") {
+      states.push(event["detail"].effectPhase);
+      if (event["detail"].effectPhase === "after") {
         assert.deepEqual(states, ["before", "during", "after"]);
         done();
       }

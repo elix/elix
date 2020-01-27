@@ -1,3 +1,4 @@
+import {assert} from '../test-helpers.js';
 import * as calendar from "../../src/calendar.js";
 
 describe("calendar helpers", () => {

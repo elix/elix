@@ -1,3 +1,4 @@
+import { assert } from '../test-helpers.js';
 import * as internal from "../../src/internal.js";
 import ReactiveMixin from "../../src/ReactiveMixin.js";
 import SingleSelectionMixin from "../../src/SingleSelectionMixin.js";
@@ -192,6 +193,7 @@ describe("SingleSelectionMixin", () => {
 
   it("ignores a selectedIndex that's not a number", () => {
     const fixture = createSampleElement();
+    // @ts-ignore
     fixture.selectedIndex = "foo";
     assert.equal(fixture.selectedIndex, -1);
   });

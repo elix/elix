@@ -1,3 +1,4 @@
+import { assert } from '../test-helpers.js';
 import * as internal from "../../src/internal.js";
 import WrappedStandardElement from "../../src/WrappedStandardElement.js";
 
@@ -37,7 +38,7 @@ describe("WrappedStandardElement", () => {
     const fixture = new WrappedA();
     fixture.href = "http://localhost/foo/bar.html";
     container.appendChild(fixture);
-    assert.equal(fixture.inner.href, "http://localhost/foo/bar.html");
+    assert.propertyVal(fixture.inner, "href", "http://localhost/foo/bar.html");
     assert.equal(fixture.protocol, "http:");
     assert.equal(fixture.hostname, "localhost");
     assert.equal(fixture.pathname, "/foo/bar.html");
@@ -48,7 +49,7 @@ describe("WrappedStandardElement", () => {
     container.appendChild(fixture);
     fixture.setAttribute("href", "http://example.com/");
     fixture[internal.renderChanges]();
-    assert.equal(fixture.inner.href, "http://example.com/");
+    assert.propertyVal(fixture.inner, "href", "http://example.com/");
   });
 
   it("re-raises events not automatically retargetted by Shadow DOM", done => {
@@ -92,22 +93,22 @@ describe("WrappedStandardElement", () => {
     // Disable via property.
     fixture.disabled = true;
     fixture[internal.renderChanges]();
-    assert(fixture.inner.disabled);
+    assert.propertyVal(fixture.inner, "disabled", true);
 
     // // Re-enable via property.
     fixture.disabled = false;
     fixture[internal.renderChanges]();
-    assert(!fixture.inner.disabled);
+    assert.propertyVal(fixture.inner, "disabled", false);
 
     // Disable via attribute.
     fixture.setAttribute("disabled", "");
     fixture[internal.renderChanges]();
-    assert(fixture.inner.disabled);
+    assert.propertyVal(fixture.inner, "disabled", true);
 
     // Re-enable via attribute.
     fixture.removeAttribute("disabled");
     fixture[internal.renderChanges]();
-    assert(!fixture.inner.disabled);
+    assert.propertyVal(fixture.inner, "disabled", false);
   });
 
   it("delegates tabindex state to inner element", async () => {

@@ -1,3 +1,4 @@
+import { assert } from '../test-helpers.js';
 import AttributeMarshallingMixin from "../../src/AttributeMarshallingMixin.js";
 
 let defaultPropertyValue;
@@ -43,8 +44,7 @@ describe("AttributeMarshallingMixin", () => {
   });
 
   it("defines observedAttributes for all custom property setters", () => {
-    const observedAttributes = ElementWithCustomProperty.observedAttributes;
-    assert.deepEqual(observedAttributes, ["custom-property", "disabled"]);
+    assert.deepNestedPropertyVal(ElementWithCustomProperty, "observedAttributes", ["custom-property", "disabled"]);
   });
 
   it("marshals hyphenated attribute to corresponding camelCase property", () => {

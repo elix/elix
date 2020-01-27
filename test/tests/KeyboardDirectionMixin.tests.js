@@ -1,10 +1,11 @@
+import { assert, sinon } from '../test-helpers.js';
 import * as internal from "../../src/internal.js";
 import KeyboardDirectionMixin from "../../src/KeyboardDirectionMixin.js";
 
 class KeyboardDirectionMixinTest extends KeyboardDirectionMixin(HTMLElement) {
   constructor() {
     super();
-    this[internal.state] = {};
+    this[internal.state] = { orientation: "" };
   }
 
   [internal.goRight]() {
