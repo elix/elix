@@ -49,7 +49,7 @@
     "ci:fast": "npm run lint && npm run test -- --run-in-ci",
     "lint": "eslint .; tsc",
     "prepublishOnly": "node tasks/prepublishOnly.js",
-    "sauce-tests": "node tasks/sauce-tests.js",
+    "sauce-tests": "node tasks/sauceTests.js",
     "test": "node tasks/headless-tests.js",
     "typecheck": "tsc"
   }
