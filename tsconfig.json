@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowJs": true,
+    "allowSyntheticDefaultImports": true, // just needed for sinon
     "checkJs": true,
     "noEmit": true,
     // We'd like to use noImplicitAny: true, but we often need to access
@@ -10,8 +11,7 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "strict": true,
-    "target": "ES2019",
-    "allowSyntheticDefaultImports": true // just needed for sinon
+    "target": "ES2019"
   },
   "include": ["src/**/*.js", "demos/**/*.js", "test/**/*.js"]
 }
