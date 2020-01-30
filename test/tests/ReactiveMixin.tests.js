@@ -16,10 +16,6 @@ class ReactiveTest extends ReactiveMixin(HTMLElement) {
     }
   }
 
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], ReactiveTest.defaults);
-  }
-
   [internal.render](changed) {
     if (super[internal.render]) {
       super[internal.render](changed);
@@ -27,8 +23,16 @@ class ReactiveTest extends ReactiveMixin(HTMLElement) {
     this.renderedResult = this[internal.state].message;
   }
 }
-ReactiveTest.defaults = undefined;
 customElements.define("reactive-test", ReactiveTest);
+
+class ReactiveWithDefaultsTest extends ReactiveTest {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
+      message: "aardvark"
+    });
+  }
+}
+customElements.define("reactive-with-defaults-test", ReactiveWithDefaultsTest);
 
 // Simple class, copies state member `a` to `b`.
 class ReactiveStateTest1 extends ReactiveMixin(HTMLElement) {
@@ -68,15 +72,11 @@ describe("ReactiveMixin", function() {
   });
 
   it("starts with defaultState if defined", () => {
-    ReactiveTest.defaults = {
-      message: "aardvark"
-    };
-    const fixture = new ReactiveTest();
+    const fixture = new ReactiveWithDefaultsTest();
     assert.deepEqual(
       fixture[internal.state],
       new State({ message: "aardvark" })
     );
-    ReactiveTest.defaults = undefined;
   });
 
   it("setState updates state", () => {
