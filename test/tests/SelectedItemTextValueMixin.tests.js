@@ -1,4 +1,4 @@
-import { assert } from '../test-helpers.js';
+import { assert } from "../test-helpers.js";
 import SingleSelectionMixin from "../../src/SingleSelectionMixin.js";
 import SelectedItemTextValueMixin from "../../src/SelectedItemTextValueMixin.js";
 

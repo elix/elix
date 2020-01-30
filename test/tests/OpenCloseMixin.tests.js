@@ -1,4 +1,4 @@
-import { assert } from '../test-helpers.js';
+import { assert } from "../test-helpers.js";
 import OpenCloseMixin from "../../src/OpenCloseMixin.js";
 import ReactiveMixin from "../../src/ReactiveMixin.js";
 
