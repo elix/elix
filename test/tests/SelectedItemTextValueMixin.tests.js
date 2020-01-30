@@ -1,6 +1,6 @@
 import { assert } from "../test-helpers.js";
-import SingleSelectionMixin from "../../src/SingleSelectionMixin.js";
 import SelectedItemTextValueMixin from "../../src/SelectedItemTextValueMixin.js";
+import SingleSelectionMixin from "../../src/SingleSelectionMixin.js";
 
 /* Element that exposes a value property */
 class ElementWithValue extends SelectedItemTextValueMixin(
