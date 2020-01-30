@@ -1,4 +1,4 @@
-import { assert, sinon } from "../test-helpers.js";
+import { assert, sinon } from "../testHelpers.js";
 import * as internal from "../../src/internal.js";
 import DirectionSelectionMixin from "../../src/DirectionSelectionMixin.js";
 

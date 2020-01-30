@@ -1,4 +1,4 @@
-import { assert } from "../test-helpers.js";
+import { assert } from "../testHelpers.js";
 import * as internal from "../../src/internal.js";
 import * as mockInteractions from "../mockInteractions.js";
 import ReactiveMixin from "../../src/ReactiveMixin.js";

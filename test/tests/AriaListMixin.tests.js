@@ -1,4 +1,4 @@
-import { assert } from "../test-helpers.js";
+import { assert } from "../testHelpers.js";
 import * as internal from "../../src/internal.js";
 import AriaListMixin from "../../src/AriaListMixin.js";
 import ContentItemsMixin from "../../src/ContentItemsMixin.js";

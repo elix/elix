@@ -1,4 +1,4 @@
-import { assert } from "../test-helpers.js";
+import { assert } from "../testHelpers.js";
 import * as content from "../../src/content.js";
 import * as internal from "../../src/internal.js";
 import * as template from "../../src/template.js";
