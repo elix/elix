@@ -30,6 +30,27 @@ class ReactiveTest extends ReactiveMixin(HTMLElement) {
 ReactiveTest.defaults = undefined;
 customElements.define("reactive-test", ReactiveTest);
 
+// Simple class, copies state member `a` to `b`.
+class ReactiveStateTest1 extends ReactiveMixin(HTMLElement) {
+  get [internal.defaultState]() {
+    const state = super[internal.defaultState];
+    state.onChange("a", state => ({ b: state.a }));
+    return state;
+  }
+}
+customElements.define("reactive-state-test-1", ReactiveStateTest1);
+
+// Simple class, copies state member `a` to `b`, a has initial value.
+class ReactiveStateTest2 extends ReactiveMixin(HTMLElement) {
+  get [internal.defaultState]() {
+    const state = super[internal.defaultState];
+    state.a = 1;
+    state.onChange("a", state => ({ b: state.a }));
+    return state;
+  }
+}
+customElements.define("reactive-state-test-2", ReactiveStateTest2);
+
 describe("ReactiveMixin", function() {
   let container;
 
@@ -154,15 +175,7 @@ describe("ReactiveMixin", function() {
   });
 
   it("runs state change handlers when state changes", () => {
-    // Simple class, copies state member `a` to `b`.
-    class Fixture extends ReactiveMixin(HTMLElement) {
-      get [internal.defaultState]() {
-        const state = super[internal.defaultState];
-        state.onChange("a", state => ({ b: state.a }));
-        return state;
-      }
-    }
-    const fixture = new Fixture();
+    const fixture = new ReactiveStateTest1();
     fixture[internal.setState]({ a: 1 });
     assert(fixture[internal.state].b === 1);
     fixture[internal.setState]({ b: 2 }); // Shouldn't have any effect on `a`
@@ -172,15 +185,7 @@ describe("ReactiveMixin", function() {
   });
 
   it("runs state change handlers on initial state", () => {
-    class Fixture extends ReactiveMixin(HTMLElement) {
-      get [internal.defaultState]() {
-        const state = super[internal.defaultState];
-        state.a = 1;
-        state.onChange("a", state => ({ b: state.a }));
-        return state;
-      }
-    }
-    const fixture = new Fixture();
+    const fixture = new ReactiveStateTest2();
     assert(fixture[internal.state].a === 1);
     assert(fixture[internal.state].b === 1);
     fixture[internal.setState]({ a: 2 });
