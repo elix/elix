@@ -1,31 +1,33 @@
-import { assert } from '../test-helpers.js';
+import { assert } from "../test-helpers.js";
 import * as internal from "../../src/internal.js";
 import SlotContentMixin from "../../src/SlotContentMixin.js";
 
 /*
  * Simple element using the SlotContentMixin mixin.
  */
-// @ts-ignore I have no idea what the tsc error means here :( 
 class SlotContentTest extends SlotContentMixin(HTMLElement) {
   constructor() {
     super();
-    this.attachShadow({ mode: "open" });
-    // @ts-ignore prevent tsc error "`this.shadowRoot` might be null"
-    this.shadowRoot.innerHTML = `
+    const shadowRoot = this.attachShadow({ mode: "open" });
+    shadowRoot.innerHTML = `
       <div id="static">This is static content</div>
       <slot></slot>
     `;
-    // Simulate key bits of ReactiveMixin.
-    this[internal.state] = this[internal.defaultState];
+    // Simulate key bit of ReactiveMixin.
     this[internal.componentDidMount]();
   }
 
   get [internal.defaultState]() {
-    return {};
+    return super[internal.defaultState];
   }
 
   [internal.setState](state) {
     Object.assign(this[internal.state], state);
+  }
+
+  // Simulate key bit of ReactiveMixin.
+  get [internal.state]() {
+    return this[internal.defaultState];
   }
 }
 customElements.define("slot-content-test", SlotContentTest);
@@ -37,9 +39,8 @@ customElements.define("slot-content-test", SlotContentTest);
 class WrappedContentTest extends HTMLElement {
   constructor() {
     super();
-    this.attachShadow({ mode: "open" });
-    // @ts-ignore prevent tsc error "`this.shadowRoot` might be null"
-    this.shadowRoot.innerHTML = `<slot-content-test><slot></slot></default-slotcontent-test>`;
+    const shadowRoot = this.attachShadow({ mode: "open" });
+    shadowRoot.innerHTML = `<slot-content-test><slot></slot></default-slotcontent-test>`;
   }
 }
 customElements.define("wrapped-content-test", WrappedContentTest);
@@ -59,8 +60,7 @@ describe("SlotContentMixin", () => {
     const fixture = new SlotContentTest();
     // Wait for initial content.
     await Promise.resolve();
-    // @ts-ignore prevent tsc error "`fixture.shadowRoot` might be null"
-    const slot = fixture.shadowRoot.children[1];
+    const slot = fixture.shadowRoot && fixture.shadowRoot.children[1];
     assert.equal(fixture[internal.contentSlot], slot);
   });
 
@@ -75,12 +75,13 @@ describe("SlotContentMixin", () => {
   it("returns distributed nodes as content", async () => {
     const wrapper = new WrappedContentTest();
     wrapper.innerHTML = `<div>One</div><div>Two</div><div>Three</div>`;
-    // @ts-ignore prevent tsc error "`wrapper.shadowRoot` might be null"
-    const fixture = wrapper.shadowRoot.querySelector("slot-content-test");
+    const fixture =
+      wrapper.shadowRoot &&
+      wrapper.shadowRoot.querySelector("slot-content-test");
     // Wait for initial content.
     await Promise.resolve();
-    // @ts-ignore prevent tsc error "`fixture` might be null"
-    assert.equal(fixture[internal.state].content.length, 3);
+    const content = fixture && fixture[internal.state].content;
+    assert.equal(content.length, 3);
   });
 
   it("sets content when defined component is parsed", async () => {
@@ -115,15 +116,16 @@ describe("SlotContentMixin", () => {
 
   it("updates content when redistributed content changes", async () => {
     const wrapper = new WrappedContentTest();
-    // @ts-ignore prevent tsc error "`wrapper.shadowRoot` might be null"
-    const fixture = wrapper.shadowRoot.querySelector("slot-content-test");
+    const fixture =
+      wrapper.shadowRoot &&
+      wrapper.shadowRoot.querySelector("slot-content-test");
     container.appendChild(wrapper);
     // Wait for initial content.
     wrapper.textContent = "echidna";
     // Wait for slotchange event to be processed.
     await Promise.resolve();
-    // @ts-ignore prevent tsc error "`fixture` might be null"
-    assert.equal(fixture[internal.state].content[0].textContent, "echidna");
+    const content = fixture && fixture[internal.state].content;
+    assert.equal(content[0].textContent, "echidna");
   });
 
   it("updates content if node is removed from light DOM", async () => {

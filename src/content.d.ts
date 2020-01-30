@@ -4,4 +4,4 @@
 export function isSubstantiveElement(node: Node): boolean;
 export function substantiveElements(
   nodes: NodeList | Node[]
-): HTMLElement[] | SVGElement[];
+): (HTMLElement | SVGElement)[];

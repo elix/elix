@@ -154,8 +154,7 @@ describe("ReactiveMixin", function() {
 
   it("runs state change handlers when state changes", () => {
     // Simple class, copies state member `a` to `b`.
-    // @ts-ignore - no idea how to fix the tsc error :(
-    class Fixture extends ReactiveMixin(Object) {
+    class Fixture extends ReactiveMixin(HTMLElement) {
       get [internal.defaultState]() {
         const state = super[internal.defaultState];
         state.onChange("a", state => ({ b: state.a }));
@@ -172,8 +171,7 @@ describe("ReactiveMixin", function() {
   });
 
   it("runs state change handlers on initial state", () => {
-    // @ts-ignore - no idea how to fix the tsc error :(
-    class Fixture extends ReactiveMixin(Object) {
+    class Fixture extends ReactiveMixin(HTMLElement) {
       get [internal.defaultState]() {
         const state = super[internal.defaultState];
         state.a = 1;
