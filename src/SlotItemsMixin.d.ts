@@ -10,7 +10,7 @@ declare const SlotItemsMixin: StateMixin<
   {},
   {
     [internal.contentSlot]: HTMLSlotElement;
-    items: ListItemElement[];
+    readonly items: ListItemElement[];
   },
   {
     content: Node[];

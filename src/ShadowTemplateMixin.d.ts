@@ -6,7 +6,7 @@
 declare const ShadowTemplateMixin: Mixin<
   {},
   {
-    ids: {
+    readonly ids: {
       [id: string]: HTMLElement | SVGElement;
     };
     connectedCallback(): void;

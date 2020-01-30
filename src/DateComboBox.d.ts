@@ -6,7 +6,7 @@ import ComboBox from "./ComboBox.js";
 
 export default class DateComboBox extends CalendarElementMixin(ComboBox) {
   arrowButtonPartType: PartDescriptor;
-  calendar: Element;
+  readonly calendar: Element;
   calendarPartType: PartDescriptor;
   dateTimeFormatOptions: Intl.DateTimeFormatOptions;
   dayPartType: PartDescriptor;

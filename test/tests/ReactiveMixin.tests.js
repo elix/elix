@@ -1,7 +1,7 @@
-import { assert, sinon } from '../test-helpers.js';
+import { assert, sinon } from "../test-helpers.js";
 import * as internal from "../../src/internal.js";
 import ReactiveMixin from "../../src/ReactiveMixin.js";
-import State from '../../src/State.js';
+import State from "../../src/State.js";
 
 class ReactiveTest extends ReactiveMixin(HTMLElement) {
   [internal.componentDidMount]() {
@@ -17,10 +17,7 @@ class ReactiveTest extends ReactiveMixin(HTMLElement) {
   }
 
   get [internal.defaultState]() {
-    return Object.assign(
-      super[internal.defaultState],
-      ReactiveTest.defaults
-    );
+    return Object.assign(super[internal.defaultState], ReactiveTest.defaults);
   }
 
   [internal.render](changed) {
@@ -54,7 +51,10 @@ describe("ReactiveMixin", function() {
       message: "aardvark"
     };
     const fixture = new ReactiveTest();
-    assert.deepEqual(fixture[internal.state], new State({ message: "aardvark" }));
+    assert.deepEqual(
+      fixture[internal.state],
+      new State({ message: "aardvark" })
+    );
     ReactiveTest.defaults = undefined;
   });
 
@@ -68,6 +68,7 @@ describe("ReactiveMixin", function() {
 
   it("state is immutable", () => {
     const fixture = new ReactiveTest();
+    // @ts-ignore We know state is read-only, that's why this throws.
     assert.throws(() => (fixture[internal.state] = new State()));
     assert.throws(() => (fixture[internal.state].message = "chihuahua"));
   });

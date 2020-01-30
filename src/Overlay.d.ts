@@ -9,8 +9,8 @@ import SlotContentMixin from "./SlotContentMixin.js";
 export default class Overlay extends OpenCloseMixin(
   OverlayMixin(SlotContentMixin(ReactiveElement))
 ) {
-  backdrop: Element;
+  readonly backdrop: Element;
   backdropPartType: PartDescriptor;
-  frame: Element;
+  readonly frame: Element;
   framePartType: PartDescriptor;
 }

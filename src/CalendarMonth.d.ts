@@ -9,7 +9,7 @@ export default class CalendarMonth extends CalendarElementMixin(
 ) {
   dayElementForDate(date: Date): Element | null;
   dayPartType: PartDescriptor;
-  days: Element[];
+  readonly days: Element[];
   daysOfWeekFormat: "long" | "narrow" | "short";
   monthFormat: "numeric" | "2-digit" | "long" | "short" | "narrow";
   showCompleteWeeks: boolean;

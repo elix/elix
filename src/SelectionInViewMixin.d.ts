@@ -9,7 +9,7 @@ declare const SelectionInViewMixin: Mixin<
   {},
   {
     scrollItemIntoView(item: Element): void;
-    [internal.scrollTarget]: Element;
+    readonly [internal.scrollTarget]: Element;
   }
 >;
 

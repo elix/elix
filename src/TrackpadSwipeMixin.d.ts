@@ -9,7 +9,7 @@ declare const TrackpadSwipeMixin: StateMixin<
   {},
   {},
   {
-    [internal.swipeTarget]: HTMLElement;
+    readonly [internal.swipeTarget]: HTMLElement;
   },
   {
     swipeFraction: number;

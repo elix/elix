@@ -12,5 +12,7 @@ export default class State {
   constructor(defaults?: PlainObject);
   copyWithChanges(changes: PlainObject): { state: State; changed: boolean };
   onChange(dependencies: string[] | string, callback: ChangeHandler): void;
+  // State members are generally read-only, but we can't apply `readonly` to
+  // them because they can be modified during getDefaultState.
   [key: string]: any;
 }

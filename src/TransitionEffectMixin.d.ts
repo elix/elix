@@ -9,7 +9,7 @@ declare const TransitionEffectMixin: StateMixin<
   {},
   {},
   {
-    [internal.effectEndTarget]: Element;
+    readonly [internal.effectEndTarget]: Element;
     startEffect(effect: string): Promise<void>;
   },
   {

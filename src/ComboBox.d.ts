@@ -10,7 +10,7 @@ import PopupSource from "./PopupSource.js";
 export default class ComboBox extends AriaRoleMixin(
   DelegateFocusMixin(FormElementMixin(KeyboardMixin(PopupSource)))
 ) {
-  input: Element | null;
+  readonly input: Element | null;
   inputPartType: PartDescriptor;
   placeholder: string;
   toggleButtonPartType: PartDescriptor;

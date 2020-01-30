@@ -6,7 +6,7 @@
 declare const DelegateItemsMixin: Mixin<
   {},
   {
-    items: Element[];
+    readonly items: Element[];
   }
 >;
 

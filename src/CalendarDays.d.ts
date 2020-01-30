@@ -10,7 +10,7 @@ export default class CalendarDays extends CalendarElementMixin(
   dayElementForDate(date: Date): Element | null;
   dayCount: number;
   dayPartType: PartDescriptor;
-  days: Element[];
+  readonly days: Element[];
   showCompleteWeeks: boolean;
   showSelectedDay: boolean;
   startDate: Date;
