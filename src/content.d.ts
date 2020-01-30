@@ -2,6 +2,4 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 export function isSubstantiveElement(node: Node): boolean;
-export function substantiveElements(
-  nodes: NodeList | Node[]
-): (HTMLElement | SVGElement)[];
+export function substantiveElements(nodes: NodeList | Node[]): Element[];
