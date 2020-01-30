@@ -1,33 +1,21 @@
 import { assert } from "../testHelpers.js";
 import * as internal from "../../src/internal.js";
+import ReactiveMixin from "../../src/ReactiveMixin.js";
 import SlotContentMixin from "../../src/SlotContentMixin.js";
 
 /*
  * Simple element using the SlotContentMixin mixin.
  */
-class SlotContentTest extends SlotContentMixin(HTMLElement) {
-  constructor() {
-    super();
-    const shadowRoot = this.attachShadow({ mode: "open" });
-    shadowRoot.innerHTML = `
-      <div id="static">This is static content</div>
-      <slot></slot>
-    `;
-    // Simulate key bit of ReactiveMixin.
-    this[internal.componentDidMount]();
-  }
-
-  get [internal.defaultState]() {
-    return super[internal.defaultState];
-  }
-
-  [internal.setState](state) {
-    Object.assign(this[internal.state], state);
-  }
-
-  // Simulate key bit of ReactiveMixin.
-  get [internal.state]() {
-    return this[internal.defaultState];
+class SlotContentTest extends SlotContentMixin(ReactiveMixin(HTMLElement)) {
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
+    if (!this.shadowRoot) {
+      const shadowRoot = this.attachShadow({ mode: "open" });
+      shadowRoot.innerHTML = `
+        <div id="static">This is static content</div>
+        <slot></slot>
+      `;
+    }
   }
 }
 customElements.define("slot-content-test", SlotContentTest);
@@ -58,6 +46,7 @@ describe("SlotContentMixin", () => {
 
   it("uses the component's default slot as the default slot for content", async () => {
     const fixture = new SlotContentTest();
+    container.append(fixture);
     // Wait for initial content.
     await Promise.resolve();
     const slot = fixture.shadowRoot && fixture.shadowRoot.children[1];
@@ -67,6 +56,7 @@ describe("SlotContentMixin", () => {
   it("returns direct assigned nodes as content", async () => {
     const fixture = new SlotContentTest();
     fixture.innerHTML = `<div>One</div><div>Two</div><div>Three</div>`;
+    container.append(fixture);
     // Wait for initial content.
     await Promise.resolve();
     assert.equal(fixture[internal.state].content.length, 3);
@@ -78,6 +68,7 @@ describe("SlotContentMixin", () => {
     const fixture =
       wrapper.shadowRoot &&
       wrapper.shadowRoot.querySelector("slot-content-test");
+    container.append(wrapper);
     // Wait for initial content.
     await Promise.resolve();
     const content = fixture && fixture[internal.state].content;
@@ -94,7 +85,7 @@ describe("SlotContentMixin", () => {
 
   it("updates content when textContent changes", async () => {
     const fixture = new SlotContentTest();
-    container.appendChild(fixture);
+    container.append(fixture);
     // Wait for initial content.
     fixture.textContent = "chihuahua";
     // Wait for slotchange event to be processed.
@@ -104,11 +95,11 @@ describe("SlotContentMixin", () => {
 
   it("updates content when children change", async () => {
     const fixture = new SlotContentTest();
-    container.appendChild(fixture);
+    container.append(fixture);
     // Wait for initial content.
     const div = document.createElement("div");
     div.textContent = "dingo";
-    fixture.appendChild(div);
+    fixture.append(div);
     // Wait for slotchange event to be processed.
     await Promise.resolve();
     assert.equal(fixture[internal.state].content[0].textContent, "dingo");
@@ -119,7 +110,7 @@ describe("SlotContentMixin", () => {
     const fixture =
       wrapper.shadowRoot &&
       wrapper.shadowRoot.querySelector("slot-content-test");
-    container.appendChild(wrapper);
+    container.append(wrapper);
     // Wait for initial content.
     wrapper.textContent = "echidna";
     // Wait for slotchange event to be processed.
@@ -132,8 +123,8 @@ describe("SlotContentMixin", () => {
     const fixture = new SlotContentTest();
     const div = document.createElement("div");
     div.textContent = "hippopotamus";
-    fixture.appendChild(div);
-    container.appendChild(fixture);
+    fixture.append(div);
+    container.append(fixture);
     // Wait for initial content and for first
     // slotchange event to be processed.
 
