@@ -478,6 +478,8 @@ export const startEffect = Symbol("startEffect");
  */
 export const state = Symbol("state");
 
+export const stateEffects = Symbol("stateEffects");
+
 /**
  * Symbol for the `swipeDown` method.
  *

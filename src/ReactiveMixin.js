@@ -59,10 +59,10 @@ export default function ReactiveMixin(Base) {
      * The default state for the component. This can be extended by mixins and
      * classes to provide additional default state.
      *
-     * @type {State}
+     * @type {PlainObject}
      */
     get [internal.defaultState]() {
-      return new State();
+      return {};
     }
 
     /**
@@ -168,29 +168,37 @@ export default function ReactiveMixin(Base) {
       }
 
       const firstSetState = this[stateKey] === undefined;
-      if (firstSetState) {
-        // Create temporary state as seed.
-        this[stateKey] = Object.freeze(new State());
+
+      // Apply changes, determine effects, loop until no more effects.
+      const log = changedSinceLastRender.get(this) || {};
+      const state = Object.assign({}, this[stateKey]); // Copy state
+      let effects = changes;
+      let changedInThisSetState = false;
+      while (true) {
+        const changed = fieldsChanged(state, effects);
+        if (Object.keys(changed).length === 0) {
+          break;
+        }
+        changedInThisSetState = true;
+        Object.assign(state, effects);
+        Object.assign(log, changed);
+        effects = this[internal.stateEffects](state, changed);
       }
 
-      const { state, changed } = this[stateKey].copyWithChanges(changes);
-
-      const renderWorthy = firstSetState || changed;
+      const renderWorthy = firstSetState || changedInThisSetState;
       if (!renderWorthy) {
         // No need to update state.
         return;
       }
 
       // Freeze the new state so it's immutable. This prevents accidental
-      // attempts to set state without going through[internal.setState].
+      // attempts to set state without going through [internal.setState].
       Object.freeze(state);
 
       // Set the new state.
       this[stateKey] = state;
 
       // Log the changes.
-      const log = changedSinceLastRender.get(this) || {};
-      Object.assign(log, changed);
       changedSinceLastRender.set(this, log);
 
       if (!(this.isConnected && renderWorthy)) {
@@ -230,6 +238,10 @@ export default function ReactiveMixin(Base) {
     get [internal.state]() {
       return this[stateKey];
     }
+
+    [internal.stateEffects](state, changed) {
+      return super[internal.stateEffects] || {};
+    }
   }
 
   // Expose state when debugging; see note for `[internal.state]` getter.
@@ -243,4 +255,37 @@ export default function ReactiveMixin(Base) {
   }
 
   return Reactive;
+}
+
+/**
+ * Return true if the two values are equal.
+ *
+ * @private
+ * @param {any} value1
+ * @param {any} value2
+ * @returns {boolean}
+ */
+function equal(value1, value2) {
+  if (value1 instanceof Date && value2 instanceof Date) {
+    return value1.getTime() === value2.getTime();
+  }
+  return value1 === value2;
+}
+
+/**
+ * Return a dictionary of flags indicating which of the indicated changes to the
+ * state are actually changes.
+ *
+ * @private
+ * @param {PlainObject} state
+ * @param {PlainObject} changes
+ */
+function fieldsChanged(state, changes) {
+  const changed = {};
+  for (const field in changes) {
+    if (!equal(changes[field], state[field])) {
+      changed[field] = true;
+    }
+  }
+  return changed;
 }

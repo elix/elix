@@ -13,11 +13,15 @@ declare const ReactiveMixin: Mixin<
     [internal.componentDidUpdate](
       /** @typeof {PlainObject} */ changed: PlainObject
     ): void;
-    readonly [internal.defaultState]: State;
+    readonly [internal.defaultState]: PlainObject;
     [internal.render](changed: PlainObject): void;
     [internal.renderChanges](): void;
     [internal.setState](changes: PlainObject): Promise<void>;
-    readonly [internal.state]: State;
+    [internal.stateEffects](
+      state: PlainObject,
+      changed: PlainObject
+    ): PlainObject;
+    readonly [internal.state]: PlainObject;
   }
 >;
 

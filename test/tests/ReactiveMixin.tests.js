@@ -36,21 +36,22 @@ customElements.define("reactive-with-defaults-test", ReactiveWithDefaultsTest);
 
 // Simple class, copies state member `a` to `b`.
 class ReactiveStateTest1 extends ReactiveMixin(HTMLElement) {
-  get [internal.defaultState]() {
-    const state = super[internal.defaultState];
-    state.onChange("a", state => ({ b: state.a }));
-    return state;
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
+    if (changed.a) {
+      effects.b = state.a;
+    }
+    return effects;
   }
 }
 customElements.define("reactive-state-test-1", ReactiveStateTest1);
 
-// Simple class, copies state member `a` to `b`, a has initial value.
-class ReactiveStateTest2 extends ReactiveMixin(HTMLElement) {
+// Like above, but has initial value.
+class ReactiveStateTest2 extends ReactiveStateTest1 {
   get [internal.defaultState]() {
-    const state = super[internal.defaultState];
-    state.a = 1;
-    state.onChange("a", state => ({ b: state.a }));
-    return state;
+    return Object.assign(super[internal.defaultState], {
+      a: 1
+    });
   }
 }
 customElements.define("reactive-state-test-2", ReactiveStateTest2);
@@ -174,7 +175,7 @@ describe("ReactiveMixin", function() {
     assert.equal(fixture[internal.state], previousState);
   });
 
-  it("runs state change handlers when state changes", () => {
+  it.only("runs state change handlers when state changes", () => {
     const fixture = new ReactiveStateTest1();
     fixture[internal.setState]({ a: 1 });
     assert(fixture[internal.state].b === 1);
@@ -184,7 +185,7 @@ describe("ReactiveMixin", function() {
     assert(fixture[internal.state].b === 3);
   });
 
-  it("runs state change handlers on initial state", () => {
+  it.only("runs state change handlers on initial state", () => {
     const fixture = new ReactiveStateTest2();
     assert(fixture[internal.state].a === 1);
     assert(fixture[internal.state].b === 1);
