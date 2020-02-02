@@ -71,7 +71,7 @@ class Drawer extends Base {
   }
 
   get [internal.defaultState]() {
-    const result = Object.assign(super[internal.defaultState], {
+    return Object.assign(super[internal.defaultState], {
       backdropPartType: ModalBackdrop,
       fromEdge: "start",
       gripSize: null,
@@ -80,18 +80,6 @@ class Drawer extends Base {
       selectedIndex: 0,
       tabIndex: -1
     });
-
-    // Have swipeAxis follow fromEdge.
-    result.onChange("fromEdge", state => {
-      const { fromEdge } = state;
-      const swipeAxis =
-        fromEdge === "top" || fromEdge === "bottom" ? "vertical" : "horizontal";
-      return {
-        swipeAxis
-      };
-    });
-
-    return result;
   }
 
   get [internal.effectEndTarget]() {
@@ -316,6 +304,21 @@ class Drawer extends Base {
     }
   }
 
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects]
+      ? super[internal.stateEffects](state, changed)
+      : {};
+
+    // Have swipeAxis follow fromEdge.
+    if (changed.fromEdge) {
+      const { fromEdge } = state;
+      const swipeAxis =
+        fromEdge === "top" || fromEdge === "bottom" ? "vertical" : "horizontal";
+      Object.assign(effects, { swipeAxis });
+    }
+
+    return effects;
+  }
   async [internal.swipeDown]() {
     const { fromEdge } = this[internal.state];
     if (fromEdge === "top") {

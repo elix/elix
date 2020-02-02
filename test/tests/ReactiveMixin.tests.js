@@ -175,7 +175,7 @@ describe("ReactiveMixin", function() {
     assert.equal(fixture[internal.state], previousState);
   });
 
-  it.only("runs state change handlers when state changes", () => {
+  it("runs state change handlers when state changes", () => {
     const fixture = new ReactiveStateTest1();
     fixture[internal.setState]({ a: 1 });
     assert(fixture[internal.state].b === 1);
@@ -185,7 +185,7 @@ describe("ReactiveMixin", function() {
     assert(fixture[internal.state].b === 3);
   });
 
-  it.only("runs state change handlers on initial state", () => {
+  it("runs state change handlers on initial state", () => {
     const fixture = new ReactiveStateTest2();
     assert(fixture[internal.state].a === 1);
     assert(fixture[internal.state].b === 1);

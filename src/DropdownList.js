@@ -31,25 +31,11 @@ class DropdownList extends Base {
   }
 
   get [internal.defaultState]() {
-    const state = Object.assign(super[internal.defaultState], {
+    return Object.assign(super[internal.defaultState], {
       itemRole: "menuitemradio",
       selectionRequired: true,
       valuePartType: "div"
     });
-
-    // When the menu closes, update our selection from the menu selection.
-    state.onChange("opened", state => {
-      const { closeResult, items, opened } = state;
-      if (!opened && items && closeResult !== undefined) {
-        const selectedIndex = items.indexOf(closeResult);
-        return {
-          selectedIndex
-        };
-      }
-      return null;
-    });
-
-    return state;
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
@@ -80,6 +66,21 @@ class DropdownList extends Base {
       const childNodes = clone ? clone.childNodes : [];
       applyChildNodes(this[internal.ids].value, childNodes);
     }
+  }
+
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
+
+    // When the menu closes, update our selection from the menu selection.
+    if (changed.opened) {
+      const { closeResult, items, opened } = state;
+      if (!opened && items && closeResult !== undefined) {
+        const selectedIndex = items.indexOf(closeResult);
+        Object.assign(effects, { selectedIndex });
+      }
+    }
+
+    return effects;
   }
 
   get [internal.template]() {

@@ -76,7 +76,7 @@ class PopupSource extends Base {
   }
 
   get [internal.defaultState]() {
-    const result = Object.assign(super[internal.defaultState], {
+    return Object.assign(super[internal.defaultState], {
       backdropPartType: Backdrop,
       framePartType: OverlayFrame,
       horizontalAlign: "start",
@@ -92,24 +92,6 @@ class PopupSource extends Base {
       roomRight: null,
       sourcePartType: "div"
     });
-
-    // Closing popup resets our calculations of popup size and room.
-    result.onChange(["opened"], state => {
-      if (!state.opened) {
-        return {
-          popupHeight: null,
-          popupMeasured: false,
-          popupWidth: null,
-          roomAbove: null,
-          roomBelow: null,
-          roomLeft: null,
-          roomRight: null
-        };
-      }
-      return null;
-    });
-
-    return result;
   }
 
   get frame() {
@@ -359,6 +341,25 @@ class PopupSource extends Base {
   }
   set sourcePartType(sourcePartType) {
     this[internal.setState]({ sourcePartType });
+  }
+
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
+
+    // Closing popup resets our calculations of popup size and room.
+    if (changed.opened && !state.opened) {
+      Object.assign(effects, {
+        popupHeight: null,
+        popupMeasured: false,
+        popupWidth: null,
+        roomAbove: null,
+        roomBelow: null,
+        roomLeft: null,
+        roomRight: null
+      });
+    }
+
+    return effects;
   }
 
   get [internal.template]() {

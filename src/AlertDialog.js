@@ -68,30 +68,11 @@ class AlertDialog extends Dialog {
   }
 
   get [internal.defaultState]() {
-    const state = Object.assign(super[internal.defaultState], {
+    return Object.assign(super[internal.defaultState], {
       choiceButtonPartType: "button",
       choiceButtons: [],
       choices: ["OK"]
     });
-
-    // When choices or choice button part type changes, regenerate buttons.
-    state.onChange(["choiceButtonPartType", "choices"], state => {
-      /** @type {string[]} */ const choices = state.choices;
-      const choiceButtons = choices.map(choice => {
-        const button = template.createElement(state.choiceButtonPartType);
-        if ("part" in button) {
-          /** @type {any} */ (button).part = "choice-button";
-        }
-        button.textContent = choice;
-        return button;
-      });
-      Object.freeze(choiceButtons);
-      return {
-        choiceButtons
-      };
-    });
-
-    return state;
   }
 
   // Let the user select a choice by pressing its initial letter.
@@ -128,6 +109,29 @@ class AlertDialog extends Dialog {
         this[internal.state].choiceButtons
       );
     }
+  }
+
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
+
+    // When choices or choice button part type changes, regenerate buttons.
+    if (changed.choiceButtonPartType || changed.choices) {
+      /** @type {string[]} */ const choices = state.choices;
+      const choiceButtons = choices.map(choice => {
+        const button = template.createElement(state.choiceButtonPartType);
+        if ("part" in button) {
+          /** @type {any} */ (button).part = "choice-button";
+        }
+        button.textContent = choice;
+        return button;
+      });
+      Object.freeze(choiceButtons);
+      Object.assign(effects, {
+        choiceButtons
+      });
+    }
+
+    return effects;
   }
 
   get [internal.template]() {

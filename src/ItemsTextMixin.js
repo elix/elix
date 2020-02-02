@@ -11,22 +11,9 @@ export default function ItemsTextMixin(Base) {
   // The class prototype added by the mixin.
   class ItemsText extends Base {
     get [internal.defaultState]() {
-      const state = Object.assign(super[internal.defaultState], {
+      return Object.assign(super[internal.defaultState], {
         texts: null
       });
-
-      // Regenerate texts when items change.
-      state.onChange("items", state => {
-        const { items } = state;
-        const texts = getTextsFromItems(items, this[internal.getItemText]);
-        if (texts) {
-          Object.freeze(texts);
-          return { texts };
-        }
-        return null;
-      });
-
-      return state;
     }
 
     /**
@@ -40,6 +27,24 @@ export default function ItemsTextMixin(Base) {
      */
     [internal.getItemText](item) {
       return getItemText(item);
+    }
+
+    [internal.stateEffects](state, changed) {
+      const effects = super[internal.stateEffects]
+        ? super[internal.stateEffects](state, changed)
+        : {};
+
+      // Regenerate texts when items change.
+      if (changed.items) {
+        const { items } = state;
+        const texts = getTextsFromItems(items, this[internal.getItemText]);
+        if (texts) {
+          Object.freeze(texts);
+          Object.assign(effects, { texts });
+        }
+      }
+
+      return effects;
     }
   }
 

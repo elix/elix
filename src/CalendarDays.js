@@ -74,8 +74,8 @@ class CalendarDays extends Base {
 
   get [internal.defaultState]() {
     const today = calendar.today();
-    const state = Object.assign(super[internal.defaultState], {
-      date: calendar.today(),
+    return Object.assign(super[internal.defaultState], {
+      date: today,
       dayCount: 1,
       dayPartType: CalendarDay,
       days: null,
@@ -83,17 +83,6 @@ class CalendarDays extends Base {
       showSelectedDay: false,
       startDate: today
     });
-
-    // If any date-related state changes, regenerate the set of days.
-    state.onChange(
-      ["dayCount", "dayPartType", "locale", "showCompleteWeeks", "startDate"],
-      (state, changed) => {
-        const days = updateDays(state, changed.dayPartType);
-        return { days };
-      }
-    );
-
-    return state;
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
@@ -169,6 +158,24 @@ class CalendarDays extends Base {
         startDate: parsed
       });
     }
+  }
+
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
+
+    // If any date-related state changes, regenerate the set of days.
+    if (
+      changed.dayCount ||
+      changed.dayPartType ||
+      changed.locale ||
+      changed.showCompleteWeeks ||
+      changed.startDate
+    ) {
+      const days = updateDays(state, changed.dayPartType);
+      Object.assign(effects, { days });
+    }
+
+    return effects;
   }
 
   get [internal.template]() {

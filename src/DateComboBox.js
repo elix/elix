@@ -110,7 +110,7 @@ class DateComboBox extends Base {
       year: "numeric"
     };
 
-    const state = Object.assign(super[internal.defaultState], {
+    return Object.assign(super[internal.defaultState], {
       arrowButtonPartType: ArrowDirectionButton,
       calendarPartType: CalendarMonthNavigator,
       date: null,
@@ -125,91 +125,6 @@ class DateComboBox extends Base {
       todayButtonPartType: SeamlessButton,
       yearFormat: "numeric"
     });
-
-    // If the date changed while focused, assume user changed date.
-    state.onChange(["date", "value"], state => {
-      if (state.focused) {
-        return {
-          userChangedDate: true
-        };
-      }
-      return null;
-    });
-
-    // Update value from date if:
-    // the date was changed from the outside,
-    // we're closing or losing focus and the user's changed the date,
-    // or the format changed and the date was the last substantive property set.
-    state.onChange(
-      ["date", "dateTimeFormat", "focused", "opened"],
-      (state, changed) => {
-        const {
-          closeResult,
-          date,
-          datePriority,
-          dateTimeFormat,
-          focused,
-          opened,
-          userChangedDate
-        } = state;
-        const closing = changed.opened && !opened;
-        const canceled = closeResult && closeResult.canceled;
-        const blur = changed.focused && !focused;
-        if (
-          (changed.date && !focused) ||
-          (blur && userChangedDate) ||
-          (closing && userChangedDate && !canceled) ||
-          (changed.dateTimeFormat && datePriority)
-        ) {
-          const formattedDate =
-            date && dateTimeFormat ? this.formatDate(date, dateTimeFormat) : "";
-          // See notes on mobile at ComboBox.defaultState.
-          const probablyMobile = matchMedia("(pointer: coarse)").matches;
-          const selectText = formattedDate.length > 0 && !probablyMobile;
-          return {
-            selectText,
-            value: formattedDate
-          };
-        }
-        return null;
-      }
-    );
-
-    // Update date from value if the value was changed, or the date format or
-    // time bias changed and the value was the last substantive property set.
-    state.onChange(
-      ["dateTimeFormat", "timeBias", "value"],
-      (state, changed) => {
-        const { datePriority, dateTimeFormat, timeBias, value } = state;
-        if (
-          dateTimeFormat &&
-          (changed.value ||
-            (!datePriority && (changed.dateTimeFormat || changed.timeBias)))
-        ) {
-          const parsedDate = this.parseDate(value, dateTimeFormat, timeBias);
-          if (parsedDate) {
-            return {
-              date: parsedDate
-            };
-          }
-        }
-        return null;
-      }
-    );
-
-    // Update our date format if the locale or format options change.
-    state.onChange(["dateTimeFormatOptions", "locale"], state => {
-      const { dateTimeFormatOptions, locale } = state;
-      const dateTimeFormat = calendar.dateTimeFormat(
-        locale,
-        dateTimeFormatOptions
-      );
-      return {
-        dateTimeFormat
-      };
-    });
-
-    return state;
   }
 
   /**
@@ -422,6 +337,87 @@ class DateComboBox extends Base {
     if (changed.yearFormat && "yearFormat" in cast) {
       cast.yearFormat = this[internal.state].yearFormat;
     }
+  }
+
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
+
+    // If the date changed while focused, assume user changed date.
+    if (changed.date || changed.value) {
+      if (state.focused) {
+        Object.assign(effects, { userChangedDate: true });
+      }
+    }
+
+    // Update value from date if:
+    // the date was changed from the outside,
+    // we're closing or losing focus and the user's changed the date,
+    // or the format changed and the date was the last substantive property set.
+    if (
+      changed.date ||
+      changed.dateTimeFormat ||
+      changed.focused ||
+      changed.opened
+    ) {
+      const {
+        closeResult,
+        date,
+        datePriority,
+        dateTimeFormat,
+        focused,
+        opened,
+        userChangedDate
+      } = state;
+      const closing = changed.opened && !opened;
+      const canceled = closeResult && closeResult.canceled;
+      const blur = changed.focused && !focused;
+      if (
+        (changed.date && !focused) ||
+        (blur && userChangedDate) ||
+        (closing && userChangedDate && !canceled) ||
+        (changed.dateTimeFormat && datePriority)
+      ) {
+        const formattedDate =
+          date && dateTimeFormat ? this.formatDate(date, dateTimeFormat) : "";
+        // See notes on mobile at ComboBox.defaultState.
+        const probablyMobile = matchMedia("(pointer: coarse)").matches;
+        const selectText = formattedDate.length > 0 && !probablyMobile;
+        Object.assign(effects, {
+          selectText,
+          value: formattedDate
+        });
+      }
+    }
+
+    // Update date from value if the value was changed, or the date format or
+    // time bias changed and the value was the last substantive property set.
+    if (changed.dateTimeFormat || changed.timeBias || changed.value) {
+      const { datePriority, dateTimeFormat, timeBias, value } = state;
+      if (
+        dateTimeFormat &&
+        (changed.value ||
+          (!datePriority && (changed.dateTimeFormat || changed.timeBias)))
+      ) {
+        const parsedDate = this.parseDate(value, dateTimeFormat, timeBias);
+        if (parsedDate) {
+          Object.assign(effects, {
+            date: parsedDate
+          });
+        }
+      }
+    }
+
+    // Update our date format if the locale or format options change.
+    if (changed.dateTimeFormatOptions || changed.locale) {
+      const { dateTimeFormatOptions, locale } = state;
+      const dateTimeFormat = calendar.dateTimeFormat(
+        locale,
+        dateTimeFormatOptions
+      );
+      Object.assign(effects, { dateTimeFormat });
+    }
+
+    return effects;
   }
 
   get [internal.template]() {

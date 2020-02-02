@@ -69,7 +69,7 @@ class Explorer extends Base {
   }
 
   get [internal.defaultState]() {
-    const state = Object.assign(super[internal.defaultState], {
+    return Object.assign(super[internal.defaultState], {
       proxies: [],
       proxiesAssigned: false,
       proxyPartType: "div",
@@ -79,24 +79,6 @@ class Explorer extends Base {
       selectionRequired: true,
       stagePartType: Modes
     });
-
-    // If items for default proxies have changed, recreate the proxies.
-    // If nodes have been assigned to the proxy slot, use those instead.
-    state.onChange(
-      ["items", "proxiesAssigned", "proxyPartType"],
-      (state, changed) => {
-        const { items, proxiesAssigned, proxyPartType } = state;
-        if ((changed.items || changed.proxyPartType) && !proxiesAssigned) {
-          // Generate sufficient default proxies.
-          return {
-            proxies: createDefaultProxies(items, proxyPartType)
-          };
-        }
-        return null;
-      }
-    );
-
-    return state;
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
@@ -337,6 +319,24 @@ class Explorer extends Base {
   }
   set stagePartType(stagePartType) {
     this[internal.setState]({ stagePartType });
+  }
+
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
+
+    // If items for default proxies have changed, recreate the proxies.
+    // If nodes have been assigned to the proxy slot, use those instead.
+    if (changed.items || changed.proxiesAssigned || changed.proxyPartType) {
+      const { items, proxiesAssigned, proxyPartType } = state;
+      if ((changed.items || changed.proxyPartType) && !proxiesAssigned) {
+        // Generate sufficient default proxies.
+        Object.assign(effects, {
+          proxies: createDefaultProxies(items, proxyPartType)
+        });
+      }
+    }
+
+    return effects;
   }
 
   get [internal.template]() {

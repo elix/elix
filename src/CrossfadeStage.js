@@ -48,32 +48,13 @@ class CrossfadeStage extends Base {
   }
 
   get [internal.defaultState]() {
-    const result = Object.assign(super[internal.defaultState], {
+    return Object.assign(super[internal.defaultState], {
       effect: "select",
       effectEndTarget: null,
       effectPhase: "after",
       selectionRequired: true,
       transitionDuration: 750 // 3/4 of a second
     });
-
-    // When selection changes, (re)start the selection effect.
-    result.onChange("selectedIndex", state => {
-      const effectPhase =
-        state.enableEffects &&
-        state.selectedIndex >= 0 &&
-        state.effectPhase !== "before"
-          ? "before"
-          : "after";
-      // We'll watch the selected item to see when its `transitionend` event
-      // fires; that will signal the end of the effect.
-      const effectEndTarget =
-        state.items && state.items[state.selectedIndex]
-          ? state.items[state.selectedIndex]
-          : null;
-      return { effectEndTarget, effectPhase };
-    });
-
-    return result;
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
@@ -166,6 +147,32 @@ class CrossfadeStage extends Base {
   }
   set swipeFraction(swipeFraction) {
     this[internal.setState]({ swipeFraction });
+  }
+
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
+
+    // When selection changes, (re)start the selection effect.
+    if (changed.selectedIndex) {
+      const effectPhase =
+        state.enableEffects &&
+        state.selectedIndex >= 0 &&
+        state.effectPhase !== "before"
+          ? "before"
+          : "after";
+      // We'll watch the selected item to see when its `transitionend` event
+      // fires; that will signal the end of the effect.
+      const effectEndTarget =
+        state.items && state.items[state.selectedIndex]
+          ? state.items[state.selectedIndex]
+          : null;
+      Object.assign(effects, {
+        effectEndTarget,
+        effectPhase
+      });
+    }
+
+    return effects;
   }
 
   get transitionDuration() {

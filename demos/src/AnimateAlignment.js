@@ -23,26 +23,9 @@ export default class AnimateAlignment extends Base {
   }
 
   get [internal.defaultState]() {
-    const base = Object.assign(super[internal.defaultState], {
+    return Object.assign(super[internal.defaultState], {
       align: "left"
     });
-
-    base.onChange("effectPhase", state => {
-      if (state.effectPhase === "after") {
-        if (state.effect === "slideLeft") {
-          return {
-            align: "left"
-          };
-        } else if (state.effect === "slideRight") {
-          return {
-            align: "right"
-          };
-        }
-      }
-      return null;
-    });
-
-    return base;
   }
 
   get [internal.effectEndTarget]() {
@@ -92,6 +75,24 @@ export default class AnimateAlignment extends Base {
       // Align without animation
       container.classList.toggle("right", align === "right");
     }
+  }
+
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
+
+    if (changed.effectPhase && state.effectPhase === "after") {
+      if (state.effect === "slideLeft") {
+        Object.assign(effects, {
+          align: "left"
+        });
+      } else if (state.effect === "slideRight") {
+        Object.assign(effects, {
+          align: "right"
+        });
+      }
+    }
+
+    return effects;
   }
 
   get [internal.template]() {

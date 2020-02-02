@@ -79,27 +79,11 @@ class AutoSizeTextarea extends Base {
   }
 
   get [internal.defaultState]() {
-    const state = Object.assign(super[internal.defaultState], {
+    return Object.assign(super[internal.defaultState], {
       minimumRows: 1,
       value: null,
       valueTracksContent: true
     });
-
-    state.onChange(["content", "valueTracksContent"], (state, changed) => {
-      if (
-        (changed.content || changed.valueTracksContent) &&
-        state.valueTracksContent
-      ) {
-        /** @type {Node[]} */ const content = state.content;
-        const value = getTextFromContent(content);
-        return {
-          value
-        };
-      }
-      return null;
-    });
-
-    return state;
   }
 
   /**
@@ -152,6 +136,22 @@ class AutoSizeTextarea extends Base {
       ].inner).value = value;
       this[internal.ids].textCopy.textContent = value;
     }
+  }
+
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
+
+    // If the value is tracking content and content changes, update the value.
+    if (
+      (changed.content || changed.valueTracksContent) &&
+      state.valueTracksContent
+    ) {
+      /** @type {Node[]} */ const content = state.content;
+      const value = getTextFromContent(content);
+      Object.assign(effects, { value });
+    }
+
+    return effects;
   }
 
   /*

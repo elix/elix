@@ -63,7 +63,7 @@ class Carousel extends Base {
     const mediaQueryList = window.matchMedia(pointerQuery);
     const showArrowButtons =
       mediaQueryList.media === pointerQuery ? mediaQueryList.matches : true;
-    const result = Object.assign(super[internal.defaultState], {
+    return Object.assign(super[internal.defaultState], {
       orientation: "horizontal",
       proxyListOverlap: true,
       proxyListPosition: "bottom",
@@ -72,19 +72,6 @@ class Carousel extends Base {
       showArrowButtons,
       stagePartType: SlidingStage
     });
-
-    // When orientation changes, have swipe axis follow suit, and also
-    // set the default proxy list position.
-    result.onChange("orientation", state => {
-      const proxyListPosition =
-        state.orientation === "horizontal" ? "bottom" : "right";
-      return {
-        proxyListPosition,
-        swipeAxis: state.orientation
-      };
-    });
-
-    return result;
   }
 
   get orientation() {
@@ -153,6 +140,23 @@ class Carousel extends Base {
     return this[internal.ids].stage instanceof HTMLElement
       ? this[internal.ids].stage
       : base;
+  }
+
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
+
+    // When orientation changes, have swipe axis follow suit, and also
+    // set the default proxy list position.
+    if (changed.orientation) {
+      const proxyListPosition =
+        state.orientation === "horizontal" ? "bottom" : "right";
+      Object.assign(effects, {
+        proxyListPosition,
+        swipeAxis: state.orientation
+      });
+    }
+
+    return effects;
   }
 
   get [internal.template]() {

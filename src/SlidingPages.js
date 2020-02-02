@@ -38,15 +38,17 @@ const Base = AriaListMixin(
  * @mixes TrackpadSwipeMixin
  */
 class SlidingPages extends Base {
-  get [internal.defaultState]() {
-    const result = super[internal.defaultState];
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
 
     // Have swipeAxis follow orientation.
-    result.onChange("orientation", state => ({
-      swipeAxis: state.orientation
-    }));
+    if (changed.orientation) {
+      Object.assign(effects, {
+        swipeAxis: state.orientation
+      });
+    }
 
-    return result;
+    return effects;
   }
 }
 

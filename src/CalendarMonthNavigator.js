@@ -81,7 +81,7 @@ class CalendarMonthNavigator extends Base {
   }
 
   get [internal.defaultState]() {
-    const result = Object.assign(super[internal.defaultState], {
+    return Object.assign(super[internal.defaultState], {
       arrowButtonOverlap: false,
       canGoNext: true,
       canGoPrevious: true,
@@ -92,14 +92,6 @@ class CalendarMonthNavigator extends Base {
       showSelectedDay: true,
       value: null
     });
-
-    // Reflect any change in date to value as well so that FormElementMixin can
-    // update form internals.
-    result.onChange("date", state => ({
-      value: state.date ? state.date.toString() : ""
-    }));
-
-    return result;
   }
 
   [internal.keydown](/** @type {KeyboardEvent} */ event) {
@@ -172,6 +164,20 @@ class CalendarMonthNavigator extends Base {
       date: calendar.offsetDateByDays(this[internal.state].date, -7)
     });
     return true;
+  }
+
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
+
+    // Reflect any change in date to value as well so that FormElementMixin can
+    // update form internals.
+    if (changed.date) {
+      Object.assign(effects, {
+        value: state.date ? state.date.toString() : ""
+      });
+    }
+
+    return effects;
   }
 
   get [internal.template]() {

@@ -240,7 +240,9 @@ export default function ReactiveMixin(Base) {
     }
 
     [internal.stateEffects](state, changed) {
-      return super[internal.stateEffects] || {};
+      return super[internal.stateEffects]
+        ? super[internal.stateEffects](state, changed)
+        : {};
     }
   }
 

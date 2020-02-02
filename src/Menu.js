@@ -109,18 +109,11 @@ class Menu extends Base {
   }
 
   get [internal.defaultState]() {
-    const state = Object.assign(super[internal.defaultState], {
+    return Object.assign(super[internal.defaultState], {
       highlightSelection: true,
       orientation: "vertical",
       selectionFocused: false
     });
-
-    // When selection changes, we'll need to focus on it in componentDidUpdate.
-    state.onChange("selectedIndex", () => ({
-      selectionFocused: false
-    }));
-
-    return state;
   }
 
   /**
@@ -214,6 +207,19 @@ class Menu extends Base {
 
   get [internal.scrollTarget]() {
     return this[internal.ids].content;
+  }
+
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
+
+    // When selection changes, we'll need to focus on it in componentDidUpdate.
+    if (changed.selectedIndex) {
+      Object.assign(effects, {
+        selectionFocused: false
+      });
+    }
+
+    return effects;
   }
 
   get [internal.template]() {

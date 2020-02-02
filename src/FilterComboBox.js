@@ -18,34 +18,12 @@ const Base = SlotContentMixin(ListComboBox);
  */
 class FilterComboBox extends Base {
   get [internal.defaultState]() {
-    const state = Object.assign(super[internal.defaultState], {
+    return Object.assign(super[internal.defaultState], {
       filter: "",
       inputPartType: AutoCompleteInput,
       listPartType: FilterListBox,
       texts: null
     });
-
-    // If content changes, regenerate texts.
-    state.onChange("content", state => {
-      const { content } = state;
-      const items = content ? substantiveElements(content) : null;
-      const texts = items ? getTextsFromItems(items) : [];
-      return {
-        texts
-      };
-    });
-
-    // Closing resets the filter.
-    state.onChange("opened", state => {
-      if (!state.opened) {
-        return {
-          filter: ""
-        };
-      }
-      return null;
-    });
-
-    return state;
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
@@ -77,6 +55,27 @@ class FilterComboBox extends Base {
         input.texts = this[internal.state].texts;
       }
     }
+  }
+
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
+
+    // If content changes, regenerate texts.
+    if (changed.content) {
+      const { content } = state;
+      const items = content ? substantiveElements(content) : null;
+      const texts = items ? getTextsFromItems(items) : [];
+      Object.assign(effects, { texts });
+    }
+
+    // Closing resets the filter.
+    if (changed.opened && !state.opened) {
+      Object.assign(effects, {
+        filter: ""
+      });
+    }
+
+    return effects;
   }
 }
 

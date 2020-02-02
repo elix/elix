@@ -7,20 +7,24 @@ const formElementsSupported = "ElementInternals" in window;
 
 class FormElementTest extends FormElementMixin(ReactiveElement) {
   get [internal.defaultState]() {
-    const result = Object.assign(super[internal.defaultState], {
+    return Object.assign(super[internal.defaultState], {
       value: null
     });
+  }
 
-    result.onChange("value", state => {
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
+
+    if (changed.value) {
       const valid = state.value !== null && state.value !== "";
       const validationMessage = valid ? "" : `Can't be empty`;
-      return {
+      Object.assign(effects, {
         valid,
         validationMessage
-      };
-    });
+      });
+    }
 
-    return result;
+    return effects;
   }
 
   get value() {

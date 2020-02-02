@@ -8,40 +8,10 @@ const Base = SlotContentMixin(ReactiveElement);
 
 class RenderState extends Base {
   get [internal.defaultState]() {
-    const result = Object.assign(super[internal.defaultState], {
+    return Object.assign(super[internal.defaultState], {
       fixture: null,
       fixtureState: {}
     });
-    result.onChange("content", state => {
-      if (!state.content) {
-        return {
-          fixture: null
-        };
-      }
-
-      const elements = substantiveElements(state.content);
-      if (!elements || elements.length < 1) {
-        return {
-          fixture: null
-        };
-      }
-
-      // Look for an element (or subelement) with class "fixture".
-      const fixtures = elements
-        .map(element =>
-          element.classList.contains("fixture")
-            ? element
-            : element.querySelector(".fixture")
-        )
-        .filter(item => item !== null);
-
-      // If no fixture was found, return the first element.
-      const fixture = fixtures[0] || elements[0];
-      return {
-        fixture
-      };
-    });
-    return result;
   }
 
   get [internal.contentSlot]() {
@@ -89,6 +59,42 @@ class RenderState extends Base {
           : "";
       this[internal.ids].fixtureState.textContent = textContent;
     }
+  }
+
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
+
+    if (changed.content) {
+      if (!state.content) {
+        Object.assign(effects, {
+          fixture: null
+        });
+      } else {
+        const elements = substantiveElements(state.content);
+        if (!elements || elements.length < 1) {
+          Object.assign(effects, {
+            fixture: null
+          });
+        } else {
+          // Look for an element (or subelement) with class "fixture".
+          const fixtures = elements
+            .map(element =>
+              element.classList.contains("fixture")
+                ? element
+                : element.querySelector(".fixture")
+            )
+            .filter(item => item !== null);
+
+          // If no fixture was found, return the first element.
+          const fixture = fixtures[0] || elements[0];
+          Object.assign(effects, {
+            fixture
+          });
+        }
+      }
+    }
+
+    return effects;
   }
 
   get [internal.template]() {

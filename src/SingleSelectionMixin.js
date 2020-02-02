@@ -60,7 +60,7 @@ export default function SingleSelectionMixin(Base) {
     }
 
     get [internal.defaultState]() {
-      const state = Object.assign(super[internal.defaultState], {
+      return Object.assign(super[internal.defaultState], {
         canSelectNext: null,
         canSelectPrevious: null,
         selectedIndex: -1,
@@ -68,80 +68,6 @@ export default function SingleSelectionMixin(Base) {
         selectionWraps: false,
         trackSelectedItem: true
       });
-
-      // Ensure selectedIndex is valid.
-      state.onChange(
-        ["items", "selectedIndex", "selectionRequired"],
-        (state, changed) => {
-          const {
-            items,
-            selectedIndex,
-            selectionRequired,
-            selectionWraps
-          } = state;
-
-          let adjustedIndex = selectedIndex;
-          if (
-            changed.items &&
-            items &&
-            !changed.selectedIndex &&
-            state.trackSelectedItem
-          ) {
-            // The index stayed the same, but the item may have moved.
-            const selectedItem = this.selectedItem;
-            if (items[selectedIndex] !== selectedItem) {
-              // The item moved or was removed. See if we can find the item
-              // again in the list of items.
-              const currentIndex = items.indexOf(selectedItem);
-              if (currentIndex >= 0) {
-                // Found the item again. Update the index to match.
-                adjustedIndex = currentIndex;
-              }
-            }
-          }
-
-          // If items are null, we haven't received items yet. Don't validate the
-          // selected index, as it may be set through markup; we'll want to validate
-          // it only after we have items.
-          if (items) {
-            const validatedIndex = validateIndex(
-              adjustedIndex,
-              items.length,
-              selectionRequired,
-              selectionWraps
-            );
-            return {
-              selectedIndex: validatedIndex
-            };
-          }
-          return null;
-        }
-      );
-
-      // Update computed state members canSelectNext/canSelectPrevious.
-      state.onChange(["items", "selectedIndex", "selectionWraps"], state => {
-        const { items, selectedIndex, selectionWraps } = state;
-        if (items) {
-          const count = items.length;
-          const canSelectNext =
-            count === 0
-              ? false
-              : selectionWraps ||
-                selectedIndex < 0 ||
-                selectedIndex < count - 1;
-          const canSelectPrevious =
-            count === 0
-              ? false
-              : this.selectionWraps || selectedIndex < 0 || selectedIndex > 0;
-          return {
-            canSelectNext,
-            canSelectPrevious
-          };
-        }
-        return null;
-      });
-
-      return state;
     }
 
     /**
@@ -278,6 +204,81 @@ export default function SingleSelectionMixin(Base) {
         return false;
       }
       return updateSelectedIndex(this, newIndex);
+    }
+
+    [internal.stateEffects](state, changed) {
+      const effects = super[internal.stateEffects]
+        ? super[internal.stateEffects](state, changed)
+        : {};
+
+      // Ensure selectedIndex is valid.
+      if (changed.items || changed.selectedIndex || changed.selectionRequired) {
+        const {
+          items,
+          selectedIndex,
+          selectionRequired,
+          selectionWraps
+        } = state;
+
+        let adjustedIndex = selectedIndex;
+        if (
+          changed.items &&
+          items &&
+          !changed.selectedIndex &&
+          state.trackSelectedItem
+        ) {
+          // The index stayed the same, but the item may have moved.
+          const selectedItem = this.selectedItem;
+          if (items[selectedIndex] !== selectedItem) {
+            // The item moved or was removed. See if we can find the item
+            // again in the list of items.
+            const currentIndex = items.indexOf(selectedItem);
+            if (currentIndex >= 0) {
+              // Found the item again. Update the index to match.
+              adjustedIndex = currentIndex;
+            }
+          }
+        }
+
+        // If items are null, we haven't received items yet. Don't validate the
+        // selected index, as it may be set through markup; we'll want to validate
+        // it only after we have items.
+        if (items) {
+          const validatedIndex = validateIndex(
+            adjustedIndex,
+            items.length,
+            selectionRequired,
+            selectionWraps
+          );
+          Object.assign(effects, {
+            selectedIndex: validatedIndex
+          });
+        }
+      }
+
+      // Update computed state members canSelectNext/canSelectPrevious.
+      if (changed.items || changed.selectedIndex || changed.selectionWraps) {
+        const { items, selectedIndex, selectionWraps } = state;
+        if (items) {
+          const count = items.length;
+          const canSelectNext =
+            count === 0
+              ? false
+              : selectionWraps ||
+                selectedIndex < 0 ||
+                selectedIndex < count - 1;
+          const canSelectPrevious =
+            count === 0
+              ? false
+              : this.selectionWraps || selectedIndex < 0 || selectedIndex > 0;
+          Object.assign(effects, {
+            canSelectNext,
+            canSelectPrevious
+          });
+        }
+      }
+
+      return effects;
     }
   }
 

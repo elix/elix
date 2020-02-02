@@ -19,59 +19,12 @@ export default function DirectionSelectionMixin(Base) {
   // The class prototype added by the mixin.
   class DirectionSelection extends Base {
     get [internal.defaultState]() {
-      const state = Object.assign(super[internal.defaultState], {
+      return Object.assign(super[internal.defaultState], {
         canGoDown: null,
         canGoLeft: null,
         canGoRight: null,
         canGoUp: null
       });
-
-      // Update computed state members to track whether we can go
-      // down/left/right/up.
-      state.onChange(
-        [
-          "canSelectNext",
-          "canSelectPrevious",
-          "languageDirection",
-          "orientation",
-          "rightToLeft"
-        ],
-        state => {
-          const {
-            canSelectNext,
-            canSelectPrevious,
-            orientation,
-            rightToLeft
-          } = state;
-          const canGoNext = canSelectNext;
-          const canGoPrevious = canSelectPrevious;
-          const horizontal =
-            orientation === "horizontal" || orientation === "both";
-          const vertical = orientation === "vertical" || orientation === "both";
-          const canGoDown = vertical && canSelectNext;
-          const canGoLeft = !horizontal
-            ? false
-            : rightToLeft
-            ? canSelectNext
-            : canSelectPrevious;
-          const canGoRight = !horizontal
-            ? false
-            : rightToLeft
-            ? canSelectPrevious
-            : canSelectNext;
-          const canGoUp = vertical && canSelectPrevious;
-          return {
-            canGoDown,
-            canGoLeft,
-            canGoNext,
-            canGoPrevious,
-            canGoRight,
-            canGoUp
-          };
-        }
-      );
-
-      return state;
     }
 
     /**
@@ -210,6 +163,56 @@ export default function DirectionSelectionMixin(Base) {
       } else {
         return this.selectPrevious();
       }
+    }
+
+    [internal.stateEffects](state, changed) {
+      const effects = super[internal.stateEffects]
+        ? super[internal.stateEffects](state, changed)
+        : {};
+
+      // Update computed state members to track whether we can go
+      // down/left/right/up.
+      if (
+        changed.canSelectNext ||
+        changed.canSelectPrevious ||
+        changed.languageDirection ||
+        changed.orientation ||
+        changed.rightToLeft
+      ) {
+        const {
+          canSelectNext,
+          canSelectPrevious,
+          orientation,
+          rightToLeft
+        } = state;
+        const canGoNext = canSelectNext;
+        const canGoPrevious = canSelectPrevious;
+        const horizontal =
+          orientation === "horizontal" || orientation === "both";
+        const vertical = orientation === "vertical" || orientation === "both";
+        const canGoDown = vertical && canSelectNext;
+        const canGoLeft = !horizontal
+          ? false
+          : rightToLeft
+          ? canSelectNext
+          : canSelectPrevious;
+        const canGoRight = !horizontal
+          ? false
+          : rightToLeft
+          ? canSelectPrevious
+          : canSelectNext;
+        const canGoUp = vertical && canSelectPrevious;
+        Object.assign(effects, {
+          canGoDown,
+          canGoLeft,
+          canGoNext,
+          canGoPrevious,
+          canGoRight,
+          canGoUp
+        });
+      }
+
+      return effects;
     }
   }
 

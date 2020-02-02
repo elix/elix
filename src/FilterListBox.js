@@ -9,16 +9,9 @@ import ListBox from "./ListBox.js";
  */
 class FilterListBox extends ListBox {
   get [internal.defaultState]() {
-    const state = Object.assign(super[internal.defaultState], {
+    return Object.assign(super[internal.defaultState], {
       filter: null
     });
-
-    // When filter changes, let other mixins know items should be recalculated.
-    state.onChange("filter", () => ({
-      items: null
-    }));
-
-    return state;
   }
 
   /**
@@ -110,6 +103,19 @@ class FilterListBox extends ListBox {
         }
       });
     }
+  }
+
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
+
+    // When filter changes, let other mixins know items should be recalculated.
+    if (changed.filter) {
+      Object.assign(effects, {
+        items: null
+      });
+    }
+
+    return effects;
   }
 }
 

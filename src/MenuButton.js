@@ -77,7 +77,7 @@ class MenuButton extends PopupButton {
   }
 
   get [internal.defaultState]() {
-    const state = Object.assign(super[internal.defaultState], {
+    return Object.assign(super[internal.defaultState], {
       dragSelect: true,
       menuPartType: Menu,
       menuSelectedIndex: -1,
@@ -85,35 +85,6 @@ class MenuButton extends PopupButton {
       touchstartX: null,
       touchstartY: null
     });
-
-    // Set things when opening, or reset things when closing.
-    state.onChange("opened", state => {
-      if (state.opened) {
-        // Opening
-        return {
-          // Until we get a mouseup, we're doing a drag-select.
-          dragSelect: true,
-
-          // Select the default item in the menu.
-          menuSelectedIndex: this.defaultMenuSelectedIndex,
-
-          // Clear any previously selected item.
-          selectedItem: null,
-
-          // Clear previous touchstart point.
-          touchStartX: null,
-          touchStartY: null
-        };
-      } else {
-        // Closing
-        return {
-          // Clear menu selection.
-          menuSelectedIndex: -1
-        };
-      }
-    });
-
-    return state;
   }
 
   disconnectedCallback() {
@@ -307,6 +278,39 @@ class MenuButton extends PopupButton {
         menu.selectedIndex = this[internal.state].menuSelectedIndex;
       }
     }
+  }
+
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
+
+    // Set things when opening, or reset things when closing.
+    if (changed.opened) {
+      if (state.opened) {
+        // Opening
+        Object.assign(effects, {
+          // Until we get a mouseup, we're doing a drag-select.
+          dragSelect: true,
+
+          // Select the default item in the menu.
+          menuSelectedIndex: this.defaultMenuSelectedIndex,
+
+          // Clear any previously selected item.
+          selectedItem: null,
+
+          // Clear previous touchstart point.
+          touchStartX: null,
+          touchStartY: null
+        });
+      } else {
+        // Closing
+        Object.assign(effects, {
+          // Clear menu selection.
+          menuSelectedIndex: -1
+        });
+      }
+    }
+
+    return effects;
   }
 
   get [internal.template]() {

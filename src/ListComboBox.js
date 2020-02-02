@@ -28,63 +28,11 @@ class ListComboBox extends Base {
   }
 
   get [internal.defaultState]() {
-    const state = Object.assign(super[internal.defaultState], {
+    return Object.assign(super[internal.defaultState], {
       horizontalAlign: "stretch",
       listPartType: ListBox,
       selectedIndex: -1
     });
-
-    // If value was changed directly or items have updated, select the
-    // corresponding item in list.
-    state.onChange(["items", "value"], state => {
-      const { value } = state;
-      /** @type {ListItemElement[]} */ const items = state.items;
-      if (items && value != null) {
-        const searchText = value.toLowerCase();
-        const selectedIndex = items.findIndex(item => {
-          const itemText = getItemText(item);
-          return itemText.toLowerCase() === searchText;
-        });
-        return {
-          selectedIndex
-        };
-      }
-      return null;
-    });
-
-    // If user selects a new item, or combo is closing, make selected item the
-    // value.
-    state.onChange(["opened", "selectedIndex"], (state, changed) => {
-      const { closeResult, items, opened, selectedIndex, value } = state;
-      const closing = changed.opened && !opened;
-      const canceled = closeResult && closeResult.canceled;
-      if (
-        selectedIndex >= 0 &&
-        (changed.selectedIndex || (closing && !canceled))
-      ) {
-        const selectedItem = items[selectedIndex];
-        if (selectedItem) {
-          const selectedItemText = getItemText(selectedItem);
-          // See notes on mobile at ComboBox.defaultState.
-          const probablyMobile = matchMedia("(pointer: coarse)").matches;
-          const selectText = !probablyMobile;
-          if (value !== selectedItemText) {
-            return {
-              selectText,
-              value: selectedItemText
-            };
-          }
-        }
-      }
-      return null;
-    });
-
-    // When items change, we need to recalculate popup size.
-    state.onChange("items", () => ({
-      popupMeasured: false
-    }));
-
-    return state;
   }
 
   // We do our own handling of the Up and Down arrow keys, rather than relying
@@ -216,6 +164,60 @@ class ListComboBox extends Base {
         list.selectedIndex = this[internal.state].selectedIndex;
       }
     }
+  }
+
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
+
+    // If value was changed directly or items have updated, select the
+    // corresponding item in list.
+    if (changed.items || changed.value) {
+      const { value } = state;
+      /** @type {ListItemElement[]} */ const items = state.items;
+      if (items && value != null) {
+        const searchText = value.toLowerCase();
+        const selectedIndex = items.findIndex(item => {
+          const itemText = getItemText(item);
+          return itemText.toLowerCase() === searchText;
+        });
+        Object.assign(effects, { selectedIndex });
+      }
+    }
+
+    // If user selects a new item, or combo is closing, make selected item the
+    // value.
+    if (changed.opened || changed.selectedIndex) {
+      const { closeResult, items, opened, selectedIndex, value } = state;
+      const closing = changed.opened && !opened;
+      const canceled = closeResult && closeResult.canceled;
+      if (
+        selectedIndex >= 0 &&
+        (changed.selectedIndex || (closing && !canceled))
+      ) {
+        const selectedItem = items[selectedIndex];
+        if (selectedItem) {
+          const selectedItemText = getItemText(selectedItem);
+          // See notes on mobile at ComboBox.defaultState.
+          const probablyMobile = matchMedia("(pointer: coarse)").matches;
+          const selectText = !probablyMobile;
+          if (value !== selectedItemText) {
+            Object.assign(effects, {
+              selectText,
+              value: selectedItemText
+            });
+          }
+        }
+      }
+    }
+
+    // When items change, we need to recalculate popup size.
+    if (changed.items) {
+      Object.assign(effects, {
+        popupMeasured: false
+      });
+    }
+
+    return effects;
   }
 
   get [internal.template]() {

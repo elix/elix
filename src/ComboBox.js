@@ -58,7 +58,7 @@ class ComboBox extends Base {
   }
 
   get [internal.defaultState]() {
-    const state = Object.assign(super[internal.defaultState], {
+    return Object.assign(super[internal.defaultState], {
       ariaLabel: "",
       backdropPartType: Hidden,
       focused: false,
@@ -71,6 +71,10 @@ class ComboBox extends Base {
       toggleButtonPartType: SeamlessButton,
       value: ""
     });
+  }
+
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
 
     // Select text on closing.
     // Exception: on mobile devices, leaving the text selected may show
@@ -79,18 +83,13 @@ class ComboBox extends Base {
     // We therefore avoid leaving text selected if an on-screen keyboard is in
     // use. Since we can't actually detect that, we use the absence of a
     // fine-grained pointer (mouse) as a proxy for mobile.
-    state.onChange(["opened"], state => {
-      if (!state.opened) {
-        const probablyMobile = matchMedia("(pointer: coarse)").matches;
-        const selectText = !probablyMobile;
-        return {
-          selectText
-        };
-      }
-      return null;
-    });
+    if (changed.opened && !state.opened) {
+      const probablyMobile = matchMedia("(pointer: coarse)").matches;
+      const selectText = !probablyMobile;
+      Object.assign(effects, { selectText });
+    }
 
-    return state;
+    return effects;
   }
 
   /**

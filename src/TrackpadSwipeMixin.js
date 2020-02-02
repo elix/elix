@@ -44,7 +44,7 @@ export default function TrackpadSwipeMixin(Base) {
     }
 
     get [internal.defaultState]() {
-      const result = Object.assign(super[internal.defaultState], {
+      return Object.assign(super[internal.defaultState], {
         swipeAxis: "horizontal",
         swipeDownWillCommit: false,
         swipeFraction: null,
@@ -54,30 +54,6 @@ export default function TrackpadSwipeMixin(Base) {
         swipeRightWillCommit: false,
         swipeUpWillCommit: false
       });
-
-      // If the swipeFraction crosses the -0.5 or 0.5 mark, update our notion of
-      // whether we'll commit an operation if the swipe were to finish at that
-      // point. This definition is compatible with one defined by
-      // TouchSwipeMixin.
-      result.onChange("swipeFraction", state => {
-        const { swipeAxis, swipeFraction } = state;
-        if (swipeFraction !== null) {
-          if (swipeAxis === "horizontal") {
-            return {
-              swipeLeftWillCommit: swipeFraction <= -0.5,
-              swipeRightWillCommit: swipeFraction >= 0.5
-            };
-          } else {
-            return {
-              swipeUpWillCommit: swipeFraction <= -0.5,
-              swipeDownWillCommit: swipeFraction >= 0.5
-            };
-          }
-        }
-        return null;
-      });
-
-      return result;
     }
 
     /**
@@ -90,6 +66,35 @@ export default function TrackpadSwipeMixin(Base) {
     get [internal.swipeTarget]() {
       const base = super[internal.swipeTarget];
       return base || this;
+    }
+
+    [internal.stateEffects](state, changed) {
+      const effects = super[internal.stateEffects]
+        ? super[internal.stateEffects](state, changed)
+        : {};
+
+      // If the swipeFraction crosses the -0.5 or 0.5 mark, update our notion of
+      // whether we'll commit an operation if the swipe were to finish at that
+      // point. This definition is compatible with one defined by
+      // TouchSwipeMixin.
+      if (changed.swipeFraction) {
+        const { swipeAxis, swipeFraction } = state;
+        if (swipeFraction !== null) {
+          if (swipeAxis === "horizontal") {
+            Object.assign(effects, {
+              swipeLeftWillCommit: swipeFraction <= -0.5,
+              swipeRightWillCommit: swipeFraction >= 0.5
+            });
+          } else {
+            Object.assign(effects, {
+              swipeUpWillCommit: swipeFraction <= -0.5,
+              swipeDownWillCommit: swipeFraction >= 0.5
+            });
+          }
+        }
+      }
+
+      return effects;
     }
   };
 }

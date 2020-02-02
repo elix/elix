@@ -86,7 +86,7 @@ class PullToRefresh extends Base {
 
   get [internal.defaultState]() {
     // Suppress transition effects on page load.
-    const state = Object.assign(super[internal.defaultState], {
+    return Object.assign(super[internal.defaultState], {
       swipeFractionMin: 0, // Can't swipe up, only down
       pullIndicatorPartType: downArrowTemplate,
       pullTriggeredRefresh: false,
@@ -96,29 +96,6 @@ class PullToRefresh extends Base {
       scrollPullMaxReached: false,
       swipeAxis: "vertical"
     });
-
-    // We use a pullTriggeredRefresh flag to track whether the current pull
-    // gesture has already triggered a refresh. If the user pulls down far
-    // enough to trigger a refresh, and the refresh completes while the user is
-    // still pulling down, we don't want further pulling to trigger a second
-    // refresh.
-    state.onChange(["refreshing", "swipeFraction"], (state, changed) => {
-      const { refreshing, swipeFraction } = state;
-      if (changed.refreshing && refreshing) {
-        // We've started a refresh; set flag.
-        return {
-          pullTriggeredRefresh: true
-        };
-      } else if (swipeFraction === null && !state.refreshing) {
-        // We're neither pulling nor refreshing, so reset flag.
-        return {
-          pullTriggeredRefresh: false
-        };
-      }
-      return null;
-    });
-
-    return state;
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {
@@ -217,6 +194,32 @@ class PullToRefresh extends Base {
   }
   set refreshingIndicatorPartType(refreshingIndicatorPartType) {
     this[internal.setState]({ refreshingIndicatorPartType });
+  }
+
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
+
+    // We use a pullTriggeredRefresh flag to track whether the current pull
+    // gesture has already triggered a refresh. If the user pulls down far
+    // enough to trigger a refresh, and the refresh completes while the user is
+    // still pulling down, we don't want further pulling to trigger a second
+    // refresh.
+    if (changed.refreshing || changed.swipeFraction) {
+      const { refreshing, swipeFraction } = state;
+      if (changed.refreshing && refreshing) {
+        // We've started a refresh; set flag.
+        Object.assign(effects, {
+          pullTriggeredRefresh: true
+        });
+      } else if (swipeFraction === null && !state.refreshing) {
+        // We're neither pulling nor refreshing, so reset flag.
+        Object.assign(effects, {
+          pullTriggeredRefresh: false
+        });
+      }
+    }
+
+    return effects;
   }
 
   get [internal.template]() {

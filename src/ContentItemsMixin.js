@@ -45,32 +45,9 @@ export default function ContentItemsMixin(Base) {
     }
 
     get [internal.defaultState]() {
-      const state = Object.assign(super[internal.defaultState], {
+      return Object.assign(super[internal.defaultState], {
         items: null
       });
-
-      // Regenerate items when content changes, or if items has been nullified
-      // by another mixin (as a signal that items should be regenerated).
-      state.onChange(["content", "items"], (state, changed) => {
-        /** @type {Node[]} */ const content = state.content;
-        const needsItems = content && !state.items; // Signal from other mixins
-        if (changed.content || needsItems) {
-          const items = content
-            ? Array.prototype.filter.call(content, (/** @type {Node} */ item) =>
-                item instanceof HTMLElement || item instanceof SVGElement
-                  ? this[internal.itemMatchesState](item, state)
-                  : false
-              )
-            : null;
-          if (items) {
-            Object.freeze(items);
-          }
-          return { items };
-        }
-        return null;
-      });
-
-      return state;
     }
 
     /**
@@ -94,6 +71,34 @@ export default function ContentItemsMixin(Base) {
      */
     get items() {
       return this[internal.state] ? this[internal.state].items : null;
+    }
+
+    [internal.stateEffects](state, changed) {
+      const effects = super[internal.stateEffects]
+        ? super[internal.stateEffects](state, changed)
+        : {};
+
+      // Regenerate items when content changes, or if items has been nullified
+      // by another mixin (as a signal that items should be regenerated).
+      if (changed.content || changed.items) {
+        /** @type {Node[]} */ const content = state.content;
+        const needsItems = content && !state.items; // Signal from other mixins
+        if (changed.content || needsItems) {
+          const items = content
+            ? Array.prototype.filter.call(content, (/** @type {Node} */ item) =>
+                item instanceof HTMLElement || item instanceof SVGElement
+                  ? this[internal.itemMatchesState](item, state)
+                  : false
+              )
+            : null;
+          if (items) {
+            Object.freeze(items);
+          }
+          Object.assign(effects, { items });
+        }
+      }
+
+      return effects;
     }
   };
 }
