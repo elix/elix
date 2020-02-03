@@ -270,7 +270,7 @@ export default function SingleSelectionMixin(Base) {
           const canSelectPrevious =
             count === 0
               ? false
-              : this.selectionWraps || selectedIndex < 0 || selectedIndex > 0;
+              : selectionWraps || selectedIndex < 0 || selectedIndex > 0;
           Object.assign(effects, {
             canSelectNext,
             canSelectPrevious
