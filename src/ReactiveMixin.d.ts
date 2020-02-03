@@ -4,7 +4,6 @@
 /// <reference path="shared.d.ts"/>
 
 import * as internal from "./internal.js";
-import State from "./State.js";
 
 declare const ReactiveMixin: Mixin<
   {},

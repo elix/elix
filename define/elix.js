@@ -110,7 +110,6 @@ export { default as SlidingPages } from "./SlidingPages.js";
 export { default as SlidingStage } from "./SlidingStage.js";
 export { default as SlotContentMixin } from "../src/SlotContentMixin.js";
 export { default as SlotItemsMixin } from "../src/SlotItemsMixin.js";
-export { default as State } from "./State.js";
 export { default as SwipeCommandsMixin } from "../src/SwipeCommandsMixin.js";
 export { default as SwipeDirectionMixin } from "../src/SwipeDirectionMixin.js";
 export { default as TabButton } from "./TabButton.js";

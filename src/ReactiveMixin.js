@@ -1,6 +1,5 @@
 import * as internal from "./internal.js";
 import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import State from "./State.js";
 
 /** @type {any} */
 const mountedKey = Symbol("mounted");
@@ -169,23 +168,15 @@ export default function ReactiveMixin(Base) {
 
       const firstSetState = this[stateKey] === undefined;
 
-      // Apply changes, determine effects, loop until no more effects.
+      // Get the log of fields that have changed since this component was last
+      // rendered.
       const log = changedSinceLastRender.get(this) || {};
-      const state = Object.assign({}, this[stateKey]); // Copy state
-      let effects = changes;
-      let changedInThisSetState = false;
-      while (true) {
-        const changed = fieldsChanged(state, effects);
-        if (Object.keys(changed).length === 0) {
-          break;
-        }
-        changedInThisSetState = true;
-        Object.assign(state, effects);
-        Object.assign(log, changed);
-        effects = this[internal.stateEffects](state, changed);
-      }
 
-      const renderWorthy = firstSetState || changedInThisSetState;
+      // Apply the changes to the component's state to produce a new state
+      // and a dictionary of flags indicating which fields actually changed.
+      const { state, changed } = copyStateWithChanges(this, changes);
+
+      const renderWorthy = firstSetState || Object.keys(changed).length > 0;
       if (!renderWorthy) {
         // No need to update state.
         return;
@@ -195,14 +186,15 @@ export default function ReactiveMixin(Base) {
       // attempts to set state without going through [internal.setState].
       Object.freeze(state);
 
-      // Set the new state.
+      // Set this as the component's new state.
       this[stateKey] = state;
 
-      // Log the changes.
+      // Log any fields that changed.
+      Object.assign(log, changed);
       changedSinceLastRender.set(this, log);
 
-      if (!(this.isConnected && renderWorthy)) {
-        // Not in document or no worthwhile changes to render.
+      if (!this.isConnected) {
+        // Not in document, so no need to render.
         return;
       }
 
@@ -233,7 +225,7 @@ export default function ReactiveMixin(Base) {
      * that returns the component's state. You can then access the state
      * in your browser's debug console.
      *
-     * @type {State}
+     * @type {PlainObject}
      */
     get [internal.state]() {
       return this[stateKey];
@@ -257,6 +249,34 @@ export default function ReactiveMixin(Base) {
   }
 
   return Reactive;
+}
+
+/**
+ * Create a copy of the component's state with the indicated changes applied.
+ * Ask the component whether the new state implies any second-order effects. If
+ * so, apply those and loop again until the state has stabilized. Return the new
+ * state and a dictionary of flags indicating which fields were actually
+ * changed.
+ *
+ * @private
+ * @param {Object} component
+ * @param {PlainObject} changes
+ */
+export function copyStateWithChanges(component, changes) {
+  const state = Object.assign({}, component[stateKey]);
+  const changed = {};
+  let effects = changes;
+  /* eslint-disable no-constant-condition */
+  while (true) {
+    const changedByEffects = fieldsChanged(state, effects);
+    if (Object.keys(changedByEffects).length === 0) {
+      break;
+    }
+    Object.assign(state, effects);
+    Object.assign(changed, changedByEffects);
+    effects = component[internal.stateEffects](state, changedByEffects);
+  }
+  return { state, changed };
 }
 
 /**

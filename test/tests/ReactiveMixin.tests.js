@@ -1,7 +1,6 @@
 import { assert, sinon } from "../testHelpers.js";
 import * as internal from "../../src/internal.js";
 import ReactiveMixin from "../../src/ReactiveMixin.js";
-import State from "../../src/State.js";
 
 class ReactiveTest extends ReactiveMixin(HTMLElement) {
   [internal.componentDidMount]() {
@@ -35,7 +34,12 @@ class ReactiveWithDefaultsTest extends ReactiveTest {
 customElements.define("reactive-with-defaults-test", ReactiveWithDefaultsTest);
 
 // Simple class, copies state member `a` to `b`.
-class ReactiveStateTest1 extends ReactiveMixin(HTMLElement) {
+class ReactiveStateChangeTest extends ReactiveMixin(HTMLElement) {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
+      a: 0
+    });
+  }
   [internal.stateEffects](state, changed) {
     const effects = super[internal.stateEffects](state, changed);
     if (changed.a) {
@@ -44,17 +48,26 @@ class ReactiveStateTest1 extends ReactiveMixin(HTMLElement) {
     return effects;
   }
 }
-customElements.define("reactive-state-test-1", ReactiveStateTest1);
+customElements.define("reactive-state-change-test", ReactiveStateChangeTest);
 
-// Like above, but has initial value.
-class ReactiveStateTest2 extends ReactiveStateTest1 {
+// State machine that updates a counter up to 10.
+class ReactiveStateLoopTest extends ReactiveMixin(HTMLElement) {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      a: 1
+      value: 0
     });
   }
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects](state, changed);
+    if (changed.value && state.value < 10) {
+      Object.assign(effects, {
+        value: state.value + 1
+      });
+    }
+    return effects;
+  }
 }
-customElements.define("reactive-state-test-2", ReactiveStateTest2);
+customElements.define("reactive-state-loop-test", ReactiveStateLoopTest);
 
 describe("ReactiveMixin", function() {
   let container;
@@ -69,15 +82,12 @@ describe("ReactiveMixin", function() {
 
   it("starts with an empty state object", () => {
     const fixture = new ReactiveTest();
-    assert.deepEqual(fixture[internal.state], new State({}));
+    assert.isEmpty(fixture[internal.state]);
   });
 
   it("starts with defaultState if defined", () => {
     const fixture = new ReactiveWithDefaultsTest();
-    assert.deepEqual(
-      fixture[internal.state],
-      new State({ message: "aardvark" })
-    );
+    assert.deepEqual(fixture[internal.state], { message: "aardvark" });
   });
 
   it("setState updates state", () => {
@@ -85,13 +95,13 @@ describe("ReactiveMixin", function() {
     fixture[internal.setState]({
       message: "badger"
     });
-    assert.deepEqual(fixture[internal.state], new State({ message: "badger" }));
+    assert.deepEqual(fixture[internal.state], { message: "badger" });
   });
 
   it("state is immutable", () => {
     const fixture = new ReactiveTest();
     // @ts-ignore We know state is read-only, that's why this throws.
-    assert.throws(() => (fixture[internal.state] = new State()));
+    assert.throws(() => (fixture[internal.state] = {}));
     assert.throws(() => (fixture[internal.state].message = "chihuahua"));
   });
 
@@ -176,20 +186,19 @@ describe("ReactiveMixin", function() {
   });
 
   it("runs state change handlers when state changes", () => {
-    const fixture = new ReactiveStateTest1();
+    const fixture = new ReactiveStateChangeTest();
+    assert.equal(fixture[internal.state].a, 0);
+    assert.equal(fixture[internal.state].b, 0);
     fixture[internal.setState]({ a: 1 });
-    assert(fixture[internal.state].b === 1);
+    assert.equal(fixture[internal.state].b, 1);
     fixture[internal.setState]({ b: 2 }); // Shouldn't have any effect on `a`
-    assert(fixture[internal.state].a === 1);
+    assert.equal(fixture[internal.state].a, 1);
     fixture[internal.setState]({ a: 3 });
-    assert(fixture[internal.state].b === 3);
+    assert.equal(fixture[internal.state].b, 3);
   });
 
-  it("runs state change handlers on initial state", () => {
-    const fixture = new ReactiveStateTest2();
-    assert(fixture[internal.state].a === 1);
-    assert(fixture[internal.state].b === 1);
-    fixture[internal.setState]({ a: 2 });
-    assert(fixture[internal.state].b === 2);
+  it("lets a change handler loop as long as necessary", () => {
+    const fixture = new ReactiveStateLoopTest();
+    assert.equal(fixture[internal.state].value, 10);
   });
 });
