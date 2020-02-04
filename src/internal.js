@@ -455,6 +455,10 @@ export const scrollTarget = Symbol("scrollTarget");
  */
 export const setState = Symbol("setState");
 
+export const shadowRoot = Symbol("shadowRoot");
+
+export const shadowRootMode = Symbol("shadowRootMode");
+
 /**
  * Symbol for the `startEffect` method.
  *

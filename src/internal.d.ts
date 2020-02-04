@@ -46,6 +46,8 @@ export const renderChanges: "_renderChanges";
 export const rendering: "_rendering";
 export const scrollTarget: "_scrollTarget";
 export const setState: "_setState";
+export const shadowRoot: "_shadowRoot";
+export const shadowRootMode: "_shadowRootMode";
 export const startEffect: "_startEffect";
 export const state: "_state";
 export const stateEffects: "_stateEffects";

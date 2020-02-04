@@ -89,11 +89,19 @@ export default function ShadowTemplateMixin(Base) {
         const delegatesFocus = this[internal.delegatesFocus];
         const root = this.attachShadow({
           delegatesFocus,
-          mode: "open"
+          mode: this[internal.shadowRootMode]
         });
         const clone = document.importNode(template.content, true);
         root.appendChild(clone);
+        this[internal.shadowRoot] = root;
       }
+    }
+
+    /**
+     * @type {ShadowRootMode}
+     */
+    get [internal.shadowRootMode]() {
+      return "open";
     }
   }
 

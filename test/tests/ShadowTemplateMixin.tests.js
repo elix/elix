@@ -72,6 +72,21 @@ customElements.define(
   ElementWithDynamicTemplate
 );
 
+/* Element with closed shadow root. */
+class ElementWithClosedRoot extends ShadowTemplateMixin(HTMLElement) {
+  constructor() {
+    super();
+    this[internal.render]();
+  }
+  get [internal.shadowRootMode]() {
+    return "closed";
+  }
+  get [internal.template]() {
+    return template.html`<div id="message">Hello</div>`;
+  }
+}
+customElements.define("element-with-closed-root", ElementWithClosedRoot);
+
 describe("ShadowTemplateMixin", () => {
   let container;
 
@@ -86,6 +101,7 @@ describe("ShadowTemplateMixin", () => {
   it("stamps string template into root", () => {
     const fixture = new ElementWithStringTemplate();
     assert(fixture.shadowRoot);
+    assert(fixture[internal.shadowRoot]);
     // @ts-ignore prevent tsc error "`*.shadowRoot` might be null"
     assert.equal(fixture.shadowRoot.textContent.trim(), "Hello");
   });
@@ -119,5 +135,12 @@ describe("ShadowTemplateMixin", () => {
     const fixture2 = new ElementWithDynamicTemplate();
     // @ts-ignore prevent tsc error "`*.shadowRoot` might be null"
     assert.equal(fixture2.shadowRoot.textContent.trim(), "1");
+  });
+
+  it("can optionally create a closed shadow root", () => {
+    const fixture = new ElementWithClosedRoot();
+    container.append(fixture);
+    assert.isNull(fixture.shadowRoot);
+    assert(fixture[internal.shadowRoot]);
   });
 });
