@@ -185,7 +185,8 @@ export default function ReactiveMixin(Base) {
       // Set this as the component's new state.
       this[stateKey] = state;
 
-      // Log any fields that changed.
+      // Add this round of changed fields to the complete set that have
+      // changed since the component was last rendered.
       Object.assign(this[changedSinceLastRenderKey], changed);
 
       if (!this.isConnected) {
@@ -226,6 +227,28 @@ export default function ReactiveMixin(Base) {
       return this[stateKey];
     }
 
+    /**
+     * Ask the component whether a state with a set of recently-changed fields
+     * implies that additional second-order changes should be applied to that
+     * state to make it consistent.
+     *
+     * This method is invoked during a call to `internal.setState` to give all
+     * of a component's mixins and classes a chance to respond to changes in
+     * state. If one mixin/class updates state that it controls, another
+     * mixin/class may want to respond by updating some other state member that
+     * *it* controls.
+     *
+     * This method should return a dictionary of changes that should be applied
+     * to the state. If the dictionary object is not empty, the
+     * `internal.setState` will invoke this `stateEffects` method again to
+     * determine whether there are any third-order effects that should be
+     * applied. This process repeats until all mixins/classes report that they
+     * have no additional changes to make.
+     *
+     * @param {PlainObject} state
+     * @param {PlainObject} changed
+     * @returns {PlainObject}
+     */
     [internal.stateEffects](state, changed) {
       return super[internal.stateEffects]
         ? super[internal.stateEffects](state, changed)
