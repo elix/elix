@@ -375,7 +375,7 @@ function addDocumentListeners(/** @type {MenuButton} */ element) {
 async function handleMouseup(/** @type {MouseEvent} */ event) {
   // @ts-ignore
   const element = this;
-  const hitTargets = element.shadowRoot.elementsFromPoint(
+  const hitTargets = element[internal.shadowRoot].elementsFromPoint(
     event.clientX,
     event.clientY
   );

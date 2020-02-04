@@ -44,7 +44,7 @@ class DynamicMultiple extends ReactiveElement {
   [internal.render](changed) {
     super[internal.render](changed);
     if (changed.dynamicPartType) {
-      const dynamics = this.shadowRoot.querySelectorAll(".dynamic");
+      const dynamics = this[internal.shadowRoot].querySelectorAll(".dynamic");
       template.transmute(dynamics, this[internal.state].dynamicPartType);
     }
   }

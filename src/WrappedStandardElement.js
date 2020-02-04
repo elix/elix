@@ -339,7 +339,7 @@ class WrappedStandardElement extends Base {
     // as the user types), the component must listen to suitable events on the
     // inner element and update its state accordingly.
     const value = this[internal.state].innerProperties[name];
-    return value || (this.shadowRoot && this.inner[name]);
+    return value || (this[internal.shadowRoot] && this.inner[name]);
   }
 
   static get observedAttributes() {

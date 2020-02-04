@@ -9,12 +9,13 @@ import SlotContentMixin from "../../src/SlotContentMixin.js";
 class SlotContentTest extends SlotContentMixin(ReactiveMixin(HTMLElement)) {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (!this.shadowRoot) {
-      const shadowRoot = this.attachShadow({ mode: "open" });
-      shadowRoot.innerHTML = `
+    if (!this[internal.shadowRoot]) {
+      const root = this.attachShadow({ mode: "open" });
+      root.innerHTML = `
         <div id="static">This is static content</div>
         <slot></slot>
       `;
+      this[internal.shadowRoot] = root;
     }
   }
 }

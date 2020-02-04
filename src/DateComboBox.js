@@ -39,7 +39,7 @@ class DateComboBox extends Base {
   }
 
   get calendar() {
-    return this.shadowRoot ? this[internal.ids].calendar : null;
+    return this[internal.shadowRoot] ? this[internal.ids].calendar : null;
   }
 
   /**

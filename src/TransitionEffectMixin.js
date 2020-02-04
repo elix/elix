@@ -22,7 +22,7 @@ export default function TransitionEffectMixin(Base) {
       // a slot in the shadow, so we'll listen to events that reach the shadow
       // root.
       const target =
-        this[internal.effectEndTarget] === this ? this : this.shadowRoot;
+        this[internal.effectEndTarget] === this ? this : this[internal.shadowRoot];
       target.addEventListener("transitionend", event => {
         // See if the event target is our expected `effectEndTarget`. If the
         // component defines a `effectEndTarget` state, we use that; otherwise,

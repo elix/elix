@@ -69,7 +69,7 @@ class CalendarMonth extends Base {
    * @type {Element[]}
    */
   get days() {
-    return this.shadowRoot
+    return this[internal.shadowRoot]
       ? /** @type {any} */ (this[internal.ids].monthDays).days
       : [];
   }

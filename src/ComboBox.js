@@ -98,7 +98,7 @@ class ComboBox extends Base {
    * @type {Element|null}
    */
   get input() {
-    return this.shadowRoot ? this[internal.ids].input : null;
+    return this[internal.shadowRoot] ? this[internal.ids].input : null;
   }
 
   /**

@@ -34,7 +34,7 @@ function FocusCaptureMixin(Base) {
       this[internal.ids].focusCatcher.addEventListener("focus", () => {
         if (!this[wrappingFocusKey]) {
           // Wrap focus back to the first focusable element.
-          const focusElement = firstFocusableElement(this.shadowRoot);
+          const focusElement = firstFocusableElement(this[internal.shadowRoot]);
           if (focusElement) {
             focusElement.focus();
           }
@@ -43,10 +43,10 @@ function FocusCaptureMixin(Base) {
     }
 
     [internal.keydown](/** @type {KeyboardEvent} */ event) {
-      const firstElement = firstFocusableElement(this.shadowRoot);
+      const firstElement = firstFocusableElement(this[internal.shadowRoot]);
       const onFirstElement =
         document.activeElement === firstElement ||
-        this.shadowRoot.activeElement === firstElement;
+        this[internal.shadowRoot].activeElement === firstElement;
       if (onFirstElement && event.key === "Tab" && event.shiftKey) {
         // Set focus to focus catcher.
         // The Shift+Tab keydown event should continue bubbling, and the default

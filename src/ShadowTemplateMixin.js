@@ -59,8 +59,9 @@ export default function ShadowTemplateMixin(Base) {
           {
             /* eslint-disable no-unused-vars */
             get(target, property, receiver) {
-              return element.shadowRoot && typeof property === "string"
-                ? element.shadowRoot.getElementById(property)
+              const root = element[internal.shadowRoot];
+              return root && typeof property === "string"
+                ? root.getElementById(property)
                 : null;
             }
           }
@@ -77,7 +78,7 @@ export default function ShadowTemplateMixin(Base) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }
-      if (this.shadowRoot) {
+      if (this[internal.shadowRoot]) {
         // Already rendered
         return;
       }

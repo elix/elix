@@ -62,7 +62,7 @@ class Input extends Base {
   set value(value) {
     // @ts-ignore
     super.value = value;
-    if (this.shadowRoot) {
+    if (this[internal.shadowRoot]) {
       /** @type {any} */ const inner = this.inner;
       this.setInnerProperty("selectionStart", inner.selectionStart);
       this.setInnerProperty("selectionEnd", inner.selectionEnd);

@@ -1,3 +1,4 @@
+import * as internal from "./internal.js";
 import { selfAndComposedAncestors } from "./utilities.js";
 
 /**
@@ -65,7 +66,7 @@ export function canScrollInDirection(target, orientation, downOrRight) {
  * @returns {Element}
  */
 export function defaultScrollTarget(element) {
-  const root = element.shadowRoot;
+  const root = element[internal.shadowRoot];
   const slot = root && root.querySelector("slot:not([name])");
   const scrollingParent =
     slot &&

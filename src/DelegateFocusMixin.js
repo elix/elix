@@ -22,7 +22,7 @@ export default function DelegateFocusMixin(Base) {
       // both the host and the focused subelement — which seems confusing and
       // (in our opinion) looks ugly. If the browser supports delegatesFocus we
       // suppress the host focus outline.
-      /** @type {any} */ const cast = this.shadowRoot;
+      /** @type {any} */ const cast = this[internal.shadowRoot];
       if (cast.delegatesFocus) {
         this.style.outline = "none";
       }
@@ -49,7 +49,7 @@ export default function DelegateFocusMixin(Base) {
      * @param {FocusOptions=} focusOptions
      */
     focus(focusOptions) {
-      /** @type {any} */ const cast = this.shadowRoot;
+      /** @type {any} */ const cast = this[internal.shadowRoot];
       if (cast.delegatesFocus) {
         // Native support for delegatesFocus, so don't need to do anything.
         super.focus(focusOptions);
@@ -74,11 +74,11 @@ export default function DelegateFocusMixin(Base) {
       // to fully explore that, we workaround the bug by providing the polyfill
       // behavior even in browsers that have delegatesFocus.
 
-      // /** @type {any} */ const cast = this.shadowRoot;
+      // /** @type {any} */ const cast = this[internal.shadowRoot];
       // return cast.delegatesFocus
       //   ? this
-      //   : firstFocusableElement(this.shadowRoot);
-      return firstFocusableElement(this.shadowRoot);
+      //   : firstFocusableElement(this[internal.shadowRoot]);
+      return firstFocusableElement(this[internal.shadowRoot]);
     }
   }
 

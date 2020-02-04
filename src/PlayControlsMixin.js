@@ -66,7 +66,7 @@ export default function PlayControlsMixin(Base) {
         super[internal.render](changed);
       }
       if (changed.controlButtonPartType) {
-        const controlButtons = this.shadowRoot.querySelectorAll(
+        const controlButtons = this[internal.shadowRoot].querySelectorAll(
           ".controlButton"
         );
         template.transmute(

@@ -59,8 +59,9 @@ export default function SlotContentMixin(Base) {
      */
     get [internal.contentSlot]() {
       /** @type {HTMLSlotElement|null} */ const slot =
-        this.shadowRoot && this.shadowRoot.querySelector("slot:not([name])");
-      if (!this.shadowRoot || !slot) {
+        this[internal.shadowRoot] &&
+        this[internal.shadowRoot].querySelector("slot:not([name])");
+      if (!this[internal.shadowRoot] || !slot) {
         /* eslint-disable no-console */
         console.warn(
           `SlotContentMixin expects ${this.constructor.name} to define a shadow tree that includes a default (unnamed) slot.\nSee https://elix.org/documentation/SlotContentMixin.`

@@ -114,7 +114,7 @@ class AutoCompleteInput extends Input {
     super.value = value;
     // If the input has focus, we assume the user is typing, and rely on
     // the `input` event to update the originalText state.
-    if (this.shadowRoot && !this.inner.matches(":focus")) {
+    if (this[internal.shadowRoot] && !this.inner.matches(":focus")) {
       this[internal.setState]({
         originalText: value
       });
