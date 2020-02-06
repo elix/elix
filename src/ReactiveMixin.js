@@ -245,8 +245,12 @@ export default function ReactiveMixin(Base) {
      * applied. This process repeats until all mixins/classes report that they
      * have no additional changes to make.
      *
-     * @param {PlainObject} state
-     * @param {PlainObject} changed
+     * See an example of how `ReactiveMixin` invokes the `stateEffects` to
+     * [ensure state consistency](ReactiveMixin#ensuring-state-consistency).
+     *
+     * @param {PlainObject} state - a proposal for a new state
+     * @param {PlainObject} changed - the set of fields changed in this
+     * latest proposal for the new state
      * @returns {PlainObject}
      */
     [internal.stateEffects](state, changed) {
