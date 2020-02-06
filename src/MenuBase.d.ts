@@ -18,7 +18,7 @@ import SingleSelectionMixin from "./SingleSelectionMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 import TapSelectionMixin from "./TapSelectionMixin.js";
 
-export default class Menu extends AriaMenuMixin(
+export default class MenuBase extends AriaMenuMixin(
   DelegateFocusMixin(
     DirectionSelectionMixin(
       FocusVisibleMixin(
