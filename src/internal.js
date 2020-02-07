@@ -692,6 +692,8 @@ if (elixdebug === "true") {
       rendering,
       scrollTarget,
       setState,
+      shadowRoot,
+      shadowRootMode,
       startEffect,
       state,
       swipeDown,
