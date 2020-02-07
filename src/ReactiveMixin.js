@@ -33,12 +33,16 @@ export default function ReactiveMixin(Base) {
       this[internal.setState](this[internal.defaultState]);
     }
 
+    // The default implementation of componentDidMount just passes through to
+    // any superclass implementation.
     [internal.componentDidMount]() {
       if (super[internal.componentDidMount]) {
         super[internal.componentDidMount]();
       }
     }
 
+    // The default implementation of componentDidUpdate just passes through to
+    // any superclass implementation.
     [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
       if (super[internal.componentDidUpdate]) {
         super[internal.componentDidUpdate](changed);
@@ -76,10 +80,10 @@ export default function ReactiveMixin(Base) {
      * component's base classes and mixins have a chance to perform their own
      * render work.
      *
-     * @param {object} changed - dictionary of flags indicating which state
+     * @param {PlainObject} changed - dictionary of flags indicating which state
      * members have changed since the last render
      */
-    [internal.render](/** @type {PlainObject} */ changed) {
+    [internal.render](changed) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }
@@ -154,7 +158,7 @@ export default function ReactiveMixin(Base) {
      * and the new state has changed, this returns a promise to asynchronously
      * render the component. Otherwise, this returns a resolved promise.
      *
-     * @param {object} changes - the changes to apply to the element's state
+     * @param {PlainObject} changes - the changes to apply to the element's state
      * @returns {Promise} - resolves when the new state has been rendered
      */
     async [internal.setState](changes) {
@@ -281,22 +285,30 @@ export default function ReactiveMixin(Base) {
  * changed.
  *
  * @private
- * @param {Object} component
+ * @param {Element} element
  * @param {PlainObject} changes
  */
-export function copyStateWithChanges(component, changes) {
-  const state = Object.assign({}, component[stateKey]);
+export function copyStateWithChanges(element, changes) {
+  // Start with a copy of the current state.
+  const state = Object.assign({}, element[stateKey]);
   const changed = {};
+  // Take the supplied changes as the first round of effects.
   let effects = changes;
+  // Loop until there are no effects to apply.
   /* eslint-disable no-constant-condition */
   while (true) {
+    // See whether the effects actually changed anything in state.
     const changedByEffects = fieldsChanged(state, effects);
     if (Object.keys(changedByEffects).length === 0) {
+      // No more effects to apply; we're done.
       break;
     }
+    // Apply the effects.
     Object.assign(state, effects);
     Object.assign(changed, changedByEffects);
-    effects = component[internal.stateEffects](state, changedByEffects);
+    // Ask the component if there are any second- (or third-, etc.) order
+    // effects that should be applied.
+    effects = element[internal.stateEffects](state, changedByEffects);
   }
   return { state, changed };
 }
