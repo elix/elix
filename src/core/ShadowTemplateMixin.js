@@ -1,4 +1,4 @@
-import * as internal from "../internal.js";
+import * as internal from "./internal.js";
 import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 // A cache of processed templates, indexed by element class.
@@ -52,7 +52,7 @@ export default function ShadowTemplateMixin(Base) {
      */
     get [internal.ids]() {
       if (!this[shadowReferencesKey]) {
-        // Construct a proxy that maps $ -> getElementById.
+        // Construct a proxy that maps to getElementById.
         const element = this;
         this[shadowReferencesKey] = new Proxy(
           {},
@@ -93,7 +93,7 @@ export default function ShadowTemplateMixin(Base) {
           mode: this[internal.shadowRootMode]
         });
         const clone = document.importNode(template.content, true);
-        root.appendChild(clone);
+        root.append(clone);
         this[internal.shadowRoot] = root;
       }
     }

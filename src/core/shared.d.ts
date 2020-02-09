@@ -37,6 +37,8 @@ type ChangeHandler = (
 
 /*
  * An item in a list component
+ *
+ * TODO: This isn't core, should be defined elsewhere.
  */
 type ListItemElement = HTMLElement | SVGElement;
 
@@ -75,6 +77,8 @@ type PlainObject = {
 
 /*
  * Descriptor that can be instantiated to create a part.
+ *
+ * TODO: This isn't core, should be defined elsewhere.
  */
 type PartDescriptor = Constructor<HTMLElement> | string | HTMLTemplateElement;
 

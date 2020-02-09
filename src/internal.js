@@ -105,7 +105,7 @@ export const defaultState = coreInternal.defaultState;
  * don't support that natively. Mixins like [KeyboardMixin](KeyboardMixin) use
  * this to accommodate focus delegation.
  */
-export const delegatesFocus = Symbol("delegatesFocus");
+export const delegatesFocus = coreInternal.delegatesFocus;
 
 /**
  * Symbol for the `effectEndTarget` property.
@@ -125,7 +125,7 @@ export const effectEndTarget = Symbol("effectEndTarget");
  * 1) the element itself, in browsers that support native focus delegation or,
  * 2) the shadow root's first focusable element.
  */
-export const focusTarget = Symbol("focusTarget");
+export const focusTarget = coreInternal.focusTarget;
 
 /**
  * Symbol for the `getItemText` method.

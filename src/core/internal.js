@@ -58,6 +58,25 @@ export const componentDidUpdate = Symbol("componentDidUpdate");
 export const defaultState = Symbol("defaultState");
 
 /**
+ * Symbol for the `delegatesFocus` property.
+ *
+ * [DelegatesFocusMixin](DelegatesFocusMixin) defines this property, returning
+ * true to indicate that the focus is being delegated, even in browsers that
+ * don't support that natively. Mixins like [KeyboardMixin](KeyboardMixin) use
+ * this to accommodate focus delegation.
+ */
+export const delegatesFocus = Symbol("delegatesFocus");
+
+/**
+ * Symbol for the `focusTarget` property.
+ *
+ * [DelegatesFocusMixin](DelegatesFocusMixin) defines this property as either:
+ * 1) the element itself, in browsers that support native focus delegation or,
+ * 2) the shadow root's first focusable element.
+ */
+export const focusTarget = Symbol("focusTarget");
+
+/**
  * Symbol for the `hasDynamicTemplate` property.
  *
  * If your component class does not always use the same template, define a

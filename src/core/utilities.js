@@ -1,4 +1,4 @@
-import * as internal from "../internal.js";
+import * as internal from "./internal.js";
 
 /**
  * Miscellaneous utility functions for web components
@@ -71,7 +71,7 @@ export function closestFocusableNode(node) {
     const focusable =
       focusTarget instanceof HTMLElement &&
       focusTarget.tabIndex >= 0 &&
-      !(/** @type {any} */ (focusTarget).disabled) &&
+      !/** @type {any} */ (focusTarget).disabled &&
       !(focusTarget instanceof HTMLSlotElement);
     if (focusable) {
       return focusTarget;
