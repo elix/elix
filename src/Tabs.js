@@ -1,7 +1,7 @@
 import { defaultAriaRole } from "./accessibility.js";
-import { ensureId } from "./utilities.js";
+import { ensureId } from "./core/utilities.js";
 import * as internal from "./internal.js";
-import * as template from "./template.js";
+import * as template from "./core/template.js";
 import Explorer from "./Explorer.js";
 import GenericMixin from "./GenericMixin.js";
 import TabButton from "./TabButton.js";

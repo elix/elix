@@ -1,6 +1,6 @@
-import { deepContains, indexOfItemContainingTarget } from "./utilities.js";
+import { deepContains, indexOfItemContainingTarget } from "./core/utilities.js";
 import * as internal from "./internal.js";
-import * as template from "./template.js";
+import * as template from "./core/template.js";
 import MenuBase from "./MenuBase.js";
 import PopupButtonBase from "./PopupButtonBase.js";
 

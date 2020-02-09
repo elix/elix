@@ -3,7 +3,7 @@
 
 import OpenCloseMixin from "./OpenCloseMixin.js";
 import OverlayMixin from "./OverlayMixin.js";
-import ReactiveElement from "./ReactiveElement.js";
+import ReactiveElement from "./core/ReactiveElement.js";
 import SlotContentMixin from "./SlotContentMixin.js";
 
 export default class Overlay extends OpenCloseMixin(

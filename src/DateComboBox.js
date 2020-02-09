@@ -1,6 +1,6 @@
 import * as calendar from "./calendar.js";
 import * as internal from "./internal.js";
-import * as template from "./template.js";
+import * as template from "./core/template.js";
 import ArrowDirectionButton from "./ArrowDirectionButton.js";
 import CalendarDayButton from "./CalendarDayButton.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";

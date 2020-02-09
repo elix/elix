@@ -1,7 +1,7 @@
 import { assert } from "../testHelpers.js";
 import * as internal from "../../src/internal.js";
-import * as template from "../../src/template.js";
-import ReactiveElement from "../../src/ReactiveElement.js";
+import * as template from "../../src/core/template.js";
+import ReactiveElement from "../../src/core/ReactiveElement.js";
 import TransitionEffectMixin from "../../src/TransitionEffectMixin.js";
 
 const Base = TransitionEffectMixin(ReactiveElement);

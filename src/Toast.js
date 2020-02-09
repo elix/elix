@@ -1,5 +1,5 @@
 import * as internal from "./internal.js";
-import * as template from "./template.js";
+import * as template from "./core/template.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import Popup from "./Popup.js";
 import TransitionEffectMixin from "./TransitionEffectMixin.js";

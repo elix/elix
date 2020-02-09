@@ -1,6 +1,6 @@
 import { canScrollInDirection } from "./scrolling.js";
 import * as internal from "./internal.js";
-import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
+import ReactiveElement from "./core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /** @type {any} */
 const deferToScrollingKey = Symbol("deferToScrolling");

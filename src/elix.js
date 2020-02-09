@@ -18,7 +18,7 @@ export { default as AriaMenuMixin } from "./AriaMenuMixin.js";
 export { default as AriaRoleMixin } from "./AriaRoleMixin.js";
 export { default as ArrowDirectionButton } from "./ArrowDirectionButton.js";
 export { default as ArrowDirectionMixin } from "./ArrowDirectionMixin.js";
-export { default as AttributeMarshallingMixin } from "./AttributeMarshallingMixin.js";
+export { default as AttributeMarshallingMixin } from "./core/AttributeMarshallingMixin.js";
 export { default as AutoCompleteComboBox } from "./AutoCompleteComboBox.js";
 export { default as AutoCompleteInput } from "./AutoCompleteInput.js";
 export { default as AutoSizeTextarea } from "./AutoSizeTextarea.js";
@@ -97,14 +97,14 @@ export { default as PopupModalityMixin } from "./PopupModalityMixin.js";
 export { default as PopupSource } from "./PopupSource.js";
 export { default as ProgressSpinner } from "./ProgressSpinner.js";
 export { default as PullToRefresh } from "./PullToRefresh.js";
-export { default as ReactiveElement } from "./ReactiveElement.js";
-export { default as ReactiveMixin } from "./ReactiveMixin.js";
+export { default as ReactiveElement } from "./core/ReactiveElement.js";
+export { default as ReactiveMixin } from "./core/ReactiveMixin.js";
 export { default as ResizeMixin } from "./ResizeMixin.js";
 export { default as SeamlessButton } from "./SeamlessButton.js";
 export { default as SelectableButton } from "./SelectableButton.js";
 export { default as SelectedItemTextValueMixin } from "./SelectedItemTextValueMixin.js";
 export { default as SelectionInViewMixin } from "./SelectionInViewMixin.js";
-export { default as ShadowTemplateMixin } from "./ShadowTemplateMixin.js";
+export { default as ShadowTemplateMixin } from "./core/ShadowTemplateMixin.js";
 export { default as SingleSelectionMixin } from "./SingleSelectionMixin.js";
 export { default as Slideshow } from "./Slideshow.js";
 export { default as SlideshowWithPlayControls } from "./SlideshowWithPlayControls.js";
@@ -158,10 +158,10 @@ import * as scrollingImport from "./scrolling.js";
 // @ts-ignore
 export const scrolling = scrollingImport;
 
-import * as templateImport from "./template.js";
+import * as templateImport from "./core/template.js";
 // @ts-ignore
 export const template = templateImport;
 
-import * as utilitiesImport from "./utilities.js";
+import * as utilitiesImport from "./core/utilities.js";
 // @ts-ignore
 export const utilities = utilitiesImport;

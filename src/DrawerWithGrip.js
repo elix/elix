@@ -1,5 +1,5 @@
 import * as internal from "./internal.js";
-import * as template from "./template.js";
+import * as template from "./core/template.js";
 import Drawer from "./Drawer.js";
 import SeamlessButton from "./SeamlessButton.js";
 

@@ -3,8 +3,8 @@ import {
   applyChildNodes,
   composedAncestors,
   firstFocusableElement
-} from "../../src/utilities.js";
-import * as template from "../../src/template.js";
+} from "../../src/core/utilities.js";
+import * as template from "../../src/core/template.js";
 
 describe("utilities", () => {
   it("firstFocusableElement finds first focusable element in light DOM", () => {

@@ -1,5 +1,5 @@
 import * as internal from "./internal.js";
-import * as template from "./template.js";
+import * as template from "./core/template.js";
 import AriaListMixin from "./AriaListMixin.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
@@ -12,7 +12,7 @@ import KeyboardMixin from "./KeyboardMixin.js";
 import KeyboardPagedSelectionMixin from "./KeyboardPagedSelectionMixin.js";
 import KeyboardPrefixSelectionMixin from "./KeyboardPrefixSelectionMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
-import ReactiveElement from "./ReactiveElement.js";
+import ReactiveElement from "./core/ReactiveElement.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SelectionInViewMixin from "./SelectionInViewMixin.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";

@@ -1,6 +1,6 @@
-import { deepContains, ownEvent } from "./utilities.js";
+import { deepContains, ownEvent } from "./core/utilities.js";
 import * as internal from "./internal.js";
-import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
+import ReactiveElement from "./core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /** @type {any} */
 const implicitCloseListenerKey = Symbol("implicitCloseListener");

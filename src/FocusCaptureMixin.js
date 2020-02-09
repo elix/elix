@@ -1,7 +1,7 @@
-import { firstFocusableElement } from "./utilities.js";
+import { firstFocusableElement } from "./core/utilities.js";
 import * as internal from "./internal.js";
-import * as template from "./template.js";
-import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
+import * as template from "./core/template.js";
+import ReactiveElement from "./core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 // Symbols for private data members on an element.
 const wrap = Symbol("wrap");

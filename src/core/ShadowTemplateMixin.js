@@ -1,4 +1,4 @@
-import * as internal from "./internal.js";
+import * as internal from "../internal.js";
 import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 // A cache of processed templates, indexed by element class.

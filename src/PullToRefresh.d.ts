@@ -2,7 +2,7 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import EffectMixin from "./EffectMixin.js";
-import ReactiveElement from "./ReactiveElement.js";
+import ReactiveElement from "./core/ReactiveElement.js";
 import TouchSwipeMixin from "./TouchSwipeMixin.js";
 
 export default class PullToRefresh extends EffectMixin(

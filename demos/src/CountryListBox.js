@@ -3,7 +3,7 @@
  */
 
 import * as internal from "../../src/internal.js";
-import * as template from "../../src/template.js";
+import * as template from "../../src/core/template.js";
 import AriaListMixin from "../../src/AriaListMixin.js";
 import ContentItemsMixin from "../../src/ContentItemsMixin.js";
 import DirectionSelectionMixin from "../../src/DirectionSelectionMixin.js";
@@ -13,7 +13,7 @@ import KeyboardMixin from "../../src/KeyboardMixin.js";
 import KeyboardPagedSelectionMixin from "../../src/KeyboardPagedSelectionMixin.js";
 import KeyboardPrefixSelectionMixin from "../../src/KeyboardPrefixSelectionMixin.js";
 import LanguageDirectionMixin from "../../src/LanguageDirectionMixin.js";
-import ReactiveElement from "../../src/ReactiveElement.js";
+import ReactiveElement from "../../src/core/ReactiveElement.js";
 import SelectedItemTextValueMixin from "../../src/SelectedItemTextValueMixin.js";
 import SelectionInViewMixin from "../../src/SelectionInViewMixin.js";
 import SingleSelectionMixin from "../../src/SingleSelectionMixin.js";

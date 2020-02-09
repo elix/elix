@@ -31,6 +31,8 @@
  * @module internal
  */
 
+import * as coreInternal from "./core/internal.js";
+
 /**
  * Symbol for the `checkSize` method.
  *
@@ -55,7 +57,7 @@ export const checkSize = Symbol("checkSize");
  *
  * @function componentDidMount
  */
-export const componentDidMount = Symbol("componentDidMount");
+export const componentDidMount = coreInternal.componentDidMount;
 
 /**
  * Symbol for the `componentDidUpdate` method.
@@ -66,7 +68,7 @@ export const componentDidMount = Symbol("componentDidMount");
  *
  * @function componentDidUpdate
  */
-export const componentDidUpdate = Symbol("componentDidUpdate");
+export const componentDidUpdate = coreInternal.componentDidUpdate;
 
 /**
  * Symbol for the `contentSlot` property.
@@ -93,7 +95,7 @@ export const defaultTabIndex = Symbol("defaultTabIndex");
  *
  * @var {State}
  */
-export const defaultState = Symbol("defaultState");
+export const defaultState = coreInternal.defaultState;
 
 /**
  * Symbol for the `delegatesFocus` property.
@@ -228,7 +230,7 @@ export const goUp = Symbol("goUp");
  * static class property getter with this symbol and have it return `true`.
  * This will disable template caching for your component.
  */
-export const hasDynamicTemplate = Symbol("hasDynamicTemplate");
+export const hasDynamicTemplate = coreInternal.hasDynamicTemplate;
 
 /**
  * Symbol for the `ids` property.
@@ -245,7 +247,7 @@ export const hasDynamicTemplate = Symbol("hasDynamicTemplate");
  *
  * @type {object} - a dictionary mapping shadow element IDs to elements
  */
-export const ids = Symbol("ids");
+export const ids = coreInternal.ids;
 
 /**
  * Symbol for the `itemMatchesState` method.
@@ -346,17 +348,6 @@ export const mouseleave = Symbol("mouseleave");
 export const nativeInternals = Symbol("nativeInternals");
 
 /**
- * Symbol for the `populate` method.
- *
- * [PopulateUpdateMixin](PopulateUpdateMixin) invokes this method as the first
- * of two rendering phases. In this phase, the component can manipulate the
- * Shadow DOM tree to ensure the correct elements are present.
- *
- * @function populate
- */
-export const populate = Symbol("populate");
-
-/**
  * Symbol for the `raiseChangeEvents` property.
  *
  * This property is used by mixins to determine whether they should raise
@@ -401,7 +392,7 @@ export const populate = Symbol("populate");
  *
  * @var {boolean} raiseChangeEvents
  */
-export const raiseChangeEvents = Symbol("raiseChangeEvents");
+export const raiseChangeEvents = coreInternal.raiseChangeEvents;
 
 /**
  * Symbol for the `render` method.
@@ -411,7 +402,7 @@ export const raiseChangeEvents = Symbol("raiseChangeEvents");
  *
  * @function render
  */
-export const render = Symbol("render");
+export const render = coreInternal.render;
 
 /**
  * Symbol for the `renderChanges` method.
@@ -421,7 +412,7 @@ export const render = Symbol("render");
  *
  * @function renderChanges
  */
-export const renderChanges = Symbol("renderChanges");
+export const renderChanges = coreInternal.renderChanges;
 
 /**
  * Symbol for the `rendering` property.
@@ -431,7 +422,7 @@ export const renderChanges = Symbol("renderChanges");
  *
  * @var {boolean} rendering
  */
-export const rendering = Symbol("rendering");
+export const rendering = coreInternal.rendering;
 
 /**
  * Symbol for the `scrollTarget` property.
@@ -453,7 +444,7 @@ export const scrollTarget = Symbol("scrollTarget");
  *
  * @function setState
  */
-export const setState = Symbol("setState");
+export const setState = coreInternal.setState;
 
 /**
  * Symbol for the `shadowRoot` property.
@@ -467,7 +458,7 @@ export const setState = Symbol("setState");
  *
  * @var {ShadowRoot}
  */
-export const shadowRoot = Symbol("shadowRoot");
+export const shadowRoot = coreInternal.shadowRoot;
 
 /**
  * Symbol for the `shadowRootMode` property.
@@ -480,7 +471,7 @@ export const shadowRoot = Symbol("shadowRoot");
  * @var {'open'|'closed'}
  * @default 'open'
  */
-export const shadowRootMode = Symbol("shadowRootMode");
+export const shadowRootMode = coreInternal.shadowRootMode;
 
 /**
  * Symbol for the `startEffect` method.
@@ -503,9 +494,9 @@ export const startEffect = Symbol("startEffect");
  *
  * @var {State}
  */
-export const state = Symbol("state");
+export const state = coreInternal.state;
 
-export const stateEffects = Symbol("stateEffects");
+export const stateEffects = coreInternal.stateEffects;
 
 /**
  * Symbol for the `swipeDown` method.
@@ -639,19 +630,7 @@ export const tap = Symbol("tap");
  *
  * @var {HTMLTemplateElement} template
  */
-export const template = Symbol("template");
-
-/**
- * Symbol for the `update` method.
- *
- * [PopulateUpdateMixin](PopulateUpdateMixin) invokes this method as the second
- * of two rendering phases. In this phase, the component can apply updates to
- * the top-level host element or its shadow elements to reflect the component's
- * current state.
- *
- * @function update
- */
-export const update = Symbol("update");
+export const template = coreInternal.template;
 
 // Expose internals as a global when debugging.
 const elixdebug = new URLSearchParams(location.search).get("elixdebug");
@@ -685,7 +664,6 @@ if (elixdebug === "true") {
       mouseenter,
       mouseleave,
       nativeInternals,
-      populate,
       raiseChangeEvents,
       render,
       renderChanges,
@@ -707,8 +685,7 @@ if (elixdebug === "true") {
       swipeUp,
       swipeUpComplete,
       tap,
-      template,
-      update
+      template
     }
   };
 }

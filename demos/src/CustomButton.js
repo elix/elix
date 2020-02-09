@@ -1,5 +1,5 @@
 import * as internal from "../../src/internal.js";
-import * as template from "../../src/template.js";
+import * as template from "../../src/core/template.js";
 import Button from "../../src/Button.js";
 
 class CustomButton extends Button {

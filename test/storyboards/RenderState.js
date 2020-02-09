@@ -1,7 +1,7 @@
 import { substantiveElements } from "../../src/content.js";
 import * as internal from "../../src/internal.js";
-import * as template from "../../src/template.js";
-import ReactiveElement from "../../src/ReactiveElement.js";
+import * as template from "../../src/core/template.js";
+import ReactiveElement from "../../src/core/ReactiveElement.js";
 import SlotContentMixin from "../../src/SlotContentMixin.js";
 
 const Base = SlotContentMixin(ReactiveElement);

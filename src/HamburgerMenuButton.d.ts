@@ -5,7 +5,7 @@ import Drawer from "./Drawer.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
-import ReactiveElement from "./ReactiveElement.js";
+import ReactiveElement from "./core/ReactiveElement.js";
 import SeamlessButton from "./SeamlessButton.js";
 
 export default class HamburgerMenuButton extends FocusVisibleMixin(

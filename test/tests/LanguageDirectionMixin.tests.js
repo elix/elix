@@ -1,7 +1,7 @@
 import { assert } from "../testHelpers.js";
 import * as internal from "../../src/internal.js";
 import LanguageDirectionMixin from "../../src/LanguageDirectionMixin.js";
-import ReactiveElement from "../../src/ReactiveElement.js";
+import ReactiveElement from "../../src/core/ReactiveElement.js";
 
 class LanguageDirectionTest extends LanguageDirectionMixin(ReactiveElement) {}
 customElements.define("language-direction-test", LanguageDirectionTest);

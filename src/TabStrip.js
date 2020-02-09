@@ -1,14 +1,14 @@
-import { deepContains } from "./utilities.js";
+import { deepContains } from "./core/utilities.js";
 import { defaultAriaRole } from "./accessibility.js";
 import * as internal from "./internal.js";
-import * as template from "./template.js";
+import * as template from "./core/template.js";
 import AriaListMixin from "./AriaListMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import GenericMixin from "./GenericMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
-import ReactiveElement from "./ReactiveElement.js";
+import ReactiveElement from "./core/ReactiveElement.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 import TapSelectionMixin from "./TapSelectionMixin.js";

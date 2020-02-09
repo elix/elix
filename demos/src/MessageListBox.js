@@ -1,7 +1,7 @@
 import "./AnimateAlignment.js";
-import { applyChildNodes } from "../../src/utilities.js";
+import { applyChildNodes } from "../../src/core/utilities.js";
 import * as internal from "../../src/internal.js";
-import * as template from "../../src/template.js";
+import * as template from "../../src/core/template.js";
 import EffectMixin from "../../src/EffectMixin.js";
 import ListBox from "../../src/ListBox.js";
 import SwipeCommandsMixin from "../../src/SwipeCommandsMixin.js";

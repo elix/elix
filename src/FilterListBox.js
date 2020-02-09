@@ -1,4 +1,4 @@
-import { applyChildNodes } from "./utilities.js";
+import { applyChildNodes } from "./core/utilities.js";
 import * as internal from "./internal.js";
 import ListBox from "./ListBox.js";
 

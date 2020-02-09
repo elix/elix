@@ -7,7 +7,7 @@ import GenericMixin from "./GenericMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
-import ReactiveElement from "./ReactiveElement.js";
+import ReactiveElement from "./core/ReactiveElement.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 import TapSelectionMixin from "./TapSelectionMixin.js";

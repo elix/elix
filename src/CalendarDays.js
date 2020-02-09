@@ -1,10 +1,10 @@
-import { applyChildNodes } from "./utilities.js";
+import { applyChildNodes } from "./core/utilities.js";
 import * as calendar from "./calendar.js";
 import * as internal from "./internal.js";
-import * as template from "./template.js";
+import * as template from "./core/template.js";
 import CalendarDay from "./CalendarDay.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
-import ReactiveElement from "./ReactiveElement.js";
+import ReactiveElement from "./core/ReactiveElement.js";
 
 const Base = CalendarElementMixin(ReactiveElement);
 

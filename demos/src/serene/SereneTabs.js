@@ -1,5 +1,5 @@
 import * as internal from "../../../src/internal.js";
-import * as template from "../../../src/template.js";
+import * as template from "../../../src/core/template.js";
 import CrossfadeStage from "../../../src/CrossfadeStage.js";
 import SereneTabButton from "./SereneTabButton.js";
 import Tabs from "../../../src/Tabs.js";

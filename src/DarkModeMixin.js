@@ -1,5 +1,5 @@
 import * as internal from "./internal.js";
-import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
+import ReactiveElement from "./core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Lets a component automatically or explicitly configure itself for dark backgrounds

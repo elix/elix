@@ -7,7 +7,7 @@ export { default as AriaMenuMixin } from "../src/AriaMenuMixin.js";
 export { default as AriaRoleMixin } from "../src/AriaRoleMixin.js";
 export { default as ArrowDirectionButton } from "./ArrowDirectionButton.js";
 export { default as ArrowDirectionMixin } from "../src/ArrowDirectionMixin.js";
-export { default as AttributeMarshallingMixin } from "../src/AttributeMarshallingMixin.js";
+export { default as AttributeMarshallingMixin } from "../src/core/AttributeMarshallingMixin.js";
 export { default as AutoCompleteComboBox } from "./AutoCompleteComboBox.js";
 export { default as AutoCompleteInput } from "./AutoCompleteInput.js";
 export { default as AutoSizeTextarea } from "./AutoSizeTextarea.js";
@@ -87,13 +87,13 @@ export { default as PopupSource } from "./PopupSource.js";
 export { default as ProgressSpinner } from "./ProgressSpinner.js";
 export { default as PullToRefresh } from "./PullToRefresh.js";
 export { default as ReactiveElement } from "./ReactiveElement.js";
-export { default as ReactiveMixin } from "../src/ReactiveMixin.js";
+export { default as ReactiveMixin } from "../src/core/ReactiveMixin.js";
 export { default as ResizeMixin } from "../src/ResizeMixin.js";
 export { default as SeamlessButton } from "./SeamlessButton.js";
 export { default as SelectableButton } from "./SelectableButton.js";
 export { default as SelectedItemTextValueMixin } from "../src/SelectedItemTextValueMixin.js";
 export { default as SelectionInViewMixin } from "../src/SelectionInViewMixin.js";
-export { default as ShadowTemplateMixin } from "../src/ShadowTemplateMixin.js";
+export { default as ShadowTemplateMixin } from "../src/core/ShadowTemplateMixin.js";
 export { default as SingleSelectionMixin } from "../src/SingleSelectionMixin.js";
 export { default as Slideshow } from "./Slideshow.js";
 export { default as SlideshowWithPlayControls } from "./SlideshowWithPlayControls.js";
@@ -147,10 +147,10 @@ import * as scrollingImport from "../src/scrolling.js";
 // @ts-ignore
 export const scrolling = scrollingImport;
 
-import * as templateImport from "../src/template.js";
+import * as templateImport from "../src/core/template.js";
 // @ts-ignore
 export const template = templateImport;
 
-import * as utilitiesImport from "../src/utilities.js";
+import * as utilitiesImport from "../src/core/utilities.js";
 // @ts-ignore
 export const utilities = utilitiesImport;

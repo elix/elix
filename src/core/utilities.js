@@ -1,4 +1,4 @@
-import * as internal from "./internal.js";
+import * as internal from "../internal.js";
 
 /**
  * Miscellaneous utility functions for web components

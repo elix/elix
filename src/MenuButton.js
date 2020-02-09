@@ -1,5 +1,5 @@
 import * as internal from "./internal.js";
-import * as template from "./template.js";
+import * as template from "./core/template.js";
 import Menu from "./Menu.js";
 import MenuButtonBase from "./MenuButtonBase.js";
 

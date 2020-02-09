@@ -1,8 +1,8 @@
 import * as internal from "./internal.js";
-import * as template from "./template.js";
+import * as template from "./core/template.js";
 import EffectMixin from "./EffectMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
-import ReactiveElement from "./ReactiveElement.js";
+import ReactiveElement from "./core/ReactiveElement.js";
 import ResizeMixin from "./ResizeMixin.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";

@@ -1,8 +1,8 @@
-import { forwardFocus } from "./utilities.js";
+import { forwardFocus } from "./core/utilities.js";
 import * as internal from "./internal.js";
-import * as template from "./template.js";
+import * as template from "./core/template.js";
 import ArrowDirectionButton from "./ArrowDirectionButton.js";
-import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
+import ReactiveElement from "./core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 const wrap = Symbol("wrap");
 

@@ -1,5 +1,5 @@
 import { assert } from "../testHelpers.js";
-import AttributeMarshallingMixin from "../../src/AttributeMarshallingMixin.js";
+import AttributeMarshallingMixin from "../../src/core/AttributeMarshallingMixin.js";
 
 let defaultPropertyValue;
 

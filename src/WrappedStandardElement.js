@@ -1,8 +1,8 @@
-import { booleanAttributes } from "./AttributeMarshallingMixin.js";
+import { booleanAttributes } from "./core/AttributeMarshallingMixin.js";
 import * as internal from "./internal.js";
-import * as template from "./template.js";
+import * as template from "./core/template.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
-import ReactiveElement from "./ReactiveElement.js";
+import ReactiveElement from "./core/ReactiveElement.js";
 
 const extendsKey = Symbol("extends");
 

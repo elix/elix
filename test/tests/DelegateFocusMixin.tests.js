@@ -1,8 +1,8 @@
 import { assert } from "../testHelpers.js";
 import * as internal from "../../src/internal.js";
-import * as template from "../../src/template.js";
+import * as template from "../../src/core/template.js";
 import DelegateFocusMixin from "../../src/DelegateFocusMixin.js";
-import ReactiveElement from "../../src/ReactiveElement.js";
+import ReactiveElement from "../../src/core/ReactiveElement.js";
 
 class DelegateFocusTest extends DelegateFocusMixin(ReactiveElement) {
   get [internal.template]() {

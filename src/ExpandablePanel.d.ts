@@ -2,7 +2,7 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import OpenCloseMixin from "./OpenCloseMixin.js";
-import ReactiveElement from "./ReactiveElement.js";
+import ReactiveElement from "./core/ReactiveElement.js";
 import TransitionEffectMixin from "./TransitionEffectMixin.js";
 import EffectMixin from "./EffectMixin.js";
 

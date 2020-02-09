@@ -2,7 +2,7 @@ import { assert } from "../testHelpers.js";
 import * as internal from "../../src/internal.js";
 import * as mockInteractions from "../mockInteractions.js";
 import KeyboardMixin from "../../src/KeyboardMixin.js";
-import ReactiveElement from "../../src/ReactiveElement.js";
+import ReactiveElement from "../../src/core/ReactiveElement.js";
 
 class KeyboardTest extends KeyboardMixin(ReactiveElement) {}
 customElements.define("keyboard-test", KeyboardTest);

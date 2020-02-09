@@ -1,7 +1,7 @@
 import { getItemText } from "./ItemsTextMixin.js";
-import { indexOfItemContainingTarget, forwardFocus } from "./utilities.js";
+import { indexOfItemContainingTarget, forwardFocus } from "./core/utilities.js";
 import * as internal from "./internal.js";
-import * as template from "./template.js";
+import * as template from "./core/template.js";
 import ComboBox from "./ComboBox.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";

@@ -1,6 +1,6 @@
 import { defaultScrollTarget } from "./scrolling.js";
 import * as internal from "./internal.js";
-import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
+import ReactiveElement from "./core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Scrolls to ensure the selected item is visible

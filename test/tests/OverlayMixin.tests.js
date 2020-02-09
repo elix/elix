@@ -2,7 +2,7 @@ import { assert } from "../testHelpers.js";
 import * as internal from "../../src/internal.js";
 import OpenCloseMixin from "../../src/OpenCloseMixin.js";
 import OverlayMixin from "../../src/OverlayMixin.js";
-import ReactiveElement from "../../src/ReactiveElement.js";
+import ReactiveElement from "../../src/core/ReactiveElement.js";
 
 const Base = OpenCloseMixin(OverlayMixin(ReactiveElement));
 

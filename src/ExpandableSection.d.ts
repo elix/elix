@@ -3,7 +3,7 @@
 
 import AriaRoleMixin from "./AriaRoleMixin.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
-import ReactiveElement from "./ReactiveElement.js";
+import ReactiveElement from "./core/ReactiveElement.js";
 
 export default class ExpandableSection extends AriaRoleMixin(
   OpenCloseMixin(ReactiveElement)

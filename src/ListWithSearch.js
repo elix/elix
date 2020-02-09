@@ -1,12 +1,12 @@
 import * as internal from "./internal.js";
-import * as template from "./template.js";
+import * as template from "./core/template.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import FilterListBox from "./FilterListBox.js";
 import KeyboardMixin from "./KeyboardMixin.js";
-import ReactiveElement from "./ReactiveElement.js";
+import ReactiveElement from "./core/ReactiveElement.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";
 

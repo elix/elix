@@ -1,7 +1,7 @@
-import { forwardFocus, indexOfItemContainingTarget } from "./utilities.js";
+import { forwardFocus, indexOfItemContainingTarget } from "./core/utilities.js";
 import * as calendar from "./calendar.js";
 import * as internal from "./internal.js";
-import * as template from "./template.js";
+import * as template from "./core/template.js";
 import ArrowDirectionMixin from "./ArrowDirectionMixin.js";
 import CalendarDayButton from "./CalendarDayButton.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";

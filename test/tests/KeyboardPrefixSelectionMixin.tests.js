@@ -2,7 +2,7 @@ import { assert } from "../testHelpers.js";
 import * as internal from "../../src/internal.js";
 import ItemsTextMixin from "../../src/ItemsTextMixin.js";
 import KeyboardPrefixSelectionMixin from "../../src/KeyboardPrefixSelectionMixin.js";
-import ReactiveMixin from "../../src/ReactiveMixin.js";
+import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 
 const Base = ItemsTextMixin(
   KeyboardPrefixSelectionMixin(ReactiveMixin(HTMLElement))

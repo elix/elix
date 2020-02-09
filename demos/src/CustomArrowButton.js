@@ -1,5 +1,5 @@
 import * as internal from "../../src/internal.js";
-import * as template from "../../src/template.js";
+import * as template from "../../src/core/template.js";
 import SeamlessButton from "../../src/SeamlessButton.js";
 
 class CustomArrowButton extends SeamlessButton {

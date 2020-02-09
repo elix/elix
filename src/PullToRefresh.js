@@ -1,10 +1,10 @@
 import { dampen } from "./fractionalSelection.js";
 import { getScrollableElement } from "./scrolling.js";
 import * as internal from "./internal.js";
-import * as template from "./template.js";
+import * as template from "./core/template.js";
 import EffectMixin from "./EffectMixin.js";
 import ProgressSpinner from "./ProgressSpinner.js";
-import ReactiveElement from "./ReactiveElement.js";
+import ReactiveElement from "./core/ReactiveElement.js";
 import TouchSwipeMixin from "./TouchSwipeMixin.js";
 
 // Template for the default down arrow shown while pulling.

@@ -1,6 +1,6 @@
 import { isSubstantiveElement } from "./content.js";
 import * as internal from "./internal.js";
-import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
+import ReactiveElement from "./core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Treats an element's content nodes as list items.

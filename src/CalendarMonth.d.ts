@@ -2,7 +2,7 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import CalendarElementMixin from "./CalendarElementMixin.js";
-import ReactiveElement from "./ReactiveElement.js";
+import ReactiveElement from "./core/ReactiveElement.js";
 
 export default class CalendarMonth extends CalendarElementMixin(
   ReactiveElement

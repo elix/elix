@@ -6,7 +6,7 @@ import DisabledMixin from "./DisabledMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
-import ReactiveElement from "./ReactiveElement.js";
+import ReactiveElement from "./core/ReactiveElement.js";
 
 export default class PopupSource extends AriaRoleMixin(
   DisabledMixin(

@@ -1,6 +1,6 @@
-import { ownEvent } from "./utilities.js";
+import { ownEvent } from "./core/utilities.js";
 import * as internal from "./internal.js";
-import * as template from "./template.js";
+import * as template from "./core/template.js";
 import GenericMixin from "./GenericMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import PopupSource from "./PopupSource.js";

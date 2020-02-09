@@ -1,5 +1,5 @@
 import * as internal from "../../src/internal.js";
-import * as template from "../../src/template.js";
+import * as template from "../../src/core/template.js";
 import Carousel from "../../src/Carousel.js";
 
 // Shows how to change the glyphs used in the arrow buttons.

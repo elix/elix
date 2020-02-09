@@ -1,10 +1,10 @@
 import * as internal from "./internal.js";
-import * as template from "./template.js";
+import * as template from "./core/template.js";
 import Drawer from "./Drawer.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
-import ReactiveElement from "./ReactiveElement.js";
+import ReactiveElement from "./core/ReactiveElement.js";
 import SeamlessButton from "./SeamlessButton.js";
 
 const Base = FocusVisibleMixin(KeyboardMixin(OpenCloseMixin(ReactiveElement)));
