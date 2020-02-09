@@ -27,13 +27,12 @@ type IndexedObject<T> = {
   [key: string]: T;
 };
 
-/*
- * A onChange handler for a State object.
- */
-type ChangeHandler = (
-  state: PlainObject,
-  changed?: PlainObject | null
-) => PlainObject | null;
+type CustomElement = HTMLElement & {
+  adoptedCallback(): void;
+  attributeChangedCallback(attributeName, oldValue, newValue): void;
+  connectedCallback(): void;
+  disconnectedCallback(): void;
+};
 
 /*
  * An item in a list component

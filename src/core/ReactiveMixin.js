@@ -1,5 +1,4 @@
 import * as internal from "./internal.js";
-import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /** @type {any} */
 const mountedKey = Symbol("mounted");
@@ -21,7 +20,7 @@ const changedSinceLastRenderKey = Symbol("changedSinceLastRender");
  * FRP behavior comparable to React's.
  *
  * @module ReactiveMixin
- * @param {Constructor<ReactiveElement>} Base
+ * @param {Constructor<CustomElement>} Base
  */
 export default function ReactiveMixin(Base) {
   class Reactive extends Base {

@@ -1,5 +1,4 @@
 import * as internal from "./internal.js";
-import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 // A cache of processed templates, indexed by element class.
 const classTemplateMap = new Map();
@@ -32,7 +31,7 @@ const shadowReferencesKey = Symbol("shadowReferences");
  * `this[internal.ids].foo` that points to that button.
  *
  * @module ShadowTemplateMixin
- * @param {Constructor<ReactiveElement>} Base
+ * @param {Constructor<HTMLElement>} Base
  */
 export default function ShadowTemplateMixin(Base) {
   // The class prototype added by the mixin.

@@ -1,5 +1,4 @@
 import * as internal from "./internal.js";
-import ReactiveElement from "./ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /** @type {IndexedObject<boolean>} */
 export const booleanAttributes = {
@@ -61,7 +60,7 @@ const propertyNamesToAttributes = {
  * yourself.
  *
  * @module AttributeMarshallingMixin
- * @param {Constructor<ReactiveElement>} Base
+ * @param {Constructor<CustomElement>} Base
  */
 export default function AttributeMarshallingMixin(Base) {
   // The class prototype added by the mixin.
@@ -108,7 +107,7 @@ export default function AttributeMarshallingMixin(Base) {
  * Return the custom attributes for the given class.
  *
  * @private
- * @param {Constructor<ReactiveElement>} classFn
+ * @param {Constructor<HTMLElement>} classFn
  */
 function attributesForClass(classFn) {
   // We treat the HTMLElement base class as if it has no attributes, since we
