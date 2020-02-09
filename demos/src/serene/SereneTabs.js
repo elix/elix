@@ -1,8 +1,8 @@
-import * as internal from "../../../src/internal.js";
+import * as internal from "../../../src/base/internal.js";
 import * as template from "../../../src/core/template.js";
-import CrossfadeStage from "../../../src/CrossfadeStage.js";
+import CrossfadeStage from "../../../src/base/CrossfadeStage.js";
 import SereneTabButton from "./SereneTabButton.js";
-import Tabs from "../../../src/Tabs.js";
+import Tabs from "../../../src/base/Tabs.js";
 
 class SereneTabs extends Tabs {
   get [internal.defaultState]() {

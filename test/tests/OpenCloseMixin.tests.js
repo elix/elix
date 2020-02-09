@@ -1,5 +1,5 @@
 import { assert } from "../testHelpers.js";
-import OpenCloseMixin from "../../src/OpenCloseMixin.js";
+import OpenCloseMixin from "../../src/base/OpenCloseMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 
 const Base = OpenCloseMixin(ReactiveMixin(HTMLElement));

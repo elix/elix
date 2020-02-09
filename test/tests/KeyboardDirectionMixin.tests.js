@@ -1,6 +1,6 @@
 import { assert, sinon } from "../testHelpers.js";
-import * as internal from "../../src/internal.js";
-import KeyboardDirectionMixin from "../../src/KeyboardDirectionMixin.js";
+import * as internal from "../../src/base/internal.js";
+import KeyboardDirectionMixin from "../../src/base/KeyboardDirectionMixin.js";
 
 class KeyboardDirectionMixinTest extends KeyboardDirectionMixin(HTMLElement) {
   constructor() {

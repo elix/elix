@@ -1,2 +1,2 @@
-import Overlay from "../src/Overlay.js";
+import Overlay from "../src/base/Overlay.js";
 export default Overlay;

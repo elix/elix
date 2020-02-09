@@ -1,2 +1,2 @@
-import WrappedStandardElement from "../src/WrappedStandardElement.js";
+import WrappedStandardElement from "../src/base/WrappedStandardElement.js";
 export default WrappedStandardElement;

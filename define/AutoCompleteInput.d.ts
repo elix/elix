@@ -1,2 +1,2 @@
-import AutoCompleteInput from "../src/AutoCompleteInput.js";
+import AutoCompleteInput from "../src/base/AutoCompleteInput.js";
 export default AutoCompleteInput;

@@ -1,7 +1,7 @@
-import * as internal from "../../src/internal.js";
+import * as internal from "../../src/base/internal.js";
 import * as template from "../../src/core/template.js";
-import EffectMixin from "../../src/EffectMixin.js";
-import TransitionEffectMixin from "../../src/TransitionEffectMixin.js";
+import EffectMixin from "../../src/base/EffectMixin.js";
+import TransitionEffectMixin from "../../src/base/TransitionEffectMixin.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
 
 const Base = EffectMixin(TransitionEffectMixin(ReactiveElement));

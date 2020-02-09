@@ -1,2 +1,2 @@
-import ArrowDirectionButton from "../src/ArrowDirectionButton.js";
+import ArrowDirectionButton from "../src/base/ArrowDirectionButton.js";
 export default ArrowDirectionButton;

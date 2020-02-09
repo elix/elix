@@ -1,2 +1,2 @@
-import Backdrop from "../src/Backdrop.js";
+import Backdrop from "../src/base/Backdrop.js";
 export default Backdrop;

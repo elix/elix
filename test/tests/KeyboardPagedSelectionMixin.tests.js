@@ -1,6 +1,6 @@
 import { assert } from "../testHelpers.js";
-import * as internal from "../../src/internal.js";
-import KeyboardPagedSelectionMixin from "../../src/KeyboardPagedSelectionMixin.js";
+import * as internal from "../../src/base/internal.js";
+import KeyboardPagedSelectionMixin from "../../src/base/KeyboardPagedSelectionMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 
 const itemHeight = 100;

@@ -1,2 +1,2 @@
-import CarouselSlideshow from "../src/CarouselSlideshow.js";
+import CarouselSlideshow from "../src/base/CarouselSlideshow.js";
 export default CarouselSlideshow;

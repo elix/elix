@@ -2,22 +2,22 @@
  * Demo of a list box with hard-coded contents.
  */
 
-import * as internal from "../../src/internal.js";
+import * as internal from "../../src/base/internal.js";
 import * as template from "../../src/core/template.js";
-import AriaListMixin from "../../src/AriaListMixin.js";
-import ContentItemsMixin from "../../src/ContentItemsMixin.js";
-import DirectionSelectionMixin from "../../src/DirectionSelectionMixin.js";
-import ItemsTextMixin from "../../src/ItemsTextMixin.js";
-import KeyboardDirectionMixin from "../../src/KeyboardDirectionMixin.js";
-import KeyboardMixin from "../../src/KeyboardMixin.js";
-import KeyboardPagedSelectionMixin from "../../src/KeyboardPagedSelectionMixin.js";
-import KeyboardPrefixSelectionMixin from "../../src/KeyboardPrefixSelectionMixin.js";
-import LanguageDirectionMixin from "../../src/LanguageDirectionMixin.js";
+import AriaListMixin from "../../src/base/AriaListMixin.js";
+import ContentItemsMixin from "../../src/base/ContentItemsMixin.js";
+import DirectionSelectionMixin from "../../src/base/DirectionSelectionMixin.js";
+import ItemsTextMixin from "../../src/base/ItemsTextMixin.js";
+import KeyboardDirectionMixin from "../../src/base/KeyboardDirectionMixin.js";
+import KeyboardMixin from "../../src/base/KeyboardMixin.js";
+import KeyboardPagedSelectionMixin from "../../src/base/KeyboardPagedSelectionMixin.js";
+import KeyboardPrefixSelectionMixin from "../../src/base/KeyboardPrefixSelectionMixin.js";
+import LanguageDirectionMixin from "../../src/base/LanguageDirectionMixin.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
-import SelectedItemTextValueMixin from "../../src/SelectedItemTextValueMixin.js";
-import SelectionInViewMixin from "../../src/SelectionInViewMixin.js";
-import SingleSelectionMixin from "../../src/SingleSelectionMixin.js";
-import TapSelectionMixin from "../../src/TapSelectionMixin.js";
+import SelectedItemTextValueMixin from "../../src/base/SelectedItemTextValueMixin.js";
+import SelectionInViewMixin from "../../src/base/SelectionInViewMixin.js";
+import SingleSelectionMixin from "../../src/base/SingleSelectionMixin.js";
+import TapSelectionMixin from "../../src/base/TapSelectionMixin.js";
 
 const Base = AriaListMixin(
   ContentItemsMixin(

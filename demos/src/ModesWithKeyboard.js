@@ -1,8 +1,8 @@
-import AriaRoleMixin from "../../src/AriaRoleMixin.js";
-import DirectionSelectionMixin from "../../src/DirectionSelectionMixin.js";
-import KeyboardDirectionMixin from "../../src/KeyboardDirectionMixin.js";
-import KeyboardMixin from "../../src/KeyboardMixin.js";
-import Modes from "../../src/Modes.js";
+import AriaRoleMixin from "../../src/base/AriaRoleMixin.js";
+import DirectionSelectionMixin from "../../src/base/DirectionSelectionMixin.js";
+import KeyboardDirectionMixin from "../../src/base/KeyboardDirectionMixin.js";
+import KeyboardMixin from "../../src/base/KeyboardMixin.js";
+import Modes from "../../src/base/Modes.js";
 
 const ModesWithKeyboard = AriaRoleMixin(
   DirectionSelectionMixin(KeyboardDirectionMixin(KeyboardMixin(Modes)))

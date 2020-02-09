@@ -1,6 +1,6 @@
 import { assert } from "../testHelpers.js";
-import * as internal from "../../src/internal.js";
-import ContentItemsMixin from "../../src/ContentItemsMixin.js";
+import * as internal from "../../src/base/internal.js";
+import ContentItemsMixin from "../../src/base/ContentItemsMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 
 class ContentItemsTest extends ContentItemsMixin(ReactiveMixin(HTMLElement)) {

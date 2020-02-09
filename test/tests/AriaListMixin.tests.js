@@ -1,7 +1,7 @@
 import { assert } from "../testHelpers.js";
-import * as internal from "../../src/internal.js";
-import AriaListMixin from "../../src/AriaListMixin.js";
-import ContentItemsMixin from "../../src/ContentItemsMixin.js";
+import * as internal from "../../src/base/internal.js";
+import AriaListMixin from "../../src/base/AriaListMixin.js";
+import ContentItemsMixin from "../../src/base/ContentItemsMixin.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
 
 class AriaListTest extends AriaListMixin(ContentItemsMixin(ReactiveElement)) {

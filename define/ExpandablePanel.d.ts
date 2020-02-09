@@ -1,2 +1,2 @@
-import ExpandablePanel from "../src/ExpandablePanel.js";
+import ExpandablePanel from "../src/base/ExpandablePanel.js";
 export default ExpandablePanel;

@@ -1,2 +1,2 @@
-import Hidden from "../src/Hidden.js";
+import Hidden from "../src/base/Hidden.js";
 export default Hidden;

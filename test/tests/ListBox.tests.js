@@ -1,5 +1,5 @@
 import { assert } from "../testHelpers.js";
-import * as internal from "../../src/internal.js";
+import * as internal from "../../src/base/internal.js";
 import * as mockInteractions from "../mockInteractions.js";
 import ListBox from "../../define/ListBox.js";
 

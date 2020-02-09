@@ -1,5 +1,5 @@
-import * as internal from "../../src/internal.js";
-import Carousel from "../../src/Carousel.js";
+import * as internal from "../../src/base/internal.js";
+import Carousel from "../../src/base/Carousel.js";
 import CustomArrowButton from "./CustomArrowButton.js";
 import CustomPageDot from "./CustomPageDot.js";
 

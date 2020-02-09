@@ -1,6 +1,6 @@
-import * as internal from "../../src/internal.js";
+import * as internal from "../../src/base/internal.js";
 import * as template from "../../src/core/template.js";
-import Carousel from "../../src/Carousel.js";
+import Carousel from "../../src/base/Carousel.js";
 
 // Shows how to change the glyphs used in the arrow buttons.
 class CustomCarousel extends Carousel {

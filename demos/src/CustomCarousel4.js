@@ -1,6 +1,6 @@
-import * as internal from "../../src/internal.js";
-import Carousel from "../../src/Carousel.js";
-import PageNumbersMixin from "../../src/PageNumbersMixin.js";
+import * as internal from "../../src/base/internal.js";
+import Carousel from "../../src/base/Carousel.js";
+import PageNumbersMixin from "../../src/base/PageNumbersMixin.js";
 
 const Base = PageNumbersMixin(Carousel);
 

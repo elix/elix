@@ -1,6 +1,6 @@
 import { assert } from "../testHelpers.js";
-import * as internal from "../../src/internal.js";
-import DarkModeMixin from "../../src/DarkModeMixin.js";
+import * as internal from "../../src/base/internal.js";
+import DarkModeMixin from "../../src/base/DarkModeMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 
 class DarkModeTest extends DarkModeMixin(ReactiveMixin(HTMLElement)) {}

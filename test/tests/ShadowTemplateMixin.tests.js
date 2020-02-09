@@ -1,5 +1,5 @@
 import { assert } from "../testHelpers.js";
-import * as internal from "../../src/internal.js";
+import * as internal from "../../src/base/internal.js";
 import * as template from "../../src/core/template.js";
 import ShadowTemplateMixin from "../../src/core/ShadowTemplateMixin.js";
 
@@ -78,6 +78,7 @@ class ElementWithClosedRoot extends ShadowTemplateMixin(HTMLElement) {
     super();
     this[internal.render]();
   }
+  /** @type {'closed'|'open'} */
   get [internal.shadowRootMode]() {
     return "closed";
   }

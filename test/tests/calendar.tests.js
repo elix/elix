@@ -1,5 +1,5 @@
 import { assert } from "../testHelpers.js";
-import * as calendar from "../../src/calendar.js";
+import * as calendar from "../../src/base/calendar.js";
 
 describe("calendar helpers", () => {
   it("can determine facts about a date", async () => {

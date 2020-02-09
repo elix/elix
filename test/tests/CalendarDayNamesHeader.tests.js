@@ -1,6 +1,6 @@
 import { assert } from "../testHelpers.js";
 import { trimMarks } from "../normalize.js";
-import * as internal from "../../src/internal.js";
+import * as internal from "../../src/base/internal.js";
 import CalendarDayNamesHeader from "../../define/CalendarDayNamesHeader.js";
 
 describe("CalendarDayNamesHeader", () => {

@@ -1,6 +1,6 @@
 import { assert } from "../testHelpers.js";
-import * as calendar from "../../src/calendar.js";
-import * as internal from "../../src/internal.js";
+import * as calendar from "../../src/base/calendar.js";
+import * as internal from "../../src/base/internal.js";
 import CalendarDays from "../../define/CalendarDays.js";
 
 describe("CalendarDays", () => {

@@ -3,14 +3,21 @@
 
 /// <reference path="shared.d.ts"/>
 
+import * as internal from "./internal.js";
+
 declare const ShadowTemplateMixin: Mixin<
   {},
   {
+    [internal.delegatesFocus]: boolean;
+    [internal.focusTarget]: HTMLElement | null;
+    [internal.hasDynamicTemplate]: boolean;
     readonly ids: {
       [id: string]: HTMLElement | SVGElement;
     };
     connectedCallback(): void;
     shadowRoot: ShadowRoot;
+    [internal.shadowRoot]: ShadowRoot;
+    [internal.shadowRootMode]: "closed" | "open";
   }
 >;
 

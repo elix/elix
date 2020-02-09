@@ -1,2 +1,2 @@
-import ListBox from "../src/ListBox.js";
+import ListBox from "../src/base/ListBox.js";
 export default ListBox;

@@ -1,2 +1,2 @@
-import CarouselWithThumbnails from "../src/CarouselWithThumbnails.js";
+import CarouselWithThumbnails from "../src/base/CarouselWithThumbnails.js";
 export default CarouselWithThumbnails;

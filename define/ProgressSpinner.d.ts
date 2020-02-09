@@ -1,2 +1,2 @@
-import ProgressSpinner from "../src/ProgressSpinner.js";
+import ProgressSpinner from "../src/base/ProgressSpinner.js";
 export default ProgressSpinner;

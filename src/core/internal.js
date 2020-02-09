@@ -189,8 +189,31 @@ export const rendering = Symbol("rendering");
  */
 export const setState = Symbol("setState");
 
+/**
+ * Symbol for the `shadowRoot` property.
+ *
+ * This property holds a reference to an element's shadow root, like
+ * `this.shadowRoot`. This propery exists because `this.shadowRoot` is not
+ * available for components with closed shadow roots.
+ * [ShadowTemplateMixin](ShadowTemplateMixin) creates open shadow roots by
+ * default, but you can opt into creating closed shadow roots; see
+ * [shadowRootMode](internal#internal.shadowRootMode).
+ *
+ * @var {ShadowRoot}
+ */
 export const shadowRoot = Symbol("shadowRoot");
 
+/**
+ * Symbol for the `shadowRootMode` property.
+ *
+ * If true (the default), then [ShadowTemplateMixin](ShadowTemplateMixin) will
+ * create an open shadow root when the component is instantiated. Set this to
+ * false if you want to programmatically hide component internals in a closed
+ * shadow root.
+ *
+ * @var {'closed'|'open'}
+ * @default 'open'
+ */
 export const shadowRootMode = Symbol("shadowRootMode");
 
 /**
