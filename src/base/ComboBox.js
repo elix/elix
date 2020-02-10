@@ -232,17 +232,16 @@ class ComboBox extends Base {
         this[internal.ids].toggleButton,
         this[internal.state].toggleButtonPartType
       );
-      this[internal.ids].toggleButton.addEventListener("mousedown", () => {
+      const toggleButton = this[internal.ids].toggleButton;
+      const input = this[internal.ids].input;
+      toggleButton.addEventListener("mousedown", () => {
         this[internal.raiseChangeEvents] = true;
         this.toggle();
         this[internal.raiseChangeEvents] = false;
       });
-      if (
-        this[internal.ids].toggleButton instanceof HTMLElement &&
-        this[internal.ids].input instanceof HTMLElement
-      ) {
+      if (toggleButton instanceof HTMLElement && input instanceof HTMLElement) {
         // Forward focus for new toggle button.
-        forwardFocus(this[internal.ids].toggleButton, this[internal.ids].input);
+        forwardFocus(toggleButton, input);
       }
     }
     if (changed.popupPartType) {

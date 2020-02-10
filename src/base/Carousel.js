@@ -137,9 +137,8 @@ class Carousel extends Base {
 
   get [internal.swipeTarget]() {
     const base = super[internal.swipeTarget];
-    return this[internal.ids].stage instanceof HTMLElement
-      ? this[internal.ids].stage
-      : base;
+    const stage = this[internal.ids].stage;
+    return stage instanceof HTMLElement ? stage : base;
   }
 
   [internal.stateEffects](state, changed) {

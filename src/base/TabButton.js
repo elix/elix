@@ -81,7 +81,7 @@ class TabButton extends Base {
       };
       this[internal.ids].inner.style.borderRadius = generic
         ? borderRadiusForPosition[position]
-        : null;
+        : "";
     }
     if (changed.generic || changed.position || changed.selected) {
       // Adjust selected appearance.

@@ -121,7 +121,7 @@ class Explorer extends Base {
       this[internal.ids].stage.addEventListener(
         "selection-effect-finished",
         event => {
-          const { selectedIndex } = event.detail;
+          const { selectedIndex } = /** @type {any} */ (event).detail;
           /**
            * This event is raised if the current `stage` applies a transition
            * effect when changing the selection, and the selection effect has

@@ -11,7 +11,7 @@ declare const ShadowTemplateMixin: Mixin<
     [internal.delegatesFocus]: boolean;
     [internal.focusTarget]: HTMLElement | null;
     [internal.hasDynamicTemplate]: boolean;
-    readonly ids: {
+    readonly [internal.ids]: {
       [id: string]: HTMLElement | SVGElement;
     };
     connectedCallback(): void;

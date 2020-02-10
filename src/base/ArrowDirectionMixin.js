@@ -80,13 +80,15 @@ function ArrowDirectionMixin(Base) {
 
     [internal.render](/** @type {PlainObject} */ changed) {
       if (changed.arrowButtonPartType) {
-        if (this[internal.ids].arrowButtonPrevious instanceof HTMLElement) {
+        const arrowButtonPrevious = this[internal.ids].arrowButtonPrevious;
+        if (arrowButtonPrevious instanceof HTMLElement) {
           // Turn off focus handling for old previous button.
-          forwardFocus(this[internal.ids].arrowButtonPrevious, null);
+          forwardFocus(arrowButtonPrevious, null);
         }
-        if (this[internal.ids].arrowButtonNext instanceof HTMLElement) {
+        const arrowButtonNext = this[internal.ids].arrowButtonNext;
+        if (arrowButtonNext instanceof HTMLElement) {
           // Turn off focus handling for old next button.
-          forwardFocus(this[internal.ids].arrowButtonNext, null);
+          forwardFocus(arrowButtonNext, null);
         }
       }
 
@@ -102,13 +104,14 @@ function ArrowDirectionMixin(Base) {
           this[internal.ids].arrowButtonPrevious,
           this[internal.state].arrowButtonPartType
         );
-        if (this[internal.ids].arrowButtonPrevious instanceof HTMLElement) {
-          forwardFocus(this[internal.ids].arrowButtonPrevious, cast);
+        const arrowButtonPrevious = this[internal.ids].arrowButtonPrevious;
+        if (arrowButtonPrevious instanceof HTMLElement) {
+          forwardFocus(arrowButtonPrevious, cast);
         }
         const previousButtonHandler = createButtonHandler(this, () =>
           this.arrowButtonPrevious()
         );
-        this[internal.ids].arrowButtonPrevious.addEventListener(
+        arrowButtonPrevious.addEventListener(
           "mousedown",
           previousButtonHandler
         );
@@ -117,16 +120,14 @@ function ArrowDirectionMixin(Base) {
           this[internal.ids].arrowButtonNext,
           this[internal.state].arrowButtonPartType
         );
-        if (this[internal.ids].arrowButtonNext instanceof HTMLElement) {
-          forwardFocus(this[internal.ids].arrowButtonNext, cast);
+        const arrowButtonNext = this[internal.ids].arrowButtonNext;
+        if (arrowButtonNext instanceof HTMLElement) {
+          forwardFocus(arrowButtonNext, cast);
         }
         const nextButtonHandler = createButtonHandler(this, () =>
           this.arrowButtonNext()
         );
-        this[internal.ids].arrowButtonNext.addEventListener(
-          "mousedown",
-          nextButtonHandler
-        );
+        arrowButtonNext.addEventListener("mousedown", nextButtonHandler);
       }
 
       const {

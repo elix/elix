@@ -278,7 +278,7 @@ class PopupSource extends Base {
         maxHeight: maxFrameHeight ? `${maxFrameHeight}px` : null,
         maxWidth: maxFrameWidth ? `${maxFrameWidth}px` : null
       });
-      this[internal.ids].popupContainer.style.top = positionBelow ? null : "0";
+      this[internal.ids].popupContainer.style.top = positionBelow ? "" : "0";
     }
     if (changed.sourcePartType) {
       template.transmute(

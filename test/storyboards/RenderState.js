@@ -15,7 +15,8 @@ class RenderState extends Base {
   }
 
   get [internal.contentSlot]() {
-    return this[internal.ids].fixtureSlot;
+    const slot = this[internal.ids].fixtureSlot;
+    return slot instanceof HTMLSlotElement ? slot : null;
   }
 
   get fixture() {

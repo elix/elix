@@ -273,8 +273,9 @@ class PullToRefresh extends Base {
  * @param {PullToRefresh} element
  */
 function getSwipeThreshold(element) {
-  return element[internal.ids].refreshIndicators instanceof HTMLElement
-    ? element[internal.ids].refreshIndicators.offsetHeight
+  const refreshIndicators = element[internal.ids].refreshIndicators;
+  return refreshIndicators instanceof HTMLElement
+    ? refreshIndicators.offsetHeight
     : 0;
 }
 
