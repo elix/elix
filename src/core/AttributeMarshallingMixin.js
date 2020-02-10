@@ -47,7 +47,7 @@ const propertyNamesToAttributes = {
  *       get fooBar() { return this._fooBar; }
  *       set fooBar(value) { this._fooBar = value; }
  *     }
- *      *
+ *
  * If someone then instantiates your component in HTML:
  *
  *     <my-element foo-bar="Hello"></my-element>
@@ -94,9 +94,7 @@ export default function AttributeMarshallingMixin(Base) {
     }
 
     static get observedAttributes() {
-      /** @type {any} */
-      const elementClass = this;
-      return attributesForClass(elementClass);
+      return attributesForClass(this);
     }
   }
 
