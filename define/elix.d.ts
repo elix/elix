@@ -7,7 +7,6 @@ export { default as AriaMenuMixin } from "../src/base/AriaMenuMixin.js";
 export { default as AriaRoleMixin } from "../src/base/AriaRoleMixin.js";
 export { default as ArrowDirectionButton } from "./ArrowDirectionButton.js";
 export { default as ArrowDirectionMixin } from "../src/base/ArrowDirectionMixin.js";
-export { default as AttributeMarshallingMixin } from "../src/core/AttributeMarshallingMixin.js";
 export { default as AutoCompleteComboBox } from "./AutoCompleteComboBox.js";
 export { default as AutoCompleteInput } from "./AutoCompleteInput.js";
 export { default as AutoSizeTextarea } from "./AutoSizeTextarea.js";
@@ -68,7 +67,9 @@ export { default as ListComboBox } from "./ListComboBox.js";
 export { default as ListExplorer } from "./ListExplorer.js";
 export { default as ListWithSearch } from "./ListWithSearch.js";
 export { default as Menu } from "./Menu.js";
+export { default as MenuBase } from "./MenuBase.js";
 export { default as MenuButton } from "./MenuButton.js";
+export { default as MenuButtonBase } from "./MenuButtonBase.js";
 export { default as MenuItem } from "./MenuItem.js";
 export { default as MenuSeparator } from "./MenuSeparator.js";
 export { default as ModalBackdrop } from "./ModalBackdrop.js";
@@ -82,18 +83,16 @@ export { default as PageNumbersMixin } from "../src/base/PageNumbersMixin.js";
 export { default as PlayControlsMixin } from "../src/base/PlayControlsMixin.js";
 export { default as Popup } from "./Popup.js";
 export { default as PopupButton } from "./PopupButton.js";
+export { default as PopupButtonBase } from "./PopupButtonBase.js";
 export { default as PopupModalityMixin } from "../src/base/PopupModalityMixin.js";
 export { default as PopupSource } from "./PopupSource.js";
 export { default as ProgressSpinner } from "./ProgressSpinner.js";
 export { default as PullToRefresh } from "./PullToRefresh.js";
-export { default as ReactiveElement } from "./ReactiveElement.js";
-export { default as ReactiveMixin } from "../src/core/ReactiveMixin.js";
 export { default as ResizeMixin } from "../src/base/ResizeMixin.js";
 export { default as SeamlessButton } from "./SeamlessButton.js";
 export { default as SelectableButton } from "./SelectableButton.js";
 export { default as SelectedItemTextValueMixin } from "../src/base/SelectedItemTextValueMixin.js";
 export { default as SelectionInViewMixin } from "../src/base/SelectionInViewMixin.js";
-export { default as ShadowTemplateMixin } from "../src/core/ShadowTemplateMixin.js";
 export { default as SingleSelectionMixin } from "../src/base/SingleSelectionMixin.js";
 export { default as Slideshow } from "./Slideshow.js";
 export { default as SlideshowWithPlayControls } from "./SlideshowWithPlayControls.js";
@@ -135,6 +134,10 @@ import * as contentImport from "../src/base/content.js";
 // @ts-ignore
 export const content = contentImport;
 
+import * as elixImport from "../src/base/elix.js";
+// @ts-ignore
+export const elix = elixImport;
+
 import * as fractionalSelectionImport from "../src/base/fractionalSelection.js";
 // @ts-ignore
 export const fractionalSelection = fractionalSelectionImport;
@@ -146,11 +149,3 @@ export const internal = internalImport;
 import * as scrollingImport from "../src/base/scrolling.js";
 // @ts-ignore
 export const scrolling = scrollingImport;
-
-import * as templateImport from "../src/core/template.js";
-// @ts-ignore
-export const template = templateImport;
-
-import * as utilitiesImport from "../src/core/utilities.js";
-// @ts-ignore
-export const utilities = utilitiesImport;

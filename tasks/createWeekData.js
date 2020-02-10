@@ -20,7 +20,7 @@ const weekDataUrl =
 async function createWeekData() {
   const weekData = await getWeekData();
   const weekSource = formatWeekDataAsModule(weekData);
-  const weekFile = path.join(__dirname, "../src/weekData.js");
+  const weekFile = path.join(__dirname, "../src/base/weekData.js");
   await fs.writeFile(weekFile, weekSource);
 }
 

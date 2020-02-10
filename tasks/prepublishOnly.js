@@ -27,7 +27,7 @@ async function createEmptyDefineFolder(defineFolder) {
 
 async function getSourceFiles(sourceFolder) {
   /** @type {string[]} */ const files = await fs.readdir(sourceFolder);
-  const generatedFiles = ["elix.js", "weekData.js"];
+  const generatedFiles = ["weekData.js"];
   // Source files have a .js extension. Also, ignore generated files.
   const jsFiles = files.filter(
     file => path.extname(file) === ".js" && !generatedFiles.includes(file)
@@ -55,7 +55,7 @@ async function getSourceFiles(sourceFolder) {
 
 (async () => {
   try {
-    const sourceFolder = path.join(__dirname, "../src");
+    const sourceFolder = path.join(__dirname, "../src/base"); // TODO: -> src/plain
     const defineFolder = path.join(__dirname, "../define");
     // Preparation
     const sourceFilesPromise = await getSourceFiles(sourceFolder);
