@@ -6,9 +6,9 @@
     <title>Reactive web component example with subclassing</title>
 
     <script type="module">
-      import * as internal from "../src/internal.js";
-      import * as template from "../src/template.js";
-      import ReactiveElement from "../src/ReactiveElement.js";
+      import * as internal from "../src/base/internal.js";
+      import * as template from "../src/core/template.js";
+      import ReactiveElement from "../src/core/ReactiveElement.js";
 
       class IncrementDecrement extends ReactiveElement {
         get buttonPartType() {

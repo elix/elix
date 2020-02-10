@@ -21,8 +21,8 @@
         <button id="increment">+</button>
       </template>
       <script type="module">
-        import * as internal from "../src/internal.js";
-        import ReactiveMixin from "../src/ReactiveMixin.js";
+        import * as internal from "../src/core/internal.js";
+        import ReactiveMixin from "../src/core/ReactiveMixin.js";
 
         // Create a native web component with reactive behavior.
         class IncrementDecrement extends ReactiveMixin(HTMLElement) {

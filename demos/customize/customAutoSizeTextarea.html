@@ -12,9 +12,9 @@
     <link rel="stylesheet" href="../demos.css" />
 
     <script type="module">
-      import * as internal from "../../src/internal.js";
-      import * as template from "../../src/template.js";
-      import AutoSizeTextarea from "../../src/AutoSizeTextarea.js";
+      import * as internal from "../../src/base/internal.js";
+      import * as template from "../../src/core/template.js";
+      import AutoSizeTextarea from "../../src/base/AutoSizeTextarea.js";
 
       class CustomAutoSizeTextarea extends AutoSizeTextarea {
         get [internal.template]() {
