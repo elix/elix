@@ -11,8 +11,8 @@ class MenuButton extends MenuButtonBase {
   }
 
   get [internal.template]() {
-    return template.concat(
-      super[internal.template],
+    const result = super[internal.template];
+    result.append(
       template.html`
         <style>
           #menu {
@@ -21,8 +21,9 @@ class MenuButton extends MenuButtonBase {
             padding: 0.5em 0;
           }
         </style>
-      `
+      `.content
     );
+    return result;
   }
 }
 
