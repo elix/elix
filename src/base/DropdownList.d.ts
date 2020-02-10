@@ -2,7 +2,7 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import FormElementMixin from "./FormElementMixin.js";
-import MenuButton from "./MenuButton.js";
+import MenuButton from "../plain/MenuButton.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
