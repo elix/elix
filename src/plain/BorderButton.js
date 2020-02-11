@@ -1,19 +1,17 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
-import Button from "../base/Button.js";
+import PlainButton from "./Button.js";
 
-class PlainButton extends Button {
+class BorderButton extends PlainButton {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
       template.html`
         <style>
           #inner {
-            display: inline-flex;
-            justify-content: center;
-            margin: 0;
-            position: relative;
-            white-space: nowrap;
+            background: #eee;
+            border: 1px solid #ddd;
+            padding: 0.25em 0.5em;
           }
         </style>
       `.content
@@ -22,4 +20,4 @@ class PlainButton extends Button {
   }
 }
 
-export default PlainButton;
+export default BorderButton;

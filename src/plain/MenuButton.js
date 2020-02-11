@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
-import PlainButton from "./Button.js";
+import BorderButton from "./BorderButton.js";
 import MenuButton from "../base/MenuButton.js";
 import PlainMenu from "./Menu.js";
 import PlainOverlayFrame from "./OverlayFrame.js";
@@ -10,7 +10,7 @@ class PlainMenuButton extends MenuButton {
     return Object.assign(super[internal.defaultState], {
       framePartType: PlainOverlayFrame,
       menuPartType: PlainMenu,
-      sourcePartType: PlainButton
+      sourcePartType: BorderButton
     });
   }
 

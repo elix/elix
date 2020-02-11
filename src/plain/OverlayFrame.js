@@ -1,4 +1,4 @@
-import * as internal from "../core/internal.js";
+import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
 import OverlayFrame from "../base/OverlayFrame.js";
 

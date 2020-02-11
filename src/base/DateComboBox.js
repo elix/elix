@@ -1,12 +1,11 @@
 import * as calendar from "./calendar.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
-import ArrowDirectionButton from "./ArrowDirectionButton.js";
+import Button from "./Button.js";
 import CalendarDayButton from "./CalendarDayButton.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
 import CalendarMonthNavigator from "./CalendarMonthNavigator.js";
 import ComboBox from "./ComboBox.js";
-import Button from "./Button.js";
 
 const Base = CalendarElementMixin(ComboBox);
 
@@ -15,6 +14,7 @@ const Base = CalendarElementMixin(ComboBox);
  *
  * @inherits ComboBox
  * @mixes CalendarElementMixin
+ * @part {Button} arrow-button - the arrow buttons that navigate the calendar
  * @part {CalendarMonthNavigator} calendar - the calendar showing dates to choose from
  * @part {CalendarDay} day - any of the day elements in the calendar
  * @part day - any of the day elements in the month grid
@@ -29,7 +29,6 @@ class DateComboBox extends Base {
    * left and right arrow buttons that navigate the calendar.
    *
    * @type {PartDescriptor}
-   * @default ArrowDirectionButton
    */
   get arrowButtonPartType() {
     return this[internal.state].arrowButtonPartType;
@@ -111,7 +110,7 @@ class DateComboBox extends Base {
     };
 
     return Object.assign(super[internal.defaultState], {
-      arrowButtonPartType: ArrowDirectionButton,
+      arrowButtonPartType: Button,
       calendarPartType: CalendarMonthNavigator,
       date: null,
       datePriority: false,
@@ -437,15 +436,6 @@ class DateComboBox extends Base {
 
         #calendar {
           margin: 0.5em;
-        }
-
-        #todayButton {
-          border: 1px solid transparent;
-          padding: 0.5em;
-        }
-
-        #todayButton:hover {
-          border-color: gray;
         }
       </style>
       <div id="calendarContainer">

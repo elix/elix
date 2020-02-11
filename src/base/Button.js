@@ -107,6 +107,7 @@ class Button extends Base {
           }
           
           #inner {
+            align-items: center;
             background: none;
             border: none;
             color: inherit;

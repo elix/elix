@@ -1,9 +1,9 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
-import Button from "../base/Button.js";
+import PlainButton from "./Button.js";
 import DarkModeMixin from "../base/DarkModeMixin.js";
 
-const Base = DarkModeMixin(Button);
+const Base = DarkModeMixin(PlainButton);
 
 /**
  * Button that can be used as a left or right arrow button.
