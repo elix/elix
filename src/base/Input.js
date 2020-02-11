@@ -41,16 +41,17 @@ class Input extends Base {
   }
 
   get [internal.template]() {
-    return template.concat(
-      super[internal.template],
+    const result = super[internal.template];
+    result.content.append(
       template.html`
         <style>
           #inner {
             font: inherit;
           }
         </style>
-      `
+      `.content
     );
+    return result;
   }
 
   // Updating the value can also update the selectionStart and selectionEnd

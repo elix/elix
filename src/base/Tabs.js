@@ -129,16 +129,17 @@ class Tabs extends Base {
   }
 
   get [internal.template]() {
-    return template.concat(
-      super[internal.template],
+    const result = super[internal.template];
+    result.content.append(
       template.html`
-      <style>
-        #proxyList {
-          z-index: 1;
-        }
-      </style>
-    `
+        <style>
+          #proxyList {
+            z-index: 1;
+          }
+        </style>
+      `.content
     );
+    return result;
   }
 }
 

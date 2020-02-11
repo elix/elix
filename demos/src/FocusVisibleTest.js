@@ -4,8 +4,8 @@ import Button from "../../src/base/Button.js";
 
 class FocusVisibleTest extends Button {
   get [internal.template]() {
-    return template.concat(
-      super[internal.template],
+    const result = super[internal.template];
+    result.content.append(
       template.html`
         <style>
           #inner {
@@ -15,8 +15,9 @@ class FocusVisibleTest extends Button {
             padding: 6px 12px;
           }
         </style>
-      `
+      `.content
     );
+    return result;
   }
 }
 

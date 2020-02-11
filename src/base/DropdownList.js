@@ -86,8 +86,9 @@ class DropdownList extends Base {
   }
 
   get [internal.template]() {
-    const base = super[internal.template];
-    const sourceSlot = base.content.querySelector('slot[name="source"]');
+    const result = super[internal.template];
+
+    const sourceSlot = result.content.querySelector('slot[name="source"]');
     if (!sourceSlot) {
       throw `Couldn't find slot with name "source".`;
     }
@@ -103,8 +104,8 @@ class DropdownList extends Base {
       </div>
     `;
     applyChildNodes(sourceSlot, sourceSlotContent.content.childNodes);
-    return template.concat(
-      base,
+
+    result.content.append(
       template.html`
         <style>
           #downIcon,
@@ -117,8 +118,10 @@ class DropdownList extends Base {
             padding: 0;
           }
         </style>
-      `
+      `.content
     );
+
+    return result;
   }
 
   /**

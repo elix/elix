@@ -4,8 +4,8 @@ import SeamlessButton from "../../src/base/SeamlessButton.js";
 
 class CustomArrowButton extends SeamlessButton {
   get [internal.template]() {
-    return template.concat(
-      super[internal.template],
+    const result = super[internal.template];
+    result.content.append(
       template.html`
         <style>
           :host {
@@ -49,8 +49,9 @@ class CustomArrowButton extends SeamlessButton {
             transform: scale(1.0);
           }
         </style>
-      `
+      `.content
     );
+    return result;
   }
 }
 

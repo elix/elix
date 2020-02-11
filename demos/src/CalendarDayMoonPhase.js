@@ -13,22 +13,23 @@ import CalendarDay from "../../src/base/CalendarDay.js";
  */
 class CalendarDayMoonPhase extends CalendarDay {
   get [internal.template]() {
-    return template.concat(
-      super[internal.template],
+    const result = super[internal.template];
+    result.content.append(
       template.html`
-      <style>
-        #phaseIcon {
-          height: 1.5em;
-          width: 1.5em;
-        }
-        
-        #phaseIcon:not([src]) {
-          visibility: hidden;
-        }
-      </style>
-      <img id="phaseIcon">
-    `
+        <style>
+          #phaseIcon {
+            height: 1.5em;
+            width: 1.5em;
+          }
+          
+          #phaseIcon:not([src]) {
+            visibility: hidden;
+          }
+        </style>
+        <img id="phaseIcon">
+      `.content
     );
+    return result;
   }
 
   [internal.render](/** @type {PlainObject} */ changed) {

@@ -25,49 +25,50 @@ class ArrowDirectionButton extends Base {
   }
 
   get [internal.template]() {
-    return template.concat(
-      super[internal.template],
+    const result = super[internal.template];
+    result.content.append(
       template.html`
-      <style>
-        :host {
-          color: rgba(0, 0, 0, 0.7);
-        }
+        <style>
+          :host {
+            color: rgba(0, 0, 0, 0.7);
+          }
 
-        :host(:hover:not([disabled]))  {
-          background: rgba(0, 0, 0, 0.2);
-          color: rgba(0, 0, 0, 0.8);
-          cursor: pointer;
-        }
+          :host(:hover:not([disabled]))  {
+            background: rgba(0, 0, 0, 0.2);
+            color: rgba(0, 0, 0, 0.8);
+            cursor: pointer;
+          }
 
-        :host([disabled]) {
-          color: rgba(0, 0, 0, 0.3);
-        }
+          :host([disabled]) {
+            color: rgba(0, 0, 0, 0.3);
+          }
 
-        #inner {
-          fill: currentcolor;
-        }
+          #inner {
+            fill: currentcolor;
+          }
 
-        #inner:hover:not(:disabled) {
-        }
+          #inner:hover:not(:disabled) {
+          }
 
-        #inner:disabled {
-        }
+          #inner:disabled {
+          }
 
-        #inner.darkMode {
-          color: rgba(255, 255, 255, 0.7);
-        }
+          #inner.darkMode {
+            color: rgba(255, 255, 255, 0.7);
+          }
 
-        #inner.darkMode:hover:not(:disabled) {
-          background: rgba(255, 255, 255, 0.2);
-          color: rgba(255, 255, 255, 0.8);
-        }
+          #inner.darkMode:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.8);
+          }
 
-        #inner.darkMode:disabled {
-          color: rgba(255, 255, 255, 0.3);
-        }
-      </style>
-    `
+          #inner.darkMode:disabled {
+            color: rgba(255, 255, 255, 0.3);
+          }
+        </style>
+      `.content
     );
+    return result;
   }
 }
 

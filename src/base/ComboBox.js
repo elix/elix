@@ -306,10 +306,10 @@ class ComboBox extends Base {
   }
 
   get [internal.template]() {
-    const base = super[internal.template];
+    const result = super[internal.template];
 
     // Use an input element in the source.
-    const sourceSlot = base.content.querySelector('slot[name="source"]');
+    const sourceSlot = result.content.querySelector('slot[name="source"]');
     if (!sourceSlot) {
       throw `Couldn't find slot with name "source".`;
     }
@@ -326,58 +326,59 @@ class ComboBox extends Base {
     `;
     template.replace(sourceSlot, sourceTemplate.content);
 
-    return template.concat(
-      base,
+    result.content.append(
       template.html`
-      <style>
-        :host {
-          outline: none;
-        }
+        <style>
+          :host {
+            outline: none;
+          }
 
-        #source {
-          background-color: inherit;
-          position: relative;
-        }
+          #source {
+            background-color: inherit;
+            position: relative;
+          }
 
-        #input {
-          box-sizing: border-box;
-          font: inherit;
-          height: 100%;
-          width: 100%;
-        }
+          #input {
+            box-sizing: border-box;
+            font: inherit;
+            height: 100%;
+            width: 100%;
+          }
 
-        #toggleButton {
-          align-items: center;
-          bottom: 3px;
-          display: flex;
-          padding: 0;
-          position: absolute;
-          top: 3px;
-          width: 1.5em;
-        }
+          #toggleButton {
+            align-items: center;
+            bottom: 3px;
+            display: flex;
+            padding: 0;
+            position: absolute;
+            top: 3px;
+            width: 1.5em;
+          }
 
-        #toggleButton[disabled] {
-          opacity: 0.5;
-        }
+          #toggleButton[disabled] {
+            opacity: 0.5;
+          }
 
-        #toggleButton:not([disabled]):hover {
-          background: #eee;
-        }
+          #toggleButton:not([disabled]):hover {
+            background: #eee;
+          }
 
-        #downIcon,
-        #upIcon {
-          fill: currentColor;
-          margin: 0.25em;
-        }
+          #downIcon,
+          #upIcon {
+            fill: currentColor;
+            margin: 0.25em;
+          }
 
-        #popup {
-          flex-direction: column;
-          max-height: 100vh;
-          max-width: 100vh;
-        }
-      </style>
-    `
+          #popup {
+            flex-direction: column;
+            max-height: 100vh;
+            max-width: 100vh;
+          }
+        </style>
+      `.content
     );
+
+    return result;
   }
 
   /**

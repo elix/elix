@@ -19,19 +19,22 @@ class SlidingPagesWithArrows extends Base {
   }
 
   get [internal.template]() {
-    const base = super[internal.template];
+    const result = super[internal.template];
+
     /** @type {any} */ const cast = this;
-    cast[ArrowDirectionMixin.wrap](base.content);
-    return template.concat(
-      base,
+    cast[ArrowDirectionMixin.wrap](result.content);
+
+    result.content.append(
       template.html`
-      <style>
-        .arrowButton {
-          font-size: 48px;
-        }
-      </style>
-    `
+        <style>
+          .arrowButton {
+            font-size: 48px;
+          }
+        </style>
+      `.content
     );
+
+    return result;
   }
 }
 

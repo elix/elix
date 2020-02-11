@@ -30,38 +30,40 @@ export default class CustomDrawer extends DrawerWithGrip {
 
   get [internal.template]() {
     const result = super[internal.template];
+
     const gripTemplate = template.html`
       <div id="plusIcon">+</div>
     `;
     const gripSlot = result.content.querySelector('slot[name="grip"]');
     gripSlot.innerHTML = "";
     gripSlot.append(gripTemplate.content);
-    return template.concat(
-      result,
+
+    result.content.append(
       template.html`
-      <style>
-        #frame {
-          background: rgba(26,36,46,0.9);
-          color: white;
-          width: 100%;
-        }
+        <style>
+          #frame {
+            background: rgba(26,36,46,0.9);
+            color: white;
+            width: 100%;
+          }
 
-        #plusIcon {
-          color: #00c8aa;
-          font-family: "Varela Round", sans-serif;
-          font-size: 80px;
-          font-weight: bold;
-          padding: 8px;
-          -webkit-text-stroke: 4px currentColor;
-          transition: color 0.25s;
-        }
+          #plusIcon {
+            color: #00c8aa;
+            font-family: "Varela Round", sans-serif;
+            font-size: 80px;
+            font-weight: bold;
+            padding: 8px;
+            -webkit-text-stroke: 4px currentColor;
+            transition: color 0.25s;
+          }
 
-        #grip:hover #plusIcon {
-          color: #16FFDC;
-        }
-      </style>
-    `
+          #grip:hover #plusIcon {
+            color: #16FFDC;
+          }
+        </style>
+      `.content
     );
+    return result;
   }
 }
 

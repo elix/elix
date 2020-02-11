@@ -12,8 +12,8 @@ import WrappedStandardElement from "./WrappedStandardElement.js";
  */
 class Thumbnail extends WrappedStandardElement.wrap("img") {
   get [internal.template]() {
-    return template.concat(
-      super[internal.template],
+    const result = super[internal.template];
+    result.content.append(
       template.html`
         <style>
           :host {
@@ -26,8 +26,9 @@ class Thumbnail extends WrappedStandardElement.wrap("img") {
             object-fit: contain;
           }
         </style>
-      `
+      `.content
     );
+    return result;
   }
 }
 

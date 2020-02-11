@@ -122,50 +122,7 @@ export default class MessageListBox extends Base {
   }
 
   get [internal.template]() {
-    const result = template.concat(
-      super[internal.template],
-      template.html`
-      <style>
-        :host([generic]) ::slotted(*) {
-          padding: 0;
-        }
-
-        .command {
-          display: flex;
-          padding: 1em;
-        }
-
-        .iconWithLabel {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-
-        .icon {
-          height: 32px;
-          width: 32px;
-        }
-
-        #unreadCommand {
-          background: #147efb;
-          color: white;
-          text-align: left;
-        }
-        #unreadCommand.willCommit {
-          text-align: right;
-        }
-
-        #deleteCommand {
-          background: #fc3d39;
-          color: white;
-          text-align: right;
-        }
-        #deleteCommand.willCommit {
-          text-align: left;
-        }
-      </style>
-    `
-    );
+    const result = super[internal.template];
 
     // Patch the Mark Read/Unread command into the left command slot.
     const leftCommandSlot = result.content.getElementById("leftCommandSlot");
@@ -201,6 +158,50 @@ export default class MessageListBox extends Base {
         rightCommandTemplate.content.childNodes
       );
     }
+
+    result.content.append(
+      template.html`
+        <style>
+          :host([generic]) ::slotted(*) {
+            padding: 0;
+          }
+
+          .command {
+            display: flex;
+            padding: 1em;
+          }
+
+          .iconWithLabel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          }
+
+          .icon {
+            height: 32px;
+            width: 32px;
+          }
+
+          #unreadCommand {
+            background: #147efb;
+            color: white;
+            text-align: left;
+          }
+          #unreadCommand.willCommit {
+            text-align: right;
+          }
+
+          #deleteCommand {
+            background: #fc3d39;
+            color: white;
+            text-align: right;
+          }
+          #deleteCommand.willCommit {
+            text-align: left;
+          }
+        </style>
+      `.content
+    );
 
     return result;
   }

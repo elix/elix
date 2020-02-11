@@ -4,19 +4,20 @@ import Button from "../../src/base/Button.js";
 
 class CustomButton extends Button {
   get [internal.template]() {
-    return template.concat(
-      super[internal.template],
+    const result = super[internal.template];
+    result.content.append(
       template.html`
-      <style>
-        #inner {
-          background: white;
-          border-radius: 0.5em;
-          border: 2px solid rgba(255, 0, 0, 0.2);
-          padding: 0.5em 1em;
-        }
-      </style>
-    `
+        <style>
+          #inner {
+            background: white;
+            border-radius: 0.5em;
+            border: 2px solid rgba(255, 0, 0, 0.2);
+            padding: 0.5em 1em;
+          }
+        </style>
+      `.content
     );
+    return result;
   }
 }
 

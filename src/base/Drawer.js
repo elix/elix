@@ -383,11 +383,12 @@ class Drawer extends Base {
 
   get [internal.template]() {
     const result = super[internal.template];
+
     const frameContent = result.content.querySelector("#frameContent");
     /** @type {any} */ const cast = this;
     cast[FocusCaptureMixin.wrap](frameContent);
-    return template.concat(
-      result,
+
+    result.content.append(
       template.html`
         <style>
           :host {
@@ -407,8 +408,10 @@ class Drawer extends Base {
             overflow: hidden;
           }
         </style>
-      `
+      `.content
     );
+
+    return result;
   }
 }
 

@@ -33,17 +33,18 @@ class ModalBackdrop extends Backdrop {
   }
 
   get [internal.template]() {
-    return template.concat(
-      super[internal.template],
+    const result = super[internal.template];
+    result.content.append(
       template.html`
-      <style>
-        :host {
-          background: black;
-          opacity: 0.2;
-        }
-      </style>
-    `
+        <style>
+          :host {
+            background: black;
+            opacity: 0.2;
+          }
+        </style>
+      `.content
     );
+    return result;
   }
 }
 

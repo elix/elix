@@ -12,18 +12,19 @@ import Button from "./Button.js";
  */
 class SeamlessButton extends Button {
   get [internal.template]() {
-    return template.concat(
-      super[internal.template],
+    const result = super[internal.template];
+    result.content.append(
       template.html`
-      <style>
-        #inner {
-          background: none;
-          border: none;
-          padding: 0;
-        }
-      </style>
-    `
+        <style>
+          #inner {
+            background: none;
+            border: none;
+            padding: 0;
+          }
+        </style>
+      `.content
     );
+    return result;
   }
 }
 

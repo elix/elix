@@ -1,2 +1,2 @@
-import Drawer from "../src/base/Drawer.js";
+import Drawer from "../src/plain/Drawer.js";
 export default Drawer;

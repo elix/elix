@@ -65,29 +65,30 @@
 
       class CustomIncrementDecrement extends IncrementDecrement {
         get [internal.template]() {
-          return template.concat(
-            super[internal.template],
+          const result = super[internal.template];
+          result.content.append(
             template.html`
-          <style>
-            :host {
-              background: lightgray;
-              font-family: Helvetica, Arial, sans-serif;
-              font-weight: bold;
-            }
+              <style>
+                :host {
+                  background: lightgray;
+                  font-family: Helvetica, Arial, sans-serif;
+                  font-weight: bold;
+                }
 
-            button {
-              background: #444;
-              border: none;
-              border-radius: 0;
-              color: white;
-            }
+                button {
+                  background: #444;
+                  border: none;
+                  border-radius: 0;
+                  color: white;
+                }
 
-            button:disabled {
-              color: gray;
-            }
-          </style>
-        `
+                button:disabled {
+                  color: gray;
+                }
+              </style>
+            `.content
           );
+          return result;
         }
 
         [internal.render](changed) {

@@ -11,16 +11,17 @@ class CarouselComboBox extends AutoCompleteComboBox {
   }
 
   get [internal.template]() {
-    return template.concat(
-      super[internal.template],
+    const result = super[internal.template];
+    result.content.append(
       template.html`
-      <style>
-        #list {
-          background: black;
-        }
-      </style>
-    `
+        <style>
+          #list {
+            background: black;
+          }
+        </style>
+      `.content
     );
+    return result;
   }
 }
 

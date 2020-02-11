@@ -10,29 +10,30 @@ class ToolbarTab extends TabButton {
   }
 
   get [internal.template]() {
-    return template.concat(
-      super[internal.template],
+    const result = super[internal.template];
+    result.content.append(
       template.html`
-      <style>
-        #inner {
-          align-items: center;
-          background: transparent;
-          border: none;
-          display: flex;
-          flex: 1;
-          flex-direction: column;
-          font: inherit;
-          padding: 6px;
-          -webkit-tap-highlight-color: transparent;
-        }
+        <style>
+          #inner {
+            align-items: center;
+            background: transparent;
+            border: none;
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            font: inherit;
+            padding: 6px;
+            -webkit-tap-highlight-color: transparent;
+          }
 
-        :host([selected]) {
-          color: dodgerblue;
-          z-index: 1;
-        }
-      </style>
-    `
+          :host([selected]) {
+            color: dodgerblue;
+            z-index: 1;
+          }
+        </style>
+      `.content
     );
+    return result;
   }
 }
 

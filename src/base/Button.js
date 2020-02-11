@@ -95,8 +95,8 @@ class Button extends Base {
   }
 
   get [internal.template]() {
-    return template.concat(
-      super[internal.template],
+    const result = super[internal.template];
+    result.content.append(
       template.html`
         <style>
           :host {
@@ -120,8 +120,9 @@ class Button extends Base {
             width: 100%;
           }
         </style>
-      `
+      `.content
     );
+    return result;
   }
 }
 

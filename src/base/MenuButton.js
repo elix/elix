@@ -317,7 +317,7 @@ class MenuButton extends PopupButtonBase {
   }
 
   get [internal.template]() {
-    const base = super[internal.template];
+    const result = super[internal.template];
 
     // Wrap default slot with a menu.
     const menuTemplate = template.html`
@@ -325,7 +325,7 @@ class MenuButton extends PopupButtonBase {
         <slot></slot>
       </div>
     `;
-    const defaultSlot = base.content.querySelector("slot:not([name])");
+    const defaultSlot = result.content.querySelector("slot:not([name])");
     if (defaultSlot) {
       template.transmute(defaultSlot, menuTemplate);
     }
@@ -339,13 +339,12 @@ class MenuButton extends PopupButtonBase {
         </svg>
       </slot>
     `;
-    const sourceSlot = base.content.querySelector('slot[name="source"]');
+    const sourceSlot = result.content.querySelector('slot[name="source"]');
     if (sourceSlot) {
       template.transmute(sourceSlot, sourceTemplate);
     }
 
-    return template.concat(
-      base,
+    result.content.append(
       template.html`
         <style>
           #menu {
@@ -362,8 +361,10 @@ class MenuButton extends PopupButtonBase {
             fill: currentColor;
           }
         </style>
-      `
+      `.content
     );
+
+    return result;
   }
 }
 

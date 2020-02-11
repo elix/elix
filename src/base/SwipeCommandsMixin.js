@@ -227,48 +227,49 @@ export default function SwipeCommandsMixin(Base) {
     }
 
     get [internal.template]() {
-      return template.concat(
-        super[internal.template],
+      const result = super[internal.template];
+      result.content.append(
         template.html`
-        <style>
-          ::slotted(*) {
-            box-sizing: border-box;
-            will-change: transform;
-          }
+          <style>
+            ::slotted(*) {
+              box-sizing: border-box;
+              will-change: transform;
+            }
 
-          ::slotted(.unread) {
-            font-weight: bold;
-          }
+            ::slotted(.unread) {
+              font-weight: bold;
+            }
 
-          .commandContainer {
-            display: flex;
-            overflow: hidden;
-            position: absolute;
-            width: 0;
-            will-change: width;
-          }
+            .commandContainer {
+              display: flex;
+              overflow: hidden;
+              position: absolute;
+              width: 0;
+              will-change: width;
+            }
 
-          .commandContainer ::slotted(*),
-          .commandContainer slot > * {
-            flex: 1;
-          }
+            .commandContainer ::slotted(*),
+            .commandContainer slot > * {
+              flex: 1;
+            }
 
-          #leftCommandContainer {
-            left: 0;
-          }
+            #leftCommandContainer {
+              left: 0;
+            }
 
-          #rightCommandContainer {
-            right: 0;
-          }
-        </style>
-        <div id="leftCommandContainer" class="commandContainer">
-          <slot id="leftCommandSlot" name="leftCommand"></slot>
-        </div>
-        <div id="rightCommandContainer" class="commandContainer">
-          <slot id="rightCommandSlot" name="rightCommand"></slot>
-        </div>
-      `
+            #rightCommandContainer {
+              right: 0;
+            }
+          </style>
+          <div id="leftCommandContainer" class="commandContainer">
+            <slot id="leftCommandSlot" name="leftCommand"></slot>
+          </div>
+          <div id="rightCommandContainer" class="commandContainer">
+            <slot id="rightCommandSlot" name="rightCommand"></slot>
+          </div>
+        `.content
       );
+      return result;
     }
   };
 }

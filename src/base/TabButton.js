@@ -119,35 +119,36 @@ class TabButton extends Base {
   }
 
   get [internal.template]() {
-    return template.concat(
-      super[internal.template],
+    const result = super[internal.template];
+    result.content.append(
       template.html`
-      <style>
-        #inner {
-          background: inherit;
-          color: inherit;
-          margin: 0;
-        }
+        <style>
+          #inner {
+            background: inherit;
+            color: inherit;
+            margin: 0;
+          }
 
-        :host([generic]) #inner {
-          background: white;
-          border-color: #ccc;
-          border-style: solid;
-          border-width: 1px;
-          padding: 0.5em 0.75em;
-          white-space: nowrap;
-        }
+          :host([generic]) #inner {
+            background: white;
+            border-color: #ccc;
+            border-style: solid;
+            border-width: 1px;
+            padding: 0.5em 0.75em;
+            white-space: nowrap;
+          }
 
-        :host([generic][selected]) #inner {
-          z-index: 1;
-        }
+          :host([generic][selected]) #inner {
+            z-index: 1;
+          }
 
-        :host([generic]) #inner:disabled {
-          color: #888;
-        }
-      </style>
-    `
+          :host([generic]) #inner:disabled {
+            color: #888;
+          }
+        </style>
+      `.content
     );
+    return result;
   }
 }
 

@@ -31,31 +31,32 @@ class PageDot extends Base {
   }
 
   get [internal.template]() {
-    return template.concat(
-      super[internal.template],
+    const result = super[internal.template];
+    result.content.append(
       template.html`
-      <style>
-        :host {
-          border-radius: 7px;
-          box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.5);
-          box-sizing: border-box;
-          cursor: pointer;
-          height: 8px;
-          margin: 7px 5px;
-          padding: 0;
-          transition: opacity 0.2s;
-          width: 8px;
-        }
-
-        @media (min-width: 768px) {
+        <style>
           :host {
-            height: 12px;
-            width: 12px;
+            border-radius: 7px;
+            box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.5);
+            box-sizing: border-box;
+            cursor: pointer;
+            height: 8px;
+            margin: 7px 5px;
+            padding: 0;
+            transition: opacity 0.2s;
+            width: 8px;
           }
-        }
-      </style>
-    `
+
+          @media (min-width: 768px) {
+            :host {
+              height: 12px;
+              width: 12px;
+            }
+          }
+        </style>
+      `.content
     );
+    return result;
   }
 }
 

@@ -14,21 +14,22 @@ import CenteredStrip from "./CenteredStrip.js";
  */
 class CenteredStripHighlight extends CenteredStrip {
   get [internal.template]() {
-    return template.concat(
-      super[internal.template],
+    const result = super[internal.template];
+    result.content.append(
       template.html`
-      <style>
-        ::slotted(*) {
-          padding: 0.25em;
-        }
+        <style>
+          ::slotted(*) {
+            padding: 0.25em;
+          }
 
-        ::slotted([selected]) {
-          background: highlight;
-          color: highlighttext;
-        }
-      </style>
-    `
+          ::slotted([selected]) {
+            background: highlight;
+            color: highlighttext;
+          }
+        </style>
+      `.content
     );
+    return result;
   }
 }
 

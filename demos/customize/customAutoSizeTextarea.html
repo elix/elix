@@ -18,17 +18,18 @@
 
       class CustomAutoSizeTextarea extends AutoSizeTextarea {
         get [internal.template]() {
-          return template.concat(
-            super[internal.template],
+          const result = super[internal.template];
+          result.content.append(
             template.html`
-          <style>
-            #inner {
-              border: none;
-              border-bottom: 1px solid #757575;
-            }
-          </style>
-        `
+              <style>
+                #inner {
+                  border: none;
+                  border-bottom: 1px solid #757575;
+                }
+              </style>
+            `.content
           );
+          return result;
         }
       }
 

@@ -72,16 +72,17 @@ class CenteredStripOpacity extends CenteredStrip {
   }
 
   get [internal.template]() {
-    return template.concat(
-      super[internal.template],
+    const result = super[internal.template];
+    result.content.append(
       template.html`
-      <style>
-        ::slotted(*) {
-          opacity: ${opacityMinimum.toString()}
-        }
-      </style>
-    `
+        <style>
+          ::slotted(*) {
+            opacity: ${opacityMinimum.toString()}
+          }
+        </style>
+      `.content
     );
+    return result;
   }
 
   get transitionDuration() {

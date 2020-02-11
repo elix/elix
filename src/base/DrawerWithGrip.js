@@ -164,41 +164,42 @@ class DrawerWithGrip extends Drawer {
       template.transmute(defaultSlot, gripTemplate);
     }
 
-    return template.concat(
-      result,
+    result.content.append(
       template.html`
-      <style>
-        #frame {
-          display: flex;
-          overflow: hidden;
-        }
+        <style>
+          #frame {
+            display: flex;
+            overflow: hidden;
+          }
 
-        #gripContainer {
-          display: grid;
-          height: 100%;
-          width: 100%;
-        }
+          #gripContainer {
+            display: grid;
+            height: 100%;
+            width: 100%;
+          }
 
-        #grippedContent {
-          overflow: auto;
-          -webkit-overflow-scrolling: touch; /* for momentum scrolling */
-        }
-        :host([opened="false"]) #grippedContent {
-          overflow: hidden;
-        }
+          #grippedContent {
+            overflow: auto;
+            -webkit-overflow-scrolling: touch; /* for momentum scrolling */
+          }
+          :host([opened="false"]) #grippedContent {
+            overflow: hidden;
+          }
 
-        #gripWorkaround {
-          display: grid;
-        }
+          #gripWorkaround {
+            display: grid;
+          }
 
-        #grip {
-          align-items: center;
-          display: grid;
-          justify-items: center;
-        }
-      </style>
-    `
+          #grip {
+            align-items: center;
+            display: grid;
+            justify-items: center;
+          }
+        </style>
+      `.content
     );
+
+    return result;
   }
 }
 

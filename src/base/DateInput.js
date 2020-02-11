@@ -183,16 +183,17 @@ class DateInput extends Base {
   }
 
   get [internal.template]() {
-    return template.concat(
-      super[internal.template],
+    const result = super[internal.template];
+    result.content.append(
       template.html`
-      <style>
-        :host {
-          width: 6em;
-        }
-      </style>
-    `
+        <style>
+          :host {
+            width: 6em;
+          }
+        </style>
+      `.content
     );
+    return result;
   }
 
   /**

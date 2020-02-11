@@ -104,8 +104,8 @@ class PopupButton extends Base {
   }
 
   get [internal.template]() {
-    return template.concat(
-      super[internal.template],
+    const result = super[internal.template];
+    result.content.append(
       template.html`
         <style>
           #source {
@@ -133,8 +133,9 @@ class PopupButton extends Base {
             padding: 0.25em 0.5em;
           }
         </style>
-      `
+      `.content
     );
+    return result;
   }
 }
 

@@ -15,28 +15,29 @@ class SereneTabs extends Tabs {
   }
 
   get [internal.template]() {
-    return template.concat(
-      super[internal.template],
+    const result = super[internal.template];
+    result.content.append(
       template.html`
-      <style>
-        :host {
-          display: flex;
-        }
+        <style>
+          :host {
+            display: flex;
+          }
 
-        #proxyList {
-          background: #222;
-          color: white;
-          font-family: Gentium Basic;
-          padding: 0 33px;
-        }
+          #proxyList {
+            background: #222;
+            color: white;
+            font-family: Gentium Basic;
+            padding: 0 33px;
+          }
 
-        #stage {
-          background: white;
-          padding: 0 33px;
-        }
-      </style>
-    `
+          #stage {
+            background: white;
+            padding: 0 33px;
+          }
+        </style>
+      `.content
     );
+    return result;
   }
 }
 

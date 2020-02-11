@@ -159,33 +159,36 @@ class Carousel extends Base {
   }
 
   get [internal.template]() {
-    const base = super[internal.template];
-    const stage = base.content.querySelector("#stage");
+    const result = super[internal.template];
+
+    const stage = result.content.querySelector("#stage");
     /** @type {any} */ const cast = this;
     cast[ArrowDirectionMixin.wrap](stage);
-    const result = template.concat(
-      base,
-      template.html`
-      <style>
-        .arrowButton {
-          font-size: 48px;
-        }
 
-        #proxyList {
-          outline: none;
-        }
-
-        #stage {
-          height: 100%;
-          width: 100%;
-        }
-      </style>
-    `
-    );
     const proxyList = result.content.getElementById("proxyList");
     if (proxyList) {
       proxyList.setAttribute("tabindex", "");
     }
+
+    result.content.append(
+      template.html`
+        <style>
+          .arrowButton {
+            font-size: 48px;
+          }
+
+          #proxyList {
+            outline: none;
+          }
+
+          #stage {
+            height: 100%;
+            width: 100%;
+          }
+        </style>
+      `.content
+    );
+
     return result;
   }
 }
