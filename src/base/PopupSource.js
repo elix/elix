@@ -139,14 +139,6 @@ class PopupSource extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.framePartType) {
-      if ("framePartType" in this[internal.ids].popup) {
-        const { framePartType } = this[internal.state];
-        /** @type {any} */ (this[
-          internal.ids
-        ].popup).framePartType = framePartType;
-      }
-    }
     if (changed.popupPartType) {
       template.transmute(
         this[internal.ids].popup,
@@ -175,14 +167,20 @@ class PopupSource extends Base {
         }
       });
     }
-    if (changed.backdropPartType) {
-      // Since this check depends on popup, do it after we do any necessary
-      // transmuting of popup.
+    if (changed.backdropPartType || changed.popupPartType) {
       if ("backdropPartType" in this[internal.ids].popup) {
         const { backdropPartType } = this[internal.state];
         /** @type {any} */ (this[
           internal.ids
         ].popup).backdropPartType = backdropPartType;
+      }
+    }
+    if (changed.framePartType || changed.popupPartType) {
+      if ("framePartType" in this[internal.ids].popup) {
+        const { framePartType } = this[internal.state];
+        /** @type {any} */ (this[
+          internal.ids
+        ].popup).framePartType = framePartType;
       }
     }
     if (
