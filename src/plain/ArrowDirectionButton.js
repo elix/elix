@@ -1,7 +1,7 @@
-import * as internal from "./internal.js";
+import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
-import DarkModeMixin from "./DarkModeMixin.js";
-import Button from "./Button.js";
+import Button from "../base/Button.js";
+import DarkModeMixin from "../base/DarkModeMixin.js";
 
 const Base = DarkModeMixin(Button);
 

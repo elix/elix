@@ -1,7 +1,7 @@
 import { forwardFocus } from "../core/utilities.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
-import ArrowDirectionButton from "./ArrowDirectionButton.js";
+import Button from "./Button.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 const wrap = Symbol("wrap");
@@ -11,7 +11,7 @@ const wrap = Symbol("wrap");
  *
  * @module ArrowDirectionMixin
  * @param {Constructor<ReactiveElement>} Base
- * @part {ArrowDirectionButton} arrow-button - both of the arrow buttons
+ * @part {Button} arrow-button - both of the arrow buttons
  * @part arrow-button-next - the arrow button that navigates to the next item
  * @part arrow-button-previous - the arrow button that navigates to the previous item
  * @part arrow-icon - both of the default arrow icons used in the arrow buttons
@@ -43,7 +43,6 @@ function ArrowDirectionMixin(Base) {
      * previous/next arrow buttons.
      *
      * @type {PartDescriptor}
-     * @default ArrowDirectionButton
      */
     get arrowButtonPartType() {
       return this[internal.state].arrowButtonPartType;
@@ -72,7 +71,7 @@ function ArrowDirectionMixin(Base) {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState], {
         arrowButtonOverlap: true,
-        arrowButtonPartType: ArrowDirectionButton,
+        arrowButtonPartType: Button,
         orientation: "horizontal",
         showArrowButtons: true
       });

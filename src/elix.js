@@ -16,7 +16,7 @@ export { default as AlertDialog } from "./base/AlertDialog.js";
 export { default as AriaListMixin } from "./base/AriaListMixin.js";
 export { default as AriaMenuMixin } from "./base/AriaMenuMixin.js";
 export { default as AriaRoleMixin } from "./base/AriaRoleMixin.js";
-export { default as ArrowDirectionButton } from "./base/ArrowDirectionButton.js";
+export { default as ArrowDirectionButton } from "./plain/ArrowDirectionButton.js";
 export { default as ArrowDirectionMixin } from "./base/ArrowDirectionMixin.js";
 export { default as AttributeMarshallingMixin } from "./core/AttributeMarshallingMixin.js";
 export { default as AutoCompleteComboBox } from "./base/AutoCompleteComboBox.js";

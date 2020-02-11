@@ -5,7 +5,7 @@ export { default as AlertDialog } from "./AlertDialog.js";
 export { default as AriaListMixin } from "../src/base/AriaListMixin.js";
 export { default as AriaMenuMixin } from "../src/base/AriaMenuMixin.js";
 export { default as AriaRoleMixin } from "../src/base/AriaRoleMixin.js";
-export { default as ArrowDirectionButton } from "./ArrowDirectionButton.js";
+export { default as ArrowDirectionButton } from "../src/plain/ArrowDirectionButton.js";
 export { default as ArrowDirectionMixin } from "../src/base/ArrowDirectionMixin.js";
 export { default as AutoCompleteComboBox } from "./AutoCompleteComboBox.js";
 export { default as AutoCompleteInput } from "./AutoCompleteInput.js";
