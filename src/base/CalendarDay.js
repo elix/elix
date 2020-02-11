@@ -133,6 +133,7 @@ class CalendarDay extends Base {
     return template.html`
       <style>
         :host {
+          box-sizing: border-box;
           display: inline-block;
           padding: 0.3em;
         }

@@ -3,16 +3,15 @@ import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import CalendarDay from "./CalendarDay.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
-import Button from "./Button.js";
+import SelectableButton from "./SelectableButton.js";
 
-const Base = CalendarElementMixin(Button);
+const Base = CalendarElementMixin(SelectableButton);
 
 class CalendarDayButton extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       date: calendar.today(),
       outsideRange: false,
-      selected: false,
       tabIndex: -1
     });
   }
@@ -37,23 +36,14 @@ class CalendarDayButton extends Base {
       day.outsideRange = this[internal.state].outsideRange;
     }
     if (changed.selected) {
-      const { selected } = this[internal.state];
-      // Reflect selected state to this host.
-      setInternalState(this, "selected", selected);
       // Reflect selected state to inner CalendarDay.
-      day.selected = selected;
+      day.selected = this[internal.state].selected;
     }
-  }
-
-  get selected() {
-    return this[internal.state].selected;
-  }
-  set selected(selected) {
-    this[internal.setState]({ selected });
   }
 
   get [internal.template]() {
     const result = super[internal.template];
+
     // Replace default slot with calendar day.
     const defaultSlot = template.defaultSlot(result.content);
     if (defaultSlot) {
@@ -63,37 +53,27 @@ class CalendarDayButton extends Base {
       dayTemplate.content.append(day);
       template.transmute(defaultSlot, dayTemplate);
     }
+
     // Style outer button.
-    const styleTemplate = template.html`
-      <style>
-        :host {
-          border: 1px solid transparent;
-        }
+    result.content.appendChild(
+      template.html`
+        <style>
+          :host {
+            border: 1px solid transparent;
+          }
 
-        :host(:hover) {
-          border-color: gray;
-        }
+          :host(:hover) {
+            border-color: gray;
+          }
 
-        #day {
-          width: 100%;
-        }
-      </style>
-    `;
-    result.content.appendChild(styleTemplate.content);
+          #day {
+            width: 100%;
+          }
+        </style>
+      `.content
+    );
+
     return result;
-  }
-}
-
-// Set both a visible class for template-patching purposes, and an internal
-// state for browsers that support the `:state` selector. When all browsers
-// support that, we'll want to deprecate use of classes.
-function setInternalState(element, name, value) {
-  element.toggleAttribute(name, value);
-  if (
-    element[internal.nativeInternals] &&
-    element[internal.nativeInternals].states
-  ) {
-    element[internal.nativeInternals].states.toggle(name, value);
   }
 }
 

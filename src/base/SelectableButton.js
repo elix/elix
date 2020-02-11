@@ -21,15 +21,18 @@ class SelectableButton extends Button {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (
-      changed.selected &&
-      this[internal.nativeInternals] &&
-      this[internal.nativeInternals].states
-    ) {
-      // Reflect selected property to element `:state`.
+    if (changed.selected) {
+      // Set both an attribute and an internal state for browsers that support
+      // the `:state` selector. When all browsers support :state, we'll want
+      // to deprecate use of attributes.
       const { selected } = this[internal.state];
       this.toggleAttribute("selected", selected);
-      this[internal.nativeInternals].states.toggle("selected", selected);
+      if (
+        this[internal.nativeInternals] &&
+        this[internal.nativeInternals].states
+      ) {
+        this[internal.nativeInternals].states.toggle("selected", selected);
+      }
     }
   }
 

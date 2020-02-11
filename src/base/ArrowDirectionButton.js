@@ -47,12 +47,6 @@ class ArrowDirectionButton extends Base {
             fill: currentcolor;
           }
 
-          #inner:hover:not(:disabled) {
-          }
-
-          #inner:disabled {
-          }
-
           #inner.darkMode {
             color: rgba(255, 255, 255, 0.7);
           }
