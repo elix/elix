@@ -1,9 +1,6 @@
 // Elix is a JavaScript project, but we define TypeScript declarations so we can
 // confirm our code is type safe, and to support TypeScript users.
 
-export function concat(
-  ...templates: HTMLTemplateElement[]
-): HTMLTemplateElement;
 export function createElement(descriptor: PartDescriptor): Node;
 export function defaultSlot(tree: DocumentFragment): Node | null;
 export function html(

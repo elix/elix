@@ -20,28 +20,6 @@
 const mapBaseTagToCount = new Map();
 
 /**
- * Returns a new template whose content is the concatenated content of the
- * supplied templates.
- *
- * This function is used by Elix components to customize their appearance,
- * For example, a component might
- * [append an additional stylesheet](customizing#appending-an-additional-stylesheet)
- * to extend or override the styles provided by a base class template.
- *
- * @param  {HTMLTemplateElement[]} templates - the templates to concatenate
- * @returns {HTMLTemplateElement} - a new template created by concatenating the
- * input templates
- */
-export function concat(...templates) {
-  const result = document.createElement("template");
-  const clones = templates.map(template =>
-    document.importNode(template.content, true)
-  );
-  result.content.append(...clones);
-  return result;
-}
-
-/**
  * Create an element from a role descriptor (a component class constructor,
  * an HTML tag name, or an HTML template).
  *

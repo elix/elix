@@ -173,11 +173,4 @@ describe("templates", () => {
       assert(element.classList.contains("foo"));
     });
   });
-
-  it("can concatenate templates", () => {
-    const a = template.html`<div>A</div>`;
-    const b = template.html`<div>B</div>`;
-    const fixture = template.concat(a, b);
-    assert.equal(fixture.innerHTML, `<div>A</div><div>B</div>`);
-  });
 });
