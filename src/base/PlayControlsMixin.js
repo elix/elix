@@ -1,7 +1,7 @@
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import SeamlessButton from "./SeamlessButton.js";
+import Button from "./Button.js";
 
 const wrap = Symbol("wrap");
 
@@ -12,7 +12,7 @@ const wrap = Symbol("wrap");
  *
  * @module PlayControlsMixin
  * @param {Constructor<ReactiveElement>} Base
- * @part {SeamlessButton} control-button - any of the buttons that control playback
+ * @part {Button} control-button - any of the buttons that control playback
  * @part control-icon - any of the icons shown in the control buttons
  * @part next-button - the button that navigates to the next item
  * @part next-icon - icon for the next button
@@ -29,7 +29,7 @@ export default function PlayControlsMixin(Base) {
      * the play control buttons.
      *
      * @type {PartDescriptor}
-     * @default SeamlessButton
+     * @default Button
      */
     get controlButtonPartType() {
       return this[internal.state].controlButtonPartType;
@@ -40,7 +40,7 @@ export default function PlayControlsMixin(Base) {
 
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState], {
-        controlButtonPartType: SeamlessButton
+        controlButtonPartType: Button
       });
     }
 

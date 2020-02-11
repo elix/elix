@@ -2,10 +2,10 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import CalendarElementMixin from "./CalendarElementMixin.js";
-import SeamlessButton from "./SeamlessButton.js";
+import Button from "./Button.js";
 
 export default class CalendarDayButton extends CalendarElementMixin(
-  SeamlessButton
+  Button
 ) {
   outsideRange: boolean;
   selected: boolean;

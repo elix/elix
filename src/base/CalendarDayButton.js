@@ -3,9 +3,9 @@ import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import CalendarDay from "./CalendarDay.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
-import SeamlessButton from "./SeamlessButton.js";
+import Button from "./Button.js";
 
-const Base = CalendarElementMixin(SeamlessButton);
+const Base = CalendarElementMixin(Button);
 
 class CalendarDayButton extends Base {
   get [internal.defaultState]() {

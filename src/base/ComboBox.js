@@ -6,7 +6,7 @@ import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import Hidden from "./Hidden.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import PopupSource from "./PopupSource.js";
-import SeamlessButton from "./SeamlessButton.js";
+import Button from "./Button.js";
 import FormElementMixin from "./FormElementMixin.js";
 
 const Base = AriaRoleMixin(
@@ -25,7 +25,7 @@ const Base = AriaRoleMixin(
  * @part down-icon - the icon shown in the toggle button if the popup will open or close in the down direction
  * @part {input} input - the text input element
  * @part {div} source
- * @part {SeamlessButton} toggle-button - the button that toggles the popup
+ * @part {Button} toggle-button - the button that toggles the popup
  * @part up-icon - the icon shown in the toggle button if the popup will open or close in the up direction
  */
 class ComboBox extends Base {
@@ -68,7 +68,7 @@ class ComboBox extends Base {
       role: "combobox",
       selectText: false,
       sourcePartType: "div",
-      toggleButtonPartType: SeamlessButton,
+      toggleButtonPartType: Button,
       value: ""
     });
   }
@@ -386,7 +386,7 @@ class ComboBox extends Base {
    * button that toggles the popup.
    *
    * @type {PartDescriptor}
-   * @default SeamlessButton
+   * @default Button
    */
   get toggleButtonPartType() {
     return this[internal.state].toggleButtonPartType;

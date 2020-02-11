@@ -1,7 +1,7 @@
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import Drawer from "./Drawer.js";
-import SeamlessButton from "./SeamlessButton.js";
+import Button from "./Button.js";
 
 /**
  * A drawer that includes an always-visible grip element
@@ -14,7 +14,7 @@ import SeamlessButton from "./SeamlessButton.js";
  * image or other element into the `grip` slot.
  *
  * @inherits Drawer
- * @part {SeamlessButton} grip - the handle the user can tap, click, or swipe to open or close the drawer
+ * @part {Button} grip - the handle the user can tap, click, or swipe to open or close the drawer
  */
 class DrawerWithGrip extends Drawer {
   [internal.componentDidMount]() {
@@ -33,7 +33,7 @@ class DrawerWithGrip extends Drawer {
 
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      gripPartType: SeamlessButton
+      gripPartType: Button
     });
   }
 
@@ -42,7 +42,7 @@ class DrawerWithGrip extends Drawer {
    * handle the user can tap/click/swipe to open or close the drawer.
    *
    * @type {PartDescriptor}
-   * @default SeamlessButton
+   * @default Button
    */
   get gripPartType() {
     return this[internal.state].gripPartType;

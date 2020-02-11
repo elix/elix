@@ -107,16 +107,13 @@ class Button extends Base {
           }
           
           #inner {
-            align-items: center; /* Edge */
+            background: none;
+            border: none;
             color: inherit;
-            display: inline-flex;
             flex: 1;
             font: inherit;
             height: 100%;
-            justify-content: center;
             padding: 0;
-            position: relative;
-            text-align: initial; /* Edge */
             width: 100%;
           }
         </style>

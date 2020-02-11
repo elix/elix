@@ -1,9 +1,9 @@
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import DarkModeMixin from "./DarkModeMixin.js";
-import SeamlessButton from "./SeamlessButton.js";
+import Button from "./Button.js";
 
-const Base = DarkModeMixin(SeamlessButton);
+const Base = DarkModeMixin(Button);
 
 /**
  * Button that can be used as a left or right arrow button.
@@ -11,7 +11,7 @@ const Base = DarkModeMixin(SeamlessButton);
  * This component is used by [ArrowDirectionMixin](ArrowDirectionMixin) for its
  * default left/right arrow buttons.
  *
- * @inherits SeamlessButton
+ * @inherits Button
  * @mixes DarkModeMixin
  */
 class ArrowDirectionButton extends Base {

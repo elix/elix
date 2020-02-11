@@ -1,11 +1,11 @@
 import * as internal from "./internal.js";
-import SeamlessButton from "./SeamlessButton.js";
+import Button from "./Button.js";
 
 /**
  *
- * @inherits SeamlessButton
+ * @inherits Button
  */
-class SelectableButton extends SeamlessButton {
+class SelectableButton extends Button {
   constructor() {
     super();
     if (!this[internal.nativeInternals] && this.attachInternals) {

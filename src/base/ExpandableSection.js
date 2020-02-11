@@ -4,7 +4,7 @@ import AriaRoleMixin from "./AriaRoleMixin.js";
 import ExpandablePanel from "./ExpandablePanel.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import SeamlessButton from "./SeamlessButton.js";
+import Button from "./Button.js";
 
 const Base = AriaRoleMixin(OpenCloseMixin(ReactiveElement));
 
@@ -19,13 +19,13 @@ const Base = AriaRoleMixin(OpenCloseMixin(ReactiveElement));
  * @part toggle - contains the icons or other element which lets the user know they
  * can expand/collapse the panel
  * @part toggle-icon - both of the default icons used to expand/collapse the panel
- * @part {SeamlessButton} header - the header that can be clicked/tapped to expand or collapse the panel
+ * @part {Button} header - the header that can be clicked/tapped to expand or collapse the panel
  * @part {ExpandablePanel} panel - contains the component's expandable/collapsible content
  */
 class ExpandableSection extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      headerPartType: SeamlessButton,
+      headerPartType: Button,
       panelPartType: ExpandablePanel,
       role: "region"
     });
@@ -36,7 +36,7 @@ class ExpandableSection extends Base {
    * region the user can tap/click to expand or collapse the section.
    *
    * @type {PartDescriptor}
-   * @default SeamlessButton
+   * @default Button
    */
   get headerPartType() {
     return this[internal.state].headerPartType;

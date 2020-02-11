@@ -5,7 +5,7 @@ import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import SeamlessButton from "./SeamlessButton.js";
+import Button from "./Button.js";
 
 const Base = FocusVisibleMixin(KeyboardMixin(OpenCloseMixin(ReactiveElement)));
 
@@ -22,14 +22,14 @@ const Base = FocusVisibleMixin(KeyboardMixin(OpenCloseMixin(ReactiveElement)));
  * @mixes KeyboardMixin
  * @mixes OpenCloseMixin
  * @part {Drawer} menu - contains the navigation or other menu items
- * @part {SeamlessButton} menu-button - toggles display of the menu
+ * @part {Button} menu-button - toggles display of the menu
  * @part menu-icon - the icon inside the menu button
  */
 class HamburgerMenuButton extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       fromEdge: "start",
-      menuButtonPartType: SeamlessButton,
+      menuButtonPartType: Button,
       menuPartType: Drawer
     });
   }
@@ -94,7 +94,7 @@ class HamburgerMenuButton extends Base {
    * button the user can tap/click to invoke the menu.
    *
    * @type {PartDescriptor}
-   * @default SeamlessButton
+   * @default Button
    */
   get menuButtonPartType() {
     return this[internal.state].menuButtonPartType;

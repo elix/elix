@@ -2,8 +2,8 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import DarkModeMixin from "./DarkModeMixin.js";
-import SeamlessButton from "./SeamlessButton.js";
+import Button from "./Button.js";
 
 export default class ArrowDirectionButton extends DarkModeMixin(
-  SeamlessButton
+  Button
 ) {}

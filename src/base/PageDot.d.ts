@@ -2,6 +2,6 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import DarkModeMixin from "./DarkModeMixin.js";
-import SeamlessButton from "./SeamlessButton.js";
+import SelectableButton from "./SelectableButton.js";
 
-export default class PageDot extends DarkModeMixin(SeamlessButton) {}
+export default class PageDot extends DarkModeMixin(SelectableButton) {}

@@ -12,7 +12,7 @@ export { default as AutoCompleteComboBox } from "./base/AutoCompleteComboBox.js"
 export { default as AutoCompleteInput } from "./base/AutoCompleteInput.js";
 export { default as AutoSizeTextarea } from "./base/AutoSizeTextarea.js";
 export { default as Backdrop } from "./base/Backdrop.js";
-export { default as Button } from "./base/Button.js";
+export { default as Button } from "./plain/Button.js";
 export { default as CalendarDay } from "./base/CalendarDay.js";
 export { default as CalendarDayButton } from "./base/CalendarDayButton.js";
 export { default as CalendarDayNamesHeader } from "./base/CalendarDayNamesHeader.js";
@@ -89,7 +89,7 @@ export { default as PullToRefresh } from "./base/PullToRefresh.js";
 export { default as ReactiveElement } from "./ReactiveElement.js";
 export { default as ReactiveMixin } from "./ReactiveMixin.js";
 export { default as ResizeMixin } from "./base/ResizeMixin.js";
-export { default as SeamlessButton } from "./base/SeamlessButton.js";
+export { default as Button } from "./base/Button.js";
 export { default as SelectableButton } from "./base/SelectableButton.js";
 export { default as SelectedItemTextValueMixin } from "./base/SelectedItemTextValueMixin.js";
 export { default as SelectionInViewMixin } from "./base/SelectionInViewMixin.js";

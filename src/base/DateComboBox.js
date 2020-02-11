@@ -6,7 +6,7 @@ import CalendarDayButton from "./CalendarDayButton.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
 import CalendarMonthNavigator from "./CalendarMonthNavigator.js";
 import ComboBox from "./ComboBox.js";
-import SeamlessButton from "./SeamlessButton.js";
+import Button from "./Button.js";
 
 const Base = CalendarElementMixin(ComboBox);
 
@@ -21,7 +21,7 @@ const Base = CalendarElementMixin(ComboBox);
  * @part day-names-header - the column header showing the names of the days
  * @part month-days - the grid of days for the month
  * @part month-hear-header - the calendar header showing the month and/or year
- * @part {SeamlessButton} today-button - the button that will navigate to today in the calendar
+ * @part {Button} today-button - the button that will navigate to today in the calendar
  */
 class DateComboBox extends Base {
   /**
@@ -122,7 +122,7 @@ class DateComboBox extends Base {
       daysOfWeekFormat: "short",
       monthFormat: "long",
       timeBias: null,
-      todayButtonPartType: SeamlessButton,
+      todayButtonPartType: Button,
       yearFormat: "numeric"
     });
   }
@@ -486,7 +486,7 @@ class DateComboBox extends Base {
    * button that takes the user back to the current date.
    *
    * @type {PartDescriptor}
-   * @default SeamlessButton
+   * @default Button
    */
   get todayButtonPartType() {
     return this[internal.state].todayButtonPartType;
