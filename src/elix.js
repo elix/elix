@@ -92,7 +92,7 @@ export { default as PageDot } from "./base/PageDot.js";
 export { default as PageNumbersMixin } from "./base/PageNumbersMixin.js";
 export { default as PlayControlsMixin } from "./base/PlayControlsMixin.js";
 export { default as Popup } from "./base/Popup.js";
-export { default as PopupButton } from "./base/PopupButton.js";
+export { default as PlainPopupButton } from "./plain/PopupButton.js";
 export { default as PopupModalityMixin } from "./base/PopupModalityMixin.js";
 export { default as PopupSource } from "./base/PopupSource.js";
 export { default as ProgressSpinner } from "./base/ProgressSpinner.js";

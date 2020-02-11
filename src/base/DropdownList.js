@@ -2,15 +2,13 @@ import { applyChildNodes } from "../core/utilities.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import FormElementMixin from "./FormElementMixin.js";
-import MenuButtonBase from "./MenuButton.js";
+import MenuButton from "./MenuButton.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
 const Base = FormElementMixin(
-  SelectedItemTextValueMixin(
-    SingleSelectionMixin(SlotItemsMixin(MenuButtonBase))
-  )
+  SelectedItemTextValueMixin(SingleSelectionMixin(SlotItemsMixin(MenuButton)))
 );
 
 /**

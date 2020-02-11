@@ -5,7 +5,7 @@ import {
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import Menu from "./Menu.js";
-import PopupButtonBase from "./PopupButtonBase.js";
+import PopupButton from "./PopupButton.js";
 
 const documentMouseupListenerKey = Symbol("documentMouseupListener");
 
@@ -16,7 +16,7 @@ const documentMouseupListenerKey = Symbol("documentMouseupListener");
  * @part {Menu} menu - the menu shown in the popup
  * @part toggle-icon - icon shown in the button that invokes the menu
  */
-class MenuButton extends PopupButtonBase {
+class MenuButton extends PopupButton {
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
 

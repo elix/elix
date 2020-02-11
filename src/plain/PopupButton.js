@@ -1,14 +1,14 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
-import MenuButton from "../base/MenuButton.js";
-import PlainMenu from "./Menu.js";
+import Button from "../base/Button.js";
+import PopupButton from "../base/PopupButton.js";
 import PlainOverlayFrame from "./OverlayFrame.js";
 
-class PlainMenuButton extends MenuButton {
+class PlainPopupButton extends PopupButton {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       framePartType: PlainOverlayFrame,
-      menuPartType: PlainMenu
+      sourcePartType: Button
     });
   }
 
@@ -17,16 +17,19 @@ class PlainMenuButton extends MenuButton {
     result.content.append(
       template.html`
         <style>
-          #menu {
-            background: window;
-            border: none;
-            padding: 0.5em 0;
+          #source {
+            background: buttonface;
+            color: inherit;
+            font: inherit;
+            margin: 0;
+            padding: 0.25em 0.5em;
+            white-space: nowrap;
           }
         </style>
-      `.content
+      `
     );
     return result;
   }
 }
 
-export default PlainMenuButton;
+export default PlainPopupButton;
