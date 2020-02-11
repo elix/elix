@@ -1,14 +1,14 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
-import Menu from "./Menu.js";
-import MenuButtonBase from "../base/MenuButton.js";
-import OverlayFrame from "./OverlayFrame.js";
+import PlainMenu from "./Menu.js";
+import MenuButton from "../base/MenuButton.js";
+import PlainOverlayFrame from "./OverlayFrame.js";
 
-class MenuButton extends MenuButtonBase {
+class PlainMenuButton extends MenuButton {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      framePartType: OverlayFrame,
-      menuPartType: Menu
+      framePartType: PlainOverlayFrame,
+      menuPartType: PlainMenu
     });
   }
 
@@ -29,4 +29,4 @@ class MenuButton extends MenuButtonBase {
   }
 }
 
-export default MenuButton;
+export default PlainMenuButton;

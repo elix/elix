@@ -1,6 +1,6 @@
 import * as internal from "../core/internal.js";
 import * as template from "../core/template.js";
-import OverlayFrameBase from "../base/OverlayFrame.js";
+import OverlayFrame from "../base/OverlayFrame.js";
 
 /**
  * A simple frame for overlay content.
@@ -10,7 +10,7 @@ import OverlayFrameBase from "../base/OverlayFrame.js";
  *
  * @inherits ReactiveElement
  */
-class OverlayFrame extends OverlayFrameBase {
+class PlainOverlayFrame extends OverlayFrame {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
@@ -28,4 +28,4 @@ class OverlayFrame extends OverlayFrameBase {
   }
 }
 
-export default OverlayFrame;
+export default PlainOverlayFrame;

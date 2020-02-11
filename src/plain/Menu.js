@@ -1,8 +1,8 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
-import MenuBase from "../base/Menu.js";
+import Menu from "../base/Menu.js";
 
-class Menu extends MenuBase {
+class PlainMenu extends Menu {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
@@ -28,4 +28,4 @@ class Menu extends MenuBase {
   }
 }
 
-export default Menu;
+export default PlainMenu;

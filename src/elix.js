@@ -79,7 +79,7 @@ export { default as ListComboBox } from "./base/ListComboBox.js";
 export { default as ListExplorer } from "./base/ListExplorer.js";
 export { default as ListWithSearch } from "./base/ListWithSearch.js";
 export { default as Menu } from "./base/Menu.js";
-export { default as MenuButton } from "./plain/MenuButton.js";
+export { default as PlainMenuButton } from "./plain/MenuButton.js";
 export { default as MenuItem } from "./base/MenuItem.js";
 export { default as MenuSeparator } from "./base/MenuSeparator.js";
 export { default as ModalBackdrop } from "./base/ModalBackdrop.js";

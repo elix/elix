@@ -2,13 +2,15 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import FormElementMixin from "./FormElementMixin.js";
-import MenuButton from "../plain/MenuButton.js";
+import PlainMenuButton from "../plain/MenuButton.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
 export default class DropdownList extends FormElementMixin(
-  SelectedItemTextValueMixin(SingleSelectionMixin(SlotItemsMixin(MenuButton)))
+  SelectedItemTextValueMixin(
+    SingleSelectionMixin(SlotItemsMixin(PlainMenuButton))
+  )
 ) {
   defaultMenuSelectedIndex: number;
   valuePartType: PartDescriptor;
