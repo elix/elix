@@ -1,2 +1,2 @@
-import PlainMenuButton from "../src/plain/MenuButton.js";
-export default PlainMenuButton;
+import MenuButton from "../src/plain/MenuButton.js";
+export default MenuButton;

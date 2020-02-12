@@ -55,10 +55,11 @@ async function getSourceFiles(sourceFolder) {
 
 (async () => {
   try {
-    const sourceFolder = path.join(__dirname, "../src/base"); // TODO: -> src/plain
+    const plainFolder = path.join(__dirname, "../src/plain");
+    const elixSourceFolder = path.join(__dirname, "../src");
     const defineFolder = path.join(__dirname, "../define");
     // Preparation
-    const sourceFilesPromise = await getSourceFiles(sourceFolder);
+    const sourceFilesPromise = await getSourceFiles(plainFolder);
     await Promise.all([
       sourceFilesPromise,
       createEmptyDefineFolder(defineFolder)
@@ -66,7 +67,7 @@ async function getSourceFiles(sourceFolder) {
     const sourceFiles = await sourceFilesPromise; // Resolves immediately
     await Promise.all([
       createDefineModules(defineFolder, sourceFiles.components),
-      createLibraryFiles(sourceFolder, defineFolder, sourceFiles),
+      createLibraryFiles(sourceFiles, elixSourceFolder, defineFolder),
       createWeekData()
     ]);
   } catch (e) {

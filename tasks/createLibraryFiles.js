@@ -45,12 +45,12 @@ async function createLibraryFile(
   const classExports = classExportFiles
     .map(file => {
       const name = path.basename(file, ".js");
-      // Components point to the local folder, mixins point to /src.
+      // Components point to the local folder, mixins point to /src/base.
       const isMixin = name.endsWith("Mixin");
       const filePath =
         isMixin && destinationFolder !== sourceFolder
           ? path.join(relativeFolder, file)
-          : `./${file}`;
+          : `./plain/${file}`;
       return `export { default as ${name} } from "${filePath}";`;
     })
     .join("\n");
@@ -59,11 +59,11 @@ async function createLibraryFile(
   const helperExports = helperFiles
     .map(file => {
       const name = path.basename(file, ".js");
-      // Helpers always point to the /src folder.
+      // Helpers always point to the /src/base folder.
       const filePath =
         destinationFolder !== sourceFolder
           ? path.join(relativeFolder, file)
-          : `./${file}`;
+          : `./base/${file}`;
       return `import * as ${name}Import from "${filePath}";
 // @ts-ignore
 export const ${name} = ${name}Import;
@@ -85,18 +85,27 @@ ${helperExports}`;
   await fs.writeFile(destination, content);
 }
 
-async function createLibraryFiles(sourceFolder, defineFolder, sourceFiles) {
+async function createLibraryFiles(
+  sourceFiles,
+  destinationFolder,
+  defineFolder
+) {
   // Write library files to /src folder,
   // and auto-define variations to /define folder.
-  const srcJsPath = path.join(sourceFolder, "elix.js");
-  const srcTsPath = path.join(sourceFolder, "elix.d.ts");
+  const srcJsPath = path.join(destinationFolder, "elix.js");
+  const srcTsPath = path.join(destinationFolder, "elix.d.ts");
   const defineJsPath = path.join(defineFolder, "elix.js");
   const defineTsPath = path.join(defineFolder, "elix.d.ts");
   await Promise.all([
-    createLibraryFile(srcJsPath, srcJsHeader, sourceFolder, sourceFiles),
-    createLibraryFile(srcTsPath, tsHeader, sourceFolder, sourceFiles),
-    createLibraryFile(defineJsPath, defineJsHeader, sourceFolder, sourceFiles),
-    createLibraryFile(defineTsPath, tsHeader, sourceFolder, sourceFiles)
+    createLibraryFile(srcJsPath, srcJsHeader, destinationFolder, sourceFiles),
+    createLibraryFile(srcTsPath, tsHeader, destinationFolder, sourceFiles),
+    createLibraryFile(
+      defineJsPath,
+      defineJsHeader,
+      destinationFolder,
+      sourceFiles
+    ),
+    createLibraryFile(defineTsPath, tsHeader, destinationFolder, sourceFiles)
   ]);
 }
 

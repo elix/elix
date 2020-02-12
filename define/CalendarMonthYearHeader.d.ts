@@ -1,2 +1,2 @@
-import CalendarMonthYearHeader from "../src/base/CalendarMonthYearHeader.js";
+import CalendarMonthYearHeader from "../src/plain/CalendarMonthYearHeader.js";
 export default CalendarMonthYearHeader;
