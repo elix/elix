@@ -173,10 +173,6 @@ class Carousel extends Base {
     result.content.append(
       template.html`
         <style>
-          .arrowButton {
-            font-size: 48px;
-          }
-
           #proxyList {
             outline: none;
           }

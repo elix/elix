@@ -36,7 +36,7 @@ export { default as Carousel } from "./base/Carousel.js";
 export { default as CarouselSlideshow } from "./base/CarouselSlideshow.js";
 export { default as CarouselWithThumbnails } from "./base/CarouselWithThumbnails.js";
 export { default as CenteredStrip } from "./base/CenteredStrip.js";
-export { default as CenteredStripHighlight } from "./base/CenteredStripHighlight.js";
+export { default as CenteredStripHighlight } from "./plain/CenteredStripHighlight.js";
 export { default as CenteredStripOpacity } from "./base/CenteredStripOpacity.js";
 export { default as ComboBox } from "./base/ComboBox.js";
 export { default as ComposedFocusMixin } from "./base/ComposedFocusMixin.js";

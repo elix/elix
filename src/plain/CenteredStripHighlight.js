@@ -1,6 +1,6 @@
-import * as internal from "./internal.js";
+import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
-import CenteredStrip from "./CenteredStrip.js";
+import CenteredStrip from "../base/CenteredStrip.js";
 
 /**
  * Centered strip showing selected item with a highlight color
