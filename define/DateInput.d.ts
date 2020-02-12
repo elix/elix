@@ -1,2 +1,2 @@
-import DateInput from "../src/base/DateInput.js";
+import DateInput from "../src/plain/DateInput.js";
 export default DateInput;

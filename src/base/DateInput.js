@@ -182,20 +182,6 @@ class DateInput extends Base {
     return effects;
   }
 
-  get [internal.template]() {
-    const result = super[internal.template];
-    result.content.append(
-      template.html`
-        <style>
-          :host {
-            width: 6em;
-          }
-        </style>
-      `.content
-    );
-    return result;
-  }
-
   /**
    * If set, this indicates whether a date containing only a month and day
    * should infer a year such that the time is in the future or in the past.
