@@ -112,13 +112,6 @@ class DrawerWithGrip extends Drawer {
       this[internal.ids].gripWorkaround.style.gridArea =
         mapFromEdgeToGripCell[fromEdge];
     }
-
-    if (changed.swipeAxis && this[internal.ids].gripIcon) {
-      // Rotate the default grip icon to reflect the swipe axis.
-      const transform =
-        this[internal.state].swipeAxis === "horizontal" ? "rotate(90deg)" : "";
-      this[internal.ids].gripIcon.style.transform = transform;
-    }
   }
 
   // Tell TrackpadSwipeMixin that the gripped content is the scrollable element
@@ -131,7 +124,6 @@ class DrawerWithGrip extends Drawer {
     const result = super[internal.template];
 
     // Replace the default slot with one that includes a grip element.
-    // Default grip icon from Material Design icons "drag handle".
     //
     // The gripWorkaround element exists for Safari, which doesn't correctly
     // measure the grip dimensions in componentDidMount without it. Having
@@ -144,17 +136,7 @@ class DrawerWithGrip extends Drawer {
         </div>
         <div id="gripWorkaround">
           <div id="grip" part="grip" aria-label="Toggle drawer">
-            <slot name="grip">
-              <svg id="gripIcon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
-                <defs>
-                  <path id="a" d="M0 0h24v24H0V0z"/>
-                </defs>
-                <clipPath id="b">
-                  <use xlink:href="#a" overflow="visible"/>
-                </clipPath>
-                <path clip-path="url(#b)" d="M20 9H4v2h16V9zM4 15h16v-2H4v2z"/>
-              </svg>
-            </slot>
+            <slot name="grip"></slot>
           </div>
         </div>
       </div>

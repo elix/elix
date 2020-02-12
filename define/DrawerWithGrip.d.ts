@@ -1,2 +1,2 @@
-import DrawerWithGrip from "../src/base/DrawerWithGrip.js";
+import DrawerWithGrip from "../src/plain/DrawerWithGrip.js";
 export default DrawerWithGrip;
