@@ -202,14 +202,6 @@ class CalendarMonth extends Base {
 
         #monthYearHeader {
           display: block;
-          font-size: larger;
-          font-weight: bold;
-          padding: 0.3em;
-        }
-
-        #dayNamesHeader {
-          font-size: smaller;
-          width: 100%;
         }
 
         #monthDays {
