@@ -17,9 +17,7 @@ const Base = CalendarElementMixin(ComboBox);
  *
  * @inherits ComboBox
  * @mixes CalendarElementMixin
- * @part {Button} arrow-button - the arrow buttons that navigate the calendar
  * @part {CalendarMonthNavigator} calendar - the calendar showing dates to choose from
- * @part {CalendarDay} day - any of the day elements in the calendar
  * @part day - any of the day elements in the month grid
  * @part day-names-header - the column header showing the names of the days
  * @part month-days - the grid of days for the month
@@ -27,19 +25,6 @@ const Base = CalendarElementMixin(ComboBox);
  * @part {Button} today-button - the button that will navigate to today in the calendar
  */
 class DateComboBox extends Base {
-  /**
-   * The class, tag, or template used to create the `arrow-button` parts - the
-   * left and right arrow buttons that navigate the calendar.
-   *
-   * @type {PartDescriptor}
-   */
-  get arrowButtonPartType() {
-    return this[internal.state].arrowButtonPartType;
-  }
-  set arrowButtonPartType(arrowButtonPartType) {
-    this[internal.setState]({ arrowButtonPartType });
-  }
-
   get calendar() {
     return this[internal.shadowRoot] ? this[internal.ids].calendar : null;
   }
@@ -73,20 +58,6 @@ class DateComboBox extends Base {
     this[internal.setState]({
       datePriority: true
     });
-  }
-
-  /**
-   * The class, tag, or template used to create the header showing the
-   * day names.
-   *
-   * @type {PartDescriptor}
-   * @default CalendarDayNamesHeader
-   */
-  get dayNamesHeaderPartType() {
-    return this[internal.state].dayNamesHeaderPartType;
-  }
-  set dayNamesHeaderPartType(dayNamesHeaderPartType) {
-    this[internal.setState]({ dayNamesHeaderPartType });
   }
 
   /**
@@ -127,19 +98,14 @@ class DateComboBox extends Base {
     };
 
     return Object.assign(super[internal.defaultState], {
-      arrowButtonPartType: Button,
       calendarPartType: CalendarMonthNavigator,
       date: null,
       datePriority: false,
       dateSelected: false,
       dateTimeFormat: null,
       dateTimeFormatOptions,
-      dayNamesHeaderPartType: CalendarDayNamesHeader,
-      dayPartType: CalendarDayButton,
       daysOfWeekFormat: "short",
-      monthDaysPartType: CalendarDays,
       monthFormat: "long",
-      monthYearHeaderPartType: CalendarMonthYearHeader,
       timeBias: null,
       todayButtonPartType: Button,
       yearFormat: "numeric"
@@ -286,33 +252,6 @@ class DateComboBox extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the grid of days.
-   *
-   * @type {PartDescriptor}
-   * @default CalendarDays
-   */
-  get monthDaysPartType() {
-    return this[internal.state].monthDaysPartType;
-  }
-  set monthDaysPartType(monthDaysPartType) {
-    this[internal.setState]({ monthDaysPartType });
-  }
-
-  /**
-   * The class, tag, or template used to create the header showing the
-   * month and year.
-   *
-   * @type {PartDescriptor}
-   * @default CalendarMonthYearHeader
-   */
-  get monthYearHeaderPartType() {
-    return this[internal.state].monthYearHeaderPartType;
-  }
-  set monthYearHeaderPartType(monthYearHeaderPartType) {
-    this[internal.setState]({ monthYearHeaderPartType });
-  }
-
-  /**
    * Parse the given text as a Date.
    *
    * @private
@@ -359,39 +298,28 @@ class DateComboBox extends Base {
       });
     }
     const cast = /** @type {any} */ (this[internal.ids].calendar);
-    if (
-      changed.arrowButtonPartType &&
-      "arrowButtonPartType" in this[internal.ids].calendar
-    ) {
-      cast.arrowButtonPartType = this[internal.state].arrowButtonPartType;
-    }
-    if (changed.date) {
+    if (changed.date || changed.calendarPartType) {
       cast.date = this[internal.state].date;
     }
-    if (changed.dayPartType && "dayPartType" in cast) {
-      cast.dayPartType = this[internal.state].dayPartType;
-    }
-    if (changed.dayNamesHeaderPartType && "dayNamesHeaderPartType" in cast) {
-      cast.dayNamesHeaderPartType = this[internal.state].dayNamesHeaderPartType;
-    }
-    if (changed.daysOfWeekFormat && "daysOfWeekFormat" in cast) {
+    if (
+      (changed.daysOfWeekFormat || changed.calendarPartType) &&
+      "daysOfWeekFormat" in cast
+    ) {
       cast.daysOfWeekFormat = this[internal.state].daysOfWeekFormat;
     }
-    if (changed.locale) {
+    if (changed.locale || changed.calendarPartType) {
       cast.locale = this[internal.state].locale;
     }
-    if (changed.monthFormat && "monthFormat" in cast) {
+    if (
+      (changed.monthFormat || changed.calendarPartType) &&
+      "monthFormat" in cast
+    ) {
       cast.monthFormat = this[internal.state].monthFormat;
     }
-    if (changed.monthDaysPartType && "monthDaysPartType" in cast) {
-      cast.monthDaysPartType = this[internal.state].monthDaysPartType;
-    }
-    if (changed.monthYearHeaderPartType && "monthYearHeaderPartType" in cast) {
-      cast.monthYearHeaderPartType = this[
-        internal.state
-      ].monthYearHeaderPartType;
-    }
-    if (changed.yearFormat && "yearFormat" in cast) {
+    if (
+      (changed.yearFormat || changed.calendarPartType) &&
+      "yearFormat" in cast
+    ) {
       cast.yearFormat = this[internal.state].yearFormat;
     }
   }
@@ -490,7 +418,7 @@ class DateComboBox extends Base {
       </style>
       <div id="calendarContainer">
         <div id="calendar" part="calendar" exportparts="day, day-names-header, month-days, month-hear-header" tabindex="-1"></div>
-        <button id="todayButton" part="today-button">Today</button>
+        <div id="todayButton" part="today-button">Today</div>
       </div>
     `;
     const defaultSlot = template.defaultSlot(result.content);

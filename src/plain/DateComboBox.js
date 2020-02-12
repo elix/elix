@@ -1,11 +1,8 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
-import ArrowDirectionButton from "./ArrowDirectionButton.js";
 import DateComboBox from "../base/DateComboBox.js";
 import PlainButton from "./Button.js";
-import PlainCalendarDayButton from "./CalendarDayButton.js";
-import PlainCalendarDayNamesHeader from "./CalendarDayNamesHeader.js";
-import PlainCalendarMonthYearHeader from "./CalendarMonthYearHeader.js";
+import PlainCalendarMonthNavigator from "./CalendarMonthNavigator.js";
 import PlainOverlayFrame from "./OverlayFrame.js";
 
 /**
@@ -14,11 +11,8 @@ import PlainOverlayFrame from "./OverlayFrame.js";
 class PlainDateComboBox extends DateComboBox {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      arrowButtonPartType: ArrowDirectionButton,
-      dayNamesHeaderPartType: PlainCalendarDayNamesHeader,
-      dayPartType: PlainCalendarDayButton,
+      calendarPartType: PlainCalendarMonthNavigator,
       framePartType: PlainOverlayFrame,
-      monthYearHeaderPartType: PlainCalendarMonthYearHeader,
       todayButtonPartType: PlainButton,
       toggleButtonPartType: PlainButton
     });
