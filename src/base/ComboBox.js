@@ -3,11 +3,11 @@ import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import AriaRoleMixin from "./AriaRoleMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
+import FormElementMixin from "./FormElementMixin.js";
 import Hidden from "./Hidden.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import PopupSource from "./PopupSource.js";
-import Button from "./Button.js";
-import FormElementMixin from "./FormElementMixin.js";
+import UpDownButton from "./UpDownButton.js";
 
 const Base = AriaRoleMixin(
   DelegateFocusMixin(FormElementMixin(KeyboardMixin(PopupSource)))
@@ -25,7 +25,7 @@ const Base = AriaRoleMixin(
  * @part down-icon - the icon shown in the toggle button if the popup will open or close in the down direction
  * @part {input} input - the text input element
  * @part {div} source
- * @part {Button} toggle-button - the button that toggles the popup
+ * @part {UpDownButton} toggle-button - the button that toggles the popup
  * @part up-icon - the icon shown in the toggle button if the popup will open or close in the up direction
  */
 class ComboBox extends Base {
@@ -68,7 +68,7 @@ class ComboBox extends Base {
       role: "combobox",
       selectText: false,
       sourcePartType: "div",
-      toggleButtonPartType: Button,
+      toggleButtonPartType: UpDownButton,
       value: ""
     });
   }
@@ -164,6 +164,7 @@ class ComboBox extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
+
     if (changed.inputPartType) {
       template.transmute(
         this[internal.ids].input,
@@ -227,6 +228,7 @@ class ComboBox extends Base {
         this[internal.raiseChangeEvents] = false;
       });
     }
+
     if (changed.toggleButtonPartType) {
       template.transmute(
         this[internal.ids].toggleButton,
@@ -244,6 +246,7 @@ class ComboBox extends Base {
         forwardFocus(toggleButton, input);
       }
     }
+
     if (changed.popupPartType) {
       const popup = this[internal.ids].popup;
       popup.removeAttribute("tabindex");
@@ -261,27 +264,36 @@ class ComboBox extends Base {
         /** @type {any} */ (popup).closeOnWindowResize = false;
       }
     }
+
     if (changed.ariaLabel) {
       this[internal.ids].input.setAttribute(
         "aria-label",
         this[internal.state].ariaLabel
       );
     }
+
     if (changed.disabled) {
       const { disabled } = this[internal.state];
       /** @type {any} */ (this[internal.ids].input).disabled = disabled;
       /** @type {any} */ (this[internal.ids].toggleButton).disabled = disabled;
     }
+
     if (changed.placeholder) {
       const { placeholder } = this[internal.state];
       /** @type {any} */ (this[internal.ids].input).placeholder = placeholder;
     }
-    if (changed.popupPosition) {
+
+    // Tell the toggle button which direction it should point to depending on
+    // which direction the popup will open.
+    if (changed.popupPosition || changed.toggleButtonPartType) {
       const { popupPosition } = this[internal.state];
-      const showDown = popupPosition === "below";
-      this[internal.ids].downIcon.style.display = showDown ? "block" : "none";
-      this[internal.ids].upIcon.style.display = showDown ? "none" : "block";
+      const direction = popupPosition === "below" ? "down" : "up";
+      /** @type {any} */ const toggleButton = this[internal.ids].toggleButton;
+      if ("direction" in toggleButton) {
+        toggleButton.direction = direction;
+      }
     }
+
     if (changed.rightToLeft) {
       const { rightToLeft } = this[internal.state];
       // We want to style the inner input if it's been created with
@@ -299,6 +311,7 @@ class ComboBox extends Base {
         right: rightToLeft ? "" : "3px"
       });
     }
+
     if (changed.value) {
       const { value } = this[internal.state];
       /** @type {any} */ (this[internal.ids].input).value = value;
@@ -315,14 +328,7 @@ class ComboBox extends Base {
     }
     const sourceTemplate = template.html`
       <input id="input" part="input"></input>
-      <button id="toggleButton" part="toggle-button" tabindex="-1">
-        <svg id="downIcon" part="down-icon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
-          <path d="M 0 0 l5 5 5 -5 z"/>
-        </svg>
-        <svg id="upIcon" part="up-icon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
-          <path d="M 0 5 l5 -5 5 5 z"/>
-        </svg>
-      </button>
+      <div id="toggleButton" part="toggle-button" exportparts="down-icon up-icon" tabindex="-1"></div>
     `;
     template.replace(sourceSlot, sourceTemplate.content);
 
@@ -346,27 +352,9 @@ class ComboBox extends Base {
           }
 
           #toggleButton {
-            align-items: center;
             bottom: 3px;
-            display: flex;
-            padding: 0;
             position: absolute;
             top: 3px;
-            width: 1.5em;
-          }
-
-          #toggleButton[disabled] {
-            opacity: 0.5;
-          }
-
-          #toggleButton:not([disabled]):hover {
-            background: #eee;
-          }
-
-          #downIcon,
-          #upIcon {
-            fill: currentColor;
-            margin: 0.25em;
           }
 
           #popup {

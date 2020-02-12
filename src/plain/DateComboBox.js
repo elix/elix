@@ -1,5 +1,6 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
+import ComboBoxToggleButton from "./ComboBoxToggleButton.js";
 import DateComboBox from "../base/DateComboBox.js";
 import PlainButton from "./Button.js";
 import PlainCalendarMonthNavigator from "./CalendarMonthNavigator.js";
@@ -14,7 +15,7 @@ class PlainDateComboBox extends DateComboBox {
       calendarPartType: PlainCalendarMonthNavigator,
       framePartType: PlainOverlayFrame,
       todayButtonPartType: PlainButton,
-      toggleButtonPartType: PlainButton
+      toggleButtonPartType: ComboBoxToggleButton
     });
   }
 
