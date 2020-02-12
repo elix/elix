@@ -11,7 +11,7 @@ class BorderButton extends PlainButton {
           #inner {
             background: #eee;
             border: 1px solid #ddd;
-            padding: 0.25em 0.5em;
+            padding: 0.25em 0.25em;
           }
         </style>
       `.content

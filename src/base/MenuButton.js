@@ -6,6 +6,7 @@ import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import Menu from "./Menu.js";
 import PopupButton from "./PopupButton.js";
+import UpDownToggle from "./UpDownToggle.js";
 
 const documentMouseupListenerKey = Symbol("documentMouseupListener");
 
@@ -14,7 +15,9 @@ const documentMouseupListenerKey = Symbol("documentMouseupListener");
  *
  * @inherits PopupButtonBase
  * @part {Menu} menu - the menu shown in the popup
- * @part toggle-icon - icon shown in the button that invokes the menu
+ * @part {UpDownToggle} popup-toggle - the element that lets the user know they can open the popup
+ * @part down-icon - the icon shown in the toggle if the popup will open or close in the down direction
+ * @part up-icon - the icon shown in the toggle if the popup will open or close in the up direction
  */
 class MenuButton extends PopupButton {
   [internal.componentDidMount]() {
@@ -85,6 +88,7 @@ class MenuButton extends PopupButton {
       menuPartType: Menu,
       menuSelectedIndex: -1,
       selectedItem: null,
+      popupTogglePartType: UpDownToggle,
       touchstartX: null,
       touchstartY: null
     });
@@ -199,11 +203,27 @@ class MenuButton extends PopupButton {
     this[internal.setState]({ menuPartType });
   }
 
+  /**
+   * The class, tag, or template used to create the `popup-toggle` part – the
+   * element that lets the user know they can open the popup.
+   *
+   * @type {PartDescriptor}
+   * @default Button
+   */
+  get popupTogglePartType() {
+    return this[internal.state].popupTogglePartType;
+  }
+  set popupTogglePartType(popupTogglePartType) {
+    this[internal.setState]({ popupTogglePartType });
+  }
+
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
+
     if (changed.popupPartType) {
       this[internal.ids].popup.tabIndex = -1;
     }
+
     if (changed.menuPartType) {
       template.transmute(
         this[internal.ids].menu,
@@ -275,6 +295,25 @@ class MenuButton extends PopupButton {
         }
       );
     }
+
+    if (changed.popupTogglePartType) {
+      template.transmute(
+        this[internal.ids].popupToggle,
+        this[internal.state].popupTogglePartType
+      );
+    }
+
+    // Tell the toggle which direction it should point to depending on which
+    // direction the popup will open.
+    if (changed.popupPosition || changed.popupTogglePartType) {
+      const { popupPosition } = this[internal.state];
+      const direction = popupPosition === "below" ? "down" : "up";
+      /** @type {any} */ const popupToggle = this[internal.ids].popupToggle;
+      if ("direction" in popupToggle) {
+        popupToggle.direction = direction;
+      }
+    }
+
     if (changed.menuSelectedIndex) {
       const menu = /** @type {any} */ (this[internal.ids].menu);
       if ("selectedIndex" in menu) {
@@ -330,18 +369,16 @@ class MenuButton extends PopupButton {
       template.transmute(defaultSlot, menuTemplate);
     }
 
-    // Inject a "..." icon into the source slot.
-    // Default "..." icon is from Google Material Design icons.
-    const sourceTemplate = template.html`
-      <slot>
-        <svg id="toggleIcon" part="toggle-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-          <path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
-        </svg>
-      </slot>
-    `;
+    // Inject a toggle button into the source slot.
     const sourceSlot = result.content.querySelector('slot[name="source"]');
     if (sourceSlot) {
-      template.transmute(sourceSlot, sourceTemplate);
+      sourceSlot.append(
+        template.html`
+          <div id="popupToggle" part="popup-toggle" exportparts="down-icon up-icon" tabindex="-1">
+            <slot name="toggle-icon"></slot>
+          </div>
+        `.content
+      );
     }
 
     result.content.append(
@@ -354,11 +391,6 @@ class MenuButton extends PopupButton {
           #source {
             align-items: center;
             display: flex;
-          }
-
-          #toggleIcon {
-            display: block;
-            fill: currentColor;
           }
         </style>
       `.content

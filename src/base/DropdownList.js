@@ -19,8 +19,6 @@ const Base = FormElementMixin(
  * @mixes SelectedItemTextValueMixin
  * @mixes SingleSelectionMixin
  * @mixes SlotItemsMixin
- * @part down-icon - the icon shown in the toggle button if the popup will open or close in the down direction
- * @part up-icon - the icon shown in the toggle button if the popup will open or close in the up direction
  * @part {div} value - region inside the toggle button showing the value of the current selection
  */
 class DropdownList extends Base {
@@ -40,6 +38,14 @@ class DropdownList extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
+
+    if (changed.valuePartType) {
+      template.transmute(
+        this[internal.ids].value,
+        this[internal.state].valuePartType
+      );
+    }
+
     if (changed.itemRole) {
       if ("itemRole" in this[internal.ids].menu) {
         /** @type {any} */ (this[internal.ids].menu).itemRole = this[
@@ -47,18 +53,7 @@ class DropdownList extends Base {
         ].itemRole;
       }
     }
-    if (changed.valuePartType) {
-      template.transmute(
-        this[internal.ids].value,
-        this[internal.state].valuePartType
-      );
-    }
-    if (changed.opened || changed.popupPosition) {
-      const { popupPosition } = this[internal.state];
-      const showDown = popupPosition === "below";
-      this[internal.ids].downIcon.style.display = showDown ? "block" : "none";
-      this[internal.ids].upIcon.style.display = showDown ? "none" : "block";
-    }
+
     if (changed.selectedIndex) {
       const items = this[internal.state].items || [];
       const selectedItem = items[this[internal.state].selectedIndex];
@@ -86,22 +81,16 @@ class DropdownList extends Base {
   get [internal.template]() {
     const result = super[internal.template];
 
+    // Replace the source slot with an element to show the value.
     const sourceSlot = result.content.querySelector('slot[name="source"]');
-    if (!sourceSlot) {
-      throw `Couldn't find slot with name "source".`;
+    if (sourceSlot) {
+      template.replace(
+        sourceSlot,
+        template.html`
+          <div id="value" part="value"></div>
+        `.content
+      );
     }
-    const sourceSlotContent = template.html`
-      <div id="value" part="value"></div>
-      <div>
-        <svg id="downIcon" part="toggle-icon down-icon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
-          <path d="M 0 0 l5 5 5 -5 z"/>
-        </svg>
-        <svg id="upIcon" part="toggle-icon up-icon" xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5">
-          <path d="M 0 5 l5 -5 5 5 z"/>
-        </svg>
-      </div>
-    `;
-    applyChildNodes(sourceSlot, sourceSlotContent.content.childNodes);
 
     result.content.append(
       template.html`

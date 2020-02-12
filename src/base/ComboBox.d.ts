@@ -13,6 +13,6 @@ export default class ComboBox extends AriaRoleMixin(
   readonly input: Element | null;
   inputPartType: PartDescriptor;
   placeholder: string;
-  toggleButtonPartType: PartDescriptor;
+  popupTogglePartType: PartDescriptor;
   value: any;
 }

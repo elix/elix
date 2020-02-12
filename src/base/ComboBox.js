@@ -7,7 +7,7 @@ import FormElementMixin from "./FormElementMixin.js";
 import Hidden from "./Hidden.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import PopupSource from "./PopupSource.js";
-import UpDownButton from "./UpDownButton.js";
+import UpDownToggle from "./UpDownToggle.js";
 
 const Base = AriaRoleMixin(
   DelegateFocusMixin(FormElementMixin(KeyboardMixin(PopupSource)))
@@ -22,11 +22,11 @@ const Base = AriaRoleMixin(
  * @mixes FormElementMixin
  * @mixes KeyboardMixin
  * @part {Hidden} backdrop
- * @part down-icon - the icon shown in the toggle button if the popup will open or close in the down direction
+ * @part down-icon - the icon shown in the toggle if the popup will open or close in the down direction
  * @part {input} input - the text input element
  * @part {div} source
- * @part {UpDownButton} toggle-button - the button that toggles the popup
- * @part up-icon - the icon shown in the toggle button if the popup will open or close in the up direction
+ * @part {UpDownToggle} popup-toggle - the element that lets the user know they can open the popup
+ * @part up-icon - the icon shown in the toggle if the popup will open or close in the up direction
  */
 class ComboBox extends Base {
   // Forward any ARIA label to the input element.
@@ -65,10 +65,10 @@ class ComboBox extends Base {
       inputPartType: "input",
       orientation: "vertical",
       placeholder: "",
+      popupTogglePartType: UpDownToggle,
       role: "combobox",
       selectText: false,
       sourcePartType: "div",
-      toggleButtonPartType: UpDownButton,
       value: ""
     });
   }
@@ -162,6 +162,20 @@ class ComboBox extends Base {
     this[internal.setState]({ placeholder });
   }
 
+  /**
+   * The class, tag, or template used to create the `popup-toggle` part – the
+   * element that lets the user know they can open the popup.
+   *
+   * @type {PartDescriptor}
+   * @default Button
+   */
+  get popupTogglePartType() {
+    return this[internal.state].popupTogglePartType;
+  }
+  set popupTogglePartType(popupTogglePartType) {
+    this[internal.setState]({ popupTogglePartType });
+  }
+
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
 
@@ -229,21 +243,21 @@ class ComboBox extends Base {
       });
     }
 
-    if (changed.toggleButtonPartType) {
+    if (changed.popupTogglePartType) {
       template.transmute(
-        this[internal.ids].toggleButton,
-        this[internal.state].toggleButtonPartType
+        this[internal.ids].popupToggle,
+        this[internal.state].popupTogglePartType
       );
-      const toggleButton = this[internal.ids].toggleButton;
+      const popupToggle = this[internal.ids].popupToggle;
       const input = this[internal.ids].input;
-      toggleButton.addEventListener("mousedown", () => {
+      popupToggle.addEventListener("mousedown", () => {
         this[internal.raiseChangeEvents] = true;
         this.toggle();
         this[internal.raiseChangeEvents] = false;
       });
-      if (toggleButton instanceof HTMLElement && input instanceof HTMLElement) {
+      if (popupToggle instanceof HTMLElement && input instanceof HTMLElement) {
         // Forward focus for new toggle button.
-        forwardFocus(toggleButton, input);
+        forwardFocus(popupToggle, input);
       }
     }
 
@@ -275,7 +289,7 @@ class ComboBox extends Base {
     if (changed.disabled) {
       const { disabled } = this[internal.state];
       /** @type {any} */ (this[internal.ids].input).disabled = disabled;
-      /** @type {any} */ (this[internal.ids].toggleButton).disabled = disabled;
+      /** @type {any} */ (this[internal.ids].popupToggle).disabled = disabled;
     }
 
     if (changed.placeholder) {
@@ -283,14 +297,14 @@ class ComboBox extends Base {
       /** @type {any} */ (this[internal.ids].input).placeholder = placeholder;
     }
 
-    // Tell the toggle button which direction it should point to depending on
-    // which direction the popup will open.
-    if (changed.popupPosition || changed.toggleButtonPartType) {
+    // Tell the toggle which direction it should point to depending on which
+    // direction the popup will open.
+    if (changed.popupPosition || changed.popupTogglePartType) {
       const { popupPosition } = this[internal.state];
       const direction = popupPosition === "below" ? "down" : "up";
-      /** @type {any} */ const toggleButton = this[internal.ids].toggleButton;
-      if ("direction" in toggleButton) {
-        toggleButton.direction = direction;
+      /** @type {any} */ const popupToggle = this[internal.ids].popupToggle;
+      if ("direction" in popupToggle) {
+        popupToggle.direction = direction;
       }
     }
 
@@ -306,7 +320,7 @@ class ComboBox extends Base {
         paddingRight: rightToLeft ? "2px" : "1.5em",
         paddingTop: "2px"
       });
-      Object.assign(this[internal.ids].toggleButton.style, {
+      Object.assign(this[internal.ids].popupToggle.style, {
         left: rightToLeft ? "3px" : "",
         right: rightToLeft ? "" : "3px"
       });
@@ -323,14 +337,15 @@ class ComboBox extends Base {
 
     // Use an input element in the source.
     const sourceSlot = result.content.querySelector('slot[name="source"]');
-    if (!sourceSlot) {
-      throw `Couldn't find slot with name "source".`;
+    if (sourceSlot) {
+      template.replace(
+        sourceSlot,
+        template.html`
+          <input id="input" part="input"></input>
+          <div id="popupToggle" part="popup-toggle" tabindex="-1"></div>
+        `.content
+      );
     }
-    const sourceTemplate = template.html`
-      <input id="input" part="input"></input>
-      <div id="toggleButton" part="toggle-button" exportparts="down-icon up-icon" tabindex="-1"></div>
-    `;
-    template.replace(sourceSlot, sourceTemplate.content);
 
     result.content.append(
       template.html`
@@ -351,7 +366,7 @@ class ComboBox extends Base {
             width: 100%;
           }
 
-          #toggleButton {
+          #popupToggle {
             bottom: 3px;
             position: absolute;
             top: 3px;
@@ -367,20 +382,6 @@ class ComboBox extends Base {
     );
 
     return result;
-  }
-
-  /**
-   * The class, tag, or template used to create the `toggle-button` part – the
-   * button that toggles the popup.
-   *
-   * @type {PartDescriptor}
-   * @default Button
-   */
-  get toggleButtonPartType() {
-    return this[internal.state].toggleButtonPartType;
-  }
-  set toggleButtonPartType(toggleButtonPartType) {
-    this[internal.setState]({ toggleButtonPartType });
   }
 
   get value() {
