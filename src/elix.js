@@ -34,6 +34,7 @@ export { default as ExpandableSection } from "./plain/ExpandableSection.js";
 export { default as FilterComboBox } from "./plain/FilterComboBox.js";
 export { default as Menu } from "./plain/Menu.js";
 export { default as MenuButton } from "./plain/MenuButton.js";
+export { default as ModalBackdrop } from "./plain/ModalBackdrop.js";
 export { default as OpenCloseToggle } from "./plain/OpenCloseToggle.js";
 export { default as OverlayFrame } from "./plain/OverlayFrame.js";
 export { default as PopupButton } from "./plain/PopupButton.js";

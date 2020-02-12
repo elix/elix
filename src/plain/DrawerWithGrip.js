@@ -1,11 +1,13 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
 import DrawerWithGrip from "../base/DrawerWithGrip.js";
+import PlainModalBackdrop from "./ModalBackdrop.js";
 import PlainOverlayFrame from "./OverlayFrame.js";
 
 class PlainDrawerWithGrip extends DrawerWithGrip {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
+      backdropPartType: PlainModalBackdrop,
       framePartType: PlainOverlayFrame
     });
   }
