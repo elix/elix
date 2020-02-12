@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
-import PlainUpDownToggle from "./UpDownToggle.js";
+import OpenCloseToggle from "./OpenCloseToggle.js";
 import DateComboBox from "../base/DateComboBox.js";
 import PlainButton from "./Button.js";
 import PlainCalendarMonthNavigator from "./CalendarMonthNavigator.js";
@@ -15,7 +15,7 @@ class PlainDateComboBox extends DateComboBox {
       calendarPartType: PlainCalendarMonthNavigator,
       framePartType: PlainOverlayFrame,
       todayButtonPartType: PlainButton,
-      popupTogglePartType: PlainUpDownToggle
+      popupTogglePartType: OpenCloseToggle
     });
   }
 

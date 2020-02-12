@@ -208,7 +208,7 @@ class MenuButton extends PopupButton {
    * element that lets the user know they can open the popup.
    *
    * @type {PartDescriptor}
-   * @default Button
+   * @default UpDownToggle
    */
   get popupTogglePartType() {
     return this[internal.state].popupTogglePartType;

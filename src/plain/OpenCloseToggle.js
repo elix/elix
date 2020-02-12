@@ -2,7 +2,7 @@ import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
 import UpDownToggle from "../base/UpDownToggle.js";
 
-class PlainUpDownToggle extends UpDownToggle {
+class OpenCloseToggle extends UpDownToggle {
   get [internal.template]() {
     const result = super[internal.template];
 
@@ -21,7 +21,7 @@ class PlainUpDownToggle extends UpDownToggle {
       <svg id="upIcon" part="up-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 5">
         <path d="M 0 5 l5 -5 5 5 z"/>
       </svg>
-  `.content.children[0];
+    `.content.children[0];
     if (upIcon && upIconGlyph) {
       template.replace(upIcon, upIconGlyph);
     }
@@ -59,4 +59,4 @@ class PlainUpDownToggle extends UpDownToggle {
   }
 }
 
-export default PlainUpDownToggle;
+export default OpenCloseToggle;

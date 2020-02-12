@@ -1,10 +1,11 @@
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import AriaRoleMixin from "./AriaRoleMixin.js";
+import Button from "./Button.js";
 import ExpandablePanel from "./ExpandablePanel.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import Button from "./Button.js";
+import UpDownToggle from "./UpDownToggle.js";
 
 const Base = AriaRoleMixin(OpenCloseMixin(ReactiveElement));
 
@@ -14,11 +15,8 @@ const Base = AriaRoleMixin(OpenCloseMixin(ReactiveElement));
  * @inherits ReactiveElement
  * @mixes AriaRoleMixin
  * @mixes OpenCloseMixin
- * @part collapse-icon - the default icon shown when the panel is expanded
- * @part expand-icon - the default icon shown when the panel is collapsed
- * @part toggle - contains the icons or other element which lets the user know they
+ * @part {UpDownToggle} toggle - contains the icons or other element which lets the user know they
  * can expand/collapse the panel
- * @part toggle-icon - both of the default icons used to expand/collapse the panel
  * @part {Button} header - the header that can be clicked/tapped to expand or collapse the panel
  * @part {ExpandablePanel} panel - contains the component's expandable/collapsible content
  */
@@ -27,7 +25,8 @@ class ExpandableSection extends Base {
     return Object.assign(super[internal.defaultState], {
       headerPartType: Button,
       panelPartType: ExpandablePanel,
-      role: "region"
+      role: "region",
+      togglePartType: UpDownToggle
     });
   }
 
@@ -61,6 +60,7 @@ class ExpandableSection extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
+
     if (changed.headerPartType) {
       template.transmute(
         this[internal.ids].header,
@@ -72,26 +72,34 @@ class ExpandableSection extends Base {
         this[internal.raiseChangeEvents] = false;
       });
     }
+
     if (changed.panelPartType) {
       template.transmute(
         this[internal.ids].panel,
         this[internal.state].panelPartType
       );
     }
-    if (changed.opened) {
+
+    if (changed.togglePartType) {
+      template.transmute(
+        this[internal.ids].toggle,
+        this[internal.state].togglePartType
+      );
+    }
+
+    if (changed.opened || changed.togglePartType) {
       const { opened } = this[internal.state];
+
       this[internal.ids].header.setAttribute(
         "aria-expanded",
         opened.toString()
       );
-      if (this[internal.ids].collapseIcon) {
-        this[internal.ids].collapseIcon.style.display = opened
-          ? "block"
-          : "none";
+
+      /** @type {any} */ const toggle = this[internal.ids].toggle;
+      if ("direction" in toggle) {
+        toggle.direction = opened ? "up" : "down";
       }
-      if (this[internal.ids].expandIcon) {
-        this[internal.ids].expandIcon.style.display = opened ? "none" : "block";
-      }
+
       if ("opened" in this[internal.ids].panel) {
         /** @type {any} */ (this[internal.ids].panel).opened = opened;
       }
@@ -124,30 +132,33 @@ class ExpandableSection extends Base {
           flex: 1;
           text-align: start;
         }
-
-        #toggle {
-          margin: 0.5em;
-        }
       </style>
       <div id="header" part="header">
         <div id="headerContainer" class="headerElement">
           <slot name="header"></slot>
         </div>
         <div id="toggle" part="toggle" class="headerElement">
-          <slot name="toggleSlot">
-            <svg id="collapseIcon" part="toggle-icon collapse-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-              <path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"/>
-            </svg>
-            <svg id="expandIcon" part="toggle-icon expand-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-              <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/>
-            </svg>
-          </slot>
+          <slot name="toggleSlot"></slot>
         </div>
       </div>
       <div id="panel" part="panel" role="none">
         <slot></slot>
       </div>
     `;
+  }
+
+  /**
+   * The class, tag, or template used to create the `toggle` part – the element
+   * that lets the user know they can expand/collapse the section.
+   *
+   * @type {PartDescriptor}
+   * @default UpDownToggle
+   */
+  get togglePartType() {
+    return this[internal.state].togglePartType;
+  }
+  set togglePartType(togglePartType) {
+    this[internal.setState]({ togglePartType });
   }
 }
 
