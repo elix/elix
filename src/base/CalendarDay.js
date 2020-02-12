@@ -135,33 +135,9 @@ class CalendarDay extends Base {
         :host {
           box-sizing: border-box;
           display: inline-block;
-          padding: 0.3em;
-        }
-
-        :host(.weekend) {
-          color: gray;
-        }
-
-        :host(.outside-range) {
-          color: lightgray;
-        }
-
-        :host(.today) {
-          color: darkred;
-          font-weight: bold;
-        }
-
-        :host([selected]) {
-          background: #ddd;
-        }
-
-        #day {
-          display: block;
-          text-align: right;
         }
       </style>
-
-      <span id="day"></span>
+      <div id="day"></div>
     `;
   }
 }

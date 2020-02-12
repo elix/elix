@@ -1,2 +1,2 @@
-import CalendarDay from "../src/base/CalendarDay.js";
+import CalendarDay from "../src/plain/CalendarDay.js";
 export default CalendarDay;

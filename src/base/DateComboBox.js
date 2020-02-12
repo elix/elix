@@ -425,17 +425,9 @@ class DateComboBox extends Base {
     // Replace default slot with calendar.
     const calendarTemplate = template.html`
       <style>
-        :host {
-          width: 8em;
-        }
-
         #calendarContainer {
           display: flex;
           flex-direction: column;
-        }
-
-        #calendar {
-          margin: 0.5em;
         }
       </style>
       <div id="calendarContainer">

@@ -1,6 +1,7 @@
 import * as internal from "../base/internal.js";
 import ArrowDirectionButton from "./ArrowDirectionButton.js";
 import CalendarMonthNavigator from "../base/CalendarMonthNavigator.js";
+import PlainCalendarDayButton from "./CalendarDayButton.js";
 
 /**
  * @part {ArrowDirectionButton} arrow-button - both of the arrow buttons
@@ -8,7 +9,8 @@ import CalendarMonthNavigator from "../base/CalendarMonthNavigator.js";
 class PlainCalendarMonthNavigator extends CalendarMonthNavigator {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      arrowButtonPartType: ArrowDirectionButton
+      arrowButtonPartType: ArrowDirectionButton,
+      dayPartType: PlainCalendarDayButton
     });
   }
 }
