@@ -3,8 +3,11 @@ import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import Button from "./Button.js";
 import CalendarDayButton from "./CalendarDayButton.js";
+import CalendarDayNamesHeader from "./CalendarDayNamesHeader.js";
+import CalendarDays from "./CalendarDays.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
 import CalendarMonthNavigator from "./CalendarMonthNavigator.js";
+import CalendarMonthYearHeader from "./CalendarMonthYearHeader.js";
 import ComboBox from "./ComboBox.js";
 
 const Base = CalendarElementMixin(ComboBox);
@@ -73,6 +76,20 @@ class DateComboBox extends Base {
   }
 
   /**
+   * The class, tag, or template used to create the header showing the
+   * day names.
+   *
+   * @type {PartDescriptor}
+   * @default CalendarDayNamesHeader
+   */
+  get dayNamesHeaderPartType() {
+    return this[internal.state].dayNamesHeaderPartType;
+  }
+  set dayNamesHeaderPartType(dayNamesHeaderPartType) {
+    this[internal.setState]({ dayNamesHeaderPartType });
+  }
+
+  /**
    * The class, tag, or template used to create the `day` parts – the set of
    * days shown in the calendar grid.
    *
@@ -117,9 +134,12 @@ class DateComboBox extends Base {
       dateSelected: false,
       dateTimeFormat: null,
       dateTimeFormatOptions,
+      dayNamesHeaderPartType: CalendarDayNamesHeader,
       dayPartType: CalendarDayButton,
       daysOfWeekFormat: "short",
+      monthDaysPartType: CalendarDays,
       monthFormat: "long",
+      monthYearHeaderPartType: CalendarMonthYearHeader,
       timeBias: null,
       todayButtonPartType: Button,
       yearFormat: "numeric"
@@ -266,6 +286,33 @@ class DateComboBox extends Base {
   }
 
   /**
+   * The class, tag, or template used to create the grid of days.
+   *
+   * @type {PartDescriptor}
+   * @default CalendarDays
+   */
+  get monthDaysPartType() {
+    return this[internal.state].monthDaysPartType;
+  }
+  set monthDaysPartType(monthDaysPartType) {
+    this[internal.setState]({ monthDaysPartType });
+  }
+
+  /**
+   * The class, tag, or template used to create the header showing the
+   * month and year.
+   *
+   * @type {PartDescriptor}
+   * @default CalendarMonthYearHeader
+   */
+  get monthYearHeaderPartType() {
+    return this[internal.state].monthYearHeaderPartType;
+  }
+  set monthYearHeaderPartType(monthYearHeaderPartType) {
+    this[internal.setState]({ monthYearHeaderPartType });
+  }
+
+  /**
    * Parse the given text as a Date.
    *
    * @private
@@ -324,6 +371,9 @@ class DateComboBox extends Base {
     if (changed.dayPartType && "dayPartType" in cast) {
       cast.dayPartType = this[internal.state].dayPartType;
     }
+    if (changed.dayNamesHeaderPartType && "dayNamesHeaderPartType" in cast) {
+      cast.dayNamesHeaderPartType = this[internal.state].dayNamesHeaderPartType;
+    }
     if (changed.daysOfWeekFormat && "daysOfWeekFormat" in cast) {
       cast.daysOfWeekFormat = this[internal.state].daysOfWeekFormat;
     }
@@ -332,6 +382,14 @@ class DateComboBox extends Base {
     }
     if (changed.monthFormat && "monthFormat" in cast) {
       cast.monthFormat = this[internal.state].monthFormat;
+    }
+    if (changed.monthDaysPartType && "monthDaysPartType" in cast) {
+      cast.monthDaysPartType = this[internal.state].monthDaysPartType;
+    }
+    if (changed.monthYearHeaderPartType && "monthYearHeaderPartType" in cast) {
+      cast.monthYearHeaderPartType = this[
+        internal.state
+      ].monthYearHeaderPartType;
     }
     if (changed.yearFormat && "yearFormat" in cast) {
       cast.yearFormat = this[internal.state].yearFormat;

@@ -89,16 +89,6 @@ class CalendarDayNamesHeader extends ReactiveElement {
           display: grid;
           grid-template-columns: repeat(7, 1fr);
         }
-
-        .dayName {
-          padding: 0.3em;
-          text-align: center;
-          white-space: nowrap;
-        }
-
-        .dayName.weekend {
-          color: gray;
-        }
       </style>
 
       <div id="day0" part="day-name" class="dayName"></div>

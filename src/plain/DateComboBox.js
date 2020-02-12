@@ -4,6 +4,8 @@ import ArrowDirectionButton from "./ArrowDirectionButton.js";
 import DateComboBox from "../base/DateComboBox.js";
 import PlainButton from "./Button.js";
 import PlainCalendarDayButton from "./CalendarDayButton.js";
+import PlainCalendarDayNamesHeader from "./CalendarDayNamesHeader.js";
+import PlainCalendarMonthYearHeader from "./CalendarMonthYearHeader.js";
 import PlainOverlayFrame from "./OverlayFrame.js";
 
 /**
@@ -13,8 +15,10 @@ class PlainDateComboBox extends DateComboBox {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       arrowButtonPartType: ArrowDirectionButton,
+      dayNamesHeaderPartType: PlainCalendarDayNamesHeader,
       dayPartType: PlainCalendarDayButton,
       framePartType: PlainOverlayFrame,
+      monthYearHeaderPartType: PlainCalendarMonthYearHeader,
       todayButtonPartType: PlainButton,
       toggleButtonPartType: PlainButton
     });

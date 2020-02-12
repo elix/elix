@@ -24,10 +24,10 @@ const Base = CalendarElementMixin(ReactiveElement);
  * @inherits ReactiveElement
  * @mixes CalendarElementMixin
  * @part {CalendarDay} day - any of the day elements in the month grid
+ * @part {CalendarDayNamesHeader} day-names-header - the column header showing the names of the days
+ * @part {CalendarDays} month-days - the grid of days for the month
+ * @part {CalendarMonthYearHeader} month-year-header - the calendar header showing the month and/or year
  * @part day-name - any of the names for the days of the week
- * @part day-names-header - the column header showing the names of the days
- * @part month-days - the grid of days for the month
- * @part month-year-header - the calendar header showing the month and/or year
  */
 class CalendarMonth extends Base {
   /**
@@ -45,6 +45,20 @@ class CalendarMonth extends Base {
       "dayElementForDate" in monthDays &&
       monthDays.dayElementForDate(date)
     );
+  }
+
+  /**
+   * The class, tag, or template used to create the header showing the
+   * day names.
+   *
+   * @type {PartDescriptor}
+   * @default CalendarDayNamesHeader
+   */
+  get dayNamesHeaderPartType() {
+    return this[internal.state].dayNamesHeaderPartType;
+  }
+  set dayNamesHeaderPartType(dayNamesHeaderPartType) {
+    this[internal.setState]({ dayNamesHeaderPartType });
   }
 
   /**
@@ -93,9 +107,12 @@ class CalendarMonth extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       date: calendar.today(),
+      dayNamesHeaderPartType: CalendarDayNamesHeader,
       dayPartType: CalendarDay,
       daysOfWeekFormat: "short",
+      monthDaysPartType: CalendarDays,
       monthFormat: "long",
+      monthYearHeaderPartType: CalendarMonthYearHeader,
       showCompleteWeeks: false,
       showSelectedDay: false,
       yearFormat: "numeric"
@@ -118,20 +135,70 @@ class CalendarMonth extends Base {
     this[internal.setState]({ monthFormat });
   }
 
+  /**
+   * The class, tag, or template used to create the grid of days.
+   *
+   * @type {PartDescriptor}
+   * @default CalendarDays
+   */
+  get monthDaysPartType() {
+    return this[internal.state].monthDaysPartType;
+  }
+  set monthDaysPartType(monthDaysPartType) {
+    this[internal.setState]({ monthDaysPartType });
+  }
+
+  /**
+   * The class, tag, or template used to create the header showing the
+   * month and year.
+   *
+   * @type {PartDescriptor}
+   * @default CalendarMonthYearHeader
+   */
+  get monthYearHeaderPartType() {
+    return this[internal.state].monthYearHeaderPartType;
+  }
+  set monthYearHeaderPartType(monthYearHeaderPartType) {
+    this[internal.setState]({ monthYearHeaderPartType });
+  }
+
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    if (changed.locale) {
+    if (changed.dayNamesHeaderPartType) {
+      template.transmute(
+        this[internal.ids].dayNamesHeader,
+        this[internal.state].dayNamesHeaderPartType
+      );
+    }
+    if (changed.monthYearHeaderPartType) {
+      template.transmute(
+        this[internal.ids].monthYearHeader,
+        this[internal.state].monthYearHeaderPartType
+      );
+    }
+    if (changed.monthDaysPartType) {
+      template.transmute(
+        this[internal.ids].monthDays,
+        this[internal.state].monthDaysPartType
+      );
+    }
+    if (changed.dayPartType || changed.monthDaysPartType) {
+      /** @type {any} */ (this[internal.ids].monthDays).dayPartType = this[
+        internal.state
+      ].dayPartType;
+    }
+    if (
+      changed.locale ||
+      changed.monthDaysPartType ||
+      changed.monthYearHeaderPartType ||
+      changed.dayNamesHeaderPartType
+    ) {
       const locale = this[internal.state].locale;
       /** @type {any} */ (this[internal.ids].monthDays).locale = locale;
       /** @type {any} */ (this[internal.ids].monthYearHeader).locale = locale;
       /** @type {any} */ (this[internal.ids].dayNamesHeader).locale = locale;
     }
-    if (changed.dayPartType) {
-      /** @type {any} */ (this[internal.ids].monthDays).dayPartType = this[
-        internal.state
-      ].dayPartType;
-    }
-    if (changed.date) {
+    if (changed.date || changed.monthDaysPartType) {
       const { date } = this[internal.state];
       if (date) {
         const startDate = calendar.firstDateOfMonth(date);
@@ -147,31 +214,31 @@ class CalendarMonth extends Base {
         ].monthYearHeader).date = calendar.firstDateOfMonth(date);
       }
     }
-    if (changed.daysOfWeekFormat) {
+    if (changed.daysOfWeekFormat || changed.dayNamesHeaderPartType) {
       const { daysOfWeekFormat } = this[internal.state];
       /** @type {any} */ (this[
         internal.ids
       ].dayNamesHeader).format = daysOfWeekFormat;
     }
-    if (changed.showCompleteWeeks) {
+    if (changed.showCompleteWeeks || changed.monthDaysPartType) {
       const { showCompleteWeeks } = this[internal.state];
       /** @type {any} */ (this[
         internal.ids
       ].monthDays).showCompleteWeeks = showCompleteWeeks;
     }
-    if (changed.showSelectedDay) {
+    if (changed.showSelectedDay || changed.monthDaysPartType) {
       const { showSelectedDay } = this[internal.state];
       /** @type {any} */ (this[
         internal.ids
       ].monthDays).showSelectedDay = showSelectedDay;
     }
-    if (changed.monthFormat) {
+    if (changed.monthFormat || changed.monthYearHeaderPartType) {
       const { monthFormat } = this[internal.state];
       /** @type {any} */ (this[
         internal.ids
       ].monthYearHeader).monthFormat = monthFormat;
     }
-    if (changed.yearFormat) {
+    if (changed.yearFormat || changed.monthYearHeaderPartType) {
       const { yearFormat } = this[internal.state];
       /** @type {any} */ (this[
         internal.ids
@@ -194,7 +261,7 @@ class CalendarMonth extends Base {
   }
 
   get [internal.template]() {
-    const result = template.html`
+    return template.html`
       <style>
         :host {
           display: inline-block;
@@ -213,19 +280,6 @@ class CalendarMonth extends Base {
       <div id="dayNamesHeader" part="day-names-header" exportparts="day-name" format="short"></div>
       <div id="monthDays" part="month-days" exportparts="day"></div>
     `;
-    const monthYearHeader = result.content.getElementById("monthYearHeader");
-    if (monthYearHeader) {
-      template.transmute(monthYearHeader, CalendarMonthYearHeader);
-    }
-    const dayNamesHeader = result.content.getElementById("dayNamesHeader");
-    if (dayNamesHeader) {
-      template.transmute(dayNamesHeader, CalendarDayNamesHeader);
-    }
-    const monthDays = result.content.getElementById("monthDays");
-    if (monthDays) {
-      template.transmute(monthDays, CalendarDays);
-    }
-    return result;
   }
 
   /**
