@@ -3,14 +3,12 @@ import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import AriaListMixin from "./AriaListMixin.js";
 import ArrowDirectionMixin from "./ArrowDirectionMixin.js";
-import CenteredStripOpacity from "./CenteredStripOpacity.js";
 import DarkModeMixin from "./DarkModeMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import Explorer from "./Explorer.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
-import PageDot from "./PageDot.js";
 import SlidingStage from "./SlidingStage.js";
 import SwipeDirectionMixin from "./SwipeDirectionMixin.js";
 import TouchSwipeMixin from "./TouchSwipeMixin.js";
@@ -67,8 +65,6 @@ class Carousel extends Base {
       orientation: "horizontal",
       proxyListOverlap: true,
       proxyListPosition: "bottom",
-      proxyListPartType: CenteredStripOpacity,
-      proxyPartType: PageDot,
       showArrowButtons,
       stagePartType: SlidingStage
     });
@@ -88,19 +84,16 @@ class Carousel extends Base {
       const cast = this[internal.ids].proxyList;
       forwardFocus(cast, null);
     }
+
     super[internal.render](changed);
+
     if (changed.stagePartType || changed.orientation) {
       /** @type {any} */ const cast = this[internal.ids].stage;
       if ("orientation" in cast) {
         cast.orientation = this[internal.state].orientation;
       }
     }
-    if (changed.orientation || changed.proxyListPartType) {
-      /** @type {any} */ const cast = this[internal.ids].proxyList;
-      if ("orientation" in cast) {
-        cast.orientation = this[internal.state].orientation;
-      }
-    }
+
     if (changed.proxyListPartType) {
       // Keep focus off of the proxies and onto the carousel itself.
       /** @type {any} */
@@ -108,11 +101,20 @@ class Carousel extends Base {
       forwardFocus(cast, this);
       cast.removeAttribute("tabindex");
     }
+
+    if (changed.orientation || changed.proxyListPartType) {
+      /** @type {any} */ const cast = this[internal.ids].proxyList;
+      if ("orientation" in cast) {
+        cast.orientation = this[internal.state].orientation;
+      }
+    }
+
     if (changed.stagePartType) {
       /** @type {any} */
       const cast = this[internal.ids].stage;
       cast.removeAttribute("tabindex");
     }
+
     const { darkMode } = this[internal.state];
     /** @type {Element[]} */ const proxies = this[internal.state].proxies;
     // Wait for knowledge of dark mode
@@ -125,6 +127,7 @@ class Carousel extends Base {
         }
       });
     }
+
     if (changed.proxies && proxies) {
       // Make proxies not focusable.
       proxies.forEach(proxy => {

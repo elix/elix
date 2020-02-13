@@ -10,7 +10,6 @@ import Explorer from "./Explorer.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
-import PageDot from "./PageDot.js";
 import SlidingStage from "./SlidingStage.js";
 import SwipeDirectionMixin from "./SwipeDirectionMixin.js";
 import TouchSwipeMixin from "./TouchSwipeMixin.js";
