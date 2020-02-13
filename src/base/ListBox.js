@@ -5,7 +5,6 @@ import ComposedFocusMixin from "./ComposedFocusMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
-import GenericMixin from "./GenericMixin.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
@@ -24,18 +23,16 @@ const Base = AriaListMixin(
     DirectionSelectionMixin(
       FocusVisibleMixin(
         FormElementMixin(
-          GenericMixin(
-            ItemsTextMixin(
-              KeyboardDirectionMixin(
-                KeyboardMixin(
-                  KeyboardPagedSelectionMixin(
-                    KeyboardPrefixSelectionMixin(
-                      LanguageDirectionMixin(
-                        SelectedItemTextValueMixin(
-                          SelectionInViewMixin(
-                            SingleSelectionMixin(
-                              SlotItemsMixin(TapSelectionMixin(ReactiveElement))
-                            )
+          ItemsTextMixin(
+            KeyboardDirectionMixin(
+              KeyboardMixin(
+                KeyboardPagedSelectionMixin(
+                  KeyboardPrefixSelectionMixin(
+                    LanguageDirectionMixin(
+                      SelectedItemTextValueMixin(
+                        SelectionInViewMixin(
+                          SingleSelectionMixin(
+                            SlotItemsMixin(TapSelectionMixin(ReactiveElement))
                           )
                         )
                       )
@@ -67,7 +64,6 @@ const Base = AriaListMixin(
  * @mixes FocusVisibleMixin
  * @mixes FormElementMixin
  * @mixes ItemsTextMixin
- * @mixes GenericMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
  * @mixes KeyboardPagedSelectionMixin
@@ -138,30 +134,10 @@ class ListBox extends Base {
           overflow: hidden; /* Container element is responsible for scrolling */
           -webkit-tap-highlight-color: transparent;
         }
-
-        :host([generic]) {
-          border: 1px solid gray;
-        }
-
         #container {
           display: flex;
           flex: 1;
           -webkit-overflow-scrolling: touch; /* for momentum scrolling */
-        }
-
-        :host([generic]) ::slotted(*) {
-          padding: 0.25em;
-        }
-
-        :host([generic]) ::slotted([selected]) {
-          background: highlight;
-          color: highlighttext;
-        }
-
-        @media (pointer: coarse) {
-          :host([generic]) ::slotted(*) {
-            padding: 1em;
-          }
         }
 
         ::slotted(option) {
