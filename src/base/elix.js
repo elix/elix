@@ -116,7 +116,7 @@ export { default as TabButton } from "./TabButton.js";
 export { default as TabStrip } from "./TabStrip.js";
 export { default as Tabs } from "./Tabs.js";
 export { default as TapSelectionMixin } from "./TapSelectionMixin.js";
-export { default as Thumbnail } from "./Thumbnail.js";
+export { default as Thumbnail } from "../plain/Thumbnail.js";
 export { default as TimerSelectionMixin } from "./TimerSelectionMixin.js";
 export { default as Toast } from "./Toast.js";
 export { default as TouchSwipeMixin } from "./TouchSwipeMixin.js";

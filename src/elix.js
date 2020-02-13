@@ -23,6 +23,8 @@ export { default as CalendarMonth } from "./plain/CalendarMonth.js";
 export { default as CalendarMonthNavigator } from "./plain/CalendarMonthNavigator.js";
 export { default as CalendarMonthYearHeader } from "./plain/CalendarMonthYearHeader.js";
 export { default as Carousel } from "./plain/Carousel.js";
+export { default as CarouselSlideshow } from "./plain/CarouselSlideshow.js";
+export { default as CarouselWithThumbnails } from "./plain/CarouselWithThumbnails.js";
 export { default as CenteredStripHighlight } from "./plain/CenteredStripHighlight.js";
 export { default as DateComboBox } from "./plain/DateComboBox.js";
 export { default as DateInput } from "./plain/DateInput.js";
@@ -37,7 +39,9 @@ export { default as MenuButton } from "./plain/MenuButton.js";
 export { default as ModalBackdrop } from "./plain/ModalBackdrop.js";
 export { default as OpenCloseToggle } from "./plain/OpenCloseToggle.js";
 export { default as OverlayFrame } from "./plain/OverlayFrame.js";
+export { default as PageDot } from "./plain/PageDot.js";
 export { default as PopupButton } from "./plain/PopupButton.js";
+export { default as Thumbnail } from "./plain/Thumbnail.js";
 
 // Files that export multiple objects.
 // As of Sept 2019, there's no way to simultaneously import a collection of

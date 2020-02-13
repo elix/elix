@@ -1,18 +1,17 @@
 import * as internal from "./internal.js";
 import Carousel from "./Carousel.js";
-import Thumbnail from "./Thumbnail.js";
 
 /**
  * Carousel showing a thumbnail for each image
  *
  * @inherits Carousel
- * @part {Thumbnail} proxy
+ * @part {img} proxy
  */
 class CarouselWithThumbnails extends Carousel {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       proxyListOverlap: false,
-      proxyPartType: Thumbnail
+      proxyPartType: "img"
     });
   }
 
@@ -25,7 +24,7 @@ class CarouselWithThumbnails extends Carousel {
       proxies.forEach((proxy, index) => {
         /** @type {any} */ const item = items[index];
         /** @type {any} */ const cast = proxy;
-        if (item && "src" in cast) {
+        if (item && typeof item.src === "string" && "src" in cast) {
           cast.src = item.src;
         }
       });

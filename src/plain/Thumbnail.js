@@ -1,6 +1,6 @@
-import * as internal from "./internal.js";
+import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
-import WrappedStandardElement from "./WrappedStandardElement.js";
+import WrappedStandardElement from "../base/WrappedStandardElement.js";
 
 /**
  * A thumbnail image used to represent a larger image.
@@ -16,10 +16,6 @@ class Thumbnail extends WrappedStandardElement.wrap("img") {
     result.content.append(
       template.html`
         <style>
-          :host {
-            position: relative;
-          }
-
           #inner {
             height: var(--elix-thumbnail-height, 100%);
             width: var(--elix-thumbnail-width, 100%);
