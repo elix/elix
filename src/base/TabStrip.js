@@ -4,7 +4,6 @@ import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import AriaListMixin from "./AriaListMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
-import GenericMixin from "./GenericMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
@@ -16,12 +15,10 @@ import TapSelectionMixin from "./TapSelectionMixin.js";
 const Base = AriaListMixin(
   TapSelectionMixin(
     DirectionSelectionMixin(
-      GenericMixin(
-        KeyboardDirectionMixin(
-          KeyboardMixin(
-            LanguageDirectionMixin(
-              SingleSelectionMixin(SlotItemsMixin(ReactiveElement))
-            )
+      KeyboardDirectionMixin(
+        KeyboardMixin(
+          LanguageDirectionMixin(
+            SingleSelectionMixin(SlotItemsMixin(ReactiveElement))
           )
         )
       )
@@ -182,9 +179,6 @@ class TabStrip extends Base {
         item.toggleAttribute("selected", index === selectedIndex);
       });
     }
-    if (changed.generic) {
-      this.style.gridGap = this[internal.state].generic ? "0.25em" : "";
-    }
     if (changed.orientation) {
       this.style.gridAutoFlow =
         this[internal.state].orientation === "vertical" ? "row" : "column";
@@ -231,12 +225,6 @@ class TabStrip extends Base {
         :host {
           display: grid;
           grid-auto-flow: column;
-        }
-
-        ::slotted(*) {
-          cursor: pointer;
-          font: inherit;
-          -webkit-tap-highlight-color: transparent;
         }
       </style>
       <slot></slot>

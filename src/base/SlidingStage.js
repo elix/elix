@@ -122,10 +122,6 @@ class SlidingStage extends Base {
           flex: 0 0 100%;
           max-width: 100%; /* For Firefox */
         }
-
-        ::slotted(img) {
-          object-fit: contain;
-        }
       </style>
       <div id="slidingStageContent" role="none">
         <slot></slot>

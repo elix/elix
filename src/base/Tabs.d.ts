@@ -2,8 +2,7 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import Explorer from "./Explorer.js";
-import GenericMixin from "./GenericMixin.js";
 
-export default class Tabs extends GenericMixin(Explorer) {
+export default class Tabs extends Explorer {
   tabAlign: "start" | "center" | "end" | "stretch";
 }

@@ -3,12 +3,11 @@
 
 import Button from "./Button.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
-import GenericMixin from "./GenericMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import SlotContentMixin from "./SlotContentMixin.js";
 
 export default class TabButton extends FocusVisibleMixin(
-  GenericMixin(LanguageDirectionMixin(SlotContentMixin(Button)))
+  LanguageDirectionMixin(SlotContentMixin(Button))
 ) {
   position: "bottom" | "left" | "right" | "top";
   selected: boolean;

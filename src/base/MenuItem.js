@@ -1,9 +1,5 @@
 import * as internal from "./internal.js";
-import * as template from "../core/template.js";
-import GenericMixin from "./GenericMixin.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-
-const Base = GenericMixin(ReactiveElement);
 
 /**
  * A choice in a menu
@@ -14,9 +10,8 @@ const Base = GenericMixin(ReactiveElement);
  * of item you want.
  *
  * @inherits ReactiveElement
- * @mixes GenericMixin
  */
-class MenuItem extends Base {
+class MenuItem extends ReactiveElement {
   [internal.componentDidUpdate](/** @typeof {PlainObject} */ changed) {
     // TODO: How do we know whether to raise this if selection is set by Menu? */
     if (changed.selected /* && this[internal.raiseChangeEvents] */) {
@@ -48,24 +43,6 @@ class MenuItem extends Base {
   // handling parsing it for us.
   set selected(selected) {
     this[internal.setState]({ selected });
-  }
-
-  get [internal.template]() {
-    /* Variety of system fonts */
-    return template.html`
-      <style>
-        :host([generic]) {
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-          font-size: 10pt;
-          padding-left: 2em !important;
-          padding-right: 2em !important;
-          white-space: nowrap;
-        }
-      </style>
-      <div id="container">
-        <slot></slot>
-      </div>
-    `;
   }
 }
 

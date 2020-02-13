@@ -37,15 +37,25 @@ export { default as ExpandCollapseToggle } from "../src/plain/ExpandCollapseTogg
 export { default as ExpandableSection } from "../src/plain/ExpandableSection.js";
 export { default as Explorer } from "../src/plain/Explorer.js";
 export { default as FilterComboBox } from "../src/plain/FilterComboBox.js";
+export { default as FilterListBox } from "../src/plain/FilterListBox.js";
 export { default as ListBox } from "../src/plain/ListBox.js";
+export { default as ListBoxDesignMixin } from "../src/plain/ListBoxDesignMixin.js";
 export { default as ListExplorer } from "../src/plain/ListExplorer.js";
+export { default as ListWithSearch } from "../src/plain/ListWithSearch.js";
 export { default as Menu } from "../src/plain/Menu.js";
 export { default as MenuButton } from "../src/plain/MenuButton.js";
+export { default as MenuItem } from "../src/plain/MenuItem.js";
+export { default as MenuSeparator } from "../src/plain/MenuSeparator.js";
 export { default as ModalBackdrop } from "../src/plain/ModalBackdrop.js";
 export { default as OpenCloseToggle } from "../src/plain/OpenCloseToggle.js";
 export { default as OverlayFrame } from "../src/plain/OverlayFrame.js";
 export { default as PageDot } from "../src/plain/PageDot.js";
 export { default as PopupButton } from "../src/plain/PopupButton.js";
+export { default as SlidingPages } from "../src/plain/SlidingPages.js";
+export { default as SlidingStage } from "../src/plain/SlidingStage.js";
+export { default as TabButton } from "../src/plain/TabButton.js";
+export { default as TabStrip } from "../src/plain/TabStrip.js";
+export { default as Tabs } from "../src/plain/Tabs.js";
 export { default as Thumbnail } from "../src/plain/Thumbnail.js";
 
 // Files that export multiple objects.

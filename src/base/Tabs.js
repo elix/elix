@@ -1,13 +1,9 @@
 import { defaultAriaRole } from "./accessibility.js";
 import { ensureId } from "../core/utilities.js";
 import * as internal from "./internal.js";
-import * as template from "../core/template.js";
 import Explorer from "./Explorer.js";
-import GenericMixin from "./GenericMixin.js";
 import TabButton from "./TabButton.js";
 import TabStrip from "./TabStrip.js";
-
-const Base = GenericMixin(Explorer);
 
 /**
  * Basic tabs structure for navigation and configuration
@@ -18,11 +14,10 @@ const Base = GenericMixin(Explorer);
  * best if you only have a small handful of pages, say 2–7.
  *
  * @inherits Explorer
- * @mixes GenericMixin
  * @part {TabButton} proxy
  * @part {TabStrip} proxy-list
  */
-class Tabs extends Base {
+class Tabs extends Explorer {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       itemRole: "tabpanel",
@@ -83,26 +78,6 @@ class Tabs extends Base {
         }
       });
     }
-    if (changed.generic) {
-      if ("generic" in this[internal.ids].proxyList) {
-        /** @type {any} */ (this[internal.ids].proxyList).generic = this[
-          internal.state
-        ].generic;
-      }
-    }
-    if (
-      (changed.generic || changed.proxies || changed.proxiesAssigned) &&
-      proxies
-    ) {
-      if (!this[internal.state].proxiesAssigned) {
-        proxies.forEach(proxy => {
-          /** @type {any} */ const cast = proxy;
-          if ("generic" in cast) {
-            cast.generic = this[internal.state].generic;
-          }
-        });
-      }
-    }
     if (changed.tabAlign) {
       // Apply alignment to proxy list.
       if ("tabAlign" in this[internal.ids].proxyList) {
@@ -115,9 +90,6 @@ class Tabs extends Base {
   /**
    * The alignment of the tabs within the tab strip.
    *
-   * The value of this property will be forwarded to the corresponding
-   * property
-   *
    * @type {('start'|'center'|'end'|'stretch')}
    * @default 'start'
    */
@@ -126,20 +98,6 @@ class Tabs extends Base {
   }
   set tabAlign(tabAlign) {
     this[internal.setState]({ tabAlign });
-  }
-
-  get [internal.template]() {
-    const result = super[internal.template];
-    result.content.append(
-      template.html`
-        <style>
-          #proxyList {
-            z-index: 1;
-          }
-        </style>
-      `.content
-    );
-    return result;
   }
 }
 
