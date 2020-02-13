@@ -65,7 +65,7 @@ export function createElement(descriptor) {
  * null if not found.
  *
  * @param {DocumentFragment} tree - the tree to search
- * @returns {Node|null}
+ * @returns {HTMLSlotElement|null}
  */
 export function defaultSlot(tree) {
   return tree.querySelector("slot:not([name])");

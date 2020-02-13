@@ -136,31 +136,15 @@ class AlertDialog extends Dialog {
 
   get [internal.template]() {
     const result = super[internal.template];
-    const alertDialogTemplate = template.html`
-      <style>
-        #frame {
-          padding: 1em;
-        }
-
-        #buttonContainer {
-          margin-top: 1em;
-        }
-
-        button {
-          font: inherit;
-        }
-
-        #buttonContainer > :not(:first-child) {
-          margin-left: 0.5em;
-        }
-      </style>
-      <div id="alertDialogContent">
-        <slot></slot>
-        <div id="buttonContainer"></div>
-      </div>
-    `;
+    // Fill the default slot with a new default slot and a button container.
     const defaultSlot = template.defaultSlot(result.content);
     if (defaultSlot) {
+      const alertDialogTemplate = template.html`
+        <div id="alertDialogContent">
+          <slot></slot>
+          <div id="buttonContainer"></div>
+        </div>
+      `;
       template.transmute(defaultSlot, alertDialogTemplate);
     }
     return result;

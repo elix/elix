@@ -2,7 +2,7 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 export function createElement(descriptor: PartDescriptor): Node;
-export function defaultSlot(tree: DocumentFragment): Node | null;
+export function defaultSlot(tree: DocumentFragment): HTMLSlotElement | null;
 export function html(
   strings: TemplateStringsArray,
   ...substitutions: any[]

@@ -1,6 +1,7 @@
 // TypeScript declarations for the complete Elix library.
 
 // Files that export a single object.
+export { default as AlertDialog } from "../src/plain/AlertDialog.js";
 export { default as ArrowDirectionButton } from "../src/plain/ArrowDirectionButton.js";
 export { default as AutoCompleteComboBox } from "../src/plain/AutoCompleteComboBox.js";
 export { default as BorderButton } from "../src/plain/BorderButton.js";
