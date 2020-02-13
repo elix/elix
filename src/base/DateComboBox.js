@@ -2,12 +2,8 @@ import * as calendar from "./calendar.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import Button from "./Button.js";
-import CalendarDayButton from "./CalendarDayButton.js";
-import CalendarDayNamesHeader from "./CalendarDayNamesHeader.js";
-import CalendarDays from "./CalendarDays.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
 import CalendarMonthNavigator from "./CalendarMonthNavigator.js";
-import CalendarMonthYearHeader from "./CalendarMonthYearHeader.js";
 import ComboBox from "./ComboBox.js";
 
 const Base = CalendarElementMixin(ComboBox);

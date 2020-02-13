@@ -1,5 +1,3 @@
-import * as internal from "./internal.js";
-import * as template from "../core/template.js";
 import Backdrop from "./Backdrop.js";
 
 /**

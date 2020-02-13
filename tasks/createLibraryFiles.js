@@ -50,7 +50,7 @@ async function createLibraryFile(
       const filePath =
         isMixin && destinationFolder !== sourceFolder
           ? path.join(relativeFolder, file)
-          : `./plain/${file}`;
+          : `../src/plain/${file}`;
       return `export { default as ${name} } from "${filePath}";`;
     })
     .join("\n");
@@ -63,7 +63,7 @@ async function createLibraryFile(
       const filePath =
         destinationFolder !== sourceFolder
           ? path.join(relativeFolder, file)
-          : `./base/${file}`;
+          : `../src/base/${file}`;
       return `import * as ${name}Import from "${filePath}";
 // @ts-ignore
 export const ${name} = ${name}Import;
