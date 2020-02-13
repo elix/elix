@@ -90,7 +90,10 @@ class Button extends Base {
 
   // Respond to a simulated click.
   [internal.tap]() {
-    const clickEvent = new MouseEvent("click");
+    const clickEvent = new MouseEvent("click", {
+      bubbles: true,
+      cancelable: true
+    });
     this.dispatchEvent(clickEvent);
   }
 
