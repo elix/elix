@@ -364,7 +364,7 @@ class MenuButton extends PopupButton {
         <slot></slot>
       </div>
     `;
-    const defaultSlot = result.content.querySelector("slot:not([name])");
+    const defaultSlot = template.defaultSlot(result.content);
     if (defaultSlot) {
       template.transmute(defaultSlot, menuTemplate);
     }

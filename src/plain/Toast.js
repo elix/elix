@@ -1,0 +1,45 @@
+import * as internal from "../base/internal.js";
+import * as template from "../core/template.js";
+import PlainOverlayFrame from "./OverlayFrame.js";
+import Toast from "../base/Toast.js";
+
+class PlainToast extends Toast {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
+      framePartType: PlainOverlayFrame
+    });
+  }
+
+  get [internal.template]() {
+    const result = super[internal.template];
+    result.content.append(
+      template.html`
+        <style>
+          :host {
+            align-items: initial;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: initial;
+            left: 0;
+            outline: none;
+            pointer-events: none;
+            top: 0;
+            -webkit-tap-highlight-color: transparent;
+            width: 100%;
+          }
+  
+          #frame {
+            margin: 1em;
+            transition-duration: 0.25s;
+            transition-property: opacity, transform;
+            will-change: opacity, transform;
+          }
+        </style>
+      `.content
+    );
+    return result;
+  }
+}
+
+export default PlainToast;

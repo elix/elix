@@ -3,16 +3,8 @@ import { getScrollableElement } from "./scrolling.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import EffectMixin from "./EffectMixin.js";
-import ProgressSpinner from "./ProgressSpinner.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 import TouchSwipeMixin from "./TouchSwipeMixin.js";
-
-// Template for the default down arrow shown while pulling.
-const downArrowTemplate = template.html`
-  <svg viewBox="0 0 24 24" style="fill: #404040; height: 24px; width: 24px;">
-    <path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z" />
-  </svg>
-`;
 
 const Base = EffectMixin(TouchSwipeMixin(ReactiveElement));
 
@@ -27,8 +19,8 @@ const Base = EffectMixin(TouchSwipeMixin(ReactiveElement));
  * @mixes TouchSwipeMixin
  * @part indicator - either of the pull or refreshing indicators
  * @part refresh-header - the header area shown when the user pulls down
- * @part pull-indicator - the element shown to let the user know they can pull down
- * @part {ProgressSpinner} refreshing-indicator - the element shown during a refresh of the content
+ * @part {div} pull-indicator - the element shown to let the user know they can pull down
+ * @part {div} refreshing-indicator - the element shown during a refresh of the content
  */
 class PullToRefresh extends Base {
   [internal.componentDidMount]() {
@@ -88,10 +80,10 @@ class PullToRefresh extends Base {
     // Suppress transition effects on page load.
     return Object.assign(super[internal.defaultState], {
       swipeFractionMin: 0, // Can't swipe up, only down
-      pullIndicatorPartType: downArrowTemplate,
+      pullIndicatorPartType: "div",
       pullTriggeredRefresh: false,
       refreshing: false,
-      refreshingIndicatorPartType: ProgressSpinner,
+      refreshingIndicatorPartType: "div",
       scrollPullDistance: null,
       scrollPullMaxReached: false,
       swipeAxis: "vertical"
@@ -246,7 +238,6 @@ class PullToRefresh extends Base {
           box-sizing: border-box;
           display: grid;
           justify-items: center;
-          padding: 1em;
         }
 
         #refreshIndicators > * {

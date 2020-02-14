@@ -1,13 +1,16 @@
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
+import Button from "./Button.js";
+import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import Drawer from "./Drawer.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import Button from "./Button.js";
 
-const Base = FocusVisibleMixin(KeyboardMixin(OpenCloseMixin(ReactiveElement)));
+const Base = DelegateFocusMixin(
+  FocusVisibleMixin(KeyboardMixin(OpenCloseMixin(ReactiveElement)))
+);
 
 /**
  * Button that invokes a command menu, usually in a mobile context
@@ -23,7 +26,6 @@ const Base = FocusVisibleMixin(KeyboardMixin(OpenCloseMixin(ReactiveElement)));
  * @mixes OpenCloseMixin
  * @part {Drawer} menu - contains the navigation or other menu items
  * @part {Button} menu-button - toggles display of the menu
- * @part menu-icon - the icon inside the menu button
  */
 class HamburgerMenuButton extends Base {
   get [internal.defaultState]() {
@@ -154,29 +156,11 @@ class HamburgerMenuButton extends Base {
         :host {
           align-items: center;
           display: inline-flex;
-          height: 1em;
           touch-action: manipulation;
-          width: 1em;
-        }
-
-        #menuButton {
-          align-items: center;
-          display: inline-flex;
-          flex: 1;
-        }
-
-        #menuIcon {
-          display: block;
-          height: 24px;
-          width: 24px;
         }
       </style>
-      <div id="menuButton" part="menu-button" aria-label="Open menu" tabindex="-1">
-        <slot name="menuIcon">
-          <svg id="menuIcon" part="menu-icon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 3 h18 v2 h-18 z m0 5 h18 v2 h-18 z m0 5 h18 v2 h-18 z"></path>
-          </svg>
-        </slot>
+      <div id="menuButton" part="menu-button" aria-label="Open menu">
+        <slot name="menuButton"></slot>
       </div>
       <div id="menu" part="menu" exportparts="backdrop, frame">
         <slot></slot>

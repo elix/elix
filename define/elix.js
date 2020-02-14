@@ -36,6 +36,7 @@ export { default as ExpandableSection } from "../src/plain/ExpandableSection.js"
 export { default as Explorer } from "../src/plain/Explorer.js";
 export { default as FilterComboBox } from "../src/plain/FilterComboBox.js";
 export { default as FilterListBox } from "../src/plain/FilterListBox.js";
+export { default as HamburgerMenuButton } from "../src/plain/HamburgerMenuButton.js";
 export { default as ListBox } from "../src/plain/ListBox.js";
 export { default as ListBoxDesignMixin } from "../src/ListBoxDesignMixin.js";
 export { default as ListExplorer } from "../src/plain/ListExplorer.js";
@@ -49,12 +50,14 @@ export { default as OpenCloseToggle } from "../src/plain/OpenCloseToggle.js";
 export { default as OverlayFrame } from "../src/plain/OverlayFrame.js";
 export { default as PageDot } from "../src/plain/PageDot.js";
 export { default as PopupButton } from "../src/plain/PopupButton.js";
+export { default as PullToRefresh } from "../src/plain/PullToRefresh.js";
 export { default as SlidingPages } from "../src/plain/SlidingPages.js";
 export { default as SlidingStage } from "../src/plain/SlidingStage.js";
 export { default as TabButton } from "../src/plain/TabButton.js";
 export { default as TabStrip } from "../src/plain/TabStrip.js";
 export { default as Tabs } from "../src/plain/Tabs.js";
 export { default as Thumbnail } from "../src/plain/Thumbnail.js";
+export { default as Toast } from "../src/plain/Toast.js";
 
 // Files that export multiple objects.
 // As of Sept 2019, there's no way to simultaneously import a collection of
