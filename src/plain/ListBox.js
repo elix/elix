@@ -1,4 +1,4 @@
 import ListBox from "../base/ListBox.js";
-import ListBoxDesignMixin from "./ListBoxDesignMixin.js";
+import PlainListBoxMixin from "./PlainListBoxMixin.js";
 
-export default class PlainListBox extends ListBoxDesignMixin(ListBox) {}
+export default class PlainListBox extends PlainListBoxMixin(ListBox) {}

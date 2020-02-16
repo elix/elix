@@ -1,8 +1,8 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
 
-export default function ListBoxDesignMixin(Base) {
-  return class ListBoxDesign extends Base {
+export default function PlainListBoxMixin(Base) {
+  return class PlainListBox extends Base {
     get [internal.template]() {
       const result = super[internal.template];
       result.content.append(
