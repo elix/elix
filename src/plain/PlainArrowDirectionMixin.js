@@ -1,8 +1,16 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
+import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
-export default function PlainArrowDirectionIconsMixin(Base) {
-  return class PlainArrowDirectionIcons extends Base {
+/**
+ * @module PlainArrowDirectionMixin
+ * @param {Constructor<ReactiveElement>} Base
+ * @part arrow-icon - both of the default arrow icons used in the arrow buttons
+ * @part arrow-icon-next - the arrow icon that points to the next item
+ * @part arrow-icon-previous - the arrow icon that points to the previous item
+ */
+export default function PlainArrowDirectionMixin(Base) {
+  return class PlainArrowDirection extends Base {
     [internal.render](changed) {
       super[internal.render](changed);
 

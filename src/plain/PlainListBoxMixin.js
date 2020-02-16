@@ -1,6 +1,11 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
+import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
+/**
+ * @module PlainListBoxMixin
+ * @param {Constructor<ReactiveElement>} Base
+ */
 export default function PlainListBoxMixin(Base) {
   return class PlainListBox extends Base {
     get [internal.template]() {

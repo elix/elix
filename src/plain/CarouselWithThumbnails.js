@@ -2,7 +2,7 @@ import * as internal from "../base/internal.js";
 import ArrowDirectionButton from "./ArrowDirectionButton.js";
 import CarouselWithThumbnails from "../base/CarouselWithThumbnails.js";
 import CenteredStripOpacity from "./CenteredStripOpacity.js";
-import PlainArrowDirectionIconsMixin from "./PlainArrowDirectionIconsMixin.js";
+import PlainArrowDirectionIconsMixin from "./PlainArrowDirectionMixin.js";
 import PlainCarouselMixin from "./PlainCarouselMixin.js";
 import Thumbnail from "./Thumbnail.js";
 

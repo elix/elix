@@ -1,7 +1,7 @@
 import * as internal from "../base/internal.js";
 import ArrowDirectionButton from "./ArrowDirectionButton.js";
 import CalendarMonthNavigator from "../base/CalendarMonthNavigator.js";
-import PlainArrowDirectionIconsMixin from "./PlainArrowDirectionIconsMixin.js";
+import PlainArrowDirectionIconsMixin from "./PlainArrowDirectionMixin.js";
 import PlainCalendarDayButton from "./CalendarDayButton.js";
 import PlainCalendarDayNamesHeader from "./CalendarDayNamesHeader.js";
 import PlainCalendarMonthYearHeader from "./CalendarMonthYearHeader.js";
