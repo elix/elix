@@ -28,6 +28,11 @@ const Base = OpenCloseMixin(
  * @mixes TransitionEffectMixin
  */
 class ExpandablePanel extends Base {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
+      transitionDuration: 250
+    });
+  }
   get [internal.effectEndTarget]() {
     return this[internal.ids].outerContainer;
   }
@@ -35,7 +40,9 @@ class ExpandablePanel extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.effect || changed.effectPhase || changed.enableEffects) {
-      const { effect, effectPhase, enableEffects } = this[internal.state];
+      const { effect, effectPhase, enableEffects, transitionDuration } = this[
+        internal.state
+      ];
 
       // The inner container lets us measure how tall the content wants to be.
       const naturalHeight = this[
@@ -64,8 +71,11 @@ class ExpandablePanel extends Base {
       // https://developers.google.com/web/updates/2017/03/performant-expand-and-collapse.
       // Animating height does have the advantage of letting you set the height of
       // the panel's collapsed state by setting the panel's `min-height`.
+      const durationInSeconds = transitionDuration / 1000;
       const transition =
-        enableEffects && effectPhase === "during" ? "height 0.25s" : null;
+        enableEffects && effectPhase === "during"
+          ? `height ${durationInSeconds}s`
+          : null;
 
       Object.assign(this[internal.ids].outerContainer.style, {
         height,
@@ -101,6 +111,19 @@ class ExpandablePanel extends Base {
         </div>
       </div>
     `;
+  }
+
+  /**
+   * The duration of the expand/collapse transition in milliseconds.
+   *
+   * @type {number}
+   * @default {250}
+   */
+  get transitionDuration() {
+    return this[internal.state].transitionDuration;
+  }
+  set transitionDuration(transitionDuration) {
+    this[internal.setState]({ transitionDuration });
   }
 }
 
