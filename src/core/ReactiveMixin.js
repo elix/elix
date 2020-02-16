@@ -243,10 +243,10 @@ export default function ReactiveMixin(Base) {
      *
      * This method should return a dictionary of changes that should be applied
      * to the state. If the dictionary object is not empty, the
-     * `internal.setState` will invoke this `stateEffects` method again to
-     * determine whether there are any third-order effects that should be
-     * applied. This process repeats until all mixins/classes report that they
-     * have no additional changes to make.
+     * `internal.setState` will apply the changes to the state, and invoke this
+     * `stateEffects` method again to determine whether there are any
+     * third-order effects that should be applied. This process repeats until
+     * all mixins/classes report that they have no additional changes to make.
      *
      * See an example of how `ReactiveMixin` invokes the `stateEffects` to
      * [ensure state consistency](ReactiveMixin#ensuring-state-consistency).
