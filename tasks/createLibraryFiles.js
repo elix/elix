@@ -45,11 +45,11 @@ async function createLibraryFile(
   const classExports = classExportFiles
     .map(file => {
       const name = path.basename(file, ".js");
-      // Components point to the local folder, mixins point to /src/base.
+      // TODO: Components point to the local folder, mixins point to /src/base.
       const isMixin = name.endsWith("Mixin");
       const filePath =
         isMixin && destinationFolder !== sourceFolder
-          ? path.join(relativeFolder, file)
+          ? path.join(relativeFolder, "/plain/", file)
           : `../src/plain/${file}`;
       return `export { default as ${name} } from "${filePath}";`;
     })

@@ -40,7 +40,7 @@ export { default as HamburgerMenuButton } from "../src/plain/HamburgerMenuButton
 export { default as Hidden } from "../src/plain/Hidden.js";
 export { default as Input } from "../src/plain/Input.js";
 export { default as ListBox } from "../src/plain/ListBox.js";
-export { default as ListBoxDesignMixin } from "../src/ListBoxDesignMixin.js";
+export { default as ListBoxDesignMixin } from "../src/plain/ListBoxDesignMixin.js";
 export { default as ListComboBox } from "../src/plain/ListComboBox.js";
 export { default as ListExplorer } from "../src/plain/ListExplorer.js";
 export { default as ListWithSearch } from "../src/plain/ListWithSearch.js";
