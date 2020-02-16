@@ -60,7 +60,6 @@ class ComboBox extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       ariaLabel: "",
-      backdropPartType: Hidden,
       focused: false,
       inputPartType: "input",
       orientation: "vertical",
@@ -263,11 +262,16 @@ class ComboBox extends Base {
 
     if (changed.popupPartType) {
       const popup = this[internal.ids].popup;
+      /** @type {any} */ const cast = popup;
       popup.removeAttribute("tabindex");
-      if ("autoFocus" in popup) {
-        /** @type {any} */ (popup).autoFocus = false;
+      // Override popup's backdrop to hide it.
+      if ("backdropPartType" in popup) {
+        cast.backdropPartType = Hidden;
       }
-      const frame = /** @type {any} */ (popup).frame;
+      if ("autoFocus" in popup) {
+        cast.autoFocus = false;
+      }
+      const frame = cast.frame;
       if (frame) {
         Object.assign(frame.style, {
           display: "flex",
@@ -275,7 +279,7 @@ class ComboBox extends Base {
         });
       }
       if ("closeOnWindowResize" in popup) {
-        /** @type {any} */ (popup).closeOnWindowResize = false;
+        cast.closeOnWindowResize = false;
       }
     }
 

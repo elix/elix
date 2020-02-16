@@ -1,12 +1,10 @@
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import AriaRoleMixin from "./AriaRoleMixin.js";
-import Backdrop from "./Backdrop.js";
 import DisabledMixin from "./DisabledMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
-import OverlayFrame from "./OverlayFrame.js";
 import Popup from "./Popup.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 
@@ -27,31 +25,10 @@ const Base = AriaRoleMixin(
  * @mixes FocusVisibleMixin
  * @mixes KeyboardMixin
  * @mixes OpenCloseMixin
- * @part {Backdrop} backdrop - the backdrop behind the overlay
- * @part {OverlayFrame} frame - the frame around the overlay
  * @part {Popup} popup - the popup element
  * @part {button} source - the element used as the reference point for positioning the popup, generally the element that invokes the popup
  */
 class PopupSource extends Base {
-  /**
-   * The class, tag, or template used for the `backdrop` part - the optional
-   * element shown behind the popup.
-   *
-   * This can help focus the user's attention on the overlay content.
-   * Additionally, a backdrop can be used to absorb clicks on background page
-   * elements. For example, [Dialog](Dialog) uses [ModalBackdrop](ModalBackdrop)
-   * as an overlay backdrop in such a way.
-   *
-   * @type {PartDescriptor}
-   * @default Backdrop
-   */
-  get backdropPartType() {
-    return this[internal.state].backdropPartType;
-  }
-  set backdropPartType(backdropPartType) {
-    this[internal.setState]({ backdropPartType });
-  }
-
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
     if (this[internal.state].opened) {
@@ -77,8 +54,6 @@ class PopupSource extends Base {
 
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      backdropPartType: Backdrop,
-      framePartType: OverlayFrame,
       horizontalAlign: "start",
       popupHeight: null,
       popupMeasured: false,
@@ -96,24 +71,6 @@ class PopupSource extends Base {
 
   get frame() {
     return /** @type {any} */ (this[internal.ids].popup).frame;
-  }
-
-  /**
-   * The class, tag, or template used to create the `frame` part – the popup's
-   * primary content.
-   *
-   * The frame element can be used to provide a border around the popup content,
-   * and to provide visual effects such as a drop-shadow to help distinguish
-   * popup content from background page elements.
-   *
-   * @type {PartDescriptor}
-   * @default OverlayFrame
-   */
-  get framePartType() {
-    return this[internal.state].framePartType;
-  }
-  set framePartType(framePartType) {
-    this[internal.setState]({ framePartType });
   }
 
   /**
@@ -166,22 +123,6 @@ class PopupSource extends Base {
           this[internal.raiseChangeEvents] = false;
         }
       });
-    }
-    if (changed.backdropPartType || changed.popupPartType) {
-      if ("backdropPartType" in this[internal.ids].popup) {
-        const { backdropPartType } = this[internal.state];
-        /** @type {any} */ (this[
-          internal.ids
-        ].popup).backdropPartType = backdropPartType;
-      }
-    }
-    if (changed.framePartType || changed.popupPartType) {
-      if ("framePartType" in this[internal.ids].popup) {
-        const { framePartType } = this[internal.state];
-        /** @type {any} */ (this[
-          internal.ids
-        ].popup).framePartType = framePartType;
-      }
     }
     if (
       changed.horizontalAlign ||

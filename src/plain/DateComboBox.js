@@ -1,10 +1,10 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
-import OpenCloseToggle from "./OpenCloseToggle.js";
 import DateComboBox from "../base/DateComboBox.js";
+import OpenCloseToggle from "./OpenCloseToggle.js";
 import PlainButton from "./Button.js";
 import PlainCalendarMonthNavigator from "./CalendarMonthNavigator.js";
-import PlainOverlayFrame from "./OverlayFrame.js";
+import PlainPopup from "./Popup.js";
 
 /**
  * @part {ArrowDirectionButton} arrow-button - both of the arrow buttons
@@ -13,8 +13,8 @@ class PlainDateComboBox extends DateComboBox {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       calendarPartType: PlainCalendarMonthNavigator,
-      framePartType: PlainOverlayFrame,
       todayButtonPartType: PlainButton,
+      popupPartType: PlainPopup,
       popupTogglePartType: OpenCloseToggle
     });
   }
