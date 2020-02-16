@@ -3,9 +3,12 @@ import ArrowDirectionButton from "./ArrowDirectionButton.js";
 import CarouselSlideshow from "../base/CarouselSlideshow.js";
 import CenteredStripOpacity from "./CenteredStripOpacity.js";
 import PageDot from "./PageDot.js";
+import PlainArrowDirectionIconsMixin from "./PlainArrowDirectionIconsMixin.js";
 import PlainCarouselMixin from "./PlainCarouselMixin.js";
 
-class PlainCarouselSlideshow extends PlainCarouselMixin(CarouselSlideshow) {
+class PlainCarouselSlideshow extends PlainArrowDirectionIconsMixin(
+  PlainCarouselMixin(CarouselSlideshow)
+) {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       arrowButtonPartType: ArrowDirectionButton,

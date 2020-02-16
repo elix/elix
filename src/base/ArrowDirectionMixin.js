@@ -217,22 +217,6 @@ function ArrowDirectionMixin(Base) {
         Object.assign(arrowButtonNext.style, buttonStyle, nextButtonStyle);
       }
 
-      // Rotate the default icons for vertical orientation, flip the default
-      // icons for right-to-left.
-      if (changed.orientation || changed.rightToLeft) {
-        const transform = vertical
-          ? "rotate(90deg)"
-          : rightToLeft
-          ? "rotateZ(180deg)"
-          : "";
-        if (this[internal.ids].arrowIconPrevious) {
-          this[internal.ids].arrowIconPrevious.style.transform = transform;
-        }
-        if (this[internal.ids].arrowIconNext) {
-          this[internal.ids].arrowIconNext.style.transform = transform;
-        }
-      }
-
       // Disable the previous/next buttons if we can't go in those directions.
       // WORKAROUND: We check to makes sure that can go previous/next state is
       // defined (which happens once the component has items). Without that
@@ -292,13 +276,7 @@ function ArrowDirectionMixin(Base) {
             aria-hidden="true"
             tabindex="-1"
             >
-            <slot name="arrowButtonPrevious">
-              <svg id="arrowIconPrevious" part="arrow-icon arrow-icon-previous" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" style="fill: currentColor; height: 1em; width: 1em;">
-                <g>
-                  <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
-                </g>
-              </svg>
-            </slot>
+            <slot name="arrowButtonPrevious"></slot>
           </div>
           <div id="arrowDirectionContainer" role="none" style="flex: 1; overflow: hidden; position: relative;"></div>
           <div
@@ -309,13 +287,7 @@ function ArrowDirectionMixin(Base) {
             aria-hidden="true"
             tabindex="-1"
             >
-            <slot name="arrowButtonNext">
-              <svg id="arrowIconNext" part="arrow-icon arrow-icon-next" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" style="fill: currentColor; height: 1em; width: 1em;">
-                <g>
-                  <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
-                </g>
-              </svg>
-            </slot>
+            <slot name="arrowButtonNext"></slot>
           </div>
         </div>
       `;
