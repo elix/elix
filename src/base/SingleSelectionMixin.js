@@ -286,6 +286,30 @@ export default function SingleSelectionMixin(Base) {
 }
 
 /**
+ * Validate the given selected index and, if that's not the element's current
+ * selected index, update it.
+ *
+ * @private
+ * @param {ReactiveElement} element
+ * @param {number} selectedIndex
+ */
+function updateSelectedIndex(element, selectedIndex) {
+  const validatedIndex = validateIndex(
+    selectedIndex,
+    element[internal.state].items.length,
+    element[internal.state].selectionRequired,
+    element[internal.state].selectionWraps
+  );
+  const changed = element[internal.state].selectedIndex !== validatedIndex;
+  if (changed) {
+    element[internal.setState]({
+      selectedIndex: validatedIndex
+    });
+  }
+  return changed;
+}
+
+/**
  * Force the indicated index to be between -1 and count - 1.
  *
  * @private
@@ -312,28 +336,4 @@ function validateIndex(index, count, selectionRequired, selectionWraps) {
     validatedIndex = Math.max(Math.min(index, count - 1), -1);
   }
   return validatedIndex;
-}
-
-/**
- * Validate the given selected index and, if that's not the element's current
- * selected index, update it.
- *
- * @private
- * @param {ReactiveElement} element
- * @param {number} selectedIndex
- */
-function updateSelectedIndex(element, selectedIndex) {
-  const validatedIndex = validateIndex(
-    selectedIndex,
-    element[internal.state].items.length,
-    element[internal.state].selectionRequired,
-    element[internal.state].selectionWraps
-  );
-  const changed = element[internal.state].selectedIndex !== validatedIndex;
-  if (changed) {
-    element[internal.setState]({
-      selectedIndex: validatedIndex
-    });
-  }
-  return changed;
 }
