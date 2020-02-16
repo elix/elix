@@ -2,7 +2,7 @@ import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
 import ArrowDirectionButton from "./ArrowDirectionButton.js";
 import CarouselWithThumbnails from "../base/CarouselWithThumbnails.js";
-import CenteredStripOpacity from "../base/CenteredStripOpacity.js";
+import CenteredStripOpacity from "./CenteredStripOpacity.js";
 import Thumbnail from "./Thumbnail.js";
 
 class PlainCarouselWithThumbnails extends CarouselWithThumbnails {

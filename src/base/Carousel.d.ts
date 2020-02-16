@@ -3,14 +3,12 @@
 
 import AriaListMixin from "./AriaListMixin.js";
 import ArrowDirectionMixin from "./ArrowDirectionMixin.js";
-import CenteredStripOpacity from "./CenteredStripOpacity.js";
 import DarkModeMixin from "./DarkModeMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import Explorer from "./Explorer.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
-import SlidingStage from "./SlidingStage.js";
 import SwipeDirectionMixin from "./SwipeDirectionMixin.js";
 import TouchSwipeMixin from "./TouchSwipeMixin.js";
 import TrackpadSwipeMixin from "./TrackpadSwipeMixin.js";

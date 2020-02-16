@@ -40,7 +40,6 @@ export { default as HamburgerMenuButton } from "../src/plain/HamburgerMenuButton
 export { default as Hidden } from "../src/plain/Hidden.js";
 export { default as Input } from "../src/plain/Input.js";
 export { default as ListBox } from "../src/plain/ListBox.js";
-export { default as ListBoxDesignMixin } from "../src/plain/PlainListBoxMixin.js";
 export { default as ListComboBox } from "../src/plain/ListComboBox.js";
 export { default as ListExplorer } from "../src/plain/ListExplorer.js";
 export { default as ListWithSearch } from "../src/plain/ListWithSearch.js";
@@ -54,6 +53,8 @@ export { default as OpenCloseToggle } from "../src/plain/OpenCloseToggle.js";
 export { default as Overlay } from "../src/plain/Overlay.js";
 export { default as OverlayFrame } from "../src/plain/OverlayFrame.js";
 export { default as PageDot } from "../src/plain/PageDot.js";
+export { default as PlainComboBoxMixin } from "../src/plain/PlainComboBoxMixin.js";
+export { default as PlainListBoxMixin } from "../src/plain/PlainListBoxMixin.js";
 export { default as Popup } from "../src/plain/Popup.js";
 export { default as PopupButton } from "../src/plain/PopupButton.js";
 export { default as PopupSource } from "../src/plain/PopupSource.js";
