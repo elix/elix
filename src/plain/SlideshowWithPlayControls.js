@@ -1,2 +1,6 @@
 import SlideshowWithPlayControls from "../base/SlideshowWithPlayControls.js";
-export default SlideshowWithPlayControls;
+import PlainPlayControlsMixin from "./PlainPlayControlsMixin.js";
+
+export default class PlainSlideshowWithPlayControls extends PlainPlayControlsMixin(
+  SlideshowWithPlayControls
+) {}
