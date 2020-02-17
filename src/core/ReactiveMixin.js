@@ -64,7 +64,8 @@ export default function ReactiveMixin(Base) {
      * @type {PlainObject}
      */
     get [internal.defaultState]() {
-      return {};
+      // Defer to base implementation if defined.
+      return super[internal.defaultState] || {};
     }
 
     /**
@@ -165,7 +166,7 @@ export default function ReactiveMixin(Base) {
       if (this[internal.rendering]) {
         /* eslint-disable no-console */
         console.warn(
-          `${this.constructor.name} called[internal.setState] during rendering, which you should avoid.\nSee https://elix.org/documentation/ReactiveMixin.`
+          `${this.constructor.name} called [internal.setState] during rendering, which you should avoid.\nSee https://elix.org/documentation/ReactiveMixin.`
         );
       }
 
