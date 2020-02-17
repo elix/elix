@@ -1,2 +1,2 @@
 import PlainBackdrop from "../src/plain/PlainBackdrop.js";
-export default Backdrop;
+export default class ElixBackdrop extends PlainBackdrop {}

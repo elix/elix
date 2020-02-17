@@ -1,2 +1,2 @@
 import PlainSlideshowWithPlayControls from "../src/plain/PlainSlideshowWithPlayControls.js";
-export default SlideshowWithPlayControls;
+export default class ElixSlideshowWithPlayControls extends PlainSlideshowWithPlayControls {}

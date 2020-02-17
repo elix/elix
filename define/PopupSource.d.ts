@@ -1,2 +1,2 @@
 import PlainPopupSource from "../src/plain/PlainPopupSource.js";
-export default PopupSource;
+export default class ElixPopupSource extends PlainPopupSource {}

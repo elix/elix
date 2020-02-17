@@ -1,2 +1,2 @@
 import PlainAlertDialog from "../src/plain/PlainAlertDialog.js";
-export default AlertDialog;
+export default class ElixAlertDialog extends PlainAlertDialog {}

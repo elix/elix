@@ -1,2 +1,2 @@
 import PlainExplorer from "../src/plain/PlainExplorer.js";
-export default Explorer;
+export default class ElixExplorer extends PlainExplorer {}

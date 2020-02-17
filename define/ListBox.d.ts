@@ -1,2 +1,2 @@
 import PlainListBox from "../src/plain/PlainListBox.js";
-export default ListBox;
+export default class ElixListBox extends PlainListBox {}

@@ -1,2 +1,2 @@
 import PlainListExplorer from "../src/plain/PlainListExplorer.js";
-export default ListExplorer;
+export default class ElixListExplorer extends PlainListExplorer {}

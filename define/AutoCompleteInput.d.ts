@@ -1,2 +1,2 @@
 import PlainAutoCompleteInput from "../src/plain/PlainAutoCompleteInput.js";
-export default AutoCompleteInput;
+export default class ElixAutoCompleteInput extends PlainAutoCompleteInput {}

@@ -1,2 +1,2 @@
 import PlainCalendarMonthNavigator from "../src/plain/PlainCalendarMonthNavigator.js";
-export default CalendarMonthNavigator;
+export default class ElixCalendarMonthNavigator extends PlainCalendarMonthNavigator {}

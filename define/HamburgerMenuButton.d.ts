@@ -1,2 +1,2 @@
 import PlainHamburgerMenuButton from "../src/plain/PlainHamburgerMenuButton.js";
-export default HamburgerMenuButton;
+export default class ElixHamburgerMenuButton extends PlainHamburgerMenuButton {}

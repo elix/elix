@@ -1,2 +1,2 @@
 import PlainArrowDirectionButton from "../src/plain/PlainArrowDirectionButton.js";
-export default ArrowDirectionButton;
+export default class ElixArrowDirectionButton extends PlainArrowDirectionButton {}

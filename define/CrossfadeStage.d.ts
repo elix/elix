@@ -1,2 +1,2 @@
 import PlainCrossfadeStage from "../src/plain/PlainCrossfadeStage.js";
-export default CrossfadeStage;
+export default class ElixCrossfadeStage extends PlainCrossfadeStage {}

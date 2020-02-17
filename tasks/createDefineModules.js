@@ -32,7 +32,7 @@ customElements.define("${tag}", Elix${className});
 
     // Create TypeScript file.
     const tsContent = `import ${plainClassName} from "${importPath}";
-export default ${className};
+export default class Elix${className} extends ${plainClassName} {}
 `;
     const tsPath = path.join(defineFolder, `${className}.d.ts`);
     const tsPromise = fs.writeFile(tsPath, tsContent);

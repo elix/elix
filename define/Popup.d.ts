@@ -1,2 +1,2 @@
 import PlainPopup from "../src/plain/PlainPopup.js";
-export default Popup;
+export default class ElixPopup extends PlainPopup {}

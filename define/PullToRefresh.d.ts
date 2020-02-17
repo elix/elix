@@ -1,2 +1,2 @@
 import PlainPullToRefresh from "../src/plain/PlainPullToRefresh.js";
-export default PullToRefresh;
+export default class ElixPullToRefresh extends PlainPullToRefresh {}

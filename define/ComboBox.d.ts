@@ -1,2 +1,2 @@
 import PlainComboBox from "../src/plain/PlainComboBox.js";
-export default ComboBox;
+export default class ElixComboBox extends PlainComboBox {}

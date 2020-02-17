@@ -1,2 +1,2 @@
 import PlainAutoCompleteComboBox from "../src/plain/PlainAutoCompleteComboBox.js";
-export default AutoCompleteComboBox;
+export default class ElixAutoCompleteComboBox extends PlainAutoCompleteComboBox {}

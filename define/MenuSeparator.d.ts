@@ -1,2 +1,2 @@
 import PlainMenuSeparator from "../src/plain/PlainMenuSeparator.js";
-export default MenuSeparator;
+export default class ElixMenuSeparator extends PlainMenuSeparator {}

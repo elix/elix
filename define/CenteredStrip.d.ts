@@ -1,2 +1,2 @@
 import PlainCenteredStrip from "../src/plain/PlainCenteredStrip.js";
-export default CenteredStrip;
+export default class ElixCenteredStrip extends PlainCenteredStrip {}

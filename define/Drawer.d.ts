@@ -1,2 +1,2 @@
 import PlainDrawer from "../src/plain/PlainDrawer.js";
-export default Drawer;
+export default class ElixDrawer extends PlainDrawer {}

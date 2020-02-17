@@ -1,2 +1,2 @@
 import PlainMenuButton from "../src/plain/PlainMenuButton.js";
-export default MenuButton;
+export default class ElixMenuButton extends PlainMenuButton {}

@@ -1,2 +1,2 @@
 import PlainOverlayFrame from "../src/plain/PlainOverlayFrame.js";
-export default OverlayFrame;
+export default class ElixOverlayFrame extends PlainOverlayFrame {}

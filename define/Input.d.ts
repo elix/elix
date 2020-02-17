@@ -1,2 +1,2 @@
 import PlainInput from "../src/plain/PlainInput.js";
-export default Input;
+export default class ElixInput extends PlainInput {}

@@ -1,2 +1,2 @@
 import PlainPageDot from "../src/plain/PlainPageDot.js";
-export default PageDot;
+export default class ElixPageDot extends PlainPageDot {}

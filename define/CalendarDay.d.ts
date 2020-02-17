@@ -1,2 +1,2 @@
 import PlainCalendarDay from "../src/plain/PlainCalendarDay.js";
-export default CalendarDay;
+export default class ElixCalendarDay extends PlainCalendarDay {}

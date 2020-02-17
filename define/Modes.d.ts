@@ -1,2 +1,2 @@
 import PlainModes from "../src/plain/PlainModes.js";
-export default Modes;
+export default class ElixModes extends PlainModes {}

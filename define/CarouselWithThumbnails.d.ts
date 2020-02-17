@@ -1,2 +1,2 @@
 import PlainCarouselWithThumbnails from "../src/plain/PlainCarouselWithThumbnails.js";
-export default CarouselWithThumbnails;
+export default class ElixCarouselWithThumbnails extends PlainCarouselWithThumbnails {}

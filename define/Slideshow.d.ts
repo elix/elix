@@ -1,2 +1,2 @@
 import PlainSlideshow from "../src/plain/PlainSlideshow.js";
-export default Slideshow;
+export default class ElixSlideshow extends PlainSlideshow {}

@@ -1,2 +1,2 @@
 import PlainMenuItem from "../src/plain/PlainMenuItem.js";
-export default MenuItem;
+export default class ElixMenuItem extends PlainMenuItem {}

@@ -1,2 +1,2 @@
 import PlainPopupButton from "../src/plain/PlainPopupButton.js";
-export default PopupButton;
+export default class ElixPopupButton extends PlainPopupButton {}

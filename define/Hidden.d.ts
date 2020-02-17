@@ -1,2 +1,2 @@
 import PlainHidden from "../src/plain/PlainHidden.js";
-export default Hidden;
+export default class ElixHidden extends PlainHidden {}

@@ -1,2 +1,2 @@
 import PlainCalendarDayNamesHeader from "../src/plain/PlainCalendarDayNamesHeader.js";
-export default CalendarDayNamesHeader;
+export default class ElixCalendarDayNamesHeader extends PlainCalendarDayNamesHeader {}

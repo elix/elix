@@ -1,2 +1,2 @@
 import PlainCarousel from "../src/plain/PlainCarousel.js";
-export default Carousel;
+export default class ElixCarousel extends PlainCarousel {}

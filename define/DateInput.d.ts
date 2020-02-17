@@ -1,2 +1,2 @@
 import PlainDateInput from "../src/plain/PlainDateInput.js";
-export default DateInput;
+export default class ElixDateInput extends PlainDateInput {}

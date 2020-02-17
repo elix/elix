@@ -1,2 +1,2 @@
 import PlainTabButton from "../src/plain/PlainTabButton.js";
-export default TabButton;
+export default class ElixTabButton extends PlainTabButton {}

@@ -1,2 +1,2 @@
 import PlainDrawerWithGrip from "../src/plain/PlainDrawerWithGrip.js";
-export default DrawerWithGrip;
+export default class ElixDrawerWithGrip extends PlainDrawerWithGrip {}

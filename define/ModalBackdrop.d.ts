@@ -1,2 +1,2 @@
 import PlainModalBackdrop from "../src/plain/PlainModalBackdrop.js";
-export default ModalBackdrop;
+export default class ElixModalBackdrop extends PlainModalBackdrop {}

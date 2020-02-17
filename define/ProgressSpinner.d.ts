@@ -1,2 +1,2 @@
 import PlainProgressSpinner from "../src/plain/PlainProgressSpinner.js";
-export default ProgressSpinner;
+export default class ElixProgressSpinner extends PlainProgressSpinner {}
