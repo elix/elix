@@ -1,5 +1,5 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
+import html from "../core/html.js";
 import PlainTabButton from "./PlainTabButton.js";
 import PlainTabStrip from "./PlainTabStrip.js";
 import Tabs from "../base/Tabs.js";
@@ -19,13 +19,13 @@ class PlainTabs extends Tabs {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
-      template.html`
+      html`
         <style>
           #proxyList {
             z-index: 1;
           }
         </style>
-      `.content
+      `
     );
     return result;
   }

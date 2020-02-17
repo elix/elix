@@ -1,7 +1,7 @@
 import * as internal from "./internal.js";
-import * as template from "../core/template.js";
-import WrappedStandardElement from "./WrappedStandardElement.js";
 import FormElementMixin from "./FormElementMixin.js";
+import html from "../core/html.js";
+import WrappedStandardElement from "./WrappedStandardElement.js";
 
 const Base = FormElementMixin(WrappedStandardElement.wrap("input"));
 
@@ -43,13 +43,13 @@ class Input extends Base {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
-      template.html`
+      html`
         <style>
           #inner {
             font: inherit;
           }
         </style>
-      `.content
+      `
     );
     return result;
   }

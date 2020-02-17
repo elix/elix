@@ -3,6 +3,7 @@ import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import CalendarDay from "./CalendarDay.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
+import html from "../core/html.js";
 import SelectableButton from "./SelectableButton.js";
 
 const Base = CalendarElementMixin(SelectableButton);
@@ -81,13 +82,13 @@ class CalendarDayButton extends Base {
 
     // Style outer button.
     result.content.appendChild(
-      template.html`
+      html`
         <style>
           #day {
             width: 100%;
           }
         </style>
-      `.content
+      `
     );
 
     return result;

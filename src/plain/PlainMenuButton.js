@@ -1,5 +1,5 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
+import html from "../core/html.js";
 import MenuButton from "../base/MenuButton.js";
 import PlainBorderButton from "./PlainBorderButton.js";
 import PlainMenu from "./PlainMenu.js";
@@ -24,7 +24,7 @@ class PlainMenuButton extends MenuButton {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
-      template.html`
+      html`
         <style>
           #menu {
             background: window;
@@ -32,7 +32,7 @@ class PlainMenuButton extends MenuButton {
             padding: 0.5em 0;
           }
         </style>
-      `.content
+      `
     );
     return result;
   }

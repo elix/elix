@@ -1,5 +1,5 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
+import html from "../core/html.js";
 import Menu from "../base/Menu.js";
 
 /**
@@ -11,7 +11,7 @@ class PlainMenu extends Menu {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
-      template.html`
+      html`
         <style>
           :host ::slotted(*) {
             padding: 0.25em;
@@ -27,7 +27,7 @@ class PlainMenu extends Menu {
             }
           }
         </style>
-      `.content
+      `
     );
     return result;
   }

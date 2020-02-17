@@ -1,5 +1,5 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
+import html from "../core/html.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
@@ -43,13 +43,19 @@ export default function PlainPlayControlsMixin(Base) {
       );
       if (previousButton) {
         previousButton.append(
-          template.html`
-            <svg id="previousIcon" part="control-icon previous-icon" class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+          html`
+            <svg
+              id="previousIcon"
+              part="control-icon previous-icon"
+              class="icon"
+              viewBox="0 0 24 24"
+              preserveAspectRatio="xMidYMid meet"
+            >
               <g id="skip-previous">
-                <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
               </g>
             </svg>
-        `.content
+          `
         );
       }
       const playButton = result.content.querySelector(
@@ -57,18 +63,34 @@ export default function PlainPlayControlsMixin(Base) {
       );
       if (playButton) {
         playButton.append(
-          template.html`
-            <svg id="playingIcon" part="control-icon playing-icon" class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+          html`
+            <svg
+              id="playingIcon"
+              part="control-icon playing-icon"
+              class="icon"
+              viewBox="0 0 24 24"
+              preserveAspectRatio="xMidYMid meet"
+            >
               <g id="pause-circle-outline">
-                <path d="M9 16h2V8H9v8zm3-14C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-4h2V8h-2v8z"></path>
+                <path
+                  d="M9 16h2V8H9v8zm3-14C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-4h2V8h-2v8z"
+                ></path>
               </g>
             </svg>
-            <svg id="pausedIcon" part="control-icon paused-icon" class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+            <svg
+              id="pausedIcon"
+              part="control-icon paused-icon"
+              class="icon"
+              viewBox="0 0 24 24"
+              preserveAspectRatio="xMidYMid meet"
+            >
               <g id="play-circle-outline">
-                <path d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
+                <path
+                  d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+                ></path>
               </g>
             </svg>
-          `.content
+          `
         );
       }
       const nextButton = result.content.querySelector(
@@ -76,18 +98,24 @@ export default function PlainPlayControlsMixin(Base) {
       );
       if (nextButton) {
         nextButton.append(
-          template.html`
-            <svg id="nextIcon" part="control-icon next-icon" class="icon" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+          html`
+            <svg
+              id="nextIcon"
+              part="control-icon next-icon"
+              class="icon"
+              viewBox="0 0 24 24"
+              preserveAspectRatio="xMidYMid meet"
+            >
               <g id="skip-next">
-                <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
               </g>
             </svg>
-        `.content
+          `
         );
       }
 
       result.content.append(
-        template.html`
+        html`
           <style>
             #buttons {
               box-sizing: border-box;
@@ -119,7 +147,7 @@ export default function PlainPlayControlsMixin(Base) {
               width: 40px;
             }
           </style>
-        `.content
+        `
       );
 
       return result;

@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
 import CalendarDayButton from "../base/CalendarDayButton.js";
+import html from "../core/html.js";
 import PlainCalendarDay from "./PlainCalendarDay.js";
 
 /**
@@ -18,7 +18,7 @@ class PlainCalendarDayButton extends CalendarDayButton {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
-      template.html`
+      html`
         <style>
           :host {
             border: 1px solid transparent;
@@ -32,7 +32,7 @@ class PlainCalendarDayButton extends CalendarDayButton {
             background: #ddd;
           }
         </style>
-      `.content
+      `
     );
     return result;
   }

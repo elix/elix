@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
 import AlertDialog from "../base/AlertDialog.js";
+import html from "../core/html.js";
 import PlainBorderButton from "./PlainBorderButton.js";
 import PlainModalBackdrop from "./PlainModalBackdrop.js";
 import PlainOverlayFrame from "./PlainOverlayFrame.js";
@@ -22,7 +22,7 @@ class PlainAlertDialog extends AlertDialog {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
-      template.html`
+      html`
         <style>
           #frame {
             padding: 1em;
@@ -36,7 +36,7 @@ class PlainAlertDialog extends AlertDialog {
             margin-left: 0.5em;
           }
         </style>
-      `.content
+      `
     );
     return result;
   }

@@ -1,7 +1,8 @@
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
-import Drawer from "./Drawer.js";
 import Button from "./Button.js";
+import Drawer from "./Drawer.js";
+import html from "../core/html.js";
 
 /**
  * A drawer that includes an always-visible grip element
@@ -147,7 +148,7 @@ class DrawerWithGrip extends Drawer {
     }
 
     result.content.append(
-      template.html`
+      html`
         <style>
           #frame {
             display: flex;
@@ -178,7 +179,7 @@ class DrawerWithGrip extends Drawer {
             justify-items: center;
           }
         </style>
-      `.content
+      `
     );
 
     return result;

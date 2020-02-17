@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
 import DarkModeMixin from "../base/DarkModeMixin.js";
+import html from "../core/html.js";
 import SelectableButton from "../base/SelectableButton.js";
 
 const Base = DarkModeMixin(SelectableButton);
@@ -34,7 +34,7 @@ class PageDot extends Base {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
-      template.html`
+      html`
         <style>
           :host {
             border-radius: 7px;
@@ -55,7 +55,7 @@ class PageDot extends Base {
             }
           }
         </style>
-      `.content
+      `
     );
     return result;
   }

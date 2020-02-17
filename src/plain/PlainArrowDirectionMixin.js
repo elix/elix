@@ -1,5 +1,5 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
+import html from "../core/html.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
@@ -44,13 +44,19 @@ export default function PlainArrowDirectionMixin(Base) {
       );
       if (arrowButtonPrevious) {
         arrowButtonPrevious.append(
-          template.html`
-            <svg id="arrowIconPrevious" part="arrow-icon arrow-icon-previous" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" style="fill: currentColor; height: 1em; width: 1em;">
+          html`
+            <svg
+              id="arrowIconPrevious"
+              part="arrow-icon arrow-icon-previous"
+              viewBox="0 0 24 24"
+              preserveAspectRatio="xMidYMid meet"
+              style="fill: currentColor; height: 1em; width: 1em;"
+            >
               <g>
                 <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
               </g>
             </svg>
-          `.content
+          `
         );
       }
       const arrowButtonNext = result.content.querySelector(
@@ -58,13 +64,19 @@ export default function PlainArrowDirectionMixin(Base) {
       );
       if (arrowButtonNext) {
         arrowButtonNext.append(
-          template.html`
-            <svg id="arrowIconNext" part="arrow-icon arrow-icon-next" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" style="fill: currentColor; height: 1em; width: 1em;">
+          html`
+            <svg
+              id="arrowIconNext"
+              part="arrow-icon arrow-icon-next"
+              viewBox="0 0 24 24"
+              preserveAspectRatio="xMidYMid meet"
+              style="fill: currentColor; height: 1em; width: 1em;"
+            >
               <g>
                 <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
               </g>
             </svg>
-          `.content
+          `
         );
       }
 

@@ -1,8 +1,8 @@
 import * as internal from "./internal.js";
-import * as template from "../core/template.js";
 import AriaRoleMixin from "./AriaRoleMixin.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
+import html from "../core/html.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import WrappedStandardElement from "./WrappedStandardElement.js";
 
@@ -100,7 +100,7 @@ class Button extends Base {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
-      template.html`
+      html`
         <style>
           :host {
             display: inline-flex;
@@ -108,7 +108,7 @@ class Button extends Base {
             -webkit-tap-highlight-color: transparent;
             touch-action: manipulation;
           }
-          
+
           #inner {
             align-items: center;
             background: none;
@@ -119,7 +119,7 @@ class Button extends Base {
             padding: 0;
           }
         </style>
-      `.content
+      `
     );
     return result;
   }

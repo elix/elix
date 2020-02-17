@@ -1,6 +1,6 @@
 import { ownEvent } from "../core/utilities.js";
 import * as internal from "./internal.js";
-import * as template from "../core/template.js";
+import html from "../core/html.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import PopupSource from "./PopupSource.js";
 
@@ -105,7 +105,7 @@ class PopupButton extends Base {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
-      template.html`
+      html`
         <style>
           #source {
             cursor: default;
@@ -118,7 +118,7 @@ class PopupButton extends Base {
             user-select: none;
           }
         </style>
-      `.content
+      `
     );
     return result;
   }

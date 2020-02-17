@@ -1,7 +1,7 @@
 import * as internal from "./internal.js";
-import * as template from "../core/template.js";
 import DialogModalityMixin from "./DialogModalityMixin.js";
 import FocusCaptureMixin from "./FocusCaptureMixin.js";
+import html from "../core/html.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import ModalBackdrop from "./ModalBackdrop.js";
 import Overlay from "./Overlay.js";
@@ -36,7 +36,7 @@ class Dialog extends Base {
     cast[FocusCaptureMixin.wrap](frame);
 
     result.content.append(
-      template.html`
+      html`
         <style>
           :host {
             height: 100%;
@@ -46,7 +46,7 @@ class Dialog extends Base {
             width: 100%;
           }
         </style>
-      `.content
+      `
     );
 
     return result;

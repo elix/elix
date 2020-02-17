@@ -1,12 +1,12 @@
 import { forwardFocus } from "../core/utilities.js";
 import * as internal from "./internal.js";
-import * as template from "../core/template.js";
 import AriaListMixin from "./AriaListMixin.js";
 import ArrowDirectionMixin from "./ArrowDirectionMixin.js";
 import DarkModeMixin from "./DarkModeMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import Explorer from "./Explorer.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
+import html from "../core/html.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import SlidingStage from "./SlidingStage.js";
@@ -174,7 +174,7 @@ class Carousel extends Base {
     }
 
     result.content.append(
-      template.html`
+      html`
         <style>
           #proxyList {
             outline: none;
@@ -185,7 +185,7 @@ class Carousel extends Base {
             width: 100%;
           }
         </style>
-      `.content
+      `
     );
 
     return result;

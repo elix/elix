@@ -1,5 +1,5 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
+import html from "../core/html.js";
 import OverlayFrame from "../base/OverlayFrame.js";
 
 /**
@@ -14,7 +14,7 @@ class PlainOverlayFrame extends OverlayFrame {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
-      template.html`
+      html`
         <style>
           :host {
             background: white;
@@ -22,7 +22,7 @@ class PlainOverlayFrame extends OverlayFrame {
             box-shadow: 0 0px 10px rgba(0, 0, 0, 0.5);
           }
         </style>
-      `.content
+      `
     );
     return result;
   }

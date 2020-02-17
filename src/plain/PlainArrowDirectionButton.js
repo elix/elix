@@ -1,7 +1,7 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
-import PlainButton from "./PlainButton.js";
 import DarkModeMixin from "../base/DarkModeMixin.js";
+import html from "../core/html.js";
+import PlainButton from "./PlainButton.js";
 
 const Base = DarkModeMixin(PlainButton);
 
@@ -28,13 +28,13 @@ class PlainArrowDirectionButton extends Base {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
-      template.html`
+      html`
         <style>
           :host {
             color: rgba(0, 0, 0, 0.7);
           }
 
-          :host(:hover:not([disabled]))  {
+          :host(:hover:not([disabled])) {
             background: rgba(0, 0, 0, 0.2);
             color: rgba(0, 0, 0, 0.8);
             cursor: pointer;
@@ -61,7 +61,7 @@ class PlainArrowDirectionButton extends Base {
             color: rgba(255, 255, 255, 0.3);
           }
         </style>
-      `.content
+      `
     );
     return result;
   }

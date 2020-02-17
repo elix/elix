@@ -5,6 +5,7 @@ import AriaRoleMixin from "./AriaRoleMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import Hidden from "./Hidden.js";
+import html from "../core/html.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import PopupSource from "./PopupSource.js";
 import UpDownToggle from "./UpDownToggle.js";
@@ -344,15 +345,15 @@ class ComboBox extends Base {
     if (sourceSlot) {
       template.replace(
         sourceSlot,
-        template.html`
+        html`
           <input id="input" part="input"></input>
           <div id="popupToggle" part="popup-toggle" tabindex="-1"></div>
-        `.content
+        `
       );
     }
 
     result.content.append(
-      template.html`
+      html`
         <style>
           :host {
             outline: none;
@@ -382,7 +383,7 @@ class ComboBox extends Base {
             max-width: 100vh;
           }
         </style>
-      `.content
+      `
     );
 
     return result;

@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
 import ExpandableSection from "../base/ExpandableSection.js";
+import html from "../core/html.js";
 import PlainButton from "./PlainButton.js";
 import PlainExpandCollapseToggle from "./PlainExpandCollapseToggle.js";
 
@@ -20,13 +20,13 @@ class PlainExpandableSection extends ExpandableSection {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
-      template.html`
+      html`
         <style>
           #toggle {
             margin: 0.75em;
           }
         </style>
-      `.content
+      `
     );
     return result;
   }

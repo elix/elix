@@ -4,6 +4,7 @@ import {
 } from "../core/utilities.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
+import html from "../core/html.js";
 import Menu from "./Menu.js";
 import PopupButton from "./PopupButton.js";
 import UpDownToggle from "./UpDownToggle.js";
@@ -373,16 +374,21 @@ class MenuButton extends PopupButton {
     const sourceSlot = result.content.querySelector('slot[name="source"]');
     if (sourceSlot) {
       sourceSlot.append(
-        template.html`
-          <div id="popupToggle" part="popup-toggle" exportparts="down-icon up-icon" tabindex="-1">
+        html`
+          <div
+            id="popupToggle"
+            part="popup-toggle"
+            exportparts="down-icon up-icon"
+            tabindex="-1"
+          >
             <slot name="toggle-icon"></slot>
           </div>
-        `.content
+        `
       );
     }
 
     result.content.append(
-      template.html`
+      html`
         <style>
           #menu {
             max-height: 100%;
@@ -393,7 +399,7 @@ class MenuButton extends PopupButton {
             display: flex;
           }
         </style>
-      `.content
+      `
     );
 
     return result;

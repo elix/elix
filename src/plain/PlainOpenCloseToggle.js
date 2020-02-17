@@ -1,5 +1,6 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
+import html from "../core/html.js";
 import UpDownToggle from "../base/UpDownToggle.js";
 
 /**
@@ -13,26 +14,31 @@ class PlainOpenCloseToggle extends UpDownToggle {
 
     // Replace the icons with our up/down glyphs.
     const downIcon = result.content.getElementById("downIcon");
-    const downIconGlyph = template.html`
+    const downIconGlyph = html`
       <svg id="downIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 5">
-        <path d="M 0 0 l5 5 5 -5 z"/>
+        <path d="M 0 0 l5 5 5 -5 z" />
       </svg>
-    `.content.children[0];
+    `.children[0];
     if (downIcon && downIconGlyph) {
       template.replace(downIcon, downIconGlyph);
     }
     const upIcon = result.content.getElementById("upIcon");
-    const upIconGlyph = template.html`
-      <svg id="upIcon" part="up-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 5">
-        <path d="M 0 5 l5 -5 5 5 z"/>
+    const upIconGlyph = html`
+      <svg
+        id="upIcon"
+        part="up-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 10 5"
+      >
+        <path d="M 0 5 l5 -5 5 5 z" />
       </svg>
-    `.content.children[0];
+    `.children[0];
     if (upIcon && upIconGlyph) {
       template.replace(upIcon, upIconGlyph);
     }
 
     result.content.append(
-      template.html`
+      html`
         <style>
           :host([disabled]) {
             opacity: 0.5;
@@ -58,7 +64,7 @@ class PlainOpenCloseToggle extends UpDownToggle {
             width: 10px;
           }
         </style>
-      `.content
+      `
     );
     return result;
   }

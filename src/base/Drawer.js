@@ -1,8 +1,8 @@
 import * as internal from "./internal.js";
-import * as template from "../core/template.js";
 import DialogModalityMixin from "./DialogModalityMixin.js";
 import EffectMixin from "./EffectMixin.js";
 import FocusCaptureMixin from "./FocusCaptureMixin.js";
+import html from "../core/html.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import ModalBackdrop from "./ModalBackdrop.js";
@@ -389,7 +389,7 @@ class Drawer extends Base {
     cast[FocusCaptureMixin.wrap](frameContent);
 
     result.content.append(
-      template.html`
+      html`
         <style>
           :host {
             align-items: stretch;
@@ -408,7 +408,7 @@ class Drawer extends Base {
             overflow: hidden;
           }
         </style>
-      `.content
+      `
     );
 
     return result;

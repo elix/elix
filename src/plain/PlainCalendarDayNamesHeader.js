@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
 import CalendarDayNamesHeader from "../base/CalendarDayNamesHeader.js";
+import html from "../core/html.js";
 
 /**
  * CalendarDayNamesHeader component in the Plain reference design system
@@ -11,12 +11,12 @@ class PlainCalendarDayNamesHeader extends CalendarDayNamesHeader {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
-      template.html`
+      html`
         <style>
           :host {
             font-size: smaller;
           }
-          
+
           .dayName {
             padding: 0.3em;
             text-align: center;
@@ -27,7 +27,7 @@ class PlainCalendarDayNamesHeader extends CalendarDayNamesHeader {
             color: gray;
           }
         </style>
-      `.content
+      `
     );
     return result;
   }

@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
 import CarouselWithThumbnails from "../base/CarouselWithThumbnails.js";
+import html from "../core/html.js";
 import PlainArrowDirectionButton from "./PlainArrowDirectionButton.js";
 import PlainArrowDirectionMixin from "./PlainArrowDirectionMixin.js";
 import PlainCarouselMixin from "./PlainCarouselMixin.js";
@@ -27,7 +27,7 @@ class PlainCarouselWithThumbnails extends PlainArrowDirectionMixin(
     const result = super[internal.template];
 
     result.content.append(
-      template.html`
+      html`
         <style>
           [part~="proxy"] {
             height: var(--elix-thumbnail-height, 4em);
@@ -35,7 +35,7 @@ class PlainCarouselWithThumbnails extends PlainArrowDirectionMixin(
             object-fit: contain;
           }
         </style>
-      `.content
+      `
     );
 
     return result;

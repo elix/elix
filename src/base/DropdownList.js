@@ -2,6 +2,7 @@ import { applyChildNodes } from "../core/utilities.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import FormElementMixin from "./FormElementMixin.js";
+import html from "../core/html.js";
 import MenuButton from "./MenuButton.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";
@@ -86,14 +87,14 @@ class DropdownList extends Base {
     if (sourceSlot) {
       template.replace(
         sourceSlot,
-        template.html`
+        html`
           <div id="value" part="value"></div>
-        `.content
+        `
       );
     }
 
     result.content.append(
-      template.html`
+      html`
         <style>
           #downIcon,
           #upIcon {
@@ -105,7 +106,7 @@ class DropdownList extends Base {
             padding: 0;
           }
         </style>
-      `.content
+      `
     );
 
     return result;

@@ -1,5 +1,5 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
+import html from "../core/html.js";
 import TabButton from "../base/TabButton.js";
 
 /**
@@ -63,7 +63,7 @@ class PlainTabButton extends TabButton {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
-      template.html`
+      html`
         <style>
           :host #inner {
             background: white;
@@ -82,7 +82,7 @@ class PlainTabButton extends TabButton {
             color: #888;
           }
         </style>
-      `.content
+      `
     );
     return result;
   }

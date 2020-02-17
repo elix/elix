@@ -1,5 +1,5 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
+import html from "../core/html.js";
 import PlainOverlayFrame from "./PlainOverlayFrame.js";
 import Toast from "../base/Toast.js";
 
@@ -16,7 +16,7 @@ class PlainToast extends Toast {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
-      template.html`
+      html`
         <style>
           :host {
             align-items: initial;
@@ -31,7 +31,7 @@ class PlainToast extends Toast {
             -webkit-tap-highlight-color: transparent;
             width: 100%;
           }
-  
+
           #frame {
             margin: 1em;
             transition-duration: 0.25s;
@@ -39,7 +39,7 @@ class PlainToast extends Toast {
             will-change: opacity, transform;
           }
         </style>
-      `.content
+      `
     );
     return result;
   }

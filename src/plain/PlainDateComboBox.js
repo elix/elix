@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
 import DateComboBox from "../base/DateComboBox.js";
+import html from "../core/html.js";
 import PlainButton from "./PlainButton.js";
 import PlainCalendarMonthNavigator from "./PlainCalendarMonthNavigator.js";
 import PlainComboBoxMixin from "./PlainComboBoxMixin.js";
@@ -21,7 +21,7 @@ class PlainDateComboBox extends PlainComboBoxMixin(DateComboBox) {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
-      template.html`
+      html`
         <style>
           :host {
             width: 8em;
@@ -40,7 +40,7 @@ class PlainDateComboBox extends PlainComboBoxMixin(DateComboBox) {
             border-color: gray;
           }
         </style>
-      `.content
+      `
     );
     return result;
   }

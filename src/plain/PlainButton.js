@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
 import Button from "../base/Button.js";
+import html from "../core/html.js";
 
 /**
  * Button component in the Plain reference design system
@@ -11,7 +11,7 @@ class PlainButton extends Button {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
-      template.html`
+      html`
         <style>
           #inner {
             display: inline-flex;
@@ -21,7 +21,7 @@ class PlainButton extends Button {
             white-space: nowrap;
           }
         </style>
-      `.content
+      `
     );
     return result;
   }

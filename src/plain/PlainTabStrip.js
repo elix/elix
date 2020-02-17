@@ -1,5 +1,5 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
+import html from "../core/html.js";
 import TabStrip from "../base/TabStrip.js";
 
 /**
@@ -9,13 +9,13 @@ class PlainTabStrip extends TabStrip {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
-      template.html`
+      html`
         <style>
           :host {
             grid-gap: 0.25em;
           }
         </style>
-      `.content
+      `
     );
     return result;
   }

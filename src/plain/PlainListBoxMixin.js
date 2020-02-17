@@ -1,5 +1,5 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
+import html from "../core/html.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
@@ -13,7 +13,7 @@ export default function PlainListBoxMixin(Base) {
     get [internal.template]() {
       const result = super[internal.template];
       result.content.append(
-        template.html`
+        html`
           <style>
             :host {
               border: 1px solid gray;
@@ -34,7 +34,7 @@ export default function PlainListBoxMixin(Base) {
               }
             }
           </style>
-      `.content
+        `
       );
       return result;
     }

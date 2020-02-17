@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
 import HamburgerMenuButton from "../base/HamburgerMenuButton.js";
+import html from "../core/html.js";
 import PlainDrawer from "./PlainDrawer.js";
 
 /**
@@ -25,18 +25,25 @@ class PlainHamburgerMenuButton extends HamburgerMenuButton {
     );
     if (menuButtonSlot) {
       menuButtonSlot.append(
-        template.html`
+        html`
           <slot name="menuIcon">
-            <svg id="menuIcon" part="menu-icon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 3 h18 v2 h-18 z m0 5 h18 v2 h-18 z m0 5 h18 v2 h-18 z"></path>
+            <svg
+              id="menuIcon"
+              part="menu-icon"
+              viewBox="0 0 18 18"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0 3 h18 v2 h-18 z m0 5 h18 v2 h-18 z m0 5 h18 v2 h-18 z"
+              ></path>
             </svg>
           </slot>
-        `.content
+        `
       );
     }
 
     result.content.append(
-      template.html`
+      html`
         <style>
           :host {
             height: 1em;
@@ -55,7 +62,7 @@ class PlainHamburgerMenuButton extends HamburgerMenuButton {
             width: 24px;
           }
         </style>
-      `.content
+      `
     );
     return result;
   }

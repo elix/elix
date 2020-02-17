@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
 import CenteredStrip from "../base/CenteredStrip.js";
+import html from "../core/html.js";
 
 const opacityMinimum = 0.4;
 const opacityMaximum = 1.0;
@@ -74,13 +74,13 @@ class CenteredStripOpacity extends CenteredStrip {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
-      template.html`
+      html`
         <style>
           ::slotted(*) {
-            opacity: ${opacityMinimum.toString()}
+            opacity: ${opacityMinimum.toString()};
           }
         </style>
-      `.content
+      `
     );
     return result;
   }

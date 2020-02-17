@@ -1,5 +1,5 @@
 import * as internal from "./internal.js";
-import * as template from "../core/template.js";
+import html from "../core/html.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
@@ -229,7 +229,7 @@ export default function SwipeCommandsMixin(Base) {
     get [internal.template]() {
       const result = super[internal.template];
       result.content.append(
-        template.html`
+        html`
           <style>
             ::slotted(*) {
               box-sizing: border-box;
@@ -267,7 +267,7 @@ export default function SwipeCommandsMixin(Base) {
           <div id="rightCommandContainer" class="commandContainer">
             <slot id="rightCommandSlot" name="rightCommand"></slot>
           </div>
-        `.content
+        `
       );
       return result;
     }

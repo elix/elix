@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
 import DrawerWithGrip from "../base/DrawerWithGrip.js";
+import html from "../core/html.js";
 import PlainModalBackdrop from "./PlainModalBackdrop.js";
 import PlainOverlayFrame from "./PlainOverlayFrame.js";
 
@@ -35,27 +35,27 @@ class PlainDrawerWithGrip extends DrawerWithGrip {
     const gripSlot = result.content.querySelector('slot[name="grip"]');
     if (gripSlot) {
       gripSlot.append(
-        template.html`
-          <svg id="gripIcon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+        html`
+          <svg
+            id="gripIcon"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
             <defs>
-              <path id="a" d="M0 0h24v24H0V0z"/>
+              <path id="a" d="M0 0h24v24H0V0z" />
             </defs>
             <clipPath id="b">
-              <use xlink:href="#a" overflow="visible"/>
+              <use xlink:href="#a" overflow="visible" />
             </clipPath>
-            <path clip-path="url(#b)" d="M20 9H4v2h16V9zM4 15h16v-2H4v2z"/>
+            <path clip-path="url(#b)" d="M20 9H4v2h16V9zM4 15h16v-2H4v2z" />
           </svg>
-        `.content
+        `
       );
     }
 
-    result.content.append(
-      template.html`
-        <style>
-
-        </style>
-      `.content
-    );
     return result;
   }
 }
