@@ -41,13 +41,12 @@ async function createLibraryFile(
   const classExportFiles = sourceFiles.components.sort();
   const classExports = classExportFiles
     .map(file => {
-      const plainClassName = path.basename(file, ".js");
+      const fullClassName = path.basename(file, ".js");
       // Strip 'Plain' from beginning of class name.
       const plainRegex = /^Plain(?<name>.+)/;
-      const match = plainRegex.exec(plainClassName);
-      const className = match ? match.groups.name : plainClassName;
-      const filePath = `../src/plain/${file}`;
-      return `export { default as ${className} } from "${filePath}";`;
+      const match = plainRegex.exec(fullClassName);
+      const className = match ? match.groups.name : fullClassName;
+      return `export { default as ${className} } from "./${className}.js";`;
     })
     .join("\n");
 
