@@ -3,8 +3,23 @@ import * as internal from "./internal.js";
 // A cache of processed templates, indexed by element class.
 const classTemplateMap = new Map();
 
+// A Proxy that maps shadow element IDs to shadow elements.
 /** @type {any} */
-const shadowReferencesKey = Symbol("shadowReferences");
+const shadowIdProxyKey = Symbol("shadowReferences");
+
+// Reference stored on the proxy target to get to the actual element.
+const proxyElementKey = Symbol("proxyElement");
+
+// A handler used for the shadow element ID proxy.
+const shadowIdProxyHandler = {
+  get(target, property) {
+    const element = target[proxyElementKey];
+    const root = element[internal.shadowRoot];
+    return root && typeof property === "string"
+      ? root.getElementById(property)
+      : null;
+  }
+};
 
 /**
  * Stamps a template into a component's Shadow DOM when instantiated
@@ -45,28 +60,20 @@ export default function ShadowTemplateMixin(Base) {
      * the corresponding button in the component instance's shadow tree. The
      * `ids` property is simply a shorthand for `getElementById`, so
      * `this[internal.ids].foo` is the same as
-     * `this.shadowRoot.getElementById('foo')`.
+     * `this[internal.shadowRoot].getElementById('foo')`.
      *
      * @type {object} - a dictionary mapping shadow element IDs to elements
      */
     get [internal.ids]() {
-      if (!this[shadowReferencesKey]) {
+      if (!this[shadowIdProxyKey]) {
         // Construct a proxy that maps to getElementById.
-        const element = this;
-        this[shadowReferencesKey] = new Proxy(
-          {},
-          {
-            /* eslint-disable no-unused-vars */
-            get(target, property, receiver) {
-              const root = element[internal.shadowRoot];
-              return root && typeof property === "string"
-                ? root.getElementById(property)
-                : null;
-            }
-          }
-        );
+        const target = {
+          // Give the proxy a means of refering this element via the target.
+          [proxyElementKey]: this
+        };
+        this[shadowIdProxyKey] = new Proxy(target, shadowIdProxyHandler);
       }
-      return this[shadowReferencesKey];
+      return this[shadowIdProxyKey];
     }
 
     /*
