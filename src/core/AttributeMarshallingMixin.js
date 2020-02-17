@@ -93,6 +93,17 @@ export default function AttributeMarshallingMixin(Base) {
       }
     }
 
+    // Because maintaining the mapping of attributes to properties is tedious,
+    // this provides a default implementation for `observedAttributes` that
+    // assumes that your component will want to expose all public properties in
+    // your component's API as properties.
+    //
+    // You can override this default implementation of `observedAttributes`. For
+    // example, if you have a system that can statically analyze which
+    // properties are available to your component, you could hand-author or
+    // programmatically generate a definition for `observedAttributes` that
+    // avoids the minor run-time performance cost of determining your
+    // component's public properties.
     static get observedAttributes() {
       return attributesForClass(this);
     }
@@ -142,11 +153,6 @@ function attributesForClass(classFn) {
   );
   const result = baseAttributes.concat(diff);
 
-  // Remove standard `style` property.
-  const styleIndex = result.indexOf("style");
-  if (styleIndex >= 0) {
-    result.splice(styleIndex, 1);
-  }
   return result;
 }
 
