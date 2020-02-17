@@ -4,7 +4,7 @@ const fs = require("fs").promises;
 const path = require("path");
 
 const srcJsHeader = `/*
- * The complete set of Elix elements and mixins.
+ * The complete set of Elix components and mixins.
  * 
  * This file is the primary entry point to the Elix package, so its exports are
  * what is obtained if you write \`import * from "elix"\`. However, in
@@ -17,7 +17,7 @@ const srcJsHeader = `/*
  */`;
 
 const defineJsHeader = `/*
-* The complete set of Elix elements and mixins.
+* The complete set of Elix components and mixins.
 * 
 * You can load this file as a convenience to auto-define all Elix components
 * for immediate use. However, in production use it will be much more efficient
@@ -29,88 +29,83 @@ const defineJsHeader = `/*
 
 const tsHeader = `// TypeScript declarations for the complete Elix library.`;
 
-async function createLibraryFile(
-  destination,
-  header,
-  sourceFolder,
-  sourceFiles
-) {
+async function createLibraryFile(destination, header, sourceFiles) {
   const destinationFolder = path.dirname(destination);
-  const relativeFolder = path.relative(destinationFolder, sourceFolder);
 
-  const classExportFiles = sourceFiles.components.sort();
-  const classExports = classExportFiles
+  const componentsAndMixins = [
+    ...sourceFiles.components,
+    ...sourceFiles.mixins
+  ];
+  const sorted = sortByBaseName(componentsAndMixins);
+  const defaultExports = sorted
     .map(file => {
+      const relativePath = path.relative(destinationFolder, file);
       const fullClassName = path.basename(file, ".js");
       // Strip 'Plain' from beginning of class name.
       const plainRegex = /^Plain(?<name>.+)/;
       const match = plainRegex.exec(fullClassName);
       const className = match ? match.groups.name : fullClassName;
-      return `export { default as ${className} } from "./${className}.js";`;
+      // Include a "." if there's not already a "." at the beginning.
+      const importPath =
+        relativePath[0] === "." ? relativePath : `./${relativePath}`;
+      return `export { default as ${className} } from "${importPath}";`;
     })
     .join("\n");
 
-  // const mixinExportFiles = sourceFiles.mixins.sort();
-  // const mixinExports = mixinExportFiles
-  //   .map(file => {
-  //     const name = path.basename(file, ".js");
-  //     const filePath = path.join(relativeFolder, "/plain/", file);
-  //     return `export { default as ${name} } from "${filePath}";`;
-  //   })
-  //   .join("\n");
-
   const helperFiles = sourceFiles.helpers.sort();
-  const helperExports = helperFiles
+  const multipleExports = helperFiles
     .map(file => {
+      const relativePath = path.relative(destinationFolder, file);
       const name = path.basename(file, ".js");
-      // Helpers always point to the /src/base folder.
-      const filePath =
-        destinationFolder !== sourceFolder
-          ? path.join(relativeFolder, file)
-          : `../src/base/${file}`;
-      return `import * as ${name}Import from "${filePath}";
+      // Include a "." if there's not already a "." at the beginning.
+      const importPath =
+        relativePath[0] === "." ? relativePath : `./${relativePath}`;
+      return `import * as ${name}Import from "${importPath}";
 // @ts-ignore
 export const ${name} = ${name}Import;
-`;
+  `;
     })
     .join("\n");
 
   const content = `${header}
 
 // Files that export a single object.
-${classExports}
+${defaultExports}
 
 // Files that export multiple objects.
 // As of Sept 2019, there's no way to simultaneously import a collection of
 // objects and then export them as a named object, so we have to do the import
 // and export in separate steps.
-${helperExports}`;
+${multipleExports}`;
 
   await fs.writeFile(destination, content);
 }
 
-async function createLibraryFiles(
-  sourceFiles,
-  destinationFolder,
-  defineFolder
-) {
+async function createLibraryFiles(sourceFiles, targetFolder) {
   // Write library files to /src folder,
   // and auto-define variations to /define folder.
-  const srcJsPath = path.join(destinationFolder, "elix.js");
-  const srcTsPath = path.join(destinationFolder, "elix.d.ts");
-  const defineJsPath = path.join(defineFolder, "elix.js");
-  const defineTsPath = path.join(defineFolder, "elix.d.ts");
+  const libraryJsPath = path.join(targetFolder, "elix.js");
+  const libraryTsPath = path.join(targetFolder, "elix.d.ts");
   await Promise.all([
-    createLibraryFile(srcJsPath, srcJsHeader, destinationFolder, sourceFiles),
-    createLibraryFile(srcTsPath, tsHeader, destinationFolder, sourceFiles),
-    createLibraryFile(
-      defineJsPath,
-      defineJsHeader,
-      destinationFolder,
-      sourceFiles
-    ),
-    createLibraryFile(defineTsPath, tsHeader, destinationFolder, sourceFiles)
+    createLibraryFile(libraryJsPath, srcJsHeader, sourceFiles),
+    createLibraryFile(libraryTsPath, tsHeader, sourceFiles)
   ]);
+}
+
+function sortByBaseName(files) {
+  const result = files.slice();
+  result.sort((a, b) => {
+    const basenameA = path.basename(a);
+    const basenameB = path.basename(b);
+    if (basenameA < basenameB) {
+      return -1;
+    } else if (basenameA > basenameB) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+  return result;
 }
 
 module.exports = createLibraryFiles;

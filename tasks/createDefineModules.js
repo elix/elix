@@ -1,13 +1,12 @@
+const fs = require("fs").promises;
+const path = require("path");
+
 // Create modules that export Elix components *and* define them as custom
 // elements.
 //
 // For each component module PlainFoo.js in the /src/plain folder, create a
 // corresponding Foo.js file in the /define folder that exports the same
 // Foo component, and also defines it as `elix-foo`.
-
-const fs = require("fs").promises;
-const path = require("path");
-
 async function createDefineModules(defineFolder, componentFiles) {
   const modulePromises = componentFiles.map(componentFile => {
     // Strip 'Plain' from beginning of class name.
@@ -18,8 +17,13 @@ async function createDefineModules(defineFolder, componentFiles) {
 
     const tag = tagFromClassName(className);
 
+    const relativePath = path.relative(defineFolder, componentFile);
+    // Include a "." if there's not already a "." at the beginning.
+    const importPath =
+      relativePath[0] === "." ? relativePath : `./${relativePath}`;
+
     // Create JavaScript file.
-    const jsContent = `import ${plainClassName} from "../src/plain/${componentFile}";
+    const jsContent = `import ${plainClassName} from "${importPath}";
 export default class Elix${className} extends ${plainClassName} {}
 customElements.define("${tag}", Elix${className});
 `;
@@ -27,7 +31,7 @@ customElements.define("${tag}", Elix${className});
     const jsPromise = fs.writeFile(jsPath, jsContent);
 
     // Create TypeScript file.
-    const tsContent = `import ${plainClassName} from "../src/plain/${componentFile}";
+    const tsContent = `import ${plainClassName} from "${importPath}";
 export default ${className};
 `;
     const tsPath = path.join(defineFolder, `${className}.d.ts`);

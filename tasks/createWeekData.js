@@ -17,10 +17,10 @@ const daysOfWeek = {
 const weekDataUrl =
   "https://raw.githubusercontent.com/unicode-cldr/cldr-core/master/supplemental/weekData.json";
 
-async function createWeekData() {
+async function createWeekData(targetFolder) {
   const weekData = await getWeekData();
   const weekSource = formatWeekDataAsModule(weekData);
-  const weekFile = path.join(__dirname, "../src/base/weekData.js");
+  const weekFile = path.join(targetFolder, "weekData.js");
   await fs.writeFile(weekFile, weekSource);
 }
 
