@@ -83,6 +83,9 @@ export function defaultSlot(tree) {
  * This function is called `html` so that it can be easily used with HTML
  * syntax-highlighting extensions for various popular code editors.
  *
+ * See also [html](html), a helper which returns a similar result but as an
+ * DocumentFragment.
+ *
  * @param {TemplateStringsArray} strings - the strings passed to the JavaScript template
  * literal
  * @param {string[]} substitutions - the variable values passed to the
