@@ -1,3 +1,3 @@
-import Explorer from "../src/plain/Explorer.js";
-export default class ElixExplorer extends Explorer {}
+import PlainExplorer from "../src/plain/PlainExplorer.js";
+export default class ElixExplorer extends PlainExplorer {}
 customElements.define("elix-explorer", ElixExplorer);

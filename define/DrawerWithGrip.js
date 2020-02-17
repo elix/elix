@@ -1,3 +1,3 @@
-import DrawerWithGrip from "../src/plain/DrawerWithGrip.js";
-export default class ElixDrawerWithGrip extends DrawerWithGrip {}
+import PlainDrawerWithGrip from "../src/plain/PlainDrawerWithGrip.js";
+export default class ElixDrawerWithGrip extends PlainDrawerWithGrip {}
 customElements.define("elix-drawer-with-grip", ElixDrawerWithGrip);

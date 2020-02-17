@@ -1,2 +1,2 @@
-import Drawer from "../src/plain/Drawer.js";
+import PlainDrawer from "../src/plain/PlainDrawer.js";
 export default Drawer;

@@ -1,2 +1,2 @@
-import PopupSource from "../src/plain/PopupSource.js";
+import PlainPopupSource from "../src/plain/PlainPopupSource.js";
 export default PopupSource;

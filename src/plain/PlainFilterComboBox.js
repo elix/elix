@@ -1,7 +1,7 @@
 import * as internal from "../base/internal.js";
 import FilterComboBox from "../base/FilterComboBox.js";
 import PlainComboBoxMixin from "./PlainComboBoxMixin.js";
-import PlainFilterListBox from "./FilterListBox.js";
+import PlainFilterListBox from "./PlainFilterListBox.js";
 
 class PlainFilterComboBox extends PlainComboBoxMixin(FilterComboBox) {
   get [internal.defaultState]() {

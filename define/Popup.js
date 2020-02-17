@@ -1,3 +1,3 @@
-import Popup from "../src/plain/Popup.js";
-export default class ElixPopup extends Popup {}
+import PlainPopup from "../src/plain/PlainPopup.js";
+export default class ElixPopup extends PlainPopup {}
 customElements.define("elix-popup", ElixPopup);

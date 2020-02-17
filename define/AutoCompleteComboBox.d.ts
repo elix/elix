@@ -1,2 +1,2 @@
-import AutoCompleteComboBox from "../src/plain/AutoCompleteComboBox.js";
+import PlainAutoCompleteComboBox from "../src/plain/PlainAutoCompleteComboBox.js";
 export default AutoCompleteComboBox;

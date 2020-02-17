@@ -1,2 +1,2 @@
-import CenteredStripOpacity from "../src/plain/CenteredStripOpacity.js";
+import PlainCenteredStripOpacity from "../src/plain/PlainCenteredStripOpacity.js";
 export default CenteredStripOpacity;

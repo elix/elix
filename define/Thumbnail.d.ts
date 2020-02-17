@@ -1,2 +1,2 @@
-import Thumbnail from "../src/plain/Thumbnail.js";
+import PlainThumbnail from "../src/plain/PlainThumbnail.js";
 export default Thumbnail;

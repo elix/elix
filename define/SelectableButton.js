@@ -1,3 +1,3 @@
-import SelectableButton from "../src/plain/SelectableButton.js";
-export default class ElixSelectableButton extends SelectableButton {}
+import PlainSelectableButton from "../src/plain/PlainSelectableButton.js";
+export default class ElixSelectableButton extends PlainSelectableButton {}
 customElements.define("elix-selectable-button", ElixSelectableButton);

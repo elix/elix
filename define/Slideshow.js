@@ -1,3 +1,3 @@
-import Slideshow from "../src/plain/Slideshow.js";
-export default class ElixSlideshow extends Slideshow {}
+import PlainSlideshow from "../src/plain/PlainSlideshow.js";
+export default class ElixSlideshow extends PlainSlideshow {}
 customElements.define("elix-slideshow", ElixSlideshow);

@@ -1,9 +1,9 @@
 import * as internal from "../base/internal.js";
-import Dialog from "../base/Dialog.js";
-import PlainModalBackdrop from "./ModalBackdrop.js";
-import PlainOverlayFrame from "./OverlayFrame.js";
+import Drawer from "../base/Drawer.js";
+import PlainModalBackdrop from "./PlainModalBackdrop.js";
+import PlainOverlayFrame from "./PlainOverlayFrame.js";
 
-class PlainDialog extends Dialog {
+class PlainDrawer extends Drawer {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       backdropPartType: PlainModalBackdrop,
@@ -12,4 +12,4 @@ class PlainDialog extends Dialog {
   }
 }
 
-export default PlainDialog;
+export default PlainDrawer;

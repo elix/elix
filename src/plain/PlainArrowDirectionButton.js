@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
-import PlainButton from "./Button.js";
+import PlainButton from "./PlainButton.js";
 import DarkModeMixin from "../base/DarkModeMixin.js";
 
 const Base = DarkModeMixin(PlainButton);
@@ -14,7 +14,7 @@ const Base = DarkModeMixin(PlainButton);
  * @inherits Button
  * @mixes DarkModeMixin
  */
-class ArrowDirectionButton extends Base {
+class PlainArrowDirectionButton extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     // Wait for knowledge of dark mode to be set after initial render.
@@ -66,4 +66,4 @@ class ArrowDirectionButton extends Base {
   }
 }
 
-export default ArrowDirectionButton;
+export default PlainArrowDirectionButton;

@@ -1,2 +1,2 @@
-import CalendarMonth from "../src/plain/CalendarMonth.js";
+import PlainCalendarMonth from "../src/plain/PlainCalendarMonth.js";
 export default CalendarMonth;

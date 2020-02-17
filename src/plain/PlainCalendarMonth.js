@@ -1,8 +1,8 @@
 import * as internal from "../base/internal.js";
 import CalendarMonth from "../base/CalendarMonth.js";
-import PlainCalendarDay from "./CalendarDay.js";
-import PlainCalendarDayNamesHeader from "./CalendarDayNamesHeader.js";
-import PlainCalendarMonthYearHeader from "./CalendarMonthYearHeader.js";
+import PlainCalendarDay from "./PlainCalendarDay.js";
+import PlainCalendarDayNamesHeader from "./PlainCalendarDayNamesHeader.js";
+import PlainCalendarMonthYearHeader from "./PlainCalendarMonthYearHeader.js";
 
 /**
  * @part {ArrowDirectionButton} arrow-button - both of the arrow buttons

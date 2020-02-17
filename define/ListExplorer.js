@@ -1,3 +1,3 @@
-import ListExplorer from "../src/plain/ListExplorer.js";
-export default class ElixListExplorer extends ListExplorer {}
+import PlainListExplorer from "../src/plain/PlainListExplorer.js";
+export default class ElixListExplorer extends PlainListExplorer {}
 customElements.define("elix-list-explorer", ElixListExplorer);

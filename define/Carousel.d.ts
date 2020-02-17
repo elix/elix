@@ -1,2 +1,2 @@
-import Carousel from "../src/plain/Carousel.js";
+import PlainCarousel from "../src/plain/PlainCarousel.js";
 export default Carousel;

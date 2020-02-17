@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
-import PlainProgressSpinner from "./ProgressSpinner.js";
+import PlainProgressSpinner from "./PlainProgressSpinner.js";
 import PullToRefresh from "../base/PullToRefresh.js";
 
 // Template for the default down arrow shown while pulling.

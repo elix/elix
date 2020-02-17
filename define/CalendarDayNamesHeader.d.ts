@@ -1,2 +1,2 @@
-import CalendarDayNamesHeader from "../src/plain/CalendarDayNamesHeader.js";
+import PlainCalendarDayNamesHeader from "../src/plain/PlainCalendarDayNamesHeader.js";
 export default CalendarDayNamesHeader;

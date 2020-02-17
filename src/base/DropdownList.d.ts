@@ -2,12 +2,12 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import FormElementMixin from "./FormElementMixin.js";
-import PlainMenuButton from "../plain/MenuButton.js";
+import PlainMenuButton from "../plain/PlainMenuButton.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 
-export default class DropdownList extends FormElementMixin(
+export default class PlainDropdownList extends FormElementMixin(
   SelectedItemTextValueMixin(
     SingleSelectionMixin(SlotItemsMixin(PlainMenuButton))
   )

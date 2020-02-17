@@ -1,2 +1,2 @@
-import ListWithSearch from "../src/plain/ListWithSearch.js";
+import PlainListWithSearch from "../src/plain/PlainListWithSearch.js";
 export default ListWithSearch;

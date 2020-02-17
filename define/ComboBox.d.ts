@@ -1,2 +1,2 @@
-import ComboBox from "../src/plain/ComboBox.js";
+import PlainComboBox from "../src/plain/PlainComboBox.js";
 export default ComboBox;

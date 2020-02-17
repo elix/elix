@@ -1,2 +1,2 @@
-import SlidingStage from "../src/plain/SlidingStage.js";
+import PlainSlidingStage from "../src/plain/PlainSlidingStage.js";
 export default SlidingStage;

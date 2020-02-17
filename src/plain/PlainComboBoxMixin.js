@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
-import OpenCloseToggle from "./OpenCloseToggle.js";
-import PlainPopup from "./Popup.js";
+import PlainOpenCloseToggle from "./PlainOpenCloseToggle.js";
+import PlainPopup from "./PlainPopup.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
@@ -12,7 +12,7 @@ export default function PlainComboBoxMixin(Base) {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState], {
         popupPartType: PlainPopup,
-        popupTogglePartType: OpenCloseToggle
+        popupTogglePartType: PlainOpenCloseToggle
       });
     }
   };

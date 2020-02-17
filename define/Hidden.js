@@ -1,3 +1,3 @@
-import Hidden from "../src/plain/Hidden.js";
-export default class ElixHidden extends Hidden {}
+import PlainHidden from "../src/plain/PlainHidden.js";
+export default class ElixHidden extends PlainHidden {}
 customElements.define("elix-hidden", ElixHidden);

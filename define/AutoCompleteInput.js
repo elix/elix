@@ -1,3 +1,3 @@
-import AutoCompleteInput from "../src/plain/AutoCompleteInput.js";
-export default class ElixAutoCompleteInput extends AutoCompleteInput {}
+import PlainAutoCompleteInput from "../src/plain/PlainAutoCompleteInput.js";
+export default class ElixAutoCompleteInput extends PlainAutoCompleteInput {}
 customElements.define("elix-auto-complete-input", ElixAutoCompleteInput);

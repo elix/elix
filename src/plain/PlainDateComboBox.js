@@ -1,8 +1,8 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
 import DateComboBox from "../base/DateComboBox.js";
-import PlainButton from "./Button.js";
-import PlainCalendarMonthNavigator from "./CalendarMonthNavigator.js";
+import PlainButton from "./PlainButton.js";
+import PlainCalendarMonthNavigator from "./PlainCalendarMonthNavigator.js";
 import PlainComboBoxMixin from "./PlainComboBoxMixin.js";
 
 class PlainDateComboBox extends PlainComboBoxMixin(DateComboBox) {

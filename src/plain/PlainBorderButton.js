@@ -1,8 +1,8 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
-import PlainButton from "./Button.js";
+import PlainButton from "./PlainButton.js";
 
-class BorderButton extends PlainButton {
+class PlainBorderButton extends PlainButton {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
@@ -20,4 +20,4 @@ class BorderButton extends PlainButton {
   }
 }
 
-export default BorderButton;
+export default PlainBorderButton;

@@ -1,3 +1,3 @@
-import ListBox from "../src/plain/ListBox.js";
-export default class ElixListBox extends ListBox {}
+import PlainListBox from "../src/plain/PlainListBox.js";
+export default class ElixListBox extends PlainListBox {}
 customElements.define("elix-list-box", ElixListBox);

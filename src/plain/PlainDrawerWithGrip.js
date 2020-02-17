@@ -1,8 +1,8 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
 import DrawerWithGrip from "../base/DrawerWithGrip.js";
-import PlainModalBackdrop from "./ModalBackdrop.js";
-import PlainOverlayFrame from "./OverlayFrame.js";
+import PlainModalBackdrop from "./PlainModalBackdrop.js";
+import PlainOverlayFrame from "./PlainOverlayFrame.js";
 
 class PlainDrawerWithGrip extends DrawerWithGrip {
   get [internal.defaultState]() {

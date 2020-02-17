@@ -1,2 +1,2 @@
-import HamburgerMenuButton from "../src/plain/HamburgerMenuButton.js";
+import PlainHamburgerMenuButton from "../src/plain/PlainHamburgerMenuButton.js";
 export default HamburgerMenuButton;

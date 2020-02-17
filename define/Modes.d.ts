@@ -1,2 +1,2 @@
-import Modes from "../src/plain/Modes.js";
+import PlainModes from "../src/plain/PlainModes.js";
 export default Modes;

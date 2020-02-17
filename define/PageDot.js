@@ -1,3 +1,3 @@
-import PageDot from "../src/plain/PageDot.js";
-export default class ElixPageDot extends PageDot {}
+import PlainPageDot from "../src/plain/PlainPageDot.js";
+export default class ElixPageDot extends PlainPageDot {}
 customElements.define("elix-page-dot", ElixPageDot);

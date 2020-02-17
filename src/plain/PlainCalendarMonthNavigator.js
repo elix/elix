@@ -1,10 +1,10 @@
 import * as internal from "../base/internal.js";
-import ArrowDirectionButton from "./ArrowDirectionButton.js";
 import CalendarMonthNavigator from "../base/CalendarMonthNavigator.js";
+import PlainArrowDirectionButton from "./PlainArrowDirectionButton.js";
 import PlainArrowDirectionIconsMixin from "./PlainArrowDirectionMixin.js";
-import PlainCalendarDayButton from "./CalendarDayButton.js";
-import PlainCalendarDayNamesHeader from "./CalendarDayNamesHeader.js";
-import PlainCalendarMonthYearHeader from "./CalendarMonthYearHeader.js";
+import PlainCalendarDayButton from "./PlainCalendarDayButton.js";
+import PlainCalendarDayNamesHeader from "./PlainCalendarDayNamesHeader.js";
+import PlainCalendarMonthYearHeader from "./PlainCalendarMonthYearHeader.js";
 
 /**
  * @part {ArrowDirectionButton} arrow-button - both of the arrow buttons
@@ -14,7 +14,7 @@ class PlainCalendarMonthNavigator extends PlainArrowDirectionIconsMixin(
 ) {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      arrowButtonPartType: ArrowDirectionButton,
+      arrowButtonPartType: PlainArrowDirectionButton,
       dayNamesHeaderPartType: PlainCalendarDayNamesHeader,
       dayPartType: PlainCalendarDayButton,
       monthYearHeaderPartType: PlainCalendarMonthYearHeader

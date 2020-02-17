@@ -1,7 +1,7 @@
 import * as internal from "../../src/base/internal.js";
 import * as template from "../../src/core/template.js";
-import AutoCompleteComboBox from "../../src/plain/AutoCompleteComboBox.js";
-import Carousel from "../../src/plain/Carousel.js";
+import AutoCompleteComboBox from "../../src/plain/PlainAutoCompleteComboBox.js";
+import Carousel from "../../src/plain/PlainCarousel.js";
 
 class CarouselComboBox extends AutoCompleteComboBox {
   get [internal.defaultState]() {

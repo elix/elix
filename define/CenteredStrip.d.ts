@@ -1,2 +1,2 @@
-import CenteredStrip from "../src/plain/CenteredStrip.js";
+import PlainCenteredStrip from "../src/plain/PlainCenteredStrip.js";
 export default CenteredStrip;

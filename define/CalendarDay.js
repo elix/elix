@@ -1,3 +1,3 @@
-import CalendarDay from "../src/plain/CalendarDay.js";
-export default class ElixCalendarDay extends CalendarDay {}
+import PlainCalendarDay from "../src/plain/PlainCalendarDay.js";
+export default class ElixCalendarDay extends PlainCalendarDay {}
 customElements.define("elix-calendar-day", ElixCalendarDay);

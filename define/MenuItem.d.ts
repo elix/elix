@@ -1,2 +1,2 @@
-import MenuItem from "../src/plain/MenuItem.js";
+import PlainMenuItem from "../src/plain/PlainMenuItem.js";
 export default MenuItem;

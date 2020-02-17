@@ -1,2 +1,2 @@
-import SelectableButton from "../src/plain/SelectableButton.js";
+import PlainSelectableButton from "../src/plain/PlainSelectableButton.js";
 export default SelectableButton;

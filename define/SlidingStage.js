@@ -1,3 +1,3 @@
-import SlidingStage from "../src/plain/SlidingStage.js";
-export default class ElixSlidingStage extends SlidingStage {}
+import PlainSlidingStage from "../src/plain/PlainSlidingStage.js";
+export default class ElixSlidingStage extends PlainSlidingStage {}
 customElements.define("elix-sliding-stage", ElixSlidingStage);

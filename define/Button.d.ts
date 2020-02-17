@@ -1,2 +1,2 @@
-import Button from "../src/plain/Button.js";
+import PlainButton from "../src/plain/PlainButton.js";
 export default Button;

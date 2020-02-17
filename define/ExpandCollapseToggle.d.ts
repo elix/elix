@@ -1,2 +1,2 @@
-import ExpandCollapseToggle from "../src/plain/ExpandCollapseToggle.js";
+import PlainExpandCollapseToggle from "../src/plain/PlainExpandCollapseToggle.js";
 export default ExpandCollapseToggle;

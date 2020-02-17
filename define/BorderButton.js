@@ -1,3 +1,3 @@
-import BorderButton from "../src/plain/BorderButton.js";
-export default class ElixBorderButton extends BorderButton {}
+import PlainBorderButton from "../src/plain/PlainBorderButton.js";
+export default class ElixBorderButton extends PlainBorderButton {}
 customElements.define("elix-border-button", ElixBorderButton);

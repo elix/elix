@@ -1,2 +1,2 @@
-import PopupButton from "../src/plain/PopupButton.js";
+import PlainPopupButton from "../src/plain/PlainPopupButton.js";
 export default PopupButton;

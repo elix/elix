@@ -1,3 +1,3 @@
-import ExpandCollapseToggle from "../src/plain/ExpandCollapseToggle.js";
-export default class ElixExpandCollapseToggle extends ExpandCollapseToggle {}
+import PlainExpandCollapseToggle from "../src/plain/PlainExpandCollapseToggle.js";
+export default class ElixExpandCollapseToggle extends PlainExpandCollapseToggle {}
 customElements.define("elix-expand-collapse-toggle", ElixExpandCollapseToggle);

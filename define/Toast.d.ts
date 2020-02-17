@@ -1,2 +1,2 @@
-import Toast from "../src/plain/Toast.js";
+import PlainToast from "../src/plain/PlainToast.js";
 export default Toast;

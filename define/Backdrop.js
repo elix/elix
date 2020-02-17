@@ -1,3 +1,3 @@
-import Backdrop from "../src/plain/Backdrop.js";
-export default class ElixBackdrop extends Backdrop {}
+import PlainBackdrop from "../src/plain/PlainBackdrop.js";
+export default class ElixBackdrop extends PlainBackdrop {}
 customElements.define("elix-backdrop", ElixBackdrop);

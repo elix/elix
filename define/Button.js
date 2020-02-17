@@ -1,3 +1,3 @@
-import Button from "../src/plain/Button.js";
-export default class ElixButton extends Button {}
+import PlainButton from "../src/plain/PlainButton.js";
+export default class ElixButton extends PlainButton {}
 customElements.define("elix-button", ElixButton);

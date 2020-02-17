@@ -1,2 +1,2 @@
-import AutoSizeTextarea from "../src/plain/AutoSizeTextarea.js";
+import PlainAutoSizeTextarea from "../src/plain/PlainAutoSizeTextarea.js";
 export default AutoSizeTextarea;

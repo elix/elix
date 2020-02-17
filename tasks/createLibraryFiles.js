@@ -37,25 +37,30 @@ async function createLibraryFile(
 ) {
   const destinationFolder = path.dirname(destination);
   const relativeFolder = path.relative(destinationFolder, sourceFolder);
-  const classExportFiles = [
-    ...sourceFiles.components,
-    ...sourceFiles.mixins
-  ].sort();
 
+  const classExportFiles = sourceFiles.components.sort();
   const classExports = classExportFiles
     .map(file => {
-      const name = path.basename(file, ".js");
-      // TODO: Components point to the local folder, mixins point to /src/base.
-      const isMixin = name.endsWith("Mixin");
-      const filePath =
-        isMixin && destinationFolder !== sourceFolder
-          ? path.join(relativeFolder, "/plain/", file)
-          : `../src/plain/${file}`;
-      return `export { default as ${name} } from "${filePath}";`;
+      const plainClassName = path.basename(file, ".js");
+      // Strip 'Plain' from beginning of class name.
+      const plainRegex = /^Plain(?<name>.+)/;
+      const match = plainRegex.exec(plainClassName);
+      const className = match ? match.groups.name : plainClassName;
+      const filePath = `../src/plain/${file}`;
+      return `export { default as ${className} } from "${filePath}";`;
     })
     .join("\n");
 
-  const helperFiles = sourceFiles.helpers;
+  // const mixinExportFiles = sourceFiles.mixins.sort();
+  // const mixinExports = mixinExportFiles
+  //   .map(file => {
+  //     const name = path.basename(file, ".js");
+  //     const filePath = path.join(relativeFolder, "/plain/", file);
+  //     return `export { default as ${name} } from "${filePath}";`;
+  //   })
+  //   .join("\n");
+
+  const helperFiles = sourceFiles.helpers.sort();
   const helperExports = helperFiles
     .map(file => {
       const name = path.basename(file, ".js");

@@ -1,3 +1,3 @@
-import DropdownList from "../src/plain/DropdownList.js";
-export default class ElixDropdownList extends DropdownList {}
+import PlainDropdownList from "../src/plain/PlainDropdownList.js";
+export default class ElixDropdownList extends PlainDropdownList {}
 customElements.define("elix-dropdown-list", ElixDropdownList);

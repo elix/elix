@@ -1,18 +1,18 @@
 import * as internal from "../base/internal.js";
-import ArrowDirectionButton from "./ArrowDirectionButton.js";
 import CarouselSlideshow from "../base/CarouselSlideshow.js";
-import CenteredStripOpacity from "./CenteredStripOpacity.js";
-import PageDot from "./PageDot.js";
+import PageDot from "./PlainPageDot.js";
+import PlainArrowDirectionButton from "./PlainArrowDirectionButton.js";
 import PlainArrowDirectionIconsMixin from "./PlainArrowDirectionMixin.js";
 import PlainCarouselMixin from "./PlainCarouselMixin.js";
+import PlainCenteredStripOpacity from "./PlainCenteredStripOpacity.js";
 
 class PlainCarouselSlideshow extends PlainArrowDirectionIconsMixin(
   PlainCarouselMixin(CarouselSlideshow)
 ) {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      arrowButtonPartType: ArrowDirectionButton,
-      proxyListPartType: CenteredStripOpacity,
+      arrowButtonPartType: PlainArrowDirectionButton,
+      proxyListPartType: PlainCenteredStripOpacity,
       proxyPartType: PageDot
     });
   }

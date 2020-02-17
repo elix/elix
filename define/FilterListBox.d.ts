@@ -1,2 +1,2 @@
-import FilterListBox from "../src/plain/FilterListBox.js";
+import PlainFilterListBox from "../src/plain/PlainFilterListBox.js";
 export default FilterListBox;

@@ -1,2 +1,2 @@
-import SlidingPages from "../src/plain/SlidingPages.js";
+import PlainSlidingPages from "../src/plain/PlainSlidingPages.js";
 export default SlidingPages;

@@ -1,2 +1,2 @@
-import BorderButton from "../src/plain/BorderButton.js";
+import PlainBorderButton from "../src/plain/PlainBorderButton.js";
 export default BorderButton;

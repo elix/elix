@@ -1,3 +1,3 @@
-import MenuItem from "../src/plain/MenuItem.js";
-export default class ElixMenuItem extends MenuItem {}
+import PlainMenuItem from "../src/plain/PlainMenuItem.js";
+export default class ElixMenuItem extends PlainMenuItem {}
 customElements.define("elix-menu-item", ElixMenuItem);

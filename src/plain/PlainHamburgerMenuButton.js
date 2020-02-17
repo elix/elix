@@ -1,7 +1,7 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
 import HamburgerMenuButton from "../base/HamburgerMenuButton.js";
-import PlainDrawer from "./Drawer.js";
+import PlainDrawer from "./PlainDrawer.js";
 
 /**
  * @part menu-icon - the icon inside the menu button

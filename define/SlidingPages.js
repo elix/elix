@@ -1,3 +1,3 @@
-import SlidingPages from "../src/plain/SlidingPages.js";
-export default class ElixSlidingPages extends SlidingPages {}
+import PlainSlidingPages from "../src/plain/PlainSlidingPages.js";
+export default class ElixSlidingPages extends PlainSlidingPages {}
 customElements.define("elix-sliding-pages", ElixSlidingPages);

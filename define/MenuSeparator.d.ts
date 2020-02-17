@@ -1,2 +1,2 @@
-import MenuSeparator from "../src/plain/MenuSeparator.js";
+import PlainMenuSeparator from "../src/plain/PlainMenuSeparator.js";
 export default MenuSeparator;

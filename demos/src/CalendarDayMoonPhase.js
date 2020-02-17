@@ -1,6 +1,6 @@
 import * as internal from "../../src/base/internal.js";
 import * as template from "../../src/core/template.js";
-import CalendarDay from "../../src/plain/CalendarDay.js";
+import CalendarDay from "../../src/plain/PlainCalendarDay.js";
 
 /*
  * Shows an icon for the moon phase for a given date.

@@ -1,18 +1,18 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
-import BorderButton from "./BorderButton.js";
 import MenuButton from "../base/MenuButton.js";
-import OpenCloseToggle from "./OpenCloseToggle.js";
-import PlainMenu from "./Menu.js";
-import PlainOverlayFrame from "./OverlayFrame.js";
+import PlainBorderButton from "./PlainBorderButton.js";
+import PlainMenu from "./PlainMenu.js";
+import PlainOpenCloseToggle from "./PlainOpenCloseToggle.js";
+import PlainOverlayFrame from "./PlainOverlayFrame.js";
 
 class PlainMenuButton extends MenuButton {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       framePartType: PlainOverlayFrame,
       menuPartType: PlainMenu,
-      popupTogglePartType: OpenCloseToggle,
-      sourcePartType: BorderButton
+      popupTogglePartType: PlainOpenCloseToggle,
+      sourcePartType: PlainBorderButton
     });
   }
 

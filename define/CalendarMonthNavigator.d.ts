@@ -1,2 +1,2 @@
-import CalendarMonthNavigator from "../src/plain/CalendarMonthNavigator.js";
+import PlainCalendarMonthNavigator from "../src/plain/PlainCalendarMonthNavigator.js";
 export default CalendarMonthNavigator;

@@ -1,2 +1,2 @@
-import OverlayFrame from "../src/plain/OverlayFrame.js";
+import PlainOverlayFrame from "../src/plain/PlainOverlayFrame.js";
 export default OverlayFrame;

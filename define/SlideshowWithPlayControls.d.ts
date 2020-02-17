@@ -1,2 +1,2 @@
-import SlideshowWithPlayControls from "../src/plain/SlideshowWithPlayControls.js";
+import PlainSlideshowWithPlayControls from "../src/plain/PlainSlideshowWithPlayControls.js";
 export default SlideshowWithPlayControls;

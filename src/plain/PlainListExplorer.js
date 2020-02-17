@@ -1,16 +1,16 @@
 import * as internal from "../base/internal.js";
-import CalendarDays from "../base/CalendarDays.js";
-import PlainCalendarDay from "./CalendarDay.js";
+import ListExplorer from "../base/ListExplorer.js";
+import PlainListBox from "./PlainListBox.js";
 
 /**
  * @part {ArrowDirectionButton} arrow-button - both of the arrow buttons
  */
-class PlainCalendarDays extends CalendarDays {
+class PlainListExplorer extends ListExplorer {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      dayPartType: PlainCalendarDay
+      proxyListPartType: PlainListBox
     });
   }
 }
 
-export default PlainCalendarDays;
+export default PlainListExplorer;

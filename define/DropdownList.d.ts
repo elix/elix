@@ -1,2 +1,2 @@
-import DropdownList from "../src/plain/DropdownList.js";
+import PlainDropdownList from "../src/plain/PlainDropdownList.js";
 export default DropdownList;

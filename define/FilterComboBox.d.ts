@@ -1,2 +1,2 @@
-import FilterComboBox from "../src/plain/FilterComboBox.js";
+import PlainFilterComboBox from "../src/plain/PlainFilterComboBox.js";
 export default FilterComboBox;

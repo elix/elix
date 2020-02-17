@@ -1,2 +1,2 @@
-import AutoCompleteInput from "../src/plain/AutoCompleteInput.js";
+import PlainAutoCompleteInput from "../src/plain/PlainAutoCompleteInput.js";
 export default AutoCompleteInput;

@@ -10,7 +10,7 @@ import WrappedStandardElement from "../base/WrappedStandardElement.js";
  *
  * @inherits WrappedStandardElement
  */
-class Thumbnail extends WrappedStandardElement.wrap("img") {
+class PlainThumbnail extends WrappedStandardElement.wrap("img") {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
@@ -28,4 +28,4 @@ class Thumbnail extends WrappedStandardElement.wrap("img") {
   }
 }
 
-export default Thumbnail;
+export default PlainThumbnail;

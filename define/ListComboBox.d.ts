@@ -1,2 +1,2 @@
-import ListComboBox from "../src/plain/ListComboBox.js";
+import PlainListComboBox from "../src/plain/PlainListComboBox.js";
 export default ListComboBox;

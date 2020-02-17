@@ -1,7 +1,7 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
 import CalendarDayButton from "../base/CalendarDayButton.js";
-import PlainCalendarDay from "./CalendarDay.js";
+import PlainCalendarDay from "./PlainCalendarDay.js";
 
 class PlainCalendarDayButton extends CalendarDayButton {
   get [internal.defaultState]() {

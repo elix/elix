@@ -1,24 +1,25 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
-import ExpandableSection from "../base/ExpandableSection.js";
-import ExpandCollapseToggle from "./ExpandCollapseToggle.js";
-import PlainButton from "./Button.js";
+import PlainTabButton from "./PlainTabButton.js";
+import PlainTabStrip from "./PlainTabStrip.js";
+import Tabs from "../base/Tabs.js";
 
-class PlainExpandableSection extends ExpandableSection {
+class PlainTabs extends Tabs {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      headerPartType: PlainButton,
-      togglePartType: ExpandCollapseToggle
+      itemRole: "tabpanel",
+      proxyPartType: PlainTabButton,
+      proxyListPartType: PlainTabStrip,
+      tabAlign: "start"
     });
   }
-
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
       template.html`
         <style>
-          #toggle {
-            margin: 0.75em;
+          #proxyList {
+            z-index: 1;
           }
         </style>
       `.content
@@ -27,4 +28,4 @@ class PlainExpandableSection extends ExpandableSection {
   }
 }
 
-export default PlainExpandableSection;
+export default PlainTabs;

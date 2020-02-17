@@ -1,2 +1,2 @@
-import CalendarDayButton from "../src/plain/CalendarDayButton.js";
+import PlainCalendarDayButton from "../src/plain/PlainCalendarDayButton.js";
 export default CalendarDayButton;

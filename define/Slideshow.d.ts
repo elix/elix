@@ -1,2 +1,2 @@
-import Slideshow from "../src/plain/Slideshow.js";
+import PlainSlideshow from "../src/plain/PlainSlideshow.js";
 export default Slideshow;

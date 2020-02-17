@@ -1,3 +1,3 @@
-import DateComboBox from "../src/plain/DateComboBox.js";
-export default class ElixDateComboBox extends DateComboBox {}
+import PlainDateComboBox from "../src/plain/PlainDateComboBox.js";
+export default class ElixDateComboBox extends PlainDateComboBox {}
 customElements.define("elix-date-combo-box", ElixDateComboBox);

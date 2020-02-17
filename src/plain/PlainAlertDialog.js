@@ -1,9 +1,9 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
 import AlertDialog from "../base/AlertDialog.js";
-import PlainBorderButton from "./BorderButton.js";
-import PlainModalBackdrop from "./ModalBackdrop.js";
-import PlainOverlayFrame from "./OverlayFrame.js";
+import PlainBorderButton from "./PlainBorderButton.js";
+import PlainModalBackdrop from "./PlainModalBackdrop.js";
+import PlainOverlayFrame from "./PlainOverlayFrame.js";
 
 class PlainAlertDialog extends AlertDialog {
   get [internal.defaultState]() {

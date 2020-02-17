@@ -1,2 +1,2 @@
-import PullToRefresh from "../src/plain/PullToRefresh.js";
+import PlainPullToRefresh from "../src/plain/PlainPullToRefresh.js";
 export default PullToRefresh;

@@ -1,2 +1,2 @@
-import TabButton from "../src/plain/TabButton.js";
+import PlainTabButton from "../src/plain/PlainTabButton.js";
 export default TabButton;

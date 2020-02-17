@@ -1,8 +1,8 @@
 import * as internal from "../../src/base/internal.js";
 import * as template from "../../src/core/template.js";
-import ArrowDirectionButton from "../../src/plain/ArrowDirectionButton.js";
+import ArrowDirectionButton from "../../src/plain/PlainArrowDirectionButton.js";
 import ArrowDirectionMixin from "../../src/base/ArrowDirectionMixin.js";
-import SlidingPages from "../../src/plain/SlidingPages.js";
+import SlidingPages from "../../src/plain/PlainSlidingPages.js";
 
 const Base = ArrowDirectionMixin(SlidingPages);
 

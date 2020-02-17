@@ -1,3 +1,3 @@
-import CarouselWithThumbnails from "../src/plain/CarouselWithThumbnails.js";
-export default class ElixCarouselWithThumbnails extends CarouselWithThumbnails {}
+import PlainCarouselWithThumbnails from "../src/plain/PlainCarouselWithThumbnails.js";
+export default class ElixCarouselWithThumbnails extends PlainCarouselWithThumbnails {}
 customElements.define("elix-carousel-with-thumbnails", ElixCarouselWithThumbnails);

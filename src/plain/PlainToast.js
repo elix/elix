@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
-import PlainOverlayFrame from "./OverlayFrame.js";
+import PlainOverlayFrame from "./PlainOverlayFrame.js";
 import Toast from "../base/Toast.js";
 
 class PlainToast extends Toast {

@@ -1,2 +1,2 @@
-import OpenCloseToggle from "../src/plain/OpenCloseToggle.js";
+import PlainOpenCloseToggle from "../src/plain/PlainOpenCloseToggle.js";
 export default OpenCloseToggle;

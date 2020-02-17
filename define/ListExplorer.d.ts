@@ -1,2 +1,2 @@
-import ListExplorer from "../src/plain/ListExplorer.js";
+import PlainListExplorer from "../src/plain/PlainListExplorer.js";
 export default ListExplorer;

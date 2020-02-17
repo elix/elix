@@ -1,2 +1,2 @@
-import Menu from "../src/plain/Menu.js";
+import PlainMenu from "../src/plain/PlainMenu.js";
 export default Menu;

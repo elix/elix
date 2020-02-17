@@ -1,3 +1,3 @@
-import Toast from "../src/plain/Toast.js";
-export default class ElixToast extends Toast {}
+import PlainToast from "../src/plain/PlainToast.js";
+export default class ElixToast extends PlainToast {}
 customElements.define("elix-toast", ElixToast);

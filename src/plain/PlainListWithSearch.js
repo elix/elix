@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
 import ListWithSearch from "../base/ListWithSearch.js";
-import PlainFilterListBox from "./FilterListBox.js";
+import PlainFilterListBox from "./PlainFilterListBox.js";
 
 class PlainListWithSearch extends ListWithSearch {
   get [internal.defaultState]() {

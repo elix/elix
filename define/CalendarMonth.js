@@ -1,3 +1,3 @@
-import CalendarMonth from "../src/plain/CalendarMonth.js";
-export default class ElixCalendarMonth extends CalendarMonth {}
+import PlainCalendarMonth from "../src/plain/PlainCalendarMonth.js";
+export default class ElixCalendarMonth extends PlainCalendarMonth {}
 customElements.define("elix-calendar-month", ElixCalendarMonth);

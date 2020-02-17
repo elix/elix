@@ -1,2 +1,2 @@
-import Dialog from "../src/plain/Dialog.js";
+import PlainDialog from "../src/plain/PlainDialog.js";
 export default Dialog;
