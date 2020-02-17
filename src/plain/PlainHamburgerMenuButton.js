@@ -4,6 +4,9 @@ import HamburgerMenuButton from "../base/HamburgerMenuButton.js";
 import PlainDrawer from "./PlainDrawer.js";
 
 /**
+ * HamburgerMenuButton component in the Plain reference design system
+ *
+ * @inherits HamburgerMenuButton
  * @part menu-icon - the icon inside the menu button
  */
 class PlainHamburgerMenuButton extends HamburgerMenuButton {

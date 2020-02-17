@@ -3,6 +3,8 @@ import * as template from "../core/template.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
+ * ListBox styles in the Plain reference design system
+ *
  * @module PlainListBoxMixin
  * @param {Constructor<ReactiveElement>} Base
  */

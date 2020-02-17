@@ -1,15 +1,18 @@
 import * as internal from "../base/internal.js";
 import CalendarMonthNavigator from "../base/CalendarMonthNavigator.js";
 import PlainArrowDirectionButton from "./PlainArrowDirectionButton.js";
-import PlainArrowDirectionIconsMixin from "./PlainArrowDirectionMixin.js";
+import PlainArrowDirectionMixin from "./PlainArrowDirectionMixin.js";
 import PlainCalendarDayButton from "./PlainCalendarDayButton.js";
 import PlainCalendarDayNamesHeader from "./PlainCalendarDayNamesHeader.js";
 import PlainCalendarMonthYearHeader from "./PlainCalendarMonthYearHeader.js";
 
 /**
- * @part {ArrowDirectionButton} arrow-button - both of the arrow buttons
+ * CalendarMonthNavigator component in the Plain reference design system
+ *
+ * @inherits CalendarMonthNavigator
+ * @mixes PlainArrowDirectionMixin
  */
-class PlainCalendarMonthNavigator extends PlainArrowDirectionIconsMixin(
+class PlainCalendarMonthNavigator extends PlainArrowDirectionMixin(
   CalendarMonthNavigator
 ) {
   get [internal.defaultState]() {

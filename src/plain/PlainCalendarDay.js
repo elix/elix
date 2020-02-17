@@ -2,6 +2,11 @@ import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
 import CalendarDay from "../base/CalendarDay.js";
 
+/**
+ * CalendarDay component in the Plain reference design system
+ *
+ * @inherits CalendarDay
+ */
 class PlainCalendarDay extends CalendarDay {
   get [internal.template]() {
     const result = super[internal.template];

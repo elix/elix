@@ -4,6 +4,9 @@ import PlainTabButton from "./PlainTabButton.js";
 import PlainTabStrip from "./PlainTabStrip.js";
 import Tabs from "../base/Tabs.js";
 
+/**
+ * @inherits Tabs
+ */
 class PlainTabs extends Tabs {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {

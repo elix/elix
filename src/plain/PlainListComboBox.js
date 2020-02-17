@@ -3,6 +3,11 @@ import ListComboBox from "../base/ListComboBox.js";
 import PlainOpenCloseToggle from "./PlainOpenCloseToggle.js";
 import PlainPopup from "./PlainPopup.js";
 
+/**
+ * ListComboBox component in the Plain reference design system
+ *
+ * @inherits SlidingStage
+ */
 class PlainListComboBox extends ListComboBox {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {

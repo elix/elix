@@ -1,4 +1,4 @@
-This folder contains the Plain reference design system built on the Elix base components.
+This folder contains the Plain reference design systembuilt on the Elix base components.
 
 As their name implies, the base components are intended to be used as the base for a design system. The base components are not designed to be directly instantiable.
 

@@ -5,6 +5,11 @@ import PlainButton from "./PlainButton.js";
 import PlainCalendarMonthNavigator from "./PlainCalendarMonthNavigator.js";
 import PlainComboBoxMixin from "./PlainComboBoxMixin.js";
 
+/**
+ * DateComboBox component in the Plain reference design system
+ *
+ * @inherits DateComboBox
+ */
 class PlainDateComboBox extends PlainComboBoxMixin(DateComboBox) {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {

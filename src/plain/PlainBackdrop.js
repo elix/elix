@@ -1,2 +1,10 @@
 import Backdrop from "../base/Backdrop.js";
-export default Backdrop;
+
+/**
+ * Backdrop component in the Plain reference design system
+ *
+ * @inherits Backdrop
+ */
+class PlainBackdrop extends Backdrop {}
+
+export default PlainBackdrop;

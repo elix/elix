@@ -3,6 +3,12 @@ import AutoCompleteComboBox from "../base/AutoCompleteComboBox.js";
 import PlainComboBoxMixin from "./PlainComboBoxMixin.js";
 import PlainListBox from "./PlainListBox.js";
 
+/**
+ * AutoCompleteComboBox component in the Plain reference design system
+ *
+ * @inherits AutoCompleteComboBox
+ * @mixes PlainComboBoxMixin
+ */
 class PlainAutoCompleteComboBox extends PlainComboBoxMixin(
   AutoCompleteComboBox
 ) {

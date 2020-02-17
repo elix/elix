@@ -1,2 +1,10 @@
 import Explorer from "../base/Explorer.js";
-export default Explorer;
+
+/**
+ * Explorer component in the Plain reference design system
+ *
+ * @inherits Explorer
+ */
+class PlainExplorer extends Explorer {}
+
+export default PlainExplorer;

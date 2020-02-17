@@ -3,6 +3,11 @@ import * as template from "../core/template.js";
 import CalendarDayButton from "../base/CalendarDayButton.js";
 import PlainCalendarDay from "./PlainCalendarDay.js";
 
+/**
+ * CalendarDayButton component in the Plain reference design system
+ *
+ * @inherits CalendarDayButton
+ */
 class PlainCalendarDayButton extends CalendarDayButton {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {

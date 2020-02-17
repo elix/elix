@@ -4,6 +4,11 @@ import DrawerWithGrip from "../base/DrawerWithGrip.js";
 import PlainModalBackdrop from "./PlainModalBackdrop.js";
 import PlainOverlayFrame from "./PlainOverlayFrame.js";
 
+/**
+ * DrawerWithGrip component in the Plain reference design system
+ *
+ * @inherits DrawerWithGrip
+ */
 class PlainDrawerWithGrip extends DrawerWithGrip {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {

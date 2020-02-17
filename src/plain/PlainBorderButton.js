@@ -2,6 +2,11 @@ import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
 import PlainButton from "./PlainButton.js";
 
+/**
+ * Button with a border in the Plain reference design system
+ *
+ * @inherits PlainButton
+ */
 class PlainBorderButton extends PlainButton {
   get [internal.template]() {
     const result = super[internal.template];

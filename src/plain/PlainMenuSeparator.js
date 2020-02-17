@@ -2,6 +2,11 @@ import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
 import MenuSeparator from "../base/MenuSeparator.js";
 
+/**
+ * MenuSeparator component in the Plain reference design system
+ *
+ * @inherits MenuSeparator
+ */
 class PlainMenuSeparator extends MenuSeparator {
   get [internal.template]() {
     return template.html`

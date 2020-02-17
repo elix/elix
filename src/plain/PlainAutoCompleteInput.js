@@ -1,2 +1,10 @@
 import AutoCompleteInput from "../base/AutoCompleteInput.js";
-export default AutoCompleteInput;
+
+/**
+ * AutoCompleteInput component in the Plain reference design system
+ *
+ * @inherits AutoCompleteInput
+ */
+class PlainAutoCompleteInput extends AutoCompleteInput {}
+
+export default PlainAutoCompleteInput;

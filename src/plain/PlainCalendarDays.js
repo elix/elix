@@ -3,7 +3,9 @@ import CalendarDays from "../base/CalendarDays.js";
 import PlainCalendarDay from "./PlainCalendarDay.js";
 
 /**
- * @part {ArrowDirectionButton} arrow-button - both of the arrow buttons
+ * CalendarDays component in the Plain reference design system
+ *
+ * @inherits CalendarDays
  */
 class PlainCalendarDays extends CalendarDays {
   get [internal.defaultState]() {

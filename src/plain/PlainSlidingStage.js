@@ -1,2 +1,8 @@
 import SlidingStage from "../base/SlidingStage.js";
-export default SlidingStage;
+
+/**
+ * SlidingStage component in the Plain reference design system
+ *
+ * @inherits SlidingStage
+ */
+export default class PlainSlidingStage extends SlidingStage {}

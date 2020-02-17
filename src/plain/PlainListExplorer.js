@@ -3,7 +3,9 @@ import ListExplorer from "../base/ListExplorer.js";
 import PlainListBox from "./PlainListBox.js";
 
 /**
- * @part {ArrowDirectionButton} arrow-button - both of the arrow buttons
+ * ListExplorer component in the Plain reference design system
+ *
+ * @inherits ListExplorer
  */
 class PlainListExplorer extends ListExplorer {
   get [internal.defaultState]() {

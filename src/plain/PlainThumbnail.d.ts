@@ -3,4 +3,4 @@
 
 import WrappedStandardElement from "../base/WrappedStandardElement.js";
 
-export default class Thumbnail extends WrappedStandardElement {}
+export default class PlainThumbnail extends WrappedStandardElement {}

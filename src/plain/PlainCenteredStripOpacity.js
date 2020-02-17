@@ -8,7 +8,7 @@ const opacityMaximum = 1.0;
 /**
  * Centered strip showing unselected items with partial opacity
  *
- * [`CenteredStripOpacity` is used by `Carousel` for dots or
+ * [`CenteredStripOpacity` is used by Carousel for dots or
  * thumbnails](/demos/centeredStripOpacity.html)
  *
  * For a variation that uses a highlight color instead of opacity, see

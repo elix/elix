@@ -3,10 +3,10 @@ import * as template from "../core/template.js";
 import WrappedStandardElement from "../base/WrappedStandardElement.js";
 
 /**
- * A thumbnail image used to represent a larger image.
+ * A thumbnail for a larger image in the Plain reference design system
  *
- * [CarouselWithThumbnails](CarouselWithThumbnails) uses `Thumbnail` as the
- * default "proxy" element for list items.
+ * [PlainCarouselWithThumbnails](PlainCarouselWithThumbnails) uses `Thumbnail`
+ * as the default "proxy" element for list items.
  *
  * @inherits WrappedStandardElement
  */

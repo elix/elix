@@ -5,6 +5,11 @@ import PlainBorderButton from "./PlainBorderButton.js";
 import PlainModalBackdrop from "./PlainModalBackdrop.js";
 import PlainOverlayFrame from "./PlainOverlayFrame.js";
 
+/**
+ * AlertDialog component in the Plain reference design system
+ *
+ * @inherits AlertDialog
+ */
 class PlainAlertDialog extends AlertDialog {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {

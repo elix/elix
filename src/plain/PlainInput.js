@@ -1,2 +1,10 @@
 import Input from "../base/Input.js";
-export default Input;
+
+/**
+ * ListBox component in the Plain reference design system
+ *
+ * @inherits ListBox
+ */
+class PlainInput extends Input {}
+
+export default PlainInput;

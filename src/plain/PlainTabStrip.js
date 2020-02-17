@@ -2,6 +2,9 @@ import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
 import TabStrip from "../base/TabStrip.js";
 
+/**
+ * @inherits TabStrip
+ */
 class PlainTabStrip extends TabStrip {
   get [internal.template]() {
     const result = super[internal.template];

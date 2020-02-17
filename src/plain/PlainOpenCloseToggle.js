@@ -2,7 +2,12 @@ import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
 import UpDownToggle from "../base/UpDownToggle.js";
 
-class OpenCloseToggle extends UpDownToggle {
+/**
+ * OpenCloseToggle component in the Plain reference design system
+ *
+ * @inherits OpenCloseToggle
+ */
+class PlainOpenCloseToggle extends UpDownToggle {
   get [internal.template]() {
     const result = super[internal.template];
 
@@ -59,4 +64,4 @@ class OpenCloseToggle extends UpDownToggle {
   }
 }
 
-export default OpenCloseToggle;
+export default PlainOpenCloseToggle;

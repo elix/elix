@@ -1,2 +1,10 @@
 import AutoSizeTextarea from "../base/AutoSizeTextarea.js";
-export default AutoSizeTextarea;
+
+/**
+ * AutoSizeTextarea component in the Plain reference design system
+ *
+ * @inherits AutoSizeTextarea
+ */
+class PlainAutoSizeTextarea extends AutoSizeTextarea {}
+
+export default PlainAutoSizeTextarea;

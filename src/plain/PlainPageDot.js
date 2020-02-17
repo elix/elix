@@ -6,9 +6,10 @@ import SelectableButton from "../base/SelectableButton.js";
 const Base = DarkModeMixin(SelectableButton);
 
 /**
- * A small dot used to represent the items in a carousel-like element.
+ * A small dot component in the Plain reference design system
  *
- * This is used as the default proxy element in [Carousel](Carousel).
+ * This used as the default proxy element to represent items in carousels like
+ * [PlainCarousel](PlainCarousel).
  *
  * @inherits SelectableButton
  * @mixes DarkModeMixin

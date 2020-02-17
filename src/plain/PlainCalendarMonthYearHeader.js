@@ -2,6 +2,11 @@ import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
 import CalendarMonthYearHeader from "../base/CalendarMonthYearHeader.js";
 
+/**
+ * CalendarMonthYearHeader component in the Plain reference design system
+ *
+ * @inherits CalendarMonthYearHeader
+ */
 class PlainCalendarMonthYearHeader extends CalendarMonthYearHeader {
   get [internal.template]() {
     const result = super[internal.template];

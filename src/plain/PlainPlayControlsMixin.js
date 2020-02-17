@@ -3,6 +3,8 @@ import * as template from "../core/template.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
+ * PlayControlsMixin design in the Plain reference design system
+ *
  * @module PlainPlayControlsMixin
  * @param {Constructor<ReactiveElement>} Base
  * @part control-icon - any of the icons shown in the control buttons

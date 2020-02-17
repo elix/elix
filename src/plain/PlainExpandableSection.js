@@ -4,6 +4,11 @@ import ExpandableSection from "../base/ExpandableSection.js";
 import PlainButton from "./PlainButton.js";
 import PlainExpandCollapseToggle from "./PlainExpandCollapseToggle.js";
 
+/**
+ * ExpandableSection component in the Plain reference design system
+ *
+ * @inherits ExpandableSection
+ */
 class PlainExpandableSection extends ExpandableSection {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {

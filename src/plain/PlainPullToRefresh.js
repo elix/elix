@@ -10,6 +10,11 @@ const downArrowTemplate = template.html`
   </svg>
 `;
 
+/**
+ * PullToRefresh component in the Plain reference design system
+ *
+ * @inherits PullToRefresh
+ */
 class PlainPullToRefresh extends PullToRefresh {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {

@@ -2,6 +2,11 @@ import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
 import TabButton from "../base/TabButton.js";
 
+/**
+ * TabButton component in the Plain reference design system
+ *
+ * @inherits TabButton
+ */
 class PlainTabButton extends TabButton {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);

@@ -5,7 +5,9 @@ import PlainCalendarDayNamesHeader from "./PlainCalendarDayNamesHeader.js";
 import PlainCalendarMonthYearHeader from "./PlainCalendarMonthYearHeader.js";
 
 /**
- * @part {ArrowDirectionButton} arrow-button - both of the arrow buttons
+ * CalendarMonth component in the Plain reference design system
+ *
+ * @inherits CalendarMonth
  */
 class PlainCalendarMonth extends CalendarMonth {
   get [internal.defaultState]() {

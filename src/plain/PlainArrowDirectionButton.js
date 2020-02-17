@@ -6,12 +6,13 @@ import DarkModeMixin from "../base/DarkModeMixin.js";
 const Base = DarkModeMixin(PlainButton);
 
 /**
- * Button that can be used as a left or right arrow button.
+ * Left/right arrow button in the Plain reference design system
  *
- * This component is used by [ArrowDirectionMixin](ArrowDirectionMixin) for its
- * default left/right arrow buttons.
+ * This component is used by
+ * [PlainArrowDirectionMixin](PlainArrowDirectionMixin) for its default
+ * left/right arrow buttons.
  *
- * @inherits Button
+ * @inherits PlainButton
  * @mixes DarkModeMixin
  */
 class PlainArrowDirectionButton extends Base {

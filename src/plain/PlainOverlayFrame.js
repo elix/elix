@@ -3,12 +3,12 @@ import * as template from "../core/template.js";
 import OverlayFrame from "../base/OverlayFrame.js";
 
 /**
- * A simple frame for overlay content.
+ * OverlayFrame component in the Plain reference design system
  *
  * The default appearance of `OverlayFrame` uses a simple drop-shadow to let the
  * user see the framed content as being on top of the background page content.
  *
- * @inherits ReactiveElement
+ * @inherits OverlayFrame
  */
 class PlainOverlayFrame extends OverlayFrame {
   get [internal.template]() {

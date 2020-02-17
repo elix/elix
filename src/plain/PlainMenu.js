@@ -2,6 +2,11 @@ import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
 import Menu from "../base/Menu.js";
 
+/**
+ * Menu component in the Plain reference design system
+ *
+ * @inherits Menu
+ */
 class PlainMenu extends Menu {
   get [internal.template]() {
     const result = super[internal.template];

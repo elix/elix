@@ -2,6 +2,11 @@ import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
 import CalendarDayNamesHeader from "../base/CalendarDayNamesHeader.js";
 
+/**
+ * CalendarDayNamesHeader component in the Plain reference design system
+ *
+ * @inherits CalendarDayNamesHeader
+ */
 class PlainCalendarDayNamesHeader extends CalendarDayNamesHeader {
   get [internal.template]() {
     const result = super[internal.template];

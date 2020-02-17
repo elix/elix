@@ -4,6 +4,8 @@ import PlainPopup from "./PlainPopup.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
+ * ComboBox styles for the Plain reference design system
+ *
  * @module PlainComboBoxMixin
  * @param {Constructor<ReactiveElement>} Base
  */

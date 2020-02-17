@@ -2,6 +2,11 @@ import * as internal from "../base/internal.js";
 import * as template from "../core/template.js";
 import ProgressSpinner from "../base/ProgressSpinner.js";
 
+/**
+ * ProgressSpinner component in the Plain reference design system
+ *
+ * @inherits ProgressSpinner
+ */
 class PlainProgressSpinner extends ProgressSpinner {
   get [internal.defaultState]() {
     // The spinner has 12 discrete steps in its rotation.

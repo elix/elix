@@ -3,6 +3,8 @@ import * as template from "../core/template.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
+ * ArrowDirectionMixin styles in the Plain reference design system
+ *
  * @module PlainArrowDirectionMixin
  * @param {Constructor<ReactiveElement>} Base
  * @part arrow-icon - both of the default arrow icons used in the arrow buttons

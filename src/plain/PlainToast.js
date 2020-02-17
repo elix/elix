@@ -3,6 +3,9 @@ import * as template from "../core/template.js";
 import PlainOverlayFrame from "./PlainOverlayFrame.js";
 import Toast from "../base/Toast.js";
 
+/**
+ * @inherits Toast
+ */
 class PlainToast extends Toast {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
