@@ -5,4 +5,6 @@ import Slideshow from "../base/Slideshow.js";
  *
  * @inherits Slideshow
  */
-export default class PlainSlideshow extends Slideshow {}
+class PlainSlideshow extends Slideshow {}
+
+export default PlainSlideshow;

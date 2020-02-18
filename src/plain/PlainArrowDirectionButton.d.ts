@@ -4,10 +4,4 @@
 import DarkModeMixin from "../base/DarkModeMixin.js";
 import Button from "../base/Button.js";
 
-/**
- * Arrow button component in the Plain reference design system
- *
- * @inherits Button
- * @mixes DarkModeMixin
- */
 export default class PlainArrowDirectionButton extends DarkModeMixin(Button) {}

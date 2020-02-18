@@ -6,6 +6,8 @@ import PlainPlayControlsMixin from "./PlainPlayControlsMixin.js";
  *
  * @inherits SlideshowWithPlayControls
  */
-export default class PlainSlideshowWithPlayControls extends PlainPlayControlsMixin(
+class PlainSlideshowWithPlayControls extends PlainPlayControlsMixin(
   SlideshowWithPlayControls
 ) {}
+
+export default PlainSlideshowWithPlayControls;

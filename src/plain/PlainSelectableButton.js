@@ -5,4 +5,6 @@ import SelectableButton from "../base/SelectableButton.js";
  *
  * @inherits SelectableButton
  */
-export default class PlainSelectableButton extends SelectableButton {}
+class PlainSelectableButton extends SelectableButton {}
+
+export default PlainSelectableButton;

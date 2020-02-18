@@ -5,4 +5,6 @@ import SlidingStage from "../base/SlidingStage.js";
  *
  * @inherits SlidingStage
  */
-export default class PlainSlidingStage extends SlidingStage {}
+class PlainSlidingStage extends SlidingStage {}
+
+export default PlainSlidingStage;

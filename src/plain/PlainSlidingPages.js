@@ -5,4 +5,6 @@ import SlidingPages from "../base/SlidingPages.js";
  *
  * @inherits SlidingPages
  */
-export default class PlainSlidingPages extends SlidingPages {}
+class PlainSlidingPages extends SlidingPages {}
+
+export default PlainSlidingPages;

@@ -167,6 +167,7 @@ function bringToFront(element) {
  * If the element has or inherits an explicit numeric z-index, return true.
  * Otherwise, return false.
  *
+ * @private
  * @param {HTMLElement} element
  * @returns {boolean}
  */
