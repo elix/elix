@@ -4,7 +4,7 @@ import MenuButton from "../base/MenuButton.js";
 import PlainBorderButton from "./PlainBorderButton.js";
 import PlainMenu from "./PlainMenu.js";
 import PlainOpenCloseToggle from "./PlainOpenCloseToggle.js";
-import PlainOverlayFrame from "./PlainOverlayFrame.js";
+import PlainPopup from "./PlainPopup.js";
 
 /**
  * MenuButton component in the Plain reference design system
@@ -14,8 +14,8 @@ import PlainOverlayFrame from "./PlainOverlayFrame.js";
 class PlainMenuButton extends MenuButton {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      framePartType: PlainOverlayFrame,
       menuPartType: PlainMenu,
+      popupPartType: PlainPopup,
       popupTogglePartType: PlainOpenCloseToggle,
       sourcePartType: PlainBorderButton
     });

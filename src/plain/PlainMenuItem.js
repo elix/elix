@@ -12,7 +12,7 @@ class PlainMenuItem extends MenuItem {
     /* Variety of system fonts */
     return template.html`
       <style>
-        :host([generic]) {
+        :host {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
           font-size: 10pt;
           padding-left: 2em !important;
@@ -20,9 +20,7 @@ class PlainMenuItem extends MenuItem {
           white-space: nowrap;
         }
       </style>
-      <div id="container">
-        <slot></slot>
-      </div>
+      <slot></slot>
     `;
   }
 }
