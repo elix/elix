@@ -1,3 +1,9 @@
+/**
+ * A helper for creating a DocumentFragment in JavaScript.
+ *
+ * @module html
+ */
+
 import * as template from "./template.js";
 
 /**
@@ -21,7 +27,9 @@ import * as template from "./template.js";
  * JavaScript template literal
  * @returns {DocumentFragment}
  */
-export default function html(strings, ...substitutions) {
+function html(strings, ...substitutions) {
   const t = template.html(strings, ...substitutions);
   return t.content;
 }
+
+export default html;
