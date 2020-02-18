@@ -381,11 +381,11 @@ function createDefaultProxies(items, proxyPartType) {
     ? items.map(() => template.createElement(proxyPartType))
     : [];
   proxies.forEach(proxy => {
-    if ("part" in proxy) {
-      /** @type {any} */ (proxy).part = "proxy";
-    }
+    // As of February 2020, the `part` property is not available in all
+    // browsers, so we set it as an attribute instead.
+    /** @type {any} */ (proxy).setAttribute("part", "proxy");
   });
-  // Make the array immutable to help update performance.
+  // Make the array immutable to avoid accidental mutation.
   Object.freeze(proxies);
   return proxies;
 }
