@@ -116,10 +116,16 @@ export default function ShadowTemplateMixin(Base) {
 }
 
 /**
- * Return and cache the template for the given element.
+ * Return the template for the element being instantiated.
+ *
+ * If this is the first time we're creating this type of element, or the
+ * component has indicated that its template is dynamic (and should be retrieved
+ * each time), ask the component class for the template and cache the result.
+ * Otherwise, immediately return the cached template.
  *
  * @private
  * @param {HTMLElement} element
+ * @returns {HTMLTemplateElement}
  */
 function getTemplate(element) {
   const hasDynamicTemplate = element[internal.hasDynamicTemplate];
@@ -128,15 +134,13 @@ function getTemplate(element) {
     : classTemplateMap.get(element.constructor); // See if we've cached it
   if (template === undefined) {
     // Ask the component for its template.
-    template = element[internal.template] || null;
-    if (template) {
-      if (!(template instanceof HTMLTemplateElement)) {
-        throw `Warning: the [internal.template] property for ${element.constructor.name} must return an HTMLTemplateElement.`;
-      }
-      if (!hasDynamicTemplate) {
-        // Store prepared template for next creation of same type of element.
-        classTemplateMap.set(element.constructor, template);
-      }
+    template = element[internal.template];
+    if (!(template instanceof HTMLTemplateElement)) {
+      throw `Warning: the [internal.template] property for ${element.constructor.name} must return an HTMLTemplateElement.`;
+    }
+    if (!hasDynamicTemplate) {
+      // Store prepared template for next creation of same type of element.
+      classTemplateMap.set(element.constructor, template);
     }
   }
   return template;
