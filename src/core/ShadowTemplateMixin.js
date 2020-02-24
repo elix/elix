@@ -129,12 +129,14 @@ function getTemplate(element) {
   if (template === undefined) {
     // Ask the component for its template.
     template = element[internal.template] || null;
-    if (template && !(template instanceof HTMLTemplateElement)) {
-      throw `Warning: the [internal.template] property for ${element.constructor.name} must return an HTMLTemplateElement.`;
-    }
-    if (!hasDynamicTemplate) {
-      // Store prepared template for next creation of same type of element.
-      classTemplateMap.set(element.constructor, template);
+    if (template) {
+      if (!(template instanceof HTMLTemplateElement)) {
+        throw `Warning: the [internal.template] property for ${element.constructor.name} must return an HTMLTemplateElement.`;
+      }
+      if (!hasDynamicTemplate) {
+        // Store prepared template for next creation of same type of element.
+        classTemplateMap.set(element.constructor, template);
+      }
     }
   }
   return template;
