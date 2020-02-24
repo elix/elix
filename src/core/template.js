@@ -93,13 +93,9 @@ export function defaultSlot(tree) {
  * @returns {HTMLTemplateElement}
  */
 export function html(strings, ...substitutions) {
-  // Concatenate the strings and substitutions.
+  // Collate the strings and substitutions to create complete HTML.
   const complete = strings
-    .map((string, index) => {
-      const substitution =
-        index < substitutions.length ? substitutions[index] : "";
-      return `${string}${substitution}`;
-    })
+    .map((string, index) => `${string}${substitutions[index] || ""}`)
     .join("");
   const template = document.createElement("template");
   template.innerHTML = complete;
