@@ -7,6 +7,7 @@ import PlainCalendarDay from "./PlainCalendarDay.js";
  * CalendarDayButton component in the Plain reference design system
  *
  * @inherits CalendarDayButton
+ * @part {PlainCalendarDay} day
  */
 class PlainCalendarDayButton extends CalendarDayButton {
   get [internal.defaultState]() {

@@ -7,6 +7,8 @@ import PlainOverlayFrame from "./PlainOverlayFrame.js";
  * Dialog component in the Plain reference design system
  *
  * @inherits Dialog
+ * @part {PlainModalBackdrop} backdrop
+ * @part {PlainOverlayFrame} frame
  */
 class PlainDialog extends Dialog {
   get [internal.defaultState]() {

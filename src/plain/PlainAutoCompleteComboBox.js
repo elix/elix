@@ -8,6 +8,7 @@ import PlainListBox from "./PlainListBox.js";
  *
  * @inherits AutoCompleteComboBox
  * @mixes PlainComboBoxMixin
+ * @part {PlainListBox} list
  */
 class PlainAutoCompleteComboBox extends PlainComboBoxMixin(
   AutoCompleteComboBox

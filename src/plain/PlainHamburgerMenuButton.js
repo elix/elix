@@ -8,6 +8,7 @@ import PlainDrawer from "./PlainDrawer.js";
  *
  * @inherits HamburgerMenuButton
  * @part menu-icon - the icon inside the menu button
+ * @part {PlainDrawer} menu
  */
 class PlainHamburgerMenuButton extends HamburgerMenuButton {
   get [internal.defaultState]() {

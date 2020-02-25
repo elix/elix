@@ -7,6 +7,8 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
  * ComboBox styles for the Plain reference design system
  *
  * @module PlainComboBoxMixin
+ * @part {PlainPopup} popup
+ * @part {PlainOpenCloseToggle} popup-toggle
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function PlainComboBoxMixin(Base) {

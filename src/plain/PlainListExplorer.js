@@ -6,6 +6,7 @@ import PlainListBox from "./PlainListBox.js";
  * ListExplorer component in the Plain reference design system
  *
  * @inherits ListExplorer
+ * @part {PlainListBox} proxy-list
  */
 class PlainListExplorer extends ListExplorer {
   get [internal.defaultState]() {

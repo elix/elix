@@ -7,6 +7,8 @@ import PlainOverlayFrame from "./PlainOverlayFrame.js";
  * Drawer component in the Plain reference design system
  *
  * @inherits Drawer
+ * @part {PlainModalBackdrop} backdrop
+ * @part {PlainOverlayFrame} frame
  */
 class PlainDrawer extends Drawer {
   get [internal.defaultState]() {

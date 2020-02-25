@@ -7,6 +7,8 @@ import PlainPopup from "./PlainPopup.js";
  * ListComboBox component in the Plain reference design system
  *
  * @inherits SlidingStage
+ * @part {PlainPopup} popup
+ * @part {PlainOpenCloseToggle} popup-toggle
  */
 class PlainListComboBox extends ListComboBox {
   get [internal.defaultState]() {

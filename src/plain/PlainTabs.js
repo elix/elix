@@ -6,6 +6,8 @@ import Tabs from "../base/Tabs.js";
 
 /**
  * @inherits Tabs
+ * @part {PlainTabButton} proxy
+ * @part {PlainTabStrip} proxy-list
  */
 class PlainTabs extends Tabs {
   get [internal.defaultState]() {

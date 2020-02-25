@@ -9,6 +9,10 @@ import PlainPopup from "./PlainPopup.js";
  * DropdownList component in the Plain reference design system
  *
  * @inherits DropdownList
+ * @part {PlainMenu} menu
+ * @part {PlainPopup} popup
+ * @part {PlainBorderButton} source
+ * @part {PlainOpenCloseToggle} popup-toggle
  */
 class PlainDropdownList extends DropdownList {
   get [internal.defaultState]() {

@@ -9,6 +9,8 @@ import PlainComboBoxMixin from "./PlainComboBoxMixin.js";
  * DateComboBox component in the Plain reference design system
  *
  * @inherits DateComboBox
+ * @part {PlainCalendarMonthNavigator} calendar
+ * @part {PlainButton} today-button
  */
 class PlainDateComboBox extends PlainComboBoxMixin(DateComboBox) {
   get [internal.defaultState]() {

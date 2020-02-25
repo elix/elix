@@ -7,6 +7,8 @@ import PlainOverlayFrame from "./PlainOverlayFrame.js";
  * Popup component in the Plain reference design system
  *
  * @inherits Popup
+ * @part {PlainBackdrop} backdrop
+ * @part {PlainOverlayFrame} frame
  */
 class PlainPopup extends Popup {
   get [internal.defaultState]() {

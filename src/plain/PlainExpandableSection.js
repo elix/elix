@@ -8,6 +8,8 @@ import PlainExpandCollapseToggle from "./PlainExpandCollapseToggle.js";
  * ExpandableSection component in the Plain reference design system
  *
  * @inherits ExpandableSection
+ * @part {PlainButton} header
+ * @part {PlainExpandCollapseToggle} toggle
  */
 class PlainExpandableSection extends ExpandableSection {
   get [internal.defaultState]() {

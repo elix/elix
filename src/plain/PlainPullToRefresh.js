@@ -15,6 +15,7 @@ const downArrowTemplate = template.html`
  * PullToRefresh component in the Plain reference design system
  *
  * @inherits PullToRefresh
+ * @part {PlainProgressSpinner} refreshing-indicator
  */
 class PlainPullToRefresh extends PullToRefresh {
   get [internal.defaultState]() {

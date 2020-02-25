@@ -7,6 +7,7 @@ import PlainFilterListBox from "./PlainFilterListBox.js";
  * FilterComboBox component in the Plain reference design system
  *
  * @inherits FilterComboBox
+ * @part {PlainFilterListBox} list
  */
 class PlainFilterComboBox extends PlainComboBoxMixin(FilterComboBox) {
   get [internal.defaultState]() {

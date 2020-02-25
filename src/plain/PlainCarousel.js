@@ -1,6 +1,5 @@
 import * as internal from "../base/internal.js";
 import Carousel from "../base/Carousel.js";
-import PlainArrowDirectionButton from "./PlainArrowDirectionButton.js";
 import PlainArrowDirectionMixin from "./PlainArrowDirectionMixin.js";
 import PlainCarouselMixin from "./PlainCarouselMixin.js";
 import PlainCenteredStripOpacity from "./PlainCenteredStripOpacity.js";
@@ -18,7 +17,6 @@ class PlainCarousel extends PlainArrowDirectionMixin(
 ) {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      arrowButtonPartType: PlainArrowDirectionButton,
       proxyListPartType: PlainCenteredStripOpacity,
       proxyPartType: PlainPageDot
     });

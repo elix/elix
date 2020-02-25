@@ -5,6 +5,7 @@ import Toast from "../base/Toast.js";
 
 /**
  * @inherits Toast
+ * @part {PlainOverlayFrame} frame
  */
 class PlainToast extends Toast {
   get [internal.defaultState]() {

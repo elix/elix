@@ -1,5 +1,6 @@
 import * as internal from "../base/internal.js";
 import html from "../core/html.js";
+import PlainArrowDirectionButton from "./PlainArrowDirectionButton.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
@@ -7,12 +8,19 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
  *
  * @module PlainArrowDirectionMixin
  * @param {Constructor<ReactiveElement>} Base
+ * @part {PlainArrowDirectionButton} arrow-button
  * @part arrow-icon - both of the default arrow icons used in the arrow buttons
  * @part arrow-icon-next - the arrow icon that points to the next item
  * @part arrow-icon-previous - the arrow icon that points to the previous item
  */
 export default function PlainArrowDirectionMixin(Base) {
   return class PlainArrowDirection extends Base {
+    get [internal.defaultState]() {
+      return Object.assign(super[internal.defaultState], {
+        arrowButtonPartType: PlainArrowDirectionButton
+      });
+    }
+
     [internal.render](changed) {
       super[internal.render](changed);
 

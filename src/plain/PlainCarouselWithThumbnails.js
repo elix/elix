@@ -12,6 +12,8 @@ import PlainCenteredStripOpacity from "./PlainCenteredStripOpacity.js";
  * @inherits CarouselWithThumbnails
  * @mixes PlainArrowDirectionMixin
  * @mixes PlainCarouselMixin
+ * @part {PlainArrowDirectionButton} arrow-button
+ * @part {PlainCenteredStripOpacity} proxy-list
  */
 class PlainCarouselWithThumbnails extends PlainArrowDirectionMixin(
   PlainCarouselMixin(CarouselWithThumbnails)

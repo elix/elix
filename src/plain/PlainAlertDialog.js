@@ -9,6 +9,9 @@ import PlainOverlayFrame from "./PlainOverlayFrame.js";
  * AlertDialog component in the Plain reference design system
  *
  * @inherits AlertDialog
+ * @part {PlainModalBackdrop} backdrop
+ * @part {PlainBorderButton} choice-button
+ * @part {PlainOverlayFrame} frame
  */
 class PlainAlertDialog extends AlertDialog {
   get [internal.defaultState]() {

@@ -8,6 +8,8 @@ import PlainOverlayFrame from "./PlainOverlayFrame.js";
  * DrawerWithGrip component in the Plain reference design system
  *
  * @inherits DrawerWithGrip
+ * @part {PlainModalBackdrop} backdrop
+ * @part {PlainOverlayFrame} frame
  */
 class PlainDrawerWithGrip extends DrawerWithGrip {
   get [internal.defaultState]() {

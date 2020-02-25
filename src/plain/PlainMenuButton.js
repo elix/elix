@@ -10,6 +10,10 @@ import PlainPopup from "./PlainPopup.js";
  * MenuButton component in the Plain reference design system
  *
  * @inherits MenuButton
+ * @part {PlainMenu} menu
+ * @part {PlainPopup} popup
+ * @part {PlainOpenCloseToggle} popup-toggle
+ * @part {PlainBorderButton} source
  */
 class PlainMenuButton extends MenuButton {
   get [internal.defaultState]() {

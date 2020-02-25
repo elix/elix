@@ -8,6 +8,9 @@ import PlainCalendarMonthYearHeader from "./PlainCalendarMonthYearHeader.js";
  * CalendarMonth component in the Plain reference design system
  *
  * @inherits CalendarMonth
+ * @part {PlainCalendarDayNamesHeader} day-names-header
+ * @part {PlainCalendarDay} day
+ * @part {PlainCalendarMonthYearHeader} month-year-header
  */
 class PlainCalendarMonth extends CalendarMonth {
   get [internal.defaultState]() {

@@ -6,6 +6,7 @@ import PlainFilterListBox from "./PlainFilterListBox.js";
  * ListWithSearch component in the Plain reference design system
  *
  * @inherits ListWithSearch
+ * @part {PlainFilterListBox} list
  */
 class PlainListWithSearch extends ListWithSearch {
   get [internal.defaultState]() {
