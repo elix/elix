@@ -135,12 +135,18 @@ function getTemplate(element) {
   if (template === undefined) {
     // Ask the component for its template.
     template = element[internal.template];
-    if (!(template instanceof HTMLTemplateElement)) {
-      throw `Warning: the [internal.template] property for ${element.constructor.name} must return an HTMLTemplateElement.`;
-    }
-    if (!hasDynamicTemplate) {
-      // Store prepared template for next creation of same type of element.
-      classTemplateMap.set(element.constructor, template);
+    // A component using this mixin isn't required to supply a template --
+    // if they don't, they simply won't end up with a shadow root.
+    if (template) {
+      // But if the component does supply a template, it needs to be an
+      // HTMLTemplateElement instance.
+      if (!(template instanceof HTMLTemplateElement)) {
+        throw `Warning: the [internal.template] property for ${element.constructor.name} must return an HTMLTemplateElement.`;
+      }
+      if (!hasDynamicTemplate) {
+        // Store prepared template for next creation of same type of element.
+        classTemplateMap.set(element.constructor, template);
+      }
     }
   }
   return template;
