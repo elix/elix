@@ -4,7 +4,6 @@ import html from "../core/html.js";
 import PlainArrowDirectionButton from "./PlainArrowDirectionButton.js";
 import PlainArrowDirectionMixin from "./PlainArrowDirectionMixin.js";
 import PlainCarouselMixin from "./PlainCarouselMixin.js";
-import PlainCenteredStripOpacity from "./PlainCenteredStripOpacity.js";
 
 /**
  * CarouselWithThumbnails component in the Plain reference design system
@@ -20,8 +19,7 @@ class PlainCarouselWithThumbnails extends PlainArrowDirectionMixin(
 ) {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      arrowButtonPartType: PlainArrowDirectionButton,
-      proxyListPartType: PlainCenteredStripOpacity
+      arrowButtonPartType: PlainArrowDirectionButton
     });
   }
 

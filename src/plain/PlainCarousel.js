@@ -2,7 +2,6 @@ import * as internal from "../base/internal.js";
 import Carousel from "../base/Carousel.js";
 import PlainArrowDirectionMixin from "./PlainArrowDirectionMixin.js";
 import PlainCarouselMixin from "./PlainCarouselMixin.js";
-import PlainCenteredStripOpacity from "./PlainCenteredStripOpacity.js";
 import PlainPageDot from "./PlainPageDot.js";
 
 /**
@@ -11,13 +10,13 @@ import PlainPageDot from "./PlainPageDot.js";
  * @inherits Carousel
  * @mixes PlainArrowDirectionMixin
  * @mixes PlainCarouselMixin
+ * @part {PlainPageDot} proxy
  */
 class PlainCarousel extends PlainArrowDirectionMixin(
   PlainCarouselMixin(Carousel)
 ) {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      proxyListPartType: PlainCenteredStripOpacity,
       proxyPartType: PlainPageDot
     });
   }

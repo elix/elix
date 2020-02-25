@@ -48,8 +48,6 @@ const Base = AriaListMixin(
  * @mixes SwipeDirectionMixin
  * @mixes TouchSwipeMixin
  * @mixes TrackpadSwipeMixin
- * @part {PageDot} proxy
- * @part {CenteredStripOpacity} proxy-list
  * @part {SlidingStage} stage
  */
 class Carousel extends Base {
