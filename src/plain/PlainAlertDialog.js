@@ -2,23 +2,19 @@ import * as internal from "../base/internal.js";
 import AlertDialog from "../base/AlertDialog.js";
 import html from "../core/html.js";
 import PlainBorderButton from "./PlainBorderButton.js";
-import PlainModalBackdrop from "./PlainModalBackdrop.js";
-import PlainOverlayFrame from "./PlainOverlayFrame.js";
+import PlainModalOverlayMixin from "./PlainModalOverlayMixin.js";
 
 /**
  * AlertDialog component in the Plain reference design system
  *
  * @inherits AlertDialog
- * @part {PlainModalBackdrop} backdrop
+ * @mixes PlainModalOverlayMixin
  * @part {PlainBorderButton} choice-button
- * @part {PlainOverlayFrame} frame
  */
-class PlainAlertDialog extends AlertDialog {
+class PlainAlertDialog extends PlainModalOverlayMixin(AlertDialog) {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      backdropPartType: PlainModalBackdrop,
-      choiceButtonPartType: PlainBorderButton,
-      framePartType: PlainOverlayFrame
+      choiceButtonPartType: PlainBorderButton
     });
   }
 

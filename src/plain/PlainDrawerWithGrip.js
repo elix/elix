@@ -1,24 +1,15 @@
 import * as internal from "../base/internal.js";
 import DrawerWithGrip from "../base/DrawerWithGrip.js";
 import html from "../core/html.js";
-import PlainModalBackdrop from "./PlainModalBackdrop.js";
-import PlainOverlayFrame from "./PlainOverlayFrame.js";
+import PlainModalOverlayMixin from "./PlainModalOverlayMixin.js";
 
 /**
  * DrawerWithGrip component in the Plain reference design system
  *
  * @inherits DrawerWithGrip
- * @part {PlainModalBackdrop} backdrop
- * @part {PlainOverlayFrame} frame
+ * @mixes PlainModalOverlayMixin
  */
-class PlainDrawerWithGrip extends DrawerWithGrip {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
-      backdropPartType: PlainModalBackdrop,
-      framePartType: PlainOverlayFrame
-    });
-  }
-
+class PlainDrawerWithGrip extends PlainModalOverlayMixin(DrawerWithGrip) {
   [internal.render](changed) {
     super[internal.render](changed);
     if (changed.swipeAxis && this[internal.ids].gripIcon) {
