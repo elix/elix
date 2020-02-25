@@ -1,5 +1,8 @@
 import { getItemText } from "./ItemsTextMixin.js";
-import { indexOfItemContainingTarget, forwardFocus } from "../core/utilities.js";
+import {
+  indexOfItemContainingTarget,
+  forwardFocus
+} from "../core/utilities.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import ComboBox from "./ComboBox.js";
@@ -116,6 +119,10 @@ class ListComboBox extends Base {
       );
 
       this[internal.ids].list.addEventListener("mousedown", event => {
+        // Only process events for the main (usually left) button.
+        if (/** @type {MouseEvent} */ (event).button !== 0) {
+          return;
+        }
         // Mousing down inside a list item closes the popup.
         /** @type {any} */
         const target = event.target;

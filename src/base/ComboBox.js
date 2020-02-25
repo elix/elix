@@ -231,7 +231,11 @@ class ComboBox extends Base {
       });
 
       // If the user clicks on the input and the popup is closed, open it.
-      this[internal.ids].input.addEventListener("mousedown", () => {
+      this[internal.ids].input.addEventListener("mousedown", event => {
+        // Only process events for the main (usually left) button.
+        if (/** @type {MouseEvent} */ (event).button !== 0) {
+          return;
+        }
         this[internal.raiseChangeEvents] = true;
         this[internal.setState]({
           selectText: false
@@ -250,7 +254,11 @@ class ComboBox extends Base {
       );
       const popupToggle = this[internal.ids].popupToggle;
       const input = this[internal.ids].input;
-      popupToggle.addEventListener("mousedown", () => {
+      popupToggle.addEventListener("mousedown", event => {
+        // Only process events for the main (usually left) button.
+        if (/** @type {MouseEvent} */ (event).button !== 0) {
+          return;
+        }
         this[internal.raiseChangeEvents] = true;
         this.toggle();
         this[internal.raiseChangeEvents] = false;

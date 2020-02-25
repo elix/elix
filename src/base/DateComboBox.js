@@ -274,6 +274,10 @@ class DateComboBox extends Base {
         this[internal.raiseChangeEvents] = false;
       });
       this[internal.ids].calendar.addEventListener("mousedown", event => {
+        // Only process events for the main (usually left) button.
+        if (/** @type {MouseEvent} */ (event).button !== 0) {
+          return;
+        }
         this[internal.raiseChangeEvents] = true;
         this.close();
         event.preventDefault(); // Keep focus on input.
@@ -286,6 +290,10 @@ class DateComboBox extends Base {
         this[internal.state].todayButtonPartType
       );
       this[internal.ids].todayButton.addEventListener("mousedown", event => {
+        // Only process events for the main (usually left) button.
+        if (/** @type {MouseEvent} */ (event).button !== 0) {
+          return;
+        }
         this[internal.raiseChangeEvents] = true;
         this.date = calendar.today();
         this.close();

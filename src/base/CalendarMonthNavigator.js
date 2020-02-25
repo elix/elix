@@ -1,4 +1,7 @@
-import { forwardFocus, indexOfItemContainingTarget } from "../core/utilities.js";
+import {
+  forwardFocus,
+  indexOfItemContainingTarget
+} from "../core/utilities.js";
 import * as calendar from "./calendar.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
@@ -44,6 +47,10 @@ class CalendarMonthNavigator extends Base {
   constructor() {
     super();
     this.addEventListener("mousedown", event => {
+      // Only process events for the main (usually left) button.
+      if (event.button !== 0) {
+        return;
+      }
       this[internal.raiseChangeEvents] = true;
       const target = event.composedPath()[0];
       if (target instanceof Node) {

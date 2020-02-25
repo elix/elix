@@ -252,6 +252,10 @@ class MenuButton extends PopupButton {
       // separate blur handler). To keep the focus on the menu, we prevent the
       // default event behavior.
       this[internal.ids].menu.addEventListener("mousedown", event => {
+        // Only process events for the main (usually left) button.
+        if (/** @type {MouseEvent} */ (event).button !== 0) {
+          return;
+        }
         if (this.opened) {
           event.stopPropagation();
           event.preventDefault();
