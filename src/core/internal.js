@@ -34,8 +34,6 @@
  *
  * A component using [ReactiveMixin](ReactiveMixin) will have this method
  * invoked the first time the component is rendered in the DOM.
- *
- * @function componentDidMount
  */
 export const componentDidMount = Symbol("componentDidMount");
 
@@ -45,15 +43,11 @@ export const componentDidMount = Symbol("componentDidMount");
  * A component using [ReactiveMixin](ReactiveMixin) will have this method
  * invoked a component already in the DOM has finished a subsequent render
  * operation.
- *
- * @function componentDidUpdate
  */
 export const componentDidUpdate = Symbol("componentDidUpdate");
 
 /**
- * The default state for this element.
- *
- * @var {State}
+ * Symbol for the default state for this element.
  */
 export const defaultState = Symbol("defaultState");
 
@@ -97,8 +91,6 @@ export const hasDynamicTemplate = Symbol("hasDynamicTemplate");
  * the corresponding button in the component instance's shadow tree.
  * The `ids` function is simply a shorthand for `getElementById`, so
  * `this[internal.ids].foo` is the same as `this.shadowRoot.getElementById('foo')`.
- *
- * @type {object} - a dictionary mapping shadow element IDs to elements
  */
 export const ids = Symbol("ids");
 
@@ -144,8 +136,6 @@ export const ids = Symbol("ids");
  * In this way, programmatic attempts to set the `foo` property will not
  * trigger the `foo-changed` event, but UI interactions that update that
  * property will cause those events to be raised.
- *
- * @var {boolean} raiseChangeEvents
  */
 export const raiseChangeEvents = Symbol("raiseChangeEvents");
 
@@ -154,8 +144,6 @@ export const raiseChangeEvents = Symbol("raiseChangeEvents");
  *
  * [ReactiveMixin](ReactiveMixin) invokes this `internal.render` method to give
  * the component a chance to render recent changes in component state.
- *
- * @function render
  */
 export const render = Symbol("render");
 
@@ -164,8 +152,6 @@ export const render = Symbol("render");
  *
  * [ReactiveMixin](ReactiveMixin) invokes this method in response to a
  * `setState` call; you should generally not invoke this method yourself.
- *
- * @function renderChanges
  */
 export const renderChanges = Symbol("renderChanges");
 
@@ -174,8 +160,6 @@ export const renderChanges = Symbol("renderChanges");
  *
  * [ReactiveMixin](ReactiveMixin) sets this property to true during rendering,
  * at other times it will be false.
- *
- * @var {boolean} rendering
  */
 export const rendering = Symbol("rendering");
 
@@ -184,8 +168,6 @@ export const rendering = Symbol("rendering");
  *
  * A component using [ReactiveMixin](ReactiveMixin) can invoke this method to
  * apply changes to the element's current state.
- *
- * @function setState
  */
 export const setState = Symbol("setState");
 
@@ -198,8 +180,6 @@ export const setState = Symbol("setState");
  * [ShadowTemplateMixin](ShadowTemplateMixin) creates open shadow roots by
  * default, but you can opt into creating closed shadow roots; see
  * [shadowRootMode](internal#internal.shadowRootMode).
- *
- * @var {ShadowRoot}
  */
 export const shadowRoot = Symbol("shadowRoot");
 
@@ -210,21 +190,21 @@ export const shadowRoot = Symbol("shadowRoot");
  * create an open shadow root when the component is instantiated. Set this to
  * false if you want to programmatically hide component internals in a closed
  * shadow root.
- *
- * @var {'closed'|'open'}
- * @default 'open'
  */
 export const shadowRootMode = Symbol("shadowRootMode");
 
 /**
- * The element's current state.
+ * Symbol for the element's current state.
  *
  * This is managed by [ReactiveMixin](ReactiveMixin).
- *
- * @var {State}
  */
 export const state = Symbol("state");
 
+/**
+ * Symbol for the `stateEffects` method.
+ *
+ * See [stateEffects](ReactiveMixin#stateEffects).
+ */
 export const stateEffects = Symbol("stateEffects");
 
 /**
@@ -232,7 +212,5 @@ export const stateEffects = Symbol("stateEffects");
  *
  * [ShadowTemplateMixin](ShadowTemplateMixin) uses this property to obtain a
  * component's template, which it will clone into a component's shadow root.
- *
- * @var {HTMLTemplateElement} template
  */
 export const template = Symbol("template");

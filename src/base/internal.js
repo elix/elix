@@ -54,8 +54,6 @@ export const checkSize = Symbol("checkSize");
  *
  * A component using [ReactiveMixin](ReactiveMixin) will have this method
  * invoked the first time the component is rendered in the DOM.
- *
- * @function componentDidMount
  */
 export const componentDidMount = coreInternal.componentDidMount;
 
@@ -65,8 +63,6 @@ export const componentDidMount = coreInternal.componentDidMount;
  * A component using [ReactiveMixin](ReactiveMixin) will have this method
  * invoked a component already in the DOM has finished a subsequent render
  * operation.
- *
- * @function componentDidUpdate
  */
 export const componentDidUpdate = coreInternal.componentDidUpdate;
 
@@ -77,8 +73,6 @@ export const componentDidUpdate = coreInternal.componentDidUpdate;
  * element in the component's shadow tree that holds the component's content.
  * By default, this is the first slot element with no "name" attribute. You
  * can override this to return a different slot.
- *
- * @var {HTMLSlotElement} contentSlot
  */
 export const contentSlot = Symbol("contentSlot");
 
@@ -92,8 +86,6 @@ export const defaultTabIndex = Symbol("defaultTabIndex");
 
 /**
  * The default state for this element.
- *
- * @var {State}
  */
 export const defaultState = coreInternal.defaultState;
 
@@ -113,8 +105,6 @@ export const delegatesFocus = coreInternal.delegatesFocus;
  * [TransitionEffectMixin](TransitionEffectMixin) inspects this property to
  * determine which element's `transitionend` event will signal the end of a
  * transition effect.
- *
- * @returns {Element} The element with a CSS transition that ends the effect
  */
 export const effectEndTarget = Symbol("effectEndTarget");
 
@@ -137,9 +127,6 @@ export const focusTarget = coreInternal.focusTarget;
  *
  * This method takes a single parameter: the `HTMLElement` of the item from
  * which text should be extracted.
- *
- * @function getItemText
- * @returns {string} the text of the item
  */
 export const getItemText = Symbol("getItemText");
 
@@ -147,8 +134,6 @@ export const getItemText = Symbol("getItemText");
  * Symbol for the `goDown` method.
  *
  * This method is invoked when the user wants to go/navigate down.
- *
- * @function goDown
  */
 export const goDown = Symbol("goDown");
 
@@ -157,8 +142,6 @@ export const goDown = Symbol("goDown");
  *
  * This method is invoked when the user wants to go/navigate to the end (e.g.,
  * of a list).
- *
- * @function goEnd
  */
 export const goEnd = Symbol("goEnd");
 
@@ -169,8 +152,6 @@ export const goEnd = Symbol("goEnd");
  * make use of this method include
  * [KeyboardDirectionMixin](KeyboardDirectionMixin) and
  * [SwipeDirectionMixin](SwipeDirectionMixin).
- *
- * @function goLeft
  */
 export const goLeft = Symbol("goLeft");
 
@@ -178,8 +159,6 @@ export const goLeft = Symbol("goLeft");
  * Symbol for the `goNext` method.
  *
  * This method is invoked when the user wants to go/navigate to the next item.
- *
- * @function goNext
  */
 export const goNext = Symbol("goNext");
 
@@ -187,8 +166,6 @@ export const goNext = Symbol("goNext");
  * Symbol for the `goPrevious` method.
  *
  * This method is invoked when the user wants to go/navigate to the previous item.
- *
- * @function goPrevious
  */
 export const goPrevious = Symbol("goPrevious");
 
@@ -199,8 +176,6 @@ export const goPrevious = Symbol("goPrevious");
  * that make use of this method include
  * [KeyboardDirectionMixin](KeyboardDirectionMixin) and
  * [SwipeDirectionMixin](SwipeDirectionMixin).
- *
- * @function goRight
  */
 export const goRight = Symbol("goRight");
 
@@ -209,8 +184,6 @@ export const goRight = Symbol("goRight");
  *
  * This method is invoked when the user wants to go/navigate to the start
  * (e.g., of a list).
- *
- * @function goStart
  */
 export const goStart = Symbol("goStart");
 
@@ -218,8 +191,6 @@ export const goStart = Symbol("goStart");
  * Symbol for the `goUp` method.
  *
  * This method is invoked when the user wants to go/navigate up.
- *
- * @function goUp
  */
 export const goUp = Symbol("goUp");
 
@@ -244,8 +215,6 @@ export const hasDynamicTemplate = coreInternal.hasDynamicTemplate;
  * the corresponding button in the component instance's shadow tree.
  * The `ids` function is simply a shorthand for `getElementById`, so
  * `this[internal.ids].foo` is the same as `this.shadowRoot.getElementById('foo')`.
- *
- * @type {object} - a dictionary mapping shadow element IDs to elements
  */
 export const ids = coreInternal.ids;
 
@@ -270,10 +239,6 @@ export const ids = coreInternal.ids;
  *       return base && !item.disabled;
  *     }
  *
- * @function itemMatchesState
- * @param {Node} item - the node that may or may not belong in the given state
- * @param {object} state - the state in question
- * @returns {boolean}
  */
 export const itemMatchesState = Symbol("itemMatchesState");
 
@@ -283,8 +248,6 @@ export const itemMatchesState = Symbol("itemMatchesState");
  * A component using [DelegateItemsMixin](DelegateItemsMixin) uses this property
  * to indicate which one of its shadow elements is the one whose `items`
  * property will be treated as the component's own `items`.
- *
- * @var {Element} itemsDelegate
  */
 export const itemsDelegate = Symbol("itemsDelegate");
 
@@ -306,8 +269,6 @@ export const itemsDelegate = Symbol("itemsDelegate");
  *
  * This method takes a `KeyboardEvent` parameter that contains the event being
  * processed.
- *
- * @function keydown
  */
 export const keydown = Symbol("keydown");
 
@@ -320,8 +281,6 @@ export const keydown = Symbol("keydown");
  *
  * This method takes a `MouseEvent` parameter that contains the event being
  * processed.
- *
- * @function mouseenter
  */
 export const mouseenter = Symbol("mouseenter");
 
@@ -334,16 +293,11 @@ export const mouseenter = Symbol("mouseenter");
  *
  * This method takes a `MouseEvent` parameter that contains the event being
  * processed.
- *
- * @function mouseleave
  */
 export const mouseleave = Symbol("mouseleave");
 
 /**
  * Symbol for access to native HTML element internals.
- * 
- // @ts-ignore
- * @type {ElementInternals}
  */
 export const nativeInternals = Symbol("nativeInternals");
 
@@ -389,8 +343,6 @@ export const nativeInternals = Symbol("nativeInternals");
  * In this way, programmatic attempts to set the `foo` property will not
  * trigger the `foo-changed` event, but UI interactions that update that
  * property will cause those events to be raised.
- *
- * @var {boolean} raiseChangeEvents
  */
 export const raiseChangeEvents = coreInternal.raiseChangeEvents;
 
@@ -399,8 +351,6 @@ export const raiseChangeEvents = coreInternal.raiseChangeEvents;
  *
  * [ReactiveMixin](ReactiveMixin) invokes this `internal.render` method to give
  * the component a chance to render recent changes in component state.
- *
- * @function render
  */
 export const render = coreInternal.render;
 
@@ -409,8 +359,6 @@ export const render = coreInternal.render;
  *
  * [ReactiveMixin](ReactiveMixin) invokes this method in response to a
  * `setState` call; you should generally not invoke this method yourself.
- *
- * @function renderChanges
  */
 export const renderChanges = coreInternal.renderChanges;
 
@@ -419,8 +367,6 @@ export const renderChanges = coreInternal.renderChanges;
  *
  * [ReactiveMixin](ReactiveMixin) sets this property to true during rendering,
  * at other times it will be false.
- *
- * @var {boolean} rendering
  */
 export const rendering = coreInternal.rendering;
 
@@ -431,8 +377,6 @@ export const rendering = coreInternal.rendering;
  * should be scrolled. [SelectionInViewMixin](SelectionInViewMixin) can use
  * this property to determine which element should be scrolled to keep the
  * selected item in view.
- *
- * @var {Element} scrollTarget
  */
 export const scrollTarget = Symbol("scrollTarget");
 
@@ -441,8 +385,6 @@ export const scrollTarget = Symbol("scrollTarget");
  *
  * A component using [ReactiveMixin](ReactiveMixin) can invoke this method to
  * apply changes to the element's current state.
- *
- * @function setState
  */
 export const setState = coreInternal.setState;
 
@@ -455,8 +397,6 @@ export const setState = coreInternal.setState;
  * [ShadowTemplateMixin](ShadowTemplateMixin) creates open shadow roots by
  * default, but you can opt into creating closed shadow roots; see
  * [shadowRootMode](internal#internal.shadowRootMode).
- *
- * @var {ShadowRoot}
  */
 export const shadowRoot = coreInternal.shadowRoot;
 
@@ -467,9 +407,6 @@ export const shadowRoot = coreInternal.shadowRoot;
  * create an open shadow root when the component is instantiated. Set this to
  * false if you want to programmatically hide component internals in a closed
  * shadow root.
- *
- * @var {'open'|'closed'}
- * @default 'open'
  */
 export const shadowRootMode = coreInternal.shadowRootMode;
 
@@ -482,8 +419,6 @@ export const shadowRootMode = coreInternal.shadowRootMode;
  *
  * This method takes a single `string` parameter giving the name of the effect
  * to start.
- *
- * @function startEffect
  */
 export const startEffect = Symbol("startEffect");
 
@@ -491,8 +426,6 @@ export const startEffect = Symbol("startEffect");
  * The element's current state.
  *
  * This is managed by [ReactiveMixin](ReactiveMixin).
- *
- * @var {State}
  */
 export const state = coreInternal.state;
 
@@ -503,8 +436,6 @@ export const stateEffects = coreInternal.stateEffects;
  *
  * The swipe mixin [TouchSwipeMixin](TouchSwipeMixin) invokes this method when
  * the user finishes a gesture to swipe down.
- *
- * @function swipeDown
  */
 export const swipeDown = Symbol("swipeDown");
 
@@ -513,8 +444,6 @@ export const swipeDown = Symbol("swipeDown");
  *
  * [SwipeCommandsMixin](SwipeCommandsMixin) invokes this method after any
  * animated transition associated with a swipe down has completed.
- *
- * @function swipeDownComplete
  */
 export const swipeDownComplete = Symbol("swipeDownComplete");
 
@@ -524,8 +453,6 @@ export const swipeDownComplete = Symbol("swipeDownComplete");
  * The swipe mixins [TouchSwipeMixin](TouchSwipeMixin) and
  * [TrackpadSwipeMixin](TrackpadSwipeMixin) invoke this method when the user
  * finishes a gesture to swipe left.
- *
- * @function swipeLeft
  */
 export const swipeLeft = Symbol("swipeLeft");
 
@@ -534,8 +461,6 @@ export const swipeLeft = Symbol("swipeLeft");
  *
  * [SwipeCommandsMixin](SwipeCommandsMixin) invokes this method after any
  * animated transition associated with a swipe left has completed.
- *
- * @function swipeLeftTransitionEnd
  */
 export const swipeLeftTransitionEnd = Symbol("swipeLeftTransitionEnd");
 
@@ -545,8 +470,6 @@ export const swipeLeftTransitionEnd = Symbol("swipeLeftTransitionEnd");
  * The swipe mixins [TouchSwipeMixin](TouchSwipeMixin) and
  * [TrackpadSwipeMixin](TrackpadSwipeMixin) invoke this method when the user
  * finishes a gesture to swipe right.
- *
- * @function swipeRight
  */
 export const swipeRight = Symbol("swipeRight");
 
@@ -555,8 +478,6 @@ export const swipeRight = Symbol("swipeRight");
  *
  * [SwipeCommandsMixin](SwipeCommandsMixin) invokes this method after any
  * animated transition associated with a swipe right has completed.
- *
- * @function swipeRightTransitionEnd
  */
 export const swipeRightTransitionEnd = Symbol("swipeRightTransitionEnd");
 
@@ -565,8 +486,6 @@ export const swipeRightTransitionEnd = Symbol("swipeRightTransitionEnd");
  *
  * The swipe mixin [TouchSwipeMixin](TouchSwipeMixin) invokes this method when
  * the user finishes a gesture to swipe up.
- *
- * @function swipeUp
  */
 export const swipeUp = Symbol("swipeUp");
 
@@ -575,8 +494,6 @@ export const swipeUp = Symbol("swipeUp");
  *
  * [SwipeCommandsMixin](SwipeCommandsMixin) invokes this method after any
  * animated transition associated with a swipe up has completed.
- *
- * @function swipeUpComplete
  */
 export const swipeUpComplete = Symbol("swipeUpComplete");
 
@@ -586,10 +503,6 @@ export const swipeUpComplete = Symbol("swipeUpComplete");
  * [TouchSwipeMixin](TouchSwipeMixin) and
  * [TrackpadSwipeMixin](TrackpadSwipeMixin) invoke this method when a swipe
  * is starting, passing in the starting (x, y) client coordinate.
- *
- * @function swipeStart
- * @param {number} clientX
- * @param {number} clientY
  */
 export const swipeStart = Symbol("swipeStart");
 
@@ -606,8 +519,6 @@ export const swipeStart = Symbol("swipeStart");
  * `state.swipeFraction` member when the user drags their finger. The
  * `swipeFraction` is the distance the user has dragged in the current drag
  * operation over that `offsetWidth`.
- *
- * @var {HTMLElement} swipeTarget
  */
 export const swipeTarget = Symbol("swipeTarget");
 
@@ -617,8 +528,6 @@ export const swipeTarget = Symbol("swipeTarget");
  * This method is invoked when an element receives an operation that should
  * be interpreted as a tap. [TapSelectionMixin](TapSelectionMixin)
  * invokes this when the element receives a `mousedown` event, for example.
- *
- * @function tap
  */
 export const tap = Symbol("tap");
 
@@ -627,8 +536,6 @@ export const tap = Symbol("tap");
  *
  * [ShadowTemplateMixin](ShadowTemplateMixin) uses this property to obtain a
  * component's template, which it will clone into a component's shadow root.
- *
- * @var {HTMLTemplateElement} template
  */
 export const template = coreInternal.template;
 
