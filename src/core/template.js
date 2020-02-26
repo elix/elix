@@ -154,7 +154,7 @@ function registerCustomElement(classFn) {
     }
   }
   // Register with the generated tag.
-  customElements.define(tag, classFn);
+  customElements.define(tag, /** @type {any} */ classFn);
   // Bump number and remember it. If we see the same base tag again later, we'll
   // start counting at that number in our search for a uniquifying number.
   mapBaseTagToCount.set(baseTag, count + 1);
