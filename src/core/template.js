@@ -119,7 +119,7 @@ export function html(strings, ...substitutions) {
  * base to produce a complete tag.
  *
  * @private
- * @param {function} classFn
+ * @param {Constructor<HTMLElement>} classFn
  */
 function registerCustomElement(classFn) {
   let baseTag;

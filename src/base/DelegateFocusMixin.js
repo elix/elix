@@ -45,7 +45,7 @@ export default function DelegateFocusMixin(Base) {
      * If someone tries to put the focus on us, delegate the focus to the first
      * focusable element in the composed tree below our shadow root.
      *
-     * @private
+     * @ignore
      * @param {FocusOptions=} focusOptions
      */
     focus(focusOptions) {

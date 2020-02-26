@@ -204,7 +204,7 @@ class WrappedStandardElement extends Base {
    * unusual standard attributes like contenteditable. To handle those, this
    * class defines its own attributeChangedCallback.
    *
-   * @private
+   * @ignore
    * @param {string} name
    * @param {string} oldValue
    * @param {string} newValue

@@ -68,7 +68,7 @@ export default function AttributeMarshallingMixin(Base) {
     /**
      * Handle a change to the attribute with the given name.
      *
-     * @private
+     * @ignore
      * @param {string} attributeName
      * @param {string} oldValue
      * @param {string} newValue
