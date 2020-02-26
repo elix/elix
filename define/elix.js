@@ -151,10 +151,6 @@ import * as fractionalSelectionImport from "../src/base/fractionalSelection.js";
 // @ts-ignore
 export const fractionalSelection = fractionalSelectionImport;
   
-import * as iconsImport from "../src/base/icons.js";
-// @ts-ignore
-export const icons = iconsImport;
-  
 import * as internalImport from "../src/base/internal.js";
 // @ts-ignore
 export const internal = internalImport;
@@ -162,6 +158,10 @@ export const internal = internalImport;
 import * as scrollingImport from "../src/base/scrolling.js";
 // @ts-ignore
 export const scrolling = scrollingImport;
+  
+import * as htmlImport from "../src/core/html.js";
+// @ts-ignore
+export const html = htmlImport;
   
 import * as templateImport from "../src/core/template.js";
 // @ts-ignore

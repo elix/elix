@@ -79,6 +79,7 @@ export { default as MenuButton } from "./plain/PlainMenuButton.js";
 export { default as MenuItem } from "./plain/PlainMenuItem.js";
 export { default as MenuSeparator } from "./plain/PlainMenuSeparator.js";
 export { default as ModalBackdrop } from "./plain/PlainModalBackdrop.js";
+export { default as ModalOverlayMixin } from "./plain/PlainModalOverlayMixin.js";
 export { default as Modes } from "./plain/PlainModes.js";
 export { default as OpenCloseToggle } from "./plain/PlainOpenCloseToggle.js";
 export { default as Overlay } from "./plain/PlainOverlay.js";
@@ -143,10 +144,6 @@ import * as fractionalSelectionImport from "./base/fractionalSelection.js";
 // @ts-ignore
 export const fractionalSelection = fractionalSelectionImport;
   
-import * as iconsImport from "./base/icons.js";
-// @ts-ignore
-export const icons = iconsImport;
-  
 import * as internalImport from "./base/internal.js";
 // @ts-ignore
 export const internal = internalImport;
@@ -154,6 +151,10 @@ export const internal = internalImport;
 import * as scrollingImport from "./base/scrolling.js";
 // @ts-ignore
 export const scrolling = scrollingImport;
+  
+import * as htmlImport from "./core/html.js";
+// @ts-ignore
+export const html = htmlImport;
   
 import * as templateImport from "./core/template.js";
 // @ts-ignore
