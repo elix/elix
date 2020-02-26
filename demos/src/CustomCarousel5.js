@@ -1,11 +1,11 @@
 import * as internal from "../../src/base/internal.js";
 import * as template from "../../src/core/template.js";
-import Carousel from "../../src/base/Carousel.js";
 import CustomArrowButton from "./CustomArrowButton.js";
 import CustomPageDot from "./CustomPageDot.js";
 import PageNumbersMixin from "../../src/base/PageNumbersMixin.js";
+import PlainCarousel from "../../src/plain/PlainCarousel.js";
 
-const Base = PageNumbersMixin(Carousel);
+const Base = PageNumbersMixin(PlainCarousel);
 
 // Customize everything.
 class CustomCarousel extends Base {
@@ -41,8 +41,6 @@ class CustomCarousel extends Base {
       template.html`
         <style>
           .arrowButton {
-            font-size: 28px;
-            font-weight: bold;
             padding: 0.5em;
           }
         </style>

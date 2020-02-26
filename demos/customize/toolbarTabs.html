@@ -46,11 +46,11 @@
           justify-content: center;
         }
 
-        elix-seamless-button[selected] {
+        elix-button[selected] {
           color: dodgerblue;
         }
 
-        elix-seamless-button::part(inner) {
+        elix-button::part(inner) {
           display: flex;
           flex-direction: column;
           padding: 6px;
@@ -64,18 +64,18 @@
         tab-align="stretch"
         stage-part-type="elix-sliding-pages"
       >
-        <elix-seamless-button slot="proxy" aria-label="Home">
+        <elix-button slot="proxy" aria-label="Home">
           <div class="material-icons">home</div>
           Home
-        </elix-seamless-button>
-        <elix-seamless-button slot="proxy" aria-label="Search">
+        </elix-button>
+        <elix-button slot="proxy" aria-label="Search">
           <div class="material-icons">search</div>
           Search
-        </elix-seamless-button>
-        <elix-seamless-button slot="proxy" aria-label="Settings">
+        </elix-button>
+        <elix-button slot="proxy" aria-label="Settings">
           <div class="material-icons">settings</div>
           Settings
-        </elix-seamless-button>
+        </elix-button>
         <div class="page">Home page</div>
         <div class="page">Search page</div>
         <div class="page">Settings page</div>

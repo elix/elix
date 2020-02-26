@@ -1,8 +1,8 @@
 import * as internal from "../../src/base/internal.js";
-import Carousel from "../../src/base/Carousel.js";
+import PlainCarousel from "../../src/plain/PlainCarousel.js";
 import PageNumbersMixin from "../../src/base/PageNumbersMixin.js";
 
-const Base = PageNumbersMixin(Carousel);
+const Base = PageNumbersMixin(PlainCarousel);
 
 // Shows creating a carousel with custom mixins.
 class CustomCarousel extends Base {
