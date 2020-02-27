@@ -78,9 +78,10 @@ class Carousel extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     if (changed.proxyListPartType && this[internal.ids].proxyList) {
       // Turn off focus handling for old proxy list.
-      /** @type {any} */
-      const cast = this[internal.ids].proxyList;
-      forwardFocus(cast, null);
+      const proxyList = this[internal.ids].proxyList;
+      if (proxyList instanceof HTMLElement) {
+        forwardFocus(proxyList, null);
+      }
     }
 
     super[internal.render](changed);
@@ -94,10 +95,11 @@ class Carousel extends Base {
 
     if (changed.proxyListPartType) {
       // Keep focus off of the proxies and onto the carousel itself.
-      /** @type {any} */
-      const cast = this[internal.ids].proxyList;
-      forwardFocus(cast, this);
-      cast.removeAttribute("tabindex");
+      const proxyList = this[internal.ids].proxyList;
+      if (proxyList instanceof HTMLElement) {
+        forwardFocus(proxyList, this);
+      }
+      proxyList.removeAttribute("tabindex");
     }
 
     if (changed.orientation || changed.proxyListPartType) {
@@ -108,13 +110,11 @@ class Carousel extends Base {
     }
 
     if (changed.stagePartType) {
-      /** @type {any} */
-      const cast = this[internal.ids].stage;
-      cast.removeAttribute("tabindex");
+      this[internal.ids].stage.removeAttribute("tabindex");
     }
 
     const { darkMode } = this[internal.state];
-    /** @type {Element[]} */ const proxies = this[internal.state].proxies;
+    const proxies = this.proxies;
     // Wait for knowledge of dark mode
     if ((changed.darkMode || changed.proxies) && darkMode !== null && proxies) {
       // Apply dark mode to proxies.
