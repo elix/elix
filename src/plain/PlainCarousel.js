@@ -6,7 +6,7 @@ import PlainPageDot from "./PlainPageDot.js";
 
 /**
  * Carousel component in the Plain reference design system
-
+ *
  * @inherits Carousel
  * @mixes PlainArrowDirectionMixin
  * @mixes PlainCarouselMixin

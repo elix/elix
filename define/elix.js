@@ -103,6 +103,7 @@ export { default as ReactiveElement } from "../src/core/ReactiveElement.js";
 export { default as ReactiveMixin } from "../src/core/ReactiveMixin.js";
 export { default as ResizeMixin } from "../src/base/ResizeMixin.js";
 export { default as SelectableButton } from "./SelectableButton.js";
+export { default as SelectableMixin } from "../src/base/SelectableMixin.js";
 export { default as SelectedItemTextValueMixin } from "../src/base/SelectedItemTextValueMixin.js";
 export { default as SelectionInViewMixin } from "../src/base/SelectionInViewMixin.js";
 export { default as ShadowTemplateMixin } from "../src/core/ShadowTemplateMixin.js";

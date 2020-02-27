@@ -14,7 +14,7 @@ const Base = DarkModeMixin(SelectableButton);
  * @inherits SelectableButton
  * @mixes DarkModeMixin
  */
-class PageDot extends Base {
+class PlainPageDot extends Base {
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
     this.setAttribute("role", "none");
@@ -61,4 +61,4 @@ class PageDot extends Base {
   }
 }
 
-export default PageDot;
+export default PlainPageDot;

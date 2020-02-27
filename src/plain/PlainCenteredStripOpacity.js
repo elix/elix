@@ -16,7 +16,7 @@ const opacityMaximum = 1.0;
  *
  * @inherits CenteredStrip
  */
-class CenteredStripOpacity extends CenteredStrip {
+class PlainCenteredStripOpacity extends CenteredStrip {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       transitionDuration: 250
@@ -167,4 +167,4 @@ function mergeSinglePropertyTransition(transition, name, value) {
   }
 }
 
-export default CenteredStripOpacity;
+export default PlainCenteredStripOpacity;

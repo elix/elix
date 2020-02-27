@@ -12,7 +12,7 @@ import html from "../core/html.js";
  *
  * @inherits CenteredStrip
  */
-class CenteredStripHighlight extends CenteredStrip {
+class PlainCenteredStripHighlight extends CenteredStrip {
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
@@ -33,4 +33,4 @@ class CenteredStripHighlight extends CenteredStrip {
   }
 }
 
-export default CenteredStripHighlight;
+export default PlainCenteredStripHighlight;

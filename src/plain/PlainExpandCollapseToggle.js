@@ -11,7 +11,7 @@ import UpDownToggle from "../base/UpDownToggle.js";
  * @part expand-icon - the default icon shown when the panel is collapsed
  * @part toggle-icon - both of the default icons used to expand/collapse the panel
  */
-class ExpandCollapseToggle extends UpDownToggle {
+class PlainExpandCollapseToggle extends UpDownToggle {
   get [internal.template]() {
     const result = super[internal.template];
 
@@ -79,4 +79,4 @@ class ExpandCollapseToggle extends UpDownToggle {
   }
 }
 
-export default ExpandCollapseToggle;
+export default PlainExpandCollapseToggle;
