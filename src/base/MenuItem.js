@@ -1,5 +1,5 @@
-import * as internal from "./internal.js";
 import ReactiveElement from "../core/ReactiveElement.js";
+import SelectableMixin from "./SelectableMixin.js";
 
 /**
  * A choice in a menu
@@ -10,40 +10,8 @@ import ReactiveElement from "../core/ReactiveElement.js";
  * of item you want.
  *
  * @inherits ReactiveElement
+ * @mixes SelectableMixin
  */
-class MenuItem extends ReactiveElement {
-  [internal.componentDidUpdate](/** @typeof {PlainObject} */ changed) {
-    // TODO: How do we know whether to raise this if selection is set by Menu? */
-    if (changed.selected /* && this[internal.raiseChangeEvents] */) {
-      /**
-       * Raised when the `selected` property changes.
-       *
-       * @event selected-changed
-       */
-      const event = new CustomEvent("selected-changed", {
-        detail: {
-          selected: this[internal.state].selected
-        }
-      });
-      this.dispatchEvent(event);
-    }
-  }
-
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
-      selected: false
-    });
-  }
-
-  get selected() {
-    return this[internal.state].selected;
-  }
-  // Note: AttributeMarshallingMixin will recognize `selected` as the name of
-  // attribute that should be parsed as a boolean attribute, and so will
-  // handling parsing it for us.
-  set selected(selected) {
-    this[internal.setState]({ selected });
-  }
-}
+class MenuItem extends SelectableMixin(ReactiveElement) {}
 
 export default MenuItem;

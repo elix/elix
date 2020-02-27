@@ -2,10 +2,11 @@ import * as internal from "./internal.js";
 import Button from "./Button.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
+import SelectableMixin from "./SelectableMixin.js";
 import SlotContentMixin from "./SlotContentMixin.js";
 
 const Base = FocusVisibleMixin(
-  LanguageDirectionMixin(SlotContentMixin(Button))
+  LanguageDirectionMixin(SelectableMixin(SlotContentMixin(Button)))
 );
 
 /**
@@ -17,12 +18,12 @@ const Base = FocusVisibleMixin(
  * @inherits WrappedStandardElement
  * @mixes FocusVisibleMixin
  * @mixes LanguageDirectionMixin
+ * @mixes SelectableMixin
  * @mixes SlotContentMixin
  */
 class TabButton extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      selected: false,
       treatEnterAsClick: false, // Let tab strip handle Enter.
       treatSpaceAsClick: false, // Let tab strip handle Space.
       position: "top"
@@ -46,13 +47,6 @@ class TabButton extends Base {
   }
   set position(position) {
     this[internal.setState]({ position });
-  }
-
-  get selected() {
-    return this[internal.state].selected;
-  }
-  set selected(selected) {
-    this[internal.setState]({ selected });
   }
 }
 
