@@ -3,8 +3,9 @@ import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
 import ReactiveElement from "../core/ReactiveElement.js";
+import SelectableMixin from "./SelectableMixin.js";
 
-const Base = CalendarElementMixin(ReactiveElement);
+const Base = CalendarElementMixin(SelectableMixin(ReactiveElement));
 
 /**
  * Calendar representation of a single day.
@@ -23,6 +24,7 @@ const Base = CalendarElementMixin(ReactiveElement);
  *
  * @inherits ReactiveElement
  * @mixes CalendarElementMixin
+ * @mixes SelectableMixin
  * @state alternate-month
  * @state first-day-of-month
  * @state first-week
@@ -33,7 +35,6 @@ const Base = CalendarElementMixin(ReactiveElement);
  * @state outside-range
  * @state past
  * @state saturday
- * @state selected
  * @state sunday
  * @state thursday
  * @state today
@@ -43,18 +44,10 @@ const Base = CalendarElementMixin(ReactiveElement);
  * @state weekend
  */
 class CalendarDay extends Base {
-  constructor() {
-    super();
-    if (!this[internal.nativeInternals] && this.attachInternals) {
-      this[internal.nativeInternals] = this.attachInternals();
-    }
-  }
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       date: calendar.today(),
-      outsideRange: false,
-      selected: false
+      outsideRange: false
     });
   }
 
@@ -110,9 +103,6 @@ class CalendarDay extends Base {
         this[internal.state].outsideRange
       );
     }
-    if (changed.selected) {
-      setInternalState(this, "selected", this[internal.state].selected);
-    }
   }
 
   get outsideRange() {
@@ -120,13 +110,6 @@ class CalendarDay extends Base {
   }
   set outsideRange(outsideRange) {
     this[internal.setState]({ outsideRange });
-  }
-
-  get selected() {
-    return this[internal.state].selected;
-  }
-  set selected(selected) {
-    this[internal.setState]({ selected });
   }
 
   get [internal.template]() {
@@ -142,16 +125,11 @@ class CalendarDay extends Base {
   }
 }
 
-// Set both a visible class for template-patching purposes, and an internal
+// Set both a visible attribute for template-patching purposes, and an internal
 // state for browsers that support the `:state` selector. When all browsers
-// support that, we'll want to deprecate use of classes.
+// support that, we'll want to deprecate use of attributes.
 function setInternalState(element, name, value) {
-  // TODO: Move all aspects from classes to attributes.
-  if (name === "selected") {
-    element.toggleAttribute(name, value);
-  } else {
-    element.classList.toggle(name, value);
-  }
+  element.toggleAttribute(name, value);
   if (
     element[internal.nativeInternals] &&
     element[internal.nativeInternals].states

@@ -69,13 +69,16 @@ class CalendarDayNamesHeader extends ReactiveElement {
       const weekendStart = calendar.weekendStart(locale);
       const weekendEnd = calendar.weekendEnd(locale);
       const date = new Date(2017, 0, 1); // A Sunday
+      const dayNameParts = this[internal.shadowRoot].querySelectorAll(
+        '[part~="day-name"]'
+      );
       for (let i = 0; i <= 6; i++) {
         const dayOfWeek = (firstDayOfWeek + i) % 7;
         date.setDate(dayOfWeek + 1);
         const weekend = dayOfWeek === weekendStart || dayOfWeek === weekendEnd;
-        const dayElement = this[internal.ids][`day${i}`];
-        dayElement.classList.toggle("weekday", !weekend);
-        dayElement.classList.toggle("weekend", weekend);
+        const dayElement = dayNameParts[i];
+        dayElement.toggleAttribute("weekday", !weekend);
+        dayElement.toggleAttribute("weekend", weekend);
         dayElement.textContent = formatter.format(date);
       }
     }
@@ -91,13 +94,13 @@ class CalendarDayNamesHeader extends ReactiveElement {
         }
       </style>
 
-      <div id="day0" part="day-name" class="dayName"></div>
-      <div id="day1" part="day-name" class="dayName"></div>
-      <div id="day2" part="day-name" class="dayName"></div>
-      <div id="day3" part="day-name" class="dayName"></div>
-      <div id="day4" part="day-name" class="dayName"></div>
-      <div id="day5" part="day-name" class="dayName"></div>
-      <div id="day6" part="day-name" class="dayName"></div>
+      <div id="day0" part="day-name"></div>
+      <div id="day1" part="day-name"></div>
+      <div id="day2" part="day-name"></div>
+      <div id="day3" part="day-name"></div>
+      <div id="day4" part="day-name"></div>
+      <div id="day5" part="day-name"></div>
+      <div id="day6" part="day-name"></div>
     `;
   }
 }

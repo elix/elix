@@ -5,6 +5,7 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
  * Tracks whether the element is currently selected
  *
  * @module SelectableMixin
+ * @state selected
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function SelectableMixin(Base) {

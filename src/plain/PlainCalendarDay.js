@@ -15,27 +15,24 @@ class PlainCalendarDay extends CalendarDay {
         <style>
           :host {
             padding: 0.3em;
+            text-align: right;
           }
 
-          :host(.weekend) {
+          :host([weekend]) {
             color: gray;
           }
 
-          :host(.outside-range) {
+          :host([outside-range]) {
             color: lightgray;
           }
 
-          :host(.today) {
+          :host([today]) {
             color: darkred;
             font-weight: bold;
           }
 
           :host([selected]) {
             background: #ddd;
-          }
-
-          #day {
-            text-align: right;
           }
         </style>
       `

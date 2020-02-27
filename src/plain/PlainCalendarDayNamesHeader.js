@@ -17,13 +17,13 @@ class PlainCalendarDayNamesHeader extends CalendarDayNamesHeader {
             font-size: smaller;
           }
 
-          .dayName {
+          [part~="day-name"] {
             padding: 0.3em;
             text-align: center;
             white-space: nowrap;
           }
 
-          .dayName.weekend {
+          [weekend] {
             color: gray;
           }
         </style>
