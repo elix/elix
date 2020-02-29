@@ -5,7 +5,7 @@ const classTemplateMap = new Map();
 
 // A Proxy that maps shadow element IDs to shadow elements.
 /** @type {any} */
-const shadowIdProxyKey = Symbol("shadowReferences");
+const shadowIdProxyKey = Symbol("shadowIdProxy");
 
 // Reference stored on the proxy target to get to the actual element.
 const proxyElementKey = Symbol("proxyElement");
