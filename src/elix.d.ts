@@ -153,6 +153,10 @@ import * as scrollingImport from "./base/scrolling.js";
 // @ts-ignore
 export const scrolling = scrollingImport;
   
+import * as domImport from "./core/dom.js";
+// @ts-ignore
+export const dom = domImport;
+  
 import * as htmlImport from "./core/html.js";
 // @ts-ignore
 export const html = htmlImport;
@@ -160,8 +164,4 @@ export const html = htmlImport;
 import * as templateImport from "./core/template.js";
 // @ts-ignore
 export const template = templateImport;
-  
-import * as utilitiesImport from "./core/utilities.js";
-// @ts-ignore
-export const utilities = utilitiesImport;
   

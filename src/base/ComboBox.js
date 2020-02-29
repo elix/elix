@@ -1,4 +1,4 @@
-import { forwardFocus } from "../core/utilities.js";
+import { forwardFocus } from "../core/dom.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import AriaRoleMixin from "./AriaRoleMixin.js";

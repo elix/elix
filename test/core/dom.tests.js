@@ -3,10 +3,10 @@ import {
   applyChildNodes,
   composedAncestors,
   firstFocusableElement
-} from "../../src/core/utilities.js";
+} from "../../src/core/dom.js";
 import * as template from "../../src/core/template.js";
 
-describe("utilities", () => {
+describe("DOM helpers", () => {
   it("firstFocusableElement finds first focusable element in light DOM", () => {
     const fixture = template.html`
       <div></div>

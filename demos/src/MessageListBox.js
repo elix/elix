@@ -1,5 +1,5 @@
 import "./AnimateAlignment.js";
-import { applyChildNodes } from "../../src/core/utilities.js";
+import { applyChildNodes } from "../../src/core/dom.js";
 import * as internal from "../../src/base/internal.js";
 import * as template from "../../src/core/template.js";
 import EffectMixin from "../../src/base/EffectMixin.js";

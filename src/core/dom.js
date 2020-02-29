@@ -1,9 +1,9 @@
 import * as internal from "./internal.js";
 
 /**
- * Miscellaneous utility functions for web components
+ * Miscellaneous DOM helpers for web components
  *
- * @module utilities
+ * @module dom
  */
 
 const mousedownListenerKey = Symbol("mousedownListener");
@@ -68,7 +68,7 @@ export function closestFocusableNode(node) {
     const focusable =
       focusTarget instanceof HTMLElement &&
       focusTarget.tabIndex >= 0 &&
-      !(/** @type {any} */ (focusTarget).disabled) &&
+      !(/** @type {any} */ (focusTarget.disabled)) &&
       !(focusTarget instanceof HTMLSlotElement);
     if (focusable) {
       return focusTarget;

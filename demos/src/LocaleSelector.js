@@ -1,4 +1,4 @@
-import { applyChildNodes } from "../../src/core/utilities.js";
+import { applyChildNodes } from "../../src/core/dom.js";
 import * as internal from "../../src/base/internal.js";
 import * as template from "../../src/core/template.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";

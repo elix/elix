@@ -1,4 +1,4 @@
-import { ownEvent } from "../core/utilities.js";
+import { ownEvent } from "../core/dom.js";
 import * as internal from "./internal.js";
 import html from "../core/html.js";
 import KeyboardMixin from "./KeyboardMixin.js";

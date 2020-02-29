@@ -1,7 +1,4 @@
-import {
-  deepContains,
-  indexOfItemContainingTarget
-} from "../core/utilities.js";
+import { deepContains, indexOfItemContainingTarget } from "../core/dom.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import html from "../core/html.js";

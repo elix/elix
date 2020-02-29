@@ -1,4 +1,4 @@
-import { closestFocusableNode } from "../core/utilities.js";
+import { closestFocusableNode } from "../core/dom.js";
 import * as internal from "./internal.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 

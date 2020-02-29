@@ -1,4 +1,4 @@
-import { deepContains } from "../core/utilities.js";
+import { deepContains } from "../core/dom.js";
 import { defaultAriaRole } from "./accessibility.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";

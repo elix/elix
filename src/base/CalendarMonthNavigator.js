@@ -1,7 +1,4 @@
-import {
-  forwardFocus,
-  indexOfItemContainingTarget
-} from "../core/utilities.js";
+import { forwardFocus, indexOfItemContainingTarget } from "../core/dom.js";
 import * as calendar from "./calendar.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";

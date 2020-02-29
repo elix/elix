@@ -1,4 +1,4 @@
-import { applyChildNodes } from "../core/utilities.js";
+import { applyChildNodes } from "../core/dom.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import Dialog from "./Dialog.js";
