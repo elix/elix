@@ -24,10 +24,11 @@ export function closestFocusableNode(node) {
     const focusTarget = current[internal.focusTarget] || current;
     // We want an element that has a tabIndex of 0 or more. We ignore disabled
     // elements, and slot elements (which oddly have a tabIndex of 0).
+    /** @type {any} */ const cast = focusTarget;
     const focusable =
       focusTarget instanceof HTMLElement &&
       focusTarget.tabIndex >= 0 &&
-      !(/** @type {any} */ (focusTarget.disabled)) &&
+      !cast.disabled &&
       !(focusTarget instanceof HTMLSlotElement);
     if (focusable) {
       return focusTarget;
@@ -249,6 +250,27 @@ export function* selfAndComposedAncestors(node) {
   if (node) {
     yield node;
     yield* composedAncestors(node);
+  }
+}
+
+/**
+ * Set an internal state for browsers that support the `:state` selector, as
+ * well as an attribute of the same name to permit state-based styling on older
+ * browsers.
+ *
+ * When all browsers support that, we'd like to deprecate use of attributes.
+ *
+ * @param {Element} element
+ * @param {string} name
+ * @param {boolean} value
+ */
+export function setInternalState(element, name, value) {
+  element.toggleAttribute(name, value);
+  if (
+    element[internal.nativeInternals] &&
+    element[internal.nativeInternals].states
+  ) {
+    element[internal.nativeInternals].states.toggle(name, value);
   }
 }
 

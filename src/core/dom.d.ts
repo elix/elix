@@ -19,3 +19,8 @@ export function replaceChildNodes(
   childNodes: NodeList | Node[]
 ): void;
 export function selfAndComposedAncestors(node: Node): Iterable<Node>;
+export function setInternalState(
+  element: Element,
+  state: string,
+  value: boolean
+): void;

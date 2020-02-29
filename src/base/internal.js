@@ -299,7 +299,7 @@ export const mouseleave = Symbol("mouseleave");
 /**
  * Symbol for access to native HTML element internals.
  */
-export const nativeInternals = Symbol("nativeInternals");
+export const nativeInternals = coreInternal.nativeInternals;
 
 /**
  * Symbol for the `raiseChangeEvents` property.

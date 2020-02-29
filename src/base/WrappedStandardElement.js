@@ -1,4 +1,5 @@
 import { booleanAttributes } from "../core/AttributeMarshallingMixin.js";
+import { setInternalState } from "../core/dom.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
@@ -368,13 +369,7 @@ class WrappedStandardElement extends Base {
       Object.assign(inner, innerProperties);
       const { disabled } = innerProperties;
       if (disabled !== undefined) {
-        this.toggleAttribute("disabled", disabled);
-        if (
-          this[internal.nativeInternals] &&
-          this[internal.nativeInternals].states
-        ) {
-          this[internal.nativeInternals].states.toggle("disabled", disabled);
-        }
+        setInternalState(this, "disabled", disabled);
       }
     }
   }

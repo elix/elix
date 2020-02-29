@@ -1,3 +1,4 @@
+import { setInternalState } from "../core/dom.js";
 import * as internal from "./internal.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
@@ -46,17 +47,8 @@ export default function SelectableMixin(Base) {
     [internal.render](/** @type {PlainObject} */ changed) {
       super[internal.render](changed);
       if (changed.selected) {
-        // Set both an attribute and an internal state for browsers that support
-        // the `:state` selector. When all browsers support :state, we'll want
-        // to deprecate use of attributes.
         const { selected } = this[internal.state];
-        this.toggleAttribute("selected", selected);
-        if (
-          this[internal.nativeInternals] &&
-          this[internal.nativeInternals].states
-        ) {
-          this[internal.nativeInternals].states.toggle("selected", selected);
-        }
+        setInternalState(this, "selected", selected);
       }
     }
 

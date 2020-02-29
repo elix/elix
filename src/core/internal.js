@@ -95,6 +95,11 @@ export const hasDynamicTemplate = Symbol("hasDynamicTemplate");
 export const ids = Symbol("ids");
 
 /**
+ * Symbol for access to native HTML element internals.
+ */
+export const nativeInternals = Symbol("nativeInternals");
+
+/**
  * Symbol for the `raiseChangeEvents` property.
  *
  * This property is used by mixins to determine whether they should raise

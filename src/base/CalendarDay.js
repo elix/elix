@@ -1,3 +1,4 @@
+import { setInternalState } from "../core/dom.js";
 import * as calendar from "./calendar.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
@@ -122,19 +123,6 @@ class CalendarDay extends Base {
       </style>
       <div id="day"></div>
     `;
-  }
-}
-
-// Set both a visible attribute for template-patching purposes, and an internal
-// state for browsers that support the `:state` selector. When all browsers
-// support that, we'll want to deprecate use of attributes.
-function setInternalState(element, name, value) {
-  element.toggleAttribute(name, value);
-  if (
-    element[internal.nativeInternals] &&
-    element[internal.nativeInternals].states
-  ) {
-    element[internal.nativeInternals].states.toggle(name, value);
   }
 }
 
