@@ -8,7 +8,6 @@ export function applyChildNodes(
 export function closestFocusableNode(element: Element): HTMLElement | null;
 export function composedAncestors(node: Node): Iterable<Node>;
 export function deepContains(container: Node, target: Node): boolean;
-export function ensureId(element: Element): string;
 export function firstFocusableElement(root: Node): HTMLElement | null;
 export function forwardFocus(
   origin: HTMLElement,

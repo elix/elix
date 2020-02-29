@@ -2,3 +2,4 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 export const defaultAriaRole: IndexedObject<string>;
+export function ensureId(element: Element): string;

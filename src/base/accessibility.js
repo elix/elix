@@ -8,6 +8,10 @@
  * @module accessibility
  */
 
+// Used by ensureId
+const generatedIdKey = Symbol("generatedId");
+let generatedIdCount = 0;
+
 /**
  * A dictionary mapping built-in HTML elements to their default ARIA role.
  *
@@ -39,3 +43,20 @@ export const defaultAriaRole = {
   th: "th",
   ul: "list"
 };
+
+/**
+ * If the given element already has an ID, return it. If not, generate a
+ * previously unused ID and return that.
+ *
+ * @param {Element} element
+ * @returns {string}
+ */
+export function ensureId(element) {
+  let id = element.id || element[generatedIdKey];
+  if (!id) {
+    id = `_id${generatedIdCount++}`;
+    // Remember that we generated an ID for this element.
+    element[generatedIdKey] = id;
+  }
+  return id;
+}

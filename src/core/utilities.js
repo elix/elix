@@ -6,10 +6,7 @@ import * as internal from "./internal.js";
  * @module utilities
  */
 
-const generatedIdKey = Symbol("generatedId");
 const mousedownListenerKey = Symbol("mousedownListener");
-
-let generatedIdCount = 0;
 
 /**
  * Sets the element's `childNodes` to the given set of nodes.
@@ -71,7 +68,7 @@ export function closestFocusableNode(node) {
     const focusable =
       focusTarget instanceof HTMLElement &&
       focusTarget.tabIndex >= 0 &&
-      !/** @type {any} */ (focusTarget).disabled &&
+      !(/** @type {any} */ (focusTarget).disabled) &&
       !(focusTarget instanceof HTMLSlotElement);
     if (focusable) {
       return focusTarget;
@@ -130,23 +127,6 @@ export function deepContains(container, target) {
     current = parent;
   }
   return false;
-}
-
-/**
- * If the given element already has an ID, return it. If not, generate a
- * previously unused ID and return that.
- *
- * @param {Element} element
- * @returns {string}
- */
-export function ensureId(element) {
-  let id = element.id || element[generatedIdKey];
-  if (!id) {
-    id = `_id${generatedIdCount++}`;
-    // Remember that we generated an ID for this element.
-    element[generatedIdKey] = id;
-  }
-  return id;
 }
 
 /**
