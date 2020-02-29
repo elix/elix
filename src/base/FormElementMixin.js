@@ -14,8 +14,9 @@ export default function FormElementMixin(Base) {
   class FormElement extends Base {
     constructor() {
       super();
-      if (!this[internal.nativeInternals] && this.attachInternals) {
-        this[internal.nativeInternals] = this.attachInternals();
+      /** @type {any} */ const cast = this;
+      if (!this[internal.nativeInternals] && cast.attachInternals) {
+        this[internal.nativeInternals] = cast.attachInternals();
       }
     }
 
