@@ -29,7 +29,7 @@ class PlainProgressSpinner extends ProgressSpinner {
 
     // Replace default slot with a spinner icon.
     // Spinner SVG created from https://dribbble.com/shots/958711-Free-vector-iOS-spinners.
-    const defaultSlot = template.defaultSlot(result.content);
+    const defaultSlot = result.content.querySelector("slot:not([name])");
     if (defaultSlot) {
       template.transmute(
         defaultSlot,

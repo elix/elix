@@ -425,7 +425,7 @@ class DateComboBox extends Base {
         <div id="todayButton" part="today-button">Today</div>
       </div>
     `;
-    const defaultSlot = template.defaultSlot(result.content);
+    const defaultSlot = result.content.querySelector("slot:not([name])");
     if (defaultSlot) {
       template.transmute(defaultSlot, calendarTemplate);
     }

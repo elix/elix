@@ -142,7 +142,7 @@ class DrawerWithGrip extends Drawer {
         </div>
       </div>
     `;
-    const defaultSlot = template.defaultSlot(result.content);
+    const defaultSlot = result.content.querySelector("slot:not([name])");
     if (defaultSlot) {
       template.transmute(defaultSlot, gripTemplate);
     }

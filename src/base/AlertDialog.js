@@ -137,7 +137,7 @@ class AlertDialog extends Dialog {
   get [internal.template]() {
     const result = super[internal.template];
     // Fill the default slot with a new default slot and a button container.
-    const defaultSlot = template.defaultSlot(result.content);
+    const defaultSlot = result.content.querySelector("slot:not([name])");
     if (defaultSlot) {
       const alertDialogTemplate = template.html`
         <div id="alertDialogContent">

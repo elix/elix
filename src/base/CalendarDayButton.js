@@ -71,7 +71,7 @@ class CalendarDayButton extends Base {
     const result = super[internal.template];
 
     // Replace default slot with calendar day.
-    const defaultSlot = template.defaultSlot(result.content);
+    const defaultSlot = result.content.querySelector("slot:not([name])");
     if (defaultSlot) {
       const dayTemplate = document.createElement("template");
       const day = new CalendarDay();

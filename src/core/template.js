@@ -61,17 +61,6 @@ export function createElement(descriptor) {
 }
 
 /**
- * Search a tree for a default slot: a slot with no "name" attribute. Return
- * null if not found.
- *
- * @param {DocumentFragment} tree - the tree to search
- * @returns {HTMLSlotElement|null}
- */
-export function defaultSlot(tree) {
-  return tree.querySelector("slot:not([name])");
-}
-
-/**
  * A JavaScript template string literal that returns an HTML template.
  *
  * Example:
