@@ -1,4 +1,4 @@
-import { applyChildNodes } from "../core/dom.js";
+import { replaceChildNodes } from "../core/dom.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
@@ -150,7 +150,7 @@ class Explorer extends Base {
       const childNodes = proxiesAssigned
         ? [this[internal.ids].proxySlot]
         : [this[internal.ids].proxySlot, ...proxies];
-      applyChildNodes(this[internal.ids].proxyList, childNodes);
+      replaceChildNodes(this[internal.ids].proxyList, childNodes);
     }
     if (
       changed.proxyListOverlap ||

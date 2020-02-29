@@ -1,4 +1,4 @@
-import { applyChildNodes } from "../core/dom.js";
+import { replaceChildNodes } from "../core/dom.js";
 import * as calendar from "./calendar.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
@@ -88,7 +88,7 @@ class CalendarDays extends Base {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.days) {
-      applyChildNodes(
+      replaceChildNodes(
         this[internal.ids].dayContainer,
         this[internal.state].days
       );

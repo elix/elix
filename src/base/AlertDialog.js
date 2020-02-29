@@ -1,4 +1,4 @@
-import { applyChildNodes } from "../core/dom.js";
+import { replaceChildNodes } from "../core/dom.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import Dialog from "./Dialog.js";
@@ -104,7 +104,7 @@ class AlertDialog extends Dialog {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
     if (changed.choiceButtons) {
-      applyChildNodes(
+      replaceChildNodes(
         this[internal.ids].buttonContainer,
         this[internal.state].choiceButtons
       );

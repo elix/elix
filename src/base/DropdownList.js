@@ -1,4 +1,4 @@
-import { applyChildNodes } from "../core/dom.js";
+import { replaceChildNodes } from "../core/dom.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import FormElementMixin from "./FormElementMixin.js";
@@ -60,7 +60,7 @@ class DropdownList extends Base {
       const selectedItem = items[this[internal.state].selectedIndex];
       const clone = selectedItem ? selectedItem.cloneNode(true) : null;
       const childNodes = clone ? clone.childNodes : [];
-      applyChildNodes(this[internal.ids].value, childNodes);
+      replaceChildNodes(this[internal.ids].value, childNodes);
     }
   }
 
