@@ -316,6 +316,11 @@ class MenuButton extends PopupButton {
       }
     }
 
+    if (changed.disabled) {
+      const { disabled } = this[internal.state];
+      /** @type {any} */ (this[internal.ids].popupToggle).disabled = disabled;
+    }
+
     if (changed.menuSelectedIndex) {
       const menu = /** @type {any} */ (this[internal.ids].menu);
       if ("selectedIndex" in menu) {

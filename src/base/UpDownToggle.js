@@ -11,7 +11,8 @@ import ReactiveElement from "../core/ReactiveElement.js";
 class UpDownToggle extends ReactiveElement {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      direction: "down"
+      direction: "down",
+      disabled: false
     });
   }
 
@@ -28,14 +29,27 @@ class UpDownToggle extends ReactiveElement {
     this[internal.setState]({ direction });
   }
 
+  get disabled() {
+    return this[internal.state].disabled;
+  }
+  set disabled(disabled) {
+    this[internal.setState]({ disabled });
+  }
+
   [internal.render](changed) {
     super[internal.render](changed);
+
     if (changed.direction) {
       const { direction } = this[internal.state];
       this[internal.ids].downIcon.style.display =
         direction === "down" ? "block" : "none";
       this[internal.ids].upIcon.style.display =
         direction === "up" ? "block" : "none";
+    }
+
+    if (changed.disabled) {
+      const { disabled } = this[internal.state];
+      this.toggleAttribute("disabled", disabled);
     }
   }
 

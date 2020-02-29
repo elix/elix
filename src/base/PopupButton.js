@@ -73,6 +73,7 @@ class PopupButton extends Base {
         // mousedown events fire even if button is disabled, so we need
         // to explicitly ignore those.
         if (this.disabled) {
+          event.preventDefault();
           return;
         }
         // Only handle primary button mouse down to avoid interfering with

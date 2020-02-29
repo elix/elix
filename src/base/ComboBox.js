@@ -259,6 +259,11 @@ class ComboBox extends Base {
         if (/** @type {MouseEvent} */ (event).button !== 0) {
           return;
         }
+        // Ignore mousedown if we're presently disabled.
+        if (this[internal.state].disabled) {
+          event.preventDefault();
+          return;
+        }
         this[internal.raiseChangeEvents] = true;
         this.toggle();
         this[internal.raiseChangeEvents] = false;
