@@ -7,6 +7,10 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
  *
  * @module SwipeCommandsMixin
  * @param {Constructor<ReactiveElement>} Base
+ * @part {div} command-container - the left and right containers for the
+ * commands
+ * @part {div} left-command-container - left container for commands
+ * @part {div} right-command-container - right container for commands
  */
 export default function SwipeCommandsMixin(Base) {
   // The class prototype added by the mixin.
@@ -240,7 +244,7 @@ export default function SwipeCommandsMixin(Base) {
               font-weight: bold;
             }
 
-            .commandContainer {
+            [part~="command-container"] {
               display: flex;
               overflow: hidden;
               position: absolute;
@@ -253,18 +257,24 @@ export default function SwipeCommandsMixin(Base) {
               flex: 1;
             }
 
-            #leftCommandContainer {
+            [part~="left-command-container"] {
               left: 0;
             }
 
-            #rightCommandContainer {
+            [part~="right-command-container"] {
               right: 0;
             }
           </style>
-          <div id="leftCommandContainer" class="commandContainer">
+          <div
+            id="leftCommandContainer"
+            part="command-container left-command-container"
+          >
             <slot id="leftCommandSlot" name="leftCommand"></slot>
           </div>
-          <div id="rightCommandContainer" class="commandContainer">
+          <div
+            id="rightCommandContainer"
+            part="command-container right-command-container"
+          >
             <slot id="rightCommandSlot" name="rightCommand"></slot>
           </div>
         `

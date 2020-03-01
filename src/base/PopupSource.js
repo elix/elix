@@ -309,7 +309,7 @@ class PopupSource extends Base {
           position: relative;
         }
 
-        #source {
+        [part~="source"] {
           height: 100%;
           -webkit-tap-highlight-color: transparent;
           touch-action: manipulation;
@@ -323,7 +323,7 @@ class PopupSource extends Base {
           width: 100%;
         }
 
-        #popup {
+        [part~="popup"] {
           align-items: initial;
           height: initial;
           justify-content: initial;

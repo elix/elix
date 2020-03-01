@@ -120,6 +120,7 @@ class Overlay extends Base {
   }
 
   get [internal.template]() {
+    // TODO: Consider moving frameContent div to Drawer.
     return template.html`
       <style>
         :host {
@@ -134,7 +135,7 @@ class Overlay extends Base {
           -webkit-tap-highlight-color: transparent;
         }
 
-        #frame {
+        [part~="frame"] {
           box-sizing: border-box;
           display: flex;
           flex-direction: column;

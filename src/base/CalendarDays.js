@@ -26,6 +26,7 @@ const Base = CalendarElementMixin(ReactiveElement);
  * @inherits ReactiveElement
  * @mixes CalendarElementMixin
  * @part {CalendarDay} day - any of the day elements in the grid
+ * @part {div} day-container - container for the days
  */
 class CalendarDays extends Base {
   /**
@@ -185,14 +186,14 @@ class CalendarDays extends Base {
           display: inline-block;
         }
 
-        #dayContainer {
+        [part~="day-container"] {
           direction: ltr;
           display: grid;
           grid-template-columns: repeat(7, 1fr);
         }
       </style>
 
-      <div id="dayContainer"></div>
+      <div id="dayContainer" part="day-container"></div>
     `;
   }
 }

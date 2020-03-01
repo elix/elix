@@ -65,7 +65,7 @@ class PlainTabButton extends TabButton {
     result.content.append(
       html`
         <style>
-          :host #inner {
+          [part~="inner"] {
             background: white;
             border-color: #ccc;
             border-style: solid;
@@ -74,11 +74,11 @@ class PlainTabButton extends TabButton {
             white-space: nowrap;
           }
 
-          :host([selected]) #inner {
+          :host([selected]) [part~="inner"] {
             z-index: 1;
           }
 
-          :host() #inner:disabled {
+          [part~="inner"]:disabled {
             color: #888;
           }
         </style>

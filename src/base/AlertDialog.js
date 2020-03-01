@@ -8,14 +8,15 @@ import Dialog from "./Dialog.js";
  *
  * @inherits Dialog
  * @part {button} choice-button - a button representing a choice
+ * @part {div} choice-button-container - the container for the choice buttons
  */
 class AlertDialog extends Dialog {
   [internal.componentDidMount]() {
     super[internal.componentDidMount]();
-    this[internal.ids].buttonContainer.addEventListener(
+    this[internal.ids].choiceButtonContainer.addEventListener(
       "click",
       async event => {
-        // TODO: Ignore clicks on buttonContainer background.
+        // TODO: Ignore clicks on choiceButtonContainer background.
         const button = event.target;
         if (button instanceof HTMLElement) {
           const choice = button.textContent;
@@ -105,7 +106,7 @@ class AlertDialog extends Dialog {
     super[internal.render](changed);
     if (changed.choiceButtons) {
       replaceChildNodes(
-        this[internal.ids].buttonContainer,
+        this[internal.ids].choiceButtonContainer,
         this[internal.state].choiceButtons
       );
     }
@@ -142,7 +143,7 @@ class AlertDialog extends Dialog {
       const alertDialogTemplate = template.html`
         <div id="alertDialogContent">
           <slot></slot>
-          <div id="buttonContainer"></div>
+          <div id="choiceButtonContainer" part="choice-button-container"></div>
         </div>
       `;
       template.transmute(defaultSlot, alertDialogTemplate);

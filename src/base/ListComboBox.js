@@ -230,7 +230,7 @@ class ListComboBox extends Base {
     // Wrap default slot with a list.
     const listTemplate = template.html`
       <style>
-        #list {
+        [part~="list"] {
           border: none;
           flex: 1;
           height: 100%;

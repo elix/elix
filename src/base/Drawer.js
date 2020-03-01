@@ -396,15 +396,16 @@ class Drawer extends Base {
             -webkit-overflow-scrolling: touch; /* for momentum scrolling */
           }
 
-          #backdrop {
+          [part~="backdrop"] {
             will-change: opacity;
           }
 
-          #frame {
+          [part~="frame"] {
             overflow: auto;
             will-change: transform;
           }
-          :host([opened="false"]) #frame {
+
+          :host([opened="false"]) [part~="frame"] {
             overflow: hidden;
           }
         </style>

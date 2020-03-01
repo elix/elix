@@ -18,6 +18,7 @@ const Base = EffectMixin(TouchSwipeMixin(ReactiveElement));
  * @mixes EffectMixin
  * @mixes TouchSwipeMixin
  * @part indicator - either of the pull or refreshing indicators
+ * @part indicator-container - container for the refreshing indicators
  * @part refresh-header - the header area shown when the user pulls down
  * @part {div} pull-indicator - the element shown to let the user know they can pull down
  * @part {div} refreshing-indicator - the element shown during a refresh of the content
@@ -221,7 +222,7 @@ class PullToRefresh extends Base {
           display: block;
         }
 
-        #refreshHeader {
+        [part~="refresh-header"] {
           align-items: center;
           display: flex;
           flex-direction: column-reverse;
@@ -233,21 +234,21 @@ class PullToRefresh extends Base {
           width: 100%;
         }
 
-        #refreshIndicators {
+        [part~="indicator-container"] {
           align-items: center;
           box-sizing: border-box;
           display: grid;
           justify-items: center;
         }
 
-        #refreshIndicators > * {
+        [part~="indicator"] {
           grid-column: 1;
           grid-row: 1;
         }
       </style>
 
       <div id="refreshHeader" part="refresh-header">
-        <div id="refreshIndicators">
+        <div id="indicatorContainer" part="indicator-container">
           <div id="pullIndicator" part="indicator pull-indicator"></div>
           <div id="refreshingIndicator" part="indicator refreshing-indicator"></div>
         </div>
@@ -264,9 +265,9 @@ class PullToRefresh extends Base {
  * @param {PullToRefresh} element
  */
 function getSwipeThreshold(element) {
-  const refreshIndicators = element[internal.ids].refreshIndicators;
-  return refreshIndicators instanceof HTMLElement
-    ? refreshIndicators.offsetHeight
+  const indicatorContainer = element[internal.ids].indicatorContainer;
+  return indicatorContainer instanceof HTMLElement
+    ? indicatorContainer.offsetHeight
     : 0;
 }
 

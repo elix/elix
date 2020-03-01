@@ -117,32 +117,34 @@ export default function PlainPlayControlsMixin(Base) {
       result.content.append(
         html`
           <style>
-            #buttons {
+            [part~="button-container"] {
               box-sizing: border-box;
               padding: 0.5em;
               text-align: center;
             }
 
-            .controlButton {
+            [part~="control-button"] {
               fill: rgba(255, 255, 255, 0.5);
               transition: fill 0.5s;
               vertical-align: middle;
             }
-            :host(:hover) .controlButton {
+            :host(:hover) [part~="control-button"] {
               fill: rgba(255, 255, 255, 0.7);
             }
-            .controlButton:hover {
+            [part~="control-button"]:hover {
               fill: rgba(255, 255, 255, 0.85);
             }
-            .controlButton:active {
+            [part~="control-button"]:active {
               fill: white;
             }
 
-            .icon {
+            [part~="control-icon"] {
               height: 30px;
               width: 30px;
             }
-            #playButton .icon {
+
+            [part~="playing-icon"],
+            [part~="paused-icon"] {
               height: 40px;
               width: 40px;
             }

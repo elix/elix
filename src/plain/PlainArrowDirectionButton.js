@@ -44,20 +44,20 @@ class PlainArrowDirectionButton extends Base {
             color: rgba(0, 0, 0, 0.3);
           }
 
-          #inner {
+          [part~="inner"] {
             fill: currentcolor;
           }
 
-          #inner.darkMode {
+          [part~="inner"].darkMode {
             color: rgba(255, 255, 255, 0.7);
           }
 
-          #inner.darkMode:hover:not(:disabled) {
+          [part~="inner"].darkMode:hover:not(:disabled) {
             background: rgba(255, 255, 255, 0.2);
             color: rgba(255, 255, 255, 0.8);
           }
 
-          #inner.darkMode:disabled {
+          [part~="inner"].darkMode:disabled {
             color: rgba(255, 255, 255, 0.3);
           }
         </style>

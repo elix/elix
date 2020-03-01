@@ -353,11 +353,11 @@ class Explorer extends Base {
           position: relative;
         }
 
-        #proxyList {
+        [part~="proxy-list"] {
           box-sizing: border-box;
         }
 
-        #stage {
+        [part~="stage"] {
           flex: 1;
         }
       </style>

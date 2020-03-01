@@ -51,13 +51,13 @@ class PlainHamburgerMenuButton extends HamburgerMenuButton {
             width: 1em;
           }
 
-          #menuButton {
+          [part~="menu-button"] {
             align-items: center;
             display: inline-flex;
             flex: 1;
           }
 
-          #menuIcon {
+          [part~="menu-icon"] {
             display: block;
             height: 24px;
             width: 24px;

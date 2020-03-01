@@ -13,7 +13,7 @@ class PlainButton extends Button {
     result.content.append(
       html`
         <style>
-          #inner {
+          [part~="inner"] {
             display: inline-flex;
             justify-content: center;
             margin: 0;

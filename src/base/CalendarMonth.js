@@ -267,11 +267,11 @@ class CalendarMonth extends Base {
           display: inline-block;
         }
 
-        #monthYearHeader {
+        [part~="month-year-header"] {
           display: block;
         }
 
-        #monthDays {
+        [part~="month-days"] {
           display: block;
         }
       </style>

@@ -206,7 +206,7 @@ class ListWithSearch extends Base {
           grid-template-rows: auto minmax(0, 1fr);
         }
 
-        #input {
+        [part~="input"] {
           font: inherit;
         }
       </style>

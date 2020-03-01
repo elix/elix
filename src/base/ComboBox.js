@@ -372,25 +372,25 @@ class ComboBox extends Base {
             outline: none;
           }
 
-          #source {
+          [part~="source"] {
             background-color: inherit;
             position: relative;
           }
 
-          #input {
+          [part~="input"] {
             box-sizing: border-box;
             font: inherit;
             height: 100%;
             width: 100%;
           }
 
-          #popupToggle {
+          [part~="popup-toggle"] {
             bottom: 3px;
             position: absolute;
             top: 3px;
           }
 
-          #popup {
+          [part~="popup"] {
             flex-direction: column;
             max-height: 100vh;
             max-width: 100vh;

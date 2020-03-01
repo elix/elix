@@ -23,7 +23,7 @@ export default function PlainCarouselMixin(Base) {
       result.content.append(
         html`
           <style>
-            .arrowButton {
+            [part~="arrow-icon"] {
               font-size: 48px;
             }
           </style>

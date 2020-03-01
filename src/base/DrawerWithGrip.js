@@ -150,7 +150,7 @@ class DrawerWithGrip extends Drawer {
     result.content.append(
       html`
         <style>
-          #frame {
+          [part~="frame"] {
             display: flex;
             overflow: hidden;
           }
@@ -173,7 +173,7 @@ class DrawerWithGrip extends Drawer {
             display: grid;
           }
 
-          #grip {
+          [part~="grip"] {
             align-items: center;
             display: grid;
             justify-items: center;

@@ -15,7 +15,12 @@ class PlainOpenCloseToggle extends UpDownToggle {
     // Replace the icons with our up/down glyphs.
     const downIcon = result.content.getElementById("downIcon");
     const downIconGlyph = html`
-      <svg id="downIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 5">
+      <svg
+        id="downIcon"
+        part="toggle-icon down-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 10 5"
+      >
         <path d="M 0 0 l5 5 5 -5 z" />
       </svg>
     `.children[0];
@@ -26,7 +31,7 @@ class PlainOpenCloseToggle extends UpDownToggle {
     const upIconGlyph = html`
       <svg
         id="upIcon"
-        part="up-icon"
+        part="toggle-icon up-icon"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 10 5"
       >
@@ -48,16 +53,7 @@ class PlainOpenCloseToggle extends UpDownToggle {
             background: #eee;
           }
 
-          #inner {
-            display: inline-flex;
-            justify-content: center;
-            margin: 0;
-            position: relative;
-            white-space: nowrap;
-          }
-
-          #downIcon,
-          #upIcon {
+          [part~="toggle-icon"] {
             fill: currentColor;
             height: 10px;
             margin: 0.25em;

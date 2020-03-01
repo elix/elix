@@ -84,7 +84,7 @@ class CalendarDayButton extends Base {
     result.content.appendChild(
       html`
         <style>
-          #day {
+          [part~="day"] {
             width: 100%;
           }
         </style>

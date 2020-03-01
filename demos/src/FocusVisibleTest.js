@@ -8,7 +8,7 @@ class FocusVisibleTest extends Button {
     result.content.append(
       template.html`
         <style>
-          #inner {
+          [part~="inner"] {
             background: #888;
             border-radius: 3px;
             color: #eee;

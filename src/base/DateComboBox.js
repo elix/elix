@@ -14,6 +14,7 @@ const Base = CalendarElementMixin(ComboBox);
  * @inherits ComboBox
  * @mixes CalendarElementMixin
  * @part {CalendarMonthNavigator} calendar - the calendar showing dates to choose from
+ * @part {div} calendar-container - container for the calendar
  * @part day - any of the day elements in the month grid
  * @part day-names-header - the column header showing the names of the days
  * @part month-days - the grid of days for the month
@@ -415,12 +416,12 @@ class DateComboBox extends Base {
     // Replace default slot with calendar.
     const calendarTemplate = template.html`
       <style>
-        #calendarContainer {
+        [part~="calendar-container"] {
           display: flex;
           flex-direction: column;
         }
       </style>
-      <div id="calendarContainer">
+      <div id="calendar-container">
         <div id="calendar" part="calendar" exportparts="day, day-names-header, month-days, month-hear-header" tabindex="-1"></div>
         <div id="todayButton" part="today-button">Today</div>
       </div>

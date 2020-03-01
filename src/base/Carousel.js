@@ -174,11 +174,7 @@ class Carousel extends Base {
     result.content.append(
       html`
         <style>
-          #proxyList {
-            outline: none;
-          }
-
-          #stage {
+          [part~="stage"] {
             height: 100%;
             width: 100%;
           }

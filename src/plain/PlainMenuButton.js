@@ -30,7 +30,7 @@ class PlainMenuButton extends MenuButton {
     result.content.append(
       html`
         <style>
-          #menu {
+          [part~="menu"] {
             background: window;
             border: none;
             padding: 0.5em 0;

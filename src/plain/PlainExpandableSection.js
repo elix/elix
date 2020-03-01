@@ -24,7 +24,7 @@ class PlainExpandableSection extends ExpandableSection {
     result.content.append(
       html`
         <style>
-          #toggle {
+          [part~="toggle"] {
             margin: 0.75em;
           }
         </style>

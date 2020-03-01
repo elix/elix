@@ -23,7 +23,7 @@ class PlainTabs extends Tabs {
     result.content.append(
       html`
         <style>
-          #proxyList {
+          [part~="proxy-list"] {
             z-index: 1;
           }
         </style>

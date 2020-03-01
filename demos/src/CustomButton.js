@@ -8,7 +8,7 @@ class CustomButton extends Button {
     result.content.append(
       template.html`
         <style>
-          #inner {
+          [part~="inner"] {
             background: white;
             border-radius: 0.5em;
             border: 2px solid rgba(255, 0, 0, 0.2);

@@ -93,22 +93,6 @@ class DropdownList extends Base {
       );
     }
 
-    result.content.append(
-      html`
-        <style>
-          #downIcon,
-          #upIcon {
-            fill: currentColor;
-            margin-left: 0.25em;
-          }
-
-          #menu {
-            padding: 0;
-          }
-        </style>
-      `
-    );
-
     return result;
   }
 

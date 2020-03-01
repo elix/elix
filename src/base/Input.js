@@ -45,7 +45,7 @@ class Input extends Base {
     result.content.append(
       html`
         <style>
-          #inner {
+          [part~="inner"] {
             font: inherit;
           }
         </style>

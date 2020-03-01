@@ -96,7 +96,7 @@ export default function PlayControlsMixin(Base) {
     [wrap](original) {
       const playControlsTemplate = template.html`
         <style>
-          #buttons {
+          [part~="button-container"] {
             bottom: 0;
             position: absolute;
             width: 100%;
@@ -113,7 +113,7 @@ export default function PlayControlsMixin(Base) {
           }
         </style>
 
-        <div id="buttons">
+        <div part="button-container">
           <div class="controlButton" part="control-button previous-button" id="previousButton" aria-hidden="true" tabindex="-1">
             <slot name="previousButton"></slot>
           </div>

@@ -445,7 +445,7 @@ class WrappedStandardElement extends Base {
           display: ${display}
         }
         
-        #inner {
+        [part~="inner"] {
           box-sizing: border-box;
           height: 100%;
           width: 100%;

@@ -12,6 +12,7 @@ const wrap = Symbol("wrap");
  *
  * @module PageNumbersMixin
  * @param {Constructor<ReactiveElement>} Base
+ * @part {div} page-number - the page number
  */
 function PageNumbersMixin(Base) {
   class PageNumbers extends Base {
@@ -38,7 +39,7 @@ function PageNumbersMixin(Base) {
       const pageNumbersTemplate = template.html`
         <div id="pageNumbers" role="none" style="display: flex; flex: 1; overflow: hidden;">
           <style>
-            #pageNumber {
+            [part~="page-number"] {
               bottom: 0;
               color: white;
               padding: 0.5em;
@@ -47,7 +48,7 @@ function PageNumbersMixin(Base) {
             }
           </style>
           <div id="pageNumbersContainer" role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;"></div>
-          <div id="pageNumber"></div>
+          <div id="pageNumber" part="page-number"></div>
         </div>
       `;
       template.wrap(

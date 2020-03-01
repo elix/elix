@@ -396,11 +396,11 @@ class MenuButton extends PopupButton {
     result.content.append(
       html`
         <style>
-          #menu {
+          [part~="menu"] {
             max-height: 100%;
           }
 
-          #source {
+          [part~="source"] {
             align-items: center;
             display: flex;
           }

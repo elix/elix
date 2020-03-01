@@ -109,7 +109,7 @@ class Button extends Base {
             touch-action: manipulation;
           }
 
-          #inner {
+          [part~="inner"] {
             align-items: center;
             background: none;
             border: none;

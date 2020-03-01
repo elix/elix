@@ -30,7 +30,7 @@ class PlainPullToRefresh extends PullToRefresh {
     result.content.append(
       html`
         <style>
-          #refreshIndicators {
+          [part~="indicator-container"] {
             padding: 1em;
           }
         </style>

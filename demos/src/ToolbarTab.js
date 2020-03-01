@@ -14,7 +14,12 @@ class ToolbarTab extends TabButton {
     result.content.append(
       template.html`
         <style>
-          #inner {
+          :host([selected]) {
+            color: dodgerblue;
+            z-index: 1;
+          }
+
+          [part~="inner"] {
             align-items: center;
             background: transparent;
             border: none;
@@ -24,11 +29,6 @@ class ToolbarTab extends TabButton {
             font: inherit;
             padding: 6px;
             -webkit-tap-highlight-color: transparent;
-          }
-
-          :host([selected]) {
-            color: dodgerblue;
-            z-index: 1;
           }
         </style>
       `.content
