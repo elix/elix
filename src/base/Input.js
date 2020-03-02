@@ -47,6 +47,7 @@ class Input extends Base {
         <style>
           [part~="inner"] {
             font: inherit;
+            text-align: inherit;
           }
         </style>
       `
