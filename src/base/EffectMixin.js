@@ -13,17 +13,19 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 export default function EffectMixin(Base) {
   // The class prototype added by the mixin.
   class Transition extends Base {
-    [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) {
-        super[internal.componentDidMount]();
+    connectedCallback() {
+      if (super.connectedCallback) {
+        super.connectedCallback();
       }
 
-      // Once everything's finished rendering, enable transition effects.
-      setTimeout(() => {
-        this[internal.setState]({
-          enableEffects: true
+      if (this[internal.firstConnectedCallback]) {
+        // Once everything's finished rendering, enable transition effects.
+        setTimeout(() => {
+          this[internal.setState]({
+            enableEffects: true
+          });
         });
-      });
+      }
     }
 
     get [internal.defaultState]() {

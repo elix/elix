@@ -42,31 +42,19 @@ const Base = DialogModalityMixin(
  * @mixes TransitionEffectMixin
  */
 class Drawer extends Base {
-  [internal.componentDidMount]() {
-    super[internal.componentDidMount]();
-
-    // If user clicks on frame while drawer is closed (implying that gripSize is
-    // greater than zero), then open the drawer.
-    this[internal.ids].frame.addEventListener("click", event => {
-      this[internal.raiseChangeEvents] = true;
-      if (this.closed) {
-        this.open();
-        event.stopPropagation();
-      }
-      this[internal.raiseChangeEvents] = false;
-    });
-
-    // Reflect opened attribute.
-    this.setAttribute("opened", this[internal.state].opened.toString());
-  }
-
-  [internal.componentDidUpdate](/** @typeof {PlainObject} */ changed) {
-    if (super[internal.componentDidUpdate]) {
-      super[internal.componentDidUpdate](changed);
-    }
-    if (changed.opened) {
-      // Reflect opened attribute.
-      this.setAttribute("opened", this[internal.state].opened.toString());
+  connectedCallback() {
+    super.connectedCallback();
+    if (this[internal.firstConnectedCallback]) {
+      // If user clicks on frame while drawer is closed (implying that gripSize is
+      // greater than zero), then open the drawer.
+      this[internal.ids].frame.addEventListener("click", event => {
+        this[internal.raiseChangeEvents] = true;
+        if (this.closed) {
+          this.open();
+          event.stopPropagation();
+        }
+        this[internal.raiseChangeEvents] = false;
+      });
     }
   }
 
@@ -301,6 +289,14 @@ class Drawer extends Base {
         "aria-expanded",
         this[internal.state].opened.toString()
       );
+    }
+  }
+
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
+    if (changed.opened) {
+      // Reflect opened attribute.
+      this.setAttribute("opened", this[internal.state].opened.toString());
     }
   }
 

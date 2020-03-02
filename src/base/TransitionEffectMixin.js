@@ -10,39 +10,60 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 export default function TransitionEffectMixin(Base) {
   // The class prototype added by the mixin.
   class TransitionEffect extends Base {
-    [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) {
-        super[internal.componentDidMount]();
+    connectedCallback() {
+      if (super.connectedCallback) {
+        super.connectedCallback();
       }
-
-      // Listen for `transitionend` events so we can check to see whether an
-      // effect has completed. If the component defines an `effectEndTarget`
-      // that's the host, listen to events on that. Otherwise, we assume the
-      // target is either in the shadow or an element that will be slotted into
-      // a slot in the shadow, so we'll listen to events that reach the shadow
-      // root.
-      const target =
-        this[internal.effectEndTarget] === this ? this : this[internal.shadowRoot];
-      target.addEventListener("transitionend", event => {
-        // See if the event target is our expected `effectEndTarget`. If the
-        // component defines a `effectEndTarget` state, we use that; otherwise,
-        // we use the element identified with `internal.effectEndTarget`.
-        const effectEndTarget =
-          this[internal.state].effectEndTarget ||
-          this[internal.effectEndTarget];
-        if (event.target === effectEndTarget) {
-          // Advance to the next phase.
-          this[internal.setState]({
-            effectPhase: "after"
-          });
-        }
-      });
+      if (this[internal.firstConnectedCallback]) {
+        // Listen for `transitionend` events so we can check to see whether an
+        // effect has completed. If the component defines an `effectEndTarget`
+        // that's the host, listen to events on that. Otherwise, we assume the
+        // target is either in the shadow or an element that will be slotted into
+        // a slot in the shadow, so we'll listen to events that reach the shadow
+        // root.
+        const target =
+          this[internal.effectEndTarget] === this
+            ? this
+            : this[internal.shadowRoot];
+        target.addEventListener("transitionend", event => {
+          // See if the event target is our expected `effectEndTarget`. If the
+          // component defines a `effectEndTarget` state, we use that; otherwise,
+          // we use the element identified with `internal.effectEndTarget`.
+          const effectEndTarget =
+            this[internal.state].effectEndTarget ||
+            this[internal.effectEndTarget];
+          if (event.target === effectEndTarget) {
+            // Advance to the next phase.
+            this[internal.setState]({
+              effectPhase: "after"
+            });
+          }
+        });
+      }
     }
 
-    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) {
-        super[internal.componentDidUpdate](changed);
+    /**
+     * Return the elements that use CSS transitions to provide visual effects.
+     *
+     * By default, this assumes the host element itself will have a CSS
+     * transition applied to it, and so returns an array containing the element.
+     * If you will be applying CSS transitions to other elements, override this
+     * property and return an array containing the implicated elements.
+     *
+     * See [internal.effectEndTarget](symbols#effectEndTarget)
+     * for details.
+     *
+     * @type {HTMLElement}
+     */
+    get [internal.effectEndTarget]() {
+      return super[internal.effectEndTarget] || this;
+    }
+
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
       }
+
       if (changed.effect || changed.effectPhase) {
         const { effect, effectPhase } = this[internal.state];
         /**
@@ -85,23 +106,6 @@ export default function TransitionEffectMixin(Base) {
           }
         }
       }
-    }
-
-    /**
-     * Return the elements that use CSS transitions to provide visual effects.
-     *
-     * By default, this assumes the host element itself will have a CSS
-     * transition applied to it, and so returns an array containing the element.
-     * If you will be applying CSS transitions to other elements, override this
-     * property and return an array containing the implicated elements.
-     *
-     * See [internal.effectEndTarget](symbols#effectEndTarget)
-     * for details.
-     *
-     * @type {HTMLElement}
-     */
-    get [internal.effectEndTarget]() {
-      return super[internal.effectEndTarget] || this;
     }
 
     /**

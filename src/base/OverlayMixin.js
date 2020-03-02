@@ -22,36 +22,6 @@ const restoreFocusToElementKey = Symbol("restoreFocusToElement");
 export default function OverlayMixin(Base) {
   // The class prototype added by the mixin.
   class Overlay extends Base {
-    constructor() {
-      // @ts-ignore
-      super();
-      this.addEventListener("blur", event => {
-        // What has the focus now?
-        const newFocusedElement = event.relatedTarget || document.activeElement;
-        /** @type {any} */
-        const node = this;
-        if (newFocusedElement instanceof HTMLElement) {
-          const focusInside = deepContains(node, newFocusedElement);
-          if (!focusInside) {
-            if (this.opened) {
-              // The user has most likely clicked on something in the background
-              // of a modeless overlay. Remember that element, and restore focus
-              // to it when the overlay finishes closing.
-              this[restoreFocusToElementKey] = newFocusedElement;
-            } else {
-              // A blur event fired, but the overlay closed itself before the blur
-              // event could be processed. In closing, we may have already
-              // restored the focus to the element that originally invoked the
-              // overlay. Since the user has clicked somewhere else to close the
-              // overlay, put the focus where they wanted it.
-              newFocusedElement.focus();
-              this[restoreFocusToElementKey] = null;
-            }
-          }
-        }
-      });
-    }
-
     // TODO: Document
     get autoFocus() {
       return this[internal.state].autoFocus;
@@ -60,38 +30,39 @@ export default function OverlayMixin(Base) {
       this[internal.setState]({ autoFocus });
     }
 
-    [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) {
-        super[internal.componentDidMount]();
-      }
-      openedChanged(this);
+    connectedCallback() {
+      super.connectedCallback();
+      if (this[internal.firstConnectedCallback]) {
+        this.addEventListener("blur", event => {
+          // What has the focus now?
+          const newFocusedElement =
+            event.relatedTarget || document.activeElement;
+          /** @type {any} */
+          const node = this;
+          if (newFocusedElement instanceof HTMLElement) {
+            const focusInside = deepContains(node, newFocusedElement);
+            if (!focusInside) {
+              if (this.opened) {
+                // The user has most likely clicked on something in the background
+                // of a modeless overlay. Remember that element, and restore focus
+                // to it when the overlay finishes closing.
+                this[restoreFocusToElementKey] = newFocusedElement;
+              } else {
+                // A blur event fired, but the overlay closed itself before the blur
+                // event could be processed. In closing, we may have already
+                // restored the focus to the element that originally invoked the
+                // overlay. Since the user has clicked somewhere else to close the
+                // overlay, put the focus where they wanted it.
+                newFocusedElement.focus();
+                this[restoreFocusToElementKey] = null;
+              }
+            }
+          }
+        });
 
-      // Perform one-time check to see if component needs a default z-index.
-      if (this[internal.state].persistent && !hasZIndex(this)) {
-        bringToFront(this);
-      }
-    }
-
-    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) {
-        super[internal.componentDidUpdate](changed);
-      }
-      if (changed.opened) {
-        openedChanged(this);
-      }
-
-      // If we're finished closing an overlay that was automatically added to the
-      // document, remove it now. Note: we only do this when the component
-      // updates, not when it mounts, because we don't want an automatically-added
-      // element to be immediately removed during its connectedCallback.
-      if (
-        !this[internal.state].persistent &&
-        this.closeFinished &&
-        this[appendedToDocumentKey]
-      ) {
-        this[appendedToDocumentKey] = false;
-        if (this.parentNode) {
-          this.parentNode.removeChild(this);
+        // Perform one-time check to see if component needs a default z-index.
+        if (this[internal.state].persistent && !hasZIndex(this)) {
+          bringToFront(this);
         }
       }
     }
@@ -148,6 +119,62 @@ export default function OverlayMixin(Base) {
               bringToFront(this);
             }
           }
+        }
+      }
+    }
+
+    [internal.rendered](/** @type {PlainObject} */ changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
+      }
+
+      if (changed.opened) {
+        if (this[internal.state].autoFocus) {
+          if (this[internal.state].opened) {
+            // Opened
+            if (
+              !this[restoreFocusToElementKey] &&
+              document.activeElement !== document.body
+            ) {
+              // Remember which element had the focus before we were opened.
+              this[restoreFocusToElementKey] = document.activeElement;
+            }
+            // Focus on the element itself (if it's focusable), or the first focusable
+            // element inside it.
+            // TODO: We'd prefer to require that overlays (like the Overlay base
+            // class) make use of delegatesFocus via DelegateFocusMixin, which would
+            // let us drop the need for this mixin here to do anything special with
+            // focus. However, an initial trial of this revealed an issue in
+            // MenuButton, where invoking the menu did not put the focus on the first
+            // menu item as expected. Needs more investigation.
+            const focusElement = firstFocusableElement(this);
+            if (focusElement) {
+              focusElement.focus();
+            }
+          } else {
+            // Closed
+            if (this[restoreFocusToElementKey]) {
+              // Restore focus to the element that had the focus before the overlay was
+              // opened.
+              this[restoreFocusToElementKey].focus();
+              this[restoreFocusToElementKey] = null;
+            }
+          }
+        }
+      }
+
+      // If we're finished closing an overlay that was automatically added to the
+      // document, remove it now. Note: we only do this when the component
+      // updates, not when it mounts, because we don't want an automatically-added
+      // element to be immediately removed during its connectedCallback.
+      if (
+        !this[internal.state].persistent &&
+        this.closeFinished &&
+        this[appendedToDocumentKey]
+      ) {
+        this[appendedToDocumentKey] = false;
+        if (this.parentNode) {
+          this.parentNode.removeChild(this);
         }
       }
     }
@@ -222,40 +249,4 @@ function maxZIndexInUse() {
     return zIndex;
   });
   return Math.max(...zIndices);
-}
-
-// Update the overlay following a change in opened state.
-function openedChanged(/** @type {ReactiveElement} */ element) {
-  if (element[internal.state].autoFocus) {
-    if (element[internal.state].opened) {
-      // Opened
-      if (
-        !element[restoreFocusToElementKey] &&
-        document.activeElement !== document.body
-      ) {
-        // Remember which element had the focus before we were opened.
-        element[restoreFocusToElementKey] = document.activeElement;
-      }
-      // Focus on the element itself (if it's focusable), or the first focusable
-      // element inside it.
-      // TODO: We'd prefer to require that overlays (like the Overlay base
-      // class) make use of delegatesFocus via DelegateFocusMixin, which would
-      // let us drop the need for this mixin here to do anything special with
-      // focus. However, an initial trial of this revealed an issue in
-      // MenuButton, where invoking the menu did not put the focus on the first
-      // menu item as expected. Needs more investigation.
-      const focusElement = firstFocusableElement(element);
-      if (focusElement) {
-        focusElement.focus();
-      }
-    } else {
-      // Closed
-      if (element[restoreFocusToElementKey]) {
-        // Restore focus to the element that had the focus before the overlay was
-        // opened.
-        element[restoreFocusToElementKey].focus();
-        element[restoreFocusToElementKey] = null;
-      }
-    }
-  }
 }

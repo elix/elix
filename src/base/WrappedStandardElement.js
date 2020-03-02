@@ -244,38 +244,39 @@ class WrappedStandardElement extends Base {
   //
   // click() {}
 
-  [internal.componentDidMount]() {
-    super[internal.componentDidMount]();
-
-    // Listen for any events raised by the inner element which will not
-    // automatically be retargetted across the Shadow DOM boundary, and re-raise
-    // those events when they happen.
-    const eventNames = reraiseEvents[this.extends] || [];
-    eventNames.forEach(eventName => {
-      this.inner.addEventListener(eventName, () => {
-        const event = new Event(eventName, {
-          bubbles: eventBubbles[eventName] || false
-        });
-        this.dispatchEvent(event);
-      });
-    });
-
-    // If inner element can be disabled, then listen to mouse events on the
-    // *outer* element and absorb them if the inner element is disabled.
-    // Without this, a mouse event like a click on the inner disabled element
-    // would be treated as a click on the outer element. Someone listening to
-    // clicks on the outer element would get a click event, even though the
-    // overall element is supposed to be disabled.
-    if ("disabled" in this[internal.ids].inner) {
-      mouseEventNames.forEach(eventName => {
-        this.addEventListener(eventName, event => {
-          /** @type {any} */
-          const element = this[internal.ids].inner;
-          if (element.disabled) {
-            event.stopImmediatePropagation();
-          }
+  connectedCallback() {
+    super.connectedCallback();
+    if (this[internal.firstConnectedCallback]) {
+      // Listen for any events raised by the inner element which will not
+      // automatically be retargetted across the Shadow DOM boundary, and
+      // re-raise those events when they happen.
+      const eventNames = reraiseEvents[this.extends] || [];
+      eventNames.forEach(eventName => {
+        this.inner.addEventListener(eventName, () => {
+          const event = new Event(eventName, {
+            bubbles: eventBubbles[eventName] || false
+          });
+          this.dispatchEvent(event);
         });
       });
+
+      // If inner element can be disabled, then listen to mouse events on the
+      // *outer* element and absorb them if the inner element is disabled.
+      // Without this, a mouse event like a click on the inner disabled element
+      // would be treated as a click on the outer element. Someone listening to
+      // clicks on the outer element would get a click event, even though the
+      // overall element is supposed to be disabled.
+      if ("disabled" in this[internal.ids].inner) {
+        mouseEventNames.forEach(eventName => {
+          this.addEventListener(eventName, event => {
+            /** @type {any} */
+            const element = this[internal.ids].inner;
+            if (element.disabled) {
+              event.stopImmediatePropagation();
+            }
+          });
+        });
+      }
     }
   }
 
