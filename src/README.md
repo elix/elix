@@ -1,4 +1,4 @@
-The /src folder has three subfolders:
+This src folder has three subfolders:
 
 - src/core – The ReactiveElement base class, the core files it’s built from, plus utilities
 - src/base – Component mixins and generic component base classes (which typically can’t be instantiated directly)
