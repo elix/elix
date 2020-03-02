@@ -140,13 +140,13 @@ export default function ReactiveMixin(Base) {
 
         this[internal.rendering] = false;
 
-        // Let the component know it was rendered.
-        this[internal.rendered](changed);
-
         // Since we've now rendered all changes, clear the change log. If other
         // async render calls are queued up behind this call, they'll see an
         // empty change log, and so skip unnecessary render work.
         this[changedSinceLastRenderKey] = {};
+
+        // Let the component know it was rendered.
+        this[internal.rendered](changed);
 
         // DEPRECATED: First time is consider mounting; subsequent times are updates.
         if (!this[mountedKey]) {
