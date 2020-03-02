@@ -1,8 +1,13 @@
 import { assert, sinon } from "../testHelpers.js";
-import * as internal from "../../src/base/internal.js";
+import * as internal from "../../src/core/internal.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 
 class ReactiveTest extends ReactiveMixin(HTMLElement) {
+  constructor() {
+    super();
+    this._firstConnectedCallback = this[internal.firstConnectedCallback];
+  }
+
   [internal.componentDidMount]() {
     if (super[internal.componentDidMount]) {
       super[internal.componentDidMount]();
@@ -13,6 +18,11 @@ class ReactiveTest extends ReactiveMixin(HTMLElement) {
     if (super[internal.componentDidUpdate]) {
       super[internal.componentDidUpdate](changed);
     }
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this._firstConnectedCallback = this[internal.firstConnectedCallback];
   }
 
   [internal.render](changed) {
@@ -171,6 +181,20 @@ describe("ReactiveMixin", function() {
     // connectedCallback shouldn't trigger rerender.
     await Promise.resolve();
     assert.equal(componentDidMountSpy.callCount, 1);
+  });
+
+  it("[internal.firstConnectedCallback] is true only in first connectedCallback", async () => {
+    const fixture = new ReactiveTest();
+    assert(!fixture._firstConnectedCallback);
+    container.appendChild(fixture);
+    // connectedCallback should trigger first render with promise timing.
+    await Promise.resolve();
+    assert(fixture._firstConnectedCallback);
+    // Remove element, then put it back.
+    container.removeChild(fixture);
+    container.appendChild(fixture);
+    await Promise.resolve();
+    assert(!fixture._firstConnectedCallback);
   });
 
   it("leaves state object alone if there are no changes", async () => {

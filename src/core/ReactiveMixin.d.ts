@@ -10,6 +10,7 @@ declare const ReactiveMixin: Mixin<
   {
     [internal.componentDidMount](): void;
     [internal.componentDidUpdate](changed: PlainObject): void;
+    connectedCallback(): void;
     readonly [internal.defaultState]: PlainObject;
     [internal.raiseChangeEvents]: boolean;
     [internal.render](changed: PlainObject): void;

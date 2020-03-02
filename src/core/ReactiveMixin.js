@@ -26,6 +26,7 @@ export default function ReactiveMixin(Base) {
   class Reactive extends Base {
     constructor() {
       super();
+      this[internal.firstConnectedCallback] = false;
       this[changedSinceLastRenderKey] = {};
       // Set the initial state from the default state defined by the component
       // and its mixins.
@@ -49,6 +50,13 @@ export default function ReactiveMixin(Base) {
     }
 
     connectedCallback() {
+      if (this[internal.firstConnectedCallback]) {
+        // Second or nth connectedCallback.
+        this[internal.firstConnectedCallback] = false;
+      } else {
+        // First connectedCallback.
+        this[internal.firstConnectedCallback] = true;
+      }
       if (super.connectedCallback) {
         super.connectedCallback();
       }
