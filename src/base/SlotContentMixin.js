@@ -26,9 +26,9 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 export default function SlotContentMixin(Base) {
   // The class prototype added by the mixin.
   class SlotContent extends Base {
-    [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) {
-        super[internal.componentDidMount]();
+    connectedCallback() {
+      if (super.connectedCallback) {
+        super.connectedCallback();
       }
 
       // Listen to changes on the default slot.

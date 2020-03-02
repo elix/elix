@@ -18,8 +18,8 @@ import html from "../core/html.js";
  * @part {Button} grip - the handle the user can tap, click, or swipe to open or close the drawer
  */
 class DrawerWithGrip extends Drawer {
-  [internal.componentDidMount]() {
-    super[internal.componentDidMount]();
+  connectedCallback() {
+    super.connectedCallback();
 
     if (this[internal.state].gripSize === null) {
       // Use the rendered size of the grip to set the gripSize. This will ensure

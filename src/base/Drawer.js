@@ -42,22 +42,6 @@ const Base = DialogModalityMixin(
  * @mixes TransitionEffectMixin
  */
 class Drawer extends Base {
-  connectedCallback() {
-    super.connectedCallback();
-    if (this[internal.firstConnectedCallback]) {
-      // If user clicks on frame while drawer is closed (implying that gripSize is
-      // greater than zero), then open the drawer.
-      this[internal.ids].frame.addEventListener("click", event => {
-        this[internal.raiseChangeEvents] = true;
-        if (this.closed) {
-          this.open();
-          event.stopPropagation();
-        }
-        this[internal.raiseChangeEvents] = false;
-      });
-    }
-  }
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       backdropPartType: ModalBackdrop,
