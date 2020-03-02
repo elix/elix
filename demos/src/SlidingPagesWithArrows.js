@@ -1,10 +1,11 @@
 import * as internal from "../../src/base/internal.js";
 import * as template from "../../src/core/template.js";
-import ArrowDirectionButton from "../../src/plain/PlainArrowDirectionButton.js";
 import ArrowDirectionMixin from "../../src/base/ArrowDirectionMixin.js";
+import PlainArrowDirectionButton from "../../src/plain/PlainArrowDirectionButton.js";
+import PlainArrowDirectionMixin from "../../src/plain/PlainArrowDirectionMixin.js";
 import SlidingPages from "../../src/plain/PlainSlidingPages.js";
 
-const Base = ArrowDirectionMixin(SlidingPages);
+const Base = PlainArrowDirectionMixin(ArrowDirectionMixin(SlidingPages));
 
 class SlidingPagesWithArrows extends Base {
   get [internal.defaultState]() {
@@ -15,7 +16,7 @@ class SlidingPagesWithArrows extends Base {
     // Firefox will show the arrows.
     const finePointer = !window.matchMedia("(pointer:coarse)").matches;
     return Object.assign(super[internal.defaultState], {
-      arrowButtonPartType: ArrowDirectionButton,
+      arrowButtonPartType: PlainArrowDirectionButton,
       showArrowButtons: finePointer
     });
   }
@@ -29,7 +30,7 @@ class SlidingPagesWithArrows extends Base {
     result.content.append(
       template.html`
         <style>
-          .arrowButton {
+          [part~="arrow-icon"] {
             font-size: 48px;
           }
         </style>

@@ -252,8 +252,8 @@ export default function SwipeCommandsMixin(Base) {
               will-change: width;
             }
 
-            .commandContainer ::slotted(*),
-            .commandContainer slot > * {
+            [part~="command-container"] ::slotted(*),
+            [part~="command-container"] slot > * {
               flex: 1;
             }
 
