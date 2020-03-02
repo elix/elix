@@ -136,6 +136,22 @@ class AutoSizeTextarea extends Base {
     }
   }
 
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
+    if (changed.value && this[internal.raiseChangeEvents]) {
+      const { value } = this[internal.state];
+      /**
+       * Raised when the `value` property changes.
+       *
+       * @event value-changed
+       */
+      const event = new CustomEvent("value-changed", {
+        detail: { value }
+      });
+      this.dispatchEvent(event);
+    }
+  }
+
   [internal.stateEffects](state, changed) {
     const effects = super[internal.stateEffects](state, changed);
 
