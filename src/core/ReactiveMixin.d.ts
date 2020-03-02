@@ -15,6 +15,7 @@ declare const ReactiveMixin: Mixin<
     [internal.raiseChangeEvents]: boolean;
     [internal.render](changed: PlainObject): void;
     [internal.renderChanges](): void;
+    [internal.rendered](changed: PlainObject): void;
     [internal.rendering]: boolean;
     [internal.setState](changes: PlainObject): Promise<void>;
     readonly [internal.state]: PlainObject;

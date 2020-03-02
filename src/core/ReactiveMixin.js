@@ -140,13 +140,15 @@ export default function ReactiveMixin(Base) {
 
         this[internal.rendering] = false;
 
+        // Let the component know it was rendered.
+        this[internal.rendered](changed);
+
         // Since we've now rendered all changes, clear the change log. If other
         // async render calls are queued up behind this call, they'll see an
         // empty change log, and so skip unnecessary render work.
         this[changedSinceLastRenderKey] = {};
 
-        // Let the component know it was rendered.
-        // First time is consider mounting; subsequent times are updates.
+        // DEPRECATED: First time is consider mounting; subsequent times are updates.
         if (!this[mountedKey]) {
           this[internal.componentDidMount]();
           this[mountedKey] = true;
@@ -157,6 +159,14 @@ export default function ReactiveMixin(Base) {
         // Restore state of event flags.
         this[internal.raiseChangeEvents] = saveRaiseChangeEvents;
         this[raiseChangeEventsInNextRenderKey] = saveRaiseChangeEvents;
+      }
+    }
+
+    // The default implementation of rendered just passes through to any
+    // superclass implementation.
+    [internal.rendered](/** @type {PlainObject} */ changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
       }
     }
 

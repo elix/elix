@@ -24,6 +24,7 @@ export const nativeInternals: "_nativeInternals";
 export const raiseChangeEvents: "_raiseChangeEvents";
 export const render: "_render";
 export const renderChanges: "_renderChanges";
+export const rendered: "_rendered";
 export const rendering: "_rendering";
 export const setState: "_setState";
 export const shadowRoot: "_shadowRoot";

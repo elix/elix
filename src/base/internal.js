@@ -374,6 +374,14 @@ export const render = coreInternal.render;
 export const renderChanges = coreInternal.renderChanges;
 
 /**
+ * Symbol for the `rendered` method.
+ *
+ * [ReactiveMixin](ReactiveMixin) will invoke this method after your
+ * element has completely finished rendering.
+ */
+export const rendered = coreInternal.rendered;
+
+/**
  * Symbol for the `rendering` property.
  *
  * [ReactiveMixin](ReactiveMixin) sets this property to true during rendering,

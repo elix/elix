@@ -169,6 +169,19 @@ describe("ReactiveMixin", function() {
     assert.equal(componentDidUpdateSpy.callCount, 1);
   });
 
+  it("render invokes rendered method if defined", async () => {
+    const fixture = new ReactiveTest();
+    const renderedSpy = sinon.spy(fixture, internal.rendered);
+    container.appendChild(fixture);
+    // connectedCallback should trigger first render with promise timing.
+    await Promise.resolve();
+    assert.equal(renderedSpy.callCount, 1);
+    await fixture[internal.setState]({
+      message: "iguana"
+    });
+    assert.equal(renderedSpy.callCount, 2);
+  });
+
   it("only calls componentDidMount once, even if component is reattached", async () => {
     const fixture = new ReactiveTest();
     const componentDidMountSpy = sinon.spy(fixture, internal.componentDidMount);
