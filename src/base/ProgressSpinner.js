@@ -11,18 +11,6 @@ import ReactiveElement from "../core/ReactiveElement.js";
  * @inherits ReactiveElement
  */
 class ProgressSpinner extends ReactiveElement {
-  [internal.componentDidMount]() {
-    super[internal.componentDidMount]();
-    tick(this);
-  }
-
-  [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-    super[internal.componentDidUpdate](changed);
-    if (changed.count || (changed.playing && this[internal.state].playing)) {
-      tick(this);
-    }
-  }
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       count: -1,
@@ -42,6 +30,13 @@ class ProgressSpinner extends ReactiveElement {
   }
   set playing(playing) {
     this[internal.setState]({ playing });
+  }
+
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
+    if (changed.count || (changed.playing && this[internal.state].playing)) {
+      tick(this);
+    }
   }
 
   get [internal.template]() {
