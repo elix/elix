@@ -421,7 +421,7 @@ class DateComboBox extends Base {
           flex-direction: column;
         }
       </style>
-      <div id="calendar-container">
+      <div part="calendar-container">
         <div id="calendar" part="calendar" exportparts="day, day-names-header, month-days, month-hear-header" tabindex="-1"></div>
         <div id="todayButton" part="today-button">Today</div>
       </div>
