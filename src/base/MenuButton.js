@@ -152,10 +152,13 @@ class MenuButton extends PopupButton {
 
   [internal.keydown](/** @type {KeyboardEvent} */ event) {
     switch (event.key) {
-      // When open, Enter closes popup.
+      // Enter toggles popup.
       case "Enter":
         if (this.opened) {
           this.highlightSelectedItemAndClose();
+          return true;
+        } else {
+          this.open();
           return true;
         }
     }

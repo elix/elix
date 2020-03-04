@@ -131,7 +131,7 @@ class ComboBox extends Base {
         break;
 
       case "Enter":
-        this.close();
+        this.toggle();
         handled = true;
         break;
 
