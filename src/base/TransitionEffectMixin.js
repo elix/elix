@@ -14,7 +14,7 @@ export default function TransitionEffectMixin(Base) {
       if (super.connectedCallback) {
         super.connectedCallback();
       }
-      if (this[internal.firstConnectedCallback]) {
+      if (this[internal.firstRender]) {
         // Listen for `transitionend` events so we can check to see whether an
         // effect has completed. If the component defines an `effectEndTarget`
         // that's the host, listen to events on that. Otherwise, we assume the

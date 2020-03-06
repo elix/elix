@@ -21,7 +21,7 @@ export const defaultTabIndex: "_defaultTabIndex";
 export const delegatesFocus: "_delegatesFocus";
 export const effectEndTarget: "_effectEndTarget";
 export const event: "_event";
-export const firstConnectedCallback: "_firstConnectedCallback";
+export const firstRender: "_firstRender";
 export const focusTarget: "_focusTarget";
 export const getItemText: "_getItemText";
 export const goDown: "_goDown";

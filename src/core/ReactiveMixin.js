@@ -1,8 +1,6 @@
 import * as internal from "./internal.js";
 
 /** @type {any} */
-const mountedKey = Symbol("mounted");
-/** @type {any} */
 const stateKey = Symbol("state");
 /** @type {any} */
 const raiseChangeEventsInNextRenderKey = Symbol(
@@ -26,7 +24,7 @@ export default function ReactiveMixin(Base) {
   class Reactive extends Base {
     constructor() {
       super();
-      this[internal.firstConnectedCallback] = false;
+      this[internal.firstRender] = undefined;
       this[changedSinceLastRenderKey] = {};
       // Set the initial state from the default state defined by the component
       // and its mixins.
@@ -50,13 +48,6 @@ export default function ReactiveMixin(Base) {
     }
 
     connectedCallback() {
-      if (this[internal.firstConnectedCallback]) {
-        // Second or nth connectedCallback.
-        this[internal.firstConnectedCallback] = false;
-      } else {
-        // First connectedCallback.
-        this[internal.firstConnectedCallback] = true;
-      }
       if (super.connectedCallback) {
         super.connectedCallback();
       }
@@ -114,6 +105,11 @@ export default function ReactiveMixin(Base) {
       // Determine what's changed since the last render.
       const changed = this[changedSinceLastRenderKey];
 
+      if (typeof this[internal.firstRender] === "undefined") {
+        // First render.
+        this[internal.firstRender] = true;
+      }
+
       // We only render if the component's never been rendered before, or is
       // something's actually changed since the last render. Consecutive
       // synchronous[internal.setState] calls will queue up corresponding async render
@@ -121,7 +117,7 @@ export default function ReactiveMixin(Base) {
       // state is available, and that is what is rendered. When the following
       // render calls happen, they will see that the complete state has already
       // been rendered, and skip doing any work.
-      if (!this[mountedKey] || Object.keys(changed).length > 0) {
+      if (this[internal.firstRender] || Object.keys(changed).length > 0) {
         // If at least one of the[internal.setState] calls was made in response to user
         // interaction or some other component-internal event, set the
         // raiseChangeEvents flag so that componentDidMount/componentDidUpdate
@@ -149,12 +145,14 @@ export default function ReactiveMixin(Base) {
         this[internal.rendered](changed);
 
         // DEPRECATED: First time is consider mounting; subsequent times are updates.
-        if (!this[mountedKey]) {
+        if (this[internal.firstRender]) {
           this[internal.componentDidMount]();
-          this[mountedKey] = true;
         } else {
           this[internal.componentDidUpdate](changed);
         }
+
+        // We've now rendered for the first time.
+        this[internal.firstRender] = false;
 
         // Restore state of event flags.
         this[internal.raiseChangeEvents] = saveRaiseChangeEvents;

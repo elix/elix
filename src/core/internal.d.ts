@@ -16,7 +16,7 @@ export const componentDidMount: "_componentDidMount";
 export const componentDidUpdate: "_componentDidUpdate";
 export const defaultState: "_defaultState";
 export const delegatesFocus: "_delegatesFocus";
-export const firstConnectedCallback: "_firstConnectedCallback";
+export const firstRender: "_firstRender";
 export const focusTarget: "_focusTarget";
 export const hasDynamicTemplate: "_hasDynamicTemplate";
 export const ids: "_ids";

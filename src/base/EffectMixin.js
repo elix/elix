@@ -18,7 +18,7 @@ export default function EffectMixin(Base) {
         super.connectedCallback();
       }
 
-      if (this[internal.firstConnectedCallback]) {
+      if (this[internal.firstRender]) {
         // Once everything's finished rendering, enable transition effects.
         setTimeout(() => {
           this[internal.setState]({

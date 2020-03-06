@@ -246,7 +246,7 @@ class WrappedStandardElement extends Base {
 
   connectedCallback() {
     super.connectedCallback();
-    if (this[internal.firstConnectedCallback]) {
+    if (this[internal.firstRender]) {
       // Listen for any events raised by the inner element which will not
       // automatically be retargetted across the Shadow DOM boundary, and
       // re-raise those events when they happen.

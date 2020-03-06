@@ -62,15 +62,16 @@ export const defaultState = Symbol("defaultState");
 export const delegatesFocus = Symbol("delegatesFocus");
 
 /**
- * Symbol for the `firstConnectedCallback` property.
+ * Symbol for the `firstRender` property.
  *
  * [ReactiveMixin](ReactiveMixin) sets the property to `true` during the
- * element's first `connectedCallback`, then `false` in subsequent callbacks.
+ * element's first `render` and `rendered` callback, then `false` in subsequent
+ * callbacks.
  *
- * You can inspect this property in your own `connectedCallback` handler
- * to do work like wiring up events that should only happen once.
+ * You can inspect this property in your own `rendered` callback handler to do
+ * work like wiring up events that should only happen once.
  */
-export const firstConnectedCallback = Symbol("firstConnectedCallback");
+export const firstRender = Symbol("firstRender");
 
 /**
  * Symbol for the `focusTarget` property.

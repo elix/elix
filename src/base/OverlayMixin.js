@@ -32,7 +32,7 @@ export default function OverlayMixin(Base) {
 
     connectedCallback() {
       super.connectedCallback();
-      if (this[internal.firstConnectedCallback]) {
+      if (this[internal.firstRender]) {
         this.addEventListener("blur", event => {
           // What has the focus now?
           const newFocusedElement =

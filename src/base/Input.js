@@ -17,7 +17,7 @@ const Base = FormElementMixin(WrappedStandardElement.wrap("input"));
 class Input extends Base {
   connectedCallback() {
     super.connectedCallback();
-    if (this[internal.firstConnectedCallback]) {
+    if (this[internal.firstRender]) {
       // The following jsDoc comment doesn't directly apply to the statement which
       // follows, but is placed there because the comment has to go somewhere to
       // be visible to jsDoc, and the statement is at tangentially related.

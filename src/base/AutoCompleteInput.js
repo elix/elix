@@ -9,7 +9,7 @@ import Input from "./Input.js";
 class AutoCompleteInput extends Input {
   connectedCallback() {
     super.connectedCallback();
-    if (this[internal.firstConnectedCallback]) {
+    if (this[internal.firstRender]) {
       // In many ways it would be cleaner to do AutoComplete work in a keydown
       // listener. Unfortunately, Chrome for Android sets the keyCode on *all*
       // keydown events to a mysterious 229 value, making it impossible for us

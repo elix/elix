@@ -5,7 +5,7 @@ import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 class ReactiveTest extends ReactiveMixin(HTMLElement) {
   constructor() {
     super();
-    this._firstConnectedCallback = this[internal.firstConnectedCallback];
+    this._firstRender = this[internal.firstRender];
   }
 
   [internal.componentDidMount]() {
@@ -20,16 +20,14 @@ class ReactiveTest extends ReactiveMixin(HTMLElement) {
     }
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-    this._firstConnectedCallback = this[internal.firstConnectedCallback];
+  [internal.render](changed) {
+    super[internal.render](changed);
+    this.renderedResult = this[internal.state].message;
   }
 
-  [internal.render](changed) {
-    if (super[internal.render]) {
-      super[internal.render](changed);
-    }
-    this.renderedResult = this[internal.state].message;
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
+    this._firstRender = this[internal.firstRender];
   }
 }
 customElements.define("reactive-test", ReactiveTest);
@@ -196,18 +194,19 @@ describe("ReactiveMixin", function() {
     assert.equal(componentDidMountSpy.callCount, 1);
   });
 
-  it("[internal.firstConnectedCallback] is true only in first connectedCallback", async () => {
+  it("[internal.firstRender] is true only in first rendered callback", async () => {
     const fixture = new ReactiveTest();
-    assert(!fixture._firstConnectedCallback);
+    assert(typeof fixture[internal.firstRender] === "undefined");
     container.appendChild(fixture);
     // connectedCallback should trigger first render with promise timing.
     await Promise.resolve();
-    assert(fixture._firstConnectedCallback);
-    // Remove element, then put it back.
+    assert(fixture._firstRender);
+    // Remove element, touch it, then put it back.
     container.removeChild(fixture);
+    fixture[internal.setState]({ message: "gerbil" });
     container.appendChild(fixture);
     await Promise.resolve();
-    assert(!fixture._firstConnectedCallback);
+    assert(!fixture._firstRender);
   });
 
   it("leaves state object alone if there are no changes", async () => {

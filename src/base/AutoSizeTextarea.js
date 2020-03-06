@@ -29,7 +29,7 @@ const Base = FormElementMixin(
 class AutoSizeTextarea extends Base {
   connectedCallback() {
     super.connectedCallback();
-    if (this[internal.firstConnectedCallback]) {
+    if (this[internal.firstRender]) {
       /**
        * Raised when the user changes the element's text content.
        *
