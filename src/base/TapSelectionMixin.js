@@ -46,17 +46,20 @@ export default function TapSelectionMixin(Base) {
       });
     }
 
-    [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) {
-        super[internal.componentDidMount]();
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
       }
-      Object.assign(this.style, {
-        touchAction: "manipulation", // for iOS Safari
-        mozUserSelect: "none",
-        msUserSelect: "none",
-        webkitUserSelect: "none",
-        userSelect: "none"
-      });
+
+      if (this[internal.firstRender]) {
+        Object.assign(this.style, {
+          touchAction: "manipulation", // for iOS Safari
+          mozUserSelect: "none",
+          msUserSelect: "none",
+          webkitUserSelect: "none",
+          userSelect: "none"
+        });
+      }
     }
 
     [internal.tap](/** @type {MouseEvent} */ event) {

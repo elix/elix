@@ -33,32 +33,35 @@ const nativeDelegatesFocus = shadowRoot.delegatesFocus;
 export default function ComposedFocusMixin(Base) {
   // The class prototype added by the mixin.
   class ComposedFocus extends Base {
-    [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) {
-        super[internal.componentDidMount]();
-      }
-      this.addEventListener("mousedown", event => {
-        if (!this[internal.state].composeFocus) {
-          return;
-        }
-        // Only process events for the main (usually left) button.
-        if (event.button !== 0) {
-          return;
-        }
-        if (event.target instanceof Element) {
-          const target = closestFocusableNode(event.target);
-          if (target) {
-            target.focus();
-            event.preventDefault();
-          }
-        }
-      });
-    }
-
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState], {
         composeFocus: !nativeDelegatesFocus
       });
+    }
+
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
+      }
+
+      if (this[internal.firstRender]) {
+        this.addEventListener("mousedown", event => {
+          if (!this[internal.state].composeFocus) {
+            return;
+          }
+          // Only process events for the main (usually left) button.
+          if (event.button !== 0) {
+            return;
+          }
+          if (event.target instanceof Element) {
+            const target = closestFocusableNode(event.target);
+            if (target) {
+              target.focus();
+              event.preventDefault();
+            }
+          }
+        });
+      }
     }
   }
 

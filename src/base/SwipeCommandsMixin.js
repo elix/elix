@@ -15,61 +15,6 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 export default function SwipeCommandsMixin(Base) {
   // The class prototype added by the mixin.
   return class SwipeCommands extends Base {
-    [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) {
-        super[internal.componentDidMount]();
-      }
-      // When a transition on the left/right command container ends, let the
-      // component know so that it can perform any operation that should follow
-      // the end of the transition. E.g., a Delete swipe command would want to
-      // wait until the transition has finished before removing the item.
-      this[internal.ids].leftCommandContainer.addEventListener(
-        "transitionend",
-        () => {
-          if (
-            this[internal.state].swipeRightCommitted &&
-            this[internal.swipeRightTransitionEnd]
-          ) {
-            this[internal.swipeRightTransitionEnd]();
-          }
-          // Now that the swipe has finished, reset remaining swipe-related state.
-          this[internal.setState]({
-            swipeItem: null,
-            swipeRightCommitted: false
-          });
-        }
-      );
-      this[internal.ids].rightCommandContainer.addEventListener(
-        "transitionend",
-        () => {
-          if (
-            this[internal.state].swipeLeftCommitted &&
-            this[internal.swipeLeftTransitionEnd]
-          ) {
-            this[internal.swipeLeftTransitionEnd]();
-          }
-          // Now that the swipe has finished, reset remaining swipe-related state.
-          this[internal.setState]({
-            swipeItem: null,
-            swipeLeftCommitted: false
-          });
-        }
-      );
-    }
-
-    [internal.componentDidUpdate](/** @typeof {PlainObject} */ changed) {
-      super[internal.componentDidUpdate](changed);
-      // Vibrate if the user is currently swiping and has just triggered a change
-      // in the commit-ability of a command.
-      if (
-        (changed.swipeLeftWillCommit || changed.swipeRightWillCommit) &&
-        "vibrate" in navigator &&
-        this[internal.state].swipeFraction !== null
-      ) {
-        navigator.vibrate(5);
-      }
-    }
-
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState], {
         swipeLeftCommitted: false,
@@ -194,6 +139,61 @@ export default function SwipeCommandsMixin(Base) {
             width: "0"
           });
         }
+      }
+    }
+
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
+      }
+
+      if (this[internal.firstRender]) {
+        // When a transition on the left/right command container ends, let the
+        // component know so that it can perform any operation that should follow
+        // the end of the transition. E.g., a Delete swipe command would want to
+        // wait until the transition has finished before removing the item.
+        this[internal.ids].leftCommandContainer.addEventListener(
+          "transitionend",
+          () => {
+            if (
+              this[internal.state].swipeRightCommitted &&
+              this[internal.swipeRightTransitionEnd]
+            ) {
+              this[internal.swipeRightTransitionEnd]();
+            }
+            // Now that the swipe has finished, reset remaining swipe-related state.
+            this[internal.setState]({
+              swipeItem: null,
+              swipeRightCommitted: false
+            });
+          }
+        );
+        this[internal.ids].rightCommandContainer.addEventListener(
+          "transitionend",
+          () => {
+            if (
+              this[internal.state].swipeLeftCommitted &&
+              this[internal.swipeLeftTransitionEnd]
+            ) {
+              this[internal.swipeLeftTransitionEnd]();
+            }
+            // Now that the swipe has finished, reset remaining swipe-related state.
+            this[internal.setState]({
+              swipeItem: null,
+              swipeLeftCommitted: false
+            });
+          }
+        );
+      }
+
+      // Vibrate if the user is currently swiping and has just triggered a change
+      // in the commit-ability of a command.
+      if (
+        (changed.swipeLeftWillCommit || changed.swipeRightWillCommit) &&
+        "vibrate" in navigator &&
+        this[internal.state].swipeFraction !== null
+      ) {
+        navigator.vibrate(5);
       }
     }
 

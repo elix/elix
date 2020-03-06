@@ -13,27 +13,6 @@ const Base = KeyboardMixin(PopupSource);
  * @mixes KeyboardMixin
  */
 class PopupButton extends Base {
-  [internal.componentDidMount]() {
-    super[internal.componentDidMount]();
-
-    // If the top-level element gets the focus while the popup is open, the most
-    // likely expanation is that the user hit Shift+Tab to back up out of the
-    // popup. In that case, we should close.
-    this.addEventListener("focus", async event => {
-      const hostFocused = !ownEvent(this[internal.ids].popup, event);
-      // It's possible to get a focus event in the initial mousedown on the
-      // source button before the popup is even rendered. We don't want to close
-      // in that case, so we check to see if we've already measured the popup
-      // dimensions (which will be true if the popup fully completed rendering).
-      const measured = this[internal.state].popupHeight !== null;
-      if (hostFocused && this.opened && measured) {
-        this[internal.raiseChangeEvents] = true;
-        await this.close();
-        this[internal.raiseChangeEvents] = false;
-      }
-    });
-  }
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       role: "button",
@@ -100,6 +79,30 @@ class PopupButton extends Base {
         // it when the popup closes.
       });
       source.tabIndex = -1;
+    }
+  }
+
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
+
+    if (this[internal.firstRender]) {
+      // If the top-level element gets the focus while the popup is open, the
+      // most likely expanation is that the user hit Shift+Tab to back up out of
+      // the popup. In that case, we should close.
+      this.addEventListener("focus", async event => {
+        const hostFocused = !ownEvent(this[internal.ids].popup, event);
+        // It's possible to get a focus event in the initial mousedown on the
+        // source button before the popup is even rendered. We don't want to
+        // close in that case, so we check to see if we've already measured the
+        // popup dimensions (which will be true if the popup fully completed
+        // rendering).
+        const measured = this[internal.state].popupHeight !== null;
+        if (hostFocused && this.opened && measured) {
+          this[internal.raiseChangeEvents] = true;
+          await this.close();
+          this[internal.raiseChangeEvents] = false;
+        }
+      });
     }
   }
 

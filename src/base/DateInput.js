@@ -12,24 +12,6 @@ const Base = CalendarElementMixin(Input);
  * @mixes CalendarElementMixin
  */
 class DateInput extends Base {
-  [internal.componentDidMount]() {
-    super[internal.componentDidMount]();
-    this[internal.ids].inner.addEventListener("blur", () => {
-      this[internal.raiseChangeEvents] = true;
-      this[internal.setState]({
-        focused: false
-      });
-      this[internal.raiseChangeEvents] = false;
-    });
-    this[internal.ids].inner.addEventListener("focus", () => {
-      this[internal.raiseChangeEvents] = true;
-      this[internal.setState]({
-        focused: true
-      });
-      this[internal.raiseChangeEvents] = false;
-    });
-  }
-
   get date() {
     return super.date;
   }
@@ -96,6 +78,24 @@ class DateInput extends Base {
    */
   parseDate(text, dateTimeFormat, timeBias) {
     return calendar.parseWithOptionalYear(text, dateTimeFormat, timeBias);
+  }
+
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
+    this[internal.ids].inner.addEventListener("blur", () => {
+      this[internal.raiseChangeEvents] = true;
+      this[internal.setState]({
+        focused: false
+      });
+      this[internal.raiseChangeEvents] = false;
+    });
+    this[internal.ids].inner.addEventListener("focus", () => {
+      this[internal.raiseChangeEvents] = true;
+      this[internal.setState]({
+        focused: true
+      });
+      this[internal.raiseChangeEvents] = false;
+    });
   }
 
   [internal.stateEffects](state, changed) {

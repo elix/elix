@@ -20,17 +20,11 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 export default function SelectionInViewMixin(Base) {
   // The class prototype added by the mixin.
   class SelectionInView extends Base {
-    [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) {
-        super[internal.componentDidMount]();
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
       }
-      this.scrollSelectionIntoView();
-    }
 
-    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) {
-        super[internal.componentDidUpdate](changed);
-      }
       if (changed.selectedIndex) {
         this.scrollSelectionIntoView();
       }

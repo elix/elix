@@ -14,20 +14,6 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 export default function DelegateFocusMixin(Base) {
   // The class prototype added by the mixin.
   class DelegateFocus extends Base {
-    [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) {
-        super[internal.componentDidMount]();
-      }
-      // The delegatesFocus spec says that the focus outline should be shown on
-      // both the host and the focused subelement — which seems confusing and
-      // (in our opinion) looks ugly. If the browser supports delegatesFocus we
-      // suppress the host focus outline.
-      /** @type {any} */ const cast = this[internal.shadowRoot];
-      if (cast.delegatesFocus) {
-        this.style.outline = "none";
-      }
-    }
-
     /**
      * Returns true if the component is delegating its focus.
      *
@@ -79,6 +65,21 @@ export default function DelegateFocusMixin(Base) {
       //   ? this
       //   : firstFocusableElement(this[internal.shadowRoot]);
       return firstFocusableElement(this[internal.shadowRoot]);
+    }
+
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
+      }
+      if (this[internal.firstRender]) {
+        // The delegatesFocus spec says that the focus outline should be shown
+        // on both the host and the focused subelement — which seems confusing
+        // and (in our opinion) looks ugly. If the browser supports
+        // delegatesFocus we suppress the host focus outline.
+        if (/** @type {any} */ (this[internal.shadowRoot]).delegatesFocus) {
+          this.style.outline = "none";
+        }
+      }
     }
   }
 

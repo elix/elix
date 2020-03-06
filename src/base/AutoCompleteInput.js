@@ -7,8 +7,17 @@ import Input from "./Input.js";
  * @inherits Input
  */
 class AutoCompleteInput extends Input {
-  connectedCallback() {
-    super.connectedCallback();
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
+      autoCompleteSelect: false,
+      originalText: "",
+      texts: []
+    });
+  }
+
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
+
     if (this[internal.firstRender]) {
       // In many ways it would be cleaner to do AutoComplete work in a keydown
       // listener. Unfortunately, Chrome for Android sets the keyCode on *all*
@@ -55,18 +64,6 @@ class AutoCompleteInput extends Input {
         });
       });
     }
-  }
-
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
-      autoCompleteSelect: false,
-      originalText: "",
-      texts: []
-    });
-  }
-
-  [internal.rendered](changed) {
-    super[internal.rendered](changed);
 
     const { autoCompleteSelect, originalText } = this[internal.state];
     if (changed.originalText && autoCompleteSelect) {

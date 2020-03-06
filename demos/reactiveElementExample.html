@@ -27,15 +27,6 @@
 
         // Create a native web component with reactive behavior.
         class IncrementDecrement extends ReactiveElement {
-          [internal.componentDidMount]() {
-            this[internal.ids].decrement.addEventListener("click", () => {
-              this.value--;
-            });
-            this[internal.ids].increment.addEventListener("click", () => {
-              this.value++;
-            });
-          }
-
           // This sets the component's initial state at constructor time.
           get [internal.defaultState]() {
             return Object.assign(super[internal.defaultState], {
@@ -46,6 +37,16 @@
           // Render the current state to the DOM.
           [internal.render](changed) {
             super[internal.render](changed);
+
+            if (this[internal.firstRender]) {
+              this[internal.ids].decrement.addEventListener("click", () => {
+                this.value--;
+              });
+              this[internal.ids].increment.addEventListener("click", () => {
+                this.value++;
+              });
+            }
+
             if (changed.value) {
               this[internal.ids].value.textContent = this[internal.state].value;
             }

@@ -17,18 +17,6 @@
       import ReactiveElement from "../src/core/ReactiveElement.js";
 
       class IncrementDecrement extends ReactiveElement {
-        [internal.componentDidMount]() {
-          if (super[internal.componentDidMount]) {
-            super[internal.componentDidMount]();
-          }
-          this[internal.ids].decrement.addEventListener("click", () => {
-            this.value--;
-          });
-          this[internal.ids].increment.addEventListener("click", () => {
-            this.value++;
-          });
-        }
-
         // This property becomes the value of this[internal.state] at constructor time.
         get [internal.defaultState]() {
           return Object.assign(super[internal.defaultState], {
@@ -39,6 +27,16 @@
         // When state changes, render updates to the DOM.
         [internal.render](changed) {
           super[internal.render](changed);
+
+          if (this[internal.firstRender]) {
+            this[internal.ids].decrement.addEventListener("click", () => {
+              this.value--;
+            });
+            this[internal.ids].increment.addEventListener("click", () => {
+              this.value++;
+            });
+          }
+
           if (changed.value) {
             const { value } = this[internal.state];
             this.style.color = value < 0 ? "red" : null;

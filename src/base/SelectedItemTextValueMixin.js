@@ -23,9 +23,9 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 export default function SelectedItemTextValueMixin(Base) {
   // The class prototype added by the mixin.
   class SelectedItemTextValue extends Base {
-    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) {
-        super[internal.componentDidUpdate](changed);
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
       }
       const { items, pendingValue } = this[internal.state];
       if (pendingValue && items) {

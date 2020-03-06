@@ -29,29 +29,6 @@ const Base = AriaRoleMixin(
  * @part {button} source - the element used as the reference point for positioning the popup, generally the element that invokes the popup
  */
 class PopupSource extends Base {
-  [internal.componentDidMount]() {
-    super[internal.componentDidMount]();
-    if (this[internal.state].opened) {
-      // Popup is opened initially, which is somewhat unusual.
-      waitThenRenderOpened(this);
-    }
-    this.setAttribute("aria-haspopup", "true");
-  }
-
-  [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-    super[internal.componentDidUpdate](changed);
-    if (changed.opened) {
-      if (this.opened) {
-        waitThenRenderOpened(this);
-      } else {
-        removeEventListeners(this);
-      }
-    } else if (this.opened && !this[internal.state].popupMeasured) {
-      // Need to recalculate popup measurements.
-      measurePopup(this);
-    }
-  }
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       horizontalAlign: "start",
@@ -235,6 +212,27 @@ class PopupSource extends Base {
         const { disabled } = this[internal.state];
         /** @type {any} */ (this[internal.ids].source).disabled = disabled;
       }
+    }
+  }
+
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
+
+    if (this[internal.firstRender]) {
+      this.setAttribute("aria-haspopup", "true");
+    }
+
+    if (changed.opened) {
+      if (this.opened) {
+        // Worth noting that's possible (but unusual) for a popup to render opened
+        // on first render.
+        waitThenRenderOpened(this);
+      } else {
+        removeEventListeners(this);
+      }
+    } else if (this.opened && !this[internal.state].popupMeasured) {
+      // Need to recalculate popup measurements.
+      measurePopup(this);
     }
   }
 

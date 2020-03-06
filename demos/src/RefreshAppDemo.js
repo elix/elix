@@ -18,22 +18,6 @@ const texts = [
 ];
 
 class RefreshAppDemo extends ReactiveElement {
-  [internal.componentDidMount]() {
-    if (super[internal.componentDidMount]) {
-      super[internal.componentDidMount]();
-    }
-    this[internal.ids].pullToRefresh.addEventListener(
-      "refreshing-changed",
-      event => {
-        /** @type {any} */
-        const cast = event;
-        if (cast.detail.refreshing) {
-          this.refresh();
-        }
-      }
-    );
-  }
-
   get [internal.defaultState]() {
     const paragraphs = createParagraphs(texts);
     return Object.assign(super[internal.defaultState], {
@@ -60,6 +44,20 @@ class RefreshAppDemo extends ReactiveElement {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
+
+    if (this[internal.firstRender]) {
+      this[internal.ids].pullToRefresh.addEventListener(
+        "refreshing-changed",
+        event => {
+          /** @type {any} */
+          const cast = event;
+          if (cast.detail.refreshing) {
+            this.refresh();
+          }
+        }
+      );
+    }
+
     if (changed.paragraphs) {
       replaceChildNodes(
         this[internal.ids].pullToRefresh,

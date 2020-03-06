@@ -69,41 +69,6 @@ const Base = AriaMenuMixin(
  * @mixes TapSelectionMixin
  */
 class Menu extends Base {
-  [internal.componentDidMount]() {
-    super[internal.componentDidMount]();
-
-    this.addEventListener("mousemove", () => {
-      this.suppressFocusVisibility();
-    });
-
-    // Treat a pointerdown event as a tap.
-    if ("PointerEvent" in window) {
-      // Prefer listening to standard pointer events.
-      this.addEventListener("pointerdown", event => this[internal.tap](event));
-    } else {
-      this.addEventListener("touchstart", event => this[internal.tap](event));
-    }
-
-    this.removeAttribute("tabindex");
-  }
-
-  [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-    super[internal.componentDidUpdate](changed);
-    if (changed.selectedIndex && !this[internal.state].selectionFocused) {
-      // The selected item needs the focus, but this is complicated. See notes
-      // in render.
-      const focusElement =
-        this.selectedItem instanceof HTMLElement ? this.selectedItem : this;
-      focusElement.focus();
-
-      // Now that the selection has been focused, we can remove/reset the
-      // tabindex on any item that had previously been selected.
-      this[internal.setState]({
-        selectionFocused: true
-      });
-    }
-  }
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       highlightSelection: true,
@@ -201,6 +166,42 @@ class Menu extends Base {
     }
   }
 
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
+
+    if (this[internal.firstRender]) {
+      this.addEventListener("mousemove", () => {
+        this.suppressFocusVisibility();
+      });
+
+      // Treat a pointerdown event as a tap.
+      if ("PointerEvent" in window) {
+        // Prefer listening to standard pointer events.
+        this.addEventListener("pointerdown", event =>
+          this[internal.tap](event)
+        );
+      } else {
+        this.addEventListener("touchstart", event => this[internal.tap](event));
+      }
+
+      this.removeAttribute("tabindex");
+    }
+
+    if (changed.selectedIndex && !this[internal.state].selectionFocused) {
+      // The selected item needs the focus, but this is complicated. See notes
+      // in render.
+      const focusElement =
+        this.selectedItem instanceof HTMLElement ? this.selectedItem : this;
+      focusElement.focus();
+
+      // Now that the selection has been focused, we can remove/reset the
+      // tabindex on any item that had previously been selected.
+      this[internal.setState]({
+        selectionFocused: true
+      });
+    }
+  }
+
   get [internal.scrollTarget]() {
     return this[internal.ids].content;
   }
@@ -208,7 +209,7 @@ class Menu extends Base {
   [internal.stateEffects](state, changed) {
     const effects = super[internal.stateEffects](state, changed);
 
-    // When selection changes, we'll need to focus on it in componentDidUpdate.
+    // When selection changes, we'll need to focus on it in rendered.
     if (changed.selectedIndex) {
       Object.assign(effects, {
         selectionFocused: false

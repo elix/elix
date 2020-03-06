@@ -15,13 +15,13 @@ const Base = DarkModeMixin(SelectableButton);
  * @mixes DarkModeMixin
  */
 class PlainPageDot extends Base {
-  [internal.componentDidMount]() {
-    super[internal.componentDidMount]();
-    this.setAttribute("role", "none");
-  }
-
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
+
+    if (this[internal.firstRender]) {
+      this.setAttribute("role", "none");
+    }
+
     const { darkMode } = this[internal.state];
     // Wait for knowledge of dark mode
     if (changed.darkMode && darkMode !== null) {

@@ -20,31 +20,32 @@ const Base = EffectMixin(
  * @mixes EffectMixin
  */
 class CrossfadeStage extends Base {
-  [internal.componentDidMount]() {
-    if (super[internal.componentDidMount]) {
-      super[internal.componentDidMount]();
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
+
+    if (this[internal.firstRender]) {
+      this.addEventListener("effect-phase-changed", event => {
+        /** @type {any} */ const cast = event;
+        if (cast.detail.effectPhase === "after") {
+          const { selectedIndex } = this[internal.state];
+          /**
+           * This event is raised when changing the selection and the selection
+           * effect has completed.
+           *
+           * The order of events when the `selectedIndex` property changes is
+           * therefore: `selected-index-changed` (occurs immediately when the
+           * index changes), followed by `selection-effect-finished` (occurs
+           * some time later).
+           *
+           * @event selection-effect-finished
+           */
+          const finishedEvent = new CustomEvent("selection-effect-finished", {
+            detail: { selectedIndex }
+          });
+          this.dispatchEvent(finishedEvent);
+        }
+      });
     }
-    this.addEventListener("effect-phase-changed", event => {
-      /** @type {any} */ const cast = event;
-      if (cast.detail.effectPhase === "after") {
-        const { selectedIndex } = this[internal.state];
-        /**
-         * This event is raised when changing the selection and the selection
-         * effect has completed.
-         *
-         * The order of events when the `selectedIndex` property changes is
-         * therefore: `selected-index-changed` (occurs immediately when the
-         * index changes), followed by `selection-effect-finished` (occurs
-         * some time later).
-         *
-         * @event selection-effect-finished
-         */
-        const finishedEvent = new CustomEvent("selection-effect-finished", {
-          detail: { selectedIndex }
-        });
-        this.dispatchEvent(finishedEvent);
-      }
-    });
   }
 
   get [internal.defaultState]() {

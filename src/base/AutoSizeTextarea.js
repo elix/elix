@@ -27,55 +27,6 @@ const Base = FormElementMixin(
  * @mixes SlotContentMixin
  */
 class AutoSizeTextarea extends Base {
-  connectedCallback() {
-    super.connectedCallback();
-    if (this[internal.firstRender]) {
-      /**
-       * Raised when the user changes the element's text content.
-       *
-       * This is the standard `input` event; the component does not do any work
-       * to raise it. It is documented here to let people know it is available
-       * to detect when the user edits the content.
-       *
-       * @event input
-       */
-      this[internal.ids].inner.addEventListener("input", () => {
-        this[internal.raiseChangeEvents] = true;
-        this[internal.setState]({ valueTracksContent: false });
-        /** @type {any} */
-        const inner = this[internal.ids].inner;
-        this[internal.setState]({
-          value: inner.value
-        });
-        this[internal.raiseChangeEvents] = false;
-      });
-
-      // For auto-sizing to work, we need the text copy to have the same border,
-      // padding, and other relevant characteristics as the original text area.
-      // Since those aspects are affected by CSS, we have to wait until the
-      // element is in the document before we can update the text copy.
-      const textareaStyle = getComputedStyle(this[internal.ids].inner);
-      const lineHeight = this[internal.ids].extraSpace.clientHeight;
-      this[internal.setState]({
-        copyStyle: {
-          "border-bottom-style": textareaStyle.borderBottomStyle,
-          "border-bottom-width": textareaStyle.borderBottomWidth,
-          "border-left-style": textareaStyle.borderLeftStyle,
-          "border-left-width": textareaStyle.borderLeftWidth,
-          "border-right-style": textareaStyle.borderRightStyle,
-          "border-right-width": textareaStyle.borderRightWidth,
-          "border-top-style": textareaStyle.borderTopStyle,
-          "border-top-width": textareaStyle.borderTopWidth,
-          "padding-bottom": textareaStyle.paddingBottom,
-          "padding-left": textareaStyle.paddingLeft,
-          "padding-right": textareaStyle.paddingRight,
-          "padding-top": textareaStyle.paddingTop
-        },
-        lineHeight
-      });
-    }
-  }
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       minimumRows: 1,
@@ -138,6 +89,53 @@ class AutoSizeTextarea extends Base {
 
   [internal.rendered](changed) {
     super[internal.rendered](changed);
+
+    if (this[internal.firstRender]) {
+      /**
+       * Raised when the user changes the element's text content.
+       *
+       * This is the standard `input` event; the component does not do any work
+       * to raise it. It is documented here to let people know it is available
+       * to detect when the user edits the content.
+       *
+       * @event input
+       */
+      this[internal.ids].inner.addEventListener("input", () => {
+        this[internal.raiseChangeEvents] = true;
+        this[internal.setState]({ valueTracksContent: false });
+        /** @type {any} */
+        const inner = this[internal.ids].inner;
+        this[internal.setState]({
+          value: inner.value
+        });
+        this[internal.raiseChangeEvents] = false;
+      });
+
+      // For auto-sizing to work, we need the text copy to have the same border,
+      // padding, and other relevant characteristics as the original text area.
+      // Since those aspects are affected by CSS, we have to wait until the
+      // element is in the document before we can update the text copy.
+      const textareaStyle = getComputedStyle(this[internal.ids].inner);
+      const lineHeight = this[internal.ids].extraSpace.clientHeight;
+      this[internal.setState]({
+        copyStyle: {
+          "border-bottom-style": textareaStyle.borderBottomStyle,
+          "border-bottom-width": textareaStyle.borderBottomWidth,
+          "border-left-style": textareaStyle.borderLeftStyle,
+          "border-left-width": textareaStyle.borderLeftWidth,
+          "border-right-style": textareaStyle.borderRightStyle,
+          "border-right-width": textareaStyle.borderRightWidth,
+          "border-top-style": textareaStyle.borderTopStyle,
+          "border-top-width": textareaStyle.borderTopWidth,
+          "padding-bottom": textareaStyle.paddingBottom,
+          "padding-left": textareaStyle.paddingLeft,
+          "padding-right": textareaStyle.paddingRight,
+          "padding-top": textareaStyle.paddingTop
+        },
+        lineHeight
+      });
+    }
+
     if (changed.value && this[internal.raiseChangeEvents]) {
       const { value } = this[internal.state];
       /**

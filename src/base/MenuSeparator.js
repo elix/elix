@@ -9,13 +9,16 @@ import ReactiveElement from "../core/ReactiveElement.js";
  * @inherits ReactiveElement
  */
 class MenuSeparator extends ReactiveElement {
-  [internal.componentDidMount]() {
-    super[internal.componentDidMount]();
-    this.setAttribute("aria-hidden", "true");
-  }
-
   get disabled() {
     return true;
+  }
+
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
+
+    if (this[internal.firstRender]) {
+      this.setAttribute("aria-hidden", "true");
+    }
   }
 }
 

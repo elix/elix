@@ -1,8 +1,11 @@
 import * as internal from "./internal.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
+/** @type {any} */
 const itemsChangedListenerKey = Symbol("itemsChangedListener");
+/** @type {any} */
 const previousItemsDelegateKey = Symbol("previousItemsDelegate");
+/** @type {any} */
 const selectedIndexChangedListenerKey = Symbol("selectedIndexChangedListener");
 
 /**
@@ -40,20 +43,6 @@ export default function DelegateItemsMixin(Base) {
       };
     }
 
-    [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) {
-        super[internal.componentDidMount]();
-      }
-      listenToDelegateEvents(this);
-    }
-
-    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) {
-        super[internal.componentDidUpdate](changed);
-      }
-      listenToDelegateEvents(this);
-    }
-
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState], {
         items: null
@@ -83,31 +72,37 @@ export default function DelegateItemsMixin(Base) {
         }
       }
     }
+
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
+      }
+
+      // If the delegate changed, wire up event handlers.
+      const itemsDelegate = this[internal.itemsDelegate];
+      const previousItemsDelegate = this[previousItemsDelegateKey];
+      if (itemsDelegate !== previousItemsDelegate) {
+        if (previousItemsDelegate) {
+          // Stop listening to events on previous delegate.
+          previousItemsDelegate.removeEventListener(
+            this[itemsChangedListenerKey]
+          );
+          previousItemsDelegate.removeEventListener(
+            this[selectedIndexChangedListenerKey]
+          );
+        }
+        // Start listening to events on new delegate.
+        itemsDelegate.addEventListener(
+          "items-changed",
+          this[itemsChangedListenerKey]
+        );
+        itemsDelegate.addEventListener(
+          "selected-index-changed",
+          this[selectedIndexChangedListenerKey]
+        );
+      }
+    }
   }
 
   return DelegateItems;
-}
-
-function listenToDelegateEvents(/** @type {ReactiveElement} */ element) {
-  /** @type {any} */ const cast = element;
-  const itemsDelegate = cast[internal.itemsDelegate];
-  const previousItemsDelegate = cast[previousItemsDelegateKey];
-  if (itemsDelegate !== previousItemsDelegate) {
-    if (previousItemsDelegate) {
-      // Stop listening to events on previous delegate.
-      previousItemsDelegate.removeEventListener(cast[itemsChangedListenerKey]);
-      previousItemsDelegate.removeEventListener(
-        cast[selectedIndexChangedListenerKey]
-      );
-    }
-    // Start listening to events on new delegate.
-    itemsDelegate.addEventListener(
-      "items-changed",
-      cast[itemsChangedListenerKey]
-    );
-    itemsDelegate.addEventListener(
-      "selected-index-changed",
-      cast[selectedIndexChangedListenerKey]
-    );
-  }
 }

@@ -55,20 +55,6 @@ export default function ResizeMixin(Base) {
       }
     }
 
-    [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) {
-        super[internal.componentDidMount]();
-      }
-      this[internal.checkSize]();
-    }
-
-    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) {
-        super[internal.componentDidUpdate](changed);
-      }
-      this[internal.checkSize]();
-    }
-
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState], {
         clientHeight: this.clientHeight,
@@ -83,6 +69,14 @@ export default function ResizeMixin(Base) {
       if (resizeObserver) {
         resizeObserver.unobserve(this);
       }
+    }
+
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
+      }
+
+      this[internal.checkSize]();
     }
   };
 }

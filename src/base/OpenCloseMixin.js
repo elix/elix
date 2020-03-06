@@ -70,9 +70,53 @@ export default function OpenCloseMixin(Base) {
       return this[internal.state].closeResult;
     }
 
-    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) {
-        super[internal.componentDidUpdate](changed);
+    get [internal.defaultState]() {
+      const defaults = {
+        closeResult: null,
+        opened: false
+      };
+      // If this component defines a `startEffect` method (e.g., by using
+      // TransitionEffectMixin), include default state for open/close effects.
+      // Since the component is closed by default, the default effect state is
+      // after the close effect has completed.
+      if (this[internal.startEffect]) {
+        Object.assign(defaults, {
+          effect: "close",
+          effectPhase: "after",
+          openCloseEffects: true
+        });
+      }
+      return Object.assign(super[internal.defaultState], defaults);
+    }
+
+    /**
+     * Open the element (if not already opened).
+     */
+    async open() {
+      if (super.open) {
+        await super.open();
+      }
+      this[internal.setState]({ closeResult: undefined });
+      await this.toggle(true);
+    }
+
+    /**
+     * True if the element is currently opened.
+     *
+     * @type {boolean}
+     */
+    get opened() {
+      return this[internal.state] && this[internal.state].opened;
+    }
+    set opened(opened) {
+      const parsed = String(opened) === "true";
+      this[internal.setState]({ closeResult: undefined });
+      this.toggle(parsed);
+    }
+
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
       }
 
       if (changed.opened && this[internal.raiseChangeEvents]) {
@@ -120,50 +164,6 @@ export default function OpenCloseMixin(Base) {
         this[closePromiseKey] = null;
         closeResolve(this[internal.state].closeResult);
       }
-    }
-
-    get [internal.defaultState]() {
-      const defaults = {
-        closeResult: null,
-        opened: false
-      };
-      // If this component defines a `startEffect` method (e.g., by using
-      // TransitionEffectMixin), include default state for open/close effects.
-      // Since the component is closed by default, the default effect state is
-      // after the close effect has completed.
-      if (this[internal.startEffect]) {
-        Object.assign(defaults, {
-          effect: "close",
-          effectPhase: "after",
-          openCloseEffects: true
-        });
-      }
-      return Object.assign(super[internal.defaultState], defaults);
-    }
-
-    /**
-     * Open the element (if not already opened).
-     */
-    async open() {
-      if (super.open) {
-        await super.open();
-      }
-      this[internal.setState]({ closeResult: undefined });
-      await this.toggle(true);
-    }
-
-    /**
-     * True if the element is currently opened.
-     *
-     * @type {boolean}
-     */
-    get opened() {
-      return this[internal.state] && this[internal.state].opened;
-    }
-    set opened(opened) {
-      const parsed = String(opened) === "true";
-      this[internal.setState]({ closeResult: undefined });
-      this.toggle(parsed);
     }
 
     /**

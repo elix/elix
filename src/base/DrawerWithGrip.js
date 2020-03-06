@@ -18,26 +18,6 @@ import html from "../core/html.js";
  * @part {Button} grip - the handle the user can tap, click, or swipe to open or close the drawer
  */
 class DrawerWithGrip extends Drawer {
-  connectedCallback() {
-    super.connectedCallback();
-
-    if (this[internal.state].gripSize === null) {
-      // Use the rendered size of the grip to set the gripSize. This will ensure
-      // the grip is visible, peeking out from the edge of the drawer's container.
-      const { fromEdge } = this[internal.state];
-      const vertical = fromEdge === "top" || fromEdge === "bottom";
-      const dimension = vertical ? "offsetHeight" : "offsetWidth";
-      const gripSize = this[internal.ids].grip[dimension];
-      this[internal.setState]({ gripSize });
-    }
-  }
-
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
-      gripPartType: Button
-    });
-  }
-
   /**
    * The class, tag, or template used to create the `grip` part – the grip
    * handle the user can tap/click/swipe to open or close the drawer.
@@ -115,6 +95,26 @@ class DrawerWithGrip extends Drawer {
     }
   }
 
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
+
+    if (this[internal.state].gripSize === null) {
+      // Use the rendered size of the grip to set the gripSize. This will ensure
+      // the grip is visible, peeking out from the edge of the drawer's container.
+      const { fromEdge } = this[internal.state];
+      const vertical = fromEdge === "top" || fromEdge === "bottom";
+      const dimension = vertical ? "offsetHeight" : "offsetWidth";
+      const gripSize = this[internal.ids].grip[dimension];
+      this[internal.setState]({ gripSize });
+    }
+  }
+
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
+      gripPartType: Button
+    });
+  }
+
   // Tell TrackpadSwipeMixin that the gripped content is the scrollable element
   // the user is going to try to scroll with the trackpad.
   get [internal.scrollTarget]() {
@@ -127,9 +127,8 @@ class DrawerWithGrip extends Drawer {
     // Replace the default slot with one that includes a grip element.
     //
     // The gripWorkaround element exists for Safari, which doesn't correctly
-    // measure the grip dimensions in componentDidMount without it. Having
-    // a div that's display: block instead of flex appears to be the reason
-    // this helps.
+    // measure the grip dimensions when mounted without it. Having a div that's
+    // display: block instead of flex appears to be the reason this helps.
     const gripTemplate = template.html`
       <div id="gripContainer">
         <div id="grippedContent">

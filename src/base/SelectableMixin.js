@@ -20,9 +20,23 @@ export default function SelectableMixin(Base) {
       }
     }
 
-    [internal.componentDidUpdate](changed) {
-      if (super[internal.componentDidUpdate]) {
-        super[internal.componentDidUpdate](changed);
+    get [internal.defaultState]() {
+      return Object.assign(super[internal.defaultState], {
+        selected: false
+      });
+    }
+
+    [internal.render](/** @type {PlainObject} */ changed) {
+      super[internal.render](changed);
+      if (changed.selected) {
+        const { selected } = this[internal.state];
+        setInternalState(this, "selected", selected);
+      }
+    }
+
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
       }
       // TODO: How do we know whether to raise this if selection is set by Menu? */
       if (changed.selected /* && this[internal.raiseChangeEvents] */) {
@@ -36,20 +50,6 @@ export default function SelectableMixin(Base) {
           detail: { selected }
         });
         this.dispatchEvent(event);
-      }
-    }
-
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState], {
-        selected: false
-      });
-    }
-
-    [internal.render](/** @type {PlainObject} */ changed) {
-      super[internal.render](changed);
-      if (changed.selected) {
-        const { selected } = this[internal.state];
-        setInternalState(this, "selected", selected);
       }
     }
 

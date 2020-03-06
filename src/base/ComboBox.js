@@ -38,8 +38,23 @@ class ComboBox extends Base {
     this[internal.setState]({ ariaLabel });
   }
 
-  [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-    super[internal.componentDidUpdate](changed);
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
+      ariaLabel: "",
+      focused: false,
+      inputPartType: "input",
+      orientation: "vertical",
+      placeholder: "",
+      popupTogglePartType: UpDownToggle,
+      role: "combobox",
+      selectText: false,
+      sourcePartType: "div",
+      value: ""
+    });
+  }
+
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
     if (this[internal.state].selectText) {
       // Select the text in the input after giving the inner input a chance to render the value.
       setTimeout(() => {
@@ -56,21 +71,6 @@ class ComboBox extends Base {
         }
       });
     }
-  }
-
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
-      ariaLabel: "",
-      focused: false,
-      inputPartType: "input",
-      orientation: "vertical",
-      placeholder: "",
-      popupTogglePartType: UpDownToggle,
-      role: "combobox",
-      selectText: false,
-      sourcePartType: "div",
-      value: ""
-    });
   }
 
   [internal.stateEffects](state, changed) {

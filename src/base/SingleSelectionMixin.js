@@ -41,9 +41,20 @@ export default function SingleSelectionMixin(Base) {
       return this[internal.state].canSelectPrevious;
     }
 
-    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) {
-        super[internal.componentDidUpdate](changed);
+    get [internal.defaultState]() {
+      return Object.assign(super[internal.defaultState], {
+        canSelectNext: null,
+        canSelectPrevious: null,
+        selectedIndex: -1,
+        selectionRequired: false,
+        selectionWraps: false,
+        trackSelectedItem: true
+      });
+    }
+
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
       }
       if (changed.selectedIndex && this[internal.raiseChangeEvents]) {
         const selectedIndex = this[internal.state].selectedIndex;
@@ -57,17 +68,6 @@ export default function SingleSelectionMixin(Base) {
         });
         this.dispatchEvent(event);
       }
-    }
-
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState], {
-        canSelectNext: null,
-        canSelectPrevious: null,
-        selectedIndex: -1,
-        selectionRequired: false,
-        selectionWraps: false,
-        trackSelectedItem: true
-      });
     }
 
     /**

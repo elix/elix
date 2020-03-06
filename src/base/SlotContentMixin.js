@@ -26,9 +26,31 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 export default function SlotContentMixin(Base) {
   // The class prototype added by the mixin.
   class SlotContent extends Base {
-    connectedCallback() {
-      if (super.connectedCallback) {
-        super.connectedCallback();
+    /**
+     * See [internal.contentSlot](symbols#contentSlot).
+     */
+    get [internal.contentSlot]() {
+      /** @type {HTMLSlotElement|null} */ const slot =
+        this[internal.shadowRoot] &&
+        this[internal.shadowRoot].querySelector("slot:not([name])");
+      if (!this[internal.shadowRoot] || !slot) {
+        /* eslint-disable no-console */
+        console.warn(
+          `SlotContentMixin expects ${this.constructor.name} to define a shadow tree that includes a default (unnamed) slot.\nSee https://elix.org/documentation/SlotContentMixin.`
+        );
+      }
+      return slot;
+    }
+
+    get [internal.defaultState]() {
+      return Object.assign(super[internal.defaultState], {
+        content: null
+      });
+    }
+
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
       }
 
       // Listen to changes on the default slot.
@@ -52,28 +74,6 @@ export default function SlotContentMixin(Base) {
           this[internal.raiseChangeEvents] = false;
         });
       }
-    }
-
-    /**
-     * See [internal.contentSlot](symbols#contentSlot).
-     */
-    get [internal.contentSlot]() {
-      /** @type {HTMLSlotElement|null} */ const slot =
-        this[internal.shadowRoot] &&
-        this[internal.shadowRoot].querySelector("slot:not([name])");
-      if (!this[internal.shadowRoot] || !slot) {
-        /* eslint-disable no-console */
-        console.warn(
-          `SlotContentMixin expects ${this.constructor.name} to define a shadow tree that includes a default (unnamed) slot.\nSee https://elix.org/documentation/SlotContentMixin.`
-        );
-      }
-      return slot;
-    }
-
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState], {
-        content: null
-      });
     }
   }
 

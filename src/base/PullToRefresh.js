@@ -24,59 +24,6 @@ const Base = EffectMixin(TouchSwipeMixin(ReactiveElement));
  * @part {div} refreshing-indicator - the element shown during a refresh of the content
  */
 class PullToRefresh extends Base {
-  [internal.componentDidMount]() {
-    super[internal.componentDidMount]();
-    // Listen to scroll events in case the user scrolls up past the page's top.
-    let scrollTarget = getScrollableElement(this) || window;
-    scrollTarget.addEventListener("scroll", async () => {
-      // We might normally call requestAnimationFrame in a scroll handler, but
-      // in this case that could cause our scroll handling to run after the user
-      // has scrolled away from the top.
-      this[internal.raiseChangeEvents] = true;
-      // Desktop and Mobile Safari don't agree on how to expose document
-      // scrollTop, so we use window.pageYOffset.
-      // See https://stackoverflow.com/questions/2506958/how-to-find-in-javascript-the-current-scroll-offset-in-mobile-safari-iphon
-      const scrollTop =
-        scrollTarget instanceof Window
-          ? window.pageYOffset
-          : scrollTarget.scrollTop;
-      await handleScrollPull(this, scrollTop);
-      this[internal.raiseChangeEvents] = false;
-    });
-  }
-
-  [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-    super[internal.componentDidUpdate](changed);
-    if (
-      this[internal.state].swipeFraction > 0 &&
-      !this[internal.state].refreshing &&
-      !this[internal.state].pullTriggeredRefresh
-    ) {
-      const y = getTranslationForSwipeFraction(
-        this[internal.state],
-        this[internal.swipeTarget]
-      );
-      if (y >= getSwipeThreshold(this)) {
-        // User has dragged element down far enough to trigger a refresh.
-        this.refreshing = true;
-      }
-    } else if (changed.refreshing) {
-      if (this[internal.raiseChangeEvents]) {
-        /**
-         * Raised when the `refreshing` state changes.
-         *
-         * @event refreshing-changed
-         */
-        const event = new CustomEvent("refreshing-changed", {
-          detail: {
-            refreshing: this[internal.state].refreshing
-          }
-        });
-        this.dispatchEvent(event);
-      }
-    }
-  }
-
   get [internal.defaultState]() {
     // Suppress transition effects on page load.
     return Object.assign(super[internal.defaultState], {
@@ -149,6 +96,59 @@ class PullToRefresh extends Base {
       this[internal.ids].pullIndicator.style.visibility = showPullIndicator
         ? "visible"
         : "hidden";
+    }
+  }
+
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
+
+    if (this[internal.firstRender]) {
+      // Listen to scroll events in case the user scrolls up past the page's top.
+      let scrollTarget = getScrollableElement(this) || window;
+      scrollTarget.addEventListener("scroll", async () => {
+        // We might normally call requestAnimationFrame in a scroll handler, but
+        // in this case that could cause our scroll handling to run after the user
+        // has scrolled away from the top.
+        this[internal.raiseChangeEvents] = true;
+        // Desktop and Mobile Safari don't agree on how to expose document
+        // scrollTop, so we use window.pageYOffset.
+        // See https://stackoverflow.com/questions/2506958/how-to-find-in-javascript-the-current-scroll-offset-in-mobile-safari-iphon
+        const scrollTop =
+          scrollTarget instanceof Window
+            ? window.pageYOffset
+            : scrollTarget.scrollTop;
+        await handleScrollPull(this, scrollTop);
+        this[internal.raiseChangeEvents] = false;
+      });
+    }
+
+    if (
+      this[internal.state].swipeFraction > 0 &&
+      !this[internal.state].refreshing &&
+      !this[internal.state].pullTriggeredRefresh
+    ) {
+      const y = getTranslationForSwipeFraction(
+        this[internal.state],
+        this[internal.swipeTarget]
+      );
+      if (y >= getSwipeThreshold(this)) {
+        // User has dragged element down far enough to trigger a refresh.
+        this.refreshing = true;
+      }
+    } else if (changed.refreshing) {
+      if (this[internal.raiseChangeEvents]) {
+        /**
+         * Raised when the `refreshing` state changes.
+         *
+         * @event refreshing-changed
+         */
+        const event = new CustomEvent("refreshing-changed", {
+          detail: {
+            refreshing: this[internal.state].refreshing
+          }
+        });
+        this.dispatchEvent(event);
+      }
     }
   }
 

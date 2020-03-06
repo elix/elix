@@ -24,22 +24,6 @@ export default function FormElementMixin(Base) {
       return this[internal.nativeInternals].checkValidity();
     }
 
-    [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) {
-        super[internal.componentDidMount]();
-      }
-      updateValue(this);
-    }
-
-    [internal.componentDidUpdate](/** @typeof {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) {
-        super[internal.componentDidUpdate](changed);
-      }
-      if (changed.value) {
-        updateValue(this);
-      }
-    }
-
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState], {
         validationMessage: "",
@@ -115,6 +99,20 @@ export default function FormElementMixin(Base) {
       }
     }
 
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
+      }
+      if (changed.value) {
+        if (this[internal.nativeInternals]) {
+          this[internal.nativeInternals].setFormValue(
+            this[internal.state].value,
+            this[internal.state]
+          );
+        }
+      }
+    }
+
     reportValidity() {
       return this[internal.nativeInternals].reportValidity();
     }
@@ -146,13 +144,4 @@ export default function FormElementMixin(Base) {
   }
 
   return FormElement;
-}
-
-function updateValue(element) {
-  if (element[internal.nativeInternals]) {
-    element[internal.nativeInternals].setFormValue(
-      element[internal.state].value,
-      element[internal.state]
-    );
-  }
 }

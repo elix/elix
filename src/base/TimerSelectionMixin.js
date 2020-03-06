@@ -16,20 +16,6 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 export default function TimerSelectionMixin(Base) {
   // The class prototype added by the mixin.
   class TimerSelection extends Base {
-    [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) {
-        super[internal.componentDidMount]();
-      }
-      updateTimer(this);
-    }
-
-    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) {
-        super[internal.componentDidUpdate](changed);
-      }
-      updateTimer(this);
-    }
-
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState], {
         playing: true,
@@ -78,6 +64,14 @@ export default function TimerSelectionMixin(Base) {
           this.pause();
         }
       }
+    }
+
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
+      }
+
+      updateTimer(this);
     }
 
     /**

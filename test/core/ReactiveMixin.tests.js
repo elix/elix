@@ -8,18 +8,6 @@ class ReactiveTest extends ReactiveMixin(HTMLElement) {
     this._firstRender = this[internal.firstRender];
   }
 
-  [internal.componentDidMount]() {
-    if (super[internal.componentDidMount]) {
-      super[internal.componentDidMount]();
-    }
-  }
-
-  [internal.componentDidUpdate](/** @typeof {PlainObject} */ changed) {
-    if (super[internal.componentDidUpdate]) {
-      super[internal.componentDidUpdate](changed);
-    }
-  }
-
   [internal.render](changed) {
     super[internal.render](changed);
     this.renderedResult = this[internal.state].message;
@@ -148,25 +136,6 @@ describe("ReactiveMixin", function() {
     assert.equal(fixture[internal.state].message, "gorilla");
   });
 
-  it("render invokes componentDidMount/componentDidUpdate if defined", async () => {
-    const fixture = new ReactiveTest();
-    const componentDidMountSpy = sinon.spy(fixture, internal.componentDidMount);
-    const componentDidUpdateSpy = sinon.spy(
-      fixture,
-      internal.componentDidUpdate
-    );
-    container.appendChild(fixture);
-    // connectedCallback should trigger first render with promise timing.
-    await Promise.resolve();
-    assert.equal(componentDidMountSpy.callCount, 1);
-    assert.equal(componentDidUpdateSpy.callCount, 0);
-    await fixture[internal.setState]({
-      message: "iguana"
-    });
-    assert.equal(componentDidMountSpy.callCount, 1);
-    assert.equal(componentDidUpdateSpy.callCount, 1);
-  });
-
   it("render invokes rendered method if defined", async () => {
     const fixture = new ReactiveTest();
     const renderedSpy = sinon.spy(fixture, internal.rendered);
@@ -178,20 +147,6 @@ describe("ReactiveMixin", function() {
       message: "iguana"
     });
     assert.equal(renderedSpy.callCount, 2);
-  });
-
-  it("only calls componentDidMount once, even if component is reattached", async () => {
-    const fixture = new ReactiveTest();
-    const componentDidMountSpy = sinon.spy(fixture, internal.componentDidMount);
-    container.appendChild(fixture);
-    // connectedCallback should trigger first render with promise timing.
-    await Promise.resolve();
-    assert.equal(componentDidMountSpy.callCount, 1);
-    container.removeChild(fixture);
-    container.appendChild(fixture);
-    // connectedCallback shouldn't trigger rerender.
-    await Promise.resolve();
-    assert.equal(componentDidMountSpy.callCount, 1);
   });
 
   it("[internal.firstRender] is true only in first rendered callback", async () => {

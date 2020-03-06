@@ -36,35 +36,6 @@ export default function PopupModalityMixin(Base) {
       this.addEventListener("blur", blurHandler.bind(this));
     }
 
-    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) {
-        super[internal.componentDidUpdate](changed);
-      }
-      if (changed.opened) {
-        if (this.opened) {
-          // Wait before wiring up events – if the popup was opened because the
-          // user clicked something, that opening click event may still be
-          // bubbling up, and we only want to start listening after it's been
-          // processed. Alternatively, if the popup caused the page to scroll, we
-          // don't want to immediately close because the page scrolled (only if
-          // the user scrolls).
-          const callback =
-            "requestIdleCallback" in window
-              ? window["requestIdleCallback"]
-              : setTimeout;
-          callback(() => {
-            // It's conceivable the popup was closed before the timeout completed,
-            // so double-check that it's still opened before listening to events.
-            if (this.opened) {
-              addEventListeners(this);
-            }
-          });
-        } else {
-          removeEventListeners(this);
-        }
-      }
-    }
-
     /**
      * True if the popup should close if the user resizes the window.
      *
@@ -110,6 +81,36 @@ export default function PopupModalityMixin(Base) {
         // Apply top-level role.
         const { role } = this[internal.state];
         this.setAttribute("role", role);
+      }
+    }
+
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
+      }
+
+      if (changed.opened) {
+        if (this.opened) {
+          // Wait before wiring up events – if the popup was opened because the
+          // user clicked something, that opening click event may still be
+          // bubbling up, and we only want to start listening after it's been
+          // processed. Alternatively, if the popup caused the page to scroll, we
+          // don't want to immediately close because the page scrolled (only if
+          // the user scrolls).
+          const callback =
+            "requestIdleCallback" in window
+              ? window["requestIdleCallback"]
+              : setTimeout;
+          callback(() => {
+            // It's conceivable the popup was closed before the timeout completed,
+            // so double-check that it's still opened before listening to events.
+            if (this.opened) {
+              addEventListeners(this);
+            }
+          });
+        } else {
+          removeEventListeners(this);
+        }
       }
     }
 

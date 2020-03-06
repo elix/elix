@@ -44,14 +44,6 @@ const Base = AriaListMixin(
 );
 
 class CountryListBox extends Base {
-  [internal.componentDidMount]() {
-    if (super[internal.componentDidMount]) {
-      super[internal.componentDidMount]();
-    }
-    const content = this[internal.ids].content.children;
-    this[internal.setState]({ content });
-  }
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       orientation: "vertical"
@@ -73,6 +65,15 @@ class CountryListBox extends Base {
           item.toggleAttribute("selected", selected);
         });
       }
+    }
+  }
+
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
+
+    if (this[internal.firstRender]) {
+      const content = this[internal.ids].content.children;
+      this[internal.setState]({ content });
     }
   }
 

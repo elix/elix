@@ -55,16 +55,18 @@ const Base = AriaListMixin(
  * @mixes TrackpadSwipeMixin
  */
 class SlideshowWithPlayControls extends Base {
-  [internal.componentDidMount]() {
-    super[internal.componentDidMount]();
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
 
-    // Clicking the slideshow toggles the playing state.
-    this.addEventListener("click", () => {
-      this[internal.raiseChangeEvents] = true;
-      // @ts-ignore
-      this.playing = !this.playing;
-      this[internal.raiseChangeEvents] = false;
-    });
+    if (this[internal.firstRender]) {
+      // Clicking the slideshow toggles the playing state.
+      this.addEventListener("click", () => {
+        this[internal.raiseChangeEvents] = true;
+        // @ts-ignore
+        this.playing = !this.playing;
+        this[internal.raiseChangeEvents] = false;
+      });
+    }
   }
 
   get [internal.template]() {

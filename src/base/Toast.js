@@ -28,16 +28,6 @@ class Toast extends Base {
     });
   }
 
-  async [internal.componentDidMount]() {
-    await super[internal.componentDidMount]();
-    startTimerIfOpened(this);
-  }
-
-  async [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-    await super[internal.componentDidUpdate](changed);
-    startTimerIfOpened(this);
-  }
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       duration: null,
@@ -170,6 +160,11 @@ class Toast extends Base {
         transform
       });
     }
+  }
+
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
+    startTimerIfOpened(this);
   }
 }
 

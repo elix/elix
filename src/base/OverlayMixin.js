@@ -30,8 +30,65 @@ export default function OverlayMixin(Base) {
       this[internal.setState]({ autoFocus });
     }
 
-    connectedCallback() {
-      super.connectedCallback();
+    get [internal.defaultState]() {
+      return Object.assign(super[internal.defaultState], {
+        autoFocus: true,
+        persistent: false
+      });
+    }
+
+    async open() {
+      if (!this[internal.state].persistent && !this.isConnected) {
+        // Overlay isn't in document yet.
+        this[appendedToDocumentKey] = true;
+        document.body.append(this);
+      }
+      if (super.open) {
+        await super.open();
+      }
+    }
+
+    [internal.render](/** @type {PlainObject} */ changed) {
+      if (super[internal.render]) {
+        super[internal.render](changed);
+      }
+      if (changed.effectPhase || changed.opened || changed.persistent) {
+        if (!this[internal.state].persistent) {
+          // Temporary overlay
+          const closed =
+            typeof this.closeFinished === "undefined"
+              ? this.closed
+              : this.closeFinished;
+
+          // We'd like to just use the `hidden` attribute, but a side-effect of
+          // styling with the hidden attribute is that naive styling of the
+          // component from the outside (to change to display: flex, say) will
+          // override the display: none implied by hidden. To work around both
+          // these problems, we use display: none when the overlay is closed.
+          this.style.display = closed ? "none" : "";
+
+          if (closed) {
+            if (this[defaultZIndexKey]) {
+              // Remove default z-index.
+              this.style.zIndex = "";
+              this[defaultZIndexKey] = null;
+            }
+          } else if (this[defaultZIndexKey]) {
+            this.style.zIndex = this[defaultZIndexKey];
+          } else {
+            if (!hasZIndex(this)) {
+              bringToFront(this);
+            }
+          }
+        }
+      }
+    }
+
+    [internal.rendered](/** @type {PlainObject} */ changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
+      }
+
       if (this[internal.firstRender]) {
         this.addEventListener("blur", event => {
           // What has the focus now?
@@ -64,68 +121,6 @@ export default function OverlayMixin(Base) {
         if (this[internal.state].persistent && !hasZIndex(this)) {
           bringToFront(this);
         }
-      }
-    }
-
-    get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState], {
-        autoFocus: true,
-        persistent: false
-      });
-    }
-
-    async open() {
-      if (!this[internal.state].persistent && !this.isConnected) {
-        // Overlay isn't in document yet.
-        this[appendedToDocumentKey] = true;
-        document.body.appendChild(this);
-      }
-      if (super.open) {
-        await super.open();
-      }
-    }
-
-    [internal.render](/** @type {PlainObject} */ changed) {
-      if (super[internal.render]) {
-        super[internal.render](changed);
-      }
-      if (changed.effectPhase || changed.opened || changed.persistent) {
-        if (!this[internal.state].persistent) {
-          // Temporary overlay
-          const closed =
-            typeof this.closeFinished === "undefined"
-              ? this.closed
-              : this.closeFinished;
-
-          // We'd like to just use the `hidden` attribute, but Edge has trouble
-          // with that: if the hidden attribute is removed from an overlay to
-          // display it, Edge may not paint it correctly. And a side-effect
-          // of styling with the hidden attribute is that naive styling of the
-          // component from the outside (to change to display: flex, say) will
-          // override the display: none implied by hidden. To work around both
-          // these problems, we use display: none when the overlay is closed.
-          this.style.display = closed ? "none" : "";
-
-          if (closed) {
-            if (this[defaultZIndexKey]) {
-              // Remove default z-index.
-              this.style.zIndex = "";
-              this[defaultZIndexKey] = null;
-            }
-          } else if (this[defaultZIndexKey]) {
-            this.style.zIndex = this[defaultZIndexKey];
-          } else {
-            if (!hasZIndex(this)) {
-              bringToFront(this);
-            }
-          }
-        }
-      }
-    }
-
-    [internal.rendered](/** @type {PlainObject} */ changed) {
-      if (super[internal.rendered]) {
-        super[internal.rendered](changed);
       }
 
       if (changed.opened) {
@@ -168,6 +163,7 @@ export default function OverlayMixin(Base) {
       // updates, not when it mounts, because we don't want an automatically-added
       // element to be immediately removed during its connectedCallback.
       if (
+        !this[internal.firstRender] &&
         !this[internal.state].persistent &&
         this.closeFinished &&
         this[appendedToDocumentKey]

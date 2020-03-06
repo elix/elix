@@ -22,11 +22,6 @@ const Base = DelegateItemsMixin(
  * @part {ListBox} list - the list of choices
  */
 class ListComboBox extends Base {
-  [internal.componentDidMount]() {
-    super[internal.componentDidMount]();
-    this.setAttribute("aria-haspopup", "listbox");
-  }
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       horizontalAlign: "stretch",
@@ -167,6 +162,13 @@ class ListComboBox extends Base {
       if ("selectedIndex" in list) {
         list.selectedIndex = this[internal.state].selectedIndex;
       }
+    }
+  }
+
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
+    if (this[internal.firstRender]) {
+      this.setAttribute("aria-haspopup", "listbox");
     }
   }
 

@@ -11,23 +11,6 @@ import Dialog from "./Dialog.js";
  * @part {div} choice-button-container - the container for the choice buttons
  */
 class AlertDialog extends Dialog {
-  [internal.componentDidMount]() {
-    super[internal.componentDidMount]();
-    this[internal.ids].choiceButtonContainer.addEventListener(
-      "click",
-      async event => {
-        // TODO: Ignore clicks on choiceButtonContainer background.
-        const button = event.target;
-        if (button instanceof HTMLElement) {
-          const choice = button.textContent;
-          this[internal.raiseChangeEvents] = true;
-          await this.close({ choice });
-          this[internal.raiseChangeEvents] = false;
-        }
-      }
-    );
-  }
-
   /**
    * The buttons created by the component to represent the choices in the
    * [choices](#choices) property.
@@ -102,12 +85,31 @@ class AlertDialog extends Dialog {
     );
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](changed) {
     super[internal.render](changed);
     if (changed.choiceButtons) {
       replaceChildNodes(
         this[internal.ids].choiceButtonContainer,
         this[internal.state].choiceButtons
+      );
+    }
+  }
+
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
+    if (this[internal.firstRender]) {
+      this[internal.ids].choiceButtonContainer.addEventListener(
+        "click",
+        async event => {
+          // TODO: Ignore clicks on choiceButtonContainer background.
+          const button = event.target;
+          if (button instanceof HTMLElement) {
+            const choice = button.textContent;
+            this[internal.raiseChangeEvents] = true;
+            await this.close({ choice });
+            this[internal.raiseChangeEvents] = false;
+          }
+        }
       );
     }
   }

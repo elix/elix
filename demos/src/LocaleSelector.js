@@ -290,28 +290,6 @@ const locales = {
 };
 
 class LocaleSelector extends ReactiveElement {
-  [internal.componentDidMount]() {
-    if (super[internal.componentDidMount]) {
-      super[internal.componentDidMount]();
-    }
-    this[internal.ids].select.addEventListener("change", () => {
-      this[internal.raiseChangeEvents] = true;
-      this.value = /** @type {any} */ (this[internal.ids].select).value;
-      this[internal.raiseChangeEvents] = false;
-    });
-  }
-
-  [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-    if (changed.value && this[internal.raiseChangeEvents]) {
-      const event = new CustomEvent("change", {
-        detail: {
-          value: this[internal.state].value
-        }
-      });
-      this.dispatchEvent(event);
-    }
-  }
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       value: navigator.language
@@ -325,6 +303,27 @@ class LocaleSelector extends ReactiveElement {
       /** @type {HTMLSelectElement} */ (this[
         internal.ids
       ].select).value = value;
+    }
+  }
+
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
+
+    if (this[internal.firstRender]) {
+      this[internal.ids].select.addEventListener("change", () => {
+        this[internal.raiseChangeEvents] = true;
+        this.value = /** @type {any} */ (this[internal.ids].select).value;
+        this[internal.raiseChangeEvents] = false;
+      });
+    }
+
+    if (changed.value && this[internal.raiseChangeEvents]) {
+      const event = new CustomEvent("change", {
+        detail: {
+          value: this[internal.state].value
+        }
+      });
+      this.dispatchEvent(event);
     }
   }
 

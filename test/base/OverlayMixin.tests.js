@@ -8,9 +8,7 @@ const Base = OpenCloseMixin(OverlayMixin(ReactiveElement));
 
 class OverlayTest extends Base {
   [internal.render](changed) {
-    if (super[internal.render]) {
-      super[internal.render](changed);
-    }
+    super[internal.render](changed);
     this.tabIndex = 0;
   }
 }

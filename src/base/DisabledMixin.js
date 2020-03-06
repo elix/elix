@@ -10,22 +10,6 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 export default function DisabledMixin(Base) {
   // The class prototype added by the mixin.
   class Disabled extends Base {
-    [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) {
-        super[internal.componentDidMount]();
-      }
-      reflectDisabledAttribute(this);
-    }
-
-    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) {
-        super[internal.componentDidUpdate](changed);
-      }
-      if (changed.disabled) {
-        reflectDisabledAttribute(this);
-      }
-    }
-
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState], {
         disabled: false
@@ -73,12 +57,17 @@ export default function DisabledMixin(Base) {
         disabled: parsed
       });
     }
+
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
+      }
+      if (changed.disabled) {
+        // Reflect value of disabled property to the corresponding attribute.
+        this.toggleAttribute("disabled", this.disabled);
+      }
+    }
   }
 
   return Disabled;
-}
-
-// Reflect value of disabled property to the corresponding attribute.
-function reflectDisabledAttribute(/** @type {ReactiveElement} */ element) {
-  element.toggleAttribute("disabled", element.disabled);
 }

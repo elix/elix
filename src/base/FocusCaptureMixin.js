@@ -27,21 +27,6 @@ const wrappingFocusKey = Symbol("wrappingFocus");
  */
 function FocusCaptureMixin(Base) {
   class FocusCapture extends Base {
-    [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) {
-        super[internal.componentDidMount]();
-      }
-      this[internal.ids].focusCatcher.addEventListener("focus", () => {
-        if (!this[wrappingFocusKey]) {
-          // Wrap focus back to the first focusable element.
-          const focusElement = firstFocusableElement(this[internal.shadowRoot]);
-          if (focusElement) {
-            focusElement.focus();
-          }
-        }
-      });
-    }
-
     [internal.keydown](/** @type {KeyboardEvent} */ event) {
       const firstElement = firstFocusableElement(this[internal.shadowRoot]);
       const onFirstElement =
@@ -61,6 +46,26 @@ function FocusCaptureMixin(Base) {
       return (
         (super[internal.keydown] && super[internal.keydown](event)) || false
       );
+    }
+
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
+      }
+
+      if (this[internal.firstRender]) {
+        this[internal.ids].focusCatcher.addEventListener("focus", () => {
+          if (!this[wrappingFocusKey]) {
+            // Wrap focus back to the first focusable element.
+            const focusElement = firstFocusableElement(
+              this[internal.shadowRoot]
+            );
+            if (focusElement) {
+              focusElement.focus();
+            }
+          }
+        });
+      }
     }
 
     /**

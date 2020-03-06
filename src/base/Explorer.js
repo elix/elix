@@ -45,29 +45,6 @@ class Explorer extends Base {
     }
   }
 
-  [internal.componentDidMount]() {
-    super[internal.componentDidMount]();
-
-    // When proxy slot's assigned nodes change, determine whether we need to
-    // generate default proxies or (if assigned nodes are present) treat the
-    // assigned nodes as the proxies.
-    this[internal.ids].proxySlot.addEventListener("slotchange", () => {
-      const proxySlot = /** @type {any} */ (this[internal.ids].proxySlot);
-      const proxies = proxySlot.assignedNodes({ flatten: true });
-      const proxiesAssigned = proxies.length > 0;
-      if (proxiesAssigned) {
-        // Nodes assigned to slot become proxies.
-        this[internal.setState]({
-          proxiesAssigned,
-          proxies
-        });
-      } else {
-        // No nodes assigned -- we'll need to generate proxies.
-        this[internal.setState]({ proxiesAssigned });
-      }
-    });
-  }
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       proxies: [],
@@ -230,6 +207,31 @@ class Explorer extends Base {
         const { swipeFraction } = this[internal.state];
         /** @type {any} */ (stage).swipeFraction = swipeFraction;
       }
+    }
+  }
+
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
+
+    if (this[internal.firstRender]) {
+      // When proxy slot's assigned nodes change, determine whether we need to
+      // generate default proxies or (if assigned nodes are present) treat the
+      // assigned nodes as the proxies.
+      this[internal.ids].proxySlot.addEventListener("slotchange", () => {
+        const proxySlot = /** @type {any} */ (this[internal.ids].proxySlot);
+        const proxies = proxySlot.assignedNodes({ flatten: true });
+        const proxiesAssigned = proxies.length > 0;
+        if (proxiesAssigned) {
+          // Nodes assigned to slot become proxies.
+          this[internal.setState]({
+            proxiesAssigned,
+            proxies
+          });
+        } else {
+          // No nodes assigned -- we'll need to generate proxies.
+          this[internal.setState]({ proxiesAssigned });
+        }
+      });
     }
   }
 

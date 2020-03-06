@@ -32,7 +32,7 @@ export default function TouchSwipeMixin(Base) {
       // TODO: Touch events should probably be factored out into its own mixin.
 
       // Prefer using the older touch events if supported.
-      // See the rationale for this in the comments for componentDidMount.
+      // See the rationale for this in the comments for rendered.
       if ("TouchEvent" in window) {
         this.addEventListener("touchstart", async event => {
           this[internal.raiseChangeEvents] = true;
@@ -124,40 +124,45 @@ export default function TouchSwipeMixin(Base) {
       }
     }
 
-    [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) {
-        super[internal.componentDidMount]();
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
       }
-      //
-      // Choosing a touch-action value is unfortunately fraught with issues.
-      //
-      // As best as we can tell, touch-action has different behavior with the
-      // older TouchEvents and the newer PointerEvents.
-      //
-      // With TouchEvents, we can set touch-action: manipulation, and get what
-      // we want in all cases. In particular, a touch-sensitive component on a
-      // scrolling surface will still be able to scroll if TouchSwipeMixin
-      // declines to handle a touch event. (It appears that more specific
-      // touch-action values like "pan-x" would prevent touch scrolling in the
-      // cross-axis, where as "manipulation" allows cross-axis scrolling.)
-      //
-      // With PointerEvents, it looks like we can get what we want in many cases
-      // with touch-action: none, but that has the unfortunate side-effect of
-      // disabling useful default interactions like scrolling with touch.
-      //
-      // For this reason, we currently prefer using TouchEvents. Those are
-      // supported In Chrome, Safari, and Firefox. (As of Oct 2018, MDN says
-      // TouchEvents are not supported in Safari, but as far as we can tell,
-      // they actually are.) On those browsers, we set touch-action:
-      // manipulation.
-      //
-      // That leaves Edge, where we're forced to use PointerEvents, and the best
-      // touch-action we can find is "none". That allows many use cases to
-      // function properly. However, components using TouchSwipeMixin on a
-      // scrolling surface in Edge won't be able to retain support for built-in
-      // touch features like scrolling.
-      //
-      this.style.touchAction = "TouchEvent" in window ? "manipulation" : "none";
+
+      if (this[internal.firstRender]) {
+        //
+        // Choosing a touch-action value is unfortunately fraught with issues.
+        //
+        // As best as we can tell, touch-action has different behavior with the
+        // older TouchEvents and the newer PointerEvents.
+        //
+        // With TouchEvents, we can set touch-action: manipulation, and get what
+        // we want in all cases. In particular, a touch-sensitive component on a
+        // scrolling surface will still be able to scroll if TouchSwipeMixin
+        // declines to handle a touch event. (It appears that more specific
+        // touch-action values like "pan-x" would prevent touch scrolling in the
+        // cross-axis, where as "manipulation" allows cross-axis scrolling.)
+        //
+        // With PointerEvents, it looks like we can get what we want in many
+        // cases with touch-action: none, but that has the unfortunate
+        // side-effect of disabling useful default interactions like scrolling
+        // with touch.
+        //
+        // For this reason, we currently prefer using TouchEvents. Those are
+        // supported In Chrome, Safari, and Firefox. (As of Oct 2018, MDN says
+        // TouchEvents are not supported in Safari, but as far as we can tell,
+        // they actually are.) On those browsers, we set touch-action:
+        // manipulation.
+        //
+        // That leaves Edge, where we're forced to use PointerEvents, and the best
+        // touch-action we can find is "none". That allows many use cases to
+        // function properly. However, components using TouchSwipeMixin on a
+        // scrolling surface in Edge won't be able to retain support for built-in
+        // touch features like scrolling.
+        //
+        this.style.touchAction =
+          "TouchEvent" in window ? "manipulation" : "none";
+      }
     }
 
     get [internal.defaultState]() {

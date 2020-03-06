@@ -10,10 +10,28 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 export default function TransitionEffectMixin(Base) {
   // The class prototype added by the mixin.
   class TransitionEffect extends Base {
-    connectedCallback() {
-      if (super.connectedCallback) {
-        super.connectedCallback();
+    /**
+     * Return the elements that use CSS transitions to provide visual effects.
+     *
+     * By default, this assumes the host element itself will have a CSS
+     * transition applied to it, and so returns an array containing the element.
+     * If you will be applying CSS transitions to other elements, override this
+     * property and return an array containing the implicated elements.
+     *
+     * See [internal.effectEndTarget](symbols#effectEndTarget)
+     * for details.
+     *
+     * @type {HTMLElement}
+     */
+    get [internal.effectEndTarget]() {
+      return super[internal.effectEndTarget] || this;
+    }
+
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
       }
+
       if (this[internal.firstRender]) {
         // Listen for `transitionend` events so we can check to see whether an
         // effect has completed. If the component defines an `effectEndTarget`
@@ -39,29 +57,6 @@ export default function TransitionEffectMixin(Base) {
             });
           }
         });
-      }
-    }
-
-    /**
-     * Return the elements that use CSS transitions to provide visual effects.
-     *
-     * By default, this assumes the host element itself will have a CSS
-     * transition applied to it, and so returns an array containing the element.
-     * If you will be applying CSS transitions to other elements, override this
-     * property and return an array containing the implicated elements.
-     *
-     * See [internal.effectEndTarget](symbols#effectEndTarget)
-     * for details.
-     *
-     * @type {HTMLElement}
-     */
-    get [internal.effectEndTarget]() {
-      return super[internal.effectEndTarget] || this;
-    }
-
-    [internal.rendered](changed) {
-      if (super[internal.rendered]) {
-        super[internal.rendered](changed);
       }
 
       if (changed.effect || changed.effectPhase) {

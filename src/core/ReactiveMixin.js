@@ -31,22 +31,6 @@ export default function ReactiveMixin(Base) {
       this[internal.setState](this[internal.defaultState]);
     }
 
-    // The default implementation of componentDidMount just passes through to
-    // any superclass implementation.
-    [internal.componentDidMount]() {
-      if (super[internal.componentDidMount]) {
-        super[internal.componentDidMount]();
-      }
-    }
-
-    // The default implementation of componentDidUpdate just passes through to
-    // any superclass implementation.
-    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) {
-        super[internal.componentDidUpdate](changed);
-      }
-    }
-
     connectedCallback() {
       if (super.connectedCallback) {
         super.connectedCallback();
@@ -97,9 +81,8 @@ export default function ReactiveMixin(Base) {
      * ReactiveMixin will invoke this method following a `setState` call;
      * you should not need to invoke this method yourself.
      *
-     * This method invokes all internal render methods, then invokes
-     * `componentDidMount` (for first render) or `componentDidUpdate` (for
-     * subsequent renders).
+     * This method invokes the internal `render` method, then invokes the
+     * `rendered` method.
      */
     [internal.renderChanges]() {
       // Determine what's changed since the last render.
@@ -146,9 +129,21 @@ export default function ReactiveMixin(Base) {
 
         // DEPRECATED: First time is consider mounting; subsequent times are updates.
         if (this[internal.firstRender]) {
-          this[internal.componentDidMount]();
+          if (this[internal.componentDidMount]) {
+            /* eslint-disable no-console */
+            console.warn(
+              "Use the rendered method instead of the deprecated componentDidMount method."
+            );
+            this[internal.componentDidMount]();
+          }
         } else {
-          this[internal.componentDidUpdate](changed);
+          if (this[internal.componentDidUpdate]) {
+            /* eslint-disable no-console */
+            console.warn(
+              "Use the rendered method instead of the deprecated componentDidUpdate method."
+            );
+            this[internal.componentDidUpdate](changed);
+          }
         }
 
         // We've now rendered for the first time.

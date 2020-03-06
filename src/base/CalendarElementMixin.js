@@ -16,25 +16,6 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 export default function CalendarElementMixin(Base) {
   // The class prototype added by the mixin.
   class CalendarElement extends Base {
-    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) {
-        super[internal.componentDidUpdate](changed);
-      }
-      // TODO: call calendar.datesEqual(date, previousState.date)?
-      if (changed.date && this[internal.raiseChangeEvents]) {
-        const date = this[internal.state].date;
-        /**
-         * Raised when the `date` property changes.
-         *
-         * @event date-changed
-         */
-        const event = new CustomEvent("date-changed", {
-          detail: { date }
-        });
-        this.dispatchEvent(event);
-      }
-    }
-
     /**
      * The date that should be shown by the element. For elements that show a
      * range of dates (a month, a week, etc.), the referenced date will be
@@ -88,6 +69,26 @@ export default function CalendarElementMixin(Base) {
     }
     set locale(locale) {
       this[internal.setState]({ locale });
+    }
+
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
+      }
+
+      // TODO: call calendar.datesEqual(date, previousState.date)?
+      if (changed.date && this[internal.raiseChangeEvents]) {
+        const date = this[internal.state].date;
+        /**
+         * Raised when the `date` property changes.
+         *
+         * @event date-changed
+         */
+        const event = new CustomEvent("date-changed", {
+          detail: { date }
+        });
+        this.dispatchEvent(event);
+      }
     }
   }
 

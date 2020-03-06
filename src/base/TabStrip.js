@@ -61,36 +61,6 @@ const Base = AriaListMixin(
  * @mixes TapSelectionMixin
  */
 class TabStrip extends Base {
-  [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-    super[internal.componentDidUpdate](changed);
-
-    // Does this component, or any of its assigned nodes, have focus?
-    // This is a surprisingly hard question to answer.
-    // Try finding the deepest active element, then walking up.
-    let focused = false;
-    let activeElement = document.activeElement;
-    if (activeElement) {
-      while (
-        activeElement.shadowRoot &&
-        activeElement.shadowRoot.activeElement
-      ) {
-        activeElement = activeElement.shadowRoot.activeElement;
-      }
-      focused = deepContains(this, activeElement);
-    }
-
-    // Ensure the selected tab button has the focus.
-    const selectedItem = this.selectedItem;
-    if (
-      focused &&
-      selectedItem &&
-      selectedItem instanceof HTMLElement &&
-      selectedItem !== document.activeElement
-    ) {
-      selectedItem.focus();
-    }
-  }
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       orientation: "horizontal",
@@ -161,6 +131,7 @@ class TabStrip extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
+
     const { items } = this[internal.state];
     if (changed.items && items) {
       const { tabButtonRole } = this[internal.state];
@@ -172,6 +143,7 @@ class TabStrip extends Base {
         }
       });
     }
+
     if ((changed.items || changed.selectedIndex) && items) {
       // Apply `selected` style to the selected item only.
       const { selectedIndex } = this[internal.state];
@@ -179,10 +151,12 @@ class TabStrip extends Base {
         item.toggleAttribute("selected", index === selectedIndex);
       });
     }
+
     if (changed.orientation) {
       this.style.gridAutoFlow =
         this[internal.state].orientation === "vertical" ? "row" : "column";
     }
+
     if (changed.tabAlign) {
       const { tabAlign } = this[internal.state];
       const justifyContentForTabAlign = {
@@ -194,6 +168,7 @@ class TabStrip extends Base {
       // @ts-ignore
       this.style.placeContent = justifyContentForTabAlign[tabAlign];
     }
+
     if (changed.items || changed.position) {
       const { position } = this[internal.state];
       if (items) {
@@ -203,6 +178,36 @@ class TabStrip extends Base {
           }
         });
       }
+    }
+  }
+
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
+
+    // Does this component, or any of its assigned nodes, have focus?
+    // This is a surprisingly hard question to answer.
+    // Try finding the deepest active element, then walking up.
+    let focused = false;
+    let activeElement = document.activeElement;
+    if (activeElement) {
+      while (
+        activeElement.shadowRoot &&
+        activeElement.shadowRoot.activeElement
+      ) {
+        activeElement = activeElement.shadowRoot.activeElement;
+      }
+      focused = deepContains(this, activeElement);
+    }
+
+    // Ensure the selected tab button has the focus.
+    const selectedItem = this.selectedItem;
+    if (
+      focused &&
+      selectedItem &&
+      selectedItem instanceof HTMLElement &&
+      selectedItem !== document.activeElement
+    ) {
+      selectedItem.focus();
     }
   }
 

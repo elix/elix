@@ -29,21 +29,6 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
  */
 export default function ContentItemsMixin(Base) {
   return class ContentItems extends Base {
-    [internal.componentDidUpdate](/** @type {PlainObject} */ changed) {
-      if (super[internal.componentDidUpdate]) {
-        super[internal.componentDidUpdate](changed);
-      }
-      if (changed.items && this[internal.raiseChangeEvents]) {
-        /**
-         * Raised when the `items` property changes.
-         *
-         * @event items-changed
-         */
-        const event = new CustomEvent("items-changed");
-        this.dispatchEvent(event);
-      }
-    }
-
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState], {
         items: null
@@ -71,6 +56,31 @@ export default function ContentItemsMixin(Base) {
      */
     get items() {
       return this[internal.state] ? this[internal.state].items : null;
+    }
+
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
+      }
+
+      // Raise items-changed if items changed after the initial render. We'll
+      // see changed.items on initial render, and raiseChangeEvents will be true
+      // if we're using SlotContentMixin, but we don't want to actually raise
+      // the event then because the items didn't change in response to user
+      // activity.
+      if (
+        !this[internal.firstRender] &&
+        changed.items &&
+        this[internal.raiseChangeEvents]
+      ) {
+        /**
+         * Raised when the `items` property changes.
+         *
+         * @event items-changed
+         */
+        const event = new CustomEvent("items-changed");
+        this.dispatchEvent(event);
+      }
     }
 
     [internal.stateEffects](state, changed) {
