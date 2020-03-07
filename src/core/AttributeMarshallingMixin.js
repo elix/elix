@@ -117,6 +117,7 @@ export default function AttributeMarshallingMixin(Base) {
  *
  * @private
  * @param {Constructor<HTMLElement>} classFn
+ * @returns {string[]}
  */
 function attributesForClass(classFn) {
   // We treat the HTMLElement base class as if it has no attributes, since we
