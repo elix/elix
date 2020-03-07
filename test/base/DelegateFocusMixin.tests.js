@@ -29,8 +29,9 @@ describe("DelegateFocusMixin", () => {
     const fixture = new DelegateFocusTest();
     container.appendChild(fixture);
     fixture.focus();
-    const activeElement = fixture.shadowRoot.activeElement;
-    const input = fixture.shadowRoot.querySelector("input");
+    const root = fixture.shadowRoot;
+    const activeElement = root && root.activeElement;
+    const input = root && root.querySelector("input");
     assert.equal(activeElement, input);
   });
 });

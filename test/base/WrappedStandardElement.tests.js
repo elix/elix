@@ -128,7 +128,9 @@ describe("WrappedStandardElement", () => {
     assert.equal(fixture.selectionStart, 1);
     assert.equal(fixture.selectionEnd, 4);
     fixture.focus();
-    assert.equal(fixture.shadowRoot.activeElement, fixture.inner);
+    const root = fixture.shadowRoot;
+    const activeElement = root && root.activeElement;
+    assert.equal(activeElement, fixture.inner);
   });
 
   it("delegates attributes that don't correspond to properties", async () => {

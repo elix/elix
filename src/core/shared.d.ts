@@ -32,6 +32,7 @@ type CustomElement = HTMLElement & {
   attributeChangedCallback(attributeName, oldValue, newValue): void;
   connectedCallback(): void;
   disconnectedCallback(): void;
+  shadowRoot: ShadowRoot;
 };
 
 /*

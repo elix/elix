@@ -117,7 +117,8 @@ describe("ShadowTemplateMixin", () => {
   it("generates this[internal.ids] references for shadow elements with 'id' attributes", () => {
     const fixture = new ElementWithStringTemplate();
     const root = fixture.shadowRoot;
-    assert.equal(fixture[internal.ids].message, root.querySelector("#message"));
+    const message = root && root.getElementById("message");
+    assert.equal(fixture[internal.ids].message, message);
   });
 
   it("caches the template for a component", () => {

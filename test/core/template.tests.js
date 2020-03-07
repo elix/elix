@@ -168,9 +168,13 @@ describe("templates", () => {
     const fixture = new DynamicMultiple();
     fixture[internal.renderChanges]();
     assert(fixture[internal.ids].static instanceof HTMLDivElement);
-    fixture.shadowRoot.querySelectorAll(".dynamic").forEach(element => {
-      assert(element instanceof HTMLButtonElement);
-      assert(element.classList.contains("foo"));
-    });
+    const root = fixture.shadowRoot;
+    assert(root);
+    if (root) {
+      root.querySelectorAll(".dynamic").forEach(element => {
+        assert(element instanceof HTMLButtonElement);
+        assert(element.classList.contains("foo"));
+      });
+    }
   });
 });
