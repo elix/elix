@@ -27,11 +27,10 @@ export default function TransitionEffectMixin(Base) {
       return super[internal.effectEndTarget] || this;
     }
 
-    [internal.rendered](changed) {
-      if (super[internal.rendered]) {
-        super[internal.rendered](changed);
+    [internal.render](changed) {
+      if (super[internal.render]) {
+        super[internal.render](changed);
       }
-
       if (this[internal.firstRender]) {
         // Listen for `transitionend` events so we can check to see whether an
         // effect has completed. If the component defines an `effectEndTarget`
@@ -58,7 +57,12 @@ export default function TransitionEffectMixin(Base) {
           }
         });
       }
+    }
 
+    [internal.rendered](changed) {
+      if (super[internal.rendered]) {
+        super[internal.rendered](changed);
+      }
       if (changed.effect || changed.effectPhase) {
         const { effect, effectPhase } = this[internal.state];
         /**

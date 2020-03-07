@@ -318,33 +318,9 @@ class WrappedStandardElement extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
+
     const inner = this.inner;
-    if (changed.tabIndex) {
-      inner.tabIndex = this[internal.state].tabIndex;
-    }
-    if (changed.innerAttributes) {
-      // Forward attributes to the inner element.
-      // See notes at attributeChangedCallback.
-      const { innerAttributes } = this[internal.state];
-      for (const name in innerAttributes) {
-        applyAttribute(inner, name, innerAttributes[name]);
-      }
-    }
-    if (changed.innerProperties) {
-      const { innerProperties } = this[internal.state];
-      Object.assign(inner, innerProperties);
-      const { disabled } = innerProperties;
-      if (disabled !== undefined) {
-        setInternalState(this, "disabled", disabled);
-      }
-    }
-  }
-
-  [internal.rendered](changed) {
-    super[internal.rendered](changed);
     if (this[internal.firstRender]) {
-      const inner = this.inner;
-
       // Listen for any events raised by the inner element which will not
       // automatically be retargetted across the Shadow DOM boundary, and
       // re-raise those events when they happen.
@@ -372,6 +348,36 @@ class WrappedStandardElement extends Base {
             }
           });
         });
+      }
+    }
+
+    if (changed.tabIndex) {
+      inner.tabIndex = this[internal.state].tabIndex;
+    }
+
+    if (changed.innerAttributes) {
+      // Forward attributes to the inner element.
+      // See notes at attributeChangedCallback.
+      const { innerAttributes } = this[internal.state];
+      for (const name in innerAttributes) {
+        applyAttribute(inner, name, innerAttributes[name]);
+      }
+    }
+
+    if (changed.innerProperties) {
+      // Forward properties to the inner element.
+      const { innerProperties } = this[internal.state];
+      Object.assign(inner, innerProperties);
+    }
+  }
+
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
+    if (changed.innerProperties) {
+      const { innerProperties } = this[internal.state];
+      const { disabled } = innerProperties;
+      if (disabled !== undefined) {
+        setInternalState(this, "disabled", disabled);
       }
     }
   }

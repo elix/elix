@@ -100,10 +100,17 @@ class ListComboBox extends Base {
       const cast = this[internal.ids].list;
       forwardFocus(cast, null);
     }
+
     super[internal.render](changed);
+
+    if (this[internal.firstRender]) {
+      this.setAttribute("aria-haspopup", "listbox");
+    }
+
     if (changed.inputPartType) {
       this[internal.ids].input.setAttribute("aria-autocomplete", "both");
     }
+
     if (changed.listPartType) {
       template.transmute(
         this[internal.ids].list,
@@ -157,18 +164,12 @@ class ListComboBox extends Base {
         }
       );
     }
+
     if (changed.selectedIndex) {
       const list = /** @type {any} */ (this[internal.ids].list);
       if ("selectedIndex" in list) {
         list.selectedIndex = this[internal.state].selectedIndex;
       }
-    }
-  }
-
-  [internal.rendered](changed) {
-    super[internal.rendered](changed);
-    if (this[internal.firstRender]) {
-      this.setAttribute("aria-haspopup", "listbox");
     }
   }
 

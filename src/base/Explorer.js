@@ -60,6 +60,28 @@ class Explorer extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
+
+    if (this[internal.firstRender]) {
+      // When proxy slot's assigned nodes change, determine whether we need to
+      // generate default proxies or (if assigned nodes are present) treat the
+      // assigned nodes as the proxies.
+      this[internal.ids].proxySlot.addEventListener("slotchange", () => {
+        const proxySlot = /** @type {any} */ (this[internal.ids].proxySlot);
+        const proxies = proxySlot.assignedNodes({ flatten: true });
+        const proxiesAssigned = proxies.length > 0;
+        if (proxiesAssigned) {
+          // Nodes assigned to slot become proxies.
+          this[internal.setState]({
+            proxiesAssigned,
+            proxies
+          });
+        } else {
+          // No nodes assigned -- we'll need to generate proxies.
+          this[internal.setState]({ proxiesAssigned });
+        }
+      });
+    }
+
     /** @type {any} */
     const handleSelectedIndexChanged = (/** @type {CustomEvent} */ event) => {
       // The proxy list and stage may raise events before they've actually
@@ -76,6 +98,7 @@ class Explorer extends Base {
         }
       }
     };
+
     if (changed.proxyListPartType) {
       template.transmute(
         this[internal.ids].proxyList,
@@ -86,6 +109,7 @@ class Explorer extends Base {
         handleSelectedIndexChanged
       );
     }
+
     if (changed.stagePartType) {
       template.transmute(
         this[internal.ids].stage,
@@ -119,6 +143,7 @@ class Explorer extends Base {
         }
       );
     }
+
     const proxyList = this[internal.ids].proxyList;
     const stage = this[internal.ids].stage;
     if (changed.proxies || changed.proxiesAssigned) {
@@ -129,6 +154,7 @@ class Explorer extends Base {
         : [this[internal.ids].proxySlot, ...proxies];
       replaceChildNodes(this[internal.ids].proxyList, childNodes);
     }
+
     if (
       changed.proxyListOverlap ||
       changed.proxyListPosition ||
@@ -143,6 +169,7 @@ class Explorer extends Base {
         zIndex: proxyListOverlap ? "1" : null
       });
     }
+
     if (changed.proxyListPosition || changed.rightToLeft) {
       // Map the relative position of the list vis-a-vis the stage to a position
       // from the perspective of the list.
@@ -164,6 +191,7 @@ class Explorer extends Base {
         cast.position = position;
       }
     }
+
     if (changed.proxyListPosition || changed.proxyListPartType) {
       setListAndStageOrder(this, this[internal.state]);
       const { proxyListPosition } = this[internal.state];
@@ -178,60 +206,40 @@ class Explorer extends Base {
         top: proxyListPosition === "top" ? "0" : null
       });
     }
+
     if (changed.selectedIndex || changed.proxyListPartType) {
       if ("selectedIndex" in proxyList) {
         const { selectedIndex } = this[internal.state];
         /** @type {any} */ (proxyList).selectedIndex = selectedIndex;
       }
     }
+
     if (changed.selectedIndex || changed.stagePartType) {
       if ("selectedIndex" in stage) {
         const { selectedIndex } = this[internal.state];
         /** @type {any} */ (stage).selectedIndex = selectedIndex;
       }
     }
+
     if (changed.selectionRequired || changed.proxyListPartType) {
       if ("selectionRequired" in proxyList) {
         const { selectionRequired } = this[internal.state];
         /** @type {any} */ (proxyList).selectionRequired = selectionRequired;
       }
     }
+
     if (changed.swipeFraction || changed.proxyListPartType) {
       if ("swipeFraction" in proxyList) {
         const { swipeFraction } = this[internal.state];
         /** @type {any} */ (proxyList).swipeFraction = swipeFraction;
       }
     }
+
     if (changed.swipeFraction || changed.stagePartType) {
       if ("swipeFraction" in stage) {
         const { swipeFraction } = this[internal.state];
         /** @type {any} */ (stage).swipeFraction = swipeFraction;
       }
-    }
-  }
-
-  [internal.rendered](changed) {
-    super[internal.rendered](changed);
-
-    if (this[internal.firstRender]) {
-      // When proxy slot's assigned nodes change, determine whether we need to
-      // generate default proxies or (if assigned nodes are present) treat the
-      // assigned nodes as the proxies.
-      this[internal.ids].proxySlot.addEventListener("slotchange", () => {
-        const proxySlot = /** @type {any} */ (this[internal.ids].proxySlot);
-        const proxies = proxySlot.assignedNodes({ flatten: true });
-        const proxiesAssigned = proxies.length > 0;
-        if (proxiesAssigned) {
-          // Nodes assigned to slot become proxies.
-          this[internal.setState]({
-            proxiesAssigned,
-            proxies
-          });
-        } else {
-          // No nodes assigned -- we'll need to generate proxies.
-          this[internal.setState]({ proxiesAssigned });
-        }
-      });
     }
   }
 

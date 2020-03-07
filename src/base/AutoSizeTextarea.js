@@ -71,24 +71,6 @@ class AutoSizeTextarea extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
-    const { copyStyle, lineHeight, minimumRows, value } = this[internal.state];
-    if (changed.copyStyle) {
-      Object.assign(this[internal.ids].copyContainer.style, copyStyle);
-    }
-    if (changed.lineHeight || (changed.minimumRows && lineHeight != null)) {
-      const minHeight = minimumRows * lineHeight;
-      this[internal.ids].copyContainer.style.minHeight = `${minHeight}px`;
-    }
-    if (changed.value) {
-      /** @type {HTMLTextAreaElement} */ (this[
-        internal.ids
-      ].inner).value = value;
-      this[internal.ids].textCopy.textContent = value;
-    }
-  }
-
-  [internal.rendered](changed) {
-    super[internal.rendered](changed);
 
     if (this[internal.firstRender]) {
       /**
@@ -110,7 +92,29 @@ class AutoSizeTextarea extends Base {
         });
         this[internal.raiseChangeEvents] = false;
       });
+    }
 
+    const { copyStyle, lineHeight, minimumRows, value } = this[internal.state];
+    if (changed.copyStyle) {
+      Object.assign(this[internal.ids].copyContainer.style, copyStyle);
+    }
+
+    if (changed.lineHeight || (changed.minimumRows && lineHeight != null)) {
+      const minHeight = minimumRows * lineHeight;
+      this[internal.ids].copyContainer.style.minHeight = `${minHeight}px`;
+    }
+
+    if (changed.value) {
+      /** @type {HTMLTextAreaElement} */ (this[
+        internal.ids
+      ].inner).value = value;
+      this[internal.ids].textCopy.textContent = value;
+    }
+  }
+
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
+    if (this[internal.firstRender]) {
       // For auto-sizing to work, we need the text copy to have the same border,
       // padding, and other relevant characteristics as the original text area.
       // Since those aspects are affected by CSS, we have to wait until the

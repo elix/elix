@@ -15,8 +15,8 @@ const Base = FormElementMixin(WrappedStandardElement.wrap("input"));
  * @mixes FormElementMixin
  */
 class Input extends Base {
-  [internal.rendered](changed) {
-    super[internal.rendered](changed);
+  [internal.render](changed) {
+    super[internal.render](changed);
     if (this[internal.firstRender]) {
       // The following jsDoc comment doesn't directly apply to the statement which
       // follows, but is placed there because the comment has to go somewhere to

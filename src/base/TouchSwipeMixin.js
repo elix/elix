@@ -23,113 +23,113 @@ const touchSequenceAxisKey = Symbol("touchSequenceAxis");
 export default function TouchSwipeMixin(Base) {
   // The class prototype added by the mixin.
   return class TouchSwipe extends Base {
-    constructor() {
-      // @ts-ignore
-      super();
-
-      // In all touch events, only handle single touches. We don't want to
-      // inadvertently do work when the user's trying to pinch-zoom for example.
-      // TODO: Touch events should probably be factored out into its own mixin.
-
-      // Prefer using the older touch events if supported.
-      // See the rationale for this in the comments for rendered.
-      if ("TouchEvent" in window) {
-        this.addEventListener("touchstart", async event => {
-          this[internal.raiseChangeEvents] = true;
-          if (this[multiTouchKey]) {
-            return;
-          } else if (event.touches.length === 1) {
-            const { clientX, clientY } = event.changedTouches[0];
-            gestureStart(this, clientX, clientY);
-          } else {
-            this[multiTouchKey] = true;
-          }
-          await Promise.resolve();
-          this[internal.raiseChangeEvents] = false;
-        });
-        this.addEventListener("touchmove", async event => {
-          this[internal.raiseChangeEvents] = true;
-          if (
-            !this[multiTouchKey] &&
-            event.touches.length === 1 &&
-            event.target
-          ) {
-            const { clientX, clientY } = event.changedTouches[0];
-            const handled = gestureContinue(
-              this,
-              clientX,
-              clientY,
-              event.target
-            );
-            if (handled) {
-              event.preventDefault();
-              event.stopPropagation();
-            }
-          }
-          await Promise.resolve();
-          this[internal.raiseChangeEvents] = false;
-        });
-        this.addEventListener("touchend", async event => {
-          this[internal.raiseChangeEvents] = true;
-          if (event.touches.length === 0 && event.target) {
-            // All touches removed; gesture is complete.
-            if (!this[multiTouchKey]) {
-              // Single-touch swipe has finished.
-              const { clientX, clientY } = event.changedTouches[0];
-              gestureEnd(this, clientX, clientY, event.target);
-            }
-            this[multiTouchKey] = false;
-          }
-          await Promise.resolve();
-          this[internal.raiseChangeEvents] = false;
-        });
-      } else if ("PointerEvent" in window) {
-        // Use pointer events.
-        this.addEventListener("pointerdown", async event => {
-          this[internal.raiseChangeEvents] = true;
-          if (isEventForPenOrPrimaryTouch(event)) {
-            const { clientX, clientY } = event;
-            gestureStart(this, clientX, clientY);
-          }
-          await Promise.resolve();
-          this[internal.raiseChangeEvents] = false;
-        });
-        this.addEventListener("pointermove", async event => {
-          this[internal.raiseChangeEvents] = true;
-          if (isEventForPenOrPrimaryTouch(event) && event.target) {
-            const { clientX, clientY } = event;
-            const handled = gestureContinue(
-              this,
-              clientX,
-              clientY,
-              event.target
-            );
-            if (handled) {
-              event.preventDefault();
-              event.stopPropagation();
-            }
-          }
-          await Promise.resolve();
-          this[internal.raiseChangeEvents] = false;
-        });
-        this.addEventListener("pointerup", async event => {
-          this[internal.raiseChangeEvents] = true;
-          if (isEventForPenOrPrimaryTouch(event) && event.target) {
-            const { clientX, clientY } = event;
-            gestureEnd(this, clientX, clientY, event.target);
-          }
-          await Promise.resolve();
-          this[internal.raiseChangeEvents] = false;
-        });
-      }
-    }
-
-    [internal.rendered](changed) {
-      if (super[internal.rendered]) {
-        super[internal.rendered](changed);
+    [internal.render](changed) {
+      if (super[internal.render]) {
+        super[internal.render](changed);
       }
 
       if (this[internal.firstRender]) {
+        // In all touch events, only handle single touches. We don't want to
+        // inadvertently do work when the user's trying to pinch-zoom for
+        // example. TODO: Touch events should probably be factored out into its
+        // own mixin.
+
+        // Prefer using the older touch events if supported.
+        // See the rationale for this in the comments for rendered.
+        if ("TouchEvent" in window) {
+          this.addEventListener("touchstart", async event => {
+            this[internal.raiseChangeEvents] = true;
+            if (this[multiTouchKey]) {
+              return;
+            } else if (event.touches.length === 1) {
+              const { clientX, clientY } = event.changedTouches[0];
+              gestureStart(this, clientX, clientY);
+            } else {
+              this[multiTouchKey] = true;
+            }
+            await Promise.resolve();
+            this[internal.raiseChangeEvents] = false;
+          });
+
+          this.addEventListener("touchmove", async event => {
+            this[internal.raiseChangeEvents] = true;
+            if (
+              !this[multiTouchKey] &&
+              event.touches.length === 1 &&
+              event.target
+            ) {
+              const { clientX, clientY } = event.changedTouches[0];
+              const handled = gestureContinue(
+                this,
+                clientX,
+                clientY,
+                event.target
+              );
+              if (handled) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+            }
+            await Promise.resolve();
+            this[internal.raiseChangeEvents] = false;
+          });
+
+          this.addEventListener("touchend", async event => {
+            this[internal.raiseChangeEvents] = true;
+            if (event.touches.length === 0 && event.target) {
+              // All touches removed; gesture is complete.
+              if (!this[multiTouchKey]) {
+                // Single-touch swipe has finished.
+                const { clientX, clientY } = event.changedTouches[0];
+                gestureEnd(this, clientX, clientY, event.target);
+              }
+              this[multiTouchKey] = false;
+            }
+            await Promise.resolve();
+            this[internal.raiseChangeEvents] = false;
+          });
+        } else if ("PointerEvent" in window) {
+          // Use pointer events.
+          this.addEventListener("pointerdown", async event => {
+            this[internal.raiseChangeEvents] = true;
+            if (isEventForPenOrPrimaryTouch(event)) {
+              const { clientX, clientY } = event;
+              gestureStart(this, clientX, clientY);
+            }
+            await Promise.resolve();
+            this[internal.raiseChangeEvents] = false;
+          });
+
+          this.addEventListener("pointermove", async event => {
+            this[internal.raiseChangeEvents] = true;
+            if (isEventForPenOrPrimaryTouch(event) && event.target) {
+              const { clientX, clientY } = event;
+              const handled = gestureContinue(
+                this,
+                clientX,
+                clientY,
+                event.target
+              );
+              if (handled) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+            }
+            await Promise.resolve();
+            this[internal.raiseChangeEvents] = false;
+          });
+
+          this.addEventListener("pointerup", async event => {
+            this[internal.raiseChangeEvents] = true;
+            if (isEventForPenOrPrimaryTouch(event) && event.target) {
+              const { clientX, clientY } = event;
+              gestureEnd(this, clientX, clientY, event.target);
+            }
+            await Promise.resolve();
+            this[internal.raiseChangeEvents] = false;
+          });
+        }
+
         //
         // Choosing a touch-action value is unfortunately fraught with issues.
         //

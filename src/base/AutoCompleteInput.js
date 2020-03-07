@@ -15,9 +15,8 @@ class AutoCompleteInput extends Input {
     });
   }
 
-  [internal.rendered](changed) {
-    super[internal.rendered](changed);
-
+  [internal.render](changed) {
+    super[internal.render](changed);
     if (this[internal.firstRender]) {
       // In many ways it would be cleaner to do AutoComplete work in a keydown
       // listener. Unfortunately, Chrome for Android sets the keyCode on *all*
@@ -64,7 +63,10 @@ class AutoCompleteInput extends Input {
         });
       });
     }
+  }
 
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
     const { autoCompleteSelect, originalText } = this[internal.state];
     if (changed.originalText && autoCompleteSelect) {
       // We've finished rendering new auto-completed text.

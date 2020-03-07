@@ -48,11 +48,10 @@ function FocusCaptureMixin(Base) {
       );
     }
 
-    [internal.rendered](changed) {
-      if (super[internal.rendered]) {
-        super[internal.rendered](changed);
+    [internal.render](changed) {
+      if (super[internal.render]) {
+        super[internal.render](changed);
       }
-
       if (this[internal.firstRender]) {
         this[internal.ids].focusCatcher.addEventListener("focus", () => {
           if (!this[wrappingFocusKey]) {

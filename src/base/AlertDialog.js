@@ -87,16 +87,7 @@ class AlertDialog extends Dialog {
 
   [internal.render](changed) {
     super[internal.render](changed);
-    if (changed.choiceButtons) {
-      replaceChildNodes(
-        this[internal.ids].choiceButtonContainer,
-        this[internal.state].choiceButtons
-      );
-    }
-  }
 
-  [internal.rendered](changed) {
-    super[internal.rendered](changed);
     if (this[internal.firstRender]) {
       this[internal.ids].choiceButtonContainer.addEventListener(
         "click",
@@ -110,6 +101,13 @@ class AlertDialog extends Dialog {
             this[internal.raiseChangeEvents] = false;
           }
         }
+      );
+    }
+
+    if (changed.choiceButtons) {
+      replaceChildNodes(
+        this[internal.ids].choiceButtonContainer,
+        this[internal.state].choiceButtons
       );
     }
   }

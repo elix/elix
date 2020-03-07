@@ -13,9 +13,8 @@ class MenuSeparator extends ReactiveElement {
     return true;
   }
 
-  [internal.rendered](changed) {
-    super[internal.rendered](changed);
-
+  [internal.render](changed) {
+    super[internal.render](changed);
     if (this[internal.firstRender]) {
       this.setAttribute("aria-hidden", "true");
     }

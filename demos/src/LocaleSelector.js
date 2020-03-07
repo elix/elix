@@ -298,6 +298,15 @@ class LocaleSelector extends ReactiveElement {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
+
+    if (this[internal.firstRender]) {
+      this[internal.ids].select.addEventListener("change", () => {
+        this[internal.raiseChangeEvents] = true;
+        this.value = /** @type {any} */ (this[internal.ids].select).value;
+        this[internal.raiseChangeEvents] = false;
+      });
+    }
+
     if (changed.value) {
       const value = this[internal.state].value;
       /** @type {HTMLSelectElement} */ (this[
@@ -308,15 +317,6 @@ class LocaleSelector extends ReactiveElement {
 
   [internal.rendered](changed) {
     super[internal.rendered](changed);
-
-    if (this[internal.firstRender]) {
-      this[internal.ids].select.addEventListener("change", () => {
-        this[internal.raiseChangeEvents] = true;
-        this.value = /** @type {any} */ (this[internal.ids].select).value;
-        this[internal.raiseChangeEvents] = false;
-      });
-    }
-
     if (changed.value && this[internal.raiseChangeEvents]) {
       const event = new CustomEvent("change", {
         detail: {

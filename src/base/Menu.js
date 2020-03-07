@@ -113,6 +113,25 @@ class Menu extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
+
+    if (this[internal.firstRender]) {
+      this.addEventListener("mousemove", () => {
+        this.suppressFocusVisibility();
+      });
+
+      // Treat a pointerdown event as a tap.
+      if ("PointerEvent" in window) {
+        // Prefer listening to standard pointer events.
+        this.addEventListener("pointerdown", event =>
+          this[internal.tap](event)
+        );
+      } else {
+        this.addEventListener("touchstart", event => this[internal.tap](event));
+      }
+
+      this.removeAttribute("tabindex");
+    }
+
     const { selectedIndex, items } = this[internal.state];
     if ((changed.items || changed.selectedIndex) && items) {
       // Reflect the selection state to the item.
@@ -120,6 +139,7 @@ class Menu extends Base {
         item.toggleAttribute("selected", index === selectedIndex);
       });
     }
+
     if (
       (changed.items ||
         changed.selectedIndex ||
@@ -168,26 +188,11 @@ class Menu extends Base {
 
   [internal.rendered](changed) {
     super[internal.rendered](changed);
-
-    if (this[internal.firstRender]) {
-      this.addEventListener("mousemove", () => {
-        this.suppressFocusVisibility();
-      });
-
-      // Treat a pointerdown event as a tap.
-      if ("PointerEvent" in window) {
-        // Prefer listening to standard pointer events.
-        this.addEventListener("pointerdown", event =>
-          this[internal.tap](event)
-        );
-      } else {
-        this.addEventListener("touchstart", event => this[internal.tap](event));
-      }
-
-      this.removeAttribute("tabindex");
-    }
-
-    if (changed.selectedIndex && !this[internal.state].selectionFocused) {
+    if (
+      !this[internal.firstRender] &&
+      changed.selectedIndex &&
+      !this[internal.state].selectionFocused
+    ) {
       // The selected item needs the focus, but this is complicated. See notes
       // in render.
       const focusElement =

@@ -55,9 +55,8 @@ const Base = AriaListMixin(
  * @mixes TrackpadSwipeMixin
  */
 class SlideshowWithPlayControls extends Base {
-  [internal.rendered](changed) {
-    super[internal.rendered](changed);
-
+  [internal.render](changed) {
+    super[internal.render](changed);
     if (this[internal.firstRender]) {
       // Clicking the slideshow toggles the playing state.
       this.addEventListener("click", () => {

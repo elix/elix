@@ -20,8 +20,18 @@ const Base = EffectMixin(
  * @mixes EffectMixin
  */
 class CrossfadeStage extends Base {
-  [internal.rendered](changed) {
-    super[internal.rendered](changed);
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
+      effect: "select",
+      effectEndTarget: null,
+      effectPhase: "after",
+      selectionRequired: true,
+      transitionDuration: 750 // 3/4 of a second
+    });
+  }
+
+  [internal.render](/** @type {PlainObject} */ changed) {
+    super[internal.render](changed);
 
     if (this[internal.firstRender]) {
       this.addEventListener("effect-phase-changed", event => {
@@ -46,20 +56,7 @@ class CrossfadeStage extends Base {
         }
       });
     }
-  }
 
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
-      effect: "select",
-      effectEndTarget: null,
-      effectPhase: "after",
-      selectionRequired: true,
-      transitionDuration: 750 // 3/4 of a second
-    });
-  }
-
-  [internal.render](/** @type {PlainObject} */ changed) {
-    super[internal.render](changed);
     if (
       changed.effect ||
       changed.effectPhase ||

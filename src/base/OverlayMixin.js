@@ -52,6 +52,36 @@ export default function OverlayMixin(Base) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }
+
+      if (this[internal.firstRender]) {
+        this.addEventListener("blur", event => {
+          // What has the focus now?
+          const newFocusedElement =
+            event.relatedTarget || document.activeElement;
+          /** @type {any} */
+          const node = this;
+          if (newFocusedElement instanceof HTMLElement) {
+            const focusInside = deepContains(node, newFocusedElement);
+            if (!focusInside) {
+              if (this.opened) {
+                // The user has most likely clicked on something in the background
+                // of a modeless overlay. Remember that element, and restore focus
+                // to it when the overlay finishes closing.
+                this[restoreFocusToElementKey] = newFocusedElement;
+              } else {
+                // A blur event fired, but the overlay closed itself before the blur
+                // event could be processed. In closing, we may have already
+                // restored the focus to the element that originally invoked the
+                // overlay. Since the user has clicked somewhere else to close the
+                // overlay, put the focus where they wanted it.
+                newFocusedElement.focus();
+                this[restoreFocusToElementKey] = null;
+              }
+            }
+          }
+        });
+      }
+
       if (changed.effectPhase || changed.opened || changed.persistent) {
         if (!this[internal.state].persistent) {
           // Temporary overlay
@@ -90,33 +120,6 @@ export default function OverlayMixin(Base) {
       }
 
       if (this[internal.firstRender]) {
-        this.addEventListener("blur", event => {
-          // What has the focus now?
-          const newFocusedElement =
-            event.relatedTarget || document.activeElement;
-          /** @type {any} */
-          const node = this;
-          if (newFocusedElement instanceof HTMLElement) {
-            const focusInside = deepContains(node, newFocusedElement);
-            if (!focusInside) {
-              if (this.opened) {
-                // The user has most likely clicked on something in the background
-                // of a modeless overlay. Remember that element, and restore focus
-                // to it when the overlay finishes closing.
-                this[restoreFocusToElementKey] = newFocusedElement;
-              } else {
-                // A blur event fired, but the overlay closed itself before the blur
-                // event could be processed. In closing, we may have already
-                // restored the focus to the element that originally invoked the
-                // overlay. Since the user has clicked somewhere else to close the
-                // overlay, put the focus where they wanted it.
-                newFocusedElement.focus();
-                this[restoreFocusToElementKey] = null;
-              }
-            }
-          }
-        });
-
         // Perform one-time check to see if component needs a default z-index.
         if (this[internal.state].persistent && !hasZIndex(this)) {
           bringToFront(this);

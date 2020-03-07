@@ -18,6 +18,12 @@ const documentMouseupListenerKey = Symbol("documentMouseupListener");
  * @part up-icon - the icon shown in the toggle if the popup will open or close in the up direction
  */
 class MenuButton extends PopupButton {
+  connectedCallback() {
+    super.connectedCallback();
+    // Handle edge case where component is opened, removed, then added back.
+    listenIfOpenAndConnected(this);
+  }
+
   // The index that will be selected by default when the menu opens.
   get defaultMenuSelectedIndex() {
     return -1;
@@ -39,9 +45,7 @@ class MenuButton extends PopupButton {
     if (super.disconnectedCallback) {
       super.disconnectedCallback();
     }
-    /** @type {any} */ const cast = this;
-    document.removeEventListener("mouseup", cast[documentMouseupListenerKey]);
-    cast[documentMouseupListenerKey] = null;
+    listenIfOpenAndConnected(this);
   }
 
   /**
@@ -164,6 +168,23 @@ class MenuButton extends PopupButton {
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
 
+    if (this[internal.firstRender]) {
+      // If the user hovers over an item, select it.
+      this.addEventListener("mousemove", event => {
+        const target = event.target;
+        if (target && target instanceof Node) {
+          const hoverIndex = indexOfItemContainingTarget(this.items, target);
+          if (hoverIndex !== this[internal.state].menuSelectedIndex) {
+            this[internal.raiseChangeEvents] = true;
+            this[internal.setState]({
+              menuSelectedIndex: hoverIndex
+            });
+            this[internal.raiseChangeEvents] = false;
+          }
+        }
+      });
+    }
+
     if (changed.popupPartType) {
       this[internal.ids].popup.tabIndex = -1;
     }
@@ -278,39 +299,6 @@ class MenuButton extends PopupButton {
   [internal.rendered](changed) {
     super[internal.rendered](changed);
 
-    if (this[internal.firstRender]) {
-      // If the user hovers over an item, select it.
-      this.addEventListener("mousemove", event => {
-        const target = event.target;
-        if (target && target instanceof Node) {
-          const hoverIndex = indexOfItemContainingTarget(this.items, target);
-          if (hoverIndex !== this[internal.state].menuSelectedIndex) {
-            this[internal.raiseChangeEvents] = true;
-            this[internal.setState]({
-              menuSelectedIndex: hoverIndex
-            });
-            this[internal.raiseChangeEvents] = false;
-          }
-        }
-      });
-
-      // If the popup is open and user releases the mouse over the backdrop, close
-      // the popup. We need to listen to mouseup on the document, not this
-      // element. If the user mouses down on the source, then moves the mouse off
-      // the document before releasing the mouse, the element itself won't get the
-      // mouseup. The document will, however, so it's a more reliable source of
-      // mouse state.
-      //
-      // Coincidentally, we *also* need to listen to mouseup on the document to
-      // tell whether the user released the mouse over the source button. When the
-      // user mouses down, the backdrop will appear and cover the source, so from
-      // that point on the source won't receive a mouseup event. Again, we can
-      // listen to mouseup on the document and do our own hit-testing to see if
-      // the user released the mouse over the source.
-      /** @type {any} */ const cast = this;
-      cast[documentMouseupListenerKey] = handleMouseup.bind(this);
-    }
-
     if (changed.menuSelectedIndex) {
       const selectedItem =
         this[internal.state].menuSelectedIndex >= 0
@@ -320,11 +308,7 @@ class MenuButton extends PopupButton {
     }
 
     if (changed.opened) {
-      if (this[internal.state].opened) {
-        addDocumentListeners(this);
-      } else {
-        removeDocumentListeners(this);
-      }
+      listenIfOpenAndConnected(this);
     }
   }
 
@@ -411,11 +395,6 @@ class MenuButton extends PopupButton {
   }
 }
 
-function addDocumentListeners(/** @type {MenuButton} */ element) {
-  /** @type {any} */ const cast = element;
-  document.addEventListener("mouseup", cast[documentMouseupListenerKey]);
-}
-
 async function handleMouseup(/** @type {MouseEvent} */ event) {
   // @ts-ignore
   const element = this;
@@ -445,9 +424,34 @@ async function handleMouseup(/** @type {MouseEvent} */ event) {
   }
 }
 
-function removeDocumentListeners(/** @type {MenuButton} */ element) {
-  /** @type {any} */ const cast = element;
-  document.removeEventListener("mouseup", cast[documentMouseupListenerKey]);
+function listenIfOpenAndConnected(element) {
+  if (element[internal.state].opened && element.isConnected) {
+    // If the popup is open and user releases the mouse over the backdrop, close
+    // the popup. We need to listen to mouseup on the document, not this
+    // element. If the user mouses down on the source, then moves the mouse off
+    // the document before releasing the mouse, the element itself won't get the
+    // mouseup. The document will, however, so it's a more reliable source of
+    // mouse state.
+    //
+    // Coincidentally, we *also* need to listen to mouseup on the document to
+    // tell whether the user released the mouse over the source button. When the
+    // user mouses down, the backdrop will appear and cover the source, so from
+    // that point on the source won't receive a mouseup event. Again, we can
+    // listen to mouseup on the document and do our own hit-testing to see if
+    // the user released the mouse over the source.
+    if (!element[documentMouseupListenerKey]) {
+      // Not listening yet; start.
+      element[documentMouseupListenerKey] = handleMouseup.bind(element);
+      document.addEventListener("mouseup", element[documentMouseupListenerKey]);
+    }
+  } else if (element[documentMouseupListenerKey]) {
+    // Currently listening; stop.
+    document.removeEventListener(
+      "mouseup",
+      element[documentMouseupListenerKey]
+    );
+    element[documentMouseupListenerKey] = null;
+  }
 }
 
 export default MenuButton;

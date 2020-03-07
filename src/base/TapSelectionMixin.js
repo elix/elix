@@ -46,11 +46,10 @@ export default function TapSelectionMixin(Base) {
       });
     }
 
-    [internal.rendered](changed) {
-      if (super[internal.rendered]) {
-        super[internal.rendered](changed);
+    [internal.render](changed) {
+      if (super[internal.render]) {
+        super[internal.render](changed);
       }
-
       if (this[internal.firstRender]) {
         Object.assign(this.style, {
           touchAction: "manipulation", // for iOS Safari

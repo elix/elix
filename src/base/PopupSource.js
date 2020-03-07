@@ -73,6 +73,11 @@ class PopupSource extends Base {
 
   [internal.render](/** @type {PlainObject} */ changed) {
     super[internal.render](changed);
+
+    if (this[internal.firstRender]) {
+      this.setAttribute("aria-haspopup", "true");
+    }
+
     if (changed.popupPartType) {
       template.transmute(
         this[internal.ids].popup,
@@ -101,6 +106,7 @@ class PopupSource extends Base {
         }
       });
     }
+
     if (
       changed.horizontalAlign ||
       changed.popupMeasured ||
@@ -196,17 +202,20 @@ class PopupSource extends Base {
       });
       this[internal.ids].popupContainer.style.top = positionBelow ? "" : "0";
     }
+
     if (changed.sourcePartType) {
       template.transmute(
         this[internal.ids].source,
         this[internal.state].sourcePartType
       );
     }
+
     if (changed.opened) {
       const { opened } = this[internal.state];
       /** @type {any} */ (this[internal.ids].popup).opened = opened;
       this.setAttribute("aria-expanded", opened.toString());
     }
+
     if (changed.disabled) {
       if ("disabled" in this[internal.ids].source) {
         const { disabled } = this[internal.state];
@@ -217,11 +226,6 @@ class PopupSource extends Base {
 
   [internal.rendered](changed) {
     super[internal.rendered](changed);
-
-    if (this[internal.firstRender]) {
-      this.setAttribute("aria-haspopup", "true");
-    }
-
     if (changed.opened) {
       if (this.opened) {
         // Worth noting that's possible (but unusual) for a popup to render opened
