@@ -38,7 +38,7 @@ class PullToRefresh extends Base {
     });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
 
     if (this[internal.firstRender]) {
@@ -124,7 +124,7 @@ class PullToRefresh extends Base {
     }
   }
 
-  [internal.rendered](changed) {
+  [internal.rendered](/** @type {ChangedFlags} */ changed) {
     super[internal.rendered](changed);
 
     if (

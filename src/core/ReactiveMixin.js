@@ -63,10 +63,10 @@ export default function ReactiveMixin(Base) {
      * component's base classes and mixins have a chance to perform their own
      * render work.
      *
-     * @param {PlainObject} changed - dictionary of flags indicating which state
+     * @param {ChangedFlags} changed - dictionary of flags indicating which state
      * members have changed since the last render
      */
-    [internal.render](changed) {
+    [internal.render](/** @type {ChangedFlags} */ changed) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }
@@ -115,7 +115,7 @@ export default function ReactiveMixin(Base) {
         this[internal.rendering] = true;
 
         // Invoke any internal render implementations.
-        this[internal.render](changed);
+        this[internal.render](/** @type {ChangedFlags} */ changed);
 
         this[internal.rendering] = false;
 
@@ -157,7 +157,7 @@ export default function ReactiveMixin(Base) {
 
     // The default implementation of rendered just passes through to any
     // superclass implementation.
-    [internal.rendered](/** @type {PlainObject} */ changed) {
+    [internal.rendered](/** @type {ChangedFlags} */ changed) {
       if (super[internal.rendered]) {
         super[internal.rendered](changed);
       }
@@ -264,7 +264,7 @@ export default function ReactiveMixin(Base) {
      * [ensure state consistency](ReactiveMixin#ensuring-state-consistency).
      *
      * @param {PlainObject} state - a proposal for a new state
-     * @param {PlainObject} changed - the set of fields changed in this
+     * @param {ChangedFlags} changed - the set of fields changed in this
      * latest proposal for the new state
      * @returns {PlainObject}
      */
@@ -301,7 +301,9 @@ export default function ReactiveMixin(Base) {
  */
 export function copyStateWithChanges(element, changes) {
   // Start with a copy of the current state.
+  /** @type {PlainObject} */
   const state = Object.assign({}, element[stateKey]);
+  /** @type {ChangedFlags} */
   const changed = {};
   // Take the supplied changes as the first round of effects.
   let effects = changes;
@@ -348,6 +350,7 @@ function equal(value1, value2) {
  * @param {PlainObject} changes
  */
 function fieldsChanged(state, changes) {
+  /** @type {ChangedFlags} */
   const changed = {};
   for (const field in changes) {
     if (!equal(changes[field], state[field])) {

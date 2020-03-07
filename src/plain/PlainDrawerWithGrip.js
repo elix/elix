@@ -10,7 +10,7 @@ import PlainModalOverlayMixin from "./PlainModalOverlayMixin.js";
  * @mixes PlainModalOverlayMixin
  */
 class PlainDrawerWithGrip extends PlainModalOverlayMixin(DrawerWithGrip) {
-  [internal.render](changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (changed.swipeAxis && this[internal.ids].gripIcon) {
       // Rotate the default grip icon to reflect the swipe axis.

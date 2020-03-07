@@ -15,7 +15,7 @@ const Base = DarkModeMixin(SelectableButton);
  * @mixes DarkModeMixin
  */
 class PlainPageDot extends Base {
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
 
     if (this[internal.firstRender]) {

@@ -13,7 +13,7 @@ import ReactiveElement from "../core/ReactiveElement.js";
  * @inherits ReactiveElement
  */
 class Hidden extends ReactiveElement {
-  [internal.render](changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (this[internal.firstRender]) {
       this.setAttribute("hidden", "");

@@ -165,7 +165,7 @@ class MenuButton extends PopupButton {
     this[internal.setState]({ popupTogglePartType });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
 
     if (this[internal.firstRender]) {
@@ -296,7 +296,7 @@ class MenuButton extends PopupButton {
     }
   }
 
-  [internal.rendered](changed) {
+  [internal.rendered](/** @type {ChangedFlags} */ changed) {
     super[internal.rendered](changed);
 
     if (changed.menuSelectedIndex) {

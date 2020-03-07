@@ -15,7 +15,7 @@ class PlainProgressSpinner extends ProgressSpinner {
     });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (changed.count) {
       const step = 360 / this[internal.state].rotationsPerSecond;

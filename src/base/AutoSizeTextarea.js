@@ -69,7 +69,7 @@ class AutoSizeTextarea extends Base {
     }
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
 
     if (this[internal.firstRender]) {
@@ -112,7 +112,7 @@ class AutoSizeTextarea extends Base {
     }
   }
 
-  [internal.rendered](changed) {
+  [internal.rendered](/** @type {ChangedFlags} */ changed) {
     super[internal.rendered](changed);
     if (this[internal.firstRender]) {
       // For auto-sizing to work, we need the text copy to have the same border,

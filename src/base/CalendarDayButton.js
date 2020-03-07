@@ -45,22 +45,27 @@ class CalendarDayButton extends Base {
     this[internal.setState]({ outsideRange });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
+
     if (changed.dayPartType) {
       const { dayPartType } = this[internal.state];
       template.transmute(this[internal.ids].day, dayPartType);
     }
+
     /** @type {any} */ const day = this[internal.ids].day;
     if (changed.dayPartType || changed.date) {
       day.date = this[internal.state].date;
     }
+
     if (changed.dayPartType || changed.locale) {
       day.locale = this[internal.state].locale;
     }
+
     if (changed.dayPartType || changed.outsideRange) {
       day.outsideRange = this[internal.state].outsideRange;
     }
+
     if (changed.dayPartType || changed.selected) {
       // Reflect selected state to inner CalendarDay.
       day.selected = this[internal.state].selected;

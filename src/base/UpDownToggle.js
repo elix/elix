@@ -36,7 +36,7 @@ class UpDownToggle extends ReactiveElement {
     this[internal.setState]({ disabled });
   }
 
-  [internal.render](changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
 
     if (changed.direction) {

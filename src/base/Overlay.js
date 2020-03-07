@@ -91,7 +91,7 @@ class Overlay extends Base {
     this[internal.setState]({ framePartType });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (changed.backdropPartType) {
       template.transmute(
@@ -107,7 +107,7 @@ class Overlay extends Base {
     }
   }
 
-  [internal.rendered](changed) {
+  [internal.rendered](/** @type {ChangedFlags} */ changed) {
     super[internal.rendered](changed);
 
     if (changed.opened && this[internal.state].content) {

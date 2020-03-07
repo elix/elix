@@ -26,7 +26,7 @@ export default function SwipeCommandsMixin(Base) {
       });
     }
 
-    [internal.render](/** @type {PlainObject} */ changed) {
+    [internal.render](/** @type {ChangedFlags} */ changed) {
       super[internal.render](changed);
 
       if (this[internal.firstRender]) {
@@ -182,7 +182,7 @@ export default function SwipeCommandsMixin(Base) {
       }
     }
 
-    [internal.rendered](changed) {
+    [internal.rendered](/** @type {ChangedFlags} */ changed) {
       if (super[internal.rendered]) {
         super[internal.rendered](changed);
       }

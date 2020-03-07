@@ -161,7 +161,7 @@ class ListWithSearch extends Base {
     this[internal.setState]({ placeholder });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (changed.inputPartType) {
       template.transmute(

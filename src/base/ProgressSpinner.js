@@ -32,7 +32,7 @@ class ProgressSpinner extends ReactiveElement {
     this[internal.setState]({ playing });
   }
 
-  [internal.rendered](changed) {
+  [internal.rendered](/** @type {ChangedFlags} */ changed) {
     super[internal.rendered](changed);
     if (changed.count || (changed.playing && this[internal.state].playing)) {
       tick(this);

@@ -37,7 +37,7 @@ class ExpandablePanel extends Base {
     return this[internal.ids].outerContainer;
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (changed.effect || changed.effectPhase || changed.enableEffects) {
       const { effect, effectPhase, enableEffects, transitionDuration } = this[

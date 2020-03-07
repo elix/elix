@@ -27,7 +27,7 @@ export default function TransitionEffectMixin(Base) {
       return super[internal.effectEndTarget] || this;
     }
 
-    [internal.render](changed) {
+    [internal.render](/** @type {ChangedFlags} */ changed) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }
@@ -59,7 +59,7 @@ export default function TransitionEffectMixin(Base) {
       }
     }
 
-    [internal.rendered](changed) {
+    [internal.rendered](/** @type {ChangedFlags} */ changed) {
       if (super[internal.rendered]) {
         super[internal.rendered](changed);
       }

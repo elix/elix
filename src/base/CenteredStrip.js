@@ -45,7 +45,7 @@ class CenteredStrip extends Base {
     this[internal.setState]({ orientation });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (
       changed.clientWidth ||

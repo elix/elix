@@ -9,19 +9,19 @@ declare const ReactiveMixin: Mixin<
   {},
   {
     [internal.componentDidMount](): void;
-    [internal.componentDidUpdate](changed: PlainObject): void;
+    [internal.componentDidUpdate](changed: ChangedFlags): void;
     connectedCallback(): void;
     readonly [internal.defaultState]: PlainObject;
     [internal.raiseChangeEvents]: boolean;
-    [internal.render](changed: PlainObject): void;
+    [internal.render](changed: ChangedFlags): void;
     [internal.renderChanges](): void;
-    [internal.rendered](changed: PlainObject): void;
+    [internal.rendered](changed: ChangedFlags): void;
     [internal.rendering]: boolean;
     [internal.setState](changes: PlainObject): Promise<void>;
     readonly [internal.state]: PlainObject;
     [internal.stateEffects](
       state: PlainObject,
-      changed: PlainObject
+      changed: ChangedFlags
     ): PlainObject;
   }
 >;

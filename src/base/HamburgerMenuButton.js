@@ -105,7 +105,7 @@ class HamburgerMenuButton extends Base {
     this[internal.setState]({ menuButtonPartType });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (changed.menuButtonPartType) {
       template.transmute(

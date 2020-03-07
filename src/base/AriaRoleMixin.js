@@ -19,7 +19,7 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 export default function AriaRoleMixin(Base) {
   // The class prototype added by the mixin.
   class AriaRole extends Base {
-    [internal.render](/** @type {PlainObject} */ changed) {
+    [internal.render](/** @type {ChangedFlags} */ changed) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }

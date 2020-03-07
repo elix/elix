@@ -28,7 +28,7 @@ class Modes extends Base {
     });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (changed.items || changed.selectedIndex) {
       const { selectedIndex, items } = this[internal.state];

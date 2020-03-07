@@ -73,7 +73,7 @@ class Toast extends Base {
     this[internal.setState]({ fromEdge });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (changed.fromEdge) {
       // Host
@@ -162,7 +162,7 @@ class Toast extends Base {
     }
   }
 
-  [internal.rendered](changed) {
+  [internal.rendered](/** @type {ChangedFlags} */ changed) {
     super[internal.rendered](changed);
     startTimerIfOpened(this);
   }

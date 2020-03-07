@@ -52,8 +52,9 @@ class CalendarDay extends Base {
     });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
+
     const { date } = this[internal.state];
     if (changed.date) {
       const today = calendar.today();
@@ -88,6 +89,7 @@ class CalendarDay extends Base {
       setInternalState(this, "today", daysFromToday === 0);
       this[internal.ids].day.textContent = dayOfMonth.toString();
     }
+
     if (changed.date || changed.locale) {
       const dayOfWeek = date.getDay();
       const { locale } = this[internal.state];
@@ -97,6 +99,7 @@ class CalendarDay extends Base {
       setInternalState(this, "weekday", !weekend);
       setInternalState(this, "weekend", weekend);
     }
+
     if (changed.outsideRange) {
       setInternalState(
         this,

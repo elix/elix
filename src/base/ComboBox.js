@@ -53,7 +53,7 @@ class ComboBox extends Base {
     });
   }
 
-  [internal.rendered](changed) {
+  [internal.rendered](/** @type {ChangedFlags} */ changed) {
     super[internal.rendered](changed);
     if (this[internal.state].selectText) {
       // Select the text in the input after giving the inner input a chance to render the value.
@@ -176,7 +176,7 @@ class ComboBox extends Base {
     this[internal.setState]({ popupTogglePartType });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
 
     if (changed.inputPartType) {

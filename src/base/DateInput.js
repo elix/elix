@@ -80,7 +80,7 @@ class DateInput extends Base {
     return calendar.parseWithOptionalYear(text, dateTimeFormat, timeBias);
   }
 
-  [internal.rendered](changed) {
+  [internal.rendered](/** @type {ChangedFlags} */ changed) {
     super[internal.rendered](changed);
     this[internal.ids].inner.addEventListener("blur", () => {
       this[internal.raiseChangeEvents] = true;

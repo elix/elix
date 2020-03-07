@@ -162,7 +162,7 @@ class CalendarMonth extends Base {
     this[internal.setState]({ monthYearHeaderPartType });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (changed.dayNamesHeaderPartType) {
       template.transmute(

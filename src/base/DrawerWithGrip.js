@@ -32,7 +32,7 @@ class DrawerWithGrip extends Drawer {
     this[internal.setState]({ gripPartType });
   }
 
-  [internal.render](changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     if (super[internal.render]) {
       super[internal.render](changed);
     }
@@ -95,7 +95,7 @@ class DrawerWithGrip extends Drawer {
     }
   }
 
-  [internal.rendered](changed) {
+  [internal.rendered](/** @type {ChangedFlags} */ changed) {
     super[internal.rendered](changed);
 
     if (this[internal.state].gripSize === null) {

@@ -71,7 +71,7 @@ export default function FormElementMixin(Base) {
       this[internal.setState]({ name });
     }
 
-    [internal.render](changed) {
+    [internal.render](/** @type {ChangedFlags} */ changed) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }
@@ -99,7 +99,7 @@ export default function FormElementMixin(Base) {
       }
     }
 
-    [internal.rendered](changed) {
+    [internal.rendered](/** @type {ChangedFlags} */ changed) {
       if (super[internal.rendered]) {
         super[internal.rendered](changed);
       }

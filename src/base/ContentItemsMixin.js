@@ -58,7 +58,7 @@ export default function ContentItemsMixin(Base) {
       return this[internal.state] ? this[internal.state].items : null;
     }
 
-    [internal.rendered](changed) {
+    [internal.rendered](/** @type {ChangedFlags} */ changed) {
       if (super[internal.rendered]) {
         super[internal.rendered](changed);
       }

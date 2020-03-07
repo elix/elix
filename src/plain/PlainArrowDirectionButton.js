@@ -16,7 +16,7 @@ const Base = DarkModeMixin(PlainButton);
  * @mixes DarkModeMixin
  */
 class PlainArrowDirectionButton extends Base {
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     // Wait for knowledge of dark mode to be set after initial render.
     const { darkMode } = this[internal.state];

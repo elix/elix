@@ -67,7 +67,7 @@ export default function DelegateFocusMixin(Base) {
       return firstFocusableElement(this[internal.shadowRoot]);
     }
 
-    [internal.render](changed) {
+    [internal.render](/** @type {ChangedFlags} */ changed) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }

@@ -74,6 +74,10 @@ type PlainObject = {
   [key: string]: any;
 };
 
+type ChangedFlags = {
+  [key: string]: boolean;
+};
+
 /*
  * Descriptor that can be instantiated to create a part.
  */

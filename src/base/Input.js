@@ -15,7 +15,7 @@ const Base = FormElementMixin(WrappedStandardElement.wrap("input"));
  * @mixes FormElementMixin
  */
 class Input extends Base {
-  [internal.render](changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (this[internal.firstRender]) {
       // The following jsDoc comment doesn't directly apply to the statement which

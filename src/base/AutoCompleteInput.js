@@ -15,7 +15,7 @@ class AutoCompleteInput extends Input {
     });
   }
 
-  [internal.render](changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (this[internal.firstRender]) {
       // In many ways it would be cleaner to do AutoComplete work in a keydown
@@ -65,7 +65,7 @@ class AutoCompleteInput extends Input {
     }
   }
 
-  [internal.rendered](changed) {
+  [internal.rendered](/** @type {ChangedFlags} */ changed) {
     super[internal.rendered](changed);
     const { autoCompleteSelect, originalText } = this[internal.state];
     if (changed.originalText && autoCompleteSelect) {

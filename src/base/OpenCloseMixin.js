@@ -114,7 +114,7 @@ export default function OpenCloseMixin(Base) {
       this.toggle(parsed);
     }
 
-    [internal.rendered](changed) {
+    [internal.rendered](/** @type {ChangedFlags} */ changed) {
       if (super[internal.rendered]) {
         super[internal.rendered](changed);
       }

@@ -93,7 +93,7 @@ class ListComboBox extends Base {
     return this[internal.ids].list;
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     if (changed.listPartType && this[internal.ids].list) {
       // Turn off focus handling for old list.
       /** @type {any} */

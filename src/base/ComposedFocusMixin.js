@@ -39,7 +39,7 @@ export default function ComposedFocusMixin(Base) {
       });
     }
 
-    [internal.render](changed) {
+    [internal.render](/** @type {ChangedFlags} */ changed) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }

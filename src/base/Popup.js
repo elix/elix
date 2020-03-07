@@ -15,7 +15,7 @@ const Base = KeyboardMixin(PopupModalityMixin(Overlay));
  * @mixes PopupModalityMixin
  */
 class Popup extends Base {
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (changed.backdropPartType) {
       this[internal.ids].backdrop.addEventListener(

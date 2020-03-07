@@ -129,7 +129,7 @@ class TabStrip extends Base {
     });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
 
     const { items } = this[internal.state];
@@ -181,7 +181,7 @@ class TabStrip extends Base {
     }
   }
 
-  [internal.rendered](changed) {
+  [internal.rendered](/** @type {ChangedFlags} */ changed) {
     super[internal.rendered](changed);
 
     // Does this component, or any of its assigned nodes, have focus?

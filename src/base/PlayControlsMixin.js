@@ -57,7 +57,7 @@ export default function PlayControlsMixin(Base) {
       );
     }
 
-    [internal.render](/** @type {PlainObject} */ changed) {
+    [internal.render](/** @type {ChangedFlags} */ changed) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }

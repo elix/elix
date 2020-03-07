@@ -46,7 +46,7 @@ export default function TapSelectionMixin(Base) {
       });
     }
 
-    [internal.render](changed) {
+    [internal.render](/** @type {ChangedFlags} */ changed) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }

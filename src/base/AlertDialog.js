@@ -85,7 +85,7 @@ class AlertDialog extends Dialog {
     );
   }
 
-  [internal.render](changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
 
     if (this[internal.firstRender]) {

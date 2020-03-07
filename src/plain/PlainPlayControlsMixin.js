@@ -15,7 +15,7 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
  */
 export default function PlainPlayControlsMixin(Base) {
   return class PlainPlayControls extends Base {
-    [internal.render](changed) {
+    [internal.render](/** @type {ChangedFlags} */ changed) {
       super[internal.render](changed);
 
       // Show playing icon if paused; paused icon if playing.

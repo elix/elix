@@ -75,7 +75,7 @@ class Carousel extends Base {
     this[internal.setState]({ orientation });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     if (changed.proxyListPartType && this[internal.ids].proxyList) {
       // Turn off focus handling for old proxy list.
       const proxyList = this[internal.ids].proxyList;

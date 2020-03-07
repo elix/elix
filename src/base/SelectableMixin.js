@@ -26,7 +26,7 @@ export default function SelectableMixin(Base) {
       });
     }
 
-    [internal.render](/** @type {PlainObject} */ changed) {
+    [internal.render](/** @type {ChangedFlags} */ changed) {
       super[internal.render](changed);
       if (changed.selected) {
         const { selected } = this[internal.state];
@@ -34,7 +34,7 @@ export default function SelectableMixin(Base) {
       }
     }
 
-    [internal.rendered](changed) {
+    [internal.rendered](/** @type {ChangedFlags} */ changed) {
       if (super[internal.rendered]) {
         super[internal.rendered](changed);
       }

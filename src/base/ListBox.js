@@ -89,7 +89,7 @@ class ListBox extends Base {
     this[internal.setState]({ orientation });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (changed.items || changed.selectedIndex) {
       // Apply `selected` style to the selected item only.

@@ -73,7 +73,7 @@ export default function PopupModalityMixin(Base) {
       return handled || (super.keydown && super.keydown(event)) || false;
     }
 
-    [internal.render](/** @type {PlainObject} */ changed) {
+    [internal.render](/** @type {ChangedFlags} */ changed) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }
@@ -84,7 +84,7 @@ export default function PopupModalityMixin(Base) {
       }
     }
 
-    [internal.rendered](changed) {
+    [internal.rendered](/** @type {ChangedFlags} */ changed) {
       if (super[internal.rendered]) {
         super[internal.rendered](changed);
       }

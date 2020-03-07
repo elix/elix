@@ -71,7 +71,7 @@ class PopupSource extends Base {
     this[internal.setState]({ horizontalAlign });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
 
     if (this[internal.firstRender]) {
@@ -224,7 +224,7 @@ class PopupSource extends Base {
     }
   }
 
-  [internal.rendered](changed) {
+  [internal.rendered](/** @type {ChangedFlags} */ changed) {
     super[internal.rendered](changed);
     if (changed.opened) {
       if (this.opened) {

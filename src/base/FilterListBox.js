@@ -80,7 +80,7 @@ class FilterListBox extends ListBox {
     return !filter ? true : !text ? false : text.includes(filter);
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     const { content, filter } = this[internal.state];
     // We inspect `content` instead of `items` so that we can render even those

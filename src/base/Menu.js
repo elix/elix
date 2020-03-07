@@ -111,7 +111,7 @@ class Menu extends Base {
     return base && !cast.disabled;
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
 
     if (this[internal.firstRender]) {
@@ -186,7 +186,7 @@ class Menu extends Base {
     }
   }
 
-  [internal.rendered](changed) {
+  [internal.rendered](/** @type {ChangedFlags} */ changed) {
     super[internal.rendered](changed);
     if (
       !this[internal.firstRender] &&

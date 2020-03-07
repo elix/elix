@@ -52,7 +52,7 @@ export default function SingleSelectionMixin(Base) {
       });
     }
 
-    [internal.rendered](changed) {
+    [internal.rendered](/** @type {ChangedFlags} */ changed) {
       if (super[internal.rendered]) {
         super[internal.rendered](changed);
       }

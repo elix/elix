@@ -48,7 +48,7 @@ export default function OverlayMixin(Base) {
       }
     }
 
-    [internal.render](/** @type {PlainObject} */ changed) {
+    [internal.render](/** @type {ChangedFlags} */ changed) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }
@@ -114,7 +114,7 @@ export default function OverlayMixin(Base) {
       }
     }
 
-    [internal.rendered](/** @type {PlainObject} */ changed) {
+    [internal.rendered](/** @type {ChangedFlags} */ changed) {
       if (super[internal.rendered]) {
         super[internal.rendered](changed);
       }

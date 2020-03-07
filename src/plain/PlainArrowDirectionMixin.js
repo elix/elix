@@ -21,7 +21,7 @@ export default function PlainArrowDirectionMixin(Base) {
       });
     }
 
-    [internal.render](changed) {
+    [internal.render](/** @type {ChangedFlags} */ changed) {
       super[internal.render](changed);
 
       // Rotate the default icons for vertical orientation, flip the default

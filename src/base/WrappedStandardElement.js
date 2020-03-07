@@ -316,7 +316,7 @@ class WrappedStandardElement extends Base {
     return [...super.observedAttributes, ...attributesWithoutProperties];
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
 
     const inner = this.inner;
@@ -371,7 +371,7 @@ class WrappedStandardElement extends Base {
     }
   }
 
-  [internal.rendered](changed) {
+  [internal.rendered](/** @type {ChangedFlags} */ changed) {
     super[internal.rendered](changed);
     if (changed.innerProperties) {
       const { innerProperties } = this[internal.state];

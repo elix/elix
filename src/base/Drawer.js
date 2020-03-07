@@ -86,7 +86,7 @@ class Drawer extends Base {
     this[internal.setState]({ gripSize });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
 
     if (changed.backdropPartType) {
@@ -276,7 +276,7 @@ class Drawer extends Base {
     }
   }
 
-  [internal.rendered](changed) {
+  [internal.rendered](/** @type {ChangedFlags} */ changed) {
     super[internal.rendered](changed);
     if (changed.opened) {
       // Reflect opened attribute.

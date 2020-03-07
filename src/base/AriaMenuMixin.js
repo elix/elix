@@ -26,7 +26,7 @@ export default function AriaMenuMixin(Base) {
       this[internal.setState]({ itemRole });
     }
 
-    [internal.render](/** @type {PlainObject} */ changed) {
+    [internal.render](/** @type {ChangedFlags} */ changed) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }

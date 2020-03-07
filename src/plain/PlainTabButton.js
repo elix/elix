@@ -8,7 +8,7 @@ import TabButton from "../base/TabButton.js";
  * @inherits TabButton
  */
 class PlainTabButton extends TabButton {
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (changed.position) {
       // Adjust margins.

@@ -15,7 +15,7 @@ class CarouselWithThumbnails extends Carousel {
     });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     /** @type {Element[]} */ const proxies = this[internal.state].proxies;
     if ((changed.items || changed.proxies) && proxies) {

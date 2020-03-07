@@ -74,7 +74,7 @@ function ArrowDirectionMixin(Base) {
       });
     }
 
-    [internal.render](/** @type {PlainObject} */ changed) {
+    [internal.render](/** @type {ChangedFlags} */ changed) {
       if (changed.arrowButtonPartType) {
         const arrowButtonPrevious = this[internal.ids].arrowButtonPrevious;
         if (arrowButtonPrevious instanceof HTMLElement) {

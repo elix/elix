@@ -71,7 +71,7 @@ export default function CalendarElementMixin(Base) {
       this[internal.setState]({ locale });
     }
 
-    [internal.rendered](changed) {
+    [internal.rendered](/** @type {ChangedFlags} */ changed) {
       if (super[internal.rendered]) {
         super[internal.rendered](changed);
       }

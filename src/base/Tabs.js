@@ -26,7 +26,7 @@ class Tabs extends Explorer {
     });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     const { items } = this[internal.state];
     /** @type {Element[]} */ const proxies = this[internal.state].proxies;

@@ -26,7 +26,7 @@ class FilterComboBox extends Base {
     });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (changed.inputPartType) {
       this[internal.ids].input.addEventListener("input", event => {

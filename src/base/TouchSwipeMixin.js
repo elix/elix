@@ -23,7 +23,7 @@ const touchSequenceAxisKey = Symbol("touchSequenceAxis");
 export default function TouchSwipeMixin(Base) {
   // The class prototype added by the mixin.
   return class TouchSwipe extends Base {
-    [internal.render](changed) {
+    [internal.render](/** @type {ChangedFlags} */ changed) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }

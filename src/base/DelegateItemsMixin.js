@@ -58,7 +58,7 @@ export default function DelegateItemsMixin(Base) {
       return this[internal.state] ? this[internal.state].items : null;
     }
 
-    [internal.render](/** @type {PlainObject} */ changed) {
+    [internal.render](/** @type {ChangedFlags} */ changed) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }
@@ -73,7 +73,7 @@ export default function DelegateItemsMixin(Base) {
       }
     }
 
-    [internal.rendered](changed) {
+    [internal.rendered](/** @type {ChangedFlags} */ changed) {
       if (super[internal.rendered]) {
         super[internal.rendered](changed);
       }

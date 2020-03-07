@@ -29,7 +29,7 @@ class CarouselSlideshow extends Base {
     });
   }
 
-  [internal.render](/** @type {PlainObject} */ changed) {
+  [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (changed.transitionDuration) {
       const { transitionDuration } = this[internal.state];

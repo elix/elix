@@ -23,7 +23,7 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 export default function SelectedItemTextValueMixin(Base) {
   // The class prototype added by the mixin.
   class SelectedItemTextValue extends Base {
-    [internal.rendered](changed) {
+    [internal.rendered](/** @type {ChangedFlags} */ changed) {
       if (super[internal.rendered]) {
         super[internal.rendered](changed);
       }

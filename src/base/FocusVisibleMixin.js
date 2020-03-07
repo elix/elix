@@ -88,7 +88,7 @@ export default function FocusVisibleMixin(Base) {
       });
     }
 
-    [internal.render](/** @type {PlainObject} */ changed) {
+    [internal.render](/** @type {ChangedFlags} */ changed) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }
