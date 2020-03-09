@@ -31,6 +31,38 @@ export default function ReactiveMixin(Base) {
       this[internal.setState](this[internal.defaultState]);
     }
 
+    [internal.componentDidMount]() {
+      if (super[internal.componentDidMount]) {
+        super[internal.componentDidMount]();
+      }
+      if (
+        super[internal.componentDidMount] ||
+        this[internal.componentDidMount] !==
+          Reactive.prototype[internal.componentDidMount]
+      ) {
+        /* eslint-disable no-console */
+        console.warn(
+          "componentDidMount is deprecated. Instead, use the internal.rendered method and the internal.firstRender flag."
+        );
+      }
+    }
+
+    [internal.componentDidUpdate](changed) {
+      if (super[internal.componentDidUpdate]) {
+        super[internal.componentDidUpdate](changed);
+      }
+      if (
+        super[internal.componentDidUpdate] ||
+        this[internal.componentDidUpdate] !==
+          Reactive.prototype[internal.componentDidUpdate]
+      ) {
+        /* eslint-disable no-console */
+        console.warn(
+          "componentDidUpdate is deprecated. Instead, use the internal.rendered method and the internal.firstRender flag."
+        );
+      }
+    }
+
     connectedCallback() {
       if (super.connectedCallback) {
         super.connectedCallback();
@@ -130,18 +162,10 @@ export default function ReactiveMixin(Base) {
         // DEPRECATED: First time is consider mounting; subsequent times are updates.
         if (this[internal.firstRender]) {
           if (this[internal.componentDidMount]) {
-            /* eslint-disable no-console */
-            console.warn(
-              "Use the rendered method instead of the deprecated componentDidMount method."
-            );
             this[internal.componentDidMount]();
           }
         } else {
           if (this[internal.componentDidUpdate]) {
-            /* eslint-disable no-console */
-            console.warn(
-              "Use the rendered method instead of the deprecated componentDidUpdate method."
-            );
             this[internal.componentDidUpdate](changed);
           }
         }

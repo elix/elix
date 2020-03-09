@@ -34,6 +34,8 @@
  *
  * A component using [ReactiveMixin](ReactiveMixin) will have this method
  * invoked the first time the component is rendered in the DOM.
+ *
+ * This method has been deprecated; use `rendered` instead.
  */
 export const componentDidMount = Symbol("componentDidMount");
 
@@ -43,6 +45,8 @@ export const componentDidMount = Symbol("componentDidMount");
  * A component using [ReactiveMixin](ReactiveMixin) will have this method
  * invoked a component already in the DOM has finished a subsequent render
  * operation.
+ *
+ * This method has been deprecated; use `rendered` instead.
  */
 export const componentDidUpdate = Symbol("componentDidUpdate");
 
@@ -177,6 +181,10 @@ export const renderChanges = Symbol("renderChanges");
  *
  * [ReactiveMixin](ReactiveMixin) will invoke this method after your
  * element has completely finished rendering.
+ *
+ * If you only want to do work the first time rendering happens (for example, if
+ * you want to wire up event handlers), your `internal.rendered` implementation
+ * can inspect the `internal.firstRender` flag.
  */
 export const rendered = Symbol("rendered");
 
