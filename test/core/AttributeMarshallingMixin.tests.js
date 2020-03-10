@@ -70,5 +70,10 @@ describe("AttributeMarshallingMixin", () => {
     // https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes#Boolean_Attributes
     fixture.setAttribute("disabled", "true");
     assert(!fixture.disabled);
+    fixture.removeAttribute("disabled");
+    fixture.toggleAttribute("disabled");
+    assert(fixture.disabled);
+    fixture.toggleAttribute("disabled");
+    assert(!fixture.disabled);
   });
 });

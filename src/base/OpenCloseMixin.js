@@ -35,6 +35,17 @@ export default function OpenCloseMixin(Base) {
     }
 
     /**
+     * True if the element is currently closed.
+     *
+     * This read-only property is provided as a convenient inverse of `opened`.
+     *
+     * @type {boolean}
+     */
+    get closed() {
+      return this[internal.state] && !this[internal.state].opened;
+    }
+
+    /**
      * True if the element has completely closed.
      *
      * For components not using asynchronous open/close effects, this property
