@@ -42,20 +42,9 @@ export default function DisabledMixin(Base) {
     get disabled() {
       return this[internal.state].disabled;
     }
+    // AttributeMarshallingMixin should parse this as a boolean attribute for us.
     set disabled(disabled) {
-      // If the supplied value is a boolean, we accept it directly. If the
-      // supplied value is a string, it was presumably set via an attribute. In
-      // that case, any non-null value counts as true.
-      const parsed =
-        typeof disabled === "boolean" ? disabled : disabled !== null;
-      // Setting the disabled state will eventually cause the property value to
-      // be reflected to the disabled attribute, which will invoke this setter
-      // again -- this time, with a string value. That string value should get
-      // parsed the same way, so the second[internal.setState] call shouldn't have any
-      // effect.
-      this[internal.setState]({
-        disabled: parsed
-      });
+      this[internal.setState]({ disabled });
     }
 
     [internal.rendered](/** @type {ChangedFlags} */ changed) {

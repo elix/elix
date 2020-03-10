@@ -1,3 +1,4 @@
+import { booleanAttributeValue } from "../core/AttributeMarshallingMixin.js";
 import * as internal from "./internal.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
@@ -56,7 +57,7 @@ export default function TimerSelectionMixin(Base) {
       return this[internal.state].playing;
     }
     set playing(playing) {
-      const parsed = String(playing) === "true";
+      const parsed = booleanAttributeValue("playing", playing);
       if (parsed !== this[internal.state].playing) {
         if (parsed) {
           this.play();
