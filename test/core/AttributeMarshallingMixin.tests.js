@@ -64,5 +64,11 @@ describe("AttributeMarshallingMixin", () => {
     assert(fixture.disabled);
     fixture.removeAttribute("disabled");
     assert(!fixture.disabled);
+    fixture.setAttribute("disabled", "disabled");
+    assert(fixture.disabled);
+    // Native boolean attribute of a string like "true" is actually `false`!
+    // https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes#Boolean_Attributes
+    fixture.setAttribute("disabled", "true");
+    assert(!fixture.disabled);
   });
 });

@@ -1,5 +1,6 @@
 import * as internal from "./internal.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
+import { booleanAttributeValue } from "../core/AttributeMarshallingMixin.js";
 
 /** @type {any} */
 const closePromiseKey = Symbol("closePromise");
@@ -31,19 +32,6 @@ export default function OpenCloseMixin(Base) {
       }
       this[internal.setState]({ closeResult });
       await this.toggle(false);
-    }
-
-    /**
-     * True if the element is currently closed.
-     *
-     * @type {boolean}
-     */
-    get closed() {
-      return this[internal.state] && !this[internal.state].opened;
-    }
-    set closed(closed) {
-      const parsed = String(closed) === "true";
-      this.toggle(!parsed);
     }
 
     /**
@@ -103,13 +91,15 @@ export default function OpenCloseMixin(Base) {
     /**
      * True if the element is currently opened.
      *
-     * @type {boolean}
+     * This property can be set as a boolean attribute
+     *
+     * @type {boolean|string}
      */
     get opened() {
       return this[internal.state] && this[internal.state].opened;
     }
     set opened(opened) {
-      const parsed = String(opened) === "true";
+      const parsed = booleanAttributeValue("opened", opened);
       this[internal.setState]({ closeResult: undefined });
       this.toggle(parsed);
     }

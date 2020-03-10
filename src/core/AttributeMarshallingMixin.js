@@ -1,7 +1,7 @@
 import * as internal from "./internal.js";
 
 /** @type {IndexedObject<boolean>} */
-export const booleanAttributes = {
+export const standardBooleanAttributes = {
   checked: true,
   defer: true,
   disabled: true,
@@ -177,22 +177,40 @@ function attributeToPropertyName(attributeName) {
 }
 
 /**
- * If the given attribute name corresponds to a boolean attribute, map the
- * supplied string value to a boolean. Otherwise return as is.
+ * Given a string value for a named boolean attribute, return `true` if the
+ * value is either: a) the empty string, or b) a case-insensitive match for the
+ * name.
+ *
+ * This is native HTML behavior; see the MDN documentation on [boolean
+ * attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes#Boolean_Attributes)
+ * for the reasoning.
+ *
+ * Given a null value, this return `false`.
+ * Given a boolean value, this return the value as is.
+ *
+ * @param {string} name
+ * @param {string|boolean|null} value
+ */
+export function booleanAttributeValue(name, value) {
+  return typeof value === "boolean"
+    ? value
+    : typeof value === "string"
+    ? value === "" || name.toLowerCase() === value.toLowerCase()
+    : false;
+}
+
+/**
+ * If the given attribute name corresponds to a standard boolean attribute, map
+ * the supplied string value to a boolean. Otherwise return as is.
  *
  * @private
- * @param {string} attributeName
+ * @param {string} name
  * @param {string} value
  */
-function castPotentialBooleanAttribute(attributeName, value) {
-  if (booleanAttributes[attributeName]) {
-    if (typeof value === "string") {
-      return true;
-    } else if (value === null) {
-      return false;
-    }
-  }
-  return value;
+function castPotentialBooleanAttribute(name, value) {
+  return standardBooleanAttributes[name]
+    ? booleanAttributeValue(name, value)
+    : value;
 }
 
 /**

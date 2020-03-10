@@ -1,3 +1,4 @@
+import { setInternalState } from "../core/dom.js";
 import * as internal from "./internal.js";
 import DialogModalityMixin from "./DialogModalityMixin.js";
 import EffectMixin from "./EffectMixin.js";
@@ -280,7 +281,7 @@ class Drawer extends Base {
     super[internal.rendered](changed);
     if (changed.opened) {
       // Reflect opened attribute.
-      this.setAttribute("opened", this[internal.state].opened.toString());
+      setInternalState(this, "opened", this[internal.state].opened);
     }
   }
 

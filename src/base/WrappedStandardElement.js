@@ -1,4 +1,4 @@
-import { booleanAttributes } from "../core/AttributeMarshallingMixin.js";
+import { standardBooleanAttributes } from "../core/AttributeMarshallingMixin.js";
 import { setInternalState } from "../core/dom.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
@@ -505,7 +505,7 @@ class WrappedStandardElement extends Base {
  * @param {string} value
  */
 export function applyAttribute(element, name, value) {
-  if (booleanAttributes[name]) {
+  if (standardBooleanAttributes[name]) {
     // Boolean attribute
     if (typeof value === "string") {
       element.setAttribute(name, "");

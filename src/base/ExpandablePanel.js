@@ -87,10 +87,7 @@ class ExpandablePanel extends Base {
       // (which it usually won't).
       const canReceiveFocus = this[internal.state].tabIndex >= 0;
       if (canReceiveFocus) {
-        this.setAttribute(
-          "aria-expanded",
-          this[internal.state].opened.toString()
-        );
+        this.toggleAttribute("aria-expanded", this[internal.state].opened);
       } else {
         this.removeAttribute("aria-expanded");
       }
