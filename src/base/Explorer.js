@@ -99,11 +99,9 @@ class Explorer extends Base {
       }
     };
 
+    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+
     if (changed.proxyListPartType) {
-      template.transmute(
-        this[internal.ids].proxyList,
-        this[internal.state].proxyListPartType
-      );
       this[internal.ids].proxyList.addEventListener(
         "selected-index-changed",
         handleSelectedIndexChanged
@@ -111,10 +109,6 @@ class Explorer extends Base {
     }
 
     if (changed.stagePartType) {
-      template.transmute(
-        this[internal.ids].stage,
-        this[internal.state].stagePartType
-      );
       this[internal.ids].stage.addEventListener(
         "selected-index-changed",
         handleSelectedIndexChanged
@@ -350,7 +344,7 @@ class Explorer extends Base {
   }
 
   get [internal.template]() {
-    return template.html`
+    const result = template.html`
       <style>
         :host {
           display: inline-flex;
@@ -376,6 +370,10 @@ class Explorer extends Base {
         <div id="stage" part="stage" role="none"><slot></slot></div>
       </div>
     `;
+
+    renderParts(result.content, this[internal.state]);
+
+    return result;
   }
 }
 
@@ -415,6 +413,31 @@ function findChildContainingNode(root, node) {
     : parentNode
     ? findChildContainingNode(root, parentNode)
     : null;
+}
+
+/**
+ * Render parts for the template or an instance.
+ *
+ * @private
+ * @param {DocumentFragment} root
+ * @param {PlainObject} state
+ * @param {ChangedFlags} [changed]
+ */
+function renderParts(root, state, changed) {
+  if (!changed || changed.proxyListPartType) {
+    const proxyList = root.getElementById("proxyList");
+    if (proxyList) {
+      const { proxyListPartType } = state;
+      template.transmute(proxyList, proxyListPartType);
+    }
+  }
+  if (!changed || changed.stagePartType) {
+    const stage = root.getElementById("stage");
+    if (stage) {
+      const { stagePartType } = state;
+      template.transmute(stage, stagePartType);
+    }
+  }
 }
 
 /**

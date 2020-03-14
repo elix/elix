@@ -37,11 +37,9 @@ class DrawerWithGrip extends Drawer {
       super[internal.render](changed);
     }
 
+    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+
     if (changed.gripPartType) {
-      template.transmute(
-        this[internal.ids].grip,
-        this[internal.state].gripPartType
-      );
       this[internal.ids].grip.addEventListener("click", event => {
         // Clicking grip toggles drawer.
         this[internal.raiseChangeEvents] = true;
@@ -145,6 +143,8 @@ class DrawerWithGrip extends Drawer {
       `);
     }
 
+    renderParts(result.content, this[internal.state]);
+
     result.content.append(html`
       <style>
         [part~="frame"] {
@@ -179,6 +179,24 @@ class DrawerWithGrip extends Drawer {
     `);
 
     return result;
+  }
+}
+
+/**
+ * Render parts for the template or an instance.
+ *
+ * @private
+ * @param {DocumentFragment} root
+ * @param {PlainObject} state
+ * @param {ChangedFlags} [changed]
+ */
+function renderParts(root, state, changed) {
+  if (!changed || changed.gripPartType) {
+    const { gripPartType } = state;
+    const grip = root.getElementById("grip");
+    if (grip) {
+      template.transmute(grip, gripPartType);
+    }
   }
 }
 

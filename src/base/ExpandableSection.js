@@ -61,30 +61,14 @@ class ExpandableSection extends Base {
   [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
 
+    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+
     if (changed.headerPartType) {
-      template.transmute(
-        this[internal.ids].header,
-        this[internal.state].headerPartType
-      );
       this[internal.ids].header.addEventListener("click", () => {
         this[internal.raiseChangeEvents] = true;
         this.toggle();
         this[internal.raiseChangeEvents] = false;
       });
-    }
-
-    if (changed.panelPartType) {
-      template.transmute(
-        this[internal.ids].panel,
-        this[internal.state].panelPartType
-      );
-    }
-
-    if (changed.togglePartType) {
-      template.transmute(
-        this[internal.ids].toggle,
-        this[internal.state].togglePartType
-      );
     }
 
     if (changed.opened || changed.togglePartType) {
@@ -108,7 +92,7 @@ class ExpandableSection extends Base {
 
   get [internal.template]() {
     // Default expand/collapse icons from Google's Material Design collection.
-    return template.html`
+    const result = template.html`
       <style>
         :host {
           display: block;
@@ -145,6 +129,10 @@ class ExpandableSection extends Base {
         <slot></slot>
       </div>
     `;
+
+    renderParts(result.content, this[internal.state]);
+
+    return result;
   }
 
   /**
@@ -159,6 +147,38 @@ class ExpandableSection extends Base {
   }
   set togglePartType(togglePartType) {
     this[internal.setState]({ togglePartType });
+  }
+}
+
+/**
+ * Render parts for the template or an instance.
+ *
+ * @private
+ * @param {DocumentFragment} root
+ * @param {PlainObject} state
+ * @param {ChangedFlags} [changed]
+ */
+function renderParts(root, state, changed) {
+  if (!changed || changed.headerPartType) {
+    const { headerPartType } = state;
+    const header = root.getElementById("header");
+    if (header) {
+      template.transmute(header, headerPartType);
+    }
+  }
+  if (!changed || changed.panelPartType) {
+    const { panelPartType } = state;
+    const panel = root.getElementById("panel");
+    if (panel) {
+      template.transmute(panel, panelPartType);
+    }
+  }
+  if (!changed || changed.togglePartType) {
+    const { togglePartType } = state;
+    const toggle = root.getElementById("toggle");
+    if (toggle) {
+      template.transmute(toggle, togglePartType);
+    }
   }
 }
 

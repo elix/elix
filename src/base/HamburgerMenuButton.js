@@ -107,22 +107,18 @@ class HamburgerMenuButton extends Base {
 
   [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
+
+    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+
     if (changed.menuButtonPartType) {
-      template.transmute(
-        this[internal.ids].menuButton,
-        this[internal.state].menuButtonPartType
-      );
       this[internal.ids].menuButton.addEventListener("click", () => {
         this[internal.raiseChangeEvents] = true;
         this.open();
         this[internal.raiseChangeEvents] = false;
       });
     }
+
     if (changed.menuPartType) {
-      template.transmute(
-        this[internal.ids].menu,
-        this[internal.state].menuPartType
-      );
       this[internal.ids].menu.addEventListener("closed", event => {
         /** @type {any} */
         const cast = event;
@@ -137,12 +133,15 @@ class HamburgerMenuButton extends Base {
         });
       });
     }
+
     const menu = /** @type {any} */ (this[internal.ids].menu);
+
     if (changed.fromEdge) {
       if ("fromEdge" in menu) {
         menu.fromEdge = this[internal.state].fromEdge;
       }
     }
+
     if (changed.opened) {
       if ("opened" in menu) {
         menu.opened = this[internal.state].opened;
@@ -151,7 +150,7 @@ class HamburgerMenuButton extends Base {
   }
 
   get [internal.template]() {
-    return template.html`
+    const result = template.html`
       <style>
         :host {
           align-items: center;
@@ -166,6 +165,35 @@ class HamburgerMenuButton extends Base {
         <slot></slot>
       </div>
     `;
+
+    renderParts(result.content, this[internal.state]);
+
+    return result;
+  }
+}
+
+/**
+ * Render parts for the template or an instance.
+ *
+ * @private
+ * @param {DocumentFragment} root
+ * @param {PlainObject} state
+ * @param {ChangedFlags} [changed]
+ */
+function renderParts(root, state, changed) {
+  if (!changed || changed.menuButtonPartType) {
+    const { menuButtonPartType } = state;
+    const menuButton = root.getElementById("menuButton");
+    if (menuButton) {
+      template.transmute(menuButton, menuButtonPartType);
+    }
+  }
+  if (!changed || changed.menuPartType) {
+    const { menuPartType } = state;
+    const menu = root.getElementById("menu");
+    if (menu) {
+      template.transmute(menu, menuPartType);
+    }
   }
 }
 

@@ -41,6 +41,8 @@ class PullToRefresh extends Base {
   [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
 
+    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+
     if (this[internal.firstRender]) {
       // Listen to scroll events in case the user scrolls up past the page's top.
       let scrollTarget = getScrollableElement(this) || window;
@@ -61,13 +63,6 @@ class PullToRefresh extends Base {
       });
     }
 
-    if (changed.pullIndicatorPartType) {
-      template.transmute(
-        this[internal.ids].pullIndicator,
-        this.pullIndicatorPartType
-      );
-    }
-
     if (changed.refreshing) {
       const { refreshing } = this[internal.state];
       const refreshingIndicator = this[internal.ids].refreshingIndicator;
@@ -75,13 +70,6 @@ class PullToRefresh extends Base {
       if ("playing" in this[internal.ids].refreshingIndicator) {
         /** @type {any} */ (refreshingIndicator).playing = refreshing;
       }
-    }
-
-    if (changed.refreshingIndicatorPartType) {
-      template.transmute(
-        this[internal.ids].refreshingIndicator,
-        this.refreshingIndicatorPartType
-      );
     }
 
     if (changed.enableEffects || changed.refreshing || changed.swipeFraction) {
@@ -221,7 +209,7 @@ class PullToRefresh extends Base {
   }
 
   get [internal.template]() {
-    return template.html`
+    const result = template.html`
       <style>
         :host {
           display: block;
@@ -260,6 +248,10 @@ class PullToRefresh extends Base {
       </div>
       <slot></slot>
     `;
+
+    renderParts(result.content, this[internal.state]);
+
+    return result;
   }
 }
 
@@ -342,6 +334,31 @@ async function handleScrollPull(element, scrollTop) {
       scrollPullDistance: null,
       scrollPullMaxReached: false
     });
+  }
+}
+
+/**
+ * Render parts for the template or an instance.
+ *
+ * @private
+ * @param {DocumentFragment} root
+ * @param {PlainObject} state
+ * @param {ChangedFlags} [changed]
+ */
+function renderParts(root, state, changed) {
+  if (!changed || changed.pullIndicatorPartType) {
+    const { pullIndicatorPartType } = state;
+    const pullIndicator = root.getElementById("pullIndicator");
+    if (pullIndicator) {
+      template.transmute(pullIndicator, pullIndicatorPartType);
+    }
+  }
+  if (!changed || changed.refreshingIndicatorPartType) {
+    const { refreshingIndicatorPartType } = state;
+    const refreshingIndicator = root.getElementById("refreshingIndicator");
+    if (refreshingIndicator) {
+      template.transmute(refreshingIndicator, refreshingIndicatorPartType);
+    }
   }
 }
 

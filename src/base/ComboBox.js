@@ -179,12 +179,9 @@ class ComboBox extends Base {
   [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
 
-    if (changed.inputPartType) {
-      template.transmute(
-        this[internal.ids].input,
-        this[internal.state].inputPartType
-      );
+    renderParts(this[internal.shadowRoot], this[internal.state], changed);
 
+    if (changed.inputPartType) {
       this[internal.ids].input.addEventListener("blur", () => {
         this[internal.setState]({
           focused: false
@@ -248,10 +245,6 @@ class ComboBox extends Base {
     }
 
     if (changed.popupTogglePartType) {
-      template.transmute(
-        this[internal.ids].popupToggle,
-        this[internal.state].popupTogglePartType
-      );
       const popupToggle = this[internal.ids].popupToggle;
       const input = this[internal.ids].input;
       popupToggle.addEventListener("mousedown", event => {
@@ -365,6 +358,8 @@ class ComboBox extends Base {
       );
     }
 
+    renderParts(result.content, this[internal.state]);
+
     result.content.append(
       html`
         <style>
@@ -407,6 +402,31 @@ class ComboBox extends Base {
   }
   set value(value) {
     this[internal.setState]({ value });
+  }
+}
+
+/**
+ * Render parts for the template or an instance.
+ *
+ * @private
+ * @param {DocumentFragment} root
+ * @param {PlainObject} state
+ * @param {ChangedFlags} [changed]
+ */
+function renderParts(root, state, changed) {
+  if (!changed || changed.inputPartType) {
+    const { inputPartType } = state;
+    const input = root.getElementById("input");
+    if (input) {
+      template.transmute(input, inputPartType);
+    }
+  }
+  if (!changed || changed.popupTogglePartType) {
+    const { popupTogglePartType } = state;
+    const popupToggle = root.getElementById("popupToggle");
+    if (popupToggle) {
+      template.transmute(popupToggle, popupTogglePartType);
+    }
   }
 }
 

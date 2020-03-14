@@ -168,6 +168,8 @@ class MenuButton extends PopupButton {
   [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
 
+    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+
     if (this[internal.firstRender]) {
       // If the user hovers over an item, select it.
       this.addEventListener("mousemove", event => {
@@ -190,11 +192,6 @@ class MenuButton extends PopupButton {
     }
 
     if (changed.menuPartType) {
-      template.transmute(
-        this[internal.ids].menu,
-        this[internal.state].menuPartType
-      );
-
       // Close the popup if menu loses focus.
       this[internal.ids].menu.addEventListener("blur", async event => {
         /** @type {any} */
@@ -262,13 +259,6 @@ class MenuButton extends PopupButton {
           });
           this[internal.raiseChangeEvents] = false;
         }
-      );
-    }
-
-    if (changed.popupTogglePartType) {
-      template.transmute(
-        this[internal.ids].popupToggle,
-        this[internal.state].popupTogglePartType
       );
     }
 
@@ -373,6 +363,8 @@ class MenuButton extends PopupButton {
       `);
     }
 
+    renderParts(result.content, this[internal.state]);
+
     result.content.append(html`
       <style>
         [part~="menu"] {
@@ -446,6 +438,31 @@ function listenIfOpenAndConnected(element) {
       element[documentMouseupListenerKey]
     );
     element[documentMouseupListenerKey] = null;
+  }
+}
+
+/**
+ * Render parts for the template or an instance.
+ *
+ * @private
+ * @param {DocumentFragment} root
+ * @param {PlainObject} state
+ * @param {ChangedFlags} [changed]
+ */
+function renderParts(root, state, changed) {
+  if (!changed || changed.menuPartType) {
+    const { menuPartType } = state;
+    const menu = root.getElementById("menu");
+    if (menu) {
+      template.transmute(menu, menuPartType);
+    }
+  }
+  if (!changed || changed.popupTogglePartType) {
+    const { popupTogglePartType } = state;
+    const popupToggle = root.getElementById("popupToggle");
+    if (popupToggle) {
+      template.transmute(popupToggle, popupTogglePartType);
+    }
   }
 }
 

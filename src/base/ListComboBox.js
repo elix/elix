@@ -104,6 +104,8 @@ class ListComboBox extends Base {
 
     super[internal.render](changed);
 
+    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+
     if (this[internal.firstRender]) {
       this.setAttribute("aria-haspopup", "listbox");
     }
@@ -113,11 +115,6 @@ class ListComboBox extends Base {
     }
 
     if (changed.listPartType) {
-      template.transmute(
-        this[internal.ids].list,
-        this[internal.state].listPartType
-      );
-
       this[internal.ids].list.addEventListener("mousedown", event => {
         // Only process events for the main (usually left) button.
         if (/** @type {MouseEvent} */ (event).button !== 0) {
@@ -251,7 +248,27 @@ class ListComboBox extends Base {
       `);
     }
 
+    renderParts(result.content, this[internal.state]);
+
     return result;
+  }
+}
+
+/**
+ * Render parts for the template or an instance.
+ *
+ * @private
+ * @param {DocumentFragment} root
+ * @param {PlainObject} state
+ * @param {ChangedFlags} [changed]
+ */
+function renderParts(root, state, changed) {
+  if (!changed || changed.listPartType) {
+    const { listPartType } = state;
+    const list = root.getElementById("list");
+    if (list) {
+      template.transmute(list, listPartType);
+    }
   }
 }
 

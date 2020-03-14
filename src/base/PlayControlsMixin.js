@@ -61,16 +61,10 @@ export default function PlayControlsMixin(Base) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }
+
+      renderParts(this[internal.shadowRoot], this[internal.state], changed);
+
       if (changed.controlButtonPartType) {
-        const controlButtons = this[internal.shadowRoot].querySelectorAll(
-          '[part~="control-button"]'
-        );
-        controlButtons.forEach(controlButton =>
-          template.transmute(
-            controlButton,
-            this[internal.state].controlButtonPartType
-          )
-        );
         this[internal.ids].previousButton.addEventListener("click", event => {
           this.selectPrevious();
           event.stopPropagation();
@@ -129,6 +123,9 @@ export default function PlayControlsMixin(Base) {
 
         <div id="playControlsContainer" role="none"></div>
       `;
+
+      renderParts(playControlsTemplate.content, this[internal.state]);
+
       template.wrap(
         original,
         playControlsTemplate.content,
@@ -138,6 +135,24 @@ export default function PlayControlsMixin(Base) {
   }
 
   return PlayControls;
+}
+
+/**
+ * Render parts for the template or an instance.
+ *
+ * @private
+ * @param {DocumentFragment} root
+ * @param {PlainObject} state
+ * @param {ChangedFlags} [changed]
+ */
+function renderParts(root, state, changed) {
+  if (!changed || changed.controlButtonPartType) {
+    const { controlButtonPartType } = state;
+    const controlButtons = root.querySelectorAll('[part~="control-button"]');
+    controlButtons.forEach(controlButton =>
+      template.transmute(controlButton, controlButtonPartType)
+    );
+  }
 }
 
 PlayControlsMixin.wrap = wrap;

@@ -74,16 +74,13 @@ class PopupSource extends Base {
   [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
 
+    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+
     if (this[internal.firstRender]) {
       this.setAttribute("aria-haspopup", "true");
     }
 
     if (changed.popupPartType) {
-      template.transmute(
-        this[internal.ids].popup,
-        this[internal.state].popupPartType
-      );
-
       // Popup's opened state becomes our own opened state.
       this[internal.ids].popup.addEventListener("opened", () => {
         if (!this.opened) {
@@ -203,13 +200,6 @@ class PopupSource extends Base {
       this[internal.ids].popupContainer.style.top = positionBelow ? "" : "0";
     }
 
-    if (changed.sourcePartType) {
-      template.transmute(
-        this[internal.ids].source,
-        this[internal.state].sourcePartType
-      );
-    }
-
     if (changed.opened) {
       const { opened } = this[internal.state];
       /** @type {any} */ (this[internal.ids].popup).opened = opened;
@@ -304,7 +294,7 @@ class PopupSource extends Base {
   }
 
   get [internal.template]() {
-    return template.html`
+    const result = template.html`
       <style>
         :host {
           display: inline-block;
@@ -345,6 +335,10 @@ class PopupSource extends Base {
         </div>
       </div>
     `;
+
+    renderParts(result.content, this[internal.state]);
+
+    return result;
   }
 }
 
@@ -354,14 +348,6 @@ function addEventListeners(/** @type {PopupSource} */ element) {
     measurePopup(element);
   };
   window.addEventListener("resize", cast[resizeListenerKey]);
-}
-
-function removeEventListeners(/** @type {PopupSource} */ element) {
-  /** @type {any} */ const cast = element;
-  if (cast[resizeListenerKey]) {
-    window.removeEventListener("resize", cast[resizeListenerKey]);
-    cast[resizeListenerKey] = null;
-  }
 }
 
 /**
@@ -387,6 +373,39 @@ function measurePopup(element) {
     windowHeight,
     windowWidth
   });
+}
+
+function removeEventListeners(/** @type {PopupSource} */ element) {
+  /** @type {any} */ const cast = element;
+  if (cast[resizeListenerKey]) {
+    window.removeEventListener("resize", cast[resizeListenerKey]);
+    cast[resizeListenerKey] = null;
+  }
+}
+
+/**
+ * Render parts for the template or an instance.
+ *
+ * @private
+ * @param {DocumentFragment} root
+ * @param {PlainObject} state
+ * @param {ChangedFlags} [changed]
+ */
+function renderParts(root, state, changed) {
+  if (!changed || changed.popupPartType) {
+    const { popupPartType } = state;
+    const popup = root.getElementById("popup");
+    if (popup) {
+      template.transmute(popup, popupPartType);
+    }
+  }
+  if (!changed || changed.sourcePartType) {
+    const { sourcePartType } = state;
+    const source = root.getElementById("source");
+    if (source) {
+      template.transmute(source, sourcePartType);
+    }
+  }
 }
 
 /**

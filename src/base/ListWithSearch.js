@@ -163,11 +163,10 @@ class ListWithSearch extends Base {
 
   [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
+
+    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+
     if (changed.inputPartType) {
-      template.transmute(
-        this[internal.ids].input,
-        this[internal.state].inputPartType
-      );
       this[internal.ids].input.addEventListener("input", () => {
         this[internal.raiseChangeEvents] = true;
         const filter = /** @type {any} */ (this[internal.ids].input).value;
@@ -175,21 +174,18 @@ class ListWithSearch extends Base {
         this[internal.raiseChangeEvents] = false;
       });
     }
-    if (changed.listPartType) {
-      template.transmute(
-        this[internal.ids].list,
-        this[internal.state].listPartType
-      );
-    }
+
     if (changed.ariaLabel) {
       const { ariaLabel } = this[internal.state];
       this[internal.ids].input.setAttribute("aria-label", ariaLabel);
     }
+
     if (changed.filter) {
       const { filter } = this[internal.state];
       /** @type {HTMLInputElement} */ (this[internal.ids].input).value = filter;
       /** @type {any} */ (this[internal.ids].list).filter = filter;
     }
+
     if (changed.placeholder) {
       const { placeholder } = this[internal.state];
       /** @type {HTMLInputElement} */ (this[
@@ -199,7 +195,7 @@ class ListWithSearch extends Base {
   }
 
   get [internal.template]() {
-    return template.html`
+    const result = template.html`
       <style>
         :host {
           display: grid;
@@ -215,6 +211,35 @@ class ListWithSearch extends Base {
         <slot></slot>
       </div>
     `;
+
+    renderParts(result.content, this[internal.state]);
+
+    return result;
+  }
+}
+
+/**
+ * Render parts for the template or an instance.
+ *
+ * @private
+ * @param {DocumentFragment} root
+ * @param {PlainObject} state
+ * @param {ChangedFlags} [changed]
+ */
+function renderParts(root, state, changed) {
+  if (!changed || changed.inputPartType) {
+    const { inputPartType } = state;
+    const input = root.getElementById("input");
+    if (input) {
+      template.transmute(input, inputPartType);
+    }
+  }
+  if (!changed || changed.listPartType) {
+    const { listPartType } = state;
+    const list = root.getElementById("list");
+    if (list) {
+      template.transmute(list, listPartType);
+    }
   }
 }
 

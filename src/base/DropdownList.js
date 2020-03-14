@@ -40,12 +40,7 @@ class DropdownList extends Base {
   [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
 
-    if (changed.valuePartType) {
-      template.transmute(
-        this[internal.ids].value,
-        this[internal.state].valuePartType
-      );
-    }
+    renderParts(this[internal.shadowRoot], this[internal.state], changed);
 
     if (changed.itemRole) {
       if ("itemRole" in this[internal.ids].menu) {
@@ -93,6 +88,8 @@ class DropdownList extends Base {
       );
     }
 
+    renderParts(result.content, this[internal.state]);
+
     return result;
   }
 
@@ -108,6 +105,24 @@ class DropdownList extends Base {
   }
   set valuePartType(valuePartType) {
     this[internal.setState]({ valuePartType });
+  }
+}
+
+/**
+ * Render parts for the template or an instance.
+ *
+ * @private
+ * @param {DocumentFragment} root
+ * @param {PlainObject} state
+ * @param {ChangedFlags} [changed]
+ */
+function renderParts(root, state, changed) {
+  if (!changed || changed.valuePartType) {
+    const { valuePartType } = state;
+    const value = root.getElementById("value");
+    if (value) {
+      template.transmute(value, valuePartType);
+    }
   }
 }
 

@@ -92,14 +92,12 @@ function ArrowDirectionMixin(Base) {
         super[internal.render](changed);
       }
 
+      renderParts(this[internal.shadowRoot], this[internal.state], changed);
+
       if (changed.arrowButtonPartType) {
         /** @type {any} */
         const cast = this;
 
-        template.transmute(
-          this[internal.ids].arrowButtonPrevious,
-          this[internal.state].arrowButtonPartType
-        );
         const arrowButtonPrevious = this[internal.ids].arrowButtonPrevious;
         if (arrowButtonPrevious instanceof HTMLElement) {
           forwardFocus(arrowButtonPrevious, cast);
@@ -112,10 +110,6 @@ function ArrowDirectionMixin(Base) {
           previousButtonHandler
         );
 
-        template.transmute(
-          this[internal.ids].arrowButtonNext,
-          this[internal.state].arrowButtonPartType
-        );
         const arrowButtonNext = this[internal.ids].arrowButtonNext;
         if (arrowButtonNext instanceof HTMLElement) {
           forwardFocus(arrowButtonNext, cast);
@@ -288,6 +282,7 @@ function ArrowDirectionMixin(Base) {
           </div>
         </div>
       `;
+      renderParts(arrowDirectionTemplate.content, this[internal.state]);
       template.wrap(
         original,
         arrowDirectionTemplate.content,
@@ -320,6 +315,28 @@ function createButtonHandler(element, callback) {
     await Promise.resolve();
     element[internal.raiseChangeEvents] = false;
   };
+}
+
+/**
+ * Render parts for the template or an instance.
+ *
+ * @private
+ * @param {DocumentFragment} root
+ * @param {PlainObject} state
+ * @param {ChangedFlags} [changed]
+ */
+function renderParts(root, state, changed) {
+  if (!changed || changed.arrowButtonPartType) {
+    const { arrowButtonPartType } = state;
+    const arrowButtonPrevious = root.getElementById("arrowButtonPrevious");
+    if (arrowButtonPrevious) {
+      template.transmute(arrowButtonPrevious, arrowButtonPartType);
+    }
+    const arrowButtonNext = root.getElementById("arrowButtonNext");
+    if (arrowButtonNext) {
+      template.transmute(arrowButtonNext, arrowButtonPartType);
+    }
+  }
 }
 
 ArrowDirectionMixin.wrap = wrap;

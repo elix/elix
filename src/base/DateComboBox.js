@@ -263,11 +263,10 @@ class DateComboBox extends Base {
 
   [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
+
+    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+
     if (changed.calendarPartType) {
-      template.transmute(
-        this[internal.ids].calendar,
-        this[internal.state].calendarPartType
-      );
       this[internal.ids].calendar.addEventListener("date-changed", event => {
         this[internal.raiseChangeEvents] = true;
         /** @type {any} */
@@ -287,10 +286,6 @@ class DateComboBox extends Base {
       });
     }
     if (changed.todayButtonPartType) {
-      template.transmute(
-        this[internal.ids].todayButton,
-        this[internal.state].todayButtonPartType
-      );
       this[internal.ids].todayButton.addEventListener("mousedown", event => {
         // Only process events for the main (usually left) button.
         if (/** @type {MouseEvent} */ (event).button !== 0) {
@@ -436,6 +431,8 @@ class DateComboBox extends Base {
       `);
     }
 
+    renderParts(result.content, this[internal.state]);
+
     return result;
   }
 
@@ -502,6 +499,31 @@ class DateComboBox extends Base {
   }
   set yearFormat(yearFormat) {
     this[internal.setState]({ yearFormat });
+  }
+}
+
+/**
+ * Render parts for the template or an instance.
+ *
+ * @private
+ * @param {DocumentFragment} root
+ * @param {PlainObject} state
+ * @param {ChangedFlags} [changed]
+ */
+function renderParts(root, state, changed) {
+  if (!changed || changed.calendarPartType) {
+    const { calendarPartType } = state;
+    const calendar = root.getElementById("calendar");
+    if (calendar) {
+      template.transmute(calendar, calendarPartType);
+    }
+  }
+  if (!changed || changed.todayButtonPartType) {
+    const { todayButtonPartType } = state;
+    const todayButton = root.getElementById("todayButton");
+    if (todayButton) {
+      template.transmute(todayButton, todayButtonPartType);
+    }
   }
 }
 

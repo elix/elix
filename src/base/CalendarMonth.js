@@ -164,29 +164,14 @@ class CalendarMonth extends Base {
 
   [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
-    if (changed.dayNamesHeaderPartType) {
-      template.transmute(
-        this[internal.ids].dayNamesHeader,
-        this[internal.state].dayNamesHeaderPartType
-      );
-    }
-    if (changed.monthYearHeaderPartType) {
-      template.transmute(
-        this[internal.ids].monthYearHeader,
-        this[internal.state].monthYearHeaderPartType
-      );
-    }
-    if (changed.monthDaysPartType) {
-      template.transmute(
-        this[internal.ids].monthDays,
-        this[internal.state].monthDaysPartType
-      );
-    }
+    renderParts(this[internal.shadowRoot], this[internal.state], changed);
+
     if (changed.dayPartType || changed.monthDaysPartType) {
       /** @type {any} */ (this[internal.ids].monthDays).dayPartType = this[
         internal.state
       ].dayPartType;
     }
+
     if (
       changed.locale ||
       changed.monthDaysPartType ||
@@ -198,6 +183,7 @@ class CalendarMonth extends Base {
       /** @type {any} */ (this[internal.ids].monthYearHeader).locale = locale;
       /** @type {any} */ (this[internal.ids].dayNamesHeader).locale = locale;
     }
+
     if (changed.date || changed.monthDaysPartType) {
       const { date } = this[internal.state];
       if (date) {
@@ -214,30 +200,35 @@ class CalendarMonth extends Base {
         ].monthYearHeader).date = calendar.firstDateOfMonth(date);
       }
     }
+
     if (changed.daysOfWeekFormat || changed.dayNamesHeaderPartType) {
       const { daysOfWeekFormat } = this[internal.state];
       /** @type {any} */ (this[
         internal.ids
       ].dayNamesHeader).format = daysOfWeekFormat;
     }
+
     if (changed.showCompleteWeeks || changed.monthDaysPartType) {
       const { showCompleteWeeks } = this[internal.state];
       /** @type {any} */ (this[
         internal.ids
       ].monthDays).showCompleteWeeks = showCompleteWeeks;
     }
+
     if (changed.showSelectedDay || changed.monthDaysPartType) {
       const { showSelectedDay } = this[internal.state];
       /** @type {any} */ (this[
         internal.ids
       ].monthDays).showSelectedDay = showSelectedDay;
     }
+
     if (changed.monthFormat || changed.monthYearHeaderPartType) {
       const { monthFormat } = this[internal.state];
       /** @type {any} */ (this[
         internal.ids
       ].monthYearHeader).monthFormat = monthFormat;
     }
+
     if (changed.yearFormat || changed.monthYearHeaderPartType) {
       const { yearFormat } = this[internal.state];
       /** @type {any} */ (this[
@@ -261,7 +252,7 @@ class CalendarMonth extends Base {
   }
 
   get [internal.template]() {
-    return template.html`
+    const result = template.html`
       <style>
         :host {
           display: inline-block;
@@ -280,6 +271,8 @@ class CalendarMonth extends Base {
       <div id="dayNamesHeader" part="day-names-header" exportparts="day-name" format="short"></div>
       <div id="monthDays" part="month-days" exportparts="day"></div>
     `;
+    renderParts(result.content, this[internal.state]);
+    return result;
   }
 
   /**
@@ -296,6 +289,38 @@ class CalendarMonth extends Base {
   }
   set yearFormat(yearFormat) {
     this[internal.setState]({ yearFormat });
+  }
+}
+
+/**
+ * Render parts for the template or an instance.
+ *
+ * @private
+ * @param {DocumentFragment} root
+ * @param {PlainObject} state
+ * @param {ChangedFlags} [changed]
+ */
+function renderParts(root, state, changed) {
+  if (!changed || changed.dayNamesHeaderPartType) {
+    const { dayNamesHeaderPartType } = state;
+    const dayNamesHeader = root.getElementById("dayNamesHeader");
+    if (dayNamesHeader) {
+      template.transmute(dayNamesHeader, dayNamesHeaderPartType);
+    }
+  }
+  if (!changed || changed.monthYearHeaderPartType) {
+    const { monthYearHeaderPartType } = state;
+    const monthYearHeader = root.getElementById("monthYearHeader");
+    if (monthYearHeader) {
+      template.transmute(monthYearHeader, monthYearHeaderPartType);
+    }
+  }
+  if (!changed || changed.monthDaysPartType) {
+    const { monthDaysPartType } = state;
+    const monthDays = root.getElementById("monthDays");
+    if (monthDays) {
+      template.transmute(monthDays, monthDaysPartType);
+    }
   }
 }
 

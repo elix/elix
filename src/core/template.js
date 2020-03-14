@@ -29,7 +29,7 @@ const mapBaseTagToCount = new Map();
  *
  * @param {PartDescriptor} descriptor - the descriptor that will be used to
  * create the element
- * @returns {HTMLElement|SVGElement} the new element
+ * @returns {Element} the new element
  */
 export function createElement(descriptor) {
   if (typeof descriptor === "function") {
@@ -200,10 +200,10 @@ export function replace(original, replacement) {
  * the existing elements that match the selector are already of the desired
  * class/tag name, the replacement operation is skipped.
  *
- * @param {HTMLElement|SVGElement} original - the node to replace
+ * @param {Element} original - the node to replace
  * @param {PartDescriptor} descriptor - the descriptor used to generate the
  * replacement element
- * @returns {HTMLElement|SVGElement} the replacement node(s)
+ * @returns {Element} the replacement node(s)
  */
 export function transmute(original, descriptor) {
   if (

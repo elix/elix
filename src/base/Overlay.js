@@ -93,18 +93,7 @@ class Overlay extends Base {
 
   [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
-    if (changed.backdropPartType) {
-      template.transmute(
-        this[internal.ids].backdrop,
-        this[internal.state].backdropPartType
-      );
-    }
-    if (changed.framePartType) {
-      template.transmute(
-        this[internal.ids].frame,
-        this[internal.state].framePartType
-      );
-    }
+    renderParts(this[internal.shadowRoot], this[internal.state], changed);
   }
 
   [internal.rendered](/** @type {ChangedFlags} */ changed) {
@@ -122,7 +111,7 @@ class Overlay extends Base {
 
   get [internal.template]() {
     // TODO: Consider moving frameContent div to Drawer.
-    return template.html`
+    const result = template.html`
       <style>
         :host {
           align-items: center;
@@ -163,6 +152,35 @@ class Overlay extends Base {
         </div>
       </div>
     `;
+
+    renderParts(result.content, this[internal.state]);
+
+    return result;
+  }
+}
+
+/**
+ * Render parts for the template or an instance.
+ *
+ * @private
+ * @param {DocumentFragment} root
+ * @param {PlainObject} state
+ * @param {ChangedFlags} [changed]
+ */
+function renderParts(root, state, changed) {
+  if (!changed || changed.backdropPartType) {
+    const { backdropPartType } = state;
+    const backdrop = root.getElementById("backdrop");
+    if (backdrop) {
+      template.transmute(backdrop, backdropPartType);
+    }
+  }
+  if (!changed || changed.framePartType) {
+    const { framePartType } = state;
+    const frame = root.getElementById("frame");
+    if (frame) {
+      template.transmute(frame, framePartType);
+    }
   }
 }
 
