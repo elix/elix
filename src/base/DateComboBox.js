@@ -5,6 +5,7 @@ import Button from "./Button.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
 import CalendarMonthNavigator from "./CalendarMonthNavigator.js";
 import ComboBox from "./ComboBox.js";
+import html from "../core/html.js";
 
 const Base = CalendarElementMixin(ComboBox);
 
@@ -27,7 +28,7 @@ class DateComboBox extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `calendar` part - the
+   * The class or tag used to create the `calendar` part - the
    * element showing a calendar with selectable days.
    *
    * @type {PartDescriptor}
@@ -58,7 +59,7 @@ class DateComboBox extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `day` parts – the set of
+   * The class or tag used to create the `day` parts – the set of
    * days shown in the calendar grid.
    *
    * @type {PartDescriptor}
@@ -414,21 +415,25 @@ class DateComboBox extends Base {
     const result = super[internal.template];
 
     // Replace default slot with calendar.
-    const calendarTemplate = template.html`
-      <style>
-        [part~="calendar-container"] {
-          display: flex;
-          flex-direction: column;
-        }
-      </style>
-      <div part="calendar-container">
-        <div id="calendar" part="calendar" exportparts="day, day-names-header, month-days, month-hear-header" tabindex="-1"></div>
-        <div id="todayButton" part="today-button">Today</div>
-      </div>
-    `;
     const defaultSlot = result.content.querySelector("slot:not([name])");
     if (defaultSlot) {
-      template.transmute(defaultSlot, calendarTemplate);
+      defaultSlot.replaceWith(html`
+        <style>
+          [part~="calendar-container"] {
+            display: flex;
+            flex-direction: column;
+          }
+        </style>
+        <div part="calendar-container">
+          <div
+            id="calendar"
+            part="calendar"
+            exportparts="day, day-names-header, month-days, month-hear-header"
+            tabindex="-1"
+          ></div>
+          <div id="todayButton" part="today-button">Today</div>
+        </div>
+      `);
     }
 
     return result;
@@ -455,7 +460,7 @@ class DateComboBox extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `today-button` part – the
+   * The class or tag used to create the `today-button` part – the
    * button that takes the user back to the current date.
    *
    * @type {PartDescriptor}

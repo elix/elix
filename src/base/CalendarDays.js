@@ -51,7 +51,7 @@ class CalendarDays extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `day` parts – the set of
+   * The class or tag used to create the `day` parts – the set of
    * days shown in the calendar grid.
    *
    * @type {PartDescriptor}

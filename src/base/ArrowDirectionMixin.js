@@ -36,7 +36,7 @@ function ArrowDirectionMixin(Base) {
     }
 
     /**
-     * The class, tag, or template used to create the `arrow-button` parts – the
+     * The class or tag used to create the `arrow-button` parts – the
      * previous/next arrow buttons.
      *
      * @type {PartDescriptor}

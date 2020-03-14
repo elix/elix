@@ -50,14 +50,6 @@ describe("templates", () => {
     assert(fixture instanceof TemplateTest);
   });
 
-  it("can create an element by cloning a template", () => {
-    const fixtureTemplate = document.createElement("template");
-    fixtureTemplate.innerHTML = `<div>Hello</div>`;
-    const fixture = template.createElement(fixtureTemplate);
-    assert(fixture instanceof HTMLDivElement);
-    assert.equal(fixture.textContent, "Hello");
-  });
-
   it("can substitute one element for another", () => {
     const original = document.createElement("button");
     original.setAttribute("id", "original");

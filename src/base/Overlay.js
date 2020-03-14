@@ -44,7 +44,7 @@ class Overlay extends Base {
   }
 
   /**
-   * The class, tag, or template used for the `backdrop` part - the optional
+   * The class or tag used for the `backdrop` part - the optional
    * element shown behind the overlay.
    *
    * This can help focus the user's attention on the overlay content.
@@ -74,7 +74,7 @@ class Overlay extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `frame` part – the overlay's
+   * The class or tag used to create the `frame` part – the overlay's
    * primary content.
    *
    * The frame element can be used to provide a border around the overlay

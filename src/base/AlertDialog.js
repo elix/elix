@@ -2,6 +2,7 @@ import { replaceChildNodes } from "../core/dom.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import Dialog from "./Dialog.js";
+import html from "../core/html.js";
 
 /**
  * Asks a single question the user can answer with choice buttons
@@ -22,7 +23,7 @@ class AlertDialog extends Dialog {
   }
 
   /**
-   * The class, tag, or template used to create the `choice-button` parts —
+   * The class or tag used to create the `choice-button` parts —
    * the set of choices shown to the user.
    *
    * @type {PartDescriptor}
@@ -137,16 +138,15 @@ class AlertDialog extends Dialog {
 
   get [internal.template]() {
     const result = super[internal.template];
-    // Fill the default slot with a new default slot and a button container.
+    // Replace the default slot with a new default slot and a button container.
     const defaultSlot = result.content.querySelector("slot:not([name])");
     if (defaultSlot) {
-      const alertDialogTemplate = template.html`
+      defaultSlot.replaceWith(html`
         <div id="alertDialogContent">
           <slot></slot>
           <div id="choiceButtonContainer" part="choice-button-container"></div>
         </div>
-      `;
-      template.transmute(defaultSlot, alertDialogTemplate);
+      `);
     }
     return result;
   }

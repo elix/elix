@@ -25,7 +25,7 @@ class CalendarDayButton extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `day` parts – the set of
+   * The class or tag used to create the `day` parts – the set of
    * days shown in the calendar grid.
    *
    * @type {PartDescriptor}
@@ -78,11 +78,9 @@ class CalendarDayButton extends Base {
     // Replace default slot with calendar day.
     const defaultSlot = result.content.querySelector("slot:not([name])");
     if (defaultSlot) {
-      const dayTemplate = document.createElement("template");
       const day = new CalendarDay();
       day.id = "day";
-      dayTemplate.content.append(day);
-      template.transmute(defaultSlot, dayTemplate);
+      defaultSlot.replaceWith(day);
     }
 
     // Style outer button.

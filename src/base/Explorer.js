@@ -290,7 +290,7 @@ class Explorer extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `proxy-list` part - the list
+   * The class or tag used to create the `proxy-list` part - the list
    * of selectable proxies representing the items in the list.
    *
    * @type {PartDescriptor}
@@ -304,7 +304,7 @@ class Explorer extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `proxy` parts - the default
+   * The class or tag used to create the `proxy` parts - the default
    * representations for the list's items.
    *
    * @type {PartDescriptor}
@@ -318,7 +318,7 @@ class Explorer extends Base {
   }
 
   /**
-   * The class, tag, or template used for the main "stage" element that shows a
+   * The class or tag used for the main "stage" element that shows a
    * single item at a time.
    *
    * @type {PartDescriptor}

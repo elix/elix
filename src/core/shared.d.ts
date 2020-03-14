@@ -82,7 +82,7 @@ type ChangedFlags = {
 /*
  * Descriptor that can be instantiated to create a part.
  */
-type PartDescriptor = Constructor<HTMLElement> | string | HTMLTemplateElement;
+type PartDescriptor = Constructor<HTMLElement> | string;
 
 /*
  * Mixins that add to state can indicate exactly what members they add to state.

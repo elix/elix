@@ -19,7 +19,7 @@ import html from "../core/html.js";
  */
 class DrawerWithGrip extends Drawer {
   /**
-   * The class, tag, or template used to create the `grip` part – the grip
+   * The class or tag used to create the `grip` part – the grip
    * handle the user can tap/click/swipe to open or close the drawer.
    *
    * @type {PartDescriptor}
@@ -129,57 +129,54 @@ class DrawerWithGrip extends Drawer {
     // The gripWorkaround element exists for Safari, which doesn't correctly
     // measure the grip dimensions when mounted without it. Having a div that's
     // display: block instead of flex appears to be the reason this helps.
-    const gripTemplate = template.html`
-      <div id="gripContainer">
-        <div id="grippedContent">
-          <slot></slot>
-        </div>
-        <div id="gripWorkaround">
-          <div id="grip" part="grip" aria-label="Toggle drawer">
-            <slot name="grip"></slot>
-          </div>
-        </div>
-      </div>
-    `;
     const defaultSlot = result.content.querySelector("slot:not([name])");
     if (defaultSlot) {
-      template.transmute(defaultSlot, gripTemplate);
+      defaultSlot.replaceWith(html`
+        <div id="gripContainer">
+          <div id="grippedContent">
+            <slot></slot>
+          </div>
+          <div id="gripWorkaround">
+            <div id="grip" part="grip" aria-label="Toggle drawer">
+              <slot name="grip"></slot>
+            </div>
+          </div>
+        </div>
+      `);
     }
 
-    result.content.append(
-      html`
-        <style>
-          [part~="frame"] {
-            display: flex;
-            overflow: hidden;
-          }
+    result.content.append(html`
+      <style>
+        [part~="frame"] {
+          display: flex;
+          overflow: hidden;
+        }
 
-          #gripContainer {
-            display: grid;
-            height: 100%;
-            width: 100%;
-          }
+        #gripContainer {
+          display: grid;
+          height: 100%;
+          width: 100%;
+        }
 
-          #grippedContent {
-            overflow: auto;
-            -webkit-overflow-scrolling: touch; /* for momentum scrolling */
-          }
-          :host(:not([opened])) #grippedContent {
-            overflow: hidden;
-          }
+        #grippedContent {
+          overflow: auto;
+          -webkit-overflow-scrolling: touch; /* for momentum scrolling */
+        }
+        :host(:not([opened])) #grippedContent {
+          overflow: hidden;
+        }
 
-          #gripWorkaround {
-            display: grid;
-          }
+        #gripWorkaround {
+          display: grid;
+        }
 
-          [part~="grip"] {
-            align-items: center;
-            display: grid;
-            justify-items: center;
-          }
-        </style>
-      `
-    );
+        [part~="grip"] {
+          align-items: center;
+          display: grid;
+          justify-items: center;
+        }
+      </style>
+    `);
 
     return result;
   }

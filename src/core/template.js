@@ -20,15 +20,15 @@
 const mapBaseTagToCount = new Map();
 
 /**
- * Create an element from a role descriptor (a component class constructor,
- * an HTML tag name, or an HTML template).
+ * Create an element from a role descriptor (a component class constructor or
+ * an HTML tag name).
  *
  * If the descriptor is an HTML template, and the resulting document fragment
  * contains a single top-level node, that node is returned directly (instead of
  * the fragment).
  *
- * @param {PartDescriptor} descriptor - the descriptor that
- * will be used to create the element
+ * @param {PartDescriptor} descriptor - the descriptor that will be used to
+ * create the element
  * @returns {Node} the new element
  */
 export function createElement(descriptor) {
@@ -50,10 +50,6 @@ export function createElement(descriptor) {
       }
     }
     return element;
-  } else if (descriptor instanceof HTMLTemplateElement) {
-    // Template
-    const fragment = document.importNode(descriptor.content, true);
-    return fragment.children.length === 1 ? fragment.children[0] : fragment;
   } else {
     // String tag name: e.g., 'div'
     return document.createElement(descriptor);

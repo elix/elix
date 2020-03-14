@@ -5,6 +5,7 @@ import * as template from "../core/template.js";
 import ComboBox from "./ComboBox.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
+import html from "../core/html.js";
 import ListBox from "./ListBox.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";
 
@@ -76,7 +77,7 @@ class ListComboBox extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `list` part - the list of
+   * The class or tag used to create the `list` part - the list of
    * available choices shown in the popup.
    *
    * @type {PartDescriptor}
@@ -231,24 +232,23 @@ class ListComboBox extends Base {
     const result = super[internal.template];
 
     // Wrap default slot with a list.
-    const listTemplate = template.html`
-      <style>
-        [part~="list"] {
-          border: none;
-          flex: 1;
-          height: 100%;
-          max-height: 100%;
-          overscroll-behavior: contain;
-          width: 100%;
-        }
-      </style>
-      <div id="list" part="list" tabindex="-1">
-        <slot></slot>
-      </div>
-    `;
     const defaultSlot = result.content.querySelector("slot:not([name])");
     if (defaultSlot) {
-      template.transmute(defaultSlot, listTemplate);
+      defaultSlot.replaceWith(html`
+        <style>
+          [part~="list"] {
+            border: none;
+            flex: 1;
+            height: 100%;
+            max-height: 100%;
+            overscroll-behavior: contain;
+            width: 100%;
+          }
+        </style>
+        <div id="list" part="list" tabindex="-1">
+          <slot></slot>
+        </div>
+      `);
     }
 
     return result;

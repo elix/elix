@@ -257,7 +257,7 @@ class PopupSource extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `popup` part – the element
+   * The class or tag used to create the `popup` part – the element
    * responsible for displaying the popup and handling overlay behavior.
    *
    * @type {PartDescriptor}
@@ -271,7 +271,7 @@ class PopupSource extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `source` part - the button
+   * The class or tag used to create the `source` part - the button
    * (or other element) the user can tap/click to invoke the popup.
    *
    * @type {PartDescriptor}

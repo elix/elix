@@ -158,7 +158,7 @@ class PullToRefresh extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `pull-indicator` part – the
+   * The class or tag used to create the `pull-indicator` part – the
    * element that lets the user know they can pull to refresh.
    *
    * By default, this is a down arrow icon.
@@ -180,7 +180,7 @@ class PullToRefresh extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `refreshing-indicator` part
+   * The class or tag used to create the `refreshing-indicator` part
    * – the element shown to let the user know the element is currently
    * refreshing.
    *

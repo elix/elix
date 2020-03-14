@@ -97,7 +97,7 @@ class DropdownList extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `value` part - the region
+   * The class or tag used to create the `value` part - the region
    * showing the dropdown list's current value.
    *
    * @type {PartDescriptor}

@@ -138,7 +138,7 @@ class MenuButton extends PopupButton {
   }
 
   /**
-   * The class, tag, or template used to define the `menu` part – the element
+   * The class or tag used to define the `menu` part – the element
    * presenting the menu items and handling navigation between them.
    *
    * @type {PartDescriptor}
@@ -152,7 +152,7 @@ class MenuButton extends PopupButton {
   }
 
   /**
-   * The class, tag, or template used to create the `popup-toggle` part – the
+   * The class or tag used to create the `popup-toggle` part – the
    * element that lets the user know they can open the popup.
    *
    * @type {PartDescriptor}
@@ -349,47 +349,42 @@ class MenuButton extends PopupButton {
     const result = super[internal.template];
 
     // Wrap default slot with a menu.
-    const menuTemplate = template.html`
-      <div id="menu" part="menu">
-        <slot></slot>
-      </div>
-    `;
     const defaultSlot = result.content.querySelector("slot:not([name])");
     if (defaultSlot) {
-      template.transmute(defaultSlot, menuTemplate);
+      defaultSlot.replaceWith(html`
+        <div id="menu" part="menu">
+          <slot></slot>
+        </div>
+      `);
     }
 
     // Inject a toggle button into the source slot.
     const sourceSlot = result.content.querySelector('slot[name="source"]');
     if (sourceSlot) {
-      sourceSlot.append(
-        html`
-          <div
-            id="popupToggle"
-            part="popup-toggle"
-            exportparts="down-icon up-icon"
-            tabindex="-1"
-          >
-            <slot name="toggle-icon"></slot>
-          </div>
-        `
-      );
+      sourceSlot.append(html`
+        <div
+          id="popupToggle"
+          part="popup-toggle"
+          exportparts="down-icon up-icon"
+          tabindex="-1"
+        >
+          <slot name="toggle-icon"></slot>
+        </div>
+      `);
     }
 
-    result.content.append(
-      html`
-        <style>
-          [part~="menu"] {
-            max-height: 100%;
-          }
+    result.content.append(html`
+      <style>
+        [part~="menu"] {
+          max-height: 100%;
+        }
 
-          [part~="source"] {
-            align-items: center;
-            display: flex;
-          }
-        </style>
-      `
-    );
+        [part~="source"] {
+          align-items: center;
+          display: flex;
+        }
+      </style>
+    `);
 
     return result;
   }

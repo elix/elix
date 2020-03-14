@@ -31,7 +31,7 @@ class ExpandableSection extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `header` part - the header
+   * The class or tag used to create the `header` part - the header
    * region the user can tap/click to expand or collapse the section.
    *
    * @type {PartDescriptor}
@@ -45,7 +45,7 @@ class ExpandableSection extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `panel` part - the container
+   * The class or tag used to create the `panel` part - the container
    * for the expandable/collapsible content.
    *
    * @type {PartDescriptor}
@@ -148,7 +148,7 @@ class ExpandableSection extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `toggle` part – the element
+   * The class or tag used to create the `toggle` part – the element
    * that lets the user know they can expand/collapse the section.
    *
    * @type {PartDescriptor}

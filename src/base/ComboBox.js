@@ -102,7 +102,7 @@ class ComboBox extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `input` part into which the
+   * The class or tag used to create the `input` part into which the
    * user can enter text.
    *
    * @type {PartDescriptor}
@@ -163,7 +163,7 @@ class ComboBox extends Base {
   }
 
   /**
-   * The class, tag, or template used to create the `popup-toggle` part – the
+   * The class or tag used to create the `popup-toggle` part – the
    * element that lets the user know they can open the popup.
    *
    * @type {PartDescriptor}
