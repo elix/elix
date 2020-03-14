@@ -80,7 +80,8 @@ type ChangedFlags = {
 };
 
 /*
- * Descriptor that can be instantiated to create a part.
+ * Descriptor that can be instantiated to create a part: either a custom element
+ * constructor or an HTML tag name.
  */
 type PartDescriptor = Constructor<HTMLElement> | string;
 

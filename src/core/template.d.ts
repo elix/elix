@@ -6,7 +6,7 @@ export function html(
   strings: TemplateStringsArray,
   ...substitutions: any[]
 ): HTMLTemplateElement;
-export function replace(original: Node | null, replacement: Node): Node;
+export function replace(original: Node, replacement: Node): Node;
 export function transmute(original: Node, descriptor: PartDescriptor): Node;
 export function wrap(
   original: Node,

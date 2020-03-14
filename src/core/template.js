@@ -142,14 +142,11 @@ function registerCustomElement(classFn) {
  * replacement node. The attributes, classes, styles, and child nodes of the
  * original node will be moved to the replacement.
  *
- * @param {(Node|null)} original - an existing node to be replaced
+ * @param {Node} original - an existing node to be replaced
  * @param {Node} replacement - the node to replace the existing node with
  * @returns {Node} the updated replacement node
  */
 export function replace(original, replacement) {
-  if (!original) {
-    throw "The original element could not be found.";
-  }
   const parent = original.parentNode;
   if (!parent) {
     throw "An element must have a parent before it can be substituted.";
