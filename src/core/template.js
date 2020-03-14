@@ -83,15 +83,8 @@ export function createElement(descriptor) {
  */
 export function html(strings, ...substitutions) {
   // Collate the strings and substitutions to create complete HTML.
-  const complete = strings
-    .map((string, index) => {
-      const substitution =
-        index < substitutions.length ? substitutions[index] : "";
-      return `${string}${substitution}`;
-    })
-    .join("");
   const template = document.createElement("template");
-  template.innerHTML = complete;
+  template.innerHTML = String.raw(strings, ...substitutions);
   return template;
 }
 

@@ -4,8 +4,6 @@
  * @module html
  */
 
-import * as template from "./template.js";
-
 /**
  * A JavaScript template string literal that returns an HTML document fragment.
  *
@@ -28,8 +26,10 @@ import * as template from "./template.js";
  * @returns {DocumentFragment}
  */
 function html(strings, ...substitutions) {
-  const t = template.html(strings, ...substitutions);
-  return t.content;
+  // Collate the strings and substitutions to create complete HTML.
+  const template = document.createElement("template");
+  template.innerHTML = String.raw(strings, ...substitutions);
+  return template.content;
 }
 
 export default html;
