@@ -46,11 +46,15 @@ class Drawer extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       backdropPartType: ModalBackdrop,
+      drawerTransitionDuration: 250, // milliseconds
       fromEdge: "start",
       gripSize: null,
+      openedFraction: 0,
+      openedRenderedFraction: 0,
       persistent: true,
       role: "landmark",
       selectedIndex: 0,
+      showTransition: false,
       tabIndex: -1
     });
   }
@@ -114,28 +118,28 @@ class Drawer extends Base {
       this[internal.ids].frame.style.clipPath = clip ? "inset(0px)" : "";
     }
 
+    // As the drawer opens (closes), slide the frame all the way out (in).
     if (
       changed.effect ||
       changed.effectPhase ||
-      changed.enableEffects ||
       changed.fromEdge ||
       changed.gripSize ||
+      changed.openedFraction ||
       changed.rightToLeft ||
       changed.swipeFraction
     ) {
-      // Render the drawer.
       const {
+        drawerTransitionDuration,
         effect,
         effectPhase,
-        enableEffects,
         fromEdge,
         gripSize,
+        openedFraction,
+        openedRenderedFraction,
         rightToLeft,
+        showTransition,
         swipeFraction
       } = this[internal.state];
-      const opened =
-        (effect === "open" && effectPhase !== "before") ||
-        (effect === "close" && effectPhase === "before");
 
       const fromLeadingEdge =
         fromEdge === "left" ||
@@ -143,34 +147,8 @@ class Drawer extends Base {
         (fromEdge === "start" && !rightToLeft) ||
         (fromEdge === "end" && rightToLeft);
 
-      // Constrain the distance swiped to between 0 and a bit less than 1. A swipe
-      // distance of 1 itself would cause a tricky problem. The drawer would
-      // render itself completely off screen. This means the expected CSS
-      // transition would not occur, so the transitionend event wouldn't fire,
-      // leaving us waiting indefinitely for an event that will never come. By
-      // ensuring we always transition at least a tiny bit, we guarantee that a
-      // transition and its accompanying event will occur.
-
-      // Swipe bounds depend on whether drawer is current open or closed.
-      const expectPositiveSwipe =
-        (fromLeadingEdge && !opened) || (!fromLeadingEdge && opened);
-      const almost1 = 0.999;
-      const lowerBound = expectPositiveSwipe ? 0 : -almost1;
-      const upperBound = expectPositiveSwipe ? almost1 : 0;
-
       const swiping = swipeFraction !== null;
       const sign = fromLeadingEdge ? -1 : 1;
-      let openedFraction = opened ? 1 : 0;
-      if (swiping) {
-        const boundedSwipeFraction = Math.max(
-          Math.min(swipeFraction, upperBound),
-          lowerBound
-        );
-        openedFraction -= sign * boundedSwipeFraction;
-      }
-
-      const maxOpacity = 1;
-      const opacity = maxOpacity * openedFraction;
 
       const translateFraction = sign * (1 - openedFraction);
 
@@ -182,31 +160,15 @@ class Drawer extends Base {
         this[internal.ids].backdrop.style.visibility = "hidden";
       }
 
-      let duration = 0;
+      // The time required to show transitions depends on how far apart the
+      // elements currently are from their desired state.
+      const transitionFraction = Math.abs(
+        openedFraction - openedRenderedFraction
+      );
 
-      // We don't show transitions during swiping, as it would give the swipe a
-      // sluggish feel. We do show transitions during the open or close effect.
-      // In the case where a user begins to close a drawer, but doesn't close it
-      // more than halfway, we want to animate the transition back to the fully
-      // opened state. For that, we show transitions during the "after" effect
-      // phase.
-      const showTransition =
-        enableEffects &&
-        !swiping &&
-        effect &&
-        (effectPhase === "during" || effectPhase === "after");
-      if (showTransition) {
-        // The time required to show transitions depends on how far apart the
-        // elements currently are from their desired state. As a reference point,
-        // we compare the expected opacity of the backdrop to its current opacity.
-        // (We can't use the swipeFraction, because no swipe is in progress.)
-        /** @type {any} */
-        const backdrop = this[internal.ids].backdrop;
-        const opacityCurrent = parseFloat(backdrop.style.opacity) || 0;
-        const opacityRemaining = Math.abs(opacityCurrent - opacity);
-        const fullDuration = 0.25; // Quarter second
-        duration = (opacityRemaining / maxOpacity) * fullDuration;
-      }
+      const duration = showTransition
+        ? transitionFraction * (drawerTransitionDuration / 1000)
+        : 0;
 
       const vertical = fromEdge === "top" || fromEdge === "bottom";
       const axis = vertical ? "Y" : "X";
@@ -218,18 +180,14 @@ class Drawer extends Base {
           : `calc(${translatePercentage} + ${gripValue}px)`;
       const transform = `translate${axis}(${translateValue})`;
 
-      Object.assign(this[internal.ids].backdrop.style, {
-        opacity,
-        transition: showTransition ? `opacity ${duration}s linear` : undefined
-      });
       Object.assign(this[internal.ids].frame.style, {
         transform,
-        transition: showTransition ? `transform ${duration}s` : undefined
+        transition: showTransition ? `transform ${duration}s` : ""
       });
     }
 
+    // Dock drawer to appropriate edge
     if (changed.fromEdge || changed.rightToLeft) {
-      // Dock drawer to appropriate edge
       const { fromEdge, rightToLeft } = this[internal.state];
 
       // Stick drawer to all edges except the one opposite the fromEdge.
@@ -268,8 +226,8 @@ class Drawer extends Base {
       this.style.justifyContent = mapFromEdgetoJustifyContent[fromEdge];
     }
 
+    // Reflect opened state to ARIA attribute.
     if (changed.opened) {
-      // Reflect opened state to ARIA attribute.
       this.setAttribute(
         "aria-expanded",
         this[internal.state].opened.toString()
@@ -279,9 +237,17 @@ class Drawer extends Base {
 
   [internal.rendered](/** @type {ChangedFlags} */ changed) {
     super[internal.rendered](changed);
+
     if (changed.opened) {
       // Reflect opened attribute.
       setInternalState(this, "opened", this[internal.state].opened);
+    }
+
+    if (changed.openedFraction) {
+      // Remember that we've rendered the drawer at this opened fraction.
+      this[internal.setState]({
+        openedRenderedFraction: this[internal.state].openedFraction
+      });
     }
   }
 
@@ -298,8 +264,83 @@ class Drawer extends Base {
       Object.assign(effects, { swipeAxis });
     }
 
+    // During a swipe or open/close, update openedFraction state.
+    if (
+      changed.effect ||
+      changed.effectPhase ||
+      changed.fromEdge ||
+      changed.rightToLeft ||
+      changed.swipeFraction
+    ) {
+      const {
+        effect,
+        effectPhase,
+        fromEdge,
+        rightToLeft,
+        swipeFraction
+      } = state;
+      const opened =
+        (effect === "open" && effectPhase !== "before") ||
+        (effect === "close" && effectPhase === "before");
+
+      const fromLeadingEdge =
+        fromEdge === "left" ||
+        fromEdge === "top" ||
+        (fromEdge === "start" && !rightToLeft) ||
+        (fromEdge === "end" && rightToLeft);
+
+      // Constrain the opened fraction to between 0 and a bit less than 1. A
+      // swipe distance of 1 itself would cause a tricky problem. The drawer
+      // would render itself completely off screen. This means the expected CSS
+      // transition would not occur, so the transitionend event wouldn't fire,
+      // leaving us waiting indefinitely for an event that will never come. By
+      // ensuring we always transition at least a tiny bit, we guarantee that a
+      // transition and its accompanying event will occur.
+      const almost1 = 0.999;
+
+      // Swipe bounds depend on whether drawer is current open or closed.
+      const expectPositiveSwipe =
+        (fromLeadingEdge && !opened) || (!fromLeadingEdge && opened);
+      const lowerBound = expectPositiveSwipe ? 0 : -almost1;
+      const upperBound = expectPositiveSwipe ? almost1 : 0;
+
+      const swiping = swipeFraction !== null;
+      const sign = fromLeadingEdge ? -1 : 1;
+      let openedFraction = opened ? 1 : 0;
+      if (swiping) {
+        const boundedSwipeFraction = Math.max(
+          Math.min(swipeFraction, upperBound),
+          lowerBound
+        );
+        openedFraction -= sign * boundedSwipeFraction;
+      }
+      Object.assign(effects, { openedFraction });
+    }
+
+    // Don't show transitions during swiping, as it would give the swipe a
+    // sluggish feel. We do show transitions during the open or close effect. In
+    // the case where a user begins to close a drawer, but doesn't close it more
+    // than halfway, we want to animate the transition back to the fully opened
+    // state. For that, we show transitions during the "after" effect phase.
+    if (
+      changed.enableEffects ||
+      changed.effect ||
+      changed.effectPhase ||
+      changed.swipeFraction
+    ) {
+      const { enableEffects, effect, effectPhase, swipeFraction } = state;
+      const swiping = swipeFraction !== null;
+      const showTransition =
+        enableEffects &&
+        !swiping &&
+        effect &&
+        (effectPhase === "during" || effectPhase === "after");
+      Object.assign(effects, { showTransition });
+    }
+
     return effects;
   }
+
   async [internal.swipeDown]() {
     const { fromEdge } = this[internal.state];
     if (fromEdge === "top") {

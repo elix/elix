@@ -1,6 +1,7 @@
 import * as internal from "../base/internal.js";
 import DrawerWithGrip from "../base/DrawerWithGrip.js";
 import html from "../core/html.js";
+import PlainDrawerMixin from "./PlainDrawerMixin.js";
 import PlainModalOverlayMixin from "./PlainModalOverlayMixin.js";
 
 /**
@@ -9,11 +10,13 @@ import PlainModalOverlayMixin from "./PlainModalOverlayMixin.js";
  * @inherits DrawerWithGrip
  * @mixes PlainModalOverlayMixin
  */
-class PlainDrawerWithGrip extends PlainModalOverlayMixin(DrawerWithGrip) {
+class PlainDrawerWithGrip extends PlainDrawerMixin(
+  PlainModalOverlayMixin(DrawerWithGrip)
+) {
   [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
+    // Rotate the default grip icon to reflect the swipe axis.
     if (changed.swipeAxis && this[internal.ids].gripIcon) {
-      // Rotate the default grip icon to reflect the swipe axis.
       const transform =
         this[internal.state].swipeAxis === "horizontal" ? "rotate(90deg)" : "";
       this[internal.ids].gripIcon.style.transform = transform;

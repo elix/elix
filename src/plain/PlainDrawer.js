@@ -1,4 +1,5 @@
 import Drawer from "../base/Drawer.js";
+import PlainDrawerMixin from "./PlainDrawerMixin.js";
 import PlainModalOverlayMixin from "./PlainModalOverlayMixin.js";
 
 /**
@@ -7,6 +8,6 @@ import PlainModalOverlayMixin from "./PlainModalOverlayMixin.js";
  * @inherits Drawer
  * @mixes PlainModalOverlayMixin
  */
-class PlainDrawer extends PlainModalOverlayMixin(Drawer) {}
+class PlainDrawer extends PlainDrawerMixin(PlainModalOverlayMixin(Drawer)) {}
 
 export default PlainDrawer;

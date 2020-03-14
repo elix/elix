@@ -11,7 +11,7 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
  * @part {PlainOverlayFrame} frame
  * @param {Constructor<ReactiveElement>} Base
  */
-export default function PlainModalOverlayMixin(Base) {
+export default function PlaPlainModalOverlayMixin(Base) {
   return class PlainModalOverlay extends Base {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState], {
