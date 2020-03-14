@@ -33,32 +33,6 @@ class DynamicSingle extends ReactiveElement {
 }
 customElements.define("dynamic-part-type", DynamicSingle);
 
-// A component with a template where a role is applied to multiple elements.
-class DynamicMultiple extends ReactiveElement {
-  get [internal.defaultState]() {
-    return Object.assign(super[internal.defaultState], {
-      dynamicPartType: "button"
-    });
-  }
-
-  [internal.render](changed) {
-    super[internal.render](changed);
-    if (changed.dynamicPartType) {
-      const dynamics = this[internal.shadowRoot].querySelectorAll(".dynamic");
-      template.transmute(dynamics, this[internal.state].dynamicPartType);
-    }
-  }
-
-  get [internal.template]() {
-    return template.html`
-      <div id="static">This doesn't change</div>
-      <div class="dynamic foo">This element changes</div>
-      <div class="dynamic foo">This changes too</div>
-    `;
-  }
-}
-customElements.define("dynamic-multiple", DynamicMultiple);
-
 describe("templates", () => {
   it("html template function returns an HTMLTemplateElement", () => {
     const fixture = template.html`<div>Hello</div>`;
@@ -162,19 +136,5 @@ describe("templates", () => {
       "This element changes"
     );
     assert(fixture[internal.ids].dynamic.classList.contains("foo"));
-  });
-
-  it("supports an element with a role applied to multiple elements", async () => {
-    const fixture = new DynamicMultiple();
-    fixture[internal.renderChanges]();
-    assert(fixture[internal.ids].static instanceof HTMLDivElement);
-    const root = fixture.shadowRoot;
-    assert(root);
-    if (root) {
-      root.querySelectorAll(".dynamic").forEach(element => {
-        assert(element instanceof HTMLButtonElement);
-        assert(element.classList.contains("foo"));
-      });
-    }
   });
 });

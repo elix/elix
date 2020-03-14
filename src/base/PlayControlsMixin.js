@@ -63,11 +63,13 @@ export default function PlayControlsMixin(Base) {
       }
       if (changed.controlButtonPartType) {
         const controlButtons = this[internal.shadowRoot].querySelectorAll(
-          ".controlButton"
+          '[part~="control-button"]'
         );
-        template.transmute(
-          controlButtons,
-          this[internal.state].controlButtonPartType
+        controlButtons.forEach(controlButton =>
+          template.transmute(
+            controlButton,
+            this[internal.state].controlButtonPartType
+          )
         );
         this[internal.ids].previousButton.addEventListener("click", event => {
           this.selectPrevious();
@@ -114,13 +116,13 @@ export default function PlayControlsMixin(Base) {
         </style>
 
         <div part="button-container">
-          <div class="controlButton" part="control-button previous-button" id="previousButton" aria-hidden="true" tabindex="-1">
+          <div part="control-button previous-button" id="previousButton" aria-hidden="true" tabindex="-1">
             <slot name="previousButton"></slot>
           </div>
-          <div class="controlButton" part="control-button play-button" id="playButton" aria-hidden="true" tabindex="-1">
+          <div part="control-button play-button" id="playButton" aria-hidden="true" tabindex="-1">
             <slot name="playButton"></slot>
           </div>
-          <div class="controlButton" part="control-button next-button" id="nextButton" aria-hidden="true" tabindex="-1">
+          <div part="control-button next-button" id="nextButton" aria-hidden="true" tabindex="-1">
             <slot name="nextButton"></slot>
           </div>
         </div>

@@ -199,29 +199,21 @@ export function replace(original, replacement) {
 }
 
 /**
- * Replace a node or nodes with new element(s), transferring all attributes,
- * classes, styles, and child nodes from the original(s) to the replacement(s).
+ * Replace a node with a new element, transferring all attributes, classes,
+ * styles, and child nodes from the original(s) to the replacement(s).
  *
  * The descriptor used for the replacements can be a 1) component class
  * constructor, 2) an HTML tag name, or 3) an HTML template. For #1 and #2, if
  * the existing elements that match the selector are already of the desired
  * class/tag name, the replacement operation is skipped.
  *
- * @param {(Array|NodeList|Node)} original - the node to replace
- * @param {PartDescriptor} descriptor - the descriptor used
- * to generate replacement elements
- * @returns {Array|Node} the replacement node(s)
+ * @param {Node} original - the node to replace
+ * @param {PartDescriptor} descriptor - the descriptor used to generate the
+ * replacement element
+ * @returns {Node} the replacement node(s)
  */
 export function transmute(original, descriptor) {
-  if (original instanceof Array) {
-    // Transmute an array.
-    const replacements = original.map(node => transmute(node, descriptor));
-    return replacements;
-  } else if (original instanceof NodeList) {
-    // Transmute a list of nodes.
-    const replacements = [...original].map(node => transmute(node, descriptor));
-    return replacements;
-  } else if (
+  if (
     (typeof descriptor === "function" && original.constructor === descriptor) ||
     (typeof descriptor === "string" &&
       original instanceof Element &&

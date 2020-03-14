@@ -7,10 +7,7 @@ export function html(
   ...substitutions: any[]
 ): HTMLTemplateElement;
 export function replace(original: Node | null, replacement: Node): Node;
-export function transmute(
-  original: Node[] | NodeList | Node,
-  descriptor: PartDescriptor
-): Node[] | Node;
+export function transmute(original: Node, descriptor: PartDescriptor): Node;
 export function wrap(
   original: Node,
   wrapper: DocumentFragment | Element,
