@@ -169,7 +169,7 @@ class Drawer extends Base {
         openedFraction -= sign * boundedSwipeFraction;
       }
 
-      const maxOpacity = 0.2;
+      const maxOpacity = 1;
       const opacity = maxOpacity * openedFraction;
 
       const translateFraction = sign * (1 - openedFraction);

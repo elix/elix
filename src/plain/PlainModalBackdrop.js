@@ -14,8 +14,7 @@ class PlainModalBackdrop extends ModalBackdrop {
       html`
         <style>
           :host {
-            background: black;
-            opacity: 0.2;
+            background: rgba(0, 0, 0, 0.2);
           }
         </style>
       `
