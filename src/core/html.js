@@ -26,7 +26,6 @@
  * @returns {DocumentFragment}
  */
 function html(strings, ...substitutions) {
-  // Collate the strings and substitutions to create complete HTML.
   const template = document.createElement("template");
   template.innerHTML = String.raw(strings, ...substitutions);
   return template.content;
