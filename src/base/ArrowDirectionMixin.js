@@ -2,6 +2,7 @@ import { forwardFocus } from "../core/dom.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import Button from "./Button.js";
+import html from "../core/html.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 const wrap = Symbol("wrap");
@@ -254,11 +255,15 @@ function ArrowDirectionMixin(Base) {
     /**
      * Destructively wrap a node with elements to show arrow buttons.
      *
-     * @param {Node} original - the node that should be wrapped by buttons
+     * @param {Element} target - the node that should be wrapped by buttons
      */
-    [wrap](original) {
-      const arrowDirectionTemplate = template.html`
-        <div id="arrowDirection" role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;">
+    [wrap](target) {
+      const arrowControls = html`
+        <div
+          id="arrowDirection"
+          role="none"
+          style="display: flex; flex: 1; overflow: hidden; position: relative;"
+        >
           <div
             id="arrowButtonPrevious"
             part="arrow-button arrow-button-previous"
@@ -266,10 +271,14 @@ function ArrowDirectionMixin(Base) {
             class="arrowButton"
             aria-hidden="true"
             tabindex="-1"
-            >
+          >
             <slot name="arrowButtonPrevious"></slot>
           </div>
-          <div id="arrowDirectionContainer" role="none" style="flex: 1; overflow: hidden; position: relative;"></div>
+          <div
+            id="arrowDirectionContainer"
+            role="none"
+            style="flex: 1; overflow: hidden; position: relative;"
+          ></div>
           <div
             id="arrowButtonNext"
             part="arrow-button arrow-button-next"
@@ -277,17 +286,20 @@ function ArrowDirectionMixin(Base) {
             class="arrowButton"
             aria-hidden="true"
             tabindex="-1"
-            >
+          >
             <slot name="arrowButtonNext"></slot>
           </div>
         </div>
       `;
-      renderParts(arrowDirectionTemplate.content, this[internal.state]);
-      template.wrap(
-        original,
-        arrowDirectionTemplate.content,
-        "#arrowDirectionContainer"
-      );
+
+      renderParts(arrowControls, this[internal.state]);
+
+      // Wrap the target with the arrow controls.
+      const container = arrowControls.getElementById("arrowDirectionContainer");
+      if (container) {
+        target.replaceWith(arrowControls);
+        container.append(target);
+      }
     }
   }
 

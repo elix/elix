@@ -1,6 +1,7 @@
 import { firstFocusableElement } from "../core/dom.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
+import html from "../core/html.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 // Symbols for private data members on an element.
@@ -73,10 +74,10 @@ function FocusCaptureMixin(Base) {
      * Call this method in a components `internal.template` property.
      * Invoke this method as `this[FocusCaptureMixin.wrap](element)`.
      *
-     * @param {Node} original - the element within which focus should wrap
+     * @param {Element} target - the element within which focus should wrap
      */
-    [wrap](original) {
-      const focusCaptureTemplate = template.html`
+    [wrap](target) {
+      const focusCapture = html`
         <style>
           #focusCapture {
             display: flex;
@@ -99,11 +100,13 @@ function FocusCaptureMixin(Base) {
           <div id="focusCatcher" tabindex="0"></div>
         </div>
       `;
-      template.wrap(
-        original,
-        focusCaptureTemplate.content,
-        "#focusCaptureContainer"
-      );
+
+      // Wrap the target with the focus capture elements.
+      const container = focusCapture.getElementById("focusCaptureContainer");
+      if (container) {
+        target.replaceWith(focusCapture);
+        container.append(target);
+      }
     }
   }
 

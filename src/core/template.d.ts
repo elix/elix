@@ -11,8 +11,3 @@ export function transmute(
   original: Element,
   descriptor: PartDescriptor
 ): Element;
-export function wrap(
-  original: Node,
-  wrapper: DocumentFragment | Element,
-  destination: string
-): void;

@@ -1,5 +1,5 @@
 import * as internal from "./internal.js";
-import * as template from "../core/template.js";
+import html from "../core/html.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 const wrap = Symbol("wrap");
@@ -33,11 +33,15 @@ function PageNumbersMixin(Base) {
     /**
      * Destructively wrap a node with elements to show page numbers.
      *
-     * @param {Node} original - the element that should be wrapped by page numbers
+     * @param {Element} target - the element that should be wrapped by page numbers
      */
-    [wrap](original) {
-      const pageNumbersTemplate = template.html`
-        <div id="pageNumbers" role="none" style="display: flex; flex: 1; overflow: hidden;">
+    [wrap](target) {
+      const pageNumbers = html`
+        <div
+          id="pageNumbers"
+          role="none"
+          style="display: flex; flex: 1; overflow: hidden;"
+        >
           <style>
             [part~="page-number"] {
               bottom: 0;
@@ -47,15 +51,21 @@ function PageNumbersMixin(Base) {
               right: 0;
             }
           </style>
-          <div id="pageNumbersContainer" role="none" style="display: flex; flex: 1; overflow: hidden; position: relative;"></div>
+          <div
+            id="pageNumbersContainer"
+            role="none"
+            style="display: flex; flex: 1; overflow: hidden; position: relative;"
+          ></div>
           <div id="pageNumber" part="page-number"></div>
         </div>
       `;
-      template.wrap(
-        original,
-        pageNumbersTemplate.content,
-        "#pageNumbersContainer"
-      );
+
+      // Wrap the target with the page numbers.
+      const container = pageNumbers.getElementById("pageNumbersContainer");
+      if (container) {
+        target.replaceWith(pageNumbers);
+        container.append(target);
+      }
     }
   }
 

@@ -221,27 +221,3 @@ export function transmute(original, descriptor) {
     return replacement;
   }
 }
-
-/**
- * Destructively wrap a node or document fragment with the indicated wrapper
- * node. The contents of the original node/fragment are moved to the indicated
- * destination node (which should be a node within the wrapper).
- *
- * @param {Node} original - the node to wrap
- * @param {(DocumentFragment|Element)} wrapper - the node to wrap with
- * @param {string} destination - a CSS selector indicating a node in the wrapper
- * in which the original node should be put
- */
-export function wrap(original, wrapper, destination) {
-  const destinationNode = wrapper.querySelector(destination);
-  if (!destinationNode) {
-    throw `Can't find the wrapper destination indicated by "${destination}".`;
-  }
-  if (original.parentNode) {
-    original.parentNode.replaceChild(wrapper, original);
-    destinationNode.appendChild(original);
-  } else if (original instanceof DocumentFragment) {
-    destinationNode.append(...original.childNodes);
-    original.appendChild(wrapper);
-  }
-}

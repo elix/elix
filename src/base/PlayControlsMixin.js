@@ -1,7 +1,8 @@
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
-import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import Button from "./Button.js";
+import html from "../core/html.js";
+import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 const wrap = Symbol("wrap");
 
@@ -87,10 +88,10 @@ export default function PlayControlsMixin(Base) {
     /**
      * Destructively wrap a node with elements for play controls.
      *
-     * @param {Node} original - the element that should be wrapped by play controls
+     * @param {Element} target - the element that should be wrapped by play controls
      */
-    [wrap](original) {
-      const playControlsTemplate = template.html`
+    [wrap](target) {
+      const playControls = html`
         <style>
           [part~="button-container"] {
             bottom: 0;
@@ -110,13 +111,28 @@ export default function PlayControlsMixin(Base) {
         </style>
 
         <div part="button-container">
-          <div part="control-button previous-button" id="previousButton" aria-hidden="true" tabindex="-1">
+          <div
+            part="control-button previous-button"
+            id="previousButton"
+            aria-hidden="true"
+            tabindex="-1"
+          >
             <slot name="previousButton"></slot>
           </div>
-          <div part="control-button play-button" id="playButton" aria-hidden="true" tabindex="-1">
+          <div
+            part="control-button play-button"
+            id="playButton"
+            aria-hidden="true"
+            tabindex="-1"
+          >
             <slot name="playButton"></slot>
           </div>
-          <div part="control-button next-button" id="nextButton" aria-hidden="true" tabindex="-1">
+          <div
+            part="control-button next-button"
+            id="nextButton"
+            aria-hidden="true"
+            tabindex="-1"
+          >
             <slot name="nextButton"></slot>
           </div>
         </div>
@@ -124,13 +140,14 @@ export default function PlayControlsMixin(Base) {
         <div id="playControlsContainer" role="none"></div>
       `;
 
-      renderParts(playControlsTemplate.content, this[internal.state]);
+      renderParts(playControls, this[internal.state]);
 
-      template.wrap(
-        original,
-        playControlsTemplate.content,
-        "#playControlsContainer"
-      );
+      // Wrap the target with the play controls.
+      const container = playControls.getElementById("playControlsContainer");
+      if (container) {
+        target.replaceWith(playControls);
+        container.append(target);
+      }
     }
   }
 

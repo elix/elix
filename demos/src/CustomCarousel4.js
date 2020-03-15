@@ -8,8 +8,13 @@ const Base = PageNumbersMixin(PlainCarousel);
 class CustomCarousel extends Base {
   get [internal.template]() {
     const result = super[internal.template];
-    /** @type {any} */ const cast = this;
-    cast[PageNumbersMixin.wrap](result.content);
+    const explorerContainer = result.content.getElementById(
+      "explorerContainer"
+    );
+    if (explorerContainer) {
+      /** @type {any} */ const cast = this;
+      cast[PageNumbersMixin.wrap](explorerContainer);
+    }
     return result;
   }
 }

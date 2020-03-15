@@ -34,8 +34,13 @@ class CustomCarousel extends Base {
     }
 
     // Add page numbers.
-    /** @type {any} */ const cast = this;
-    cast[PageNumbersMixin.wrap](result.content);
+    const explorerContainer = result.content.getElementById(
+      "explorerContainer"
+    );
+    if (explorerContainer) {
+      /** @type {any} */ const cast = this;
+      cast[PageNumbersMixin.wrap](explorerContainer);
+    }
 
     result.content.append(
       template.html`
