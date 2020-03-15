@@ -198,15 +198,19 @@ export function ownEvent(node, event) {
 }
 
 /**
- * Sets the element's `childNodes` to the given set of nodes.
+ * Adds or removes the element's `childNodes` as necessary to match the nodes
+ * indicated in the `childNodes` parameter.
  *
- * This adds or removes the element's `childNodes` as necessary to match the
- * nodes indicated in the `childNodes` parameter.
+ * This operation is useful in cases where you maintain your own set of nodes
+ * which should be rendered as the children of some element. When you insert or
+ * remove nodes in that set, you can invoke this function to efficiently apply
+ * the new set as a delta to the existing children. Only the items in the set
+ * that have actually changed will be added or removed.
  *
  * @param {Node} element - the element to update
  * @param {(NodeList|Node[])} childNodes - the set of nodes to apply
  */
-export function replaceChildNodes(element, childNodes) {
+export function updateChildNodes(element, childNodes) {
   // If the childNodes parameter is the actual childNodes of an element, then as
   // we append those nodes to the indicated target element, they'll get removed
   // from the original set. To keep the list stable, we make a copy.

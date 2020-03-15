@@ -1,4 +1,4 @@
-import { replaceChildNodes } from "../core/dom.js";
+import { updateChildNodes } from "../core/dom.js";
 import * as internal from "./internal.js";
 import ListBox from "./ListBox.js";
 
@@ -98,7 +98,7 @@ class FilterListBox extends ListBox {
           // For matching items, highlight the matching text.
           if (matches) {
             const childNodes = this.highlightTextInItem(filter, content);
-            replaceChildNodes(content, childNodes);
+            updateChildNodes(content, childNodes);
           }
         }
       });

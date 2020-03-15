@@ -71,34 +71,6 @@ describe("templates", () => {
     assert.equal(replacement.textContent, "Hello");
   });
 
-  it("can wrap an element in an tree", () => {
-    const fixture = document.createElement("section");
-    const span = document.createElement("span");
-    const text = new Text("Hello");
-    span.appendChild(text);
-    fixture.appendChild(span);
-    const wrapper = document.createElement("div");
-    const paragraph = document.createElement("p");
-    wrapper.appendChild(paragraph);
-    template.wrap(span, wrapper, "p");
-    assert.equal(fixture.childNodes.length, 1);
-    assert.equal(fixture.childNodes[0], wrapper);
-    assert.equal(span.parentNode, paragraph);
-  });
-
-  it("can wrap the contents of a document fragment", () => {
-    const fixture = document.createDocumentFragment();
-    const text = new Text("Hello");
-    fixture.appendChild(text);
-    const wrapper = document.createElement("div");
-    const paragraph = document.createElement("p");
-    wrapper.appendChild(paragraph);
-    template.wrap(fixture, wrapper, "p");
-    assert.equal(fixture.childNodes.length, 1);
-    assert.equal(fixture.childNodes[0], wrapper);
-    assert.equal(text.parentNode, paragraph);
-  });
-
   it("supports an element with a role during initial rendering", async () => {
     const fixture = new DynamicSingle();
     fixture[internal.renderChanges]();

@@ -1,4 +1,4 @@
-import { replaceChildNodes } from "../core/dom.js";
+import { updateChildNodes } from "../core/dom.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
@@ -146,7 +146,7 @@ class Explorer extends Base {
       const childNodes = proxiesAssigned
         ? [this[internal.ids].proxySlot]
         : [this[internal.ids].proxySlot, ...proxies];
-      replaceChildNodes(this[internal.ids].proxyList, childNodes);
+      updateChildNodes(this[internal.ids].proxyList, childNodes);
     }
 
     if (

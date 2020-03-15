@@ -14,13 +14,13 @@ export function indexOfItemContainingTarget(
   target: Node
 ): number;
 export function ownEvent(node: Node, event: Event): boolean;
-export function replaceChildNodes(
-  element: Node,
-  childNodes: NodeList | Node[]
-): void;
 export function selfAndComposedAncestors(node: Node): Iterable<Node>;
 export function setInternalState(
   element: Element,
   state: string,
   value: boolean
+): void;
+export function updateChildNodes(
+  element: Node,
+  childNodes: NodeList | Node[]
 ): void;

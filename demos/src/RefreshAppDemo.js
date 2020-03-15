@@ -1,5 +1,5 @@
 import "../../define/PullToRefresh.js";
-import { replaceChildNodes } from "../../src/core/dom.js";
+import { updateChildNodes } from "../../src/core/dom.js";
 import * as internal from "../../src/base/internal.js";
 import * as template from "../../src/core/template.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
@@ -59,7 +59,7 @@ class RefreshAppDemo extends ReactiveElement {
     }
 
     if (changed.paragraphs) {
-      replaceChildNodes(
+      updateChildNodes(
         this[internal.ids].pullToRefresh,
         this[internal.state].paragraphs
       );

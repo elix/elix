@@ -1,5 +1,5 @@
 import "./AnimateAlignment.js";
-import { replaceChildNodes } from "../../src/core/dom.js";
+import { updateChildNodes } from "../../src/core/dom.js";
 import * as internal from "../../src/base/internal.js";
 import * as template from "../../src/core/template.js";
 import EffectMixin from "../../src/base/EffectMixin.js";
@@ -139,10 +139,7 @@ export default class MessageListBox extends Base {
           </div>
         </animate-alignment>
       `;
-      replaceChildNodes(
-        leftCommandSlot,
-        leftCommandTemplate.content.childNodes
-      );
+      updateChildNodes(leftCommandSlot, leftCommandTemplate.content.childNodes);
     }
 
     // Patch the Delete command into the right commands slot.
@@ -156,7 +153,7 @@ export default class MessageListBox extends Base {
           </div>
         </animate-alignment>
       `;
-      replaceChildNodes(
+      updateChildNodes(
         rightCommandSlot,
         rightCommandTemplate.content.childNodes
       );

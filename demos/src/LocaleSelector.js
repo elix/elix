@@ -1,4 +1,4 @@
-import { replaceChildNodes } from "../../src/core/dom.js";
+import { updateChildNodes } from "../../src/core/dom.js";
 import * as internal from "../../src/base/internal.js";
 import * as template from "../../src/core/template.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
@@ -346,7 +346,7 @@ class LocaleSelector extends ReactiveElement {
     });
     const select = result.content.getElementById("select");
     if (select) {
-      replaceChildNodes(select, localeOptions);
+      updateChildNodes(select, localeOptions);
     }
     return result;
   }

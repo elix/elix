@@ -1,8 +1,8 @@
 import { assert } from "../testHelpers.js";
 import {
-  replaceChildNodes,
   composedAncestors,
-  firstFocusableElement
+  firstFocusableElement,
+  updateChildNodes
 } from "../../src/core/dom.js";
 import * as template from "../../src/core/template.js";
 
@@ -44,7 +44,7 @@ describe("DOM helpers", () => {
     assert.equal(element, input);
   });
 
-  it("replaceChildNodes updates child nodes", () => {
+  it("updateChildNodes updates child nodes", () => {
     const fixture = document.createElement("div");
     const existingChild = document.createTextNode("existing");
     fixture.appendChild(existingChild);
@@ -52,7 +52,7 @@ describe("DOM helpers", () => {
       document.createTextNode("one"),
       document.createTextNode("two")
     ];
-    replaceChildNodes(fixture, nodes);
+    updateChildNodes(fixture, nodes);
     assert.equal(fixture.childNodes.length, 2);
     assert.equal(fixture.childNodes[0], nodes[0]);
     assert.equal(fixture.childNodes[1], nodes[1]);
