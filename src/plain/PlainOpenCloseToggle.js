@@ -23,7 +23,7 @@ class PlainOpenCloseToggle extends UpDownToggle {
       >
         <path d="M 0 0 l5 5 5 -5 z" />
       </svg>
-    `.children[0];
+    `.firstElementChild;
     if (downIcon && downIconGlyph) {
       template.replace(downIcon, downIconGlyph);
     }
@@ -37,7 +37,7 @@ class PlainOpenCloseToggle extends UpDownToggle {
       >
         <path d="M 0 5 l5 -5 5 5 z" />
       </svg>
-    `.children[0];
+    `.firstElementChild;
     if (upIcon && upIconGlyph) {
       template.replace(upIcon, upIconGlyph);
     }

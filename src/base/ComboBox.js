@@ -346,16 +346,13 @@ class ComboBox extends Base {
   get [internal.template]() {
     const result = super[internal.template];
 
-    // Use an input element in the source.
+    // Put an input element and toggle in the source.
     const sourceSlot = result.content.querySelector('slot[name="source"]');
     if (sourceSlot) {
-      template.replace(
-        sourceSlot,
-        html`
-          <input id="input" part="input"></input>
-          <div id="popupToggle" part="popup-toggle" tabindex="-1"></div>
-        `
-      );
+      sourceSlot.replaceWith(html`
+        <input id="input" part="input"></input>
+        <div id="popupToggle" part="popup-toggle" tabindex="-1"></div>
+      `);
     }
 
     renderParts(result.content, this[internal.state]);
