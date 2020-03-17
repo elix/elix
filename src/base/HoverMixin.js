@@ -38,7 +38,7 @@ export default function HoverMixin(Base) {
     }
 
     /**
-     * See [internal.mouseenter](symbols#mouseenter).
+     * See [internal.mouseenter](internal#internal.mouseenter).
      */
     [internal.mouseenter](/** @type {MouseEvent} */ event) {
       if (super[internal.mouseenter]) {
@@ -50,7 +50,7 @@ export default function HoverMixin(Base) {
     }
 
     /**
-     * See [internal.mouseenter](symbols#mouseenter).
+     * See [internal.mouseenter](internal#internal.mouseenter).
      */
     [internal.mouseleave](/** @type {MouseEvent} */ event) {
       if (super[internal.mouseleave]) {

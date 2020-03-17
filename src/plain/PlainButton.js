@@ -18,7 +18,6 @@ class PlainButton extends Button {
             justify-content: center;
             margin: 0;
             position: relative;
-            white-space: nowrap;
           }
         </style>
       `

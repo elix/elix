@@ -96,7 +96,7 @@ export default function SelectionInViewMixin(Base) {
      * helper to find the most likely candidate for scrolling. You can override
      * this property to directly identify which element should be scrolled.
      *
-     * See also [internal.scrollTarget](symbols#scrollTarget).
+     * See also [internal.scrollTarget](internal#internal.scrollTarget).
      */
     get [internal.scrollTarget]() {
       const base = super[internal.scrollTarget];

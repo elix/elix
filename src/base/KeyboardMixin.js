@@ -77,7 +77,7 @@ export default function KeyboardMixin(Base) {
     }
 
     /**
-     * See the [symbols](symbols#keydown) documentation for details.
+     * See the [symbols](internal#internal.keydown) documentation for details.
      */
     [internal.keydown](/** @type {KeyboardEvent} */ event) {
       if (super[internal.keydown]) {

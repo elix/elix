@@ -18,7 +18,7 @@ export default function TransitionEffectMixin(Base) {
      * If you will be applying CSS transitions to other elements, override this
      * property and return an array containing the implicated elements.
      *
-     * See [internal.effectEndTarget](symbols#effectEndTarget)
+     * See [internal.effectEndTarget](internal#internal.effectEndTarget)
      * for details.
      *
      * @type {HTMLElement}
@@ -71,7 +71,7 @@ export default function TransitionEffectMixin(Base) {
          *
          * Note: In general, Elix components do not raise events in response to
          * outside manipulation. (See
-         * [internal.raiseChangeEvents](symbols#raiseChangeEvents).) However, for
+         * [internal.raiseChangeEvents](internal#internal.raiseChangeEvents).) However, for
          * a component using `TransitionEffectMixin`, a single invocation of the
          * `startEffect` method will cause the element to pass through multiple
          * visual states. This makes it hard for external hosts of this
@@ -108,7 +108,7 @@ export default function TransitionEffectMixin(Base) {
     }
 
     /**
-     * See [internal.startEffect](symbols#startEffect).
+     * See [internal.startEffect](internal#internal.startEffect).
      *
      * @param {string} effect
      */

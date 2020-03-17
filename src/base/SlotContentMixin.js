@@ -27,7 +27,7 @@ export default function SlotContentMixin(Base) {
   // The class prototype added by the mixin.
   class SlotContent extends Base {
     /**
-     * See [internal.contentSlot](symbols#contentSlot).
+     * See [internal.contentSlot](internal#internal.contentSlot).
      */
     get [internal.contentSlot]() {
       /** @type {HTMLSlotElement|null} */ const slot =

@@ -57,7 +57,7 @@ export default function TrackpadSwipeMixin(Base) {
     }
 
     /**
-     * See [internal.swipeTarget](symbols#swipeTarget).
+     * See [internal.swipeTarget](internal#internal.swipeTarget).
      *
      * @property internal.swipeTarget
      * @memberof TrackpadSwipeMixin

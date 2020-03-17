@@ -89,7 +89,7 @@ export default function KeyboardPagedSelectionMixin(Base) {
      * Page Down. The default value is calculated by
      * [defaultScrollTarget](defaultScrollTarget#defaultScrollTarget).
      *
-     * See [internal.scrollTarget](symbols#scrollTarget).
+     * See [internal.scrollTarget](internal#internal.scrollTarget).
      *
      * @type {HTMLElement}
      */
