@@ -42,7 +42,7 @@ export default function ReactiveMixin(Base) {
       ) {
         /* eslint-disable no-console */
         console.warn(
-          "componentDidMount is deprecated. Instead, use the internal.rendered method and the internal.firstRender flag."
+          "componentDidMount is deprecated, use the internal.rendered method and the internal.firstRender flag instead. See https://elix.org/documentation/ReactiveMixin."
         );
       }
     }
@@ -58,7 +58,7 @@ export default function ReactiveMixin(Base) {
       ) {
         /* eslint-disable no-console */
         console.warn(
-          "componentDidUpdate is deprecated. Instead, use the internal.rendered method and the internal.firstRender flag."
+          "componentDidUpdate is deprecated, use the internal.rendered method and the internal.firstRender flag instead. See https://elix.org/documentation/ReactiveMixin."
         );
       }
     }

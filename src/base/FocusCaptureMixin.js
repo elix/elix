@@ -1,6 +1,5 @@
 import { firstFocusableElement } from "../core/dom.js";
 import * as internal from "./internal.js";
-import * as template from "../core/template.js";
 import html from "../core/html.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 

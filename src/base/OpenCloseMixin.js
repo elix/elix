@@ -1,6 +1,6 @@
+import { booleanAttributeValue } from "../core/dom.js";
 import * as internal from "./internal.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-import { booleanAttributeValue } from "../core/AttributeMarshallingMixin.js";
 
 /** @type {any} */
 const closePromiseKey = Symbol("closePromise");
