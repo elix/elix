@@ -24,8 +24,13 @@ class SlidingPagesWithArrows extends Base {
   get [internal.template]() {
     const result = super[internal.template];
 
-    /** @type {any} */ const cast = this;
-    cast[ArrowDirectionMixin.wrap](result.content);
+    const slidingStageContent = result.content.getElementById(
+      "slidingStageContent"
+    );
+    if (slidingStageContent) {
+      /** @type {any} */ const cast = this;
+      cast[ArrowDirectionMixin.wrap](slidingStageContent);
+    }
 
     result.content.append(
       template.html`
