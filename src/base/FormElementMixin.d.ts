@@ -15,9 +15,7 @@ declare const FormElementMixin: StateMixin<
     validity: boolean;
     willValidate: boolean;
   },
-  {
-    value: string;
-  }
+  {}
 >;
 
 export default FormElementMixin;

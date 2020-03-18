@@ -4,7 +4,8 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 /**
  * Allows a component to participate in HTML form submission.
  *
- * The mixin expects the component to define a `value` property.
+ * The mixin expects the component to define a `value` property of type
+ * `string`.
  *
  * @module FormElementMixin
  * @param {Constructor<ReactiveElement>} Base

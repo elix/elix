@@ -97,6 +97,7 @@ export { default as Slideshow } from "./plain/PlainSlideshow.js";
 export { default as SlideshowWithPlayControls } from "./plain/PlainSlideshowWithPlayControls.js";
 export { default as SlidingPages } from "./plain/PlainSlidingPages.js";
 export { default as SlidingStage } from "./plain/PlainSlidingStage.js";
+export { default as SpinBox } from "./plain/PlainSpinBox.js";
 export { default as TabButton } from "./plain/PlainTabButton.js";
 export { default as TabStrip } from "./plain/PlainTabStrip.js";
 export { default as Tabs } from "./plain/PlainTabs.js";
