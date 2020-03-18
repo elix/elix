@@ -50,6 +50,16 @@ export function createElement(descriptor) {
       }
     }
     return element;
+    // @ts-ignore
+  } else if (descriptor instanceof HTMLTemplateElement) {
+    // Template
+    /* eslint-disable no-console */
+    console.warn(
+      "Deprecation warning: template.createElement and template.transmute will soon stop accepting an HTMLTemplateElement as a part descriptor."
+    );
+    const fragment = document.importNode(descriptor.content, true);
+    // @ts-ignore
+    return fragment.children.length === 1 ? fragment.children[0] : fragment;
   } else {
     // String tag name: e.g., 'div'
     return document.createElement(descriptor);
