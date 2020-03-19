@@ -1,11 +1,11 @@
 // import CustomRepeatButton from "./CustomRepeatButton.js";
 import * as internal from "../core/internal.js";
 import html from "../core/html.js";
+import NumberSpinBox from "../base/NumberSpinBox.js";
 import PlainButton from "./PlainButton.js";
 import PlainInput from "./PlainInput.js";
-import SpinBox from "../base/SpinBox.js";
 
-export default class PlainSpinBox extends SpinBox {
+export default class PlainNumberSpinBox extends NumberSpinBox {
   get [internal.defaultState]() {
     return {
       ...super[internal.defaultState],
@@ -54,4 +54,4 @@ export default class PlainSpinBox extends SpinBox {
   }
 }
 
-customElements.define("plain-spin-box", PlainSpinBox);
+customElements.define("plain-number-spin-box", PlainNumberSpinBox);

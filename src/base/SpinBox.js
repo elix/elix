@@ -1,78 +1,56 @@
-import * as internal from "../core/internal.js";
+import * as internal from "./internal.js";
 import * as template from "../core/template.js";
-import FormElementMixin from "../base/FormElementMixin.js";
+import FormElementMixin from "./FormElementMixin.js";
+import KeyboardMixin from "./KeyboardMixin.js";
+import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import ReactiveElement from "../core/ReactiveElement.js";
+
+const Base = FormElementMixin(
+  KeyboardMixin(KeyboardDirectionMixin(ReactiveElement))
+);
 
 /**
  * Input element with buttons to increase or decrease the value
  *
+ * @inherits ReactiveElement
+ * @mixes FormElementMixin
+ * @mixes KeyboardDirectionMixin
+ * @mixes KeyboardMixin
  * @part {input} input - the text input portion of the spin box
  * @part {button} button - the up and down buttons
  * @part up-button - the up button
  * @part down-button - the down button
  */
-export class SpinBox extends FormElementMixin(ReactiveElement) {
+export class SpinBox extends Base {
   get [internal.defaultState]() {
     return {
       ...super[internal.defaultState],
       buttonPartType: "button",
       inputPartType: "input",
+      orientation: "vertical",
       step: 1,
       value: 0
     };
   }
 
-  /**
-   * Format the numeric value as a string.
-   *
-   * This is used after incrementing/decrementing the value to reformat the
-   * value as a string.
-   *
-   * @param {number} value
-   */
-  formatValue(value) {
-    return String(value);
+  [internal.goDown]() {
+    if (super[internal.goDown]) {
+      super[internal.goDown]();
+    }
+    this.stepDown();
   }
 
-  /**
-   * Parse the given string as a number.
-   *
-   * This is used to parse the current value before incrementing/decrementing
-   * it.
-   *
-   * @param {string} value
-   */
-  parseValue(value) {
-    return parseInt(value);
+  [internal.goUp]() {
+    if (super[internal.goUp]) {
+      super[internal.goUp]();
+    }
+    this.stepUp();
   }
 
   [internal.render](changed) {
     super[internal.render](changed);
 
     renderParts(this[internal.shadowRoot], this[internal.state], changed);
-
-    if (this[internal.firstRender]) {
-      // Add Up key and Down key handlers.
-      this.addEventListener("keydown", event => {
-        this[internal.raiseChangeEvents] = true;
-        let handled = false;
-        switch (event.key) {
-          case "ArrowDown":
-            this.stepDown();
-            handled = true;
-            break;
-
-          case "ArrowUp":
-            this.stepUp();
-            handled = true;
-            break;
-        }
-        if (handled) {
-          event.preventDefault();
-        }
-        this[internal.raiseChangeEvents] = false;
-      });
-    }
 
     // Wire up handlers on new buttons.
     if (changed.buttonPartType) {
@@ -99,32 +77,9 @@ export class SpinBox extends FormElementMixin(ReactiveElement) {
     }
   }
 
-  /**
-   * The amount by which the value will be incremented or decremented.
-   *
-   * @type {number}
-   * @default 1
-   */
-  get step() {
-    return this[internal.state].step;
-  }
-  set step(step) {
-    this[internal.setState]({ step });
-  }
+  stepDown() {}
 
-  /**
-   * Decrements the `value` by the amount of the `step`.
-   */
-  stepDown() {
-    this.value = this.formatValue(this.parseValue(this.value) - this.step);
-  }
-
-  /**
-   * Increments the `value` by the amount of the `step`.
-   */
-  stepUp() {
-    this.value = this.formatValue(this.parseValue(this.value) + this.step);
-  }
+  stepUp() {}
 
   get [internal.template]() {
     return template.html`
