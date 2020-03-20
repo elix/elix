@@ -1,18 +1,21 @@
+import { forwardFocus } from "../core/dom.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
+import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
-import KeyboardMixin from "./KeyboardMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
+import KeyboardMixin from "./KeyboardMixin.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 
-const Base = FormElementMixin(
-  KeyboardMixin(KeyboardDirectionMixin(ReactiveElement))
+const Base = DelegateFocusMixin(
+  FormElementMixin(KeyboardMixin(KeyboardDirectionMixin(ReactiveElement)))
 );
 
 /**
  * Input element with buttons to increase or decrease the value
  *
  * @inherits ReactiveElement
+ * @mixes DelegateFocusMixin
  * @mixes FormElementMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
@@ -23,14 +26,13 @@ const Base = FormElementMixin(
  */
 export class SpinBox extends Base {
   get [internal.defaultState]() {
-    return {
-      ...super[internal.defaultState],
+    return Object.assign(super[internal.defaultState], {
       buttonPartType: "button",
       inputPartType: "input",
       orientation: "vertical",
       step: 1,
       value: 0
-    };
+    });
   }
 
   [internal.goDown]() {
@@ -70,6 +72,19 @@ export class SpinBox extends Base {
       });
     }
 
+    // When buttons are clicked, keep focus on input.
+    if (changed.buttonPartType || changed.inputPartType) {
+      const input = this[internal.ids].input;
+      const downButton = this[internal.ids].downButton;
+      if (downButton instanceof HTMLElement && input instanceof HTMLElement) {
+        forwardFocus(downButton, input);
+      }
+      const upButton = this[internal.ids].upButton;
+      if (upButton instanceof HTMLElement && input instanceof HTMLElement) {
+        forwardFocus(upButton, input);
+      }
+    }
+
     // Render value state to input.
     if (changed.value) {
       const { value } = this[internal.state];
@@ -100,8 +115,8 @@ export class SpinBox extends Base {
         }
       </style>
       <div id="input" part="input"></div>
-      <div id="upButton" part="spin-button up-button"></div>
-      <div id="downButton" part="spin-button down-button"></div>
+      <div id="upButton" part="spin-button up-button" tabindex="-1"></div>
+      <div id="downButton" part="spin-button down-button" tabindex="-1"></div>
     `;
   }
 
