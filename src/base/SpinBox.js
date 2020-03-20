@@ -27,6 +27,9 @@ const Base = DelegateFocusMixin(
 export class SpinBox extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
+      focused: false,
+      focusOutline: null,
+      focusOutlineOffset: null,
       buttonPartType: "button",
       inputPartType: "input",
       orientation: "vertical",
@@ -54,6 +57,15 @@ export class SpinBox extends Base {
 
     renderParts(this[internal.shadowRoot], this[internal.state], changed);
 
+    if (this[internal.firstRender]) {
+      this.addEventListener("focusin", () => {
+        this[internal.setState]({ focused: true });
+      });
+      this.addEventListener("focusout", () => {
+        this[internal.setState]({ focused: false });
+      });
+    }
+
     // Wire up handlers on new buttons.
     if (changed.buttonPartType) {
       this[internal.ids].downButton.addEventListener("mousedown", () => {
@@ -70,6 +82,26 @@ export class SpinBox extends Base {
       this[internal.ids].input.addEventListener("input", () => {
         this.value = /** @type {any} */ (this[internal.ids].input).value;
       });
+
+      this[internal.ids].input.addEventListener("focus", () => {
+        setTimeout(() => {
+          if (
+            !this[internal.state].focusOutline ||
+            !this[internal.state].focusOutlineOffset
+          ) {
+            const { outline, outlineOffset, outlineStyle } = getComputedStyle(
+              this[internal.ids].input.inner
+            );
+            if (outlineStyle !== "none") {
+              this[internal.setState]({
+                focusOutline: outline,
+                focusOutlineOffset: outlineOffset
+              });
+              console.log(outline);
+            }
+          }
+        });
+      });
     }
 
     // When buttons are clicked, keep focus on input.
@@ -82,6 +114,22 @@ export class SpinBox extends Base {
       const upButton = this[internal.ids].upButton;
       if (upButton instanceof HTMLElement && input instanceof HTMLElement) {
         forwardFocus(upButton, input);
+      }
+    }
+
+    if (changed.focused || changed.focusOutline || changed.focusOutlineOffset) {
+      const { focused, focusOutline, focusOutlineOffset } = this[
+        internal.state
+      ];
+      if (focusOutline && focusOutlineOffset) {
+        Object.assign(this.style, {
+          outline: focused ? focusOutline : "none",
+          outlineOffset: focused ? focusOutlineOffset : ""
+        });
+        Object.assign(this[internal.ids].input.inner.style, {
+          outline: "none",
+          outlineOffset: "0"
+        });
       }
     }
 
