@@ -58,6 +58,7 @@ export { default as DateComboBox } from "./plain/PlainDateComboBox.js";
 export { default as DateInput } from "./plain/PlainDateInput.js";
 export { default as Dialog } from "./plain/PlainDialog.js";
 export { default as Drawer } from "./plain/PlainDrawer.js";
+export { default as DrawerMixin } from "./plain/PlainDrawerMixin.js";
 export { default as DrawerWithGrip } from "./plain/PlainDrawerWithGrip.js";
 export { default as DropdownList } from "./plain/PlainDropdownList.js";
 export { default as ExpandCollapseToggle } from "./plain/PlainExpandCollapseToggle.js";
