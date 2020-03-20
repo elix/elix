@@ -179,8 +179,23 @@ export default function ReactiveMixin(Base) {
       }
     }
 
-    // The default implementation of rendered just passes through to any
-    // superclass implementation.
+    /**
+     * Perform any work that must happen after state changes have been rendered
+     * to the DOM.
+     *
+     * The default implementation of this method does nothing. Override this
+     * method in your component to perform work that requires the component to
+     * be fully rendered, such as setting focus on a shadow element or
+     * inspecting the computed style of an element. If such work should result
+     * in a change in component state, you can safely call `setState` during the
+     * `rendered` method.
+     *
+     * Be sure to call `super` in your method implementation so that your
+     * component's base classes and mixins have a chance to perform their own
+     * post-render work.
+     *
+     * @param {ChangedFlags} changed
+     */
     [internal.rendered](/** @type {ChangedFlags} */ changed) {
       if (super[internal.rendered]) {
         super[internal.rendered](changed);
