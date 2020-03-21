@@ -3,7 +3,6 @@ import * as template from "../core/template.js";
 import AriaMenuMixin from "./AriaMenuMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
-import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
@@ -20,18 +19,16 @@ import TapSelectionMixin from "./TapSelectionMixin.js";
 const Base = AriaMenuMixin(
   DelegateFocusMixin(
     DirectionSelectionMixin(
-      FocusVisibleMixin(
-        ItemsTextMixin(
-          KeyboardDirectionMixin(
-            KeyboardMixin(
-              KeyboardPagedSelectionMixin(
-                KeyboardPrefixSelectionMixin(
-                  LanguageDirectionMixin(
-                    SelectedItemTextValueMixin(
-                      SelectionInViewMixin(
-                        SingleSelectionMixin(
-                          SlotItemsMixin(TapSelectionMixin(ReactiveElement))
-                        )
+      ItemsTextMixin(
+        KeyboardDirectionMixin(
+          KeyboardMixin(
+            KeyboardPagedSelectionMixin(
+              KeyboardPrefixSelectionMixin(
+                LanguageDirectionMixin(
+                  SelectedItemTextValueMixin(
+                    SelectionInViewMixin(
+                      SingleSelectionMixin(
+                        SlotItemsMixin(TapSelectionMixin(ReactiveElement))
                       )
                     )
                   )
@@ -55,7 +52,6 @@ const Base = AriaMenuMixin(
  * @mixes AriaMenuMixin
  * @mixes DelegateFocusMixin
  * @mixes DirectionSelectionMixin
- * @mixes FocusVisibleMixin
  * @mixes ItemsTextMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
@@ -115,10 +111,6 @@ class Menu extends Base {
     super[internal.render](changed);
 
     if (this[internal.firstRender]) {
-      this.addEventListener("mousemove", () => {
-        this.suppressFocusVisibility();
-      });
-
       // Treat a pointerdown event as a tap.
       if ("PointerEvent" in window) {
         // Prefer listening to standard pointer events.
@@ -174,14 +166,6 @@ class Menu extends Base {
             item.removeAttribute("tabindex");
           }
         }
-
-        // Don't show focus on selected item if we're suppressing the focus
-        // (because the mouse was used for selection) or if the item was
-        // selected by default when the menu opened.
-        const suppressFocus =
-          (selected && !this[internal.state].focusVisible) ||
-          isDefaultFocusableItem;
-        item.style.outline = suppressFocus ? "none" : "";
       });
     }
   }
