@@ -2,6 +2,8 @@ import { deepContains } from "../core/dom.js";
 import * as internal from "./internal.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
+const focusRingOutlineStyle = emulatedFocusRingOutline();
+
 // We consider the keyboard to be active if the window has received a keydown
 // event since the last mousedown event.
 let keyboardActive = false;
@@ -92,28 +94,39 @@ export default function FocusVisibleMixin(Base) {
       if (super[internal.render]) {
         super[internal.render](changed);
       }
+
+      // Suppress the component's normal `outline` style unless we know the
+      // focus should be visible.
       if (changed.focusVisible) {
-        // Suppress the component's normal `outline` style unless we know the
-        // focus should be visible.
-        this.style.outline = this[internal.state].focusVisible ? "" : "none";
+        const delegatesFocus = this[internal.delegatesFocus];
+        if (!this[internal.state].focusVisible) {
+          // Suppress focus visibility
+          this.style.outline = "none";
+        } else if (!delegatesFocus) {
+          // Focus is on host; let browser show default focus ring.
+          this.style.outline = "";
+        } else {
+          // Focus is within; emulate focus ring.
+          Object.assign(this.style, focusRingOutlineStyle);
+        }
       }
     }
+  };
+}
 
-    /**
-     * Temporarily suppress visibility of the keyboard focus until the next
-     * keydown event.
-     *
-     * This can be useful in components like [Menu](Menu) that actively manage
-     * where the focus is in response to mouse hover activity. If the user uses
-     * the keyboard to invoke a menu, then changes to using the mouse, it can be
-     * distracting to see the focus indicator moving as well. In such
-     * situations, the component can invoke this method (e.g., in response to
-     * `mousemove`) to temporarily suppress focus visibility.
-     */
-    suppressFocusVisibility() {
-      keyboardActive = false;
-      refreshFocus(this);
-    }
+// Calculate which outline style we'll use if we need to emulate a focus ring.
+function emulatedFocusRingOutline() {
+  const e = document.createElement("div");
+  const webkitFocusRingColor = "-webkit-focus-ring-color";
+  e.style.outlineColor = webkitFocusRingColor;
+  const useWebkitFocusRing = e.style.outlineColor === webkitFocusRingColor;
+  const outlineColor = useWebkitFocusRing
+    ? webkitFocusRingColor // Webkit, Chrome, etc.
+    : "Highlight"; // Firefox
+  const outlineStyle = "auto";
+  return {
+    outlineColor,
+    outlineStyle
   };
 }
 

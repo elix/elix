@@ -6,9 +6,7 @@
 declare const FocusVisibleMixin: StateMixin<
   {},
   {},
-  {
-    suppressFocusVisibility(): void;
-  },
+  {},
   {
     focusVisible: string;
   }

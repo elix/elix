@@ -2,13 +2,16 @@ import { forwardFocus } from "../core/dom.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
+import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 
 const Base = DelegateFocusMixin(
-  FormElementMixin(KeyboardMixin(KeyboardDirectionMixin(ReactiveElement)))
+  FocusVisibleMixin(
+    FormElementMixin(KeyboardMixin(KeyboardDirectionMixin(ReactiveElement)))
+  )
 );
 
 /**
@@ -16,6 +19,7 @@ const Base = DelegateFocusMixin(
  *
  * @inherits ReactiveElement
  * @mixes DelegateFocusMixin
+ * @mixes FocusVisibleMixin
  * @mixes FormElementMixin
  * @mixes KeyboardDirectionMixin
  * @mixes KeyboardMixin
@@ -107,12 +111,6 @@ export class SpinBox extends Base {
           display: inline-grid;
         }
 
-        :host(:focus-within) {
-          outline-color: Highlight; /* Firefox */
-          outline-color: -webkit-focus-ring-color; /* Everyone else */
-          outline-style: auto;
-          outline-width: 2px;
-        }
 
         [part~="input"] {
           grid-row-end: 3;
