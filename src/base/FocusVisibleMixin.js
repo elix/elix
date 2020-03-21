@@ -1,8 +1,8 @@
 import { deepContains } from "../core/dom.js";
 import * as internal from "./internal.js";
+import * as template from "../core/template.js";
+import html from "../core/html.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
-
-const focusRingOutlineStyle = emulatedFocusRingOutline();
 
 // We consider the keyboard to be active if the window has received a keydown
 // event since the last mousedown event.
@@ -98,35 +98,28 @@ export default function FocusVisibleMixin(Base) {
       // Suppress the component's normal `outline` style unless we know the
       // focus should be visible.
       if (changed.focusVisible) {
-        const delegatesFocus = this[internal.delegatesFocus];
-        if (!this[internal.state].focusVisible) {
-          // Suppress focus visibility
-          this.style.outline = "none";
-        } else if (!delegatesFocus) {
-          // Focus is on host; let browser show default focus ring.
-          this.style.outline = "";
-        } else {
-          // Focus is within; emulate focus ring.
-          Object.assign(this.style, focusRingOutlineStyle);
-        }
+        const { focusVisible } = this[internal.state];
+        this.toggleAttribute("focus-visible", focusVisible);
       }
     }
-  };
-}
 
-// Calculate which outline style we'll use if we need to emulate a focus ring.
-function emulatedFocusRingOutline() {
-  const e = document.createElement("div");
-  const webkitFocusRingColor = "-webkit-focus-ring-color";
-  e.style.outlineColor = webkitFocusRingColor;
-  const useWebkitFocusRing = e.style.outlineColor === webkitFocusRingColor;
-  const outlineColor = useWebkitFocusRing
-    ? webkitFocusRingColor // Webkit, Chrome, etc.
-    : "Highlight"; // Firefox
-  const outlineStyle = "auto";
-  return {
-    outlineColor,
-    outlineStyle
+    get [internal.template]() {
+      const result = super[internal.template] || template.html``;
+      result.content.append(html`
+        <style>
+          :host {
+            outline: none;
+          }
+
+          :host([focus-visible]:focus-within) {
+            outline-color: Highlight; /* Firefox */
+            outline-color: -webkit-focus-ring-color; /* All other browsers */
+            outline-style: auto;
+          }
+        </style>
+      `);
+      return result;
+    }
   };
 }
 

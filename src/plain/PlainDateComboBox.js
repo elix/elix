@@ -35,6 +35,7 @@ class PlainDateComboBox extends PlainComboBoxMixin(DateComboBox) {
 
           [part~="today-button"] {
             border: 1px solid transparent;
+            box-sizing: border-box;
             padding: 0.5em;
           }
 

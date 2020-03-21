@@ -116,6 +116,7 @@ class Button extends Base {
             color: inherit;
             flex: 1;
             font: inherit;
+            outline: none;
             padding: 0;
           }
         </style>

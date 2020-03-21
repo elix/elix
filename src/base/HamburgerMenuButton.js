@@ -4,6 +4,7 @@ import Button from "./Button.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import Drawer from "./Drawer.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
+import html from "../core/html.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
 import ReactiveElement from "../core/ReactiveElement.js";
@@ -150,7 +151,8 @@ class HamburgerMenuButton extends Base {
   }
 
   get [internal.template]() {
-    const result = template.html`
+    const result = super[internal.template];
+    result.content.append(html`
       <style>
         :host {
           align-items: center;
@@ -164,7 +166,7 @@ class HamburgerMenuButton extends Base {
       <div id="menu" part="menu" exportparts="backdrop, frame">
         <slot></slot>
       </div>
-    `;
+    `);
 
     renderParts(result.content, this[internal.state]);
 

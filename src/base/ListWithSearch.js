@@ -5,6 +5,8 @@ import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import FilterListBox from "./FilterListBox.js";
+import FocusVisibleMixin from "./FocusVisibleMixin.js";
+import html from "../core/html.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
@@ -14,8 +16,10 @@ const Base = ComposedFocusMixin(
   DelegateFocusMixin(
     DelegateItemsMixin(
       DirectionSelectionMixin(
-        KeyboardMixin(
-          SelectedItemTextValueMixin(SingleSelectionMixin(ReactiveElement))
+        FocusVisibleMixin(
+          KeyboardMixin(
+            SelectedItemTextValueMixin(SingleSelectionMixin(ReactiveElement))
+          )
         )
       )
     )
@@ -195,7 +199,8 @@ class ListWithSearch extends Base {
   }
 
   get [internal.template]() {
-    const result = template.html`
+    const result = super[internal.template];
+    result.content.append(html`
       <style>
         :host {
           display: grid;
@@ -203,14 +208,18 @@ class ListWithSearch extends Base {
         }
 
         [part~="input"] {
-          font: inherit;
+          outline: none;
+        }
+
+        [part~="list"] {
+          outline: none;
         }
       </style>
-      <input id="input" part="input">
+      <input id="input" part="input" />
       <div id="list" part="list" tabindex="-1">
         <slot></slot>
       </div>
-    `;
+    `);
 
     renderParts(result.content, this[internal.state]);
 

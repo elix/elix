@@ -1,9 +1,12 @@
 import * as internal from "./internal.js";
+import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import html from "../core/html.js";
 import WrappedStandardElement from "./WrappedStandardElement.js";
 
-const Base = FormElementMixin(WrappedStandardElement.wrap("input"));
+const Base = FocusVisibleMixin(
+  FormElementMixin(WrappedStandardElement.wrap("input"))
+);
 
 /**
  * Base class for custom input elements
@@ -43,16 +46,15 @@ class Input extends Base {
 
   get [internal.template]() {
     const result = super[internal.template];
-    result.content.append(
-      html`
-        <style>
-          [part~="inner"] {
-            font: inherit;
-            text-align: inherit;
-          }
-        </style>
-      `
-    );
+    result.content.append(html`
+      <style>
+        [part~="inner"] {
+          font: inherit;
+          outline: none;
+          text-align: inherit;
+        }
+      </style>
+    `);
     return result;
   }
 

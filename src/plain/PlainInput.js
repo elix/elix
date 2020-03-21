@@ -14,6 +14,7 @@ class PlainInput extends Input {
       <style>
         :host {
           border: 1px solid gray;
+          box-sizing: border-box;
         }
 
         [part~="inner"] {

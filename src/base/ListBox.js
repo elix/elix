@@ -1,10 +1,10 @@
 import * as internal from "./internal.js";
-import * as template from "../core/template.js";
 import AriaListMixin from "./AriaListMixin.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
+import html from "../core/html.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
@@ -125,7 +125,8 @@ class ListBox extends Base {
   }
 
   get [internal.template]() {
-    return template.html`
+    const result = super[internal.template];
+    result.content.append(html`
       <style>
         :host {
           box-sizing: border-box;
@@ -134,7 +135,7 @@ class ListBox extends Base {
           overflow: hidden; /* Container element is responsible for scrolling */
           -webkit-tap-highlight-color: transparent;
         }
-        
+
         #container {
           display: flex;
           flex: 1;
@@ -144,7 +145,8 @@ class ListBox extends Base {
       <div id="container" role="none">
         <slot></slot>
       </div>
-    `;
+    `);
+    return result;
   }
 }
 

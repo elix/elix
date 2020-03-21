@@ -4,6 +4,7 @@ import * as template from "../core/template.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
+import html from "../core/html.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import ReactiveElement from "../core/ReactiveElement.js";
@@ -74,10 +75,6 @@ export class SpinBox extends Base {
       this[internal.ids].input.addEventListener("input", () => {
         this.value = /** @type {any} */ (this[internal.ids].input).value;
       });
-
-      // TODO: Avoid referencing inner
-      this[internal.ids].input.style.outline = "none";
-      this[internal.ids].input.inner.style.outline = "none";
     }
 
     // When buttons are clicked, keep focus on input.
@@ -105,16 +102,17 @@ export class SpinBox extends Base {
   stepUp() {}
 
   get [internal.template]() {
-    return template.html`
+    const result = super[internal.template];
+    result.content.append(html`
       <style>
         :host {
           display: inline-grid;
         }
 
-
         [part~="input"] {
           grid-row-end: 3;
           grid-row-start: 1;
+          outline: none;
           text-align: right;
         }
 
@@ -126,7 +124,8 @@ export class SpinBox extends Base {
       <div id="input" part="input"></div>
       <div id="upButton" part="spin-button up-button" tabindex="-1"></div>
       <div id="downButton" part="spin-button down-button" tabindex="-1"></div>
-    `;
+    `);
+    return result;
   }
 
   /**

@@ -3,6 +3,7 @@ import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import AriaRoleMixin from "./AriaRoleMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
+import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import Hidden from "./Hidden.js";
 import html from "../core/html.js";
@@ -11,7 +12,9 @@ import PopupSource from "./PopupSource.js";
 import UpDownToggle from "./UpDownToggle.js";
 
 const Base = AriaRoleMixin(
-  DelegateFocusMixin(FormElementMixin(KeyboardMixin(PopupSource)))
+  DelegateFocusMixin(
+    FocusVisibleMixin(FormElementMixin(KeyboardMixin(PopupSource)))
+  )
 );
 
 /**
@@ -20,6 +23,7 @@ const Base = AriaRoleMixin(
  * @inherits PopupSource
  * @mixes AriaRoleMixin
  * @mixes DelegateFocusMixin
+ * @mixes FocusVisibleMixin
  * @mixes FormElementMixin
  * @mixes KeyboardMixin
  * @part {Hidden} backdrop
@@ -319,24 +323,6 @@ class ComboBox extends Base {
       }
     }
 
-    if (changed.rightToLeft) {
-      const { rightToLeft } = this[internal.state];
-      // We want to style the inner input if it's been created with
-      // WrappedStandardElement, otherwise style the input directly.
-      const cast = /** @type {any} */ (this[internal.ids].input);
-      const input = "inner" in cast ? cast.inner : cast;
-      Object.assign(input.style, {
-        paddingBottom: "2px",
-        paddingLeft: rightToLeft ? "1.5em" : "2px",
-        paddingRight: rightToLeft ? "2px" : "1.5em",
-        paddingTop: "2px"
-      });
-      Object.assign(this[internal.ids].popupToggle.style, {
-        left: rightToLeft ? "3px" : "",
-        right: rightToLeft ? "" : "3px"
-      });
-    }
-
     if (changed.value) {
       const { value } = this[internal.state];
       /** @type {any} */ (this[internal.ids].input).value = value;
@@ -361,25 +347,18 @@ class ComboBox extends Base {
       html`
         <style>
           :host {
-            outline: none;
+            padding: 1px; /* Helps keep Chrome focus ring away from input */
           }
 
           [part~="source"] {
             background-color: inherit;
+            display: inline-grid;
+            grid-template-columns: 1fr auto;
             position: relative;
           }
 
           [part~="input"] {
-            box-sizing: border-box;
-            font: inherit;
-            height: 100%;
-            width: 100%;
-          }
-
-          [part~="popup-toggle"] {
-            bottom: 3px;
-            position: absolute;
-            top: 3px;
+            outline: none;
           }
 
           [part~="popup"] {

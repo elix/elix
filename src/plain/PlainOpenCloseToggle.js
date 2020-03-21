@@ -45,6 +45,12 @@ class PlainOpenCloseToggle extends UpDownToggle {
     result.content.append(
       html`
         <style>
+          :host {
+            align-items: center;
+            display: inline-flex;
+            padding: 2px;
+          }
+
           :host([disabled]) {
             opacity: 0.5;
           }

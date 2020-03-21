@@ -3,6 +3,7 @@ import * as template from "../core/template.js";
 import AriaRoleMixin from "./AriaRoleMixin.js";
 import DisabledMixin from "./DisabledMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
+import html from "../core/html.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
 import Popup from "./Popup.js";
@@ -294,7 +295,8 @@ class PopupSource extends Base {
   }
 
   get [internal.template]() {
-    const result = template.html`
+    const result = super[internal.template];
+    result.content.append(html`
       <style>
         :host {
           display: inline-block;
@@ -334,7 +336,7 @@ class PopupSource extends Base {
           <slot></slot>
         </div>
       </div>
-    `;
+    `);
 
     renderParts(result.content, this[internal.state]);
 

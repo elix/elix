@@ -17,6 +17,7 @@ export default function PlainListBoxMixin(Base) {
           <style>
             :host {
               border: 1px solid gray;
+              box-sizing: border-box;
             }
 
             ::slotted(*) {

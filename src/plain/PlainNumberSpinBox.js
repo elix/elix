@@ -24,6 +24,7 @@ export default class PlainNumberSpinBox extends NumberSpinBox {
       <style>
         :host {
           border: 1px solid gray;
+          box-sizing: border-box;
         }
 
         [part~="input"] {

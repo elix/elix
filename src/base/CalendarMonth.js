@@ -6,6 +6,7 @@ import CalendarDayNamesHeader from "./CalendarDayNamesHeader.js";
 import CalendarDays from "./CalendarDays.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
 import CalendarMonthYearHeader from "./CalendarMonthYearHeader.js";
+import html from "../core/html.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 
 const Base = CalendarElementMixin(ReactiveElement);
@@ -252,7 +253,8 @@ class CalendarMonth extends Base {
   }
 
   get [internal.template]() {
-    const result = template.html`
+    const result = super[internal.template];
+    result.content.append(html`
       <style>
         :host {
           display: inline-block;
@@ -268,9 +270,14 @@ class CalendarMonth extends Base {
       </style>
 
       <div id="monthYearHeader" part="month-year-header"></div>
-      <div id="dayNamesHeader" part="day-names-header" exportparts="day-name" format="short"></div>
+      <div
+        id="dayNamesHeader"
+        part="day-names-header"
+        exportparts="day-name"
+        format="short"
+      ></div>
       <div id="monthDays" part="month-days" exportparts="day"></div>
-    `;
+    `);
     renderParts(result.content, this[internal.state]);
     return result;
   }
