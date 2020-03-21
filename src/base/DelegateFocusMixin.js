@@ -66,21 +66,6 @@ export default function DelegateFocusMixin(Base) {
       //   : firstFocusableElement(this[internal.shadowRoot]);
       return firstFocusableElement(this[internal.shadowRoot]);
     }
-
-    [internal.render](/** @type {ChangedFlags} */ changed) {
-      if (super[internal.render]) {
-        super[internal.render](changed);
-      }
-      if (this[internal.firstRender]) {
-        // The delegatesFocus spec says that the focus outline should be shown
-        // on both the host and the focused subelement — which seems confusing
-        // and (in our opinion) looks ugly. If the browser supports
-        // delegatesFocus we suppress the host focus outline.
-        if (/** @type {any} */ (this[internal.shadowRoot]).delegatesFocus) {
-          this.style.outline = "none";
-        }
-      }
-    }
   }
 
   return DelegateFocus;
