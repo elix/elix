@@ -1,31 +1,11 @@
-import * as internal from "../base/internal.js";
-import html from "../core/html.js";
 import Input from "../base/Input.js";
+import PlainInputMixin from "./PlainInputMixin.js";
 
 /**
  * ListBox component in the Plain reference design system
  *
  * @inherits ListBox
  */
-class PlainInput extends Input {
-  get [internal.template]() {
-    const result = super[internal.template];
-    result.content.append(html`
-      <style>
-        :host {
-          background: white;
-          border: 1px solid gray;
-          box-sizing: border-box;
-        }
-
-        [part~="inner"] {
-          background: transparent;
-          border-color: transparent;
-        }
-      </style>
-    `);
-    return result;
-  }
-}
+class PlainInput extends PlainInputMixin(Input) {}
 
 export default PlainInput;
