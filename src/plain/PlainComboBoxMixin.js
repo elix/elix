@@ -43,11 +43,17 @@ export default function PlainComboBoxMixin(Base) {
       result.content.append(html`
         <style>
           :host {
+            background: white;
             border: 1px solid gray;
             box-sizing: border-box;
           }
 
+          [part~="source"] {
+            z-index: 2; /* So it's on top of popup */
+          }
+
           [part~="input"] {
+            background: transparent;
             border: none;
           }
         </style>

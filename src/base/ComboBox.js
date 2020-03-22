@@ -346,10 +346,6 @@ class ComboBox extends Base {
     result.content.append(
       html`
         <style>
-          :host {
-            padding: 1px; /* Helps keep Chrome focus ring away from input */
-          }
-
           [part~="source"] {
             background-color: inherit;
             display: inline-grid;

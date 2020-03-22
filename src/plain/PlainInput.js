@@ -13,11 +13,13 @@ class PlainInput extends Input {
     result.content.append(html`
       <style>
         :host {
+          background: white;
           border: 1px solid gray;
           box-sizing: border-box;
         }
 
         [part~="inner"] {
+          background: transparent;
           border-color: transparent;
         }
       </style>
