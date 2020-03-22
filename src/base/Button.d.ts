@@ -3,4 +3,4 @@
 
 import WrappedStandardElement from "./WrappedStandardElement.js";
 
-export default class Button extends WrappedStandardElement {}
+export default class RepeatButton extends WrappedStandardElement {}

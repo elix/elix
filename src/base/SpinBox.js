@@ -98,7 +98,7 @@ export class SpinBox extends Base {
       /** @type {any} */ const input = this[internal.ids].input;
       input.value = value;
       // Put cursor at end of text.
-      const length = value.length;
+      const length = String(value).length;
       input.selectionStart = length;
       input.selectionEnd = length;
     }

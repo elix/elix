@@ -1,17 +1,14 @@
-// import CustomInput from "./CustomInput.js";
-// import CustomRepeatButton from "./CustomRepeatButton.js";
 import * as internal from "../../src/core/internal.js";
 import html from "../../src/core/html.js";
+import RepeatButton from "../../src/base/RepeatButton.js";
 import SpinBox from "../../src/base/SpinBox.js";
 
 export default class CustomSpinBox extends SpinBox {
-  // get [internal.defaultState]() {
-  //   return {
-  //     ...super[internal.defaultState],
-  //     buttonPartType: CustomRepeatButton,
-  //     inputPartType: CustomInput
-  //   };
-  // }
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
+      buttonPartType: RepeatButton
+    });
+  }
 
   [internal.render](changed) {
     super[internal.render](changed);

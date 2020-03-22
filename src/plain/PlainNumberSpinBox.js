@@ -2,14 +2,14 @@
 import * as internal from "../core/internal.js";
 import html from "../core/html.js";
 import NumberSpinBox from "../base/NumberSpinBox.js";
-import PlainButton from "./PlainButton.js";
+import PlainRepeatButton from "./PlainRepeatButton.js";
 import PlainInput from "./PlainInput.js";
 
 export default class PlainNumberSpinBox extends NumberSpinBox {
   get [internal.defaultState]() {
     return {
       ...super[internal.defaultState],
-      buttonPartType: PlainButton,
+      buttonPartType: PlainRepeatButton,
       inputPartType: PlainInput
     };
   }

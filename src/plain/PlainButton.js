@@ -1,29 +1,11 @@
-import * as internal from "../base/internal.js";
 import Button from "../base/Button.js";
-import html from "../core/html.js";
+import PlainButtonMixin from "./PlainButtonMixin.js";
 
 /**
  * Button component in the Plain reference design system
  *
  * @inherits Button
  */
-class PlainButton extends Button {
-  get [internal.template]() {
-    const result = super[internal.template];
-    result.content.append(
-      html`
-        <style>
-          [part~="inner"] {
-            display: inline-flex;
-            justify-content: center;
-            margin: 0;
-            position: relative;
-          }
-        </style>
-      `
-    );
-    return result;
-  }
-}
+class PlainButton extends PlainButtonMixin(Button) {}
 
 export default PlainButton;
