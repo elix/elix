@@ -1,9 +1,9 @@
 import * as internal from "../../src/core/internal.js";
 import html from "../../src/core/html.js";
 import RepeatButton from "../../src/base/RepeatButton.js";
-import SpinBox from "../../src/base/SpinBox.js";
+import NumberSpinBox from "../../src/base/NumberSpinBox.js";
 
-export default class CustomSpinBox extends SpinBox {
+export default class CustomSpinBox extends NumberSpinBox {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       buttonPartType: RepeatButton
@@ -18,16 +18,6 @@ export default class CustomSpinBox extends SpinBox {
       this.style.borderColor = negative ? "rgb(255, 0, 255)" : "";
       this.style.backgroundColor = negative ? "rgba(255, 0, 255, 0.1)" : "";
     }
-  }
-
-  stepDown() {
-    const { number, unit } = parse(this.value);
-    this.value = format(number - 1, unit);
-  }
-
-  stepUp() {
-    const { number, unit } = parse(this.value);
-    this.value = format(number + 1, unit);
   }
 
   get [internal.template]() {
@@ -70,19 +60,6 @@ export default class CustomSpinBox extends SpinBox {
     `);
     return result;
   }
-}
-
-function format(number, unit) {
-  return unit ? `${number}${unit}` : number;
-}
-
-function parse(s) {
-  const numberWithUnitRegex = /(-?\d+)(?:\s*(.+))?/;
-  const match = numberWithUnitRegex.exec(s);
-  const parsed = parseInt(s);
-  const number = match ? parseInt(match[1]) : isNaN(parsed) ? 0 : parsed;
-  const unit = match ? match[2] : "";
-  return { number, unit };
 }
 
 customElements.define("custom-spin-box", CustomSpinBox);
