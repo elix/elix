@@ -45,6 +45,7 @@ export class SpinBox extends Base {
       super[internal.goDown]();
     }
     this.stepDown();
+    return true; // Handled
   }
 
   [internal.goUp]() {
@@ -52,6 +53,7 @@ export class SpinBox extends Base {
       super[internal.goUp]();
     }
     this.stepUp();
+    return true; // Handled
   }
 
   [internal.render](changed) {
@@ -93,7 +95,12 @@ export class SpinBox extends Base {
     // Render value state to input.
     if (changed.value) {
       const { value } = this[internal.state];
-      /** @type {any} */ (this[internal.ids].input).value = value;
+      /** @type {any} */ const input = this[internal.ids].input;
+      input.value = value;
+      // Put cursor at end of text.
+      const length = value.length;
+      input.selectionStart = length;
+      input.selectionEnd = length;
     }
   }
 
