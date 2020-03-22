@@ -230,6 +230,15 @@ export const hasDynamicTemplate = coreInternal.hasDynamicTemplate;
 export const ids = coreInternal.ids;
 
 /**
+ * Symbol for the `inputDelegate` property.
+ *
+ * [DelegateInputSelectionMixin](DelegateInputSelectionMixin) uses this property
+ * to indicate which shadow element is the input-type element to which text
+ * selection methods and properties should be delegated.
+ */
+export const inputDelegate = Symbol("inputDelegate");
+
+/**
  * Symbol for the `itemMatchesState` method.
  *
  * `ContentItemsMixin` uses this callback to determine whether a content node

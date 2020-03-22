@@ -2,6 +2,7 @@ import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
+import DelegateInputSelectionMixin from "./DelegateInputSelectionMixin.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import FilterListBox from "./FilterListBox.js";
@@ -14,11 +15,13 @@ import SingleSelectionMixin from "./SingleSelectionMixin.js";
 
 const Base = ComposedFocusMixin(
   DelegateFocusMixin(
-    DelegateItemsMixin(
-      DirectionSelectionMixin(
-        FocusVisibleMixin(
-          KeyboardMixin(
-            SelectedItemTextValueMixin(SingleSelectionMixin(ReactiveElement))
+    DelegateInputSelectionMixin(
+      DelegateItemsMixin(
+        DirectionSelectionMixin(
+          FocusVisibleMixin(
+            KeyboardMixin(
+              SelectedItemTextValueMixin(SingleSelectionMixin(ReactiveElement))
+            )
           )
         )
       )
@@ -32,6 +35,7 @@ const Base = ComposedFocusMixin(
  * @inherits ReactiveElement
  * @mixes ComposedFocusMixin
  * @mixes DelegateFocusMixin
+ * @mixes DelegateInputSelectionMixin
  * @mixes DelegateItemsMixin
  * @mixes DirectionSelectionMixin
  * @mixes KeyboardMixin
@@ -78,6 +82,10 @@ class ListWithSearch extends Base {
   }
   set inputPartType(inputPartType) {
     this[internal.setState]({ inputPartType });
+  }
+
+  get [internal.inputDelegate]() {
+    return this[internal.ids].input;
   }
 
   get [internal.itemsDelegate]() {

@@ -34,6 +34,7 @@ export const goStart: "_goStart";
 export const goUp: "_goUp";
 export const hasDynamicTemplate: "_hasDynamicTemplate";
 export const ids: "_ids";
+export const inputDelegate: "_inputDelegate";
 export const itemMatchesState: "_itemMatchesState";
 export const itemsDelegate: "_itemsDelegate";
 export const keydown: "_keydown";

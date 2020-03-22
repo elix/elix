@@ -10,10 +10,13 @@ import html from "../core/html.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import PopupSource from "./PopupSource.js";
 import UpDownToggle from "./UpDownToggle.js";
+import DelegateInputSelectionMixin from "./DelegateInputSelectionMixin.js";
 
 const Base = AriaRoleMixin(
   DelegateFocusMixin(
-    FocusVisibleMixin(FormElementMixin(KeyboardMixin(PopupSource)))
+    DelegateInputSelectionMixin(
+      FocusVisibleMixin(FormElementMixin(KeyboardMixin(PopupSource)))
+    )
   )
 );
 
@@ -23,6 +26,7 @@ const Base = AriaRoleMixin(
  * @inherits PopupSource
  * @mixes AriaRoleMixin
  * @mixes DelegateFocusMixin
+ * @mixes DelegateInputSelectionMixin
  * @mixes FocusVisibleMixin
  * @mixes FormElementMixin
  * @mixes KeyboardMixin
@@ -55,6 +59,10 @@ class ComboBox extends Base {
       sourcePartType: "div",
       value: ""
     });
+  }
+
+  get [internal.inputDelegate]() {
+    return this[internal.ids].input;
   }
 
   [internal.rendered](/** @type {ChangedFlags} */ changed) {

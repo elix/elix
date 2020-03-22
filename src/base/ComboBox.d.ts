@@ -3,12 +3,15 @@
 
 import AriaRoleMixin from "./AriaRoleMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
+import DelegateInputSelectionMixin from "./DelegateInputSelectionMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import PopupSource from "./PopupSource.js";
 
 export default class ComboBox extends AriaRoleMixin(
-  DelegateFocusMixin(FormElementMixin(KeyboardMixin(PopupSource)))
+  DelegateFocusMixin(
+    DelegateInputSelectionMixin(FormElementMixin(KeyboardMixin(PopupSource)))
+  )
 ) {
   readonly input: Element | null;
   inputPartType: PartDescriptor;
