@@ -2,6 +2,7 @@ import { forwardFocus } from "../core/dom.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
+import DisabledMixin from "./DisabledMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import html from "../core/html.js";
@@ -10,8 +11,10 @@ import KeyboardMixin from "./KeyboardMixin.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 
 const Base = DelegateFocusMixin(
-  FocusVisibleMixin(
-    FormElementMixin(KeyboardMixin(KeyboardDirectionMixin(ReactiveElement)))
+  DisabledMixin(
+    FocusVisibleMixin(
+      FormElementMixin(KeyboardMixin(KeyboardDirectionMixin(ReactiveElement)))
+    )
   )
 );
 
@@ -89,6 +92,20 @@ export class SpinBox extends Base {
       const upButton = this[internal.ids].upButton;
       if (upButton instanceof HTMLElement && input instanceof HTMLElement) {
         forwardFocus(upButton, input);
+      }
+    }
+
+    // When disabled, disable inner elements.
+    if (changed.disabled) {
+      const { disabled } = this[internal.state];
+      if ("disabled" in this[internal.ids].input) {
+        /** @type {any} */ (this[internal.ids].input).disabled = disabled;
+      }
+      if ("disabled" in this[internal.ids].downButton) {
+        /** @type {any} */ (this[internal.ids].downButton).disabled = disabled;
+      }
+      if ("disabled" in this[internal.ids].upButton) {
+        /** @type {any} */ (this[internal.ids].upButton).disabled = disabled;
       }
     }
 

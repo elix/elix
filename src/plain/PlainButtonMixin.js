@@ -14,6 +14,10 @@ export default function PlainButtonMixin(Base) {
       const result = super[internal.template];
       result.content.append(html`
         <style>
+          :host([disabled]) {
+            color: gray;
+          }
+
           [part~="inner"] {
             display: inline-flex;
             justify-content: center;
