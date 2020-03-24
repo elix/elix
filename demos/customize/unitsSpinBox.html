@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Custom SpinBox</title>
+
+    <link rel="stylesheet" href="../demos.css" />
+    <script type="module" src="../src/UnitsSpinBox.js"></script>
+  </head>
+
+  <body role="main">
+    <div class="demo">
+      <p>
+        This custom spin box shows basic support for optional units ("px", "em",
+        etc.). This doesn't try to restrict which units are specified (although
+        that could be added); it simply preserves the units when you increment
+        or decrement the value.
+      </p>
+      <units-spin-box value="0px"></units-spin-box>
+    </div>
+  </body>
+</html>
