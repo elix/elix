@@ -21,4 +21,20 @@ describe("NumberSpinBox", () => {
     fixture.stepDown();
     assert.equal(fixture.value, -0.1);
   });
+
+  it("doesn't increment/decrement beyond defined maximum/minimum values", () => {
+    const fixture = new NumberSpinBox();
+    assert.equal(fixture.value, 0);
+    fixture.min = 1;
+    fixture.max = 5;
+    fixture.step = 2;
+    assert.equal(fixture.value, 0); // Still allowed
+    fixture.stepUp(); // 2
+    fixture.stepUp(); // 4
+    fixture.stepUp(); // Would be 6; ignored
+    assert.equal(fixture.value, 4);
+    fixture.stepDown(); // 2
+    fixture.stepDown(); // Would be 0; ignored
+    assert.equal(fixture.value, 2);
+  });
 });

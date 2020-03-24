@@ -4,6 +4,8 @@ import SpinBox from "./SpinBox.js";
 class NumberSpinBox extends SpinBox {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
+      max: null,
+      min: null,
       step: 1
     });
   }
@@ -19,6 +21,34 @@ class NumberSpinBox extends SpinBox {
   formatValue(value) {
     const { precision } = this[internal.state];
     return Number(value).toFixed(precision);
+  }
+
+  /**
+   * The maximum allowable value of the `value` property.
+   *
+   * @type {number|null}
+   * @default 1
+   */
+  get max() {
+    return this[internal.state].max;
+  }
+  set max(max) {
+    const parsed = typeof max === "string" ? parseFloat(max) : max;
+    this[internal.setState]({ max: parsed });
+  }
+
+  /**
+   * The minimum allowable value of the `value` property.
+   *
+   * @type {number|null}
+   * @default 1
+   */
+  get min() {
+    return this[internal.state].min;
+  }
+  set min(min) {
+    const parsed = typeof min === "string" ? parseFloat(min) : min;
+    this[internal.setState]({ min: parsed });
   }
 
   /**
@@ -75,7 +105,11 @@ class NumberSpinBox extends SpinBox {
    */
   stepDown() {
     super.stepDown();
-    this.value = this.formatValue(this.parseValue(this.value) - this.step);
+    const result = this.parseValue(this.value) - this.step;
+    const { min } = this[internal.state];
+    if (min === null || result >= min) {
+      this.value = this.formatValue(result);
+    }
   }
 
   /**
@@ -83,7 +117,11 @@ class NumberSpinBox extends SpinBox {
    */
   stepUp() {
     super.stepUp();
-    this.value = this.formatValue(this.parseValue(this.value) + this.step);
+    const result = this.parseValue(this.value) + this.step;
+    const { max } = this[internal.state];
+    if (max === null || result <= max) {
+      this.value = this.formatValue(result);
+    }
   }
 }
 

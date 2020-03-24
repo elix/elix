@@ -4,5 +4,7 @@
 import SpinBox from "./SpinBox.js";
 
 export default class NumberSpinBox extends SpinBox {
+  max: number | null;
+  min: number | null;
   step: number;
 }
