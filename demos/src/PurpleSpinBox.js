@@ -1,8 +1,15 @@
 import * as internal from "../../src/core/internal.js";
 import html from "../../src/core/html.js";
 import NumberSpinBox from "../../src/base/NumberSpinBox.js";
+import RepeatButton from "../../src/base/RepeatButton.js";
 
 export default class PurpleSpinBox extends NumberSpinBox {
+  get [internal.defaultState]() {
+    return Object.assign(super[internal.defaultState], {
+      buttonPartType: RepeatButton
+    });
+  }
+
   [internal.render](changed) {
     super[internal.render](changed);
     if (changed.value) {
