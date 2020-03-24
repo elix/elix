@@ -1,11 +1,12 @@
 import * as internal from "./internal.js";
+import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import html from "../core/html.js";
 import WrappedStandardElement from "./WrappedStandardElement.js";
 
-const Base = FocusVisibleMixin(
-  FormElementMixin(WrappedStandardElement.wrap("input"))
+const Base = DelegateInputLabelMixin(
+  FocusVisibleMixin(FormElementMixin(WrappedStandardElement.wrap("input")))
 );
 
 /**
@@ -18,6 +19,10 @@ const Base = FocusVisibleMixin(
  * @mixes FormElementMixin
  */
 class Input extends Base {
+  get [internal.inputDelegate]() {
+    return this.inner;
+  }
+
   [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (this[internal.firstRender]) {

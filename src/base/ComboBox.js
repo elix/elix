@@ -3,6 +3,8 @@ import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import AriaRoleMixin from "./AriaRoleMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
+import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
+import DelegateInputSelectionMixin from "./DelegateInputSelectionMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
 import Hidden from "./Hidden.js";
@@ -10,12 +12,13 @@ import html from "../core/html.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import PopupSource from "./PopupSource.js";
 import UpDownToggle from "./UpDownToggle.js";
-import DelegateInputSelectionMixin from "./DelegateInputSelectionMixin.js";
 
 const Base = AriaRoleMixin(
   DelegateFocusMixin(
-    DelegateInputSelectionMixin(
-      FocusVisibleMixin(FormElementMixin(KeyboardMixin(PopupSource)))
+    DelegateInputLabelMixin(
+      DelegateInputSelectionMixin(
+        FocusVisibleMixin(FormElementMixin(KeyboardMixin(PopupSource)))
+      )
     )
   )
 );
@@ -26,6 +29,7 @@ const Base = AriaRoleMixin(
  * @inherits PopupSource
  * @mixes AriaRoleMixin
  * @mixes DelegateFocusMixin
+ * @mixes DelegateInputLabelMixin
  * @mixes DelegateInputSelectionMixin
  * @mixes FocusVisibleMixin
  * @mixes FormElementMixin
@@ -38,17 +42,8 @@ const Base = AriaRoleMixin(
  * @part up-icon - the icon shown in the toggle if the popup will open or close in the up direction
  */
 class ComboBox extends Base {
-  // Forward any ARIA label to the input element.
-  get ariaLabel() {
-    return this[internal.state].ariaLabel;
-  }
-  set ariaLabel(ariaLabel) {
-    this[internal.setState]({ ariaLabel });
-  }
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      ariaLabel: "",
       focused: false,
       inputPartType: "input",
       orientation: "vertical",
@@ -300,13 +295,6 @@ class ComboBox extends Base {
       if ("closeOnWindowResize" in popup) {
         cast.closeOnWindowResize = false;
       }
-    }
-
-    if (changed.ariaLabel) {
-      this[internal.ids].input.setAttribute(
-        "aria-label",
-        this[internal.state].ariaLabel
-      );
     }
 
     if (changed.disabled) {

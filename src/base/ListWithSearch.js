@@ -2,6 +2,7 @@ import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
+import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import DelegateInputSelectionMixin from "./DelegateInputSelectionMixin.js";
 import DelegateItemsMixin from "./DelegateItemsMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
@@ -15,12 +16,16 @@ import SingleSelectionMixin from "./SingleSelectionMixin.js";
 
 const Base = ComposedFocusMixin(
   DelegateFocusMixin(
-    DelegateInputSelectionMixin(
-      DelegateItemsMixin(
-        DirectionSelectionMixin(
-          FocusVisibleMixin(
-            KeyboardMixin(
-              SelectedItemTextValueMixin(SingleSelectionMixin(ReactiveElement))
+    DelegateInputLabelMixin(
+      DelegateInputSelectionMixin(
+        DelegateItemsMixin(
+          DirectionSelectionMixin(
+            FocusVisibleMixin(
+              KeyboardMixin(
+                SelectedItemTextValueMixin(
+                  SingleSelectionMixin(ReactiveElement)
+                )
+              )
             )
           )
         )
@@ -35,6 +40,7 @@ const Base = ComposedFocusMixin(
  * @inherits ReactiveElement
  * @mixes ComposedFocusMixin
  * @mixes DelegateFocusMixin
+ * @mixes DelegateInputLabelMixin
  * @mixes DelegateInputSelectionMixin
  * @mixes DelegateItemsMixin
  * @mixes DirectionSelectionMixin
@@ -45,17 +51,8 @@ const Base = ComposedFocusMixin(
  * @part {FilterListBox} list - the searchable list of items
  */
 class ListWithSearch extends Base {
-  // Forward any ARIA label to the input element.
-  get ariaLabel() {
-    return this[internal.state].ariaLabel;
-  }
-  set ariaLabel(ariaLabel) {
-    this[internal.setState]({ ariaLabel });
-  }
-
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      ariaLabel: "",
       filter: "",
       inputPartType: "input",
       listPartType: FilterListBox,
@@ -185,11 +182,6 @@ class ListWithSearch extends Base {
         this[internal.setState]({ filter });
         this[internal.raiseChangeEvents] = false;
       });
-    }
-
-    if (changed.ariaLabel) {
-      const { ariaLabel } = this[internal.state];
-      this[internal.ids].input.setAttribute("aria-label", ariaLabel);
     }
 
     if (changed.filter) {

@@ -23,7 +23,8 @@ class NumberSpinBox extends SpinBox {
    * @param {string} value
    */
   parseValue(value) {
-    return parseInt(value);
+    const parsed = parseInt(value);
+    return isNaN(parsed) ? 0 : parsed;
   }
 
   /**
