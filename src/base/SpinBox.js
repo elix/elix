@@ -48,6 +48,7 @@ export class SpinBox extends Base {
       inputPartType: "input",
       orientation: "vertical",
       step: 1,
+      stepSelect: false,
       value: 0
     });
   }
@@ -80,10 +81,14 @@ export class SpinBox extends Base {
     // Wire up handlers on new buttons.
     if (changed.buttonPartType) {
       this[internal.ids].downButton.addEventListener("mousedown", () => {
+        this[internal.raiseChangeEvents] = true;
         this.stepDown();
+        this[internal.raiseChangeEvents] = false;
       });
       this[internal.ids].upButton.addEventListener("mousedown", () => {
+        this[internal.raiseChangeEvents] = true;
         this.stepUp();
+        this[internal.raiseChangeEvents] = false;
       });
     }
 
@@ -127,16 +132,33 @@ export class SpinBox extends Base {
       const { value } = this[internal.state];
       /** @type {any} */ const input = this[internal.ids].input;
       input.value = value;
-      // Put cursor at end of text.
-      const length = value.length;
-      input.selectionStart = length;
-      input.selectionEnd = length;
     }
   }
 
-  stepDown() {}
+  [internal.rendered](changed) {
+    super[internal.rendered](changed);
 
-  stepUp() {}
+    // If we changed the value as a result of stepDown/stepUp, put the cursor
+    // at the end of the new text.
+    const { stepSelect, value } = this[internal.state];
+    if (changed.value && stepSelect) {
+      /** @type {any} */ const input = this[internal.ids].input;
+      const length = value.length;
+      input.selectionStart = length;
+      input.selectionEnd = length;
+      this[internal.setState]({ stepSelect: false });
+    }
+  }
+
+  stepDown() {
+    // Set selection after we've rendered.
+    this[internal.setState]({ stepSelect: true });
+  }
+
+  stepUp() {
+    // Set selection after we've rendered.
+    this[internal.setState]({ stepSelect: true });
+  }
 
   get [internal.template]() {
     const result = super[internal.template];
