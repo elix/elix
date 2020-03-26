@@ -16,7 +16,7 @@ export default function PlainSpinBoxMixin(Base) {
   return class PlainSpinBox extends Base {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState], {
-        // buttonPartType: PlainRepeatButton,
+        buttonPartType: PlainRepeatButton,
         inputPartType: PlainInput
       });
     }

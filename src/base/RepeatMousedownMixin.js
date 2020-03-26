@@ -32,30 +32,72 @@ export default function RepeatMousedownMixin(Base) {
         // Only listen to mouse events with the primary (usually left) button.
         this.addEventListener("mousedown", event => {
           if (!(event instanceof SyntheticMouseEvent) && event.button === 0) {
+            this[internal.raiseChangeEvents] = true;
             repeatStart(this);
+            this[internal.raiseChangeEvents] = false;
           }
         });
         this.addEventListener("mouseup", event => {
           if (event.button === 0) {
+            this[internal.raiseChangeEvents] = true;
             repeatStop(this);
+            this[internal.raiseChangeEvents] = false;
           }
         });
         this.addEventListener("mouseleave", event => {
           if (event.button === 0) {
+            this[internal.raiseChangeEvents] = true;
             repeatStop(this);
+            this[internal.raiseChangeEvents] = false;
           }
         });
 
         // Treat touch events like mouse events.
         this.addEventListener("touchstart", () => {
+          this[internal.raiseChangeEvents] = true;
           repeatStart(this);
+          this[internal.raiseChangeEvents] = false;
         });
         this.addEventListener("touchend", () => {
+          this[internal.raiseChangeEvents] = true;
           repeatStop(this);
+          this[internal.raiseChangeEvents] = false;
         });
       }
     }
+
+    [internal.stateEffects](state, changed) {
+      const effects = super[internal.stateEffects]
+        ? super[internal.stateEffects](state, changed)
+        : {};
+
+      // TODO: Avoid needing to inspect innerProperties to handle the
+      // application of this mixin on a WrappedStandardElement.
+      if (changed.disabled || changed.innerProperties) {
+        const disabled =
+          state.disabled ||
+          (state.innerProperties && state.innerProperties.disabled);
+        if (disabled) {
+          clearRepeat(this);
+          Object.assign(effects, {
+            repeatInterval: null,
+            repeatTimeout: null
+          });
+        }
+      }
+
+      return effects;
+    }
   };
+}
+
+function clearRepeat(element) {
+  if (element[internal.state].repeatTimeout) {
+    clearTimeout(element[internal.state].repeatTimeout);
+  }
+  if (element[internal.state].repeatInterval) {
+    clearInterval(element[internal.state].repeatInterval);
+  }
 }
 
 function repeatStart(element) {
@@ -74,16 +116,13 @@ function repeatStart(element) {
   element[internal.setState]({ repeatTimeout });
 }
 
+// Stop timeout and/or interval in progress.
 function repeatStop(element) {
-  // Stop timeout and/or interval in progress.
-  if (element[internal.state].repeatTimeout) {
-    clearTimeout(element[internal.state].repeatTimeout);
-    element[internal.setState]({ repeatTimeout: null });
-  }
-  if (element[internal.state].repeatInterval) {
-    clearInterval(element[internal.state].repeatInterval);
-    element[internal.setState]({ repeatInterval: null });
-  }
+  clearRepeat(element);
+  element[internal.setState]({
+    repeatTimeout: null,
+    repeatInterval: null
+  });
 }
 
 // Raise a synthetic mousedown event.
