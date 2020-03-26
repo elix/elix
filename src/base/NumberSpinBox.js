@@ -78,21 +78,20 @@ class NumberSpinBox extends SpinBox {
       Object.assign(effects, { precision });
     }
 
-    // The value is valid if it falls between the min and max.
     if (changed.max || changed.min || changed.value) {
+      // The value is valid if it falls between the min and max.
       // TODO: We need a way to let other classes/mixins on the prototype chain
       // contribute to validity -- if someone else thinks the value is invalid,
       // we should respect that, even if the value falls within the min/max
       // bounds.
       const { max, min, value } = state;
-      const belowMax = max === null || value <= max;
-      const aboveMin = min === null || value >= min;
-      if (!belowMax) {
+      const parsedValue = parseInt(value); // this.parseValue(value);
+      if (!(max === null || parsedValue <= max)) {
         Object.assign(effects, {
           valid: false,
           validationMessage: `Value must be less than or equal to ${max}.`
         });
-      } else if (!aboveMin) {
+      } else if (!(min === null || parsedValue >= min)) {
         Object.assign(effects, {
           valid: false,
           validationMessage: `Value must be greater than or equal to ${min}.`
@@ -103,6 +102,16 @@ class NumberSpinBox extends SpinBox {
           validationMessage: ""
         });
       }
+
+      // We can only go up if we're below max.
+      Object.assign(effects, {
+        canGoUp: parsedValue < state.max
+      });
+
+      // We can only go down if we're above min.
+      Object.assign(effects, {
+        canGoDown: parsedValue > state.min
+      });
     }
 
     return effects;

@@ -45,6 +45,8 @@ export class SpinBox extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       buttonPartType: "button",
+      canGoDown: true,
+      canGoUp: true,
       inputPartType: "input",
       orientation: "vertical",
       step: 1,
@@ -113,25 +115,30 @@ export class SpinBox extends Base {
       }
     }
 
+    const { disabled, value } = this[internal.state];
+
     // When disabled, disable inner elements.
-    if (changed.disabled) {
-      const { disabled } = this[internal.state];
+    // Also, disable up or down button if we're at max or min.
+    if (changed.canGoUp || changed.canGoDown || changed.disabled) {
+      const { canGoUp, canGoDown } = this[internal.state];
       if ("disabled" in this[internal.ids].input) {
         /** @type {any} */ (this[internal.ids].input).disabled = disabled;
       }
       if ("disabled" in this[internal.ids].downButton) {
-        /** @type {any} */ (this[internal.ids].downButton).disabled = disabled;
+        const upDisabled = disabled || !canGoUp;
+        /** @type {any} */ (this[internal.ids].upButton).disabled = upDisabled;
       }
       if ("disabled" in this[internal.ids].upButton) {
-        /** @type {any} */ (this[internal.ids].upButton).disabled = disabled;
+        const downDisabled = disabled || !canGoDown;
+        /** @type {any} */ (this[
+          internal.ids
+        ].downButton).disabled = downDisabled;
       }
     }
 
     // Render value state to input.
     if (changed.value) {
-      const { value } = this[internal.state];
-      /** @type {any} */ const input = this[internal.ids].input;
-      input.value = value;
+      /** @type {any} */ (this[internal.ids].input).value = value;
     }
   }
 

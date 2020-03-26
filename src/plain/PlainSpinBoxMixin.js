@@ -16,7 +16,7 @@ export default function PlainSpinBoxMixin(Base) {
   return class PlainSpinBox extends Base {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState], {
-        buttonPartType: PlainRepeatButton,
+        // buttonPartType: PlainRepeatButton,
         inputPartType: PlainInput
       });
     }
@@ -30,16 +30,19 @@ export default function PlainSpinBoxMixin(Base) {
       result.content.append(html`
         <style>
           :host {
+            background: white;
             border: 1px solid gray;
             box-sizing: border-box;
           }
 
           [part~="input"] {
+            background: transparent;
             border: none;
             width: 4em;
           }
 
           [part~="spin-button"] {
+            background: transparent;
             border: 1px solid gray;
             box-sizing: border-box;
             font-size: 0.6em;

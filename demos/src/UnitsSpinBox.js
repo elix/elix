@@ -2,11 +2,13 @@ import PlainSpinBox from "../../src/plain/PlainSpinBox.js";
 
 export default class UnitsSpinBox extends PlainSpinBox {
   stepDown() {
+    super.stepDown();
     const { number, unit } = parse(this.value);
     this.value = format(number - 1, unit);
   }
 
   stepUp() {
+    super.stepUp();
     const { number, unit } = parse(this.value);
     this.value = format(number + 1, unit);
   }

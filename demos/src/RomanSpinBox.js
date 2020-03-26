@@ -18,11 +18,13 @@ const romanToNumberMap = {
 
 export default class RomanSpinBox extends PlainSpinBox {
   stepDown() {
+    super.stepDown();
     const number = romanToNumber(this.value);
     this.value = numberToRoman(number - 1);
   }
 
   stepUp() {
+    super.stepUp();
     const number = romanToNumber(this.value);
     this.value = numberToRoman(number + 1);
   }
