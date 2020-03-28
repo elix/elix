@@ -17,9 +17,9 @@ class NumberSpinBox extends SpinBox {
    * value as a string.
    *
    * @param {number} value
+   * @param {number} precision
    */
-  formatValue(value) {
-    const { precision } = this[internal.state];
+  formatValue(value, precision) {
     return Number(value).toFixed(precision);
   }
 
@@ -58,9 +58,9 @@ class NumberSpinBox extends SpinBox {
    * it.
    *
    * @param {string} value
+   * @param {number} precision
    */
-  parseValue(value) {
-    const { precision } = this[internal.state];
+  parseValue(value, precision) {
     const parsed = precision === 0 ? parseInt(value) : parseFloat(value);
     return isNaN(parsed) ? 0 : parsed;
   }
@@ -84,14 +84,14 @@ class NumberSpinBox extends SpinBox {
       // contribute to validity -- if someone else thinks the value is invalid,
       // we should respect that, even if the value falls within the min/max
       // bounds.
-      const { max, min, value } = state;
-      const parsedValue = parseInt(value); // this.parseValue(value);
-      if (!(max === null || parsedValue <= max)) {
+      const { max, min, precision, value } = state;
+      const parsed = parseInt(value, precision);
+      if (!isNaN(parsed) && !(max === null || parsed <= max)) {
         Object.assign(effects, {
           valid: false,
           validationMessage: `Value must be less than or equal to ${max}.`
         });
-      } else if (!(min === null || parsedValue >= min)) {
+      } else if (!isNaN(parsed) && !(min === null || parsed >= min)) {
         Object.assign(effects, {
           valid: false,
           validationMessage: `Value must be greater than or equal to ${min}.`
@@ -105,12 +105,12 @@ class NumberSpinBox extends SpinBox {
 
       // We can only go up if we're below max.
       Object.assign(effects, {
-        canGoUp: parsedValue < state.max
+        canGoUp: isNaN(parsed) || parsed < state.max
       });
 
       // We can only go down if we're above min.
       Object.assign(effects, {
-        canGoDown: parsedValue > state.min
+        canGoDown: isNaN(parsed) || parsed > state.min
       });
     }
 
@@ -138,25 +138,33 @@ class NumberSpinBox extends SpinBox {
 
   /**
    * Decrements the `value` by the amount of the `step`.
+   *
+   * If the result is still greater than the `max` value, this will force
+   * `value` to `max`.
    */
   stepDown() {
     super.stepDown();
-    const result = this.parseValue(this.value) - this.step;
+    const { max, precision, value } = this[internal.state];
+    const result = Math.min(this.parseValue(value, precision) - this.step, max);
     const { min } = this[internal.state];
     if (min === null || result >= min) {
-      this.value = this.formatValue(result);
+      this.value = this.formatValue(result, precision);
     }
   }
 
   /**
    * Increments the `value` by the amount of the `step`.
+   *
+   * If the result is still smaller than the `min` value, this will force
+   * `value` to `min`.
    */
   stepUp() {
     super.stepUp();
-    const result = this.parseValue(this.value) + this.step;
+    const { min, precision, value } = this[internal.state];
+    const result = Math.max(this.parseValue(value, precision) + this.step, min);
     const { max } = this[internal.state];
     if (max === null || result <= max) {
-      this.value = this.formatValue(result);
+      this.value = this.formatValue(result, precision);
     }
   }
 }

@@ -51,7 +51,7 @@ export class SpinBox extends Base {
       orientation: "vertical",
       step: 1,
       stepSelect: false,
-      value: 0
+      value: ""
     });
   }
 
@@ -195,10 +195,10 @@ export class SpinBox extends Base {
   }
 
   /**
-   * The value entered in the spin box.
+   * The text entered in the spin box.
    *
    * @type {string}
-   * @default "0"
+   * @default ""
    */
   get value() {
     return this[internal.state].value;
