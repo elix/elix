@@ -1,6 +1,11 @@
 import * as internal from "./internal.js";
 import SpinBox from "./SpinBox.js";
 
+/**
+ * Input with buttons to increase or decrease a numeric value
+ *
+ * @inherits SpinBox
+ */
 class NumberSpinBox extends SpinBox {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {

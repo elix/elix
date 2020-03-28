@@ -1,8 +1,12 @@
 import NumberSpinBox from "../base/NumberSpinBox.js";
 import PlainSpinBoxMixin from "./PlainSpinBoxMixin.js";
 
-export default class PlainNumberSpinBox extends PlainSpinBoxMixin(
-  NumberSpinBox
-) {}
+/**
+ * NumberSpinBox component in the Plain reference design system
+ *
+ * @inherits NumberSpinBox
+ * @mixes PlainSpinBoxMixin
+ */
+class PlainNumberSpinBox extends PlainSpinBoxMixin(NumberSpinBox) {}
 
-customElements.define("plain-number-spin-box", PlainNumberSpinBox);
+export default PlainNumberSpinBox;

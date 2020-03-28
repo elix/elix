@@ -27,6 +27,8 @@
  * interfere with other component logic. For example, if for some reason the
  * component wants to define a separate property with the plain string name,
  * "template", it can do so without affecting the above property setter.
+ *
+ * @module internal
  */
 
 /**

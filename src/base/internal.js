@@ -77,17 +77,17 @@ export const componentDidUpdate = coreInternal.componentDidUpdate;
 export const contentSlot = Symbol("contentSlot");
 
 /**
+ * The default state for this element.
+ */
+export const defaultState = coreInternal.defaultState;
+
+/**
  * Symbol for the `defaultTabIndex` property.
  *
  * [KeyboardMixin](KeyboardMixin) uses this if it is unable to successfully
  * parse a string tabindex attribute.
  */
 export const defaultTabIndex = Symbol("defaultTabIndex");
-
-/**
- * The default state for this element.
- */
-export const defaultState = coreInternal.defaultState;
 
 /**
  * Symbol for the `delegatesFocus` property.
@@ -581,6 +581,7 @@ if (elixdebug === "true") {
       delegatesFocus,
       effectEndTarget,
       event,
+      firstRender,
       focusTarget,
       getItemText,
       goDown,
@@ -593,6 +594,7 @@ if (elixdebug === "true") {
       goUp,
       hasDynamicTemplate,
       ids,
+      inputDelegate,
       itemMatchesState,
       itemsDelegate,
       keydown,
@@ -602,6 +604,7 @@ if (elixdebug === "true") {
       raiseChangeEvents,
       render,
       renderChanges,
+      rendered,
       rendering,
       scrollTarget,
       setState,
@@ -609,6 +612,7 @@ if (elixdebug === "true") {
       shadowRootMode,
       startEffect,
       state,
+      stateEffects,
       swipeDown,
       swipeDownComplete,
       swipeLeft,

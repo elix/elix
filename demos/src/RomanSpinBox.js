@@ -1,4 +1,5 @@
 import PlainSpinBox from "../../src/plain/PlainSpinBox.js";
+import * as internal from "../../src/base/internal.js";
 
 const romanToNumberMap = {
   M: 1000,
@@ -17,6 +18,19 @@ const romanToNumberMap = {
 };
 
 export default class RomanSpinBox extends PlainSpinBox {
+  [internal.stateEffects](state, changed) {
+    const effects = super[internal.stateEffects];
+
+    if (changed.value) {
+      const { value } = state;
+      Object.assign(effects, {
+        canGoDown: value !== "I" && value !== ""
+      });
+    }
+
+    return effects;
+  }
+
   stepDown() {
     super.stepDown();
     const number = romanToNumber(this.value);
@@ -60,4 +74,4 @@ function romanToNumber(roman) {
   return n;
 }
 
-customElements.define("units-spin-box", RomanSpinBox);
+customElements.define("roman-spin-box", RomanSpinBox);

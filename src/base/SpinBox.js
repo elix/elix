@@ -18,7 +18,7 @@ const Base = DelegateFocusMixin(
       DisabledMixin(
         FocusVisibleMixin(
           FormElementMixin(
-            KeyboardMixin(KeyboardDirectionMixin(ReactiveElement))
+            KeyboardDirectionMixin(KeyboardMixin(ReactiveElement))
           )
         )
       )
@@ -27,11 +27,13 @@ const Base = DelegateFocusMixin(
 );
 
 /**
- * Input element with buttons to increase or decrease the value
+ * Input with buttons to increase or decrease a value
  *
  * @inherits ReactiveElement
  * @mixes DelegateFocusMixin
+ * @mixes DelegateInputLabelMixin
  * @mixes DelegateInputSelectionMixin
+ * @mixes DisabledMixin
  * @mixes FocusVisibleMixin
  * @mixes FormElementMixin
  * @mixes KeyboardDirectionMixin
