@@ -4,7 +4,8 @@ import PlainInputMixin from "./PlainInputMixin.js";
 /**
  * ListBox component in the Plain reference design system
  *
- * @inherits ListBox
+ * @inherits Input
+ * @mixes PlainInputMixin
  */
 class PlainInput extends PlainInputMixin(Input) {}
 

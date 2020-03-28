@@ -3,6 +3,8 @@ import html from "../core/html.js";
 import TabStrip from "../base/TabStrip.js";
 
 /**
+ * Toast component in the Plain reference design system
+ *
  * @inherits TabStrip
  */
 class PlainTabStrip extends TabStrip {

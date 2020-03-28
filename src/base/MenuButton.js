@@ -11,7 +11,7 @@ const documentMouseupListenerKey = Symbol("documentMouseupListener");
 /**
  * A button that invokes a menu.
  *
- * @inherits PopupButtonBase
+ * @inherits PopupButton
  * @part {Menu} menu - the menu shown in the popup
  * @part {UpDownToggle} popup-toggle - the element that lets the user know they can open the popup
  * @part down-icon - the icon shown in the toggle if the popup will open or close in the down direction

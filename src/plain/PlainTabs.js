@@ -5,6 +5,8 @@ import PlainTabStrip from "./PlainTabStrip.js";
 import Tabs from "../base/Tabs.js";
 
 /**
+ * Tabs component in the Plain reference design system
+ *
  * @inherits Tabs
  * @part {PlainTabButton} proxy
  * @part {PlainTabStrip} proxy-list
