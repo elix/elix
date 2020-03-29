@@ -91,12 +91,17 @@ class NumberSpinBox extends SpinBox {
       // bounds.
       const { max, min, precision, value } = state;
       const parsed = parseInt(value, precision);
-      if (!isNaN(parsed) && !(max === null || parsed <= max)) {
+      if (value !== "" && isNaN(parsed)) {
+        Object.assign(effects, {
+          valid: false,
+          validationMessage: "Value must be a number"
+        });
+      } else if (!(max === null || parsed <= max)) {
         Object.assign(effects, {
           valid: false,
           validationMessage: `Value must be less than or equal to ${max}.`
         });
-      } else if (!isNaN(parsed) && !(min === null || parsed >= min)) {
+      } else if (!(min === null || parsed >= min)) {
         Object.assign(effects, {
           valid: false,
           validationMessage: `Value must be greater than or equal to ${min}.`
