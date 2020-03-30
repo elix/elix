@@ -53,11 +53,12 @@ describe("NumberSpinBox", () => {
 
   it("determines whether the user can step up or down", () => {
     const fixture = new NumberSpinBox();
-    fixture.min = 0;
-    fixture.max = 10;
+    fixture.value = 0;
+    // If no max/min, can always go up/down.
     assert(fixture[internal.state].canGoUp);
     assert(fixture[internal.state].canGoDown);
-    fixture.value = 0;
+    fixture.min = 0;
+    fixture.max = 10;
     assert(fixture[internal.state].canGoUp);
     assert(!fixture[internal.state].canGoDown);
     fixture.value = 1;

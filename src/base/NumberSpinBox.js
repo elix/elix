@@ -115,12 +115,12 @@ class NumberSpinBox extends SpinBox {
 
       // We can only go up if we're below max.
       Object.assign(effects, {
-        canGoUp: isNaN(parsed) || parsed < state.max
+        canGoUp: isNaN(parsed) || state.max === null || parsed < state.max
       });
 
       // We can only go down if we're above min.
       Object.assign(effects, {
-        canGoDown: isNaN(parsed) || parsed > state.min
+        canGoDown: isNaN(parsed) || state.min === null || parsed > state.min
       });
     }
 
@@ -155,7 +155,10 @@ class NumberSpinBox extends SpinBox {
   stepDown() {
     super.stepDown();
     const { max, precision, value } = this[internal.state];
-    const result = Math.min(this.parseValue(value, precision) - this.step, max);
+    let result = this.parseValue(value, precision) - this.step;
+    if (max !== null) {
+      result = Math.min(result, max);
+    }
     const { min } = this[internal.state];
     if (min === null || result >= min) {
       this.value = this.formatValue(result, precision);
@@ -171,7 +174,10 @@ class NumberSpinBox extends SpinBox {
   stepUp() {
     super.stepUp();
     const { min, precision, value } = this[internal.state];
-    const result = Math.max(this.parseValue(value, precision) + this.step, min);
+    let result = this.parseValue(value, precision) + this.step;
+    if (min !== null) {
+      result = Math.max(result, min);
+    }
     const { max } = this[internal.state];
     if (max === null || result <= max) {
       this.value = this.formatValue(result, precision);
