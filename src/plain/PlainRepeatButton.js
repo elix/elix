@@ -4,7 +4,8 @@ import PlainButtonMixin from "./PlainButtonMixin.js";
 /**
  * Button component in the Plain reference design system
  *
- * @inherits Button
+ * @inherits RepeatButton
+ * @mixes PlainButtonMixin
  */
 class PlainRepeatButton extends PlainButtonMixin(RepeatButton) {}
 

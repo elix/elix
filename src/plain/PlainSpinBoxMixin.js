@@ -9,8 +9,8 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
  *
  * @module PlainSpinBoxMixin
  * @param {Constructor<ReactiveElement>} Base
- * @part button {PlainRepeatButton}
- * @part input {PlainInput}
+ * @part {PlainRepeatButton} button
+ * @part {PlainInput} input
  */
 export default function PlainSpinBoxMixin(Base) {
   return class PlainSpinBox extends Base {
