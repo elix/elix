@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elix TooltipSource</title>
+
+    <link rel="stylesheet" href="demos.css" />
+    <script type="module" src="../define/TooltipSource.js"></script>
+  </head>
+
+  <body role="main">
+    <div class="demo padded">
+      <style>
+        #source {
+          color: red;
+          text-decoration: underline dotted;
+        }
+        #source:hover {
+          background: pink;
+        }
+
+        #tooltip {
+          padding: 1em;
+          white-space: nowrap;
+        }
+
+        :not(:defined) #source {
+          visibility: visible;
+        }
+        :not(:defined) #tooltip {
+          display: none;
+        }
+      </style>
+
+      This sentence includes a
+      <elix-tooltip-source>
+        <span id="source" slot="source">
+          word
+        </span>
+        <span id="tooltip">Here is the tooltip.</span>
+      </elix-tooltip-source>
+      you can hover over with a mouse for a tooltip.
+    </div>
+  </body>
+</html>

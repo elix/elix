@@ -11,7 +11,7 @@ import PlainOverlayFrame from "./PlainOverlayFrame.js";
  * @part {PlainOverlayFrame} frame
  * @param {Constructor<ReactiveElement>} Base
  */
-export default function PlaPlainModalOverlayMixin(Base) {
+export default function PlainModalOverlayMixin(Base) {
   return class PlainModalOverlay extends Base {
     get [defaultState]() {
       return Object.assign(super[defaultState] || {}, {
