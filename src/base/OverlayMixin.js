@@ -1,4 +1,5 @@
 import { deepContains, firstFocusableElement } from "../core/dom.js";
+import { fragmentFrom, templateFrom } from "../core/htmlLiterals.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import {
   defaultState,
@@ -7,6 +8,7 @@ import {
   rendered,
   setState,
   state,
+  template,
 } from "./internal.js";
 
 /** @type {any} */
@@ -102,7 +104,7 @@ export default function OverlayMixin(Base) {
           // component from the outside (to change to display: flex, say) will
           // override the display: none implied by hidden. To work around both
           // these problems, we use display: none when the overlay is closed.
-          this.style.display = closed ? "none" : "";
+          // this.style.display = closed ? "none" : "";
 
           if (closed) {
             if (this[defaultZIndexKey]) {
@@ -183,6 +185,20 @@ export default function OverlayMixin(Base) {
           this.parentNode.removeChild(this);
         }
       }
+    }
+
+    get [template]() {
+      const result = super[template] || templateFrom.html``;
+
+      result.content.append(fragmentFrom.html`
+        <style>
+          :host(:not([opened])) {
+            display: none;
+          }
+        </style>
+      `);
+
+      return result;
     }
   }
 

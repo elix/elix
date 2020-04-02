@@ -1,8 +1,9 @@
-import { booleanAttributeValue } from "../core/dom.js";
+import { booleanAttributeValue, setInternalState } from "../core/dom.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import {
   defaultState,
   raiseChangeEvents,
+  render,
   rendered,
   setState,
   startEffect,
@@ -130,6 +131,15 @@ export default function OpenCloseMixin(Base) {
     set opened(opened) {
       this[setState]({ closeResult: undefined });
       this.toggle(opened);
+    }
+
+    [render](changed) {
+      super[render](changed);
+
+      if (changed.opened) {
+        const { opened } = this[state];
+        setInternalState(this, "opened", opened);
+      }
     }
 
     [rendered](/** @type {ChangedFlags} */ changed) {

@@ -1,11 +1,20 @@
 import * as internal from "./internal.js";
 import Hidden from "./Hidden.js";
-import PopupSource from "./PopupSource.js";
+import html from "../core/html.js";
+import PopupButton from "./PopupButton.js";
 
 /**
- * Source for a non-interactive tooltip that appears on hover
+ * Button with a non-interactive tooltip that appears on hover
  */
-class TooltipSource extends PopupSource {
+class TooltipSource extends PopupButton {
+  get [internal.defaultState]() {
+    // HACK
+    return Object.assign(super[internal.defaultState], {
+      role: "none",
+      tabIndex: -1
+    });
+  }
+
   [internal.render](changed) {
     super[internal.render](changed);
 
@@ -22,6 +31,20 @@ class TooltipSource extends PopupSource {
         this.close();
         this[internal.raiseChangeEvents] = false;
       });
+
+      // HACK
+      source.tabIndex = 0;
+
+      // HACK
+      source.addEventListener("keydown", event => {
+        this[internal.raiseChangeEvents] = true;
+        if (event.key === "Escape") {
+          this.close({
+            canceled: "Escape"
+          });
+        }
+        this[internal.raiseChangeEvents] = false;
+      });
     }
 
     // Suppress popup's backdrop, which would interfere with tracking
@@ -35,13 +58,33 @@ class TooltipSource extends PopupSource {
       if ("autoFocus" in popup) {
         /** @type {any} */ (popup).autoFocus = Hidden;
       }
+
+      // HACK
+      popup.tabIndex = -1;
     }
   }
 
   get [internal.template]() {
     const result = super[internal.template];
 
-    // Indicate that the source is described by the popup.
+    // visually-hidden class from
+    // https://inclusive-components.design/tooltips-toggletips/
+    result.content.append(html`
+      <style>
+        #popup:not([opened]) {
+          clip-path: inset(100%);
+          clip: rect(1px, 1px, 1px, 1px);
+          display: inherit;
+          height: 1px;
+          overflow: hidden;
+          position: absolute;
+          white-space: nowrap;
+          width: 1px;
+        }
+      </style>
+    `);
+
+    // Indicate that the button is described by the popup.
     const source = result.content.getElementById("source");
     if (source) {
       source.setAttribute("aria-describedby", "popup");
