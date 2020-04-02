@@ -7,25 +7,56 @@
 
     <link rel="stylesheet" href="demos.css" />
     <script type="module" src="../define/TooltipSource.js"></script>
+
+    <script type="module">
+      import * as internal from "../src/core/internal.js";
+      import * as template from "../src/core/template.js";
+      import ReactiveElement from "../src/core/ReactiveElement.js";
+
+      class TestElement extends ReactiveElement {
+        connectedCallback() {
+          super.connectedCallback();
+        }
+        get [internal.template]() {
+          // visually-hidden class from
+          // https://inclusive-components.design/tooltips-toggletips/
+          return template.html`
+            <style>
+              .visually-hidden {
+                clip-path: inset(100%);
+                clip: rect(1px, 1px, 1px, 1px);
+                height: 1px;
+                overflow: hidden;
+                position: absolute;
+                white-space: nowrap;
+                width: 1px;
+              }
+            </style>
+            <button aria-describedby="tooltip"><slot name="source"></slot></button>
+            <span id="tooltip" class="visually-hidden"><slot></slot></span>
+          `;
+        }
+      }
+
+      customElements.define("test-element", TestElement);
+    </script>
   </head>
 
   <body role="main">
+    <button id="OK" aria-describedby="okTooltip">OK</button>
+    <div id="okTooltip" role="tooltip">This is the OK button</div>
+    <test-element>
+      <span slot="source">Hello</span>
+      How are you?
+    </test-element>
     <div class="demo padded">
       <style>
-        #source {
-          color: red;
-          text-decoration: underline dotted;
-        }
-        #source:hover {
-          background: pink;
-        }
-
         #tooltip {
           padding: 1em;
           white-space: nowrap;
         }
 
-        :not(:defined) #source {
+        :not(:defined) #label {
           visibility: visible;
         }
         :not(:defined) #tooltip {
@@ -33,14 +64,16 @@
         }
       </style>
 
-      This sentence includes a
+      <p>
+        This button has a tooltip that appears when you hover over the button
+        with a mouse.
+      </p>
       <elix-tooltip-source>
-        <span id="source" slot="source">
-          word
+        <span id="label" slot="source">
+          OK
         </span>
         <span id="tooltip">Here is the tooltip.</span>
       </elix-tooltip-source>
-      you can hover over with a mouse for a tooltip.
     </div>
   </body>
 </html>
