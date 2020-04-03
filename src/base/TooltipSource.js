@@ -8,10 +8,8 @@ import PopupButton from "./PopupButton.js";
  */
 class TooltipSource extends PopupButton {
   get [internal.defaultState]() {
-    // HACK
     return Object.assign(super[internal.defaultState], {
-      role: "none",
-      tabIndex: -1
+      role: "none"
     });
   }
 
@@ -33,18 +31,15 @@ class TooltipSource extends PopupButton {
       });
 
       // HACK
-      source.tabIndex = 0;
-
-      // HACK
-      source.addEventListener("keydown", event => {
-        this[internal.raiseChangeEvents] = true;
-        if (event.key === "Escape") {
-          this.close({
-            canceled: "Escape"
-          });
-        }
-        this[internal.raiseChangeEvents] = false;
-      });
+      // source.addEventListener("keydown", event => {
+      //   this[internal.raiseChangeEvents] = true;
+      //   if (event.key === "Escape") {
+      //     this.close({
+      //       canceled: "Escape"
+      //     });
+      //   }
+      //   this[internal.raiseChangeEvents] = false;
+      // });
     }
 
     // Suppress popup's backdrop, which would interfere with tracking
@@ -59,7 +54,8 @@ class TooltipSource extends PopupButton {
         /** @type {any} */ (popup).autoFocus = Hidden;
       }
 
-      // HACK
+      // Even if the popup declares itself focusable, we want to keep focus on
+      // the source.
       popup.tabIndex = -1;
     }
   }
