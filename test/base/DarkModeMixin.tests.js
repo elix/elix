@@ -24,7 +24,7 @@ describe("DarkModeMixin", () => {
     parent.appendChild(fixture);
     container.appendChild(parent);
     await Promise.resolve();
-    assert(fixture[internal.state].darkMode);
+    assert(fixture[internal.state].dark);
   });
 
   it("infers no dark mode when the element or ancestor has a light background color", async () => {
@@ -34,6 +34,6 @@ describe("DarkModeMixin", () => {
     parent.appendChild(fixture);
     container.appendChild(parent);
     await Promise.resolve();
-    assert(!fixture[internal.state].darkMode);
+    assert(!fixture[internal.state].dark);
   });
 });

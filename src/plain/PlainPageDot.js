@@ -21,14 +21,6 @@ class PlainPageDot extends Base {
     if (this[internal.firstRender]) {
       this.setAttribute("role", "none");
     }
-
-    const { darkMode } = this[internal.state];
-    // Wait for knowledge of dark mode
-    if (changed.darkMode && darkMode !== null) {
-      this.style.backgroundColor = darkMode
-        ? "rgb(255, 255, 255)"
-        : "rgb(0, 0, 0)";
-    }
   }
 
   get [internal.template]() {
@@ -37,6 +29,7 @@ class PlainPageDot extends Base {
       html`
         <style>
           :host {
+            background-color: black;
             border-radius: 7px;
             box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.5);
             box-sizing: border-box;
@@ -46,6 +39,10 @@ class PlainPageDot extends Base {
             padding: 0;
             transition: opacity 0.2s;
             width: 8px;
+          }
+
+          :host([dark]) {
+            background-color: white;
           }
 
           @media (min-width: 768px) {

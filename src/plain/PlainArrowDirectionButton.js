@@ -16,15 +16,6 @@ const Base = DarkModeMixin(PlainButton);
  * @mixes DarkModeMixin
  */
 class PlainArrowDirectionButton extends Base {
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
-    // Wait for knowledge of dark mode to be set after initial render.
-    const { darkMode } = this[internal.state];
-    if (changed.darkMode && darkMode !== null) {
-      this[internal.ids].inner.classList.toggle("darkMode", darkMode);
-    }
-  }
-
   get [internal.template]() {
     const result = super[internal.template];
     result.content.append(
@@ -34,7 +25,7 @@ class PlainArrowDirectionButton extends Base {
             color: rgba(0, 0, 0, 0.7);
           }
 
-          :host(:hover:not([disabled])) {
+          :host(:not([disabled]):hover) {
             background: rgba(0, 0, 0, 0.2);
             color: rgba(0, 0, 0, 0.8);
             cursor: pointer;
@@ -48,16 +39,16 @@ class PlainArrowDirectionButton extends Base {
             fill: currentcolor;
           }
 
-          [part~="inner"].darkMode {
+          :host([dark]) {
             color: rgba(255, 255, 255, 0.7);
           }
 
-          [part~="inner"].darkMode:hover:not(:disabled) {
+          :host([dark]:not([disabled]):hover) {
             background: rgba(255, 255, 255, 0.2);
             color: rgba(255, 255, 255, 0.8);
           }
 
-          [part~="inner"].darkMode:disabled {
+          :host([dark][disabled]) {
             color: rgba(255, 255, 255, 0.3);
           }
         </style>

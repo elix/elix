@@ -7,10 +7,12 @@ declare const DarkModeMixin: StateMixin<
   {},
   {},
   {
-    darkMode: boolean | null;
+    dark: boolean;
+    detectDarkMode: "auto" | "off";
   },
   {
-    darkMode: boolean | null;
+    dark: boolean;
+    detectDarkMode: "auto" | "off";
   }
 >;
 

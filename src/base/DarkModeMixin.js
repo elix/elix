@@ -1,3 +1,4 @@
+import { booleanAttributeValue, setInternalState } from "../core/dom.js";
 import * as internal from "./internal.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
@@ -11,18 +12,7 @@ const colorSchemeElements = new Set();
  * @param {Constructor<ReactiveElement>} Base
  */
 export default function DarkModeMixin(Base) {
-  return class DarkMode extends Base {
-    // Once connected, check background color. We set state before calling super
-    // so the new state will be included when ReactiveMixin calls render.
-    connectedCallback() {
-      if (this[internal.state].detectDarkMode) {
-        detectDarkMode(this);
-      }
-      if (super.connectedCallback) {
-        super.connectedCallback();
-      }
-    }
-
+  return class dark extends Base {
     disconnectedCallback() {
       if (super.disconnectedCallback) {
         super.disconnectedCallback();
@@ -39,28 +29,52 @@ export default function DarkModeMixin(Base) {
      * initially added to the page. The component will look up its hierarchy for
      * an ancestor that has an explicit background color. If the color's
      * lightness value in the HSL cylindrical-coordinate system is below 50%,
-     * the background is assumed to be dark and `darkMode` will default to true.
+     * the background is assumed to be dark and `dark` will default to true.
      * If the color is lighter than that, or no explicit background color can be
-     * found, the default value of `darkMode` will be false.
+     * found, the default value of `dark` will be false.
      *
      * @type {boolean}
      */
-    get darkMode() {
-      return this[internal.state].darkMode;
+    get dark() {
+      return this[internal.state].dark;
     }
-    set darkMode(darkMode) {
-      const parsed = String(darkMode) === "true";
+    set dark(dark) {
+      const parsed = booleanAttributeValue("dark", dark);
       this[internal.setState]({
-        darkMode: parsed,
-        detectDarkMode: false
+        dark: parsed
       });
     }
 
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState], {
-        darkMode: null,
-        detectDarkMode: true
+        dark: false,
+        detectDarkMode: "auto"
       });
+    }
+
+    /**
+     * Determines whether the component should automatially try to detect
+     * whether it should apply dark mode.
+     *
+     * @type {'auto'|'off'}
+     * @default 'auto'
+     */
+    get detectDarkMode() {
+      return this[internal.state].detectDarkMode;
+    }
+    set detectDarkMode(detectDarkMode) {
+      if (detectDarkMode === "auto" || detectDarkMode === "off") {
+        this[internal.setState]({ detectDarkMode });
+      }
+    }
+
+    [internal.render](changed) {
+      super[internal.render](changed);
+
+      if (changed.dark) {
+        const { dark } = this[internal.state];
+        setInternalState(this, "dark", dark);
+      }
     }
 
     [internal.rendered](changed) {
@@ -70,8 +84,9 @@ export default function DarkModeMixin(Base) {
         const { detectDarkMode } = this[internal.state];
         // Add/remove element to/from list of elements listening to color
         // scheme.
-        if (detectDarkMode) {
+        if (detectDarkMode === "auto") {
           colorSchemeElements.add(this);
+          setDarkModeFromBackgroundColor(this);
         } else {
           colorSchemeElements.delete(this);
         }
@@ -81,14 +96,14 @@ export default function DarkModeMixin(Base) {
 }
 
 // Infer dark mode from effective background color.
-function detectDarkMode(element) {
+function setDarkModeFromBackgroundColor(element) {
   const backgroundColor = findBackgroundColor(element);
   const rgb = parseRgb(backgroundColor);
   if (rgb) {
     const hsl = rgbToHsl(rgb);
     // We consider any lightness below 50% to be dark.
-    const darkMode = hsl.l < 0.5;
-    element[internal.setState]({ darkMode });
+    const dark = hsl.l < 0.5;
+    element[internal.setState]({ dark });
   }
 }
 
@@ -178,6 +193,6 @@ function rgbToHsl(/** @type {PlainObject} */ rgb) {
 // Listen to changes in user preference for dark mode.
 window.matchMedia("(prefers-color-scheme: dark)").addListener(() => {
   colorSchemeElements.forEach(element => {
-    detectDarkMode(element);
+    setDarkModeFromBackgroundColor(element);
   });
 });

@@ -21,19 +21,20 @@ export default function PlainCarouselMixin(Base) {
     [internal.render](changed) {
       super[internal.render](changed);
 
-      const { darkMode } = this[internal.state];
       const proxies = this.proxies;
-      // Wait for knowledge of dark mode
       if (
-        (changed.darkMode || changed.proxies) &&
-        darkMode !== null &&
+        (changed.dark || changed.detectDarkMode || changed.proxies) &&
         proxies
       ) {
         // Apply dark mode to proxies.
+        const { dark, detectDarkMode } = this[internal.state];
         proxies.forEach(proxy => {
           /** @type {any} */ const cast = proxy;
-          if ("darkMode" in cast) {
-            cast.darkMode = darkMode;
+          if ("dark" in cast) {
+            cast.dark = dark;
+          }
+          if ("detectDarkMode" in cast) {
+            cast.detectDarkMode = detectDarkMode;
           }
         });
       }
