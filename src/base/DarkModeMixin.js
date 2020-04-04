@@ -177,7 +177,6 @@ function rgbToHsl(/** @type {PlainObject} */ rgb) {
 
 // Listen to changes in user preference for dark mode.
 window.matchMedia("(prefers-color-scheme: dark)").addListener(() => {
-  console.log("color scheme changed");
   colorSchemeElements.forEach(element => {
     detectDarkMode(element);
   });

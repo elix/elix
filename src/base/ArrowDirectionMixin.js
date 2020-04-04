@@ -125,7 +125,6 @@ function ArrowDirectionMixin(Base) {
         arrowButtonOverlap,
         canGoNext,
         canGoPrevious,
-        darkMode,
         orientation,
         rightToLeft
       } = this[internal.state];
@@ -223,16 +222,6 @@ function ArrowDirectionMixin(Base) {
       // See note for canGoNext above.
       if (changed.canGoPrevious && canGoPrevious !== null) {
         arrowButtonPrevious.disabled = !canGoPrevious;
-      }
-      // Wait for knowledge of dark mode
-      if (changed.darkMode && darkMode !== null) {
-        // Apply dark mode to buttons.
-        if ("darkMode" in arrowButtonPrevious) {
-          /** @type {any} */ (arrowButtonPrevious).darkMode = darkMode;
-        }
-        if ("darkMode" in arrowButtonNext) {
-          /** @type {any} */ (arrowButtonNext).darkMode = darkMode;
-        }
       }
 
       if (changed.showArrowButtons) {

@@ -41,6 +41,22 @@ export default function PlainArrowDirectionMixin(Base) {
           this[internal.ids].arrowIconNext.style.transform = transform;
         }
       }
+
+      // Wait for knowledge of dark mode
+      const { darkMode } = this[internal.state];
+      if (changed.darkMode && darkMode !== null) {
+        // Apply dark mode to buttons.
+        /** @type {any} */ const arrowButtonPrevious = this[internal.ids]
+          .arrowButtonPrevious;
+        /** @type {any} */ const arrowButtonNext = this[internal.ids]
+          .arrowButtonNext;
+        if ("darkMode" in arrowButtonPrevious) {
+          /** @type {any} */ (arrowButtonPrevious).darkMode = darkMode;
+        }
+        if ("darkMode" in arrowButtonNext) {
+          /** @type {any} */ (arrowButtonNext).darkMode = darkMode;
+        }
+      }
     }
 
     get [internal.template]() {

@@ -2,7 +2,6 @@ import { forwardFocus } from "../core/dom.js";
 import * as internal from "./internal.js";
 import AriaListMixin from "./AriaListMixin.js";
 import ArrowDirectionMixin from "./ArrowDirectionMixin.js";
-import DarkModeMixin from "./DarkModeMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import Explorer from "./Explorer.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
@@ -16,13 +15,11 @@ import TrackpadSwipeMixin from "./TrackpadSwipeMixin.js";
 
 const Base = AriaListMixin(
   ArrowDirectionMixin(
-    DarkModeMixin(
-      DirectionSelectionMixin(
-        FocusVisibleMixin(
-          KeyboardDirectionMixin(
-            KeyboardMixin(
-              SwipeDirectionMixin(TouchSwipeMixin(TrackpadSwipeMixin(Explorer)))
-            )
+    DirectionSelectionMixin(
+      FocusVisibleMixin(
+        KeyboardDirectionMixin(
+          KeyboardMixin(
+            SwipeDirectionMixin(TouchSwipeMixin(TrackpadSwipeMixin(Explorer)))
           )
         )
       )
@@ -40,7 +37,6 @@ const Base = AriaListMixin(
  * @inherits Explorer
  * @mixes AriaListMixin
  * @mixes ArrowDirectionMixin
- * @mixes DarkModeMixin
  * @mixes DirectionSelectionMixin
  * @mixes FocusVisibleMixin
  * @mixes KeyboardDirectionMixin
@@ -113,19 +109,7 @@ class Carousel extends Base {
       this[internal.ids].stage.removeAttribute("tabindex");
     }
 
-    const { darkMode } = this[internal.state];
     const proxies = this.proxies;
-    // Wait for knowledge of dark mode
-    if ((changed.darkMode || changed.proxies) && darkMode !== null && proxies) {
-      // Apply dark mode to proxies.
-      proxies.forEach(proxy => {
-        /** @type {any} */ const cast = proxy;
-        if ("darkMode" in cast) {
-          cast.darkMode = darkMode;
-        }
-      });
-    }
-
     if (changed.proxies && proxies) {
       // Make proxies not focusable.
       proxies.forEach(proxy => {

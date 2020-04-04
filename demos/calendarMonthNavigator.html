@@ -7,11 +7,29 @@
 
     <link rel="stylesheet" href="demos.css" />
     <script type="module" src="../define/CalendarMonthNavigator.js"></script>
+
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: black;
+        }
+      }
+    </style>
   </head>
 
   <body role="main">
     <div class="demo padded">
-      <elix-calendar-month-navigator></elix-calendar-month-navigator>
+      <style>
+        @media (prefers-color-scheme: dark) {
+          #sampleCalendar {
+            background: black;
+            color: white;
+          }
+        }
+      </style>
+      <elix-calendar-month-navigator
+        id="sampleCalendar"
+      ></elix-calendar-month-navigator>
     </div>
   </body>
 </html>
