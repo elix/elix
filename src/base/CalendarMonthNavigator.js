@@ -30,7 +30,6 @@ const Base = ArrowDirectionMixin(
  * @inherits CalendarMonth
  * @mixes ArrowDirectionMixin
  * @mixes CalendarElementMixin
- * @mixes DarkModeMixin
  * @mixes FocusVisibleMixin
  * @mixes FormElementMixin
  * @mixes KeyboardDirectionMixin
