@@ -78,16 +78,6 @@ class Button extends Base {
     );
   }
 
-  [internal.render](/** @type {ChangedFlags} */ changed) {
-    super[internal.render](changed);
-    if (changed.focusVisible) {
-      // Override host `outline` style supplied by FocusVisibleMixin.
-      this.style.outline = "none";
-      const { focusVisible } = this[internal.state];
-      this[internal.ids].inner.style.outline = focusVisible ? "" : "none";
-    }
-  }
-
   // Respond to a simulated click.
   [internal.tap]() {
     const clickEvent = new MouseEvent("click", {
@@ -116,7 +106,6 @@ class Button extends Base {
             color: inherit;
             flex: 1;
             font: inherit;
-            outline: none;
             padding: 0;
           }
         </style>
