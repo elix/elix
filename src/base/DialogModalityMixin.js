@@ -26,7 +26,7 @@ const previousDocumentMarginRightKey = Symbol("previousDocumentMarginRight");
 export default function DialogModalityMixin(Base) {
   return class DialogModality extends Base {
     get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState], {
+      return Object.assign(super[internal.defaultState] || {}, {
         role: "dialog"
       });
     }

@@ -16,7 +16,7 @@ export default function SwipeCommandsMixin(Base) {
   // The class prototype added by the mixin.
   return class SwipeCommands extends Base {
     get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState], {
+      return Object.assign(super[internal.defaultState] || {}, {
         swipeLeftCommitted: false,
         swipeLeftFollowsThrough: false,
         swipeLeftRemovesItem: false,

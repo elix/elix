@@ -42,7 +42,7 @@ export default function CalendarElementMixin(Base) {
     }
 
     get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState], {
+      return Object.assign(super[internal.defaultState] || {}, {
         date: null,
         locale: navigator.language
       });

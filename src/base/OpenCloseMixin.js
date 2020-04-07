@@ -85,7 +85,7 @@ export default function OpenCloseMixin(Base) {
           openCloseEffects: true
         });
       }
-      return Object.assign(super[internal.defaultState], defaults);
+      return Object.assign(super[internal.defaultState] || {}, defaults);
     }
 
     /**

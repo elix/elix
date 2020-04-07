@@ -16,7 +16,7 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 export default function PlainComboBoxMixin(Base) {
   return class PlainComboBox extends Base {
     get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState], {
+      return Object.assign(super[internal.defaultState] || {}, {
         inputPartType: PlainInput,
         popupPartType: PlainPopup,
         popupTogglePartType: PlainOpenCloseToggle

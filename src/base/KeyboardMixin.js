@@ -69,7 +69,7 @@ export default function KeyboardMixin(Base) {
       // the focus and raise keyboard events. Otherwise, we do set a tabindex on
       // the host, so that we can get keyboard events.
       const tabIndex = this[internal.delegatesFocus] ? null : 0;
-      const state = Object.assign(super[internal.defaultState], {
+      const state = Object.assign(super[internal.defaultState] || {}, {
         tabIndex
       });
 

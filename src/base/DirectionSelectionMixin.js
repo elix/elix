@@ -19,7 +19,7 @@ export default function DirectionSelectionMixin(Base) {
   // The class prototype added by the mixin.
   class DirectionSelection extends Base {
     get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState], {
+      return Object.assign(super[internal.defaultState] || {}, {
         canGoDown: null,
         canGoLeft: null,
         canGoRight: null,

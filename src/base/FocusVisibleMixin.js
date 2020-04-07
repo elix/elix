@@ -85,7 +85,7 @@ export default function FocusVisibleMixin(Base) {
     }
 
     get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState], {
+      return Object.assign(super[internal.defaultState] || {}, {
         focusVisible: false
       });
     }

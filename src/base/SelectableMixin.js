@@ -21,7 +21,7 @@ export default function SelectableMixin(Base) {
     }
 
     get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState], {
+      return Object.assign(super[internal.defaultState] || {}, {
         selected: false
       });
     }

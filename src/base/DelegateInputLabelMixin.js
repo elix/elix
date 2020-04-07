@@ -26,7 +26,7 @@ export default function DelegateInputLabelMixin(Base) {
     }
 
     get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState], {
+      return Object.assign(super[internal.defaultState] || {}, {
         ariaLabel: ""
       });
     }

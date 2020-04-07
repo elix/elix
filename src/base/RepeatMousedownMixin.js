@@ -16,7 +16,7 @@ class SyntheticMouseEvent extends MouseEvent {}
 export default function RepeatMousedownMixin(Base) {
   return class RepeatMousedown extends Base {
     get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState], {
+      return Object.assign(super[internal.defaultState] || {}, {
         repeatDelayDuration: 500, // In ms. Wait a bit before starting repeats.
         repeatInterval: null,
         repeatIntervalDuration: 50, // In ms. Once repeats start, they go fast.

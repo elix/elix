@@ -46,7 +46,7 @@ export default function DarkModeMixin(Base) {
     }
 
     get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState], {
+      return Object.assign(super[internal.defaultState] || {}, {
         dark: false,
         detectDarkMode: "auto"
       });

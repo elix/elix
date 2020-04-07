@@ -42,7 +42,7 @@ export default function SingleSelectionMixin(Base) {
     }
 
     get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState], {
+      return Object.assign(super[internal.defaultState] || {}, {
         canSelectNext: null,
         canSelectPrevious: null,
         selectedIndex: -1,

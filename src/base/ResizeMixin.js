@@ -56,7 +56,7 @@ export default function ResizeMixin(Base) {
     }
 
     get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState], {
+      return Object.assign(super[internal.defaultState] || {}, {
         clientHeight: this.clientHeight,
         clientWidth: this.clientWidth
       });

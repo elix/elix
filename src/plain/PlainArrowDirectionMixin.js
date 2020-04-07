@@ -16,7 +16,7 @@ import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line
 export default function PlainArrowDirectionMixin(Base) {
   return class PlainArrowDirection extends Base {
     get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState], {
+      return Object.assign(super[internal.defaultState] || {}, {
         arrowButtonPartType: PlainArrowDirectionButton
       });
     }

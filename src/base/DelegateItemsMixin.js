@@ -44,7 +44,7 @@ export default function DelegateItemsMixin(Base) {
     }
 
     get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState], {
+      return Object.assign(super[internal.defaultState] || {}, {
         items: null
       });
     }

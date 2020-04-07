@@ -18,7 +18,7 @@ export default function TimerSelectionMixin(Base) {
   // The class prototype added by the mixin.
   class TimerSelection extends Base {
     get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState], {
+      return Object.assign(super[internal.defaultState] || {}, {
         playing: true,
         selectedIndexForTimer: null,
         selectionTimerDuration: 1000,

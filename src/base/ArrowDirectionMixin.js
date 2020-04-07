@@ -67,7 +67,7 @@ function ArrowDirectionMixin(Base) {
     }
 
     get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState], {
+      return Object.assign(super[internal.defaultState] || {}, {
         arrowButtonOverlap: true,
         arrowButtonPartType: Button,
         orientation: "horizontal",

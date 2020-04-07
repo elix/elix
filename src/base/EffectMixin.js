@@ -14,7 +14,7 @@ export default function EffectMixin(Base) {
   // The class prototype added by the mixin.
   class Transition extends Base {
     get [internal.defaultState]() {
-      return Object.assign(super[internal.defaultState], {
+      return Object.assign(super[internal.defaultState] || {}, {
         enableEffects: false
       });
     }
