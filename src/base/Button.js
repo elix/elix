@@ -45,7 +45,7 @@ class Button extends Base {
     return Object.assign(super[internal.defaultState], {
       role: "button",
       treatEnterAsClick: true,
-      treatSpaceAsClick: true
+      treatSpaceAsClick: true,
     });
   }
 
@@ -82,7 +82,7 @@ class Button extends Base {
   [internal.tap]() {
     const clickEvent = new MouseEvent("click", {
       bubbles: true,
-      cancelable: true
+      cancelable: true,
     });
     this.dispatchEvent(clickEvent);
   }
@@ -106,6 +106,7 @@ class Button extends Base {
             color: inherit;
             flex: 1;
             font: inherit;
+            outline: none;
             padding: 0;
           }
         </style>
