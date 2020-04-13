@@ -52,7 +52,7 @@ describe("WrappedStandardElement", () => {
     assert.propertyVal(fixture.inner, "href", "http://example.com/");
   });
 
-  it("re-raises events not automatically retargetted by Shadow DOM", done => {
+  it("re-raises events not automatically retargetted by Shadow DOM", (done) => {
     const fixture = new WrappedImg();
     container.appendChild(fixture);
     fixture.addEventListener("load", () => {

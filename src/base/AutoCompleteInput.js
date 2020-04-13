@@ -11,7 +11,7 @@ class AutoCompleteInput extends Input {
     return Object.assign(super[internal.defaultState], {
       autoCompleteSelect: false,
       originalText: "",
-      texts: []
+      texts: [],
     });
   }
 
@@ -57,7 +57,7 @@ class AutoCompleteInput extends Input {
           }
           // Remember what the user typed for next time.
           this[internal.setState]({
-            originalText: text
+            originalText: text,
           });
           this[internal.raiseChangeEvents] = false;
         });
@@ -73,7 +73,7 @@ class AutoCompleteInput extends Input {
       // Leave the auto-completed portion (after the part the user originally
       // typed) selected.
       this[internal.setState]({
-        autoCompleteSelect: false
+        autoCompleteSelect: false,
       });
       this.setInnerProperty("selectionStart", originalText.length);
       this.setInnerProperty("selectionEnd", this.value.length);
@@ -85,8 +85,8 @@ class AutoCompleteInput extends Input {
       const event = new InputEvent("input", {
         // @ts-ignore
         detail: {
-          originalText
-        }
+          originalText,
+        },
       });
       this.dispatchEvent(event);
     }
@@ -116,7 +116,7 @@ class AutoCompleteInput extends Input {
     // the `input` event to update the originalText state.
     if (this[internal.shadowRoot] && !this.inner.matches(":focus")) {
       this[internal.setState]({
-        originalText: value
+        originalText: value,
       });
     }
   }
@@ -128,18 +128,18 @@ export function autoComplete(/** @type {AutoCompleteInput} */ element) {
   if (value.length === 0 || !texts) {
     return null;
   }
-  const match = texts.find(text => text.toLowerCase().startsWith(value));
+  const match = texts.find((text) => text.toLowerCase().startsWith(value));
   if (!match) {
     return null;
   }
 
   // Update the input value to the match. This is just a convenient way to
-  // set state.innerProperties.value if the value actually changed.
+  // set the value state if the value actually changed.
   element.setInnerProperty("value", match);
 
   // Leave the auto-completed portion selected.
   element[internal.setState]({
-    autoCompleteSelect: true
+    autoCompleteSelect: true,
   });
 
   return match;

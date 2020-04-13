@@ -6,6 +6,8 @@ import ReactiveElement from "../core/ReactiveElement.js";
 
 const extendsKey = Symbol("extends");
 
+const delegatedPropertySettersKey = Symbol("delegatedPropertySetters");
+
 /* True if a standard element is focusable by default. */
 /** @type {IndexedObject<boolean>} */
 const focusableByDefault = {
@@ -16,7 +18,7 @@ const focusableByDefault = {
   iframe: true,
   input: true,
   select: true,
-  textarea: true
+  textarea: true,
 };
 
 /*
@@ -73,7 +75,7 @@ const reraiseEvents = {
   tbody: ["scroll"],
   tfoot: ["scroll"],
   thead: ["scroll"],
-  textarea: ["change", "select", "scroll"]
+  textarea: ["change", "select", "scroll"],
 };
 
 /*
@@ -89,7 +91,7 @@ const mouseEventNames = [
   "mouseout",
   "mouseover",
   "mouseup",
-  "wheel"
+  "wheel",
 ];
 
 // Keep track of which re-raised events should bubble.
@@ -97,7 +99,7 @@ const mouseEventNames = [
 const eventBubbles = {
   abort: true,
   change: true,
-  reset: true
+  reset: true,
 };
 
 // Elements which are display: block by default.
@@ -137,7 +139,7 @@ const blockElements = [
   "table",
   "tfoot",
   "ul",
-  "video"
+  "video",
 ];
 
 // Standard attributes that don't have corresponding properties.
@@ -174,7 +176,7 @@ const attributesWithoutProperties = [
   "referrerpolicy",
   "rowspan",
   "scoped",
-  "usemap"
+  "usemap",
 ];
 
 const Base = DelegateFocusMixin(ReactiveElement);
@@ -217,7 +219,7 @@ class WrappedStandardElement extends Base {
         {},
         this[internal.state].innerAttributes,
         {
-          [name]: newValue
+          [name]: newValue,
         }
       );
       this[internal.setState]({ innerAttributes });
@@ -246,7 +248,6 @@ class WrappedStandardElement extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       innerAttributes: {},
-      innerProperties: {}
     });
   }
 
@@ -304,7 +305,7 @@ class WrappedStandardElement extends Base {
     // in response to user interaction (e.g., an input element's value changes
     // as the user types), the component must listen to suitable events on the
     // inner element and update its state accordingly.
-    const value = this[internal.state].innerProperties[name];
+    const value = this[internal.state][name];
     return value || (this[internal.shadowRoot] && this.inner[name]);
   }
 
@@ -324,10 +325,10 @@ class WrappedStandardElement extends Base {
       // automatically be retargetted across the Shadow DOM boundary, and
       // re-raise those events when they happen.
       const eventNames = reraiseEvents[this.extends] || [];
-      eventNames.forEach(eventName => {
+      eventNames.forEach((eventName) => {
         inner.addEventListener(eventName, () => {
           const event = new Event(eventName, {
-            bubbles: eventBubbles[eventName] || false
+            bubbles: eventBubbles[eventName] || false,
           });
           this.dispatchEvent(event);
         });
@@ -340,8 +341,8 @@ class WrappedStandardElement extends Base {
       // clicks on the outer element would get a click event, even though the
       // overall element is supposed to be disabled.
       if ("disabled" in inner) {
-        mouseEventNames.forEach(eventName => {
-          this.addEventListener(eventName, event => {
+        mouseEventNames.forEach((eventName) => {
+          this.addEventListener(eventName, (event) => {
             if (/** @type {any} */ (inner).disabled) {
               event.stopImmediatePropagation();
             }
@@ -363,18 +364,18 @@ class WrappedStandardElement extends Base {
       }
     }
 
-    if (changed.innerProperties) {
-      // Forward properties to the inner element.
-      const { innerProperties } = this[internal.state];
-      Object.assign(inner, innerProperties);
-    }
+    // Forward delegated properties to the inner element.
+    this.constructor[delegatedPropertySettersKey].forEach((property) => {
+      if (changed[property]) {
+        inner[property] = this[internal.state][property];
+      }
+    });
   }
 
   [internal.rendered](/** @type {ChangedFlags} */ changed) {
     super[internal.rendered](changed);
-    if (changed.innerProperties) {
-      const { innerProperties } = this[internal.state];
-      const { disabled } = innerProperties;
+    if (changed.disabled) {
+      const { disabled } = this[internal.state];
       if (disabled !== undefined) {
         setInternalState(this, "disabled", disabled);
       }
@@ -398,16 +399,8 @@ class WrappedStandardElement extends Base {
     // tabIndex property to the tabindex attribute, causing a loop.
     //
     // To avoid this, we check the existing value before updating our state.
-    const current = this[internal.state].innerProperties[name];
-    if (current !== value) {
-      const innerProperties = Object.assign(
-        {},
-        this[internal.state].innerProperties,
-        {
-          [name]: value
-        }
-      );
-      this[internal.setState]({ innerProperties });
+    if (this[internal.state][name] !== value) {
+      this[internal.setState]({ [name]: value });
     }
   }
 
@@ -550,7 +543,7 @@ function createDelegate(name, descriptor) {
  * @param {PropertyDescriptor} descriptor
  */
 function createMethodDelegate(name, descriptor) {
-  const value = function(/** @type {any[]} */ ...args) {
+  const value = function (/** @type {any[]} */ ...args) {
     // @ts-ignore
     this.inner[name](...args);
   };
@@ -558,7 +551,7 @@ function createMethodDelegate(name, descriptor) {
     configurable: descriptor.configurable,
     enumerable: descriptor.enumerable,
     value,
-    writable: descriptor.writable
+    writable: descriptor.writable,
   };
   return delegate;
 }
@@ -574,15 +567,15 @@ function createPropertyDelegate(name, descriptor) {
   /** @type {PlainObject} */
   const delegate = {
     configurable: descriptor.configurable,
-    enumerable: descriptor.enumerable
+    enumerable: descriptor.enumerable,
   };
   if (descriptor.get) {
-    delegate.get = function() {
+    delegate.get = function () {
       return this.getInnerProperty(name);
     };
   }
   if (descriptor.set) {
-    delegate.set = function(/** @type {any} */ value) {
+    delegate.set = function (/** @type {any} */ value) {
       this.setInnerProperty(name, value);
     };
   }
@@ -602,7 +595,8 @@ function createPropertyDelegate(name, descriptor) {
  */
 function defineDelegates(cls, prototype) {
   const names = Object.getOwnPropertyNames(prototype);
-  names.forEach(name => {
+  cls[delegatedPropertySettersKey] = [];
+  names.forEach((name) => {
     const descriptor = Object.getOwnPropertyDescriptor(prototype, name);
     if (!descriptor) {
       return;
@@ -610,6 +604,9 @@ function defineDelegates(cls, prototype) {
     const delegate = createDelegate(name, descriptor);
     if (delegate) {
       Object.defineProperty(cls.prototype, name, delegate);
+      if (delegate.set) {
+        cls[delegatedPropertySettersKey].push(name);
+      }
     }
   });
 }

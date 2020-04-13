@@ -20,7 +20,7 @@ export default function RepeatMousedownMixin(Base) {
         repeatDelayDuration: 500, // In ms. Wait a bit before starting repeats.
         repeatInterval: null,
         repeatIntervalDuration: 50, // In ms. Once repeats start, they go fast.
-        repeatTimeout: null
+        repeatTimeout: null,
       });
     }
 
@@ -30,21 +30,21 @@ export default function RepeatMousedownMixin(Base) {
       // Wire up event handlers.
       if (this[internal.firstRender]) {
         // Only listen to mouse events with the primary (usually left) button.
-        this.addEventListener("mousedown", event => {
+        this.addEventListener("mousedown", (event) => {
           if (!(event instanceof SyntheticMouseEvent) && event.button === 0) {
             this[internal.raiseChangeEvents] = true;
             repeatStart(this);
             this[internal.raiseChangeEvents] = false;
           }
         });
-        this.addEventListener("mouseup", event => {
+        this.addEventListener("mouseup", (event) => {
           if (event.button === 0) {
             this[internal.raiseChangeEvents] = true;
             repeatStop(this);
             this[internal.raiseChangeEvents] = false;
           }
         });
-        this.addEventListener("mouseleave", event => {
+        this.addEventListener("mouseleave", (event) => {
           if (event.button === 0) {
             this[internal.raiseChangeEvents] = true;
             repeatStop(this);
@@ -71,17 +71,12 @@ export default function RepeatMousedownMixin(Base) {
         ? super[internal.stateEffects](state, changed)
         : {};
 
-      // TODO: Avoid needing to inspect innerProperties to handle the
-      // application of this mixin on a WrappedStandardElement.
-      if (changed.disabled || changed.innerProperties) {
-        const disabled =
-          state.disabled ||
-          (state.innerProperties && state.innerProperties.disabled);
-        if (disabled) {
+      if (changed.disabled) {
+        if (state.disabled) {
           clearRepeat(this);
           Object.assign(effects, {
             repeatInterval: null,
-            repeatTimeout: null
+            repeatTimeout: null,
           });
         }
       }
@@ -121,7 +116,7 @@ function repeatStop(element) {
   clearRepeat(element);
   element[internal.setState]({
     repeatTimeout: null,
-    repeatInterval: null
+    repeatInterval: null,
   });
 }
 
@@ -132,7 +127,7 @@ function raiseMousedown(element) {
     button: 0,
     cancelable: true,
     clientX: 0,
-    clientY: 0
+    clientY: 0,
   });
   element.dispatchEvent(event);
 }

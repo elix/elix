@@ -18,7 +18,7 @@ class DateInput extends Base {
   set date(date) {
     super.date = date;
     this[internal.setState]({
-      datePriority: true
+      datePriority: true,
     });
   }
 
@@ -33,7 +33,7 @@ class DateInput extends Base {
     const dateTimeFormatOptions = {
       day: "numeric",
       month: "numeric",
-      year: "numeric"
+      year: "numeric",
     };
     return Object.assign(super[internal.defaultState], {
       dateSelected: false,
@@ -41,7 +41,7 @@ class DateInput extends Base {
       dateTimeFormatOptions,
       datePriority: false,
       focused: false,
-      timeBias: null
+      timeBias: null,
     });
   }
 
@@ -85,14 +85,14 @@ class DateInput extends Base {
     this[internal.ids].inner.addEventListener("blur", () => {
       this[internal.raiseChangeEvents] = true;
       this[internal.setState]({
-        focused: false
+        focused: false,
       });
       this[internal.raiseChangeEvents] = false;
     });
     this[internal.ids].inner.addEventListener("focus", () => {
       this[internal.raiseChangeEvents] = true;
       this[internal.setState]({
-        focused: true
+        focused: true,
       });
       this[internal.raiseChangeEvents] = false;
     });
@@ -104,7 +104,7 @@ class DateInput extends Base {
     // If the date changed while focused, assume user changed date.
     if (changed.date && state.focused) {
       Object.assign(effects, {
-        userChangedDate: true
+        userChangedDate: true,
       });
     }
 
@@ -118,7 +118,7 @@ class DateInput extends Base {
         datePriority,
         dateTimeFormat,
         focused,
-        userChangedDate
+        userChangedDate,
       } = state;
       const blur = changed.focused && !focused;
       if (
@@ -127,42 +127,27 @@ class DateInput extends Base {
         (changed.dateTimeFormat && datePriority)
       ) {
         const formattedDate = date ? this.formatDate(date, dateTimeFormat) : "";
-        const innerProperties = Object.assign({}, state.innerProperties, {
-          value: formattedDate
-        });
         Object.assign(effects, {
-          innerProperties,
-          selectText: formattedDate.length > 0
+          selectText: formattedDate.length > 0,
+          value: formattedDate,
         });
       }
     }
 
     // Update date from value if the value was changed, or the date format or
     // time bias changed and the value was the last substantive property set.
-    if (changed.dateTimeFormat || changed.innerProperties || changed.timeBias) {
-      const {
-        date,
-        datePriority,
-        dateTimeFormat,
-        innerProperties,
-        timeBias
-      } = state;
-      const value = innerProperties.value;
-      // If the innerProperties changed, we don't know whether its was
-      // innerProperties.value that changed, or some other property of the inner
-      // input element. We conservatively assume it was the input. We'll then
-      // check to see whether the date actually changed -- a check we wouldn't
-      // normally need to make -- before deciding whether to return a new date.
+    if (changed.dateTimeFormat || changed.timeBias || changed.value) {
+      const { datePriority, dateTimeFormat, timeBias, value } = state;
       if (
         dateTimeFormat &&
         value &&
-        (changed.innerProperties ||
+        (changed.value ||
           (!datePriority && (changed.dateTimeFormat || changed.timeBias)))
       ) {
         const parsedDate = this.parseDate(value, dateTimeFormat, timeBias);
-        if (parsedDate && !calendar.datesEqual(date, parsedDate)) {
+        if (parsedDate) {
           Object.assign(effects, {
-            date: parsedDate
+            date: parsedDate,
           });
         }
       }
@@ -210,7 +195,7 @@ class DateInput extends Base {
     this[internal.raiseChangeEvents] = true;
     super.value = value;
     this[internal.setState]({
-      datePriority: false
+      datePriority: false,
     });
     this[internal.raiseChangeEvents] = saveRaiseChangesEvents;
   }
