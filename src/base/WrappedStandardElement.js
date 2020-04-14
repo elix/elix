@@ -370,6 +370,14 @@ class WrappedStandardElement extends Base {
         inner[property] = this[internal.state][property];
       }
     });
+
+    // Special case: if we change the value, we should also reapply
+    // selectionStart/End.
+    if (changed.value) {
+      const { selectionStart, selectionEnd } = this[internal.state];
+      /** @type {any} */ (inner).selectionStart = selectionStart;
+      /** @type {any} */ (inner).selectionEnd = selectionEnd;
+    }
   }
 
   [internal.rendered](/** @type {ChangedFlags} */ changed) {

@@ -74,9 +74,9 @@ class AutoCompleteInput extends Input {
       // typed) selected.
       this[internal.setState]({
         autoCompleteSelect: false,
+        selectionEnd: this.value.length,
+        selectionStart: originalText.length,
       });
-      this.setInnerProperty("selectionStart", originalText.length);
-      this.setInnerProperty("selectionEnd", this.value.length);
 
       // Dispatch an input event so that listeners can process the
       // auto-completed text.
@@ -133,13 +133,11 @@ export function autoComplete(/** @type {AutoCompleteInput} */ element) {
     return null;
   }
 
-  // Update the input value to the match. This is just a convenient way to
-  // set the value state if the value actually changed.
-  element.setInnerProperty("value", match);
-
+  // Update the input value to the match.
   // Leave the auto-completed portion selected.
   element[internal.setState]({
     autoCompleteSelect: true,
+    value: match,
   });
 
   return match;
