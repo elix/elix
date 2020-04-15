@@ -15,6 +15,7 @@ class OverlayFrame extends ReactiveElement {
     return template.html`
       <style>
         :host {
+          display: inline-block;
           position: relative;
         }
       </style>
