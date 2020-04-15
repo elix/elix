@@ -12,15 +12,16 @@ export default function ItemsTextMixin(Base) {
   class ItemsText extends Base {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
-        texts: null
+        texts: null,
       });
     }
 
     /**
      * Extract the text from the given item.
      *
-     * The default implementation returns an item's `alt` attribute or its
-     * `textContent`, in that order.
+     * The default implementation returns an item's `aria-label`, `alt` attribute,
+     * or its `textContent`, in that order. You can override this to return the
+     * text that should be used.
      *
      * @param {ListItemElement} item
      * @returns {string}
@@ -58,7 +59,12 @@ export default function ItemsTextMixin(Base) {
  * @param {ListItemElement} item
  */
 export function getItemText(item) {
-  return item.getAttribute("alt") || item.textContent || "";
+  return (
+    item.getAttribute("aria-label") ||
+    item.getAttribute("alt") ||
+    item.textContent ||
+    ""
+  );
 }
 
 /**
@@ -68,5 +74,5 @@ export function getItemText(item) {
  * @param {ListItemElement[]} items
  */
 export function getTextsFromItems(items, getText = getItemText) {
-  return items ? Array.from(items, item => getText(item)) : null;
+  return items ? Array.from(items, (item) => getText(item)) : null;
 }

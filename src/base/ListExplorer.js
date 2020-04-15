@@ -10,8 +10,22 @@ class ListExplorer extends Explorer {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       proxyListPosition: "start",
-      orientation: "vertical"
+      orientation: "vertical",
     });
+  }
+
+  /**
+   * Extract the text from the given item.
+   *
+   * The default implementation returns an item's `aria-label`, `alt` attribute,
+   * or its `textContent`, in that order. You can override this to return the
+   * text that should be used.
+   *
+   * @param {ListItemElement} item
+   * @returns {string}
+   */
+  [internal.getItemText](item) {
+    return getItemText(item);
   }
 
   [internal.render](/** @type {ChangedFlags} */ changed) {
@@ -23,15 +37,27 @@ class ListExplorer extends Explorer {
       proxies.forEach((proxy, index) => {
         const item = items[index];
         if (item) {
-          const label =
-            item.getAttribute("aria-label") || "alt" in item
-              ? /** @type {any} */ (item).alt
-              : "";
-          proxy.textContent = label;
+          const text = this[internal.getItemText](item);
+          proxy.textContent = text;
         }
       });
     }
   }
+}
+
+/**
+ * Extract the text from the given item.
+ *
+ * @private
+ * @param {ListItemElement} item
+ */
+export function getItemText(item) {
+  return (
+    item.getAttribute("aria-label") ||
+    item.getAttribute("alt") ||
+    item.textContent ||
+    ""
+  );
 }
 
 export default ListExplorer;
