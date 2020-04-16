@@ -53,26 +53,28 @@ export default function SlotContentMixin(Base) {
         super[internal.rendered](changed);
       }
 
-      // Listen to changes on the default slot.
-      const slot = this[internal.contentSlot];
-      if (slot) {
-        slot.addEventListener("slotchange", async () => {
-          // Although slotchange isn't generally a user-driven event, it's
-          // impossible for us to know whether a change in slot content is going
-          // to result in effects that the host of this element can predict.
-          // To be on the safe side, we raise any change events that come up
-          // during the processing of this event.
-          this[internal.raiseChangeEvents] = true;
+      if (this[internal.firstRender]) {
+        // Listen to changes on the default slot.
+        const slot = this[internal.contentSlot];
+        if (slot) {
+          slot.addEventListener("slotchange", async () => {
+            // Although slotchange isn't generally a user-driven event, it's
+            // impossible for us to know whether a change in slot content is going
+            // to result in effects that the host of this element can predict.
+            // To be on the safe side, we raise any change events that come up
+            // during the processing of this event.
+            this[internal.raiseChangeEvents] = true;
 
-          // The nodes assigned to the given component have changed.
-          // Update the component's state to reflect the new content.
-          const content = slot.assignedNodes({ flatten: true });
-          Object.freeze(content);
-          this[internal.setState]({ content });
+            // The nodes assigned to the given component have changed.
+            // Update the component's state to reflect the new content.
+            const content = slot.assignedNodes({ flatten: true });
+            Object.freeze(content);
+            this[internal.setState]({ content });
 
-          await Promise.resolve();
-          this[internal.raiseChangeEvents] = false;
-        });
+            await Promise.resolve();
+            this[internal.raiseChangeEvents] = false;
+          });
+        }
       }
     }
   }
