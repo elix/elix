@@ -1,3 +1,4 @@
+import { forwardFocus } from "../core/dom.js";
 import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import Button from "./Button.js";
@@ -37,7 +38,7 @@ export default function PlayControlsMixin(Base) {
 
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
-        controlButtonPartType: Button
+        controlButtonPartType: Button,
       });
     }
 
@@ -59,6 +60,24 @@ export default function PlayControlsMixin(Base) {
     }
 
     [internal.render](/** @type {ChangedFlags} */ changed) {
+      if (changed.arrowButtonPartType) {
+        const previousButton = this[internal.ids].previousButton;
+        if (previousButton instanceof HTMLElement) {
+          // Turn off focus handling for old previous button.
+          forwardFocus(previousButton, null);
+        }
+        const playButton = this[internal.ids].playButton;
+        if (playButton instanceof HTMLElement) {
+          // Turn off focus handling for old play button.
+          forwardFocus(playButton, null);
+        }
+        const nextButton = this[internal.ids].nextButton;
+        if (nextButton instanceof HTMLElement) {
+          // Turn off focus handling for old next button.
+          forwardFocus(nextButton, null);
+        }
+      }
+
       if (super[internal.render]) {
         super[internal.render](changed);
       }
@@ -66,11 +85,12 @@ export default function PlayControlsMixin(Base) {
       renderParts(this[internal.shadowRoot], this[internal.state], changed);
 
       if (changed.controlButtonPartType) {
-        this[internal.ids].previousButton.addEventListener("click", event => {
+        const { nextButton, playButton, previousButton } = this[internal.ids];
+        previousButton.addEventListener("click", (event) => {
           this.selectPrevious();
           event.stopPropagation();
         });
-        this[internal.ids].playButton.addEventListener("click", event => {
+        playButton.addEventListener("click", (event) => {
           if (!this.playing) {
             this.play();
           } else {
@@ -78,10 +98,21 @@ export default function PlayControlsMixin(Base) {
           }
           event.stopPropagation();
         });
-        this[internal.ids].nextButton.addEventListener("click", event => {
+        nextButton.addEventListener("click", (event) => {
           this.selectNext();
           event.stopPropagation();
         });
+
+        // Keep focus on host.
+        if (previousButton instanceof HTMLElement) {
+          forwardFocus(previousButton, this);
+        }
+        if (playButton instanceof HTMLElement) {
+          forwardFocus(playButton, this);
+        }
+        if (nextButton instanceof HTMLElement) {
+          forwardFocus(nextButton, this);
+        }
       }
     }
 
@@ -166,7 +197,7 @@ function renderParts(root, state, changed) {
   if (!changed || changed.controlButtonPartType) {
     const { controlButtonPartType } = state;
     const controlButtons = root.querySelectorAll('[part~="control-button"]');
-    controlButtons.forEach(controlButton =>
+    controlButtons.forEach((controlButton) =>
       template.transmute(controlButton, controlButtonPartType)
     );
   }
