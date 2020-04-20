@@ -18,7 +18,7 @@ const shadowIdProxyHandler = {
     return root && typeof property === "string"
       ? root.getElementById(property)
       : null;
-  }
+  },
 };
 
 /**
@@ -69,7 +69,7 @@ export default function ShadowTemplateMixin(Base) {
         // Construct a proxy that maps to getElementById.
         const target = {
           // Give the proxy a means of refering this element via the target.
-          [proxyElementKey]: this
+          [proxyElementKey]: this,
         };
         this[shadowIdProxyKey] = new Proxy(target, shadowIdProxyHandler);
       }
@@ -94,10 +94,8 @@ export default function ShadowTemplateMixin(Base) {
       if (template) {
         // Stamp the template into a new shadow root.
         const delegatesFocus = this[internal.delegatesFocus];
-        const root = this.attachShadow({
-          delegatesFocus,
-          mode: this[internal.shadowRootMode]
-        });
+        const mode = this[internal.shadowRootMode];
+        const root = this.attachShadow({ delegatesFocus, mode });
         const clone = document.importNode(template.content, true);
         root.append(clone);
         this[internal.shadowRoot] = root;

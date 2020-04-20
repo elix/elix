@@ -118,7 +118,9 @@ export default function ReactiveMixin(Base) {
      */
     [internal.renderChanges]() {
       // Determine what's changed since the last render.
-      const changed = this[changedSinceLastRenderKey];
+      /** @type {ChangedFlags} */ const changed = this[
+        changedSinceLastRenderKey
+      ];
 
       if (typeof this[internal.firstRender] === "undefined") {
         // First render.
@@ -129,7 +131,7 @@ export default function ReactiveMixin(Base) {
       // something's actually changed since the last render. Consecutive
       // synchronous[internal.setState] calls will queue up corresponding async render
       // calls. By the time the first render call actually happens, the complete
-      // state is available, and that is what is rendered. When the following
+      // state is available, and that is what is rendered. When the subsequent
       // render calls happen, they will see that the complete state has already
       // been rendered, and skip doing any work.
       if (this[internal.firstRender] || Object.keys(changed).length > 0) {
@@ -147,7 +149,7 @@ export default function ReactiveMixin(Base) {
         this[internal.rendering] = true;
 
         // Invoke any internal render implementations.
-        this[internal.render](/** @type {ChangedFlags} */ changed);
+        this[internal.render](changed);
 
         this[internal.rendering] = false;
 
@@ -320,7 +322,7 @@ export default function ReactiveMixin(Base) {
     Object.defineProperty(Reactive.prototype, "state", {
       get() {
         return this[internal.state];
-      }
+      },
     });
   }
 
