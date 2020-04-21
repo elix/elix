@@ -13,7 +13,7 @@ class TransitionEffectTest extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       effect: "close",
-      effectPhase: "after"
+      effectPhase: "after",
     });
   }
 
@@ -29,7 +29,7 @@ class TransitionEffectTest extends Base {
         : 0;
     Object.assign(this.style, {
       display,
-      opacity
+      opacity,
     });
   }
 
@@ -45,7 +45,7 @@ class TransitionEffectTest extends Base {
 }
 customElements.define("transition-effect-test", TransitionEffectTest);
 
-describe("TransitionEffectMixin", function() {
+describe("TransitionEffectMixin", function () {
   let container;
 
   before(() => {
@@ -56,11 +56,11 @@ describe("TransitionEffectMixin", function() {
     container.innerHTML = "";
   });
 
-  it("goes through effect phases when opened", done => {
+  it("goes through effect phases when opened", (done) => {
     const fixture = new TransitionEffectTest();
     container.appendChild(fixture);
     const states = [];
-    fixture.addEventListener("effect-phase-changed", event => {
+    fixture.addEventListener("effect-phase-changed", (event) => {
       states.push(event["detail"].effectPhase);
       if (event["detail"].effectPhase === "after") {
         assert.deepEqual(states, ["before", "during", "after"]);
@@ -70,12 +70,12 @@ describe("TransitionEffectMixin", function() {
     fixture[internal.startEffect]("open");
   });
 
-  it("goes through effect phases when closed", done => {
+  it("goes through effect phases when closed", (done) => {
     const fixture = new TransitionEffectTest();
     fixture.opened = true;
     container.appendChild(fixture);
     const states = [];
-    fixture.addEventListener("effect-phase-changed", event => {
+    fixture.addEventListener("effect-phase-changed", (event) => {
       states.push(event["detail"].effectPhase);
       if (event["detail"].effectPhase === "after") {
         assert.deepEqual(states, ["before", "during", "after"]);

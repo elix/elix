@@ -14,7 +14,7 @@ class PlainListComboBox extends ListComboBox {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       popupPartType: PlainPopup,
-      popupTogglePartType: PlainOpenCloseToggle
+      popupTogglePartType: PlainOpenCloseToggle,
     });
   }
 }

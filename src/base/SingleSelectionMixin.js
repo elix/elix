@@ -48,7 +48,7 @@ export default function SingleSelectionMixin(Base) {
         selectedIndex: -1,
         selectionRequired: false,
         selectionWraps: false,
-        trackSelectedItem: true
+        trackSelectedItem: true,
       });
     }
 
@@ -64,7 +64,7 @@ export default function SingleSelectionMixin(Base) {
          * @event selected-index-changed
          */
         const event = new CustomEvent("selected-index-changed", {
-          detail: { selectedIndex }
+          detail: { selectedIndex },
         });
         this.dispatchEvent(event);
       }
@@ -95,7 +95,7 @@ export default function SingleSelectionMixin(Base) {
       const parsed = Number(selectedIndex);
       if (!isNaN(parsed)) {
         this[internal.setState]({
-          selectedIndex: parsed
+          selectedIndex: parsed,
         });
       }
     }
@@ -131,7 +131,7 @@ export default function SingleSelectionMixin(Base) {
     }
     set selectionRequired(selectionRequired) {
       this[internal.setState]({
-        selectionRequired: String(selectionRequired) === "true"
+        selectionRequired: String(selectionRequired) === "true",
       });
     }
 
@@ -146,7 +146,7 @@ export default function SingleSelectionMixin(Base) {
     }
     set selectionWraps(selectionWraps) {
       this[internal.setState]({
-        selectionWraps: String(selectionWraps) === "true"
+        selectionWraps: String(selectionWraps) === "true",
       });
     }
 
@@ -217,7 +217,7 @@ export default function SingleSelectionMixin(Base) {
           items,
           selectedIndex,
           selectionRequired,
-          selectionWraps
+          selectionWraps,
         } = state;
 
         let adjustedIndex = selectedIndex;
@@ -251,7 +251,7 @@ export default function SingleSelectionMixin(Base) {
             selectionWraps
           );
           Object.assign(effects, {
-            selectedIndex: validatedIndex
+            selectedIndex: validatedIndex,
           });
         }
       }
@@ -273,7 +273,7 @@ export default function SingleSelectionMixin(Base) {
               : selectionWraps || selectedIndex < 0 || selectedIndex > 0;
           Object.assign(effects, {
             canSelectNext,
-            canSelectPrevious
+            canSelectPrevious,
           });
         }
       }
@@ -303,7 +303,7 @@ function updateSelectedIndex(element, selectedIndex) {
   const changed = element[internal.state].selectedIndex !== validatedIndex;
   if (changed) {
     element[internal.setState]({
-      selectedIndex: validatedIndex
+      selectedIndex: validatedIndex,
     });
   }
   return changed;

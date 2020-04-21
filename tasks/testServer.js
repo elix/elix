@@ -9,7 +9,7 @@ async function start(port) {
   const rootPath = path.join(__dirname, "..");
   app.use("/", express.static(rootPath));
   let server;
-  await new Promise(resolve => {
+  await new Promise((resolve) => {
     server = app.listen(port, resolve);
   });
   return server;

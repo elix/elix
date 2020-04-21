@@ -60,7 +60,7 @@ class Carousel extends Base {
       proxyListOverlap: true,
       proxyListPosition: "bottom",
       showArrowButtons,
-      stagePartType: SlidingStage
+      stagePartType: SlidingStage,
     });
   }
 
@@ -112,7 +112,7 @@ class Carousel extends Base {
     const proxies = this.proxies;
     if (changed.proxies && proxies) {
       // Make proxies not focusable.
-      proxies.forEach(proxy => {
+      proxies.forEach((proxy) => {
         if (proxy instanceof HTMLElement) {
           proxy.tabIndex = -1;
         }
@@ -136,7 +136,7 @@ class Carousel extends Base {
         state.orientation === "horizontal" ? "bottom" : "right";
       Object.assign(effects, {
         proxyListPosition,
-        swipeAxis: state.orientation
+        swipeAxis: state.orientation,
       });
     }
 

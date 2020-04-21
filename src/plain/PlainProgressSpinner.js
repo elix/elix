@@ -11,7 +11,7 @@ class PlainProgressSpinner extends ProgressSpinner {
   get [internal.defaultState]() {
     // The spinner has 12 discrete steps in its rotation.
     return Object.assign(super[internal.defaultState], {
-      rotationsPerSecond: 12
+      rotationsPerSecond: 12,
     });
   }
 

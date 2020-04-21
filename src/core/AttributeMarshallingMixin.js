@@ -6,11 +6,11 @@ import { booleanAttributeValue, standardBooleanAttributes } from "./dom.js";
 // attribute, which is mapped to the tabIndex (capital "I") property.
 /** @type {IndexedObject<string>} */
 const attributeToPropertyNames = {
-  tabindex: "tabIndex"
+  tabindex: "tabIndex",
 };
 /** @type {IndexedObject<string>} */
 const propertyNamesToAttributes = {
-  tabIndex: "tabindex"
+  tabIndex: "tabindex",
 };
 
 /**
@@ -125,20 +125,20 @@ function attributesForClass(classFn) {
 
   // Get attributes for this class.
   const propertyNames = Object.getOwnPropertyNames(classFn.prototype);
-  const setterNames = propertyNames.filter(propertyName => {
+  const setterNames = propertyNames.filter((propertyName) => {
     const descriptor = Object.getOwnPropertyDescriptor(
       classFn.prototype,
       propertyName
     );
     return descriptor && typeof descriptor.set === "function";
   });
-  const attributes = setterNames.map(setterName =>
+  const attributes = setterNames.map((setterName) =>
     propertyNameToAttribute(setterName)
   );
 
   // Merge.
   const diff = attributes.filter(
-    attribute => baseAttributes.indexOf(attribute) < 0
+    (attribute) => baseAttributes.indexOf(attribute) < 0
   );
   const result = baseAttributes.concat(diff);
 
@@ -156,7 +156,7 @@ function attributeToPropertyName(attributeName) {
   if (!propertyName) {
     // Convert and memoize.
     const hyphenRegEx = /-([a-z])/g;
-    propertyName = attributeName.replace(hyphenRegEx, match =>
+    propertyName = attributeName.replace(hyphenRegEx, (match) =>
       match[1].toUpperCase()
     );
     attributeToPropertyNames[attributeName] = propertyName;

@@ -24,7 +24,7 @@ const Base = SingleSelectionMixin(SlotItemsMixin(ReactiveElement));
 class Modes extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      selectionRequired: true
+      selectionRequired: true,
     });
   }
 

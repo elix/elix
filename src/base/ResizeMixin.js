@@ -38,7 +38,7 @@ export default function ResizeMixin(Base) {
       if (sizeChanged) {
         this[internal.setState]({
           clientHeight,
-          clientWidth
+          clientWidth,
         });
       }
     }
@@ -58,7 +58,7 @@ export default function ResizeMixin(Base) {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
         clientHeight: this.clientHeight,
-        clientWidth: this.clientWidth
+        clientWidth: this.clientWidth,
       });
     }
 
@@ -86,7 +86,7 @@ const Observer = window["ResizeObserver"];
 if (typeof Observer !== "undefined") {
   // Use ResizeObserver.
   resizeObserver = new Observer((/** @type {any[]} */ entries) => {
-    entries.forEach(entry => {
+    entries.forEach((entry) => {
       // In theory, the "content size" reported by ResizeObserver appears to be
       // the same as the clientHeight/clientWidth. Neither should include
       // padding. But since this theory is not explicitly confirmed by the
@@ -96,14 +96,14 @@ if (typeof Observer !== "undefined") {
       const { clientHeight, clientWidth } = target;
       target[internal.setState]({
         clientHeight,
-        clientWidth
+        clientWidth,
       });
     });
   });
 } else {
   // Fall back to only tracking window resize.
   window.addEventListener("resize", () => {
-    windowResizeEntries.forEach(entry => {
+    windowResizeEntries.forEach((entry) => {
       entry[internal.checkSize]();
     });
   });

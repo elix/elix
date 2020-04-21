@@ -41,14 +41,14 @@ export default function DarkModeMixin(Base) {
     set dark(dark) {
       const parsed = booleanAttributeValue("dark", dark);
       this[internal.setState]({
-        dark: parsed
+        dark: parsed,
       });
     }
 
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
         dark: false,
-        detectDarkMode: "auto"
+        detectDarkMode: "auto",
       });
     }
 
@@ -192,7 +192,7 @@ function rgbToHsl(/** @type {PlainObject} */ rgb) {
 
 // Listen to changes in user preference for dark mode.
 window.matchMedia("(prefers-color-scheme: dark)").addListener(() => {
-  colorSchemeElements.forEach(element => {
+  colorSchemeElements.forEach((element) => {
     setDarkModeFromBackgroundColor(element);
   });
 });

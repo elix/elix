@@ -2,7 +2,7 @@ import { assert } from "../testHelpers.js";
 import {
   composedAncestors,
   firstFocusableElement,
-  updateChildNodes
+  updateChildNodes,
 } from "../../src/core/dom.js";
 import * as template from "../../src/core/template.js";
 
@@ -50,7 +50,7 @@ describe("DOM helpers", () => {
     fixture.appendChild(existingChild);
     const nodes = [
       document.createTextNode("one"),
-      document.createTextNode("two")
+      document.createTextNode("two"),
     ];
     updateChildNodes(fixture, nodes);
     assert.equal(fixture.childNodes.length, 2);

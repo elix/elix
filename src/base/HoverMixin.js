@@ -17,13 +17,13 @@ export default function HoverMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this.addEventListener("mouseenter", async event => {
+      this.addEventListener("mouseenter", async (event) => {
         this[internal.raiseChangeEvents] = true;
         this[internal.mouseenter](event);
         await Promise.resolve();
         this[internal.raiseChangeEvents] = false;
       });
-      this.addEventListener("mouseleave", async event => {
+      this.addEventListener("mouseleave", async (event) => {
         this[internal.raiseChangeEvents] = true;
         this[internal.mouseleave](event);
         await Promise.resolve();
@@ -33,7 +33,7 @@ export default function HoverMixin(Base) {
 
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
-        hover: false
+        hover: false,
       });
     }
 
@@ -45,7 +45,7 @@ export default function HoverMixin(Base) {
         super[internal.mouseenter](event);
       }
       this[internal.setState]({
-        hover: true
+        hover: true,
       });
     }
 
@@ -57,7 +57,7 @@ export default function HoverMixin(Base) {
         super[internal.mouseleave](event);
       }
       this[internal.setState]({
-        hover: false
+        hover: false,
       });
     }
   };

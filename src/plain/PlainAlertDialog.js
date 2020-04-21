@@ -14,7 +14,7 @@ import PlainModalOverlayMixin from "./PlainModalOverlayMixin.js";
 class PlainAlertDialog extends PlainModalOverlayMixin(AlertDialog) {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      choiceButtonPartType: PlainBorderButton
+      choiceButtonPartType: PlainBorderButton,
     });
   }
 

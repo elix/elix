@@ -18,7 +18,7 @@ export default function PlainDrawerMixin(Base) {
           drawerTransitionDuration,
           openedFraction,
           openedRenderedFraction,
-          showTransition
+          showTransition,
         } = this[internal.state];
 
         // The time required to show transitions depends on how far apart the
@@ -32,7 +32,7 @@ export default function PlainDrawerMixin(Base) {
 
         Object.assign(this[internal.ids].backdrop.style, {
           opacity: openedFraction,
-          transition: showTransition ? `opacity ${duration}s linear` : ""
+          transition: showTransition ? `opacity ${duration}s linear` : "",
         });
       }
     }

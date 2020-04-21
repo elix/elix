@@ -34,7 +34,7 @@ class CenteredStrip extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       orientation: "horizontal",
-      selectionRequired: true
+      selectionRequired: true,
     });
   }
 
@@ -132,7 +132,7 @@ class CenteredStrip extends Base {
         const showTransition = this[internal.state].enableEffects && !swiping;
         Object.assign(this[internal.ids].strip.style, {
           transform,
-          transition: showTransition ? "transform 0.25s" : "none"
+          transition: showTransition ? "transform 0.25s" : "none",
         });
 
         this[internal.ids].stripContainer.style.justifyContent = justifyContent;

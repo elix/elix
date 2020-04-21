@@ -77,7 +77,7 @@
             if (edgeChanged) {
               // If we need to change edge, when toast has finished closing,
               // open it on the new edge.
-              sampleToast.whenClosed().then(function() {
+              sampleToast.whenClosed().then(function () {
                 toggleToast(fromEdge);
               });
             }

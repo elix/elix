@@ -44,7 +44,7 @@ class SlidingPages extends Base {
     // Have swipeAxis follow orientation.
     if (changed.orientation) {
       Object.assign(effects, {
-        swipeAxis: state.orientation
+        swipeAxis: state.orientation,
       });
     }
 

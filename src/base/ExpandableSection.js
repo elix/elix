@@ -26,7 +26,7 @@ class ExpandableSection extends Base {
       headerPartType: Button,
       panelPartType: ExpandablePanel,
       role: "region",
-      togglePartType: UpDownToggle
+      togglePartType: UpDownToggle,
     });
   }
 

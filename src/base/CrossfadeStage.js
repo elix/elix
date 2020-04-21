@@ -26,7 +26,7 @@ class CrossfadeStage extends Base {
       effectEndTarget: null,
       effectPhase: "after",
       selectionRequired: true,
-      transitionDuration: 750 // 3/4 of a second
+      transitionDuration: 750, // 3/4 of a second
     });
   }
 
@@ -34,7 +34,7 @@ class CrossfadeStage extends Base {
     super[internal.render](changed);
 
     if (this[internal.firstRender]) {
-      this.addEventListener("effect-phase-changed", event => {
+      this.addEventListener("effect-phase-changed", (event) => {
         /** @type {any} */ const cast = event;
         if (cast.detail.effectPhase === "after") {
           const { selectedIndex } = this[internal.state];
@@ -50,7 +50,7 @@ class CrossfadeStage extends Base {
            * @event selection-effect-finished
            */
           const finishedEvent = new CustomEvent("selection-effect-finished", {
-            detail: { selectedIndex }
+            detail: { selectedIndex },
           });
           this.dispatchEvent(finishedEvent);
         }
@@ -75,7 +75,7 @@ class CrossfadeStage extends Base {
         items,
         rightToLeft,
         selectedIndex,
-        swipeFraction
+        swipeFraction,
       } = this[internal.state];
       if (items && effect === "select") {
         if (enableEffects && effectPhase === "before") {
@@ -133,7 +133,7 @@ class CrossfadeStage extends Base {
           ? `opacity ${transitionDuration / 1000}s linear`
           : "";
       if (items) {
-        items.forEach(item => {
+        items.forEach((item) => {
           item.style.transition = transition;
         });
       }
@@ -166,7 +166,7 @@ class CrossfadeStage extends Base {
           : null;
       Object.assign(effects, {
         effectEndTarget,
-        effectPhase
+        effectPhase,
       });
     }
 

@@ -4,9 +4,7 @@
 import CalendarElementMixin from "./CalendarElementMixin.js";
 import Button from "./Button.js";
 
-export default class CalendarDayButton extends CalendarElementMixin(
-  Button
-) {
+export default class CalendarDayButton extends CalendarElementMixin(Button) {
   outsideRange: boolean;
   selected: boolean;
 }

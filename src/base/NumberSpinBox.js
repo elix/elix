@@ -11,7 +11,7 @@ class NumberSpinBox extends SpinBox {
     return Object.assign(super[internal.defaultState], {
       max: null,
       min: null,
-      step: 1
+      step: 1,
     });
   }
 
@@ -94,33 +94,33 @@ class NumberSpinBox extends SpinBox {
       if (value !== "" && isNaN(parsed)) {
         Object.assign(effects, {
           valid: false,
-          validationMessage: "Value must be a number"
+          validationMessage: "Value must be a number",
         });
       } else if (!(max === null || parsed <= max)) {
         Object.assign(effects, {
           valid: false,
-          validationMessage: `Value must be less than or equal to ${max}.`
+          validationMessage: `Value must be less than or equal to ${max}.`,
         });
       } else if (!(min === null || parsed >= min)) {
         Object.assign(effects, {
           valid: false,
-          validationMessage: `Value must be greater than or equal to ${min}.`
+          validationMessage: `Value must be greater than or equal to ${min}.`,
         });
       } else {
         Object.assign(effects, {
           valid: true,
-          validationMessage: ""
+          validationMessage: "",
         });
       }
 
       // We can only go up if we're below max.
       Object.assign(effects, {
-        canGoUp: isNaN(parsed) || state.max === null || parsed < state.max
+        canGoUp: isNaN(parsed) || state.max === null || parsed < state.max,
       });
 
       // We can only go down if we're above min.
       Object.assign(effects, {
-        canGoDown: isNaN(parsed) || state.min === null || parsed > state.min
+        canGoDown: isNaN(parsed) || state.min === null || parsed > state.min,
       });
     }
 

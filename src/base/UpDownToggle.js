@@ -12,7 +12,7 @@ class UpDownToggle extends ReactiveElement {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       direction: "down",
-      disabled: false
+      disabled: false,
     });
   }
 

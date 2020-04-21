@@ -23,7 +23,7 @@ export default function DirectionSelectionMixin(Base) {
         canGoDown: null,
         canGoLeft: null,
         canGoRight: null,
-        canGoUp: null
+        canGoUp: null,
       });
     }
 
@@ -183,7 +183,7 @@ export default function DirectionSelectionMixin(Base) {
           canSelectNext,
           canSelectPrevious,
           orientation,
-          rightToLeft
+          rightToLeft,
         } = state;
         const canGoNext = canSelectNext;
         const canGoPrevious = canSelectPrevious;
@@ -208,7 +208,7 @@ export default function DirectionSelectionMixin(Base) {
           canGoNext,
           canGoPrevious,
           canGoRight,
-          canGoUp
+          canGoUp,
         });
       }
 

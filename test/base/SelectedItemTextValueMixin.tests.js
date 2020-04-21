@@ -9,7 +9,7 @@ class ElementWithValue extends SelectedItemTextValueMixin(
   get items() {
     if (!this._items) {
       const strings = ["One", "Two", "Three"];
-      this._items = strings.map(string => {
+      this._items = strings.map((string) => {
         const item = document.createElement("div");
         item.textContent = string;
         return item;

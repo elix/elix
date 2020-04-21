@@ -17,7 +17,7 @@ class PlainAutoCompleteComboBox extends PlainComboBoxMixin(
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       inputPartType: PlainAutoCompleteInput,
-      listPartType: PlainListBox
+      listPartType: PlainListBox,
     });
   }
 }

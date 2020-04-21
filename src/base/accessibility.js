@@ -41,7 +41,7 @@ export const defaultAriaRole = {
   td: "td",
   textarea: "textbox",
   th: "th",
-  ul: "list"
+  ul: "list",
 };
 
 /**

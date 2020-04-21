@@ -54,7 +54,7 @@
           dialog.framePartType = "custom-overlay-frame";
           dialog.choices = choices;
           dialog.textContent = "Hello, world";
-          dialog.addEventListener("closed", event => {
+          dialog.addEventListener("closed", (event) => {
             const closeResult = event.detail.closeResult;
             const choice = closeResult && closeResult.choice;
             response.textContent = choice

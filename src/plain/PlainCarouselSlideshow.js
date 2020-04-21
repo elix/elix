@@ -19,7 +19,7 @@ class PlainCarouselSlideshow extends DarkModeMixin(
 ) {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      proxyPartType: PlainPageDot
+      proxyPartType: PlainPageDot,
     });
   }
 }

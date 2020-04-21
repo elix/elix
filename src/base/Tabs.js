@@ -22,7 +22,7 @@ class Tabs extends Explorer {
       itemRole: "tabpanel",
       proxyPartType: TabButton,
       proxyListPartType: TabStrip,
-      tabAlign: "start"
+      tabAlign: "start",
     });
   }
 

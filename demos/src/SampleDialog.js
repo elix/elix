@@ -7,7 +7,7 @@ class SampleDialog extends Dialog {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       backdropPartType: CustomBackdrop,
-      framePartType: CustomOverlayFrame
+      framePartType: CustomOverlayFrame,
     });
   }
 

@@ -72,7 +72,7 @@ export default function OpenCloseMixin(Base) {
     get [internal.defaultState]() {
       const defaults = {
         closeResult: null,
-        opened: false
+        opened: false,
       };
       // If this component defines a `startEffect` method (e.g., by using
       // TransitionEffectMixin), include default state for open/close effects.
@@ -82,7 +82,7 @@ export default function OpenCloseMixin(Base) {
         Object.assign(defaults, {
           effect: "close",
           effectPhase: "after",
-          openCloseEffects: true
+          openCloseEffects: true,
         });
       }
       return Object.assign(super[internal.defaultState] || {}, defaults);
@@ -129,8 +129,8 @@ export default function OpenCloseMixin(Base) {
         const openedChangedEvent = new CustomEvent("opened-changed", {
           detail: {
             closeResult: this[internal.state].closeResult,
-            opened: this[internal.state].opened
-          }
+            opened: this[internal.state].opened,
+          },
         });
         this.dispatchEvent(openedChangedEvent);
 
@@ -150,8 +150,8 @@ export default function OpenCloseMixin(Base) {
            */
           const closedEvent = new CustomEvent("closed", {
             detail: {
-              closeResult: this[internal.state].closeResult
-            }
+              closeResult: this[internal.state].closeResult,
+            },
           });
           this.dispatchEvent(closedEvent);
         }
@@ -201,7 +201,7 @@ export default function OpenCloseMixin(Base) {
      */
     whenClosed() {
       if (!this[closePromiseKey]) {
-        this[closePromiseKey] = new Promise(resolve => {
+        this[closePromiseKey] = new Promise((resolve) => {
           this[closeResolveKey] = resolve;
         });
       }

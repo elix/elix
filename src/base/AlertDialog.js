@@ -56,7 +56,7 @@ class AlertDialog extends Dialog {
     return Object.assign(super[internal.defaultState], {
       choiceButtonPartType: "button",
       choiceButtons: [],
-      choices: ["OK"]
+      choices: ["OK"],
     });
   }
 
@@ -68,11 +68,11 @@ class AlertDialog extends Dialog {
     if (key) {
       // See if one of the choices starts with the key.
       const choice = this.choices.find(
-        choice => choice[0].toLowerCase() === key
+        (choice) => choice[0].toLowerCase() === key
       );
       if (choice) {
         this.close({
-          choice
+          choice,
         });
         handled = true;
       }
@@ -92,7 +92,7 @@ class AlertDialog extends Dialog {
     if (this[internal.firstRender]) {
       this[internal.ids].choiceButtonContainer.addEventListener(
         "click",
-        async event => {
+        async (event) => {
           // TODO: Ignore clicks on choiceButtonContainer background.
           const button = event.target;
           if (button instanceof HTMLElement) {
@@ -119,7 +119,7 @@ class AlertDialog extends Dialog {
     // When choices or choice button part type changes, regenerate buttons.
     if (changed.choiceButtonPartType || changed.choices) {
       /** @type {string[]} */ const choices = state.choices;
-      const choiceButtons = choices.map(choice => {
+      const choiceButtons = choices.map((choice) => {
         const button = template.createElement(state.choiceButtonPartType);
         if ("part" in button) {
           /** @type {any} */ (button).part = "choice-button";
@@ -129,7 +129,7 @@ class AlertDialog extends Dialog {
       });
       Object.freeze(choiceButtons);
       Object.assign(effects, {
-        choiceButtons
+        choiceButtons,
       });
     }
 

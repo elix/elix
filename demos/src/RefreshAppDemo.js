@@ -14,14 +14,14 @@ const texts = [
   `Nam imperdiet id purus quis rutrum. Phasellus laoreet efficitur lorem, eu commodo tortor pretium sit amet. Etiam volutpat ex ac ex luctus maximus. Praesent in pharetra nunc, sed rhoncus eros. Nulla facilisi. Aenean commodo volutpat feugiat. Pellentesque egestas nulla ut facilisis efficitur. Praesent maximus diam ut suscipit mattis. Aenean eros turpis, vestibulum id sem vitae, suscipit molestie justo.`,
   `Nulla iaculis varius arcu, et rhoncus est lobortis et. Etiam convallis, velit ut tincidunt molestie, enim erat malesuada nunc, et ornare tortor velit et mi. Quisque nec felis nulla. Mauris sit amet nisi quis sapien pharetra tempor. Aenean fringilla nulla urna, sed tristique ipsum vulputate a. Ut lacus diam, volutpat id tincidunt a, condimentum eu odio. Nam justo orci, consectetur vitae nulla a, sagittis vestibulum erat. Mauris fringilla urna est, sit amet rutrum nulla facilisis a.`,
   `Sed in nulla eu nisl consectetur semper. Aliquam tristique ligula eu maximus porttitor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam tempor sed ex sit amet egestas. Curabitur sapien est, rhoncus dignissim pharetra sit amet, viverra id lectus. Vestibulum semper leo porta mi viverra consectetur. Quisque imperdiet lectus eget volutpat bibendum. Vivamus in nunc enim. Morbi fringilla est velit.`,
-  `Proin malesuada pharetra sapien, vitae blandit ante ultricies vitae. Curabitur tempus urna malesuada mauris pharetra feugiat. Duis augue nunc, porta et lorem dictum, interdum pellentesque risus. Donec leo dolor, sollicitudin a nunc non, consectetur interdum risus. Pellentesque feugiat magna libero, quis sollicitudin leo elementum in. Etiam urna risus, congue id placerat eu, fringilla lobortis diam. Sed id auctor nisi. Nunc sed ex eu neque sodales pharetra sit amet non libero.`
+  `Proin malesuada pharetra sapien, vitae blandit ante ultricies vitae. Curabitur tempus urna malesuada mauris pharetra feugiat. Duis augue nunc, porta et lorem dictum, interdum pellentesque risus. Donec leo dolor, sollicitudin a nunc non, consectetur interdum risus. Pellentesque feugiat magna libero, quis sollicitudin leo elementum in. Etiam urna risus, congue id placerat eu, fringilla lobortis diam. Sed id auctor nisi. Nunc sed ex eu neque sodales pharetra sit amet non libero.`,
 ];
 
 class RefreshAppDemo extends ReactiveElement {
   get [internal.defaultState]() {
     const paragraphs = createParagraphs(texts);
     return Object.assign(super[internal.defaultState], {
-      paragraphs
+      paragraphs,
     });
   }
 
@@ -48,7 +48,7 @@ class RefreshAppDemo extends ReactiveElement {
     if (this[internal.firstRender]) {
       this[internal.ids].pullToRefresh.addEventListener(
         "refreshing-changed",
-        event => {
+        (event) => {
           /** @type {any} */
           const cast = event;
           if (cast.detail.refreshing) {
@@ -101,7 +101,7 @@ class RefreshAppDemo extends ReactiveElement {
 }
 
 function createParagraphs(/** @type {string[]} */ texts) {
-  const paragraphs = texts.map(text => {
+  const paragraphs = texts.map((text) => {
     const paragraph = document.createElement("p");
     paragraph.textContent = text;
     return paragraph;

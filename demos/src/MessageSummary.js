@@ -15,7 +15,7 @@ export default class MessageSummary extends ReactiveElement {
       date: null,
       read: false,
       sender: null,
-      summary: null
+      summary: null,
     });
   }
 
@@ -25,7 +25,7 @@ export default class MessageSummary extends ReactiveElement {
   set read(read) {
     const parsed = String(read) === "true";
     this[internal.setState]({
-      read: parsed
+      read: parsed,
     });
   }
 

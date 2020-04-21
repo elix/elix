@@ -22,7 +22,7 @@ export default function SelectableMixin(Base) {
 
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
-        selected: false
+        selected: false,
       });
     }
 
@@ -47,7 +47,7 @@ export default function SelectableMixin(Base) {
          * @event selected-changed
          */
         const event = new CustomEvent("selected-changed", {
-          detail: { selected }
+          detail: { selected },
         });
         this.dispatchEvent(event);
       }

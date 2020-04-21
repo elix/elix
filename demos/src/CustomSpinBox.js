@@ -6,7 +6,7 @@ import NumberSpinBox from "../../src/base/NumberSpinBox.js";
 export default class CustomSpinBox extends NumberSpinBox {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      buttonPartType: RepeatButton
+      buttonPartType: RepeatButton,
     });
   }
 

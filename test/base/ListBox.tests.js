@@ -21,7 +21,7 @@ describe("ListBox", () => {
     await Promise.resolve();
     assert.equal(fixture[internal.state].selectedIndex, -1);
     const item = fixture.items[0];
-    const eventPromise = new Promise(resolve => {
+    const eventPromise = new Promise((resolve) => {
       fixture.addEventListener("selected-index-changed", () => {
         assert.equal(fixture[internal.state].selectedIndex, 0);
         resolve();
@@ -49,7 +49,7 @@ describe("ListBox", () => {
 
 function createSampleListBox() {
   const fixture = new ListBox();
-  ["Zero", "One", "Two"].forEach(text => {
+  ["Zero", "One", "Two"].forEach((text) => {
     const div = document.createElement("div");
     div.textContent = text;
     fixture.appendChild(div);

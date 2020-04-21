@@ -14,7 +14,7 @@ class PlainPopup extends Popup {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       backdropPartType: PlainBackdrop,
-      framePartType: PlainOverlayFrame
+      framePartType: PlainOverlayFrame,
     });
   }
 }

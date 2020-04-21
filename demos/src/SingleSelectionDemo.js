@@ -18,7 +18,7 @@ class SingleSelectionDemo extends Base {
   constructor() {
     super();
     /* Clicking an item selects it. */
-    this.addEventListener("mousedown", event => {
+    this.addEventListener("mousedown", (event) => {
       if (event.target instanceof Element) {
         this[internal.raiseChangeEvents] = true;
         this.selectedItem = event.target;
@@ -31,7 +31,7 @@ class SingleSelectionDemo extends Base {
     // For real applications, use SlotItemsMixin.
     const observer = new MutationObserver(() => {
       this[internal.setState]({
-        content: [...this.children]
+        content: [...this.children],
       });
     });
     observer.observe(this, { childList: true });
@@ -39,7 +39,7 @@ class SingleSelectionDemo extends Base {
 
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      content: [...this.children]
+      content: [...this.children],
     });
   }
 

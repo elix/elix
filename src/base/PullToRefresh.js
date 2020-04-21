@@ -34,7 +34,7 @@ class PullToRefresh extends Base {
       refreshingIndicatorPartType: "div",
       scrollPullDistance: null,
       scrollPullMaxReached: false,
-      swipeAxis: "vertical"
+      swipeAxis: "vertical",
     });
   }
 
@@ -85,7 +85,7 @@ class PullToRefresh extends Base {
       const showTransition = enableEffects && !swipingDown;
       Object.assign(this.style, {
         transform: `translate3D(0, ${y}px, 0)`,
-        transition: showTransition ? "transform 0.25s" : null
+        transition: showTransition ? "transform 0.25s" : null,
       });
     }
 
@@ -99,7 +99,7 @@ class PullToRefresh extends Base {
         pullTriggeredRefresh,
         refreshing,
         scrollPullDistance,
-        swipeFraction
+        swipeFraction,
       } = this[internal.state];
       const swipingDown = swipeFraction != null && swipeFraction > 0;
       const scrollingDown = !!scrollPullDistance;
@@ -137,8 +137,8 @@ class PullToRefresh extends Base {
          */
         const event = new CustomEvent("refreshing-changed", {
           detail: {
-            refreshing: this[internal.state].refreshing
-          }
+            refreshing: this[internal.state].refreshing,
+          },
         });
         this.dispatchEvent(event);
       }
@@ -195,12 +195,12 @@ class PullToRefresh extends Base {
       if (changed.refreshing && refreshing) {
         // We've started a refresh; set flag.
         Object.assign(effects, {
-          pullTriggeredRefresh: true
+          pullTriggeredRefresh: true,
         });
       } else if (swipeFraction === null && !state.refreshing) {
         // We're neither pulling nor refreshing, so reset flag.
         Object.assign(effects, {
-          pullTriggeredRefresh: false
+          pullTriggeredRefresh: false,
         });
       }
     }
@@ -332,7 +332,7 @@ async function handleScrollPull(element, scrollTop) {
     // top of the page, so the scroll pull has finished.
     await element[internal.setState]({
       scrollPullDistance: null,
-      scrollPullMaxReached: false
+      scrollPullMaxReached: false,
     });
   }
 }

@@ -34,11 +34,11 @@ async function createLibraryFile(destination, header, sourceFiles) {
 
   const componentsAndMixins = [
     ...sourceFiles.components,
-    ...sourceFiles.mixins
+    ...sourceFiles.mixins,
   ];
   const sorted = sortByBaseName(componentsAndMixins);
   const defaultExports = sorted
-    .map(file => {
+    .map((file) => {
       const relativePath = path.relative(destinationFolder, file);
       const fullClassName = path.basename(file, ".js");
       // Strip 'Plain' from beginning of class name.
@@ -54,7 +54,7 @@ async function createLibraryFile(destination, header, sourceFiles) {
 
   const helperFiles = sourceFiles.helpers.sort();
   const multipleExports = helperFiles
-    .map(file => {
+    .map((file) => {
       const relativePath = path.relative(destinationFolder, file);
       const name = path.basename(file, ".js");
       // Include a "." if there's not already a "." at the beginning.
@@ -88,7 +88,7 @@ async function createLibraryFiles(sourceFiles, targetFolder) {
   const libraryTsPath = path.join(targetFolder, "elix.d.ts");
   await Promise.all([
     createLibraryFile(libraryJsPath, srcJsHeader, sourceFiles),
-    createLibraryFile(libraryTsPath, tsHeader, sourceFiles)
+    createLibraryFile(libraryTsPath, tsHeader, sourceFiles),
   ]);
 }
 

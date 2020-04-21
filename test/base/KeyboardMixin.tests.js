@@ -44,7 +44,7 @@ describe("KeyboardMixin", () => {
     assert.equal(fixture.getAttribute("tabindex"), "2");
   });
 
-  it("listens to keydown and fires the keydown() method", done => {
+  it("listens to keydown and fires the keydown() method", (done) => {
     const fixture = new KeyboardTest();
     fixture[internal.keydown] = () => {
       done();

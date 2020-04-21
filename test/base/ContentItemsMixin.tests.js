@@ -43,7 +43,7 @@ describe("ContentItemsMixin", () => {
     assert.equal(items[1].textContent, "2");
   });
 
-  it("raises items-changed event", done => {
+  it("raises items-changed event", (done) => {
     const fixture = new ContentItemsTest();
     fixture.addEventListener("items-changed", () => {
       done();

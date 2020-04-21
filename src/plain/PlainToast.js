@@ -10,7 +10,7 @@ import Toast from "../base/Toast.js";
 class PlainToast extends Toast {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      framePartType: PlainOverlayFrame
+      framePartType: PlainOverlayFrame,
     });
   }
 

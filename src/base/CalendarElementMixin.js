@@ -36,7 +36,7 @@ export default function CalendarElementMixin(Base) {
       // Only update state if actual date value differs from current state.
       if (!calendar.datesEqual(parsed, this[internal.state].date)) {
         this[internal.setState]({
-          date: parsed
+          date: parsed,
         });
       }
     }
@@ -44,7 +44,7 @@ export default function CalendarElementMixin(Base) {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
         date: null,
-        locale: navigator.language
+        locale: navigator.language,
       });
     }
 
@@ -85,7 +85,7 @@ export default function CalendarElementMixin(Base) {
          * @event date-changed
          */
         const event = new CustomEvent("date-changed", {
-          detail: { date }
+          detail: { date },
         });
         this.dispatchEvent(event);
       }

@@ -15,7 +15,7 @@ class ProgressSpinner extends ReactiveElement {
     return Object.assign(super[internal.defaultState], {
       count: -1,
       playing: true,
-      rotationsPerSecond: 10
+      rotationsPerSecond: 10,
     });
   }
 
@@ -58,7 +58,7 @@ function tick(/** @type {ProgressSpinner} */ element) {
     setTimeout(() => {
       requestAnimationFrame(() => {
         element[internal.setState]({
-          count: element[internal.state].count + 1
+          count: element[internal.state].count + 1,
         });
       });
     }, delay);

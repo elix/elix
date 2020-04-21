@@ -23,7 +23,7 @@ export default class MessageListBox extends Base {
       // follow through: the leftward animation will continue all the way to the
       // left after the user completes the gesture.
       swipeLeftFollowsThrough: true,
-      swipeLeftRemovesItem: true
+      swipeLeftRemovesItem: true,
     });
   }
 

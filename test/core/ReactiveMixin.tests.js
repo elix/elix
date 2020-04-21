@@ -23,7 +23,7 @@ customElements.define("reactive-test", ReactiveTest);
 class ReactiveWithDefaultsTest extends ReactiveTest {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      message: "aardvark"
+      message: "aardvark",
     });
   }
 }
@@ -33,7 +33,7 @@ customElements.define("reactive-with-defaults-test", ReactiveWithDefaultsTest);
 class ReactiveStateChangeTest extends ReactiveMixin(HTMLElement) {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      a: 0
+      a: 0,
     });
   }
   [internal.stateEffects](state, changed) {
@@ -50,14 +50,14 @@ customElements.define("reactive-state-change-test", ReactiveStateChangeTest);
 class ReactiveStateLoopTest extends ReactiveMixin(HTMLElement) {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      value: 0
+      value: 0,
     });
   }
   [internal.stateEffects](state, changed) {
     const effects = super[internal.stateEffects](state, changed);
     if (changed.value && state.value < 10) {
       Object.assign(effects, {
-        value: state.value + 1
+        value: state.value + 1,
       });
     }
     return effects;
@@ -65,7 +65,7 @@ class ReactiveStateLoopTest extends ReactiveMixin(HTMLElement) {
 }
 customElements.define("reactive-state-loop-test", ReactiveStateLoopTest);
 
-describe("ReactiveMixin", function() {
+describe("ReactiveMixin", function () {
   let container;
 
   before(() => {
@@ -89,7 +89,7 @@ describe("ReactiveMixin", function() {
   it("setState updates state", () => {
     const fixture = new ReactiveTest();
     fixture[internal.setState]({
-      message: "badger"
+      message: "badger",
     });
     assert.deepEqual(fixture[internal.state], { message: "badger" });
   });
@@ -105,7 +105,7 @@ describe("ReactiveMixin", function() {
     const fixture = new ReactiveTest();
     const renderSpy = sinon.spy(fixture, internal.render);
     await fixture[internal.setState]({
-      message: "dingo"
+      message: "dingo",
     });
     assert.equal(renderSpy.callCount, 0);
   });
@@ -115,7 +115,7 @@ describe("ReactiveMixin", function() {
     container.appendChild(fixture);
     const renderSpy = sinon.spy(fixture, internal.render);
     await fixture[internal.setState]({
-      message: "echidna"
+      message: "echidna",
     });
     assert.equal(renderSpy.callCount, 1);
     assert.equal(fixture.renderedResult, "echidna");
@@ -127,10 +127,10 @@ describe("ReactiveMixin", function() {
     const renderSpy = sinon.spy(fixture, internal.render);
     /* Do *not* await first call - invoke it synchronously. */
     fixture[internal.setState]({
-      message: "fox"
+      message: "fox",
     });
     await fixture[internal.setState]({
-      message: "gorilla"
+      message: "gorilla",
     });
     assert.equal(renderSpy.callCount, 1);
     assert.equal(fixture[internal.state].message, "gorilla");
@@ -144,7 +144,7 @@ describe("ReactiveMixin", function() {
     await Promise.resolve();
     assert.equal(renderedSpy.callCount, 1);
     await fixture[internal.setState]({
-      message: "iguana"
+      message: "iguana",
     });
     assert.equal(renderedSpy.callCount, 2);
   });
@@ -167,11 +167,11 @@ describe("ReactiveMixin", function() {
   it("leaves state object alone if there are no changes", async () => {
     const fixture = new ReactiveTest();
     await fixture[internal.setState]({
-      message: "hamster"
+      message: "hamster",
     });
     const previousState = fixture[internal.state];
     await fixture[internal.setState]({
-      message: "hamster"
+      message: "hamster",
     });
     assert.equal(fixture[internal.state], previousState);
   });

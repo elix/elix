@@ -14,7 +14,7 @@ describe("calendar helpers", () => {
     const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
       day: "numeric",
       month: "numeric",
-      year: "numeric"
+      year: "numeric",
     });
     const text = "1/2/2019"; // 2019 Jan 2
     const actual = calendar.parse(text, dateTimeFormat);
@@ -25,7 +25,7 @@ describe("calendar helpers", () => {
   it("can parse short numeric en-US dates", () => {
     const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
       day: "numeric",
-      month: "numeric"
+      month: "numeric",
     });
     const text = "1/2"; // Jan 2
     const actual = calendar.parse(text, dateTimeFormat);
@@ -43,7 +43,7 @@ describe("calendar helpers", () => {
     const dateTimeFormat = new Intl.DateTimeFormat("en-GB", {
       day: "numeric",
       month: "numeric",
-      year: "numeric"
+      year: "numeric",
     });
     const text = "1/2/2019"; // 2019 Feb 1
     const actual = calendar.parse(text, dateTimeFormat);
@@ -54,7 +54,7 @@ describe("calendar helpers", () => {
   it("can parse short numeric en-GB dates", () => {
     const dateTimeFormat = new Intl.DateTimeFormat("en-GB", {
       day: "numeric",
-      month: "numeric"
+      month: "numeric",
     });
     const text = "1/2"; // Feb 1
     const actual = calendar.parse(text, dateTimeFormat);
@@ -72,7 +72,7 @@ describe("calendar helpers", () => {
     const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
       day: "numeric",
       month: "numeric",
-      year: "numeric"
+      year: "numeric",
     });
     const today = new Date();
     const day = today.getDate();

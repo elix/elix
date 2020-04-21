@@ -8,7 +8,7 @@ class SingleSelectionTest extends SingleSelectionMixin(
 ) {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      items: []
+      items: [],
     });
   }
 
@@ -83,7 +83,7 @@ describe("SingleSelectionMixin", () => {
     const fixture = createSampleElement();
     assert.equal(fixture[internal.state].selectedIndex, -1);
     await fixture[internal.setState]({
-      selectionRequired: true
+      selectionRequired: true,
     });
     assert.equal(fixture[internal.state].selectedIndex, 0);
   });
@@ -91,11 +91,11 @@ describe("SingleSelectionMixin", () => {
   it("preserves selected item when items change and old selection exists in new set", async () => {
     const fixture = createSampleElement();
     fixture[internal.setState]({
-      selectedIndex: 1
+      selectedIndex: 1,
     });
     assert.equal(fixture[internal.state].selectedIndex, 1);
     fixture[internal.setState]({
-      items: fixture[internal.state].items.slice(1) // Removes item 0
+      items: fixture[internal.state].items.slice(1), // Removes item 0
     });
     assert.equal(fixture[internal.state].selectedIndex, 0);
   });
@@ -106,7 +106,7 @@ describe("SingleSelectionMixin", () => {
     items.splice(2, 1);
     await fixture[internal.setState]({
       items,
-      selectedIndex: 2
+      selectedIndex: 2,
     });
     assert.equal(fixture[internal.state].selectedIndex, 1);
   });
@@ -115,7 +115,7 @@ describe("SingleSelectionMixin", () => {
     const fixture = createSampleElement();
     await fixture[internal.setState]({
       items: [],
-      selectedIndex: 0
+      selectedIndex: 0,
     });
     assert.equal(fixture.selectedIndex, -1);
   });
@@ -164,7 +164,7 @@ describe("SingleSelectionMixin", () => {
     await Promise.resolve();
   });
 
-  it("changing selection through (simulated) user interaction raises the selected-index-changed event", done => {
+  it("changing selection through (simulated) user interaction raises the selected-index-changed event", (done) => {
     const fixture = createSampleElement();
     fixture.addEventListener("selected-index-changed", () => {
       done();
@@ -176,7 +176,7 @@ describe("SingleSelectionMixin", () => {
     fixture[internal.raiseChangeEvents] = false;
   });
 
-  it("changing selection programmatically does not raise the selected-index-changed event", done => {
+  it("changing selection programmatically does not raise the selected-index-changed event", (done) => {
     const fixture = createSampleElement();
     fixture.addEventListener("selected-index-changed", () => {
       assert.fail(
@@ -207,7 +207,7 @@ function createSampleElement() {
   // To keep this unit test collection focus on selection, and not on tracking
   // children as items, we just use a plain array of item objects instead.
   fixture[internal.setState]({
-    items: ["Zero", "One", "Two"]
+    items: ["Zero", "One", "Two"],
   });
   return fixture;
 }

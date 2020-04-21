@@ -48,7 +48,7 @@ class CalendarDay extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       date: calendar.today(),
-      outsideRange: false
+      outsideRange: false,
     });
   }
 

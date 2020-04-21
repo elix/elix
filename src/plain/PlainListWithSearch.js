@@ -13,7 +13,7 @@ class PlainListWithSearch extends ListWithSearch {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       inputPartType: PlainInput,
-      listPartType: PlainFilterListBox
+      listPartType: PlainFilterListBox,
     });
   }
 }

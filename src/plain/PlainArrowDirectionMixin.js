@@ -17,7 +17,7 @@ export default function PlainArrowDirectionMixin(Base) {
   return class PlainArrowDirection extends Base {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
-        arrowButtonPartType: PlainArrowDirectionButton
+        arrowButtonPartType: PlainArrowDirectionButton,
       });
     }
 

@@ -12,7 +12,7 @@ import PlainCalendarDay from "./PlainCalendarDay.js";
 class PlainCalendarDayButton extends CalendarDayButton {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      dayPartType: PlainCalendarDay
+      dayPartType: PlainCalendarDay,
     });
   }
 

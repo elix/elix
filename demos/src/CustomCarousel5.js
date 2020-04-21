@@ -12,7 +12,7 @@ class CustomCarousel extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       arrowButtonPartType: CustomArrowButton,
-      proxyPartType: CustomPageDot
+      proxyPartType: CustomPageDot,
     });
   }
 

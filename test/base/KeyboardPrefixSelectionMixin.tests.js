@@ -11,7 +11,7 @@ const Base = ItemsTextMixin(
 class KeyboardPrefixSelectionTest extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      selectedIndex: -1
+      selectedIndex: -1,
     });
   }
 
@@ -124,9 +124,9 @@ function createSampleElement() {
     "Cherry",
     "Cranberry",
     "Dried Apricot",
-    "Dried Cherry"
+    "Dried Cherry",
   ];
-  const items = texts.map(text => {
+  const items = texts.map((text) => {
     const div = document.createElement("div");
     div.textContent = text;
     return div;
@@ -139,6 +139,6 @@ function simulateKeydown(fixture, key) {
   const keyCode = key.length === 1 ? key.charCodeAt(0) : null;
   fixture[internal.keydown]({
     key,
-    keyCode
+    keyCode,
   });
 }

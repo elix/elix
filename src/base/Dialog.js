@@ -24,7 +24,7 @@ class Dialog extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       backdropPartType: ModalBackdrop,
-      tabIndex: -1
+      tabIndex: -1,
     });
   }
 

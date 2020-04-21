@@ -10,7 +10,7 @@ class RenderState extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       fixture: null,
-      fixtureState: {}
+      fixtureState: {},
     });
   }
 
@@ -32,7 +32,7 @@ class RenderState extends Base {
         ? JSON.parse(fixtureState)
         : fixtureState;
     this[internal.setState]({
-      fixtureState: parsed
+      fixtureState: parsed,
     });
   }
 
@@ -68,28 +68,28 @@ class RenderState extends Base {
     if (changed.content) {
       if (!state.content) {
         Object.assign(effects, {
-          fixture: null
+          fixture: null,
         });
       } else {
         const elements = substantiveElements(state.content);
         if (!elements || elements.length < 1) {
           Object.assign(effects, {
-            fixture: null
+            fixture: null,
           });
         } else {
           // Look for an element (or subelement) with class "fixture".
           const fixtures = elements
-            .map(element =>
+            .map((element) =>
               element.classList.contains("fixture")
                 ? element
                 : element.querySelector(".fixture")
             )
-            .filter(item => item !== null);
+            .filter((item) => item !== null);
 
           // If no fixture was found, return the first element.
           const fixture = fixtures[0] || elements[0];
           Object.assign(effects, {
-            fixture
+            fixture,
           });
         }
       }

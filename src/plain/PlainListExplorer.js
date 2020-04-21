@@ -11,7 +11,7 @@ import PlainListBox from "./PlainListBox.js";
 class PlainListExplorer extends ListExplorer {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      proxyListPartType: PlainListBox
+      proxyListPartType: PlainListBox,
     });
   }
 }

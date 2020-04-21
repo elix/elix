@@ -5,7 +5,7 @@ import DrawerWithGrip from "../../src/base/DrawerWithGrip.js";
 export default class CustomDrawer extends DrawerWithGrip {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      fromEdge: "right"
+      fromEdge: "right",
     });
   }
 

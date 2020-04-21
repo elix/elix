@@ -14,7 +14,7 @@ class PlainPopupButton extends PopupButton {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       popupPartType: PlainPopup,
-      sourcePartType: PlainBorderButton
+      sourcePartType: PlainBorderButton,
     });
   }
 }

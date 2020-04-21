@@ -16,7 +16,7 @@ export const standardBooleanAttributes = {
   multiple: true,
   noresize: true,
   readonly: true,
-  selected: true
+  selected: true,
 };
 
 const mousedownListenerKey = Symbol("mousedownListener");

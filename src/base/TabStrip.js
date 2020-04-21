@@ -69,7 +69,7 @@ class TabStrip extends Base {
       tabAlign: "start",
       tabButtonRole: "tab",
       tabIndex: -1,
-      position: "top"
+      position: "top",
     });
   }
 
@@ -85,7 +85,7 @@ class TabStrip extends Base {
         if (event.target instanceof HTMLElement) {
           const newIndex = items && items.indexOf(event.target);
           this[internal.setState]({
-            selectedIndex: newIndex
+            selectedIndex: newIndex,
           });
           handled = newIndex !== selectedIndex;
         }
@@ -125,7 +125,7 @@ class TabStrip extends Base {
       position === "top" || position === "bottom" ? "horizontal" : "vertical";
     this[internal.setState]({
       orientation,
-      position
+      position,
     });
   }
 
@@ -135,7 +135,7 @@ class TabStrip extends Base {
     const { items } = this[internal.state];
     if (changed.items && items) {
       const { tabButtonRole } = this[internal.state];
-      items.forEach(item => {
+      items.forEach((item) => {
         if (tabButtonRole === defaultAriaRole[item.localName]) {
           item.removeAttribute("role");
         } else {
@@ -163,7 +163,7 @@ class TabStrip extends Base {
         center: "center",
         end: "end",
         start: "start",
-        stretch: "stretch" // No style needed for "stretch"
+        stretch: "stretch", // No style needed for "stretch"
       };
       // @ts-ignore
       this.style.placeContent = justifyContentForTabAlign[tabAlign];
@@ -172,7 +172,7 @@ class TabStrip extends Base {
     if (changed.items || changed.position) {
       const { position } = this[internal.state];
       if (items) {
-        items.forEach(item => {
+        items.forEach((item) => {
           if ("position" in item) {
             /** @type {any} */ (item).position = position;
           }

@@ -5,7 +5,7 @@ import TabButton from "../../../src/base/TabButton.js";
 class SereneTabButton extends TabButton {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      generic: false
+      generic: false,
     });
   }
 

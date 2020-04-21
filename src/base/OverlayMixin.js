@@ -33,7 +33,7 @@ export default function OverlayMixin(Base) {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
         autoFocus: true,
-        persistent: false
+        persistent: false,
       });
     }
 
@@ -54,7 +54,7 @@ export default function OverlayMixin(Base) {
       }
 
       if (this[internal.firstRender]) {
-        this.addEventListener("blur", event => {
+        this.addEventListener("blur", (event) => {
           // What has the focus now?
           const newFocusedElement =
             event.relatedTarget || document.activeElement;
@@ -238,7 +238,7 @@ function hasZIndex(element) {
  */
 function maxZIndexInUse() {
   const elements = document.body.querySelectorAll("*");
-  const zIndices = Array.from(elements, element => {
+  const zIndices = Array.from(elements, (element) => {
     const style = getComputedStyle(element);
     let zIndex = 0;
     if (style.position !== "static" && style.zIndex !== "auto") {

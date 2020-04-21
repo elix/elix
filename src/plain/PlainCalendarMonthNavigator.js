@@ -23,7 +23,7 @@ class PlainCalendarMonthNavigator extends DarkModeMixin(
     return Object.assign(super[internal.defaultState], {
       dayNamesHeaderPartType: PlainCalendarDayNamesHeader,
       dayPartType: PlainCalendarDayButton,
-      monthYearHeaderPartType: PlainCalendarMonthYearHeader
+      monthYearHeaderPartType: PlainCalendarMonthYearHeader,
     });
   }
 }

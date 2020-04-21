@@ -25,7 +25,7 @@ class CarouselSlideshow extends Base {
       selectionTimerDuration: 3000,
       selectionWraps: true,
       stagePartType: CrossfadeStage,
-      transitionDuration: 1000
+      transitionDuration: 1000,
     });
   }
 
@@ -34,14 +34,12 @@ class CarouselSlideshow extends Base {
     if (changed.transitionDuration) {
       const { transitionDuration } = this[internal.state];
       if ("transitionDuration" in this[internal.ids].proxyList) {
-        /** @type {any} */ (this[
-          internal.ids
-        ].proxyList).transitionDuration = transitionDuration;
+        /** @type {any} */ (this[internal.ids]
+          .proxyList).transitionDuration = transitionDuration;
       }
       if ("transitionDuration" in this[internal.ids].stage) {
-        /** @type {any} */ (this[
-          internal.ids
-        ].stage).transitionDuration = transitionDuration;
+        /** @type {any} */ (this[internal.ids]
+          .stage).transitionDuration = transitionDuration;
       }
     }
   }

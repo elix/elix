@@ -17,7 +17,7 @@ class PlainCalendarMonth extends CalendarMonth {
     return Object.assign(super[internal.defaultState], {
       dayNamesHeaderPartType: PlainCalendarDayNamesHeader,
       dayPartType: PlainCalendarDay,
-      monthYearHeaderPartType: PlainCalendarMonthYearHeader
+      monthYearHeaderPartType: PlainCalendarMonthYearHeader,
     });
   }
 }

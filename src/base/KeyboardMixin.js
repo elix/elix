@@ -43,14 +43,14 @@ export default function KeyboardMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this.addEventListener("keydown", async event => {
+      this.addEventListener("keydown", async (event) => {
         this[internal.raiseChangeEvents] = true;
         // For use with FocusVisibleMixin.
         if (!this[internal.state].focusVisible) {
           // The user may have begun interacting with this element using the
           // mouse/touch, but has now begun using the keyboard, so show focus.
           this[internal.setState]({
-            focusVisible: true
+            focusVisible: true,
           });
         }
         const handled = this[internal.keydown](event);
@@ -70,7 +70,7 @@ export default function KeyboardMixin(Base) {
       // the host, so that we can get keyboard events.
       const tabIndex = this[internal.delegatesFocus] ? null : 0;
       const state = Object.assign(super[internal.defaultState] || {}, {
-        tabIndex
+        tabIndex,
       });
 
       return state;
@@ -119,7 +119,7 @@ export default function KeyboardMixin(Base) {
       if (!this[internal.rendering]) {
         // Record the new tabIndex in our state.
         this[internal.setState]({
-          tabIndex: parsed
+          tabIndex: parsed,
         });
       }
     }

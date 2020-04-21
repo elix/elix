@@ -27,7 +27,7 @@ class Slideshow extends Base {
       playing: true,
       selectionTimerDuration: 3000,
       selectionWraps: true,
-      transitionDuration: 1000
+      transitionDuration: 1000,
     });
   }
 }

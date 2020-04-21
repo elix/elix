@@ -13,7 +13,7 @@ import PlainDrawer from "./PlainDrawer.js";
 class PlainHamburgerMenuButton extends HamburgerMenuButton {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      menuPartType: PlainDrawer
+      menuPartType: PlainDrawer,
     });
   }
 

@@ -6,7 +6,7 @@ import RepeatButton from "../../src/base/RepeatButton.js";
 export default class PurpleSpinBox extends NumberSpinBox {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      buttonPartType: RepeatButton
+      buttonPartType: RepeatButton,
     });
   }
 

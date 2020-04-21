@@ -25,7 +25,7 @@ const auxiliarycustomTags = [
   "script",
   "style",
   "template",
-  "noembed" // deprecated
+  "noembed", // deprecated
 ];
 
 /**

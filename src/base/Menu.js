@@ -69,7 +69,7 @@ class Menu extends Base {
     return Object.assign(super[internal.defaultState], {
       highlightSelection: true,
       orientation: "vertical",
-      selectionFocused: false
+      selectionFocused: false,
     });
   }
 
@@ -87,9 +87,9 @@ class Menu extends Base {
     if (keyboardActive || probablyDesktop) {
       const flashDuration = 75; // milliseconds
       this[internal.setState]({ highlightSelection: false });
-      await new Promise(resolve => setTimeout(resolve, flashDuration));
+      await new Promise((resolve) => setTimeout(resolve, flashDuration));
       this[internal.setState]({ highlightSelection: true });
-      await new Promise(resolve => setTimeout(resolve, flashDuration));
+      await new Promise((resolve) => setTimeout(resolve, flashDuration));
     }
   }
 
@@ -114,11 +114,13 @@ class Menu extends Base {
       // Treat a pointerdown event as a tap.
       if ("PointerEvent" in window) {
         // Prefer listening to standard pointer events.
-        this.addEventListener("pointerdown", event =>
+        this.addEventListener("pointerdown", (event) =>
           this[internal.tap](event)
         );
       } else {
-        this.addEventListener("touchstart", event => this[internal.tap](event));
+        this.addEventListener("touchstart", (event) =>
+          this[internal.tap](event)
+        );
       }
 
       this.removeAttribute("tabindex");
@@ -186,7 +188,7 @@ class Menu extends Base {
       // Now that the selection has been focused, we can remove/reset the
       // tabindex on any item that had previously been selected.
       this[internal.setState]({
-        selectionFocused: true
+        selectionFocused: true,
       });
     }
   }
@@ -201,7 +203,7 @@ class Menu extends Base {
     // When selection changes, we'll need to focus on it in rendered.
     if (changed.selectedIndex) {
       Object.assign(effects, {
-        selectionFocused: false
+        selectionFocused: false,
       });
     }
 

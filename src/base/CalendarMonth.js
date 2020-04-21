@@ -115,7 +115,7 @@ class CalendarMonth extends Base {
       monthYearHeaderPartType: CalendarMonthYearHeader,
       showCompleteWeeks: false,
       showSelectedDay: false,
-      yearFormat: "numeric"
+      yearFormat: "numeric",
     });
   }
 
@@ -193,47 +193,41 @@ class CalendarMonth extends Base {
         Object.assign(this[internal.ids].monthDays, {
           date,
           dayCount,
-          startDate
+          startDate,
         });
-        /** @type {any} */ (this[
-          internal.ids
-        ].monthYearHeader).date = calendar.firstDateOfMonth(date);
+        /** @type {any} */ (this[internal.ids]
+          .monthYearHeader).date = calendar.firstDateOfMonth(date);
       }
     }
 
     if (changed.daysOfWeekFormat || changed.dayNamesHeaderPartType) {
       const { daysOfWeekFormat } = this[internal.state];
-      /** @type {any} */ (this[
-        internal.ids
-      ].dayNamesHeader).format = daysOfWeekFormat;
+      /** @type {any} */ (this[internal.ids]
+        .dayNamesHeader).format = daysOfWeekFormat;
     }
 
     if (changed.showCompleteWeeks || changed.monthDaysPartType) {
       const { showCompleteWeeks } = this[internal.state];
-      /** @type {any} */ (this[
-        internal.ids
-      ].monthDays).showCompleteWeeks = showCompleteWeeks;
+      /** @type {any} */ (this[internal.ids]
+        .monthDays).showCompleteWeeks = showCompleteWeeks;
     }
 
     if (changed.showSelectedDay || changed.monthDaysPartType) {
       const { showSelectedDay } = this[internal.state];
-      /** @type {any} */ (this[
-        internal.ids
-      ].monthDays).showSelectedDay = showSelectedDay;
+      /** @type {any} */ (this[internal.ids]
+        .monthDays).showSelectedDay = showSelectedDay;
     }
 
     if (changed.monthFormat || changed.monthYearHeaderPartType) {
       const { monthFormat } = this[internal.state];
-      /** @type {any} */ (this[
-        internal.ids
-      ].monthYearHeader).monthFormat = monthFormat;
+      /** @type {any} */ (this[internal.ids]
+        .monthYearHeader).monthFormat = monthFormat;
     }
 
     if (changed.yearFormat || changed.monthYearHeaderPartType) {
       const { yearFormat } = this[internal.state];
-      /** @type {any} */ (this[
-        internal.ids
-      ].monthYearHeader).yearFormat = yearFormat;
+      /** @type {any} */ (this[internal.ids]
+        .monthYearHeader).yearFormat = yearFormat;
     }
   }
 

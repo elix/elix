@@ -12,7 +12,7 @@ import PlainFilterListBox from "./PlainFilterListBox.js";
 class PlainFilterComboBox extends PlainComboBoxMixin(FilterComboBox) {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      listPartType: PlainFilterListBox
+      listPartType: PlainFilterListBox,
     });
   }
 }

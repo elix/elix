@@ -55,7 +55,7 @@ class Drawer extends Base {
       role: "landmark",
       selectedIndex: 0,
       showTransition: false,
-      tabIndex: -1
+      tabIndex: -1,
     });
   }
 
@@ -138,7 +138,7 @@ class Drawer extends Base {
         openedRenderedFraction,
         rightToLeft,
         showTransition,
-        swipeFraction
+        swipeFraction,
       } = this[internal.state];
 
       const fromLeadingEdge =
@@ -182,7 +182,7 @@ class Drawer extends Base {
 
       Object.assign(this[internal.ids].frame.style, {
         transform,
-        transition: showTransition ? `transform ${duration}s` : ""
+        transition: showTransition ? `transform ${duration}s` : "",
       });
     }
 
@@ -195,20 +195,20 @@ class Drawer extends Base {
         bottom: 0,
         left: 0,
         right: 0,
-        top: 0
+        top: 0,
       };
       const mapFromEdgeToOppositeEdge = {
         bottom: "top",
         left: "right",
         right: "left",
-        top: "bottom"
+        top: "bottom",
       };
       mapFromEdgeToOppositeEdge.start =
         mapFromEdgeToOppositeEdge[rightToLeft ? "right" : "left"];
       mapFromEdgeToOppositeEdge.end =
         mapFromEdgeToOppositeEdge[rightToLeft ? "left" : "right"];
       Object.assign(this.style, edgeCoordinates, {
-        [mapFromEdgeToOppositeEdge[fromEdge]]: null
+        [mapFromEdgeToOppositeEdge[fromEdge]]: null,
       });
 
       /** @type {IndexedObject<string>} */
@@ -218,7 +218,7 @@ class Drawer extends Base {
         left: rightToLeft ? "flex-end" : "flex-start",
         right: rightToLeft ? "flex-start" : "flex-end",
         start: "flex-start",
-        top: "flex-start"
+        top: "flex-start",
       };
 
       this.style.flexDirection =
@@ -246,7 +246,7 @@ class Drawer extends Base {
     if (changed.openedFraction) {
       // Remember that we've rendered the drawer at this opened fraction.
       this[internal.setState]({
-        openedRenderedFraction: this[internal.state].openedFraction
+        openedRenderedFraction: this[internal.state].openedFraction,
       });
     }
   }
@@ -277,7 +277,7 @@ class Drawer extends Base {
         effectPhase,
         fromEdge,
         rightToLeft,
-        swipeFraction
+        swipeFraction,
       } = state;
       const opened =
         (effect === "open" && effectPhase !== "before") ||
@@ -441,7 +441,7 @@ class Drawer extends Base {
 async function close(/** @type {Drawer} */ element) {
   element[internal.setState]({
     effect: "close",
-    effectPhase: "during"
+    effectPhase: "during",
   });
   await element.close();
 }
@@ -449,7 +449,7 @@ async function close(/** @type {Drawer} */ element) {
 async function open(/** @type {Drawer} */ element) {
   element[internal.setState]({
     effect: "open",
-    effectPhase: "during"
+    effectPhase: "during",
   });
   await element.open();
 }

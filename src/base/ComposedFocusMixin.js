@@ -35,7 +35,7 @@ export default function ComposedFocusMixin(Base) {
   class ComposedFocus extends Base {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
-        composeFocus: !nativeDelegatesFocus
+        composeFocus: !nativeDelegatesFocus,
       });
     }
 
@@ -44,7 +44,7 @@ export default function ComposedFocusMixin(Base) {
         super[internal.render](changed);
       }
       if (this[internal.firstRender]) {
-        this.addEventListener("mousedown", event => {
+        this.addEventListener("mousedown", (event) => {
           if (!this[internal.state].composeFocus) {
             return;
           }

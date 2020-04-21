@@ -18,7 +18,7 @@ class PlainTabButton extends TabButton {
         marginBottom: position === "top" ? "-1px" : null,
         marginLeft: position === "right" ? "-1px" : null,
         marginRight: position === "left" ? "-1px" : null,
-        marginTop: position === "bottom" ? "-1px" : null
+        marginTop: position === "bottom" ? "-1px" : null,
       });
 
       // Adjust which corners are rounded.
@@ -27,7 +27,7 @@ class PlainTabButton extends TabButton {
         bottom: "0 0 0.25em 0.25em",
         left: "0.25em 0 0 0.25em",
         right: "0 0.25em 0.25em 0",
-        top: "0.25em 0.25em 0 0"
+        top: "0.25em 0.25em 0 0",
       };
       this[internal.ids].inner.style.borderRadius =
         borderRadiusForPosition[position];
@@ -41,7 +41,7 @@ class PlainTabButton extends TabButton {
         borderLeftColor: null,
         borderRightColor: null,
         borderTopColor: null,
-        zIndex: selected ? "1" : ""
+        zIndex: selected ? "1" : "",
       };
       if (selected) {
         // We style the border opposite the button's position: if the button is
@@ -51,7 +51,7 @@ class PlainTabButton extends TabButton {
           bottom: "borderTopColor",
           left: "borderRightColor",
           right: "borderLeftColor",
-          top: "borderBottomColor"
+          top: "borderBottomColor",
         };
         const borderSide = borderColorSideForPosition[position];
         buttonStyle[borderSide] = "transparent";

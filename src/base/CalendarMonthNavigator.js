@@ -39,7 +39,7 @@ const Base = ArrowDirectionMixin(
 class CalendarMonthNavigator extends Base {
   constructor() {
     super();
-    this.addEventListener("mousedown", event => {
+    this.addEventListener("mousedown", (event) => {
       // Only process events for the main (usually left) button.
       if (event.button !== 0) {
         return;
@@ -66,7 +66,7 @@ class CalendarMonthNavigator extends Base {
     // assume the current date.
     const date = this[internal.state].date || calendar.today();
     this[internal.setState]({
-      date: calendar.offsetDateByMonths(date, 1)
+      date: calendar.offsetDateByMonths(date, 1),
     });
     return true;
   }
@@ -75,7 +75,7 @@ class CalendarMonthNavigator extends Base {
     // See note in arrowButtonNext.
     const date = this[internal.state].date || calendar.today();
     this[internal.setState]({
-      date: calendar.offsetDateByMonths(date, -1)
+      date: calendar.offsetDateByMonths(date, -1),
     });
     return true;
   }
@@ -90,7 +90,7 @@ class CalendarMonthNavigator extends Base {
       orientation: "both",
       showCompleteWeeks: true,
       showSelectedDay: true,
-      value: null
+      value: null,
     });
   }
 
@@ -100,21 +100,21 @@ class CalendarMonthNavigator extends Base {
     switch (event.key) {
       case "Home":
         this[internal.setState]({
-          date: calendar.today()
+          date: calendar.today(),
         });
         handled = true;
         break;
 
       case "PageDown":
         this[internal.setState]({
-          date: calendar.offsetDateByMonths(this[internal.state].date, 1)
+          date: calendar.offsetDateByMonths(this[internal.state].date, 1),
         });
         handled = true;
         break;
 
       case "PageUp":
         this[internal.setState]({
-          date: calendar.offsetDateByMonths(this[internal.state].date, -1)
+          date: calendar.offsetDateByMonths(this[internal.state].date, -1),
         });
         handled = true;
         break;
@@ -131,7 +131,7 @@ class CalendarMonthNavigator extends Base {
       super[internal.goDown]();
     }
     this[internal.setState]({
-      date: calendar.offsetDateByDays(this[internal.state].date, 7)
+      date: calendar.offsetDateByDays(this[internal.state].date, 7),
     });
     return true;
   }
@@ -141,7 +141,7 @@ class CalendarMonthNavigator extends Base {
       super[internal.goLeft]();
     }
     this[internal.setState]({
-      date: calendar.offsetDateByDays(this[internal.state].date, -1)
+      date: calendar.offsetDateByDays(this[internal.state].date, -1),
     });
     return true;
   }
@@ -151,7 +151,7 @@ class CalendarMonthNavigator extends Base {
       super[internal.goRight]();
     }
     this[internal.setState]({
-      date: calendar.offsetDateByDays(this[internal.state].date, 1)
+      date: calendar.offsetDateByDays(this[internal.state].date, 1),
     });
     return true;
   }
@@ -161,7 +161,7 @@ class CalendarMonthNavigator extends Base {
       super[internal.goUp]();
     }
     this[internal.setState]({
-      date: calendar.offsetDateByDays(this[internal.state].date, -7)
+      date: calendar.offsetDateByDays(this[internal.state].date, -7),
     });
     return true;
   }
@@ -173,7 +173,7 @@ class CalendarMonthNavigator extends Base {
     // update form internals.
     if (changed.date) {
       Object.assign(effects, {
-        value: state.date ? state.date.toString() : ""
+        value: state.date ? state.date.toString() : "",
       });
     }
 

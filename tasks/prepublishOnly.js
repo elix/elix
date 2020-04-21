@@ -17,10 +17,10 @@ async function categorizeFiles(folder) {
   const result = {
     components: [],
     helpers: [],
-    mixins: []
+    mixins: [],
   };
   const files = await getJavaScriptFiles(folder);
-  files.forEach(file => {
+  files.forEach((file) => {
     const fileName = path.basename(file);
     if (fileName.toLowerCase()[0] === fileName[0]) {
       // Helpers start with lowercase letter.
@@ -41,7 +41,7 @@ async function createEmptyDefineFolder(defineFolder) {
     const files = await fs.readdir(defineFolder);
     // If we get this far, the folder already exists.
     // Remove all existing files.
-    const removePromises = files.map(file => {
+    const removePromises = files.map((file) => {
       const filePath = path.join(defineFolder, file);
       fs.unlink(filePath);
     });
@@ -61,9 +61,9 @@ async function getJavaScriptFiles(folder) {
   // Source files have a .js extension. Also, ignore generated files.
   const generatedFiles = ["elix.js", "weekData.js"];
   const fileNames = files.filter(
-    file => path.extname(file) === ".js" && !generatedFiles.includes(file)
+    (file) => path.extname(file) === ".js" && !generatedFiles.includes(file)
   );
-  const filePaths = fileNames.map(name => path.join(folder, name));
+  const filePaths = fileNames.map((name) => path.join(folder, name));
   return filePaths;
 }
 
@@ -71,9 +71,9 @@ function mergeCategorizedFiles(...fileSets) {
   const result = {
     components: [],
     helpers: [],
-    mixins: []
+    mixins: [],
   };
-  fileSets.forEach(categorizedFiles => {
+  fileSets.forEach((categorizedFiles) => {
     result.components = mergeFiles(
       result.components,
       categorizedFiles.components
@@ -92,8 +92,8 @@ function mergeCategorizedFiles(...fileSets) {
 // In this comparison, we ignore the prefix "Plain" on the base filename, as we
 // want PlainFoo to overwrite Foo.
 function mergeFiles(files1, files2) {
-  const moduleNames2 = files2.map(file => baseModuleName(file));
-  const filesIn1NotIn2 = files1.filter(file => {
+  const moduleNames2 = files2.map((file) => baseModuleName(file));
+  const filesIn1NotIn2 = files1.filter((file) => {
     const moduleName1 = baseModuleName(file);
     return !moduleNames2.includes(moduleName1);
   });
@@ -115,7 +115,7 @@ function mergeFiles(files1, files2) {
     const [coreFiles, baseFiles, plainFiles] = await Promise.all([
       categorizeFiles(coreFolder),
       categorizeFiles(baseFolder),
-      categorizeFiles(plainFolder)
+      categorizeFiles(plainFolder),
     ]);
 
     // Generate the define modules based on the plain components.
@@ -141,7 +141,7 @@ function mergeFiles(files1, files2) {
 
     await Promise.all([
       createLibraryFiles(regularFiles, sourceRootFolder),
-      createLibraryFiles(registerFiles, defineFolder)
+      createLibraryFiles(registerFiles, defineFolder),
     ]);
   } catch (e) {
     // We have to deal with top-level exceptions.

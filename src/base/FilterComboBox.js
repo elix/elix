@@ -22,14 +22,14 @@ class FilterComboBox extends Base {
       filter: "",
       inputPartType: AutoCompleteInput,
       listPartType: FilterListBox,
-      texts: null
+      texts: null,
     });
   }
 
   [internal.render](/** @type {ChangedFlags} */ changed) {
     super[internal.render](changed);
     if (changed.inputPartType) {
-      this[internal.ids].input.addEventListener("input", event => {
+      this[internal.ids].input.addEventListener("input", (event) => {
         this[internal.raiseChangeEvents] = true;
         /** @type {any} */
         const cast = event;
@@ -71,7 +71,7 @@ class FilterComboBox extends Base {
     // Closing resets the filter.
     if (changed.opened && !state.opened) {
       Object.assign(effects, {
-        filter: ""
+        filter: "",
       });
     }
 

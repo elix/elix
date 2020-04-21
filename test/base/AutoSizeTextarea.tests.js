@@ -18,7 +18,7 @@ describe("AutoSizeTextarea", () => {
       "<elix-auto-size-textarea>aardvark</elix-auto-size-textarea>";
     const fixture = container.querySelector("elix-auto-size-textarea");
     // Wait for slotchange event.
-    await new Promise(resolve => setTimeout(resolve));
+    await new Promise((resolve) => setTimeout(resolve));
     assert.equal(fixture.value, "aardvark");
   });
 

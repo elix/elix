@@ -27,7 +27,7 @@ class CalendarDayNamesHeader extends ReactiveElement {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       format: "short",
-      locale: navigator.language
+      locale: navigator.language,
     });
   }
 
@@ -63,7 +63,7 @@ class CalendarDayNamesHeader extends ReactiveElement {
     if (changed.format || changed.locale) {
       const { format, locale } = this[internal.state];
       const formatter = calendar.dateTimeFormat(locale, {
-        weekday: format
+        weekday: format,
       });
       const firstDayOfWeek = calendar.firstDayOfWeek(locale);
       const weekendStart = calendar.weekendStart(locale);

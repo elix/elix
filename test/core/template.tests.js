@@ -10,7 +10,7 @@ customElements.define("template-test", TemplateTest);
 class DynamicSingle extends ReactiveElement {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      dynamicPartType: "button"
+      dynamicPartType: "button",
     });
   }
 
@@ -90,7 +90,7 @@ describe("templates", () => {
     assert(fixture[internal.ids].static instanceof HTMLDivElement);
     assert(fixture[internal.ids].dynamic instanceof HTMLButtonElement);
     fixture[internal.setState]({
-      dynamicPartType: "a"
+      dynamicPartType: "a",
     });
     fixture[internal.renderChanges]();
     assert(fixture[internal.ids].dynamic instanceof HTMLAnchorElement);

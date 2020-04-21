@@ -15,7 +15,7 @@ class PlainExpandableSection extends ExpandableSection {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       headerPartType: PlainButton,
-      togglePartType: PlainExpandCollapseToggle
+      togglePartType: PlainExpandCollapseToggle,
     });
   }
 

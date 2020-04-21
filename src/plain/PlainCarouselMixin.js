@@ -14,7 +14,7 @@ export default function PlainCarouselMixin(Base) {
   return class PlainCarousel extends Base {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
-        proxyListPartType: PlainCenteredStripOpacity
+        proxyListPartType: PlainCenteredStripOpacity,
       });
     }
 
@@ -28,7 +28,7 @@ export default function PlainCarouselMixin(Base) {
       ) {
         // Apply dark mode to proxies.
         const { dark, detectDarkMode } = this[internal.state];
-        proxies.forEach(proxy => {
+        proxies.forEach((proxy) => {
           /** @type {any} */ const cast = proxy;
           if ("dark" in cast) {
             cast.dark = dark;

@@ -16,7 +16,7 @@ class PlainDateComboBox extends PlainComboBoxMixin(DateComboBox) {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       calendarPartType: PlainCalendarMonthNavigator,
-      todayButtonPartType: PlainButton
+      todayButtonPartType: PlainButton,
     });
   }
 

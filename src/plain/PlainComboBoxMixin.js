@@ -19,7 +19,7 @@ export default function PlainComboBoxMixin(Base) {
       return Object.assign(super[internal.defaultState] || {}, {
         inputPartType: PlainInput,
         popupPartType: PlainPopup,
-        popupTogglePartType: PlainOpenCloseToggle
+        popupTogglePartType: PlainOpenCloseToggle,
       });
     }
 
@@ -33,7 +33,7 @@ export default function PlainComboBoxMixin(Base) {
         const cast = /** @type {any} */ (this[internal.ids].input);
         const input = "inner" in cast ? cast.inner : cast;
         Object.assign(input.style, {
-          outline: "none"
+          outline: "none",
         });
       }
     }

@@ -16,7 +16,7 @@ class PlainPullToRefresh extends PullToRefresh {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       refreshingIndicatorPartType: PlainProgressSpinner,
-      pullIndicatorPartType: "svg"
+      pullIndicatorPartType: "svg",
     });
   }
 

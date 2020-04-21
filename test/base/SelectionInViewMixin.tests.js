@@ -14,13 +14,13 @@ class SelectionInViewTest extends SelectionInViewMixin(
     const items = Array.prototype.slice.call(this.children);
     this[internal.setState]({
       items,
-      selectedIndex: -1
+      selectedIndex: -1,
     });
   }
 }
 customElements.define("selection-in-view-test", SelectionInViewTest);
 
-describe("SelectionInViewMixin", function() {
+describe("SelectionInViewMixin", function () {
   let container;
 
   before(() => {
@@ -31,7 +31,7 @@ describe("SelectionInViewMixin", function() {
     container.innerHTML = "";
   });
 
-  it("Scrolls down to bring item clipped by bottom edge fully into view", done => {
+  it("Scrolls down to bring item clipped by bottom edge fully into view", (done) => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     fixture.addEventListener("scroll", () => {
@@ -43,7 +43,7 @@ describe("SelectionInViewMixin", function() {
     fixture[internal.setState]({ selectedIndex: 1 });
   });
 
-  it("Scrolls down to bring item below bottom edge fully into view", done => {
+  it("Scrolls down to bring item below bottom edge fully into view", (done) => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     fixture.addEventListener("scroll", () => {
@@ -53,7 +53,7 @@ describe("SelectionInViewMixin", function() {
     fixture[internal.setState]({ selectedIndex: 2 });
   });
 
-  it("Scrolls up to bring item above top edge fully into view", done => {
+  it("Scrolls up to bring item above top edge fully into view", (done) => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     fixture.scrollTop = 150; // Scrolled all the way to bottom.
@@ -75,7 +75,7 @@ function createSampleElement() {
   fixture.style.overflowY = "auto";
 
   // Add items.
-  ["Zero", "One", "Two"].forEach(text => {
+  ["Zero", "One", "Two"].forEach((text) => {
     const div = document.createElement("div");
     div.textContent = text;
     div.style.height = `${itemHeight}px`;

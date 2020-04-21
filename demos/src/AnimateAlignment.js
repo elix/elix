@@ -24,7 +24,7 @@ export default class AnimateAlignment extends Base {
 
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      align: "left"
+      align: "left",
     });
   }
 
@@ -55,19 +55,19 @@ export default class AnimateAlignment extends Base {
           container.style,
           distance > 0 && {
             transform,
-            transition: ""
+            transition: "",
           }
         );
         container.classList.toggle("right", effect === "slideRight");
       } else if (effectPhase === "during") {
         Object.assign(container.style, {
           transform: "translateX(0)",
-          transition: "transform 0.25s"
+          transition: "transform 0.25s",
         });
       } else if (effectPhase === "after") {
         Object.assign(container.style, {
           transform: "",
-          transition: ""
+          transition: "",
         });
       }
     }
@@ -83,11 +83,11 @@ export default class AnimateAlignment extends Base {
     if (changed.effectPhase && state.effectPhase === "after") {
       if (state.effect === "slideLeft") {
         Object.assign(effects, {
-          align: "left"
+          align: "left",
         });
       } else if (state.effect === "slideRight") {
         Object.assign(effects, {
-          align: "right"
+          align: "right",
         });
       }
     }

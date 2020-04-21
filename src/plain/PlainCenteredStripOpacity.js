@@ -19,7 +19,7 @@ const opacityMaximum = 1.0;
 class PlainCenteredStripOpacity extends CenteredStrip {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      transitionDuration: 250
+      transitionDuration: 250,
     });
   }
 
@@ -40,7 +40,7 @@ class PlainCenteredStripOpacity extends CenteredStrip {
         rightToLeft,
         selectedIndex,
         swipeFraction,
-        transitionDuration
+        transitionDuration,
       } = this[internal.state];
       if (items) {
         const sign = rightToLeft ? 1 : -1;
@@ -64,7 +64,7 @@ class PlainCenteredStripOpacity extends CenteredStrip {
           );
           Object.assign(item.style, {
             opacity,
-            transition
+            transition,
           });
         });
       }

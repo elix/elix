@@ -229,7 +229,7 @@ export function parse(text, dateTimeFormat) {
   // we're only supporting numeric day/month/year, we just take anything
   // that's not a digit as a separator.
   const regExText = parts
-    .map(part =>
+    .map((part) =>
       part.type === "literal"
         ? "(\\D+)"
         : // TODO: use named capture group `(<${part.type}>\\d+)`
@@ -283,7 +283,7 @@ export function parseWithOptionalYear(text, dateTimeFormat, timeBias) {
   const { day, locale, month } = dateTimeFormat.resolvedOptions();
   const abbreviatedFormat = new Intl.DateTimeFormat(locale, {
     day,
-    month
+    month,
   });
   const abbreviatedDate = parse(text, abbreviatedFormat);
   if (abbreviatedDate && timeBias) {

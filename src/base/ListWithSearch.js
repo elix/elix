@@ -56,7 +56,7 @@ class ListWithSearch extends Base {
       filter: "",
       inputPartType: "input",
       listPartType: FilterListBox,
-      placeholder: "Search"
+      placeholder: "Search",
     });
   }
 
@@ -192,9 +192,8 @@ class ListWithSearch extends Base {
 
     if (changed.placeholder) {
       const { placeholder } = this[internal.state];
-      /** @type {HTMLInputElement} */ (this[
-        internal.ids
-      ].input).placeholder = placeholder;
+      /** @type {HTMLInputElement} */ (this[internal.ids]
+        .input).placeholder = placeholder;
     }
   }
 

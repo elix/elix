@@ -43,7 +43,7 @@ class PopupSource extends Base {
       roomBelow: null,
       roomLeft: null,
       roomRight: null,
-      sourcePartType: "div"
+      sourcePartType: "div",
     });
   }
 
@@ -92,7 +92,7 @@ class PopupSource extends Base {
       });
 
       // Popup's closed state becomes our own closed state.
-      this[internal.ids].popup.addEventListener("closed", event => {
+      this[internal.ids].popup.addEventListener("closed", (event) => {
         if (!this.closed) {
           this[internal.raiseChangeEvents] = true;
           /** @type {any} */
@@ -120,7 +120,7 @@ class PopupSource extends Base {
         roomAbove,
         roomBelow,
         roomLeft,
-        roomRight
+        roomRight,
       } = this[internal.state];
 
       const fitsAbove = popupHeight <= roomAbove;
@@ -191,12 +191,12 @@ class PopupSource extends Base {
         left,
         opacity,
         position,
-        right
+        right,
       });
       const frame = /** @type {any} */ (popup).frame;
       Object.assign(frame.style, {
         maxHeight: maxFrameHeight ? `${maxFrameHeight}px` : null,
-        maxWidth: maxFrameWidth ? `${maxFrameWidth}px` : null
+        maxWidth: maxFrameWidth ? `${maxFrameWidth}px` : null,
       });
       this[internal.ids].popupContainer.style.top = positionBelow ? "" : "0";
     }
@@ -287,7 +287,7 @@ class PopupSource extends Base {
         roomAbove: null,
         roomBelow: null,
         roomLeft: null,
-        roomRight: null
+        roomRight: null,
       });
     }
 
@@ -373,7 +373,7 @@ function measurePopup(element) {
     roomLeft: sourceRect.right,
     roomRight: Math.ceil(windowWidth - sourceRect.left),
     windowHeight,
-    windowWidth
+    windowWidth,
   });
 }
 

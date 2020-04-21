@@ -42,7 +42,7 @@ export default function TransitionEffectMixin(Base) {
           this[internal.effectEndTarget] === this
             ? this
             : this[internal.shadowRoot];
-        target.addEventListener("transitionend", event => {
+        target.addEventListener("transitionend", (event) => {
           // See if the event target is our expected `effectEndTarget`. If the
           // component defines a `effectEndTarget` state, we use that; otherwise,
           // we use the element identified with `internal.effectEndTarget`.
@@ -52,7 +52,7 @@ export default function TransitionEffectMixin(Base) {
           if (event.target === effectEndTarget) {
             // Advance to the next phase.
             this[internal.setState]({
-              effectPhase: "after"
+              effectPhase: "after",
             });
           }
         });
@@ -84,8 +84,8 @@ export default function TransitionEffectMixin(Base) {
         const event = new CustomEvent("effect-phase-changed", {
           detail: {
             effect,
-            effectPhase
-          }
+            effectPhase,
+          },
         });
         this.dispatchEvent(event);
 
@@ -100,7 +100,7 @@ export default function TransitionEffectMixin(Base) {
           if (effectPhase === "before") {
             // Advance to the next phase.
             this[internal.setState]({
-              effectPhase: "during"
+              effectPhase: "during",
             });
           }
         }
@@ -115,7 +115,7 @@ export default function TransitionEffectMixin(Base) {
     async [internal.startEffect](effect) {
       await this[internal.setState]({
         effect,
-        effectPhase: "before"
+        effectPhase: "before",
       });
     }
   }

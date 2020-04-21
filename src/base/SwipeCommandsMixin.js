@@ -22,7 +22,7 @@ export default function SwipeCommandsMixin(Base) {
         swipeLeftRemovesItem: false,
         swipeRightCommitted: false,
         swipeRightFollowsThrough: false,
-        swipeRightRemovesItem: false
+        swipeRightRemovesItem: false,
       });
     }
 
@@ -46,7 +46,7 @@ export default function SwipeCommandsMixin(Base) {
             // Now that the swipe has finished, reset remaining swipe-related state.
             this[internal.setState]({
               swipeItem: null,
-              swipeRightCommitted: false
+              swipeRightCommitted: false,
             });
           }
         );
@@ -62,7 +62,7 @@ export default function SwipeCommandsMixin(Base) {
             // Now that the swipe has finished, reset remaining swipe-related state.
             this[internal.setState]({
               swipeItem: null,
-              swipeLeftCommitted: false
+              swipeLeftCommitted: false,
             });
           }
         );
@@ -97,7 +97,7 @@ export default function SwipeCommandsMixin(Base) {
             Object.assign(rightCommandContainer.style, {
               height: `${itemRect.height}px`,
               top: `${itemTop}px`,
-              width: `${commandWidth}px`
+              width: `${commandWidth}px`,
             });
           } else {
             rightCommandContainer.style.width = "0";
@@ -109,7 +109,7 @@ export default function SwipeCommandsMixin(Base) {
             Object.assign(leftCommandContainer.style, {
               height: `${itemRect.height}px`,
               top: `${itemTop}px`,
-              width: `${commandWidth}px`
+              width: `${commandWidth}px`,
             });
           } else {
             leftCommandContainer.style.width = "0";
@@ -118,7 +118,7 @@ export default function SwipeCommandsMixin(Base) {
           Object.assign(swipeItem.style, {
             height: `${itemRect.height}px`,
             transform: `translateX(${translation}%)`,
-            transition: ""
+            transition: "",
           });
         } else if (swipeItem) {
           // User has finished active swiping, swipe item is still active. Let
@@ -130,7 +130,7 @@ export default function SwipeCommandsMixin(Base) {
             swipeLeftRemovesItem,
             swipeRightCommitted,
             swipeRightFollowsThrough,
-            swipeRightRemovesItem
+            swipeRightRemovesItem,
           } = this[internal.state];
           const followThroughLeft =
             swipeLeftCommitted && swipeLeftFollowsThrough;
@@ -139,11 +139,11 @@ export default function SwipeCommandsMixin(Base) {
           const containerTransition = "height 0.25s, width 0.25s";
           Object.assign(leftCommandContainer.style, {
             transition: containerTransition,
-            width: followThroughRight ? "100%" : "0"
+            width: followThroughRight ? "100%" : "0",
           });
           Object.assign(rightCommandContainer.style, {
             transition: containerTransition,
-            width: followThroughLeft ? "100%" : "0"
+            width: followThroughLeft ? "100%" : "0",
           });
           const translation = followThroughLeft
             ? "-100%"
@@ -164,19 +164,19 @@ export default function SwipeCommandsMixin(Base) {
           Object.assign(swipeItem.style, {
             height,
             transform: `translateX(${translation})`,
-            transition: "height 0.25s, transform 0.25s"
+            transition: "height 0.25s, transform 0.25s",
           });
         } else {
           // No item is being swiped. Reset command containers.
           Object.assign(leftCommandContainer.style, {
             height: "",
             transition: "",
-            width: "0"
+            width: "0",
           });
           Object.assign(rightCommandContainer.style, {
             height: "",
             transition: "",
-            width: "0"
+            width: "0",
           });
         }
       }
@@ -205,7 +205,7 @@ export default function SwipeCommandsMixin(Base) {
         super[internal.swipeLeft]();
       }
       this[internal.setState]({
-        swipeLeftCommitted: true
+        swipeLeftCommitted: true,
       });
     }
 
@@ -215,7 +215,7 @@ export default function SwipeCommandsMixin(Base) {
         super[internal.swipeRight]();
       }
       this[internal.setState]({
-        swipeRightCommitted: true
+        swipeRightCommitted: true,
       });
     }
 
@@ -293,7 +293,7 @@ export default function SwipeCommandsMixin(Base) {
  * @param {number} y
  */
 function getItemAtY(items, y) {
-  return items.find(item => {
+  return items.find((item) => {
     const itemRect = item.getBoundingClientRect();
     return itemRect.top <= y && y <= itemRect.bottom;
   });

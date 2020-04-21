@@ -31,7 +31,7 @@ export default function ContentItemsMixin(Base) {
   return class ContentItems extends Base {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
-        items: null
+        items: null,
       });
     }
 

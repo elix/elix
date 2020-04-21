@@ -30,7 +30,7 @@ class CalendarMonthYearHeader extends Base {
     return Object.assign(super[internal.defaultState], {
       date: calendar.today(),
       monthFormat: "long",
-      yearFormat: "numeric"
+      yearFormat: "numeric",
     });
   }
 

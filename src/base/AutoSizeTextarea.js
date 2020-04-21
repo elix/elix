@@ -31,7 +31,7 @@ class AutoSizeTextarea extends Base {
     return Object.assign(super[internal.defaultState], {
       minimumRows: 1,
       value: null,
-      valueTracksContent: true
+      valueTracksContent: true,
     });
   }
 
@@ -64,7 +64,7 @@ class AutoSizeTextarea extends Base {
     const parsed = Number(minimumRows);
     if (!isNaN(parsed)) {
       this[internal.setState]({
-        minimumRows: parsed
+        minimumRows: parsed,
       });
     }
   }
@@ -88,7 +88,7 @@ class AutoSizeTextarea extends Base {
         /** @type {any} */
         const inner = this[internal.ids].inner;
         this[internal.setState]({
-          value: inner.value
+          value: inner.value,
         });
         this[internal.raiseChangeEvents] = false;
       });
@@ -105,9 +105,8 @@ class AutoSizeTextarea extends Base {
     }
 
     if (changed.value) {
-      /** @type {HTMLTextAreaElement} */ (this[
-        internal.ids
-      ].inner).value = value;
+      /** @type {HTMLTextAreaElement} */ (this[internal.ids]
+        .inner).value = value;
       this[internal.ids].textCopy.textContent = value;
     }
   }
@@ -134,9 +133,9 @@ class AutoSizeTextarea extends Base {
           "padding-bottom": textareaStyle.paddingBottom,
           "padding-left": textareaStyle.paddingLeft,
           "padding-right": textareaStyle.paddingRight,
-          "padding-top": textareaStyle.paddingTop
+          "padding-top": textareaStyle.paddingTop,
         },
-        lineHeight
+        lineHeight,
       });
     }
 
@@ -148,7 +147,7 @@ class AutoSizeTextarea extends Base {
        * @event value-changed
        */
       const event = new CustomEvent("value-changed", {
-        detail: { value }
+        detail: { value },
       });
       this.dispatchEvent(event);
     }
@@ -254,7 +253,7 @@ class AutoSizeTextarea extends Base {
   set value(value) {
     this[internal.setState]({
       value,
-      valueTracksContent: false
+      valueTracksContent: false,
     });
   }
 }
@@ -264,7 +263,7 @@ function getTextFromContent(/** @type {Node[]} */ contentNodes) {
   if (contentNodes === null) {
     return "";
   }
-  const texts = [...contentNodes].map(node => node.textContent);
+  const texts = [...contentNodes].map((node) => node.textContent);
   const text = texts.join("").trim();
   return unescapeHtml(text);
 }

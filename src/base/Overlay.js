@@ -65,7 +65,7 @@ class Overlay extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       backdropPartType: Backdrop,
-      framePartType: OverlayFrame
+      framePartType: OverlayFrame,
     });
   }
 
@@ -101,7 +101,7 @@ class Overlay extends Base {
 
     if (changed.opened && this[internal.state].content) {
       // If contents know how to size themselves, ask them to check their size.
-      this[internal.state].content.forEach(element => {
+      this[internal.state].content.forEach((element) => {
         if (element[internal.checkSize]) {
           element[internal.checkSize]();
         }

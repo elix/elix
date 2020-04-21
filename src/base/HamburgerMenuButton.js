@@ -33,7 +33,7 @@ class HamburgerMenuButton extends Base {
     return Object.assign(super[internal.defaultState], {
       fromEdge: "start",
       menuButtonPartType: Button,
-      menuPartType: Drawer
+      menuPartType: Drawer,
     });
   }
 
@@ -120,17 +120,17 @@ class HamburgerMenuButton extends Base {
     }
 
     if (changed.menuPartType) {
-      this[internal.ids].menu.addEventListener("closed", event => {
+      this[internal.ids].menu.addEventListener("closed", (event) => {
         /** @type {any} */
         const cast = event;
         this[internal.setState]({
           closeResult: cast.detail.closeResult,
-          opened: false
+          opened: false,
         });
       });
       this[internal.ids].menu.addEventListener("opened", () => {
         this[internal.setState]({
-          opened: true
+          opened: true,
         });
       });
     }

@@ -27,7 +27,7 @@ class ListComboBox extends Base {
     return Object.assign(super[internal.defaultState], {
       horizontalAlign: "stretch",
       listPartType: ListBox,
-      selectedIndex: -1
+      selectedIndex: -1,
     });
   }
 
@@ -115,7 +115,7 @@ class ListComboBox extends Base {
     }
 
     if (changed.listPartType) {
-      this[internal.ids].list.addEventListener("mousedown", event => {
+      this[internal.ids].list.addEventListener("mousedown", (event) => {
         // Only process events for the main (usually left) button.
         if (/** @type {MouseEvent} */ (event).button !== 0) {
           return;
@@ -148,14 +148,14 @@ class ListComboBox extends Base {
       // Backspace a second time to actually delete the selected text.
       this[internal.ids].list.addEventListener(
         "selected-index-changed",
-        event => {
+        (event) => {
           /** @type {any} */
           const cast = event;
           const listSelectedIndex = cast.detail.selectedIndex;
           if (this[internal.state].selectedIndex !== listSelectedIndex) {
             this[internal.raiseChangeEvents] = true;
             this[internal.setState]({
-              selectedIndex: listSelectedIndex
+              selectedIndex: listSelectedIndex,
             });
             this[internal.raiseChangeEvents] = false;
           }
@@ -181,7 +181,7 @@ class ListComboBox extends Base {
       /** @type {ListItemElement[]} */ const items = state.items;
       if (items && value != null) {
         const searchText = value.toLowerCase();
-        const selectedIndex = items.findIndex(item => {
+        const selectedIndex = items.findIndex((item) => {
           const itemText = getItemText(item);
           return itemText.toLowerCase() === searchText;
         });
@@ -208,7 +208,7 @@ class ListComboBox extends Base {
           if (value !== selectedItemText) {
             Object.assign(effects, {
               selectText,
-              value: selectedItemText
+              value: selectedItemText,
             });
           }
         }
@@ -218,7 +218,7 @@ class ListComboBox extends Base {
     // When items change, we need to recalculate popup size.
     if (changed.items) {
       Object.assign(effects, {
-        popupMeasured: false
+        popupMeasured: false,
       });
     }
 

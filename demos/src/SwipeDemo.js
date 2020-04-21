@@ -9,7 +9,7 @@ const Base = TouchSwipeMixin(TrackpadSwipeMixin(ReactiveElement));
 class SwipeDemo extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      swipeAxis: "horizontal"
+      swipeAxis: "horizontal",
     });
   }
 
@@ -21,11 +21,11 @@ class SwipeDemo extends Base {
       this.style.flexDirection = vertical ? "row" : "column";
       Object.assign(this[internal.ids].block.style, {
         height: vertical ? "100%" : "1em",
-        width: vertical ? "1em" : "100%"
+        width: vertical ? "1em" : "100%",
       });
       Object.assign(this[internal.ids].container.style, {
         "flex-direction": vertical ? "row-reverse" : "column",
-        "justify-content": vertical ? "flex-end" : "center"
+        "justify-content": vertical ? "flex-end" : "center",
       });
       this[internal.ids].empty.style.display = vertical ? "none" : "block";
       this[internal.ids].space.style.display = vertical ? "none" : "block";

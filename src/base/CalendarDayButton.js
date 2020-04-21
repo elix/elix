@@ -20,7 +20,7 @@ class CalendarDayButton extends Base {
       date: calendar.today(),
       dayPartType: CalendarDay,
       outsideRange: false,
-      tabIndex: -1
+      tabIndex: -1,
     });
   }
 

@@ -16,7 +16,7 @@ export default function PlaPlainModalOverlayMixin(Base) {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
         backdropPartType: PlainModalBackdrop,
-        framePartType: PlainOverlayFrame
+        framePartType: PlainOverlayFrame,
       });
     }
   };

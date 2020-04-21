@@ -214,7 +214,7 @@ function scrollOnePage(element, downward) {
   element[internal.raiseChangeEvents] = true;
 
   element[internal.setState]({
-    selectedIndex: newIndex
+    selectedIndex: newIndex,
   });
 
   element[internal.raiseChangeEvents] = saveRaiseChangesEvents;

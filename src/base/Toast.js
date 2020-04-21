@@ -31,7 +31,7 @@ class Toast extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       duration: null,
-      fromEdge: "bottom"
+      fromEdge: "bottom",
     });
   }
 
@@ -81,28 +81,28 @@ class Toast extends Base {
       const hostEdgeStyles = {
         bottom: {
           alignItems: "center",
-          justifyContent: "flex-end"
+          justifyContent: "flex-end",
         },
         "bottom-left": {
           alignItems: "flex-start",
-          justifyContent: "flex-end"
+          justifyContent: "flex-end",
         },
         "bottom-right": {
           alignItems: "flex-end",
-          justifyContent: "flex-end"
+          justifyContent: "flex-end",
         },
         top: {
           alignItems: "center",
-          justifyContent: null
+          justifyContent: null,
         },
         "top-left": {
           alignItems: "flex-start",
-          justifyContent: null
+          justifyContent: null,
         },
         "top-right": {
           alignItems: "flex-end",
-          justifyContent: null
-        }
+          justifyContent: null,
+        },
       };
       Object.assign(this.style, hostEdgeStyles[this[internal.state].fromEdge]);
     }
@@ -120,7 +120,7 @@ class Toast extends Base {
         "bottom-left": "bottom-right",
         "bottom-right": "bottom-left",
         "top-left": "top-right",
-        "top-right": "top-left"
+        "top-right": "top-left",
       };
       const languageAdjustedEdge = rightToLeft
         ? oppositeEdge[fromEdge] || fromEdge
@@ -133,7 +133,7 @@ class Toast extends Base {
         "bottom-right": "translateX(100%)",
         top: "translateY(-100%)",
         "top-left": "translateX(-100%)",
-        "top-right": "translateX(100%)"
+        "top-right": "translateX(100%)",
       };
 
       /** @type {IndexedObject<string>} */
@@ -143,7 +143,7 @@ class Toast extends Base {
         "bottom-right": "translateX(0)",
         top: "translateY(0)",
         "top-left": "translateX(0)",
-        "top-right": "translateX(0)"
+        "top-right": "translateX(0)",
       };
 
       const opened =
@@ -157,7 +157,7 @@ class Toast extends Base {
 
       Object.assign(this[internal.ids].frame.style, {
         opacity,
-        transform
+        transform,
       });
     }
   }

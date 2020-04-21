@@ -20,24 +20,24 @@ export default function DelegateItemsMixin(Base) {
     constructor() {
       super();
       // @ts-ignore
-      this[itemsChangedListenerKey] = event => {
+      this[itemsChangedListenerKey] = (event) => {
         /** @type {any} */
         const cast = event.target;
         const delegateItems = cast.items;
         if (this[internal.state].items !== delegateItems) {
           this[internal.setState]({
-            items: delegateItems
+            items: delegateItems,
           });
         }
       };
       // @ts-ignore
-      this[selectedIndexChangedListenerKey] = event => {
+      this[selectedIndexChangedListenerKey] = (event) => {
         /** @type {any} */
         const cast = event;
         const delegateSelectedIndex = cast.detail.selectedIndex;
         if (this[internal.state].selectedIndex !== delegateSelectedIndex) {
           this[internal.setState]({
-            selectedIndex: delegateSelectedIndex
+            selectedIndex: delegateSelectedIndex,
           });
         }
       };
@@ -45,7 +45,7 @@ export default function DelegateItemsMixin(Base) {
 
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
-        items: null
+        items: null,
       });
     }
 

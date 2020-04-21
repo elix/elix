@@ -10,7 +10,7 @@ class SereneTabs extends Tabs {
       generic: false,
       itemRole: "tabpanel",
       proxyPartType: SereneTabButton,
-      stagePartType: CrossfadeStage
+      stagePartType: CrossfadeStage,
     });
   }
 

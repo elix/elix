@@ -11,7 +11,7 @@ const daysOfWeek = {
   wed: 3,
   thu: 4,
   fri: 5,
-  sat: 6
+  sat: 6,
 };
 
 const weekDataUrl =
@@ -30,7 +30,7 @@ function formatWeekDataAsModule(weekData) {
   const transformed = {
     firstDay: transformWeekDays(firstDay),
     weekendEnd: transformWeekDays(weekendEnd),
-    weekendStart: transformWeekDays(weekendStart)
+    weekendStart: transformWeekDays(weekendStart),
   };
   const formatted = JSON.stringify(transformed, null, 2);
   const js = `// Generated from

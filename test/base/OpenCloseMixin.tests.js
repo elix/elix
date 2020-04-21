@@ -7,7 +7,7 @@ const Base = OpenCloseMixin(ReactiveMixin(HTMLElement));
 class OpenCloseTest extends Base {}
 customElements.define("open-close-test", OpenCloseTest);
 
-describe("OpenCloseMixin", function() {
+describe("OpenCloseMixin", function () {
   it("opens and closes with opened property", () => {
     const fixture = new OpenCloseTest();
     assert(!fixture.opened);

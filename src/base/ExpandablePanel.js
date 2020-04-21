@@ -30,7 +30,7 @@ const Base = OpenCloseMixin(
 class ExpandablePanel extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      transitionDuration: 250
+      transitionDuration: 250,
     });
   }
   get [internal.effectEndTarget]() {
@@ -56,13 +56,13 @@ class ExpandablePanel extends Base {
         open: {
           before: "0px",
           during: `${naturalHeight}px`,
-          after: ""
+          after: "",
         },
         close: {
           before: `${naturalHeight}px`,
           during: "0px",
-          after: "0px"
-        }
+          after: "0px",
+        },
       };
       const height = phaseHeights[effect][effectPhase];
 
@@ -79,7 +79,7 @@ class ExpandablePanel extends Base {
 
       Object.assign(this[internal.ids].outerContainer.style, {
         height,
-        transition
+        transition,
       });
     }
     if (changed.opened || changed.tabIndex) {

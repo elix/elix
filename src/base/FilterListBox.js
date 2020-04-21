@@ -10,7 +10,7 @@ import ListBox from "./ListBox.js";
 class FilterListBox extends ListBox {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      filter: null
+      filter: null,
     });
   }
 
@@ -86,7 +86,7 @@ class FilterListBox extends ListBox {
     // We inspect `content` instead of `items` so that we can render even those
     // elements that don't match the current filter.
     if ((changed.filter || changed.content) && content) {
-      content.forEach(content => {
+      content.forEach((content) => {
         if (content instanceof HTMLElement || content instanceof SVGElement) {
           // Hide content elements that don't match the filter.
           const matches = this[internal.itemMatchesState](
@@ -111,7 +111,7 @@ class FilterListBox extends ListBox {
     // When filter changes, let other mixins know items should be recalculated.
     if (changed.filter) {
       Object.assign(effects, {
-        items: null
+        items: null,
       });
     }
 

@@ -35,7 +35,7 @@ export default function TapSelectionMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this.addEventListener("mousedown", event => {
+      this.addEventListener("mousedown", (event) => {
         // Only process events for the main (usually left) button.
         if (event.button !== 0) {
           return;
@@ -56,7 +56,7 @@ export default function TapSelectionMixin(Base) {
           mozUserSelect: "none",
           msUserSelect: "none",
           webkitUserSelect: "none",
-          userSelect: "none"
+          userSelect: "none",
         });
       }
     }
@@ -84,7 +84,7 @@ export default function TapSelectionMixin(Base) {
           (!selectionRequired && selectedIndex !== targetIndex)
         ) {
           this[internal.setState]({
-            selectedIndex: targetIndex
+            selectedIndex: targetIndex,
           });
           event.stopPropagation();
         }

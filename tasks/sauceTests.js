@@ -11,24 +11,24 @@ const config = {
   framework: "mocha",
   // throttled: 3,
   sauceConfig: {
-    "video-upload-on-pass": false
+    "video-upload-on-pass": false,
   },
   browsers: [
     {
       browserName: "chrome",
-      platform: "OS X 10.14"
+      platform: "OS X 10.14",
     },
     {
       browserName: "chrome",
-      platform: "Windows 10"
+      platform: "Windows 10",
     },
     {
       browserName: "firefox",
-      platform: "OS X 10.14"
+      platform: "OS X 10.14",
     },
     {
       browserName: "firefox",
-      platform: "Windows 10"
+      platform: "Windows 10",
     },
     // TODO: Test with Chromium-based Edge when available
     // {
@@ -37,17 +37,17 @@ const config = {
     // },
     {
       browserName: "safari",
-      platform: "OS X 10.14"
-    }
+      platform: "OS X 10.14",
+    },
   ],
-  onTestSuiteComplete: status => {
+  onTestSuiteComplete: (status) => {
     if (status) {
       console.log("All tests passed!");
       reportStatus = 0;
     } else {
       console.log("One or more tests failed");
     }
-  }
+  },
 };
 
 async function runTests() {

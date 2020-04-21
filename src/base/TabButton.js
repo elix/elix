@@ -26,7 +26,7 @@ class TabButton extends Base {
     return Object.assign(super[internal.defaultState], {
       treatEnterAsClick: false, // Let tab strip handle Enter.
       treatSpaceAsClick: false, // Let tab strip handle Space.
-      position: "top"
+      position: "top",
     });
   }
 

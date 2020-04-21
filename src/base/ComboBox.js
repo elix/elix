@@ -52,7 +52,7 @@ class ComboBox extends Base {
       role: "combobox",
       selectText: false,
       sourcePartType: "div",
-      value: ""
+      value: "",
     });
   }
 
@@ -145,7 +145,7 @@ class ComboBox extends Base {
       // Escape closes popup and indicates why.
       case "Escape":
         this.close({
-          canceled: "Escape"
+          canceled: "Escape",
         });
         handled = true;
         break;
@@ -191,7 +191,7 @@ class ComboBox extends Base {
     if (changed.inputPartType) {
       this[internal.ids].input.addEventListener("blur", () => {
         this[internal.setState]({
-          focused: false
+          focused: false,
         });
         // If we're open and lose focus, then close.
         if (this.opened) {
@@ -204,7 +204,7 @@ class ComboBox extends Base {
       this[internal.ids].input.addEventListener("focus", () => {
         this[internal.raiseChangeEvents] = true;
         this[internal.setState]({
-          focused: true
+          focused: true,
         });
         this[internal.raiseChangeEvents] = false;
       });
@@ -216,7 +216,7 @@ class ComboBox extends Base {
         const value = cast.value;
         /** @type {PlainObject} */ const changes = {
           value,
-          selectText: false
+          selectText: false,
         };
         if (this.closed && value > "") {
           // If user types while popup is closed, implicitly open it.
@@ -229,20 +229,20 @@ class ComboBox extends Base {
       this[internal.ids].input.addEventListener("keydown", () => {
         this[internal.raiseChangeEvents] = true;
         this[internal.setState]({
-          selectText: false
+          selectText: false,
         });
         this[internal.raiseChangeEvents] = false;
       });
 
       // If the user clicks on the input and the popup is closed, open it.
-      this[internal.ids].input.addEventListener("mousedown", event => {
+      this[internal.ids].input.addEventListener("mousedown", (event) => {
         // Only process events for the main (usually left) button.
         if (/** @type {MouseEvent} */ (event).button !== 0) {
           return;
         }
         this[internal.raiseChangeEvents] = true;
         this[internal.setState]({
-          selectText: false
+          selectText: false,
         });
         if (this.closed && !this.disabled) {
           this.open();
@@ -254,7 +254,7 @@ class ComboBox extends Base {
     if (changed.popupTogglePartType) {
       const popupToggle = this[internal.ids].popupToggle;
       const input = this[internal.ids].input;
-      popupToggle.addEventListener("mousedown", event => {
+      popupToggle.addEventListener("mousedown", (event) => {
         // Only process events for the main (usually left) button.
         if (/** @type {MouseEvent} */ (event).button !== 0) {
           return;
@@ -289,7 +289,7 @@ class ComboBox extends Base {
       if (frame) {
         Object.assign(frame.style, {
           display: "flex",
-          flexDirection: "column"
+          flexDirection: "column",
         });
       }
       if ("closeOnWindowResize" in popup) {

@@ -27,7 +27,7 @@ export default function DialogModalityMixin(Base) {
   return class DialogModality extends Base {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
-        role: "dialog"
+        role: "dialog",
       });
     }
 
@@ -38,7 +38,7 @@ export default function DialogModalityMixin(Base) {
         case "Escape":
           // Close on Esc key.
           this.close({
-            canceled: "Escape"
+            canceled: "Escape",
           });
           handled = true;
           break;

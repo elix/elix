@@ -9,7 +9,7 @@ class CustomCarousel extends PlainCarousel {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       arrowButtonPartType: CustomArrowButton,
-      proxyPartType: CustomPageDot
+      proxyPartType: CustomPageDot,
     });
   }
 }

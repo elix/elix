@@ -16,7 +16,7 @@ class PopupButton extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       role: "button",
-      sourcePartType: "button"
+      sourcePartType: "button",
     });
   }
 
@@ -48,7 +48,7 @@ class PopupButton extends Base {
       // If the top-level element gets the focus while the popup is open, the
       // most likely expanation is that the user hit Shift+Tab to back up out of
       // the popup. In that case, we should close.
-      this.addEventListener("focus", async event => {
+      this.addEventListener("focus", async (event) => {
         const hostFocused = !ownEvent(this[internal.ids].popup, event);
         // It's possible to get a focus event in the initial mousedown on the
         // source button before the popup is even rendered. We don't want to
@@ -69,7 +69,7 @@ class PopupButton extends Base {
       // mousedown won't fire until the user releases their finger, so it behaves
       // like a click.
       const source = this[internal.ids].source;
-      source.addEventListener("mousedown", event => {
+      source.addEventListener("mousedown", (event) => {
         // mousedown events fire even if button is disabled, so we need
         // to explicitly ignore those.
         if (this.disabled) {

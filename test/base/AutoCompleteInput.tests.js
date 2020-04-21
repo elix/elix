@@ -1,7 +1,7 @@
 import { assert } from "../testHelpers.js";
 import {
   default as AutoCompleteInput,
-  autoComplete
+  autoComplete,
 } from "../../src/base/AutoCompleteInput.js";
 import * as internal from "../../src/base/internal.js";
 

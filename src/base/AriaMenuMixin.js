@@ -15,7 +15,7 @@ export default function AriaMenuMixin(Base) {
       const base = super[internal.defaultState];
       return Object.assign(base, {
         itemRole: base.itemRole || "menuitem",
-        role: base.role || "menu"
+        role: base.role || "menu",
       });
     }
 
@@ -34,7 +34,7 @@ export default function AriaMenuMixin(Base) {
       /** @type {ListItemElement[]} */ const items = this[internal.state].items;
       if ((changed.items || changed.itemRole) && items) {
         // Give each item a role.
-        items.forEach(item => {
+        items.forEach((item) => {
           if (itemRole === defaultAriaRole[item.localName]) {
             item.removeAttribute("role");
           } else {

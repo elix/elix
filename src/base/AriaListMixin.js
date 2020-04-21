@@ -42,7 +42,7 @@ export default function AriaListMixin(Base) {
       const base = super[internal.defaultState];
       return Object.assign(base, {
         itemRole: base.itemRole || "option",
-        role: base.role || "listbox"
+        role: base.role || "listbox",
       });
     }
 
@@ -61,7 +61,7 @@ export default function AriaListMixin(Base) {
       /** @type {ListItemElement[]} */ const items = this[internal.state].items;
       if (changed.items && items) {
         // Give each item an ID.
-        items.forEach(item => {
+        items.forEach((item) => {
           if (!item.id) {
             item.id = ensureId(item);
           }
@@ -69,7 +69,7 @@ export default function AriaListMixin(Base) {
       }
       if ((changed.items || changed.itemRole) && items) {
         // Give each item a role.
-        items.forEach(item => {
+        items.forEach((item) => {
           if (itemRole === defaultAriaRole[item.localName]) {
             item.removeAttribute("role");
           } else {

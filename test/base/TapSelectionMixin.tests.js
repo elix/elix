@@ -13,7 +13,7 @@ class TapSelectionTest extends TapSelectionMixin(
     const items = Array.prototype.slice.call(this.children);
     this[internal.setState]({
       items,
-      selectedIndex: -1
+      selectedIndex: -1,
     });
   }
 
@@ -26,7 +26,7 @@ class TapSelectionTest extends TapSelectionMixin(
 }
 customElements.define("tap-selection-test", TapSelectionTest);
 
-describe("TapSelectionMixin", function() {
+describe("TapSelectionMixin", function () {
   let container;
 
   before(() => {
@@ -37,7 +37,7 @@ describe("TapSelectionMixin", function() {
     container.innerHTML = "";
   });
 
-  it("sets the tapped item as the selected item", done => {
+  it("sets the tapped item as the selected item", (done) => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     assert.equal(fixture[internal.state].selectedIndex, -1);
@@ -49,7 +49,7 @@ describe("TapSelectionMixin", function() {
     mockInteractions.dispatchSyntheticMouseEvent(item, "mousedown");
   });
 
-  it("ignores right clicks", done => {
+  it("ignores right clicks", (done) => {
     const fixture = createSampleElement();
     container.appendChild(fixture);
     assert.equal(fixture[internal.state].selectedIndex, -1);
@@ -63,14 +63,14 @@ describe("TapSelectionMixin", function() {
       done();
     });
     mockInteractions.dispatchSyntheticMouseEvent(item, "mousedown", {
-      button: 2
+      button: 2,
     });
   });
 });
 
 function createSampleElement() {
   const fixture = new TapSelectionTest();
-  ["Zero", "One", "Two"].forEach(text => {
+  ["Zero", "One", "Two"].forEach((text) => {
     const div = document.createElement("div");
     div.textContent = text;
     fixture.appendChild(div);

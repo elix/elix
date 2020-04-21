@@ -29,7 +29,7 @@ class SlidingStage extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       orientation: "horizontal",
-      selectionRequired: true
+      selectionRequired: true,
     });
   }
 
@@ -92,7 +92,7 @@ class SlidingStage extends Base {
   set swipeFraction(swipeFraction) {
     const parsed = swipeFraction && parseFloat(swipeFraction);
     this[internal.setState]({
-      swipeFraction: parsed
+      swipeFraction: parsed,
     });
   }
 

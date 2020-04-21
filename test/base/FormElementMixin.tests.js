@@ -8,7 +8,7 @@ const formElementsSupported = "ElementInternals" in window;
 class FormElementTest extends FormElementMixin(ReactiveElement) {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      value: null
+      value: null,
     });
   }
 
@@ -20,7 +20,7 @@ class FormElementTest extends FormElementMixin(ReactiveElement) {
       const validationMessage = valid ? "" : `Can't be empty`;
       Object.assign(effects, {
         valid,
-        validationMessage
+        validationMessage,
       });
     }
 
@@ -57,7 +57,7 @@ customElements.define("form-element-test", FormElementTest);
     assert.equal(elements[0], fixture);
   });
 
-  it("includes its value in form submission", done => {
+  it("includes its value in form submission", (done) => {
     const fixture = new FormElementTest();
     fixture.name = "animal";
     const form = document.createElement("form");
@@ -69,7 +69,7 @@ customElements.define("form-element-test", FormElementTest);
     container.append(form, resultFrame);
     fixture.value = "aardvark";
     fixture[internal.renderChanges]();
-    form.addEventListener("formdata", event => {
+    form.addEventListener("formdata", (event) => {
       assert(event["formData"].get("animal"), "aardvark");
       done();
     });

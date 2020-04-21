@@ -286,13 +286,13 @@ const locales = {
   "vun-TZ": "Vunjo (Tanzania)",
   "cy-GB": "Welsh (United Kingdom)",
   "yo-NG": "Yoruba (Nigeria)",
-  "zu-ZA": "Zulu (South Africa)"
+  "zu-ZA": "Zulu (South Africa)",
 };
 
 class LocaleSelector extends ReactiveElement {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      value: navigator.language
+      value: navigator.language,
     });
   }
 
@@ -309,9 +309,8 @@ class LocaleSelector extends ReactiveElement {
 
     if (changed.value) {
       const value = this[internal.state].value;
-      /** @type {HTMLSelectElement} */ (this[
-        internal.ids
-      ].select).value = value;
+      /** @type {HTMLSelectElement} */ (this[internal.ids]
+        .select).value = value;
     }
   }
 
@@ -320,8 +319,8 @@ class LocaleSelector extends ReactiveElement {
     if (changed.value && this[internal.raiseChangeEvents]) {
       const event = new CustomEvent("change", {
         detail: {
-          value: this[internal.state].value
-        }
+          value: this[internal.state].value,
+        },
       });
       this.dispatchEvent(event);
     }
@@ -337,7 +336,7 @@ class LocaleSelector extends ReactiveElement {
       <select id="select"></select>
     `;
     // Create options for all locales.
-    const localeOptions = Object.keys(locales).map(locale => {
+    const localeOptions = Object.keys(locales).map((locale) => {
       const option = document.createElement("option");
       option.value = locale;
       option.disabled = !localeSupported(locale);

@@ -53,7 +53,7 @@ export class SpinBox extends Base {
       orientation: "vertical",
       step: 1,
       stepSelect: false,
-      value: ""
+      value: "",
     });
   }
 
@@ -132,9 +132,8 @@ export class SpinBox extends Base {
       }
       if ("disabled" in this[internal.ids].upButton) {
         const downDisabled = disabled || !canGoDown;
-        /** @type {any} */ (this[
-          internal.ids
-        ].downButton).disabled = downDisabled;
+        /** @type {any} */ (this[internal.ids]
+          .downButton).disabled = downDisabled;
       }
     }
 
@@ -222,7 +221,7 @@ function renderParts(root, state, changed) {
   if (!changed || changed.inputPartType) {
     const { buttonPartType } = state;
     const buttons = root.querySelectorAll('[part~="spin-button"]');
-    buttons.forEach(button => {
+    buttons.forEach((button) => {
       template.transmute(button, buttonPartType);
     });
   }

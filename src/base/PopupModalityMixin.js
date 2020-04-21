@@ -52,7 +52,7 @@ export default function PopupModalityMixin(Base) {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
         closeOnWindowResize: true,
-        role: "alert"
+        role: "alert",
       });
     }
 
@@ -63,7 +63,7 @@ export default function PopupModalityMixin(Base) {
       switch (event.key) {
         case "Escape":
           this.close({
-            canceled: "Escape"
+            canceled: "Escape",
           });
           handled = true;
           break;

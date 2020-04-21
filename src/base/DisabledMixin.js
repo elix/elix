@@ -12,7 +12,7 @@ export default function DisabledMixin(Base) {
   class Disabled extends Base {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
-        disabled: false
+        disabled: false,
       });
     }
 

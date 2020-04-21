@@ -78,7 +78,7 @@ const Base = AriaListMixin(
 class ListBox extends Base {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      orientation: "vertical"
+      orientation: "vertical",
     });
   }
 
@@ -108,13 +108,13 @@ class ListBox extends Base {
               display: "block",
               flexDirection: "",
               overflowX: "hidden",
-              overflowY: "auto"
+              overflowY: "auto",
             }
           : {
               display: "flex",
               flexDirection: "row",
               overflowX: "auto",
-              overflowY: "hidden"
+              overflowY: "hidden",
             };
       Object.assign(this[internal.ids].container.style, style);
     }

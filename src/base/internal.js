@@ -624,7 +624,7 @@ if (elixdebug === "true") {
       swipeUp,
       swipeUpComplete,
       tap,
-      template
-    }
+      template,
+    },
   };
 }

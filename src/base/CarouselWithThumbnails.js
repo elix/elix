@@ -11,7 +11,7 @@ class CarouselWithThumbnails extends Carousel {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       proxyListOverlap: false,
-      proxyPartType: "img"
+      proxyPartType: "img",
     });
   }
 

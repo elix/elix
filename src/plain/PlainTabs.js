@@ -17,7 +17,7 @@ class PlainTabs extends Tabs {
       itemRole: "tabpanel",
       proxyPartType: PlainTabButton,
       proxyListPartType: PlainTabStrip,
-      tabAlign: "start"
+      tabAlign: "start",
     });
   }
   get [internal.template]() {

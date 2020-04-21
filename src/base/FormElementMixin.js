@@ -28,7 +28,7 @@ export default function FormElementMixin(Base) {
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
         validationMessage: "",
-        valid: true
+        valid: true,
       });
     }
 
@@ -91,7 +91,7 @@ export default function FormElementMixin(Base) {
           } else {
             this[internal.nativeInternals].setValidity(
               {
-                customError: true
+                customError: true,
               },
               validationMessage
             );

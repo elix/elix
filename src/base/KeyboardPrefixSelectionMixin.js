@@ -101,7 +101,7 @@ export default function KeyboardPrefixSelectionMixin(Base) {
       const searchText = prefix.toLowerCase();
       /** @type {string[]} */ const texts = this[internal.state].texts;
       const selectedIndex = texts.findIndex(
-        text => text.substr(0, prefix.length).toLowerCase() === searchText
+        (text) => text.substr(0, prefix.length).toLowerCase() === searchText
       );
       if (selectedIndex >= 0) {
         const previousIndex = this.selectedIndex;

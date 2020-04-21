@@ -17,7 +17,7 @@ class SlidingPagesWithArrows extends Base {
     const finePointer = !window.matchMedia("(pointer:coarse)").matches;
     return Object.assign(super[internal.defaultState], {
       arrowButtonPartType: PlainArrowDirectionButton,
-      showArrowButtons: finePointer
+      showArrowButtons: finePointer,
     });
   }
 

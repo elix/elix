@@ -22,7 +22,7 @@ describe("KeyboardDirectionMixin", () => {
     const fixture = new KeyboardDirectionMixinTest();
     const spy = sinon.spy(fixture, internal.goRight);
     const result = fixture[internal.keydown]({
-      key: "ArrowRight"
+      key: "ArrowRight",
     });
     assert(spy.calledOnce);
     assert(result);
@@ -31,11 +31,11 @@ describe("KeyboardDirectionMixin", () => {
   it("ignores a Right arrow key when orientation is vertical", () => {
     const fixture = new KeyboardDirectionMixinTest();
     Object.assign(fixture[internal.state], {
-      orientation: "vertical"
+      orientation: "vertical",
     });
     const spy = sinon.spy(fixture, internal.goRight);
     const result = fixture[internal.keydown]({
-      key: "ArrowRight"
+      key: "ArrowRight",
     });
     assert(!spy.calledOnce);
     assert(!result);
@@ -46,7 +46,7 @@ describe("KeyboardDirectionMixin", () => {
     const spy = sinon.spy(fixture, internal.goRight);
     const result = fixture[internal.keydown]({
       altKey: true,
-      key: "ArrowRight"
+      key: "ArrowRight",
     });
     assert(!spy.calledOnce);
     assert(!result);

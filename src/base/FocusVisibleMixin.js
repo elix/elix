@@ -42,7 +42,7 @@ export default function FocusVisibleMixin(Base) {
       // state, this could lead to setting state during rendering, which is bad.
       // To avoid this problem, we use promise timing to defer the setting of
       // state.
-      this.addEventListener("focusout", event => {
+      this.addEventListener("focusout", (event) => {
         Promise.resolve().then(() => {
           // What has the focus now?
           /** @type {any} */ const cast = event;
@@ -53,7 +53,7 @@ export default function FocusVisibleMixin(Base) {
           const lostFocus = !isFocusedElement && !containsFocus;
           if (lostFocus) {
             this[internal.setState]({
-              focusVisible: false
+              focusVisible: false,
             });
             // No longer need to listen for changes in focus visibility.
             document.removeEventListener(
@@ -69,7 +69,7 @@ export default function FocusVisibleMixin(Base) {
           if (this[internal.state].focusVisible !== keyboardActive) {
             // Show the element as focused if the keyboard has been used.
             this[internal.setState]({
-              focusVisible: keyboardActive
+              focusVisible: keyboardActive,
             });
           }
           if (!this[focusVisibleChangedListenerKey]) {
@@ -86,7 +86,7 @@ export default function FocusVisibleMixin(Base) {
 
     get [internal.defaultState]() {
       return Object.assign(super[internal.defaultState] || {}, {
-        focusVisible: false
+        focusVisible: false,
       });
     }
 
@@ -125,7 +125,7 @@ export default function FocusVisibleMixin(Base) {
 
 function refreshFocus(/** @type {ReactiveElement} */ element) {
   element[internal.setState]({
-    focusVisible: keyboardActive
+    focusVisible: keyboardActive,
   });
 }
 
@@ -134,8 +134,8 @@ function updateKeyboardActive(/** @type {boolean} */ newKeyboardActive) {
     keyboardActive = newKeyboardActive;
     const event = new CustomEvent("focus-visible-changed", {
       detail: {
-        focusVisible: keyboardActive
-      }
+        focusVisible: keyboardActive,
+      },
     });
     document.dispatchEvent(event);
   }

@@ -30,7 +30,7 @@ export default function TrackpadSwipeMixin(Base) {
     constructor() {
       // @ts-ignore
       super();
-      this.addEventListener("wheel", async event => {
+      this.addEventListener("wheel", async (event) => {
         this[internal.raiseChangeEvents] = true;
         const handled = handleWheel(this, event);
         if (handled) {
@@ -52,7 +52,7 @@ export default function TrackpadSwipeMixin(Base) {
         swipeFractionMin: -1,
         swipeLeftWillCommit: false,
         swipeRightWillCommit: false,
-        swipeUpWillCommit: false
+        swipeUpWillCommit: false,
       });
     }
 
@@ -83,12 +83,12 @@ export default function TrackpadSwipeMixin(Base) {
           if (swipeAxis === "horizontal") {
             Object.assign(effects, {
               swipeLeftWillCommit: swipeFraction <= -0.5,
-              swipeRightWillCommit: swipeFraction >= 0.5
+              swipeRightWillCommit: swipeFraction >= 0.5,
             });
           } else {
             Object.assign(effects, {
               swipeUpWillCommit: swipeFraction <= -0.5,
-              swipeDownWillCommit: swipeFraction >= 0.5
+              swipeDownWillCommit: swipeFraction >= 0.5,
             });
           }
         }
@@ -276,7 +276,7 @@ function performImmediateGesture(element, gesture) {
     swipeFraction: null,
     swipeLeftWillCommit: false,
     swipeRightWillCommit: false,
-    swipeUpWillCommit: false
+    swipeUpWillCommit: false,
   });
 }
 
@@ -327,7 +327,7 @@ async function wheelTimedOut(element) {
     swipeFraction: null,
     swipeLeftWillCommit: false,
     swipeRightWillCommit: false,
-    swipeUpWillCommit: false
+    swipeUpWillCommit: false,
   });
 
   if (gesture && element[gesture]) {

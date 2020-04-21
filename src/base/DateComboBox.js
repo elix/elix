@@ -54,7 +54,7 @@ class DateComboBox extends Base {
   set date(date) {
     super.date = date;
     this[internal.setState]({
-      datePriority: true
+      datePriority: true,
     });
   }
 
@@ -92,7 +92,7 @@ class DateComboBox extends Base {
     const dateTimeFormatOptions = {
       day: "numeric",
       month: "numeric",
-      year: "numeric"
+      year: "numeric",
     };
 
     return Object.assign(super[internal.defaultState], {
@@ -106,7 +106,7 @@ class DateComboBox extends Base {
       monthFormat: "long",
       timeBias: null,
       todayButtonPartType: Button,
-      yearFormat: "numeric"
+      yearFormat: "numeric",
     });
   }
 
@@ -127,7 +127,7 @@ class DateComboBox extends Base {
     }
     const date = this[internal.state].date || new Date();
     this[internal.setState]({
-      date: calendar.offsetDateByDays(date, 7)
+      date: calendar.offsetDateByDays(date, 7),
     });
     return true;
   }
@@ -138,7 +138,7 @@ class DateComboBox extends Base {
     }
     const date = this[internal.state].date || new Date();
     this[internal.setState]({
-      date: calendar.offsetDateByDays(date, -1)
+      date: calendar.offsetDateByDays(date, -1),
     });
     return true;
   }
@@ -149,7 +149,7 @@ class DateComboBox extends Base {
     }
     const date = this[internal.state].date || new Date();
     this[internal.setState]({
-      date: calendar.offsetDateByDays(date, 1)
+      date: calendar.offsetDateByDays(date, 1),
     });
     return true;
   }
@@ -160,7 +160,7 @@ class DateComboBox extends Base {
     }
     const date = this[internal.state].date || new Date();
     this[internal.setState]({
-      date: calendar.offsetDateByDays(date, -7)
+      date: calendar.offsetDateByDays(date, -7),
     });
     return true;
   }
@@ -199,7 +199,7 @@ class DateComboBox extends Base {
       case "PageDown":
         if (opened) {
           this[internal.setState]({
-            date: calendar.offsetDateByMonths(date, 1)
+            date: calendar.offsetDateByMonths(date, 1),
           });
           handled = true;
         }
@@ -208,7 +208,7 @@ class DateComboBox extends Base {
       case "PageUp":
         if (opened) {
           this[internal.setState]({
-            date: calendar.offsetDateByMonths(date, -1)
+            date: calendar.offsetDateByMonths(date, -1),
           });
           handled = true;
         }
@@ -267,14 +267,14 @@ class DateComboBox extends Base {
     renderParts(this[internal.shadowRoot], this[internal.state], changed);
 
     if (changed.calendarPartType) {
-      this[internal.ids].calendar.addEventListener("date-changed", event => {
+      this[internal.ids].calendar.addEventListener("date-changed", (event) => {
         this[internal.raiseChangeEvents] = true;
         /** @type {any} */
         const cast = event;
         this.date = cast.detail.date;
         this[internal.raiseChangeEvents] = false;
       });
-      this[internal.ids].calendar.addEventListener("mousedown", event => {
+      this[internal.ids].calendar.addEventListener("mousedown", (event) => {
         // Only process events for the main (usually left) button.
         if (/** @type {MouseEvent} */ (event).button !== 0) {
           return;
@@ -286,7 +286,7 @@ class DateComboBox extends Base {
       });
     }
     if (changed.todayButtonPartType) {
-      this[internal.ids].todayButton.addEventListener("mousedown", event => {
+      this[internal.ids].todayButton.addEventListener("mousedown", (event) => {
         // Only process events for the main (usually left) button.
         if (/** @type {MouseEvent} */ (event).button !== 0) {
           return;
@@ -352,7 +352,7 @@ class DateComboBox extends Base {
         dateTimeFormat,
         focused,
         opened,
-        userChangedDate
+        userChangedDate,
       } = state;
       const closing = changed.opened && !opened;
       const canceled = closeResult && closeResult.canceled;
@@ -370,7 +370,7 @@ class DateComboBox extends Base {
         const selectText = formattedDate.length > 0 && !probablyMobile;
         Object.assign(effects, {
           selectText,
-          value: formattedDate
+          value: formattedDate,
         });
       }
     }
@@ -387,7 +387,7 @@ class DateComboBox extends Base {
         const parsedDate = this.parseDate(value, dateTimeFormat, timeBias);
         if (parsedDate) {
           Object.assign(effects, {
-            date: parsedDate
+            date: parsedDate,
           });
         }
       }
@@ -480,7 +480,7 @@ class DateComboBox extends Base {
     this[internal.raiseChangeEvents] = true;
     super.value = value;
     this[internal.setState]({
-      datePriority: false
+      datePriority: false,
     });
     this[internal.raiseChangeEvents] = saveRaiseChangesEvents;
   }

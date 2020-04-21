@@ -14,7 +14,7 @@ class OverlayTest extends Base {
 }
 customElements.define("overlay-test", OverlayTest);
 
-describe("OverlayMixin", function() {
+describe("OverlayMixin", function () {
   let container;
 
   before(() => {

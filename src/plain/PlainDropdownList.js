@@ -20,7 +20,7 @@ class PlainDropdownList extends DropdownList {
       menuPartType: PlainMenu,
       popupPartType: PlainPopup,
       sourcePartType: PlainBorderButton,
-      popupTogglePartType: PlainOpenCloseToggle
+      popupTogglePartType: PlainOpenCloseToggle,
     });
   }
 }

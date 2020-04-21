@@ -8,7 +8,7 @@ const path = require("path");
 // corresponding Foo.js file in the /define folder that exports the same
 // Foo component, and also defines it as `elix-foo`.
 async function createDefineModules(defineFolder, componentFiles) {
-  const modulePromises = componentFiles.map(componentFile => {
+  const modulePromises = componentFiles.map((componentFile) => {
     // Strip 'Plain' from beginning of class name.
     const plainClassName = path.basename(componentFile, ".js");
     const plainRegex = /^Plain(?<name>.+)/;

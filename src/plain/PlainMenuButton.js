@@ -21,7 +21,7 @@ class PlainMenuButton extends MenuButton {
       menuPartType: PlainMenu,
       popupPartType: PlainPopup,
       popupTogglePartType: PlainOpenCloseToggle,
-      sourcePartType: PlainBorderButton
+      sourcePartType: PlainBorderButton,
     });
   }
 

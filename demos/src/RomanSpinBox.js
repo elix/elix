@@ -14,7 +14,7 @@ const romanToNumberMap = {
   IX: 9,
   V: 5,
   IV: 4,
-  I: 1
+  I: 1,
 };
 
 export default class RomanSpinBox extends PlainSpinBox {
@@ -24,7 +24,7 @@ export default class RomanSpinBox extends PlainSpinBox {
     if (changed.value) {
       const { value } = state;
       Object.assign(effects, {
-        canGoDown: value !== "I" && value !== ""
+        canGoDown: value !== "I" && value !== "",
       });
     }
 

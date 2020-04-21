@@ -40,7 +40,7 @@ class DrawerWithGrip extends Drawer {
     renderParts(this[internal.shadowRoot], this[internal.state], changed);
 
     if (changed.gripPartType) {
-      this[internal.ids].grip.addEventListener("click", event => {
+      this[internal.ids].grip.addEventListener("click", (event) => {
         // Clicking grip toggles drawer.
         this[internal.raiseChangeEvents] = true;
         this.toggle();
@@ -64,7 +64,7 @@ class DrawerWithGrip extends Drawer {
         bottom: "auto 1fr / auto",
         left: "auto / 1fr auto",
         right: "auto / auto 1fr",
-        top: "1fr auto / auto"
+        top: "1fr auto / auto",
       };
       mapFromEdgeToGrid.start = rightToLeft
         ? mapFromEdgeToGrid.right
@@ -78,7 +78,7 @@ class DrawerWithGrip extends Drawer {
         bottom: "1 / 1",
         left: "1 / 2",
         right: "1 / 1",
-        top: "2 / 1"
+        top: "2 / 1",
       };
       mapFromEdgeToGripCell.start = rightToLeft
         ? mapFromEdgeToGripCell.right
@@ -109,7 +109,7 @@ class DrawerWithGrip extends Drawer {
 
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
-      gripPartType: Button
+      gripPartType: Button,
     });
   }
 
