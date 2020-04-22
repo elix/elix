@@ -228,7 +228,7 @@ class TabStrip extends Base {
     return template.html`
       <style>
         :host {
-          display: grid;
+          display: inline-grid;
           grid-auto-flow: column;
         }
       </style>

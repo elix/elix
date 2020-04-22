@@ -55,6 +55,11 @@ class UpDownToggle extends ReactiveElement {
 
   get [internal.template]() {
     return template.html`
+      <style>
+        :host {
+          display: inline-block;
+        }
+      </style>
       <div id="downIcon" part="down-icon">
         <slot name="down-icon"></slot>
       </div>

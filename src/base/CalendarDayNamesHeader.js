@@ -89,7 +89,7 @@ class CalendarDayNamesHeader extends ReactiveElement {
       <style>
         :host {
           direction: ltr;
-          display: grid;
+          display: inline-grid;
           grid-template-columns: repeat(7, 1fr);
         }
       </style>

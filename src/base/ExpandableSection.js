@@ -95,7 +95,7 @@ class ExpandableSection extends Base {
     const result = template.html`
       <style>
         :host {
-          display: block;
+          display: inline-block;
         }
 
         [part~="header"] {

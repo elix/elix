@@ -115,7 +115,7 @@ class Overlay extends Base {
       <style>
         :host {
           align-items: center;
-          display: flex;
+          display: inline-flex;
           flex-direction: column;
           justify-content: center;
           max-height: 100vh;

@@ -167,7 +167,7 @@ class CenteredStrip extends Base {
       <style>
         :host {
           cursor: default;
-          display: flex;
+          display: inline-flex;
           -webkit-tap-highlight-color: transparent;
           -moz-user-select: none;
           -ms-user-select: none;

@@ -216,7 +216,7 @@ class Menu extends Base {
         :host {
           box-sizing: border-box;
           cursor: default;
-          display: flex;
+          display: inline-flex;
           -webkit-tap-highlight-color: transparent;
           touch-action: manipulation;
         }

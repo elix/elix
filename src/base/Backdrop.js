@@ -26,6 +26,7 @@ class Backdrop extends Base {
     return template.html`
       <style>
         :host {
+          display: inline-block;
           height: 100%;
           left: 0;
           position: fixed;
