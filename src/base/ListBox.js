@@ -51,8 +51,8 @@ const Base = AriaListMixin(
 /**
  * Single-selection list box
  *
- * This component supports a generic visual style, ARIA support, and full
- * keyboard navigation. See [KeyboardDirectionMixin](KeyboardDirectionMixin),
+ * This component supports ARIA support and full keyboard navigation. See
+ * [KeyboardDirectionMixin](KeyboardDirectionMixin),
  * [KeyboardPagedSelectionMixin](KeyboardPagedSelectionMixin), and
  * [KeyboardPrefixSelectionMixin](KeyboardPrefixSelectionMixin) for keyboard
  * details.

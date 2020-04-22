@@ -1,11 +1,10 @@
 import { indexOfItemContainingTarget } from "../core/dom.js";
 // import FormElementMixin from "./FormElementMixin.js";
 import html from "../core/html.js";
-// import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
 import AriaListMixin from "./AriaListMixin.js";
-// import ComposedFocusMixin from "./ComposedFocusMixin.js";
+import ComposedFocusMixin from "./ComposedFocusMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import * as internal from "./internal.js";
@@ -14,6 +13,7 @@ import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import KeyboardPagedSelectionMixin from "./KeyboardPagedSelectionMixin.js";
 import KeyboardPrefixSelectionMixin from "./KeyboardPrefixSelectionMixin.js";
+import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import MultiSelectionMixin from "./MultiSelectionMixin.js";
 // import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SelectionInViewMixin from "./SelectionInViewMixin.js";
@@ -23,21 +23,23 @@ import TapSelectionMixin from "./TapSelectionMixin.js";
 // import TapToggleMixin from "./TapToggleMixin.js";
 
 const Base = AriaListMixin(
-  //   ComposedFocusMixin(
-  DirectionSelectionMixin(
-    FocusVisibleMixin(
-      //         FormElementMixin(
-      ItemsTextMixin(
-        KeyboardDirectionMixin(
-          KeyboardMixin(
-            KeyboardPagedSelectionMixin(
-              KeyboardPrefixSelectionMixin(
-                //                     LanguageDirectionMixin(
-                //                       SelectedItemTextValueMixin(
-                SelectionInViewMixin(
-                  MultiSelectionMixin(
-                    SingleSelectionMixin(
-                      SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+  ComposedFocusMixin(
+    DirectionSelectionMixin(
+      FocusVisibleMixin(
+        //         FormElementMixin(
+        ItemsTextMixin(
+          KeyboardDirectionMixin(
+            KeyboardMixin(
+              KeyboardPagedSelectionMixin(
+                KeyboardPrefixSelectionMixin(
+                  LanguageDirectionMixin(
+                    //                       SelectedItemTextValueMixin(
+                    SelectionInViewMixin(
+                      MultiSelectionMixin(
+                        SingleSelectionMixin(
+                          SlotItemsMixin(TapSelectionMixin(ReactiveElement))
+                        )
+                      )
                     )
                   )
                 )
@@ -51,10 +53,10 @@ const Base = AriaListMixin(
 );
 
 /**
- * Single-selection list box
+ * Multiple-selection list box
  *
- * This component supports a generic visual style, ARIA support, and full
- * keyboard navigation. See [KeyboardDirectionMixin](KeyboardDirectionMixin),
+ * This component supports ARIA support and full keyboard navigation. See
+ * [KeyboardDirectionMixin](KeyboardDirectionMixin),
  * [KeyboardPagedSelectionMixin](KeyboardPagedSelectionMixin), and
  * [KeyboardPrefixSelectionMixin](KeyboardPrefixSelectionMixin) for keyboard
  * details.
