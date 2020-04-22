@@ -371,6 +371,10 @@ class MenuButton extends PopupButton {
           max-height: 100%;
         }
 
+        [part~="popup-toggle"] {
+          outline: none;
+        }
+
         [part~="source"] {
           align-items: center;
           display: flex;
