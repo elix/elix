@@ -55,6 +55,7 @@ export { default as CarouselWithThumbnails } from "./plain/PlainCarouselWithThum
 export { default as CenteredStrip } from "./plain/PlainCenteredStrip.js";
 export { default as CenteredStripHighlight } from "./plain/PlainCenteredStripHighlight.js";
 export { default as CenteredStripOpacity } from "./plain/PlainCenteredStripOpacity.js";
+export { default as CheckListItem } from "./plain/PlainCheckListItem.js";
 export { default as ComboBox } from "./plain/PlainComboBox.js";
 export { default as ComboBoxMixin } from "./plain/PlainComboBoxMixin.js";
 export { default as CrossfadeStage } from "./plain/PlainCrossfadeStage.js";

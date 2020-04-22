@@ -28,6 +28,7 @@ export { default as CarouselWithThumbnails } from "./CarouselWithThumbnails.js";
 export { default as CenteredStrip } from "./CenteredStrip.js";
 export { default as CenteredStripHighlight } from "./CenteredStripHighlight.js";
 export { default as CenteredStripOpacity } from "./CenteredStripOpacity.js";
+export { default as CheckListItem } from "./CheckListItem.js";
 export { default as ComboBox } from "./ComboBox.js";
 export { default as ComposedFocusMixin } from "../src/base/ComposedFocusMixin.js";
 export { default as ContentItemsMixin } from "../src/base/ContentItemsMixin.js";
