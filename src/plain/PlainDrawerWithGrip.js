@@ -1,5 +1,5 @@
-import * as internal from "../base/internal.js";
 import DrawerWithGrip from "../base/DrawerWithGrip.js";
+import * as internal from "../base/internal.js";
 import html from "../core/html.js";
 import PlainDrawerMixin from "./PlainDrawerMixin.js";
 import PlainModalOverlayMixin from "./PlainModalOverlayMixin.js";

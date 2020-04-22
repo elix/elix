@@ -1,8 +1,8 @@
-import { getTextsFromItems } from "./ItemsTextMixin.js";
-import { substantiveElements } from "./content.js";
-import * as internal from "./internal.js";
 import AutoCompleteInput from "./AutoCompleteInput.js";
+import { substantiveElements } from "./content.js";
 import FilterListBox from "./FilterListBox.js";
+import * as internal from "./internal.js";
+import { getTextsFromItems } from "./ItemsTextMixin.js";
 import ListComboBox from "./ListComboBox.js";
 import SlotContentMixin from "./SlotContentMixin.js";
 

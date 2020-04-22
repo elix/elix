@@ -1,8 +1,8 @@
-import * as internal from "./internal.js";
+import html from "../core/html.js";
 import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
-import html from "../core/html.js";
+import * as internal from "./internal.js";
 import WrappedStandardElement from "./WrappedStandardElement.js";
 
 const Base = DelegateInputLabelMixin(

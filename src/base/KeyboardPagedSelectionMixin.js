@@ -1,6 +1,6 @@
-import { defaultScrollTarget } from "./scrolling.js";
-import * as internal from "./internal.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
+import { defaultScrollTarget } from "./scrolling.js";
 
 /**
  * Maps the Page Up and Page Down keys to selection operations.

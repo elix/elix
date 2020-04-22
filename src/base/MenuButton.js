@@ -1,7 +1,7 @@
 import { deepContains, indexOfItemContainingTarget } from "../core/dom.js";
-import * as internal from "./internal.js";
-import * as template from "../core/template.js";
 import html from "../core/html.js";
+import * as template from "../core/template.js";
+import * as internal from "./internal.js";
 import Menu from "./Menu.js";
 import PopupButton from "./PopupButton.js";
 import UpDownToggle from "./UpDownToggle.js";

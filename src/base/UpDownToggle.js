@@ -1,6 +1,6 @@
-import * as internal from "./internal.js";
-import * as template from "../core/template.js";
 import ReactiveElement from "../core/ReactiveElement.js";
+import * as template from "../core/template.js";
+import * as internal from "./internal.js";
 
 /**
  * An element that can point up or down.

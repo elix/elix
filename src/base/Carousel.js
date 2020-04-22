@@ -1,11 +1,11 @@
 import { forwardFocus } from "../core/dom.js";
-import * as internal from "./internal.js";
+import html from "../core/html.js";
 import AriaListMixin from "./AriaListMixin.js";
 import ArrowDirectionMixin from "./ArrowDirectionMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import Explorer from "./Explorer.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
-import html from "../core/html.js";
+import * as internal from "./internal.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import SlidingStage from "./SlidingStage.js";

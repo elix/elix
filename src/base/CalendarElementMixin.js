@@ -1,6 +1,6 @@
+import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import * as calendar from "./calendar.js";
 import * as internal from "./internal.js";
-import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Adds locale-sensitive date support.

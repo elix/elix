@@ -1,5 +1,5 @@
-import * as internal from "./internal.js";
 import ReactiveElement from "../core/ReactiveElement.js";
+import * as internal from "./internal.js";
 
 /**
  * Inactive item that helps group related menu items

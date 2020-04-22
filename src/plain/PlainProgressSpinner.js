@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
-import html from "../core/html.js";
 import ProgressSpinner from "../base/ProgressSpinner.js";
+import html from "../core/html.js";
 
 /**
  * ProgressSpinner component in the Plain reference design system

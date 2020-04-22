@@ -1,6 +1,6 @@
 import { defaultAriaRole, ensureId } from "./accessibility.js";
-import * as internal from "./internal.js";
 import Explorer from "./Explorer.js";
+import * as internal from "./internal.js";
 import TabButton from "./TabButton.js";
 import TabStrip from "./TabStrip.js";
 

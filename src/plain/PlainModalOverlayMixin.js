@@ -1,7 +1,7 @@
 import * as internal from "../base/internal.js";
+import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import PlainModalBackdrop from "./PlainModalBackdrop.js";
 import PlainOverlayFrame from "./PlainOverlayFrame.js";
-import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Modal overlay styles for the Plain reference design system

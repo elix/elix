@@ -1,5 +1,5 @@
-import * as internal from "../base/internal.js";
 import FilterComboBox from "../base/FilterComboBox.js";
+import * as internal from "../base/internal.js";
 import PlainComboBoxMixin from "./PlainComboBoxMixin.js";
 import PlainFilterListBox from "./PlainFilterListBox.js";
 

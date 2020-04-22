@@ -1,8 +1,8 @@
-import { assert } from "../testHelpers.js";
 import * as content from "../../src/base/content.js";
 import * as internal from "../../src/base/internal.js";
-import * as template from "../../src/core/template.js";
 import ShadowTemplateMixin from "../../src/core/ShadowTemplateMixin.js";
+import * as template from "../../src/core/template.js";
+import { assert } from "../testHelpers.js";
 
 /*
  * Simple element with a slot.

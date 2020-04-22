@@ -1,7 +1,7 @@
-import * as internal from "./internal.js";
 import AutoCompleteInput from "./AutoCompleteInput.js";
-import ListComboBox from "./ListComboBox.js";
+import * as internal from "./internal.js";
 import ItemsTextMixin from "./ItemsTextMixin.js";
+import ListComboBox from "./ListComboBox.js";
 
 const Base = ItemsTextMixin(ListComboBox);
 

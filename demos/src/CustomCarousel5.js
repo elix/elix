@@ -1,9 +1,9 @@
 import * as internal from "../../src/base/internal.js";
+import PageNumbersMixin from "../../src/base/PageNumbersMixin.js";
 import * as template from "../../src/core/template.js";
+import PlainCarousel from "../../src/plain/PlainCarousel.js";
 import CustomArrowButton from "./CustomArrowButton.js";
 import CustomPageDot from "./CustomPageDot.js";
-import PageNumbersMixin from "../../src/base/PageNumbersMixin.js";
-import PlainCarousel from "../../src/plain/PlainCarousel.js";
 
 const Base = PageNumbersMixin(PlainCarousel);
 

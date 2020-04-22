@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
-import html from "../core/html.js";
 import OverlayFrame from "../base/OverlayFrame.js";
+import html from "../core/html.js";
 
 /**
  * OverlayFrame component in the Plain reference design system

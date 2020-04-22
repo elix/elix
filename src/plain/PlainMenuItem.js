@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
 import MenuItem from "../base/MenuItem.js";
+import * as template from "../core/template.js";
 
 /**
  * MenuItem component in the Plain reference design system

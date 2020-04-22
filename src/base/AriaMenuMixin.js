@@ -1,6 +1,6 @@
+import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import { defaultAriaRole } from "./accessibility.js";
 import * as internal from "./internal.js";
-import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * Tells assistive technologies to describe a list's items as a menu of choices.

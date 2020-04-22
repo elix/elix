@@ -1,5 +1,5 @@
-import * as internal from "../base/internal.js";
 import CalendarDay from "../base/CalendarDay.js";
+import * as internal from "../base/internal.js";
 import html from "../core/html.js";
 
 /**

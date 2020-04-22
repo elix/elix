@@ -1,5 +1,5 @@
-import * as internal from "../base/internal.js";
 import AlertDialog from "../base/AlertDialog.js";
+import * as internal from "../base/internal.js";
 import html from "../core/html.js";
 import PlainBorderButton from "./PlainBorderButton.js";
 import PlainModalOverlayMixin from "./PlainModalOverlayMixin.js";

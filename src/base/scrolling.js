@@ -1,5 +1,5 @@
-import * as internal from "./internal.js";
 import { selfAndComposedAncestors } from "../core/dom.js";
+import * as internal from "./internal.js";
 
 /**
  * Utilities for working with scrolling.

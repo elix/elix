@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
-import html from "../core/html.js";
 import MenuButton from "../base/MenuButton.js";
+import html from "../core/html.js";
 import PlainBorderButton from "./PlainBorderButton.js";
 import PlainMenu from "./PlainMenu.js";
 import PlainOpenCloseToggle from "./PlainOpenCloseToggle.js";

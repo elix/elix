@@ -1,7 +1,7 @@
-import { assert } from "../testHelpers.js";
 import * as internal from "../../src/base/internal.js";
-import * as template from "../../src/core/template.js";
 import ShadowTemplateMixin from "../../src/core/ShadowTemplateMixin.js";
+import * as template from "../../src/core/template.js";
+import { assert } from "../testHelpers.js";
 
 /* Element with a simple template */
 class ElementWithStringTemplate extends ShadowTemplateMixin(HTMLElement) {

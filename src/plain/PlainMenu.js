@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
-import html from "../core/html.js";
 import Menu from "../base/Menu.js";
+import html from "../core/html.js";
 
 /**
  * Menu component in the Plain reference design system

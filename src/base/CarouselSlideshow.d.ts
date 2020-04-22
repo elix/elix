@@ -2,7 +2,6 @@
 // confirm our code is type safe, and to support TypeScript users.
 
 import Carousel from "./Carousel.js";
-import CrossfadeStage from "./CrossfadeStage.js";
 import TimerSelectionMixin from "./TimerSelectionMixin.js";
 
 export default class CarouselSlideshow extends TimerSelectionMixin(Carousel) {

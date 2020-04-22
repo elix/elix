@@ -1,8 +1,8 @@
 import * as internal from "../base/internal.js";
+import Tabs from "../base/Tabs.js";
 import html from "../core/html.js";
 import PlainTabButton from "./PlainTabButton.js";
 import PlainTabStrip from "./PlainTabStrip.js";
-import Tabs from "../base/Tabs.js";
 
 /**
  * Tabs component in the Plain reference design system

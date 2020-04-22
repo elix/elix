@@ -1,6 +1,6 @@
 import { ownEvent } from "../core/dom.js";
-import * as internal from "./internal.js";
 import html from "../core/html.js";
+import * as internal from "./internal.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import PopupSource from "./PopupSource.js";
 

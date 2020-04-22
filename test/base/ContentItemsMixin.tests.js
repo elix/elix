@@ -1,7 +1,7 @@
-import { assert } from "../testHelpers.js";
-import * as internal from "../../src/base/internal.js";
 import ContentItemsMixin from "../../src/base/ContentItemsMixin.js";
+import * as internal from "../../src/base/internal.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
+import { assert } from "../testHelpers.js";
 
 class ContentItemsTest extends ContentItemsMixin(ReactiveMixin(HTMLElement)) {
   connectedCallback() {

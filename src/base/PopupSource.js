@@ -1,13 +1,13 @@
-import * as internal from "./internal.js";
+import html from "../core/html.js";
+import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
 import AriaRoleMixin from "./AriaRoleMixin.js";
 import DisabledMixin from "./DisabledMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
-import html from "../core/html.js";
+import * as internal from "./internal.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
 import Popup from "./Popup.js";
-import ReactiveElement from "../core/ReactiveElement.js";
 
 const resizeListenerKey = Symbol("resizeListener");
 

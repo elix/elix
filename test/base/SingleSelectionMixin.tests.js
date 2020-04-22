@@ -1,7 +1,7 @@
-import { assert } from "../testHelpers.js";
 import * as internal from "../../src/base/internal.js";
-import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import SingleSelectionMixin from "../../src/base/SingleSelectionMixin.js";
+import ReactiveMixin from "../../src/core/ReactiveMixin.js";
+import { assert } from "../testHelpers.js";
 
 class SingleSelectionTest extends SingleSelectionMixin(
   ReactiveMixin(HTMLElement)

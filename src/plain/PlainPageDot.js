@@ -1,7 +1,7 @@
-import * as internal from "../base/internal.js";
 import DarkModeMixin from "../base/DarkModeMixin.js";
-import html from "../core/html.js";
+import * as internal from "../base/internal.js";
 import SelectableButton from "../base/SelectableButton.js";
+import html from "../core/html.js";
 
 const Base = DarkModeMixin(SelectableButton);
 

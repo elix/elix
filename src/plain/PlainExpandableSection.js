@@ -1,5 +1,5 @@
-import * as internal from "../base/internal.js";
 import ExpandableSection from "../base/ExpandableSection.js";
+import * as internal from "../base/internal.js";
 import html from "../core/html.js";
 import PlainButton from "./PlainButton.js";
 import PlainExpandCollapseToggle from "./PlainExpandCollapseToggle.js";

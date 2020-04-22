@@ -1,12 +1,12 @@
-import * as calendar from "./calendar.js";
-import * as internal from "./internal.js";
+import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
+import * as calendar from "./calendar.js";
 import CalendarDay from "./CalendarDay.js";
 import CalendarDayNamesHeader from "./CalendarDayNamesHeader.js";
 import CalendarDays from "./CalendarDays.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
 import CalendarMonthYearHeader from "./CalendarMonthYearHeader.js";
-import ReactiveElement from "../core/ReactiveElement.js";
+import * as internal from "./internal.js";
 
 const Base = CalendarElementMixin(ReactiveElement);
 

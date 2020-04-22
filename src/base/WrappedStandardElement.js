@@ -1,8 +1,8 @@
 import { setInternalState, standardBooleanAttributes } from "../core/dom.js";
-import * as internal from "./internal.js";
+import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
-import ReactiveElement from "../core/ReactiveElement.js";
+import * as internal from "./internal.js";
 
 const extendsKey = Symbol("extends");
 

@@ -1,6 +1,6 @@
 import { booleanAttributeValue, setInternalState } from "../core/dom.js";
-import * as internal from "./internal.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
 
 // Elements listening for changes in prefers-color-scheme.
 const colorSchemeElements = new Set();

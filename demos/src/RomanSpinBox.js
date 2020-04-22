@@ -1,5 +1,5 @@
-import PlainSpinBox from "../../src/plain/PlainSpinBox.js";
 import * as internal from "../../src/base/internal.js";
+import PlainSpinBox from "../../src/plain/PlainSpinBox.js";
 
 const romanToNumberMap = {
   M: 1000,

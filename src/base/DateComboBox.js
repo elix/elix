@@ -1,11 +1,11 @@
-import * as calendar from "./calendar.js";
-import * as internal from "./internal.js";
+import html from "../core/html.js";
 import * as template from "../core/template.js";
 import Button from "./Button.js";
+import * as calendar from "./calendar.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
 import CalendarMonthNavigator from "./CalendarMonthNavigator.js";
 import ComboBox from "./ComboBox.js";
-import html from "../core/html.js";
+import * as internal from "./internal.js";
 
 const Base = CalendarElementMixin(ComboBox);
 

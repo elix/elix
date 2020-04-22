@@ -1,5 +1,5 @@
-import * as internal from "./internal.js";
 import Carousel from "./Carousel.js";
+import * as internal from "./internal.js";
 
 /**
  * Carousel showing a thumbnail for each image

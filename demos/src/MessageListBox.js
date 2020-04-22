@@ -1,12 +1,12 @@
-import "./AnimateAlignment.js";
-import { updateChildNodes } from "../../src/core/dom.js";
-import * as internal from "../../src/base/internal.js";
-import * as template from "../../src/core/template.js";
 import EffectMixin from "../../src/base/EffectMixin.js";
+import * as internal from "../../src/base/internal.js";
 import ListBox from "../../src/base/ListBox.js";
 import SwipeCommandsMixin from "../../src/base/SwipeCommandsMixin.js";
 import TouchSwipeMixin from "../../src/base/TouchSwipeMixin.js";
 import TrackpadSwipeMixin from "../../src/base/TrackpadSwipeMixin.js";
+import { updateChildNodes } from "../../src/core/dom.js";
+import * as template from "../../src/core/template.js";
+import "./AnimateAlignment.js";
 
 const Base = EffectMixin(
   SwipeCommandsMixin(TouchSwipeMixin(TrackpadSwipeMixin(ListBox)))

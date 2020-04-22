@@ -1,5 +1,6 @@
 import { forwardFocus } from "../core/dom.js";
-import * as internal from "./internal.js";
+import html from "../core/html.js";
+import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import DelegateInputLabelMixin from "./DelegateInputLabelMixin.js";
@@ -7,10 +8,9 @@ import DelegateInputSelectionMixin from "./DelegateInputSelectionMixin.js";
 import DisabledMixin from "./DisabledMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
-import html from "../core/html.js";
+import * as internal from "./internal.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
-import ReactiveElement from "../core/ReactiveElement.js";
 
 const Base = DelegateFocusMixin(
   DelegateInputLabelMixin(

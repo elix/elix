@@ -1,7 +1,7 @@
-import { assert } from "../testHelpers.js";
-import { trimMarks } from "../normalize.js";
-import * as internal from "../../src/base/internal.js";
 import CalendarMonthYearHeader from "../../define/CalendarMonthYearHeader.js";
+import * as internal from "../../src/base/internal.js";
+import { trimMarks } from "../normalize.js";
+import { assert } from "../testHelpers.js";
 
 describe("CalendarMonthYearHeader", () => {
   it("renders English US month header", async () => {

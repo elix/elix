@@ -1,8 +1,8 @@
-import * as internal from "./internal.js";
+import html from "../core/html.js";
 import * as template from "../core/template.js";
 import Button from "./Button.js";
 import Drawer from "./Drawer.js";
-import html from "../core/html.js";
+import * as internal from "./internal.js";
 
 /**
  * A drawer that includes an always-visible grip element

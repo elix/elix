@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
-import html from "../core/html.js";
 import ModalBackdrop from "../base/ModalBackdrop.js";
+import html from "../core/html.js";
 
 /**
  * ModalBackdrop component in the Plain reference design system

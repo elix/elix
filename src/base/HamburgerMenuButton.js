@@ -1,13 +1,13 @@
-import * as internal from "./internal.js";
+import html from "../core/html.js";
+import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
 import Button from "./Button.js";
 import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import Drawer from "./Drawer.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
-import html from "../core/html.js";
+import * as internal from "./internal.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
-import ReactiveElement from "../core/ReactiveElement.js";
 
 const Base = DelegateFocusMixin(
   FocusVisibleMixin(KeyboardMixin(OpenCloseMixin(ReactiveElement)))

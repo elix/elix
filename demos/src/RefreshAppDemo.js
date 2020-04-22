@@ -1,8 +1,8 @@
 import "../../define/PullToRefresh.js";
-import { updateChildNodes } from "../../src/core/dom.js";
 import * as internal from "../../src/base/internal.js";
-import * as template from "../../src/core/template.js";
+import { updateChildNodes } from "../../src/core/dom.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
+import * as template from "../../src/core/template.js";
 
 const texts = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed molestie molestie enim porta dapibus. Phasellus dolor quam, egestas eu viverra at, porttitor in diam. Donec risus tellus, accumsan eget ipsum sed, vestibulum blandit ante. Nullam rhoncus leo nec lobortis convallis. Donec posuere tellus a nibh dignissim, rhoncus viverra neque rutrum. Suspendisse rutrum at massa vitae venenatis. Suspendisse ut risus pellentesque lacus dictum aliquet. Cras a arcu id odio molestie imperdiet.`,

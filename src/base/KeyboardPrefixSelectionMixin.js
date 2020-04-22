@@ -1,6 +1,6 @@
+import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import { TYPING_TIMEOUT_DURATION } from "./constants.js";
 import * as internal from "./internal.js";
-import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 // Symbols for private data members on an element.
 const typedPrefixKey = Symbol("typedPrefix");

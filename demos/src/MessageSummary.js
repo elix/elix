@@ -1,6 +1,6 @@
 import * as internal from "../../src/base/internal.js";
-import * as template from "../../src/core/template.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
+import * as template from "../../src/core/template.js";
 
 export default class MessageSummary extends ReactiveElement {
   get date() {

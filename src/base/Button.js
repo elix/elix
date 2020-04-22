@@ -1,8 +1,8 @@
-import * as internal from "./internal.js";
+import html from "../core/html.js";
 import AriaRoleMixin from "./AriaRoleMixin.js";
 import ComposedFocusMixin from "./ComposedFocusMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
-import html from "../core/html.js";
+import * as internal from "./internal.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import WrappedStandardElement from "./WrappedStandardElement.js";
 

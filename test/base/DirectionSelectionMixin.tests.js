@@ -1,6 +1,6 @@
-import { assert, sinon } from "../testHelpers.js";
-import * as internal from "../../src/base/internal.js";
 import DirectionSelectionMixin from "../../src/base/DirectionSelectionMixin.js";
+import * as internal from "../../src/base/internal.js";
+import { assert, sinon } from "../testHelpers.js";
 
 class DirectionSelectionTest extends DirectionSelectionMixin(HTMLElement) {
   selectFirst() {}

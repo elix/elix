@@ -1,7 +1,7 @@
-import * as internal from "./internal.js";
 import AriaListMixin from "./AriaListMixin.js";
 import DirectionSelectionMixin from "./DirectionSelectionMixin.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
+import * as internal from "./internal.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import SlidingStage from "./SlidingStage.js";

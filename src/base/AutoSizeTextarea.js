@@ -1,6 +1,6 @@
-import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import FormElementMixin from "./FormElementMixin.js";
+import * as internal from "./internal.js";
 import SlotContentMixin from "./SlotContentMixin.js";
 import WrappedStandardElement from "./WrappedStandardElement.js";
 

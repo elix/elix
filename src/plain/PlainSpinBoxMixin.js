@@ -1,8 +1,8 @@
 import * as internal from "../base/internal.js";
 import html from "../core/html.js";
+import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 import PlainInput from "./PlainInput.js";
 import PlainRepeatButton from "./PlainRepeatButton.js";
-import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
 
 /**
  * SpinBox design in the Plain reference design system

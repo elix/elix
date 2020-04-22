@@ -1,5 +1,5 @@
-import * as internal from "../base/internal.js";
 import DateComboBox from "../base/DateComboBox.js";
+import * as internal from "../base/internal.js";
 import html from "../core/html.js";
 import PlainButton from "./PlainButton.js";
 import PlainCalendarMonthNavigator from "./PlainCalendarMonthNavigator.js";

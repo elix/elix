@@ -3,9 +3,9 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-import * as internal from "./internal.js";
-import DelegateFocusMixin from "./DelegateFocusMixin.js";
 import ReactiveElement from "../core/ReactiveElement.js";
+import DelegateFocusMixin from "./DelegateFocusMixin.js";
+import * as internal from "./internal.js";
 
 export default class WrappedStandardElement extends DelegateFocusMixin(
   ReactiveElement

@@ -1,6 +1,6 @@
 import { indexOfItemContainingTarget } from "../core/dom.js";
-import * as internal from "./internal.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
 
 /**
  * Maps a tap/mousedown on a list item to selection of that item

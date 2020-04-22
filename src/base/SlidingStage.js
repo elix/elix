@@ -1,9 +1,9 @@
-import * as fractionalSelection from "./fractionalSelection.js";
-import * as internal from "./internal.js";
+import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
 import EffectMixin from "./EffectMixin.js";
+import * as fractionalSelection from "./fractionalSelection.js";
+import * as internal from "./internal.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
-import ReactiveElement from "../core/ReactiveElement.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 

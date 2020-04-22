@@ -1,7 +1,7 @@
-import * as internal from "../../src/base/internal.js";
 import ContentItemsMixin from "../../src/base/ContentItemsMixin.js";
-import ReactiveMixin from "../../src/core/ReactiveMixin.js";
+import * as internal from "../../src/base/internal.js";
 import SingleSelectionMixin from "../../src/base/SingleSelectionMixin.js";
+import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 
 const Base = ContentItemsMixin(
   ReactiveMixin(SingleSelectionMixin(HTMLElement))

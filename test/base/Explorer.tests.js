@@ -1,5 +1,5 @@
-import { assert } from "../testHelpers.js";
 import Explorer from "../../define/Explorer.js";
+import { assert } from "../testHelpers.js";
 
 describe("Explorer", () => {
   let container;

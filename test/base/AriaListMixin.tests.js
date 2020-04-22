@@ -1,8 +1,8 @@
-import { assert } from "../testHelpers.js";
-import * as internal from "../../src/base/internal.js";
 import AriaListMixin from "../../src/base/AriaListMixin.js";
 import ContentItemsMixin from "../../src/base/ContentItemsMixin.js";
+import * as internal from "../../src/base/internal.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
+import { assert } from "../testHelpers.js";
 
 class AriaListTest extends AriaListMixin(ContentItemsMixin(ReactiveElement)) {
   connectedCallback() {

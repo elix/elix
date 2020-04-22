@@ -1,6 +1,6 @@
-import { assert } from "../testHelpers.js";
-import * as internal from "../../src/base/internal.js";
 import NumberSpinBox from "../../define/NumberSpinBox.js";
+import * as internal from "../../src/base/internal.js";
+import { assert } from "../testHelpers.js";
 
 const formElementsSupported = "ElementInternals" in window;
 

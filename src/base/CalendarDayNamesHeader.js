@@ -1,7 +1,7 @@
-import * as internal from "./internal.js";
-import * as calendar from "./calendar.js";
-import * as template from "../core/template.js";
 import ReactiveElement from "../core/ReactiveElement.js";
+import * as template from "../core/template.js";
+import * as calendar from "./calendar.js";
+import * as internal from "./internal.js";
 
 /**
  * Header showing the localized days of the week

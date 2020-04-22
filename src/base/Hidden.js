@@ -1,5 +1,5 @@
-import * as internal from "./internal.js";
 import ReactiveElement from "../core/ReactiveElement.js";
+import * as internal from "./internal.js";
 
 /**
  * An element with no visible appearance

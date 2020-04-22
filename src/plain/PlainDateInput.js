@@ -1,5 +1,5 @@
-import * as internal from "../base/internal.js";
 import DateInput from "../base/DateInput.js";
+import * as internal from "../base/internal.js";
 import html from "../core/html.js";
 
 /**

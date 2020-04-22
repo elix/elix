@@ -1,7 +1,7 @@
+import Dialog from "../../src/base/Dialog.js";
 import * as internal from "../../src/base/internal.js";
 import CustomBackdrop from "./CustomBackdrop.js";
 import CustomOverlayFrame from "./CustomOverlayFrame.js";
-import Dialog from "../../src/base/Dialog.js";
 
 class SampleDialog extends Dialog {
   get [internal.defaultState]() {

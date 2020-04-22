@@ -1,6 +1,6 @@
+import DrawerWithGrip from "../../src/base/DrawerWithGrip.js";
 import * as internal from "../../src/base/internal.js";
 import * as template from "../../src/core/template.js";
-import DrawerWithGrip from "../../src/base/DrawerWithGrip.js";
 
 export default class CustomDrawer extends DrawerWithGrip {
   get [internal.defaultState]() {

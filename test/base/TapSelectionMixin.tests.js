@@ -1,9 +1,9 @@
-import { assert } from "../testHelpers.js";
 import * as internal from "../../src/base/internal.js";
-import * as mockInteractions from "../mockInteractions.js";
+import TapSelectionMixin from "../../src/base/TapSelectionMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import ShadowTemplateMixin from "../../src/core/ShadowTemplateMixin.js";
-import TapSelectionMixin from "../../src/base/TapSelectionMixin.js";
+import * as mockInteractions from "../mockInteractions.js";
+import { assert } from "../testHelpers.js";
 
 class TapSelectionTest extends TapSelectionMixin(
   ReactiveMixin(ShadowTemplateMixin(HTMLElement))

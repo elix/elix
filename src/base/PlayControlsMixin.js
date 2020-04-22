@@ -1,9 +1,9 @@
 import { forwardFocus } from "../core/dom.js";
-import * as internal from "./internal.js";
-import * as template from "../core/template.js";
-import Button from "./Button.js";
 import html from "../core/html.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
+import * as template from "../core/template.js";
+import Button from "./Button.js";
+import * as internal from "./internal.js";
 
 const wrap = Symbol("wrap");
 

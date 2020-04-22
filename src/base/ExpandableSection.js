@@ -1,10 +1,10 @@
-import * as internal from "./internal.js";
+import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
 import AriaRoleMixin from "./AriaRoleMixin.js";
 import Button from "./Button.js";
 import ExpandablePanel from "./ExpandablePanel.js";
+import * as internal from "./internal.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
-import ReactiveElement from "../core/ReactiveElement.js";
 import UpDownToggle from "./UpDownToggle.js";
 
 const Base = AriaRoleMixin(OpenCloseMixin(ReactiveElement));

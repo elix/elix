@@ -1,5 +1,5 @@
-import PlainSpinBoxMixin from "./PlainSpinBoxMixin.js";
 import SpinBox from "../base/SpinBox.js";
+import PlainSpinBoxMixin from "./PlainSpinBoxMixin.js";
 
 /**
  * SpinBox component in the Plain reference design system

@@ -3,8 +3,6 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-import * as internal from "./internal.js";
-
 declare const SwipeDirectionMixin: Mixin<
   {},
   {

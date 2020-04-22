@@ -1,5 +1,5 @@
-import * as internal from "../base/internal.js";
 import CalendarDayButton from "../base/CalendarDayButton.js";
+import * as internal from "../base/internal.js";
 import html from "../core/html.js";
 import PlainCalendarDay from "./PlainCalendarDay.js";
 

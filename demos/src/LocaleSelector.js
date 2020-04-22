@@ -1,7 +1,7 @@
-import { updateChildNodes } from "../../src/core/dom.js";
 import * as internal from "../../src/base/internal.js";
-import * as template from "../../src/core/template.js";
+import { updateChildNodes } from "../../src/core/dom.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
+import * as template from "../../src/core/template.js";
 
 // Locale list from https://stackoverflow.com/questions/3191664/list-of-all-locales-and-their-short-codes/28357857#28357857
 // This includes only locales with regions; it omits languages without regions.

@@ -1,7 +1,7 @@
-import * as internal from "../../src/core/internal.js";
-import html from "../../src/core/html.js";
-import RepeatButton from "../../src/base/RepeatButton.js";
 import NumberSpinBox from "../../src/base/NumberSpinBox.js";
+import RepeatButton from "../../src/base/RepeatButton.js";
+import html from "../../src/core/html.js";
+import * as internal from "../../src/core/internal.js";
 
 export default class CustomSpinBox extends NumberSpinBox {
   get [internal.defaultState]() {

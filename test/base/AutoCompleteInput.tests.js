@@ -1,9 +1,9 @@
-import { assert } from "../testHelpers.js";
 import {
-  default as AutoCompleteInput,
   autoComplete,
+  default as AutoCompleteInput,
 } from "../../src/base/AutoCompleteInput.js";
 import * as internal from "../../src/base/internal.js";
+import { assert } from "../testHelpers.js";
 
 customElements.define("auto-complete-input", AutoCompleteInput);
 

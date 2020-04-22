@@ -1,7 +1,7 @@
 import * as internal from "../base/internal.js";
+import Toast from "../base/Toast.js";
 import html from "../core/html.js";
 import PlainOverlayFrame from "./PlainOverlayFrame.js";
-import Toast from "../base/Toast.js";
 
 /**
  * @inherits Toast

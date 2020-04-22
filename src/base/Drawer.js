@@ -1,9 +1,9 @@
 import { setInternalState } from "../core/dom.js";
-import * as internal from "./internal.js";
+import html from "../core/html.js";
 import DialogModalityMixin from "./DialogModalityMixin.js";
 import EffectMixin from "./EffectMixin.js";
 import FocusCaptureMixin from "./FocusCaptureMixin.js";
-import html from "../core/html.js";
+import * as internal from "./internal.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import ModalBackdrop from "./ModalBackdrop.js";

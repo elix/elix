@@ -1,7 +1,7 @@
 import * as internal from "../base/internal.js";
-import * as template from "../core/template.js";
-import html from "../core/html.js";
 import UpDownToggle from "../base/UpDownToggle.js";
+import html from "../core/html.js";
+import * as template from "../core/template.js";
 
 /**
  * An expand/collapse toggle in the Plain reference design system

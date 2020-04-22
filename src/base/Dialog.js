@@ -1,7 +1,7 @@
-import * as internal from "./internal.js";
+import html from "../core/html.js";
 import DialogModalityMixin from "./DialogModalityMixin.js";
 import FocusCaptureMixin from "./FocusCaptureMixin.js";
-import html from "../core/html.js";
+import * as internal from "./internal.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import ModalBackdrop from "./ModalBackdrop.js";
 import Overlay from "./Overlay.js";

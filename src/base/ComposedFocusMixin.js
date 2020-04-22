@@ -1,6 +1,6 @@
 import { closestFocusableNode } from "../core/dom.js";
-import * as internal from "./internal.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
 
 // Quick detection of whether we'll need to handle focus.
 // As of February 2019, we don't need to handle this in Chrome, perhaps because

@@ -1,7 +1,7 @@
-import * as internal from "./internal.js";
+import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
 import AriaRoleMixin from "./AriaRoleMixin.js";
-import ReactiveElement from "../core/ReactiveElement.js";
+import * as internal from "./internal.js";
 
 const Base = AriaRoleMixin(ReactiveElement);
 

@@ -1,8 +1,8 @@
 import * as internal from "../../src/base/internal.js";
-import * as template from "../../src/core/template.js";
-import ReactiveElement from "../../src/core/ReactiveElement.js";
 import TouchSwipeMixin from "../../src/base/TouchSwipeMixin.js";
 import TrackpadSwipeMixin from "../../src/base/TrackpadSwipeMixin.js";
+import ReactiveElement from "../../src/core/ReactiveElement.js";
+import * as template from "../../src/core/template.js";
 
 const Base = TouchSwipeMixin(TrackpadSwipeMixin(ReactiveElement));
 

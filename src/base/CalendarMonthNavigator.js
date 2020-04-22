@@ -1,13 +1,13 @@
 import { forwardFocus, indexOfItemContainingTarget } from "../core/dom.js";
-import * as calendar from "./calendar.js";
-import * as internal from "./internal.js";
 import * as template from "../core/template.js";
 import ArrowDirectionMixin from "./ArrowDirectionMixin.js";
+import * as calendar from "./calendar.js";
 import CalendarDayButton from "./CalendarDayButton.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
 import CalendarMonth from "./CalendarMonth.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import FormElementMixin from "./FormElementMixin.js";
+import * as internal from "./internal.js";
 import KeyboardDirectionMixin from "./KeyboardDirectionMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";

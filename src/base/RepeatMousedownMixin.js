@@ -1,5 +1,5 @@
-import * as internal from "./internal.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
 
 // Used to distinguish our synthetic events from a real one.
 class SyntheticMouseEvent extends MouseEvent {}

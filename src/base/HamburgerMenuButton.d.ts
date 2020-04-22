@@ -1,12 +1,10 @@
 // Elix is a JavaScript project, but we define TypeScript declarations so we can
 // confirm our code is type safe, and to support TypeScript users.
 
-import Drawer from "./Drawer.js";
+import ReactiveElement from "../core/ReactiveElement.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
 import KeyboardMixin from "./KeyboardMixin.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
-import ReactiveElement from "../core/ReactiveElement.js";
-import Button from "./Button.js";
 
 export default class HamburgerMenuButton extends FocusVisibleMixin(
   KeyboardMixin(OpenCloseMixin(ReactiveElement))

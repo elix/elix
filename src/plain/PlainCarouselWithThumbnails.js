@@ -1,6 +1,6 @@
-import * as internal from "../base/internal.js";
 import CarouselWithThumbnails from "../base/CarouselWithThumbnails.js";
 import DarkModeMixin from "../base/DarkModeMixin.js";
+import * as internal from "../base/internal.js";
 import html from "../core/html.js";
 import PlainArrowDirectionButton from "./PlainArrowDirectionButton.js";
 import PlainArrowDirectionMixin from "./PlainArrowDirectionMixin.js";

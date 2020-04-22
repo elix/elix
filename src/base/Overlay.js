@@ -1,10 +1,10 @@
-import * as internal from "./internal.js";
+import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
 import Backdrop from "./Backdrop.js";
+import * as internal from "./internal.js";
 import OpenCloseMixin from "./OpenCloseMixin.js";
 import OverlayFrame from "./OverlayFrame.js";
 import OverlayMixin from "./OverlayMixin.js";
-import ReactiveElement from "../core/ReactiveElement.js";
 import SlotContentMixin from "./SlotContentMixin.js";
 
 // TODO: We'd like to use DelegateFocusMixin in this component, but see the note

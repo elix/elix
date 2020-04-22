@@ -1,6 +1,6 @@
-import { assert } from "../testHelpers.js";
 import * as internal from "../../src/base/internal.js";
 import WrappedStandardElement from "../../src/base/WrappedStandardElement.js";
+import { assert } from "../testHelpers.js";
 
 const WrappedA = WrappedStandardElement.wrap("a");
 customElements.define("wrapped-a", WrappedA);

@@ -1,6 +1,6 @@
-import * as internal from "../base/internal.js";
 import CarouselSlideshow from "../base/CarouselSlideshow.js";
 import DarkModeMixin from "../base/DarkModeMixin.js";
+import * as internal from "../base/internal.js";
 import PlainArrowDirectionMixin from "./PlainArrowDirectionMixin.js";
 import PlainCarouselMixin from "./PlainCarouselMixin.js";
 import PlainPageDot from "./PlainPageDot.js";

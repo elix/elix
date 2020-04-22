@@ -1,7 +1,7 @@
 import * as internal from "../base/internal.js";
 import html from "../core/html.js";
-import PlainArrowDirectionButton from "./PlainArrowDirectionButton.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
+import PlainArrowDirectionButton from "./PlainArrowDirectionButton.js";
 
 /**
  * ArrowDirectionMixin styles in the Plain reference design system

@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
-import html from "../core/html.js";
 import TabStrip from "../base/TabStrip.js";
+import html from "../core/html.js";
 
 /**
  * Toast component in the Plain reference design system

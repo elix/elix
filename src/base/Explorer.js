@@ -1,10 +1,10 @@
 import { updateChildNodes } from "../core/dom.js";
-import * as internal from "./internal.js";
+import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
+import * as internal from "./internal.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import ListBox from "./ListBox.js";
 import Modes from "./Modes.js";
-import ReactiveElement from "../core/ReactiveElement.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";
 import SlotItemsMixin from "./SlotItemsMixin.js";
 

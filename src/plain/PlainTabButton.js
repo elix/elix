@@ -1,6 +1,6 @@
 import * as internal from "../base/internal.js";
-import html from "../core/html.js";
 import TabButton from "../base/TabButton.js";
+import html from "../core/html.js";
 
 /**
  * TabButton component in the Plain reference design system

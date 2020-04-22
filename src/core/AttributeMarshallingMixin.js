@@ -1,5 +1,5 @@
-import * as internal from "./internal.js";
 import { booleanAttributeValue, standardBooleanAttributes } from "./dom.js";
+import * as internal from "./internal.js";
 
 // Memoized maps of attribute to property names and vice versa.
 // We initialize this with the special case of the tabindex (lowercase "i")

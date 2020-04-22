@@ -1,6 +1,6 @@
-import { assert, sinon } from "../testHelpers.js";
 import * as internal from "../../src/core/internal.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
+import { assert, sinon } from "../testHelpers.js";
 
 class ReactiveTest extends ReactiveMixin(HTMLElement) {
   constructor() {

@@ -1,6 +1,6 @@
+import Button from "../../src/base/Button.js";
 import * as internal from "../../src/base/internal.js";
 import * as template from "../../src/core/template.js";
-import Button from "../../src/base/Button.js";
 
 class CustomArrowButton extends Button {
   get [internal.template]() {

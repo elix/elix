@@ -1,9 +1,9 @@
-import { dampen } from "./fractionalSelection.js";
-import { getScrollableElement } from "./scrolling.js";
-import * as internal from "./internal.js";
+import ReactiveElement from "../core/ReactiveElement.js";
 import * as template from "../core/template.js";
 import EffectMixin from "./EffectMixin.js";
-import ReactiveElement from "../core/ReactiveElement.js";
+import { dampen } from "./fractionalSelection.js";
+import * as internal from "./internal.js";
+import { getScrollableElement } from "./scrolling.js";
 import TouchSwipeMixin from "./TouchSwipeMixin.js";
 
 const Base = EffectMixin(TouchSwipeMixin(ReactiveElement));

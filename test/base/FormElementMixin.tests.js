@@ -1,7 +1,7 @@
-import { assert } from "../testHelpers.js";
-import * as internal from "../../src/base/internal.js";
 import FormElementMixin from "../../src/base/FormElementMixin.js";
+import * as internal from "../../src/base/internal.js";
 import ReactiveElement from "../../src/core/ReactiveElement.js";
+import { assert } from "../testHelpers.js";
 
 const formElementsSupported = "ElementInternals" in window;
 

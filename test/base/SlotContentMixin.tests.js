@@ -1,7 +1,7 @@
-import { assert } from "../testHelpers.js";
 import * as internal from "../../src/base/internal.js";
-import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import SlotContentMixin from "../../src/base/SlotContentMixin.js";
+import ReactiveMixin from "../../src/core/ReactiveMixin.js";
+import { assert } from "../testHelpers.js";
 
 /*
  * Simple element using the SlotContentMixin mixin.

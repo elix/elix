@@ -1,8 +1,8 @@
 import { updateChildNodes } from "../core/dom.js";
-import * as internal from "./internal.js";
+import html from "../core/html.js";
 import * as template from "../core/template.js";
 import FormElementMixin from "./FormElementMixin.js";
-import html from "../core/html.js";
+import * as internal from "./internal.js";
 import MenuButton from "./MenuButton.js";
 import SelectedItemTextValueMixin from "./SelectedItemTextValueMixin.js";
 import SingleSelectionMixin from "./SingleSelectionMixin.js";

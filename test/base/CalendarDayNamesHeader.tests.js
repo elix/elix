@@ -1,7 +1,7 @@
-import { assert } from "../testHelpers.js";
-import { trimMarks } from "../normalize.js";
-import * as internal from "../../src/base/internal.js";
 import CalendarDayNamesHeader from "../../define/CalendarDayNamesHeader.js";
+import * as internal from "../../src/base/internal.js";
+import { trimMarks } from "../normalize.js";
+import { assert } from "../testHelpers.js";
 
 describe("CalendarDayNamesHeader", () => {
   it("renders short English US week days", async () => {

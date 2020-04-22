@@ -1,7 +1,7 @@
 import * as internal from "../base/internal.js";
+import PopupButton from "../base/PopupButton.js";
 import PlainBorderButton from "./PlainBorderButton.js";
 import PlainPopup from "./PlainPopup.js";
-import PopupButton from "../base/PopupButton.js";
 
 /**
  * PopupButton component in the Plain reference design system

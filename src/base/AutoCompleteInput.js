@@ -1,5 +1,5 @@
-import * as internal from "./internal.js";
 import Input from "./Input.js";
+import * as internal from "./internal.js";
 
 /**
  * A text input box that completes text as the user types

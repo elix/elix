@@ -1,7 +1,7 @@
-import { assert } from "../testHelpers.js";
+import CalendarDays from "../../define/CalendarDays.js";
 import * as calendar from "../../src/base/calendar.js";
 import * as internal from "../../src/base/internal.js";
-import CalendarDays from "../../define/CalendarDays.js";
+import { assert } from "../testHelpers.js";
 
 describe("CalendarDays", () => {
   it("returns day elements inside the calendar's range", async () => {

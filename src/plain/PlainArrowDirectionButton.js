@@ -1,5 +1,5 @@
-import * as internal from "../base/internal.js";
 import DarkModeMixin from "../base/DarkModeMixin.js";
+import * as internal from "../base/internal.js";
 import html from "../core/html.js";
 import PlainButton from "./PlainButton.js";
 

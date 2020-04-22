@@ -1,6 +1,6 @@
-import * as internal from "../base/internal.js";
 import CalendarMonthNavigator from "../base/CalendarMonthNavigator.js";
 import DarkModeMixin from "../base/DarkModeMixin.js";
+import * as internal from "../base/internal.js";
 import PlainArrowDirectionMixin from "./PlainArrowDirectionMixin.js";
 import PlainCalendarDayButton from "./PlainCalendarDayButton.js";
 import PlainCalendarDayNamesHeader from "./PlainCalendarDayNamesHeader.js";

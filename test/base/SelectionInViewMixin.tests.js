@@ -1,8 +1,8 @@
-import { assert } from "../testHelpers.js";
 import * as internal from "../../src/base/internal.js";
-import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import SelectionInViewMixin from "../../src/base/SelectionInViewMixin.js";
+import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import ShadowTemplateMixin from "../../src/core/ShadowTemplateMixin.js";
+import { assert } from "../testHelpers.js";
 
 const itemHeight = 100;
 

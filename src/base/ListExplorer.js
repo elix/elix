@@ -1,5 +1,5 @@
-import * as internal from "./internal.js";
 import Explorer from "./Explorer.js";
+import * as internal from "./internal.js";
 
 /**
  * Master/detail user interface pattern navigated with a list box.

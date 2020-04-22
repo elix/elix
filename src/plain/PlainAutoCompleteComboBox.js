@@ -1,5 +1,5 @@
-import * as internal from "../base/internal.js";
 import AutoCompleteComboBox from "../base/AutoCompleteComboBox.js";
+import * as internal from "../base/internal.js";
 import PlainAutoCompleteInput from "./PlainAutoCompleteInput.js";
 import PlainComboBoxMixin from "./PlainComboBoxMixin.js";
 import PlainListBox from "./PlainListBox.js";

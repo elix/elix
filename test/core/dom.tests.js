@@ -1,10 +1,10 @@
-import { assert } from "../testHelpers.js";
 import {
   composedAncestors,
   firstFocusableElement,
   updateChildNodes,
 } from "../../src/core/dom.js";
 import * as template from "../../src/core/template.js";
+import { assert } from "../testHelpers.js";
 
 describe("DOM helpers", () => {
   it("firstFocusableElement finds first focusable element in light DOM", () => {

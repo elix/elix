@@ -1,6 +1,6 @@
-import { assert } from "../testHelpers.js";
-import * as calendar from "../../src/base/calendar.js";
 import DateComboBox from "../../define/DateComboBox.js";
+import * as calendar from "../../src/base/calendar.js";
+import { assert } from "../testHelpers.js";
 
 describe("DateComboBox", () => {
   let container;

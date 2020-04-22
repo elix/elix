@@ -1,6 +1,6 @@
+import ArrowDirectionMixin from "../../src/base/ArrowDirectionMixin.js";
 import * as internal from "../../src/base/internal.js";
 import * as template from "../../src/core/template.js";
-import ArrowDirectionMixin from "../../src/base/ArrowDirectionMixin.js";
 import PlainArrowDirectionButton from "../../src/plain/PlainArrowDirectionButton.js";
 import PlainArrowDirectionMixin from "../../src/plain/PlainArrowDirectionMixin.js";
 import SlidingPages from "../../src/plain/PlainSlidingPages.js";

@@ -1,9 +1,9 @@
-import * as calendar from "./calendar.js";
-import * as internal from "./internal.js";
+import html from "../core/html.js";
 import * as template from "../core/template.js";
+import * as calendar from "./calendar.js";
 import CalendarDay from "./CalendarDay.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
-import html from "../core/html.js";
+import * as internal from "./internal.js";
 import SelectableButton from "./SelectableButton.js";
 
 const Base = CalendarElementMixin(SelectableButton);

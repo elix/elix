@@ -1,9 +1,9 @@
-import * as internal from "./internal.js";
-import * as template from "../core/template.js";
-import OpenCloseMixin from "./OpenCloseMixin.js";
 import ReactiveElement from "../core/ReactiveElement.js";
-import TransitionEffectMixin from "./TransitionEffectMixin.js";
+import * as template from "../core/template.js";
 import EffectMixin from "./EffectMixin.js";
+import * as internal from "./internal.js";
+import OpenCloseMixin from "./OpenCloseMixin.js";
+import TransitionEffectMixin from "./TransitionEffectMixin.js";
 
 const Base = OpenCloseMixin(
   EffectMixin(TransitionEffectMixin(ReactiveElement))

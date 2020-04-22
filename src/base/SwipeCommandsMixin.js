@@ -1,6 +1,6 @@
-import * as internal from "./internal.js";
 import html from "../core/html.js";
 import ReactiveElement from "../core/ReactiveElement.js"; // eslint-disable-line no-unused-vars
+import * as internal from "./internal.js";
 
 /**
  * Reveals commands behind list items when the user swipes left or right

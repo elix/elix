@@ -1,5 +1,5 @@
-import * as internal from "../base/internal.js";
 import HamburgerMenuButton from "../base/HamburgerMenuButton.js";
+import * as internal from "../base/internal.js";
 import html from "../core/html.js";
 import PlainDrawer from "./PlainDrawer.js";
 

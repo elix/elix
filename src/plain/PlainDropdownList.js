@@ -1,5 +1,5 @@
-import * as internal from "../base/internal.js";
 import DropdownList from "../base/DropdownList.js";
+import * as internal from "../base/internal.js";
 import PlainBorderButton from "./PlainBorderButton.js";
 import PlainMenu from "./PlainMenu.js";
 import PlainOpenCloseToggle from "./PlainOpenCloseToggle.js";

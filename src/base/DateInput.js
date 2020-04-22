@@ -1,7 +1,7 @@
 import * as calendar from "./calendar.js";
-import * as internal from "./internal.js";
 import CalendarElementMixin from "./CalendarElementMixin.js";
 import Input from "./Input.js";
+import * as internal from "./internal.js";
 
 const Base = CalendarElementMixin(Input);
 

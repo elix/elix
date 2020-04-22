@@ -1,5 +1,5 @@
-import * as internal from "../base/internal.js";
 import CalendarMonth from "../base/CalendarMonth.js";
+import * as internal from "../base/internal.js";
 import PlainCalendarDay from "./PlainCalendarDay.js";
 import PlainCalendarDayNamesHeader from "./PlainCalendarDayNamesHeader.js";
 import PlainCalendarMonthYearHeader from "./PlainCalendarMonthYearHeader.js";

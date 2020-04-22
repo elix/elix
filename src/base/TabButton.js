@@ -1,6 +1,6 @@
-import * as internal from "./internal.js";
 import Button from "./Button.js";
 import FocusVisibleMixin from "./FocusVisibleMixin.js";
+import * as internal from "./internal.js";
 import LanguageDirectionMixin from "./LanguageDirectionMixin.js";
 import SelectableMixin from "./SelectableMixin.js";
 import SlotContentMixin from "./SlotContentMixin.js";
