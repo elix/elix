@@ -1,9 +1,9 @@
-import CurrentItemMixin from "../../src/base/CurrentItemMixin.js";
 import * as internal from "../../src/base/internal.js";
+import ItemCursorMixin from "../../src/base/ItemCursorMixin.js";
 import ReactiveMixin from "../../src/core/ReactiveMixin.js";
 import { assert } from "../testHelpers.js";
 
-class CurrentItemTest extends CurrentItemMixin(ReactiveMixin(HTMLElement)) {
+class ItemCursorTest extends ItemCursorMixin(ReactiveMixin(HTMLElement)) {
   get [internal.defaultState]() {
     return Object.assign(super[internal.defaultState], {
       items: ["Zero", "One", "Two"],
@@ -14,9 +14,9 @@ class CurrentItemTest extends CurrentItemMixin(ReactiveMixin(HTMLElement)) {
     return this[internal.state].items;
   }
 }
-customElements.define("current-item-test", CurrentItemTest);
+customElements.define("current-item-test", ItemCursorTest);
 
-describe("CurrentItemMixin", () => {
+describe("ItemCursorMixin", () => {
   let container;
 
   before(() => {
@@ -28,64 +28,69 @@ describe("CurrentItemMixin", () => {
   });
 
   it("has currentIndex initially -1", () => {
-    const fixture = new CurrentItemTest();
+    const fixture = new ItemCursorTest();
     assert.equal(fixture[internal.state].currentIndex, -1);
   });
 
-  // it("can advance the selection to the next item", async () => {
-  //   const fixture = new CurrentItemTest();
-  //   assert.equal(fixture[internal.state].selectedIndex, -1);
-  //   const selectionChanged0 = fixture.selectNext();
-  //   assert.equal(fixture[internal.state].selectedIndex, 0);
-  //   assert(selectionChanged0);
-  //   fixture.selectNext();
-  //   const selectionChanged1 = fixture.selectNext();
-  //   assert.equal(fixture[internal.state].selectedIndex, 2);
-  //   assert(selectionChanged1);
-  //   // Moving past last item should have no effect.
-  //   const selectionChanged2 = fixture.selectNext();
-  //   assert.equal(fixture[internal.state].selectedIndex, 2);
-  //   assert(!selectionChanged2);
-  //   await Promise.resolve();
-  // });
+  it("can move to the next item", () => {
+    const fixture = new ItemCursorTest();
+    assert.equal(fixture[internal.state].currentIndex, -1);
+    const changed0 = fixture[internal.goNext]();
+    assert.equal(fixture[internal.state].currentIndex, 0);
+    assert(changed0);
+    fixture[internal.goNext]();
+    const change1 = fixture[internal.goNext]();
+    assert.equal(fixture[internal.state].currentIndex, 2);
+    assert(change1);
+    // Moving past last item should have no effect.
+    const changed2 = fixture[internal.goNext]();
+    assert.equal(fixture[internal.state].currentIndex, 2);
+    assert(!changed2);
+  });
 
-  // it("can move the selection to the previous item", async () => {
-  //   const fixture = new CurrentItemTest();
-  //   container.appendChild(fixture);
-  //   fixture.selectPrevious();
-  //   assert.equal(fixture[internal.state].selectedIndex, 2); // last item
-  //   fixture.selectPrevious();
-  //   assert.equal(fixture[internal.state].selectedIndex, 1);
-  //   await Promise.resolve();
-  // });
+  it("can move to the previous item", () => {
+    const fixture = new ItemCursorTest();
+    const changed0 = fixture[internal.goPrevious]();
+    assert.equal(fixture[internal.state].currentIndex, 2); // last item
+    assert(changed0);
+    fixture[internal.goPrevious]();
+    const changed1 = fixture[internal.goPrevious]();
+    assert.equal(fixture[internal.state].currentIndex, 0);
+    assert(changed1);
+    const changed2 = fixture[internal.goPrevious]();
+    assert.equal(fixture[internal.state].currentIndex, 0);
+    assert(!changed2);
+  });
 
-  // it("can wrap the selection from the last to the first item", async () => {
-  //   const fixture = new CurrentItemTest();
-  //   fixture.selectionWraps = true;
-  //   fixture[internal.setState]({ selectedIndex: 2 });
-  //   fixture.selectNext();
-  //   assert.equal(fixture[internal.state].selectedIndex, 0);
-  //   await Promise.resolve();
-  // });
+  it("can wrap from the last to the first item", () => {
+    const fixture = new ItemCursorTest();
+    fixture[internal.setState]({
+      cursorOperationsWrap: true,
+      currentIndex: 2,
+    });
+    fixture[internal.goNext]();
+    assert.equal(fixture[internal.state].currentIndex, 0);
+  });
 
-  // it("can wrap the selection from the first to the last item", async () => {
-  //   const fixture = new CurrentItemTest();
-  //   fixture.selectionWraps = true;
-  //   fixture[internal.setState]({ selectedIndex: 0 });
-  //   fixture.selectPrevious();
-  //   assert.equal(fixture[internal.state].selectedIndex, 2);
-  //   await Promise.resolve();
-  // });
+  it("can wrap from the first to the last item", () => {
+    const fixture = new ItemCursorTest();
+    fixture[internal.setState]({
+      cursorOperationsWrap: true,
+      currentIndex: 0,
+    });
+    fixture[internal.goPrevious]();
+    assert.equal(fixture[internal.state].currentIndex, 2);
+  });
 
   it("makes first item when current item is required and no item is curren", () => {
-    const fixture = new CurrentItemTest();
+    const fixture = new ItemCursorTest();
     assert.equal(fixture[internal.state].currentIndex, -1);
     fixture[internal.setState]({ currentItemRequired: true });
     assert.equal(fixture[internal.state].currentIndex, 0);
   });
 
   it("preserves the current item when items change and old item exists in new set", () => {
-    const fixture = new CurrentItemTest();
+    const fixture = new ItemCursorTest();
     fixture[internal.setState]({ currentIndex: 1 });
     assert.equal(fixture[internal.state].currentIndex, 1);
     fixture[internal.setState]({
@@ -95,7 +100,7 @@ describe("CurrentItemMixin", () => {
   });
 
   it("clamps current index to fall within item bounds", () => {
-    const fixture = new CurrentItemTest();
+    const fixture = new ItemCursorTest();
     fixture[internal.setState]({ currentIndex: -2 });
     // -1 (no selection) is lowest possible value.
     assert.equal(fixture[internal.state].currentIndex, -1);
@@ -105,7 +110,7 @@ describe("CurrentItemMixin", () => {
   });
 
   it("makes nearest item current when item in last place is removed", () => {
-    const fixture = new CurrentItemTest();
+    const fixture = new ItemCursorTest();
     fixture[internal.setState]({
       items: ["Zero", "One"],
       currentIndex: 2,
@@ -114,7 +119,7 @@ describe("CurrentItemMixin", () => {
   });
 
   it("drops selection when the last item is removed", () => {
-    const fixture = new CurrentItemTest();
+    const fixture = new ItemCursorTest();
     fixture[internal.setState]({
       items: [],
       currentIndex: 0,
@@ -123,7 +128,7 @@ describe("CurrentItemMixin", () => {
   });
 
   // it("sets canSelectNext/canSelectPrevious with no wrapping", async () => {
-  //   const fixture = new CurrentItemTest();
+  //   const fixture = new ItemCursorTest();
   //   assert(!fixture.selectionWraps);
 
   //   // No selection yet
@@ -150,7 +155,7 @@ describe("CurrentItemMixin", () => {
   // });
 
   // it("sets canSelectNext/canSelectPrevious with wrapping", async () => {
-  //   const fixture = new CurrentItemTest();
+  //   const fixture = new ItemCursorTest();
   //   fixture.selectionWraps = true;
 
   //   // Start of list
@@ -167,7 +172,7 @@ describe("CurrentItemMixin", () => {
   // });
 
   // it("changing selection through (simulated) user interaction raises the selected-index-changed event", (done) => {
-  //   const fixture = new CurrentItemTest();
+  //   const fixture = new ItemCursorTest();
   //   fixture.addEventListener("selected-index-changed", () => {
   //     done();
   //   });
@@ -179,7 +184,7 @@ describe("CurrentItemMixin", () => {
   // });
 
   // it("changing selection programmatically does not raise the selected-index-changed event", (done) => {
-  //   const fixture = new CurrentItemTest();
+  //   const fixture = new ItemCursorTest();
   //   fixture.addEventListener("selected-index-changed", () => {
   //     assert.fail(
   //       null,
@@ -194,7 +199,7 @@ describe("CurrentItemMixin", () => {
   // });
 
   // it("ignores a selectedIndex that's not a number", () => {
-  //   const fixture = new CurrentItemTest();
+  //   const fixture = new ItemCursorTest();
   //   // @ts-ignore
   //   fixture.selectedIndex = "foo";
   //   assert.equal(fixture.selectedIndex, -1);

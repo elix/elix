@@ -4,12 +4,12 @@ import * as internal from "./internal.js";
 /**
  * Tracks which of a set of items is the current item
  *
- * @module CurrentItemMixin
+ * @module ItemCursorMixin
  * @param {Constructor<ReactiveElement>} Base
  */
-export default function CurrentItemMixin(Base) {
+export default function ItemCursorMixin(Base) {
   // The class prototype added by the mixin.
-  class CurrentItem extends Base {
+  class ItemCursor extends Base {
     // /**
     //  * True if the selection can be moved to the next item, false if not (the
     //  * selected item is the last item in the list).
@@ -36,7 +36,7 @@ export default function CurrentItemMixin(Base) {
         currentIndex: -1,
         currentItem: null,
         currentItemRequired: false,
-        // selectionWraps: false,
+        cursorOperationsWrap: false,
       });
     }
 
@@ -143,48 +143,78 @@ export default function CurrentItemMixin(Base) {
     //   }
     //   return updateSelectedIndex(this, this[internal.state].items.length - 1);
     // }
-    // /**
-    //  * Select the next item in the list.
-    //  *
-    //  * If the list has no selection, the first item will be selected.
-    //  *
-    //  * @returns {Boolean} True if the selection changed, false if not.
-    //  */
-    // selectNext() {
-    //   if (super.selectNext) {
-    //     super.selectNext();
-    //   }
-    //   return updateSelectedIndex(this, this[internal.state].selectedIndex + 1);
-    // }
-    // /**
-    //  * Select the previous item in the list.
-    //  *
-    //  * If the list has no selection, the last item will be selected.
-    //  *
-    //  * @returns {Boolean} True if the selection changed, false if not.
-    //  */
-    // selectPrevious() {
-    //   if (super.selectPrevious) {
-    //     super.selectPrevious();
-    //   }
-    //   let newIndex;
-    //   const { items, selectedIndex, selectionWraps } = this[internal.state];
-    //   if (
-    //     (items && selectedIndex < 0) ||
-    //     (selectionWraps && selectedIndex === 0)
-    //   ) {
-    //     // No selection yet, or we're on the first item, and selection wraps.
-    //     // In either case, select the last item.
-    //     newIndex = items.length - 1;
-    //   } else if (selectedIndex > 0) {
-    //     // Select the previous item.
-    //     newIndex = selectedIndex - 1;
-    //   } else {
-    //     // Already on first item, can't go previous.
-    //     return false;
-    //   }
-    //   return updateSelectedIndex(this, newIndex);
-    // }
+
+    /**
+     * Move to the next item in the set.
+     *
+     * If no item is current, move to the first item.
+     *
+     * @returns {Boolean} True if the current item changed, false if not.
+     */
+    [internal.goNext]() {
+      if (super[internal.goNext]) {
+        super[internal.goNext]();
+      }
+      let newIndex;
+      const { items, currentIndex, cursorOperationsWrap } = this[
+        internal.state
+      ];
+      if (
+        (items && currentIndex === -1) ||
+        (cursorOperationsWrap && currentIndex === items.length - 1)
+      ) {
+        // No item is current, or we're on the last item and cursor operations
+        // wrap. Move to the first item.
+        newIndex = 0;
+      } else if (currentIndex < items.length - 1) {
+        // Move to the next item.
+        newIndex = currentIndex + 1;
+      } else {
+        // Already on last item, can't go next.
+        return false;
+      }
+      const changed = this[internal.state].currentIndex !== newIndex;
+      if (changed) {
+        this[internal.setState]({ currentIndex: newIndex });
+      }
+      return changed;
+    }
+
+    /**
+     * Move to the previous item in the set.
+     *
+     * If no item is current, move to the last item.
+     *
+     * @returns {Boolean} True if the current item changed, false if not.
+     */
+    [internal.goPrevious]() {
+      if (super[internal.goPrevious]) {
+        super[internal.goPrevious]();
+      }
+      let newIndex;
+      const { items, currentIndex, cursorOperationsWrap } = this[
+        internal.state
+      ];
+      if (
+        (items && currentIndex === -1) ||
+        (cursorOperationsWrap && currentIndex === 0)
+      ) {
+        // No item is current, or we're on the first item and cursor operations
+        // wrap. Move to the last item.
+        newIndex = items.length - 1;
+      } else if (currentIndex > 0) {
+        // Move to the previous item.
+        newIndex = currentIndex - 1;
+      } else {
+        // Already on first item, can't go previous.
+        return false;
+      }
+      const changed = this[internal.state].currentIndex !== newIndex;
+      if (changed) {
+        this[internal.setState]({ currentIndex: newIndex });
+      }
+      return changed;
+    }
 
     [internal.stateEffects](state, changed) {
       const effects = super[internal.stateEffects]
@@ -263,5 +293,5 @@ export default function CurrentItemMixin(Base) {
     }
   }
 
-  return CurrentItem;
+  return ItemCursor;
 }

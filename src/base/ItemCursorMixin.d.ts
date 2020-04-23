@@ -3,6 +3,6 @@
 
 /// <reference path="../core/shared.d.ts"/>
 
-declare const SingleSelectionMixin: StateMixin<{}, {}, {}, {}>;
+declare const ItemCursorMixin: StateMixin<{}, {}, {}, {}>;
 
-export default SingleSelectionMixin;
+export default ItemCursorMixin;
